@@ -35,6 +35,10 @@
         {
           "text": "date.js",
           "path": "../libraries/datejs/build/"
+        },
+        {
+          "text": "hammer.js",
+          "path": "../libraries/hammer/"
         }
       ]
     },
