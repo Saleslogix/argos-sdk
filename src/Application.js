@@ -184,6 +184,7 @@ define('Sage/Platform/Mobile/Application', [
          */
         initConnects: function() {
             this._connects.push(connect.connect(window, 'resize', this, this.onResize));
+            this._connects.push(connect.connect(window, 'scroll', this, this.onScroll));
             this._connects.push(connect.connect(win.body(), 'beforetransition', this, this._onBeforeTransition));
             this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
             this._connects.push(connect.connect(win.body(), 'show', this, this._onActivate));
@@ -473,6 +474,13 @@ define('Sage/Platform/Mobile/Application', [
                 connect.publish('/app/resize',[]);
             }, 100);
         },
+        onScroll: function(evt) {
+            connect.publish('/app/scroll', evt);
+
+            if (window.innerHeight + window.scrollY === document.height) {
+                connect.publish('/app/scrollBottom', evt);
+            }
+        },
         onRegistered: function(view) {
         },
         onBeforeViewTransitionAway: function(view) {
@@ -665,3 +673,4 @@ define('Sage/Platform/Mobile/Application', [
         }
     });
 });
+
