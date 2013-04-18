@@ -105,6 +105,13 @@ define('Sage/Platform/Mobile/View', [
          */
         gestures: null,
         /**
+         * Dom node to connect to for gestures. Defaults to the views domNode.
+         * @return {Object}
+         */
+        getGestureDomNode: function() {
+            return this.domNode;
+        },
+        /**
          * Available hammerjs options (defaults listed):
          *    drag: true
          *    drag_block_horizontal: false
@@ -166,7 +173,7 @@ define('Sage/Platform/Mobile/View', [
             var h;
             this._loadConnect = this.connect(this.domNode, 'onload', this._onLoad);
             if (this.gestures && this.gestures.length > 0) {
-                h = hammer(this.domNode, this.hammerOptions);
+                h = hammer(this.getGestureDomNode(), this.hammerOptions);
                 h.on(this.gestures.join(' '), lang.hitch(this, this.onGesture));
             }
         },
