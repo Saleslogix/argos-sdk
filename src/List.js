@@ -336,9 +336,11 @@ define('Sage/Platform/Mobile/List', [
         moreTemplate: new Simplate([
             '<div class="list-more" data-dojo-attach-point="moreNode">',
             '<div class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></div>',
-            '<button class="button" data-action="more">',
-            '<span>{%= $.moreText %}</span>',
-            '</button>',
+            '{% if (!$.continuousScrolling) { %}',
+                '<button class="button" data-action="more">',
+                '<span>{%= $.moreText %}</span>',
+                '</button>',
+            '{% } %}',
             '</div>'
         ]),
         /**
@@ -649,6 +651,12 @@ define('Sage/Platform/Mobile/List', [
          * The list action layout definition for the list action bar.
          */
         actions: null,
+
+        /**
+         * If true, will remove the loading button and auto fetch more data when the user scrolls to the bottom of the page.
+         */
+        continuousScrolling: true,
+
         /**
          * Setter method for the selection model, also binds the various selection model select events
          * to the respective List event handler for each.
@@ -691,8 +699,11 @@ define('Sage/Platform/Mobile/List', [
 
             this.subscribe('/app/refresh', this._onRefresh);
 
-            if (this.enableSearch)
-            {
+            if (this.continuousScrolling) {
+                this.subscribe('/app/scrollBottom', this._onScrollBottom);
+            }
+
+            if (this.enableSearch) {
                 var searchWidgetCtor = lang.isString(this.searchWidgetClass)
                     ? lang.getObject(this.searchWidgetClass, false)
                     : this.searchWidgetClass;
@@ -703,14 +714,11 @@ define('Sage/Platform/Mobile/List', [
                     'onSearchExpression': lang.hitch(this, this._onSearchExpression)
                 });
                 this.searchWidget.placeAt(this.searchNode, 'replace');
-            }
-            else
-            {
+            } else {
                 this.searchWidget = null;
             }
 
             domClass.toggle(this.domNode, 'list-hide-search', this.hideSearch);
-
             this.clear();
         },
         /**
@@ -986,6 +994,17 @@ define('Sage/Platform/Mobile/List', [
             if (this.resourceKind && options.resourceKind === this.resourceKind)
             {
                 this.refreshRequired = true;
+            }
+        },
+        /**
+         * Handler for the /app/scrollBottom event. Loads more data if needed.
+         * @private
+         */
+        _onScrollBottom: function(evt) {
+            // Check the view has focus so other views that are loaded but not visible will not load more data.
+            // TODO: Don't use focus, check the domNode for visibility
+            if (this.focused && this.hasMoreData()) {
+                this.more();
             }
         },
         /**
