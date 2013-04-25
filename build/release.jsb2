@@ -37,8 +37,8 @@
           "path": "../libraries/datejs/build/"
         },
         {
-          "text": "hammer.js",
-          "path": "../libraries/hammer/"
+          "text": "snap.js",
+          "path": "../libraries/snap/"
         }
       ]
     },

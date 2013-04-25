@@ -2,9 +2,14 @@
 
 body
 {
-	font-family: Helvetica, Arial;
-	background: #fbfdf0;
-	color: #000;
+    font-family: Helvetica, Arial;
+}
+
+body
+body > .viewContainer
+{
+    background: #fbfdf0;
+    color: #000;
 }
 
 h3
@@ -53,7 +58,9 @@ h5
     /* font-size: .8em; */
 }
 
-body > .toolbar
+.toolbar,
+.viewContainer > .toolbar,
+body > .viewContainer > .toolbar
 {
     border-bottom: 1px solid #3c4f18;
     border-top: 1px transparent #3c4f18;
@@ -87,17 +94,19 @@ body > .toolbar
 
 }
 
-.ie9 body > .toolbar
+.ie9 body > .viewContainer > .toolbar
 {
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#dae6c6, endColorstr=#c1d59f)";
 }
 
+.viewContainer > .toolbar > h1,
 .toolbar > h1
 {
     color: #000;
     text-shadow: #fff 0px 1px 0px;
 }
 
+.viewContainer > .toolbar > .button,
 .toolbar > .button
 {
     box-shadow: rgba(255,255,255,0.75) 0px 0px 3px inset;
@@ -105,6 +114,7 @@ body > .toolbar
     -webkit-box-shadow: rgba(255,255,255,0.75) 0px 0px 3px inset;
 }
 
+.viewContainer > .dialog .toolbar > h1,
 .dialog .toolbar > h1
 {
     color: #000;

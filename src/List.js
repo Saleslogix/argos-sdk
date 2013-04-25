@@ -1318,16 +1318,13 @@ define('Sage/Platform/Mobile/List', [
          * @return {Boolean} True if the feed has more data; False otherwise.
          */
         hasMoreData: function() {
-            if (this.feed['$startIndex'] > 0 && this.feed['$itemsPerPage'] > 0 && this.feed['$totalResults'] >= 0)
-            {
+            if (this.feed && this.feed['$startIndex'] > 0 && this.feed['$itemsPerPage'] > 0 && this.feed['$totalResults'] >= 0) {
                 var start = this.feed['$startIndex'];
                 var count = this.feed['$itemsPerPage'];
                 var total = this.feed['$totalResults'];
 
                 return (start + count <= total);
-            }
-            else
-            {
+            } else {
                 return true; // no way to determine, always assume more data
             }
         },

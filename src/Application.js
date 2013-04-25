@@ -28,6 +28,7 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/window',
+    'dojo/dom-construct',
     'dojo/string'
 ], function(
     json,
@@ -36,6 +37,7 @@ define('Sage/Platform/Mobile/Application', [
     declare,
     lang,
     win,
+    domConstruct,
     string
 ) {
     
@@ -104,6 +106,7 @@ define('Sage/Platform/Mobile/Application', [
          * @property {Boolean}
          */
         _started: false,
+        _rootDomNode: null,
         customizations: null,
         services: null,
         modules: null,
@@ -346,17 +349,52 @@ define('Sage/Platform/Mobile/Application', [
         hasService: function(name) {
             return !!this.services[name];
         },
+        _createViewContainers: function() {
+            var node = document.getElementById('viewContainer'), drawers;
+
+            if (node) {
+                this._rootDomNode = node;
+                return;
+            }
+
+            if (this._rootDomNode === null || typeof this._rootDomNode === 'undefined') {
+                this._rootDomNode = domConstruct.create('div', {
+                    'id': 'viewContainer',
+                    'class': 'viewContainer'
+                }, win.body());
+
+                drawers = domConstruct.create('div', {
+                    'class': 'drawers absolute'
+                }, win.body());
+
+                domConstruct.create('div', {
+                    'class': 'left-drawer absolute'
+                }, drawers);
+
+                domConstruct.create('div', {
+                    'class': 'right-drawer absolute'
+                }, drawers);
+
+            }
+        },
         /**
          * Registers a view with the application and renders it to HTML.
          * If the application has already been initialized, the view is immediately initialized as well.
          * @param {View} view A view instance to be registered.
+         * @param {domNode} domNode Optional. A DOM node to place the view in. 
          */
-        registerView: function(view) {
+        registerView: function(view, domNode) {
             this.views[view.id] = view;
 
-            if (this._started) view.init();
+            if (this._started) {
+                view.init();
+            }
 
-            view.placeAt(win.body(), 'first');
+            if (!domNode) {
+                this._createViewContainers();
+            }
+
+            view.placeAt(domNode || this._rootDomNode, 'first');
 
             this.onRegistered(view);
 
@@ -367,20 +405,25 @@ define('Sage/Platform/Mobile/Application', [
          * If the application has already been initialized, the toolbar is immediately initialized as well.
          * @param {String} name Unique name of the toolbar
          * @param {Toolbar} tbar Toolbar instance to register
+         * @param {domNode} domNode Optional. A DOM node to place the view in. 
          */
-        registerToolbar: function(name, tbar)
-        {
-            if (typeof name === 'object')
-            {
+        registerToolbar: function(name, tbar, domNode) {
+            if (typeof name === 'object') {
                 tbar = name;
                 name = tbar.name;
             }
 
             this.bars[name] = tbar;
 
-            if (this._started) tbar.init();
+            if (this._started) {
+                tbar.init();
+            }
 
-            tbar.placeAt(win.body(), 'last');
+            if (!domNode) {
+                this._createViewContainers();
+            }
+
+            tbar.placeAt(domNode || this._rootDomNode, 'last');
 
             return this;
         },

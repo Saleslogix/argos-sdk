@@ -27,7 +27,6 @@ define('Sage/Platform/Mobile/View', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dijit/_Widget',
-    'hammer',
     'Sage/Platform/Mobile/_ActionMixin',
     'Sage/Platform/Mobile/_CustomizationMixin',
     'Sage/Platform/Mobile/_Templated'
@@ -35,7 +34,6 @@ define('Sage/Platform/Mobile/View', [
     declare,
     lang,
     _Widget,
-    hammer,
     _ActionMixin,
     _CustomizationMixin,
     _Templated
@@ -89,62 +87,6 @@ define('Sage/Platform/Mobile/View', [
          */
         serviceName: false,
         /**
-         * Array of gesture event strings to connect to. 
-         * Available hammerjs events:
-         *    hold
-         *    tap
-         *    doubletap
-         *    drag, dragstart, dragend, dragup, dragdown, dragleft, dragright
-         *    swipe, swipeup, swipedown, swipeleft, swiperight
-         *    transform, transformstart, transformend
-         *    rotate
-         *    pinch, pinchin, pinchout
-         *    touch (gesture detection starts)
-         *    release (gesture detection ends)
-         * @property {Array}
-         */
-        gestures: null,
-        /**
-         * Dom node to connect to for gestures. Defaults to the views domNode.
-         * @return {Object}
-         */
-        getGestureDomNode: function() {
-            return this.domNode;
-        },
-        /**
-         * Available hammerjs options (defaults listed):
-         *    drag: true
-         *    drag_block_horizontal: false
-         *    drag_block_vertical: false
-         *    drag_lock_to_axis: false
-         *    drag_max_touches: 1
-         *    drag_min_distance: 10
-         *    hold: true
-         *    hold_threshold: 3
-         *    hold_timeout: 500
-         *    prevent_default: true
-         *    prevent_mouseevents: false
-         *    release: true
-         *    show_touches: true
-         *    stop_browser_behavior: Object
-         *    swipe: true
-         *    swipe_max_touches: 1
-         *    swipe_velocity: 0.7
-         *    tap: true
-         *    tap_always: true
-         *    tap_max_distance: 10
-         *    tap_max_touchtime: 250
-         *    doubletap_distance: 20
-         *    doubletap_interval: 300
-         *    touch: true
-         *    transform: true
-         *    transform_always_block: false
-         *    transform_min_rotation: 1
-         *    transform_min_scale: 0.01
-         * @property {Object}
-         */
-        hammerOptions: null,
-        /**
          * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
          * the fully customized toolbar layout.
          * @return {Object} The toolbar layout
@@ -172,12 +114,6 @@ define('Sage/Platform/Mobile/View', [
         initConnects: function() {
             var h;
             this._loadConnect = this.connect(this.domNode, 'onload', this._onLoad);
-            if (this.gestures && this.gestures.length > 0) {
-                h = hammer(this.getGestureDomNode(), this.hammerOptions);
-                h.on(this.gestures.join(' '), lang.hitch(this, this.onGesture));
-            }
-        },
-        onGesture: function(evt) {
         },
         _onLoad: function(evt, el, o) {
             this.disconnect(this._loadConnect);
