@@ -108,6 +108,7 @@ define('Sage/Platform/Mobile/FileManager', [
             request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             if (service) {
+                request.setRequestHeader('Authorization', service.createBasicAuthToken());
                 request.setRequestHeader('X-Authorization', service.createBasicAuthToken());
                 request.setRequestHeader('X-Authorization-Mode', 'no-challenge');
             }
@@ -147,6 +148,7 @@ define('Sage/Platform/Mobile/FileManager', [
             request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             if (service) {
+                request.setRequestHeader('Authorization', service.createBasicAuthToken());
                 request.setRequestHeader('X-Authorization', service.createBasicAuthToken());
                 request.setRequestHeader('X-Authorization-Mode', 'no-challenge');
             }
