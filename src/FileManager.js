@@ -102,10 +102,15 @@ define('Sage/Platform/Mobile/FileManager', [
             //fd.append('filename*', encodeURI(file.name)); //Does not work
             fd.append('file_', file, encodeURI(file.name)); // Does not work
             //fd.name = encodeURI(file.name)
-            var request = new XMLHttpRequest();
+            var request = new XMLHttpRequest(), service = App.getService();
 
             request.open((asPut) ? 'PUT' : 'POST', url);
             request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+            if (service) {
+                request.setRequestHeader('X-Authorization', service.createBasicAuthToken());
+                request.setRequestHeader('X-Authorization-Mode', 'no-challenge');
+            }
 
             if (complete) {
                 request.onreadystatechange = function() {
@@ -137,10 +142,16 @@ define('Sage/Platform/Mobile/FileManager', [
                 //assume Attachment SData url
                 url = 'slxdata.ashx/slx/system/-/attachments/file';
             }
-            var request = new XMLHttpRequest();
+            var request = new XMLHttpRequest(), service = App.getService(), reader;
             request.open((asPut) ? 'PUT' : 'POST', url);
             request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-            var reader = new FileReader();
+
+            if (service) {
+                request.setRequestHeader('X-Authorization', service.createBasicAuthToken());
+                request.setRequestHeader('X-Authorization-Mode', 'no-challenge');
+            }
+
+            reader = new FileReader();
             reader.onload = function(evt) {
                 var binary = evt.target.result;
                 var boundary = "---------------------------" + (new Date()).getTime();
