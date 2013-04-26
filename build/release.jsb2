@@ -96,6 +96,10 @@
           "path": "../src"
         },
         {
+          "text": "FileManager.js",
+          "path": "../src"
+        },
+        {
           "text": "SData.js",
           "path": "../src/Store"
         },
@@ -182,6 +186,10 @@
         {
           "text": "PersistentStorage.js",
           "path": "../src"
+        },
+        {
+          "text": "FileSelect.js",
+          "path": "../src/Views"
         },
         {
           "text": "Signature.js",
