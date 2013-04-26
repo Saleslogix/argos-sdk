@@ -22,6 +22,8 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     'dojo/_base/declare',
     'dojo/window',
     'dojo/dom-construct',
+    'dojo/dom-attr',
+    'dojo/dom-class',
     'Sage/Platform/Mobile/FileManager',
     'Sage/Platform/Mobile/Fields/TextField',
     'Sage/Platform/Mobile/View'
@@ -29,6 +31,8 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     declare,
     win,
     domConstruct,
+    domAttr,
+    domClass,
     FileManager,
     TextField,
     View
@@ -37,11 +41,26 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     return declare('Sage.Platform.Mobile.Views.FileSelect', [View], {
         // Localization
         titleText: 'File Select',
-        addFileText: 'Add',
-        okText: 'Ok',
+        addFileText: 'Browse',
+        okText: 'Upload',
         cancelText: 'Cancel',
         selectFileText:'Select file', 
-        //Templates
+        loadingText: 'Uploading...',
+
+        /**
+         * @property {Simplate}
+         * The template used to render the loading message when the view is requesting more data.
+         *
+         * The default template uses the following properties:
+         *
+         *      name                description
+         *      ----------------------------------------------------------------
+         *      loadingText         The text to display while loading.
+         */
+        loadingTemplate: new Simplate([
+            '<li class="list-loading-indicator"><div>{%= $.loadingText %}</div></li>'
+        ]),
+
         /**
          * @property {Simplate}
          * Simplate that defines the HTML Markup
@@ -50,22 +69,23 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
          *
          */
         widgetTemplate: new Simplate([
-           // '<div id="{%= $.id %}" title="{%: $.titleText %}" class="panel {%= $.cls %}">',
              '<div title="{%: $.titleText %}" class="panel {%= $.cls %}">',
                     '<div class="buttons">',
                     '<div><button class="button" data-action="_browesForFiles"><span>{%: $.addFileText %}</span></button></div>',
-                    '<div><button class="button" data-action="_okSelect"><span>{%: $.okText %}</span></button></div>',
-                    '<div><button class="button" data-action="_cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
-                   '</div>',
+                    '</div>',
+                    '<ul class="list-content"  data-dojo-attach-point="contentNode"></ul>',
+                    '<div class="buttons">',
+                    '<div><button class="button inline" data-action="okSelect"><span>{%: $.okText %}</span></button>',
+                    '<button class="button inline" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
+                    '</div>',
              '</div>',
-             '<ul class="list-content"  data-dojo-attach-point="contentNode"></ul>'
         ]),
         fileTemplate: new Simplate([
-            '<div class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
-            '<h4>{%: $.fileName %}<h4>',
-            '</div>'
+            '<li class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
+                '<h4>{%: $.fileName %}<h4>',
+            '</li>'
         ]),
-       
+
         signatureNode: null,
         id: 'fileSelect_edit',
         fileManager: null,
@@ -79,8 +99,8 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         postCreate: function() {
             this.inherited(arguments);
             var self = this;
-            this.btnFileSelect = dojo.doc.createElement('INPUT');
-            dojo.attr(this.btnFileSelect, {
+            this.btnFileSelect = domConstruct.create('INPUT', null);
+            domAttr.set(this.btnFileSelect, {
                 'type': 'file',
                 'multiple': 'true',
                 'accept': '*/*',
@@ -89,15 +109,14 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                     self._onSelectFile(e);
                 }
             });
-            dojo.place(this.btnFileSelect, this.domNode, 'last');
 
+            domConstruct.place(this.btnFileSelect, this.domNode, 'last');
+            domClass.remove(this.domNode, 'list-loading');
         },
         show: function(options) {
-            debugger;
             this.inherited(arguments);
             this._files = [];
             this.contentNode.innerHTML = "";
-
         },
         _browesForFiles: function(file) {
             this.btnFileSelect.click();
@@ -125,7 +144,6 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                 description: this._getDefaultDescription(file.name)
             };
             var rowNode = domConstruct.place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
-
         },
         _getFileLength: function(file) {
             var filelength = 0;
@@ -160,8 +178,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
               
            }
        },
-        
-        _uploadFile: function(file) {
+       _uploadFile: function(file) {
             if (file) {
                 var url = dString.substitute(this._uploadUrlFmt, [this.attachment.$key]);
                 //Only Support by HTML5
@@ -177,8 +194,13 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         _getDefaultDescription: function (filename) {
             return filename.replace(/\.[\w]*/, '');
         },
-        _okSelect: function() {
-
+        okSelect: function() {
+            var tpl = this.loadingTemplate.apply(this);
+            domClass.add(this.domNode, 'list-loading');
+            domConstruct.place(tpl, this.contentNode, 'first');
+        },
+        cancelSelect: function() {
         }
     });
 });
+
