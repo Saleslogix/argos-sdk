@@ -968,3 +968,25 @@ h2 > .collapsed-indicator
 .invisible {
     visibility: hidden;
 }
+
+.file-wrapper
+{
+    line-height: 50px;
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.file-wrap > input
+{
+    z-index: 2;
+    opacity: 0;
+    height: 1000px;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+

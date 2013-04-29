@@ -20,6 +20,7 @@
  */
 define('Sage/Platform/Mobile/Views/FileSelect', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/window',
     'dojo/dom-construct',
     'dojo/dom-attr',
@@ -29,6 +30,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     'Sage/Platform/Mobile/View'
 ], function(
     declare,
+    lang,
     win,
     domConstruct,
     domAttr,
@@ -41,7 +43,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     return declare('Sage.Platform.Mobile.Views.FileSelect', [View], {
         // Localization
         titleText: 'File Select',
-        addFileText: 'Browse',
+        addFileText: 'Click or Tap here to add a file.',
         okText: 'Upload',
         cancelText: 'Cancel',
         selectFileText:'Select file', 
@@ -69,16 +71,21 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
          *
          */
         widgetTemplate: new Simplate([
-             '<div title="{%: $.titleText %}" class="panel {%= $.cls %}">',
-                    '<div class="buttons">',
-                    '<div><button class="button" data-action="_browesForFiles"><span>{%: $.addFileText %}</span></button></div>',
+            '<div title="{%: $.titleText %}" class="panel {%= $.cls %}">',
+                '<div class="file-area">',
+                    '<div class="file-wrapper">',
+                        '<div class="file-wrap">',
+                            '<input type="file" data-dojo-attach-point="btnFileSelect" size="71" accept="*/*">',
+                        '</div>',
+                        '{%: $.addFileText %}',
                     '</div>',
-                    '<ul class="list-content"  data-dojo-attach-point="contentNode"></ul>',
-                    '<div class="buttons">',
+                '</div>',
+                '<ul class="list-content"  data-dojo-attach-point="contentNode"></ul>',
+                '<div class="buttons">',
                     '<div><button class="button inline" data-action="okSelect"><span>{%: $.okText %}</span></button>',
                     '<button class="button inline" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
-                    '</div>',
-             '</div>',
+                '</div>',
+            '</div>',
         ]),
         fileTemplate: new Simplate([
             '<li class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
@@ -94,24 +101,13 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         _formParts: [],
         constructor: function() {
             this._fileManager = new FileManager();
-
         },
         postCreate: function() {
             this.inherited(arguments);
-            var self = this;
-            this.btnFileSelect = domConstruct.create('INPUT', null);
-            domAttr.set(this.btnFileSelect, {
-                'type': 'file',
-                'multiple': 'false',
-                'accept': '*/*',
-                'class': 'invisible',
-                'capture':'camera',
-                onchange: function(e) {
-                    self._onSelectFile(e);
-                }
+            this.btnFileSelect.onchange = lang.hitch(this, function(e){
+                this._onSelectFile(e);
             });
 
-            domConstruct.place(this.btnFileSelect, this.domNode, 'last');
             domClass.remove(this.domNode, 'list-loading');
         },
         show: function(options) {
