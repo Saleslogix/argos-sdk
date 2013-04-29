@@ -50,22 +50,23 @@ define('Sage/Platform/Mobile/FileManager', [
             return results;
         },
         isFileSizeAllowed: function(files) {
-            var l = 0;
-            var maxfileSize = this.fileUploadOptions.maxFileSize;
-            var title = this.largeFileWarningTitle;
-            var msg = this.largeFileWarningText;
+            var len = 0, maxfileSize, title, msg;
+            maxfileSize = this.fileUploadOptions.maxFileSize;
+            title = this.largeFileWarningTitle;
+            msg = this.largeFileWarningText;
+
             for (var i = 0; i < files.length; i++) {
                 if (files[i].size === 0) {
                     // do nothing.
                 } else {
-                    l += files[i].size || files[i].blob.length;
+                    len += files[i].size || files[i].blob.length;
                 }
             }
-            if (l > (maxfileSize)) {
-                //dialogs.showError(msg, title);
-                return false;
 
+            if (len > (maxfileSize)) {
+                return false;
             }
+
             return true;
         },
         uploadFile: function(file, url, progress, complete, error, scope, asPut) {
@@ -84,7 +85,7 @@ define('Sage/Platform/Mobile/FileManager', [
         _uploadFileHTML5_asBinary: function(file, url, progress, complete, error, scope, asPut) {
             if (!url) {
                 //assume Attachment SData url
-                url = 'slxdata.ashx/slx/system/-/attachments/file';
+                url = 'slxdata.ashx/slx/system/-/attachments/file';// TODO: Remove this assumption from SDK
             }
 
             var request = new XMLHttpRequest(), service = App.getService(), reader;
@@ -106,8 +107,8 @@ define('Sage/Platform/Mobile/FileManager', [
                 boundary = "---------------------------" + (new Date()).getTime();
                 dashdash = '--';
                 crlf = '\r\n';
-                bb.push(dashdash + boundary + crlf);
 
+                bb.push(dashdash + boundary + crlf);
                 bb.push('Content-Disposition: attachment; ');
                 bb.push('name="file_"; ');
                 bb.push('filename*="' + encodeURI(file.name) + '" ');
