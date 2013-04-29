@@ -105,6 +105,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                 'multiple': 'true',
                 'accept': '*/*',
                 'class': 'invisible',
+                'capture':'camera',
                 onchange: function(e) {
                     self._onSelectFile(e);
                 }
