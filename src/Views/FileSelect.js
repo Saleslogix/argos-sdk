@@ -102,7 +102,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             this.btnFileSelect = domConstruct.create('INPUT', null);
             domAttr.set(this.btnFileSelect, {
                 'type': 'file',
-                'multiple': 'true',
+                'multiple': 'false',
                 'accept': '*/*',
                 'class': 'invisible',
                 'capture':'camera',
