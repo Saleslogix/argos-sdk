@@ -33,12 +33,20 @@
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+.left-drawer,
+.right-drawer {
     visibility: hidden;
     display: none;
 }
 
-.snapjs-left .drawers,
-.snapjs-right .drawers {
+.snapjs-left .left-drawer {
+    visibility: visible;
+    display: block;
+}
+
+.snapjs-right .right-drawer {
     visibility: visible;
     display: block;
 }
