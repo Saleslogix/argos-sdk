@@ -33,7 +33,16 @@
     left: 0;
     right: 0;
     bottom: 0;
+    visibility: hidden;
+    display: none;
 }
+
+.snapjs-left .drawers,
+.snapjs-right .drawers {
+    visibility: visible;
+    display: block;
+}
+
 .left-drawer, .right-drawer {
     top: 0;
     left: 0;
