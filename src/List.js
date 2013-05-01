@@ -700,7 +700,7 @@ define('Sage/Platform/Mobile/List', [
             this.subscribe('/app/refresh', this._onRefresh);
 
             if (this.continuousScrolling) {
-                this.subscribe('/app/scrollBottom', this._onScrollBottom);
+                this.connect(this.domNode, 'onscroll', this.onScroll);
             }
 
             if (this.enableSearch) {
@@ -996,15 +996,21 @@ define('Sage/Platform/Mobile/List', [
                 this.refreshRequired = true;
             }
         },
-        /**
-         * Handler for the /app/scrollBottom event. Loads more data if needed.
-         * @private
-         */
-        _onScrollBottom: function(evt) {
-            // Check the view has focus so other views that are loaded but not visible will not load more data.
-            // TODO: Don't use focus, check the domNode for visibility
-            if (this.focused && this.hasMoreData()) {
-                this.more();
+        onScroll: function(evt) {
+            var pos, height, scrollTop, scrollHeight, remaining, selected;
+            pos = domGeom.position(this.domNode, true);
+
+            height = pos.h; // viewport height (what user sees)
+            scrollHeight = this.domNode.scrollHeight; // Entire container height
+            scrollTop = this.domNode.scrollTop; // How far we are scrolled down
+            remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
+
+            selected = domAttr.get(this.domNode, 'selected');
+
+            if (remaining === height) {
+                if (selected === 'true' && this.hasMoreData()) {
+                    this.more();
+                }
             }
         },
         /**

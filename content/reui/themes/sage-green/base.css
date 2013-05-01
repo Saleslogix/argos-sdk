@@ -13,16 +13,19 @@ body
 
 body > .viewContainer
 {
-    position: relative;
+    position: absolute;
     padding: 45px 0 0 0;
     margin: 0;
-    min-height: 416px;
     z-index: 3;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
 }
 
 body[orient="landscape"]
 {
     min-height: 268px;
+    overflow: hidden;
 }
 
 body > .viewContainer > *
@@ -63,7 +66,11 @@ body > .viewContainer > .list
 body[orient="landscape"] > .viewContainer > .panel,
 body[orient="landscape"] > .viewContainer > .list
 {
-    height: auto;
+    position:absolute;
+    top: 45px; /* Adjust if header toolbar changes */
+    bottom: 40px; /* Adjust if footer toolbar changes */
+    width: 100%;
+    overflow: auto;
 }
 
 body > .viewContainer > [selected="true"]
@@ -101,6 +108,13 @@ body > .viewContainer > [selected="true"]
 	height: 30px;
 	line-height: 30px;
 	padding: 0 2px 0 2px;
+}
+
+.viewContainer > .footer-toolbar 
+{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
 }
 
 .viewContainer > .toolbar,

@@ -39,6 +39,10 @@
         {
           "text": "snap.js",
           "path": "../libraries/snap/"
+        },
+        {
+          "text": "iscroll.js",
+          "path": "../libraries/iscroll/"
         }
       ]
     },

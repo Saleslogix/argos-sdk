@@ -60,7 +60,8 @@ h5
 
 .toolbar,
 .viewContainer > .toolbar,
-body > .viewContainer > .toolbar
+body > .viewContainer > .toolbar,
+.viewContainer > .footer-toolbar
 {
     border-bottom: 1px solid #3c4f18;
     border-top: 1px transparent #3c4f18;
