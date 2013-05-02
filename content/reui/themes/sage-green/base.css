@@ -68,7 +68,7 @@ body[orient="landscape"] > .viewContainer > .list
 {
     position:absolute;
     top: 45px; /* Adjust if header toolbar changes */
-    bottom: 40px; /* Adjust if footer toolbar changes */
+    bottom: 0px; /* Adjust if footer toolbar changes */
     width: 100%;
     overflow: auto;
     -webkit-transition-property: top, bottom;
