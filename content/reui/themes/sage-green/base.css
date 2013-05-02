@@ -71,6 +71,13 @@ body[orient="landscape"] > .viewContainer > .list
     bottom: 40px; /* Adjust if footer toolbar changes */
     width: 100%;
     overflow: auto;
+    -webkit-transition-property: top, bottom;
+    transition-property: top, bottom;
+    -webkit-transition-duration: .2s, .2s;
+    transition-duration: .2s, .2s;
+    -webkit-transition-timing-function: linear, linear;
+    transition-timing-function: linear, linear;
+    -webkit-overflow-scrolling: touch;
 }
 
 body > .viewContainer > [selected="true"]
