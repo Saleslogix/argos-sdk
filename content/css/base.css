@@ -11,6 +11,13 @@
     cursor: default;
 }
 
+/* Overthrow CSS:
+   Enable overflow: auto on elements with overthrow class when html element has overthrow class too */
+.overthrow-enabled .overthrow {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 /* snapjs styles */
 .tall {
     height: 100%;
@@ -56,14 +63,12 @@
     left: 0;
     width: 265px;
     bottom: 0;
-    overflow: auto;
     -webkit-transition-property: top, bottom;
     transition-property: top, bottom;
     -webkit-transition-duration: .2s, .2s;
     transition-duration: .2s, .2s;
     -webkit-transition-timing-function: linear, linear;
     transition-timing-function: linear, linear;
-    -webkit-overflow-scrolling: touch;
 }
 .left-drawer {
     z-index: 2;

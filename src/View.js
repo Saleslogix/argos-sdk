@@ -59,7 +59,7 @@ define('Sage/Platform/Mobile/View', [
          * @property {Simplate}
          */
         widgetTemplate: new Simplate([
-            '<ul id="{%= $.id %}" title="{%= $.titleText %}" class="{%= $.cls %}">',
+            '<ul id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow {%= $.cls %}">',
             '</ul>'
         ]),
         _loadConnect: null,

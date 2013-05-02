@@ -39,6 +39,10 @@
         {
           "text": "snap.js",
           "path": "../libraries/snap/"
+        },
+        {
+          "text": "overthrow.js",
+          "path": "../libraries/overthrow/"
         }
       ]
     },

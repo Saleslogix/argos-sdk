@@ -367,11 +367,11 @@ define('Sage/Platform/Mobile/Application', [
                 }, win.body());
 
                 domConstruct.create('div', {
-                    'class': 'left-drawer absolute'
+                    'class': 'overthrow left-drawer absolute'
                 }, drawers);
 
                 domConstruct.create('div', {
-                    'class': 'right-drawer absolute'
+                    'class': 'overthrow right-drawer absolute'
                 }, drawers);
 
             }
