@@ -160,6 +160,49 @@ define('Sage/Platform/Mobile/FileManager', [
                 return '1 KB';
             }
             return dNumber.format(Math.round(size / 1024)) + ' KB';
+        },
+        getFile: function(fileUrl, onSuccess) {
+            var request = new XMLHttpRequest(), service = App.getService();
+            request.open("GET", fileUrl, true);
+            request.responseType = 'blob';
+            //request.responseType = 'responseText';
+            request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+            if (service) {
+                request.setRequestHeader('Authorization', service.createBasicAuthToken());
+                request.setRequestHeader('X-Authorization', service.createBasicAuthToken());
+                request.setRequestHeader('X-Authorization-Mode', 'no-challenge');
+            }
+
+            var self = this;
+            request.addEventListener("load", function() {
+                var data = this.response;
+                var contentType = this.getResponseHeader("Content-Type");
+                var contentInfo = this.getResponseHeader("Content-Disposition");
+                var responseInfo = {};
+                var fileName = contentInfo.split('=')[1];
+                responseInfo = {
+                    request: this,
+                    response: this.response,
+                    contentType: contentType,
+                    fileName: fileName
+                };                
+                if (onSuccess) {
+                    onSuccess(responseInfo);
+                }
+            }, false);
+            request.send(null);
+        },
+        toBinaryString: function(data) {
+            var ret = [];
+            var len = data.length;
+            var byte;
+            for (var i = 0; i < len; i++) {
+                byte = (data.charCodeAt(i) & 0xFF) >>> 0;
+                ret.push(String.fromCharCode(byte));
+            }
+
+            return ret.join('');
         }
     });
 });
