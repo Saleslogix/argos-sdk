@@ -1109,7 +1109,6 @@ define('Sage/Platform/Mobile/List', [
          * @private
          */
         _onSearchExpression: function(expression) {
-
             this.clear(false);
             this.queryText = '';
             this.query = expression;
@@ -1530,6 +1529,16 @@ define('Sage/Platform/Mobile/List', [
             domClass.remove(this.domNode, 'list-has-more');
 
             this.set('listContent', this.loadingTemplate.apply(this));
+        },
+        search: function() {
+            if (this.searchWidget) {
+                this.searchWidget.search();
+            }
+        },
+        setSearchTerm: function(value) {
+            if (this.searchWidget) {
+                this.searchWidget.set('queryValue', value);
+            }
         }
     });
 });

@@ -187,7 +187,7 @@ define('Sage/Platform/Mobile/View', [
                 this.refreshRequired = true;
             }
 
-            this.options = data.options || this.options || {};
+            this.options = (data && data.options) || this.options || {};
 
             (this.options.title) ? this.set('title', this.options.title) : this.set('title', this.titleText);
 
