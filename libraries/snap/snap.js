@@ -56,7 +56,7 @@
                 return eventTypes[action];
             },
             page: function(t, e){
-                return (utils.hasTouch && e.touches.length && e.touches[0]) ? e.touches[0]['page'+t] : e['page'+t];
+                return (utils.hasTouch && e.touches && e.touches.length && e.touches[0]) ? e.touches[0]['page'+t] : e['page'+t];
             },
             klass: {
                 has: function(el, name){

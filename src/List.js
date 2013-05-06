@@ -374,7 +374,7 @@ define('Sage/Platform/Mobile/List', [
                 '<button data-action="selectEntry" class="list-item-selector button">',
                     '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
                 '</button>',
-                '<div class="list-item-content">{%! $$.itemTemplate %}</div>',
+                '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
             '</li>'
         ]),
         /**
