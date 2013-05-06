@@ -14,7 +14,7 @@
  */
 
 /**
- * @class Utility
+ * @class Sage.Platform.Utility
  * Utility provides functions that are more javascript enhancers than application related code.
  * @alternateClassName utility
  * @singleton
