@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @class Sage.Platform.Mobile._Templated
+ */
 define('Sage/Platform/Mobile/_Templated',
     [
         'dojo/dom-construct',

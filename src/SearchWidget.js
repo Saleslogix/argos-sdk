@@ -14,6 +14,7 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.SearchWidget
  * Search Widget is an SData-enabled search component that {@link List List} uses by default for search.
  *
  * The search widget is a dijit Widget with all the Widget aspects.
@@ -40,7 +41,7 @@
  *
  * See the [Defining Hash Tags guide](#!/guides/v2_beyond_the_guide_defining_hashtags) for more information and how it supports localization.
  * @alternateClassName SearchWidget
- * @mixins _Templated
+ * @mixins Sage.Platform.Mobile._Templated
  */
 define('Sage/Platform/Mobile/SearchWidget', [
     'dojo/_base/declare',

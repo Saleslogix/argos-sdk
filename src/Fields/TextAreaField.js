@@ -24,6 +24,7 @@ define('Sage/Platform/Mobile/Fields/TextAreaField', [
     FieldManager
 ) {
     /**
+     * @class Sage.Platform.Mobile.Fields.TextAreaField
      * The TextAreaField extends the base TextField by changing the input element to
      * an `<textarea>` element with a configurable amount of visible rows.
      *
@@ -37,8 +38,8 @@ define('Sage/Platform/Mobile/Fields/TextAreaField', [
      *     }
      *
      * @alternateClassName TextAreaField
-     * @extends TextField
-     * @requires FieldManager
+     * @extends Sage.Platform.Mobile.Fields.TextField
+     * @requires Sage.Platform.Mobile.FieldManager
      */
     var control = declare('Sage.Platform.Mobile.Fields.TextAreaField', [TextField], {
         /**

@@ -31,6 +31,7 @@ define('Sage/Platform/Mobile/Fields/PhoneField', [
     sniff
 ) {
     /**
+     * @class Sage.Platform.Mobile.Fields.PhoneField
      * The Phone field is a specialized {@link TextField TextField} that takes a string of numbers
      * and groups them into a phone number on blur or when setting a value directly the value
      * shown to the user gets passed through the
@@ -46,8 +47,8 @@ define('Sage/Platform/Mobile/Fields/PhoneField', [
      *     }
      *
      * @alternateClassName PhoneField
-     * @extends TextField
-     * @requires FieldManager
+     * @extends Sage.Platform.Mobile.Fields.TextField
+     * @requires Sage.Platform.Mobile.FieldManager
      */
     var control = declare('Sage.Platform.Mobile.Fields.PhoneField', [TextField], {
         /**

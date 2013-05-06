@@ -1,0 +1,13 @@
+ {
+        "--title": "Argos",
+        "--footer": "Argos is maintained by SalesLogix",
+        "--categories": "docs-categories.json",
+        "--guides": "../argos/guides-source/docs-guides.json",
+        "--warnings": ["-all"],
+        "--ignore-global": true,
+        "-o": "docs",
+        "--": [
+            "src",
+            "libraries/Simplate.js"
+        ]
+}

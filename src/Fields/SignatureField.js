@@ -30,6 +30,7 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
 ) {
 
     /**
+     * @class Sage.Platform.Mobile.Fields.SignatureField
      * The SignatureField uses an HTML5 canvas element to render previews of the signature vector
      * provided by it's editor view {@link SignatureView SignatureView}.
      *
@@ -42,10 +43,10 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
      *     }
      *
      * @alternateClassName SignatureField
-     * @extends EditorField
-     * @requires FieldManager
-     * @requires SignatureView
-     * @requires format
+     * @extends Sage.Platform.Mobile.Fields.EditorField
+     * @requires Sage.Platform.Mobile.FieldManager
+     * @requires Sage.Platform.Mobile.Views.SignatureView
+     * @requires Sage.Platform.Mobile.Format
      */
     var control = declare('Sage.Platform.Mobile.Fields.SignatureField', [EditorField], {
         // Localization

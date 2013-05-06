@@ -14,6 +14,7 @@
  */
 
 /**
+ * @class Utility
  * Utility provides functions that are more javascript enhancers than application related code.
  * @alternateClassName utility
  * @singleton

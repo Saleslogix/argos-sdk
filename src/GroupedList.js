@@ -14,11 +14,12 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.GroupedList
  * Grouped List provides a hook for grouping rows before rendering them to the page.
  * The grouping adds a container for the set of rows and is collapsible.
  * Note that it constructs the page sequentially meaning the rows should be in the correct
  * order before attempting to group.
- * @extends List
+ * @extends Sage.Platform.Mobile.List
  * @alternateClassName GroupedList
  */
 define('Sage/Platform/Mobile/GroupedList', [

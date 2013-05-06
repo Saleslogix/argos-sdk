@@ -14,12 +14,13 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.ApplicationModule
  * ApplicationModule is intended to be extended in the resulting application so that it
  * references all the views, toolbars and customizations and registers them to App.
  *
  * You may think of ApplicationModule as "loader" or initializer.
  * @alternateClassName ApplicationModule
- * @requires App
+ * @requires Sage.Platform.Mobile.Application
  */
 define('Sage/Platform/Mobile/ApplicationModule', [
     'dojo/_base/array',

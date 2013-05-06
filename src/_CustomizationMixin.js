@@ -14,6 +14,7 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile._CustomizationMixin
  * Customization Mixin is a general purpose Customization Engine. It takes a customization object and
  * a layout object and applies the customization defined to the layout.
  *

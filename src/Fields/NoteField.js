@@ -25,6 +25,7 @@ define('Sage/Platform/Mobile/Fields/NoteField', [
     FieldManager
 ) {
     /**
+     * @class Sage.Platform.Mobile.Fields.NoteField
      * The NoteField is a special case where an overly long text string should be inserted and
      * you want to take the user to another view for that specific input.
      *
@@ -42,8 +43,8 @@ define('Sage/Platform/Mobile/Fields/NoteField', [
      *     }
      *
      * @alternateClassName NoteField
-     * @extends EditorField
-     * @requires FieldManager
+     * @extends Sage.Platform.Mobile.Fields.EditorField
+     * @requires Sage.Platform.Mobile.FieldManager
      */
     var control = declare('Sage.Platform.Mobile.Fields.NoteField', [EditorField], {
         /**

@@ -14,14 +14,15 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.Fields._Field
  * Field is the base class for all field controls. It describes all the functions a field should support giving no implementation itself, merely a shell. The one function that `_Field` does provide that most fields leave untouched is `validate`.
  *
  * All fields are dijit Widgets meaning it goes through the same lifecycle and has all the Widget functionality.
  *
  * @alternateClassName _Field
- * @mixins _ActionMixin
- * @mixins _Templated
- * @requires FieldManager
+ * @mixins Sage.Platform.Mobile._ActionMixin
+ * @mixins Sage.Platform.Mobile._Templated
+ * @requires Sage.Platform.Mobile.FieldManager
  */
 define('Sage/Platform/Mobile/Fields/_Field', [
     'dojo/_base/declare',
