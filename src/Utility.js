@@ -16,7 +16,7 @@
 /**
  * @class Sage.Platform.Mobile.Utility
  * Utility provides functions that are more javascript enhancers than application related code.
- * @alternateClassName utility
+ * @alternateClassName Utility
  * @singleton
  */
 define('Sage/Platform/Mobile/Utility', [
