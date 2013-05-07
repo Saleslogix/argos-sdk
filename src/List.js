@@ -14,12 +14,13 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.List
  * A List View is a view used to display a collection of items in an easy to skim list. The List View also has a
  * selection model built in for selecting rows from the list and may be used in a number of different manners.
- * @extends View
+ * @extends Sage.Platform.Mobile.View
  * @alternateClassName List
- * @requires ErrorManager
- * @requires SearchWidget
+ * @requires Sage.Platform.Mobile.ErrorManager
+ * @requires Sage.Platform.Mobile.SearchWidget
  */
 define('Sage/Platform/Mobile/List', [
     'dojo/_base/declare',
@@ -54,6 +55,7 @@ define('Sage/Platform/Mobile/List', [
 ) {
 
     /**
+     * @class Sage.Platform.Mobile.SelectionModel
      * SelectionModel provides a simple in-memory store for data that fires events
      * when a item is selected (added) or deselected (removed)
      * @alternateClassName SelectionModel
@@ -226,9 +228,10 @@ define('Sage/Platform/Mobile/List', [
     });
 
     /**
+     * @class Sage.Platform.Mobile.ConfigurableSelectionModel
      * The ConfigurableSelectionModel adds the logic to the SelectionModel to only have one item selected at a time via the `singleSelection` flag.
      * @alternateClassName ConfigurableSelectionModel
-     * @extends SelectionModel
+     * @extends Sage.Platform.Mobile.SelectionModel
      */
     var ConfigurableSelectionModel = declare('Sage.Platform.Mobile.ConfigurableSelectionModel', [SelectionModel], {
         /**

@@ -14,6 +14,7 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile._ActionMixin
  * _ActionMixin provides a click listener to the `domNode` of view it is mixed into.
  *
  * When a click event is caught by the handler it finds the closest element with `data-action`

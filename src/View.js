@@ -14,14 +14,15 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.View
  * View is the root Class for all views and incorporates all the base features,
  * events, and hooks needed to successfully render, hide, show, and transition.
  *
  * All Views are dijit Widgets, namely utilizing its: widgetTemplate, connections, and attributeMap
  * @alternateClassName View
- * @mixins _ActionMixin
- * @mixins _CustomizationMixin
- * @mixins _Templated
+ * @mixins Sage.Platform.Mobile._ActionMixin
+ * @mixins Sage.Platform.Mobile._CustomizationMixin
+ * @mixins Sage.Platform.Mobile._Templated
  */
 define('Sage/Platform/Mobile/View', [
     'dojo/_base/declare',

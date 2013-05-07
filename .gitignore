@@ -30,7 +30,6 @@ _ReSharper*/
 *.resharper.user
 [Tt]est[Rr]esult*
 docs/
-docs-config.json
 
 #OS junk files
 Thumbs.db

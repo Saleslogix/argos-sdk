@@ -14,10 +14,11 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.MainToolbar
  * MainToolbar is designed to handle the top application bar with markup and logic to set
  * a title and position toolbar items to the left or right
  * @alternateClassName MainToolbar
- * @extends Toolbar
+ * @extends Sage.Platform.Mobile.Toolbar
  */
 define('Sage/Platform/Mobile/MainToolbar', [
     'dojo/_base/declare',

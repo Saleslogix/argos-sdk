@@ -14,13 +14,14 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.Views.Signature
  * Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
  *
  * It goes hand-in-hand with {@link SignatureField SignatureField}
  *
  * @alternateClassName SignatureView
- * @extends View
- * @requires format
+ * @extends Sage.Platform.Mobile.View
+ * @requires Sage.Platform.Mobile.Format
  */
 define('Sage/Platform/Mobile/Views/Signature', [
     'dojo/_base/declare',

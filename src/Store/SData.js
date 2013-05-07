@@ -14,11 +14,12 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.Store.SData
  * SData is an extension of dojo.store that is tailored to handling SData parameters, requests,
  * and pre-handling the responses.
  * @alternateClassName SData
- * @requires convert
- * @requires utility
+ * @requires Sage.Platform.Mobile.Convert
+ * @requires Sage.Platform.Mobile.Utility
  */
 define('Sage/Platform/Mobile/Store/SData', [
     'dojo/_base/declare',

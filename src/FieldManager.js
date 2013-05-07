@@ -14,6 +14,7 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.FieldManager
  * Field Manager is a registry for field types that enables the Edit View layouts to
  * simply define `type: 'myFieldType'`.
  * @alternateClassName FieldManager

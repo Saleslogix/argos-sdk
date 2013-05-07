@@ -23,6 +23,7 @@ define('Sage/Platform/Mobile/Fields/SelectField', [
     FieldManager
 ) {
     /**
+     * @class Sage.Platform.Mobile.Fields.SelectField
      * The SelectField is a minor extension to te LookupField in that it explicitly hides search and actions.
      *
      * It may also optionally pass the `data` option which a view may optionally use instead of requesting data.
@@ -37,8 +38,8 @@ define('Sage/Platform/Mobile/Fields/SelectField', [
      *     }
      *
      * @alternateClassName SelectField
-     * @extends LookupField
-     * @requires FieldManager
+     * @extends Sage.Platform.Mobile.Fields.LookupField
+     * @requires Sage.Platform.Mobile.FieldManager
      */
     var control = declare('Sage.Platform.Mobile.Fields.SelectField', [LookupField], {
         /**

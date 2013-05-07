@@ -35,6 +35,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
     FieldManager
 ) {
     /**
+     * @class Sage.Platform.Mobile.Fields.LookupField
      * The LookupField is similiar to an Edit View in that it is a field that takes the user to another
      * view but the difference is that an EditorField takes the user to an Edit View, whereas LookupField
      * takes the user to a List View.
@@ -52,9 +53,9 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
      *     }
      *
      * @alternateClassName LookupField
-     * @extends _Field
-     * @requires FieldManager
-     * @requires utility
+     * @extends Sage.Platform.Mobile.Fields._Field
+     * @requires Sage.Platform.Mobile.FieldManager
+     * @requires Sage.Platform.Mobile.Utility
      */
     var control = declare('Sage.Platform.Mobile.Fields.LookupField', [_Field], {
         /**

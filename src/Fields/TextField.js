@@ -30,6 +30,7 @@ define('Sage/Platform/Mobile/Fields/TextField', [
     FieldManager
 ) {
     /**
+     * @class Sage.Platform.Mobile.Fields.TextField
      * The TextField is the base method of inputting just a string that is bound to a `<input type="text">`.
      *
      * It does introduce:
@@ -46,8 +47,8 @@ define('Sage/Platform/Mobile/Fields/TextField', [
      *     }
      *
      * @alternateClassName TextField
-     * @extends _Field
-     * @requires FieldManager
+     * @extends Sage.Platform.Mobile.Fields._Field
+     * @requires Sage.Platform.Mobile.FieldManager
      */
     var control = declare('Sage.Platform.Mobile.Fields.TextField', [_Field], {
         /**
