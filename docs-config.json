@@ -16,7 +16,8 @@
     "--ignore-global": true,
     "-o": "docs",
     "--": [
-    "src",
-    "libraries/Simplate.js"
+        "src",
+        "libraries/Simplate.js",
+        "libraries/jasmine/jasmine.js"
     ]
 }
