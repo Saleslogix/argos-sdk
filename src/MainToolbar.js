@@ -54,7 +54,7 @@ define('Sage/Platform/Mobile/MainToolbar', [
          */
         widgetTemplate: new Simplate([
             '<div class="toolbar {%= $.cls %}">',            
-            '<h1 id="pageTitle" class="toolbar-title" data-dojo-attach-point="titleNode">{%= $.titleText %}</h1>',
+            '<h1 id="pageTitle" class="toolbar-title" data-dojo-attach-event="onclick: onTitleClick" data-dojo-attach-point="titleNode">{%= $.titleText %}</h1>',
             '</div>'
         ]),
         /**
@@ -119,6 +119,12 @@ define('Sage/Platform/Mobile/MainToolbar', [
                 this.size = Math.max(count.left, count.right);
                 domClass.add(this.domNode, 'toolbar-size-' + this.size);
             }
+        },
+        /**
+         * Event handler that fires when the toolbar title is clicked.
+         */
+        onTitleClick: function(evt) {
         }
     });
 });
+

@@ -119,19 +119,21 @@ define('Sage/Platform/Mobile/ApplicationModule', [
         /**
          * Passes the view instance to {@link App#registerView App.registerView}.
          * @param {Object} view View instance to register
+         * @param {DOMNode} domNode Optional. DOM node to place the view in. 
          */
-        registerView: function(view) {
+        registerView: function(view, domNode) {
             if (this.application)
-                this.application.registerView(view);
+                this.application.registerView(view, domNode);
         },
         /**
          * Passes the toolbar instance to {@link App#registerToolbar App.registerToolbar}.
          * @param {String} name Unique name of the toolbar to register.
          * @param {Object} toolbar Toolbar instance to register.
+         * @param {DOMNode} domNode Optional. DOM node to place the view in. 
          */
-        registerToolbar: function(name, toolbar) {
+        registerToolbar: function(name, toolbar, domNode) {
             if (this.application)
-                this.application.registerToolbar(name, toolbar);
+                this.application.registerToolbar(name, toolbar, domNode);
         },
         /**
          * Passes the customization instance to {@link App#registerCustomization App.registerCustomization}.

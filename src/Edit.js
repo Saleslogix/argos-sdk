@@ -122,7 +122,7 @@ define('Sage/Platform/Mobile/Edit', [
          *
          */
         widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',            
+            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="overthrow edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',            
             '{%! $.loadingTemplate %}',
             '{%! $.validationSummaryTemplate %}',
             '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',

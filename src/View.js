@@ -60,7 +60,7 @@ define('Sage/Platform/Mobile/View', [
          * @property {Simplate}
          */
         widgetTemplate: new Simplate([
-            '<ul id="{%= $.id %}" title="{%= $.titleText %}" class="{%= $.cls %}">',
+            '<ul id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow {%= $.cls %}">',
             '</ul>'
         ]),
         _loadConnect: null,
@@ -87,7 +87,6 @@ define('Sage/Platform/Mobile/View', [
          * @property {String/Boolean}
          */
         serviceName: false,
-
         /**
          * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
          * the fully customized toolbar layout.
@@ -114,6 +113,7 @@ define('Sage/Platform/Mobile/View', [
          * Establishes this views connections to various events
          */
         initConnects: function() {
+            var h;
             this._loadConnect = this.connect(this.domNode, 'onload', this._onLoad);
         },
         _onLoad: function(evt, el, o) {
@@ -188,7 +188,7 @@ define('Sage/Platform/Mobile/View', [
                 this.refreshRequired = true;
             }
 
-            this.options = data.options || this.options || {};
+            this.options = (data && data.options) || this.options || {};
 
             (this.options.title) ? this.set('title', this.options.title) : this.set('title', this.titleText);
 
@@ -290,3 +290,4 @@ define('Sage/Platform/Mobile/View', [
         }
     });
 });
+
