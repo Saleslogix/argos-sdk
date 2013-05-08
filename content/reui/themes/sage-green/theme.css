@@ -766,3 +766,14 @@ textarea:focus
     );
     background-image: -moz-linear-gradient(bottom, #ffffff, #ffffff);
 }
+
+body > .viewContainer
+{
+    border-left: solid 1px #ddd;
+}
+
+.snapjs-left .left-drawer
+{
+    border-right: solid 1px #ddd;
+}
+
