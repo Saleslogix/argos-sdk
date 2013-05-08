@@ -1,5 +1,5 @@
 *
-{    
+{
     -webkit-touch-callout: none;
     -webkit-text-size-adjust: none;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -63,6 +63,7 @@ body > .viewContainer > .list
     -webkit-transform: translateX(0%);
     -webkit-transition-duration: 300ms;
     -webkit-transition-property: -webkit-transform;
+    -webkit-transform: translateZ(0); 
 }
 
 body[orient="landscape"] > .viewContainer > .panel,
@@ -76,8 +77,8 @@ body[orient="landscape"] > .viewContainer > .list
     transition-property: top, bottom;
     -webkit-transition-duration: .2s, .2s;
     transition-duration: .2s, .2s;
-    -webkit-transition-timing-function: linear, linear;
-    transition-timing-function: linear, linear;
+    -webkit-transition-timing-function: ease, ease;
+    transition-timing-function: ease, ease;
 }
 
 body > .viewContainer > [selected="true"]
