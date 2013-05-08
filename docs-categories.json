@@ -55,6 +55,24 @@
                 "classes": [
                     "Simplate"
                 ]
+            },
+            {
+                "name": "jasmine",
+                "classes": [
+                    "jasmine.Block",
+                    "jasmine.Clock",
+                    "jasmine.Env",
+                    "jasmine.JsApiReporter",
+                    "jasmine.Matchers",
+                    "jasmine.MultiReporter",
+                    "jasmine.NestedResults",
+                    "jasmine.PrettyPrinter",
+                    "jasmine.Reporter",
+                    "jasmine.Runner",
+                    "jasmine.Spec",
+                    "jasmine.Spy",
+                    "jasmine.Suite"
+                ]
             }
         ]
     }

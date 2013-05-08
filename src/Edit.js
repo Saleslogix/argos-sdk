@@ -14,6 +14,7 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.Edit
  * An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
  * of a layout similar to Detail rows but are instead Edit fields.
  *
@@ -26,22 +27,22 @@
  * functions and operates.
  *
  * @alternateClassName Edit
- * @extends View
- * @requires convert
- * @requires utility
- * @requires ErrorManager
- * @requires FieldManager
- * @requires BooleanField
- * @requires DecimalField
- * @requires DurationField
- * @requires HiddenField
- * @requires LookupField
- * @requires NoteField
- * @requires PhoneField
- * @requires SelectField
- * @requires SignatureField
- * @requires TextAreaField
- * @requires TextField
+ * @extends Sage.Platform.Mobile.View
+ * @requires Sage.Platform.Mobile.Convert
+ * @requires Sage.Platform.Mobile.Utility
+ * @requires Sage.Platform.Mobile.Fields.ErrorManager
+ * @requires Sage.Platform.Mobile.Fields.FieldManager
+ * @requires Sage.Platform.Mobile.Fields.BooleanField
+ * @requires Sage.Platform.Mobile.Fields.DecimalField
+ * @requires Sage.Platform.Mobile.Fields.DurationField
+ * @requires Sage.Platform.Mobile.Fields.HiddenField
+ * @requires Sage.Platform.Mobile.Fields.LookupField
+ * @requires Sage.Platform.Mobile.Fields.NoteField
+ * @requires Sage.Platform.Mobile.Fields.PhoneField
+ * @requires Sage.Platform.Mobile.Fields.SelectField
+ * @requires Sage.Platform.Mobile.Fields.SignatureField
+ * @requires Sage.Platform.Mobile.Fields.TextAreaField
+ * @requires Sage.Platform.Mobile.Fields.TextField
  */
 define('Sage/Platform/Mobile/Edit', [
     'dojo/_base/declare',

@@ -14,6 +14,7 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.PersistentStorage
  * @deprecated Not used.
  * @alternateClassName PersistentStorage
  */

@@ -14,9 +14,10 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.Format
  * Format is a singleton that provides various formatting functions.
  * @alternateClassName format
- * @requires convert
+ * @requires Sage.Platform.Mobile.Convert
  * @singleton
  */
 define('Sage/Platform/Mobile/Format', [

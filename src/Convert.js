@@ -14,6 +14,7 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.Convert
  * Convert provides a number of type transformation functions.
  * @alternateClassName convert
  * @singleton

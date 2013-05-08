@@ -23,6 +23,7 @@ define('Sage/Platform/Mobile/Fields/HiddenField', [
     FieldManager
 ) {
     /**
+     * @class Sage.Platform.Mobile.Fields.HiddenField
      * The Hidden Field is {@link TextField TextField} but instead binds to an `<input type="hidden"`>.
      *
      * Meaning that the field will not be displayed on screen but may still store strings of text.
@@ -35,8 +36,8 @@ define('Sage/Platform/Mobile/Fields/HiddenField', [
      *     }
      *
      * @alternateClassName HiddenField
-     * @extends TextField
-     * @requires FieldManager
+     * @extends Sage.Platform.Mobile.Fields.TextField
+     * @requires Sage.Platform.Mobile.FieldManager
      */
     var control = declare('Sage.Platform.Mobile.Fields.HiddenField', [TextField], {
         propertyTemplate: new Simplate([

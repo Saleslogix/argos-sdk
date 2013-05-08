@@ -14,6 +14,7 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.ErrorManager
  * ErrorManager is a singleton that parses and stores SData error responses into localStorage.
  * @alternateClassName ErrorManager
  * @singleton

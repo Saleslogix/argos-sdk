@@ -14,7 +14,7 @@
  */
 
 /**
- *
+ * @class Sage.Platform.Mobile.Calendar
  * @alternateClassName Calendar
  */
 define('Sage/Platform/Mobile/Calendar', [

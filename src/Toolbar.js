@@ -14,13 +14,14 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.Toolbar
  * Toolbar is a base toolbar class that provides basic rendering of the bar, adding toolbar items and binding their invokacations.
  *
  * Inherits dijit _Widget.
  *
  * @alternateClassName Toolbar
- * @mixins _ActionMixin
- * @mixins _Templated
+ * @mixins Sage.Platform.Mobile._ActionMixin
+ * @mixins Sage.Platform.Mobile._Templated
  */
 define('Sage/Platform/Mobile/Toolbar', [
     'dojo/_base/declare',

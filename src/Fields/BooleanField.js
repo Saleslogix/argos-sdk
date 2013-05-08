@@ -27,6 +27,7 @@ define('Sage/Platform/Mobile/Fields/BooleanField', [
     FieldManager
 ) {
     /**
+     * @class Sage.Platform.Mobile.Fields.BooleanField
      * The Boolean Field is used for true/false values and is visualized as a toggle or light switch.
      *
      * ###Example:
@@ -38,8 +39,8 @@ define('Sage/Platform/Mobile/Fields/BooleanField', [
      *     }
      *
      * @alternateClassName BooleanField
-     * @extends _Field
-     * @requires FieldManager
+     * @extends Sage.Platform.Mobile.Fields._Field
+     * @requires Sage.Platform.Mobile.FieldManager
      */
     var control = declare('Sage.Platform.Mobile.Fields.BooleanField', [Field], {
         /**

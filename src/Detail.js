@@ -14,15 +14,16 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.Detail
  * A Detail View represents a single record and should display all the info the user may need about the entry.
  *
  * A Detail entry is identified by its key ($key) which is how it requests the data via the SData endpoint.
  *
  * @alternateClassName Detail
- * @extends View
- * @requires format
- * @requires utility
- * @requires ErrorManager
+ * @extends Sage.Platform.Mobile.View
+ * @requires Sage.Platform.Mobile.Format
+ * @requires Sage.Platform.Mobile.Utility
+ * @requires Sage.Platform.Mobile.ErrorManager
  */
 define('Sage/Platform/Mobile/Detail', [
     'dojo',

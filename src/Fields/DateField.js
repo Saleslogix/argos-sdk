@@ -31,6 +31,7 @@ define('Sage/Platform/Mobile/Fields/DateField', [
     EditorField
 ) {
     /**
+     * @class Sage.Platform.Mobile.Fields.DateField
      * The DateField is an extension of the {@link EditorField EditorField} by accepting Date Objects
      * for values and using the {@link Calendar Calendar} view for user input.
      *
@@ -46,10 +47,10 @@ define('Sage/Platform/Mobile/Fields/DateField', [
      *     }
      *
      * @alternateClassName DateField
-     * @extends EditorField
-     * @requires Calendar
-     * @requires FieldManager
-     * @requires format
+     * @extends Sage.Platform.Mobile.Fields.EditorField
+     * @requires Sage.Platform.Mobile.Calendar
+     * @requires Sage.Platform.Mobile.FieldManager
+     * @requires Sage.Platform.Mobile.Format
      */
     var control = declare('Sage.Platform.Mobile.Fields.DateField', [EditorField], {
         // Localization

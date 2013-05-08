@@ -14,6 +14,7 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile._ServiceMixin
  * @alternateClassName _ServiceMixin
  * @deprecated
  */
