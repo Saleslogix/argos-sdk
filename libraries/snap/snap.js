@@ -232,6 +232,7 @@
                 listen: function() {
                     cache.translation = 0;
                     cache.easing = false;
+
                     utils.events.addEvent(settings.dragElement, utils.eventType('down'), action.drag.startDrag);
                     utils.events.addEvent(settings.dragElement, utils.eventType('move'), action.drag.dragging);
                     utils.events.addEvent(settings.dragElement, utils.eventType('up'), action.drag.endDrag);
@@ -435,6 +436,9 @@
             }
         },
         init = function(opts) {
+            // Default back to the element setting if dragElement was not set
+            opts.dragElement = opts.dragElement || opts.element;
+
             if (opts.element) {
                 utils.deepExtend(settings, opts);
                 cache.vendor = utils.vendor();
