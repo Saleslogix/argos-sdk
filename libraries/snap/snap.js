@@ -15,6 +15,7 @@
     var Snap = Snap || function(userOpts) {
         var settings = {
             element: null,
+            dragElement: null,
             disable: 'none',
             addBodyClasses: true,
             resistance: 0.5,
@@ -231,14 +232,14 @@
                 listen: function() {
                     cache.translation = 0;
                     cache.easing = false;
-                    utils.events.addEvent(settings.element, utils.eventType('down'), action.drag.startDrag);
-                    utils.events.addEvent(settings.element, utils.eventType('move'), action.drag.dragging);
-                    utils.events.addEvent(settings.element, utils.eventType('up'), action.drag.endDrag);
+                    utils.events.addEvent(settings.dragElement, utils.eventType('down'), action.drag.startDrag);
+                    utils.events.addEvent(settings.dragElement, utils.eventType('move'), action.drag.dragging);
+                    utils.events.addEvent(settings.dragElement, utils.eventType('up'), action.drag.endDrag);
                 },
                 stopListening: function() {
-                    utils.events.removeEvent(settings.element, utils.eventType('down'), action.drag.startDrag);
-                    utils.events.removeEvent(settings.element, utils.eventType('move'), action.drag.dragging);
-                    utils.events.removeEvent(settings.element, utils.eventType('up'), action.drag.endDrag);
+                    utils.events.removeEvent(settings.dragElement, utils.eventType('down'), action.drag.startDrag);
+                    utils.events.removeEvent(settings.dragElement, utils.eventType('move'), action.drag.dragging);
+                    utils.events.removeEvent(settings.dragElement, utils.eventType('up'), action.drag.endDrag);
                 },
                 startDrag: function(e) {
                     // No drag on ignored elements
@@ -529,3 +530,4 @@
         });
     }
 }).call(this, window, document);
+
