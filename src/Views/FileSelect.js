@@ -25,7 +25,6 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     'dojo/dom-construct',
     'dojo/dom-attr',
     'dojo/dom-class',
-    'Sage/Platform/Mobile/FileManager',
     'Sage/Platform/Mobile/Fields/TextField',
     'Sage/Platform/Mobile/View'
 ], function(
@@ -35,7 +34,6 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     domConstruct,
     domAttr,
     domClass,
-    FileManager,
     TextField,
     View
 ) {
@@ -95,12 +93,10 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
 
         signatureNode: null,
         id: 'fileSelect_edit',
-        fileManager: null,
         btnFileSelect: null,
         _files:null,
         _formParts: [],
         constructor: function() {
-            this._fileManager = new FileManager();
         },
         postCreate: function() {
             this.inherited(arguments);
@@ -175,20 +171,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
               
            }
        },
-       _uploadFile: function(file) {
-            if (file) {
-                var url = dString.substitute(this._uploadUrlFmt, [this.attachment.$key]);
-                //Only Support by HTML5
-                //fileUtility.uploadFileHTML5(file,
-                //    url,
-                //    false,
-                //    this._newFileUploaded,
-                //    this._requestFail,
-                //    this,
-                //    true);
-            }
-        },
-        _getDefaultDescription: function (filename) {
+       _getDefaultDescription: function (filename) {
             return filename.replace(/\.[\w]*/, '');
         },
         okSelect: function() {

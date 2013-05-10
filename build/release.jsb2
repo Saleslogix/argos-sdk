@@ -96,10 +96,6 @@
           "path": "../src"
         },
         {
-          "text": "FileManager.js",
-          "path": "../src"
-        },
-        {
           "text": "SData.js",
           "path": "../src/Store"
         },

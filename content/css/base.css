@@ -984,6 +984,7 @@ h2 > .collapsed-indicator
     z-index: 2;
     opacity: 0;
     height: 1000px;
+    font-size: 1000px !important;
     cursor: pointer;
     position: absolute;
     right: 0;
