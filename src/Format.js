@@ -175,6 +175,11 @@ define('Sage/Platform/Mobile/Format', [
          */
         isEmpty: isEmpty,
         /**
+         * @property {String}
+         * Text used in file size  formatter
+         */
+        bytesText: 'bytes',
+        /**
          * @property {Object[]}
          * Array of objects that have the keys `test` and `format` where `test` is a RegExp that
          * matches the phone grouping and `format` is the string format to be replaced.
@@ -504,7 +509,7 @@ define('Sage/Platform/Mobile/Format', [
             return val;
         },
         fileSize: function(size) {
-            size = parseInt(size, 10);            
+            size = parseInt(size, 10);
             if (size === 0) {
                 return '0 KB';
             }
@@ -512,7 +517,7 @@ define('Sage/Platform/Mobile/Format', [
                 return 'Unknown';
             }
             if (size < 1024) {
-                return dNumber.format(Math.round(size)) + ' Bytes';
+                return dNumber.format(Math.round(size)) + ' ' + Sage.Platform.Mobile.Format.bytesText;
             }
             else if ((1024 < size) && (size < (1024 * 1000))) {
                 return dNumber.format(Math.round(size / 1024)) + ' KB';
