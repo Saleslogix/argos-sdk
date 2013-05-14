@@ -976,7 +976,9 @@ h2 > .collapsed-indicator
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    color: #0079A7;
     font-weight: bold;
+    margin: 8px;
 }
 
 .file-wrap > input
@@ -990,4 +992,22 @@ h2 > .collapsed-indicator
     right: 0;
     top: 0;
 }
-
+.file-text > input
+{
+   -moz-box-sizing: border-box !important;
+    border: 1px solid #000000 !important;
+    font-size: 16px !important;
+    font-weight: normal !important;
+    margin: 0 0 8px !important;
+    padding:6px !important;
+    width: 100% !important; 
+}
+.file-label > label {
+    color: #0079A7 !important;
+    font-weight: bold !important;
+    text-align: left !important;
+}
+.file-name {
+    font-size: 16px !important;
+    font-weight: bold !important;
+}

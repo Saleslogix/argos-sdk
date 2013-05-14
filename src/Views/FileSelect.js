@@ -46,6 +46,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         cancelText: 'Cancel',
         selectFileText:'Select file', 
         loadingText: 'Uploading...',
+        descriptionText:'description',
 
         /**
          * @property {Simplate}
@@ -70,7 +71,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
          */
         widgetTemplate: new Simplate([
             '<div title="{%: $.titleText %}" class="panel {%= $.cls %}">',
-                '<div class="file-area">',
+                '<div  data-dojo-attach-point="fileArea" class="file-area">',
                     '<div class="file-wrapper">',
                         '<div class="file-wrap">',
                             '<input type="file" data-dojo-attach-point="btnFileSelect" size="71" accept="*/*">',
@@ -87,7 +88,11 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         ]),
         fileTemplate: new Simplate([
             '<li class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
-                '<h4>{%: $.fileName %}<h4>',
+               '<div class="file-name">{%: $.fileName %}</div>',
+               '<div class="file-label"><label>{%: $$.descriptionText %}</label></div>',
+               '<div class="file-text">',
+                   '<input id="{%=  $.name %}" type="text" value="{%=  $.description %}">',
+               '</div>',
             '</li>'
         ]),
 
@@ -110,6 +115,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             this.inherited(arguments);
             this._files = [];
             this.contentNode.innerHTML = "";
+            this.fileArea.hidden = false;
         },
         _browesForFiles: function(file) {
             this.btnFileSelect.click();
@@ -117,10 +123,30 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         removeFile: function(fileId) {
 
         },
-        getFiles: function (){
-        
+        getFileItems: function() {
+
+            var fileItems = [];
+            var files = this._files;
+            var description = '';
+            for (var i = 0; i < files.length; i++) {
+                description = this._getFileDescription(i);
+                fileItems.push({ 
+                    file: files[i],
+                    fileName: files[i].name,
+                    description: description
+                });
+            }
+            return fileItems;
         },
-        _onSelectFile: function(e){
+        _getFileDescription: function(fileIndex) {
+            var n, desc;
+            n = dojo.byId("File_" + fileIndex);
+            if (n) {
+                desc = n.value;
+            }
+            return desc;
+        },
+        _onSelectFile: function(e) {
             var files = this.btnFileSelect.files;
             if (files && files.length > 0) {
                 for (var i = 0; i < files.length; i++) {
@@ -128,6 +154,9 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                 }
                 this._buildForm(files);
             }
+
+            this.fileArea.hidden = true;
+
         },
         _addFile: function (file, index){
             var filelength = this._getFileLength(file);
