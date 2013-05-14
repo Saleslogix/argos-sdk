@@ -1066,3 +1066,50 @@ h2 > .collapsed-indicator
 .invisible {
     visibility: hidden;
 }
+
+.file-wrapper
+{
+    line-height: 50px;
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    color: #0079A7;
+    font-weight: bold;
+    margin: 8px;
+}
+
+.file-wrap > input
+{
+    z-index: 2;
+    opacity: 0;
+    height: 1000px;
+    font-size: 1000px !important;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.file-text > input
+{
+   -moz-box-sizing: border-box !important;
+    border: 1px solid #000000 !important;
+    font-size: 16px !important;
+    font-weight: normal !important;
+    margin: 0 0 8px !important;
+    padding:6px !important;
+    width: 100% !important; 
+}
+.file-label > label {
+    color: #0079A7 !important;
+    font-weight: bold !important;
+    text-align: left !important;
+}
+.file-name {
+    font-size: 16px !important;
+    font-weight: bold !important;
+}
+.display-none
+{   
+    display: none !important;
+}

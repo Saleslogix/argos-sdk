@@ -25,6 +25,7 @@ define('Sage/Platform/Mobile/Format', [
     'dojo/_base/lang',
     'dojo/dom-construct',
     'dojo/string',
+    'dojo/number',
     'Sage/Platform/Mobile/Convert',
     'Sage/Platform/Mobile/Utility'
 ], function(
@@ -32,6 +33,7 @@ define('Sage/Platform/Mobile/Format', [
     lang,
     domConstruct,
     string,
+    dNumber,
     convert,
     utility
 ) {
@@ -172,6 +174,11 @@ define('Sage/Platform/Mobile/Format', [
          * @return {Boolean} If passed item is empty
          */
         isEmpty: isEmpty,
+        /**
+         * @property {String}
+         * Text used in file size  formatter
+         */
+        bytesText: 'bytes',
         /**
          * @property {Object[]}
          * Array of objects that have the keys `test` and `format` where `test` is a RegExp that
@@ -500,6 +507,23 @@ define('Sage/Platform/Mobile/Format', [
                 val = val.replace(phoneLettersMap[i].test, phoneLettersMap[i].val);
             }
             return val;
+        },
+        fileSize: function(size) {
+            size = parseInt(size, 10);
+            if (size === 0) {
+                return '0 KB';
+            }
+            if (!size || size < 0) {
+                return 'Unknown';
+            }
+            if (size < 1024) {
+                return dNumber.format(Math.round(size)) + ' ' + Sage.Platform.Mobile.Format.bytesText;
+            }
+            else if ((1024 < size) && (size < (1024 * 1000))) {
+                return dNumber.format(Math.round(size / 1024)) + ' KB';
+            } else {
+                return dNumber.format(Math.round(size / (1024*1000))) + ' MB';
+            }
         }
     });
 });

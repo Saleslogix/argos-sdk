@@ -29,8 +29,10 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/window',
-    'dojo/dom-construct',
-    'dojo/string'
+    'dojo/string',
+    'dojo/has',
+    'dojo/_base/sniff',
+    'dojo/dom-construct'
 ], function(
     json,
     array,
@@ -38,10 +40,20 @@ define('Sage/Platform/Mobile/Application', [
     declare,
     lang,
     win,
-    domConstruct,
-    string
+    string,
+    has,
+    sniff,
+    domConstruct
 ) {
-    
+
+    has.add('html5-file-api', function(global, document) {
+        if (global.File && global.FileReader && global.FileList && global.Blob) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+
     lang.extend(Function, {
         bindDelegate: function(scope) {
             var fn = this;
