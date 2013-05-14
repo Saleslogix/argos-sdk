@@ -46,7 +46,8 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         cancelText: 'Cancel',
         selectFileText:'Select file', 
         loadingText: 'Uploading...',
-        descriptionText:'description',
+        descriptionText: 'description',
+        bytesText: 'bytes',
 
         /**
          * @property {Simplate}
@@ -124,10 +125,10 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
 
         },
         getFileItems: function() {
-
-            var fileItems = [];
-            var files = this._files;
-            var description = '';
+            var fileItems, files, description;
+            fileItems = [];
+            files = this._files;
+            description = '';
             for (var i = 0; i < files.length; i++) {
                 description = this._getFileDescription(i);
                 fileItems.push({ 
@@ -159,8 +160,10 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
 
         },
         _addFile: function (file, index){
-            var filelength = this._getFileLength(file);
-            var data = {
+            var filelength, data;
+
+            filelength = this._getFileLength(file);
+            data = {
                 name: 'File_' + index,
                 fileName: file.name + "  (" + filelength + ")",
                 description: this._getDefaultDescription(file.name)
@@ -168,7 +171,9 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             var rowNode = domConstruct.place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
         },
         _getFileLength: function(file) {
-            var filelength = 0;
+            var filelength;
+
+            filelength = 0;
             if (file.size === 0) {
                 filelength = 0;
             }
@@ -176,7 +181,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                 filelength = file.size || file.blob.length;
             }
             if (filelength === 0) {
-                filelength += "0 Bytes";
+                filelength += "0 " + this.bytesTextBytes;
             }
             else {
                 if (filelength) {
@@ -187,24 +192,25 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                             filelength = Math.round(filelength / 1024) + " KB";
                         }
                     } else {
-                        filelength += " Bytes";
+                        filelength += " " + this.bytesTextBytesBytes;
                     }
                 }
             }
             return filelength;
         },
         _buildForm: function(files) {
-           for (var i = 0; i < files.length; i++) {
-               var file = files[i];
+            var file;
+            for (var i = 0; i < files.length; i++) {
+               file = files[i];
                this._addFile(file, i);
-              
            }
        },
        _getDefaultDescription: function (filename) {
             return filename.replace(/\.[\w]*/, '');
         },
         okSelect: function() {
-            var tpl = this.loadingTemplate.apply(this);
+            var tpl;
+            tpl = this.loadingTemplate.apply(this);
             domClass.add(this.domNode, 'list-loading');
             domConstruct.place(tpl, this.contentNode, 'first');
         },
