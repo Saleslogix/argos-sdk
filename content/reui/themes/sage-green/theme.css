@@ -44,6 +44,11 @@ h5
     font-weight: normal;
 }
 
+.list-content > li:active
+{
+    background-color: #D5EFFA;
+}
+
 .list-content > li.actions-row > button:active
 {
     background-color: #80d0ef;
