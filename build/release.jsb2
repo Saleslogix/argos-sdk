@@ -192,6 +192,10 @@
           "path": "../src"
         },
         {
+          "text": "FileSelect.js",
+          "path": "../src/Views"
+        },
+        {
           "text": "Signature.js",
           "path": "../src/Views"
         },
