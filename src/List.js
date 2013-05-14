@@ -299,7 +299,7 @@ define('Sage/Platform/Mobile/List', [
          *
          */
         widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '<div data-dojo-attach-point="searchNode"></div>',
             '<a href="#" class="android-6059-fix">fix for android issue #6059</a>',                
             '{%! $.emptySelectionTemplate %}',
@@ -339,9 +339,11 @@ define('Sage/Platform/Mobile/List', [
         moreTemplate: new Simplate([
             '<div class="list-more" data-dojo-attach-point="moreNode">',
             '<div class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></div>',
-            '<button class="button" data-action="more">',
-            '<span>{%= $.moreText %}</span>',
-            '</button>',
+            '{% if (!$.continuousScrolling) { %}',
+                '<button class="button" data-action="more">',
+                '<span>{%= $.moreText %}</span>',
+                '</button>',
+            '{% } %}',
             '</div>'
         ]),
         /**
@@ -375,7 +377,7 @@ define('Sage/Platform/Mobile/List', [
                 '<button data-action="selectEntry" class="list-item-selector button">',
                     '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
                 '</button>',
-                '<div class="list-item-content">{%! $$.itemTemplate %}</div>',
+                '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
             '</li>'
         ]),
         /**
@@ -652,6 +654,12 @@ define('Sage/Platform/Mobile/List', [
          * The list action layout definition for the list action bar.
          */
         actions: null,
+
+        /**
+         * If true, will remove the loading button and auto fetch more data when the user scrolls to the bottom of the page.
+         */
+        continuousScrolling: true,
+
         /**
          * Setter method for the selection model, also binds the various selection model select events
          * to the respective List event handler for each.
@@ -694,8 +702,11 @@ define('Sage/Platform/Mobile/List', [
 
             this.subscribe('/app/refresh', this._onRefresh);
 
-            if (this.enableSearch)
-            {
+            if (this.continuousScrolling) {
+                this.connect(this.domNode, 'onscroll', this.onScroll);
+            }
+
+            if (this.enableSearch) {
                 var searchWidgetCtor = lang.isString(this.searchWidgetClass)
                     ? lang.getObject(this.searchWidgetClass, false)
                     : this.searchWidgetClass;
@@ -706,14 +717,11 @@ define('Sage/Platform/Mobile/List', [
                     'onSearchExpression': lang.hitch(this, this._onSearchExpression)
                 });
                 this.searchWidget.placeAt(this.searchNode, 'replace');
-            }
-            else
-            {
+            } else {
                 this.searchWidget = null;
             }
 
             domClass.toggle(this.domNode, 'list-hide-search', this.hideSearch);
-
             this.clear();
         },
         /**
@@ -991,6 +999,23 @@ define('Sage/Platform/Mobile/List', [
                 this.refreshRequired = true;
             }
         },
+        onScroll: function(evt) {
+            var pos, height, scrollTop, scrollHeight, remaining, selected;
+            pos = domGeom.position(this.domNode, true);
+
+            height = pos.h; // viewport height (what user sees)
+            scrollHeight = this.domNode.scrollHeight; // Entire container height
+            scrollTop = this.domNode.scrollTop; // How far we are scrolled down
+            remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
+
+            selected = domAttr.get(this.domNode, 'selected');
+
+            if (remaining === height) {
+                if (selected === 'true' && this.hasMoreData()) {
+                    this.more();
+                }
+            }
+        },
         /**
          * Handler for the select or action node data-action. Finds the nearest node with the data-key attribute and
          * toggles it in the views selection model.
@@ -1087,7 +1112,6 @@ define('Sage/Platform/Mobile/List', [
          * @private
          */
         _onSearchExpression: function(expression) {
-
             this.clear(false);
             this.queryText = '';
             this.query = expression;
@@ -1302,16 +1326,13 @@ define('Sage/Platform/Mobile/List', [
          * @return {Boolean} True if the feed has more data; False otherwise.
          */
         hasMoreData: function() {
-            if (this.feed['$startIndex'] > 0 && this.feed['$itemsPerPage'] > 0 && this.feed['$totalResults'] >= 0)
-            {
+            if (this.feed && this.feed['$startIndex'] > 0 && this.feed['$itemsPerPage'] > 0 && this.feed['$totalResults'] >= 0) {
                 var start = this.feed['$startIndex'];
                 var count = this.feed['$itemsPerPage'];
                 var total = this.feed['$totalResults'];
 
                 return (start + count <= total);
-            }
-            else
-            {
+            } else {
                 return true; // no way to determine, always assume more data
             }
         },
@@ -1511,6 +1532,16 @@ define('Sage/Platform/Mobile/List', [
             domClass.remove(this.domNode, 'list-has-more');
 
             this.set('listContent', this.loadingTemplate.apply(this));
+        },
+        search: function() {
+            if (this.searchWidget) {
+                this.searchWidget.search();
+            }
+        },
+        setSearchTerm: function(value) {
+            if (this.searchWidget) {
+                this.searchWidget.set('queryValue', value);
+            }
         }
     });
 });
