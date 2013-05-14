@@ -1011,3 +1011,7 @@ h2 > .collapsed-indicator
     font-size: 16px !important;
     font-weight: bold !important;
 }
+.display-none
+{   
+    display: none !important;
+}

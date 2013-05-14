@@ -115,7 +115,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             this.inherited(arguments);
             this._files = [];
             this.contentNode.innerHTML = "";
-            this.fileArea.hidden = false;
+            domClass.remove(this.fileArea, 'display-none');
         },
         _browesForFiles: function(file) {
             this.btnFileSelect.click();
@@ -155,7 +155,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                 this._buildForm(files);
             }
 
-            this.fileArea.hidden = true;
+            domClass.add(this.fileArea, 'display-none');
 
         },
         _addFile: function (file, index){
