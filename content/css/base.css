@@ -11,6 +11,104 @@
     cursor: default;
 }
 
+/* Overthrow CSS:
+   Enable overflow: auto on elements with overthrow class when html element has overthrow class too */
+.overthrow-enabled .overthrow {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* snapjs styles */
+.tall {
+    height: 100%;
+}
+.relative {
+    position: relative;
+}
+.absolute {
+    position: absolute;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+
+.drawers {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.left-drawer,
+.right-drawer {
+    visibility: hidden;
+    display: none;
+}
+
+.snapjs-left .left-drawer {
+    visibility: visible;
+    display: block;
+}
+
+.snapjs-right .right-drawer {
+    visibility: visible;
+    display: block;
+}
+
+.left-drawer, .right-drawer {
+    top: 0;
+    left: 0;
+    width: 265px;
+    bottom: 0;
+    -webkit-transition-property: top, bottom;
+    transition-property: top, bottom;
+    -webkit-transition-duration: .2s, .2s;
+    transition-duration: .2s, .2s;
+    -webkit-transition-timing-function: linear, linear;
+    transition-timing-function: linear, linear;
+}
+.left-drawer {
+    z-index: 2;
+}
+.right-drawer {
+    left: auto;
+    right: 0;
+    z-index: 1;
+}
+
+.left-drawer,
+.right-drawer
+{
+    -webkit-transition: width 0.3s ease; 
+    -moz-transition: width 0.3s ease; 
+    -o-transition: width 0.3s ease; 
+    transition: width 0.3s ease; 
+}
+
+.drawer-inner
+{
+    -webkit-transition: opacity 0.3s ease; 
+    -moz-transition: opacity 0.3s ease; 
+    -o-transition: opacity 0.3s ease; 
+    transition: opacity 0.3s ease; 
+}
+
+.snapjs-expand-left .drawer-inner,
+.snapjs-expand-right .drawer-inner
+{
+    opacity: 0;
+}
+
+.snapjs-expand-left .left-drawer,
+.snapjs-expand-right .right-drawer
+{
+    width: 100%;
+}
+/* end snapjs styles*/
+
 /* signature capture */
 #signature_edit { text-align: center; }
 #signature_edit canvas { border-bottom: 1px black solid; }
@@ -811,19 +909,19 @@ button.clear-button:focus
 {
     width: 60px;
 }
-body.landscape > #generic_calendar > #datetime-picker {
+body.landscape > .viewContainer > #generic_calendar > #datetime-picker {
     width:100%;
     text-align:center;
 }
 
-body.landscape > #generic_calendar > #datetime-picker > .calendar-content,
-body.landscape > #generic_calendar > #datetime-picker > .time-content
+body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .calendar-content,
+body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content
 {
     vertical-align: top;
     display:inline-block;
     padding: 0px !important;
 }
-body.landscape > #generic_calendar > #datetime-picker > .time-content
+body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content
 {
     margin-left: 18px;
 }
