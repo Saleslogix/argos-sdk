@@ -586,6 +586,8 @@ define('Sage/Platform/Mobile/Detail', [
                         context['resourceProperty'] = this.expandExpression(current['resourceProperty'], entry);
                     if (current['resourcePredicate'])
                         context['resourcePredicate'] = this.expandExpression(current['resourcePredicate'], entry);
+                    if (current['title'])
+                        context['title'] = current['title'];
 
                     data['view'] = current['view'];
                     data['context'] = (this._navigationOptions.push(context) - 1);
