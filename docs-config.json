@@ -2,7 +2,7 @@
     "--body-html": [
         "<script type='text/javascript'>",
         "Docs.otherProducts = [",
-            "{text: 'Argos SDK v2.0 <span class=\"label label-stable\">Stable</span>', href: 'http://sagesaleslogix.github.io/argos/'},",
+            "{text: 'Argos SDK v2.2 <span class=\"label label-stable\">Stable</span>', href: 'http://sagesaleslogix.github.io/argos/'},",
             "{text: 'Argos SDK v3.0 <span class=\"label label-dev\">Dev</span>', href: 'http://sagesaleslogix.github.io/argos/v3/'}",
         "];",
         "</script>"
