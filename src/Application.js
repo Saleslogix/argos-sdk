@@ -32,7 +32,10 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/string',
     'dojo/has',
     'dojo/_base/sniff',
-    'dojo/dom-construct'
+    'dojo/dom-construct',
+    'snap',
+    'dojo/_base/sniff',
+    'dojox/mobile/sniff'
 ], function(
     json,
     array,
@@ -43,7 +46,10 @@ define('Sage/Platform/Mobile/Application', [
     string,
     has,
     sniff,
-    domConstruct
+    domConstruct,
+    snap,
+    sniff,
+    mobileSniff
 ) {
 
     has.add('html5-file-api', function(global, document) {
@@ -105,6 +111,11 @@ define('Sage/Platform/Mobile/Application', [
     });
     
     return declare('Sage.Platform.Mobile.Application', null, {
+        /**
+         * Instance of a Snap.js object (https://github.com/jakiestfu/Snap.js/)
+         */
+        snapper: null,
+
         /**
          * Array of all connections for App
          * @property {Object[]}
@@ -222,8 +233,9 @@ define('Sage/Platform/Mobile/Application', [
          * Loops through views and calls their `init()` function.
          */
         initViews: function() {
-            for (var n in this.views)
+            for (var n in this.views) {
                 this.views[n].init(); // todo: change to startup
+            }
         },
         /**
          * Loops through (tool)bars and calls their `init()` function.
@@ -718,7 +730,43 @@ define('Sage/Platform/Mobile/Application', [
         },
         hasAccessTo: function(security) {
             return true;
-        }
+        },
+        /**
+         * Override this function to load a view in the left drawer.
+         */
+        showLeftDrawer: function() {
+        },
+        /**
+         * Loads Snap.js and assigns the instance to App.snapper. This method would typically be called before navigating to the initial view, so the login page does not contain the menu.
+         */
+        loadSnapper: function() {
+            // TODO: Provide a domNode param and default to viewContainer if not provided
+            var snapper, view;
+
+            if (this.snapper) {
+                return;
+            }
+
+            snapper = new snap({
+                element: document.getElementById('viewContainer'),
+                disable: 'right', // use 'none' to do both
+                addBodyClasses: true,
+                resistance: 0.1,
+                flickThreshold: 50,
+                transitionSpeed: 0.2,
+                easing: 'ease',
+                maxPosition: 266,
+                minPosition: -266,
+                tapToClose: true,
+                touchToDrag: has('android') ? false : true,
+                slideIntent: 40,
+                minDragDistance: 5 
+            });
+
+            this.snapper = snapper;
+
+            this.showLeftDrawer();
+        },
     });
 });
 
