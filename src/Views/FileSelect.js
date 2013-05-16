@@ -14,9 +14,11 @@
  */
 
 /**
+ * @class Sage.Platform.Mobile.Views.FileSelect
  * File Select View is a view for selection files capabilities.
  *
- * It goes hand-in-hand with File Manager}
+ * @alternateClassName FileSelect
+ * @extends Sage.Platform.Mobile.View
  */
 define('Sage/Platform/Mobile/Views/FileSelect', [
     'dojo/_base/declare',
