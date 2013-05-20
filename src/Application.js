@@ -148,10 +148,15 @@ define('Sage/Platform/Mobile/Application', [
         defaultService: null,
         resizeTimer: null,
         /**
+        * Signifies the maximum file size that can be uploaded in bytes
+         * @property {int}
+         */
+        maxUploadFileSize: 4000000,
+        /**
          * All options are mixed into App itself
          * @param {Object} options
          */
-        constructor: function(options) {
+         constructor: function(options) {
             this._connects = [];
             this._subscribes = [];
             
