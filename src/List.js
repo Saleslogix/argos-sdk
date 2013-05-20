@@ -1388,6 +1388,10 @@ define('Sage/Platform/Mobile/List', [
          * setting the start index as needed.
          */
         more: function() {
+            if (this.continuousScrolling) {
+                this.set('remainingContent', this.loadingTemplate.apply(this));
+            }
+
             this.requestData();
         },
         /**
