@@ -85,7 +85,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                 '</div>',
                 '<ul class="list-content"  data-dojo-attach-point="contentNode"></ul>',
                 '<div class="buttons">',
-                    '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="button inline" data-action="uploadFiles"><span>{%: $.uploadText %}</span></button>',
+                    '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="button inline" data-action="onUploadFiles"><span>{%: $.uploadText %}</span></button>',
                     '<button id="fileSelect-btn-cancel" class="button inline" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
                 '</div>',
             '</div>',
@@ -120,7 +120,8 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             this.contentNode.innerHTML = "";
             domClass.remove(this.fileArea, 'display-none');
             domClass.remove(this.btnUploadFiles, 'display-none');
-            this.updateProgress('');
+            domClass.add(this.btnUploadFiles, 'display-none');
+            this.onUpdateProgress('');
         },
         _browesForFiles: function(file) {
             this.btnFileSelect.click();
@@ -159,7 +160,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                 }
                 this._buildForm(files);
             }
-
+            domClass.remove(this.btnUploadFiles, 'display-none');
             domClass.add(this.fileArea, 'display-none');
 
         },
@@ -212,7 +213,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
        _getDefaultDescription: function (filename) {
             return filename.replace(/\.[\w]*/, '');
         },
-        uploadFiles: function() {
+        onUploadFiles: function() {
             var tpl;
             domClass.add(this.btnUploadFiles, 'display-none');
             tpl = this.loadingTemplate.apply(this);
@@ -221,14 +222,14 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         },
         cancelSelect: function() {
         },
-        updateProgress: function(msg) {
+        onUpdateProgress: function(msg) {
             var n = dojo.byId('fileselect-upload-progress');
             if (n) {
                 n.innerHTML = this.loadingText + '' + msg;
             }
         },
-        setUpdateProgressFailed: function(msg) {
-            this.updateProgress(msg);
+        onUpdateFailed: function(msg) {
+            this.onUpdateProgress(msg);
             domClass.remove(this.domNode, 'list-loading');
         }
     });
