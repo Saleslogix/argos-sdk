@@ -44,7 +44,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         // Localization
         titleText: 'File Select',
         addFileText: 'Click or Tap here to add a file.',
-        okText: 'Upload',
+        uploadText: 'Upload',
         cancelText: 'Cancel',
         selectFileText:'Select file', 
         loadingText: 'Uploading...',
@@ -62,7 +62,8 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
          *      loadingText         The text to display while loading.
          */
         loadingTemplate: new Simplate([
-            '<li class="list-loading-indicator"><div>{%= $.loadingText %}</div></li>'
+            '<li class="list-loading-indicator"><div id="fileselect-upload-progress">{%= $.loadingText %}</div></li>',
+            //'</li>'
         ]),
 
         /**
@@ -84,8 +85,8 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                 '</div>',
                 '<ul class="list-content"  data-dojo-attach-point="contentNode"></ul>',
                 '<div class="buttons">',
-                    '<div><button class="button inline" data-action="okSelect"><span>{%: $.okText %}</span></button>',
-                    '<button class="button inline" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
+                    '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="button inline" data-action="uploadFiles"><span>{%: $.uploadText %}</span></button>',
+                    '<button id="fileSelect-btn-cancel" class="button inline" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
                 '</div>',
             '</div>',
         ]),
@@ -111,7 +112,6 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             this.btnFileSelect.onchange = lang.hitch(this, function(e){
                 this._onSelectFile(e);
             });
-
             domClass.remove(this.domNode, 'list-loading');
         },
         show: function(options) {
@@ -119,6 +119,8 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             this._files = [];
             this.contentNode.innerHTML = "";
             domClass.remove(this.fileArea, 'display-none');
+            domClass.remove(this.btnUploadFiles, 'display-none');
+            this.updateProgress('');
         },
         _browesForFiles: function(file) {
             this.btnFileSelect.click();
@@ -210,13 +212,24 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
        _getDefaultDescription: function (filename) {
             return filename.replace(/\.[\w]*/, '');
         },
-        okSelect: function() {
+        uploadFiles: function() {
             var tpl;
+            domClass.add(this.btnUploadFiles, 'display-none');
             tpl = this.loadingTemplate.apply(this);
             domClass.add(this.domNode, 'list-loading');
             domConstruct.place(tpl, this.contentNode, 'first');
         },
         cancelSelect: function() {
+        },
+        updateProgress: function(msg) {
+            var n = dojo.byId('fileselect-upload-progress');
+            if (n) {
+                n.innerHTML = this.loadingText + '' + msg;
+            }
+        },
+        setUpdateProgressFailed: function(msg) {
+            this.updateProgress(msg);
+            domClass.remove(this.domNode, 'list-loading');
         }
     });
 });
