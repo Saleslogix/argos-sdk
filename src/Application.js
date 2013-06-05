@@ -156,7 +156,7 @@ define('Sage/Platform/Mobile/Application', [
          * All options are mixed into App itself
          * @param {Object} options
          */
-         constructor: function(options) {
+        constructor: function(options) {
             this._connects = [];
             this._subscribes = [];
             
