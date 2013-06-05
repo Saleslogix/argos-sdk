@@ -278,7 +278,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
 
             this.canvasNodeHeight = Math.min(
                 Math.floor(this.canvasNodeWidth * 0.5),
-                win.getBox().h - query('.toolbar')[0].offsetHeight - query('.footer-toolbar')[0].offsetHeight
+                win.getBox().h - query('.toolbar')[0].offsetHeight
             );
 
             this.signatureNode.width  = this.canvasNodeWidth;

@@ -763,7 +763,7 @@ define('Sage/Platform/Mobile/Application', [
                 maxPosition: 266,
                 minPosition: -266,
                 tapToClose: true,
-                touchToDrag: has('android') ? false : true,
+                touchToDrag: false,
                 slideIntent: 40,
                 minDragDistance: 5 
             });
