@@ -484,17 +484,6 @@
     padding: 0 0 1.5em 0;
 }
 
-.group-content > ul:last-child
-{
-    margin: 0;
-    padding: 0 0 0 0;
-}
-
-.group-content > ul > li:last-child
-{
-    border-bottom: none 0 black;
-}
-
 .group-content
 {
     border-bottom: 1px solid #DDD;
