@@ -273,7 +273,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
     font-size: 1.25em;
     font-weight: bold;
     list-style: none;
-    margin: 6px 4px 6px 4px;
+    margin: 8px 6px 8px 6px;
     padding: 8px 0px 8px 10px;
     position: relative;
     border-radius: 6px;
