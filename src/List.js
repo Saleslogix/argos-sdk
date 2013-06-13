@@ -1128,7 +1128,7 @@ define('Sage/Platform/Mobile/List', [
          * search widget by passing in the current view context.
          */
         configureSearch: function() {
-            this.query = this.options && this.options.query || null;
+            this.query = this.options && this.options.query || this.query || null;
             if (this.searchWidget)
                 this.searchWidget.configure({
                     'context': this.getContext()
