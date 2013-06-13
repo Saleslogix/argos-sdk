@@ -51,7 +51,7 @@ define('Sage/Platform/Mobile/GroupedList', [
          * Simplate that defines the HTML Markup. This override adds the needed styling.
          */
         widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '<div data-dojo-attach-point="searchNode"></div>',
             '<a href="#" class="android-6059-fix">fix for android issue #6059</a>',
             '{%! $.emptySelectionTemplate %}',
@@ -70,6 +70,7 @@ define('Sage/Platform/Mobile/GroupedList', [
             '</h2>',
             '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>'
         ]),
+
         /**
          * @property {Object}
          * The current group object that is compared to the next entries group object
