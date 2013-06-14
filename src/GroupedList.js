@@ -72,6 +72,29 @@ define('Sage/Platform/Mobile/GroupedList', [
         ]),
 
         /**
+         * @property {Simplate}
+         * The template used to render the pager at the bottom of the view.  This template is not directly rendered, but is
+         * included in {@link #viewTemplate}.
+         *
+         * The default template uses the following properties:
+         *
+         *      name                description
+         *      ----------------------------------------------------------------
+         *      moreText            The text to display on the more button.
+         *
+         * The default template exposes the following actions:
+         *
+         * * more
+         */
+        moreTemplate: new Simplate([
+            '<div class="list-more" data-dojo-attach-point="moreNode">',
+            '<div class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></div>',
+            '<button class="button" data-action="more">',
+            '<span>{%= $.moreText %}</span>',
+            '</button>',
+            '</div>'
+        ]),
+        /**
          * @property {Object}
          * The current group object that is compared to the next entries group object
          * Must have a `tag` property that identifies the group.
