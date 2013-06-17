@@ -36,12 +36,13 @@ h5
 .list-content,
 .group-content
 {
-    background-color: #fff;
+    background-color: #e6e6e6;
 }
 
 .list-content > li
 {
     font-weight: normal;
+    background-color: #fff;
 }
 
 .list-content > li:active
