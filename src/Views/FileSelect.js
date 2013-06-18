@@ -117,6 +117,11 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         show: function(options) {
             this.inherited(arguments);
             this._files = [];
+
+            // Reset the input or the onchange will not fire if the same file is uploaded multiple times
+            this.btnFileSelect.type = 'file';
+            this.btnFileSelect.value = '';
+
             this.contentNode.innerHTML = "";
             domClass.remove(this.fileArea, 'display-none');
             domClass.remove(this.btnUploadFiles, 'display-none');
