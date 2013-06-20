@@ -77,7 +77,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             '<div title="{%: $.titleText %}" class="panel {%= $.cls %}">',
                 '<div  data-dojo-attach-point="fileArea" class="file-area">',
                     '<div class="file-wrapper">',
-                        '<div class="file-wrap">',
+                        '<div class="file-wrap" data-dojo-attach-point="fileWrapper">',
                             '<input type="file" data-dojo-attach-point="btnFileSelect" size="71" accept="*/*">',
                         '</div>',
                         '{%: $.addFileText %}',
@@ -109,18 +109,25 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         },
         postCreate: function() {
             this.inherited(arguments);
-            this.btnFileSelect.onchange = lang.hitch(this, function(e){
-                this._onSelectFile(e);
-            });
             domClass.remove(this.domNode, 'list-loading');
         },
         show: function(options) {
+            var node;
+
             this.inherited(arguments);
             this._files = [];
 
-            // Reset the input or the onchange will not fire if the same file is uploaded multiple times
-            this.btnFileSelect.type = 'file';
-            this.btnFileSelect.value = '';
+            // Reset the input or the onchange will not fire if the same file is uploaded multiple times.
+            // Unfortunately IE does not allow you to reset the value of a file input, so we have to clone the node and re-insert it.
+            node = this.btnFileSelect.cloneNode();
+
+            domConstruct.destroy(this.btnFileSelect);
+            this.fileWrapper.appendChild(node);
+            this.btnFileSelect = node;
+
+            this.btnFileSelect.onchange = lang.hitch(this, function(e){
+                this._onSelectFile(e);
+            });
 
             this.contentNode.innerHTML = "";
             domClass.remove(this.fileArea, 'display-none');
