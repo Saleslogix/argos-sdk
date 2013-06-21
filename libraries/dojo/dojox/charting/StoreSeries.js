@@ -27,36 +27,37 @@ return _a.value;
 };
 }
 this.data=[];
+this._initialRendering=false;
 this.fetch();
 },destroy:function(){
 if(this.observeHandle){
-this.observeHandle.dismiss();
+this.observeHandle.remove();
 }
 },setSeriesObject:function(_b){
 this.series=_b;
 },fetch:function(){
-var _c=this.objects=[];
-var _d=this;
+var _c=this;
 if(this.observeHandle){
-this.observeHandle.dismiss();
+this.observeHandle.remove();
 }
-var _e=this.store.query(this.kwArgs.query,this.kwArgs);
-_3.when(_e,function(_f){
-_d.objects=_f;
-_10();
+var _d=this.store.query(this.kwArgs.query,this.kwArgs);
+_3.when(_d,function(_e){
+_c.objects=_e;
+_f();
 });
-if(_e.observe){
-this.observeHandle=_e.observe(_10,true);
+if(_d.observe){
+this.observeHandle=_d.observe(_f,true);
 }
-function _10(){
-_d.data=_1.map(_d.objects,function(_11){
-return _d.value(_11,_d.store);
+function _f(){
+_c.data=_1.map(_c.objects,function(_10){
+return _c.value(_10,_c.store);
 });
-_d._pushDataChanges();
+_c._pushDataChanges();
 };
 },_pushDataChanges:function(){
 if(this.series){
-this.series.chart.updateSeries(this.series.name,this);
+this.series.chart.updateSeries(this.series.name,this,this._initialRendering);
+this._initialRendering=false;
 this.series.chart.delayedRender();
 }
 }});

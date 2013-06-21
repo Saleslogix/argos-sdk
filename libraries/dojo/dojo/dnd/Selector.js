@@ -5,51 +5,51 @@
 */
 
 //>>built
-define("dojo/dnd/Selector",["../main","./common","./Container"],function(_1){
-_1.declare("dojo.dnd.Selector",_1.dnd.Container,{constructor:function(_2,_3){
-if(!_3){
-_3={};
+define("dojo/dnd/Selector",["../_base/array","../_base/declare","../_base/kernel","../_base/lang","../dom","../dom-construct","../mouse","../_base/NodeList","../on","../touch","./common","./Container"],function(_1,_2,_3,_4,_5,_6,_7,_8,on,_9,_a,_b){
+var _c=_2("dojo.dnd.Selector",_b,{constructor:function(_d,_e){
+if(!_e){
+_e={};
 }
-this.singular=_3.singular;
-this.autoSync=_3.autoSync;
+this.singular=_e.singular;
+this.autoSync=_e.autoSync;
 this.selection={};
 this.anchor=null;
 this.simpleSelection=false;
-this.events.push(_1.connect(this.node,"onmousedown",this,"onMouseDown"),_1.connect(this.node,"onmouseup",this,"onMouseUp"));
+this.events.push(on(this.node,_9.press,_4.hitch(this,"onMouseDown")),on(this.node,_9.release,_4.hitch(this,"onMouseUp")));
 },singular:false,getSelectedNodes:function(){
-var t=new _1.NodeList();
-var e=_1.dnd._empty;
+var t=new _8();
+var e=_a._empty;
 for(var i in this.selection){
 if(i in e){
 continue;
 }
-t.push(_1.byId(i));
+t.push(_5.byId(i));
 }
 return t;
 },selectNone:function(){
 return this._removeSelection()._removeAnchor();
 },selectAll:function(){
-this.forInItems(function(_4,id){
-this._addItemClass(_1.byId(id),"Selected");
+this.forInItems(function(_f,id){
+this._addItemClass(_5.byId(id),"Selected");
 this.selection[id]=1;
 },this);
 return this._removeAnchor();
 },deleteSelectedNodes:function(){
-var e=_1.dnd._empty;
+var e=_a._empty;
 for(var i in this.selection){
 if(i in e){
 continue;
 }
-var n=_1.byId(i);
+var n=_5.byId(i);
 this.delItem(i);
-_1.destroy(n);
+_6.destroy(n);
 }
 this.anchor=null;
 this.selection={};
 return this;
 },forInSelectedItems:function(f,o){
-o=o||_1.global;
-var s=this.selection,e=_1.dnd._empty;
+o=o||_3.global;
+var s=this.selection,e=_a._empty;
 for(var i in s){
 if(i in e){
 continue;
@@ -57,13 +57,13 @@ continue;
 f.call(o,this.getItem(i),i,this);
 }
 },sync:function(){
-_1.dnd.Selector.superclass.sync.call(this);
+_c.superclass.sync.call(this);
 if(this.anchor){
 if(!this.getItem(this.anchor.id)){
 this.anchor=null;
 }
 }
-var t=[],e=_1.dnd._empty;
+var t=[],e=_a._empty;
 for(var i in this.selection){
 if(i in e){
 continue;
@@ -76,11 +76,11 @@ _1.forEach(t,function(i){
 delete this.selection[i];
 },this);
 return this;
-},insertNodes:function(_5,_6,_7,_8){
-var _9=this._normalizedCreator;
-this._normalizedCreator=function(_a,_b){
-var t=_9.call(this,_a,_b);
-if(_5){
+},insertNodes:function(_10,_11,_12,_13){
+var _14=this._normalizedCreator;
+this._normalizedCreator=function(_15,_16){
+var t=_14.call(this,_15,_16);
+if(_10){
 if(!this.anchor){
 this.anchor=t.node;
 this._removeItemClass(t.node,"Selected");
@@ -98,11 +98,11 @@ this._removeItemClass(t.node,"Anchor");
 }
 return t;
 };
-_1.dnd.Selector.superclass.insertNodes.call(this,_6,_7,_8);
-this._normalizedCreator=_9;
+_c.superclass.insertNodes.call(this,_11,_12,_13);
+this._normalizedCreator=_14;
 return this;
 },destroy:function(){
-_1.dnd.Selector.superclass.destroy.call(this);
+_c.superclass.destroy.call(this);
 this.selection=this.anchor=null;
 },onMouseDown:function(e){
 if(this.autoSync){
@@ -111,15 +111,16 @@ this.sync();
 if(!this.current){
 return;
 }
-if(!this.singular&&!_1.isCopyKey(e)&&!e.shiftKey&&(this.current.id in this.selection)){
+if(!this.singular&&!_a.getCopyKeyState(e)&&!e.shiftKey&&(this.current.id in this.selection)){
 this.simpleSelection=true;
-if(e.button===_1.mouseButtons.LEFT){
-_1.stopEvent(e);
+if(_7.isLeft(e)){
+e.stopPropagation();
+e.preventDefault();
 }
 return;
 }
 if(!this.singular&&e.shiftKey){
-if(!_1.isCopyKey(e)){
+if(!_a.getCopyKeyState(e)){
 this._removeSelection();
 }
 var c=this.getAllNodes();
@@ -130,20 +131,20 @@ this._addItemClass(this.anchor,"Anchor");
 }
 this.selection[this.anchor.id]=1;
 if(this.anchor!=this.current){
-var i=0;
+var i=0,_17;
 for(;i<c.length;++i){
-var _c=c[i];
-if(_c==this.anchor||_c==this.current){
+_17=c[i];
+if(_17==this.anchor||_17==this.current){
 break;
 }
 }
 for(++i;i<c.length;++i){
-var _c=c[i];
-if(_c==this.anchor||_c==this.current){
+_17=c[i];
+if(_17==this.anchor||_17==this.current){
 break;
 }
-this._addItemClass(_c,"Selected");
-this.selection[_c.id]=1;
+this._addItemClass(_17,"Selected");
+this.selection[_17.id]=1;
 }
 this._addItemClass(this.current,"Selected");
 this.selection[this.current.id]=1;
@@ -152,7 +153,7 @@ this.selection[this.current.id]=1;
 }else{
 if(this.singular){
 if(this.anchor==this.current){
-if(_1.isCopyKey(e)){
+if(_a.getCopyKeyState(e)){
 this.selectNone();
 }
 }else{
@@ -162,7 +163,7 @@ this._addItemClass(this.anchor,"Anchor");
 this.selection[this.current.id]=1;
 }
 }else{
-if(_1.isCopyKey(e)){
+if(_a.getCopyKeyState(e)){
 if(this.anchor==this.current){
 delete this.selection[this.anchor.id];
 this._removeAnchor();
@@ -190,8 +191,9 @@ this.selection[this.current.id]=1;
 }
 }
 }
-_1.stopEvent(e);
-},onMouseUp:function(e){
+e.stopPropagation();
+e.preventDefault();
+},onMouseUp:function(){
 if(!this.simpleSelection){
 return;
 }
@@ -202,22 +204,24 @@ this.anchor=this.current;
 this._addItemClass(this.anchor,"Anchor");
 this.selection[this.current.id]=1;
 }
-},onMouseMove:function(e){
+},onMouseMove:function(){
 this.simpleSelection=false;
 },onOverEvent:function(){
-this.onmousemoveEvent=_1.connect(this.node,"onmousemove",this,"onMouseMove");
+this.onmousemoveEvent=on(this.node,_9.move,_4.hitch(this,"onMouseMove"));
 },onOutEvent:function(){
-_1.disconnect(this.onmousemoveEvent);
+if(this.onmousemoveEvent){
+this.onmousemoveEvent.remove();
 delete this.onmousemoveEvent;
+}
 },_removeSelection:function(){
-var e=_1.dnd._empty;
+var e=_a._empty;
 for(var i in this.selection){
 if(i in e){
 continue;
 }
-var _d=_1.byId(i);
-if(_d){
-this._removeItemClass(_d,"Selected");
+var _18=_5.byId(i);
+if(_18){
+this._removeItemClass(_18,"Selected");
 }
 }
 this.selection={};
@@ -229,5 +233,5 @@ this.anchor=null;
 }
 return this;
 }});
-return _1.dnd.Selector;
+return _c;
 });

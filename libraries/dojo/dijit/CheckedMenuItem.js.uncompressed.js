@@ -1,6 +1,3 @@
-//>>built
-require({cache:{
-'url:dijit/templates/CheckedMenuItem.html':"<tr class=\"dijitReset dijitMenuItem\" data-dojo-attach-point=\"focusNode\" role=\"menuitemcheckbox\" tabIndex=\"-1\"\n\t\tdata-dojo-attach-event=\"onmouseenter:_onHover,onmouseleave:_onUnhover,ondijitclick:_onClick\">\n\t<td class=\"dijitReset dijitMenuItemIconCell\" role=\"presentation\">\n\t\t<img src=\"${_blankGif}\" alt=\"\" class=\"dijitMenuItemIcon dijitCheckedMenuItemIcon\" data-dojo-attach-point=\"iconNode\"/>\n\t\t<span class=\"dijitCheckedMenuItemIconChar\">&#10003;</span>\n\t</td>\n\t<td class=\"dijitReset dijitMenuItemLabel\" colspan=\"2\" data-dojo-attach-point=\"containerNode,labelNode\"></td>\n\t<td class=\"dijitReset dijitMenuItemAccelKey\" style=\"display: none\" data-dojo-attach-point=\"accelKeyNode\"></td>\n\t<td class=\"dijitReset dijitMenuArrowCell\" role=\"presentation\">&#160;</td>\n</tr>\n"}});
 define("dijit/CheckedMenuItem", [
 	"dojo/_base/declare", // declare
 	"dojo/dom-class", // domClass.toggle
@@ -9,18 +6,14 @@ define("dijit/CheckedMenuItem", [
 	"./hccss"
 ], function(declare, domClass, MenuItem, template){
 
-/*=====
-	var MenuItem = dijit.MenuItem;
-=====*/
-
 	// module:
 	//		dijit/CheckedMenuItem
-	// summary:
-	//		A checkbox-like menu item for toggling on and off
 
 	return declare("dijit.CheckedMenuItem", MenuItem, {
 		// summary:
 		//		A checkbox-like menu item for toggling on and off
+
+		baseClass: "dijitCheckedMenuItem",
 
 		templateString: template,
 
@@ -31,12 +24,18 @@ define("dijit/CheckedMenuItem", [
 			// summary:
 			//		Hook so attr('checked', bool) works.
 			//		Sets the class and state for the check box.
-			domClass.toggle(this.domNode, "dijitCheckedMenuItemChecked", checked);
-			this.domNode.setAttribute("aria-checked", checked);
+			domClass.toggle(this.domNode, this.baseClass + "Checked", checked);
+			this.domNode.setAttribute("aria-checked", checked ? "true" : "false");
 			this._set("checked", checked);
 		},
 
 		iconClass: "",	// override dijitNoIcon
+
+		role: "menuitemcheckbox",
+
+		// checkedChar: String
+		//		Character (or string) used in place of checkbox icon when display in high contrast mode
+		checkedChar: "&#10003;",
 
 		onChange: function(/*Boolean*/ /*===== checked =====*/){
 			// summary:
@@ -45,7 +44,7 @@ define("dijit/CheckedMenuItem", [
 			//		callback
 		},
 
-		_onClick: function(/*Event*/ e){
+		_onClick: function(evt){
 			// summary:
 			//		Clicking this item just toggles its state
 			// tags:
@@ -54,7 +53,9 @@ define("dijit/CheckedMenuItem", [
 				this.set("checked", !this.checked);
 				this.onChange(this.checked);
 			}
-			this.inherited(arguments);
+			this.onClick(evt);
 		}
 	});
 });
+require({cache:{
+'url:dijit/templates/CheckedMenuItem.html':"<tr class=\"dijitReset dijitMenuItem\" data-dojo-attach-point=\"focusNode\" role=\"${role}\" tabIndex=\"-1\" aria-checked=\"${checked}\">\n\t<td class=\"dijitReset dijitMenuItemIconCell\" role=\"presentation\">\n\t\t<span class=\"dijitInline dijitIcon dijitMenuItemIcon dijitCheckedMenuItemIcon\" data-dojo-attach-point=\"iconNode\"></span>\n\t\t<span class=\"dijitMenuItemIconChar dijitCheckedMenuItemIconChar\">${checkedChar}</span>\n\t</td>\n\t<td class=\"dijitReset dijitMenuItemLabel\" colspan=\"2\" data-dojo-attach-point=\"containerNode,labelNode,textDirNode\"></td>\n\t<td class=\"dijitReset dijitMenuItemAccelKey\" style=\"display: none\" data-dojo-attach-point=\"accelKeyNode\"></td>\n\t<td class=\"dijitReset dijitMenuArrowCell\" role=\"presentation\">&#160;</td>\n</tr>\n"}});

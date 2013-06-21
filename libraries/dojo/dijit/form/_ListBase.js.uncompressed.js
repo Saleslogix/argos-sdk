@@ -1,124 +1,133 @@
-//>>built
 define("dijit/form/_ListBase", [
-	"dojo/_base/declare",	// declare
+	"dojo/_base/declare", // declare
+	"dojo/on",
 	"dojo/window" // winUtils.scrollIntoView
-], function(declare, winUtils){
+], function(declare, on, winUtils){
 
-// module:
-//		dijit/form/_ListBase
-// summary:
-//		Focus-less menu to handle UI events consistently
+	// module:
+	//		dijit/form/_ListBase
 
-return declare( "dijit.form._ListBase", null, {
-	// summary:
-	//		Focus-less menu to handle UI events consistently
-	//		Abstract methods that must be defined externally:
-	//			onSelect: item is active (mousedown but not yet mouseup, or keyboard arrow selected but no Enter)
-	//			onDeselect:  cancels onSelect
-	// tags:
-	//		private
-
-	// selected: DOMnode
-	//		currently selected node
-	selected: null,
-
-	_getTarget: function(/*Event*/ evt){
-		var tgt = evt.target;
-		var container = this.containerNode;
-		if(tgt == container || tgt == this.domNode){ return null; }
-		while(tgt && tgt.parentNode != container){
-			// recurse to the top
-			tgt = tgt.parentNode;
-		}
-		return tgt;
-	},
-
-	selectFirstNode: function(){
+	return declare("dijit.form._ListBase", null, {
 		// summary:
-		// 		Select the first displayed item in the list.
-		var first = this.containerNode.firstChild;
-		while(first && first.style.display == "none"){
-			first = first.nextSibling;
-		}
-		this._setSelectedAttr(first);
-	},
+		//		Focus-less menu to handle UI events consistently.
+		//		Abstract methods that must be defined externally:
+		//
+		//		- onSelect: item is active (mousedown but not yet mouseup, or keyboard arrow selected but no Enter)
+		//		- onDeselect:  cancels onSelect
+		// tags:
+		//		private
 
-	selectLastNode: function(){
-		// summary:
-		// 		Select the last displayed item in the list
-		var last = this.containerNode.lastChild;
-		while(last && last.style.display == "none"){
-			last = last.previousSibling;
-		}
-		this._setSelectedAttr(last);
-	},
+		// selected: DOMNode
+		//		currently selected node
+		selected: null,
 
-	selectNextNode: function(){
-		// summary:
-		// 		Select the item just below the current selection.
-		// 		If nothing selected, select first node.
-		var selectedNode = this._getSelectedAttr();
-		if(!selectedNode){
-			this.selectFirstNode();
-		}else{
-			var next = selectedNode.nextSibling;
-			while(next && next.style.display == "none"){
-				next = next.nextSibling;
+		_listConnect: function(/*String|Function*/ eventType, /*String*/ callbackFuncName){
+			// summary:
+			//		Connects 'containerNode' to specified method of this object
+			//		and automatically registers for 'disconnect' on widget destroy.
+			// description:
+			//		Provide widget-specific analog to 'connect'.
+			//		The callback function is called with the normal event object,
+			//		but also a second parameter is passed that indicates which list item
+			//		actually received the event.
+			// returns:
+			//		A handle that can be passed to `disconnect` in order to disconnect
+			//		before the widget is destroyed.
+			// tags:
+			//		private
+
+			var self = this;
+			return self.own(on(self.containerNode,
+				on.selector(
+					function(eventTarget, selector, target){
+						return eventTarget.parentNode == target;
+					},
+					eventType
+				),
+				function(evt){
+					evt.preventDefault();
+					self[callbackFuncName](evt, this);
+				}
+			));
+		},
+
+		selectFirstNode: function(){
+			// summary:
+			//		Select the first displayed item in the list.
+			var first = this.containerNode.firstChild;
+			while(first && first.style.display == "none"){
+				first = first.nextSibling;
 			}
-			if(!next){
+			this._setSelectedAttr(first);
+		},
+
+		selectLastNode: function(){
+			// summary:
+			//		Select the last displayed item in the list
+			var last = this.containerNode.lastChild;
+			while(last && last.style.display == "none"){
+				last = last.previousSibling;
+			}
+			this._setSelectedAttr(last);
+		},
+
+		selectNextNode: function(){
+			// summary:
+			//		Select the item just below the current selection.
+			//		If nothing selected, select first node.
+			var selectedNode = this.selected;
+			if(!selectedNode){
 				this.selectFirstNode();
 			}else{
-				this._setSelectedAttr(next);
+				var next = selectedNode.nextSibling;
+				while(next && next.style.display == "none"){
+					next = next.nextSibling;
+				}
+				if(!next){
+					this.selectFirstNode();
+				}else{
+					this._setSelectedAttr(next);
+				}
 			}
-		}
-	},
+		},
 
-	selectPreviousNode: function(){
-		// summary:
-		// 		Select the item just above the current selection.
-		// 		If nothing selected, select last node (if
-		// 		you select Previous and try to keep scrolling up the list).
-		var selectedNode = this._getSelectedAttr();
-		if(!selectedNode){
-			this.selectLastNode();
-		}else{
-			var prev = selectedNode.previousSibling;
-			while(prev && prev.style.display == "none"){
-				prev = prev.previousSibling;
-			}
-			if(!prev){
+		selectPreviousNode: function(){
+			// summary:
+			//		Select the item just above the current selection.
+			//		If nothing selected, select last node (if
+			//		you select Previous and try to keep scrolling up the list).
+			var selectedNode = this.selected;
+			if(!selectedNode){
 				this.selectLastNode();
 			}else{
-				this._setSelectedAttr(prev);
+				var prev = selectedNode.previousSibling;
+				while(prev && prev.style.display == "none"){
+					prev = prev.previousSibling;
+				}
+				if(!prev){
+					this.selectLastNode();
+				}else{
+					this._setSelectedAttr(prev);
+				}
 			}
-		}
-	},
+		},
 
-	_setSelectedAttr: function(/*DomNode*/ node){
-		// summary:
-		//		Does the actual select.
-		if(this.selected != node){
-			var selectedNode = this._getSelectedAttr();
-			if(selectedNode){
-				this.onDeselect(selectedNode);
-				this.selected = null;
-			}
-			if(node && node.parentNode == this.containerNode){
-				this.selected = node;
-				winUtils.scrollIntoView(node);
+		_setSelectedAttr: function(/*DomNode*/ node){
+			// summary:
+			//		Does the actual select.
+			if(this.selected != node){
+				var selectedNode = this.selected;
+				if(selectedNode){
+					this.onDeselect(selectedNode);
+				}
+				if(node){
+					winUtils.scrollIntoView(node);
+					this.onSelect(node);
+				}
+				this._set("selected", node);
+			}else if(node){
 				this.onSelect(node);
 			}
-		}else if(node){
-			this.onSelect(node);
 		}
-	},
-
-	_getSelectedAttr: function(){
-		// summary:
-		//		Returns the selected node.
-		var v = this.selected;
-		return (v && v.parentNode == this.containerNode) ? v : (this.selected = null);
-	}
-});
-
+	});
 });

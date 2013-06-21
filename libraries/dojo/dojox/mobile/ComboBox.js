@@ -1,17 +1,20 @@
 //>>built
-define("dojox/mobile/ComboBox",["dojo/_base/kernel","dojo/_base/declare","dojo/_base/lang","dojo/_base/window","dojo/dom-geometry","dojo/dom-style","dojo/window","dijit/form/_AutoCompleterMixin","dijit/popup","./_ComboBoxMenu","./TextBox","./sniff"],function(_1,_2,_3,_4,_5,_6,_7,_8,_9,_a,_b,_c){
+define("dojox/mobile/ComboBox",["dojo/_base/kernel","dojo/_base/declare","dojo/_base/lang","dojo/_base/window","dojo/dom-geometry","dojo/dom-style","dojo/dom-attr","dojo/window","dojo/touch","dijit/form/_AutoCompleterMixin","dijit/popup","./_ComboBoxMenu","./TextBox","./sniff"],function(_1,_2,_3,_4,_5,_6,_7,_8,_9,_a,_b,_c,_d,_e){
 _1.experimental("dojox.mobile.ComboBox");
-return _2("dojox.mobile.ComboBox",[_b,_8],{dropDownClass:"dojox.mobile._ComboBoxMenu",selectOnClick:false,autoComplete:false,dropDown:null,maxHeight:-1,dropDownPosition:["below","above"],_throttleOpenClose:function(){
+return _2("dojox.mobile.ComboBox",[_d,_a],{dropDownClass:"dojox.mobile._ComboBoxMenu",selectOnClick:false,autoComplete:false,dropDown:null,maxHeight:-1,dropDownPosition:["below","above"],_throttleOpenClose:function(){
 if(this._throttleHandler){
-clearTimeout(this._throttleHandler);
+this._throttleHandler.remove();
 }
-this._throttleHandler=setTimeout(_3.hitch(this,function(){
+this._throttleHandler=this.defer(function(){
 this._throttleHandler=null;
-}),500);
+},500);
 },_onFocus:function(){
 this.inherited(arguments);
 if(!this._opened&&!this._throttleHandler){
 this._startSearchAll();
+}
+if(_e("windows-theme")){
+this.domNode.blur();
 }
 },onInput:function(e){
 this._onKey(e);
@@ -20,83 +23,129 @@ this.inherited(arguments);
 this._set("list",v);
 },closeDropDown:function(){
 this._throttleOpenClose();
-if(this.startHandler){
-this.disconnect(this.startHandler);
-this.startHandler=null;
-if(this.moveHandler){
-this.disconnect(this.moveHandler);
-}
 if(this.endHandler){
+this.disconnect(this.startHandler);
 this.disconnect(this.endHandler);
-}
+this.disconnect(this.moveHandler);
+clearInterval(this.repositionTimer);
+this.repositionTimer=this.endHandler=null;
 }
 this.inherited(arguments);
-_9.close(this.dropDown);
+_7.remove(this.domNode,"aria-owns");
+_b.close(this.dropDown);
 this._opened=false;
+if(_e("windows-theme")&&this.domNode.disabled){
+this.defer(function(){
+this.domNode.removeAttribute("disabled");
+},300);
+}
 },openDropDown:function(){
-var _d=!this._opened;
-var _e=this.dropDown,_f=_e.domNode,_10=this.domNode,_11=this;
+var _f=!this._opened;
+var _10=this.dropDown,_11=_10.domNode,_12=this.domNode,_13=this;
+_7.set(_10.domNode,"role","listbox");
+if(_10.id){
+_7.set(this.domNode,"aria-owns",_10.id);
+}
+if(_e("touch")){
+_4.global.scrollBy(0,_5.position(_12,false).y);
+}
 if(!this._preparedNode){
 this._preparedNode=true;
-if(_f.style.width){
+if(_11.style.width){
 this._explicitDDWidth=true;
 }
-if(_f.style.height){
+if(_11.style.height){
 this._explicitDDHeight=true;
 }
 }
-var _12={display:"",overflow:"hidden",visibility:"hidden"};
+var _14={display:"",overflow:"hidden",visibility:"hidden"};
 if(!this._explicitDDWidth){
-_12.width="";
+_14.width="";
 }
 if(!this._explicitDDHeight){
-_12.height="";
+_14.height="";
 }
-_6.set(_f,_12);
-var _13=this.maxHeight;
-if(_13==-1){
-var _14=_7.getBox(),_15=_5.position(_10,false);
-_13=Math.floor(Math.max(_15.y,_14.h-(_15.y+_15.h)));
+_6.set(_11,_14);
+var _15=this.maxHeight;
+if(_15==-1){
+var _16=_8.getBox(),_17=_5.position(_12,false);
+_15=Math.floor(Math.max(_17.y,_16.h-(_17.y+_17.h)));
 }
-_9.moveOffScreen(_e);
-if(_e.startup&&!_e._started){
-_e.startup();
+_b.moveOffScreen(_10);
+if(_10.startup&&!_10._started){
+_10.startup();
 }
 var mb=_5.position(this.dropDown.containerNode,false);
-var _16=(_13&&mb.h>_13);
-if(_16){
-mb.h=_13;
+var _18=(_15&&mb.h>_15);
+if(_18){
+mb.h=_15;
 }
-mb.w=Math.max(mb.w,_10.offsetWidth);
-_5.setMarginBox(_f,mb);
-var _17=_9.open({parent:this,popup:_e,around:_10,orient:this.dropDownPosition,onExecute:function(){
-_11.closeDropDown();
+mb.w=Math.max(mb.w,_12.offsetWidth);
+_5.setMarginBox(_11,mb);
+var _19=_b.open({parent:this,popup:_10,around:_12,orient:_e("windows-theme")?["above"]:this.dropDownPosition,onExecute:function(){
+_13.closeDropDown();
 },onCancel:function(){
-_11.closeDropDown();
+_13.closeDropDown();
 },onClose:function(){
-_11._opened=false;
+_13._opened=false;
 }});
 this._opened=true;
-if(_d){
-if(_17.aroundCorner.charAt(0)=="B"){
-this.domNode.scrollIntoView(true);
-}
-this.startHandler=this.connect(_4.doc.documentElement,_c("touch")?"ontouchstart":"onmousedown",_3.hitch(this,function(){
-var _18=false;
-this.moveHandler=this.connect(_4.doc.documentElement,_c("touch")?"ontouchmove":"onmousemove",function(){
-_18=true;
+if(_f){
+var _1a=false,_1b=false,_1c=false,_1d=_10.domNode.parentNode,_1e=_5.position(_12,false),_1f=_5.position(_1d,false),_20=_1f.x-_1e.x,_21=_1f.y-_1e.y,_22=-1,_23=-1;
+this.startHandler=this.connect(_4.doc.documentElement,_9.press,function(e){
+_1b=true;
+_1c=true;
+_1a=false;
+_22=e.clientX;
+_23=e.clientY;
 });
-this.endHandler=this.connect(_4.doc.documentElement,_c("touch")?"ontouchend":"onmouseup",function(){
-if(!_18){
+this.moveHandler=this.connect(_4.doc.documentElement,_9.move,function(e){
+_1b=true;
+if(e.touches){
+_1c=_1a=true;
+}else{
+if(_1c&&(e.clientX!=_22||e.clientY!=_23)){
+_1a=true;
+}
+}
+});
+this.clickHandler=this.connect(_10.domNode,"onclick",function(){
+_1b=true;
+_1c=_1a=false;
+});
+this.endHandler=this.connect(_4.doc.documentElement,"onmouseup",function(){
+this.defer(function(){
+_1b=true;
+if(!_1a&&_1c){
 this.closeDropDown();
 }
+_1c=false;
 });
-}));
+});
+this.repositionTimer=setInterval(_3.hitch(this,function(){
+if(_1b){
+_1b=false;
+return;
 }
-return _17;
+var _24=_5.position(_12,false),_25=_5.position(_1d,false),_26=_25.x-_24.x,_27=_25.y-_24.y;
+if(Math.abs(_26-_20)>=1||Math.abs(_27-_21)>=1){
+_6.set(_1d,{left:parseInt(_6.get(_1d,"left"))+_20-_26+"px",top:parseInt(_6.get(_1d,"top"))+_21-_27+"px"});
+}
+}),50);
+}
+if(_e("windows-theme")){
+this.domNode.setAttribute("disabled",true);
+}
+return _19;
 },postCreate:function(){
 this.inherited(arguments);
 this.connect(this.domNode,"onclick","_onClick");
+_7.set(this.domNode,"role","combobox");
+},destroy:function(){
+if(this.repositionTimer){
+clearInterval(this.repositionTimer);
+}
+this.inherited(arguments);
 },_onClick:function(e){
 if(!this._throttleHandler){
 if(this.opened){

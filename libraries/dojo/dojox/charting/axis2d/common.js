@@ -1,5 +1,5 @@
 //>>built
-define("dojox/charting/axis2d/common",["dojo/_base/lang","dojo/_base/html","dojo/_base/window","dojo/dom-geometry","dojox/gfx"],function(_1,_2,_3,_4,g){
+define("dojox/charting/axis2d/common",["dojo/_base/lang","dojo/_base/window","dojo/dom-geometry","dojox/gfx","dojo/has"],function(_1,_2,_3,g,_4){
 var _5=_1.getObject("dojox.charting.axis2d.common",true);
 var _6=function(s){
 s.marginLeft="0px";
@@ -20,13 +20,13 @@ if(n["getBoundingClientRect"]){
 var _8=n.getBoundingClientRect();
 return _8.width||(_8.right-_8.left);
 }else{
-return _4.getMarginBox(n).w;
+return _3.getMarginBox(n).w;
 }
 };
 return _1.mixin(_5,{createText:{gfx:function(_9,_a,x,y,_b,_c,_d,_e){
 return _a.createText({x:x,y:y,text:_c,align:_b}).setFont(_d).setFill(_e);
 },html:function(_f,_10,x,y,_11,_12,_13,_14,_15){
-var p=_3.doc.createElement("div"),s=p.style,_16;
+var p=_2.doc.createElement("div"),s=p.style,_16;
 if(_f.getTextDir){
 p.dir=_f.getTextDir(_12);
 }
@@ -36,7 +36,7 @@ p.innerHTML=String(_12).replace(/\s/g,"&nbsp;");
 s.color=_14;
 s.position="absolute";
 s.left="-10000px";
-_3.body().appendChild(p);
+_2.body().appendChild(p);
 var _17=g.normalizedLength(g.splitFontString(_13).size);
 if(!_15){
 _16=_7(p);
@@ -44,7 +44,7 @@ _16=_7(p);
 if(p.dir=="rtl"){
 x+=_15?_15:_16;
 }
-_3.body().removeChild(p);
+_2.body().removeChild(p);
 s.position="relative";
 if(_15){
 s.width=_15+"px";
@@ -77,12 +77,15 @@ break;
 }
 s.top=Math.floor(y-_17)+"px";
 s.whiteSpace="nowrap";
-var _18=_3.doc.createElement("div"),w=_18.style;
+var _18=_2.doc.createElement("div"),w=_18.style;
 _6(w);
 w.width="0px";
 w.height="0px";
 _18.appendChild(p);
 _f.node.insertBefore(_18,_f.node.firstChild);
+if(_4("dojo-bidi")){
+_f.htmlElementsRegistry.push([_18,x,y,_11,_12,_13,_14]);
+}
 return _18;
 }}});
 });

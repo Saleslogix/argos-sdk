@@ -1,4 +1,3 @@
-//>>built
 define("dojox/mobile/Button", [
 	"dojo/_base/array",
 	"dojo/_base/declare",
@@ -6,51 +5,63 @@ define("dojox/mobile/Button", [
 	"dojo/dom-construct",
 	"dijit/_WidgetBase",
 	"dijit/form/_ButtonMixin",
-	"dijit/form/_FormWidgetMixin"
-],
-	function(array, declare, domClass, domConstruct, WidgetBase, ButtonMixin, FormWidgetMixin){
+	"dijit/form/_FormWidgetMixin",
+	"dojo/has",
+	"dojo/has!dojo-bidi?dojox/mobile/bidi/Button"
+	],
+	function(array, declare, domClass, domConstruct, WidgetBase, ButtonMixin, FormWidgetMixin, has, BidiButton){
 
-	/*=====
-		WidgetBase = dijit._WidgetBase;
-		FormWidgetMixin = dijit.form._FormWidgetMixin;
-		ButtonMixin = dijit.form._ButtonMixin;
-	=====*/
-	return declare("dojox.mobile.Button", [WidgetBase, FormWidgetMixin, ButtonMixin], {
+	var Button = declare(has("dojo-bidi") ? "dojox.mobile.NonBidiButton" : "dojox.mobile.Button", [WidgetBase, FormWidgetMixin, ButtonMixin], {
 		// summary:
-		//	Non-templated BUTTON widget with a thin API wrapper for click events and setting the label
+		//		Non-templated BUTTON widget with a thin API wrapper for click 
+		//		events and for setting the label.
 		//
-		// description:
-		//              Buttons can display a label, an icon, or both.
-		//              A label should always be specified (through innerHTML) or the label
-		//              attribute.  It can be hidden via showLabel=false.
+		//		Buttons can display a label, an icon, or both.
+		//		A label should always be specified (through innerHTML) or the label
+		//		attribute.  It can be hidden via showLabel=false.
 		// example:
-		// |    <button dojoType="dijit.form.Button" onClick="...">Hello world</button>
+		//	|	<button data-dojo-type="dojox/mobile/Button" onClick="...">Hello world</button>
 
+		// baseClass: String
+		//		The name of the CSS class of this widget.
 		baseClass: "mblButton",
 
-		// Override automatic assigning type --> node, it causes exception on IE.
-		// Instead, type must be specified as this.type when the node is created, as part of the original DOM
+		// _setTypeAttr: [private] Function 
+		//		Overrides the automatic assignment of type to nodes, because it causes
+		//		exception on IE. Instead, the type must be specified as this.type
+		//		when the node is created, as part of the original DOM.
 		_setTypeAttr: null,
 
 		// duration: Number
-		//	duration of selection, milliseconds or -1 for no post-click CSS styling
+		//		The duration of selection, in milliseconds, or -1 for no post-click CSS styling.
 		duration: 1000,
 
+		/*=====
+		// label: String
+		//		The label of the button.
+		label: "",
+		=====*/
+		
 		_onClick: function(e){
+			// tags:
+			//		private
 			var ret = this.inherited(arguments);
 			if(ret && this.duration >= 0){ // if its not a button with a state, then emulate press styles
 				var button = this.focusNode || this.domNode;
 				var newStateClasses = (this.baseClass+' '+this["class"]).split(" ");
 				newStateClasses = array.map(newStateClasses, function(c){ return c+"Selected"; });
 				domClass.add(button, newStateClasses);
-				setTimeout(function(){
+				this.defer(function(){
 					domClass.remove(button, newStateClasses);
 				}, this.duration);
 			}
 			return ret;
 		},
 
-		isFocusable: function(){ return false; },
+		isFocusable: function(){ 
+			// Override of the method of dijit/_WidgetBase.
+			return false; 
+		},
 
 		buildRendering: function(){
 			if(!this.srcNodeRef){
@@ -71,8 +82,11 @@ define("dojox/mobile/Button", [
 		},
 
 		_setLabelAttr: function(/*String*/ content){
+			// tags:
+			//		private
 			this.inherited(arguments, [this._cv ? this._cv(content) : content]);
 		}
 	});
 
+	return has("dojo-bidi") ? declare("dojox.mobile.Button", [Button, BidiButton]) : Button;
 });

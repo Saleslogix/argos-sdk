@@ -1,21 +1,15 @@
-//>>built
-define("dojox/charting/plot2d/Bubble", ["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", 
-		"./Base", "./common", "dojox/lang/functional", "dojox/lang/functional/reversed", 
+define("dojox/charting/plot2d/Bubble", ["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/has", 
+		"./CartesianBase", "./_PlotEvents", "./common", "dojox/lang/functional", "dojox/lang/functional/reversed",
 		"dojox/lang/utils", "dojox/gfx/fx"], 
-	function(lang, declare, arr, Base, dc, df, dfr, du, fx){
-/*=====
-var Base = dojox.charting.plot2d.Base;
-=====*/
+	function(lang, declare, arr, has, CartesianBase, _PlotEvents, dc, df, dfr, du, fx){
 
 	var purgeGroup = dfr.lambda("item.purgeGroup()");
 
-	return declare("dojox.charting.plot2d.Bubble", Base, {
-		//	summary:
+	return declare("dojox.charting.plot2d.Bubble", [CartesianBase, _PlotEvents], {
+		// summary:
 		//		A plot representing bubbles.  Note that data for Bubbles requires 3 parameters,
 		//		in the form of:  { x, y, size }, where size determines the size of the bubble.
 		defaultParams: {
-			hAxis: "x",		// use a horizontal axis named "x"
-			vAxis: "y",		// use a vertical axis named "y"
 			animate: null   // animate bars into place
 		},
 		optionalParams: {
@@ -24,36 +18,41 @@ var Base = dojox.charting.plot2d.Base;
 			outline:	{},
 			shadow:		{},
 			fill:		{},
+			filter:     {},
+			styleFunc:	null,
 			font:		"",
 			fontColor:	""
 		},
 
 		constructor: function(chart, kwArgs){
-			//	summary:
+			// summary:
 			//		Create a plot of bubbles.
-			//	chart: dojox.charting.Chart
+			// chart: dojox/charting/Chart
 			//		The chart this plot belongs to.
-			//	kwArgs: dojox.charting.plot2d.__DefaultCtorArgs?
+			// kwArgs: dojox.charting.plot2d.__DefaultCtorArgs?
 			//		Optional keyword arguments object to help define plot parameters.
-			this.opt = lang.clone(this.defaultParams);
-            du.updateWithObject(this.opt, kwArgs);
-            du.updateWithPattern(this.opt, kwArgs, this.optionalParams);
-            this.series = [];
-			this.hAxis = this.opt.hAxis;
-			this.vAxis = this.opt.vAxis;
+			this.opt = lang.clone(lang.mixin(this.opt, this.defaultParams));
+			du.updateWithObject(this.opt, kwArgs);
+			du.updateWithPattern(this.opt, kwArgs, this.optionalParams);
+			if(!this.opt.labelFunc){
+				this.opt.labelFunc = function(value, fixed, precision){
+					return this._getLabel(value.size, fixed, precision);
+				};
+			}
 			this.animate = this.opt.animate;
 		},
 
 		//	override the render so that we are plotting only circles.
 		render: function(dim, offsets){
-			//	summary:
+			// summary:
 			//		Run the calculations for any axes for this plot.
-			//	dim: Object
+			// dim: Object
 			//		An object in the form of { width, height }
-			//	offsets: Object
+			// offsets: Object
 			//		An object of the form { l, r, t, b}.
-			//	returns: dojox.charting.plot2d.Bubble
+			// returns: dojox/charting/plot2d/Bubble
 			//		A reference to this plot for functional chaining.
+			var s;
 			if(this.zoom && !this.isDataDirty()){
 				return this.performZoom(dim, offsets);
 			}
@@ -63,7 +62,7 @@ var Base = dojox.charting.plot2d.Base;
 				arr.forEach(this.series, purgeGroup);
 				this._eventSeries = {};
 				this.cleanGroup();
-				var s = this.group;
+				s = this.getGroup();
 				df.forEachRev(this.series, function(item){ item.cleanGroup(s); });
 			}
 
@@ -91,8 +90,9 @@ var Base = dojox.charting.plot2d.Base;
 					continue;
 				}
 
-				var theme = t.next("circle", [this.opt, run]), s = run.group,
-					points = arr.map(run.data, function(v, i){
+				s = run.group;
+				var theme = t.next("circle", [this.opt, run]),
+					points = arr.map(run.data, function(v){
 						return v ? {
 							x: ht(v.x) + offsets.l,
 							y: dim.height - offsets.b - vt(v.y),
@@ -100,13 +100,20 @@ var Base = dojox.charting.plot2d.Base;
 						} : null;
 					}, this);
 
-				var frontCircles = null, outlineCircles = null, shadowCircles = null;
+				var frontCircles = null, outlineCircles = null, shadowCircles = null, styleFunc = this.opt.styleFunc;
+
+				var getFinalTheme = function(item){
+					if(styleFunc){
+						return t.addMixin(theme, "circle", [item, styleFunc(item)], true);
+					}
+					return t.addMixin(theme, "circle", item, true);
+				};
 
 				// make shadows if needed
 				if(theme.series.shadow){
-					shadowCircles = arr.map(points, function(item){
+					shadowCircles = arr.map(points, function(item, i){
 						if(item !== null){
-							var finalTheme = t.addMixin(theme, "circle", item, true),
+							var finalTheme = getFinalTheme(run.data[i]),
 								shadow = finalTheme.series.shadow;
 							var shape = s.createCircle({
 								cx: item.x + shadow.dx, cy: item.y + shadow.dy, r: item.radius
@@ -125,9 +132,9 @@ var Base = dojox.charting.plot2d.Base;
 
 				// make outlines if needed
 				if(theme.series.outline){
-					outlineCircles = arr.map(points, function(item){
+					outlineCircles = arr.map(points, function(item, i){
 						if(item !== null){
-							var finalTheme = t.addMixin(theme, "circle", item, true),
+							var finalTheme = getFinalTheme(run.data[i]),
 								outline = dc.makeStroke(finalTheme.series.outline);
 							outline.width = 2 * outline.width + theme.series.stroke.width;
 							var shape = s.createCircle({
@@ -146,9 +153,9 @@ var Base = dojox.charting.plot2d.Base;
 				}
 
 				//	run through the data and add the circles.
-				frontCircles = arr.map(points, function(item){
+				frontCircles = arr.map(points, function(item, i){
 					if(item !== null){
-						var finalTheme = t.addMixin(theme, "circle", item, true),
+						var finalTheme = getFinalTheme(run.data[i]),
 							rect = {
 								x: item.x - item.radius,
 								y: item.y - item.radius,
@@ -160,9 +167,13 @@ var Base = dojox.charting.plot2d.Base;
 						var shape = s.createCircle({
 							cx: item.x, cy: item.y, r: item.radius
 						}).setFill(specialFill).setStroke(finalTheme.series.stroke);
+						if(shape.setFilter && finalTheme.series.filter){
+							shape.setFilter(finalTheme.series.filter);
+						}
 						if(this.animate){
 							this._animateBubble(shape, dim.height - offsets.b, item.radius);
 						}
+						this.createLabel(s, run.data[i], rect, finalTheme);
 						return shape;
 					}
 					return null;
@@ -202,7 +213,12 @@ var Base = dojox.charting.plot2d.Base;
 				run.dirty = false;
 			}
 			this.dirty = false;
-			return this;	//	dojox.charting.plot2d.Bubble
+			// chart mirroring starts
+			if(has("dojo-bidi")){
+				this._checkOrientation(this.group, dim, offsets);
+			}
+			// chart mirroring ends
+			return this;	//	dojox/charting/plot2d/Bubble
 		},
 		_animateBubble: function(shape, offset, size){
 			fx.animateTransform(lang.delegate({

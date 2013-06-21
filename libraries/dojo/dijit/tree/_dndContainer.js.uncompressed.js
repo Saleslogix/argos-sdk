@@ -1,41 +1,53 @@
-//>>built
 define("dijit/tree/_dndContainer", [
-	"dojo/aspect",	// aspect.after
+	"dojo/aspect", // aspect.after
 	"dojo/_base/declare", // declare
 	"dojo/dom-class", // domClass.add domClass.remove domClass.replace
-	"dojo/_base/event",	// event.stop
-	"dojo/_base/lang", // lang.getObject lang.mixin lang.hitch
-	"dojo/mouse",	// mouse.enter, mouse.leave
-	"dojo/on"
-], function(aspect, declare, domClass, event, lang, mouse, on){
+	"dojo/_base/lang", // lang.mixin lang.hitch
+	"dojo/on",
+	"dojo/touch"
+], function(aspect, declare, domClass, lang, on, touch){
 
 	// module:
 	//		dijit/tree/_dndContainer
-	// summary:
-	//		This is a base class for `dijit.tree._dndSelector`, and isn't meant to be used directly.
-	//		It's modeled after `dojo.dnd.Container`.
+
+	/*=====
+	 var __Args = {
+	 // summary:
+	 //		A dict of parameters for Tree source configuration.
+	 // isSource: Boolean?
+	 //		Can be used as a DnD source. Defaults to true.
+	 // accept: String[]
+	 //		List of accepted types (text strings) for a target; defaults to
+	 //		["text", "treeNode"]
+	 // copyOnly: Boolean?
+	 //		Copy items, if true, use a state of Ctrl key otherwise,
+	 // dragThreshold: Number
+	 //		The move delay in pixels before detecting a drag; 0 by default
+	 // betweenThreshold: Integer
+	 //		Distance from upper/lower edge of node to allow drop to reorder nodes
+	 };
+	 =====*/
 
 	return declare("dijit.tree._dndContainer", null, {
 
 		// summary:
-		//		This is a base class for `dijit.tree._dndSelector`, and isn't meant to be used directly.
-		//		It's modeled after `dojo.dnd.Container`.
+		//		This is a base class for `dijit/tree/_dndSelector`, and isn't meant to be used directly.
+		//		It's modeled after `dojo/dnd/Container`.
 		// tags:
 		//		protected
 
 		/*=====
-		// current: DomNode
-		//		The currently hovered TreeNode.rowNode (which is the DOM node
-		//		associated w/a given node in the tree, excluding it's descendants)
-		current: null,
-		=====*/
+		 // current: TreeNode
+		 //		The currently hovered TreeNode.  Not set to anything for keyboard operation.  (TODO: change?)
+		 current: null,
+		 =====*/
 
 		constructor: function(tree, params){
 			// summary:
 			//		A constructor of the Container
 			// tree: Node
 			//		Node or node's id to build the container on
-			// params: dijit.tree.__SourceArgs
+			// params: __Args
 			//		A dict of parameters, which gets mixed into the object
 			// tags:
 			//		private
@@ -43,26 +55,24 @@ define("dijit/tree/_dndContainer", [
 			this.node = tree.domNode;	// TODO: rename; it's not a TreeNode but the whole Tree
 			lang.mixin(this, params);
 
-			// class-specific variables
-			this.current = null;	// current TreeNode's DOM node
-
 			// states
 			this.containerState = "";
 			domClass.add(this.node, "dojoDndContainer");
 
 			// set up events
 			this.events = [
-				// container level events
-				on(this.node, mouse.enter, lang.hitch(this, "onOverEvent")),
-				on(this.node, mouse.leave,	lang.hitch(this, "onOutEvent")),
+				// Mouse (or touch) enter/leave on Tree itself
+				on(this.node, touch.enter, lang.hitch(this, "onOverEvent")),
+				on(this.node, touch.leave, lang.hitch(this, "onOutEvent")),
 
 				// switching between TreeNodes
 				aspect.after(this.tree, "_onNodeMouseEnter", lang.hitch(this, "onMouseOver"), true),
 				aspect.after(this.tree, "_onNodeMouseLeave", lang.hitch(this, "onMouseOut"), true),
 
 				// cancel text selection and text dragging
-				on(this.node, "dragstart", lang.hitch(event, "stop")),
-				on(this.node, "selectstart", lang.hitch(event, "stop"))
+				on(this.node, "dragstart, selectstart", function(evt){
+					evt.preventDefault();
+				})
 			];
 		},
 
@@ -71,7 +81,9 @@ define("dijit/tree/_dndContainer", [
 			//		Prepares this object to be garbage-collected
 
 			var h;
-			while(h = this.events.pop()){ h.remove(); }
+			while(h = this.events.pop()){
+				h.remove();
+			}
 
 			// this.clearItems();
 			this.node = this.parent = null;

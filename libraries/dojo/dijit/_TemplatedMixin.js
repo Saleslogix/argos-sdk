@@ -1,140 +1,86 @@
 //>>built
-define("dijit/_TemplatedMixin",["dojo/_base/lang","dojo/touch","./_WidgetBase","dojo/string","dojo/cache","dojo/_base/array","dojo/_base/declare","dojo/dom-construct","dojo/_base/sniff","dojo/_base/unload","dojo/_base/window"],function(_1,_2,_3,_4,_5,_6,_7,_8,_9,_a,_b){
-var _c=_7("dijit._TemplatedMixin",null,{templateString:null,templatePath:null,_skipNodeCache:false,_earlyTemplatedStartup:false,constructor:function(){
-this._attachPoints=[];
-this._attachEvents=[];
-},_stringRepl:function(_d){
-var _e=this.declaredClass,_f=this;
-return _4.substitute(_d,this,function(_10,key){
-if(key.charAt(0)=="!"){
-_10=_1.getObject(key.substr(1),false,_f);
+define("dijit/_TemplatedMixin",["dojo/cache","dojo/_base/declare","dojo/dom-construct","dojo/_base/lang","dojo/on","dojo/sniff","dojo/string","./_AttachMixin"],function(_1,_2,_3,_4,on,_5,_6,_7){
+var _8=_2("dijit._TemplatedMixin",_7,{templateString:null,templatePath:null,_skipNodeCache:false,searchContainerNode:true,_stringRepl:function(_9){
+var _a=this.declaredClass,_b=this;
+return _6.substitute(_9,this,function(_c,_d){
+if(_d.charAt(0)=="!"){
+_c=_4.getObject(_d.substr(1),false,_b);
 }
-if(typeof _10=="undefined"){
-throw new Error(_e+" template:"+key);
+if(typeof _c=="undefined"){
+throw new Error(_a+" template:"+_d);
 }
-if(_10==null){
+if(_c==null){
 return "";
 }
-return key.charAt(0)=="!"?_10:_10.toString().replace(/"/g,"&quot;");
+return _d.charAt(0)=="!"?_c:_c.toString().replace(/"/g,"&quot;");
 },this);
 },buildRendering:function(){
+if(!this._rendered){
 if(!this.templateString){
-this.templateString=_5(this.templatePath,{sanitize:true});
+this.templateString=_1(this.templatePath,{sanitize:true});
 }
-var _11=_c.getCachedTemplate(this.templateString,this._skipNodeCache);
-var _12;
-if(_1.isString(_11)){
-_12=_8.toDom(this._stringRepl(_11));
-if(_12.nodeType!=1){
-throw new Error("Invalid template: "+_11);
+var _e=_8.getCachedTemplate(this.templateString,this._skipNodeCache,this.ownerDocument);
+var _f;
+if(_4.isString(_e)){
+_f=_3.toDom(this._stringRepl(_e),this.ownerDocument);
+if(_f.nodeType!=1){
+throw new Error("Invalid template: "+_e);
 }
 }else{
-_12=_11.cloneNode(true);
+_f=_e.cloneNode(true);
 }
-this.domNode=_12;
+this.domNode=_f;
+}
 this.inherited(arguments);
-this._attachTemplateNodes(_12,function(n,p){
-return n.getAttribute(p);
-});
-this._beforeFillContent();
+if(!this._rendered){
 this._fillContent(this.srcNodeRef);
-},_beforeFillContent:function(){
-},_fillContent:function(_13){
-var _14=this.containerNode;
-if(_13&&_14){
-while(_13.hasChildNodes()){
-_14.appendChild(_13.firstChild);
+}
+this._rendered=true;
+},_fillContent:function(_10){
+var _11=this.containerNode;
+if(_10&&_11){
+while(_10.hasChildNodes()){
+_11.appendChild(_10.firstChild);
 }
 }
-},_attachTemplateNodes:function(_15,_16){
-var _17=_1.isArray(_15)?_15:(_15.all||_15.getElementsByTagName("*"));
-var x=_1.isArray(_15)?0:-1;
-for(;x<_17.length;x++){
-var _18=(x==-1)?_15:_17[x];
-if(this.widgetsInTemplate&&(_16(_18,"dojoType")||_16(_18,"data-dojo-type"))){
-continue;
-}
-var _19=_16(_18,"dojoAttachPoint")||_16(_18,"data-dojo-attach-point");
-if(_19){
-var _1a,_1b=_19.split(/\s*,\s*/);
-while((_1a=_1b.shift())){
-if(_1.isArray(this[_1a])){
-this[_1a].push(_18);
-}else{
-this[_1a]=_18;
-}
-this._attachPoints.push(_1a);
-}
-}
-var _1c=_16(_18,"dojoAttachEvent")||_16(_18,"data-dojo-attach-event");
-if(_1c){
-var _1d,_1e=_1c.split(/\s*,\s*/);
-var _1f=_1.trim;
-while((_1d=_1e.shift())){
-if(_1d){
-var _20=null;
-if(_1d.indexOf(":")!=-1){
-var _21=_1d.split(":");
-_1d=_1f(_21[0]);
-_20=_1f(_21[1]);
-}else{
-_1d=_1f(_1d);
-}
-if(!_20){
-_20=_1d;
-}
-this._attachEvents.push(this.connect(_18,_2[_1d]||_1d,_20));
-}
-}
-}
-}
-},destroyRendering:function(){
-_6.forEach(this._attachPoints,function(_22){
-delete this[_22];
-},this);
-this._attachPoints=[];
-_6.forEach(this._attachEvents,this.disconnect,this);
-this._attachEvents=[];
-this.inherited(arguments);
 }});
-_c._templateCache={};
-_c.getCachedTemplate=function(_23,_24){
-var _25=_c._templateCache;
-var key=_23;
-var _26=_25[key];
-if(_26){
+_8._templateCache={};
+_8.getCachedTemplate=function(_12,_13,doc){
+var _14=_8._templateCache;
+var key=_12;
+var _15=_14[key];
+if(_15){
 try{
-if(!_26.ownerDocument||_26.ownerDocument==_b.doc){
-return _26;
+if(!_15.ownerDocument||_15.ownerDocument==(doc||document)){
+return _15;
 }
 }
 catch(e){
 }
-_8.destroy(_26);
+_3.destroy(_15);
 }
-_23=_4.trim(_23);
-if(_24||_23.match(/\$\{([^\}]+)\}/g)){
-return (_25[key]=_23);
+_12=_6.trim(_12);
+if(_13||_12.match(/\$\{([^\}]+)\}/g)){
+return (_14[key]=_12);
 }else{
-var _27=_8.toDom(_23);
-if(_27.nodeType!=1){
-throw new Error("Invalid template: "+_23);
+var _16=_3.toDom(_12,doc);
+if(_16.nodeType!=1){
+throw new Error("Invalid template: "+_12);
 }
-return (_25[key]=_27);
+return (_14[key]=_16);
 }
 };
-if(_9("ie")){
-_a.addOnWindowUnload(function(){
-var _28=_c._templateCache;
-for(var key in _28){
-var _29=_28[key];
-if(typeof _29=="object"){
-_8.destroy(_29);
+if(_5("ie")){
+on(window,"unload",function(){
+var _17=_8._templateCache;
+for(var key in _17){
+var _18=_17[key];
+if(typeof _18=="object"){
+_3.destroy(_18);
 }
-delete _28[key];
+delete _17[key];
 }
 });
 }
-_1.extend(_3,{dojoAttachEvent:"",dojoAttachPoint:""});
-return _c;
+return _8;
 });

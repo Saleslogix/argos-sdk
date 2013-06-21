@@ -1,19 +1,13 @@
-//>>built
-define("dojox/charting/plot2d/Columns", ["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "./Base", "./common", 
+define("dojox/charting/plot2d/Columns", ["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/has", "./CartesianBase", "./_PlotEvents", "./common",
 		"dojox/lang/functional", "dojox/lang/functional/reversed", "dojox/lang/utils", "dojox/gfx/fx"], 
-	function(lang, arr, declare, Base, dc, df, dfr, du, fx){
+	function(lang, arr, declare, has, CartesianBase, _PlotEvents, dc, df, dfr, du, fx){
 
 	var purgeGroup = dfr.lambda("item.purgeGroup()");
-/*=====
-var Base = dojox.charting.plot2d.Base;
-=====*/
 
-	return declare("dojox.charting.plot2d.Columns", Base, {
-		//	summary:
+	return declare("dojox.charting.plot2d.Columns", [CartesianBase, _PlotEvents], {
+		// summary:
 		//		The plot object representing a column chart (vertical bars).
 		defaultParams: {
-			hAxis: "x",		// use a horizontal axis named "x"
-			vAxis: "y",		// use a vertical axis named "y"
 			gap:	0,		// gap between columns in pixels
 			animate: null,  // animate bars into place
 			enableCache: false
@@ -26,35 +20,34 @@ var Base = dojox.charting.plot2d.Base;
 			outline:	{},
 			shadow:		{},
 			fill:		{},
+			filter:     {},
+			styleFunc:  null,
 			font:		"",
 			fontColor:	""
 		},
 
 		constructor: function(chart, kwArgs){
-			//	summary:
+			// summary:
 			//		The constructor for a columns chart.
-			//	chart: dojox.charting.Chart
+			// chart: dojox/charting/Chart
 			//		The chart this plot belongs to.
-			//	kwArgs: dojox.charting.plot2d.__BarCtorArgs?
+			// kwArgs: dojox.charting.plot2d.__BarCtorArgs?
 			//		An optional keyword arguments object to help define the plot.
-			this.opt = lang.clone(this.defaultParams);
+			this.opt = lang.clone(lang.mixin(this.opt, this.defaultParams));
 			du.updateWithObject(this.opt, kwArgs);
 			du.updateWithPattern(this.opt, kwArgs, this.optionalParams);
-			this.series = [];
-			this.hAxis = this.opt.hAxis;
-			this.vAxis = this.opt.vAxis;
 			this.animate = this.opt.animate;
 		},
 
 		getSeriesStats: function(){
-			//	summary:
+			// summary:
 			//		Calculate the min/max on all attached series in both directions.
-			//	returns: Object
+			// returns: Object
 			//		{hmin, hmax, vmin, vmax} min/max in both directions.
 			var stats = dc.collectSimpleStats(this.series);
 			stats.hmin -= 0.5;
 			stats.hmax += 0.5;
-			return stats;
+			return stats; // Object
 		},
 		
 		createRect: function(run, creator, params){
@@ -74,37 +67,35 @@ var Base = dojox.charting.plot2d.Base;
 		},
 
 		render: function(dim, offsets){
-			//	summary:
+			// summary:
 			//		Run the calculations for any axes for this plot.
-			//	dim: Object
+			// dim: Object
 			//		An object in the form of { width, height }
-			//	offsets: Object
+			// offsets: Object
 			//		An object of the form { l, r, t, b}.
-			//	returns: dojox.charting.plot2d.Columns
+			// returns: dojox/charting/plot2d/Columns
 			//		A reference to this plot for functional chaining.
 			if(this.zoom && !this.isDataDirty()){
 				return this.performZoom(dim, offsets);
 			}
-			var t = this.getSeriesStats();
 			this.resetEvents();
 			this.dirty = this.isDirty();
+			var s;
 			if(this.dirty){
 				arr.forEach(this.series, purgeGroup);
 				this._eventSeries = {};
 				this.cleanGroup();
-				var s = this.group;
+				s = this.getGroup();
 				df.forEachRev(this.series, function(item){ item.cleanGroup(s); });
 			}
-			var t = this.chart.theme, f, gap, width,
+			var t = this.chart.theme,
 				ht = this._hScaler.scaler.getTransformerFromModel(this._hScaler),
 				vt = this._vScaler.scaler.getTransformerFromModel(this._vScaler),
 				baseline = Math.max(0, this._vScaler.bounds.lower),
 				baselineHeight = vt(baseline),
-				min = Math.max(0, Math.floor(this._hScaler.bounds.from - 1)), max = Math.ceil(this._hScaler.bounds.to),
 				events = this.events();
-			f = dc.calculateBarSize(this._hScaler.bounds.scale, this.opt);
-			gap = f.gap;
-			width = f.size;
+			var bar = this.getBarProperties();
+			
 			for(var i = this.series.length - 1; i >= 0; --i){
 				var run = this.series[i];
 				if(!this.dirty && !run.dirty){
@@ -117,28 +108,58 @@ var Base = dojox.charting.plot2d.Base;
 					run._rectFreePool = (run._rectFreePool?run._rectFreePool:[]).concat(run._rectUsePool?run._rectUsePool:[]);
 					run._rectUsePool = [];
 				}
-				var theme = t.next("column", [this.opt, run]), s = run.group,
+				var theme = t.next("column", [this.opt, run]),
 					eventSeries = new Array(run.data.length);
-				var l = Math.min(run.data.length, max);
-				for(var j = min; j < l; ++j){
+				s = run.group;
+				var indexed = arr.some(run.data, function(item){
+					return typeof item == "number" || (item && !item.hasOwnProperty("x"));
+				});
+				// on indexed charts we can easily just interate from the first visible to the last visible
+				// data point to save time
+				var min = indexed?Math.max(0, Math.floor(this._hScaler.bounds.from - 1)):0;
+				var max = indexed?Math.min(run.data.length, Math.ceil(this._hScaler.bounds.to)):run.data.length;
+				for(var j = min; j < max; ++j){
 					var value = run.data[j];
-					if(value !== null){
-						var v = typeof value == "number" ? value : value.y,
-							vv = vt(v),
-							height = vv - baselineHeight,
-							h = Math.abs(height),
-							finalTheme = typeof value != "number" ?
-								t.addMixin(theme, "column", value, true) :
-								t.post(theme, "column");
-						if(width >= 1 && h >= 0){
+					if(value != null){
+						var val = this.getValue(value, j, i, indexed),
+							vv = vt(val.y),
+							h = Math.abs(vv - baselineHeight), 
+							finalTheme,
+							sshape;
+						
+						if(this.opt.styleFunc || typeof value != "number"){
+							var tMixin = typeof value != "number" ? [value] : [];
+							if(this.opt.styleFunc){
+								tMixin.push(this.opt.styleFunc(value));
+							}
+							finalTheme = t.addMixin(theme, "column", tMixin, true);
+						}else{
+							finalTheme = t.post(theme, "column");
+						}
+						
+						if(bar.width >= 1 && h >= 0){
 							var rect = {
-								x: offsets.l + ht(j + 0.5) + gap,
-								y: dim.height - offsets.b - (v > baseline ? vv : baselineHeight),
-								width: width, height: h
+								x: offsets.l + ht(val.x + 0.5) + bar.gap + bar.thickness * i,
+								y: dim.height - offsets.b - (val.y > baseline ? vv : baselineHeight),
+								width: bar.width, 
+								height: h
 							};
+							if(finalTheme.series.shadow){
+								var srect = lang.clone(rect);
+								srect.x += finalTheme.series.shadow.dx;
+								srect.y += finalTheme.series.shadow.dy;
+								sshape = this.createRect(run, s, srect).setFill(finalTheme.series.shadow.color).setStroke(finalTheme.series.shadow);
+								if(this.animate){
+									this._animateColumn(sshape, dim.height - offsets.b + baselineHeight, h);
+								}
+							}
+							
 							var specialFill = this._plotFill(finalTheme.series.fill, dim, offsets);
 							specialFill = this._shapeFill(specialFill, rect);
 							var shape = this.createRect(run, s, rect).setFill(specialFill).setStroke(finalTheme.series.stroke);
+							if(shape.setFilter && finalTheme.series.filter){
+								shape.setFilter(finalTheme.series.filter);
+							}
 							run.dyn.fill   = shape.getFill();
 							run.dyn.stroke = shape.getStroke();
 							if(events){
@@ -147,12 +168,21 @@ var Base = dojox.charting.plot2d.Base;
 									index:   j,
 									run:     run,
 									shape:   shape,
-									x:       j + 0.5,
-									y:       v
+									shadow:  sshape,
+									cx:      val.x + 0.5,
+									cy:      val.y,
+									x:	     indexed?j:run.data[j].x,
+									y:	 	 indexed?run.data[j]:run.data[j].y
 								};
 								this._connectEvents(o);
 								eventSeries[j] = o;
 							}
+							// if val.py is here, this means we are stacking and we need to subtract previous
+							// value to get the high in which we will lay out the label
+							if(!isNaN(val.py) && val.py > baseline){
+								rect.height = vv - vt(val.py);
+							}
+							this.createLabel(s, value, rect, finalTheme);
 							if(this.animate){
 								this._animateColumn(shape, dim.height - offsets.b - baselineHeight, h);
 							}
@@ -163,9 +193,36 @@ var Base = dojox.charting.plot2d.Base;
 				run.dirty = false;
 			}
 			this.dirty = false;
-			return this;	//	dojox.charting.plot2d.Columns
+			// chart mirroring starts
+			if(has("dojo-bidi")){
+				this._checkOrientation(this.group, dim, offsets);
+			}
+			// chart mirroring ends
+			return this;	//	dojox/charting/plot2d/Columns
+		},
+		getValue: function(value, j, seriesIndex, indexed){
+			var y,x;
+			if(indexed){
+				if(typeof value == "number"){
+					y = value;
+				}else{
+					y = value.y;
+				}
+				x = j;
+			}else{
+				y = value.y;
+				x = value.x - 1;
+			}
+			return { x: x, y: y };
+		},
+		getBarProperties: function(){
+			var f = dc.calculateBarSize(this._hScaler.bounds.scale, this.opt);
+			return {gap: f.gap, width: f.size, thickness: 0};
 		},
 		_animateColumn: function(shape, voffset, vsize){
+			if(vsize==0){
+				vsize = 1;
+			}
 			fx.animateTransform(lang.delegate({
 				shape: shape,
 				duration: 1200,
@@ -176,5 +233,6 @@ var Base = dojox.charting.plot2d.Base;
 				]
 			}, this.animate)).play();
 		}
+		
 	});
 });
