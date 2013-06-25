@@ -29,7 +29,7 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
     FieldManager
 ) {
     /**
-     * @class Sage.Platform.Mobile.DurationField
+     * @class Sage.Platform.Mobile.Fields.DurationField
      * The Duration field is a mashup of an auto-complete box and a {@link LookupField LookupField} for handling
      * duration's of: minutes, hours, days, weeks or years. Meaning a user can type directly into the input area the
      * amount of time or press the lookup button and choose from pre-determined list of times.

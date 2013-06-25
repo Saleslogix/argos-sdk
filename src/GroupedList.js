@@ -159,6 +159,7 @@ define('Sage/Platform/Mobile/GroupedList', [
         /**
          * Overwrites the parent {@link List#processFeed processFeed} to introduce grouping by group tags, see {@link #getGroupForEntry getGroupForEntry}.
          * @param {Object} feed The SData feed result
+         * @deprecated Use processData instead
          */
         processFeed: function(feed) {
             var i, entry, entryGroup, rowNode, remaining, getGroupsNode;
@@ -197,6 +198,29 @@ define('Sage/Platform/Mobile/GroupedList', [
             }
 
             domClass.toggle(this.domNode, 'list-has-more', this.hasMoreData());
+        },
+        processData: function(items) {
+            var i, item, count = items.length, store = this.get('store'), entryGroup, rowNode, getGroupsNode;
+            getGroupsNode = Utility.memoize(lang.hitch(this, this.getGroupsNode), function(entryGroup) {
+                return entryGroup.tag;
+            });
+
+            if (count > 0) {
+                for (i = 0; i < count; i++) {
+                    item = this._processItem(items[i]);
+                    this.items[store.getIdentity(item)] = item;
+
+                    entryGroup = this.getGroupForEntry(item);
+
+                    item["$groupTag"] = entryGroup.tag;
+                    item["$groupTitle"] = entryGroup.title;
+
+                    rowNode = domConstruct.toDom(this.rowTemplate.apply(item, this));
+                    this.onApplyRowTemplate(item, rowNode);
+
+                    domConstruct.place(rowNode, getGroupsNode(entryGroup), 'last');
+                }
+            }
         },
         getGroupsNode: function(entryGroup) {
             var results = query('[data-group="' + entryGroup.tag + '"]', this.contentNode);

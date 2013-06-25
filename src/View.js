@@ -87,6 +87,7 @@ define('Sage/Platform/Mobile/View', [
          * @property {String/Boolean}
          */
         serviceName: false,
+        connectionName: false,
         /**
          * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
          * the fully customized toolbar layout.
@@ -277,6 +278,9 @@ define('Sage/Platform/Mobile/View', [
          */
         getService: function() {
             return App.getService(this.serviceName); /* if false is passed, the default service will be returned */
+        },
+        getConnection: function() {
+            return this.getService();
         },
         getTag: function() {
         },

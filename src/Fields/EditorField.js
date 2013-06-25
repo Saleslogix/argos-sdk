@@ -148,7 +148,6 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
          */
         disable: function() {
             this.inherited(arguments);
-            
             this._disableTextElement();
         },
         /**
@@ -178,6 +177,7 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
                     }]
                 },
                 entry: this.originalValue || this.validationValue,
+                item: this.originalValue || this.validationValue,
                 changes: this.currentValue,
                 entityName: this.entityName || (this.owner && this.owner.entityName),
                 negateHistory: true
@@ -208,7 +208,6 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
          */
         _onClick: function(evt) {
             event.stop(evt);
-            
             this.navigateToEditView();
         },
         /**
@@ -227,11 +226,11 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
                     this.currentValue = view.getValues(true);
                 } else {
                     // Gets an entry with fields that are dirty
-                    this.currentValue = view.createEntry();
+                    this.currentValue = view.createItem();
                 }
 
                 // store all editor values for validation, not only dirty values
-                this.validationValue = view.getValues(true); 
+                this.validationValue = view.getValues(true);
             }
         },
         /**
@@ -322,7 +321,7 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
          * @param {Boolean} initial True if the value is the default/clean value, false if it is a meant as a dirty value
          */
         setValue: function(val, initial)
-        {            
+        {
             if (val)
             {
                 this.validationValue = this.currentValue = val;
