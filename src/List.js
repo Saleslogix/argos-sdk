@@ -656,9 +656,14 @@ define('Sage/Platform/Mobile/List', [
         actions: null,
 
         /**
-         * If true, will remove the loading button and auto fetch more data when the user scrolls to the bottom of the page.
+         * @property {Boolean} If true, will remove the loading button and auto fetch more data when the user scrolls to the bottom of the page.
          */
         continuousScrolling: true,
+
+        /**
+         * @property {Boolean} Indicates if the list is loading
+         */
+        listLoading: false,
 
         /**
          * Setter method for the selection model, also binds the various selection model select events
@@ -1011,7 +1016,7 @@ define('Sage/Platform/Mobile/List', [
             selected = domAttr.get(this.domNode, 'selected');
 
             if (remaining === height) {
-                if (selected === 'true' && this.hasMoreData()) {
+                if (selected === 'true' && this.hasMoreData() && !this.listLoading) {
                     this.more();
                 }
             }
@@ -1123,7 +1128,7 @@ define('Sage/Platform/Mobile/List', [
          * search widget by passing in the current view context.
          */
         configureSearch: function() {
-            this.query = this.options && this.options.query || null;
+            this.query = this.options && this.options.query || this.query || null;
             if (this.searchWidget)
                 this.searchWidget.configure({
                     'context': this.getContext()
@@ -1345,6 +1350,7 @@ define('Sage/Platform/Mobile/List', [
             alert(string.substitute(this.requestErrorText, [response, o]));
             ErrorManager.addError(response, o, this.options, 'failure');
             domClass.remove(this.domNode, 'list-loading');
+            this.listLoading = false;
         },
         /**
          * Handler when an a request is aborted from an SData endpoint.
@@ -1359,6 +1365,7 @@ define('Sage/Platform/Mobile/List', [
             ErrorManager.addError(response, o, this.options, 'aborted');
 
             domClass.remove(this.domNode, 'list-loading');
+            this.listLoading = false;
         },
         /**
          * Handler when a request to SData is successful
@@ -1368,12 +1375,14 @@ define('Sage/Platform/Mobile/List', [
             this.processFeed(feed);
 
             domClass.remove(this.domNode, 'list-loading');
+            this.listLoading = false;
         },
         /**
          * Initiates the SData request.
          */
         requestData: function() {
             domClass.add(this.domNode, 'list-loading');
+            this.listLoading = true;
 
             var request = this.createRequest();
             request.read({

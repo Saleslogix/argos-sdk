@@ -51,7 +51,7 @@ define('Sage/Platform/Mobile/GroupedList', [
          * Simplate that defines the HTML Markup. This override adds the needed styling.
          */
         widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '<div data-dojo-attach-point="searchNode"></div>',
             '<a href="#" class="android-6059-fix">fix for android issue #6059</a>',
             '{%! $.emptySelectionTemplate %}',
@@ -69,6 +69,30 @@ define('Sage/Platform/Mobile/GroupedList', [
             '{%: $.title %}<button class="collapsed-indicator" aria-label="{%: $$.toggleCollapseText %}"></button>',
             '</h2>',
             '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>'
+        ]),
+
+        /**
+         * @property {Simplate}
+         * The template used to render the pager at the bottom of the view.  This template is not directly rendered, but is
+         * included in {@link #viewTemplate}.
+         *
+         * The default template uses the following properties:
+         *
+         *      name                description
+         *      ----------------------------------------------------------------
+         *      moreText            The text to display on the more button.
+         *
+         * The default template exposes the following actions:
+         *
+         * * more
+         */
+        moreTemplate: new Simplate([
+            '<div class="list-more" data-dojo-attach-point="moreNode">',
+            '<div class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></div>',
+            '<button class="button" data-action="more">',
+            '<span>{%= $.moreText %}</span>',
+            '</button>',
+            '</div>'
         ]),
         /**
          * @property {Object}

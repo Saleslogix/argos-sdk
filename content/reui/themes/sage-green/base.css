@@ -273,14 +273,10 @@ input:not([type|=radio]):not([type|=checkbox]) {
     font-size: 1.25em;
     font-weight: bold;
     list-style: none;
-    margin: 0;
+    margin: 8px 6px 8px 6px;
     padding: 8px 0px 8px 10px;
     position: relative;
-    border-bottom: solid 1px #ddd;
-}
-.list-content > li:last-child
-{
-    border-bottom: none;
+    border-radius: 6px;
 }
 
 .list-content > li

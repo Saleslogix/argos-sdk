@@ -156,7 +156,7 @@ define('Sage/Platform/Mobile/Application', [
          * All options are mixed into App itself
          * @param {Object} options
          */
-         constructor: function(options) {
+        constructor: function(options) {
             this._connects = [];
             this._subscribes = [];
             
@@ -754,8 +754,10 @@ define('Sage/Platform/Mobile/Application', [
 
             snapper = new snap({
                 element: document.getElementById('viewContainer'),
+                dragger: null,
                 disable: 'right', // use 'none' to do both
                 addBodyClasses: true,
+                hyperextensible: false,
                 resistance: 0.1,
                 flickThreshold: 50,
                 transitionSpeed: 0.2,

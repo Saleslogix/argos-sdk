@@ -20,9 +20,11 @@
  * @singleton
  */
 define('Sage/Platform/Mobile/Utility', [
-    'dojo/_base/lang'
+    'dojo/_base/lang',
+    'dojo/_base/array'
 ], function(
-    lang
+    lang,
+    array
 ) {
     var nameToPathCache = {};
     var nameToPath = function(name) {
@@ -92,6 +94,18 @@ define('Sage/Platform/Mobile/Utility', [
         roundNumberTo: function(number, precision) {
             var k = Math.pow(10, precision);
             return (Math.round(number * k) / k);
+        },
+        /**
+         * @function
+         * Utility function to join fields within a Simplate template.
+         */
+        joinFields: function(seperator, fields) {
+            var results;
+            results = array.filter(fields, function(item) {
+                return item !== null && typeof item !== 'undefined' && item !== '';
+            });
+
+            return results.join(seperator);
         }
     });
 });
