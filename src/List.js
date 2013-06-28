@@ -300,12 +300,22 @@ define('Sage/Platform/Mobile/List', [
          */
         widgetTemplate: new Simplate([
             '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
-            '<div data-dojo-attach-point="searchNode"></div>',
+            '{%! $.listHeaderTemplate %}',
             '<a href="#" class="android-6059-fix">fix for android issue #6059</a>',                
             '{%! $.emptySelectionTemplate %}',
             '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
             '{%! $.moreTemplate %}',
             '{%! $.listActionTemplate %}',
+            '</div>'
+        ]),
+        /**
+         * @property {Simplate}
+         * The template used to render the list views header menu.
+         *
+         */
+        listHeaderTemplate: new Simplate([
+            '<div class="list-header list-header-hidden" data-dojo-attach-point="listHeader">',
+                '<div data-dojo-attach-point="searchNode"></div>',
             '</div>'
         ]),
         /**
@@ -766,11 +776,18 @@ define('Sage/Platform/Mobile/List', [
         createToolLayout: function() {
             return this.tools || (this.tools = {
                 'tbar': [{
-                    id: 'new',
-                    action: 'navigateToInsertView',
-                    security: App.getViewSecurity(this.insertView, 'insert')
-                }]
+                        id: 'new',
+                        action: 'navigateToInsertView',
+                        security: App.getViewSecurity(this.insertView, 'insert')
+                    }, {
+                        id: 'toggleListHeaderMenu',
+                        action: 'toggleListHeaderMenu'
+                    }
+                ]
             });
+        },
+        toggleListHeaderMenu: function() {
+            domClass.toggle(this.listHeader, 'list-header-hidden');
         },
         /**
          * Sets and returns the list-action actions layout definition, this method should be overriden in the view
