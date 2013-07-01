@@ -331,6 +331,11 @@ define('Sage/Platform/Mobile/List', [
         loadingTemplate: new Simplate([
             '<li class="list-loading-indicator"><div>{%= $.loadingText %}</div></li>'
         ]),
+        hashTagFavoriteTemplate: new Simplate([
+            '<button class="button" data-action="hashTagFavoriteClick" data-key="{%= $.key %}">',
+                '{%= $.text %}',
+            '</button>'
+        ]),
         /**
          * @property {Simplate}
          * The template used to render the pager at the bottom of the view.  This template is not directly rendered, but is
@@ -744,6 +749,7 @@ define('Sage/Platform/Mobile/List', [
          */
         startup: function() {
             this.inherited(arguments);
+            var hashTag, node, text;
 
             if (this.searchWidget)
                 this.searchWidget.configure({
@@ -751,22 +757,34 @@ define('Sage/Platform/Mobile/List', [
                     'formatSearchQuery': lang.hitch(this, this.formatSearchQuery)
                 });
 
+                if (this.hashTagQueries) {
+                    for (hashTag in this.hashTagQueries) {
+                        if (this.hashTagQueries.hasOwnProperty(hashTag)) {
+                            text = this.hashTagQueriesText[hashTag] || hashTag;
+                            node = domConstruct.toDom(this.hashTagFavoriteTemplate.apply({text: text, key: hashTag }));
+                            domConstruct.place(node, this.listHeader, 'last');
+                        }
+                    }
+
+                    console.log(this.id);
+                    console.dir(this.hashTagQueries);
+                }
             this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
         },
         /**
          * Extends dijit Widget to destroy the search widget before destroying the view.
          */
         destroy: function() {
-			if (this.searchWidget)
-            {
-				if(!this.searchWidget._destroyed)
+            if (this.searchWidget) {
+                if(!this.searchWidget._destroyed) {
                     this.searchWidget.destroyRecursive();
+                }
 
-				delete this.searchWidget;
-			}
+                delete this.searchWidget;
+            }
             
-			this.inherited(arguments);
-		},
+            this.inherited(arguments);
+        },
         /**
          * Sets and returns the toolbar item layout definition, this method should be overriden in the view
          * so that you may define the views toolbar items.
@@ -1409,6 +1427,12 @@ define('Sage/Platform/Mobile/List', [
                 scope: this
             });
         },
+        hashTagFavoriteClick: function(params) {
+            if (params.key && this.hashTagQueries[params.key]) {
+                this.setSearchTerm('#' + params.key); 
+                this.search();
+            }
+        },
         /**
          * Handler for the more button. Simply calls {@link #requestData requestData} which already has the info for
          * setting the start index as needed.
@@ -1570,6 +1594,7 @@ define('Sage/Platform/Mobile/List', [
         },
         setSearchTerm: function(value) {
             if (this.searchWidget) {
+                this.searchWidget.queryNode.focus();
                 this.searchWidget.set('queryValue', value);
             }
         }
