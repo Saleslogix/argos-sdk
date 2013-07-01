@@ -405,7 +405,7 @@ textarea:focus
 {
     overflow-x: auto;
     overflow-y: hidden;
-    padding-bottom: 4px;
+    padding-bottom: 8px;
 }
 
 .list-hash-tags > div
@@ -414,9 +414,11 @@ textarea:focus
     background-image: none;
     background-color: #fff;
     margin: 8px 3px 0px 3px; 
-    padding: 4px 3px 4px 3px; 
+    padding: 0px 6px 2px 6px; 
     border-radius: 6px;
     white-space: nowrap;
+    border: none;
+    font-size: 1.25em;
 }
 
 .button:active

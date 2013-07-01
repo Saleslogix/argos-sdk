@@ -1428,7 +1428,7 @@ define('Sage/Platform/Mobile/List', [
         },
         hashTagFavoriteClick: function(params) {
             if (params.key) {
-                this.appendSearchTerm('#' + params.key); 
+                this.setSearchTerm('#' + params.key); 
                 this.search();
             }
         },
