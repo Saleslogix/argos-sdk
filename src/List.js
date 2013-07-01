@@ -1593,14 +1593,12 @@ define('Sage/Platform/Mobile/List', [
         },
         appendSearchTerm: function(value) {
             if (this.searchWidget) {
-                this.searchWidget.queryNode.focus();
                 var existing = this.searchWidget.get('queryValue');
                 this.setSearchTerm(existing + ' ' + value);
             }
         },
         setSearchTerm: function(value) {
             if (this.searchWidget) {
-                this.searchWidget.queryNode.focus();
                 this.searchWidget.set('queryValue', value);
             }
         }
