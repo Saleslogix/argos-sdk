@@ -316,6 +316,8 @@ define('Sage/Platform/Mobile/List', [
         listHeaderTemplate: new Simplate([
             '<div class="list-header list-header-hidden" data-dojo-attach-point="listHeader">',
                 '<div data-dojo-attach-point="searchNode"></div>',
+                '<div class="list-hash-tags" data-dojo-attach-point="hashTagsNode">',
+                '</div>',
             '</div>'
         ]),
         /**
@@ -332,9 +334,9 @@ define('Sage/Platform/Mobile/List', [
             '<li class="list-loading-indicator"><div>{%= $.loadingText %}</div></li>'
         ]),
         hashTagFavoriteTemplate: new Simplate([
-            '<button class="button" data-action="hashTagFavoriteClick" data-key="{%= $.key %}">',
+            '<div class="button" data-action="hashTagFavoriteClick" data-key="{%= $.key %}">',
                 '{%= $.text %}',
-            '</button>'
+            '</div>'
         ]),
         /**
          * @property {Simplate}
@@ -762,7 +764,7 @@ define('Sage/Platform/Mobile/List', [
                         if (this.hashTagQueries.hasOwnProperty(hashTag)) {
                             text = this.hashTagQueriesText[hashTag] || hashTag;
                             node = domConstruct.toDom(this.hashTagFavoriteTemplate.apply({text: text, key: hashTag }));
-                            domConstruct.place(node, this.listHeader, 'last');
+                            domConstruct.place(node, this.hashTagsNode, 'last');
                         }
                     }
 

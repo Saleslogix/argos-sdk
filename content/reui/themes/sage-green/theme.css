@@ -401,16 +401,20 @@ textarea:focus
     margin: 0px 0px 8x 0px;
 }
 
-.list-header > button
+.list-hash-tags
+{
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.list-hash-tags > div
 {
     display: inline;
     background-image: none;
     background-color: #fff;
-    margin: 8px 6px 8px 6px; 
-    padding: 0px 6px 0px 6px; 
+    margin: 8px 3px 0px 3px; 
+    padding: 4px 3px 4px 3px; 
     border-radius: 6px;
-    font-size: 1.25em;
-    min-height: 45px;
 }
 
 .button:active
