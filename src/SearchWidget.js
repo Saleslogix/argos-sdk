@@ -99,7 +99,7 @@ define('Sage/Platform/Mobile/SearchWidget', [
          * @type {RegExp}
          * The regular expression used to determine if a search query is a hash tag search.
          */
-        hashTagSearchRE: /(?:#|;|,|\.)(\w+)/g,
+        hashTagSearchRE: /(?:#|;|,|\.)([\w\-]+)/g,
         /**
          * @property {Object[]}
          * Array of hash tag definitions

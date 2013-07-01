@@ -334,7 +334,7 @@ define('Sage/Platform/Mobile/List', [
             '<li class="list-loading-indicator"><div>{%= $.loadingText %}</div></li>'
         ]),
         hashTagFavoriteTemplate: new Simplate([
-            '<div class="button" data-action="hashTagFavoriteClick" data-key="{%= $.key %}">',
+            '<div class="button" data-action="hashTagFavoriteClick" data-key="{%= $.text %}">',
                 '{%= $.text %}',
             '</div>'
         ]),
@@ -763,13 +763,10 @@ define('Sage/Platform/Mobile/List', [
                     for (hashTag in this.hashTagQueries) {
                         if (this.hashTagQueries.hasOwnProperty(hashTag)) {
                             text = this.hashTagQueriesText[hashTag] || hashTag;
-                            node = domConstruct.toDom(this.hashTagFavoriteTemplate.apply({text: text, key: hashTag }));
+                            node = domConstruct.toDom(this.hashTagFavoriteTemplate.apply({text: text}));
                             domConstruct.place(node, this.hashTagsNode, 'last');
                         }
                     }
-
-                    console.log(this.id);
-                    console.dir(this.hashTagQueries);
                 }
             this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
         },
@@ -1430,8 +1427,8 @@ define('Sage/Platform/Mobile/List', [
             });
         },
         hashTagFavoriteClick: function(params) {
-            if (params.key && this.hashTagQueries[params.key]) {
-                this.setSearchTerm('#' + params.key); 
+            if (params.key) {
+                this.appendSearchTerm('#' + params.key); 
                 this.search();
             }
         },
@@ -1592,6 +1589,13 @@ define('Sage/Platform/Mobile/List', [
         search: function() {
             if (this.searchWidget) {
                 this.searchWidget.search();
+            }
+        },
+        appendSearchTerm: function(value) {
+            if (this.searchWidget) {
+                this.searchWidget.queryNode.focus();
+                var existing = this.searchWidget.get('queryValue');
+                this.setSearchTerm(existing + ' ' + value);
             }
         },
         setSearchTerm: function(value) {

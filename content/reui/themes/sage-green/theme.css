@@ -398,13 +398,14 @@ textarea:focus
 
 .list-search
 {
-    margin: 0px 0px 8x 0px;
+    margin: 0px 0px 4px 0px;
 }
 
 .list-hash-tags
 {
     overflow-x: auto;
     overflow-y: hidden;
+    padding-bottom: 4px;
 }
 
 .list-hash-tags > div
@@ -415,6 +416,7 @@ textarea:focus
     margin: 8px 3px 0px 3px; 
     padding: 4px 3px 4px 3px; 
     border-radius: 6px;
+    white-space: nowrap;
 }
 
 .button:active
