@@ -31,11 +31,14 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/_base/lang',
     'dojo/_base/window',
     'dojo/string',
+    'dojo/router',
+    'dojo/hash',
     'dojo/has',
     'dojo/dom-construct',
     'snap',
     'dojo/sniff',
-    'dojox/mobile/sniff'
+    'dojox/mobile/sniff',
+    'Sage/Platform/Mobile/ReUI/main'
 ], function(
     json,
     array,
@@ -45,11 +48,14 @@ define('Sage/Platform/Mobile/Application', [
     lang,
     win,
     string,
+    router,
+    hash,
     has,
     domConstruct,
     snap,
     sniff,
-    mobileSniff
+    mobileSniff,
+    ReUI
 ) {
 
     has.add('html5-file-api', function(global, document) {
@@ -112,6 +118,11 @@ define('Sage/Platform/Mobile/Application', [
     
     return declare('Sage.Platform.Mobile.Application', null, {
         /**
+         * Instance of a ReUI
+         */
+        ReUI: ReUI,
+
+        /**
          * Instance of a Snap.js object (https://github.com/jakiestfu/Snap.js/)
          */
         snapper: null,
@@ -148,6 +159,10 @@ define('Sage/Platform/Mobile/Application', [
         services: null,
         modules: null,
         views: null,
+        router: router,
+        hash: hash,
+        history: null,
+        _currentPage: null,
         /**
          * Toolbar instances by key name
          * @property {Object}
@@ -160,6 +175,12 @@ define('Sage/Platform/Mobile/Application', [
          */
         defaultService: null,
         resizeTimer: null,
+
+        /**
+         * The hash to redirect to after login.
+         * @property {String}
+         */
+        redirectHash: '',
         /**
         * Signifies the maximum file size that can be uploaded in bytes
          * @property {int}
@@ -173,6 +194,7 @@ define('Sage/Platform/Mobile/Application', [
             this._connects = [];
             this._signals = [];
             this._subscribes = [];
+            this.history = [];
             
             this.customizations = {};
             this.services = {};
@@ -215,9 +237,16 @@ define('Sage/Platform/Mobile/Application', [
         initReUI: function() {
             // prevent ReUI from attempting to load the URLs view as we handle that ourselves.
             // todo: add support for handling the URL?
-            window.location.hash = '';
+            var hash = this.hash();
+            if (hash !== '') {
+                this.redirectHash = hash;
+            }
 
+            window.location.hash = '';
             ReUI.init();
+        },
+        initRoutes: function() {
+            this.router.startup();
         },
         /**
          * If caching is enable and App is {@link #isOnline online} the empties the SData cache via {@link #_clearSDataRequestCache _clearSDataRequestCache}.
@@ -293,6 +322,7 @@ define('Sage/Platform/Mobile/Application', [
             this.initModules();
             this.initToolbars();
             this.initReUI();
+            this.initRoutes();
         },
         /**
          * Sets `_started` to true.
@@ -305,6 +335,13 @@ define('Sage/Platform/Mobile/Application', [
          */
         isOnline: function() {
             return window.navigator.onLine;
+        },
+        /**
+         * Returns true/false if the current view is the first/initial view.
+         * This is useful for disabling the back button (so you don't hit the login page).
+         * @returns {boolean}
+        */
+        isOnFirstView: function() {
         },
         /**
          * Removes all keys from localStorage that start with `sdata.cache`.
@@ -440,6 +477,8 @@ define('Sage/Platform/Mobile/Application', [
          * @param {domNode} domNode Optional. A DOM node to place the view in. 
          */
         registerView: function(view, domNode) {
+
+
             this.views[view.id] = view;
 
             if (!domNode) {
@@ -449,6 +488,17 @@ define('Sage/Platform/Mobile/Application', [
             view._placeAt = domNode || this._rootDomNode;
 
             this.onRegistered(view);
+
+            aspect.before(view, 'show', lang.hitch(view, function() {
+                var view = this;
+                if (view && !view._started) {
+                    view.init();
+                    view.placeAt(view._placeAt, 'first');
+                    view._started = true;
+                    view._placeAt = null;
+                }
+            }));
+
 
             return this;
         },
@@ -485,7 +535,10 @@ define('Sage/Platform/Mobile/Application', [
          */
         getViews: function() {
             var r = [];
-            for (var n in this.views) r.push(this.views[n]);
+            for (var n in this.views) {
+                r.push(this.views[n]);
+            }
+
             return r;
         },
         /**
@@ -502,10 +555,18 @@ define('Sage/Platform/Mobile/Application', [
          * @return {View} Returns the active view instance, if no view is active returns null.
          */
         getPrimaryActiveView: function() {
-            var el = ReUI.getCurrentPage() || ReUI.getCurrentDialog();
-            if (el) return this.getView(el);
+            var el = App.getCurrentPage();
+            if (el) {
+                return this.getView(el);
+            }
 
             return null;
+        },
+        getCurrentPage: function() {
+            return this._currentPage;
+        },
+        setCurrentPage: function(page) {
+            this._currentPage = page;
         },
         /**
          * Determines if any registered view has been registered with the provided key.
@@ -529,13 +590,6 @@ define('Sage/Platform/Mobile/Application', [
                     view = this.views[key.id];
                 }
 
-                if (view && !view._started) {
-                    view.init();
-                    view.placeAt(view._placeAt, 'first');
-                    view._started = true;
-                    view._placeAt = null;
-                }
-                
                 return view;
             }
             return null;
@@ -651,7 +705,7 @@ define('Sage/Platform/Mobile/Application', [
             view.activate(tag, data);
         },
         /**
-         * Searches ReUI.context.history by passing a predicate function that should return true
+         * Searches history by passing a predicate function that should return true
          * when a match is found.
          * @param {Function} predicate Function that is called in the provided scope with the current history iteration. It should return true if the history item is the desired context.
          * @param {Number} depth
@@ -666,7 +720,7 @@ define('Sage/Platform/Mobile/Application', [
                 depth = 0;
             }
 
-            list = ReUI.context.history || [];
+            list = this.history || [];
 
             depth = depth || 0;
 

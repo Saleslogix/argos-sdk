@@ -327,6 +327,17 @@ define('Sage/Platform/Mobile/Detail', [
 
             return this.inherited(arguments);
         },
+        // Override the Views registerDefaultRoute to include the entity id in the route
+        registerDefaultRoute: function() {
+            var router = App.router;
+            router.register(['_', this.id, ';:key'].join(''), lang.hitch(this, this.onDefaultRoute));
+        },
+        onDefaultRoute: function(evt) {
+            this.show({
+                descriptor: '',
+                key: evt.params.key
+            });
+        },
         /**
          * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.
          * @param {Object} options The object published by the event.
@@ -641,12 +652,13 @@ define('Sage/Platform/Mobile/Detail', [
         processEntry: function(entry) {
             this.entry = entry;
 
-            if (this.entry)
-            {
+            if (this.entry) {
+                if (!this.options.descriptor) {
+                    App.setPrimaryTitle(this.entry.$descriptor);
+                }
+
                 this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
-            }
-            else
-            {
+            } else {
                 this.set('detailContent', '');
             }
         },

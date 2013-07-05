@@ -324,6 +324,24 @@ define('Sage/Platform/Mobile/Edit', [
                     field.renderTo(node);
             }, this);
         },
+        // Override the Views registerDefaultRoute to include the entity id in the route
+        registerDefaultRoute: function() {
+            var router = App.router;
+            router.register(['_', this.id, ';:key'].join(''), lang.hitch(this, this.onDefaultRoute));
+        },
+        onDefaultRoute: function(evt) {
+            var primary = App.getPrimaryActiveView();
+            if (primary && primary.id === this.id) {
+                return;
+            }
+
+            if (evt.params.key) {
+                this.show({
+                    descriptor: '',
+                    key: evt.params.key
+                });
+            } 
+        },
         /**
          * Extends init to also init the fields in `this.fields`.
          */
@@ -343,19 +361,25 @@ define('Sage/Platform/Mobile/Edit', [
          * @template
          */
         createToolLayout: function() {
-            return this.tools || (this.tools = {
-                'tbar': [{
+            var tbar = [{
                     id: 'save',
                     action: 'save',
                     security: this.options && this.options.insert
                         ? this.insertSecurity
                         : this.updateSecurity
-                },{
+            }];
+
+            if (!App.isOnFirstView()) {
+                tbar.push({
                     id: 'cancel',
                     side: 'left',
                     fn: ReUI.back,
                     scope: ReUI
-                }]
+                });
+            }
+
+            return this.tools || (this.tools = {
+                'tbar': tbar
             });
         },
         /**
@@ -496,6 +520,18 @@ define('Sage/Platform/Mobile/Edit', [
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Include, this.queryInclude.join(','));
 
             return request;
+        },
+        /**
+         * Returns the view key
+         * @return {String} View key
+         */
+        getTag: function() {
+            var tag = this.options && this.options.entry && this.options.entry.$key;
+            if (!tag) {
+                tag = this.options && this.options.key;
+            }
+
+            return tag;
         },
         /**
          * Sets and returns the Edit view layout by following a standard for section and field:
@@ -689,6 +725,11 @@ define('Sage/Platform/Mobile/Edit', [
          */
         processEntry: function(entry) {
             this.entry = this.convertEntry(entry || {});
+
+            if (!this.options.descriptor) {
+                App.setPrimaryTitle(this.entry.$descriptor);
+            }
+
             this.setValues(this.entry, true);
 
             domClass.remove(this.domNode, 'panel-loading');
@@ -1158,11 +1199,13 @@ define('Sage/Platform/Mobile/Edit', [
          * state and `key` of the entry (false if inserting)
          */
         getContext: function() {
-            return lang.mixin(this.inherited(arguments), {
+            var context = lang.mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind,
                 insert: this.options.insert,
-                key: this.options.insert ? false : this.options.entry && this.options.entry['$key']
+                key: this.options.insert ? false : this.options.key ? this.options.key : this.options.entry && this.options.entry['$key']
             });
+
+            return context;
         },
         /**
          * Wrapper for detecting security for update mode or insert mode
