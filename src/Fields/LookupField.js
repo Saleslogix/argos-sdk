@@ -229,6 +229,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          * Sets the where expression used in the SData query of the List view.
          */
         where: null,
+        viewMixin: null,
         /**
          * @cfg {String/Function}
          * May be set and passed in the navigation options to the target List view.
@@ -356,10 +357,13 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 negateHistory: true,
                 tools: {
                     tbar: [{
+                        id: 'toggleListHeaderMenu',
+                        action: 'toggleListHeaderMenu'
+                    }, {
                         id: 'complete',
                         fn: this.complete,
                         scope: this
-                    },{
+                    }, {
                         id: 'cancel',
                         side: 'left',
                         fn: ReUI.back,
@@ -406,8 +410,10 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
         navigateToListView: function() {
             var view = App.getView(this.view),
                 options = this.createNavigationOptions();
-            if (view && options && !this.disabled)
+            if (view && options && !this.disabled) {
+                lang.mixin(view, this.viewMixin);
                 view.show(options);
+            }
         },
         /**
          * Handler for the click event, fires {@link #navigateToListView navigateToListView} if the
