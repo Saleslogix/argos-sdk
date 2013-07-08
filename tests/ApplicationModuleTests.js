@@ -1,4 +1,4 @@
-define('ApplicationModuleTests', ['Sage/Platform/Mobile/ApplicationModule'], function(ApplicationModule) {
+define('tests/ApplicationModuleTests', ['Sage/Platform/Mobile/ApplicationModule'], function(ApplicationModule) {
 return describe('Sage.Platform.Mobile.ApplicationModule', function() {
 
     it('Can register a view to the set application', function() {

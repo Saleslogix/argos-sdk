@@ -38,11 +38,17 @@
     require({
         baseUrl: "./",
         packages: [
-        { name: 'dojo', location: '../libraries/dojo/dojo' },
-        { name: 'dijit', location: '../libraries/dojo/dijit' },
-        { name: 'dojox', location: '../libraries/dojo/dojox' },
-        { name: 'Sage/Platform/Mobile', location: '../src' }
-    ]});
+            { name: 'dojo', location: '../libraries/dojo/dojo' },
+            { name: 'dijit', location: '../libraries/dojo/dijit' },
+            { name: 'dojox', location: '../libraries/dojo/dojox' },
+            { name: 'snap', location: '../libraries/snap', main: 'snap' },
+            { name: 'Sage/Platform/Mobile', location: '../src' },
+            { name: 'tests', location: '.' }
+        ],
+        paths: {
+            'Sage/Platform/Mobile': '../src'
+        }
+    });
     </script>
 </head>
 <body>
@@ -55,29 +61,26 @@
         'dojo/_base/xhr',
         'dojo/DeferredList',
 
-        'localization/en',
-        'ApplicationModuleTests',
-        'CalendarTests',
-        'ConvertTests',
-        'ErrorManagerTests',
-        'FieldManagerTests',
-        'FormatTests',
-        'GroupedListTests',
-        'MainToolbarTests',
-        'SearchWidgetTests',
-        'ToolbarTests',
-        'UtilityTests',
-
-        'Fields/_FieldTests',
-
-        'Fields/NoteFieldTests',
-        'Fields/PhoneFieldTests',
-        'Fields/SelectFieldTests',
-        'Fields/SignatureFieldTests',
-        'Fields/TextAreaFieldTests',
-        'Fields/TextFieldTests',
-        'Fields/DecimalFieldTests'
-
+        'tests/localization/en',
+        'tests/ApplicationModuleTests',
+        'tests/CalendarTests',
+        'tests/ConvertTests',
+        'tests/ErrorManagerTests',
+        'tests/FieldManagerTests',
+        'tests/FormatTests',
+        'tests/GroupedListTests',
+        'tests/MainToolbarTests',
+        'tests/SearchWidgetTests',
+        'tests/ToolbarTests',
+        'tests/UtilityTests',
+        'tests/Fields/_FieldTests',
+        'tests/Fields/NoteFieldTests',
+        'tests/Fields/PhoneFieldTests',
+        'tests/Fields/SelectFieldTests',
+        'tests/Fields/SignatureFieldTests',
+        'tests/Fields/TextAreaFieldTests',
+        'tests/Fields/TextFieldTests',
+        'tests/Fields/DecimalFieldTests'
     ], function (dojo, lang, array, xhr, DeferredList) {
 
         lang.mixin(Resources, {
