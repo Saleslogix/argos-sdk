@@ -131,6 +131,12 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          * Required. Must be set to a view id of the target lookup view
          */
         view: false,
+
+        /**
+         * @cfg {Object}
+         * Optional. Object to mixin over the view
+         */
+        viewMixin: null,
         /**
          * @property {String}
          * The default `valueKeyProperty` if `valueKeyProperty` is not defined.
@@ -229,7 +235,6 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          * Sets the where expression used in the SData query of the List view.
          */
         where: null,
-        viewMixin: null,
         /**
          * @cfg {String/Function}
          * May be set and passed in the navigation options to the target List view.
