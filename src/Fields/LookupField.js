@@ -360,6 +360,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 where: this.where,
                 orderBy: this.orderBy,
                 negateHistory: true,
+                continuousScrolling: false,
                 tools: {
                     tbar: [{
                         id: 'toggleListHeaderMenu',
