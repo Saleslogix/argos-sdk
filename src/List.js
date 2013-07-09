@@ -300,24 +300,12 @@ define('Sage/Platform/Mobile/List', [
          */
         widgetTemplate: new Simplate([
             '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
-            '{%! $.listHeaderTemplate %}',
+            '<div data-dojo-attach-point="searchNode"></div>',
             '<a href="#" class="android-6059-fix">fix for android issue #6059</a>',                
             '{%! $.emptySelectionTemplate %}',
             '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
             '{%! $.moreTemplate %}',
             '{%! $.listActionTemplate %}',
-            '</div>'
-        ]),
-        /**
-         * @property {Simplate}
-         * The template used to render the list views header menu.
-         *
-         */
-        listHeaderTemplate: new Simplate([
-            '<div class="list-header list-header-hidden" data-dojo-attach-point="listHeader">',
-                '<div data-dojo-attach-point="searchNode"></div>',
-                '<div class="list-hash-tags" data-dojo-attach-point="hashTagsNode">',
-                '</div>',
             '</div>'
         ]),
         /**
@@ -332,11 +320,6 @@ define('Sage/Platform/Mobile/List', [
          */
         loadingTemplate: new Simplate([
             '<li class="list-loading-indicator"><div>{%= $.loadingText %}</div></li>'
-        ]),
-        hashTagFavoriteTemplate: new Simplate([
-            '<div class="button" data-action="hashTagFavoriteClick" data-key="{%= $.text %}">',
-                '{%= $.text %}',
-            '</div>'
         ]),
         /**
          * @property {Simplate}
@@ -751,7 +734,6 @@ define('Sage/Platform/Mobile/List', [
          */
         startup: function() {
             this.inherited(arguments);
-            var hashTag, node, text;
 
             if (this.searchWidget)
                 this.searchWidget.configure({
@@ -759,15 +741,6 @@ define('Sage/Platform/Mobile/List', [
                     'formatSearchQuery': lang.hitch(this, this.formatSearchQuery)
                 });
 
-                if (this.hashTagQueries) {
-                    for (hashTag in this.hashTagQueries) {
-                        if (this.hashTagQueries.hasOwnProperty(hashTag)) {
-                            text = this.hashTagQueriesText[hashTag] || hashTag;
-                            node = domConstruct.toDom(this.hashTagFavoriteTemplate.apply({text: text}));
-                            domConstruct.place(node, this.hashTagsNode, 'last');
-                        }
-                    }
-                }
             this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
         },
         /**
@@ -793,18 +766,11 @@ define('Sage/Platform/Mobile/List', [
         createToolLayout: function() {
             return this.tools || (this.tools = {
                 'tbar': [{
-                        id: 'new',
-                        action: 'navigateToInsertView',
-                        security: App.getViewSecurity(this.insertView, 'insert')
-                    }, {
-                        id: 'toggleListHeaderMenu',
-                        action: 'toggleListHeaderMenu'
-                    }
-                ]
+                    id: 'new',
+                    action: 'navigateToInsertView',
+                    security: App.getViewSecurity(this.insertView, 'insert')
+                }]
             });
-        },
-        toggleListHeaderMenu: function() {
-            domClass.toggle(this.listHeader, 'list-header-hidden');
         },
         /**
          * Sets and returns the list-action actions layout definition, this method should be overriden in the view
@@ -1426,12 +1392,6 @@ define('Sage/Platform/Mobile/List', [
                 scope: this
             });
         },
-        hashTagFavoriteClick: function(params) {
-            if (params.key) {
-                this.setSearchTerm('#' + params.key); 
-                this.search();
-            }
-        },
         /**
          * Handler for the more button. Simply calls {@link #requestData requestData} which already has the info for
          * setting the start index as needed.
@@ -1589,12 +1549,6 @@ define('Sage/Platform/Mobile/List', [
         search: function() {
             if (this.searchWidget) {
                 this.searchWidget.search();
-            }
-        },
-        appendSearchTerm: function(value) {
-            if (this.searchWidget) {
-                var existing = this.searchWidget.get('queryValue');
-                this.setSearchTerm(existing + ' ' + value);
             }
         },
         setSearchTerm: function(value) {
