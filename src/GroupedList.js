@@ -100,6 +100,7 @@ define('Sage/Platform/Mobile/GroupedList', [
          * Must have a `tag` property that identifies the group.
          * The `title` property will be placed into the `groupTemplate` for the header text.
          */
+        groupBySection: null,
         _currentGroup: null,
         _currentGroupNode: null,
         /**
@@ -125,6 +126,14 @@ define('Sage/Platform/Mobile/GroupedList', [
          * @return {Object} Object that contains a tag and title property where tag will be used in comparisons
          */
         getGroupForEntry: function(entry) {
+            var section;
+            if (this.groupBySection) {
+                section = this.groupBySection.getSection(entry);
+                return {
+                    tag: section.key,
+                    title: section.title
+                }
+            }
             return {
                 tag: 1,
                 title: 'Default'
@@ -172,7 +181,7 @@ define('Sage/Platform/Mobile/GroupedList', [
                         domConstruct.place(this.groupTemplate.apply(entryGroup, this), this.contentNode, 'last');
                         this._currentGroupNode = query("> :last-child", this.contentNode)[0];
                     }
-
+                    
                     this.entries[entry.$key] = entry;
 
                     o.push(this.rowTemplate.apply(entry, this));
@@ -199,6 +208,22 @@ define('Sage/Platform/Mobile/GroupedList', [
 
             this._currentGroup = null;
             this._currentGroupNode = null;
+        },
+        /**
+         * Called on application startup to configure the search widget if present and create the list actions.
+         */
+        startup: function() {
+            this.inherited(arguments);
+            this.createGroupBySection();
+            this.applyGroupByOrderBy();
+        },
+        createGroupBySection: function() {
+        },
+        applyGroupByOrderBy: function() {
+            if (this.groupBySection) {
+                this.queryOrderBy = this.groupBySection.getOrderByQuery();
+            }
         }
+        
     });
 });
