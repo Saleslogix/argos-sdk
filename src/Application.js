@@ -742,9 +742,16 @@ define('Sage/Platform/Mobile/Application', [
         showLeftDrawer: function() {
         },
         /**
-         * Loads Snap.js and assigns the instance to App.snapper. This method would typically be called before navigating to the initial view, so the login page does not contain the menu.
+         * Override this function to load a view in the right drawer.
          */
-        loadSnapper: function() {
+        showRightDrawer: function() {
+        },
+        /**
+         * Loads Snap.js and assigns the instance to App.snapper. This method would typically be called before navigating to the initial view, so the login page does not contain the menu.
+         * @param {DOMNode} element Optional. Snap.js options.element property. If not provided defaults to the "viewContaienr" DOMNode.
+         * @param {Object} options Optional. Snap.js options object. A default is provided if this is undefined. Providing options will override the element parameter.
+         */
+        loadSnapper: function(element, options) {
             // TODO: Provide a domNode param and default to viewContainer if not provided
             var snapper, view;
 
@@ -752,10 +759,10 @@ define('Sage/Platform/Mobile/Application', [
                 return;
             }
 
-            snapper = new snap({
-                element: document.getElementById('viewContainer'),
+            snapper = new snap(options || {
+                element: element || document.getElementById('viewContainer'),
                 dragger: null,
-                disable: 'right', // use 'none' to do both
+                disable: 'none',
                 addBodyClasses: true,
                 hyperextensible: false,
                 resistance: 0.1,
@@ -773,6 +780,7 @@ define('Sage/Platform/Mobile/Application', [
             this.snapper = snapper;
 
             this.showLeftDrawer();
+            this.showRightDrawer();
         },
     });
 });
