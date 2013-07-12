@@ -100,6 +100,8 @@ define('Sage/Platform/Mobile/GroupedList', [
          * Must have a `tag` property that identifies the group.
          * The `title` property will be placed into the `groupTemplate` for the header text.
          */
+        _groupBySections: null,
+        _currentGroupBySection: null,
         _currentGroup: null,
         _currentGroupNode: null,
         /**
@@ -125,6 +127,19 @@ define('Sage/Platform/Mobile/GroupedList', [
          * @return {Object} Object that contains a tag and title property where tag will be used in comparisons
          */
         getGroupForEntry: function(entry) {
+            var sectionDef, title;
+            if (this._currentGroupBySection) {
+                sectionDef = this._currentGroupBySection.section.getSection(entry);
+                if (this._currentGroupBySection.description) {
+                    title = this._currentGroupBySection.description + ': ' + sectionDef.title;
+                } else {
+                    title =  sectionDef.title;
+                }
+                return {
+                    tag: sectionDef.key,
+                    title: title
+                }
+            }
             return {
                 tag: 1,
                 title: 'Default'
@@ -150,7 +165,7 @@ define('Sage/Platform/Mobile/GroupedList', [
 
             if (this.feed['$totalResults'] === 0)
             {
-                this.set('listContent', this.noDataTemplate.apply(this));               
+                this.set('listContent', this.noDataTemplate.apply(this));
             }
             else if (feed['$resources'])
             {
@@ -176,6 +191,7 @@ define('Sage/Platform/Mobile/GroupedList', [
                     this.entries[entry.$key] = entry;
 
                     o.push(this.rowTemplate.apply(entry, this));
+
                 }
 
                 if (o.length > 0)
@@ -199,6 +215,58 @@ define('Sage/Platform/Mobile/GroupedList', [
 
             this._currentGroup = null;
             this._currentGroupNode = null;
+        },
+        /**
+         * Called on application startup to configure the search widget if present and create the list actions.
+         */
+        startup: function() {
+            this.inherited(arguments);
+            this._initGroupBySections();
+
+        },
+        _initGroupBySections:function(){
+            this._groupBySections = this.getGroupBySections();
+            this.setDefaultGroupBySection();
+            this.applyGroupByOrderBy();
+        },
+        setDefaultGroupBySection: function() {
+            var count = 0;
+            if (this._groupBySections) {
+                count = this._groupBySections.length
+                for (var i = 0; i < count; i++) {
+                    if (this._groupBySections[i].isDefault === true) {
+                        this._currentGroupBySection = this._groupBySections[i];
+                    }
+                }
+                if ((this._currentGroupBySection == null) && (count > 0)) {
+                    this._currentGroupBySection = this._groupBySections[0];
+                }
+            }
+            
+        },
+        getGroupBySection: function(sectionId) {
+            var groupSection = null;
+            if (this._groupBySections) {
+                for (var i = 0; i < this._groupBySections.length; i++) {
+                    if (this._groupBySections[i].Id === sectionId) {
+                        groupSection = this._groupBySections[i];
+                    }
+                }
+            }
+            return groupSection;
+        },
+        setCurrentGroupBySection:function(sectionId){
+            this._currentGroupBySection = this.getGroupBySection(sectionId);
+            this.applyGroupByOrderBy(); //need to refresh view
+        },
+        getGroupBySections: function() {
+            return null;
+        },
+        applyGroupByOrderBy: function() {
+            if (this._currentGroupBySection) {
+                this.queryOrderBy = this._currentGroupBySection.section.getOrderByQuery();
+            }
         }
+        
     });
 });

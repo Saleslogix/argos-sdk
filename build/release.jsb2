@@ -168,6 +168,18 @@
           "path": "../src"
         },
         {
+          "text": "_GroupBySection.js",
+          "path": "../src/Groups"
+        },
+        {
+          "text": "DateTimeSection.js",
+          "path": "../src/Groups"
+        },
+		{
+          "text": "GroupByValueSection.js",
+          "path": "../src/Groups"
+        },
+        {
           "text": "SearchWidget.js",
           "path": "../src"
         },
