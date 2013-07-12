@@ -187,7 +187,7 @@ define('Sage/Platform/Mobile/GroupedList', [
                         domConstruct.place(this.groupTemplate.apply(entryGroup, this), this.contentNode, 'last');
                         this._currentGroupNode = query("> :last-child", this.contentNode)[0];
                     }
-                    
+
                     this.entries[entry.$key] = entry;
 
                     o.push(this.rowTemplate.apply(entry, this));
