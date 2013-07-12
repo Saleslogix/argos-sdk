@@ -771,7 +771,7 @@ define('Sage/Platform/Mobile/Application', [
                 easing: 'ease',
                 maxPosition: 266,
                 minPosition: -266,
-                tapToClose: true,
+                tapToClose: false,
                 touchToDrag: false,
                 slideIntent: 40,
                 minDragDistance: 5 
