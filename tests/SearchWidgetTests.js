@@ -151,12 +151,14 @@ define('tests/SearchWidgetTests', ['dojo/query','dojo/dom-class','Sage/Platform/
                         key: 'test',
                         tag: 'test',
                         query: 'query'
-                    }]
+                    }],
+                    formatSearchQuery: function(val) { return 'where='+val;}
                 }
             );
             searchWidget.queryNode.value = '#test';
 
 
+            spyOn(searchWidget, 'formatSearchQuery').andCallThrough();
             spyOn(searchWidget, 'hashTagSearch').andCallThrough();
             spyOn(searchWidget, 'onSearchExpression');
 
