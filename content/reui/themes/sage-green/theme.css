@@ -50,14 +50,9 @@ h5
     background-color: #D5EFFA;
 }
 
-.list-content > li.actions-row > button:active
+.list-content > .actions-row > button:active
 {
     background-color: #80d0ef;
-}
-
-.list-content > li span
-{
-    /* font-size: .8em; */
 }
 
 .toolbar,
@@ -66,7 +61,7 @@ body > .viewContainer > .toolbar,
 .viewContainer > .footer-toolbar
 {
     border-bottom: 1px solid #3c4f18;
-    border-top: 1px transparent #3c4f18;
+    border-top: 1px solid transparent;
     background-color: #c0d298;
     background: linear-gradient(
         to bottom,
@@ -168,8 +163,8 @@ body > .viewContainer > .toolbar,
 .panel-loading-indicator
 {
     background-color: #fff;
-    border: none 0px black;
-    border-bottom: solid 1px #ddd;
+    border: 0 none black;
+    border-bottom: 1px solid #ddd;
 }
 
 .panel-content > h2
@@ -228,12 +223,12 @@ body > .viewContainer > .toolbar,
 
 .panel-content > h2:first-child
 {
-    border-top: solid 1px #e6e6e6;
+    border-top: 1px solid  #e6e6e6;
 }
 
 .panel-validation-summary > h2:first-child
 {
-    border-top: solid 1px #de6464;
+    border-top: 1px solid  #de6464;
 }
 
 .panel-form-error > .panel-content > h2:first-child
@@ -246,7 +241,7 @@ body > .viewContainer > .toolbar,
 .panel-validation-summary > fieldset,
 .panel-validation-summary > div
 {
-    border: none 0px black;
+    border: 0 none black;
 }
 
 input:focus,
@@ -306,8 +301,7 @@ textarea:focus
 }
 
 .panel-content > fieldset > .row-edit > div > textarea,
-.panel-content > fieldset > .row-edit > textarea,
-
+.panel-content > fieldset > .row-edit > textarea
 {
     font-family: Helvetica, Arial;
     font-size: 16px;
@@ -330,7 +324,7 @@ textarea:focus
 
 .panel-content > fieldset > .row-edit:first-of-type
 {
-    border-top: none 0 black;
+    border-top: 0 none black;
 }
 
 .button
@@ -677,7 +671,7 @@ textarea:focus
 }
 
 .subHeaderButton:active,
-.whiteButton:active,
+.whiteButton:active
 {
     background-color: #e6e6e6;
     background: linear-gradient(

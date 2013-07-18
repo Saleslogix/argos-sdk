@@ -115,12 +115,6 @@
 #signature_edit .buttons { overflow: auto; margin-bottom: 0.5em; }
 #signature_edit .buttons .button { display: inline-block; width: 40%; margin: 0 1em; }
 
-/* list view */
-.list
-{
-    
-}
-
 .list-content > li
 {
     cursor: pointer;
@@ -182,9 +176,14 @@
     font-weight: bold;
 }
 
-.list-loading .list-more .button span
+.list-loading .list-more .button span,
+.panel.busy .actionButton span
 {
     background: url('../images/loading-indicator-gray.gif') no-repeat scroll 0 50%;
+}
+
+.list-loading .list-more .button span
+{
     padding: 0 0 0 20px;
     color: #555;
 }
@@ -199,11 +198,16 @@
     padding: 1em;
 }
 
-.list-loading .list-loading-indicator div
+.list-loading .list-loading-indicator div,
+.panel .panel-loading-indicator div.row > div
 {
     background: url('../images/loading-indicator-white.gif') no-repeat scroll 0 50%;
+}
+
+.list-loading .list-loading-indicator div
+{
     padding: 0 0 0 20px;
-	display: inline-block;
+    display: inline-block;
     text-align: center;
 }
 
@@ -491,9 +495,8 @@
 /* detail veiw */
 .panel .panel-loading-indicator div.row > div
 {
-	background: url('../images/loading-indicator-white.gif') no-repeat scroll 0 50%;
     display: inline-block;
-	padding: 0 0 0 20px;
+    padding: 0 0 0 20px;
 }
 
 .panel .panel-loading-indicator div.row
@@ -514,13 +517,12 @@
 .toolbar.busy .actionButton span
 {
     background: url('../images/loading-indicator-light-green.gif') no-repeat scroll 0 50%;
-	padding: 0 0 0 20px;
+    padding: 0 0 0 20px;
 }
 
 .panel.busy .actionButton span
 {
-    background: url('../images/loading-indicator-gray.gif') no-repeat scroll 0 50%;
-	padding: 0 0 0 20px;
+    padding: 0 0 0 20px;
 }
 
 /* edit/insert */
@@ -618,7 +620,7 @@
     z-index:50;
 }
 
-.row-edit[data-field-type="duration"] > div > div.autoComplete-watermark
+.row-edit[data-field-type="duration"] > div > .autoComplete-watermark
 {
     position:absolute;
     box-sizing: border-box;
@@ -635,7 +637,7 @@
     padding: 4px 34px 4px 110px !important;
 }
 
-input.text-input {
+.text-input {
     padding:  8px 34px 8px 110px !important;
 }
 
@@ -696,12 +698,12 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox])
     width:30px;
     height:30px;
 }
-div.search-widget button.clear-button
+.search-widget button.clear-button
 {
     position: static; height: 30px;
 }
 div.search-active button.clear-button,
-div.text-field-active > button.clear-button,
+.text-field-active > button.clear-button,
 button.clear-button:focus
 {
     background: url('../images/delete.png') no-repeat 50% 50%;
@@ -891,12 +893,6 @@ button.clear-button:focus
     text-shadow: rgba(0, 0, 0, 1.0) 0px 1px 0;
 }
 
-/* Webkit browsers misbehaves. Don't know why. */
-.ext-webkit .time-content > input.hour-field,
-.ext-webkit .time-content > input.minute-field
-{
-    width: 60px;
-}
 body.landscape > .viewContainer > #generic_calendar > #datetime-picker {
     width:100%;
     text-align:center;
@@ -916,7 +912,7 @@ body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-c
 
 #datetime-picker { padding-bottom: 2em; }
 
-#datetime-picker div.time-content-hidden {
+#datetime-picker .time-content-hidden {
     display:none !important;
 }
 #datetime-picker table {
@@ -946,7 +942,6 @@ body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-c
     padding:0;
     -webkit-appearance: listbox;
     -moz-appearance: listbox;
-    appearance: listbox;
     position: relative; /* Fix android browser issue with -webkit-transform blocking <select> */
 }
 #datetime-picker .datetime-selects td {
@@ -999,11 +994,6 @@ h2 > .collapsed-indicator
     margin: 0 4px 0 0;
 }
 
-.collapsed > .collapsed-indicator
-{
-    
-}
-
 .collapsed + ul,
 .collapsed + fieldset,
 .collapsed + div
@@ -1011,7 +1001,7 @@ h2 > .collapsed-indicator
     display: none !important;
 }
 
-.action-list > li > a.disabled
+.action-list > li > .disabled
 {
     opacity: 0.3;
 }
