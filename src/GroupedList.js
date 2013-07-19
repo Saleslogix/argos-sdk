@@ -169,33 +169,41 @@ define('Sage/Platform/Mobile/GroupedList', [
             }
             else if (feed['$resources'])
             {
-                var o = [];
-
+                //var o = [];
+                var docfrag = document.createDocumentFragment();
                 for (var i = 0; i < feed['$resources'].length; i++)
                 {
                     var entry = feed['$resources'][i],
                         entryGroup = this.getGroupForEntry(entry);
-
+                    var rowNode;
                     if (entryGroup.tag != this._currentGroup)
                     {
-                        if (o.length > 0)
-                            domConstruct.place(o.join(''), this._currentGroupNode, 'last');
-
-                        o = [];
-
+                        //if (o.length > 0)
+                        //    domConstruct.place(o.join(''), this._currentGroupNode, 'last');
+                        if (docfrag.childNodes.length > 0) {
+                            domConstruct.place(docfrag, this._currentGroupNode, 'last');
+                        }
+                        //o = [];
+                        docfrag = document.createDocumentFragment();
                         this._currentGroup = entryGroup.tag;
+
                         domConstruct.place(this.groupTemplate.apply(entryGroup, this), this.contentNode, 'last');
                         this._currentGroupNode = query("> :last-child", this.contentNode)[0];
                     }
 
                     this.entries[entry.$key] = entry;
-
-                    o.push(this.rowTemplate.apply(entry, this));
-
+                    rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+                    this.onApplyRowTemplate(entry, rowNode);
+                    docfrag.appendChild(rowNode);
+                    //o.push(this.rowTemplate.apply(entry, this));
+                    //this.onApplyRowTemplate(entry, rowNode);
                 }
 
-                if (o.length > 0)
-                    domConstruct.place(o.join(''), this._currentGroupNode, 'last');
+               // if (o.length > 0)
+                //     domConstruct.place(o.join(''), this._currentGroupNode, 'last');
+                if (docfrag.childNodes.length > 0) {
+                    domConstruct.place(docfrag, this._currentGroupNode, 'last');
+                }
             }
 
             // todo: add more robust handling when $totalResults does not exist, i.e., hide element completely
