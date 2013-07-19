@@ -26,8 +26,7 @@ module.exports = function(grunt) {
         cssmin: {
             combine: {
                 files: {
-                    'min/css/sdk.min.css': ['content/reui/themes/sage-green/theme.css', 'content/css/base.css'],
-                    'min/css/test.min.css': ['content/reui/themes/sage-green/test.css']
+                    'min/css/sdk.min.css': ['content/reui/themes/sage-green/theme.css', 'content/css/base.css']
                 }
             }
         },
