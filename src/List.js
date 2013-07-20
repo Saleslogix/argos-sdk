@@ -883,12 +883,17 @@ define('Sage/Platform/Mobile/List', [
          */
         showActionPanel: function(rowNode) {
             this.checkActionState();
-
             domClass.add(rowNode, 'list-action-selected');
+
+            this.onApplyRowActionPanel(this.actionsNode, rowNode);
+
             domConstruct.place(this.actionsNode, rowNode, 'after');
 
             if (this.actionsNode.offsetTop + this.actionsNode.clientHeight + 48 > document.documentElement.clientHeight)
                 this.actionsNode.scrollIntoView(false);
+        },
+        onApplyRowActionPanel: function(actionNodePanel, rowNode) {
+
         },
         /**
          * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
@@ -1295,7 +1300,6 @@ define('Sage/Platform/Mobile/List', [
             }
             else if (feed['$resources'])
             {
-                //var o = [];
                 var docfrag = document.createDocumentFragment();
                 for (var i = 0; i < feed['$resources'].length; i++)
                 {
@@ -1306,12 +1310,9 @@ define('Sage/Platform/Mobile/List', [
                     this.entries[entry.$key] = entry;
                     rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
                     docfrag.appendChild(rowNode);
-                    //o.push(this.rowTemplate.apply(entry, this));
                     this.onApplyRowTemplate(entry, rowNode);
                 }
 
-               // if (o.length > 0)
-                //     domConstruct.place(o.join(''), this.contentNode, 'last');
                 if (docfrag.childNodes.length > 0) {
                     domConstruct.place(docfrag, this.contentNode, 'last');                    
                 }
