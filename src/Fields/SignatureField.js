@@ -133,6 +133,7 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
         setValue: function (val, initial) {
             if (initial) this.originalValue = val;
 
+            this.currentValue = val;
             domAttr.set(this.inputNode, 'value', val || '');
 
             try

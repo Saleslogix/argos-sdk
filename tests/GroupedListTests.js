@@ -1,4 +1,4 @@
-define('tests/GroupedListTests', ['dojo/query','dojo/dom-class','Sage/Platform/Mobile/GroupedList'], function(query, domClass, GroupedList) {
+define('tests/GroupedListTests', ['dojo/query','dojo/dom-class', 'dojo/text!./feeds/GroupListFeed.json', 'Sage/Platform/Mobile/GroupedList'], function(query, domClass, jsonFeed, GroupedList) {
 return describe('Sage.Platform.Mobile.GroupedList', function() {
 
     var list = new GroupedList();
@@ -46,7 +46,7 @@ return describe('Sage.Platform.Mobile.GroupedList', function() {
     });
 
     it('Can construct list items from feed', function() {
-        var feed = Resources.get('feeds/GroupListFeed.json');
+        var feed = JSON.parse(jsonFeed);
 
         list.processFeed(feed);
 
@@ -54,7 +54,7 @@ return describe('Sage.Platform.Mobile.GroupedList', function() {
     });
 
     it('Can split list items into groups', function() {
-        var feed = Resources.get('feeds/GroupListFeed.json');
+        var feed = JSON.parse(jsonFeed);
 
         list.getGroupForEntry = function(entry) {
             return {

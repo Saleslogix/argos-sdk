@@ -225,6 +225,11 @@
       "filters": ".*(\\.css|\\.jpg|\\.png|\\.gif)"
     },
     {
+      "src": "../min",
+      "dest": "content",
+      "filters": ".*(\\.css)"
+    },
+    {
       "src": "../libraries/dojo/dojo",
       "dest": "content/dojo/dojo",
       "filters": "(dojo\\.js|acme\\.js)"

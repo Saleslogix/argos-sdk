@@ -53,14 +53,7 @@
 </head>
 <body>
 <script type="text/javascript">
-    var Resources = {};
     require([
-        'dojo/_base/kernel',
-        'dojo/_base/lang',
-        'dojo/_base/array',
-        'dojo/_base/xhr',
-        'dojo/DeferredList',
-
         'tests/localization/en',
         'tests/ApplicationModuleTests',
         'tests/CalendarTests',
@@ -81,43 +74,31 @@
         'tests/Fields/TextAreaFieldTests',
         'tests/Fields/TextFieldTests',
         'tests/Fields/DecimalFieldTests'
-    ], function (dojo, lang, array, xhr, DeferredList) {
+    ], function () {
 
-        lang.mixin(Resources, {
-            _store: {},
-            get: function(name) {
-                return Resources._store[name];
-            },
-            set: function(name, value) {
-                Resources._store[name] = value;
-            }
-        });
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
 
+      var htmlReporter = new jasmine.HtmlReporter();
 
-        var wait = [],
-            preload = [
-                'feeds/GroupListFeed.json' // if running this test through IIS, be sure to have the appropriate mime type, 'application/json', set for '.json'.
-            ];
+      jasmineEnv.addReporter(htmlReporter);
 
-        array.forEach(preload, function(item) {
-            wait.push(xhr('GET', {
-                url: item,
-                handleAs: 'text'
-            }).then(function(result) {
-                try { result = JSON.parse(result); } catch(e) {}
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
 
-                Resources.set(item, result);
-            }));
-        });
+      var currentWindowOnload = window.onload;
 
-        new DeferredList(wait)
-            .then(function(results) {
-                if (dojo.some(results, function(result) { return !result[0]; }))
-                    throw new Error("Could not pre-load expected resources.");
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
 
-                jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
-                jasmine.getEnv().execute();
-            });
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
     
     });
 </script>
