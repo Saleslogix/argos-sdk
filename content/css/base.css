@@ -234,7 +234,7 @@
         color-stop(1, #cccccc)
     );
     background-image: -moz-linear-gradient(top, #e6e6e6, #cccccc);
-	border-bottom: 1px solid black;
+    border-bottom: 1px solid black;
     border-top: 1px solid transparent;
 
     box-shadow: rgba(0,0,0,0.5) 0px 2px 3px;
@@ -501,9 +501,9 @@
 
 .panel .panel-loading-indicator div.row
 {
-	text-align: center !important;
-	padding: 1em !important;
-	min-height: 1em !important;
+    text-align: center !important;
+    padding: 1em !important;
+    min-height: 1em !important;
 }
 
 .content-loading > span
@@ -598,7 +598,7 @@
 .row-edit[data-field-type="signature"] > div > canvas,
 .row-edit[data-field-type="signature"] > div > img
 {
-	margin-left: 110px;
+    margin-left: 110px;
 }
 
 .row-edit[data-field-type="note"] > div > textarea,

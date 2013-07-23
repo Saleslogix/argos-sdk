@@ -201,13 +201,13 @@ body > .viewContainer > .toolbar,
     background-color: #de6464;
     background: linear-gradient(top, #de6464, #b33737);
     background-image: -webkit-gradient(
-		linear,
-		left top,
-		left bottom,
-		color-stop(0, #de6464),
-		color-stop(1, #b33737)
-	);
-	background-image: -moz-linear-gradient(top, #de6464, #b33737);
+        linear,
+        left top,
+        left bottom,
+        color-stop(0, #de6464),
+        color-stop(1, #b33737)
+    );
+    background-image: -moz-linear-gradient(top, #de6464, #b33737);
     box-shadow: rgba(0,0,0,0.5) 0px 2px 3px;
     -moz-box-shadow: rgba(0,0,0,0.5) 0px 2px 3px;
     -webkit-box-shadow: rgba(0,0,0,0.5) 0px 2px 3px;
@@ -247,8 +247,8 @@ body > .viewContainer > .toolbar,
 input:focus,
 textarea:focus
 {
-	outline: none;
-	background-color: #fff; /* #FDFFDD */;
+    outline: none;
+    background-color: #fff; /* #FDFFDD */;
 }
 
 .panel-content > ul,
