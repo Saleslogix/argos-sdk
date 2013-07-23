@@ -169,7 +169,6 @@ define('Sage/Platform/Mobile/GroupedList', [
             }
             else if (feed['$resources'])
             {
-                //var o = [];
                 var docfrag = document.createDocumentFragment();
                 for (var i = 0; i < feed['$resources'].length; i++)
                 {
@@ -178,12 +177,11 @@ define('Sage/Platform/Mobile/GroupedList', [
                     var rowNode;
                     if (entryGroup.tag != this._currentGroup)
                     {
-                        //if (o.length > 0)
-                        //    domConstruct.place(o.join(''), this._currentGroupNode, 'last');
+
                         if (docfrag.childNodes.length > 0) {
                             domConstruct.place(docfrag, this._currentGroupNode, 'last');
                         }
-                        //o = [];
+
                         docfrag = document.createDocumentFragment();
                         this._currentGroup = entryGroup.tag;
 
@@ -195,12 +193,9 @@ define('Sage/Platform/Mobile/GroupedList', [
                     rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
                     this.onApplyRowTemplate(entry, rowNode);
                     docfrag.appendChild(rowNode);
-                    //o.push(this.rowTemplate.apply(entry, this));
-                    //this.onApplyRowTemplate(entry, rowNode);
+
                 }
 
-               // if (o.length > 0)
-                //     domConstruct.place(o.join(''), this._currentGroupNode, 'last');
                 if (docfrag.childNodes.length > 0) {
                     domConstruct.place(docfrag, this._currentGroupNode, 'last');
                 }
