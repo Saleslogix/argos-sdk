@@ -301,7 +301,7 @@ define('Sage/Platform/Mobile/List', [
         widgetTemplate: new Simplate([
             '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '<div data-dojo-attach-point="searchNode"></div>',
-            '<a href="#" class="android-6059-fix">fix for android issue #6059</a>',                
+            '<a href="#" class="android-6059-fix">fix for android issue #6059</a>',
             '{%! $.emptySelectionTemplate %}',
             '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
             '{%! $.moreTemplate %}',
@@ -883,12 +883,17 @@ define('Sage/Platform/Mobile/List', [
          */
         showActionPanel: function(rowNode) {
             this.checkActionState();
-
             domClass.add(rowNode, 'list-action-selected');
+
+            this.onApplyRowActionPanel(this.actionsNode, rowNode);
+
             domConstruct.place(this.actionsNode, rowNode, 'after');
 
             if (this.actionsNode.offsetTop + this.actionsNode.clientHeight + 48 > document.documentElement.clientHeight)
                 this.actionsNode.scrollIntoView(false);
+        },
+        onApplyRowActionPanel: function(actionNodePanel, rowNode) {
+
         },
         /**
          * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
@@ -1295,21 +1300,22 @@ define('Sage/Platform/Mobile/List', [
             }
             else if (feed['$resources'])
             {
-                var o = [];
-
+                var docfrag = document.createDocumentFragment();
                 for (var i = 0; i < feed['$resources'].length; i++)
                 {
                     var entry = feed['$resources'][i];
-
+                    var rowNode;
                     entry['$descriptor'] = entry['$descriptor'] || feed['$descriptor'];
 
                     this.entries[entry.$key] = entry;
-
-                    o.push(this.rowTemplate.apply(entry, this));
+                    rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+                    docfrag.appendChild(rowNode);
+                    this.onApplyRowTemplate(entry, rowNode);
                 }
 
-                if (o.length > 0)
-                    domConstruct.place(o.join(''), this.contentNode, 'last');
+                if (docfrag.childNodes.length > 0) {
+                    domConstruct.place(docfrag, this.contentNode, 'last');                    
+                }
             }
 
             // todo: add more robust handling when $totalResults does not exist, i.e., hide element completely
@@ -1325,6 +1331,9 @@ define('Sage/Platform/Mobile/List', [
                 domClass.add(this.domNode, 'list-has-empty-opt');
 
             this._loadPreviousSelections();
+        },
+        onApplyRowTemplate: function(entry, rowNode) {
+
         },
         /**
          * Deterimines if there is more data to be shown by inspecting the last feed result.
