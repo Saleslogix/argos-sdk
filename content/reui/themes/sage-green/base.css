@@ -193,9 +193,9 @@ body > .viewContainer > .dialog {
     border-top: 1px solid #6d84a2;
     padding: 0px 6px;
     -webkit-border-bottom-left-radius: 5px;
-	-webkit-border-bottom-right-radius: 5px;
-	-moz-border-bottom-left-radius: 5px;
-	-moz-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
 }
 
 .dialog > fieldset > label {
@@ -255,7 +255,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
 .list-content > li > img.icon,
 .list-content > li > * > img.icon
 {
-    border: none 0 black;
+    border: 0 none black;
     margin: 0 .5em 0 0;
     width: 24px;
     height: 24px;
@@ -270,32 +270,32 @@ input:not([type|=radio]):not([type|=checkbox]) {
 
 h3
 {
-	font-size: .75em;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+    font-size: .75em;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 h4
 {
-	font-size: .5em;
-	margin: 0;
-	padding: 0;	
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+    font-size: .5em;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 img
 {
-	border: none 0 black;
+    border: 0 none black;
 }
 
 .panel > .panel-loading-indicator
 {
-	display: none;
+    display: none;
 }
 
 .panel > .panel-validation-summary
@@ -352,7 +352,7 @@ img
 .panel-validation-summary > ul > li > img.icon
 .panel-validation-summary > ul > li > * > img.icon
 {
-    border: none 0 black;
+    border: 0 none black;
     margin: 0 .5em 0 0;
     width: 24px;
     height: 24px;
@@ -536,7 +536,7 @@ img
 
     border-radius: 3px;
     -webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
+    -moz-border-radius: 3px;
 
     margin: 0;
     padding: 0px 10px 0 110px;
@@ -555,9 +555,9 @@ img
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     -webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
+    -moz-border-radius: 3px;
     margin: 0;
-    border: none 0px black;
+    border: 0 none black;
     padding: 8px 10px 8px 110px;
     background: transparent;
     width: 100%;
