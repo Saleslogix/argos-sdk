@@ -40,7 +40,7 @@ body > .viewContainer > .panel,
 body > .viewContainer > .list
 {
     position: absolute;
-    top: 45px;
+    top: 33px;
     bottom: 0px;
     width: 100%;
     box-sizing: border-box;
@@ -55,7 +55,7 @@ body[orient="landscape"] > .viewContainer > .panel,
 body[orient="landscape"] > .viewContainer > .list
 {
     position:absolute;
-    top: 45px; /* Adjust if header toolbar changes */
+    top: 33px; /* Adjust if header toolbar changes */
     bottom: 0px; /* Adjust if footer toolbar changes */
     width: 100%;
     -webkit-transition-property: top, bottom;
@@ -96,9 +96,9 @@ body > .viewContainer > [selected="true"]
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
 
-    height: 45px;
+    /*height: 45px;*/
     width: 100%;
-    padding: 4px 4px;
+    /*padding: 4px 4px;*/
 
     display: block;
     z-index: 10;
@@ -144,6 +144,16 @@ body > .viewContainer > [selected="true"]
     height: 34px;
     padding: 0px;
     z-index: 100;
+}
+
+.toolButton:hover
+{
+    background-color: #FE5000;
+}
+
+.toolButton:active
+{
+    background-color: #FE5000;
 }
 
 .toolButton > img
@@ -206,8 +216,8 @@ body > .viewContainer > .dialog {
 }
 
 input:not([type|=radio]):not([type|=checkbox]) {
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
+    /*-webkit-border-radius: 3px;
+    -moz-border-radius: 3px;*/
     -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
     box-sizing: border-box;
@@ -221,6 +231,42 @@ input:not([type|=radio]):not([type|=checkbox]) {
     border: 1px solid #000;
 }
 
+/*For the separate Contextual Menu*/
+.contextualContent > .group-content > .list-content
+{
+    margin: 0;
+    padding: 0;
+}
+
+.contextualContent > .group-content > .list-content > li 
+{
+    background-color: #212721;
+    font-size: 1.25em;
+    font-weight: bold;
+    list-style: none;
+    margin: 0;
+    position: relative;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 32px 8px 6px;
+    border: 1px solid #5a5d59;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.contextualContent > .group-content > .list-content > li:hover 
+{
+    cursor: pointer;
+    background: -webkit-gradient(linear, left top, right bottom, from(#212721), to(#00678a));
+    background: -moz-linear-gradient(top, #212721, #00678a);
+}
+
+.contextualContent > .group-content > .list-content > li:active 
+{
+    background: -webkit-gradient(linear, left top, right bottom, from(#212721), to(#00678a));
+    background: -moz-linear-gradient(top, #212721, #00678a);
+}
+
 .list-content
 {
     margin: 0;
@@ -232,10 +278,11 @@ input:not([type|=radio]):not([type|=checkbox]) {
     font-size: 1.25em;
     font-weight: bold;
     list-style: none;
-    margin: 8px 6px 8px 6px;
-    padding: 8px 0px 8px 10px;
+    margin: 4px 0px;
+    /*margin: 8px 6px 8px 6px;*/
+    /*padding: 8px 0px 8px 10px;*/
     position: relative;
-    border-radius: 6px;
+    /*border-radius: 6px;*/
 }
 
 .list-content > li
@@ -255,7 +302,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
 .list-content > li > img.icon,
 .list-content > li > * > img.icon
 {
-    border: 0 none black;
+    border: none 0 black;
     margin: 0 .5em 0 0;
     width: 24px;
     height: 24px;
@@ -282,7 +329,7 @@ h4
 {
     font-size: .5em;
     margin: 0;
-    padding: 0;
+    padding: 0;    
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -290,7 +337,7 @@ h4
 
 img
 {
-    border: 0 none black;
+    border: none 0 black;
 }
 
 .panel > .panel-loading-indicator
@@ -352,7 +399,7 @@ img
 .panel-validation-summary > ul > li > img.icon
 .panel-validation-summary > ul > li > * > img.icon
 {
-    border: 0 none black;
+    border: none 0 black;
     margin: 0 .5em 0 0;
     width: 24px;
     height: 24px;
@@ -408,7 +455,7 @@ img
     margin: 0px;
     padding: 0;
     position: relative;
-    float: left;
+    float: left;    
     width: 100px;
     text-align: right;
     font-size: 0.8em;
@@ -457,7 +504,8 @@ img
 
 .list-search
 {
-    padding: 6px;
+    padding: 2px;
+    /*padding: 6px;*/
     position: relative;
 }
 
@@ -474,8 +522,8 @@ img
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     display: inline-block;    
-    height: 32px;
-    border: solid 1px black;
+    height: 35px;
+    /*border: solid 1px black; */
 }
 
 .list-search .dismissButton {
@@ -487,7 +535,7 @@ img
     width: 32px;
     right: 70px;
     top: 6px;
-    border: solid 1px black;
+    /*border: solid 1px black;*/
 }
 
 .list-search label
@@ -557,7 +605,7 @@ img
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     margin: 0;
-    border: 0 none black;
+    border: none 0px black;
     padding: 8px 10px 8px 110px;
     background: transparent;
     width: 100%;
