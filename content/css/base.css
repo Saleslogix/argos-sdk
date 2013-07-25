@@ -48,6 +48,13 @@
     display: none;
 }
 
+.left-drawer,
+.right-drawer
+{
+    display: none;
+    visibility: hidden;
+}
+
 .snapjs-left .left-drawer {
     visibility: visible;
     display: block;
