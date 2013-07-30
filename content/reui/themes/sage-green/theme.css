@@ -39,18 +39,21 @@ h5
     background-color: #e6e6e6;
 }
 
-.list-content > li
+.list-content > li,
+.group-content > li
 {
     font-weight: normal;
     background-color: #fff;
 }
 
-.list-content > li:active
+.list-content > li:active,
+.group-content > li:active
 {
     background-color: #D5EFFA;
 }
 
-.list-content > .actions-row > button:active
+.list-content > .actions-row > button:active,
+.group-content > .actions-row > button:active
 {
     background-color: #80d0ef;
 }

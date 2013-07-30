@@ -221,13 +221,15 @@ input:not([type|=radio]):not([type|=checkbox]) {
     border: 1px solid #000;
 }
 
-.list-content
+.list-content,
+.group-content
 {
     margin: 0;
     padding: 0;
 }
 
-.list-content > li
+.list-content > li,
+.group-content > li
 {
     font-size: 1.25em;
     font-weight: bold;
@@ -238,7 +240,8 @@ input:not([type|=radio]):not([type|=checkbox]) {
     border-radius: 6px;
 }
 
-.list-content > li
+.list-content > li,
+.group-content > li
 {
     padding: 8px 32px 8px 6px;
 }
