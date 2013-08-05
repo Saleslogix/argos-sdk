@@ -24,6 +24,8 @@
  */
 define('Sage/Platform/Mobile/GroupedList', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/when',
     'dojo/query',
     'dojo/string',
     'dojo/dom-class',
@@ -31,6 +33,8 @@ define('Sage/Platform/Mobile/GroupedList', [
     'Sage/Platform/Mobile/List'
 ], function(
     declare,
+    lang,
+    when,
     query,
     string,
     domClass,
@@ -173,8 +177,10 @@ define('Sage/Platform/Mobile/GroupedList', [
                 for (var i = 0; i < feed['$resources'].length; i++)
                 {
                     var entry = feed['$resources'][i],
-                        entryGroup = this.getGroupForEntry(entry);
+                        entryGroup = this.getGroupForEntry(entry),
+                        related;
                     var rowNode;
+                    related = this.fetchRelatedRowData(entry);
                     if (entryGroup.tag != this._currentGroup)
                     {
 
@@ -195,6 +201,14 @@ define('Sage/Platform/Mobile/GroupedList', [
                     this.onApplyRowTemplate(entry, rowNode);
                     docfrag.appendChild(rowNode);
 
+                    (function(context, related, entry, rowNode) {
+                        when(related, lang.hitch(context, function(val) {
+                            if (val) {
+                                entry.related = val;
+                                this.onApplyRelatedRowTemplate(entry, rowNode);
+                            }
+                        }));
+                    })(this, related, entry, rowNode);
                 }
 
                 if (docfrag.childNodes.length > 0) {

@@ -34,6 +34,9 @@ define('Sage/Platform/Mobile/List', [
     'dojo/dom',
     'dojo/string',
     'dojo/window',
+    'dojo/Deferred',
+    'dojo/promise/all',
+    'dojo/when',
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/View',
     'Sage/Platform/Mobile/SearchWidget'
@@ -49,6 +52,9 @@ define('Sage/Platform/Mobile/List', [
     dom,
     string,
     win,
+    Deferred,
+    all,
+    when,
     ErrorManager,
     View,
     SearchWidget
@@ -378,7 +384,11 @@ define('Sage/Platform/Mobile/List', [
                     '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
                 '</button>',
                 '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
+                '<div class="list-item-content-related"></div>',
             '</li>'
+        ]),
+        itemRelatedTemplate: new Simplate([
+            '<h3>{%: $.$descriptor %}</h3>'
         ]),
         /**
          * @cfg {Simplate}
@@ -1291,26 +1301,37 @@ define('Sage/Platform/Mobile/List', [
          * @param {Object} feed The SData result
          */
         processFeed: function(feed) {
-            if (!this.feed) this.set('listContent', '');
+            var docfrag, entry, i, related, remaining, rowNode;
+
+            if (!this.feed) {
+                this.set('listContent', '');
+            }
 
             this.feed = feed;
-            if (this.feed['$totalResults'] === 0)
-            {
+
+            if (this.feed['$totalResults'] === 0) {
                 this.set('listContent', this.noDataTemplate.apply(this));                
-            }
-            else if (feed['$resources'])
-            {
-                var docfrag = document.createDocumentFragment();
-                for (var i = 0; i < feed['$resources'].length; i++)
-                {
-                    var entry = feed['$resources'][i];
-                    var rowNode;
+            } else if (feed['$resources']) {
+                docfrag = document.createDocumentFragment();
+                for (i = 0; i < feed['$resources'].length; i++) {
+                    entry = feed['$resources'][i];
                     entry['$descriptor'] = entry['$descriptor'] || feed['$descriptor'];
+
+                    related = this.fetchRelatedRowData(entry);
 
                     this.entries[entry.$key] = entry;
                     rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
                     docfrag.appendChild(rowNode);
                     this.onApplyRowTemplate(entry, rowNode);
+
+                    (function(context, related, entry, rowNode) {
+                        when(related, lang.hitch(context, function(val) {
+                            if (val) {
+                                entry.related = val;
+                                this.onApplyRelatedRowTemplate(entry, rowNode);
+                            }
+                        }));
+                    })(this, related, entry, rowNode);
                 }
 
                 if (docfrag.childNodes.length > 0) {
@@ -1319,21 +1340,29 @@ define('Sage/Platform/Mobile/List', [
             }
 
             // todo: add more robust handling when $totalResults does not exist, i.e., hide element completely
-            if (typeof this.feed['$totalResults'] !== 'undefined')
-            {
-                var remaining = this.feed['$totalResults'] - (this.feed['$startIndex'] + this.feed['$itemsPerPage'] - 1);
+            if (typeof this.feed['$totalResults'] !== 'undefined') {
+                remaining = this.feed['$totalResults'] - (this.feed['$startIndex'] + this.feed['$itemsPerPage'] - 1);
                 this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
             }
 
             domClass.toggle(this.domNode, 'list-has-more', this.hasMoreData());
 
-            if (this.options.allowEmptySelection)
+            if (this.options.allowEmptySelection) {
                 domClass.add(this.domNode, 'list-has-empty-opt');
+            }
 
             this._loadPreviousSelections();
         },
+        onApplyRelatedRowTemplate: function(entry, rowNode) {
+            var node = query('.list-item-content-related', rowNode), templateString;
+            if (node.length > 0) {
+                templateString = this.itemRelatedTemplate.apply(entry, this);
+                node[0].innerHTML = templateString; 
+            }
+        },
+        fetchRelatedRowData: function(entry) {
+        },
         onApplyRowTemplate: function(entry, rowNode) {
-
         },
         /**
          * Deterimines if there is more data to be shown by inspecting the last feed result.
