@@ -204,12 +204,13 @@ define('Sage/Platform/Mobile/Store/SData', [
                 }
             }
 
-            var where = utility.expand(this.scope || this, this.where),
+            var where = utility.expand(this.scope || this, queryOptions.where || this.where),
                 query = utility.expand(this.scope || this, query),
                 conditions = [];
 
-            if (where)
+            if (where) {
                 conditions.push(where);
+            }
 
             if (query)
                 conditions.push(query);
