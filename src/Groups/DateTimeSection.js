@@ -231,11 +231,9 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                 !this._isYesterday(value);
         },
         _isTwoWeeksAgo: function(value) {
-            // Excludes yesterday
             return this._getWeek(value) === (this.currentWeek - 2)
         },
         _isThreeWeeksAgo: function(value) {
-            // Excludes yesterday
             return this._getWeek(value) === (this.currentWeek - 3)
         },
         _isLastMonth: function(value) {
