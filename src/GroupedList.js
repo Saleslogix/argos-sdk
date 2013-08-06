@@ -137,7 +137,8 @@ define('Sage/Platform/Mobile/GroupedList', [
                 }
                 return {
                     tag: sectionDef.key,
-                    title: title
+                    title: title,
+                    collapsed: !!sectionDef.collapsed
                 }
             }
             return {

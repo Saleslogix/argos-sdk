@@ -16,9 +16,9 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
-     'Sage/Platform/Mobile/Convert',
-     'Sage/Platform/Mobile/Utility',
-     'Sage/Platform/Mobile/Groups/_GroupBySection'
+    'Sage/Platform/Mobile/Convert',
+    'Sage/Platform/Mobile/Utility',
+    'Sage/Platform/Mobile/Groups/_GroupBySection'
 ], function(
     declare,
     lang,
@@ -33,7 +33,8 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
         displayNameText: 'Date Time Section',
         todayText: 'Today',
         tomorrowText: 'Tomorrow',
-        thisWeekText: 'This week',
+        laterThisWeekText: 'Later this week',
+        earlierThisWeekText: 'Earlier this week',
         thisMonthText: 'This month',
         thisYearText: 'This year',
         yesterdayText: 'Yesterday',
@@ -59,21 +60,22 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
 
             this.sections.push({ key: 'Today', title: this.todayText, value: null });
             this.sections.push({ key: 'Tomorrow', title: this.tomorrowText, value: null });
-            this.sections.push({ key: 'ThisWeek', title: this.thisWeekText, value: null });
-            this.sections.push({ key: 'ThisMonth', title: this.thisMonthText, value: null });
-            this.sections.push({ key: 'ThisYear', title: this.thisYearText, value: null });
+            this.sections.push({ key: 'LaterThisWeek', title: this.laterThisWeekText, value: null });
+            this.sections.push({ key: 'EarlierThisWeek', title: this.earlierThisWeekText, value: null });
+            this.sections.push({ key: 'ThisMonth', title: this.thisMonthText, value: null, collapsed: true });
+            this.sections.push({ key: 'ThisYear', title: this.thisYearText, value: null, collapsed: true });
             this.sections.push({ key: 'Yesterday', title:this.yesterdayText, value: null });
-            this.sections.push({ key: 'LastWeek', title: this.lastWeekText, value: null });
-            this.sections.push({ key: 'TwoWeeksAgo', title: this.twoWeeksAgoText, value: null });
-            this.sections.push({ key: 'ThreeWeeksAgo', title: this.threeWeeksAgoText, value: null });
-            this.sections.push({ key: 'LastMonth', title: this.lastMonthText, value: null });
-            this.sections.push({ key: 'TwoMonthsAgo', title: this.twoMonthsAgoText, value: null });
-            this.sections.push({ key: 'ThreeMonthsAgo', title: this.threeMonthsAgoText, value: null });
-            this.sections.push({ key: 'Older', title: this.olderText, value: null });
-            this.sections.push({ key: 'NextYear', title: this.nextYearText, value: null });
-            this.sections.push({ key: 'NextMonth', title: this.nextMonthText, value: null });
-            this.sections.push({ key: 'NextWeek', title: this.nextWeekText, value: null });
-            this.sections.push({ key: 'Future', title: this.futureText,value: null });
+            this.sections.push({ key: 'LastWeek', title: this.lastWeekText, value: null, collapsed: true });
+            this.sections.push({ key: 'TwoWeeksAgo', title: this.twoWeeksAgoText, value: null, collapsed: true });
+            this.sections.push({ key: 'ThreeWeeksAgo', title: this.threeWeeksAgoText, value: null, collapsed: true });
+            this.sections.push({ key: 'LastMonth', title: this.lastMonthText, value: null, collapsed: true });
+            this.sections.push({ key: 'TwoMonthsAgo', title: this.twoMonthsAgoText, value: null, collapsed: true });
+            this.sections.push({ key: 'ThreeMonthsAgo', title: this.threeMonthsAgoText, value: null, collapsed: true });
+            this.sections.push({ key: 'Older', title: this.olderText, value: null, collapsed: true });
+            this.sections.push({ key: 'NextYear', title: this.nextYearText, value: null, collapsed: true });
+            this.sections.push({ key: 'NextMonth', title: this.nextMonthText, value: null, collapsed: true });
+            this.sections.push({ key: 'NextWeek', title: this.nextWeekText, value: null, collapsed: true });
+            this.sections.push({ key: 'Future', title: this.futureText,value: null, collapsed: true });
         },
         getSection: function(entry) {
             var value;
@@ -89,7 +91,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             return null;
         },
         getDefaultSection:function(){
-            return { key: 'Unknown', title: 'Unknown' }
+            return { key: 'Unknown', title: 'Unknown' };
         },
         getSectionKey: function(value){
             var valueDate;
@@ -133,6 +135,10 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             if (this._isLastWeek(valueDate)) {
                 return "LastWeek";
             }
+
+            if (this._isEarlierThisWeek(valueDate)) {
+                return "EarlierThisWeek";
+            }
             
             if (this._isYesterday(valueDate)) {
                 return "Yesterday";
@@ -146,8 +152,8 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                 return "Tomorrow";
             }
 
-            if (this._isThisWeek(valueDate)) {
-                return "ThisWeek";
+            if (this._isLaterThisWeek(valueDate)) {
+                return "LaterThisWeek";
             }
 
             if (this._isNextWeek(valueDate)) {
@@ -183,7 +189,8 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             return value.getFullYear() === (this.currentYear + 1);
         },
         _isOlder: function(value) {
-            return value.getFullYear() < this.currentYear;
+            return value.getFullYear() <= this.currentYear &&
+                value.getMonth() < (this.currentMonth - 3);
         },
         _isThisYear: function(value) {
             return value.getFullYear() === this.currentYear;
@@ -217,13 +224,23 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                 value.getMonth() === this.currentMonth &&
                 value.getDayOfYear() === (this.currentDay - 1);
         },
-        _isThisWeek: function(value) {
+        _isLaterThisWeek: function(value) {
             // Excludes today, tomorrow, and yesterday
             return this._isThisYear(value) &&
                 !this._isToday(value) && 
                 !this._isTomorrow(value) &&
                 !this._isYesterday(value) &&
-                this._getWeek(value) === this.currentWeek;
+                this._getWeek(value) === this.currentWeek &&
+                value.getDayOfYear() > this.currentDay;
+        },
+        _isEarlierThisWeek: function(value) {
+            // Excludes today, tomorrow, and yesterday
+            return this._isThisYear(value) &&
+                !this._isToday(value) && 
+                !this._isTomorrow(value) &&
+                !this._isYesterday(value) &&
+                this._getWeek(value) === this.currentWeek &&
+                value.getDayOfYear() < this.currentDay;
         },
         _isLastWeek: function(value) {
             // Excludes yesterday
@@ -231,10 +248,10 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                 !this._isYesterday(value);
         },
         _isTwoWeeksAgo: function(value) {
-            return this._getWeek(value) === (this.currentWeek - 2)
+            return this._getWeek(value) === (this.currentWeek - 2);
         },
         _isThreeWeeksAgo: function(value) {
-            return this._getWeek(value) === (this.currentWeek - 3)
+            return this._getWeek(value) === (this.currentWeek - 3);
         },
         _isLastMonth: function(value) {
             return value.getMonth() === (this.currentMonth - 1);
@@ -246,6 +263,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             return value.getMonth() === (this.currentMonth - 3);
         },
         getSectionByKey:function(key, value){
+            var section;
             for(section in this.sections){
                 if (this.sections[section].key === key) {
                     return this.sections[section];
