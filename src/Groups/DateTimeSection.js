@@ -111,39 +111,39 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                 valueDay = valueDate.getDay();
             }
             if (valueYear > this.currentYear) {
-                if (valueYear == (this.currentYear + 1)) {
+                if (valueYear === (this.currentYear + 1)) {
                     key = "NextYear";
                 }
                 else {
                     key = "Future";
                 }
-            } else if (valueYear == this.currentYear) {
+            } else if (valueYear === this.currentYear) {
                 if (valueMonth > this.currentMonth) {
-                    if (valueMonth == this.currentMonth + 1) {
+                    if (valueMonth === this.currentMonth + 1) {
                         key = "NextMonth";
                     } else {
                         key = "ThisYear";
                     }
-                } else if (valueMonth == this.currentMonth) {
+                } else if (valueMonth === this.currentMonth) {
                     if (valueWeek > this.currentWeek) {
 
-                        if (valueWeek = this.currentWeek + 1) {
+                        if (valueWeek === this.currentWeek + 1) {
                             key = "NextWeek";
                         } else {
                             key = "ThisMonth";
                         }
-                    } else if (valueWeek == this.currentWeek) {
+                    } else if (valueWeek === this.currentWeek) {
                         if (valueDay > this.currentDay) {
-                            if (valueDay == (this.currentDay + 1)) {
+                            if (valueDay === (this.currentDay + 1)) {
                                 key = "Tomorrow";
                             }
                             else {
                                 key = "ThisWeek";
                             }
-                        } else if (valueDay == this.currentDay) {
+                        } else if (valueDay === this.currentDay) {
                             key = "Today";
                         } else {
-                            if (valueDay == (this.currentDay - 1)) {
+                            if (valueDay === (this.currentDay - 1)) {
                                 key = "Yesterday";
                             }else{ 
                                 key = "X";
@@ -151,11 +151,11 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                         }
                     }
                     else {
-                        if (valueWeek == this.currentWeek - 1) {
+                        if (valueWeek === this.currentWeek - 1) {
                             key = "LastWeek";
-                        } else if (valueWeek == this.currentWeek - 2) {
+                        } else if (valueWeek === this.currentWeek - 2) {
                             key = "TwoWeeksAgo";
-                        } else if (valueWeek == this.currentWeek - 3) {
+                        } else if (valueWeek === this.currentWeek - 3) {
                             key = "ThreeWeeksAgo";
                         } else {
                             key = "LastMonth";
@@ -163,11 +163,11 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                     }
 
                 } else {
-                    if (valueMonth == (this.currentMonth - 1)) {
+                    if (valueMonth === (this.currentMonth - 1)) {
                         key = "LastMonth";
-                    } else if(valueMonth == (this.currentMonth - 2)) {
+                    } else if(valueMonth === (this.currentMonth - 2)) {
                         key = "TwoMonthsAgo";
-                    } else if (valueMonth == (this.currentMonth - 3)) {
+                    } else if (valueMonth === (this.currentMonth - 3)) {
                         key = "ThreeMonthsAgo";
                     } else {
                         key = "Older";
@@ -182,7 +182,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
         },
         getSectionByKey:function(key, value){
             for(section in this.sections){
-                if (this.sections[section].key == key) {
+                if (this.sections[section].key === key) {
                     return this.sections[section];
                 }
             }
