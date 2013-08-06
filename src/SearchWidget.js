@@ -252,7 +252,7 @@ define('Sage/Platform/Mobile/SearchWidget', [
         * * Determines if its a custom expression, hash tag, or normal search
         */
         getFormattedSearchQuery: function() {
-            var searchQuery = this.get('queryValue'),
+            var searchQuery = this.getSearchExpression(),
                 formattedQuery,
                 isCustomMatch = searchQuery && this.customSearchRE.test(searchQuery),
                 isHashTagMatch = searchQuery && this.hashTagSearchRE.test(searchQuery);
@@ -269,6 +269,14 @@ define('Sage/Platform/Mobile/SearchWidget', [
                 formattedQuery = null;
             }
             return formattedQuery;
+        },
+        /**
+       * Gets the current search expression.
+       * * Gathers the inputted search text
+       */
+        getSearchExpression: function()
+        {
+            return this.queryNode.value;
         }
     });
 });
