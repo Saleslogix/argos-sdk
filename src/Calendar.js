@@ -24,7 +24,8 @@ define('Sage/Platform/Mobile/Calendar', [
     'dojo/dom-class',
     'dojo/dom-construct',
     'dojo/dom-style',
-    'Sage/Platform/Mobile/View'
+    'Sage/Platform/Mobile/View',
+    'moment'
 ], function(
     declare,
     string,
@@ -32,7 +33,8 @@ define('Sage/Platform/Mobile/Calendar', [
     domClass,
     domConstruct,
     domStyle,
-    View
+    View,
+    moment
 ) {
     var pad = function(n) { return n < 10 ? '0' + n : n };
     var uCase = function (str) { return str.charAt(0).toUpperCase() + str.substring(1); };
@@ -48,10 +50,10 @@ define('Sage/Platform/Mobile/Calendar', [
         calendarNode: null,
         timeNode: null,
         meridiemNode: null,
-        months: moment.monthsShort,
-        dateFormat: moment.longDateFormat.L,
+        months: moment().lang()._monthsShort,
+        dateFormat: moment().lang()._longDateFormat.L,
         timeFormatText: 'h:mm A',
-        is24hrTimeFormat: moment.longDateFormat.LT.match(/H\:/),
+        is24hrTimeFormat: moment().lang()._longDateFormat.LT.match(/H\:/),
         date: false,
         showTimePicker: false,
         timeless: false,
@@ -243,7 +245,7 @@ define('Sage/Platform/Mobile/Calendar', [
                 // hide meridiem toggle when using 24hr time format:
                 if (this.is24hrTimeFormat) {
                     domStyle.set(this.meridiemNode.parentNode, 'display', 'none');
-                } else if (12 > this.date.getHours()) {
+                } else if (12 > this.date.hours()) {
                     // ensure initial toggle state reflects actual time
                     domClass.add(this.meridiemNode, 'toggleStateOn');
                 } else {

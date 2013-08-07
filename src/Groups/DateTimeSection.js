@@ -18,14 +18,16 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
     'dojo/string',
     'Sage/Platform/Mobile/Convert',
     'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/Groups/_GroupBySection'
+    'Sage/Platform/Mobile/Groups/_GroupBySection',
+    'moment'
 ], function(
     declare,
     lang,
     string,
     Convert,
     Utility,
-    _GroupBySection
+    _GroupBySection,
+    moment
 ) {
 
     return declare('Sage.Platform.Mobile.Groups.DateTimeSection', [_GroupBySection], {
@@ -97,15 +99,15 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             var valueDate;
 
             if (!this.currentDate) {
-                this.currentDate = new Date(Date.now());
-                this.currentYear = this.currentDate.getFullYear();
-                this.currentMonth = this.currentDate.getMonth();
-                this.currentWeek = this._getWeek(this.currentDate);
-                this.currentDay = this.currentDate.getDayOfYear();
+                this.currentDate = moment();;
+                this.currentYear = this.currentDate.year();
+                this.currentMonth = this.currentDate.month();
+                this.currentWeek = this.currentDate.week();
+                this.currentDay = this.currentDate.dayOfYear();
             }
 
             if (value) {
-                valueDate = Convert.toDateFromString(value);
+                valueDate = moment(value);
             }
 
             if (this._isOlder(valueDate)) {
@@ -183,46 +185,46 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             return "Unknown";
         },
         _isFuture: function(value) {
-            return value.getFullYear() > (this.currentYear + 1); 
+            return value.year() > (this.currentYear + 1); 
         },
         _isNextYear: function(value) {
-            return value.getFullYear() === (this.currentYear + 1);
+            return value.year() === (this.currentYear + 1);
         },
         _isOlder: function(value) {
-            return value.getFullYear() <= this.currentYear &&
-                value.getMonth() < (this.currentMonth - 3);
+            return value.year() <= this.currentYear &&
+                value.month() < (this.currentMonth - 3);
         },
         _isThisYear: function(value) {
-            return value.getFullYear() === this.currentYear;
+            return value.year() === this.currentYear;
         },
         _isNextMonth: function(value) {
-            return this._isThisYear(value) && value.getMonth() === (this.currentMonth + 1);
+            return this._isThisYear(value) && value.month() === (this.currentMonth + 1);
         },
         _isNextWeek: function(value) {
             return this._isThisYear(value) &&
-                value.getMonth() === this.currentMonth &&
-                this._getWeek(value) === (this.currentWeek + 1);
+                value.month() === this.currentMonth &&
+                value.week() === (this.currentWeek + 1);
         },
         _isThisMonth: function(value) {
             // Excludes next week
             return this._isThisYear(value) &&
-                value.getMonth() === this.currentMonth &&
-                this._getWeek(value) > (this.currentWeek + 1);
+                value.month() === this.currentMonth &&
+                value.week() > (this.currentWeek + 1);
         },
         _isTomorrow: function(value) {
             return this._isThisYear(value) &&
-                value.getMonth() === this.currentMonth &&
-                value.getDayOfYear() === (this.currentDay + 1);
+                value.month() === this.currentMonth &&
+                value.dayOfYear() === (this.currentDay + 1);
         },
         _isToday: function(value) {
             return this._isThisYear(value) &&
-                value.getMonth() === this.currentMonth &&
-                value.getDayOfYear() === this.currentDay;
+                value.month() === this.currentMonth &&
+                value.dayOfYear() === this.currentDay;
         },
         _isYesterday: function(value) {
             return this._isThisYear(value) &&
-                value.getMonth() === this.currentMonth &&
-                value.getDayOfYear() === (this.currentDay - 1);
+                value.month() === this.currentMonth &&
+                value.dayOfYear() === (this.currentDay - 1);
         },
         _isLaterThisWeek: function(value) {
             // Excludes today, tomorrow, and yesterday
@@ -230,8 +232,8 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                 !this._isToday(value) && 
                 !this._isTomorrow(value) &&
                 !this._isYesterday(value) &&
-                this._getWeek(value) === this.currentWeek &&
-                value.getDayOfYear() > this.currentDay;
+                value.week() === this.currentWeek &&
+                value.dayOfYear() > this.currentDay;
         },
         _isEarlierThisWeek: function(value) {
             // Excludes today, tomorrow, and yesterday
@@ -239,28 +241,28 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                 !this._isToday(value) && 
                 !this._isTomorrow(value) &&
                 !this._isYesterday(value) &&
-                this._getWeek(value) === this.currentWeek &&
-                value.getDayOfYear() < this.currentDay;
+                value.week() === this.currentWeek &&
+                value.dayOfYear() < this.currentDay;
         },
         _isLastWeek: function(value) {
             // Excludes yesterday
-            return this._getWeek(value) === (this.currentWeek - 1) &&
+            return value.week() === (this.currentWeek - 1) &&
                 !this._isYesterday(value);
         },
         _isTwoWeeksAgo: function(value) {
-            return this._getWeek(value) === (this.currentWeek - 2);
+            return value.week() === (this.currentWeek - 2);
         },
         _isThreeWeeksAgo: function(value) {
-            return this._getWeek(value) === (this.currentWeek - 3);
+            return value.week() === (this.currentWeek - 3);
         },
         _isLastMonth: function(value) {
-            return value.getMonth() === (this.currentMonth - 1);
+            return value.month() === (this.currentMonth - 1);
         },
         _isTwoMonthsAgo: function(value) {
-            return value.getMonth() === (this.currentMonth - 2);
+            return value.month() === (this.currentMonth - 2);
         },
         _isThreeMonthsAgo: function(value) {
-            return value.getMonth() === (this.currentMonth - 3);
+            return value.month() === (this.currentMonth - 3);
         },
         getSectionByKey:function(key, value){
             var section;
@@ -276,10 +278,6 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             key = this.getSectionKey(value);
             section = this.getSectionByKey(key, value);
             return section;
-        },
-        _getWeek: function(date) {
-            var onejan = new Date(date.getFullYear(),0,1);
-            return Math.ceil((((date - onejan) / 86400000) + onejan.getDay()+1)/7);
-        } 
+        }
     });
 });

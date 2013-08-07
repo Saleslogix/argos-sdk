@@ -1,6 +1,16 @@
 var moment = require("../../moment");
 
 exports.utc = {
+    setUp : function (cb) {
+        moment.lang('en');
+        cb();
+    },
+
+    tearDown : function (cb) {
+        moment.lang('en');
+        cb();
+    },
+
     "utc and local" : function(test) {
         test.expect(7);
 
@@ -20,7 +30,7 @@ exports.utc = {
             test.equal(m.date(), 2, "the date should be correct for local");
             test.equal(m.day(), 3, "the day should be correct for local");
         }
-        var zone = (m.zone() > 0) ? Math.floor(m.zone() / 60) : Math.ceil(m.zone() / 60);
+        var zone = Math.ceil(m.zone() / 60);
         var expected = (24 + 3 - zone) % 24;
         test.equal(m.hours(), expected, "the hours (" + m.hours() + ") should be correct for local");
         test.equal(moment().utc().zone(), 0, "timezone in utc should always be zero");
@@ -28,7 +38,13 @@ exports.utc = {
     },
 
     "creating with utc" : function(test) {
-        test.expect(6);
+        test.expect(7);
+
+        var diff = moment.utc().valueOf() - moment().valueOf();
+        diff = Math.abs(diff);
+        // we check the diff rather than equality because sometimes they are off by a millisecond
+
+        test.ok(diff < 5, "Calling moment.utc() should default to the current time");
 
         var m = moment.utc([2011, 1, 2, 3, 4, 5, 6]);
         test.equal(m.date(), 2, "the day should be correct for utc array");
