@@ -27,7 +27,8 @@ define('Sage/Platform/Mobile/Format', [
     'dojo/string',
     'dojo/number',
     'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/Utility'
+    'Sage/Platform/Mobile/Utility',
+    'moment'
 ], function(
     json,
     lang,
@@ -35,7 +36,8 @@ define('Sage/Platform/Mobile/Format', [
     string,
     dNumber,
     convert,
-    utility
+    utility,
+    moment
 ) {
 
     var getVectorMaxSize = function (v) {
