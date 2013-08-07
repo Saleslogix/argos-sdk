@@ -13,6 +13,11 @@
  * limitations under the License.
  */
 
+/**
+ * @class Sage.Platform.Mobile._ServiceMixin
+ * @alternateClassName _ServiceMixin
+ * @deprecated
+ */
 define('Sage/Platform/Mobile/_ServiceMixin', [
     'dojo/_base/declare'
 ], function(
@@ -23,6 +28,7 @@ define('Sage/Platform/Mobile/_ServiceMixin', [
         serviceMap: null,
         constructor: function() {
             var map = this.serviceMap;
+            console.log(map);
             if (map)
             {
                 for (var property in map)

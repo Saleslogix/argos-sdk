@@ -258,7 +258,7 @@ ReUI = {};
 
         D.clearTimer(context.check);
 
-        scrollTo(0, 1);
+        // scrollTo(0, 1);
 
         D.addClass(R.rootEl, 'transition');
 
@@ -349,7 +349,7 @@ ReUI = {};
             context.height = window.innerHeight;
             context.width = window.innerWidth;
 
-            setOrientation(context.height < context.width ? 'landscape' : 'portrait');
+            R.setOrientation(context.height < context.width ? 'landscape' : 'portrait');
         }
 
         if (context.transitioning) return;
@@ -377,31 +377,6 @@ ReUI = {};
             if (page)
                 R.show(page, {external: true, reverse: reverse, tag: info && info.tag, data: info && info.data});
         }         
-    };
-
-    var setOrientation = function(value) {
-        var currentOrient = R.rootEl.getAttribute('orient');
-        if (value === currentOrient) return;
-
-        R.rootEl.setAttribute('orient', value);
-
-        if (value == 'portrait') 
-        {
-            D.removeClass(R.rootEl, 'landscape');
-            D.addClass(R.rootEl, 'portrait');
-        }
-        else if (value == 'landscape')
-        {
-            D.removeClass(R.rootEl, 'portrait');
-            D.addClass(R.rootEl, 'landscape');
-        }
-        else
-        {
-            D.removeClass(R.rootEl, 'portrait');
-            D.removeClass(R.rootEl, 'landscape');
-        }
-
-        D.wait(scrollTo, 100, 0, 1); 
     };
 
     var context = {
@@ -495,6 +470,29 @@ ReUI = {};
             D.bind(R.rootEl, 'click', onRootClick);
         },
 
+        setOrientation: function(value) {
+            var currentOrient = R.rootEl.getAttribute('orient');
+            if (value === currentOrient) return;
+
+            R.rootEl.setAttribute('orient', value);
+
+            if (value == 'portrait') 
+            {
+                D.removeClass(R.rootEl, 'landscape');
+                D.addClass(R.rootEl, 'portrait');
+            }
+            else if (value == 'landscape')
+            {
+                D.removeClass(R.rootEl, 'portrait');
+                D.addClass(R.rootEl, 'landscape');
+            }
+            else
+            {
+                D.removeClass(R.rootEl, 'portrait');
+                D.removeClass(R.rootEl, 'landscape');
+            }
+        },
+
         registerFx: function(name, compatible, fn) {
             if (typeof compatible === 'function')
             {
@@ -539,7 +537,8 @@ ReUI = {};
 
             if (!page) return;
 
-            if (D.isSelected(page)) return;
+            if (context.hash === formatHashForPage(page, o))
+                return;
 
             context.transitioning = true;
            
@@ -633,7 +632,7 @@ ReUI = {};
 
                 D.dispatch(page, 'focus', false);
 
-                if (from)
+                if (from && !D.isSelected(page))
                 {
                     if (o.reverse) D.dispatch(context.page, 'unload', false);
 

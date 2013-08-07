@@ -17,6 +17,10 @@
           "path": "../libraries/"
         },
         {
+          "text": "canvas2image.js",
+          "path": "../libraries/"
+        },
+        {
           "text": "sdata-client-dependencies-debug.js",
           "path": "../libraries/sdata/"
         },
@@ -31,6 +35,14 @@
         {
           "text": "date.js",
           "path": "../libraries/datejs/build/"
+        },
+        {
+          "text": "snap.js",
+          "path": "../libraries/snap/"
+        },
+        {
+          "text": "overthrow.js",
+          "path": "../libraries/overthrow/"
         }
       ]
     },
@@ -72,11 +84,11 @@
           "path": "../src"
         },
         {
-          "text": "Format.js",
+          "text": "Utility.js",
           "path": "../src"
         },
         {
-          "text": "Utility.js",
+          "text": "Format.js",
           "path": "../src"
         },
         {
@@ -90,6 +102,10 @@
         {
           "text": "FieldManager.js",
           "path": "../src"
+        },
+        {
+          "text": "SData.js",
+          "path": "../src/Store"
         },
         {
           "text": "_Field.js",
@@ -152,6 +168,18 @@
           "path": "../src"
         },
         {
+          "text": "_GroupBySection.js",
+          "path": "../src/Groups"
+        },
+        {
+          "text": "DateTimeSection.js",
+          "path": "../src/Groups"
+        },
+		{
+          "text": "GroupByValueSection.js",
+          "path": "../src/Groups"
+        },
+        {
           "text": "SearchWidget.js",
           "path": "../src"
         },
@@ -176,6 +204,10 @@
           "path": "../src"
         },
         {
+          "text": "FileSelect.js",
+          "path": "../src/Views"
+        },
+        {
           "text": "Signature.js",
           "path": "../src/Views"
         },
@@ -193,9 +225,25 @@
       "filters": ".*(\\.css|\\.jpg|\\.png|\\.gif)"
     },
     {
+      "src": "../min",
+      "dest": "content",
+      "filters": ".*(\\.css)"
+    },
+    {
       "src": "../libraries/dojo/dojo",
       "dest": "content/dojo/dojo",
       "filters": "(dojo\\.js|acme\\.js)"
+    },
+    {
+      "src": "../libraries/dojo/dojo/cldr/nls",
+      "dest": "content/dojo/dojo/cldr/nls",
+      "filters": ".*js"
+    },
+    {
+      "src": "../libraries/dojo/dojox",
+      "dest": "content/dojo/dojox",
+      "filters": "((gfx|svg|shape|path)\\.js)"
     }
   ]
 }
+

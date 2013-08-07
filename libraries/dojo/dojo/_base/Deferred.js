@@ -5,125 +5,138 @@
 */
 
 //>>built
-define("dojo/_base/Deferred",["./kernel","./lang"],function(_1,_2){
-var _3=function(){
+define("dojo/_base/Deferred",["./kernel","../Deferred","../promise/Promise","../errors/CancelError","../has","./lang","../when"],function(_1,_2,_3,_4,_5,_6,_7){
+var _8=function(){
 };
-var _4=Object.freeze||function(){
+var _9=Object.freeze||function(){
 };
-_1.Deferred=function(_5){
-var _6,_7,_8,_9,_a;
-var _b=(this.promise={});
-function _c(_d){
-if(_7){
+var _a=_1.Deferred=function(_b){
+var _c,_d,_e,_f,_10,_11,_12;
+var _13=(this.promise=new _3());
+function _14(_15){
+if(_d){
 throw new Error("This deferred has already been resolved");
 }
-_6=_d;
-_7=true;
-_e();
+_c=_15;
+_d=true;
+_16();
 };
-function _e(){
-var _f;
-while(!_f&&_a){
-var _10=_a;
-_a=_a.next;
-if((_f=(_10.progress==_3))){
-_7=false;
+function _16(){
+var _17;
+while(!_17&&_12){
+var _18=_12;
+_12=_12.next;
+if((_17=(_18.progress==_8))){
+_d=false;
 }
-var _11=(_8?_10.error:_10.resolved);
-if(_11){
+var _19=(_10?_18.error:_18.resolved);
+if(_5("config-useDeferredInstrumentation")){
+if(_10&&_2.instrumentRejected){
+_2.instrumentRejected(_c,!!_19);
+}
+}
+if(_19){
 try{
-var _12=_11(_6);
-if(_12&&typeof _12.then==="function"){
-_12.then(_2.hitch(_10.deferred,"resolve"),_2.hitch(_10.deferred,"reject"),_2.hitch(_10.deferred,"progress"));
+var _1a=_19(_c);
+if(_1a&&typeof _1a.then==="function"){
+_1a.then(_6.hitch(_18.deferred,"resolve"),_6.hitch(_18.deferred,"reject"),_6.hitch(_18.deferred,"progress"));
 continue;
 }
-var _13=_f&&_12===undefined;
-if(_f&&!_13){
-_8=_12 instanceof Error;
+var _1b=_17&&_1a===undefined;
+if(_17&&!_1b){
+_10=_1a instanceof Error;
 }
-_10.deferred[_13&&_8?"reject":"resolve"](_13?_6:_12);
+_18.deferred[_1b&&_10?"reject":"resolve"](_1b?_c:_1a);
 }
 catch(e){
-_10.deferred.reject(e);
+_18.deferred.reject(e);
 }
 }else{
-if(_8){
-_10.deferred.reject(_6);
+if(_10){
+_18.deferred.reject(_c);
 }else{
-_10.deferred.resolve(_6);
+_18.deferred.resolve(_c);
 }
 }
 }
 };
-this.resolve=this.callback=function(_14){
-this.fired=0;
-this.results=[_14,null];
-_c(_14);
+this.isResolved=_13.isResolved=function(){
+return _f==0;
 };
-this.reject=this.errback=function(_15){
-_8=true;
-this.fired=1;
-_c(_15);
-this.results=[null,_15];
-if(!_15||_15.log!==false){
-(_1.config.deferredOnError||function(x){
-console.error(x);
-})(_15);
+this.isRejected=_13.isRejected=function(){
+return _f==1;
+};
+this.isFulfilled=_13.isFulfilled=function(){
+return _f>=0;
+};
+this.isCanceled=_13.isCanceled=function(){
+return _e;
+};
+this.resolve=this.callback=function(_1c){
+this.fired=_f=0;
+this.results=[_1c,null];
+_14(_1c);
+};
+this.reject=this.errback=function(_1d){
+_10=true;
+this.fired=_f=1;
+if(_5("config-useDeferredInstrumentation")){
+if(_2.instrumentRejected){
+_2.instrumentRejected(_1d,!!_12);
+}
+}
+_14(_1d);
+this.results=[null,_1d];
+};
+this.progress=function(_1e){
+var _1f=_12;
+while(_1f){
+var _20=_1f.progress;
+_20&&_20(_1e);
+_1f=_1f.next;
 }
 };
-this.progress=function(_16){
-var _17=_a;
-while(_17){
-var _18=_17.progress;
-_18&&_18(_16);
-_17=_17.next;
-}
-};
-this.addCallbacks=function(_19,_1a){
-this.then(_19,_1a,_3);
+this.addCallbacks=function(_21,_22){
+this.then(_21,_22,_8);
 return this;
 };
-_b.then=this.then=function(_1b,_1c,_1d){
-var _1e=_1d==_3?this:new _1.Deferred(_b.cancel);
-var _1f={resolved:_1b,error:_1c,progress:_1d,deferred:_1e};
-if(_a){
-_9=_9.next=_1f;
+_13.then=this.then=function(_23,_24,_25){
+var _26=_25==_8?this:new _a(_13.cancel);
+var _27={resolved:_23,error:_24,progress:_25,deferred:_26};
+if(_12){
+_11=_11.next=_27;
 }else{
-_a=_9=_1f;
+_12=_11=_27;
 }
-if(_7){
-_e();
+if(_d){
+_16();
 }
-return _1e.promise;
+return _26.promise;
 };
-var _20=this;
-_b.cancel=this.cancel=function(){
-if(!_7){
-var _21=_5&&_5(_20);
-if(!_7){
-if(!(_21 instanceof Error)){
-_21=new Error(_21);
+var _28=this;
+_13.cancel=this.cancel=function(){
+if(!_d){
+var _29=_b&&_b(_28);
+if(!_d){
+if(!(_29 instanceof Error)){
+_29=new _4(_29);
 }
-_21.log=false;
-_20.reject(_21);
+_29.log=false;
+_28.reject(_29);
 }
 }
+_e=true;
 };
-_4(_b);
+_9(_13);
 };
-_2.extend(_1.Deferred,{addCallback:function(_22){
-return this.addCallbacks(_2.hitch.apply(_1,arguments));
-},addErrback:function(_23){
-return this.addCallbacks(null,_2.hitch.apply(_1,arguments));
-},addBoth:function(_24){
-var _25=_2.hitch.apply(_1,arguments);
-return this.addCallbacks(_25,_25);
+_6.extend(_a,{addCallback:function(_2a){
+return this.addCallbacks(_6.hitch.apply(_1,arguments));
+},addErrback:function(_2b){
+return this.addCallbacks(null,_6.hitch.apply(_1,arguments));
+},addBoth:function(_2c){
+var _2d=_6.hitch.apply(_1,arguments);
+return this.addCallbacks(_2d,_2d);
 },fired:-1});
-_1.Deferred.when=_1.when=function(_26,_27,_28,_29){
-if(_26&&typeof _26.then==="function"){
-return _26.then(_27,_28,_29);
-}
-return _27?_27(_26):_26;
-};
-return _1.Deferred;
+_a.when=_1.when=_7;
+return _a;
 });

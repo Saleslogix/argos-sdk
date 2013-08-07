@@ -29,6 +29,7 @@ obj/
 _ReSharper*/
 *.resharper.user
 [Tt]est[Rr]esult*
+docs/
 
 #OS junk files
 Thumbs.db
@@ -37,3 +38,11 @@ Thumbs.db
 deploy/
 .idea/
 *.patch
+
+*.swp
+
+# nodejs
+node_modules
+.grunt/
+_SpecRunner.html
+report/junit.xml

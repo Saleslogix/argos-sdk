@@ -1,81 +1,8 @@
+/*
+	Copyright (c) 2004-2011, The Dojo Foundation All Rights Reserved.
+	Available via Academic Free License >= 2.1 OR the modified BSD license.
+	see: http://dojotoolkit.org/license for details
+*/
+
 //>>built
-define(
-//begin v1.x content
-{
-	"quarters-standAlone-wide": [
-		"第1季",
-		"第2季",
-		"第3季",
-		"第4季"
-	],
-	"quarters-format-abbr": [
-		"第1季",
-		"第2季",
-		"第3季",
-		"第4季"
-	],
-	"dateFormat-medium": "yyyy/M/d",
-	"field-second": "秒",
-	"quarters-standAlone-abbr": [
-		"第1季",
-		"第2季",
-		"第3季",
-		"第4季"
-	],
-	"dateFormatItem-MMdd": "MM/dd",
-	"dateFormatItem-MEd": "M/d（E）",
-	"dateFormatItem-yMEd": "yyyy/M/d（EEE）",
-	"field-week": "週",
-	"dateFormatItem-H": "H時",
-	"eraNarrow": [
-		"西元前",
-		"西元"
-	],
-	"field-day-relative+-3": "大前天",
-	"timeFormat-full": "zzzzah時mm分ss秒",
-	"dateFormatItem-Md": "M/d",
-	"months-standAlone-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
-	],
-	"eraNames": [
-		"西元前",
-		"西元"
-	],
-	"field-minute": "分鐘",
-	"field-hour": "小時",
-	"field-day-relative+2": "後天",
-	"field-day-relative+3": "大後天",
-	"dateFormat-short": "yy/M/d",
-	"dateFormatItem-yMMMEd": "y年M月d日EEE",
-	"field-era": "年代",
-	"dateFormatItem-yM": "yyyy/M",
-	"timeFormat-long": "zah時mm分ss秒",
-	"eraAbbr": [
-		"西元前",
-		"西元"
-	],
-	"dateFormatItem-h": "ah時",
-	"dateFormatItem-yMMM": "y年M月",
-	"quarters-format-wide": [
-		"第1季",
-		"第2季",
-		"第3季",
-		"第4季"
-	],
-	"field-weekday": "週天",
-	"field-zone": "區域",
-	"dateFormatItem-Ed": "d日(E)"
-}
-//end v1.x content
-);
+define("dojo/cldr/nls/zh-tw/gregorian",{"quarters-standAlone-wide":["第1季","第2季","第3季","第4季"],"quarters-format-abbr":["第1季","第2季","第3季","第4季"],"dateFormat-medium":"y/M/d","$locale":"zh-hant-tw","quarters-standAlone-abbr":["第1季","第2季","第3季","第4季"],"dateFormatItem-MEd":"M/d（E）","dateFormatItem-yMEd":"y/M/d（E）","dateFormatItem-Hm":"H:mm","dateFormatItem-H":"H時","eraNarrow":["西元前","西元"],"timeFormat-full":"zzzzah時mm分ss秒","months-standAlone-wide":["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],"eraNames":["西元前","西元"],"dateFormatItem-yQQQ":"y年QQQ","dateFormatItem-yMM":"y-MM","dateFormatItem-Hms":"H:mm:ss","dateFormat-short":"y/M/d","months-format-wide":["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],"timeFormat-long":"zah時mm分ss秒","eraAbbr":["西元前","西元"],"dateFormatItem-h":"ah時","quarters-format-wide":["第1季","第2季","第3季","第4季"],"dateFormatItem-Ed":"d日（E）"});

@@ -13,6 +13,15 @@
  * limitations under the License.
  */
 
+/**
+ * @class Sage.Platform.Mobile.ApplicationModule
+ * ApplicationModule is intended to be extended in the resulting application so that it
+ * references all the views, toolbars and customizations and registers them to App.
+ *
+ * You may think of ApplicationModule as "loader" or initializer.
+ * @alternateClassName ApplicationModule
+ * @requires Sage.Platform.Mobile.Application
+ */
 define('Sage/Platform/Mobile/ApplicationModule', [
     'dojo/_base/array',
     'dojo/_base/connect',
@@ -27,15 +36,35 @@ define('Sage/Platform/Mobile/ApplicationModule', [
 ) {
 
     return declare('Sage.Platform.Mobile.ApplicationModule', null, {
+        /**
+         * @property {Array}
+         * Array of dojo.connect bound to ApplicationModule
+         */
         _connects: null,
+        /**
+         * @property {Array}
+         * Array of dojo.subscribe bound to ApplicationModule
+         */
         _subscribes: null,
+        /**
+         * @property {Object}
+         * The {@link App App} instance for the application
+         */
         application: null,
+        /**
+         * Mixes in the passed options object into itself
+         * @param {Object} options Properties to be mixed in
+         */
         constructor: function(options) {
             this._connects = [];
             this._subscribes = [];
 
             lang.mixin(this, options);
         },
+        /**
+         * Destroy loops and disconnects all `_connect`s and unsubscribes all `_subscribe`s.
+         * Also calls {@link #uninitialize uninitialize}
+         */
         destroy: function() {
             array.forEach(this._connects, function(handle) {
                 connect.disconnect(handle);
@@ -47,9 +76,21 @@ define('Sage/Platform/Mobile/ApplicationModule', [
 
             this.uninitialize();
         },
+        /**
+         * Performs any additional destruction requirements
+         */
         uninitialize: function() {
 
         },
+        /**
+         * Saves the passed application instance and calls:
+         *
+         * 1. {@link #loadCustomizations loadCustomizations}
+         * 1. {@link #loadToolbars loadToolbars}
+         * 1. {@link #loadViews loadViews}
+         *
+         * @param {Object} application
+         */
         init: function(application) {
             this.application = application;
 
@@ -57,20 +98,49 @@ define('Sage/Platform/Mobile/ApplicationModule', [
             this.loadToolbars();
             this.loadViews();
         },
+        /**
+         * @template
+         * This function should be overriden in the app and be used to register all customizations.
+         */
         loadCustomizations: function() {
         },
+        /**
+         * @template
+         * This function should be overriden in the app and be used to register all views.
+         */
         loadViews: function() {
         },
+        /**
+         * @template
+         * This function should be overriden in the app and be used to register all toolbars.
+         */
         loadToolbars: function() {
         },
-        registerView: function(view) {
+        /**
+         * Passes the view instance to {@link App#registerView App.registerView}.
+         * @param {Object} view View instance to register
+         * @param {DOMNode} domNode Optional. DOM node to place the view in. 
+         */
+        registerView: function(view, domNode) {
             if (this.application)
-                this.application.registerView(view);
+                this.application.registerView(view, domNode);
         },
-        registerToolbar: function(name, toolbar) {
+        /**
+         * Passes the toolbar instance to {@link App#registerToolbar App.registerToolbar}.
+         * @param {String} name Unique name of the toolbar to register.
+         * @param {Object} toolbar Toolbar instance to register.
+         * @param {DOMNode} domNode Optional. DOM node to place the view in. 
+         */
+        registerToolbar: function(name, toolbar, domNode) {
             if (this.application)
-                this.application.registerToolbar(name, toolbar);
+                this.application.registerToolbar(name, toolbar, domNode);
         },
+        /**
+         * Passes the customization instance to {@link App#registerCustomization App.registerCustomization}.
+         * @param {String} set The customization set name, or type. Examples: `list`, `detail/tools`, `list/hashTagQueries`
+         * @param {String} id The View id the customization will be applied to
+         * @param {Object} spec The customization object containing at least `at` and `type`.
+         */
         registerCustomization: function(set, id, spec) {
             if (this.application)
                 this.application.registerCustomization(set, id, spec);

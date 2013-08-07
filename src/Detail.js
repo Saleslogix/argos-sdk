@@ -13,6 +13,18 @@
  * limitations under the License.
  */
 
+/**
+ * @class Sage.Platform.Mobile.Detail
+ * A Detail View represents a single record and should display all the info the user may need about the entry.
+ *
+ * A Detail entry is identified by its key ($key) which is how it requests the data via the SData endpoint.
+ *
+ * @alternateClassName Detail
+ * @extends Sage.Platform.Mobile.View
+ * @requires Sage.Platform.Mobile.Format
+ * @requires Sage.Platform.Mobile.Utility
+ * @requires Sage.Platform.Mobile.ErrorManager
+ */
 define('Sage/Platform/Mobile/Detail', [
     'dojo',
     'dojo/_base/declare',
@@ -40,22 +52,60 @@ define('Sage/Platform/Mobile/Detail', [
 ) {
 
     return declare('Sage.Platform.Mobile.Detail', [View], {
+        /**
+         * @property {Object}
+         * Creates a setter map to html nodes, namely:
+         *
+         * * detailContent => contentNode's innerHTML
+         *
+         */
         attributeMap: {
             detailContent: {node: 'contentNode', type: 'innerHTML'}
         },
+        /**
+         * @property {Simplate}
+         * The template used to render the view's main DOM element when the view is initialized.
+         * This template includes loadingTemplate.
+         *
+         * The default template uses the following properties:
+         *
+         *      name                description
+         *      ----------------------------------------------------------------
+         *      id                   main container div id
+         *      title                main container div title attr
+         *      cls                  additional class string added to the main container div
+         *      resourceKind         set to data-resource-kind
+         *
+         */
         widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '{%! $.loadingTemplate %}',
             '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
             '</div>'
         ]),
+        /**
+         * @property {Simplate}
+         * HTML shown when no data is available.
+         */
         emptyTemplate: new Simplate([
         ]),
+        /**
+         * @property {Simplate}
+         * HTML shown when data is being loaded.
+         *
+         * `$` => the view instance
+         */
         loadingTemplate: new Simplate([
             '<div class="panel-loading-indicator">',
             '<div class="row"><div>{%: $.loadingText %}</div></div>',
             '</div>'
         ]),
+        /**
+         * @property {Simplate}
+         * HTML that starts a new section including the collapsible header
+         *
+         * `$` => the view instance
+         */
         sectionBeginTemplate: new Simplate([
             '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
             '{%: ($.title || $.options.title) %}<button class="collapsed-indicator" aria-label="{%: $$.toggleCollapseText %}"></button>',
@@ -66,6 +116,12 @@ define('Sage/Platform/Mobile/Detail', [
             '<div class="{%= ($.cls || $.options.cls) %}">',
             '{% } %}'
         ]),
+        /**
+         * @property {Simplate}
+         * HTML that ends a section
+         *
+         * `$` => the view instance
+         */
         sectionEndTemplate: new Simplate([
             '{% if ($.list || $.options.list) { %}',
             '</ul>',
@@ -73,12 +129,26 @@ define('Sage/Platform/Mobile/Detail', [
             '</div>',
             '{% } %}'
         ]),
+        /**
+         * @property {Simplate}
+         * HTML that is used for a property in the detail layout
+         *
+         * * `$` => detail layout row
+         * * `$$` => view instance
+         */
         propertyTemplate: new Simplate([
             '<div class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
             '<label>{%: $.label %}</label>',
             '<span>{%= $.value %}</span>', // todo: create a way to allow the value to not be surrounded with a span tag
             '</div>'
         ]),
+        /**
+         * @property {Simplate}
+         * HTML that is used for detail layout items that point to related views, includes a label and links the value text
+         *
+         * * `$` => detail layout row
+         * * `$$` => view instance
+         */
         relatedPropertyTemplate: new Simplate([
             '<div class="row {%= $.cls %}">',
             '<label>{%: $.label %}</label>',
@@ -89,6 +159,13 @@ define('Sage/Platform/Mobile/Detail', [
             '</span>',
             '</div>'
         ]),
+        /**
+         * @property {Simplate}
+         * HTML that is used for detail layout items that point to related views, displayed as an icon and text
+         *
+         * * `$` => detail layout row
+         * * `$$` => view instance
+         */
         relatedTemplate: new Simplate([
             '<li class="{%= $.cls %}">',
             '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}">',
@@ -99,6 +176,13 @@ define('Sage/Platform/Mobile/Detail', [
             '</a>',
             '</li>'
         ]),
+        /**
+         * @property {Simplate}
+         * HTML that is used for detail layout items that fire an action, displayed with label and property value
+         *
+         * * `$` => detail layout row
+         * * `$$` => view instance
+         */
         actionPropertyTemplate: new Simplate([
             '<div class="row {%= $.cls %}">',
             '<label>{%: $.label %}</label>',
@@ -109,6 +193,13 @@ define('Sage/Platform/Mobile/Detail', [
             '</span>',
             '</div>'
         ]),
+        /**
+         * @property {Simplate}
+         * HTML that is used for detail layout items that fire an action, displayed as an icon and text
+         *
+         * * `$` => detail layout row
+         * * `$$` => view instance
+         */
         actionTemplate: new Simplate([
             '<li class="{%= $.cls %}">',
             '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
@@ -120,29 +211,100 @@ define('Sage/Platform/Mobile/Detail', [
             '</a>',
             '</li>'
         ]),
+        /**
+         * @property {Simplate}
+         * HTML that is shown when not available
+         *
+         * `$` => the view instance
+         */
         notAvailableTemplate: new Simplate([
             '<div class="not-available">{%: $.notAvailableText %}</div>'
         ]),
+        /**
+         * @property {String}
+         * The unique identifier of the view
+         */
         id: 'generic_detail',
+        /**
+         * @property {Object}
+         * The layout definition that constructs the detail view with sections and rows
+         */
         layout: null,
+        /**
+         * @cfg {String/Object}
+         * May be used for verifying the view is accessible
+         */
         security: false,
+        /**
+         * @property {String}
+         * The customization identifier for this class. When a customization is registered it is passed
+         * a path/identifier which is then matched to this property.
+         */
         customizationSet: 'detail',
+        /**
+         * @property {Boolean}
+         * Controls if the view should be exposed
+         */
         expose: false,
+        /**
+         * @deprecated
+         */
         editText: 'Edit',
+        /**
+         * @cfg {String}
+         * Default title text shown in the top toolbar
+         */
         titleText: 'Detail',
+        /**
+         * @property {String}
+         * Helper string for a basic section header text
+         */
         detailsText: 'Details',
+        /**
+         * @property {String}
+         * ARIA label text for a collapsible section header
+         */
         toggleCollapseText: 'toggle collapse',
+        /**
+         * @property {String}
+         * Text shown while loading and used in loadingTemplate
+         */
         loadingText: 'loading...',
+        /**
+         * @property {String}
+         * Text shown when a server error occurs
+         */
         requestErrorText: 'A server error occurred while requesting data.',
+        /**
+         * @property {String}
+         * Text used in the notAvailableTemplate
+         */
         notAvailableText: 'The requested entry is not available.',
+        /**
+         * @cfg {String}
+         * The view id to be taken to when the Edit button is pressed in the toolbar
+         */
         editView: false,
+        /**
+         * @property {Object[]}
+         * Store for mapping layout options to an index on the HTML node
+         */
         _navigationOptions: null,
 
+        /**
+         * Extends the dijit widget postCreate to subscribe to the global `/app/refresh` event and clear the view.
+         */
         postCreate: function() {
             this.inherited(arguments);
             this.subscribe('/app/refresh', this._onRefresh);
             this.clear();
         },
+        /**
+         * Sets and returns the toolbar item layout definition, this method should be overriden in the view
+         * so that you may define the views toolbar items.
+         * @return {Object} this.tools
+         * @template
+         */
         createToolLayout: function() {
             return this.tools || (this.tools = {
                 'tbar': [{
@@ -152,12 +314,24 @@ define('Sage/Platform/Mobile/Detail', [
                 }]
             });
         },
+        /**
+         * Extends the {@link _ActionMixin#invokeAction mixins invokeAction} to stop if `data-disableAction` is true
+         * @param name
+         * @param {Object} parameters Collection of `data-` attributes from the node
+         * @param {Event} evt
+         * @param {HTMLElement} el
+         */
         invokeAction: function(name, parameters, evt, el) {
             if (parameters && /true/i.test(parameters['disableAction']))
                 return;
 
             return this.inherited(arguments);
         },
+        /**
+         * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.
+         * @param {Object} options The object published by the event.
+         * @private
+         */
         _onRefresh: function(o) {
             var descriptor = o.data && o.data['$descriptor'];
 
@@ -172,26 +346,55 @@ define('Sage/Platform/Mobile/Detail', [
                 }
             }
         },
+        /**
+         * Applies the entries property to a format string
+         * @param {Object} entry Data entry
+         * @param {String} fmt Where expression to be formatted, `${0}` will be the extracted property.
+         * @param {String} property Property name to extract from the entry, may be a path: `Address.City`.
+         * @return {String}
+         */
         formatRelatedQuery: function(entry, fmt, property) {
             property = property || '$key';
-            return string.substitute(fmt, [utility.getValue(entry, property)]);
+            return string.substitute(fmt, [utility.getValue(entry, property, "")]);
         },
+        /**
+         * Toggles the collapsed state of the section.
+         * @param {Object} params Collection of `data-` attributes from the source node.
+         */
         toggleSection: function(params) {
             var node = dom.byId(params.$source);
             if (node)
                 domClass.toggle(node, 'collapsed');
         },
+        /**
+         * Handler for the related entry action, navigates to the defined `data-view` passing the `data-context`.
+         * @param {Object} params Collection of `data-` attributes from the source node.
+         */
         activateRelatedEntry: function(params) {
             if (params.context) this.navigateToRelatedView(params.view, parseInt(params.context, 10), params.descriptor);
         },
+        /**
+         * Handler for the related list action, navigates to the defined `data-view` passing the `data-context`.
+         * @param {Object} params Collection of `data-` attributes from the source node.
+         */
         activateRelatedList: function(params) {
             if (params.context) this.navigateToRelatedView(params.view, parseInt(params.context, 10), params.descriptor);
         },
+        /**
+         * Navigates to the defined `this.editView` passing the current `this.entry` as default data.
+         * @param {HTMLElement} el
+         */
         navigateToEditView: function(el) {
             var view = App.getView(this.editView);
             if (view)
                 view.show({entry: this.entry});
         },
+        /**
+         * Navigates to a given view id passing the options retrieved using the slot index to `this._navigationOptions`.
+         * @param {String} id View id to go to
+         * @param {Number} slot Index of the context to use in `this._navigationOptions`.
+         * @param {String} descriptor Optional descriptor option that is mixed in.
+         */
         navigateToRelatedView: function(id, slot, descriptor) {
             var options = this._navigationOptions[slot],
                 view = App.getView(id);
@@ -201,6 +404,15 @@ define('Sage/Platform/Mobile/Detail', [
             if (view && options)
                 view.show(options);
         },
+        /**
+         * Creates Sage.SData.Client.SDataSingleResourceRequest instance and sets a number of known properties.
+         *
+         * List of properties used `this.property/this.options.property`:
+         *
+         * `/key`, `resourceKind`, `querySelect`, `queryInclude`, `queryOrderBy`, and `contractName`
+         *
+         * @return {Object} Sage.SData.Client.SDataSingleResourceRequest instance.
+         */
         createRequest: function() {
             var request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
 
@@ -228,9 +440,48 @@ define('Sage/Platform/Mobile/Detail', [
 
             return request;
         },
+        /**
+         * Sets and returns the Detail view layout by following a standard for section and rows:
+         *
+         * The `this.layout` itself is an array of section objects where a section object is defined as such:
+         *
+         *     {
+         *        name: 'String', // Required. unique name for identification/customization purposes
+         *        title: 'String', // Required. Text shown in the section header
+         *        list: boolean, // Optional. Default false. Controls if the group container for child rows should be a div (false) or ul (true)
+         *        children: [], // Array of child row objects
+         *     }
+         *
+         * A child row object has:
+         *
+         *     {
+         *        name: 'String', // Required. unique name for identification/customization purposes
+         *        property: 'String', // Optional. The SData property of the current entity to bind to
+         *        label: 'String', // Optional. Text shown in the label to the left of the property
+         *        onCreate: function(), // Optional. You may pass a function to be called when the row is added to the DOM
+         *        include: boolean, // Optional. If false the row will not be included in the layout
+         *        exclude: boolean, // Optional. If true the row will not be included in the layout
+         *        template: Simplate, // Optional. Override the HTML Simplate used for rendering the value (not the row) where `$` is the row object
+         *        tpl: Simplate, // Optional. Same as template.
+         *        renderer: function(), // Optional. Pass a function that receives the current value and returns a value to be rendered
+         *        encode: boolean, // Optional. If true it will encode HTML entities
+         *        cls: 'String', // Optional. Additional CSS class string to be added to the row div
+         *        use: Simplate, // Optional. Override the HTML Simplate used for rendering the row (not value)
+         *        provider: function(entry, propertyName), // Optional. Function that accepts the SData entry and the property name and returns the extracted value. By default simply extracts directly.
+         *        value: Any // Optional. Provide a value directly instead of binding to SData
+         *     }
+         *
+         * @return {Object[]} Detail layout definition
+         */
         createLayout: function() {
             return this.layout || [];
         },
+        /**
+         * Processes the given layout definition using the SData entry response by rendering and inserting the HTML nodes and
+         * firing any onCreate events defined.
+         * @param {Object[]} layout Layout definition
+         * @param {Object} entry SData response
+         */
         processLayout: function(layout, entry) {
             var rows = (layout['children'] || layout['as'] || layout),
                 options = layout['options'] || (layout['options'] = {
@@ -335,6 +586,8 @@ define('Sage/Platform/Mobile/Detail', [
                         context['resourceProperty'] = this.expandExpression(current['resourceProperty'], entry);
                     if (current['resourcePredicate'])
                         context['resourcePredicate'] = this.expandExpression(current['resourcePredicate'], entry);
+                    if (current['title'])
+                        context['title'] = current['title'];
 
                     data['view'] = current['view'];
                     data['context'] = (this._navigationOptions.push(context) - 1);
@@ -373,6 +626,11 @@ define('Sage/Platform/Mobile/Detail', [
                 this.processLayout(current, entry);
             }
         },
+        /**
+         * Saves the SData response to `this.entry` and invokes {@link #processLayout processLayout} by passing the customized
+         * layout definition. If no entry is provided, empty the screen.
+         * @param {Object} entry SData response
+         */
         processEntry: function(entry) {
             this.entry = entry;
 
@@ -385,6 +643,11 @@ define('Sage/Platform/Mobile/Detail', [
                 this.set('detailContent', '');
             }
         },
+        /**
+         * Handler when an error occurs while request data from the SData endpoint.
+         * @param {Object} response The response object.
+         * @param {Object} o The options that were passed when creating the Ajax request.
+         */
         onRequestDataFailure: function(response, o) {
             if (response && response.status == 404)
             {
@@ -398,15 +661,30 @@ define('Sage/Platform/Mobile/Detail', [
 
             domClass.remove(this.domNode, 'panel-loading');
         },
+        /**
+         * Handler when an a request is aborted from an SData endpoint.
+         *
+         * Clears the `this.options` object which will by default force a refresh of the view.
+         *
+         * @param {Object} response The response object.
+         * @param {Object} o The options that were passed when creating the Ajax request.
+         */
         onRequestDataAborted: function(response, o) {
             this.options = false; // force a refresh
             ErrorManager.addError(response, o, this.options, 'aborted');
             domClass.remove(this.domNode, 'panel-loading');
         },
+        /**
+         * Handler when a request to SData is successful
+         * @param {Object} entry The SData response
+         */
         onRequestDataSuccess: function(entry) {
             this.processEntry(entry);
             domClass.remove(this.domNode, 'panel-loading');
         },
+        /**
+         * Initiates the SData request.
+         */
         requestData: function() {
             domClass.add(this.domNode, 'panel-loading');
 
@@ -419,6 +697,11 @@ define('Sage/Platform/Mobile/Detail', [
                     scope: this
                 });
         },
+        /**
+         * Determines if the view should be refresh by inspecting and comparing the passed navigation option key with current key.
+         * @param {Object} options Passed navigation options.
+         * @return {Boolean} True if the view should be refreshed, false if not.
+         */
         refreshRequiredFor: function(options) {
             if (this.options) {
                 if (options) {
@@ -429,6 +712,11 @@ define('Sage/Platform/Mobile/Detail', [
             else
                 return this.inherited(arguments);
         },
+        /**
+         * Extends the {@link View#activate parent implementation} to set the nav options title attribute to the descriptor
+         * @param tag
+         * @param data
+         */
         activate: function(tag, data) {
             var options = data && data.options;
             if (options && options.descriptor)
@@ -436,15 +724,28 @@ define('Sage/Platform/Mobile/Detail', [
 
             this.inherited(arguments);
         },
+        /**
+         * Extends the {@link View#show parent implementation} to set the nav options title attribute to the descriptor
+         * @param tag
+         * @param data
+         */
         show: function(options) {
             if (options && options.descriptor)
                 options.title = options.title || options.descriptor;
 
             this.inherited(arguments);
         },
+        /**
+         * Returns the view key
+         * @return {String} View key
+         */
         getTag: function() {
             return this.options && this.options.key;
         },
+        /**
+         * Extends the {@link View#getContext parent implementation} to also set the resourceKind, key and descriptor
+         * @return {Object} View context object
+         */
         getContext: function() {
             return lang.mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind,
@@ -452,6 +753,10 @@ define('Sage/Platform/Mobile/Detail', [
                 descriptor: this.options.descriptor
             });
         },
+        /**
+         * Extends the {@link View#beforeTransitionTo parent implementation} to also clear the view if `refreshRequired` is true
+         * @return {Object} View context object
+         */
         beforeTransitionTo: function() {
             this.inherited(arguments);
 
@@ -460,6 +765,10 @@ define('Sage/Platform/Mobile/Detail', [
                 this.clear();
             }
         },
+        /**
+         * If a security breach is detected it sets the content to the notAvailableTemplate, otherwise it calls
+         * {@link #requestData requestData} which starts the process sequence.
+         */
         refresh: function() {
             if (this.security && !App.hasAccessTo(this.expandExpression(this.security)))
             {
@@ -469,9 +778,9 @@ define('Sage/Platform/Mobile/Detail', [
 
             this.requestData();
         },
-        transitionTo: function() {
-            this.inherited(arguments);
-        },
+        /**
+         * Clears the view by replacing the content with the empty template and emptying the stored row contexts.
+         */
         clear: function() {
             this.set('detailContent', this.emptyTemplate.apply(this));
 

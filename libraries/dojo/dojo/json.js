@@ -19,7 +19,7 @@ var _3=function(_4){
 return ("\""+_4.replace(/(["\\])/g,"\\$1")+"\"").replace(/[\f]/g,"\\f").replace(/[\b]/g,"\\b").replace(/[\n]/g,"\\n").replace(/[\t]/g,"\\t").replace(/[\r]/g,"\\r");
 };
 return {parse:_1("json-parse")?JSON.parse:function(_5,_6){
-if(_6&&!/^([\s\[\{]*(?:"(?:\\.|[^"])+"|-?\d[\d\.]*(?:[Ee][+-]?\d+)?|null|true|false|)[\s\]\}]*(?:,|:|$))+$/.test(_5)){
+if(_6&&!/^([\s\[\{]*(?:"(?:\\.|[^"])*"|-?\d[\d\.]*(?:[Ee][+-]?\d+)?|null|true|false|)[\s\]\}]*(?:,|:|$))+$/.test(_5)){
 throw new SyntaxError("Invalid characters in JSON");
 }
 return eval("("+_5+")");
@@ -79,6 +79,7 @@ return "["+res.join(",")+_13+_c+"]";
 var _14=[];
 for(_d in it){
 var _15;
+if(it.hasOwnProperty(_d)){
 if(typeof _d=="number"){
 _15="\""+_d+"\"";
 }else{
@@ -93,6 +94,7 @@ if(typeof _e!="string"){
 continue;
 }
 _14.push(_13+_12+_15+":"+sep+_e);
+}
 }
 return "{"+_14.join(",")+_13+_c+"}";
 };

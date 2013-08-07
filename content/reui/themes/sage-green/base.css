@@ -1,102 +1,91 @@
-*
-{    
-    -webkit-touch-callout: none;
-    -webkit-text-size-adjust: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-
 body
 {
-    position: relative;
-	padding: 45px 0 0 0;
+    padding: 0;
     margin: 0;
-	overflow-x: hidden;
-    min-height: 416px;
+    overflow: hidden;
+}
+
+body > .viewContainer
+{
+    position: absolute;
+    padding: 45px 0 0 0;
+    margin: 0;
+    z-index: 3;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
 }
 
 body[orient="landscape"]
 {
     min-height: 268px;
+    overflow: hidden;
 }
 
-body > *
-{
-    /* display: none; */
-    position: relative;
-    margin: 0;
-    padding : 0;
-}
-
-body > .list,
-body > .panel,
-body > .dialog
+body > .viewContainer > .list,
+body > .viewContainer > .panel,
+body > .viewContainer > .dialog
 {
     display: none;
 }
 
-body.transition > .panel,
-body.transition > .list
+body.transition > .viewContainer > .panel,
+body.transition > .viewContainer > .list
 {
     position: absolute;
     top: 45px;
 }
 
-body > .panel,
-body > .list
+body > .viewContainer > .panel,
+body > .viewContainer > .list
 {
+    position: absolute;
+    top: 45px;
+    bottom: 0px;
+    width: 100%;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    width: 100%;
-    height: auto;
-    -webkit-transform: translateX(0%);
-    -webkit-transition-duration: 300ms;
+    -webkit-transition-duration: 200ms;
     -webkit-transition-property: -webkit-transform;
+    -webkit-transform: translateZ(0); 
 }
 
-body[orient="landscape"] > .panel,
-body[orient="landscape"] > .list
+body[orient="landscape"] > .viewContainer > .panel,
+body[orient="landscape"] > .viewContainer > .list
 {
-    height: auto;
+    position:absolute;
+    top: 45px; /* Adjust if header toolbar changes */
+    bottom: 0px; /* Adjust if footer toolbar changes */
+    width: 100%;
+    -webkit-transition-property: top, bottom;
+    transition-property: top, bottom;
+    -webkit-transition-duration: 0.2s, 0.2s;
+    transition-duration: 0.2s, 0.2s;
+    -webkit-transition-timing-function: ease, ease;
+    transition-timing-function: ease, ease;
 }
 
-body > [selected="true"]
+body > .viewContainer > [selected="true"]
 {
     display: block;
 }
 
-.h-stack
-{
-    display: -webkit-box;
-    -webkit-box-orient: horizontal;
-    -webkit-box-pack: center;
-    -webkit-box-align: start;
-
-    display: -moz-box;
-    -moz-box-orient: horizontal;
-    -moz-box-pack: center;
-    -moz-box-align: start;
-
-    display: box;
-    box-orient: horizontal;
-    box-pack: center;
-    box-align: start;
-}
-
-.h-stack > div
-{
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    box-flex: 1;
-}
-
 .button
 {
-	height: 30px;
-	line-height: 30px;
-	padding: 0 2px 0 2px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 2px 0 2px;
 }
 
+.viewContainer > .footer-toolbar 
+{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
+.viewContainer > .toolbar,
 .toolbar
 {
     position: absolute;
@@ -114,7 +103,7 @@ body > [selected="true"]
     display: block;
     z-index: 10;
 }
-
+.viewContainer > .toolbar > h1,
 .toolbar > h1 {
     overflow: hidden; 
     display: block;
@@ -134,12 +123,14 @@ body > [selected="true"]
     z-index: 0;
 }
 
+.viewContainer > .toolbar-size-1 > h1,
 .toolbar-size-1 > h1
 {
     left: 50px;
     right: 50px;
 }
 
+.viewContainer > .toolbar-size-2 > h1,
 .toolbar-size-2 > h1
 {
     left: 100px;
@@ -182,7 +173,7 @@ body > [selected="true"]
     margin-left: 10px;
 }
 
-body > .dialog {
+body > .viewContainer > .dialog {
     top: 0px;
     bottom: 0px;
     width: 100%;
@@ -202,9 +193,9 @@ body > .dialog {
     border-top: 1px solid #6d84a2;
     padding: 0px 6px;
     -webkit-border-bottom-left-radius: 5px;
-	-webkit-border-bottom-right-radius: 5px;
-	-moz-border-bottom-left-radius: 5px;
-	-moz-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
 }
 
 .dialog > fieldset > label {
@@ -216,7 +207,7 @@ body > .dialog {
 
 input:not([type|=radio]):not([type|=checkbox]) {
     -webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
+    -moz-border-radius: 3px;
     -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
     box-sizing: border-box;
@@ -230,43 +221,51 @@ input:not([type|=radio]):not([type|=checkbox]) {
     border: 1px solid #000;
 }
 
-.list-content
+.list-content,
+.group-content
 {
     margin: 0;
     padding: 0;
 }
 
-.list-content > li
+.list-content > li,
+.group-content > li
 {
     font-size: 1.25em;
     font-weight: bold;
     list-style: none;
-    margin: 0;
+    margin: 8px 6px 8px 6px;
     padding: 8px 0px 8px 10px;
     position: relative;
-    border-bottom: solid 1px #ddd;
-}
-.list-content > li:last-child
-{
-    border-bottom: none;
+    border-radius: 6px;
 }
 
-.list-content > li
+.list-content > li,
+.group-content > li
 {
-    padding: 8px 32px 8px 36px;
+    padding: 8px 32px 8px 6px;
+}
+.list-show-selectors .list-item-content,
+.list-item-static-selector + .list-item-content
+{
+    padding-left: 42px;
+}
+.actions-enabled + .list-item-content
+{
+    padding-left: 48px;
 }
 
 .list-content > li > img.icon,
 .list-content > li > * > img.icon
 {
-    border: none 0 black;
+    border: 0 none black;
     margin: 0 .5em 0 0;
     width: 24px;
     height: 24px;
     float: left;
 }
 
-.list-content > li > input.list-selector
+.list-content > li > .list-selector
 {
     float: left;
     margin: 2px 0 0 0px;
@@ -274,32 +273,32 @@ input:not([type|=radio]):not([type|=checkbox]) {
 
 h3
 {
-	font-size: .75em;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+    font-size: .75em;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 h4
 {
-	font-size: .5em;
-	margin: 0;
-	padding: 0;	
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+    font-size: .5em;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 img
 {
-	border: none 0 black;
+    border: 0 none black;
 }
 
 .panel > .panel-loading-indicator
 {
-	display: none;
+    display: none;
 }
 
 .panel > .panel-validation-summary
@@ -309,14 +308,9 @@ img
 
 .panel-loading > .panel-loading-indicator
 {
-	display: block;
+    display: block;
     margin: 0;
     padding: 0;
-}
-
-.panel-loading > *:not(.panel-loading-indicator)
-{
-	display: none;
 }
 
 .panel-form-error > .panel-validation-summary
@@ -361,7 +355,7 @@ img
 .panel-validation-summary > ul > li > img.icon
 .panel-validation-summary > ul > li > * > img.icon
 {
-    border: none 0 black;
+    border: 0 none black;
     margin: 0 .5em 0 0;
     width: 24px;
     height: 24px;
@@ -414,19 +408,19 @@ img
 .row > div > label,
 .row > label
 {
-	margin: 0px;
-	padding: 0;
-	position: relative;
-	float: left;	
-	width: 100px;
-	text-align: right;
-	font-size: 0.8em;
+    margin: 0px;
+    padding: 0;
+    position: relative;
+    float: left;
+    width: 100px;
+    text-align: right;
+    font-size: 0.8em;
 }
 
 .row
 {
-	text-align: left;
-	clear: both;
+    text-align: left;
+    clear: both;
     line-height: 1.5em;
     padding: 0 .75em;
 }
@@ -436,12 +430,12 @@ img
 .row > span,
 .row > a
 {
-	display: block;
-	margin: 0 0 0 0;
-	padding: 0 0 0 12px;
-	position: relative;
-	overflow: hidden;
-	text-overflow: ellipsis;
+    display: block;
+    margin: 0 0 0 0;
+    padding: 0 0 0 12px;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .row > * > a
@@ -461,7 +455,7 @@ img
 
 .no-data
 {
-	text-align: center;
+    text-align: center;
 }
 
 .list-search
@@ -471,7 +465,7 @@ img
 }
 
 .list-search input
-{    
+{
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     height: 32px;
@@ -482,12 +476,8 @@ img
 {    
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    position: absolute;
     display: inline-block;    
     height: 32px;
-    width: 64px;
-    right: 6px;
-    top: 6px;
     border: solid 1px black;
 }
 
@@ -519,7 +509,7 @@ img
 .row-edit > div > label,
 .row-edit > label
 {
-	position: absolute;
+    position: absolute;
     height: 30px;
     line-height: 30px;
     text-overflow: ellipsis;
@@ -549,13 +539,12 @@ img
 
     border-radius: 3px;
     -webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
+    -moz-border-radius: 3px;
 
     margin: 0;
-    border: none 0px black;
     padding: 0px 10px 0 110px;
     height: 32px !important;
-    border: none 0px transparent;
+    border: 0 none transparent;
     background: transparent;
 }
 
@@ -569,18 +558,17 @@ img
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     -webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
+    -moz-border-radius: 3px;
     margin: 0;
-    border: none 0px black;
+    border: 0 none black;
     padding: 8px 10px 8px 110px;
-    border: none 0px transparent;
     background: transparent;
     width: 100%;
-    display: block;    
+    display: block;
 }
 
-.row > div > input[type|=radio], .row > div >x input[type|=checkbox],
-.row > input[type|=radio], .row > div >x input[type|=checkbox]
+.row > div > input[type|=radio], .row > div > input[type|=checkbox],
+.row > input[type|=radio], .row > div > input[type|=checkbox]
 {
   margin: 7px 7px 0 0;
   height: 25px;

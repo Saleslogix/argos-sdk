@@ -1,0 +1,23 @@
+{
+    "--body-html": [
+        "<script type='text/javascript'>",
+        "Docs.otherProducts = [",
+            "{text: 'Argos SDK v2.2 <span class=\"label label-stable\">Stable</span>', href: 'http://sagesaleslogix.github.io/argos/'},",
+            "{text: 'Argos SDK v3.0 <span class=\"label label-dev\">Dev</span>', href: 'http://sagesaleslogix.github.io/argos/v3/'}",
+        "];",
+        "</script>"
+    ],
+    "--title": "Argos",
+    "--footer": "Argos is maintained by SalesLogix",
+    "--welcome": "../argos/welcome.html",
+    "--categories": "docs-categories.json",
+    "--guides": "../argos/guides-source/docs-guides.json",
+    "--warnings": ["-all"],
+    "--ignore-global": true,
+    "-o": "docs",
+    "--": [
+        "src",
+        "libraries/Simplate.js",
+        "libraries/jasmine/jasmine.js"
+    ]
+}

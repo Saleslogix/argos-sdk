@@ -13,10 +13,18 @@
  * limitations under the License.
  */
 
+/**
+ * @class Sage.Platform.Mobile.Utility
+ * Utility provides functions that are more javascript enhancers than application related code.
+ * @alternateClassName Utility
+ * @singleton
+ */
 define('Sage/Platform/Mobile/Utility', [
-    'dojo/_base/lang'
+    'dojo/_base/lang',
+    'dojo/_base/array'
 ], function(
-    lang
+    lang,
+    array
 ) {
     var nameToPathCache = {};
     var nameToPath = function(name) {
@@ -76,6 +84,28 @@ define('Sage/Platform/Mobile/Utility', [
             if (typeof path[0] !== "undefined")
                 current[path[0]] = val;
             return o;
+        },
+        expand: function(scope, expression) {
+            if (typeof expression === 'function')
+                return expression.apply(scope, Array.prototype.slice.call(arguments, 2));
+            else
+                return expression;
+        },
+        roundNumberTo: function(number, precision) {
+            var k = Math.pow(10, precision);
+            return (Math.round(number * k) / k);
+        },
+        /**
+         * @function
+         * Utility function to join fields within a Simplate template.
+         */
+        joinFields: function(seperator, fields) {
+            var results;
+            results = array.filter(fields, function(item) {
+                return item !== null && typeof item !== 'undefined' && item !== '';
+            });
+
+            return results.join(seperator);
         }
     });
 });
