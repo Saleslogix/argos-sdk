@@ -27,7 +27,8 @@ define('Sage/Platform/Mobile/Format', [
     'dojo/string',
     'dojo/number',
     'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/Utility'
+    'Sage/Platform/Mobile/Utility',
+    'moment'
 ], function(
     json,
     lang,
@@ -35,7 +36,8 @@ define('Sage/Platform/Mobile/Format', [
     string,
     dNumber,
     convert,
-    utility
+    utility,
+    moment
 ) {
 
     var getVectorMaxSize = function (v) {
@@ -149,6 +151,9 @@ define('Sage/Platform/Mobile/Format', [
          * Text used in {@link #timespan timespan} formatter for exactly one minute
          */
         minuteText: 'minute',
+
+        shortDateFormatText: 'M/D/YYYY',
+
         /**
         * @property {String}
         * format string for percent
@@ -264,9 +269,11 @@ define('Sage/Platform/Mobile/Format', [
 
             if (date)
             {
-                if (utc) date = date.clone().add({minutes: date.getTimezoneOffset()});
+                date = moment(date);
+                if (utc)
+                    date = date.add({minutes: date.zone()});
 
-                return date.toString(fmt || Date.CultureInfo.formatPatterns.shortDate);
+                return date.format(fmt || Sage.Platform.Mobile.Format.shortDateFormatText);
             }
 
             return val;
