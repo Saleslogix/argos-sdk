@@ -103,10 +103,6 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
 
             if (!this.currentDate) {
                 this.currentDate = moment();
-                this.currentYear = this.currentDate.year();
-                this.currentMonth = this.currentDate.month();
-                this.currentWeek = this.currentDate.week();
-                this.currentDay = this.currentDate.dayOfYear();
             }
 
             if (value) {
@@ -180,15 +176,15 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             return "Unknown";
         },
         _isFuture: function(value) {
-            return value.year() > (this.currentYear + 1); 
+            return value.year() > (this.currentDate.year() + 1); 
         },
         _isNextYear: function(value) {
             // Next year excluding anything that could be within the next month (next week, later this week, tomorrow)
-            return value.year() === (this.currentYear + 1) &&
+            return value.year() === (this.currentDate.year() + 1) &&
                 !this._isNextMonth(value);
         },
         _isPastYear: function(value) {
-            return value.year() < this.currentYear &&
+            return value.year() < this.currentDate.year() &&
                 !this._isLastMonth(value);
         },
         _isLaterThisYear: function(value) {
