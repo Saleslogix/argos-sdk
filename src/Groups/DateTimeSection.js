@@ -59,6 +59,8 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
         constructor: function(o) {
             this.groupByProperty = o.groupByProperty;
             this.sortDirection = o.sortDirection;
+            this.momentLang = o.momentLang;
+
             this.init();
         },
         init: function() {
@@ -107,6 +109,11 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
 
             if (value) {
                 valueDate = moment(value);
+            }
+
+            if (this.momentLang) {
+                valueDate.lang(this.momentLang);
+                this.currentDate.lang(this.momentLang);
             }
 
             if (this._isPastYear(valueDate)) {
