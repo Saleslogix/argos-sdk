@@ -43,6 +43,10 @@
         {
           "text": "overthrow.js",
           "path": "../libraries/overthrow/"
+        },
+        {
+          "text": "moment.js",
+          "path": "../libraries/moment/"
         }
       ]
     },
