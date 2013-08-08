@@ -121,7 +121,7 @@ define('Sage/Platform/Mobile/Calendar', [
         timePickControl: null,
 
         daysInMonth: function() {
-            return moment(this.year+'-'+this.month).daysInMonth();
+            return moment(this.year+'-'+this.month, 'YYYY-M').daysInMonth();
         },
         init: function() {
             this.inherited(arguments);

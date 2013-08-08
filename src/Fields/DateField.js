@@ -42,7 +42,7 @@ define('Sage/Platform/Mobile/Fields/DateField', [
      *         property: 'StartDate',
      *         label: this.startDateText,
      *         type: 'date',
-     *         dateFormatText: 'MM/dd HH:mm:ss',
+     *         dateFormatText: 'MM/DD HH:mm:ss',
      *         showTimerPicker: true
      *     }
      *
