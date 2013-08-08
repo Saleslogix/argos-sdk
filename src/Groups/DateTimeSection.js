@@ -51,6 +51,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
         threeWeeksAgoText: 'Three weeks ago',
         twoMonthsAgoText: 'Two months ago',
         threeMonthsAgoText: 'Three months ago',
+        unknownText: 'Unknown',
 
         constructor: function(o) {
             this.groupByProperty = o.groupByProperty;
@@ -93,7 +94,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             return null;
         },
         getDefaultSection:function(){
-            return { key: 'Unknown', title: 'Unknown' };
+            return { key: 'Unknown', title: this.unknownText, collapsed: true };
         },
         getSectionKey: function(value){
             var valueDate;
