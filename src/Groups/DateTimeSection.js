@@ -57,10 +57,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
         unknownText: 'Unknown',
 
         constructor: function(o) {
-            this.groupByProperty = o.groupByProperty;
-            this.sortDirection = o.sortDirection;
-            this.momentLang = o.momentLang;
-
+            declare.safeMixin(this, o);
             this.init();
         },
         init: function() {
