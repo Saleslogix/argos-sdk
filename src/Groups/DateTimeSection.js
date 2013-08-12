@@ -225,7 +225,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             var monthStart = this.currentDate.clone().startOf('month'),
                 lastWeekStart = this.currentDate.clone().subtract(1, 'week').startOf('week');
 
-            return value.isAfter(this.monthStart) &&
+            return value.isAfter(monthStart) &&
                 value.isBefore(lastWeekStart);
         },
         _isLaterThisMonth: function(value) {
