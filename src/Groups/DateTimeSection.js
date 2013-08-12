@@ -279,7 +279,8 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                 lastWeekEnd = lastWeekStart.clone().endOf('week');
 
             return value.isAfter(lastWeekStart) &&
-                value.isBefore(lastWeekEnd);
+                value.isBefore(lastWeekEnd) && 
+                !this._isYesterday(value);
         },
         _isLastMonth: function(value) {
             // Last month, excluding any potential past days (earlier this week, last week, yesterday)
