@@ -31,20 +31,6 @@ return describe('Sage.Platform.Mobile.GroupedList', function() {
         expect(domClass.contains(node, 'collapsed')).toEqual(false);
     });
 
-    it('Can reset _currentGroup on clear', function() {
-        list._currentGroup = 'test';
-        list.clear();
-
-        expect(list._currentGroup).toEqual(null);
-    });
-
-    it('Can reset _currentGroupNode on clear', function() {
-        list._currentGroupNode = 'test';
-        list.clear();
-
-        expect(list._currentGroupNode).toEqual(null);
-    });
-
     it('Can construct list items from feed', function() {
         var feed = JSON.parse(jsonFeed);
 
