@@ -27,19 +27,19 @@
 define('Sage/Platform/Mobile/View', [
     'dojo/_base/declare',
     'dojo/_base/lang',
-    'dijit/_Widget',
+    'dijit/_WidgetBase',
     'Sage/Platform/Mobile/_ActionMixin',
     'Sage/Platform/Mobile/_CustomizationMixin',
     'Sage/Platform/Mobile/_Templated'
 ], function(
     declare,
     lang,
-    _Widget,
+    _WidgetBase,
     _ActionMixin,
     _CustomizationMixin,
     _Templated
 ) {
-    return declare('Sage.Platform.Mobile.View', [_Widget, _ActionMixin, _CustomizationMixin, _Templated], {
+    return declare('Sage.Platform.Mobile.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
         /**
          * This map provides quick access to HTML properties, most notably the selected property of the container
          */

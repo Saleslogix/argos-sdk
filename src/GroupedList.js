@@ -24,18 +24,22 @@
  */
 define('Sage/Platform/Mobile/GroupedList', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/query',
     'dojo/string',
     'dojo/dom-class',
     'dojo/dom-construct',
-    'Sage/Platform/Mobile/List'
+    'Sage/Platform/Mobile/List',
+    'Sage/Platform/Mobile/Utility'
 ], function(
     declare,
+    lang,
     query,
     string,
     domClass,
     domConstruct,
-    List
+    List,
+    Utility
 ) {
 
     return declare('Sage.Platform.Mobile.GroupedList', [List], {
@@ -102,8 +106,6 @@ define('Sage/Platform/Mobile/GroupedList', [
          */
         _groupBySections: null,
         _currentGroupBySection: null,
-        _currentGroup: null,
-        _currentGroupNode: null,
         /**
          * Function that returns a "group object". The group object must have a tag property that is
          * based off the passed entry as it will be used to compare to other entries.
@@ -137,7 +139,8 @@ define('Sage/Platform/Mobile/GroupedList', [
                 }
                 return {
                     tag: sectionDef.key,
-                    title: title
+                    title: title,
+                    collapsed: !!sectionDef.collapsed
                 }
             }
             return {
@@ -159,65 +162,56 @@ define('Sage/Platform/Mobile/GroupedList', [
          * @param {Object} feed The SData feed result
          */
         processFeed: function(feed) {
-            if (!this.feed) this.set('listContent', '');
+            var i, entry, entryGroup, rowNode, remaining, getGroupsNode;
+            getGroupsNode = Utility.memoize(lang.hitch(this, this.getGroupsNode), function(entryGroup) {
+                return entryGroup.tag;
+            });
+
+            if (!this.feed){
+                this.set('listContent', '');
+            }
 
             this.feed = feed;
 
-            if (this.feed['$totalResults'] === 0)
-            {
+            if (this.feed['$totalResults'] === 0) {
                 this.set('listContent', this.noDataTemplate.apply(this));
-            }
-            else if (feed['$resources'])
-            {
-                var docfrag = document.createDocumentFragment();
-                for (var i = 0; i < feed['$resources'].length; i++)
-                {
-                    var entry = feed['$resources'][i],
-                        entryGroup = this.getGroupForEntry(entry);
-                    var rowNode;
-                    if (entryGroup.tag != this._currentGroup)
-                    {
+            } else if (feed['$resources']) {
+                for (i = 0; i < feed['$resources'].length; i++) {
+                    entry = feed['$resources'][i];
+                    entryGroup = this.getGroupForEntry(entry);
 
-                        if (docfrag.childNodes.length > 0) {
-                            domConstruct.place(docfrag, this._currentGroupNode, 'last');
-                        }
-
-                        docfrag = document.createDocumentFragment();
-                        this._currentGroup = entryGroup.tag;
-
-                        domConstruct.place(this.groupTemplate.apply(entryGroup, this), this.contentNode, 'last');
-                        this._currentGroupNode = query("> :last-child", this.contentNode)[0];
-                    }
+                    entry["$groupTag"] = entryGroup.tag;
+                    entry["$groupTitle"] = entryGroup.title;
 
                     this.entries[entry.$key] = entry;
                     rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
                     this.onApplyRowTemplate(entry, rowNode);
-                    docfrag.appendChild(rowNode);
 
-                }
-
-                if (docfrag.childNodes.length > 0) {
-                    domConstruct.place(docfrag, this._currentGroupNode, 'last');
+                    domConstruct.place(rowNode, getGroupsNode(entryGroup), 'last');
                 }
             }
 
             // todo: add more robust handling when $totalResults does not exist, i.e., hide element completely
-            if (typeof this.feed['$totalResults'] !== 'undefined')
-            {
-                var remaining = this.feed['$totalResults'] - (this.feed['$startIndex'] + this.feed['$itemsPerPage'] - 1);
+            if (typeof this.feed['$totalResults'] !== 'undefined') {
+                remaining = this.feed['$totalResults'] - (this.feed['$startIndex'] + this.feed['$itemsPerPage'] - 1);
                 this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
             }
 
             domClass.toggle(this.domNode, 'list-has-more', this.hasMoreData());
         },
-        /**
-         * Calls parent {@link List#clear clear} and also deletes the current group memory.
-         */
-        clear: function() {
-            this.inherited(arguments);
+        getGroupsNode: function(entryGroup) {
+            var results = query('[data-group="' + entryGroup.tag + '"]', this.contentNode);
+            if (results.length > 0) {
+                results = results[0];
+            } else {
+                // Does not exist, lets create it
+                results = domConstruct.toDom(this.groupTemplate.apply(entryGroup, this));
+                domConstruct.place(results, this.contentNode, 'last');
+                // re-query what we just place in (which was a doc frag)
+                results = query('[data-group="' + entryGroup.tag + '"]', this.contentNode)[0];
+            }
 
-            this._currentGroup = null;
-            this._currentGroupNode = null;
+            return results;
         },
         /**
          * Called on application startup to configure the search widget if present and create the list actions.

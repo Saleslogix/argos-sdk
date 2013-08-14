@@ -125,22 +125,8 @@ define('Sage/Platform/Mobile/SearchWidget', [
          * * Fires the {@link #onSearchExpression onSearchExpression} event which {@link List#_onSearchExpression listens to}.
          */
         search: function() {
-            var searchQuery = this.queryNode.value,
-                formattedQuery,
-                isCustomMatch = searchQuery && this.customSearchRE.test(searchQuery),
-                isHashTagMatch = searchQuery && this.hashTagSearchRE.test(searchQuery);
-
-            switch(true) {
-                case isCustomMatch: formattedQuery = this.customSearch(searchQuery);
-                    break;
-                case isHashTagMatch: formattedQuery = this.hashTagSearch(searchQuery);
-                    break;
-                default: formattedQuery = this.formatSearchQuery(searchQuery);
-            }
-
-            if (lang.trim(searchQuery) === '')
-                formattedQuery = null;
-
+            var formattedQuery;
+            formattedQuery = this.getFormattedSearchQuery();
             this.onSearchExpression(formattedQuery, this);
         },
         /**
@@ -259,6 +245,38 @@ define('Sage/Platform/Mobile/SearchWidget', [
          */
         onSearchExpression: function(expression, widget) {
 
+        },
+        /**
+        * Gets the current search expression as a formatted query.
+        * * Gathers the inputted search text
+        * * Determines if its a custom expression, hash tag, or normal search
+        */
+        getFormattedSearchQuery: function() {
+            var searchQuery = this.getSearchExpression(),
+                formattedQuery,
+                isCustomMatch = searchQuery && this.customSearchRE.test(searchQuery),
+                isHashTagMatch = searchQuery && this.hashTagSearchRE.test(searchQuery);
+
+            switch (true) {
+                case isCustomMatch: formattedQuery = this.customSearch(searchQuery);
+                    break;
+                case isHashTagMatch: formattedQuery = this.hashTagSearch(searchQuery);
+                    break;
+                default: formattedQuery = this.formatSearchQuery(searchQuery);
+            }
+
+            if (lang.trim(searchQuery) === '') {
+                formattedQuery = null;
+            }
+            return formattedQuery;
+        },
+        /**
+       * Gets the current search expression.
+       * * Gathers the inputted search text
+       */
+        getSearchExpression: function()
+        {
+            return this.queryNode.value;
         }
     });
 });

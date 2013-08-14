@@ -71,7 +71,7 @@
                 },
                 remove: function(el, name){
                     if(settings.addBodyClasses){
-                        el.className = (el.className).replace(" "+name, "");
+                        el.className = (el.className).replace(name, "").replace(/^\s+|\s+$/g, '');
                     }
                 }
             },

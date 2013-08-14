@@ -82,7 +82,8 @@ h5
     /*background-color: #e6e6e6; */
 }
 
-.list-content > li
+.list-content > li,
+.group-content > li
 {
     font-weight: normal;
     background-color: #f6f6f7;
@@ -97,14 +98,16 @@ h5
     background: -moz-linear-gradient(top, #f6f6f7, #00678a);
 }
 
-.list-content > li:active
+.list-content > li:active,
+.group-content > li:active
 {
     background: -webkit-gradient(linear, left top, right bottom, from(#f6f6f7), to(#00678a));
     background: -moz-linear-gradient(top, #f6f6f7, #00678a);
     /*background-color: #D5EFFA;*/
 }
 
-.list-content > .actions-row > button:active
+.list-content > .actions-row > button:active,
+.group-content > .actions-row > button:active
 {
     background-color: #80d0ef;
 }
