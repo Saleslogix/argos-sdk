@@ -177,8 +177,7 @@ define('Sage/Platform/Mobile/Edit', [
             '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
             '{%: ($.title || $.options.title) %}<button class="collapsed-indicator" aria-label="{%: $$.toggleCollapseText %}"></button>',
             '</h2>',
-            '<fieldset class="{%= ($.cls || $.options.cls) %}">',
-            '<a href="#" class="android-6059-fix">fix for android issue #6059</a>'
+            '<fieldset class="{%= ($.cls || $.options.cls) %}">'
         ]),
         /**
          * @property {Simplate}
