@@ -23,6 +23,27 @@ module.exports = function(grunt) {
                 template: 'GruntRunner.tmpl'
             }
         },
+        less: {
+            development: {
+                options: {
+                    paths: ['content/css']
+                },
+                files: {
+                    'min/css/sdk.min.sage-green.debug.css': 'content/css/themes/sage-green.less',
+                    'min/css/sdk.min.swiftpage-orange.debug.css': 'content/css/themes/swiftpage-orange.less'
+                }
+            },
+            production: {
+                options: {
+                    paths: ['content/css'],
+                    yuicompress: true
+                },
+                files: {
+                    'min/css/sdk.min.sage-green.css': 'content/css/themes/sage-green.less',
+                    'min/css/sdk.min.swiftpage-orange.css': 'content/css/themes/swiftpage-orange.less'
+                }
+            }
+        },
         cssmin: {
             combine: {
                 files: {
@@ -48,6 +69,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-csslint');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     grunt.registerTask('test', ['connect', 'jasmine']);
     grunt.registerTask('default', ['test']);
