@@ -1,14 +1,13 @@
-
 body
 {
     font-family: @font-family; 
+    color: @text-color;
 }
 
 body
 body > .viewContainer
 {
     background: @body-bg-color;
-    color: @text-color;
 }
 
 h3
@@ -44,7 +43,6 @@ h5
     background-color: @list-item-bg-color;
 }
 
-
 .list-content > .actions-row > button:active,
 .group-content > .actions-row > button:active
 {
@@ -68,7 +66,7 @@ h5
     position: relative;
     color: @menu-list-item-color;
     text-decoration: none;
-    padding: 8px 32px 8px 6px;
+    padding: 8px 0px 8px 0px;
     border: @menu-list-item-border;
     border-left: 0px;
     border-right: 0px;
@@ -111,7 +109,6 @@ body > .viewContainer > .toolbar,
 .panel-loading-indicator
 {
     background-color: @panel-content-bg-color;
-    border: @panel-content-border;
 }
 
 .panel-content > h2
@@ -249,7 +246,7 @@ textarea:focus
     font-weight: @button-font-weight;
     font-size: @button-font-size;
 
-    .border-radius(4px);
+    .border-radius(0px);
 
     border: @button-border;
 

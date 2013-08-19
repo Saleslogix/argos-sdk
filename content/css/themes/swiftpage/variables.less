@@ -108,8 +108,8 @@
 // Toolbar
 @toolbar-bg-color:                  @gray1-darker;
 @toolbar-text-color:                #fff;
-@toolbar-button-bg-color:           @gray5-lighter;
-@toolbar-button-border:             1px solid @gray4-darker;
+@toolbar-button-bg-color:           @gray1-lighter;
+@toolbar-button-border:             1px solid @gray1-darker;
 @toolbar-button-disabled-opacity:   0.25;
 
 // List
@@ -174,9 +174,9 @@
 // Mixins
 // --------------------------------------------------------
 .border-radius (@size) {
-    border-radius: @size;
-    -webkit-border-radius: @size;
-    -moz-border-radius: @size;
+    border-radius: @arguments;
+    -webkit-border-radius: @arguments;
+    -moz-border-radius: @arguments;
 }
 
 .box-shadow (@box) {

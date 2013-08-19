@@ -226,8 +226,6 @@
 .list-search .searchButton
 {
     cursor: pointer;
-    -moz-border-radius: 0px 3px 3px 0px;
-    -webkit-border-radius: 0px 3px 3px 0px;
     font-size: 0.9em;
     line-height: 30px;
     padding: 0 8px 0 6px;
@@ -239,8 +237,6 @@
 .list-search .dismissButton
 {   
     cursor: pointer;
-    -moz-border-radius: 3px 0px 0px 3px;
-    -webkit-border-radius: 3px 0px 0px 3px;
     font-size: 0.9em;
     line-height: 30px;
     text-align: center;
@@ -330,7 +326,7 @@
     color: #ff0;
     position: absolute;
     top: 8px;
-    left: 12px;
+    left: 8px;
     bottom: 0px;
     z-index: 10;
 }
@@ -592,18 +588,8 @@ div.table-layout
 {
     display: table;
     width: 99%;
-
     padding: 0 0 0 5px;
-    border: 1px solid #000;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
     background: #fff;
-
-    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
-    -webkit-background-clip: padding-box;
-    -moz-background-clip: padding-box;
 }
 div.table-layout > div
 {
@@ -755,7 +741,6 @@ h2 > .collapsed-indicator
     height: 30px;
     width: 30px;
     float: right;
-    margin: 0 4px 0 0;
 }
 
 .collapsed + ul,
@@ -1092,10 +1077,9 @@ input:not([type|=radio]):not([type|=checkbox]) {
     font-size: 1.25em;
     font-weight: bold;
     list-style: none;
-    margin: 8px 6px 8px 6px;
-    padding: 8px 0px 8px 10px;
+    margin: 4px 0px 4px 0px;
+    padding: 4px 0px 4px 10px;
     position: relative;
-    border-radius: 6px;
 }
 
 .list-content > li,
@@ -1106,7 +1090,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
 .list-show-selectors .list-item-content,
 .list-item-static-selector + .list-item-content
 {
-    padding-left: 42px;
+    padding-left: 38px;
 }
 .actions-enabled + .list-item-content
 {
@@ -1185,7 +1169,7 @@ img
     height: 32px;
     line-height: 32px;
     margin: 0;
-    padding: 0 0 0 6px;
+    padding: 0 0 0 2px;
     font-size: 1em;
     z-index: 5;
     position: relative;
@@ -1342,6 +1326,7 @@ img
     display: inline-block;    
     height: 35px;
     border: solid 1px black;
+    background-color: @button-bg-color;
 }
 
 .list-search .dismissButton {
