@@ -215,56 +215,6 @@
     font-weight: normal;
 }
 
-/* search */
-.list-search input
-{
-    font-size: 0.9em;
-    line-height: 30px;
-    border: 0;
-}
-
-.list-search .searchButton
-{
-    cursor: pointer;
-    font-size: 0.9em;
-    line-height: 30px;
-    padding: 0 8px 0 6px;
-    border: solid 1px #000;
-    text-align: center;
-    z-index: 100;
-}
-
-.list-search .dismissButton
-{   
-    cursor: pointer;
-    font-size: 0.9em;
-    line-height: 30px;
-    text-align: center;
-    border-style: solid;
-    border-color: #000;
-    border-width: 1px 0 1px 1px;
-    z-index: 100;
-}
-
-.list-search label
-{
-    color: #aaa;
-    font-size: 0.9em !important;
-    line-height: 32px;
-    padding: 0 8px 0 6px;
-    font-weight: normal;
-}
-
-.search-active label
-{
-    display: none;
-}
-
-.search-active .dismissButton
-{
-    display: block;
-}
-
 /* list selection */
 .list .list-item-selector
 {
@@ -584,6 +534,50 @@
     padding:  8px 34px 8px 110px !important;
 }
 
+.list-search
+{
+    padding: 6px;
+    position: relative;
+}
+
+.list-search input
+{
+    .box-sizing(border-box);
+    height: 32px;
+    margin: 0 !important;
+    border: @button-border;
+}
+
+.list-search .searchButton
+{    
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    display: inline-block;    
+    height: 35px;
+    border: @button-border;
+    background-color: @button-bg-color;
+}
+
+.list-search .dismissButton {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    position: absolute;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    right: 70px;
+    top: 6px;
+    border: solid 1px black;
+}
+
+.list-search label
+{
+    position: absolute;
+    top: 6px;
+    left: 6px;
+}
+
+
 div.table-layout
 {
     display: table;
@@ -608,7 +602,8 @@ div.table-layout div.hasButton > button
 }
 div.table-layout div.hasButton > button.searchButton
 {
-    border-left: 1px solid #000;
+    border: @button-border;
+    border-left: 1px solid @black-darker;
 }
 div.table-layout div input:not([type|=radio]):not([type|=checkbox])
 {
@@ -631,6 +626,57 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox])
     width:30px;
     height:30px;
 }
+
+/* search */
+.list-search input
+{
+    font-size: 0.9em;
+    line-height: 30px;
+    border: 0;
+}
+
+.list-search .searchButton
+{
+    cursor: pointer;
+    font-size: 0.9em;
+    line-height: 30px;
+    padding: 0 8px 0 6px;
+    border: solid 1px #000;
+    text-align: center;
+    z-index: 100;
+}
+
+.list-search .dismissButton
+{   
+    cursor: pointer;
+    font-size: 0.9em;
+    line-height: 30px;
+    text-align: center;
+    border-style: solid;
+    border-color: #000;
+    border-width: 1px 0 1px 1px;
+    z-index: 100;
+}
+
+.list-search label
+{
+    color: #aaa;
+    font-size: 0.9em !important;
+    line-height: 32px;
+    padding: 0 8px 0 6px;
+    font-weight: normal;
+}
+
+.search-active label
+{
+    display: none;
+}
+
+.search-active .dismissButton
+{
+    display: block;
+}
+
 .search-widget button.clear-button
 {
     position: static; height: 30px;
@@ -1303,49 +1349,6 @@ img
 .contextualContent .list-search 
 {
     background-color: @gray1-darker;
-}
-
-.list-search
-{
-    padding: 6px;
-    position: relative;
-}
-
-.list-search input
-{
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    height: 32px;
-    margin: 0 !important;
-}
-
-.list-search .searchButton
-{    
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    display: inline-block;    
-    height: 35px;
-    border: solid 1px black;
-    background-color: @button-bg-color;
-}
-
-.list-search .dismissButton {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    position: absolute;
-    display: inline-block;
-    height: 32px;
-    width: 32px;
-    right: 70px;
-    top: 6px;
-    border: solid 1px black;
-}
-
-.list-search label
-{
-    position: absolute;
-    top: 6px;
-    left: 6px;
 }
 
 .row-edit
