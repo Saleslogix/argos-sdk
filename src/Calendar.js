@@ -341,7 +341,7 @@ define('Sage/Platform/Mobile/Calendar', [
             result.minutes(minutes);
             if ((this.options && this.options.timeless) || this.timeless)
             {
-                result = result.sod().add({minutes: -1 * result.zone(), seconds: 5});
+                result = result.startOf('day').add({minutes: -1 * result.zone(), seconds: 5});
             }
 
             return result.toDate();
