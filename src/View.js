@@ -93,7 +93,16 @@ define('Sage/Platform/Mobile/View', [
          * @return {Object} The toolbar layout
          */
         getTools: function() {
-            return this._createCustomizedLayout(this.createToolLayout(), 'tools');
+            var tools = this._createCustomizedLayout(this.createToolLayout(), 'tools');
+            this.onToolLayoutCreated(tools);
+            return tools;
+        },
+        /**
+         * Called after toolBar layout is created;
+         * 
+         */
+        onToolLayoutCreated:function(tools){
+    
         },
         /**
          * Returns the tool layout that defines all toolbar items for the view
