@@ -30,7 +30,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'min/css/sdk.min.sage-green.debug.css': 'content/css/themes/sage-green.less',
-                    'min/css/sdk.min.swiftpage-orange.debug.css': 'content/css/themes/swiftpage-orange.less'
+                    'min/css/sdk.min.swiftpage.debug.css': 'content/css/themes/swiftpage.less'
                 }
             },
             production: {
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'min/css/sdk.min.sage-green.css': 'content/css/themes/sage-green.less',
-                    'min/css/sdk.min.swiftpage-orange.css': 'content/css/themes/swiftpage-orange.less'
+                    'min/css/sdk.min.swiftpage.css': 'content/css/themes/swiftpage.less'
                 }
             }
         },
