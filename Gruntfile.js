@@ -26,40 +26,20 @@ module.exports = function(grunt) {
         less: {
             development: {
                 options: {
-                    paths: ['content/css']
                 },
                 files: {
-                    'min/css/sdk.min.sage-green.debug.css': 'content/css/themes/sage-green.less',
-                    'min/css/sdk.min.swiftpage.debug.css': 'content/css/themes/swiftpage.less'
+                    'min/css/themes/sage-green/sdk.min.sage-green.debug.css': 'content/css/themes/sage-green.less',
+                    'min/css/themes/swiftpage/sdk.min.swiftpage.debug.css': 'content/css/themes/swiftpage.less'
                 }
             },
             production: {
                 options: {
-                    paths: ['content/css'],
                     yuicompress: true
                 },
                 files: {
-                    'min/css/sdk.min.sage-green.css': 'content/css/themes/sage-green.less',
-                    'min/css/sdk.min.swiftpage.css': 'content/css/themes/swiftpage.less'
+                    'min/css/themes/sage-green/sdk.min.sage-green.css': 'content/css/themes/sage-green.less',
+                    'min/css/themes/swiftpage/sdk.min.swiftpage.css': 'content/css/themes/swiftpage.less'
                 }
-            }
-        },
-        cssmin: {
-            combine: {
-                files: {
-                    'min/css/sdk.min.css': ['content/reui/themes/sage-green/theme.css', 'content/css/base.css']
-                }
-            }
-        },
-        csslint: {
-            options: {
-                csslintrc: '.csslintrc',
-                formatters: [
-                    { id: 'junit-xml', dest: 'report/junit.xml' }
-                ]
-            },
-            lax: {
-                src: ['content/**/*.css']
             }
         }
     });
@@ -67,8 +47,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-contrib-less');
 
     grunt.registerTask('test', ['connect', 'jasmine']);
