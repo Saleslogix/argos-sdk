@@ -214,14 +214,6 @@ textarea:focus
     font-size: @text-area-font-size;
 }
 
-.panel-content > fieldset >.row-edit > div > input:focus,
-.panel-content > fieldset >.row-edit > div > textarea:focus,
-.panel-content > fieldset >.row-edit > input:focus,
-.panel-content > fieldset >.row-edit > textarea:focus
-{
-    .box-shadow(@input-focus-box-shadow);
-}
-
 .panel-content > fieldset > .row-edit
 {
     border-top: @panel-content-rowedit-border;
@@ -251,6 +243,7 @@ textarea:focus
     border: @button-border;
 
     cursor: @button-cursor;
+    outline-color: @button-outline-color;
 }
 
 .button:active
