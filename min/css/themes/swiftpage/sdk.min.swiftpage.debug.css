@@ -1183,7 +1183,7 @@ h5 {
 }
 .list-content,
 .group-content {
-  background-color: #e5e5e5;
+  background-color: #a1a1a1;
 }
 .list-content > li,
 .group-content > li {
@@ -1317,14 +1317,6 @@ textarea:focus {
 .panel-content > fieldset > .row-edit > textarea {
   font-size: 16px;
 }
-.panel-content > fieldset > .row-edit > div > input:focus,
-.panel-content > fieldset > .row-edit > div > textarea:focus,
-.panel-content > fieldset > .row-edit > input:focus,
-.panel-content > fieldset > .row-edit > textarea:focus {
-  box-shadow: 0 0 5px #fea780;
-  -webkit-box-shadow: 0 0 5px #fea780;
-  -moz-box-shadow: 0 0 5px #fea780;
-}
 .panel-content > fieldset > .row-edit {
   border-top: solid 1px #dfdfdf;
 }
@@ -1347,6 +1339,7 @@ textarea:focus {
   -moz-border-radius: 0px;
   border: none;
   cursor: pointer;
+  outline-color: #fe5000;
 }
 .button:active {
   background-color: #ffffff;
