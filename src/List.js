@@ -634,6 +634,18 @@ define('Sage/Platform/Mobile/List', [
          * The class constructor to use for the search widget
          */
         searchWidgetClass: SearchWidget,
+
+        /**
+         * @property {Boolean}
+         * Flag to indicate the default search term has been set.
+         */
+        defaultSearchTermSet: false,
+
+        /**
+         * @property {String}
+         * The default search term to use
+         */
+        defaultSearchTerm: '',
         /**
          * @property {Object}
          * The selection model for the view
@@ -1133,10 +1145,27 @@ define('Sage/Platform/Mobile/List', [
          */
         configureSearch: function() {
             this.query = this.options && this.options.query || this.query || null;
-            if (this.searchWidget)
+            if (this.searchWidget) {
                 this.searchWidget.configure({
                     'context': this.getContext()
                 });
+            }
+
+            this._setDefaultSearchTerm();
+        },
+        _setDefaultSearchTerm: function() {
+            if (!this.defaultSearchTerm || this.defaultSearchTermSet) {
+                return;
+            }
+
+            var searchQuery;
+            this.setSearchTerm(this.defaultSearchTerm);
+            searchQuery = this.getSearchQuery();
+            if (searchQuery) {
+                this.query = searchQuery;
+            }
+
+            this.defaultSearchTermSet = true;
         },
         /**
          * Creates SDataResourceCollectionRequest instance and sets a number of known properties.
