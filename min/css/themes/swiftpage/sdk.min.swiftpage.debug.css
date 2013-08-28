@@ -1273,6 +1273,10 @@ body > .viewContainer > .toolbar,
 .panel-validation-summary > div {
   border: 0 none #000000;
 }
+input,
+textarea {
+  -webkit-tap-hightlight-color: rgba(0, 0, 0, 0);
+}
 input:focus,
 textarea:focus {
   outline: none;
@@ -1449,7 +1453,7 @@ body > .viewContainer {
   display: none;
 }
 .toggleStateOn {
-  border: #00678a;
+  border: 1px solid #00678a;
   background-color: #444444;
 }
 .logo {
