@@ -185,6 +185,7 @@ define('Sage/Platform/Mobile/GroupedList', [
                     this.entries[entry.$key] = entry;
                     rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
                     this.onApplyRowTemplate(entry, rowNode);
+                    this.onProcessRelatedViews(entry, rowNode);
 
                     domConstruct.place(rowNode, getGroupsNode(entryGroup), 'last');
                 }
