@@ -39,7 +39,8 @@ define('Sage/Platform/Mobile/List', [
     'dojo/when',
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/View',
-    'Sage/Platform/Mobile/SearchWidget'
+    'Sage/Platform/Mobile/SearchWidget',
+    'Sage/Platform/Mobile/Store/SData'
 ], function(
     declare,
     lang,
@@ -57,7 +58,8 @@ define('Sage/Platform/Mobile/List', [
     when,
     ErrorManager,
     View,
-    SearchWidget
+    SearchWidget,
+    SDataStore
 ) {
 
     /**
@@ -752,6 +754,7 @@ define('Sage/Platform/Mobile/List', [
                 });
 
             this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
+            this._createCustomizedLayout(this.createRelatedViewLayout(), 'realatedViews');
         },
         /**
          * Extends dijit Widget to destroy the search widget before destroying the view.
@@ -766,7 +769,7 @@ define('Sage/Platform/Mobile/List', [
             }
             
             this.inherited(arguments);
-        },
+        },       
         /**
          * Sets and returns the toolbar item layout definition, this method should be overriden in the view
          * so that you may define the views toolbar items.
@@ -1310,32 +1313,23 @@ define('Sage/Platform/Mobile/List', [
             this.feed = feed;
 
             if (this.feed['$totalResults'] === 0) {
-                this.set('listContent', this.noDataTemplate.apply(this));                
+                this.set('listContent', this.noDataTemplate.apply(this));
             } else if (feed['$resources']) {
                 docfrag = document.createDocumentFragment();
                 for (i = 0; i < feed['$resources'].length; i++) {
                     entry = feed['$resources'][i];
                     entry['$descriptor'] = entry['$descriptor'] || feed['$descriptor'];
 
-                    related = this.fetchRelatedRowData(entry);
-
                     this.entries[entry.$key] = entry;
                     rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
                     docfrag.appendChild(rowNode);
                     this.onApplyRowTemplate(entry, rowNode);
+                    this.onProcessRelatedViews(entry, rowNode);
 
-                    (function(context, related, entry, rowNode) {
-                        when(related, lang.hitch(context, function(val) {
-                            if (val) {
-                                entry.related = val;
-                                this.onApplyRelatedRowTemplate(entry, rowNode);
-                            }
-                        }));
-                    })(this, related, entry, rowNode);
                 }
 
                 if (docfrag.childNodes.length > 0) {
-                    domConstruct.place(docfrag, this.contentNode, 'last');                    
+                    domConstruct.place(docfrag, this.contentNode, 'last');
                 }
             }
 
@@ -1354,11 +1348,11 @@ define('Sage/Platform/Mobile/List', [
             this._loadPreviousSelections();
         },
         onApplyRelatedRowTemplate: function(entry, rowNode) {
-            var node = query('.list-item-content-related', rowNode), templateString;
-            if (node.length > 0) {
-                templateString = this.itemRelatedTemplate.apply(entry, this);
-                node[0].innerHTML = templateString; 
-            }
+           // var node = query('.list-item-content-related', rowNode), templateString;
+           // if (node.length > 0) {
+           //     templateString = this.itemRelatedTemplate.apply(entry, this);
+           //     node[0].innerHTML = templateString; 
+           // }
         },
         fetchRelatedRowData: function(entry) {
         },
@@ -1593,6 +1587,135 @@ define('Sage/Platform/Mobile/List', [
             if (this.searchWidget) {
                 this.searchWidget.set('queryValue', value);
             }
-        }
+        },
+        relatedViewTemplate: new Simplate([
+            '<div class="list-related-view">',
+            '<hr />',
+            '<h4>{%: $$.title %} </h4>',
+            '</div>'
+        ]),
+        relatedViewRowTemplate: new Simplate([
+            '<div class="list-related-view-row">',
+            '<button xdata-action="selectRelatedEntry" data-related-type="" data-related-key="" button">',
+            '<img src="{%: $$.icon %}" class="icon" />',
+            '</button>',
+            '<div class="list-related-view-item">',
+            '{%! $$.relatedItemTemplate %}',
+            '</div>',
+            '</div>'
+        ]),
+        relatedItemTemplate: new Simplate([
+              '<div>{%: $.$descriptor %}</div>'
+        ]),
+        relatedViews: null,
+        createRelatedViewLayout: function() {
+            return this.relatedViews || (this.relatedViews = {});
+        },
+        getRelatedViewStore: function(entry, relatedView) {
+            var store = new SDataStore({
+                service: App.services['crm'],
+                resourceKind: relatedView.resourceKind,
+                scope: relatedView
+            }); 
+            return store;
+        },
+        getRelatedViewQueryOptions: function(entry, relatedView) {
+            var sortExpression = '';
+            if (relatedView.sortProperty)
+            {
+                sortExpression = relatedView.sortProperty + " " + relatedView.sortDirection || "asc"
+            }
+
+            var queryOptions = {
+                count: relatedView.numberOfItems || 1,
+                start: 0,
+                select: relatedView.selectProperties || '',
+                where: relatedView.childRelationProperty + " eq '" + entry[relatedView.parentRelationProperty] +"'",
+                sort: sortExpression
+            };
+            return queryOptions;
+        },
+        relatedViewFetchData: function(entry, relatedView) {
+            var queryResults;
+            queryResults = relatedView.store.query(null, relatedView.queryOptions);
+            return queryResults;
+        },
+        onProcessRelatedViews: function(entry, rowNode) {
+            var relatedContentNode = query('.list-item-content-related', rowNode),
+            relatedNode,
+            relatedView,
+            relatedResults,
+            i;
+
+            try {
+                if (relatedContentNode[0]) {
+                    for (i = 0; i < this.relatedViews.length; i++) {
+                      
+                        relatedView = {};
+                        lang.mixin(relatedView, this.relatedViews[i]);
+                       
+                        relatedView.relatedViewTemplate = relatedView.relatedViewTemplate || this.relatedViewTemplate;
+                        relatedView.relatedViewRowTemplate = relatedView.relatedViewRowTemplate || this.relatedViewRowTemplate;
+                        relatedView.relatedItemTemplate = relatedView.relatedItemTemplate || this.relatedItemTemplate;
+                        relatedView.store = this.relatedViews[i].store || this.getRelatedViewStore(entry, relatedView);
+                        relatedView.queryOptions = relatedView.queryOptions || this.getRelatedViewQueryOptions(entry, relatedView);
+                        relatedNode = domConstruct.toDom('<div id="relatedView_' + relatedView.id + '_' + entry.$key + '"></div>');
+                        domConstruct.place(relatedNode, relatedContentNode[0], 'last');
+
+                        if (relatedView.enabled) {
+                            if (relatedView.parentCollection) {
+                                this.onApplyRelatedView(entry, entry[relatedView.parentCollectionProperty]['$resources'], relatedContentNode[0], relatedView);
+                            } else {
+                                if (relatedView.fetchData) {
+                                    relatedResults = relatedView.fetchData(entry);
+                                } else {
+
+                                    relatedResults = this.relatedViewFetchData(entry, relatedView);
+                                }
+                                (function(context, relatedResults, entry, relatedContentNode, relatedView) {
+
+                                    try {
+                                        when(relatedResults, lang.hitch(context, function(relatedFeed) {
+                                            entry['$related_' + relatedView.id] = relatedFeed;
+                                            context.onApplyRelatedView(entry, relatedFeed, relatedContentNode, relatedView);
+                                        }));
+                                    }
+                                    catch (error) {
+
+                                    }
+                                })(this, relatedResults, entry, relatedContentNode[0], relatedView);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (error) {
+
+
+            }
+        },
+        onApplyRelatedView: function(prarentEntry, relatedFeed, relatedContentNode, relatedView)
+        {
+            var relatedHTML, itemEntry, itemNode, headerNode, itemHTML, relatedViewNode;
+            try {
+                headerNode = domConstruct.toDom(relatedView.relatedViewTemplate.apply(relatedFeed, relatedView));
+                if (relatedFeed.length > 0) {
+                    relatedViewNode = query('> #relatedView_' + relatedView.id + '_' + prarentEntry.$key, relatedContentNode);
+                    headerNode = domConstruct.toDom(relatedView.relatedViewTemplate.apply(relatedFeed, relatedView));
+                    for (i = 0; i < relatedFeed.length; i++) {
+                        itemEntry = relatedFeed[i];
+                        itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
+                        itemHTML = relatedView.relatedViewRowTemplate.apply(itemEntry, relatedView);
+                        domConstruct.place(itemHTML, headerNode, 'last');
+                    }
+                }
+                domConstruct.place(headerNode, relatedViewNode[0], 'first');
+            }
+            catch (error) {
+
+            }
+
+        },
     });
 });
