@@ -1,0 +1,201 @@
+// Variables
+
+
+// --------------------------------------------------------
+// Color palette
+// --------------------------------------------------------
+
+// Blacks
+@black-darker:                      #212721; // Darkest
+@black-dark:                        #585D58; // 75% opacity
+@black-light:                       #909390; // 50% opacity
+@black-lighter:                     #C8C9C8; // 25% opacity
+
+// Grays
+@gray1-darker:                      #444444; // Darkest
+@gray1-dark:                        #727272; // 75% opacity
+@gray1-light:                       #A1A1A1; // 50% opacity
+@gray1-lighter:                     #D0D0D0; // 25% opacity
+
+@gray2-darker:                      #666666; // Darkest
+@gray2-dark:                        #8C8C8C; // 75% opacity
+@gray2-light:                       #B2B2B2; // 50% opacity
+@gray2-lighter:                     #D9D9D9; // 25% opacity
+
+@gray3-darker:                      #C0C0C0; // Darkest
+@gray3-dark:                        #CFCFCF; // 75% opacity
+@gray3-light:                       #DFDFDF; // 50% opacity
+@gray3-lighter:                     #EFEFEF; // 25% opacity
+
+@gray4-darker:                      #dddddd; // Darkest
+@gray4-dark:                        #E5E5E5; // 75% opacity
+@gray4-light:                       #EEEEEE; // 50% opacity
+@gray4-lighter:                     #F6F6F6; // 25% opacity
+
+@gray5-darker:                      #EDEDED; // Darkest
+@gray5-dark:                        #F1F1F1; // 75% opacity
+@gray5-light:                       #F6F6F6; // 50% opacity
+@gray5-lighter:                     #FAFAFA; // 25% opacity
+
+// Blues
+
+// Normal blue
+@blue1-darker:                      #00dddb; // Darkest
+@blue1-dark:                        #40E5E4; // 75% opacity
+@blue1-light:                       #80EEED; // 50% opacity
+@blue1-lighter:                     #C0F6F6; // 25% opacity
+
+// Sea green blue
+@blue2-darker:                      #009ca6; // Darkest
+@blue2-dark:                        #40B4BC; // 75% opacity
+@blue2-light:                       #80CDD2; // 50% opacity
+@blue2-lighter:                     #C0E6E9; // 25% opacity
+
+// Darker blue
+@blue3-darker:                      #00678a; // Darkest
+@blue3-dark:                        #408DA7; // 75% opacity
+@blue3-light:                       #80B3C4; // 50% opacity
+@blue3-lighter:                     #C0D9E2; // 25% opacity
+
+// Orange
+@orange-darker:                     #FE5000; // Darkest
+@orange-dark:                       #FE7B40; // 75% opacity
+@orange-light:                      #FEA780; // 50% opacity
+@orange-lighter:                    #FED3C0; // 25% opacity
+
+// --------------------------------------------------------
+// Common UI Elements
+// --------------------------------------------------------
+// body
+@body-bg-color:                     #fff;
+@text-color:                        @black-darker;
+
+@link-color:                        @blue1-dark;
+@link-hover-color:                  @blue1-darker;
+
+// Fonts
+@font-family:                       Helvetica Neue, Helvetica, Arial;
+@font-size-base:                    14px;
+@font-size-large:                   16px;
+@font-size-small:                   12px;
+
+// Headings
+@font-size-h3:                      1em;
+@font-weight-h3:                    normal;
+@font-size-h4:                      .75em;
+@font-weight-h4:                    normal;
+@font-size-h5:                      .8em;
+@font-weight-h5:                    normal;
+
+// Forms
+@form-label-color:                  @blue3-darker;
+@form-label-font-weight:            bold;
+@button-text-color:                 @black-darker;
+@button-bg-color:                   @gray1-lighter;
+@button-active-bg-color:            #fff;
+@button-border:                     none;/*1px @gray1-light;*/
+@button-border-radius:              0px;
+@button-font-size:                  .8em;
+@button-font-weight:                bold;
+@button-text-align:                 center;
+@button-text-decoration:            none;
+@button-cursor:                     pointer;
+@button-outline-color:              @orange-darker;
+@fieldset-border:                   0 none black;
+@input-focus-outline:               none;
+@input-focus-bg-color:              #fff;
+@text-area-font-size:               @font-size-large;
+
+// Toolbar
+@toolbar-bg-color:                  @gray1-darker;
+@toolbar-text-color:                #fff;
+@toolbar-button-bg-color:           @gray1-lighter;
+@toolbar-button-border:             1px solid @gray1-darker;
+@toolbar-button-disabled-opacity:   0.25;
+
+// List
+@list-bg-color:                     @gray1-light;
+@list-item-bg-color:                #fff;
+@list-action-active-bg-color:       @blue1-light;
+
+// Panels (Detail, Edit, Calendar)
+@panel-content-bg-color:            #fff;
+@panel-content-border:              1px solid @gray3-light;
+@panel-header-border-top:           1px solid @black-darker;
+@panel-header-border-bottom:        1px solid @black-darker;
+@panel-header-bg-color:             @gray4-dark;
+@panel-header-color:                @black-darker;
+@panel-header-font-weight:          bold;
+@panel-content-firstchild-border:   1px solid @gray3-light;
+@panel-content-list-border:         none 0px black;
+@panel-content-list-bg-color:       #fff;
+@panel-content-list-item-border:    solid 1px @gray3-light;
+@panel-content-list-item-cursor:    pointer;
+@panel-content-list-firstchild-border: none 0 black;
+@panel-content-list-link-color:     inherit;
+@panel-content-list-link-txtdec:    none;
+@panel-content-row-padding:         .25em;
+@panel-content-row-min-height:      1.5em;
+@panel-content-row-border:          solid 1px @gray3-light;
+@panel-content-row-first-border:    none 0px black;
+@panel-content-rowedit-border:      solid 1px @gray3-light;
+
+// Validation Summary
+@validation-h2-color:               #fff;
+@validation-h2-bg-color:            @orange-dark;
+@validation-h2-font-weight:         bold;
+@validation-h2-border:              1px solid @black-darker;
+@validation-h2-firstchild-border:   1px solid @orange-dark;
+
+// Grouped List
+@glist-header-color:                #fff;
+@glist-header-bg-color:             @gray2-darker;
+@toggle-border:                     1px solid @gray2-dark;
+@toggle-bg-color:                   @gray1-lighter;
+@toggle-border-radius:              6px;
+@toggle-font-size:                  .8em;
+@toggle-font-weight:                bold;
+@toggle-line-height:                30px;
+@toggle-on-color:                   #fff;
+@toggle-off-color:                  @black-darker;
+@toggle-thumb-bg-color:             @gray4-darker;
+@toggle-thumb-border:               1px solid @gray1-dark;
+
+// Drawers (Global left menu, contextual right menu)
+@menu-list-item-color:              #fff;
+@menu-list-item-bg-color:           @gray1-darker;
+@menu-list-item-border:             1px solid @gray2-darker;
+@menu-border:                       1px solid @gray3-light;
+
+// Misc
+@togglestate-on-border:             1px solid @blue3-darker;
+@togglestate-on-bg-color:           @gray1-darker;
+
+// --------------------------------------------------------
+// Mixins
+// --------------------------------------------------------
+.border-radius (@size) {
+    border-radius: @arguments;
+    -webkit-border-radius: @arguments;
+    -moz-border-radius: @arguments;
+}
+
+.box-shadow (@box) {
+    box-shadow: @box;
+    -webkit-box-shadow: @box;
+    -moz-box-shadow: @box;
+}
+
+.box-sizing (@sizing) {
+    box-sizing: @sizing;
+    -webkit-box-sizing: @sizing;
+    -moz-box-sizing: @sizing;
+}
+
+.user-select (@select) {
+    -webkit-user-select: @select;
+    -khtml-user-select: @select;
+    -moz-user-select: @select;
+    -ms-user-select: @select;
+    user-select: @select;
+}

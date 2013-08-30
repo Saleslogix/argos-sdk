@@ -42,7 +42,7 @@ define('Sage/Platform/Mobile/Fields/DateField', [
      *         property: 'StartDate',
      *         label: this.startDateText,
      *         type: 'date',
-     *         dateFormatText: 'MM/dd HH:mm:ss',
+     *         dateFormatText: 'MM/DD HH:mm:ss',
      *         showTimerPicker: true
      *     }
      *
@@ -59,12 +59,7 @@ define('Sage/Platform/Mobile/Fields/DateField', [
          * The text shown when no value (or null/undefined) is set to the field.
          */
         emptyText: '',
-        /**
-         * @cfg {String}
-         * The [Datejs format](http://code.google.com/p/datejs/wiki/FormatSpecifiers) the date will be
-         * formatted when displaying in the field.
-         */
-        dateFormatText: 'MM/dd/yyyy',
+        dateFormatText: 'MM/DD/YYYY',
         /**
          * @property {String}
          * The error validation message for this field.

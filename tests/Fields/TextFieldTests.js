@@ -1,7 +1,7 @@
 define('tests/Fields/TextFieldTests', ['dojo/query','dojo/dom-attr','dojo/dom-class','Sage/Platform/Mobile/Fields/TextField'], function(query, domAttr, domClass, TextField) {
 return describe('Sage.Platform.Mobile.Fields.TextField', function() {
 
-    it('Can bind onkeypress on init when validInputOnly is true', function() {
+    xit('Can bind onkeypress on init when validInputOnly is true', function() {
         var field = new TextField();
 
         var previousConnects = field._connects.length;

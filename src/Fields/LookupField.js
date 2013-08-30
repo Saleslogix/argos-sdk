@@ -363,9 +363,6 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 continuousScrolling: false,
                 tools: {
                     tbar: [{
-                        id: 'toggleListHeaderMenu',
-                        action: 'toggleListHeaderMenu'
-                    }, {
                         id: 'complete',
                         fn: this.complete,
                         scope: this

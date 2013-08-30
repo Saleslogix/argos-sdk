@@ -12,7 +12,7 @@ return describe('Sage.Platform.Mobile.ApplicationModule', function() {
 
         module.registerView('test_view');
 
-        expect(module.application.registerView).toHaveBeenCalledWith('test_view');
+        expect(module.application.registerView).toHaveBeenCalledWith('test_view', undefined);
     });
 
     it('Can register a toolbar to the set application', function() {
@@ -26,7 +26,7 @@ return describe('Sage.Platform.Mobile.ApplicationModule', function() {
 
         module.registerToolbar('testbar', 'testbar');
 
-        expect(module.application.registerToolbar).toHaveBeenCalledWith('testbar', 'testbar');
+        expect(module.application.registerToolbar).toHaveBeenCalledWith('testbar', 'testbar', undefined);
     });
 
     it('Can register a customization to the set application', function() {
