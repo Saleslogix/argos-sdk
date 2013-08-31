@@ -1624,7 +1624,7 @@ define('Sage/Platform/Mobile/List', [
         ]),
         relatedViewRowTemplate: new Simplate([
             '<div class="list-related-view-row">',
-            '<button xdata-action="selectRelatedEntry" data-related-type="" data-related-key="" button">',
+            '<button xdata-action="selectRelatedEntry" data-related-type="" data-related-key="" >',
             '<img src="{%: $$.icon %}" class="icon" />',
             '</button>',
             '<div class="list-related-view-item">',
