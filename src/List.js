@@ -1759,21 +1759,14 @@ define('Sage/Platform/Mobile/List', [
 
         },
         onShowRelatedView: function(params, evt, node) {
-            //var row = query(node).closest('[data-key]')[0],
-            //    key = row ? row.getAttribute('data-key') : false;
-
-           // if (this._selectionModel && key)
-           //     this._selectionModel.toggle(key, this.entries[key], row);
-
-           // if (this.options.singleSelect && this.options.singleSelectAction && !this.enableActions)
-           //     this.invokeSingleSelectAction();
+           
         
             var relatedId, entryKey, entry, relatedView, relatedViewNode, i, relatedViewDataNode;
-            relatedId = params.$source.attributes[1].value;
-            entryKey = params.$source.attributes[0].value;
+            relatedId = params.relatedviewid; 
+            entryKey = params.entrykey; 
             entry = this.entries[entryKey];
             relatedViewNode = query('#relatedView_' + relatedId + '_' + entryKey, this.contentNode);
-            if (entry['$related_' + relatedId]) {
+            if (entry.hasOwnProperty('$related_' + relatedId)) {
                 relatedViewDataNode = query('.list-related-view', relatedViewNode[0]);
                 domClass.toggle(relatedViewDataNode[0], 'list-hide-related-view', true);
                 return;
