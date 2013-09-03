@@ -207,6 +207,9 @@ input:not([type|=radio]):not([type|=checkbox]) {
 .actions-enabled + .list-item-content {
   padding-left: 48px;
 }
+.list-item-content-related {
+  margin-left: 20px;
+}
 .list-content > li > img.icon,
 .list-content > li > * > img.icon {
   border: 0 none black;

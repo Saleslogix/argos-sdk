@@ -1376,11 +1376,11 @@ define('Sage/Platform/Mobile/List', [
             this._loadPreviousSelections();
         },
         onApplyRelatedRowTemplate: function(entry, rowNode) {
-           // var node = query('.list-item-content-related', rowNode), templateString;
-           // if (node.length > 0) {
-           //     templateString = this.itemRelatedTemplate.apply(entry, this);
-           //     node[0].innerHTML = templateString; 
-           // }
+            // var node = query('.list-item-content-related', rowNode), templateString;
+            // if (node.length > 0) {
+            //     templateString = this.itemRelatedTemplate.apply(entry, this);
+            //     node[0].innerHTML = templateString; 
+            // }
         },
         fetchRelatedRowData: function(entry) {
         },
@@ -1618,8 +1618,7 @@ define('Sage/Platform/Mobile/List', [
         },
         relatedViewTemplate: new Simplate([
             '<div class="list-related-view">',
-            '<hr />',
-            '<h4>{%: $$.title %} </h4>',
+           // '<h4>{%: $$.title %} </h4>',
             '</div>'
         ]),
         relatedViewRowTemplate: new Simplate([
@@ -1634,6 +1633,13 @@ define('Sage/Platform/Mobile/List', [
         ]),
         relatedItemTemplate: new Simplate([
               '<div>{%: $.$descriptor %}</div>'
+        ]),
+
+        relatedViewSectionTemplate: new Simplate([
+             '<div id="relatedView_{%: $$.id  %}_{%: $.$key  %}" class="list-related-view-section">',
+             '<button data-action="onShowRelatedView" data-relatedviewid="{%: $$.id  %}" data-entrykey="{%: $.$key  %}">{%: $$.title %}</button>',
+               '<hr />',
+             '</div>'
         ]),
         relatedViews: null,
         createRelatedViewLayout: function() {
@@ -1670,7 +1676,7 @@ define('Sage/Platform/Mobile/List', [
         },
         onProcessRelatedViews: function(entry, rowNode) {
             var relatedContentNode = query('.list-item-content-related', rowNode),
-            relatedNode,
+            relatedViewNode,
             relatedView,
             relatedResults,
             i;
@@ -1678,41 +1684,13 @@ define('Sage/Platform/Mobile/List', [
             try {
                 if (relatedContentNode[0]) {
                     for (i = 0; i < this.relatedViews.length; i++) {
-                      
-                        relatedView = {};
-                        lang.mixin(relatedView, this.relatedViews[i]);
-                       
-                        relatedView.relatedViewTemplate = relatedView.relatedViewTemplate || this.relatedViewTemplate;
-                        relatedView.relatedViewRowTemplate = relatedView.relatedViewRowTemplate || this.relatedViewRowTemplate;
-                        relatedView.relatedItemTemplate = relatedView.relatedItemTemplate || this.relatedItemTemplate;
-                        relatedView.store = this.relatedViews[i].store || this.getRelatedViewStore(entry, relatedView);
-                        relatedView.queryOptions = relatedView.queryOptions || this.getRelatedViewQueryOptions(entry, relatedView);
-                        relatedNode = domConstruct.toDom('<div id="relatedView_' + relatedView.id + '_' + entry.$key + '"></div>');
-                        domConstruct.place(relatedNode, relatedContentNode[0], 'last');
-
-                        if (relatedView.enabled) {
-                            if (relatedView.parentCollection) {
-                                this.onApplyRelatedView(entry, entry[relatedView.parentCollectionProperty]['$resources'], relatedContentNode[0], relatedView);
-                            } else {
-                                if (relatedView.fetchData) {
-                                    relatedResults = relatedView.fetchData(entry);
-                                } else {
-
-                                    relatedResults = this.relatedViewFetchData(entry, relatedView);
-                                }
-                                (function(context, relatedResults, entry, relatedContentNode, relatedView) {
-
-                                    try {
-                                        when(relatedResults, lang.hitch(context, function(relatedFeed) {
-                                            entry['$related_' + relatedView.id] = relatedFeed;
-                                            context.onApplyRelatedView(entry, relatedFeed, relatedContentNode, relatedView);
-                                        }));
-                                    }
-                                    catch (error) {
-
-                                    }
-                                })(this, relatedResults, entry, relatedContentNode[0], relatedView);
-                            }
+                        if (this.relatedViews[i].enabled) {
+                            relatedView = this.onInitRelatedView(this.relatedViews[i], entry);
+                            relatedViewNode = this.relatedViewSectionTemplate.apply(entry, relatedView);
+                            domConstruct.place(relatedViewNode, relatedContentNode[0], 'last');
+                            relatedViewNode = query('> #relatedView_' + relatedView.id + '_' + entry.$key, relatedContentNode[0]);
+                            this.relatedViews[i].loaded = false;
+                            //this.onLoadRelatedView(relatedView, entry, relatedViewNode[0]);
                         }
                     }
                 }
@@ -1723,13 +1701,48 @@ define('Sage/Platform/Mobile/List', [
 
             }
         },
-        onApplyRelatedView: function(prarentEntry, relatedFeed, relatedContentNode, relatedView)
+        onInitRelatedView:function(initRelatedView, entry){
+            var relatedView = {};
+            lang.mixin(relatedView, initRelatedView);
+            relatedView.relatedViewTemplate = relatedView.relatedViewTemplate || this.relatedViewTemplate;
+            relatedView.relatedViewRowTemplate = relatedView.relatedViewRowTemplate || this.relatedViewRowTemplate;
+            relatedView.relatedItemTemplate = relatedView.relatedItemTemplate || this.relatedItemTemplate;
+            relatedView.store = relatedView.store || this.getRelatedViewStore(entry, relatedView);
+            relatedView.queryOptions = relatedView.queryOptions || this.getRelatedViewQueryOptions(entry, relatedView);
+            return relatedView;
+        },
+        onLoadRelatedView:function(relatedView, entry, relatedViewNode){
+
+            if (relatedView.parentCollection) {
+                this.onApplyRelatedView(entry, entry[relatedView.parentCollectionProperty]['$resources'], relatedViewNode, relatedView);
+                entry['$related_' + relatedView.id] = true;
+            } else {
+                if (relatedView.fetchData) {
+                    relatedResults = relatedView.fetchData(entry);
+                } else {
+
+                    relatedResults = this.relatedViewFetchData(entry, relatedView);
+                }
+                (function(context, relatedResults, entry, relatedViewNode, relatedView) {
+
+                    try {
+                        when(relatedResults, lang.hitch(context, function(relatedFeed) {
+                            entry['$related_' + relatedView.id] = relatedFeed;
+                            context.onApplyRelatedView(entry, relatedFeed, relatedViewNode, relatedView);
+                        }));
+                    }
+                    catch (error) {
+
+                    }
+                })(this, relatedResults, entry, relatedViewNode, relatedView);
+            }
+        },
+        onApplyRelatedView: function(prarentEntry, relatedFeed, relatedViewNode, relatedView)
         {
-            var relatedHTML, itemEntry, itemNode, headerNode, itemHTML, relatedViewNode;
+            var relatedHTML, itemEntry, itemNode, headerNode, itemHTML; 
             try {
                 headerNode = domConstruct.toDom(relatedView.relatedViewTemplate.apply(relatedFeed, relatedView));
                 if (relatedFeed.length > 0) {
-                    relatedViewNode = query('> #relatedView_' + relatedView.id + '_' + prarentEntry.$key, relatedContentNode);
                     headerNode = domConstruct.toDom(relatedView.relatedViewTemplate.apply(relatedFeed, relatedView));
                     for (i = 0; i < relatedFeed.length; i++) {
                         itemEntry = relatedFeed[i];
@@ -1738,12 +1751,42 @@ define('Sage/Platform/Mobile/List', [
                         domConstruct.place(itemHTML, headerNode, 'last');
                     }
                 }
-                domConstruct.place(headerNode, relatedViewNode[0], 'first');
+                domConstruct.place(headerNode, relatedViewNode, 'last');
             }
             catch (error) {
 
             }
 
         },
+        onShowRelatedView: function(params, evt, node) {
+            //var row = query(node).closest('[data-key]')[0],
+            //    key = row ? row.getAttribute('data-key') : false;
+
+           // if (this._selectionModel && key)
+           //     this._selectionModel.toggle(key, this.entries[key], row);
+
+           // if (this.options.singleSelect && this.options.singleSelectAction && !this.enableActions)
+           //     this.invokeSingleSelectAction();
+        
+            var relatedId, entryKey, entry, relatedView, relatedViewNode, i, relatedViewDataNode;
+            relatedId = params.$source.attributes[1].value;
+            entryKey = params.$source.attributes[0].value;
+            entry = this.entries[entryKey];
+            relatedViewNode = query('#relatedView_' + relatedId + '_' + entryKey, this.contentNode);
+            if (entry['$related_' + relatedId]) {
+                relatedViewDataNode = query('.list-related-view', relatedViewNode[0]);
+                domClass.toggle(relatedViewDataNode[0], 'list-hide-related-view', true);
+                return;
+            }
+
+            for (i = 0; i < this.relatedViews.length; i++) {
+                if ((this.relatedViews[i].id === relatedId)){
+                    relatedView = this.onInitRelatedView(this.relatedViews[i], entry);
+                    this.onLoadRelatedView(relatedView, entry, relatedViewNode[0]);
+                    break;
+                }
+            }
+        }
     });
 });
+ 
