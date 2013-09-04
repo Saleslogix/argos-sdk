@@ -489,15 +489,16 @@ define('Sage/Platform/Mobile/Detail', [
                 }),
                 sectionQueue = [],
                 sectionStarted = false,
-                callbacks = [];
+                callbacks = [],
+                current;
 
             for (var i = 0; i < rows.length; i++) {
-                var current = rows[i],
-                    section,
+                var section,
                     sectionNode,
                     include = this.expandExpression(current['include'], entry),
                     exclude = this.expandExpression(current['exclude'], entry);
 
+                current = rows[i];
                 if (include !== undefined && !include) continue;
                 if (exclude !== undefined && exclude) continue;
 
@@ -613,15 +614,15 @@ define('Sage/Platform/Mobile/Detail', [
                     callbacks.push({row: current, node: rowNode, value: value, entry: entry});
             }
 
-            for (var i = 0; i < callbacks.length; i++)
+            for (i = 0; i < callbacks.length; i++)
             {
                 var item = callbacks[i];
                 item.row['onCreate'].apply(this, [item.row, item.node, item.value, item.entry]);
             }
 
-            for (var i = 0; i < sectionQueue.length; i++)
+            for (i = 0; i < sectionQueue.length; i++)
             {
-                var current = sectionQueue[i];
+                current = sectionQueue[i];
 
                 this.processLayout(current, entry);
             }

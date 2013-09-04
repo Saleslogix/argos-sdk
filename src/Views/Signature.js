@@ -327,7 +327,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
                     rescaled[i].push([
                         this.signature[i][j][0] * scale,
                         this.signature[i][j][1] * scale
-                    ])
+                    ]);
                 }
             }
             return rescaled;
@@ -340,7 +340,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
             var optimized = [];
 
             for (var i = 0; i < this.signature.length; i++)
-                optimized.push(this.optimize(this.signature[i]))
+                optimized.push(this.optimize(this.signature[i]));
 
             return optimized;
         },

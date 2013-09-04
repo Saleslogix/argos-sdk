@@ -249,9 +249,10 @@ define('Sage/Platform/Mobile/List', [
          * @param {Boolean} val The state that `singleSelection` should be in.
          */
         useSingleSelection: function(val) {
-            if (this.singleSelection != !!val) //false != undefined = true, false != !!undefined = false
-            {
-                this.singleSelection = val;
+            if (val && typeof val !== 'undefined' && val !== null) {
+                this.singleSelection = true;
+            } else {
+                this.singleSelection = false;
             }
         },
         /**
@@ -713,7 +714,7 @@ define('Sage/Platform/Mobile/List', [
         postCreate: function() {
             this.inherited(arguments);
 
-            if (this._selectionModel == null)
+            if (this._selectionModel === null)
                 this.set('selectionModel', new ConfigurableSelectionModel());
 
             this.subscribe('/app/refresh', this._onRefresh);

@@ -62,7 +62,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
          *      loadingText         The text to display while loading.
          */
         loadingTemplate: new Simplate([
-            '<li class="list-loading-indicator"><div id="fileselect-upload-progress">{%= $.loadingText %}</div></li>',
+            '<li class="list-loading-indicator"><div id="fileselect-upload-progress">{%= $.loadingText %}</div></li>'
             //'</li>'
         ]),
 
@@ -88,7 +88,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                     '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="button inline" data-action="onUploadFiles"><span>{%: $.uploadText %}</span></button>',
                     '<button id="fileSelect-btn-cancel" class="button inline" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
                 '</div>',
-            '</div>',
+            '</div>'
         ]),
         fileTemplate: new Simplate([
             '<li class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',

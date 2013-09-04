@@ -31,7 +31,6 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/_base/window',
     'dojo/string',
     'dojo/has',
-    'dojo/_base/sniff',
     'dojo/dom-construct',
     'snap',
     'dojo/_base/sniff',
@@ -45,7 +44,6 @@ define('Sage/Platform/Mobile/Application', [
     win,
     string,
     has,
-    sniff,
     domConstruct,
     snap,
     sniff,
@@ -284,7 +282,7 @@ define('Sage/Platform/Mobile/Application', [
          */
         _clearSDataRequestCache: function() {
             var check = function(k) {
-                return /^sdata\.cache/i.test(k);
+                return (/^sdata\.cache/i).test(k);
             };
 
             if (window.localStorage)
@@ -627,16 +625,16 @@ define('Sage/Platform/Mobile/Application', [
          * @return {Object/Boolean} context History data context if found, false if not.
          */
         queryNavigationContext: function(predicate, depth, scope) {
-            if (typeof depth !== 'number')
-            {
+            if (typeof depth !== 'number') {
                 scope = depth;
                 depth = 0;
             }
 
-            var list = ReUI.context.history || [],
-                depth = depth || 0;
+            var list = ReUI.context.history || [], i;
 
-            for (var i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++)
+            depth = depth || 0;
+
+            for (i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++)
                 if (predicate.call(scope || this, list[i].data))
                     return list[i].data;
 
@@ -781,7 +779,7 @@ define('Sage/Platform/Mobile/Application', [
 
             this.showLeftDrawer();
             this.showRightDrawer();
-        },
+        }
     });
 });
 
