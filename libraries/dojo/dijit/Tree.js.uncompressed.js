@@ -1,3 +1,6 @@
+require({cache:{
+'url:dijit/templates/Tree.html':"<div role=\"tree\">\n\t<div class=\"dijitInline dijitTreeIndent\" style=\"position: absolute; top: -9999px\" data-dojo-attach-point=\"indentDetector\"></div>\n\t<div class=\"dijitTreeExpando dijitTreeExpandoLoading\" data-dojo-attach-point=\"rootLoadingIndicator\"></div>\n\t<div data-dojo-attach-point=\"containerNode\" class=\"dijitTreeContainer\" role=\"presentation\">\n\t</div>\n</div>\n",
+'url:dijit/templates/TreeNode.html':"<div class=\"dijitTreeNode\" role=\"presentation\"\n\t><div data-dojo-attach-point=\"rowNode\" class=\"dijitTreeRow\" role=\"presentation\"\n\t\t><span data-dojo-attach-point=\"expandoNode\" class=\"dijitInline dijitTreeExpando\" role=\"presentation\"></span\n\t\t><span data-dojo-attach-point=\"expandoNodeText\" class=\"dijitExpandoText\" role=\"presentation\"></span\n\t\t><span data-dojo-attach-point=\"contentNode\"\n\t\t\tclass=\"dijitTreeContent\" role=\"presentation\">\n\t\t\t<span role=\"presentation\" class=\"dijitInline dijitIcon dijitTreeIcon\" data-dojo-attach-point=\"iconNode\"></span\n\t\t\t><span data-dojo-attach-point=\"labelNode,focusNode\" class=\"dijitTreeLabel\" role=\"treeitem\" tabindex=\"-1\" aria-selected=\"false\"></span>\n\t\t</span\n\t></div>\n\t<div data-dojo-attach-point=\"containerNode\" class=\"dijitTreeNodeContainer\" role=\"presentation\" style=\"display: none;\"></div>\n</div>\n"}});
 define("dijit/Tree", [
 	"dojo/_base/array", // array.filter array.forEach array.map
 	"dojo/aspect",
@@ -1353,41 +1356,30 @@ define("dijit/Tree", [
 			return dom.isDescendant(node, widget.expandoNode) || dom.isDescendant(node, widget.expandoNodeText);
 		},
 
-		_onClick: function(/*TreeNode*/ nodeWidget, /*Event*/ e){
-			// summary:
-			//		Translates click events into commands for the controller to process
-
+		__click: function(/*TreeNode*/ nodeWidget, /*Event*/ e, /*Boolean*/doOpen, /*String*/func){
 			var domElement = e.target,
 				isExpandoClick = this.isExpandoNode(domElement, nodeWidget);
 
-			if(nodeWidget.isExpandable && (this.openOnClick || isExpandoClick)){
+			if(nodeWidget.isExpandable && (doOpen || isExpandoClick)){
 				// expando node was clicked, or label of a folder node was clicked; open it
 				this._onExpandoClick({node: nodeWidget});
 			}else{
 				this._publish("execute", { item: nodeWidget.item, node: nodeWidget, evt: e });
-				this.onClick(nodeWidget.item, nodeWidget, e);
+				this[func](nodeWidget.item, nodeWidget, e);
 				this.focusNode(nodeWidget);
 			}
 			e.stopPropagation();
 			e.preventDefault();
 		},
+		_onClick: function(/*TreeNode*/ nodeWidget, /*Event*/ e){
+			// summary:
+			//		Translates click events into commands for the controller to process
+			this.__click(nodeWidget, e, this.openOnClick, 'onClick');
+		},
 		_onDblClick: function(/*TreeNode*/ nodeWidget, /*Event*/ e){
 			// summary:
 			//		Translates double-click events into commands for the controller to process
-
-			var domElement = e.target,
-				isExpandoClick = (domElement == nodeWidget.expandoNode || domElement == nodeWidget.expandoNodeText);
-
-			if(nodeWidget.isExpandable && (this.openOnClick || isExpandoClick)){
-				// expando node was clicked, or label of a folder node was clicked; open it
-				this._onExpandoClick({node: nodeWidget});
-			}else{
-				this._publish("execute", { item: nodeWidget.item, node: nodeWidget, evt: e });
-				this.onDblClick(nodeWidget.item, nodeWidget, e);
-				this.focusNode(nodeWidget);
-			}
-			e.stopPropagation();
-			e.preventDefault();
+			this.__click(nodeWidget, e, this.openOnDblClick, 'onDblClick');
 		},
 
 		_onExpandoClick: function(/*Object*/ message){
@@ -1807,6 +1799,3 @@ define("dijit/Tree", [
 
 	return Tree;
 });
-require({cache:{
-'url:dijit/templates/Tree.html':"<div role=\"tree\">\n\t<div class=\"dijitInline dijitTreeIndent\" style=\"position: absolute; top: -9999px\" data-dojo-attach-point=\"indentDetector\"></div>\n\t<div class=\"dijitTreeExpando dijitTreeExpandoLoading\" data-dojo-attach-point=\"rootLoadingIndicator\"></div>\n\t<div data-dojo-attach-point=\"containerNode\" class=\"dijitTreeContainer\" role=\"presentation\">\n\t</div>\n</div>\n",
-'url:dijit/templates/TreeNode.html':"<div class=\"dijitTreeNode\" role=\"presentation\"\n\t><div data-dojo-attach-point=\"rowNode\" class=\"dijitTreeRow\" role=\"presentation\"\n\t\t><span data-dojo-attach-point=\"expandoNode\" class=\"dijitInline dijitTreeExpando\" role=\"presentation\"></span\n\t\t><span data-dojo-attach-point=\"expandoNodeText\" class=\"dijitExpandoText\" role=\"presentation\"></span\n\t\t><span data-dojo-attach-point=\"contentNode\"\n\t\t\tclass=\"dijitTreeContent\" role=\"presentation\">\n\t\t\t<span role=\"presentation\" class=\"dijitInline dijitIcon dijitTreeIcon\" data-dojo-attach-point=\"iconNode\"></span\n\t\t\t><span data-dojo-attach-point=\"labelNode,focusNode\" class=\"dijitTreeLabel\" role=\"treeitem\" tabindex=\"-1\" aria-selected=\"false\"></span>\n\t\t</span\n\t></div>\n\t<div data-dojo-attach-point=\"containerNode\" class=\"dijitTreeNodeContainer\" role=\"presentation\" style=\"display: none;\"></div>\n</div>\n"}});
