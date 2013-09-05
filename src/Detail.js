@@ -493,12 +493,12 @@ define('Sage/Platform/Mobile/Detail', [
                 current;
 
             for (var i = 0; i < rows.length; i++) {
+                current = rows[i];
                 var section,
                     sectionNode,
                     include = this.expandExpression(current['include'], entry),
                     exclude = this.expandExpression(current['exclude'], entry);
 
-                current = rows[i];
                 if (include !== undefined && !include) continue;
                 if (exclude !== undefined && exclude) continue;
 
