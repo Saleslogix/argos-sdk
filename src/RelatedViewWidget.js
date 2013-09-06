@@ -40,10 +40,12 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     return declare('Sage.Platform.Mobile.RelatedViewWidget', [_Widget, _Templated], {
        
         nodataText: 'no records found ...',
-        viewMoreDataText: 'see more.. ',
+        viewMoreDataText: 'see more ... ',
+        refreshViewText: 'refresh',
         parentEntry: null,
         relatedEntry: null,
         relateViewNode: null,
+        itemsNode: null,
         id: 'related-view',
         icon: 'content/images/icons/ContactProfile_48x48.png',
         title: 'Related View',
@@ -72,8 +74,11 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                   '{%: ($.title ) %}',
                   '<button  class="collapsed-indicator" aria-label="{%: $.title %}"></button>',
                '</div>',
-               '<div  data-dojo-attach-point="relatedViewNode"></div>',
-
+               '<div>',
+                  '{%! $$.relatedViewHeaderTemplate %}',
+                   '<div  data-dojo-attach-point="relatedViewNode"></div>',
+                  '{%! $$.relatedViewFooterTemplate %}',
+                '<div>',
             '</div>'
         ]),
         nodataTemplate: new Simplate([
@@ -83,12 +88,13 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         ]),
         relatedViewHeaderTemplate: new Simplate([
            '<div class="related-view-widget-header">',
+                '<div class="action" data-dojo-attach-event="onclick:onRefreshView">{%: $$.refreshViewText %}</div>',
            '</div>'
         ]),
         relatedViewFooterTemplate: new Simplate([
             '<div class="related-view-widget-footer">',
                 '<div>',
-                 '<h4> {%: $$.viewMoreDataText %}</h4>',
+                 '<div class="action" data-dojo-attach-event="onclick:onSelectMoreData">{%: $$.viewMoreDataText %}</div>',
                '</div>',
                 '<hr />',
             '</div>'
@@ -183,33 +189,32 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             this.isLoaded = true;
         },
         onApply: function(relatedFeed) {
-            var relatedHTML, itemEntry, itemNode, headerNode, footerNode, footerHtml, itemHTML, nodataHTML;
+            var relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, footerHtml, itemHTML, nodataHTML;
             try {
 
+                if (this.itemsNode) {
+                    dojo.destroy(this.itemsNode);
+                }
+
+                this.itemsNode = domConstruct.toDom("<div id='itemsNode'><div>");
+                domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
                 if (relatedFeed.length > 0) {
-                    headerNode = domConstruct.toDom(this.relatedViewHeaderTemplate.apply(this.parentEntry, this));
-                    domConstruct.place(headerNode, this.relatedViewNode, 'last');
                     for (i = 0; i < relatedFeed.length; i++) {
                         itemEntry = relatedFeed[i];
                         itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
                         itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
                         itemNode = domConstruct.toDom(itemHTML);
                         dojo.connect(itemNode, 'onclick', this, 'onSelectViewRow');
-                        domConstruct.place(itemNode, this.relatedViewNode, 'last', this);
+                        domConstruct.place(itemNode, this.itemsNode, 'last', this);
                     }
-                    footerNode = domConstruct.toDom(this.relatedViewFooterTemplate.apply(this.parentEntry, this));
-                    dojo.connect(footerNode, 'onclick', this, 'onSelectMoreData');
-                    domConstruct.place(footerNode, this.relatedViewNode, 'last');
+                    
                 } else {
-                   
-                    domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.relatedViewNode, 'last');
-                    footerNode = domConstruct.toDom(this.relatedViewFooterTemplate.apply(this.parentEntry, this));
-                    dojo.connect(footerNode, 'onclick', this, 'onSelectMoreData');
+                    domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
                 }
-
+                domConstruct.place(itemsNode, this.relatedViewNode, 'last');
             }
             catch (error) {
-                console.log('Error applying realted data for related view widget:' + error);
+                console.log('Error applying data for related view widget:' + error);
             }
 
         },
@@ -240,8 +245,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                 view.show(options);
             }
             evt.stopPropagation();
-        },
-       
+        },       
         onSelectMoreData: function(evt) {
             var  options, view, whereExpression;
 
@@ -271,6 +275,17 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             if (view) {
                 view.show(options);
             }
+            evt.stopPropagation();
+        },
+        onRefreshView: function(evt) {
+            var  i, view, nodes;
+
+            if (this.itemsNode) {
+                dojo.destroy(this.itemsNode);
+            }
+            this.isLoaded = false;
+            this.onLoad();
+
             evt.stopPropagation();
         }
     });

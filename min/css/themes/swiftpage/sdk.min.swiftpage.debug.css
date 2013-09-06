@@ -1179,6 +1179,11 @@ img {
   padding: 2px 4px 4px;
   background-color: #d0d0d0;
 }
+.related-view-widget-section .action {
+  font-size: 0.75em;
+  font-weight: bold;
+  color: #408da7;
+}
 .related-view-widget-header {
   padding: 1px 1px 1px 2px;
 }
