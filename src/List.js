@@ -778,7 +778,7 @@ define('Sage/Platform/Mobile/List', [
 
                 delete this.searchWidget;
             }
-            
+            this.destroyRelatedViewWidgets();
             this.inherited(arguments);
         },       
         /**
@@ -1352,7 +1352,9 @@ define('Sage/Platform/Mobile/List', [
                     rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
                     docfrag.appendChild(rowNode);
                     this.onApplyRowTemplate(entry, rowNode);
-                    this.onProcessRelatedViews(entry, rowNode);
+                    if (this.relatedViews.length > 0) {
+                        this.onProcessRelatedViews(entry, rowNode);
+                    }
 
                 }
 
@@ -1374,15 +1376,6 @@ define('Sage/Platform/Mobile/List', [
             }
 
             this._loadPreviousSelections();
-        },
-        onApplyRelatedRowTemplate: function(entry, rowNode) {
-            // var node = query('.list-item-content-related', rowNode), templateString;
-            // if (node.length > 0) {
-            //     templateString = this.itemRelatedTemplate.apply(entry, this);
-            //     node[0].innerHTML = templateString; 
-            // }
-        },
-        fetchRelatedRowData: function(entry) {
         },
         onApplyRowTemplate: function(entry, rowNode) {
         },
@@ -1441,9 +1434,9 @@ define('Sage/Platform/Mobile/List', [
          * Initiates the SData request.
          */
         requestData: function() {
+
             domClass.add(this.domNode, 'list-loading');
             this.listLoading = true;
-
             var request = this.createRequest();
             request.read({
                 success: this.onRequestDataSuccess,
@@ -1605,6 +1598,7 @@ define('Sage/Platform/Mobile/List', [
             domClass.remove(this.domNode, 'list-has-more');
 
             this.set('listContent', this.loadingTemplate.apply(this));
+            this.destroyRelatedViewWidgets();
         },
         search: function() {
             if (this.searchWidget) {
@@ -1616,170 +1610,53 @@ define('Sage/Platform/Mobile/List', [
                 this.searchWidget.set('queryValue', value);
             }
         },
-        relatedViewTemplate: new Simplate([
-            '<div class="list-related-view">',
-           // '<h4>{%: $$.title %} </h4>',
-            '</div>'
-        ]),
-        relatedViewRowTemplate: new Simplate([
-            '<div class="list-related-view-row">',
-            '<button xdata-action="selectRelatedEntry" data-related-type="" data-related-key="" >',
-            '<img src="{%: $$.icon %}" class="icon" />',
-            '</button>',
-            '<div class="list-related-view-item">',
-            '{%! $$.relatedItemTemplate %}',
-            '</div>',
-            '</div>'
-        ]),
-        relatedItemTemplate: new Simplate([
-              '<div>{%: $.$descriptor %}</div>'
-        ]),
-
-        relatedViewSectionTemplate: new Simplate([
-             '<div id="relatedView_{%: $$.id  %}_{%: $.$key  %}" class="list-related-view-section">',
-             '<button data-action="onShowRelatedView" data-relatedviewid="{%: $$.id  %}" data-entrykey="{%: $.$key  %}">{%: $$.title %}</button>',
-               '<hr />',
-             '</div>'
-        ]),
         relatedViews: null,
+        relatedViewWidgets: [],
         createRelatedViewLayout: function() {
             return this.relatedViews || (this.relatedViews = {});
         },
-        getRelatedViewStore: function(entry, relatedView) {
-            var store = new SDataStore({
-                service: App.services['crm'],
-                resourceKind: relatedView.resourceKind,
-                scope: relatedView
-            }); 
-            return store;
-        },
-        getRelatedViewQueryOptions: function(entry, relatedView) {
-            var sortExpression = '';
-            if (relatedView.sortProperty)
-            {
-                sortExpression = relatedView.sortProperty + " " + relatedView.sortDirection || "asc"
-            }
-
-            var queryOptions = {
-                count: relatedView.numberOfItems || 1,
-                start: 0,
-                select: relatedView.selectProperties || '',
-                where: relatedView.childRelationProperty + " eq '" + entry[relatedView.parentRelationProperty] +"'",
-                sort: sortExpression
-            };
-            return queryOptions;
-        },
-        relatedViewFetchData: function(entry, relatedView) {
-            var queryResults;
-            queryResults = relatedView.store.query(null, relatedView.queryOptions);
-            return queryResults;
+        destroyRelatedViewWidgets: function() {
+            array.forEach(this.relatedViewWidgets, function(widget) {
+                widget.destroy();
+            }, this);
+            this.relatedViewWidgets = [];
         },
         onProcessRelatedViews: function(entry, rowNode) {
-            var relatedContentNode = query('.list-item-content-related', rowNode),
+            var relatedContentNode, 
             relatedViewNode,
-            relatedView,
+            relatedViewWidget,
             relatedResults,
-            i;
+            i,
+            options;
+            
+            if (this.relatedViews.length > 0) {
+                relatedContentNode = query('.list-item-content-related', rowNode);
+                try {
+                    if (relatedContentNode[0]) {
+                        for (i = 0; i < this.relatedViews.length; i++) {
+                            if (this.relatedViews[i].enabled) {
 
-            try {
-                if (relatedContentNode[0]) {
-                    for (i = 0; i < this.relatedViews.length; i++) {
-                        if (this.relatedViews[i].enabled) {
-                            relatedView = this.onInitRelatedView(this.relatedViews[i], entry);
-                            relatedViewNode = this.relatedViewSectionTemplate.apply(entry, relatedView);
-                            domConstruct.place(relatedViewNode, relatedContentNode[0], 'last');
-                            relatedViewNode = query('> #relatedView_' + relatedView.id + '_' + entry.$key, relatedContentNode[0]);
-                            this.relatedViews[i].loaded = false;
-                            //this.onLoadRelatedView(relatedView, entry, relatedViewNode[0]);
+                                options = {}
+                                lang.mixin(options, this.relatedViews[i]);
+                                options.id = this.relatedViews[i].id + '_' + entry.$key;
+                                relatedViewWidget = new this.relatedViews[i].widgetType(options);
+                                this.relatedViewWidgets.push(relatedViewWidget);
+                                relatedViewWidget.parentEntry = entry;
+                                relatedViewWidget.parentNode = relatedContentNode[0];
+                                relatedViewWidget.onInit();
+                                relatedViewWidget.placeAt(relatedContentNode[0], 'last');
+                            }
                         }
                     }
+
                 }
+                catch (error) {
+                    console.log('Error processing related view widgets:' + error );
 
-            }
-            catch (error) {
-
-
-            }
-        },
-        onInitRelatedView:function(initRelatedView, entry){
-            var relatedView = {};
-            lang.mixin(relatedView, initRelatedView);
-            relatedView.relatedViewTemplate = relatedView.relatedViewTemplate || this.relatedViewTemplate;
-            relatedView.relatedViewRowTemplate = relatedView.relatedViewRowTemplate || this.relatedViewRowTemplate;
-            relatedView.relatedItemTemplate = relatedView.relatedItemTemplate || this.relatedItemTemplate;
-            relatedView.store = relatedView.store || this.getRelatedViewStore(entry, relatedView);
-            relatedView.queryOptions = relatedView.queryOptions || this.getRelatedViewQueryOptions(entry, relatedView);
-            return relatedView;
-        },
-        onLoadRelatedView:function(relatedView, entry, relatedViewNode){
-
-            if (relatedView.parentCollection) {
-                this.onApplyRelatedView(entry, entry[relatedView.parentCollectionProperty]['$resources'], relatedViewNode, relatedView);
-                entry['$related_' + relatedView.id] = true;
-            } else {
-                if (relatedView.fetchData) {
-                    relatedResults = relatedView.fetchData(entry);
-                } else {
-
-                    relatedResults = this.relatedViewFetchData(entry, relatedView);
-                }
-                (function(context, relatedResults, entry, relatedViewNode, relatedView) {
-
-                    try {
-                        when(relatedResults, lang.hitch(context, function(relatedFeed) {
-                            entry['$related_' + relatedView.id] = relatedFeed;
-                            context.onApplyRelatedView(entry, relatedFeed, relatedViewNode, relatedView);
-                        }));
-                    }
-                    catch (error) {
-
-                    }
-                })(this, relatedResults, entry, relatedViewNode, relatedView);
-            }
-        },
-        onApplyRelatedView: function(prarentEntry, relatedFeed, relatedViewNode, relatedView)
-        {
-            var relatedHTML, itemEntry, itemNode, headerNode, itemHTML; 
-            try {
-                headerNode = domConstruct.toDom(relatedView.relatedViewTemplate.apply(relatedFeed, relatedView));
-                if (relatedFeed.length > 0) {
-                    headerNode = domConstruct.toDom(relatedView.relatedViewTemplate.apply(relatedFeed, relatedView));
-                    for (i = 0; i < relatedFeed.length; i++) {
-                        itemEntry = relatedFeed[i];
-                        itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
-                        itemHTML = relatedView.relatedViewRowTemplate.apply(itemEntry, relatedView);
-                        domConstruct.place(itemHTML, headerNode, 'last');
-                    }
-                }
-                domConstruct.place(headerNode, relatedViewNode, 'last');
-            }
-            catch (error) {
-
-            }
-
-        },
-        onShowRelatedView: function(params, evt, node) {
-           
-        
-            var relatedId, entryKey, entry, relatedView, relatedViewNode, i, relatedViewDataNode;
-            relatedId = params.relatedviewid; 
-            entryKey = params.entrykey; 
-            entry = this.entries[entryKey];
-            relatedViewNode = query('#relatedView_' + relatedId + '_' + entryKey, this.contentNode);
-            if (entry.hasOwnProperty('$related_' + relatedId)) {
-                relatedViewDataNode = query('.list-related-view', relatedViewNode[0]);
-                domClass.toggle(relatedViewDataNode[0], 'list-hide-related-view', true);
-                return;
-            }
-
-            for (i = 0; i < this.relatedViews.length; i++) {
-                if ((this.relatedViews[i].id === relatedId)){
-                    relatedView = this.onInitRelatedView(this.relatedViews[i], entry);
-                    this.onLoadRelatedView(relatedView, entry, relatedViewNode[0]);
-                    break;
                 }
             }
         }
+
     });
 });
  

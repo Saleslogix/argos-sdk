@@ -184,6 +184,10 @@
           "path": "../src/Groups"
         },
         {
+          "text": "RelatedViewWidget.js",
+          "path": "../src"
+        },
+        {
           "text": "SearchWidget.js",
           "path": "../src"
         },
