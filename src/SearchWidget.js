@@ -156,7 +156,7 @@ define('Sage/Platform/Mobile/SearchWidget', [
             this.hashTagSearchRE.lastIndex = 0;
 
             var match;
-            while (match = this.hashTagSearchRE.exec(query))
+            while ((match = this.hashTagSearchRE.exec(query)))
             {
                 var hashTag = match[1],
                     hashQueryExpression = null;

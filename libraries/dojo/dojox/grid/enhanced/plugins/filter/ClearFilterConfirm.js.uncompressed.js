@@ -1,3 +1,5 @@
+require({cache:{
+'url:dojox/grid/enhanced/templates/ClearFilterConfirmPane.html':"<div class=\"dojoxGridClearFilterConfirm\">\n\t<div class=\"dojoxGridClearFilterMsg\">\n\t\t${_clearFilterMsg}\n\t</div>\n\t<div class=\"dojoxGridClearFilterBtns\" dojoAttachPoint=\"btnsNode\">\n\t\t<span dojoType=\"dijit.form.Button\" label=\"${_cancelBtnLabel}\" dojoAttachPoint=\"cancelBtn\" dojoAttachEvent=\"onClick:_onCancel\"></span>\n\t\t<span dojoType=\"dijit.form.Button\" label=\"${_clearBtnLabel}\" dojoAttachPoint=\"clearBtn\" dojoAttachEvent=\"onClick:_onClear\"></span>\n\t</div>\n</div>\n"}});
 define("dojox/grid/enhanced/plugins/filter/ClearFilterConfirm", [
 	"dojo/_base/declare",
 	"dijit/_Widget",
@@ -43,5 +45,3 @@ return declare("dojox.grid.enhanced.plugins.filter.ClearFilterConfirm",
 	}
 });
 });
-require({cache:{
-'url:dojox/grid/enhanced/templates/ClearFilterConfirmPane.html':"<div class=\"dojoxGridClearFilterConfirm\">\n\t<div class=\"dojoxGridClearFilterMsg\">\n\t\t${_clearFilterMsg}\n\t</div>\n\t<div class=\"dojoxGridClearFilterBtns\" dojoAttachPoint=\"btnsNode\">\n\t\t<span dojoType=\"dijit.form.Button\" label=\"${_cancelBtnLabel}\" dojoAttachPoint=\"cancelBtn\" dojoAttachEvent=\"onClick:_onCancel\"></span>\n\t\t<span dojoType=\"dijit.form.Button\" label=\"${_clearBtnLabel}\" dojoAttachPoint=\"clearBtn\" dojoAttachEvent=\"onClick:_onClear\"></span>\n\t</div>\n</div>\n"}});

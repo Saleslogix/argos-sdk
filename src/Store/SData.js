@@ -49,7 +49,7 @@ define('Sage/Platform/Mobile/Store/SData', [
             var match,
                 result = [];
 
-            while (match = parseOrderByRE.exec(expression))
+            while ((match = parseOrderByRE.exec(expression)))
             {
                 result.push({
                     attribute: match[1],
@@ -205,12 +205,14 @@ define('Sage/Platform/Mobile/Store/SData', [
             }
 
             var where = utility.expand(this.scope || this, queryOptions.where || this.where),
-                query = utility.expand(this.scope || this, query),
                 conditions = [];
+
 
             if (where) {
                 conditions.push(where);
             }
+
+            query = utility.expand(this.scope || this, query);
 
             if (query)
                 conditions.push(query);

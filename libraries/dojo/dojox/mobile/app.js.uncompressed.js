@@ -754,7 +754,7 @@ define([
 				this.openExternalView(detail, target);
 				return;
 			}else if(detail.href){
-				if(detail.hrefTarget){
+				if(detail.hrefTarget && detail.hrefTarget != "_self"){
 					win.global.open(detail.href, detail.hrefTarget);
 				}else{
 					var view; // find top level visible view
@@ -1092,7 +1092,7 @@ define([
 				history.back();	
 				return;
 			}	
-			if (this.href && this.hrefTarget) {
+			if (this.href && this.hrefTarget && this.hrefTarget != "_self") {
 				win.global.open(this.href, this.hrefTarget || "_blank");
 				this._onNewWindowOpened(e);
 				return;
@@ -1902,6 +1902,9 @@ define([
 				this.defer(function(){
 					this._onInput(faux);
 				}); // widget notification after key has posted
+				if(e.type == "keypress"){
+					e.stopPropagation(); // don't allow parents to stop printables from being typed
+				}
 			};
 			this.own(on(this.textbox, "keydown, keypress, paste, cut, input, compositionend", lang.hitch(this, handleEvent)));
 		},
@@ -6252,7 +6255,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 							e.stopPropagation();
 							e.stopImmediatePropagation && e.stopImmediatePropagation();
 							if(type == "click" && (e.target.tagName != "INPUT" || e.target.type == "radio" || e.target.type == "checkbox")
-								&& e.target.tagName != "TEXTAREA"){
+								&& e.target.tagName != "TEXTAREA" && e.target.tagName != "AUDIO" && e.target.tagName != "VIDEO"){
 								 // preventDefault() breaks textual <input>s on android, keyboard doesn't popup,
 								 // but it is still needed for checkboxes and radio buttons, otherwise in some cases
 								 // the checked state becomes inconsistent with the widget's state
@@ -7473,10 +7476,17 @@ define([
 		// summary:
 		//		A widget that represents a view that occupies the full screen
 		// description:
-		//		View acts as a container for any HTML and/or widgets. An entire
-		//		HTML page can have multiple View widgets and the user can
-		//		navigate through the views back and forth without page
-		//		transitions.
+		//		View is a container widget for any HTML element and/or Dojo widgets.
+		//		As a Dojo widget container it can itself contain View widgets
+		//		forming a set of nested views. A Dojo Mobile application is usually
+		//		made of multiple View widgets and the user can navigate through
+		//		the views back and forth with animated transition effects.
+		//		
+		//		When using several sibling views (direct children of the same
+		//		element), you can use the 'selected' attribute to define whether
+		//		the view should be displayed when the application is launched.
+		//		If no view has selected=true, the first sibling view is displayed
+		//		at startup time.
 
 		// selected: Boolean
 		//		If true, the view is displayed at startup time.
@@ -10070,10 +10080,7 @@ define([
 		uncheckClass: "",
 
 		// variableHeight: Boolean
-		//		If true, the height of the item varies according to its
-		//		content. In dojo 1.6 or older, the "mblVariableHeight" class was
-		//		used for this purpose. In dojo 1.7, adding the mblVariableHeight
-		//		class still works for backward compatibility.
+		//		If true, the height of the item varies according to its content.
 		variableHeight: false,
 
 		// rightIconTitle: String

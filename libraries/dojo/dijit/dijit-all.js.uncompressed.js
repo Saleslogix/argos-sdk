@@ -3597,7 +3597,9 @@ define([
 			if(item.popup){
 				this.set("selected", item);
 				this.set("activated", true);
-				this._openItemPopup(item, /^key/.test(evt._origType || evt.type));
+				var byKeyboard = /^key/.test(evt._origType || evt.type) ||
+					(evt.clientX == 0 && evt.clientY == 0);	// detects accessKey like ALT+SHIFT+F, where type is "click"
+				this._openItemPopup(item, byKeyboard);
 			}else{
 				// before calling user defined handler, close hierarchy of menus
 				// and restore focus to place it was when menu was opened
@@ -4732,7 +4734,7 @@ define([
 		},
 
 		_startSearchFromInput: function(){
-			this._startSearch(this.focusNode.value.replace(/([\\\*\?])/g, "\\$1"));
+			this._startSearch(this.focusNode.value);
 		},
 
 		_startSearch: function(/*String*/ text){
@@ -4755,7 +4757,7 @@ define([
 						deep: true
 					}
 				},
-				qs = string.substitute(this.queryExpr, [text]),
+				qs = string.substitute(this.queryExpr, [text.replace(/([\\\*\?])/g, "\\$1")]),
 				q,
 				startQuery = function(){
 					var resPromise = _this._fetchHandle = _this.store.query(query, options);
@@ -7428,6 +7430,9 @@ define([
 				this.defer(function(){
 					this._onInput(faux);
 				}); // widget notification after key has posted
+				if(e.type == "keypress"){
+					e.stopPropagation(); // don't allow parents to stop printables from being typed
+				}
 			};
 			this.own(on(this.textbox, "keydown, keypress, paste, cut, input, compositionend", lang.hitch(this, handleEvent)));
 		},
@@ -7754,6 +7759,7 @@ define([
 				this.popup = registry.byNode(node);
 			}
 			this.ownerDocumentBody.appendChild(this.popup.domNode);
+			this.popup.domNode.setAttribute("aria-labelledby", this.containerNode.id);
 			this.popup.startup();
 
 			this.popup.domNode.style.display="none";
@@ -18150,7 +18156,7 @@ define([
 			var col = b.isCollapsed;
 			var r, sNode, eNode, sel;
 			if(mark){
-				if(has("ie") < 9){
+				if(has("ie") < 9 || (has("ie") === 9 && has("quirks"))){
 					if(lang.isArray(mark)){
 						// IE CONTROL, have to use the native bookmark.
 						bookmark = [];
@@ -18278,7 +18284,7 @@ define([
 			var tmp = [];
 			if(b && b.mark){
 				var mark = b.mark;
-				if(has("ie") < 9){
+				if(has("ie") < 9 || (has("ie") === 9 && has("quirks"))){
 					// Try to use the pseudo range API on IE for better accuracy.
 					var sel = rangeapi.getSelection(this.window);
 					if(!lang.isArray(mark)){
@@ -26246,7 +26252,7 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 			case 'E':
 			case 'e':
 			case 'c':
-				s = '\\S+';
+				s = '.+?'; // match anything including spaces until the first pattern delimiter is found such as a comma or space
 				break;
 			case 'h': //hour (1-12)
 				s = '1[0-2]|'+p2+'[1-9]';
@@ -26581,7 +26587,7 @@ define([
 			//		of the option is empty or missing, a separator is created instead.
 			//		Passing in an array of options will yield slightly better performance
 			//		since the children are only loaded once.
-			array.forEach([].concat(option), function(i){
+			array.forEach(lang.isArray(option) ? option : [option], function(i){
 				if(i && lang.isObject(i)){
 					this.options.push(i);
 				}
@@ -26598,7 +26604,7 @@ define([
 			//		You can also pass in an array of those values for a slightly
 			//		better performance since the children are only loaded once.
 			//		For numeric option values, specify {value: number} as the argument.
-			var oldOpts = this.getOptions([].concat(valueOrIdx));
+			var oldOpts = this.getOptions(lang.isArray(valueOrIdx) ? valueOrIdx : [valueOrIdx]);
 			array.forEach(oldOpts, function(option){
 				// We can get null back in our array - if our option was not found.  In
 				// that case, we don't want to blow up...
@@ -26618,7 +26624,7 @@ define([
 			//		is matched based on the value of the entered option.  Passing
 			//		in an array of new options will yield better performance since
 			//		the children will only be loaded once.
-			array.forEach([].concat(newOption), function(i){
+			array.forEach(lang.isArray(newOption) ? newOption : [newOption], function(i){
 				var oldOpt = this.getOptions({ value: i.value }), k;
 				if(oldOpt){
 					for(k in i){
@@ -28475,7 +28481,7 @@ define([
 				evt.stopPropagation();
 				evt.preventDefault();
 				this._searchString = ''; // so a DOWN_ARROW b doesn't search for ab
-			}else if(evt.keyCode == keys.SPACE && this._searchTimer && !(evt.ctrlKey || evt.altKey)){
+			}else if(evt.keyCode == keys.SPACE && this._searchTimer && !(evt.ctrlKey || evt.altKey || evt.metaKey)){
 				evt.stopImmediatePropagation(); // stop a11yclick and _HasDropdown from seeing SPACE if we're doing keyboard searching
 				evt.preventDefault(); // stop IE from scrolling, and most browsers (except FF) from sending keypress
 				this._keyboardSearch(evt, ' ');
@@ -28488,8 +28494,10 @@ define([
 			// tags:
 			//		private
 
-			if(evt.charCode < keys.SPACE || (evt.ctrlKey || evt.altKey) || (evt.charCode == keys.SPACE && this._searchTimer)){
-				// Avoid duplicate events on firefox (this is an arrow key that will be handled by keydown handler)
+			if(evt.charCode < keys.SPACE || evt.ctrlKey || evt.altKey || evt.metaKey ||
+					(evt.charCode == keys.SPACE && this._searchTimer)){
+				// Avoid duplicate events on firefox (ex: arrow key that will be handled by keydown handler),
+				// and also control sequences like CMD-Q
 				return;
 			}
 			evt.preventDefault();
@@ -30385,7 +30393,10 @@ define([
 					DialogUnderlay.show(pd.underlayAttrs, pd.zIndex - 1);
 				}
 
-				// Adjust focus
+				// Adjust focus.
+				// TODO: regardless of setting of dialog.refocus, if the exeucte() method set focus somewhere,
+				// don't shift focus back to button.  Note that execute() runs at the start of the fade-out but
+				// this code runs later, at the end of the fade-out.  Menu has code like this.
 				if(dialog.refocus){
 					// If we are returning control to a previous dialog but for some reason
 					// that dialog didn't have a focused field, set focus to first focusable item.
@@ -30443,8 +30454,12 @@ define([
 	// then refocus.   Won't do anything if focus was removed because the Dialog was closed, or
 	// because a new Dialog popped up on top of the old one, or when focus moves to popups
 	focus.watch("curNode", function(attr, oldNode, node){
+ 		// Note: if no dialogs, ds.length==1 but ds[ds.length-1].dialog is null
 		var topDialog = ds[ds.length - 1].dialog;
-		if(node && topDialog){	// if no dialogs, ds.length==1 but ds[ds.length-1].dialog is null
+
+		// If a node was focused, and there's a Dialog currently showing, and not in the process of fading out...
+		// Ignore focus events on other document though because it's likely an Editor inside of the Dialog.
+		if(node && topDialog && !topDialog._fadeOutDeferred && node.ownerDocument == topDialog.ownerDocument){
 			// If the node that was focused is inside the dialog or in a popup, even a context menu that isn't
 			// technically a descendant of the the dialog, don't do anything.
 			do{
@@ -33120,41 +33135,30 @@ define([
 			return dom.isDescendant(node, widget.expandoNode) || dom.isDescendant(node, widget.expandoNodeText);
 		},
 
-		_onClick: function(/*TreeNode*/ nodeWidget, /*Event*/ e){
-			// summary:
-			//		Translates click events into commands for the controller to process
-
+		__click: function(/*TreeNode*/ nodeWidget, /*Event*/ e, /*Boolean*/doOpen, /*String*/func){
 			var domElement = e.target,
 				isExpandoClick = this.isExpandoNode(domElement, nodeWidget);
 
-			if(nodeWidget.isExpandable && (this.openOnClick || isExpandoClick)){
+			if(nodeWidget.isExpandable && (doOpen || isExpandoClick)){
 				// expando node was clicked, or label of a folder node was clicked; open it
 				this._onExpandoClick({node: nodeWidget});
 			}else{
 				this._publish("execute", { item: nodeWidget.item, node: nodeWidget, evt: e });
-				this.onClick(nodeWidget.item, nodeWidget, e);
+				this[func](nodeWidget.item, nodeWidget, e);
 				this.focusNode(nodeWidget);
 			}
 			e.stopPropagation();
 			e.preventDefault();
 		},
+		_onClick: function(/*TreeNode*/ nodeWidget, /*Event*/ e){
+			// summary:
+			//		Translates click events into commands for the controller to process
+			this.__click(nodeWidget, e, this.openOnClick, 'onClick');
+		},
 		_onDblClick: function(/*TreeNode*/ nodeWidget, /*Event*/ e){
 			// summary:
 			//		Translates double-click events into commands for the controller to process
-
-			var domElement = e.target,
-				isExpandoClick = (domElement == nodeWidget.expandoNode || domElement == nodeWidget.expandoNodeText);
-
-			if(nodeWidget.isExpandable && (this.openOnClick || isExpandoClick)){
-				// expando node was clicked, or label of a folder node was clicked; open it
-				this._onExpandoClick({node: nodeWidget});
-			}else{
-				this._publish("execute", { item: nodeWidget.item, node: nodeWidget, evt: e });
-				this.onDblClick(nodeWidget.item, nodeWidget, e);
-				this.focusNode(nodeWidget);
-			}
-			e.stopPropagation();
-			e.preventDefault();
+			this.__click(nodeWidget, e, this.openOnDblClick, 'onDblClick');
 		},
 
 		_onExpandoClick: function(/*Object*/ message){

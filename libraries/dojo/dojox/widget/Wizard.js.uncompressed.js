@@ -1,3 +1,5 @@
+require({cache:{
+'url:dojox/widget/Wizard/Wizard.html':"<div class=\"dojoxWizard\" dojoAttachPoint=\"wizardNode\">\n    <div class=\"dojoxWizardContainer\" dojoAttachPoint=\"containerNode\"></div>\n    <div class=\"dojoxWizardButtons\" dojoAttachPoint=\"wizardNav\">\n        <button dojoType=\"dijit.form.Button\" type=\"button\" dojoAttachPoint=\"previousButton\">${previousButtonLabel}</button>\n        <button dojoType=\"dijit.form.Button\" type=\"button\" dojoAttachPoint=\"nextButton\">${nextButtonLabel}</button>\n        <button dojoType=\"dijit.form.Button\" type=\"button\" dojoAttachPoint=\"doneButton\" style=\"display:none\">${doneButtonLabel}</button>\n        <button dojoType=\"dijit.form.Button\" type=\"button\" dojoAttachPoint=\"cancelButton\">${cancelButtonLabel}</button>\n    </div>\n</div>\n"}});
 define("dojox/widget/Wizard", [
 	"dojo/_base/lang",
 	"dojo/_base/declare",
@@ -8,7 +10,8 @@ define("dojox/widget/Wizard", [
 	"dojo/i18n",
 	"dojo/text!./Wizard/Wizard.html",
 	"dojo/i18n!dijit/nls/common",
-	"dojo/i18n!./nls/Wizard"
+	"dojo/i18n!./nls/Wizard",
+	"dijit/form/Button"		// used by template
 ], function (lang, declare, connect, StackContainer, _TemplatedMixin, _WidgetsInTemplateMixin, i18n, template) {
   
 var Wizard = declare("dojox.widget.Wizard", [StackContainer, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -134,5 +137,3 @@ var Wizard = declare("dojox.widget.Wizard", [StackContainer, _TemplatedMixin, _W
 
 return Wizard;
 });
-require({cache:{
-'url:dojox/widget/Wizard/Wizard.html':"<div class=\"dojoxWizard\" dojoAttachPoint=\"wizardNode\">\n    <div class=\"dojoxWizardContainer\" dojoAttachPoint=\"containerNode\"></div>\n    <div class=\"dojoxWizardButtons\" dojoAttachPoint=\"wizardNav\">\n        <button dojoType=\"dijit.form.Button\" type=\"button\" dojoAttachPoint=\"previousButton\">${previousButtonLabel}</button>\n        <button dojoType=\"dijit.form.Button\" type=\"button\" dojoAttachPoint=\"nextButton\">${nextButtonLabel}</button>\n        <button dojoType=\"dijit.form.Button\" type=\"button\" dojoAttachPoint=\"doneButton\" style=\"display:none\">${doneButtonLabel}</button>\n        <button dojoType=\"dijit.form.Button\" type=\"button\" dojoAttachPoint=\"cancelButton\">${cancelButtonLabel}</button>\n    </div>\n</div>\n"}});

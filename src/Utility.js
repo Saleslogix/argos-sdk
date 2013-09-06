@@ -48,7 +48,9 @@ define('Sage/Platform/Mobile/Utility', [
                 path.push(parts[i]);
             }
         }
-        return (nameToPathCache[name] = path.reverse());
+
+        nameToPathCache[name] = path.reverse();
+        return nameToPathCache[name];
     };
 
     return lang.setObject('Sage.Platform.Mobile.Utility', {
@@ -61,7 +63,8 @@ define('Sage/Platform/Mobile/Utility', [
                 if (cache[key]) {
                     return cache[key];
                 } else {
-                    return (cache[key] = fn.apply(this, arguments));
+                    cache[key] = fn.apply(this, arguments);
+                    return cache[key];
                 }
             };
         },

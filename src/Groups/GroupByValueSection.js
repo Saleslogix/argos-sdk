@@ -58,7 +58,7 @@ define('Sage/Platform/Mobile/Groups/GroupByValueSection', [
             return null;
         },
         getDefaultSection:function(){
-            return { key: 'Unknown', title: 'Unknown' }
+            return { key: 'Unknown', title: 'Unknown' };
         },
         _getValueFromWidth:function(value, width){
             if (value) {

@@ -453,7 +453,7 @@ define('Sage/Platform/Mobile/Edit', [
         createRequest: function() {
             var request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
 
-            var key = (this.entry && this.entry['$key']) || this.options.key
+            var key = (this.entry && this.entry['$key']) || this.options.key;
             if (key)
                 request.setResourceSelector(string.substitute("'${0}'", [key]));
 
@@ -535,11 +535,12 @@ define('Sage/Platform/Mobile/Edit', [
                 }),
                 sectionQueue = [],
                 sectionStarted = false,
-                content = [];
+                content = [],
+                current;
             
             for (var i = 0; i < rows.length; i++)
             {
-                var current = rows[i];
+                current = rows[i];
 
                 if (current['children'] || current['as'])
                 {
@@ -576,9 +577,9 @@ define('Sage/Platform/Mobile/Edit', [
 
             domConstruct.place(content.join(''), this.contentNode, 'last');
 
-            for (var i = 0; i < sectionQueue.length; i++)
+            for (i = 0; i < sectionQueue.length; i++)
             {
-                var current = sectionQueue[i];
+                current = sectionQueue[i];
 
                 this.processLayout(current);
             }
