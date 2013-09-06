@@ -72,6 +72,7 @@ define('Sage/Platform/Mobile/PersistentStorage', [
         },
         getItem: function(key, options) {
             options = options || {};
+            var value;
             try
             {
                 if (window.localStorage)
@@ -93,7 +94,7 @@ define('Sage/Platform/Mobile/PersistentStorage', [
                             if (this.allowCacheUse) sosCache[this.name] = store;
                         }
 
-                        var value = utility.getValue(store, key);
+                        value = utility.getValue(store, key);
 
                         if (options.success)
                             options.success.call(options.scope || this, value);
@@ -103,8 +104,9 @@ define('Sage/Platform/Mobile/PersistentStorage', [
                     else
                     {
                         var fqKey = this.formatQualifiedKey(this.name, key),
-                            serialized = window.localStorage.getItem(fqKey),
-                            value = this.serializeValues && options.serialize !== false
+                            serialized = window.localStorage.getItem(fqKey);
+
+                        value = this.serializeValues && options.serialize !== false
                                 ? this.deserializeValue(serialized)
                                 : serialized;
 

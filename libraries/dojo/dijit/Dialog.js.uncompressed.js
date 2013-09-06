@@ -1,3 +1,5 @@
+require({cache:{
+'url:dijit/templates/Dialog.html':"<div class=\"dijitDialog\" role=\"dialog\" aria-labelledby=\"${id}_title\">\n\t<div data-dojo-attach-point=\"titleBar\" class=\"dijitDialogTitleBar\">\n\t\t<span data-dojo-attach-point=\"titleNode\" class=\"dijitDialogTitle\" id=\"${id}_title\"\n\t\t\t\trole=\"heading\" level=\"1\"></span>\n\t\t<span data-dojo-attach-point=\"closeButtonNode\" class=\"dijitDialogCloseIcon\" data-dojo-attach-event=\"ondijitclick: onCancel\" title=\"${buttonCancel}\" role=\"button\" tabindex=\"0\">\n\t\t\t<span data-dojo-attach-point=\"closeText\" class=\"closeText\" title=\"${buttonCancel}\">x</span>\n\t\t</span>\n\t</div>\n\t<div data-dojo-attach-point=\"containerNode\" class=\"dijitDialogPaneContent\"></div>\n</div>\n"}});
 define("dijit/Dialog", [
 	"require",
 	"dojo/_base/array", // array.forEach array.indexOf array.map
@@ -578,7 +580,10 @@ define("dijit/Dialog", [
 					DialogUnderlay.show(pd.underlayAttrs, pd.zIndex - 1);
 				}
 
-				// Adjust focus
+				// Adjust focus.
+				// TODO: regardless of setting of dialog.refocus, if the exeucte() method set focus somewhere,
+				// don't shift focus back to button.  Note that execute() runs at the start of the fade-out but
+				// this code runs later, at the end of the fade-out.  Menu has code like this.
 				if(dialog.refocus){
 					// If we are returning control to a previous dialog but for some reason
 					// that dialog didn't have a focused field, set focus to first focusable item.
@@ -636,8 +641,12 @@ define("dijit/Dialog", [
 	// then refocus.   Won't do anything if focus was removed because the Dialog was closed, or
 	// because a new Dialog popped up on top of the old one, or when focus moves to popups
 	focus.watch("curNode", function(attr, oldNode, node){
+ 		// Note: if no dialogs, ds.length==1 but ds[ds.length-1].dialog is null
 		var topDialog = ds[ds.length - 1].dialog;
-		if(node && topDialog){	// if no dialogs, ds.length==1 but ds[ds.length-1].dialog is null
+
+		// If a node was focused, and there's a Dialog currently showing, and not in the process of fading out...
+		// Ignore focus events on other document though because it's likely an Editor inside of the Dialog.
+		if(node && topDialog && !topDialog._fadeOutDeferred && node.ownerDocument == topDialog.ownerDocument){
 			// If the node that was focused is inside the dialog or in a popup, even a context menu that isn't
 			// technically a descendant of the the dialog, don't do anything.
 			do{
@@ -660,5 +669,3 @@ define("dijit/Dialog", [
 
 	return Dialog;
 });
-require({cache:{
-'url:dijit/templates/Dialog.html':"<div class=\"dijitDialog\" role=\"dialog\" aria-labelledby=\"${id}_title\">\n\t<div data-dojo-attach-point=\"titleBar\" class=\"dijitDialogTitleBar\">\n\t\t<span data-dojo-attach-point=\"titleNode\" class=\"dijitDialogTitle\" id=\"${id}_title\"\n\t\t\t\trole=\"heading\" level=\"1\"></span>\n\t\t<span data-dojo-attach-point=\"closeButtonNode\" class=\"dijitDialogCloseIcon\" data-dojo-attach-event=\"ondijitclick: onCancel\" title=\"${buttonCancel}\" role=\"button\" tabindex=\"0\">\n\t\t\t<span data-dojo-attach-point=\"closeText\" class=\"closeText\" title=\"${buttonCancel}\">x</span>\n\t\t</span>\n\t</div>\n\t<div data-dojo-attach-point=\"containerNode\" class=\"dijitDialogPaneContent\"></div>\n</div>\n"}});

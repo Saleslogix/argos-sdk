@@ -140,7 +140,7 @@ define('Sage/Platform/Mobile/GroupedList', [
                     tag: sectionDef.key,
                     title: title,
                     collapsed: !!sectionDef.collapsed
-                }
+                };
             }
             return {
                 tag: 1,
@@ -229,13 +229,13 @@ define('Sage/Platform/Mobile/GroupedList', [
         setDefaultGroupBySection: function() {
             var count = 0;
             if (this._groupBySections) {
-                count = this._groupBySections.length
+                count = this._groupBySections.length;
                 for (var i = 0; i < count; i++) {
                     if (this._groupBySections[i].isDefault === true) {
                         this._currentGroupBySection = this._groupBySections[i];
                     }
                 }
-                if ((this._currentGroupBySection == null) && (count > 0)) {
+                if ((this._currentGroupBySection === null) && (count > 0)) {
                     this._currentGroupBySection = this._groupBySections[0];
                 }
             }

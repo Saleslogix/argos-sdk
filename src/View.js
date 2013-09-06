@@ -199,7 +199,11 @@ define('Sage/Platform/Mobile/View', [
 
             this.options = (data && data.options) || this.options || {};
 
-            (this.options.title) ? this.set('title', this.options.title) : this.set('title', this.titleText);
+            if (this.options.title) {
+                this.set('title', this.options.title);
+            } else {
+                this.set('title', this.titleText);
+            }
 
             this.onActivate(this);
         },
@@ -218,7 +222,11 @@ define('Sage/Platform/Mobile/View', [
 
             this.options = options || this.options || {};
 
-            (this.options.title) ? this.set('title', this.options.title) : this.set('title', this.titleText);
+            if (this.options.title) {
+                this.set('title', this.options.title);
+            } else {
+                this.set('title', this.titleText);
+            }
 
             ReUI.show(this.domNode, lang.mixin(transitionOptions || {}, {tag: this.getTag(), data: this.getContext()}));
         },

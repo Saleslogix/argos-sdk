@@ -38,7 +38,8 @@ define('Sage/Platform/Mobile/FieldManager', [
          * @param {Function} ctor Constructor function of field
          */
         register: function(name, ctor) {
-            return (store[name] = ctor);
+            store[name] = ctor;
+            return ctor;
         },
         /**
          * Retrieves a constructor for the given field name

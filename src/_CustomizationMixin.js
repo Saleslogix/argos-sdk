@@ -92,7 +92,8 @@ define('Sage/Platform/Mobile/_CustomizationMixin', [
                 insertRowsAfter,
                 customization,
                 stop,
-                row;
+                row,
+                name;
 
             if (lang.isArray(layout))
             {
@@ -202,7 +203,7 @@ define('Sage/Platform/Mobile/_CustomizationMixin', [
             {
                 output = {};
 
-                for (var name in layout)
+                for (name in layout)
                     if (lang.isArray(layout[name]))
                         output[name] = this._compileCustomizedLayout(customizations, layout[name], name);
                     else

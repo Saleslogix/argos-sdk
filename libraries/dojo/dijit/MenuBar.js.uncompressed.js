@@ -1,3 +1,5 @@
+require({cache:{
+'url:dijit/templates/MenuBar.html':"<div class=\"dijitMenuBar dijitMenuPassive\" data-dojo-attach-point=\"containerNode\" role=\"menubar\" tabIndex=\"${tabIndex}\"\n\t ></div>\n"}});
 define("dijit/MenuBar", [
 	"dojo/_base/declare", // declare
 	"dojo/keys", // keys.DOWN_ARROW
@@ -87,5 +89,3 @@ define("dijit/MenuBar", [
 		}
 	});
 });
-require({cache:{
-'url:dijit/templates/MenuBar.html':"<div class=\"dijitMenuBar dijitMenuPassive\" data-dojo-attach-point=\"containerNode\" role=\"menubar\" tabIndex=\"${tabIndex}\"\n\t ></div>\n"}});

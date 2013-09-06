@@ -36,7 +36,9 @@ define('Sage/Platform/Mobile/Calendar', [
     View,
     moment
 ) {
-    var pad = function(n) { return n < 10 ? '0' + n : n };
+    var pad = function(n) {
+        return n < 10 ? '0' + n : n;
+    };
     var uCase = function (str) { return str.charAt(0).toUpperCase() + str.substring(1); };
 
     return declare('Sage.Platform.Mobile.Calendar', [View], {
