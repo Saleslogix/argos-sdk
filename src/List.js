@@ -34,9 +34,13 @@ define('Sage/Platform/Mobile/List', [
     'dojo/dom',
     'dojo/string',
     'dojo/window',
+    'dojo/Deferred',
+    'dojo/promise/all',
+    'dojo/when',
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/View',
-    'Sage/Platform/Mobile/SearchWidget'
+    'Sage/Platform/Mobile/SearchWidget',
+    'Sage/Platform/Mobile/Store/SData'
 ], function(
     declare,
     lang,
@@ -49,9 +53,13 @@ define('Sage/Platform/Mobile/List', [
     dom,
     string,
     win,
+    Deferred,
+    all,
+    when,
     ErrorManager,
     View,
-    SearchWidget
+    SearchWidget,
+    SDataStore
 ) {
 
     /**
@@ -378,6 +386,7 @@ define('Sage/Platform/Mobile/List', [
                     '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
                 '</button>',
                 '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
+                '<div id="list-item-content-related"></div>',
             '</li>'
         ]),
         /**
@@ -754,6 +763,7 @@ define('Sage/Platform/Mobile/List', [
                 });
 
             this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
+            this._createCustomizedLayout(this.createRelatedViewLayout(), 'realatedViews');
         },
         /**
          * Extends dijit Widget to destroy the search widget before destroying the view.
@@ -766,9 +776,9 @@ define('Sage/Platform/Mobile/List', [
 
                 delete this.searchWidget;
             }
-            
+            this.destroyRelatedViewWidgets();
             this.inherited(arguments);
-        },
+        },       
         /**
          * Sets and returns the toolbar item layout definition, this method should be overriden in the view
          * so that you may define the views toolbar items.
@@ -1320,49 +1330,52 @@ define('Sage/Platform/Mobile/List', [
          * @param {Object} feed The SData result
          */
         processFeed: function(feed) {
-            if (!this.feed) this.set('listContent', '');
+            var docfrag, entry, i, related, remaining, rowNode;
+
+            if (!this.feed) {
+                this.set('listContent', '');
+            }
 
             this.feed = feed;
-            if (this.feed['$totalResults'] === 0)
-            {
-                this.set('listContent', this.noDataTemplate.apply(this));                
-            }
-            else if (feed['$resources'])
-            {
-                var docfrag = document.createDocumentFragment();
-                for (var i = 0; i < feed['$resources'].length; i++)
-                {
-                    var entry = feed['$resources'][i];
-                    var rowNode;
+
+            if (this.feed['$totalResults'] === 0) {
+                this.set('listContent', this.noDataTemplate.apply(this));
+            } else if (feed['$resources']) {
+                docfrag = document.createDocumentFragment();
+                for (i = 0; i < feed['$resources'].length; i++) {
+                    entry = feed['$resources'][i];
                     entry['$descriptor'] = entry['$descriptor'] || feed['$descriptor'];
 
                     this.entries[entry.$key] = entry;
                     rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
                     docfrag.appendChild(rowNode);
                     this.onApplyRowTemplate(entry, rowNode);
+                    if (this.relatedViews.length > 0) {
+                        this.onProcessRelatedViews(entry, rowNode);
+                    }
+
                 }
 
                 if (docfrag.childNodes.length > 0) {
-                    domConstruct.place(docfrag, this.contentNode, 'last');                    
+                    domConstruct.place(docfrag, this.contentNode, 'last');
                 }
             }
 
             // todo: add more robust handling when $totalResults does not exist, i.e., hide element completely
-            if (typeof this.feed['$totalResults'] !== 'undefined')
-            {
-                var remaining = this.feed['$totalResults'] - (this.feed['$startIndex'] + this.feed['$itemsPerPage'] - 1);
+            if (typeof this.feed['$totalResults'] !== 'undefined') {
+                remaining = this.feed['$totalResults'] - (this.feed['$startIndex'] + this.feed['$itemsPerPage'] - 1);
                 this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
             }
 
             domClass.toggle(this.domNode, 'list-has-more', this.hasMoreData());
 
-            if (this.options.allowEmptySelection)
+            if (this.options.allowEmptySelection) {
                 domClass.add(this.domNode, 'list-has-empty-opt');
+            }
 
             this._loadPreviousSelections();
         },
         onApplyRowTemplate: function(entry, rowNode) {
-
         },
         /**
          * Deterimines if there is more data to be shown by inspecting the last feed result.
@@ -1419,9 +1432,9 @@ define('Sage/Platform/Mobile/List', [
          * Initiates the SData request.
          */
         requestData: function() {
+
             domClass.add(this.domNode, 'list-loading');
             this.listLoading = true;
-
             var request = this.createRequest();
             request.read({
                 success: this.onRequestDataSuccess,
@@ -1583,6 +1596,7 @@ define('Sage/Platform/Mobile/List', [
             domClass.remove(this.domNode, 'list-has-more');
 
             this.set('listContent', this.loadingTemplate.apply(this));
+            this.destroyRelatedViewWidgets();
         },
         search: function() {
             if (this.searchWidget) {
@@ -1593,6 +1607,54 @@ define('Sage/Platform/Mobile/List', [
             if (this.searchWidget) {
                 this.searchWidget.set('queryValue', value);
             }
+        },
+        relatedViews: null,
+        relatedViewWidgets: [],
+        createRelatedViewLayout: function() {
+            return this.relatedViews || (this.relatedViews = {});
+        },
+        destroyRelatedViewWidgets: function() {
+            array.forEach(this.relatedViewWidgets, function(widget) {
+                widget.destroy();
+            }, this);
+            this.relatedViewWidgets = [];
+        },
+        onProcessRelatedViews: function(entry, rowNode) {
+            var relatedContentNode, 
+            relatedViewNode,
+            relatedViewWidget,
+            relatedResults,
+            i,
+            options;
+            
+            if (this.relatedViews.length > 0) {
+                relatedContentNode = query('> #list-item-content-related', rowNode);
+                try {
+                    if (relatedContentNode[0]) {
+                        for (i = 0; i < this.relatedViews.length; i++) {
+                            if (this.relatedViews[i].enabled) {
+
+                                options = {}
+                                lang.mixin(options, this.relatedViews[i]);
+                                options.id = this.relatedViews[i].id + '_' + entry.$key;
+                                relatedViewWidget = new this.relatedViews[i].widgetType(options);
+                                this.relatedViewWidgets.push(relatedViewWidget);
+                                relatedViewWidget.parentEntry = entry;
+                                relatedViewWidget.parentNode = relatedContentNode[0];
+                                relatedViewWidget.onInit();
+                                relatedViewWidget.placeAt(relatedContentNode[0], 'last');
+                            }
+                        }
+                    }
+
+                }
+                catch (error) {
+                    console.log('Error processing related view widgets:' + error );
+
+                }
+            }
         }
+
     });
 });
+ 
