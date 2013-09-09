@@ -638,9 +638,15 @@ define('Sage/Platform/Mobile/List', [
 
         /**
          * @property {Boolean}
-         * Flag to indicate the default search term has been set.
+         * Flag to indicate the default search term has been set
          */
         defaultSearchTermSet: false,
+
+        /**
+         * @property {Boolean}
+         * Flag to indicate if the user has performed a search
+         */
+        hasSearched: false,
 
         /**
          * @property {String}
@@ -1122,7 +1128,7 @@ define('Sage/Platform/Mobile/List', [
          * @return {String}
          */
         escapeSearchQuery: function(searchQuery) {
-            return (searchQuery || '').replace(/"/g, '""');
+            return (searchQuery || '').replace(/"/g, '""');//"
         },
         /**
          * Handler for the search widgets search.
@@ -1134,6 +1140,7 @@ define('Sage/Platform/Mobile/List', [
          * @private
          */
         _onSearchExpression: function(expression) {
+            this.hasSearched = true;
             this.clear(false);
             this.queryText = '';
             this.query = expression;
@@ -1155,7 +1162,7 @@ define('Sage/Platform/Mobile/List', [
             this._setDefaultSearchTerm();
         },
         _setDefaultSearchTerm: function() {
-            if (!this.defaultSearchTerm || this.defaultSearchTermSet) {
+            if (!this.defaultSearchTerm || this.defaultSearchTermSet || this.hasSearched) {
                 return;
             }
 
@@ -1524,12 +1531,17 @@ define('Sage/Platform/Mobile/List', [
          * Extends the {@link View#transitionTo parent implementation} to also configure the search widget and
          * load previous selections into the selection model.
          */
-        transitionTo: function()
-        {
+        transitionTo: function() {
             this.configureSearch();
 
-            if (this._selectionModel) this._loadPreviousSelections();
+            if (this._selectionModel) {
+                this._loadPreviousSelections();
+            }
             
+            this.inherited(arguments);
+        },
+        transitionAway: function() {
+            this.defaultSearchTermSet = false;
             this.inherited(arguments);
         },
         /**
