@@ -1633,8 +1633,7 @@ define('Sage/Platform/Mobile/List', [
                     if (relatedContentNode[0]) {
                         for (i = 0; i < this.relatedViews.length; i++) {
                             if (this.relatedViews[i].enabled) {
-
-                                options = {}
+                                options = {};
                                 lang.mixin(options, this.relatedViews[i]);
                                 options.id = this.relatedViews[i].id + '_' + entry.$key;
                                 relatedViewWidget = new this.relatedViews[i].widgetType(options);
