@@ -778,7 +778,7 @@ define('Sage/Platform/Mobile/List', [
             }
             this.destroyRelatedViewWidgets();
             this.inherited(arguments);
-        },       
+        },
         /**
          * Sets and returns the toolbar item layout definition, this method should be overriden in the view
          * so that you may define the views toolbar items.
