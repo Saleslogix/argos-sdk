@@ -243,14 +243,17 @@ define('Sage/Platform/Mobile/Application', [
          * Establishes signals/handles from dojo's newer APIs
          */
         initSignals: function() {
-            this._signals.push(aspect.after(window.ReUI, 'setOrientation', lang.hitch(this, function(result, args){
+            this._signals.push(aspect.after(window.ReUI, 'setOrientation', lang.hitch(this, function(result, args) {
                 var value;
                 if (args && args.length > 0) {
                     value = args[0];
                     this.currentOrientation = value;
+                    this.onSetOrientation(value);
                     connect.publish('/app/setOrientation', [value]);
                 }
             })));
+        },
+        onSetOrientation: function(value) {
         },
         /**
          * Loops through connections and calls {@link #registerService registerService} on each.
