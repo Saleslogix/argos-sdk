@@ -1439,6 +1439,9 @@ define('Sage/Platform/Mobile/List', [
          * Initiates the SData request.
          */
         requestData: function() {
+            if (this.listLoading) {
+                return;
+            }
 
             domClass.add(this.domNode, 'list-loading');
             this.listLoading = true;
