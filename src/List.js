@@ -1147,8 +1147,9 @@ define('Sage/Platform/Mobile/List', [
          * @private
          */
         _onSearchExpression: function(expression) {
-            this.hasSearched = true;
             this.clear(false);
+
+            this.hasSearched = true;
             this.queryText = '';
             this.query = expression;
 
@@ -1602,6 +1603,8 @@ define('Sage/Platform/Mobile/List', [
             this.entries = {};
             this.feed = false;
             this.query = false; // todo: rename to searchQuery
+            this.defaultSearchTermSet = false;
+            this.hasSearched = false;
 
             if (all !== false && this.searchWidget) this.searchWidget.clear();
 
