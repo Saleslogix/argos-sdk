@@ -40,7 +40,7 @@ define('Sage/Platform/Mobile/List', [
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/View',
     'Sage/Platform/Mobile/SearchWidget',
-    'Sage/Platform/Mobile/RelatedViewManager',
+    'Sage/Platform/Mobile/RelatedViewManager'
 ], function(
     declare,
     lang,
@@ -1609,57 +1609,16 @@ define('Sage/Platform/Mobile/List', [
             }
         },
         relatedViews: null,
-        xrelatedViewWidgets: [],
         relatedViewManagers:{},
         createRelatedViewLayout: function() {
             return this.relatedViews || (this.relatedViews = {});
-        },
-        xdestroyRelatedViewWidgets: function() {
-            array.forEach(this.relatedViewWidgets, function(widget) {
-                widget.destroy();
-            }, this);
-            this.relatedViewWidgets = [];
         },
         destroyRelatedViewWidgets: function() {
             for (var relatedViewId in this.relatedViewManagers) {
                 this.relatedViewManagers[relatedViewId].destroyViews();
             }
         },
-        xonProcessRelatedViews: function(entry, rowNode) {
-            var relatedContentNode, 
-            relatedViewNode,
-            relatedViewWidget,
-            relatedResults,
-            i,
-            options;
-            
-            if (this.relatedViews.length > 0) {
-                relatedContentNode = query('> #list-item-content-related', rowNode);
-                try {
-                    if (relatedContentNode[0]) {
-                        for (i = 0; i < this.relatedViews.length; i++) {
-                            if (this.relatedViews[i].enabled) {
-                                options = {};
-                                lang.mixin(options, this.relatedViews[i]);
-                                options.id = this.relatedViews[i].id + '_' + entry.$key;
-                                relatedViewWidget = new this.relatedViews[i].widgetType(options);
-                                this.relatedViewWidgets.push(relatedViewWidget);
-                                relatedViewWidget.parentEntry = entry;
-                                relatedViewWidget.parentNode = relatedContentNode[0];
-                                relatedViewWidget.onInit();
-                                relatedViewWidget.placeAt(relatedContentNode[0], 'last');
-                            }
-                        }
-                    }
-
-                }
-                catch (error) {
-                    console.log('Error processing related view widgets:' + error );
-
-                }
-            }
-        },
-        getRelatedViewManager: function(relatedView) {
+       getRelatedViewManager: function(relatedView) {
             var relatedViewManager;
             if (this.relatedViewManagers[this.relatedViews[i].id]) {
                 relatedViewManager = this.relatedViewManagers[this.relatedViews[i].id];
@@ -1680,8 +1639,7 @@ define('Sage/Platform/Mobile/List', [
                         if (this.relatedViews[i].enabled) {
                             relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
                             if (relatedViewManager) {
-                                feedId = this.feed['$startIndex'] + '_' + this.feed['$itemsPerPage'];
-                                relatedViewManager.addView(entry, rowNode, feedId);
+                                relatedViewManager.addView(entry, rowNode);
                             }
                         }
                     }
