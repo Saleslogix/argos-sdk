@@ -372,16 +372,12 @@ ReUI = {};
     };
 
     var checkOrientationAndLocation = function() {
-        if ((isSimilarLength(window.innerHeight, context.width) && isSimilarLength(window.innerWidth, context.height)) ||
-            (context.height === 0 || context.width === 0)) {
-
+        // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
+        if ((window.innerHeight !== context.height || window.innerWidth !== context.width) &&
+               !(window.innerHeight !== context.height && window.innerWidth === context.width)) {
             context.height = window.innerHeight;
             context.width = window.innerWidth;
             R.setOrientation(context.height < context.width ? 'landscape' : 'portrait');
-        } else if ((window.innerHeight != context.height) || (window.innerWidth != context.width)) {
-            context.height = window.innerHeight;
-            context.width = window.innerWidth;
-            updateOrientationDom(context.height < context.width ? 'landscape' : 'portrait');
         }
 
         if (context.transitioning) return;
