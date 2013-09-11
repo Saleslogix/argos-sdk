@@ -1170,7 +1170,7 @@ img {
   width: 25px;
 }
 .related-view-widget-section {
-  padding: 4px 1px 1px 24px;
+  padding: 4px 1px 1px 78px;
 }
 .related-view-widget-section .tab {
   font-size: 0.75em;
@@ -1200,6 +1200,8 @@ img {
   padding: 1px 2px;
   text-overflow: ellipsis;
   overflow: hidden;
+  background-color: #c0d9e2;
+  margin: 4px;
 }
 .related-view-widget-row > button {
   background-color: #FFFFFF;
