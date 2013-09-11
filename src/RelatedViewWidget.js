@@ -23,6 +23,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     'dojo/when',
     'dojo/dom-construct',
     'dojo/query',
+    'dojo/dom-attr',
     'Sage/Platform/Mobile/Store/SData',
     'dijit/_Widget',
     'Sage/Platform/Mobile/_Templated'
@@ -35,6 +36,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     when,
     domConstruct,
     query,
+    domAttr,
     SDataStore,
     _Widget,
     _Templated
@@ -42,13 +44,13 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     return declare('Sage.Platform.Mobile.RelatedViewWidget', [_Widget, _Templated], {
        
         nodataText: 'no records found ...',
-        viewMoreDataText: 'see more ... ',
+        selectMoreDataText: 'see ${0} more of ${1} ... ',
         loadingText: 'loading ... ',
         refreshViewText: 'refresh',
         parentEntry: null,
         relatedEntry: null,
-        relateViewNode: null,
         itemsNode: null,
+        loadingNode: null,
         id: 'related-view',
         icon: 'content/images/icons/ContactProfile_48x48.png',
         title: 'Related View',
@@ -65,10 +67,13 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         sort: null,
         store: null,
         queryOptions: null,
-        numberOfItems: 1,
         isLoaded: false,
         autoLoad: false,
-        tabcls: 'tab collasped',
+        wait: false,
+        startIndex: 1,
+        pageSize: 3,
+        relatedResults: null,
+        itemCount: 0,
         /**
          * @property {Simplate}
          * Simple that defines the HTML Markup
@@ -101,9 +106,9 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
            '</div>'
         ]),
         relatedViewFooterTemplate: new Simplate([
-            '<div class="related-view-widget-footer">',
+            '<div class="related-view-widget-footer  ">',
                 '<div>',
-                 '<div class="action" data-dojo-attach-event="onclick:onSelectMoreData">{%: $$.viewMoreDataText %}</div>',
+                 '<div  data-dojo-attach-point="selectMoreNode" class="action" data-dojo-attach-event="onclick:onSelectMoreData"></div>',
                '</div>',
                 '<hr />',
             '</div>'
@@ -128,17 +133,6 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             this.inherited(arguments);
             lang.mixin(this, options);
         },
-        /**
-         * Expands the passed expression if it is a function.
-         * @param {String/Function} expression Returns string directly, if function it is called and the result returned.
-         * @return {String} String expression.
-         */
-        expandExpression: function(expression) {
-            if (typeof expression === 'function')
-                return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-            else
-                return expression;
-        },
         getStore: function() {
             var store = new SDataStore({
                 service: App.services['crm'],
@@ -149,7 +143,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             return store;
         },
         getQueryOptions: function() {
-            var whereExpression = '';
+            var whereExpression = '', startIndex;
             if (this.hasOwnProperty('where')) {
                 if (typeof this.where === 'function') {
                     whereExpression = this.where(this.parentEntry);
@@ -157,18 +151,25 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     whereExpression = this.where;
                 }
             }
+            
             var queryOptions = {
-                count: this.numberOfItems || 1,
+                count: this.pageSize || 1,
                 start: 0,
                 select: this.select || '',
                 where: whereExpression,
                 sort: this.sort || ''
             };
+            
             return queryOptions;
         },
         fetchData: function() {
-            var queryResults;
+            var queryResults, startIndex;
+            if (this.startIndex < 1) {
+                this.startIndex = 1;
+            }
+            this.queryOptions.start = this.startIndex-1;
             queryResults = this.store.query(null, this.queryOptions);
+            this.startIndex = this.startIndex > 0 && this.pageSize > 0 ? this.startIndex + this.pageSize : 1;
             return queryResults;
         },
         onInit: function() {
@@ -181,49 +182,54 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                 domClass.toggle(tabNode, 'collapsed');
                 this.onLoad();
             }
-
-
         },
         onLoad: function() {
-            var loadingNode, x;
-            if (this.isLoaded) {
-                return;
-            }
+
             if (this.parentCollection) {
                 this.onApply(this.parentEntry[this.parentCollectionProperty]['$resources']);
             } else {
-                relatedResults = this.fetchData();
 
-                this.itemsNode = domConstruct.toDom("<div id='itemsNode'><div>");
-                loadingNode = this.loadingTemplate.apply(this);
-                domConstruct.place(loadingNode, this.itemsNode, 'last', this);
-                domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
-
+                if (!this.loadingNode) {
+                    this.loadingNode = domConstruct.toDom(this.loadingTemplate.apply(this));
+                    domConstruct.place(this.loadingNode, this.relatedViewNode, 'last', this);
+                }
+                domClass.toggle(this.loadingNode, 'related-view-widget-loading');
+                if (this.wait) {
+                    return;
+                }
+                this.relatedResults = this.fetchData();
                 (function(context, relatedResults) {
 
                     try {
                         when(relatedResults, lang.hitch(context, function(relatedFeed) {
-                            context.onApply(relatedFeed);
+                            this.onApply(relatedFeed);
                         }));
                     }
                     catch (error) {
                         console.log('Error fetching related view data:' + error);
                     }
-                })(this, relatedResults);
+                })(this, this.relatedResults);
             }
             this.isLoaded = true;
         },
         onApply: function(relatedFeed) {
-            var relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, footerHtml, itemHTML, nodataHTML;
+            var relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, itemHTML, moreData, restCount, moreCount ;
             try {
 
-                if (this.itemsNode) {
-                    dojo.destroy(this.itemsNode);
+                if (!this.itemsNode) {
+                    this.itemsNode = domConstruct.toDom("<div id='itemsNode'><div>");
+                    domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
                 }
-
-                this.itemsNode = domConstruct.toDom("<div id='itemsNode'><div>");
-                domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
                 if (relatedFeed.length > 0) {
+                    this.itemCount = this.itemCount + relatedFeed.length;
+                    restCount = this.relatedResults.total - this.itemCount;
+                    if (restCount > 0) {
+                        moreCount = (restCount >= this.pageSize) ? this.pageSize : restCount;
+                        moreData = string.substitute(this.selectMoreDataText, [moreCount, restCount]);
+                    } else {
+                        moreData = '';
+                    }
+                    domAttr.set(this.selectMoreNode, { innerHTML: moreData });
                     for (i = 0; i < relatedFeed.length; i++) {
                         itemEntry = relatedFeed[i];
                         itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
@@ -235,8 +241,9 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     
                 } else {
                     domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
+                    domAttr.set(this.selectMoreNode, { innerHTML: "" });
                 }
-
+                domClass.toggle(this.loadingNode, 'related-view-widget-loading');
             }
             catch (error) {
                 console.log('Error applying data for related view widget:' + error);
@@ -270,9 +277,9 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                 view.show(options);
             }
             evt.stopPropagation();
-        },       
-        onSelectMoreData: function(evt) {
-            var  options, view, whereExpression;
+        },
+        onNavigateToList: function(evt) {
+            var options, view, whereExpression;
 
             if (this.hasOwnProperty('listViewWhere')) {
                 if (typeof this.listViewWhere === 'function') {
@@ -302,12 +309,19 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             }
             evt.stopPropagation();
         },
+        onSelectMoreData: function(evt) {
+            this.onLoad();
+            evt.stopPropagation();
+        },
         onRefreshView: function(evt) {
             var  i, view, nodes;
 
             if (this.itemsNode) {
                 dojo.destroy(this.itemsNode);
+                this.itemsNode = null;
             }
+            this.startIndex = 1;
+            this.itemCount = 0;
             this.isLoaded = false;
             this.onLoad();
 

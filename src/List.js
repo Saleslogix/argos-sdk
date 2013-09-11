@@ -40,7 +40,7 @@ define('Sage/Platform/Mobile/List', [
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/View',
     'Sage/Platform/Mobile/SearchWidget',
-    'Sage/Platform/Mobile/Store/SData'
+    'Sage/Platform/Mobile/RelatedViewManager',
 ], function(
     declare,
     lang,
@@ -59,7 +59,7 @@ define('Sage/Platform/Mobile/List', [
     ErrorManager,
     View,
     SearchWidget,
-    SDataStore
+    RelatedViewManager
 ) {
 
     /**
@@ -1351,7 +1351,7 @@ define('Sage/Platform/Mobile/List', [
                     docfrag.appendChild(rowNode);
                     this.onApplyRowTemplate(entry, rowNode);
                     if (this.relatedViews.length > 0) {
-                        this.onProcessRelatedViews(entry, rowNode);
+                        this.onProcessRelatedViews(entry, rowNode, feed);
                     }
 
                 }
@@ -1609,17 +1609,23 @@ define('Sage/Platform/Mobile/List', [
             }
         },
         relatedViews: null,
-        relatedViewWidgets: [],
+        xrelatedViewWidgets: [],
+        relatedViewManagers:{},
         createRelatedViewLayout: function() {
             return this.relatedViews || (this.relatedViews = {});
         },
-        destroyRelatedViewWidgets: function() {
+        xdestroyRelatedViewWidgets: function() {
             array.forEach(this.relatedViewWidgets, function(widget) {
                 widget.destroy();
             }, this);
             this.relatedViewWidgets = [];
         },
-        onProcessRelatedViews: function(entry, rowNode) {
+        destroyRelatedViewWidgets: function() {
+            for (var relatedViewId in this.relatedViewManagers) {
+                this.relatedViewManagers[relatedViewId].destroyViews();
+            }
+        },
+        xonProcessRelatedViews: function(entry, rowNode) {
             var relatedContentNode, 
             relatedViewNode,
             relatedViewWidget,
@@ -1649,6 +1655,39 @@ define('Sage/Platform/Mobile/List', [
                 }
                 catch (error) {
                     console.log('Error processing related view widgets:' + error );
+
+                }
+            }
+        },
+        getRelatedViewManager: function(relatedView) {
+            var relatedViewManager;
+            if (this.relatedViewManagers[this.relatedViews[i].id]) {
+                relatedViewManager = this.relatedViewManagers[this.relatedViews[i].id];
+            } else {
+                options = { id:relatedView.id,
+                    relatedViewConfig: relatedView
+                };
+                relatedViewManager = new RelatedViewManager(options);
+                this.relatedViewManagers[relatedView.id] = relatedViewManager;
+            }
+            return relatedViewManager;
+        },
+        onProcessRelatedViews: function(entry, rowNode, feed) {
+            var relatedViewManager, feedId;
+            if (this.relatedViews.length > 0) {
+                try {
+                    for (i = 0; i < this.relatedViews.length; i++) {
+                        if (this.relatedViews[i].enabled) {
+                            relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
+                            if (relatedViewManager) {
+                                feedId = this.feed['$startIndex'] + '_' + this.feed['$itemsPerPage'];
+                                relatedViewManager.addView(entry, rowNode, feedId);
+                            }
+                        }
+                    }
+                }
+                catch (error) {
+                    console.log('Error processing related views:' + error );
 
                 }
             }
