@@ -341,11 +341,17 @@ ReUI = {};
         if (hash && hash.indexOf(R.hashPrefix) === 0)
             return D.get(hash.substr(R.hashPrefix.length));
         return false;
-    };                   
+    };  
+
+    var isSimilarLength = function(x, y) {
+        // Check if x and y are within 5px of each other
+        return Math.abs(x - y) < 5; 
+    };
 
     var checkOrientationAndLocation = function() {
-        if ((window.innerHeight != context.height) || (window.innerWidth != context.width))
-        {
+        if ((isSimilarLength(window.innerHeight, context.width) && isSimilarLength(window.innerWidth, context.height)) ||
+            (context.height === 0 || context.width === 0)) {
+
             context.height = window.innerHeight;
             context.width = window.innerWidth;
 
