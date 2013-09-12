@@ -730,6 +730,7 @@ define('Sage/Platform/Mobile/List', [
          * Extends dijit Widget postCreate to setup the selection model, search widget and bind
          * to the global refresh publish
          */
+        _onScrollHandle: null,
         postCreate: function() {
             this.inherited(arguments);
 
@@ -737,10 +738,6 @@ define('Sage/Platform/Mobile/List', [
                 this.set('selectionModel', new ConfigurableSelectionModel());
 
             this.subscribe('/app/refresh', this._onRefresh);
-
-            if (this.continuousScrolling) {
-                this.connect(this.domNode, 'onscroll', this.onScroll);
-            }
 
             if (this.enableSearch) {
                 var searchWidgetCtor = lang.isString(this.searchWidgetClass)
@@ -1434,6 +1431,10 @@ define('Sage/Platform/Mobile/List', [
 
             domClass.remove(this.domNode, 'list-loading');
             this.listLoading = false;
+
+            if (!this._onScrollHandle && this.continuousScrolling) {
+                this._onScrollHandle = this.connect(this.domNode, 'onscroll', this.onScroll);
+            }
         },
         /**
          * Initiates the SData request.
@@ -1593,10 +1594,16 @@ define('Sage/Platform/Mobile/List', [
                 this._selectionModel.resumeEvents();
             }
 
-            this.requestedFirstPage = false;
             this.entries = {};
             this.feed = false;
             this.query = false; // todo: rename to searchQuery
+            this.defaultSearchTermSet = false;
+            this.hasSearched = false;
+            
+            if (this._onScrollHandle) {
+                this.disconnect(this._onScrollHandle);
+                this._onScrollHandle = null;
+            }
 
             if (all !== false && this.searchWidget) this.searchWidget.clear();
 
