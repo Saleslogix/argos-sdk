@@ -47,6 +47,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         selectMoreDataText: 'see ${0} more of ${1} ... ',
         loadingText: 'loading ... ',
         refreshViewText: 'refresh',
+        totalCountText: ' ${0} of ${1}',
         parentEntry: null,
         relatedEntry: null,
         itemsNode: null,
@@ -85,8 +86,8 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             '{% } else { %}',
                 '<div  id="tab" class="tab collapsed" data-dojo-attach-event="onclick:toggleView">',
             '{% } %}',
-                  '{%: ($.title ) %}',
-                  '<button  class="collapsed-indicator" aria-label="{%: $.title %}"></button>',
+                  '<span  data-dojo-attach-point="titleNode" >{%: ($.title ) %}</span>',
+                  '<button  class="collapsed-indicator" aria-label="{%: $.title %}"> </button>',
                '</div>',
                '<div>',
                   '{%! $$.relatedViewHeaderTemplate %}',
@@ -102,7 +103,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         ]),
         relatedViewHeaderTemplate: new Simplate([
            '<div class="related-view-widget-header">',
-                '<div class="action" data-dojo-attach-event="onclick:onRefreshView">{%: $$.refreshViewText %}</div>',
+                '<div class="action" data-dojo-attach-event="onclick:onRefreshView">{%: $$.refreshViewText %}</div>',               
            '</div>'
         ]),
         relatedViewFooterTemplate: new Simplate([
@@ -230,6 +231,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                         moreData = '';
                     }
                     domAttr.set(this.selectMoreNode, { innerHTML: moreData });
+                    domAttr.set(this.titleNode, { innerHTML:  this.title +  "  "  +  string.substitute(this.totalCountText, [this.itemCount, this.relatedResults.total]) });
                     for (i = 0; i < relatedFeed.length; i++) {
                         itemEntry = relatedFeed[i];
                         itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
