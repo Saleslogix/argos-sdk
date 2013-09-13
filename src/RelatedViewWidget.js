@@ -98,7 +98,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             '</div>'
         ]),
         nodataTemplate: new Simplate([
-             '<div class="related-view-widget-nodata"> {%: $$.nodataText %}</div>',
+             '<div class="related-view-widget-nodata"> {%: $$.nodataText %}</div>'
         ]),
         relatedViewHeaderTemplate: new Simplate([
            '<div class="related-view-widget-header">',

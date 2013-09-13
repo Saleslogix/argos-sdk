@@ -1619,7 +1619,7 @@ define('Sage/Platform/Mobile/List', [
             }
         },
        getRelatedViewManager: function(relatedView) {
-            var relatedViewManager;
+            var relatedViewManager, options;
             if (this.relatedViewManagers[relatedView.id]) {
                 relatedViewManager = this.relatedViewManagers[relatedView.id];
             } else {
