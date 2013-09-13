@@ -647,9 +647,15 @@ define('Sage/Platform/Mobile/List', [
 
         /**
          * @property {Boolean}
-         * Flag to indicate the default search term has been set.
+         * Flag to indicate the default search term has been set
          */
         defaultSearchTermSet: false,
+
+        /**
+         * @property {Boolean}
+         * Flag to indicate if the user has performed a search
+         */
+        hasSearched: false,
 
         /**
          * @property {String}
@@ -720,6 +726,7 @@ define('Sage/Platform/Mobile/List', [
          * Extends dijit Widget postCreate to setup the selection model, search widget and bind
          * to the global refresh publish
          */
+        _onScrollHandle: null,
         postCreate: function() {
             this.inherited(arguments);
 
@@ -727,10 +734,6 @@ define('Sage/Platform/Mobile/List', [
                 this.set('selectionModel', new ConfigurableSelectionModel());
 
             this.subscribe('/app/refresh', this._onRefresh);
-
-            if (this.continuousScrolling) {
-                this.connect(this.domNode, 'onscroll', this.onScroll);
-            }
 
             if (this.enableSearch) {
                 var searchWidgetCtor = lang.isString(this.searchWidgetClass)
@@ -910,9 +913,6 @@ define('Sage/Platform/Mobile/List', [
             this.onApplyRowActionPanel(this.actionsNode, rowNode);
 
             domConstruct.place(this.actionsNode, rowNode, 'after');
-
-            if (this.actionsNode.offsetTop + this.actionsNode.clientHeight + 48 > document.documentElement.clientHeight)
-                this.actionsNode.scrollIntoView(false);
         },
         onApplyRowActionPanel: function(actionNodePanel, rowNode) {
 
@@ -1132,7 +1132,7 @@ define('Sage/Platform/Mobile/List', [
          * @return {String}
          */
         escapeSearchQuery: function(searchQuery) {
-            return (searchQuery || '').replace(/"/g, '""');
+            return (searchQuery || '').replace(/"/g, '""');//"
         },
         /**
          * Handler for the search widgets search.
@@ -1145,6 +1145,8 @@ define('Sage/Platform/Mobile/List', [
          */
         _onSearchExpression: function(expression) {
             this.clear(false);
+
+            this.hasSearched = true;
             this.queryText = '';
             this.query = expression;
 
@@ -1165,7 +1167,7 @@ define('Sage/Platform/Mobile/List', [
             this._setDefaultSearchTerm();
         },
         _setDefaultSearchTerm: function() {
-            if (!this.defaultSearchTerm || this.defaultSearchTermSet) {
+            if (!this.defaultSearchTerm || this.defaultSearchTermSet || this.hasSearched) {
                 return;
             }
 
@@ -1427,11 +1429,18 @@ define('Sage/Platform/Mobile/List', [
 
             domClass.remove(this.domNode, 'list-loading');
             this.listLoading = false;
+
+            if (!this._onScrollHandle && this.continuousScrolling) {
+                this._onScrollHandle = this.connect(this.domNode, 'onscroll', this.onScroll);
+            }
         },
         /**
          * Initiates the SData request.
          */
         requestData: function() {
+            if (this.listLoading) {
+                return;
+            }
 
             domClass.add(this.domNode, 'list-loading');
             this.listLoading = true;
@@ -1537,12 +1546,17 @@ define('Sage/Platform/Mobile/List', [
          * Extends the {@link View#transitionTo parent implementation} to also configure the search widget and
          * load previous selections into the selection model.
          */
-        transitionTo: function()
-        {
+        transitionTo: function() {
             this.configureSearch();
 
-            if (this._selectionModel) this._loadPreviousSelections();
+            if (this._selectionModel) {
+                this._loadPreviousSelections();
+            }
             
+            this.inherited(arguments);
+        },
+        transitionAway: function() {
+            this.defaultSearchTermSet = false;
             this.inherited(arguments);
         },
         /**
@@ -1586,10 +1600,16 @@ define('Sage/Platform/Mobile/List', [
                 this._selectionModel.resumeEvents();
             }
 
-            this.requestedFirstPage = false;
             this.entries = {};
             this.feed = false;
             this.query = false; // todo: rename to searchQuery
+            this.defaultSearchTermSet = false;
+            this.hasSearched = false;
+            
+            if (this._onScrollHandle) {
+                this.disconnect(this._onScrollHandle);
+                this._onScrollHandle = null;
+            }
 
             if (all !== false && this.searchWidget) this.searchWidget.clear();
 
@@ -1619,7 +1639,7 @@ define('Sage/Platform/Mobile/List', [
             }
         },
        getRelatedViewManager: function(relatedView) {
-            var relatedViewManager;
+            var relatedViewManager, i, options;
             if (this.relatedViewManagers[this.relatedViews[i].id]) {
                 relatedViewManager = this.relatedViewManagers[this.relatedViews[i].id];
             } else {
@@ -1632,7 +1652,7 @@ define('Sage/Platform/Mobile/List', [
             return relatedViewManager;
         },
         onProcessRelatedViews: function(entry, rowNode, feed) {
-            var relatedViewManager, feedId;
+            var relatedViewManager, feedId, i;
             if (this.relatedViews.length > 0) {
                 try {
                     for (i = 0; i < this.relatedViews.length; i++) {

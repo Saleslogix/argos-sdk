@@ -26,6 +26,7 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/_base/json',
     'dojo/_base/array',
     'dojo/_base/connect',
+    'dojo/aspect',
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/window',
@@ -39,6 +40,7 @@ define('Sage/Platform/Mobile/Application', [
     json,
     array,
     connect,
+    aspect,
     declare,
     lang,
     win,
@@ -115,10 +117,23 @@ define('Sage/Platform/Mobile/Application', [
         snapper: null,
 
         /**
+         * @property {String}
+         * Current orientation of the application. Can be landscape or portrait.
+         */
+        currentOrientation: 'portrait',
+
+        /**
          * Array of all connections for App
          * @property {Object[]}
          */
         _connects: null,
+
+        /**
+         * Array of handles for App
+         * @property {Object[]}
+         */
+        _signals: null,
+
         /**
          * Array of all subscriptions for App
          */
@@ -156,6 +171,7 @@ define('Sage/Platform/Mobile/Application', [
          */
         constructor: function(options) {
             this._connects = [];
+            this._signals = [];
             this._subscribes = [];
             
             this.customizations = {};
@@ -179,6 +195,10 @@ define('Sage/Platform/Mobile/Application', [
 
             array.forEach(this._subscribes, function(handle){
                 connect.unsubscribe(handle);
+            });
+
+            array.forEach(this._signals, function(signal) {
+                signal.remove();
             });
 
             this.uninitialize();
@@ -217,6 +237,23 @@ define('Sage/Platform/Mobile/Application', [
             this._connects.push(connect.connect(win.body(), 'beforetransition', this, this._onBeforeTransition));
             this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
             this._connects.push(connect.connect(win.body(), 'show', this, this._onActivate));
+        },
+
+        /**
+         * Establishes signals/handles from dojo's newer APIs
+         */
+        initSignals: function() {
+            this._signals.push(aspect.after(window.ReUI, 'setOrientation', lang.hitch(this, function(result, args) {
+                var value;
+                if (args && args.length > 0) {
+                    value = args[0];
+                    this.currentOrientation = value;
+                    this.onSetOrientation(value);
+                    connect.publish('/app/setOrientation', [value]);
+                }
+            })));
+        },
+        onSetOrientation: function(value) {
         },
         /**
          * Loops through connections and calls {@link #registerService registerService} on each.
@@ -258,6 +295,7 @@ define('Sage/Platform/Mobile/Application', [
          */
         init: function() {
             this.initConnects();
+            this.initSignals();
             this.initCaching();
             this.initServices();
             this.initModules();
@@ -625,12 +663,14 @@ define('Sage/Platform/Mobile/Application', [
          * @return {Object/Boolean} context History data context if found, false if not.
          */
         queryNavigationContext: function(predicate, depth, scope) {
+            var i, j, list;
+
             if (typeof depth !== 'number') {
                 scope = depth;
                 depth = 0;
             }
 
-            var list = ReUI.context.history || [], i;
+            list = ReUI.context.history || [];
 
             depth = depth || 0;
 

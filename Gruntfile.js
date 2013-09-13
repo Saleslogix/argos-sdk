@@ -41,6 +41,22 @@ module.exports = function(grunt) {
                     'min/css/themes/swiftpage/sdk.min.swiftpage.css': 'content/css/themes/swiftpage.less'
                 }
             }
+        },
+        watch: {
+            scripts: {
+                files: ['src/**/*.js'],
+                tasks: ['jshint'],
+                options: {
+                    spawn: false
+                }
+            },
+            less: {
+                files: ['content/**/*.less'],
+                tasks: ['less'],
+                options: {
+                    spawn: false
+                }
+            }
         }
     });
     
@@ -48,6 +64,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('test', ['connect', 'jasmine']);
     grunt.registerTask('default', ['test']);

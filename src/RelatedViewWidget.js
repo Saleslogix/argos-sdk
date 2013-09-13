@@ -189,7 +189,6 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             }
         },
         onLoad: function() {
-
             if (this.parentCollection) {
                 this.onApply(this.parentEntry[this.parentCollectionProperty]['$resources']);
             } else {
@@ -218,7 +217,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             this.isLoaded = true;
         },
         onApply: function(relatedFeed) {
-            var relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, itemHTML, moreData, restCount, moreCount ;
+            var relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, itemHTML, moreData, restCount, moreCount, i;
             try {
 
                 if (!this.itemsNode) {
