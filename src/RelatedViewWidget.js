@@ -126,7 +126,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         relatedItemIconTemplate: new Simplate([
             '<button class="header">',
                 '<img src="{%: $$.icon %}" class="icon" />',
-            '</button>',
+            '</button>'
         ]),
         relatedItemTemplate: new Simplate([
               '<div>{%: $.$descriptor %}</div>'

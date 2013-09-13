@@ -1197,13 +1197,16 @@ img {
   display: block;
   line-height: 1em;
   min-height: 0.1em;
-  padding: 1px 2px;
+  padding: 1px 40px 1px 1px;
   text-overflow: ellipsis;
   overflow: hidden;
   background-color: #c0d9e2;
   margin: 4px;
 }
-.related-view-widget-row > button {
+.related-view-widget-row > div {
+  margin: 4px;
+}
+.related-view-widget-row > button.header {
   background-color: #FFFFFF;
   border-color: #000000;
   border-radius: 1px 1px 1px 1px;
@@ -1224,14 +1227,19 @@ img {
   width: 24px !important;
 }
 .related-view-widget-item {
-  left: 45px;
+  left: 40px;
   line-height: inherit;
   min-height: 1em;
-  padding: 1px 1px 1px 2px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 1px 1px 1px 2px;
   position: relative;
-  top: -25px;
+  text-overflow: ellipsis;
+  top: -40px;
+  margin: 4px;
+}
+.related-view-widget-item .header {
+  font-size: 0.75em;
+  font-weight: bold;
 }
 .related-view-widget-nodata {
   display: block;
