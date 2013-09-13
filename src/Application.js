@@ -663,12 +663,14 @@ define('Sage/Platform/Mobile/Application', [
          * @return {Object/Boolean} context History data context if found, false if not.
          */
         queryNavigationContext: function(predicate, depth, scope) {
+            var i, j, list;
+
             if (typeof depth !== 'number') {
                 scope = depth;
                 depth = 0;
             }
 
-            var list = ReUI.context.history || [], i;
+            list = ReUI.context.history || [];
 
             depth = depth || 0;
 

@@ -185,7 +185,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
 
         },
         onLoad: function() {
-            var loadingNode, x;
+            var loadingNode, x, relatedResults;
             if (this.isLoaded) {
                 return;
             }
@@ -214,7 +214,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             this.isLoaded = true;
         },
         onApply: function(relatedFeed) {
-            var relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, footerHtml, itemHTML, nodataHTML;
+            var relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, footerHtml, itemHTML, nodataHTML, i;
             try {
 
                 if (this.itemsNode) {

@@ -146,7 +146,7 @@ function(domConstruct, declare, query, parser, array, lang, registry, wai) {
          * @param getAttrFunc {Function} A function which will be used to obtain property for a given DomNode/Widget
          */
         _attachTemplateNodes: function(rootNode, getAttrFunc) {
-            var nodes, x, baseNode, attachPoint, point, attachEvent, event, events, trim, thisFunc, role, values, pair;
+            var nodes, x, baseNode, attachPoint, point, attachEvent, event, events, trim, thisFunc, role, values, pair, points;
 
             getAttrFunc = getAttrFunc || function (n,p){ return n.getAttribute(p); };
 
