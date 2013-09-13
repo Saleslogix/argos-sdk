@@ -179,9 +179,13 @@
           "text": "DateTimeSection.js",
           "path": "../src/Groups"
         },
-		{
+        {
           "text": "GroupByValueSection.js",
           "path": "../src/Groups"
+        },
+        {
+          "text": "RelatedViewManager.js",
+          "path": "../src"
         },
         {
           "text": "RelatedViewWidget.js",

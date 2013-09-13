@@ -40,7 +40,7 @@ define('Sage/Platform/Mobile/List', [
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/View',
     'Sage/Platform/Mobile/SearchWidget',
-    'Sage/Platform/Mobile/Store/SData'
+    'Sage/Platform/Mobile/RelatedViewManager'
 ], function(
     declare,
     lang,
@@ -59,7 +59,7 @@ define('Sage/Platform/Mobile/List', [
     ErrorManager,
     View,
     SearchWidget,
-    SDataStore
+    RelatedViewManager
 ) {
 
     /**
@@ -647,15 +647,9 @@ define('Sage/Platform/Mobile/List', [
 
         /**
          * @property {Boolean}
-         * Flag to indicate the default search term has been set
+         * Flag to indicate the default search term has been set.
          */
         defaultSearchTermSet: false,
-
-        /**
-         * @property {Boolean}
-         * Flag to indicate if the user has performed a search
-         */
-        hasSearched: false,
 
         /**
          * @property {String}
@@ -726,7 +720,6 @@ define('Sage/Platform/Mobile/List', [
          * Extends dijit Widget postCreate to setup the selection model, search widget and bind
          * to the global refresh publish
          */
-        _onScrollHandle: null,
         postCreate: function() {
             this.inherited(arguments);
 
@@ -734,6 +727,10 @@ define('Sage/Platform/Mobile/List', [
                 this.set('selectionModel', new ConfigurableSelectionModel());
 
             this.subscribe('/app/refresh', this._onRefresh);
+
+            if (this.continuousScrolling) {
+                this.connect(this.domNode, 'onscroll', this.onScroll);
+            }
 
             if (this.enableSearch) {
                 var searchWidgetCtor = lang.isString(this.searchWidgetClass)
@@ -913,6 +910,9 @@ define('Sage/Platform/Mobile/List', [
             this.onApplyRowActionPanel(this.actionsNode, rowNode);
 
             domConstruct.place(this.actionsNode, rowNode, 'after');
+
+            if (this.actionsNode.offsetTop + this.actionsNode.clientHeight + 48 > document.documentElement.clientHeight)
+                this.actionsNode.scrollIntoView(false);
         },
         onApplyRowActionPanel: function(actionNodePanel, rowNode) {
 
@@ -1132,7 +1132,7 @@ define('Sage/Platform/Mobile/List', [
          * @return {String}
          */
         escapeSearchQuery: function(searchQuery) {
-            return (searchQuery || '').replace(/"/g, '""');//"
+            return (searchQuery || '').replace(/"/g, '""');
         },
         /**
          * Handler for the search widgets search.
@@ -1145,8 +1145,6 @@ define('Sage/Platform/Mobile/List', [
          */
         _onSearchExpression: function(expression) {
             this.clear(false);
-
-            this.hasSearched = true;
             this.queryText = '';
             this.query = expression;
 
@@ -1167,7 +1165,7 @@ define('Sage/Platform/Mobile/List', [
             this._setDefaultSearchTerm();
         },
         _setDefaultSearchTerm: function() {
-            if (!this.defaultSearchTerm || this.defaultSearchTermSet || this.hasSearched) {
+            if (!this.defaultSearchTerm || this.defaultSearchTermSet) {
                 return;
             }
 
@@ -1353,7 +1351,7 @@ define('Sage/Platform/Mobile/List', [
                     docfrag.appendChild(rowNode);
                     this.onApplyRowTemplate(entry, rowNode);
                     if (this.relatedViews.length > 0) {
-                        this.onProcessRelatedViews(entry, rowNode);
+                        this.onProcessRelatedViews(entry, rowNode, feed);
                     }
 
                 }
@@ -1429,18 +1427,11 @@ define('Sage/Platform/Mobile/List', [
 
             domClass.remove(this.domNode, 'list-loading');
             this.listLoading = false;
-
-            if (!this._onScrollHandle && this.continuousScrolling) {
-                this._onScrollHandle = this.connect(this.domNode, 'onscroll', this.onScroll);
-            }
         },
         /**
          * Initiates the SData request.
          */
         requestData: function() {
-            if (this.listLoading) {
-                return;
-            }
 
             domClass.add(this.domNode, 'list-loading');
             this.listLoading = true;
@@ -1546,17 +1537,12 @@ define('Sage/Platform/Mobile/List', [
          * Extends the {@link View#transitionTo parent implementation} to also configure the search widget and
          * load previous selections into the selection model.
          */
-        transitionTo: function() {
+        transitionTo: function()
+        {
             this.configureSearch();
 
-            if (this._selectionModel) {
-                this._loadPreviousSelections();
-            }
+            if (this._selectionModel) this._loadPreviousSelections();
             
-            this.inherited(arguments);
-        },
-        transitionAway: function() {
-            this.defaultSearchTermSet = false;
             this.inherited(arguments);
         },
         /**
@@ -1600,16 +1586,10 @@ define('Sage/Platform/Mobile/List', [
                 this._selectionModel.resumeEvents();
             }
 
+            this.requestedFirstPage = false;
             this.entries = {};
             this.feed = false;
             this.query = false; // todo: rename to searchQuery
-            this.defaultSearchTermSet = false;
-            this.hasSearched = false;
-            
-            if (this._onScrollHandle) {
-                this.disconnect(this._onScrollHandle);
-                this._onScrollHandle = null;
-            }
 
             if (all !== false && this.searchWidget) this.searchWidget.clear();
 
@@ -1629,46 +1609,43 @@ define('Sage/Platform/Mobile/List', [
             }
         },
         relatedViews: null,
-        relatedViewWidgets: [],
+        relatedViewManagers:{},
         createRelatedViewLayout: function() {
             return this.relatedViews || (this.relatedViews = {});
         },
         destroyRelatedViewWidgets: function() {
-            array.forEach(this.relatedViewWidgets, function(widget) {
-                widget.destroy();
-            }, this);
-            this.relatedViewWidgets = [];
+            for (var relatedViewId in this.relatedViewManagers) {
+                this.relatedViewManagers[relatedViewId].destroyViews();
+            }
         },
-        onProcessRelatedViews: function(entry, rowNode) {
-            var relatedContentNode, 
-            relatedViewNode,
-            relatedViewWidget,
-            relatedResults,
-            i,
-            options;
-            
+       getRelatedViewManager: function(relatedView) {
+            var relatedViewManager, options;
+            if (this.relatedViewManagers[relatedView.id]) {
+                relatedViewManager = this.relatedViewManagers[relatedView.id];
+            } else {
+                options = { id:relatedView.id,
+                    relatedViewConfig: relatedView
+                };
+                relatedViewManager = new RelatedViewManager(options);
+                this.relatedViewManagers[relatedView.id] = relatedViewManager;
+            }
+            return relatedViewManager;
+        },
+        onProcessRelatedViews: function(entry, rowNode, feed) {
+            var relatedViewManager,i;
             if (this.relatedViews.length > 0) {
-                relatedContentNode = query('> #list-item-content-related', rowNode);
                 try {
-                    if (relatedContentNode[0]) {
-                        for (i = 0; i < this.relatedViews.length; i++) {
-                            if (this.relatedViews[i].enabled) {
-                                options = {};
-                                lang.mixin(options, this.relatedViews[i]);
-                                options.id = this.relatedViews[i].id + '_' + entry.$key;
-                                relatedViewWidget = new this.relatedViews[i].widgetType(options);
-                                this.relatedViewWidgets.push(relatedViewWidget);
-                                relatedViewWidget.parentEntry = entry;
-                                relatedViewWidget.parentNode = relatedContentNode[0];
-                                relatedViewWidget.onInit();
-                                relatedViewWidget.placeAt(relatedContentNode[0], 'last');
+                    for (i = 0; i < this.relatedViews.length; i++) {
+                        if (this.relatedViews[i].enabled) {
+                            relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
+                            if (relatedViewManager) {
+                                relatedViewManager.addView(entry, rowNode);
                             }
                         }
                     }
-
                 }
                 catch (error) {
-                    console.log('Error processing related view widgets:' + error );
+                    console.log('Error processing related views:' + error );
 
                 }
             }
