@@ -1170,7 +1170,7 @@ img {
   width: 25px;
 }
 .related-view-widget-section {
-  padding: 4px 1px 1px 24px;
+  padding: 4px 1px 1px 78px;
 }
 .related-view-widget-section .tab {
   font-size: 0.75em;
@@ -1197,11 +1197,21 @@ img {
   display: block;
   line-height: 1em;
   min-height: 0.1em;
-  padding: 1px 2px;
+  padding: 1px 40px 1px 1px;
   text-overflow: ellipsis;
   overflow: hidden;
+  background-color: #c0d9e2;
+  margin: 4px;
 }
-.related-view-widget-row > button {
+.related-view-widget-row .wrapper {
+  display: inline-block;
+}
+.related-view-widget-row .wrapper > div {
+  float: left;
+  margin: 4px;
+  max-width: 80%;
+}
+.related-view-widget-row .wrapper button.header {
   background-color: #FFFFFF;
   border-color: #000000;
   border-radius: 1px 1px 1px 1px;
@@ -1214,7 +1224,7 @@ img {
   top: 3px;
   width: 33px;
 }
-.related-view-widget-row > * > img.icon {
+.related-view-widget-row .wrapper > div > * > img.icon {
   height: 24px !important;
   left: 1px;
   position: relative;
@@ -1222,14 +1232,17 @@ img {
   width: 24px !important;
 }
 .related-view-widget-item {
-  left: 45px;
   line-height: inherit;
   min-height: 1em;
-  padding: 1px 1px 1px 2px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 1px 1px 1px 2px;
   position: relative;
-  top: -25px;
+  text-overflow: ellipsis;
+  margin: 4px;
+}
+.related-view-widget-item .header {
+  font-size: 0.75em;
+  font-weight: bold;
 }
 .related-view-widget-nodata {
   display: block;
@@ -1240,7 +1253,7 @@ img {
   padding: 1em;
 }
 .related-view-widget-loading-indicator {
-  display: block;
+  display: none;
   text-align: center;
   font-size: 0.75em;
   font-weight: normal;
@@ -1252,6 +1265,9 @@ img {
   padding: 0 0 0 20px;
   display: inline-block;
   text-align: center;
+}
+.related-view-widget-loading {
+  display: inline-block;
 }
 body {
   font-family: Helvetica Neue, Helvetica, Arial;
