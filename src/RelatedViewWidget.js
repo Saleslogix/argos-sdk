@@ -98,9 +98,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             '</div>'
         ]),
         nodataTemplate: new Simplate([
-           '<div class="related-view-widget-nodata">',
-             '<div> {%: $$.nodataText %}</div>',
-           '</div>'
+             '<div class="related-view-widget-nodata"> {%: $$.nodataText %}</div>',
         ]),
         relatedViewHeaderTemplate: new Simplate([
            '<div class="related-view-widget-header">',
@@ -117,16 +115,20 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         ]),
         relatedViewRowTemplate: new Simplate([
             '<div class="related-view-widget-row {%: $$.cls %}"  data-relatedkey="{%: $.$key %}" data-descriptor="{%: $.$descriptor %}">',
-             '{%! $$.relatedItemIconTemplate %}',
-             '<div class="related-view-widget-item">',
-             '{%! $$.relatedItemTemplate %}',
-             '</div>',
-             '</div>'
+               '<div class="wrapper">',
+                   '{%! $$.relatedItemIconTemplate %}',
+                   '<div class="related-view-widget-item">',
+                      '{%! $$.relatedItemTemplate %}',
+                  '</div>',
+               '</div>',
+            '</div>'
         ]),
         relatedItemIconTemplate: new Simplate([
+            '<div>',
             '<button class="header">',
                 '<img src="{%: $$.icon %}" class="icon" />',
-            '</button>'
+            '</button>',
+            '</div>'
         ]),
         relatedItemTemplate: new Simplate([
               '<div>{%: $.$descriptor %}</div>'
@@ -218,7 +220,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             this.isLoaded = true;
         },
         onApply: function(relatedFeed) {
-            var relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, itemHTML, moreData, restCount, moreCount ;
+            var i, relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, itemHTML, moreData, restCount, moreCount ;
             try {
 
                 if (!this.itemsNode) {
@@ -320,7 +322,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             evt.stopPropagation();
         },
         onRefreshView: function(evt) {
-            var  i, view, nodes;
+            var view, nodes;
 
             if (this.itemsNode) {
                 dojo.destroy(this.itemsNode);

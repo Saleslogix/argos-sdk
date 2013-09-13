@@ -1620,8 +1620,8 @@ define('Sage/Platform/Mobile/List', [
         },
        getRelatedViewManager: function(relatedView) {
             var relatedViewManager;
-            if (this.relatedViewManagers[this.relatedViews[i].id]) {
-                relatedViewManager = this.relatedViewManagers[this.relatedViews[i].id];
+            if (this.relatedViewManagers[relatedView.id]) {
+                relatedViewManager = this.relatedViewManagers[relatedView.id];
             } else {
                 options = { id:relatedView.id,
                     relatedViewConfig: relatedView
@@ -1632,7 +1632,7 @@ define('Sage/Platform/Mobile/List', [
             return relatedViewManager;
         },
         onProcessRelatedViews: function(entry, rowNode, feed) {
-            var relatedViewManager, feedId;
+            var relatedViewManager,i;
             if (this.relatedViews.length > 0) {
                 try {
                     for (i = 0; i < this.relatedViews.length; i++) {

@@ -58,7 +58,6 @@ define('Sage/Platform/Mobile/RelatedViewManager',  [
             relatedViewNode,
             relatedViewWidget,
             relatedResults,
-            i,
             options;
             relatedContentNode = query('> #list-item-content-related', rowNode);
             try {
