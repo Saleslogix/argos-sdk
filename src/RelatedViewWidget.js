@@ -43,6 +43,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
 ) {
     return declare('Sage.Platform.Mobile.RelatedViewWidget', [_Widget, _Templated], {
        
+        cls: null,
         nodataText: 'no records found ...',
         selectMoreDataText: 'see ${0} more of ${1} ... ',
         loadingText: 'loading ... ',
@@ -80,7 +81,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
          * Simple that defines the HTML Markup
          */
         widgetTemplate: new Simplate([
-            '<div class="related-view-widget-section">',
+            '<div class="related-view-widget-section {%: $$.cls %}">',
              '{% if ($.autoLoad) { %}',
                  '<div  id="tab" class="tab" data-dojo-attach-event="onclick:toggleView">',
             '{% } else { %}',
@@ -103,7 +104,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         ]),
         relatedViewHeaderTemplate: new Simplate([
            '<div class="related-view-widget-header">',
-                '<div class="action" data-dojo-attach-event="onclick:onRefreshView">{%: $$.refreshViewText %}</div>',               
+                '<div class="action" data-dojo-attach-event="onclick:onRefreshView">{%: $$.refreshViewText %}</div>',
            '</div>'
         ]),
         relatedViewFooterTemplate: new Simplate([
@@ -115,14 +116,17 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             '</div>'
         ]),
         relatedViewRowTemplate: new Simplate([
-            '<div class="related-view-widget-row"  data-relatedkey="{%: $.$key %}" data-descriptor="{%: $.$descriptor %}">',
-              '<button>',
+            '<div class="related-view-widget-row {%: $$.cls %}"  data-relatedkey="{%: $.$key %}" data-descriptor="{%: $.$descriptor %}">',
+             '{%! $$.relatedItemIconTemplate %}',
+             '<div class="related-view-widget-item">',
+             '{%! $$.relatedItemTemplate %}',
+             '</div>',
+             '</div>'
+        ]),
+        relatedItemIconTemplate: new Simplate([
+            '<button class="header">',
                 '<img src="{%: $$.icon %}" class="icon" />',
-               '</button>',
-            '<div class="related-view-widget-item">',
-            '{%! $$.relatedItemTemplate %}',
-            '</div>',
-            '</div>'
+            '</button>',
         ]),
         relatedItemTemplate: new Simplate([
               '<div>{%: $.$descriptor %}</div>'
