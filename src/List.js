@@ -920,9 +920,6 @@ define('Sage/Platform/Mobile/List', [
             this.onApplyRowActionPanel(this.actionsNode, rowNode);
 
             domConstruct.place(this.actionsNode, rowNode, 'after');
-
-            if (this.actionsNode.offsetTop + this.actionsNode.clientHeight + 48 > document.documentElement.clientHeight)
-                this.actionsNode.scrollIntoView(false);
         },
         onApplyRowActionPanel: function(actionNodePanel, rowNode) {
 
