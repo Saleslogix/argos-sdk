@@ -687,6 +687,16 @@ define('Sage/Platform/Mobile/List', [
         listLoading: false,
 
         /**
+         * The related view definitions for related views for each row.
+         */
+        relatedViews: null,
+
+        /**
+         * The related view managers for each related view definition.
+         */
+        relatedViewManagers: null,
+
+        /**
          * Setter method for the selection model, also binds the various selection model select events
          * to the respective List event handler for each.
          * @param {SelectionModel} selectionModel The selection model instance to save to the view
@@ -1603,23 +1613,42 @@ define('Sage/Platform/Mobile/List', [
                 this.searchWidget.search();
             }
         },
+        /**
+        * Sets the query value on the serach widget
+        */
         setSearchTerm: function(value) {
             if (this.searchWidget) {
                 this.searchWidget.set('queryValue', value);
             }
         },
-        relatedViews: null,
-        relatedViewManagers:{},
+        /**
+         * Sets and returns the related view definition, this method should be overriden in the view
+         * so that you may define the related views that will be add to each row in the list.
+         * @return {Object} this.relatedViews
+         */
         createRelatedViewLayout: function() {
             return this.relatedViews || (this.relatedViews = {});
         },
+        /**
+         *  Destroies all of the realted view widgets, that was added.
+         */
         destroyRelatedViewWidgets: function() {
-            for (var relatedViewId in this.relatedViewManagers) {
-                this.relatedViewManagers[relatedViewId].destroyViews();
+            if (this.relatedViewManagers) {
+                for (var relatedViewId in this.relatedViewManagers) {
+                    this.relatedViewManagers[relatedViewId].destroyViews();
+                }
             }
         },
+        /**
+         * Gets the related view mnagager for a related view definition. 
+         * If a manager is not found a new Related View Manager is created and returned.
+         * @return {Object} RelatedViewManager
+         */
        getRelatedViewManager: function(relatedView) {
             var relatedViewManager, options;
+            if (!this.relatedViewManagers)            {
+                this.relatedViewManagers = {};
+            }
             if (this.relatedViewManagers[relatedView.id]) {
                 relatedViewManager = this.relatedViewManagers[relatedView.id];
             } else {
@@ -1630,7 +1659,16 @@ define('Sage/Platform/Mobile/List', [
                 this.relatedViewManagers[relatedView.id] = relatedViewManager;
             }
             return relatedViewManager;
-        },
+       },
+        /**
+         * called form Process feed method to process each entry and row node and add the realted view widgets for all realted views defined.
+         *
+         * Add the each entry and row to the RelateView manager wich in turn creates the new related view and renders its content with in the current row.`
+         *
+         * @param {Object} entry the current entry from the feed.
+         * @param {Object} rownode the current dom node to add the widget to.
+         * @param {Object} feed the sData feed.
+         */
         onProcessRelatedViews: function(entry, rowNode, feed) {
             var relatedViewManager,i;
             if (this.relatedViews.length > 0) {
