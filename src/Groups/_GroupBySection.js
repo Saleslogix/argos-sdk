@@ -1,4 +1,4 @@
-﻿/*
+/*
     Swiftpage Partner Source License
     Copyright 2013 Swiftpage ACT! LLC.  All rights reserved.
     
