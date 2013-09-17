@@ -62,6 +62,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         enabled: null,
         parentCollection: false,
         parentCollectionProperty: null,
+        relateData: null,
         resourceKind: null,
         contractName: null,
         select: null,
@@ -76,17 +77,21 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         pageSize: 3,
         relatedResults: null,
         itemCount: 0,
+        _isInitLoad:true,
         /**
          * @property {Simplate}
          * Simple that defines the HTML Markup
          */
         widgetTemplate: new Simplate([
             '<div class="related-view-widget {%: $$.cls %}">',
-             '{% if ($.autoLoad) { %}',
-                 '<div  id="tab" class="tab" data-dojo-attach-event="onclick:toggleView">',
-            '{% } else { %}',
-                '<div  id="tab" class="tab collapsed" data-dojo-attach-event="onclick:toggleView">',
-            '{% } %}',
+             //'<div  id="tab" class="tab" data-dojo-attach-event="onclick:toggleView">',
+                '<div  id="tab" data-dojo-attach-point="tabNode" class="',
+                '{% if ($.autoLoad) { %}',
+                   'tab ',
+                '{% } else { %}',
+                   'tab collapsed ',
+                '{% } %}',
+                  '" data-dojo-attach-event="onclick:toggleView">',
                   '<span  data-dojo-attach-point="titleNode" >{%: ($.title ) %}</span>',
                   '<button  class="collapsed-indicator" aria-label="{%: $.title %}"> </button>',
                '</div>',
@@ -178,19 +183,32 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             return queryResults;
         },
         onInit: function() {
-            var tabNode;
+            this._isInitLoad = true;
             this.store = this.store || this.getStore();
             this.queryOptions = this.queryOptions || this.getQueryOptions();
 
             if (this.autoLoad) {
-                tabNode = query('> #tab', this.domNode);
-                domClass.toggle(tabNode, 'collapsed');
                 this.onLoad();
             }
         },
         onLoad: function() {
+            var data;
+            if (this.relatedData) {
 
-            if (this.parentCollection) {
+                if (typeof this.relatedData === 'function') {
+                    data = this.relatedData(this.parentEntry);
+                } else {
+                    data = this.relatedData;
+                }
+                if (data) {
+                    this.relatedResults = { total: data.length };
+                    this.pageSize = data.length;
+                    this.onApply(data);
+                }
+
+            }else if(this.parentCollection) {
+                this.relatedResults = { total: this.parentEntry[this.parentCollectionProperty]['$resources'].length };
+                this.pageSize = this.relatedResults.total;
                 this.onApply(this.parentEntry[this.parentCollectionProperty]['$resources']);
             } else {
 
@@ -247,7 +265,12 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     
                 } else {
                     domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
+                    domAttr.set(this.titleNode, { innerHTML: this.title + "  " + string.substitute(this.totalCountText, [0, 0]) });
                     domAttr.set(this.selectMoreNode, { innerHTML: "" });
+                    if (this._isInitLoad) {
+                        this._isInitLoad = false;
+                        domClass.toggle(this.tabNode, 'collapsed');
+                    }
                 }
                 domClass.toggle(this.loadingNode, 'loading');
             }

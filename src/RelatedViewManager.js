@@ -69,7 +69,6 @@ define('Sage/Platform/Mobile/RelatedViewManager',  [
                         relatedViewWidget = new this.relatedViewConfig.widgetType(options);
                         relatedViewWidget.parentEntry = entry;
                         relatedViewWidget.parentNode = relatedContentNode[0];
-                        relatedViewWidget.autoLoad = true;
                         this.relatedViews[relatedViewWidget.id] = relatedViewWidget;
                         relatedViewWidget.onInit();
                         relatedViewWidget.placeAt(relatedContentNode[0], 'last');
