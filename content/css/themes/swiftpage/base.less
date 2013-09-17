@@ -1436,11 +1436,11 @@ img
   height: 25px;
   width: 25px;
 }
-.related-view-widget-section
+.related-view-widget
 {
-    padding: 4px 1px 1px 78px;
+    padding: 4px 1px 1px 40px;
 }
-.related-view-widget-section .tab
+.related-view-widget .tab
 {
     font-size: 0.75em;
     font-weight: bold;
@@ -1448,29 +1448,29 @@ img
     padding: 2px 4px 4px;
     background-color: @gray1-lighter;
 }
-.related-view-widget-section .action
+.related-view-widget .action
 {
     font-size: 0.75em;
     font-weight: bold;
     color: @blue3-dark;
 }
 
-.related-view-widget-header
+.related-view-widget .header
 {
     padding: 1px 1px 1px 2px;
 }
 
-.related-view-widget-footer
+.related-view-widget .footer
 {
     padding: 1px 1px 1px 2px;
 }
 
-.related-view-widget-footer> button
+.related-view-widget .footer> button
 {
   float:right;
 }
 
-.related-view-widget-row {
+.related-view-widget .row {
     display: block;
     line-height: 1em;
     min-height: 0.1em;
@@ -1479,40 +1479,15 @@ img
     overflow: hidden;
     background-color:@blue3-lighter;
     margin: 4px;
-}
-.related-view-widget-row .wrapper {
-    display:inline-block;
-}
-
-.related-view-widget-row .wrapper > div {
-    float: left;
-    margin: 4px;
-    max-width: 80%;
-}
-.related-view-widget-row .wrapper  button.header {
-    background-color: #FFFFFF;
-    border-color: #000000;
-    border-radius: 1px 1px 1px 1px;
-    border-width: 0;
-    height: 34px;
-    left: 2px;
-    margin: 1px;
-    padding: 1px;
     position: relative;
-    top: 3px;
-    width: 33px;
 }
 
-.related-view-widget-row  .wrapper> div > *>img.icon
-{
-    height: 24px !important;
-    left: 1px;
+.related-view-widget .items{
+    text-overflow: ellipsis;
+    overflow: hidden;
     position: relative;
-    top: 0;
-    width: 24px !important;
 }
-
-.related-view-widget-item {
+.related-view-widget .item {
     line-height: inherit;
     min-height: 1em;
     overflow: hidden;
@@ -1521,15 +1496,35 @@ img
     text-overflow: ellipsis;
     margin:4px;
 }
+.related-view-widget .item .item-icon {
 
-.related-view-widget-item .header {
+    float: left;
+    border-width: 0;
+    height: 22px;
+    left: 0px;
+    padding: 0 12px 0 0;
+    position: relative;
+    top: 0;
+    width: 28px;
+
+}
+.related-view-widget .item .item-header {
 
     font-size: 0.75em;
     font-weight: bold;
 }
 
+.related-view-widget .item .item-icon > img
+{
+    border: 2px solid #FFFFFF;
+    height: 24px;
+    left: 0;
+    position: relative;
+    top: 0;
+    width: 24px;
+}
 
-.related-view-widget-nodata
+.related-view-widget .nodata
 {
     display: block;
     text-align: center;
@@ -1539,7 +1534,7 @@ img
     padding: 1em;
 }
 
-.related-view-widget-loading-indicator
+.related-view-widget .loading-indicator
 {
     display: none;
     text-align: center;
@@ -1549,7 +1544,7 @@ img
     padding: 1em;
 }
 
-.related-view-widget-loading-indicator  div,
+.related-view-widget .loading-indicator  div,
 {
     background: url('../../../images/loading-indicator-white.gif') no-repeat scroll 0 50%;
     padding: 0 0 0 20px;
@@ -1557,7 +1552,7 @@ img
     text-align: center;
 }
 
-.related-view-widget-loading
+.related-view-widget .loading
 {
     display: inline-block;
 }
