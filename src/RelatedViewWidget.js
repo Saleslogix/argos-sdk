@@ -81,7 +81,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
          * Simple that defines the HTML Markup
          */
         widgetTemplate: new Simplate([
-            '<div class="related-view-widget-section {%: $$.cls %}">',
+            '<div class="related-view-widget {%: $$.cls %}">',
              '{% if ($.autoLoad) { %}',
                  '<div  id="tab" class="tab" data-dojo-attach-event="onclick:toggleView">',
             '{% } else { %}',
@@ -98,15 +98,15 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             '</div>'
         ]),
         nodataTemplate: new Simplate([
-             '<div class="related-view-widget-nodata"> {%: $$.nodataText %}</div>'
+             '<div class="nodata"> {%: $$.nodataText %}</div>'
         ]),
         relatedViewHeaderTemplate: new Simplate([
-           '<div class="related-view-widget-header">',
+           '<div class="header">',
                 '<div class="action" data-dojo-attach-event="onclick:onRefreshView">{%: $$.refreshViewText %}</div>',
            '</div>'
         ]),
         relatedViewFooterTemplate: new Simplate([
-            '<div class="related-view-widget-footer  ">',
+            '<div class="footer  ">',
                 '<div>',
                  '<div  data-dojo-attach-point="selectMoreNode" class="action" data-dojo-attach-event="onclick:onSelectMoreData"></div>',
                '</div>',
@@ -114,27 +114,25 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             '</div>'
         ]),
         relatedViewRowTemplate: new Simplate([
-            '<div class="related-view-widget-row {%: $$.cls %}"  data-relatedkey="{%: $.$key %}" data-descriptor="{%: $.$descriptor %}">',
+            '<div class="row {%: $$.cls %}"  data-relatedkey="{%: $.$key %}" data-descriptor="{%: $.$descriptor %}">',
                '<div class="wrapper">',
-                   '{%! $$.relatedItemIconTemplate %}',
-                   '<div class="related-view-widget-item">',
+                   '<div class="item">',
+                      '<div class="item-icon">',
+                           '{%! $$.relatedItemIconTemplate %}',
+                       '</div>',
                       '{%! $$.relatedItemTemplate %}',
                   '</div>',
                '</div>',
             '</div>'
         ]),
         relatedItemIconTemplate: new Simplate([
-            '<div>',
-            '<button class="header">',
-                '<img src="{%: $$.icon %}" class="icon" />',
-            '</button>',
-            '</div>'
+             '<img src="{%: $$.icon %}" />'
         ]),
         relatedItemTemplate: new Simplate([
-              '<div>{%: $.$descriptor %}</div>'
+              '<div class="item-header">{%: $.$descriptor %}</div>'
         ]),
         loadingTemplate: new Simplate([
-           '<div class="related-view-widget-loading-indicator"><div>{%= $.loadingText %}</div></div>'
+           '<div class="loading-indicator"><div>{%= $.loadingText %}</div></div>'
         ]),
         contructor: function(options) {
             this.inherited(arguments);
@@ -200,7 +198,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     this.loadingNode = domConstruct.toDom(this.loadingTemplate.apply(this));
                     domConstruct.place(this.loadingNode, this.relatedViewNode, 'last', this);
                 }
-                domClass.toggle(this.loadingNode, 'related-view-widget-loading');
+                domClass.toggle(this.loadingNode, 'loading');
                 if (this.wait) {
                     return;
                 }
@@ -224,7 +222,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             try {
 
                 if (!this.itemsNode) {
-                    this.itemsNode = domConstruct.toDom("<div id='itemsNode'><div>");
+                    this.itemsNode = domConstruct.toDom("<div id='itemsNode' class='items'><div>");
                     domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
                 }
                 if (relatedFeed.length > 0) {
@@ -251,7 +249,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
                     domAttr.set(this.selectMoreNode, { innerHTML: "" });
                 }
-                domClass.toggle(this.loadingNode, 'related-view-widget-loading');
+                domClass.toggle(this.loadingNode, 'loading');
             }
             catch (error) {
                 console.log('Error applying data for related view widget:' + error);
