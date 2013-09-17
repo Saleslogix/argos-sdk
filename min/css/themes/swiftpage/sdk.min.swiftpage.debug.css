@@ -1177,7 +1177,8 @@ img {
   font-weight: bold;
   margin: 0;
   padding: 2px 4px 4px;
-  background-color: #d0d0d0;
+  background-color: #727272;
+  color: #FFFFFF;
 }
 .related-view-widget .action {
   font-size: 0.75em;
@@ -1200,7 +1201,6 @@ img {
   padding: 1px 40px 1px 1px;
   text-overflow: ellipsis;
   overflow: hidden;
-  background-color: #c0d9e2;
   margin: 4px;
   position: relative;
 }
@@ -1217,6 +1217,7 @@ img {
   position: relative;
   text-overflow: ellipsis;
   margin: 4px;
+  color: #727272;
 }
 .related-view-widget .item .item-icon {
   float: left;
@@ -1231,6 +1232,7 @@ img {
 .related-view-widget .item .item-header {
   font-size: 0.75em;
   font-weight: bold;
+  color: #fe7b40;
 }
 .related-view-widget .item .item-icon > img {
   border: 2px solid #FFFFFF;
