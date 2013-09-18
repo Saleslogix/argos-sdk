@@ -1134,7 +1134,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
     font-size: 1.25em;
     font-weight: bold;
     list-style: none;
-    margin: 4px 0px 4px 0px;
+    margin: 6px 0px 6px 0px;
     padding: 4px 0px 4px 10px;
     position: relative;
 }
@@ -1438,17 +1438,41 @@ img
 }
 .related-view-widget
 {
-    padding: 4px 1px 1px 40px;
+    padding: 4px 1px 1px 24px;
 }
+
+.related-view-widget .panel
+{
+	padding: 1px;
+}
+
 .related-view-widget .tab
+{
+    margin: 0;
+    padding: 1px;
+    position: relative;
+}
+
+.related-view-widget .tab .title
 {
     font-size: 0.75em;
     font-weight: bold;
-    margin: 0;
-    padding: 2px 4px 4px;
-    background-color: @gray1-dark;
-	color: #FFFFFF;
+    color: @gray1-dark;
+    left: 34px;
+    position: relative;
+    top: 6px;
 }
+.related-view-widget .tab .refresh-icon
+{
+    background: url('../../../images/refresh.png') no-repeat scroll 0 50%;
+    padding: 1px;
+    text-align: center;
+    width: 24px;
+    height:24px;
+    left: 0;
+    position: absolute;
+}
+
 .related-view-widget .action
 {
     font-size: 0.75em;
@@ -1458,49 +1482,52 @@ img
 
 .related-view-widget .header
 {
-    padding: 1px 1px 1px 2px;
+    padding: 4px 4px 4px 8px;
 }
 
 .related-view-widget .footer
 {
-    padding: 1px 1px 1px 2px;
+    padding: 4px 4px 4px 8px;
 }
 
 .related-view-widget .footer> button
 {
-  float:right;
+    float:right;
 }
 
-.related-view-widget .row {
+.related-view-widget .row 
+{
     display: block;
     line-height: 1em;
     min-height: 0.1em;
-    padding: 1px 40px 1px 1px;
+    padding: 1px;
     text-overflow: ellipsis;
     overflow: hidden;
-    //background-color:@gray5-lighter;
     margin: 4px;
     position: relative;
-
-
+	background-color: #FFFFFF;
 }
 
-.related-view-widget .items{
+.related-view-widget .items
+{
     text-overflow: ellipsis;
     overflow: hidden;
     position: relative;
 }
-.related-view-widget .item {
+
+.related-view-widget .item 
+{
     line-height: inherit;
-    min-height: 1em;
+    min-height: 2em;
     overflow: hidden;
     padding: 1px 1px 1px 2px;
     position: relative;
     text-overflow: ellipsis;
     margin:4px;
-	color:@gray1-dark;
 }
-.related-view-widget .item .item-icon {
+
+.related-view-widget .item .item-icon 
+{
 
     float: left;
     border-width: 0;
@@ -1512,13 +1539,21 @@ img
     width: 28px;
 
 }
-.related-view-widget .item .item-header {
-
-    font-size: 0.75em;
-    font-weight: bold;
-	color:@orange-dark;
+.related-view-widget .item .item-header
+{
+   color:@black-darker;
 }
+.related-view-widget .item .item-detail 
+{
+    color:@gray1-dark;
+}
+.related-view-widget .item .item-footer 
+{
 
+    //font-size: 0.75em;
+   // font-weight: bold;
+	color:@black-darker;
+}
 .related-view-widget .item .item-icon > img
 {
     border: 2px solid #FFFFFF;
@@ -1561,3 +1596,4 @@ img
 {
     display: inline-block;
 }
+

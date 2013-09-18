@@ -45,10 +45,12 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
        
         cls: null,
         nodataText: 'no records found ...',
-        selectMoreDataText: 'see ${0} more of ${1} ... ',
+        selectMoreDataText2: 'see ${0} more of ${1} ... ',
+        selectMoreDataText: 'see ${0} more ... ',
         loadingText: 'loading ... ',
         refreshViewText: 'refresh',
-        totalCountText: ' ${0} of ${1}',
+        itemOfCountText: ' ${0} of ${1}',
+        totalCountText: ' (${0})',
         parentEntry: null,
         relatedEntry: null,
         itemsNode: null,
@@ -84,18 +86,19 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
          */
         widgetTemplate: new Simplate([
             '<div class="related-view-widget {%: $$.cls %}">',
-             //'<div  id="tab" class="tab" data-dojo-attach-event="onclick:toggleView">',
+                
                 '<div  id="tab" data-dojo-attach-point="tabNode" class="',
                 '{% if ($.autoLoad) { %}',
                    'tab ',
                 '{% } else { %}',
                    'tab collapsed ',
                 '{% } %}',
-                  '" data-dojo-attach-event="onclick:toggleView">',
-                  '<span  data-dojo-attach-point="titleNode" >{%: ($.title ) %}</span>',
-                  '<button  class="collapsed-indicator" aria-label="{%: $.title %}"> </button>',
+                  '" >',
+                  '<div class="refresh-icon" data-dojo-attach-event="onclick:onRefreshView"></div>',
+                  '<div data-dojo-attach-event="onclick:toggleView"  data-dojo-attach-point="titleNode" class="title" >{%: ($.title ) %} </div>',
+                   '<hr />',
                '</div>',
-               '<div>',
+               '<div class="panel">',
                   '{%! $$.relatedViewHeaderTemplate %}',
                    '<div  data-dojo-attach-point="relatedViewNode"></div>',
                   '{%! $$.relatedViewFooterTemplate %}',
@@ -106,35 +109,48 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
              '<div class="nodata"> {%: $$.nodataText %}</div>'
         ]),
         relatedViewHeaderTemplate: new Simplate([
-           '<div class="header">',
-                '<div class="action" data-dojo-attach-event="onclick:onRefreshView">{%: $$.refreshViewText %}</div>',
-           '</div>'
+          // '<div class="header">',
+              //  '<div class="action" data-dojo-attach-event="onclick:onRefreshView">{%: $$.refreshViewText %}</div>',
+          // '</div>'
+          ''
         ]),
         relatedViewFooterTemplate: new Simplate([
             '<div class="footer  ">',
-                '<div>',
                  '<div  data-dojo-attach-point="selectMoreNode" class="action" data-dojo-attach-event="onclick:onSelectMoreData"></div>',
-               '</div>',
-                '<hr />',
             '</div>'
         ]),
         relatedViewRowTemplate: new Simplate([
             '<div class="row {%: $$.cls %}"  data-relatedkey="{%: $.$key %}" data-descriptor="{%: $.$descriptor %}">',
-               '<div class="wrapper">',
-                   '<div class="item">',
-                      '<div class="item-icon">',
-                           '{%! $$.relatedItemIconTemplate %}',
-                       '</div>',
-                      '{%! $$.relatedItemTemplate %}',
-                  '</div>',
-               '</div>',
+                 '<div class="item">',
+                      '{%! $$.relatedItemTemplate %}', 
+                 '</div>',
             '</div>'
         ]),
         relatedItemIconTemplate: new Simplate([
              '<img src="{%: $$.icon %}" />'
         ]),
+        relatedItemHeaderTemplate: new Simplate([
+              '<div>{%: $.$descriptor %}</div>'
+        ]),
+        relatedItemDetailTemplate: new Simplate([
+              '<div></div>'
+        ]),
+        relatedItemFooterTemplate: new Simplate([
+            '<div></div>'
+        ]),
         relatedItemTemplate: new Simplate([
-              '<div class="item-header">{%: $.$descriptor %}</div>'
+               '<div class="item-icon">',
+                   '{%! $$.relatedItemIconTemplate %}',
+               '</div>',
+               '<div class="item-header">',
+                   '{%! $$.relatedItemHeaderTemplate %}',
+               '</div>',
+               '<div class="item-detail">',
+                  '{%! $$.relatedItemDetailTemplate %}',
+               '</div>',
+               '<div class="item-footer">',
+                   '{%! $$.relatedItemFooterTemplate %}',
+                '</div>'
         ]),
         loadingTemplate: new Simplate([
            '<div class="loading-indicator"><div>{%= $.loadingText %}</div></div>'
@@ -253,7 +269,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                         moreData = '';
                     }
                     domAttr.set(this.selectMoreNode, { innerHTML: moreData });
-                    domAttr.set(this.titleNode, { innerHTML:  this.title +  "  "  +  string.substitute(this.totalCountText, [this.itemCount, this.relatedResults.total]) });
+                    domAttr.set(this.titleNode, { innerHTML:  this.title +  "  "  +  string.substitute(this.totalCountText, [this.relatedResults.total]) });
                     for (i = 0; i < relatedFeed.length; i++) {
                         itemEntry = relatedFeed[i];
                         itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
@@ -281,9 +297,8 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         },
         toggleView: function(evt) {
 
-            if (evt.target) {
-                domClass.toggle(evt.target, 'collapsed');
-            }
+            domClass.toggle(this.tabNode, 'collapsed');
+
             if (!this.isLoaded) {
                 this.onLoad();
             }
