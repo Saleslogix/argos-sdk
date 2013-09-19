@@ -45,8 +45,9 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
        
         cls: null,
         nodataText: 'no records found ...',
-        selectMoreDataText2: 'see ${0} more of ${1} ... ',
-        selectMoreDataText: 'see ${0} more ... ',
+        selectMoreDataText: 'see ${0} more of ${1} ... ',
+        selectMoreDataText2: 'see ${0} more ... ',
+        navToListText:'see list',
         loadingText: 'loading ... ',
         refreshViewText: 'refresh',
         itemOfCountText: ' ${0} of ${1}',
@@ -61,7 +62,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         detailViewId: null,
         listViewId: null,
         listViewWhere: null,
-        enabled: null,
+        enabled: false,
         parentCollection: false,
         parentCollectionProperty: null,
         relateData: null,
@@ -79,44 +80,53 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         pageSize: 3,
         relatedResults: null,
         itemCount: 0,
-        _isInitLoad:true,
+        _isInitLoad: true,
+        showRefresh: true,
+        showNavToList: true,
+        showTab: true,
+        showTitle: true,
+        showTotalInTab: true,
+        hideWhenNoData: false,
         /**
          * @property {Simplate}
          * Simple that defines the HTML Markup
          */
         widgetTemplate: new Simplate([
             '<div class="related-view-widget {%: $$.cls %}">',
-                
-                '<div  id="tab" data-dojo-attach-point="tabNode" class="',
-                '{% if ($.autoLoad) { %}',
-                   'tab ',
-                '{% } else { %}',
-                   'tab collapsed ',
-                '{% } %}',
-                  '" >',
-                  '<div class="refresh-icon" data-dojo-attach-event="onclick:onRefreshView"></div>',
-                  '<div data-dojo-attach-event="onclick:toggleView"  data-dojo-attach-point="titleNode" class="title" >{%: ($.title ) %} </div>',
-                   '<hr />',
-               '</div>',
-               '<div class="panel">',
-                  '{%! $$.relatedViewHeaderTemplate %}',
-                   '<div  data-dojo-attach-point="relatedViewNode"></div>',
-                  '{%! $$.relatedViewFooterTemplate %}',
-                '<div>',
+                '<div data-dojo-attach-point="containerNode">',
+                    '<div  id="tab" data-dojo-attach-point="tabNode" class="',
+                    '{% if ($.autoLoad) { %}',
+                     'tab ',
+                    '{% } else { %}',
+                       'tab collapsed ',
+                    '{% } %}',
+                    '" >',
+                       '<div class="tab-items">',
+                       '<div data-dojo-attach-point="titleNode" data-dojo-attach-event="onclick:toggleView"  class="title" >{%: ($.title ) %} </div>',
+                       '<div data-dojo-attach-point="refreshNode" data-dojo-attach-event="onclick:onRefreshView" class="tab-icon refresh-img"></div>',
+                       '<div data-dojo-attach-point="navToListNode" data-dojo-attach-event="onclick:onNavigateToList" class="tab-icon navtolist-img"></div>',
+                        '</div>',
+                    '</div>',
+                    '<div class="panel">',
+                       '{%! $$.relatedViewHeaderTemplate %}',
+                       '<div  data-dojo-attach-point="relatedViewNode"></div>',
+                       '{%! $$.relatedViewFooterTemplate %}',
+                    '</div>',
+                '</div>',
             '</div>'
         ]),
         nodataTemplate: new Simplate([
              '<div class="nodata"> {%: $$.nodataText %}</div>'
         ]),
         relatedViewHeaderTemplate: new Simplate([
-          // '<div class="header">',
-              //  '<div class="action" data-dojo-attach-event="onclick:onRefreshView">{%: $$.refreshViewText %}</div>',
-          // '</div>'
-          ''
+           '<div class="header">',
+              '<div class="line-bar"></div>',
+          '</div>'
         ]),
         relatedViewFooterTemplate: new Simplate([
-            '<div class="footer  ">',
+            '<div class="footer">',
                  '<div  data-dojo-attach-point="selectMoreNode" class="action" data-dojo-attach-event="onclick:onSelectMoreData"></div>',
+                 '<div  data-dojo-attach-point="navtoListFooterNode" class="action" data-dojo-attach-event="onclick:onNavigateToList">{%: $$.navToListText %}</div>',
             '</div>'
         ]),
         relatedViewRowTemplate: new Simplate([
@@ -150,7 +160,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                '</div>',
                '<div class="item-footer">',
                    '{%! $$.relatedItemFooterTemplate %}',
-                '</div>'
+               '</div>'
         ]),
         loadingTemplate: new Simplate([
            '<div class="loading-indicator"><div>{%= $.loadingText %}</div></div>'
@@ -158,6 +168,24 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         contructor: function(options) {
             this.inherited(arguments);
             lang.mixin(this, options);
+        },
+        postCreate:function(){
+            if (!this.showTab) {
+                domClass.toggle(this.tabNode, 'hidden');
+            } else {
+                if (!this.showRefresh) {
+                    domClass.toggle(this.refreshNode, 'hidden');
+                }
+                if (!this.showNavToList) {
+                    domClass.toggle(this.navToListNode, 'hidden');
+                }
+                if (!this.showTitle) {
+                    domClass.toggle(this.titleNode, 'hidden');
+                }
+                if ((!this.showTitle) && (!this.showRefresh) && (!this.showNavToList)) {
+                    domClass.toggle(this.tabNode, 'hidden');
+                }
+            }
         },
         getStore: function() {
             var store = new SDataStore({
@@ -255,6 +283,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             var i, relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, itemHTML, moreData, restCount, moreCount ;
             try {
 
+               
                 if (!this.itemsNode) {
                     this.itemsNode = domConstruct.toDom("<div id='itemsNode' class='items'><div>");
                     domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
@@ -264,12 +293,15 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     restCount = this.relatedResults.total - this.itemCount;
                     if (restCount > 0) {
                         moreCount = (restCount >= this.pageSize) ? this.pageSize : restCount;
-                        moreData = string.substitute(this.selectMoreDataText, [moreCount, restCount]);
+                        moreData = string.substitute(this.selectMoreDataText, [moreCount, this.relatedResults.total]);
+                        //moreData = string.substitute(this.selectMoreDataText, [moreCount, restCount]);
                     } else {
                         moreData = '';
                     }
                     domAttr.set(this.selectMoreNode, { innerHTML: moreData });
-                    domAttr.set(this.titleNode, { innerHTML:  this.title +  "  "  +  string.substitute(this.totalCountText, [this.relatedResults.total]) });
+                    if (this.showTotalInTab) {
+                        domAttr.set(this.titleNode, { innerHTML: this.title + "  " + string.substitute(this.totalCountText, [this.relatedResults.total]) });
+                    }
                     for (i = 0; i < relatedFeed.length; i++) {
                         itemEntry = relatedFeed[i];
                         itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
@@ -280,8 +312,13 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     }
                     
                 } else {
+                    if (this.hideWhenNoData) {
+                        domClass.toggle(this.containerNode, 'hidden');
+                    }
                     domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
-                    domAttr.set(this.titleNode, { innerHTML: this.title + "  " + string.substitute(this.totalCountText, [0, 0]) });
+                    if (this.showTotalInTab) {
+                        domAttr.set(this.titleNode, { innerHTML: this.title + "  " + string.substitute(this.totalCountText, [0, 0]) });
+                    }
                     domAttr.set(this.selectMoreNode, { innerHTML: "" });
                     if (this._isInitLoad) {
                         this._isInitLoad = false;

@@ -1439,60 +1439,96 @@ img
 .related-view-widget
 {
     padding: 4px 1px 1px 24px;
+	position: relative;
+	
 }
 
 .related-view-widget .panel
 {
-	padding: 1px;
+    padding: 1px;
+    position: relative;
+    top: 0px;
 }
-
+.related-view-widget > h4
+{
+   font-size: 0.65em;
+}
 .related-view-widget .tab
 {
     margin: 0;
     padding: 1px;
-    position: relative;
+    position: absolute;
+    top: 0;
+}
+
+.related-view-widget .tab-items
+{
+    left: 0;
+    margin: 0;
+    padding: 1px;
+    position: absolute;
+    top: 0;
 }
 
 .related-view-widget .tab .title
 {
-    font-size: 0.75em;
+    font-size: 0.8em;
     font-weight: bold;
     color: @gray1-dark;
-    left: 34px;
-    position: relative;
-    top: 6px;
-}
-.related-view-widget .tab .refresh-icon
-{
-    background: url('../../../images/refresh.png') no-repeat scroll 0 50%;
-    padding: 1px;
-    text-align: center;
-    width: 24px;
-    height:24px;
-    left: 0;
-    position: absolute;
+	padding: 0 10px 0 0;
+	float:left;
 }
 
+.related-view-widget .line-bar
+{
+    background-color: @gray1-lighter;
+	height: 1px;
+    padding: 0;
+    position: relative;
+    top: 0;
+}
+.related-view-widget .tab-icon
+{
+    padding: 1px;
+    text-align: center;
+    width:24px;
+    height:24px;
+    padding: 0 0 0 6px;
+	float:left;
+}
+
+.related-view-widget  .refresh-img
+{
+    background: url('../../../images/refresh.png') no-repeat scroll 0 50%;
+   
+}
+.related-view-widget  .navtolist-img
+{
+    background: url('../../../images/arrow-right-black.png') no-repeat scroll 0 50%;
+}
+.related-view-widget  .hidden
+{
+   display:none;
+}
 .related-view-widget .action
 {
-    font-size: 0.75em;
     font-weight: bold;
     color: @blue3-dark;
+    float:left;
+    padding: 0 10px;
 }
 
 .related-view-widget .header
 {
-    padding: 4px 4px 4px 8px;
+    padding: 1px;
+	position: relative;
 }
 
 .related-view-widget .footer
 {
-    padding: 4px 4px 4px 8px;
-}
-
-.related-view-widget .footer> button
-{
-    float:right;
+    font-size: 0.65em;
+	padding: 2px 2px 2px 4px;
+	position: relative;
 }
 
 .related-view-widget .row 
@@ -1517,13 +1553,13 @@ img
 
 .related-view-widget .item 
 {
-    line-height: inherit;
-    min-height: 2em;
+    line-height: 0.75em;
+    min-height: 0.5em;
     overflow: hidden;
-    padding: 1px 1px 1px 2px;
+    padding: 0;
     position: relative;
     text-overflow: ellipsis;
-    margin:4px;
+    margin:1px;
 }
 
 .related-view-widget .item .item-icon 
@@ -1532,27 +1568,29 @@ img
     float: left;
     border-width: 0;
     height: 22px;
-    left: 0px;
-    padding: 0 12px 0 0;
-    position: relative;
+    left: 0;
+    padding: 0;
+    position: absolute;
     top: 0;
     width: 28px;
 
 }
 .related-view-widget .item .item-header
 {
-   color:@black-darker;
+    color:@black-darker;
+    left: 40px;
+    position: relative;
 }
 .related-view-widget .item .item-detail 
 {
     color:@gray1-dark;
+    left: 40px;
+    position: relative;
 }
 .related-view-widget .item .item-footer 
 {
-
-    //font-size: 0.75em;
-   // font-weight: bold;
-	color:@black-darker;
+    font-size: 0.65em;
+    color:@black-darker;
 }
 .related-view-widget .item .item-icon > img
 {
