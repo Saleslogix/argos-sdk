@@ -1184,15 +1184,18 @@ img {
 .related-view-widget .tab {
   margin: 0;
   padding: 1px;
-  position: absolute;
-  top: 0;
 }
 .related-view-widget .tab-items {
-  left: 0;
   margin: 0;
   padding: 1px;
-  position: absolute;
-  top: 0;
+  text-align: left;
+}
+.related-view-widget .tab-item {
+  padding: 0 2px;
+}
+.related-view-widget .tab-item > img {
+  width: 16px;
+  hieght: 16px;
 }
 .related-view-widget .tab .title {
   font-size: 0.8em;
@@ -1203,7 +1206,7 @@ img {
 }
 .related-view-widget .line-bar {
   background-color: #d0d0d0;
-  height: 1px;
+  height: 2px;
   padding: 0;
   position: relative;
   top: 0;
@@ -1224,6 +1227,19 @@ img {
 }
 .related-view-widget .hidden {
   display: none;
+}
+.related-view-widget .action-items {
+  color: #408da7;
+  font-size: 0.6em;
+  font-weight: bold;
+  text-align: left;
+}
+.related-view-widget .action-item {
+  padding: 0 2px;
+}
+.related-view-widget .action-item > img {
+  width: 16px;
+  hieght: 16px;
 }
 .related-view-widget .action {
   font-weight: bold;

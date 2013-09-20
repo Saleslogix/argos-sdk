@@ -26,6 +26,8 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     'dojo/dom-attr',
     'Sage/Platform/Mobile/Store/SData',
     'dijit/_Widget',
+    'Sage/Platform/Mobile/_CustomizationMixin',
+    'Sage/Platform/Mobile/_ActionMixin',
     'Sage/Platform/Mobile/_Templated'
 ], function(
     declare,
@@ -39,9 +41,11 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     domAttr,
     SDataStore,
     _Widget,
+    _CustomizationMixin,
+    _ActionMixin,
     _Templated
 ) {
-    return declare('Sage.Platform.Mobile.RelatedViewWidget', [_Widget, _Templated], {
+    return declare('Sage.Platform.Mobile.RelatedViewWidget', [_Widget, _CustomizationMixin,_ActionMixin, _Templated], {
        
         cls: null,
         nodataText: 'no records found ...',
@@ -49,7 +53,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         selectMoreDataText2: 'see ${0} more ... ',
         navToListText:'see list',
         loadingText: 'loading ... ',
-        refreshViewText: 'refresh',
+        refreshViewText: 'xrefresh',
         itemOfCountText: ' ${0} of ${1}',
         totalCountText: ' (${0})',
         parentEntry: null,
@@ -58,6 +62,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         loadingNode: null,
         id: 'related-view',
         icon: 'content/images/icons/ContactProfile_48x48.png',
+        iconitem: 'content/images/icons/ContactProfile_48x48.png',
         title: 'Related View',
         detailViewId: null,
         listViewId: null,
@@ -81,12 +86,10 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         relatedResults: null,
         itemCount: 0,
         _isInitLoad: true,
-        showRefresh: true,
-        showNavToList: true,
         showTab: true,
-        showTitle: true,
         showTotalInTab: true,
         hideWhenNoData: false,
+        enableActions: true,
         /**
          * @property {Simplate}
          * Simple that defines the HTML Markup
@@ -101,13 +104,12 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                        'tab collapsed ',
                     '{% } %}',
                     '" >',
-                       '<div class="tab-items">',
-                       '<div data-dojo-attach-point="titleNode" data-dojo-attach-event="onclick:toggleView"  class="title" >{%: ($.title ) %} </div>',
-                       '<div data-dojo-attach-point="refreshNode" data-dojo-attach-event="onclick:onRefreshView" class="tab-icon refresh-img"></div>',
-                       '<div data-dojo-attach-point="navToListNode" data-dojo-attach-event="onclick:onNavigateToList" class="tab-icon navtolist-img"></div>',
-                        '</div>',
+                    '<div class="tab-items">',
+                       '{%! $$.relatedViewTabItemsTemplate %}',
+                    '</div>',
                     '</div>',
                     '<div class="panel">',
+                       '<div data-dojo-attach-point="actionsNode" class="action-items"></div>',
                        '{%! $$.relatedViewHeaderTemplate %}',
                        '<div  data-dojo-attach-point="relatedViewNode"></div>',
                        '{%! $$.relatedViewFooterTemplate %}',
@@ -117,6 +119,12 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         ]),
         nodataTemplate: new Simplate([
              '<div class="nodata"> {%: $$.nodataText %}</div>'
+        ]),
+        relatedViewTabItemsTemplate: new Simplate([
+             '<span class="tab-item" data-dojo-attach-event="onclick:onNavigateToList">',
+               '<img src="{%= $.icon %}" alt="{%= $.title %}" />',
+            '</span>',
+            '<span data-dojo-attach-point="titleNode" data-dojo-attach-event="onclick:toggleView"  class="title" >{%: ($.title ) %} </span>'
         ]),
         relatedViewHeaderTemplate: new Simplate([
            '<div class="header">',
@@ -137,7 +145,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             '</div>'
         ]),
         relatedItemIconTemplate: new Simplate([
-             '<img src="{%: $$.icon %}" />'
+             '<img src="{%: $$.itemicon %}" />'
         ]),
         relatedItemHeaderTemplate: new Simplate([
               '<div>{%: $.$descriptor %}</div>'
@@ -165,6 +173,13 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         loadingTemplate: new Simplate([
            '<div class="loading-indicator"><div>{%= $.loadingText %}</div></div>'
         ]),
+
+        relatedActionTemplate: new Simplate([
+           '<span class="action-item" data-id="{%= $.actionIndex %}">',
+                  '<img src="{%= $.icon %}" alt="{%= $.label %}" />',
+           '</span>'
+        ]),
+
         contructor: function(options) {
             this.inherited(arguments);
             lang.mixin(this, options);
@@ -172,20 +187,64 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         postCreate:function(){
             if (!this.showTab) {
                 domClass.toggle(this.tabNode, 'hidden');
-            } else {
-                if (!this.showRefresh) {
-                    domClass.toggle(this.refreshNode, 'hidden');
-                }
-                if (!this.showNavToList) {
-                    domClass.toggle(this.navToListNode, 'hidden');
-                }
-                if (!this.showTitle) {
-                    domClass.toggle(this.titleNode, 'hidden');
-                }
-                if ((!this.showTitle) && (!this.showRefresh) && (!this.showNavToList)) {
-                    domClass.toggle(this.tabNode, 'hidden');
-                }
+            } 
+            if (this.enableActions) {
+                this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'relatedview-actions'));
             }
+        },
+        createActionLayout: function() {
+            return this.actions || (this.actions = [{
+                id: 'refresh',
+                icon: 'content/images/icons/Recurring_24x24.png',
+                label: this.refreshViewText,
+                action: 'onRefreshView',
+                isEnabled:true
+            }, {
+                id: 'navtoListView',
+                icon: 'content/images/icons/drilldown_24.png',
+                label: this.viewContactsActionText,
+                action: 'onNavigateToList',
+                isEnabled:true
+                //fn: this.onNavigateToListView.bindDelegate(this, 'contact_related', 'Account.id eq "${0}"')
+            }]
+            );
+        },
+        createActions: function(actions) {
+            var i,action, actionNode, actionTemplate, options;
+            for (i = 0; i < actions.length; i++) {
+                  action = actions[i],
+                    options = {
+                        actionIndex: i
+                        //hasAccess: (action.security && App.hasAccessTo(this.expandExpression(action.security))) || true
+                    },
+                    actionTemplate = action.template || this.relatedActionTemplate;
+
+                lang.mixin(action, options);
+                actionNode = domConstruct.toDom(actionTemplate.apply(action, action.id));
+                dojo.connect(actionNode, 'onclick', this, 'onInvokeActionItem');
+                domConstruct.place(actionNode, this.actionsNode, 'last');
+            }
+
+            this.actions = actions;
+        },
+        onInvokeActionItem: function(evt) {
+            var action , parameters, index;
+            index = evt.currentTarget.attributes['data-id'].value;
+               action = this.actions[index];
+                if (action) {
+                    if (action.isEnabled) {
+                        if (action['fn']) {
+                            action['fn'].call(action['scope'] || this, action);
+                        }
+                        else {
+
+                            if(typeof this[action['action']] === 'function'){
+                                this[action['action']](evt); 
+                            }
+                        }
+                    }
+                }
+                event.stop(evt);
         },
         getStore: function() {
             var store = new SDataStore({
