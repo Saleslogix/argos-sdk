@@ -1,4 +1,3 @@
-//>>built
 define("dojox/mobile/Tooltip", [
 	"dojo/_base/array", // array.forEach
 	"dijit/registry",
@@ -9,16 +8,14 @@ define("dojox/mobile/Tooltip", [
 	"dojo/dom-geometry",
 	"dojo/dom-style",
 	"dijit/place",
-	"dijit/_WidgetBase"
-], function(array, registry, declare, lang, domClass, domConstruct, domGeometry, domStyle, place, WidgetBase){
+	"dijit/_WidgetBase",
+	"dojo/has",
+	"dojo/has!dojo-bidi?dojox/mobile/bidi/Tooltip"
+], function(array, registry, declare, lang, domClass, domConstruct, domGeometry, domStyle, place, WidgetBase, has, BidiTooltip){
 
-	/*=====
-		WidgetBase = dijit._WidgetBase;
-	=====*/
-	return declare("dojox.mobile.Tooltip", WidgetBase, {
+	var Tooltip = declare(has("dojo-bidi") ? "dojox.mobile.NonBidiTooltip" : "dojox.mobile.Tooltip", WidgetBase, {
 		// summary:
 		//		A non-templated popup bubble widget
-		//
 
 		baseClass: "mblTooltip mblTooltipHidden",
 
@@ -28,17 +25,23 @@ define("dojox/mobile/Tooltip", [
 			this.anchor = domConstruct.create("div", {"class":"mblTooltipAnchor"}, this.domNode, "first");
 			this.arrow = domConstruct.create("div", {"class":"mblTooltipArrow"}, this.anchor);
 			this.innerArrow = domConstruct.create("div", {"class":"mblTooltipInnerArrow"}, this.anchor);
+			if(!this.containerNode){
+				// set containerNode so that getChildren() works
+				this.containerNode = this.domNode;
+			}
 		},
 
-		show: function(/*DomNode*/ aroundNode, positions){
+		show: function(/*DomNode*/ aroundNode, /*Array*/positions){
 			// summary:
 			//		Pop up the tooltip and point to aroundNode using the best position
 			// positions:
 			//		Ordered list of positions to try matching up.
-			//			* before: places drop down before the aroundNode
-			//			* after: places drop down after the aroundNode
-			//			* above-centered: drop down goes above aroundNode
-			//			* below-centered: drop down goes below aroundNode
+			//
+			//		- before-centered: places drop down before the aroundNode
+			//		- after-centered: places drop down after the aroundNode
+			//		- above-centered: drop down goes above aroundNode
+			//		- below-centered: drop down goes below aroundNode
+
 			var domNode = this.domNode;
 			var connectorClasses = {
 				"MRM": "mblTooltipAfter",
@@ -57,14 +60,21 @@ define("dojox/mobile/Tooltip", [
 			domClass.remove(domNode, ["mblTooltipAfter","mblTooltipBefore","mblTooltipBelow","mblTooltipAbove"]);
 			array.forEach(registry.findWidgets(domNode), function(widget){
 				if(widget.height == "auto" && typeof widget.resize == "function"){
-					if(!widget.fixedFooterHeight){
-						widget.fixedFooterHeight = domGeometry.getPadBorderExtents(domNode).b;
+					if(!widget._parentPadBorderExtentsBottom){
+						widget._parentPadBorderExtentsBottom = domGeometry.getPadBorderExtents(domNode).b;
 					}
 					widget.resize();
 				}
 			});
-			var best = place.around(domNode, aroundNode, positions || ['below-centered', 'above-centered', 'after', 'before'], this.isLeftToRight());
-			var connectorClass = connectorClasses[best.corner + best.aroundCorner.charAt(0)] || '';
+			// Convert before/after to before-centered/after-centered for compatibility
+			// TODO remove this 1.7->1.8 compatibility code in 2.0
+			if(positions){
+				positions = array.map(positions, function(pos){
+					return {after: "after-centered", before: "before-centered"}[pos] || pos;
+				});
+			}
+			var best = place.around(domNode, aroundNode, positions || ["below-centered", "above-centered", "after-centered", "before-centered"], this.isLeftToRight());
+			var connectorClass = connectorClasses[best.corner + best.aroundCorner.charAt(0)] || "";
 			domClass.add(domNode, connectorClass);
 			var pos = domGeometry.position(aroundNode, true);
 			domStyle.set(this.anchor, (connectorClass == "mblTooltipAbove" || connectorClass == "mblTooltipBelow")
@@ -97,4 +107,6 @@ define("dojox/mobile/Tooltip", [
 			this.inherited(arguments);
 		}
 	});
+	
+	return has("dojo-bidi") ? declare("dojox.mobile.Tooltip", [Tooltip, BidiTooltip]) : Tooltip;		
 });

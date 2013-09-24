@@ -1,4 +1,4 @@
-define('GroupedListTests', ['dojo/query','dojo/dom-class','Sage/Platform/Mobile/GroupedList'], function(query, domClass, GroupedList) {
+define('tests/GroupedListTests', ['dojo/query','dojo/dom-class', 'dojo/text!./feeds/GroupListFeed.json', 'Sage/Platform/Mobile/GroupedList'], function(query, domClass, jsonFeed, GroupedList) {
 return describe('Sage.Platform.Mobile.GroupedList', function() {
 
     var list = new GroupedList();
@@ -31,22 +31,8 @@ return describe('Sage.Platform.Mobile.GroupedList', function() {
         expect(domClass.contains(node, 'collapsed')).toEqual(false);
     });
 
-    it('Can reset _currentGroup on clear', function() {
-        list._currentGroup = 'test';
-        list.clear();
-
-        expect(list._currentGroup).toEqual(null);
-    });
-
-    it('Can reset _currentGroupNode on clear', function() {
-        list._currentGroupNode = 'test';
-        list.clear();
-
-        expect(list._currentGroupNode).toEqual(null);
-    });
-
     it('Can construct list items from feed', function() {
-        var feed = Resources.get('feeds/GroupListFeed.json');
+        var feed = JSON.parse(jsonFeed);
 
         list.processFeed(feed);
 
@@ -54,7 +40,7 @@ return describe('Sage.Platform.Mobile.GroupedList', function() {
     });
 
     it('Can split list items into groups', function() {
-        var feed = Resources.get('feeds/GroupListFeed.json');
+        var feed = JSON.parse(jsonFeed);
 
         list.getGroupForEntry = function(entry) {
             return {

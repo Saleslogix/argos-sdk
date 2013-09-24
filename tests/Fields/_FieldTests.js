@@ -1,4 +1,4 @@
-define('Fields/_FieldTests', ['dojo/query','Sage/Platform/Mobile/Fields/_Field'], function(query, _Field) {
+define('tests/Fields/_FieldTests', ['dojo/query','Sage/Platform/Mobile/Fields/_Field'], function(query, _Field) {
 return describe('Sage.Platform.Mobile.Fields._Field', function() {
 
     it('Can mixin properties on construction', function() {

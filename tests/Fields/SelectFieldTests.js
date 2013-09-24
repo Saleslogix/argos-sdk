@@ -1,4 +1,4 @@
-define('Fields/SelectFieldTests', ['Sage/Platform/Mobile/Fields/SelectField'], function(SelectField) {
+define('tests/Fields/SelectFieldTests', ['Sage/Platform/Mobile/Fields/SelectField'], function(SelectField) {
 return describe('Sage.Platform.Mobile.Fields.SelectField', function() {
 
     it('Can default to no valueKeyProperty', function() {

@@ -43,6 +43,10 @@
         {
           "text": "overthrow.js",
           "path": "../libraries/overthrow/"
+        },
+        {
+          "text": "moment.js",
+          "path": "../libraries/moment/"
         }
       ]
     },
@@ -168,6 +172,26 @@
           "path": "../src"
         },
         {
+          "text": "_GroupBySection.js",
+          "path": "../src/Groups"
+        },
+        {
+          "text": "DateTimeSection.js",
+          "path": "../src/Groups"
+        },
+        {
+          "text": "GroupByValueSection.js",
+          "path": "../src/Groups"
+        },
+        {
+          "text": "RelatedViewManager.js",
+          "path": "../src"
+        },
+        {
+          "text": "RelatedViewWidget.js",
+          "path": "../src"
+        },
+        {
           "text": "SearchWidget.js",
           "path": "../src"
         },
@@ -211,6 +235,11 @@
       "src": "../content",
       "dest": "content",
       "filters": ".*(\\.css|\\.jpg|\\.png|\\.gif)"
+    },
+    {
+      "src": "../min",
+      "dest": "content",
+      "filters": ".*(\\.css)"
     },
     {
       "src": "../libraries/dojo/dojo",

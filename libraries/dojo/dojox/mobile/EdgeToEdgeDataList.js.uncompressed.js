@@ -1,25 +1,21 @@
-//>>built
 define("dojox/mobile/EdgeToEdgeDataList", [
+	"dojo/_base/kernel",
 	"dojo/_base/declare",
 	"./EdgeToEdgeList",
 	"./_DataListMixin"
-], function(declare, EdgeToEdgeList, DataListMixin){
-
-/*=====
-	var EdgeToEdgeList = dojox.mobile.EdgeToEdgeList;
-	var DataListMixin = dojox.mobile._DataListMixin;
-=====*/
+], function(kernel, declare, EdgeToEdgeList, DataListMixin){
 
 	// module:
 	//		dojox/mobile/EdgeToEdgeDataList
-	// summary:
-	//		An enhanced version of EdgeToEdgeList.
 
+	kernel.deprecated("dojox/mobile/EdgeToEdgeDataList", 
+		"Use dojox/mobile/EdgeToEdgeStoreList instead", "2.0");
+	
 	return declare("dojox.mobile.EdgeToEdgeDataList", [EdgeToEdgeList, DataListMixin],{
 		// summary:
-		//		An enhanced version of EdgeToEdgeList.
+		//		A dojo/data-enabled version of EdgeToEdgeList.
 		// description:
-		//		EdgeToEdgeDataList is an enhanced version of EdgeToEdgeList. It
-		//		can generate ListItems according to the given dojo.data store.
+		//		EdgeToEdgeDataList is a subclass of EdgeToEdgeList which
+		//		can generate ListItems according to the given dojo/data store.
 	});
 });

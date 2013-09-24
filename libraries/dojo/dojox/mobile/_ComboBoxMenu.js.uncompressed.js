@@ -1,4 +1,3 @@
-//>>built
 define("dojox/mobile/_ComboBoxMenu", [
 	"dojo/_base/kernel",
 	"dojo/_base/declare",
@@ -6,26 +5,31 @@ define("dojox/mobile/_ComboBoxMenu", [
 	"dojo/dom-construct",
 	"dijit/form/_ComboBoxMenuMixin",
 	"dijit/_WidgetBase",
-	"dojox/mobile/_ListTouchMixin",
-	"./scrollable"
+	"./_ListTouchMixin",
+	"./scrollable",
+	"dojo/has",
+	"dojo/has!dojo-bidi?dojox/mobile/bidi/_ComboBoxMenu"
 ],
-	function(dojo, declare, domClass, domConstruct, ComboBoxMenuMixin, WidgetBase, ListTouchMixin, Scrollable){
+	function(dojo, declare, domClass, domConstruct, ComboBoxMenuMixin, WidgetBase, ListTouchMixin, Scrollable, has, BidiComboBoxMenu){
+	// module:
+	//		dojox/mobile/_ComboBoxMenu
 
-	/*=====
-		ComboBoxMenuMixin = dijit.form._ComboBoxMenuMixin;
-		WidgetBase = dijit._WidgetBase;
-		ListTouchMixin = dojox.mobile._ListTouchMixin;
-	=====*/
-	return declare("dojox.mobile._ComboBoxMenu", [WidgetBase, ListTouchMixin, ComboBoxMenuMixin], {
+	var _ComboBoxMenu = declare(has("dojo-bidi") ? "dojox.mobile._NonBidiComboBoxMenu" : "dojox.mobile._ComboBoxMenu", [WidgetBase, ListTouchMixin, ComboBoxMenuMixin], {
 		// summary:
-		//		Focus-less menu for internal use in `dijit.form.ComboBox`
+		//		Focus-less menu for internal use in dojox/mobile/ComboBox.
 		//		Abstract methods that must be defined externally:
-		//			onChange: item was explicitly chosen (mousedown somewhere on the menu and mouseup somewhere on the menu)
-		//			onPage: next(1) or previous(-1) button pressed
+		//
+		//		- onChange: item was explicitly chosen (mousedown somewhere on the menu and mouseup somewhere on the menu);
+		//		- onPage: next(1) or previous(-1) button pressed.
 		// tags:
 		//		private
 
+		// baseClass: String
+		//		The name of the CSS class of this widget.
 		baseClass: "mblComboBoxMenu",
+		
+		// bgIframe: [private] Boolean
+		//		Flag to prevent the creation of a background iframe, when appropriate. For internal usage. 
 		bgIframe: true, // so it's not created for IE and FF
 
 		buildRendering: function(){
@@ -37,6 +41,7 @@ define("dojox/mobile/_ComboBoxMenu", [
 		},
 
 		_createMenuItem: function(){
+			// override of the method from dijit/form/_ComboBoxMenu.
 			return domConstruct.create("div", {
 				"class": "mblReset mblComboBoxMenuItem" +(this.isLeftToRight() ? "" : " mblComboBoxMenuItemRtl"),
 				role: "option"
@@ -45,17 +50,19 @@ define("dojox/mobile/_ComboBoxMenu", [
 
 		onSelect: function(/*DomNode*/ node){
 			// summary:
-			//		Add selected CSS
+			//		Add selected CSS.
 			domClass.add(node, "mblComboBoxMenuItemSelected");
 		},
 
 		onDeselect: function(/*DomNode*/ node){
 			// summary:
-			//		Remove selected CSS
+			//		Remove selected CSS.
 			domClass.remove(node, "mblComboBoxMenuItemSelected");
 		},
 
 		onOpen: function(){
+			// summary:
+			//		Called when the menu opens.
 			this.scrollable.init({
 				domNode: this.domNode,
 				containerNode: this.containerNode
@@ -64,6 +71,8 @@ define("dojox/mobile/_ComboBoxMenu", [
 		},
 
 		onClose: function(){
+			// summary:
+			//		Called when the menu closes.
 			this.scrollable.cleanup();
 		},
 
@@ -74,9 +83,9 @@ define("dojox/mobile/_ComboBoxMenu", [
 
 		postCreate: function(){
 			this.inherited(arguments);
-			this.scrollable = new Scrollable(dojo, dojox);
+			this.scrollable = new Scrollable();
 			this.scrollable.resize = function(){}; // resize changes the height rudely
-			this.scrollable.androidWorkaroud = false; // disable Android workaround
 		}
 	});
+	return has("dojo-bidi") ? declare("dojox.mobile._ComboBoxMenu", [_ComboBoxMenu, BidiComboBoxMenu]) : _ComboBoxMenu;
 });

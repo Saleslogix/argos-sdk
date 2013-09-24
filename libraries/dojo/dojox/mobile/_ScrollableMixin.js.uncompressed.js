@@ -1,6 +1,6 @@
-//>>built
 define("dojox/mobile/_ScrollableMixin", [
 	"dojo/_base/kernel",
+	"dojo/_base/config",
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/window",
@@ -8,20 +8,14 @@ define("dojox/mobile/_ScrollableMixin", [
 	"dojo/dom-class",
 	"dijit/registry",	// registry.byNode
 	"./scrollable"
-], function(dojo, declare, lang, win, dom, domClass, registry, Scrollable){
+], function(dojo, config, declare, lang, win, dom, domClass, registry, Scrollable){
 	// module:
 	//		dojox/mobile/_ScrollableMixin
-	// summary:
-	//		Mixin for widgets to have a touch scrolling capability.
 
-	var cls = declare("dojox.mobile._ScrollableMixin", null, {
+	var cls = declare("dojox.mobile._ScrollableMixin", Scrollable, {
 		// summary:
 		//		Mixin for widgets to have a touch scrolling capability.
-		// description:
-		//		Actual implementation is in scrollable.js.
-		//		scrollable.js is not a dojo class, but just a collection
-		//		of functions. This module makes scrollable.js a dojo class.
-
+	
 		// fixedHeader: String
 		//		Id of the fixed header.
 		fixedHeader: "",
@@ -30,15 +24,25 @@ define("dojox/mobile/_ScrollableMixin", [
 		//		Id of the fixed footer.
 		fixedFooter: "",
 
+		_fixedAppFooter: "",
+
 		// scrollableParams: Object
-		//		Parameters for dojox.mobile.scrollable.init().
+		//		Parameters for dojox/mobile/scrollable.init().
 		scrollableParams: null,
 
 		// allowNestedScrolls: Boolean
-		//		e.g. Allow ScrollableView in a SwapView.
+		//		Flag to allow scrolling in nested containers, e.g. to allow ScrollableView in a SwapView.
 		allowNestedScrolls: true,
 
+		// appBars: Boolean
+		//		Enables the search for application-specific bars (header or footer).
+		appBars: true, 
+
 		constructor: function(){
+			// summary:
+			//		Creates a new instance of the class.
+			// tags:
+			//		private
 			this.scrollableParams = {};
 		},
 
@@ -49,8 +53,11 @@ define("dojox/mobile/_ScrollableMixin", [
 
 		startup: function(){
 			if(this._started){ return; }
-			var node;
-			var params = this.scrollableParams;
+			if(this._fixedAppFooter){
+				this._fixedAppFooter = dom.byId(this._fixedAppFooter);
+			}
+			this.findAppBars();
+			var node, params = this.scrollableParams;
 			if(this.fixedHeader){
 				node = dom.byId(this.fixedHeader);
 				if(node.parentNode == this.domNode){ // local footer
@@ -66,23 +73,33 @@ define("dojox/mobile/_ScrollableMixin", [
 				}
 				params.fixedFooterHeight = node.offsetHeight;
 			}
+			this.scrollType = this.scrollType || config["mblScrollableScrollType"] || 0;
 			this.init(params);
 			if(this.allowNestedScrolls){
 				for(var p = this.getParent(); p; p = p.getParent()){
 					if(p && p.scrollableParams){
-						this.isNested = true;
 						this.dirLock = true;
 						p.dirLock = true;
 						break;
 					}
 				}
 			}
+			// subscribe to afterResizeAll to scroll the focused input field into view
+			// so as not to break layout on orientation changes while keyboard is shown (#14991)
+			this._resizeHandle = this.subscribe("/dojox/mobile/afterResizeAll", function(){
+				if(this.domNode.style.display === 'none'){ return; }
+				var elem = win.doc.activeElement;
+				if(this.isFormElement(elem) && dom.isDescendant(elem, this.containerNode)){
+					this.scrollIntoView(elem);
+				}
+			});
 			this.inherited(arguments);
 		},
 
 		findAppBars: function(){
 			// summary:
 			//		Search for application-specific header or footer.
+			if(!this.appBars){ return; }
 			var i, len, c;
 			for(i = 0, len = win.body().childNodes.length; i < len; i++){
 				c = win.body().childNodes[i];
@@ -101,7 +118,8 @@ define("dojox/mobile/_ScrollableMixin", [
 			// summary:
 			//		Checks if the given node is a fixed bar or not.
 			if(node.nodeType === 1){
-				var fixed = node.getAttribute("fixed")
+				var fixed = node.getAttribute("fixed") // TODO: Remove the non-HTML5-compliant attribute in 2.0
+					|| node.getAttribute("data-mobile-fixed")
 					|| (registry.byNode(node) && registry.byNode(node).fixed);
 				if(fixed === "top"){
 					domClass.add(node, "mblFixedHeaderBar");
@@ -112,13 +130,16 @@ define("dojox/mobile/_ScrollableMixin", [
 					return fixed;
 				}else if(fixed === "bottom"){
 					domClass.add(node, "mblFixedBottomBar");
-					this.fixedFooter = node;
+					if(local){
+						this.fixedFooter = node;
+					}else{
+						this._fixedAppFooter = node;
+					}
 					return fixed;
 				}
 			}
 			return null;
 		}
 	});
-	lang.extend(cls, new Scrollable(dojo, dojox));
 	return cls;
 });

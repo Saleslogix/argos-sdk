@@ -26,8 +26,8 @@
     <script type="text/javascript" src="../libraries/sdata/sdata-client-dependencies-debug.js"></script>
     <script type="text/javascript" src="../libraries/sdata/sdata-client-debug.js"></script>
 
-    <!-- DateJS -->
-    <script type="text/javascript" src="../libraries/datejs/build/date.js"></script>
+    <!-- Moment.js -->
+    <script type="text/javascript" src="../libraries/moment/min/moment.min.js"></script>
 
     <!-- Simplate -->
     <script type="text/javascript" src="../libraries/Simplate.js"></script>
@@ -38,83 +38,69 @@
     require({
         baseUrl: "./",
         packages: [
-        { name: 'dojo', location: '../libraries/dojo/dojo' },
-        { name: 'dijit', location: '../libraries/dojo/dijit' },
-        { name: 'dojox', location: '../libraries/dojo/dojox' },
-        { name: 'Sage/Platform/Mobile', location: '../src' }
-    ]});
+            { name: 'dojo', location: '../libraries/dojo/dojo' },
+            { name: 'dijit', location: '../libraries/dojo/dijit' },
+            { name: 'dojox', location: '../libraries/dojo/dojox' },
+            { name: 'snap', location: '../libraries/snap', main: 'snap' },
+            { name: 'moment', location: '../libraries/moment', main: 'moment' },
+            { name: 'Sage/Platform/Mobile', location: '../src' },
+            { name: 'tests', location: '.' }
+        ],
+        paths: {
+            'Sage/Platform/Mobile': '../src'
+        }
+    });
     </script>
 </head>
 <body>
 <script type="text/javascript">
-    var Resources = {};
     require([
-        'dojo/_base/kernel',
-        'dojo/_base/lang',
-        'dojo/_base/array',
-        'dojo/_base/xhr',
-        'dojo/DeferredList',
+        'tests/localization/en',
+        'tests/ApplicationModuleTests',
+        'tests/CalendarTests',
+        'tests/ConvertTests',
+        'tests/ErrorManagerTests',
+        'tests/FieldManagerTests',
+        'tests/FormatTests',
+        'tests/GroupedListTests',
+        'tests/MainToolbarTests',
+        'tests/SearchWidgetTests',
+        'tests/ToolbarTests',
+        'tests/UtilityTests',
+        'tests/Fields/_FieldTests',
+        'tests/Fields/NoteFieldTests',
+        'tests/Fields/PhoneFieldTests',
+        'tests/Fields/SelectFieldTests',
+        'tests/Fields/SignatureFieldTests',
+        'tests/Fields/TextAreaFieldTests',
+        'tests/Fields/TextFieldTests',
+        'tests/Fields/DecimalFieldTests',
+        'tests/Groups/DateTimeSectionTests'
+    ], function () {
 
-        'localization/en',
-        'ApplicationModuleTests',
-        'CalendarTests',
-        'ConvertTests',
-        'ErrorManagerTests',
-        'FieldManagerTests',
-        'FormatTests',
-        'GroupedListTests',
-        'MainToolbarTests',
-        'SearchWidgetTests',
-        'ToolbarTests',
-        'UtilityTests',
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
 
-        'Fields/_FieldTests',
+      var htmlReporter = new jasmine.HtmlReporter();
 
-        'Fields/NoteFieldTests',
-        'Fields/PhoneFieldTests',
-        'Fields/SelectFieldTests',
-        'Fields/SignatureFieldTests',
-        'Fields/TextAreaFieldTests',
-        'Fields/TextFieldTests',
-        'Fields/DecimalFieldTests'
+      jasmineEnv.addReporter(htmlReporter);
 
-    ], function (dojo, lang, array, xhr, DeferredList) {
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
 
-        lang.mixin(Resources, {
-            _store: {},
-            get: function(name) {
-                return Resources._store[name];
-            },
-            set: function(name, value) {
-                Resources._store[name] = value;
-            }
-        });
+      var currentWindowOnload = window.onload;
 
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
 
-        var wait = [],
-            preload = [
-                'feeds/GroupListFeed.json' // if running this test through IIS, be sure to have the appropriate mime type, 'application/json', set for '.json'.
-            ];
-
-        array.forEach(preload, function(item) {
-            wait.push(xhr('GET', {
-                url: item,
-                handleAs: 'text'
-            }).then(function(result) {
-                try { result = JSON.parse(result); } catch(e) {}
-
-                Resources.set(item, result);
-            }));
-        });
-
-        new DeferredList(wait)
-            .then(function(results) {
-                if (dojo.some(results, function(result) { return !result[0]; }))
-                    throw new Error("Could not pre-load expected resources.");
-
-                jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
-                jasmine.getEnv().execute();
-            });
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
     
     });
 </script>

@@ -131,6 +131,12 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          * Required. Must be set to a view id of the target lookup view
          */
         view: false,
+
+        /**
+         * @cfg {Object}
+         * Optional. Object to mixin over the view
+         */
+        viewMixin: null,
         /**
          * @property {String}
          * The default `valueKeyProperty` if `valueKeyProperty` is not defined.
@@ -354,12 +360,13 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 where: this.where,
                 orderBy: this.orderBy,
                 negateHistory: true,
+                continuousScrolling: false,
                 tools: {
                     tbar: [{
                         id: 'complete',
                         fn: this.complete,
                         scope: this
-                    },{
+                    }, {
                         id: 'cancel',
                         side: 'left',
                         fn: ReUI.back,
@@ -406,8 +413,10 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
         navigateToListView: function() {
             var view = App.getView(this.view),
                 options = this.createNavigationOptions();
-            if (view && options && !this.disabled)
+            if (view && options && !this.disabled) {
+                lang.mixin(view, this.viewMixin);
                 view.show(options);
+            }
         },
         /**
          * Handler for the click event, fires {@link #navigateToListView navigateToListView} if the
@@ -495,7 +504,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 var selectionModel = view.get('selectionModel'),
                     selections = selectionModel.getSelections();
 
-                if (selectionModel.getSelectionCount() == 0 && view.options.allowEmptySelection)
+                if (selectionModel.getSelectionCount() === 0 && view.options.allowEmptySelection)
                     this.clearValue(true);
 
                 if (this.singleSelect)
@@ -679,8 +688,9 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          * @param {String} key data-key attribute of the selected row (typically $key from SData)
          */
         setSelection: function(val, key) {
-            var key = utility.getValue(val, this.keyProperty, val) || key, // if we can extract the key as requested, use it instead of the selection key
-                text = utility.getValue(val, this.textProperty);
+            var text = utility.getValue(val, this.textProperty);
+
+            key = utility.getValue(val, this.keyProperty, val) || key; // if we can extract the key as requested, use it instead of the selection key
 
             if (text && this.textTemplate)
                 text = this.textTemplate.apply(text, this);
@@ -714,7 +724,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                     ? this.valueTextProperty || this.textProperty
                     : false;
 
-            if (typeof val === 'undefined' || val == null)
+            if (typeof val === 'undefined' || val === null)
             {
                 this.currentValue = false;
                 if (initial) this.originalValue = this.currentValue;

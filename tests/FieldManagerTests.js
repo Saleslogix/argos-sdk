@@ -1,4 +1,4 @@
-define('FieldManagerTests', ['dojo/_base/lang','Sage/Platform/Mobile/FieldManager'], function(lang, FieldManager) {
+define('tests/FieldManagerTests', ['dojo/_base/lang','Sage/Platform/Mobile/FieldManager'], function(lang, FieldManager) {
 return describe('Sage.Platform.Mobile.FieldManager', function() {
 
     it('Can register an item', function() {

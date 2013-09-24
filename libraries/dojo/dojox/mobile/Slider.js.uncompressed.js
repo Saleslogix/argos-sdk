@@ -1,27 +1,24 @@
-//>>built
 define("dojox/mobile/Slider", [
 	"dojo/_base/array",
 	"dojo/_base/connect",
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/window",
+	"dojo/sniff",
 	"dojo/dom-class",
 	"dojo/dom-construct",
 	"dojo/dom-geometry",
 	"dojo/dom-style",
+	"dojo/keys",
+	"dojo/touch",
 	"dijit/_WidgetBase",
 	"dijit/form/_FormValueMixin"
 ],
-	function(array, connect, declare, lang, win, domClass, domConstruct, domGeometry, domStyle, WidgetBase, FormValueMixin){
+	function(array, connect, declare, lang, win, has, domClass, domConstruct, domGeometry, domStyle, keys, touch, WidgetBase, FormValueMixin){
 
-	/*=====
-		WidgetBase = dijit._WidgetBase;
-		FormValueMixin = dijit.form._FormValueMixin;
-	=====*/
 	return declare("dojox.mobile.Slider", [WidgetBase, FormValueMixin], {
 		// summary:
 		//		A non-templated Slider widget similar to the HTML5 INPUT type=range.
-		//
 
 		// value: [const] Number
 		//		The current slider value.
@@ -41,6 +38,8 @@ define("dojox/mobile/Slider", [
 		//		A value of 0 means continuous (as much as allowed by pixel resolution).
 		step: 1,
 
+		// baseClass: String
+		//		The name of the CSS class of this widget.
 		baseClass: "mblSlider",
 
 		// flip: [const] Boolean
@@ -49,9 +48,10 @@ define("dojox/mobile/Slider", [
 
 		// orientation: [const] String
 		//		The slider direction.
-		//		"H": horizontal
-		//		"V": vertical
-		//		"auto": use width/height comparison at instantiation time (default is "H" if width/height are 0)
+		//
+		//		- "H": horizontal
+		//		- "V": vertical
+		//		- "auto": use width/height comparison at instantiation time (default is "H" if width/height are 0)
 		orientation: "auto",
 
 		// halo: Number
@@ -60,18 +60,27 @@ define("dojox/mobile/Slider", [
 		halo: "8pt",
 
 		buildRendering: function(){
-			this.focusNode = this.domNode = domConstruct.create("div", {});
-			this.valueNode = domConstruct.create("input", (this.srcNodeRef && this.srcNodeRef.name) ? { type: "hidden", name: this.srcNodeRef.name } : { type: "hidden" }, this.domNode, "last");
-			var relativeParent = domConstruct.create("div", { style: { position:"relative", height:"100%", width:"100%" } }, this.domNode, "last");
-			this.progressBar = domConstruct.create("div", { style:{ position:"absolute" }, "class":"mblSliderProgressBar" }, relativeParent, "last");
-			this.touchBox = domConstruct.create("div", { style:{ position:"absolute" }, "class":"mblSliderTouchBox" }, relativeParent, "last");
-			this.handle = domConstruct.create("div", { style:{ position:"absolute" }, "class":"mblSliderHandle" }, relativeParent, "last");
+			if(!this.templateString){ // true if this widget is not templated
+				this.focusNode = this.domNode = domConstruct.create("div", {});
+				this.valueNode = domConstruct.create("input", (this.srcNodeRef && this.srcNodeRef.name) ? { type: "hidden", name: this.srcNodeRef.name } : { type: "hidden" }, this.domNode, "last");
+				var relativeParent = domConstruct.create("div", { style: { position:"relative", height:"100%", width:"100%" } }, this.domNode, "last");
+				this.progressBar = domConstruct.create("div", { style:{ position:"absolute" }, "class":"mblSliderProgressBar" }, relativeParent, "last");
+				this.touchBox = domConstruct.create("div", { style:{ position:"absolute" }, "class":"mblSliderTouchBox" }, relativeParent, "last");
+				this.handle = domConstruct.create("div", { style:{ position:"absolute" }, "class":"mblSliderHandle" }, relativeParent, "last");
+			}
 			this.inherited(arguments);
+			// prevent browser scrolling on IE10 (evt.preventDefault() is not enough)
+			if(typeof this.domNode.style.msTouchAction != "undefined"){
+				this.domNode.style.msTouchAction = "none";
+			}
 		},
 
 		_setValueAttr: function(/*Number*/ value, /*Boolean?*/ priorityChange){
 			// summary:
-			//		Hook so set('value', value) works.
+			//		Hook such that set('value', value) works.
+			// tags:
+			//		private
+			value = Math.max(Math.min(value, this.max), this.min);
 			var fromPercent = (this.value - this.min) * 100 / (this.max - this.min);
 			this.valueNode.value = value;
 			this.inherited(arguments);
@@ -121,9 +130,9 @@ define("dojox/mobile/Slider", [
 				e.preventDefault();
 				var isMouse = e.type == "mousedown";
 				var box = domGeometry.position(node, false); // can't use true since the added docScroll and the returned x are body-zoom incompatibile
-				var bodyZoom = domStyle.get(win.body(), "zoom") || 1;
+				var bodyZoom = has("ie") ? 1 : (domStyle.get(win.body(), "zoom") || 1);
 				if(isNaN(bodyZoom)){ bodyZoom = 1; }
-				var nodeZoom = domStyle.get(node, "zoom") || 1;
+				var nodeZoom = has("ie") ? 1 : (domStyle.get(node, "zoom") || 1);
 				if(isNaN(nodeZoom)){ nodeZoom = 1; }
 				var startPixel = box[this._attrs.x] * nodeZoom * bodyZoom + domGeometry.docScroll()[this._attrs.x];
 				var maxPixels = box[this._attrs.w] * nodeZoom * bodyZoom;
@@ -134,29 +143,63 @@ define("dojox/mobile/Slider", [
 				array.forEach(actionHandles, connect.disconnect);
 				var root = win.doc.documentElement;
 				var actionHandles = [
-					this.connect(root, isMouse ? "onmousemove" : "ontouchmove", continueDrag),
-					this.connect(root, isMouse ? "onmouseup" : "ontouchend", endDrag)
+					this.connect(root, touch.move, continueDrag),
+					this.connect(root, touch.release, endDrag)
 				];
 			}
 
-			var point, pixelValue, value;
-			var node = this.domNode;
+			function keyPress(/*Event*/ e){
+				if(this.disabled || this.readOnly || e.altKey || e.ctrlKey || e.metaKey){ return; }
+				var	step = this.step,
+					multiplier = 1,
+					newValue;
+				switch(e.keyCode){
+					case keys.HOME:
+						newValue = this.min;
+						break;
+					case keys.END:
+						newValue = this.max;
+						break;
+					case keys.RIGHT_ARROW:
+						multiplier = -1;
+					case keys.LEFT_ARROW:
+						newValue = this.value + multiplier * ((flip && horizontal) ? step : -step);
+						break;
+					case keys.DOWN_ARROW:
+						multiplier = -1;
+					case keys.UP_ARROW:
+						newValue = this.value + multiplier * ((!flip || horizontal) ? step : -step);
+						break;
+					default:
+						return;
+				}
+				e.preventDefault();
+				this._setValueAttr(newValue, false);
+			}
+
+			function keyUp(/*Event*/ e){
+				if(this.disabled || this.readOnly || e.altKey || e.ctrlKey || e.metaKey){ return; }
+				this._setValueAttr(this.value, true);
+			}
+
+			var	point, pixelValue, value,
+				node = this.domNode;
 			if(this.orientation == "auto"){
 				 this.orientation = node.offsetHeight <= node.offsetWidth ? "H" : "V";
 			}
 			// add V or H suffix to baseClass for styling purposes
 			domClass.add(this.domNode, array.map(this.baseClass.split(" "), lang.hitch(this, function(c){ return c+this.orientation; })));
-			var horizontal = this.orientation != "V";
-			var ltr = horizontal ? this.isLeftToRight() : false;
-			var flip = this.flip;
+			var	horizontal = this.orientation != "V",
+				ltr = horizontal ? this.isLeftToRight() : false,
+				flip = !!this.flip;
 			// _reversed is complicated since you can have flipped right-to-left and vertical is upside down by default
-			this._reversed = !(horizontal && ((ltr && !flip) || (!ltr && flip))) || (!horizontal && !flip);
+			this._reversed = !((horizontal && ((ltr && !flip) || (!ltr && flip))) || (!horizontal && flip));
 			this._attrs = horizontal ? { x:'x', w:'w', l:'l', r:'r', pageX:'pageX', clientX:'clientX', handleLeft:"left", left:this._reversed ? "right" : "left", width:"width" } : { x:'y', w:'h', l:'t', r:'b', pageX:'pageY', clientX:'clientY', handleLeft:"top", left:this._reversed ? "bottom" : "top", width:"height" };
 			this.progressBar.style[this._attrs.left] = "0px";
-			this.connect(this.touchBox, "touchstart", beginDrag);
-			this.connect(this.touchBox, "onmousedown", beginDrag); // in case this works
-			this.connect(this.handle, "touchstart", beginDrag);
-			this.connect(this.handle, "onmousedown", beginDrag); // in case this works
+			this.connect(this.touchBox, touch.press, beginDrag);
+			this.connect(this.handle, touch.press, beginDrag);
+			this.connect(this.domNode, "onkeypress", keyPress); // for desktop a11y
+			this.connect(this.domNode, "onkeyup", keyUp); // fire onChange on desktop
 			this.startup();
 			this.set('value', this.value);
 		}

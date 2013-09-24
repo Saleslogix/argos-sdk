@@ -1,0 +1,393 @@
+body
+{
+    font-family: @font-family; 
+    color: @text-color;
+}
+
+body
+body > .viewContainer
+{
+    background: @body-bg-color;
+}
+
+h3
+{
+    font-size: @font-size-h3;
+    font-weight: @font-weight-h3;
+}
+
+h4
+{
+    font-size: @font-size-h4;
+    font-weight: @font-weight-h4;
+}
+
+h5
+{
+    margin: 0;
+    padding: 0;
+    font-size: @font-size-h5;
+    font-weight: @font-weight-h5;
+}
+
+.list-content,
+.group-content
+{
+    background-color: @list-bg-color;
+}
+
+.list-content > li,
+.group-content > li
+{
+    font-weight: normal;
+    background-color: @list-item-bg-color;
+}
+
+.list-content > .actions-row > button:active,
+.group-content > .actions-row > button:active
+{
+    background-color: @list-action-active-bg-color;
+}
+
+/*For the separate Contextual Menu*/
+.contextualContent > .group-content > .list-content
+{
+    margin: 0;
+    padding: 0;
+}
+
+.contextualContent > .group-content > .list-content > li 
+{
+    background-color: @menu-list-item-bg-color;
+    font-size: 1.25em;
+    font-weight: bold;
+    list-style: none;
+    margin: 0;
+    position: relative;
+    color: @menu-list-item-color;
+    text-decoration: none;
+    padding: 8px 0px 8px 0px;
+    border: @menu-list-item-border;
+    border-left: 0px;
+    border-right: 0px;
+    .border-radius(0px);
+}
+
+.group-content > h2
+{
+    height: 32px;
+    line-height: 32px;
+    margin: 0;
+    padding: 0 0 0 6px;
+    font-size: 1em;
+    position: relative;
+    background-color: @glist-header-bg-color;
+    color: @glist-header-color;
+}
+
+.toolbar,
+.viewContainer > .toolbar,
+body > .viewContainer > .toolbar,
+.viewContainer > .footer-toolbar
+{
+    background-color: @toolbar-bg-color;
+}
+
+.viewContainer > .toolbar > h1,
+.toolbar > h1
+{
+    color: @toolbar-text-color;
+}
+
+.viewContainer > .toolbar > .button,
+.toolbar > .button
+{
+    background-color: @toolbar-button-bg-color;
+}
+
+.panel-content,
+.panel-loading-indicator
+{
+    background-color: @panel-content-bg-color;
+}
+
+.panel-content > h2
+{
+    border-bottom: @panel-header-border-bottom;
+    border-top: @panel-header-border-top;
+    background-color: @panel-header-bg-color;
+    color: @panel-header-color;
+    font-weight: @panel-header-font-weight;
+}
+
+.panel-validation-summary > h2
+{
+    border-bottom: @validation-h2-border;
+    border-top: @validation-h2-border;
+    background-color: @validation-h2-bg-color;
+    color: @validation-h2-color;
+    font-weight: @validation-h2-font-weight;
+}
+
+.panel-content > h2:first-child
+{
+    border-top: @panel-content-firstchild-border;
+}
+
+.panel-validation-summary > h2:first-child
+{
+    border-top: @validation-h2-firstchild-border;
+}
+
+.panel-form-error > .panel-content > h2:first-child
+{
+    border-top: @fieldset-border;
+}
+
+.panel-content > fieldset,
+.panel-content > div,
+.panel-validation-summary > fieldset,
+.panel-validation-summary > div
+{
+    border: @fieldset-border;
+}
+
+input,
+textarea
+{
+    -webkit-tap-hightlight-color: rgba(0, 0, 0, 0);
+}
+
+input:focus,
+textarea:focus
+{
+    outline: @input-focus-outline;
+    background-color: @input-focus-bg-color;
+}
+
+.panel-content > ul,
+.panel-validation-summary > ul
+{
+    border: @panel-content-list-border;
+    background-color: @panel-content-list-bg-color;    
+}
+
+.panel-content > ul > li,
+.panel-validation-summary > ul > li
+{
+    border-top: @panel-content-list-item-border;
+    cursor: @panel-content-list-item-cursor;
+}
+
+.panel-content > ul > li:first-child,
+.panel-validation-summary > ul > li:first-child
+{
+    border-top: @panel-content-list-firstchild-border;
+}
+
+.panel-content > ul a,
+.panel-validation-summary > ul a
+{
+    color: @panel-content-list-link-color;
+    text-decoration: @panel-content-list-link-txtdec;
+}
+
+.panel-content > fieldset > .row,
+.panel-content > div > .row
+{
+    padding: @panel-content-row-padding;
+    min-height: @panel-content-row-min-height;
+    border-top: @panel-content-row-border;
+}
+
+.panel-content > fieldset > .row:first-child,
+.panel-content > div > .row:first-child
+{
+    border-top: @panel-content-row-first-border;
+}
+
+.panel-content > fieldset > .row > div > label,
+.panel-content > div > .row > div > label,
+.panel-content > div > .row > label
+{
+    font-weight: @form-label-font-weight;    
+    color: @form-label-color;
+}
+
+.panel-content > fieldset > .row-edit > div > textarea,
+.panel-content > fieldset > .row-edit > textarea
+{
+    font-size: @text-area-font-size;
+}
+
+.panel-content > fieldset > .row-edit
+{
+    border-top: @panel-content-rowedit-border;
+}
+
+.panel-content > fieldset > .row-edit:first-of-type
+{
+    border-top: 0 none black;
+}
+
+.button
+{
+    .box-sizing(border-box);
+    display: block;
+    
+    color: @button-text-color;
+    background-color: @button-bg-color;
+
+    text-align: @button-text-align;
+    text-decoration: @button-text-decoration;
+
+    font-weight: @button-font-weight;
+    font-size: @button-font-size;
+
+    .border-radius(@button-border-radius);
+
+    border: @button-border;
+
+    cursor: @button-cursor;
+    outline-color: @button-outline-color;
+}
+
+.button:active
+{
+    background-color: @button-active-bg-color;
+}
+
+.toolButton,
+.headerButton
+{
+    color: @toolbar-text-color; 
+    border: @toolbar-button-border;
+    background-color: @toolbar-button-bg-color; 
+}
+
+.toolButton-disabled
+{
+    opacity: @toolbar-button-disabled-opacity;
+}
+
+body > .viewContainer
+{
+    border-left: @menu-border;
+}
+
+.snapjs-left .left-drawer
+{
+    border-right: @menu-border;
+}
+
+/* Calendar */
+.calendar-content
+{
+    .box-sizing(border-box);
+    padding: 4px;
+}
+
+.time-content
+{
+    text-align: center;
+    margin-top: 6px;
+}
+
+.toggle {
+    border: @toggle-border;
+    background-color: @toggle-bg-color;
+    .border-radius(@toggle-border-radius);
+    font-size: @toggle-font-size; 
+    font-weight: @toggle-font-weight;
+    line-height: @toggle-line-height; 
+    .user-select(none);
+}
+
+.toggle-vertical
+{
+    width: 64px;
+    height: 126px;
+    margin: 0;
+    position: relative;
+}
+
+.toggleOn {
+    display: none;
+    position: absolute;
+    width: 60px;
+    text-align: center;
+    color: @toggle-on-color;
+    left: 0;
+    top: 0;
+}
+.toggle-vertical > .toggleOn
+{
+    height: 60px;
+    width: 64px;
+    top: 0;
+}
+.toggleOff
+{
+    position: absolute;
+    width: 60px;
+    text-align: center;
+    right: 0;
+    top: 0;
+    color: @toggle-off-color;
+}
+.toggle-vertical > .toggleOff
+{
+    width: 100%;
+    bottom: 0;
+    top: auto;
+}
+
+.toggle > .thumb
+{
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 40px;
+    height: 28px;
+    border: @toggle-thumb-border;
+    background-color: @gray4-darker;
+    .border-radius(6px);
+}
+.toggle-vertical > .thumb
+{
+    width: 64px;
+}
+
+.toggleStateOn > .thumb
+{
+    left: auto;
+    right: -1px;
+}
+.toggleStateOn > .vertical
+{
+    left: -1px;
+    top: auto;
+    bottom: -1px;
+}
+
+.toggleStateOn > .toggleOn
+{
+    display: block;
+}
+
+.toggleStateOn > .toggleOff
+{
+    display: none;
+}
+
+.toggleStateOn
+{
+    border: @togglestate-on-border;    
+    background-color: @togglestate-on-bg-color;
+}
+
+.logo
+{
+    text-align: center;
+}
+

@@ -1,4 +1,4 @@
-define('ToolbarTests', [
+define('tests/ToolbarTests', [
     'dojo/dom-style',
     'dojo/dom-class',
     'Sage/Platform/Mobile/Toolbar'

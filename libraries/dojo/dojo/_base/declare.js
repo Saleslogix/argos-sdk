@@ -225,14 +225,17 @@ _35.safeMixin(this.prototype,_34);
 return this;
 };
 function _36(_37,_38){
+return _35([this].concat(_37),_38||{});
+};
+function _39(_3a,_3b){
 return function(){
-var a=arguments,_39=a,a0=a[0],f,i,m,l=_37.length,_3a;
+var a=arguments,_3c=a,a0=a[0],f,i,m,l=_3a.length,_3d;
 if(!(this instanceof a.callee)){
-return _3b(a);
+return _3e(a);
 }
-if(_38&&(a0&&a0.preamble||this.preamble)){
-_3a=new Array(_37.length);
-_3a[0]=a;
+if(_3b&&(a0&&a0.preamble||this.preamble)){
+_3d=new Array(_3a.length);
+_3d[0]=a;
 for(i=0;;){
 a0=a[0];
 if(a0){
@@ -241,7 +244,7 @@ if(f){
 a=f.apply(this,a)||a;
 }
 }
-f=_37[i].prototype;
+f=_3a[i].prototype;
 f=f.hasOwnProperty("preamble")&&f.preamble;
 if(f){
 a=f.apply(this,a)||a;
@@ -249,30 +252,30 @@ a=f.apply(this,a)||a;
 if(++i==l){
 break;
 }
-_3a[i]=a;
+_3d[i]=a;
 }
 }
 for(i=l-1;i>=0;--i){
-f=_37[i];
+f=_3a[i];
 m=f._meta;
 f=m?m.ctor:f;
 if(f){
-f.apply(this,_3a?_3a[i]:a);
+f.apply(this,_3d?_3d[i]:a);
 }
 }
 f=this.postscript;
 if(f){
-f.apply(this,_39);
+f.apply(this,_3c);
 }
 };
 };
-function _3c(_3d,_3e){
+function _3f(_40,_41){
 return function(){
 var a=arguments,t=a,a0=a[0],f;
 if(!(this instanceof a.callee)){
-return _3b(a);
+return _3e(a);
 }
-if(_3e){
+if(_41){
 if(a0){
 f=a0.preamble;
 if(f){
@@ -284,8 +287,8 @@ if(f){
 f.apply(this,t);
 }
 }
-if(_3d){
-_3d.apply(this,a);
+if(_40){
+_40.apply(this,a);
 }
 f=this.postscript;
 if(f){
@@ -293,13 +296,13 @@ f.apply(this,a);
 }
 };
 };
-function _3f(_40){
+function _42(_43){
 return function(){
 var a=arguments,i=0,f,m;
 if(!(this instanceof a.callee)){
-return _3b(a);
+return _3e(a);
 }
-for(;f=_40[i];++i){
+for(;f=_43[i];++i){
 m=f._meta;
 f=m?m.ctor:f;
 if(f){
@@ -313,116 +316,117 @@ f.apply(this,a);
 }
 };
 };
-function _41(_42,_43,_44){
+function _44(_45,_46,_47){
 return function(){
-var b,m,f,i=0,_45=1;
-if(_44){
-i=_43.length-1;
-_45=-1;
+var b,m,f,i=0,_48=1;
+if(_47){
+i=_46.length-1;
+_48=-1;
 }
-for(;b=_43[i];i+=_45){
+for(;b=_46[i];i+=_48){
 m=b._meta;
-f=(m?m.hidden:b.prototype)[_42];
+f=(m?m.hidden:b.prototype)[_45];
 if(f){
 f.apply(this,arguments);
 }
 }
 };
 };
-function _46(_47){
-_6.prototype=_47.prototype;
+function _49(_4a){
+_6.prototype=_4a.prototype;
 var t=new _6;
 _6.prototype=null;
 return t;
 };
-function _3b(_48){
-var _49=_48.callee,t=_46(_49);
-_49.apply(t,_48);
+function _3e(_4b){
+var _4c=_4b.callee,t=_49(_4c);
+_4c.apply(t,_4b);
 return t;
 };
-function _35(_4a,_4b,_4c){
-if(typeof _4a!="string"){
-_4c=_4b;
-_4b=_4a;
-_4a="";
+function _35(_4d,_4e,_4f){
+if(typeof _4d!="string"){
+_4f=_4e;
+_4e=_4d;
+_4d="";
 }
-_4c=_4c||{};
-var _4d,i,t,_4e,_4f,_50,_51,_52=1,_53=_4b;
-if(_5.call(_4b)=="[object Array]"){
-_50=_c(_4b,_4a);
-t=_50[0];
-_52=_50.length-t;
-_4b=_50[_52];
+_4f=_4f||{};
+var _50,i,t,_51,_52,_53,_54,_55=1,_56=_4e;
+if(_5.call(_4e)=="[object Array]"){
+_53=_c(_4e,_4d);
+t=_53[0];
+_55=_53.length-t;
+_4e=_53[_55];
 }else{
-_50=[0];
-if(_4b){
-if(_5.call(_4b)=="[object Function]"){
-t=_4b._meta;
-_50=_50.concat(t?t.bases:_4b);
+_53=[0];
+if(_4e){
+if(_5.call(_4e)=="[object Function]"){
+t=_4e._meta;
+_53=_53.concat(t?t.bases:_4e);
 }else{
-_9("base class is not a callable constructor.",_4a);
+_9("base class is not a callable constructor.",_4d);
 }
 }else{
-if(_4b!==null){
-_9("unknown base class. Did you use dojo.require to pull it in?",_4a);
+if(_4e!==null){
+_9("unknown base class. Did you use dojo.require to pull it in?",_4d);
 }
 }
 }
-if(_4b){
-for(i=_52-1;;--i){
-_4d=_46(_4b);
+if(_4e){
+for(i=_55-1;;--i){
+_50=_49(_4e);
 if(!i){
 break;
 }
-t=_50[i];
-(t._meta?_29:_4)(_4d,t.prototype);
-_4e=new Function;
-_4e.superclass=_4b;
-_4e.prototype=_4d;
-_4b=_4d.constructor=_4e;
+t=_53[i];
+(t._meta?_29:_4)(_50,t.prototype);
+_51=new Function;
+_51.superclass=_4e;
+_51.prototype=_50;
+_4e=_50.constructor=_51;
 }
 }else{
-_4d={};
+_50={};
 }
-_35.safeMixin(_4d,_4c);
-t=_4c.constructor;
+_35.safeMixin(_50,_4f);
+t=_4f.constructor;
 if(t!==op.constructor){
 t.nom=_8;
-_4d.constructor=t;
+_50.constructor=t;
 }
-for(i=_52-1;i;--i){
-t=_50[i]._meta;
+for(i=_55-1;i;--i){
+t=_53[i]._meta;
 if(t&&t.chains){
-_51=_4(_51||{},t.chains);
+_54=_4(_54||{},t.chains);
 }
 }
-if(_4d["-chains-"]){
-_51=_4(_51||{},_4d["-chains-"]);
+if(_50["-chains-"]){
+_54=_4(_54||{},_50["-chains-"]);
 }
-t=!_51||!_51.hasOwnProperty(_8);
-_50[0]=_4e=(_51&&_51.constructor==="manual")?_3f(_50):(_50.length==1?_3c(_4c.constructor,t):_36(_50,t));
-_4e._meta={bases:_50,hidden:_4c,chains:_51,parents:_53,ctor:_4c.constructor};
-_4e.superclass=_4b&&_4b.prototype;
-_4e.extend=_33;
-_4e.prototype=_4d;
-_4d.constructor=_4e;
-_4d.getInherited=_21;
-_4d.isInstanceOf=_27;
-_4d.inherited=_26;
-_4d.__inherited=_17;
-if(_4a){
-_4d.declaredClass=_4a;
-_3.setObject(_4a,_4e);
+t=!_54||!_54.hasOwnProperty(_8);
+_53[0]=_51=(_54&&_54.constructor==="manual")?_42(_53):(_53.length==1?_3f(_4f.constructor,t):_39(_53,t));
+_51._meta={bases:_53,hidden:_4f,chains:_54,parents:_56,ctor:_4f.constructor};
+_51.superclass=_4e&&_4e.prototype;
+_51.extend=_33;
+_51.createSubclass=_36;
+_51.prototype=_50;
+_50.constructor=_51;
+_50.getInherited=_21;
+_50.isInstanceOf=_27;
+_50.inherited=_26;
+_50.__inherited=_17;
+if(_4d){
+_50.declaredClass=_4d;
+_3.setObject(_4d,_51);
 }
-if(_51){
-for(_4f in _51){
-if(_4d[_4f]&&typeof _51[_4f]=="string"&&_4f!=_8){
-t=_4d[_4f]=_41(_4f,_50,_51[_4f]==="after");
-t.nom=_4f;
+if(_54){
+for(_52 in _54){
+if(_50[_52]&&typeof _54[_52]=="string"&&_52!=_8){
+t=_50[_52]=_44(_52,_53,_54[_52]==="after");
+t.nom=_52;
 }
 }
 }
-return _4e;
+return _51;
 };
 _1.safeMixin=_35.safeMixin=_2e;
 _1.declare=_35;

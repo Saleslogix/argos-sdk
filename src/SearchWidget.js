@@ -75,11 +75,10 @@ define('Sage/Platform/Mobile/SearchWidget', [
         widgetTemplate: new Simplate([
             '<div class="search-widget">',
             '<div class="table-layout">',
-                '<div><input type="text" name="query" class="query" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onfocus:_onFocus,onblur:_onBlur,onkeypress:_onKeyPress" /></div>',
+                '<div><input type="text" placeholder="{%= $.searchText %}" name="query" class="query" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onfocus:_onFocus,onblur:_onBlur,onkeypress:_onKeyPress" /></div>',
                 '<div class="hasButton"><button class="clear-button" tabindex="-1" data-dojo-attach-event="onclick: _onClearClick"></button></div>',
                 '<div class="hasButton"><button class="subHeaderButton searchButton" data-dojo-attach-event="click: search">{%= $.searchText %}</button></div>',
             '</div>',
-            '<label data-dojo-attach-point="labelNode">{%= $.searchText %}</label>',
             '</div>'
         ]),
 
@@ -99,7 +98,7 @@ define('Sage/Platform/Mobile/SearchWidget', [
          * @type {RegExp}
          * The regular expression used to determine if a search query is a hash tag search.
          */
-        hashTagSearchRE: /(?:#|;|,|\.)(\w+)/g,
+        hashTagSearchRE: /(?:#|;|,|\.)([^\s]+)/g,
         /**
          * @property {Object[]}
          * Array of hash tag definitions
@@ -126,22 +125,8 @@ define('Sage/Platform/Mobile/SearchWidget', [
          * * Fires the {@link #onSearchExpression onSearchExpression} event which {@link List#_onSearchExpression listens to}.
          */
         search: function() {
-            var searchQuery = this.queryNode.value,
-                formattedQuery,
-                isCustomMatch = searchQuery && this.customSearchRE.test(searchQuery),
-                isHashTagMatch = searchQuery && this.hashTagSearchRE.test(searchQuery);
-
-            switch(true) {
-                case isCustomMatch: formattedQuery = this.customSearch(searchQuery);
-                    break;
-                case isHashTagMatch: formattedQuery = this.hashTagSearch(searchQuery);
-                    break;
-                default: formattedQuery = this.formatSearchQuery(searchQuery);
-            }
-
-            if (lang.trim(searchQuery) === '')
-                formattedQuery = null;
-
+            var formattedQuery;
+            formattedQuery = this.getFormattedSearchQuery();
             this.onSearchExpression(formattedQuery, this);
         },
         /**
@@ -171,7 +156,7 @@ define('Sage/Platform/Mobile/SearchWidget', [
             this.hashTagSearchRE.lastIndex = 0;
 
             var match;
-            while (match = this.hashTagSearchRE.exec(query))
+            while ((match = this.hashTagSearchRE.exec(query)))
             {
                 var hashTag = match[1],
                     hashQueryExpression = null;
@@ -260,6 +245,38 @@ define('Sage/Platform/Mobile/SearchWidget', [
          */
         onSearchExpression: function(expression, widget) {
 
+        },
+        /**
+        * Gets the current search expression as a formatted query.
+        * * Gathers the inputted search text
+        * * Determines if its a custom expression, hash tag, or normal search
+        */
+        getFormattedSearchQuery: function() {
+            var searchQuery = this.getSearchExpression(),
+                formattedQuery,
+                isCustomMatch = searchQuery && this.customSearchRE.test(searchQuery),
+                isHashTagMatch = searchQuery && this.hashTagSearchRE.test(searchQuery);
+
+            switch (true) {
+                case isCustomMatch: formattedQuery = this.customSearch(searchQuery);
+                    break;
+                case isHashTagMatch: formattedQuery = this.hashTagSearch(searchQuery);
+                    break;
+                default: formattedQuery = this.formatSearchQuery(searchQuery);
+            }
+
+            if (lang.trim(searchQuery) === '') {
+                formattedQuery = null;
+            }
+            return formattedQuery;
+        },
+        /**
+       * Gets the current search expression.
+       * * Gathers the inputted search text
+       */
+        getSearchExpression: function()
+        {
+            return this.queryNode.value;
         }
     });
 });

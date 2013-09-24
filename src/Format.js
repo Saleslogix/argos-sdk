@@ -27,7 +27,8 @@ define('Sage/Platform/Mobile/Format', [
     'dojo/string',
     'dojo/number',
     'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/Utility'
+    'Sage/Platform/Mobile/Utility',
+    'moment'
 ], function(
     json,
     lang,
@@ -35,7 +36,8 @@ define('Sage/Platform/Mobile/Format', [
     string,
     dNumber,
     convert,
-    utility
+    utility,
+    moment
 ) {
 
     var getVectorMaxSize = function (v) {
@@ -149,6 +151,9 @@ define('Sage/Platform/Mobile/Format', [
          * Text used in {@link #timespan timespan} formatter for exactly one minute
          */
         minuteText: 'minute',
+
+        shortDateFormatText: 'M/D/YYYY',
+
         /**
         * @property {String}
         * format string for percent
@@ -264,9 +269,11 @@ define('Sage/Platform/Mobile/Format', [
 
             if (date)
             {
-                if (utc) date = date.clone().add({minutes: date.getTimezoneOffset()});
+                date = moment(date);
+                if (utc)
+                    date = date.add({minutes: date.zone()});
 
-                return date.toString(fmt || Date.CultureInfo.formatPatterns.shortDate);
+                return date.format(fmt || Sage.Platform.Mobile.Format.shortDateFormatText);
             }
 
             return val;
@@ -304,10 +311,10 @@ define('Sage/Platform/Mobile/Format', [
          * @return {String} Number as a percentage with % sign.
          */
         percent: function(val, places) {
-            var intVal, v, dp, wp, numberFormated
+            var intVal, v, dp, wp, numberFormated;
 
             if (typeof places !== 'number') {
-                places = 2
+                places = 2;
             }
 
             places = Math.floor(places);
@@ -315,7 +322,7 @@ define('Sage/Platform/Mobile/Format', [
             v = utility.roundNumberTo(intVal, places);
 
             //get the whole number part
-            wp = (Math.floor(v)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace("\\.", '.'))
+            wp = (Math.floor(v)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace("\\.", '.'));
 
             if (places < 1) { // format with out decimal part
                 numberFormated = string.substitute('${0}', [wp]).replace(/ /g, '\u00A0'); //keep numbers from breaking
@@ -438,7 +445,7 @@ define('Sage/Platform/Mobile/Format', [
             if (typeof vector == 'string' || vector instanceof String)
                 try { vector = json.fromJson(vector); } catch(e) {}
 
-            if (!(vector instanceof Array) || 0 == vector.length)
+            if (!(vector instanceof Array) || 0 === vector.length)
                 vector = [[]]; // blank image.
 
             var size = getVectorMaxSize(vector);
@@ -454,7 +461,7 @@ define('Sage/Platform/Mobile/Format', [
             Sage.Platform.Mobile.Format.canvasDraw(vector, canvasNode, options);
 
             img = canvasNode.toDataURL('image/png');
-            if (img.indexOf("data:image/png") != 0)
+            if (img.indexOf("data:image/png") !== 0)
                 img = Canvas2Image.saveAsBMP(canvasNode, true).src;
 
             return html

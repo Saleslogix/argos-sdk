@@ -24,18 +24,22 @@
  */
 define('Sage/Platform/Mobile/GroupedList', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/query',
     'dojo/string',
     'dojo/dom-class',
     'dojo/dom-construct',
-    'Sage/Platform/Mobile/List'
+    'Sage/Platform/Mobile/List',
+    'Sage/Platform/Mobile/Utility'
 ], function(
     declare,
+    lang,
     query,
     string,
     domClass,
     domConstruct,
-    List
+    List,
+    Utility
 ) {
 
     return declare('Sage.Platform.Mobile.GroupedList', [List], {
@@ -53,7 +57,6 @@ define('Sage/Platform/Mobile/GroupedList', [
         widgetTemplate: new Simplate([
             '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '<div data-dojo-attach-point="searchNode"></div>',
-            '<a href="#" class="android-6059-fix">fix for android issue #6059</a>',
             '{%! $.emptySelectionTemplate %}',
             '<div class="group-content" data-dojo-attach-point="contentNode"></div>',
             '{%! $.moreTemplate %}',
@@ -100,8 +103,8 @@ define('Sage/Platform/Mobile/GroupedList', [
          * Must have a `tag` property that identifies the group.
          * The `title` property will be placed into the `groupTemplate` for the header text.
          */
-        _currentGroup: null,
-        _currentGroupNode: null,
+        _groupBySections: null,
+        _currentGroupBySection: null,
         /**
          * Function that returns a "group object". The group object must have a tag property that is
          * based off the passed entry as it will be used to compare to other entries.
@@ -125,6 +128,20 @@ define('Sage/Platform/Mobile/GroupedList', [
          * @return {Object} Object that contains a tag and title property where tag will be used in comparisons
          */
         getGroupForEntry: function(entry) {
+            var sectionDef, title;
+            if (this._currentGroupBySection) {
+                sectionDef = this._currentGroupBySection.section.getSection(entry);
+                if (this._currentGroupBySection.description) {
+                    title = this._currentGroupBySection.description + ': ' + sectionDef.title;
+                } else {
+                    title =  sectionDef.title;
+                }
+                return {
+                    tag: sectionDef.key,
+                    title: title,
+                    collapsed: !!sectionDef.collapsed
+                };
+            }
             return {
                 tag: 1,
                 title: 'Default'
@@ -144,61 +161,108 @@ define('Sage/Platform/Mobile/GroupedList', [
          * @param {Object} feed The SData feed result
          */
         processFeed: function(feed) {
-            if (!this.feed) this.set('listContent', '');
+            var i, entry, entryGroup, rowNode, remaining, getGroupsNode;
+            getGroupsNode = Utility.memoize(lang.hitch(this, this.getGroupsNode), function(entryGroup) {
+                return entryGroup.tag;
+            });
+
+            if (!this.feed){
+                this.set('listContent', '');
+            }
 
             this.feed = feed;
 
-            if (this.feed['$totalResults'] === 0)
-            {
-                this.set('listContent', this.noDataTemplate.apply(this));               
-            }
-            else if (feed['$resources'])
-            {
-                var o = [];
+            if (this.feed['$totalResults'] === 0) {
+                this.set('listContent', this.noDataTemplate.apply(this));
+            } else if (feed['$resources']) {
+                for (i = 0; i < feed['$resources'].length; i++) {
+                    entry = feed['$resources'][i];
+                    entryGroup = this.getGroupForEntry(entry);
 
-                for (var i = 0; i < feed['$resources'].length; i++)
-                {
-                    var entry = feed['$resources'][i],
-                        entryGroup = this.getGroupForEntry(entry);
-
-                    if (entryGroup.tag != this._currentGroup)
-                    {
-                        if (o.length > 0)
-                            domConstruct.place(o.join(''), this._currentGroupNode, 'last');
-
-                        o = [];
-
-                        this._currentGroup = entryGroup.tag;
-                        domConstruct.place(this.groupTemplate.apply(entryGroup, this), this.contentNode, 'last');
-                        this._currentGroupNode = query("> :last-child", this.contentNode)[0];
-                    }
+                    entry["$groupTag"] = entryGroup.tag;
+                    entry["$groupTitle"] = entryGroup.title;
 
                     this.entries[entry.$key] = entry;
+                    rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+                    this.onApplyRowTemplate(entry, rowNode);
 
-                    o.push(this.rowTemplate.apply(entry, this));
+                    domConstruct.place(rowNode, getGroupsNode(entryGroup), 'last');
                 }
-
-                if (o.length > 0)
-                    domConstruct.place(o.join(''), this._currentGroupNode, 'last');
             }
 
             // todo: add more robust handling when $totalResults does not exist, i.e., hide element completely
-            if (typeof this.feed['$totalResults'] !== 'undefined')
-            {
-                var remaining = this.feed['$totalResults'] - (this.feed['$startIndex'] + this.feed['$itemsPerPage'] - 1);
+            if (typeof this.feed['$totalResults'] !== 'undefined') {
+                remaining = this.feed['$totalResults'] - (this.feed['$startIndex'] + this.feed['$itemsPerPage'] - 1);
                 this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
             }
 
             domClass.toggle(this.domNode, 'list-has-more', this.hasMoreData());
         },
-        /**
-         * Calls parent {@link List#clear clear} and also deletes the current group memory.
-         */
-        clear: function() {
-            this.inherited(arguments);
+        getGroupsNode: function(entryGroup) {
+            var results = query('[data-group="' + entryGroup.tag + '"]', this.contentNode);
+            if (results.length > 0) {
+                results = results[0];
+            } else {
+                // Does not exist, lets create it
+                results = domConstruct.toDom(this.groupTemplate.apply(entryGroup, this));
+                domConstruct.place(results, this.contentNode, 'last');
+                // re-query what we just place in (which was a doc frag)
+                results = query('[data-group="' + entryGroup.tag + '"]', this.contentNode)[0];
+            }
 
-            this._currentGroup = null;
-            this._currentGroupNode = null;
+            return results;
+        },
+        /**
+         * Called on application startup to configure the search widget if present and create the list actions.
+         */
+        startup: function() {
+            this.inherited(arguments);
+            this._initGroupBySections();
+
+        },
+        _initGroupBySections:function(){
+            this._groupBySections = this.getGroupBySections();
+            this.setDefaultGroupBySection();
+            this.applyGroupByOrderBy();
+        },
+        setDefaultGroupBySection: function() {
+            var count = 0;
+            if (this._groupBySections) {
+                count = this._groupBySections.length;
+                for (var i = 0; i < count; i++) {
+                    if (this._groupBySections[i].isDefault === true) {
+                        this._currentGroupBySection = this._groupBySections[i];
+                    }
+                }
+                if ((this._currentGroupBySection === null) && (count > 0)) {
+                    this._currentGroupBySection = this._groupBySections[0];
+                }
+            }
+            
+        },
+        getGroupBySection: function(sectionId) {
+            var groupSection = null;
+            if (this._groupBySections) {
+                for (var i = 0; i < this._groupBySections.length; i++) {
+                    if (this._groupBySections[i].Id === sectionId) {
+                        groupSection = this._groupBySections[i];
+                    }
+                }
+            }
+            return groupSection;
+        },
+        setCurrentGroupBySection:function(sectionId){
+            this._currentGroupBySection = this.getGroupBySection(sectionId);
+            this.applyGroupByOrderBy(); //need to refresh view
+        },
+        getGroupBySections: function() {
+            return null;
+        },
+        applyGroupByOrderBy: function() {
+            if (this._currentGroupBySection) {
+                this.queryOrderBy = this._currentGroupBySection.section.getOrderByQuery();
+            }
         }
+        
     });
 });
