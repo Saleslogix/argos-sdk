@@ -48,10 +48,26 @@ define('Sage/Platform/Mobile/Utility', [
                 path.push(parts[i]);
             }
         }
-        return (nameToPathCache[name] = path.reverse());
+
+        nameToPathCache[name] = path.reverse();
+        return nameToPathCache[name];
     };
 
     return lang.setObject('Sage.Platform.Mobile.Utility', {
+        memoize: function(fn, keyFn) {
+            var cache = {};
+            keyFn = keyFn || (function(value) { return value; });
+
+            return function() {
+                var key = keyFn.apply(this, arguments);
+                if (cache[key]) {
+                    return cache[key];
+                } else {
+                    cache[key] = fn.apply(this, arguments);
+                    return cache[key];
+                }
+            };
+        },
         getValue: function(o, name, defaultValue) {
             var path = nameToPath(name).slice(0);
             var current = o;

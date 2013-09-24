@@ -110,7 +110,7 @@ define('Sage/Platform/Mobile/Fields/DecimalField', [
         getPrecision: function() {
             var perc;
             if (this.precision === 0) {
-                perc = this.precision
+                perc = this.precision;
             } else {
                 perc = this.precision || Mobile.CultureInfo.numberFormat.currencyDecimalDigits;
             }

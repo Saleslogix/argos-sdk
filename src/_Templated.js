@@ -51,6 +51,8 @@ function(domConstruct, declare, query, parser, array, lang, registry, wai) {
          * Processes `this.widgetTemplate` or `this.contentTemplate`
          */
         buildRendering: function () {
+            var root, widgetsToAttach;
+
             if (this.widgetTemplate && this.contentTemplate)
             {
                 throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
@@ -59,11 +61,11 @@ function(domConstruct, declare, query, parser, array, lang, registry, wai) {
             if (this.contentTemplate)
             {
                 this.inherited(arguments);
-                var root = domConstruct.toDom(['<div>', this.contentTemplate.apply(this), '</div>'].join(''));
+                root = domConstruct.toDom(['<div>', this.contentTemplate.apply(this), '</div>'].join(''));
                 this._attachTemplateNodes(root);
             } else if (this.widgetTemplate)
             {
-                var root = domConstruct.toDom(this.widgetTemplate.apply(this));
+                root = domConstruct.toDom(this.widgetTemplate.apply(this));
 
                 if (root.nodeType === 11)
                     root = domConstruct.toDom(['<div>', this.widgetTemplate.apply(this), '</div>'].join(''));
@@ -84,7 +86,7 @@ function(domConstruct, declare, query, parser, array, lang, registry, wai) {
             if (this.widgetsInTemplate)
             {
                 // Store widgets that we need to start at a later point in time
-                var widgetsToAttach = parser.parse(root, {
+                widgetsToAttach = parser.parse(root, {
                     noStart: !this._earlyTemplatedStartup,
                     template: true,          //1.6 addition
                     inherited: {dir: this.dir, lang: this.lang},
@@ -144,23 +146,24 @@ function(domConstruct, declare, query, parser, array, lang, registry, wai) {
          * @param getAttrFunc {Function} A function which will be used to obtain property for a given DomNode/Widget
          */
         _attachTemplateNodes: function(rootNode, getAttrFunc) {
+            var nodes, x, baseNode, attachPoint, point, attachEvent, event, events, trim, thisFunc, role, values, pair, points;
+
             getAttrFunc = getAttrFunc || function (n,p){ return n.getAttribute(p); };
 
-            var nodes = (rootNode instanceof Array) ? rootNode : (rootNode.all || rootNode.getElementsByTagName("*"));
-            var x = (rootNode instanceof Array) ? 0 : -1;
+            nodes = (rootNode instanceof Array) ? rootNode : (rootNode.all || rootNode.getElementsByTagName("*"));
+            x = (rootNode instanceof Array) ? 0 : -1;
             for (; x<nodes.length; x++)
             {
-                var baseNode = (x == -1) ? rootNode : nodes[x];
+                baseNode = (x == -1) ? rootNode : nodes[x];
                 if (this.widgetsInTemplate && (getAttrFunc(baseNode, "dojoType") || getAttrFunc(baseNode, "data-dojo-type")))
                 {
                     continue;
                 }
                 // Process dojoAttachPoint
-                //var attachPoint = getAttrFunc(baseNode, "dojoAttachPoint");
-                var attachPoint = getAttrFunc(baseNode, "dojoAttachPoint") || getAttrFunc(baseNode, "data-dojo-attach-point");
+                attachPoint = getAttrFunc(baseNode, "dojoAttachPoint") || getAttrFunc(baseNode, "data-dojo-attach-point");
                 if (attachPoint)
                 {
-                    var point, points = attachPoint.split(/\s*,\s*/);
+                    points = attachPoint.split(/\s*,\s*/);
                     while ((point = points.shift()))
                     {
                         if (this[point] instanceof Array)
@@ -177,19 +180,18 @@ function(domConstruct, declare, query, parser, array, lang, registry, wai) {
                 }
 
                 // Process dojoAttachEvent
-                //var attachEvent = getAttrFunc(baseNode, "dojoAttachEvent");
-                var attachEvent = getAttrFunc(baseNode, "dojoAttachEvent") || getAttrFunc(baseNode, "data-dojo-attach-event");
+                attachEvent = getAttrFunc(baseNode, "dojoAttachEvent") || getAttrFunc(baseNode, "data-dojo-attach-event");
                 if (attachEvent)
                 {
                     // NOTE: we want to support attributes that have the form
                     // "domEvent: nativeEvent; ..."
-                    var event, events = attachEvent.split(/\s*,\s*/);
-                    var trim = lang.trim;
+                    events = attachEvent.split(/\s*,\s*/);
+                    trim = lang.trim;
                     while ((event = events.shift()))
                     {
                         if (event)
                         {
-                            var thisFunc = null;
+                            thisFunc = null;
                             if (event.indexOf(":") != -1)
                             {
                                 // oh, if only JS had tuple assignment
@@ -214,19 +216,19 @@ function(domConstruct, declare, query, parser, array, lang, registry, wai) {
 
                 // waiRole, waiState
                 // TODO: remove this in 2.0, templates are now using role=... and aria-XXX=... attributes directicly
-                var role = getAttrFunc(baseNode, "waiRole");
+                role = getAttrFunc(baseNode, "waiRole");
                 if (role)
                 {
                     wai.setWaiRole(baseNode, role);
                 }
                 
-                var values = getAttrFunc(baseNode, "waiState");
+                values = getAttrFunc(baseNode, "waiState");
                 if (values)
                 {
                     array.forEach(values.split(/\s*,\s*/), function(stateValue) {
                         if (stateValue.indexOf('-') != -1)
                         {
-                            var pair = stateValue.split('-');
+                            pair = stateValue.split('-');
                             wai.setWaiState(baseNode, pair[0], pair[1]);
                         }
                     });

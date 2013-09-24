@@ -1,0 +1,576 @@
+body
+{
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+body > .viewContainer
+{
+    position: absolute;
+    padding: 45px 0 0 0;
+    margin: 0;
+    z-index: 3;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+}
+
+body[orient="landscape"]
+{
+    min-height: 268px;
+    overflow: hidden;
+}
+
+body > .viewContainer > .list,
+body > .viewContainer > .panel,
+body > .viewContainer > .dialog
+{
+    display: none;
+}
+
+body.transition > .viewContainer > .panel,
+body.transition > .viewContainer > .list
+{
+    position: absolute;
+    top: 45px;
+}
+
+body > .viewContainer > .panel,
+body > .viewContainer > .list
+{
+    position: absolute;
+    top: 45px;
+    bottom: 0px;
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-transition-duration: 200ms;
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transform: translateZ(0); 
+}
+
+body[orient="landscape"] > .viewContainer > .panel,
+body[orient="landscape"] > .viewContainer > .list
+{
+    position:absolute;
+    top: 45px; /* Adjust if header toolbar changes */
+    bottom: 0px; /* Adjust if footer toolbar changes */
+    width: 100%;
+    -webkit-transition-property: top, bottom;
+    transition-property: top, bottom;
+    -webkit-transition-duration: 0.2s, 0.2s;
+    transition-duration: 0.2s, 0.2s;
+    -webkit-transition-timing-function: ease, ease;
+    transition-timing-function: ease, ease;
+}
+
+body > .viewContainer > [selected="true"]
+{
+    display: block;
+}
+
+.button
+{
+    height: 30px;
+    line-height: 30px;
+    padding: 0 2px 0 2px;
+}
+
+.viewContainer > .footer-toolbar 
+{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
+.viewContainer > .toolbar,
+.toolbar
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+    height: 45px;
+    width: 100%;
+    padding: 4px 4px;
+
+    display: block;
+    z-index: 10;
+}
+.viewContainer > .toolbar > h1,
+.toolbar > h1 {
+    overflow: hidden; 
+    display: block;
+    margin: 0;
+    padding: 0;    
+    font-size: 1em;
+    line-height: 34px;
+    font-weight: normal;    
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #FFFFFF;
+
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    z-index: 0;
+}
+
+.viewContainer > .toolbar-size-1 > h1,
+.toolbar-size-1 > h1
+{
+    left: 50px;
+    right: 50px;
+}
+
+.viewContainer > .toolbar-size-2 > h1,
+.toolbar-size-2 > h1
+{
+    left: 100px;
+    right: 100px;
+}
+
+.toolButton
+{
+    position: relative;
+    width: 40px;
+    height: 34px;
+    padding: 0px;
+    z-index: 100;
+}
+
+.toolButton > img
+{
+    margin: 4px;
+}
+
+.toolButton > span
+{
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 4px;
+    width: 24px;
+    height: 24px;
+}
+
+.toolButton-left
+{
+    float: left;
+    margin-right: 10px;
+}
+
+.toolButton-right
+{
+    float: right;
+    margin-left: 10px;
+}
+
+body > .viewContainer > .dialog {
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0;
+    text-align: right;
+}
+
+.dialog > fieldset {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    border: none;
+    border-top: 1px solid #6d84a2;
+    padding: 0px 6px;
+    -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
+}
+
+.dialog > fieldset > label {
+    position: absolute;
+    margin: 8px 0 0 6px;
+    font-size: 14px;
+    display: inline-block;
+}
+
+input:not([type|=radio]):not([type|=checkbox]) {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    margin: 0 0 8px 0;
+    padding: 6px 6px 6px 44px;
+    font-size: 16px;
+    font-weight: normal;
+    border: 1px solid #000;
+}
+
+.list-content,
+.group-content
+{
+    margin: 0;
+    padding: 0;
+}
+
+.list-content > li,
+.group-content > li
+{
+    font-size: 1.25em;
+    font-weight: bold;
+    list-style: none;
+    margin: 8px 6px 8px 6px;
+    padding: 8px 0px 8px 10px;
+    position: relative;
+    border-radius: 6px;
+}
+
+.list-content > li,
+.group-content > li
+{
+    padding: 8px 32px 8px 6px;
+}
+.list-show-selectors .list-item-content,
+.list-item-static-selector + .list-item-content
+{
+    padding-left: 42px;
+}
+.actions-enabled + .list-item-content
+{
+    padding-left: 48px;
+}
+
+.list-content > li > img.icon,
+.list-content > li > * > img.icon
+{
+    border: 0 none black;
+    margin: 0 .5em 0 0;
+    width: 24px;
+    height: 24px;
+    float: left;
+}
+
+.list-content > li > .list-selector
+{
+    float: left;
+    margin: 2px 0 0 0px;
+}
+
+h3
+{
+    font-size: .75em;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+h4
+{
+    font-size: .5em;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+img
+{
+    border: 0 none black;
+}
+
+.panel > .panel-loading-indicator
+{
+    display: none;
+}
+
+.panel > .panel-validation-summary
+{
+    display: none;
+}
+
+.panel-loading > .panel-loading-indicator
+{
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.panel-form-error > .panel-validation-summary
+{
+    display: block;
+}
+
+.panel-content > h2,
+.panel-validation-summary > h2
+{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 32px;
+    line-height: 32px;
+    margin: 0;
+    padding: 0 0 0 6px;
+    font-size: 1em;
+    z-index: 5;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;    
+    user-select: none;
+}
+
+.panel > ul > li,
+.panel-content > ul > li
+{
+    list-style: none;
+    line-height: 28px;
+    clear: both;
+}
+
+.panel-validation-summary > ul > li
+{
+    list-style: none;
+    clear: both;
+}
+
+.panel-content > ul > li > img.icon,
+.panel-content > ul > li > * > img.icon,
+.panel-validation-summary > ul > li > img.icon
+.panel-validation-summary > ul > li > * > img.icon
+{
+    border: 0 none black;
+    margin: 0 .5em 0 0;
+    width: 24px;
+    height: 24px;
+    float: left;
+}
+
+.panel-content > fieldset,
+.panel-validation-summary > fieldset,
+.panel-content > div,
+.panel-validation-summary > div,
+.panel-content > ul,
+.panel-validation-summary > ul
+{
+    margin: 0;
+    padding: 0 0 1.5em 0;
+}
+
+.panel-content > fieldset:last-child,
+.panel-content > ul:last-child,
+.panel-content > div:last-child
+{
+    margin: 0;
+    padding: 0 0 0 0;
+}
+
+.panel-content > ul > li,
+.panel-validation-summary > ul > li
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.panel-content > ul > li > a,
+.panel-validation-summary > ul > li > a
+{
+    padding: 8px;
+    margin: 0px;
+    display: block;
+}
+
+.panel-validation-summary > ul > li > a > h3
+{
+    overflow: visible;
+    text-overflow: inherit;
+    white-space: inherit;
+}
+
+.row > div > label,
+.row > label
+{
+    margin: 0px;
+    padding: 0;
+    position: relative;
+    float: left;
+    width: 100px;
+    text-align: right;
+    font-size: 0.8em;
+}
+
+.row
+{
+    text-align: left;
+    clear: both;
+    line-height: 1.5em;
+    padding: 0 .75em;
+}
+
+.row > div > span,
+.row > div > a,
+.row > span,
+.row > a
+{
+    display: block;
+    margin: 0 0 0 0;
+    padding: 0 0 0 12px;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.row > * > a
+{
+    border-bottom: 1px dotted #00338D;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.not-available
+{
+    text-align: center;
+    padding: 8px 32px 8px 36px !important;
+    font-size: 1.25em;
+}
+
+.no-data
+{
+    text-align: center;
+}
+
+.list-search
+{
+    padding: 6px;
+    position: relative;
+}
+
+.list-search input
+{
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    height: 32px;
+    margin: 0 !important;
+}
+
+.list-search .searchButton
+{    
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    display: inline-block;    
+    height: 32px;
+    border: solid 1px black;
+}
+
+.list-search .dismissButton {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    position: absolute;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    right: 70px;
+    top: 6px;
+    border: solid 1px black;
+}
+
+.list-search label
+{
+    position: absolute;
+    top: 6px;
+    left: 6px;
+}
+
+.row-edit
+{
+    /*position: relative;*/
+    padding: 2px 0.75em;
+}
+
+.row-edit > div > label,
+.row-edit > label
+{
+    position: absolute;
+    height: 30px;
+    line-height: 30px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.row > div > input[type|=radio], .row > div > input[type|=checkbox],
+.row > input[type|=radio], .row > input[type|=checkbox]
+{
+    margin: 7px 7px 0 0;
+    height: 25px;
+    width: 25px;
+}
+
+.row > div > input:not([type|=radio]):not([type|=checkbox]),
+.row > input:not([type|=radio]):not([type|=checkbox])
+{
+    -webkit-appearance: none;
+
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+
+    margin: 0;
+    padding: 0px 10px 0 110px;
+    height: 32px !important;
+    border: 0 none transparent;
+    background: transparent;
+}
+
+.row > div > textarea,
+.row > textarea
+{
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    margin: 0;
+    border: 0 none black;
+    padding: 8px 10px 8px 110px;
+    background: transparent;
+    width: 100%;
+    display: block;
+}
+
+.row > div > input[type|=radio], .row > div > input[type|=checkbox],
+.row > input[type|=radio], .row > div > input[type|=checkbox]
+{
+  margin: 7px 7px 0 0;
+  height: 25px;
+  width: 25px;
+}

@@ -1,4 +1,4 @@
-define('Fields/PhoneFieldTests', ['Sage/Platform/Mobile/Fields/PhoneField', 'Sage/Platform/Mobile/Format'], function(PhoneField, format) {
+define('tests/Fields/PhoneFieldTests', ['Sage/Platform/Mobile/Fields/PhoneField', 'Sage/Platform/Mobile/Format'], function(PhoneField, format) {
 return describe('Sage.Platform.Mobile.Fields.PhoneField', function() {
 
     /*it('Can call format value on blur', function() {

@@ -1,39 +1,30 @@
-//>>built
-define("dojox/charting/action2d/MouseZoomAndPan", ["dojo/_base/html", "dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_base/event",
-	"dojo/_base/connect", "./ChartAction", "dojo/_base/sniff", "dojo/dom-prop", "dojo/keys"], 
-	function(html, declare, win, arr, eventUtil, connect, ChartAction, has, domProp, keys){
+define("dojox/charting/action2d/MouseZoomAndPan", ["dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_base/event",
+	"dojo/_base/connect", "dojo/mouse", "./ChartAction", "dojo/sniff", "dojo/dom-prop", "dojo/keys",
+	"dojo/has!dojo-bidi?../bidi/action2d/ZoomAndPan"],
+	function(declare, win, arr, eventUtil, connect, mouse, ChartAction, has, domProp, keys, BidiMouseZoomAndPan){
 
 	/*=====
-	dojo.declare("dojox.charting.action2d.__MouseZoomAndPanCtorArgs", null, {
-		//	summary:
+	var __MouseZoomAndPanCtorArgs = {
+		// summary:
 		//		Additional arguments for mouse zoom and pan actions.
-	
-		//	axis: String?
+		// axis: String?
 		//		Target axis name for this action.  Default is "x".
-		axis: "x",
-		//	scaleFactor: Number?
+		// scaleFactor: Number?
 		//		The scale factor applied on mouse wheel zoom.  Default is 1.2.
-		scaleFactor: 1.2,
-		//	maxScale: Number?
+		// maxScale: Number?
 		//		The max scale factor accepted by this chart action.  Default is 100.
-		maxScale: 100,
-		//	enableScroll: Boolean?
+		// enableScroll: Boolean?
 		//		Whether mouse drag gesture should scroll the chart.  Default is true.
-		enableScroll: true,
-		//	enableDoubleClickZoom: Boolean?
+		// enableDoubleClickZoom: Boolean?
 		//		Whether a double click gesture should toggle between fit and zoom on the chart.  Default is true.
-		enableDoubleClickZoom: true,
-		//	enableKeyZoom: Boolean?
+		// enableKeyZoom: Boolean?
 		//		Whether a keyZoomModifier + + or keyZoomModifier + - key press should zoom in our out on the chart.  Default is true.
-		enableKeyZoom: true,
-		//	keyZoomModifier: String?
+		// keyZoomModifier: String?
 		//		Which keyboard modifier should used for keyboard zoom in and out. This should be one of "alt", "ctrl", "shift" or "none" for no modifier. Default is "ctrl".
-		keyZoomModifier: "ctrl"
-	});
-	var ChartAction = dojox.charting.action2d.ChartAction;
+	};
 	=====*/
 
-	var sUnit = has("mozilla") ? -3 : 120;
+	var sUnit = has("mozilla") ? 3 : 120;
 	var keyTests = {
 		none: function(event){
 			return !event.ctrlKey && !event.altKey && !event.shiftKey;
@@ -49,8 +40,8 @@ define("dojox/charting/action2d/MouseZoomAndPan", ["dojo/_base/html", "dojo/_bas
 		}
 	};
 
-	return declare("dojox.charting.action2d.MouseZoomAndPan", ChartAction, {
-		//	summary:
+	var MouseZoomAndPan = declare(has("dojo-bidi")? "dojox.charting.action2d.NonBidiMouseZoomAndPan" : "dojox.charting.action2d.MouseZoomAndPan", ChartAction, {
+		// summary:
 		//		Create an mouse zoom and pan action.
 		//		You can zoom in or out the data window with mouse wheel. You can scroll using mouse drag gesture. 
 		//		You can toggle between zoom and fit view using double click on the chart.
@@ -68,13 +59,13 @@ define("dojox/charting/action2d/MouseZoomAndPan", ["dojo/_base/html", "dojo/_bas
 		optionalParams: {}, // no optional parameters
 		
 		constructor: function(chart, plot, kwArgs){
-			//	summary:
+			// summary:
 			//		Create an mouse zoom and pan action and connect it.
-			//	chart: dojox.charting.Chart
+			// chart: dojox/charting/Chart
 			//		The chart this action applies to.
-			//	kwArgs: dojox.charting.action2d.__MouseZoomAndPanCtorArgs?
+			// kwArgs: __MouseZoomAndPanCtorArgs?
 			//		Optional arguments for the chart action.
-			this._listeners = [{eventName: !has("mozilla") ? "onmousewheel" : "DOMMouseScroll", methodName: "onMouseWheel"}];
+			this._listeners = [{eventName: mouse.wheel, methodName: "onMouseWheel"}];
 			if(!kwArgs){ kwArgs = {}; }
 			this.axis = kwArgs.axis ? kwArgs.axis : "x";
 			this.scaleFactor = kwArgs.scaleFactor ? kwArgs.scaleFactor : 1.2;
@@ -105,7 +96,7 @@ define("dojox/charting/action2d/MouseZoomAndPan", ["dojo/_base/html", "dojo/_bas
 		},
 		
 		connect: function(){
-			//	summary:
+			// summary:
 			//		Connect this action to the chart.
 			this.inherited(arguments);
 			if(this.enableKeyZoom){
@@ -117,7 +108,7 @@ define("dojox/charting/action2d/MouseZoomAndPan", ["dojo/_base/html", "dojo/_bas
 		},
 		
 		disconnect: function(){
-			//	summary:
+			// summary:
 			//		Disconnect this action from the chart.
 			this.inherited(arguments);
 			if(this.enableKeyZoom){
@@ -129,7 +120,7 @@ define("dojox/charting/action2d/MouseZoomAndPan", ["dojo/_base/html", "dojo/_bas
 		},
 	
 		onMouseDown: function(event){
-			//	summary:
+			// summary:
 			//		Called when mouse is down on the chart.
 			var chart = this.chart, axis = chart.getAxis(this.axis);
 			if(!axis.vertical){
@@ -155,33 +146,32 @@ define("dojox/charting/action2d/MouseZoomAndPan", ["dojo/_base/html", "dojo/_bas
 		},
 	
 		onMouseMove: function(event){
-			//	summary:
+			// summary:
 			//		Called when mouse is moved on the chart.
 			if(this._isPanning){
 				var chart = this.chart, axis = chart.getAxis(this.axis);
-				var delta = axis.vertical?(this._startCoord- event.pageY):(event.pageX - this._startCoord);
+				var delta = this._getDelta(event);
 				
 				var bounds = axis.getScaler().bounds,
 					s = bounds.span / (bounds.upper - bounds.lower);
 		
 				var scale = axis.getWindowScale();
-		
 				chart.setAxisWindow(this.axis, scale, this._startOffset - delta / s / scale);
 				chart.render();
 			}
 		},
 	
 		onMouseUp: function(event){
-			//	summary:
+			// summary:
 			//		Called when mouse is up on the chart.
 			this._isPanning = false;
 			this._disconnectHandles();
 		},
 		
 		onMouseWheel: function(event){
-			//	summary:
+			// summary:
 			//		Called when mouse wheel is used on the chart.
-			var scroll = event[(has("mozilla") ? "detail" : "wheelDelta")] / sUnit;
+			var scroll = event.wheelDelta / sUnit;
 			// on Mozilla the sUnit might actually not always be 3
 			// make sure we never have -1 < scroll < 1
 			if(scroll > -1 && scroll < 0){
@@ -193,7 +183,7 @@ define("dojox/charting/action2d/MouseZoomAndPan", ["dojo/_base/html", "dojo/_bas
 		},
 		
 		onKeyPress: function(event){
-			//	summary:
+			// summary:
 			//		Called when a key is pressed on the chart.
 			if(keyTests[this.keyZoomModifier](event)){
 				if(event.keyChar == "+" || event.keyCode == keys.NUMPAD_PLUS){
@@ -205,7 +195,7 @@ define("dojox/charting/action2d/MouseZoomAndPan", ["dojo/_base/html", "dojo/_bas
 		},
 		
 		onDoubleClick: function(event){
-			//	summary:
+			// summary:
 			//		Called when the mouse is double is double clicked on the chart. Toggle between zoom and fit chart.
 			var chart = this.chart, axis = chart.getAxis(this.axis);
 			var scale = 1 / this.scaleFactor;
@@ -241,6 +231,11 @@ define("dojox/charting/action2d/MouseZoomAndPan", ["dojo/_base/html", "dojo/_bas
 			chart.zoomIn(this.axis, [newStart, newEnd]);
 			// do not scroll browser
 			eventUtil.stop(event);
+		},
+		
+		_getDelta: function(event){
+			return this.chart.getAxis(this.axis).vertical?(this._startCoord- event.pageY):(event.pageX - this._startCoord);
 		}
-	});		
+	});
+	return has("dojo-bidi")? declare("dojox.charting.action2d.MouseZoomAndPan", [MouseZoomAndPan, BidiMouseZoomAndPan]) : MouseZoomAndPan;
 });

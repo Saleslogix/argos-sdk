@@ -341,15 +341,43 @@ ReUI = {};
         if (hash && hash.indexOf(R.hashPrefix) === 0)
             return D.get(hash.substr(R.hashPrefix.length));
         return false;
-    };                   
+    };  
+
+    var isSimilarLength = function(x, y) {
+        // Check if x and y are within 5px of each other
+        return Math.abs(x - y) < 5; 
+    };
+
+    var updateOrientationDom = function(value) {
+        var currentOrient = R.rootEl.getAttribute('orient');
+        if (value === currentOrient) return;
+
+        R.rootEl.setAttribute('orient', value);
+
+        if (value == 'portrait') 
+        {
+            D.removeClass(R.rootEl, 'landscape');
+            D.addClass(R.rootEl, 'portrait');
+        }
+        else if (value == 'landscape')
+        {
+            D.removeClass(R.rootEl, 'portrait');
+            D.addClass(R.rootEl, 'landscape');
+        }
+        else
+        {
+            D.removeClass(R.rootEl, 'portrait');
+            D.removeClass(R.rootEl, 'landscape');
+        }
+    };
 
     var checkOrientationAndLocation = function() {
-        if ((window.innerHeight != context.height) || (window.innerWidth != context.width))
-        {
+        // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
+        if ((window.innerHeight !== context.height || window.innerWidth !== context.width) &&
+               !(window.innerHeight !== context.height && window.innerWidth === context.width)) {
             context.height = window.innerHeight;
             context.width = window.innerWidth;
-
-            setOrientation(context.height < context.width ? 'landscape' : 'portrait');
+            R.setOrientation(context.height < context.width ? 'landscape' : 'portrait');
         }
 
         if (context.transitioning) return;
@@ -377,31 +405,6 @@ ReUI = {};
             if (page)
                 R.show(page, {external: true, reverse: reverse, tag: info && info.tag, data: info && info.data});
         }         
-    };
-
-    var setOrientation = function(value) {
-        var currentOrient = R.rootEl.getAttribute('orient');
-        if (value === currentOrient) return;
-
-        R.rootEl.setAttribute('orient', value);
-
-        if (value == 'portrait') 
-        {
-            D.removeClass(R.rootEl, 'landscape');
-            D.addClass(R.rootEl, 'portrait');
-        }
-        else if (value == 'landscape')
-        {
-            D.removeClass(R.rootEl, 'portrait');
-            D.addClass(R.rootEl, 'landscape');
-        }
-        else
-        {
-            D.removeClass(R.rootEl, 'portrait');
-            D.removeClass(R.rootEl, 'landscape');
-        }
-
-        // D.wait(scrollTo, 100, 0, 1); 
     };
 
     var context = {
@@ -495,6 +498,10 @@ ReUI = {};
             D.bind(R.rootEl, 'click', onRootClick);
         },
 
+        setOrientation: function(value) {
+            updateOrientationDom(value);
+        },
+
         registerFx: function(name, compatible, fn) {
             if (typeof compatible === 'function')
             {
@@ -555,8 +562,9 @@ ReUI = {};
                     if (context.history[position].hash == hash)
                         break;
 
-                if (position > -1)
+                if ((position > -1) && (position === (count-2))) //Added check if history item is just one back.
                 {
+
                     context.history = context.history.splice(0, position + 1);
                     context.hash = hash;
 

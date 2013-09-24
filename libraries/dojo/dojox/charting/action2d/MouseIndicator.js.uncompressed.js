@@ -1,104 +1,79 @@
-//>>built
-define("dojox/charting/action2d/MouseIndicator", ["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_base/window", "dojo/_base/sniff",
+define("dojox/charting/action2d/MouseIndicator", ["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_base/window", "dojo/sniff",
 	"./ChartAction", "./_IndicatorElement", "dojox/lang/utils", "dojo/_base/event","dojo/_base/array"],
 	function(lang, declare, hub, win, has, ChartAction, IndicatorElement, du, eventUtil, arr){ 
 
 	/*=====
-	dojo.declare("dojox.charting.action2d.__MouseIndicatorCtorArgs", null, {
-		//	summary:
+	var __MouseIndicatorCtorArgs = {
+		// summary:
 		//		Additional arguments for mouse indicator.
-		
-		//	series: String
+		// series: String
 		//		Target series name for this action.
-		series: "",
-		
-		//	autoScroll: Boolean? 
+		// autoScroll: Boolean?
 		//		Whether when moving indicator the chart is automatically scrolled. Default is true.
-		autoScroll:		true,
-	
-		//	vertical: Boolean? 
+		// lines: Boolean?
+		//		Whether the indicator lines are visible or not. Default is true.
+		// labels: Boolean?
+		//		Whether the indicator label is visible or not. Default is true.
+		// markers: Boolean?
+		//		Whether the indicator markers are visible or not. Default is true.
+		// offset: {x, y}?
+		//		A pair of (x, y) pixel coordinate to specify the offset between the end of the indicator line and the
+		//		position at which the labels are rendered. Default is no offset which means it is automatically computed.
+		// start: Boolean?
+		//		Whether the label is rendered at the start or end of the indicator. Default is false meaning end of
+		//		the line.
+		// vertical: Boolean?
 		//		Whether the indicator is vertical or not. Default is true.
-		vertical:		true,
-		
-		//	fixed: Boolean?
+		// fixed: Boolean?
 		//		Whether a fixed precision must be applied to data values for display. Default is true.
-		fixed:			true,
-
-		//	precision: Number?
-		//		The precision at which to round data values for display. Default is 1.
-		precision:		0,
-		
-		//	lineStroke: dojo.gfx.Stroke?
+		// precision: Number?
+		//		The precision at which to round data values for display. Default is 0.
+		// lineStroke: dojo/gfx/Stroke?
 		//		An optional stroke to use for indicator line.
-		lineStroke:		{},
-	
-		//	lineOutline: dojo.gfx.Stroke?
+		// lineOutline: dojo/gfx/Stroke?
 		//		An optional outline to use for indicator line.
-		lineOutline:		{},
-	
-		//	lineShadow: dojo.gfx.Stroke?
+		// lineShadow: dojo/gfx/Stroke?
 		//		An optional shadow to use for indicator line.
-		lineShadow:		{},
-		
-		//	stroke: dojo.gfx.Stroke?
+		// stroke: dojo.gfx.Stroke?
 		//		An optional stroke to use for indicator label background.
-		stroke:		{},
-	
-		//	outline: dojo.gfx.Stroke?
+		// outline: dojo.gfx.Stroke?
 		//		An optional outline to use for indicator label background.
-		outline:		{},
-	
-		//	shadow: dojo.gfx.Stroke?
+		// shadow: dojo.gfx.Stroke?
 		//		An optional shadow to use for indicator label background.
-		shadow:		{},
-	
-		//	fill: dojo.gfx.Fill?
+		// fill: dojo.gfx.Fill?
 		//		An optional fill to use for indicator label background.
-		fill:			{},
-		
-		//	fillFunc: Function?
+		// fillFunc: Function?
 		//		An optional function to use to compute label background fill. It takes precedence over
 		//		fill property when available.
-		fillFunc:		null,
-		
-		//	labelFunc: Function?
+		// labelFunc: Function?
 		//		An optional function to use to compute label text. It takes precedence over
 		//		the default text when available.
-		labelFunc:		{},
-	
-		//	font: String?
+		//	|		function labelFunc(firstDataPoint, secondDataPoint, fixed, precision) {}
+		//		`firstDataPoint` is the `{x, y}` data coordinates pointed by the mouse.
+		//		`secondDataPoint` is only useful for dual touch indicators not mouse indicators.
+		//		`fixed` is true if fixed precision must be applied.
+		//		`precision` is the requested precision to be applied.
+		// font: String?
 		//		A font definition to use for indicator label background.
-		font:		"",
-	
-		//	fontColor: String|dojo.Color?
+		// fontColor: String|dojo.Color?
 		//		The color to use for indicator label background.
-		fontColor:	"",
-	
-		//	markerStroke: dojo.gfx.Stroke?
+		// markerStroke: dojo.gfx.Stroke?
 		//		An optional stroke to use for indicator marker.
-		markerStroke:		{},
-	
-		//	markerOutline: dojo.gfx.Stroke?
+		// markerOutline: dojo.gfx.Stroke?
 		//		An optional outline to use for indicator marker.
-		markerOutline:		{},
-	
-		//	markerShadow: dojo.gfx.Stroke?
+		// markerShadow: dojo.gfx.Stroke?
 		//		An optional shadow to use for indicator marker.
-		markerShadow:		{},
-	
-		//	markerFill: dojo.gfx.Fill?
+		// markerFill: dojo.gfx.Fill?
 		//		An optional fill to use for indicator marker.
-		markerFill:			{},
-		
-		//	markerSymbol: String?
+		// markerSymbol: String?
 		//		An optional symbol string to use for indicator marker.
-		markerFill:			{}	
-	});
-	var ChartAction = dojox.charting.action2d.ChartAction;
+		// mouseOver: Boolean?
+		//		Whether the mouse indicator is enabled on mouse over or on mouse drag. Default is false.
+	};
 	=====*/
 
 	return declare("dojox.charting.action2d.MouseIndicator", ChartAction, {
-		//	summary:
+		// summary:
 		//		Create a mouse indicator action. You can drag mouse over the chart to display a data indicator.
 
 		// the data description block for the widget parser
@@ -107,12 +82,16 @@ define("dojox/charting/action2d/MouseIndicator", ["dojo/_base/lang", "dojo/_base
 			vertical: true,
 			autoScroll: true,
 			fixed: true,
-			precision: 0
+			precision: 0,
+			lines: true,
+			labels: true,
+			markers: true
 		},
 		optionalParams: {
 			lineStroke: {},
 			outlineStroke: {},
 			shadowStroke: {},
+			lineFill: {},
 			stroke:		{},
 			outline:	{},
 			shadow:		{},
@@ -125,20 +104,24 @@ define("dojox/charting/action2d/MouseIndicator", ["dojo/_base/lang", "dojo/_base
 			markerOutline:		{},
 			markerShadow:		{},
 			markerFill:			{},
-			markerSymbol:		""
+			markerSymbol:		"",
+			offset: {},
+			start: false,
+			mouseOver: false
 		},	
 
 		constructor: function(chart, plot, kwArgs){
-			//	summary:
+			// summary:
 			//		Create an mouse indicator action and connect it.
-			//	chart: dojox.charting.Chart
+			// chart: dojox/charting/Chart
 			//		The chart this action applies to.
-			//	kwArgs: dojox.charting.action2d.__MouseIndicatorCtorArgs?
+			// kwArgs: __MouseIndicatorCtorArgs?
 			//		Optional arguments for the chart action.
-			this._listeners = [{eventName: "onmousedown", methodName: "onMouseDown"}];
 			this.opt = lang.clone(this.defaultParams);
 			du.updateWithObject(this.opt, kwArgs);
 			du.updateWithPattern(this.opt, kwArgs, this.optionalParams);
+			this._listeners = this.opt.mouseOver?[{eventName: "onmousemove", methodName: "onMouseMove"}]:
+				[{eventName: "onmousedown", methodName: "onMouseDown"}];
 			this._uName = "mouseIndicator"+this.opt.series;
 			this._handles = [];
 			this.connect();
@@ -153,16 +136,16 @@ define("dojox/charting/action2d/MouseIndicator", ["dojo/_base/lang", "dojo/_base
 		},
 
 		connect: function(){
-			//	summary:
+			// summary:
 			//		Connect this action to the chart. This adds a indicator plot
 			//		to the chart that's why Chart.render() must be called after connect.
 			this.inherited(arguments);
 			// add plot with unique name
-			this.chart.addPlot(this._uName, {type: IndicatorElement, inter: this});
+			this.chart.addPlot(this._uName, {type: IndicatorElement, inter: this });
 		},
 
 		disconnect: function(){
-			//	summary:
+			// summary:
 			//		Disconnect this action from the chart.
 			if(this._isMouseDown){
 				this.onMouseUp();
@@ -172,8 +155,16 @@ define("dojox/charting/action2d/MouseIndicator", ["dojo/_base/lang", "dojo/_base
 			this._disconnectHandles();
 		},
 
+		onChange: function(event){
+			// summary:
+			//		Called when the indicator value changed.
+			// event:
+			//		An event with a start property containing the {x, y} data points of the mouse indicator. It also
+			// 		contains a label property containing the displayed text.
+		},
+
 		onMouseDown: function(event){
-			//	summary:
+			// summary:
 			//		Called when mouse is down on the chart.
 			this._isMouseDown = true;
 			
@@ -192,9 +183,9 @@ define("dojox/charting/action2d/MouseIndicator", ["dojo/_base/lang", "dojo/_base
 		},
 
 		onMouseMove: function(event){
-			//	summary:
+			// summary:
 			//		Called when the mouse is moved on the chart.
-			if(this._isMouseDown){
+			if(this._isMouseDown || this.opt.mouseOver){
 				this._onMouseSingle(event);
 			}
 		},
@@ -208,7 +199,7 @@ define("dojox/charting/action2d/MouseIndicator", ["dojo/_base/lang", "dojo/_base
 		},
 
 		onMouseUp: function(event){
-			//	summary:
+			// summary:
 			//		Called when mouse is up on the chart.
 			var plot = this.chart.getPlot(this._uName);
 			plot.stopTrack();

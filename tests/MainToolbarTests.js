@@ -1,4 +1,4 @@
-define('MainToolbarTests', ['dojo/query', 'dojo/dom-construct', 'dojo/dom-class', 'Sage/Platform/Mobile/MainToolbar'], function(query, domConstruct, domClass, MainToolbar) {
+define('tests/MainToolbarTests', ['dojo/query', 'dojo/dom-construct', 'dojo/dom-class', 'Sage/Platform/Mobile/MainToolbar'], function(query, domConstruct, domClass, MainToolbar) {
 return describe('Sage.Platform.Mobile.MainToolbar', function() {
 
     it('Can clear right toolbar items', function() {

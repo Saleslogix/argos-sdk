@@ -1,4 +1,4 @@
-define('Fields/DecimalFieldTests', ['dojo/query','dojo/dom-attr','dojo/dom-class','Sage/Platform/Mobile/Fields/DecimalField'], function(query, domAttr, domClass, DecimalField) {
+define('tests/Fields/DecimalFieldTests', ['dojo/query','dojo/dom-attr','dojo/dom-class','Sage/Platform/Mobile/Fields/DecimalField'], function(query, domAttr, domClass, DecimalField) {
 return describe('Sage.Platform.Mobile.Fields.DecimalField', function() {
 
     it('Can rouund to 2 decimal places', function() {

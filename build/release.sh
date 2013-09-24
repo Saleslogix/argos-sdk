@@ -9,7 +9,6 @@ mkdir -p deploy/content/datejs
 mkdir -p deploy/content/javascript
 mkdir -p deploy/content/images
 mkdir -p deploy/content/css
-mkdir -p deploy/content/reui
 
 # .NET Build Tool
 # mono tools/JsBit/JsBit.exe -p "build/release.jsb2" -d "."

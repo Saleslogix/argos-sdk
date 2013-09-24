@@ -27,19 +27,19 @@
 define('Sage/Platform/Mobile/View', [
     'dojo/_base/declare',
     'dojo/_base/lang',
-    'dijit/_Widget',
+    'dijit/_WidgetBase',
     'Sage/Platform/Mobile/_ActionMixin',
     'Sage/Platform/Mobile/_CustomizationMixin',
     'Sage/Platform/Mobile/_Templated'
 ], function(
     declare,
     lang,
-    _Widget,
+    _WidgetBase,
     _ActionMixin,
     _CustomizationMixin,
     _Templated
 ) {
-    return declare('Sage.Platform.Mobile.View', [_Widget, _ActionMixin, _CustomizationMixin, _Templated], {
+    return declare('Sage.Platform.Mobile.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
         /**
          * This map provides quick access to HTML properties, most notably the selected property of the container
          */
@@ -93,7 +93,16 @@ define('Sage/Platform/Mobile/View', [
          * @return {Object} The toolbar layout
          */
         getTools: function() {
-            return this._createCustomizedLayout(this.createToolLayout(), 'tools');
+            var tools = this._createCustomizedLayout(this.createToolLayout(), 'tools');
+            this.onToolLayoutCreated(tools);
+            return tools;
+        },
+        /**
+         * Called after toolBar layout is created;
+         * 
+         */
+        onToolLayoutCreated:function(tools){
+    
         },
         /**
          * Returns the tool layout that defines all toolbar items for the view
@@ -190,7 +199,11 @@ define('Sage/Platform/Mobile/View', [
 
             this.options = (data && data.options) || this.options || {};
 
-            (this.options.title) ? this.set('title', this.options.title) : this.set('title', this.titleText);
+            if (this.options.title) {
+                this.set('title', this.options.title);
+            } else {
+                this.set('title', this.titleText);
+            }
 
             this.onActivate(this);
         },
@@ -209,7 +222,11 @@ define('Sage/Platform/Mobile/View', [
 
             this.options = options || this.options || {};
 
-            (this.options.title) ? this.set('title', this.options.title) : this.set('title', this.titleText);
+            if (this.options.title) {
+                this.set('title', this.options.title);
+            } else {
+                this.set('title', this.titleText);
+            }
 
             ReUI.show(this.domNode, lang.mixin(transitionOptions || {}, {tag: this.getTag(), data: this.getContext()}));
         },

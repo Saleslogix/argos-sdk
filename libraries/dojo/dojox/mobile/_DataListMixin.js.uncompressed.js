@@ -1,40 +1,38 @@
-//>>built
 define("dojox/mobile/_DataListMixin", [
 	"dojo/_base/array",
-	"dojo/_base/connect",
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dijit/registry",	// registry.byId
-	"./ListItem"
-], function(array, connect, declare, lang, registry, ListItem){
+	"dijit/registry",
+	"./_DataMixin",
+	"./ListItem",
+	"dojo/has",
+	"dojo/has!dojo-bidi?dojox/mobile/bidi/_StoreListMixin"
+], function(array, declare, registry, DataMixin, ListItem, has, BidiDataListMixin){
 
 	// module:
 	//		dojox/mobile/_DataListMixin
-	// summary:
-	//		Mixin for widgets to generate the list items corresponding to the
-	//		data provider object.
 
-	return declare("dojox.mobile._DataListMixin", null,{
+	var _DataListMixin = declare(has("dojo-bidi") ? "dojox.mobile._NonBidiDataListMixin" : "dojox.mobile._DataListMixin", DataMixin, {
 		// summary:
 		//		Mixin for widgets to generate the list items corresponding to
 		//		the data provider object.
 		// description:
 		//		By mixing this class into the widgets, the list item nodes are
 		//		generated as the child nodes of the widget and automatically
-		//		re-generated whenever the corresponding data items are modified.
+		//		regenerated whenever the corresponding data items are modified.
 
-		// store: Object
-		//		Reference to data provider object
-		store: null,
+		// append: Boolean
+		//		If true, refresh() does not clear the existing items.
+		append: false,
 
-		// query: Object
-		//		A query that can be passed to 'store' to initially filter the
-		//		items.
-		query: null,
+		// itemMap: Object
+		//		An optional parameter mapping field names from the store to ItemList name.
+		// example:
+		//	|	itemMap:{text:'label', profile_image_url:'icon' }
+		itemMap: null,
 
-		// queryOptions: Object
-		//		An optional parameter for the query.
-		queryOptions: null,
+		// itemRenderer: ListItem class or subclass
+		//		The class used to create list items. Default is dojox/mobile/ListItem.
+		itemRenderer: ListItem,
 
 		buildRendering: function(){
 			this.inherited(arguments);
@@ -42,36 +40,6 @@ define("dojox/mobile/_DataListMixin", [
 			var store = this.store;
 			this.store = null;
 			this.setStore(store, this.query, this.queryOptions);
-		},
-
-		setStore: function(store, query, queryOptions){
-			// summary:
-			//		Sets the store to use with this widget.
-			if(store === this.store){ return; }
-			this.store = store;
-			this.query = query;
-			this.queryOptions = queryOptions;
-			if(store && store.getFeatures()["dojo.data.api.Notification"]){
-				array.forEach(this._conn || [], connect.disconnect);
-				this._conn = [
-					connect.connect(store, "onSet", this, "onSet"),
-					connect.connect(store, "onNew", this, "onNew"),
-					connect.connect(store, "onDelete", this, "onDelete")
-				];
-			}
-			this.refresh();
-		},
-
-		refresh: function(){
-			// summary:
-			//		Fetches the data and generates the list items.
-			if(!this.store){ return; }
-			this.store.fetch({
-				query: this.query,
-				queryOptions: this.queryOptions,
-				onComplete: lang.hitch(this, "onComplete"),
-				onError: lang.hitch(this, "onError")
-			});
 		},
 
 		createListItem: function(/*Object*/item){
@@ -84,20 +52,27 @@ define("dojox/mobile/_DataListMixin", [
 				if(name === labelAttr){
 					attr["label"] = this.store.getLabel(item);
 				}else{
-					attr[name] = this.store.getValue(item, name);
+					attr[(this.itemMap && this.itemMap[name]) || name] = this.store.getValue(item, name);
 				}
 			}, this);
-			var w = new ListItem(attr);
+			// TODO this code should be like for textDir in the bidi mixin createListItem method
+			// however for that dynamic set/get of the dir property must be supported first
+			// that is why for now as a workaround we keep the code here
+			if(has("dojo-bidi") && typeof attr["dir"] == "undefined"){
+				attr["dir"] = this.isLeftToRight() ? "ltr" : "rtl";
+			}
+			var w = new this.itemRenderer(attr);
 			item._widgetId = w.id;
 			return w;
 		},
-
 		generateList: function(/*Array*/items, /*Object*/dataObject){
 			// summary:
 			//		Given the data, generates a list of items.
-			array.forEach(this.getChildren(), function(child){
-				child.destroyRecursive();
-			});
+			if(!this.append){
+				array.forEach(this.getChildren(), function(child){
+					child.destroyRecursive();
+				});
+			}
 			array.forEach(items, function(item, index){
 				this.addChild(this.createListItem(item));
 			}, this);
@@ -115,20 +90,29 @@ define("dojox/mobile/_DataListMixin", [
 		},
 
 		onSet: function(/*Object*/item, /*String*/attribute, /*Object|Array*/oldValue, /*Object|Array*/newValue){
-			//	summary:
-			//		See dojo.data.api.Notification.onSet()
+			// summary:
+			//		See dojo/data/api/Notification.onSet().
 		},
 
 		onNew: function(/*Object*/newItem, /*Object?*/parentInfo){
-			//	summary:
-			//		See dojo.data.api.Notification.onNew()
+			// summary:
+			//		See dojo/data/api/Notification.onNew().
 			this.addChild(this.createListItem(newItem));
 		},
 
 		onDelete: function(/*Object*/deletedItem){
-			//	summary:
-			//		See dojo.data.api.Notification.onDelete()
+			// summary:
+			//		See dojo/data/api/Notification.onDelete().
 			registry.byId(deletedItem._widgetId).destroyRecursive();
+		},
+
+		onStoreClose: function(/*Object?*/request){
+			// summary:
+			//		Refresh list on close.
+			if(this.store.clearOnClose){
+				this.refresh();
+			}
 		}
 	});
+	return has("dojo-bidi") ? declare("dojox.mobile._DataListMixin", [_DataListMixin, BidiDataListMixin]) : _DataListMixin;	
 });

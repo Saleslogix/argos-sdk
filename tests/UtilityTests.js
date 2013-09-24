@@ -1,4 +1,4 @@
-define('UtilityTests', ['dojo/_base/lang', 'Sage/Platform/Mobile/Utility'], function(lang, utility) {
+define('tests/UtilityTests', ['dojo/_base/lang', 'Sage/Platform/Mobile/Utility'], function(lang, utility) {
 return describe('Sage.Platform.Mobile.Utility', function() {
 
     it('Can get single level property of object', function() {
@@ -74,6 +74,12 @@ return describe('Sage.Platform.Mobile.Utility', function() {
 
         expect(testObj.level1.level2.level3).toEqual('test');
     });
+    it('Can join fields filtering out null, undefined, and empty strings', function() {
+        var test = [undefined, '', null, 'john.doe'];
+        expect(utility.joinFields(',', test)).toEqual('john.doe');
+        test.push('manager');
+        expect(utility.joinFields(',', test)).toEqual('john.doe,manager');
+    });
+});
+});
 
-});
-});

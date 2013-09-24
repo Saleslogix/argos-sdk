@@ -1,137 +1,182 @@
 //>>built
-define("dojox/charting/plot2d/Grid",["dojo/_base/lang","dojo/_base/declare","dojo/_base/connect","dojo/_base/array","../Element","./common","dojox/lang/utils","dojox/gfx/fx"],function(_1,_2,_3,_4,_5,dc,du,fx){
-return _2("dojox.charting.plot2d.Grid",_5,{defaultParams:{hAxis:"x",vAxis:"y",hMajorLines:true,hMinorLines:false,vMajorLines:true,vMinorLines:false,hStripes:"none",vStripes:"none",animate:null,enableCache:false},optionalParams:{},constructor:function(_6,_7){
+define("dojox/charting/plot2d/Grid",["dojo/_base/lang","dojo/_base/declare","dojo/_base/array","dojo/sniff","./CartesianBase","./common","dojox/lang/utils","dojox/gfx/fx"],function(_1,_2,_3,_4,_5,dc,du,fx){
+var _6=function(a,b){
+return a.value-b.value;
+};
+return _2("dojox.charting.plot2d.Grid",_5,{defaultParams:{hMajorLines:true,hMinorLines:false,vMajorLines:true,vMinorLines:false,hStripes:false,vStripes:false,animate:null,enableCache:false,renderOnAxis:true},optionalParams:{majorHLine:{},minorHLine:{},majorVLine:{},minorVLine:{},hFill:{},vFill:{},hAlternateFill:{},vAlternateFill:{}},constructor:function(_7,_8){
 this.opt=_1.clone(this.defaultParams);
-du.updateWithObject(this.opt,_7);
-this.hAxis=this.opt.hAxis;
-this.vAxis=this.opt.vAxis;
-this.dirty=true;
+du.updateWithObject(this.opt,_8);
+du.updateWithPattern(this.opt,_8,this.optionalParams);
 this.animate=this.opt.animate;
-this.zoom=null,this.zoomQueue=[];
-this.lastWindow={vscale:1,hscale:1,xoffset:0,yoffset:0};
 if(this.opt.enableCache){
 this._lineFreePool=[];
 this._lineUsePool=[];
+this._rectFreePool=[];
+this._rectUsePool=[];
 }
-},clear:function(){
-this._hAxis=null;
-this._vAxis=null;
-this.dirty=true;
-return this;
-},setAxis:function(_8){
-if(_8){
-this[_8.vertical?"_vAxis":"_hAxis"]=_8;
-}
-return this;
 },addSeries:function(_9){
 return this;
 },getSeriesStats:function(){
 return _1.delegate(dc.defaultStats);
-},initializeScalers:function(){
-return this;
-},isDirty:function(){
-return this.dirty||this._hAxis&&this._hAxis.dirty||this._vAxis&&this._vAxis.dirty;
-},performZoom:function(_a,_b){
-var vs=this._vAxis.scale||1,hs=this._hAxis.scale||1,_c=_a.height-_b.b,_d=this._hAxis.getScaler().bounds,_e=(_d.from-_d.lower)*_d.scale,_f=this._vAxis.getScaler().bounds,_10=(_f.from-_f.lower)*_f.scale,_11=vs/this.lastWindow.vscale,_12=hs/this.lastWindow.hscale,_13=(this.lastWindow.xoffset-_e)/((this.lastWindow.hscale==1)?hs:this.lastWindow.hscale),_14=(_10-this.lastWindow.yoffset)/((this.lastWindow.vscale==1)?vs:this.lastWindow.vscale),_15=this.group,_16=fx.animateTransform(_1.delegate({shape:_15,duration:1200,transform:[{name:"translate",start:[0,0],end:[_b.l*(1-_12),_c*(1-_11)]},{name:"scale",start:[1,1],end:[_12,_11]},{name:"original"},{name:"translate",start:[0,0],end:[_13,_14]}]},this.zoom));
-_1.mixin(this.lastWindow,{vscale:vs,hscale:hs,xoffset:_e,yoffset:_10});
-this.zoomQueue.push(_16);
-_3.connect(_16,"onEnd",this,function(){
-this.zoom=null;
-this.zoomQueue.shift();
-if(this.zoomQueue.length>0){
-this.zoomQueue[0].play();
-}
-});
-if(this.zoomQueue.length==1){
-this.zoomQueue[0].play();
-}
-return this;
-},getRequiredColors:function(){
-return 0;
 },cleanGroup:function(){
 this.inherited(arguments);
 if(this.opt.enableCache){
 this._lineFreePool=this._lineFreePool.concat(this._lineUsePool);
 this._lineUsePool=[];
+this._rectFreePool=this._rectFreePool.concat(this._rectUsePool);
+this._rectUsePool=[];
 }
-},createLine:function(_17,_18){
-var _19;
+},createLine:function(_a,_b){
+var _c;
 if(this.opt.enableCache&&this._lineFreePool.length>0){
-_19=this._lineFreePool.pop();
-_19.setShape(_18);
-_17.add(_19);
+_c=this._lineFreePool.pop();
+_c.setShape(_b);
+_a.add(_c);
 }else{
-_19=_17.createLine(_18);
+_c=_a.createLine(_b);
 }
 if(this.opt.enableCache){
-this._lineUsePool.push(_19);
+this._lineUsePool.push(_c);
 }
-return _19;
-},render:function(dim,_1a){
+return _c;
+},createRect:function(_d,_e){
+var _f;
+if(this.opt.enableCache&&this._rectFreePool.length>0){
+_f=this._rectFreePool.pop();
+_f.setShape(_e);
+_d.add(_f);
+}else{
+_f=_d.createRect(_e);
+}
+if(this.opt.enableCache){
+this._rectUsePool.push(_f);
+}
+return _f;
+},render:function(dim,_10){
 if(this.zoom){
-return this.performZoom(dim,_1a);
+return this.performZoom(dim,_10);
 }
 this.dirty=this.isDirty();
 if(!this.dirty){
 return this;
 }
 this.cleanGroup();
-var s=this.group,ta=this.chart.theme.axis;
-try{
-var _1b=this._vAxis.getScaler(),vt=_1b.scaler.getTransformerFromModel(_1b),_1c=this._vAxis.getTicks();
-if(_1c!=null){
-if(this.opt.hMinorLines){
-_4.forEach(_1c.minor,function(_1d){
-var y=dim.height-_1a.b-vt(_1d.value);
-var _1e=this.createLine(s,{x1:_1a.l,y1:y,x2:dim.width-_1a.r,y2:y}).setStroke(ta.minorTick);
-if(this.animate){
-this._animateGrid(_1e,"h",_1a.l,_1a.r+_1a.l-dim.width);
+var s=this.getGroup(),ta=this.chart.theme,_11,_12;
+if((_4("ios")&&_4("ios")<6)||_4("android")||(_4("safari")&&!_4("ios"))){
+var w=Math.max(0,dim.width-_10.l-_10.r),h=Math.max(0,dim.height-_10.t-_10.b);
+s.createRect({x:_10.l,y:_10.t,width:w,height:h});
 }
-},this);
+if(this._vAxis){
+_12=this._vAxis.getTicks();
+var _13=this._vAxis.getScaler();
+if(_12!=null&&_13!=null){
+var vt=_13.scaler.getTransformerFromModel(_13);
+if(this.opt.hStripes){
+this._renderHRect(_12,ta.grid,dim,_10,_13,vt);
+}
+if(this.opt.hMinorLines){
+_11=this.opt.minorHLine||(ta.grid&&ta.grid.minorLine)||ta.axis.minorTick;
+this._renderHLines(_12.minor,_11,dim,_10,_13,vt);
 }
 if(this.opt.hMajorLines){
-_4.forEach(_1c.major,function(_1f){
-var y=dim.height-_1a.b-vt(_1f.value);
-var _20=this.createLine(s,{x1:_1a.l,y1:y,x2:dim.width-_1a.r,y2:y}).setStroke(ta.majorTick);
-if(this.animate){
-this._animateGrid(_20,"h",_1a.l,_1a.r+_1a.l-dim.width);
-}
-},this);
+_11=this.opt.majorHLine||(ta.grid&&ta.grid.majorLine)||ta.axis.majorTick;
+this._renderHLines(_12.major,_11,dim,_10,_13,vt);
 }
 }
 }
-catch(e){
+if(this._hAxis){
+_12=this._hAxis.getTicks();
+var _14=this._hAxis.getScaler();
+if(_12!=null&&_14!=null){
+var ht=_14.scaler.getTransformerFromModel(_14);
+if(this.opt.vStripes){
+this._renderVRect(_12,ta.grid,dim,_10,_14,ht);
 }
-try{
-var _21=this._hAxis.getScaler(),ht=_21.scaler.getTransformerFromModel(_21),_1c=this._hAxis.getTicks();
-if(this!=null){
-if(_1c&&this.opt.vMinorLines){
-_4.forEach(_1c.minor,function(_22){
-var x=_1a.l+ht(_22.value);
-var _23=this.createLine(s,{x1:x,y1:_1a.t,x2:x,y2:dim.height-_1a.b}).setStroke(ta.minorTick);
-if(this.animate){
-this._animateGrid(_23,"v",dim.height-_1a.b,dim.height-_1a.b-_1a.t);
+if(_12&&this.opt.vMinorLines){
+_11=this.opt.minorVLine||(ta.grid&&ta.grid.minorLine)||ta.axis.minorTick;
+this._renderVLines(_12.minor,_11,dim,_10,_14,ht);
 }
-},this);
-}
-if(_1c&&this.opt.vMajorLines){
-_4.forEach(_1c.major,function(_24){
-var x=_1a.l+ht(_24.value);
-var _25=this.createLine(s,{x1:x,y1:_1a.t,x2:x,y2:dim.height-_1a.b}).setStroke(ta.majorTick);
-if(this.animate){
-this._animateGrid(_25,"v",dim.height-_1a.b,dim.height-_1a.b-_1a.t);
-}
-},this);
+if(_12&&this.opt.vMajorLines){
+_11=this.opt.majorVLine||(ta.grid&&ta.grid.majorLine)||ta.axis.majorTick;
+this._renderVLines(_12.major,_11,dim,_10,_14,ht);
 }
 }
-}
-catch(e){
 }
 this.dirty=false;
 return this;
-},_animateGrid:function(_26,_27,_28,_29){
-var _2a=_27=="h"?[_28,0]:[0,_28];
-var _2b=_27=="h"?[1/_29,1]:[1,1/_29];
-fx.animateTransform(_1.delegate({shape:_26,duration:1200,transform:[{name:"translate",start:_2a,end:[0,0]},{name:"scale",start:_2b,end:[1,1]},{name:"original"}]},this.animate)).play();
+},_renderHLines:function(_15,_16,dim,_17,_18,vt){
+var s=this.getGroup();
+_3.forEach(_15,function(_19){
+if(!this.opt.renderOnAxis&&_19.value==(this._vAxis.opt.leftBottom?_18.bounds.from:_18.bounds.to)){
+return;
+}
+var y=dim.height-_17.b-vt(_19.value);
+var _1a=this.createLine(s,{x1:_17.l,y1:y,x2:dim.width-_17.r,y2:y}).setStroke(_16);
+if(this.animate){
+this._animateGrid(_1a,"h",_17.l,_17.r+_17.l-dim.width);
+}
+},this);
+},_renderVLines:function(_1b,_1c,dim,_1d,_1e,ht){
+var s=this.getGroup();
+_3.forEach(_1b,function(_1f){
+if(!this.opt.renderOnAxis&&_1f.value==(this._hAxis.opt.leftBottom?_1e.bounds.from:_1e.bounds.to)){
+return;
+}
+var x=_1d.l+ht(_1f.value);
+var _20=this.createLine(s,{x1:x,y1:_1d.t,x2:x,y2:dim.height-_1d.b}).setStroke(_1c);
+if(this.animate){
+this._animateGrid(_20,"v",dim.height-_1d.b,dim.height-_1d.b-_1d.t);
+}
+},this);
+},_renderHRect:function(_21,_22,dim,_23,_24,vt){
+var _25,_26,y,y2,_27;
+var _28=_21.major.concat(_21.minor);
+_28.sort(_6);
+if(_28[0].value>_24.bounds.from){
+_28.splice(0,0,{value:_24.bounds.from});
+}
+if(_28[_28.length-1].value<_24.bounds.to){
+_28.push({value:_24.bounds.to});
+}
+var s=this.getGroup();
+for(var j=0;j<_28.length-1;j++){
+_26=_28[j];
+y=dim.height-_23.b-vt(_26.value);
+y2=dim.height-_23.b-vt(_28[j+1].value);
+_25=(j%2==0)?(this.opt.hAlternateFill||(_22&&_22.alternateFill)):(this.opt.hFill||(_22&&_22.fill));
+if(_25){
+_27=this.createRect(s,{x:_23.l,y:y,width:dim.width-_23.r,height:y-y2}).setFill(_25);
+if(this.animate){
+this._animateGrid(_27,"h",_23.l,_23.r+_23.l-dim.width);
+}
+}
+}
+},_renderVRect:function(_29,_2a,dim,_2b,_2c,ht){
+var _2d,_2e,x,x2,_2f;
+var _30=_29.major.concat(_29.minor);
+_30.sort(_6);
+if(_30[0].value>_2c.bounds.from){
+_30.splice(0,0,{value:_2c.bounds.from});
+}
+if(_30[_30.length-1].value<_2c.bounds.to){
+_30.push({value:_2c.bounds.to});
+}
+var s=this.getGroup();
+for(var j=0;j<_30.length-1;j++){
+_2e=_30[j];
+x=_2b.l+ht(_2e.value);
+x2=_2b.l+ht(_30[j+1].value);
+_2d=(j%2==0)?(this.opt.vAlternateFill||(_2a&&_2a.alternateFill)):(this.opt.vFill||(_2a&&_2a.fill));
+if(_2d){
+_2f=this.createRect(s,{x:x,y:_2b.t,width:x2-x,height:dim.width-_2b.r}).setFill(_2d);
+if(this.animate){
+this._animateGrid(_2f,"v",dim.height-_2b.b,dim.height-_2b.b-_2b.t);
+}
+}
+}
+},_animateGrid:function(_31,_32,_33,_34){
+var _35=_32=="h"?[_33,0]:[0,_33];
+var _36=_32=="h"?[1/_34,1]:[1,1/_34];
+fx.animateTransform(_1.delegate({shape:_31,duration:1200,transform:[{name:"translate",start:_35,end:[0,0]},{name:"scale",start:_36,end:[1,1]},{name:"original"}]},this.animate)).play();
 }});
 });
