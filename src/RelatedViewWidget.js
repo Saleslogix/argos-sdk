@@ -53,7 +53,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         selectMoreDataText2: 'see ${0} more ... ',
         navToListText:'see list',
         loadingText: 'loading ... ',
-        refreshViewText: 'xrefresh',
+        refreshViewText: 'refresh',
         itemOfCountText: ' ${0} of ${1}',
         totalCountText: ' (${0})',
         parentEntry: null,
