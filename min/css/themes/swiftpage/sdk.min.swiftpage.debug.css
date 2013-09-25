@@ -1194,14 +1194,14 @@ img {
   padding: 0 2px;
 }
 .related-view-widget .tab-item > img {
-  width: 16px;
-  hieght: 16px;
+  width: 24px;
+  hieght: 24px;
 }
 .related-view-widget .tab .title {
   font-size: 0.8em;
   font-weight: bold;
   color: #727272;
-  padding: 0 10px 0 0;
+  padding: 0 0 0 14px;
   float: left;
 }
 .related-view-widget .line-bar {
@@ -1210,6 +1210,7 @@ img {
   padding: 0;
   position: relative;
   top: 0;
+  margin: 2px 0 0;
 }
 .related-view-widget .tab-icon {
   padding: 1px;
@@ -1232,14 +1233,14 @@ img {
   color: #408da7;
   font-size: 0.6em;
   font-weight: bold;
-  text-align: left;
+  text-align: right;
 }
 .related-view-widget .action-item {
   padding: 0 2px;
 }
 .related-view-widget .action-item > img {
-  width: 16px;
-  hieght: 16px;
+  width: 24px;
+  hieght: 24px;
 }
 .related-view-widget .action {
   font-weight: bold;
@@ -1273,7 +1274,8 @@ img {
   position: relative;
 }
 .related-view-widget .item {
-  line-height: 0.75em;
+  font-size: 0.85em;
+  line-height: 0.95em;
   min-height: 0.5em;
   overflow: hidden;
   padding: 0;
@@ -1300,6 +1302,7 @@ img {
   color: #727272;
   left: 40px;
   position: relative;
+  padding: 0 40px 0 0;
 }
 .related-view-widget .item .item-footer {
   font-size: 0.65em;

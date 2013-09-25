@@ -62,7 +62,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         loadingNode: null,
         id: 'related-view',
         icon: 'content/images/icons/ContactProfile_48x48.png',
-        iconitem: 'content/images/icons/ContactProfile_48x48.png',
+        itemIcon: 'content/images/icons/ContactProfile_48x48.png',
         title: 'Related View',
         detailViewId: null,
         listViewId: null,
@@ -109,10 +109,14 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     '</div>',
                     '</div>',
                     '<div class="panel">',
-                       '<div data-dojo-attach-point="actionsNode" class="action-items"></div>',
-                       '{%! $$.relatedViewHeaderTemplate %}',
-                       '<div  data-dojo-attach-point="relatedViewNode"></div>',
-                       '{%! $$.relatedViewFooterTemplate %}',
+                        '<div data-dojo-attach-point="actionsNode" class="action-items"></div>',
+                        '<div data-dojo-attach-point="headereNode" class="header">',
+                           '{%! $$.relatedViewHeaderTemplate %}',
+                        '</div>',
+                        '<div  data-dojo-attach-point="relatedViewNode"></div>',
+                        '<div data-dojo-attach-point="footerNode" class="footer">',
+                           '{%! $$.relatedViewFooterTemplate %}',
+                        '</div>',
                     '</div>',
                 '</div>',
             '</div>'
@@ -121,21 +125,21 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
              '<div class="nodata"> {%: $$.nodataText %}</div>'
         ]),
         relatedViewTabItemsTemplate: new Simplate([
-             '<span class="tab-item" data-dojo-attach-event="onclick:onNavigateToList">',
-               '<img src="{%= $.icon %}" alt="{%= $.title %}" />',
+            '<span class="tab-item">',
+            '<div class="tab-icon" data-dojo-attach-event="onclick:onNavigateToList">',
+               '<img src="{%= $.icon %}" alt="{%= $.title %}" />',                
+            '</div>',
+            '<div data-dojo-attach-point="titleNode" data-dojo-attach-event="onclick:toggleView"  class="title" >{%: ($.title ) %} </div>',
             '</span>',
-            '<span data-dojo-attach-point="titleNode" data-dojo-attach-event="onclick:toggleView"  class="title" >{%: ($.title ) %} </span>'
+            '<div class="line-bar"></div>'
         ]),
         relatedViewHeaderTemplate: new Simplate([
-           '<div class="header">',
-              '<div class="line-bar"></div>',
-          '</div>'
+            ''
         ]),
         relatedViewFooterTemplate: new Simplate([
-            '<div class="footer">',
                  '<div  data-dojo-attach-point="selectMoreNode" class="action" data-dojo-attach-event="onclick:onSelectMoreData"></div>',
-                 '<div  data-dojo-attach-point="navtoListFooterNode" class="action" data-dojo-attach-event="onclick:onNavigateToList">{%: $$.navToListText %}</div>',
-            '</div>'
+                 '<div  data-dojo-attach-point="navtoListFooterNode" class="action" data-dojo-attach-event="onclick:onNavigateToList">{%: $$.navToListText %}</div>'
+
         ]),
         relatedViewRowTemplate: new Simplate([
             '<div class="row {%: $$.cls %}"  data-relatedkey="{%: $.$key %}" data-descriptor="{%: $.$descriptor %}">',
@@ -145,7 +149,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             '</div>'
         ]),
         relatedItemIconTemplate: new Simplate([
-             '<img src="{%: $$.itemicon %}" />'
+             '<img src="{%: $$.itemIcon %}" />'
         ]),
         relatedItemHeaderTemplate: new Simplate([
               '<div>{%: $.$descriptor %}</div>'
@@ -204,8 +208,8 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                 icon: 'content/images/icons/drilldown_24.png',
                 label: this.viewContactsActionText,
                 action: 'onNavigateToList',
-                isEnabled:true
-                //fn: this.onNavigateToListView.bindDelegate(this, 'contact_related', 'Account.id eq "${0}"')
+                isEnabled:true,
+                fn: this.onNavigateToList.bindDelegate(this)
             }]
             );
         },
