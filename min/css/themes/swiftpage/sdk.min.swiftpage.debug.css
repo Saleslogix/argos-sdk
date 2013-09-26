@@ -1297,6 +1297,7 @@ img {
   color: #212721;
   left: 40px;
   position: relative;
+  padding: 0 40px 0 0;
 }
 .related-view-widget .item .item-detail {
   color: #727272;
