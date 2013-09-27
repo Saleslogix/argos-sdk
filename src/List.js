@@ -1597,7 +1597,6 @@ define('Sage/Platform/Mobile/List', [
             this.entries = {};
             this.feed = false;
             this.query = false; // todo: rename to searchQuery
-            this.defaultSearchTermSet = false;
             this.hasSearched = false;
             
             if (this._onScrollHandle) {
