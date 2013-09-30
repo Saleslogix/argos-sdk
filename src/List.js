@@ -787,6 +787,19 @@ define('Sage/Platform/Mobile/List', [
             this.inherited(arguments);
         },
         /**
+        * Shows overrides the view class to set options for the list view and then calls the inherited show method on the view.
+        * @param {Object} options The navigation options passed from the previous view.
+        * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
+        */
+       show: function(options, transitionOptions) {
+           if (options){
+               if (options.resetSearch) {
+                   this.defaultSearchTermSet = false;
+               }
+           }
+           this.inherited(arguments);
+        },
+        /**
          * Sets and returns the toolbar item layout definition, this method should be overriden in the view
          * so that you may define the views toolbar items.
          * @return {Object} this.tools

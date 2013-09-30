@@ -590,6 +590,12 @@ define('Sage/Platform/Mobile/Detail', [
                     if (current['title'])
                         context['title'] = current['title'];
 
+                    if (current['resetSearch']) {
+                        context['resetSearch'] = current['resetSearch'];
+                    } else {
+                        context['resetSearch'] = true;
+                    }
+
                     data['view'] = current['view'];
                     data['context'] = (this._navigationOptions.push(context) - 1);
                 }
