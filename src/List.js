@@ -1172,7 +1172,9 @@ define('Sage/Platform/Mobile/List', [
             if (!this.defaultSearchTerm || this.defaultSearchTermSet) {
                 return;
             }
-
+            if (!this.defaultSearchTerm) {
+                return;
+            }
             var searchQuery;
             this.setSearchTerm(this.defaultSearchTerm);
             searchQuery = this.getSearchQuery();
@@ -1604,7 +1606,9 @@ define('Sage/Platform/Mobile/List', [
                 this._onScrollHandle = null;
             }
 
-            if (all !== false && this.searchWidget) this.searchWidget.clear();
+            if (all == true && this.searchWidget) {
+                this.searchWidget.clear();
+            }
 
             domClass.remove(this.domNode, 'list-has-more');
 
