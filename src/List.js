@@ -1172,9 +1172,6 @@ define('Sage/Platform/Mobile/List', [
             if (!this.defaultSearchTerm || this.defaultSearchTermSet) {
                 return;
             }
-            if (!this.defaultSearchTerm) {
-                return;
-            }
             var searchQuery;
             this.setSearchTerm(this.defaultSearchTerm);
             searchQuery = this.getSearchQuery();
@@ -1598,9 +1595,7 @@ define('Sage/Platform/Mobile/List', [
 
             this.entries = {};
             this.feed = false;
-            this.query = false; // todo: rename to searchQuery
-            this.hasSearched = false;
-            
+
             if (this._onScrollHandle) {
                 this.disconnect(this._onScrollHandle);
                 this._onScrollHandle = null;
@@ -1608,6 +1603,8 @@ define('Sage/Platform/Mobile/List', [
 
             if (all == true && this.searchWidget) {
                 this.searchWidget.clear();
+                this.query = false; // todo: rename to searchQuery
+                this.hasSearched = false;
             }
 
             domClass.remove(this.domNode, 'list-has-more');
