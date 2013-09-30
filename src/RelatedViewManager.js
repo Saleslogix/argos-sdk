@@ -59,7 +59,7 @@ define('Sage/Platform/Mobile/RelatedViewManager',  [
             relatedViewWidget,
             relatedResults,
             options;
-            relatedContentNode = query('* > #list-item-content-related', rowNode)
+            relatedContentNode = query('> #list-item-content-related', rowNode)
             try {
                 if (relatedContentNode[0]) {
                     if (this.enabled) {
