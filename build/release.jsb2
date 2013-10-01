@@ -33,10 +33,6 @@
           "path": "../libraries/reui/"
         },
         {
-          "text": "date.js",
-          "path": "../libraries/datejs/build/"
-        },
-        {
           "text": "snap.js",
           "path": "../libraries/snap/"
         },
