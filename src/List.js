@@ -1149,7 +1149,7 @@ define('Sage/Platform/Mobile/List', [
          * @return {String}
          */
         escapeSearchQuery: function(searchQuery) {
-            return (searchQuery || '').replace(/"/g, '""');
+            return (searchQuery || '').replace(/"/g, '""'); //"
         },
         /**
          * Handler for the search widgets search.
@@ -1185,8 +1185,14 @@ define('Sage/Platform/Mobile/List', [
             if (!this.defaultSearchTerm || this.defaultSearchTermSet) {
                 return;
             }
+
             var searchQuery;
-            this.setSearchTerm(this.defaultSearchTerm);
+            if (typeof this.defaultSearchTerm === 'function') {
+                this.setSearchTerm(this.defaultSearchTerm());
+            } else {
+                this.setSearchTerm(this.defaultSearchTerm);
+            }
+
             searchQuery = this.getSearchQuery();
             if (searchQuery) {
                 this.query = searchQuery;
