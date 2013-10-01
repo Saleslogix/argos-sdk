@@ -787,6 +787,19 @@ define('Sage/Platform/Mobile/List', [
             this.inherited(arguments);
         },
         /**
+        * Shows overrides the view class to set options for the list view and then calls the inherited show method on the view.
+        * @param {Object} options The navigation options passed from the previous view.
+        * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
+        */
+       show: function(options, transitionOptions) {
+           if (options){
+               if (options.resetSearch) {
+                   this.defaultSearchTermSet = false;
+               }
+           }
+           this.inherited(arguments);
+        },
+        /**
          * Sets and returns the toolbar item layout definition, this method should be overriden in the view
          * so that you may define the views toolbar items.
          * @return {Object} this.tools
@@ -1136,7 +1149,7 @@ define('Sage/Platform/Mobile/List', [
          * @return {String}
          */
         escapeSearchQuery: function(searchQuery) {
-            return (searchQuery || '').replace(/"/g, '""');
+            return (searchQuery || '').replace(/"/g, '""'); //"
         },
         /**
          * Handler for the search widgets search.
@@ -1174,7 +1187,12 @@ define('Sage/Platform/Mobile/List', [
             }
 
             var searchQuery;
-            this.setSearchTerm(this.defaultSearchTerm);
+            if (typeof this.defaultSearchTerm === 'function') {
+                this.setSearchTerm(this.defaultSearchTerm());
+            } else {
+                this.setSearchTerm(this.defaultSearchTerm);
+            }
+
             searchQuery = this.getSearchQuery();
             if (searchQuery) {
                 this.query = searchQuery;
@@ -1596,15 +1614,17 @@ define('Sage/Platform/Mobile/List', [
 
             this.entries = {};
             this.feed = false;
-            this.query = false; // todo: rename to searchQuery
-            this.hasSearched = false;
-            
+
             if (this._onScrollHandle) {
                 this.disconnect(this._onScrollHandle);
                 this._onScrollHandle = null;
             }
 
-            if (all !== false && this.searchWidget) this.searchWidget.clear();
+            if (all == true && this.searchWidget) {
+                this.searchWidget.clear();
+                this.query = false; // todo: rename to searchQuery
+                this.hasSearched = false;
+            }
 
             domClass.remove(this.domNode, 'list-has-more');
 
