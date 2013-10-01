@@ -270,14 +270,6 @@ define('Sage/Platform/Mobile/Application', [
                 this.modules[i].init(this);
         },
         /**
-         * Loops through views and calls their `init()` function.
-         */
-        initViews: function() {
-            for (var n in this.views) {
-                this.views[n].init(); // todo: change to startup
-            }
-        },
-        /**
          * Loops through (tool)bars and calls their `init()` function.
          */
         initToolbars: function() {
@@ -300,7 +292,6 @@ define('Sage/Platform/Mobile/Application', [
             this.initServices();
             this.initModules();
             this.initToolbars();
-            this.initViews();
             this.initReUI();
         },
         /**
@@ -451,15 +442,11 @@ define('Sage/Platform/Mobile/Application', [
         registerView: function(view, domNode) {
             this.views[view.id] = view;
 
-            if (this._started) {
-                view.init();
-            }
-
             if (!domNode) {
                 this._createViewContainers();
             }
 
-            view.placeAt(domNode || this._rootDomNode, 'first');
+            view._placeAt = domNode || this._rootDomNode;
 
             this.onRegistered(view);
 
@@ -534,13 +521,22 @@ define('Sage/Platform/Mobile/Application', [
          * @return {View} view The requested view.
          */
         getView: function(key) {
-            if (key)
-            {
-                if (typeof key === 'string')
-                    return this.views[key];
+            var view;
+            if (key) {
+                if (typeof key === 'string') {
+                    view = this.views[key];
+                } else if (typeof key.id === 'string') {
+                    view = this.views[key.id];
+                }
 
-                if (typeof key === 'object' && typeof key.id === 'string')
-                    return this.views[key.id];
+                if (view && !view._started) {
+                    view.init();
+                    view.placeAt(view._placeAt, 'first');
+                    view._started = true;
+                    view._placeAt = null;
+                }
+                
+                return view;
             }
             return null;
         },
