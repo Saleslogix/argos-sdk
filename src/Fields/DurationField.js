@@ -277,6 +277,10 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
          * @param init
          */
         setValue: function(val, init) {
+            if (val === null || typeof val === 'undefined') {
+                val = 0;
+            }
+
             this.currentValue = val;
             this.set('inputValue', this.textFormat(val));
             this.hideAutoComplete();
@@ -302,7 +306,7 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
 
             for (var key in autoCompleteValues)
             {
-                stepValue = key;
+                stepValue = parseInt(key, 10);
                 if (val === 0 && stepValue === 1)
                 {
                     this.currentKey = autoCompleteValues[key];
