@@ -24,6 +24,8 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     'dojo/dom-construct',
     'dojo/query',
     'dojo/dom-attr',
+    'dojo/_base/connect',
+    'dojo/_base/array',
     'Sage/Platform/Mobile/Store/SData',
     'dijit/_Widget',
     'Sage/Platform/Mobile/_CustomizationMixin',
@@ -39,6 +41,8 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     domConstruct,
     query,
     domAttr,
+    connect,
+    array,
     SDataStore,
     _Widget,
     _CustomizationMixin,
@@ -56,7 +60,9 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         refreshViewText: 'refresh',
         itemOfCountText: ' ${0} of ${1}',
         totalCountText: ' (${0})',
+        parentProperty: '$key',
         parentEntry: null,
+        relatedProperty: '$key',
         relatedEntry: null,
         itemsNode: null,
         loadingNode: null,
@@ -70,13 +76,13 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         enabled: false,
         parentCollection: false,
         parentCollectionProperty: null,
-        relateData: null,
         resourceKind: null,
         contractName: null,
         select: null,
         where: null,
         sort: null,
         store: null,
+        relatedData: null,
         queryOptions: null,
         isLoaded: false,
         autoLoad: false,
@@ -88,8 +94,10 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         _isInitLoad: true,
         showTab: true,
         showTotalInTab: true,
+        showSelectMore: false, 
         hideWhenNoData: false,
         enableActions: true,
+        _subscribes: null,
         /**
          * @property {Simplate}
          * Simple that defines the HTML Markup
@@ -183,10 +191,10 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                   '<img src="{%= $.icon %}" alt="{%= $.label %}" />',
            '</span>'
         ]),
-
-        contructor: function(options) {
-            this.inherited(arguments);
+        constructor: function(options) {
             lang.mixin(this, options);
+            this._subscribes = [];
+            this._subscribes.push(connect.subscribe('/app/refresh', this, this._onAppRefresh));
         },
         postCreate:function(){
             if (!this.showTab) {
@@ -352,16 +360,24 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
                 }
                 if (relatedFeed.length > 0) {
+                    domClass.remove(this.containerNode, 'hidden');
+                    domClass.remove(this.tabNode, 'collapsed');
                     this.itemCount = this.itemCount + relatedFeed.length;
                     restCount = this.relatedResults.total - this.itemCount;
                     if (restCount > 0) {
                         moreCount = (restCount >= this.pageSize) ? this.pageSize : restCount;
                         moreData = string.substitute(this.selectMoreDataText, [moreCount, this.relatedResults.total]);
-                        //moreData = string.substitute(this.selectMoreDataText, [moreCount, restCount]);
+                         //moreData = string.substitute(this.selectMoreDataText, [moreCount, restCount]);
                     } else {
                         moreData = '';
                     }
-                    domAttr.set(this.selectMoreNode, { innerHTML: moreData });
+                    if (this.showSelectMore) {
+                        domAttr.set(this.selectMoreNode, { innerHTML: moreData });
+                    } else {
+                        domAttr.set(this.selectMoreNode, { innerHTML: '' });
+                        //moreData = string.substitute(this.selectMoreDataText2, ['']);
+                        //domAttr.set(this.navtoListFooterNode, { innerHTML: moreData });
+                    }
                     if (this.showTotalInTab) {
                         domAttr.set(this.titleNode, { innerHTML: this.title + "  " + string.substitute(this.totalCountText, [this.relatedResults.total]) });
                     }
@@ -376,7 +392,11 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     
                 } else {
                     if (this.hideWhenNoData) {
-                        domClass.toggle(this.containerNode, 'hidden');
+                        //domClass.toggle(this.containerNode, 'hidden');
+                        domClass.add(this.containerNode, 'hidden');
+                    }
+                    else {
+                        domClass.remove(this.containerNode, 'hidden')
                     }
                     domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
                     if (this.showTotalInTab) {
@@ -458,6 +478,10 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             evt.stopPropagation();
         },
         onRefreshView: function(evt) {
+            this._onRefreshView();
+            evt.stopPropagation();
+        },
+        _onRefreshView: function() {
             var view, nodes;
 
             if (this.itemsNode) {
@@ -468,8 +492,21 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             this.itemCount = 0;
             this.isLoaded = false;
             this.onLoad();
-
-            evt.stopPropagation();
+        },
+        _onAppRefresh: function(data) {
+            if (data && data.data) {
+                if(data.resourceKind === this.resourceKind){
+                    if (this.parentEntry && (this.parentEntry[this.parentProperty] === data.data[this.relatedProperty])){
+                        this._onRefreshView();
+                    }
+                }
+            }
+        },
+        destroy: function() {
+            array.forEach(this._subscribes, function(handle) {
+                connect.unsubscribe(handle);
+            });
+            this.inherited(arguments);
         }
     });
 });
