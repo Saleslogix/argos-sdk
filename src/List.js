@@ -1669,7 +1669,7 @@ define('Sage/Platform/Mobile/List', [
          */
        getRelatedViewManager: function(relatedView) {
             var relatedViewManager, options;
-            if (!this.relatedViewManagers)            {
+            if (!this.relatedViewManagers){
                 this.relatedViewManagers = {};
             }
             if (this.relatedViewManagers[relatedView.id]) {
@@ -1694,6 +1694,9 @@ define('Sage/Platform/Mobile/List', [
          */
         onProcessRelatedViews: function(entry, rowNode, feed) {
             var relatedViewManager,i;
+            if (this.options && this.options.simpleMode && (this.options.simpleMode === true)) {
+                return;
+            }
             if (this.relatedViews.length > 0) {
                 try {
                     for (i = 0; i < this.relatedViews.length; i++) {
