@@ -361,6 +361,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 orderBy: this.orderBy,
                 negateHistory: true,
                 continuousScrolling: false,
+                simpleMode:true,
                 tools: {
                     tbar: [{
                         id: 'complete',
