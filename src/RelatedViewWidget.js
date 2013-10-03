@@ -367,7 +367,6 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     if (restCount > 0) {
                         moreCount = (restCount >= this.pageSize) ? this.pageSize : restCount;
                         moreData = string.substitute(this.selectMoreDataText, [moreCount, this.relatedResults.total]);
-                         //moreData = string.substitute(this.selectMoreDataText, [moreCount, restCount]);
                     } else {
                         moreData = '';
                     }
@@ -375,8 +374,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                         domAttr.set(this.selectMoreNode, { innerHTML: moreData });
                     } else {
                         domAttr.set(this.selectMoreNode, { innerHTML: '' });
-                        //moreData = string.substitute(this.selectMoreDataText2, ['']);
-                        //domAttr.set(this.navtoListFooterNode, { innerHTML: moreData });
+
                     }
                     if (this.showTotalInTab) {
                         domAttr.set(this.titleNode, { innerHTML: this.title + "  " + string.substitute(this.totalCountText, [this.relatedResults.total]) });
@@ -392,7 +390,6 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                     
                 } else {
                     if (this.hideWhenNoData) {
-                        //domClass.toggle(this.containerNode, 'hidden');
                         domClass.add(this.containerNode, 'hidden');
                     }
                     else {
