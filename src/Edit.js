@@ -990,7 +990,9 @@ define('Sage/Platform/Mobile/Edit', [
             this.enable();
 
             connect.publish('/app/refresh', [{
-                resourceKind: this.resourceKind
+                resourceKind: this.resourceKind,
+                key: entry['$key'],
+                data: entry
             }]);
 
             this.onInsertCompleted(entry);
