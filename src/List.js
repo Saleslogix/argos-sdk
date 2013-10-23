@@ -1149,7 +1149,7 @@ define('Sage/Platform/Mobile/List', [
          * @return {String}
          */
         escapeSearchQuery: function(searchQuery) {
-            return (searchQuery || '').replace(/"/g, '""'); //"
+            return (searchQuery || '').replace(/"/g, '""');
         },
         /**
          * Handler for the search widgets search.
