@@ -770,7 +770,7 @@ define('Sage/Platform/Mobile/List', [
                 });
 
             this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
-            this._createCustomizedLayout(this.createRelatedViewLayout(), 'realatedViews');
+            this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
         },
         /**
          * Extends dijit Widget to destroy the search widget before destroying the view.
@@ -1620,7 +1620,7 @@ define('Sage/Platform/Mobile/List', [
                 this._onScrollHandle = null;
             }
 
-            if (all == true && this.searchWidget) {
+            if (all === true && this.searchWidget) {
                 this.searchWidget.clear();
                 this.query = false; // todo: rename to searchQuery
                 this.hasSearched = false;

@@ -135,7 +135,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         relatedViewTabItemsTemplate: new Simplate([
             '<span class="tab-item">',
             '<div class="tab-icon" data-dojo-attach-event="onclick:onNavigateToList">',
-               '<img src="{%= $.icon %}" alt="{%= $.title %}" />',                
+               '<img src="{%= $.icon %}" alt="{%= $.title %}" />',
             '</div>',
             '<div data-dojo-attach-point="titleNode" data-dojo-attach-event="onclick:toggleView"  class="title" >{%: ($.title ) %} </div>',
             '</span>',
@@ -393,7 +393,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                         domClass.add(this.containerNode, 'hidden');
                     }
                     else {
-                        domClass.remove(this.containerNode, 'hidden')
+                        domClass.remove(this.containerNode, 'hidden');
                     }
                     domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
                     if (this.showTotalInTab) {
