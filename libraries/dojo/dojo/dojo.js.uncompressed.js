@@ -102,7 +102,7 @@
 
 		forEach = function(vector, callback){
 			if(vector){
-				for(var i = 0; vector[i];){
+				for(var i = 0; i < vector.length;){
 					callback(vector[i++]);
 				}
 			}
