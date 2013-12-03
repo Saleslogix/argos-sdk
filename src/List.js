@@ -1196,6 +1196,8 @@ define('Sage/Platform/Mobile/List', [
             searchQuery = this.getSearchQuery();
             if (searchQuery) {
                 this.query = searchQuery;
+            } else {
+                this.query = '';
             }
 
             this.defaultSearchTermSet = true;
