@@ -34,7 +34,7 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/has',
     'dojo/dom-construct',
     'snap',
-    'dojo/_base/sniff',
+    'dojo/sniff',
     'dojox/mobile/sniff'
 ], function(
     json,

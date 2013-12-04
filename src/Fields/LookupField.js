@@ -20,6 +20,8 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
     'dojo/_base/lang',
     'dojo/string',
     'dojo/query',
+    'dojo/has',
+    'dojo/sniff',
     'Sage/Platform/Mobile/Utility',
     'Sage/Platform/Mobile/Fields/_Field',
     'Sage/Platform/Mobile/FieldManager'
@@ -30,6 +32,8 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
     lang,
     string,
     query,
+    has,
+    sniff,
     utility,
     _Field,
     FieldManager
@@ -426,6 +430,15 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          */
         _onClick: function(evt) {
             var buttonNode = query(evt.target).closest('.button')[0];
+
+            if (has('bb')) {
+                /*
+                 * The Blackberry Z10 has an issue where the event target of the onclick will never be the button
+                 * or span element. The event target for blackberry will alway be the input. This might be beause the
+                 * spans the entire screen, and the button overlays it.
+                 */
+                buttonNode = true;
+            }
 
             if (!this.isDisabled() && (buttonNode || this.requireSelection))
             {
