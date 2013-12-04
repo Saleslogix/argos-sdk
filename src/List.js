@@ -834,7 +834,7 @@ define('Sage/Platform/Mobile/List', [
                 var action = actions[i],
                     options = {
                         actionIndex: i,
-                        hasAccess: action.security && App.hasAccessTo(this.expandExpression(action.security)) ? true : false
+                        hasAccess: (!actions.security || (action.security && App.hasAccessTo(this.expandExpression(action.security)))) ? true : false
                     },
                     actionTemplate = action.template || this.listActionItemTemplate;
 
