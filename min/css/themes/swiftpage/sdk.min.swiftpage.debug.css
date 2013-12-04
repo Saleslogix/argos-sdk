@@ -374,9 +374,9 @@
 .row-edit[data-field-type="note"] > .button,
 .row-edit[data-field-type="signature"] > div > .button {
   margin: 0;
-  padding: 0 8px;
+  padding: 0 12px;
   position: absolute;
-  right: 4px;
+  right: 8px;
 }
 .row-edit[data-field-type="picklist"] > div > input,
 .row-edit[data-field-type="lookup"] > div > input,
