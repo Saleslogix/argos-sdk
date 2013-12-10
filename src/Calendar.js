@@ -217,7 +217,7 @@ define('Sage/Platform/Mobile/Calendar', [
             var today = moment();
 
             this.populateSelector(this.yearNode, this.year,
-                    (this.year < today.year()) - 10 ? this.year : today.year() - 10, // min 10 years in past - arbitrary min
+                    (this.year < today.year() - 10) ? this.year : today.year() - 10, // min 10 years in past - arbitrary min
                     (10 + today.year()) // max 10 years into future - arbitrary limit
             );
             this.populateSelector(this.monthNode, this.month, 0, 11);
