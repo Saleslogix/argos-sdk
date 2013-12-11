@@ -151,7 +151,7 @@ define('tests/Groups/DateTimeSectionTests', [
 
         it('should be later this year', function() {
             var dts = new DateTimeSection(), value;
-            dts.currentDate = moment().endOf('month').subtract(2, 'days');
+            dts.currentDate = moment().startOf('year').endOf('month').subtract(2, 'days');
 
             value = dts.currentDate.clone().endOf('month').add({months: 1, days: 1});
             expect(dts.getSectionKey(value)).toEqual("LaterThisYear");
