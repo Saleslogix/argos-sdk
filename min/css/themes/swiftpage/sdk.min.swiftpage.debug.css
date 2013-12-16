@@ -606,7 +606,6 @@ body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-c
   -moz-appearance: listbox;
   position: relative;
   /* Fix android browser issue with -webkit-transform blocking <select> */
-
 }
 #datetime-picker .datetime-selects td {
   border: none;
@@ -786,10 +785,8 @@ body[orient="landscape"] > .viewContainer > .list {
   position: absolute;
   top: 45px;
   /* Adjust if header toolbar changes */
-
   bottom: 0px;
   /* Adjust if footer toolbar changes */
-
   width: 100%;
   -webkit-transition-property: top, bottom;
   transition-property: top, bottom;
@@ -1107,7 +1104,6 @@ img {
 }
 .row-edit {
   /*position: relative;*/
-
   padding: 2px 0.75em;
 }
 .row-edit > div > label,

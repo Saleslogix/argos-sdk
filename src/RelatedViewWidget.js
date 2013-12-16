@@ -224,11 +224,10 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         createActions: function(actions) {
             var i,action, actionNode, actionTemplate, options;
             for (i = 0; i < actions.length; i++) {
-                  action = actions[i],
+                  action = actions[i];
                     options = {
                         actionIndex: i
-                        //hasAccess: (action.security && App.hasAccessTo(this.expandExpression(action.security))) || true
-                    },
+                    };
                     actionTemplate = action.template || this.relatedActionTemplate;
 
                 lang.mixin(action, options);
