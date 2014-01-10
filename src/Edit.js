@@ -936,8 +936,9 @@ define('Sage/Platform/Mobile/Edit', [
         disable: function() {
             this.busy = true;
 
-            if (App.bars.tbar)
-                App.bars.tbar.disable();
+            if (App.bars.tbar) {
+                App.bars.tbar.disableTool('save');
+            }
 
             domClass.add(this.domNode, 'busy');
         },
@@ -947,8 +948,9 @@ define('Sage/Platform/Mobile/Edit', [
         enable: function() {
             this.busy = false;
 
-            if (App.bars.tbar)
-                App.bars.tbar.enable();
+            if (App.bars.tbar) {
+                App.bars.tbar.enableTool('save');
+            }
 
             domClass.remove(this.domNode, 'busy');
         },
