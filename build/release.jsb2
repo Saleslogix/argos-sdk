@@ -136,10 +136,6 @@
           "path": "../src/Fields"
         },
         {
-          "text": "NoteField.js",
-          "path": "../src/Fields"
-        },
-        {
           "text": "PhoneField.js",
           "path": "../src/Fields"
         },
@@ -153,6 +149,10 @@
         },
         {
           "text": "TextAreaField.js",
+          "path": "../src/Fields"
+        },
+        {
+          "text": "NoteField.js",
           "path": "../src/Fields"
         },
         {
