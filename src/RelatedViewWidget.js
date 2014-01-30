@@ -234,7 +234,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
 
                 lang.mixin(action, options);
                 actionNode = domConstruct.toDom(actionTemplate.apply(action, action.id));
-                on(actionNode, 'click', lang.hitch(this, onInvokeActionItem));
+                on(actionNode, 'click', lang.hitch(this, this.onInvokeActionItem));
                 domConstruct.place(actionNode, this.actionsNode, 'last');
             }
 
@@ -385,7 +385,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                         itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
                         itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
                         itemNode = domConstruct.toDom(itemHTML);
-                        on(itemNode, 'click', lang.hitch(this, onSelectViewRow));
+                        on(itemNode, 'click', lang.hitch(this, this.onSelectViewRow));
                         domConstruct.place(itemNode, this.itemsNode, 'last', this);
                     }
                     
