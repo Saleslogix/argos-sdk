@@ -27,6 +27,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     'dojo/dom-construct',
     'dojo/dom-attr',
     'dojo/dom-class',
+    'dojo/dom',
     'Sage/Platform/Mobile/Fields/TextField',
     'Sage/Platform/Mobile/View'
 ], function(
@@ -36,6 +37,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     domConstruct,
     domAttr,
     domClass,
+    dom,
     TextField,
     View
 ) {
@@ -158,7 +160,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         },
         _getFileDescription: function(fileIndex) {
             var n, desc;
-            n = dojo.byId("File_" + fileIndex);
+            n = dom.byId("File_" + fileIndex);
             if (n) {
                 desc = n.value;
             }
@@ -235,7 +237,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         cancelSelect: function() {
         },
         onUpdateProgress: function(msg) {
-            var n = dojo.byId('fileselect-upload-progress');
+            var n = dom.byId('fileselect-upload-progress');
             if (n) {
                 n.innerHTML = this.loadingText + '' + msg;
             }

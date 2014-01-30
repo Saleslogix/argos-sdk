@@ -18,6 +18,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/event',
+    'dojo/on',
     'dojo/string',
     'dojo/dom-class',
     'dojo/when',
@@ -35,6 +36,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     declare,
     lang,
     event,
+    on,
     string,
     domClass,
     when,
@@ -232,7 +234,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
 
                 lang.mixin(action, options);
                 actionNode = domConstruct.toDom(actionTemplate.apply(action, action.id));
-                dojo.connect(actionNode, 'onclick', this, 'onInvokeActionItem');
+                on(actionNode, 'click', lang.hitch(this, onInvokeActionItem));
                 domConstruct.place(actionNode, this.actionsNode, 'last');
             }
 
@@ -383,7 +385,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                         itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
                         itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
                         itemNode = domConstruct.toDom(itemHTML);
-                        dojo.connect(itemNode, 'onclick', this, 'onSelectViewRow');
+                        on(itemNode, 'click', lang.hitch(this, onSelectViewRow));
                         domConstruct.place(itemNode, this.itemsNode, 'last', this);
                     }
                     
@@ -481,7 +483,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             var view, nodes;
 
             if (this.itemsNode) {
-                dojo.destroy(this.itemsNode);
+                domConstruct.destroy(this.itemsNode);
                 this.itemsNode = null;
             }
             this.startIndex = 1;
