@@ -168,8 +168,8 @@
         return fragments;
     };
 
-    var setCache = function(markup) {
-        cache[markup] = markup;
+    var setCache = function(markup, fn) {
+        cache[markup] = fn;
     };
 
     var getCache = function(markup) {
@@ -275,8 +275,8 @@
             define('Simplate', [], function() {
                 return Simplate;
             });
-        } else {
-            root.Simplate = Simplate;
         }
     }
+
+    root.Simplate = Simplate;
 })();
