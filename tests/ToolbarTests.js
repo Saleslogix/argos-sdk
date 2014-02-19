@@ -11,7 +11,7 @@ return describe('Sage.Platform.Mobile.Toolbar', function() {
 
     // mock of App
     window.App = {};
-    window.App.hasAccessTo = jasmine.createSpy().andCallFake(function(val) {
+    window.App.hasAccessTo = jasmine.createSpy().and.callFake(function(val) {
         // for testing a rejected security call
         if (val == 'false')
             return false;

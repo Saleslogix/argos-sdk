@@ -24,7 +24,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
 ) {
 
     return declare('Sage.Platform.Mobile.Groups.DateTimeSection', [_GroupBySection], {
-        name: 'DateTimeSectionFilter',        
+        name: 'DateTimeSectionFilter',
         displayNameText: 'Date Time Section',
         todayText: 'Today',
         tomorrowText: 'Tomorrow',
@@ -123,7 +123,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             if (this.isEarlierThisWeek(valueDate)) {
                 return "EarlierThisWeek";
             }
-            
+
             if (this.isYesterday(valueDate)) {
                 return "Yesterday";
             }
@@ -171,7 +171,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             return "Unknown";
         },
         isFuture: function(value) {
-            return value.year() > (this.currentDate.year() + 1); 
+            return value.year() > (this.currentDate.year() + 1);
         },
         isNextYear: function(value) {
             // Next year excluding anything that could be within the next month (next week, later this week, tomorrow)
@@ -221,7 +221,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             var monthEnd = this.currentDate.clone().endOf('month'),
                 nextWeekEnd = this.currentDate.clone().add(1, 'week').endOf('week');
 
-            return value.isAfter(this.nextWeekEnd) &&
+            return value.isAfter(nextWeekEnd) &&
                 value.isBefore(monthEnd);
         },
         isNextWeek: function(value) {

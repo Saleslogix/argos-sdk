@@ -4,9 +4,10 @@
 <head>
     <title>Argos-sdk Test Runner</title>
     <!-- jasmine -->
-    <link rel="stylesheet" type="text/css" href="../libraries/jasmine/jasmine.css">
-    <script type="text/javascript" src="../libraries/jasmine/jasmine.js"></script>
-    <script type="text/javascript" src="../libraries/jasmine/jasmine-html.js"></script>
+    <link rel="stylesheet" type="text/css" href="../libraries/jasmine-2.0.0/jasmine.css">
+    <script type="text/javascript" src="../libraries/jasmine-2.0.0/jasmine.js"></script>
+    <script type="text/javascript" src="../libraries/jasmine-2.0.0/jasmine-html.js"></script>
+    <script type="text/javascript" src="../libraries/jasmine-2.0.0/boot.js"></script>
 
     <!-- JSON -->
     <script type="text/javascript" src="../libraries/json2.js"></script>
@@ -81,7 +82,7 @@
       var jasmineEnv = jasmine.getEnv();
       jasmineEnv.updateInterval = 1000;
 
-      var htmlReporter = new jasmine.HtmlReporter();
+      var htmlReporter = new jasmine.HtmlReporter({});
 
       jasmineEnv.addReporter(htmlReporter);
 
@@ -101,7 +102,6 @@
       function execJasmine() {
         jasmineEnv.execute();
       }
-    
     });
 </script>
 </body>

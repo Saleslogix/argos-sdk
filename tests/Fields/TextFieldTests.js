@@ -43,7 +43,7 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
 
         var evt = { keyChar: 'a' };
 
-        spyOn(field, 'validate').andReturn(false);
+        spyOn(field, 'validate').and.returnValue(false);
 
         field._onKeyPress(evt);
 
@@ -59,7 +59,7 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
             stopPropagation: function() {}
         };
 
-        spyOn(field, 'validate').andReturn('false');
+        spyOn(field, 'validate').and.returnValue('false');
         spyOn(evt, 'preventDefault');
         spyOn(evt, 'stopPropagation');
 
@@ -197,7 +197,7 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
     it('Can determine if field is dirty (orig value not equal actual value)', function() {
         var field = new TextField();
 
-        spyOn(field, 'getValue').andReturn('dirty');
+        spyOn(field, 'getValue').and.returnValue('dirty');
 
         field.originalValue = 'orig';
 
@@ -206,7 +206,7 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
     it('Can determine if field is clean (orig value equal actual value)', function() {
         var field = new TextField();
 
-        spyOn(field, 'getValue').andReturn('clean');
+        spyOn(field, 'getValue').and.returnValue('clean');
 
         field.originalValue = 'clean';
 
@@ -218,7 +218,7 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
 
         field.previousValue = 'test';
 
-        spyOn(field, 'getValue').andReturn('changed');
+        spyOn(field, 'getValue').and.returnValue('changed');
         spyOn(field, 'onChange');
 
         field.onNotificationTrigger();
@@ -231,7 +231,7 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
 
         field.previousValue = 'test';
 
-        spyOn(field, 'getValue').andReturn('changed');
+        spyOn(field, 'getValue').and.returnValue('changed');
 
         field.onNotificationTrigger();
 
@@ -242,7 +242,7 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
 
         field.previousValue = 'test';
 
-        spyOn(field, 'getValue').andReturn('changed');
+        spyOn(field, 'getValue').and.returnValue('changed');
 
         field.onNotificationTrigger();
 
@@ -254,7 +254,7 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
 
         field.containerNode = document.createElement('div');
 
-        spyOn(field, 'validate').andReturn(true);
+        spyOn(field, 'validate').and.returnValue(true);
 
         field.onValidationTrigger();
 
@@ -267,7 +267,7 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
         field.containerNode = document.createElement('div');
         domClass.add(field.containerNode, 'row-error');
 
-        spyOn(field, 'validate').andReturn(false);
+        spyOn(field, 'validate').and.returnValue(false);
 
         field.onValidationTrigger();
 

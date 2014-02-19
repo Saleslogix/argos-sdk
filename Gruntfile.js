@@ -1,4 +1,4 @@
-module.exports = function(grunt) { 
+module.exports = function(grunt) {
     grunt.initConfig({
         jshint: {
             options: {
@@ -16,11 +16,18 @@ module.exports = function(grunt) {
             }
         },
         jasmine: {
-            src: ['src/**/*.js'],
-            options: {
-                specs: 'tests/**/*.js',
-                host: 'http://127.0.0.1:8000/',
-                template: 'GruntRunner.tmpl'
+            coverage: {
+                src: ['src/**/*.js'],
+                options: {
+                    specs: 'tests/**/*.js',
+                    host: 'http://127.0.0.1:8000/',
+                    template: require('grunt-template-jasmine-istanbul'),
+                    templateOptions: {
+                        coverage: 'coverage/coverage.json',
+                        report: 'coverage',
+                        template: 'GruntRunner.tmpl'
+                    }
+                }
             }
         },
         less: {
@@ -59,13 +66,13 @@ module.exports = function(grunt) {
             }
         }
     });
-    
+
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('test', ['connect', 'jasmine']);
+    grunt.registerTask('test', ['connect', 'jasmine:coverage']);
     grunt.registerTask('default', ['test']);
 };

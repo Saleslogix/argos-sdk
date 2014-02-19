@@ -298,7 +298,7 @@ return describe('Sage.Platform.Mobile.Format', function() {
         expect(format.phone(testStr)).toEqual('(123)-456-7890x123');
     });
     it('Can call alphaToPhoneNumeric when formatting a phone number', function() {
-        spyOn(format, 'alphaToPhoneNumeric').andReturn('test');
+        spyOn(format, 'alphaToPhoneNumeric').and.returnValue('test');
 
         format.phone('test');
 

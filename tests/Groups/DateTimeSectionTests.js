@@ -8,7 +8,7 @@ define('tests/Groups/DateTimeSectionTests', [
             value = moment();
             expect(dts.getSectionKey(value)).toEqual("Today");
             value.add(1, 'days');
-            expect(dts.getSectionKey(value)).toNotEqual("Today");
+            expect(dts.getSectionKey(value)).not.toBe("Today");
         });
 
         it('should be tomorrow', function() {
@@ -143,7 +143,7 @@ define('tests/Groups/DateTimeSectionTests', [
 
         it('should be earlier this year', function() {
             var dts = new DateTimeSection(), value;
-            dts.currentDate = moment().startOf('month').add(2, 'days');
+            dts.currentDate = moment().month(5).startOf('month').add(2, 'days');
 
             value = dts.currentDate.clone().startOf('month').subtract({months: 1, days: 1});
             expect(dts.getSectionKey(value)).toEqual("EarlierThisYear");
@@ -164,7 +164,7 @@ define('tests/Groups/DateTimeSectionTests', [
             value = dts.currentDate.clone().startOf('year').subtract({days: 1});
             expect(dts.getSectionKey(value)).toEqual("PastYear");
         });
-        
+
         it('should be next year', function() {
             var dts = new DateTimeSection(), value;
             dts.currentDate = moment().subtract(2, 'months');
