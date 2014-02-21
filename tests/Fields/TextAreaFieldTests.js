@@ -15,5 +15,17 @@ return describe('Sage.Platform.Mobile.Fields.TextArea', function() {
         expect(field.clearNode).toEqual(null);
     });
 
+    it('Can set the value', function() {
+        var field = new TextArea();
+        field.setValue('abc');
+        expect(field.getValue()).toBe('abc');
+
+        field.setValue();
+        expect(field.getValue()).toBe('');
+
+        field.setValue('abc', true); // initial value
+        expect(field.originalValue).toBe('abc');
+    });
+
 });
 });

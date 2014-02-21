@@ -175,6 +175,21 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
         expect(field.inputNode.value).toEqual('test');
     });
 
+    it('Connects to onkeypress if validInputOnly is true', function() {
+        var field = new TextField({ validInputOnly: true});
+        spyOn(field, 'connect');
+        field.init();
+        expect(field.connect).toHaveBeenCalled();
+    });
+
+    it('Can set input value to nothing', function() {
+        var field = new TextField();
+
+        field.setValue();
+
+        expect(field.inputNode.value).toEqual('');
+    });
+
     it('Can clear value as initial value', function() {
         var field = new TextField();
 
