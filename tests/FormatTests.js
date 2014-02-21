@@ -113,6 +113,10 @@ return describe('Sage.Platform.Mobile.Format', function() {
         var testStr = 1.999999999;
         expect(format.fixed(testStr, '6')).toEqual(1.99);
     });
+    it('Can handle bad input', function() {
+        expect(format.fixed(null)).toEqual(null);
+        expect(format.fixed()).toEqual(undefined);
+    });
 
     it('Can present as percent - single digit with default places of 2', function() {
         var testStr = .01;
