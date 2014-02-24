@@ -1,7 +1,20 @@
-define('tests/Fields/PhoneFieldTests', ['Sage/Platform/Mobile/Fields/PhoneField', 'Sage/Platform/Mobile/Format'], function(PhoneField, format) {
+define('tests/Fields/PhoneFieldTests', [
+    'Sage/Platform/Mobile/Fields/PhoneField',
+    'Sage/Platform/Mobile/Format'
+], function(
+    PhoneField,
+    format
+) {
 return describe('Sage.Platform.Mobile.Fields.PhoneField', function() {
+    it('Can call validaton on keyup', function() {
+        var field = new PhoneField();
+        field.validationTrigger = 'keyup';
+        spyOn(field, 'onValidationTrigger');
+        field._onKeyUp();
+        expect(field.onValidationTrigger).toHaveBeenCalled();
+    });
 
-    /*it('Can call format value on blur', function() {
+    it('Can call format value on blur', function() {
         var field = new PhoneField();
 
         spyOn(format, 'phone');
@@ -13,12 +26,12 @@ return describe('Sage.Platform.Mobile.Fields.PhoneField', function() {
     it('Can set formatted value to input node on blur', function() {
         var field = new PhoneField();
 
-        spyOn(format, 'phone').andReturn('test');
+        spyOn(format, 'phone').and.returnValue('test');
 
         field._onBlur();
 
         expect(field.inputNode.value).toEqual('test');
-    });*/
+    });
     it('Can strip symbols characters when first character is not +', function() {
         var field = new PhoneField();
 

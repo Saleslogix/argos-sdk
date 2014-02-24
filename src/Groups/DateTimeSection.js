@@ -53,6 +53,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
             this.init();
         },
         init: function() {
+            this.inherited(arguments);
             this.sections = [];
 
             this.sections.push({ key: 'Today', title: this.todayText, value: null });
@@ -97,6 +98,8 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
 
             if (value) {
                 valueDate = moment(value);
+            } else {
+                return 'Unknown';
             }
 
             if (this.momentLang) {
@@ -164,14 +167,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                 return "NextYear";
             }
 
-            if (this.isFuture(valueDate)) {
-                return "Future";
-            }
-
-            return "Unknown";
-        },
-        isFuture: function(value) {
-            return value.year() > (this.currentDate.year() + 1);
+            return "Future";
         },
         isNextYear: function(value) {
             // Next year excluding anything that could be within the next month (next week, later this week, tomorrow)
@@ -267,7 +263,7 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                 lastWeekEnd = lastWeekStart.clone().endOf('week');
 
             return value.isAfter(lastWeekStart) &&
-                value.isBefore(lastWeekEnd) && 
+                value.isBefore(lastWeekEnd) &&
                 !this.isYesterday(value);
         },
         isLastMonth: function(value) {

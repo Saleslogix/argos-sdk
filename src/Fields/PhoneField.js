@@ -89,10 +89,11 @@ define('Sage/Platform/Mobile/Fields/PhoneField', [
          * @param {Boolean} initial True if the value is the original/clean value.
          */
         setValue: function(val, initial) {
-            if (initial) this.originalValue = val;
-            
-            this.previousValue = false;
+            if (initial) {
+                this.originalValue = val;
+            }
 
+            this.previousValue = false;
             this.set('inputValue', format.phone(val) || '');
         },
         /**
