@@ -39,7 +39,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
     _ActionMixin,
     _Templated
 ) {
-    
+
     return declare('Sage.Platform.Mobile.Fields._Field', [_Widget, _ActionMixin, _Templated], {
         /**
          * @property {View}
@@ -96,6 +96,9 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          */
         type: null,
 
+        app: null,
+        reui: null,
+
         /**
          * @property {Simplate}
          * Simplate used to define the fields HTML Markup
@@ -114,6 +117,14 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          */
         constructor: function(o) {
             lang.mixin(this, o);
+
+            if (this.app === null) {
+                this.app = window.App;
+            }
+
+            if (this.reui === null) {
+                this.reui = window.ReUI;
+            }
         },
         /**
          * Inserts the field into the given DOM node using dijit Widget `placeAt(node)` and saves

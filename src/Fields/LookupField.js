@@ -370,8 +370,8 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                     }, {
                         id: 'cancel',
                         side: 'left',
-                        fn: ReUI.back,
-                        scope: ReUI
+                        fn: this.reui.back,
+                        scope: this.reui
                     }]
                     }
                 },
@@ -412,7 +412,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          * Navigates to the `this.view` id passing the options created from {@link #createNavigationOptions createNavigationOptions}.
          */
         navigateToListView: function() {
-            var view = App.getView(this.view),
+            var view = this.app.getView(this.view),
                 options = this.createNavigationOptions();
             if (view && options && !this.disabled) {
                 lang.mixin(view, this.viewMixin);
@@ -499,7 +499,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          */
         complete: function() {
             // todo: should there be a better way?
-            var view = App.getPrimaryActiveView();
+            var view = this.app.getPrimaryActiveView();
 
             if (view && view.get('selectionModel'))
             {
@@ -523,7 +523,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                     this.setSelections(selections);
                 }
 
-                ReUI.back();
+                this.reui.back();
 
                 // if the event is fired before the transition, any XMLHttpRequest created in an event handler and
                 // executing during the transition can potentially fail (status 0).  this might only be an issue with CORS

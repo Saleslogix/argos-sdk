@@ -33,7 +33,7 @@ return describe('Sage.Platform.Mobile.Fields.SignatureField', function() {
         };
 
         field = new Signature({
-            App: app
+            app: app
         });
 
         field.getValuesFromView();
@@ -43,9 +43,9 @@ return describe('Sage.Platform.Mobile.Fields.SignatureField', function() {
         field.getValuesFromView();
         expect(field.currentValue).toBe(null);
 
-        field = new Signature();
         original = window.App;
         window.App = app;
+        field = new Signature();
         field.getValuesFromView();
         expect(field.currentValue).toBe('value');
         window.App = original;

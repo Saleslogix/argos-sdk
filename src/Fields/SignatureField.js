@@ -85,7 +85,6 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
             width: 180,
             height: 50
         },
-        App: null,
         /**
          * @property {Simplate}
          * Simplate that defines the fields HTML Markup
@@ -117,7 +116,7 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
          */
         getValuesFromView: function() {
             var view, app;
-            app = this.App ? this.App : window.App;
+            app = this.app;
 
             var view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
             if (view)
