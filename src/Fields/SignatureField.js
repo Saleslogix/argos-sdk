@@ -85,6 +85,7 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
             width: 180,
             height: 50
         },
+        App: null,
         /**
          * @property {Simplate}
          * Simplate that defines the fields HTML Markup
@@ -99,7 +100,6 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
             '<img data-dojo-attach-point="signatureNode" src="" width="{%: $.config.width %}" height="{%: $.config.height %}" alt="" />',
             '<input data-dojo-attach-point="inputNode" type="hidden">'
         ]),
-
         /**
          * Extends the {@link EditorField#createNavigationOptions parent} implementation by
          * also passing the `signature` array.
@@ -116,7 +116,10 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
          * Complete override that gets the editor view, gets the values and calls set value on the field
          */
         getValuesFromView: function() {
-            var view = App.getPrimaryActiveView();
+            var view, app;
+            app = this.App ? this.App : window.App;
+
+            var view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
             if (view)
             {
                 var value = view.getValues();

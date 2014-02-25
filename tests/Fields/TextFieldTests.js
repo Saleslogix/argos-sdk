@@ -149,6 +149,14 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
         field._onClearClick(fakeClickEvt);
 
         expect(field.clearValue).toHaveBeenCalled();
+
+        // set the text-field-active class on the domNode
+        // clearValue should not be called if it is active
+        field = new TextField();
+        domClass.add(field.domNode, 'text-field-active');
+        spyOn(field, 'clearValue');
+        field._onClearClick(fakeClickEvt);
+        expect(field.clearValue).not.toHaveBeenCalled();
     });
 
     it('Can get value of inputNode', function() {
@@ -227,7 +235,7 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
 
         expect(field.isDirty()).toEqual(false);
     });
-    
+
     it('Can call onChange when value check fails in the notification handler', function() {
         var field = new TextField();
 
@@ -239,6 +247,13 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
         field.onNotificationTrigger();
 
         expect(field.onChange).toHaveBeenCalledWith('changed', field);
+
+        field = new TextField();
+        field.previousValue = 'changed';
+        spyOn(field, 'getValue').and.returnValue('changed');
+        spyOn(field, 'onChange');
+        field.onNotificationTrigger();
+        expect(field.onChange).not.toHaveBeenCalled();
     });
 
     it('Can set previous value to new value when value check fails in the notification handler', function() {
