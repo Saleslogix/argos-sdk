@@ -1,9 +1,14 @@
-define('tests/Fields/LookupFieldTests', ['Sage/Platform/Mobile/Fields/LookupField'], function(LookupField) {
+define('tests/Fields/LookupFieldTests', [
+    'Sage/Platform/Mobile/Fields/LookupField'
+], function(
+    LookupField
+) {
     return describe('Sage.Platform.Mobile.Fields.LookupField', function() {
         it('can clear the value', function() {
             var field = new LookupField();
             field.clearValue();
             expect(field.currentValue).toEqual(false);
+            field.destroy();
         });
 
         it('can create navigation options', function() {
@@ -11,6 +16,7 @@ define('tests/Fields/LookupFieldTests', ['Sage/Platform/Mobile/Fields/LookupFiel
             field = new LookupField();
             options = field.createNavigationOptions();
             expect(options.singleSelect).toEqual(field.singleSelect);
+            field.destroy();
         });
 
         it('can init', function() {
@@ -22,6 +28,7 @@ define('tests/Fields/LookupFieldTests', ['Sage/Platform/Mobile/Fields/LookupFiel
             spyOn(field, 'disable');
             field.init();
             expect(field.disable).toHaveBeenCalled();
+            field.destroy();
 
             // Writeable - requireSelection false
             field = new LookupField();
@@ -30,6 +37,7 @@ define('tests/Fields/LookupFieldTests', ['Sage/Platform/Mobile/Fields/LookupFiel
             spyOn(field, 'connect');
             field.init();
             expect(field.connect.calls.count()).toEqual(3);
+            field.destroy();
 
             // Writeable - requireSelection true
             field = new LookupField();
@@ -38,6 +46,7 @@ define('tests/Fields/LookupFieldTests', ['Sage/Platform/Mobile/Fields/LookupFiel
             spyOn(field, 'connect');
             field.init();
             expect(field.connect.calls.count()).toEqual(1);
+            field.destroy();
         });
 
         it('can enable', function() {
@@ -46,7 +55,7 @@ define('tests/Fields/LookupFieldTests', ['Sage/Platform/Mobile/Fields/LookupFiel
             field = new LookupField();
             field.enable();
             expect(field.inputNode.attributes.getNamedItem('disabled')).toEqual(null);
-
+            field.destroy();
         });
 
         it('can disable', function() {
@@ -55,6 +64,7 @@ define('tests/Fields/LookupFieldTests', ['Sage/Platform/Mobile/Fields/LookupFiel
             field = new LookupField();
             field.disable();
             expect(field.inputNode.attributes.getNamedItem('disabled').value).toEqual('');
+            field.destroy();
         });
 
         it('can check if readOnly', function() {
@@ -64,6 +74,7 @@ define('tests/Fields/LookupFieldTests', ['Sage/Platform/Mobile/Fields/LookupFiel
             expect(field.isReadOnly()).toEqual(true);
             field.view = true;
             expect(field.isReadOnly()).toEqual(false);
+            field.destroy();
         });
 
         it('can complete', function(done) {
@@ -107,6 +118,8 @@ define('tests/Fields/LookupFieldTests', ['Sage/Platform/Mobile/Fields/LookupFiel
                 expect(field.onChange).toHaveBeenCalled();
                 done();
             }, 100);
+
+            field.destroy();
         });
     });
 });
