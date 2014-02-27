@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         connect: {
             server: {
                 options: {
-                    port: 8000,
+                    port: 8001,
                     hostname: '127.0.0.1',
                     base: '.'
                 }
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
                 src: ['src/**/*.js'],
                 options: {
                     specs: 'tests/**/*.js',
-                    host: 'http://127.0.0.1:8000/',
+                    host: 'http://127.0.0.1:8001/',
                     template: require('grunt-template-jasmine-istanbul'),
                     templateOptions: {
                         coverage: 'coverage/coverage.json',

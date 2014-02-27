@@ -392,7 +392,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
 
             if (this.dependsOn && !dependentValue)
             {
-                alert(string.substitute(this.dependentErrorText, [this.getDependentLabel()]));
+                console.error(string.substitute(this.dependentErrorText, [this.getDependentLabel() || '']));
                 return false;
             }
 
