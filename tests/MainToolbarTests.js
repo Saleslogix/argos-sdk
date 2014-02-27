@@ -1,4 +1,16 @@
-define('tests/MainToolbarTests', ['dojo/query', 'dojo/dom-construct', 'dojo/dom-class', 'Sage/Platform/Mobile/MainToolbar'], function(query, domConstruct, domClass, MainToolbar) {
+define('tests/MainToolbarTests', [
+   'dojo/on',    
+   'dojo/query',
+   'dojo/dom-construct', 
+   'dojo/dom-class',
+   'Sage/Platform/Mobile/MainToolbar'
+], function(
+    on,
+    query, 
+    domConstruct, 
+    domClass, 
+    MainToolbar
+) {
 return describe('Sage.Platform.Mobile.MainToolbar', function() {
 
     it('Can clear right toolbar items', function() {
@@ -52,6 +64,24 @@ return describe('Sage.Platform.Mobile.MainToolbar', function() {
 
         var tool = query('> [data-action]', bar.domNode)[0];
         expect(domClass.contains(tool, 'toolButton-right')).toEqual(true);
+    });
+
+    it('Can handle no tools', function() {
+        var bar = new MainToolbar();
+
+        bar.showTools();
+        expect(bar.size).toEqual(0);
+    });
+
+    it('Can handle title click', function() {
+        var bar = new MainToolbar();
+        spyOn(bar, 'onTitleClick').and.callThrough();
+        on.emit(bar.titleNode, 'click', {
+            bubbles: true,
+            cancelable: true
+        });
+
+        expect(bar.onTitleClick).toHaveBeenCalled();
     });
 });
 });
