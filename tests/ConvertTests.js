@@ -70,6 +70,9 @@ return describe('Sage.Platform.Mobile.Convert', function() {
         var testStr = '2011-06T08:15:00-07:00';
         expect(convert.isDateString(testStr)).toEqual(false);
     });
+    it('Can skip non-string values', function() {
+        expect(convert.isDateString(null)).toEqual(false);
+    });
 
     it('Can convert Date object to ISO string', function() {
         var testDate = new Date(Date.UTC(2011, 0, 1, 8, 30, 0));
@@ -88,6 +91,12 @@ return describe('Sage.Platform.Mobile.Convert', function() {
     it('Can convert ISO string to Date object, with timezone', function() {
         var testStr = '2011-01-01T08:30:00-07:00';
         expect(convert.toDateFromString(testStr)).toEqual(new Date(Date.UTC(2011, 0, 1, 15, 30, 0)));
+
+        testStr = '2011-01-01T08:30:00+01:00';
+        expect(convert.toDateFromString(testStr)).toEqual(new Date(Date.UTC(2011, 0, 1, 7, 30, 0)));
+
+        testStr = '2011-01-01';
+        expect(convert.toDateFromString(testStr)).toEqual(new Date(Date.UTC(2011, 0, 1)));
     });
     it('Can convert JSON string to Date Object', function() {
         var testStr = '/Date(1293870600000)/';
@@ -97,6 +106,8 @@ return describe('Sage.Platform.Mobile.Convert', function() {
         var testStr = 10;
         expect(convert.toDateFromString(testStr)).toEqual(10);
     });
-
+    it('Can handle empty strings', function() {
+        expect(convert.toDateFromString('')).toEqual('');
+    });
 });
 });
