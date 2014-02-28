@@ -373,11 +373,13 @@ ReUI = {};
 
     var checkOrientationAndLocation = function() {
         // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
-        if ((window.innerHeight !== context.height || window.innerWidth !== context.width) &&
-               !(window.innerHeight !== context.height && window.innerWidth === context.width)) {
+        if (Math.abs(window.innerHeight - context.height) > 5 || Math.abs(window.innerWidth - context.width) > 5) {
+            if (Math.abs(window.innerWidth - context.width) > 5) {
+                R.setOrientation(context.height < context.width ? 'landscape' : 'portrait');
+            }
+
             context.height = window.innerHeight;
             context.width = window.innerWidth;
-            R.setOrientation(context.height < context.width ? 'landscape' : 'portrait');
         }
 
         if (context.transitioning) return;
