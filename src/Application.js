@@ -805,7 +805,7 @@ define('Sage/Platform/Mobile/Application', [
                 easing: 'ease',
                 maxPosition: 266,
                 minPosition: -266,
-                tapToClose: true,
+                tapToClose: has('ie') ? false : true, // causes issues on windows phones where tapping the close button causes snap.js endDrag to fire, closing the menu before we can check the state properly
                 touchToDrag: false,
                 slideIntent: 40,
                 minDragDistance: 5 
