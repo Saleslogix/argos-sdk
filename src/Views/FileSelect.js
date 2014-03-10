@@ -24,6 +24,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/window',
+    'dojo/has',
     'dojo/dom-construct',
     'dojo/dom-attr',
     'dojo/dom-class',
@@ -34,6 +35,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     declare,
     lang,
     win,
+    has,
     domConstruct,
     domAttr,
     domClass,
@@ -48,10 +50,11 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         addFileText: 'Click or Tap here to add a file.',
         uploadText: 'Upload',
         cancelText: 'Cancel',
-        selectFileText:'Select file', 
+        selectFileText:'Select file',
         loadingText: 'Uploading...',
         descriptionText: 'description',
         bytesText: 'bytes',
+        notSupportedText: 'Adding attachments is not supported by your device.',
 
         /**
          * @property {Simplate}
@@ -66,6 +69,14 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         loadingTemplate: new Simplate([
             '<li class="list-loading-indicator"><div id="fileselect-upload-progress">{%= $.loadingText %}</div></li>'
             //'</li>'
+        ]),
+
+        /**
+         * @property {Simplate}
+         * The template that displays when HTML5 file api is not supported.
+         */
+        notSupportedTemplate: new Simplate([
+            '<h2>{%= $$.notSupportedText %}</h2>'
         ]),
 
         /**
@@ -117,6 +128,12 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             var node;
 
             this.inherited(arguments);
+
+            if (!has('html5-file-api')) {
+                domConstruct.place(this.notSupportedTemplate.apply({}, this), this.domNode, 'only');
+                return;
+            }
+
             this._files = [];
 
             // Reset the input or the onchange will not fire if the same file is uploaded multiple times.
