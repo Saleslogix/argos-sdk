@@ -53,6 +53,10 @@ define('Sage/Platform/Mobile/Application', [
 ) {
 
     has.add('html5-file-api', function(global, document) {
+        if (has('ie')) {
+            return false;
+        }
+
         if (global.File && global.FileReader && global.FileList && global.Blob) {
             return true;
         } else {
