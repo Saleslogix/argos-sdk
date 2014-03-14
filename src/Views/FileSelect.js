@@ -24,18 +24,22 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/window',
+    'dojo/has',
     'dojo/dom-construct',
     'dojo/dom-attr',
     'dojo/dom-class',
+    'dojo/dom',
     'Sage/Platform/Mobile/Fields/TextField',
     'Sage/Platform/Mobile/View'
 ], function(
     declare,
     lang,
     win,
+    has,
     domConstruct,
     domAttr,
     domClass,
+    dom,
     TextField,
     View
 ) {
@@ -46,10 +50,11 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         addFileText: 'Click or Tap here to add a file.',
         uploadText: 'Upload',
         cancelText: 'Cancel',
-        selectFileText:'Select file', 
+        selectFileText:'Select file',
         loadingText: 'Uploading...',
         descriptionText: 'description',
         bytesText: 'bytes',
+        notSupportedText: 'Adding attachments is not supported by your device.',
 
         /**
          * @property {Simplate}
@@ -64,6 +69,14 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         loadingTemplate: new Simplate([
             '<li class="list-loading-indicator"><div id="fileselect-upload-progress">{%= $.loadingText %}</div></li>'
             //'</li>'
+        ]),
+
+        /**
+         * @property {Simplate}
+         * The template that displays when HTML5 file api is not supported.
+         */
+        notSupportedTemplate: new Simplate([
+            '<h2>{%= $$.notSupportedText %}</h2>'
         ]),
 
         /**
@@ -115,6 +128,12 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             var node;
 
             this.inherited(arguments);
+
+            if (!has('html5-file-api')) {
+                domConstruct.place(this.notSupportedTemplate.apply({}, this), this.domNode, 'only');
+                return;
+            }
+
             this._files = [];
 
             // Reset the input or the onchange will not fire if the same file is uploaded multiple times.
@@ -158,7 +177,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         },
         _getFileDescription: function(fileIndex) {
             var n, desc;
-            n = dojo.byId("File_" + fileIndex);
+            n = dom.byId("File_" + fileIndex);
             if (n) {
                 desc = n.value;
             }
@@ -235,7 +254,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         cancelSelect: function() {
         },
         onUpdateProgress: function(msg) {
-            var n = dojo.byId('fileselect-upload-progress');
+            var n = dom.byId('fileselect-upload-progress');
             if (n) {
                 n.innerHTML = this.loadingText + '' + msg;
             }

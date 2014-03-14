@@ -3,23 +3,12 @@
 <head>
   <meta charset="utf-8">
   <title>Jasmine Spec Runner</title>
-<% with (scripts) { %>
- <% jasmine.forEach(function(script) { %>
-   <script type="text/javascript" src="<%= script %>"></script>
- <% }); %>
- 
-  <% vendor.forEach(function(script) { %>
-   <script type="text/javascript" src="<%= script %>"></script>
- <% }); %>
- 
- <% helpers.forEach(function(script) { %>
-   <script type="text/javascript" src="<%= script %>"></script>
- <% }); %>
- 
- <% reporters.forEach(function(script) { %>
-   <script type="text/javascript" src="<%= script %>"></script>
- <% }); %>
-<% }; %>
+  <% with (scripts) { %>
+    <% [].concat(polyfills, jasmine, vendor, helpers).forEach(function(script){ %>
+    <script src="<%= script %>"></script>
+    <% }) %>
+
+  <% }; %>
 
   <!-- JSON -->
   <script type="text/javascript" src="libraries/json2.js"></script>
@@ -62,17 +51,19 @@
             { name: 'dojox', location: 'libraries/dojo/dojox' },
             { name: 'snap', location: 'libraries/snap', main: 'snap' },
             { name: 'moment', location: 'libraries/moment', main: 'moment' },
-            { name: 'Sage/Platform/Mobile', location: 'src' },
+            { name: 'Sage/Platform/Mobile', location: '.grunt/grunt-contrib-jasmine/src' },// istanbul outputs the instrumented to this temp folder
             { name: 'tests', location: 'tests' }
         ],
         paths: {
-            'Sage/Platform/Mobile': 'src'
+            'Sage/Platform/Mobile': '.grunt/grunt-contrib-jasmine/src'
         }
   });
   </script>
   <% css.forEach(function(style){ %>
   <link rel="stylesheet" type="text/css" href="<%= style %>">
   <% }); %>
+
+
 
 </head>
 <body>
@@ -82,30 +73,10 @@
   <% specs.forEach(function(spec) { %>
     '<%= spec.replace("./tests", "tests").replace(".js", "") %>',
   <% }); %>
+    '<%= boot %>',
+    '<%= reporters[0] %>',
+    '<%= reporters[1] %>'
   ], function() {
-      var jasmineEnv = jasmine.getEnv();
-      jasmineEnv.updateInterval = 1000;
-
-      var htmlReporter = new jasmine.HtmlReporter();
-
-      jasmineEnv.addReporter(htmlReporter);
-
-      jasmineEnv.specFilter = function(spec) {
-        return htmlReporter.specFilter(spec);
-      };
-
-      var currentWindowOnload = window.onload;
-
-      window.onload = function() {
-        if (currentWindowOnload) {
-          currentWindowOnload();
-        }
-        execJasmine();
-      };
-
-      function execJasmine() {
-        jasmineEnv.execute();
-      }
   });
   <% }; %>
   </script>

@@ -42,24 +42,6 @@ define('Sage/Platform/Mobile/Store/SData', [
     convert,
     utility
 ) {
-    var parseOrderByRE = /((?:\w+)(?:\.\w+)?)(?:\s+(asc|desc))?/g,
-        parseOrderBy = function(expression) {
-            if (typeof expression !== 'string') return expression;
-
-            var match,
-                result = [];
-
-            while ((match = parseOrderByRE.exec(expression)))
-            {
-                result.push({
-                    attribute: match[1],
-                    descending: match[2] && match[2].toLowerCase() == 'desc'
-                });
-            }
-
-            return result;
-        };
-
     return declare('Sage.Platform.Mobile.Store.SData', null, {
         doDateConversion: false,
 
@@ -278,28 +260,12 @@ define('Sage/Platform/Mobile/Store/SData', [
 
             deferred.reject(error);
         },
-        _onCancel: function(handle) {
-            this.store.abort(handle.value);
-        },
         _handleDateConversion: function(entry) {
             for (var prop in entry)
             {
                 if (convert.isDateString(entry[prop]))
                 {
                     entry[prop] = convert.toDateFromString(entry[prop]);
-                }
-            }
-
-            return entry;
-        },
-        _handleDateSerialization: function(entry) {
-            for (var prop in entry)
-            {
-                if (entry[prop] instanceof Date)
-                {
-                    entry[prop] = this.service.isJsonEnabled()
-                        ? convert.toJsonStringFromDate(entry[prop])
-                        : convert.toIsoStringFromDate(entry[prop]);
                 }
             }
 
@@ -314,7 +280,7 @@ define('Sage/Platform/Mobile/Store/SData', [
             //		The object in the store that matches the given id.
 
             var handle = {},
-                deferred = new Deferred(lang.hitch(this, this._onCancel, handle)),
+                deferred = new Deferred(),
                 request = this._createEntryRequest(id, getOptions || {});
 
             var method = this.executeGetAs
@@ -368,7 +334,7 @@ define('Sage/Platform/Mobile/Store/SData', [
             if (version) object['$etag'] = version;
 
             var handle = {},
-                deferred = new Deferred(lang.hitch(this, this._onCancel, handle)),
+                deferred = new Deferred(),
                 request = this._createEntryRequest(id, putOptions);
 
             var method = putOptions.overwrite
@@ -427,7 +393,7 @@ define('Sage/Platform/Mobile/Store/SData', [
             //	|	});
 
             var handle = {},
-                queryDeferred = new Deferred(lang.hitch(this, this._onCancel, handle)),
+                queryDeferred = new Deferred(),
                 request = this._createFeedRequest(query, queryOptions || {});
 
             queryDeferred.total = -1;
@@ -446,25 +412,6 @@ define('Sage/Platform/Mobile/Store/SData', [
             });
 
             return QueryResults(queryDeferred);
-        },
-        transaction: function() {
-            // summary:
-            //		Starts a new transaction.
-            //		Note that a store user might not call transaction() prior to using put,
-            //		delete, etc. in which case these operations effectively could be thought of
-            //		as "auto-commit" style actions.
-            // returns: dojo.store.api.Store.Transaction
-            //		This represents the new current transaction.
-        },
-        getChildren: function(parent, options){
-            // summary:
-            //		Retrieves the children of an object.
-            // parent: Object
-            //		The object to find the children of.
-            // options: dojo.store.api.Store.QueryOptions?
-            //		Additional options to apply to the retrieval of the children.
-            // returns: dojo.store.api.Store.QueryResults
-            //		A result set of the children of the parent object.
         },
         getMetadata: function(object) {
             if (object)

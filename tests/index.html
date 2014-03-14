@@ -4,9 +4,9 @@
 <head>
     <title>Argos-sdk Test Runner</title>
     <!-- jasmine -->
-    <link rel="stylesheet" type="text/css" href="../libraries/jasmine/jasmine.css">
-    <script type="text/javascript" src="../libraries/jasmine/jasmine.js"></script>
-    <script type="text/javascript" src="../libraries/jasmine/jasmine-html.js"></script>
+    <link rel="stylesheet" type="text/css" href="../libraries/jasmine-2.0.0/jasmine.css">
+    <script type="text/javascript" src="../libraries/jasmine-2.0.0/jasmine.js"></script>
+    <script type="text/javascript" src="../libraries/jasmine-2.0.0/jasmine-html.js"></script>
 
     <!-- JSON -->
     <script type="text/javascript" src="../libraries/json2.js"></script>
@@ -68,6 +68,7 @@
         'tests/ToolbarTests',
         'tests/UtilityTests',
         'tests/Fields/_FieldTests',
+        'tests/Fields/LookupFieldTests',
         'tests/Fields/NoteFieldTests',
         'tests/Fields/PhoneFieldTests',
         'tests/Fields/SelectFieldTests',
@@ -75,33 +76,10 @@
         'tests/Fields/TextAreaFieldTests',
         'tests/Fields/TextFieldTests',
         'tests/Fields/DecimalFieldTests',
-        'tests/Groups/DateTimeSectionTests'
+        'tests/Groups/DateTimeSectionTests',
+        'tests/Stores/SData',
+        '../libraries/jasmine-2.0.0/boot.js'
     ], function () {
-
-      var jasmineEnv = jasmine.getEnv();
-      jasmineEnv.updateInterval = 1000;
-
-      var htmlReporter = new jasmine.HtmlReporter();
-
-      jasmineEnv.addReporter(htmlReporter);
-
-      jasmineEnv.specFilter = function(spec) {
-        return htmlReporter.specFilter(spec);
-      };
-
-      var currentWindowOnload = window.onload;
-
-      window.onload = function() {
-        if (currentWindowOnload) {
-          currentWindowOnload();
-        }
-        execJasmine();
-      };
-
-      function execJasmine() {
-        jasmineEnv.execute();
-      }
-    
     });
 </script>
 </body>

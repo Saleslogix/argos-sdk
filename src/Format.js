@@ -290,6 +290,10 @@ define('Sage/Platform/Mobile/Format', [
          * @return {Number} Fixed number.
          */
         fixed: function(val, d) {
+            if (typeof val !== 'number' && typeof val !== 'string') {
+                return val;
+            }
+
             if (typeof d !== 'number')
                 d = 2;
 

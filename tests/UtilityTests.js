@@ -33,6 +33,52 @@ return describe('Sage.Platform.Mobile.Utility', function() {
         expect(utility.getValue(testObj, 'level1', 'testFallback')).toEqual('testFallback');
     });
 
+    it('Can not set an invalid property', function() {
+        var testObj = {
+            test: null
+        };
+
+        expect(utility.setValue(testObj, '', '').test).toEqual(null);
+        expect(utility.setValue(testObj, '.', '').test).toEqual(null);
+    });
+
+    it('Can memoize', function() {
+        var spy, mem;
+
+        spy = {
+            adder: function(a, b) {
+                return a + b;
+            }
+        };
+
+        spyOn(spy, 'adder').and.callThrough();
+
+        mem = utility.memoize(spy.adder);
+        mem(1, 2);
+        mem(1, 2);
+        expect(spy.adder.calls.count()).toEqual(1);
+    });
+
+    it('Can expand an expression', function() {
+        expect(utility.expand(null, function() {
+            return '123';
+        })).toEqual('123');
+    });
+
+    it('Can set nested properties', function() {
+        var testObj = {
+            test1: {
+                test2: {
+                    name: ''
+                }
+            }
+        };
+
+        expect(utility.setValue(testObj, 'test1.test2.name', 'John Doe').test1.test2.name).toEqual('John Doe');
+        expect(utility.setValue({test1: { test2: {}}}, 'test1[test2]', 'Jane Doe')).toEqual({ test1: { test2: 'Jane Doe' }});
+        expect(utility.setValue({test1: {}}, 'test2[0]', 'Jane Doe')).toEqual({ test1: { }, test2: ['Jane Doe'] });
+    });
+
     it('Can set an existing single level property of object', function() {
         var testObj = {
             level1: null

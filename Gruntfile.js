@@ -1,4 +1,4 @@
-module.exports = function(grunt) { 
+module.exports = function(grunt) {
     grunt.initConfig({
         jshint: {
             options: {
@@ -9,18 +9,35 @@ module.exports = function(grunt) {
         connect: {
             server: {
                 options: {
-                    port: 8000,
+                    port: 8001,
                     hostname: '127.0.0.1',
                     base: '.'
                 }
             }
         },
         jasmine: {
-            src: ['src/**/*.js'],
-            options: {
-                specs: 'tests/**/*.js',
-                host: 'http://127.0.0.1:8000/',
-                template: 'GruntRunner.tmpl'
+            coverage: {
+                src: ['src/**/*.js'],
+                options: {
+                    specs: 'tests/**/*.js',
+                    host: 'http://127.0.0.1:8001/',
+                    template: require('grunt-template-jasmine-istanbul'),
+                    templateOptions: {
+                        coverage: 'coverage/coverage.json',
+                        report: [
+                            {
+                                type: 'text'
+                            },
+                            {
+                                type: 'html',
+                                options: {
+                                    dir: 'coverage'
+                                }
+                            }
+                        ],
+                        template: 'GruntRunner.tmpl'
+                    }
+                }
             }
         },
         less: {
@@ -59,13 +76,13 @@ module.exports = function(grunt) {
             }
         }
     });
-    
+
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('test', ['connect', 'jasmine']);
+    grunt.registerTask('test', ['connect', 'jasmine:coverage']);
     grunt.registerTask('default', ['test']);
 };

@@ -85,7 +85,7 @@ define('tests/SearchWidgetTests', ['dojo/query','dojo/dom-class','Sage/Platform/
                     }
                 }
             );
-            spyOn(searchWidget, 'formatSearchQuery').andCallThrough();
+            spyOn(searchWidget, 'formatSearchQuery').and.callThrough();
 
             expect(searchWidget.hashTagSearch('#test john')).toEqual('(query) and (where=john)');
             expect(searchWidget.formatSearchQuery).toHaveBeenCalledWith('john');
@@ -123,7 +123,7 @@ define('tests/SearchWidgetTests', ['dojo/query','dojo/dom-class','Sage/Platform/
             searchWidget.queryNode.value = 'search';
 
 
-            spyOn(searchWidget, 'formatSearchQuery').andCallThrough();
+            spyOn(searchWidget, 'formatSearchQuery').and.callThrough();
             spyOn(searchWidget, 'onSearchExpression');
 
             searchWidget.search();
@@ -136,7 +136,7 @@ define('tests/SearchWidgetTests', ['dojo/query','dojo/dom-class','Sage/Platform/
             searchWidget.queryNode.value = '#!test';
 
 
-            spyOn(searchWidget, 'customSearch').andCallThrough();
+            spyOn(searchWidget, 'customSearch').and.callThrough();
             spyOn(searchWidget, 'onSearchExpression');
 
             searchWidget.search();
@@ -159,8 +159,8 @@ define('tests/SearchWidgetTests', ['dojo/query','dojo/dom-class','Sage/Platform/
                 }
             );
 
-            spyOn(searchWidget, 'formatSearchQuery').andCallThrough();
-            spyOn(searchWidget, 'hashTagSearch').andCallThrough();
+            spyOn(searchWidget, 'formatSearchQuery').and.callThrough();
+            spyOn(searchWidget, 'hashTagSearch').and.callThrough();
             spyOn(searchWidget, 'onSearchExpression');
 
             searchWidget.search();
@@ -184,7 +184,7 @@ define('tests/SearchWidgetTests', ['dojo/query','dojo/dom-class','Sage/Platform/
             );
             searchWidget.queryNode.value = '#test #test1';
 
-            spyOn(searchWidget, 'hashTagSearch').andCallThrough();
+            spyOn(searchWidget, 'hashTagSearch').and.callThrough();
             spyOn(searchWidget, 'onSearchExpression');
 
             searchWidget.search();
@@ -207,8 +207,8 @@ define('tests/SearchWidgetTests', ['dojo/query','dojo/dom-class','Sage/Platform/
             );
             searchWidget.queryNode.value = '#test search';
 
-            spyOn(searchWidget, 'hashTagSearch').andCallThrough();
-            spyOn(searchWidget, 'formatSearchQuery').andCallThrough();
+            spyOn(searchWidget, 'hashTagSearch').and.callThrough();
+            spyOn(searchWidget, 'formatSearchQuery').and.callThrough();
             spyOn(searchWidget, 'onSearchExpression');
 
             searchWidget.search();

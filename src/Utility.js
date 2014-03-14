@@ -87,15 +87,12 @@ define('Sage/Platform/Mobile/Utility', [
             while ((typeof current !== "undefined") && path.length > 1)
             {
                 var key = path.pop();
-                if (path.length > 0)
-                {
-                    var next = path[path.length - 1];
-                    current = current[key] = (typeof current[key] !== "undefined")
-                        ? current[key]
-                        : (typeof next === "number")
-                            ? []
-                            : {};
-                }
+                var next = path[path.length - 1];
+                current = current[key] = (typeof current[key] !== "undefined")
+                    ? current[key]
+                    : (typeof next === "number")
+                        ? []
+                        : {};
             }
             if (typeof path[0] !== "undefined")
                 current[path[0]] = val;

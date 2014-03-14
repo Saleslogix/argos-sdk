@@ -1202,6 +1202,12 @@ define('Sage/Platform/Mobile/List', [
 
             this.defaultSearchTermSet = true;
         },
+        getSearchQuery:function(){
+            if (this.searchWidget) {
+                return this.searchWidget.getFormattedSearchQuery();
+            }
+            return null;
+        },
         /**
          * Creates SDataResourceCollectionRequest instance and sets a number of known properties.
          *

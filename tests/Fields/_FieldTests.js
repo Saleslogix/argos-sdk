@@ -1,6 +1,11 @@
 define('tests/Fields/_FieldTests', ['dojo/query','Sage/Platform/Mobile/Fields/_Field'], function(query, _Field) {
 return describe('Sage.Platform.Mobile.Fields._Field', function() {
 
+    it('Returns true as a default for isDirty()', function() {
+        var field = new _Field();
+        expect(field.isDirty()).toBe(true);
+    });
+
     it('Can mixin properties on construction', function() {
         var field = new _Field({test:'test'});
 

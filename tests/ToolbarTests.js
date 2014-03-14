@@ -11,7 +11,7 @@ return describe('Sage.Platform.Mobile.Toolbar', function() {
 
     // mock of App
     window.App = {};
-    window.App.hasAccessTo = jasmine.createSpy().andCallFake(function(val) {
+    window.App.hasAccessTo = jasmine.createSpy().and.callFake(function(val) {
         // for testing a rejected security call
         if (val == 'false')
             return false;
@@ -65,6 +65,10 @@ return describe('Sage.Platform.Mobile.Toolbar', function() {
         bar.enableTool('test');
 
         expect(bar.tools.test['enabled']).toEqual(true);
+
+        expect(function() {
+            bar.enableTool();
+        }).not.toThrow();
     });
 
     it('Can disable toolbar item', function() {
@@ -76,6 +80,10 @@ return describe('Sage.Platform.Mobile.Toolbar', function() {
         bar.disableTool('test');
 
         expect(bar.tools.test['enabled']).toEqual(false);
+
+        expect(function() {
+            bar.disableTool();
+        }).not.toThrow();
     });
 
     it('Can indicate toolbar item is busy', function() {
@@ -87,6 +95,10 @@ return describe('Sage.Platform.Mobile.Toolbar', function() {
         bar.indicateToolBusy('test');
 
         expect(bar.tools.test['busy']).toEqual(true);
+
+        expect(function() {
+            bar.indicateToolBusy();
+        }).not.toThrow();
     });
 
     it('Can clear toolbar item busy status', function() {
@@ -98,6 +110,10 @@ return describe('Sage.Platform.Mobile.Toolbar', function() {
         bar.clearToolBusy('test');
 
         expect(bar.tools.test['busy']).toEqual(false);
+
+        expect(function() {
+            bar.clearToolBusy();
+        }).not.toThrow();
     });
 
     it('Can detect when a tool is enabled', function() {
@@ -127,6 +143,22 @@ return describe('Sage.Platform.Mobile.Toolbar', function() {
         bar.showTools([
             {
                 id: 'test'
+            }
+        ]);
+
+        expect(bar.tools.test['enabled']).toEqual(true);
+        expect(bar.tools.test['busy']).toEqual(false);
+        expect(bar.tools.test['source'].id).toEqual('test');
+    });
+    it('Can show tools, expect security', function() {
+        var bar = new Toolbar();
+        bar.init();
+        bar.showTools([
+            {
+                id: 'test',
+                security: function() {
+                    return true;
+                }
             }
         ]);
 

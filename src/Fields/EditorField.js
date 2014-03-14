@@ -177,7 +177,7 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
                         scope: ReUI
                     }]
                 },
-                entry: this.originalValue,
+                entry: this.originalValue || this.validationValue,
                 changes: this.currentValue,
                 entityName: this.entityName || (this.owner && this.owner.entityName),
                 negateHistory: true
@@ -187,13 +187,14 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
          * Navigates to the given `this.view` using the options from {@link #createNavigationOptions createNavigationOptions}.
          */
         navigateToEditView: function() {
-            if (this.isDisabled()) return;
+            if (this.isDisabled()) {
+                return;
+            }
 
             var view = App.getView(this.view),
                 options = this.createNavigationOptions();
 
-            if (view && options)
-            {
+            if (view && options) {
                 if (options.title) view.set('title', options.title);
                 view.show(options);
             }
@@ -218,12 +219,19 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
             var view = App.getPrimaryActiveView(),
                 values = view && view.getValues();
 
-            if (view && values)
-            {
-                // todo: is this the appropriate way to handle this?  do not want $key, $name, etc., when applying values.
-                // difference is primarily "as component" vs. "as child".
-                this.currentValue = this.applyTo ? values : view.createEntry();
-                this.validationValue = view.getValues(true); // store all editor values for validation, not only dirty values
+            if (view && values) {
+                if (this.applyTo) {
+                    this.currentValue = values;
+                } else if (this.owner.inserting) {
+                    // If we are inserting a new value, we want all the fields, not just fields that changed (if the user edited multiple times)
+                    this.currentValue = view.getValues(true);
+                } else {
+                    // Gets an entry with fields that are dirty
+                    this.currentValue = view.createEntry();
+                }
+
+                // store all editor values for validation, not only dirty values
+                this.validationValue = view.getValues(true); 
             }
         },
         /**

@@ -2,13 +2,55 @@ define('tests/Groups/DateTimeSectionTests', [
        'Sage/Platform/Mobile/Groups/DateTimeSection'
 ], function(DateTimeSection) {
     return describe('Sage.Platform.Mobile.Groups.DateTimeSection', function() {
+        it('can get a default section', function() {
+            var dts = new DateTimeSection();
+            expect(dts.getDefaultSection().key).toBe("Unknown");
+        });
+
+        it('can get a section', function() {
+            var dts = new DateTimeSection();
+            dts.groupByProperty = 'Test';
+            expect(dts.getSection({}).key).toBe('Unknown');
+            expect(dts.getSection({'Test': moment()}).key).toBe('Today');
+            expect(dts.getSection()).toBe(null);
+
+            dts.groupByProperty = '';
+            expect(dts.getSection({})).toBe(null);
+
+            expect(dts.getGroupSection()).toBe(undefined);
+
+            dts.groupByProperty = 'Test';
+            expect(dts.getOrderByQuery()).toBe('Test desc');
+            dts.sortDirection = 'asc';
+            expect(dts.getOrderByQuery()).toBe('Test asc');
+        });
+
+        it('can get a section by key', function() {
+            var dts = new DateTimeSection();
+            dts.init();
+            expect(dts.getSectionByKey('Foo').key).toBe('Unknown');
+        });
+
+        it('can get section key', function() {
+            var dts = new DateTimeSection();
+            dts.init();
+            expect(dts.getSectionKey(null)).toBe('Unknown');
+        });
+
+        it('can use a momentLang', function() {
+            var dts = new DateTimeSection();
+            dts.init();
+            dts.momentLang = 'en';
+            expect(dts.getSectionKey(moment())).toBe('Today');
+        });
+
         it('should be today', function() {
             var dts = new DateTimeSection(), value;
             dts.currentDate = moment();
             value = moment();
             expect(dts.getSectionKey(value)).toEqual("Today");
             value.add(1, 'days');
-            expect(dts.getSectionKey(value)).toNotEqual("Today");
+            expect(dts.getSectionKey(value)).not.toBe("Today");
         });
 
         it('should be tomorrow', function() {
@@ -143,7 +185,7 @@ define('tests/Groups/DateTimeSectionTests', [
 
         it('should be earlier this year', function() {
             var dts = new DateTimeSection(), value;
-            dts.currentDate = moment().startOf('month').add(2, 'days');
+            dts.currentDate = moment().month(5).startOf('month').add(2, 'days');
 
             value = dts.currentDate.clone().startOf('month').subtract({months: 1, days: 1});
             expect(dts.getSectionKey(value)).toEqual("EarlierThisYear");
@@ -164,7 +206,7 @@ define('tests/Groups/DateTimeSectionTests', [
             value = dts.currentDate.clone().startOf('year').subtract({days: 1});
             expect(dts.getSectionKey(value)).toEqual("PastYear");
         });
-        
+
         it('should be next year', function() {
             var dts = new DateTimeSection(), value;
             dts.currentDate = moment().subtract(2, 'months');
