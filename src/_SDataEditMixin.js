@@ -85,14 +85,17 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
         createTemplateRequest: function() {
             var request = new Sage.SData.Client.SDataTemplateResourceRequest(this.getService());
 
-            if (this.resourceKind)
+            if (this.resourceKind) {
                 request.setResourceKind(this.resourceKind);
+            }
 
-            if (this.querySelect)
+            if (this.querySelect) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Select, this.querySelect.join(','));
+            }
 
-            if (this.queryInclude)
+            if (this.queryInclude) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Include, this.queryInclude.join(','));
+            }
 
             return request;
         },
@@ -101,12 +104,13 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
          */
         requestTemplate: function() {
             var request = this.createTemplateRequest();
-            if (request)
+            if (request) {
                 request.read({
                     success: this.onRequestTemplateSuccess,
                     failure: this.onRequestTemplateFailure,
                     scope: this
                 });
+            }
         },
         /**
          * Handler when an error occurs while request data from the SData endpoint.
@@ -146,8 +150,7 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
 
             // if an entry has been passed through options, apply it here, now that the template has been applied.
             // in this case, since we are doing an insert (only time template is used), the entry is applied as modified data.
-            if (this.options.entry)
-            {
+            if (this.options.entry) {
                 this.entry = this.convertEntry(this.options.entry);
                 this.setValues(this.entry);
             }

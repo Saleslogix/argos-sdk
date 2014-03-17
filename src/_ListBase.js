@@ -461,14 +461,14 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @private
          */
         _setSelectionModelAttr: function(selectionModel) {
-            if (this._selectionConnects)
+            if (this._selectionConnects) {
                 array.forEach(this._selectionConnects, this.disconnect, this);
+            }
 
             this._selectionModel = selectionModel;
             this._selectionConnects = [];
 
-            if (this._selectionModel)
-            {
+            if (this._selectionModel) {
                 this._selectionConnects.push(
                     this.connect(this._selectionModel, 'onSelect', this._onSelectionModelSelect),
                     this.connect(this._selectionModel, 'onDeselect', this._onSelectionModelDeselect),
@@ -492,9 +492,9 @@ define('Sage/Platform/Mobile/_ListBase', [
         postCreate: function() {
             this.inherited(arguments);
 
-            if (this._selectionModel === null)
+            if (this._selectionModel === null) {
                 this.set('selectionModel', new ConfigurableSelectionModel());
-
+            }
             this.subscribe('/app/refresh', this._onRefresh);
 
             if (this.enableSearch) {
@@ -521,11 +521,12 @@ define('Sage/Platform/Mobile/_ListBase', [
         startup: function() {
             this.inherited(arguments);
 
-            if (this.searchWidget)
+            if (this.searchWidget) {
                 this.searchWidget.configure({
                     'hashTagQueries': this._createCustomizedLayout(this.createHashTagQueryLayout(), 'hashTagQueries'),
                     'formatSearchQuery': lang.hitch(this, this.formatSearchQuery)
                 });
+            }
 
             this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
             this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
@@ -592,8 +593,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @param {Object[]} actions
          */
         createActions: function(actions) {
-            for (var i = 0; i < actions.length; i++)
-            {
+            for (var i = 0; i < actions.length; i++) {
                 var action = actions[i],
                     options = {
                         actionIndex: i,
@@ -625,20 +625,24 @@ define('Sage/Platform/Mobile/_ListBase', [
                 selectedItems = this.get('selectionModel').getSelections(),
                 selection = null;
 
-            if (!action.isEnabled) return;
+            if (!action.isEnabled) {
+                return;
+            }
 
-            for (var key in selectedItems)
-            {
+            for (var key in selectedItems) {
                 selection = selectedItems[key];
                 break;
             }
 
-            if (action['fn'])
+            if (action['fn']) {
                 action['fn'].call(action['scope'] || this, action, selection);
-            else
-                if (action['action'])
-                    if (this.hasAction(action['action']))
+            } else {
+                if (action['action']) {
+                    if (this.hasAction(action['action'])) {
                         this.invokeAction(action['action'], action, selection);
+                    }
+                }
+            }
         },
         /**
          * Called when showing the action bar for a newly selected row, it sets the disabled state for each action
@@ -742,10 +746,11 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         _onSelectionModelSelect: function(key, data, tag) {
             var node = dom.byId(tag) || query('li[data-key="'+key+'"]', this.contentNode)[0];
-            if (!node) return;
+            if (!node) {
+                return;
+            }
 
-            if (this.enableActions)
-            {
+            if (this.enableActions) {
                 this.showActionPanel(node);
                 return;
             }
@@ -762,10 +767,11 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         _onSelectionModelDeselect: function(key, data, tag) {
             var node = dom.byId(tag) || query('li[data-key="'+key+'"]', this.contentNode)[0];
-            if (!node) return;
+            if (!node) {
+                return;
+            }
 
-            if (this.enableActions)
-            {
+            if (this.enableActions) {
                 this.hideActionPanel(node);
                 return;
             }
@@ -860,8 +866,9 @@ define('Sage/Platform/Mobile/_ListBase', [
             {
                 if (this._selectionModel && this.isNavigationDisabled()) {
                     this._selectionModel.toggle(params.key, this.items[params.key] || params.descriptor, params.$source);
-                    if (this.options.singleSelect && this.options.singleSelectAction)
+                    if (this.options.singleSelect && this.options.singleSelectAction) {
                         this.invokeSingleSelectAction();
+                    }
                 } else {
                     this.navigateToDetailView(params.key, params.descriptor);
                 }
@@ -872,11 +879,13 @@ define('Sage/Platform/Mobile/_ListBase', [
          * If autoClearSelection is true, clear the selection model.
          */
         invokeSingleSelectAction: function() {
-            if (App.bars['tbar'])
-                App.bars['tbar'].invokeTool({tool: this.options.singleSelectAction});
+            if (App.bars['tbar']) {
+                App.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction });
+            }
 
-            if (this.autoClearSelection)
+            if (this.autoClearSelection) {
                 this._selectionModel.clear();
+            }
         },
         /**
          * Called to transform a textual query into an SData query compatible search expression.
@@ -977,8 +986,9 @@ define('Sage/Platform/Mobile/_ListBase', [
                 key: selection.data['$key']
             });
 
-            if (view && options)
+            if (view && options) {
                 view.show(options);
+            }
         },
         /**
          * Navigates to the defined `this.detailView` passing the params as navigation options.
@@ -987,11 +997,12 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         navigateToDetailView: function(key, descriptor) {
             var view = App.getView(this.detailView);
-            if (view)
+            if (view) {
                 view.show({
                     descriptor: descriptor,
                     key: key
                 });
+            }
         },
         /**
          * Helper method for list-actions. Navigates to the defined `this.editView` passing the given selections `$key`
@@ -1001,8 +1012,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         navigateToEditView: function(action, selection) {
             var view = App.getView(this.editView || this.insertView);
-            if (view)
-            {
+            if (view) {
                 view.show({
                     key: selection.data['$key']
                 });
@@ -1015,8 +1025,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         navigateToInsertView: function(el) {
             var view = App.getView(this.insertView || this.editView);
-            if (view)
-            {
+            if (view) {
                 view.show({
                     returnTo: this.id,
                     insert: true
@@ -1109,8 +1118,9 @@ define('Sage/Platform/Mobile/_ListBase', [
                     ? size - (this.position + this.pageSize)
                     : -1;
 
-                if (remaining !== -1)
+                if (remaining !== -1) {
                     this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
+                }
 
                 domClass.toggle(this.domNode, 'list-has-more', (remaining === -1 || remaining > 0));
 
@@ -1204,12 +1214,9 @@ define('Sage/Platform/Mobile/_ListBase', [
             }
         },
         _onQueryError: function(queryOptions, error) {
-            if (error.aborted)
-            {
+            if (error.aborted) {
                 this.options = false; // force a refresh
-            }
-            else
-            {
+            } else {
                 alert(string.substitute(this.requestErrorText, [error]));
             }
 
@@ -1244,8 +1251,9 @@ define('Sage/Platform/Mobile/_ListBase', [
         emptySelection: function() {
             this._selectionModel.clear();
 
-            if (App.bars['tbar'])
-                App.bars['tbar'].invokeTool({tool: this.options.singleSelectAction}); // invoke action of tool
+            if (App.bars['tbar']) {
+                App.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction }); // invoke action of tool
+            }
         },
         /**
          * Determines if the view should be refresh by inspecting and comparing the passed navigation options with current values.
@@ -1253,21 +1261,29 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @return {Boolean} True if the view should be refreshed, false if not.
          */
         refreshRequiredFor: function(options) {
-            if (this.options)
-            {
-                if (options)
-                {
-                    if (this.expandExpression(this.options.stateKey) != this.expandExpression(options.stateKey)) return true;
-                    if (this.expandExpression(this.options.where) != this.expandExpression(options.where)) return true;
-                    if (this.expandExpression(this.options.query) != this.expandExpression(options.query)) return true;
-                    if (this.expandExpression(this.options.resourceKind) != this.expandExpression(options.resourceKind)) return true;
-                    if (this.expandExpression(this.options.resourcePredicate) != this.expandExpression(options.resourcePredicate)) return true;
+            if (this.options) {
+                if (options) {
+                    if (this.expandExpression(this.options.stateKey) != this.expandExpression(options.stateKey)) {
+                        return true;
+                    }
+                    if (this.expandExpression(this.options.where) != this.expandExpression(options.where)) {
+                        return true;
+                    }
+                    if (this.expandExpression(this.options.query) != this.expandExpression(options.query)) {
+                        return true;
+                    }
+                    if (this.expandExpression(this.options.resourceKind) != this.expandExpression(options.resourceKind)) {
+                        return true;
+                    }
+                    if (this.expandExpression(this.options.resourcePredicate) != this.expandExpression(options.resourcePredicate)) {
+                        return true;
+                    }
                 }
 
                 return false;
-            }
-            else
+            } else {
                 return this.inherited(arguments);
+            }
         },
         /**
          * Returns the current views context by expanding upon the {@link View#getContext parent implementation} to include
@@ -1290,28 +1306,27 @@ define('Sage/Platform/Mobile/_ListBase', [
 
             domClass.toggle(this.domNode, 'list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);
 
-            if (this._selectionModel && !this.isSelectionDisabled())
+            if (this._selectionModel && !this.isSelectionDisabled()) {
                 this._selectionModel.useSingleSelection(this.options.singleSelect);
+            }
 
-            if (typeof this.options.enableActions !== 'undefined')
+            if (typeof this.options.enableActions !== 'undefined') {
                 this.enableActions = this.options.enableActions;
+            }
 
             domClass.toggle(this.domNode, 'list-show-actions', this.enableActions);
-            if (this.enableActions)
-            {
+            if (this.enableActions) {
                 this._selectionModel.useSingleSelection(true);
             }
 
 
-            if (this.refreshRequired)
-            {
+            if (this.refreshRequired) {
                 this.clear();
-            }
-            else
-            {
+            } else  {
                 // if enabled, clear any pre-existing selections
-                if (this._selectionModel && this.autoClearSelection && !this.enableActions)
+                if (this._selectionModel && this.autoClearSelection && !this.enableActions) {
                     this._selectionModel.clear();
+                }
             }
         },
         /**
@@ -1322,7 +1337,9 @@ define('Sage/Platform/Mobile/_ListBase', [
         {
             this.configureSearch();
 
-            if (this._selectionModel) this._loadPreviousSelections();
+            if (this._selectionModel) {
+                this._loadPreviousSelections();
+            }
             
             this.inherited(arguments);
         },
@@ -1335,13 +1352,15 @@ define('Sage/Platform/Mobile/_ListBase', [
             // todo: always regenerate this layout? always regenerating allows for all existing customizations
             // to still work, at expense of potential (rare) performance issues if many customizations are registered.
             var layout = [];
-            for (var name in this.hashTagQueries)
+            for (var name in this.hashTagQueries) {
                 layout.push({
                     'key': name,
                     'tag': (this.hashTagQueriesText && this.hashTagQueriesText[name]) || name,
                     'query': this.hashTagQueries[name]
                 });
+            }
             return layout;
+            
         },
         /**
          * Called when the view needs to be reset. Invokes the request data process.
@@ -1360,8 +1379,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @param {Boolean} all If true, also clear the search widget.
          */
         clear: function(all) {
-            if (this._selectionModel)
-            {
+            if (this._selectionModel) {
                 this._selectionModel.suspendEvents();
                 this._selectionModel.clear();
                 this._selectionModel.resumeEvents();

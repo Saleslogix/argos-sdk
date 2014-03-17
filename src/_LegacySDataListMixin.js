@@ -176,47 +176,56 @@ define('Sage/Platform/Mobile/_LegacySDataListMixin', [
                 .setStartIndex(startIndex);
 
             var contractName = this.expandExpression((options && options.contractName) || this.contractName);
-            if (contractName)
+            if (contractName) {
                 request.setContractName(contractName);
+            }
 
             var resourceKindExpr = this.expandExpression((options && options.resourceKind) || this.resourceKind);
-            if (resourceKindExpr)
+            if (resourceKindExpr) {
                 request.setResourceKind(resourceKindExpr);
+            }
 
             var resourcePropertyExpr = this.expandExpression((options && options.resourceProperty) || this.resourceProperty);
-            if (resourcePropertyExpr)
+            if (resourcePropertyExpr) {
                 request
                     .getUri()
                     .setPathSegment(Sage.SData.Client.SDataUri.ResourcePropertyIndex, resourcePropertyExpr);
+            }
 
             var resourcePredicateExpr = this.expandExpression((options && options.resourcePredicate) || this.resourcePredicate);
-            if (resourcePredicateExpr)
+            if (resourcePredicateExpr) {
                 request
                     .getUri()
                     .setCollectionPredicate(resourcePredicateExpr);
+            }
 
             var querySelectExpr = this.expandExpression((options && options.select) || this.querySelect);
-            if (querySelectExpr)
+            if (querySelectExpr) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Select, querySelectExpr.join(','));
+            }
 
             var queryIncludeExpr = this.expandExpression(this.queryInclude);
-            if (queryIncludeExpr)
+            if (queryIncludeExpr) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Include, queryIncludeExpr.join(','));
+            }
 
             var queryOrderByExpr = this.expandExpression((options && options.orderBy) || this.queryOrderBy);
-            if (queryOrderByExpr)
+            if (queryOrderByExpr) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.OrderBy, queryOrderByExpr);
+            }
 
             var queryWhereExpr = this.expandExpression((options && options.where) || this.queryWhere);
-            if (queryWhereExpr)
+            if (queryWhereExpr) {
                 where.push(queryWhereExpr);
+            }
 
-            if (this.query)
+            if (this.query) {
                 where.push(this.query);
+            }
 
-
-            if (where.length > 0)
+            if (where.length > 0) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Where, where.join(' and '));
+            }
 
             return request;
         },

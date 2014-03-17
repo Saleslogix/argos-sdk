@@ -394,15 +394,10 @@ define('Sage/Platform/Mobile/Store/SData', [
          */
         query: function(query, queryOptions) {
             var handle = {},
-<<<<<<< HEAD
-                queryDeferred = new Deferred(),
-                request = this._createFeedRequest(query, queryOptions || {});
-=======
                 queryDeferred = new Deferred(lang.hitch(this, this._onCancel, handle)),
                 request = this._createFeedRequest(query, queryOptions || {}),
                 method,
                 options;
->>>>>>> Extracted Detail, Edit, and List into base classes. Existing Detail, Edit, and List will not mixin _SDataListMixin, etc for backwards compatibility for consuming classes. Doc updates.
 
             queryDeferred.total = -1;
             options = {
@@ -427,8 +422,6 @@ define('Sage/Platform/Mobile/Store/SData', [
             handle.value = method.call(request, options);
             return QueryResults(queryDeferred);
         },
-<<<<<<< HEAD
-=======
         /**
          * Not implemented in this store.
          */
@@ -450,7 +443,6 @@ define('Sage/Platform/Mobile/Store/SData', [
          * @return {String|Object} return.entity
          * @return {String} return.version
          */
->>>>>>> Extracted Detail, Edit, and List into base classes. Existing Detail, Edit, and List will not mixin _SDataListMixin, etc for backwards compatibility for consuming classes. Doc updates.
         getMetadata: function(object) {
             if (object)
             {

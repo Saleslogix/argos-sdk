@@ -83,8 +83,7 @@ define('Sage/Platform/Mobile/_SDataDetailMixin', [
         },
         _applyStateToGetOptions: function(getOptions) {
             var options = this.options;
-            if (options)
-            {
+            if (options) {
                 if (options.select) getOptions.select = options.select;
                 if (options.include) getOptions.include = options.include;
                 if (options.contractName) getOptions.contractName = options.contractName;

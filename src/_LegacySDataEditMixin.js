@@ -56,8 +56,7 @@ define('Sage/Platform/Mobile/_LegacySDataEditMixin', [
         onRequestDataSuccess: function(entry) {
             this.processEntry(entry);
 
-            if (this.options.changes)
-            {
+            if (this.options.changes) {
                 this.changes = this.options.changes;
                 this.setValues(this.changes);
             }
@@ -75,23 +74,29 @@ define('Sage/Platform/Mobile/_LegacySDataEditMixin', [
             var request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
 
             var key = (this.entry && this.entry['$key']) || this.options.key;
-            if (key)
+            if (key) {
                 request.setResourceSelector(string.substitute("'${0}'", [key]));
+            }
 
-            if (this.contractName)
+            if (this.contractName) {
                 request.setContractName(this.contractName);
+            }
 
-            if (this.resourceKind)
+            if (this.resourceKind) {
                 request.setResourceKind(this.resourceKind);
+            }
 
-            if (this.querySelect)
+            if (this.querySelect) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Select, this.querySelect.join(','));
+            }
 
-            if (this.queryInclude)
+            if (this.queryInclude) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Include, this.queryInclude.join(','));
+            }
 
-            if (this.queryOrderBy)
+            if (this.queryOrderBy) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.OrderBy, this.queryOrderBy);
+            }
 
             return request;
         },
