@@ -245,12 +245,10 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
             var view = App.getPrimaryActiveView();
             var success = true;
 
-            if (view instanceof Sage.Platform.Mobile.Edit)
-            {
+            if (view instanceof Sage.Platform.Mobile.Edit) {
                 view.hideValidationSummary();
 
-                if (view.validate() !== false)
-                {
+                if (view.validate() !== false) {
                     view.showValidationSummary();
                     return;
                 }
@@ -261,16 +259,18 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
             this.setText(this.formatValue(this.validationValue));
 
             // todo: remove
-            if (view.isValid && !view.isValid())
+            if (view.isValid && !view.isValid()) {
                 return;
-            else
+            } else {
                 ReUI.back();
-
+            }
             // if the event is fired before the transition, any XMLHttpRequest created in an event handler and
             // executing during the transition can potentially fail (status 0).  this might only be an issue with CORS
             // requests created in this state (the pre-flight request is made, and the request ends with status 0).
             // wrapping thing in a timeout and placing after the transition starts, mitigates this issue.
-            if (success) setTimeout(lang.hitch(this, this._onComplete), 0);
+            if (success) {
+                setTimeout(lang.hitch(this, this._onComplete), 0);
+            }
         },
         /**
          * Handler for `_onComplete` which is fired after the user has completed the form in the editor view
@@ -320,18 +320,15 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
          * @param {Object/String/Date/Number} val Value to be set
          * @param {Boolean} initial True if the value is the default/clean value, false if it is a meant as a dirty value
          */
-        setValue: function(val, initial)
-        {
-            if (val)
-            {
+        setValue: function(val, initial) {
+            if (val) {
                 this.validationValue = this.currentValue = val;
 
                 if (initial) this.originalValue = this.currentValue;
 
                 this.setText(this.formatValue(val));
             }
-            else
-            {
+            else {
                 this.validationValue = this.currentValue = null;
 
                 if (initial) this.originalValue = this.currentValue;
