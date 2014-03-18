@@ -59,6 +59,10 @@ define('Sage/Platform/Mobile/Application', [
 ) {
 
     has.add('html5-file-api', function(global, document) {
+        if (has('ie')) {
+            return false;
+        }
+
         if (global.File && global.FileReader && global.FileList && global.Blob) {
             return true;
         } else {
@@ -156,7 +160,8 @@ define('Sage/Platform/Mobile/Application', [
         _started: false,
         _rootDomNode: null,
         customizations: null,
-        services: null,
+        services: null,// TODO: Remove
+        _connections: null,
         modules: null,
         views: null,
         router: router,
@@ -197,7 +202,8 @@ define('Sage/Platform/Mobile/Application', [
             this.history = [];
             
             this.customizations = {};
-            this.services = {};
+            this.services = {};// TODO: Remove
+            this._connections = {};
             this.modules = [];
             this.views = {};
             this.bars = {};
@@ -222,6 +228,14 @@ define('Sage/Platform/Mobile/Application', [
             array.forEach(this._signals, function(signal) {
                 signal.remove();
             });
+
+            for (var name in this._connections) {
+                var connection = this._connections[name];
+                if (connection) {
+                    connection.un('beforerequest', this._loadSDataRequest, this);
+                    connection.un('requestcomplete', this._cacheSDataRequest, this);
+                }
+            }
 
             this.uninitialize();
         },
@@ -288,6 +302,7 @@ define('Sage/Platform/Mobile/Application', [
          * Loops through connections and calls {@link #registerService registerService} on each.
          */
         initServices: function() {
+            // TODO: Remove this method
             for (var name in this.connections)
                 this.registerService(name, this.connections[name]);
         },
@@ -318,11 +333,22 @@ define('Sage/Platform/Mobile/Application', [
             this.initConnects();
             this.initSignals();
             this.initCaching();
-            this.initServices();
+            this.initServices();// TODO: Remove
+            this._startupConnections();
             this.initModules();
             this.initToolbars();
             this.initReUI();
             this.initRoutes();
+        },
+        /**
+         * Establishes various connections to events.
+         */
+        _startupConnections: function() {
+            for (var name in this.connections)
+                if (this.connections.hasOwnProperty(name)) this.registerConnection(name, this.connections[name]);
+
+            /* todo: should we be mixing this in? */
+            delete this.connections;
         },
         /**
          * Sets `_started` to true.
@@ -416,6 +442,7 @@ define('Sage/Platform/Mobile/Application', [
          * @param {Object} options Optional settings for the registered service.
          */
         registerService: function(name, service, options) {
+            // TODO: Remove this method
             options = options || {};
 
             var instance = service instanceof Sage.SData.Client.SDataService
@@ -436,10 +463,37 @@ define('Sage/Platform/Mobile/Application', [
             return this;
         },
         /**
+         * Optional creates, then registers an Sage.SData.Client.SDataService and adds the result to `App.services`.
+         * @param {String} name Unique identifier for the service.
+         * @param {Object} definition May be a SDataService instance or constructor parameters to create a new SDataService instance.
+         * @param {Object} options Optional settings for the registered service.
+         */
+        registerConnection: function(name, definition, options) {
+            options = options || {};
+
+            var instance = definition instanceof Sage.SData.Client.SDataService
+                ? definition
+                : new Sage.SData.Client.SDataService(definition);
+
+            this._connections[name] = instance;
+
+            if (this.enableCaching && (options.offline || definition.offline)) {
+                instance.on('beforerequest', this._loadSDataRequest, this);
+                instance.on('requestcomplete', this._cacheSDataRequest, this);
+            }
+
+            if ((options.isDefault || definition.isDefault) || !this._connections['default']) {
+                this._connections['default'] = instance;
+            }
+
+            return this;
+        },
+        /**
          * Determines the the specified service name is found in the Apps service object.
          * @param {String} name Name of the SDataService to detect
          */
         hasService: function(name) {
+            // TODO: Remove this method
             return !!this.services[name];
         },
         _createViewContainers: function() {
@@ -609,10 +663,23 @@ define('Sage/Platform/Mobile/Application', [
          * @return {Object} The registered Sage.SData.Client.SDataService instance.
          */
         getService: function(name) {
+            // TODO: Remove this method
             if (typeof name === 'string' && this.services[name])
                 return this.services[name];
 
             return this.defaultService;
+        },
+        /**
+         * Determines the the specified service name is found in the Apps service object.
+         * @param {String} name Name of the SDataService to detect
+         */
+        hasConnection: function(name) {
+            return !!this._connections[name];
+        },
+        getConnection: function(name) {
+            if (this._connections[name]) return this._connections[name];
+
+            return this._connections['default'];
         },
         /**
          * Sets the applications current title.
@@ -859,7 +926,7 @@ define('Sage/Platform/Mobile/Application', [
                 easing: 'ease',
                 maxPosition: 266,
                 minPosition: -266,
-                tapToClose: true,
+                tapToClose: has('ie') ? false : true, // causes issues on windows phones where tapping the close button causes snap.js endDrag to fire, closing the menu before we can check the state properly
                 touchToDrag: false,
                 slideIntent: 40,
                 minDragDistance: 5 

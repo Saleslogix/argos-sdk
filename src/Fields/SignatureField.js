@@ -118,7 +118,7 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
             var view, app;
             app = this.app;
 
-            var view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
+            view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
             if (view)
             {
                 var value = view.getValues();

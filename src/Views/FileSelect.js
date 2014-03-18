@@ -24,6 +24,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/window',
+    'dojo/has',
     'dojo/dom-construct',
     'dojo/dom-attr',
     'dojo/dom-class',
@@ -34,6 +35,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     declare,
     lang,
     win,
+    has,
     domConstruct,
     domAttr,
     domClass,
@@ -48,10 +50,11 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         addFileText: 'Click or Tap here to add a file.',
         uploadText: 'Upload',
         cancelText: 'Cancel',
-        selectFileText:'Select file', 
+        selectFileText:'Select file',
         loadingText: 'Uploading...',
         descriptionText: 'description',
         bytesText: 'bytes',
+        notSupportedText: 'Adding attachments is not supported by your device.',
 
         /**
          * @property {Simplate}
@@ -66,6 +69,14 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         loadingTemplate: new Simplate([
             '<li class="list-loading-indicator"><div id="fileselect-upload-progress">{%= $.loadingText %}</div></li>'
             //'</li>'
+        ]),
+
+        /**
+         * @property {Simplate}
+         * The template that displays when HTML5 file api is not supported.
+         */
+        notSupportedTemplate: new Simplate([
+            '<h2>{%= $$.notSupportedText %}</h2>'
         ]),
 
         /**
@@ -92,6 +103,9 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                 '</div>',
             '</div>'
         ]),
+        /**
+         * @property {Simplate} fileTemplate
+         */
         fileTemplate: new Simplate([
             '<li class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
                '<div class="file-name">{%: $.fileName %}</div>',
@@ -107,16 +121,31 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         btnFileSelect: null,
         _files:null,
         _formParts: [],
+
+        /**
+         * @constructor
+         */
         constructor: function() {
         },
         postCreate: function() {
             this.inherited(arguments);
             domClass.remove(this.domNode, 'list-loading');
         },
+        /**
+         * Extends the @{link Sage.Platlform.Mobile.View} show to clear out the onchange event of the file input.
+         * The onchange event will only fire once per file, so we must re-insert the dom node and re-attach the event.
+         * @extends show
+         */
         show: function(options) {
             var node;
 
             this.inherited(arguments);
+
+            if (!has('html5-file-api')) {
+                domConstruct.place(this.notSupportedTemplate.apply({}, this), this.domNode, 'only');
+                return;
+            }
+
             this._files = [];
 
             // Reset the input or the onchange will not fire if the same file is uploaded multiple times.
@@ -141,8 +170,11 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             this.btnFileSelect.click();
         },
         removeFile: function(fileId) {
-
         },
+        /**
+         * Returns an array of objects with the properties of: file, fileName, and description.
+         * @returns {Array}
+         */
         getFileItems: function() {
             var fileItems, files, description;
             fileItems = [];
@@ -227,6 +259,9 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
        _getDefaultDescription: function (filename) {
             return filename.replace(/\.[\w]*/, '');
         },
+        /**
+         * Handles the display when the user clicks upload.
+         */
         onUploadFiles: function() {
             var tpl;
             domClass.add(this.btnUploadFiles, 'display-none');
@@ -236,12 +271,18 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         },
         cancelSelect: function() {
         },
+        /**
+         * Handles the display when progress events are recieved.
+         */
         onUpdateProgress: function(msg) {
             var n = dom.byId('fileselect-upload-progress');
             if (n) {
                 n.innerHTML = this.loadingText + '' + msg;
             }
         },
+        /**
+         * Handles the display when the upload fails.
+         */
         onUpdateFailed: function(msg) {
             this.onUpdateProgress(msg);
             domClass.remove(this.domNode, 'list-loading');

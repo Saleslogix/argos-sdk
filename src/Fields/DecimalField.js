@@ -28,7 +28,7 @@ define('Sage/Platform/Mobile/Fields/DecimalField', [
     Utility
 ) {
     /**
-     * @class Sage.Platform.Mobile.DecimalField
+     * @class Sage.Platform.Mobile.Fields.DecimalField
      * The Decimal Field is used for inputting numbers and extends {@link TextField TextField} with:
      *
      * * hides the clear (x) button;

@@ -100,7 +100,19 @@
           "path": "../src"
         },
         {
+          "text": "_DetailBase.js",
+          "path": "../src"
+        },
+        {
           "text": "Detail.js",
+          "path": "../src"
+        },
+        {
+          "text": "_SDataDetailMixin.js",
+          "path": "../src"
+        },
+        {
+          "text": "_LegacySDataDetailMixin.js",
           "path": "../src"
         },
         {
@@ -168,7 +180,19 @@
           "path": "../src/Fields"
         },
         {
+          "text": "_EditBase.js",
+          "path": "../src"
+        },
+        {
           "text": "Edit.js",
+          "path": "../src"
+        },
+        {
+          "text": "_SDataEditMixin.js",
+          "path": "../src"
+        },
+        {
+          "text": "_LegacySDataEditMixin.js",
           "path": "../src"
         },
         {
@@ -196,7 +220,19 @@
           "path": "../src"
         },
         {
+          "text": "_ListBase.js",
+          "path": "../src"
+        },
+        {
           "text": "List.js",
+          "path": "../src"
+        },
+        {
+          "text": "_SDataListMixin.js",
+          "path": "../src"
+        },
+        {
+          "text": "_LegacySDataListMixin.js",
           "path": "../src"
         },
         {

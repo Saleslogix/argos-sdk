@@ -87,6 +87,7 @@ define('Sage/Platform/Mobile/View', [
          * @property {String/Boolean}
          */
         serviceName: false,
+        connectionName: false,
         constructor: function() {
             this.initRoutes();
         },
@@ -309,6 +310,9 @@ define('Sage/Platform/Mobile/View', [
          */
         getService: function() {
             return App.getService(this.serviceName); /* if false is passed, the default service will be returned */
+        },
+        getConnection: function() {
+            return this.getService();
         },
         getTag: function() {
         },
