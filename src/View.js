@@ -129,9 +129,11 @@ define('Sage/Platform/Mobile/View', [
                 this.registerDefaultRoute();
             }
 
-            for (route in this.routes) {
-                if (this.routes.hasOwnProperty(route)) {
-                    App.router.register(route, lang.hitch(this, this.routes[route]));
+            if (window.App && window.App.router) {
+                for (route in this.routes) {
+                    if (this.routes.hasOwnProperty(route)) {
+                        window.App.router.register(route, lang.hitch(this, this.routes[route]));
+                    }
                 }
             }
         },
@@ -181,8 +183,10 @@ define('Sage/Platform/Mobile/View', [
             this.show();
         },
         registerDefaultRoute: function() {
-            var router = App.router;
-            router.register('_' + this.id, lang.hitch(this, this.onDefaultRoute));
+            if (window.App && window.App.router) {
+                var router = window.App.router;
+                router.register('_' + this.id, lang.hitch(this, this.onDefaultRoute));
+            }
         },
         /**
          * The onBeforeTransitionAway event.
