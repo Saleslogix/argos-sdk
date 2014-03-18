@@ -323,6 +323,24 @@ define('Sage/Platform/Mobile/_EditBase', [
                 }
             }, this);
         },
+        // Override the Views registerDefaultRoute to include the entity id in the route
+        registerDefaultRoute: function() {
+            var router = App.router;
+            router.register(['_', this.id, ';:key'].join(''), lang.hitch(this, this.onDefaultRoute));
+        },
+        onDefaultRoute: function(evt) {
+            var primary = App.getPrimaryActiveView();
+            if (primary && primary.id === this.id) {
+                return;
+            }
+
+            if (evt.params.key) {
+                this.show({
+                    descriptor: '',
+                    key: evt.params.key
+                });
+            } 
+        },
         /**
          * Extends init to also init the fields in `this.fields`.
          */
@@ -343,19 +361,25 @@ define('Sage/Platform/Mobile/_EditBase', [
          * @template
          */
         createToolLayout: function() {
-            return this.tools || (this.tools = {
-                'tbar': [{
+            var tbar = [{
                     id: 'save',
                     action: 'save',
                     security: this.options && this.options.insert
                         ? this.insertSecurity
                         : this.updateSecurity
-                },{
+            }];
+
+            if (!App.isOnFirstView()) {
+                tbar.push({
                     id: 'cancel',
                     side: 'left',
                     fn: ReUI.back,
                     scope: ReUI
-                }]
+                });
+            }
+
+            return this.tools || (this.tools = {
+                'tbar': tbar
             });
         },
         _getStoreAttr: function() {
@@ -474,6 +498,10 @@ define('Sage/Platform/Mobile/_EditBase', [
         processData: function(item) {
             this.entry = this.item = this.processItem(this.convertItem(item || {})) || {};
 
+            if (!this.options.descriptor) {
+                App.setPrimaryTitle(this.entry.$descriptor);
+            }
+
             this.setValues(item, true);
 
             // Re-apply any passed changes as they may have been overwritten
@@ -544,6 +572,19 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         createLayout: function() {
             return this.layout || [];
+        },
+        /**
+         *
+         * Returns the view key
+         * @return {String} View key
+         */
+        getTag: function() {
+            var tag = this.options && this.options.item && this.options.item.$key;
+            if (!tag) {
+                tag = this.options && this.options.key;
+            }
+
+            return tag;
         },
         processLayout: function(layout)
         {
@@ -1038,7 +1079,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             return lang.mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind,
                 insert: this.options.insert,
-                key: this.options.insert ? false : this.options.item && this.options.item['$key']
+                key: this.options.insert ? false : this.options.key ? this.options.key : this.options.item && this.options.item['$key'] 
             });
         },
         /**

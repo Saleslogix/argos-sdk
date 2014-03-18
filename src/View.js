@@ -88,6 +88,9 @@ define('Sage/Platform/Mobile/View', [
          */
         serviceName: false,
         connectionName: false,
+        constructor: function() {
+            this.initRoutes();
+        },
         /**
          * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
          * the fully customized toolbar layout.
@@ -118,6 +121,19 @@ define('Sage/Platform/Mobile/View', [
         init: function() {
             this.startup();
             this.initConnects();
+        },
+        initRoutes: function() {
+            var route;
+
+            if (this.routes === null) {
+                this.registerDefaultRoute();
+            }
+
+            for (route in this.routes) {
+                if (this.routes.hasOwnProperty(route)) {
+                    App.router.register(route, lang.hitch(this, this.routes[route]));
+                }
+            }
         },
         /**
          * Establishes this views connections to various events
@@ -154,6 +170,19 @@ define('Sage/Platform/Mobile/View', [
          * Emptying nodes, requesting data, rendering new content
          */
         refresh: function() {
+        },
+        /**
+         * Key/Value pair of route/callback for this view. These are registered with the App.router when the view is registered.
+         * @property {Object}
+         * @see http://dojotoolkit.org/reference-guide/1.9/dojo/router.html#dojo-router
+         */
+        routes: null, 
+        onDefaultRoute: function(evt) {
+            this.show();
+        },
+        registerDefaultRoute: function() {
+            var router = App.router;
+            router.register('_' + this.id, lang.hitch(this, this.onDefaultRoute));
         },
         /**
          * The onBeforeTransitionAway event.
@@ -229,7 +258,10 @@ define('Sage/Platform/Mobile/View', [
                 this.set('title', this.titleText);
             }
 
-            ReUI.show(this.domNode, lang.mixin(transitionOptions || {}, {tag: this.getTag(), data: this.getContext()}));
+            var tag = this.getTag(),
+                data = this.getContext();
+
+            ReUI.show(this.domNode, lang.mixin(transitionOptions || {}, {tag: tag, data: data}));
         },
         /**
          * Expands the passed expression if it is a function.

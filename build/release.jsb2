@@ -29,10 +29,6 @@
           "path": "../libraries/sdata/"
         },
         {
-          "text": "reui.js",
-          "path": "../libraries/reui/"
-        },
-        {
           "text": "snap.js",
           "path": "../libraries/snap/"
         },
@@ -51,6 +47,14 @@
       "file": "content/javascript/argos-sdk.js",
       "isDebug": true,
       "fileIncludes": [
+        {
+          "text": "DomHelper.js",
+          "path": "../src/ReUI"
+        },
+        {
+          "text": "main.js",
+          "path": "../src/ReUI"
+        },
         {
           "text": "Application.js",
           "path": "../src"
