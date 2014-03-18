@@ -20,21 +20,25 @@
  * @singleton
  */
 define('Sage/Platform/Mobile/ErrorManager', [
-    'dojo/_base/json',
+    'dojo/json',
     'dojo/_base/lang',
     'dojo/_base/connect',
-    'dojo/string'
+    'dojo/string',
+    'moment',
+    './Utility'
 ], function(
     json,
     lang,
     connect,
-    string
+    string,
+    moment,
+    utility
 ) {
     var errors = [];
     try
     {
         if (window.localStorage)
-            errors = json.fromJson(window.localStorage.getItem('errorlog')) || [];
+            errors = json.parse(window.localStorage.getItem('errorlog')) || [];
     }
     catch(e)
     {
@@ -60,6 +64,25 @@ define('Sage/Platform/Mobile/ErrorManager', [
         errorCacheSizeMax: 10,
 
         /**
+         * Adds a custom error item and fires the onErrorAdd event
+         * @param description Short title or description of the Error. Ex: Duplicate Found, Invalid Email
+         * @param error Object The error object that will be JSON-stringified and stored for use.
+         */
+        addSimpleError: function(description, error) {
+            var errorItem = {
+                    '$key': new Date().getTime(),
+                    'Date': moment().format(),
+                    'Description': description,
+                    'Error': json.stringify(utility.sanitizeForJson(error))
+                };
+
+            this.checkCacheSize();
+            errors.push(errorItem);
+            this.onErrorAdd();
+            this.save();
+        },
+
+        /**
          * Adds a custom error item by combining error message/options for easier tech support
          * @param {Object} serverResponse Full response from server, status, responsetext, etc.
          * @param {Object} requestOptions GET or POST options sent, only records the URL at this time
@@ -67,21 +90,23 @@ define('Sage/Platform/Mobile/ErrorManager', [
          * @param {String} failType Either "failure" or "aborted" as each response has different properties
          */
         addError: function(serverResponse, requestOptions, viewOptions, failType) {
+            if (typeof serverResponse === 'string' && arguments.length === 2) {
+                this.addSimpleError.apply(this, arguments);
+                return;
+            }
+
             var errorDate = new Date(),
-                dateStamp = string.substitute('/Date(${0})/',[errorDate.getTime()]),
+                dateStamp = new Date().getTime(),
                 errorItem = {
-                    errorDate: errorDate.toString(),
-                    errorDateStamp: dateStamp,
-                    url: requestOptions.url,
-                    viewOptions: this.serializeValues(viewOptions),
-                    "$key": dateStamp
+                    "$key": dateStamp,
+                    'Date': moment().format(),
+                    'Error': json.stringify(utility.sanitizeForJson({
+                        serverResponse: serverResponse,
+                        requestOptions: requestOptions,
+                        viewOptions: viewOptions,
+                        failType: failType
+                    }))
                 };
-
-            if (failType === 'failure')
-                lang.mixin(errorItem, this.extractFailureResponse(serverResponse));
-
-            if (failType === 'aborted')
-                lang.mixin(errorItem, this.extractAbortResponse(serverResponse));
 
             this.checkCacheSize();
             errors.push(errorItem);
@@ -122,7 +147,7 @@ define('Sage/Platform/Mobile/ErrorManager', [
             var o;
             try
             {
-                o = json.fromJson(json);
+                o = json.parse(json);
                 o = o[0];
             }
             catch(e)
@@ -250,7 +275,7 @@ define('Sage/Platform/Mobile/ErrorManager', [
             try
             {
                 if (window.localStorage)
-                    window.localStorage.setItem('errorlog', json.toJson(errors));
+                    window.localStorage.setItem('errorlog', json.stringify(errors));
             }
             catch(e)
             {

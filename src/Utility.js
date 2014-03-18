@@ -21,10 +21,12 @@
  */
 define('Sage/Platform/Mobile/Utility', [
     'dojo/_base/lang',
-    'dojo/_base/array'
+    'dojo/_base/array',
+    'dojo/json'
 ], function(
     lang,
-    array
+    array,
+    json
 ) {
     var nameToPathCache = {};
     var nameToPath = function(name) {
@@ -119,6 +121,61 @@ define('Sage/Platform/Mobile/Utility', [
             });
 
             return results.join(seperator);
+        },
+        /**
+         * Sanitizes an Object so that JSON.stringify will work without errors by discarding non-stringable keys.
+         * @param {Object} obj Object to be cleansed of non-stringify friendly keys/values.
+         * @return {Object} Object ready to be JSON.stringified.
+         */
+        sanitizeForJson: function(obj) {
+            var type;
+            for (var key in obj)
+            {
+                try
+                {
+                    type = typeof obj[key];
+                }
+                catch(e)
+                {
+                    delete obj[key];
+                    continue;
+                }
+
+                switch(type)
+                {
+                    case 'undefined':
+                        obj[key] = 'undefined';
+                        break;
+
+                    case 'function':
+                        delete obj[key];
+                        break;
+
+                    case 'object':
+                        if (obj[key] === null) {
+                            obj[key] = 'null';
+                            break;
+                        }
+                        if(key === 'scope')
+                        {
+                            obj[key] = 'null';
+                            break;
+                        }
+                        obj[key] = this.sanitizeForJson(obj[key]);
+                        break;
+                    case 'string':
+                        try
+                        {
+                            obj[key] = json.parse(obj[key]);
+
+                            if (typeof obj[key] === 'object')
+                                obj[key] = this.sanitizeForJson(obj[key]);
+                        }
+                        catch(e){}
+                        break;
+                }
+            }
+            return obj;
         }
     });
 });

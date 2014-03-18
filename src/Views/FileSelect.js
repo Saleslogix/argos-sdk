@@ -103,6 +103,9 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                 '</div>',
             '</div>'
         ]),
+        /**
+         * @property {Simplate} fileTemplate
+         */
         fileTemplate: new Simplate([
             '<li class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
                '<div class="file-name">{%: $.fileName %}</div>',
@@ -118,12 +121,21 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         btnFileSelect: null,
         _files:null,
         _formParts: [],
+
+        /**
+         * @constructor
+         */
         constructor: function() {
         },
         postCreate: function() {
             this.inherited(arguments);
             domClass.remove(this.domNode, 'list-loading');
         },
+        /**
+         * Extends the @{link Sage.Platlform.Mobile.View} show to clear out the onchange event of the file input.
+         * The onchange event will only fire once per file, so we must re-insert the dom node and re-attach the event.
+         * @extends show
+         */
         show: function(options) {
             var node;
 
@@ -158,8 +170,11 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             this.btnFileSelect.click();
         },
         removeFile: function(fileId) {
-
         },
+        /**
+         * Returns an array of objects with the properties of: file, fileName, and description.
+         * @returns {Array}
+         */
         getFileItems: function() {
             var fileItems, files, description;
             fileItems = [];
@@ -244,6 +259,9 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
        _getDefaultDescription: function (filename) {
             return filename.replace(/\.[\w]*/, '');
         },
+        /**
+         * Handles the display when the user clicks upload.
+         */
         onUploadFiles: function() {
             var tpl;
             domClass.add(this.btnUploadFiles, 'display-none');
@@ -253,12 +271,18 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         },
         cancelSelect: function() {
         },
+        /**
+         * Handles the display when progress events are recieved.
+         */
         onUpdateProgress: function(msg) {
             var n = dom.byId('fileselect-upload-progress');
             if (n) {
                 n.innerHTML = this.loadingText + '' + msg;
             }
         },
+        /**
+         * Handles the display when the upload fails.
+         */
         onUpdateFailed: function(msg) {
             this.onUpdateProgress(msg);
             domClass.remove(this.domNode, 'list-loading');
