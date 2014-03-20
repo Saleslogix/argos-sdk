@@ -565,7 +565,7 @@ this.onExpandAnimationEnd(true);
 })});
 this._expandAnimation.play();
 }else{
-this._expandRowImpl(_5c);
+this._expandRowImpl(_5c,true);
 }
 }
 },_expandRowImpl:function(_5e,_5f){

@@ -12,7 +12,7 @@ this._listConnect("mouseup","_onMouseUp");
 this._listConnect("mouseover","_onMouseOver");
 this._listConnect("mouseout","_onMouseOut");
 },_onClick:function(_5,_6){
-this._setSelectedAttr(_6);
+this._setSelectedAttr(_6,false);
 if(this._deferredClick){
 this._deferredClick.remove();
 }
@@ -26,7 +26,7 @@ this.onUnhover(this._hoveredNode);
 this._hoveredNode=null;
 }
 this._isDragging=true;
-this._setSelectedAttr(_8);
+this._setSelectedAttr(_8,false);
 },_onMouseUp:function(_9,_a){
 this._isDragging=false;
 var _b=this.selected;
@@ -61,7 +61,7 @@ this._cancelDrag=null;
 this._hoveredNode=_10;
 this.onHover(_10);
 if(this._isDragging){
-this._setSelectedAttr(_10);
+this._setSelectedAttr(_10,false);
 }
 }});
 });

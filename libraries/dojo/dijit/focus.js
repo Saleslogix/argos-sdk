@@ -21,7 +21,7 @@ var mdh=on(_16.document,"mousedown, touchstart",function(evt){
 _18._justMouseDowned=true;
 setTimeout(function(){
 _18._justMouseDowned=false;
-},0);
+},13);
 if(evt&&evt.target&&evt.target.parentNode==null){
 return;
 }
