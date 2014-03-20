@@ -276,7 +276,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         resourceKind: '',
         store: null,
-        entries: {},
+        entries: null,
         /**
          * @property {Number}
          * The number of entries to request per SData payload.
@@ -457,12 +457,12 @@ define('Sage/Platform/Mobile/_ListBase', [
         /**
          * Store ID property
          */
-        keyProperty: '$key',
+        keyProperty: '',
 
         /**
          * Store description property
          */
-        descriptorProperty: '$descriptor',
+        descriptorProperty: '',
 
         /**
          * Setter method for the selection model, also binds the various selection model select events
@@ -499,6 +499,9 @@ define('Sage/Platform/Mobile/_ListBase', [
          * to the global refresh publish
          */
         _onScrollHandle: null,
+        constructor: function() {
+            this.entries = {};
+        },
         postCreate: function() {
             this.inherited(arguments);
 
@@ -980,7 +983,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @param {Object} action Action instance, not used.
          * @param {Object} selection Data entry for the selection.
          * @param {String} viewId View id to be shown
-         * @param {String} whereQueryFmt Where expression format string to be passed. `${0}` will be the `$key`
+         * @param {String} whereQueryFmt Where expression format string to be passed. `${0}` will be the `keyProperty`
          * property of the passed selection data.
          */
         navigateToRelatedView:  function(action, selection, viewId, whereQueryFmt) {
@@ -1014,7 +1017,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             }
         },
         /**
-         * Helper method for list-actions. Navigates to the defined `this.editView` passing the given selections `$key`
+         * Helper method for list-actions. Navigates to the defined `this.editView` passing the given selections `keyProperty`
          * property in the navigation options (which is then requested and result used as default data).
          * @param {Object} action Action instance, not used.
          * @param {Object} selection Data entry for the selection.

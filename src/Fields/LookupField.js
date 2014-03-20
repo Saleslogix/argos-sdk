@@ -694,10 +694,11 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
 
             key = utility.getValue(val, this.keyProperty, val) || key; // if we can extract the key as requested, use it instead of the selection key
 
-            if (text && this.textTemplate)
+            if (text && this.textTemplate) {
                 text = this.textTemplate.apply(text, this);
-            else if (this.textRenderer)
+            } else if (this.textRenderer) {
                 text = this.textRenderer.call(this, val, key, text);
+            }
 
             this.currentSelection = val;
 
@@ -706,7 +707,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 text: text || key
             };
 
-            this.setText(text);
+            this.setText(this.currentValue.text);
         },
         /**
          * Sets the given value to `this.currentValue` using the initial flag if to set it as

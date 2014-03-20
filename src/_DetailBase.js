@@ -17,7 +17,7 @@
  * @class Sage.Platform.Mobile._DetailBase
  * A Detail View represents a single record and should display all the info the user may need about the entry.
  *
- * A Detail entry is identified by its key ($key) which is how it requests the data via the endpoint.
+ * A Detail entry is identified by its key (keyProperty) which is how it requests the data via the endpoint.
  *
  * @alternateClassName _DetailBase
  * @extends Sage.Platform.Mobile.View
@@ -234,6 +234,11 @@ define('Sage/Platform/Mobile/_DetailBase', [
         store: null,
         /**
          * @property {Object}
+         * The data entry
+         */
+        entry: null,
+        /**
+         * @property {Object}
          * The layout definition that constructs the detail view with sections and rows
          */
         layout: null,
@@ -354,7 +359,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * @private
          */
         _onRefresh: function(o) {
-            var descriptor = o.data && o.data['$descriptor'];
+            var descriptor = o.data && o.data[this.descriptorProperty];
 
             if (this.options && this.options.key === o.key) {
                 this.refreshRequired = true;
@@ -641,7 +646,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * @param {Object} entry Entry from data store
          * @return {Object} By default does not do any processing
          */
-        processEntry: function(entry) {
+        preProcessEntry: function(entry) {
             return entry;
         },
         /**
@@ -649,13 +654,13 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * passes it to process layout.
          * @param {Object} entry Entry from data store
          */
-        processData: function(entry) {
-            this.entry = this.processEntry(entry);
+        processEntry: function(entry) {
+            this.entry = this.preProcessEntry(entry);
 
             if (this.entry) {
 
-                if (!this.options.descriptor && this.entry.$descriptor) {
-                    App.setPrimaryTitle(this.entry.$descriptor);
+                if (!this.options.descriptor && this.entry[this.descriptorProperty]) {
+                    App.setPrimaryTitle(this.entry[this.descriptorProperty]);
                 }
 
                 this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
@@ -666,7 +671,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
         _onGetComplete: function(entry) {
             try {
                 if (entry) {
-                    this.processData(entry);
+                    this.processEntry(entry);
                 } else {
                     domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
                 }
