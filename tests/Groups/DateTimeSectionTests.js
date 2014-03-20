@@ -1,6 +1,7 @@
 define('tests/Groups/DateTimeSectionTests', [
-       'Sage/Platform/Mobile/Groups/DateTimeSection'
-], function(DateTimeSection) {
+    'moment',
+    'Sage/Platform/Mobile/Groups/DateTimeSection'
+], function(moment, DateTimeSection) {
     return describe('Sage.Platform.Mobile.Groups.DateTimeSection', function() {
         it('can get a default section', function() {
             var dts = new DateTimeSection();
