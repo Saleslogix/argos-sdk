@@ -37,7 +37,7 @@
           "path": "../libraries/overthrow/"
         },
         {
-          "text": "moment.js",
+          "text": "moment-with-langs.min.js",
           "path": "../libraries/moment/"
         }
       ]
