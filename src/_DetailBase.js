@@ -298,6 +298,9 @@ define('Sage/Platform/Mobile/_DetailBase', [
          */
         _navigationOptions: null,
 
+        keyProperty: '',
+        descriptorProperty: '',
+
         /**
          * Extends the dijit widget postCreate to subscribe to the global `/app/refresh` event and clear the view.
          */
@@ -395,11 +398,11 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * @param {HTMLElement} el
          */
         navigateToEditView: function(el) {
-            var view, item;
+            var view, entry;
             view = App.getView(this.editView);
             if (view) {
-                item = lang.mixin({}, this.entry, this.item);
-                view.show({entry: item, item: item});
+                entry = this.entry;
+                view.show({entry: entry});
             }
         },
         /**
@@ -635,35 +638,35 @@ define('Sage/Platform/Mobile/_DetailBase', [
         /**
          * @template
          * Optional processing of the returned entry before it gets processed into layout.
-         * @param {Object} item Entry from data store
+         * @param {Object} entry Entry from data store
          * @return {Object} By default does not do any processing
          */
-        processItem: function(item) {
-            return item;
+        processEntry: function(entry) {
+            return entry;
         },
         /**
          * Takes the entry from the data store, applies customization, applies any custom item process and then
          * passes it to process layout.
-         * @param {Object} item Entry from data store
+         * @param {Object} entry Entry from data store
          */
-        processData: function(item) {
-            this.entry = this.item = this.processItem(item);
+        processData: function(entry) {
+            this.entry = this.processEntry(entry);
 
-            if (this.item) {
+            if (this.entry) {
 
-                if (!this.options.descriptor && this.item.$descriptor) {
-                    App.setPrimaryTitle(this.item.$descriptor);
+                if (!this.options.descriptor && this.entry.$descriptor) {
+                    App.setPrimaryTitle(this.entry.$descriptor);
                 }
 
-                this.processLayout(this._createCustomizedLayout(this.createLayout()), this.item);
+                this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
             } else {
                 this.set('detailContent', '');
             }
         },
-        _onGetComplete: function(item) {
+        _onGetComplete: function(entry) {
             try {
-                if (item) {
-                    this.processData(item);
+                if (entry) {
+                    this.processData(entry);
                 } else {
                     domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
                 }
