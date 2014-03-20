@@ -167,7 +167,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * The template used to render a row in the view.  This template includes {@link #itemTemplate}.
          */
         rowTemplate: new Simplate([
-            '<li data-action="activateEntry" data-key="{%= $.$key %}" data-descriptor="{%: $.$descriptor %}">',
+            '<li data-action="activateEntry" data-key="{%= $[$$.keyProperty] %}" data-descriptor="{%: $[$$.descriptorProperty] %}">',
                 '<button data-action="selectEntry" class="list-item-selector button">',
                     '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
                 '</button>',
@@ -184,8 +184,8 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @template
          */
         itemTemplate: new Simplate([
-            '<h3>{%: $.$descriptor %}</h3>',
-            '<h4>{%: $.$key %}</h4>'
+            '<h3>{%: $[$$.descriptorProperty] %}</h3>',
+            '<h4>{%: $[$$.keyProperty] %}</h4>'
         ]),
         /**
          * @property {Simplate}
@@ -453,6 +453,16 @@ define('Sage/Platform/Mobile/_ListBase', [
          * The related view managers for each related view definition.
          */
         relatedViewManagers: null,
+
+        /**
+         * Store ID property
+         */
+        keyProperty: '$key',
+
+        /**
+         * Store description property
+         */
+        descriptorProperty: '$descriptor',
 
         /**
          * Setter method for the selection model, also binds the various selection model select events
@@ -976,14 +986,14 @@ define('Sage/Platform/Mobile/_ListBase', [
         navigateToRelatedView:  function(action, selection, viewId, whereQueryFmt) {
             var view = App.getView(viewId),
                 options = {
-                    where: string.substitute(whereQueryFmt, [selection.data['$key']])
+                    where: string.substitute(whereQueryFmt, [selection.data[this.keyProperty]])
                 };
 
             this.setSource({
                 item: selection.data,
                 entry: selection.data,
-                descriptor: selection.data['$descriptor'],
-                key: selection.data['$key']
+                descriptor: selection.data[this.descriptorProperty],
+                key: selection.data[this.keyProperty]
             });
 
             if (view && options) {
@@ -1014,7 +1024,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             var view = App.getView(this.editView || this.insertView);
             if (view) {
                 view.show({
-                    key: selection.data['$key']
+                    key: selection.data[this.keyProperty]
                 });
             }
         },
