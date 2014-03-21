@@ -89,8 +89,12 @@ define('Sage/Platform/Mobile/_SDataListMixin', [
          * The default resource predicate for an SData request.
          */
         resourcePredicate: null,
-        keyProperty: '$key',
-        descriptorProperty: '$descriptor',
+
+        itemsProperty: '$resources',
+        idProperty: '$key',
+        labelProperty: '$descriptor',
+        entityProperty: '$name',
+        versionProperty: '$etag',
 
         /**
          * Constructs a where expression using the provided format string and extracting the needed property from entry
@@ -124,7 +128,11 @@ define('Sage/Platform/Mobile/_SDataListMixin', [
                 where: this.queryWhere,
                 queryArgs: this.queryArgs,
                 orderBy: this.queryOrderBy,
-                idProperty: this.keyProperty,
+                itemsProperty: this.itemsProperty,
+                idProperty: this.idProperty,
+                labelProperty: this.labelProperty,
+                entityProperty: this.entityProperty,
+                versionProperty: this.versionProperty,
                 scope: this
             });
         },

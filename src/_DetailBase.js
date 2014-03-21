@@ -17,7 +17,7 @@
  * @class Sage.Platform.Mobile._DetailBase
  * A Detail View represents a single record and should display all the info the user may need about the entry.
  *
- * A Detail entry is identified by its key (keyProperty) which is how it requests the data via the endpoint.
+ * A Detail entry is identified by its key (idProperty) which is how it requests the data via the endpoint.
  *
  * @alternateClassName _DetailBase
  * @extends Sage.Platform.Mobile.View
@@ -303,8 +303,12 @@ define('Sage/Platform/Mobile/_DetailBase', [
          */
         _navigationOptions: null,
 
-        keyProperty: '',
-        descriptorProperty: '',
+        // Store properties
+        itemsProperty: '',
+        idProperty: '',
+        labelProperty: '',
+        entityProperty: '',
+        versionProperty: '',
 
         /**
          * Extends the dijit widget postCreate to subscribe to the global `/app/refresh` event and clear the view.
@@ -359,7 +363,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * @private
          */
         _onRefresh: function(o) {
-            var descriptor = o.data && o.data[this.descriptorProperty];
+            var descriptor = o.data && o.data[this.labelProperty];
 
             if (this.options && this.options.key === o.key) {
                 this.refreshRequired = true;
@@ -659,8 +663,8 @@ define('Sage/Platform/Mobile/_DetailBase', [
 
             if (this.entry) {
 
-                if (!this.options.descriptor && this.entry[this.descriptorProperty]) {
-                    App.setPrimaryTitle(this.entry[this.descriptorProperty]);
+                if (!this.options.descriptor && this.entry[this.labelProperty]) {
+                    App.setPrimaryTitle(this.entry[this.labelProperty]);
                 }
 
                 this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);

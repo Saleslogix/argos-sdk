@@ -498,7 +498,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
 
             if (!this.options.descriptor) {
-                App.setPrimaryTitle(this.entry[this.descriptorProperty]);
+                App.setPrimaryTitle(this.entry[this.labelProperty]);
             }
 
             this.setValues(entry, true);
@@ -578,7 +578,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          * @return {String} View key
          */
         getTag: function() {
-            var tag = this.options && this.options.entry && this.options.entry[this.keyProperty];
+            var tag = this.options && this.options.entry && this.options.entry[this.idProperty];
             if (!tag) {
                 tag = this.options && this.options.key;
             }
@@ -1078,7 +1078,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             return lang.mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind,
                 insert: this.options.insert,
-                key: this.options.insert ? false : this.options.key ? this.options.key : this.options.entry && this.options.entry[this.keyProperty]
+                key: this.options.insert ? false : this.options.key ? this.options.key : this.options.entry && this.options.entry[this.idProperty]
             });
         },
         /**

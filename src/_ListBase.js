@@ -167,7 +167,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * The template used to render a row in the view.  This template includes {@link #itemTemplate}.
          */
         rowTemplate: new Simplate([
-            '<li data-action="activateEntry" data-key="{%= $[$$.keyProperty] %}" data-descriptor="{%: $[$$.descriptorProperty] %}">',
+            '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
                 '<button data-action="selectEntry" class="list-item-selector button">',
                     '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
                 '</button>',
@@ -184,8 +184,8 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @template
          */
         itemTemplate: new Simplate([
-            '<h3>{%: $[$$.descriptorProperty] %}</h3>',
-            '<h4>{%: $[$$.keyProperty] %}</h4>'
+            '<h3>{%: $[$$.labelProperty] %}</h3>',
+            '<h4>{%: $[$$.idProperty] %}</h4>'
         ]),
         /**
          * @property {Simplate}
@@ -454,15 +454,12 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         relatedViewManagers: null,
 
-        /**
-         * Store ID property
-         */
-        keyProperty: '',
-
-        /**
-         * Store description property
-         */
-        descriptorProperty: '',
+        // Store properties
+        itemsProperty: '',
+        idProperty: '',
+        labelProperty: '',
+        entityProperty: '',
+        versionProperty: '',
 
         /**
          * Setter method for the selection model, also binds the various selection model select events
@@ -983,19 +980,19 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @param {Object} action Action instance, not used.
          * @param {Object} selection Data entry for the selection.
          * @param {String} viewId View id to be shown
-         * @param {String} whereQueryFmt Where expression format string to be passed. `${0}` will be the `keyProperty`
+         * @param {String} whereQueryFmt Where expression format string to be passed. `${0}` will be the `idProperty`
          * property of the passed selection data.
          */
         navigateToRelatedView:  function(action, selection, viewId, whereQueryFmt) {
             var view = App.getView(viewId),
                 options = {
-                    where: string.substitute(whereQueryFmt, [selection.data[this.keyProperty]])
+                    where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]])
                 };
 
             this.setSource({
                 entry: selection.data,
-                descriptor: selection.data[this.descriptorProperty],
-                key: selection.data[this.keyProperty]
+                descriptor: selection.data[this.labelProperty],
+                key: selection.data[this.idProperty]
             });
 
             if (view && options) {
@@ -1017,7 +1014,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             }
         },
         /**
-         * Helper method for list-actions. Navigates to the defined `this.editView` passing the given selections `keyProperty`
+         * Helper method for list-actions. Navigates to the defined `this.editView` passing the given selections `idProperty`
          * property in the navigation options (which is then requested and result used as default data).
          * @param {Object} action Action instance, not used.
          * @param {Object} selection Data entry for the selection.
@@ -1026,7 +1023,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             var view = App.getView(this.editView || this.insertView);
             if (view) {
                 view.show({
-                    key: selection.data[this.keyProperty]
+                    key: selection.data[this.idProperty]
                 });
             }
         },
