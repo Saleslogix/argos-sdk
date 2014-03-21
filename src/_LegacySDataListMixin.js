@@ -23,7 +23,6 @@ define('Sage/Platform/Mobile/_LegacySDataListMixin', [
     string
 ) {
     return declare('Sage.Platform.Mobile._LegacySDataListMixin', null, {
-        entries: {},
         feed: null,
 
         /**

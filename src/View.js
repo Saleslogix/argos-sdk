@@ -103,10 +103,9 @@ define('Sage/Platform/Mobile/View', [
         },
         /**
          * Called after toolBar layout is created;
-         * 
+         *
          */
         onToolLayoutCreated:function(tools){
-    
         },
         /**
          * Returns the tool layout that defines all toolbar items for the view

@@ -17,7 +17,7 @@
  * @class Sage.Platform.Mobile._DetailBase
  * A Detail View represents a single record and should display all the info the user may need about the entry.
  *
- * A Detail entry is identified by its key ($key) which is how it requests the data via the endpoint.
+ * A Detail entry is identified by its key (keyProperty) which is how it requests the data via the endpoint.
  *
  * @alternateClassName _DetailBase
  * @extends Sage.Platform.Mobile.View
@@ -234,6 +234,11 @@ define('Sage/Platform/Mobile/_DetailBase', [
         store: null,
         /**
          * @property {Object}
+         * The data entry
+         */
+        entry: null,
+        /**
+         * @property {Object}
          * The layout definition that constructs the detail view with sections and rows
          */
         layout: null,
@@ -298,6 +303,9 @@ define('Sage/Platform/Mobile/_DetailBase', [
          */
         _navigationOptions: null,
 
+        keyProperty: '',
+        descriptorProperty: '',
+
         /**
          * Extends the dijit widget postCreate to subscribe to the global `/app/refresh` event and clear the view.
          */
@@ -351,7 +359,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * @private
          */
         _onRefresh: function(o) {
-            var descriptor = o.data && o.data['$descriptor'];
+            var descriptor = o.data && o.data[this.descriptorProperty];
 
             if (this.options && this.options.key === o.key) {
                 this.refreshRequired = true;
@@ -395,11 +403,11 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * @param {HTMLElement} el
          */
         navigateToEditView: function(el) {
-            var view, item;
+            var view, entry;
             view = App.getView(this.editView);
             if (view) {
-                item = lang.mixin({}, this.entry, this.item);
-                view.show({entry: item, item: item});
+                entry = this.entry;
+                view.show({entry: entry});
             }
         },
         /**
@@ -635,35 +643,35 @@ define('Sage/Platform/Mobile/_DetailBase', [
         /**
          * @template
          * Optional processing of the returned entry before it gets processed into layout.
-         * @param {Object} item Entry from data store
+         * @param {Object} entry Entry from data store
          * @return {Object} By default does not do any processing
          */
-        processItem: function(item) {
-            return item;
+        preProcessEntry: function(entry) {
+            return entry;
         },
         /**
          * Takes the entry from the data store, applies customization, applies any custom item process and then
          * passes it to process layout.
-         * @param {Object} item Entry from data store
+         * @param {Object} entry Entry from data store
          */
-        processData: function(item) {
-            this.entry = this.item = this.processItem(item);
+        processEntry: function(entry) {
+            this.entry = this.preProcessEntry(entry);
 
-            if (this.item) {
+            if (this.entry) {
 
-                if (!this.options.descriptor && this.item.$descriptor) {
-                    App.setPrimaryTitle(this.item.$descriptor);
+                if (!this.options.descriptor && this.entry[this.descriptorProperty]) {
+                    App.setPrimaryTitle(this.entry[this.descriptorProperty]);
                 }
 
-                this.processLayout(this._createCustomizedLayout(this.createLayout()), this.item);
+                this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
             } else {
                 this.set('detailContent', '');
             }
         },
-        _onGetComplete: function(item) {
+        _onGetComplete: function(entry) {
             try {
-                if (item) {
-                    this.processData(item);
+                if (entry) {
+                    this.processEntry(entry);
                 } else {
                     domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
                 }
