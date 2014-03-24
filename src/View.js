@@ -125,6 +125,7 @@ define('Sage/Platform/Mobile/View', [
             var route;
 
             if (this.routes === null) {
+                this.routes = {};
                 this.registerDefaultRoute();
             }
 
@@ -177,15 +178,12 @@ define('Sage/Platform/Mobile/View', [
          * @property {Object}
          * @see http://dojotoolkit.org/reference-guide/1.9/dojo/router.html#dojo-router
          */
-        routes: null, 
+        routes: null,
         onDefaultRoute: function(evt) {
             this.show();
         },
         registerDefaultRoute: function() {
-            if (window.App && window.App.router) {
-                var router = window.App.router;
-                router.register('_' + this.id, lang.hitch(this, this.onDefaultRoute));
-            }
+            this.routes['_' + this.id] = this.onDefaultRoute;
         },
         /**
          * The onBeforeTransitionAway event.
