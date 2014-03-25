@@ -97,6 +97,7 @@ define('Sage/Platform/Mobile/ApplicationModule', [
             this.loadCustomizations();
             this.loadToolbars();
             this.loadViews();
+            this.loadRoutes();
         },
         /**
          * @template
@@ -110,6 +111,8 @@ define('Sage/Platform/Mobile/ApplicationModule', [
          */
         loadViews: function() {
         },
+        loadRoutes: function() {
+        },
         /**
          * @template
          * This function should be overriden in the app and be used to register all toolbars.
@@ -119,17 +122,33 @@ define('Sage/Platform/Mobile/ApplicationModule', [
         /**
          * Passes the view instance to {@link App#registerView App.registerView}.
          * @param {Object} view View instance to register
-         * @param {DOMNode} domNode Optional. DOM node to place the view in. 
+         * @param {DOMNode} domNode Optional. DOM node to place the view in.
          */
         registerView: function(view, domNode) {
-            if (this.application)
+            if (this.application) {
                 this.application.registerView(view, domNode);
+            }
+        },
+        registerRoute: function(view, path, cb) {
+            if (this.application) {
+                this.application.registerRoute(view, path, cb);
+            }
+        },
+        clearRoutes: function(view) {
+            if (this.application) {
+                this.application.clearRoutes(view);
+            }
+        },
+        clearRoute: function(view, path) {
+            if (this.application) {
+                this.application.clearRoute(view, path);
+            }
         },
         /**
          * Passes the toolbar instance to {@link App#registerToolbar App.registerToolbar}.
          * @param {String} name Unique name of the toolbar to register.
          * @param {Object} toolbar Toolbar instance to register.
-         * @param {DOMNode} domNode Optional. DOM node to place the view in. 
+         * @param {DOMNode} domNode Optional. DOM node to place the view in.
          */
         registerToolbar: function(name, toolbar, domNode) {
             if (this.application)

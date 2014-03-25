@@ -322,10 +322,11 @@ define('Sage/Platform/Mobile/_EditBase', [
                 }
             }, this);
         },
-        // Override the Views registerDefaultRoute to include the entity id in the route
-        registerDefaultRoute: function() {
-            var router = App.router;
-            router.register(['_', this.id, ';:key'].join(''), lang.hitch(this, this.onDefaultRoute));
+        onSetupRoutes: function() {
+            var app = window.App;
+            if (app) {
+                app.registerRoute(this, [this.id, ';key'].join(''), lang.hitch(this, this.onDefaultRoute));
+            }
         },
         onDefaultRoute: function(evt) {
             var primary = App.getPrimaryActiveView();

@@ -89,7 +89,6 @@ define('Sage/Platform/Mobile/View', [
         serviceName: false,
         connectionName: false,
         constructor: function() {
-            this.initRoutes();
         },
         /**
          * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
@@ -120,22 +119,6 @@ define('Sage/Platform/Mobile/View', [
         init: function() {
             this.startup();
             this.initConnects();
-        },
-        initRoutes: function() {
-            var route;
-
-            if (this.routes === null) {
-                this.routes = {};
-                this.registerDefaultRoute();
-            }
-
-            if (window.App && window.App.router) {
-                for (route in this.routes) {
-                    if (this.routes.hasOwnProperty(route)) {
-                        window.App.router.register(route, lang.hitch(this, this.routes[route]));
-                    }
-                }
-            }
         },
         /**
          * Establishes this views connections to various events
@@ -172,18 +155,6 @@ define('Sage/Platform/Mobile/View', [
          * Emptying nodes, requesting data, rendering new content
          */
         refresh: function() {
-        },
-        /**
-         * Key/Value pair of route/callback for this view. These are registered with the App.router when the view is registered.
-         * @property {Object}
-         * @see http://dojotoolkit.org/reference-guide/1.9/dojo/router.html#dojo-router
-         */
-        routes: null,
-        onDefaultRoute: function(evt) {
-            this.show();
-        },
-        registerDefaultRoute: function() {
-            this.routes['_' + this.id] = this.onDefaultRoute;
         },
         /**
          * The onBeforeTransitionAway event.
@@ -244,7 +215,20 @@ define('Sage/Platform/Mobile/View', [
          * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
          */
         show: function(options, transitionOptions) {
-            if (this.onShow(this) === false) return;
+            var tag, data, options, app, viewShowOptions;
+
+            app = window.App;
+            if (app && app.viewShowOptions) {
+                viewShowOptions = app.viewShowOptions.pop();
+                if (viewShowOptions) {
+                    options = lang.mixin(options, viewShowOptions.options);
+                    transitionOptions = lang.mixin(transitionOptions, viewShowOptions.transitionOptions);
+                }
+            }
+
+            if (this.onShow(this) === false) {
+                return;
+            }
 
             if (this.refreshRequiredFor(options))
             {
@@ -259,10 +243,11 @@ define('Sage/Platform/Mobile/View', [
                 this.set('title', this.titleText);
             }
 
-            var tag = this.getTag(),
-                data = this.getContext();
+            tag = this.getTag();
+            data = this.getContext();
 
-            ReUI.show(this.domNode, lang.mixin(transitionOptions || {}, {tag: tag, data: data}));
+            transitionOptions = lang.mixin(transitionOptions || {}, {tag: tag, data: data});
+            ReUI.show(this.domNode, transitionOptions);
         },
         /**
          * Expands the passed expression if it is a function.
@@ -341,6 +326,8 @@ define('Sage/Platform/Mobile/View', [
          */
         getSecurity: function(access) {
             return this.security;
+        },
+        onSetupRoutes: function() {
         }
     });
 });

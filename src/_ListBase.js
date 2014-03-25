@@ -996,7 +996,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             });
 
             if (view && options) {
-                view.show(options);
+                App.goRoute(view.id, options);
             }
         },
         /**
@@ -1007,7 +1007,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         navigateToDetailView: function(key, descriptor) {
             var view = App.getView(this.detailView);
             if (view) {
-                view.show({
+                App.goRoute(view.id, {
                     descriptor: descriptor,
                     key: key
                 });
@@ -1022,7 +1022,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         navigateToEditView: function(action, selection) {
             var view = App.getView(this.editView || this.insertView);
             if (view) {
-                view.show({
+                App.goRoute(view.id, {
                     key: selection.data[this.idProperty]
                 });
             }
@@ -1035,7 +1035,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         navigateToInsertView: function(el) {
             var view = App.getView(this.insertView || this.editView);
             if (view) {
-                view.show({
+                App.goRoute(view.id, {
                     returnTo: this.id,
                     insert: true
                 });
