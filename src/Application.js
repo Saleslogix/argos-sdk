@@ -264,6 +264,8 @@ define('Sage/Platform/Mobile/Application', [
                 this.redirectHash = hash.replace(this.routePrefix, '');
             }
 
+            location.hash = '';
+
             ReUI.init();
         },
         initRoutes: function() {
