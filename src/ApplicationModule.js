@@ -111,6 +111,9 @@ define('Sage/Platform/Mobile/ApplicationModule', [
          */
         loadViews: function() {
         },
+        /**
+         * Allows inherited application modules to register custom routes.
+         */
         loadRoutes: function() {
         },
         /**
@@ -129,16 +132,25 @@ define('Sage/Platform/Mobile/ApplicationModule', [
                 this.application.registerView(view, domNode);
             }
         },
+        /**
+         * Calls {@link App#registerRoute App.registerRoute}.
+         */
         registerRoute: function(view, path, cb) {
             if (this.application) {
                 this.application.registerRoute(view, path, cb);
             }
         },
+        /**
+         * Calls {@link App#clearRoutes App.clearRoutes}.
+         */
         clearRoutes: function(view) {
             if (this.application) {
                 this.application.clearRoutes(view);
             }
         },
+        /**
+         * Calls {@link App#clearRoute App.clearRoute}.
+         */
         clearRoute: function(view, path) {
             if (this.application) {
                 this.application.clearRoute(view, path);

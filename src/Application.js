@@ -126,10 +126,20 @@ define('Sage/Platform/Mobile/Application', [
          */
         ReUI: ReUI,
 
+        /**
+         * @property viewRoutes {Object} Object where the keys are registered view id's. The value is an array of registered routes to that view.
+         */
         viewRoutes: null,
 
+        /**
+         * @property viewShowOptions {Array} Array with one configuration object that gets pushed before showing a view.
+         * Allows passing in options via routing. Value gets removed once the view is shown.
+         */
         viewShowOptions: null,
 
+        /**
+         * @property routePrefix {String} Prefix for routing that shows up after the # in the URL.
+         */
         routePrefix: '!',
 
         /**
@@ -565,11 +575,23 @@ define('Sage/Platform/Mobile/Application', [
                 view._placeAt = null;
             }
         },
+        /**
+         * Registers a default route for a view. This is called when the view gets registered with the Application.
+         * The default route path is just the view's id. The callback is onDefaultRoute.
+         * @param {View}
+         */
         registerDefaultRoute: function(view) {
             view = this.getView(view);
             var path = view.id;
             this.registerRoute(view, path, lang.hitch(this, this.onDefaultRoute, path, view));
         },
+        /**
+         * Registers a route to a view.
+         * @param {Object} view
+         * @param {String} path
+         * @param {Function} cb
+         * @param {Object} cb.evt
+         */
         registerRoute: function(view, path, cb) {
             path = this.routePrefix + path;
             view = this.getView(view);
@@ -579,15 +601,28 @@ define('Sage/Platform/Mobile/Application', [
                 handle: this.router.register(path, cb)
             });
         },
+        /**
+         * Default callback function for registerDefaultRoute.
+         */
         onDefaultRoute: function(path, view) {
             view.showViaRoute();
         },
+        /**
+         * Goes to a given route. This replaces calling view.show(options, transitionOptions) directly.
+         * @param {String} path
+         * @param {Object} options
+         * @param {Object} transitionOptions
+         */
         goRoute: function(path, options, transitionOptions) {
             path = path.indexOf(this.routePrefix) === 0 ? path : this.routePrefix + path;
             this.viewShowOptions = []; // ensure we have one entry
             this.viewShowOptions.push({ oldPath: this.hash(), path: path, options: options, transitionOptions: transitionOptions});
             this.router.go(path);
         },
+        /**
+         * Clears all routes for the given view.
+         * @param {Object}
+         */
         clearRoutes: function(view) {
             var existing;
 
@@ -599,6 +634,11 @@ define('Sage/Platform/Mobile/Application', [
 
             this.viewRoutes[view.id] = null;
         },
+        /**
+         * Clears a route for the given view/path.
+         * @param {Object} view
+         * @param {Object} path
+         */
         clearRoute: function(view, path) {
             var existing, index;
 

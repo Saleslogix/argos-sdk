@@ -210,6 +210,11 @@ define('Sage/Platform/Mobile/View', [
 
             this.onActivate(this);
         },
+        /**
+         * Shows the view using iUI in order to transition to the new element.
+         * @param {Object} options The navigation options passed from the previous view.
+         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
+         */
         showViaRoute: function(options, transitionOptions) {
             var tag, data, app, viewShowOptions;
 
@@ -249,6 +254,7 @@ define('Sage/Platform/Mobile/View', [
          * Shows the view using iUI in order to transition to the new element.
          * @param {Object} options The navigation options passed from the previous view.
          * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
+         * @deprecated Use App.goRoute instead.
          */
         show: function(options, transitionOptions) {
             App.goRoute(this.id, options, transitionOptions);
@@ -331,6 +337,9 @@ define('Sage/Platform/Mobile/View', [
         getSecurity: function(access) {
             return this.security;
         },
+        /**
+         * Hook so inherited views can clear/register their own routes.
+         */
         onSetupRoutes: function() {
         }
     });
