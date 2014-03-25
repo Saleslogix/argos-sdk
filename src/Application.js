@@ -566,6 +566,7 @@ define('Sage/Platform/Mobile/Application', [
             }
         },
         registerDefaultRoute: function(view) {
+            view = this.getView(view);
             var path = view.id;
             this.registerRoute(view, path, lang.hitch(this, this.onDefaultRoute, path, view));
         },
