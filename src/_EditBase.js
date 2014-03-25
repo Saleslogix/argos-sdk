@@ -335,7 +335,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
 
             if (evt.params.key) {
-                this.show({
+                this.showViaRoute({
                     descriptor: '',
                     key: evt.params.key
                 });
@@ -899,7 +899,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                 var returnTo = this.options.returnTo,
                     view = App.getView(returnTo);
                 if (view) {
-                    view.show();
+                    App.goRoute(view.id);
                 } else {
                     window.location.hash = returnTo;
                 }
@@ -1017,7 +1017,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                 var returnTo = this.options.returnTo,
                     view = App.getView(returnTo);
                 if (view) {
-                    view.show();
+                    App.goRoute(view.id);
                 } else {
                     window.location.hash = returnTo;
                 }

@@ -552,17 +552,18 @@ define('Sage/Platform/Mobile/Application', [
             this.onRegistered(view);
             view.onSetupRoutes();
 
-            aspect.before(view, 'show', lang.hitch(view, function() {
-                var view = this;
-                if (view && !view._started) {
-                    view.init();
-                    view.placeAt(view._placeAt, 'first');
-                    view._started = true;
-                    view._placeAt = null;
-                }
-            }));
+            aspect.before(view, 'showViaRoute', lang.hitch(view, this._beforeViewShow));
 
             return this;
+        },
+        _beforeViewShow: function() {
+            var view = this;
+            if (view && !view._started) {
+                view.init();
+                view.placeAt(view._placeAt, 'first');
+                view._started = true;
+                view._placeAt = null;
+            }
         },
         registerDefaultRoute: function(view) {
             var path = view.id;
@@ -578,7 +579,7 @@ define('Sage/Platform/Mobile/Application', [
             });
         },
         onDefaultRoute: function(path, view) {
-            view.show();
+            view.showViaRoute();
         },
         goRoute: function(path, options, transitionOptions) {
             path = path.indexOf(this.routePrefix) === 0 ? path : this.routePrefix + path;

@@ -210,12 +210,7 @@ define('Sage/Platform/Mobile/View', [
 
             this.onActivate(this);
         },
-        /**
-         * Shows the view using iUI in order to transition to the new element.
-         * @param {Object} options The navigation options passed from the previous view.
-         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
-         */
-        show: function(options, transitionOptions) {
+        showViaRoute: function(options, transitionOptions) {
             var tag, data, options, app, viewShowOptions;
 
             app = window.App;
@@ -249,6 +244,14 @@ define('Sage/Platform/Mobile/View', [
 
             transitionOptions = lang.mixin(transitionOptions || {}, {tag: tag, data: data});
             ReUI.show(this.domNode, transitionOptions);
+        },
+        /**
+         * Shows the view using iUI in order to transition to the new element.
+         * @param {Object} options The navigation options passed from the previous view.
+         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
+         */
+        show: function(options, transitionOptions) {
+            App.goRoute(this.id, options, transitionOptions);
         },
         /**
          * Expands the passed expression if it is a function.

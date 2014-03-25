@@ -156,7 +156,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
          * `/app/resize` event and immediately call resize so the canvas is scaled.
          * @param options
          */
-        show: function(options) {
+        showViaRoute: function(options) {
             this.inherited(arguments);
 
             if (options && options.lineWidth) { this.config.lineWidth = options.lineWidth; }

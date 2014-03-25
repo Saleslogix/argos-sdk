@@ -354,7 +354,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             }
         },
         onDefaultRoute: function(evt) {
-            this.show({
+            this.showViaRoute({
                 descriptor: '',
                 key: evt.params.key
             });
@@ -771,11 +771,11 @@ define('Sage/Platform/Mobile/_DetailBase', [
             this.inherited(arguments);
         },
         /**
-         * Extends the {@link View#show parent implementation} to set the nav options title attribute to the descriptor
+         * Extends the {@link View#showViaRoute parent implementation} to set the nav options title attribute to the descriptor
          * @param tag
          * @param data
          */
-        show: function(options) {
+        showViaRoute: function(options) {
             if (options && options.descriptor) {
                 options.title = options.title || options.descriptor;
             }

@@ -552,7 +552,7 @@ define('Sage/Platform/Mobile/_ListBase', [
 
                 delete this.searchWidget;
             }
-            
+
             delete this.store;
             this.destroyRelatedViewWidgets();
             this.inherited(arguments);
@@ -561,11 +561,11 @@ define('Sage/Platform/Mobile/_ListBase', [
             return this.store || (this.store = this.createStore());
         },
         /**
-        * Shows overrides the view class to set options for the list view and then calls the inherited show method on the view.
+        * Shows overrides the view class to set options for the list view and then calls the inherited showViaRoute method on the view.
         * @param {Object} options The navigation options passed from the previous view.
         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
         */
-       show: function(options, transitionOptions) {
+        showViaRoute: function(options, transitionOptions) {
            if (options){
                if (options.resetSearch) {
                    this.defaultSearchTermSet = false;
