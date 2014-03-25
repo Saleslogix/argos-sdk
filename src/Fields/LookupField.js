@@ -416,7 +416,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 options = this.createNavigationOptions();
             if (view && options && !this.disabled) {
                 lang.mixin(view, this.viewMixin);
-                App.goRoute(view.id, options);
+                this.app.goRoute(view.id, options);
             }
         },
         buttonClick: function() {

@@ -211,7 +211,7 @@ define('Sage/Platform/Mobile/View', [
             this.onActivate(this);
         },
         showViaRoute: function(options, transitionOptions) {
-            var tag, data, options, app, viewShowOptions;
+            var tag, data, app, viewShowOptions;
 
             app = window.App;
             if (app && app.viewShowOptions) {
