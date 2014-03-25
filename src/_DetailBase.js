@@ -350,7 +350,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             this.inherited(arguments);
             var app = window.App;
             if (app) {
-                app.registerRoute(this, [this.id, ';key'].join(''), lang.hitch(this, this.onDefaultRoute));
+                app.registerRoute(this, [this.id, '/:key'].join(''), lang.hitch(this, this.onDefaultRoute));
             }
         },
         onDefaultRoute: function(evt) {
@@ -413,7 +413,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             view = App.getView(this.editView);
             if (view) {
                 entry = this.entry;
-                view.show({entry: entry});
+                App.goRoute(view.id + '/' + entry[this.idProperty], {entry: entry});
             }
         },
         /**
@@ -431,7 +431,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             }
 
             if (view && options) {
-                view.show(options);
+                App.goRoute(view.id, options);
             }
         },
         /**

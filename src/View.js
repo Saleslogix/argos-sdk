@@ -145,10 +145,11 @@ define('Sage/Platform/Mobile/View', [
          * @return {Boolean} True indicates view needs to be refreshed.
          */
         refreshRequiredFor: function(options) {
-            if (this.options)
+            if (this.options) {
                 return !!options; // if options provided, then refresh
-            else
+            } else {
                 return true;
+            }
         },
         /**
          * Should refresh the view, such as but not limited to:

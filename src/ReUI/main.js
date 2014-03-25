@@ -201,7 +201,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
                 return;
             }
 
-            var count, hash, position, from;
+            var count, position, from;
 
             o = o || {};
 
@@ -217,12 +217,11 @@ define('Sage/Platform/Mobile/ReUI/main', [
 
             if (o.track !== false) {
                 count = App.history.length;
-                hash = dojoHash();
                 position = -1;
 
                 // do loop and trim
                 for (position = count - 1; position >= 0; position--) {
-                    if (App.history[position].hash == hash) {
+                    if (App.history[position].page === page.id) {
                         break;
                     }
                 }
@@ -232,15 +231,8 @@ define('Sage/Platform/Mobile/ReUI/main', [
 
                     App.history = App.history.splice(0, position + 1);
 
-                    context.hash = hash;
-
                     // indicate that App.history has already been taken care of (i.e. nothing needs to be pushed).
                     o.trimmed = true;
-
-                    // trim up the browser history
-                    // if the requested hash does not equal the current location hash, trim up history.
-                    // location hash will not match requested hash when show is called directly, but will match
-                    // for detected location changes (i.e. the back button).
                 } else if (o.returnTo) {
                     if (typeof o.returnTo === 'function') {
                         for (position = count - 1; position >= 0; position--) {
@@ -255,8 +247,6 @@ define('Sage/Platform/Mobile/ReUI/main', [
                     if (position > -1) {
                         // we fix up the history, but do not flag as trimmed, since we do want the new view to be pushed.
                         App.history = App.history.splice(0, position + 1);
-
-                        context.hash = App.history[App.history.length - 1] && App.history[App.history.length - 1].hash;
                     }
                 }
             }

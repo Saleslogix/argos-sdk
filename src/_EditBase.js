@@ -124,7 +124,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          *
          */
         widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="overthrow edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',            
+            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="overthrow edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '{%! $.loadingTemplate %}',
             '{%! $.validationSummaryTemplate %}',
             '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
@@ -139,7 +139,7 @@ define('Sage/Platform/Mobile/_EditBase', [
         loadingTemplate: new Simplate([
             '<fieldset class="panel-loading-indicator">',
             '<div class="row"><div>{%: $.loadingText %}</div></div>',
-            '</fieldset>'        
+            '</fieldset>'
         ]),
         /**
          * @property {Simplate}
@@ -325,7 +325,7 @@ define('Sage/Platform/Mobile/_EditBase', [
         onSetupRoutes: function() {
             var app = window.App;
             if (app) {
-                app.registerRoute(this, [this.id, ';key'].join(''), lang.hitch(this, this.onDefaultRoute));
+                app.registerRoute(this, [this.id, '/:key'].join(''), lang.hitch(this, this.onDefaultRoute));
             }
         },
         onDefaultRoute: function(evt) {
@@ -1099,7 +1099,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         beforeTransitionTo: function() {
             if (this.refreshRequired) {
-                if (this.options.insert === true || this.options.key) {
+                if (this.options.insert === true || (this.options.key && !this.options.entry)) {
                     domClass.add(this.domNode, 'panel-loading');
                 } else {
                     domClass.remove(this.domNode, 'panel-loading');

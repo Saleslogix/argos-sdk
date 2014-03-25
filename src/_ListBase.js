@@ -1007,7 +1007,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         navigateToDetailView: function(key, descriptor) {
             var view = App.getView(this.detailView);
             if (view) {
-                App.goRoute(view.id, {
+                App.goRoute(view.id + '/' + key, {
                     descriptor: descriptor,
                     key: key
                 });
@@ -1020,10 +1020,11 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @param {Object} selection Data entry for the selection.
          */
         navigateToEditView: function(action, selection) {
-            var view = App.getView(this.editView || this.insertView);
+            var view = App.getView(this.editView || this.insertView),
+                key = selection.data[this.idProperty];
             if (view) {
-                App.goRoute(view.id, {
-                    key: selection.data[this.idProperty]
+                App.goRoute(view.id + '/' + key, {
+                    key: key
                 });
             }
         },

@@ -578,7 +578,6 @@ define('Sage/Platform/Mobile/Application', [
             });
         },
         onDefaultRoute: function(path, view) {
-            console.log(path);
             view.show();
         },
         goRoute: function(path, options, transitionOptions) {
