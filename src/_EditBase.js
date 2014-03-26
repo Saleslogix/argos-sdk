@@ -124,7 +124,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          *
          */
         widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="overthrow edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',            
+            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="overthrow edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '{%! $.loadingTemplate %}',
             '{%! $.validationSummaryTemplate %}',
             '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
@@ -139,7 +139,7 @@ define('Sage/Platform/Mobile/_EditBase', [
         loadingTemplate: new Simplate([
             '<fieldset class="panel-loading-indicator">',
             '<div class="row"><div>{%: $.loadingText %}</div></div>',
-            '</fieldset>'        
+            '</fieldset>'
         ]),
         /**
          * @property {Simplate}
@@ -322,10 +322,11 @@ define('Sage/Platform/Mobile/_EditBase', [
                 }
             }, this);
         },
-        // Override the Views registerDefaultRoute to include the entity id in the route
-        registerDefaultRoute: function() {
-            var router = App.router;
-            router.register(['_', this.id, ';:key'].join(''), lang.hitch(this, this.onDefaultRoute));
+        onSetupRoutes: function() {
+            var app = window.App;
+            if (app) {
+                app.registerRoute(this, [this.id, '/:key'].join(''), lang.hitch(this, this.onDefaultRoute));
+            }
         },
         onDefaultRoute: function(evt) {
             var primary = App.getPrimaryActiveView();
@@ -334,7 +335,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
 
             if (evt.params.key) {
-                this.show({
+                this.showViaRoute({
                     descriptor: '',
                     key: evt.params.key
                 });
@@ -898,7 +899,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                 var returnTo = this.options.returnTo,
                     view = App.getView(returnTo);
                 if (view) {
-                    view.show();
+                    App.goRoute(view.id);
                 } else {
                     window.location.hash = returnTo;
                 }
@@ -1016,7 +1017,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                 var returnTo = this.options.returnTo,
                     view = App.getView(returnTo);
                 if (view) {
-                    view.show();
+                    App.goRoute(view.id);
                 } else {
                     window.location.hash = returnTo;
                 }
@@ -1098,7 +1099,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         beforeTransitionTo: function() {
             if (this.refreshRequired) {
-                if (this.options.insert === true || this.options.key) {
+                if (this.options.insert === true || (this.options.key && !this.options.entry)) {
                     domClass.add(this.domNode, 'panel-loading');
                 } else {
                     domClass.remove(this.domNode, 'panel-loading');

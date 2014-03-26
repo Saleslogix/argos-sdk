@@ -346,13 +346,15 @@ define('Sage/Platform/Mobile/_DetailBase', [
             }
             return this.inherited(arguments);
         },
-        // Override the Views registerDefaultRoute to include the entity id in the route
-        registerDefaultRoute: function() {
-            var router = App.router;
-            router.register(['_', this.id, ';:key'].join(''), lang.hitch(this, this.onDefaultRoute));
+        onSetupRoutes: function() {
+            this.inherited(arguments);
+            var app = window.App;
+            if (app) {
+                app.registerRoute(this, [this.id, '/:key'].join(''), lang.hitch(this, this.onDefaultRoute));
+            }
         },
         onDefaultRoute: function(evt) {
-            this.show({
+            this.showViaRoute({
                 descriptor: '',
                 key: evt.params.key
             });
@@ -411,7 +413,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             view = App.getView(this.editView);
             if (view) {
                 entry = this.entry;
-                view.show({entry: entry});
+                App.goRoute(view.id + '/' + entry[this.idProperty], {entry: entry});
             }
         },
         /**
@@ -429,7 +431,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             }
 
             if (view && options) {
-                view.show(options);
+                App.goRoute(view.id, options);
             }
         },
         /**
@@ -769,11 +771,11 @@ define('Sage/Platform/Mobile/_DetailBase', [
             this.inherited(arguments);
         },
         /**
-         * Extends the {@link View#show parent implementation} to set the nav options title attribute to the descriptor
+         * Extends the {@link View#showViaRoute parent implementation} to set the nav options title attribute to the descriptor
          * @param tag
          * @param data
          */
-        show: function(options) {
+        showViaRoute: function(options) {
             if (options && options.descriptor) {
                 options.title = options.title || options.descriptor;
             }

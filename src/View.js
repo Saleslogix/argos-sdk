@@ -89,7 +89,6 @@ define('Sage/Platform/Mobile/View', [
         serviceName: false,
         connectionName: false,
         constructor: function() {
-            this.initRoutes();
         },
         /**
          * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
@@ -121,21 +120,6 @@ define('Sage/Platform/Mobile/View', [
             this.startup();
             this.initConnects();
         },
-        initRoutes: function() {
-            var route;
-
-            if (this.routes === null) {
-                this.registerDefaultRoute();
-            }
-
-            if (window.App && window.App.router) {
-                for (route in this.routes) {
-                    if (this.routes.hasOwnProperty(route)) {
-                        window.App.router.register(route, lang.hitch(this, this.routes[route]));
-                    }
-                }
-            }
-        },
         /**
          * Establishes this views connections to various events
          */
@@ -161,31 +145,17 @@ define('Sage/Platform/Mobile/View', [
          * @return {Boolean} True indicates view needs to be refreshed.
          */
         refreshRequiredFor: function(options) {
-            if (this.options)
+            if (this.options) {
                 return !!options; // if options provided, then refresh
-            else
+            } else {
                 return true;
+            }
         },
         /**
          * Should refresh the view, such as but not limited to:
          * Emptying nodes, requesting data, rendering new content
          */
         refresh: function() {
-        },
-        /**
-         * Key/Value pair of route/callback for this view. These are registered with the App.router when the view is registered.
-         * @property {Object}
-         * @see http://dojotoolkit.org/reference-guide/1.9/dojo/router.html#dojo-router
-         */
-        routes: null, 
-        onDefaultRoute: function(evt) {
-            this.show();
-        },
-        registerDefaultRoute: function() {
-            if (window.App && window.App.router) {
-                var router = window.App.router;
-                router.register('_' + this.id, lang.hitch(this, this.onDefaultRoute));
-            }
         },
         /**
          * The onBeforeTransitionAway event.
@@ -245,8 +215,21 @@ define('Sage/Platform/Mobile/View', [
          * @param {Object} options The navigation options passed from the previous view.
          * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
          */
-        show: function(options, transitionOptions) {
-            if (this.onShow(this) === false) return;
+        showViaRoute: function(options, transitionOptions) {
+            var tag, data, app, viewShowOptions;
+
+            app = window.App;
+            if (app && app.viewShowOptions) {
+                viewShowOptions = app.viewShowOptions.pop();
+                if (viewShowOptions) {
+                    options = lang.mixin(options, viewShowOptions.options);
+                    transitionOptions = lang.mixin(transitionOptions, viewShowOptions.transitionOptions);
+                }
+            }
+
+            if (this.onShow(this) === false) {
+                return;
+            }
 
             if (this.refreshRequiredFor(options))
             {
@@ -261,10 +244,20 @@ define('Sage/Platform/Mobile/View', [
                 this.set('title', this.titleText);
             }
 
-            var tag = this.getTag(),
-                data = this.getContext();
+            tag = this.getTag();
+            data = this.getContext();
 
-            ReUI.show(this.domNode, lang.mixin(transitionOptions || {}, {tag: tag, data: data}));
+            transitionOptions = lang.mixin(transitionOptions || {}, {tag: tag, data: data});
+            ReUI.show(this.domNode, transitionOptions);
+        },
+        /**
+         * Shows the view using iUI in order to transition to the new element.
+         * @param {Object} options The navigation options passed from the previous view.
+         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
+         * @deprecated Use App.goRoute instead.
+         */
+        show: function(options, transitionOptions) {
+            App.goRoute(this.id, options, transitionOptions);
         },
         /**
          * Expands the passed expression if it is a function.
@@ -343,6 +336,11 @@ define('Sage/Platform/Mobile/View', [
          */
         getSecurity: function(access) {
             return this.security;
+        },
+        /**
+         * Hook so inherited views can clear/register their own routes.
+         */
+        onSetupRoutes: function() {
         }
     });
 });

@@ -119,12 +119,28 @@ define('Sage/Platform/Mobile/Application', [
         'localize': localize,
         'mergeConfiguration': mergeConfiguration
     });
-    
+
     return declare('Sage.Platform.Mobile.Application', null, {
         /**
          * Instance of a ReUI
          */
         ReUI: ReUI,
+
+        /**
+         * @property viewRoutes {Object} Object where the keys are registered view id's. The value is an array of registered routes to that view.
+         */
+        viewRoutes: null,
+
+        /**
+         * @property viewShowOptions {Array} Array with one configuration object that gets pushed before showing a view.
+         * Allows passing in options via routing. Value gets removed once the view is shown.
+         */
+        viewShowOptions: null,
+
+        /**
+         * @property routePrefix {String} Prefix for routing that shows up after the # in the URL.
+         */
+        routePrefix: '!',
 
         /**
          * Instance of a Snap.js object (https://github.com/jakiestfu/Snap.js/)
@@ -200,7 +216,7 @@ define('Sage/Platform/Mobile/Application', [
             this._signals = [];
             this._subscribes = [];
             this.history = [];
-            
+
             this.customizations = {};
             this.services = {};// TODO: Remove
             this._connections = {};
@@ -209,6 +225,8 @@ define('Sage/Platform/Mobile/Application', [
             this.bars = {};
 
             this.context = {};
+            this.viewRoutes = {};
+            this.viewShowOptions = [];
 
             lang.mixin(this, options);
         },
@@ -253,10 +271,11 @@ define('Sage/Platform/Mobile/Application', [
             // todo: add support for handling the URL?
             var hash = this.hash();
             if (hash !== '') {
-                this.redirectHash = hash;
+                this.redirectHash = hash.replace(this.routePrefix, '');
             }
 
-            window.location.hash = '';
+            location.hash = '';
+
             ReUI.init();
         },
         initRoutes: function() {
@@ -528,11 +547,9 @@ define('Sage/Platform/Mobile/Application', [
          * Registers a view with the application and renders it to HTML.
          * If the application has already been initialized, the view is immediately initialized as well.
          * @param {View} view A view instance to be registered.
-         * @param {domNode} domNode Optional. A DOM node to place the view in. 
+         * @param {domNode} domNode Optional. A DOM node to place the view in.
          */
         registerView: function(view, domNode) {
-
-
             this.views[view.id] = view;
 
             if (!domNode) {
@@ -541,27 +558,112 @@ define('Sage/Platform/Mobile/Application', [
 
             view._placeAt = domNode || this._rootDomNode;
 
+            this.registerDefaultRoute(view);
             this.onRegistered(view);
+            view.onSetupRoutes();
 
-            aspect.before(view, 'show', lang.hitch(view, function() {
-                var view = this;
-                if (view && !view._started) {
-                    view.init();
-                    view.placeAt(view._placeAt, 'first');
-                    view._started = true;
-                    view._placeAt = null;
-                }
-            }));
-
+            aspect.before(view, 'showViaRoute', lang.hitch(view, this._beforeViewShow));
 
             return this;
+        },
+        _beforeViewShow: function() {
+            var view = this;
+            if (view && !view._started) {
+                view.init();
+                view.placeAt(view._placeAt, 'first');
+                view._started = true;
+                view._placeAt = null;
+            }
+        },
+        /**
+         * Registers a default route for a view. This is called when the view gets registered with the Application.
+         * The default route path is just the view's id. The callback is onDefaultRoute.
+         * @param {View}
+         */
+        registerDefaultRoute: function(view) {
+            view = this.getView(view);
+            var path = view.id;
+            this.registerRoute(view, path, lang.hitch(this, this.onDefaultRoute, path, view));
+        },
+        /**
+         * Registers a route to a view.
+         * @param {Object} view
+         * @param {String} path
+         * @param {Function} cb
+         * @param {Object} cb.evt
+         */
+        registerRoute: function(view, path, cb) {
+            path = this.routePrefix + path;
+            view = this.getView(view);
+            this.viewRoutes[view.id] = this.viewRoutes[view.id] || [];
+            this.viewRoutes[view.id].push({
+                path: path,
+                handle: this.router.register(path, cb)
+            });
+        },
+        /**
+         * Default callback function for registerDefaultRoute.
+         */
+        onDefaultRoute: function(path, view) {
+            view.showViaRoute();
+        },
+        /**
+         * Goes to a given route. This replaces calling view.show(options, transitionOptions) directly.
+         * @param {String} path
+         * @param {Object} options
+         * @param {Object} transitionOptions
+         */
+        goRoute: function(path, options, transitionOptions) {
+            path = path.indexOf(this.routePrefix) === 0 ? path : this.routePrefix + path;
+            this.viewShowOptions = []; // ensure we have one entry
+            this.viewShowOptions.push({ oldPath: this.hash(), path: path, options: options, transitionOptions: transitionOptions});
+            this.router.go(path);
+        },
+        /**
+         * Clears all routes for the given view.
+         * @param {Object}
+         */
+        clearRoutes: function(view) {
+            var existing;
+
+            view = this.getView(view);
+            existing = this.viewRoutes[view.id];
+            array.forEach(existing, function(route) {
+                route.handle.remove();
+            });
+
+            this.viewRoutes[view.id] = null;
+        },
+        /**
+         * Clears a route for the given view/path.
+         * @param {Object} view
+         * @param {Object} path
+         */
+        clearRoute: function(view, path) {
+            var existing, index;
+
+            path = this.routePrefix + path;
+            view = this.getView(view);
+            existing = this.viewRoutes[view.id];
+            index = -1;
+
+            array.forEach(existing, function(route, idx) {
+                if (route.path === path) {
+                    route.handle.remove();
+                    index = idx;
+                }
+            });
+
+            if (index > -1) {
+                this.viewRoutes[view.id].splice(index, 1);
+            }
         },
         /**
          * Registers a toolbar with the application and renders it to HTML.
          * If the application has already been initialized, the toolbar is immediately initialized as well.
          * @param {String} name Unique name of the toolbar
          * @param {Toolbar} tbar Toolbar instance to register
-         * @param {domNode} domNode Optional. A DOM node to place the view in. 
+         * @param {domNode} domNode Optional. A DOM node to place the view in.
          */
         registerToolbar: function(name, tbar, domNode) {
             if (typeof name === 'object') {

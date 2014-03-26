@@ -552,7 +552,7 @@ define('Sage/Platform/Mobile/_ListBase', [
 
                 delete this.searchWidget;
             }
-            
+
             delete this.store;
             this.destroyRelatedViewWidgets();
             this.inherited(arguments);
@@ -561,11 +561,11 @@ define('Sage/Platform/Mobile/_ListBase', [
             return this.store || (this.store = this.createStore());
         },
         /**
-        * Shows overrides the view class to set options for the list view and then calls the inherited show method on the view.
+        * Shows overrides the view class to set options for the list view and then calls the inherited showViaRoute method on the view.
         * @param {Object} options The navigation options passed from the previous view.
         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
         */
-       show: function(options, transitionOptions) {
+        showViaRoute: function(options, transitionOptions) {
            if (options){
                if (options.resetSearch) {
                    this.defaultSearchTermSet = false;
@@ -996,7 +996,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             });
 
             if (view && options) {
-                view.show(options);
+                App.goRoute(view.id, options);
             }
         },
         /**
@@ -1007,7 +1007,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         navigateToDetailView: function(key, descriptor) {
             var view = App.getView(this.detailView);
             if (view) {
-                view.show({
+                App.goRoute(view.id + '/' + key, {
                     descriptor: descriptor,
                     key: key
                 });
@@ -1020,10 +1020,11 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @param {Object} selection Data entry for the selection.
          */
         navigateToEditView: function(action, selection) {
-            var view = App.getView(this.editView || this.insertView);
+            var view = App.getView(this.editView || this.insertView),
+                key = selection.data[this.idProperty];
             if (view) {
-                view.show({
-                    key: selection.data[this.idProperty]
+                App.goRoute(view.id + '/' + key, {
+                    key: key
                 });
             }
         },
@@ -1035,7 +1036,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         navigateToInsertView: function(el) {
             var view = App.getView(this.insertView || this.editView);
             if (view) {
-                view.show({
+                App.goRoute(view.id, {
                     returnTo: this.id,
                     insert: true
                 });

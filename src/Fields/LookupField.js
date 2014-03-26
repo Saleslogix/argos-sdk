@@ -416,7 +416,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 options = this.createNavigationOptions();
             if (view && options && !this.disabled) {
                 lang.mixin(view, this.viewMixin);
-                view.show(options);
+                this.app.goRoute(view.id, options);
             }
         },
         buttonClick: function() {
@@ -765,7 +765,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
 
                     if (initial) this.originalValue = this.currentValue;
 
-                    this.setText(this.requireSelection ? this.emptyText : '');    
+                    this.setText(this.requireSelection ? this.emptyText : '');
                 }
             }
             else
@@ -779,8 +779,8 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                     text = this.textRenderer.call(this, val, key, text);
 
                 this.currentValue = {
-                    key: key,
-                    text: text
+                    key: key || text,
+                    text: text || key
                 };
 
                 if (initial) this.originalValue = this.currentValue;
