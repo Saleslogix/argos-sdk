@@ -170,7 +170,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          */
         relatedTemplate: new Simplate([
             '<li class="{%= $.cls %}">',
-            '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}">',
+            '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
             '{% if ($.icon) { %}',
             '<img src="{%= $.icon %}" alt="icon" class="icon" />',
             '{% } %}',
@@ -582,6 +582,9 @@ define('Sage/Platform/Mobile/_DetailBase', [
                     }
                     if (current['resourcePredicate']) {
                         context['resourcePredicate'] = this.expandExpression(current['resourcePredicate'], entry);
+                    }
+                    if (current['dataSet']) {
+                        context['dataSet'] = this.expandExpression(current['dataSet'], entry);
                     }
                     if (current['title']) {
                         context['title'] = current['title'];

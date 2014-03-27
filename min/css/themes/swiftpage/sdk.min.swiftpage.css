@@ -665,6 +665,7 @@ div > .collapsed-indicator {
 .collapsed + div {
   display: none !important;
 }
+li > .disabled,
 .action-list > li > .disabled {
   opacity: 0.3;
 }
