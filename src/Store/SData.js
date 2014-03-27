@@ -61,6 +61,7 @@ define('Sage/Platform/Mobile/Store/SData', [
         resourceProperty: null,
         resourcePredicate: null,
         applicationName: null,
+        dataSet: null,
         executeQueryAs: null,
         executeGetAs: null,
 
@@ -85,6 +86,7 @@ define('Sage/Platform/Mobile/Store/SData', [
 
                 var contractName = utility.expand(this.scope || this, getOptions.contractName || this.contractName),
                     resourceKind = utility.expand(this.scope || this, getOptions.resourceKind || this.resourceKind),
+                    dataSet = utility.expand(this.scope || this, getOptions.dataSet || this.dataSet),
                     resourceProperty = utility.expand(this.scope || this, getOptions.resourceProperty || this.resourceProperty),
                      resourcePredicate;
                 if (id) {
@@ -104,6 +106,7 @@ define('Sage/Platform/Mobile/Store/SData', [
 
                 if (contractName) request.setContractName(contractName);
                 if (resourceKind) request.setResourceKind(resourceKind);
+                if (dataSet) request.setDataSet(dataSet);
             }
 
             var select = utility.expand(this.scope || this, getOptions.select || this.select),
@@ -131,6 +134,7 @@ define('Sage/Platform/Mobile/Store/SData', [
                     resourceProperty = utility.expand(this.scope || this, queryOptions.resourceProperty || this.resourceProperty),
                     resourcePredicate = utility.expand(this.scope || this, queryOptions.resourcePredicate || this.resourcePredicate),
                     applicationName = utility.expand(this.scope || this, queryOptions.applicationName || this.applicationName),
+                    dataSet = utility.expand(this.scope || this, queryOptions.dataSet || this.dataSet),
                     queryArgs = utility.expand(this.scope || this, queryOptions.queryArgs || this.queryArgs);
 
                 if (queryName)
@@ -154,6 +158,8 @@ define('Sage/Platform/Mobile/Store/SData', [
                 if (contractName) request.setContractName(contractName);
                 if (resourceKind) request.setResourceKind(resourceKind);
                 if (applicationName) request.setApplicationName(applicationName);
+                if (dataSet) request.setDataSet(dataSet);
+
                 if (queryArgs)
                     for (var arg in queryArgs) request.setQueryArg(arg, queryArgs[arg]);
             }
