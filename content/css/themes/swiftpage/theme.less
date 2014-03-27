@@ -113,9 +113,9 @@ body > .viewContainer > .toolbar,
 
 .panel-content > h2
 {
-    border-bottom: @panel-header-border-bottom;
+    /*border-bottom: @panel-header-border-bottom;*/
     border-top: @panel-header-border-top;
-    background-color: @panel-header-bg-color;
+    /*background-color: @panel-header-bg-color;*/
     color: @panel-header-color;
     font-weight: @panel-header-font-weight;
 }
@@ -144,14 +144,6 @@ body > .viewContainer > .toolbar,
     border-top: @fieldset-border;
 }
 
-.panel-content > fieldset,
-.panel-content > div,
-.panel-validation-summary > fieldset,
-.panel-validation-summary > div
-{
-    border: @fieldset-border;
-}
-
 input,
 textarea
 {
@@ -172,19 +164,6 @@ textarea:focus
     background-color: @panel-content-list-bg-color;    
 }
 
-.panel-content > ul > li,
-.panel-validation-summary > ul > li
-{
-    border-top: @panel-content-list-item-border;
-    cursor: @panel-content-list-item-cursor;
-}
-
-.panel-content > ul > li:first-child,
-.panel-validation-summary > ul > li:first-child
-{
-    border-top: @panel-content-list-firstchild-border;
-}
-
 .panel-content > ul a,
 .panel-validation-summary > ul a
 {
@@ -197,13 +176,6 @@ textarea:focus
 {
     padding: @panel-content-row-padding;
     min-height: @panel-content-row-min-height;
-    border-top: @panel-content-row-border;
-}
-
-.panel-content > fieldset > .row:first-child,
-.panel-content > div > .row:first-child
-{
-    border-top: @panel-content-row-first-border;
 }
 
 .panel-content > fieldset > .row > div > label,

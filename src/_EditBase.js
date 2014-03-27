@@ -176,8 +176,8 @@ define('Sage/Platform/Mobile/_EditBase', [
          * `$` => the view instance
          */
         sectionBeginTemplate: new Simplate([
-            '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-            '{%: ($.title || $.options.title) %}<button class="collapsed-indicator" aria-label="{%: $$.toggleCollapseText %}"></button>',
+            '<h2>',
+            '{%: ($.title || $.options.title) %}',
             '</h2>',
             '<fieldset class="{%= ($.cls || $.options.cls) %}">'
         ]),
@@ -255,11 +255,6 @@ define('Sage/Platform/Mobile/_EditBase', [
          * Default title text shown in the top toolbar
          */
         titleText: 'Edit',
-        /**
-         * @property {String}
-         * ARIA label text for a collapsible section header
-         */
-        toggleCollapseText: 'toggle collapse',
         /**
          * @cfg {String}
          * The text placed in the header when there are validation errors
@@ -460,16 +455,6 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
 
             return this.inherited(arguments);
-        },
-        /**
-         * Toggles the collapsed state of the section.
-         * @param {Object} params Collection of `data-` attributes from the source node.
-         */
-        toggleSection: function(params) {
-            var node = dom.byId(params.$source);
-            if (node) {
-                domClass.toggle(node, 'collapsed');
-            }
         },
         createStore: function() {
             return null;

@@ -109,8 +109,8 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * `$` => the view instance
          */
         sectionBeginTemplate: new Simplate([
-            '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-            '{%: ($.title || $.options.title) %}<button class="collapsed-indicator" aria-label="{%: $$.toggleCollapseText %}"></button>',
+            '<h2>',
+            '{%: ($.title || $.options.title) %}',
             '</h2>',
             '{% if ($.list || $.options.list) { %}',
             '<ul class="{%= ($.cls || $.options.cls) %}">',
@@ -170,12 +170,12 @@ define('Sage/Platform/Mobile/_DetailBase', [
          */
         relatedTemplate: new Simplate([
             '<li class="{%= $.cls %}">',
-            '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}">',
-            '{% if ($.icon) { %}',
-            '<img src="{%= $.icon %}" alt="icon" class="icon" />',
-            '{% } %}',
-            '<span>{%: $.label %}</span>',
-            '</a>',
+                '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}">',
+                    '{% if ($.icon) { %}',
+                        '<img src="{%= $.icon %}" alt="icon" class="icon" />',
+                    '{% } %}',
+                    '<span>{%: $.label %}</span>',
+                '</a>',
             '</li>'
         ]),
         /**
@@ -274,11 +274,6 @@ define('Sage/Platform/Mobile/_DetailBase', [
         detailsText: 'Details',
         /**
          * @property {String}
-         * ARIA label text for a collapsible section header
-         */
-        toggleCollapseText: 'toggle collapse',
-        /**
-         * @property {String}
          * Text shown while loading and used in loadingTemplate
          */
         loadingText: 'loading...',
@@ -374,16 +369,6 @@ define('Sage/Platform/Mobile/_DetailBase', [
                     this.options.title = descriptor;
                     this.set('title', descriptor);
                 }
-            }
-        },
-        /**
-         * Toggles the collapsed state of the section.
-         * @param {Object} params Collection of `data-` attributes from the source node.
-         */
-        toggleSection: function(params) {
-            var node = dom.byId(params.$source);
-            if (node) {
-                domClass.toggle(node, 'collapsed');
             }
         },
         /**

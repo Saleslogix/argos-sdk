@@ -422,7 +422,7 @@
 .row > input:not([type|=radio]):not([type|=checkbox])
 {
     height: auto;
-    padding: 10px 10px 0 110px;
+    padding: 10px 10px 0 0px;
 }
 
 /* fields */
@@ -484,20 +484,20 @@
 .row-edit[data-field-type="date"] > input,
 .row-edit[data-field-type="note"] > input
 {
-    padding: 8px 34px 8px 110px !important;
+    padding: 8px 34px 8px 0px !important;
 }
 
 .row-edit[data-field-type="signature"] > div > canvas,
 .row-edit[data-field-type="signature"] > div > img
 {
-    margin-left: 110px;
+    margin-left: 0px;
 }
 
 .row-edit[data-field-type="note"] > div > textarea,
 .row-edit[data-field-type="note"] > textarea
 {
-    padding: 8px 34px 8px 110px !important;
-    height: 5em;
+    padding: 8px 34px 8px 0px !important;
+    height: 10em;
     overflow: hidden;
 }
 
@@ -526,11 +526,11 @@
 .row-edit[data-field-type="address"] > div > div
 {
     min-height: 1.5em !important;
-    padding: 4px 34px 4px 110px !important;
+    padding: 4px 34px 4px 0px !important;
 }
 
 .text-input {
-    padding:  8px 34px 8px 110px !important;
+    padding:  8px 34px 8px 0px !important;
 }
 
 .list-search
@@ -624,6 +624,7 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox])
     z-index:101;
     width:30px;
     height:30px;
+    display: block;
 }
 
 /* search */
@@ -1269,7 +1270,8 @@ img
 .panel-validation-summary > ul
 {
     margin: 0;
-    padding: 0 0 1.5em 0;
+    padding: 0;
+    border: none;
 }
 
 .panel-content > fieldset:last-child,
@@ -1292,7 +1294,7 @@ img
 .panel-content > ul > li > a,
 .panel-validation-summary > ul > li > a
 {
-    padding: 8px;
+    padding: 4px;
     margin: 0px;
     display: block;
 }
@@ -1310,9 +1312,6 @@ img
     margin: 0px;
     padding: 0;
     position: relative;
-    float: left;
-    width: 100px;
-    text-align: right;
     font-size: 0.8em;
 }
 
@@ -1368,16 +1367,6 @@ img
     padding: 2px 0.75em;
 }
 
-.row-edit > div > label,
-.row-edit > label
-{
-    position: absolute;
-    height: 30px;
-    line-height: 30px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
 .row > div > input[type|=radio], .row > div > input[type|=checkbox],
 .row > input[type|=radio], .row > input[type|=checkbox]
 {
@@ -1404,7 +1393,7 @@ img
     -moz-border-radius: 3px;
 
     margin: 0;
-    padding: 0px 10px 0 110px;
+    padding: 0px 10px 0px 0px;
     height: 32px !important;
     border: 0 none transparent;
     background: transparent;
@@ -1423,7 +1412,7 @@ img
     -moz-border-radius: 3px;
     margin: 0;
     border: 0 none black;
-    padding: 8px 10px 8px 110px;
+    padding: 8px 10px 8px 0px;
     background: transparent;
     width: 100%;
     display: block;
