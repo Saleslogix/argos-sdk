@@ -1112,10 +1112,9 @@ define('Sage/Platform/Mobile/_EditBase', [
                         return false;
                     }
                 }
-                return true;
-            } else {
-                return this.inherited(arguments);
             }
+
+            return this.inherited(arguments);
         },
         /**
          * Refresh first clears out any variables set to previous data.

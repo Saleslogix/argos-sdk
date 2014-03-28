@@ -1008,7 +1008,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             var view = App.getView(this.detailView);
             if (view) {
                 App.goRoute(view.id + '/' + key, {
-                    descriptor: descriptor,
+                    title: descriptor,
                     key: key
                 });
             }

@@ -61,6 +61,7 @@ define('Sage/Platform/Mobile/Store/SData', [
         resourceProperty: null,
         resourcePredicate: null,
         applicationName: null,
+        dataSet: null,
         executeQueryAs: null,
         executeGetAs: null,
 
@@ -85,6 +86,7 @@ define('Sage/Platform/Mobile/Store/SData', [
 
                 var contractName = utility.expand(this.scope || this, getOptions.contractName || this.contractName),
                     resourceKind = utility.expand(this.scope || this, getOptions.resourceKind || this.resourceKind),
+                    dataSet = utility.expand(this.scope || this, getOptions.dataSet || this.dataSet),
                     resourceProperty = utility.expand(this.scope || this, getOptions.resourceProperty || this.resourceProperty),
                     resourcePredicate;
 
@@ -108,84 +110,100 @@ define('Sage/Platform/Mobile/Store/SData', [
                 if (resourceKind) {
                     request.setResourceKind(resourceKind);
                 }
+
+                if (dataSet) {
+                    request.setDataSet(dataSet);
+                }
             }
 
             var select = utility.expand(this.scope || this, getOptions.select || this.select),
                 include = utility.expand(this.scope || this, getOptions.include || this.include);
 
-            if (select && select.length > 0)
+            if (select && select.length > 0) {
                 request.setQueryArg('select', select.join(','));
+            }
 
-            if (include && include.length > 0)
+            if (include && include.length > 0) {
                 request.setQueryArg('include', include.join(','));
+            }
 
             return request;
         },
         _createFeedRequest: function(query, queryOptions) {
             var request = utility.expand(this, queryOptions.request || this.request);
-            if (request)
-            {
+            if (request) {
                 request = request.clone();
-            }
-            else
-            {
+            } else {
                 var queryName = utility.expand(this.scope || this, queryOptions.queryName || this.queryName),
                     contractName = utility.expand(this.scope || this, queryOptions.contractName || this.contractName),
                     resourceKind = utility.expand(this.scope || this, queryOptions.resourceKind || this.resourceKind),
                     resourceProperty = utility.expand(this.scope || this, queryOptions.resourceProperty || this.resourceProperty),
                     resourcePredicate = utility.expand(this.scope || this, queryOptions.resourcePredicate || this.resourcePredicate),
                     applicationName = utility.expand(this.scope || this, queryOptions.applicationName || this.applicationName),
+                    dataSet = utility.expand(this.scope || this, queryOptions.dataSet || this.dataSet),
                     queryArgs = utility.expand(this.scope || this, queryOptions.queryArgs || this.queryArgs);
 
-                if (queryName)
-                {
+                if (queryName) {
                     request = new Sage.SData.Client.SDataNamedQueryRequest(this.service)
                         .setQueryName(queryName);
 
-                    if (resourcePredicate) request.getUri().setCollectionPredicate(resourcePredicate);
-                }
-                else if (resourceProperty)
-                {
+                    if (resourcePredicate) {
+                        request.getUri().setCollectionPredicate(resourcePredicate);
+                    }
+                } else if (resourceProperty) {
                     request = new Sage.SData.Client.SDataResourcePropertyRequest(this.service)
                         .setResourceProperty(resourceProperty)
                         .setResourceSelector(resourcePredicate);
-                }
-                else
-                {
+                } else {
                     request = new Sage.SData.Client.SDataResourceCollectionRequest(this.service);
                 }
 
-                if (contractName) request.setContractName(contractName);
-                if (resourceKind) request.setResourceKind(resourceKind);
-                if (applicationName) request.setApplicationName(applicationName);
-                if (queryArgs)
-                    for (var arg in queryArgs) request.setQueryArg(arg, queryArgs[arg]);
+                if (contractName) {
+                    request.setContractName(contractName);
+                }
+
+                if (resourceKind) {
+                    request.setResourceKind(resourceKind);
+                }
+
+                if (applicationName) {
+                    request.setApplicationName(applicationName);
+                }
+
+                if (dataSet) {
+                    request.setDataSet(dataSet);
+                }
+
+                if (queryArgs) {
+                    for (var arg in queryArgs) {
+                        request.setQueryArg(arg, queryArgs[arg]);
+                    }
+                }
             }
 
             var select = utility.expand(this.scope || this, queryOptions.select || this.select),
                 include = utility.expand(this.scope || this, queryOptions.include || this.include),
                 orderBy = utility.expand(this.scope || this, queryOptions.sort || this.orderBy);
 
-            if (select && select.length > 0)
+            if (select && select.length > 0) {
                 request.setQueryArg('select', select.join(','));
+            }
 
-            if (include && include.length > 0)
+            if (include && include.length > 0) {
                 request.setQueryArg('include', include.join(','));
+            }
 
-            if (orderBy)
-            {
-                if (typeof orderBy === 'string')
-                {
+            if (orderBy) {
+                if (typeof orderBy === 'string') {
                     request.setQueryArg('orderby', orderBy);
-                }
-                else if (orderBy.length > 0)
-                {
+                } else if (orderBy.length > 0) {
                     var order = [];
                     array.forEach(orderBy, function (v) {
-                        if (v.descending)
+                        if (v.descending) {
                             this.push(v.attribute + ' desc');
-                        else
+                        } else {
                             this.push(v.attribute);
+                        }
                     }, order);
 
                     request.setQueryArg('orderby', order.join(','));
@@ -202,45 +220,42 @@ define('Sage/Platform/Mobile/Store/SData', [
 
             query = utility.expand(this.scope || this, query);
 
-            if (query)
+            if (query) {
                 conditions.push(query);
+            }
 
-            if (conditions.length > 0)
+            if (conditions.length > 0) {
                 request.setQueryArg('where', '(' + conditions.join(') and (') + ')');
+            }
 
-            if (typeof queryOptions.start !== 'undefined')
+            if (typeof queryOptions.start !== 'undefined') {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.StartIndex, queryOptions.start + 1);
+            }
 
-            if (typeof queryOptions.count !== 'undefined')
+            if (typeof queryOptions.count !== 'undefined') {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Count, queryOptions.count);
+            }
 
             return request;
         },
         _onRequestFeedSuccess: function(queryDeferred, feed) {
-            if (feed)
-            {
+            if (feed) {
                 var items = lang.getObject(this.itemsProperty, false, feed),
                     total = typeof feed['$totalResults'] === 'number' ? feed['$totalResults'] : -1;
 
                 queryDeferred.total = total;
                 queryDeferred.resolve(items);
-            }
-            else
-            {
+            } else {
                 var error = new Error('The feed result is invalid.');
 
                 queryDeferred.reject(error);
             }
         },
         _onRequestEntrySuccess: function(deferred, entry) {
-            if (entry)
-            {
+            if (entry) {
                 deferred.resolve(this.doDateConversion ? this._handleDateConversion(entry) : entry);
-            }
-            else
-            {
+            } else {
                 var error = new Error('The entry result is invalid.');
-
                 deferred.reject(error);
             }
         },
@@ -265,10 +280,8 @@ define('Sage/Platform/Mobile/Store/SData', [
             deferred.reject(error);
         },
         _handleDateConversion: function(entry) {
-            for (var prop in entry)
-            {
-                if (convert.isDateString(entry[prop]))
-                {
+            for (var prop in entry) {
+                if (convert.isDateString(entry[prop])) {
                     entry[prop] = convert.toDateFromString(entry[prop]);
                 }
             }
@@ -329,10 +342,10 @@ define('Sage/Platform/Mobile/Store/SData', [
          * Stores an object.
          * @param {Object} object The object to store.
          * @param {Object} putOptions Additional directives for storing objects.
-         * @param {String|Number} putOptions.id 
-         * @param {String|Object} putOptions.entity 
-         * @param {String} putOptions.version 
-         * @param {Boolean} putOptions.overwrite 
+         * @param {String|Number} putOptions.id
+         * @param {String|Object} putOptions.entity
+         * @param {String} putOptions.version
+         * @param {Boolean} putOptions.overwrite
          * @returns {String|Number}
          */
         put: function(object, putOptions) {
@@ -343,9 +356,17 @@ define('Sage/Platform/Mobile/Store/SData', [
                 version = putOptions.version || this.getVersion(object),
                 atom = !this.service.isJsonEnabled();
 
-            if (id) object['$key'] = id;
-            if (entity && atom) object['$name'] = entity;
-            if (version) object['$etag'] = version;
+            if (id) {
+                object['$key'] = id;
+            }
+
+            if (entity && atom) {
+                object['$name'] = entity;
+            }
+
+            if (version) {
+                object['$etag'] = version;
+            }
 
             var handle = {},
                 deferred = new Deferred(),
@@ -444,8 +465,7 @@ define('Sage/Platform/Mobile/Store/SData', [
          * @return {String} return.version
          */
         getMetadata: function(object) {
-            if (object)
-            {
+            if (object) {
                 return {
                     id: this.getIdentity(object),
                     label: this.getLabel(object),
