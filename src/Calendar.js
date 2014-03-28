@@ -202,6 +202,7 @@ define('Sage/Platform/Mobile/Calendar', [
         },
         showViaRoute: function(options) {
             this.inherited(arguments);
+            options = options || this.options;
 
             this.titleText = options.label ? options.label : this.titleText;
 

@@ -195,7 +195,10 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
                 options = this.createNavigationOptions();
 
             if (view && options) {
-                if (options.title) view.set('title', options.title);
+                if (options.title) {
+                    view.set('title', options.title);
+                }
+
                 App.goRoute(view.id, options);
             }
         },
