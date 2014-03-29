@@ -336,7 +336,7 @@
 .row > div > input:not([type|=radio]):not([type|=checkbox]),
 .row > input:not([type|=radio]):not([type|=checkbox]) {
   height: auto;
-  padding: 10px 10px 0 110px;
+  padding: 10px 10px 0 0px;
 }
 /* fields */
 .row-hidden {
@@ -390,16 +390,16 @@
 .row-edit[data-field-type="name"] > input,
 .row-edit[data-field-type="date"] > input,
 .row-edit[data-field-type="note"] > input {
-  padding: 8px 34px 8px 110px !important;
+  padding: 8px 34px 8px 0px !important;
 }
 .row-edit[data-field-type="signature"] > div > canvas,
 .row-edit[data-field-type="signature"] > div > img {
-  margin-left: 110px;
+  margin-left: 0px;
 }
 .row-edit[data-field-type="note"] > div > textarea,
 .row-edit[data-field-type="note"] > textarea {
-  padding: 8px 34px 8px 110px !important;
-  height: 5em;
+  padding: 8px 34px 8px 0px !important;
+  height: 10em;
   overflow: hidden;
 }
 .row-edit[data-field-type="duration"] > div > .button {
@@ -420,10 +420,10 @@
 }
 .row-edit[data-field-type="address"] > div > div {
   min-height: 1.5em !important;
-  padding: 4px 34px 4px 110px !important;
+  padding: 4px 34px 4px 0px !important;
 }
 .text-input {
-  padding: 8px 34px 8px 110px !important;
+  padding: 8px 34px 8px 0px !important;
 }
 .list-search {
   padding: 6px;
@@ -502,6 +502,7 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
   z-index: 101;
   width: 30px;
   height: 30px;
+  display: block;
 }
 /* search */
 .list-search input {
@@ -1033,7 +1034,8 @@ img {
 .panel-content > ul,
 .panel-validation-summary > ul {
   margin: 0;
-  padding: 0 0 1.5em 0;
+  padding: 0;
+  border: none;
 }
 .panel-content > fieldset:last-child,
 .panel-content > ul:last-child,
@@ -1050,7 +1052,7 @@ img {
 }
 .panel-content > ul > li > a,
 .panel-validation-summary > ul > li > a {
-  padding: 8px;
+  padding: 4px;
   margin: 0px;
   display: block;
 }
@@ -1064,9 +1066,6 @@ img {
   margin: 0px;
   padding: 0;
   position: relative;
-  float: left;
-  width: 100px;
-  text-align: right;
   font-size: 0.8em;
 }
 .row {
@@ -1107,14 +1106,6 @@ img {
   /*position: relative;*/
   padding: 2px 0.75em;
 }
-.row-edit > div > label,
-.row-edit > label {
-  position: absolute;
-  height: 30px;
-  line-height: 30px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
 .row > div > input[type|=radio],
 .row > div > input[type|=checkbox],
 .row > input[type|=radio],
@@ -1135,9 +1126,9 @@ img {
   border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
-  margin: 0;
-  padding: 0px 10px 0 110px;
-  height: 32px !important;
+  margin: 0px 0px 0px 12px;
+  padding: 0px 10px 0px 0px;
+  height: 23px !important;
   border: 0 none transparent;
   background: transparent;
 }
@@ -1153,7 +1144,7 @@ img {
   -moz-border-radius: 3px;
   margin: 0;
   border: 0 none black;
-  padding: 8px 10px 8px 110px;
+  padding: 8px 10px 8px 0px;
   background: transparent;
   width: 100%;
   display: block;
@@ -1424,9 +1415,9 @@ body > .viewContainer > .toolbar,
   background-color: #ffffff;
 }
 .panel-content > h2 {
-  border-bottom: 1px solid #212721;
-  border-top: 1px solid #212721;
-  background-color: #e5e5e5;
+  /*border-bottom: @panel-header-border-bottom;*/
+  border-top: 1px solid #dfdfdf;
+  /*background-color: @panel-header-bg-color;*/
   color: #212721;
   font-weight: bold;
 }
@@ -1446,12 +1437,6 @@ body > .viewContainer > .toolbar,
 .panel-form-error > .panel-content > h2:first-child {
   border-top: 0 none #000000;
 }
-.panel-content > fieldset,
-.panel-content > div,
-.panel-validation-summary > fieldset,
-.panel-validation-summary > div {
-  border: 0 none #000000;
-}
 input,
 textarea {
   -webkit-tap-hightlight-color: rgba(0, 0, 0, 0);
@@ -1466,15 +1451,6 @@ textarea:focus {
   border: none 0px #000000;
   background-color: #ffffff;
 }
-.panel-content > ul > li,
-.panel-validation-summary > ul > li {
-  border-top: solid 1px #dfdfdf;
-  cursor: pointer;
-}
-.panel-content > ul > li:first-child,
-.panel-validation-summary > ul > li:first-child {
-  border-top: none 0 #000000;
-}
 .panel-content > ul a,
 .panel-validation-summary > ul a {
   color: inherit;
@@ -1484,11 +1460,6 @@ textarea:focus {
 .panel-content > div > .row {
   padding: 0.25em;
   min-height: 1.5em;
-  border-top: solid 1px #dfdfdf;
-}
-.panel-content > fieldset > .row:first-child,
-.panel-content > div > .row:first-child {
-  border-top: none 0px #000000;
 }
 .panel-content > fieldset > .row > div > label,
 .panel-content > div > .row > div > label,
