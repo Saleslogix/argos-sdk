@@ -483,8 +483,9 @@ define('Sage/Platform/Mobile/Format', [
          * @returns {String}
          */
         phone: function(val, asLink) {
-            if (typeof val !== 'string')
+            if (typeof val !== 'string') {
                 return val;
+            }
 
             val = Sage.Platform.Mobile.Format.alphaToPhoneNumeric(val);
 
@@ -494,16 +495,18 @@ define('Sage/Platform/Mobile/Format', [
                     : val.replace(/[^0-9x]/ig, ''),
                 formattedMatch;
 
-            for (var i = 0; i < formatters.length; i++)
-            {
+            for (var i = 0; i < formatters.length; i++) {
                 var formatter = formatters[i],
                     match;
-                if ((match = formatter.test.exec(clean)))
+
+                if ((match = formatter.test.exec(clean))) {
                     formattedMatch = string.substitute(formatter.format, [val, clean].concat(match));
+                }
             }
 
-            if (formattedMatch)
+            if (formattedMatch) {
                 return asLink ? string.substitute('<a href="tel:${0}">${1}</a>', [clean, formattedMatch]) : formattedMatch;
+            }
 
             return val;
         },
