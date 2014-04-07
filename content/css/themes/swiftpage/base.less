@@ -1337,10 +1337,16 @@ img
     text-overflow: ellipsis;
 }
 
-.row > * > a
+.href
 {
-    border-bottom: 1px dotted #00338D;
-    color: black;
+    display: inline-block;
+}
+
+.row > * > a,
+.href
+{
+    border-bottom: 1px dotted @blue2-darker;
+    color: @blue2-darker;
     text-decoration: none;
     cursor: pointer;
 }
