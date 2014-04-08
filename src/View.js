@@ -231,8 +231,7 @@ define('Sage/Platform/Mobile/View', [
                 return;
             }
 
-            if (this.refreshRequiredFor(options))
-            {
+            if (this.refreshRequiredFor(options)) {
                 this.refreshRequired = true;
             }
 

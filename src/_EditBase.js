@@ -324,14 +324,22 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
         },
         onDefaultRoute: function(evt) {
-            var primary = App.getPrimaryActiveView();
+            var primary = App.getPrimaryActiveView(),
+                title = '';
+
             if (primary && primary.id === this.id) {
                 return;
             }
 
+            if (this.options && this.options.entry) {
+                title = this.options.entry[this.labelProperty] || this.get('title');
+            } else if (this.options && this.options.title) {
+                title = this.options.title;
+            }
+
             if (evt.params.key) {
                 this.showViaRoute({
-                    descriptor: '',
+                    title: title,
                     key: evt.params.key
                 });
             }
@@ -483,7 +491,7 @@ define('Sage/Platform/Mobile/_EditBase', [
         processData: function(entry) {
             this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
 
-            if (!this.options.descriptor) {
+            if (this.entry && this.entry[this.labelProperty]) {
                 App.setPrimaryTitle(this.entry[this.labelProperty]);
             }
 
