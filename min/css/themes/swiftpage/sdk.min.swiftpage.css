@@ -337,6 +337,7 @@
 .row > input:not([type|=radio]):not([type|=checkbox]) {
   height: auto;
   padding: 10px 10px 0 0px;
+  background-color: #fafafa;
 }
 /* fields */
 .row-hidden {
@@ -376,7 +377,7 @@
   margin: 0;
   padding: 0 12px;
   position: absolute;
-  right: 8px;
+  right: 5px;
 }
 .row-edit[data-field-type="picklist"] > div > input,
 .row-edit[data-field-type="lookup"] > div > input,
@@ -390,7 +391,7 @@
 .row-edit[data-field-type="name"] > input,
 .row-edit[data-field-type="date"] > input,
 .row-edit[data-field-type="note"] > input {
-  padding: 8px 34px 8px 0px !important;
+  padding: 8px 34px 8px 0px;
 }
 .row-edit[data-field-type="signature"] > div > canvas,
 .row-edit[data-field-type="signature"] > div > img {
@@ -398,16 +399,9 @@
 }
 .row-edit[data-field-type="note"] > div > textarea,
 .row-edit[data-field-type="note"] > textarea {
-  padding: 8px 34px 8px 0px !important;
+  padding: 8px 34px 8px 0px;
   height: 10em;
   overflow: hidden;
-}
-.row-edit[data-field-type="duration"] > div > .button {
-  z-index: 55;
-}
-.row-edit[data-field-type="duration"] > div > input {
-  position: relative;
-  z-index: 50;
 }
 .row-edit[data-field-type="duration"] > div > .autoComplete-watermark {
   position: absolute;
@@ -419,11 +413,13 @@
   padding: 3px 0 0 111px;
 }
 .row-edit[data-field-type="address"] > div > div {
-  min-height: 1.5em !important;
-  padding: 4px 34px 4px 0px !important;
+  min-height: 1.5em;
+  padding: 8px 34px 8px 8px;
+  border: 1px solid #d0d0d0;
+  background-color: #fafafa;
 }
 .text-input {
-  padding: 8px 34px 8px 0px !important;
+  padding: 8px 34px 8px 0px;
 }
 .list-search {
   padding: 6px;
@@ -801,7 +797,7 @@ body > .viewContainer > [selected="true"] {
   display: block;
 }
 .button {
-  height: 30px;
+  height: 36px;
   line-height: 30px;
   padding: 0 2px 0 2px;
 }
@@ -908,8 +904,6 @@ body > .viewContainer > .dialog {
   display: inline-block;
 }
 input:not([type|=radio]):not([type|=checkbox]) {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
   -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
@@ -920,7 +914,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
   padding: 6px 6px 6px 44px;
   font-size: 16px;
   font-weight: normal;
-  border: 1px solid #000;
+  border: 1px solid #d0d0d0;
 }
 .list-content,
 .group-content {
@@ -1127,14 +1121,8 @@ img {
   box-shadow: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  margin: 0px 0px 0px 12px;
-  padding: 0px 10px 0px 0px;
-  height: 23px !important;
-  border: 0 none transparent;
-  background: transparent;
+  margin: 0;
+  padding: 8px 34px 8px 8px;
 }
 .row > div > textarea,
 .row > textarea {
@@ -1449,6 +1437,7 @@ input:focus,
 textarea:focus {
   outline: none;
   background-color: #ffffff;
+  border: 1px solid #d0d0d0;
 }
 .panel-content > ul,
 .panel-validation-summary > ul {
@@ -1474,9 +1463,11 @@ textarea:focus {
 .panel-content > fieldset > .row-edit > div > textarea,
 .panel-content > fieldset > .row-edit > textarea {
   font-size: 16px;
+  border: 1px solid #d0d0d0;
+  background-color: #fafafa;
 }
 .panel-content > fieldset > .row-edit {
-  border-top: solid 1px #dfdfdf;
+  border-top: none;
 }
 .panel-content > fieldset > .row-edit:first-of-type {
   border-top: 0 none black;
@@ -1497,7 +1488,6 @@ textarea:focus {
   -moz-border-radius: 0px;
   border: none;
   cursor: pointer;
-  outline-color: #fe5000;
 }
 .button:active {
   background-color: #ffffff;

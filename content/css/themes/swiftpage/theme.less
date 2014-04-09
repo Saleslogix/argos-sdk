@@ -155,6 +155,7 @@ textarea:focus
 {
     outline: @input-focus-outline;
     background-color: @input-focus-bg-color;
+    border: 1px solid @gray1-lighter;
 }
 
 .panel-content > ul,
@@ -190,6 +191,8 @@ textarea:focus
 .panel-content > fieldset > .row-edit > textarea
 {
     font-size: @text-area-font-size;
+    border: 1px solid @gray1-lighter;
+    background-color: @gray5-lighter;
 }
 
 .panel-content > fieldset > .row-edit
@@ -206,7 +209,7 @@ textarea:focus
 {
     .box-sizing(border-box);
     display: block;
-    
+
     color: @button-text-color;
     background-color: @button-bg-color;
 
@@ -219,9 +222,7 @@ textarea:focus
     .border-radius(@button-border-radius);
 
     border: @button-border;
-
     cursor: @button-cursor;
-    outline-color: @button-outline-color;
 }
 
 .button:active
@@ -232,9 +233,9 @@ textarea:focus
 .toolButton,
 .headerButton
 {
-    color: @toolbar-text-color; 
+    color: @toolbar-text-color;
     border: @toolbar-button-border;
-    background-color: @toolbar-button-bg-color; 
+    background-color: @toolbar-button-bg-color;
 }
 
 .toolButton-disabled
