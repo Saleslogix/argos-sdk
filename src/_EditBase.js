@@ -124,7 +124,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          *
          */
         widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="overthrow edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',            
+            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="overthrow edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '{%! $.loadingTemplate %}',
             '{%! $.validationSummaryTemplate %}',
             '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
@@ -139,7 +139,7 @@ define('Sage/Platform/Mobile/_EditBase', [
         loadingTemplate: new Simplate([
             '<fieldset class="panel-loading-indicator">',
             '<div class="row"><div>{%: $.loadingText %}</div></div>',
-            '</fieldset>'        
+            '</fieldset>'
         ]),
         /**
          * @property {Simplate}
@@ -176,8 +176,8 @@ define('Sage/Platform/Mobile/_EditBase', [
          * `$` => the view instance
          */
         sectionBeginTemplate: new Simplate([
-            '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-            '{%: ($.title || $.options.title) %}<button class="collapsed-indicator" aria-label="{%: $$.toggleCollapseText %}"></button>',
+            '<h2>',
+            '{%: ($.title || $.options.title) %}',
             '</h2>',
             '<fieldset class="{%= ($.cls || $.options.cls) %}">'
         ]),
@@ -256,11 +256,6 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         titleText: 'Edit',
         /**
-         * @property {String}
-         * ARIA label text for a collapsible section header
-         */
-        toggleCollapseText: 'toggle collapse',
-        /**
          * @cfg {String}
          * The text placed in the header when there are validation errors
          */
@@ -289,7 +284,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          * @property {Object}
          * The saved data response.
          */
-        item: null,
+        entry: null,
         /**
          * @property {Boolean}
          * Flags if the view is in "insert" (create) mode, or if it is in "update" (edit) mode.
@@ -312,7 +307,6 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         startup: function() {
             this.inherited(arguments);
-            
             this.processLayout(this._createCustomizedLayout(this.createLayout()));
 
             query('div[data-field]', this.contentNode).forEach(function(node) {
@@ -323,23 +317,32 @@ define('Sage/Platform/Mobile/_EditBase', [
                 }
             }, this);
         },
-        // Override the Views registerDefaultRoute to include the entity id in the route
-        registerDefaultRoute: function() {
-            var router = App.router;
-            router.register(['_', this.id, ';:key'].join(''), lang.hitch(this, this.onDefaultRoute));
+        onSetupRoutes: function() {
+            var app = window.App;
+            if (app) {
+                app.registerRoute(this, [this.id, '/:key'].join(''), lang.hitch(this, this.onDefaultRoute));
+            }
         },
         onDefaultRoute: function(evt) {
-            var primary = App.getPrimaryActiveView();
+            var primary = App.getPrimaryActiveView(),
+                title = '';
+
             if (primary && primary.id === this.id) {
                 return;
             }
 
+            if (this.options && this.options.entry) {
+                title = this.options.entry[this.labelProperty] || this.get('title');
+            } else if (this.options && this.options.title) {
+                title = this.options.title;
+            }
+
             if (evt.params.key) {
-                this.show({
-                    descriptor: '',
+                this.showViaRoute({
+                    title: title,
                     key: evt.params.key
                 });
-            } 
+            }
         },
         /**
          * Extends init to also init the fields in `this.fields`.
@@ -461,48 +464,38 @@ define('Sage/Platform/Mobile/_EditBase', [
 
             return this.inherited(arguments);
         },
-        /**
-         * Toggles the collapsed state of the section.
-         * @param {Object} params Collection of `data-` attributes from the source node.
-         */
-        toggleSection: function(params) {
-            var node = dom.byId(params.$source);
-            if (node) {
-                domClass.toggle(node, 'collapsed');
-            }
-        },
         createStore: function() {
             return null;
         },
         onContentChange: function() {
         },
-        processItem: function(item) {
-            return item;
+        processEntry: function(entry) {
+            return entry;
         },
         /**
-         * Loops a given item testing for date strings and converts them to javascript Date objects
-         * @param {Object} item data item
-         * @return {Object} item with actual Date objects
+         * Loops a given entry testing for date strings and converts them to javascript Date objects
+         * @param {Object} entry data
+         * @return {Object} entry with actual Date objects
          */
-        convertItem: function(item) {
+        convertEntry: function(entry) {
             // todo: should we create a deep copy?
             // todo: do a deep conversion?
-            for (var n in item) {
-                if (convert.isDateString(item[n])) {
-                    item[n] = convert.toDateFromString(item[n]);
+            for (var n in entry) {
+                if (convert.isDateString(entry[n])) {
+                    entry[n] = convert.toDateFromString(entry[n]);
                 }
             }
 
-            return item;
+            return entry;
         },
-        processData: function(item) {
-            this.entry = this.item = this.processItem(this.convertItem(item || {})) || {};
+        processData: function(entry) {
+            this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
 
-            if (!this.options.descriptor) {
-                App.setPrimaryTitle(this.entry.$descriptor);
+            if (this.entry && this.entry[this.labelProperty]) {
+                App.setPrimaryTitle(this.entry[this.labelProperty]);
             }
 
-            this.setValues(item, true);
+            this.setValues(entry, true);
 
             // Re-apply any passed changes as they may have been overwritten
             if (this.options.changes) {
@@ -510,10 +503,10 @@ define('Sage/Platform/Mobile/_EditBase', [
                 this.setValues(this.changes);
             }
         },
-        _onGetComplete: function(item) {
+        _onGetComplete: function(entry) {
             try {
-                if (item) {
-                    this.processData(item);
+                if (entry) {
+                    this.processData(entry);
                 } else {
                     /* todo: show error message? */
                 }
@@ -579,7 +572,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          * @return {String} View key
          */
         getTag: function() {
-            var tag = this.options && this.options.item && this.options.item.$key;
+            var tag = this.options && this.options.entry && this.options.entry[this.idProperty];
             if (!tag) {
                 tag = this.options && this.options.key;
             }
@@ -596,7 +589,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                 sectionStarted = false,
                 content = [],
                 current;
-            
+
             for (var i = 0; i < rows.length; i++) {
                 current = rows[i];
 
@@ -614,7 +607,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                 {
                     sectionStarted = true;
                     content.push(this.sectionBeginTemplate.apply(layout, this));
-                }                    
+                }
 
                 var ctor = FieldManager.get(current['type']),
                     field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
@@ -662,7 +655,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                 );
 
                 return getResults;
-            } 
+            }
 
             console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataEditMixin to your edit view?');
         },
@@ -695,7 +688,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          * The value set is then passed the initial state, true for default/unmodified/clean and false
          * for dirty or altered.
          *
-         * @param {Object} values data item, or collection of key/values where key matches a fields property attribute
+         * @param {Object} values data entry, or collection of key/values where key matches a fields property attribute
          * @param {Boolean} initial Initial state of the value, true for clean, false for dirty
          */
         setValues: function(values, initial) {
@@ -853,28 +846,28 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
         },
         onInsert: function(values) {
-            var store, addOptions, item, request;
+            var store, addOptions, entry, request;
             store = this.get('store');
             if (store) {
                 addOptions = {
                         overwrite: false
                 };
-                item = this.createItemForInsert(values);
+                entry = this.createEntryForInsert(values);
 
                 this._applyStateToAddOptions(addOptions);
 
-                Deferred.when(store.add(item, addOptions),
-                    lang.hitch(this, this.onAddComplete, item),
+                Deferred.when(store.add(entry, addOptions),
+                    lang.hitch(this, this.onAddComplete, entry),
                     lang.hitch(this, this.onAddError, addOptions)
                 );
             }
         },
         _applyStateToAddOptions: function(addOptions) {
         },
-        onAddComplete: function(item, result) {
+        onAddComplete: function(entry, result) {
             this.enable();
 
-            var message = this._buildRefreshMessage(item, result);
+            var message = this._buildRefreshMessage(entry, result);
             connect.publish('/app/refresh', [message]);
 
             this.onInsertCompleted(result);
@@ -892,14 +885,14 @@ define('Sage/Platform/Mobile/_EditBase', [
         },
         /**
          * Handler for insert complete, checks for `this.options.returnTo` else it simply goes back.
-         * @param item
+         * @param entry
          */
-        onInsertCompleted: function(item) {
+        onInsertCompleted: function(entry) {
             if (this.options && this.options.returnTo) {
                 var returnTo = this.options.returnTo,
                     view = App.getView(returnTo);
                 if (view) {
-                    view.show();
+                    App.goRoute(view.id);
                 } else {
                     window.location.hash = returnTo;
                 }
@@ -924,25 +917,25 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
         },
         onUpdate: function(values) {
-            var store, putOptions, item;
+            var store, putOptions, entry;
             store = this.get('store');
             if (store) {
                 putOptions = {
                         overwrite: true,
-                        id: store.getIdentity(this.item)
+                        id: store.getIdentity(this.entry)
                 };
-                item = this.createItemForUpdate(values);
+                entry = this.createItemForUpdate(values);
 
                 this._applyStateToPutOptions(putOptions);
 
-                Deferred.when(store.put(item, putOptions),
-                    lang.hitch(this, this.onPutComplete, item),
+                Deferred.when(store.put(entry, putOptions),
+                    lang.hitch(this, this.onPutComplete, entry),
                     lang.hitch(this, this.onPutError, putOptions)
                 );
             }
         },
         /**
-         * Gathers the values for the item to send back and returns the appropriate payload for
+         * Gathers the values for the entry to send back and returns the appropriate payload for
          * creating or updating.
          * @return {Object} Entry/payload
          */
@@ -951,7 +944,7 @@ define('Sage/Platform/Mobile/_EditBase', [
 
             return this.inserting
                 ? this.createItemForUpdate(values)
-                : this.createItemForInsert(values);
+                : this.createEntryForInsert(values);
         },
         /**
          * Takes the values object and adds the needed propertiers for updating.
@@ -966,7 +959,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          * @param {Object} values
          * @return {Object} Object with properties for inserting
          */
-        createItemForInsert: function(values) {
+        createEntryForInsert: function(values) {
             return this.convertValues(values);
         },
         /**
@@ -977,14 +970,14 @@ define('Sage/Platform/Mobile/_EditBase', [
         },
         _applyStateToPutOptions: function(putOptions) {
         },
-        onPutComplete: function(item, result) {
+        onPutComplete: function(entry, result) {
             this.enable();
 
-            var message = this._buildRefreshMessage(item, result);
+            var message = this._buildRefreshMessage(entry, result);
 
             connect.publish('/app/refresh', [message]);
 
-            this.onUpdateCompleted(item);
+            this.onUpdateCompleted(entry);
         },
         onPutError: function(putOptions, error) {
             alert(string.substitute(this.requestErrorText, [error]));
@@ -997,10 +990,10 @@ define('Sage/Platform/Mobile/_EditBase', [
 
             this.enable();
         },
-        _buildRefreshMessage: function(item, result) {
-            if (item) {
+        _buildRefreshMessage: function(entry, result) {
+            if (entry) {
                 var store = this.get('store'),
-                    id = store.getIdentity(item);
+                    id = store.getIdentity(entry);
                 return {
                     id: id,
                     key: id,
@@ -1010,14 +1003,14 @@ define('Sage/Platform/Mobile/_EditBase', [
         },
         /**
          * Handler for update complete, checks for `this.options.returnTo` else it simply goes back.
-         * @param item
+         * @param entry
          */
-        onUpdateCompleted: function(item) {
+        onUpdateCompleted: function(entry) {
             if (this.options && this.options.returnTo) {
                 var returnTo = this.options.returnTo,
                     view = App.getView(returnTo);
                 if (view) {
-                    view.show();
+                    App.goRoute(view.id);
                 } else {
                     window.location.hash = returnTo;
                 }
@@ -1026,7 +1019,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
         },
         /**
-         * Creates the markup by applying the `validationSummaryItemTemplate` to each item in `this.errors`
+         * Creates the markup by applying the `validationSummaryItemTemplate` to each entry in `this.errors`
          * then sets the combined result into the summary validation node and sets the styling to visible
          */
         showValidationSummary: function() {
@@ -1073,13 +1066,13 @@ define('Sage/Platform/Mobile/_EditBase', [
         },
         /**
          * Extends the getContext function to also include the `resourceKind` of the view, `insert`
-         * state and `key` of the item (false if inserting)
+         * state and `key` of the entry (false if inserting)
          */
         getContext: function() {
             return lang.mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind,
                 insert: this.options.insert,
-                key: this.options.insert ? false : this.options.key ? this.options.key : this.options.item && this.options.item['$key'] 
+                key: this.options.insert ? false : this.options.key ? this.options.key : this.options.entry && this.options.entry[this.idProperty]
             });
         },
         /**
@@ -1099,7 +1092,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         beforeTransitionTo: function() {
             if (this.refreshRequired) {
-                if (this.options.insert === true || this.options.key) {
+                if (this.options.insert === true || (this.options.key && !this.options.entry)) {
                     domClass.add(this.domNode, 'panel-loading');
                 } else {
                     domClass.remove(this.domNode, 'panel-loading');
@@ -1127,10 +1120,9 @@ define('Sage/Platform/Mobile/_EditBase', [
                         return false;
                     }
                 }
-                return true;
-            } else {
-                return this.inherited(arguments);
             }
+
+            return this.inherited(arguments);
         },
         /**
          * Refresh first clears out any variables set to previous data.
@@ -1141,7 +1133,6 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         refresh: function() {
             this.onRefresh();
-            this.item = false;
             this.entry = false;
             this.changes = false;
             this.inserting = (this.options.insert === true);
@@ -1162,8 +1153,8 @@ define('Sage/Platform/Mobile/_EditBase', [
         },
         onRefreshUpdate: function() {
             // apply as non-modified data
-            if (this.options.item) {
-                this.processData(this.options.item);
+            if (this.options.entry) {
+                this.processData(this.options.entry);
 
                 // apply changes as modified data, since we want this to feed-back through
                 if (this.options.changes) {
@@ -1179,3 +1170,4 @@ define('Sage/Platform/Mobile/_EditBase', [
         }
     });
 });
+

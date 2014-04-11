@@ -896,7 +896,7 @@ this._removeRenderItem(_c1);
 }
 }));
 }else{
-this.removeRenderItem(s.id);
+this._removeRenderItem(s.id);
 }
 }else{
 if(e.completed){

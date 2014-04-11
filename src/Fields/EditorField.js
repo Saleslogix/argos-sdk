@@ -177,7 +177,6 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
                     }]
                 },
                 entry: this.originalValue || this.validationValue,
-                item: this.originalValue || this.validationValue,
                 changes: this.currentValue,
                 entityName: this.entityName || (this.owner && this.owner.entityName),
                 negateHistory: true
@@ -195,8 +194,11 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
                 options = this.createNavigationOptions();
 
             if (view && options) {
-                if (options.title) view.set('title', options.title);
-                view.show(options);
+                if (options.title) {
+                    view.set('title', options.title);
+                }
+
+                App.goRoute(view.id, options);
             }
         },
         /**

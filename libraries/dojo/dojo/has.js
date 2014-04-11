@@ -19,6 +19,8 @@ _3.add=function(_a,_b,_c,_d){
 return _c&&_3(_a);
 };
 1||_3.add("host-browser",_4);
+0&&_3.add("host-node",(typeof process=="object"&&process.versions&&process.versions.node&&process.versions.v8));
+0&&_3.add("host-rhino",(typeof load=="function"&&(typeof Packages=="function"||typeof Packages=="object")));
 1||_3.add("dom",_4);
 1||_3.add("dojo-dom-ready-api",1);
 1||_3.add("dojo-sniff",1);

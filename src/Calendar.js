@@ -39,6 +39,7 @@ define('Sage/Platform/Mobile/Calendar', [
     var pad = function(n) {
         return n < 10 ? '0' + n : n;
     };
+
     var uCase = function (str) { return str.charAt(0).toUpperCase() + str.substring(1); };
 
     return declare('Sage.Platform.Mobile.Calendar', [View], {
@@ -143,8 +144,7 @@ define('Sage/Platform/Mobile/Calendar', [
             this.month = this.monthNode.value;
 
             // adjust dayNode selector from changes to monthNode or leap/non-leap year
-            if (this.dayNode.options.length != this.daysInMonth())
-            {
+            if (this.dayNode.options.length != this.daysInMonth()) {
                 this.populateSelector(this.dayNode, this.dayNode.selectedIndex + 1, 1, this.daysInMonth());
             }
 
@@ -162,8 +162,7 @@ define('Sage/Platform/Mobile/Calendar', [
             var el = params.$source,
                 toggledValue = el && (domAttr.get(el, 'toggled') !== true);
 
-            if (el)
-            {
+            if (el) {
                 domClass.toggle(el, 'toggleStateOn');
                 domAttr.set(el, 'toggled', toggledValue);
             }
@@ -171,16 +170,19 @@ define('Sage/Platform/Mobile/Calendar', [
             this.updateDatetimeCaption();
         },
         populateSelector: function(el, val, min, max) {
-            if (val > max) { val = max; }
+            if (val > max) {
+                val = max;
+            }
+
             el.options.length = 0;
 
-            for (var i=min; i <= max; i++)
-            {
+            for (var i=min; i <= max; i++) {
                 var opt = domConstruct.create('option', {
                     innerHTML: (this.monthNode == el) ? uCase(this.months[i]) : pad(i),
                     value: i,
                     selected: (i == val)
                 });
+
                 el.options[el.options.length] = opt;
             }
         },
@@ -200,8 +202,9 @@ define('Sage/Platform/Mobile/Calendar', [
 
             return string.substitute(this[whichTemplate], [whichFormat]);
         },
-        show: function(options) {
+        showViaRoute: function(options) {
             this.inherited(arguments);
+            options = options || this.options;
 
             this.titleText = options.label ? options.label : this.titleText;
 
@@ -211,8 +214,9 @@ define('Sage/Platform/Mobile/Calendar', [
             this.year  = this.date.year();
             this.month = this.date.month();
 
-            if ((this.options && this.options.timeless) || this.timeless)
+            if ((this.options && this.options.timeless) || this.timeless) {
                 this.date.add({minutes: this.date.zone()});
+            }
 
             var today = moment();
 
@@ -220,6 +224,7 @@ define('Sage/Platform/Mobile/Calendar', [
                     (this.year < today.year() - 10) ? this.year : today.year() - 10, // min 10 years in past - arbitrary min
                     (10 + today.year()) // max 10 years into future - arbitrary limit
             );
+
             this.populateSelector(this.monthNode, this.month, 0, 11);
             this.populateSelector(this.dayNode, this.date.date(), 1, this.daysInMonth());
             this.populateSelector(this.hourNode,
@@ -229,15 +234,13 @@ define('Sage/Platform/Mobile/Calendar', [
                 this.is24hrTimeFormat ? 0 : 1,
                 this.is24hrTimeFormat ? 23 : 12
             );
+
             this.populateSelector(this.minuteNode, this.date.minutes(), 0, 59);
 
-            if (this.date.hours() < 12)
-            {
+            if (this.date.hours() < 12) {
                 domAttr.set(this.meridiemNode, 'toggled', true);
                 domClass.add(this.meridiemNode, 'toggleStateOn');
-            }
-            else
-            {
+            } else {
                 domAttr.set(this.meridiemNode, 'toggled', false);
                 domClass.remove(this.meridiemNode, 'toggleStateOn');
             }
@@ -266,8 +269,7 @@ define('Sage/Platform/Mobile/Calendar', [
         decrementDay: function() { this.decrement(this.dayNode); },
         decrementHour: function() {
             this.decrement(this.hourNode);
-            if (11 == this.hourNode.value % 12)
-            {
+            if (11 == this.hourNode.value % 12) {
                 this.toggleMeridiem({$source:this.meridiemNode});
             }
         },
@@ -275,12 +277,9 @@ define('Sage/Platform/Mobile/Calendar', [
         decrement: function(el, inc) { // all fields are <select> elements
             inc = inc || 1;
 
-            if (0 <= (el.selectedIndex - inc))
-            {
+            if (0 <= (el.selectedIndex - inc)) {
                 el.selectedIndex = inc * Math.floor((el.selectedIndex -1)/ inc);
-            }
-            else
-            {
+            } else {
                 if (el == this.yearNode)   { return false; }
                 if (el == this.dayNode)    { this.decrementMonth(); }
                 if (el == this.monthNode)  { this.decrementYear();  }
@@ -297,8 +296,7 @@ define('Sage/Platform/Mobile/Calendar', [
         incrementHour: function() {
             this.increment(this.hourNode);
 
-            if (this.hourNode.selectedIndex == (this.hourNode.options.length - 1))
-            {
+            if (this.hourNode.selectedIndex == (this.hourNode.options.length - 1)) {
                 this.toggleMeridiem({$source:this.meridiemNode});
             }
         },
@@ -306,12 +304,9 @@ define('Sage/Platform/Mobile/Calendar', [
         increment: function(el, inc) {
             inc = inc || 1;
 
-            if (el.options.length > (el.selectedIndex + inc))
-            {
+            if (el.options.length > (el.selectedIndex + inc)) {
                 el.selectedIndex += inc;
-            }
-            else
-            {
+            } else {
                 if (el == this.yearNode) { return false; }
                 if (el == this.dayNode) { this.incrementMonth(); }
                 if (el == this.monthNode)  { this.incrementYear(); }
@@ -323,9 +318,13 @@ define('Sage/Platform/Mobile/Calendar', [
         },
         updateDatetimeCaption: function() {
             var t = moment(this.getDateTime());
+
+            if ((this.options && this.options.timeless) || this.timeless) {
+                t.utc();
+            }
+
             this.datePickControl.caption.innerHTML = t.format('dddd'); // weekday text
-            if (this.showTimePicker)
-            {
+            if (this.showTimePicker) {
                 this.timePickControl.caption.innerHTML = t.format(this.timeFormatText);
             }
         },
@@ -341,10 +340,6 @@ define('Sage/Platform/Mobile/Calendar', [
 
             result.hours(hours);
             result.minutes(minutes);
-            if ((this.options && this.options.timeless) || this.timeless)
-            {
-                result = result.startOf('day').add({minutes: -1 * result.zone(), seconds: 5});
-            }
 
             return result.toDate();
         }

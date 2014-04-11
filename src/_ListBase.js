@@ -15,7 +15,7 @@
 
 /**
  * @class Sage.Platform.Mobile._ListBase
- * A List View is a view used to display a collection of items in an easy to skim list. The List View also has a
+ * A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
  * selection model built in for selecting rows from the list and may be used in a number of different manners.
  * @extends Sage.Platform.Mobile.View
  * @alternateClassName _ListBase
@@ -167,7 +167,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * The template used to render a row in the view.  This template includes {@link #itemTemplate}.
          */
         rowTemplate: new Simplate([
-            '<li data-action="activateEntry" data-key="{%= $[$$.keyProperty] %}" data-descriptor="{%: $[$$.descriptorProperty] %}">',
+            '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
                 '<button data-action="selectEntry" class="list-item-selector button">',
                     '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
                 '</button>',
@@ -184,8 +184,8 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @template
          */
         itemTemplate: new Simplate([
-            '<h3>{%: $[$$.descriptorProperty] %}</h3>',
-            '<h4>{%: $[$$.keyProperty] %}</h4>'
+            '<h3>{%: $[$$.labelProperty] %}</h3>',
+            '<h4>{%: $[$$.idProperty] %}</h4>'
         ]),
         /**
          * @property {Simplate}
@@ -235,7 +235,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         contentNode: null,
         /**
          * @property {HTMLElement}
-         * Attach point for the remaining items content
+         * Attach point for the remaining entries content
          */
         remainingContentNode: null,
         /**
@@ -250,12 +250,12 @@ define('Sage/Platform/Mobile/_ListBase', [
         emptySelectionNode: null,
         /**
          * @property {HTMLElement}
-         * Attach point for the remaining items container
+         * Attach point for the remaining entries container
          */
         remainingNode: null,
         /**
          * @property {HTMLElement}
-         * Attach point for the request more items container
+         * Attach point for the request more entries container
          */
         moreNode: null,
         /**
@@ -276,10 +276,10 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         resourceKind: '',
         store: null,
-        items: {},
+        entries: null,
         /**
          * @property {Number}
-         * The number of items to request per SData payload.
+         * The number of entries to request per SData payload.
          */
         pageSize: 20,
         /**
@@ -426,7 +426,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         _selectionConnects: null,
         /**
          * @property {Object}
-         * The toolbar layout definition for all toolbar items.
+         * The toolbar layout definition for all toolbar entries.
          */
         tools: null,
         /**
@@ -454,15 +454,12 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         relatedViewManagers: null,
 
-        /**
-         * Store ID property
-         */
-        keyProperty: '$key',
-
-        /**
-         * Store description property
-         */
-        descriptorProperty: '$descriptor',
+        // Store properties
+        itemsProperty: '',
+        idProperty: '',
+        labelProperty: '',
+        entityProperty: '',
+        versionProperty: '',
 
         /**
          * Setter method for the selection model, also binds the various selection model select events
@@ -499,6 +496,9 @@ define('Sage/Platform/Mobile/_ListBase', [
          * to the global refresh publish
          */
         _onScrollHandle: null,
+        constructor: function() {
+            this.entries = {};
+        },
         postCreate: function() {
             this.inherited(arguments);
 
@@ -552,7 +552,7 @@ define('Sage/Platform/Mobile/_ListBase', [
 
                 delete this.searchWidget;
             }
-            
+
             delete this.store;
             this.destroyRelatedViewWidgets();
             this.inherited(arguments);
@@ -561,11 +561,11 @@ define('Sage/Platform/Mobile/_ListBase', [
             return this.store || (this.store = this.createStore());
         },
         /**
-        * Shows overrides the view class to set options for the list view and then calls the inherited show method on the view.
+        * Shows overrides the view class to set options for the list view and then calls the inherited showViaRoute method on the view.
         * @param {Object} options The navigation options passed from the previous view.
         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
         */
-       show: function(options, transitionOptions) {
+        showViaRoute: function(options, transitionOptions) {
            if (options){
                if (options.resetSearch) {
                    this.defaultSearchTermSet = false;
@@ -575,7 +575,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         },
         /**
          * Sets and returns the toolbar item layout definition, this method should be overriden in the view
-         * so that you may define the views toolbar items.
+         * so that you may define the views toolbar entries.
          * @return {Object} this.tools
          * @template
          */
@@ -590,7 +590,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         },
         /**
          * Sets and returns the list-action actions layout definition, this method should be overriden in the view
-         * so that you may define the action items for that view.
+         * so that you may define the action entries for that view.
          * @return {Object} this.acttions
          */
         createActionLayout: function() {
@@ -618,6 +618,39 @@ define('Sage/Platform/Mobile/_ListBase', [
 
             this.actions = actions;
         },
+        selectEntrySilent: function(key) {
+            var enableActions = this.enableActions,// preserve the original value
+                selectionModel = this.get('selectionModel'),
+                selectedItems,
+                selection,
+                prop;
+
+            if (key) {
+                this.enableActions = false; // Set to false so the quick actions menu doesn't pop up
+                selectionModel.clear();
+                selectionModel.toggle(key, this.entries[key]);
+                selectedItems = selectionModel.getSelections();
+                this.enableActions = enableActions;
+
+                // We know we are single select, so just grab the first selection
+                for (prop in selectedItems) {
+                    selection = selectedItems[prop];
+                    break;
+                }
+            }
+
+            return selection;
+        },
+        invokeActionItemBy: function(actionPredicate, key) {
+            var actions, selection;
+
+            actions = array.filter(this.actions, actionPredicate);
+            selection = this.selectEntrySilent(key);
+            this.checkActionState();
+            array.forEach(actions, function(action) {
+                this._invokeAction(action, selection);
+            }, this);
+        },
         /**
          * This is the data-action handler for list-actions, it will locate the action instance viw the data-id attribute
          * and invoke either the `fn` with `scope` or the named `action` on the current view.
@@ -635,13 +668,17 @@ define('Sage/Platform/Mobile/_ListBase', [
                 selectedItems = this.get('selectionModel').getSelections(),
                 selection = null;
 
-            if (!action.isEnabled) {
-                return;
-            }
 
             for (var key in selectedItems) {
                 selection = selectedItems[key];
                 break;
+            }
+
+            this._invokeAction(action, selection);
+        },
+        _invokeAction: function(action, selection) {
+            if (!action.isEnabled) {
+                return;
             }
 
             if (action['fn']) {
@@ -854,7 +891,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                 key = row ? row.getAttribute('data-key') : false;
 
             if (this._selectionModel && key) {
-                this._selectionModel.toggle(key, this.items[key], row);
+                this._selectionModel.toggle(key, this.entries[key], row);
             }
 
             if (this.options.singleSelect && this.options.singleSelectAction && !this.enableActions) {
@@ -875,7 +912,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             if (params.key)
             {
                 if (this._selectionModel && this.isNavigationDisabled()) {
-                    this._selectionModel.toggle(params.key, this.items[params.key] || params.descriptor, params.$source);
+                    this._selectionModel.toggle(params.key, this.entries[params.key] || params.descriptor, params.$source);
                     if (this.options.singleSelect && this.options.singleSelectAction) {
                         this.invokeSingleSelectAction();
                     }
@@ -980,24 +1017,23 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @param {Object} action Action instance, not used.
          * @param {Object} selection Data entry for the selection.
          * @param {String} viewId View id to be shown
-         * @param {String} whereQueryFmt Where expression format string to be passed. `${0}` will be the `$key`
+         * @param {String} whereQueryFmt Where expression format string to be passed. `${0}` will be the `idProperty`
          * property of the passed selection data.
          */
         navigateToRelatedView:  function(action, selection, viewId, whereQueryFmt) {
             var view = App.getView(viewId),
                 options = {
-                    where: string.substitute(whereQueryFmt, [selection.data[this.keyProperty]])
+                    where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]])
                 };
 
             this.setSource({
-                item: selection.data,
                 entry: selection.data,
-                descriptor: selection.data[this.descriptorProperty],
-                key: selection.data[this.keyProperty]
+                descriptor: selection.data[this.labelProperty],
+                key: selection.data[this.idProperty]
             });
 
             if (view && options) {
-                view.show(options);
+                App.goRoute(view.id, options);
             }
         },
         /**
@@ -1008,23 +1044,24 @@ define('Sage/Platform/Mobile/_ListBase', [
         navigateToDetailView: function(key, descriptor) {
             var view = App.getView(this.detailView);
             if (view) {
-                view.show({
-                    descriptor: descriptor,
+                App.goRoute(view.id + '/' + key, {
+                    title: descriptor,
                     key: key
                 });
             }
         },
         /**
-         * Helper method for list-actions. Navigates to the defined `this.editView` passing the given selections `$key`
+         * Helper method for list-actions. Navigates to the defined `this.editView` passing the given selections `idProperty`
          * property in the navigation options (which is then requested and result used as default data).
          * @param {Object} action Action instance, not used.
          * @param {Object} selection Data entry for the selection.
          */
         navigateToEditView: function(action, selection) {
-            var view = App.getView(this.editView || this.insertView);
+            var view = App.getView(this.editView || this.insertView),
+                key = selection.data[this.idProperty];
             if (view) {
-                view.show({
-                    key: selection.data[this.keyProperty]
+                App.goRoute(view.id + '/' + key, {
+                    key: key
                 });
             }
         },
@@ -1036,7 +1073,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         navigateToInsertView: function(el) {
             var view = App.getView(this.insertView || this.editView);
             if (view) {
-                view.show({
+                App.goRoute(view.id, {
                     returnTo: this.id,
                     insert: true
                 });
@@ -1080,7 +1117,7 @@ define('Sage/Platform/Mobile/_ListBase', [
 
             console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?');
         },
-        _onQueryComplete: function(queryResults, items) {
+        _onQueryComplete: function(queryResults, entries) {
             try {
                 var start = this.position;
 
@@ -1091,7 +1128,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                     domClass.add(this.domNode, 'list-has-empty');
                 }
 
-                this.processData(items);
+                this.processData(entries);
 
                 domClass.remove(this.domNode, 'list-loading');
                 this.listLoading = false;
@@ -1116,8 +1153,8 @@ define('Sage/Platform/Mobile/_ListBase', [
         },
         onContentChange: function() {
         },
-        _processItem: function(item) {
-            return item;
+        _processEntry: function(entry) {
+            return entry;
         },
         _onQueryTotal: function(size) {
             this.total = size;
@@ -1139,31 +1176,31 @@ define('Sage/Platform/Mobile/_ListBase', [
         },
         onApplyRowTemplate: function(entry, rowNode) {
         },
-        processData: function(items) {
+        processData: function(entries) {
             var store = this.get('store'),
                 rowNode,
                 output,
                 docfrag,
                 key,
-                item,
+                entry,
                 i,
-                count = items.length;
+                count = entries.length;
 
             if (count > 0) {
                 output = [];
 
                 docfrag = document.createDocumentFragment();
                 for (i = 0; i < count; i++) {
-                    item = this._processItem(items[i]);
+                    entry = this._processEntry(entries[i]);
                     // If key comes back with nothing, check that the store is properly
                     // setup with an idProperty
-                    key = store.getIdentity(item);
-                    this.items[store.getIdentity(item)] = item;
-                    rowNode = domConstruct.toDom(this.rowTemplate.apply(item, this));
+                    key = store.getIdentity(entry);
+                    this.entries[store.getIdentity(entry)] = entry;
+                    rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
                     docfrag.appendChild(rowNode);
-                    this.onApplyRowTemplate(item, rowNode);
+                    this.onApplyRowTemplate(entry, rowNode);
                     if (this.relatedViews.length > 0) {
-                        this.onProcessRelatedViews(item, rowNode, items);
+                        this.onProcessRelatedViews(entry, rowNode, entries);
                     }
                 }
 
@@ -1195,13 +1232,13 @@ define('Sage/Platform/Mobile/_ListBase', [
        },
         /**
          *
-         * Add the each item and row to the RelateView manager wich in turn creates the new related view and renders its content with in the current row.`
+         * Add the each entry and row to the RelateView manager wich in turn creates the new related view and renders its content with in the current row.`
          *
-         * @param {Object} item the current item from the data.
+         * @param {Object} entry the current entry from the data.
          * @param {Object} rownode the current dom node to add the widget to.
-         * @param {Object} items the data.
+         * @param {Object} entries the data.
          */
-        onProcessRelatedViews: function(item, rowNode, items) {
+        onProcessRelatedViews: function(entry, rowNode, entries) {
             var relatedViewManager,i;
             if (this.options && this.options.simpleMode && (this.options.simpleMode === true)) {
                 return;
@@ -1212,7 +1249,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                         if (this.relatedViews[i].enabled) {
                             relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
                             if (relatedViewManager) {
-                                relatedViewManager.addView(item, rowNode);
+                                relatedViewManager.addView(entry, rowNode);
                             }
                         }
                     }
@@ -1382,7 +1419,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * Clears the view by:
          *
          *  * clearing the selection model, but without it invoking the event handlers;
-         *  * clears the views data such as `this.entries` and `this.items`;
+         *  * clears the views data such as `this.entries` and `this.entries`;
          *  * clears the search width if passed true; and
          *  * applies the default template.
          *
@@ -1396,7 +1433,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             }
 
             this.requestedFirstPage = false;
-            this.items = {};
+            this.entries = {};
             this.position = 0;
             this.query = false; // todo: rename to searchQuery
 

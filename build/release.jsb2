@@ -37,7 +37,7 @@
           "path": "../libraries/overthrow/"
         },
         {
-          "text": "moment.js",
+          "text": "moment-with-langs.min.js",
           "path": "../libraries/moment/"
         }
       ]
@@ -54,6 +54,14 @@
         {
           "text": "main.js",
           "path": "../src/ReUI"
+        },
+        {
+          "text": "SelectionModel.js",
+          "path": "../src"
+        },
+        {
+          "text": "ConfigurableSelectionModel.js",
+          "path": "../src"
         },
         {
           "text": "Application.js",
@@ -96,15 +104,15 @@
           "path": "../src"
         },
         {
+          "text": "SData.js",
+          "path": "../src/Store"
+        },
+        {
           "text": "ErrorManager.js",
           "path": "../src"
         },
         {
           "text": "_DetailBase.js",
-          "path": "../src"
-        },
-        {
-          "text": "Detail.js",
           "path": "../src"
         },
         {
@@ -116,12 +124,12 @@
           "path": "../src"
         },
         {
-          "text": "FieldManager.js",
+          "text": "Detail.js",
           "path": "../src"
         },
         {
-          "text": "SData.js",
-          "path": "../src/Store"
+          "text": "FieldManager.js",
+          "path": "../src"
         },
         {
           "text": "_Field.js",
@@ -184,15 +192,15 @@
           "path": "../src"
         },
         {
-          "text": "Edit.js",
-          "path": "../src"
-        },
-        {
           "text": "_SDataEditMixin.js",
           "path": "../src"
         },
         {
           "text": "_LegacySDataEditMixin.js",
+          "path": "../src"
+        },
+        {
+          "text": "Edit.js",
           "path": "../src"
         },
         {
@@ -224,15 +232,15 @@
           "path": "../src"
         },
         {
-          "text": "List.js",
-          "path": "../src"
-        },
-        {
           "text": "_SDataListMixin.js",
           "path": "../src"
         },
         {
           "text": "_LegacySDataListMixin.js",
+          "path": "../src"
+        },
+        {
+          "text": "List.js",
           "path": "../src"
         },
         {

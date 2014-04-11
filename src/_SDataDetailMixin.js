@@ -61,8 +61,13 @@ define('Sage/Platform/Mobile/_SDataDetailMixin', [
          * The default resource predicate for an SData request.
          */
         resourcePredicate: null,
-        keyProperty: '$key',
-        descriptorProperty: '$descriptor',
+
+        itemsProperty: '$resources',
+        idProperty: '$key',
+        labelProperty: '$descriptor',
+        entityProperty: '$name',
+        versionProperty: '$etag',
+
         createStore: function() {
             return new SData({
                 service: this.getConnection(),
@@ -72,7 +77,11 @@ define('Sage/Platform/Mobile/_SDataDetailMixin', [
                 resourcePredicate: this.resourcePredicate,
                 include: this.queryInclude,
                 select: this.querySelect,
-                identityProperty: this.keyProperty,
+                itemsProperty: this.itemsProperty,
+                idProperty: this.idProperty,
+                labelProperty: this.labelProperty,
+                entityProperty: this.entityProperty,
+                versionProperty: this.versionProperty,
                 scope: this
             });
         },

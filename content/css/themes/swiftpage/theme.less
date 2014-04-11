@@ -113,9 +113,9 @@ body > .viewContainer > .toolbar,
 
 .panel-content > h2
 {
-    border-bottom: @panel-header-border-bottom;
+    /*border-bottom: @panel-header-border-bottom;*/
     border-top: @panel-header-border-top;
-    background-color: @panel-header-bg-color;
+    /*background-color: @panel-header-bg-color;*/
     color: @panel-header-color;
     font-weight: @panel-header-font-weight;
 }
@@ -144,14 +144,6 @@ body > .viewContainer > .toolbar,
     border-top: @fieldset-border;
 }
 
-.panel-content > fieldset,
-.panel-content > div,
-.panel-validation-summary > fieldset,
-.panel-validation-summary > div
-{
-    border: @fieldset-border;
-}
-
 input,
 textarea
 {
@@ -163,6 +155,7 @@ textarea:focus
 {
     outline: @input-focus-outline;
     background-color: @input-focus-bg-color;
+    border: 1px solid @gray1-lighter;
 }
 
 .panel-content > ul,
@@ -170,19 +163,6 @@ textarea:focus
 {
     border: @panel-content-list-border;
     background-color: @panel-content-list-bg-color;    
-}
-
-.panel-content > ul > li,
-.panel-validation-summary > ul > li
-{
-    border-top: @panel-content-list-item-border;
-    cursor: @panel-content-list-item-cursor;
-}
-
-.panel-content > ul > li:first-child,
-.panel-validation-summary > ul > li:first-child
-{
-    border-top: @panel-content-list-firstchild-border;
 }
 
 .panel-content > ul a,
@@ -197,13 +177,6 @@ textarea:focus
 {
     padding: @panel-content-row-padding;
     min-height: @panel-content-row-min-height;
-    border-top: @panel-content-row-border;
-}
-
-.panel-content > fieldset > .row:first-child,
-.panel-content > div > .row:first-child
-{
-    border-top: @panel-content-row-first-border;
 }
 
 .panel-content > fieldset > .row > div > label,
@@ -218,6 +191,8 @@ textarea:focus
 .panel-content > fieldset > .row-edit > textarea
 {
     font-size: @text-area-font-size;
+    border: 1px solid @gray1-lighter;
+    background-color: @gray5-lighter;
 }
 
 .panel-content > fieldset > .row-edit
@@ -234,7 +209,7 @@ textarea:focus
 {
     .box-sizing(border-box);
     display: block;
-    
+
     color: @button-text-color;
     background-color: @button-bg-color;
 
@@ -247,9 +222,7 @@ textarea:focus
     .border-radius(@button-border-radius);
 
     border: @button-border;
-
     cursor: @button-cursor;
-    outline-color: @button-outline-color;
 }
 
 .button:active
@@ -260,9 +233,9 @@ textarea:focus
 .toolButton,
 .headerButton
 {
-    color: @toolbar-text-color; 
+    color: @toolbar-text-color;
     border: @toolbar-button-border;
-    background-color: @toolbar-button-bg-color; 
+    background-color: @toolbar-button-bg-color;
 }
 
 .toolButton-disabled

@@ -422,7 +422,8 @@
 .row > input:not([type|=radio]):not([type|=checkbox])
 {
     height: auto;
-    padding: 10px 10px 0 110px;
+    padding: 10px 10px 0 0px;
+    background-color: @gray5-lighter;
 }
 
 /* fields */
@@ -468,7 +469,7 @@
     margin: 0;
     padding: 0 12px;
     position: absolute;
-    right: 8px;
+    right: 5px;
 }
 
 .row-edit[data-field-type="picklist"] > div > input,
@@ -484,32 +485,21 @@
 .row-edit[data-field-type="date"] > input,
 .row-edit[data-field-type="note"] > input
 {
-    padding: 8px 34px 8px 110px !important;
+    padding: 8px 34px 8px 0px;
 }
 
 .row-edit[data-field-type="signature"] > div > canvas,
 .row-edit[data-field-type="signature"] > div > img
 {
-    margin-left: 110px;
+    margin-left: 0px;
 }
 
 .row-edit[data-field-type="note"] > div > textarea,
 .row-edit[data-field-type="note"] > textarea
 {
-    padding: 8px 34px 8px 110px !important;
-    height: 5em;
+    padding: 8px 34px 8px 0px;
+    height: 10em;
     overflow: hidden;
-}
-
-.row-edit[data-field-type="duration"] > div > .button
-{
-    z-index:55;
-}
-
-.row-edit[data-field-type="duration"] > div > input
-{
-    position:relative;
-    z-index:50;
 }
 
 .row-edit[data-field-type="duration"] > div > .autoComplete-watermark
@@ -525,12 +515,14 @@
 
 .row-edit[data-field-type="address"] > div > div
 {
-    min-height: 1.5em !important;
-    padding: 4px 34px 4px 110px !important;
+    min-height: 1.5em;
+    padding: 8px 34px 8px 8px;
+    border: 1px solid @gray1-lighter;
+    background-color: @gray5-lighter;
 }
 
 .text-input {
-    padding:  8px 34px 8px 110px !important;
+    padding:  8px 34px 8px 0px;
 }
 
 .list-search
@@ -624,6 +616,7 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox])
     z-index:101;
     width:30px;
     height:30px;
+    display: block;
 }
 
 /* search */
@@ -807,6 +800,7 @@ div > .collapsed-indicator
     display: none !important;
 }
 
+li > .disabled,
 .action-list > li > .disabled
 {
     opacity: 0.3;
@@ -973,7 +967,7 @@ body > .viewContainer > [selected="true"]
 
 .button
 {
-    height: 30px;
+    height: 36px;
     line-height: 30px;
     padding: 0 2px 0 2px;
 }
@@ -1106,8 +1100,6 @@ body > .viewContainer > .dialog {
 }
 
 input:not([type|=radio]):not([type|=checkbox]) {
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
     box-sizing: border-box;
@@ -1118,7 +1110,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
     padding: 6px 6px 6px 44px;
     font-size: 16px;
     font-weight: normal;
-    border: 1px solid #000;
+    border: 1px solid @gray1-lighter;
 }
 
 .list-content,
@@ -1269,7 +1261,8 @@ img
 .panel-validation-summary > ul
 {
     margin: 0;
-    padding: 0 0 1.5em 0;
+    padding: 0;
+    border: none;
 }
 
 .panel-content > fieldset:last-child,
@@ -1292,7 +1285,7 @@ img
 .panel-content > ul > li > a,
 .panel-validation-summary > ul > li > a
 {
-    padding: 8px;
+    padding: 4px;
     margin: 0px;
     display: block;
 }
@@ -1310,9 +1303,6 @@ img
     margin: 0px;
     padding: 0;
     position: relative;
-    float: left;
-    width: 100px;
-    text-align: right;
     font-size: 0.8em;
 }
 
@@ -1320,7 +1310,7 @@ img
 {
     text-align: left;
     clear: both;
-    line-height: 1.5em;
+    line-height: 2.3em;
     padding: 0 .75em;
 }
 
@@ -1331,16 +1321,22 @@ img
 {
     display: block;
     margin: 0 0 0 0;
-    padding: 0 0 0 12px;
+    padding: 0 0 0 9px;
     position: relative;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.row > * > a
+.href
 {
-    border-bottom: 1px dotted #00338D;
-    color: black;
+    display: inline-block;
+}
+
+.row > * > a,
+.href
+{
+    border-bottom: 1px dotted @blue2-darker;
+    color: @blue2-darker;
     text-decoration: none;
     cursor: pointer;
 }
@@ -1368,16 +1364,6 @@ img
     padding: 2px 0.75em;
 }
 
-.row-edit > div > label,
-.row-edit > label
-{
-    position: absolute;
-    height: 30px;
-    line-height: 30px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
 .row > div > input[type|=radio], .row > div > input[type|=checkbox],
 .row > input[type|=radio], .row > input[type|=checkbox]
 {
@@ -1399,15 +1385,8 @@ img
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
 
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-
     margin: 0;
-    padding: 0px 10px 0 110px;
-    height: 32px !important;
-    border: 0 none transparent;
-    background: transparent;
+    padding: 8px 34px 8px 8px;
 }
 
 .row > div > textarea,
@@ -1423,7 +1402,7 @@ img
     -moz-border-radius: 3px;
     margin: 0;
     border: 0 none black;
-    padding: 8px 10px 8px 110px;
+    padding: 8px 10px 8px 0px;
     background: transparent;
     width: 100%;
     display: block;

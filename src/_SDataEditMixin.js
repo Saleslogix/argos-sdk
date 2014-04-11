@@ -50,13 +50,14 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
          * The saved SData response.
          */
         entry: null,
+
         /**
          * @property {Object}
          * The saved template SData response.
          */
         templateEntry: null,
 
-        _buildRefreshMessage: function(item, result) {
+        _buildRefreshMessage: function(entry, result) {
             var message = this.inherited(arguments);
 
             return lang.mixin(message, {
@@ -191,8 +192,8 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
         _applyStateToPutOptions: function(putOptions) {
             var store = this.get('store');
 
-            putOptions.version = store.getVersion(this.item);
-            putOptions.entity = store.getEntity(this.item) || this.entityName;
+            putOptions.version = store.getVersion(this.entry);
+            putOptions.entity = store.getEntity(this.entry) || this.entityName;
         },
         _applyStateToAddOptions: function(addOptions) {
             addOptions.entity = this.entityName;

@@ -199,24 +199,24 @@ define('Sage/Platform/Mobile/GroupedList', [
 
             domClass.toggle(this.domNode, 'list-has-more', this.hasMoreData());
         },
-        processData: function(items) {
-            var i, item, count = items.length, store = this.get('store'), entryGroup, rowNode, getGroupsNode;
+        processData: function(entries) {
+            var i, entry, count = entries.length, store = this.get('store'), entryGroup, rowNode, getGroupsNode;
             getGroupsNode = Utility.memoize(lang.hitch(this, this.getGroupsNode), function(entryGroup) {
                 return entryGroup.tag;
             });
 
             if (count > 0) {
                 for (i = 0; i < count; i++) {
-                    item = this._processItem(items[i]);
-                    this.items[store.getIdentity(item)] = item;
+                    entry = this._processEntry(entries[i]);
+                    this.entries[store.getIdentity(entry)] = entry;
 
-                    entryGroup = this.getGroupForEntry(item);
+                    entryGroup = this.getGroupForEntry(entry);
 
-                    item["$groupTag"] = entryGroup.tag;
-                    item["$groupTitle"] = entryGroup.title;
+                    entry["$groupTag"] = entryGroup.tag;
+                    entry["$groupTitle"] = entryGroup.title;
 
-                    rowNode = domConstruct.toDom(this.rowTemplate.apply(item, this));
-                    this.onApplyRowTemplate(item, rowNode);
+                    rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+                    this.onApplyRowTemplate(entry, rowNode);
 
                     domConstruct.place(rowNode, getGroupsNode(entryGroup), 'last');
                 }

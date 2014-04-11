@@ -6,6 +6,9 @@ define('tests/Fields/LookupFieldTests', [
     return describe('Sage.Platform.Mobile.Fields.LookupField', function() {
         beforeEach(function() {
             this.app = {
+                goRoute: function() {
+                    this.getView().showViaRoute();
+                },
                 getPrimaryActiveView: function() {
                     // Return a fake view
                     return {
@@ -203,29 +206,32 @@ define('tests/Fields/LookupFieldTests', [
             field = new LookupField({app: this.app, reui: this.reui});
             spyOn(field.app, 'getView').and.callFake(function() {
                 view = {
+                    id: 'account_list',
                     show: function() {
+                    },
+                    showViaRoute: function() {
                     }
                 };
 
-                spyOn(view, 'show');
+                spyOn(view, 'showViaRoute');
                 return view;
             });
 
             // Normal
             field.navigateToListView();
             expect(field.app.getView).toHaveBeenCalled();
-            expect(view.show).toHaveBeenCalled();
+            expect(view.showViaRoute).toHaveBeenCalled();
 
             // On button click
             field.app.getView.calls.reset();
-            view.show.calls.reset();
+            view.showViaRoute.calls.reset();
 
             field.buttonClick();
             expect(field.app.getView).toHaveBeenCalled();
-            expect(view.show).toHaveBeenCalled();
+            expect(view.showViaRoute).toHaveBeenCalled();
 
             field.app.getView.calls.reset();
-            view.show.calls.reset();
+            view.showViaRoute.calls.reset();
 
             field._onClick({
                 target: field.domNode,
@@ -234,16 +240,16 @@ define('tests/Fields/LookupFieldTests', [
             });
 
             expect(field.app.getView).toHaveBeenCalled();
-            expect(view.show).toHaveBeenCalled();
+            expect(view.showViaRoute).toHaveBeenCalled();
 
             field.app.getView.calls.reset();
-            view.show.calls.reset();
+            view.showViaRoute.calls.reset();
 
             field.disabled = true;
             field._onClick({target: field.domNode});
 
             expect(field.app.getView).not.toHaveBeenCalled();
-            expect(view.show).not.toHaveBeenCalled();
+            expect(view.showViaRoute).not.toHaveBeenCalled();
 
             field.destroy();
         });
@@ -254,18 +260,19 @@ define('tests/Fields/LookupFieldTests', [
             field = new LookupField({app: this.app, reui: this.reui});
             spyOn(field.app, 'getView').and.callFake(function() {
                 view = {
-                    show: function() {
+                    id: 'account_list',
+                    showViaRoute: function() {
                     }
                 };
 
-                spyOn(view, 'show');
+                spyOn(view, 'showViaRoute');
                 return view;
             });
 
             field.disabled = true;
             field.navigateToListView();
             expect(field.app.getView).toHaveBeenCalled();
-            expect(view.show).not.toHaveBeenCalled();
+            expect(view.showViaRoute).not.toHaveBeenCalled();
 
             field.destroy();
         });

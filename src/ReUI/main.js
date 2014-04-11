@@ -1,6 +1,7 @@
 define('Sage/Platform/Mobile/ReUI/main', [
     'dojo/_base/lang',
     'dojo/on',
+    'dojo/hash',
     'dojo/dom',
     'dojo/dom-class',
     'dojo/dom-attr',
@@ -10,6 +11,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
 ], function(
     lang,
     on,
+    dojoHash,
     dom,
     domClass,
     domAttr,
@@ -29,22 +31,21 @@ define('Sage/Platform/Mobile/ReUI/main', [
             if (typeof page.id !== 'string' || page.id.length <= 0) {
                 page.id = 'reui-' + (context.counter++);
             }
-           
-            context.hash = location.hash = formatHashForPage(page, o);
+
+            context.hash = dojoHash();
 
             if (o.trimmed !== true) {
-                context.history.push({
+                App.history.push({
                     hash: context.hash,
                     page: page.id,
                     tag: o.tag,
                     data: o.data
                 });
-                App.history = context.history;
             }
         }
 
         context.transitioning = false;
-  
+
         if (o.update !== false) {
             if (R.titleEl) {
                 if (page.title) {
@@ -57,24 +58,23 @@ define('Sage/Platform/Mobile/ReUI/main', [
                 }
             }
         }
-    };  
-    
-    var transition = function(from, to, o) {            
-        function complete() {            
+    };
+
+    var transition = function(from, to, o) {
+        function complete() {
             transitionComplete(to, o);
 
             domClass.remove(R.rootEl, 'transition');
 
-            context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);                                                               
-                
+            context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
             on.emit(from, 'aftertransition', {out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
             on.emit(to, 'aftertransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
 
             if (o.complete) {
                 o.complete(from, to, o);
             }
-        }       
-        
+        }
+
         context.transitioning = true;
 
         window.clearInterval(context.check);
@@ -94,43 +94,6 @@ define('Sage/Platform/Mobile/ReUI/main', [
         complete();
     };
 
-    var extractInfoFromHash = function(hash) {
-        var segments, position, el;
-        if (hash) {
-            if (hash.indexOf(R.hashPrefix) === 0) {
-                segments = hash.substr(R.hashPrefix.length).split(';');
-            }
-
-            return {
-                hash: hash,
-                page: segments[0],
-                tag: segments.length <= 2 ? segments[1] : segments.slice(1)
-            };
-        } else {
-            // no hash? IE9 can lose it on history.back()
-            el = R.getCurrentPage();
-            if (el && el.id) {
-                for (position = context.history.length - 1; position > 0; position--) {
-                    if (context.history[position].hash.match(el.id)) {
-                        break;
-                    }
-                }
-            }
-
-            return context.history[position - 1];
-
-        }
-
-        return false;
-    };
-
-    var formatHashForPage = function(page, options) {
-        var segments = options && options.tag
-            ? [page.id].concat(options.tag)
-            : [page.id];
-        return R.hashPrefix + segments.join(';');       
-    };
-    
     var updateOrientationDom = function(value) {
         var currentOrient = R.rootEl.getAttribute('orient');
         if (value === currentOrient) {
@@ -161,34 +124,6 @@ define('Sage/Platform/Mobile/ReUI/main', [
             context.height = window.innerHeight;
             context.width = window.innerWidth;
         }
-
-        if (context.transitioning) {
-            return;
-        }
-
-        if (context.hash != location.hash) {
-            // do reverse checking here, loop-and-trim will be done by show
-            var reverse = false,
-                info,
-                page;
-
-            for (var position = context.history.length - 2; position >= 0; position--) {
-                if (context.history[position].hash == location.hash) {
-                    info = context.history[position];
-                    reverse = true;
-                    break;
-                }
-            }
-
-            info = info || extractInfoFromHash(location.hash);
-            page = info && dom.byId(info.page);
-
-            // more often than not, data will only be needed when moving to a previous view (and restoring its state).
-            
-            if (page) {
-                R.show(page, {external: true, reverse: reverse, tag: info && info.tag, data: info && info.data});
-            }
-        }         
     };
 
     var context = {
@@ -198,17 +133,15 @@ define('Sage/Platform/Mobile/ReUI/main', [
         counter: 0,
         width: 0,
         height: 0,
-        check: 0,
-        history: [] 
+        check: 0
     };
 
     var config = window.reConfig || {};
-    
+
     lang.mixin(ReUI, {
-        rootEl: false, 
-        titleEl: false,      
+        rootEl: false,
+        titleEl: false,
         pageTitleId: 'pageTitle',
-        hashPrefix: '#_',
         checkStateEvery: 250,
         context: context,
 
@@ -219,7 +152,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
 
             context.initialized = true;
 
-            R.rootEl = R.rootEl || document.body;            
+            R.rootEl = R.rootEl || document.body;
             R.titleEl = R.titleEl || dom.byId(R.pageTitleId);
 
             context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
@@ -254,7 +187,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
                 window.clearInterval(context.check);
             }
         },
-        
+
         /**
          * Available Options:
          *   horizontal: True if the transition is horizontal, False otherwise.
@@ -268,9 +201,10 @@ define('Sage/Platform/Mobile/ReUI/main', [
                 return;
             }
 
-            var count, hash, position, from;
+            var count, position, from;
 
             o = o || {};
+
             page = typeof page === 'string'
                 ? dom.byId(page)
                 : page;
@@ -279,46 +213,30 @@ define('Sage/Platform/Mobile/ReUI/main', [
                 return;
             }
 
-            if (context.hash === formatHashForPage(page, o)) {
-                return;
-            }
-
             context.transitioning = true;
-           
+
             if (o.track !== false) {
-                count = context.history.length;
-                hash = formatHashForPage(page, o);
+                count = App.history.length;
                 position = -1;
 
                 // do loop and trim
                 for (position = count - 1; position >= 0; position--) {
-                    if (context.history[position].hash == hash) {
+                    if (App.history[position].page === page.id) {
                         break;
                     }
                 }
 
                 if ((position > -1) && (position === (count-2))) {
-                     //Added check if history item is just one back. 
+                     //Added check if history item is just one back.
 
-                    context.history = context.history.splice(0, position + 1);
-                    App.history = context.history;
+                    App.history = App.history.splice(0, position + 1);
 
-                    context.hash = hash;
-
-                    // indicate that context.history has already been taken care of (i.e. nothing needs to be pushed).
+                    // indicate that App.history has already been taken care of (i.e. nothing needs to be pushed).
                     o.trimmed = true;
-                    
-                    // trim up the browser history
-                    // if the requested hash does not equal the current location hash, trim up history.
-                    // location hash will not match requested hash when show is called directly, but will match
-                    // for detected location changes (i.e. the back button).
-                    if (location.hash != hash) {
-                        history.go(position - (count - 1));
-                    }
                 } else if (o.returnTo) {
                     if (typeof o.returnTo === 'function') {
                         for (position = count - 1; position >= 0; position--) {
-                            if (o.returnTo(context.history[position])) {
+                            if (o.returnTo(App.history[position])) {
                                 break;
                             }
                         }
@@ -328,14 +246,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
 
                     if (position > -1) {
                         // we fix up the history, but do not flag as trimmed, since we do want the new view to be pushed.
-                        context.history = context.history.splice(0, position + 1);
-                        App.history = context.history;
-
-                        context.hash = context.history[context.history.length - 1] && context.history[context.history.length - 1].hash;
-
-                        if (location.hash != hash) {
-                            history.go(position - (count - 1));
-                        }
+                        App.history = App.history.splice(0, position + 1);
                     }
                 }
             }
@@ -370,10 +281,10 @@ define('Sage/Platform/Mobile/ReUI/main', [
                 D.select(page);
 
                 transitionComplete(page, o);
-                
+
                 on.emit(page, 'aftertransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
             }
-        }                    
+        }
     }, config);
 
     window.ReUI = ReUI;

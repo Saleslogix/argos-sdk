@@ -13,23 +13,9 @@
   <!-- JSON -->
   <script type="text/javascript" src="libraries/json2.js"></script>
 
-  <!-- ReUI -->
-  <script type="text/javascript">
-  reConfig = {
-      autoInit: false,
-      legacyMode: false,
-      showInitialPage: false,
-      updateBackButtonText: false
-  };
-  </script>
-  <script type="text/javascript" src="libraries/reui/reui.js"></script>
-
   <!-- SData Client Library -->
   <script type="text/javascript" src="libraries/sdata/sdata-client-dependencies-debug.js"></script>
   <script type="text/javascript" src="libraries/sdata/sdata-client-debug.js"></script>
-
-  <!-- Moment.js -->
-  <script type="text/javascript" src="libraries/moment/min/moment.min.js"></script>
 
   <!-- Simplate -->
   <script type="text/javascript" src="libraries/Simplate.js"></script>
@@ -50,7 +36,7 @@
             { name: 'dijit', location: 'libraries/dojo/dijit' },
             { name: 'dojox', location: 'libraries/dojo/dojox' },
             { name: 'snap', location: 'libraries/snap', main: 'snap' },
-            { name: 'moment', location: 'libraries/moment', main: 'moment' },
+            { name: 'moment', location: '../libraries/moment', main: 'moment-with-langs.min' },
             { name: 'Sage/Platform/Mobile', location: '.grunt/grunt-contrib-jasmine/src' },// istanbul outputs the instrumented to this temp folder
             { name: 'tests', location: 'tests' }
         ],

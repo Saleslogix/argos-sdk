@@ -41,9 +41,9 @@ return _13;
 var _15=null,_16={};
 b._getTextBox=function(_17,_18,_19){
 var m,s,al=arguments.length;
-var i;
+var i,box;
 if(!_15){
-_15=_8.create("div",{style:{position:"absolute",top:"-10000px",left:"0"}},_5.body());
+_15=_8.create("div",{style:{position:"absolute",top:"-10000px",left:"0",visibility:"hidden"}},_5.body());
 }
 m=_15;
 m.className="";
@@ -64,12 +64,14 @@ if(al>2&&_19){
 m.className=_19;
 }
 m.innerHTML=_17;
-if(m["getBoundingClientRect"]){
+if(m.getBoundingClientRect){
 var bcr=m.getBoundingClientRect();
-return {l:bcr.left,t:bcr.top,w:bcr.width||(bcr.right-bcr.left),h:bcr.height||(bcr.bottom-bcr.top)};
+box={l:bcr.left,t:bcr.top,w:bcr.width||(bcr.right-bcr.left),h:bcr.height||(bcr.bottom-bcr.top)};
 }else{
-return _9.getMarginBox(m);
+box=_9.getMarginBox(m);
 }
+m.innerHTML="";
+return box;
 };
 b._computeTextLocation=function(_1a,_1b,_1c,_1d){
 var loc={},_1e=_1a.align;

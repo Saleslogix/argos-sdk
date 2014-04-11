@@ -416,7 +416,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 options = this.createNavigationOptions();
             if (view && options && !this.disabled) {
                 lang.mixin(view, this.viewMixin);
-                view.show(options);
+                this.app.goRoute(view.id, options);
             }
         },
         buttonClick: function() {
@@ -694,10 +694,11 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
 
             key = utility.getValue(val, this.keyProperty, val) || key; // if we can extract the key as requested, use it instead of the selection key
 
-            if (text && this.textTemplate)
+            if (text && this.textTemplate) {
                 text = this.textTemplate.apply(text, this);
-            else if (this.textRenderer)
+            } else if (this.textRenderer) {
                 text = this.textRenderer.call(this, val, key, text);
+            }
 
             this.currentSelection = val;
 
@@ -706,7 +707,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 text: text || key
             };
 
-            this.setText(text);
+            this.setText(this.currentValue.text);
         },
         /**
          * Sets the given value to `this.currentValue` using the initial flag if to set it as
@@ -764,7 +765,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
 
                     if (initial) this.originalValue = this.currentValue;
 
-                    this.setText(this.requireSelection ? this.emptyText : '');    
+                    this.setText(this.requireSelection ? this.emptyText : '');
                 }
             }
             else
@@ -778,8 +779,8 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                     text = this.textRenderer.call(this, val, key, text);
 
                 this.currentValue = {
-                    key: key,
-                    text: text
+                    key: key || text,
+                    text: text || key
                 };
 
                 if (initial) this.originalValue = this.currentValue;
