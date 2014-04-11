@@ -198,7 +198,7 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
                     view.set('title', options.title);
                 }
 
-                App.goRoute(view.id, options);
+                view.show(options);
             }
         },
         /**
