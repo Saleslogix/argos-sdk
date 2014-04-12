@@ -542,18 +542,7 @@ define('Sage/Platform/Mobile/Application', [
 
             this.onRegistered(view);
 
-            aspect.before(view, 'show', lang.hitch(view, this._beforeViewShow));
-
             return this;
-        },
-        _beforeViewShow: function() {
-            var view = this;
-            if (view && !view._started) {
-                view.init();
-                view.placeAt(view._placeAt, 'first');
-                view._started = true;
-                view._placeAt = null;
-            }
         },
         /**
          * Registers a toolbar with the application and renders it to HTML.
@@ -641,6 +630,13 @@ define('Sage/Platform/Mobile/Application', [
                     view = this.views[key];
                 } else if (typeof key.id === 'string') {
                     view = this.views[key.id];
+                }
+
+                if (view && !view._started) {
+                    view.init();
+                    view.placeAt(view._placeAt, 'first');
+                    view._started = true;
+                    view._placeAt = null;
                 }
 
                 return view;
