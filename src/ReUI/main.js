@@ -207,7 +207,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
         titleEl: false,
         pageTitleId: 'pageTitle',
         hashPrefix: '#_',
-        checkStateEvery: 250,
+        checkStateEvery: 100,
         context: context,
 
         init: function() {
@@ -266,6 +266,8 @@ define('Sage/Platform/Mobile/ReUI/main', [
                 return;
             }
 
+            context.transitioning = true;
+
             var count, hash, position, from;
 
             o = o || {};
@@ -280,8 +282,6 @@ define('Sage/Platform/Mobile/ReUI/main', [
             if (context.hash === formatHashForPage(page, o)) {
                 return;
             }
-
-            context.transitioning = true;
 
             if (o.track !== false) {
                 count = context.history.length;
@@ -357,7 +357,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
                     on.emit(page, 'unload', {bubbles: false, cancelable: true});
                 }
 
-                window.setTimeout(transition, 0, from, page, o);
+                window.setTimeout(transition, R.checkStateEvery, from, page, o);
             } else {
                 on.emit(page, 'beforetransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
 
