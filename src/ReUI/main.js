@@ -39,7 +39,6 @@ define('Sage/Platform/Mobile/ReUI/main', [
                     tag: o.tag,
                     data: o.data
                 });
-                App.history = context.history;
             }
         }
 
@@ -235,7 +234,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
          * @deprecated
          */
         getCurrentPage: function() {
-            return App.getCurrentPage();
+            return context.page;
         },
 
         /**
@@ -300,7 +299,6 @@ define('Sage/Platform/Mobile/ReUI/main', [
                      //Added check if history item is just one back. 
 
                     context.history = context.history.splice(0, position + 1);
-                    App.history = context.history;
 
                     context.hash = hash;
 
@@ -327,7 +325,6 @@ define('Sage/Platform/Mobile/ReUI/main', [
                     if (position > -1) {
                         // we fix up the history, but do not flag as trimmed, since we do want the new view to be pushed.
                         context.history = context.history.splice(0, position + 1);
-                        App.history = context.history;
 
                         context.hash = context.history[context.history.length - 1] && context.history[context.history.length - 1].hash;
 
@@ -345,14 +342,13 @@ define('Sage/Platform/Mobile/ReUI/main', [
 
             on.emit(page, 'load', {bubbles: false, cancelable: true});
 
-            from = App.getCurrentPage();
+            from = context.page;
 
             if (from) {
                 on.emit(from, 'blur', {bubbles: false, cancelable: true});
             }
 
             context.page = page; // Keep for backwards compat
-            App.setCurrentPage(page);
 
             on.emit(page, 'focus', {bubbles: false, cancelable: true});
 

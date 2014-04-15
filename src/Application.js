@@ -169,7 +169,6 @@ define('Sage/Platform/Mobile/Application', [
         modules: null,
         views: null,
         hash: hash,
-        history: null,
         _currentPage: null,
         /**
          * Toolbar instances by key name
@@ -202,7 +201,6 @@ define('Sage/Platform/Mobile/Application', [
             this._connects = [];
             this._signals = [];
             this._subscribes = [];
-            this.history = [];
 
             this.customizations = {};
             this.services = {};// TODO: Remove
@@ -597,18 +595,10 @@ define('Sage/Platform/Mobile/Application', [
          * @return {View} Returns the active view instance, if no view is active returns null.
          */
         getPrimaryActiveView: function() {
-            var el = App.getCurrentPage();
+            var el = ReUI.getCurrentPage() || ReUI.getCurrentDialog();
             if (el) {
                 return this.getView(el);
             }
-
-            return null;
-        },
-        getCurrentPage: function() {
-            return this._currentPage;
-        },
-        setCurrentPage: function(page) {
-            this._currentPage = page;
         },
         /**
          * Determines if any registered view has been registered with the provided key.
@@ -767,7 +757,7 @@ define('Sage/Platform/Mobile/Application', [
             view.activate(tag, data);
         },
         /**
-         * Searches history by passing a predicate function that should return true
+         * Searches ReUI.context.history by passing a predicate function that should return true
          * when a match is found.
          * @param {Function} predicate Function that is called in the provided scope with the current history iteration. It should return true if the history item is the desired context.
          * @param {Number} depth
@@ -782,7 +772,7 @@ define('Sage/Platform/Mobile/Application', [
                 depth = 0;
             }
 
-            list = this.history || [];
+            list = ReUI.context.history || [];
 
             depth = depth || 0;
 
