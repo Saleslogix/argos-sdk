@@ -153,7 +153,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
         // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
         if (Math.abs(window.innerHeight - context.height) > 5 || Math.abs(window.innerWidth - context.width) > 5) {
             if (Math.abs(window.innerWidth - context.width) > 5) {
-                R.setOrientation(context.height < context.width ? 'landscape' : 'portrait');
+                R.setOrientation(window.innerHeight < window.innerWidth ? 'landscape' : 'portrait');
             }
 
             context.height = window.innerHeight;
