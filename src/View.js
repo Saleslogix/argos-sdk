@@ -215,17 +215,8 @@ define('Sage/Platform/Mobile/View', [
          * @param {Object} options The navigation options passed from the previous view.
          * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
          */
-        showViaRoute: function(options, transitionOptions) {
-            var tag, data, app, viewShowOptions;
-
-            app = window.App;
-            if (app && app.viewShowOptions) {
-                viewShowOptions = app.viewShowOptions.pop();
-                if (viewShowOptions) {
-                    options = lang.mixin(options, viewShowOptions.options);
-                    transitionOptions = lang.mixin(transitionOptions, viewShowOptions.transitionOptions);
-                }
-            }
+        show: function(options, transitionOptions) {
+            var tag, data;
 
             if (this.onShow(this) === false) {
                 return;
@@ -248,15 +239,6 @@ define('Sage/Platform/Mobile/View', [
 
             transitionOptions = lang.mixin(transitionOptions || {}, {tag: tag, data: data});
             ReUI.show(this.domNode, transitionOptions);
-        },
-        /**
-         * Shows the view using iUI in order to transition to the new element.
-         * @param {Object} options The navigation options passed from the previous view.
-         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
-         * @deprecated Use App.goRoute instead.
-         */
-        show: function(options, transitionOptions) {
-            App.goRoute(this.id, options, transitionOptions);
         },
         /**
          * Expands the passed expression if it is a function.
@@ -336,11 +318,6 @@ define('Sage/Platform/Mobile/View', [
         getSecurity: function(access) {
             return this.security;
         },
-        /**
-         * Hook so inherited views can clear/register their own routes.
-         */
-        onSetupRoutes: function() {
-        }
     });
 });
 
