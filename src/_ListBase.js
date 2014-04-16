@@ -561,11 +561,11 @@ define('Sage/Platform/Mobile/_ListBase', [
             return this.store || (this.store = this.createStore());
         },
         /**
-        * Shows overrides the view class to set options for the list view and then calls the inherited showViaRoute method on the view.
+        * Shows overrides the view class to set options for the list view and then calls the inherited show method on the view.
         * @param {Object} options The navigation options passed from the previous view.
         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
         */
-        showViaRoute: function(options, transitionOptions) {
+        show: function(options, transitionOptions) {
            if (options){
                if (options.resetSearch) {
                    this.defaultSearchTermSet = false;
@@ -1033,7 +1033,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             });
 
             if (view && options) {
-                App.goRoute(view.id, options);
+                view.show(options);
             }
         },
         /**
@@ -1044,7 +1044,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         navigateToDetailView: function(key, descriptor) {
             var view = App.getView(this.detailView);
             if (view) {
-                App.goRoute(view.id + '/' + key, {
+                view.show({
                     title: descriptor,
                     key: key
                 });
@@ -1060,7 +1060,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             var view = App.getView(this.editView || this.insertView),
                 key = selection.data[this.idProperty];
             if (view) {
-                App.goRoute(view.id + '/' + key, {
+                view.show({
                     key: key
                 });
             }
@@ -1073,7 +1073,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         navigateToInsertView: function(el) {
             var view = App.getView(this.insertView || this.editView);
             if (view) {
-                App.goRoute(view.id, {
+                view.show({
                     returnTo: this.id,
                     insert: true
                 });

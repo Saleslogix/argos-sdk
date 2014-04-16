@@ -31,7 +31,6 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/_base/lang',
     'dojo/_base/window',
     'dojo/string',
-    'dojo/router',
     'dojo/hash',
     'dojo/has',
     'dojo/dom-construct',
@@ -48,7 +47,6 @@ define('Sage/Platform/Mobile/Application', [
     lang,
     win,
     string,
-    router,
     hash,
     has,
     domConstruct,
@@ -127,20 +125,10 @@ define('Sage/Platform/Mobile/Application', [
         ReUI: ReUI,
 
         /**
-         * @property viewRoutes {Object} Object where the keys are registered view id's. The value is an array of registered routes to that view.
-         */
-        viewRoutes: null,
-
-        /**
          * @property viewShowOptions {Array} Array with one configuration object that gets pushed before showing a view.
          * Allows passing in options via routing. Value gets removed once the view is shown.
          */
         viewShowOptions: null,
-
-        /**
-         * @property routePrefix {String} Prefix for routing that shows up after the # in the URL.
-         */
-        routePrefix: '!',
 
         /**
          * Instance of a Snap.js object (https://github.com/jakiestfu/Snap.js/)
@@ -180,9 +168,7 @@ define('Sage/Platform/Mobile/Application', [
         _connections: null,
         modules: null,
         views: null,
-        router: router,
         hash: hash,
-        history: null,
         _currentPage: null,
         /**
          * Toolbar instances by key name
@@ -215,7 +201,6 @@ define('Sage/Platform/Mobile/Application', [
             this._connects = [];
             this._signals = [];
             this._subscribes = [];
-            this.history = [];
 
             this.customizations = {};
             this.services = {};// TODO: Remove
@@ -225,7 +210,6 @@ define('Sage/Platform/Mobile/Application', [
             this.bars = {};
 
             this.context = {};
-            this.viewRoutes = {};
             this.viewShowOptions = [];
 
             lang.mixin(this, options);
@@ -271,15 +255,12 @@ define('Sage/Platform/Mobile/Application', [
             // todo: add support for handling the URL?
             var hash = this.hash();
             if (hash !== '') {
-                this.redirectHash = hash.replace(this.routePrefix, '');
+                this.redirectHash = hash;
             }
 
             location.hash = '';
 
             ReUI.init();
-        },
-        initRoutes: function() {
-            this.router.startup();
         },
         /**
          * If caching is enable and App is {@link #isOnline online} the empties the SData cache via {@link #_clearSDataRequestCache _clearSDataRequestCache}.
@@ -357,7 +338,6 @@ define('Sage/Platform/Mobile/Application', [
             this.initModules();
             this.initToolbars();
             this.initReUI();
-            this.initRoutes();
         },
         /**
          * Establishes various connections to events.
@@ -558,105 +538,9 @@ define('Sage/Platform/Mobile/Application', [
 
             view._placeAt = domNode || this._rootDomNode;
 
-            this.registerDefaultRoute(view);
             this.onRegistered(view);
-            view.onSetupRoutes();
-
-            aspect.before(view, 'showViaRoute', lang.hitch(view, this._beforeViewShow));
 
             return this;
-        },
-        _beforeViewShow: function() {
-            var view = this;
-            if (view && !view._started) {
-                view.init();
-                view.placeAt(view._placeAt, 'first');
-                view._started = true;
-                view._placeAt = null;
-            }
-        },
-        /**
-         * Registers a default route for a view. This is called when the view gets registered with the Application.
-         * The default route path is just the view's id. The callback is onDefaultRoute.
-         * @param {View}
-         */
-        registerDefaultRoute: function(view) {
-            view = this.getView(view);
-            var path = view.id;
-            this.registerRoute(view, path, lang.hitch(this, this.onDefaultRoute, path, view));
-        },
-        /**
-         * Registers a route to a view.
-         * @param {Object} view
-         * @param {String} path
-         * @param {Function} cb
-         * @param {Object} cb.evt
-         */
-        registerRoute: function(view, path, cb) {
-            path = this.routePrefix + path;
-            view = this.getView(view);
-            this.viewRoutes[view.id] = this.viewRoutes[view.id] || [];
-            this.viewRoutes[view.id].push({
-                path: path,
-                handle: this.router.register(path, cb)
-            });
-        },
-        /**
-         * Default callback function for registerDefaultRoute.
-         */
-        onDefaultRoute: function(path, view) {
-            view.showViaRoute();
-        },
-        /**
-         * Goes to a given route. This replaces calling view.show(options, transitionOptions) directly.
-         * @param {String} path
-         * @param {Object} options
-         * @param {Object} transitionOptions
-         */
-        goRoute: function(path, options, transitionOptions) {
-            path = path.indexOf(this.routePrefix) === 0 ? path : this.routePrefix + path;
-            this.viewShowOptions = []; // ensure we have one entry
-            this.viewShowOptions.push({ oldPath: this.hash(), path: path, options: options, transitionOptions: transitionOptions});
-            this.router.go(path);
-        },
-        /**
-         * Clears all routes for the given view.
-         * @param {Object}
-         */
-        clearRoutes: function(view) {
-            var existing;
-
-            view = this.getView(view);
-            existing = this.viewRoutes[view.id];
-            array.forEach(existing, function(route) {
-                route.handle.remove();
-            });
-
-            this.viewRoutes[view.id] = null;
-        },
-        /**
-         * Clears a route for the given view/path.
-         * @param {Object} view
-         * @param {Object} path
-         */
-        clearRoute: function(view, path) {
-            var existing, index;
-
-            path = this.routePrefix + path;
-            view = this.getView(view);
-            existing = this.viewRoutes[view.id];
-            index = -1;
-
-            array.forEach(existing, function(route, idx) {
-                if (route.path === path) {
-                    route.handle.remove();
-                    index = idx;
-                }
-            });
-
-            if (index > -1) {
-                this.viewRoutes[view.id].splice(index, 1);
-            }
         },
         /**
          * Registers a toolbar with the application and renders it to HTML.
@@ -711,18 +595,10 @@ define('Sage/Platform/Mobile/Application', [
          * @return {View} Returns the active view instance, if no view is active returns null.
          */
         getPrimaryActiveView: function() {
-            var el = App.getCurrentPage();
+            var el = ReUI.getCurrentPage() || ReUI.getCurrentDialog();
             if (el) {
                 return this.getView(el);
             }
-
-            return null;
-        },
-        getCurrentPage: function() {
-            return this._currentPage;
-        },
-        setCurrentPage: function(page) {
-            this._currentPage = page;
         },
         /**
          * Determines if any registered view has been registered with the provided key.
@@ -744,6 +620,13 @@ define('Sage/Platform/Mobile/Application', [
                     view = this.views[key];
                 } else if (typeof key.id === 'string') {
                     view = this.views[key.id];
+                }
+
+                if (view && !view._started) {
+                    view.init();
+                    view.placeAt(view._placeAt, 'first');
+                    view._started = true;
+                    view._placeAt = null;
                 }
 
                 return view;
@@ -874,7 +757,7 @@ define('Sage/Platform/Mobile/Application', [
             view.activate(tag, data);
         },
         /**
-         * Searches history by passing a predicate function that should return true
+         * Searches ReUI.context.history by passing a predicate function that should return true
          * when a match is found.
          * @param {Function} predicate Function that is called in the provided scope with the current history iteration. It should return true if the history item is the desired context.
          * @param {Number} depth
@@ -889,7 +772,7 @@ define('Sage/Platform/Mobile/Application', [
                 depth = 0;
             }
 
-            list = this.history || [];
+            list = ReUI.context.history || [];
 
             depth = depth || 0;
 

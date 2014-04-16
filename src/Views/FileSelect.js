@@ -132,11 +132,11 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             domClass.remove(this.domNode, 'list-loading');
         },
         /**
-         * Extends the @{link Sage.Platlform.Mobile.View} showViaRoute to clear out the onchange event of the file input.
+         * Extends the @{link Sage.Platlform.Mobile.View} show to clear out the onchange event of the file input.
          * The onchange event will only fire once per file, so we must re-insert the dom node and re-attach the event.
-         * @extends showViaRoute
+         * @extends show
          */
-        showViaRoute: function(options) {
+        show: function(options) {
             var node;
 
             this.inherited(arguments);

@@ -423,10 +423,10 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             evt.stopPropagation();
         },
         onSelectViewRow: function(evt) {
-            var relatedKey, descriptor, options, view, route;
+            var relatedKey, descriptor, options, view;
 
             relatedKey = evt.currentTarget.attributes['data-relatedkey'].value;
-            descriptor = evt.currentTarget.attributes['data-descriptor'].value; 
+            descriptor = evt.currentTarget.attributes['data-descriptor'].value;
 
             options = {
                 descriptor: descriptor,
@@ -436,8 +436,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
 
             view = App.getView(this.detailViewId);
             if (view) {
-                route = relatedKey ? view.id + '/' + relatedKey : view.id;
-                App.goRoute(route, view.id, options);
+                view.show(options);
             }
             evt.stopPropagation();
         },
@@ -468,7 +467,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
 
             view = App.getView(this.listViewId);
             if (view) {
-                App.goRoute(view.id, options);
+                view.show(options);
             }
             evt.stopPropagation();
         },

@@ -341,26 +341,6 @@ define('Sage/Platform/Mobile/_DetailBase', [
             }
             return this.inherited(arguments);
         },
-        onSetupRoutes: function() {
-            this.inherited(arguments);
-            var app = window.App;
-            if (app) {
-                app.registerRoute(this, [this.id, '/:key'].join(''), lang.hitch(this, this.onDefaultRoute));
-            }
-        },
-        onDefaultRoute: function(evt) {
-            var title = '';
-            if (this.entry) {
-                title = this.entry[this.labelProperty] || this.get('title');
-            } else if (this.options && this.options.title) {
-                title = this.options.title;
-            }
-
-            this.showViaRoute({
-                title: title,
-                key: evt.params.key
-            });
-        },
         /**
          * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.
          * @param {Object} options The object published by the event.
@@ -405,7 +385,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             view = App.getView(this.editView);
             if (view) {
                 entry = this.entry;
-                App.goRoute(view.id + '/' + entry[this.idProperty], {entry: entry});
+                view.show({entry: entry});
             }
         },
         /**
@@ -423,7 +403,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             }
 
             if (view && options) {
-                App.goRoute(view.id, options);
+                view.show(options);
             }
         },
         /**
