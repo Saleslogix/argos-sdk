@@ -6,9 +6,6 @@ define('tests/Fields/LookupFieldTests', [
     return describe('Sage.Platform.Mobile.Fields.LookupField', function() {
         beforeEach(function() {
             this.app = {
-                goRoute: function() {
-                    this.getView().showViaRoute();
-                },
                 getPrimaryActiveView: function() {
                     // Return a fake view
                     return {
@@ -208,30 +205,28 @@ define('tests/Fields/LookupFieldTests', [
                 view = {
                     id: 'account_list',
                     show: function() {
-                    },
-                    showViaRoute: function() {
                     }
                 };
 
-                spyOn(view, 'showViaRoute');
+                spyOn(view, 'show');
                 return view;
             });
 
             // Normal
             field.navigateToListView();
             expect(field.app.getView).toHaveBeenCalled();
-            expect(view.showViaRoute).toHaveBeenCalled();
+            expect(view.show).toHaveBeenCalled();
 
             // On button click
             field.app.getView.calls.reset();
-            view.showViaRoute.calls.reset();
+            view.show.calls.reset();
 
             field.buttonClick();
             expect(field.app.getView).toHaveBeenCalled();
-            expect(view.showViaRoute).toHaveBeenCalled();
+            expect(view.show).toHaveBeenCalled();
 
             field.app.getView.calls.reset();
-            view.showViaRoute.calls.reset();
+            view.show.calls.reset();
 
             field._onClick({
                 target: field.domNode,
@@ -240,16 +235,16 @@ define('tests/Fields/LookupFieldTests', [
             });
 
             expect(field.app.getView).toHaveBeenCalled();
-            expect(view.showViaRoute).toHaveBeenCalled();
+            expect(view.show).toHaveBeenCalled();
 
             field.app.getView.calls.reset();
-            view.showViaRoute.calls.reset();
+            view.show.calls.reset();
 
             field.disabled = true;
             field._onClick({target: field.domNode});
 
             expect(field.app.getView).not.toHaveBeenCalled();
-            expect(view.showViaRoute).not.toHaveBeenCalled();
+            expect(view.show).not.toHaveBeenCalled();
 
             field.destroy();
         });
@@ -261,18 +256,18 @@ define('tests/Fields/LookupFieldTests', [
             spyOn(field.app, 'getView').and.callFake(function() {
                 view = {
                     id: 'account_list',
-                    showViaRoute: function() {
+                    show: function() {
                     }
                 };
 
-                spyOn(view, 'showViaRoute');
+                spyOn(view, 'show');
                 return view;
             });
 
             field.disabled = true;
             field.navigateToListView();
             expect(field.app.getView).toHaveBeenCalled();
-            expect(view.showViaRoute).not.toHaveBeenCalled();
+            expect(view.show).not.toHaveBeenCalled();
 
             field.destroy();
         });
