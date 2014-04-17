@@ -1060,7 +1060,6 @@ img {
   margin: 0px;
   padding: 0;
   position: relative;
-  font-size: 0.8em;
 }
 .row {
   text-align: left;
@@ -1325,6 +1324,7 @@ img {
 body {
   font-family: Helvetica Neue, Helvetica, Arial;
   color: #212721;
+  font-size: 1em;
 }
 body body > .viewContainer {
   background: #ffffff;
