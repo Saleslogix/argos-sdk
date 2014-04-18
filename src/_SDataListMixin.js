@@ -43,6 +43,10 @@ define('Sage/Platform/Mobile/_SDataListMixin', [
     string
 ) {
     return declare('Sage.Platform.Mobile._SDataListMixin', null, {
+        /**
+         * @property request Object SData request passed into the store. Optional.
+         */
+        request: null,
 
         /**
          * @cfg {String} resourceKind
@@ -119,6 +123,7 @@ define('Sage/Platform/Mobile/_SDataListMixin', [
         createStore: function() {
             return new SData({
                 service: this.getConnection(),
+                request: this.request,
                 contractName: this.contractName,
                 resourceKind: this.resourceKind,
                 resourceProperty: this.resourceProperty,
