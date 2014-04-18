@@ -75,6 +75,22 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
             }
         },
         /**
+         * ApplyContext is called during {@link #processTemplateEntry processTemplateEntry} and is
+         * intended as a hook for when you are inserting a new entry (not editing) and wish to apply
+         * values from context, ie, from a view in the history.
+         *
+         * The cycle of a template values is (first to last, last being the one that overwrites all)
+         *
+         * 1\. Set the values of the template SData response
+         * 2\. Set any field defaults (the fields `default` property)
+         * 3\. ApplyContext is called
+         * 4\. If `this.options.entry` is defined, apply those values
+         *
+         * @param templateEntry
+         */
+        applyContext: function(templateEntry) {
+        },
+        /**
          * Creates Sage.SData.Client.SDataTemplateResourceRequest instance and sets a number of known properties.
          *
          * List of properties used `this.property/this.options.property`:
