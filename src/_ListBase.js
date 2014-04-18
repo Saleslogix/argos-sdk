@@ -1144,6 +1144,10 @@ define('Sage/Platform/Mobile/_ListBase', [
 
                 this.onContentChange();
                 connect.publish('/app/toolbar/update', []);
+
+                if (this._selectionModel) {
+                    this._loadPreviousSelections();
+                }
             } catch (e) {
                 console.error(e);
             }
