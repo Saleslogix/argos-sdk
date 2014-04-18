@@ -636,17 +636,9 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * @param {Object} entry Entry from data store
          */
         processEntry: function(entry) {
-            var title;
-
             this.entry = this.preProcessEntry(entry);
 
             if (this.entry) {
-                if (!this.options.title && this.entry[this.labelProperty]) {
-                    title = this.entry[this.labelProperty];
-                    this.set('title', title);
-                    App.setPrimaryTitle(title);
-                }
-
                 this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
             } else {
                 this.set('detailContent', '');
@@ -742,6 +734,13 @@ define('Sage/Platform/Mobile/_DetailBase', [
          */
         activate: function(tag, data) {
             var options = data && data.options;
+            if (options && options.descriptor) {
+                options.title = options.title || options.descriptor;
+            }
+
+            this.inherited(arguments);
+        },
+        show: function(options) {
             if (options && options.descriptor) {
                 options.title = options.title || options.descriptor;
             }

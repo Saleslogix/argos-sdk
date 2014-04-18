@@ -464,10 +464,6 @@ define('Sage/Platform/Mobile/_EditBase', [
         processData: function(entry) {
             this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
 
-            if (this.entry && this.entry[this.labelProperty]) {
-                App.setPrimaryTitle(this.entry[this.labelProperty]);
-            }
-
             this.setValues(entry, true);
 
             // Re-apply any passed changes as they may have been overwritten
