@@ -1125,7 +1125,7 @@ define('Sage/Platform/Mobile/_ListBase', [
 
                 /* todo: move to a more appropriate location */
                 if (this.options && this.options.allowEmptySelection) {
-                    domClass.add(this.domNode, 'list-has-empty');
+                    domClass.add(this.domNode, 'list-has-empty-opt');
                 }
 
                 this.processData(entries);
