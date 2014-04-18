@@ -45,16 +45,14 @@ module.exports = function(grunt) {
                 options: {
                 },
                 files: {
-                    'min/css/themes/sage-green/sdk.min.sage-green.debug.css': 'content/css/themes/sage-green.less',
                     'min/css/themes/swiftpage/sdk.min.swiftpage.debug.css': 'content/css/themes/swiftpage.less'
                 }
             },
             production: {
                 options: {
-                    yuicompress: true
+                    cleancss: true
                 },
                 files: {
-                    'min/css/themes/sage-green/sdk.min.sage-green.css': 'content/css/themes/sage-green.less',
                     'min/css/themes/swiftpage/sdk.min.swiftpage.css': 'content/css/themes/swiftpage.less'
                 }
             }
