@@ -376,12 +376,14 @@ define('Sage/Platform/Mobile/List', [
             '</button>',
             '</div>'
         ]),
+        keyProperty: '$key',
+        labelProperty: '$descriptor',
         /**
          * @property {Simplate}
          * The template used to render a row in the view.  This template includes {@link #itemTemplate}.
          */
         rowTemplate: new Simplate([
-            '<li data-action="activateEntry" data-key="{%= $.$key %}" data-descriptor="{%: $.$descriptor %}">',
+            '<li data-action="activateEntry" data-key="{%= $[$$.keyProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
                 '<button data-action="selectEntry" class="list-item-selector button">',
                     '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
                 '</button>',
@@ -1403,7 +1405,9 @@ define('Sage/Platform/Mobile/List', [
                 domClass.add(this.domNode, 'list-has-empty-opt');
             }
 
-            this._loadPreviousSelections();
+            if (this._selectionModel) {
+                this._loadPreviousSelections();
+            }
         },
         onApplyRowTemplate: function(entry, rowNode) {
         },
@@ -1575,8 +1579,10 @@ define('Sage/Platform/Mobile/List', [
         {
             this.configureSearch();
 
-            if (this._selectionModel) this._loadPreviousSelections();
-            
+            if (this._selectionModel) {
+                this._loadPreviousSelections();
+            }
+
             this.inherited(arguments);
         },
         /**
