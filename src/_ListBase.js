@@ -1128,6 +1128,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                     domClass.add(this.domNode, 'list-has-empty-opt');
                 }
 
+                this.set('listContent', '');
                 this.processData(entries);
 
                 domClass.remove(this.domNode, 'list-loading');
