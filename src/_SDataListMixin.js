@@ -177,7 +177,7 @@ define('Sage/Platform/Mobile/_SDataListMixin', [
             total = this.total;
 
             if (start > 0 && count > 0 && total >= 0) {
-                return (start + count <= total);
+                return this.remaining === -1 || this.remaining > 0;
             } else {
                 return true; // no way to determine, always assume more data
             }

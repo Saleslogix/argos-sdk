@@ -133,11 +133,9 @@ define('Sage/Platform/Mobile/_ListBase', [
         moreTemplate: new Simplate([
             '<div class="list-more" data-dojo-attach-point="moreNode">',
             '<div class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></div>',
-            '{% if (!$.continuousScrolling) { %}',
-                '<button class="button" data-action="more">',
-                '<span>{%= $.moreText %}</span>',
-                '</button>',
-            '{% } %}',
+            '<button class="button" data-action="more">',
+            '<span>{%= $.moreText %}</span>',
+            '</button>',
             '</div>'
         ]),
         /**
@@ -860,7 +858,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         _onRefresh: function(options) {
         },
         onScroll: function(evt) {
-            var pos, height, scrollTop, scrollHeight, remaining, selected;
+            var pos, height, scrollTop, scrollHeight, remaining, selected, diff;
             pos = domGeom.position(this.domNode, true);
 
             height = pos.h; // viewport height (what user sees)
@@ -870,7 +868,10 @@ define('Sage/Platform/Mobile/_ListBase', [
 
             selected = domAttr.get(this.domNode, 'selected');
 
-            if (remaining === height) {
+            diff = Math.abs(remaining - height);
+
+            // Start auto fetching more data if the user is on the last half of the remaining screen
+            if (diff <= height / 2) {
                 if (selected === 'true' && this.hasMoreData() && !this.listLoading) {
                     this.more();
                 }
@@ -1128,7 +1129,12 @@ define('Sage/Platform/Mobile/_ListBase', [
                     domClass.add(this.domNode, 'list-has-empty-opt');
                 }
 
-                this.set('listContent', '');
+                /* remove the loading indicator so that it does not get re-shown while requesting more data */
+                if (start === 0) {
+                    this.set('listContent', '');
+                    domConstruct.destroy(this.loadingIndicatorNode);
+                }
+
                 this.processData(entries);
 
                 domClass.remove(this.domNode, 'list-loading');
@@ -1136,11 +1142,6 @@ define('Sage/Platform/Mobile/_ListBase', [
 
                 if (!this._onScrollHandle && this.continuousScrolling) {
                     this._onScrollHandle = this.connect(this.domNode, 'onscroll', this.onScroll);
-                }
-
-                /* remove the loading indicator so that it does not get re-shown while requesting more data */
-                if (start === 0) {
-                    domConstruct.destroy(this.loadingIndicatorNode);
                 }
 
                 this.onContentChange();
@@ -1162,22 +1163,29 @@ define('Sage/Platform/Mobile/_ListBase', [
             return entry;
         },
         _onQueryTotal: function(size) {
+            var remaining;
+
             this.total = size;
             if (size === 0) {
                 domConstruct.place(this.noDataTemplate.apply(this), this.contentNode, 'only');
             } else {
-                var remaining = size > -1
-                    ? size - (this.position + this.pageSize)
-                    : -1;
-
+                remaining = this.getRemainingCount();
                 if (remaining !== -1) {
                     this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
+                    this.remaining = remaining;
                 }
 
                 domClass.toggle(this.domNode, 'list-has-more', (remaining === -1 || remaining > 0));
 
                 this.position = this.position + this.pageSize;
             }
+        },
+        getRemainingCount: function() {
+            var remaining = this.total > -1
+                ? this.total - (this.position + this.pageSize)
+                : -1;
+
+            return remaining;
         },
         onApplyRowTemplate: function(entry, rowNode) {
         },
@@ -1488,8 +1496,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                     this.relatedViewManagers[relatedViewId].destroyViews();
                 }
             }
-        },
-
+        }
     });
 });
  
