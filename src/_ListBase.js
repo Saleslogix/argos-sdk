@@ -1131,7 +1131,11 @@ define('Sage/Platform/Mobile/_ListBase', [
 
                 /* remove the loading indicator so that it does not get re-shown while requesting more data */
                 if (start === 0) {
-                    this.set('listContent', '');
+                    // Check entries.length so we don't clear out the "noData" template
+                    if (entries.length > 0) {
+                        this.set('listContent', '');
+                    }
+
                     domConstruct.destroy(this.loadingIndicatorNode);
                 }
 
@@ -1167,7 +1171,7 @@ define('Sage/Platform/Mobile/_ListBase', [
 
             this.total = size;
             if (size === 0) {
-                domConstruct.place(this.noDataTemplate.apply(this), this.contentNode, 'only');
+                this.set('listContent', this.noDataTemplate.apply(this));
             } else {
                 remaining = this.getRemainingCount();
                 if (remaining !== -1) {
