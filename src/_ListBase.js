@@ -95,11 +95,13 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         widgetTemplate: new Simplate([
             '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
-            '<div data-dojo-attach-point="searchNode"></div>',
-            '{%! $.emptySelectionTemplate %}',
-            '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
-            '{%! $.moreTemplate %}',
-            '{%! $.listActionTemplate %}',
+                '<div data-dojo-attach-point="searchNode"></div>',
+                '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">',
+                    '{%! $.emptySelectionTemplate %}',
+                    '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
+                    '{%! $.moreTemplate %}',
+                    '{%! $.listActionTemplate %}',
+                '</div>',
             '</div>'
         ]),
         /**
@@ -859,11 +861,11 @@ define('Sage/Platform/Mobile/_ListBase', [
         },
         onScroll: function(evt) {
             var pos, height, scrollTop, scrollHeight, remaining, selected, diff;
-            pos = domGeom.position(this.domNode, true);
+            pos = domGeom.position(this.scrollerNode, true);
 
             height = pos.h; // viewport height (what user sees)
-            scrollHeight = this.domNode.scrollHeight; // Entire container height
-            scrollTop = this.domNode.scrollTop; // How far we are scrolled down
+            scrollHeight = this.scrollerNode.scrollHeight; // Entire container height
+            scrollTop = this.scrollerNode.scrollTop; // How far we are scrolled down
             remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
 
             selected = domAttr.get(this.domNode, 'selected');
@@ -1145,7 +1147,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                 this.listLoading = false;
 
                 if (!this._onScrollHandle && this.continuousScrolling) {
-                    this._onScrollHandle = this.connect(this.domNode, 'onscroll', this.onScroll);
+                    this._onScrollHandle = this.connect(this.scrollerNode, 'onscroll', this.onScroll);
                 }
 
                 this.onContentChange();

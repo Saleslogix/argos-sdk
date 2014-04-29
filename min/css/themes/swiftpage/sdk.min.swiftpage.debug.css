@@ -281,6 +281,12 @@
   width: 24px;
   height: 24px;
 }
+.list .scroller {
+  position: absolute;
+  width: 100%;
+  top: 48px;
+  bottom: 0px;
+}
 .list .item-static-icon {
   width: 24px;
   height: 24px;
@@ -926,7 +932,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
   font-size: 1.25em;
   font-weight: bold;
   list-style: none;
-  margin: 6px 0px 6px 0px;
+  margin: 0px 0px 6px 0px;
   padding: 4px 0px 4px 10px;
   position: relative;
 }
