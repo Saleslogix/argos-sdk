@@ -301,7 +301,6 @@
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  height: 32px;
   line-height: 32px;
   margin: 0;
   padding: 0 0 0 6px;
@@ -1385,7 +1384,6 @@ h5 {
   -moz-border-radius: 0px;
 }
 .group-content > h2 {
-  height: 32px;
   line-height: 32px;
   margin: 0;
   padding: 0 0 0 6px;
