@@ -266,8 +266,6 @@ define('Sage/Platform/Mobile/ReUI/main', [
                 return;
             }
 
-            context.transitioning = true;
-
             var count, hash, position, from;
 
             o = o || {};
@@ -276,14 +274,14 @@ define('Sage/Platform/Mobile/ReUI/main', [
                 : page;
 
             if (!page) {
-                context.transitioning = false;
                 return;
             }
 
             if (context.hash === formatHashForPage(page, o)) {
-                context.transitioning = false;
                 return;
             }
+
+            context.transitioning = true;
 
             if (o.track !== false) {
                 count = context.history.length;
