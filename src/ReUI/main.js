@@ -276,10 +276,12 @@ define('Sage/Platform/Mobile/ReUI/main', [
                 : page;
 
             if (!page) {
+                context.transitioning = false;
                 return;
             }
 
             if (context.hash === formatHashForPage(page, o)) {
+                context.transitioning = false;
                 return;
             }
 
