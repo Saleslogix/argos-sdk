@@ -566,12 +566,12 @@ define('Sage/Platform/Mobile/_ListBase', [
         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
         */
         show: function(options, transitionOptions) {
-           if (options){
+            if (options){
                if (options.resetSearch) {
                    this.defaultSearchTermSet = false;
                }
-           }
-           this.inherited(arguments);
+            }
+            this.inherited(arguments);
         },
         /**
          * Sets and returns the toolbar item layout definition, this method should be overriden in the view
