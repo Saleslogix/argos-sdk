@@ -456,23 +456,44 @@ define('Sage/Platform/Mobile/_DetailBase', [
                 sectionQueue = [],
                 sectionStarted = false,
                 callbacks = [],
-                current;
+                current,
+                i,
+                section,
+                sectionNode,
+                include,
+                exclude,
+                provider,
+                property,
+                value,
+                rendered,
+                formatted,
+                data,
+                hasAccess,
+                context,
+                useListTemplate,
+                template,
+                rowNode,
+                item;
 
-            for (var i = 0; i < rows.length; i++) {
+            for (i = 0; i < rows.length; i++) {
                 current = rows[i];
-                var section,
-                    sectionNode,
-                    include = this.expandExpression(current['include'], entry),
-                    exclude = this.expandExpression(current['exclude'], entry);
+                include = this.expandExpression(current['include'], entry);
+                exclude = this.expandExpression(current['exclude'], entry);
 
-                if (include !== undefined && !include) continue;
-                if (exclude !== undefined && exclude) continue;
+                if (include !== undefined && !include) {
+                    continue;
+                }
+
+                if (exclude !== undefined && exclude) {
+                    continue;
+                }
 
                 if (current['children'] || current['as']) {
-                    if (sectionStarted)
+                    if (sectionStarted) {
                         sectionQueue.push(current);
-                    else
+                    } else {
                         this.processLayout(current, entry);
+                    }
 
                     continue;
                 }
@@ -484,15 +505,13 @@ define('Sage/Platform/Mobile/_DetailBase', [
                     domConstruct.place(section, this.contentNode);
                 }
 
-                var provider = current['provider'] || utility.getValue,
-                    property = typeof current['property'] == 'string'
-                        ? current['property']
-                        : current['name'],
-                    value = typeof current['value'] === 'undefined'
-                        ? provider(entry, property, entry)
-                        : current['value'],
-                    rendered,
-                    formatted;
+                provider = current['provider'] || utility.getValue;
+                property = typeof current['property'] == 'string'
+                    ? current['property']
+                    : current['name'];
+                value = typeof current['value'] === 'undefined'
+                    ? provider(entry, property, entry)
+                    : current['value'];
 
                 if (current['template'] || current['tpl']) {
                     rendered = (current['template'] || current['tpl']).apply(value, this);
@@ -511,7 +530,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
                         : value;
                 }
 
-                var data = lang.mixin({}, {
+                data = lang.mixin({}, {
                     entry: entry,
                     value: formatted,
                     raw: value
@@ -527,7 +546,8 @@ define('Sage/Platform/Mobile/_DetailBase', [
                     data['action'] = this.expandExpression(current['action'], entry, value);
                 }
 
-                var hasAccess = App.hasAccessTo(current['security']);
+                hasAccess = App.hasAccessTo(current['security']);
+
                 if (current['security']) {
                     data['disabled'] = !hasAccess;
                 }
@@ -537,7 +557,8 @@ define('Sage/Platform/Mobile/_DetailBase', [
                 }
 
                 if (current['view']) {
-                    var context = lang.mixin({}, current['options']);
+                    context = lang.mixin({}, current['options']);
+
                     if (current['key']) {
                         context['key'] = typeof current['key'] === 'function'
                             ? this.expandExpression(current['key'], entry)
@@ -572,21 +593,24 @@ define('Sage/Platform/Mobile/_DetailBase', [
                     data['context'] = (this._navigationOptions.push(context) - 1);
                 }
 
-                // priority: use > (relatedPropertyTemplate | relatedTemplate) > (actionPropertyTemplate | actionTemplate) > propertyTemplate
-                var useListTemplate = (layout['list'] || options['list']),
-                    template = current['use']
-                        ? current['use']
-                        : current['view']
-                            ? useListTemplate
-                                ? this.relatedTemplate
-                                : this.relatedPropertyTemplate
-                            : current['action']
-                                ? useListTemplate
-                                    ? this.actionTemplate
-                                    : this.actionPropertyTemplate
-                                : this.propertyTemplate;
+                useListTemplate = (layout['list'] || options['list']);
 
-                var rowNode = domConstruct.place(template.apply(data, this), sectionNode);
+                // priority: use > (relatedPropertyTemplate | relatedTemplate) > (actionPropertyTemplate | actionTemplate) > propertyTemplate
+                if (current['use']) {
+                    template = current['use'];
+                } else if (current['view'] && useListTemplate) {
+                    template = this.relatedTemplate;
+                } else if (current['view']) {
+                    template = this.relatedPropertyTemplate;
+                } else if (current['action'] && useListTemplate) {
+                    template = this.actionTemplate;
+                } else if (current['action']) {
+                    template = this.actionPropertyTemplate;
+                } else {
+                    template = this.propertyTemplate;
+                }
+
+                rowNode = domConstruct.place(template.apply(data, this), sectionNode);
 
                 if (current['onCreate']) {
                     callbacks.push({ row: current, node: rowNode, value: value, entry: entry });
@@ -594,7 +618,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             }
 
             for (i = 0; i < callbacks.length; i++) {
-                var item = callbacks[i];
+                item = callbacks[i];
                 item.row['onCreate'].apply(this, [item.row, item.node, item.value, item.entry]);
             }
 
