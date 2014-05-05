@@ -323,6 +323,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             return this.tools || (this.tools = {
                 'tbar': [{
                     id: 'edit',
+                    cls: 'fa fa-edit fa-fw fa-lg',
                     action: 'navigateToEditView',
                     security: App.getViewSecurity(this.editView, 'update')
                 }]

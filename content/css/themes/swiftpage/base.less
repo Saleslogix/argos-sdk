@@ -909,7 +909,7 @@ body
 body > .viewContainer
 {
     position: absolute;
-    padding: 45px 0 0 0;
+    padding: 48px 0 0 0;
     margin: 0;
     z-index: 3;
     top: 0px;
@@ -934,14 +934,14 @@ body.transition > .viewContainer > .panel,
 body.transition > .viewContainer > .list
 {
     position: absolute;
-    top: 45px;
+    top: 48px;
 }
 
 body > .viewContainer > .panel,
 body > .viewContainer > .list
 {
     position: absolute;
-    top: 45px;
+    top: 48px;
     bottom: 0px;
     width: 100%;
     box-sizing: border-box;
@@ -956,7 +956,7 @@ body[orient="landscape"] > .viewContainer > .panel,
 body[orient="landscape"] > .viewContainer > .list
 {
     position: absolute;
-    top: 45px; /* Adjust if header toolbar changes */
+    top: 48px; /* Adjust if header toolbar changes */
     bottom: 0px; /* Adjust if footer toolbar changes */
     width: 100%;
     -webkit-transition-property: top, bottom;
@@ -997,7 +997,7 @@ body > .viewContainer > [selected="true"]
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
 
-    height: 45px;
+    height: 48px;
     width: 100%;
     padding: 4px 4px;
 
@@ -1041,9 +1041,9 @@ body > .viewContainer > [selected="true"]
 .toolButton
 {
     position: relative;
-    width: 40px;
-    height: 34px;
-    padding: 0px;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0;
     z-index: 100;
 }
 
