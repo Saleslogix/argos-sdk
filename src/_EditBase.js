@@ -340,6 +340,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             var tbar = [{
                     id: 'save',
                     action: 'save',
+                    cls: 'fa fa-save fa-fw fa-lg',
                     security: this.options && this.options.insert
                         ? this.insertSecurity
                         : this.updateSecurity
@@ -348,6 +349,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             if (!App.isOnFirstView()) {
                 tbar.push({
                     id: 'cancel',
+                    cls: 'fa fa-ban fa-fw fa-lg',
                     side: 'left',
                     fn: ReUI.back,
                     scope: ReUI

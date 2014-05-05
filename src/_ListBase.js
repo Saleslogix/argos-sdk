@@ -583,6 +583,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             return this.tools || (this.tools = {
                 'tbar': [{
                     id: 'new',
+                    cls: 'fa fa-plus fa-fw fa-lg',
                     action: 'navigateToInsertView',
                     security: App.getViewSecurity(this.insertView, 'insert')
                 }]

@@ -69,9 +69,7 @@ define('Sage/Platform/Mobile/MainToolbar', [
                     'data-action="invokeTool" data-tool="{%= $.id %}"',
                     'aria-label="{%: $.title || $.id %}">',
                 '{% if ($.icon) { %}',
-                '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
-                '{% } else { %}',
-                '<span></span>',
+                    '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
                 '{% } %}',
             '</button>'
         ]),
