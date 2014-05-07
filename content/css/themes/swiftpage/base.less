@@ -270,11 +270,22 @@
 
 .list-item-static-selector
 {
+    div
+    {
+        width: 100%;
+        text-align: center;
+    }
+
+    .icon
+    {
+        padding-left: 8px;
+    }
+
     visibility: visible;
     width: 38px;
     position: absolute;
     top: 8px;
-    left: 8px;
+    left: 0px;
     bottom: 0px;
     z-index: 10;
 }
@@ -1152,7 +1163,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
 .list-show-selectors .list-item-content,
 .list-item-static-selector + .list-item-content
 {
-    padding-left: 38px;
+    padding-left: 42px;
 }
 .actions-enabled + .list-item-content
 {
