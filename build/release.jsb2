@@ -276,6 +276,11 @@
   ],
   "resources": [
     {
+      "src": "../libraries/font-awesome-4.0.3",
+      "dest": "content",
+      "filters": ".*(\\.css|\\.jpg|\\.png|\\.gif|\\.otf|\\.eot|\\.svg|\\.ttf|\\.woff)"
+    },
+    {
       "src": "../content",
       "dest": "content",
       "filters": ".*(\\.css|\\.jpg|\\.png|\\.gif)"
