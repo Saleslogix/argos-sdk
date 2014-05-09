@@ -166,8 +166,8 @@ define('Sage/Platform/Mobile/_LegacySDataListMixin', [
             var where = [],
                 options = this.options,
                 pageSize = this.pageSize,
-                startIndex = this.entries && this.entries['$startIndex'] > 0 && this.entries['$itemsPerPage'] > 0
-                    ? this.entries['$startIndex'] + this.entries['$itemsPerPage']
+                startIndex = this.feed && this.feed['$startIndex'] > 0 && this.feed['$itemsPerPage'] > 0
+                    ? this.feed['$startIndex'] + this.feed['$itemsPerPage']
                     : 1;
 
             var request = new Sage.SData.Client.SDataResourceCollectionRequest(this.getService())
