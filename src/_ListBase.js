@@ -873,13 +873,17 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         _onRefresh: function(options) {
         },
+        _getScrollerAttr: function() {
+            return this.scrollerNode || this.domNode;
+        },
         onScroll: function(evt) {
-            var pos, height, scrollTop, scrollHeight, remaining, selected, diff;
-            pos = domGeom.position(this.scrollerNode, true);
+            var pos, height, scrollTop, scrollHeight, remaining, selected, diff, scrollerNode;
+            scrollerNode = this.get('scroller');
+            pos = domGeom.position(scrollerNode, true);
 
             height = pos.h; // viewport height (what user sees)
-            scrollHeight = this.scrollerNode.scrollHeight; // Entire container height
-            scrollTop = this.scrollerNode.scrollTop; // How far we are scrolled down
+            scrollHeight = scrollerNode.scrollHeight; // Entire container height
+            scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
             remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
 
             selected = domAttr.get(this.domNode, 'selected');
@@ -1136,7 +1140,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         },
         _onQueryComplete: function(queryResults, entries) {
             try {
-                var start = this.position;
+                var start = this.position, scrollerNode = this.get('scroller');
 
                 when(queryResults.total, lang.hitch(this, this._onQueryTotal));
 
@@ -1161,7 +1165,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                 this.listLoading = false;
 
                 if (!this._onScrollHandle && this.continuousScrolling) {
-                    this._onScrollHandle = this.connect(this.scrollerNode, 'onscroll', this.onScroll);
+                    this._onScrollHandle = this.connect(scrollerNode, 'onscroll', this.onScroll);
                 }
 
                 this.onContentChange();
