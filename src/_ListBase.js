@@ -351,6 +351,20 @@ define('Sage/Platform/Mobile/_ListBase', [
         titleText: 'List',
         /**
          * @property {String}
+         * The error message to display if rendering a row template is not successful.
+         */
+        errorRenderText: 'Error rendering row template.',
+        /**
+         * @property {Simplate}
+         *
+         */
+        rowTemplateError: new Simplate([
+            '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
+                '<div class="list-item-content" data-snap-ignore="true">{%: $$.errorRenderText %}</div>',
+            '</li>'
+        ]),
+        /**
+         * @property {String}
          * The format string for the text displayed for the remaining record count.  This is used in a {@link String#format} call.
          */
         remainingText: '${0} records remaining',
@@ -1216,7 +1230,14 @@ define('Sage/Platform/Mobile/_ListBase', [
                     // setup with an idProperty
                     key = store.getIdentity(entry);
                     this.entries[store.getIdentity(entry)] = entry;
-                    rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+
+                    try {
+                        rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+                    } catch (err) {
+                        console.error(err);
+                        rowNode = domConstruct.toDom(this.rowTemplateError.apply(entry, this));
+                    }
+
                     docfrag.appendChild(rowNode);
                     this.onApplyRowTemplate(entry, rowNode);
                     if (this.relatedViews.length > 0) {
@@ -1230,7 +1251,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             }
         },
         /**
-         * Gets the related view mnagager for a related view definition. 
+         * Gets the related view mnagager for a related view definition.
          * If a manager is not found a new Related View Manager is created and returned.
          * @return {Object} RelatedViewManager
          */
