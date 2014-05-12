@@ -595,6 +595,20 @@ define('Sage/Platform/Mobile/List', [
         titleText: 'List',
         /**
          * @property {String}
+         * The error message to display if rendering a row template is not successful.
+         */
+        errorRenderText: 'Error rendering row template.',
+        /**
+         * @property {Simplate}
+         *
+         */
+        rowTemplateError: new Simplate([
+            '<li data-action="activateEntry" data-key="{%= $[$$.keyProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
+                '<div class="list-item-content" data-snap-ignore="true">{%: $$.errorRenderText %}</div>',
+            '</li>'
+        ]),
+        /**
+         * @property {String}
          * The format string for the text displayed for the remaining record count.  This is used in a {@link String#format} call.
          */
         remainingText: '${0} records remaining',
@@ -1379,7 +1393,14 @@ define('Sage/Platform/Mobile/List', [
                     entry['$descriptor'] = entry['$descriptor'] || feed['$descriptor'];
 
                     this.entries[entry.$key] = entry;
-                    rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+
+                    try {
+                        rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+                    } catch (err) {
+                        console.error(err);
+                        rowNode = domConstruct.toDom(this.rowTemplateError.apply(entry, this));
+                    }
+
                     docfrag.appendChild(rowNode);
                     this.onApplyRowTemplate(entry, rowNode);
                     if (this.relatedViews.length > 0) {
