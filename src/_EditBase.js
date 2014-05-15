@@ -276,6 +276,11 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         requestErrorText: 'A server error occured while requesting data.',
         /**
+         * @property {String}
+         * Text alerted to user when the data has been updated since they last fetched the data.
+         */
+        concurrencyErrorText: 'Another user has updated this record, the view will now reload with the updated changes. All changes will be highlighted. Review the changes and save again.',
+        /**
          * @property {Object}
          * Collection of the fields in the layout where the key is the `name` of the field.
          */
@@ -290,6 +295,10 @@ define('Sage/Platform/Mobile/_EditBase', [
          * Flags if the view is in "insert" (create) mode, or if it is in "update" (edit) mode.
          */
         inserting: null,
+
+        HTTP_STATUS: {
+            PRECONDITION_FAILED: 412
+        },
 
         /**
          * Extends constructor to initialze `this.fields` to {}
@@ -462,9 +471,28 @@ define('Sage/Platform/Mobile/_EditBase', [
             return entry;
         },
         processData: function(entry) {
+            var field, currentValues;
+
             this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
 
             this.setValues(entry, true);
+
+            // Re-apply changes saved from concurrency/precondition failure
+            if (this.previousValues) {
+                // Make a copy of the current values, so we can diff them
+                currentValues = this.getValues(true);
+                this.setValues(this.previousValues, false);
+
+                array.forEach(this.diffs(this.previousValuesAll, currentValues), function(val) {
+                    field = this.fields[val];
+                    if (field) {
+                        field.toggleHighlight();
+                    }
+                }, this);
+
+                this.previousValues = null;
+                this.previousValuesAll = null;
+            }
 
             // Re-apply any passed changes as they may have been overwritten
             if (this.options.changes) {
@@ -647,6 +675,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         clearValues: function() {
             for (var name in this.fields) {
+                this.fields[name].clearHighlight();
                 this.fields[name].clearValue();
             }
         },
@@ -949,15 +978,66 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.onUpdateCompleted(entry);
         },
         onPutError: function(putOptions, error) {
-            alert(string.substitute(this.requestErrorText, [error]));
+            var errorItem;
 
-            var errorItem = {
+            if (error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED) {
+                // Show the user a concurrency error message, preserve our current form values (all of them),
+                // and reload the view to fetch the new data.
+                alert(this.concurrencyErrorText);
+                this.previousValues = this.getValues();
+                this.previousValuesAll = this.getValues(true);
+                this.options.key = this.entry.$key; // Force a fetch by key
+                delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
+                this.refresh();
+            } else {
+                alert(string.substitute(this.requestErrorText, [error]));
+            }
+
+            errorItem = {
                 viewOptions: this.options,
                 serverError: error
             };
             ErrorManager.addError(this.requestErrorText, errorItem);
 
             this.enable();
+        },
+        /**
+         * Diffs the results from the current values and the previous values.
+         * This is done for a concurrency check to highlight what has changed, the fields between left and right should not be different,
+         * and there is no check for that.
+         * @returns Array List of property names that have changed
+         */
+        diffs: function(left, right) {
+            var prop, leftValue, rightValue, acc, toString = Object.prototype.toString;
+            acc = [];
+
+            for (prop in left) {
+                leftValue = left[prop];
+                rightValue = right[prop];
+
+                if (toString.call(leftValue) === '[object Date]' &&
+                    toString.call(rightValue) === '[object Date]') {
+
+                    leftValue = leftValue.valueOf();
+                    rightValue = rightValue.valueOf();
+
+                } else if (toString.call(leftValue) === '[object Object]' &&
+                           toString.call(rightValue) === '[object Object]') {
+                    // TODO: Do we need to recursively inspect child objects?
+                    leftValue = leftValue[this.idProperty];
+                    rightValue = rightValue[this.idProperty];
+                } else if (toString.call(leftValue) !== toString.call(rightValue)) {
+                    // type mismatch, ignore
+                    leftValue = true;
+                    rightValue = true;
+                }
+
+                if (leftValue !== rightValue) {
+                    acc.push(prop);
+                }
+            }
+
+            return acc;
         },
         _buildRefreshMessage: function(entry, result) {
             if (entry) {
