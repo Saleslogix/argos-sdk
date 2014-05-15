@@ -873,9 +873,6 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         _onRefresh: function(options) {
         },
-        _getScrollerAttr: function() {
-            return this.scrollerNode || this.domNode;
-        },
         onScroll: function(evt) {
             var pos, height, scrollTop, scrollHeight, remaining, selected, diff, scrollerNode;
             scrollerNode = this.get('scroller');
