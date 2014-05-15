@@ -1607,3 +1607,7 @@ body > .viewContainer {
 .logo {
   text-align: center;
 }
+.field-highlight {
+  border: 2px solid red;
+  padding: 5px;
+}
