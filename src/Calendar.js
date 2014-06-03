@@ -131,9 +131,9 @@ define('Sage/Platform/Mobile/Calendar', [
         },
         init: function() {
             this.inherited(arguments);
-            this.months =  App.moment._lang._monthsShort,
-            dateFormat =  App.moment._lang._longDateFormat.L,
-            is24hrTimeFormat = App.moment._lang._longDateFormat.LT.match(/H\:/),
+            this.months = moment().lang()._monthsShort;
+            dateFormat = moment().lang()._longDateFormat.L;
+            is24hrTimeFormat = moment().lang()._longDateFormat.LT.match(/H\:/);
             this.connect(this.dayNode,    'onchange', this.validate);
             this.connect(this.monthNode,  'onchange', this.validate);
             this.connect(this.yearNode,   'onchange', this.validate);
