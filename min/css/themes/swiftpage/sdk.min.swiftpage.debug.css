@@ -233,6 +233,9 @@
 .list-item-static-selector .icon {
   padding-left: 8px;
 }
+.list-item-static-selector .fa-stack {
+  top: -7px;
+}
 .list-action-selected + .actions-row {
   display: block !important;
 }
@@ -315,7 +318,6 @@
 /* collapsed/expand icons */
 .group-content > h2 > button {
   float: right;
-  background-color: transparent;
   border: none;
   height: 32px;
 }
@@ -1096,8 +1098,7 @@ img {
 }
 .href {
   display: inline-block;
-  border-bottom: 1px dotted #00dedc;
-  color: #00dedc;
+  color: #ffb900;
   text-decoration: none;
   cursor: pointer;
 }
@@ -1110,7 +1111,7 @@ img {
   text-align: center;
 }
 .contextualContent .list-search {
-  background-color: #787d82;
+  background-color: #0f1e1e;
 }
 .row-edit {
   /*position: relative;*/
@@ -1375,18 +1376,14 @@ h5 {
   padding: 0;
 }
 .contextualContent > .group-content > .list-content > li {
-  background-color: #4f5657;
-  font-size: 1.25em;
-  font-weight: bold;
+  background-color: #0f1e1e;
+  font-size: 1em;
   list-style: none;
   margin: 0;
   position: relative;
-  color: #ffffff;
+  color: #dcdcde;
   text-decoration: none;
-  padding: 8px 0px 8px 0px;
-  border-bottom: 1px solid #787d82;
-  border-left: 0px;
-  border-right: 0px;
+  padding: 8px 0px 8px 8px;
   border-radius: 0px;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
@@ -1394,18 +1391,22 @@ h5 {
 .group-content > h2 {
   line-height: 32px;
   margin: 0;
-  padding: 0 0 0 6px;
+  padding: 0 0 0 4px;
   font-size: 1em;
   position: relative;
-  background-color: #888c8d;
-  color: #ffffff;
-  border-bottom: 1px solid #787d82;
+  background-color: #0f1e1e;
+  color: #dcdcde;
+  border-bottom: 2px solid #dcdcde;
+}
+.group-content > h2 > button {
+  color: #dcdcde;
+  background-color: transparent;
 }
 .toolbar,
 .viewContainer > .toolbar,
 body > .viewContainer > .toolbar,
 .viewContainer > .footer-toolbar {
-  background-color: #4f5657;
+  background-color: #3471af;
 }
 .viewContainer > .toolbar > h1,
 .toolbar > h1 {
@@ -1471,7 +1472,7 @@ textarea:focus {
 .panel-content > div > .row > div > label,
 .panel-content > div > .row > label {
   font-weight: bold;
-  color: #4c75bb;
+  color: #3471af;
 }
 .panel-content > fieldset > .row-edit > div > textarea,
 .panel-content > fieldset > .row-edit > textarea {
@@ -1515,10 +1516,10 @@ textarea:focus {
   opacity: 0.25;
 }
 body > .viewContainer {
-  border-left: 1px solid #b9bcbd;
+  border-left: 2px solid #dcdcde;
 }
 .snapjs-left .left-drawer {
-  border-right: 1px solid #b9bcbd;
+  border-right: 2px solid #dcdcde;
 }
 /* Calendar */
 .calendar-content {
@@ -1532,8 +1533,8 @@ body > .viewContainer {
   margin-top: 6px;
 }
 .toggle {
-  border: 1px solid #c6c9cc;
-  background-color: #4f5657;
+  border: 2px solid #c6c9cc;
+  background-color: #787d82;
   border-radius: 6px;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -1557,7 +1558,7 @@ body > .viewContainer {
   position: absolute;
   width: 60px;
   text-align: center;
-  color: #ffffff;
+  color: #dcdcde;
   left: 0;
   top: 0;
 }
@@ -1610,7 +1611,7 @@ body > .viewContainer {
   display: none;
 }
 .toggleStateOn {
-  border: 1px solid #00dedc;
+  border: 1px solid #787d82;
   background-color: #787d82;
 }
 .logo {
