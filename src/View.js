@@ -210,6 +210,9 @@ define('Sage/Platform/Mobile/View', [
 
             this.onActivate(this);
         },
+        _getScrollerAttr: function() {
+            return this.scrollerNode || this.domNode;
+        },
         /**
          * Shows the view using iUI in order to transition to the new element.
          * @param {Object} options The navigation options passed from the previous view.
