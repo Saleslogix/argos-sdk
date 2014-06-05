@@ -71,6 +71,9 @@ define('Sage/Platform/Mobile/MainToolbar', [
                 '{% if ($.icon) { %}',
                     '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
                 '{% } %}',
+                '{% if (!$.cls) { %}',
+                    '<span></span>',
+                '{% } %}',
             '</button>'
         ]),
         /**

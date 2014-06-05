@@ -365,11 +365,13 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 tools: {
                     tbar: [{
                         id: 'complete',
+                        cls: 'fa fa-check fa-fw fa-lg',
                         fn: this.complete,
                         scope: this
                     }, {
                         id: 'cancel',
                         side: 'left',
+                        cls: 'fa fa-ban fa-fw fa-lg',
                         fn: this.reui.back,
                         scope: this.reui
                     }]
@@ -414,6 +416,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
         navigateToListView: function() {
             var view = this.app.getView(this.view),
                 options = this.createNavigationOptions();
+
             if (view && options && !this.disabled) {
                 lang.mixin(view, this.viewMixin);
                 view.show(options);
