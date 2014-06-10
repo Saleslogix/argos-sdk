@@ -697,15 +697,17 @@ define('Sage/Platform/Mobile/_EditBase', [
          * @return {Object} A single object payload with all the values.
          */
         getValues: function(all) {
-            var o = {},
+            var payload = {},
                 empty = true,
                 field,
                 value,
                 target,
                 include,
-                exclude;
+                exclude,
+                name,
+                prop;
 
-            for (var name in this.fields) {
+            for (name in this.fields) {
                 field = this.fields[name];
                 value = field.getValue();
 
@@ -730,16 +732,27 @@ define('Sage/Platform/Mobile/_EditBase', [
                 // for now, explicitly hidden fields (via. the field.hide() method) are not included
                 if (all || ((field.alwaysUseValue || field.isDirty() || include) && !field.isHidden())) {
                     if (field.applyTo !== false) {
-                        target = utility.getValue(o, field.applyTo);
-                        lang.mixin(target, value);
+                        if (typeof field.applyTo === 'function') {
+                            if (typeof value === 'object') {
+                                // Copy the value properties into our payload object
+                                for (prop in value) {
+                                    payload[prop] = value[prop];
+                                }
+                            }
+
+                            field.applyTo(payload, value);
+                        } else if (typeof field.applyTo === 'string') {
+                            target = utility.getValue(payload, field.applyTo);
+                            lang.mixin(target, value);
+                        }
                     } else {
-                        utility.setValue(o, field.property || name, value);
+                        utility.setValue(payload, field.property || name, value);
                     }
 
                     empty = false;
                 }
             }
-            return empty ? false : o;
+            return empty ? false : payload;
         },
         /**
          * Loops and gathers the validation errors returned from each field and adds them to the
