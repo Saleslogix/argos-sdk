@@ -148,7 +148,7 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
          * The first capture group must be non-text part
          * Second capture is the phrase to be used in auto complete
          */
-        autoCompletePhraseRE: /^((?:\d+(?:\.\d*)?|\.\d+)\s*?)(\w+)/,
+        autoCompletePhraseRE: /^((?:\d+(?:\.\d*)?|\.\d+)\s*?)(.+)/,
 
         /**
          * @property {RegExp}
@@ -166,7 +166,7 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
             var numberDecimalSeparator = Mobile.CultureInfo.numberFormat.numberDecimalSeparator;
 
             this.autoCompletePhraseRE = new RegExp(
-                string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(\\w+)', [numberDecimalSeparator])
+                string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator])
             );
 
             this.autoCompleteValueRE = new RegExp(
@@ -318,7 +318,7 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
                     this.currentKey = autoCompleteValues[key];
                 }
             }
-            return this.convertUnit(val, finalUnit) + ' ' +this.currentKey;
+            return this.formatUnit(this.convertUnit(val, finalUnit));
         },
         /**
          * Divides two numbers and fixes the decimal point to two places.
@@ -326,8 +326,36 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
          * @param {Number} to
          * @return {Number}
          */
-        convertUnit: function(val, to) {
-            return format.fixed(val/to, 2);
+        convertUnit: function(val, to) {            
+            return format.fixed(val / to, 2);         
+        },
+        /**
+         * Formats the unit with correct decimal separator.
+         * @param {Number} unit  
+         * @return {string}
+         */
+        formatUnit: function (unit) {
+            var sval;
+            if (isNaN(unit)) {
+                sval = "0"
+            } else {
+                sval = unit.toString().split(".");
+                if (sval.length === 1) {
+                    sval = sval[0];
+                } else {
+                    if (sval[1] === "0") {
+                        sval = sval[0];
+                    } else {
+                        sval = string.substitute('${0}${1}${2}',
+                                [
+                                    sval[0],
+                                    Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.',
+                                    sval[1]
+                                ]);
+                    }
+                }
+            }
+            return sval + ' ' + this.currentKey;
         },
         /**
          * Extends the {@link LookupField#createNavigationOptions parent implementation} to explicitly set hide search
