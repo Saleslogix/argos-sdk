@@ -6,6 +6,7 @@
 
 //>>built
 define("dojo/promise/instrumentation",["./tracer","../has","../_base/lang","../_base/array"],function(_1,_2,_3,_4){
+_2.add("config-useDeferredInstrumentation","report-unhandled-rejections");
 function _5(_6,_7,_8){
 var _9="";
 if(_6&&_6.stack){

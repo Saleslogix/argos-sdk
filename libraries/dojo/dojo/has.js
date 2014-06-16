@@ -27,7 +27,10 @@ return _c&&_3(_a);
 }
 if(1){
 _3.add("dom-addeventlistener",!!document.addEventListener);
-_3.add("touch","ontouchstart" in document||window.navigator.msMaxTouchPoints>0);
+_3.add("touch","ontouchstart" in document||("onpointerdown" in document&&navigator.maxTouchPoints>0)||window.navigator.msMaxTouchPoints);
+_3.add("touch-events","ontouchstart" in document);
+_3.add("pointer-events","onpointerdown" in document);
+_3.add("MSPointer","msMaxTouchPoints" in navigator);
 _3.add("device-width",screen.availWidth||innerWidth);
 var _e=document.createElement("form");
 _3.add("dom-attributes-explicit",_e.attributes.length==0);

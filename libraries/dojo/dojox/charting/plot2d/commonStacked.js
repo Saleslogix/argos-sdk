@@ -29,6 +29,9 @@ return _5;
 },getIndexValue:function(_7,i,_8){
 var _9=0,v,j,_a;
 for(j=0;j<=i;++j){
+if(_7[j].hidden){
+continue;
+}
 _a=_9;
 v=_7[j].data[_8];
 if(v!=null){
@@ -42,6 +45,9 @@ return [_9,_a];
 },getValue:function(_b,i,x){
 var _c=null,j,z,v,_d;
 for(j=0;j<=i;++j){
+if(_b[j].hidden){
+continue;
+}
 for(z=0;z<_b[j].data.length;z++){
 _d=_c;
 v=_b[j].data[z];

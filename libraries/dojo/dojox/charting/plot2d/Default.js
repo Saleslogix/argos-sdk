@@ -73,6 +73,20 @@ continue;
 }
 var _18=t.next(this.opt.areas?"area":"line",[this.opt,run],true),_19,ht=this._hScaler.scaler.getTransformerFromModel(this._hScaler),vt=this._vScaler.scaler.getTransformerFromModel(this._vScaler),_1a=this._eventSeries[run.name]=new Array(run.data.length);
 s=run.group;
+if(run.hidden){
+if(this.opt.lines){
+run.dyn.stroke=_18.series.stroke;
+}
+if(this.opt.markers){
+run.dyn.markerFill=_18.marker.fill;
+run.dyn.markerStroke=_18.marker.stroke;
+run.dyn.marker=_18.symbol;
+}
+if(this.opt.areas){
+run.dyn.fill=_18.series.fill;
+}
+continue;
+}
 var _1b=_3.some(run.data,function(_1c){
 return typeof _1c=="number"||(_1c&&!_1c.hasOwnProperty("x"));
 });

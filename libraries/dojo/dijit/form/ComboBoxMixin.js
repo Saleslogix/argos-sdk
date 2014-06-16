@@ -39,7 +39,7 @@ if(_16){
 this._setStoreAttr(_16);
 }
 this.inherited(arguments);
-if(!this.params.store&&!this.store._oldAPI){
+if(!this.params.store&&this.store&&!this.store._oldAPI){
 var _17=this.declaredClass;
 _4.mixin(this.store,{getValue:function(_18,_19){
 _3.deprecated(_17+".store.getValue(item, attr) is deprecated for builtin store.  Use item.attr directly","","2.0");

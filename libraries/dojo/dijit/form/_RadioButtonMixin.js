@@ -1,5 +1,5 @@
 //>>built
-define("dijit/form/_RadioButtonMixin",["dojo/_base/array","dojo/_base/declare","dojo/dom-attr","dojo/_base/lang","dojo/query","../registry"],function(_1,_2,_3,_4,_5,_6){
+define("dijit/form/_RadioButtonMixin",["dojo/_base/array","dojo/_base/declare","dojo/dom-attr","dojo/_base/lang","dojo/query!css2","../registry"],function(_1,_2,_3,_4,_5,_6){
 return _2("dijit.form._RadioButtonMixin",null,{type:"radio",_getRelatedWidgets:function(){
 var _7=[];
 _5("input[type=radio]",this.focusNode.form||this.ownerDocument).forEach(_4.hitch(this,function(_8){

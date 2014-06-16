@@ -207,7 +207,7 @@ return;
 }
 if(_14>-1){
 var _15=this.chatRegister[_14];
-_15.recieveMessage(_12);
+_15.receiveMessage(_12);
 }else{
 var _16=new _3.xmpp.ChatService();
 _16.uid=this.getBareJid(_12.from);
@@ -223,7 +223,7 @@ this.registerChatInstance(_16,_12);
 _17.setSession(this);
 this.chatRegister.push(_17);
 this.onRegisterChatInstance(_17,_18);
-_17.recieveMessage(_18,true);
+_17.receiveMessage(_18,true);
 },iqSetHandler:function(msg){
 if(msg.hasChildNodes()){
 var fn=msg.firstChild;

@@ -225,7 +225,13 @@ _35.safeMixin(this.prototype,_34);
 return this;
 };
 function _36(_37,_38){
-return _35([this].concat(_37),_38||{});
+if(!(_37 instanceof Array||typeof _37=="function")){
+_38=_37;
+_37=undefined;
+}
+_38=_38||{};
+_37=_37||[];
+return _35([this].concat(_37),_38);
 };
 function _39(_3a,_3b){
 return function(){

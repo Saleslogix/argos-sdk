@@ -26,8 +26,8 @@ _7.scopeMap=_8;
 _7.baseUrl=_7.config.baseUrl=_3.baseUrl;
 _7.isAsync=!1||_3.async;
 _7.locale=_2.locale;
-var _b="$Rev: fd52c96 $".match(/[0-9a-f]{7,}/);
-_7.version={major:1,minor:9,patch:3,flag:"",revision:_b?_b[0]:NaN,toString:function(){
+var _b="$Rev: e124479 $".match(/[0-9a-f]{7,}/);
+_7.version={major:1,minor:10,patch:0,flag:"",revision:_b?_b[0]:NaN,toString:function(){
 var v=_7.version;
 return v.major+"."+v.minor+"."+v.patch+v.flag+" ("+v.revision+")";
 }};
@@ -52,7 +52,7 @@ if(!console[tn]){
 (function(){
 var _d=tn+"";
 console[_d]=("log" in console)?function(){
-var a=Array.apply({},arguments);
+var a=Array.prototype.slice.call(arguments);
 a.unshift(_d+":");
 console["log"](a.join(" "));
 }:function(){

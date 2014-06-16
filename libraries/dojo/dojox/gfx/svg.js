@@ -268,7 +268,7 @@ this.rawNode.setAttribute("clip-path",_34);
 _2f=_10(_b.xmlns.svg,"clipPath");
 _30=_10(_b.xmlns.svg,_2e);
 _2f.appendChild(_30);
-this.rawNode.parentNode.appendChild(_2f);
+this.rawNode.parentNode.insertBefore(_2f,this.rawNode);
 _8.set(_2f,"id",_33);
 }
 _8.set(_30,_2d);
@@ -529,7 +529,8 @@ this.rawNode.setAttribute("font-weight",f.weight);
 this.rawNode.setAttribute("font-size",f.size);
 this.rawNode.setAttribute("font-family",f.family);
 }};
-var C=gs.Container,_55={openBatch:function(){
+var C=gs.Container;
+var _55=_b.Container={openBatch:function(){
 if(!this._batch){
 this.fragment=_18();
 }
@@ -579,7 +580,7 @@ r.appendChild(_59);
 }
 return C.clear.apply(this,arguments);
 },getBoundingBox:C.getBoundingBox,_moveChildToFront:C._moveChildToFront,_moveChildToBack:C._moveChildToBack};
-var _5a={createObject:function(_5b,_5c){
+var _5a=_b.Creator={createObject:function(_5b,_5c){
 if(!this.rawNode){
 return null;
 }

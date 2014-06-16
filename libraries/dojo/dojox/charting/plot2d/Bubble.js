@@ -45,10 +45,15 @@ if(typeof run.data[0]=="number"){
 console.warn("dojox.charting.plot2d.Bubble: the data in the following series cannot be rendered as a bubble chart; ",run);
 continue;
 }
-s=run.group;
 var _12=t.next("circle",[this.opt,run]),_13=_3.map(run.data,function(v){
 return v?{x:ht(v.x)+_f.l,y:_e.height-_f.b-vt(v.y),radius:this._vScaler.bounds.scale*(v.size/2)}:null;
 },this);
+if(run.hidden){
+run.dyn.fill=_12.series.fill;
+run.dyn.stroke=_12.series.stroke;
+continue;
+}
+s=run.group;
 var _14=null,_15=null,_16=null,_17=this.opt.styleFunc;
 var _18=function(_19){
 if(_17){

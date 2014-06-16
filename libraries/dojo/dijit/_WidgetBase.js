@@ -25,7 +25,7 @@ this._set(_1b,val);
 function _1c(a,b){
 return a===b||(a!==a&&b!==b);
 };
-var _1d=_6("dijit._WidgetBase",[_11,_13],{id:"",_setIdAttr:"domNode",lang:"",_setLangAttr:_1a("lang"),dir:"",_setDirAttr:_1a("dir"),"class":"",_setClassAttr:{node:"domNode",type:"class"},style:"",title:"",tooltip:"",baseClass:"",srcNodeRef:null,domNode:null,containerNode:null,ownerDocument:null,_setOwnerDocumentAttr:function(val){
+var _1d=_6("dijit._WidgetBase",[_11,_13],{id:"",_setIdAttr:"domNode",lang:"",_setLangAttr:_1a("lang"),dir:"",_setDirAttr:_1a("dir"),"class":"",_setClassAttr:{node:"domNode",type:"class"},_setTypeAttr:null,style:"",title:"",tooltip:"",baseClass:"",srcNodeRef:null,domNode:null,containerNode:null,ownerDocument:null,_setOwnerDocumentAttr:function(val){
 this._set("ownerDocument",val);
 },attributeMap:{},_blankGif:_4.blankGif||_1.toUrl("dojo/resources/blank.gif"),_introspect:function(){
 var _1e=this.constructor;
@@ -321,7 +321,7 @@ var _5a=!_58.tagName&&_15.byId(_58);
 if(_5a&&_5a.addChild&&(!_59||typeof _59==="number")){
 _5a.addChild(this,_59);
 }else{
-var ref=_5a?(_5a.containerNode&&!/after|before|replace/.test(_59||"")?_5a.containerNode:_5a.domNode):_7.byId(_58,this.ownerDocument);
+var ref=_5a&&("domNode" in _5a)?(_5a.containerNode&&!/after|before|replace/.test(_59||"")?_5a.containerNode:_5a.domNode):_7.byId(_58,this.ownerDocument);
 _a.place(this.domNode,ref,_59);
 if(!this._started&&(this.getParent()||{})._started){
 this.startup();

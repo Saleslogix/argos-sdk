@@ -103,16 +103,20 @@ function _25(_26,_27){
 var _28=_6[_26];
 if(_28){
 _6[_26]=function(_29){
+var _2a;
+if(_26==="put"){
+_2a=_6.getIdentity(_29);
+}
 if(_24){
 return _28.apply(this,arguments);
 }
 _24=true;
 try{
-var _2a=_28.apply(this,arguments);
-_3(_2a,function(_2b){
-_27((typeof _2b=="object"&&_2b)||_29);
+var _2b=_28.apply(this,arguments);
+_3(_2b,function(_2c){
+_27((typeof _2c=="object"&&_2c)||_29,_2a);
 });
-return _2a;
+return _2b;
 }
 finally{
 _24=false;
@@ -120,11 +124,11 @@ _24=false;
 };
 }
 };
-_25("put",function(_2c){
-_6.notify(_2c,_6.getIdentity(_2c));
+_25("put",function(_2d,_2e){
+_6.notify(_2d,_2e);
 });
-_25("add",function(_2d){
-_6.notify(_2d);
+_25("add",function(_2f){
+_6.notify(_2f);
 });
 _25("remove",function(id){
 _6.notify(undefined,id);

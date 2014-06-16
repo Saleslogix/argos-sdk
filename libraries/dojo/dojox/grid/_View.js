@@ -391,7 +391,7 @@ var h=(this.domNode.style.height&&parseInt(this.domNode.style.height.replace(/px
 var _50=this;
 var _51=function(){
 var v;
-for(var i in _50.grid.views.views){
+for(var i=0;i<_50.grid.views.views.length;++i){
 v=_50.grid.views.views[i];
 if(v!==_50&&v.hasHScrollbar()){
 return true;

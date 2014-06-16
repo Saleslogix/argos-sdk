@@ -139,7 +139,7 @@ this.dropDownButton=new _11({label:this.labelText,dropDown:this.dropDownMenu,bas
 }
 this.inherited(arguments);
 },_onMouseDown:function(e){
-_4.stop(e);
+e.preventDefault();
 },validator:function(){
 if(!this.required){
 return true;

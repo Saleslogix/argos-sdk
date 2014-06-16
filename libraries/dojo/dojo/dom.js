@@ -60,7 +60,7 @@ if(!_c){
 return false;
 }
 var _d=_c.style;
-var _e=["Khtml","O","ms","Moz","Webkit"],i=_e.length,_f="userSelect",_10;
+var _e=["Khtml","O","Moz","Webkit"],i=_e.length,_f="userSelect",_10;
 do{
 if(typeof _d[_f]!=="undefined"){
 return _f;

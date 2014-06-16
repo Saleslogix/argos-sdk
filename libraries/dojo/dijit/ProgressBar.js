@@ -12,6 +12,7 @@ this.indeterminateHighContrastImage.setAttribute("src",this._indeterminateHighCo
 this.update();
 },_setDirAttr:function(_9){
 _3.toggle(this.domNode,"dijitProgressBarRtl",_9=="rtl");
+_3.toggle(this.domNode,"dijitProgressBarIndeterminateRtl",this.indeterminate&&_9=="rtl");
 this.inherited(arguments);
 },update:function(_a){
 _4.mixin(this,_a||{});
@@ -34,6 +35,7 @@ ap.setAttribute("aria-valuemin",0);
 ap.setAttribute("aria-valuemax",this.maximum);
 this.labelNode.innerHTML=this.report(_c);
 _3.toggle(this.domNode,"dijitProgressBarIndeterminate",this.indeterminate);
+_3.toggle(this.domNode,"dijitProgressBarIndeterminateRtl",this.indeterminate&&!this.isLeftToRight());
 _b.style.width=(_c*100)+"%";
 this.onChange();
 },_setValueAttr:function(v){

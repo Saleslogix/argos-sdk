@@ -152,7 +152,7 @@
   color: #000000;
 }
 .claro .dijitCalendarHoveredDate .dijitCalendarDateLabel,
-.claro .dijitCalendarEnabledDate:hover .dijitCalendarDateLabel {
+.claro .dijitCalendarLite .dijitCalendarEnabledDate:hover .dijitCalendarDateLabel {
   background-color: #abd6ff;
   border: solid 1px #759dc0;
   color: #000000;
@@ -232,7 +232,7 @@
   padding: 2px 0;
 }
 .claro .dijitCalendarMonthMenu .dijitCalendarMonthLabelHover,
-.claro .dijitCalendarMonthMenu .dijitCalendarMonthLabel:hover {
+.claro .dijitCalendarMonthMenu .dijitCalendarMonthLabelActive {
   border-color: #759dc0;
   border-width: 1px 0;
   background-color: #abd6ff;

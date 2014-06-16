@@ -37,6 +37,12 @@ t.skip();
 continue;
 }
 var _10=t.next("marker",[this.opt,run]),_11,ht=this._hScaler.scaler.getTransformerFromModel(this._hScaler),vt=this._vScaler.scaler.getTransformerFromModel(this._vScaler);
+if(run.hidden){
+run.dyn.marker=_10.symbol;
+run.dyn.markerFill=_10.marker.fill;
+run.dyn.markerStroke=_10.marker.stroke;
+continue;
+}
 s=run.group;
 if(typeof run.data[0]=="number"){
 _11=_2.map(run.data,function(v,i){

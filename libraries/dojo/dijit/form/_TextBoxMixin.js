@@ -12,6 +12,9 @@ _b=this.filter(this.format(_c,this.constraints));
 }else{
 _b="";
 }
+if(this.compare(_c,this.filter(this.parse(_b,this.constraints)))!=0){
+_b=null;
+}
 }
 }
 if(_b!=null&&((typeof _b)!="number"||!isNaN(_b))&&this.textbox.value!=_b){
@@ -51,7 +54,7 @@ this._set("displayedValue",this.get("displayedValue"));
 },postCreate:function(){
 this.textbox.setAttribute("value",this.textbox.value);
 this.inherited(arguments);
-var _10=function(e){
+function _10(e){
 var _11;
 if(e.type=="keydown"){
 _11=e.keyCode;
@@ -127,7 +130,7 @@ this.__skipInputEvent=true;
 }
 var _13={faux:true},_14;
 for(_14 in e){
-if(_14!="layerX"&&_14!="layerY"){
+if(!/^(layer[XY]|returnValue|keyLocation)$/.test(_14)){
 var v=e[_14];
 if(typeof v!="function"&&typeof v!="undefined"){
 _13[_14]=v;
@@ -150,11 +153,10 @@ return;
 this.defer(function(){
 this._onInput(_13);
 });
-if(e.type=="keypress"){
-e.stopPropagation();
-}
 };
-this.own(on(this.textbox,"keydown, keypress, paste, cut, input, compositionend",_6.hitch(this,_10)));
+this.own(on(this.textbox,"keydown, keypress, paste, cut, input, compositionend",_6.hitch(this,_10)),on(this.domNode,"keypress",function(e){
+e.stopPropagation();
+}));
 },_blankValue:"",filter:function(val){
 if(val===null){
 return this._blankValue;

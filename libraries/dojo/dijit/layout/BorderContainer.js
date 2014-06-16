@@ -114,12 +114,7 @@ this.horizontal=/top|bottom/.test(this.region);
 this.inherited(arguments);
 _4.add(this.domNode,"dijitGutter"+(this.horizontal?"H":"V"));
 }});
-var _2a=_3("dijit.layout.BorderContainer",_e,{gutters:true,liveSplitters:true,persist:false,baseClass:"dijitBorderContainer",_splitterClass:_10,postMixInProperties:function(){
-if(!this.gutters){
-this.baseClass+="NoGutter";
-}
-this.inherited(arguments);
-},_setupChild:function(_2b){
+var _2a=_3("dijit.layout.BorderContainer",_e,{gutters:true,liveSplitters:true,persist:false,baseClass:"dijitBorderContainer",_splitterClass:_10,_setupChild:function(_2b){
 this.inherited(arguments);
 var _2c=_2b.region,ltr=_2b.isLeftToRight();
 if(_2c=="leading"){

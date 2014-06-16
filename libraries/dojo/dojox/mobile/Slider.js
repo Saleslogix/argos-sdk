@@ -8,11 +8,19 @@ var _f=_8.create("div",{style:{position:"relative",height:"100%",width:"100%"}},
 this.progressBar=_8.create("div",{style:{position:"absolute"},"class":"mblSliderProgressBar"},_f,"last");
 this.touchBox=_8.create("div",{style:{position:"absolute"},"class":"mblSliderTouchBox"},_f,"last");
 this.handle=_8.create("div",{style:{position:"absolute"},"class":"mblSliderHandle"},_f,"last");
+this.handle.setAttribute("role","slider");
+this.handle.setAttribute("tabindex",0);
 }
 this.inherited(arguments);
 if(typeof this.domNode.style.msTouchAction!="undefined"){
 this.domNode.style.msTouchAction="none";
 }
+},_setMinAttr:function(min){
+this.handle.setAttribute("aria-valuemin",min);
+this._set("min",min);
+},_setMaxAttr:function(max){
+this.handle.setAttribute("aria-valuemax",max);
+this._set("max",max);
 },_setValueAttr:function(_10,_11){
 _10=Math.max(Math.min(_10,this.max),this.min);
 var _12=(this.value-this.min)*100/(this.max-this.min);
@@ -21,7 +29,6 @@ this.inherited(arguments);
 if(!this._started){
 return;
 }
-this.focusNode.setAttribute("aria-valuenow",_10);
 var _13=(_10-this.min)*100/(this.max-this.min);
 var _14=this.orientation!="V";
 if(_11===true){
@@ -33,9 +40,11 @@ _7.remove(this.progressBar,"mblSliderTransition");
 }
 _a.set(this.handle,this._attrs.handleLeft,(this._reversed?(100-_13):_13)+"%");
 _a.set(this.progressBar,this._attrs.width,_13+"%");
+this.handle.setAttribute("aria-valuenow",_10);
 },postCreate:function(){
 this.inherited(arguments);
 function _15(e){
+e.target.focus();
 function _16(e){
 _2b=_17?e[this._attrs.pageX]:(e.touches?e.touches[0][this._attrs.pageX]:e[this._attrs.clientX]);
 _2c=_2b-_18;

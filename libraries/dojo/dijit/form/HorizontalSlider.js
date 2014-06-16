@@ -87,7 +87,7 @@ this._set("value",_22);
 this.valueNode.value=_22;
 this.focusNode.setAttribute("aria-valuenow",_22);
 this.inherited(arguments);
-var _24=(_22-this.minimum)/(this.maximum-this.minimum);
+var _24=this.maximum>this.minimum?((_22-this.minimum)/(this.maximum-this.minimum)):0;
 var _25=(this._descending===false)?this.remainingBar:this.progressBar;
 var _26=(this._descending===false)?this.progressBar:this.remainingBar;
 if(this._inProgressAnim&&this._inProgressAnim.status!="stopped"){
@@ -116,7 +116,7 @@ _25.style[this._progressPixelSize]=(_24*100)+"%";
 _26.style[this._progressPixelSize]=((1-_24)*100)+"%";
 }
 },_bumpValue:function(_2b,_2c){
-if(this.disabled||this.readOnly){
+if(this.disabled||this.readOnly||(this.maximum<=this.minimum)){
 return;
 }
 var s=_5.getComputedStyle(this.sliderBarContainer);

@@ -66,8 +66,13 @@ this._reconnectEvents(run.name);
 continue;
 }
 run.cleanGroup();
-s=run.group;
 var _15=t.next("candlestick",[this.opt,run]),_16=new Array(run.data.length);
+if(run.hidden){
+run.dyn.fill=_15.series.fill;
+run.dyn.stroke=_15.series.stroke;
+continue;
+}
+s=run.group;
 for(var j=0;j<run.data.length;++j){
 var v=run.data[j];
 if(v!==null){

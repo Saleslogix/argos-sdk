@@ -61,7 +61,7 @@ return c;
 return _8(_22,_26,_25);
 },around:function(_28,_29,_2a,_2b,_2c){
 var _2d;
-if(typeof _29=="string"||"offsetWidth" in _29){
+if(typeof _29=="string"||"offsetWidth" in _29||"ownerSVGElement" in _29){
 _2d=_2.position(_29,true);
 if(/^(above|below)/.test(_2a[0])){
 var _2e=_2.getBorderExtents(_29),_2f=_29.firstChild?_2.getBorderExtents(_29.firstChild):{t:0,l:0,b:0,r:0},_30=_2.getBorderExtents(_28),_31=_28.firstChild?_2.getBorderExtents(_28.firstChild):{t:0,l:0,b:0,r:0};

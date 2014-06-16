@@ -23,7 +23,10 @@ _5(_3,"config",1);
 _5(_3.has,"",1);
 }
 if(!_3.locale&&typeof navigator!="undefined"){
-_3.locale=(navigator.language||navigator.userLanguage).toLowerCase();
+var _9=(navigator.language||navigator.userLanguage);
+if(_9){
+_3.locale=_9.toLowerCase();
+}
 }
 return _3;
 });

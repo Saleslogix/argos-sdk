@@ -1,5 +1,5 @@
 //>>built
-define("dijit/layout/StackContainer",["dojo/_base/array","dojo/cookie","dojo/_base/declare","dojo/dom-class","dojo/dom-construct","dojo/has","dojo/_base/lang","dojo/on","dojo/ready","dojo/topic","dojo/when","../registry","../_WidgetBase","./_LayoutWidget","dojo/i18n!../nls/common"],function(_1,_2,_3,_4,_5,_6,_7,on,_8,_9,_a,_b,_c,_d){
+define("dijit/layout/StackContainer",["dojo/_base/array","dojo/cookie","dojo/_base/declare","dojo/dom-class","dojo/dom-construct","dojo/has","dojo/_base/lang","dojo/on","dojo/ready","dojo/topic","dojo/when","../registry","../_WidgetBase","./_LayoutWidget"],function(_1,_2,_3,_4,_5,_6,_7,on,_8,_9,_a,_b,_c,_d){
 if(_6("dijit-legacy-requires")){
 _8(0,function(){
 var _e=["dijit/layout/StackController"];
@@ -55,7 +55,7 @@ this.inherited(arguments);
 if(_15.style.display=="none"){
 _15.style.display="block";
 }
-_14.domNode.title="";
+_14.domNode.removeAttribute("title");
 },addChild:function(_18,_19){
 this.inherited(arguments);
 if(this._started){

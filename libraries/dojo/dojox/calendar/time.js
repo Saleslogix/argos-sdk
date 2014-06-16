@@ -83,5 +83,21 @@ _17=_17||Date;
 var _18=new _17();
 return d.getFullYear()==_18.getFullYear()&&d.getMonth()==_18.getMonth()&&d.getDate()==_18.getDate();
 };
+_5.isOverlapping=function(_19,_1a,_1b,_1c,_1d,_1e){
+if(_1a==null||_1c==null||_1b==null||_1d==null){
+return false;
+}
+var cal=_19.dateModule;
+if(_1e){
+if(cal.compare(_1a,_1d)==1||cal.compare(_1c,_1b)==1){
+return false;
+}
+}else{
+if(cal.compare(_1a,_1d)!=-1||cal.compare(_1c,_1b)!=-1){
+return false;
+}
+}
+return true;
+};
 return _5;
 });

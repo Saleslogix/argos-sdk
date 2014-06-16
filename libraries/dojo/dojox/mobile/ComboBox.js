@@ -17,8 +17,10 @@ if(_e("windows-theme")){
 this.domNode.blur();
 }
 },onInput:function(e){
+if(!e||e.charCode!==0){
 this._onKey(e);
 this.inherited(arguments);
+}
 },_setListAttr:function(v){
 this._set("list",v);
 },closeDropDown:function(){
@@ -115,7 +117,7 @@ this.clickHandler=this.connect(_10.domNode,"onclick",function(){
 _1b=true;
 _1c=_1a=false;
 });
-this.endHandler=this.connect(_4.doc.documentElement,"onmouseup",function(){
+this.endHandler=this.connect(_4.doc.documentElement,_9.release,function(){
 this.defer(function(){
 _1b=true;
 if(!_1a&&_1c){

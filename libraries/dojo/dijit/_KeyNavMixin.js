@@ -86,7 +86,7 @@ this._keyboardSearch(evt," ");
 }
 }
 },_onContainerKeypress:function(evt){
-if(evt.charCode<_4.SPACE||evt.ctrlKey||evt.altKey||evt.metaKey||(evt.charCode==_4.SPACE&&this._searchTimer)){
+if(evt.charCode<=_4.SPACE||evt.ctrlKey||evt.altKey||evt.metaKey){
 return;
 }
 evt.preventDefault();

@@ -69,6 +69,9 @@ this.inherited(arguments);
 var _14=this.focusNode||this.domNode;
 this.own(on(this._buttonNode,_b.press,_a.hitch(this,"_onDropDownMouseDown")),on(this._buttonNode,"click",_a.hitch(this,"_onDropDownClick")),on(_14,"keydown",_a.hitch(this,"_onKey")),on(_14,"keyup",_a.hitch(this,"_onKeyUp")));
 },destroy:function(){
+if(this._opened){
+this.closeDropDown(true);
+}
 if(this.dropDown){
 if(!this.dropDown._destroyed){
 this.dropDown.destroyRecursive();
@@ -174,7 +177,7 @@ delete this._focusDropDownTimer;
 }
 if(this._opened){
 this._popupStateNode.setAttribute("aria-expanded","false");
-if(_1f){
+if(_1f&&this.focus){
 this.focus();
 }
 _e.close(this.dropDown);

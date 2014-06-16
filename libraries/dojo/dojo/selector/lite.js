@@ -8,7 +8,7 @@
 define("dojo/selector/lite",["../has","../_base/kernel"],function(_1,_2){
 "use strict";
 var _3=document.createElement("div");
-var _4=_3.matchesSelector||_3.webkitMatchesSelector||_3.mozMatchesSelector||_3.msMatchesSelector||_3.oMatchesSelector;
+var _4=_3.matches||_3.webkitMatchesSelector||_3.mozMatchesSelector||_3.msMatchesSelector||_3.oMatchesSelector;
 var _5=_3.querySelectorAll;
 var _6=/([^\s,](?:"(?:\\.|[^"])+"|'(?:\\.|[^'])+'|[^,])*)/g;
 _1.add("dom-matches-selector",!!_4);

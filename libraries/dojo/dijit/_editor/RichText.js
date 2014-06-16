@@ -171,7 +171,7 @@ var _2c=_2b.value.split(this._SEPARATOR),i=0,dat;
 while((dat=_2c[i++])){
 var _2d=dat.split(this._NAME_CONTENT_SEP);
 if(_2d[0]===this.name){
-_27=_2d[1];
+this.value=_2d[1];
 _2c=_2c.splice(i,1);
 _2b.value=_2c.join(this._SEPARATOR);
 break;
@@ -219,7 +219,7 @@ this.selection=new _16.SelectionManager(w);
 if(has("ie")){
 this._localizeEditorCommands();
 }
-this.onLoad(_27);
+this.onLoad(this.get("value"));
 });
 var src=this._getIframeDocTxt().replace(/\\/g,"\\\\").replace(/'/g,"\\'"),s;
 if(has("ie")<11){
@@ -386,18 +386,14 @@ _43.editNode.focus();
 this.focusNode=this.editNode;
 var _44=this.events.concat(this.captureEvents);
 var ap=this.iframe?this.document:this.editNode;
-this.own(_1.map(_44,function(_45){
+this.own.apply(this,_1.map(_44,function(_45){
 var _46=_45.toLowerCase().replace(/^on/,"");
-on(ap,_46,_d.hitch(this,_45));
+return on(ap,_46,_d.hitch(this,_45));
 },this));
 this.own(on(ap,"mouseup",_d.hitch(this,"onClick")));
 if(has("ie")){
 this.own(on(this.document,"mousedown",_d.hitch(this,"_onIEMouseDown")));
 this.editNode.style.zoom=1;
-}else{
-this.own(on(this.document,"mousedown",_d.hitch(this,function(){
-delete this._cursorToStart;
-})));
 }
 if(has("webkit")){
 this._webkitListener=this.own(on(this.document,"mouseup",_d.hitch(this,"onDisplayChanged")))[0];
@@ -419,7 +415,7 @@ this.isLoaded=true;
 this.set("disabled",this.disabled);
 var _47=_d.hitch(this,function(){
 this.setValue(_42);
-if(this.onLoadDeferred){
+if(this.onLoadDeferred&&!this.onLoadDeferred.isFulfilled()){
 this.onLoadDeferred.resolve(true);
 }
 this.onDisplayChanged();
@@ -541,13 +537,6 @@ this.ownerDocumentBody.focus();
 if(!this.isLoaded){
 this.focusOnLoad=true;
 return;
-}
-if(this._cursorToStart){
-delete this._cursorToStart;
-if(this.editNode.childNodes){
-this.placeCursorAtStart();
-return;
-}
 }
 if(has("ie")<9){
 this.iframe.fireEvent("onfocus",document.createEventObject());
@@ -807,7 +796,6 @@ this.setValue(_6b);
 }));
 return;
 }
-this._cursorToStart=true;
 if(this.textarea&&(this.isClosed||!this.isLoaded)){
 this.textarea.value=_6b;
 }else{
@@ -1680,6 +1668,11 @@ while(_dd.lastChild&&_de(_dd.lastChild)){
 _8.destroy(_dd.lastChild);
 }
 return _dd;
+},_setTextDirAttr:function(_e0){
+this._set("textDir",_e0);
+this.onLoadDeferred.then(_d.hitch(this,function(){
+this.editNode.dir=_e0;
+}));
 }});
 return _1b;
 });

@@ -59,7 +59,7 @@ _10[_d]=_c.getIdentity(_f);
 return _10;
 };
 return function(_15){
-return _b(_e(_15));
+return _b(_15&&_e(_15));
 };
 },get:function(id,_16){
 var _17,_18;
@@ -69,58 +69,94 @@ _19.resolve(_17=_1a);
 }),onError:function(_1b){
 _19.reject(_18=_1b);
 }});
-if(_17){
-return _17;
+if(_17!==undefined){
+return _17==null?undefined:_17;
 }
 if(_18){
 throw _18;
 }
 return _19.promise;
 },put:function(_1c,_1d){
-var id=_1d&&typeof _1d.id!="undefined"||this.getIdentity(_1c);
+_1d=_1d||{};
+var id=typeof _1d.id!="undefined"?_1d.id:this.getIdentity(_1c);
 var _1e=this.store;
 var _1f=this.idProperty;
+var _20=new _3();
 if(typeof id=="undefined"){
 _1e.newItem(_1c);
-_1e.save();
+_1e.save({onComplete:function(){
+_20.resolve(_1c);
+},onError:function(_21){
+_20.reject(_21);
+}});
 }else{
-_1e.fetchItemByIdentity({identity:id,onItem:function(_20){
-if(_20){
+_1e.fetchItemByIdentity({identity:id,onItem:function(_22){
+if(_22){
+if(_1d.overwrite===false){
+return _20.reject(new Error("Overwriting existing object not allowed"));
+}
 for(var i in _1c){
-if(i!=_1f&&_1e.getValue(_20,i)!=_1c[i]){
-_1e.setValue(_20,i,_1c[i]);
+if(i!=_1f&&_1c.hasOwnProperty(i)&&_1e.getValue(_22,i)!=_1c[i]){
+_1e.setValue(_22,i,_1c[i]);
 }
 }
 }else{
+if(_1d.overwrite===true){
+return _20.reject(new Error("Creating new object not allowed"));
+}
 _1e.newItem(_1c);
 }
-_1e.save();
+_1e.save({onComplete:function(){
+_20.resolve(_1c);
+},onError:function(_23){
+_20.reject(_23);
+}});
+},onError:function(_24){
+_20.reject(_24);
 }});
 }
+return _20.promise;
+},add:function(_25,_26){
+(_26=_26||{}).overwrite=false;
+return this.put(_25,_26);
 },remove:function(id){
-var _21=this.store;
-this.store.fetchItemByIdentity({identity:id,onItem:function(_22){
-_21.deleteItem(_22);
-_21.save();
+var _27=this.store;
+var _28=new _3();
+this.store.fetchItemByIdentity({identity:id,onItem:function(_29){
+try{
+if(_29==null){
+_28.resolve(false);
+}else{
+_27.deleteItem(_29);
+_27.save();
+_28.resolve(true);
+}
+}
+catch(error){
+_28.reject(error);
+}
+},onError:function(_2a){
+_28.reject(_2a);
 }});
-},query:function(_23,_24){
-var _25;
-var _26=new _3(function(){
-_25.abort&&_25.abort();
+return _28.promise;
+},query:function(_2b,_2c){
+var _2d;
+var _2e=new _3(function(){
+_2d.abort&&_2d.abort();
 });
-_26.total=new _3();
-var _27=this._objectConverter(function(_28){
-return _28;
+_2e.total=new _3();
+var _2f=this._objectConverter(function(_30){
+return _30;
 });
-_25=this.store.fetch(_1.mixin({query:_23,onBegin:function(_29){
-_26.total.resolve(_29);
-},onComplete:function(_2a){
-_26.resolve(_4.map(_2a,_27));
-},onError:function(_2b){
-_26.reject(_2b);
-}},_24));
-return _5(_26);
-},getIdentity:function(_2c){
-return _2c[this.idProperty];
+_2d=this.store.fetch(_1.mixin({query:_2b,onBegin:function(_31){
+_2e.total.resolve(_31);
+},onComplete:function(_32){
+_2e.resolve(_4.map(_32,_2f));
+},onError:function(_33){
+_2e.reject(_33);
+}},_2c));
+return _5(_2e);
+},getIdentity:function(_34){
+return _34[this.idProperty];
 }});
 });

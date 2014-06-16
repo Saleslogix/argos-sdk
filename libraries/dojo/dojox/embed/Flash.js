@@ -1,79 +1,23 @@
 //>>built
-define("dojox/embed/Flash",["dojo"],function(_1){
-var _2,_3;
-var _4=9;
-var _5="dojox-embed-flash-",_6=0;
-var _7={expressInstall:false,width:320,height:240,swLiveConnect:"true",allowScriptAccess:"sameDomain",allowNetworking:"all",style:null,redirect:null};
-function _8(_9){
-_9=_1.delegate(_7,_9);
-if(!("path" in _9)){
+define("dojox/embed/Flash",["dojo/_base/lang","dojo/_base/unload","dojo/_base/array","dojo/query","dojo/has","dojo/dom","dojo/on","dojo/window"],function(_1,_2,_3,_4,_5,_6,on,_7){
+var _8,_9;
+var _a=9;
+var _b="dojox-embed-flash-",_c=0;
+var _d={expressInstall:false,width:320,height:240,swLiveConnect:"true",allowScriptAccess:"sameDomain",allowNetworking:"all",style:null,redirect:null};
+function _e(_f){
+_f=_1.delegate(_d,_f);
+if(!("path" in _f)){
 console.error("dojox.embed.Flash(ctor):: no path reference to a Flash movie was provided.");
 return null;
 }
-if(!("id" in _9)){
-_9.id=(_5+_6++);
+if(!("id" in _f)){
+_f.id=(_b+_c++);
 }
-return _9;
+return _f;
 };
-if(_1.isIE){
-_2=function(_a){
-_a=_8(_a);
-if(!_a){
-return null;
-}
-var p;
-var _b=_a.path;
-if(_a.vars){
-var a=[];
-for(p in _a.vars){
-a.push(p+"="+_a.vars[p]);
-}
-_a.params.FlashVars=a.join("&");
-delete _a.vars;
-}
-var s="<object id=\""+_a.id+"\" "+"classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" "+"width=\""+_a.width+"\" "+"height=\""+_a.height+"\""+((_a.style)?" style=\""+_a.style+"\"":"")+">"+"<param name=\"movie\" value=\""+_b+"\" />";
-if(_a.params){
-for(p in _a.params){
-s+="<param name=\""+p+"\" value=\""+_a.params[p]+"\" />";
-}
-}
-s+="</object>";
-return {id:_a.id,markup:s};
-};
-_3=(function(){
-var _c=10,_d=null;
-while(!_d&&_c>7){
-try{
-_d=new ActiveXObject("ShockwaveFlash.ShockwaveFlash."+_c--);
-}
-catch(e){
-}
-}
-if(_d){
-var v=_d.GetVariable("$version").split(" ")[1].split(",");
-return {major:(v[0]!=null)?parseInt(v[0]):0,minor:(v[1]!=null)?parseInt(v[1]):0,rev:(v[2]!=null)?parseInt(v[2]):0};
-}
-return {major:0,minor:0,rev:0};
-})();
-_1.addOnWindowUnload(function(){
-console.warn("***************UNLOAD");
-var _e=function(){
-};
-var _f=_1.query("object").reverse().style("display","none").forEach(function(i){
-for(var p in i){
-if((p!="FlashVars")&&_1.isFunction(i[p])){
-try{
-i[p]=_e;
-}
-catch(e){
-}
-}
-}
-});
-});
-}else{
-_2=function(_10){
-_10=_8(_10);
+if(_5("ie")){
+_8=function(_10){
+_10=_e(_10);
 if(!_10){
 return null;
 }
@@ -84,43 +28,99 @@ var a=[];
 for(p in _10.vars){
 a.push(p+"="+_10.vars[p]);
 }
-_10.params.flashVars=a.join("&");
+_10.params.FlashVars=a.join("&");
 delete _10.vars;
 }
-var s="<embed type=\"application/x-shockwave-flash\" "+"src=\""+_11+"\" "+"id=\""+_10.id+"\" "+"width=\""+_10.width+"\" "+"height=\""+_10.height+"\""+((_10.style)?" style=\""+_10.style+"\" ":"")+"pluginspage=\""+window.location.protocol+"//www.adobe.com/go/getflashplayer\" ";
+var s="<object id=\""+_10.id+"\" "+"classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" "+"width=\""+_10.width+"\" "+"height=\""+_10.height+"\""+((_10.style)?" style=\""+_10.style+"\"":"")+">"+"<param name=\"movie\" value=\""+_11+"\" />";
 if(_10.params){
 for(p in _10.params){
-s+=" "+p+"=\""+_10.params[p]+"\"";
+s+="<param name=\""+p+"\" value=\""+_10.params[p]+"\" />";
+}
+}
+s+="</object>";
+return {id:_10.id,markup:s};
+};
+_9=(function(){
+var _12=10,_13=null;
+while(!_13&&_12>7){
+try{
+_13=new ActiveXObject("ShockwaveFlash.ShockwaveFlash."+_12--);
+}
+catch(e){
+}
+}
+if(_13){
+var v=_13.GetVariable("$version").split(" ")[1].split(",");
+return {major:(v[0]!=null)?parseInt(v[0]):0,minor:(v[1]!=null)?parseInt(v[1]):0,rev:(v[2]!=null)?parseInt(v[2]):0};
+}
+return {major:0,minor:0,rev:0};
+})();
+_2.addOnWindowUnload(function(){
+console.warn("***************UNLOAD");
+var _14=function(){
+};
+var _15=_4("object").reverse().style("display","none").forEach(function(i){
+for(var p in i){
+if((p!="FlashVars")&&typeof i[p]=="function"){
+try{
+i[p]=_14;
+}
+catch(e){
+}
+}
+}
+});
+});
+}else{
+_8=function(_16){
+_16=_e(_16);
+if(!_16){
+return null;
+}
+var p;
+var _17=_16.path;
+if(_16.vars){
+var a=[];
+for(p in _16.vars){
+a.push(p+"="+_16.vars[p]);
+}
+_16.params.flashVars=a.join("&");
+delete _16.vars;
+}
+var s="<embed type=\"application/x-shockwave-flash\" "+"src=\""+_17+"\" "+"id=\""+_16.id+"\" "+"width=\""+_16.width+"\" "+"height=\""+_16.height+"\""+((_16.style)?" style=\""+_16.style+"\" ":"")+"pluginspage=\""+window.location.protocol+"//www.adobe.com/go/getflashplayer\" ";
+if(_16.params){
+for(p in _16.params){
+s+=" "+p+"=\""+_16.params[p]+"\"";
 }
 }
 s+=" />";
-return {id:_10.id,markup:s};
+return {id:_16.id,markup:s};
 };
-_3=(function(){
-var _12=navigator.plugins["Shockwave Flash"];
-if(_12&&_12.description){
-var v=_12.description.replace(/([a-zA-Z]|\s)+/,"").replace(/(\s+r|\s+b[0-9]+)/,".").split(".");
+_9=(function(){
+var _18=navigator.plugins["Shockwave Flash"];
+if(_18&&_18.description){
+var v=_18.description.replace(/([a-zA-Z]|\s)+/,"").replace(/(\s+r|\s+b[0-9]+)/,".").split(".");
 return {major:(v[0]!=null)?parseInt(v[0]):0,minor:(v[1]!=null)?parseInt(v[1]):0,rev:(v[2]!=null)?parseInt(v[2]):0};
 }
 return {major:0,minor:0,rev:0};
 })();
 }
-var _13=function(_14,_15){
+var _19=function(_1a,_1b){
 if(location.href.toLowerCase().indexOf("file://")>-1){
 throw new Error("dojox.embed.Flash can't be run directly from a file. To instatiate the required SWF correctly it must be run from a server, like localHost.");
 }
-this.available=dojox.embed.Flash.available;
-this.minimumVersion=_14.minimumVersion||_4;
+this.available=_9.major;
+this.minimumVersion=_1a.minimumVersion||_a;
 this.id=null;
 this.movie=null;
 this.domNode=null;
-if(_15){
-_15=_1.byId(_15);
+if(_1b){
+_1b=_6.byId(_1b);
 }
 setTimeout(_1.hitch(this,function(){
-if(_14.expressInstall||this.available&&this.available>=this.minimumVersion){
-if(_14&&_15){
-this.init(_14,_15);
+if(_1a.expressInstall||this.available&&this.available>=this.minimumVersion){
+if(_1a&&_1b){
+this.init(_1a,_1b);
 }else{
 this.onError("embed.Flash was not provided with the proper arguments.");
 }
@@ -133,8 +133,8 @@ this.onError("Flash version detected: "+this.available+" is out of date. Minimum
 }
 }),100);
 };
-_1.extend(_13,{onReady:function(_16){
-},onLoad:function(_17){
+_1.extend(_19,{onReady:function(_1c){
+},onLoad:function(_1d){
 },onError:function(msg){
 },_onload:function(){
 clearInterval(this._poller);
@@ -142,22 +142,22 @@ delete this._poller;
 delete this._pollCount;
 delete this._pollMax;
 this.onLoad(this.movie);
-},init:function(_18,_19){
+},init:function(_1e,_1f){
 this.destroy();
-_19=_1.byId(_19||this.domNode);
-if(!_19){
+_1f=_6.byId(_1f||this.domNode);
+if(!_1f){
 throw new Error("dojox.embed.Flash: no domNode reference has been passed.");
 }
-var p=0,_1a=false;
+var p=0,_20=false;
 this._poller=null;
 this._pollCount=0;
 this._pollMax=15;
 this.pollTime=100;
-if(dojox.embed.Flash.initialized){
-this.id=dojox.embed.Flash.place(_18,_19);
-this.domNode=_19;
+if(_19.initialized){
+this.id=_19.place(_1e,_1f);
+this.domNode=_1f;
 setTimeout(_1.hitch(this,function(){
-this.movie=this.byId(this.id,_18.doc);
+this.movie=this.byId(this.id,_1e.doc);
 this.onReady(this.movie);
 this._poller=setInterval(_1.hitch(this,function(){
 try{
@@ -188,63 +188,63 @@ this.id=this.movie=this.domNode=null;
 if(!this.movie){
 return;
 }
-var _1b=_1.delegate({id:true,movie:true,domNode:true,onReady:true,onLoad:true});
+var _21=_1.delegate({id:true,movie:true,domNode:true,onReady:true,onLoad:true});
 for(var p in this){
-if(!_1b[p]){
+if(!_21[p]){
 delete this[p];
 }
 }
 if(this._poller){
-_1.connect(this,"onLoad",this,"_destroy");
+on(this,"Load",this,"_destroy");
 }else{
 this._destroy();
 }
-},byId:function(_1c,doc){
+},byId:function(_22,doc){
 doc=doc||document;
-if(doc.embeds[_1c]){
-return doc.embeds[_1c];
+if(doc.embeds[_22]){
+return doc.embeds[_22];
 }
-if(doc[_1c]){
-return doc[_1c];
+if(doc[_22]){
+return doc[_22];
 }
-if(window[_1c]){
-return window[_1c];
+if(window[_22]){
+return window[_22];
 }
-if(document[_1c]){
-return document[_1c];
+if(document[_22]){
+return document[_22];
 }
 return null;
 }});
-_1.mixin(_13,{minSupported:8,available:_3.major,supported:(_3.major>=_3.required),minimumRequired:_3.required,version:_3,initialized:false,onInitialize:function(){
-_13.initialized=true;
-},__ie_markup__:function(_1d){
-return _2(_1d);
-},proxy:function(obj,_1e){
-_1.forEach((_1.isArray(_1e)?_1e:[_1e]),function(_1f){
-this[_1f]=_1.hitch(this,function(){
+_1.mixin(_19,{minSupported:8,available:_9.major,supported:(_9.major>=_9.required),minimumRequired:_9.required,version:_9,initialized:false,onInitialize:function(){
+_19.initialized=true;
+},__ie_markup__:function(_23){
+return _8(_23);
+},proxy:function(obj,_24){
+_3.forEach((_24 instanceof Array?_24:[_24]),function(_25){
+this[_25]=_1.hitch(this,function(){
 return (function(){
-return eval(this.movie.CallFunction("<invoke name=\""+_1f+"\" returntype=\"javascript\">"+"<arguments>"+_1.map(arguments,function(_20){
-return __flash__toXML(_20);
+return eval(this.movie.CallFunction("<invoke name=\""+_25+"\" returntype=\"javascript\">"+"<arguments>"+_3.map(arguments,function(_26){
+return __flash__toXML(_26);
 }).join("")+"</arguments>"+"</invoke>"));
 }).apply(this,arguments||[]);
 });
 },obj);
 }});
-_13.place=function(_21,_22){
-var o=_2(_21);
-_22=_1.byId(_22);
-if(!_22){
-_22=_1.doc.createElement("div");
-_22.id=o.id+"-container";
-_1.body().appendChild(_22);
+_19.place=function(_27,_28){
+var o=_8(_27);
+_28=_6.byId(_28);
+if(!_28){
+_28=_7.doc.createElement("div");
+_28.id=o.id+"-container";
+_7.body().appendChild(_28);
 }
 if(o){
-_22.innerHTML=o.markup;
+_28.innerHTML=o.markup;
 return o.id;
 }
 return null;
 };
-_13.onInitialize();
-_1.setObject("dojox.embed.Flash",_13);
-return _13;
+_19.onInitialize();
+_1.setObject("dojox.embed.Flash",_19);
+return _19;
 });
