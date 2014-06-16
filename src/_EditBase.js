@@ -908,7 +908,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                         overwrite: true,
                         id: store.getIdentity(this.entry)
                 };
-                entry = this.createItemForUpdate(values);
+                entry = this.createEntryForUpdate(values);
 
                 this._applyStateToPutOptions(putOptions);
 
@@ -927,15 +927,15 @@ define('Sage/Platform/Mobile/_EditBase', [
             var values = this.getValues();
 
             return this.inserting
-                ? this.createItemForUpdate(values)
-                : this.createEntryForInsert(values);
+                ? this.createEntryForInsert(values)
+                : this.createEntryForUpdate(values);
         },
         /**
          * Takes the values object and adds the needed propertiers for updating.
          * @param {Object} values
          * @return {Object} Object with properties for updating
          */
-        createItemForUpdate: function(values) {
+        createEntryForUpdate: function(values) {
             return this.convertValues(values);
         },
         /**
