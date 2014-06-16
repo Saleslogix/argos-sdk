@@ -148,7 +148,7 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
          * The first capture group must be non-text part
          * Second capture is the phrase to be used in auto complete
          */
-        autoCompletePhraseRE: /^((?:\d+(?:\.\d*)?|\.\d+)\s*?)(\w+)/,
+        autoCompletePhraseRE: /^((?:\d+(?:\.\d*)?|\.\d+)\s*?)(.+)/,
 
         /**
          * @property {RegExp}
@@ -166,7 +166,7 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
             var numberDecimalSeparator = Mobile.CultureInfo.numberFormat.numberDecimalSeparator;
 
             this.autoCompletePhraseRE = new RegExp(
-                string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(\\w+)', [numberDecimalSeparator])
+                string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator])
             );
 
             this.autoCompleteValueRE = new RegExp(
