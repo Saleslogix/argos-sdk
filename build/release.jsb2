@@ -108,6 +108,10 @@
           "path": "../src/Store"
         },
         {
+          "text": "PouchDB.js",
+          "path": "../src/Store"
+        },
+        {
           "text": "ErrorManager.js",
           "path": "../src"
         },

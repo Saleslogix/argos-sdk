@@ -581,7 +581,7 @@ define('tests/Stores/SData', [
             });
         });
 
-        it('can get using a custom request', function() {
+        it('can get using a custom request', function(done) {
             var store, promise, service = new MockService();
             store = new Store({
                 service: service,

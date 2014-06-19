@@ -14,6 +14,7 @@
         "Mobile": false,
         "ReUI": false,
         "Base64": false,
-        "Canvas2Image": false
+        "Canvas2Image": false,
+        "PouchDB": false
     }
 }
