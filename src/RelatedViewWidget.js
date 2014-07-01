@@ -71,7 +71,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         id: 'related-view',
         icon: 'content/images/icons/ContactProfile_48x48.png',
         itemIcon: 'content/images/icons/ContactProfile_48x48.png',
-        title: 'Related View',
+        titleText: 'Related View',
         detailViewId: null,
         listViewId: null,
         listViewWhere: null,
@@ -195,6 +195,10 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         ]),
         constructor: function(options) {
             lang.mixin(this, options);
+            if (this.titleText) {
+                this.title = this.titleText;
+            }
+
             this._subscribes = [];
             this._subscribes.push(connect.subscribe('/app/refresh', this, this._onAppRefresh));
         },
