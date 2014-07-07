@@ -1490,7 +1490,7 @@ textarea:focus {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  display: block;
+  display: block !important;
   color: #0f1e1e;
   background-color: #b4b9be;
   text-align: center;
@@ -1533,7 +1533,7 @@ body > .viewContainer {
   margin-top: 6px;
 }
 .toggle {
-  border: 2px solid #c6c9cc;
+  border: 1px solid #999b9f;
   background-color: #787d82;
   border-radius: 6px;
   -webkit-border-radius: 6px;
