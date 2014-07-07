@@ -169,7 +169,11 @@ define('Sage/Platform/Mobile/_ListBase', [
         rowTemplate: new Simplate([
             '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
                 '<button data-action="selectEntry" class="list-item-selector button">',
-                    '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
+                    '{% if ($$.selectIconClass) { %}',
+                        '<span class="{%= $$.selectIconClass %}"></span>',
+                    '{% } else if ($$.icon || $$.selectIcon) { %}',
+                        '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
+                    '{% } %}',
                 '</button>',
                 '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
                 '<div id="list-item-content-related"></div>',
@@ -218,12 +222,17 @@ define('Sage/Platform/Mobile/_ListBase', [
          *      actionIndex         The correlating index number of the action collection
          *      title               Text used for ARIA-labeling
          *      icon                Relative path to the icon to use
+         *      cls                 CSS class to use instead of an icon
          *      id                  Unique name of action, also used for alt image text
          *      label               Text added below the icon
          */
         listActionItemTemplate: new Simplate([
             '<button data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">',
-                '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
+                '{% if ($.cls) { %}',
+                    '<span class="{%= $.cls %}"></span>',
+                '{% } else if ($.icon) { %}',
+                    '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
+                '{% } %}',
                 '<label>{%: $.label %}</label>',
             '</button>'
         ]),
@@ -406,6 +415,13 @@ define('Sage/Platform/Mobile/_ListBase', [
          * The relative path to the checkmark or select icon for row selector
          */
         selectIcon: 'content/images/icons/OK_24.png',
+
+        /**
+         * @property {String}
+         * CSS class to use for checkmark or select icon for row selector. Overrides selectIcon.
+         */
+        selectIconClass: 'fa fa-check fa-lg',
+
         /**
          * @property {Object}
          * The search widget instance for the view

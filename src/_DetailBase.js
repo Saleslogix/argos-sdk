@@ -173,6 +173,8 @@ define('Sage/Platform/Mobile/_DetailBase', [
                 '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
                     '{% if ($.icon) { %}',
                         '<img src="{%= $.icon %}" alt="icon" class="icon" />',
+                    '{% } else if ($.iconClass) { %}',
+                        '<div class="{%= $.iconClass %}" alt="icon"></div>',
                     '{% } %}',
                     '<span>{%: $.label %}</span>',
                 '</a>',
@@ -206,7 +208,9 @@ define('Sage/Platform/Mobile/_DetailBase', [
             '<li class="{%= $.cls %}">',
             '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
             '{% if ($.icon) { %}',
-            '<img src="{%= $.icon %}" alt="icon" class="icon" />',
+                '<img src="{%= $.icon %}" alt="icon" class="icon" />',
+            '{% } else if ($.iconClass) { %}',
+                '<div class="{%= $.iconClass %}" alt="icon"></div>',
             '{% } %}',
             '<label>{%: $.label %}</label>',
             '<span>{%= $.value %}</span>',
@@ -323,7 +327,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             return this.tools || (this.tools = {
                 'tbar': [{
                     id: 'edit',
-                    cls: 'fa fa-edit fa-fw fa-lg',
+                    cls: 'fa fa-pencil fa-fw fa-lg',
                     action: 'navigateToEditView',
                     security: App.getViewSecurity(this.editView, 'update')
                 }]

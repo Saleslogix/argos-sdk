@@ -355,7 +355,9 @@
     text-overflow: ellipsis;
     overflow-x: hidden;
 }
-.actions-row > button > img
+
+.actions-row > button > img,
+.actions-row > button > span
 {
     padding: 3px 3px 0 3px;
     width: 24px;
@@ -839,6 +841,12 @@ li > .disabled,
     text-overflow: ellipsis;
 }
 
+ul.action-list > li > a > div
+{
+    float: left;
+    margin: 0 0.5em 0 0;
+}
+
 .action-list > li
 {
     line-height: 1em !important;
@@ -1316,6 +1324,7 @@ img
     padding: 4px;
     margin: 0px;
     display: block;
+    cursor: pointer;
 }
 
 .panel-validation-summary > ul > li > a > h3
