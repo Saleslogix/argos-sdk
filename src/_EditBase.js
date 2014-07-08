@@ -138,7 +138,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         loadingTemplate: new Simplate([
             '<fieldset class="panel-loading-indicator">',
-            '<div class="row"><div>{%: $.loadingText %}</div></div>',
+            '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>',
             '</fieldset>'
         ]),
         /**
