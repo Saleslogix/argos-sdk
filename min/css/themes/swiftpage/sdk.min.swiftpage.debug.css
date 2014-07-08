@@ -150,8 +150,9 @@
   font-weight: bold;
 }
 .list-loading .list-more .button span,
-.panel.busy .actionButton span {
-  background: url('../../../images/loading-indicator-gray.gif') no-repeat scroll 0 50%;
+.panel.busy .actionButton span.indicator {
+  visibility: visible;
+  display: inline;
 }
 .list-loading .list-more .button span {
   padding: 0 0 0 20px;
@@ -348,8 +349,15 @@
   background: url('../../../images/loading-indicator-light-green.gif') no-repeat scroll 0 50%;
   padding: 0 0 0 20px;
 }
-.panel.busy .actionButton span {
-  padding: 0 0 0 20px;
+.panel.busy .actionButton span.indicator {
+  margin: 0 10px 0 0;
+}
+.panel.busy {
+  opacity: 0.5;
+}
+.panel .actionButton span.indicator {
+  visibility: hidden;
+  display: none;
 }
 /* edit/insert */
 .row > div > input:not([type|=radio]):not([type|=checkbox]),
