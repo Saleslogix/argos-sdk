@@ -171,9 +171,10 @@
 }
 
 .list-loading .list-more .button span,
-.panel.busy .actionButton span
+.panel.busy .actionButton span.indicator
 {
-    background: url('../../../images/loading-indicator-gray.gif') no-repeat scroll 0 50%;
+    visibility: visible;
+    display: inline;
 }
 
 .list-loading .list-more .button span
@@ -442,10 +443,22 @@
     padding: 0 0 0 20px;
 }
 
-.panel.busy .actionButton span
+.panel.busy .actionButton span.indicator
 {
-    padding: 0 0 0 20px;
+    margin: 0 10px 0 0;
 }
+
+.panel.busy
+{
+    opacity: 0.5;
+}
+
+.panel .actionButton span.indicator
+{
+    visibility: hidden;
+    display: none;
+}
+
 
 /* edit/insert */
 .row > div > input:not([type|=radio]):not([type|=checkbox]),
