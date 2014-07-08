@@ -166,10 +166,6 @@
   line-height: 1.5em;
   padding: 1em;
 }
-.list-loading .list-loading-indicator div,
-.panel .panel-loading-indicator div.row > div {
-  background: url('../../../images/loading-indicator-white.gif') no-repeat scroll 0 50%;
-}
 .list-loading .list-loading-indicator div {
   padding: 0 0 0 20px;
   display: inline-block;
@@ -346,7 +342,6 @@
 }
 /* busy */
 .toolbar.busy .actionButton span {
-  background: url('../../../images/loading-indicator-light-green.gif') no-repeat scroll 0 50%;
   padding: 0 0 0 20px;
 }
 .panel.busy .actionButton span.indicator {
@@ -1005,6 +1000,7 @@ img {
 }
 .panel > .panel-loading-indicator {
   display: none;
+  border: none;
 }
 .panel > .panel-validation-summary {
   display: none;
@@ -1012,6 +1008,10 @@ img {
 .panel-loading > .panel-loading-indicator {
   display: block;
   margin: 0;
+  padding: 0;
+}
+.panel-loading > .panel-loading-indicator span {
+  display: inline;
   padding: 0;
 }
 .panel-form-error > .panel-validation-summary {
