@@ -338,7 +338,7 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
         formatUnit: function (unit) {
             var sval;
             if (isNaN(unit)) {
-                sval = "0"
+                sval = "0";
             } else {
                 sval = unit.toString().split(".");
                 if (sval.length === 1) {
