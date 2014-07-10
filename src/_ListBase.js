@@ -414,7 +414,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @property {String}
          * The relative path to the checkmark or select icon for row selector
          */
-        selectIcon: 'content/images/icons/OK_24.png',
+        selectIcon: '',
 
         /**
          * @property {String}

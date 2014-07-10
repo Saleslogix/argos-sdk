@@ -69,8 +69,6 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         itemsNode: null,
         loadingNode: null,
         id: 'related-view',
-        icon: 'content/images/icons/ContactProfile_48x48.png',
-        itemIcon: 'content/images/icons/ContactProfile_48x48.png',
         titleText: 'Related View',
         detailViewId: null,
         listViewId: null,
@@ -213,14 +211,14 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         createActionLayout: function() {
             return this.actions || (this.actions = [{
                 id: 'refresh',
-                icon: 'content/images/icons/Recurring_24x24.png',
+                cls: 'fa fa-refresh fa-2x',
                 label: this.refreshViewText,
                 action: 'onRefreshView',
                 isEnabled:true
             }, {
                 id: 'navtoListView',
-                icon: 'content/images/icons/drilldown_24.png',
                 label: this.viewContactsActionText,
+                cls: 'fa fa-list fa-2x',
                 action: 'onNavigateToList',
                 isEnabled:true,
                 fn: this.onNavigateToList.bindDelegate(this)
