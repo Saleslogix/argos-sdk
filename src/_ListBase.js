@@ -20,6 +20,7 @@
  * @extends Sage.Platform.Mobile.View
  * @alternateClassName _ListBase
  * @requires Sage.Platform.Mobile.ErrorManager
+ * @requires Sage.Platform.Mobile.Utility
  * @requires Sage.Platform.Mobile.SearchWidget
  */
 define('Sage/Platform/Mobile/_ListBase', [
@@ -38,6 +39,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     'dojo/Deferred',
     'dojo/promise/all',
     'dojo/when',
+    'Sage/Platform/Mobile/Utility',
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/View',
     'Sage/Platform/Mobile/SearchWidget',
@@ -59,6 +61,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     Deferred,
     all,
     when,
+    Utility,
     ErrorManager,
     View,
     SearchWidget,
@@ -987,7 +990,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @return {String}
          */
         escapeSearchQuery: function(searchQuery) {
-            return (searchQuery || '').replace(/"/g, '""');
+            return Utility.escapeSearchQuery(searchQuery);
         },
         /**
          * Handler for the search widgets search.
