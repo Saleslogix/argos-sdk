@@ -205,7 +205,7 @@ define('Sage/Platform/Mobile/View', [
             if (this.options.title) {
                 this.set('title', this.options.title);
             } else {
-                this.set('title', this.titleText);
+                this.set('title', (this.get('title') || this.titleText));
             }
 
             this.onActivate(this);
@@ -234,7 +234,7 @@ define('Sage/Platform/Mobile/View', [
             if (this.options.title) {
                 this.set('title', this.options.title);
             } else {
-                this.set('title', this.titleText);
+                this.set('title', (this.get('title') || this.titleText));
             }
 
             tag = this.getTag();
