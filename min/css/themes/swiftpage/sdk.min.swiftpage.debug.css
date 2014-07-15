@@ -161,10 +161,8 @@
 .list-loading .list-loading-indicator {
   display: block;
   text-align: center;
-  font-size: 1em;
+  font-size: 1.25em;
   font-weight: normal;
-  line-height: 1.5em;
-  padding: 1em;
 }
 .list-loading .list-loading-indicator div {
   padding: 0 0 0 20px;
