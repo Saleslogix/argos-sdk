@@ -86,32 +86,36 @@ define('Sage/Platform/Mobile/Application', [
     });
 
     var applyLocalizationTo = function(object, localization) {
-            var target = object.prototype || object;
-            for (var key in localization)
-            {
-                if (lang.isObject(localization[key]))
-                    applyLocalizationTo(target[key], localization[key]);
-                else
-                    target[key] = localization[key];
-            }
-        },
-        localize = function(name, localization) {
-            var target = lang.getObject(name);
-            if (target && target.prototype) target = target.prototype;
-            if (target) applyLocalizationTo(target, localization);
-        },
-        mergeConfiguration = function(baseConfiguration, moduleConfiguration) {
-            if (baseConfiguration)
-            {
-                if (baseConfiguration.modules && moduleConfiguration.modules)
-                    baseConfiguration.modules = baseConfiguration.modules.concat(moduleConfiguration.modules);
+        if (!object) {
+            return;
+        }
 
-                if (baseConfiguration.connections && moduleConfiguration.connections)
-                    baseConfiguration.connections = lang.mixin(baseConfiguration.connections, moduleConfiguration.connections);
+        var target = object.prototype || object;
+        for (var key in localization) {
+            if (lang.isObject(localization[key])) {
+                applyLocalizationTo(target[key], localization[key]);
+            } else {
+                target[key] = localization[key];
             }
+        }
+    },
+    localize = function(name, localization) {
+        var target = lang.getObject(name);
+        if (target && target.prototype) target = target.prototype;
+        if (target) applyLocalizationTo(target, localization);
+    },
+    mergeConfiguration = function(baseConfiguration, moduleConfiguration) {
+        if (baseConfiguration)
+        {
+            if (baseConfiguration.modules && moduleConfiguration.modules)
+                baseConfiguration.modules = baseConfiguration.modules.concat(moduleConfiguration.modules);
 
-            return baseConfiguration;
-        };
+            if (baseConfiguration.connections && moduleConfiguration.connections)
+                baseConfiguration.connections = lang.mixin(baseConfiguration.connections, moduleConfiguration.connections);
+        }
+
+        return baseConfiguration;
+    };
 
     lang.mixin(win.global, {
         'localize': localize,
