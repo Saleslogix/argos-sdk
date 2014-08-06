@@ -1123,7 +1123,7 @@ img {
 }
 .href {
   display: inline-block;
-  color: #ffb900;
+  color: #ffb400;
   text-decoration: none;
   cursor: pointer;
 }
@@ -1427,7 +1427,7 @@ h5 {
 .viewContainer > .toolbar,
 body > .viewContainer > .toolbar,
 .viewContainer > .footer-toolbar {
-  background-color: #3471af;
+  background-color: #007dbe;
 }
 .viewContainer > .toolbar > h1,
 .toolbar > h1 {
@@ -1493,7 +1493,7 @@ textarea:focus {
 .panel-content > div > .row > div > label,
 .panel-content > div > .row > label {
   font-weight: bold;
-  color: #3471af;
+  color: #007dbe;
 }
 .panel-content > fieldset > .row-edit > div > textarea,
 .panel-content > fieldset > .row-edit > textarea {
@@ -1513,7 +1513,7 @@ textarea:focus {
   -moz-box-sizing: border-box;
   display: block;
   color: #ffffff;
-  background-color: #3471af;
+  background-color: #007dbe;
   text-align: center;
   text-decoration: none;
   font-weight: bold;
