@@ -844,7 +844,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
                 view.getListCount(options).then(function(result) {
                     var labelNode, html;
 
-                    if (result) {
+                    if (result >= 0) {
                         labelNode = query('.related-item-label', rowNode)[0];
                         if (labelNode) {
                             html = '<span class="related-item-count">(' + result + ')</span>';
