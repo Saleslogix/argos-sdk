@@ -26,6 +26,8 @@
 define('Sage/Platform/Mobile/_SDataListMixin', [
     'dojo/_base/declare',
     'dojo/_base/lang',
+    'dojo/Deferred',
+    'dojo/when',
     'Sage/Platform/Mobile/Store/SData',
     'Sage/Platform/Mobile/Utility',
     'Sage/Platform/Mobile/ErrorManager',
@@ -35,6 +37,8 @@ define('Sage/Platform/Mobile/_SDataListMixin', [
 ], function(
     declare,
     lang,
+    Deferred,
+    when,
     SData,
     utility,
     ErrorManager,
@@ -181,6 +185,34 @@ define('Sage/Platform/Mobile/_SDataListMixin', [
             } else {
                 return true; // no way to determine, always assume more data
             }
+        },
+        getListCount: function(options) {
+            var store, queryOptions, queryResults, def = new Deferred();
+
+            store = new SData({
+                service: App.services['crm'],
+                resourceKind: this.resourceKind,
+                contractName: this.contractName,
+                scope: this
+            });
+
+            queryOptions = {
+                count: 1,
+                start: 0,
+                select: '',
+                where: options.where,
+                sort: ''
+            };
+
+            queryResults = store.query(null, queryOptions);
+
+            when(queryResults, function(relatedFeed) {
+                def.resolve(queryResults.total);
+            }, function(err) {
+                def.reject(err);
+            });
+
+            return def.promise;
         }
     });
 });

@@ -1545,6 +1545,11 @@ define('Sage/Platform/Mobile/_ListBase', [
                     this.relatedViewManagers[relatedViewId].destroyViews();
                 }
             }
+        },
+        /**
+         * Returns a promise with the list's count.
+         */
+        getListCount: function(options, callback) {
         }
     });
 });
