@@ -1639,6 +1639,9 @@ body > .viewContainer {
 .logo {
   text-align: center;
 }
+.related-item-count {
+  margin: 0 0 0 5px;
+}
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)

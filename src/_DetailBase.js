@@ -617,16 +617,17 @@ define('Sage/Platform/Mobile/_DetailBase', [
                 } else {
                     template = this.propertyTemplate;
                 }
-                
+
                 rowNode = domConstruct.place(template.apply(data, this), sectionNode);
                 if (current['relatedItem']) {
                     try{
                         this._processRelatedItem(data, context, rowNode);
                     } catch (e) {
                         //error processing related node
+                        console.error(e);
                     }
                 }
-                
+
                 if (current['onCreate']) {
                     callbacks.push({ row: current, node: rowNode, value: value, entry: entry });
                 }
@@ -836,18 +837,24 @@ define('Sage/Platform/Mobile/_DetailBase', [
             this._navigationOptions = [];
         },
         _processRelatedItem: function(data, context, rowNode) {
-            var view = App.getView(data['view']);
-            var options = {}, html, labelNode;
+            var view = App.getView(data['view']), options = {};
+
             if(view){
                 options.where = context ? context['where'] : '';
-                view._getListCount(options, function(result) {
+                view.getListCount(options).then(function(result) {
+                    var labelNode, html;
+
                     if (result) {
                         labelNode = query('.related-item-label', rowNode)[0];
-                        html = '<span class="related-item-count">' + result + '</span>';
-                        domConstruct.place(html, labelNode, 'after');
+                        if (labelNode) {
+                            html = '<span class="related-item-count">(' + result + ')</span>';
+                            domConstruct.place(html, labelNode, 'after');
+                        } else {
+                            console.warn('Missing the "related-item-label" dom node.');
+                        }
                     }
                 });
-            } 
+            }
         }
     });
 });
