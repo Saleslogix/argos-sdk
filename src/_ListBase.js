@@ -1083,6 +1083,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             var view = App.getView(this.detailView);
             if (view) {
                 view.show({
+                    descriptor: descriptor, // keep for backwards compat
                     title: descriptor,
                     key: key
                 });

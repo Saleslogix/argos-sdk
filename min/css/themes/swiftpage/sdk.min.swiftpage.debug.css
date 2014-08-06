@@ -405,6 +405,7 @@
   padding: 0 12px;
   position: absolute;
   right: 5px;
+  display: block;
 }
 .row-edit[data-field-type="picklist"] > div > input,
 .row-edit[data-field-type="lookup"] > div > input,
@@ -734,7 +735,6 @@ ul.action-list > li > a > div {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  color: #0079A7;
   font-weight: bold;
   margin: 8px;
 }
@@ -758,7 +758,6 @@ ul.action-list > li > a > div {
   width: 100% !important;
 }
 .file-label > label {
-  color: #0079A7 !important;
   font-weight: bold !important;
   text-align: left !important;
 }
@@ -1512,7 +1511,7 @@ textarea:focus {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  display: block !important;
+  display: block;
   color: #ffffff;
   background-color: #3471af;
   text-align: center;
