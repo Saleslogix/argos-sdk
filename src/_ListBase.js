@@ -39,6 +39,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     'dojo/Deferred',
     'dojo/promise/all',
     'dojo/when',
+    'Sage/Platform/Mobile/Store/SData',
     'Sage/Platform/Mobile/Utility',
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/View',
@@ -61,6 +62,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     Deferred,
     all,
     when,
+    SDataStore,
     Utility,
     ErrorManager,
     View,
@@ -1543,6 +1545,29 @@ define('Sage/Platform/Mobile/_ListBase', [
                 for (var relatedViewId in this.relatedViewManagers) {
                     this.relatedViewManagers[relatedViewId].destroyViews();
                 }
+            }
+        },
+        _getListCount: function(options, callback) {
+            var store, queryOptions, queryResults;
+            store = new SDataStore({
+                service: App.services['crm'],
+                resourceKind: this.resourceKind,
+                contractName: this.contractName,
+                scope: this
+            });
+            queryOptions = {
+                count: 1,
+                start: 0,
+                select: '',
+                where: options.where,
+                sort: ''
+            };
+           queryResults = store.query(null, queryOptions);
+
+            if (callback) {
+                when(queryResults, lang.hitch(this, function(relatedFeed) {
+                    callback(queryResults.total);
+                }));
             }
         }
     });
