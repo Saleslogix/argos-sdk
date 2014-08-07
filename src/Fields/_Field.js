@@ -96,6 +96,12 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          */
         type: null,
 
+        /**
+         * @property {Boolean}
+         * Flag to indicate if this field should be focused when the form is shown.
+         */
+        autoFocus: false,
+
         app: null,
         reui: null,
 
@@ -125,6 +131,11 @@ define('Sage/Platform/Mobile/Fields/_Field', [
             if (this.reui === null) {
                 this.reui = window.ReUI;
             }
+        },
+        /**
+         * Focuses the input for the field
+         */
+        focus: function() {
         },
         /**
          * Inserts the field into the given DOM node using dijit Widget `placeAt(node)` and saves

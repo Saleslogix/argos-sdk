@@ -158,6 +158,9 @@ define('Sage/Platform/Mobile/Fields/TextField', [
 
             domAttr.set(this.inputNode, 'disabled', true);
         },
+        focus: function() {
+            this.inputNode.focus();
+        },
         /**
          * Handler for the `onkeypress` event which is not connected unless `validInputOnly` is true.
          *
