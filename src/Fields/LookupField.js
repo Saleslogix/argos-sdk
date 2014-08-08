@@ -292,6 +292,11 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
 
             this.set('inputDisabled', true);
         },
+        focus: function() {
+            if (!this.isReadOnly()) {
+                this.inputNode.focus();
+            }
+        },
         /**
          * Determines if the field is readonly by checking for a target view
          * @return {Boolean}

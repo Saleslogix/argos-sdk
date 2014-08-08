@@ -204,11 +204,6 @@ define('Sage/Platform/Mobile/_EditBase', [
         ]),
 
         /**
-         * @property {String}
-         * Sets the ReUI transition effect for when this view comes into view
-         */
-        transitionEffect: 'slide',
-        /**
          * @cfg {String}
          * The unique identifier of the view
          */
@@ -290,6 +285,8 @@ define('Sage/Platform/Mobile/_EditBase', [
          * Flags if the view is in "insert" (create) mode, or if it is in "update" (edit) mode.
          */
         inserting: null,
+
+        _focusField: null,
 
         /**
          * Extends constructor to initialze `this.fields` to {}
@@ -550,8 +547,7 @@ define('Sage/Platform/Mobile/_EditBase', [
 
             return tag;
         },
-        processLayout: function(layout)
-        {
+        processLayout: function(layout) {
             var rows = (layout['children'] || layout['as'] || layout),
                 options = layout['options'] || (layout['options'] = {
                     title: this.detailsText
@@ -559,7 +555,10 @@ define('Sage/Platform/Mobile/_EditBase', [
                 sectionQueue = [],
                 sectionStarted = false,
                 content = [],
-                current;
+                current,
+                ctor,
+                field,
+                template;
 
             for (var i = 0; i < rows.length; i++) {
                 current = rows[i];
@@ -580,11 +579,17 @@ define('Sage/Platform/Mobile/_EditBase', [
                     content.push(this.sectionBeginTemplate.apply(layout, this));
                 }
 
-                var ctor = FieldManager.get(current['type']),
-                    field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
+                ctor = FieldManager.get(current['type']);
+                field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
                         owner: this
-                    }, current)),
-                    template = field.propertyTemplate || this.propertyTemplate;
+                    }, current));
+                template = field.propertyTemplate || this.propertyTemplate;
+
+                if (field.autoFocus && !this._focusField) {
+                    this._focusField = field;
+                } else if (field.autoFocus && this._focusField) {
+                    throw new Error("Only one field can have autoFocus set to true in the Edit layout.");
+                }
 
 
                 this.connect(field, 'onShow', this._onShowField);
@@ -1081,6 +1086,13 @@ define('Sage/Platform/Mobile/_EditBase', [
                 } else {
                     domClass.remove(this.domNode, 'panel-loading');
                 }
+            }
+
+            this.inherited(arguments);
+        },
+        onTransitionTo: function() {
+            if (this._focusField) {
+                this._focusField.focus();
             }
 
             this.inherited(arguments);
