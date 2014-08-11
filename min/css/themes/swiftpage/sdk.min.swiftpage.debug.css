@@ -364,7 +364,7 @@
 .row > input:not([type|=radio]):not([type|=checkbox]) {
   height: auto;
   padding: 10px 10px 0 0px;
-  background-color: #ebebee;
+  background-color: #ecedef;
 }
 /* fields */
 .row-hidden {
@@ -443,8 +443,8 @@
 .row-edit[data-field-type="address"] > div > div {
   min-height: 1.5em;
   padding: 8px 34px 8px 8px;
-  border: 1px solid #dcdcde;
-  background-color: #ebebee;
+  border: 1px solid #dddee0;
+  background-color: #ecedef;
 }
 .text-input {
   padding: 8px 34px 8px 0px;
@@ -945,7 +945,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
   padding: 6px 6px 6px 44px;
   font-size: 16px;
   font-weight: normal;
-  border: 1px solid #dcdcde;
+  border: 1px solid #dddee0;
 }
 .list-content,
 .group-content {
@@ -1215,12 +1215,12 @@ img {
 .related-view-widget .tab .title {
   font-size: 0.8em;
   font-weight: bold;
-  color: #999b9f;
+  color: #9a9ea1;
   padding: 0 0 0 14px;
   float: left;
 }
 .related-view-widget .line-bar {
-  background-color: #dcdcde;
+  background-color: #dddee0;
   height: 2px;
   padding: 0;
   position: relative;
@@ -1245,7 +1245,7 @@ img {
   display: none;
 }
 .related-view-widget .action-items {
-  color: #6a97cb;
+  color: #409ece;
   font-size: 0.6em;
   font-weight: bold;
   text-align: right;
@@ -1259,7 +1259,7 @@ img {
 }
 .related-view-widget .action {
   font-weight: bold;
-  color: #6a97cb;
+  color: #409ece;
   float: left;
   padding: 0 10px;
 }
@@ -1315,7 +1315,7 @@ img {
   padding: 0 40px 0 0;
 }
 .related-view-widget .item .item-detail {
-  color: #999b9f;
+  color: #9a9ea1;
   left: 40px;
   position: relative;
   padding: 0 40px 0 0;
@@ -1390,7 +1390,7 @@ h5 {
 }
 .list-content > .actions-row > button:active,
 .group-content > .actions-row > button:active {
-  background-color: #96b9da;
+  background-color: #7fbede;
 }
 /*For the separate Contextual Menu*/
 .contextualContent > .group-content > .list-content {
@@ -1416,11 +1416,11 @@ h5 {
   padding: 0 0 0 4px;
   font-size: 1em;
   position: relative;
-  background-color: #4f5657;
+  background-color: #4b5656;
   color: #ffffff;
 }
 .group-content > h2 > button {
-  color: #dcdcde;
+  color: #dddee0;
   background-color: transparent;
 }
 .toolbar,
@@ -1443,7 +1443,7 @@ body > .viewContainer > .toolbar,
 }
 .panel-content > h2 {
   /*border-bottom: @panel-header-border-bottom;*/
-  border-top: 1px solid #d7d8dc;
+  border-top: 1px solid #d9dcde;
   /*background-color: @panel-header-bg-color;*/
   color: #0f1e1e;
   font-weight: bold;
@@ -1456,7 +1456,7 @@ body > .viewContainer > .toolbar,
   font-weight: bold;
 }
 .panel-content > h2:first-child {
-  border-top: 1px solid #d7d8dc;
+  border-top: 1px solid #d9dcde;
 }
 .panel-validation-summary > h2:first-child {
   border-top: 1px solid #de8649;
@@ -1472,7 +1472,7 @@ input:focus,
 textarea:focus {
   outline: none;
   background-color: #ffffff;
-  border: 1px solid #dcdcde;
+  border: 1px solid #dddee0;
 }
 .panel-content > ul,
 .panel-validation-summary > ul {
@@ -1498,8 +1498,8 @@ textarea:focus {
 .panel-content > fieldset > .row-edit > div > textarea,
 .panel-content > fieldset > .row-edit > textarea {
   font-size: 16px;
-  border: 1px solid #dcdcde;
-  background-color: #ebebee;
+  border: 1px solid #dddee0;
+  background-color: #ecedef;
 }
 .panel-content > fieldset > .row-edit {
   border-top: none;
@@ -1537,10 +1537,10 @@ textarea:focus {
   opacity: 0.25;
 }
 body > .viewContainer {
-  border-left: 2px solid #dcdcde;
+  border-left: 2px solid #dddee0;
 }
 .snapjs-left .left-drawer {
-  border-right: 2px solid #dcdcde;
+  border-right: 2px solid #dddee0;
 }
 /* Calendar */
 .calendar-content {
@@ -1554,7 +1554,7 @@ body > .viewContainer {
   margin-top: 6px;
 }
 .toggle {
-  border: 1px solid #999b9f;
+  border: 1px solid #9a9ea1;
   background-color: #787d82;
   border-radius: 6px;
   -webkit-border-radius: 6px;
@@ -1579,7 +1579,7 @@ body > .viewContainer {
   position: absolute;
   width: 60px;
   text-align: center;
-  color: #dcdcde;
+  color: #dddee0;
   left: 0;
   top: 0;
 }
@@ -1607,7 +1607,7 @@ body > .viewContainer {
   left: -1px;
   width: 40px;
   height: 28px;
-  border: 1px solid #999b9f;
+  border: 1px solid #9a9ea1;
   background-color: #b4b9be;
   border-radius: 6px;
   -webkit-border-radius: 6px;
