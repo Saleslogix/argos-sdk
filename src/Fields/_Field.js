@@ -73,7 +73,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          *
          * Note the word `default` must be in quotes as default is a reserved word in javascript.
          */
-        'default': null,
+        'default': undefined,
         /**
          * @property {String}
          * The unique (within the current form) name of the field

@@ -128,6 +128,10 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Include, this.queryInclude.join(','));
             }
 
+            if (this.contractName) {
+                request.setContractName(this.contractName);
+            }
+
             return request;
         },
         /**
