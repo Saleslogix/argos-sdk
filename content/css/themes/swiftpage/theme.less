@@ -57,20 +57,16 @@ h5
     padding: 0;
 }
 
-.contextualContent > .group-content > .list-content > li 
+.contextualContent > .group-content > .list-content > li
 {
     background-color: @menu-list-item-bg-color;
-    font-size: 1.25em;
-    font-weight: bold;
+    font-size: 1em;
     list-style: none;
     margin: 0;
     position: relative;
     color: @menu-list-item-color;
     text-decoration: none;
-    padding: 8px 0px 8px 0px;
-    border: @menu-list-item-border;
-    border-left: 0px;
-    border-right: 0px;
+    padding: 8px 0px 8px 8px;
     .border-radius(0px);
 }
 
@@ -78,11 +74,16 @@ h5
 {
     line-height: 32px;
     margin: 0;
-    padding: 0 0 0 6px;
+    padding: 0 0 0 4px;
     font-size: 1em;
     position: relative;
     background-color: @glist-header-bg-color;
     color: @glist-header-color;
+}
+
+.group-content > h2 > button {
+    color: @gray1-lighter;
+    background-color: transparent;
 }
 
 .toolbar,
@@ -192,7 +193,7 @@ textarea:focus
 {
     font-size: @text-area-font-size;
     border: 1px solid @gray1-lighter;
-    background-color: @gray5-lighter;
+    background-color: @gray2-lighter;
 }
 
 .panel-content > fieldset > .row-edit
@@ -234,8 +235,8 @@ textarea:focus
 .headerButton
 {
     color: @toolbar-text-color;
-    border: @toolbar-button-border;
     background-color: @toolbar-button-bg-color;
+    border: @toolbar-button-border;
 }
 
 .toolButton-disabled
@@ -323,7 +324,7 @@ body > .viewContainer
     width: 40px;
     height: 28px;
     border: @toggle-thumb-border;
-    background-color: @gray4-darker;
+    background-color: @gray2-darker;
     .border-radius(6px);
 }
 .toggle-vertical > .thumb
@@ -355,7 +356,7 @@ body > .viewContainer
 
 .toggleStateOn
 {
-    border: @togglestate-on-border;    
+    border: @togglestate-on-border;
     background-color: @togglestate-on-bg-color;
 }
 
@@ -368,4 +369,9 @@ body > .viewContainer
 {
     border: 2px solid red;
     padding: 5px;
+}
+
+.related-item-count
+{
+    margin: 0 0 0 5px;
 }

@@ -56,6 +56,14 @@ define('Sage/Platform/Mobile/Utility', [
     };
 
     return lang.setObject('Sage.Platform.Mobile.Utility', {
+        /**
+         * Replaces a single `"` with two `""` for proper SData query expressions.
+         * @param {String} searchQuery Search expression to be escaped.
+         * @return {String}
+         */
+        escapeSearchQuery: function(searchQuery) {
+            return (searchQuery || '').replace(/"/g, '""');
+        },
         memoize: function(fn, keyFn) {
             var cache = {};
             keyFn = keyFn || (function(value) { return value; });

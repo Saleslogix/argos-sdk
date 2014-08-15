@@ -64,9 +64,11 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
          */
         widgetTemplate: new Simplate([
             '<label for="{%= $.name %}">{%: $.label %}</label>',
-            '<button class="button simpleSubHeaderButton" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
+            '<button class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
             '<input data-dojo-attach-point="inputNode" type="text" />'
         ]),
+
+        iconClass: 'fa fa-pencil fa-lg',
 
         // Localization
         /**
@@ -167,10 +169,12 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
                 tools: {
                     tbar: [{
                         id: 'complete',
+                        cls: 'fa fa-check fa-fw fa-lg',
                         fn: this.complete,
                         scope: this
                     },{
                         id: 'cancel',
+                        cls: 'fa fa-ban fa-fw fa-lg',
                         side: 'left',
                         fn: ReUI.back,
                         scope: ReUI

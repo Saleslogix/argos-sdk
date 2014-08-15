@@ -50,6 +50,9 @@ define('Sage/Platform/Mobile/GroupedList', [
          */
         toggleCollapseText: 'toggle collapse',
 
+        collapsedIconClass: 'fa-angle-double-right',
+        expanedIconClass: 'fa-angle-double-down',
+
         /**
          * @property {Simplate}
          * Simplate that defines the HTML Markup. This override adds the needed styling.
@@ -68,8 +71,8 @@ define('Sage/Platform/Mobile/GroupedList', [
          * Simplate that defines the Group template that includes the header element with collapse button and the row container
          */
         groupTemplate: new Simplate([
-            '<h2 data-action="toggleGroup" class="{% if ($.collapsed) { %}collapsed{% } %}">',
-            '{%: $.title %}<button class="collapsed-indicator" aria-label="{%: $$.toggleCollapseText %}"></button>',
+            '<h2 data-action="toggleGroup">',
+            '{%: $.title %}<button class="fa {% if ($.collapsed) { %}{%: $$.collapsedIconClass %} {% } else { %}{%: $$.expanedIconClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
             '</h2>',
             '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>'
         ]),
@@ -152,9 +155,22 @@ define('Sage/Platform/Mobile/GroupedList', [
          * @param {Object} params Object containing the event and other properties
          */
         toggleGroup: function(params) {
-            var node = params.$source;
-            if (node)
+            var node = params.$source,
+                child;
+
+            if (node) {
                 domClass.toggle(node, 'collapsed');
+                child = node.children[0];
+
+                // Child is the button icon indicator for collapsed/expanded
+                if (child) {
+                    if (domClass.contains(child, this.expanedIconClass)) {
+                        domClass.replace(child, this.collapsedIconClass, this.expanedIconClass);
+                    } else {
+                        domClass.replace(child, this.expanedIconClass, this.collapsedIconClass);
+                    }
+                }
+            }
         },
         /**
          * Overwrites the parent {@link List#processFeed processFeed} to introduce grouping by group tags, see {@link #getGroupForEntry getGroupForEntry}.

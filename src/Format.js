@@ -23,6 +23,7 @@
 define('Sage/Platform/Mobile/Format', [
     'dojo/_base/json',
     'dojo/_base/lang',
+    'dojo/_base/array',
     'dojo/dom-construct',
     'dojo/string',
     'dojo/number',
@@ -32,6 +33,7 @@ define('Sage/Platform/Mobile/Format', [
 ], function(
     json,
     lang,
+    array,
     domConstruct,
     string,
     dNumber,
@@ -229,9 +231,23 @@ define('Sage/Platform/Mobile/Format', [
          * @return {String} An `<a>` element as a string.
          */
         link: function(val) {
-            if (typeof val !== 'string')
+            if (typeof val !== 'string') {
                 return val;
+            }
 
+            // Check if the user specified a URI scheme,
+            // does not include all URI Schemes, such as tel:, etc.
+            var schemes = ['://', 'mailto:'], hasURIScheme;
+
+            hasURIScheme = array.some(schemes, function(scheme) {
+                return val.indexOf(scheme) > -1;
+            });
+
+            if (hasURIScheme) {
+                return string.substitute('<a target="_blank" href="${0}">${0}</a>', [val]);
+            }
+
+            // Specify a default URI scheme of http
             return string.substitute('<a target="_blank" href="http://${0}">${0}</a>', [val]);
         },
         /**

@@ -86,7 +86,7 @@ define('tests/Fields/LookupFieldTests', [
 
             field.singleSelect = false;
             options = field.createNavigationOptions();
-            expect(options.tools.tbar[0].cls).toBe(undefined);
+            expect(options.tools.tbar[0].cls).not.toBe(undefined);
 
 
             field.destroy();

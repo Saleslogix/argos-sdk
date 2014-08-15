@@ -33,7 +33,6 @@ for(var j=0;j<_e.data.length;j++){
 if(_e.data[j]!==null){
 if(typeof _e.data[j]=="number"){
 var _f=_d.vmin,_10=_d.vmax;
-if(!("ymin" in _e)||!("ymax" in _e)){
 _2.forEach(_e.data,function(val,i){
 if(val!==null){
 var x=i+1,y=val;
@@ -46,7 +45,6 @@ _d.vmin=Math.min(_d.vmin,y);
 _d.vmax=Math.max(_d.vmax,y);
 }
 });
-}
 if("ymin" in _e){
 _d.vmin=Math.min(_f,_e.ymin);
 }

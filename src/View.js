@@ -205,10 +205,13 @@ define('Sage/Platform/Mobile/View', [
             if (this.options.title) {
                 this.set('title', this.options.title);
             } else {
-                this.set('title', this.titleText);
+                this.set('title', (this.get('title') || this.titleText));
             }
 
             this.onActivate(this);
+        },
+        _getScrollerAttr: function() {
+            return this.scrollerNode || this.domNode;
         },
         /**
          * Shows the view using iUI in order to transition to the new element.
@@ -231,7 +234,7 @@ define('Sage/Platform/Mobile/View', [
             if (this.options.title) {
                 this.set('title', this.options.title);
             } else {
-                this.set('title', this.titleText);
+                this.set('title', (this.get('title') || this.titleText));
             }
 
             tag = this.getTag();

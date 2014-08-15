@@ -138,7 +138,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         loadingTemplate: new Simplate([
             '<fieldset class="panel-loading-indicator">',
-            '<div class="row"><div>{%: $.loadingText %}</div></div>',
+            '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>',
             '</fieldset>'
         ]),
         /**
@@ -203,11 +203,6 @@ define('Sage/Platform/Mobile/_EditBase', [
             '</div>'
         ]),
 
-        /**
-         * @property {String}
-         * Sets the ReUI transition effect for when this view comes into view
-         */
-        transitionEffect: 'slide',
         /**
          * @cfg {String}
          * The unique identifier of the view
@@ -299,6 +294,7 @@ define('Sage/Platform/Mobile/_EditBase', [
         HTTP_STATUS: {
             PRECONDITION_FAILED: 412
         },
+        _focusField: null,
 
         /**
          * Extends constructor to initialze `this.fields` to {}
@@ -349,6 +345,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             var tbar = [{
                     id: 'save',
                     action: 'save',
+                    cls: 'fa fa-save fa-fw fa-lg',
                     security: this.options && this.options.insert
                         ? this.insertSecurity
                         : this.updateSecurity
@@ -357,6 +354,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             if (!App.isOnFirstView()) {
                 tbar.push({
                     id: 'cancel',
+                    cls: 'fa fa-ban fa-fw fa-lg',
                     side: 'left',
                     fn: ReUI.back,
                     scope: ReUI
@@ -576,8 +574,7 @@ define('Sage/Platform/Mobile/_EditBase', [
 
             return tag;
         },
-        processLayout: function(layout)
-        {
+        processLayout: function(layout) {
             var rows = (layout['children'] || layout['as'] || layout),
                 options = layout['options'] || (layout['options'] = {
                     title: this.detailsText
@@ -585,7 +582,10 @@ define('Sage/Platform/Mobile/_EditBase', [
                 sectionQueue = [],
                 sectionStarted = false,
                 content = [],
-                current;
+                current,
+                ctor,
+                field,
+                template;
 
             for (var i = 0; i < rows.length; i++) {
                 current = rows[i];
@@ -606,11 +606,17 @@ define('Sage/Platform/Mobile/_EditBase', [
                     content.push(this.sectionBeginTemplate.apply(layout, this));
                 }
 
-                var ctor = FieldManager.get(current['type']),
-                    field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
+                ctor = FieldManager.get(current['type']);
+                field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
                         owner: this
-                    }, current)),
-                    template = field.propertyTemplate || this.propertyTemplate;
+                    }, current));
+                template = field.propertyTemplate || this.propertyTemplate;
+
+                if (field.autoFocus && !this._focusField) {
+                    this._focusField = field;
+                } else if (field.autoFocus && this._focusField) {
+                    throw new Error("Only one field can have autoFocus set to true in the Edit layout.");
+                }
 
 
                 this.connect(field, 'onShow', this._onShowField);
@@ -724,15 +730,17 @@ define('Sage/Platform/Mobile/_EditBase', [
          * @return {Object} A single object payload with all the values.
          */
         getValues: function(all) {
-            var o = {},
+            var payload = {},
                 empty = true,
                 field,
                 value,
                 target,
                 include,
-                exclude;
+                exclude,
+                name,
+                prop;
 
-            for (var name in this.fields) {
+            for (name in this.fields) {
                 field = this.fields[name];
                 value = field.getValue();
 
@@ -757,16 +765,27 @@ define('Sage/Platform/Mobile/_EditBase', [
                 // for now, explicitly hidden fields (via. the field.hide() method) are not included
                 if (all || ((field.alwaysUseValue || field.isDirty() || include) && !field.isHidden())) {
                     if (field.applyTo !== false) {
-                        target = utility.getValue(o, field.applyTo);
-                        lang.mixin(target, value);
+                        if (typeof field.applyTo === 'function') {
+                            if (typeof value === 'object') {
+                                // Copy the value properties into our payload object
+                                for (prop in value) {
+                                    payload[prop] = value[prop];
+                                }
+                            }
+
+                            field.applyTo(payload, value);
+                        } else if (typeof field.applyTo === 'string') {
+                            target = utility.getValue(payload, field.applyTo);
+                            lang.mixin(target, value);
+                        }
                     } else {
-                        utility.setValue(o, field.property || name, value);
+                        utility.setValue(payload, field.property || name, value);
                     }
 
                     empty = false;
                 }
             }
-            return empty ? false : o;
+            return empty ? false : payload;
         },
         /**
          * Loops and gathers the validation errors returned from each field and adds them to the
@@ -922,7 +941,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                         overwrite: true,
                         id: store.getIdentity(this.entry)
                 };
-                entry = this.createItemForUpdate(values);
+                entry = this.createEntryForUpdate(values);
 
                 this._applyStateToPutOptions(putOptions);
 
@@ -941,15 +960,15 @@ define('Sage/Platform/Mobile/_EditBase', [
             var values = this.getValues();
 
             return this.inserting
-                ? this.createItemForUpdate(values)
-                : this.createEntryForInsert(values);
+                ? this.createEntryForInsert(values)
+                : this.createEntryForUpdate(values);
         },
         /**
          * Takes the values object and adds the needed propertiers for updating.
          * @param {Object} values
          * @return {Object} Object with properties for updating
          */
-        createItemForUpdate: function(values) {
+        createEntryForUpdate: function(values) {
             return this.convertValues(values);
         },
         /**
@@ -1146,6 +1165,13 @@ define('Sage/Platform/Mobile/_EditBase', [
                 } else {
                     domClass.remove(this.domNode, 'panel-loading');
                 }
+            }
+
+            this.inherited(arguments);
+        },
+        onTransitionTo: function() {
+            if (this._focusField) {
+                this._focusField.focus();
             }
 
             this.inherited(arguments);

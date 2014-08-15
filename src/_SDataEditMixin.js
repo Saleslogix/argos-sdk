@@ -74,6 +74,20 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
                 this.requestTemplate();
             }
         },
+        createEntryForUpdate: function(values) {
+            values = this.inherited(arguments);
+            return lang.mixin(values, {
+                '$key': this.entry['$key'],
+                '$etag': this.entry['$etag'],
+                '$name': this.entry['$name']
+            });
+        },
+        createEntryForInsert: function(values) {
+            values = this.inherited(arguments);
+            return lang.mixin(values, {
+                '$name': this.entityName
+            });
+        },
         /**
          * ApplyContext is called during {@link #processTemplateEntry processTemplateEntry} and is
          * intended as a hook for when you are inserting a new entry (not editing) and wish to apply
@@ -112,6 +126,10 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
 
             if (this.queryInclude) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Include, this.queryInclude.join(','));
+            }
+
+            if (this.contractName) {
+                request.setContractName(this.contractName);
             }
 
             return request;

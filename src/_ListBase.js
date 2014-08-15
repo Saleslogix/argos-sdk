@@ -20,6 +20,7 @@
  * @extends Sage.Platform.Mobile.View
  * @alternateClassName _ListBase
  * @requires Sage.Platform.Mobile.ErrorManager
+ * @requires Sage.Platform.Mobile.Utility
  * @requires Sage.Platform.Mobile.SearchWidget
  */
 define('Sage/Platform/Mobile/_ListBase', [
@@ -38,6 +39,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     'dojo/Deferred',
     'dojo/promise/all',
     'dojo/when',
+    'Sage/Platform/Mobile/Utility',
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/View',
     'Sage/Platform/Mobile/SearchWidget',
@@ -59,6 +61,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     Deferred,
     all,
     when,
+    Utility,
     ErrorManager,
     View,
     SearchWidget,
@@ -115,7 +118,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          *      loadingText         The text to display while loading.
          */
         loadingTemplate: new Simplate([
-            '<li class="list-loading-indicator"><div>{%= $.loadingText %}</div></li>'
+            '<li class="list-loading-indicator"><span class="fa fa-spinner fa-spin"></span><div>{%= $.loadingText %}</div></li>'
         ]),
         /**
          * @property {Simplate}
@@ -169,7 +172,11 @@ define('Sage/Platform/Mobile/_ListBase', [
         rowTemplate: new Simplate([
             '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
                 '<button data-action="selectEntry" class="list-item-selector button">',
-                    '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
+                    '{% if ($$.selectIconClass) { %}',
+                        '<span class="{%= $$.selectIconClass %}"></span>',
+                    '{% } else if ($$.icon || $$.selectIcon) { %}',
+                        '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
+                    '{% } %}',
                 '</button>',
                 '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
                 '<div id="list-item-content-related"></div>',
@@ -218,12 +225,17 @@ define('Sage/Platform/Mobile/_ListBase', [
          *      actionIndex         The correlating index number of the action collection
          *      title               Text used for ARIA-labeling
          *      icon                Relative path to the icon to use
+         *      cls                 CSS class to use instead of an icon
          *      id                  Unique name of action, also used for alt image text
          *      label               Text added below the icon
          */
         listActionItemTemplate: new Simplate([
             '<button data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">',
-                '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
+                '{% if ($.cls) { %}',
+                    '<span class="{%= $.cls %}"></span>',
+                '{% } else if ($.icon) { %}',
+                    '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
+                '{% } %}',
                 '<label>{%: $.label %}</label>',
             '</button>'
         ]),
@@ -405,7 +417,14 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @property {String}
          * The relative path to the checkmark or select icon for row selector
          */
-        selectIcon: 'content/images/icons/OK_24.png',
+        selectIcon: '',
+
+        /**
+         * @property {String}
+         * CSS class to use for checkmark or select icon for row selector. Overrides selectIcon.
+         */
+        selectIconClass: 'fa fa-check fa-lg',
+
         /**
          * @property {Object}
          * The search widget instance for the view
@@ -597,6 +616,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             return this.tools || (this.tools = {
                 'tbar': [{
                     id: 'new',
+                    cls: 'fa fa-plus fa-fw fa-lg',
                     action: 'navigateToInsertView',
                     security: App.getViewSecurity(this.insertView, 'insert')
                 }]
@@ -873,9 +893,6 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         _onRefresh: function(options) {
         },
-        _getScrollerAttr: function() {
-            return this.scrollerNode || this.domNode;
-        },
         onScroll: function(evt) {
             var pos, height, scrollTop, scrollHeight, remaining, selected, diff, scrollerNode;
             scrollerNode = this.get('scroller');
@@ -973,7 +990,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @return {String}
          */
         escapeSearchQuery: function(searchQuery) {
-            return (searchQuery || '').replace(/"/g, '""');
+            return Utility.escapeSearchQuery(searchQuery);
         },
         /**
          * Handler for the search widgets search.
@@ -1066,6 +1083,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             var view = App.getView(this.detailView);
             if (view) {
                 view.show({
+                    descriptor: descriptor, // keep for backwards compat
                     title: descriptor,
                     key: key
                 });
@@ -1527,6 +1545,11 @@ define('Sage/Platform/Mobile/_ListBase', [
                     this.relatedViewManagers[relatedViewId].destroyViews();
                 }
             }
+        },
+        /**
+         * Returns a promise with the list's count.
+         */
+        getListCount: function(options, callback) {
         }
     });
 });

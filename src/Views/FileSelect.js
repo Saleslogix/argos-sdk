@@ -163,7 +163,6 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             this.contentNode.innerHTML = "";
             domClass.remove(this.fileArea, 'display-none');
             domClass.remove(this.btnUploadFiles, 'display-none');
-            domClass.add(this.btnUploadFiles, 'display-none');
             this.onUpdateProgress('');
         },
         _browesForFiles: function(file) {

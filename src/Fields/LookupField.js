@@ -94,9 +94,11 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          */
         widgetTemplate: new Simplate([
             '<label for="{%= $.name %}">{%: $.label %}</label>',
-            '<button style="z-index: 5;" data-action="buttonClick" class="button simpleSubHeaderButton" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
+            '<button style="z-index: 5;" data-action="buttonClick" class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
             '<input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />'
         ]),
+
+        iconClass: 'fa fa-search fa-lg',
 
         // Localization
         /**
@@ -290,6 +292,11 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
 
             this.set('inputDisabled', true);
         },
+        focus: function() {
+            if (!this.isReadOnly()) {
+                this.inputNode.focus();
+            }
+        },
         /**
          * Determines if the field is readonly by checking for a target view
          * @return {Boolean}
@@ -365,11 +372,13 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 tools: {
                     tbar: [{
                         id: 'complete',
+                        cls: 'fa fa-check fa-fw fa-lg',
                         fn: this.complete,
                         scope: this
                     }, {
                         id: 'cancel',
                         side: 'left',
+                        cls: 'fa fa-ban fa-fw fa-lg',
                         fn: this.reui.back,
                         scope: this.reui
                     }]
@@ -414,6 +423,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
         navigateToListView: function() {
             var view = this.app.getView(this.view),
                 options = this.createNavigationOptions();
+
             if (view && options && !this.disabled) {
                 lang.mixin(view, this.viewMixin);
                 view.show(options);

@@ -75,7 +75,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          *
          * Note the word `default` must be in quotes as default is a reserved word in javascript.
          */
-        'default': null,
+        'default': undefined,
         /**
          * @property {String}
          * The unique (within the current form) name of the field
@@ -97,6 +97,12 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          * the field is constructed
          */
         type: null,
+
+        /**
+         * @property {Boolean}
+         * Flag to indicate if this field should be focused when the form is shown.
+         */
+        autoFocus: false,
 
         app: null,
         reui: null,
@@ -128,6 +134,11 @@ define('Sage/Platform/Mobile/Fields/_Field', [
             if (this.reui === null) {
                 this.reui = window.ReUI;
             }
+        },
+        /**
+         * Focuses the input for the field
+         */
+        focus: function() {
         },
         /**
          * Inserts the field into the given DOM node using dijit Widget `placeAt(node)` and saves
