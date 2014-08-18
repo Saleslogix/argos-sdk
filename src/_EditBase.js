@@ -274,7 +274,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          * @property {String}
          * Text alerted to user when the data has been updated since they last fetched the data.
          */
-        concurrencyErrorText: 'Another user has updated this record, the view will now reload with the updated changes. All changes will be highlighted. Review the changes and save again.',
+        concurrencyErrorText: 'Another user has updated this field. Review the changes and save again.',
         /**
          * @property {Object}
          * Collection of the fields in the layout where the key is the `name` of the field.
@@ -469,7 +469,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             return entry;
         },
         processData: function(entry) {
-            var field, currentValues;
+            var field, currentValues, diffs;
 
             this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
 
@@ -481,12 +481,25 @@ define('Sage/Platform/Mobile/_EditBase', [
                 currentValues = this.getValues(true);
                 this.setValues(this.previousValues, false);
 
-                array.forEach(this.diffs(this.previousValuesAll, currentValues), function(val) {
-                    field = this.fields[val];
-                    if (field) {
-                        field.toggleHighlight();
-                    }
-                }, this);
+                diffs = this.diffs(this.previousValuesAll, currentValues);
+
+                if (diffs.length > 0) {
+                    array.forEach(diffs, function(val) {
+                        field = this.fields[val];
+                        if (field) {
+                            field.toggleHighlight();
+                            this.errors.push({
+                                name: val,
+                                message: this.concurrencyErrorText
+                            });
+                        }
+                    }, this);
+
+                    this.showValidationSummary();
+                } else {
+                    // No diffs found, attempt to re-save
+                    this.save();
+                }
 
                 this.previousValues = null;
                 this.previousValuesAll = null;
@@ -1000,9 +1013,8 @@ define('Sage/Platform/Mobile/_EditBase', [
             var errorItem;
 
             if (error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED) {
-                // Show the user a concurrency error message, preserve our current form values (all of them),
+                // Preserve our current form values (all of them),
                 // and reload the view to fetch the new data.
-                alert(this.concurrencyErrorText);
                 this.previousValues = this.getValues();
                 this.previousValuesAll = this.getValues(true);
                 this.options.key = this.entry.$key; // Force a fetch by key
