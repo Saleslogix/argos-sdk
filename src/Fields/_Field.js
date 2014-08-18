@@ -28,6 +28,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
+    'dojo/dom-class',
     'dijit/_Widget',
     'Sage/Platform/Mobile/_ActionMixin',
     'Sage/Platform/Mobile/_Templated'
@@ -35,6 +36,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
     declare,
     lang,
     string,
+    domClass,
     _Widget,
     _ActionMixin,
     _Templated
@@ -104,6 +106,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
 
         app: null,
         reui: null,
+        highlightCls: 'field-highlight',
 
         /**
          * @property {Simplate}
@@ -196,6 +199,18 @@ define('Sage/Platform/Mobile/Fields/_Field', [
             this.hidden = true;
             this.onHide(this);
         },
+        toggleHighlight: function() {
+            var node = this.domNode;
+            if (node) {
+                domClass.toggle(node, this.highlightCls);
+            }
+        },
+        clearHighlight: function() {
+            var node = this.domNode;
+            if (node) {
+                domClass.remove(node, this.highlightCls);
+            }
+        },
         /**
          * Returns the hidden state
          * @return {Boolean}
@@ -216,7 +231,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          * @template
          */
         setValue: function(val, initial) {
-        },        
+        },
         /**
          * Each field type will need to implement this function to clear the value and visually.
          * @template

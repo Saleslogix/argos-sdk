@@ -1638,6 +1638,10 @@ body > .viewContainer {
 .logo {
   text-align: center;
 }
+.field-highlight {
+  border: 2px solid red;
+  padding: 5px;
+}
 .related-item-count {
   margin: 0 0 0 5px;
 }
