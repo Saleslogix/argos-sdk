@@ -141,7 +141,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * * `$$` => view instance
          */
         propertyTemplate: new Simplate([
-            '<div class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
+            '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}" data-property="{%= $.property || $.name %}">',
             '<label>{%: $.label %}</label>',
             '<span>{%= $.value %}</span>', // todo: create a way to allow the value to not be surrounded with a span tag
             '</div>'
@@ -154,7 +154,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * * `$$` => view instance
          */
         relatedPropertyTemplate: new Simplate([
-            '<div class="row {%= $.cls %}">',
+            '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
             '<label>{%: $.label %}</label>',
             '<span>',
             '<a data-action="activateRelatedEntry" data-view="{%= $.view %}" data-context="{%: $.context %}" data-descriptor="{%: $.descriptor %}">',
