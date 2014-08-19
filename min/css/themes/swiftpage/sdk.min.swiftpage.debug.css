@@ -1116,7 +1116,7 @@ img {
 .row > a {
   display: block;
   margin: 0 0 0 0;
-  padding: 0 0 0 9px;
+  padding: 0 0 0 30px;
   position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1644,6 +1644,10 @@ body > .viewContainer {
 }
 .related-item-count {
   margin: 0 0 0 5px;
+}
+.related-item-count,
+.related-item-label {
+  color: #0000ee;
 }
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
