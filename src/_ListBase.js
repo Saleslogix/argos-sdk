@@ -732,13 +732,23 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         checkActionState: function() {
             var selectedItems = this.get('selectionModel').getSelections(),
-                selection = null, i, action, key;
+                selection = null, key;
 
             for (key in selectedItems) {
                 selection = selectedItems[key];
                 break;
             }
-
+            this._applyStateToActions(selection);
+           
+        },
+        /**
+         * Called from checkActionState method and sets the state of the actions from what was selected from the selected row, it sets the disabled state for each action
+         * item using the currently selected row as context by passing the action instance the selected row to the
+         * action items `enabled` property.
+         * @param {Object} selection 
+         */
+        _applyStateToActions: function(selection) {
+            var i, action;
             // IE10 is destroying the child notes of the actionsNode when the list view refreshes,
             // re-create the action DOM before moving on.
             if (this.actionsNode.childNodes.length === 0 && this.actions.length > 0) {
