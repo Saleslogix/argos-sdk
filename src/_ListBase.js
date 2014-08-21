@@ -1507,7 +1507,6 @@ define('Sage/Platform/Mobile/_ListBase', [
             this.requestedFirstPage = false;
             this.entries = {};
             this.position = 0;
-            this.query = false; // todo: rename to searchQuery
 
             if (this._onScrollHandle) {
                 this.disconnect(this._onScrollHandle);
