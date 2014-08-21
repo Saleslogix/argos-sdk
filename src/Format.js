@@ -303,7 +303,7 @@ define('Sage/Platform/Mobile/Format', [
          *
          * @param {Number/String} val The value will be `parseFloat` before operating.
          * @param {Number} d Number of decimals places to keep, defaults to 2 if not provided.
-         * @return {Number} Fixed number.
+         * @return {String} Fixed number, formatted for the current locale.
          */
         fixed: function(val, d) {
             var m, v, results;
