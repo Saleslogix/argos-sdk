@@ -303,20 +303,26 @@ define('Sage/Platform/Mobile/Format', [
          *
          * @param {Number/String} val The value will be `parseFloat` before operating.
          * @param {Number} d Number of decimals places to keep, defaults to 2 if not provided.
-         * @return {Number} Fixed number.
+         * @return {String} Fixed number, formatted for the current locale.
          */
         fixed: function(val, d) {
+            var m, v, results;
+
             if (typeof val !== 'number' && typeof val !== 'string') {
                 return val;
             }
 
-            if (typeof d !== 'number')
+            if (typeof d !== 'number') {
                 d = 2;
+            }
 
-            var m = Math.pow(10, d),
-                v = Math.floor(parseFloat(val) * m) / m;
+            m = Math.pow(10, d);
+            v = Math.floor(parseFloat(val) * m) / m;
 
-            return v;
+            // Replace the "en" decimal separator with the current culture's
+            results = v.toString().replace('.', Mobile.CultureInfo.numberFormat.numberDecimalSeparator);
+
+            return results;
         },
         /**
          * Takes a decimal number, multiplies by 100 and adds the % sign with the number of palces to the right.

@@ -99,19 +99,19 @@ return describe('Sage.Platform.Mobile.Format', function() {
 
     it('Can fix decimal place - decimals to few', function() {
         var testStr = 1.999999999;
-        expect(format.fixed(testStr, 2)).toEqual(1.99);
+        expect(format.fixed(testStr, 2)).toEqual('1.99');
     });
     it('Can fix decimal place - decimals to none (using 0 as fixed)', function() {
         var testStr = 1.99;
-        expect(format.fixed(testStr, 0)).toEqual(1);
+        expect(format.fixed(testStr, 0)).toEqual('1');
     });
     it('Can fix decimal place - as string for value', function() {
         var testStr = '1.999999999';
-        expect(format.fixed(testStr, 2)).toEqual(1.99);
+        expect(format.fixed(testStr, 2)).toEqual('1.99');
     });
     it('Can fix decimal place - as string for fixed, should fallback to 2 for fixed', function() {
         var testStr = 1.999999999;
-        expect(format.fixed(testStr, '6')).toEqual(1.99);
+        expect(format.fixed(testStr, '6')).toEqual('1.99');
     });
     it('Can handle bad input', function() {
         expect(format.fixed(null)).toEqual(null);
