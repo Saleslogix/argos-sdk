@@ -1013,7 +1013,8 @@ img {
   display: none;
   border: none;
 }
-.panel > .panel-validation-summary {
+.panel > .panel-validation-summary,
+.panel > .panel-concurrency-summary {
   display: none;
 }
 .panel-loading > .panel-loading-indicator {
@@ -1025,11 +1026,13 @@ img {
   display: inline;
   padding: 0;
 }
-.panel-form-error > .panel-validation-summary {
+.panel-form-error > .panel-validation-summary,
+.panel-form-concurrency-error > .panel-concurrency-summary {
   display: block;
 }
 .panel-content > h2,
-.panel-validation-summary > h2 {
+.panel-validation-summary > h2,
+.panel-concurrency-summary > h2 {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1050,7 +1053,8 @@ img {
   line-height: 28px;
   clear: both;
 }
-.panel-validation-summary > ul > li {
+.panel-validation-summary > ul > li,
+.panel-concurrency-summary > ul > li {
   list-style: none;
   clear: both;
 }
@@ -1065,10 +1069,13 @@ img {
 }
 .panel-content > fieldset,
 .panel-validation-summary > fieldset,
+.panel-concurrency-summary > fieldset,
 .panel-content > div,
 .panel-validation-summary > div,
+.panel-concurrency-summary > div,
 .panel-content > ul,
-.panel-validation-summary > ul {
+.panel-validation-summary > ul,
+.panel-concurrency-summary > ul {
   margin: 0;
   padding: 0;
   border: none;
@@ -1080,7 +1087,8 @@ img {
   padding: 0 0 0 0;
 }
 .panel-content > ul > li,
-.panel-validation-summary > ul > li {
+.panel-validation-summary > ul > li,
+.panel-concurrency-summary > ul > li {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1093,7 +1101,8 @@ img {
   display: block;
   cursor: pointer;
 }
-.panel-validation-summary > ul > li > a > h3 {
+.panel-validation-summary > ul > li > a > h3,
+.panel-concurrency-summary > ul > li > h3 {
   overflow: visible;
   text-overflow: inherit;
   white-space: inherit;
@@ -1452,7 +1461,8 @@ body > .viewContainer > .toolbar,
   color: #0f1e1e;
   font-weight: bold;
 }
-.panel-validation-summary > h2 {
+.panel-validation-summary > h2,
+.panel-concurrency-summary > h2 {
   border-bottom: 1px solid #0f1e1e;
   border-top: 1px solid #0f1e1e;
   background-color: #de8649;
@@ -1462,7 +1472,8 @@ body > .viewContainer > .toolbar,
 .panel-content > h2:first-child {
   border-top: 1px solid #d9dcde;
 }
-.panel-validation-summary > h2:first-child {
+.panel-validation-summary > h2:first-child,
+.panel-concurrency-summary > h2:first-child {
   border-top: 1px solid #de8649;
 }
 .panel-form-error > .panel-content > h2:first-child {
@@ -1479,7 +1490,8 @@ textarea:focus {
   border: 1px solid #dddee0;
 }
 .panel-content > ul,
-.panel-validation-summary > ul {
+.panel-validation-summary > ul,
+.panel-concurrency-summary > ul {
   border: none 0px #000000;
   background-color: #ffffff;
 }

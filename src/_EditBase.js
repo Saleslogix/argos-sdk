@@ -106,6 +106,10 @@ define('Sage/Platform/Mobile/_EditBase', [
             validationContent: {
                 node: 'validationContentNode',
                 type: 'innerHTML'
+            },
+            concurrencyContent: {
+                node: 'concurrencyContentNode',
+                type: 'innerHTML'
             }
         },
         /**
@@ -127,6 +131,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             '<div id="{%= $.id %}" title="{%: $.titleText %}" class="overthrow edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '{%! $.loadingTemplate %}',
             '{%! $.validationSummaryTemplate %}',
+            '{%! $.concurrencySummaryTemplate %}',
             '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
             '</div>'
         ]),
@@ -156,6 +161,19 @@ define('Sage/Platform/Mobile/_EditBase', [
         ]),
         /**
          * @property {Simplate}
+         * HTML for the concurrency error area, this div is shown/hidden as needed.
+         *
+         * `$` => the view instance
+         */
+        concurrencySummaryTemplate: new Simplate([
+            '<div class="panel-concurrency-summary">',
+            '<h2>{%: $.concurrencySummaryText %}</h2>',
+            '<ul data-dojo-attach-point="concurrencyContentNode">',
+            '</ul>',
+            '</div>'
+        ]),
+        /**
+         * @property {Simplate}
          * HTML shown when data is being loaded.
          *
          * * `$` => validation error object
@@ -167,6 +185,16 @@ define('Sage/Platform/Mobile/_EditBase', [
             '<h3>{%: $.message %}</h3>',
             '<h4>{%: $$.label %}</h4>',
             '</a>',
+            '</li>'
+        ]),
+        /**
+         * @property {Simplate}
+         * * `$` => validation error object
+         */
+        concurrencySummaryItemTemplate: new Simplate([
+            '<li>',
+            '<h3>{%: $.message %}</h3>',
+            '<h4>{%: $.name %}</h4>',
             '</li>'
         ]),
         /**
@@ -256,6 +284,11 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         validationSummaryText: 'Validation Summary',
         /**
+         * @cfg {String}
+         * The text placed in the header when there are validation errors
+         */
+        concurrencySummaryText: 'Concurrency Error(s)',
+        /**
          * @property {String}
          * Default text used in the section header
          */
@@ -274,7 +307,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          * @property {String}
          * Text alerted to user when the data has been updated since they last fetched the data.
          */
-        concurrencyErrorText: 'Another user has updated this field. Review the changes and save again.',
+        concurrencyErrorText: 'Another user has updated this field.',
         /**
          * @property {Object}
          * Collection of the fields in the layout where the key is the `name` of the field.
@@ -469,39 +502,33 @@ define('Sage/Platform/Mobile/_EditBase', [
             return entry;
         },
         processData: function(entry) {
-            var field, currentValues, diffs;
+            var currentValues, diffs;
 
             this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
 
             this.setValues(entry, true);
 
             // Re-apply changes saved from concurrency/precondition failure
-            if (this.previousValues) {
+            if (this.previousValuesAll) {
                 // Make a copy of the current values, so we can diff them
                 currentValues = this.getValues(true);
-                this.setValues(this.previousValues, false);
 
                 diffs = this.diffs(this.previousValuesAll, currentValues);
 
                 if (diffs.length > 0) {
                     array.forEach(diffs, function(val) {
-                        field = this.fields[val];
-                        if (field) {
-                            field.toggleHighlight();
-                            this.errors.push({
-                                name: val,
-                                message: this.concurrencyErrorText
-                            });
-                        }
+                        this.errors.push({
+                            name: val,
+                            message: this.concurrencyErrorText
+                        });
                     }, this);
 
-                    this.showValidationSummary();
+                    this.showConcurrencySummary();
                 } else {
                     // No diffs found, attempt to re-save
                     this.save();
                 }
 
-                this.previousValues = null;
                 this.previousValuesAll = null;
             }
 
@@ -1015,7 +1042,6 @@ define('Sage/Platform/Mobile/_EditBase', [
             if (error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED) {
                 // Preserve our current form values (all of them),
                 // and reload the view to fetch the new data.
-                this.previousValues = this.getValues();
                 this.previousValuesAll = this.getValues(true);
                 this.options.key = this.entry.$key; // Force a fetch by key
                 delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
@@ -1033,39 +1059,33 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.enable();
         },
         /**
+         * Array of strings that will get ignored when the diffing runs.
+         */
+        diffPropertyIgnores: [],
+        /**
          * Diffs the results from the current values and the previous values.
-         * This is done for a concurrency check to highlight what has changed, the fields between left and right should not be different,
-         * and there is no check for that.
+         * This is done for a concurrency check to indicate what has changed.
          * @returns Array List of property names that have changed
          */
         diffs: function(left, right) {
-            var prop, leftValue, rightValue, acc, toString = Object.prototype.toString;
-            acc = [];
+            var acc = [],
+                DeepDiff = window.DeepDiff,
+                diffs,
+                DIFF_EDITED = 'E';
 
-            for (prop in left) {
-                leftValue = left[prop];
-                rightValue = right[prop];
+            if (DeepDiff) {
+                diffs = DeepDiff.diff(left, right, lang.hitch(this, function(path, key) {
+                    if (array.indexOf(this.diffPropertyIgnores, key) >= 0) {
+                        return true;
+                    }
+                }));
 
-                if (toString.call(leftValue) === '[object Date]' &&
-                    toString.call(rightValue) === '[object Date]') {
-
-                    leftValue = leftValue.valueOf();
-                    rightValue = rightValue.valueOf();
-
-                } else if (toString.call(leftValue) === '[object Object]' &&
-                           toString.call(rightValue) === '[object Object]') {
-                    // TODO: Do we need to recursively inspect child objects?
-                    leftValue = leftValue[this.idProperty];
-                    rightValue = rightValue[this.idProperty];
-                } else if (toString.call(leftValue) !== toString.call(rightValue)) {
-                    // type mismatch, ignore
-                    leftValue = true;
-                    rightValue = true;
-                }
-
-                if (leftValue !== rightValue) {
-                    acc.push(prop);
-                }
+                array.forEach(diffs, function(diff) {
+                    var path = diff.path.join('.');
+                    if (diff.kind === DIFF_EDITED && array.indexOf(acc, path) === -1) {
+                        acc.push(path);
+                    }
+                });
             }
 
             return acc;
@@ -1112,12 +1132,29 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.set('validationContent', content.join(''));
             domClass.add(this.domNode, 'panel-form-error');
         },
+        showConcurrencySummary: function() {
+            var content = [];
+
+            for (var i = 0; i < this.errors.length; i++) {
+                content.push(this.concurrencySummaryItemTemplate.apply(this.errors[i]));
+            }
+
+            this.set('concurrencyContent', content.join(''));
+            domClass.add(this.domNode, 'panel-form-concurrency-error');
+        },
         /**
          * Removes the summary validation visible styling and empties its contents of error markup
          */
         hideValidationSummary: function() {
             domClass.remove(this.domNode, 'panel-form-error');
             this.set('validationContent', '');
+        },
+        /**
+         * Removes teh summary for concurrency errors
+         */
+        hideConcurrencySummary: function() {
+            domClass.remove(this.domNode, 'panel-form-concurrency-error');
+            this.set('concurrencyContent', '');
         },
         /**
          * Handler for the save toolbar action.
@@ -1132,6 +1169,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
 
             this.hideValidationSummary();
+            this.hideConcurrencySummary();
 
             if (this.validate() !== false) {
                 this.showValidationSummary();
@@ -1225,6 +1263,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.inserting = (this.options.insert === true);
 
             domClass.remove(this.domNode, 'panel-form-error');
+            domClass.remove(this.domNode, 'panel-form-concurrency-error');
 
             this.clearValues();
 
