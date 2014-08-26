@@ -56,6 +56,10 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
          * The saved template SData response.
          */
         templateEntry: null,
+        diffPropertyIgnores: [
+            '$etag',
+            '$updated'
+        ],
 
         _buildRefreshMessage: function(entry, result) {
             var message = this.inherited(arguments);

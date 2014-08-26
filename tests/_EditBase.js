@@ -65,7 +65,7 @@ define('tests/_EditBase', ['dojo/_base/lang', 'Sage/Platform/Mobile/_EditBase'],
 
             right.e.$key = 'id2';
 
-            expect(base.diffs(left, right)).toEqual(['d', 'e']);// e object has a different key
+            expect(base.diffs(left, right)).toEqual(['d', 'e.$key']);// e object has a different key
 
             base.destroy();
         });
