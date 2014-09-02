@@ -486,19 +486,11 @@ define('Sage/Platform/Mobile/_EditBase', [
             return entry;
         },
         /**
-         * Loops a given entry testing for date strings and converts them to javascript Date objects
+         * Pre-processes the entry before processEntry runs.
          * @param {Object} entry data
          * @return {Object} entry with actual Date objects
          */
         convertEntry: function(entry) {
-            // todo: should we create a deep copy?
-            // todo: do a deep conversion?
-            for (var n in entry) {
-                if (convert.isDateString(entry[n])) {
-                    entry[n] = convert.toDateFromString(entry[n]);
-                }
-            }
-
             return entry;
         },
         processData: function(entry) {
