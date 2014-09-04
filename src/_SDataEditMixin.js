@@ -80,11 +80,17 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
         },
         createEntryForUpdate: function(values) {
             values = this.inherited(arguments);
-            return lang.mixin(values, {
+            values = lang.mixin(values, {
                 '$key': this.entry['$key'],
                 '$etag': this.entry['$etag'],
                 '$name': this.entry['$name']
             });
+
+            if (App && App.skipConcurrencyCheck) {
+                delete values['$etag'];
+            }
+
+            return values;
         },
         createEntryForInsert: function(values) {
             values = this.inherited(arguments);
