@@ -124,6 +124,11 @@ define('Sage/Platform/Mobile/Application', [
 
     return declare('Sage.Platform.Mobile.Application', null, {
         /**
+         * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
+         */
+        enableConcurrencyCheck: false,
+
+        /**
          * Instance of a ReUI
          */
         ReUI: ReUI,
