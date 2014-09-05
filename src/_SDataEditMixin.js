@@ -86,7 +86,7 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
                 '$name': this.entry['$name']
             });
 
-            if (App && App.skipConcurrencyCheck) {
+            if (App && !App.enableConcurrencyCheck) {
                 delete values['$etag'];
             }
 

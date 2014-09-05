@@ -124,10 +124,9 @@ define('Sage/Platform/Mobile/Application', [
 
     return declare('Sage.Platform.Mobile.Application', null, {
         /**
-         * @property skipConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
-         * WARNING: If this options is enabled and two users attempt to save the same field, the last person to save will win.
+         * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
          */
-        skipConcurrencyCheck: true,
+        enableConcurrencyCheck: false,
 
         /**
          * Instance of a ReUI
