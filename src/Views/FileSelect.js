@@ -22,7 +22,6 @@
  */
 define('Sage/Platform/Mobile/Views/FileSelect', [
     'dojo/_base/declare',
-    'dojo/_base/lang',
     'dojo/window',
     'dojo/has',
     'dojo/dom-construct',
@@ -33,7 +32,6 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     'Sage/Platform/Mobile/View'
 ], function(
     declare,
-    lang,
     win,
     has,
     domConstruct,
@@ -156,9 +154,9 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             this.fileWrapper.appendChild(node);
             this.btnFileSelect = node;
 
-            this.btnFileSelect.onchange = lang.hitch(this, function(e){
+            this.btnFileSelect.onchange = function(e){
                 this._onSelectFile(e);
-            });
+            }.bind(this);
 
             this.contentNode.innerHTML = "";
             domClass.remove(this.fileArea, 'display-none');

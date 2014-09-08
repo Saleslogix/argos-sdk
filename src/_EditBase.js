@@ -685,8 +685,8 @@ define('Sage/Platform/Mobile/_EditBase', [
                 getResults = store.get(getExpression, getOptions);
 
                 Deferred.when(getResults,
-                    lang.hitch(this, this._onGetComplete),
-                    lang.hitch(this, this._onGetError, getOptions)
+                    this._onGetComplete.bind(this),
+                    this._onGetError.bind(this, getOptions)
                 );
 
                 return getResults;
@@ -906,8 +906,8 @@ define('Sage/Platform/Mobile/_EditBase', [
                 this._applyStateToAddOptions(addOptions);
 
                 Deferred.when(store.add(entry, addOptions),
-                    lang.hitch(this, this.onAddComplete, entry),
-                    lang.hitch(this, this.onAddError, addOptions)
+                    this.onAddComplete.bind(this, entry),
+                    this.onAddError.bind(this, addOptions)
                 );
             }
         },
@@ -978,8 +978,8 @@ define('Sage/Platform/Mobile/_EditBase', [
                 this._applyStateToPutOptions(putOptions);
 
                 Deferred.when(store.put(entry, putOptions),
-                    lang.hitch(this, this.onPutComplete, entry),
-                    lang.hitch(this, this.onPutError, putOptions)
+                    this.onPutComplete.bind(this, entry),
+                    this.onPutError.bind(this, putOptions)
                 );
             }
         },
@@ -1066,11 +1066,11 @@ define('Sage/Platform/Mobile/_EditBase', [
                 DIFF_EDITED = 'E';
 
             if (DeepDiff) {
-                diffs = DeepDiff.diff(left, right, lang.hitch(this, function(path, key) {
+                diffs = DeepDiff.diff(left, right, function(path, key) {
                     if (array.indexOf(this.diffPropertyIgnores, key) >= 0) {
                         return true;
                     }
-                }));
+                }.bind(this));
 
                 array.forEach(diffs, function(diff) {
                     var path = diff.path.join('.');

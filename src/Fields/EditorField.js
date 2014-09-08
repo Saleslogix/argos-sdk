@@ -30,12 +30,10 @@
 define('Sage/Platform/Mobile/Fields/EditorField', [
     'dojo/_base/declare',
     'dojo/_base/event',
-    'dojo/_base/lang',
     'Sage/Platform/Mobile/Fields/_Field'
 ], function(
     declare,
     event,
-    lang,
     _Field
 ) {
 
@@ -275,7 +273,7 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
             // requests created in this state (the pre-flight request is made, and the request ends with status 0).
             // wrapping thing in a timeout and placing after the transition starts, mitigates this issue.
             if (success) {
-                setTimeout(lang.hitch(this, this._onComplete), 0);
+                setTimeout(this._onComplete.bind(this), 0);
             }
         },
         /**
