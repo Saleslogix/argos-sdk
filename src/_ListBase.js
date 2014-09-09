@@ -548,7 +548,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                 this.searchWidget = this.searchWidget || new searchWidgetCtor({
                     'class': 'list-search',
                     'owner': this,
-                    'onSearchExpression': lang.hitch(this, this._onSearchExpression)
+                    'onSearchExpression': this._onSearchExpression.bind(this)
                 });
                 this.searchWidget.placeAt(this.searchNode, 'replace');
             } else {
@@ -567,7 +567,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             if (this.searchWidget) {
                 this.searchWidget.configure({
                     'hashTagQueries': this._createCustomizedLayout(this.createHashTagQueryLayout(), 'hashTagQueries'),
-                    'formatSearchQuery': lang.hitch(this, this.formatSearchQuery)
+                    'formatSearchQuery': this.formatSearchQuery.bind(this)
                 });
             }
 
@@ -1157,8 +1157,8 @@ define('Sage/Platform/Mobile/_ListBase', [
                     queryResults = store.query(queryExpression, queryOptions);
 
                 when(queryResults,
-                    lang.hitch(this, this._onQueryComplete, queryResults),
-                    lang.hitch(this, this._onQueryError, queryOptions)
+                    this._onQueryComplete.bind(this, queryResults),
+                    this._onQueryError.bind(this, queryOptions)
                 );
 
                 return queryResults;
@@ -1170,7 +1170,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             try {
                 var start = this.position, scrollerNode = this.get('scroller');
 
-                when(queryResults.total, lang.hitch(this, this._onQueryTotal));
+                when(queryResults.total, this._onQueryTotal.bind(this));
 
                 /* todo: move to a more appropriate location */
                 if (this.options && this.options.allowEmptySelection) {

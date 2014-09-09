@@ -221,7 +221,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                 cls: 'fa fa-list fa-2x',
                 action: 'onNavigateToList',
                 isEnabled:true,
-                fn: this.onNavigateToList.bindDelegate(this)
+                fn: this.onNavigateToList.bind(this)
             }]
             );
         },
@@ -236,7 +236,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
 
                 lang.mixin(action, options);
                 actionNode = domConstruct.toDom(actionTemplate.apply(action, action.id));
-                on(actionNode, 'click', lang.hitch(this, this.onInvokeActionItem));
+                on(actionNode, 'click', this.onInvokeActionItem.bind(this));
                 domConstruct.place(actionNode, this.actionsNode, 'last');
             }
 
@@ -342,9 +342,9 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                 (function(context, relatedResults) {
 
                     try {
-                        when(relatedResults, lang.hitch(context, function(relatedFeed) {
+                        when(relatedResults, function(relatedFeed) {
                             this.onApply(relatedFeed);
-                        }));
+                        }.bind(context));
                     }
                     catch (error) {
                         console.log('Error fetching related view data:' + error);
@@ -387,7 +387,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                         itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
                         itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
                         itemNode = domConstruct.toDom(itemHTML);
-                        on(itemNode, 'click', lang.hitch(this, this.onSelectViewRow));
+                        on(itemNode, 'click', this.onSelectViewRow.bind(this));
                         domConstruct.place(itemNode, this.itemsNode, 'last', this);
                     }
                     

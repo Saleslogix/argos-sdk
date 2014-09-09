@@ -539,7 +539,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 // executing during the transition can potentially fail (status 0).  this might only be an issue with CORS
                 // requests created in this state (the pre-flight request is made, and the request ends with status 0).
                 // wrapping thing in a timeout and placing after the transition starts, mitigates this issue.
-                setTimeout(lang.hitch(this, this._onComplete), 0);
+                setTimeout(this._onComplete.bind(this), 0);
             }
         },
         /**
@@ -563,7 +563,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
 
                 if (!this.requireSelection && !this.textTemplate)
                     if (this.originalValue.text != this.getText())
-                        return true;                
+                        return true;
 
                 return false;
             }
@@ -572,7 +572,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
             {
                 if (!this.requireSelection && !this.textTemplate)
                     if (this.originalValue.text != this.getText())
-                        return true; 
+                        return true;
             }
             else
             {

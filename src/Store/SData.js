@@ -238,6 +238,8 @@ define('Sage/Platform/Mobile/Store/SData', [
 
             return request;
         },
+        _onCancel: function(deferred) {
+        },
         _onRequestFeedSuccess: function(queryDeferred, feed) {
             if (feed) {
                 var items = lang.getObject(this.itemsProperty, false, feed),
@@ -298,9 +300,9 @@ define('Sage/Platform/Mobile/Store/SData', [
                 : request.read;
 
             handle.value = method.call(request, {
-                success: lang.hitch(this, this._onRequestEntrySuccess, deferred),
-                failure: lang.hitch(this, this._onRequestFailure, deferred),
-                abort: lang.hitch(this, this._onRequestAbort, deferred)
+                success: this._onRequestEntrySuccess.bind(this, deferred),
+                failure: this._onRequestFailure.bind(this, deferred),
+                abort: this._onRequestAbort.bind(this, deferred)
             });
 
             return deferred;
@@ -377,9 +379,9 @@ define('Sage/Platform/Mobile/Store/SData', [
                 : request.create;
 
             handle.value = method.call(request, object, {
-                success: lang.hitch(this, this._onTransmitEntrySuccess, deferred),
-                failure: lang.hitch(this, this._onRequestFailure, deferred),
-                abort: lang.hitch(this, this._onRequestAbort, deferred)
+                success: this._onTransmitEntrySuccess.bind(this, deferred),
+                failure: this._onRequestFailure.bind(this, deferred),
+                abort: this._onRequestAbort.bind(this, deferred)
             });
 
             return deferred;
@@ -415,16 +417,16 @@ define('Sage/Platform/Mobile/Store/SData', [
          */
         query: function(query, queryOptions) {
             var handle = {},
-                queryDeferred = new Deferred(lang.hitch(this, this._onCancel, handle)),
+                queryDeferred = new Deferred(this._onCancel.bind(this, handle)),
                 request = this._createFeedRequest(query, queryOptions || {}),
                 method,
                 options;
 
             queryDeferred.total = -1;
             options = {
-                success: lang.hitch(this, this._onRequestFeedSuccess, queryDeferred),
-                failure: lang.hitch(this, this._onRequestFailure, queryDeferred),
-                abort: lang.hitch(this, this._onRequestAbort, queryDeferred),
+                success: this._onRequestFeedSuccess.bind(this, queryDeferred),
+                failure: this._onRequestFailure.bind(this, queryDeferred),
+                abort: this._onRequestAbort.bind(this, queryDeferred),
                 httpMethodOverride: queryOptions && queryOptions['httpMethodOverride']
             };
 

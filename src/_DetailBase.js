@@ -736,8 +736,8 @@ define('Sage/Platform/Mobile/_DetailBase', [
                 getResults = store.get(getExpression, getOptions);
 
                 Deferred.when(getResults,
-                    lang.hitch(this, this._onGetComplete),
-                    lang.hitch(this, this._onGetError, getOptions)
+                    this._onGetComplete.bind(this),
+                    this._onGetError.bind(this, getOptions)
                 );
 
                 return getResults;
