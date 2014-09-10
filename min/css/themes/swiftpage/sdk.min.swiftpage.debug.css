@@ -107,6 +107,9 @@
 .list-content > li {
   cursor: pointer;
 }
+.list-content > li > h3 {
+  font-size: .75em !important;
+}
 .list-search .dismissButton {
   display: none;
 }
@@ -295,7 +298,7 @@
 .list .scroller {
   position: absolute;
   width: 100%;
-  top: 48px;
+  top: 37px;
   bottom: 0px;
 }
 .list .item-static-icon {
@@ -450,7 +453,7 @@
   padding: 8px 34px 8px 0px;
 }
 .list-search {
-  padding: 6px;
+  padding: 1px;
   position: relative;
 }
 .list-search input {
@@ -488,8 +491,8 @@
 }
 div.table-layout {
   display: table;
-  width: 99%;
-  padding: 0 0 0 5px;
+  width: 100%;
+  padding: 0;
   background: #fff;
 }
 div.table-layout > div {
@@ -506,7 +509,6 @@ div.table-layout div.hasButton > button {
 }
 div.table-layout div.hasButton > button.searchButton {
   border: none;
-  border-left: 1px solid #0f1e1e;
 }
 div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
   border: 0;
@@ -957,7 +959,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
   font-size: 1.25em;
   font-weight: bold;
   list-style: none;
-  margin: 0px 0px 6px 0px;
+  margin: 0px 0px 1px 0px;
   padding: 4px 0px 4px 10px;
   position: relative;
 }
@@ -1371,7 +1373,7 @@ img {
   display: inline-block;
 }
 body {
-  font-family: Helvetica Neue, Helvetica, Arial;
+  font-family: Helvetica, Arial, Sans-serif;
   color: #0f1e1e;
   font-size: 1em;
 }
