@@ -50,8 +50,8 @@ define('Sage/Platform/Mobile/GroupedList', [
          */
         toggleCollapseText: 'toggle collapse',
 
-        collapsedIconClass: 'fa-angle-double-right',
-        expanedIconClass: 'fa-angle-double-down',
+        collapsedIconClass: 'fa-chevron-right',
+        expanedIconClass: 'fa-chevron-down',
 
         /**
          * @property {Simplate}
