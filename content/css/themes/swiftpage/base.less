@@ -114,6 +114,11 @@
     cursor: pointer;
 }
 
+.list-content > li > h3
+{
+    font-size: .75em !important;
+}
+
 .list-search .dismissButton
 {
     display: none;
@@ -361,7 +366,7 @@
 {
     position: absolute;
     width: 100%;
-    top: 48px;
+    top: 37px;
     bottom: 0px;
 }
 
@@ -562,7 +567,7 @@
 
 .list-search
 {
-    padding: 6px;
+    padding: 1px;
     position: relative;
 }
 
@@ -608,8 +613,8 @@
 div.table-layout
 {
     display: table;
-    width: 99%;
-    padding: 0 0 0 5px;
+    width: 100%;
+    padding: 0;
     background: #fff;
 }
 div.table-layout > div
@@ -630,7 +635,6 @@ div.table-layout div.hasButton > button
 div.table-layout div.hasButton > button.searchButton
 {
     border: @button-border;
-    border-left: 1px solid @black-darker;
 }
 div.table-layout div input:not([type|=radio]):not([type|=checkbox])
 {
@@ -1166,7 +1170,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
     font-size: 1.25em;
     font-weight: bold;
     list-style: none;
-    margin: 0px 0px 6px 0px;
+    margin: 0px 0px 1px 0px;
     padding: 4px 0px 4px 10px;
     position: relative;
 }
