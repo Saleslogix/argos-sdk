@@ -432,7 +432,6 @@
 .row-edit[data-field-type="note"] > textarea {
   padding: 8px 34px 8px 0px;
   height: 10em;
-  overflow: hidden;
 }
 .row-edit[data-field-type="duration"] > div > .autoComplete-watermark {
   position: absolute;
