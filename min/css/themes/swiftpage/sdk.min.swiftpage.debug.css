@@ -716,6 +716,7 @@ ul.action-list > li > a > div {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  color: #007dbe;
 }
 .action-list > li > a > span {
   display: block;
@@ -1098,8 +1099,8 @@ img {
 }
 .panel-content > ul > li > a,
 .panel-validation-summary > ul > li > a {
-  padding: 4px;
-  margin: 0px;
+  padding: 1px;
+  margin: 0 0 0 30px;
   display: block;
   cursor: pointer;
 }
@@ -1122,7 +1123,6 @@ img {
 .row {
   text-align: left;
   clear: both;
-  line-height: 2.3em;
   padding: 0 .75em;
 }
 .row > div > span,
@@ -1377,6 +1377,11 @@ body {
   color: #0f1e1e;
   font-size: 1em;
 }
+a {
+  color: #007dbe;
+  text-decoration: underline;
+  cursor: pointer;
+}
 body body > .viewContainer {
   background: #ffffff;
 }
@@ -1511,7 +1516,7 @@ textarea:focus {
 .panel-content > div > .row > div > label,
 .panel-content > div > .row > label {
   font-weight: bold;
-  color: #007dbe;
+  color: #4b5656;
 }
 .panel-content > fieldset > .row-edit > div > textarea,
 .panel-content > fieldset > .row-edit > textarea {
@@ -1661,11 +1666,11 @@ body > .viewContainer {
   padding: 5px;
 }
 .related-item-count {
-  margin: 0 0 0 5px;
+  margin: 0 0 0 1px;
 }
 .related-item-count,
 .related-item-label {
-  color: #0000ee;
+  color: #007dbe;
 }
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
