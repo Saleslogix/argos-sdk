@@ -235,6 +235,8 @@ define('Sage/Platform/Mobile/_ListBase', [
                     '<span class="{%= $.cls %}"></span>',
                 '{% } else if ($.icon) { %}',
                     '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
+                '{% } else { %}',
+                    '<span class="fa fa-level-down fa-2x"></span>',
                 '{% } %}',
                 '<label>{%: $.label %}</label>',
             '</button>'
