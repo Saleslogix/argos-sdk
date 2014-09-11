@@ -670,9 +670,6 @@ body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-c
 #datetime-picker .datetime-tt {
   border: none !important;
 }
-.collapsed {
-  margin-bottom: -1px !important;
-}
 h2 > .collapsed-indicator {
   height: 30px;
   width: 30px;
