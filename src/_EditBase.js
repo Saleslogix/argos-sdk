@@ -328,6 +328,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             PRECONDITION_FAILED: 412
         },
         _focusField: null,
+        _hasFocused: false,
 
         /**
          * Extends constructor to initialze `this.fields` to {}
@@ -1212,8 +1213,11 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.inherited(arguments);
         },
         onTransitionTo: function() {
-            if (this._focusField) {
+            // Focus the default focus field if it exists and it has not already been focused.
+            // This flag is important because onTransitionTo will fire multiple times if the user is using lookups and editor type fields that transition away from this view.
+            if (this._focusField && !this._hasFocused) {
                 this._focusField.focus();
+                this._hasFocused = true;
             }
 
             this.inherited(arguments);
@@ -1253,6 +1257,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.entry = false;
             this.changes = false;
             this.inserting = (this.options.insert === true);
+            this._hasFocused = false;
 
             domClass.remove(this.domNode, 'panel-form-error');
             domClass.remove(this.domNode, 'panel-form-concurrency-error');
