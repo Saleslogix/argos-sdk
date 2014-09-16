@@ -332,8 +332,24 @@ define('Sage/Platform/Mobile/_DetailBase', [
                     cls: 'fa fa-pencil fa-fw fa-lg',
                     action: 'navigateToEditView',
                     security: App.getViewSecurity(this.editView, 'update')
+                }, {
+                    id: 'refresh',
+                    cls: 'fa fa-refresh fa-fw fa-lg',
+                    action: '_refreshClicked'
                 }]
             });
+        },
+        _refreshClicked: function() {
+            this.clear();
+            this.refreshRequired = true;
+            this.refresh();
+
+            this.onRefreshClicked();
+        },
+        /**
+         * Called when the user clicks the refresh toolbar button.
+         */
+        onRefreshClicked: function() {
         },
         /**
          * Extends the {@link _ActionMixin#invokeAction mixins invokeAction} to stop if `data-disableAction` is true
