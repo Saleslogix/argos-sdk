@@ -1027,7 +1027,7 @@ define('Sage/Platform/Mobile/_EditBase', [
 
             connect.publish('/app/refresh', [message]);
 
-            this.onUpdateCompleted(entry);
+            this.onUpdateCompleted(result);
         },
         onPutError: function(putOptions, error) {
             var errorItem;
