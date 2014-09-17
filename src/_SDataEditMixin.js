@@ -86,7 +86,7 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
                 '$name': this.entry['$name']
             });
 
-            if (App && !App.enableConcurrencyCheck) {
+            if (!this._isConcurrencyCheckEnabled()) {
                 delete values['$etag'];
             }
 
@@ -236,11 +236,18 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
         _applyStateToPutOptions: function(putOptions) {
             var store = this.get('store');
 
-            putOptions.version = store.getVersion(this.entry);
+            if (this._isConcurrencyCheckEnabled()) {
+                // The SData store will take the version and apply it to the etag
+                putOptions.version = store.getVersion(this.entry);
+            }
+
             putOptions.entity = store.getEntity(this.entry) || this.entityName;
         },
         _applyStateToAddOptions: function(addOptions) {
             addOptions.entity = this.entityName;
+        },
+        _isConcurrencyCheckEnabled: function() {
+            return App && App.enableConcurrencyCheck;
         }
     });
 });
