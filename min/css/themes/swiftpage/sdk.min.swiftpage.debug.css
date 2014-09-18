@@ -1458,11 +1458,16 @@ body > .viewContainer > .toolbar,
   background-color: #ffffff;
 }
 .panel-content > h2 {
-  /*border-bottom: @panel-header-border-bottom;*/
-  border-top: 1px solid #d9dcde;
-  /*background-color: @panel-header-bg-color;*/
+  border-bottom: 1px solid #c7cbce;
+  background-color: #d9dcde;
   color: #0f1e1e;
   font-weight: bold;
+}
+.panel-content > h2 > button {
+  float: right;
+  background-color: transparent;
+  border: none;
+  height: 24px;
 }
 .panel-validation-summary > h2,
 .panel-concurrency-summary > h2 {

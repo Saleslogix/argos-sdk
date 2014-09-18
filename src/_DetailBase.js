@@ -111,8 +111,9 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * `$` => the view instance
          */
         sectionBeginTemplate: new Simplate([
-            '<h2>',
+            '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
             '{%: ($.title || $.options.title) %}',
+            '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
             '</h2>',
             '{% if ($.list || $.options.list) { %}',
             '<ul class="{%= ($.cls || $.options.cls) %}">',
@@ -294,6 +295,21 @@ define('Sage/Platform/Mobile/_DetailBase', [
          */
         notAvailableText: 'The requested data is not available.',
         /**
+         * @property {String}
+         * ARIA label text for a collapsible section header
+         */
+        toggleCollapseText: 'toggle collapse',
+        /**
+         * @property {String}
+         * CSS class for the collapse button when in a expanded state
+         */
+        toggleCollapseClass: 'fa fa-chevron-down',
+        /**
+         * @property {String}
+         * CSS class for the collapse button when in a collapsed state
+         */
+        toggleExpandClass: 'fa fa-chevron-right',
+        /**
          * @cfg {String}
          * The view id to be taken to when the Edit button is pressed in the toolbar
          */
@@ -363,6 +379,20 @@ define('Sage/Platform/Mobile/_DetailBase', [
                 return;
             }
             return this.inherited(arguments);
+        },
+        /**
+         * Toggles the collapsed state of the section.
+         */
+        toggleSection: function(params) {
+            var node = dom.byId(params.$source), button = null;
+            if (node) {
+                domClass.toggle(node, 'collapsed');
+                button = query('button', node)[0];
+                if (button) {
+                    domClass.toggle(button, this.toggleCollapseClass);
+                    domClass.toggle(button, this.toggleExpandClass);
+                }
+            }
         },
         /**
          * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.

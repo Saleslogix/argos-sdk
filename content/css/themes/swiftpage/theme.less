@@ -121,11 +121,18 @@ body > .viewContainer > .toolbar,
 
 .panel-content > h2
 {
-    /*border-bottom: @panel-header-border-bottom;*/
-    border-top: @panel-header-border-top;
-    /*background-color: @panel-header-bg-color;*/
+    border-bottom: @panel-header-border-bottom;
+    background-color: @panel-header-bg-color;
     color: @panel-header-color;
     font-weight: @panel-header-font-weight;
+}
+
+.panel-content > h2 > button
+{
+    float: right;
+    background-color: transparent;
+    border: none;
+    height: 24px;
 }
 
 .panel-validation-summary > h2,
