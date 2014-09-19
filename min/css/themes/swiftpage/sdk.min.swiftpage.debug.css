@@ -1467,7 +1467,7 @@ body > .viewContainer > .toolbar,
   float: right;
   background-color: transparent;
   border: none;
-  height: 24px;
+  height: 32px;
 }
 .panel-validation-summary > h2,
 .panel-concurrency-summary > h2 {
@@ -1500,6 +1500,7 @@ textarea:focus {
 .panel-content > ul,
 .panel-validation-summary > ul,
 .panel-concurrency-summary > ul {
+  margin: 0.25em;
   border: none 0px #000000;
   background-color: #ffffff;
 }
