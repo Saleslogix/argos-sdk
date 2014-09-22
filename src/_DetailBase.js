@@ -158,7 +158,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
             '<label>{%: $.label %}</label>',
             '<span>',
-            '<a data-action="activateRelatedEntry" data-view="{%= $.view %}" data-context="{%: $.context %}" data-descriptor="{%: $.descriptor %}">',
+            '<a data-action="activateRelatedEntry" data-view="{%= $.view %}" data-context="{%: $.context %}" data-descriptor="{%: $.descriptor || $.value %}">',
             '{%= $.value %}',
             '</a>',
             '</span>',
