@@ -71,7 +71,7 @@ define('Sage/Platform/Mobile/GroupedList', [
          * Simplate that defines the Group template that includes the header element with collapse button and the row container
          */
         groupTemplate: new Simplate([
-            '<h2 data-action="toggleGroup">',
+            '<h2 data-action="toggleGroup" class="{% if ($.collapsed) { %}collapsed{% } %}">',
             '{%: $.title %}<button class="fa {% if ($.collapsed) { %}{%: $$.collapsedIconClass %} {% } else { %}{%: $$.expanedIconClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
             '</h2>',
             '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>'
