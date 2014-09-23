@@ -200,13 +200,6 @@ define('Sage/Platform/Mobile/Fields/TextField', [
          */
         _onFocus: function(evt) {
             domClass.add(this.domNode, 'text-field-active');
-
-            setTimeout(function() {
-                var value = this.inputNode.value;
-                if (value && value.length > 0) {
-                    this.inputNode.setSelectionRange(0, value.length);
-                }
-            }.bind(this), 10);
         },
         /**
          * Handler for the `onblur` event
