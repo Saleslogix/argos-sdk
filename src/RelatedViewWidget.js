@@ -69,9 +69,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         itemsNode: null,
         loadingNode: null,
         id: 'related-view',
-        icon: 'content/images/icons/ContactProfile_48x48.png',
-        itemIcon: 'content/images/icons/ContactProfile_48x48.png',
-        title: 'Related View',
+        titleText: 'Related View',
         detailViewId: null,
         listViewId: null,
         listViewWhere: null,
@@ -195,6 +193,10 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         ]),
         constructor: function(options) {
             lang.mixin(this, options);
+            if (this.titleText) {
+                this.title = this.titleText;
+            }
+
             this._subscribes = [];
             this._subscribes.push(connect.subscribe('/app/refresh', this, this._onAppRefresh));
         },
@@ -209,17 +211,17 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
         createActionLayout: function() {
             return this.actions || (this.actions = [{
                 id: 'refresh',
-                icon: 'content/images/icons/Recurring_24x24.png',
+                cls: 'fa fa-refresh fa-2x',
                 label: this.refreshViewText,
                 action: 'onRefreshView',
                 isEnabled:true
             }, {
                 id: 'navtoListView',
-                icon: 'content/images/icons/drilldown_24.png',
                 label: this.viewContactsActionText,
+                cls: 'fa fa-list fa-2x',
                 action: 'onNavigateToList',
                 isEnabled:true,
-                fn: this.onNavigateToList.bindDelegate(this)
+                fn: this.onNavigateToList.bind(this)
             }]
             );
         },
@@ -234,7 +236,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
 
                 lang.mixin(action, options);
                 actionNode = domConstruct.toDom(actionTemplate.apply(action, action.id));
-                on(actionNode, 'click', lang.hitch(this, this.onInvokeActionItem));
+                on(actionNode, 'click', this.onInvokeActionItem.bind(this));
                 domConstruct.place(actionNode, this.actionsNode, 'last');
             }
 
@@ -340,9 +342,9 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                 (function(context, relatedResults) {
 
                     try {
-                        when(relatedResults, lang.hitch(context, function(relatedFeed) {
+                        when(relatedResults, function(relatedFeed) {
                             this.onApply(relatedFeed);
-                        }));
+                        }.bind(context));
                     }
                     catch (error) {
                         console.log('Error fetching related view data:' + error);
@@ -385,7 +387,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
                         itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
                         itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
                         itemNode = domConstruct.toDom(itemHTML);
-                        on(itemNode, 'click', lang.hitch(this, this.onSelectViewRow));
+                        on(itemNode, 'click', this.onSelectViewRow.bind(this));
                         domConstruct.place(itemNode, this.itemsNode, 'last', this);
                     }
                     

@@ -114,6 +114,11 @@
     cursor: pointer;
 }
 
+.list-content > li > h3
+{
+    font-size: .75em !important;
+}
+
 .list-search .dismissButton
 {
     display: none;
@@ -171,9 +176,10 @@
 }
 
 .list-loading .list-more .button span,
-.panel.busy .actionButton span
+.panel.busy .actionButton span.indicator
 {
-    background: url('../../../images/loading-indicator-gray.gif') no-repeat scroll 0 50%;
+    visibility: visible;
+    display: inline;
 }
 
 .list-loading .list-more .button span
@@ -186,16 +192,8 @@
 {
     display: block;
     text-align: center;
-    font-size: 1em;
+    font-size: 1.25em;
     font-weight: normal;
-    line-height: 1.5em;
-    padding: 1em;
-}
-
-.list-loading .list-loading-indicator div,
-.panel .panel-loading-indicator div.row > div
-{
-    background: url('../../../images/loading-indicator-white.gif') no-repeat scroll 0 50%;
 }
 
 .list-loading .list-loading-indicator div
@@ -228,6 +226,7 @@
     background: none;
     border: 0 none #000;
     padding: 0 2px 0 0px;
+    color: @black-darker;
 }
 .list-show-actions .list-item-selector
 {
@@ -242,17 +241,6 @@
     color: #000;
     text-shadow: #fff 0px 1px 0px;
     border: 1px solid #ececec;
-
-    background-color: #ffffff;
-    background-image: linear-gradient(to bottom, #fcfcfc, #dfdfdf);
-    background-image: -webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #ffffff),
-        color-stop(1, #ececec)
-    );
-    background-image: -moz-linear-gradient(top, #ffffff, #ececec);
 }
 
 .list-show-actions .list-item-selector > img
@@ -290,7 +278,7 @@
     width: 38px;
     position: absolute;
     top: 8px;
-    left: 0px;
+    left: 6px;
     bottom: 0px;
     z-index: 10;
 }
@@ -303,12 +291,8 @@
 .list-action-selected > .list-item-selector
 {
     border-color: #DDD;
-    background-color: #eaf1df !important;
-    background-image: none !important;
-    border-bottom: 0px none #eaf1df !important;
-    -webkit-border-radius: 3px 3px 0px 0px;
-    border-radius: 3px 3px 0px 0px;
-    bottom: -1px;
+    .border-radius(3px);
+    bottom: 0px;
     height: auto !important;
     box-shadow: none !important;
     -moz-box-shadow: none !important;
@@ -323,7 +307,6 @@
 .actions-row
 {
     display: none;
-    background: #eaf1df;
 }
 
 .actions-row:after
@@ -348,16 +331,33 @@
 
 .actions-row > button > label
 {
-    padding: 0 3px 3px 3px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 2px;
+    padding: 0;
     font-size: 10px;
     white-space: nowrap;
     display: block;
     text-overflow: ellipsis;
     overflow-x: hidden;
 }
+
+.actions-row > button > span
+{
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 2px;
+    padding: 0;
+}
+
 .actions-row > button > img
 {
-    padding: 3px 3px 0 3px;
+    position: absolute;
+    top: 0px;
+    left: 25%;
+    padding: 2px 2px 0 2px;
     width: 24px;
     height: 24px;
 }
@@ -366,7 +366,7 @@
 {
     position: absolute;
     width: 100%;
-    top: 48px;
+    top: 37px;
     bottom: 0px;
 }
 
@@ -436,20 +436,31 @@
 /* busy */
 .toolbar.busy .actionButton span
 {
-    background: url('../../../images/loading-indicator-light-green.gif') no-repeat scroll 0 50%;
     padding: 0 0 0 20px;
 }
 
-.panel.busy .actionButton span
+.panel.busy .actionButton span.indicator
 {
-    padding: 0 0 0 20px;
+    margin: 0 10px 0 0;
 }
+
+.panel.busy
+{
+    opacity: 0.5;
+}
+
+.panel .actionButton span.indicator
+{
+    visibility: hidden;
+    display: none;
+}
+
 
 /* edit/insert */
 .row > div > input:not([type|=radio]):not([type|=checkbox]),
 .row > input:not([type|=radio]):not([type|=checkbox])
 {
-    height: auto;
+    height: 36px;
     padding: 10px 10px 0 0px;
     background-color: @gray2-lighter;
 }
@@ -498,6 +509,7 @@
     padding: 0 12px;
     position: absolute;
     right: 5px;
+    display: block;
 }
 
 .row-edit[data-field-type="picklist"] > div > input,
@@ -527,7 +539,6 @@
 {
     padding: 8px 34px 8px 0px;
     height: 10em;
-    overflow: hidden;
 }
 
 .row-edit[data-field-type="duration"] > div > .autoComplete-watermark
@@ -555,7 +566,7 @@
 
 .list-search
 {
-    padding: 6px;
+    padding: 1px;
     position: relative;
 }
 
@@ -574,7 +585,8 @@
     display: inline-block;
     height: 35px;
     border: @button-border;
-    background-color: @button-bg-color;
+    background-color: @gray2-darker;
+    color: @black-darker;
 }
 
 .list-search .dismissButton {
@@ -600,8 +612,8 @@
 div.table-layout
 {
     display: table;
-    width: 99%;
-    padding: 0 0 0 5px;
+    width: 100%;
+    padding: 0;
     background: #fff;
 }
 div.table-layout > div
@@ -622,7 +634,6 @@ div.table-layout div.hasButton > button
 div.table-layout div.hasButton > button.searchButton
 {
     border: @button-border;
-    border-left: 1px solid @black-darker;
 }
 div.table-layout div input:not([type|=radio]):not([type|=checkbox])
 {
@@ -797,10 +808,6 @@ body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-c
 #datetime-picker .datetime-tt {
     border: none !important;
 }
-.collapsed
-{
-    margin-bottom: -1px !important;
-}
 
 h2 > .collapsed-indicator
 {
@@ -839,6 +846,12 @@ li > .disabled,
     text-overflow: ellipsis;
 }
 
+ul.action-list > li > a > div
+{
+    float: left;
+    margin: 0 0.5em 0 0;
+}
+
 .action-list > li
 {
     line-height: 1em !important;
@@ -854,6 +867,7 @@ li > .disabled,
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    color: @link-color;
 }
 
 .action-list > li > a > span
@@ -880,7 +894,6 @@ li > .disabled,
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    color: #0079A7;
     font-weight: bold;
     margin: 8px;
 }
@@ -904,10 +917,9 @@ li > .disabled,
     font-weight: normal !important;
     margin: 0 0 8px !important;
     padding:6px !important;
-    width: 100% !important; 
+    width: 100% !important;
 }
 .file-label > label {
-    color: #0079A7 !important;
     font-weight: bold !important;
     text-align: left !important;
 }
@@ -1154,7 +1166,7 @@ input:not([type|=radio]):not([type|=checkbox]) {
     font-size: 1.25em;
     font-weight: bold;
     list-style: none;
-    margin: 0px 0px 6px 0px;
+    margin: 0px 0px 1px 0px;
     padding: 4px 0px 4px 10px;
     position: relative;
 }
@@ -1190,6 +1202,17 @@ input:not([type|=radio]):not([type|=checkbox]) {
     margin: 2px 0 0 0px;
 }
 
+.no-data
+{
+    text-align: center;
+}
+
+.no-data > h3
+{
+    white-space: normal;
+}
+
+
 h3
 {
     font-size: .75em;
@@ -1218,9 +1241,11 @@ img
 .panel > .panel-loading-indicator
 {
     display: none;
+    border: none;
 }
 
-.panel > .panel-validation-summary
+.panel > .panel-validation-summary,
+.panel > .panel-concurrency-summary
 {
     display: none;
 }
@@ -1232,13 +1257,21 @@ img
     padding: 0;
 }
 
-.panel-form-error > .panel-validation-summary
+.panel-loading > .panel-loading-indicator span
+{
+    display: inline;
+    padding: 0;
+}
+
+.panel-form-error > .panel-validation-summary,
+.panel-form-concurrency-error > .panel-concurrency-summary
 {
     display: block;
 }
 
 .panel-content > h2,
-.panel-validation-summary > h2
+.panel-validation-summary > h2,
+.panel-concurrency-summary > h2
 {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -1263,7 +1296,8 @@ img
     clear: both;
 }
 
-.panel-validation-summary > ul > li
+.panel-validation-summary > ul > li,
+.panel-concurrency-summary > ul > li
 {
     list-style: none;
     clear: both;
@@ -1283,10 +1317,13 @@ img
 
 .panel-content > fieldset,
 .panel-validation-summary > fieldset,
+.panel-concurrency-summary > fieldset,
 .panel-content > div,
 .panel-validation-summary > div,
+.panel-concurrency-summary > div,
 .panel-content > ul,
-.panel-validation-summary > ul
+.panel-validation-summary > ul,
+.panel-concurrency-summary > ul
 {
     margin: 0;
     padding: 0;
@@ -1302,7 +1339,8 @@ img
 }
 
 .panel-content > ul > li,
-.panel-validation-summary > ul > li
+.panel-validation-summary > ul > li,
+.panel-concurrency-summary > ul > li
 {
     list-style: none;
     margin: 0;
@@ -1313,16 +1351,23 @@ img
 .panel-content > ul > li > a,
 .panel-validation-summary > ul > li > a
 {
-    padding: 4px;
-    margin: 0px;
+    padding: 1px;
+    margin: 0 0 0 30px;
     display: block;
+    cursor: pointer;
 }
 
-.panel-validation-summary > ul > li > a > h3
+.panel-validation-summary > ul > li > a > h3,
+.panel-concurrency-summary > ul > li > h3
 {
     overflow: visible;
     text-overflow: inherit;
     white-space: inherit;
+}
+.row.no-value
+{
+    display: none;
+    visibility: hidden;
 }
 
 .row > div > label,
@@ -1337,7 +1382,6 @@ img
 {
     text-align: left;
     clear: both;
-    line-height: 2.3em;
     padding: 0 .75em;
 }
 
@@ -1348,7 +1392,7 @@ img
 {
     display: block;
     margin: 0 0 0 0;
-    padding: 0 0 0 9px;
+    padding: 0 0 0 30px;
     position: relative;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1357,7 +1401,7 @@ img
 .href
 {
     display: inline-block;
-    color: @yellow-darker;
+    color: @link-color;
     text-decoration: none;
     cursor: pointer;
 }
@@ -1367,11 +1411,6 @@ img
     text-align: center;
     padding: 8px 32px 8px 36px !important;
     font-size: 1.25em;
-}
-
-.no-data
-{
-    text-align: center;
 }
 
 .contextualContent .list-search

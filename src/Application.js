@@ -56,6 +56,32 @@ define('Sage/Platform/Mobile/Application', [
     ReUI
 ) {
 
+    // Polyfill for Funcion.bind, taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+    if (!Function.prototype.bind) {
+      Function.prototype.bind = function (oThis) {
+        if (typeof this !== "function") {
+          // closest thing possible to the ECMAScript 5
+          // internal IsCallable function
+          throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+        }
+
+        var aArgs = Array.prototype.slice.call(arguments, 1),
+            fToBind = this,
+            fNOP = function () {},
+            fBound = function () {
+              return fToBind.apply(this instanceof fNOP && oThis
+                     ? this
+                     : oThis,
+                     aArgs.concat(Array.prototype.slice.call(arguments)));
+            };
+
+        fNOP.prototype = this.prototype;
+        fBound.prototype = new fNOP();
+
+        return fBound;
+      };
+    }
+
     has.add('html5-file-api', function(global, document) {
         if (has('ie')) {
             return false;
@@ -69,11 +95,11 @@ define('Sage/Platform/Mobile/Application', [
     });
 
     lang.extend(Function, {
+        // TODO: Deprecate this in favor of the standard "bind", using polyfill if necessary
         bindDelegate: function(scope) {
             var fn = this;
 
-            if (arguments.length == 1) return function()
-            {
+            if (arguments.length == 1) return function() {
                 return fn.apply(scope || this, arguments);
             };
 
@@ -86,32 +112,36 @@ define('Sage/Platform/Mobile/Application', [
     });
 
     var applyLocalizationTo = function(object, localization) {
-            var target = object.prototype || object;
-            for (var key in localization)
-            {
-                if (lang.isObject(localization[key]))
-                    applyLocalizationTo(target[key], localization[key]);
-                else
-                    target[key] = localization[key];
-            }
-        },
-        localize = function(name, localization) {
-            var target = lang.getObject(name);
-            if (target && target.prototype) target = target.prototype;
-            if (target) applyLocalizationTo(target, localization);
-        },
-        mergeConfiguration = function(baseConfiguration, moduleConfiguration) {
-            if (baseConfiguration)
-            {
-                if (baseConfiguration.modules && moduleConfiguration.modules)
-                    baseConfiguration.modules = baseConfiguration.modules.concat(moduleConfiguration.modules);
+        if (!object) {
+            return;
+        }
 
-                if (baseConfiguration.connections && moduleConfiguration.connections)
-                    baseConfiguration.connections = lang.mixin(baseConfiguration.connections, moduleConfiguration.connections);
+        var target = object.prototype || object;
+        for (var key in localization) {
+            if (lang.isObject(localization[key])) {
+                applyLocalizationTo(target[key], localization[key]);
+            } else {
+                target[key] = localization[key];
             }
+        }
+    },
+    localize = function(name, localization) {
+        var target = lang.getObject(name);
+        if (target && target.prototype) target = target.prototype;
+        if (target) applyLocalizationTo(target, localization);
+    },
+    mergeConfiguration = function(baseConfiguration, moduleConfiguration) {
+        if (baseConfiguration)
+        {
+            if (baseConfiguration.modules && moduleConfiguration.modules)
+                baseConfiguration.modules = baseConfiguration.modules.concat(moduleConfiguration.modules);
 
-            return baseConfiguration;
-        };
+            if (baseConfiguration.connections && moduleConfiguration.connections)
+                baseConfiguration.connections = lang.mixin(baseConfiguration.connections, moduleConfiguration.connections);
+        }
+
+        return baseConfiguration;
+    };
 
     lang.mixin(win.global, {
         'localize': localize,
@@ -119,6 +149,11 @@ define('Sage/Platform/Mobile/Application', [
     });
 
     return declare('Sage.Platform.Mobile.Application', null, {
+        /**
+         * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
+         */
+        enableConcurrencyCheck: false,
+
         /**
          * Instance of a ReUI
          */
@@ -286,7 +321,7 @@ define('Sage/Platform/Mobile/Application', [
          * Establishes signals/handles from dojo's newer APIs
          */
         initSignals: function() {
-            this._signals.push(aspect.after(window.ReUI, 'setOrientation', lang.hitch(this, function(result, args) {
+            this._signals.push(aspect.after(window.ReUI, 'setOrientation', function(result, args) {
                 var value;
                 if (args && args.length > 0) {
                     value = args[0];
@@ -294,7 +329,7 @@ define('Sage/Platform/Mobile/Application', [
                     this.onSetOrientation(value);
                     connect.publish('/app/setOrientation', [value]);
                 }
-            })));
+            }.bind(this)));
         },
         onSetOrientation: function(value) {
         },

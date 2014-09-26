@@ -94,9 +94,11 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          */
         widgetTemplate: new Simplate([
             '<label for="{%= $.name %}">{%: $.label %}</label>',
-            '<button style="z-index: 5;" data-action="buttonClick" class="button simpleSubHeaderButton" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
+            '<button style="z-index: 5;" data-action="buttonClick" class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
             '<input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />'
         ]),
+
+        iconClass: 'fa fa-search fa-lg',
 
         // Localization
         /**
@@ -289,6 +291,11 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
             this.inherited(arguments);
 
             this.set('inputDisabled', true);
+        },
+        focus: function() {
+            if (!this.isReadOnly()) {
+                this.inputNode.focus();
+            }
         },
         /**
          * Determines if the field is readonly by checking for a target view
@@ -532,7 +539,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 // executing during the transition can potentially fail (status 0).  this might only be an issue with CORS
                 // requests created in this state (the pre-flight request is made, and the request ends with status 0).
                 // wrapping thing in a timeout and placing after the transition starts, mitigates this issue.
-                setTimeout(lang.hitch(this, this._onComplete), 0);
+                setTimeout(this._onComplete.bind(this), 0);
             }
         },
         /**
@@ -556,7 +563,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
 
                 if (!this.requireSelection && !this.textTemplate)
                     if (this.originalValue.text != this.getText())
-                        return true;                
+                        return true;
 
                 return false;
             }
@@ -565,7 +572,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
             {
                 if (!this.requireSelection && !this.textTemplate)
                     if (this.originalValue.text != this.getText())
-                        return true; 
+                        return true;
             }
             else
             {

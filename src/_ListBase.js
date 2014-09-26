@@ -20,6 +20,7 @@
  * @extends Sage.Platform.Mobile.View
  * @alternateClassName _ListBase
  * @requires Sage.Platform.Mobile.ErrorManager
+ * @requires Sage.Platform.Mobile.Utility
  * @requires Sage.Platform.Mobile.SearchWidget
  */
 define('Sage/Platform/Mobile/_ListBase', [
@@ -38,6 +39,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     'dojo/Deferred',
     'dojo/promise/all',
     'dojo/when',
+    'Sage/Platform/Mobile/Utility',
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/View',
     'Sage/Platform/Mobile/SearchWidget',
@@ -59,6 +61,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     Deferred,
     all,
     when,
+    Utility,
     ErrorManager,
     View,
     SearchWidget,
@@ -115,7 +118,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          *      loadingText         The text to display while loading.
          */
         loadingTemplate: new Simplate([
-            '<li class="list-loading-indicator"><div>{%= $.loadingText %}</div></li>'
+            '<li class="list-loading-indicator"><span class="fa fa-spinner fa-spin"></span><div>{%= $.loadingText %}</div></li>'
         ]),
         /**
          * @property {Simplate}
@@ -169,7 +172,11 @@ define('Sage/Platform/Mobile/_ListBase', [
         rowTemplate: new Simplate([
             '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
                 '<button data-action="selectEntry" class="list-item-selector button">',
-                    '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
+                    '{% if ($$.selectIconClass) { %}',
+                        '<span class="{%= $$.selectIconClass %}"></span>',
+                    '{% } else if ($$.icon || $$.selectIcon) { %}',
+                        '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
+                    '{% } %}',
                 '</button>',
                 '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
                 '<div id="list-item-content-related"></div>',
@@ -218,12 +225,19 @@ define('Sage/Platform/Mobile/_ListBase', [
          *      actionIndex         The correlating index number of the action collection
          *      title               Text used for ARIA-labeling
          *      icon                Relative path to the icon to use
+         *      cls                 CSS class to use instead of an icon
          *      id                  Unique name of action, also used for alt image text
          *      label               Text added below the icon
          */
         listActionItemTemplate: new Simplate([
             '<button data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">',
-                '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
+                '{% if ($.cls) { %}',
+                    '<span class="{%= $.cls %}"></span>',
+                '{% } else if ($.icon) { %}',
+                    '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
+                '{% } else { %}',
+                    '<span class="fa fa-level-down fa-2x"></span>',
+                '{% } %}',
                 '<label>{%: $.label %}</label>',
             '</button>'
         ]),
@@ -405,7 +419,14 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @property {String}
          * The relative path to the checkmark or select icon for row selector
          */
-        selectIcon: 'content/images/icons/OK_24.png',
+        selectIcon: '',
+
+        /**
+         * @property {String}
+         * CSS class to use for checkmark or select icon for row selector. Overrides selectIcon.
+         */
+        selectIconClass: 'fa fa-check fa-lg',
+
         /**
          * @property {Object}
          * The search widget instance for the view
@@ -529,7 +550,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                 this.searchWidget = this.searchWidget || new searchWidgetCtor({
                     'class': 'list-search',
                     'owner': this,
-                    'onSearchExpression': lang.hitch(this, this._onSearchExpression)
+                    'onSearchExpression': this._onSearchExpression.bind(this)
                 });
                 this.searchWidget.placeAt(this.searchNode, 'replace');
             } else {
@@ -548,7 +569,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             if (this.searchWidget) {
                 this.searchWidget.configure({
                     'hashTagQueries': this._createCustomizedLayout(this.createHashTagQueryLayout(), 'hashTagQueries'),
-                    'formatSearchQuery': lang.hitch(this, this.formatSearchQuery)
+                    'formatSearchQuery': this.formatSearchQuery.bind(this)
                 });
             }
 
@@ -713,13 +734,23 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         checkActionState: function() {
             var selectedItems = this.get('selectionModel').getSelections(),
-                selection = null, i, action, key;
+                selection = null, key;
 
             for (key in selectedItems) {
                 selection = selectedItems[key];
                 break;
             }
-
+            this._applyStateToActions(selection);
+           
+        },
+        /**
+         * Called from checkActionState method and sets the state of the actions from what was selected from the selected row, it sets the disabled state for each action
+         * item using the currently selected row as context by passing the action instance the selected row to the
+         * action items `enabled` property.
+         * @param {Object} selection 
+         */
+        _applyStateToActions: function(selection) {
+            var i, action;
             // IE10 is destroying the child notes of the actionsNode when the list view refreshes,
             // re-create the action DOM before moving on.
             if (this.actionsNode.childNodes.length === 0 && this.actions.length > 0) {
@@ -971,7 +1002,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @return {String}
          */
         escapeSearchQuery: function(searchQuery) {
-            return (searchQuery || '').replace(/"/g, '""');
+            return Utility.escapeSearchQuery(searchQuery);
         },
         /**
          * Handler for the search widgets search.
@@ -1064,6 +1095,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             var view = App.getView(this.detailView);
             if (view) {
                 view.show({
+                    descriptor: descriptor, // keep for backwards compat
                     title: descriptor,
                     key: key
                 });
@@ -1127,8 +1159,8 @@ define('Sage/Platform/Mobile/_ListBase', [
                     queryResults = store.query(queryExpression, queryOptions);
 
                 when(queryResults,
-                    lang.hitch(this, this._onQueryComplete, queryResults),
-                    lang.hitch(this, this._onQueryError, queryOptions)
+                    this._onQueryComplete.bind(this, queryResults),
+                    this._onQueryError.bind(this, queryOptions)
                 );
 
                 return queryResults;
@@ -1140,7 +1172,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             try {
                 var start = this.position, scrollerNode = this.get('scroller');
 
-                when(queryResults.total, lang.hitch(this, this._onQueryTotal));
+                when(queryResults.total, this._onQueryTotal.bind(this));
 
                 /* todo: move to a more appropriate location */
                 if (this.options && this.options.allowEmptySelection) {
@@ -1477,7 +1509,6 @@ define('Sage/Platform/Mobile/_ListBase', [
             this.requestedFirstPage = false;
             this.entries = {};
             this.position = 0;
-            this.query = false; // todo: rename to searchQuery
 
             if (this._onScrollHandle) {
                 this.disconnect(this._onScrollHandle);
@@ -1525,6 +1556,11 @@ define('Sage/Platform/Mobile/_ListBase', [
                     this.relatedViewManagers[relatedViewId].destroyViews();
                 }
             }
+        },
+        /**
+         * Returns a promise with the list's count.
+         */
+        getListCount: function(options, callback) {
         }
     });
 });

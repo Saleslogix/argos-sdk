@@ -93,7 +93,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
     };
 
     var extractInfoFromHash = function(hash) {
-        var segments, position, el;
+        var segments = [], position, el;
         if (hash) {
             if (hash.indexOf(R.hashPrefix) === 0) {
                 segments = hash.substr(R.hashPrefix.length).split(';');

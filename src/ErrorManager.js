@@ -272,14 +272,11 @@ define('Sage/Platform/Mobile/ErrorManager', [
          * Attempts to save all errors into localStorage under the `errorlog` key.
          */
         save: function() {
-            try
-            {
+            try {
                 if (window.localStorage)
                     window.localStorage.setItem('errorlog', json.stringify(errors));
-            }
-            catch(e)
-            {
-
+            } catch(e) {
+                console.error(e);
             }
         }
     }

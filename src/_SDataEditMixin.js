@@ -56,6 +56,10 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
          * The saved template SData response.
          */
         templateEntry: null,
+        diffPropertyIgnores: [
+            '$etag',
+            '$updated'
+        ],
 
         _buildRefreshMessage: function(entry, result) {
             var message = this.inherited(arguments);
@@ -76,11 +80,17 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
         },
         createEntryForUpdate: function(values) {
             values = this.inherited(arguments);
-            return lang.mixin(values, {
+            values = lang.mixin(values, {
                 '$key': this.entry['$key'],
                 '$etag': this.entry['$etag'],
                 '$name': this.entry['$name']
             });
+
+            if (!this._isConcurrencyCheckEnabled()) {
+                delete values['$etag'];
+            }
+
+            return values;
         },
         createEntryForInsert: function(values) {
             values = this.inherited(arguments);
@@ -126,6 +136,10 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
 
             if (this.queryInclude) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Include, this.queryInclude.join(','));
+            }
+
+            if (this.contractName) {
+                request.setContractName(this.contractName);
             }
 
             return request;
@@ -222,11 +236,18 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
         _applyStateToPutOptions: function(putOptions) {
             var store = this.get('store');
 
-            putOptions.version = store.getVersion(this.entry);
+            if (this._isConcurrencyCheckEnabled()) {
+                // The SData store will take the version and apply it to the etag
+                putOptions.version = store.getVersion(this.entry);
+            }
+
             putOptions.entity = store.getEntity(this.entry) || this.entityName;
         },
         _applyStateToAddOptions: function(addOptions) {
             addOptions.entity = this.entityName;
+        },
+        _isConcurrencyCheckEnabled: function() {
+            return App && App.enableConcurrencyCheck;
         }
     });
 });

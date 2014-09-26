@@ -39,6 +39,10 @@
         {
           "text": "moment-with-langs.min.js",
           "path": "../libraries/moment/"
+        },
+        {
+          "text": "deep-diff-0.2.0.min.js",
+          "path": "../libraries/deep-diff/"
         }
       ]
     },

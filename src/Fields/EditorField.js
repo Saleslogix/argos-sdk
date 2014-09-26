@@ -30,12 +30,10 @@
 define('Sage/Platform/Mobile/Fields/EditorField', [
     'dojo/_base/declare',
     'dojo/_base/event',
-    'dojo/_base/lang',
     'Sage/Platform/Mobile/Fields/_Field'
 ], function(
     declare,
     event,
-    lang,
     _Field
 ) {
 
@@ -64,9 +62,11 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
          */
         widgetTemplate: new Simplate([
             '<label for="{%= $.name %}">{%: $.label %}</label>',
-            '<button class="button simpleSubHeaderButton" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
+            '<button class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
             '<input data-dojo-attach-point="inputNode" type="text" />'
         ]),
+
+        iconClass: 'fa fa-pencil fa-lg',
 
         // Localization
         /**
@@ -167,10 +167,12 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
                 tools: {
                     tbar: [{
                         id: 'complete',
+                        cls: 'fa fa-check fa-fw fa-lg',
                         fn: this.complete,
                         scope: this
                     },{
                         id: 'cancel',
+                        cls: 'fa fa-ban fa-fw fa-lg',
                         side: 'left',
                         fn: ReUI.back,
                         scope: ReUI
@@ -271,7 +273,7 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
             // requests created in this state (the pre-flight request is made, and the request ends with status 0).
             // wrapping thing in a timeout and placing after the transition starts, mitigates this issue.
             if (success) {
-                setTimeout(lang.hitch(this, this._onComplete), 0);
+                setTimeout(this._onComplete.bind(this), 0);
             }
         },
         /**

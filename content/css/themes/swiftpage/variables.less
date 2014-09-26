@@ -12,10 +12,10 @@
 @background-lighter:                #f8f8f8;
 
 // secondary blue
-@blue1-darker:                      #3471AF;
-@blue1-dark:                        #6a97cb;
-@blue1-light:                       #96b9da;
-@blue1-lighter:                     #c8daed;
+@blue1-darker:                      #007dbe;
+@blue1-dark:                        #409ece;
+@blue1-light:                       #7fbede;
+@blue1-lighter:                     #bfdeef;
 
 // secondary maroon/red
 @red-darker:                        #c3004b;
@@ -30,7 +30,7 @@
 @purple-ligther:                    #cfbdcd;
 
 // tertiary yellow
-@yellow-darker:                     #ffb900;
+@yellow-darker:                     #ffb400;
 @yellow-dark:                       #eccb4e;
 @yellow-light:                      #f1db83;
 @yellow-lighter:                    #f7eebf;
@@ -43,29 +43,27 @@
 
 // primary black
 @black-darker:                      #0f1e1e;
-@black-dark:                        #4f5657;
-@black-light:                       #888c8d;
-@black-lighter:                     #c1c4c5;
+@black-dark:                        #4b5656;
+@black-light:                       #878e8e;
+@black-lighter:                     #c3c7c7;
 
 // cool dark gray
 @gray1-darker:                      #787d82;
-@gray1-dark:                        #999b9f;
-@gray1-light:                       #b9bcbd;
-@gray1-lighter:                     #dcdcde;
+@gray1-dark:                        #9a9ea1;
+@gray1-light:                       #BBBEC0;
+@gray1-lighter:                     #dddee0;
 
 // cool light gray
 @gray2-darker:                      #b4b9be;
-@gray2-dark:                        #c6c9cc;
-@gray2-light:                       #d7d8dc;
-@gray2-lighter:                     #ebebee;
+@gray2-dark:                        #c7cbce;
+@gray2-light:                       #d9dcde;
+@gray2-lighter:                     #ecedef;
 
 // primary call to action
 @blue2-darker:                      #00dedc;
-@blue2-dark:                        #8fe0e3;
-@blue2-light:                       #aae8ea;
-@blue2-lighter:                     #d0f3f2;
-
-
+@blue2-dark:                        #40e6e5;
+@blue2-light:                       #7feeed;
+@blue2-lighter:                     #bff7f6;
 
 // --------------------------------------------------------
 // Common UI Elements
@@ -74,11 +72,17 @@
 @body-bg-color:                     #fff;
 @text-color:                        @black-darker;
 
-@link-color:                        @blue1-dark;
-@link-hover-color:                  @blue1-darker;
+@link-color:                        @blue1-darker;
+@link-hover-color:                  @blue1-dark;
+
+@mobile-portrait:                   320px;
+@mobile-landscape:                  480px;
+@tablet-portrait:                   768px;
+@tablet-landscape:                  1024px;
+@desktop:                           1280px;
 
 // Fonts
-@font-family:                       Helvetica Neue, Helvetica, Arial;
+@font-family:                       Helvetica, Arial, Sans-serif;
 @font-size-base:                    14px;
 @font-size-large:                   16px;
 @font-size-small:                   12px;
@@ -94,10 +98,10 @@
 @font-weight-h5:                    normal;
 
 // Forms
-@form-label-color:                  @blue1-darker;
+@form-label-color:                  @black-dark;
 @form-label-font-weight:            bold;
-@button-text-color:                 @black-darker;
-@button-bg-color:                   @gray2-darker;
+@button-text-color:                 #fff;
+@button-bg-color:                   @blue1-darker;
 @button-active-bg-color:            #fff;
 @button-border:                     none;
 @button-border-radius:              0px;
@@ -126,10 +130,10 @@
 
 // Panels (Detail, Edit, Calendar)
 @panel-content-bg-color:            #fff;
-@panel-content-border:              1px solid @gray2-light;
-@panel-header-border-top:           1px solid @gray2-light;
-@panel-header-border-bottom:        1px solid @gray2-light;
-@panel-header-bg-color:             @gray2-dark;
+@panel-content-border:              1px solid @gray2-dark;
+@panel-header-border-top:           1px solid @gray2-dark;
+@panel-header-border-bottom:        1px solid @gray2-dark;
+@panel-header-bg-color:             @gray2-light;
 @panel-header-color:                @black-darker;
 @panel-header-font-weight:          bold;
 @panel-content-firstchild-border:   1px solid @gray2-light;
@@ -154,9 +158,9 @@
 @validation-h2-firstchild-border:   1px solid @orange-dark;
 
 // Grouped List
-@glist-header-color:                @gray1-lighter;
-@glist-header-bg-color:             @black-darker;
-@toggle-border:                     2px solid @gray2-dark;
+@glist-header-color:                #fff;
+@glist-header-bg-color:             @black-dark;
+@toggle-border:                     1px solid @gray1-dark;
 @toggle-bg-color:                   @gray1-darker;
 @toggle-border-radius:              6px;
 @toggle-font-size:                  .8em;
@@ -168,7 +172,7 @@
 @toggle-thumb-border:               1px solid @gray1-dark;
 
 // Drawers (Global left menu, contextual right menu)
-@menu-list-item-color:              @gray1-lighter;
+@menu-list-item-color:              #fff;
 @menu-list-item-bg-color:           @black-darker;
 @menu-list-item-border:             2px solid @gray1-lighter;
 @menu-border:                       2px solid @gray1-lighter;

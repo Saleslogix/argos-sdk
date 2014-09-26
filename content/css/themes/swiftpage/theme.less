@@ -5,6 +5,13 @@ body
     font-size: 1em;
 }
 
+a
+{
+    color: @link-color;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 body
 body > .viewContainer
 {
@@ -79,7 +86,6 @@ h5
     position: relative;
     background-color: @glist-header-bg-color;
     color: @glist-header-color;
-    border-bottom: @menu-list-item-border;
 }
 
 .group-content > h2 > button {
@@ -115,14 +121,22 @@ body > .viewContainer > .toolbar,
 
 .panel-content > h2
 {
-    /*border-bottom: @panel-header-border-bottom;*/
-    border-top: @panel-header-border-top;
-    /*background-color: @panel-header-bg-color;*/
+    border-bottom: @panel-header-border-bottom;
+    background-color: @panel-header-bg-color;
     color: @panel-header-color;
     font-weight: @panel-header-font-weight;
 }
 
-.panel-validation-summary > h2
+.panel-content > h2 > button
+{
+    float: right;
+    background-color: transparent;
+    border: none;
+    height: 32px;
+}
+
+.panel-validation-summary > h2,
+.panel-concurrency-summary > h2
 {
     border-bottom: @validation-h2-border;
     border-top: @validation-h2-border;
@@ -136,7 +150,8 @@ body > .viewContainer > .toolbar,
     border-top: @panel-content-firstchild-border;
 }
 
-.panel-validation-summary > h2:first-child
+.panel-validation-summary > h2:first-child,
+.panel-concurrency-summary > h2:first-child
 {
     border-top: @validation-h2-firstchild-border;
 }
@@ -161,10 +176,12 @@ textarea:focus
 }
 
 .panel-content > ul,
-.panel-validation-summary > ul
+.panel-validation-summary > ul,
+.panel-concurrency-summary > ul
 {
+    margin: 0.25em;
     border: @panel-content-list-border;
-    background-color: @panel-content-list-bg-color;    
+    background-color: @panel-content-list-bg-color;
 }
 
 .panel-content > ul a,
@@ -185,7 +202,7 @@ textarea:focus
 .panel-content > div > .row > div > label,
 .panel-content > div > .row > label
 {
-    font-weight: @form-label-font-weight;    
+    font-weight: @form-label-font-weight;
     color: @form-label-color;
 }
 
@@ -357,7 +374,7 @@ body > .viewContainer
 
 .toggleStateOn
 {
-    border: @togglestate-on-border;    
+    border: @togglestate-on-border;
     background-color: @togglestate-on-bg-color;
 }
 
@@ -366,3 +383,19 @@ body > .viewContainer
     text-align: center;
 }
 
+.field-highlight
+{
+    border: 2px solid red;
+    padding: 5px;
+}
+
+.related-item-count
+{
+    margin: 0 0 0 1px;
+}
+
+.related-item-count,
+.related-item-label
+{
+    color: @link-color;
+}

@@ -53,7 +53,21 @@ define('Sage/Platform/Mobile/Calendar', [
         calendarNode: null,
         timeNode: null,
         meridiemNode: null,
-        months: moment().lang()._monthsShort,
+        monthsShortText: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+        ],
+        months: null,
         dateFormat: moment().lang()._longDateFormat.L,
         timeFormatText: 'h:mm A',
         is24hrTimeFormat: moment().lang()._longDateFormat.LT.match(/H\:/),
@@ -131,7 +145,9 @@ define('Sage/Platform/Mobile/Calendar', [
         },
         init: function() {
             this.inherited(arguments);
-
+            this.months = this.monthsShortText;
+            this.dateFormat = moment().lang()._longDateFormat.L;
+            this.is24hrTimeFormat = moment().lang()._longDateFormat.LT.match(/H\:/);
             this.connect(this.dayNode,    'onchange', this.validate);
             this.connect(this.monthNode,  'onchange', this.validate);
             this.connect(this.yearNode,   'onchange', this.validate);

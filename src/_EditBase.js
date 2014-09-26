@@ -106,6 +106,10 @@ define('Sage/Platform/Mobile/_EditBase', [
             validationContent: {
                 node: 'validationContentNode',
                 type: 'innerHTML'
+            },
+            concurrencyContent: {
+                node: 'concurrencyContentNode',
+                type: 'innerHTML'
             }
         },
         /**
@@ -127,6 +131,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             '<div id="{%= $.id %}" title="{%: $.titleText %}" class="overthrow edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '{%! $.loadingTemplate %}',
             '{%! $.validationSummaryTemplate %}',
+            '{%! $.concurrencySummaryTemplate %}',
             '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
             '</div>'
         ]),
@@ -138,7 +143,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         loadingTemplate: new Simplate([
             '<fieldset class="panel-loading-indicator">',
-            '<div class="row"><div>{%: $.loadingText %}</div></div>',
+            '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>',
             '</fieldset>'
         ]),
         /**
@@ -156,6 +161,19 @@ define('Sage/Platform/Mobile/_EditBase', [
         ]),
         /**
          * @property {Simplate}
+         * HTML for the concurrency error area, this div is shown/hidden as needed.
+         *
+         * `$` => the view instance
+         */
+        concurrencySummaryTemplate: new Simplate([
+            '<div class="panel-concurrency-summary">',
+            '<h2>{%: $.concurrencySummaryText %}</h2>',
+            '<ul data-dojo-attach-point="concurrencyContentNode">',
+            '</ul>',
+            '</div>'
+        ]),
+        /**
+         * @property {Simplate}
          * HTML shown when data is being loaded.
          *
          * * `$` => validation error object
@@ -167,6 +185,16 @@ define('Sage/Platform/Mobile/_EditBase', [
             '<h3>{%: $.message %}</h3>',
             '<h4>{%: $$.label %}</h4>',
             '</a>',
+            '</li>'
+        ]),
+        /**
+         * @property {Simplate}
+         * * `$` => validation error object
+         */
+        concurrencySummaryItemTemplate: new Simplate([
+            '<li>',
+            '<h3>{%: $.message %}</h3>',
+            '<h4>{%: $.name %}</h4>',
             '</li>'
         ]),
         /**
@@ -203,11 +231,6 @@ define('Sage/Platform/Mobile/_EditBase', [
             '</div>'
         ]),
 
-        /**
-         * @property {String}
-         * Sets the ReUI transition effect for when this view comes into view
-         */
-        transitionEffect: 'slide',
         /**
          * @cfg {String}
          * The unique identifier of the view
@@ -261,6 +284,11 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         validationSummaryText: 'Validation Summary',
         /**
+         * @cfg {String}
+         * The text placed in the header when there are validation errors
+         */
+        concurrencySummaryText: 'Concurrency Error(s)',
+        /**
          * @property {String}
          * Default text used in the section header
          */
@@ -276,6 +304,11 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         requestErrorText: 'A server error occured while requesting data.',
         /**
+         * @property {String}
+         * Text alerted to user when the data has been updated since they last fetched the data.
+         */
+        concurrencyErrorText: 'Another user has updated this field.',
+        /**
          * @property {Object}
          * Collection of the fields in the layout where the key is the `name` of the field.
          */
@@ -290,6 +323,12 @@ define('Sage/Platform/Mobile/_EditBase', [
          * Flags if the view is in "insert" (create) mode, or if it is in "update" (edit) mode.
          */
         inserting: null,
+
+        HTTP_STATUS: {
+            PRECONDITION_FAILED: 412
+        },
+        _focusField: null,
+        _hasFocused: false,
 
         /**
          * Extends constructor to initialze `this.fields` to {}
@@ -448,25 +487,43 @@ define('Sage/Platform/Mobile/_EditBase', [
             return entry;
         },
         /**
-         * Loops a given entry testing for date strings and converts them to javascript Date objects
+         * Pre-processes the entry before processEntry runs.
          * @param {Object} entry data
          * @return {Object} entry with actual Date objects
          */
         convertEntry: function(entry) {
-            // todo: should we create a deep copy?
-            // todo: do a deep conversion?
-            for (var n in entry) {
-                if (convert.isDateString(entry[n])) {
-                    entry[n] = convert.toDateFromString(entry[n]);
-                }
-            }
-
             return entry;
         },
         processData: function(entry) {
+            var currentValues, diffs;
+
             this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
 
             this.setValues(entry, true);
+
+            // Re-apply changes saved from concurrency/precondition failure
+            if (this.previousValuesAll) {
+                // Make a copy of the current values, so we can diff them
+                currentValues = this.getValues(true);
+
+                diffs = this.diffs(this.previousValuesAll, currentValues);
+
+                if (diffs.length > 0) {
+                    array.forEach(diffs, function(val) {
+                        this.errors.push({
+                            name: val,
+                            message: this.concurrencyErrorText
+                        });
+                    }, this);
+
+                    this.showConcurrencySummary();
+                } else {
+                    // No diffs found, attempt to re-save
+                    this.save();
+                }
+
+                this.previousValuesAll = null;
+            }
 
             // Re-apply any passed changes as they may have been overwritten
             if (this.options.changes) {
@@ -550,8 +607,7 @@ define('Sage/Platform/Mobile/_EditBase', [
 
             return tag;
         },
-        processLayout: function(layout)
-        {
+        processLayout: function(layout) {
             var rows = (layout['children'] || layout['as'] || layout),
                 options = layout['options'] || (layout['options'] = {
                     title: this.detailsText
@@ -559,7 +615,10 @@ define('Sage/Platform/Mobile/_EditBase', [
                 sectionQueue = [],
                 sectionStarted = false,
                 content = [],
-                current;
+                current,
+                ctor,
+                field,
+                template;
 
             for (var i = 0; i < rows.length; i++) {
                 current = rows[i];
@@ -580,11 +639,17 @@ define('Sage/Platform/Mobile/_EditBase', [
                     content.push(this.sectionBeginTemplate.apply(layout, this));
                 }
 
-                var ctor = FieldManager.get(current['type']),
-                    field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
+                ctor = FieldManager.get(current['type']);
+                field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
                         owner: this
-                    }, current)),
-                    template = field.propertyTemplate || this.propertyTemplate;
+                    }, current));
+                template = field.propertyTemplate || this.propertyTemplate;
+
+                if (field.autoFocus && !this._focusField) {
+                    this._focusField = field;
+                } else if (field.autoFocus && this._focusField) {
+                    throw new Error("Only one field can have autoFocus set to true in the Edit layout.");
+                }
 
 
                 this.connect(field, 'onShow', this._onShowField);
@@ -621,8 +686,8 @@ define('Sage/Platform/Mobile/_EditBase', [
                 getResults = store.get(getExpression, getOptions);
 
                 Deferred.when(getResults,
-                    lang.hitch(this, this._onGetComplete),
-                    lang.hitch(this, this._onGetError, getOptions)
+                    this._onGetComplete.bind(this),
+                    this._onGetError.bind(this, getOptions)
                 );
 
                 return getResults;
@@ -649,6 +714,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         clearValues: function() {
             for (var name in this.fields) {
+                this.fields[name].clearHighlight();
                 this.fields[name].clearValue();
             }
         },
@@ -841,8 +907,8 @@ define('Sage/Platform/Mobile/_EditBase', [
                 this._applyStateToAddOptions(addOptions);
 
                 Deferred.when(store.add(entry, addOptions),
-                    lang.hitch(this, this.onAddComplete, entry),
-                    lang.hitch(this, this.onAddError, addOptions)
+                    this.onAddComplete.bind(this, entry),
+                    this.onAddError.bind(this, addOptions)
                 );
             }
         },
@@ -913,8 +979,8 @@ define('Sage/Platform/Mobile/_EditBase', [
                 this._applyStateToPutOptions(putOptions);
 
                 Deferred.when(store.put(entry, putOptions),
-                    lang.hitch(this, this.onPutComplete, entry),
-                    lang.hitch(this, this.onPutError, putOptions)
+                    this.onPutComplete.bind(this, entry),
+                    this.onPutError.bind(this, putOptions)
                 );
             }
         },
@@ -961,18 +1027,61 @@ define('Sage/Platform/Mobile/_EditBase', [
 
             connect.publish('/app/refresh', [message]);
 
-            this.onUpdateCompleted(entry);
+            this.onUpdateCompleted(result);
         },
         onPutError: function(putOptions, error) {
-            alert(string.substitute(this.requestErrorText, [error]));
+            var errorItem;
 
-            var errorItem = {
+            if (error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED) {
+                // Preserve our current form values (all of them),
+                // and reload the view to fetch the new data.
+                this.previousValuesAll = this.getValues(true);
+                this.options.key = this.entry.$key; // Force a fetch by key
+                delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
+                this.refresh();
+            } else {
+                alert(string.substitute(this.requestErrorText, [error]));
+            }
+
+            errorItem = {
                 viewOptions: this.options,
                 serverError: error
             };
             ErrorManager.addError(this.requestErrorText, errorItem);
 
             this.enable();
+        },
+        /**
+         * Array of strings that will get ignored when the diffing runs.
+         */
+        diffPropertyIgnores: [],
+        /**
+         * Diffs the results from the current values and the previous values.
+         * This is done for a concurrency check to indicate what has changed.
+         * @returns Array List of property names that have changed
+         */
+        diffs: function(left, right) {
+            var acc = [],
+                DeepDiff = window.DeepDiff,
+                diffs,
+                DIFF_EDITED = 'E';
+
+            if (DeepDiff) {
+                diffs = DeepDiff.diff(left, right, function(path, key) {
+                    if (array.indexOf(this.diffPropertyIgnores, key) >= 0) {
+                        return true;
+                    }
+                }.bind(this));
+
+                array.forEach(diffs, function(diff) {
+                    var path = diff.path.join('.');
+                    if (diff.kind === DIFF_EDITED && array.indexOf(acc, path) === -1) {
+                        acc.push(path);
+                    }
+                });
+            }
+
+            return acc;
         },
         _buildRefreshMessage: function(entry, result) {
             if (entry) {
@@ -1016,12 +1125,29 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.set('validationContent', content.join(''));
             domClass.add(this.domNode, 'panel-form-error');
         },
+        showConcurrencySummary: function() {
+            var content = [];
+
+            for (var i = 0; i < this.errors.length; i++) {
+                content.push(this.concurrencySummaryItemTemplate.apply(this.errors[i]));
+            }
+
+            this.set('concurrencyContent', content.join(''));
+            domClass.add(this.domNode, 'panel-form-concurrency-error');
+        },
         /**
          * Removes the summary validation visible styling and empties its contents of error markup
          */
         hideValidationSummary: function() {
             domClass.remove(this.domNode, 'panel-form-error');
             this.set('validationContent', '');
+        },
+        /**
+         * Removes teh summary for concurrency errors
+         */
+        hideConcurrencySummary: function() {
+            domClass.remove(this.domNode, 'panel-form-concurrency-error');
+            this.set('concurrencyContent', '');
         },
         /**
          * Handler for the save toolbar action.
@@ -1036,6 +1162,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
 
             this.hideValidationSummary();
+            this.hideConcurrencySummary();
 
             if (this.validate() !== false) {
                 this.showValidationSummary();
@@ -1085,6 +1212,16 @@ define('Sage/Platform/Mobile/_EditBase', [
 
             this.inherited(arguments);
         },
+        onTransitionTo: function() {
+            // Focus the default focus field if it exists and it has not already been focused.
+            // This flag is important because onTransitionTo will fire multiple times if the user is using lookups and editor type fields that transition away from this view.
+            if (this._focusField && !this._hasFocused) {
+                this._focusField.focus();
+                this._hasFocused = true;
+            }
+
+            this.inherited(arguments);
+        },
         /**
          * Empties the activate method which prevents detection of refresh from transititioning.
          *
@@ -1120,8 +1257,10 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.entry = false;
             this.changes = false;
             this.inserting = (this.options.insert === true);
+            this._hasFocused = false;
 
             domClass.remove(this.domNode, 'panel-form-error');
+            domClass.remove(this.domNode, 'panel-form-concurrency-error');
 
             this.clearValues();
 

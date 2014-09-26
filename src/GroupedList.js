@@ -50,8 +50,8 @@ define('Sage/Platform/Mobile/GroupedList', [
          */
         toggleCollapseText: 'toggle collapse',
 
-        collapsedIconClass: 'fa-angle-double-right',
-        expanedIconClass: 'fa-angle-double-down',
+        collapsedIconClass: 'fa-chevron-right',
+        expanedIconClass: 'fa-chevron-down',
 
         /**
          * @property {Simplate}
@@ -71,7 +71,7 @@ define('Sage/Platform/Mobile/GroupedList', [
          * Simplate that defines the Group template that includes the header element with collapse button and the row container
          */
         groupTemplate: new Simplate([
-            '<h2 data-action="toggleGroup">',
+            '<h2 data-action="toggleGroup" class="{% if ($.collapsed) { %}collapsed{% } %}">',
             '{%: $.title %}<button class="fa {% if ($.collapsed) { %}{%: $$.collapsedIconClass %} {% } else { %}{%: $$.expanedIconClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
             '</h2>',
             '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>'
@@ -179,7 +179,7 @@ define('Sage/Platform/Mobile/GroupedList', [
          */
         processFeed: function(feed) {
             var i, entry, entryGroup, rowNode, remaining, getGroupsNode;
-            getGroupsNode = Utility.memoize(lang.hitch(this, this.getGroupsNode), function(entryGroup) {
+            getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), function(entryGroup) {
                 return entryGroup.tag;
             });
 
@@ -217,7 +217,7 @@ define('Sage/Platform/Mobile/GroupedList', [
         },
         processData: function(entries) {
             var i, entry, count = entries.length, store = this.get('store'), entryGroup, rowNode, getGroupsNode;
-            getGroupsNode = Utility.memoize(lang.hitch(this, this.getGroupsNode), function(entryGroup) {
+            getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), function(entryGroup) {
                 return entryGroup.tag;
             });
 

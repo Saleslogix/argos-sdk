@@ -16,7 +16,6 @@
 
 define('Sage/Platform/Mobile/Fields/TextField', [
     'dojo/_base/declare',
-    'dojo/_base/lang',
     'dojo/_base/event',
     'dojo/dom-attr',
     'dojo/dom-class',
@@ -24,7 +23,6 @@ define('Sage/Platform/Mobile/Fields/TextField', [
     'Sage/Platform/Mobile/FieldManager'
 ], function(
     declare,
-    lang,
     event,
     domAttr,
     domClass,
@@ -158,6 +156,9 @@ define('Sage/Platform/Mobile/Fields/TextField', [
 
             domAttr.set(this.inputNode, 'disabled', true);
         },
+        focus: function() {
+            this.inputNode.focus();
+        },
         /**
          * Handler for the `onkeypress` event which is not connected unless `validInputOnly` is true.
          *
@@ -199,13 +200,6 @@ define('Sage/Platform/Mobile/Fields/TextField', [
          */
         _onFocus: function(evt) {
             domClass.add(this.domNode, 'text-field-active');
-
-            setTimeout(lang.hitch(this, function() {
-                var value = this.inputNode.value;
-                if (value && value.length > 0) {
-                    this.inputNode.setSelectionRange(0, value.length);
-                }
-            }), 10);
         },
         /**
          * Handler for the `onblur` event

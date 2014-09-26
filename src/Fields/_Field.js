@@ -28,6 +28,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
+    'dojo/dom-class',
     'dijit/_Widget',
     'Sage/Platform/Mobile/_ActionMixin',
     'Sage/Platform/Mobile/_Templated'
@@ -35,6 +36,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
     declare,
     lang,
     string,
+    domClass,
     _Widget,
     _ActionMixin,
     _Templated
@@ -73,7 +75,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          *
          * Note the word `default` must be in quotes as default is a reserved word in javascript.
          */
-        'default': null,
+        'default': undefined,
         /**
          * @property {String}
          * The unique (within the current form) name of the field
@@ -96,8 +98,15 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          */
         type: null,
 
+        /**
+         * @property {Boolean}
+         * Flag to indicate if this field should be focused when the form is shown.
+         */
+        autoFocus: false,
+
         app: null,
         reui: null,
+        highlightCls: 'field-highlight',
 
         /**
          * @property {Simplate}
@@ -125,6 +134,11 @@ define('Sage/Platform/Mobile/Fields/_Field', [
             if (this.reui === null) {
                 this.reui = window.ReUI;
             }
+        },
+        /**
+         * Focuses the input for the field
+         */
+        focus: function() {
         },
         /**
          * Inserts the field into the given DOM node using dijit Widget `placeAt(node)` and saves
@@ -185,6 +199,18 @@ define('Sage/Platform/Mobile/Fields/_Field', [
             this.hidden = true;
             this.onHide(this);
         },
+        toggleHighlight: function() {
+            var node = this.domNode;
+            if (node) {
+                domClass.toggle(node, this.highlightCls);
+            }
+        },
+        clearHighlight: function() {
+            var node = this.domNode;
+            if (node) {
+                domClass.remove(node, this.highlightCls);
+            }
+        },
         /**
          * Returns the hidden state
          * @return {Boolean}
@@ -205,7 +231,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          * @template
          */
         setValue: function(val, initial) {
-        },        
+        },
         /**
          * Each field type will need to implement this function to clear the value and visually.
          * @template
