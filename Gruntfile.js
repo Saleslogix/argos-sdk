@@ -45,7 +45,7 @@ module.exports = function(grunt) {
                 options: {
                 },
                 files: {
-                    'min/css/themes/swiftpage/sdk.min.swiftpage.debug.css': 'content/css/themes/swiftpage.less'
+                    'min/css/themes/crm/sdk.min.crm.debug.css': 'content/css/themes/crm.less'
                 }
             },
             production: {
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
                     cleancss: true
                 },
                 files: {
-                    'min/css/themes/swiftpage/sdk.min.swiftpage.css': 'content/css/themes/swiftpage.less'
+                    'min/css/themes/crm/sdk.min.crm.css': 'content/css/themes/crm.less'
                 }
             }
         },
