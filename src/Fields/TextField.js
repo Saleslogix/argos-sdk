@@ -77,7 +77,7 @@ define('Sage/Platform/Mobile/Fields/TextField', [
             '{% if ($.enableClearButton && !$.readonly) { %}',
                 '<button class="clear-button" tabindex="-1" data-dojo-attach-point="clearNode" data-dojo-attach-event="onclick:_onClearClick"></button>',
             '{% } %}',
-            '<input data-dojo-attach-point="inputNode" tabindex="0" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>'
+            '<input data-dojo-attach-point="inputNode" tabindex="0" placeholder="{%: $.placeHolderText %}" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>'
         ]),
         /**
          * @property {HTMLElement}
@@ -112,7 +112,7 @@ define('Sage/Platform/Mobile/Fields/TextField', [
          * @cfg {Boolean}
          * Flag for controlling the addition of the clear button.
          */
-        enableClearButton: true,
+        enableClearButton: false,
         /**
          * @cfg {Boolean}
          * Flag that if true connects the `onkeypress` event to {@link #_onKeyPress _onKeyPress}

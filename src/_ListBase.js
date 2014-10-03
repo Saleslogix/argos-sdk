@@ -205,7 +205,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         noDataTemplate: new Simplate([
             '<li class="no-data">',
-            '<h3>{%= $.noDataText %}</h3>',
+            '<h2>{%= $.noDataText %}</h2>',
             '</li>'
         ]),
         /**
