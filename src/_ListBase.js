@@ -118,7 +118,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          *      loadingText         The text to display while loading.
          */
         loadingTemplate: new Simplate([
-            '<li class="list-loading-indicator"><span class="fa fa-spinner fa-spin"></span><div>{%= $.loadingText %}</div></li>'
+            '<li class="list-loading-indicator"><span class="fa fa-spinner fa-spin"></span><h2>{%= $.loadingText %}</h2></li>'
         ]),
         /**
          * @property {Simplate}
