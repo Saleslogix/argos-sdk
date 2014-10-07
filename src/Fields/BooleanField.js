@@ -66,8 +66,6 @@ define('Sage/Platform/Mobile/Fields/BooleanField', [
             '<label for="{%= $.name %}">{%: $.label %}</label>',
             '<div class="toggle" data-dojo-attach-point="toggleNode" data-dojo-attach-event="onclick:_onClick" toggled="{%= !!$.checked %}">',
                 '<span class="thumb"></span>',
-                '<span class="toggleOn">{%= $.onText %}</span>',
-                '<span class="toggleOff">{%= $.offText %}</span>',
             '</div>'
         ]),
         /**
@@ -86,18 +84,6 @@ define('Sage/Platform/Mobile/Fields/BooleanField', [
          * Value used during dirty/modified comparison
          */
         originalValue: null,
-
-        //Localization
-        /**
-         * @property {String}
-         * The text placed within the "on" part of the toggle switch
-         */
-        onText: 'ON',
-        /**
-         * @property {String}
-         * The text placed within the "off" part of the toggle switch
-         */
-        offText: 'OFF',
 
         /**
          * Fires with the toggle switch is pressed and sets the value to

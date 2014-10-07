@@ -392,6 +392,7 @@ button.clear-button:focus {
     margin: 7px 7px 0 0;
     height: 25px;
     width: 25px;
+    display: block;
 }
 
 .row > div > input:not([type|=radio]):not([type|=checkbox]),
@@ -490,4 +491,53 @@ button.clear-button:focus {
 .file-label > label {
     font-weight: bold !important;
     text-align: left !important;
+}
+
+.toggle {
+    border: @toggle-border;
+    background-color: @toggle-bg-color;
+    .border-radius(@toggle-border-radius);
+    line-height: @toggle-line-height;
+    .user-select(none);
+    width: 50px;
+    height: 28px;
+    margin: 3px 0px 3px 0px;
+    position: relative;
+    right: auto;
+    .box-sizing(border-box);
+}
+
+.toggle-vertical {
+    width: 64px;
+    height: 126px;
+    margin: 0;
+    position: relative;
+}
+
+.toggle > .thumb {
+    position: absolute;
+    width: 26px;
+    height: 24px;
+    background-color: @toggle-thumb-bg-color;
+    .border-radius(@toggle-border-radius);
+}
+
+.toggle-vertical > .thumb {
+    width: 64px;
+}
+
+.toggleStateOn > .thumb {
+    left: auto;
+    right: -1px;
+}
+
+.toggleStateOn > .vertical {
+    left: -1px;
+    top: auto;
+    bottom: -1px;
+}
+
+.toggleStateOn {
+    background-color: @togglestate-on-bg-color;
+    border-color: @togglestate-on-border-bg-color;
 }
