@@ -179,6 +179,45 @@ th {
   padding: 0;
 }
 /*2px solid @icon-color;*/
+body {
+  font-family: Helvetica, Arial, Sans-serif;
+}
+h1,
+.h1 {
+  font-size: 20px;
+}
+h2,
+.h2 {
+  font-size: 16px;
+}
+h3,
+.h3 {
+  font-size: 14px;
+}
+h4,
+.h4 {
+  font-size: 12px;
+}
+h5,
+.h5 {
+  font-size: 10px;
+}
+p,
+span {
+  font-size: 12px;
+}
+.smalltext {
+  font-size: 11px;
+}
+.verysmalltext {
+  font-size: 9px;
+}
+.title {
+  font-size: 32px;
+}
+.subtitle {
+  font-size: 24px;
+}
 /* Overthrow CSS:
    Enable overflow: auto on elements with overthrow class when html element has overthrow class too */
 .overthrow-enabled .overthrow {
@@ -327,25 +366,18 @@ th {
   display: block;
   text-align: center;
   padding: 0px 0 12px 0;
-  font-size: .8em;
-  font-weight: bold;
 }
 .list-loading .list-loading-indicator {
   display: block;
   text-align: center;
-  font-size: 1.25em;
-  font-weight: normal;
 }
-.list-loading .list-loading-indicator div {
-  padding: 0 0 0 20px;
+.list-loading .list-loading-indicator h2 {
+  padding: 0 0 0 10px;
   display: inline-block;
   text-align: center;
 }
 .list-content > li > a {
   padding: 8px 32px 8px 36px;
-}
-.list-content > li > .item {
-  font-weight: normal;
 }
 /* list selection */
 .list .list-item-selector {
@@ -468,7 +500,6 @@ th {
 }
 .content-loading > span {
   padding-left: 32px;
-  font-size: 12px;
   background: url('../../../images/content-loading-light-green.gif') no-repeat scroll 12px 50%;
 }
 .panel.busy {
@@ -529,7 +560,6 @@ ul.action-list > li > a > div {
 }
 .action-list > li > a > span {
   display: block;
-  font-size: 12px;
   min-height: 1em;
   line-height: inherit;
   padding: 2px 0 0 0;
@@ -547,12 +577,7 @@ ul.action-list > li > a > div {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  font-weight: bold;
   margin: 8px;
-}
-.file-name {
-  font-size: 16px !important;
-  font-weight: bold !important;
 }
 .display-none {
   display: none !important;
@@ -616,52 +641,6 @@ body[orient="landscape"] > .viewContainer > .list {
 body > .viewContainer > [selected="true"] {
   display: block;
 }
-.viewContainer > .footer-toolbar {
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-}
-.viewContainer > .toolbar,
-.toolbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  height: 40px;
-  width: 100%;
-  padding: 4px 4px;
-  display: block;
-  z-index: 10;
-}
-.viewContainer > .toolbar > h1,
-.toolbar > h1 {
-  overflow: hidden;
-  display: block;
-  margin: 0;
-  padding: 0;
-  line-height: 34px;
-  font-weight: normal;
-  text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #FFFFFF;
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  z-index: 0;
-}
-.viewContainer > .toolbar-size-1 > h1,
-.toolbar-size-1 > h1 {
-  left: 50px;
-  right: 50px;
-}
-.viewContainer > .toolbar-size-2 > h1,
-.toolbar-size-2 > h1 {
-  left: 100px;
-  right: 100px;
-}
 body > .viewContainer > .dialog {
   top: 0px;
   bottom: 0px;
@@ -697,7 +676,6 @@ body > .viewContainer > .dialog {
 }
 .list-content > li,
 .group-content > li {
-  font-weight: bold;
   list-style: none;
   margin: 0px 0px 1px 0px;
   padding: 4px 0px 4px 10px;
@@ -731,13 +709,6 @@ body > .viewContainer > .dialog {
 }
 .no-data > h3 {
   white-space: normal;
-}
-h3 {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 img {
   border: 0 none black;
@@ -872,7 +843,6 @@ img {
 .not-available {
   text-align: center;
   padding: 8px 32px 8px 36px !important;
-  font-size: 1.25em;
 }
 .contextualContent .list-search {
   background-color: #0f1e1e;
@@ -885,9 +855,6 @@ img {
   padding: 1px;
   position: relative;
   top: 0px;
-}
-.related-view-widget > h4 {
-  font-size: 0.65em;
 }
 .related-view-widget .tab {
   margin: 0;
@@ -906,8 +873,6 @@ img {
   height: 24px;
 }
 .related-view-widget .tab .title {
-  font-size: 0.8em;
-  font-weight: bold;
   color: #9a9ea1;
   padding: 0 0 0 14px;
   float: left;
@@ -938,7 +903,6 @@ img {
   display: none;
 }
 .related-view-widget .action-items {
-  font-weight: bold;
   text-align: right;
 }
 .related-view-widget .action-item {
@@ -949,7 +913,6 @@ img {
   height: 24px;
 }
 .related-view-widget .action {
-  font-weight: bold;
   float: left;
   padding: 0 10px;
 }
@@ -1009,7 +972,6 @@ img {
   padding: 0 40px 0 0;
 }
 .related-view-widget .item .item-footer {
-  font-size: 0.65em;
   color: #0f1e1e;
 }
 .related-view-widget .item .item-icon > img {
@@ -1023,16 +985,12 @@ img {
 .related-view-widget .nodata {
   display: block;
   text-align: center;
-  font-size: 0.75em;
-  font-weight: normal;
   line-height: 1.5em;
   padding: 1em;
 }
 .related-view-widget .loading-indicator {
   display: none;
   text-align: center;
-  font-size: 0.75em;
-  font-weight: normal;
   line-height: 1.5em;
   padding: 1em;
 }
@@ -1046,8 +1004,6 @@ img {
   display: inline-block;
 }
 body {
-  font-family: Helvetica, Arial, Sans-serif;
-  font-size: 62.5%;
   color: #1a1a1a;
 }
 a {
@@ -1055,29 +1011,16 @@ a {
   text-decoration: underline;
   cursor: pointer;
 }
-.title {
-  font-size: 32px;
-}
-.subtitle {
-  font-size: 24px;
-}
-h1 {
-  font-size: 20px;
-}
-h2 {
-  font-size: 16px;
-}
-h3 {
-  font-size: 14px;
-}
-p {
-  font-size: 12px;
-}
-.smalltext {
-  font-size: 11px;
-}
-.verysmalltext {
-  font-size: 9px;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 body body > .viewContainer {
   background: #ffffff;
@@ -1088,7 +1031,6 @@ body body > .viewContainer {
 }
 .list-content > li,
 .group-content > li {
-  font-weight: normal;
   background-color: #ffffff;
 }
 /*For the separate Contextual Menu*/
@@ -1098,7 +1040,6 @@ body body > .viewContainer {
 }
 .contextualContent > .group-content > .list-content > li {
   background-color: #0f1e1e;
-  font-size: 1em;
   list-style: none;
   margin: 0;
   position: relative;
@@ -1113,19 +1054,8 @@ body body > .viewContainer {
   line-height: 32px;
   margin: 0;
   padding: 0 0 0 4px;
-  font-size: 1em;
   position: relative;
   background-color: #4b5656;
-  color: #ffffff;
-}
-.toolbar,
-.viewContainer > .toolbar,
-body > .viewContainer > .toolbar,
-.viewContainer > .footer-toolbar {
-  background-color: #13a3f7;
-}
-.viewContainer > .toolbar > h1,
-.toolbar > h1 {
   color: #ffffff;
 }
 .panel-content,
@@ -1136,7 +1066,7 @@ body > .viewContainer > .toolbar,
   border-bottom: 1px solid #c7cbce;
   background-color: #d9dcde;
   color: #1a1a1a;
-  font-weight: bold;
+  padding: 5px 0 5px 0;
 }
 .panel-validation-summary > h2,
 .panel-concurrency-summary > h2 {
@@ -1144,7 +1074,6 @@ body > .viewContainer > .toolbar,
   border-top: 1px solid #1a1a1a;
   background-color: #ff6400;
   color: #ffffff;
-  font-weight: bold;
 }
 .panel-content > h2:first-child {
   border-top: 1px solid #d9dcde;
@@ -1176,12 +1105,10 @@ body > .viewContainer > .toolbar,
 .panel-content > fieldset > .row > div > label,
 .panel-content > div > .row > div > label,
 .panel-content > div > .row > label {
-  font-weight: bold;
   color: #4b5656;
 }
 .panel-content > fieldset > .row-edit > div > textarea,
 .panel-content > fieldset > .row-edit > textarea {
-  font-size: 12px;
   border: 1px solid #dddee0;
   background-color: #ecedef;
 }
@@ -1207,88 +1134,6 @@ body > .viewContainer {
 .time-content {
   text-align: center;
   margin-top: 6px;
-}
-.toggle {
-  border: 1px solid #9a9ea1;
-  background-color: #787d82;
-  border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 30px;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.toggle-vertical {
-  width: 64px;
-  height: 126px;
-  margin: 0;
-  position: relative;
-}
-.toggleOn {
-  display: none;
-  position: absolute;
-  width: 60px;
-  text-align: center;
-  color: #dddee0;
-  left: 0;
-  top: 0;
-}
-.toggle-vertical > .toggleOn {
-  height: 60px;
-  width: 64px;
-  top: 0;
-}
-.toggleOff {
-  position: absolute;
-  width: 60px;
-  text-align: center;
-  right: 0;
-  top: 0;
-  color: #0f1e1e;
-}
-.toggle-vertical > .toggleOff {
-  width: 100%;
-  bottom: 0;
-  top: auto;
-}
-.toggle > .thumb {
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  width: 40px;
-  height: 28px;
-  border: 1px solid #9a9ea1;
-  background-color: #b4b9be;
-  border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-}
-.toggle-vertical > .thumb {
-  width: 64px;
-}
-.toggleStateOn > .thumb {
-  left: auto;
-  right: -1px;
-}
-.toggleStateOn > .vertical {
-  left: -1px;
-  top: auto;
-  bottom: -1px;
-}
-.toggleStateOn > .toggleOn {
-  display: block;
-}
-.toggleStateOn > .toggleOff {
-  display: none;
-}
-.toggleStateOn {
-  border: 1px solid #787d82;
-  background-color: #787d82;
 }
 .logo {
   text-align: center;
@@ -1326,6 +1171,7 @@ textarea {
 }
 label {
   font-size: 12px;
+  font-weight: bold;
 }
 input:focus,
 textarea:focus {
@@ -1349,7 +1195,6 @@ textarea:focus {
   float: right;
   background-color: transparent;
   border: none;
-  height: 32px;
 }
 .toolButton,
 .headerButton {
@@ -1492,10 +1337,12 @@ textarea:focus {
 .row-edit[data-field-type="note"] > .button,
 .row-edit[data-field-type="signature"] > div > .button {
   margin: 0;
-  padding: 0 12px;
+  padding: 0;
   position: absolute;
-  right: 5px;
+  right: 4px;
   display: block;
+  height: 30px;
+  width: 40px;
 }
 .row-edit[data-field-type="picklist"] > div > input,
 .row-edit[data-field-type="lookup"] > div > input,
@@ -1657,6 +1504,7 @@ button.clear-button:focus {
   margin: 7px 7px 0 0;
   height: 25px;
   width: 25px;
+  display: block;
 }
 .row > div > input:not([type|=radio]):not([type|=checkbox]),
 .row > input:not([type|=radio]):not([type|=checkbox]) {
@@ -1721,14 +1569,6 @@ button.clear-button:focus {
   width: 24px;
   height: 24px;
 }
-.toolButton-left {
-  float: left;
-  margin-right: 10px;
-}
-.toolButton-right {
-  float: right;
-  margin-left: 10px;
-}
 .file-wrap > input {
   z-index: 2;
   opacity: 0;
@@ -1751,6 +1591,117 @@ button.clear-button:focus {
 .file-label > label {
   font-weight: bold !important;
   text-align: left !important;
+}
+.toggle {
+  border: 2px solid #b3b3b3;
+  background-color: #b3b3b3;
+  border-radius: 14px;
+  -webkit-border-radius: 14px;
+  -moz-border-radius: 14px;
+  line-height: 30px;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 50px;
+  height: 28px;
+  margin: 3px 0px 3px 0px;
+  position: relative;
+  right: auto;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.toggle-vertical {
+  width: 64px;
+  height: 126px;
+  margin: 0;
+  position: relative;
+}
+.toggle > .thumb {
+  position: absolute;
+  width: 26px;
+  height: 24px;
+  background-color: #ffffff;
+  border-radius: 14px;
+  -webkit-border-radius: 14px;
+  -moz-border-radius: 14px;
+}
+.toggle-vertical > .thumb {
+  width: 64px;
+}
+.toggleStateOn > .thumb {
+  left: auto;
+  right: -1px;
+}
+.toggleStateOn > .vertical {
+  left: -1px;
+  top: auto;
+  bottom: -1px;
+}
+.toggleStateOn {
+  background-color: #13a3f7;
+  border-color: #13a3f7;
+}
+.viewContainer > .footer-toolbar {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+.viewContainer > .toolbar,
+.toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 40px;
+  width: 100%;
+  padding: 4px 4px;
+  display: block;
+  z-index: 10;
+}
+.viewContainer > .toolbar > h1,
+.toolbar > h1 {
+  color: #ffffff;
+  overflow: hidden;
+  display: block;
+  margin: 0;
+  padding: 0;
+  line-height: 34px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  z-index: 0;
+}
+.viewContainer > .toolbar-size-1 > h1,
+.toolbar-size-1 > h1 {
+  left: 50px;
+  right: 50px;
+}
+.viewContainer > .toolbar-size-2 > h1,
+.toolbar-size-2 > h1 {
+  left: 100px;
+  right: 100px;
+}
+.toolbar,
+.viewContainer > .toolbar,
+body > .viewContainer > .toolbar,
+.viewContainer > .footer-toolbar {
+  background-color: #13a3f7;
+}
+.toolButton-left {
+  float: left;
+  margin-right: 10px;
+}
+.toolButton-right {
+  float: right;
+  margin-left: 10px;
 }
 #datetime-picker {
   padding-bottom: 2em;
@@ -3410,4 +3361,3 @@ body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-c
 .fa-bomb:before {
   content: "\f1e2";
 }
-/*# sourceMappingURL=sdk.min.crm.debug.css.map */
