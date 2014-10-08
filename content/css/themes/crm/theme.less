@@ -1,0 +1,171 @@
+@import "variables.less";
+@import "mixins.less";
+
+body {
+    color: @text-color;
+}
+
+a {
+    color: @link-color;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+h1, h2, h3, h4, h5 {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+body
+body > .viewContainer {
+    background: @body-bg-color;
+}
+
+.list-content,
+.group-content {
+    background-color: @list-bg-color;
+}
+
+.list-content > li,
+.group-content > li {
+    background-color: @list-item-bg-color;
+}
+
+/*For the separate Contextual Menu*/
+.contextualContent > .group-content > .list-content {
+    margin: 0;
+    padding: 0;
+}
+
+.contextualContent > .group-content > .list-content > li {
+    background-color: @menu-list-item-bg-color;
+    list-style: none;
+    margin: 0;
+    position: relative;
+    color: @menu-list-item-color;
+    text-decoration: none;
+    padding: 8px 0px 8px 8px;
+    .border-radius(0px);
+}
+
+.group-content > h2 {
+    line-height: 32px;
+    margin: 0;
+    padding: 0 0 0 4px;
+    position: relative;
+    background-color: @glist-header-bg-color;
+    color: @glist-header-color;
+}
+
+.panel-content,
+.panel-loading-indicator {
+    background-color: @panel-content-bg-color;
+}
+
+.panel-content > h2 {
+    border-bottom: @panel-header-border-bottom;
+    background-color: @panel-header-bg-color;
+    color: @panel-header-color;
+    padding: 5px 0 5px 0;
+}
+
+.panel-validation-summary > h2,
+.panel-concurrency-summary > h2 {
+    border-bottom: @validation-h2-border;
+    border-top: @validation-h2-border;
+    background-color: @validation-h2-bg-color;
+    color: @validation-h2-color;
+}
+
+.panel-content > h2:first-child {
+    border-top: @panel-content-firstchild-border;
+}
+
+.panel-validation-summary > h2:first-child,
+.panel-concurrency-summary > h2:first-child {
+    border-top: @validation-h2-firstchild-border;
+}
+
+.panel-form-error > .panel-content > h2:first-child {
+    border-top: @fieldset-border;
+}
+
+.panel-content > ul,
+.panel-validation-summary > ul,
+.panel-concurrency-summary > ul {
+    margin: 0.25em;
+    border: @panel-content-list-border;
+    background-color: @panel-content-list-bg-color;
+}
+
+.panel-content > ul a,
+.panel-validation-summary > ul a {
+    color: @panel-content-list-link-color;
+    text-decoration: @panel-content-list-link-txtdec;
+}
+
+.panel-content > fieldset > .row,
+.panel-content > div > .row {
+    padding: @panel-content-row-padding;
+    min-height: @panel-content-row-min-height;
+}
+
+.panel-content > fieldset > .row > div > label,
+.panel-content > div > .row > div > label,
+.panel-content > div > .row > label {
+    color: @form-label-color;
+}
+
+.panel-content > fieldset > .row-edit > div > textarea,
+.panel-content > fieldset > .row-edit > textarea {
+    border: 1px solid @gray1-lighter;
+    background-color: @gray2-lighter;
+}
+
+.panel-content > fieldset > .row-edit {
+    border-top: @panel-content-rowedit-border;
+}
+
+.panel-content > fieldset > .row-edit:first-of-type {
+    border-top: 0 none black;
+}
+
+body > .viewContainer {
+    border-left: @menu-border;
+}
+
+.snapjs-left .left-drawer {
+    border-right: @menu-border;
+}
+
+/* Calendar */
+.calendar-content {
+    .box-sizing(border-box);
+    padding: 4px;
+}
+
+.time-content {
+    text-align: center;
+    margin-top: 6px;
+}
+
+.logo {
+    text-align: center;
+}
+
+.field-highlight {
+    border: 2px solid red;
+    padding: 5px;
+}
+
+.related-item-count {
+    margin: 0 0 0 1px;
+}
+
+.related-item-count,
+.related-item-label {
+    color: @link-color;
+}
