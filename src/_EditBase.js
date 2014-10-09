@@ -61,6 +61,7 @@ define('Sage/Platform/Mobile/_EditBase', [
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/FieldManager',
     'Sage/Platform/Mobile/View',
+    'Immutable',
 
     'dojo/NodeList-manipulate',
     'Sage/Platform/Mobile/Fields/BooleanField',
@@ -91,7 +92,8 @@ define('Sage/Platform/Mobile/_EditBase', [
     utility,
     ErrorManager,
     FieldManager,
-    View
+    View,
+    Immutable
 ) {
 
     return declare('Sage.Platform.Mobile._EditBase', [View], {
@@ -497,7 +499,7 @@ define('Sage/Platform/Mobile/_EditBase', [
         processData: function(entry) {
             var currentValues, diffs;
 
-            this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
+            this.entry = Immutable.fromJS(this.processEntry(this.convertEntry(entry || {})) || {});
 
             this.setValues(entry, true);
 
@@ -972,7 +974,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             if (store) {
                 putOptions = {
                         overwrite: true,
-                        id: store.getIdentity(this.entry)
+                        id: store.getIdentity(this.entry.toJS())
                 };
                 entry = this.createEntryForUpdate(values);
 
@@ -1030,13 +1032,14 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.onUpdateCompleted(result);
         },
         onPutError: function(putOptions, error) {
-            var errorItem;
+            var errorItem, key, store = this.get('store');
 
             if (error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED) {
                 // Preserve our current form values (all of them),
                 // and reload the view to fetch the new data.
                 this.previousValuesAll = this.getValues(true);
-                this.options.key = this.entry.$key; // Force a fetch by key
+                key = store.getIdentity(this.entry.toJS());
+                this.options.key = this.entry && this.entry.get(key); // Force a fetch by key
                 delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
                 this.refresh();
             } else {
@@ -1254,7 +1257,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         refresh: function() {
             this.onRefresh();
-            this.entry = false;
+            this.entry = this.entry && this.entry.clear();
             this.changes = false;
             this.inserting = (this.options.insert === true);
             this._hasFocused = false;

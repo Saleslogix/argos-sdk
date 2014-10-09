@@ -43,6 +43,10 @@
         {
           "text": "deep-diff-0.2.0.min.js",
           "path": "../libraries/deep-diff/"
+        },
+        {
+          "text": "Immutable.min.js",
+          "path": "../libraries/"
         }
       ]
     },
