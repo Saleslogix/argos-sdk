@@ -1,0 +1,926 @@
+@import "variables.less";
+@import "mixins.less";
+
+/* Overthrow CSS:
+   Enable overflow: auto on elements with overthrow class when html element has overthrow class too */
+.overthrow-enabled .overthrow {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* snapjs styles */
+.tall {
+    height: 100%;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.drawers {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.left-drawer,
+.right-drawer {
+    visibility: hidden;
+    display: none;
+}
+
+.left-drawer,
+.right-drawer {
+    display: none;
+    visibility: hidden;
+}
+
+.snapjs-left .left-drawer {
+    visibility: visible;
+    display: block;
+}
+
+.snapjs-right .right-drawer {
+    visibility: visible;
+    display: block;
+}
+
+.left-drawer, .right-drawer {
+    top: 0;
+    left: 0;
+    width: 265px;
+    bottom: 0;
+    -webkit-transition-property: top, bottom;
+    transition-property: top, bottom;
+    -webkit-transition-duration: .2s, .2s;
+    transition-duration: .2s, .2s;
+    -webkit-transition-timing-function: linear, linear;
+    transition-timing-function: linear, linear;
+}
+
+.left-drawer {
+    z-index: 2;
+}
+
+.right-drawer {
+    left: auto;
+    right: 0;
+    z-index: 1;
+}
+
+.left-drawer,
+.right-drawer {
+    -webkit-transition: width 0.3s ease;
+    -moz-transition: width 0.3s ease;
+    -o-transition: width 0.3s ease;
+    transition: width 0.3s ease;
+}
+
+.drawer-inner {
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+
+.snapjs-expand-left .drawer-inner,
+.snapjs-expand-right .drawer-inner {
+    opacity: 0;
+}
+
+.snapjs-expand-left .left-drawer,
+.snapjs-expand-right .right-drawer {
+    width: 100%;
+}
+
+/* end snapjs styles*/
+
+.list-content > li {
+    cursor: pointer;
+}
+
+.list-more, .list-empty-opt {
+    .toolButton {
+        position: relative;
+        min-width: 28px;
+        min-height: 28px;
+        padding: 0;
+        z-index: 100;
+    }
+
+    .toolButton > img {
+        margin: 4px;
+    }
+
+    .toolButton > span {
+        display: inline-block;
+        background-repeat: no-repeat;
+        background-position: center center;
+        margin: 4px;
+        width: 24px;
+        height: 24px;
+    }
+
+    .toolButton-left {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .toolButton-right {
+        float: right;
+        margin-left: 10px;
+    }
+    display: none;
+    padding: 12px;
+    border-bottom: 1px solid #DDD;
+}
+
+.list-more .list-remaining {
+    display: none;
+}
+
+.list-loading-indicator {
+    display: none;
+}
+
+/* list view states */
+.list-hide-search .list-search {
+    display: none;
+}
+
+.list-has-more .list-more, .list-has-empty-opt .list-empty-opt {
+    display: block;
+    background-color: #fff;
+}
+
+.list-has-more .list-remaining {
+    display: block;
+    text-align: center;
+    padding: 0px 0 12px 0;
+}
+
+.list-loading .list-loading-indicator {
+    display: block;
+    text-align: center;
+}
+
+.list-loading .list-loading-indicator h2 {
+    padding: 0 0 0 10px;
+    display: inline-block;
+    text-align: center;
+}
+
+.list-content > li > a {
+    padding: 8px 32px 8px 36px;
+}
+
+/* list selection */
+.list .list-item-selector {
+    visibility: hidden;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    z-index: 10;
+    background: none;
+    border: 0 none #000;
+    padding: 0 2px 0 0px;
+    color: @black-darker;
+}
+
+.list-show-actions .list-item-selector {
+    visibility: visible !important;
+    width: 38px;
+    height: 38px;
+    left: 6px;
+
+    line-height: 30px;
+    padding: 0 2px 0 2px;
+
+    color: #000;
+    text-shadow: #fff 0px 1px 0px;
+    border: 1px solid #ececec;
+}
+
+.list-show-actions .list-item-selector > img {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    border: none 0 black;
+}
+
+.list-item-selected > .list-item-selector {
+    visibility: visible !important;
+}
+
+.list-item-static-selector {
+    div {
+        width: 100%;
+        text-align: center;
+    }
+
+    .icon {
+        padding-left: 8px;
+    }
+
+    .fa-stack {
+        top: -7px;
+    }
+
+    visibility: visible;
+    width: 38px;
+    position: absolute;
+    top: 8px;
+    left: 6px;
+    bottom: 0px;
+    z-index: 10;
+}
+
+.list-action-selected + .actions-row {
+    display: block !important;
+}
+
+.list-action-selected > .list-item-selector {
+    border-color: #DDD;
+    .border-radius(3px);
+    bottom: 0px;
+    height: auto !important;
+    box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.actions-row {
+    display: none;
+}
+
+.actions-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.list .scroller {
+    position: absolute;
+    width: 100%;
+    top: 45px;
+    bottom: 0px;
+}
+
+.list .item-static-icon {
+    width: 24px;
+    height: 24px;
+    top: 6px;
+    left: 6px;
+    float: left;
+    padding: 0px 5px 0px 0px;
+}
+
+/* grouped list */
+.group-content > h2 {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin: 0;
+    padding: 0 0 0 6px;
+    z-index: 5;
+    position: relative;
+}
+
+.group-content > ul {
+    margin: 0;
+}
+
+.group-content {
+    border-bottom: 1px solid #DDD;
+}
+
+/* detail veiw */
+.panel .panel-loading-indicator div.row > div {
+    display: inline-block;
+    padding: 0 0 0 20px;
+}
+
+.panel .panel-loading-indicator div.row {
+    text-align: center !important;
+    padding: 1em !important;
+    min-height: 1em !important;
+}
+
+.content-loading > span {
+    padding-left: 32px;
+    background: url('../../../images/content-loading-light-green.gif') no-repeat scroll 12px 50%;
+}
+
+.panel.busy {
+    opacity: 0.5;
+}
+
+/* fields */
+.row-hidden {
+    display: none;
+}
+
+.list-search {
+    padding: 1px;
+    position: relative;
+}
+
+div.table-layout {
+    display: table;
+    width: 100%;
+    padding: 0;
+    background: #fff;
+}
+
+div.table-layout > div {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+h2 > .collapsed-indicator {
+    height: 30px;
+    width: 30px;
+    float: right;
+}
+
+h4 > .collapsed-indicator {
+    height: 25px;
+    width: 25px;
+    float: right;
+}
+
+div > .collapsed-indicator {
+    height: 25px;
+    width: 25px;
+    float: right;
+}
+
+.collapsed + ul,
+.collapsed + fieldset,
+.collapsed + div {
+    display: none !important;
+}
+
+li > .disabled,
+.action-list > li > .disabled {
+    opacity: 0.3;
+}
+
+.action-list > ul > li > a {
+    text-overflow: ellipsis;
+}
+
+ul.action-list > li > a > div {
+    float: left;
+    margin: 0 0.5em 0 0;
+}
+
+.action-list > li {
+    line-height: 1em !important;
+    cursor: pointer !important;
+}
+
+.action-list > li > a > span {
+    display: block;
+    min-height: 1em;
+    line-height: inherit;
+    padding: 2px 0 0 0;
+    color: #777;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.file-wrapper {
+    line-height: 50px;
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    margin: 8px;
+}
+
+.display-none {
+    display: none !important;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+body > .viewContainer {
+    position: absolute;
+    padding: 40px 0 0 0;
+    margin: 0;
+    z-index: 3;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+}
+
+body[orient="landscape"] {
+    min-height: 268px;
+    overflow: hidden;
+}
+
+body > .viewContainer > .list,
+body > .viewContainer > .panel,
+body > .viewContainer > .dialog {
+    display: none;
+}
+
+body.transition > .viewContainer > .panel,
+body.transition > .viewContainer > .list {
+    position: absolute;
+    top: 40px;
+}
+
+body > .viewContainer > .panel,
+body > .viewContainer > .list {
+    position: absolute;
+    top: 40px;
+    bottom: 0px;
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-transition-duration: 200ms;
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transform: translateZ(0);
+}
+
+body[orient="landscape"] > .viewContainer > .panel,
+body[orient="landscape"] > .viewContainer > .list {
+    position: absolute;
+    top: 40px; /* Adjust if header toolbar changes */
+    bottom: 0px; /* Adjust if footer toolbar changes */
+    width: 100%;
+    -webkit-transition-property: top, bottom;
+    transition-property: top, bottom;
+    -webkit-transition-duration: 0.2s, 0.2s;
+    transition-duration: 0.2s, 0.2s;
+    -webkit-transition-timing-function: ease, ease;
+    transition-timing-function: ease, ease;
+}
+
+body > .viewContainer > [selected="true"] {
+    display: block;
+}
+
+body > .viewContainer > .dialog {
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0;
+    text-align: right;
+}
+
+.dialog > fieldset {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    border: none;
+    border-top: 1px solid #6d84a2;
+    padding: 0px 6px;
+    -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
+}
+
+.dialog > fieldset > label {
+    position: absolute;
+    margin: 8px 0 0 6px;
+    display: inline-block;
+}
+
+.list-content,
+.group-content {
+    margin: 0;
+    padding: 0;
+}
+
+.list-content > li,
+.group-content > li {
+    list-style: none;
+    margin: 0px 0px 1px 0px;
+    padding: 4px 0px 4px 10px;
+    position: relative;
+}
+
+.list-content > li,
+.group-content > li {
+    padding: 8px 32px 8px 6px;
+}
+
+.list-show-selectors .list-item-content,
+.list-item-static-selector + .list-item-content {
+    padding-left: 42px;
+}
+
+.actions-enabled + .list-item-content {
+    padding-left: 40px;
+}
+
+.list-content > li > img.icon,
+.list-content > li > * > img.icon {
+    border: 0 none black;
+    margin: 0 .5em 0 0;
+    width: 24px;
+    height: 24px;
+    float: left;
+}
+
+.list-content > li > .list-selector {
+    float: left;
+    margin: 2px 0 0 0px;
+}
+
+.no-data {
+    text-align: center;
+}
+
+.no-data > h3 {
+    white-space: normal;
+}
+
+img {
+    border: 0 none black;
+}
+
+.panel > .panel-loading-indicator {
+    display: none;
+    border: none;
+}
+
+.panel > .panel-validation-summary,
+.panel > .panel-concurrency-summary {
+    display: none;
+}
+
+.panel-loading > .panel-loading-indicator {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.panel-loading > .panel-loading-indicator span {
+    display: inline;
+    padding: 0;
+}
+
+.panel-form-error > .panel-validation-summary,
+.panel-form-concurrency-error > .panel-concurrency-summary {
+    display: block;
+}
+
+.panel-content > h2,
+.panel-validation-summary > h2,
+.panel-concurrency-summary > h2 {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin: 0;
+    padding: 0 0 0 2px;
+    z-index: 5;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.panel > ul > li,
+.panel-content > ul > li {
+    list-style: none;
+    line-height: 28px;
+    clear: both;
+}
+
+.panel-validation-summary > ul > li,
+.panel-concurrency-summary > ul > li {
+    list-style: none;
+    clear: both;
+}
+
+.panel-content > ul > li > img.icon,
+.panel-content > ul > li > * > img.icon,
+.panel-validation-summary > ul > li > img.icon
+.panel-validation-summary > ul > li > * > img.icon {
+    border: 0 none black;
+    margin: 0 .5em 0 0;
+    width: 24px;
+    height: 24px;
+    float: left;
+}
+
+.panel-content > fieldset,
+.panel-validation-summary > fieldset,
+.panel-concurrency-summary > fieldset,
+.panel-content > div,
+.panel-validation-summary > div,
+.panel-concurrency-summary > div,
+.panel-content > ul,
+.panel-validation-summary > ul,
+.panel-concurrency-summary > ul {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.panel-content > fieldset:last-child,
+.panel-content > ul:last-child,
+.panel-content > div:last-child {
+    margin: 0;
+    padding: 0 0 0 0;
+}
+
+.panel-content > ul > li,
+.panel-validation-summary > ul > li,
+.panel-concurrency-summary > ul > li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.panel-content > ul > li > a,
+.panel-validation-summary > ul > li > a {
+    padding: 1px;
+    margin: 0 0 0 30px;
+    display: block;
+    cursor: pointer;
+}
+
+.panel-validation-summary > ul > li > a > h3,
+.panel-concurrency-summary > ul > li > h3 {
+    overflow: visible;
+    text-overflow: inherit;
+    white-space: inherit;
+}
+
+.row.no-value {
+    display: none;
+    visibility: hidden;
+}
+
+.row > div > label,
+.row > label {
+    margin: 0px;
+    padding: 0;
+    position: relative;
+}
+
+.row {
+    text-align: left;
+    clear: both;
+    padding: 0 .75em;
+}
+
+.row > div > span,
+.row > div > a,
+.row > span,
+.row > a {
+    display: block;
+    margin: 0 0 0 0;
+    padding: 0 0 0 30px;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.href {
+    display: inline-block;
+    color: @link-color;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.not-available {
+    text-align: center;
+    padding: 8px 32px 8px 36px !important;
+}
+
+.contextualContent .list-search {
+    background-color: @black-darker;
+}
+
+.related-view-widget {
+    padding: 4px 1px 10px 24px;
+    position: relative;
+
+}
+
+.related-view-widget .panel {
+    padding: 1px;
+    position: relative;
+    top: 0px;
+}
+
+.related-view-widget .tab {
+    margin: 0;
+    padding: 1px;
+}
+
+.related-view-widget .tab-items {
+    margin: 0;
+    padding: 1px;
+    text-align: left;
+}
+
+.related-view-widget .tab-item {
+    padding: 0 2px;
+}
+
+.related-view-widget .tab-item > img {
+    width: 24px;
+    height: 24px;
+}
+
+.related-view-widget .tab .title {
+    color: @gray1-dark;
+    padding: 0 0 0 14px;
+    float: left;
+}
+
+.related-view-widget .line-bar {
+    background-color: @gray1-lighter;
+    height: 2px;
+    padding: 0;
+    position: relative;
+    top: 0;
+    margin: 2px 0 0;
+}
+
+.related-view-widget .tab-icon {
+    padding: 1px;
+    text-align: center;
+    width: 24px;
+    height: 24px;
+    padding: 0 0 0 6px;
+    float: left;
+}
+
+.related-view-widget .refresh-img {
+    background: url('../../../images/refresh.png') no-repeat scroll 0 50%;
+}
+
+.related-view-widget .navtolist-img {
+    background: url('../../../images/arrow-right-black.png') no-repeat scroll 0 50%;
+}
+
+.related-view-widget .hidden {
+    display: none;
+}
+
+.related-view-widget .action-items {
+    text-align: right;
+}
+
+.related-view-widget .action-item {
+    padding: 0 2px;
+}
+
+.related-view-widget .action-item > img {
+    width: 24px;
+    height: 24px;
+}
+
+.related-view-widget .action {
+    float: left;
+    padding: 0 10px;
+}
+
+.related-view-widget .header {
+    padding: 1px;
+    position: relative;
+}
+
+.related-view-widget .footer {
+    padding: 2px 2px 2px 4px;
+    position: relative;
+}
+
+.related-view-widget .row {
+    display: block;
+    line-height: 1em;
+    min-height: 0.1em;
+    padding: 1px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 4px;
+    position: relative;
+    background-color: #FFFFFF;
+}
+
+.related-view-widget .items {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+}
+
+.related-view-widget .item {
+    line-height: 0.95em;
+    min-height: 0.5em;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    text-overflow: ellipsis;
+    margin: 1px;
+}
+
+.related-view-widget .item .item-icon {
+    float: left;
+    border-width: 0;
+    height: 22px;
+    left: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    width: 28px;
+
+}
+
+.related-view-widget .item .item-header {
+    color: @black-darker;
+    left: 40px;
+    position: relative;
+    padding: 0 40px 0 0;
+
+}
+
+.related-view-widget .item .item-detail {
+    color: @gray1-dark;
+    left: 40px;
+    position: relative;
+    padding: 0 40px 0 0;
+}
+
+.related-view-widget .item .item-footer {
+    color: @black-darker;
+}
+
+.related-view-widget .item .item-icon > img {
+    border: 2px solid #FFFFFF;
+    height: 24px;
+    left: 0;
+    position: relative;
+    top: 0;
+    width: 24px;
+}
+
+.related-view-widget .nodata {
+    display: block;
+    text-align: center;
+    line-height: 1.5em;
+    padding: 1em;
+}
+
+.related-view-widget .loading-indicator {
+    display: none;
+    text-align: center;
+    line-height: 1.5em;
+    padding: 1em;
+}
+
+.related-view-widget .loading-indicator div,
+{
+    background: url('../../../images/loading-indicator-white.gif') no-repeat scroll 0 50%;
+    padding: 0 0 0 20px;
+    display: inline-block;
+    text-align: center;
+}
+
+.related-view-widget .loading {
+    display: inline-block;
+}
+

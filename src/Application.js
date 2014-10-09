@@ -204,6 +204,7 @@ define('Sage/Platform/Mobile/Application', [
         modules: null,
         views: null,
         hash: hash,
+        onLine: true,
         _currentPage: null,
         /**
          * Toolbar instances by key name
@@ -307,6 +308,12 @@ define('Sage/Platform/Mobile/Application', [
                     this._clearSDataRequestCache();
             }
         },
+        onOffline: function () {
+            this.onLine = false;
+        },
+        onOnline: function () {
+            this.onLine = true;
+        },
         /**
          * Establishes various connections to events.
          */
@@ -315,6 +322,10 @@ define('Sage/Platform/Mobile/Application', [
             this._connects.push(connect.connect(win.body(), 'beforetransition', this, this._onBeforeTransition));
             this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
             this._connects.push(connect.connect(win.body(), 'show', this, this._onActivate));
+            this._connects.push(connect.connect(window, 'offline', this, this.onOffline));
+            this._connects.push(connect.connect(window, 'online', this, this.onOnline));
+
+            this.onLine = navigator.onLine;
         },
 
         /**
