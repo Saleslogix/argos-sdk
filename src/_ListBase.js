@@ -44,8 +44,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     'Sage/Platform/Mobile/View',
     'Sage/Platform/Mobile/SearchWidget',
     'Sage/Platform/Mobile/ConfigurableSelectionModel',
-    'Sage/Platform/Mobile/RelatedViewManager',
-    'Immutable'
+    'Sage/Platform/Mobile/RelatedViewManager'
 ], function(
     declare,
     lang,
@@ -67,8 +66,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     View,
     SearchWidget,
     ConfigurableSelectionModel,
-    RelatedViewManager,
-    Immutable
+    RelatedViewManager
 ) {
 
     return declare('Sage.Platform.Mobile._ListBase', [View], {
@@ -534,7 +532,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         _onScrollHandle: null,
         constructor: function() {
-            this.entries = Immutable.Map();
+            this.entries = {};
         },
         postCreate: function() {
             this.inherited(arguments);
@@ -666,7 +664,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             if (key) {
                 this.enableActions = false; // Set to false so the quick actions menu doesn't pop up
                 selectionModel.clear();
-                selectionModel.toggle(key, this.entries.get(key).toJS());
+                selectionModel.toggle(key, this.entries[key]);
                 selectedItems = selectionModel.getSelections();
                 this.enableActions = enableActions;
 
@@ -943,7 +941,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                 key = row ? row.getAttribute('data-key') : false;
 
             if (this._selectionModel && key) {
-                this._selectionModel.toggle(key, this.entries.get(key).toJS(), row);
+                this._selectionModel.toggle(key, this.entries[key], row);
             }
 
             if (this.options.singleSelect && this.options.singleSelectAction && !this.enableActions) {
@@ -964,7 +962,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             if (params.key)
             {
                 if (this._selectionModel && this.isNavigationDisabled()) {
-                    this._selectionModel.toggle(params.key, this.entries.get(params.key).toJS() || params.descriptor, params.$source);
+                    this._selectionModel.toggle(params.key, this.entries[params.key] || params.descriptor, params.$source);
                     if (this.options.singleSelect && this.options.singleSelectAction) {
                         this.invokeSingleSelectAction();
                     }
@@ -1248,6 +1246,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         processData: function(entries) {
             var store = this.get('store'),
                 rowNode,
+                output,
                 docfrag,
                 key,
                 entry,
@@ -1255,30 +1254,29 @@ define('Sage/Platform/Mobile/_ListBase', [
                 count = entries.length;
 
             if (count > 0) {
+                output = [];
+
                 docfrag = document.createDocumentFragment();
+                for (i = 0; i < count; i++) {
+                    entry = this._processEntry(entries[i]);
+                    // If key comes back with nothing, check that the store is properly
+                    // setup with an idProperty
+                    key = store.getIdentity(entry);
+                    this.entries[store.getIdentity(entry)] = entry;
 
-                // withMutations allows us to batch mutations to the immutable collection for performance reasons
-                this.entries = this.entries.withMutations(function(batchEntries) {
-                    for (i = 0; i < count; i++) {
-                        entry = this._processEntry(entries[i]);
-                        // If key comes back with nothing, check that the store is properly
-                        // setup with an idProperty
-                        key = store.getIdentity(entry);
-                        batchEntries.set(key, Immutable.fromJS(entry));
-                        try {
-                            rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
-                        } catch (err) {
-                            console.error(err);
-                            rowNode = domConstruct.toDom(this.rowTemplateError.apply(entry, this));
-                        }
-
-                        docfrag.appendChild(rowNode);
-                        this.onApplyRowTemplate(entry, rowNode);
-                        if (this.relatedViews.length > 0) {
-                            this.onProcessRelatedViews(entry, rowNode, entries);
-                        }
+                    try {
+                        rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+                    } catch (err) {
+                        console.error(err);
+                        rowNode = domConstruct.toDom(this.rowTemplateError.apply(entry, this));
                     }
-                }.bind(this));
+
+                    docfrag.appendChild(rowNode);
+                    this.onApplyRowTemplate(entry, rowNode);
+                    if (this.relatedViews.length > 0) {
+                        this.onProcessRelatedViews(entry, rowNode, entries);
+                    }
+                }
 
                 if (docfrag.childNodes.length > 0) {
                     domConstruct.place(docfrag, this.contentNode, 'last');
@@ -1508,7 +1506,8 @@ define('Sage/Platform/Mobile/_ListBase', [
                 this._selectionModel.resumeEvents();
             }
 
-            this.entries = this.entries.clear();
+            this.requestedFirstPage = false;
+            this.entries = {};
             this.position = 0;
 
             if (this._onScrollHandle) {

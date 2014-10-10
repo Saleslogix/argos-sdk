@@ -38,8 +38,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
     'Sage/Platform/Mobile/Format',
     'Sage/Platform/Mobile/Utility',
     'Sage/Platform/Mobile/ErrorManager',
-    'Sage/Platform/Mobile/View',
-    'Immutable'
+    'Sage/Platform/Mobile/View'
 ], function(
     dojo,
     declare,
@@ -53,8 +52,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
     format,
     utility,
     ErrorManager,
-    View,
-    Immutable
+    View
 ) {
 
     return declare('Sage.Platform.Mobile._DetailBase', [View], {
@@ -439,7 +437,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             var view, entry;
             view = App.getView(this.editView);
             if (view) {
-                entry = this.entry && this.entry.toJS();
+                entry = this.entry;
                 view.show({entry: entry});
             }
         },
@@ -724,10 +722,10 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * @param {Object} entry Entry from data store
          */
         processEntry: function(entry) {
-            this.entry = Immutable.fromJS(this.preProcessEntry(entry));
+            this.entry = this.preProcessEntry(entry);
 
-            if (this.entry && this.entry.length > 0) {
-                this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry.toJS());
+            if (this.entry) {
+                this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
             } else {
                 this.set('detailContent', '');
             }
