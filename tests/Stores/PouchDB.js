@@ -96,7 +96,7 @@ function(
         });
 
         it('can query', function(done) {
-            var promise = this.store.query(function(doc) {
+            var promise = this.store.query(function(doc, emit) {
                 emit(doc._id, doc.data);
             });
 

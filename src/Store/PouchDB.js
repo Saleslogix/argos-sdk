@@ -130,9 +130,9 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
                 callback = function(err, response) {
                     if (err) {
                         deferred.reject(err);
+                    } else {
+                        deferred.resolve(response);
                     }
-
-                    deferred.resolve(response);
                 };
 
             if (putOptions && putOptions.overwrite) {
