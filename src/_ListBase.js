@@ -643,7 +643,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                 var action = actions[i],
                     options = {
                         actionIndex: i,
-                        hasAccess: (!actions.security || (action.security && App.hasAccessTo(this.expandExpression(action.security)))) ? true : false
+                        hasAccess: (!action.security || (action.security && App.hasAccessTo(this.expandExpression(action.security)))) ? true : false
                     },
                     actionTemplate = action.template || this.listActionItemTemplate;
 
