@@ -47,6 +47,10 @@
         {
           "text": "Immutable.min.js",
           "path": "../libraries/"
+        },
+        {
+          "text": "bluebird.js",
+          "path": "../libraries/"
         }
       ]
     },

@@ -12,7 +12,6 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/array',
-    'dojo/_base/Deferred',
     'dojo/store/util/QueryResults',
     'dojo/string',
     'dojo/_base/json',
@@ -22,7 +21,6 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
     declare,
     lang,
     array,
-    Deferred,
     QueryResults,
     string,
     json,
@@ -63,16 +61,16 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
             this.data = [];
         },
         get: function(id, options) {
-            var deferred = new Deferred();
-            this._db.get(id, options || {}, function(err, doc) {
-                if (!err) {
-                    deferred.resolve(doc);
-                } else {
-                    deferred.reject(err);
-                }
-            });
+            return new Promise(function(resolve, reject) {
+                this._db.get(id, options || {}, function(err, doc) {
+                    if (!err) {
+                        resolve(doc);
+                    } else {
+                        reject(err);
+                    }
+                });
+            }.bind(this));
 
-            return deferred.promise;
         },
         /**
          * Queries the store for objects. This does not alter the store, but returns a
@@ -83,37 +81,33 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
          *   A full CouchDB-style map/reduce object: {map : ..., reduce: ...}.
          *   The name of a view in an existing design document (e.g. 'myview' or 'mydesigndoc/myview').
          * @param {Object} queryOptions
-         * @returns {dojo.store.api.Store.QueryResults}
+         * @returns {Window.Promise}
          *
          */
         query: function(query, queryOptions) {
-            var deferred = new Deferred();
-            deferred.total = -1;
-
-            queryOptions = queryOptions || {};
-            // The dojo store interface says query should accept start, count, and sort properties on the queryOptions object
-            // We want to allow queryOptions to include PouchDB options, ensure they don't trample each other (PouchDB wins).
-            if (queryOptions.start && !queryOptions.skip) {
-                queryOptions.skip = queryOptions.start;
-            }
-
-            if (queryOptions.count && !queryOptions.limit) {
-                queryOptions.limit = queryOptions.count;
-            }
-
-            // Query is sorted by key on CouchDB, queryOptions.descending can be set to true.
-            // There is no queryOptions.sort array like a dojo store would expect.
-
-            this._db.query(query, queryOptions, function(err, response) {
-                if (!err) {
-                    deferred.total = response.total_rows;
-                    deferred.resolve(response.rows);
-                } else {
-                    deferred.reject(err);
+            return new Promise(function(resolve, reject) {
+                queryOptions = queryOptions || {};
+                // The dojo store interface says query should accept start, count, and sort properties on the queryOptions object
+                // We want to allow queryOptions to include PouchDB options, ensure they don't trample each other (PouchDB wins).
+                if (queryOptions.start && !queryOptions.skip) {
+                    queryOptions.skip = queryOptions.start;
                 }
-            });
 
-            return QueryResults(deferred.promise);
+                if (queryOptions.count && !queryOptions.limit) {
+                    queryOptions.limit = queryOptions.count;
+                }
+
+                // Query is sorted by key on CouchDB, queryOptions.descending can be set to true.
+                // There is no queryOptions.sort array like a dojo store would expect.
+
+                this._db.query(query, queryOptions, function(err, response) {
+                    if (!err) {
+                        resolve(response);
+                    } else {
+                        reject(err);
+                    }
+                });
+            }.bind(this));
         },
         /**
          * Stores an object.
@@ -123,25 +117,24 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
          * @param {String|Object} putOptions.entity
          * @param {String} putOptions.version
          * @param {Boolean} putOptions.overwrite
-         * @returns {String|Number}
+         * @returns {Window.Promise}
          */
         put: function(object, putOptions) {
-            var deferred = new Deferred(),
-                callback = function(err, response) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(response);
-                    }
-                };
+            return new Promise(function(resolve, reject) {
+                var callback = function(err, response) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(response);
+                        }
+                    };
 
-            if (putOptions && putOptions.overwrite) {
-                this._db.put(object, putOptions.id || this.getIdentity(object), callback);
-            } else {
-                this._db.post(object, callback);
-            }
-
-            return deferred.promise;
+                if (putOptions && putOptions.overwrite) {
+                    this._db.put(object, putOptions.id || this.getIdentity(object), callback);
+                } else {
+                    this._db.post(object, callback);
+                }
+            }.bind(this));
         },
         /**
          * Creates an object, throws an error if the object already exists.
