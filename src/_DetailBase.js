@@ -342,17 +342,25 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * @template
          */
         createToolLayout: function() {
-            return this.tools || (this.tools = {
-                'tbar': [{
+            var tools = [];
+
+            if (this.editView) {
+                tools.push({
                     id: 'edit',
                     cls: 'fa fa-pencil fa-fw fa-lg',
                     action: 'navigateToEditView',
                     security: App.getViewSecurity(this.editView, 'update')
-                }, {
-                    id: 'refresh',
-                    cls: 'fa fa-refresh fa-fw fa-lg',
-                    action: '_refreshClicked'
-                }]
+                });
+            }
+
+            tools.push({
+                id: 'refresh',
+                cls: 'fa fa-refresh fa-fw fa-lg',
+                action: '_refreshClicked'
+            });
+
+            return this.tools || (this.tools = {
+                'tbar': tools
             });
         },
         _refreshClicked: function() {
