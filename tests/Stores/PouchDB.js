@@ -1,10 +1,12 @@
 define('tests/Stores/PouchDB', [
     'dojo/_base/lang',
+    'dojo/when',
     'moment',
     'Sage/Platform/Mobile/Store/PouchDB'
 ],
 function(
     lang,
+    when,
     moment,
     Store
 ) {
@@ -99,17 +101,16 @@ function(
             });
 
             promise.then(function(results) {
-                var data, total;
-                total = results.total_rows;
-                data = results.rows;
-                // Check our total, and the results of our above map query function
-                expect(total).toBe(1);
-                if (data.length > 0) {
-                    expect(data[0].key).toBe('1');
-                    expect(data[0].value).toBe('123');
-                }
+                when(promise.total, function(total) {
+                    // Check our total, and the results of our above map query function
+                    expect(total).toBe(1);
+                    if (results.length > 0) {
+                        expect(results[0].key).toBe('1');
+                        expect(results[0].value).toBe('123');
+                    }
 
-                done();
+                    done();
+                });
             });
         });
 
