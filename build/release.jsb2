@@ -41,16 +41,12 @@
           "path": "../libraries/moment/"
         },
         {
-          "text": "deep-diff-0.2.0.min.js",
-          "path": "../libraries/deep-diff/"
-        },
-        {
-          "text": "Immutable.min.js",
-          "path": "../libraries/"
-        },
-        {
           "text": "pouchdb-2.2.3.min.js",
           "path": "../libraries/PouchDB"
+        },
+        {
+          "text": "deep-diff-0.2.0.min.js",
+          "path": "../libraries/deep-diff/"
         }
       ]
     },
