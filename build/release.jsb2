@@ -47,6 +47,10 @@
         {
           "text": "Immutable.min.js",
           "path": "../libraries/"
+        },
+        {
+          "text": "pouchdb-2.2.3.min.js",
+          "path": "../libraries/PouchDB"
         }
       ]
     },
