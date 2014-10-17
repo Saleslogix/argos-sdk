@@ -41,10 +41,6 @@
           "path": "../libraries/moment/"
         },
         {
-          "text": "pouchdb-2.2.3.min.js",
-          "path": "../libraries/PouchDB"
-        },
-        {
           "text": "deep-diff-0.2.0.min.js",
           "path": "../libraries/deep-diff/"
         }
@@ -316,6 +312,11 @@
       "src": "../libraries/dojo/dojox",
       "dest": "content/dojo/dojox",
       "filters": "((gfx|svg|shape|path)\\.js)"
+    },
+    {
+      "src": "../libraries/PouchDB",
+      "dest": "content/PouchDB",
+      "filters": ".*js"
     }
   ]
 }
