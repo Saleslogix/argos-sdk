@@ -4,7 +4,7 @@
   "deployDir": "deploy/",
   "pkgs": [
     {
-      "name": "Argos SDK Dependencies",
+      "name": "Argos SDK Global Dependencies",
       "file": "content/javascript/argos-dependencies.js",
       "isDebug": true,
       "fileIncludes": [
@@ -29,21 +29,32 @@
           "path": "../libraries/sdata/"
         },
         {
-          "text": "snap.js",
-          "path": "../libraries/snap/"
-        },
-        {
           "text": "overthrow.js",
           "path": "../libraries/overthrow/"
         },
         {
-          "text": "moment-with-langs.min.js",
-          "path": "../libraries/moment/"
-        },
-        {
           "text": "deep-diff-0.2.0.min.js",
           "path": "../libraries/deep-diff/"
+        },
+        {
+          "text": "pouchdb-3.0.6.min.js",
+          "path": "../libraries/PouchDB"
         }
+      ]
+    },
+    {
+      "name": "Argos SDK AMD Dependencies",
+      "file": "content/javascript/argos-amd-dependencies.js",
+      "isDebug": true,
+      "fileIncludes": [
+          {
+              "text": "snap.js",
+              "path": "../libraries/snap/"
+          },
+          {
+              "text": "moment-with-langs.min.js",
+              "path": "../libraries/moment/"
+          }
       ]
     },
     {
@@ -312,11 +323,6 @@
       "src": "../libraries/dojo/dojox",
       "dest": "content/dojo/dojox",
       "filters": "((gfx|svg|shape|path)\\.js)"
-    },
-    {
-      "src": "../libraries/PouchDB",
-      "dest": "content/PouchDB",
-      "filters": ".*js"
     }
   ]
 }

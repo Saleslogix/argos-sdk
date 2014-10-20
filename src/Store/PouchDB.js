@@ -17,8 +17,7 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
     'dojo/string',
     'dojo/_base/json',
     'Sage/Platform/Mobile/Convert',
-    '../Utility',
-    'PouchDB'
+    '../Utility'
 ], function (
     declare,
     lang,
@@ -28,8 +27,7 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
     string,
     json,
     convert,
-    utility,
-    PouchDB
+    utility
 ) {
     return declare('Sage.Platform.Mobile.Store.PouchDB', null, {
 
