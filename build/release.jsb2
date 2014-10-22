@@ -38,7 +38,11 @@
         },
         {
           "text": "pouchdb-3.0.6.min.js",
-          "path": "../libraries/PouchDB"
+          "path": "../libraries/PouchDB/"
+        },
+        {
+          "text": "bluebird.js",
+          "papth": "../libraries/"
         }
       ]
     },
