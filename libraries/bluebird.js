@@ -51,7 +51,6 @@
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise) {
 var SomePromiseArray = Promise._SomePromiseArray;
 function Promise$_Any(promises) {
@@ -101,7 +100,6 @@ Promise.prototype.any = function Promise$any() {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 var schedule = require("./schedule.js");
 var Queue = require("./queue.js");
 var errorObj = require("./util.js").errorObj;
@@ -216,7 +214,6 @@ module.exports = new Async();
  * THE SOFTWARE.
  * 
  */
-"use strict";
 var Promise = require("./promise.js")();
 module.exports = Promise;
 },{"./promise.js":20}],4:[function(require,module,exports){
@@ -244,7 +241,6 @@ module.exports = Promise;
  * THE SOFTWARE.
  * 
  */
-"use strict";
 var cr = Object.create;
 if (cr) {
     var callerCache = cr(null);
@@ -259,7 +255,6 @@ var isIdentifier = util.isIdentifier;
 
 function makeMethodCaller (methodName) {
     return new Function("obj", "                                             \n\
-        'use strict'                                                         \n\
         var len = this.length;                                               \n\
         switch(len) {                                                        \n\
             case 1: return obj.methodName(this[0]);                          \n\
@@ -273,7 +268,6 @@ function makeMethodCaller (methodName) {
 
 function makeGetter (propertyName) {
     return new Function("obj", "                                             \n\
-        'use strict';                                                        \n\
         return obj.propertyName;                                             \n\
         ".replace("propertyName", propertyName));
 }
@@ -367,7 +361,6 @@ Promise.prototype.get = function Promise$get(propertyName) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, INTERNAL) {
 var errors = require("./errors.js");
 var canAttach = errors.canAttach;
@@ -446,7 +439,6 @@ function Promise$fork(didFulfill, didReject, didProgress) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function() {
 var inherits = require("./util.js").inherits;
 var defineProperty = require("./es5.js").defineProperty;
@@ -683,7 +675,6 @@ return CapturedTrace;
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(NEXT_FILTER) {
 var util = require("./util.js");
 var errors = require("./errors.js");
@@ -781,7 +772,6 @@ return CatchFilter;
  * THE SOFTWARE.
  * 
  */
-"use strict";
 var util = require("./util.js");
 var isPrimitive = util.isPrimitive;
 var wrapsPrimitiveReceiver = util.wrapsPrimitiveReceiver;
@@ -863,7 +853,6 @@ function Promise$thenThrow(reason) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, INTERNAL) {
 var PromiseReduce = Promise.reduce;
 
@@ -901,7 +890,6 @@ Promise.each = function Promise$Each(promises, fn) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 var Objectfreeze = require("./es5.js").freeze;
 var util = require("./util.js");
 var inherits = util.inherits;
@@ -1050,7 +1038,6 @@ module.exports = {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise) {
 var TypeError = require('./errors.js').TypeError;
 
@@ -1093,7 +1080,6 @@ return apiRejection;
  * 
  */
 var isES5 = (function(){
-    "use strict";
     return this === void 0;
 })();
 
@@ -1183,7 +1169,6 @@ if (isES5) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, INTERNAL) {
 var PromiseMap = Promise.map;
 
@@ -1221,7 +1206,6 @@ Promise.filter = function Promise$Filter(promises, fn, options) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, NEXT_FILTER, cast) {
 var util = require("./util.js");
 var wrapsPrimitiveReceiver = util.wrapsPrimitiveReceiver;
@@ -1345,7 +1329,6 @@ Promise.prototype.tap = function Promise$tap(handler) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, apiRejection, INTERNAL, cast) {
 var errors = require("./errors.js");
 var TypeError = errors.TypeError;
@@ -1500,7 +1483,6 @@ Promise.spawn = function Promise$Spawn(generatorFunction) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports =
 function(Promise, PromiseArray, cast, INTERNAL) {
 var util = require("./util.js");
@@ -1512,7 +1494,6 @@ var errorObj = util.errorObj;
 if (canEvaluate) {
     var thenCallback = function(i) {
         return new Function("value", "holder", "                             \n\
-            'use strict';                                                    \n\
             holder.pIndex = value;                                           \n\
             holder.checkFulfillment(this);                                   \n\
             ".replace(/Index/g, i));
@@ -1522,7 +1503,6 @@ if (canEvaluate) {
         var values = [];
         for (var i = 1; i <= count; ++i) values.push("holder.p" + i);
         return new Function("holder", "                                      \n\
-            'use strict';                                                    \n\
             var callback = holder.fn;                                        \n\
             return callback(values);                                         \n\
             ".replace(/values/g, values.join(", ")));
@@ -1626,7 +1606,6 @@ Promise.join = function Promise$Join() {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, PromiseArray, apiRejection, cast, INTERNAL) {
 var util = require("./util.js");
 var tryCatch3 = util.tryCatch3;
@@ -1779,7 +1758,6 @@ Promise.map = function Promise$Map(promises, fn, options, _filter) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise) {
 var util = require("./util.js");
 var async = require("./async.js");
@@ -1859,7 +1837,6 @@ Promise.prototype.nodeify = function Promise$nodeify(nodeback, options) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, PromiseArray) {
 var util = require("./util.js");
 var async = require("./async.js");
@@ -1975,7 +1952,6 @@ function Promise$_progressUnchecked(progressValue) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 var old;
 if (typeof Promise !== "undefined") old = Promise;
 function noConflict(bluebird) {
@@ -3063,7 +3039,6 @@ return Promise;
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, INTERNAL, cast) {
 var canAttach = require("./errors.js").canAttach;
 var util = require("./util.js");
@@ -3269,7 +3244,6 @@ return PromiseArray;
  * THE SOFTWARE.
  * 
  */
-"use strict";
 var util = require("./util.js");
 var maybeWrapAsError = util.maybeWrapAsError;
 var errors = require("./errors.js");
@@ -3431,7 +3405,6 @@ module.exports = PromiseResolver;
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, INTERNAL) {
 var THIS = {};
 var util = require("./util.js");
@@ -3615,7 +3588,6 @@ function makeNodePromisifiedEval(callback, receiver, originalName, fn, suffix) {
                         "nodebackForPromise",
                         "INTERNAL","                                         \n\
         var ret = function FunctionName(Parameters) {                        \n\
-            'use strict';                                                    \n\
             var len = arguments.length;                                      \n\
             var promise = new Promise(INTERNAL);                             \n\
             promise._setTrace(void 0);                                       \n\
@@ -3761,7 +3733,6 @@ Promise.promisifyAll = function Promise$PromisifyAll(target, options) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, PromiseArray, cast) {
 var util = require("./util.js");
 var apiRejection = require("./errors_api_rejection")(Promise);
@@ -3873,7 +3844,6 @@ Promise.props = function Promise$Props(promises) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 function arrayCopy(src, srcIndex, dst, dstIndex, len) {
     for (var j = 0; j < len; ++j) {
         dst[j + dstIndex] = src[j + srcIndex];
@@ -3992,7 +3962,6 @@ module.exports = Queue;
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, INTERNAL, cast) {
 var apiRejection = require("./errors_api_rejection.js")(Promise);
 var isArray = require("./util.js").isArray;
@@ -4068,7 +4037,6 @@ Promise.prototype.race = function Promise$race() {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, PromiseArray, apiRejection, cast, INTERNAL) {
 var util = require("./util.js");
 var tryCatch4 = util.tryCatch4;
@@ -4253,7 +4221,6 @@ Promise.reduce = function Promise$Reduce(promises, fn, initialValue, _each) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 var schedule;
 var _MutationObserver;
 if (typeof process === "object" && typeof process.version === "string") {
@@ -4318,7 +4285,6 @@ module.exports = schedule;
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports =
     function(Promise, PromiseArray) {
 var PromiseInspection = Promise.PromiseInspection;
@@ -4389,7 +4355,6 @@ Promise.prototype.settle = function Promise$settle() {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports =
 function(Promise, PromiseArray, apiRejection) {
 var util = require("./util.js");
@@ -4554,7 +4519,6 @@ Promise._SomePromiseArray = SomePromiseArray;
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise) {
 function PromiseInspection(promise) {
     if (promise !== void 0) {
@@ -4634,7 +4598,6 @@ Promise.PromiseInspection = PromiseInspection;
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function(Promise, INTERNAL) {
 var util = require("./util.js");
 var canAttach = require("./errors.js").canAttach;
@@ -4771,7 +4734,6 @@ return Promise$_Cast;
  * THE SOFTWARE.
  * 
  */
-"use strict";
 var _setTimeout = function(fn, ms) {
     var len = arguments.length;
     var arg0 = arguments[2];
@@ -4866,7 +4828,6 @@ Promise.prototype.timeout = function Promise$timeout(ms, message) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 module.exports = function (Promise, apiRejection, cast) {
     var TypeError = require("./errors.js").TypeError;
     var inherits = require("./util.js").inherits;
@@ -5060,7 +5021,6 @@ module.exports = function (Promise, apiRejection, cast) {
  * THE SOFTWARE.
  * 
  */
-"use strict";
 var es5 = require("./es5.js");
 var haveGetters = (function(){
     try {

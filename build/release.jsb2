@@ -33,16 +33,16 @@
           "path": "../libraries/overthrow/"
         },
         {
-          "text": "deep-diff-0.2.0.min.js",
-          "path": "../libraries/deep-diff/"
-        },
-        {
           "text": "pouchdb-3.0.6.min.js",
           "path": "../libraries/PouchDB/"
         },
         {
           "text": "bluebird.js",
           "path": "../libraries/"
+        },
+        {
+          "text": "deep-diff-0.2.0.min.js",
+          "path": "../libraries/deep-diff/"
         }
       ]
     },
