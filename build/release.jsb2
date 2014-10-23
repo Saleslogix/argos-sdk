@@ -42,7 +42,7 @@
         },
         {
           "text": "bluebird.js",
-          "papth": "../libraries/"
+          "path": "../libraries/"
         }
       ]
     },
