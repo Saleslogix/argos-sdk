@@ -155,15 +155,14 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
             return this.put(object, addOptions);
         },
         /**
-         * Not implemented in this store.
+         * Removes the document given the id
+         * @param id
+         * @returns {window.Promise}
          */
         remove: function(id) {
-            var self = this;
-            this._db.get(id).then(function(doc) {
-                return self._db.remove(doc);
-            }).catch(function(err) {
-                console.error(err);
-            });
+            return this._db.get(id).then(function(doc) {
+                return this._db.remove(doc);
+            }.bind(this));
         },
         /**
          * Returns an object's identity using this.idProperty
