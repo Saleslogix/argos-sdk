@@ -375,6 +375,7 @@ span {
   padding: 0 0 0 10px;
   display: inline-block;
   text-align: center;
+  overflow: inherit;
 }
 .list-content > li > a {
   padding: 8px 32px 8px 36px;
@@ -595,6 +596,9 @@ body > .viewContainer {
   top: 0px;
   bottom: 0px;
   width: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 body[orient="landscape"] {
   min-height: 268px;
@@ -1190,6 +1194,7 @@ textarea:focus {
 .viewContainer > .toolbar > .button,
 .toolbar > .button {
   background-color: transparent;
+  outline: none;
 }
 .panel-content > h2 > button {
   float: right;
@@ -1358,36 +1363,6 @@ textarea:focus {
 .row-edit[data-field-type="note"] > input {
   padding: 8px 34px 8px 0px;
 }
-.list-search input {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  height: 32px;
-  margin: 0 !important;
-  border: none;
-}
-.list-search .searchButton {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  display: inline-block;
-  height: 35px;
-}
-.list-search .dismissButton {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  position: absolute;
-  display: inline-block;
-  height: 32px;
-  width: 32px;
-  right: 70px;
-  top: 6px;
-  border: solid 1px black;
-}
-.list-search label {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-}
 div.table-layout div.hasButton {
   width: 30px;
   white-space: nowrap;
@@ -1422,8 +1397,12 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
 }
 /* search */
 .list-search input {
-  line-height: 30px;
   border: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  margin: 0 !important;
 }
 .list-search .searchButton {
   cursor: pointer;
@@ -1432,17 +1411,32 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
   border: solid 1px #000;
   text-align: center;
   z-index: 100;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  display: inline-block;
+  height: 35px;
 }
 .list-search .dismissButton {
   cursor: pointer;
   line-height: 30px;
   text-align: center;
-  border-style: solid;
-  border-color: #000;
-  border-width: 1px 0 1px 1px;
   z-index: 100;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  position: absolute;
+  display: inline-block;
+  height: 32px;
+  width: 32px;
+  right: 70px;
+  top: 6px;
+  border: solid 1px black;
 }
 .list-search label {
+  position: absolute;
+  top: 6px;
+  left: 6px;
   color: #aaa;
   line-height: 32px;
   padding: 0 8px 0 6px;

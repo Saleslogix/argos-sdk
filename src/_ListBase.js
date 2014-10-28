@@ -1136,14 +1136,21 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         hasMoreData: function() {
         },
+        _setLoading: function() {
+            domClass.add(this.domNode, 'list-loading');
+            this.listLoading = true;
+        },
+        _clearLoading: function() {
+            domClass.remove(this.domNode, 'list-loading');
+            this.listLoading = false;
+        },
         /**
          * Initiates the data request.
          */
         requestData: function() {
             var store, queryOptions, request;
 
-            domClass.add(this.domNode, 'list-loading');
-            this.listLoading = true;
+            this._setLoading();
 
             store = this.get('store');
             if (store) {
@@ -1191,8 +1198,7 @@ define('Sage/Platform/Mobile/_ListBase', [
 
                 this.processData(entries);
 
-                domClass.remove(this.domNode, 'list-loading');
-                this.listLoading = false;
+                this._clearLoading();
 
                 if (!this._onScrollHandle && this.continuousScrolling) {
                     this._onScrollHandle = this.connect(scrollerNode, 'onscroll', this.onScroll);
