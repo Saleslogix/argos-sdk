@@ -1148,7 +1148,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * Initiates the data request.
          */
         requestData: function() {
-            var store, queryOptions, request;
+            var store, queryOptions;
 
             this._setLoading();
 
@@ -1252,7 +1252,6 @@ define('Sage/Platform/Mobile/_ListBase', [
         processData: function(entries) {
             var store = this.get('store'),
                 rowNode,
-                output,
                 docfrag,
                 key,
                 entry,
@@ -1260,8 +1259,6 @@ define('Sage/Platform/Mobile/_ListBase', [
                 count = entries.length;
 
             if (count > 0) {
-                output = [];
-
                 docfrag = document.createDocumentFragment();
                 for (i = 0; i < count; i++) {
                     entry = this._processEntry(entries[i]);

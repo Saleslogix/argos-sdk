@@ -724,13 +724,16 @@ define('Sage/Platform/Mobile/_DetailBase', [
         preProcessEntry: function(entry) {
             return entry;
         },
+        getModel: function(entry) {
+            return entry;
+        },
         /**
          * Takes the entry from the data store, applies customization, applies any custom item process and then
          * passes it to process layout.
          * @param {Object} entry Entry from data store
          */
         processEntry: function(entry) {
-            this.entry = this.preProcessEntry(entry);
+            this.entry = this.getModel(this.preProcessEntry(entry));
 
             if (this.entry) {
                 this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
