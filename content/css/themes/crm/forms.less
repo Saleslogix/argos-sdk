@@ -8,7 +8,6 @@ input, textarea {
     font-size: @font-size-input;
     border: @form-border;
     .box-sizing(border-box);
-    .box-shadow(inset 1px 1px 3px rgba(0, 0, 0, 0.5));
     .border-radius(3px);
     width: 100%;
     margin: 0 0 8px 0;
@@ -345,12 +344,6 @@ button.clear-button:focus {
     margin-left: 0px;
 }
 
-.row-edit[data-field-type="note"] > div > textarea,
-.row-edit[data-field-type="note"] > textarea {
-    padding: 8px 34px 8px 0px;
-    height: 10em;
-}
-
 .row-edit[data-field-type="duration"] > div > .autoComplete-watermark {
     position: absolute;
     box-sizing: border-box;
@@ -364,8 +357,7 @@ button.clear-button:focus {
 .row-edit[data-field-type="address"] > div > div {
     min-height: 1.5em;
     padding: 8px 34px 8px 8px;
-    border: 1px solid @gray1-lighter;
-    background-color: @gray2-lighter;
+    border: @form-border;
 }
 
 .row-edit {
@@ -395,24 +387,6 @@ button.clear-button:focus {
 
     margin: 0;
     padding: 8px 34px 8px 8px;
-}
-
-.row > div > textarea,
-.row > textarea {
-    -webkit-appearance: none;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    margin: 0;
-    border: 0 none black;
-    padding: 8px 10px 8px 0px;
-    background: transparent;
-    width: 100%;
-    display: block;
 }
 
 .row > div > input[type|=radio], .row > div > input[type|=checkbox],

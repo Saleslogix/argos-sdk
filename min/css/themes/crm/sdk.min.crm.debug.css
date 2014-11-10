@@ -245,6 +245,7 @@ span {
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: #0f1e1e;
 }
 .left-drawer,
 .right-drawer {
@@ -485,9 +486,6 @@ span {
 }
 .group-content > ul {
   margin: 0;
-}
-.group-content {
-  border-bottom: 1px solid #DDD;
 }
 /* detail veiw */
 .panel .panel-loading-indicator div.row > div {
@@ -1111,11 +1109,6 @@ body body > .viewContainer {
 .panel-content > div > .row > label {
   color: #4b5656;
 }
-.panel-content > fieldset > .row-edit > div > textarea,
-.panel-content > fieldset > .row-edit > textarea {
-  border: 1px solid #dddee0;
-  background-color: #ecedef;
-}
 .panel-content > fieldset > .row-edit {
   border-top: none;
 }
@@ -1163,9 +1156,6 @@ textarea {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -1467,11 +1457,6 @@ button.clear-button:focus {
 .row-edit[data-field-type="signature"] > div > img {
   margin-left: 0px;
 }
-.row-edit[data-field-type="note"] > div > textarea,
-.row-edit[data-field-type="note"] > textarea {
-  padding: 8px 34px 8px 0px;
-  height: 10em;
-}
 .row-edit[data-field-type="duration"] > div > .autoComplete-watermark {
   position: absolute;
   box-sizing: border-box;
@@ -1484,8 +1469,7 @@ button.clear-button:focus {
 .row-edit[data-field-type="address"] > div > div {
   min-height: 1.5em;
   padding: 8px 34px 8px 8px;
-  border: 1px solid #dddee0;
-  background-color: #ecedef;
+  border: 1px solid #b3b3b3;
 }
 .row-edit {
   /*position: relative;*/
@@ -1511,23 +1495,6 @@ button.clear-button:focus {
   -moz-box-shadow: none;
   margin: 0;
   padding: 8px 34px 8px 8px;
-}
-.row > div > textarea,
-.row > textarea {
-  -webkit-appearance: none;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  margin: 0;
-  border: 0 none black;
-  padding: 8px 10px 8px 0px;
-  background: transparent;
-  width: 100%;
-  display: block;
 }
 .row > div > input[type|=radio],
 .row > div > input[type|=checkbox],
