@@ -245,6 +245,7 @@ span {
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: #0f1e1e;
 }
 .left-drawer,
 .right-drawer {
@@ -485,9 +486,6 @@ span {
 }
 .group-content > ul {
   margin: 0;
-}
-.group-content {
-  border-bottom: 1px solid #DDD;
 }
 /* detail veiw */
 .panel .panel-loading-indicator div.row > div {
