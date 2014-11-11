@@ -725,6 +725,12 @@ define('Sage/Platform/Mobile/_DetailBase', [
             return entry;
         },
         /**
+         * Returns a new instance of a model for the view. Should be overridden by derived classes.
+         */
+        getModel: function() {
+            return null;
+        },
+        /**
          * Takes the entry from the data store, applies customization, applies any custom item process and then
          * passes it to process layout.
          * @param {Object} entry Entry from data store
@@ -776,12 +782,20 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * Initiates the request.
          */
         requestData: function() {
-            var store, getExpression, getResults, getOptions;
+            var store, getExpression, getResults, getOptions, model;
 
             domClass.add(this.domNode, 'panel-loading');
 
+            model = this.getModel();
             store = this.get('store');
-            if (store) {
+
+            if (model) {
+                model.getEntry(this.options).then(function fulfilled(data) {
+                    this._onGetComplete(data);
+                }.bind(this), function rejected(err) {
+                    this._onGetError(null, err);
+                }.bind(this));
+            } else if (store) {
                 getOptions = {};
 
                 this._applyStateToGetOptions(getOptions);
@@ -795,9 +809,9 @@ define('Sage/Platform/Mobile/_DetailBase', [
                 );
 
                 return getResults;
+            } else {
+                throw new Error('requestData called without a model or store defined.');
             }
-
-            console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataDetailMixin to your detail view?');
         },
         _buildGetExpression: function() {
             var options = this.options;

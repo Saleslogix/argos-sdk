@@ -31,6 +31,8 @@ define('Sage/Platform/Mobile/_ModelBase', [
         },
         _metadataSetter: function(value) {
             this.metadata = value;
+        },
+        getEntry: function (options) {
         }
     });
 });
