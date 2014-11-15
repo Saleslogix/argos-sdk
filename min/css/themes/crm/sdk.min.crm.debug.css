@@ -463,7 +463,7 @@ span {
 .list .scroller {
   position: absolute;
   width: 100%;
-  top: 45px;
+  top: 36px;
   bottom: 0px;
 }
 .list .item-static-icon {
@@ -509,7 +509,7 @@ span {
   display: none;
 }
 .list-search {
-  padding: 1px;
+  padding: 0px;
   position: relative;
 }
 div.table-layout {
