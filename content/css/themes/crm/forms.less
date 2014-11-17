@@ -39,6 +39,7 @@ input:focus, textarea:focus {
 .toolbar > .button {
     background-color: @toolbar-button-bg-color;
     outline: none;
+    border: none;
 }
 
 .panel-content > h2 > button {
@@ -404,6 +405,9 @@ button.clear-button:focus {
     height: 36px;
     line-height: 30px;
     padding: 0 2px 0 2px;
+    outline: none;
+    border: @button-border;
+    .border-radius(@button-border-radius);
 }
 
 .toolButton {

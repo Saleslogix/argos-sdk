@@ -1185,6 +1185,7 @@ textarea:focus {
 .toolbar > .button {
   background-color: transparent;
   outline: none;
+  border: none;
 }
 .panel-content > h2 > button {
   float: right;
@@ -1362,7 +1363,7 @@ div.table-layout div.hasButton > button {
   border: 0;
 }
 div.table-layout div.hasButton > button.searchButton {
-  border: none;
+  border: 1px solid #b3b3b3;
 }
 div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
   border: 0;
@@ -1511,6 +1512,11 @@ button.clear-button:focus {
   height: 36px;
   line-height: 30px;
   padding: 0 2px 0 2px;
+  outline: none;
+  border: 1px solid #b3b3b3;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
 }
 .toolButton {
   position: relative;
