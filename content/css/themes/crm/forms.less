@@ -467,13 +467,6 @@ button.clear-button:focus {
     .box-sizing(border-box);
 }
 
-.toggle-vertical {
-    width: 64px;
-    height: 126px;
-    margin: 0;
-    position: relative;
-}
-
 .toggle > .thumb {
     position: absolute;
     width: 26px;
@@ -482,22 +475,50 @@ button.clear-button:focus {
     .border-radius(@toggle-border-radius);
 }
 
-.toggle-vertical > .thumb {
-    width: 64px;
-}
-
 .toggleStateOn > .thumb {
     left: auto;
     right: 0px;
 }
 
-.toggleStateOn > .vertical {
-    left: -1px;
-    top: auto;
-    bottom: -1px;
-}
-
 .toggleStateOn {
     background-color: @togglestate-on-bg-color;
     border-color: @togglestate-on-border-bg-color;
+}
+
+.toggle-vertical {
+    width: 64px;
+    height: 126px;
+    margin: 0;
+    position: relative;
+
+    > .thumb {
+        width: 60px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+
+    .toggleOn {
+        height: 60px;
+        width: 64px;
+        top: 0;
+    }
+
+    .toggleOff {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        top: auto;
+        left: 0px;
+    }
+}
+
+.toggle-vertical.toggleStateOn > .toggleOff {
+    display: none;
+}
+
+.toggleStateOn > .vertical {
+    left: 0px;
+    top: auto;
+    bottom: 0px;
 }

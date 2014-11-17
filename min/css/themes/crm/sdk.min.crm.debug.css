@@ -1574,12 +1574,6 @@ button.clear-button:focus {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
-.toggle-vertical {
-  width: 64px;
-  height: 126px;
-  margin: 0;
-  position: relative;
-}
 .toggle > .thumb {
   position: absolute;
   width: 26px;
@@ -1589,21 +1583,45 @@ button.clear-button:focus {
   -webkit-border-radius: 14px;
   -moz-border-radius: 14px;
 }
-.toggle-vertical > .thumb {
-  width: 64px;
-}
 .toggleStateOn > .thumb {
   left: auto;
   right: 0px;
 }
-.toggleStateOn > .vertical {
-  left: -1px;
-  top: auto;
-  bottom: -1px;
-}
 .toggleStateOn {
   background-color: #13a3f7;
   border-color: #13a3f7;
+}
+.toggle-vertical {
+  width: 64px;
+  height: 126px;
+  margin: 0;
+  position: relative;
+}
+.toggle-vertical > .thumb {
+  width: 60px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.toggle-vertical .toggleOn {
+  height: 60px;
+  width: 64px;
+  top: 0;
+}
+.toggle-vertical .toggleOff {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  top: auto;
+  left: 0px;
+}
+.toggle-vertical.toggleStateOn > .toggleOff {
+  display: none;
+}
+.toggleStateOn > .vertical {
+  left: 0px;
+  top: auto;
+  bottom: 0px;
 }
 .viewContainer > .footer-toolbar {
   position: absolute;
@@ -1671,6 +1689,7 @@ body > .viewContainer > .toolbar,
   display: none !important;
 }
 #datetime-picker table {
+  border-collapse: separate;
   border-spacing: 6px 0px;
   padding: 2px;
   margin: 0.5em auto 0;
@@ -1685,10 +1704,6 @@ body > .viewContainer > .toolbar,
 #datetime-picker table caption {
   padding: 4px;
 }
-.ext-webkit #datetime-picker table caption {
-  width: 100%;
-}
-/* Webkit caption does not match table width by default */
 #datetime-picker td {
   padding: 0;
   margin: 0;
@@ -1720,25 +1735,19 @@ body > .viewContainer > .toolbar,
   margin: 0;
   height: 46px;
   line-height: 44px;
+  border-radius: 0px;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
-  border-radius: 0px;
 }
 #datetime-picker .plus > td > button {
-  -moz-border-radius-topleft: 3px;
-  -moz-border-radius-topright: 3px;
-  -moz-border-radius-bottomright: 0px;
-  -moz-border-radius-bottomleft: 0px;
-  -webkit-border-radius: 3px 3px 0px 0px;
   border-radius: 3px 3px 0px 0px;
+  -webkit-border-radius: 3px 3px 0px 0px;
+  -moz-border-radius: 3px 3px 0px 0px;
 }
 #datetime-picker .minus > td > button {
-  -moz-border-radius-topleft: 0px;
-  -moz-border-radius-topright: 0px;
-  -moz-border-radius-bottomright: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-radius: 0px 0px 3px 3px;
   border-radius: 0px 0px 3px 3px;
+  -webkit-border-radius: 0px 0px 3px 3px;
+  -moz-border-radius: 0px 0px 3px 3px;
 }
 #datetime-picker .datetime-tt {
   border: none !important;
