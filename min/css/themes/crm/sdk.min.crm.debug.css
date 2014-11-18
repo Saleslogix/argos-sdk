@@ -610,12 +610,12 @@ body > .viewContainer > .dialog {
 body.transition > .viewContainer > .panel,
 body.transition > .viewContainer > .list {
   position: absolute;
-  top: 40px;
+  top: 65px;
 }
 body > .viewContainer > .panel,
 body > .viewContainer > .list {
   position: absolute;
-  top: 40px;
+  top: 65px;
   bottom: 0px;
   width: 100%;
   box-sizing: border-box;
@@ -628,7 +628,7 @@ body > .viewContainer > .list {
 body[orient="landscape"] > .viewContainer > .panel,
 body[orient="landscape"] > .viewContainer > .list {
   position: absolute;
-  top: 40px;
+  top: 65px;
   /* Adjust if header toolbar changes */
   bottom: 0px;
   /* Adjust if footer toolbar changes */
@@ -1643,7 +1643,7 @@ button.clear-button:focus {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  height: 40px;
+  height: 65px;
   width: 100%;
   padding: 4px 4px;
   display: block;
@@ -1652,17 +1652,15 @@ button.clear-button:focus {
 .viewContainer > .toolbar > h1,
 .toolbar > h1 {
   color: #ffffff;
-  overflow: hidden;
   display: block;
   margin: 0;
   padding: 0;
-  line-height: 34px;
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
   position: absolute;
-  left: 0px;
-  right: 0px;
+  top: 40px;
+  width: 100%;
   z-index: 0;
 }
 .viewContainer > .toolbar-size-1 > h1,
