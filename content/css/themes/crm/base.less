@@ -457,18 +457,16 @@ body > .viewContainer > .dialog {
 body.transition > .viewContainer > .panel,
 body.transition > .viewContainer > .list {
     position: absolute;
-    top: 40px;
+    top: 65px;
 }
 
 body > .viewContainer > .panel,
 body > .viewContainer > .list {
     position: absolute;
-    top: 40px;
+    top: 65px;
     bottom: 0px;
     width: 100%;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+    .box-sizing(border-box);
     -webkit-transition-duration: 200ms;
     -webkit-transition-property: -webkit-transform;
     -webkit-transform: translateZ(0);
@@ -477,7 +475,7 @@ body > .viewContainer > .list {
 body[orient="landscape"] > .viewContainer > .panel,
 body[orient="landscape"] > .viewContainer > .list {
     position: absolute;
-    top: 40px; /* Adjust if header toolbar changes */
+    top: 65px; /* Adjust if header toolbar changes */
     bottom: 0px; /* Adjust if footer toolbar changes */
     width: 100%;
     -webkit-transition-property: top, bottom;

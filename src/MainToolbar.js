@@ -101,20 +101,22 @@ define('Sage/Platform/Mobile/MainToolbar', [
          * @param {Object[]} tools Array of toolbar item definitions
          */
         showTools: function(tools) {
+            var count, i, toolTemplate, side, tool;
             this.inherited(arguments);
 
             domClass.remove(this.domNode, 'toolbar-size-' + this.size);
             
-            if (tools)
-            {
-                var count = {left: 0, right: 0};
+            if (tools) {
+                count = {left: 0, right: 0};
 
-                for (var i = 0; i < tools.length; i++)
-                {
-                    count[tools[i].side || 'right'] += 1;
-                    var toolTemplate = tools[i].template || this.toolTemplate;
+                for (i = 0; i < tools.length; i++) {
+                    tool = tools[i];
+                    side = tool.side || 'right';
 
-                    domConstruct.place(toolTemplate.apply(tools[i], this.tools[tools[i].id]), this.domNode, 'last');
+                    count[side] += 1;
+                    toolTemplate = tool.template || this.toolTemplate;
+
+                    domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.domNode, 'last');
                 }
 
                 this.size = Math.max(count.left, count.right);
