@@ -1105,7 +1105,7 @@ body body > .viewContainer {
 }
 .panel-content > fieldset > .row,
 .panel-content > div > .row {
-  padding: 0.25em;
+  padding: 0.25em 0.25em 10px 0.25em;
   min-height: 1.5em;
 }
 .panel-content > fieldset > .row > div > label,
