@@ -281,10 +281,14 @@
     clear: both;
 }
 
+.list.list-hide-search .scroller {
+    top: 0px;
+}
+
 .list .scroller {
     position: absolute;
     width: 100%;
-    top: 36px;
+    top: 47px;
     bottom: 0px;
 }
 
@@ -347,12 +351,13 @@ div.table-layout {
     display: table;
     width: 100%;
     padding: 0;
-    background: #fff;
+    background: @color-azure;
 }
 
 div.table-layout > div {
     display: table-cell;
     vertical-align: middle;
+    padding: 5px 10px 10px 10px;
 }
 
 h2 > .collapsed-indicator {

@@ -68,17 +68,28 @@ define('Sage/Platform/Mobile/SearchWidget', [
         attributeMap: {
             queryValue: { node: 'queryNode', type: 'attribute', attribute: 'value' }
         },
+
+        /**
+         * @property {Boolean}
+         * Flag to enable the clear and search buttons.
+         */
+        enableButtons: false,
+
         /**
          * @property {Simplate}
          * Simple that defines the HTML Markup
          */
         widgetTemplate: new Simplate([
             '<div class="search-widget">',
-            '<div class="table-layout">',
-                '<div><input type="text" placeholder="{%= $.searchText %}" name="query" class="query" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onfocus:_onFocus,onblur:_onBlur,onkeypress:_onKeyPress" /></div>',
-                '<div class="hasButton"><button class="clear-button" tabindex="-1" data-dojo-attach-event="onclick: _onClearClick"></button></div>',
-                '<div class="hasButton"><button class="subHeaderButton searchButton" data-dojo-attach-event="click: search">{%= $.searchText %}</button></div>',
-            '</div>',
+                '<div class="table-layout">',
+                    '<div><input type="text" placeholder="{%= $.searchText %}" name="query" class="query" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onfocus:_onFocus,onblur:_onBlur,onkeypress:_onKeyPress" /></div>',
+
+                    '{% if ($.enableButtons) { %}',
+                        '<div class="hasButton"><button class="clear-button" tabindex="-1" data-dojo-attach-event="onclick: _onClearClick"></button></div>',
+                        '<div class="hasButton"><button class="subHeaderButton searchButton" data-dojo-attach-event="click: search">{%= $.searchText %}</button></div>',
+                    '{% } %}',
+
+                '</div>',
             '</div>'
         ]),
 
@@ -224,6 +235,11 @@ define('Sage/Platform/Mobile/SearchWidget', [
          */
         _onFocus: function() {
             domClass.add(this.domNode, 'search-active');
+
+            // Work around a chrome issue were mouseup after a focus will de-select the text
+            setTimeout(function() {
+                this.queryNode.select();
+            }.bind(this), 50);
         },
         /**
          * Detects the enter/return key and fires {@link #search search}

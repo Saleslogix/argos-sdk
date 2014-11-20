@@ -460,10 +460,13 @@ span {
   display: table;
   clear: both;
 }
+.list.list-hide-search .scroller {
+  top: 0px;
+}
 .list .scroller {
   position: absolute;
   width: 100%;
-  top: 36px;
+  top: 47px;
   bottom: 0px;
 }
 .list .item-static-icon {
@@ -516,11 +519,12 @@ div.table-layout {
   display: table;
   width: 100%;
   padding: 0;
-  background: #fff;
+  background: #13a3f7;
 }
 div.table-layout > div {
   display: table-cell;
   vertical-align: middle;
+  padding: 5px 10px 10px 10px;
 }
 h2 > .collapsed-indicator {
   height: 30px;
@@ -1368,7 +1372,6 @@ div.table-layout div.hasButton > button.searchButton {
 div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
   border: 0;
   padding: 0 6px;
-  background-color: transparent;
   box-shadow: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
