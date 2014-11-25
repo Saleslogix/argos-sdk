@@ -1111,7 +1111,7 @@ body body > .viewContainer {
 .panel-content > fieldset > .row > div > label,
 .panel-content > div > .row > div > label,
 .panel-content > div > .row > label {
-  color: #4b5656;
+  color: #9a9ea1;
 }
 .panel-content > fieldset > .row-edit {
   border-top: none;
@@ -1665,6 +1665,8 @@ button.clear-button:focus {
   top: 40px;
   width: 100%;
   z-index: 0;
+  font-size: 18px;
+  font-weight: normal;
 }
 .toolbar,
 .viewContainer > .toolbar,
