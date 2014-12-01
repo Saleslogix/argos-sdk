@@ -1270,6 +1270,7 @@ textarea:focus {
   top: 2px;
   padding: 0;
   font-size: 25px;
+  /* changes the quick action icon size */
 }
 .actions-row > button > img {
   position: absolute;
@@ -1653,8 +1654,8 @@ button.clear-button:focus {
   display: block;
   z-index: 10;
 }
-.viewContainer > .toolbar > h1,
-.toolbar > h1 {
+.viewContainer > .toolbar > .toolbar-title,
+.toolbar > .toolbar-title {
   color: #ffffff;
   display: block;
   margin: 0;
