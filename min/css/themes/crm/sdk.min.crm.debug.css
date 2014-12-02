@@ -798,7 +798,7 @@ img {
 .panel-concurrency-summary > ul > li {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 5px 0;
   position: relative;
 }
 .panel-content > ul > li > a,
@@ -1094,7 +1094,6 @@ body body > .viewContainer {
 .panel-content > ul,
 .panel-validation-summary > ul,
 .panel-concurrency-summary > ul {
-  margin: 0.25em;
   border: none;
   background-color: #ffffff;
 }
@@ -1118,6 +1117,9 @@ body body > .viewContainer {
 }
 .panel-content > fieldset > .row-edit:first-of-type {
   border-top: 0 none black;
+}
+.panel-content > .action-list {
+  background-color: #ffee99;
 }
 body > .viewContainer {
   border-left: 2px solid #dddee0;

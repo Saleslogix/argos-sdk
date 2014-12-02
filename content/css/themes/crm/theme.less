@@ -96,7 +96,6 @@ body > .viewContainer {
 .panel-content > ul,
 .panel-validation-summary > ul,
 .panel-concurrency-summary > ul {
-    margin: 0.25em;
     border: @panel-content-list-border;
     background-color: @panel-content-list-bg-color;
 }
@@ -125,6 +124,10 @@ body > .viewContainer {
 
 .panel-content > fieldset > .row-edit:first-of-type {
     border-top: 0 none black;
+}
+
+.panel-content > .action-list {
+    background-color: lighten(@color-light-amber, 30%);
 }
 
 body > .viewContainer {
