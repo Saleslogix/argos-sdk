@@ -204,7 +204,7 @@ h5,
 }
 p,
 span {
-  font-size: 12px;
+  font-size: 14px;
 }
 .smalltext {
   font-size: 11px;
@@ -386,6 +386,7 @@ span {
   visibility: hidden;
   width: 24px;
   height: 24px;
+  line-height: 24px;
   position: absolute;
   top: 8px;
   left: 12px;
@@ -1168,7 +1169,7 @@ body > .viewContainer {
 */
 input,
 textarea {
-  font-size: 12px;
+  font-size: 14px;
   border: 1px solid #b3b3b3;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -1181,8 +1182,7 @@ textarea {
   padding: 7px;
 }
 label {
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 14px;
 }
 input:focus,
 textarea:focus {
@@ -1270,7 +1270,7 @@ textarea:focus {
   text-align: center;
   bottom: 2px;
   padding: 0;
-  font-size: 12px;
+  font-size: 14px;
   white-space: nowrap;
   display: block;
   text-overflow: ellipsis;
@@ -1356,8 +1356,8 @@ textarea:focus {
   position: absolute;
   right: 4px;
   display: block;
-  height: 30px;
-  width: 40px;
+  height: 44px;
+  width: 44px;
 }
 .row-edit[data-field-type="picklist"] > div > input,
 .row-edit[data-field-type="lookup"] > div > input,
@@ -1411,6 +1411,7 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   height: 32px;
+  vertical-align: middle;
   margin: 0 !important;
 }
 .list-search .searchButton {
@@ -1469,7 +1470,8 @@ button.clear-button:focus {
 /* edit/insert */
 .row > div > input:not([type|=radio]):not([type|=checkbox]),
 .row > input:not([type|=radio]):not([type|=checkbox]) {
-  height: 30px;
+  height: 44px;
+  vertical-align: middle;
   padding: 10px 10px 0 0px;
 }
 .row-edit[data-field-type="signature"] > div > canvas,
@@ -1486,9 +1488,12 @@ button.clear-button:focus {
   padding: 3px 0 0 111px;
 }
 .row-edit[data-field-type="address"] > div > div {
-  min-height: 1.5em;
+  height: 44px;
   padding: 8px 34px 8px 8px;
   border: 1px solid #b3b3b3;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 .row-edit {
   /*position: relative;*/
@@ -1527,8 +1532,8 @@ button.clear-button:focus {
   padding: 8px 34px 8px 0px;
 }
 .button {
-  height: 36px;
-  line-height: 30px;
+  height: 44px;
+  vertical-align: middle;
   padding: 0 2px 0 2px;
   outline: none;
   border: 1px solid #b3b3b3;
@@ -1543,6 +1548,8 @@ button.clear-button:focus {
   min-height: 28px;
   padding: 0;
   z-index: 100;
+  width: 28px;
+  height: 28px;
 }
 .toolButton > img {
   margin: 4px;
@@ -1581,17 +1588,17 @@ button.clear-button:focus {
 .toggle {
   border: 2px solid #b3b3b3;
   background-color: #b3b3b3;
-  border-radius: 14px;
-  -webkit-border-radius: 14px;
-  -moz-border-radius: 14px;
-  line-height: 30px;
+  border-radius: 22px;
+  -webkit-border-radius: 22px;
+  -moz-border-radius: 22px;
+  line-height: 44px;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  width: 50px;
-  height: 28px;
+  width: 70px;
+  height: 44px;
   margin: 3px 0px 3px 0px;
   position: relative;
   right: auto;
@@ -1601,12 +1608,12 @@ button.clear-button:focus {
 }
 .toggle > .thumb {
   position: absolute;
-  width: 26px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
   background-color: #ffffff;
-  border-radius: 14px;
-  -webkit-border-radius: 14px;
-  -moz-border-radius: 14px;
+  border-radius: 22px;
+  -webkit-border-radius: 22px;
+  -moz-border-radius: 22px;
 }
 .toggleStateOn > .thumb {
   left: auto;
