@@ -236,9 +236,9 @@ define('Sage/Platform/Mobile/SearchWidget', [
         _onFocus: function() {
             domClass.add(this.domNode, 'search-active');
 
-            // Work around a chrome issue were mouseup after a focus will de-select the text
+            // Work around a chrome issue where mouseup after a focus will de-select the text
             setTimeout(function() {
-                this.queryNode.select();
+                this.queryNode.setSelectionRange(0, 9999);
             }.bind(this), 50);
         },
         /**
