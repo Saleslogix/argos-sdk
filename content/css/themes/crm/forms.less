@@ -16,7 +16,6 @@ input, textarea {
 
 label {
     font-size: @label-font-size;
-    font-weight: bold;
 }
 
 input:focus, textarea:focus {
@@ -212,8 +211,8 @@ input:focus, textarea:focus {
     position: absolute;
     right: 4px;
     display: block;
-    height: 30px;
-    width: 40px;
+    height: 44px;
+    width: 44px;
 }
 
 .row-edit[data-field-type="picklist"] > div > input,
@@ -272,6 +271,7 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
     border: 0;
     .box-sizing(border-box);
     height: 32px;
+    vertical-align: middle;
     margin: 0 !important;
 }
 
@@ -336,7 +336,8 @@ button.clear-button:focus {
 /* edit/insert */
 .row > div > input:not([type|=radio]):not([type|=checkbox]),
 .row > input:not([type|=radio]):not([type|=checkbox]) {
-    height: 30px;
+    height: 44px;
+    vertical-align: middle;
     padding: 10px 10px 0 0px;
 }
 
@@ -356,9 +357,10 @@ button.clear-button:focus {
 }
 
 .row-edit[data-field-type="address"] > div > div {
-    min-height: 1.5em;
+    height: 44px;
     padding: 8px 34px 8px 8px;
     border: @form-border;
+    .box-sizing(border-box);
 }
 
 .row-edit {
@@ -402,8 +404,8 @@ button.clear-button:focus {
 }
 
 .button {
-    height: 36px;
-    line-height: 30px;
+    height: 44px;
+    vertical-align: middle;
     padding: 0 2px 0 2px;
     outline: none;
     border: @button-border;
@@ -417,6 +419,8 @@ button.clear-button:focus {
     min-height: 28px;
     padding: 0;
     z-index: 100;
+    width: 28px;
+    height: 28px;
 }
 
 .toolButton > img {
@@ -464,8 +468,8 @@ button.clear-button:focus {
     .border-radius(@toggle-border-radius);
     line-height: @toggle-line-height;
     .user-select(none);
-    width: 50px;
-    height: 28px;
+    width: 70px;
+    height: 44px;
     margin: 3px 0px 3px 0px;
     position: relative;
     right: auto;
@@ -474,8 +478,8 @@ button.clear-button:focus {
 
 .toggle > .thumb {
     position: absolute;
-    width: 26px;
-    height: 24px;
+    width: 40px;
+    height: 40px;
     background-color: @toggle-thumb-bg-color;
     .border-radius(@toggle-border-radius);
 }
