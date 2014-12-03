@@ -3,6 +3,7 @@
 
 body {
     color: @text-color;
+    background-color: @body-bg-color;
 }
 
 a {
@@ -21,7 +22,7 @@ h1, h2, h3, h4, h5 {
 
 body
 body > .viewContainer {
-    background: @body-bg-color;
+    background-color: @body-bg-color;
 }
 
 .list-content,
@@ -159,10 +160,17 @@ body > .viewContainer {
 }
 
 .related-item-count {
-    margin: 0 0 0 1px;
+    margin: 0 5px 0 0;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    display: inline-block;
+    background-color: @color-azure;
+    text-align: center;
+    color: #fff;
+    .border-radius(3px);
 }
 
-.related-item-count,
 .related-item-label {
     color: @link-color;
 }

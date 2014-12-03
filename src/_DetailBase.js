@@ -893,8 +893,8 @@ define('Sage/Platform/Mobile/_DetailBase', [
                     if (result >= 0) {
                         labelNode = query('.related-item-label', rowNode)[0];
                         if (labelNode) {
-                            html = '<span class="related-item-count">(' + result + ')</span>';
-                            domConstruct.place(html, labelNode, 'after');
+                            html = '<span class="related-item-count">' + result + '</span>';
+                            domConstruct.place(html, labelNode, 'before');
                         } else {
                             console.warn('Missing the "related-item-label" dom node.');
                         }
