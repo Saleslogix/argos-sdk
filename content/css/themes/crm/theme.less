@@ -161,14 +161,16 @@ body > .viewContainer {
 
 .related-item-count {
     margin: 0 5px 0 0;
-    width: 32px;
-    height: 32px;
-    line-height: 32px;
+    min-width: 44px;
+    height: 44px;
+    line-height: 44px;
     display: inline-block;
     background-color: @color-azure;
     text-align: center;
     color: #fff;
+    padding: 0 5px;
     .border-radius(3px);
+    .box-sizing(border-box);
 }
 
 .related-item-label {
