@@ -1495,14 +1495,6 @@ button.clear-button:focus {
   color: #999;
   padding: 3px 0 0 111px;
 }
-.row-edit[data-field-type="address"] > div > div {
-  height: 44px;
-  padding: 8px 34px 8px 8px;
-  border: 1px solid #b3b3b3;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-}
 .row-edit {
   /*position: relative;*/
   padding: 2px 0.75em;
