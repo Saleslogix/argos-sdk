@@ -245,17 +245,12 @@ span {
   left: 0;
   right: 0;
   bottom: 0;
+}
+.left-drawer,
+.right-drawer {
+  visibility: hidden;
+  display: none;
   background-color: #0f1e1e;
-}
-.left-drawer,
-.right-drawer {
-  visibility: hidden;
-  display: none;
-}
-.left-drawer,
-.right-drawer {
-  display: none;
-  visibility: hidden;
 }
 .snapjs-left .left-drawer {
   visibility: visible;
@@ -628,12 +623,12 @@ body > .viewContainer > .dialog {
 body.transition > .viewContainer > .panel,
 body.transition > .viewContainer > .list {
   position: absolute;
-  top: 65px;
+  top: 64px;
 }
 body > .viewContainer > .panel,
 body > .viewContainer > .list {
   position: absolute;
-  top: 65px;
+  top: 64px;
   bottom: 0px;
   width: 100%;
   box-sizing: border-box;
@@ -646,7 +641,7 @@ body > .viewContainer > .list {
 body[orient="landscape"] > .viewContainer > .panel,
 body[orient="landscape"] > .viewContainer > .list {
   position: absolute;
-  top: 65px;
+  top: 64px;
   /* Adjust if header toolbar changes */
   bottom: 0px;
   /* Adjust if footer toolbar changes */
