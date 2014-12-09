@@ -72,7 +72,7 @@ define('Sage/Platform/Mobile/GroupedList', [
          */
         groupTemplate: new Simplate([
             '<h2 data-action="toggleGroup" class="{% if ($.collapsed) { %}collapsed{% } %}">',
-            '{%: $.title %}<button class="fa {% if ($.collapsed) { %}{%: $$.collapsedIconClass %} {% } else { %}{%: $$.expanedIconClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
+            '<button class="fa {% if ($.collapsed) { %}{%: $$.collapsedIconClass %} {% } else { %}{%: $$.expanedIconClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>{%: $.title %}',
             '</h2>',
             '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>'
         ]),
