@@ -547,6 +547,10 @@ div > .collapsed-indicator {
 .collapsed + div {
   display: none !important;
 }
+.action-list > li.disabled {
+  display: none;
+  visibility: hidden;
+}
 li > .disabled,
 .action-list > li > .disabled {
   opacity: 0.3;
@@ -556,9 +560,18 @@ li > .disabled,
 }
 ul.action-list > li > a > div {
   float: left;
-  margin: 0 0.5em 0 0;
+  margin: 0 5px 0 0;
+  width: 39px;
+  height: 44px;
+  text-align: center;
+  padding: 5px;
+  font-size: 1.5em;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 .action-list > li {
+  height: 44px;
   line-height: 1em !important;
   cursor: pointer !important;
 }
@@ -837,7 +850,7 @@ img {
 .row > a {
   display: block;
   margin: 0 0 0 0;
-  padding: 0 0 0 30px;
+  padding: 0 0 0 10px;
   position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1677,7 +1690,7 @@ button.clear-button:focus {
   text-overflow: ellipsis;
   white-space: nowrap;
   position: absolute;
-  top: 48px;
+  top: 44px;
   width: 100%;
   z-index: 0;
   font-size: 18px;

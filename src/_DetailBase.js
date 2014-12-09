@@ -208,7 +208,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * * `$$` => view instance
          */
         actionTemplate: new Simplate([
-            '<li class="{%= $.cls %}">',
+            '<li class="{%= $.cls %}{% if ($.disabled) { %} disabled{% } %}">',
             '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
             '{% if ($.icon) { %}',
                 '<img src="{%= $.icon %}" alt="icon" class="icon" />',
