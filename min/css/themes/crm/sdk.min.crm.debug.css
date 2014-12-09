@@ -1202,12 +1202,6 @@ textarea:focus {
   color: #dddee0;
   background-color: transparent;
 }
-.viewContainer > .toolbar > .button,
-.toolbar > .button {
-  background-color: transparent;
-  outline: none;
-  border: none;
-}
 .panel-content > h2 > button {
   float: right;
   background-color: transparent;
@@ -1314,9 +1308,6 @@ textarea:focus {
   height: 32px;
 }
 /* busy */
-.toolbar.busy .actionButton span {
-  padding: 0 0 0 20px;
-}
 .panel.busy .actionButton span.indicator {
   margin: 0 10px 0 0;
 }
@@ -1548,12 +1539,10 @@ button.clear-button:focus {
 }
 .toolButton {
   position: relative;
-  min-width: 28px;
-  min-height: 28px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0;
   z-index: 100;
-  width: 28px;
-  height: 28px;
 }
 .toolButton > img {
   margin: 4px;
@@ -1688,7 +1677,7 @@ button.clear-button:focus {
   text-overflow: ellipsis;
   white-space: nowrap;
   position: absolute;
-  top: 40px;
+  top: 48px;
   width: 100%;
   z-index: 0;
   font-size: 18px;
@@ -1700,13 +1689,23 @@ body > .viewContainer > .toolbar,
 .viewContainer > .footer-toolbar {
   background-color: #13a3f7;
 }
+.viewContainer > .toolbar > .button,
+.toolbar > .button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 1.5em;
+}
+.toolbar.busy .actionButton span {
+  padding: 0 0 0 20px;
+}
 .toolButton-left {
   float: left;
-  margin-right: 10px;
+  margin-right: 2px;
 }
 .toolButton-right {
   float: right;
-  margin-left: 10px;
+  margin-left: 2px;
 }
 #datetime-picker {
   padding-bottom: 2em;

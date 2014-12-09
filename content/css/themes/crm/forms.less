@@ -34,13 +34,6 @@ input:focus, textarea:focus {
     background-color: transparent;
 }
 
-.viewContainer > .toolbar > .button,
-.toolbar > .button {
-    background-color: @toolbar-button-bg-color;
-    outline: none;
-    border: none;
-}
-
 .panel-content > h2 > button {
     float: right;
     background-color: transparent;
@@ -161,10 +154,6 @@ input:focus, textarea:focus {
 }
 
 /* busy */
-.toolbar.busy .actionButton span {
-    padding: 0 0 0 20px;
-}
-
 .panel.busy .actionButton span.indicator {
     margin: 0 10px 0 0;
 }
@@ -415,12 +404,10 @@ button.clear-button:focus {
 
 .toolButton {
     position: relative;
-    min-width: 28px;
-    min-height: 28px;
+    min-width: 44px;
+    min-height: 44px;
     padding: 0;
     z-index: 100;
-    width: 28px;
-    height: 28px;
 }
 
 .toolButton > img {

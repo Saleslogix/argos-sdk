@@ -36,7 +36,7 @@
     white-space: nowrap;
 
     position: absolute;
-    top: 40px;
+    top: 48px;
     width: 100%;
     z-index: 0;
     font-size: 18px;
@@ -50,12 +50,24 @@ body > .viewContainer > .toolbar,
     background-color: @toolbar-bg-color;
 }
 
+.viewContainer > .toolbar > .button,
+.toolbar > .button {
+    background-color: @toolbar-button-bg-color;
+    outline: none;
+    border: none;
+    font-size: 1.5em;
+}
+
+.toolbar.busy .actionButton span {
+    padding: 0 0 0 20px;
+}
+
 .toolButton-left {
     float: left;
-    margin-right: 10px;
+    margin-right: 2px;
 }
 
 .toolButton-right {
     float: right;
-    margin-left: 10px;
+    margin-left: 2px;
 }
