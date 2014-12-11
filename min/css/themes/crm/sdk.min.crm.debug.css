@@ -851,7 +851,6 @@ img {
   text-overflow: ellipsis;
 }
 .href {
-  display: inline-block;
   color: #005ce6;
   text-decoration: none;
   cursor: pointer;
