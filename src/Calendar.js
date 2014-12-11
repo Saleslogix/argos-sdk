@@ -139,6 +139,7 @@ define('Sage/Platform/Mobile/Calendar', [
 
         daysInMonth: function() {
             var date = moment();
+            date.date(1);
             date.year(this.year);
             date.month(this.month);
             return date.daysInMonth();
@@ -156,11 +157,12 @@ define('Sage/Platform/Mobile/Calendar', [
         },
 
         validate: function() {
-            this.year = this.yearNode.value;
-            this.month = this.monthNode.value;
+            this.year = parseInt(this.yearNode.value, 10);
+            this.month = parseInt(this.monthNode.value, 10);
+            var daysInMonth = this.daysInMonth();
 
             // adjust dayNode selector from changes to monthNode or leap/non-leap year
-            if (this.dayNode.options.length != this.daysInMonth()) {
+            if (this.dayNode.options.length !== daysInMonth) {
                 this.populateSelector(this.dayNode, this.dayNode.selectedIndex + 1, 1, this.daysInMonth());
             }
 
@@ -356,6 +358,10 @@ define('Sage/Platform/Mobile/Calendar', [
 
             result.hours(hours);
             result.minutes(minutes);
+
+            if ((this.options && this.options.timeless) || this.timeless) {
+                result.utc();
+            }
 
             return result.toDate();
         }
