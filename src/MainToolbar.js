@@ -54,7 +54,7 @@ define('Sage/Platform/Mobile/MainToolbar', [
          */
         widgetTemplate: new Simplate([
             '<div class="toolbar {%= $.cls %}">',            
-            '<h1 id="pageTitle" class="toolbar-title" data-dojo-attach-event="onclick: onTitleClick" data-dojo-attach-point="titleNode">{%= $.titleText %}</h1>',
+            '<div id="pageTitle" class="toolbar-title" data-dojo-attach-event="onclick: onTitleClick" data-dojo-attach-point="titleNode">{%= $.titleText %}</div>',
             '</div>'
         ]),
         /**

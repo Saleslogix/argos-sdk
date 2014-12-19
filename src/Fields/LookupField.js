@@ -93,7 +93,9 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          *
          */
         widgetTemplate: new Simplate([
-            '<label for="{%= $.name %}">{%: $.label %}</label>',
+            '{% if ($.label) { %}',
+                '<label for="{%= $.name %}">{%: $.label %}</label>',
+            '{% } %}',
             '<button style="z-index: 5;" data-action="buttonClick" class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
             '<input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />'
         ]),

@@ -112,8 +112,8 @@ define('Sage/Platform/Mobile/_DetailBase', [
          */
         sectionBeginTemplate: new Simplate([
             '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-            '{%: ($.title || $.options.title) %}',
             '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
+            '{%: ($.title || $.options.title) %}',
             '</h2>',
             '{% if ($.list || $.options.list) { %}',
             '<ul class="{%= ($.cls || $.options.cls) %}">',
@@ -208,7 +208,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * * `$$` => view instance
          */
         actionTemplate: new Simplate([
-            '<li class="{%= $.cls %}">',
+            '<li class="{%= $.cls %}{% if ($.disabled) { %} disabled{% } %}">',
             '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
             '{% if ($.icon) { %}',
                 '<img src="{%= $.icon %}" alt="icon" class="icon" />',
@@ -893,8 +893,8 @@ define('Sage/Platform/Mobile/_DetailBase', [
                     if (result >= 0) {
                         labelNode = query('.related-item-label', rowNode)[0];
                         if (labelNode) {
-                            html = '<span class="related-item-count">(' + result + ')</span>';
-                            domConstruct.place(html, labelNode, 'after');
+                            html = '<span class="related-item-count">' + result + '</span>';
+                            domConstruct.place(html, labelNode, 'before');
                         } else {
                             console.warn('Missing the "related-item-label" dom node.');
                         }

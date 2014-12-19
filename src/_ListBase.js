@@ -557,7 +557,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                 this.searchWidget = null;
             }
 
-            domClass.toggle(this.domNode, 'list-hide-search', this.hideSearch);
+            domClass.toggle(this.domNode, 'list-hide-search', this.hideSearch || !this.enableSearch);
             this.clear();
         },
         /**
@@ -1429,7 +1429,7 @@ define('Sage/Platform/Mobile/_ListBase', [
 
             domClass.toggle(this.domNode, 'list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined')
                 ? this.options.hideSearch
-                : this.hideSearch);
+                : this.hideSearch || !this.enableSearch);
 
             domClass.toggle(this.domNode, 'list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);
 

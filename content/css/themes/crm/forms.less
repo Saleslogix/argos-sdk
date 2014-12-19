@@ -16,7 +16,6 @@ input, textarea {
 
 label {
     font-size: @label-font-size;
-    font-weight: bold;
 }
 
 input:focus, textarea:focus {
@@ -33,13 +32,6 @@ input:focus, textarea:focus {
 .group-content > h2 > button {
     color: @gray1-lighter;
     background-color: transparent;
-}
-
-.viewContainer > .toolbar > .button,
-.toolbar > .button {
-    background-color: @toolbar-button-bg-color;
-    outline: none;
-    border: none;
 }
 
 .panel-content > h2 > button {
@@ -131,6 +123,7 @@ input:focus, textarea:focus {
     left: 0px;
     top: 2px;
     padding: 0;
+    font-size: 25px; /* changes the quick action icon size */
 }
 
 .actions-row > button > img {
@@ -161,10 +154,6 @@ input:focus, textarea:focus {
 }
 
 /* busy */
-.toolbar.busy .actionButton span {
-    padding: 0 0 0 20px;
-}
-
 .panel.busy .actionButton span.indicator {
     margin: 0 10px 0 0;
 }
@@ -211,8 +200,8 @@ input:focus, textarea:focus {
     position: absolute;
     right: 4px;
     display: block;
-    height: 30px;
-    width: 40px;
+    height: 44px;
+    width: 44px;
 }
 
 .row-edit[data-field-type="picklist"] > div > input,
@@ -247,7 +236,6 @@ div.table-layout div.hasButton > button.searchButton {
 div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
     border: 0;
     padding: 0 6px;
-    background-color: transparent;
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -272,6 +260,7 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
     border: 0;
     .box-sizing(border-box);
     height: 32px;
+    vertical-align: middle;
     margin: 0 !important;
 }
 
@@ -336,7 +325,8 @@ button.clear-button:focus {
 /* edit/insert */
 .row > div > input:not([type|=radio]):not([type|=checkbox]),
 .row > input:not([type|=radio]):not([type|=checkbox]) {
-    height: 30px;
+    height: 44px;
+    vertical-align: middle;
     padding: 10px 10px 0 0px;
 }
 
@@ -353,12 +343,6 @@ button.clear-button:focus {
     z-index: 10;
     color: #999;
     padding: 3px 0 0 111px;
-}
-
-.row-edit[data-field-type="address"] > div > div {
-    min-height: 1.5em;
-    padding: 8px 34px 8px 8px;
-    border: @form-border;
 }
 
 .row-edit {
@@ -402,8 +386,8 @@ button.clear-button:focus {
 }
 
 .button {
-    height: 36px;
-    line-height: 30px;
+    height: 44px;
+    vertical-align: middle;
     padding: 0 2px 0 2px;
     outline: none;
     border: @button-border;
@@ -413,8 +397,8 @@ button.clear-button:focus {
 
 .toolButton {
     position: relative;
-    min-width: 28px;
-    min-height: 28px;
+    min-width: 44px;
+    min-height: 44px;
     padding: 0;
     z-index: 100;
 }
@@ -464,8 +448,8 @@ button.clear-button:focus {
     .border-radius(@toggle-border-radius);
     line-height: @toggle-line-height;
     .user-select(none);
-    width: 50px;
-    height: 28px;
+    width: 70px;
+    height: 44px;
     margin: 3px 0px 3px 0px;
     position: relative;
     right: auto;
@@ -474,8 +458,8 @@ button.clear-button:focus {
 
 .toggle > .thumb {
     position: absolute;
-    width: 26px;
-    height: 24px;
+    width: 40px;
+    height: 40px;
     background-color: @toggle-thumb-bg-color;
     .border-radius(@toggle-border-radius);
 }

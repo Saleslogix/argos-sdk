@@ -50,6 +50,7 @@ define('Sage/Platform/Mobile/_EditBase', [
     'dojo/_base/connect',
     'dojo/_base/array',
     'dojo/_base/Deferred',
+    'dojo/_base/window',
     'dojo/string',
     'dojo/dom',
     'dojo/dom-attr',
@@ -81,6 +82,7 @@ define('Sage/Platform/Mobile/_EditBase', [
     connect,
     array,
     Deferred,
+    win,
     string,
     dom,
     domAttr,
@@ -865,7 +867,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                 App.bars.tbar.disableTool('save');
             }
 
-            domClass.add(this.domNode, 'busy');
+            domClass.add(win.body(), 'busy');
         },
         /**
          * Enables the form by setting busy to false and enabling the toolbar
@@ -877,7 +879,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                 App.bars.tbar.enableTool('save');
             }
 
-            domClass.remove(this.domNode, 'busy');
+            domClass.remove(win.body(), 'busy');
         },
         /**
          * Called by save() when performing an insert (create).

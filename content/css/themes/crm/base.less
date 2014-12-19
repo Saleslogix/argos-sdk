@@ -34,19 +34,13 @@
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+.left-drawer,
+.right-drawer {
+    visibility: hidden;
+    display: none;
     background-color: @menu-list-item-bg-color;
-}
-
-.left-drawer,
-.right-drawer {
-    visibility: hidden;
-    display: none;
-}
-
-.left-drawer,
-.right-drawer {
-    display: none;
-    visibility: hidden;
 }
 
 .snapjs-left .left-drawer {
@@ -194,6 +188,7 @@
     visibility: hidden;
     width: 24px;
     height: 24px;
+    line-height: 24px;
     position: absolute;
     top: 8px;
     left: 12px;
@@ -281,10 +276,14 @@
     clear: both;
 }
 
+.list.list-hide-search .scroller {
+    top: 0px;
+}
+
 .list .scroller {
     position: absolute;
     width: 100%;
-    top: 36px;
+    top: 47px;
     bottom: 0px;
 }
 
@@ -329,7 +328,7 @@
     background: url('../../../images/content-loading-light-green.gif') no-repeat scroll 12px 50%;
 }
 
-.panel.busy {
+body.busy {
     opacity: 0.5;
 }
 
@@ -347,12 +346,13 @@ div.table-layout {
     display: table;
     width: 100%;
     padding: 0;
-    background: #fff;
+    background: @color-azure;
 }
 
 div.table-layout > div {
     display: table-cell;
     vertical-align: middle;
+    padding: 5px 10px 10px 10px;
 }
 
 h2 > .collapsed-indicator {
@@ -379,6 +379,11 @@ div > .collapsed-indicator {
     display: none !important;
 }
 
+.action-list > li.disabled {
+    display: none;
+    visibility: hidden;
+}
+
 li > .disabled,
 .action-list > li > .disabled {
     opacity: 0.3;
@@ -390,10 +395,17 @@ li > .disabled,
 
 ul.action-list > li > a > div {
     float: left;
-    margin: 0 0.5em 0 0;
+    margin: 0 5px 0 0;
+    width: 39px;
+    height: 44px;
+    text-align: center;
+    padding: 5px;
+    font-size: 1.5em;
+    .box-sizing(border-box);
 }
 
 .action-list > li {
+    height: 44px;
     line-height: 1em !important;
     cursor: pointer !important;
 }
@@ -457,13 +469,13 @@ body > .viewContainer > .dialog {
 body.transition > .viewContainer > .panel,
 body.transition > .viewContainer > .list {
     position: absolute;
-    top: 65px;
+    top: 64px;
 }
 
 body > .viewContainer > .panel,
 body > .viewContainer > .list {
     position: absolute;
-    top: 65px;
+    top: 64px;
     bottom: 0px;
     width: 100%;
     .box-sizing(border-box);
@@ -475,7 +487,7 @@ body > .viewContainer > .list {
 body[orient="landscape"] > .viewContainer > .panel,
 body[orient="landscape"] > .viewContainer > .list {
     position: absolute;
-    top: 65px; /* Adjust if header toolbar changes */
+    top: 64px; /* Adjust if header toolbar changes */
     bottom: 0px; /* Adjust if footer toolbar changes */
     width: 100%;
     -webkit-transition-property: top, bottom;
@@ -666,14 +678,14 @@ img {
 .panel-concurrency-summary > ul > li {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 5px 0;
     position: relative;
 }
 
 .panel-content > ul > li > a,
 .panel-validation-summary > ul > li > a {
     padding: 1px;
-    margin: 0 0 0 30px;
+    margin: 0 0 0 0.25em; /* matches the padding in the labels */
     display: block;
     cursor: pointer;
 }
@@ -709,14 +721,13 @@ img {
 .row > a {
     display: block;
     margin: 0 0 0 0;
-    padding: 0 0 0 30px;
+    padding: 0 0 0 10px;
     position: relative;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .href {
-    display: inline-block;
     color: @link-color;
     text-decoration: none;
     cursor: pointer;
