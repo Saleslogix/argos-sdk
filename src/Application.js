@@ -386,6 +386,14 @@ define('Sage/Platform/Mobile/Application', [
             this.initReUI();
         },
         /**
+         * Check if the browser supports touch events.
+         * @return {Boolean} true if the current browser supports touch events, false otherwise.
+         */
+        supportsTouch: function() {
+            // Taken from https://github.com/Modernizr/Modernizr/ (MIT Licensed)
+            return ('ontouchstart' in window) || (window.DocumentTouch && document instanceof DocumentTouch);
+        },
+        /**
          * Establishes various connections to events.
          */
         _startupConnections: function() {
