@@ -313,7 +313,7 @@ return this.own(_12.subscribe(t,_f.hitch(this,_56)))[0];
 },unsubscribe:function(_57){
 _57.remove();
 },isLeftToRight:function(){
-return this.dir?(this.dir=="ltr"):_b.isBodyLtr(this.ownerDocument);
+return this.dir?(this.dir.toLowerCase()=="ltr"):_b.isBodyLtr(this.ownerDocument);
 },isFocusable:function(){
 return this.focus&&(_c.get(this.domNode,"display")!="none");
 },placeAt:function(_58,_59){
