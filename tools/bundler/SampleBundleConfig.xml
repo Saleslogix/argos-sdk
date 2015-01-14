@@ -1,0 +1,29 @@
+﻿<?xml version="1.0"?>
+<BundleConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ConnString>Provider=SLXOLEDB.1;Password="";Persist Security Info=True;User ID=admin;Initial Catalog=SalesLogix;Data Source=YourDBServerName;Extended Properties="PORT=1706;LOG=ON;CASEINSENSITIVEFIND=ON;AUTOINCBATCHSIZE=1;SVRCERT=;"</ConnString>
+  <Name>name</Name>
+  <Description>desc</Description>
+  <Address>address</Address>
+  <Company>Sage Software</Company>
+  <Copyright>copyright</Copyright>
+  <MajorVersion>7</MajorVersion>
+  <MinorVersion>2</MinorVersion>
+  <Revision>2</Revision>
+  <Build>1</Build>
+  <InstallPassword></InstallPassword>
+  <SupportFilesPath>
+    <Name>\Portal\SlxLeadCapture\SlxLeadCapture.portal.xml</Name>
+    <Value>..\Webroot\SlxLeadCapture</Value>
+  </SupportFilesPath>
+  <SupportFilesPath>
+    <Name>\Portal\SLXCustomerPortal\SLXCustomerPortal.portal.xml</Name>
+    <Value>..\Webroot\SlxCustomerPortal</Value>
+  </SupportFilesPath>
+  <SupportFilesPath>
+    <Name>\Portal\SlxClient\SlxClient.portal.xml</Name>
+    <Value>..\Webroot\SlxClient</Value>
+  </SupportFilesPath>
+  <ExclusionFilters>
+    <ExclusionFilter>Sage.*.dll</ExclusionFilter>
+  </ExclusionFilters>
+</BundleConfiguration>

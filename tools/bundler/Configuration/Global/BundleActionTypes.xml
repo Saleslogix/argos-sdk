@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<bundleActionTypeConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <bundleActionTypes>
+    <bundleActionType>
+      <Name>InstallPlugin</Name>
+      <CaptionKey>InstallPluginCaption</CaptionKey>
+      <TypeName>Sage.SalesLogix.BundleModel.BundleActions.PluginAction, Sage.SalesLogix.BundleModel.BundleActions</TypeName>
+      <EditorTypeName>Sage.SalesLogix.BundleModel.BundleActions.PluginActionEditor, Sage.SalesLogix.BundleModel.BundleActions</EditorTypeName>
+    </bundleActionType>
+    <bundleActionType>
+      <Name>InsertPickList</Name>
+      <CaptionKey>InsertPickListCaption</CaptionKey>
+      <TypeName>Sage.SalesLogix.BundleModel.BundleActions.PickListAction, Sage.SalesLogix.BundleModel.BundleActions</TypeName>
+      <EditorTypeName>Sage.SalesLogix.BundleModel.BundleActions.PickListActionEditor, Sage.SalesLogix.BundleModel.BundleActions</EditorTypeName>
+    </bundleActionType>
+    <bundleActionType>
+      <Name>DropField</Name>
+      <CaptionKey>DropFieldCaption</CaptionKey>
+      <TypeName>Sage.SalesLogix.BundleModel.BundleActions.DropFieldAction, Sage.SalesLogix.BundleModel.BundleActions</TypeName>
+      <EditorTypeName>Sage.SalesLogix.BundleModel.BundleActions.DropFieldEditor, Sage.SalesLogix.BundleModel.BundleActions</EditorTypeName>
+    </bundleActionType>
+    <bundleActionType>
+      <Name>CreateField</Name>
+      <CaptionKey>CreateFieldCaption</CaptionKey>
+      <TypeName>Sage.SalesLogix.BundleModel.BundleActions.CreateFieldAction, Sage.SalesLogix.BundleModel.BundleActions</TypeName>
+      <EditorTypeName>Sage.SalesLogix.BundleModel.BundleActions.CreateFieldEditor, Sage.SalesLogix.BundleModel.BundleActions</EditorTypeName>
+    </bundleActionType>
+    <bundleActionType>
+      <Name>CreateIndex</Name>
+      <CaptionKey>CreateIndexCaption</CaptionKey>
+      <TypeName>Sage.SalesLogix.BundleModel.BundleActions.CreateIndexAction, Sage.SalesLogix.BundleModel.BundleActions</TypeName>
+      <EditorTypeName>Sage.SalesLogix.BundleModel.BundleActions.CreateIndexEditor, Sage.SalesLogix.BundleModel.BundleActions</EditorTypeName>
+    </bundleActionType>
+    <bundleActionType>
+      <Name>CreateTable</Name>
+      <CaptionKey>CreateTableCaption</CaptionKey>
+      <TypeName>Sage.SalesLogix.BundleModel.BundleActions.CreateTableAction, Sage.SalesLogix.BundleModel.BundleActions</TypeName>
+      <EditorTypeName>Sage.SalesLogix.BundleModel.BundleActions.CreateTableEditor, Sage.SalesLogix.BundleModel.BundleActions</EditorTypeName>
+    </bundleActionType>
+    <bundleActionType>
+      <Name>InsertRecords</Name>
+      <CaptionKey>InsertRecordsCaption</CaptionKey>
+      <TypeName>Sage.SalesLogix.BundleModel.BundleActions.InsertRecordsAction, Sage.SalesLogix.BundleModel.BundleActions</TypeName>
+      <EditorTypeName>Sage.SalesLogix.BundleModel.BundleActions.InsertRecordsEditor, Sage.SalesLogix.BundleModel.BundleActions</EditorTypeName>
+    </bundleActionType>
+  </bundleActionTypes>
+</bundleActionTypeConfiguration>
