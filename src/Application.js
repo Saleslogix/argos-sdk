@@ -391,7 +391,7 @@ define('Sage/Platform/Mobile/Application', [
          */
         supportsTouch: function() {
             // Taken from https://github.com/Modernizr/Modernizr/ (MIT Licensed)
-            return ('ontouchstart' in window) || (window.DocumentTouch && document instanceof DocumentTouch);
+            return ('ontouchstart' in window) || (window.DocumentTouch && document instanceof window.DocumentTouch);
         },
         /**
          * Establishes various connections to events.
