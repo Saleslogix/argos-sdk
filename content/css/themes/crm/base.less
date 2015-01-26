@@ -1,13 +1,6 @@
 @import "variables.less";
 @import "mixins.less";
 
-/* Overthrow CSS:
-   Enable overflow: auto on elements with overthrow class when html element has overthrow class too */
-.overthrow-enabled .overthrow {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
 /* snapjs styles */
 .tall {
     height: 100%;
@@ -285,6 +278,13 @@
     width: 100%;
     top: 47px;
     bottom: 0px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+
+    &.animate {
+        -webkit-transition: top 0.3s ease;
+        transition: top 0.3s ease;
+    }
 }
 
 .list .item-static-icon {
@@ -932,3 +932,14 @@ img {
     display: inline-block;
 }
 
+.pull-to-refresh {
+    margin: 20px 0;
+    text-align: center;
+    visibility: hidden;
+
+    > span {
+        margin: 0 10px;
+        height: 18px;
+        vertical-align: middle;
+    }
+}

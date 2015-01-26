@@ -33,10 +33,6 @@
           "path": "../libraries/snap/"
         },
         {
-          "text": "overthrow.js",
-          "path": "../libraries/overthrow/"
-        },
-        {
           "text": "moment-with-langs.min.js",
           "path": "../libraries/moment/"
         },
