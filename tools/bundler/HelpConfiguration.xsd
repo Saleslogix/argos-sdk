@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="urn:schemas-sage-com:helpconfig" 
+           elementFormDefault="qualified"
+           xmlns="urn:schemas-sage-com:helpconfig" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This schema validates help provider configuration
+		</xs:documentation>
+	</xs:annotation>
+	<xs:element name="HelpConfiguration">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				The root node for the help configuration
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="HelpComponent">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							The HelpComponent contains help information for a specific control type.
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="TypeName" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">
+									Contains the assembly qualified type name for the controls that should be configured for help
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="HelpKey" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">
+									Contains the value that should be passed to the help provider that will be used for navigating to help
+									when the component has focus.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="HelpNamespace" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">
+									The help namespace for the provider.  If this value is duplicated across multiple components, those components
+									will all share a help provider instance.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="NavigationType" use="required">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">
+									The navigation type that should be used when navigating to help from this component.
+									Corresponds to one of the System.Windows.Forms.HelpNavigator enumeration values
+								</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="AssociateIndex"/>
+									<xs:enumeration value="Find"/>
+									<xs:enumeration value="Index"/>
+									<xs:enumeration value="KeywordIndex"/>
+									<xs:enumeration value="TableOfContents"/>
+									<xs:enumeration value="Topic"/>
+									<xs:enumeration value="TopicId"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="ComponentName" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">
+									Use this attribute to apply a name filter to the help provider strategy.  If this attribute
+									is used, only controls whose name property matches this value will be configured for help.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

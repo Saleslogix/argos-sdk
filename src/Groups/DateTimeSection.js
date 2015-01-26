@@ -107,10 +107,6 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
                 this.currentDate.lang(this.momentLang);
             }
 
-            if (this.isPastYear(valueDate)) {
-                return "PastYear";
-            }
-
             if (this.isLastMonth(valueDate)) {
                 return "LastMonth";
             }
@@ -129,6 +125,10 @@ define('Sage/Platform/Mobile/Groups/DateTimeSection', [
 
             if (this.isYesterday(valueDate)) {
                 return "Yesterday";
+            }
+
+            if (this.isPastYear(valueDate)) {
+                return "PastYear";
             }
 
             if (this.isToday(valueDate)) {
