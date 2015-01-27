@@ -620,6 +620,10 @@ body > .viewContainer > .panel,
 body > .viewContainer > .dialog {
   display: none;
 }
+body > .viewContainer > .panel {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
 body.transition > .viewContainer > .panel,
 body.transition > .viewContainer > .list {
   position: absolute;
