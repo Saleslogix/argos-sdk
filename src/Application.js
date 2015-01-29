@@ -36,7 +36,6 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/dom-construct',
     'snap',
     'dojo/sniff',
-    'dojox/mobile/sniff',
     'Sage/Platform/Mobile/ReUI/main'
 ], function(
     json,
@@ -52,7 +51,6 @@ define('Sage/Platform/Mobile/Application', [
     domConstruct,
     snap,
     sniff,
-    mobileSniff,
     ReUI
 ) {
 

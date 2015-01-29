@@ -303,11 +303,6 @@
       "src": "../libraries/dojo/dojo/cldr/nls",
       "dest": "content/dojo/dojo/cldr/nls",
       "filters": ".*js"
-    },
-    {
-      "src": "../libraries/dojo/dojox",
-      "dest": "content/dojo/dojox",
-      "filters": "((gfx|svg|shape|path)\\.js)"
     }
   ]
 }
