@@ -669,6 +669,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             distance = distance / 2;
 
             if (distance >= 0) {
+                evt.preventDefault();
                 top = this.pullToRefresh.dragTop;
 
                 top = top + distance;
