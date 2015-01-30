@@ -4,7 +4,7 @@
   "deployDir": "deploy/",
   "pkgs": [
     {
-      "name": "Argos SDK Dependencies",
+      "name": "Argos SDK Global Dependencies",
       "file": "content/javascript/argos-dependencies.js",
       "isDebug": true,
       "fileIncludes": [
@@ -29,16 +29,27 @@
           "path": "../libraries/sdata/"
         },
         {
+          "text": "deep-diff-0.2.0.min.js",
+          "path": "../libraries/deep-diff/"
+        },
+        {
+          "text": "Chart.min.js",
+          "path": "../libraries/"
+        }
+      ]
+    },
+    {
+      "name": "Argos SDK AMD Dependencies",
+      "file": "content/javascript/argos-amd-dependencies.js",
+      "isDebug": true,
+      "fileIncludes": [
+        {
           "text": "snap.js",
           "path": "../libraries/snap/"
         },
         {
           "text": "moment-with-langs.min.js",
           "path": "../libraries/moment/"
-        },
-        {
-          "text": "deep-diff-0.2.0.min.js",
-          "path": "../libraries/deep-diff/"
         }
       ]
     },
@@ -293,17 +304,12 @@
     {
       "src": "../libraries/dojo/dojo",
       "dest": "content/dojo/dojo",
-      "filters": "(dojo\\.js|acme\\.js)"
+      "filters": "(dojo\\.js)"
     },
     {
       "src": "../libraries/dojo/dojo/cldr/nls",
       "dest": "content/dojo/dojo/cldr/nls",
       "filters": ".*js"
-    },
-    {
-      "src": "../libraries/dojo/dojox",
-      "dest": "content/dojo/dojox",
-      "filters": "((gfx|svg|shape|path)\\.js)"
     }
   ]
 }

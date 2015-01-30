@@ -26,7 +26,6 @@
  * @requires Sage.Platform.Mobile.ErrorManager
  */
 define('Sage/Platform/Mobile/_DetailBase', [
-    'dojo',
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/Deferred',
@@ -40,7 +39,6 @@ define('Sage/Platform/Mobile/_DetailBase', [
     'Sage/Platform/Mobile/ErrorManager',
     'Sage/Platform/Mobile/View'
 ], function(
-    dojo,
     declare,
     lang,
     Deferred,
