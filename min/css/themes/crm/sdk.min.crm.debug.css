@@ -460,6 +460,7 @@ span {
   bottom: 0px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  touch-action: none;
 }
 .list .scroller.animate {
   -webkit-transition: top 0.3s ease;
