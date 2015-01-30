@@ -563,6 +563,8 @@ define('Sage/Platform/Mobile/_ListBase', [
             originalTop: '0px',
             originalOverflow: '',
             bannerHeight: 0,
+            scrollerHeight: 0,
+            scrollerWidth: 0,
             dragTop: 0,
             pulling: false,
             dragStartX: 0,
@@ -634,6 +636,8 @@ define('Sage/Platform/Mobile/_ListBase', [
                 bannerPos = domGeom.position(this.pullRefreshBanner);
                 style = domStyle.getComputedStyle(scrollerNode); // expensive
                 this.pullToRefresh.bannerHeight = bannerPos.h;
+                this.pullToRefresh.scrollerHeight = position.h;
+                this.pullToRefresh.scrollerWidth = position.w;
                 this.pullToRefresh.originalTop = style.top;
                 this.pullToRefresh.originalOverflow = style.overflow;
                 this.pullToRefresh.dragTop = parseInt(style.top, 10);
@@ -646,7 +650,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             }
         },
         onTouchMove: function(evt) {
-            var top, distance, PULL_PADDING = 40, MAX_DISTANCE, scrollerNode;
+            var top, distance, PULL_PADDING = 20, MAX_DISTANCE, scrollerNode;
 
             scrollerNode = this.get('scroller');
 
@@ -659,9 +663,10 @@ define('Sage/Platform/Mobile/_ListBase', [
             // distance from last drag
             distance = evt.clientY - this.pullToRefresh.lastY;
 
-            // slow down the pull down speed a bit, the user has to drag a bit futher, but it feels a bit more smooth
-            distance = distance * 0.3;
             MAX_DISTANCE = this.pullToRefresh.bannerHeight + PULL_PADDING;
+
+            // slow down the pull down speed a bit, the user has to drag a bit futher, but it feels a bit more smooth
+            distance = distance / 2;
 
             if (distance >= 0) {
                 top = this.pullToRefresh.dragTop;
