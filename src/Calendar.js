@@ -359,6 +359,10 @@ define('Sage/Platform/Mobile/Calendar', [
             result.hours(hours);
             result.minutes(minutes);
 
+            if ((this.options && this.options.timeless) || this.timeless) {
+                result.utc();
+            }
+
             return result.toDate();
         }
     });
