@@ -37,7 +37,8 @@ define('Sage/Platform/Mobile/Application', [
     'snap',
     'dojo/sniff',
     'dojox/mobile/sniff',
-    'Sage/Platform/Mobile/ReUI/main'
+    'Sage/Platform/Mobile/ReUI/main',
+    'Sage/Platform/Mobile/Services/ServiceManager'
 ], function(
     json,
     array,
@@ -53,7 +54,8 @@ define('Sage/Platform/Mobile/Application', [
     snap,
     sniff,
     mobileSniff,
-    ReUI
+    ReUI,
+    ServiceManager
 ) {
 
     // Polyfill for Funcion.bind, taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
@@ -229,10 +231,12 @@ define('Sage/Platform/Mobile/Application', [
          * @property {int}
          */
         maxUploadFileSize: 4000000,
+        serviceManager: null,
         /**
          * All options are mixed into App itself
          * @param {Object} options
          */
+
         constructor: function(options) {
             this._connects = [];
             this._signals = [];
@@ -247,6 +251,7 @@ define('Sage/Platform/Mobile/Application', [
 
             this.context = {};
             this.viewShowOptions = [];
+            this.serviceManager = ServiceManager;
 
             lang.mixin(this, options);
         },
@@ -384,7 +389,12 @@ define('Sage/Platform/Mobile/Application', [
             this.initModules();
             this.initToolbars();
             this.initReUI();
+            this.initServiceManager();
         },
+        initServiceManager: function () {
+            this.serviceManager.init();
+        },
+
         /**
          * Establishes various connections to events.
          */

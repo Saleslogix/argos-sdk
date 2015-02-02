@@ -24,7 +24,9 @@ define('Sage/Platform/Mobile/RelatedViewManager',  [
     'dojo/dom-construct',
     'dojo/query',
     'dojo/_base/array',
-    'Sage/Platform/Mobile/Store/SData'
+    'Sage/Platform/Mobile/Store/SData',
+    'Sage/Platform/Mobile/RelatedViewWidget',
+    'Sage/Platform/Mobile/RelatedViewDetailWidget'
 ], function(
     declare,
     lang,
@@ -35,17 +37,23 @@ define('Sage/Platform/Mobile/RelatedViewManager',  [
     domConstruct,
     query,
     array,
-    SDataStore
+    SDataStore,
+    RelatedViewWidget,
+    RelatedViewDetailWidget
 ) {
+    var _widgetTypes = {};
     return declare('Sage.Platform.Mobile.RelatedViewManager', null, {
 
-        id: 'relatedView',
+        id: 'relatedViewManager',
         relatedViews: null,
         relatedViewConfig: null,
+        widgetTypes: _widgetTypes,
         enabled: true,
         constructor: function(options) {
             this.relatedViews = {};
             lang.mixin(this, options);
+            this.registerType('default',RelatedViewWidget);
+            this.registerType('detail', RelatedViewDetailWidget);
         },
         destroyViews: function() {
             for (var relatedViewId in this.relatedViews) {
@@ -53,25 +61,43 @@ define('Sage/Platform/Mobile/RelatedViewManager',  [
             }
             this.relatedViews = {};
         },
-        addView: function(entry, rowNode) {
+        registerType: function (widgetTypeName, ctor) {
+            this.widgetTypes[widgetTypeName] = ctor;
+        },
+        getWidgetType: function (widgetTypeName) {
+            var widgetType;
+            widgetType = this.widgetTypes[widgetTypeName];
+            if (!widgetType) {
+                widgetType = RelatedViewWidget;
+            }
+            return widgetType;
+        },
+        addView: function(entry, contentNode, owner) {
             var relatedContentNode,
             relatedViewNode,
             relatedViewWidget,
             relatedResults,
             options;
-            relatedContentNode = query('> #list-item-content-related', rowNode);
             try {
-                if (relatedContentNode[0]) {
+                if (contentNode) {
                     if (this.enabled) {
                         options = {};
+                        if (!this.relatedViewConfig.widgetType) {
+                            this.relatedViewConfig.widgetType = RelatedViewWidget;
+                        }
+                        if (typeof this.relatedViewConfig.widgetType === 'string') {
+                            this.relatedViewConfig.widgetType = this.getWidgetType(this.relatedViewConfig.widgetType);
+                        }
                         lang.mixin(options, this.relatedViewConfig);
                         options.id = this.id + '_' + entry.$key;
                         relatedViewWidget = new this.relatedViewConfig.widgetType(options);
                         relatedViewWidget.parentEntry = entry;
-                        relatedViewWidget.parentNode = relatedContentNode[0];
+                        relatedViewWidget.parentResourceKind = owner.resourceKind;
+                        relatedViewWidget.owner = owner;
+                        relatedViewWidget.parentNode = contentNode;
                         this.relatedViews[relatedViewWidget.id] = relatedViewWidget;
                         relatedViewWidget.onInit();
-                        relatedViewWidget.placeAt(relatedContentNode[0], 'last');
+                        relatedViewWidget.placeAt(contentNode, 'last');
                     }
                 }
             }
@@ -79,6 +105,6 @@ define('Sage/Platform/Mobile/RelatedViewManager',  [
                 console.log('Error adding related view widgets:' + error);
 
             }
-        }
+        }        
     });
 });

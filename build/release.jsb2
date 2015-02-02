@@ -227,6 +227,10 @@
           "text": "RelatedViewWidget.js",
           "path": "../src"
         },
+		{
+          "text": "RelatedViewDetailWidgit.js",
+          "path": "../src"
+        },
         {
           "text": "SearchWidget.js",
           "path": "../src"
@@ -274,7 +278,19 @@
         {
           "text": "_ServiceMixin.js",
           "path": "../src"
-        }
+        },
+		{
+          "text": "_ModelBase.js",
+          "path": "../src/Models"
+        },
+		{
+          "text": "_ServiceBase.js",
+          "path": "../src/Services"
+        },
+		{
+          "text": "ServiceManager.js",
+          "path": "../src/Services"
+        },
       ]
     }
   ],
