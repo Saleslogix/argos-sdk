@@ -1511,7 +1511,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             };
             ErrorManager.addError(this.requestErrorText, errorItem);
 
-            domClass.remove(this.domNode, 'list-loading');
+            this._clearLoading();
         },
         _buildQueryExpression: function() {
             return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
