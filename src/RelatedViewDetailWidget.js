@@ -73,7 +73,8 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
         id: 'related-detail-view',
         icon: 'content/images/icons/ContactProfile_48x48.png',
         iconClass: 'fa fa-building-o fa-2x',
-        rows:3,
+        rows: 3,
+        lodingNode: null,
         /**
          * @property {Simplate}
          * Simple that defines the HTML Markup
@@ -84,8 +85,7 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
             '</div>'
         ]),
         itemContentTemplate: new Simplate([
-            // '{%! $$.itemIconTemplate %}',
-             '{%! $$.itemHeaderTemplate %}',
+            '{%! $$.itemHeaderTemplate %}'
         ]),
         itemIconTemplate: new Simplate([
             '<div class="selector">',
@@ -139,6 +139,9 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
         itemEditValueTemplate: new Simplate([
            '<div class="edit">{%: $.$value %}</div>'
         ]),
+        loadingTemplate: new Simplate([
+           '<div class="content-loading"><span>{%= $.loadingText %}</span></div>'
+        ]),
         constructor: function(options) {
             lang.mixin(this, options);
             this._subscribes = [];
@@ -152,9 +155,19 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
             this.onLoad();
         },
         onLoad: function () {
-            if (this.owner.entry) {
-                this.processEntry(this.owner.entry);                
+
+            if (!this.loadingNode) {
+                this.loadingNode = domConstruct.toDom(this.loadingTemplate.apply(this));
+                domConstruct.place(this.loadingNode, this.contentNode, 'last', this);
             }
+
+            domClass.toggle(this.loadingNode, 'loading');
+
+            if (this.owner.entry) {
+                this.processEntry(this.owner.entry);
+
+            }
+            domClass.toggle(this.loadingNode, 'loading');
         },
         processEntry:function(entry){
                 var docFrag, itemsFrag, contentNode, colNode, 
@@ -290,21 +303,6 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
                     editNode = node;
                 }
             });
-
-
-            /*
-            action = this.actions[index];
-            if (action) {
-                if (action['fn']) {
-                    action['fn'].call(action['scope'] || this, action);
-                }
-                else {
-                    if (typeof this[action['action']] === 'function') {
-                        this[action['action']](evt);
-                    }
-                }
-            }
-            */
             event.stop(evt);
         },
         destroy: function() {
