@@ -1513,7 +1513,6 @@ define('Sage/Platform/Mobile/_ListBase', [
             };
 
             ErrorManager.addError(message || this.requestErrorText, errorItem);
-
         },
         _onQueryError: function(queryOptions, error) {
             if (error.aborted) {
