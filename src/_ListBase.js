@@ -1337,26 +1337,29 @@ define('Sage/Platform/Mobile/_ListBase', [
             try {
                 var start = this.position, scrollerNode = this.get('scroller');
 
-                when(queryResults.total, this._onQueryTotal.bind(this));
+                try {
+                    when(queryResults.total, this._onQueryTotal.bind(this));
 
-                /* todo: move to a more appropriate location */
-                if (this.options && this.options.allowEmptySelection) {
-                    domClass.add(this.domNode, 'list-has-empty-opt');
-                }
-
-                /* remove the loading indicator so that it does not get re-shown while requesting more data */
-                if (start === 0) {
-                    // Check entries.length so we don't clear out the "noData" template
-                    if (entries.length > 0) {
-                        this.set('listContent', '');
+                    /* todo: move to a more appropriate location */
+                    if (this.options && this.options.allowEmptySelection) {
+                        domClass.add(this.domNode, 'list-has-empty-opt');
                     }
 
-                    domConstruct.destroy(this.loadingIndicatorNode);
+                    /* remove the loading indicator so that it does not get re-shown while requesting more data */
+                    if (start === 0) {
+                        // Check entries.length so we don't clear out the "noData" template
+                        if (entries && entries.length > 0) {
+                            this.set('listContent', '');
+                        }
+
+                        domConstruct.destroy(this.loadingIndicatorNode);
+                    }
+
+                    this.processData(entries);
+
+                } finally {
+                    this._clearLoading();
                 }
-
-                this.processData(entries);
-
-                this._clearLoading();
 
                 if (!this._onScrollHandle && this.continuousScrolling) {
                     this._onScrollHandle = this.connect(scrollerNode, 'onscroll', this.onScroll);
@@ -1370,6 +1373,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                 }
             } catch (e) {
                 console.error(e);
+                this._logError({message: e.message, stack: e.stack}, e.message);
             }
         },
         createStore: function () {
@@ -1408,6 +1412,10 @@ define('Sage/Platform/Mobile/_ListBase', [
         onApplyRowTemplate: function(entry, rowNode) {
         },
         processData: function(entries) {
+            if (!entries) {
+                return;
+            }
+
             var store = this.get('store'),
                 rowNode,
                 output,
@@ -1498,6 +1506,15 @@ define('Sage/Platform/Mobile/_ListBase', [
                 }
             }
         },
+        _logError: function(error, message) {
+            var errorItem = {
+                viewOptions: this.options,
+                serverError: error
+            };
+
+            ErrorManager.addError(message || this.requestErrorText, errorItem);
+
+        },
         _onQueryError: function(queryOptions, error) {
             if (error.aborted) {
                 this.options = false; // force a refresh
@@ -1505,12 +1522,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                 alert(string.substitute(this.requestErrorText, [error]));
             }
 
-            var errorItem = {
-                viewOptions: this.options,
-                serverError: error
-            };
-            ErrorManager.addError(this.requestErrorText, errorItem);
-
+            this._logError(error);
             this._clearLoading();
         },
         _buildQueryExpression: function() {

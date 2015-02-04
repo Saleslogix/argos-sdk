@@ -221,7 +221,7 @@ define('Sage/Platform/Mobile/ErrorManager', [
                 cacheSizeIndex = this.errorCacheSizeMax - 1;
 
             if (errLength > cacheSizeIndex)
-                this.removeError(cacheSizeIndex, errLength - cacheSizeIndex);
+                this.removeError(0, errLength - cacheSizeIndex);
         },
 
         /**
