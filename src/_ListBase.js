@@ -33,6 +33,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     'dojo/dom-class',
     'dojo/dom-construct',
     'dojo/dom-geometry',
+    'dojo/dom-style',
     'dojo/dom',
     'dojo/string',
     'dojo/window',
@@ -55,6 +56,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     domClass,
     domConstruct,
     domGeom,
+    domStyle,
     dom,
     string,
     win,
@@ -99,6 +101,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         widgetTemplate: new Simplate([
             '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
                 '<div data-dojo-attach-point="searchNode"></div>',
+                '<div class="pull-to-refresh" data-dojo-attach-point="pullRefreshBanner">{%! $.pullRefreshTemplate %}</div>',
                 '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">',
                     '{%! $.emptySelectionTemplate %}',
                     '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
@@ -106,6 +109,12 @@ define('Sage/Platform/Mobile/_ListBase', [
                     '{%! $.listActionTemplate %}',
                 '</div>',
             '</div>'
+        ]),
+        pullRefreshTemplate: new Simplate([
+            '<span class="fa fa-long-arrow-down"></span>{%= $.pullRefreshText %}'
+        ]),
+        pullReleaseTemplate: new Simplate([
+            '<span class="fa fa-long-arrow-up"></span>{%= $.pullReleaseText %}'
         ]),
         /**
          * @property {Simplate}
@@ -379,6 +388,16 @@ define('Sage/Platform/Mobile/_ListBase', [
         ]),
         /**
          * @property {String}
+         * Text to indicate a pull to refresh
+         */
+        pullRefreshText: 'Pull down to refresh...',
+        /**
+         * @property {String}
+         * Text to indicate the user should release to cause the refresh
+         */
+        pullReleaseText: 'Release to refresh...',
+        /**
+         * @property {String}
          * The format string for the text displayed for the remaining record count.  This is used in a {@link String#format} call.
          */
         remainingText: '${0} records remaining',
@@ -475,6 +494,11 @@ define('Sage/Platform/Mobile/_ListBase', [
         continuousScrolling: true,
 
         /**
+         * @property {Boolean} enablePullToRefresh If true, will enable the user to drag down and refresh the list. Default is true.
+         */
+        enablePullToRefresh: true,
+
+        /**
          * @property {Boolean} Indicates if the list is loading
          */
         listLoading: false,
@@ -531,11 +555,34 @@ define('Sage/Platform/Mobile/_ListBase', [
          * to the global refresh publish
          */
         _onScrollHandle: null,
+        _onTouchStartHandle: null,
+        _onTouchEndHandle: null,
+        _onTouchMoveHandle: null,
+        _onTouchCancelHandle: null,
+        pullToRefresh: {
+            originalTop: '0px',
+            originalOverflow: '',
+            bannerHeight: 0,
+            scrollerHeight: 0,
+            scrollerWidth: 0,
+            dragTop: 0,
+            pulling: false,
+            dragStartX: 0,
+            dragStartY: 0,
+            lastX: 0,
+            lastY: 0,
+            results: false,
+            animateCls: 'animate'
+        },
         constructor: function() {
             this.entries = {};
         },
         postCreate: function() {
             this.inherited(arguments);
+
+            var scrollerNode, searchWidgetCtor;
+
+            scrollerNode = this.get('scroller');
 
             if (this._selectionModel === null) {
                 this.set('selectionModel', new ConfigurableSelectionModel());
@@ -543,7 +590,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             this.subscribe('/app/refresh', this._onRefresh);
 
             if (this.enableSearch) {
-                var searchWidgetCtor = lang.isString(this.searchWidgetClass)
+                searchWidgetCtor = lang.isString(this.searchWidgetClass)
                     ? lang.getObject(this.searchWidgetClass, false)
                     : this.searchWidgetClass;
 
@@ -559,6 +606,117 @@ define('Sage/Platform/Mobile/_ListBase', [
 
             domClass.toggle(this.domNode, 'list-hide-search', this.hideSearch || !this.enableSearch);
             this.clear();
+
+            // Pull down to refresh touch handles
+            if (this.enablePullToRefresh && window.App.supportsTouch()) {
+                this._onTouchStartHandle = this.connect(scrollerNode, 'ontouchstart', this.onTouchStart.bind(this));
+                this._onTouchMoveHandle = this.connect(scrollerNode, 'ontouchmove', this.onTouchMove.bind(this));
+                this._onTouchCancelHandle = this.connect(scrollerNode, 'ontouchcancel', this.onEndTouchDrag.bind(this));
+                this._onTouchEndHandle = this.connect(scrollerNode, 'ontouchend', this.onEndTouchDrag.bind(this));
+            }
+        },
+        onTouchStart: function(evt) {
+            var scrollTop, selected, position, style, bannerPos, scrollerNode;
+
+            this.pullToRefresh.pulling = false;
+            this.pullToRefresh.results = false;
+
+            scrollerNode = this.get('scroller');
+
+            if (!scrollerNode) {
+                return;
+            }
+
+            scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
+            selected = domAttr.get(this.domNode, 'selected');
+
+            // Start auto fetching more data if the user is on the last half of the remaining screen
+            if (selected === 'true' && scrollTop === 0 && !this.listLoading) {
+                position = domGeom.position(scrollerNode);
+                bannerPos = domGeom.position(this.pullRefreshBanner);
+                style = domStyle.getComputedStyle(scrollerNode); // expensive
+                this.pullToRefresh.bannerHeight = bannerPos.h;
+                this.pullToRefresh.scrollerHeight = position.h;
+                this.pullToRefresh.scrollerWidth = position.w;
+                this.pullToRefresh.originalTop = style.top;
+                this.pullToRefresh.originalOverflow = style.overflow;
+                this.pullToRefresh.dragTop = parseInt(style.top, 10);
+                this.pullToRefresh.dragStartY = this.pullToRefresh.lastY = evt.clientY;
+                this.pullToRefresh.dragStartX = this.pullToRefresh.lastX = evt.clientX;
+
+                this.pullToRefresh.pulling = true;
+
+                domStyle.set(this.pullRefreshBanner, 'visibility', 'visible');
+            }
+        },
+        onTouchMove: function(evt) {
+            var top, distance, PULL_PADDING = 20, MAX_DISTANCE, scrollerNode;
+
+            scrollerNode = this.get('scroller');
+
+            if (!this.pullToRefresh.pulling || !scrollerNode) {
+                return;
+            }
+
+            domClass.remove(scrollerNode, this.pullToRefresh.animateCls);
+
+            // distance from last drag
+            distance = evt.clientY - this.pullToRefresh.lastY;
+
+            MAX_DISTANCE = this.pullToRefresh.bannerHeight + PULL_PADDING;
+
+            // slow down the pull down speed a bit, the user has to drag a bit futher, but it feels a bit more smooth
+            distance = distance / 2;
+
+            if (distance >= 0) {
+                evt.preventDefault();
+                top = this.pullToRefresh.dragTop;
+
+                top = top + distance;
+                domStyle.set(scrollerNode, {
+                    'top': top + 'px',
+                    'overflow': 'hidden'
+                });
+
+                if (distance > MAX_DISTANCE) {
+                    // The user has pulled down the max distance required to trigger a refresh
+                    this.pullToRefresh.results = true;
+                    this.pullRefreshBanner.innerHTML = this.pullReleaseTemplate.apply(this);
+                } else {
+                    // The user pulled down, but not far enough to trigger a refresh
+                    this.pullToRefresh.results = false;
+                    this.pullRefreshBanner.innerHTML = this.pullRefreshTemplate.apply(this);
+                }
+            }
+        },
+        onEndTouchDrag: function() {
+            var scrollerNode;
+
+            scrollerNode = this.get('scroller');
+
+            if (!this.pullRefreshBanner || !scrollerNode) {
+                return;
+            }
+
+            // Restore our original scroller styles
+            domStyle.set(scrollerNode, {
+                'top': this.pullToRefresh.originalTop,
+                'overflow': this.pullToRefresh.originalOverflow
+            });
+
+            domStyle.set(this.pullRefreshBanner, 'visibility', 'hidden');
+
+            domClass.add(scrollerNode, this.pullToRefresh.animateCls);
+
+            // Trigger a refresh
+            if (this.pullToRefresh.results) {
+                this.clear();
+                this.refreshRequired = true;
+                this.refresh();
+            }
+
+            this.pullToRefresh.pulling = false;
+            this.pullToRefresh.results = false;
         },
         /**
          * Called on application startup to configure the search widget if present and create the list actions.
@@ -1179,26 +1337,29 @@ define('Sage/Platform/Mobile/_ListBase', [
             try {
                 var start = this.position, scrollerNode = this.get('scroller');
 
-                when(queryResults.total, this._onQueryTotal.bind(this));
+                try {
+                    when(queryResults.total, this._onQueryTotal.bind(this));
 
-                /* todo: move to a more appropriate location */
-                if (this.options && this.options.allowEmptySelection) {
-                    domClass.add(this.domNode, 'list-has-empty-opt');
-                }
-
-                /* remove the loading indicator so that it does not get re-shown while requesting more data */
-                if (start === 0) {
-                    // Check entries.length so we don't clear out the "noData" template
-                    if (entries.length > 0) {
-                        this.set('listContent', '');
+                    /* todo: move to a more appropriate location */
+                    if (this.options && this.options.allowEmptySelection) {
+                        domClass.add(this.domNode, 'list-has-empty-opt');
                     }
 
-                    domConstruct.destroy(this.loadingIndicatorNode);
+                    /* remove the loading indicator so that it does not get re-shown while requesting more data */
+                    if (start === 0) {
+                        // Check entries.length so we don't clear out the "noData" template
+                        if (entries && entries.length > 0) {
+                            this.set('listContent', '');
+                        }
+
+                        domConstruct.destroy(this.loadingIndicatorNode);
+                    }
+
+                    this.processData(entries);
+
+                } finally {
+                    this._clearLoading();
                 }
-
-                this.processData(entries);
-
-                this._clearLoading();
 
                 if (!this._onScrollHandle && this.continuousScrolling) {
                     this._onScrollHandle = this.connect(scrollerNode, 'onscroll', this.onScroll);
@@ -1212,6 +1373,7 @@ define('Sage/Platform/Mobile/_ListBase', [
                 }
             } catch (e) {
                 console.error(e);
+                this._logError({message: e.message, stack: e.stack}, e.message);
             }
         },
         createStore: function () {
@@ -1250,6 +1412,10 @@ define('Sage/Platform/Mobile/_ListBase', [
         onApplyRowTemplate: function(entry, rowNode) {
         },
         processData: function(entries) {
+            if (!entries) {
+                return;
+            }
+
             var store = this.get('store'),
                 rowNode,
                 output,
@@ -1340,20 +1506,24 @@ define('Sage/Platform/Mobile/_ListBase', [
                 }
             }
         },
-        _onQueryError: function(queryOptions, error) {
-            if (error.aborted) {
-                this.options = false; // force a refresh
-            } else {
-                alert(string.substitute(this.requestErrorText, [error]));
-            }
-
+        _logError: function(error, message) {
             var errorItem = {
                 viewOptions: this.options,
                 serverError: error
             };
-            ErrorManager.addError(this.requestErrorText, errorItem);
 
-            domClass.remove(this.domNode, 'list-loading');
+            ErrorManager.addError(message || this.requestErrorText, errorItem);
+        },
+        _onQueryError: function(queryOptions, error) {
+            if (error.aborted) {
+                this.clear();
+                this.refreshRequired = true;
+            } else {
+                alert(string.substitute(this.requestErrorText, [error]));
+            }
+
+            this._logError(error);
+            this._clearLoading();
         },
         _buildQueryExpression: function() {
             return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));

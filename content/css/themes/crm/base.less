@@ -1,13 +1,6 @@
 @import "variables.less";
 @import "mixins.less";
 
-/* Overthrow CSS:
-   Enable overflow: auto on elements with overthrow class when html element has overthrow class too */
-.overthrow-enabled .overthrow {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
 /* snapjs styles */
 .tall {
     height: 100%;
@@ -285,6 +278,13 @@
     width: 100%;
     top: 47px;
     bottom: 0px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+
+    &.animate {
+        -webkit-transition: top 0.3s ease;
+        transition: top 0.3s ease;
+    }
 }
 
 .list .item-static-icon {
@@ -464,6 +464,11 @@ body > .viewContainer > .list,
 body > .viewContainer > .panel,
 body > .viewContainer > .dialog {
     display: none;
+}
+
+body > .viewContainer > .panel {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 body.transition > .viewContainer > .panel,
@@ -742,6 +747,18 @@ img {
     background-color: @black-darker;
 }
 
+.pull-to-refresh {
+    margin: 20px 0;
+    text-align: center;
+    visibility: hidden;
+
+    > span {
+        margin: 0 10px;
+        height: 18px;
+        vertical-align: middle;
+    }
+}
+
 .related-view-widget {
     padding: 4px 1px 10px 24px;
     position: relative;
@@ -920,7 +937,7 @@ img {
     padding: 1em;
 }
 
-.related-view-widget .loading-indicator div,
+.related-view-widget .loading-indicator div
 {
     background: url('../../../images/loading-indicator-white.gif') no-repeat scroll 0 50%;
     padding: 0 0 0 20px;
@@ -934,8 +951,8 @@ img {
 
 .related-view-detail-content {
     background-color: @background-light;
-
 }
+
 .related-view-detail-widget {
 
     .content-panel {
@@ -947,13 +964,12 @@ img {
         background-color: #fff;
 
         .loading {
-             display: none;
-             padding: 0;
+            display: none;
+            padding: 0;
         }
 
 
         .header {
-            //margin: 2px 0 0 10px;
             float: left;
             width: 80%;
         }
@@ -1001,14 +1017,16 @@ img {
                     font-weight: @form-label-font-weight;
                     margin-right: 4px;
                 }
+
                 .editLabel {
-                    background-color:@gray1-dark;
+                    background-color: @gray1-dark;
                     color: #fff;
                     font-weight: @form-label-font-weight;
                     margin-right: 4px;
                     padding: 2px;
                     border-radius: 4px;
                 }
+
                 .valueCell {
                     float: left;
                     color: @form-value-color;
@@ -1040,3 +1058,5 @@ img {
         }
     }
 }
+
+

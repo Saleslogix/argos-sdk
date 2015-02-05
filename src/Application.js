@@ -36,7 +36,6 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/dom-construct',
     'snap',
     'dojo/sniff',
-    'dojox/mobile/sniff',
     'Sage/Platform/Mobile/ReUI/main',
     'Sage/Platform/Mobile/Services/ServiceManager'
 ], function(
@@ -53,7 +52,6 @@ define('Sage/Platform/Mobile/Application', [
     domConstruct,
     snap,
     sniff,
-    mobileSniff,
     ReUI,
     ServiceManager
 ) {
@@ -231,12 +229,15 @@ define('Sage/Platform/Mobile/Application', [
          * @property {int}
          */
         maxUploadFileSize: 4000000,
-        serviceManager: null,
+        /**
+         * The singelton Manger that stores refrence to other service instance
+         * @property {Object}
+         */
+        serviceManager:null,
         /**
          * All options are mixed into App itself
          * @param {Object} options
          */
-
         constructor: function(options) {
             this._connects = [];
             this._signals = [];
@@ -389,12 +390,15 @@ define('Sage/Platform/Mobile/Application', [
             this.initModules();
             this.initToolbars();
             this.initReUI();
-            this.initServiceManager();
         },
-        initServiceManager: function () {
-            this.serviceManager.init();
+        /**
+         * Check if the browser supports touch events.
+         * @return {Boolean} true if the current browser supports touch events, false otherwise.
+         */
+        supportsTouch: function() {
+            // Taken from https://github.com/Modernizr/Modernizr/ (MIT Licensed)
+            return ('ontouchstart' in window) || (window.DocumentTouch && document instanceof window.DocumentTouch);
         },
-
         /**
          * Establishes various connections to events.
          */
