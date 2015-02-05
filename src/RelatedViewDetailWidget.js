@@ -94,14 +94,12 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
             '{% } %}',
             '</div>',
         ]),
-
         itemHeaderTemplate: new Simplate([
           '<div class="header {%: $$.headerClass %}">',
               '{%! $$.itemIconTemplate %}',
               '<h3>{%: $.HeaderValue %}</h3>',
           '</div>'
         ]),
-        
         itemRowTemplate: new Simplate([
             '<div class="row {%: $$.rowClass %}" data-property="{%: $.$layout.property %}" data-rowindex="{%: $.$rowindex %}">',
                  '{%! $$.itemTemplate %}',
@@ -155,14 +153,11 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
             this.onLoad();
         },
         onLoad: function () {
-
             if (!this.loadingNode) {
                 this.loadingNode = domConstruct.toDom(this.loadingTemplate.apply(this));
                 domConstruct.place(this.loadingNode, this.contentNode, 'last', this);
             }
-
             domClass.toggle(this.loadingNode, 'loading');
-
             if (this.owner.entry) {
                 this.processEntry(this.owner.entry);
 
@@ -178,11 +173,9 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
                     rowData, rowHTML, rowValueTpl;
                 layout = this.layout;
                 docFrag = document.createDocumentFragment();
-            
                 if (layout.length > 0) {
                     headerValue = this.getValue(layout[0], entry);
                 }
-
                 contentNode = domConstruct.toDom(this.itemContentTemplate.apply({ HeaderValue: headerValue }, this));
                 docFrag.appendChild(contentNode);
                 itemsFrag = document.createDocumentFragment();
@@ -190,16 +183,15 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
                 rowCount = 0;
                 lastrow = false;
                 rowValueTpl = this.itemValueTemplate;
+
                 for (var i = 0; i < layout.length; i++) {
                     item = layout[i];
                     if (layout[0].name != item.name) {
-                    
                         if (rowCount === 0) {
                             rowFrag = document.createDocumentFragment();
                             colNode = domConstruct.toDom('<div class="column"></div>');
                             lastrow = false;
                         }
-                   
                         if (rowCount <= this.rows - 1)  {
                             rowData = {
                                 $index: i,
@@ -217,39 +209,36 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
                                 rowData.$index = i;
                                 this.itemValueTemplate = item.tpl;
                             } else {
-                                this.itemValueTemplate = rowValueTpl;                           
+                                this.itemValueTemplate = rowValueTpl;
                             }
+
                             rowNode = domConstruct.toDom(this.itemRowTemplate.apply(rowData, this));
                             if (item.allowEdit) {
                                 on(rowNode, 'click', lang.hitch(this, this.onRowClick));
                             }
+
                             rowFrag.appendChild(rowNode);
                             if ((rowCount === this.rows-1)||(layout.length === i+1)) {
                                 lastrow = true;
                             } else {
                                 rowCount++;
                             }
-                        } 
-                    
+                        }
                         if (lastrow) {
                             domConstruct.place(rowFrag, colNode, 'last');
                             itemsFrag.appendChild(colNode);
                             rowCount = 0;
                             lastrow = false;
-                        }                     
+                        }
                     }
-                }            
-
-            
+                }
                 if (itemsFrag.childNodes.length > 0) {
                     domConstruct.place(itemsFrag, itemsNode, 'last');
                     docFrag.appendChild(itemsNode);
                 }
-            
                 if (docFrag.childNodes.length > 0) {
                     domConstruct.place(docFrag, this.contentNode, 'last');
                 }
-
             },
         getValue: function(layoutItem, entry){
             var value = '', rendered;
@@ -267,7 +256,6 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
             evt.stopPropagation();
         },
        _onRefreshView: function() {
-           
             this.onLoad();
         },
         _onAppRefresh: function(data) {
