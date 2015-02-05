@@ -1516,7 +1516,8 @@ define('Sage/Platform/Mobile/_ListBase', [
         },
         _onQueryError: function(queryOptions, error) {
             if (error.aborted) {
-                this.options = false; // force a refresh
+                this.clear();
+                this.refreshRequired = true;
             } else {
                 alert(string.substitute(this.requestErrorText, [error]));
             }
