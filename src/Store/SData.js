@@ -302,7 +302,7 @@ define('Sage/Platform/Mobile/Store/SData', [
             handle.value = method.call(request, {
                 success: this._onRequestEntrySuccess.bind(this, deferred),
                 failure: this._onRequestFailure.bind(this, deferred),
-                abort: this._onRequestAbort.bind(this, deferred)
+                aborted: this._onRequestAbort.bind(this, deferred)
             });
 
             return deferred;
@@ -381,7 +381,7 @@ define('Sage/Platform/Mobile/Store/SData', [
             handle.value = method.call(request, object, {
                 success: this._onTransmitEntrySuccess.bind(this, deferred),
                 failure: this._onRequestFailure.bind(this, deferred),
-                abort: this._onRequestAbort.bind(this, deferred)
+                aborted: this._onRequestAbort.bind(this, deferred)
             });
 
             return deferred;
@@ -426,7 +426,7 @@ define('Sage/Platform/Mobile/Store/SData', [
             options = {
                 success: this._onRequestFeedSuccess.bind(this, queryDeferred),
                 failure: this._onRequestFailure.bind(this, queryDeferred),
-                abort: this._onRequestAbort.bind(this, queryDeferred),
+                aborted: this._onRequestAbort.bind(this, queryDeferred),
                 httpMethodOverride: queryOptions && queryOptions['httpMethodOverride']
             };
 

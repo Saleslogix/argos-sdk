@@ -138,14 +138,16 @@
             {
             }
 
-            if (typeof o.timeout === 'number' && o.timeout >= 0 && xhr.hasOwnProperty('timeout'))
-            {
-                xhr.timeout = o.timeout;
-                bindOnTimeout(xhr, o);
-            }
 
             if (o.async !== false)
             {
+                // Set the timeout only if the request is async
+                if (typeof o.timeout === 'number' && o.timeout >= 0 && xhr.hasOwnProperty('timeout'))
+                {
+                    xhr.timeout = o.timeout;
+                    bindOnTimeout(xhr, o);
+                }
+
                 bindOnReadyStateChange(xhr, o);
 
                 xhr.send(o.body || null);
