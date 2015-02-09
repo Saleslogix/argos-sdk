@@ -27,7 +27,7 @@ define('tests/Stores/SData', [
         } else if (this.callFailure) {
             options.failure.call(options.scope || this, request, options);
         } else if (this.callAbort) {
-            options.abort.call(options.scope || this, request, options);
+            options.aborted.call(options.scope || this, request, options);
         }
     };
     MockService.prototype.readFeed = function(request, options) {
@@ -36,7 +36,7 @@ define('tests/Stores/SData', [
         } else if (this.callFailure) {
             options.failure.call(options.scope || this, request, options);
         } else if (this.callAbort) {
-            options.abort.call(options.scope || this, request, options);
+            options.aborted.call(options.scope || this, request, options);
         }
 
         return this.data;
@@ -62,7 +62,7 @@ define('tests/Stores/SData', [
         } else if (this.callFailure) {
             options.failure.call(options.scope || this, request, options);
         } else if (this.callAbort) {
-            options.abort.call(options.scope || this, request, options);
+            options.aborted.call(options.scope || this, request, options);
         }
 
         return data;
