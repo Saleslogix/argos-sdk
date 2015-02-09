@@ -230,7 +230,7 @@ define('Sage/Platform/Mobile/Application', [
          */
         maxUploadFileSize: 4000000,
         /**
-         * The singelton Manger that stores refrence to other service instance
+         * The singelton Manager that stores refrence to other service instance
          * @property {Object}
          */
         serviceManager:null,
