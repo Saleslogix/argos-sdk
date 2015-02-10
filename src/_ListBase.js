@@ -694,7 +694,7 @@ define('Sage/Platform/Mobile/_ListBase', [
 
             scrollerNode = this.get('scroller');
 
-            if (!this.pullRefreshBanner || !scrollerNode) {
+            if (!this.pullRefreshBanner || !scrollerNode || !this.pullToRefresh.pulling) {
                 return;
             }
 
