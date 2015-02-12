@@ -1307,11 +1307,10 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         requestData: function() {
             var store, queryOptions, request;
-
-            this._setLoading();
-
             store = this.get('store');
+
             if (store) {
+                this._setLoading();
                 // attempt to use a dojo store
                 queryOptions = {
                         count: this.pageSize,
