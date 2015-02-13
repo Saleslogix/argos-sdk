@@ -1055,6 +1055,8 @@ h5 {
 body body > .viewContainer {
   background-color: #f8f8f8;
 }
+.list,
+.scroller,
 .list-content,
 .group-content {
   background-color: #ebebeb;
