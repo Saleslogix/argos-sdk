@@ -19,12 +19,16 @@ define('Sage/Platform/Mobile/Models/_ModelBase', [
 ) {
 
     return declare('Sage.Platform.Mobile.Models._ModelBase', null, {
-        
+        /**
+         * @property {String}
+         * The unique type of the model.
+         */
+        type: 'baseModel',
          /**
          * @property {String}
-         * The unique (within the current form) name of the model
+         * The unique name of the model
          */
-        name: 'baseModel',
+        name: null,
         dispalyName: 'baseModel',
         displayNamePlural: 'baseModels',
         constructor: function(o) {
