@@ -45,7 +45,8 @@ define('Sage/Platform/Mobile/_ListBase', [
     'Sage/Platform/Mobile/View',
     'Sage/Platform/Mobile/SearchWidget',
     'Sage/Platform/Mobile/ConfigurableSelectionModel',
-    'Sage/Platform/Mobile/RelatedViewManager'
+    'Sage/Platform/Mobile/RelatedViewManager',
+    'Sage/Platform/Mobile/_PullToRefreshMixin'
 ], function(
     declare,
     lang,
@@ -68,11 +69,12 @@ define('Sage/Platform/Mobile/_ListBase', [
     View,
     SearchWidget,
     ConfigurableSelectionModel,
-    RelatedViewManager
+    RelatedViewManager,
+    _PullToRefreshMixin
 ) {
 
-    return declare('Sage.Platform.Mobile._ListBase', [View], {
-        /** 
+    return declare('Sage.Platform.Mobile._ListBase', [View, _PullToRefreshMixin], {
+        /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
          *
@@ -101,7 +103,6 @@ define('Sage/Platform/Mobile/_ListBase', [
         widgetTemplate: new Simplate([
             '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
                 '<div data-dojo-attach-point="searchNode"></div>',
-                '<div class="pull-to-refresh" data-dojo-attach-point="pullRefreshBanner">{%! $.pullRefreshTemplate %}</div>',
                 '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">',
                     '{%! $.emptySelectionTemplate %}',
                     '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
@@ -109,12 +110,6 @@ define('Sage/Platform/Mobile/_ListBase', [
                     '{%! $.listActionTemplate %}',
                 '</div>',
             '</div>'
-        ]),
-        pullRefreshTemplate: new Simplate([
-            '<span class="fa fa-long-arrow-down"></span>{%= $.pullRefreshText %}'
-        ]),
-        pullReleaseTemplate: new Simplate([
-            '<span class="fa fa-long-arrow-up"></span>{%= $.pullReleaseText %}'
         ]),
         /**
          * @property {Simplate}
@@ -388,16 +383,6 @@ define('Sage/Platform/Mobile/_ListBase', [
         ]),
         /**
          * @property {String}
-         * Text to indicate a pull to refresh
-         */
-        pullRefreshText: 'Pull down to refresh...',
-        /**
-         * @property {String}
-         * Text to indicate the user should release to cause the refresh
-         */
-        pullReleaseText: 'Release to refresh...',
-        /**
-         * @property {String}
          * The format string for the text displayed for the remaining record count.  This is used in a {@link String#format} call.
          */
         remainingText: '${0} records remaining',
@@ -494,11 +479,6 @@ define('Sage/Platform/Mobile/_ListBase', [
         continuousScrolling: true,
 
         /**
-         * @property {Boolean} enablePullToRefresh If true, will enable the user to drag down and refresh the list. Default is true.
-         */
-        enablePullToRefresh: true,
-
-        /**
          * @property {Boolean} Indicates if the list is loading
          */
         listLoading: false,
@@ -550,30 +530,6 @@ define('Sage/Platform/Mobile/_ListBase', [
         _getSelectionModelAttr: function() {
             return this._selectionModel;
         },
-        /**
-         * Extends dijit Widget postCreate to setup the selection model, search widget and bind
-         * to the global refresh publish
-         */
-        _onScrollHandle: null,
-        _onTouchStartHandle: null,
-        _onTouchEndHandle: null,
-        _onTouchMoveHandle: null,
-        _onTouchCancelHandle: null,
-        pullToRefresh: {
-            originalTop: '0px',
-            originalOverflow: '',
-            bannerHeight: 0,
-            scrollerHeight: 0,
-            scrollerWidth: 0,
-            dragTop: 0,
-            pulling: false,
-            dragStartX: 0,
-            dragStartY: 0,
-            lastX: 0,
-            lastY: 0,
-            results: false,
-            animateCls: 'animate'
-        },
         constructor: function() {
             this.entries = {};
         },
@@ -607,116 +563,20 @@ define('Sage/Platform/Mobile/_ListBase', [
             domClass.toggle(this.domNode, 'list-hide-search', this.hideSearch || !this.enableSearch);
             this.clear();
 
-            // Pull down to refresh touch handles
-            if (this.enablePullToRefresh && window.App.supportsTouch()) {
-                this._onTouchStartHandle = this.connect(scrollerNode, 'ontouchstart', this.onTouchStart.bind(this));
-                this._onTouchMoveHandle = this.connect(scrollerNode, 'ontouchmove', this.onTouchMove.bind(this));
-                this._onTouchCancelHandle = this.connect(scrollerNode, 'ontouchcancel', this.onEndTouchDrag.bind(this));
-                this._onTouchEndHandle = this.connect(scrollerNode, 'ontouchend', this.onEndTouchDrag.bind(this));
-            }
+            this.initPullToRefresh(scrollerNode);
         },
-        onTouchStart: function(evt) {
-            var scrollTop, selected, position, style, bannerPos, scrollerNode;
+        shouldStartPullToRefresh: function(scrollerNode) {
+            var selected, shouldStart;
 
-            this.pullToRefresh.pulling = false;
-            this.pullToRefresh.results = false;
-
-            scrollerNode = this.get('scroller');
-
-            if (!scrollerNode) {
-                return;
-            }
-
-            scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
+            // Get the base results
+            shouldStart = this.inherited(arguments);
             selected = domAttr.get(this.domNode, 'selected');
-
-            // Start auto fetching more data if the user is on the last half of the remaining screen
-            if (selected === 'true' && scrollTop === 0 && !this.listLoading) {
-                position = domGeom.position(scrollerNode);
-                bannerPos = domGeom.position(this.pullRefreshBanner);
-                style = domStyle.getComputedStyle(scrollerNode); // expensive
-                this.pullToRefresh.bannerHeight = bannerPos.h;
-                this.pullToRefresh.scrollerHeight = position.h;
-                this.pullToRefresh.scrollerWidth = position.w;
-                this.pullToRefresh.originalTop = style.top;
-                this.pullToRefresh.originalOverflow = style.overflow;
-                this.pullToRefresh.dragTop = parseInt(style.top, 10);
-                this.pullToRefresh.dragStartY = this.pullToRefresh.lastY = evt.clientY;
-                this.pullToRefresh.dragStartX = this.pullToRefresh.lastX = evt.clientX;
-
-                this.pullToRefresh.pulling = true;
-
-                domStyle.set(this.pullRefreshBanner, 'visibility', 'visible');
-            }
+            return shouldStart && selected === 'true' && !this.listLoading;
         },
-        onTouchMove: function(evt) {
-            var top, distance, PULL_PADDING = 20, MAX_DISTANCE, scrollerNode;
-
-            scrollerNode = this.get('scroller');
-
-            if (!this.pullToRefresh.pulling || !scrollerNode) {
-                return;
-            }
-
-            domClass.remove(scrollerNode, this.pullToRefresh.animateCls);
-
-            // distance from last drag
-            distance = evt.clientY - this.pullToRefresh.lastY;
-
-            MAX_DISTANCE = this.pullToRefresh.bannerHeight + PULL_PADDING;
-
-            // slow down the pull down speed a bit, the user has to drag a bit futher, but it feels a bit more smooth
-            distance = distance / 2;
-
-            if (distance >= 0) {
-                evt.preventDefault();
-                top = this.pullToRefresh.dragTop;
-
-                top = top + distance;
-                domStyle.set(scrollerNode, {
-                    'top': top + 'px',
-                    'overflow': 'hidden'
-                });
-
-                if (distance > MAX_DISTANCE) {
-                    // The user has pulled down the max distance required to trigger a refresh
-                    this.pullToRefresh.results = true;
-                    this.pullRefreshBanner.innerHTML = this.pullReleaseTemplate.apply(this);
-                } else {
-                    // The user pulled down, but not far enough to trigger a refresh
-                    this.pullToRefresh.results = false;
-                    this.pullRefreshBanner.innerHTML = this.pullRefreshTemplate.apply(this);
-                }
-            }
-        },
-        onEndTouchDrag: function() {
-            var scrollerNode;
-
-            scrollerNode = this.get('scroller');
-
-            if (!this.pullRefreshBanner || !scrollerNode || !this.pullToRefresh.pulling) {
-                return;
-            }
-
-            // Restore our original scroller styles
-            domStyle.set(scrollerNode, {
-                'top': this.pullToRefresh.originalTop,
-                'overflow': this.pullToRefresh.originalOverflow
-            });
-
-            domStyle.set(this.pullRefreshBanner, 'visibility', 'hidden');
-
-            domClass.add(scrollerNode, this.pullToRefresh.animateCls);
-
-            // Trigger a refresh
-            if (this.pullToRefresh.results) {
-                this.clear();
-                this.refreshRequired = true;
-                this.refresh();
-            }
-
-            this.pullToRefresh.pulling = false;
-            this.pullToRefresh.results = false;
+        onPullToRefreshComplete: function() {
+            this.clear();
+            this.refreshRequired = true;
+            this.refresh();
         },
         /**
          * Called on application startup to configure the search widget if present and create the list actions.
