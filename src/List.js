@@ -20,6 +20,7 @@
  * @alternateClassName List
  * @requires Sage.Platform.Mobile._ListBase
  * @requires Sage.Platform.Mobile._SDataListMixin
+ * @mixins Sage.Platform.Mobile._SDataListMixin
  */
 define('Sage/Platform/Mobile/List', [
     'dojo/_base/declare',
@@ -33,4 +34,4 @@ define('Sage/Platform/Mobile/List', [
     return declare('Sage.Platform.Mobile.List', [_ListBase, _SDataListMixin], {
     });
 });
- 
+

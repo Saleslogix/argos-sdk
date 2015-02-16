@@ -22,6 +22,7 @@
  * @requires Sage.Platform.Mobile.ErrorManager
  * @requires Sage.Platform.Mobile.Utility
  * @requires Sage.Platform.Mobile.SearchWidget
+ * @mixins Sage.Platform.Mobile._PullToRefreshMixin
  */
 define('Sage/Platform/Mobile/_ListBase', [
     'dojo/_base/declare',

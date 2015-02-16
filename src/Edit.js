@@ -20,10 +20,9 @@
  *
  * @alternateClassName Edit
  * @extends Sage.Platform.Mobile._EditBase
- * @mixins Sage.Platform.Mobile._EditBase
- * @mixins Sage.Platform.Mobile._SDataEditMixin
  * @requires Sage.Platform.Mobile._EditBase
  * @requires Sage.Platform.Mobile._SDataEditMixin
+ * @mixins Sage.Platform.Mobile._SDataEditMixin
  */
 define('Sage/Platform/Mobile/Edit', [
     'dojo/_base/declare',

@@ -22,7 +22,6 @@
  * @extends Sage.Platform.Mobile._DetailBase
  * @requires Sage.Platform.Mobile._DetailBase
  * @requires Sage.Platform.Mobile._SDataDetailMixin
- * @mixins Sage.Platform.Mobile._DetailBase
  * @mixins Sage.Platform.Mobile._SDataDetailMixin
  */
 define('Sage/Platform/Mobile/Detail', [
