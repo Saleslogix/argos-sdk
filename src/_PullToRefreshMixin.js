@@ -1,9 +1,9 @@
 /**
- * @class Sage.Platform.Mobile._PullToRefreshMixin
+ * @class argos._PullToRefreshMixin
  * Mixin for pull to refresh actions
  * @alternateClassName _PullToRefreshMixin
  */
-define('Sage/Platform/Mobile/_PullToRefreshMixin', [
+define('argos/_PullToRefreshMixin', [
     'dojo/_base/declare',
     'dojo/dom-attr',
     'dojo/dom-class',
@@ -21,7 +21,7 @@ define('Sage/Platform/Mobile/_PullToRefreshMixin', [
     dom
 ) {
 
-    return declare('Sage.Platform.Mobile._PullToRefreshMixin', null, {
+    return declare('argos._PullToRefreshMixin', null, {
         /**
          * @property {Simplate}
          */
