@@ -14,18 +14,18 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.MainToolbar
+ * @class argos.MainToolbar
  * MainToolbar is designed to handle the top application bar with markup and logic to set
  * a title and position toolbar items to the left or right
  * @alternateClassName MainToolbar
- * @extends Sage.Platform.Mobile.Toolbar
+ * @extends argos.Toolbar
  */
-define('Sage/Platform/Mobile/MainToolbar', [
+define('argos/MainToolbar', [
     'dojo/_base/declare',
     'dojo/query',
     'dojo/dom-class',
     'dojo/dom-construct',
-    'Sage/Platform/Mobile/Toolbar',
+    'argos/Toolbar',
     'dojo/NodeList-manipulate'
 ], function(
     declare,
@@ -35,7 +35,7 @@ define('Sage/Platform/Mobile/MainToolbar', [
     Toolbar
 ) {
 
-    return declare('Sage.Platform.Mobile.MainToolbar', [Toolbar], {
+    return declare('argos.MainToolbar', [Toolbar], {
         /**
          * @property {Object}
          * Used to set the title node's innerHTML

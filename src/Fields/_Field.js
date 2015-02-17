@@ -14,24 +14,24 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Fields._Field
+ * @class argos.Fields._Field
  * Field is the base class for all field controls. It describes all the functions a field should support giving no implementation itself, merely a shell. The one function that `_Field` does provide that most fields leave untouched is `validate`.
  *
  * All fields are dijit Widgets meaning it goes through the same lifecycle and has all the Widget functionality.
  *
  * @alternateClassName _Field
- * @mixins Sage.Platform.Mobile._ActionMixin
- * @mixins Sage.Platform.Mobile._Templated
- * @requires Sage.Platform.Mobile.FieldManager
+ * @mixins argos._ActionMixin
+ * @mixins argos._Templated
+ * @requires argos.FieldManager
  */
-define('Sage/Platform/Mobile/Fields/_Field', [
+define('argos/Fields/_Field', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
     'dojo/dom-class',
     'dijit/_Widget',
-    'Sage/Platform/Mobile/_ActionMixin',
-    'Sage/Platform/Mobile/_Templated'
+    'argos/_ActionMixin',
+    'argos/_Templated'
 ], function(
     declare,
     lang,
@@ -42,7 +42,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
     _Templated
 ) {
 
-    return declare('Sage.Platform.Mobile.Fields._Field', [_Widget, _ActionMixin, _Templated], {
+    return declare('argos.Fields._Field', [_Widget, _ActionMixin, _Templated], {
         /**
          * @property {View}
          * View that controls the field.

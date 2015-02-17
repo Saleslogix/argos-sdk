@@ -14,9 +14,9 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._Templated
+ * @class argos._Templated
  */
-define('Sage/Platform/Mobile/_Templated',
+define('argos/_Templated',
     [
         'dojo/dom-construct',
         'dojo/_base/declare',
@@ -35,7 +35,7 @@ function(domConstruct, declare, query, parser, array, lang, registry, wai, _Temp
      *
      * @alternateClassName _Templated
      */
-    var templated = declare('Sage.Platform.Mobile._Templated', [_TemplatedMixin], {
+    var templated = declare('argos._Templated', [_TemplatedMixin], {
         _stringRepl: function(tmpl) {
             return tmpl;
         },

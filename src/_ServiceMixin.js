@@ -14,17 +14,17 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._ServiceMixin
+ * @class argos._ServiceMixin
  * @alternateClassName _ServiceMixin
  * @deprecated
  */
-define('Sage/Platform/Mobile/_ServiceMixin', [
+define('argos/_ServiceMixin', [
     'dojo/_base/declare'
 ], function(
     declare
 ) {
 
-    return declare('Sage.Platform.Mobile._ServiceMixin', null, {
+    return declare('argos._ServiceMixin', null, {
         serviceMap: null,
         constructor: function() {
             var map = this.serviceMap;

@@ -14,21 +14,21 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Format
+ * @class argos.Format
  * Format is a singleton that provides various formatting functions.
  * @alternateClassName format
- * @requires Sage.Platform.Mobile.Convert
+ * @requires argos.Convert
  * @singleton
  */
-define('Sage/Platform/Mobile/Format', [
+define('argos/Format', [
     'dojo/_base/json',
     'dojo/_base/lang',
     'dojo/_base/array',
     'dojo/dom-construct',
     'dojo/string',
     'dojo/number',
-    'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/Utility',
+    'argos/Convert',
+    'argos/Utility',
     'moment'
 ], function(
     json,
@@ -112,7 +112,7 @@ define('Sage/Platform/Mobile/Format', [
             .replace(/&quot;/g, '"');
     }
 
-    return lang.setObject('Sage.Platform.Mobile.Format', {
+    return lang.setObject('argos.Format', {
         /**
          * @property {String}
          * Text used in {@link #yesNo yesNo} formatter for true values
@@ -289,7 +289,7 @@ define('Sage/Platform/Mobile/Format', [
                 if (utc)
                     date = date.add({minutes: date.zone()});
 
-                return date.format(fmt || Sage.Platform.Mobile.Format.shortDateFormatText);
+                return date.format(fmt || argos.Format.shortDateFormatText);
             }
 
             return val;
@@ -358,7 +358,7 @@ define('Sage/Platform/Mobile/Format', [
                 ).replace(/ /g, '\u00A0'); //keep numbers from breaking
             }
 
-            return string.substitute(Sage.Platform.Mobile.Format.percentFormatText, [numberFormated, Mobile.CultureInfo.numberFormat.percentSymbol]);
+            return string.substitute(argos.Format.percentFormatText, [numberFormated, Mobile.CultureInfo.numberFormat.percentSymbol]);
         },
         /**
          * Takes a boolean value and returns the string Yes or No for true or false
@@ -368,8 +368,8 @@ define('Sage/Platform/Mobile/Format', [
         yesNo: function(val) {
             if (typeof val === 'string') val = /^true$/i.test(val);
 
-            return val ? Sage.Platform.Mobile.Format.yesText || 'Yes'
-                : Sage.Platform.Mobile.Format.noText || 'No';
+            return val ? argos.Format.yesText || 'Yes'
+                : argos.Format.noText || 'No';
         },
         /**
          * Takes a boolean value and returns the string T or F for true or false
@@ -380,8 +380,8 @@ define('Sage/Platform/Mobile/Format', [
             if (typeof val === 'string') val = /^true$/i.test(val);
 
             return val
-                ? Sage.Platform.Mobile.Format.trueText || 'T'
-                : Sage.Platform.Mobile.Format.falseText || 'F';
+                ? argos.Format.trueText || 'T'
+                : argos.Format.falseText || 'F';
         },
         /**
          * Takes a string and converts all new lines `\n` to HTML `<br>` elements.
@@ -399,18 +399,18 @@ define('Sage/Platform/Mobile/Format', [
          * @return {String} A string representation of the minutes as `'n hours m minutes'`
          */
         timespan: function(val) {
-            var v = Sage.Platform.Mobile.Format.fixed(val);
+            var v = argos.Format.fixed(val);
             if (isNaN(v) || !v) return '';
 
             var hrs = Math.floor(v / 60);
             var mins  = v % 60;
 
             if (hrs)
-                hrs = hrs > 1 ? string.substitute('${0} ${1}', [hrs, (Sage.Platform.Mobile.Format.hoursText || 'hours')])
-                              : string.substitute('${0} ${1}', [hrs, (Sage.Platform.Mobile.Format.hourText || 'hour')]);
+                hrs = hrs > 1 ? string.substitute('${0} ${1}', [hrs, (argos.Format.hoursText || 'hours')])
+                              : string.substitute('${0} ${1}', [hrs, (argos.Format.hourText || 'hour')]);
             if (mins)
-                mins = mins > 1 ? string.substitute('${0} ${1}', [mins, (Sage.Platform.Mobile.Format.minutesText || 'minutes')])
-                                : string.substitute('${0} ${1}', [mins, (Sage.Platform.Mobile.Format.minuteText || 'minute')]);
+                mins = mins > 1 ? string.substitute('${0} ${1}', [mins, (argos.Format.minutesText || 'minutes')])
+                                : string.substitute('${0} ${1}', [mins, (argos.Format.minuteText || 'minute')]);
 
             return (hrs && mins) ? hrs +" "+ mins
                                  : hrs === 0 ? mins : hrs;
@@ -478,7 +478,7 @@ define('Sage/Platform/Mobile/Format', [
                 canvasNode.height / size.height
             );
 
-            Sage.Platform.Mobile.Format.canvasDraw(vector, canvasNode, options);
+            argos.Format.canvasDraw(vector, canvasNode, options);
 
             img = canvasNode.toDataURL('image/png');
             if (img.indexOf("data:image/png") !== 0)
@@ -503,9 +503,9 @@ define('Sage/Platform/Mobile/Format', [
                 return val;
             }
 
-            val = Sage.Platform.Mobile.Format.alphaToPhoneNumeric(val);
+            val = argos.Format.alphaToPhoneNumeric(val);
 
-            var formatters = Sage.Platform.Mobile.Format.phoneFormat,
+            var formatters = argos.Format.phoneFormat,
                 clean = /^\+/.test(val)
                     ? val
                     : val.replace(/[^0-9x]/ig, ''),
@@ -547,7 +547,7 @@ define('Sage/Platform/Mobile/Format', [
                 return 'Unknown';
             }
             if (size < 1024) {
-                return dNumber.format(Math.round(size)) + ' ' + Sage.Platform.Mobile.Format.bytesText;
+                return dNumber.format(Math.round(size)) + ' ' + argos.Format.bytesText;
             }
             else if ((1024 < size) && (size < (1024 * 1000))) {
                 return dNumber.format(Math.round(size / 1024)) + ' KB';

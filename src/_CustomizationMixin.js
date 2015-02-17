@@ -14,7 +14,7 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._CustomizationMixin
+ * @class argos._CustomizationMixin
  * Customization Mixin is a general purpose Customization Engine. It takes a customization object and
  * a layout object and applies the customization defined to the layout.
  *
@@ -29,7 +29,7 @@
  *
  * @alternateClassName _CustomizationMixin
  */
-define('Sage/Platform/Mobile/_CustomizationMixin', [
+define('argos/_CustomizationMixin', [
     'dojo/_base/declare',
     'dojo/_base/lang'
 ], function(
@@ -44,7 +44,7 @@ define('Sage/Platform/Mobile/_CustomizationMixin', [
             return expression;
     };
 
-    return declare('Sage.Platform.Mobile._CustomizationMixin', null, {
+    return declare('argos._CustomizationMixin', null, {
         _layoutCompiled: null,
         _layoutCompiledFrom: null,
         id: null,

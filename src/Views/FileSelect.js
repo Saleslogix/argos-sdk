@@ -14,13 +14,13 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Views.FileSelect
+ * @class argos.Views.FileSelect
  * File Select View is a view for selection files capabilities.
  *
  * @alternateClassName FileSelect
- * @extends Sage.Platform.Mobile.View
+ * @extends argos.View
  */
-define('Sage/Platform/Mobile/Views/FileSelect', [
+define('argos/Views/FileSelect', [
     'dojo/_base/declare',
     'dojo/window',
     'dojo/has',
@@ -28,8 +28,8 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     'dojo/dom-attr',
     'dojo/dom-class',
     'dojo/dom',
-    'Sage/Platform/Mobile/Fields/TextField',
-    'Sage/Platform/Mobile/View'
+    'argos/Fields/TextField',
+    'argos/View'
 ], function(
     declare,
     win,
@@ -42,7 +42,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     View
 ) {
 
-    return declare('Sage.Platform.Mobile.Views.FileSelect', [View], {
+    return declare('argos.Views.FileSelect', [View], {
         // Localization
         titleText: 'File Select',
         addFileText: 'Click or Tap here to add a file.',

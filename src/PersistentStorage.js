@@ -14,16 +14,16 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.PersistentStorage
+ * @class argos.PersistentStorage
  * @deprecated Not used.
  * @alternateClassName PersistentStorage
  */
-define('Sage/Platform/Mobile/PersistentStorage', [
+define('argos/PersistentStorage', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/json',
-    'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/Utility'
+    'argos/Convert',
+    'argos/Utility'
 ], function(
     declare,
     lang,
@@ -33,7 +33,7 @@ define('Sage/Platform/Mobile/PersistentStorage', [
 ) {
     var sosCache = {};
 
-    return declare('Sage.Platform.Mobile.PersistentStorage', null, {
+    return declare('argos.PersistentStorage', null, {
 
         name: false,
         singleObjectStore: false,

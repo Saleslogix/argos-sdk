@@ -1,5 +1,5 @@
 define('tests/Fields/LookupFieldTests', [
-    'Sage/Platform/Mobile/Fields/LookupField'
+    'argos/Fields/LookupField'
 ], function(
     LookupField
 ) {

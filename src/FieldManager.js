@@ -14,19 +14,19 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.FieldManager
+ * @class argos.FieldManager
  * Field Manager is a registry for field types that enables the Edit View layouts to
  * simply define `type: 'myFieldType'`.
  * @alternateClassName FieldManager
  * @singleton
  */
-define('Sage/Platform/Mobile/FieldManager', [
+define('argos/FieldManager', [
     'dojo/_base/lang'
 ], function(
     lang
 ) {
     var store = {};
-    return lang.setObject('Sage.Platform.Mobile.FieldManager', {
+    return lang.setObject('argos.FieldManager', {
         /**
          * @property {Object}
          * The type map that translates string type names to constructor functions

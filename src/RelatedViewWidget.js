@@ -14,7 +14,7 @@
  */
 
 
-define('Sage/Platform/Mobile/RelatedViewWidget', [
+define('argos/RelatedViewWidget', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/event',
@@ -27,11 +27,11 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     'dojo/dom-attr',
     'dojo/_base/connect',
     'dojo/_base/array',
-    'Sage/Platform/Mobile/Store/SData',
+    'argos/Store/SData',
     'dijit/_Widget',
-    'Sage/Platform/Mobile/_CustomizationMixin',
-    'Sage/Platform/Mobile/_ActionMixin',
-    'Sage/Platform/Mobile/_Templated'
+    'argos/_CustomizationMixin',
+    'argos/_ActionMixin',
+    'argos/_Templated'
 ], function(
     declare,
     lang,
@@ -51,7 +51,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     _ActionMixin,
     _Templated
 ) {
-    return declare('Sage.Platform.Mobile.RelatedViewWidget', [_Widget, _CustomizationMixin,_ActionMixin, _Templated], {
+    return declare('argos.RelatedViewWidget', [_Widget, _CustomizationMixin,_ActionMixin, _Templated], {
        
         cls: null,
         nodataText: 'no records found ...',

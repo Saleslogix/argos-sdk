@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-define('Sage/Platform/Mobile/Fields/PhoneField', [
+define('argos/Fields/PhoneField', [
     'dojo/_base/declare',
     'dojo/has',
     'dojo/string',
@@ -31,7 +31,7 @@ define('Sage/Platform/Mobile/Fields/PhoneField', [
     sniff
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.PhoneField
+     * @class argos.Fields.PhoneField
      * The Phone field is a specialized {@link TextField TextField} that takes a string of numbers
      * and groups them into a phone number on blur or when setting a value directly the value
      * shown to the user gets passed through the
@@ -47,10 +47,10 @@ define('Sage/Platform/Mobile/Fields/PhoneField', [
      *     }
      *
      * @alternateClassName PhoneField
-     * @extends Sage.Platform.Mobile.Fields.TextField
-     * @requires Sage.Platform.Mobile.FieldManager
+     * @extends argos.Fields.TextField
+     * @requires argos.FieldManager
      */
-    var control = declare('Sage.Platform.Mobile.Fields.PhoneField', [TextField], {
+    var control = declare('argos.Fields.PhoneField', [TextField], {
         /**
          * @property {String}
          * Sets the `<input type=` of the field.

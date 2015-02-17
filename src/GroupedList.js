@@ -14,23 +14,23 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.GroupedList
+ * @class argos.GroupedList
  * Grouped List provides a hook for grouping rows before rendering them to the page.
  * The grouping adds a container for the set of rows and is collapsible.
  * Note that it constructs the page sequentially meaning the rows should be in the correct
  * order before attempting to group.
- * @extends Sage.Platform.Mobile.List
+ * @extends argos.List
  * @alternateClassName GroupedList
  */
-define('Sage/Platform/Mobile/GroupedList', [
+define('argos/GroupedList', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/query',
     'dojo/string',
     'dojo/dom-class',
     'dojo/dom-construct',
-    'Sage/Platform/Mobile/List',
-    'Sage/Platform/Mobile/Utility'
+    'argos/List',
+    'argos/Utility'
 ], function(
     declare,
     lang,
@@ -42,7 +42,7 @@ define('Sage/Platform/Mobile/GroupedList', [
     Utility
 ) {
 
-    return declare('Sage.Platform.Mobile.GroupedList', [List], {
+    return declare('argos.GroupedList', [List], {
         // Localization
         /**
          * @property {String}

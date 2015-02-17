@@ -15,17 +15,17 @@
 
 // todo: move to argos-saleslogix; this does not belong here.
 
-define('Sage/Platform/Mobile/Fields/NoteField', [
+define('argos/Fields/NoteField', [
     'dojo/_base/declare',
-    'Sage/Platform/Mobile/Fields/TextAreaField',
-    'Sage/Platform/Mobile/FieldManager'
+    'argos/Fields/TextAreaField',
+    'argos/FieldManager'
 ], function(
     declare,
     TextAreaField,
     FieldManager
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.NoteField
+     * @class argos.Fields.NoteField
      * The NoteField is a special case where an overly long text string should be inserted and
      * you want to take the user to another view for that specific input.
      *
@@ -43,10 +43,10 @@ define('Sage/Platform/Mobile/Fields/NoteField', [
      *     }
      *
      * @alternateClassName NoteField
-     * @extends Sage.Platform.Mobile.Fields.TextAreaField
-     * @requires Sage.Platform.Mobile.FieldManager
+     * @extends argos.Fields.TextAreaField
+     * @requires argos.FieldManager
      */
-    var control = declare('Sage.Platform.Mobile.Fields.NoteField', [TextAreaField], {
+    var control = declare('argos.Fields.NoteField', [TextAreaField], {
     });
 
     return FieldManager.register('note', control);

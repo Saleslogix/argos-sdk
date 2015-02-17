@@ -14,23 +14,23 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.View
+ * @class argos.View
  * View is the root Class for all views and incorporates all the base features,
  * events, and hooks needed to successfully render, hide, show, and transition.
  *
  * All Views are dijit Widgets, namely utilizing its: widgetTemplate, connections, and attributeMap
  * @alternateClassName View
- * @mixins Sage.Platform.Mobile._ActionMixin
- * @mixins Sage.Platform.Mobile._CustomizationMixin
- * @mixins Sage.Platform.Mobile._Templated
+ * @mixins argos._ActionMixin
+ * @mixins argos._CustomizationMixin
+ * @mixins argos._Templated
  */
-define('Sage/Platform/Mobile/View', [
+define('argos/View', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dijit/_WidgetBase',
-    'Sage/Platform/Mobile/_ActionMixin',
-    'Sage/Platform/Mobile/_CustomizationMixin',
-    'Sage/Platform/Mobile/_Templated'
+    'argos/_ActionMixin',
+    'argos/_CustomizationMixin',
+    'argos/_Templated'
 ], function(
     declare,
     lang,
@@ -39,7 +39,7 @@ define('Sage/Platform/Mobile/View', [
     _CustomizationMixin,
     _Templated
 ) {
-    return declare('Sage.Platform.Mobile.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
+    return declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
         /**
          * This map provides quick access to HTML properties, most notably the selected property of the container
          */

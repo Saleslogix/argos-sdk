@@ -14,12 +14,12 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Utility
+ * @class argos.Utility
  * Utility provides functions that are more javascript enhancers than application related code.
  * @alternateClassName Utility
  * @singleton
  */
-define('Sage/Platform/Mobile/Utility', [
+define('argos/Utility', [
     'dojo/_base/lang',
     'dojo/_base/array',
     'dojo/json'
@@ -55,7 +55,7 @@ define('Sage/Platform/Mobile/Utility', [
         return nameToPathCache[name];
     };
 
-    return lang.setObject('Sage.Platform.Mobile.Utility', {
+    return lang.setObject('argos.Utility', {
         /**
          * Replaces a single `"` with two `""` for proper SData query expressions.
          * @param {String} searchQuery Search expression to be escaped.

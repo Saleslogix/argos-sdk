@@ -14,7 +14,7 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._ActionMixin
+ * @class argos._ActionMixin
  * _ActionMixin provides a click listener to the `domNode` of view it is mixed into.
  *
  * When a click event is caught by the handler it finds the closest element with `data-action`
@@ -30,10 +30,11 @@
  *
  * @alternateClassName _ActionMixin
  */
-define('Sage/Platform/Mobile/_ActionMixin', [
+define('argos/_ActionMixin', [
     'dojo/_base/array',
     'dojo/_base/declare',
     'dojo/_base/event',
+    'dojo/_base/lang',
     'dojo/dom-attr',
     'dojo/query',
     'dojo/NodeList-traverse'
@@ -41,11 +42,12 @@ define('Sage/Platform/Mobile/_ActionMixin', [
     array,
     declare,
     event,
+    lang,
     domAttr,
     query
 ) {
 
-    return declare('Sage.Platform.Mobile._ActionMixin', null, {
+     var __class = declare('argos._ActionMixin', null, {
         /**
          * @property {String}
          * Comma separated (no spaces) list of events to listen to
@@ -140,4 +142,6 @@ define('Sage/Platform/Mobile/_ActionMixin', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile._ActionMixin', __class);
+    return __class;
 });

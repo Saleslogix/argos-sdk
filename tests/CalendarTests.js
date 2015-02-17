@@ -1,4 +1,4 @@
-define('tests/CalendarTests', ['dojo/dom-attr','dojo/dom-class','Sage/Platform/Mobile/Calendar'], function(domAttr, domClass, Calendar) {
+define('tests/CalendarTests', ['dojo/dom-attr','dojo/dom-class','argos/Calendar'], function(domAttr, domClass, Calendar) {
 return describe('Sage.Platform.Mobile.Calendar', function() {
 
     var calendar = new Calendar();

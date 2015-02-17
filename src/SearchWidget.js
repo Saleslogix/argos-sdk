@@ -14,7 +14,7 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.SearchWidget
+ * @class argos.SearchWidget
  * Search Widget is an SData-enabled search component that {@link List List} uses by default for search.
  *
  * The search widget is a dijit Widget with all the Widget aspects.
@@ -41,16 +41,16 @@
  *
  * See the [Defining Hash Tags guide](#!/guides/v2_beyond_the_guide_defining_hashtags) for more information and how it supports localization.
  * @alternateClassName SearchWidget
- * @mixins Sage.Platform.Mobile._Templated
+ * @mixins argos._Templated
  */
-define('Sage/Platform/Mobile/SearchWidget', [
+define('argos/SearchWidget', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/event',
     'dojo/string',
     'dojo/dom-class',
     'dijit/_Widget',
-    'Sage/Platform/Mobile/_Templated'
+    'argos/_Templated'
 ], function(
     declare,
     lang,
@@ -60,7 +60,7 @@ define('Sage/Platform/Mobile/SearchWidget', [
     _Widget,
     _Templated
 ) {
-    return declare('Sage.Platform.Mobile.SearchWidget', [_Widget, _Templated], {
+    return declare('argos.SearchWidget', [_Widget, _Templated], {
         /**
          * @property {Object}
          * Provides a setter for HTML node attributes, namely the value for search text

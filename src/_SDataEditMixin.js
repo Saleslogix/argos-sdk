@@ -14,25 +14,25 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._SDataEditMixin
+ * @class argos._SDataEditMixin
  *
  * Enables SData for the Edit view.
  * Extends the SDataDetail Mixin by providing functions for $template requests.
  *
  * @alternateClassName _SDataEditMixin
- * @extends Sage.Platform.Mobile._SDataDetailMixin
- * @requires Sage.Platform.Mobile.SData
+ * @extends argos._SDataDetailMixin
+ * @requires argos.SData
  */
-define('Sage/Platform/Mobile/_SDataEditMixin', [
+define('argos/_SDataEditMixin', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
     'dojo/dom-class',
     'dojo/_base/connect',
-    'Sage/Platform/Mobile/Store/SData',
-    'Sage/Platform/Mobile/ErrorManager',
-    'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/_SDataDetailMixin'
+    'argos/Store/SData',
+    'argos/ErrorManager',
+    'argos/Convert',
+    'argos/_SDataDetailMixin'
 ], function(
     declare,
     lang,
@@ -44,7 +44,7 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
     convert,
     _SDataDetailMixin
 ) {
-    return declare('Sage.Platform.Mobile._SDataEditMixin', [_SDataDetailMixin], {
+    return declare('argos._SDataEditMixin', [_SDataDetailMixin], {
         /**
          * @property {Object}
          * The saved SData response.

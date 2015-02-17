@@ -1,17 +1,17 @@
-define('Sage/Platform/Mobile/ConfigurableSelectionModel', [
+define('argos/ConfigurableSelectionModel', [
        'dojo/_base/declare',
-       'Sage/Platform/Mobile/SelectionModel'
+       'argos/SelectionModel'
 ], function(
     declare,
     SelectionModel
 ) {
     /**
-     * @class Sage.Platform.Mobile.ConfigurableSelectionModel
+     * @class argos.ConfigurableSelectionModel
      * The ConfigurableSelectionModel adds the logic to the SelectionModel to only have one item selected at a time via the `singleSelection` flag.
      * @alternateClassName ConfigurableSelectionModel
-     * @extends Sage.Platform.Mobile.SelectionModel
+     * @extends argos.SelectionModel
      */
-    return declare('Sage.Platform.Mobile.ConfigurableSelectionModel', [SelectionModel], {
+    return declare('argos.ConfigurableSelectionModel', [SelectionModel], {
         /**
          * @property {Boolean}
          * Flag that controls if only one item is selectable at a time. Meaning if this is true

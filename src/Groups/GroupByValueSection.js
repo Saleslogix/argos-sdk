@@ -3,15 +3,15 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Groups.GroupByValueSection
+ * @class argos.Groups.GroupByValueSection
  */
-define('Sage/Platform/Mobile/Groups/GroupByValueSection', [
+define('argos/Groups/GroupByValueSection', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
-    'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/Groups/_GroupBySection'
+    'argos/Convert',
+    'argos/Utility',
+    'argos/Groups/_GroupBySection'
 ], function(
     declare,
     lang,
@@ -21,7 +21,7 @@ define('Sage/Platform/Mobile/Groups/GroupByValueSection', [
     _GroupBySection
 ) {
 
-    return declare('Sage.Platform.Mobile.Groups.GroupByValueSection', [_GroupBySection], {
+    return declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
         name: 'DateTimeSectionFilter',        
         displayNameText: 'Group By Value Section',
         width:0,

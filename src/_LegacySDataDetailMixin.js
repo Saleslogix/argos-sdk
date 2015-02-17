@@ -7,12 +7,12 @@
  *
  * @alternateClassName _LegacySDataDetailMixin
  */
-define('Sage/Platform/Mobile/_LegacySDataDetailMixin', [
+define('argos/_LegacySDataDetailMixin', [
     'dojo/_base/declare',
     'dojo/dom-class',
     'dojo/dom-construct',
     'dojo/string',
-    'Sage/Platform/Mobile/ErrorManager'
+    'argos/ErrorManager'
 ], function(
     declare,
     domClass,
@@ -20,7 +20,7 @@ define('Sage/Platform/Mobile/_LegacySDataDetailMixin', [
     string,
     ErrorManager
 ) {
-    return declare('Sage.Platform.Mobile._LegacySDataDetailMixin', null, {
+    return declare('argos._LegacySDataDetailMixin', null, {
         /**
          * Initiates the SData request.
          */

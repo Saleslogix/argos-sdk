@@ -14,12 +14,12 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.ErrorManager
+ * @class argos.ErrorManager
  * ErrorManager is a singleton that parses and stores SData error responses into localStorage.
  * @alternateClassName ErrorManager
  * @singleton
  */
-define('Sage/Platform/Mobile/ErrorManager', [
+define('argos/ErrorManager', [
     'dojo/json',
     'dojo/_base/lang',
     'dojo/_base/connect',
@@ -45,7 +45,7 @@ define('Sage/Platform/Mobile/ErrorManager', [
 
     }
 
-    return lang.setObject('Sage.Platform.Mobile.ErrorManager', {
+    return lang.setObject('argos.ErrorManager', {
         //Localization
 
         /**

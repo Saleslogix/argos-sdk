@@ -14,12 +14,12 @@
  */
 
 
-define('Sage/Platform/Mobile/Fields/DecimalField', [
+define('argos/Fields/DecimalField', [
     'dojo/_base/declare',
     'dojo/string',
-    'Sage/Platform/Mobile/Fields/TextField',
-    'Sage/Platform/Mobile/FieldManager',
-    'Sage/Platform/Mobile/Utility'
+    'argos/Fields/TextField',
+    'argos/FieldManager',
+    'argos/Utility'
 ], function(
     declare,
     string,
@@ -28,7 +28,7 @@ define('Sage/Platform/Mobile/Fields/DecimalField', [
     Utility
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.DecimalField
+     * @class argos.Fields.DecimalField
      * The Decimal Field is used for inputting numbers and extends {@link TextField TextField} with:
      *
      * * hides the clear (x) button;
@@ -44,10 +44,10 @@ define('Sage/Platform/Mobile/Fields/DecimalField', [
      *     }
      *
      * @alternateClassName DecimalField
-     * @extends Sage.Platform.Mobile.Fields.TextField
-     * @requires Sage.Platform.Mobile.FieldManager
+     * @extends argos.Fields.TextField
+     * @requires argos.FieldManager
      */
-    var control = declare('Sage.Platform.Mobile.Fields.DecimalField', [TextField], {
+    var control = declare('argos.Fields.DecimalField', [TextField], {
         /**
          * @cfg {Number}
          * Defines how many decimal places to format when setting the value.

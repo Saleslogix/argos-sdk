@@ -1,4 +1,4 @@
-define('Sage/Platform/Mobile/SelectionModel', [
+define('argos/SelectionModel', [
        'dojo/_base/lang',
        'dojo/_base/declare'
 ], function(
@@ -7,12 +7,12 @@ define('Sage/Platform/Mobile/SelectionModel', [
 ) {
     
     /**
-     * @class Sage.Platform.Mobile.SelectionModel
+     * @class argos.SelectionModel
      * SelectionModel provides a simple in-memory store for data that fires events
      * when a item is selected (added) or deselected (removed)
      * @alternateClassName SelectionModel
      */
-    return declare('Sage.Platform.Mobile.SelectionModel', null, {
+    return declare('argos.SelectionModel', null, {
         /**
          * @property {Number}
          * Number of selections

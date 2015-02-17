@@ -13,12 +13,12 @@
  * limitations under the License.
  */
 
-define('Sage/Platform/Mobile/Fields/BooleanField', [
+define('argos/Fields/BooleanField', [
     'dojo/_base/declare',
     'dojo/dom-attr',
     'dojo/dom-class',
-    'Sage/Platform/Mobile/Fields/_Field',
-    'Sage/Platform/Mobile/FieldManager'
+    'argos/Fields/_Field',
+    'argos/FieldManager'
 ], function(
     declare,
     domAttr,
@@ -27,7 +27,7 @@ define('Sage/Platform/Mobile/Fields/BooleanField', [
     FieldManager
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.BooleanField
+     * @class argos.Fields.BooleanField
      * The Boolean Field is used for true/false values and is visualized as a toggle or light switch.
      *
      * ###Example:
@@ -39,10 +39,10 @@ define('Sage/Platform/Mobile/Fields/BooleanField', [
      *     }
      *
      * @alternateClassName BooleanField
-     * @extends Sage.Platform.Mobile.Fields._Field
-     * @requires Sage.Platform.Mobile.FieldManager
+     * @extends argos.Fields._Field
+     * @requires argos.FieldManager
      */
-    var control = declare('Sage.Platform.Mobile.Fields.BooleanField', [Field], {
+    var control = declare('argos.Fields.BooleanField', [Field], {
         /**
          * @property {Object}
          * Provides a setter to the toggleNodes toggled attribute

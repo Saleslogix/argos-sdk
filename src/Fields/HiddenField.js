@@ -13,17 +13,17 @@
  * limitations under the License.
  */
 
-define('Sage/Platform/Mobile/Fields/HiddenField', [
+define('argos/Fields/HiddenField', [
     'dojo/_base/declare',
-    'Sage/Platform/Mobile/Fields/TextField',
-    'Sage/Platform/Mobile/FieldManager'
+    'argos/Fields/TextField',
+    'argos/FieldManager'
 ], function(
     declare,
     TextField,
     FieldManager
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.HiddenField
+     * @class argos.Fields.HiddenField
      * The Hidden Field is {@link TextField TextField} but instead binds to an `<input type="hidden"`>.
      *
      * Meaning that the field will not be displayed on screen but may still store strings of text.
@@ -36,10 +36,10 @@ define('Sage/Platform/Mobile/Fields/HiddenField', [
      *     }
      *
      * @alternateClassName HiddenField
-     * @extends Sage.Platform.Mobile.Fields.TextField
-     * @requires Sage.Platform.Mobile.FieldManager
+     * @extends argos.Fields.TextField
+     * @requires argos.FieldManager
      */
-    var control = declare('Sage.Platform.Mobile.Fields.HiddenField', [TextField], {
+    var control = declare('argos.Fields.HiddenField', [TextField], {
         propertyTemplate: new Simplate([
             '<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
             '</div>'

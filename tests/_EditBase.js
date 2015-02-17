@@ -1,4 +1,4 @@
-define('tests/_EditBase', ['dojo/_base/lang', 'Sage/Platform/Mobile/_EditBase'], function(lang, _EditBase) {
+define('tests/_EditBase', ['dojo/_base/lang', 'argos/_EditBase'], function(lang, _EditBase) {
     return describe('Sage.Platform.Mobile._EditBase', function() {
         it('Can diff simple changes', function() {
             var left, right, base;

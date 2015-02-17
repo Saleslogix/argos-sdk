@@ -14,18 +14,18 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Edit
+ * @class argos.Edit
  *
  * Edit extends _EditBase and mixes in _SDataEditMixin to provide backwards compatibility for consumers.
  *
  * @alternateClassName Edit
- * @extends Sage.Platform.Mobile._EditBase
- * @mixins Sage.Platform.Mobile._EditBase
- * @mixins Sage.Platform.Mobile._SDataEditMixin
- * @requires Sage.Platform.Mobile._EditBase
- * @requires Sage.Platform.Mobile._SDataEditMixin
+ * @extends argos._EditBase
+ * @mixins argos._EditBase
+ * @mixins argos._SDataEditMixin
+ * @requires argos._EditBase
+ * @requires argos._SDataEditMixin
  */
-define('Sage/Platform/Mobile/Edit', [
+define('argos/Edit', [
     'dojo/_base/declare',
     './_EditBase',
     './_SDataEditMixin'
@@ -35,6 +35,6 @@ define('Sage/Platform/Mobile/Edit', [
     _SDataEditMixin
 ) {
 
-    return declare('Sage.Platform.Mobile.Edit', [_EditBase, _SDataEditMixin], {
+    return declare('argos.Edit', [_EditBase, _SDataEditMixin], {
     });
 });

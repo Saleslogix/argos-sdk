@@ -9,9 +9,9 @@
  *
  * @alternateClassName _LegacySDataListMixin
  */
-define('Sage/Platform/Mobile/_LegacySDataListMixin', [
+define('argos/_LegacySDataListMixin', [
     'dojo/_base/declare',
-    'Sage/Platform/Mobile/ErrorManager',
+    'argos/ErrorManager',
     'dojo/dom-construct',
     'dojo/dom-class',
     'dojo/string'
@@ -22,7 +22,7 @@ define('Sage/Platform/Mobile/_LegacySDataListMixin', [
     domClass,
     string
 ) {
-    return declare('Sage.Platform.Mobile._LegacySDataListMixin', null, {
+    return declare('argos._LegacySDataListMixin', null, {
         feed: null,
 
         /**

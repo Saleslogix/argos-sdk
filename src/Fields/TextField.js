@@ -14,13 +14,13 @@
  */
 
 
-define('Sage/Platform/Mobile/Fields/TextField', [
+define('argos/Fields/TextField', [
     'dojo/_base/declare',
     'dojo/_base/event',
     'dojo/dom-attr',
     'dojo/dom-class',
-    'Sage/Platform/Mobile/Fields/_Field',
-    'Sage/Platform/Mobile/FieldManager'
+    'argos/Fields/_Field',
+    'argos/FieldManager'
 ], function(
     declare,
     event,
@@ -30,7 +30,7 @@ define('Sage/Platform/Mobile/Fields/TextField', [
     FieldManager
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.TextField
+     * @class argos.Fields.TextField
      * The TextField is the base method of inputting just a string that is bound to a `<input type="text">`.
      *
      * It does introduce:
@@ -47,10 +47,10 @@ define('Sage/Platform/Mobile/Fields/TextField', [
      *     }
      *
      * @alternateClassName TextField
-     * @extends Sage.Platform.Mobile.Fields._Field
-     * @requires Sage.Platform.Mobile.FieldManager
+     * @extends argos.Fields._Field
+     * @requires argos.FieldManager
      */
-    var control = declare('Sage.Platform.Mobile.Fields.TextField', [_Field], {
+    var control = declare('argos.Fields.TextField', [_Field], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:

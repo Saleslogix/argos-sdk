@@ -1,4 +1,4 @@
-define('Sage/Platform/Mobile/ReUI/DomHelper', [
+define('argos/ReUI/DomHelper', [
     'dojo/dom-attr'
 ], function(
     domAttr

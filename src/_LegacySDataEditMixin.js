@@ -7,16 +7,16 @@
  *
  * @alternateClassName _LegacySDataEditMixin
  */
-define('Sage/Platform/Mobile/_LegacySDataEditMixin', [
+define('argos/_LegacySDataEditMixin', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
     'dojo/dom-class',
     'dojo/_base/connect',
-    'Sage/Platform/Mobile/Store/SData',
-    'Sage/Platform/Mobile/ErrorManager',
-    'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/_SDataDetailMixin'
+    'argos/Store/SData',
+    'argos/ErrorManager',
+    'argos/Convert',
+    'argos/_SDataDetailMixin'
 ], function(
     declare,
     lang,
@@ -28,7 +28,7 @@ define('Sage/Platform/Mobile/_LegacySDataEditMixin', [
     convert,
     _SDataDetailMixin
 ) {
-    return declare('Sage.Platform.Mobile._LegacySDataEditMixin', [_SDataDetailMixin], {
+    return declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
         requestData: function() {
             var request;
             request = this.createRequest();

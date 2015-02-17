@@ -14,23 +14,23 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Toolbar
+ * @class argos.Toolbar
  * Toolbar is a base toolbar class that provides basic rendering of the bar, adding toolbar items and binding their invokacations.
  *
  * Inherits dijit _Widget.
  *
  * @alternateClassName Toolbar
- * @mixins Sage.Platform.Mobile._ActionMixin
- * @mixins Sage.Platform.Mobile._Templated
+ * @mixins argos._ActionMixin
+ * @mixins argos._Templated
  */
-define('Sage/Platform/Mobile/Toolbar', [
+define('argos/Toolbar', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/dom-style',
     'dojo/dom-class',
     'dijit/_Widget',
-    'Sage/Platform/Mobile/_ActionMixin',
-    'Sage/Platform/Mobile/_Templated'
+    'argos/_ActionMixin',
+    'argos/_Templated'
 ], function(
     declare,
     lang,
@@ -40,7 +40,7 @@ define('Sage/Platform/Mobile/Toolbar', [
     _ActionMixin,
     _Templated
 ) {
-    return declare('Sage.Platform.Mobile.Toolbar', [_Widget, _ActionMixin, _Templated], {
+    return declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
         /**
          * @property {Simplate}
          * HTML markup of the toolbar
