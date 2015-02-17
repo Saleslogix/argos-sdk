@@ -14,14 +14,14 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Store.SData
+ * @class argos.Store.SData
  * SData is an extension of dojo.store that is tailored to handling SData parameters, requests,
  * and pre-handling the responses.
  *
- * @requires Sage.Platform.Mobile.Convert
- * @requires Sage.Platform.Mobile.Utility
+ * @requires argos.Convert
+ * @requires argos.Utility
  */
-define('Sage/Platform/Mobile/Store/SData', [
+define('argos/Store/SData', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/array',
@@ -29,7 +29,7 @@ define('Sage/Platform/Mobile/Store/SData', [
     'dojo/store/util/QueryResults',
     'dojo/string',
     'dojo/_base/json',
-    'Sage/Platform/Mobile/Convert',
+    '../Convert',
     '../Utility'
 ], function (
     declare,
@@ -42,7 +42,7 @@ define('Sage/Platform/Mobile/Store/SData', [
     convert,
     utility
 ) {
-    return declare('Sage.Platform.Mobile.Store.SData', null, {
+    var __class = declare('argos.Store.SData', null, {
         doDateConversion: false,
 
         /* todo: is this the appropriate name for the expansion scope? */
@@ -479,5 +479,8 @@ define('Sage/Platform/Mobile/Store/SData', [
             return null;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Store.SData', __class);
+    return __class;
 });
 

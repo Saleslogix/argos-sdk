@@ -13,16 +13,16 @@
  * limitations under the License.
  */
 
-define('Sage/Platform/Mobile/Fields/LookupField', [
+define('argos/Fields/LookupField', [
     'dojo/_base/array',
     'dojo/_base/declare',
     'dojo/_base/event',
     'dojo/_base/lang',
     'dojo/string',
     'dojo/query',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/Fields/_Field',
-    'Sage/Platform/Mobile/FieldManager'
+    '../Utility',
+    './_Field',
+    '../FieldManager'
 ], function(
     array,
     declare,
@@ -35,7 +35,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
     FieldManager
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.LookupField
+     * @class argos.Fields.LookupField
      * The LookupField is similiar to an Edit View in that it is a field that takes the user to another
      * view but the difference is that an EditorField takes the user to an Edit View, whereas LookupField
      * takes the user to a List View.
@@ -53,11 +53,11 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
      *     }
      *
      * @alternateClassName LookupField
-     * @extends Sage.Platform.Mobile.Fields._Field
-     * @requires Sage.Platform.Mobile.FieldManager
-     * @requires Sage.Platform.Mobile.Utility
+     * @extends argos.Fields._Field
+     * @requires argos.FieldManager
+     * @requires argos.Utility
      */
-    var control = declare('Sage.Platform.Mobile.Fields.LookupField', [_Field], {
+    var control = declare('argos.Fields.LookupField', [_Field], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -808,5 +808,6 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.LookupField', control);
     return FieldManager.register('lookup', control);
 });

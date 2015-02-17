@@ -14,23 +14,28 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.List
+ * @class argos.List
  * List extends _ListBase and mixes in _SDataListMixin to provide backwards compatibility for consumers.
- * @extends Sage.Platform.Mobile._ListBase
+ * @extends argos._ListBase
  * @alternateClassName List
- * @requires Sage.Platform.Mobile._ListBase
- * @requires Sage.Platform.Mobile._SDataListMixin
+ * @requires argos._ListBase
+ * @requires argos._SDataListMixin
  */
-define('Sage/Platform/Mobile/List', [
+define('argos/List', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     './_ListBase',
     './_SDataListMixin'
 ], function(
     declare,
+    lang,
     _ListBase,
     _SDataListMixin
 ) {
-    return declare('Sage.Platform.Mobile.List', [_ListBase, _SDataListMixin], {
+    var __class = declare('argos.List', [_ListBase, _SDataListMixin], {
     });
+
+    lang.setObject('Sage.Platform.Mobile.List', __class);
+    return __class;
 });
- 
+

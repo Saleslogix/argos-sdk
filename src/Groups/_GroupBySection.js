@@ -10,9 +10,9 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Groups._GroupSection
+ * @class argos.Groups._GroupSection
  */
-define('Sage/Platform/Mobile/Groups/_GroupBySection', [
+define('argos/Groups/_GroupBySection', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string'
@@ -22,7 +22,7 @@ define('Sage/Platform/Mobile/Groups/_GroupBySection', [
     string
 ) {
 
-    return declare('Sage.Platform.Mobile.Groups._GroupBySection', null, {
+    var __class = declare('argos.Groups._GroupBySection', null, {
         /**
         * @property {String}
         * The unique (within the current form) name of the field
@@ -51,4 +51,7 @@ define('Sage/Platform/Mobile/Groups/_GroupBySection', [
             return this.groupByProperty + ' ' + this.sortDirection;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
+    return __class;
 });

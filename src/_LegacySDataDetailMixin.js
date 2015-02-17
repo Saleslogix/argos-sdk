@@ -7,20 +7,22 @@
  *
  * @alternateClassName _LegacySDataDetailMixin
  */
-define('Sage/Platform/Mobile/_LegacySDataDetailMixin', [
+define('argos/_LegacySDataDetailMixin', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/dom-class',
     'dojo/dom-construct',
     'dojo/string',
-    'Sage/Platform/Mobile/ErrorManager'
+    './ErrorManager'
 ], function(
     declare,
+    lang,
     domClass,
     domConstruct,
     string,
     ErrorManager
 ) {
-    return declare('Sage.Platform.Mobile._LegacySDataDetailMixin', null, {
+    var __class = declare('argos._LegacySDataDetailMixin', null, {
         /**
          * Initiates the SData request.
          */
@@ -130,5 +132,8 @@ define('Sage/Platform/Mobile/_LegacySDataDetailMixin', [
             domClass.remove(this.domNode, 'panel-loading');
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._LegacySDataDetailMixin', __class);
+    return __class;
 });
 

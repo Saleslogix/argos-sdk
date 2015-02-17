@@ -14,12 +14,12 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Convert
+ * @class argos.Convert
  * Convert provides a number of type transformation functions.
  * @alternateClassName convert
  * @singleton
  */
-define('Sage/Platform/Mobile/Convert', [
+define('argos/Convert', [
     'dojo/_base/lang',
     'moment'
 ], function(
@@ -33,7 +33,7 @@ define('Sage/Platform/Mobile/Convert', [
             return n < 10 ? '0' + n : n;
         };
 
-    return lang.setObject('Sage.Platform.Mobile.Convert', {
+    var __class = lang.setObject('argos.Convert', {
         /**
          * Takes a string and checks to see if it is `true` or `T`, else returns false
          * @param {String} value String bool value
@@ -128,7 +128,7 @@ define('Sage/Platform/Mobile/Convert', [
                 {
                     h = parseInt(match[10], 10);
                     m = parseInt(match[11], 10);
-                    
+
                     if (match[9] === '-')
                         utc.add({minutes:((h * 60) + m)});
                     else
@@ -141,4 +141,7 @@ define('Sage/Platform/Mobile/Convert', [
             return value;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Convert', __class);
+    return __class;
 });

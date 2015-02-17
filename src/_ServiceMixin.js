@@ -14,21 +14,22 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._ServiceMixin
+ * @class argos._ServiceMixin
  * @alternateClassName _ServiceMixin
  * @deprecated
  */
-define('Sage/Platform/Mobile/_ServiceMixin', [
-    'dojo/_base/declare'
+define('argos/_ServiceMixin', [
+    'dojo/_base/declare',
+    'dojo/_base/lang'
 ], function(
-    declare
+    declare,
+    lang
 ) {
 
-    return declare('Sage.Platform.Mobile._ServiceMixin', null, {
+    var __class = declare('argos._ServiceMixin', null, {
         serviceMap: null,
         constructor: function() {
             var map = this.serviceMap;
-            console.log(map);
             if (map)
             {
                 for (var property in map)
@@ -46,4 +47,7 @@ define('Sage/Platform/Mobile/_ServiceMixin', [
             return App.getService(specification);
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._ServiceMixin', __class);
+    return __class;
 });

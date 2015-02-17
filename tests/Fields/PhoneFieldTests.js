@@ -1,6 +1,6 @@
 define('tests/Fields/PhoneFieldTests', [
-    'Sage/Platform/Mobile/Fields/PhoneField',
-    'Sage/Platform/Mobile/Format'
+    'argos/Fields/PhoneField',
+    'argos/Format'
 ], function(
     PhoneField,
     format

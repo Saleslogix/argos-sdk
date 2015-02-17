@@ -1,4 +1,4 @@
-define('tests/GroupedListTests', ['dojo/query','dojo/dom-class', 'dojo/text!./feeds/GroupListFeed.json', 'Sage/Platform/Mobile/GroupedList'], function(query, domClass, jsonFeed, GroupedList) {
+define('tests/GroupedListTests', ['dojo/query','dojo/dom-class', 'dojo/text!./feeds/GroupListFeed.json', 'argos/GroupedList'], function(query, domClass, jsonFeed, GroupedList) {
 return describe('Sage.Platform.Mobile.GroupedList', function() {
 
     var _app = window.App;

@@ -14,7 +14,7 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._EditBase
+ * @class argos._EditBase
  * An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
  * of a layout similar to Detail rows but are instead Edit fields.
  *
@@ -27,24 +27,24 @@
  * functions and operates.
  *
  * @alternateClassName _EditBase
- * @extends Sage.Platform.Mobile.View
- * @requires Sage.Platform.Mobile.Convert
- * @requires Sage.Platform.Mobile.Utility
- * @requires Sage.Platform.Mobile.Fields.ErrorManager
- * @requires Sage.Platform.Mobile.Fields.FieldManager
- * @requires Sage.Platform.Mobile.Fields.BooleanField
- * @requires Sage.Platform.Mobile.Fields.DecimalField
- * @requires Sage.Platform.Mobile.Fields.DurationField
- * @requires Sage.Platform.Mobile.Fields.HiddenField
- * @requires Sage.Platform.Mobile.Fields.LookupField
- * @requires Sage.Platform.Mobile.Fields.NoteField
- * @requires Sage.Platform.Mobile.Fields.PhoneField
- * @requires Sage.Platform.Mobile.Fields.SelectField
- * @requires Sage.Platform.Mobile.Fields.SignatureField
- * @requires Sage.Platform.Mobile.Fields.TextAreaField
- * @requires Sage.Platform.Mobile.Fields.TextField
+ * @extends argos.View
+ * @requires argos.Convert
+ * @requires argos.Utility
+ * @requires argos.Fields.ErrorManager
+ * @requires argos.Fields.FieldManager
+ * @requires argos.Fields.BooleanField
+ * @requires argos.Fields.DecimalField
+ * @requires argos.Fields.DurationField
+ * @requires argos.Fields.HiddenField
+ * @requires argos.Fields.LookupField
+ * @requires argos.Fields.NoteField
+ * @requires argos.Fields.PhoneField
+ * @requires argos.Fields.SelectField
+ * @requires argos.Fields.SignatureField
+ * @requires argos.Fields.TextAreaField
+ * @requires argos.Fields.TextField
  */
-define('Sage/Platform/Mobile/_EditBase', [
+define('argos/_EditBase', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/connect',
@@ -57,25 +57,25 @@ define('Sage/Platform/Mobile/_EditBase', [
     'dojo/dom-class',
     'dojo/dom-construct',
     'dojo/query',
-    'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/ErrorManager',
-    'Sage/Platform/Mobile/FieldManager',
-    'Sage/Platform/Mobile/View',
+    './Convert',
+    './Utility',
+    './ErrorManager',
+    './FieldManager',
+    './View',
 
     'dojo/NodeList-manipulate',
-    'Sage/Platform/Mobile/Fields/BooleanField',
-    'Sage/Platform/Mobile/Fields/DateField',
-    'Sage/Platform/Mobile/Fields/DecimalField',
-    'Sage/Platform/Mobile/Fields/DurationField',
-    'Sage/Platform/Mobile/Fields/HiddenField',
-    'Sage/Platform/Mobile/Fields/LookupField',
-    'Sage/Platform/Mobile/Fields/NoteField',
-    'Sage/Platform/Mobile/Fields/PhoneField',
-    'Sage/Platform/Mobile/Fields/SelectField',
-    'Sage/Platform/Mobile/Fields/SignatureField',
-    'Sage/Platform/Mobile/Fields/TextAreaField',
-    'Sage/Platform/Mobile/Fields/TextField'
+    './Fields/BooleanField',
+    './Fields/DateField',
+    './Fields/DecimalField',
+    './Fields/DurationField',
+    './Fields/HiddenField',
+    './Fields/LookupField',
+    './Fields/NoteField',
+    './Fields/PhoneField',
+    './Fields/SelectField',
+    './Fields/SignatureField',
+    './Fields/TextAreaField',
+    './Fields/TextField'
 ], function(
     declare,
     lang,
@@ -96,7 +96,7 @@ define('Sage/Platform/Mobile/_EditBase', [
     View
 ) {
 
-    return declare('Sage.Platform.Mobile._EditBase', [View], {
+    var __class = declare('argos._EditBase', [View], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -1294,5 +1294,8 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._EditBase', __class);
+    return __class;
 });
 

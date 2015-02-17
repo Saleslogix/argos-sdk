@@ -14,28 +14,29 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.ApplicationModule
+ * @class argos.ApplicationModule
  * ApplicationModule is intended to be extended in the resulting application so that it
  * references all the views, toolbars and customizations and registers them to App.
  *
  * You may think of ApplicationModule as "loader" or initializer.
  * @alternateClassName ApplicationModule
- * @requires Sage.Platform.Mobile.Application
+ * @requires argos.Application
  */
-define('Sage/Platform/Mobile/ApplicationModule', [
+define('argos/ApplicationModule', [
     'dojo/_base/array',
     'dojo/_base/connect',
     'dojo/_base/declare',
     'dojo/_base/lang',
-    'Sage/Platform/Mobile/Application'
+    './Application'
 ], function(
     array,
     connect,
     declare,
-    lang
+    lang,
+    Application
 ) {
 
-    return declare('Sage.Platform.Mobile.ApplicationModule', null, {
+    var __class = declare('argos.ApplicationModule', null, {
         /**
          * @property {Array}
          * Array of dojo.connect bound to ApplicationModule
@@ -147,4 +148,7 @@ define('Sage/Platform/Mobile/ApplicationModule', [
                 this.application.registerCustomization(set, id, spec);
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.ApplicationModule', __class);
+    return __class;
 });

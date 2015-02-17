@@ -1,4 +1,4 @@
-define('tests/Fields/NoteFieldTests', ['dojo/dom-attr','Sage/Platform/Mobile/Fields/NoteField'], function(domAttr, NoteField) {
+define('tests/Fields/NoteFieldTests', ['dojo/dom-attr','argos/Fields/NoteField'], function(domAttr, NoteField) {
 return describe('Sage.Platform.Mobile.Fields.NoteField', function() {
 
     xit('Can format value with custom noteProperty getter', function() {

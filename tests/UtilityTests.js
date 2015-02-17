@@ -1,4 +1,4 @@
-define('tests/UtilityTests', ['dojo/_base/lang', 'Sage/Platform/Mobile/Utility'], function(lang, utility) {
+define('tests/UtilityTests', ['dojo/_base/lang', 'argos/Utility'], function(lang, utility) {
 return describe('Sage.Platform.Mobile.Utility', function() {
 
     it('Can get single level property of object', function() {
