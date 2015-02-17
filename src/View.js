@@ -28,9 +28,9 @@ define('argos/View', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dijit/_WidgetBase',
-    'argos/_ActionMixin',
-    'argos/_CustomizationMixin',
-    'argos/_Templated'
+    './_ActionMixin',
+    './_CustomizationMixin',
+    './_Templated'
 ], function(
     declare,
     lang,
@@ -39,7 +39,7 @@ define('argos/View', [
     _CustomizationMixin,
     _Templated
 ) {
-    return declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
+    var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
         /**
          * This map provides quick access to HTML properties, most notably the selected property of the container
          */
@@ -322,5 +322,8 @@ define('argos/View', [
             return this.security;
         },
     });
+
+    lang.setObject('Sage.Platform.Mobile.View', __class);
+    return __class;
 });
 

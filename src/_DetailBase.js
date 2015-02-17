@@ -34,10 +34,10 @@ define('argos/_DetailBase', [
     'dojo/dom',
     'dojo/dom-class',
     'dojo/dom-construct',
-    'argos/Format',
-    'argos/Utility',
-    'argos/ErrorManager',
-    'argos/View'
+    './Format',
+    './Utility',
+    './ErrorManager',
+    './View'
 ], function(
     declare,
     lang,
@@ -53,7 +53,7 @@ define('argos/_DetailBase', [
     View
 ) {
 
-    return declare('argos._DetailBase', [View], {
+    var __class = declare('argos._DetailBase', [View], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -901,4 +901,7 @@ define('argos/_DetailBase', [
             }
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
+    return __class;
 });

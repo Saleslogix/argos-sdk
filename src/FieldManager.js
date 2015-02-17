@@ -26,7 +26,7 @@ define('argos/FieldManager', [
     lang
 ) {
     var store = {};
-    return lang.setObject('argos.FieldManager', {
+    var __class = lang.setObject('argos.FieldManager', {
         /**
          * @property {Object}
          * The type map that translates string type names to constructor functions
@@ -50,4 +50,7 @@ define('argos/FieldManager', [
             return store[name];
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.FieldManager', __class);
+    return __class;
 });

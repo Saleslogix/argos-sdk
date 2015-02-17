@@ -9,9 +9,9 @@ define('argos/Groups/DateTimeSection', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
-    'argos/Convert',
-    'argos/Utility',
-    'argos/Groups/_GroupBySection',
+    '../Convert',
+    '../Utility',
+    './_GroupBySection',
     'moment'
 ], function(
     declare,
@@ -23,7 +23,7 @@ define('argos/Groups/DateTimeSection', [
     moment
 ) {
 
-    return declare('argos.Groups.DateTimeSection', [_GroupBySection], {
+    var __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
         name: 'DateTimeSectionFilter',
         displayNameText: 'Date Time Section',
         todayText: 'Today',
@@ -293,4 +293,7 @@ define('argos/Groups/DateTimeSection', [
             return section;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Groups.DateTimeSection', __class);
+    return __class;
 });

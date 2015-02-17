@@ -29,8 +29,8 @@ define('argos/GroupedList', [
     'dojo/string',
     'dojo/dom-class',
     'dojo/dom-construct',
-    'argos/List',
-    'argos/Utility'
+    './List',
+    './Utility'
 ], function(
     declare,
     lang,
@@ -42,7 +42,7 @@ define('argos/GroupedList', [
     Utility
 ) {
 
-    return declare('argos.GroupedList', [List], {
+    var __class = declare('argos.GroupedList', [List], {
         // Localization
         /**
          * @property {String}
@@ -278,7 +278,6 @@ define('argos/GroupedList', [
                     this._currentGroupBySection = this._groupBySections[0];
                 }
             }
-            
         },
         getGroupBySection: function(sectionId) {
             var groupSection = null;
@@ -303,6 +302,8 @@ define('argos/GroupedList', [
                 this.queryOrderBy = this._currentGroupBySection.section.getOrderByQuery();
             }
         }
-        
     });
+
+    lang.setObject('Sage.Platform.Mobile.GroupedList', __class);
+    return __class;
 });

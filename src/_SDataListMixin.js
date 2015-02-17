@@ -28,25 +28,25 @@ define('argos/_SDataListMixin', [
     'dojo/_base/lang',
     'dojo/Deferred',
     'dojo/when',
-    'argos/Store/SData',
-    'argos/Utility',
-    'argos/ErrorManager',
     'dojo/dom-construct',
     'dojo/dom-class',
-    'dojo/string'
+    'dojo/string',
+    './Store/SData',
+    './Utility',
+    './ErrorManager'
 ], function(
     declare,
     lang,
     Deferred,
     when,
-    SData,
-    utility,
-    ErrorManager,
     domConstruct,
     domClass,
-    string
+    string,
+    SData,
+    utility,
+    ErrorManager
 ) {
-    return declare('argos._SDataListMixin', null, {
+    var __class = declare('argos._SDataListMixin', null, {
         /**
          * @property request Object SData request passed into the store. Optional.
          */
@@ -215,4 +215,7 @@ define('argos/_SDataListMixin', [
             return def.promise;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._SDataListMixin', __class);
+    return __class;
 });

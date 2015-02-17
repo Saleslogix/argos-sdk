@@ -25,14 +25,16 @@
  */
 define('argos/Views/Signature', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/_base/json',
     'dojo/query',
     'dojo/dom-geometry',
     'dojo/window',
-    'argos/Format',
-    'argos/View'
+    '../Format',
+    '../View'
 ], function(
     declare,
+    lang,
     json,
     query,
     domGeom,
@@ -41,7 +43,7 @@ define('argos/Views/Signature', [
     View
 ) {
 
-    return declare('argos.Views.Signature', [View], {
+    var __class = declare('argos.Views.Signature', [View], {
         // Localization
         /**
          * @property {String}
@@ -393,4 +395,7 @@ define('argos/Views/Signature', [
             return result;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Views.Signature', __class);
+    return __class;
 });

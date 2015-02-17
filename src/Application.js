@@ -146,7 +146,7 @@ define('argos/Application', [
         'mergeConfiguration': mergeConfiguration
     });
 
-    var _app = declare('argos.Application', null, {
+    var __class = declare('argos.Application', null, {
         /**
          * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
          */
@@ -977,7 +977,7 @@ define('argos/Application', [
     });
 
     // Backwards compatibility for custom modules still referencing the old declare global
-    lang.setObject('Sage.Platform.Mobile.Application', _app);
-    return _app;
+    lang.setObject('Sage.Platform.Mobile.Application', __class);
+    return __class;
 });
 

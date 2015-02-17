@@ -33,7 +33,7 @@ define('argos/Convert', [
             return n < 10 ? '0' + n : n;
         };
 
-    return lang.setObject('argos.Convert', {
+    var __class = lang.setObject('argos.Convert', {
         /**
          * Takes a string and checks to see if it is `true` or `T`, else returns false
          * @param {String} value String bool value
@@ -128,7 +128,7 @@ define('argos/Convert', [
                 {
                     h = parseInt(match[10], 10);
                     m = parseInt(match[11], 10);
-                    
+
                     if (match[9] === '-')
                         utc.add({minutes:((h * 60) + m)});
                     else
@@ -141,4 +141,7 @@ define('argos/Convert', [
             return value;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Convert', __class);
+    return __class;
 });

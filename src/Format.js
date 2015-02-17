@@ -27,8 +27,8 @@ define('argos/Format', [
     'dojo/dom-construct',
     'dojo/string',
     'dojo/number',
-    'argos/Convert',
-    'argos/Utility',
+    './Convert',
+    './Utility',
     'moment'
 ], function(
     json,
@@ -112,7 +112,7 @@ define('argos/Format', [
             .replace(/&quot;/g, '"');
     }
 
-    return lang.setObject('argos.Format', {
+    var __class = lang.setObject('argos.Format', {
         /**
          * @property {String}
          * Text used in {@link #yesNo yesNo} formatter for true values
@@ -556,4 +556,7 @@ define('argos/Format', [
             }
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Format', __class);
+    return __class;
 });

@@ -27,15 +27,20 @@
  */
 define('argos/Detail', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     './_DetailBase',
     './_SDataDetailMixin'
 ], function(
     declare,
+    lang,
     _DetailBase,
     _SDataDetailMixin
 ) {
 
-    return declare('argos.Detail', [_DetailBase, _SDataDetailMixin], {
+    var __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin], {
     });
+
+    lang.setObject('Sage.Platform.Mobile.Detail', __class);
+    return __class;
 });
 

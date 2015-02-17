@@ -57,25 +57,25 @@ define('argos/_EditBase', [
     'dojo/dom-class',
     'dojo/dom-construct',
     'dojo/query',
-    'argos/Convert',
-    'argos/Utility',
-    'argos/ErrorManager',
-    'argos/FieldManager',
-    'argos/View',
+    './Convert',
+    './Utility',
+    './ErrorManager',
+    './FieldManager',
+    './View',
 
     'dojo/NodeList-manipulate',
-    'argos/Fields/BooleanField',
-    'argos/Fields/DateField',
-    'argos/Fields/DecimalField',
-    'argos/Fields/DurationField',
-    'argos/Fields/HiddenField',
-    'argos/Fields/LookupField',
-    'argos/Fields/NoteField',
-    'argos/Fields/PhoneField',
-    'argos/Fields/SelectField',
-    'argos/Fields/SignatureField',
-    'argos/Fields/TextAreaField',
-    'argos/Fields/TextField'
+    './Fields/BooleanField',
+    './Fields/DateField',
+    './Fields/DecimalField',
+    './Fields/DurationField',
+    './Fields/HiddenField',
+    './Fields/LookupField',
+    './Fields/NoteField',
+    './Fields/PhoneField',
+    './Fields/SelectField',
+    './Fields/SignatureField',
+    './Fields/TextAreaField',
+    './Fields/TextField'
 ], function(
     declare,
     lang,
@@ -96,7 +96,7 @@ define('argos/_EditBase', [
     View
 ) {
 
-    return declare('argos._EditBase', [View], {
+    var __class = declare('argos._EditBase', [View], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -1294,5 +1294,8 @@ define('argos/_EditBase', [
             }
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._EditBase', __class);
+    return __class;
 });
 

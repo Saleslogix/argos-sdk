@@ -22,6 +22,7 @@
  */
 define('argos/MainToolbar', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/query',
     'dojo/dom-class',
     'dojo/dom-construct',
@@ -29,13 +30,14 @@ define('argos/MainToolbar', [
     'dojo/NodeList-manipulate'
 ], function(
     declare,
+    lang,
     query,
     domClass,
     domConstruct,
     Toolbar
 ) {
 
-    return declare('argos.MainToolbar', [Toolbar], {
+    var __class = declare('argos.MainToolbar', [Toolbar], {
         /**
          * @property {Object}
          * Used to set the title node's innerHTML
@@ -129,5 +131,8 @@ define('argos/MainToolbar', [
         onTitleClick: function(evt) {
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.MainToolbar', __class);
+    return __class;
 });
 

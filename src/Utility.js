@@ -55,7 +55,7 @@ define('argos/Utility', [
         return nameToPathCache[name];
     };
 
-    return lang.setObject('argos.Utility', {
+    var __class = lang.setObject('argos.Utility', {
         /**
          * Replaces a single `"` with two `""` for proper SData query expressions.
          * @param {String} searchQuery Search expression to be escaped.
@@ -186,4 +186,7 @@ define('argos/Utility', [
             return obj;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Utility', __class);
+    return __class;
 });

@@ -16,13 +16,15 @@
 
 define('argos/Fields/TextField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/_base/event',
     'dojo/dom-attr',
     'dojo/dom-class',
-    'argos/Fields/_Field',
-    'argos/FieldManager'
+    './_Field',
+    '../FieldManager'
 ], function(
     declare,
+    lang,
     event,
     domAttr,
     domClass,
@@ -316,5 +318,6 @@ define('argos/Fields/TextField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.TextField', control);
     return FieldManager.register('text', control);
 });

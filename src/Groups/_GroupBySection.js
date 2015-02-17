@@ -22,7 +22,7 @@ define('argos/Groups/_GroupBySection', [
     string
 ) {
 
-    return declare('argos.Groups._GroupBySection', null, {
+    var __class = declare('argos.Groups._GroupBySection', null, {
         /**
         * @property {String}
         * The unique (within the current form) name of the field
@@ -51,4 +51,7 @@ define('argos/Groups/_GroupBySection', [
             return this.groupByProperty + ' ' + this.sortDirection;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
+    return __class;
 });

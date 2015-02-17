@@ -24,7 +24,7 @@ define('argos/RelatedViewManager',  [
     'dojo/dom-construct',
     'dojo/query',
     'dojo/_base/array',
-    'argos/Store/SData'
+    './Store/SData'
 ], function(
     declare,
     lang,
@@ -37,7 +37,7 @@ define('argos/RelatedViewManager',  [
     array,
     SDataStore
 ) {
-    return declare('argos.RelatedViewManager', null, {
+    var __class = declare('argos.RelatedViewManager', null, {
 
         id: 'relatedView',
         relatedViews: null,
@@ -81,4 +81,7 @@ define('argos/RelatedViewManager',  [
             }
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.RelatedViewManager', __class);
+    return __class;
 });

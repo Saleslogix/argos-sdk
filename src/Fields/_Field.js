@@ -30,8 +30,8 @@ define('argos/Fields/_Field', [
     'dojo/string',
     'dojo/dom-class',
     'dijit/_Widget',
-    'argos/_ActionMixin',
-    'argos/_Templated'
+    '../_ActionMixin',
+    '../_Templated'
 ], function(
     declare,
     lang,
@@ -42,7 +42,7 @@ define('argos/Fields/_Field', [
     _Templated
 ) {
 
-    return declare('argos.Fields._Field', [_Widget, _ActionMixin, _Templated], {
+    var __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Templated], {
         /**
          * @property {View}
          * View that controls the field.
@@ -340,4 +340,7 @@ define('argos/Fields/_Field', [
         onChange: function(value, field) {
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Fields._Field', __class);
+    return __class;
 });

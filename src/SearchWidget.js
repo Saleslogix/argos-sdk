@@ -50,7 +50,7 @@ define('argos/SearchWidget', [
     'dojo/string',
     'dojo/dom-class',
     'dijit/_Widget',
-    'argos/_Templated'
+    './_Templated'
 ], function(
     declare,
     lang,
@@ -60,7 +60,7 @@ define('argos/SearchWidget', [
     _Widget,
     _Templated
 ) {
-    return declare('argos.SearchWidget', [_Widget, _Templated], {
+    var __class = declare('argos.SearchWidget', [_Widget, _Templated], {
         /**
          * @property {Object}
          * Provides a setter for HTML node attributes, namely the value for search text
@@ -296,4 +296,7 @@ define('argos/SearchWidget', [
             return this.queryNode.value;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.SearchWidget', __class);
+    return __class;
 });

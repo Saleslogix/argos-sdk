@@ -45,7 +45,7 @@ define('argos/ErrorManager', [
 
     }
 
-    return lang.setObject('argos.ErrorManager', {
+    var __class = lang.setObject('argos.ErrorManager', {
         //Localization
 
         /**
@@ -279,6 +279,8 @@ define('argos/ErrorManager', [
                 console.error(e);
             }
         }
-    }
-);
+    });
+
+    lang.setObject('Sage.Platform.Mobile.ErrorManager', __class);
+    return __class;
 });

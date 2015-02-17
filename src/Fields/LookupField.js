@@ -20,9 +20,9 @@ define('argos/Fields/LookupField', [
     'dojo/_base/lang',
     'dojo/string',
     'dojo/query',
-    'argos/Utility',
-    'argos/Fields/_Field',
-    'argos/FieldManager'
+    '../Utility',
+    './_Field',
+    '../FieldManager'
 ], function(
     array,
     declare,
@@ -808,5 +808,6 @@ define('argos/Fields/LookupField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.LookupField', control);
     return FieldManager.register('lookup', control);
 });

@@ -40,12 +40,12 @@ define('argos/_ListBase', [
     'dojo/Deferred',
     'dojo/promise/all',
     'dojo/when',
-    'argos/Utility',
-    'argos/ErrorManager',
-    'argos/View',
-    'argos/SearchWidget',
-    'argos/ConfigurableSelectionModel',
-    'argos/RelatedViewManager'
+    './Utility',
+    './ErrorManager',
+    './View',
+    './SearchWidget',
+    './ConfigurableSelectionModel',
+    './RelatedViewManager'
 ], function(
     declare,
     lang,
@@ -71,8 +71,8 @@ define('argos/_ListBase', [
     RelatedViewManager
 ) {
 
-    return declare('argos._ListBase', [View], {
-        /** 
+    var __class = declare('argos._ListBase', [View], {
+        /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
          *
@@ -1738,5 +1738,8 @@ define('argos/_ListBase', [
         getListCount: function(options, callback) {
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._ListBase', __class);
+    return __class;
 });
- 
+

@@ -27,14 +27,19 @@
  */
 define('argos/Edit', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     './_EditBase',
     './_SDataEditMixin'
 ], function(
     declare,
+    lang,
     _EditBase,
     _SDataEditMixin
 ) {
 
-    return declare('argos.Edit', [_EditBase, _SDataEditMixin], {
+    var __class = declare('argos.Edit', [_EditBase, _SDataEditMixin], {
     });
+
+    lang.setObject('Sage.Platform.Mobile.Edit', __class);
+    return __class;
 });

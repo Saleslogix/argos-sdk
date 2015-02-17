@@ -27,15 +27,16 @@ define('argos/ApplicationModule', [
     'dojo/_base/connect',
     'dojo/_base/declare',
     'dojo/_base/lang',
-    'argos/Application'
+    './Application'
 ], function(
     array,
     connect,
     declare,
-    lang
+    lang,
+    Application
 ) {
 
-    return declare('argos.ApplicationModule', null, {
+    var __class = declare('argos.ApplicationModule', null, {
         /**
          * @property {Array}
          * Array of dojo.connect bound to ApplicationModule
@@ -147,4 +148,7 @@ define('argos/ApplicationModule', [
                 this.application.registerCustomization(set, id, spec);
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.ApplicationModule', __class);
+    return __class;
 });

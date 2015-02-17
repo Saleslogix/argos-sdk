@@ -16,12 +16,14 @@
 
 define('argos/Fields/DecimalField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/string',
-    'argos/Fields/TextField',
-    'argos/FieldManager',
-    'argos/Utility'
+    './TextField',
+    '../FieldManager',
+    '../Utility'
 ], function(
     declare,
+    lang,
     string,
     TextField,
     FieldManager,
@@ -118,5 +120,6 @@ define('argos/Fields/DecimalField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.DecimalField', control);
     return FieldManager.register('decimal', control);
 });

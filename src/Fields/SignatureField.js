@@ -15,13 +15,15 @@
 
 define('argos/Fields/SignatureField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/_base/json',
     'dojo/dom-attr',
-    'argos/Format',
-    'argos/Fields/EditorField',
-    'argos/FieldManager'
+    '../Format',
+    './EditorField',
+    '../FieldManager'
 ], function(
     declare,
+    lang,
     json,
     domAttr,
     format,
@@ -169,5 +171,6 @@ define('argos/Fields/SignatureField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.SignatureField', control);
     return FieldManager.register('signature', control);
 });

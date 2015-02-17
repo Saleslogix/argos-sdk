@@ -1,8 +1,10 @@
 define('argos/ConfigurableSelectionModel', [
        'dojo/_base/declare',
-       'argos/SelectionModel'
+       'dojo/_base/lang',
+       './SelectionModel'
 ], function(
     declare,
+    lang,
     SelectionModel
 ) {
     /**
@@ -11,7 +13,7 @@ define('argos/ConfigurableSelectionModel', [
      * @alternateClassName ConfigurableSelectionModel
      * @extends argos.SelectionModel
      */
-    return declare('argos.ConfigurableSelectionModel', [SelectionModel], {
+    var __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
         /**
          * @property {Boolean}
          * Flag that controls if only one item is selectable at a time. Meaning if this is true
@@ -49,4 +51,7 @@ define('argos/ConfigurableSelectionModel', [
             this.inherited(arguments);
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.ConfigurableSelectionModel', __class);
+    return __class;
 });

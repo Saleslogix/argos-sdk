@@ -15,10 +15,12 @@
 
 define('argos/Fields/HiddenField', [
     'dojo/_base/declare',
-    'argos/Fields/TextField',
-    'argos/FieldManager'
+    'dojo/_base/lang',
+    './TextField',
+    '../FieldManager'
 ], function(
     declare,
+    lang,
     TextField,
     FieldManager
 ) {
@@ -65,5 +67,6 @@ define('argos/Fields/HiddenField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.HiddenField', control);
     return FieldManager.register('hidden', control);
 });

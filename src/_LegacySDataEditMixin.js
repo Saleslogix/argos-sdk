@@ -13,10 +13,10 @@ define('argos/_LegacySDataEditMixin', [
     'dojo/string',
     'dojo/dom-class',
     'dojo/_base/connect',
-    'argos/Store/SData',
-    'argos/ErrorManager',
-    'argos/Convert',
-    'argos/_SDataDetailMixin'
+    './Store/SData',
+    './ErrorManager',
+    './Convert',
+    './_SDataDetailMixin'
 ], function(
     declare,
     lang,
@@ -28,7 +28,7 @@ define('argos/_LegacySDataEditMixin', [
     convert,
     _SDataDetailMixin
 ) {
-    return declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
+    var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
         requestData: function() {
             var request;
             request = this.createRequest();
@@ -285,4 +285,7 @@ define('argos/_LegacySDataEditMixin', [
             domClass.remove(this.domNode, 'panel-loading');
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._LegacySDataEditMixin', __class);
+    return __class;
 });

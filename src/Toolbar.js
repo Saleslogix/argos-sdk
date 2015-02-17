@@ -29,8 +29,8 @@ define('argos/Toolbar', [
     'dojo/dom-style',
     'dojo/dom-class',
     'dijit/_Widget',
-    'argos/_ActionMixin',
-    'argos/_Templated'
+    './_ActionMixin',
+    './_Templated'
 ], function(
     declare,
     lang,
@@ -40,7 +40,7 @@ define('argos/Toolbar', [
     _ActionMixin,
     _Templated
 ) {
-    return declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
+    var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
         /**
          * @property {Simplate}
          * HTML markup of the toolbar
@@ -197,4 +197,7 @@ define('argos/Toolbar', [
             }
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Toolbar', __class);
+    return __class;
 });

@@ -15,13 +15,15 @@
 
 define('argos/Fields/DurationField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/string',
     'dojo/dom-class',
-    'argos/Format',
-    'argos/Fields/LookupField',
-    'argos/FieldManager'
+    '../Format',
+    './LookupField',
+    '../FieldManager'
 ], function(
     declare,
+    lang,
     string,
     domClass,
     format,
@@ -389,6 +391,7 @@ define('argos/Fields/DurationField', [
             }
         }
     });
-    
+
+    lang.setObject('Sage.Platform.Mobile.Fields.DurationField', control);
     return FieldManager.register('duration', control);
 });

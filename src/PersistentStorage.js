@@ -22,8 +22,8 @@ define('argos/PersistentStorage', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/json',
-    'argos/Convert',
-    'argos/Utility'
+    './Convert',
+    './Utility'
 ], function(
     declare,
     lang,
@@ -33,7 +33,7 @@ define('argos/PersistentStorage', [
 ) {
     var sosCache = {};
 
-    return declare('argos.PersistentStorage', null, {
+    var __class = declare('argos.PersistentStorage', null, {
 
         name: false,
         singleObjectStore: false,
@@ -196,4 +196,7 @@ define('argos/PersistentStorage', [
         clearItem: function(key, options) {
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.PersistentStorage', __class);
+    return __class;
 });

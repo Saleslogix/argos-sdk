@@ -29,10 +29,10 @@ define('argos/_SDataEditMixin', [
     'dojo/string',
     'dojo/dom-class',
     'dojo/_base/connect',
-    'argos/Store/SData',
-    'argos/ErrorManager',
-    'argos/Convert',
-    'argos/_SDataDetailMixin'
+    './Store/SData',
+    './ErrorManager',
+    './Convert',
+    './_SDataDetailMixin'
 ], function(
     declare,
     lang,
@@ -44,7 +44,7 @@ define('argos/_SDataEditMixin', [
     convert,
     _SDataDetailMixin
 ) {
-    return declare('argos._SDataEditMixin', [_SDataDetailMixin], {
+    var __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
         /**
          * @property {Object}
          * The saved SData response.
@@ -250,4 +250,7 @@ define('argos/_SDataEditMixin', [
             return App && App.enableConcurrencyCheck;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._SDataEditMixin', __class);
+    return __class;
 });

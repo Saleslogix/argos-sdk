@@ -22,16 +22,18 @@
  */
 define('argos/Views/FileSelect', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/window',
     'dojo/has',
     'dojo/dom-construct',
     'dojo/dom-attr',
     'dojo/dom-class',
     'dojo/dom',
-    'argos/Fields/TextField',
-    'argos/View'
+    '../Fields/TextField',
+    '../View'
 ], function(
     declare,
+    lang,
     win,
     has,
     domConstruct,
@@ -42,7 +44,7 @@ define('argos/Views/FileSelect', [
     View
 ) {
 
-    return declare('argos.Views.FileSelect', [View], {
+    var __class = declare('argos.Views.FileSelect', [View], {
         // Localization
         titleText: 'File Select',
         addFileText: 'Click or Tap here to add a file.',
@@ -285,5 +287,8 @@ define('argos/Views/FileSelect', [
             domClass.remove(this.domNode, 'list-loading');
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Views.FileSelect', __class);
+    return __class;
 });
 

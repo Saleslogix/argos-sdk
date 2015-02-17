@@ -29,15 +29,17 @@
  */
 define('argos/Fields/EditorField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/_base/event',
     'argos/Fields/_Field'
 ], function(
     declare,
+    lang,
     event,
     _Field
 ) {
 
-    return declare('argos.Fields.EditorField', [_Field], {
+    var __class = declare('argos.Fields.EditorField', [_Field], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -347,4 +349,7 @@ define('argos/Fields/EditorField', [
             this.setValue(null, true);
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
+    return __class;
 });

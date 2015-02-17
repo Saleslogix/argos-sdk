@@ -29,7 +29,7 @@ define('argos/Store/SData', [
     'dojo/store/util/QueryResults',
     'dojo/string',
     'dojo/_base/json',
-    'argos/Convert',
+    '../Convert',
     '../Utility'
 ], function (
     declare,
@@ -42,7 +42,7 @@ define('argos/Store/SData', [
     convert,
     utility
 ) {
-    return declare('argos.Store.SData', null, {
+    var __class = declare('argos.Store.SData', null, {
         doDateConversion: false,
 
         /* todo: is this the appropriate name for the expansion scope? */
@@ -479,5 +479,8 @@ define('argos/Store/SData', [
             return null;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Store.SData', __class);
+    return __class;
 });
 

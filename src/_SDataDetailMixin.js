@@ -24,16 +24,18 @@
  */
 define('argos/_SDataDetailMixin', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/string',
-    'argos/Utility',
-    'argos/Store/SData'
+    './Utility',
+    './Store/SData'
 ], function(
     declare,
+    lang,
     string,
     utility,
     SData
 ) {
-    return declare('argos._SDataDetailMixin', null, {
+    var __class = declare('argos._SDataDetailMixin', null, {
 
         /**
          * @cfg {String} resourceKind
@@ -113,5 +115,8 @@ define('argos/_SDataDetailMixin', [
             return string.substitute(fmt, [utility.getValue(entry, property, "")]);
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
+    return __class;
 });
 

@@ -16,14 +16,16 @@
 
 define('argos/Fields/DateField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/string',
     'dojo/dom-class',
-    'argos/Format',
-    'argos/FieldManager',
-    'argos/Fields/EditorField',
-    'argos/Calendar'
+    '../Format',
+    '../FieldManager',
+    './EditorField',
+    '../Calendar'
 ], function(
     declare,
+    lang,
     string,
     domClass,
     format,
@@ -189,5 +191,6 @@ define('argos/Fields/DateField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.DateField', control);
     return FieldManager.register('date', control);
 });

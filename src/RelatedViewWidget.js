@@ -27,11 +27,11 @@ define('argos/RelatedViewWidget', [
     'dojo/dom-attr',
     'dojo/_base/connect',
     'dojo/_base/array',
-    'argos/Store/SData',
+    './Store/SData',
     'dijit/_Widget',
-    'argos/_CustomizationMixin',
-    'argos/_ActionMixin',
-    'argos/_Templated'
+    './_CustomizationMixin',
+    './_ActionMixin',
+    './_Templated'
 ], function(
     declare,
     lang,
@@ -51,8 +51,7 @@ define('argos/RelatedViewWidget', [
     _ActionMixin,
     _Templated
 ) {
-    return declare('argos.RelatedViewWidget', [_Widget, _CustomizationMixin,_ActionMixin, _Templated], {
-       
+    var __class = declare('argos.RelatedViewWidget', [_Widget, _CustomizationMixin,_ActionMixin, _Templated], {
         cls: null,
         nodataText: 'no records found ...',
         selectMoreDataText: 'see ${0} more of ${1} ... ',
@@ -509,4 +508,7 @@ define('argos/RelatedViewWidget', [
             this.inherited(arguments);
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.RelatedViewWidget', __class);
+    return __class;
 });

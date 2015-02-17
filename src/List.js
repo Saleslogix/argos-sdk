@@ -23,14 +23,19 @@
  */
 define('argos/List', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     './_ListBase',
     './_SDataListMixin'
 ], function(
     declare,
+    lang,
     _ListBase,
     _SDataListMixin
 ) {
-    return declare('argos.List', [_ListBase, _SDataListMixin], {
+    var __class = declare('argos.List', [_ListBase, _SDataListMixin], {
     });
+
+    lang.setObject('Sage.Platform.Mobile.List', __class);
+    return __class;
 });
- 
+

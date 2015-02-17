@@ -9,9 +9,9 @@ define('argos/Groups/GroupByValueSection', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
-    'argos/Convert',
-    'argos/Utility',
-    'argos/Groups/_GroupBySection'
+    '../Convert',
+    '../Utility',
+    './_GroupBySection'
 ], function(
     declare,
     lang,
@@ -21,8 +21,8 @@ define('argos/Groups/GroupByValueSection', [
     _GroupBySection
 ) {
 
-    return declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
-        name: 'DateTimeSectionFilter',        
+    var __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
+        name: 'DateTimeSectionFilter',
         displayNameText: 'Group By Value Section',
         width:0,
         constructor: function(o) {
@@ -61,6 +61,8 @@ define('argos/Groups/GroupByValueSection', [
             }
             return value;
         }
-        
     });
+
+    lang.setObject('Sage.Platform.Mobile.Groups.GroupByValueSection', __class);
+    return __class;
 });

@@ -44,7 +44,7 @@ define('argos/_CustomizationMixin', [
             return expression;
     };
 
-    return declare('argos._CustomizationMixin', null, {
+    var __class = declare('argos._CustomizationMixin', null, {
         _layoutCompiled: null,
         _layoutCompiledFrom: null,
         id: null,
@@ -213,4 +213,7 @@ define('argos/_CustomizationMixin', [
             return output;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._CustomizationMixin', __class);
+    return __class;
 });
