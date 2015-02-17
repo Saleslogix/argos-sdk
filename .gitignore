@@ -41,3 +41,6 @@ deploy/
 *.patch
 
 *.swp
+
+node_modules/
+coverage/
