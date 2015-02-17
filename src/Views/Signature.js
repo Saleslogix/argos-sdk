@@ -14,25 +14,27 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Views.Signature
+ * @class argos.Views.Signature
  * Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
  *
  * It goes hand-in-hand with {@link SignatureField SignatureField}
  *
  * @alternateClassName SignatureView
- * @extends Sage.Platform.Mobile.View
- * @requires Sage.Platform.Mobile.Format
+ * @extends argos.View
+ * @requires argos.Format
  */
-define('Sage/Platform/Mobile/Views/Signature', [
+define('argos/Views/Signature', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/_base/json',
     'dojo/query',
     'dojo/dom-geometry',
     'dojo/window',
-    'Sage/Platform/Mobile/Format',
-    'Sage/Platform/Mobile/View'
+    '../Format',
+    '../View'
 ], function(
     declare,
+    lang,
     json,
     query,
     domGeom,
@@ -41,7 +43,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
     View
 ) {
 
-    return declare('Sage.Platform.Mobile.Views.Signature', [View], {
+    var __class = declare('argos.Views.Signature', [View], {
         // Localization
         /**
          * @property {String}
@@ -393,4 +395,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
             return result;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Views.Signature', __class);
+    return __class;
 });

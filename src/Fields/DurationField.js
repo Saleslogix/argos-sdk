@@ -13,15 +13,17 @@
  * limitations under the License.
  */
 
-define('Sage/Platform/Mobile/Fields/DurationField', [
+define('argos/Fields/DurationField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/string',
     'dojo/dom-class',
-    'Sage/Platform/Mobile/Format',
-    'Sage/Platform/Mobile/Fields/LookupField',
-    'Sage/Platform/Mobile/FieldManager'
+    '../Format',
+    './LookupField',
+    '../FieldManager'
 ], function(
     declare,
+    lang,
     string,
     domClass,
     format,
@@ -29,7 +31,7 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
     FieldManager
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.DurationField
+     * @class argos.Fields.DurationField
      * The Duration field is a mashup of an auto-complete box and a {@link LookupField LookupField} for handling
      * duration's of: minutes, hours, days, weeks or years. Meaning a user can type directly into the input area the
      * amount of time or press the lookup button and choose from pre-determined list of times.
@@ -53,10 +55,10 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
      *     }
      *
      * @alternateClassName DurationField
-     * @extends Sage.Platform.Mobile.Fields.LookupField
-     * @requires Sage.Platform.Mobile.FieldManager
+     * @extends argos.Fields.LookupField
+     * @requires argos.FieldManager
      */
-    var control = declare('Sage.Platform.Mobile.Fields.DurationField', [LookupField], {
+    var control = declare('argos.Fields.DurationField', [LookupField], {
         /**
          * Maps various attributes of nodes to setters.
          */
@@ -389,6 +391,7 @@ define('Sage/Platform/Mobile/Fields/DurationField', [
             }
         }
     });
-    
+
+    lang.setObject('Sage.Platform.Mobile.Fields.DurationField', control);
     return FieldManager.register('duration', control);
 });

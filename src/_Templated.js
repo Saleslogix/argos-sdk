@@ -14,28 +14,37 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._Templated
+ * @class argos._Templated
  */
-define('Sage/Platform/Mobile/_Templated',
-    [
-        'dojo/dom-construct',
-        'dojo/_base/declare',
-        'dojo/query',
-        'dojo/parser',
-        'dojo/_base/array',
-        'dojo/_base/lang',
-        'dijit/registry',
-        'dijit/_base/wai',
-        'dijit/_TemplatedMixin'
-],
-function(domConstruct, declare, query, parser, array, lang, registry, wai, _TemplatedMixin) {
+define('argos/_Templated', [
+    'dojo/dom-construct',
+    'dojo/_base/declare',
+    'dojo/query',
+    'dojo/parser',
+    'dojo/_base/array',
+    'dojo/_base/lang',
+    'dijit/registry',
+    'dijit/_base/wai',
+    'dijit/_TemplatedMixin'
+], function(
+    domConstruct,
+    declare,
+    query,
+    parser,
+    array,
+    lang,
+    registry,
+    wai,
+    _TemplatedMixin
+) {
+
     /**
      * _Templated serves as an override for dijit Widgets to enable the use of
      * Simplates for templates.
      *
      * @alternateClassName _Templated
      */
-    var templated = declare('Sage.Platform.Mobile._Templated', [_TemplatedMixin], {
+    var __class = declare('argos._Templated', [_TemplatedMixin], {
         _stringRepl: function(tmpl) {
             return tmpl;
         },
@@ -48,7 +57,7 @@ function(domConstruct, declare, query, parser, array, lang, registry, wai, _Temp
             {
                 throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
             }
-            
+
             if (this.contentTemplate) {
                 this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
             } else if (this.widgetTemplate) {
@@ -64,5 +73,7 @@ function(domConstruct, declare, query, parser, array, lang, registry, wai, _Temp
         }
     });
 
-    return templated;
+
+    lang.setObject('Sage.Platform.Mobile._Templated', __class);
+    return __class;
 });

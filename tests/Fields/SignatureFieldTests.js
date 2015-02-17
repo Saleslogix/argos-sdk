@@ -1,4 +1,4 @@
-define('tests/Fields/SignatureFieldTests', ['Sage/Platform/Mobile/Fields/SignatureField'], function(Signature) {
+define('tests/Fields/SignatureFieldTests', ['argos/Fields/SignatureField'], function(Signature) {
 return describe('Sage.Platform.Mobile.Fields.SignatureField', function() {
 
     it('Can clear value', function() {

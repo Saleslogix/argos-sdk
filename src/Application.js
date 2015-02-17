@@ -14,7 +14,7 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Application
+ * @class argos.Application
  * Application is a nexus that provides many routing and global application services that may be used
  * from anywhere within the app.
  *
@@ -22,7 +22,7 @@
  *
  * @alternateClassName App
  */
-define('Sage/Platform/Mobile/Application', [
+define('argos/Application', [
     'dojo/_base/json',
     'dojo/_base/array',
     'dojo/_base/connect',
@@ -36,7 +36,7 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/dom-construct',
     'snap',
     'dojo/sniff',
-    'Sage/Platform/Mobile/ReUI/main'
+    './ReUI/main'
 ], function(
     json,
     array,
@@ -146,7 +146,7 @@ define('Sage/Platform/Mobile/Application', [
         'mergeConfiguration': mergeConfiguration
     });
 
-    return declare('Sage.Platform.Mobile.Application', null, {
+    var __class = declare('argos.Application', null, {
         /**
          * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
          */
@@ -975,5 +975,9 @@ define('Sage/Platform/Mobile/Application', [
             this.showRightDrawer();
         }
     });
+
+    // Backwards compatibility for custom modules still referencing the old declare global
+    lang.setObject('Sage.Platform.Mobile.Application', __class);
+    return __class;
 });
 

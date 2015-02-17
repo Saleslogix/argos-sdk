@@ -14,17 +14,17 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._ListBase
+ * @class argos._ListBase
  * A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
  * selection model built in for selecting rows from the list and may be used in a number of different manners.
- * @extends Sage.Platform.Mobile.View
+ * @extends argos.View
  * @alternateClassName _ListBase
- * @requires Sage.Platform.Mobile.ErrorManager
- * @requires Sage.Platform.Mobile.Utility
- * @requires Sage.Platform.Mobile.SearchWidget
- * @mixins Sage.Platform.Mobile._PullToRefreshMixin
+ * @requires argos.ErrorManager
+ * @requires argos.Utility
+ * @requires argos.SearchWidget
+ * @mixins argos._PullToRefreshMixin
  */
-define('Sage/Platform/Mobile/_ListBase', [
+define('argos/_ListBase', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/array',
@@ -41,13 +41,13 @@ define('Sage/Platform/Mobile/_ListBase', [
     'dojo/Deferred',
     'dojo/promise/all',
     'dojo/when',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/ErrorManager',
-    'Sage/Platform/Mobile/View',
-    'Sage/Platform/Mobile/SearchWidget',
-    'Sage/Platform/Mobile/ConfigurableSelectionModel',
-    'Sage/Platform/Mobile/RelatedViewManager',
-    'Sage/Platform/Mobile/_PullToRefreshMixin'
+    './Utility',
+    './ErrorManager',
+    './View',
+    './SearchWidget',
+    './ConfigurableSelectionModel',
+    './RelatedViewManager',
+    './_PullToRefreshMixin'
 ], function(
     declare,
     lang,
@@ -74,7 +74,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     _PullToRefreshMixin
 ) {
 
-    return declare('Sage.Platform.Mobile._ListBase', [View, _PullToRefreshMixin], {
+    var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -1599,5 +1599,8 @@ define('Sage/Platform/Mobile/_ListBase', [
         getListCount: function(options, callback) {
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._ListBase', __class);
+    return __class;
 });
- 
+
