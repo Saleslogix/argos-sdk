@@ -339,6 +339,8 @@ define('argos/Application', [
                     connect.publish('/app/setOrientation', [value]);
                 }
             }.bind(this)));
+
+            return this;
         },
         onSetOrientation: function(value) {
         },
@@ -725,6 +727,8 @@ define('argos/Application', [
         setPrimaryTitle: function(title) {
             for (var n in this.bars)
                 if (this.bars[n].managed) this.bars[n].set('title', title);
+
+            return this;
         },
         /**
          * Resize handle, publishes the global event `/app/resize` which views may subscribe to.
@@ -809,6 +813,24 @@ define('argos/Application', [
             view.activate(tag, data);
         },
         /**
+         * Searches ReUI.context.history by passing a predicate function that should return true if a match is found, false otherwise.
+         * This is similar to queryNavigationContext, however, this function will return an array of found items instead of a single item.
+         * @param {Function} predicate
+         * @param {Object} scope
+         * @return {Array} context history filtered out by the predicate.
+         */
+        filterNavigationContext: function(predicate, scope) {
+            var list, filtered;
+            list = ReUI.context.history || [];
+            filtered = array.filter(list, function(item) {
+                return predicate.call(scope || this, item.data);
+            }.bind(this));
+
+            return array.map(filtered, function(item) {
+                return item.data;
+            });
+        },
+        /**
          * Searches ReUI.context.history by passing a predicate function that should return true
          * when a match is found.
          * @param {Function} predicate Function that is called in the provided scope with the current history iteration. It should return true if the history item is the desired context.
@@ -886,8 +908,7 @@ define('argos/Application', [
          * @param {Object} spec The customization specification
          */
         registerCustomization: function(path, spec) {
-            if (arguments.length > 2)
-            {
+            if (arguments.length > 2) {
                 var customizationSet = arguments[0],
                     id = arguments[1];
 
@@ -896,9 +917,13 @@ define('argos/Application', [
                     ? customizationSet + '#' + id
                     : customizationSet;
             }
-            
+
             var container = this.customizations[path] || (this.customizations[path] = []);
-            if (container) container.push(spec);
+            if (container) {
+                container.push(spec);
+            }
+
+            return this;
         },
         /**
          * Returns the customizations registered for the provided path.
@@ -932,11 +957,13 @@ define('argos/Application', [
          * Override this function to load a view in the left drawer.
          */
         showLeftDrawer: function() {
+            return this;
         },
         /**
          * Override this function to load a view in the right drawer.
          */
         showRightDrawer: function() {
+            return this;
         },
         /**
          * Loads Snap.js and assigns the instance to App.snapper. This method would typically be called before navigating to the initial view, so the login page does not contain the menu.
@@ -973,6 +1000,7 @@ define('argos/Application', [
 
             this.showLeftDrawer();
             this.showRightDrawer();
+            return this;
         }
     });
 
