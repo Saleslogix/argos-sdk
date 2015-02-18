@@ -339,6 +339,8 @@ define('argos/Application', [
                     connect.publish('/app/setOrientation', [value]);
                 }
             }.bind(this)));
+
+            return this;
         },
         onSetOrientation: function(value) {
         },
@@ -725,6 +727,8 @@ define('argos/Application', [
         setPrimaryTitle: function(title) {
             for (var n in this.bars)
                 if (this.bars[n].managed) this.bars[n].set('title', title);
+
+            return this;
         },
         /**
          * Resize handle, publishes the global event `/app/resize` which views may subscribe to.
@@ -904,8 +908,7 @@ define('argos/Application', [
          * @param {Object} spec The customization specification
          */
         registerCustomization: function(path, spec) {
-            if (arguments.length > 2)
-            {
+            if (arguments.length > 2) {
                 var customizationSet = arguments[0],
                     id = arguments[1];
 
@@ -914,9 +917,13 @@ define('argos/Application', [
                     ? customizationSet + '#' + id
                     : customizationSet;
             }
-            
+
             var container = this.customizations[path] || (this.customizations[path] = []);
-            if (container) container.push(spec);
+            if (container) {
+                container.push(spec);
+            }
+
+            return this;
         },
         /**
          * Returns the customizations registered for the provided path.
@@ -950,11 +957,13 @@ define('argos/Application', [
          * Override this function to load a view in the left drawer.
          */
         showLeftDrawer: function() {
+            return this;
         },
         /**
          * Override this function to load a view in the right drawer.
          */
         showRightDrawer: function() {
+            return this;
         },
         /**
          * Loads Snap.js and assigns the instance to App.snapper. This method would typically be called before navigating to the initial view, so the login page does not contain the menu.
@@ -991,6 +1000,7 @@ define('argos/Application', [
 
             this.showLeftDrawer();
             this.showRightDrawer();
+            return this;
         }
     });
 
