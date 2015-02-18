@@ -809,6 +809,24 @@ define('argos/Application', [
             view.activate(tag, data);
         },
         /**
+         * Searches ReUI.context.history by passing a predicate function that should return true if a match is found, false otherwise.
+         * This is similar to queryNavigationContext, however, this function will return an array of found items instead of a single item.
+         * @param {Function} predicate
+         * @param {Object} scope
+         * @return {Array} context history filtered out by the predicate.
+         */
+        filterNavigationContext: function(predicate, scope) {
+            var list, filtered;
+            list = ReUI.context.history || [];
+            filtered = array.filter(list, function(item) {
+                return predicate.call(scope || this, item.data);
+            }.bind(this));
+
+            return array.map(filtered, function(item) {
+                return item.data;
+            });
+        },
+        /**
          * Searches ReUI.context.history by passing a predicate function that should return true
          * when a match is found.
          * @param {Function} predicate Function that is called in the provided scope with the current history iteration. It should return true if the history item is the desired context.
