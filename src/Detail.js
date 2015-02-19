@@ -22,7 +22,6 @@
  * @extends argos._DetailBase
  * @requires argos._DetailBase
  * @requires argos._SDataDetailMixin
- * @mixins argos._DetailBase
  * @mixins argos._SDataDetailMixin
  */
 define('argos/Detail', [

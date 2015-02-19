@@ -20,10 +20,9 @@
  *
  * @alternateClassName Edit
  * @extends argos._EditBase
- * @mixins argos._EditBase
- * @mixins argos._SDataEditMixin
  * @requires argos._EditBase
  * @requires argos._SDataEditMixin
+ * @mixins argos._SDataEditMixin
  */
 define('argos/Edit', [
     'dojo/_base/declare',

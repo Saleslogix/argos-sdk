@@ -20,6 +20,7 @@
  * @alternateClassName List
  * @requires argos._ListBase
  * @requires argos._SDataListMixin
+ * @mixins argos._SDataListMixin
  */
 define('argos/List', [
     'dojo/_base/declare',
