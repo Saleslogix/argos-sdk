@@ -1693,6 +1693,7 @@ button.clear-button:focus {
   padding: 0;
   text-align: center;
   text-overflow: ellipsis;
+  overflow: hidden;
   white-space: nowrap;
   position: absolute;
   top: 42px;
