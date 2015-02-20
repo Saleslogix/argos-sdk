@@ -968,7 +968,6 @@ img {
             padding: 0;
         }
 
-
         .header {
             float: left;
             width: 80%;
@@ -987,6 +986,25 @@ img {
             margin: 8px 0px 0px 10px;
             font-size: 1.5em;
             text-align: center;
+        }
+
+        .toolBar {
+            padding: 2px 2px 2px 2px;
+            position: relative;
+            .border-radius(4px);
+            margin: 3px;
+           // background-color: @color-azure;
+           // color: #ffffff;
+            min-width: 44px;
+            min-height: 44px;
+
+            .button {
+               // background-color: transparent;
+                color: black;
+                outline: none;
+                border: none;
+                font-size: 1.5em;
+            }
         }
 
         .content-items {
@@ -1018,15 +1036,6 @@ img {
                     margin-right: 4px;
                 }
 
-                .editLabel {
-                    background-color: @gray1-dark;
-                    color: #fff;
-                    font-weight: @form-label-font-weight;
-                    margin-right: 4px;
-                    padding: 2px;
-                    border-radius: 4px;
-                }
-
                 .valueCell {
                     float: left;
                     color: @form-value-color;
@@ -1036,23 +1045,6 @@ img {
                 .value {
                     color: @form-value-color;
                     font-weight: @form-value-font-weight;
-                }
-
-                .editCell {
-                    float: left;
-                    color: @form-value-color;
-                    font-weight: @form-value-font-weight;
-                    float: left;
-                    border-color: rgb(37, 107, 200);
-                    border-style: solid;
-                    border-width: 2px;
-                    border-radius: 4px;
-                    font-weight: normal;
-                    height: 34px;
-                }
-
-                .disableEdit {
-                    display: none;
                 }
             }
         }

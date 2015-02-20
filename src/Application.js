@@ -36,8 +36,7 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/dom-construct',
     'snap',
     'dojo/sniff',
-    'Sage/Platform/Mobile/ReUI/main',
-    'Sage/Platform/Mobile/Services/ServiceManager'
+    'Sage/Platform/Mobile/ReUI/main'
 ], function(
     json,
     array,
@@ -52,8 +51,7 @@ define('Sage/Platform/Mobile/Application', [
     domConstruct,
     snap,
     sniff,
-    ReUI,
-    ServiceManager
+    ReUI
 ) {
 
     // Polyfill for Funcion.bind, taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
@@ -230,11 +228,6 @@ define('Sage/Platform/Mobile/Application', [
          */
         maxUploadFileSize: 4000000,
         /**
-         * The singelton Manager that stores refrence to other service instance
-         * @property {Object}
-         */
-        serviceManager:null,
-        /**
          * All options are mixed into App itself
          * @param {Object} options
          */
@@ -252,8 +245,6 @@ define('Sage/Platform/Mobile/Application', [
 
             this.context = {};
             this.viewShowOptions = [];
-            this.serviceManager = ServiceManager;
-
             lang.mixin(this, options);
         },
         /**

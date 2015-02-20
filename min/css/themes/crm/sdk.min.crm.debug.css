@@ -1068,6 +1068,22 @@ img {
   font-size: 1.5em;
   text-align: center;
 }
+.related-view-detail-widget .content-panel .toolBar {
+  padding: 2px 2px 2px 2px;
+  position: relative;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  margin: 3px;
+  min-width: 44px;
+  min-height: 44px;
+}
+.related-view-detail-widget .content-panel .toolBar .button {
+  color: black;
+  outline: none;
+  border: none;
+  font-size: 1.5em;
+}
 .related-view-detail-widget .content-panel .content-items {
   line-height: 1em;
   margin: 2px 0px 0px 45px;
@@ -1094,14 +1110,6 @@ img {
   font-weight: normal;
   margin-right: 4px;
 }
-.related-view-detail-widget .content-panel .content-items .row .editLabel {
-  background-color: #9a9ea1;
-  color: #fff;
-  font-weight: normal;
-  margin-right: 4px;
-  padding: 2px;
-  border-radius: 4px;
-}
 .related-view-detail-widget .content-panel .content-items .row .valueCell {
   float: left;
   color: #4d4d4d;
@@ -1110,19 +1118,6 @@ img {
 .related-view-detail-widget .content-panel .content-items .row .value {
   color: #4d4d4d;
   font-weight: normal;
-}
-.related-view-detail-widget .content-panel .content-items .row .editCell {
-  color: #4d4d4d;
-  float: left;
-  border-color: #256bc8;
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 4px;
-  font-weight: normal;
-  height: 34px;
-}
-.related-view-detail-widget .content-panel .content-items .row .disableEdit {
-  display: none;
 }
 body {
   color: #1a1a1a;
