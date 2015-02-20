@@ -245,6 +245,7 @@ span {
   visibility: hidden;
   display: none;
   background-color: #0f1e1e;
+  overflow: auto;
 }
 .snapjs-left .left-drawer {
   visibility: visible;
