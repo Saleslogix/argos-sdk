@@ -144,17 +144,22 @@ define('argos/SelectionModel', [
          * Removes all items from the store
          */
         clear: function() {
-            if (this.clearAsDeselect)
-            {
-                for (var key in this.selections) this.deselect(key);
-            }
-            else
-            {
+            var original = this.requireSelection;
+
+            if (this.clearAsDeselect) {
+                this.requireSelection = false;
+                for (var key in this.selections) {
+                    this.deselect(key);
+                }
+                this.requireSelection = original;
+            } else {
                 this.selections = {};
                 this.count = 0;
             }
 
-            if (this._fireEvents) this.onClear(this);
+            if (this._fireEvents) {
+                this.onClear(this);
+            }
         },
         /**
          * Determines if the given key is in the selections collection.
