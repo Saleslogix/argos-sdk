@@ -389,20 +389,16 @@ define('argos/Fields/LookupField', [
                 expand = ['resourceKind', 'resourcePredicate', 'where', 'previousSelections'],
                 dependentValue = this.getDependentValue();
 
-            if (options.singleSelect && options.singleSelectAction)
-            {
-                for (var key in options.tools.tbar)
-                {
+            if (options.singleSelect && options.singleSelectAction) {
+                for (var key in options.tools.tbar) {
                     var item = options.tools.tbar[key];
-                    if (item.id == options.singleSelectAction)
-                    {
+                    if (item.id == options.singleSelectAction) {
                         item.cls = 'invisible';
                     }
                 }
             }
 
-            if (this.dependsOn && !dependentValue)
-            {
+            if (this.dependsOn && !dependentValue) {
                 console.error(string.substitute(this.dependentErrorText, [this.getDependentLabel() || '']));
                 return false;
             }
@@ -510,29 +506,30 @@ define('argos/Fields/LookupField', [
          * transition issues, namely in IE.
          */
         complete: function() {
-            // todo: should there be a better way?
-            var view = this.app.getPrimaryActiveView();
+            var view, selectionModel, selections, selectionCount, val, selectionKey;
 
-            if (view && view.get('selectionModel'))
-            {
-                var selectionModel = view.get('selectionModel'),
-                    selections = selectionModel.getSelections();
+            view = this.app.getPrimaryActiveView();
+            selectionModel = view.get('selectionModel');
 
-                if (selectionModel.getSelectionCount() === 0 && view.options.allowEmptySelection)
+            if (view && selectionModel) {
+                selections = selectionModel.getSelections();
+                selectionCount = selectionModel.getSelectionCount();
+
+                if (selectionCount === 0 && view.options.allowEmptySelection) {
                     this.clearValue(true);
+                }
 
-                if (this.singleSelect)
-                {
-                    for (var selectionKey in selections)
+                if (this.singleSelect) {
+                    for (selectionKey in selections)
                     {
-                        var val = selections[selectionKey].data;
+                        val = selections[selectionKey].data;
                         this.setSelection(val, selectionKey);
                         break;
                     }
-                }
-                else
-                {
-                    this.setSelections(selections);
+                } else {
+                    if (selectionCount > 0) {
+                        this.setSelections(selections);
+                    }
                 }
 
                 this.reui.back();

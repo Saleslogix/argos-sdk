@@ -43,9 +43,10 @@ define('argos/ConfigurableSelectionModel', [
          * @param tag
          */
         select: function(key, data, tag) {
-            if (this.singleSelection)
-            {
-                if (!this.isSelected(key) || (this.count >= 1)) this.clear();
+            if (this.singleSelection) {
+                if (!this.isSelected(key) || (this.count >= 1)) {
+                    this.clear();
+                }
             }
 
             this.inherited(arguments);

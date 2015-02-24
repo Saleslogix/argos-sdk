@@ -13,6 +13,14 @@ define('argos/SelectionModel', [
      * @alternateClassName SelectionModel
      */
     var __class = declare('argos.SelectionModel', null, {
+        // Localization
+        requireSelectionText: 'A selection is required, you cannot de-select the last item.',
+
+        /**
+         * @property {Boolean}
+         * Flag to indicate a selection is required.
+         */
+        requireSelection: false,
         /**
          * @property {Number}
          * Number of selections
@@ -117,8 +125,12 @@ define('argos/SelectionModel', [
          * @param {String} key Unique identifier string that was given when the item was added
          */
         deselect: function(key) {
-            if (this.selections.hasOwnProperty(key))
-            {
+            if (this.requireSelection && this.count === 1) {
+                window.alert(this.requireSelectionText);
+                return;
+            }
+
+            if (this.selections.hasOwnProperty(key)) {
                 var selection = this.selections[key];
 
                 delete this.selections[key];
