@@ -13,16 +13,16 @@
  * limitations under the License.
  */
 
-define('Sage/Platform/Mobile/Fields/LookupField', [
+define('argos/Fields/LookupField', [
     'dojo/_base/array',
     'dojo/_base/declare',
     'dojo/_base/event',
     'dojo/_base/lang',
     'dojo/string',
     'dojo/query',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/Fields/_Field',
-    'Sage/Platform/Mobile/FieldManager'
+    '../Utility',
+    './_Field',
+    '../FieldManager'
 ], function(
     array,
     declare,
@@ -35,7 +35,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
     FieldManager
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.LookupField
+     * @class argos.Fields.LookupField
      * The LookupField is similiar to an Edit View in that it is a field that takes the user to another
      * view but the difference is that an EditorField takes the user to an Edit View, whereas LookupField
      * takes the user to a List View.
@@ -53,11 +53,11 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
      *     }
      *
      * @alternateClassName LookupField
-     * @extends Sage.Platform.Mobile.Fields._Field
-     * @requires Sage.Platform.Mobile.FieldManager
-     * @requires Sage.Platform.Mobile.Utility
+     * @extends argos.Fields._Field
+     * @requires argos.FieldManager
+     * @requires argos.Utility
      */
-    var control = declare('Sage.Platform.Mobile.Fields.LookupField', [_Field], {
+    var control = declare('argos.Fields.LookupField', [_Field], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -389,20 +389,16 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                 expand = ['resourceKind', 'resourcePredicate', 'where', 'previousSelections'],
                 dependentValue = this.getDependentValue();
 
-            if (options.singleSelect && options.singleSelectAction)
-            {
-                for (var key in options.tools.tbar)
-                {
+            if (options.singleSelect && options.singleSelectAction) {
+                for (var key in options.tools.tbar) {
                     var item = options.tools.tbar[key];
-                    if (item.id == options.singleSelectAction)
-                    {
+                    if (item.id == options.singleSelectAction) {
                         item.cls = 'invisible';
                     }
                 }
             }
 
-            if (this.dependsOn && !dependentValue)
-            {
+            if (this.dependsOn && !dependentValue) {
                 console.error(string.substitute(this.dependentErrorText, [this.getDependentLabel() || '']));
                 return false;
             }
@@ -510,29 +506,30 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
          * transition issues, namely in IE.
          */
         complete: function() {
-            // todo: should there be a better way?
-            var view = this.app.getPrimaryActiveView();
+            var view, selectionModel, selections, selectionCount, val, selectionKey;
 
-            if (view && view.get('selectionModel'))
-            {
-                var selectionModel = view.get('selectionModel'),
-                    selections = selectionModel.getSelections();
+            view = this.app.getPrimaryActiveView();
+            selectionModel = view.get('selectionModel');
 
-                if (selectionModel.getSelectionCount() === 0 && view.options.allowEmptySelection)
+            if (view && selectionModel) {
+                selections = selectionModel.getSelections();
+                selectionCount = selectionModel.getSelectionCount();
+
+                if (selectionCount === 0 && view.options.allowEmptySelection) {
                     this.clearValue(true);
+                }
 
-                if (this.singleSelect)
-                {
-                    for (var selectionKey in selections)
+                if (this.singleSelect) {
+                    for (selectionKey in selections)
                     {
-                        var val = selections[selectionKey].data;
+                        val = selections[selectionKey].data;
                         this.setSelection(val, selectionKey);
                         break;
                     }
-                }
-                else
-                {
-                    this.setSelections(selections);
+                } else {
+                    if (selectionCount > 0) {
+                        this.setSelections(selections);
+                    }
                 }
 
                 this.reui.back();
@@ -612,8 +609,7 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                     ? this.valueTextProperty || this.textProperty
                     : false;
 
-            if (keyProperty || textProperty)
-            {
+            if (keyProperty || textProperty) {
                 if (this.currentValue)
                 {
                     if (keyProperty)
@@ -623,36 +619,31 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
                     // mapping back to the property
                     if (textProperty && !this.textTemplate)
                         value = utility.setValue(value || {}, textProperty, this.requireSelection ? this.currentValue.text : text);
-                }
-                else if (!this.requireSelection)
-                {
-                    if (keyProperty && text.length > 0)
+                } else if (!this.requireSelection) {
+                    if (keyProperty && text.length > 0) {
                         value = utility.setValue(value || {}, keyProperty, text);
+                    }
 
                     // if a text template has been applied there is no way to guarantee a correct
                     // mapping back to the property
-                    if (textProperty && !this.textTemplate && text.length > 0)
-                    {
+                    if (textProperty && !this.textTemplate && text.length > 0) {
                         value = utility.setValue(value || {}, textProperty, text);
                     }
-                }                
-            }
-            else
-            {
-                if (this.currentValue)
-                {
-                    value = this.requireSelection
-                        ? this.currentValue.key
-                        : this.currentValue.text != text && !this.textTemplate
+                }
+            } else {
+                if (this.currentValue) {
+                    if (this.requireSelection) {
+                        value = this.currentValue.key ? this.currentValue.key : this.currentValue;
+                    } else {
+                        value = this.currentValue.text != text && !this.textTemplate
                             ? text
                             : this.currentValue.key;
-                }
-                else if (!this.requireSelection && text.length > 0)
-                {
+                    }
+                } else if (!this.requireSelection && text.length > 0) {
                     value = text;
                 }
             }
-            
+
             return value;
         },
         /**
@@ -814,5 +805,6 @@ define('Sage/Platform/Mobile/Fields/LookupField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.LookupField', control);
     return FieldManager.register('lookup', control);
 });

@@ -1,18 +1,26 @@
-define('Sage/Platform/Mobile/SelectionModel', [
+define('argos/SelectionModel', [
        'dojo/_base/lang',
        'dojo/_base/declare'
 ], function(
     lang,
     declare
 ) {
-    
+
     /**
-     * @class Sage.Platform.Mobile.SelectionModel
+     * @class argos.SelectionModel
      * SelectionModel provides a simple in-memory store for data that fires events
      * when a item is selected (added) or deselected (removed)
      * @alternateClassName SelectionModel
      */
-    return declare('Sage.Platform.Mobile.SelectionModel', null, {
+    var __class = declare('argos.SelectionModel', null, {
+        // Localization
+        requireSelectionText: 'A selection is required, you cannot de-select the last item.',
+
+        /**
+         * @property {Boolean}
+         * Flag to indicate a selection is required.
+         */
+        requireSelection: false,
         /**
          * @property {Number}
          * Number of selections
@@ -117,8 +125,12 @@ define('Sage/Platform/Mobile/SelectionModel', [
          * @param {String} key Unique identifier string that was given when the item was added
          */
         deselect: function(key) {
-            if (this.selections.hasOwnProperty(key))
-            {
+            if (this.requireSelection && this.count === 1) {
+                window.alert(this.requireSelectionText);
+                return;
+            }
+
+            if (this.selections.hasOwnProperty(key)) {
                 var selection = this.selections[key];
 
                 delete this.selections[key];
@@ -132,17 +144,22 @@ define('Sage/Platform/Mobile/SelectionModel', [
          * Removes all items from the store
          */
         clear: function() {
-            if (this.clearAsDeselect)
-            {
-                for (var key in this.selections) this.deselect(key);
-            }
-            else
-            {
+            var original = this.requireSelection;
+
+            if (this.clearAsDeselect) {
+                this.requireSelection = false;
+                for (var key in this.selections) {
+                    this.deselect(key);
+                }
+                this.requireSelection = original;
+            } else {
                 this.selections = {};
                 this.count = 0;
             }
 
-            if (this._fireEvents) this.onClear(this);
+            if (this._fireEvents) {
+                this.onClear(this);
+            }
         },
         /**
          * Determines if the given key is in the selections collection.
@@ -178,4 +195,7 @@ define('Sage/Platform/Mobile/SelectionModel', [
             return keys;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.SelectionModel', __class);
+    return __class;
 });

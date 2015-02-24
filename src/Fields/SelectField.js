@@ -13,17 +13,19 @@
  * limitations under the License.
  */
 
-define('Sage/Platform/Mobile/Fields/SelectField', [
+define('argos/Fields/SelectField', [
     'dojo/_base/declare',
-    'Sage/Platform/Mobile/Fields/LookupField',
-    'Sage/Platform/Mobile/FieldManager'
+    'dojo/_base/lang',
+    './LookupField',
+    '../FieldManager'
 ], function(
     declare,
+    lang,
     LookupField,
     FieldManager
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.SelectField
+     * @class argos.Fields.SelectField
      * The SelectField is a minor extension to te LookupField in that it explicitly hides search and actions.
      *
      * It may also optionally pass the `data` option which a view may optionally use instead of requesting data.
@@ -38,10 +40,10 @@ define('Sage/Platform/Mobile/Fields/SelectField', [
      *     }
      *
      * @alternateClassName SelectField
-     * @extends Sage.Platform.Mobile.Fields.LookupField
-     * @requires Sage.Platform.Mobile.FieldManager
+     * @extends argos.Fields.LookupField
+     * @requires argos.FieldManager
      */
-    var control = declare('Sage.Platform.Mobile.Fields.SelectField', [LookupField], {
+    var control = declare('argos.Fields.SelectField', [LookupField], {
         /**
          * @property {Boolean}
          * Overrides the {@link LookupField LookupField} default to explicitly set it to false forcing
@@ -69,8 +71,9 @@ define('Sage/Platform/Mobile/Fields/SelectField', [
             options.enableActions = false;
             options.data = this.expandExpression(this.data);
             return options;
-        }        
+        }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.SelectField', control);
     return FieldManager.register('select', control);
 });

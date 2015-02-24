@@ -14,20 +14,22 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Calendar
+ * @class argos.Calendar
  * @alternateClassName Calendar
  */
-define('Sage/Platform/Mobile/Calendar', [
+define('argos/Calendar', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/string',
     'dojo/dom-attr',
     'dojo/dom-class',
     'dojo/dom-construct',
     'dojo/dom-style',
-    'Sage/Platform/Mobile/View',
+    'argos/View',
     'moment'
 ], function(
     declare,
+    lang,
     string,
     domAttr,
     domClass,
@@ -42,7 +44,7 @@ define('Sage/Platform/Mobile/Calendar', [
 
     var uCase = function (str) { return str.charAt(0).toUpperCase() + str.substring(1); };
 
-    return declare('Sage.Platform.Mobile.Calendar', [View], {
+    var __class = declare('argos.Calendar', [View], {
         // Localization
         titleText: 'Calendar',
         amText: 'AM',
@@ -374,4 +376,7 @@ define('Sage/Platform/Mobile/Calendar', [
             return result.toDate();
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Calendar', __class);
+    return __class;
 });

@@ -32,11 +32,13 @@
             { name: 'dojox', location: '../libraries/dojo/dojox' },
             { name: 'snap', location: '../libraries/snap', main: 'snap' },
             { name: 'moment', location: '../libraries/moment', main: 'moment-with-langs.min' },
-            { name: 'Sage/Platform/Mobile', location: '../src' },
+            { name: 'argos', location: '../src' },
             { name: 'tests', location: '.' }
         ],
-        paths: {
-            'Sage/Platform/Mobile': '../src'
+        map: {
+            '*': {
+                'Sage/Platform/Mobile': 'argos'
+            }
         }
     });
     </script>

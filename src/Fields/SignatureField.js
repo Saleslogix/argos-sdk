@@ -13,15 +13,17 @@
  * limitations under the License.
  */
 
-define('Sage/Platform/Mobile/Fields/SignatureField', [
+define('argos/Fields/SignatureField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/_base/json',
     'dojo/dom-attr',
-    'Sage/Platform/Mobile/Format',
-    'Sage/Platform/Mobile/Fields/EditorField',
-    'Sage/Platform/Mobile/FieldManager'
+    '../Format',
+    './EditorField',
+    '../FieldManager'
 ], function(
     declare,
+    lang,
     json,
     domAttr,
     format,
@@ -30,7 +32,7 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
 ) {
 
     /**
-     * @class Sage.Platform.Mobile.Fields.SignatureField
+     * @class argos.Fields.SignatureField
      * The SignatureField uses an HTML5 canvas element to render previews of the signature vector
      * provided by it's editor view {@link SignatureView SignatureView}.
      *
@@ -43,12 +45,12 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
      *     }
      *
      * @alternateClassName SignatureField
-     * @extends Sage.Platform.Mobile.Fields.EditorField
-     * @requires Sage.Platform.Mobile.FieldManager
-     * @requires Sage.Platform.Mobile.Views.SignatureView
-     * @requires Sage.Platform.Mobile.Format
+     * @extends argos.Fields.EditorField
+     * @requires argos.FieldManager
+     * @requires argos.Views.SignatureView
+     * @requires argos.Format
      */
-    var control = declare('Sage.Platform.Mobile.Fields.SignatureField', [EditorField], {
+    var control = declare('argos.Fields.SignatureField', [EditorField], {
         // Localization
         /**
          * @property {String}
@@ -169,5 +171,6 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.SignatureField', control);
     return FieldManager.register('signature', control);
 });

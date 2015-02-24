@@ -1,4 +1,4 @@
-define('Sage/Platform/Mobile/ReUI/main', [
+define('argos/ReUI/main', [
     'dojo/_base/lang',
     'dojo/on',
     'dojo/dom',

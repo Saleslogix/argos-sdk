@@ -14,18 +14,18 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._DetailBase
+ * @class argos._DetailBase
  * A Detail View represents a single record and should display all the info the user may need about the entry.
  *
  * A Detail entry is identified by its key (idProperty) which is how it requests the data via the endpoint.
  *
  * @alternateClassName _DetailBase
- * @extends Sage.Platform.Mobile.View
- * @requires Sage.Platform.Mobile.Format
- * @requires Sage.Platform.Mobile.Utility
- * @requires Sage.Platform.Mobile.ErrorManager
+ * @extends argos.View
+ * @requires argos.Format
+ * @requires argos.Utility
+ * @requires argos.ErrorManager
  */
-define('Sage/Platform/Mobile/_DetailBase', [
+define('argos/_DetailBase', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/Deferred',
@@ -34,11 +34,11 @@ define('Sage/Platform/Mobile/_DetailBase', [
     'dojo/dom',
     'dojo/dom-class',
     'dojo/dom-construct',
-    'Sage/Platform/Mobile/Format',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/ErrorManager',
-    'Sage/Platform/Mobile/View',
-    'Sage/Platform/Mobile/RelatedViewManager',
+    './Format',
+    './Utility',
+    './ErrorManager',
+    './View',
+    './RelatedViewManager',
 ], function(
     declare,
     lang,
@@ -55,7 +55,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
     RelatedViewManager
 ) {
 
-    return declare('Sage.Platform.Mobile._DetailBase', [View], {
+    var __class = declare('argos._DetailBase', [View], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -1022,4 +1022,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             this.inherited(arguments);
         },
     });
+
+    lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
+    return __class;
 });

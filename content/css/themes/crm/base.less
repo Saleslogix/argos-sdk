@@ -34,6 +34,7 @@
     visibility: hidden;
     display: none;
     background-color: @menu-list-item-bg-color;
+    overflow: auto;
 }
 
 .snapjs-left .left-drawer {
@@ -273,10 +274,10 @@
     top: 0px;
 }
 
-.list .scroller {
-    position: absolute;
+.scroller {
     width: 100%;
-    top: 47px;
+    position: absolute;
+    top: 0px;
     bottom: 0px;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
@@ -285,6 +286,10 @@
         -webkit-transition: top 0.3s ease;
         transition: top 0.3s ease;
     }
+}
+
+.list .scroller {
+    top: 47px;
 }
 
 .list .item-static-icon {

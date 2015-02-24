@@ -123,6 +123,10 @@
           "path": "../src"
         },
         {
+          "text": "_PullToRefreshMixin.js",
+          "path": "../src"
+        },
+        {
           "text": "_DetailBase.js",
           "path": "../src"
         },

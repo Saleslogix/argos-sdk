@@ -14,26 +14,28 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._SDataDetailMixin
+ * @class argos._SDataDetailMixin
  *
  * Enables SData for the Detail view.
  * Adds the SData store to the view and exposes the needed properties for creating a Entry request.
  *
  * @alternateClassName _SDataDetailMixin
- * @requires Sage.Platform.Mobile.SData
+ * @requires argos.SData
  */
-define('Sage/Platform/Mobile/_SDataDetailMixin', [
+define('argos/_SDataDetailMixin', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/string',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/Store/SData'
+    './Utility',
+    './Store/SData'
 ], function(
     declare,
+    lang,
     string,
     utility,
     SData
 ) {
-    return declare('Sage.Platform.Mobile._SDataDetailMixin', null, {
+    var __class = declare('argos._SDataDetailMixin', null, {
 
         /**
          * @cfg {String} resourceKind
@@ -113,5 +115,8 @@ define('Sage/Platform/Mobile/_SDataDetailMixin', [
             return string.substitute(fmt, [utility.getValue(entry, property, "")]);
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
+    return __class;
 });
 

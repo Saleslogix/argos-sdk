@@ -14,7 +14,7 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Fields.EditorField
+ * @class argos.Fields.EditorField
  * The EditorField is not a field per say but a base class for another field type to inherit from. The
  * intent of an EditorField is you have a field where the input should come from another form. EditorField
  * will handle the navigation, gathering values from the other view, going back and applying to the form
@@ -25,19 +25,21 @@
  * the address parts and takes the user to an address_edit with all the street/city/postal etc.
  *
  * @alternateClassName EditorField
- * @extends Sage.Platform.Mobile._Field
+ * @extends argos._Field
  */
-define('Sage/Platform/Mobile/Fields/EditorField', [
+define('argos/Fields/EditorField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/_base/event',
-    'Sage/Platform/Mobile/Fields/_Field'
+    'argos/Fields/_Field'
 ], function(
     declare,
+    lang,
     event,
     _Field
 ) {
 
-    return declare('Sage.Platform.Mobile.Fields.EditorField', [_Field], {
+    var __class = declare('argos.Fields.EditorField', [_Field], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -249,7 +251,7 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
             var view = App.getPrimaryActiveView();
             var success = true;
 
-            if (view instanceof Sage.Platform.Mobile.Edit) {
+            if (view instanceof argos.Edit) {
                 view.hideValidationSummary();
 
                 if (view.validate() !== false) {
@@ -347,4 +349,7 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
             this.setValue(null, true);
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
+    return __class;
 });

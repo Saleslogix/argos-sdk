@@ -3,7 +3,7 @@ define('tests/MainToolbarTests', [
    'dojo/query',
    'dojo/dom-construct', 
    'dojo/dom-class',
-   'Sage/Platform/Mobile/MainToolbar'
+   'argos/MainToolbar'
 ], function(
     on,
     query, 

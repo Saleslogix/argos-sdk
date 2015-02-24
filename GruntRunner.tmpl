@@ -39,11 +39,13 @@
             { name: 'dijit', location: 'libraries/dojo/dijit' },
             { name: 'snap', location: 'libraries/snap', main: 'snap' },
             { name: 'moment', location: '../libraries/moment', main: 'moment-with-langs.min' },
-            { name: 'Sage/Platform/Mobile', location: '.grunt/grunt-contrib-jasmine/src' },// istanbul outputs the instrumented to this temp folder
+            { name: 'argos', location: '.grunt/grunt-contrib-jasmine/src' },// istanbul outputs the instrumented to this temp folder
             { name: 'tests', location: 'tests' }
         ],
-        paths: {
-            'Sage/Platform/Mobile': '.grunt/grunt-contrib-jasmine/src'
+        map: {
+            '*': {
+                'Sage/Platform/Mobile': 'argos'
+            }
         }
   });
   </script>
