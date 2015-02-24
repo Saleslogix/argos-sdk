@@ -2,7 +2,7 @@
  * See copyright file.
  */
 
-define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
+define('argos/RelatedViewDetailWidget', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/event',
@@ -16,10 +16,10 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
     'dojo/dom-attr',
     'dojo/_base/connect',
     'dojo/_base/array',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/Format',
+    './Utility',
+    './Format',
     'dijit/_Widget',
-    'Sage/Platform/Mobile/_Templated'
+    './_Templated'
     
 ], function(
     declare,
@@ -41,7 +41,7 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
     _Templated
 
 ) {
-    return declare('Sage.Platform.Mobile.RelatedViewDetailWidget', [_Widget, _Templated], {
+    var __class = declare('argos.RelatedViewDetailWidget', [_Widget, _Templated], {
 
         id: 'related-detail-view',
         lodingNode: null,
@@ -124,4 +124,7 @@ define('Sage/Platform/Mobile/RelatedViewDetailWidget', [
            this.inherited(arguments);
         }
     });
+    // Backwards compatibility for custom modules still referencing the old declare global
+    lang.setObject('Sage.Platform.Mobile.RelatedViewDetailWidget', __class);
+    return __class;
 });

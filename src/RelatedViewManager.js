@@ -3,7 +3,7 @@
  */
 
 
-define('Sage/Platform/Mobile/RelatedViewManager',  [
+define('argos/RelatedViewManager',  [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/event',
@@ -13,9 +13,9 @@ define('Sage/Platform/Mobile/RelatedViewManager',  [
     'dojo/dom-construct',
     'dojo/query',
     'dojo/_base/array',
-    'Sage/Platform/Mobile/Store/SData',
-    'Sage/Platform/Mobile/RelatedViewWidget',
-    'Sage/Platform/Mobile/RelatedViewDetailWidget'
+    './Store/SData',
+    './RelatedViewWidget',
+    './RelatedViewDetailWidget'
 ], function(
     declare,
     lang,
@@ -31,7 +31,7 @@ define('Sage/Platform/Mobile/RelatedViewManager',  [
     RelatedViewDetailWidget
 ) {
     var _widgetTypes = {};
-    return declare('Sage.Platform.Mobile.RelatedViewManager', null, {
+    var __class = declare('argos.RelatedViewManager', null, {
 
         id: 'relatedViewManager',
         relatedViews: null,
@@ -94,6 +94,9 @@ define('Sage/Platform/Mobile/RelatedViewManager',  [
                 console.log('Error adding related view widgets:' + error);
 
             }
-        }        
+        }
     });
+    // Backwards compatibility for custom modules still referencing the old declare global
+    lang.setObject('Sage.Platform.Mobile.RelatedViewManager', __class);
+    return __class;
 });

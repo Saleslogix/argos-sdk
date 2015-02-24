@@ -2,7 +2,7 @@
  * See copyright file.
  */
 
-define('Sage/Platform/Mobile/RelatedViewWidget', [
+define('argos/RelatedViewWidget', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/event',
@@ -16,12 +16,12 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     'dojo/dom-attr',
     'dojo/_base/connect',
     'dojo/_base/array',
-    'Sage/Platform/Mobile/Store/SData',
-    'Sage/Platform/Mobile/Utility',
+    './Store/SData',
+    './Utility',
     'dijit/_Widget',
-    'Sage/Platform/Mobile/_CustomizationMixin',
-    'Sage/Platform/Mobile/_ActionMixin',
-    'Sage/Platform/Mobile/_Templated'
+    './_CustomizationMixin',
+    './_ActionMixin',
+    './_Templated'
 ], function(
     declare,
     lang,
@@ -43,7 +43,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
     _ActionMixin,
     _Templated
 ) {
-    return declare('Sage.Platform.Mobile.RelatedViewWidget', [_Widget, _CustomizationMixin,_ActionMixin, _Templated], {
+    var _class = declare('argos.RelatedViewWidget', [_Widget, _CustomizationMixin,_ActionMixin, _Templated], {
        
         cls: null,
         nodataText: 'no records found ...',
@@ -1035,4 +1035,7 @@ define('Sage/Platform/Mobile/RelatedViewWidget', [
             this.inherited(arguments);
         }
     });
+    // Backwards compatibility for custom modules still referencing the old declare global
+    lang.setObject('Sage.Platform.Mobile.RelatedViewWidget', __class);
+    return __class;
 });
