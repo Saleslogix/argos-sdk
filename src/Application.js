@@ -660,7 +660,7 @@ define('argos/Application', [
          * @return {Boolean} True if there is a registered view name matching the key.
          */
         hasView: function(key) {
-            return !!this.getView(key);
+            return !!this._internalGetView({key: key, init: false});
         },
         /**
          * Returns the registered view instance with the associated key.
@@ -668,7 +668,14 @@ define('argos/Application', [
          * @return {View} view The requested view.
          */
         getView: function(key) {
-            var view;
+            return this._internalGetView({key: key, init: true});
+        },
+        _internalGetView: function(options) {
+            var view, key, init;
+
+            key = options && options.key;
+            init = options && options.init;
+
             if (key) {
                 if (typeof key === 'string') {
                     view = this.views[key];
@@ -676,7 +683,7 @@ define('argos/Application', [
                     view = this.views[key.id];
                 }
 
-                if (view && !view._started) {
+                if (init && view && !view._started) {
                     view.init();
                     view.placeAt(view._placeAt, 'first');
                     view._started = true;
@@ -685,6 +692,7 @@ define('argos/Application', [
 
                 return view;
             }
+
             return null;
         },
         /**
@@ -693,7 +701,7 @@ define('argos/Application', [
          * @param access
          */
         getViewSecurity: function(key, access) {
-            var view = this.getView(key);
+            var view = this._internalGetView({key: key, init: false});
             return (view && view.getSecurity(access));
         },
         /**
