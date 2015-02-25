@@ -43,7 +43,7 @@ define('argos/RelatedViewWidget', [
     _ActionMixin,
     _Templated
 ) {
-    var _class = declare('argos.RelatedViewWidget', [_Widget, _CustomizationMixin,_ActionMixin, _Templated], {
+    var __class = declare('argos.RelatedViewWidget', [_Widget, _CustomizationMixin,_ActionMixin, _Templated], {
        
         cls: null,
         nodataText: 'no records found ...',
