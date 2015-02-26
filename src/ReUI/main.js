@@ -4,8 +4,6 @@ define('argos/ReUI/main', [
     'dojo/dom',
     'dojo/dom-class',
     'dojo/dom-attr',
-    'dojo/dom-style',
-    'dojo/query',
     './DomHelper'
 ], function(
     lang,
@@ -13,8 +11,6 @@ define('argos/ReUI/main', [
     dom,
     domClass,
     domAttr,
-    domStyle,
-    query,
     DomHelper
 ) {
     var ReUI = {};
@@ -206,7 +202,7 @@ define('argos/ReUI/main', [
         rootEl: false,
         titleEl: false,
         pageTitleId: 'pageTitle',
-        hashPrefix: '#_',
+        hashPrefix: '#!',
         checkStateEvery: 100,
         context: context,
 
@@ -234,7 +230,7 @@ define('argos/ReUI/main', [
          * @deprecated
          */
         getCurrentPage: function() {
-            return context.page;
+            return App.getCurrentPage();
         },
 
         /**

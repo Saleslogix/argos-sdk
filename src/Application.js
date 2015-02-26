@@ -23,6 +23,7 @@
  * @alternateClassName App
  */
 define('argos/Application', [
+    './View',
     'dojo/_base/json',
     'dojo/_base/array',
     'dojo/_base/connect',
@@ -34,10 +35,11 @@ define('argos/Application', [
     'dojo/hash',
     'dojo/has',
     'dojo/dom-construct',
+    'dojo/dom-class',
     'snap',
-    'dojo/sniff',
-    './ReUI/main'
+    'dojo/sniff'
 ], function(
+    View,
     json,
     array,
     connect,
@@ -49,9 +51,9 @@ define('argos/Application', [
     hash,
     has,
     domConstruct,
+    domClass,
     snap,
-    sniff,
-    ReUI
+    sniff
 ) {
 
     // Polyfill for Funcion.bind, taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
@@ -152,11 +154,14 @@ define('argos/Application', [
          */
         enableConcurrencyCheck: false,
 
-        /**
-         * Instance of a ReUI
-         */
-        ReUI: ReUI,
-
+        ReUI: {
+            back: function() {
+                history.back();
+            },
+            context: {
+                history: null
+            }
+        },
         /**
          * @property viewShowOptions {Array} Array with one configuration object that gets pushed before showing a view.
          * Allows passing in options via routing. Value gets removed once the view is shown.
@@ -243,7 +248,9 @@ define('argos/Application', [
             this.views = {};
             this.bars = {};
 
-            this.context = {};
+            this.context = {
+                history: []
+            };
             this.viewShowOptions = [];
 
             lang.mixin(this, options);
@@ -294,7 +301,8 @@ define('argos/Application', [
 
             location.hash = '';
 
-            ReUI.init();
+            window.ReUI = this.ReUI;
+            window.ReUI.context.history = this.context.history;
         },
         /**
          * If caching is enable and App is {@link #isOnline online} the empties the SData cache via {@link #_clearSDataRequestCache _clearSDataRequestCache}.
@@ -330,16 +338,6 @@ define('argos/Application', [
          * Establishes signals/handles from dojo's newer APIs
          */
         initSignals: function() {
-            this._signals.push(aspect.after(window.ReUI, 'setOrientation', function(result, args) {
-                var value;
-                if (args && args.length > 0) {
-                    value = args[0];
-                    this.currentOrientation = value;
-                    this.onSetOrientation(value);
-                    connect.publish('/app/setOrientation', [value]);
-                }
-            }.bind(this)));
-
             return this;
         },
         onSetOrientation: function(value) {
@@ -384,6 +382,7 @@ define('argos/Application', [
             this.initModules();
             this.initToolbars();
             this.initReUI();
+            this.startOrientationCheck();
         },
         /**
          * Check if the browser supports touch events.
@@ -408,6 +407,11 @@ define('argos/Application', [
          */
         run: function() {
             this._started = true;
+            this.startOrientationCheck();
+            page(View.prototype.route, View.prototype.routeLoad, View.prototype.routeShow);
+            page({
+                hashbang: true
+            });
         },
         /**
          * Returns the `window.navigator.onLine` property for detecting if an internet connection is available.
@@ -644,15 +648,70 @@ define('argos/Application', [
             // todo: add check for multiple active views.
             return (this.getPrimaryActiveView() === view);
         },
+        updateOrientationDom: function(value) {
+            var body, currentOrient;
+
+            body = document.body;
+            currentOrient = body.getAttribute('orient');
+            if (value === currentOrient) {
+                return;
+            }
+
+            body.setAttribute('orient', value);
+
+            if (value == 'portrait') {
+                domClass.remove(body, 'landscape');
+                domClass.add(body, 'portrait');
+            } else if (value == 'landscape') {
+                domClass.remove(body, 'portrait');
+                domClass.add(body, 'landscape');
+            } else {
+                domClass.remove(body, 'portrait');
+                domClass.remove(body, 'landscape');
+            }
+
+            this.currentOrientation = value;
+            this.onSetOrientation(value);
+            connect.publish('/app/setOrientation', [value]);
+
+        },
+        checkOrientation: function() {
+            var context;
+
+            context = this.context;
+            // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
+            if (Math.abs(window.innerHeight - context.height) > 5 || Math.abs(window.innerWidth - context.width) > 5) {
+                if (Math.abs(window.innerWidth - context.width) > 5) {
+                    this.updateOrientationDom(window.innerHeight < window.innerWidth ? 'landscape' : 'portrait');
+                }
+
+                context.height = window.innerHeight;
+                context.width = window.innerWidth;
+            }
+        },
+        checkOrientationTime: 100,
+        orientationCheckHandle: null,
+        startOrientationCheck: function() {
+            this.orientationCheckHandle = window.setInterval(this.checkOrientation.bind(this), this.checkOrientationTime);
+        },
+        stopOrientationCheck: function() {
+            window.clearInterval(this.orientationCheckHandle);
+        },
         /**
          * Talks to ReUI to get the current page or dialog name and then returns the result of {@link #getView getView(name)}.
          * @return {View} Returns the active view instance, if no view is active returns null.
          */
         getPrimaryActiveView: function() {
-            var el = ReUI.getCurrentPage() || ReUI.getCurrentDialog();
+            var el = this.getCurrentPage();
             if (el) {
                 return this.getView(el);
             }
+        },
+        setCurrentPage: function(page) {
+            this._currentPage = page;
+        },
+        getCurrentPage: function() {
+            return this._currentPage;
         },
         /**
          * Determines if any registered view has been registered with the provided key.
@@ -829,7 +888,7 @@ define('argos/Application', [
          */
         filterNavigationContext: function(predicate, scope) {
             var list, filtered;
-            list = ReUI.context.history || [];
+            list = this.context.history || [];
             filtered = array.filter(list, function(item) {
                 return predicate.call(scope || this, item.data);
             }.bind(this));
@@ -854,7 +913,7 @@ define('argos/Application', [
                 depth = 0;
             }
 
-            list = ReUI.context.history || [];
+            list = this.context.history || [];
 
             depth = depth || 0;
 

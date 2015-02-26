@@ -372,7 +372,7 @@ define('argos/_EditBase', [
          * Sets and returns the toolbar item layout definition, this method should be overriden in the view
          * so that you may define the views toolbar items.
          *
-         * By default it adds a save button bound to `this.save()` and cancel that fires `ReUI.back()`
+         * By default it adds a save button bound to `this.save()` and cancel that fires `history.back()`
          *
          * @return {Object} this.tools
          * @template
@@ -392,8 +392,7 @@ define('argos/_EditBase', [
                     id: 'cancel',
                     cls: 'fa fa-ban fa-fw fa-lg',
                     side: 'left',
-                    fn: ReUI.back,
-                    scope: ReUI
+                    fn: history.back
                 });
             }
 
@@ -894,7 +893,7 @@ define('argos/_EditBase', [
             if (values) {
                 this.onInsert(values);
             } else {
-                ReUI.back();
+                history.back();
             }
         },
         onInsert: function(values) {
@@ -949,7 +948,7 @@ define('argos/_EditBase', [
                     window.location.hash = returnTo;
                 }
             } else {
-                ReUI.back();
+                history.back();
             }
         },
         /**
@@ -1110,7 +1109,7 @@ define('argos/_EditBase', [
                     window.location.hash = returnTo;
                 }
             } else {
-                ReUI.back();
+                history.back();
             }
         },
         /**

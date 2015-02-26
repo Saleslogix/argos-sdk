@@ -27,6 +27,10 @@
 define('argos/View', [
     'dojo/_base/declare',
     'dojo/_base/lang',
+    'dojo/on',
+    'dojo/dom',
+    'dojo/dom-class',
+    'dojo/dom-attr',
     'dijit/_WidgetBase',
     './_ActionMixin',
     './_CustomizationMixin',
@@ -34,6 +38,10 @@ define('argos/View', [
 ], function(
     declare,
     lang,
+    on,
+    dom,
+    domClass,
+    domAttr,
     _WidgetBase,
     _ActionMixin,
     _CustomizationMixin,
@@ -89,6 +97,12 @@ define('argos/View', [
         serviceName: false,
         connectionName: false,
         constructor: function() {
+        },
+        select: function(node) {
+            domAttr.set(node, 'selected', 'true');
+        },
+        unselect: function(node) {
+            domAttr.remove(node, 'selected');
         },
         /**
          * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
@@ -213,6 +227,7 @@ define('argos/View', [
         _getScrollerAttr: function() {
             return this.scrollerNode || this.domNode;
         },
+        _transitionOptions: null,
         /**
          * Shows the view using iUI in order to transition to the new element.
          * @param {Object} options The navigation options passed from the previous view.
@@ -241,7 +256,169 @@ define('argos/View', [
             data = this.getContext();
 
             transitionOptions = lang.mixin(transitionOptions || {}, {tag: tag, data: data});
-            ReUI.show(this.domNode, transitionOptions);
+            this._transitionOptions = transitionOptions;
+            page(this.id);
+            //this._open(transitionOptions); // TODO: invoke route change here, have the route change call _open
+        },
+        hashPrefix: '#!',
+        currentHash: '',
+        formatHashForPage: function(options) {
+            var segments = options && options.tag
+                ? [this.id].concat(options.tag)
+                : [this.id];
+            return this.hashPrefix + segments.join(';');
+        },
+        transitionComplete: function(page, o) {
+            if (o.track !== false) {
+                this.currentHash = this.formatHashForPage(o);
+
+                if (o.trimmed !== true) {
+                    App.context.history.push({
+                        hash: this.currentHash,
+                        page: this.id,
+                        tag: o.tag,
+                        data: o.data
+                    });
+                }
+            }
+        },
+        transition: function(from, to, o) {
+            function complete() {
+                this.transitionComplete(to, o);
+                domClass.remove(document.body, 'transition');
+
+                App.startOrientationCheck();
+                on.emit(from, 'aftertransition', {out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+                on.emit(to, 'aftertransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+
+                if (o.complete) {
+                    o.complete(from, to, o);
+                }
+            }
+
+            App.stopOrientationCheck();
+            domClass.add(document.body, 'transition');
+
+            // dispatch an 'show' event to let the page be aware that is being show as the result of an external
+            // event (i.e. browser back/forward navigation).
+            if (o.external) {
+                on.emit(to, 'show', {tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+            }
+
+            on.emit(from, 'beforetransition', {out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+            on.emit(to, 'beforetransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+
+            this.unselect(from);
+            this.select(to);
+            complete.apply(this);
+        },
+        /**
+         * Available Options:
+         *   horizontal: True if the transition is horizontal, False otherwise.
+         *   reverse: True if the transition is a reverse transition (right/down), False otherwise.
+         *   track: False if the transition should not be tracked in history, True otherwise.
+         *   update: False if the transition should not update title and back button, True otherwise.
+         *   scroll: False if the transition should not scroll to the top, True otherwise.
+        */
+        _open: function(o) {
+            var count, hash, position, from, page;
+
+            page = this.domNode;
+
+            o = o || this._transitionOptions || {};
+
+            if (!page) {
+                return;
+            }
+
+            if (this.currentHash === this.formatHashForPage(o)) {
+                return;
+            }
+
+            if (o.track !== false) {
+                count = App.context.history.length;
+                hash = this.formatHashForPage(o);
+                position = -1;
+
+                // do loop and trim
+                for (position = count - 1; position >= 0; position--) {
+                    if (App.context.history[position].hash == hash) {
+                        break;
+                    }
+                }
+
+                if ((position > -1) && (position === (count-2))) {
+                     //Added check if history item is just one back.
+
+                    App.context.history = App.context.history.splice(0, position + 1);
+
+                    this.currentHash = hash;
+
+                    // indicate that context.history has already been taken care of (i.e. nothing needs to be pushed).
+                    o.trimmed = true;
+                    // trim up the browser history
+                    // if the requested hash does not equal the current location hash, trim up history.
+                    // location hash will not match requested hash when show is called directly, but will match
+                    // for detected location changes (i.e. the back button).
+                    if (location.hash != hash) {
+                        history.go(position - (count - 1));
+                    }
+                } else if (o.returnTo) {
+                    if (typeof o.returnTo === 'function') {
+                        for (position = count - 1; position >= 0; position--) {
+                            if (o.returnTo(App.context.history[position])) {
+                                break;
+                            }
+                        }
+                    } else if (o.returnTo < 0) {
+                        position = (count - 1) + o.returnTo;
+                    }
+
+                    if (position > -1) {
+                        // we fix up the history, but do not flag as trimmed, since we do want the new view to be pushed.
+                        App.context.history = App.context.history.splice(0, position + 1);
+
+                        this.currentHash = App.context.history[App.context.history.length - 1] && App.context.history[App.context.history.length - 1].hash;
+
+                        if (location.hash != hash) {
+                            history.go(position - (count - 1));
+                        }
+                    }
+                }
+            }
+
+            // don't auto-scroll by default if reversing
+            if (o.reverse && typeof o.scroll === 'undefined') {
+                o.scroll = !o.reverse;
+            }
+
+            on.emit(page, 'load', {bubbles: false, cancelable: true});
+
+            from = App.getCurrentPage();
+
+            if (from) {
+                on.emit(from, 'blur', {bubbles: false, cancelable: true});
+            }
+
+            App.setCurrentPage(page);
+
+            on.emit(page, 'focus', {bubbles: false, cancelable: true});
+
+            if (from && domAttr.get(page, 'selected') !== 'true') {
+                if (o.reverse) {
+                    on.emit(page, 'unload', {bubbles: false, cancelable: true});
+                }
+
+                window.setTimeout(this.transition.bind(this), App.checkOrientationTime, from, page, o);
+            } else {
+                on.emit(page, 'beforetransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+
+                this.select(page);
+
+                this.transitionComplete(page, o);
+
+                on.emit(page, 'aftertransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+            }
         },
         /**
          * Expands the passed expression if it is a function.
@@ -321,6 +498,20 @@ define('argos/View', [
         getSecurity: function(access) {
             return this.security;
         },
+        route: ':viewId',
+        routeLoad: function(ctx, next) {
+            console.log('View::routeLoad');
+            console.dir(ctx);
+            ctx.view = window.App.getView(ctx.params.viewId);
+            next();
+        },
+        routeShow: function(ctx, next) {
+            console.log('View::routeShow');
+            console.dir(ctx);
+            if (ctx.view) {
+                ctx.view._open();
+            }
+        }
     });
 
     lang.setObject('Sage.Platform.Mobile.View', __class);

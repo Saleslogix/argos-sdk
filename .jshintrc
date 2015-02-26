@@ -15,6 +15,7 @@
         "ReUI": false,
         "Base64": false,
         "Canvas2Image": false,
-        "argos": false
+        "argos": false,
+        "page": false
     }
 }
