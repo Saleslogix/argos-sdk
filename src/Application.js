@@ -23,7 +23,6 @@
  * @alternateClassName App
  */
 define('argos/Application', [
-    './View',
     'dojo/_base/json',
     'dojo/_base/array',
     'dojo/_base/connect',
@@ -39,7 +38,6 @@ define('argos/Application', [
     'snap',
     'dojo/sniff'
 ], function(
-    View,
     json,
     array,
     connect,
@@ -289,11 +287,9 @@ define('argos/Application', [
 
         },
         /**
-         * Cleans up URL to prevent ReUI url handling and then invokes ReUI.
+         * Initialize the hash and save the redirect hash if any
          */
-        initReUI: function() {
-            // prevent ReUI from attempting to load the URLs view as we handle that ourselves.
-            // todo: add support for handling the URL?
+        initHash: function() {
             var hash = this.hash();
             if (hash !== '') {
                 this.redirectHash = hash;
@@ -301,6 +297,7 @@ define('argos/Application', [
 
             location.hash = '';
 
+            // Backwards compatibility for global uses of ReUI
             window.ReUI = this.ReUI;
             window.ReUI.context.history = this.context.history;
         },
@@ -381,7 +378,7 @@ define('argos/Application', [
             this._startupConnections();
             this.initModules();
             this.initToolbars();
-            this.initReUI();
+            this.initHash();
             this.startOrientationCheck();
         },
         /**
@@ -408,7 +405,6 @@ define('argos/Application', [
         run: function() {
             this._started = true;
             this.startOrientationCheck();
-            page(View.prototype.route, View.prototype.routeLoad, View.prototype.routeShow);
             page({
                 hashbang: true
             });
@@ -596,9 +592,22 @@ define('argos/Application', [
 
             view._placeAt = domNode || this._rootDomNode;
 
+            this.registerViewRoute(view);
+
             this.onRegistered(view);
 
             return this;
+        },
+        registerViewRoute: function(view) {
+            var route;
+
+            if (!view) {
+                return;
+            }
+
+            route = view.route || view.id;
+
+            page(route, view.routeLoad.bind(view), view.routeShow.bind(view));
         },
         /**
          * Registers a toolbar with the application and renders it to HTML.
@@ -698,7 +707,7 @@ define('argos/Application', [
             window.clearInterval(this.orientationCheckHandle);
         },
         /**
-         * Talks to ReUI to get the current page or dialog name and then returns the result of {@link #getView getView(name)}.
+         * Gets the current page and then returns the result of {@link #getView getView(name)}.
          * @return {View} Returns the active view instance, if no view is active returns null.
          */
         getPrimaryActiveView: function() {
@@ -707,9 +716,17 @@ define('argos/Application', [
                 return this.getView(el);
             }
         },
+        /**
+         * Sets the current page(domNode)
+         * @param {DOMNode}
+         */
         setCurrentPage: function(page) {
             this._currentPage = page;
         },
+        /**
+         * Gets the current page(domNode)
+         * @returns {DOMNode}
+         */
         getCurrentPage: function() {
             return this._currentPage;
         },
@@ -880,7 +897,7 @@ define('argos/Application', [
             view.activate(tag, data);
         },
         /**
-         * Searches ReUI.context.history by passing a predicate function that should return true if a match is found, false otherwise.
+         * Searches App.context.history by passing a predicate function that should return true if a match is found, false otherwise.
          * This is similar to queryNavigationContext, however, this function will return an array of found items instead of a single item.
          * @param {Function} predicate
          * @param {Object} scope
@@ -898,7 +915,7 @@ define('argos/Application', [
             });
         },
         /**
-         * Searches ReUI.context.history by passing a predicate function that should return true
+         * Searches App.context.history by passing a predicate function that should return true
          * when a match is found.
          * @param {Function} predicate Function that is called in the provided scope with the current history iteration. It should return true if the history item is the desired context.
          * @param {Number} depth

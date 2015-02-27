@@ -381,8 +381,7 @@ define('argos/Fields/LookupField', [
                         id: 'cancel',
                         side: 'left',
                         cls: 'fa fa-ban fa-fw fa-lg',
-                        fn: this.reui.back,
-                        scope: this.reui
+                        fn: history.back
                     }]
                     }
                 },
@@ -501,7 +500,7 @@ define('argos/Fields/LookupField', [
          *
          * The target view must be the currently active view and must have a selection model.
          *
-         * The values are gathered and passed to {@link #setSelection setSelection}, `ReUI.back()` is
+         * The values are gathered and passed to {@link #setSelection setSelection}, `history.back()` is
          * fired and lastly {@link #_onComplete _onComplete} is called in a setTimeout due to bizarre
          * transition issues, namely in IE.
          */
@@ -532,7 +531,7 @@ define('argos/Fields/LookupField', [
                     }
                 }
 
-                this.reui.back();
+                history.back();
 
                 // if the event is fired before the transition, any XMLHttpRequest created in an event handler and
                 // executing during the transition can potentially fail (status 0).  this might only be an issue with CORS

@@ -105,7 +105,6 @@ define('argos/Fields/_Field', [
         autoFocus: false,
 
         app: null,
-        reui: null,
         highlightCls: 'field-highlight',
 
         /**
@@ -129,10 +128,6 @@ define('argos/Fields/_Field', [
 
             if (this.app === null) {
                 this.app = window.App;
-            }
-
-            if (this.reui === null) {
-                this.reui = window.ReUI;
             }
         },
         /**

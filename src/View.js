@@ -141,10 +141,10 @@ define('argos/View', [
             var h;
             this._loadConnect = this.connect(this.domNode, 'onload', this._onLoad);
         },
-        _onLoad: function(evt, el, o) {
+        _onLoad: function(evt, el, options) {
             this.disconnect(this._loadConnect);
 
-            this.load(evt, el, o);
+            this.load(evt, el, options);
         },
         /**
          * Called once the first time the view is about to be transitioned to.
@@ -154,7 +154,7 @@ define('argos/View', [
             // todo: remove load entirely?
         },
         /**
-         * Called in {@link #show show()} before ReUI is invoked.
+         * Called in {@link #show show()} before route is invoked.
          * @param {Object} options Navigation options passed from the previous view.
          * @return {Boolean} True indicates view needs to be refreshed.
          */
@@ -231,7 +231,7 @@ define('argos/View', [
         /**
          * Shows the view using iUI in order to transition to the new element.
          * @param {Object} options The navigation options passed from the previous view.
-         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
+         * @param transitionOptions {Object} Optional transition object that is forwarded to open.
          */
         show: function(options, transitionOptions) {
             var tag, data;
@@ -258,7 +258,6 @@ define('argos/View', [
             transitionOptions = lang.mixin(transitionOptions || {}, {tag: tag, data: data});
             this._transitionOptions = transitionOptions;
             page(this.id);
-            //this._open(transitionOptions); // TODO: invoke route change here, have the route change call _open
         },
         hashPrefix: '#!',
         currentHash: '',
@@ -268,31 +267,31 @@ define('argos/View', [
                 : [this.id];
             return this.hashPrefix + segments.join(';');
         },
-        transitionComplete: function(page, o) {
-            if (o.track !== false) {
-                this.currentHash = this.formatHashForPage(o);
+        transitionComplete: function(page, options) {
+            if (options.track !== false) {
+                this.currentHash = this.formatHashForPage(options);
 
-                if (o.trimmed !== true) {
+                if (options.trimmed !== true) {
                     App.context.history.push({
                         hash: this.currentHash,
                         page: this.id,
-                        tag: o.tag,
-                        data: o.data
+                        tag: options.tag,
+                        data: options.data
                     });
                 }
             }
         },
-        transition: function(from, to, o) {
+        transition: function(from, to, options) {
             function complete() {
-                this.transitionComplete(to, o);
+                this.transitionComplete(to, options);
                 domClass.remove(document.body, 'transition');
 
                 App.startOrientationCheck();
-                on.emit(from, 'aftertransition', {out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
-                on.emit(to, 'aftertransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+                on.emit(from, 'aftertransition', {out: true, tag: options.tag, data: options.data, bubbles: true, cancelable: true});
+                on.emit(to, 'aftertransition', {out: false, tag: options.tag, data: options.data, bubbles: true, cancelable: true});
 
-                if (o.complete) {
-                    o.complete(from, to, o);
+                if (options.complete) {
+                    options.complete(from, to, options);
                 }
             }
 
@@ -301,12 +300,12 @@ define('argos/View', [
 
             // dispatch an 'show' event to let the page be aware that is being show as the result of an external
             // event (i.e. browser back/forward navigation).
-            if (o.external) {
-                on.emit(to, 'show', {tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+            if (options.external) {
+                on.emit(to, 'show', {tag: options.tag, data: options.data, bubbles: true, cancelable: true});
             }
 
-            on.emit(from, 'beforetransition', {out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
-            on.emit(to, 'beforetransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+            on.emit(from, 'beforetransition', {out: true, tag: options.tag, data: options.data, bubbles: true, cancelable: true});
+            on.emit(to, 'beforetransition', {out: false, tag: options.tag, data: options.data, bubbles: true, cancelable: true});
 
             this.unselect(from);
             this.select(to);
@@ -320,24 +319,24 @@ define('argos/View', [
          *   update: False if the transition should not update title and back button, True otherwise.
          *   scroll: False if the transition should not scroll to the top, True otherwise.
         */
-        _open: function(o) {
-            var count, hash, position, from, page;
+        open: function() {
+            var count, hash, position, from, page, options;
 
             page = this.domNode;
 
-            o = o || this._transitionOptions || {};
+            options = this._transitionOptions || {};
 
             if (!page) {
                 return;
             }
 
-            if (this.currentHash === this.formatHashForPage(o)) {
+            if (this.currentHash === this.formatHashForPage(options)) {
                 return;
             }
 
-            if (o.track !== false) {
+            if (options.track !== false) {
                 count = App.context.history.length;
-                hash = this.formatHashForPage(o);
+                hash = this.formatHashForPage(options);
                 position = -1;
 
                 // do loop and trim
@@ -355,7 +354,7 @@ define('argos/View', [
                     this.currentHash = hash;
 
                     // indicate that context.history has already been taken care of (i.e. nothing needs to be pushed).
-                    o.trimmed = true;
+                    options.trimmed = true;
                     // trim up the browser history
                     // if the requested hash does not equal the current location hash, trim up history.
                     // location hash will not match requested hash when show is called directly, but will match
@@ -363,15 +362,15 @@ define('argos/View', [
                     if (location.hash != hash) {
                         history.go(position - (count - 1));
                     }
-                } else if (o.returnTo) {
-                    if (typeof o.returnTo === 'function') {
+                } else if (options.returnTo) {
+                    if (typeof options.returnTo === 'function') {
                         for (position = count - 1; position >= 0; position--) {
-                            if (o.returnTo(App.context.history[position])) {
+                            if (options.returnTo(App.context.history[position])) {
                                 break;
                             }
                         }
-                    } else if (o.returnTo < 0) {
-                        position = (count - 1) + o.returnTo;
+                    } else if (options.returnTo < 0) {
+                        position = (count - 1) + options.returnTo;
                     }
 
                     if (position > -1) {
@@ -388,8 +387,8 @@ define('argos/View', [
             }
 
             // don't auto-scroll by default if reversing
-            if (o.reverse && typeof o.scroll === 'undefined') {
-                o.scroll = !o.reverse;
+            if (options.reverse && typeof options.scroll === 'undefined') {
+                options.scroll = !options.reverse;
             }
 
             on.emit(page, 'load', {bubbles: false, cancelable: true});
@@ -405,19 +404,19 @@ define('argos/View', [
             on.emit(page, 'focus', {bubbles: false, cancelable: true});
 
             if (from && domAttr.get(page, 'selected') !== 'true') {
-                if (o.reverse) {
+                if (options.reverse) {
                     on.emit(page, 'unload', {bubbles: false, cancelable: true});
                 }
 
-                window.setTimeout(this.transition.bind(this), App.checkOrientationTime, from, page, o);
+                window.setTimeout(this.transition.bind(this), App.checkOrientationTime, from, page, options);
             } else {
-                on.emit(page, 'beforetransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+                on.emit(page, 'beforetransition', {out: false, tag: options.tag, data: options.data, bubbles: true, cancelable: true});
 
                 this.select(page);
 
-                this.transitionComplete(page, o);
+                this.transitionComplete(page, options);
 
-                on.emit(page, 'aftertransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+                on.emit(page, 'aftertransition', {out: false, tag: options.tag, data: options.data, bubbles: true, cancelable: true});
             }
         },
         /**
@@ -498,19 +497,30 @@ define('argos/View', [
         getSecurity: function(access) {
             return this.security;
         },
-        route: ':viewId',
+        /**
+         * @property {String}
+         * Route passed into the router. If empty, defaults to the view id. RegEx expressions are also accepted.
+         */
+        route: '',
+        /**
+         * Fires first when a route is triggered. Any pre-loading should happen here.
+         * @param {Object} ctx
+         * @param {Function} next
+         */
         routeLoad: function(ctx, next) {
-            console.log('View::routeLoad');
+            console.log('View::routeLoad ' + this.id);
             console.dir(ctx);
-            ctx.view = window.App.getView(ctx.params.viewId);
             next();
         },
+        /**
+         * Fires second when a route is triggered. Any pre-loading should happen here.
+         * @param {Object} ctx
+         * @param {Function} next
+         */
         routeShow: function(ctx, next) {
-            console.log('View::routeShow');
+            console.log('View::routeShow ' + this.id);
             console.dir(ctx);
-            if (ctx.view) {
-                ctx.view._open();
-            }
+            this.open();
         }
     });
 

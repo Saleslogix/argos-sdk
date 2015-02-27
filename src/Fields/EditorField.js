@@ -176,8 +176,7 @@ define('argos/Fields/EditorField', [
                         id: 'cancel',
                         cls: 'fa fa-ban fa-fw fa-lg',
                         side: 'left',
-                        fn: ReUI.back,
-                        scope: ReUI
+                        fn: history.back
                     }]
                 },
                 entry: this.originalValue || this.validationValue,
@@ -244,7 +243,7 @@ define('argos/Fields/EditorField', [
          * the view shown is the editor view but the function is fired in scope of the field.
          *
          * It gets a handler of the current active view and validates the form, if it passes it gathers
-         * the value, sets the fields text, calls `ReUI.back` and fires {@link #_onComplete _onComplete}.
+         * the value, sets the fields text, calls `history.back` and fires {@link #_onComplete _onComplete}.
          *
          */
         complete: function() {
@@ -268,7 +267,7 @@ define('argos/Fields/EditorField', [
             if (view.isValid && !view.isValid()) {
                 return;
             } else {
-                ReUI.back();
+                history.back();
             }
             // if the event is fired before the transition, any XMLHttpRequest created in an event handler and
             // executing during the transition can potentially fail (status 0).  this might only be an issue with CORS
