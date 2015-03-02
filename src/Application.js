@@ -286,6 +286,9 @@ define('argos/Application', [
         uninitialize: function() {
 
         },
+        back: function() {
+            history.back();
+        },
         /**
          * Initialize the hash and save the redirect hash if any
          */

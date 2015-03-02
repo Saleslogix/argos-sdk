@@ -176,7 +176,7 @@ define('argos/Fields/EditorField', [
                         id: 'cancel',
                         cls: 'fa fa-ban fa-fw fa-lg',
                         side: 'left',
-                        fn: history.back
+                        fn: App.back
                     }]
                 },
                 entry: this.originalValue || this.validationValue,

@@ -381,7 +381,7 @@ define('argos/Fields/LookupField', [
                         id: 'cancel',
                         side: 'left',
                         cls: 'fa fa-ban fa-fw fa-lg',
-                        fn: history.back
+                        fn: App.back
                     }]
                     }
                 },

@@ -261,15 +261,9 @@ define('argos/View', [
         },
         hashPrefix: '#!',
         currentHash: '',
-        formatHashForPage: function(options) {
-            var segments = options && options.tag
-                ? [this.id].concat(options.tag)
-                : [this.id];
-            return this.hashPrefix + segments.join(';');
-        },
         transitionComplete: function(page, options) {
             if (options.track !== false) {
-                this.currentHash = this.formatHashForPage(options);
+                this.currentHash = location.hash;
 
                 if (options.trimmed !== true) {
                     App.context.history.push({
@@ -330,13 +324,11 @@ define('argos/View', [
                 return;
             }
 
-            if (this.currentHash === this.formatHashForPage(options)) {
-                return;
-            }
+            App.setPrimaryTitle(this.get('title'));
 
             if (options.track !== false) {
                 count = App.context.history.length;
-                hash = this.formatHashForPage(options);
+                hash = location.hash;
                 position = -1;
 
                 // do loop and trim
@@ -359,9 +351,6 @@ define('argos/View', [
                     // if the requested hash does not equal the current location hash, trim up history.
                     // location hash will not match requested hash when show is called directly, but will match
                     // for detected location changes (i.e. the back button).
-                    if (location.hash != hash) {
-                        history.go(position - (count - 1));
-                    }
                 } else if (options.returnTo) {
                     if (typeof options.returnTo === 'function') {
                         for (position = count - 1; position >= 0; position--) {
@@ -378,10 +367,6 @@ define('argos/View', [
                         App.context.history = App.context.history.splice(0, position + 1);
 
                         this.currentHash = App.context.history[App.context.history.length - 1] && App.context.history[App.context.history.length - 1].hash;
-
-                        if (location.hash != hash) {
-                            history.go(position - (count - 1));
-                        }
                     }
                 }
             }
@@ -508,8 +493,6 @@ define('argos/View', [
          * @param {Function} next
          */
         routeLoad: function(ctx, next) {
-            console.log('View::routeLoad ' + this.id);
-            console.dir(ctx);
             next();
         },
         /**
@@ -518,8 +501,6 @@ define('argos/View', [
          * @param {Function} next
          */
         routeShow: function(ctx, next) {
-            console.log('View::routeShow ' + this.id);
-            console.dir(ctx);
             this.open();
         }
     });
