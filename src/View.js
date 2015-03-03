@@ -257,7 +257,7 @@ define('argos/View', [
 
             transitionOptions = lang.mixin(transitionOptions || {}, {tag: tag, data: data});
             this._transitionOptions = transitionOptions;
-            page(this.id);
+            page(this.getRoute());
         },
         hashPrefix: '#!',
         currentHash: '',
@@ -484,9 +484,19 @@ define('argos/View', [
         },
         /**
          * @property {String}
-         * Route passed into the router. If empty, defaults to the view id. RegEx expressions are also accepted.
+         * Route passed into the router. RegEx expressions are also accepted.
          */
         route: '',
+        /**
+         * Gets the route associated with this view. Returns this.id if no route is defined.
+         */
+        getRoute: function() {
+            if ((typeof this.route === 'string' && this.route.length > 0) || this.route instanceof RegExp) {
+                return this.route;
+            }
+
+            return this.id;
+        },
         /**
          * Fires first when a route is triggered. Any pre-loading should happen here.
          * @param {Object} ctx

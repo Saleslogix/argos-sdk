@@ -602,15 +602,11 @@ define('argos/Application', [
             return this;
         },
         registerViewRoute: function(view) {
-            var route;
-
             if (!view) {
                 return;
             }
 
-            route = view.route || view.id;
-
-            page(route, view.routeLoad.bind(view), view.routeShow.bind(view));
+            page(view.getRoute(), view.routeLoad.bind(view), view.routeShow.bind(view));
         },
         /**
          * Registers a toolbar with the application and renders it to HTML.
