@@ -1291,6 +1291,21 @@ define('argos/_EditBase', [
                     this.requestData();
                 }
             }
+        },
+        getRoute: function() {
+            return this.id + '/:key?';
+        },
+        buildRoute: function() {
+            var id, key, parts = [];
+            id = this.id;
+            parts.push(id);
+
+            key = this.getTag() || (this.entry && this.entry[this.idProperty]);
+            if (key) {
+                parts.push(key);
+            }
+
+            return parts.join('/');
         }
     });
 
