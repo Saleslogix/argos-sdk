@@ -257,7 +257,7 @@ define('argos/View', [
 
             transitionOptions = lang.mixin(transitionOptions || {}, {tag: tag, data: data});
             this._transitionOptions = transitionOptions;
-            page(this.getRoute());
+            page(this.buildRoute());
         },
         hashPrefix: '#!',
         currentHash: '',
@@ -495,6 +495,14 @@ define('argos/View', [
                 return this.route;
             }
 
+            return this.id;
+        },
+        /**
+         * Show method calls this to build a route that it can navigate to. If you add a custom route,
+         * this should change to build a route that can match that.
+         * @returns {String}
+         */
+        buildRoute: function() {
             return this.id;
         },
         /**
