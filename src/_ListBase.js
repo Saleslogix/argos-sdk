@@ -625,7 +625,7 @@ define('argos/_ListBase', [
                    this.defaultSearchTermSet = false;
                }
 
-                if (!options.allowEmptySelection && this._selectionModel) {
+                if (options.allowEmptySelection === false && this._selectionModel) {
                     this._selectionModel.requireSelection = true;
                 }
             }
