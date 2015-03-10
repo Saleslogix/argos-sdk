@@ -484,6 +484,10 @@ define('argos/_DetailBase', [
                 options['descriptor'] = descriptor;
             }
 
+            if (this.entry) {
+                options.selectedEntry = this.entry;
+            }
+
             if (view && options) {
                 view.show(options);
             }

@@ -625,7 +625,7 @@ define('argos/_ListBase', [
                    this.defaultSearchTermSet = false;
                }
 
-                if (!options.allowEmptySelection && this._selectionModel) {
+                if (options.allowEmptySelection === false && this._selectionModel) {
                     this._selectionModel.requireSelection = true;
                 }
             }
@@ -1092,13 +1092,19 @@ define('argos/_ListBase', [
          * @param {Object} selection Data entry for the selection.
          * @param {String} viewId View id to be shown
          * @param {String} whereQueryFmt Where expression format string to be passed. `${0}` will be the `idProperty`
+         * @param {Object} additionalOptions Additional options to be passed into the next view
          * property of the passed selection data.
          */
-        navigateToRelatedView:  function(action, selection, viewId, whereQueryFmt) {
+        navigateToRelatedView:  function(action, selection, viewId, whereQueryFmt, additionalOptions) {
             var view = App.getView(viewId),
                 options = {
-                    where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]])
+                    where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]]),
+                    selectedEntry: selection.data
                 };
+
+            if (additionalOptions) {
+                options = lang.mixin(options, additionalOptions);
+            }
 
             this.setSource({
                 entry: selection.data,
@@ -1106,23 +1112,30 @@ define('argos/_ListBase', [
                 key: selection.data[this.idProperty]
             });
 
-            if (view && options) {
+            if (view) {
                 view.show(options);
             }
         },
         /**
          * Navigates to the defined `this.detailView` passing the params as navigation options.
          * @param {String} key Key of the entry to be shown in detail
-         * @param {String} descriptor Description of the entry, will be used as the top toolbar title text.
+         * @param {String} descriptor Description of the entry, will be used as the top toolbar title text
+         * @param {Object} additionalOptions Additional options to be passed into the next view
          */
-        navigateToDetailView: function(key, descriptor) {
-            var view = App.getView(this.detailView);
-            if (view) {
-                view.show({
+        navigateToDetailView: function(key, descriptor, additionalOptions) {
+            var view = App.getView(this.detailView),
+                options = {
                     descriptor: descriptor, // keep for backwards compat
                     title: descriptor,
                     key: key
-                });
+                };
+
+            if (additionalOptions) {
+                options = lang.mixin(options, additionalOptions);
+            }
+
+            if (view) {
+                view.show(options);
             }
         },
         /**
@@ -1130,28 +1143,48 @@ define('argos/_ListBase', [
          * property in the navigation options (which is then requested and result used as default data).
          * @param {Object} action Action instance, not used.
          * @param {Object} selection Data entry for the selection.
+         * @param {Object} additionalOptions Additional options to be passed into the next view.
          */
-        navigateToEditView: function(action, selection) {
+        navigateToEditView: function(action, selection, additionalOptions) {
             var view = App.getView(this.editView || this.insertView),
-                key = selection.data[this.idProperty];
+                key = selection.data[this.idProperty],
+                options = {
+                    key: key,
+                    selectedEntry: selection.data
+                };
+
+            if (additionalOptions) {
+                options = lang.mixin(options, additionalOptions);
+            }
+
             if (view) {
-                view.show({
-                    key: key
-                });
+                view.show(options);
             }
         },
         /**
          * Navigates to the defined `this.insertView`, or `this.editView` passing the current views id as the `returnTo`
          * option and setting `insert` to true.
          * @param {HTMLElement} el Node that initiated the event.
+         * @param {Object} additionalOptions Additional options to be passed into the next view.
          */
-        navigateToInsertView: function(el) {
-            var view = App.getView(this.insertView || this.editView);
-            if (view) {
-                view.show({
+        navigateToInsertView: function(el, additionalOptions) {
+            var view = App.getView(this.insertView || this.editView),
+                options = {
                     returnTo: this.id,
                     insert: true
-                });
+                };
+
+            // Pass along the selected entry (related list could get it from a quick action)
+            if (this.options.selectedEntry) {
+                options.selectedEntry = this.options.selectedEntry;
+            }
+
+            if (additionalOptions) {
+                options = lang.mixin(options, additionalOptions);
+            }
+
+            if (view) {
+                view.show(options);
             }
         },
         /**
