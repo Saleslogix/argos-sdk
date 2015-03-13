@@ -795,7 +795,6 @@ define('argos/_ListBase', [
                 break;
             }
             this._applyStateToActions(selection);
-           
         },
         /**
          * Called from checkActionState method and sets the state of the actions from what was selected from the selected row, it sets the disabled state for each action
@@ -1444,16 +1443,6 @@ define('argos/_ListBase', [
         },
         _onQueryError: function(queryOptions, error) {
             this.handleError(error);
-
-            /*if (error.aborted) {
-                this.clear();
-                this.refreshRequired = true;
-            } else {
-                alert(string.substitute(this.requestErrorText, [error]));
-            }
-
-            this._logError(error);
-            this._clearLoading();*/
         },
         _buildQueryExpression: function() {
             return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
