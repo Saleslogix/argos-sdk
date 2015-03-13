@@ -95,6 +95,10 @@
           "path": "../src"
         },
         {
+          "text": "_ErrorHandleMixin.js",
+          "path": "../src"
+        },
+        {
           "text": "View.js",
           "path": "../src"
         },
