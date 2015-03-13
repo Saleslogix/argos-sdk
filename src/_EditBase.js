@@ -51,7 +51,6 @@ define('argos/_EditBase', [
     'dojo/_base/array',
     'dojo/_base/Deferred',
     'dojo/_base/window',
-    'dojo/string',
     'dojo/dom',
     'dojo/dom-attr',
     'dojo/dom-class',
@@ -83,7 +82,6 @@ define('argos/_EditBase', [
     array,
     Deferred,
     win,
-    string,
     dom,
     domAttr,
     domClass,
@@ -301,10 +299,15 @@ define('argos/_EditBase', [
          */
         loadingText: 'loading...',
         /**
-         * @property {String}
-         * Text alerted to user when any server error occurs.
+         * @property {Object}
+         * Localized error messages. One general error message, and messages by HTTP status code.
          */
-        requestErrorText: 'A server error occured while requesting data.',
+        errorText: {
+            general: 'A server error occured while requesting data.',
+            status: {
+                '410': 'Error saving. This record no longer exists.'
+            }
+        },
         /**
          * @property {String}
          * Text alerted to user when the data has been updated since they last fetched the data.
@@ -326,9 +329,6 @@ define('argos/_EditBase', [
          */
         inserting: null,
 
-        HTTP_STATUS: {
-            PRECONDITION_FAILED: 412
-        },
         _focusField: null,
         _hasFocused: false,
 
@@ -550,20 +550,7 @@ define('argos/_EditBase', [
             }
         },
         _onGetError: function(getOptions, error) {
-            if (error.aborted) {
-                /* todo: show error message? */
-            } else if (error.status == 404) {
-                /* todo: show error message */
-            } else {
-                alert(string.substitute(this.requestErrorText, [error]));
-            }
-
-            var errorItem = {
-                viewOptions: this.options,
-                serverError: error
-            };
-            ErrorManager.addError(this.requestErrorText, errorItem);
-
+            this.handleError(error);
             domClass.remove(this.domNode, 'panel-loading');
         },
         /**
@@ -595,6 +582,52 @@ define('argos/_EditBase', [
          */
         createLayout: function() {
             return this.layout || [];
+        },
+
+        createErrorHandlers: function() {
+            this.errorHandlers = this.errorHandlers || [{
+                    name: 'PreCondition',
+                    test: function(error) {
+                        return error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED;
+                    },
+                    handle: function(error, next) {
+                        next(); // Invoke the next error handler first, the refresh will change a lot of mutable/shared state
+
+                        // Preserve our current form values (all of them),
+                        // and reload the view to fetch the new data.
+                        this.previousValuesAll = this.getValues(true);
+                        this.options.key = this.entry.$key; // Force a fetch by key
+                        delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
+                        this.refresh();
+                    }
+                }, {
+                    name: 'AlertError',
+                    test: function(error) {
+                        // Alert all errors that are not precondition failed.
+                        return error.status !== this.HTTP_STATUS.PRECONDITION_FAILED;
+                    },
+                    handle: function(error, next) {
+                        alert(this.getErrorMessage(error));
+                        next();
+                    }
+                }, {
+                    name: 'LogError',
+                    test: function(error) {
+                        return true;
+                    },
+                    handle: function(error, next) {
+                        var errorItem = {
+                            viewOptions: this.options,
+                            serverError: error
+                        };
+
+                        ErrorManager.addError(this.getErrorMessage(error), errorItem);
+                        next();
+                    }
+                }
+            ];
+
+            return this.errorHandlers;
         },
         /**
          *
@@ -925,14 +958,7 @@ define('argos/_EditBase', [
             this.onInsertCompleted(result);
         },
         onAddError: function(addOptions, error) {
-            alert(string.substitute(this.requestErrorText, [error]));
-
-            var errorItem = {
-                viewOptions: this.options,
-                serverError: error
-            };
-
-            ErrorManager.addError(this.requestErrorText, errorItem);
+            this.handleError(error);
             this.enable();
         },
         /**
@@ -1032,25 +1058,7 @@ define('argos/_EditBase', [
             this.onUpdateCompleted(result);
         },
         onPutError: function(putOptions, error) {
-            var errorItem;
-
-            if (error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED) {
-                // Preserve our current form values (all of them),
-                // and reload the view to fetch the new data.
-                this.previousValuesAll = this.getValues(true);
-                this.options.key = this.entry.$key; // Force a fetch by key
-                delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
-                this.refresh();
-            } else {
-                alert(string.substitute(this.requestErrorText, [error]));
-            }
-
-            errorItem = {
-                viewOptions: this.options,
-                serverError: error
-            };
-            ErrorManager.addError(this.requestErrorText, errorItem);
-
+            this.handleError(error);
             this.enable();
         },
         /**
