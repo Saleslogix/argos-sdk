@@ -284,11 +284,6 @@ define('argos/_DetailBase', [
         loadingText: 'loading...',
         /**
          * @property {String}
-         * Text shown when a server error occurs
-         */
-        requestErrorText: 'A server error occurred while requesting data.',
-        /**
-         * @property {String}
          * Text used in the notAvailableTemplate
          */
         notAvailableText: 'The requested data is not available.',
@@ -332,6 +327,54 @@ define('argos/_DetailBase', [
             this.inherited(arguments);
             this.subscribe('/app/refresh', this._onRefresh);
             this.clear();
+        },
+        createErrorHandlers: function() {
+            this.errorHandlers = this.errorHandlers || [{
+                    name: 'Aborted',
+                    test: function(error) {
+                        return error.aborted;
+                    },
+                    handle: function(error, next) {
+                        this.options = false; // force a refresh
+                        next();
+                    }
+                }, {
+                    name: 'AlertError',
+                    test: function(error) {
+                        return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
+                    },
+                    handle: function(error, next) {
+                        alert(this.getErrorMessage(error));
+                        next();
+                    }
+                }, {
+                    name: 'NotFound',
+                    test: function(error) {
+                        return error.status === this.HTTP_STATUS.NOT_FOUND;
+                    },
+                    handle: function(error, next) {
+                        domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+                        next();
+                    }
+                }, {
+                    name: 'CatchAll',
+                    test: function(error) {
+                        return true;
+                    },
+                    handle: function(error, next) {
+                        var errorItem = {
+                            viewOptions: this.options,
+                            serverError: error
+                        };
+
+                        ErrorManager.addError(this.getErrorMessage(error), errorItem);
+                        domClass.remove(this.domNode, 'panel-loading');
+                        next();
+                    }
+                }
+            ];
+
+            return this.errorHandlers;
         },
         /**
          * Sets and returns the toolbar item layout definition, this method should be overriden in the view
@@ -749,22 +792,7 @@ define('argos/_DetailBase', [
             }
         },
         _onGetError: function(getOptions, error) {
-            if (error.aborted) {
-                this.options = false; // force a refresh
-            } else if (error.status == 404) {
-                domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
-            } else {
-                alert(string.substitute(this.requestErrorText, [error]));
-            }
-
-            var errorItem = {
-                viewOptions: this.options,
-                serverError: error
-            };
-
-            ErrorManager.addError(this.requestErrorText, errorItem);
-
-            domClass.remove(this.domNode, 'panel-loading');
+            this.handleError(error);
         },
         /**
          * Initiates the request.

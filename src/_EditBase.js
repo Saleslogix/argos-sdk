@@ -603,7 +603,6 @@ define('argos/_EditBase', [
                 }, {
                     name: 'AlertError',
                     test: function(error) {
-                        // Alert all errors that are not precondition failed.
                         return error.status !== this.HTTP_STATUS.PRECONDITION_FAILED;
                     },
                     handle: function(error, next) {
@@ -611,7 +610,7 @@ define('argos/_EditBase', [
                         next();
                     }
                 }, {
-                    name: 'LogError',
+                    name: 'CatchAll',
                     test: function(error) {
                         return true;
                     },
