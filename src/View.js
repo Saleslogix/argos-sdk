@@ -97,7 +97,6 @@ define('argos/View', [
         },
         startup: function() {
             this.inherited(arguments);
-            this.errorHandlers = this._createCustomizedLayout(this.createErrorHandlers(), 'error_handlers');
         },
         /**
          * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
@@ -228,6 +227,8 @@ define('argos/View', [
          * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
          */
         show: function(options, transitionOptions) {
+            this.errorHandlers = this._createCustomizedLayout(this.createErrorHandlers(), 'errorHandlers');
+
             var tag, data;
 
             if (this.onShow(this) === false) {
