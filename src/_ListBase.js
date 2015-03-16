@@ -411,11 +411,6 @@ define('argos/_ListBase', [
         loadingText: 'loading...',
         /**
          * @property {String}
-         * The text displayed when a data request fails.
-         */
-        requestErrorText: 'A server error occurred while requesting data.',
-        /**
-         * @property {String}
          * The customization identifier for this class. When a customization is registered it is passed
          * a path/identifier which is then matched to this property.
          */
@@ -648,6 +643,41 @@ define('argos/_ListBase', [
                 }]
             });
         },
+        createErrorHandlers: function() {
+            this.errorHandlers = this.errorHandlers || [{
+                    name: 'Aborted',
+                    test: function(error) {
+                        return error.aborted;
+                    },
+                    handle: function(error, next) {
+                        this.clear();
+                        this.refreshRequired = true;
+                        next();
+                    }
+                }, {
+                    name: 'AlertError',
+                    test: function(error) {
+                        return !error.aborted;
+                    },
+                    handle: function(error, next) {
+                        alert(this.getErrorMessage(error));
+                        next();
+                    }
+                }, {
+                    name: 'CatchAll',
+                    test: function(error) {
+                        return true;
+                    },
+                    handle: function(error, next) {
+                        this._logError(error);
+                        this._clearLoading();
+                        next();
+                    }
+                }
+            ];
+
+            return this.errorHandlers;
+        },
         /**
          * Sets and returns the list-action actions layout definition, this method should be overriden in the view
          * so that you may define the action entries for that view.
@@ -765,7 +795,6 @@ define('argos/_ListBase', [
                 break;
             }
             this._applyStateToActions(selection);
-           
         },
         /**
          * Called from checkActionState method and sets the state of the actions from what was selected from the selected row, it sets the disabled state for each action
@@ -1410,18 +1439,10 @@ define('argos/_ListBase', [
                 serverError: error
             };
 
-            ErrorManager.addError(message || this.requestErrorText, errorItem);
+            ErrorManager.addError(message || this.getErrorMessage(error), errorItem);
         },
         _onQueryError: function(queryOptions, error) {
-            if (error.aborted) {
-                this.clear();
-                this.refreshRequired = true;
-            } else {
-                alert(string.substitute(this.requestErrorText, [error]));
-            }
-
-            this._logError(error);
-            this._clearLoading();
+            this.handleError(error);
         },
         _buildQueryExpression: function() {
             return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));

@@ -23,23 +23,28 @@
  * @mixins argos._ActionMixin
  * @mixins argos._CustomizationMixin
  * @mixins argos._Templated
+ * @mixins argos._ErrorHandleMixin
  */
 define('argos/View', [
     'dojo/_base/declare',
     'dojo/_base/lang',
+    'dojo/_base/array',
     'dijit/_WidgetBase',
     './_ActionMixin',
     './_CustomizationMixin',
-    './_Templated'
+    './_Templated',
+    './_ErrorHandleMixin'
 ], function(
     declare,
     lang,
+    array,
     _WidgetBase,
     _ActionMixin,
     _CustomizationMixin,
-    _Templated
+    _Templated,
+    _ErrorHandleMixin
 ) {
-    var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
+    var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated, _ErrorHandleMixin], {
         /**
          * This map provides quick access to HTML properties, most notably the selected property of the container
          */
@@ -89,6 +94,9 @@ define('argos/View', [
         serviceName: false,
         connectionName: false,
         constructor: function() {
+        },
+        startup: function() {
+            this.inherited(arguments);
         },
         /**
          * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
@@ -219,6 +227,8 @@ define('argos/View', [
          * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
          */
         show: function(options, transitionOptions) {
+            this.errorHandlers = this._createCustomizedLayout(this.createErrorHandlers(), 'errorHandlers');
+
             var tag, data;
 
             if (this.onShow(this) === false) {
@@ -320,7 +330,7 @@ define('argos/View', [
          */
         getSecurity: function(access) {
             return this.security;
-        },
+        }
     });
 
     lang.setObject('Sage.Platform.Mobile.View', __class);
