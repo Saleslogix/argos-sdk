@@ -243,6 +243,10 @@
           "path": "../src"
         },
         {
+          "text": "RelatedViewDetailWidget.js",
+          "path": "../src"
+        },
+        {
           "text": "SearchWidget.js",
           "path": "../src"
         },

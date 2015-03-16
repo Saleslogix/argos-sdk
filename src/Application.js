@@ -245,7 +245,6 @@ define('argos/Application', [
 
             this.context = {};
             this.viewShowOptions = [];
-
             lang.mixin(this, options);
         },
         /**
