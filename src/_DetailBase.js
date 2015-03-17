@@ -330,48 +330,48 @@ define('argos/_DetailBase', [
         },
         createErrorHandlers: function() {
             this.errorHandlers = this.errorHandlers || [{
-                    name: 'Aborted',
-                    test: function(error) {
-                        return error.aborted;
-                    },
-                    handle: function(error, next) {
-                        this.options = false; // force a refresh
-                        next();
-                    }
-                }, {
-                    name: 'AlertError',
-                    test: function(error) {
-                        return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
-                    },
-                    handle: function(error, next) {
-                        alert(this.getErrorMessage(error));
-                        next();
-                    }
-                }, {
-                    name: 'NotFound',
-                    test: function(error) {
-                        return error.status === this.HTTP_STATUS.NOT_FOUND;
-                    },
-                    handle: function(error, next) {
-                        domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
-                        next();
-                    }
-                }, {
-                    name: 'CatchAll',
-                    test: function(error) {
-                        return true;
-                    },
-                    handle: function(error, next) {
-                        var errorItem = {
-                            viewOptions: this.options,
-                            serverError: error
-                        };
-
-                        ErrorManager.addError(this.getErrorMessage(error), errorItem);
-                        domClass.remove(this.domNode, 'panel-loading');
-                        next();
-                    }
+                name: 'Aborted',
+                test: function(error) {
+                    return error.aborted;
+                },
+                handle: function(error, next) {
+                    this.options = false; // force a refresh
+                    next();
                 }
+            }, {
+                name: 'AlertError',
+                test: function(error) {
+                    return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
+                },
+                handle: function(error, next) {
+                    alert(this.getErrorMessage(error));
+                    next();
+                }
+            }, {
+                name: 'NotFound',
+                test: function(error) {
+                    return error.status === this.HTTP_STATUS.NOT_FOUND;
+                },
+                handle: function(error, next) {
+                    domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+                    next();
+                }
+            }, {
+                name: 'CatchAll',
+                test: function(error) {
+                    return true;
+                },
+                handle: function(error, next) {
+                    var errorItem = {
+                        viewOptions: this.options,
+                        serverError: error
+                    };
+
+                    ErrorManager.addError(this.getErrorMessage(error), errorItem);
+                    domClass.remove(this.domNode, 'panel-loading');
+                    next();
+                }
+            }
             ];
 
             return this.errorHandlers;
@@ -571,6 +571,7 @@ define('argos/_DetailBase', [
                 useListTemplate,
                 template,
                 rowNode,
+                rowHtml,
                 item;
 
             for (i = 0; i < rows.length; i++) {
@@ -709,7 +710,8 @@ define('argos/_DetailBase', [
                     template = this.propertyTemplate;
                 }
 
-                rowNode = domConstruct.place(template.apply(data, this), sectionNode);
+                rowNode = this.createRowNode(current, sectionNode, entry, template, data);
+                //rowNode = domConstruct.place(template.apply(data, this), sectionNode);
                 if (current['relatedItem']) {
                     try{
                         this._processRelatedItem(data, context, rowNode);
@@ -734,6 +736,9 @@ define('argos/_DetailBase', [
 
                 this.processLayout(current, entry);
             }
+        },
+        createRowNode: function (layout, sectionNode, entry, template, data) {
+            return domConstruct.place(template.apply(data, this), sectionNode);
         },
         _getStoreAttr: function() {
             return this.store || (this.store = this.createStore());
@@ -931,7 +936,10 @@ define('argos/_DetailBase', [
                     }
                 });
             }
-        }
+        },
+        destroy: function () {
+            this.inherited(arguments);
+        },
     });
 
     lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
