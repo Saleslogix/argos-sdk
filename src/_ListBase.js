@@ -1422,7 +1422,10 @@ define('argos/_ListBase', [
                         if (this.relatedViews[i].enabled) {
                             relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
                             if (relatedViewManager) {
-                                relatedViewManager.addView(entry, rowNode);
+                                if (!entry.$key) {
+                                    entry.$key = store.getIdentity(entry);
+                                }
+                                relatedViewManager.addView(entry, rowNode, this);
                             }
                         }
                     }
