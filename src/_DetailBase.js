@@ -711,7 +711,6 @@ define('argos/_DetailBase', [
                 }
 
                 rowNode = this.createRowNode(current, sectionNode, entry, template, data);
-                //rowNode = domConstruct.place(template.apply(data, this), sectionNode);
                 if (current['relatedItem']) {
                     try {
                         this._processRelatedItem(data, context, rowNode);
