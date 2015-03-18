@@ -1,4 +1,4 @@
-/* 
+/*
  * See copyright file.
  */
 
@@ -27,7 +27,6 @@ define('argos/RelatedViewManager',  [
     array,
     SDataStore,
     RelatedViewWidget
-    //RelatedViewDetailWidget
 ) {
     var _widgetTypes = {};
     var __class = declare('argos.RelatedViewManager', null, {
@@ -40,7 +39,7 @@ define('argos/RelatedViewManager',  [
         constructor: function(options) {
             this.relatedViews = {};
             lang.mixin(this, options);
-            this.registerType('default',RelatedViewWidget);           
+            this.registerType('default', RelatedViewWidget);
         },
         destroyViews: function() {
             for (var relatedViewId in this.relatedViews) {
@@ -48,10 +47,10 @@ define('argos/RelatedViewManager',  [
             }
             this.relatedViews = {};
         },
-        registerType: function (widgetTypeName, ctor) {
+        registerType: function(widgetTypeName, ctor) {
             this.widgetTypes[widgetTypeName] = ctor;
         },
-        getWidgetType: function (widgetTypeName) {
+        getWidgetType: function(widgetTypeName) {
             var widgetType;
             widgetType = this.widgetTypes[widgetTypeName];
             if (!widgetType) {
