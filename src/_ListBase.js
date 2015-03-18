@@ -83,8 +83,8 @@ define('argos/_ListBase', [
          * * remainingContent => remainingContentNode's innerHTML
          */
         attributeMap: {
-            listContent: {node: 'contentNode', type: 'innerHTML'},
-            remainingContent: {node: 'remainingContentNode', type: 'innerHTML'}
+            listContent: { node: 'contentNode', type: 'innerHTML' },
+            remainingContent: { node: 'remainingContentNode', type: 'innerHTML' }
         },
         /**
          * @property {Simplate}
@@ -595,7 +595,7 @@ define('argos/_ListBase', [
          */
         destroy: function() {
             if (this.searchWidget) {
-                if(!this.searchWidget._destroyed) {
+                if (!this.searchWidget._destroyed) {
                     this.searchWidget.destroyRecursive();
                 }
 
@@ -615,10 +615,10 @@ define('argos/_ListBase', [
         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
         */
         show: function(options, transitionOptions) {
-            if (options){
-               if (options.resetSearch) {
-                   this.defaultSearchTermSet = false;
-               }
+            if (options) {
+                if (options.resetSearch) {
+                    this.defaultSearchTermSet = false;
+                }
 
                 if (options.allowEmptySelection === false && this._selectionModel) {
                     this._selectionModel.requireSelection = true;
@@ -645,35 +645,35 @@ define('argos/_ListBase', [
         },
         createErrorHandlers: function() {
             this.errorHandlers = this.errorHandlers || [{
-                    name: 'Aborted',
-                    test: function(error) {
-                        return error.aborted;
-                    },
-                    handle: function(error, next) {
-                        this.clear();
-                        this.refreshRequired = true;
-                        next();
-                    }
-                }, {
-                    name: 'AlertError',
-                    test: function(error) {
-                        return !error.aborted;
-                    },
-                    handle: function(error, next) {
-                        alert(this.getErrorMessage(error));
-                        next();
-                    }
-                }, {
-                    name: 'CatchAll',
-                    test: function(error) {
-                        return true;
-                    },
-                    handle: function(error, next) {
-                        this._logError(error);
-                        this._clearLoading();
-                        next();
-                    }
+                name: 'Aborted',
+                test: function(error) {
+                    return error.aborted;
+                },
+                handle: function(error, next) {
+                    this.clear();
+                    this.refreshRequired = true;
+                    next();
                 }
+            }, {
+                name: 'AlertError',
+                test: function(error) {
+                    return !error.aborted;
+                },
+                handle: function(error, next) {
+                    alert(this.getErrorMessage(error));
+                    next();
+                }
+            }, {
+                name: 'CatchAll',
+                test: function(error) {
+                    return true;
+                },
+                handle: function(error, next) {
+                    this._logError(error);
+                    this._clearLoading();
+                    next();
+                }
+            }
             ];
 
             return this.errorHandlers;
@@ -897,7 +897,7 @@ define('argos/_ListBase', [
          * @private
          */
         _onSelectionModelSelect: function(key, data, tag) {
-            var node = dom.byId(tag) || query('li[data-key="'+key+'"]', this.contentNode)[0];
+            var node = dom.byId(tag) || query('li[data-key="' + key + '"]', this.contentNode)[0];
             if (!node) {
                 return;
             }
@@ -918,7 +918,7 @@ define('argos/_ListBase', [
          * @private
          */
         _onSelectionModelDeselect: function(key, data, tag) {
-            var node = dom.byId(tag) || query('li[data-key="'+key+'"]', this.contentNode)[0];
+            var node = dom.byId(tag) || query('li[data-key="' + key + '"]', this.contentNode)[0];
             if (!node) {
                 return;
             }
@@ -1018,8 +1018,7 @@ define('argos/_ListBase', [
          * @param {Object} params Collection of `data-` attributes from the node.
          */
         activateEntry: function(params) {
-            if (params.key)
-            {
+            if (params.key) {
                 if (this._selectionModel && this.isNavigationDisabled()) {
                     this._selectionModel.toggle(params.key, this.entries[params.key] || params.descriptor, params.$source);
                     if (this.options.singleSelect && this.options.singleSelectAction) {
@@ -1114,7 +1113,7 @@ define('argos/_ListBase', [
 
             this.defaultSearchTermSet = true;
         },
-        getSearchQuery:function(){
+        getSearchQuery: function() {
             if (this.searchWidget) {
                 return this.searchWidget.getFormattedSearchQuery();
             }
@@ -1130,7 +1129,7 @@ define('argos/_ListBase', [
          * @param {Object} additionalOptions Additional options to be passed into the next view
          * property of the passed selection data.
          */
-        navigateToRelatedView:  function(action, selection, viewId, whereQueryFmt, additionalOptions) {
+        navigateToRelatedView: function(action, selection, viewId, whereQueryFmt, additionalOptions) {
             var view = App.getView(viewId),
                 options = {
                     where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]]),
@@ -1247,8 +1246,8 @@ define('argos/_ListBase', [
                 this._setLoading();
                 // attempt to use a dojo store
                 queryOptions = {
-                        count: this.pageSize,
-                        start: this.position
+                    count: this.pageSize,
+                    start: this.position
                 };
 
                 this._applyStateToQueryOptions(queryOptions);
@@ -1306,10 +1305,10 @@ define('argos/_ListBase', [
                 }
             } catch (e) {
                 console.error(e);
-                this._logError({message: e.message, stack: e.stack}, e.message);
+                this._logError({ message: e.message, stack: e.stack }, e.message);
             }
         },
-        createStore: function () {
+        createStore: function() {
             return null;
         },
         onContentChange: function() {
@@ -1393,22 +1392,23 @@ define('argos/_ListBase', [
          * If a manager is not found a new Related View Manager is created and returned.
          * @return {Object} RelatedViewManager
          */
-       getRelatedViewManager: function(relatedView) {
+        getRelatedViewManager: function(relatedView) {
             var relatedViewManager, options;
-            if (!this.relatedViewManagers){
+            if (!this.relatedViewManagers) {
                 this.relatedViewManagers = {};
             }
             if (this.relatedViewManagers[relatedView.id]) {
                 relatedViewManager = this.relatedViewManagers[relatedView.id];
             } else {
-                options = { id:relatedView.id,
+                options = {
+                    id: relatedView.id,
                     relatedViewConfig: relatedView
                 };
                 relatedViewManager = new RelatedViewManager(options);
                 this.relatedViewManagers[relatedView.id] = relatedViewManager;
             }
             return relatedViewManager;
-       },
+        },
         /**
          *
          * Add the each entry and row to the RelateView manager wich in turn creates the new related view and renders its content with in the current row.`
@@ -1418,7 +1418,7 @@ define('argos/_ListBase', [
          * @param {Object} entries the data.
          */
         onProcessRelatedViews: function(entry, rowNode, entries) {
-            var relatedViewManager,i;
+            var relatedViewManager, i;
             if (this.options && this.options.simpleMode && (this.options.simpleMode === true)) {
                 return;
             }
@@ -1428,13 +1428,16 @@ define('argos/_ListBase', [
                         if (this.relatedViews[i].enabled) {
                             relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
                             if (relatedViewManager) {
-                                relatedViewManager.addView(entry, rowNode);
+                                if (!entry.$key) {
+                                    entry.$key = this.store.getIdentity(entry);
+                                }
+                                relatedViewManager.addView(entry, rowNode, this);
                             }
                         }
                     }
                 }
                 catch (error) {
-                    console.log('Error processing related views:' + error );
+                    console.log('Error processing related views:' + error);
 
                 }
             }
@@ -1541,10 +1544,9 @@ define('argos/_ListBase', [
                 this._selectionModel.useSingleSelection(true);
             }
 
-
             if (this.refreshRequired) {
                 this.clear();
-            } else  {
+            } else {
                 // if enabled, clear any pre-existing selections
                 if (this._selectionModel && this.autoClearSelection && !this.enableActions) {
                     this._selectionModel.clear();

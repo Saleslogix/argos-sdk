@@ -62,7 +62,7 @@ define('argos/_DetailBase', [
          *
          */
         attributeMap: {
-            detailContent: {node: 'contentNode', type: 'innerHTML'}
+            detailContent: { node: 'contentNode', type: 'innerHTML' }
         },
         /**
          * @property {Simplate}
@@ -330,48 +330,48 @@ define('argos/_DetailBase', [
         },
         createErrorHandlers: function() {
             this.errorHandlers = this.errorHandlers || [{
-                    name: 'Aborted',
-                    test: function(error) {
-                        return error.aborted;
-                    },
-                    handle: function(error, next) {
-                        this.options = false; // force a refresh
-                        next();
-                    }
-                }, {
-                    name: 'AlertError',
-                    test: function(error) {
-                        return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
-                    },
-                    handle: function(error, next) {
-                        alert(this.getErrorMessage(error));
-                        next();
-                    }
-                }, {
-                    name: 'NotFound',
-                    test: function(error) {
-                        return error.status === this.HTTP_STATUS.NOT_FOUND;
-                    },
-                    handle: function(error, next) {
-                        domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
-                        next();
-                    }
-                }, {
-                    name: 'CatchAll',
-                    test: function(error) {
-                        return true;
-                    },
-                    handle: function(error, next) {
-                        var errorItem = {
-                            viewOptions: this.options,
-                            serverError: error
-                        };
-
-                        ErrorManager.addError(this.getErrorMessage(error), errorItem);
-                        domClass.remove(this.domNode, 'panel-loading');
-                        next();
-                    }
+                name: 'Aborted',
+                test: function(error) {
+                    return error.aborted;
+                },
+                handle: function(error, next) {
+                    this.options = false; // force a refresh
+                    next();
                 }
+            }, {
+                name: 'AlertError',
+                test: function(error) {
+                    return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
+                },
+                handle: function(error, next) {
+                    alert(this.getErrorMessage(error));
+                    next();
+                }
+            }, {
+                name: 'NotFound',
+                test: function(error) {
+                    return error.status === this.HTTP_STATUS.NOT_FOUND;
+                },
+                handle: function(error, next) {
+                    domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+                    next();
+                }
+            }, {
+                name: 'CatchAll',
+                test: function(error) {
+                    return true;
+                },
+                handle: function(error, next) {
+                    var errorItem = {
+                        viewOptions: this.options,
+                        serverError: error
+                    };
+
+                    ErrorManager.addError(this.getErrorMessage(error), errorItem);
+                    domClass.remove(this.domNode, 'panel-loading');
+                    next();
+                }
+            }
             ];
 
             return this.errorHandlers;
@@ -479,7 +479,7 @@ define('argos/_DetailBase', [
             view = App.getView(this.editView);
             if (view) {
                 entry = this.entry;
-                view.show({entry: entry});
+                view.show({ entry: entry });
             }
         },
         /**
@@ -571,6 +571,7 @@ define('argos/_DetailBase', [
                 useListTemplate,
                 template,
                 rowNode,
+                rowHtml,
                 item;
 
             for (i = 0; i < rows.length; i++) {
@@ -709,9 +710,9 @@ define('argos/_DetailBase', [
                     template = this.propertyTemplate;
                 }
 
-                rowNode = domConstruct.place(template.apply(data, this), sectionNode);
+                rowNode = this.createRowNode(current, sectionNode, entry, template, data);
                 if (current['relatedItem']) {
-                    try{
+                    try {
                         this._processRelatedItem(data, context, rowNode);
                     } catch (e) {
                         //error processing related node
@@ -734,6 +735,9 @@ define('argos/_DetailBase', [
 
                 this.processLayout(current, entry);
             }
+        },
+        createRowNode: function(layout, sectionNode, entry, template, data) {
+            return domConstruct.place(template.apply(data, this), sectionNode);
         },
         _getStoreAttr: function() {
             return this.store || (this.store = this.createStore());
@@ -787,7 +791,7 @@ define('argos/_DetailBase', [
 
                 /* this must take place when the content is visible */
                 this.onContentChange();
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
             }
         },
@@ -918,7 +922,7 @@ define('argos/_DetailBase', [
         _processRelatedItem: function(data, context, rowNode) {
             var view = App.getView(data['view']), options = {};
 
-            if(view){
+            if (view) {
                 options.where = context ? context['where'] : '';
                 view.getListCount(options).then(function(result) {
                     var labelNode, html;
@@ -934,6 +938,9 @@ define('argos/_DetailBase', [
                     }
                 });
             }
+        },
+        destroy: function() {
+            this.inherited(arguments);
         }
     });
 
