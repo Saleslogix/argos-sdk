@@ -62,7 +62,7 @@ define('argos/_DetailBase', [
          *
          */
         attributeMap: {
-            detailContent: {node: 'contentNode', type: 'innerHTML'}
+            detailContent: { node: 'contentNode', type: 'innerHTML' }
         },
         /**
          * @property {Simplate}
@@ -479,7 +479,7 @@ define('argos/_DetailBase', [
             view = App.getView(this.editView);
             if (view) {
                 entry = this.entry;
-                view.show({entry: entry});
+                view.show({ entry: entry });
             }
         },
         /**
@@ -532,7 +532,7 @@ define('argos/_DetailBase', [
          *        cls: 'String', // Optional. Additional CSS class string to be added to the row div
          *        use: Simplate, // Optional. Override the HTML Simplate used for rendering the row (not value)
          *        provider: function(entry, propertyName), // Optional. Function that accepts the data entry and the property name and returns the extracted value. By default simply extracts directly.
-         *        value: Any // Optional. Provide a value directly instead of binding 
+         *        value: Any // Optional. Provide a value directly instead of binding
          *     }
          *
          * @return {Object[]} Detail layout definition
@@ -713,7 +713,7 @@ define('argos/_DetailBase', [
                 rowNode = this.createRowNode(current, sectionNode, entry, template, data);
                 //rowNode = domConstruct.place(template.apply(data, this), sectionNode);
                 if (current['relatedItem']) {
-                    try{
+                    try {
                         this._processRelatedItem(data, context, rowNode);
                     } catch (e) {
                         //error processing related node
@@ -737,7 +737,7 @@ define('argos/_DetailBase', [
                 this.processLayout(current, entry);
             }
         },
-        createRowNode: function (layout, sectionNode, entry, template, data) {
+        createRowNode: function(layout, sectionNode, entry, template, data) {
             return domConstruct.place(template.apply(data, this), sectionNode);
         },
         _getStoreAttr: function() {
@@ -792,7 +792,7 @@ define('argos/_DetailBase', [
 
                 /* this must take place when the content is visible */
                 this.onContentChange();
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
             }
         },
@@ -920,7 +920,7 @@ define('argos/_DetailBase', [
         _processRelatedItem: function(data, context, rowNode) {
             var view = App.getView(data['view']), options = {};
 
-            if(view){
+            if (view) {
                 options.where = context ? context['where'] : '';
                 view.getListCount(options).then(function(result) {
                     var labelNode, html;
@@ -937,9 +937,9 @@ define('argos/_DetailBase', [
                 });
             }
         },
-        destroy: function () {
+        destroy: function() {
             this.inherited(arguments);
-        },
+        }
     });
 
     lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
