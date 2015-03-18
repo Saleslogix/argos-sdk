@@ -259,10 +259,11 @@ define('argos/View', [
          * @return {String} String expression.
          */
         expandExpression: function(expression) {
-            if (typeof expression === 'function')
+            if (typeof expression === 'function') {
                 return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-            else
+            } else {
                 return expression;
+            }
         },
         /**
          * Called before the view is transitioned (slide animation complete) to.
@@ -311,10 +312,11 @@ define('argos/View', [
          * @return {Object} Options to be used for context.
          */
         getOptionsContext: function() {
-            if (this.options && this.options.negateHistory)
+            if (this.options && this.options.negateHistory) {
                 return { negateHistory: true };
-            else
+            } else {
                 return this.options;
+            }
         },
         /**
          * Returns the context of the view which is a small summary of key properties.

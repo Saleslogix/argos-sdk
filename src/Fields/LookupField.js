@@ -311,10 +311,11 @@ define('argos/Fields/LookupField', [
          * @return {String/Object/Number/Boolean}
          */
         getDependentValue: function() {
-            if (this.dependsOn && this.owner)
-            {
+            if (this.dependsOn && this.owner) {
                 var field = this.owner.fields[this.dependsOn];
-                if (field) return field.getValue();
+                if (field) {
+                    return field.getValue();
+                }
             }
         },
         /**
@@ -322,10 +323,11 @@ define('argos/Fields/LookupField', [
          * @return {String}
          */
         getDependentLabel: function() {
-            if (this.dependsOn && this.owner)
-            {
+            if (this.dependsOn && this.owner) {
                 var field = this.owner.fields[this.dependsOn];
-                if (field) return field.label;
+                if (field) {
+                    return field.label;
+                }
             }
         },
         /**
@@ -334,10 +336,11 @@ define('argos/Fields/LookupField', [
          * @return {String} String expression.
          */
         expandExpression: function(expression) {
-            if (typeof expression === 'function')
+            if (typeof expression === 'function') {
                 return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-            else
+            } else {
                 return expression;
+            }
         },
         /**
          * Creates the options to be passed in navigation to the target view
@@ -391,9 +394,11 @@ define('argos/Fields/LookupField', [
 
             if (options.singleSelect && options.singleSelectAction) {
                 for (var key in options.tools.tbar) {
-                    var item = options.tools.tbar[key];
-                    if (item.id == options.singleSelectAction) {
-                        item.cls = 'invisible';
+                    if (options.tools.tbar.hasOwnProperty(key)) {
+                        var item = options.tools.tbar[key];
+                        if (item.id === options.singleSelectAction) {
+                            item.cls = 'invisible';
+                        }
                     }
                 }
             }
@@ -404,10 +409,11 @@ define('argos/Fields/LookupField', [
             }
 
             array.forEach(expand, function(item) {
-                if (this[item])
+                if (this[item]) {
                     options[item] = this.dependsOn // only pass dependentValue if there is a dependency
                         ? this.expandExpression(this[item], dependentValue)
                         : this.expandExpression(this[item]);
+                }
             }, this);
 
             options.dependentValue = dependentValue;
@@ -449,8 +455,9 @@ define('argos/Fields/LookupField', [
          * @param {Event} evt Click event
          */
         _onKeyUp: function(evt) {
-            if (!this.isDisabled() && this.notificationTrigger == 'keyup')
+            if (!this.isDisabled() && this.notificationTrigger === 'keyup') {
                 this.onNotificationTrigger(evt);
+            }
         },
         /**
          * Handler for onblur, fires {@link #onNotificationTrigger onNotificationTrigger} if
@@ -458,8 +465,9 @@ define('argos/Fields/LookupField', [
          * @param {Event} evt Blur event
          */
         _onBlur: function(evt) {
-            if (!this.isDisabled() && this.notificationTrigger == 'blur')
+            if (!this.isDisabled() && this.notificationTrigger === 'blur') {
                 this.onNotificationTrigger(evt);
+            }
         },
         /**
          * Called from onkeyup and onblur handlers if the trigger is set.
@@ -472,8 +480,9 @@ define('argos/Fields/LookupField', [
         onNotificationTrigger: function(evt) {
             var currentValue = this.getValue();
 
-            if (this.previousValue != currentValue)
+            if (this.previousValue !== currentValue) {
                 this.onChange(currentValue, this);
+            }
 
             this.previousValue = currentValue;
         },
@@ -520,11 +529,12 @@ define('argos/Fields/LookupField', [
                 }
 
                 if (this.singleSelect) {
-                    for (selectionKey in selections)
-                    {
-                        val = selections[selectionKey].data;
-                        this.setSelection(val, selectionKey);
-                        break;
+                    for (selectionKey in selections) {
+                        if (selections.hasOwnProperty(selectionKey)) {
+                            val = selections[selectionKey].data;
+                            this.setSelection(val, selectionKey);
+                            break;
+                        }
                     }
                 } else {
                     if (selectionCount > 0) {
@@ -552,38 +562,40 @@ define('argos/Fields/LookupField', [
          * @return {Boolean}
          */
         isDirty: function() {
-            if (this.originalValue && this.currentValue)
-            {
-                if (this.originalValue.key != this.currentValue.key)
+            if (this.originalValue && this.currentValue) {
+                if (this.originalValue.key !== this.currentValue.key) {
                     return true;
+                }
 
-                if (this.originalValue.text != this.currentValue.text)
+                if (this.originalValue.text !== this.currentValue.text) {
                     return true;
+                }
 
-                if (!this.requireSelection && !this.textTemplate)
-                    if (this.originalValue.text != this.getText())
+                if (!this.requireSelection && !this.textTemplate) {
+                    if (this.originalValue.text !== this.getText()) {
                         return true;
+                    }
+                }
 
                 return false;
             }
 
-            if (this.originalValue)
-            {
-                if (!this.requireSelection && !this.textTemplate)
-                    if (this.originalValue.text != this.getText())
+            if (this.originalValue) {
+                if (!this.requireSelection && !this.textTemplate) {
+                    if (this.originalValue.text !== this.getText()) {
                         return true;
-            }
-            else
-            {
-                if (!this.requireSelection && !this.textTemplate)
-                {
+                    }
+                }
+            } else {
+                if (!this.requireSelection && !this.textTemplate) {
                     var text = this.getText();
-                    if (text && text.length > 0)
+                    if (text && text.length > 0) {
                         return true;
+                    }
                 }
             }
 
-            return (this.originalValue != this.currentValue);
+            return (this.originalValue !== this.currentValue);
         },
         /**
          * Returns the current selection that was set from the target list view.
@@ -610,15 +622,16 @@ define('argos/Fields/LookupField', [
                     : false;
 
             if (keyProperty || textProperty) {
-                if (this.currentValue)
-                {
-                    if (keyProperty)
+                if (this.currentValue) {
+                    if (keyProperty) {
                         value = utility.setValue(value || {}, keyProperty, this.currentValue.key);
+                    }
 
                     // if a text template has been applied there is no way to guarantee a correct
                     // mapping back to the property
-                    if (textProperty && !this.textTemplate)
+                    if (textProperty && !this.textTemplate) {
                         value = utility.setValue(value || {}, textProperty, this.requireSelection ? this.currentValue.text : text);
+                    }
                 } else if (!this.requireSelection) {
                     if (keyProperty && text.length > 0) {
                         value = utility.setValue(value || {}, keyProperty, text);
@@ -635,7 +648,7 @@ define('argos/Fields/LookupField', [
                     if (this.requireSelection) {
                         value = this.currentValue.key ? this.currentValue.key : this.currentValue;
                     } else {
-                        value = this.currentValue.text != text && !this.textTemplate
+                        value = this.currentValue.text !== text && !this.textTemplate
                             ? text
                             : this.currentValue.key;
                     }
@@ -730,63 +743,69 @@ define('argos/Fields/LookupField', [
                     ? this.valueTextProperty || this.textProperty
                     : false;
 
-            if (typeof val === 'undefined' || val === null)
-            {
+            if (typeof val === 'undefined' || val === null) {
                 this.currentValue = false;
-                if (initial) this.originalValue = this.currentValue;
+                if (initial) {
+                    this.originalValue = this.currentValue;
+                }
+
                 this.setText(this.requireSelection ? this.emptyText : '');
                 return false;
             }
 
-            if (keyProperty || textProperty)
-            {
-                if (keyProperty)
+            if (keyProperty || textProperty) {
+                if (keyProperty) {
                     key = utility.getValue(val, keyProperty);
+                }
 
-                if (textProperty)
+                if (textProperty) {
                     text = utility.getValue(val, textProperty);
+                }
 
-                if (text && this.textTemplate)
+                if (text && this.textTemplate) {
                     text = this.textTemplate.apply(text, this);
-                else if (this.textRenderer)
+                } else if (this.textRenderer) {
                     text = this.textRenderer.call(this, val, key, text);
+                }
 
-                if (key || text)
-                {
+                if (key || text) {
                     this.currentValue = {
                         key: key || text,
                         text: text || key
                     };
 
-                    if (initial) this.originalValue = this.currentValue;
+                    if (initial) {
+                        this.originalValue = this.currentValue;
+                    }
 
                     this.setText(this.currentValue.text);
-                }
-                else
-                {
+                } else {
                     this.currentValue = false;
 
-                    if (initial) this.originalValue = this.currentValue;
+                    if (initial) {
+                        this.originalValue = this.currentValue;
+                    }
 
                     this.setText(this.requireSelection ? this.emptyText : '');
                 }
-            }
-            else
-            {
+            } else {
                 key = val;
                 text = val;
 
-                if (text && this.textTemplate)
+                if (text && this.textTemplate) {
                     text = this.textTemplate.apply(text, this);
-                else if (this.textRenderer)
+                } else if (this.textRenderer) {
                     text = this.textRenderer.call(this, val, key, text);
+                }
 
                 this.currentValue = {
                     key: key || text,
                     text: text || key
                 };
 
-                if (initial) this.originalValue = this.currentValue;
+                if (initial) {
+                    this.originalValue = this.currentValue;
+                }
 
                 this.setText(text);
             }

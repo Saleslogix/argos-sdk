@@ -78,7 +78,9 @@ define('argos/Fields/PhoneField', [
         getValue: function() {
             var value = this.inherited(arguments);
 
-            if (/^\+/.test(value)) return value;
+            if (/^\+/.test(value)) {
+                return value;
+            }
 
             value = format.alphaToPhoneNumeric(value);
 

@@ -53,32 +53,33 @@ define('argos/Application', [
     sniff,
     ReUI
 ) {
-
     // Polyfill for Funcion.bind, taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+    /* jshint ignore:start */
     if (!Function.prototype.bind) {
-      Function.prototype.bind = function (oThis) {
-        if (typeof this !== "function") {
-          // closest thing possible to the ECMAScript 5
-          // internal IsCallable function
-          throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-        }
+        Function.prototype.bind = function (oThis) {
+            if (typeof this !== "function") {
+              // closest thing possible to the ECMAScript 5
+              // internal IsCallable function
+              throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+            }
 
-        var aArgs = Array.prototype.slice.call(arguments, 1),
-            fToBind = this,
-            fNOP = function () {},
-            fBound = function () {
-              return fToBind.apply(this instanceof fNOP && oThis
-                     ? this
-                     : oThis,
-                     aArgs.concat(Array.prototype.slice.call(arguments)));
-            };
+            var aArgs = Array.prototype.slice.call(arguments, 1),
+                fToBind = this,
+                fNOP = function () {},
+                fBound = function () {
+                  return fToBind.apply(this instanceof fNOP && oThis
+                         ? this
+                         : oThis,
+                         aArgs.concat(Array.prototype.slice.call(arguments)));
+                };
 
-        fNOP.prototype = this.prototype;
-        fBound.prototype = new fNOP();
+            fNOP.prototype = this.prototype;
+            fBound.prototype = new fNOP();
 
-        return fBound;
-      };
+            return fBound;
+        };
     }
+    /* jshint ignore:end */
 
     has.add('html5-file-api', function(global, document) {
         if (has('ie')) {
@@ -97,9 +98,11 @@ define('argos/Application', [
         bindDelegate: function(scope) {
             var fn = this;
 
-            if (arguments.length == 1) return function() {
-                return fn.apply(scope || this, arguments);
-            };
+            if (arguments.length === 1) {
+                return function() {
+                    return fn.apply(scope || this, arguments);
+                };
+            }
 
             var optional = Array.prototype.slice.call(arguments, 1);
             return function() {
@@ -125,17 +128,23 @@ define('argos/Application', [
     },
     localize = function(name, localization) {
         var target = lang.getObject(name);
-        if (target && target.prototype) target = target.prototype;
-        if (target) applyLocalizationTo(target, localization);
+        if (target && target.prototype) {
+            target = target.prototype;
+        }
+
+        if (target) {
+            applyLocalizationTo(target, localization);
+        }
     },
     mergeConfiguration = function(baseConfiguration, moduleConfiguration) {
-        if (baseConfiguration)
-        {
-            if (baseConfiguration.modules && moduleConfiguration.modules)
+        if (baseConfiguration) {
+            if (baseConfiguration.modules && moduleConfiguration.modules) {
                 baseConfiguration.modules = baseConfiguration.modules.concat(moduleConfiguration.modules);
+            }
 
-            if (baseConfiguration.connections && moduleConfiguration.connections)
+            if (baseConfiguration.connections && moduleConfiguration.connections) {
                 baseConfiguration.connections = lang.mixin(baseConfiguration.connections, moduleConfiguration.connections);
+            }
         }
 
         return baseConfiguration;
@@ -266,10 +275,12 @@ define('argos/Application', [
             });
 
             for (var name in this._connections) {
-                var connection = this._connections[name];
-                if (connection) {
-                    connection.un('beforerequest', this._loadSDataRequest, this);
-                    connection.un('requestcomplete', this._cacheSDataRequest, this);
+                if (this._connections.hasOwnProperty(name)) {
+                    var connection = this._connections[name];
+                    if (connection) {
+                        connection.un('beforerequest', this._loadSDataRequest, this);
+                        connection.un('requestcomplete', this._cacheSDataRequest, this);
+                    }
                 }
             }
 
@@ -302,8 +313,9 @@ define('argos/Application', [
         initCaching: function() {
             if (this.enableCaching)
             {
-                if (this.isOnline())
+                if (this.isOnline()) {
                     this._clearSDataRequestCache();
+                }
             }
         },
         onOffline: function () {
@@ -349,22 +361,29 @@ define('argos/Application', [
          */
         initServices: function() {
             // TODO: Remove this method
-            for (var name in this.connections)
-                this.registerService(name, this.connections[name]);
+            for (var name in this.connections) {
+                if (this.connections.hasOwnProperty(name)) {
+                    this.registerService(name, this.connections[name]);
+                }
+            }
         },
         /**
          * Loops through modules and calls their `init()` function.
          */
         initModules: function() {
-            for (var i = 0; i < this.modules.length; i++)
+            for (var i = 0; i < this.modules.length; i++) {
                 this.modules[i].init(this);
+            }
         },
         /**
          * Loops through (tool)bars and calls their `init()` function.
          */
         initToolbars: function() {
-            for (var n in this.bars)
-                this.bars[n].init(); // todo: change to startup
+            for (var n in this.bars) {
+                if (this.bars.hasOwnProperty(n)) {
+                    this.bars[n].init(); // todo: change to startup
+                }
+            }
         },
         /**
          * Sets the global variable `App` to this instance.
@@ -397,8 +416,13 @@ define('argos/Application', [
          * Establishes various connections to events.
          */
         _startupConnections: function() {
-            for (var name in this.connections)
-                if (this.connections.hasOwnProperty(name)) this.registerConnection(name, this.connections[name]);
+            for (var name in this.connections) {
+                if (this.connections.hasOwnProperty(name)) {
+                    if (this.connections.hasOwnProperty(name)) {
+                        this.registerConnection(name, this.connections[name]);
+                    }
+                }
+            }
 
             /* todo: should we be mixing this in? */
             delete this.connections;
@@ -430,14 +454,13 @@ define('argos/Application', [
                 return (/^sdata\.cache/i).test(k);
             };
 
-            if (window.localStorage)
-            {
+            if (window.localStorage) {
                 /* todo: find a better way to detect */
-                for (var i = window.localStorage.length - 1; i >= 0 ; i--)
-                {
+                for (var i = window.localStorage.length - 1; i >= 0 ; i--) {
                     var key = window.localStorage.key(i);
-                    if (check(key))
+                    if (check(key)) {
                         window.localStorage.removeItem(key);
+                    }
                 }
             }
         },
@@ -457,14 +480,14 @@ define('argos/Application', [
          */
         _loadSDataRequest: function(request, o) {
             // todo: find a better way of indicating that a request can prefer cache
-            if (window.localStorage)
-            {
-                if (this.isOnline() && (request.allowCacheUse !== true)) return;
+            if (window.localStorage) {
+                if (this.isOnline() && (request.allowCacheUse !== true)) {
+                    return;
+                }
 
                 var key = this._createCacheKey(request);
                 var feed = window.localStorage.getItem(key);
-                if (feed)
-                {
+                if (feed) {
                     o.result = json.fromJson(feed);
                 }
             }
@@ -477,10 +500,8 @@ define('argos/Application', [
          */
         _cacheSDataRequest: function(request, o, feed) {
             /* todo: decide how to handle PUT/POST/DELETE */
-            if (window.localStorage)
-            {
-                if (/get/i.test(o.method) && typeof feed === 'object')
-                {
+            if (window.localStorage) {
+                if (/get/i.test(o.method) && typeof feed === 'object') {
                     var key = this._createCacheKey(request);
 
                     window.localStorage.removeItem(key);
@@ -510,8 +531,9 @@ define('argos/Application', [
                 instance.on('requestcomplete', this._cacheSDataRequest, this);
             }
 
-            if ((options.isDefault || service.isDefault) || !this.defaultService)
+            if ((options.isDefault || service.isDefault) || !this.defaultService) {
                 this.defaultService = instance;
+            }
 
             return this;
         },
@@ -630,7 +652,9 @@ define('argos/Application', [
         getViews: function() {
             var r = [];
             for (var n in this.views) {
-                r.push(this.views[n]);
+                if (this.views.hasOwnProperty(n)) {
+                    r.push(this.views[n]);
+                }
             }
 
             return r;
@@ -711,8 +735,9 @@ define('argos/Application', [
          */
         getService: function(name) {
             // TODO: Remove this method
-            if (typeof name === 'string' && this.services[name])
+            if (typeof name === 'string' && this.services[name]) {
                 return this.services[name];
+            }
 
             return this.defaultService;
         },
@@ -724,7 +749,9 @@ define('argos/Application', [
             return !!this._connections[name];
         },
         getConnection: function(name) {
-            if (this._connections[name]) return this._connections[name];
+            if (this._connections[name]) {
+                return this._connections[name];
+            }
 
             return this._connections['default'];
         },
@@ -733,8 +760,13 @@ define('argos/Application', [
          * @param {String} title The new title.
          */
         setPrimaryTitle: function(title) {
-            for (var n in this.bars)
-                if (this.bars[n].managed) this.bars[n].set('title', title);
+            for (var n in this.bars) {
+                if (this.bars.hasOwnProperty(n)) {
+                    if (this.bars[n].managed) {
+                        this.bars[n].set('title', title);
+                    }
+                }
+            }
 
             return this;
         },
@@ -742,7 +774,9 @@ define('argos/Application', [
          * Resize handle, publishes the global event `/app/resize` which views may subscribe to.
          */
         onResize: function() {
-            if (this.resizeTimer) clearTimeout(this.resizeTimer);
+            if (this.resizeTimer) {
+                clearTimeout(this.resizeTimer);
+            }
 
             this.resizeTimer = setTimeout(function(){
                 connect.publish('/app/resize',[]);
@@ -762,28 +796,29 @@ define('argos/Application', [
         },
         _onBeforeTransition: function(evt) {
             var view = this.getView(evt.target);
-            if (view)
-            {
-                if (evt.out)
+            if (view) {
+                if (evt.out) {
                     this._beforeViewTransitionAway(view);
-                else
+                } else {
                     this._beforeViewTransitionTo(view);
+                }
             }
         },
         _onAfterTransition: function(evt) {
             var view = this.getView(evt.target);
-            if (view)
-            {
-                if (evt.out)
+            if (view) {
+                if (evt.out) {
                     this._viewTransitionAway(view);
-                else
+                } else {
                     this._viewTransitionTo(view);
+                }
             }
         },
         _onActivate: function(evt) {
             var view = this.getView(evt.target);
-            if (view)
+            if (view) {
                 this._viewActivate(view, evt.tag, evt.data);
+            }
         },
         _beforeViewTransitionAway: function(view) {
             this.onBeforeViewTransitionAway(view);
@@ -793,9 +828,11 @@ define('argos/Application', [
         _beforeViewTransitionTo: function(view) {
             this.onBeforeViewTransitionTo(view);
 
-            for (var n in this.bars)
-                if (this.bars[n].managed)
+            for (var n in this.bars) {
+                if (this.bars[n].managed) {
                     this.bars[n].clear();
+                }
+            }
 
             view.beforeTransitionTo();
         },
@@ -809,9 +846,11 @@ define('argos/Application', [
 
             var tools = (view.options && view.options.tools) || view.getTools() || {};
 
-            for (var n in this.bars)
-                if (this.bars[n].managed)
+            for (var n in this.bars) {
+                if (this.bars[n].managed) {
                     this.bars[n].showTools(tools[n]);
+                }
+            }
 
             view.transitionTo();
         },
@@ -858,9 +897,11 @@ define('argos/Application', [
 
             depth = depth || 0;
 
-            for (i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++)
-                if (predicate.call(scope || this, list[i].data))
+            for (i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++) {
+                if (predicate.call(scope || this, list[i].data)) {
                     return list[i].data;
+                }
+            }
 
             return false;
         },
@@ -873,24 +914,25 @@ define('argos/Application', [
          */
         isNavigationFromResourceKind: function(kind, predicate, scope) {
             var lookup = {};
-            if (lang.isArray(kind))
+            if (lang.isArray(kind)) {
                 array.forEach(kind, function(item) { this[item] = true;  }, lookup);
-            else
+            } else {
                 lookup[kind] = true;
+            }
 
             return this.queryNavigationContext(function(o) {
                 var context = (o.options && o.options.source) || o,
                     resourceKind = context && context.resourceKind;
 
                 // if a predicate is defined, both resourceKind AND predicate must match.
-                if (lookup[resourceKind])
-                {
-                    if (predicate)
-                    {
-                        if (predicate.call(scope || this, o, context)) return o;
-                    }
-                    else
+                if (lookup[resourceKind]) {
+                    if (predicate) {
+                        if (predicate.call(scope || this, o, context)) {
+                            return o;
+                        }
+                    } else {
                         return o;
+                    }
                 }
             });
         },

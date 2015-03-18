@@ -532,7 +532,7 @@ define('argos/_DetailBase', [
          *        cls: 'String', // Optional. Additional CSS class string to be added to the row div
          *        use: Simplate, // Optional. Override the HTML Simplate used for rendering the row (not value)
          *        provider: function(entry, propertyName), // Optional. Function that accepts the data entry and the property name and returns the extracted value. By default simply extracts directly.
-         *        value: Any // Optional. Provide a value directly instead of binding 
+         *        value: Any // Optional. Provide a value directly instead of binding
          *     }
          *
          * @return {Object[]} Detail layout definition
@@ -604,7 +604,7 @@ define('argos/_DetailBase', [
                 }
 
                 provider = current['provider'] || utility.getValue;
-                property = typeof current['property'] == 'string'
+                property = typeof current['property'] === 'string'
                     ? current['property']
                     : current['name'];
                 value = typeof current['value'] === 'undefined'
@@ -836,8 +836,11 @@ define('argos/_DetailBase', [
         refreshRequiredFor: function(options) {
             if (this.options) {
                 if (options) {
-                    if (this.options.key !== options.key) return true;
+                    if (this.options.key !== options.key) {
+                        return true;
+                    }
                 }
+
                 return false;
             } else {
                 return this.inherited(arguments);

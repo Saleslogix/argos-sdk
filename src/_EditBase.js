@@ -365,7 +365,9 @@ define('argos/_EditBase', [
             this.inherited(arguments);
 
             for (var name in this.fields) {
-                this.fields[name].init();
+                if (this.fields.hasOwnProperty(name)) {
+                    this.fields[name].init();
+                }
             }
         },
         /**
@@ -735,12 +737,16 @@ define('argos/_EditBase', [
          */
         applyFieldDefaults: function(){
             for (var name in this.fields) {
-                var field = this.fields[name],
-                    defaultValue = field['default'];
+                if (this.fields.hasOwnProperty(name)) {
+                    var field = this.fields[name],
+                        defaultValue = field['default'];
 
-                if (typeof defaultValue === 'undefined') continue;
+                    if (typeof defaultValue === 'undefined') {
+                        continue;
+                    }
 
-                field.setValue(this.expandExpression(defaultValue, field));
+                    field.setValue(this.expandExpression(defaultValue, field));
+                }
             }
         },
         /**
@@ -748,8 +754,10 @@ define('argos/_EditBase', [
          */
         clearValues: function() {
             for (var name in this.fields) {
-                this.fields[name].clearHighlight();
-                this.fields[name].clearValue();
+                if (this.fields.hasOwnProperty(name)) {
+                    this.fields[name].clearHighlight();
+                    this.fields[name].clearValue();
+                }
             }
         },
         /**
@@ -768,22 +776,24 @@ define('argos/_EditBase', [
                 value;
 
             for (var name in this.fields) {
-                field = this.fields[name];
+                if (this.fields.hasOwnProperty(name)) {
+                    field = this.fields[name];
 
-                // for now, explicitly hidden fields (via. the field.hide() method) are not included
-                if (field.isHidden()) {
-                    continue;
-                }
+                    // for now, explicitly hidden fields (via. the field.hide() method) are not included
+                    if (field.isHidden()) {
+                        continue;
+                    }
 
-                if (field.applyTo !== false) {
-                    value = utility.getValue(values, field.applyTo, noValue);
-                } else {
-                    value = utility.getValue(values, field.property || name, noValue);
-                }
+                    if (field.applyTo !== false) {
+                        value = utility.getValue(values, field.applyTo, noValue);
+                    } else {
+                        value = utility.getValue(values, field.property || name, noValue);
+                    }
 
-                // fyi: uses the fact that ({} !== {})
-                if (value !== noValue) {
-                    field.setValue(value, initial);
+                    // fyi: uses the fact that ({} !== {})
+                    if (value !== noValue) {
+                        field.setValue(value, initial);
+                    }
                 }
             }
         },
@@ -808,48 +818,52 @@ define('argos/_EditBase', [
                 prop;
 
             for (name in this.fields) {
-                field = this.fields[name];
-                value = field.getValue();
+                if (this.fields.hasOwnProperty(name)) {
+                    field = this.fields[name];
+                    value = field.getValue();
 
-                include = this.expandExpression(field.include, value, field, this);
-                exclude = this.expandExpression(field.exclude, value, field, this);
+                    include = this.expandExpression(field.include, value, field, this);
+                    exclude = this.expandExpression(field.exclude, value, field, this);
 
-                /**
-                 * include:
-                 *   true: always include value
-                 *   false: always exclude value
-                 * exclude:
-                 *   true: always exclude value
-                 *   false: default handling
-                 */
-                if (include !== undefined && !include) {
-                    continue;
-                }
-                if (exclude !== undefined && exclude) {
-                    continue;
-                }
-
-                // for now, explicitly hidden fields (via. the field.hide() method) are not included
-                if (all || ((field.alwaysUseValue || field.isDirty() || include) && !field.isHidden())) {
-                    if (field.applyTo !== false) {
-                        if (typeof field.applyTo === 'function') {
-                            if (typeof value === 'object') {
-                                // Copy the value properties into our payload object
-                                for (prop in value) {
-                                    payload[prop] = value[prop];
-                                }
-                            }
-
-                            field.applyTo(payload, value);
-                        } else if (typeof field.applyTo === 'string') {
-                            target = utility.getValue(payload, field.applyTo);
-                            lang.mixin(target, value);
-                        }
-                    } else {
-                        utility.setValue(payload, field.property || name, value);
+                    /**
+                     * include:
+                     *   true: always include value
+                     *   false: always exclude value
+                     * exclude:
+                     *   true: always exclude value
+                     *   false: default handling
+                     */
+                    if (include !== undefined && !include) {
+                        continue;
+                    }
+                    if (exclude !== undefined && exclude) {
+                        continue;
                     }
 
-                    empty = false;
+                    // for now, explicitly hidden fields (via. the field.hide() method) are not included
+                    if (all || ((field.alwaysUseValue || field.isDirty() || include) && !field.isHidden())) {
+                        if (field.applyTo !== false) {
+                            if (typeof field.applyTo === 'function') {
+                                if (typeof value === 'object') {
+                                    // Copy the value properties into our payload object
+                                    for (prop in value) {
+                                        if (value.hasOwnProperty(prop)) {
+                                            payload[prop] = value[prop];
+                                        }
+                                    }
+                                }
+
+                                field.applyTo(payload, value);
+                            } else if (typeof field.applyTo === 'string') {
+                                target = utility.getValue(payload, field.applyTo);
+                                lang.mixin(target, value);
+                            }
+                        } else {
+                            utility.setValue(payload, field.property || name, value);
+                        }
+
+                        empty = false;
+                    }
                 }
             }
             return empty ? false : payload;
@@ -863,18 +877,20 @@ define('argos/_EditBase', [
             this.errors = [];
 
             for (var name in this.fields) {
-                var field = this.fields[name],
-                    result;
+                if (this.fields.hasOwnProperty(name)) {
+                    var field = this.fields[name],
+                        result;
 
-                if (!field.isHidden() && false !== (result = field.validate())) {
-                    domClass.add(field.containerNode, 'row-error');
+                    if (!field.isHidden() && false !== (result = field.validate())) {
+                        domClass.add(field.containerNode, 'row-error');
 
-                    this.errors.push({
-                        name: name,
-                        message: result
-                    });
-                } else {
-                    domClass.remove(field.containerNode, 'row-error');
+                        this.errors.push({
+                            name: name,
+                            message: result
+                        });
+                    } else {
+                        domClass.remove(field.containerNode, 'row-error');
+                    }
                 }
             }
 

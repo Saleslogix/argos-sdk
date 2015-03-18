@@ -52,9 +52,10 @@ define('argos/Convert', [
          * @return {Boolean} True if it matches ISO or JSON formats, false if not a string or doesn't match.
          */
         isDateString: function(value) {
-            if (typeof value !== 'string')
+            if (typeof value !== 'string') {
                 return false;
-            
+            }
+
             return isoDate.test(value) || jsonDate.test(value);
         },
         /**
@@ -86,8 +87,9 @@ define('argos/Convert', [
          * @return {Date} Date object from string or original object if not convertable.
          */
         toDateFromString: function(value) {
-            if (typeof value !== 'string')
+            if (typeof value !== 'string') {
                 return value;
+            }
 
             var match,
                 utc,
@@ -129,10 +131,11 @@ define('argos/Convert', [
                     h = parseInt(match[10], 10);
                     m = parseInt(match[11], 10);
 
-                    if (match[9] === '-')
+                    if (match[9] === '-') {
                         utc.add({minutes:((h * 60) + m)});
-                    else
+                    } else {
                         utc.add({minutes:(-1 * ((h * 60) + m))});
+                    }
                 }
 
                 value = utc.toDate();

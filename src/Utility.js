@@ -30,23 +30,27 @@ define('argos/Utility', [
 ) {
     var nameToPathCache = {};
     var nameToPath = function(name) {
-        if (typeof name !== 'string' || name === '.' || name === '') return []; // '', for compatibility
-        if (nameToPathCache[name]) return nameToPathCache[name];
+        if (typeof name !== 'string' || name === '.' || name === '') {
+            return []; // '', for compatibility
+        }
+
+        if (nameToPathCache[name]) {
+            return nameToPathCache[name];
+        }
+
         var parts = name.split('.');
         var path = [];
-        for (var i = 0; i < parts.length; i++)
-        {
+
+        for (var i = 0; i < parts.length; i++) {
             var match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
-            if (match)
-            {
+            if (match) {
                 path.push(match[1]);
-                if (/^\d+$/.test(match[2]))
+                if (/^\d+$/.test(match[2])) {
                     path.push(parseInt(match[2], 10));
-                else
+                } else {
                     path.push(match[2]);
-            }
-            else
-            {
+                }
+            } else {
                 path.push(parts[i]);
             }
         }
@@ -84,10 +88,11 @@ define('argos/Utility', [
             while (current && path.length > 0)
             {
                 var key = path.pop();
-                if (typeof current[key] !== 'undefined')
+                if (typeof current[key] !== 'undefined') {
                     current = current[key];
-                else
+                } else {
                     return typeof defaultValue !== 'undefined' ? defaultValue : null;
+                }
             }
             return current;
         },
@@ -104,15 +109,18 @@ define('argos/Utility', [
                         ? []
                         : {};
             }
-            if (typeof path[0] !== "undefined")
+            if (typeof path[0] !== "undefined") {
                 current[path[0]] = val;
+            }
+
             return o;
         },
         expand: function(scope, expression) {
-            if (typeof expression === 'function')
+            if (typeof expression === 'function') {
                 return expression.apply(scope, Array.prototype.slice.call(arguments, 2));
-            else
+            } else {
                 return expression;
+            }
         },
         roundNumberTo: function(number, precision) {
             var k = Math.pow(10, precision);
@@ -137,50 +145,48 @@ define('argos/Utility', [
          */
         sanitizeForJson: function(obj) {
             var type;
-            for (var key in obj)
-            {
-                try
-                {
-                    type = typeof obj[key];
-                }
-                catch(e)
-                {
-                    delete obj[key];
-                    continue;
-                }
-
-                switch(type)
-                {
-                    case 'undefined':
-                        obj[key] = 'undefined';
-                        break;
-
-                    case 'function':
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    try {
+                        type = typeof obj[key];
+                    } catch(e) {
                         delete obj[key];
-                        break;
+                        continue;
+                    }
 
-                    case 'object':
-                        if (obj[key] === null) {
-                            obj[key] = 'null';
+                    switch(type) {
+                        case 'undefined':
+                            obj[key] = 'undefined';
                             break;
-                        }
-                        if(key === 'scope')
-                        {
-                            obj[key] = 'null';
-                            break;
-                        }
-                        obj[key] = this.sanitizeForJson(obj[key]);
-                        break;
-                    case 'string':
-                        try
-                        {
-                            obj[key] = json.parse(obj[key]);
 
-                            if (typeof obj[key] === 'object')
-                                obj[key] = this.sanitizeForJson(obj[key]);
-                        }
-                        catch(e){}
-                        break;
+                        case 'function':
+                            delete obj[key];
+                            break;
+
+                        case 'object':
+                            if (obj[key] === null) {
+                                obj[key] = 'null';
+                                break;
+                            }
+                            if(key === 'scope')
+                            {
+                                obj[key] = 'null';
+                                break;
+                            }
+                            obj[key] = this.sanitizeForJson(obj[key]);
+                            break;
+                        case 'string':
+                            try
+                            {
+                                obj[key] = json.parse(obj[key]);
+
+                                if (typeof obj[key] === 'object') {
+                                    obj[key] = this.sanitizeForJson(obj[key]);
+                                }
+                            }
+                            catch(e){}
+                            break;
+                    }
                 }
             }
             return obj;

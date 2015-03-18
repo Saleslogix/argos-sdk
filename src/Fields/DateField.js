@@ -166,7 +166,7 @@ define('argos/Fields/DateField', [
          */
         isDirty: function() {
             return this.originalValue instanceof Date && this.currentValue instanceof Date
-                ? this.originalValue.getTime() != this.currentValue.getTime()
+                ? this.originalValue.getTime() !== this.currentValue.getTime()
                 : this.originalValue !== this.currentValue;
         },
         /**
@@ -184,8 +184,9 @@ define('argos/Fields/DateField', [
          * @return {Boolean/Object} False for no errors. True/Object for invalid.
          */
         validate: function() {
-            if (this.inputNode.value !== '' && !this.currentValue)
+            if (this.inputNode.value !== '' && !this.currentValue) {
                 return string.substitute(this.invalidDateFormatErrorText, [this.label]);
+            }
 
             return this.inherited(arguments);
         }

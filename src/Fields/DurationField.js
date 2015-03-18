@@ -217,10 +217,11 @@ define('argos/Fields/DurationField', [
          * @return {Boolean} True if they are equal.
          */
         isWordMatch: function(val, word) {
-            if (val.length > word.length)
+            if (val.length > word.length) {
                 val = val.slice(0, word.length);
-            else
+            } else {
                 word = word.slice(0, val.length);
+            }
 
             return val.toUpperCase() === word.toUpperCase();
         },
@@ -249,8 +250,13 @@ define('argos/Fields/DurationField', [
                 multiplier = this.getMultiplier(this.currentKey),
                 newValue = 0;
 
-            if (val.length < 1) return true;
-            if (!match) return true;
+            if (val.length < 1) {
+                return true;
+            }
+
+            if (!match) {
+                return true;
+            }
 
             newValue = parseFloat(match[0]) * multiplier;
             this.setValue(newValue);
@@ -262,8 +268,9 @@ define('argos/Fields/DurationField', [
         getMultiplier: function(key) {
             var k;
             for (k in this.autoCompleteText) {
-                if (this.autoCompleteText.hasOwnProperty(k) && key == this.autoCompleteText[k])
+                if (this.autoCompleteText.hasOwnProperty(k) && key === this.autoCompleteText[k]) {
                     break;
+                }
             }
             return k;
         },
@@ -307,20 +314,21 @@ define('argos/Fields/DurationField', [
                 finalUnit = 1,
                 autoCompleteValues = this.autoCompleteText;
 
-            for (var key in autoCompleteValues)
-            {
-                stepValue = parseInt(key, 10);
-                if (val === 0 && stepValue === 1)
-                {
-                    this.currentKey = autoCompleteValues[key];
-                    break;
-                }
-                if (val / stepValue >= 1)
-                {
-                    finalUnit = stepValue;
-                    this.currentKey = autoCompleteValues[key];
+            for (var key in autoCompleteValues) {
+                if (autoCompleteValues.hasOwnProperty(key)) {
+                    stepValue = parseInt(key, 10);
+                    if (val === 0 && stepValue === 1) {
+                        this.currentKey = autoCompleteValues[key];
+                        break;
+                    }
+
+                    if (val / stepValue >= 1) {
+                        finalUnit = stepValue;
+                        this.currentKey = autoCompleteValues[key];
+                    }
                 }
             }
+
             return this.formatUnit(this.convertUnit(val, finalUnit));
         },
         /**

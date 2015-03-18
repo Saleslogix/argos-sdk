@@ -137,10 +137,10 @@ define('argos/ReUI/main', [
 
         R.rootEl.setAttribute('orient', value);
 
-        if (value == 'portrait') {
+        if (value === 'portrait') {
             domClass.remove(R.rootEl, 'landscape');
             domClass.add(R.rootEl, 'portrait');
-        } else if (value == 'landscape') {
+        } else if (value === 'landscape') {
             domClass.remove(R.rootEl, 'portrait');
             domClass.add(R.rootEl, 'landscape');
         } else {
@@ -164,14 +164,14 @@ define('argos/ReUI/main', [
             return;
         }
 
-        if (context.hash != location.hash) {
+        if (context.hash !== location.hash) {
             // do reverse checking here, loop-and-trim will be done by show
             var reverse = false,
                 info,
                 page;
 
             for (var position = context.history.length - 2; position >= 0; position--) {
-                if (context.history[position].hash == location.hash) {
+                if (context.history[position].hash === location.hash) {
                     info = context.history[position];
                     reverse = true;
                     break;
@@ -290,7 +290,7 @@ define('argos/ReUI/main', [
 
                 // do loop and trim
                 for (position = count - 1; position >= 0; position--) {
-                    if (context.history[position].hash == hash) {
+                    if (context.history[position].hash === hash) {
                         break;
                     }
                 }
@@ -308,7 +308,7 @@ define('argos/ReUI/main', [
                     // if the requested hash does not equal the current location hash, trim up history.
                     // location hash will not match requested hash when show is called directly, but will match
                     // for detected location changes (i.e. the back button).
-                    if (location.hash != hash) {
+                    if (location.hash !== hash) {
                         history.go(position - (count - 1));
                     }
                 } else if (o.returnTo) {
@@ -328,7 +328,7 @@ define('argos/ReUI/main', [
 
                         context.hash = context.history[context.history.length - 1] && context.history[context.history.length - 1].hash;
 
-                        if (location.hash != hash) {
+                        if (location.hash !== hash) {
                             history.go(position - (count - 1));
                         }
                     }

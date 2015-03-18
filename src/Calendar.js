@@ -203,9 +203,9 @@ define('argos/Calendar', [
 
             for (var i=min; i <= max; i++) {
                 var opt = domConstruct.create('option', {
-                    innerHTML: (this.monthNode == el) ? uCase(this.months[i]) : pad(i),
+                    innerHTML: (this.monthNode === el) ? uCase(this.months[i]) : pad(i),
                     value: i,
-                    selected: (i == val)
+                    selected: (i === val)
                 });
 
                 el.options[el.options.length] = opt;
@@ -221,7 +221,7 @@ define('argos/Calendar', [
                 : this.timeFormatText.split(/[^a-z]/i)[formatIndex - 3].charAt(0)
                 ];
 
-            var whichFormat = ('selectorTemplate' == whichTemplate)
+            var whichFormat = ('selectorTemplate' === whichTemplate)
                 ? whichField
                 : uCase(whichField);
 
@@ -294,7 +294,7 @@ define('argos/Calendar', [
         decrementDay: function() { this.decrement(this.dayNode); },
         decrementHour: function() {
             this.decrement(this.hourNode);
-            if (11 == this.hourNode.value % 12) {
+            if (11 === this.hourNode.value % 12) {
                 this.toggleMeridiem({$source:this.meridiemNode});
             }
         },
@@ -305,10 +305,22 @@ define('argos/Calendar', [
             if (0 <= (el.selectedIndex - inc)) {
                 el.selectedIndex = inc * Math.floor((el.selectedIndex -1)/ inc);
             } else {
-                if (el == this.yearNode)   { return false; }
-                if (el == this.dayNode)    { this.decrementMonth(); }
-                if (el == this.monthNode)  { this.decrementYear();  }
-                if (el == this.minuteNode) { this.decrementHour();  }
+                if (el === this.yearNode) {
+                    return false;
+                }
+
+                if (el === this.dayNode) {
+                    this.decrementMonth();
+                }
+
+                if (el === this.monthNode) {
+                    this.decrementYear();
+                }
+
+                if (el === this.minuteNode) {
+                    this.decrementHour();
+                }
+
                 el.selectedIndex = el.options.length - inc;
             }
 
@@ -321,7 +333,7 @@ define('argos/Calendar', [
         incrementHour: function() {
             this.increment(this.hourNode);
 
-            if (this.hourNode.selectedIndex == (this.hourNode.options.length - 1)) {
+            if (this.hourNode.selectedIndex === (this.hourNode.options.length - 1)) {
                 this.toggleMeridiem({$source:this.meridiemNode});
             }
         },
@@ -332,10 +344,22 @@ define('argos/Calendar', [
             if (el.options.length > (el.selectedIndex + inc)) {
                 el.selectedIndex += inc;
             } else {
-                if (el == this.yearNode) { return false; }
-                if (el == this.dayNode) { this.incrementMonth(); }
-                if (el == this.monthNode)  { this.incrementYear(); }
-                if (el == this.minuteNode) { this.incrementHour(); }
+                if (el === this.yearNode) {
+                    return false;
+                }
+
+                if (el === this.dayNode) {
+                    this.incrementMonth();
+                }
+
+                if (el === this.monthNode) {
+                    this.incrementYear();
+                }
+
+                if (el === this.minuteNode) {
+                    this.incrementHour();
+                }
+
                 el.selectedIndex = 0;
             }
 

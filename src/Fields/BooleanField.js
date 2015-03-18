@@ -93,7 +93,9 @@ define('argos/Fields/BooleanField', [
          * @param {Event} evt The click/tap event
          */
         _onClick: function(evt) {
-            if (this.isDisabled()) return;
+            if (this.isDisabled()) {
+                return;
+            }
 
             var toggledValue = !this.getValue();
 
@@ -119,14 +121,17 @@ define('argos/Fields/BooleanField', [
                 ? /^(true|t|0)$/i.test(val)
                 : !!val;
 
-            if (initial) this.originalValue = val;
+            if (initial) {
+                this.originalValue = val;
+            }
 
             domAttr.set(this.toggleNode, 'toggled', val);
 
-            if (val === false)
+            if (val === false) {
                 domClass.remove(this.toggleNode, 'toggleStateOn');
-            else
+            } else {
                 domClass.add(this.toggleNode, 'toggleStateOn');
+            }
 
             this.onChange(val, this);
         },
@@ -145,7 +150,7 @@ define('argos/Fields/BooleanField', [
          * @return {Boolean}
          */
         isDirty: function() {
-            return (this.originalValue != this.getValue());
+            return (this.originalValue !== this.getValue());
         }
     });
 

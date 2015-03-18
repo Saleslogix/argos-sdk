@@ -158,14 +158,37 @@ define('argos/_SDataListMixin', [
         _applyStateToQueryOptions: function(queryOptions) {
             var options = this.options;
             if (options) {
-                if (options.select) queryOptions.select = options.select;
-                if (options.include) queryOptions.include = options.include;
-                if (options.orderBy) queryOptions.sort = options.orderBy;
-                if (options.contractName) queryOptions.contractName = options.contractName;
-                if (options.resourceKind) queryOptions.resourceKind = options.resourceKind;
-                if (options.resourceProperty) queryOptions.resourceProperty = options.resourceProperty;
-                if (options.resourcePredicate) queryOptions.resourcePredicate = options.resourcePredicate;
-                if (options.queryArgs) queryOptions.queryArgs = options.queryArgs;
+                if (options.select) {
+                    queryOptions.select = options.select;
+                }
+
+                if (options.include) {
+                    queryOptions.include = options.include;
+                }
+
+                if (options.orderBy) {
+                    queryOptions.sort = options.orderBy;
+                }
+
+                if (options.contractName) {
+                    queryOptions.contractName = options.contractName;
+                }
+
+                if (options.resourceKind) {
+                    queryOptions.resourceKind = options.resourceKind;
+                }
+
+                if (options.resourceProperty) {
+                    queryOptions.resourceProperty = options.resourceProperty;
+                }
+
+                if (options.resourcePredicate) {
+                    queryOptions.resourcePredicate = options.resourcePredicate;
+                }
+
+                if (options.queryArgs) {
+                    queryOptions.queryArgs = options.queryArgs;
+                }
             }
         },
         formatSearchQuery: function(query) {

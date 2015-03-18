@@ -35,14 +35,11 @@ define('argos/ErrorManager', [
     utility
 ) {
     var errors = [];
-    try
-    {
-        if (window.localStorage)
+    try {
+        if (window.localStorage) {
             errors = json.parse(window.localStorage.getItem('errorlog')) || [];
-    }
-    catch(e)
-    {
-
+        }
+    } catch(e) {
     }
 
     var __class = lang.setObject('argos.ErrorManager', {
@@ -188,27 +185,30 @@ define('argos/ErrorManager', [
          * @return {Object} Cleaned object for for JSON serialization
          */
         serializeValues: function(obj) {
-            for (var key in obj){
-                switch(typeof obj[key]){
-                    case 'undefined':
-                        obj[key] = 'undefined';
-                        break;
-                    case 'function':
-                        delete obj[key];
-                        break;
-                    case 'object':
-                        if (obj[key] === null) {
-                            obj[key] = 'null';
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    switch(typeof obj[key]){
+                        case 'undefined':
+                            obj[key] = 'undefined';
                             break;
-                        }
-                        if(key === 'scope') { // eliminate recursive self call
-                            obj[key] = this.scopeSaveText;
+                        case 'function':
+                            delete obj[key];
                             break;
-                        }
-                        obj[key] = this.serializeValues(obj[key]);
-                        break;
+                        case 'object':
+                            if (obj[key] === null) {
+                                obj[key] = 'null';
+                                break;
+                            }
+                            if(key === 'scope') { // eliminate recursive self call
+                                obj[key] = this.scopeSaveText;
+                                break;
+                            }
+                            obj[key] = this.serializeValues(obj[key]);
+                            break;
+                    }
                 }
             }
+
             return obj;
         },
 
@@ -220,8 +220,9 @@ define('argos/ErrorManager', [
             var errLength = errors.length,
                 cacheSizeIndex = this.errorCacheSizeMax - 1;
 
-            if (errLength > cacheSizeIndex)
+            if (errLength > cacheSizeIndex) {
                 this.removeError(0, errLength - cacheSizeIndex);
+            }
         },
 
         /**
@@ -233,10 +234,10 @@ define('argos/ErrorManager', [
         getError: function(key, value) {
             var errorList = this.getAllErrors();
 
-            for (var i = 0; i < errorList.length; i++)
-            {
-                if (errorList[i][key] == value)
+            for (var i = 0; i < errorList.length; i++) {
+                if (errorList[i][key] === value) {
                     return errorList[i];
+                }
             }
 
             return null;
@@ -273,8 +274,9 @@ define('argos/ErrorManager', [
          */
         save: function() {
             try {
-                if (window.localStorage)
+                if (window.localStorage) {
                     window.localStorage.setItem('errorlog', json.stringify(errors));
+                }
             } catch(e) {
                 console.error(e);
             }

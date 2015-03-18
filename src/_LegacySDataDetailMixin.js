@@ -109,7 +109,7 @@ define('argos/_LegacySDataDetailMixin', [
          * @param {Object} o The options that were passed when creating the Ajax request.
          */
         onRequestDataFailure: function(response, o) {
-            if (response && response.status == 404) {
+            if (response && response.status === 404) {
                 domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
             } else {
                 alert(string.substitute(this.requestErrorText, [response, o]));

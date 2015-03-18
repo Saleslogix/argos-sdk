@@ -98,7 +98,7 @@ define('argos/SearchWidget', [
          * Text that is used when no value is in the search box - "placeholder" text.
          */
         searchText: 'Search',
-        
+
         /**
          * @property {RegExp}
          * The regular expression used to determine if a search query is a custom search expression.  A custom search
@@ -167,31 +167,36 @@ define('argos/SearchWidget', [
             this.hashTagSearchRE.lastIndex = 0;
 
             var match;
-            while ((match = this.hashTagSearchRE.exec(query)))
-            {
+            while ((match = this.hashTagSearchRE.exec(query))) {
                 var hashTag = match[1],
                     hashQueryExpression = null;
 
                 // todo: can optimize later if necessary
-                for (var i = 0; i < hashLayout.length && !hashQueryExpression; i++)
-                    if (hashLayout[i].tag == hashTag)
+                for (var i = 0; i < hashLayout.length && !hashQueryExpression; i++) {
+                    if (hashLayout[i].tag === hashTag) {
                         hashQueryExpression = hashLayout[i].query;
+                    }
+                }
 
-                if (!hashQueryExpression) continue;
+                if (!hashQueryExpression) {
+                    continue;
+                }
 
                 hashQueries.push(this.expandExpression(hashQueryExpression));
                 additionalSearch = additionalSearch.replace(match[0], '');
             }
 
-            if (hashQueries.length < 1)
+            if (hashQueries.length < 1) {
                 return this.formatSearchQuery(query);
+            }
 
             query = string.substitute('(${0})', [hashQueries.join(') and (')]);
 
             additionalSearch = additionalSearch.replace(/^\s+|\s+$/g, '');
 
-            if (additionalSearch)
+            if (additionalSearch) {
                 query += string.substitute(' and (${0})', [this.formatSearchQuery(additionalSearch)]);
+            }
 
             return query;
         },
@@ -209,10 +214,11 @@ define('argos/SearchWidget', [
          * @return {String} String expression.
          */
         expandExpression: function(expression) {
-            if (typeof expression === 'function')
+            if (typeof expression === 'function') {
                 return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-            else
+            } else {
                 return expression;
+            }
         },
         /**
          * Clears the search input text and attempts to re-open the keyboard
@@ -247,8 +253,7 @@ define('argos/SearchWidget', [
          * @param {Event} evt Key press event
          */
         _onKeyPress: function(evt) {
-            if (evt.keyCode == 13 || evt.keyCode == 10)
-            {
+            if (evt.keyCode === 13 || evt.keyCode === 10) {
                 event.stop(evt);
                 this.queryNode.blur();
                 this.search();

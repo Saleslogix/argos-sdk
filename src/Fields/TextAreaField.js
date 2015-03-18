@@ -70,7 +70,10 @@ define('argos/Fields/TextAreaField', [
             if (val === null || typeof val === 'undefined') {
                 val = '';
             }
-            if (initial) this.originalValue = val;
+
+            if (initial) {
+                this.originalValue = val;
+            }
 
             this.previousValue = false;
 

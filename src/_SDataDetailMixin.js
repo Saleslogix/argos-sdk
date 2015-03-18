@@ -95,12 +95,29 @@ define('argos/_SDataDetailMixin', [
         _applyStateToGetOptions: function(getOptions) {
             var options = this.options;
             if (options) {
-                if (options.select) getOptions.select = options.select;
-                if (options.include) getOptions.include = options.include;
-                if (options.contractName) getOptions.contractName = options.contractName;
-                if (options.resourceKind) getOptions.resourceKind = options.resourceKind;
-                if (options.resourceProperty) getOptions.resourceProperty = options.resourceProperty;
-                if (options.resourcePredicate) getOptions.resourcePredicate = options.resourcePredicate;
+                if (options.select) {
+                    getOptions.select = options.select;
+                }
+
+                if (options.include) {
+                    getOptions.include = options.include;
+                }
+
+                if (options.contractName) {
+                    getOptions.contractName = options.contractName;
+                }
+
+                if (options.resourceKind) {
+                    getOptions.resourceKind = options.resourceKind;
+                }
+
+                if (options.resourceProperty) {
+                    getOptions.resourceProperty = options.resourceProperty;
+                }
+
+                if (options.resourcePredicate) {
+                    getOptions.resourcePredicate = options.resourcePredicate;
+                }
             }
         },
         /**

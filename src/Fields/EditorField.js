@@ -330,14 +330,17 @@ define('argos/Fields/EditorField', [
             if (val) {
                 this.validationValue = this.currentValue = val;
 
-                if (initial) this.originalValue = this.currentValue;
+                if (initial) {
+                    this.originalValue = this.currentValue;
+                }
 
                 this.setText(this.formatValue(val));
-            }
-            else {
+            } else {
                 this.validationValue = this.currentValue = null;
 
-                if (initial) this.originalValue = this.currentValue;
+                if (initial) {
+                    this.originalValue = this.currentValue;
+                }
 
                 this.setText(this.emptyText);
             }

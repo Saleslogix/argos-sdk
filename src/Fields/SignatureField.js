@@ -135,22 +135,22 @@ define('argos/Fields/SignatureField', [
          * @param initial
          */
         setValue: function (val, initial) {
-            if (initial) this.originalValue = val;
+            if (initial) {
+                this.originalValue = val;
+            }
 
             this.currentValue = val;
             domAttr.set(this.inputNode, 'value', val || '');
 
-            try
-            {
+            try {
                 this.signature = json.fromJson(val);
-            }
-            catch(e)
-            {
+            } catch(e) {
                 this.signature = [];
             }
 
-            if (!this.signature || Array != this.signature.constructor)
+            if (!this.signature || Array !== this.signature.constructor) {
                 this.signature = [];
+            }
 
             this.signatureNode.src = format.imageFromVector(this.signature, this.config, false);
         },

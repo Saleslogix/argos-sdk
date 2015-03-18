@@ -61,10 +61,11 @@ define('argos/Toolbar', [
          * @return {String} String expression.
          */
         expandExpression: function(expression) {
-            if (typeof expression === 'function')
+            if (typeof expression === 'function') {
                 return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-            else
+            } else {
                 return expression;
+            }
         },
         /**
          * Called upon application startup.
@@ -81,17 +82,14 @@ define('argos/Toolbar', [
             var id = parameters && parameters.tool,
                 tool = this.tools && this.tools[id],
                 source = tool && tool.source;
-            if (source && tool.enabled)
-            {
-                if (source.fn)
-                {
+            if (source && tool.enabled) {
+                if (source.fn) {
                     source.fn.call(source.scope || this, source);
-                }
-                else if (source.action)
-                {
+                } else if (source.action) {
                     var view = App.getPrimaryActiveView();
-                    if (view && view.hasAction(source.action))
+                    if (view && view.hasAction(source.action)) {
                         view.invokeAction(source.action, lang.mixin(parameters, {'$tool': source}), evt, node);
+                    }
                 }
             }
         },
@@ -135,8 +133,9 @@ define('argos/Toolbar', [
          */
         enableTool: function(id) {
             var tool = this.tools && this.tools[id];
-            if (tool)
+            if (tool) {
                 tool.enabled = true;
+            }
         },
         /**
          * Sets enabled to false of the toolbar item that matches the passed id
@@ -144,8 +143,9 @@ define('argos/Toolbar', [
          */
         disableTool: function(id) {
             var tool = this.tools && this.tools[id];
-            if (tool)
+            if (tool) {
                 tool.enabled = false;
+            }
         },
         /**
          * Sets busy to true of the toolbar item that matches the passed id
@@ -153,8 +153,9 @@ define('argos/Toolbar', [
          */
         indicateToolBusy: function(id) {
             var tool = this.tools && this.tools[id];
-            if (tool)
+            if (tool) {
                 tool.busy = true;
+            }
         },
         /**
          * Sets busy to false of the toolbar item that matches the passed id
@@ -162,8 +163,9 @@ define('argos/Toolbar', [
          */
         clearToolBusy: function(id) {
             var tool = this.tools && this.tools[id];
-            if (tool)
+            if (tool) {
                 tool.busy = false;
+            }
         },
         /**
          * Checks the enabled property of the toolbar item that matches the passed id
@@ -180,18 +182,21 @@ define('argos/Toolbar', [
         showTools: function(tools) {
             this.tools = {};
 
-            if (typeof tools == 'undefined') return;
+            if (typeof tools === 'undefined') {
+                return;
+            }
 
             for (var i = 0; i < tools.length; i++) {
                 var tool = {
                     busy: false,
-                    enabled: typeof tools[i].enabled != 'undefined' ? tools[i].enabled : true,
+                    enabled: typeof tools[i].enabled !== 'undefined' ? tools[i].enabled : true,
                     source: tools[i]
                 };
 
                 // if tool is enabled, check security
-                if (tool.enabled && tools[i].security)
+                if (tool.enabled && tools[i].security) {
                     tool.enabled = App.hasAccessTo(this.expandExpression(tools[i].security));
+                }
 
                 this.tools[tools[i].id] = tool;
             }

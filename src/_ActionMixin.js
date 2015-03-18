@@ -69,7 +69,7 @@ define('argos/_ActionMixin', [
          */
         _isValidElementForAction: function(el) {
             var contained = this.domNode.contains
-                ? this.domNode != el && this.domNode.contains(el)
+                ? this.domNode !== el && this.domNode.contains(el)
                 : !!(this.domNode.compareDocumentPosition(el) & 16);
 
             return (this.domNode === el) || contained;
@@ -107,7 +107,9 @@ define('argos/_ActionMixin', [
             for (var i = 0, attrLen = el.attributes.length; i < attrLen; i++)
             {
                 var attributeName = el.attributes[i].name;
-                if (/^((?=data-action)|(?!data))/.test(attributeName)) continue;
+                if (/^((?=data-action)|(?!data))/.test(attributeName)) {
+                    continue;
+                }
 
                 /* transform hyphenated names to pascal case, minus the data segment, to be in line with HTML5 dataset naming conventions */
                 /* see: http://dev.w3.org/html5/spec/elements.html#embedding-custom-non-visible-data */

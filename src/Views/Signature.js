@@ -249,8 +249,9 @@ define('argos/Views/Signature', [
         _penUp: function (e) {
             e.preventDefault();
             this.isPenDown = false;
-            if (this.trace.length)
+            if (this.trace.length) {
                 this.signature.push(this.trace);
+            }
 
             this.trace = [];
             this.context.strokeStyle = this.config.penColor;
@@ -263,8 +264,9 @@ define('argos/Views/Signature', [
             if (this.signature.length)
             {
                 this.buffer = this.signature.pop();
-                if (!this.signature.length)
+                if (!this.signature.length) {
                     this.buffer = [this.buffer];
+                }
 
             } else if (this.buffer.length)
             {
@@ -341,8 +343,9 @@ define('argos/Views/Signature', [
         optimizeSignature: function() {
             var optimized = [];
 
-            for (var i = 0; i < this.signature.length; i++)
+            for (var i = 0; i < this.signature.length; i++) {
                 optimized.push(this.optimize(this.signature[i]));
+            }
 
             return optimized;
         },
@@ -353,7 +356,9 @@ define('argos/Views/Signature', [
          * @return {Number[]} Optimized array
          */
         optimize: function(vector) {
-            if (vector.length < 2) return vector;
+            if (vector.length < 2) {
+                return vector;
+            }
 
             var result = [],
                 minA = 0.95,

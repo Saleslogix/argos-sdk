@@ -176,7 +176,9 @@ define('argos/Store/SData', [
 
                 if (queryArgs) {
                     for (var arg in queryArgs) {
-                        request.setQueryArg(arg, queryArgs[arg]);
+                        if (queryArgs.hasOwnProperty(arg)) {
+                            request.setQueryArg(arg, queryArgs[arg]);
+                        }
                     }
                 }
             }

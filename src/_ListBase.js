@@ -724,8 +724,10 @@ define('argos/_ListBase', [
 
                 // We know we are single select, so just grab the first selection
                 for (prop in selectedItems) {
-                    selection = selectedItems[prop];
-                    break;
+                    if (selectedItems.hasOwnProperty(prop)) {
+                        selection = selectedItems[prop];
+                        break;
+                    }
                 }
             }
 
@@ -760,8 +762,10 @@ define('argos/_ListBase', [
 
 
             for (var key in selectedItems) {
-                selection = selectedItems[key];
-                break;
+                if (selectedItems.hasOwnProperty(key)) {
+                    selection = selectedItems[key];
+                    break;
+                }
             }
 
             this._invokeAction(action, selection);
@@ -791,8 +795,10 @@ define('argos/_ListBase', [
                 selection = null, key;
 
             for (key in selectedItems) {
-                selection = selectedItems[key];
-                break;
+                if (selectedItems.hasOwnProperty(key)) {
+                    selection = selectedItems[key];
+                    break;
+                }
             }
             this._applyStateToActions(selection);
         },
@@ -800,7 +806,7 @@ define('argos/_ListBase', [
          * Called from checkActionState method and sets the state of the actions from what was selected from the selected row, it sets the disabled state for each action
          * item using the currently selected row as context by passing the action instance the selected row to the
          * action items `enabled` property.
-         * @param {Object} selection 
+         * @param {Object} selection
          */
         _applyStateToActions: function(selection) {
             var i, action;
@@ -1479,19 +1485,19 @@ define('argos/_ListBase', [
         refreshRequiredFor: function(options) {
             if (this.options) {
                 if (options) {
-                    if (this.expandExpression(this.options.stateKey) != this.expandExpression(options.stateKey)) {
+                    if (this.expandExpression(this.options.stateKey) !== this.expandExpression(options.stateKey)) {
                         return true;
                     }
-                    if (this.expandExpression(this.options.where) != this.expandExpression(options.where)) {
+                    if (this.expandExpression(this.options.where) !== this.expandExpression(options.where)) {
                         return true;
                     }
-                    if (this.expandExpression(this.options.query) != this.expandExpression(options.query)) {
+                    if (this.expandExpression(this.options.query) !== this.expandExpression(options.query)) {
                         return true;
                     }
-                    if (this.expandExpression(this.options.resourceKind) != this.expandExpression(options.resourceKind)) {
+                    if (this.expandExpression(this.options.resourceKind) !== this.expandExpression(options.resourceKind)) {
                         return true;
                     }
-                    if (this.expandExpression(this.options.resourcePredicate) != this.expandExpression(options.resourcePredicate)) {
+                    if (this.expandExpression(this.options.resourcePredicate) !== this.expandExpression(options.resourcePredicate)) {
                         return true;
                     }
                 }
@@ -1549,14 +1555,13 @@ define('argos/_ListBase', [
          * Extends the {@link View#transitionTo parent implementation} to also configure the search widget and
          * load previous selections into the selection model.
          */
-        transitionTo: function()
-        {
+        transitionTo: function() {
             this.configureSearch();
 
             if (this._selectionModel) {
                 this._loadPreviousSelections();
             }
-            
+
             this.inherited(arguments);
         },
         /**
@@ -1569,14 +1574,16 @@ define('argos/_ListBase', [
             // to still work, at expense of potential (rare) performance issues if many customizations are registered.
             var layout = [];
             for (var name in this.hashTagQueries) {
-                layout.push({
-                    'key': name,
-                    'tag': (this.hashTagQueriesText && this.hashTagQueriesText[name]) || name,
-                    'query': this.hashTagQueries[name]
-                });
+                if (this.hashTagQueries.hasOwnProperty(name)) {
+                    layout.push({
+                        'key': name,
+                        'tag': (this.hashTagQueriesText && this.hashTagQueriesText[name]) || name,
+                        'query': this.hashTagQueries[name]
+                    });
+                }
             }
+
             return layout;
-            
         },
         /**
          * Called when the view needs to be reset. Invokes the request data process.
@@ -1648,7 +1655,9 @@ define('argos/_ListBase', [
         destroyRelatedViewWidgets: function() {
             if (this.relatedViewManagers) {
                 for (var relatedViewId in this.relatedViewManagers) {
-                    this.relatedViewManagers[relatedViewId].destroyViews();
+                    if (this.relatedViewManagers.hasOwnProperty(relatedViewId)) {
+                        this.relatedViewManagers[relatedViewId].destroyViews();
+                    }
                 }
             }
         },

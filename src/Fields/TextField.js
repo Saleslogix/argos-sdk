@@ -185,11 +185,11 @@ define('argos/Fields/TextField', [
          * @param {Event} evt
          */
         _onKeyUp: function(evt) {
-            if (this.validationTrigger == 'keyup') {
+            if (this.validationTrigger === 'keyup') {
                 this.onValidationTrigger(evt);
             }
 
-            if (this.notificationTrigger == 'keyup') {
+            if (this.notificationTrigger === 'keyup') {
                 this.onNotificationTrigger(evt);
             }
         },
@@ -212,11 +212,11 @@ define('argos/Fields/TextField', [
          * @param {Event} evt
          */
         _onBlur: function(evt) {
-            if (this.validationTrigger == 'blur') {
+            if (this.validationTrigger === 'blur') {
                 this.onValidationTrigger(evt);
             }
 
-            if (this.notificationTrigger == 'blur') {
+            if (this.notificationTrigger === 'blur') {
                 this.onNotificationTrigger(evt);
             }
 
@@ -258,10 +258,11 @@ define('argos/Fields/TextField', [
          * @param {Event} evt
          */
         onValidationTrigger: function(evt) {
-            if (this.validate())
+            if (this.validate()) {
                 domClass.add(this.containerNode, 'row-error');
-            else
+            } else {
                 domClass.remove(this.containerNode, 'row-error');
+            }
         },
         /**
          * Returns the input nodes value

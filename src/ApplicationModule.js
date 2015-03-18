@@ -134,8 +134,9 @@ define('argos/ApplicationModule', [
          * @param {DOMNode} domNode Optional. DOM node to place the view in.
          */
         registerToolbar: function(name, toolbar, domNode) {
-            if (this.application)
+            if (this.application) {
                 this.application.registerToolbar(name, toolbar, domNode);
+            }
         },
         /**
          * Passes the customization instance to {@link App#registerCustomization App.registerCustomization}.
@@ -144,8 +145,9 @@ define('argos/ApplicationModule', [
          * @param {Object} spec The customization object containing at least `at` and `type`.
          */
         registerCustomization: function(set, id, spec) {
-            if (this.application)
+            if (this.application) {
                 this.application.registerCustomization(set, id, spec);
+            }
         }
     });
 

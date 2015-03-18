@@ -44,8 +44,10 @@ define('argos/PersistentStorage', [
             lang.mixin(this, options);
         },
         formatQualifiedKey: function(name, key) {
-            if (key && key.indexOf(name) !== 0)
+            if (key && key.indexOf(name) !== 0) {
                 return name + '.' + key;
+            }
+
             return key;
         },
         serializeValue: function(value) {
@@ -56,17 +58,26 @@ define('argos/PersistentStorage', [
                     : value;
         },
         deserializeValue: function(value) {
-            if (value && value.indexOf('{') === 0 && value.lastIndexOf('}') === (value.length - 1))
+            if (value && value.indexOf('{') === 0 && value.lastIndexOf('}') === (value.length - 1)) {
                 return json.fromJson(value);
-            if (value && value.indexOf('[') === 0 && value.lastIndexOf(']') === (value.length - 1))
+            }
+
+            if (value && value.indexOf('[') === 0 && value.lastIndexOf(']') === (value.length - 1)) {
                 return json.fromJson(value);
-            if (convert.isDateString(value))
+            }
+
+            if (convert.isDateString(value)) {
                 return convert.toDateFromString(value);
-            if (/^(true|false)$/.test(value))
+            }
+
+            if (/^(true|false)$/.test(value)) {
                 return value === 'true';
+            }
+
             var numeric = parseFloat(value);
-            if (!isNaN(numeric))
+            if (!isNaN(numeric)) {
                 return numeric;
+            }
 
             return value;
         },
@@ -75,34 +86,30 @@ define('argos/PersistentStorage', [
             var value;
             try
             {
-                if (window.localStorage)
-                {
-                    if (this.singleObjectStore)
-                    {
+                if (window.localStorage) {
+                    if (this.singleObjectStore) {
                         var encoded,
                             store;
 
-                        if (this.allowCacheUse && sosCache[this.name])
-                        {
+                        if (this.allowCacheUse && sosCache[this.name]) {
                             store = sosCache[this.name];
-                        }
-                        else
-                        {
+                        } else {
                             encoded = window.localStorage.getItem(this.name);
                             store = json.fromJson(encoded);
 
-                            if (this.allowCacheUse) sosCache[this.name] = store;
+                            if (this.allowCacheUse) {
+                                sosCache[this.name] = store;
+                            }
                         }
 
                         value = utility.getValue(store, key);
 
-                        if (options.success)
+                        if (options.success) {
                             options.success.call(options.scope || this, value);
+                        }
 
                         return value;
-                    }
-                    else
-                    {
+                    } else {
                         var fqKey = this.formatQualifiedKey(this.name, key),
                             serialized = window.localStorage.getItem(fqKey);
 
@@ -110,45 +117,40 @@ define('argos/PersistentStorage', [
                                 ? this.deserializeValue(serialized)
                                 : serialized;
 
-                        if (options.success)
+                        if (options.success) {
                             options.success.call(options.scope || this, value);
+                        }
 
                         return value;
                     }
-                }
-                else
-                {
-                    if (options.failure)
+                } else {
+                    if (options.failure) {
                         options.failure.call(options.scope || this, false);
+                    }
                 }
-            }
-            catch (e)
-            {
-                if (options && options.failure)
+            } catch (e) {
+                if (options && options.failure) {
                     options.failure.call(options.scope || this, e);
+                }
             }
         },
         setItem: function(key, value, options) {
             options = options || {};
-            try
-            {
-                if (window.localStorage)
-                {
-                    if (this.singleObjectStore)
-                    {
+            try {
+                if (window.localStorage) {
+                    if (this.singleObjectStore) {
                         var encoded,
                             store;
 
-                        if (this.allowCacheUse && sosCache[this.name])
-                        {
+                        if (this.allowCacheUse && sosCache[this.name]) {
                             store = sosCache[this.name];
-                        }
-                        else
-                        {
+                        } else {
                             encoded = window.localStorage.getItem(this.name);
                             store = (encoded && json.fromJson(encoded)) || {};
 
-                            if (this.allowCacheUse) sosCache[this.name] = store;
+                            if (this.allowCacheUse) {
+                                sosCache[this.name] = store;
+                            }
                         }
 
                         utility.setValue(store, key, value);
@@ -157,13 +159,12 @@ define('argos/PersistentStorage', [
 
                         window.localStorage.setItem(this.name, encoded);
 
-                        if (options.success)
+                        if (options.success) {
                             options.success.call(options.scope || this);
+                        }
 
                         return true;
-                    }
-                    else
-                    {
+                    } else {
                         var fqKey = this.formatQualifiedKey(this.name, key),
                             serialized = this.serializeValues && options.serialize !== false
                                 ? this.serializeValue(value)
@@ -171,24 +172,25 @@ define('argos/PersistentStorage', [
 
                         window.localStorage.setItem(fqKey, serialized);
 
-                        if (options.success)
+                        if (options.success) {
                             options.success.call(options.scope || this);
+                        }
 
                         return true;
                     }
                 }
                 else
                 {
-                    if (options.failure)
+                    if (options.failure) {
                         options.failure.call(options.scope || this, false);
+                    }
 
                     return false;
                 }
-            }
-            catch (e)
-            {
-                if (options && options.failure)
+            } catch (e) {
+                if (options && options.failure) {
                     options.failure.call(options.scope || this, e);
+                }
 
                 return false;
             }

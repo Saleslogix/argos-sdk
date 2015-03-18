@@ -49,7 +49,9 @@ define('argos/RelatedViewManager',  [
         },
         destroyViews: function() {
             for (var relatedViewId in this.relatedViews) {
-                this.relatedViews[relatedViewId].destroy();
+                if (this.relatedViews.hasOwnProperty(relatedViewId)) {
+                    this.relatedViews[relatedViewId].destroy();
+                }
             }
             this.relatedViews = {};
         },

@@ -87,13 +87,17 @@ define('argos/Format', [
 
 
     function isEmpty(val) {
-        if (typeof val !== 'string') return !val;
+        if (typeof val !== 'string') {
+            return !val;
+        }
 
         return (val.length <= 0);
     }
 
     function encode(val) {
-        if (typeof val !== 'string') return val;
+        if (typeof val !== 'string') {
+            return val;
+        }
 
         return val
             .replace(/&/g, '&amp;')
@@ -103,7 +107,9 @@ define('argos/Format', [
     }
 
     function decode(val) {
-        if (typeof val !== 'string') return val;
+        if (typeof val !== 'string') {
+            return val;
+        }
 
         return val
             .replace(/&amp;/g, '&')
@@ -256,8 +262,9 @@ define('argos/Format', [
          * @return {String} An `<a>` element as a string.
          */
         mail: function(val) {
-            if (typeof val !== 'string')
+            if (typeof val !== 'string') {
                 return val;
+            }
 
             return string.substitute('<a href="mailto:${0}">${0}</a>', [val]);
         },
@@ -283,11 +290,11 @@ define('argos/Format', [
                     ? convert.toDateFromString(val)
                     : null;
 
-            if (date)
-            {
+            if (date) {
                 date = moment(date);
-                if (utc)
+                if (utc) {
                     date = date.add({minutes: date.zone()});
+                }
 
                 return date.format(fmt || argos.Format.shortDateFormatText);
             }
@@ -310,8 +317,9 @@ define('argos/Format', [
                 return val;
             }
 
-            if (typeof d !== 'number')
+            if (typeof d !== 'number') {
                 d = 2;
+            }
 
             var m = Math.pow(10, d),
                 v = Math.floor(parseFloat(val) * m) / m;
@@ -366,7 +374,9 @@ define('argos/Format', [
          * @return {String} Yes for true, No for false.
          */
         yesNo: function(val) {
-            if (typeof val === 'string') val = /^true$/i.test(val);
+            if (typeof val === 'string') {
+                val = /^true$/i.test(val);
+            }
 
             return val ? argos.Format.yesText || 'Yes'
                 : argos.Format.noText || 'No';
@@ -377,7 +387,9 @@ define('argos/Format', [
          * @return {String} T for true, F for false.
          */
         bool: function(val) {
-            if (typeof val === 'string') val = /^true$/i.test(val);
+            if (typeof val === 'string') {
+                val = /^true$/i.test(val);
+            }
 
             return val
                 ? argos.Format.trueText || 'T'
@@ -389,7 +401,9 @@ define('argos/Format', [
          * @return {String} String with replaced `\n` with `<br>`
          */
         nl2br: function(val) {
-            if (typeof val !== 'string') return val;
+            if (typeof val !== 'string') {
+                return val;
+            }
 
             return val.replace(/\n/g, '<br />');
         },
@@ -400,17 +414,22 @@ define('argos/Format', [
          */
         timespan: function(val) {
             var v = argos.Format.fixed(val);
-            if (isNaN(v) || !v) return '';
+            if (isNaN(v) || !v) {
+                return '';
+            }
 
             var hrs = Math.floor(v / 60);
             var mins  = v % 60;
 
-            if (hrs)
+            if (hrs) {
                 hrs = hrs > 1 ? string.substitute('${0} ${1}', [hrs, (argos.Format.hoursText || 'hours')])
                               : string.substitute('${0} ${1}', [hrs, (argos.Format.hourText || 'hour')]);
-            if (mins)
+            }
+
+            if (mins) {
                 mins = mins > 1 ? string.substitute('${0} ${1}', [mins, (argos.Format.minutesText || 'minutes')])
                                 : string.substitute('${0} ${1}', [mins, (argos.Format.minuteText || 'minute')]);
+            }
 
             return (hrs && mins) ? hrs +" "+ mins
                                  : hrs === 0 ? mins : hrs;
@@ -462,11 +481,13 @@ define('argos/Format', [
 
             options = options || {};
 
-            if (typeof vector == 'string' || vector instanceof String)
+            if (typeof vector === 'string' || vector instanceof String) {
                 try { vector = json.fromJson(vector); } catch(e) {}
+            }
 
-            if (!(vector instanceof Array) || 0 === vector.length)
+            if (!(vector instanceof Array) || 0 === vector.length) {
                 vector = [[]]; // blank image.
+            }
 
             var size = getVectorMaxSize(vector);
 
@@ -481,8 +502,9 @@ define('argos/Format', [
             argos.Format.canvasDraw(vector, canvasNode, options);
 
             img = canvasNode.toDataURL('image/png');
-            if (img.indexOf("data:image/png") !== 0)
+            if (img.indexOf("data:image/png") !== 0) {
                 img = Canvas2Image.saveAsBMP(canvasNode, true).src;
+            }
 
             return html
                 ? string.substitute(

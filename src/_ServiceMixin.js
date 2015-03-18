@@ -30,19 +30,22 @@ define('argos/_ServiceMixin', [
         serviceMap: null,
         constructor: function() {
             var map = this.serviceMap;
-            if (map)
-            {
-                for (var property in map)
-                {
-                    if (this[property]) continue; /* skip any that were explicitly mixed in */
+            if (map) {
+                for (var property in map) {
+                    if (map.hasOwnProperty(property)) {
+                        if (this[property]) {
+                            continue; /* skip any that were explicitly mixed in */
+                        }
 
-                    this[property] = this._resolveService(map[property]);
+                        this[property] = this._resolveService(map[property]);
+                    }
                 }
             }
         },
         _resolveService: function(specification) {
-            if (specification && specification.type === 'sdata')
+            if (specification && specification.type === 'sdata') {
                 return App.getService(specification.name);
+            }
 
             return App.getService(specification);
         }

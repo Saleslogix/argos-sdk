@@ -261,26 +261,27 @@ define('argos/Fields/_Field', [
          * @return {Boolean/Object} False signifies that everything is okay and the field is valid, `true` or a `string message` indicates that it failed.
          */
         validate: function(value) {
-            if (typeof this.validator === 'undefined')
+            if (typeof this.validator === 'undefined') {
                 return false;
+            }
 
             var all = lang.isArray(this.validator) ? this.validator : [this.validator];
 
-            for (var i = 0; i < all.length; i++)
-            {
+            for (var i = 0; i < all.length; i++) {
                 var current = all[i],
                     definition;
 
-                if (current instanceof RegExp)
+                if (current instanceof RegExp) {
                     definition = {
                         test: current
                     };
-                else if (typeof current === 'function')
+                } else if (typeof current === 'function') {
                     definition = {
                         fn: current
                     };
-                else
+                } else {
                     definition = current;
+                }
 
                 value = typeof value === 'undefined'
                     ? this.getValue()
@@ -292,16 +293,17 @@ define('argos/Fields/_Field', [
                         ? !definition.test.test(value)
                         : false;
 
-                if (result)
-                {
-                    if (definition.message)
+                if (result) {
+                    if (definition.message) {
                         result = typeof definition.message === 'function'
                             ? definition.message.call(definition.scope || this, value, this, this.owner)
                             : string.substitute(definition.message, [value, this.name, this.label]);
+                    }
 
                     return result;
                 }
             }
+
             return false;
         },
         /**

@@ -104,7 +104,9 @@ define('argos/SelectionModel', [
             {
                 this.selections[key] = {data: data, tag: tag};
                 this.count++;
-                if (this._fireEvents) this.onSelect(key, data, tag, this);
+                if (this._fireEvents) {
+                    this.onSelect(key, data, tag, this);
+                }
             }
         },
         /**
@@ -115,10 +117,11 @@ define('argos/SelectionModel', [
          * @param tag
          */
         toggle: function(key, data, tag) {
-            if (this.isSelected(key))
+            if (this.isSelected(key)) {
                 this.deselect(key);
-            else
+            } else {
                 this.select(key, data, tag);
+            }
         },
         /**
          * Removes an item from the store
@@ -136,8 +139,9 @@ define('argos/SelectionModel', [
                 delete this.selections[key];
                 this.count--;
 
-                if (this._fireEvents)
+                if (this._fireEvents) {
                     this.onDeselect(key, selection.data, selection.tag, this);
+                }
             }
         },
         /**
@@ -149,8 +153,11 @@ define('argos/SelectionModel', [
             if (this.clearAsDeselect) {
                 this.requireSelection = false;
                 for (var key in this.selections) {
-                    this.deselect(key);
+                    if (this.selections.hasOwnProperty(key)) {
+                        this.deselect(key);
+                    }
                 }
+
                 this.requireSelection = original;
             } else {
                 this.selections = {};
@@ -189,9 +196,12 @@ define('argos/SelectionModel', [
          */
         getSelectedKeys: function() {
             var keys = [];
-            for (var key in this.selections)
-                if (this.selections.hasOwnProperty(key))
+            for (var key in this.selections) {
+                if (this.selections.hasOwnProperty(key)) {
                     keys.push(key);
+                }
+            }
+
             return keys;
         }
     });
