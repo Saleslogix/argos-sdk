@@ -147,11 +147,13 @@ define('argos/SelectionModel', [
          * Removes all items from the store
          */
         clear: function() {
-            var original = this.requireSelection;
+            var original, key;
+
+            original = this.requireSelection;
 
             if (this.clearAsDeselect) {
                 this.requireSelection = false;
-                for (var key in this.selections) {
+                for (key in this.selections) {
                     if (this.selections.hasOwnProperty(key)) {
                         this.deselect(key);
                     }
@@ -194,8 +196,11 @@ define('argos/SelectionModel', [
          * @return {String[]} All keys in the store
          */
         getSelectedKeys: function() {
-            var keys = [];
-            for (var key in this.selections) {
+            var keys,
+                key;
+
+            keys = [];
+            for (key in this.selections) {
                 if (this.selections.hasOwnProperty(key)) {
                     keys.push(key);
                 }

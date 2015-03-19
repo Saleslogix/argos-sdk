@@ -37,7 +37,9 @@ define('argos/_CustomizationMixin', [
     lang
 ) {
 
-    var expand = function(expression) {
+    var expand, __class;
+
+    expand = function(expression) {
         if (typeof expression === 'function') {
             return expression.apply(this, Array.prototype.slice.call(arguments, 1));
         } else {
@@ -45,7 +47,7 @@ define('argos/_CustomizationMixin', [
         }
     };
 
-    var __class = declare('argos._CustomizationMixin', null, {
+    __class = declare('argos._CustomizationMixin', null, {
         _layoutCompiled: null,
         _layoutCompiledFrom: null,
         id: null,
@@ -66,13 +68,14 @@ define('argos/_CustomizationMixin', [
                     ? this.customizationSet + '/' + customizationSubSet
                     : this.customizationSet,
                 key = customizationSet + '#' + this.id,
+                customizations,
                 source = layout;
             if (source === this._layoutCompiledFrom[key] && this._layoutCompiled[key]) {
                 return this._layoutCompiled[key]; // same source layout, no changes
             }
 
             if (this.enableCustomizations) {
-                var customizations = this._getCustomizationsFor(customizationSubSet);
+                customizations = this._getCustomizationsFor(customizationSubSet);
                 if (customizations && customizations.length > 0) {
                     layout = this._compileCustomizedLayout(customizations, source, null);
                 }
@@ -93,11 +96,17 @@ define('argos/_CustomizationMixin', [
                 customization,
                 stop,
                 row,
+                i,
+                j,
+                k,
+                insertRowsTarget,
+                expandedValue,
+                children,
                 name;
 
             if (lang.isArray(layout)) {
                 output = [];
-                for (var i = 0; i < layoutCount; i++) {
+                for (i = 0; i < layoutCount; i++) {
                     row = layout[i];
 
                     /* for compatibility */
@@ -109,7 +118,7 @@ define('argos/_CustomizationMixin', [
                     insertRowsBefore = [];
                     insertRowsAfter = [];
 
-                    for (var j = 0; j < customizationCount; j++) {
+                    for (j = 0; j < customizationCount; j++) {
                         if (applied[j]) {
                             continue; // todo: allow a customization to be applied to a layout more than once?
                         }
@@ -138,10 +147,10 @@ define('argos/_CustomizationMixin', [
                                     row = lang.mixin(row, expand(customization.value, row));
                                     break;
                                 case 'insert':
-                                    var insertRowsTarget = (customization.where !== 'before')
+                                    insertRowsTarget = (customization.where !== 'before')
                                             ? insertRowsAfter
-                                            : insertRowsBefore,
-                                        expandedValue = expand(customization.value, row);
+                                            : insertRowsBefore;
+                                    expandedValue = expand(customization.value, row);
 
                                     if (lang.isArray(expandedValue)) {
                                         insertRowsTarget.push.apply(insertRowsTarget, expandedValue);
@@ -163,7 +172,7 @@ define('argos/_CustomizationMixin', [
                     output.push.apply(output, insertRowsBefore);
 
                     if (row) {
-                        var children = (row['children'] && 'children') || (row['as'] && 'as');
+                        children = (row['children'] && 'children') || (row['as'] && 'as');
                         if (children) {
                             // make a shallow copy if we haven't already
                             if (row === layout[i]) {
@@ -181,7 +190,7 @@ define('argos/_CustomizationMixin', [
                  for any non-applied, insert only, customizations, if they have an `or` property that expands into a true expression
                  the value is applied at the end of the parent group that the `or` property (ideally) matches.
                 */
-                for (var k = 0; k < customizationCount; k++) {
+                for (k = 0; k < customizationCount; k++) {
                     if (applied[k]) {
                         continue;
                     }

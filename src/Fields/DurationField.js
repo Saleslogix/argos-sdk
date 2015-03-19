@@ -184,6 +184,7 @@ define('argos/Fields/DurationField', [
          */
         _onKeyUp: function(evt) {
             var val = this.inputNode.value.toString(),
+                key,
                 match = this.autoCompletePhraseRE.exec(val);
 
             if (!match || val.length < 1) {
@@ -191,7 +192,7 @@ define('argos/Fields/DurationField', [
                 return true;
             }
 
-            for (var key in this.autoCompleteText) {
+            for (key in this.autoCompleteText) {
                 if (this.isWordMatch(match[2], this.autoCompleteText[key])) {
                     this.currentKey = this.autoCompleteText[key];
                     this.showAutoComplete(match[1] + this.autoCompleteText[key]);
@@ -309,9 +310,10 @@ define('argos/Fields/DurationField', [
         textFormat: function(val) {
             var stepValue,
                 finalUnit = 1,
+                key,
                 autoCompleteValues = this.autoCompleteText;
 
-            for (var key in autoCompleteValues) {
+            for (key in autoCompleteValues) {
                 if (autoCompleteValues.hasOwnProperty(key)) {
                     stepValue = parseInt(key, 10);
                     if (val === 0 && stepValue === 1) {

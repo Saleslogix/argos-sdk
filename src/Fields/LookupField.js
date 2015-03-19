@@ -358,7 +358,13 @@ define('argos/Fields/LookupField', [
          *
          */
         createNavigationOptions: function() {
-            var options = {
+            var options,
+                expand,
+                dependentValue,
+                item,
+                key;
+
+            options = {
                 enableActions: false,
                 selectionOnly: true,
                 singleSelect: this.singleSelect,
@@ -385,14 +391,14 @@ define('argos/Fields/LookupField', [
                         scope: this.reui
                     }]
                     }
-                },
-                expand = ['resourceKind', 'resourcePredicate', 'where', 'previousSelections'],
-                dependentValue = this.getDependentValue();
+            };
+            expand = ['resourceKind', 'resourcePredicate', 'where', 'previousSelections'];
+            dependentValue = this.getDependentValue();
 
             if (options.singleSelect && options.singleSelectAction) {
-                for (var key in options.tools.tbar) {
+                for (key in options.tools.tbar) {
                     if (options.tools.tbar.hasOwnProperty(key)) {
-                        var item = options.tools.tbar[key];
+                        item = options.tools.tbar[key];
                         if (item.id === options.singleSelectAction) {
                             item.cls = 'invisible';
                         }

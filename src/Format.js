@@ -41,12 +41,18 @@ define('argos/Format', [
     utility,
     moment
 ) {
+    var getVectorMaxSize,
+        phoneLettersMap,
+        __class;
 
-    var getVectorMaxSize = function(v) {
+    getVectorMaxSize = function(v) {
         var w = 1,
-            h = 1;
-        for (var i = 0; i < v.length; i++) {
-            for (var j = 0; j < v[i].length; j++) {
+            h = 1,
+            i,
+            j;
+
+        for (i = 0; i < v.length; i++) {
+            for (j = 0; j < v[i].length; j++) {
                 if (w < v[i][j][0]) {
                     w = v[i][j][0];
                 }
@@ -60,7 +66,7 @@ define('argos/Format', [
         return { width: w, height: h };
     };
 
-    var phoneLettersMap = [
+    phoneLettersMap = [
         {
             test: /[ABC]/gi,
             val: '2'
@@ -121,7 +127,7 @@ define('argos/Format', [
             .replace(/&quot;/g, '"');
     }
 
-    var __class = lang.setObject('argos.Format', {
+    __class = lang.setObject('argos.Format', {
         /**
          * @property {String}
          * Text used in {@link #yesNo yesNo} formatter for true values
@@ -416,13 +422,15 @@ define('argos/Format', [
          * @return {String} A string representation of the minutes as `'n hours m minutes'`
          */
         timespan: function(val) {
-            var v = argos.Format.fixed(val);
+            var v, hrs, mins;
+
+            v = argos.Format.fixed(val);
             if (isNaN(v) || !v) {
                 return '';
             }
 
-            var hrs = Math.floor(v / 60);
-            var mins  = v % 60;
+            hrs = Math.floor(v / 60);
+            mins  = v % 60;
 
             if (hrs) {
                 hrs = hrs > 1 ? string.substitute('${0} ${1}', [hrs, (argos.Format.hoursText || 'hours')])
@@ -447,6 +455,8 @@ define('argos/Format', [
          */
         canvasDraw: function(vector, canvas, options) {
             var scale, x, y,
+                trace,
+                i,
                 context = canvas.getContext('2d');
 
             // Paint canvas white vs. clearing as on Android imageFromVector alpha pixels blacken
@@ -458,11 +468,11 @@ define('argos/Format', [
             context.lineWidth   = options && options.lineWidth ? options.lineWidth : 1;
             context.strokeStyle = options && options.penColor  ? options.penColor  : 'black';
 
-            for (var trace in vector) {
+            for (trace in vector) {
                 if ( 1 < vector[trace].length) {
                     context.beginPath();
                     context.moveTo(vector[trace][0][0] * scale, vector[trace][0][1] * scale);
-                    for (var i = 1; i < vector[trace].length; i++) {
+                    for (i = 1; i < vector[trace].length; i++) {
                         x = vector[trace][i][0] * scale;
                         y = vector[trace][i][1] * scale;
                         context.lineTo(x, y);
@@ -480,6 +490,7 @@ define('argos/Format', [
          */
         imageFromVector: function(vector, options, html) {
             var img,
+                size,
                 canvasNode = domConstruct.create('canvas');
 
             options = options || {};
@@ -494,7 +505,7 @@ define('argos/Format', [
                 vector = [[]]; // blank image.
             }
 
-            var size = getVectorMaxSize(vector);
+            size = getVectorMaxSize(vector);
 
             canvasNode.width  = options.width  || size.width;
             canvasNode.height = options.height || size.height;
@@ -533,14 +544,16 @@ define('argos/Format', [
             val = argos.Format.alphaToPhoneNumeric(val);
 
             var formatters = argos.Format.phoneFormat,
+                i,
+                formatter,
+                match,
                 clean = /^\+/.test(val)
                     ? val
                     : val.replace(/[^0-9x]/ig, ''),
                 formattedMatch;
 
-            for (var i = 0; i < formatters.length; i++) {
-                var formatter = formatters[i],
-                    match;
+            for (i = 0; i < formatters.length; i++) {
+                formatter = formatters[i];
 
                 if ((match = formatter.test.exec(clean))) {
                     formattedMatch = string.substitute(formatter.format, [val, clean].concat(match));

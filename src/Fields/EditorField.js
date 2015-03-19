@@ -248,8 +248,11 @@ define('argos/Fields/EditorField', [
          *
          */
         complete: function() {
-            var view = App.getPrimaryActiveView();
-            var success = true;
+            var view,
+                success;
+
+            view = App.getPrimaryActiveView();
+            success = true;
 
             if (view instanceof argos.Edit) {
                 view.hideValidationSummary();

@@ -78,17 +78,18 @@ define('argos/Store/SData', [
             lang.mixin(this, props);
         },
         _createEntryRequest: function(id, getOptions) {
-            var request = utility.expand(this, getOptions.request || this.request);
+            var request, contractName, resourceKind, dataSet, resourceProperty, resourcePredicate, select, include;
+
+            request = utility.expand(this, getOptions.request || this.request);
             if (request) {
                 request = request.clone();
             } else {
                 id = id || utility.expand(this.scope || this, getOptions.resourcePredicate || this.resourcePredicate);
 
-                var contractName = utility.expand(this.scope || this, getOptions.contractName || this.contractName),
-                    resourceKind = utility.expand(this.scope || this, getOptions.resourceKind || this.resourceKind),
-                    dataSet = utility.expand(this.scope || this, getOptions.dataSet || this.dataSet),
-                    resourceProperty = utility.expand(this.scope || this, getOptions.resourceProperty || this.resourceProperty),
-                    resourcePredicate;
+                contractName = utility.expand(this.scope || this, getOptions.contractName || this.contractName);
+                resourceKind = utility.expand(this.scope || this, getOptions.resourceKind || this.resourceKind);
+                dataSet = utility.expand(this.scope || this, getOptions.dataSet || this.dataSet);
+                resourceProperty = utility.expand(this.scope || this, getOptions.resourceProperty || this.resourceProperty);
 
                 if (id) {
                     resourcePredicate = /\s+/.test(id) ? id : string.substitute("'${0}'", [id]);
@@ -116,8 +117,8 @@ define('argos/Store/SData', [
                 }
             }
 
-            var select = utility.expand(this.scope || this, getOptions.select || this.select),
-                include = utility.expand(this.scope || this, getOptions.include || this.include);
+            select = utility.expand(this.scope || this, getOptions.select || this.select);
+            include = utility.expand(this.scope || this, getOptions.include || this.include);
 
             if (select && select.length > 0) {
                 request.setQueryArg('select', select.join(','));
@@ -130,18 +131,35 @@ define('argos/Store/SData', [
             return request;
         },
         _createFeedRequest: function(query, queryOptions) {
-            var request = utility.expand(this, queryOptions.request || this.request);
+            var request,
+                queryName,
+                contractName,
+                resourceKind,
+                resourceProperty,
+                resourcePredicate,
+                applicationName,
+                dataSet,
+                queryArgs,
+                arg,
+                select,
+                include,
+                orderBy,
+                where,
+                order,
+                conditions;
+
+            request = utility.expand(this, queryOptions.request || this.request);
             if (request) {
                 request = request.clone();
             } else {
-                var queryName = utility.expand(this.scope || this, queryOptions.queryName || this.queryName),
-                    contractName = utility.expand(this.scope || this, queryOptions.contractName || this.contractName),
-                    resourceKind = utility.expand(this.scope || this, queryOptions.resourceKind || this.resourceKind),
-                    resourceProperty = utility.expand(this.scope || this, queryOptions.resourceProperty || this.resourceProperty),
-                    resourcePredicate = utility.expand(this.scope || this, queryOptions.resourcePredicate || this.resourcePredicate),
-                    applicationName = utility.expand(this.scope || this, queryOptions.applicationName || this.applicationName),
-                    dataSet = utility.expand(this.scope || this, queryOptions.dataSet || this.dataSet),
-                    queryArgs = utility.expand(this.scope || this, queryOptions.queryArgs || this.queryArgs);
+                queryName = utility.expand(this.scope || this, queryOptions.queryName || this.queryName);
+                contractName = utility.expand(this.scope || this, queryOptions.contractName || this.contractName);
+                resourceKind = utility.expand(this.scope || this, queryOptions.resourceKind || this.resourceKind);
+                resourceProperty = utility.expand(this.scope || this, queryOptions.resourceProperty || this.resourceProperty);
+                resourcePredicate = utility.expand(this.scope || this, queryOptions.resourcePredicate || this.resourcePredicate);
+                applicationName = utility.expand(this.scope || this, queryOptions.applicationName || this.applicationName);
+                dataSet = utility.expand(this.scope || this, queryOptions.dataSet || this.dataSet);
+                queryArgs = utility.expand(this.scope || this, queryOptions.queryArgs || this.queryArgs);
 
                 if (queryName) {
                     request = new Sage.SData.Client.SDataNamedQueryRequest(this.service)
@@ -175,7 +193,7 @@ define('argos/Store/SData', [
                 }
 
                 if (queryArgs) {
-                    for (var arg in queryArgs) {
+                    for (arg in queryArgs) {
                         if (queryArgs.hasOwnProperty(arg)) {
                             request.setQueryArg(arg, queryArgs[arg]);
                         }
@@ -183,9 +201,9 @@ define('argos/Store/SData', [
                 }
             }
 
-            var select = utility.expand(this.scope || this, queryOptions.select || this.select),
-                include = utility.expand(this.scope || this, queryOptions.include || this.include),
-                orderBy = utility.expand(this.scope || this, queryOptions.sort || this.orderBy);
+            select = utility.expand(this.scope || this, queryOptions.select || this.select);
+            include = utility.expand(this.scope || this, queryOptions.include || this.include);
+            orderBy = utility.expand(this.scope || this, queryOptions.sort || this.orderBy);
 
             if (select && select.length > 0) {
                 request.setQueryArg('select', select.join(','));
@@ -199,7 +217,7 @@ define('argos/Store/SData', [
                 if (typeof orderBy === 'string') {
                     request.setQueryArg('orderby', orderBy);
                 } else if (orderBy.length > 0) {
-                    var order = [];
+                    order = [];
                     array.forEach(orderBy, function(v) {
                         if (v.descending) {
                             this.push(v.attribute + ' desc');
@@ -212,9 +230,8 @@ define('argos/Store/SData', [
                 }
             }
 
-            var where = utility.expand(this.scope || this, queryOptions.where || this.where),
-                conditions = [];
-
+            where = utility.expand(this.scope || this, queryOptions.where || this.where);
+            conditions = [];
 
             if (where) {
                 conditions.push(where);
@@ -243,14 +260,16 @@ define('argos/Store/SData', [
         _onCancel: function(deferred) {
         },
         _onRequestFeedSuccess: function(queryDeferred, feed) {
+            var items, total, error;
+
             if (feed) {
-                var items = lang.getObject(this.itemsProperty, false, feed),
-                    total = typeof feed['$totalResults'] === 'number' ? feed['$totalResults'] : -1;
+                items = lang.getObject(this.itemsProperty, false, feed);
+                total = typeof feed['$totalResults'] === 'number' ? feed['$totalResults'] : -1;
 
                 queryDeferred.total = total;
                 queryDeferred.resolve(items);
             } else {
-                var error = new Error('The feed result is invalid.');
+                error = new Error('The feed result is invalid.');
 
                 queryDeferred.reject(error);
             }
@@ -295,9 +314,10 @@ define('argos/Store/SData', [
         get: function(id, getOptions/* sdata only */) {
             var handle = {},
                 deferred = new Deferred(),
+                method,
                 request = this._createEntryRequest(id, getOptions || {});
 
-            var method = this.executeGetAs
+            method = this.executeGetAs
                 ? request[this.executeGetAs]
                 : request.read;
 
@@ -358,6 +378,10 @@ define('argos/Store/SData', [
             var id = putOptions.id || this.getIdentity(object),
                 entity = putOptions.entity || this.entityName,
                 version = putOptions.version || this.getVersion(object),
+                handle,
+                deferred,
+                request,
+                method,
                 atom = !this.service.isJsonEnabled();
 
             if (id) {
@@ -372,11 +396,11 @@ define('argos/Store/SData', [
                 object['$etag'] = version;
             }
 
-            var handle = {},
-                deferred = new Deferred(),
-                request = this._createEntryRequest(id, putOptions);
+            handle = {};
+            deferred = new Deferred();
+            request = this._createEntryRequest(id, putOptions);
 
-            var method = putOptions.overwrite
+            method = putOptions.overwrite
                 ? request.update
                 : request.create;
 

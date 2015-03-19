@@ -71,9 +71,11 @@ define('argos/_LegacySDataEditMixin', [
          * @return {Object} Sage.SData.Client.SDataSingleResourceRequest instance.
          */
         createRequest: function() {
-            var request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
+            var request, key;
 
-            var key = (this.entry && this.entry['$key']) || this.options.key;
+            request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
+            key = (this.entry && this.entry['$key']) || this.options.key;
+
             if (key) {
                 request.setResourceSelector(string.substitute("'${0}'", [key]));
             }

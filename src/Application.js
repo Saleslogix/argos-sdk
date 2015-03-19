@@ -53,6 +53,11 @@ define('argos/Application', [
     sniff,
     ReUI
 ) {
+    var __class,
+        localize,
+        mergeConfiguration,
+        applyLocalizationTo;
+
     // Polyfill for Funcion.bind, taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
     /* jshint ignore:start */
     if (!Function.prototype.bind) {
@@ -96,7 +101,10 @@ define('argos/Application', [
     lang.extend(Function, {
         // TODO: Deprecate this in favor of the standard "bind", using polyfill if necessary
         bindDelegate: function(scope) {
-            var fn = this;
+            var fn,
+                optional;
+
+            fn = this;
 
             if (arguments.length === 1) {
                 return function() {
@@ -104,7 +112,7 @@ define('argos/Application', [
                 };
             }
 
-            var optional = Array.prototype.slice.call(arguments, 1);
+            optional = Array.prototype.slice.call(arguments, 1);
             return function() {
                 var called = Array.prototype.slice.call(arguments, 0);
                 return fn.apply(scope || this, called.concat(optional));
@@ -112,20 +120,24 @@ define('argos/Application', [
         }
     });
 
-    var applyLocalizationTo = function(object, localization) {
+    applyLocalizationTo = function(object, localization) {
         if (!object) {
             return;
         }
 
-        var target = object.prototype || object;
-        for (var key in localization) {
+        var target,
+            key;
+
+        target = object.prototype || object;
+        for (key in localization) {
             if (lang.isObject(localization[key])) {
                 applyLocalizationTo(target[key], localization[key]);
             } else {
                 target[key] = localization[key];
             }
         }
-    },
+    };
+
     localize = function(name, localization) {
         var target = lang.getObject(name);
         if (target && target.prototype) {
@@ -135,7 +147,8 @@ define('argos/Application', [
         if (target) {
             applyLocalizationTo(target, localization);
         }
-    },
+    };
+
     mergeConfiguration = function(baseConfiguration, moduleConfiguration) {
         if (baseConfiguration) {
             if (baseConfiguration.modules && moduleConfiguration.modules) {
@@ -155,7 +168,7 @@ define('argos/Application', [
         'mergeConfiguration': mergeConfiguration
     });
 
-    var __class = declare('argos.Application', null, {
+    __class = declare('argos.Application', null, {
         /**
          * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
          */
@@ -262,6 +275,9 @@ define('argos/Application', [
          * Also calls {@link #uninitialize uninitialize}.
          */
         destroy: function() {
+            var name,
+                connection;
+
             array.forEach(this._connects, function(handle) {
                 connect.disconnect(handle);
             });
@@ -274,9 +290,9 @@ define('argos/Application', [
                 signal.remove();
             });
 
-            for (var name in this._connections) {
+            for (name in this._connections) {
                 if (this._connections.hasOwnProperty(name)) {
-                    var connection = this._connections[name];
+                    connection = this._connections[name];
                     if (connection) {
                         connection.un('beforerequest', this._loadSDataRequest, this);
                         connection.un('requestcomplete', this._cacheSDataRequest, this);
@@ -449,14 +465,18 @@ define('argos/Application', [
          * Removes all keys from localStorage that start with `sdata.cache`.
          */
         _clearSDataRequestCache: function() {
-            var check = function(k) {
+            var check,
+                i,
+                key;
+
+            check = function(k) {
                 return (/^sdata\.cache/i).test(k);
             };
 
             if (window.localStorage) {
                 /* todo: find a better way to detect */
-                for (var i = window.localStorage.length - 1; i >= 0 ; i--) {
-                    var key = window.localStorage.key(i);
+                for (i = window.localStorage.length - 1; i >= 0 ; i--) {
+                    key = window.localStorage.key(i);
                     if (check(key)) {
                         window.localStorage.removeItem(key);
                     }
@@ -478,14 +498,17 @@ define('argos/Application', [
          * @param o XHR object with namely the `result` property
          */
         _loadSDataRequest: function(request, o) {
+            var key,
+                feed;
+
             // todo: find a better way of indicating that a request can prefer cache
             if (window.localStorage) {
                 if (this.isOnline() && (request.allowCacheUse !== true)) {
                     return;
                 }
 
-                var key = this._createCacheKey(request);
-                var feed = window.localStorage.getItem(key);
+                key = this._createCacheKey(request);
+                feed = window.localStorage.getItem(key);
                 if (feed) {
                     o.result = json.fromJson(feed);
                 }
@@ -648,14 +671,18 @@ define('argos/Application', [
          * @return {View[]} An array containing the currently registered views.
          */
         getViews: function() {
-            var r = [];
-            for (var n in this.views) {
-                if (this.views.hasOwnProperty(n)) {
-                    r.push(this.views[n]);
+            var results,
+                view;
+
+            results = [];
+
+            for (view in this.views) {
+                if (this.views.hasOwnProperty(view)) {
+                    results.push(this.views[view]);
                 }
             }
 
-            return r;
+            return results;
         },
         /**
          * Checks to see if the passed view instance is the currently active one by comparing it to {@link #getPrimaryActiveView primaryActiveView}.
@@ -842,9 +869,12 @@ define('argos/Application', [
         _viewTransitionTo: function(view) {
             this.onViewTransitionTo(view);
 
-            var tools = (view.options && view.options.tools) || view.getTools() || {};
+            var tools,
+                n;
 
-            for (var n in this.bars) {
+            tools = (view.options && view.options.tools) || view.getTools() || {};
+
+            for (n in this.bars) {
                 if (this.bars[n].managed) {
                     this.bars[n].showTools(tools[n]);
                 }
@@ -958,9 +988,13 @@ define('argos/Application', [
          * @param {Object} spec The customization specification
          */
         registerCustomization: function(path, spec) {
+            var customizationSet,
+                container,
+                id;
+
             if (arguments.length > 2) {
-                var customizationSet = arguments[0],
-                    id = arguments[1];
+                customizationSet = arguments[0];
+                id = arguments[1];
 
                 spec = arguments[2];
                 path = id
@@ -968,7 +1002,7 @@ define('argos/Application', [
                     : customizationSet;
             }
 
-            var container = this.customizations[path] || (this.customizations[path] = []);
+            container = this.customizations[path] || (this.customizations[path] = []);
             if (container) {
                 container.push(spec);
             }
@@ -985,17 +1019,22 @@ define('argos/Application', [
          * @param {String} path The customization set such as `list/tools#account_list` or `detail#contact_detail`. First half being the type of customization and the second the view id.
          */
         getCustomizationsFor: function(path) {
+            var forPath,
+                segments,
+                customizationSet,
+                forSet;
+
             if (arguments.length > 1) {
                 path = arguments[1]
                     ? arguments[0] + '#' + arguments[1]
                     : arguments[0];
             }
 
-            var segments = path.split('#'),
-                customizationSet = segments[0];
+            segments = path.split('#');
+            customizationSet = segments[0];
 
-            var forPath = this.customizations[path] || [],
-                forSet = this.customizations[customizationSet] || [];
+            forPath = this.customizations[path] || [];
+            forSet = this.customizations[customizationSet] || [];
 
             return forPath.concat(forSet);
         },

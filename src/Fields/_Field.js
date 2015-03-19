@@ -265,11 +265,16 @@ define('argos/Fields/_Field', [
                 return false;
             }
 
-            var all = lang.isArray(this.validator) ? this.validator : [this.validator];
+            var all,
+                i,
+                current,
+                definition,
+                result;
 
-            for (var i = 0; i < all.length; i++) {
-                var current = all[i],
-                    definition;
+            all = lang.isArray(this.validator) ? this.validator : [this.validator];
+
+            for (i = 0; i < all.length; i++) {
+                current = all[i];
 
                 if (current instanceof RegExp) {
                     definition = {
@@ -287,7 +292,7 @@ define('argos/Fields/_Field', [
                     ? this.getValue()
                     : value;
 
-                var result = typeof definition.fn === 'function'
+                result = typeof definition.fn === 'function'
                     ? definition.fn.call(definition.scope || this, value, this, this.owner)
                     : definition.test instanceof RegExp
                         ? !definition.test.test(value)

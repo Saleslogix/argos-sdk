@@ -117,12 +117,15 @@ define('argos/Fields/SignatureField', [
          * Complete override that gets the editor view, gets the values and calls set value on the field
          */
         getValuesFromView: function() {
-            var view, app;
+            var view,
+                app,
+                value;
+
             app = this.app;
 
             view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
             if (view) {
-                var value = view.getValues();
+                value = view.getValues();
                 this.currentValue = this.validationValue = value;
                 this.setValue(this.currentValue, false);
             }

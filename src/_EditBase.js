@@ -654,9 +654,10 @@ define('argos/_EditBase', [
                 current,
                 ctor,
                 field,
+                i,
                 template;
 
-            for (var i = 0; i < rows.length; i++) {
+            for (i = 0; i < rows.length; i++) {
                 current = rows[i];
 
                 if (current['children'] || current['as']) {
@@ -735,10 +736,12 @@ define('argos/_EditBase', [
          * value as the initial value of the field. If the value is a function, its expanded then applied.
          */
         applyFieldDefaults: function() {
-            for (var name in this.fields) {
+            var name, field, defaultValue;
+
+            for (name in this.fields) {
                 if (this.fields.hasOwnProperty(name)) {
-                    var field = this.fields[name],
-                        defaultValue = field['default'];
+                    field = this.fields[name];
+                    defaultValue = field['default'];
 
                     if (typeof defaultValue === 'undefined') {
                         continue;
@@ -772,9 +775,10 @@ define('argos/_EditBase', [
         setValues: function(values, initial) {
             var noValue = {},
                 field,
+                name,
                 value;
 
-            for (var name in this.fields) {
+            for (name in this.fields) {
                 if (this.fields.hasOwnProperty(name)) {
                     field = this.fields[name];
 
@@ -873,12 +877,13 @@ define('argos/_EditBase', [
          * @return {Boolean/Object[]} Returns the array of errors if present or false for no errors.
          */
         validate: function() {
+            var name, field, result;
+
             this.errors = [];
 
-            for (var name in this.fields) {
+            for (name in this.fields) {
                 if (this.fields.hasOwnProperty(name)) {
-                    var field = this.fields[name],
-                        result;
+                    field = this.fields[name];
 
                     if (!field.isHidden() && false !== (result = field.validate())) {
                         domClass.add(field.containerNode, 'row-error');
@@ -1140,9 +1145,11 @@ define('argos/_EditBase', [
          * then sets the combined result into the summary validation node and sets the styling to visible
          */
         showValidationSummary: function() {
-            var content = [];
+            var content, i;
 
-            for (var i = 0; i < this.errors.length; i++) {
+            content = [];
+
+            for (i = 0; i < this.errors.length; i++) {
                 content.push(this.validationSummaryItemTemplate.apply(this.errors[i], this.fields[this.errors[i].name]));
             }
 
@@ -1150,9 +1157,11 @@ define('argos/_EditBase', [
             domClass.add(this.domNode, 'panel-form-error');
         },
         showConcurrencySummary: function() {
-            var content = [];
+            var content, i;
 
-            for (var i = 0; i < this.errors.length; i++) {
+            content = [];
+
+            for (i = 0; i < this.errors.length; i++) {
                 content.push(this.concurrencySummaryItemTemplate.apply(this.errors[i]));
             }
 

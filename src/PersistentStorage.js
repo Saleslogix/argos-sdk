@@ -31,10 +31,11 @@ define('argos/PersistentStorage', [
     convert,
     utility
 ) {
-    var sosCache = {};
+    var sosCache,
+        __class;
 
-    var __class = declare('argos.PersistentStorage', null, {
-
+    sosCache = {};
+    __class = declare('argos.PersistentStorage', null, {
         name: false,
         singleObjectStore: false,
         allowCacheUse: true,
@@ -83,13 +84,15 @@ define('argos/PersistentStorage', [
         },
         getItem: function(key, options) {
             options = options || {};
-            var value;
+            var value,
+                encoded,
+                store,
+                serialized,
+                fqKey;
+
             try {
                 if (window.localStorage) {
                     if (this.singleObjectStore) {
-                        var encoded,
-                            store;
-
                         if (this.allowCacheUse && sosCache[this.name]) {
                             store = sosCache[this.name];
                         } else {
@@ -109,8 +112,8 @@ define('argos/PersistentStorage', [
 
                         return value;
                     } else {
-                        var fqKey = this.formatQualifiedKey(this.name, key),
-                            serialized = window.localStorage.getItem(fqKey);
+                        fqKey = this.formatQualifiedKey(this.name, key);
+                        serialized = window.localStorage.getItem(fqKey);
 
                         value = this.serializeValues && options.serialize !== false
                                 ? this.deserializeValue(serialized)
@@ -134,13 +137,15 @@ define('argos/PersistentStorage', [
             }
         },
         setItem: function(key, value, options) {
+            var fqKey,
+                encoded,
+                store,
+                serialized;
+
             options = options || {};
             try {
                 if (window.localStorage) {
                     if (this.singleObjectStore) {
-                        var encoded,
-                            store;
-
                         if (this.allowCacheUse && sosCache[this.name]) {
                             store = sosCache[this.name];
                         } else {
@@ -164,8 +169,8 @@ define('argos/PersistentStorage', [
 
                         return true;
                     } else {
-                        var fqKey = this.formatQualifiedKey(this.name, key),
-                            serialized = this.serializeValues && options.serialize !== false
+                        fqKey = this.formatQualifiedKey(this.name, key);
+                        serialized = this.serializeValues && options.serialize !== false
                                 ? this.serializeValue(value)
                                 : value;
 

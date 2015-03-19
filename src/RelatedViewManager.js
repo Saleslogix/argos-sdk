@@ -28,9 +28,11 @@ define('argos/RelatedViewManager',  [
     SDataStore,
     RelatedViewWidget
 ) {
-    var _widgetTypes = {};
-    var __class = declare('argos.RelatedViewManager', null, {
+    var _widgetTypes,
+        __class;
 
+    _widgetTypes = {};
+    __class = declare('argos.RelatedViewManager', null, {
         id: 'relatedViewManager',
         relatedViews: null,
         relatedViewConfig: null,

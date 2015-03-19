@@ -38,15 +38,19 @@ define('argos/Calendar', [
     View,
     moment
 ) {
-    var pad = function(n) {
+    var pad,
+        uCase,
+        __class;
+
+    pad = function(n) {
         return n < 10 ? '0' + n : n;
     };
 
-    var uCase = function(str) {
+    uCase = function(str) {
         return str.charAt(0).toUpperCase() + str.substring(1);
     };
 
-    var __class = declare('argos.Calendar', [View], {
+    __class = declare('argos.Calendar', [View], {
         // Localization
         titleText: 'Calendar',
         amText: 'AM',
@@ -197,14 +201,17 @@ define('argos/Calendar', [
             this.updateDatetimeCaption();
         },
         populateSelector: function(el, val, min, max) {
+            var i,
+                opt;
+
             if (val > max) {
                 val = max;
             }
 
             el.options.length = 0;
 
-            for (var i=min; i <= max; i++) {
-                var opt = domConstruct.create('option', {
+            for (i = min; i <= max; i++) {
+                opt = domConstruct.create('option', {
                     innerHTML: (this.monthNode === el) ? uCase(this.months[i]) : pad(i),
                     value: i,
                     selected: (i === val)
@@ -216,14 +223,16 @@ define('argos/Calendar', [
         localizeViewTemplate: function() {
             var whichTemplate = arguments[0],
                 formatIndex = arguments[1],
-                fields = { y:'year', Y:'year', M:'month', d:'day', D:'day', h:'hour', H:'hour', m:'minute' };
+                fields = { y:'year', Y:'year', M:'month', d:'day', D:'day', h:'hour', H:'hour', m:'minute' },
+                whichField,
+                whichFormat;
 
-            var whichField = fields[ (3 > formatIndex)
+            whichField = fields[ (3 > formatIndex)
                 ? this.dateFormat.split(/[^a-z]/i)[formatIndex].charAt(0)
                 : this.timeFormatText.split(/[^a-z]/i)[formatIndex - 3].charAt(0)
                 ];
 
-            var whichFormat = ('selectorTemplate' === whichTemplate)
+            whichFormat = ('selectorTemplate' === whichTemplate)
                 ? whichField
                 : uCase(whichField);
 

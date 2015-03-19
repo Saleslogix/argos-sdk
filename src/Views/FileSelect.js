@@ -175,11 +175,11 @@ define('argos/Views/FileSelect', [
          * @returns {Array}
          */
         getFileItems: function() {
-            var fileItems, files, description;
+            var fileItems, files, description, i;
             fileItems = [];
             files = this._files;
             description = '';
-            for (var i = 0; i < files.length; i++) {
+            for (i = 0; i < files.length; i++) {
                 description = this._getFileDescription(i);
                 fileItems.push({
                     file: files[i],
@@ -198,9 +198,11 @@ define('argos/Views/FileSelect', [
             return desc;
         },
         _onSelectFile: function(e) {
-            var files = this.btnFileSelect.files;
+            var files, i;
+
+            files = this.btnFileSelect.files;
             if (files && files.length > 0) {
-                for (var i = 0; i < files.length; i++) {
+                for (i = 0; i < files.length; i++) {
                     this._files.push(files[i]);
                 }
                 this._buildForm(files);
@@ -210,7 +212,7 @@ define('argos/Views/FileSelect', [
 
         },
         _addFile: function(file, index) {
-            var filelength, data;
+            var filelength, data, rowNode;
 
             filelength = this._getFileLength(file);
             data = {
@@ -218,7 +220,7 @@ define('argos/Views/FileSelect', [
                 fileName: file.name + '  (' + filelength + ')',
                 description: this._getDefaultDescription(file.name)
             };
-            var rowNode = domConstruct.place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
+            rowNode = domConstruct.place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
         },
         _getFileLength: function(file) {
             var filelength;
@@ -249,8 +251,8 @@ define('argos/Views/FileSelect', [
             return filelength;
         },
         _buildForm: function(files) {
-            var file;
-            for (var i = 0; i < files.length; i++) {
+            var file, i;
+            for (i = 0; i < files.length; i++) {
                 file = files[i];
                 this._addFile(file, i);
             }

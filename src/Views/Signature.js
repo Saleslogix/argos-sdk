@@ -332,10 +332,14 @@ define('argos/Views/Signature', [
          * @return {Number[][]} Rescaled signature array
          */
         rescale: function(scale) {
-            var rescaled = [];
-            for (var i = 0; i < this.signature.length; i++) {
+            var rescaled,
+                j,
+                i;
+
+            rescaled = [];
+            for (i = 0; i < this.signature.length; i++) {
                 rescaled.push([]);
-                for (var j = 0; j < this.signature[i].length; j++) {
+                for (j = 0; j < this.signature[i].length; j++) {
                     rescaled[i].push([
                         this.signature[i][j][0] * scale,
                         this.signature[i][j][1] * scale
@@ -349,9 +353,11 @@ define('argos/Views/Signature', [
          * @return {Number[][]} Optimized signature
          */
         optimizeSignature: function() {
-            var optimized = [];
+            var optimized, i;
 
-            for (var i = 0; i < this.signature.length; i++) {
+            optimized = [];
+
+            for (i = 0; i < this.signature.length; i++) {
                 optimized.push(this.optimize(this.signature[i]));
             }
 
@@ -378,9 +384,10 @@ define('argos/Views/Signature', [
                 currentP,
                 currentV,
                 currentL,
+                i,
                 dotProduct;
 
-            for (var i = 2; i < vector.length; i++) {
+            for (i = 2; i < vector.length; i++) {
                 currentP = vector[i];
                 currentV = [currentP[0] - rootP[0], currentP[1] - rootP[1]];
                 currentL = Math.sqrt(currentV[0]*currentV[0] + currentV[1]*currentV[1]);

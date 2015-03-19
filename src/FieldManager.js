@@ -25,8 +25,11 @@ define('argos/FieldManager', [
 ], function(
     lang
 ) {
-    var store = {};
-    var __class = lang.setObject('argos.FieldManager', {
+    var store,
+        __class;
+
+    store = {};
+    __class = lang.setObject('argos.FieldManager', {
         /**
          * @property {Object}
          * The type map that translates string type names to constructor functions

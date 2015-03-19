@@ -28,8 +28,14 @@ define('argos/Utility', [
     array,
     json
 ) {
-    var nameToPathCache = {};
-    var nameToPath = function(name) {
+    var nameToPathCache,
+        __class,
+        nameToPath;
+
+    nameToPathCache = {};
+    nameToPath = function(name) {
+        var parts, path, i, match;
+
         if (typeof name !== 'string' || name === '.' || name === '') {
             return []; // '', for compatibility
         }
@@ -38,11 +44,11 @@ define('argos/Utility', [
             return nameToPathCache[name];
         }
 
-        var parts = name.split('.');
-        var path = [];
+        parts = name.split('.');
+        path = [];
 
-        for (var i = 0; i < parts.length; i++) {
-            var match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
+        for (i = 0; i < parts.length; i++) {
+            match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
             if (match) {
                 path.push(match[1]);
                 if (/^\d+$/.test(match[2])) {
@@ -59,7 +65,7 @@ define('argos/Utility', [
         return nameToPathCache[name];
     };
 
-    var __class = lang.setObject('argos.Utility', {
+    __class = lang.setObject('argos.Utility', {
         /**
          * Replaces a single `"` with two `""` for proper SData query expressions.
          * @param {String} searchQuery Search expression to be escaped.
@@ -85,10 +91,12 @@ define('argos/Utility', [
             };
         },
         getValue: function(o, name, defaultValue) {
-            var path = nameToPath(name).slice(0);
-            var current = o;
+            var path, current, key;
+
+            path = nameToPath(name).slice(0);
+            current = o;
             while (current && path.length > 0) {
-                var key = path.pop();
+                key = path.pop();
                 if (typeof current[key] !== 'undefined') {
                     current = current[key];
                 } else {
@@ -98,11 +106,13 @@ define('argos/Utility', [
             return current;
         },
         setValue: function(o, name, val) {
-            var current = o;
-            var path = nameToPath(name).slice(0);
+            var current, path, key, next;
+
+            current = o;
+            path = nameToPath(name).slice(0);
             while ((typeof current !== 'undefined') && path.length > 1) {
-                var key = path.pop();
-                var next = path[path.length - 1];
+                key = path.pop();
+                next = path[path.length - 1];
                 current = current[key] = (typeof current[key] !== 'undefined')
                     ? current[key]
                     : (typeof next === 'number')
@@ -144,8 +154,8 @@ define('argos/Utility', [
          * @return {Object} Object ready to be JSON.stringified.
          */
         sanitizeForJson: function(obj) {
-            var type;
-            for (var key in obj) {
+            var type, key;
+            for (key in obj) {
                 if (obj.hasOwnProperty(key)) {
                     try {
                         type = typeof obj[key];

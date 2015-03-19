@@ -266,10 +266,13 @@ define('argos/GroupedList', [
             this.applyGroupByOrderBy();
         },
         setDefaultGroupBySection: function() {
-            var count = 0;
+            var count,
+                i;
+
+            count = 0;
             if (this._groupBySections) {
                 count = this._groupBySections.length;
-                for (var i = 0; i < count; i++) {
+                for (i = 0; i < count; i++) {
                     if (this._groupBySections[i].isDefault === true) {
                         this._currentGroupBySection = this._groupBySections[i];
                     }
@@ -280,9 +283,12 @@ define('argos/GroupedList', [
             }
         },
         getGroupBySection: function(sectionId) {
-            var groupSection = null;
+            var groupSection,
+                i;
+
+            groupSection = null;
             if (this._groupBySections) {
-                for (var i = 0; i < this._groupBySections.length; i++) {
+                for (i = 0; i < this._groupBySections.length; i++) {
                     if (this._groupBySections[i].Id === sectionId) {
                         groupSection = this._groupBySections[i];
                     }

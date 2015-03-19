@@ -80,10 +80,11 @@ define('argos/_ActionMixin', [
          */
         _initiateActionFromEvent: function(evt) {
             var el = query(evt.target).closest('[data-action]')[0],
+                parameters,
                 action = el && domAttr.get(el, 'data-action');
 
             if (action && this._isValidElementForAction(el) && this.hasAction(action, evt, el)) {
-                var parameters = this._getParametersForAction(action, evt, el);
+                parameters = this._getParametersForAction(action, evt, el);
 
                 this.invokeAction(action, parameters, evt, el);
 
@@ -98,13 +99,15 @@ define('argos/_ActionMixin', [
          * @return {Object} Object with the original event and source along with all the `data-` attributes in pascal case.
          */
         _getParametersForAction: function(name, evt, el) {
-            var parameters = {
+            var parameters, i, attrLen, attributeName, parameterName;
+
+            parameters = {
                 $event: evt,
                 $source: el
             };
 
-            for (var i = 0, attrLen = el.attributes.length; i < attrLen; i++) {
-                var attributeName = el.attributes[i].name;
+            for (i = 0, attrLen = el.attributes.length; i < attrLen; i++) {
+                attributeName = el.attributes[i].name;
                 if (/^((?=data-action)|(?!data))/.test(attributeName)) {
                     continue;
                 }
@@ -112,7 +115,7 @@ define('argos/_ActionMixin', [
                 /* transform hyphenated names to pascal case, minus the data segment, to be in line with HTML5 dataset naming conventions */
                 /* see: http://dev.w3.org/html5/spec/elements.html#embedding-custom-non-visible-data */
                 /* todo: remove transformation and use dataset when browser support is there */
-                var parameterName = attributeName.substr('data-'.length).replace(/-(\w)(\w+)/g, function($0, $1, $2) {
+                parameterName = attributeName.substr('data-'.length).replace(/-(\w)(\w+)/g, function($0, $1, $2) {
                     return $1.toUpperCase() + $2;
                 });
 

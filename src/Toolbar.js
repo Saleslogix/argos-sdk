@@ -81,12 +81,13 @@ define('argos/Toolbar', [
         invokeTool: function(parameters, evt, node) {
             var id = parameters && parameters.tool,
                 tool = this.tools && this.tools[id],
+                view,
                 source = tool && tool.source;
             if (source && tool.enabled) {
                 if (source.fn) {
                     source.fn.call(source.scope || this, source);
                 } else if (source.action) {
-                    var view = App.getPrimaryActiveView();
+                    view = App.getPrimaryActiveView();
                     if (view && view.hasAction(source.action)) {
                         view.invokeAction(source.action, lang.mixin(parameters, {'$tool': source}), evt, node);
                     }
@@ -180,14 +181,16 @@ define('argos/Toolbar', [
          * @param {Object[]} tools Toolbar item array to store.
          */
         showTools: function(tools) {
+            var tool, i;
+
             this.tools = {};
 
             if (typeof tools === 'undefined') {
                 return;
             }
 
-            for (var i = 0; i < tools.length; i++) {
-                var tool = {
+            for (i = 0; i < tools.length; i++) {
+                tool = {
                     busy: false,
                     enabled: typeof tools[i].enabled !== 'undefined' ? tools[i].enabled : true,
                     source: tools[i]

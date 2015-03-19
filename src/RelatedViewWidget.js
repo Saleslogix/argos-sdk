@@ -270,7 +270,11 @@ define('argos/RelatedViewWidget', [
             return store;
         },
         getQueryOptions: function() {
-            var whereExpression = '', startIndex;
+            var whereExpression,
+                startIndex,
+                queryOptions;
+
+            whereExpression = '';
             if (this.hasOwnProperty('where')) {
                 if (typeof this.where === 'function') {
                     whereExpression = this.where(this.parentEntry);
@@ -279,7 +283,7 @@ define('argos/RelatedViewWidget', [
                 }
             }
 
-            var queryOptions = {
+            queryOptions = {
                 count: this.pageSize || 1,
                 start: 0,
                 select: this.select || '',

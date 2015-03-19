@@ -162,17 +162,20 @@ define('argos/SearchWidget', [
         hashTagSearch: function(query) {
             var hashLayout = this.hashTagQueries || [],
                 hashQueries = [],
+                match,
+                hashTag,
+                i,
+                hashQueryExpression,
                 additionalSearch = query;
 
             this.hashTagSearchRE.lastIndex = 0;
 
-            var match;
             while ((match = this.hashTagSearchRE.exec(query))) {
-                var hashTag = match[1],
-                    hashQueryExpression = null;
+                hashTag = match[1];
+                hashQueryExpression = null;
 
                 // todo: can optimize later if necessary
-                for (var i = 0; i < hashLayout.length && !hashQueryExpression; i++) {
+                for (i = 0; i < hashLayout.length && !hashQueryExpression; i++) {
                     if (hashLayout[i].tag === hashTag) {
                         hashQueryExpression = hashLayout[i].query;
                     }

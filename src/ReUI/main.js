@@ -17,14 +17,26 @@ define('argos/ReUI/main', [
     query,
     DomHelper
 ) {
-    var ReUI = {};
+    var ReUI,
+        R,
+        D,
+        transition,
+        config,
+        context,
+        extractInfoFromHash,
+        formatHashForPage,
+        updateOrientationDom,
+        checkOrientationAndLocation,
+        transitionComplete;
+
+    ReUI = {};
 
     ReUI.DomHelper = DomHelper;
 
-    var R = ReUI,
-        D = DomHelper;
+    R = ReUI;
+    D = DomHelper;
 
-    var transitionComplete = function(page, o) {
+    transitionComplete = function(page, o) {
         if (o.track !== false) {
             if (typeof page.id !== 'string' || page.id.length <= 0) {
                 page.id = 'reui-' + (context.counter++);
@@ -58,7 +70,7 @@ define('argos/ReUI/main', [
         }
     };
 
-    var transition = function(from, to, o) {
+    transition = function(from, to, o) {
         function complete() {
             transitionComplete(to, o);
 
@@ -92,7 +104,7 @@ define('argos/ReUI/main', [
         complete();
     };
 
-    var extractInfoFromHash = function(hash) {
+    extractInfoFromHash = function(hash) {
         var segments = [], position, el;
         if (hash) {
             if (hash.indexOf(R.hashPrefix) === 0) {
@@ -122,14 +134,14 @@ define('argos/ReUI/main', [
         return false;
     };
 
-    var formatHashForPage = function(page, options) {
+    formatHashForPage = function(page, options) {
         var segments = options && options.tag
             ? [page.id].concat(options.tag)
             : [page.id];
         return R.hashPrefix + segments.join(';');
     };
 
-    var updateOrientationDom = function(value) {
+    updateOrientationDom = function(value) {
         var currentOrient = R.rootEl.getAttribute('orient');
         if (value === currentOrient) {
             return;
@@ -149,7 +161,12 @@ define('argos/ReUI/main', [
         }
     };
 
-    var checkOrientationAndLocation = function() {
+    checkOrientationAndLocation = function() {
+        var reverse,
+            info,
+            page,
+            position;
+
         // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
         if (Math.abs(window.innerHeight - context.height) > 5 || Math.abs(window.innerWidth - context.width) > 5) {
             if (Math.abs(window.innerWidth - context.width) > 5) {
@@ -166,11 +183,9 @@ define('argos/ReUI/main', [
 
         if (context.hash !== location.hash) {
             // do reverse checking here, loop-and-trim will be done by show
-            var reverse = false,
-                info,
-                page;
+            reverse = false;
 
-            for (var position = context.history.length - 2; position >= 0; position--) {
+            for (position = context.history.length - 2; position >= 0; position--) {
                 if (context.history[position].hash === location.hash) {
                     info = context.history[position];
                     reverse = true;
@@ -189,7 +204,7 @@ define('argos/ReUI/main', [
         }
     };
 
-    var context = {
+    context = {
         page: false,
         transitioning: false,
         initialized: false,
@@ -200,7 +215,7 @@ define('argos/ReUI/main', [
         history: []
     };
 
-    var config = window.reConfig || {};
+    config = window.reConfig || {};
 
     lang.mixin(ReUI, {
         rootEl: false,

@@ -29,11 +29,12 @@ define('argos/Convert', [
     var trueRE = /^(true|T)$/i,
         isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/,
         jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//,
+        __class,
         pad = function(n) {
             return n < 10 ? '0' + n : n;
         };
 
-    var __class = lang.setObject('argos.Convert', {
+    __class = lang.setObject('argos.Convert', {
         /**
          * Takes a string and checks to see if it is `true` or `T`, else returns false
          * @param {String} value String bool value

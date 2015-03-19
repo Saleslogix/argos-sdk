@@ -29,9 +29,10 @@ define('argos/_ServiceMixin', [
     var __class = declare('argos._ServiceMixin', null, {
         serviceMap: null,
         constructor: function() {
-            var map = this.serviceMap;
+            var map, property;
+            map = this.serviceMap;
             if (map) {
-                for (var property in map) {
+                for (property in map) {
                     if (map.hasOwnProperty(property)) {
                         if (this[property]) {
                             continue; /* skip any that were explicitly mixed in */

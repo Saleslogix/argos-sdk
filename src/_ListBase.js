@@ -693,13 +693,15 @@ define('argos/_ListBase', [
          * @param {Object[]} actions
          */
         createActions: function(actions) {
-            for (var i = 0; i < actions.length; i++) {
-                var action = actions[i],
-                    options = {
-                        actionIndex: i,
-                        hasAccess: (!action.security || (action.security && App.hasAccessTo(this.expandExpression(action.security)))) ? true : false
-                    },
-                    actionTemplate = action.template || this.listActionItemTemplate;
+            var i, action, options, actionTemplate;
+
+            for (i = 0; i < actions.length; i++) {
+                action = actions[i];
+                options = {
+                    actionIndex: i,
+                    hasAccess: (!action.security || (action.security && App.hasAccessTo(this.expandExpression(action.security)))) ? true : false
+                };
+                actionTemplate = action.template || this.listActionItemTemplate;
 
                 lang.mixin(action, options);
 
@@ -757,11 +759,12 @@ define('argos/_ListBase', [
         invokeActionItem: function(parameters, evt, node) {
             var index = parameters['id'],
                 action = this.actions[index],
+                key,
                 selectedItems = this.get('selectionModel').getSelections(),
                 selection = null;
 
 
-            for (var key in selectedItems) {
+            for (key in selectedItems) {
                 if (selectedItems.hasOwnProperty(key)) {
                     selection = selectedItems[key];
                     break;
@@ -942,10 +945,12 @@ define('argos/_ListBase', [
          * @private
          */
         _loadPreviousSelections: function() {
-            var previousSelections = this.options && this.options.previousSelections;
+            var previousSelections, i, row;
+
+            previousSelections = this.options && this.options.previousSelections;
             if (previousSelections) {
-                for (var i = 0; i < previousSelections.length; i++) {
-                    var row = query((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [previousSelections[i]])), this.contentNode)[0];
+                for (i = 0; i < previousSelections.length; i++) {
+                    row = query((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [previousSelections[i]])), this.contentNode)[0];
 
                     if (row) {
                         this.activateEntry({
@@ -1239,7 +1244,7 @@ define('argos/_ListBase', [
          * Initiates the data request.
          */
         requestData: function() {
-            var store, queryOptions, request;
+            var store, queryOptions, request, queryExpression, queryResults;
             store = this.get('store');
 
             if (store) {
@@ -1252,8 +1257,8 @@ define('argos/_ListBase', [
 
                 this._applyStateToQueryOptions(queryOptions);
 
-                var queryExpression = this._buildQueryExpression() || null,
-                    queryResults = store.query(queryExpression, queryOptions);
+                queryExpression = this._buildQueryExpression() || null;
+                queryResults = store.query(queryExpression, queryOptions);
 
                 when(queryResults,
                     this._onQueryComplete.bind(this, queryResults),
@@ -1574,8 +1579,10 @@ define('argos/_ListBase', [
         createHashTagQueryLayout: function() {
             // todo: always regenerate this layout? always regenerating allows for all existing customizations
             // to still work, at expense of potential (rare) performance issues if many customizations are registered.
-            var layout = [];
-            for (var name in this.hashTagQueries) {
+            var layout, name;
+
+            layout = [];
+            for (name in this.hashTagQueries) {
                 if (this.hashTagQueries.hasOwnProperty(name)) {
                     layout.push({
                         'key': name,

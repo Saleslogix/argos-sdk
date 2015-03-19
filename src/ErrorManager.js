@@ -34,7 +34,11 @@ define('argos/ErrorManager', [
     moment,
     utility
 ) {
-    var errors = [];
+    var errors,
+        __class;
+
+    errors = [];
+
     try {
         if (window.localStorage) {
             errors = json.parse(window.localStorage.getItem('errorlog')) || [];
@@ -42,7 +46,7 @@ define('argos/ErrorManager', [
     } catch(e) {
     }
 
-    var __class = lang.setObject('argos.ErrorManager', {
+    __class = lang.setObject('argos.ErrorManager', {
         //Localization
 
         /**
@@ -230,9 +234,12 @@ define('argos/ErrorManager', [
          * @return {Object} Returns the first error item in the match set or null if none found
          */
         getError: function(key, value) {
-            var errorList = this.getAllErrors();
+            var errorList,
+                i;
 
-            for (var i = 0; i < errorList.length; i++) {
+            errorList = this.getAllErrors();
+
+            for (i = 0; i < errorList.length; i++) {
                 if (errorList[i][key] === value) {
                     return errorList[i];
                 }
