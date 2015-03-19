@@ -55,7 +55,7 @@ define('argos/MainToolbar', [
          * `$` - the toolbar instance
          */
         widgetTemplate: new Simplate([
-            '<div class="toolbar {%= $.cls %}">',            
+            '<div class="toolbar {%= $.cls %}">',
             '<div id="pageTitle" class="toolbar-title" data-dojo-attach-event="onclick: onTitleClick" data-dojo-attach-point="titleNode">{%= $.titleText %}</div>',
             '</div>'
         ]),
@@ -107,7 +107,6 @@ define('argos/MainToolbar', [
             this.inherited(arguments);
 
             domClass.remove(this.domNode, 'toolbar-size-' + this.size);
-            
             if (tools) {
                 count = {left: 0, right: 0};
 

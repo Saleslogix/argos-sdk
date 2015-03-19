@@ -113,11 +113,11 @@ define('argos/Fields/DurationField', [
          * Override ride this object to change the autocomplete units or their localization.
          */
         autoCompleteText: {
-            1 : 'minute(s)',
-            60 : 'hour(s)',
-            1440 : 'day(s)',
-            10080 : 'week(s)',
-            525960 : 'year(s)'
+            1: 'minute(s)',
+            60: 'hour(s)',
+            1440: 'day(s)',
+            10080: 'week(s)',
+            525960: 'year(s)'
         },
         /**
          * @property {Boolean}
@@ -186,16 +186,13 @@ define('argos/Fields/DurationField', [
             var val = this.inputNode.value.toString(),
                 match = this.autoCompletePhraseRE.exec(val);
 
-            if (!match || val.length < 1)
-            {
+            if (!match || val.length < 1) {
                 this.hideAutoComplete();
                 return true;
             }
 
-            for (var key in this.autoCompleteText)
-            {
-                if (this.isWordMatch(match[2], this.autoCompleteText[key]))
-                {
+            for (var key in this.autoCompleteText) {
+                if (this.isWordMatch(match[2], this.autoCompleteText[key])) {
                     this.currentKey = this.autoCompleteText[key];
                     this.showAutoComplete(match[1] + this.autoCompleteText[key]);
                     return true;
@@ -278,7 +275,7 @@ define('argos/Fields/DurationField', [
          * Returns the current value in minutes
          * @return {Number}
          */
-        getValue: function(){
+        getValue: function() {
             return this.currentValue;
         },
         /**
@@ -337,15 +334,15 @@ define('argos/Fields/DurationField', [
          * @param {Number} to
          * @return {Number}
          */
-        convertUnit: function(val, to) {            
-            return format.fixed(val / to, 2);         
+        convertUnit: function(val, to) {
+            return format.fixed(val / to, 2);
         },
         /**
          * Formats the unit with correct decimal separator.
-         * @param {Number} unit  
+         * @param {Number} unit
          * @return {string}
          */
-        formatUnit: function (unit) {
+        formatUnit: function(unit) {
             var sval;
             if (isNaN(unit)) {
                 sval = "0";
@@ -387,15 +384,12 @@ define('argos/Fields/DurationField', [
             var val = this.inputNode.value.toString(),
                 phraseMatch = this.autoCompletePhraseRE.exec(val);
 
-            if (!phraseMatch)
-            {
-               domClass.add(this.containerNode, 'row-error');
-               return string.substitute(this.invalidDurationErrorText, [val]);
-            }
-            else
-            {
-               domClass.remove(this.containerNode, 'row-error');
-               return false;
+            if (!phraseMatch) {
+                domClass.add(this.containerNode, 'row-error');
+                return string.substitute(this.invalidDurationErrorText, [val]);
+            } else {
+                domClass.remove(this.containerNode, 'row-error');
+                return false;
             }
         }
     });

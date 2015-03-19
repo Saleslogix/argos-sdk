@@ -124,13 +124,10 @@ define('argos/Fields/DateField', [
         _onChange: function(evt) {
             var val = Date.parseExact(this.inputNode.value, this.dateFormatText);
 
-            if (val)
-            {
+            if (val) {
                 this.validationValue = this.currentValue = val;
                 domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
-            }
-            else
-            {
+            } else {
                 this.validationValue = this.currentValue = null;
                 domClass.add(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
             }
@@ -154,8 +151,7 @@ define('argos/Fields/DateField', [
          */
         getValuesFromView: function() {
             var view = App.getPrimaryActiveView();
-            if (view)
-            {
+            if (view) {
                 this.currentValue = this.validationValue = view.getDateTime();
                 domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
             }

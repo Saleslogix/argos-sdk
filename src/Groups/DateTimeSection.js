@@ -86,10 +86,10 @@ define('argos/Groups/DateTimeSection', [
             }
             return null;
         },
-        getDefaultSection:function(){
+        getDefaultSection:function() {
             return { key: 'Unknown', title: this.unknownText, collapsed: true };
         },
-        getSectionKey: function(value){
+        getSectionKey: function(value) {
             var valueDate;
 
             if (!this.currentDate) {
@@ -277,16 +277,16 @@ define('argos/Groups/DateTimeSection', [
                 !this.isLastWeek(value) &&
                 !this.isYesterday(value);
         },
-        getSectionByKey:function(key, value){
+        getSectionByKey:function(key, value) {
             var section;
-            for(section in this.sections){
+            for (section in this.sections) {
                 if (this.sections[section].key === key) {
                     return this.sections[section];
                 }
             }
             return this.getDefaultSection();
         },
-        getSectionByDateTime:function(value){
+        getSectionByDateTime:function(value) {
             var section,key;
             key = this.getSectionKey(value);
             section = this.getSectionByKey(key, value);

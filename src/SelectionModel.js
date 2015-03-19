@@ -100,8 +100,7 @@ define('argos/SelectionModel', [
          * @param tag
          */
         select: function(key, data, tag) {
-            if (!this.selections.hasOwnProperty(key))
-            {
+            if (!this.selections.hasOwnProperty(key)) {
                 this.selections[key] = {data: data, tag: tag};
                 this.count++;
                 if (this._fireEvents) {

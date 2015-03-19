@@ -230,7 +230,7 @@ define('argos/Fields/TextField', [
          * @param {Event} evt
          */
         _onClearClick: function(evt) {
-            if(!domClass.contains(this.domNode, 'text-field-active')) {
+            if (!domClass.contains(this.domNode, 'text-field-active')) {
                 this.clearValue(true);
                 event.stop(evt);
             }

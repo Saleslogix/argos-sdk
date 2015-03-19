@@ -112,7 +112,7 @@ define('argos/View', [
          * Called after toolBar layout is created;
          *
          */
-        onToolLayoutCreated:function(tools){
+        onToolLayoutCreated:function(tools) {
         },
         /**
          * Returns the tool layout that defines all toolbar items for the view
@@ -203,8 +203,7 @@ define('argos/View', [
         },
         activate: function(tag, data) {
             // todo: use tag only?
-            if (data && this.refreshRequiredFor(data.options))
-            {
+            if (data && this.refreshRequiredFor(data.options)) {
                 this.refreshRequired = true;
             }
 
@@ -281,8 +280,7 @@ define('argos/View', [
          * Called after the view has been transitioned (slide animation complete) to.
          */
         transitionTo: function() {
-            if (this.refreshRequired)
-            {
+            if (this.refreshRequired) {
                 this.refreshRequired = false;
                 this.refresh();
             }

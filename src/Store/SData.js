@@ -31,7 +31,7 @@ define('argos/Store/SData', [
     'dojo/_base/json',
     '../Convert',
     '../Utility'
-], function (
+], function(
     declare,
     lang,
     array,
@@ -200,7 +200,7 @@ define('argos/Store/SData', [
                     request.setQueryArg('orderby', orderBy);
                 } else if (orderBy.length > 0) {
                     var order = [];
-                    array.forEach(orderBy, function (v) {
+                    array.forEach(orderBy, function(v) {
                         if (v.descending) {
                             this.push(v.attribute + ' desc');
                         } else {
@@ -292,7 +292,7 @@ define('argos/Store/SData', [
 
             return entry;
         },
-        get: function(id, /* sdata only */ getOptions) {
+        get: function(id, getOptions/* sdata only */) {
             var handle = {},
                 deferred = new Deferred(),
                 request = this._createEntryRequest(id, getOptions || {});
@@ -455,7 +455,7 @@ define('argos/Store/SData', [
         /**
          * Not implemented in this store.
          */
-        getChildren: function(parent, options){
+        getChildren: function(parent, options) {
         },
         /**
          * Returns any metadata about the object. This may include attribution,

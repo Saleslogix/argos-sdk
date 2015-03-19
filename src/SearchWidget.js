@@ -224,7 +224,7 @@ define('argos/SearchWidget', [
          * Clears the search input text and attempts to re-open the keyboard
          * @param {Event} evt Click event
          */
-        _onClearClick: function(evt){
+        _onClearClick: function(evt) {
             event.stop(evt);
             this.clear();
             this.queryNode.focus();
@@ -296,8 +296,7 @@ define('argos/SearchWidget', [
        * Gets the current search expression.
        * * Gathers the inputted search text
        */
-        getSearchExpression: function()
-        {
+        getSearchExpression: function() {
             return this.queryNode.value;
         }
     });

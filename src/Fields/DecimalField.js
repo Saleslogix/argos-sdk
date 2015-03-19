@@ -69,16 +69,16 @@ define('argos/Fields/DecimalField', [
         setValue: function(val) {
             var perc;
 
-            perc = this.getPrecision();            
+            perc = this.getPrecision();
             val = Utility.roundNumberTo(parseFloat(val), perc);
             val = val.toFixed(perc);
-            if(isNaN(val)){
+            if (isNaN(val)) {
                 if (perc === 0) {
                     val = "0";
                 } else {
                     val = string.substitute('0${0}00', [Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.']);
-                }                
-            }else{
+                }
+            } else {
                 if (perc !== 0) {
                     val = string.substitute('${0}${1}${2}',
                         [

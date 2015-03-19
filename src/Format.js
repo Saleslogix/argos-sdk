@@ -42,15 +42,18 @@ define('argos/Format', [
     moment
 ) {
 
-    var getVectorMaxSize = function (v) {
+    var getVectorMaxSize = function(v) {
         var w = 1,
             h = 1;
-        for (var i = 0; i < v.length; i++)
-        {
-            for (var j = 0; j < v[i].length; j++)
-            {
-                if (w < v[i][j][0]) { w = v[i][j][0]; }
-                if (h < v[i][j][1]) { h = v[i][j][1]; }
+        for (var i = 0; i < v.length; i++) {
+            for (var j = 0; j < v[i].length; j++) {
+                if (w < v[i][j][0]) {
+                    w = v[i][j][0];
+                }
+
+                if (h < v[i][j][1]) {
+                    h = v[i][j][1];
+                }
             }
         }
         // maybe should return bounding box? (x,y,w,h)
@@ -328,7 +331,7 @@ define('argos/Format', [
         },
         /**
          * Takes a decimal number, multiplies by 100 and adds the % sign with the number of palces to the right.
-         *  
+         *
          * `perecent(0.35)` => `'35.00%'`
          * `perecent(0.35, 0)` => `'35%'`
          * `percent(2.9950)` => `'299.50%'`
@@ -357,7 +360,7 @@ define('argos/Format', [
             } else {
                 dp = v % 1; //get the decimal part
                 dp = dp.toPrecision(places+1); // round to significant pecsion
-                dp = dp.toString(); 
+                dp = dp.toString();
                 dp = dp.substr(2, places); //get the whole decimal part
                 numberFormated = string.substitute(
                     '${0}'
@@ -442,14 +445,14 @@ define('argos/Format', [
          * @param {HTMLElement} canvas The `<canvas>` element to be drawn on
          * @param {Object} options Canvas options: scale, lineWidth and penColor.
          */
-        canvasDraw: function (vector, canvas, options) {
+        canvasDraw: function(vector, canvas, options) {
             var scale, x, y,
                 context = canvas.getContext('2d');
 
             // Paint canvas white vs. clearing as on Android imageFromVector alpha pixels blacken
             // context.clearRect(0, 0, context.canvas.width, context.canvas.height);
             context.fillStyle = 'rgb(255,255,255)';
-            context.fillRect (0, 0, context.canvas.width, context.canvas.height);
+            context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
             scale               = options && options.scale     ? options.scale     : 1;
             context.lineWidth   = options && options.lineWidth ? options.lineWidth : 1;
@@ -475,14 +478,16 @@ define('argos/Format', [
          * @param {Boolean} html Flag for returning image as a data-uri or as a stringified `<img>` element.
          * @return {String} The encoded data of the drawn image, optionally wrapped in `<img>` if html was passed as true
          */
-        imageFromVector: function (vector, options, html) {
+        imageFromVector: function(vector, options, html) {
             var img,
                 canvasNode = domConstruct.create('canvas');
 
             options = options || {};
 
             if (typeof vector === 'string' || vector instanceof String) {
-                try { vector = json.fromJson(vector); } catch(e) {}
+                try {
+                    vector = json.fromJson(vector);
+                } catch(e) {}
             }
 
             if (!(vector instanceof Array) || 0 === vector.length) {

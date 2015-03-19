@@ -156,7 +156,7 @@ define('argos/Views/FileSelect', [
             this.fileWrapper.appendChild(node);
             this.btnFileSelect = node;
 
-            this.btnFileSelect.onchange = function(e){
+            this.btnFileSelect.onchange = function(e) {
                 this._onSelectFile(e);
             }.bind(this);
 
@@ -181,7 +181,7 @@ define('argos/Views/FileSelect', [
             description = '';
             for (var i = 0; i < files.length; i++) {
                 description = this._getFileDescription(i);
-                fileItems.push({ 
+                fileItems.push({
                     file: files[i],
                     fileName: files[i].name,
                     description: description
@@ -209,7 +209,7 @@ define('argos/Views/FileSelect', [
             domClass.add(this.fileArea, 'display-none');
 
         },
-        _addFile: function (file, index){
+        _addFile: function(file, index) {
             var filelength, data;
 
             filelength = this._getFileLength(file);
@@ -251,11 +251,11 @@ define('argos/Views/FileSelect', [
         _buildForm: function(files) {
             var file;
             for (var i = 0; i < files.length; i++) {
-               file = files[i];
-               this._addFile(file, i);
-           }
-       },
-       _getDefaultDescription: function (filename) {
+                file = files[i];
+                this._addFile(file, i);
+            }
+        },
+        _getDefaultDescription: function(filename) {
             return filename.replace(/\.[\w]*/, '');
         },
         /**
@@ -276,7 +276,7 @@ define('argos/Views/FileSelect', [
         onUpdateProgress: function(msg) {
             var n = dom.byId('fileselect-upload-progress');
             if (n) {
-                n.innerHTML = this.loadingText + '' + msg;
+                n.innerHTML = this.loadingText + ' ' + msg;
             }
         },
         /**

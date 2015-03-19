@@ -142,13 +142,10 @@ define('argos/ErrorManager', [
          */
         fromJsonArray: function(json) {
             var o;
-            try
-            {
+            try {
                 o = json.parse(json);
                 o = o[0];
-            }
-            catch(e)
-            {
+            } catch(e) {
                 o = {
                     message: json,
                     severity: ""
@@ -187,7 +184,7 @@ define('argos/ErrorManager', [
         serializeValues: function(obj) {
             for (var key in obj) {
                 if (obj.hasOwnProperty(key)) {
-                    switch(typeof obj[key]){
+                    switch (typeof obj[key]){
                         case 'undefined':
                             obj[key] = 'undefined';
                             break;
@@ -199,7 +196,8 @@ define('argos/ErrorManager', [
                                 obj[key] = 'null';
                                 break;
                             }
-                            if(key === 'scope') { // eliminate recursive self call
+
+                            if (key === 'scope') { // eliminate recursive self call
                                 obj[key] = this.scopeSaveText;
                                 break;
                             }

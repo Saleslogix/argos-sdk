@@ -95,8 +95,7 @@ define('argos/Convert', [
                 utc,
                 h, m;
 
-            if ((match = jsonDate.exec(value)))
-            {
+            if ((match = jsonDate.exec(value))) {
                 utc = new Date(parseInt(match[1], 10));
 
                 // todo: may not be needed
@@ -114,9 +113,7 @@ define('argos/Convert', [
                 */
 
                 value = utc;
-            }
-            else if ((match = isoDate.exec(value)))
-            {
+            } else if ((match = isoDate.exec(value))) {
                 utc = moment(new Date(Date.UTC(
                     parseInt(match[1], 10),
                     parseInt(match[2], 10) - 1, // zero based
@@ -126,8 +123,7 @@ define('argos/Convert', [
                     parseInt(match[6] || 0, 10)
                 )));
 
-                if (match[8] && match[8] !== 'Z')
-                {
+                if (match[8] && match[8] !== 'Z') {
                     h = parseInt(match[10], 10);
                     m = parseInt(match[11], 10);
 

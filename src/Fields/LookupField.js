@@ -267,13 +267,10 @@ define('argos/Fields/LookupField', [
 
             this.connect(this.containerNode, 'onclick', this._onClick);
 
-            if (this.isReadOnly())
-            {
+            if (this.isReadOnly()) {
                 this.disable();
                 this.set('inputReadOnly', true);
-            }
-            else if (!this.requireSelection)
-            {
+            } else if (!this.requireSelection) {
                 this.connect(this.inputNode, 'onkeyup', this._onKeyUp);
                 this.connect(this.inputNode, 'onblur', this._onBlur);
             }

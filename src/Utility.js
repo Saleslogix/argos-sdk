@@ -70,7 +70,9 @@ define('argos/Utility', [
         },
         memoize: function(fn, keyFn) {
             var cache = {};
-            keyFn = keyFn || (function(value) { return value; });
+            keyFn = keyFn || (function(value) {
+                return value;
+            });
 
             return function() {
                 var key = keyFn.apply(this, arguments);
@@ -85,8 +87,7 @@ define('argos/Utility', [
         getValue: function(o, name, defaultValue) {
             var path = nameToPath(name).slice(0);
             var current = o;
-            while (current && path.length > 0)
-            {
+            while (current && path.length > 0) {
                 var key = path.pop();
                 if (typeof current[key] !== 'undefined') {
                     current = current[key];
@@ -99,8 +100,7 @@ define('argos/Utility', [
         setValue: function(o, name, val) {
             var current = o;
             var path = nameToPath(name).slice(0);
-            while ((typeof current !== "undefined") && path.length > 1)
-            {
+            while ((typeof current !== "undefined") && path.length > 1) {
                 var key = path.pop();
                 var next = path[path.length - 1];
                 current = current[key] = (typeof current[key] !== "undefined")
@@ -154,7 +154,7 @@ define('argos/Utility', [
                         continue;
                     }
 
-                    switch(type) {
+                    switch (type) {
                         case 'undefined':
                             obj[key] = 'undefined';
                             break;
@@ -168,23 +168,20 @@ define('argos/Utility', [
                                 obj[key] = 'null';
                                 break;
                             }
-                            if(key === 'scope')
-                            {
+                            if (key === 'scope') {
                                 obj[key] = 'null';
                                 break;
                             }
                             obj[key] = this.sanitizeForJson(obj[key]);
                             break;
                         case 'string':
-                            try
-                            {
+                            try {
                                 obj[key] = json.parse(obj[key]);
 
                                 if (typeof obj[key] === 'object') {
                                     obj[key] = this.sanitizeForJson(obj[key]);
                                 }
-                            }
-                            catch(e){}
+                            } catch(e) {}
                             break;
                     }
                 }

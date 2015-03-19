@@ -71,7 +71,7 @@ define('argos/ApplicationModule', [
                 connect.disconnect(handle);
             });
 
-            array.forEach(this._subscribes, function(handle){
+            array.forEach(this._subscribes, function(handle) {
                 connect.unsubscribe(handle);
             });
 

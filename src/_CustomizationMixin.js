@@ -109,8 +109,7 @@ define('argos/_CustomizationMixin', [
                     insertRowsBefore = [];
                     insertRowsAfter = [];
 
-                    for (var j = 0; j < customizationCount; j++)
-                    {
+                    for (var j = 0; j < customizationCount; j++) {
                         if (applied[j]) {
                             continue; // todo: allow a customization to be applied to a layout more than once?
                         }

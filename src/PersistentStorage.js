@@ -40,7 +40,7 @@ define('argos/PersistentStorage', [
         allowCacheUse: true,
         serializeValues: true,
 
-        constructor: function(options){
+        constructor: function(options) {
             lang.mixin(this, options);
         },
         formatQualifiedKey: function(name, key) {
@@ -84,8 +84,7 @@ define('argos/PersistentStorage', [
         getItem: function(key, options) {
             options = options || {};
             var value;
-            try
-            {
+            try {
                 if (window.localStorage) {
                     if (this.singleObjectStore) {
                         var encoded,
@@ -178,9 +177,7 @@ define('argos/PersistentStorage', [
 
                         return true;
                     }
-                }
-                else
-                {
+                } else {
                     if (options.failure) {
                         options.failure.call(options.scope || this, false);
                     }

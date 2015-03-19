@@ -182,7 +182,6 @@ define('argos/_LegacySDataEditMixin', [
          */
         createEntryForInsert: function(values) {
             values = this.convertValues(values);
-            
             return lang.mixin(values, {
                 '$name': this.entityName
             });

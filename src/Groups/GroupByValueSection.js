@@ -50,10 +50,10 @@ define('argos/Groups/GroupByValueSection', [
             }
             return null;
         },
-        getDefaultSection:function(){
+        getDefaultSection: function() {
             return { key: 'Unknown', title: 'Unknown' };
         },
-        _getValueFromWidth:function(value, width){
+        _getValueFromWidth: function(value, width) {
             if (value) {
                 if (width > 0) {
                     value =value.toString().substring(0,width);

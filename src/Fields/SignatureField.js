@@ -121,8 +121,7 @@ define('argos/Fields/SignatureField', [
             app = this.app;
 
             view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
-            if (view)
-            {
+            if (view) {
                 var value = view.getValues();
                 this.currentValue = this.validationValue = value;
                 this.setValue(this.currentValue, false);
@@ -134,7 +133,7 @@ define('argos/Fields/SignatureField', [
          * @param val
          * @param initial
          */
-        setValue: function (val, initial) {
+        setValue: function(val, initial) {
             if (initial) {
                 this.originalValue = val;
             }

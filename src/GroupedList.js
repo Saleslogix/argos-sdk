@@ -183,7 +183,7 @@ define('argos/GroupedList', [
                 return entryGroup.tag;
             });
 
-            if (!this.feed){
+            if (!this.feed) {
                 this.set('listContent', '');
             }
 
@@ -260,7 +260,7 @@ define('argos/GroupedList', [
             this._initGroupBySections();
 
         },
-        _initGroupBySections:function(){
+        _initGroupBySections: function() {
             this._groupBySections = this.getGroupBySections();
             this.setDefaultGroupBySection();
             this.applyGroupByOrderBy();
@@ -290,7 +290,7 @@ define('argos/GroupedList', [
             }
             return groupSection;
         },
-        setCurrentGroupBySection:function(sectionId){
+        setCurrentGroupBySection: function(sectionId) {
             this._currentGroupBySection = this.getGroupBySection(sectionId);
             this.applyGroupByOrderBy(); //need to refresh view
         },

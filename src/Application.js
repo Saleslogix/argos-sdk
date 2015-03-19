@@ -56,18 +56,18 @@ define('argos/Application', [
     // Polyfill for Funcion.bind, taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
     /* jshint ignore:start */
     if (!Function.prototype.bind) {
-        Function.prototype.bind = function (oThis) {
+        Function.prototype.bind = function(oThis) {
             if (typeof this !== "function") {
-              // closest thing possible to the ECMAScript 5
-              // internal IsCallable function
-              throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+                // closest thing possible to the ECMAScript 5
+                // internal IsCallable function
+                throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
             }
 
             var aArgs = Array.prototype.slice.call(arguments, 1),
                 fToBind = this,
-                fNOP = function () {},
-                fBound = function () {
-                  return fToBind.apply(this instanceof fNOP && oThis
+                fNOP = function() {},
+                fBound = function() {
+                    return fToBind.apply(this instanceof fNOP && oThis
                          ? this
                          : oThis,
                          aArgs.concat(Array.prototype.slice.call(arguments)));
@@ -266,7 +266,7 @@ define('argos/Application', [
                 connect.disconnect(handle);
             });
 
-            array.forEach(this._subscribes, function(handle){
+            array.forEach(this._subscribes, function(handle) {
                 connect.unsubscribe(handle);
             });
 
@@ -311,17 +311,16 @@ define('argos/Application', [
          * If caching is enable and App is {@link #isOnline online} the empties the SData cache via {@link #_clearSDataRequestCache _clearSDataRequestCache}.
          */
         initCaching: function() {
-            if (this.enableCaching)
-            {
+            if (this.enableCaching) {
                 if (this.isOnline()) {
                     this._clearSDataRequestCache();
                 }
             }
         },
-        onOffline: function () {
+        onOffline: function() {
             this.onLine = false;
         },
-        onOnline: function () {
+        onOnline: function() {
             this.onLine = true;
         },
         /**
@@ -525,8 +524,7 @@ define('argos/Application', [
 
             this.services[name] = instance;
 
-            if (this.enableCaching && (options.offline || service.offline))
-            {
+            if (this.enableCaching && (options.offline || service.offline)) {
                 instance.on('beforerequest', this._loadSDataRequest, this);
                 instance.on('requestcomplete', this._cacheSDataRequest, this);
             }
@@ -778,7 +776,7 @@ define('argos/Application', [
                 clearTimeout(this.resizeTimer);
             }
 
-            this.resizeTimer = setTimeout(function(){
+            this.resizeTimer = setTimeout(function() {
                 connect.publish('/app/resize',[]);
             }, 100);
         },
@@ -915,7 +913,9 @@ define('argos/Application', [
         isNavigationFromResourceKind: function(kind, predicate, scope) {
             var lookup = {};
             if (lang.isArray(kind)) {
-                array.forEach(kind, function(item) { this[item] = true;  }, lookup);
+                array.forEach(kind, function(item) {
+                    this[item] = true;
+                }, lookup);
             } else {
                 lookup[kind] = true;
             }
@@ -985,8 +985,7 @@ define('argos/Application', [
          * @param {String} path The customization set such as `list/tools#account_list` or `detail#contact_detail`. First half being the type of customization and the second the view id.
          */
         getCustomizationsFor: function(path) {
-            if (arguments.length > 1)
-            {
+            if (arguments.length > 1) {
                 path = arguments[1]
                     ? arguments[0] + '#' + arguments[1]
                     : arguments[0];

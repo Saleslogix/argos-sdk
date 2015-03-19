@@ -42,7 +42,9 @@ define('argos/Calendar', [
         return n < 10 ? '0' + n : n;
     };
 
-    var uCase = function (str) { return str.charAt(0).toUpperCase() + str.substring(1); };
+    var uCase = function(str) {
+        return str.charAt(0).toUpperCase() + str.substring(1);
+    };
 
     var __class = declare('argos.Calendar', [View], {
         // Localization
@@ -289,16 +291,24 @@ define('argos/Calendar', [
             }
         },
 
-        decrementYear: function() { this.decrement(this.yearNode); },
-        decrementMonth: function() { this.decrement(this.monthNode); },
-        decrementDay: function() { this.decrement(this.dayNode); },
+        decrementYear: function() {
+            this.decrement(this.yearNode);
+        },
+        decrementMonth: function() {
+            this.decrement(this.monthNode);
+        },
+        decrementDay: function() {
+            this.decrement(this.dayNode);
+        },
         decrementHour: function() {
             this.decrement(this.hourNode);
             if (11 === this.hourNode.value % 12) {
                 this.toggleMeridiem({$source:this.meridiemNode});
             }
         },
-        decrementMinute: function() { this.decrement(this.minuteNode, 15); },
+        decrementMinute: function() {
+            this.decrement(this.minuteNode, 15);
+        },
         decrement: function(el, inc) { // all fields are <select> elements
             inc = inc || 1;
 
@@ -327,9 +337,15 @@ define('argos/Calendar', [
             this.validate(null, el);
         },
 
-        incrementYear: function() { this.increment(this.yearNode); },
-        incrementMonth: function() { this.increment(this.monthNode); },
-        incrementDay: function() { this.increment(this.dayNode); },
+        incrementYear: function() {
+            this.increment(this.yearNode);
+        },
+        incrementMonth: function() {
+            this.increment(this.monthNode);
+        },
+        incrementDay: function() {
+            this.increment(this.dayNode);
+        },
         incrementHour: function() {
             this.increment(this.hourNode);
 
@@ -337,7 +353,9 @@ define('argos/Calendar', [
                 this.toggleMeridiem({$source:this.meridiemNode});
             }
         },
-        incrementMinute: function() { this.increment(this.minuteNode, 15); },
+        incrementMinute: function() {
+            this.increment(this.minuteNode, 15);
+        },
         increment: function(el, inc) {
             inc = inc || 1;
 

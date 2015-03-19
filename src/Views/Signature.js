@@ -161,9 +161,18 @@ define('argos/Views/Signature', [
         show: function(options) {
             this.inherited(arguments);
 
-            if (options && options.lineWidth) { this.config.lineWidth = options.lineWidth; }
-            if (options && options.penColor)  { this.config.penColor  = options.penColor;  }
-            if (options && options.drawColor) { this.config.drawColor = options.drawColor; }
+            if (options && options.lineWidth) {
+                this.config.lineWidth = options.lineWidth;
+            }
+
+            if (options && options.penColor) {
+                this.config.penColor  = options.penColor;
+            }
+
+            if (options && options.drawColor) {
+                this.config.drawColor = options.drawColor;
+            }
+
             this.signature = (options && options.signature) ? options.signature : [];
 
             this._sizeCanvas();
@@ -201,7 +210,7 @@ define('argos/Views/Signature', [
          * @param {Event} e
          * @return Number[]
          */
-        _getCoords: function (e) {
+        _getCoords: function(e) {
             var offset = domGeom.position(this.signatureNode, false);
             return e.touches
                 ? [
@@ -218,7 +227,7 @@ define('argos/Views/Signature', [
          * Handler for `ontouchstart`, records the starting point and sets the state to down
          * @param {Event} e
          */
-        _penDown: function (e) {
+        _penDown: function(e) {
             this.isPenDown = true;
             this.lastpos = this._getCoords(e);
             this.context.lineWidth = this.config.lineWidth;
@@ -229,8 +238,11 @@ define('argos/Views/Signature', [
          * Handler for `ontouchmove`, draws the lines between the last postition and current position
          * @param {Event} e
          */
-        _penMove: function (e) {
-            if (!this.isPenDown) { return; }
+        _penMove: function(e) {
+            if (!this.isPenDown) {
+                return;
+            }
+
             this.pos = this._getCoords(e);
             e.preventDefault();
             this.context.beginPath();
@@ -246,7 +258,7 @@ define('argos/Views/Signature', [
          * Handler for `ontouchend`, saves the final signature and redraws the canvas
          * @param e
          */
-        _penUp: function (e) {
+        _penUp: function(e) {
             e.preventDefault();
             this.isPenDown = false;
             if (this.trace.length) {
@@ -260,16 +272,14 @@ define('argos/Views/Signature', [
         /**
          * Undoes the last pen down-to-pen up line by using the buffer
          */
-        _undo: function () {
-            if (this.signature.length)
-            {
+        _undo: function() {
+            if (this.signature.length) {
                 this.buffer = this.signature.pop();
                 if (!this.signature.length) {
                     this.buffer = [this.buffer];
                 }
 
-            } else if (this.buffer.length)
-            {
+            } else if (this.buffer.length) {
                 this.signature = this.buffer;
             }
             this.redraw(this.signature, this.signatureNode, this.config);
@@ -277,7 +287,7 @@ define('argos/Views/Signature', [
         /**
          * Sets the canvas width/height based on the size of the window/screen
          */
-        _sizeCanvas: function () {
+        _sizeCanvas: function() {
             this.canvasNodeWidth  = Math.floor(win.getBox().w * 0.92);
 
             this.canvasNodeHeight = Math.min(
@@ -293,7 +303,7 @@ define('argos/Views/Signature', [
          * drawn signature accordingly to the ratio.
          * @param e
          */
-        onResize: function (e) {
+        onResize: function(e) {
             var newScale,
                 oldWidth  = this.canvasNodeWidth,
                 oldHeight = this.canvasNodeHeight;
@@ -313,7 +323,7 @@ define('argos/Views/Signature', [
          * @param {HTMLElement} canvas Canvas to be drawn to
          * @param {Object} options Options to be passed to canvasDraw
          */
-        redraw: function (vector, canvas, options) {
+        redraw: function(vector, canvas, options) {
             format.canvasDraw(vector, canvas, options);
         },
         /**
@@ -321,13 +331,11 @@ define('argos/Views/Signature', [
          * @param {Number} scale Ratio in which to multiply the vector point
          * @return {Number[][]} Rescaled signature array
          */
-        rescale: function (scale) {
+        rescale: function(scale) {
             var rescaled = [];
-            for (var i = 0; i < this.signature.length; i++)
-            {
+            for (var i = 0; i < this.signature.length; i++) {
                 rescaled.push([]);
-                for (var j = 0; j < this.signature[i].length; j++)
-                {
+                for (var j = 0; j < this.signature[i].length; j++) {
                     rescaled[i].push([
                         this.signature[i][j][0] * scale,
                         this.signature[i][j][1] * scale
@@ -372,24 +380,20 @@ define('argos/Views/Signature', [
                 currentL,
                 dotProduct;
 
-            for (var i = 2; i < vector.length; i++)
-            {
+            for (var i = 2; i < vector.length; i++) {
                 currentP = vector[i];
                 currentV = [currentP[0] - rootP[0], currentP[1] - rootP[1]];
                 currentL = Math.sqrt(currentV[0]*currentV[0] + currentV[1]*currentV[1]);
                 dotProduct = (rootV[0]*currentV[0] + rootV[1]*currentV[1]) / (rootL*currentL);
 
-                if (dotProduct < minA || currentL > maxL)
-                {
+                if (dotProduct < minA || currentL > maxL) {
                     result.push(rootP);
 
                     rootP = lastP;
                     lastP = currentP;
                     rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]];
                     rootL = Math.sqrt(rootV[0]*rootV[0] + rootV[1]*rootV[1]);
-                }
-                else
-                {
+                } else {
                     lastP = currentP;
                 }
 

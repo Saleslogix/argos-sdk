@@ -669,8 +669,7 @@ define('argos/_EditBase', [
                     continue;
                 }
 
-                if (!sectionStarted)
-                {
+                if (!sectionStarted) {
                     sectionStarted = true;
                     content.push(this.sectionBeginTemplate.apply(layout, this));
                 }
@@ -735,7 +734,7 @@ define('argos/_EditBase', [
          * Loops all the fields looking for any with the `default` property set, if set apply that
          * value as the initial value of the field. If the value is a function, its expanded then applied.
          */
-        applyFieldDefaults: function(){
+        applyFieldDefaults: function() {
             for (var name in this.fields) {
                 if (this.fields.hasOwnProperty(name)) {
                     var field = this.fields[name],
