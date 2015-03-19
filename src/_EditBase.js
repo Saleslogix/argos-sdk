@@ -683,7 +683,7 @@ define('argos/_EditBase', [
                 if (field.autoFocus && !this._focusField) {
                     this._focusField = field;
                 } else if (field.autoFocus && this._focusField) {
-                    throw new Error("Only one field can have autoFocus set to true in the Edit layout.");
+                    throw new Error('Only one field can have autoFocus set to true in the Edit layout.');
                 }
 
 

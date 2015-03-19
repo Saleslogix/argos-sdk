@@ -160,7 +160,7 @@ define('argos/Views/FileSelect', [
                 this._onSelectFile(e);
             }.bind(this);
 
-            this.contentNode.innerHTML = "";
+            this.contentNode.innerHTML = '';
             domClass.remove(this.fileArea, 'display-none');
             domClass.remove(this.btnUploadFiles, 'display-none');
             this.onUpdateProgress('');
@@ -191,7 +191,7 @@ define('argos/Views/FileSelect', [
         },
         _getFileDescription: function(fileIndex) {
             var n, desc;
-            n = dom.byId("File_" + fileIndex);
+            n = dom.byId('File_' + fileIndex);
             if (n) {
                 desc = n.value;
             }
@@ -215,7 +215,7 @@ define('argos/Views/FileSelect', [
             filelength = this._getFileLength(file);
             data = {
                 name: 'File_' + index,
-                fileName: file.name + "  (" + filelength + ")",
+                fileName: file.name + '  (' + filelength + ')',
                 description: this._getDefaultDescription(file.name)
             };
             var rowNode = domConstruct.place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
@@ -231,18 +231,18 @@ define('argos/Views/FileSelect', [
                 filelength = file.size || file.blob.length;
             }
             if (filelength === 0) {
-                filelength += "0 " + this.bytesTextBytes;
+                filelength += '0 ' + this.bytesTextBytes;
             }
             else {
                 if (filelength) {
                     if (filelength > 1024) {
                         if (filelength > 1048576) {
-                            filelength = Math.round(filelength / 1048576) + " MB";
+                            filelength = Math.round(filelength / 1048576) + ' MB';
                         } else {
-                            filelength = Math.round(filelength / 1024) + " KB";
+                            filelength = Math.round(filelength / 1024) + ' KB';
                         }
                     } else {
-                        filelength += " " + this.bytesTextBytesBytes;
+                        filelength += ' ' + this.bytesTextBytesBytes;
                     }
                 }
             }

@@ -196,8 +196,8 @@ define('argos/GroupedList', [
                     entry = feed['$resources'][i];
                     entryGroup = this.getGroupForEntry(entry);
 
-                    entry["$groupTag"] = entryGroup.tag;
-                    entry["$groupTitle"] = entryGroup.title;
+                    entry['$groupTag'] = entryGroup.tag;
+                    entry['$groupTitle'] = entryGroup.title;
 
                     this.entries[entry.$key] = entry;
                     rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
@@ -228,8 +228,8 @@ define('argos/GroupedList', [
 
                     entryGroup = this.getGroupForEntry(entry);
 
-                    entry["$groupTag"] = entryGroup.tag;
-                    entry["$groupTitle"] = entryGroup.title;
+                    entry['$groupTag'] = entryGroup.tag;
+                    entry['$groupTitle'] = entryGroup.title;
 
                     rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
                     this.onApplyRowTemplate(entry, rowNode);

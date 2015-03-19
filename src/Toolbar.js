@@ -97,13 +97,13 @@ define('argos/Toolbar', [
          * Sets the toolbar style to block (visibile)
          */
         show: function() {
-            domStyle.set(this.domNode, "display", "block");
+            domStyle.set(this.domNode, 'display', 'block');
         },
         /**
          * Sets the toolbar style to none (hidden)
          */
         hide: function() {
-            domStyle.set(this.domNode, "display", "none");
+            domStyle.set(this.domNode, 'display', 'none');
         },
         /**
          * Empties the toolbar item collection and sets enabled to true

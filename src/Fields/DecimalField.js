@@ -74,7 +74,7 @@ define('argos/Fields/DecimalField', [
             val = val.toFixed(perc);
             if (isNaN(val)) {
                 if (perc === 0) {
-                    val = "0";
+                    val = '0';
                 } else {
                     val = string.substitute('0${0}00', [Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.']);
                 }

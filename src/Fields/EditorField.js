@@ -129,7 +129,7 @@ define('argos/Fields/EditorField', [
         init: function() {
             this.inherited(arguments);
 
-            this.connect(this.containerNode, "onclick", this._onClick);
+            this.connect(this.containerNode, 'onclick', this._onClick);
         },
         /**
          * Extends the parent implementation to also call {@link #_enableTextElement _enableTextElement}.

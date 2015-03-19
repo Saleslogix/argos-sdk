@@ -353,7 +353,7 @@ define('argos/Format', [
             v = utility.roundNumberTo(intVal, places);
 
             //get the whole number part
-            wp = (Math.floor(v)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace("\\.", '.'));
+            wp = (Math.floor(v)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace('\\.', '.'));
 
             if (places < 1) { // format with out decimal part
                 numberFormated = string.substitute('${0}', [wp]).replace(/ /g, '\u00A0'); //keep numbers from breaking
@@ -434,7 +434,7 @@ define('argos/Format', [
                                 : string.substitute('${0} ${1}', [mins, (argos.Format.minuteText || 'minute')]);
             }
 
-            return (hrs && mins) ? hrs +" "+ mins
+            return (hrs && mins) ? hrs + ' ' + mins
                                  : hrs === 0 ? mins : hrs;
         },
         /**
@@ -507,7 +507,7 @@ define('argos/Format', [
             argos.Format.canvasDraw(vector, canvasNode, options);
 
             img = canvasNode.toDataURL('image/png');
-            if (img.indexOf("data:image/png") !== 0) {
+            if (img.indexOf('data:image/png') !== 0) {
                 img = Canvas2Image.saveAsBMP(canvasNode, true).src;
             }
 

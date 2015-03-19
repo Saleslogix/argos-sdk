@@ -1,6 +1,10 @@
 {
     "validateIndentation": 4,
     "validateParameterSeparator": ", ",
+    "validateQuoteMarks": {
+        "mark": "'",
+        "escape": true
+    },
 
     "requireSpaceAfterKeywords": [
         "do",

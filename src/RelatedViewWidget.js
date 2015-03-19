@@ -379,7 +379,7 @@ define('argos/RelatedViewWidget', [
 
                     }
                     if (this.showTotalInTab) {
-                        domAttr.set(this.titleNode, { innerHTML: this.title + "  " + string.substitute(this.totalCountText, [this.relatedResults.total]) });
+                        domAttr.set(this.titleNode, { innerHTML: this.title + '  ' + string.substitute(this.totalCountText, [this.relatedResults.total]) });
                     }
                     for (i = 0; i < relatedFeed.length; i++) {
                         itemEntry = relatedFeed[i];
@@ -399,9 +399,9 @@ define('argos/RelatedViewWidget', [
                     }
                     domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
                     if (this.showTotalInTab) {
-                        domAttr.set(this.titleNode, { innerHTML: this.title + "  " + string.substitute(this.totalCountText, [0, 0]) });
+                        domAttr.set(this.titleNode, { innerHTML: this.title + '  ' + string.substitute(this.totalCountText, [0, 0]) });
                     }
-                    domAttr.set(this.selectMoreNode, { innerHTML: "" });
+                    domAttr.set(this.selectMoreNode, { innerHTML: '' });
                     if (this._isInitLoad) {
                         this._isInitLoad = false;
                         domClass.toggle(this.tabNode, 'collapsed');

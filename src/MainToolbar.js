@@ -95,7 +95,7 @@ define('argos/MainToolbar', [
         clear: function() {
             this.inherited(arguments);
 
-            query("> [data-action], .toolButton-right", this.domNode).remove();
+            query('> [data-action], .toolButton-right', this.domNode).remove();
         },
         /**
          * Calls parent {@link Toolbar#showTools showTools} which sets the tool collection.

@@ -95,7 +95,7 @@ define('argos/ErrorManager', [
             var errorDate = new Date(),
                 dateStamp = new Date().getTime(),
                 errorItem = {
-                    "$key": dateStamp,
+                    '$key': dateStamp,
                     'Date': moment().format(),
                     'Error': json.stringify(utility.sanitizeForJson({
                         serverResponse: serverResponse,
@@ -118,17 +118,17 @@ define('argos/ErrorManager', [
          */
         extractFailureResponse: function(response) {
             var failureResponse = {
-                "$descriptor": response.statusText,
-                "serverResponse": {
-                    "readyState": response.readyState,
-                    "responseXML": response.responseXML,
-                    "status": response.status,
-                    "responseType": response.responseType,
-                    "withCredentials": response.withCredentials,
-                    "responseText": response.responseText
+                '$descriptor': response.statusText,
+                'serverResponse': {
+                    'readyState': response.readyState,
+                    'responseXML': response.responseXML,
+                    'status': response.status,
+                    'responseType': response.responseType,
+                    'withCredentials': response.withCredentials,
+                    'responseText': response.responseText
                         ? this.fromJsonArray(response.responseText)
-                        : "",
-                    "statusText": response.statusText
+                        : '',
+                    'statusText': response.statusText
                 }
             };
             return failureResponse;
@@ -148,7 +148,7 @@ define('argos/ErrorManager', [
             } catch(e) {
                 o = {
                     message: json,
-                    severity: ""
+                    severity: ''
                 };
             }
             return o;
@@ -162,15 +162,15 @@ define('argos/ErrorManager', [
          */
         extractAbortResponse: function(response) {
             var abortResponse = {
-                "$descriptor": this.abortedText,
-                "serverResponse": {
-                    "readyState": 4,
-                    "responseXML": "",
-                    "status": 0,
-                    "responseType": "",
-                    "withCredentials": response.withCredentials,
-                    "responseText": "",
-                    "statusText": this.abortedText
+                '$descriptor': this.abortedText,
+                'serverResponse': {
+                    'readyState': 4,
+                    'responseXML': '',
+                    'status': 0,
+                    'responseType': '',
+                    'withCredentials': response.withCredentials,
+                    'responseText': '',
+                    'statusText': this.abortedText
                 }
             };
             return abortResponse;

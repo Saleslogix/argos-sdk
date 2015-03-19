@@ -345,13 +345,13 @@ define('argos/Fields/DurationField', [
         formatUnit: function(unit) {
             var sval;
             if (isNaN(unit)) {
-                sval = "0";
+                sval = '0';
             } else {
-                sval = unit.toString().split(".");
+                sval = unit.toString().split('.');
                 if (sval.length === 1) {
                     sval = sval[0];
                 } else {
-                    if (sval[1] === "0") {
+                    if (sval[1] === '0') {
                         sval = sval[0];
                     } else {
                         sval = string.substitute('${0}${1}${2}',

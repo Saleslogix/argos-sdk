@@ -84,7 +84,7 @@ define('argos/Fields/PhoneField', [
 
             value = format.alphaToPhoneNumeric(value);
 
-            return value.replace(/[^0-9x]/ig, "");
+            return value.replace(/[^0-9x]/ig, '');
         },
         /**
          * Sets the original value if initial is true and sets the input value to the formatted

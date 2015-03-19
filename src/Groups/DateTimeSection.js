@@ -108,66 +108,66 @@ define('argos/Groups/DateTimeSection', [
             }
 
             if (this.isLastMonth(valueDate)) {
-                return "LastMonth";
+                return 'LastMonth';
             }
 
             if (this.isEarlierThisMonth(valueDate)) {
-                return "EarlierThisMonth";
+                return 'EarlierThisMonth';
             }
 
             if (this.isLastWeek(valueDate)) {
-                return "LastWeek";
+                return 'LastWeek';
             }
 
             if (this.isEarlierThisWeek(valueDate)) {
-                return "EarlierThisWeek";
+                return 'EarlierThisWeek';
             }
 
             if (this.isYesterday(valueDate)) {
-                return "Yesterday";
+                return 'Yesterday';
             }
 
             if (this.isPastYear(valueDate)) {
-                return "PastYear";
+                return 'PastYear';
             }
 
             if (this.isToday(valueDate)) {
-                return "Today";
+                return 'Today';
             }
 
             if (this.isTomorrow(valueDate)) {
-                return "Tomorrow";
+                return 'Tomorrow';
             }
 
             if (this.isLaterThisWeek(valueDate)) {
-                return "LaterThisWeek";
+                return 'LaterThisWeek';
             }
 
             if (this.isNextWeek(valueDate)) {
-                return "NextWeek";
+                return 'NextWeek';
             }
 
             if (this.isLaterThisMonth(valueDate)) {
-                return "LaterThisMonth";
+                return 'LaterThisMonth';
             }
 
             if (this.isNextMonth(valueDate)) {
-                return "NextMonth";
+                return 'NextMonth';
             }
 
             if (this.isEarlierThisYear(valueDate)) {
-                return "EarlierThisYear";
+                return 'EarlierThisYear';
             }
 
             if (this.isLaterThisYear(valueDate)) {
-                return "LaterThisYear";
+                return 'LaterThisYear';
             }
 
             if (this.isNextYear(valueDate)) {
-                return "NextYear";
+                return 'NextYear';
             }
 
-            return "Future";
+            return 'Future';
         },
         isNextYear: function(value) {
             // Next year excluding anything that could be within the next month (next week, later this week, tomorrow)

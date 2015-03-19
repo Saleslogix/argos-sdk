@@ -100,16 +100,16 @@ define('argos/Utility', [
         setValue: function(o, name, val) {
             var current = o;
             var path = nameToPath(name).slice(0);
-            while ((typeof current !== "undefined") && path.length > 1) {
+            while ((typeof current !== 'undefined') && path.length > 1) {
                 var key = path.pop();
                 var next = path[path.length - 1];
-                current = current[key] = (typeof current[key] !== "undefined")
+                current = current[key] = (typeof current[key] !== 'undefined')
                     ? current[key]
-                    : (typeof next === "number")
+                    : (typeof next === 'number')
                         ? []
                         : {};
             }
-            if (typeof path[0] !== "undefined") {
+            if (typeof path[0] !== 'undefined') {
                 current[path[0]] = val;
             }
 
