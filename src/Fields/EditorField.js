@@ -172,7 +172,7 @@ define('argos/Fields/EditorField', [
                         cls: 'fa fa-check fa-fw fa-lg',
                         fn: this.complete,
                         scope: this
-                    },{
+                    }, {
                         id: 'cancel',
                         cls: 'fa fa-ban fa-fw fa-lg',
                         side: 'left',

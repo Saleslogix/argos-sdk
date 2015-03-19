@@ -70,25 +70,25 @@ define('argos/Format', [
         {
             test: /[ABC]/gi,
             val: '2'
-        },{
+        }, {
             test: /[DEF]/gi,
             val: '3'
-        },{
+        }, {
             test: /[GHI]/gi,
             val: '4'
-        },{
+        }, {
             test: /[JKL]/gi,
             val: '5'
-        },{
+        }, {
             test: /[MNO]/gi,
             val: '6'
-        },{
+        }, {
             test: /[PQRS]/gi,
             val: '7'
-        },{
+        }, {
             test: /[TUV]/gi,
             val: '8'
-        },{
+        }, {
             test: /[WXYZwyz]/g, // Note lowercase 'x' should stay for extensions
             val: '9'
         }
@@ -227,16 +227,16 @@ define('argos/Format', [
         phoneFormat: [{
             test: /^\+.*/,
             format: '${0}'
-        },{
+        }, {
             test: /^(\d{3})(\d{3,4})$/,
             format: '${3}-${4}'
-        },{
+        }, {
             test: /^(\d{3})(\d{3})(\d{2,4})$/, // 555 555 5555
             format: '(${3})-${4}-${5}'
-        },{
+        }, {
             test: /^(\d{3})(\d{3})(\d{2,4})([^0-9]{1,}.*)$/, // 555 555 5555x
             format: '(${3})-${4}-${5}${6}'
-        },{
+        }, {
             test: /^(\d{11,})(.*)$/,
             format: '${1}'
         }],
@@ -283,7 +283,7 @@ define('argos/Format', [
          * @return {String} String without space on either end
          */
         trim: function(val) {
-            return val.replace(/^\s+|\s+$/g,'');
+            return val.replace(/^\s+|\s+$/g, '');
         },
         /**
          * Takes a date and format string and returns the formatted date as a string.
@@ -365,7 +365,7 @@ define('argos/Format', [
                 numberFormated = string.substitute('${0}', [wp]).replace(/ /g, '\u00A0'); //keep numbers from breaking
             } else {
                 dp = v % 1; //get the decimal part
-                dp = dp.toPrecision(places+1); // round to significant pecsion
+                dp = dp.toPrecision(places + 1); // round to significant pecsion
                 dp = dp.toString();
                 dp = dp.substr(2, places); //get the whole decimal part
                 numberFormated = string.substitute(
@@ -592,7 +592,7 @@ define('argos/Format', [
             else if ((1024 < size) && (size < (1024 * 1000))) {
                 return dNumber.format(Math.round(size / 1024)) + ' KB';
             } else {
-                return dNumber.format(Math.round(size / (1024*1000))) + ' MB';
+                return dNumber.format(Math.round(size / (1024 * 1000))) + ' MB';
             }
         }
     });

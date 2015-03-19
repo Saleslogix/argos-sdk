@@ -69,10 +69,10 @@ define('argos/Application', [
             }
 
             var aArgs = Array.prototype.slice.call(arguments, 1),
-                fToBind = this,
+                self = this,
                 fNOP = function() {},
                 fBound = function() {
-                    return fToBind.apply(this instanceof fNOP && oThis
+                    return self.apply(this instanceof fNOP && oThis
                          ? this
                          : oThis,
                          aArgs.concat(Array.prototype.slice.call(arguments)));
@@ -101,21 +101,21 @@ define('argos/Application', [
     lang.extend(Function, {
         // TODO: Deprecate this in favor of the standard "bind", using polyfill if necessary
         bindDelegate: function(scope) {
-            var fn,
+            var self,
                 optional;
 
-            fn = this;
+            self = this;
 
             if (arguments.length === 1) {
                 return function() {
-                    return fn.apply(scope || this, arguments);
+                    return self.apply(scope || this, arguments);
                 };
             }
 
             optional = Array.prototype.slice.call(arguments, 1);
             return function() {
                 var called = Array.prototype.slice.call(arguments, 0);
-                return fn.apply(scope || this, called.concat(optional));
+                return self.apply(scope || this, called.concat(optional));
             };
         }
     });
@@ -804,7 +804,7 @@ define('argos/Application', [
             }
 
             this.resizeTimer = setTimeout(function() {
-                connect.publish('/app/resize',[]);
+                connect.publish('/app/resize', []);
             }, 100);
         },
         onRegistered: function(view) {

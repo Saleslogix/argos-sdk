@@ -310,7 +310,7 @@ define('argos/ReUI/main', [
                     }
                 }
 
-                if ((position > -1) && (position === (count-2))) {
+                if ((position > -1) && (position === (count - 2))) {
                      //Added check if history item is just one back.
 
                     context.history = context.history.splice(0, position + 1);

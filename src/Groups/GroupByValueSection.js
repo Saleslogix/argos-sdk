@@ -56,7 +56,7 @@ define('argos/Groups/GroupByValueSection', [
         _getValueFromWidth: function(value, width) {
             if (value) {
                 if (width > 0) {
-                    value =value.toString().substring(0,width);
+                    value = value.toString().substring(0, width);
                 }
             }
             return value;

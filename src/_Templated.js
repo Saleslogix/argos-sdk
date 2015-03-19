@@ -53,6 +53,7 @@ define('argos/_Templated', [
          */
         buildRendering: function() {
             var root;
+
             if (this.widgetTemplate && this.contentTemplate) {
                 throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
             }

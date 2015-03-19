@@ -380,7 +380,7 @@ define('argos/Views/Signature', [
                 rootP = vector[0],
                 lastP = vector[1],
                 rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]],
-                rootL = Math.sqrt(rootV[0]*rootV[0] + rootV[1]*rootV[1]),
+                rootL = Math.sqrt(rootV[0] * rootV[0] + rootV[1] * rootV[1]),
                 currentP,
                 currentV,
                 currentL,
@@ -390,8 +390,8 @@ define('argos/Views/Signature', [
             for (i = 2; i < vector.length; i++) {
                 currentP = vector[i];
                 currentV = [currentP[0] - rootP[0], currentP[1] - rootP[1]];
-                currentL = Math.sqrt(currentV[0]*currentV[0] + currentV[1]*currentV[1]);
-                dotProduct = (rootV[0]*currentV[0] + rootV[1]*currentV[1]) / (rootL*currentL);
+                currentL = Math.sqrt(currentV[0] * currentV[0] + currentV[1] * currentV[1]);
+                dotProduct = (rootV[0] * currentV[0] + rootV[1] * currentV[1]) / (rootL * currentL);
 
                 if (dotProduct < minA || currentL > maxL) {
                     result.push(rootP);
@@ -399,7 +399,7 @@ define('argos/Views/Signature', [
                     rootP = lastP;
                     lastP = currentP;
                     rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]];
-                    rootL = Math.sqrt(rootV[0]*rootV[0] + rootV[1]*rootV[1]);
+                    rootL = Math.sqrt(rootV[0] * rootV[0] + rootV[1] * rootV[1]);
                 } else {
                     lastP = currentP;
                 }

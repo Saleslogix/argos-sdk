@@ -322,7 +322,7 @@ define('argos/Calendar', [
             inc = inc || 1;
 
             if (0 <= (el.selectedIndex - inc)) {
-                el.selectedIndex = inc * Math.floor((el.selectedIndex -1)/ inc);
+                el.selectedIndex = inc * Math.floor((el.selectedIndex - 1) / inc);
             } else {
                 if (el === this.yearNode) {
                     return false;

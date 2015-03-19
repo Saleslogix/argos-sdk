@@ -71,7 +71,7 @@ define('argos/Groups/DateTimeSection', [
             this.sections.push({ key: 'NextYear', title: this.nextYearText, value: null, collapsed: true });
             this.sections.push({ key: 'NextMonth', title: this.nextMonthText, value: null, collapsed: true });
             this.sections.push({ key: 'NextWeek', title: this.nextWeekText, value: null, collapsed: true });
-            this.sections.push({ key: 'Future', title: this.futureText,value: null, collapsed: true });
+            this.sections.push({ key: 'Future', title: this.futureText, value: null, collapsed: true });
         },
         getSection: function(entry) {
             var value;
@@ -287,7 +287,7 @@ define('argos/Groups/DateTimeSection', [
             return this.getDefaultSection();
         },
         getSectionByDateTime:function(value) {
-            var section,key;
+            var section, key;
             key = this.getSectionKey(value);
             section = this.getSectionByKey(key, value);
             return section;
