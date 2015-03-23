@@ -235,11 +235,11 @@
           "path": "../src/Groups"
         },
         {
-          "text": "RelatedViewManager.js",
+          "text": "RelatedViewWidget.js",
           "path": "../src"
         },
         {
-          "text": "RelatedViewWidget.js",
+          "text": "RelatedViewManager.js",
           "path": "../src"
         },
         {
