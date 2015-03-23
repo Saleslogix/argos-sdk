@@ -163,8 +163,7 @@ define('argos/_SDataEditMixin', [
          * @param {Object} o The options that were passed when creating the Ajax request.
          */
         onRequestTemplateFailure: function(response, o) {
-            alert(string.substitute(this.requestErrorText, [response, o]));
-            ErrorManager.addError('failure', response);
+            this.handleError(response);
         },
         /**
          * Handler when a request to SData is successful, calls processTemplateEntry

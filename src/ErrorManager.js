@@ -240,7 +240,7 @@ define('argos/ErrorManager', [
             errorList = this.getAllErrors();
 
             for (i = 0; i < errorList.length; i++) {
-                if (errorList[i][key] === value) {
+                if (errorList[i][key] === parseInt(value, 10)) {
                     return errorList[i];
                 }
             }
