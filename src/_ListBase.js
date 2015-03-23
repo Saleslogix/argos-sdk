@@ -1102,27 +1102,32 @@ define('argos/_ListBase', [
                 return;
             }
 
-            var searchQuery;
             if (typeof this.defaultSearchTerm === 'function') {
                 this.setSearchTerm(this.defaultSearchTerm());
             } else {
                 this.setSearchTerm(this.defaultSearchTerm);
             }
 
-            searchQuery = this.getSearchQuery();
+            this._updateQuery();
+
+            this.defaultSearchTermSet = true;
+        },
+        _updateQuery: function() {
+            var searchQuery = this.getSearchQuery();
             if (searchQuery) {
                 this.query = searchQuery;
             } else {
                 this.query = '';
             }
-
-            this.defaultSearchTermSet = true;
         },
         getSearchQuery: function() {
+            var results = null;
+
             if (this.searchWidget) {
-                return this.searchWidget.getFormattedSearchQuery();
+                results = this.searchWidget.getFormattedSearchQuery();
             }
-            return null;
+
+            return results;
         },
         /**
          * Helper method for list actions. Takes a view id, data point and where format string, sets the nav options
@@ -1598,6 +1603,7 @@ define('argos/_ListBase', [
          * Called when the view needs to be reset. Invokes the request data process.
          */
         refresh: function() {
+            this.query = this.getSearchQuery() || this.query;
             this.requestData();
         },
         /**
