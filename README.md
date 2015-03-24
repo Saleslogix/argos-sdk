@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Saleslogix/argos-sdk.svg)](https://travis-ci.org/Saleslogix/argos-sdk)
+
 Saleslogix Argos Platform SDK
 =================
 
