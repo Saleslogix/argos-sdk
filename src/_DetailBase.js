@@ -945,13 +945,6 @@ define('argos/_DetailBase', [
         },
         destroy: function() {
             this.inherited(arguments);
-        },
-        getContextSnapShot: function() {
-            var snapShot, entry = this.entry;
-            if (entry) {
-                snapShot = this.contextSnapShotTemplate.apply(entry, this);
-            }
-            return snapShot;
         }
     });
 

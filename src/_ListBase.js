@@ -46,7 +46,6 @@ define('argos/_ListBase', [
     './View',
     './SearchWidget',
     './ConfigurableSelectionModel',
-    './RelatedViewManager',
     './_PullToRefreshMixin'
 ], function(
     declare,
@@ -70,7 +69,6 @@ define('argos/_ListBase', [
     View,
     SearchWidget,
     ConfigurableSelectionModel,
-    RelatedViewManager,
     _PullToRefreshMixin
 ) {
 
@@ -184,7 +182,6 @@ define('argos/_ListBase', [
                     '{% } %}',
                 '</button>',
                 '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
-                '<div id="list-item-content-related"></div>',
             '</li>'
         ]),
         /**
@@ -423,13 +420,11 @@ define('argos/_ListBase', [
          * The relative path to the checkmark or select icon for row selector
          */
         selectIcon: '',
-
         /**
          * @property {String}
          * CSS class to use for checkmark or select icon for row selector. Overrides selectIcon.
          */
         selectIconClass: 'fa fa-check fa-lg',
-
         /**
          * @property {Object}
          * The search widget instance for the view
@@ -440,7 +435,6 @@ define('argos/_ListBase', [
          * The class constructor to use for the search widget
          */
         searchWidgetClass: SearchWidget,
-
         /**
          * @property {Boolean}
          * Flag to indicate the default search term has been set.
@@ -471,34 +465,20 @@ define('argos/_ListBase', [
          * The list action layout definition for the list action bar.
          */
         actions: null,
-
         /**
          * @property {Boolean} If true, will remove the loading button and auto fetch more data when the user scrolls to the bottom of the page.
          */
         continuousScrolling: true,
-
         /**
          * @property {Boolean} Indicates if the list is loading
          */
         listLoading: false,
-
-        /**
-         * The related view definitions for related views for each row.
-         */
-        relatedViews: null,
-
-        /**
-         * The related view managers for each related view definition.
-         */
-        relatedViewManagers: null,
-
         // Store properties
         itemsProperty: '',
         idProperty: '',
         labelProperty: '',
         entityProperty: '',
         versionProperty: '',
-
         /**
          * Setter method for the selection model, also binds the various selection model select events
          * to the respective List event handler for each.
@@ -591,7 +571,6 @@ define('argos/_ListBase', [
             }
 
             this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
-            this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
         },
         /**
          * Extends dijit Widget to destroy the search widget before destroying the view.
@@ -606,7 +585,7 @@ define('argos/_ListBase', [
             }
 
             delete this.store;
-            this.destroyRelatedViewWidgets();
+            //this.destroyRelatedViewWidgets();
             this.inherited(arguments);
         },
         _getStoreAttr: function() {
@@ -1175,7 +1154,7 @@ define('argos/_ListBase', [
                     descriptor: descriptor, // keep for backwards compat
                     title: descriptor,
                     key: key,
-                    fromContext:this
+                    fromContext: this
                 };
 
             if (additionalOptions) {
@@ -1391,68 +1370,10 @@ define('argos/_ListBase', [
 
                     docfrag.appendChild(rowNode);
                     this.onApplyRowTemplate(entry, rowNode);
-                    if (this.relatedViews.length > 0) {
-                        this.onProcessRelatedViews(entry, rowNode, entries);
-                    }
                 }
 
                 if (docfrag.childNodes.length > 0) {
                     domConstruct.place(docfrag, this.contentNode, 'last');
-                }
-            }
-        },
-        /**
-         * Gets the related view mnagager for a related view definition.
-         * If a manager is not found a new Related View Manager is created and returned.
-         * @return {Object} RelatedViewManager
-         */
-        getRelatedViewManager: function(relatedView) {
-            var relatedViewManager, options;
-            if (!this.relatedViewManagers) {
-                this.relatedViewManagers = {};
-            }
-            if (this.relatedViewManagers[relatedView.id]) {
-                relatedViewManager = this.relatedViewManagers[relatedView.id];
-            } else {
-                options = {
-                    id: relatedView.id,
-                    relatedViewConfig: relatedView
-                };
-                relatedViewManager = new RelatedViewManager(options);
-                this.relatedViewManagers[relatedView.id] = relatedViewManager;
-            }
-            return relatedViewManager;
-        },
-        /**
-         *
-         * Add the each entry and row to the RelateView manager wich in turn creates the new related view and renders its content with in the current row.`
-         *
-         * @param {Object} entry the current entry from the data.
-         * @param {Object} rownode the current dom node to add the widget to.
-         * @param {Object} entries the data.
-         */
-        onProcessRelatedViews: function(entry, rowNode, entries) {
-            var relatedViewManager, i;
-            if (this.options && this.options.simpleMode && (this.options.simpleMode === true)) {
-                return;
-            }
-            if (this.relatedViews.length > 0) {
-                try {
-                    for (i = 0; i < this.relatedViews.length; i++) {
-                        if (this.relatedViews[i].enabled) {
-                            relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
-                            if (relatedViewManager) {
-                                if (!entry.$key) {
-                                    entry.$key = this.store.getIdentity(entry);
-                                }
-                                relatedViewManager.addView(entry, rowNode, this);
-                            }
-                        }
-                    }
-                }
-                catch (error) {
-                    console.log('Error processing related views:' + error);
-
                 }
             }
         },
@@ -1645,7 +1566,6 @@ define('argos/_ListBase', [
             domClass.remove(this.domNode, 'list-has-more');
 
             this.set('listContent', this.loadingTemplate.apply(this));
-            this.destroyRelatedViewWidgets();
         },
         search: function() {
             if (this.searchWidget) {
@@ -1661,40 +1581,9 @@ define('argos/_ListBase', [
             }
         },
         /**
-         * Sets and returns the related view definition, this method should be overriden in the view
-         * so that you may define the related views that will be add to each row in the list.
-         * @return {Object} this.relatedViews
-         */
-        createRelatedViewLayout: function() {
-            return this.relatedViews || (this.relatedViews = {});
-        },
-        /**
-         *  Destroies all of the realted view widgets, that was added.
-         */
-        destroyRelatedViewWidgets: function() {
-            if (this.relatedViewManagers) {
-                for (var relatedViewId in this.relatedViewManagers) {
-                    if (this.relatedViewManagers.hasOwnProperty(relatedViewId)) {
-                        this.relatedViewManagers[relatedViewId].destroyViews();
-                    }
-                }
-            }
-        },
-        /**
          * Returns a promise with the list's count.
          */
         getListCount: function(options, callback) {
-        },
-        /**
-         * Returns a rendered html snap shot of the entry.
-         */
-        getContextSnapShot: function(key) {
-            var snapShot, entry = this.entries[key];
-            if (entry) {
-                //snapShot = this.contextSnapShotTemplate.apply(entry, this);
-                snapShot = this.itemTemplate.apply(entry, this);
-            }
-            return snapShot;
         }
     });
 
