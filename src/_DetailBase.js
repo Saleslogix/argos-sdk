@@ -227,6 +227,10 @@ define('argos/_DetailBase', [
         notAvailableTemplate: new Simplate([
             '<div class="not-available">{%: $.notAvailableText %}</div>'
         ]),
+        contextSnapShotTemplate: new Simplate([
+          //  '<h3>{%: $$.title %}</h3>',
+            '<h4>{%: $["$descriptor"] %}</h4>'
+        ]),
         /**
          * @property {String}
          * The unique identifier of the view
@@ -499,7 +503,7 @@ define('argos/_DetailBase', [
             if (this.entry) {
                 options.selectedEntry = this.entry;
             }
-
+            options.fromContext = this;
             if (view && options) {
                 view.show(options);
             }
@@ -941,6 +945,13 @@ define('argos/_DetailBase', [
         },
         destroy: function() {
             this.inherited(arguments);
+        },
+        getContextSnapShot: function() {
+            var snapShot, entry = this.entry;
+            if (entry) {
+                snapShot = this.contextSnapShotTemplate.apply(entry, this);
+            }
+            return snapShot;
         }
     });
 

@@ -246,7 +246,10 @@ define('argos/_ListBase', [
                 '<label>{%: $.label %}</label>',
             '</button>'
         ]),
-
+        contextSnapShotTemplate: new Simplate([
+            '<h3>{%: $$.title %}</h3>',
+            '<h4>{%: $["$descriptor"] %}</h4>'
+        ]),
         /**
          * @property {HTMLElement}
          * Attach point for the main view content
@@ -1171,7 +1174,8 @@ define('argos/_ListBase', [
                 options = {
                     descriptor: descriptor, // keep for backwards compat
                     title: descriptor,
-                    key: key
+                    key: key,
+                    fromContext:this
                 };
 
             if (additionalOptions) {
@@ -1680,6 +1684,17 @@ define('argos/_ListBase', [
          * Returns a promise with the list's count.
          */
         getListCount: function(options, callback) {
+        },
+        /**
+         * Returns a rendered html snap shot of the entry.
+         */
+        getContextSnapShot: function(key) {
+            var snapShot, entry = this.entries[key];
+            if (entry) {
+                //snapShot = this.contextSnapShotTemplate.apply(entry, this);
+                snapShot = this.itemTemplate.apply(entry, this);
+            }
+            return snapShot;
         }
     });
 

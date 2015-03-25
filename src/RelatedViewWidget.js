@@ -28,10 +28,9 @@ define('argos/RelatedViewWidget', [
     'dojo/_base/connect',
     'dojo/_base/array',
     './Store/SData',
-    'dijit/_Widget',
     './_CustomizationMixin',
     './_ActionMixin',
-    './_Templated'
+    'argos/_RelatedViewWidgetBase'
 ], function(
     declare,
     lang,
@@ -46,12 +45,11 @@ define('argos/RelatedViewWidget', [
     connect,
     array,
     SDataStore,
-    _Widget,
     _CustomizationMixin,
     _ActionMixin,
-    _Templated
+    _RelatedViewWidgetBase
 ) {
-    var __class = declare('argos.RelatedViewWidget', [_Widget, _CustomizationMixin, _ActionMixin, _Templated], {
+    var __class = declare('argos.RelatedViewWidget',[_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], {
         cls: null,
         nodataText: 'no records found ...',
         selectMoreDataText: 'see ${0} more of ${1} ... ',
@@ -101,9 +99,7 @@ define('argos/RelatedViewWidget', [
          * @property {Simplate}
          * Simple that defines the HTML Markup
          */
-        widgetTemplate: new Simplate([
-            '<div class="related-view-widget {%: $$.cls %}">',
-                '<div data-dojo-attach-point="containerNode">',
+        relatedContentTemplate: new Simplate([
                     '<div  id="tab" data-dojo-attach-point="tabNode" class="',
                     '{% if ($.autoLoad) { %}',
                      'tab ',
@@ -124,9 +120,7 @@ define('argos/RelatedViewWidget', [
                         '<div data-dojo-attach-point="footerNode" class="footer">',
                            '{%! $$.relatedViewFooterTemplate %}',
                         '</div>',
-                    '</div>',
-                '</div>',
-            '</div>'
+                    '</div>'
         ]),
         nodataTemplate: new Simplate([
              '<div class="nodata"> {%: $$.nodataText %}</div>'
@@ -200,7 +194,7 @@ define('argos/RelatedViewWidget', [
             this._subscribes.push(connect.subscribe('/app/refresh', this, this._onAppRefresh));
         },
         postCreate: function() {
-            if (!this.showTab) {
+            if ((!this.showTab) && (this.tabNode)) {
                 domClass.toggle(this.tabNode, 'hidden');
             }
             if (this.enableActions) {
