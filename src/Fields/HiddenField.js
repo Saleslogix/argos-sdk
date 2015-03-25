@@ -20,7 +20,7 @@ define('argos/Fields/HiddenField', [
     '../FieldManager'
 ], function(
     declare,
-    lang,
+    _lang,
     TextField,
     FieldManager
 ) {
@@ -67,6 +67,6 @@ define('argos/Fields/HiddenField', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Fields.HiddenField', control);
+    _lang.setObject('Sage.Platform.Mobile.Fields.HiddenField', control);
     return FieldManager.register('hidden', control);
 });

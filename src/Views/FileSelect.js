@@ -33,7 +33,7 @@ define('argos/Views/FileSelect', [
     '../View'
 ], function(
     declare,
-    lang,
+    _lang,
     win,
     has,
     domConstruct,
@@ -290,7 +290,7 @@ define('argos/Views/FileSelect', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Views.FileSelect', __class);
+    _lang.setObject('Sage.Platform.Mobile.Views.FileSelect', __class);
     return __class;
 });
 

@@ -23,7 +23,7 @@ define('argos/Fields/DecimalField', [
     '../Utility'
 ], function(
     declare,
-    lang,
+    _lang,
     string,
     TextField,
     FieldManager,
@@ -120,6 +120,6 @@ define('argos/Fields/DecimalField', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Fields.DecimalField', control);
+    _lang.setObject('Sage.Platform.Mobile.Fields.DecimalField', control);
     return FieldManager.register('decimal', control);
 });

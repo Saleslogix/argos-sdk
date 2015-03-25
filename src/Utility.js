@@ -24,12 +24,13 @@ define('argos/Utility', [
     'dojo/_base/array',
     'dojo/json'
 ], function(
-    lang,
+    _lang,
     array,
     json
 ) {
     var nameToPathCache,
         __class,
+        lang = _lang,
         nameToPath;
 
     nameToPathCache = {};
@@ -200,6 +201,6 @@ define('argos/Utility', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Utility', __class);
+    _lang.setObject('Sage.Platform.Mobile.Utility', __class);
     return __class;
 });

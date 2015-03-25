@@ -16,7 +16,7 @@ define('argos/_LegacySDataDetailMixin', [
     './ErrorManager'
 ], function(
     declare,
-    lang,
+    _lang,
     domClass,
     domConstruct,
     string,
@@ -133,7 +133,7 @@ define('argos/_LegacySDataDetailMixin', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile._LegacySDataDetailMixin', __class);
+    _lang.setObject('Sage.Platform.Mobile._LegacySDataDetailMixin', __class);
     return __class;
 });
 

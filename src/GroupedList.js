@@ -33,7 +33,7 @@ define('argos/GroupedList', [
     './Utility'
 ], function(
     declare,
-    lang,
+    _lang,
     query,
     string,
     domClass,
@@ -310,6 +310,6 @@ define('argos/GroupedList', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.GroupedList', __class);
+    _lang.setObject('Sage.Platform.Mobile.GroupedList', __class);
     return __class;
 });

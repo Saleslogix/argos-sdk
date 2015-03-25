@@ -24,7 +24,7 @@ define('argos/Fields/PhoneField', [
     'dojo/_base/sniff'
 ], function(
     declare,
-    lang,
+    _lang,
     has,
     string,
     FieldManager,
@@ -113,6 +113,6 @@ define('argos/Fields/PhoneField', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Fields.PhoneField', control);
+    _lang.setObject('Sage.Platform.Mobile.Fields.PhoneField', control);
     return FieldManager.register('phone', control);
 });

@@ -33,7 +33,7 @@ define('argos/Toolbar', [
     './_Templated'
 ], function(
     declare,
-    lang,
+    _lang,
     domStyle,
     domClass,
     _Widget,
@@ -89,7 +89,7 @@ define('argos/Toolbar', [
                 } else if (source.action) {
                     view = App.getPrimaryActiveView();
                     if (view && view.hasAction(source.action)) {
-                        view.invokeAction(source.action, lang.mixin(parameters, {'$tool': source}), evt, node);
+                        view.invokeAction(source.action, _lang.mixin(parameters, {'$tool': source}), evt, node);
                     }
                 }
             }
@@ -206,6 +206,6 @@ define('argos/Toolbar', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Toolbar', __class);
+    _lang.setObject('Sage.Platform.Mobile.Toolbar', __class);
     return __class;
 });

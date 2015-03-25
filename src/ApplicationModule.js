@@ -32,7 +32,7 @@ define('argos/ApplicationModule', [
     array,
     connect,
     declare,
-    lang,
+    _lang,
     Application
 ) {
 
@@ -60,7 +60,7 @@ define('argos/ApplicationModule', [
             this._connects = [];
             this._subscribes = [];
 
-            lang.mixin(this, options);
+            _lang.mixin(this, options);
         },
         /**
          * Destroy loops and disconnects all `_connect`s and unsubscribes all `_subscribe`s.
@@ -151,6 +151,6 @@ define('argos/ApplicationModule', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.ApplicationModule', __class);
+    _lang.setObject('Sage.Platform.Mobile.ApplicationModule', __class);
     return __class;
 });

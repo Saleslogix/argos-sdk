@@ -30,7 +30,7 @@ define('argos/MainToolbar', [
     'dojo/NodeList-manipulate'
 ], function(
     declare,
-    lang,
+    _lang,
     query,
     domClass,
     domConstruct,
@@ -131,7 +131,7 @@ define('argos/MainToolbar', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.MainToolbar', __class);
+    _lang.setObject('Sage.Platform.Mobile.MainToolbar', __class);
     return __class;
 });
 

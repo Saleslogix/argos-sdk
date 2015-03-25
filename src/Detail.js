@@ -31,7 +31,7 @@ define('argos/Detail', [
     './_SDataDetailMixin'
 ], function(
     declare,
-    lang,
+    _lang,
     _DetailBase,
     _SDataDetailMixin
 ) {
@@ -39,7 +39,7 @@ define('argos/Detail', [
     var __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin], {
     });
 
-    lang.setObject('Sage.Platform.Mobile.Detail', __class);
+    _lang.setObject('Sage.Platform.Mobile.Detail', __class);
     return __class;
 });
 

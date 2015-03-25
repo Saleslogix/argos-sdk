@@ -53,7 +53,7 @@ define('argos/SearchWidget', [
     './_Templated'
 ], function(
     declare,
-    lang,
+    _lang,
     event,
     string,
     domClass,
@@ -209,7 +209,7 @@ define('argos/SearchWidget', [
          */
         configure: function(options) {
             // todo: for now, we simply mixin the options
-            lang.mixin(this, options);
+            _lang.mixin(this, options);
         },
         /**
          * Expands the passed expression if it is a function.
@@ -290,7 +290,7 @@ define('argos/SearchWidget', [
                 default: formattedQuery = this.formatSearchQuery(searchQuery);
             }
 
-            if (lang.trim(searchQuery) === '') {
+            if (_lang.trim(searchQuery) === '') {
                 formattedQuery = null;
             }
             return formattedQuery;
@@ -304,6 +304,6 @@ define('argos/SearchWidget', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.SearchWidget', __class);
+    _lang.setObject('Sage.Platform.Mobile.SearchWidget', __class);
     return __class;
 });

@@ -32,7 +32,7 @@ define('argos/Format', [
     'moment'
 ], function(
     json,
-    lang,
+    _lang,
     array,
     domConstruct,
     string,
@@ -43,7 +43,8 @@ define('argos/Format', [
 ) {
     var getVectorMaxSize,
         phoneLettersMap,
-        __class;
+        __class,
+        lang = _lang;
 
     getVectorMaxSize = function(v) {
         var w = 1,
@@ -597,6 +598,6 @@ define('argos/Format', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Format', __class);
+    _lang.setObject('Sage.Platform.Mobile.Format', __class);
     return __class;
 });

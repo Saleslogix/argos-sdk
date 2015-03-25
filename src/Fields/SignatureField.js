@@ -23,7 +23,7 @@ define('argos/Fields/SignatureField', [
     '../FieldManager'
 ], function(
     declare,
-    lang,
+    _lang,
     json,
     domAttr,
     format,
@@ -173,6 +173,6 @@ define('argos/Fields/SignatureField', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Fields.SignatureField', control);
+    _lang.setObject('Sage.Platform.Mobile.Fields.SignatureField', control);
     return FieldManager.register('signature', control);
 });

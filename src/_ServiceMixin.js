@@ -52,6 +52,6 @@ define('argos/_ServiceMixin', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile._ServiceMixin', __class);
+    _lang.setObject('Sage.Platform.Mobile._ServiceMixin', __class);
     return __class;
 });

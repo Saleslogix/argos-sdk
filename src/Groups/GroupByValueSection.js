@@ -14,7 +14,7 @@ define('argos/Groups/GroupByValueSection', [
     './_GroupBySection'
 ], function(
     declare,
-    lang,
+    _lang,
     string,
     Convert,
     Utility,
@@ -63,6 +63,6 @@ define('argos/Groups/GroupByValueSection', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Groups.GroupByValueSection', __class);
+    _lang.setObject('Sage.Platform.Mobile.Groups.GroupByValueSection', __class);
     return __class;
 });

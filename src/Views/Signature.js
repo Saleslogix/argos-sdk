@@ -34,7 +34,7 @@ define('argos/Views/Signature', [
     '../View'
 ], function(
     declare,
-    lang,
+    _lang,
     json,
     query,
     domGeom,
@@ -412,6 +412,6 @@ define('argos/Views/Signature', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Views.Signature', __class);
+    _lang.setObject('Sage.Platform.Mobile.Views.Signature', __class);
     return __class;
 });

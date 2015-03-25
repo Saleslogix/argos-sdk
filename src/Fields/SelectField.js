@@ -20,7 +20,7 @@ define('argos/Fields/SelectField', [
     '../FieldManager'
 ], function(
     declare,
-    lang,
+    _lang,
     LookupField,
     FieldManager
 ) {
@@ -74,6 +74,6 @@ define('argos/Fields/SelectField', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Fields.SelectField', control);
+    _lang.setObject('Sage.Platform.Mobile.Fields.SelectField', control);
     return FieldManager.register('select', control);
 });

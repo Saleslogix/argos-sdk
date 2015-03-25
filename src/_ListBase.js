@@ -50,7 +50,7 @@ define('argos/_ListBase', [
     './_PullToRefreshMixin'
 ], function(
     declare,
-    lang,
+    _lang,
     array,
     connect,
     query,
@@ -542,8 +542,8 @@ define('argos/_ListBase', [
             this.subscribe('/app/refresh', this._onRefresh);
 
             if (this.enableSearch) {
-                searchWidgetCtor = lang.isString(this.searchWidgetClass)
-                    ? lang.getObject(this.searchWidgetClass, false)
+                searchWidgetCtor = _lang.isString(this.searchWidgetClass)
+                    ? _lang.getObject(this.searchWidgetClass, false)
                     : this.searchWidgetClass;
 
                 this.searchWidget = this.searchWidget || new searchWidgetCtor({
@@ -703,7 +703,7 @@ define('argos/_ListBase', [
                 };
                 actionTemplate = action.template || this.listActionItemTemplate;
 
-                lang.mixin(action, options);
+                _lang.mixin(action, options);
 
                 domConstruct.place(actionTemplate.apply(action, action.id), this.actionsNode, 'last');
             }
@@ -863,7 +863,7 @@ define('argos/_ListBase', [
          * @param {Object} source The object to set as the options.source.
          */
         setSource: function(source) {
-            lang.mixin(source, {
+            _lang.mixin(source, {
                 resourceKind: this.resourceKind
             });
 
@@ -1147,7 +1147,7 @@ define('argos/_ListBase', [
                 };
 
             if (additionalOptions) {
-                options = lang.mixin(options, additionalOptions);
+                options = _lang.mixin(options, additionalOptions);
             }
 
             this.setSource({
@@ -1175,7 +1175,7 @@ define('argos/_ListBase', [
                 };
 
             if (additionalOptions) {
-                options = lang.mixin(options, additionalOptions);
+                options = _lang.mixin(options, additionalOptions);
             }
 
             if (view) {
@@ -1198,7 +1198,7 @@ define('argos/_ListBase', [
                 };
 
             if (additionalOptions) {
-                options = lang.mixin(options, additionalOptions);
+                options = _lang.mixin(options, additionalOptions);
             }
 
             if (view) {
@@ -1224,7 +1224,7 @@ define('argos/_ListBase', [
             }
 
             if (additionalOptions) {
-                options = lang.mixin(options, additionalOptions);
+                options = _lang.mixin(options, additionalOptions);
             }
 
             if (view) {
@@ -1464,7 +1464,7 @@ define('argos/_ListBase', [
             this.handleError(error);
         },
         _buildQueryExpression: function() {
-            return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
+            return _lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
         },
         _applyStateToQueryOptions: function(queryOptions) {
         },
@@ -1683,7 +1683,7 @@ define('argos/_ListBase', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile._ListBase', __class);
+    _lang.setObject('Sage.Platform.Mobile._ListBase', __class);
     return __class;
 });
 

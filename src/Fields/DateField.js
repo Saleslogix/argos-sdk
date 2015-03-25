@@ -25,7 +25,7 @@ define('argos/Fields/DateField', [
     '../Calendar'
 ], function(
     declare,
-    lang,
+    _lang,
     string,
     domClass,
     format,
@@ -188,6 +188,6 @@ define('argos/Fields/DateField', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Fields.DateField', control);
+    _lang.setObject('Sage.Platform.Mobile.Fields.DateField', control);
     return FieldManager.register('date', control);
 });

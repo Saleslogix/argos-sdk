@@ -31,7 +31,7 @@ define('argos/Edit', [
     './_SDataEditMixin'
 ], function(
     declare,
-    lang,
+    _lang,
     _EditBase,
     _SDataEditMixin
 ) {
@@ -39,6 +39,6 @@ define('argos/Edit', [
     var __class = declare('argos.Edit', [_EditBase, _SDataEditMixin], {
     });
 
-    lang.setObject('Sage.Platform.Mobile.Edit', __class);
+    _lang.setObject('Sage.Platform.Mobile.Edit', __class);
     return __class;
 });

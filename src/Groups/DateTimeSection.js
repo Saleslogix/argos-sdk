@@ -15,7 +15,7 @@ define('argos/Groups/DateTimeSection', [
     'moment'
 ], function(
     declare,
-    lang,
+    _lang,
     string,
     Convert,
     Utility,
@@ -294,6 +294,6 @@ define('argos/Groups/DateTimeSection', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Groups.DateTimeSection', __class);
+    _lang.setObject('Sage.Platform.Mobile.Groups.DateTimeSection', __class);
     return __class;
 });

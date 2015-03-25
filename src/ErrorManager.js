@@ -28,13 +28,14 @@ define('argos/ErrorManager', [
     './Utility'
 ], function(
     json,
-    lang,
+    _lang,
     connect,
     string,
     moment,
     utility
 ) {
     var errors,
+        lang = _lang,
         __class;
 
     errors = [];
@@ -253,7 +254,7 @@ define('argos/ErrorManager', [
          * @return {Object[]} Array of error objects.
          */
         getAllErrors: function() {
-            return lang.clone(errors);
+            return _lang.clone(errors);
         },
 
         /**
@@ -288,6 +289,6 @@ define('argos/ErrorManager', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.ErrorManager', __class);
+    _lang.setObject('Sage.Platform.Mobile.ErrorManager', __class);
     return __class;
 });

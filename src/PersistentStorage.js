@@ -26,7 +26,7 @@ define('argos/PersistentStorage', [
     './Utility'
 ], function(
     declare,
-    lang,
+    _lang,
     json,
     convert,
     utility
@@ -42,7 +42,7 @@ define('argos/PersistentStorage', [
         serializeValues: true,
 
         constructor: function(options) {
-            lang.mixin(this, options);
+            _lang.mixin(this, options);
         },
         formatQualifiedKey: function(name, key) {
             if (key && key.indexOf(name) !== 0) {
@@ -201,6 +201,6 @@ define('argos/PersistentStorage', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.PersistentStorage', __class);
+    _lang.setObject('Sage.Platform.Mobile.PersistentStorage', __class);
     return __class;
 });

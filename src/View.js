@@ -36,7 +36,7 @@ define('argos/View', [
     './_ErrorHandleMixin'
 ], function(
     declare,
-    lang,
+    _lang,
     array,
     _WidgetBase,
     _ActionMixin,
@@ -249,7 +249,7 @@ define('argos/View', [
             tag = this.getTag();
             data = this.getContext();
 
-            transitionOptions = lang.mixin(transitionOptions || {}, {tag: tag, data: data});
+            transitionOptions = _lang.mixin(transitionOptions || {}, {tag: tag, data: data});
             ReUI.show(this.domNode, transitionOptions);
         },
         /**
@@ -333,7 +333,7 @@ define('argos/View', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.View', __class);
+    _lang.setObject('Sage.Platform.Mobile.View', __class);
     return __class;
 });
 

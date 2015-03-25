@@ -2,7 +2,7 @@ define('argos/SelectionModel', [
        'dojo/_base/lang',
        'dojo/_base/declare'
 ], function(
-    lang,
+    _lang,
     declare
 ) {
 
@@ -53,7 +53,7 @@ define('argos/SelectionModel', [
         constructor: function(options) {
             this.selections = {};
 
-            lang.mixin(this, options);
+            _lang.mixin(this, options);
         },
         /**
          * Prevents the firing of action events: onSelect, onDeselect, onClear
@@ -210,6 +210,6 @@ define('argos/SelectionModel', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.SelectionModel', __class);
+    _lang.setObject('Sage.Platform.Mobile.SelectionModel', __class);
     return __class;
 });

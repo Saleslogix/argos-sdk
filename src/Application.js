@@ -44,7 +44,7 @@ define('argos/Application', [
     connect,
     aspect,
     declare,
-    lang,
+    _lang,
     win,
     string,
     hash,
@@ -100,7 +100,7 @@ define('argos/Application', [
         }
     });
 
-    lang.extend(Function, {
+    _lang.extend(Function, {
         // TODO: Deprecate this in favor of the standard "bind", using polyfill if necessary
         bindDelegate: function(scope) {
             var self,
@@ -132,7 +132,7 @@ define('argos/Application', [
 
         target = object.prototype || object;
         for (key in localization) {
-            if (lang.isObject(localization[key])) {
+            if (_lang.isObject(localization[key])) {
                 applyLocalizationTo(target[key], localization[key]);
             } else {
                 target[key] = localization[key];
@@ -141,7 +141,7 @@ define('argos/Application', [
     };
 
     localize = function(name, localization) {
-        var target = lang.getObject(name);
+        var target = _lang.getObject(name);
         if (target && target.prototype) {
             target = target.prototype;
         }
@@ -158,14 +158,14 @@ define('argos/Application', [
             }
 
             if (baseConfiguration.connections && moduleConfiguration.connections) {
-                baseConfiguration.connections = lang.mixin(baseConfiguration.connections, moduleConfiguration.connections);
+                baseConfiguration.connections = _lang.mixin(baseConfiguration.connections, moduleConfiguration.connections);
             }
         }
 
         return baseConfiguration;
     };
 
-    lang.mixin(win.global, {
+    _lang.mixin(win.global, {
         'localize': localize,
         'mergeConfiguration': mergeConfiguration
     });
@@ -284,7 +284,7 @@ define('argos/Application', [
             this.context = {};
             this.viewShowOptions = [];
 
-            lang.mixin(this, options);
+            _lang.mixin(this, options);
         },
         /**
          * Loops through and disconnections connections and unsubscribes subscriptions.
@@ -990,7 +990,7 @@ define('argos/Application', [
          */
         isNavigationFromResourceKind: function(kind, predicate, scope) {
             var lookup = {};
-            if (lang.isArray(kind)) {
+            if (_lang.isArray(kind)) {
                 array.forEach(kind, function(item) {
                     this[item] = true;
                 }, lookup);
@@ -1141,7 +1141,8 @@ define('argos/Application', [
     });
 
     // Backwards compatibility for custom modules still referencing the old declare global
-    lang.setObject('Sage.Platform.Mobile.Application', __class);
+    _lang.setObject('Sage.Platform.Mobile.Application', __class);
+
     return __class;
 });
 

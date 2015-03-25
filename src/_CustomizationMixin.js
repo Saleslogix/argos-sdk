@@ -104,7 +104,7 @@ define('argos/_CustomizationMixin', [
                 children,
                 name;
 
-            if (lang.isArray(layout)) {
+            if (_lang.isArray(layout)) {
                 output = [];
                 for (i = 0; i < layoutCount; i++) {
                     row = layout[i];
@@ -141,10 +141,10 @@ define('argos/_CustomizationMixin', [
                                 case 'modify':
                                     // make a shallow copy if we haven't already
                                     if (row === layout[i]) {
-                                        row = lang.mixin({}, row);
+                                        row = _lang.mixin({}, row);
                                     }
 
-                                    row = lang.mixin(row, expand(customization.value, row));
+                                    row = _lang.mixin(row, expand(customization.value, row));
                                     break;
                                 case 'insert':
                                     insertRowsTarget = (customization.where !== 'before')
@@ -152,7 +152,7 @@ define('argos/_CustomizationMixin', [
                                             : insertRowsBefore;
                                     expandedValue = expand(customization.value, row);
 
-                                    if (lang.isArray(expandedValue)) {
+                                    if (_lang.isArray(expandedValue)) {
                                         insertRowsTarget.push.apply(insertRowsTarget, expandedValue);
                                     } else {
                                         insertRowsTarget.push(expandedValue);
@@ -176,7 +176,7 @@ define('argos/_CustomizationMixin', [
                         if (children) {
                             // make a shallow copy if we haven't already
                             if (row === layout[i]) {
-                                row = lang.mixin({}, row);
+                                row = _lang.mixin({}, row);
                             }
 
                             row[children] = this._compileCustomizedLayout(customizations, row[children], row);
@@ -202,13 +202,13 @@ define('argos/_CustomizationMixin', [
                     }
                 }
             }
-            else if (lang.isFunction(layout)) {
+            else if (_lang.isFunction(layout)) {
                 return this._compileCustomizedLayout(customizations, layout.call(this), name);
-            } else if (lang.isObject(layout)) {
+            } else if (_lang.isObject(layout)) {
                 output = {};
 
                 for (name in layout) {
-                    if (lang.isArray(layout[name])) {
+                    if (_lang.isArray(layout[name])) {
                         output[name] = this._compileCustomizedLayout(customizations, layout[name], name);
                     } else {
                         output[name] = layout[name];
@@ -220,6 +220,6 @@ define('argos/_CustomizationMixin', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile._CustomizationMixin', __class);
+    _lang.setObject('Sage.Platform.Mobile._CustomizationMixin', __class);
     return __class;
 });

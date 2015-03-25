@@ -29,7 +29,7 @@ define('argos/Calendar', [
     'moment'
 ], function(
     declare,
-    lang,
+    _lang,
     string,
     domAttr,
     domClass,
@@ -428,6 +428,6 @@ define('argos/Calendar', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Calendar', __class);
+    _lang.setObject('Sage.Platform.Mobile.Calendar', __class);
     return __class;
 });

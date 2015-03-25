@@ -22,7 +22,7 @@ define('argos/Fields/BooleanField', [
     '../FieldManager'
 ], function(
     declare,
-    lang,
+    _lang,
     domAttr,
     domClass,
     Field,
@@ -154,6 +154,6 @@ define('argos/Fields/BooleanField', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Fields.BooleanField', control);
+    _lang.setObject('Sage.Platform.Mobile.Fields.BooleanField', control);
     return FieldManager.register('boolean', control);
 });

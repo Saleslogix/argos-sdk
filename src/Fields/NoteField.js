@@ -22,7 +22,7 @@ define('argos/Fields/NoteField', [
     '../FieldManager'
 ], function(
     declare,
-    lang,
+    _lang,
     TextAreaField,
     FieldManager
 ) {
@@ -51,6 +51,6 @@ define('argos/Fields/NoteField', [
     var control = declare('argos.Fields.NoteField', [TextAreaField], {
     });
 
-    lang.setObject('Sage.Platform.Mobile.Fields.NoteField', control);
+    _lang.setObject('Sage.Platform.Mobile.Fields.NoteField', control);
     return FieldManager.register('note', control);
 });

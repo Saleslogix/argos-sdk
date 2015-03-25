@@ -17,7 +17,7 @@ define('argos/RelatedViewManager',  [
     './RelatedViewWidget'
 ], function(
     declare,
-    lang,
+    _lang,
     event,
     string,
     domClass,
@@ -40,7 +40,7 @@ define('argos/RelatedViewManager',  [
         enabled: true,
         constructor: function(options) {
             this.relatedViews = {};
-            lang.mixin(this, options);
+            _lang.mixin(this, options);
             this.registerType('default', RelatedViewWidget);
         },
         destroyViews: function() {
@@ -78,7 +78,7 @@ define('argos/RelatedViewManager',  [
                         if (typeof this.relatedViewConfig.widgetType === 'string') {
                             this.relatedViewConfig.widgetType = this.getWidgetType(this.relatedViewConfig.widgetType);
                         }
-                        lang.mixin(options, this.relatedViewConfig);
+                        _lang.mixin(options, this.relatedViewConfig);
                         options.id = this.id + '_' + entry.$key;
                         relatedViewWidget = new this.relatedViewConfig.widgetType(options);
                         relatedViewWidget.parentEntry = entry;
@@ -98,6 +98,6 @@ define('argos/RelatedViewManager',  [
         }
     });
     // Backwards compatibility for custom modules still referencing the old declare global
-    lang.setObject('Sage.Platform.Mobile.RelatedViewManager', __class);
+    _lang.setObject('Sage.Platform.Mobile.RelatedViewManager', __class);
     return __class;
 });
