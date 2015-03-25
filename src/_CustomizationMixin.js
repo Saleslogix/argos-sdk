@@ -34,7 +34,7 @@ define('argos/_CustomizationMixin', [
     'dojo/_base/lang'
 ], function(
     declare,
-    lang
+    _lang
 ) {
 
     var expand, __class;

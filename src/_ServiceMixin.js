@@ -23,7 +23,7 @@ define('argos/_ServiceMixin', [
     'dojo/_base/lang'
 ], function(
     declare,
-    lang
+    _lang
 ) {
 
     var __class = declare('argos._ServiceMixin', null, {
