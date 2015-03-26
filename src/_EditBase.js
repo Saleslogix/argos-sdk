@@ -381,12 +381,12 @@ define('argos/_EditBase', [
          */
         createToolLayout: function() {
             var tbar = [{
-                    id: 'save',
-                    action: 'save',
-                    cls: 'fa fa-save fa-fw fa-lg',
-                    security: this.options && this.options.insert
-                        ? this.insertSecurity
-                        : this.updateSecurity
+                id: 'save',
+                action: 'save',
+                cls: 'fa fa-save fa-fw fa-lg',
+                security: this.options && this.options.insert
+                    ? this.insertSecurity
+                    : this.updateSecurity
             }];
 
             if (!App.isOnFirstView()) {
@@ -588,44 +588,44 @@ define('argos/_EditBase', [
 
         createErrorHandlers: function() {
             this.errorHandlers = this.errorHandlers || [{
-                    name: 'PreCondition',
-                    test: function(error) {
-                        return error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED;
-                    },
-                    handle: function(error, next) {
-                        next(); // Invoke the next error handler first, the refresh will change a lot of mutable/shared state
+                name: 'PreCondition',
+                test: function(error) {
+                    return error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED;
+                },
+                handle: function(error, next) {
+                    next(); // Invoke the next error handler first, the refresh will change a lot of mutable/shared state
 
-                        // Preserve our current form values (all of them),
-                        // and reload the view to fetch the new data.
-                        this.previousValuesAll = this.getValues(true);
-                        this.options.key = this.entry.$key; // Force a fetch by key
-                        delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
-                        this.refresh();
-                    }
-                }, {
-                    name: 'AlertError',
-                    test: function(error) {
-                        return error.status !== this.HTTP_STATUS.PRECONDITION_FAILED;
-                    },
-                    handle: function(error, next) {
-                        alert(this.getErrorMessage(error));
-                        next();
-                    }
-                }, {
-                    name: 'CatchAll',
-                    test: function(error) {
-                        return true;
-                    },
-                    handle: function(error, next) {
-                        var errorItem = {
-                            viewOptions: this.options,
-                            serverError: error
-                        };
-
-                        ErrorManager.addError(this.getErrorMessage(error), errorItem);
-                        next();
-                    }
+                    // Preserve our current form values (all of them),
+                    // and reload the view to fetch the new data.
+                    this.previousValuesAll = this.getValues(true);
+                    this.options.key = this.entry.$key; // Force a fetch by key
+                    delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
+                    this.refresh();
                 }
+            }, {
+                name: 'AlertError',
+                test: function(error) {
+                    return error.status !== this.HTTP_STATUS.PRECONDITION_FAILED;
+                },
+                handle: function(error, next) {
+                    alert(this.getErrorMessage(error));
+                    next();
+                }
+            }, {
+                name: 'CatchAll',
+                test: function(error) {
+                    return true;
+                },
+                handle: function(error, next) {
+                    var errorItem = {
+                        viewOptions: this.options,
+                        serverError: error
+                    };
+
+                    ErrorManager.addError(this.getErrorMessage(error), errorItem);
+                    next();
+                }
+            }
             ];
 
             return this.errorHandlers;
@@ -655,7 +655,8 @@ define('argos/_EditBase', [
                 ctor,
                 field,
                 i,
-                template;
+                template,
+                sectionNode;
 
             for (i = 0; i < rows.length; i++) {
                 current = rows[i];
@@ -675,10 +676,51 @@ define('argos/_EditBase', [
                     content.push(this.sectionBeginTemplate.apply(layout, this));
                 }
 
-                ctor = FieldManager.get(current['type']);
-                field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
-                        owner: this
-                    }, current));
+                this.createRowContent(current, content);
+                // ctor = FieldManager.get(current['type']);
+                // field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
+                //         owner: this
+                //     }, current));
+                // template = field.propertyTemplate || this.propertyTemplate;
+
+                // if (field.autoFocus && !this._focusField) {
+                //     this._focusField = field;
+                // } else if (field.autoFocus && this._focusField) {
+                //     throw new Error('Only one field can have autoFocus set to true in the Edit layout.');
+                // }
+
+
+                // this.connect(field, 'onShow', this._onShowField);
+                // this.connect(field, 'onHide', this._onHideField);
+                // this.connect(field, 'onEnable', this._onEnableField);
+                // this.connect(field, 'onDisable', this._onDisableField);
+
+                // content.push(template.apply(field, this));
+            }
+
+            content.push(this.sectionEndTemplate.apply(layout, this));
+            sectionNode = domConstruct.toDom(content.join(''));
+            this.onApplySectionNode(sectionNode, current);
+            //domConstruct.place(content.join(''), this.contentNode, 'last');
+            domConstruct.place(sectionNode, this.contentNode, 'last');
+
+
+            for (i = 0; i < sectionQueue.length; i++) {
+                current = sectionQueue[i];
+
+                this.processLayout(current);
+            }
+        },
+        onApplySectionNode: function(sectionNode, layout) {
+        },
+        createRowContent: function(layout, content) {
+            var ctor, field, template;
+            ctor = FieldManager.get(layout['type']);
+            if (ctor) {
+                field = this.fields[layout['name'] || layout['property']] = new ctor(lang.mixin({
+                    owner: this
+                }, layout));
+
                 template = field.propertyTemplate || this.propertyTemplate;
 
                 if (field.autoFocus && !this._focusField) {
@@ -686,24 +728,13 @@ define('argos/_EditBase', [
                 } else if (field.autoFocus && this._focusField) {
                     throw new Error('Only one field can have autoFocus set to true in the Edit layout.');
                 }
-
-
+                
                 this.connect(field, 'onShow', this._onShowField);
                 this.connect(field, 'onHide', this._onHideField);
                 this.connect(field, 'onEnable', this._onEnableField);
                 this.connect(field, 'onDisable', this._onDisableField);
 
                 content.push(template.apply(field, this));
-            }
-
-            content.push(this.sectionEndTemplate.apply(layout, this));
-
-            domConstruct.place(content.join(''), this.contentNode, 'last');
-
-            for (i = 0; i < sectionQueue.length; i++) {
-                current = sectionQueue[i];
-
-                this.processLayout(current);
             }
         },
         /**

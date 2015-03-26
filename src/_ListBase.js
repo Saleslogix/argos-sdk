@@ -1177,7 +1177,8 @@ define('argos/_ListBase', [
                 key = selection.data[this.idProperty],
                 options = {
                     key: key,
-                    selectedEntry: selection.data
+                    selectedEntry: selection.data,
+                    fromContext: this
                 };
 
             if (additionalOptions) {

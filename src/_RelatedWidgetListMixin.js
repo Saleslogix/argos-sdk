@@ -130,8 +130,8 @@ define('argos/_RelatedWidgetListMixin', [
         /**
          * Returns a rendered html snap shot of the entry.
          */
-        getContextSnapShot: function(key) {
-            var snapShot, entry = this.entries[key];
+        getContextSnapShot: function(options) {
+            var snapShot, entry = this.entries[options.key];
             if (entry) {
                 snapShot = this.itemTemplate.apply(entry, this);
             }

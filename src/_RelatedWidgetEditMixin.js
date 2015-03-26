@@ -2,7 +2,7 @@
  * See copyright file.
  */
 
-define('argos/_RelatedWidgetDetailMixin', [
+define('argos/_RelatedWidgetEditMixin', [
     'dojo/_base/declare',
     'dojo/_base/array',
     'dojo/_base/lang',
@@ -19,7 +19,7 @@ define('argos/_RelatedWidgetDetailMixin', [
     query,
     RelatedViewManager
 ) {
-    var __class = declare('argos._RelatedWidgetDetailMixin', null, {
+    var __class = declare('argos._RelatedWidgetEditMixin', null, {
 
         /**
        * @property {Simplate}
@@ -29,33 +29,30 @@ define('argos/_RelatedWidgetDetailMixin', [
        * * `$$` => view instance
        */
         relatedContentViewsTemplate: new Simplate([
-            '<li class="related-view-detail-content {%= $.cls %}">',
-            '<div id="related-content-views"></div>',
-            '</li>'
+            '<div id="{%= $.id %}" class="related-view-edit-content {%= $.cls %}"></div>'
         ]),
-        contextSnapShotTemplate: new Simplate([
-            '<h4>{%: $["$descriptor"] %}</h4>'
-        ]),
-        createRowNode: function(layout, sectionNode, entry, template, data) {
-            var rowNode, docfrag;
+        createRowContent: function(layout, content) {
             if (layout['relatedView']) {
-
-                rowNode = query('#related-content-views', sectionNode)[0];
-                if (!rowNode) {
-                    rowNode = domConstruct.toDom(this.relatedContentViewsTemplate.apply(data, this));
-                    domConstruct.place(rowNode, sectionNode, 'last');
-                }
-
-                docfrag = document.createDocumentFragment();
-                docfrag.appendChild(rowNode);
-                this.onProcessRelatedViews(layout['relatedView'], rowNode, entry);
-                if (docfrag.childNodes.length > 0) {
-                    domConstruct.place(docfrag, sectionNode, 'last');
-                }
+                content.push(this.relatedContentViewsTemplate.apply(layout['relatedView'],this));
             } else {
-                rowNode = this.inherited(arguments);
+                this.inherited(arguments);
             }
-            return rowNode;
+        },
+        processData: function(entry) {
+            this.destroyRelatedViewWidgets();
+            this.createRelatedViews(this.layout, entry);
+            this.inherited(arguments);
+        },
+        createRelatedViews: function(layout, entry) {
+            var node;
+            layout.forEach(function(item) {
+                if (item['relatedView']) {
+                    node = query('#' + item['relatedView'].id, this.contentNode)[0];
+                    if (node) {
+                        this.onProcessRelatedViews(item['relatedView'], node, entry);
+                    }
+                }
+            }.bind(this));
         },
         /**
         * Gets the related view manager for a related view definition.
@@ -70,7 +67,7 @@ define('argos/_RelatedWidgetDetailMixin', [
             if (this.relatedViewManagers[relatedView.id]) {
                 relatedViewManager = this.relatedViewManagers[relatedView.id];
             } else {
-                relatedView.id = this.id + '_' + relatedView.id;
+                //relatedView.id = this.id + '_' + relatedView.id;
                 relatedViewOptions = {
                 };
                 lang.mixin(relatedViewOptions, relatedView);
@@ -119,20 +116,6 @@ define('argos/_RelatedWidgetDetailMixin', [
         destroy: function() {
             this.destroyRelatedViewWidgets();
             this.inherited(arguments);
-        },
-        requestData: function() {
-            this.destroyRelatedViewWidgets();
-            this.inherited(arguments);
-        },
-        /**
-        * Returns a rendered html snap shot of the entry.
-        */
-        getContextSnapShot: function(options) {
-            var snapShot, entry = this.entry;
-            if (entry) {
-                snapShot = this.contextSnapShotTemplate.apply(entry, this);
-            }
-            return snapShot;
         }
     });
     return __class

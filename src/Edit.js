@@ -23,20 +23,24 @@
  * @requires argos._EditBase
  * @requires argos._SDataEditMixin
  * @mixins argos._SDataEditMixin
+ * @requires argos._RelatedWidgetEditMixin
+ * @mixins argos._RelatedWidgetEditMixin
  */
 define('argos/Edit', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     './_EditBase',
-    './_SDataEditMixin'
+    './_SDataEditMixin',
+    './_RelatedWidgetEditMixin'
 ], function(
     declare,
     lang,
     _EditBase,
-    _SDataEditMixin
+    _SDataEditMixin,
+    _RelatedWidgetEditMixin
 ) {
 
-    var __class = declare('argos.Edit', [_EditBase, _SDataEditMixin], {
+    var __class = declare('argos.Edit', [_EditBase, _SDataEditMixin, _RelatedWidgetEditMixin], {
     });
 
     lang.setObject('Sage.Platform.Mobile.Edit', __class);
