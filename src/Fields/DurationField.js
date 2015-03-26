@@ -23,7 +23,7 @@ define('argos/Fields/DurationField', [
     '../FieldManager'
 ], function(
     declare,
-    _lang,
+    lang,
     string,
     domClass,
     format,
@@ -396,6 +396,6 @@ define('argos/Fields/DurationField', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile.Fields.DurationField', control);
+    lang.setObject('Sage.Platform.Mobile.Fields.DurationField', control);
     return FieldManager.register('duration', control);
 });

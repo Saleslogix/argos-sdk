@@ -32,7 +32,7 @@ define('argos/_Templated', [
     query,
     parser,
     array,
-    _lang,
+    lang,
     registry,
     wai,
     _TemplatedMixin
@@ -74,6 +74,6 @@ define('argos/_Templated', [
     });
 
 
-    _lang.setObject('Sage.Platform.Mobile._Templated', __class);
+    lang.setObject('Sage.Platform.Mobile._Templated', __class);
     return __class;
 });

@@ -35,7 +35,7 @@ define('argos/_SDataEditMixin', [
     './_SDataDetailMixin'
 ], function(
     declare,
-    _lang,
+    lang,
     string,
     domClass,
     connect,
@@ -64,7 +64,7 @@ define('argos/_SDataEditMixin', [
         _buildRefreshMessage: function(entry, result) {
             var message = this.inherited(arguments);
 
-            return _lang.mixin(message, {
+            return lang.mixin(message, {
                 resourceKind: this.resourceKind
             });
         },
@@ -80,7 +80,7 @@ define('argos/_SDataEditMixin', [
         },
         createEntryForUpdate: function(values) {
             values = this.inherited(arguments);
-            values = _lang.mixin(values, {
+            values = lang.mixin(values, {
                 '$key': this.entry['$key'],
                 '$etag': this.entry['$etag'],
                 '$name': this.entry['$name']
@@ -94,7 +94,7 @@ define('argos/_SDataEditMixin', [
         },
         createEntryForInsert: function(values) {
             values = this.inherited(arguments);
-            return _lang.mixin(values, {
+            return lang.mixin(values, {
                 '$name': this.entityName
             });
         },
@@ -250,6 +250,6 @@ define('argos/_SDataEditMixin', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile._SDataEditMixin', __class);
+    lang.setObject('Sage.Platform.Mobile._SDataEditMixin', __class);
     return __class;
 });

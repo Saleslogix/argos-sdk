@@ -34,7 +34,7 @@ define('argos/Fields/_Field', [
     '../_Templated'
 ], function(
     declare,
-    _lang,
+    lang,
     string,
     domClass,
     _Widget,
@@ -125,7 +125,7 @@ define('argos/Fields/_Field', [
          * @param {Object} o Override options
          */
         constructor: function(o) {
-            _lang.mixin(this, o);
+            lang.mixin(this, o);
 
             if (this.app === null) {
                 this.app = window.App;
@@ -271,7 +271,7 @@ define('argos/Fields/_Field', [
                 definition,
                 result;
 
-            all = _lang.isArray(this.validator) ? this.validator : [this.validator];
+            all = lang.isArray(this.validator) ? this.validator : [this.validator];
 
             for (i = 0; i < all.length; i++) {
                 current = all[i];
@@ -348,6 +348,6 @@ define('argos/Fields/_Field', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile.Fields._Field', __class);
+    lang.setObject('Sage.Platform.Mobile.Fields._Field', __class);
     return __class;
 });

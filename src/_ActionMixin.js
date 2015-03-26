@@ -42,7 +42,7 @@ define('argos/_ActionMixin', [
     array,
     declare,
     event,
-    _lang,
+    lang,
     domAttr,
     query
 ) {
@@ -147,6 +147,6 @@ define('argos/_ActionMixin', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile._ActionMixin', __class);
+    lang.setObject('Sage.Platform.Mobile._ActionMixin', __class);
     return __class;
 });

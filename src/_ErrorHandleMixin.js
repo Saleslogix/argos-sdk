@@ -9,7 +9,7 @@ define('argos/_ErrorHandleMixin', [
     'dojo/_base/array'
 ], function(
     declare,
-    _lang,
+    lang,
     array
 ) {
     var __class = declare('argos._ErrorHandleMixin', null, {
@@ -114,7 +114,7 @@ define('argos/_ErrorHandleMixin', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile._ErrorHandleMixin', __class);
+    lang.setObject('Sage.Platform.Mobile._ErrorHandleMixin', __class);
     return __class;
 });
 

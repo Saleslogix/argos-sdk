@@ -33,7 +33,7 @@ define('argos/Store/SData', [
     '../Utility'
 ], function(
     declare,
-    _lang,
+    lang,
     array,
     Deferred,
     QueryResults,
@@ -75,7 +75,7 @@ define('argos/Store/SData', [
          * @constructor
         */
         constructor: function(props) {
-            _lang.mixin(this, props);
+            lang.mixin(this, props);
         },
         _createEntryRequest: function(id, getOptions) {
             var request, contractName, resourceKind, dataSet, resourceProperty, resourcePredicate, select, include;
@@ -263,7 +263,7 @@ define('argos/Store/SData', [
             var items, total, error;
 
             if (feed) {
-                items = _lang.getObject(this.itemsProperty, false, feed);
+                items = lang.getObject(this.itemsProperty, false, feed);
                 total = typeof feed['$totalResults'] === 'number' ? feed['$totalResults'] : -1;
 
                 queryDeferred.total = total;
@@ -336,7 +336,7 @@ define('argos/Store/SData', [
         */
         getIdentity: function(object) {
 
-            return _lang.getObject(this.idProperty, false, object);
+            return lang.getObject(this.idProperty, false, object);
         },
         /**
          * Returns an object's label using this.labelProperty
@@ -344,7 +344,7 @@ define('argos/Store/SData', [
          * @returns {String}
         */
         getLabel: function(object) {
-            return _lang.getObject(this.labelProperty, false, object);
+            return lang.getObject(this.labelProperty, false, object);
         },
         /**
          * Returns an object's entity using this.entityProperty
@@ -352,7 +352,7 @@ define('argos/Store/SData', [
          * @returns {String|Object}
         */
         getEntity: function(object) {
-            return _lang.getObject(this.entityProperty, false, object);
+            return lang.getObject(this.entityProperty, false, object);
         },
         /**
          * Returns an object's version using this.versionProperty
@@ -360,7 +360,7 @@ define('argos/Store/SData', [
          * @returns {String}
         */
         getVersion: function(object) {
-            return _lang.getObject(this.versionProperty, false, object);
+            return lang.getObject(this.versionProperty, false, object);
         },
         /**
          * Stores an object.
@@ -506,7 +506,7 @@ define('argos/Store/SData', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile.Store.SData', __class);
+    lang.setObject('Sage.Platform.Mobile.Store.SData', __class);
     return __class;
 });
 

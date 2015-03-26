@@ -18,7 +18,7 @@ define('argos/Groups/_GroupBySection', [
     'dojo/string'
 ], function(
     declare,
-    _lang,
+    lang,
     string
 ) {
 
@@ -41,7 +41,7 @@ define('argos/Groups/_GroupBySection', [
         sortDirection:'desc',
         sections: null,
         constructor: function(o) {
-            _lang.mixin(this, o);
+            lang.mixin(this, o);
         },
         init: function() {
         },
@@ -52,6 +52,6 @@ define('argos/Groups/_GroupBySection', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
+    lang.setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
     return __class;
 });

@@ -27,7 +27,7 @@ define('argos/Fields/LookupField', [
     array,
     declare,
     event,
-    _lang,
+    lang,
     string,
     query,
     utility,
@@ -432,7 +432,7 @@ define('argos/Fields/LookupField', [
                 options = this.createNavigationOptions();
 
             if (view && options && !this.disabled) {
-                _lang.mixin(view, this.viewMixin);
+                lang.mixin(view, this.viewMixin);
                 view.show(options);
             }
         },
@@ -827,6 +827,6 @@ define('argos/Fields/LookupField', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile.Fields.LookupField', control);
+    lang.setObject('Sage.Platform.Mobile.Fields.LookupField', control);
     return FieldManager.register('lookup', control);
 });

@@ -36,7 +36,7 @@ define('argos/_SDataListMixin', [
     './ErrorManager'
 ], function(
     declare,
-    _lang,
+    lang,
     Deferred,
     when,
     domConstruct,
@@ -112,10 +112,10 @@ define('argos/_SDataListMixin', [
          * @return {String}
          */
         formatRelatedQuery: function(entry, fmt, property) {
-            return string.substitute(fmt, [_lang.getObject(property || '$key', false, entry)]);
+            return string.substitute(fmt, [lang.getObject(property || '$key', false, entry)]);
         },
         getContext: function() {
-            return _lang.mixin(this.inherited(arguments), {
+            return lang.mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind
             });
         },
@@ -239,6 +239,6 @@ define('argos/_SDataListMixin', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile._SDataListMixin', __class);
+    lang.setObject('Sage.Platform.Mobile._SDataListMixin', __class);
     return __class;
 });

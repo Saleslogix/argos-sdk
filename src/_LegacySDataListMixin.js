@@ -18,7 +18,7 @@ define('argos/_LegacySDataListMixin', [
     'dojo/string'
 ], function(
     declare,
-    _lang,
+    lang,
     ErrorManager,
     domConstruct,
     domClass,
@@ -254,7 +254,7 @@ define('argos/_LegacySDataListMixin', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile._LegacySDataListMixin', __class);
+    lang.setObject('Sage.Platform.Mobile._LegacySDataListMixin', __class);
     return __class;
 });
 

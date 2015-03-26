@@ -77,7 +77,7 @@ define('argos/_EditBase', [
     './Fields/TextField'
 ], function(
     declare,
-    _lang,
+    lang,
     connect,
     array,
     Deferred,
@@ -676,7 +676,7 @@ define('argos/_EditBase', [
                 }
 
                 ctor = FieldManager.get(current['type']);
-                field = this.fields[current['name'] || current['property']] = new ctor(_lang.mixin({
+                field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
                         owner: this
                     }, current));
                 template = field.propertyTemplate || this.propertyTemplate;
@@ -859,7 +859,7 @@ define('argos/_EditBase', [
                                 field.applyTo(payload, value);
                             } else if (typeof field.applyTo === 'string') {
                                 target = utility.getValue(payload, field.applyTo);
-                                _lang.mixin(target, value);
+                                lang.mixin(target, value);
                             }
                         } else {
                             utility.setValue(payload, field.property || name, value);
@@ -1213,7 +1213,7 @@ define('argos/_EditBase', [
          * state and `key` of the entry (false if inserting)
          */
         getContext: function() {
-            return _lang.mixin(this.inherited(arguments), {
+            return lang.mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind,
                 insert: this.options.insert,
                 key: this.options.insert ? false : this.options.key ? this.options.key : this.options.entry && this.options.entry[this.idProperty]
@@ -1326,7 +1326,7 @@ define('argos/_EditBase', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile._EditBase', __class);
+    lang.setObject('Sage.Platform.Mobile._EditBase', __class);
     return __class;
 });
 

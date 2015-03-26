@@ -1142,7 +1142,6 @@ define('argos/Application', [
 
     // Backwards compatibility for custom modules still referencing the old declare global
     lang.setObject('Sage.Platform.Mobile.Application', __class);
-
     return __class;
 });
 

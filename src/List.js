@@ -29,14 +29,14 @@ define('argos/List', [
     './_SDataListMixin'
 ], function(
     declare,
-    _lang,
+    lang,
     _ListBase,
     _SDataListMixin
 ) {
     var __class = declare('argos.List', [_ListBase, _SDataListMixin], {
     });
 
-    _lang.setObject('Sage.Platform.Mobile.List', __class);
+    lang.setObject('Sage.Platform.Mobile.List', __class);
     return __class;
 });
 

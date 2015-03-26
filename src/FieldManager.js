@@ -23,10 +23,9 @@
 define('argos/FieldManager', [
     'dojo/_base/lang'
 ], function(
-    _lang
+    lang
 ) {
     var store,
-        lang = _lang,
         __class;
 
     store = {};
@@ -55,6 +54,6 @@ define('argos/FieldManager', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile.FieldManager', __class);
+    lang.setObject('Sage.Platform.Mobile.FieldManager', __class);
     return __class;
 });

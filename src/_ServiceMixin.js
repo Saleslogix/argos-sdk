@@ -23,7 +23,7 @@ define('argos/_ServiceMixin', [
     'dojo/_base/lang'
 ], function(
     declare,
-    _lang
+    lang
 ) {
 
     var __class = declare('argos._ServiceMixin', null, {
@@ -52,6 +52,6 @@ define('argos/_ServiceMixin', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile._ServiceMixin', __class);
+    lang.setObject('Sage.Platform.Mobile._ServiceMixin', __class);
     return __class;
 });

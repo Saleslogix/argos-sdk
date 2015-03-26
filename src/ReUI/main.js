@@ -8,7 +8,7 @@ define('argos/ReUI/main', [
     'dojo/query',
     './DomHelper'
 ], function(
-    _lang,
+    lang,
     on,
     dom,
     domClass,
@@ -217,7 +217,7 @@ define('argos/ReUI/main', [
 
     config = window.reConfig || {};
 
-    _lang.mixin(ReUI, {
+    lang.mixin(ReUI, {
         rootEl: false,
         titleEl: false,
         pageTitleId: 'pageTitle',

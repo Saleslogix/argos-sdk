@@ -4,7 +4,7 @@ define('argos/ConfigurableSelectionModel', [
        './SelectionModel'
 ], function(
     declare,
-    _lang,
+    lang,
     SelectionModel
 ) {
     /**
@@ -53,6 +53,6 @@ define('argos/ConfigurableSelectionModel', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile.ConfigurableSelectionModel', __class);
+    lang.setObject('Sage.Platform.Mobile.ConfigurableSelectionModel', __class);
     return __class;
 });

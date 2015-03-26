@@ -21,7 +21,7 @@ define('argos/Fields/TextAreaField', [
     '../FieldManager'
 ], function(
     declare,
-    _lang,
+    lang,
     TextField,
     FieldManager
 ) {
@@ -81,6 +81,6 @@ define('argos/Fields/TextAreaField', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile.Fields.TextAreaField', control);
+    lang.setObject('Sage.Platform.Mobile.Fields.TextAreaField', control);
     return FieldManager.register('textarea', control);
 });

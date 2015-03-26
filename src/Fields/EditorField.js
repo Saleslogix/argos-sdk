@@ -34,7 +34,7 @@ define('argos/Fields/EditorField', [
     'argos/Fields/_Field'
 ], function(
     declare,
-    _lang,
+    lang,
     event,
     _Field
 ) {
@@ -356,6 +356,6 @@ define('argos/Fields/EditorField', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
+    lang.setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
     return __class;
 });

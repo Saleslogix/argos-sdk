@@ -19,7 +19,7 @@ define('argos/_LegacySDataEditMixin', [
     './_SDataDetailMixin'
 ], function(
     declare,
-    _lang,
+    lang,
     string,
     domClass,
     connect,
@@ -171,7 +171,7 @@ define('argos/_LegacySDataEditMixin', [
         createEntryForUpdate: function(values) {
             values = this.convertValues(values);
 
-            return _lang.mixin(values, {
+            return lang.mixin(values, {
                 '$key': this.entry['$key'],
                 '$etag': this.entry['$etag'],
                 '$name': this.entry['$name']
@@ -184,7 +184,7 @@ define('argos/_LegacySDataEditMixin', [
          */
         createEntryForInsert: function(values) {
             values = this.convertValues(values);
-            return _lang.mixin(values, {
+            return lang.mixin(values, {
                 '$name': this.entityName
             });
         },
@@ -210,7 +210,7 @@ define('argos/_LegacySDataEditMixin', [
          * state and `key` of the entry (false if inserting)
          */
         getContext: function() {
-            return _lang.mixin(this.inherited(arguments), {
+            return lang.mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind,
                 insert: this.options.insert,
                 key: this.options.insert ? false : this.options.entry && this.options.entry['$key']
@@ -287,6 +287,6 @@ define('argos/_LegacySDataEditMixin', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile._LegacySDataEditMixin', __class);
+    lang.setObject('Sage.Platform.Mobile._LegacySDataEditMixin', __class);
     return __class;
 });

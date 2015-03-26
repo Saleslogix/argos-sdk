@@ -34,7 +34,7 @@ define('argos/RelatedViewWidget', [
     './_Templated'
 ], function(
     declare,
-    _lang,
+    lang,
     event,
     on,
     string,
@@ -191,7 +191,7 @@ define('argos/RelatedViewWidget', [
            '</span>'
         ]),
         constructor: function(options) {
-            _lang.mixin(this, options);
+            lang.mixin(this, options);
             if (this.titleText) {
                 this.title = this.titleText;
             }
@@ -233,7 +233,7 @@ define('argos/RelatedViewWidget', [
                 };
                 actionTemplate = action.template || this.relatedActionTemplate;
 
-                _lang.mixin(action, options);
+                lang.mixin(action, options);
                 actionNode = domConstruct.toDom(actionTemplate.apply(action, action.id));
                 on(actionNode, 'click', this.onInvokeActionItem.bind(this));
                 domConstruct.place(actionNode, this.actionsNode, 'last');
@@ -513,6 +513,6 @@ define('argos/RelatedViewWidget', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile.RelatedViewWidget', __class);
+    lang.setObject('Sage.Platform.Mobile.RelatedViewWidget', __class);
     return __class;
 });

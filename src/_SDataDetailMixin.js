@@ -30,7 +30,7 @@ define('argos/_SDataDetailMixin', [
     './Store/SData'
 ], function(
     declare,
-    _lang,
+    lang,
     string,
     utility,
     SData
@@ -133,7 +133,7 @@ define('argos/_SDataDetailMixin', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
+    lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
     return __class;
 });
 

@@ -40,7 +40,7 @@ define('argos/_DetailBase', [
     './View'
 ], function(
     declare,
-    _lang,
+    lang,
     Deferred,
     query,
     string,
@@ -629,7 +629,7 @@ define('argos/_DetailBase', [
                         : value;
                 }
 
-                data = _lang.mixin({}, {
+                data = lang.mixin({}, {
                     entry: entry,
                     value: formatted,
                     raw: value
@@ -656,7 +656,7 @@ define('argos/_DetailBase', [
                 }
 
                 if (current['view']) {
-                    context = _lang.mixin({}, current['options']);
+                    context = lang.mixin({}, current['options']);
 
                     if (current['key']) {
                         context['key'] = typeof current['key'] === 'function'
@@ -882,7 +882,7 @@ define('argos/_DetailBase', [
          * @return {Object} View context object
          */
         getContext: function() {
-            return _lang.mixin(this.inherited(arguments), {
+            return lang.mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind,
                 key: this.options.key,
                 descriptor: this.options.descriptor
@@ -944,6 +944,6 @@ define('argos/_DetailBase', [
         }
     });
 
-    _lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
+    lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
     return __class;
 });
