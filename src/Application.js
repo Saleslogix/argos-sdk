@@ -23,7 +23,7 @@
  * @alternateClassName App
  */
 define('argos/Application', [
-    'dojo/_base/json',
+    'dojo/json',
     'dojo/_base/array',
     'dojo/_base/connect',
     'dojo/aspect',
@@ -580,7 +580,7 @@ define('argos/Application', [
                 key = this._createCacheKey(request);
                 feed = window.localStorage.getItem(key);
                 if (feed) {
-                    o.result = json.fromJson(feed);
+                    o.result = json.parse(feed);
                 }
             }
         },
@@ -597,7 +597,7 @@ define('argos/Application', [
                     var key = this._createCacheKey(request);
 
                     window.localStorage.removeItem(key);
-                    window.localStorage.setItem(key, json.toJson(feed));
+                    window.localStorage.setItem(key, json.stringify(feed));
                 }
             }
         },
