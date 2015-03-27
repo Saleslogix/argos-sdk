@@ -482,7 +482,7 @@ define('argos/Application', [
         persistPreferences: function() {
             try {
                 if (window.localStorage) {
-                    window.localStorage.setItem('preferences', json.stringify(App.preferences));
+                    window.localStorage.setItem('preferences', json.stringify(this.preferences));
                 }
             } catch(e) {
                 console.error(e);

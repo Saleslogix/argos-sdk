@@ -1243,6 +1243,10 @@ textarea:focus {
 .toolButton-disabled {
   opacity: 0.25;
 }
+.toolButton-hidden {
+  display: none;
+  visibility: hidden;
+}
 /* signature capture */
 #signature_edit {
   text-align: center;

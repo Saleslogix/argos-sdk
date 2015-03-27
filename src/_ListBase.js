@@ -639,7 +639,7 @@ define('argos/_ListBase', [
                     id: 'new',
                     cls: 'fa fa-plus fa-fw fa-lg',
                     action: 'navigateToInsertView',
-                    security: App.getViewSecurity(this.insertView, 'insert')
+                    security: this.app.getViewSecurity(this.insertView, 'insert')
                 }]
             });
         },
@@ -699,7 +699,7 @@ define('argos/_ListBase', [
                 action = actions[i];
                 options = {
                     actionIndex: i,
-                    hasAccess: (!action.security || (action.security && App.hasAccessTo(this.expandExpression(action.security)))) ? true : false
+                    hasAccess: (!action.security || (action.security && this.app.hasAccessTo(this.expandExpression(action.security)))) ? true : false
                 };
                 actionTemplate = action.template || this.listActionItemTemplate;
 
@@ -805,6 +805,47 @@ define('argos/_ListBase', [
             }
             this._applyStateToActions(selection);
         },
+        getQuickActionPrefs: function() {
+            return this.app && this.app.preferences && this.app.preferences.quickActions;
+        },
+        ensureQuickActionPrefs: function() {
+            var appPrefs, actionPrefs;
+
+            appPrefs = this.app && this.app.preferences;
+            actionPrefs = this.getQuickActionPrefs();
+
+            if (!this.actions || !appPrefs) {
+                return;
+            }
+
+            if (!actionPrefs) {
+                appPrefs.quickActions = {};
+                actionPrefs = appPrefs.quickActions;
+            }
+
+            // If it doesn't exist, or there is a count mismatch (actions created on upgrades perhaps?)
+            // re-create the preferences store
+            if (!actionPrefs[this.id] ||
+                (actionPrefs[this.id] && actionPrefs[this.id].length !== this.actions.length)) {
+                actionPrefs[this.id] = array.map(this.actions, function(action) {
+                    action.visible = true;
+                    return action;
+                });
+
+                this.app.persistPreferences();
+            }
+        },
+        isActionVisible: function(action) {
+            var prefs, actionPref;
+
+            prefs = this.getQuickActionPrefs();
+            actionPref = prefs[action && action.actionIndex];
+            if (!prefs || !actionPref) {
+                return true;
+            }
+
+            return actionPref.visible;
+        },
         /**
          * Called from checkActionState method and sets the state of the actions from what was selected from the selected row, it sets the disabled state for each action
          * item using the currently selected row as context by passing the action instance the selected row to the
@@ -812,15 +853,18 @@ define('argos/_ListBase', [
          * @param {Object} selection
          */
         _applyStateToActions: function(selection) {
-            var i, action;
+            var i, action, actionNode;
             // IE10 is destroying the child notes of the actionsNode when the list view refreshes,
             // re-create the action DOM before moving on.
             if (this.actionsNode.childNodes.length === 0 && this.actions.length > 0) {
                 this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
             }
 
+            this.ensureQuickActionPrefs();
+
             for (i = 0; i < this.actions.length; i++) {
                 action = this.actions[i];
+                actionNode = this.actionsNode.childNodes[i];
 
                 action.isEnabled = (typeof action['enabled'] === 'undefined')
                     ? true
@@ -830,8 +874,11 @@ define('argos/_ListBase', [
                     action.isEnabled = false;
                 }
 
-                if (this.actionsNode.childNodes[i]) {
-                    domClass.toggle(this.actionsNode.childNodes[i], 'toolButton-disabled', !action.isEnabled);
+                action.visible = this.isActionVisible(action);
+
+                if (actionNode) {
+                    domClass.toggle(actionNode, 'toolButton-disabled', !action.isEnabled);
+                    domClass.toggle(actionNode, 'toolButton-hidden', !action.visible);
                 }
             }
         },
@@ -854,7 +901,6 @@ define('argos/_ListBase', [
             domConstruct.place(this.actionsNode, rowNode, 'after');
         },
         onApplyRowActionPanel: function(actionNodePanel, rowNode) {
-
         },
         /**
          * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
@@ -1039,8 +1085,8 @@ define('argos/_ListBase', [
          * If autoClearSelection is true, clear the selection model.
          */
         invokeSingleSelectAction: function() {
-            if (App.bars['tbar']) {
-                App.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction });
+            if (this.app.bars['tbar']) {
+                this.app.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction });
             }
 
             if (this.autoClearSelection) {
@@ -1140,7 +1186,7 @@ define('argos/_ListBase', [
          * property of the passed selection data.
          */
         navigateToRelatedView: function(action, selection, viewId, whereQueryFmt, additionalOptions) {
-            var view = App.getView(viewId),
+            var view = this.app.getView(viewId),
                 options = {
                     where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]]),
                     selectedEntry: selection.data
@@ -1167,7 +1213,7 @@ define('argos/_ListBase', [
          * @param {Object} additionalOptions Additional options to be passed into the next view
          */
         navigateToDetailView: function(key, descriptor, additionalOptions) {
-            var view = App.getView(this.detailView),
+            var view = this.app.getView(this.detailView),
                 options = {
                     descriptor: descriptor, // keep for backwards compat
                     title: descriptor,
@@ -1190,7 +1236,7 @@ define('argos/_ListBase', [
          * @param {Object} additionalOptions Additional options to be passed into the next view.
          */
         navigateToEditView: function(action, selection, additionalOptions) {
-            var view = App.getView(this.editView || this.insertView),
+            var view = this.app.getView(this.editView || this.insertView),
                 key = selection.data[this.idProperty],
                 options = {
                     key: key,
@@ -1212,7 +1258,7 @@ define('argos/_ListBase', [
          * @param {Object} additionalOptions Additional options to be passed into the next view.
          */
         navigateToInsertView: function(el, additionalOptions) {
-            var view = App.getView(this.insertView || this.editView),
+            var view = this.app.getView(this.insertView || this.editView),
                 options = {
                     returnTo: this.id,
                     insert: true
@@ -1486,8 +1532,8 @@ define('argos/_ListBase', [
         emptySelection: function() {
             this._selectionModel.clear();
 
-            if (App.bars['tbar']) {
-                App.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction }); // invoke action of tool
+            if (this.app.bars['tbar']) {
+                this.app.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction }); // invoke action of tool
             }
         },
         /**
