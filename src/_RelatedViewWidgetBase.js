@@ -20,7 +20,7 @@ define('argos/_RelatedViewWidgetBase', [
          * Simple that defines the HTML Markup
          */
         widgetTemplate: new Simplate([
-           '<div class="related-view-widget {%: $$.cls %}">',
+           '<div class="related-view {%: $$.cls %}">',
                '<div data-dojo-attach-point="containerNode">',
                     '{%! $$.relatedContentTemplate %}',
                '</div>',

@@ -27,7 +27,17 @@ define('argos/_RelatedWidgetListMixin', [
         /**
          * The related view managers for each related view definition.
          */
-        relatedViewManagers: null,
+         relatedViewManagers: null,
+        /**
+        * @property {Simplate}
+        * The template used to render the single list action row.
+        */
+         listActionTemplate: new Simplate([
+             '<li data-dojo-attach-point="actionsNode" class="actions-row">',
+             '<div data-dojo-attach-point="relatedActionsNode" class="related-view-list action-view"></div></li>'
+         ]),
+
+
         startup: function() {
             this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
             this.inherited(arguments);
@@ -45,6 +55,11 @@ define('argos/_RelatedWidgetListMixin', [
                  this.onProcessRelatedViews(entry, rowNode);
              }
              this.inherited(arguments);
+        },
+        onApplyRowActionPanel: function(actionNodePanel, rowNode) {
+            this.destroyRelatedView(this.currentView);
+            this.currentView = null;
+            this.inherited(arguments);
         },
         /**
         * Gets the related view manager for a related view definition.
@@ -136,6 +151,47 @@ define('argos/_RelatedWidgetListMixin', [
                 snapShot = this.itemTemplate.apply(entry, this);
             }
             return snapShot;
+        },
+        getCurrentRelatedView: function() {
+            return null;
+        },
+        destroyRelatedView: function(relatedView) {
+            var relatedViewManager;
+            if (relatedView) {
+                relatedViewManager = this.getRelatedViewManager(relatedView);
+                if (relatedViewManager) {
+                    relatedViewManager.destroyViews();
+                }
+            }
+        },
+        invokeRelatedViewAction: function(action, selection, additionalOptions) {
+            var relatedView, currentViewId, relatedViewManager, rowNode, entry, addView;
+            addView = true;
+            relatedView = action['relatedView'];
+            if (relatedView) {
+                relatedViewManager = this.getRelatedViewManager(relatedView);
+                if (relatedViewManager) {
+                    if (this.currentView) {
+                        if (this.currentView.id === relatedView.id) {
+                            addView = false;
+                        }
+                        this.destroyRelatedView(this.currentView);
+                        this.currentView = null;
+                    }
+                    if (addView) {
+                        this.currentView = relatedView;
+                        entry = selection.data;
+                        if (!entry.$key) {
+                            entry.$key = this.store.getIdentity(entry);
+                        }
+                        rowNode = this.relatedActionsNode;
+                        if (rowNode) {
+                            relatedViewManager.addView(entry, rowNode, this);
+                        }
+                    }
+
+                }
+            }
         }
     });
     return __class

@@ -930,8 +930,7 @@ img {
     padding: 1em;
 }
 
-.related-view-widget .loading-indicator div,
-{
+.related-view-widget .loading-indicator div {
     background: url('../../../images/loading-indicator-white.gif') no-repeat scroll 0 50%;
     padding: 0 0 0 20px;
     display: inline-block;
@@ -940,6 +939,26 @@ img {
 
 .related-view-widget .loading {
     display: inline-block;
+}
+.related-view {
+    margin: 4px;
+    padding: 2px;
+    position: relative;
+
+}
+.related-view-list {
+    background-color: #fff;
+    border-radius: 3px;
+
+    .action-view {
+        background-color: @background-light;
+    }
+}
+.related-view-detail {
+     background-color: @color-light-emerald;
+}
+.related-view-edit {
+     background-color: @color-light-emerald;
 }
 
 .pull-to-refresh {

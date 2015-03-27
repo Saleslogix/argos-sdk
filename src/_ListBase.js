@@ -243,10 +243,6 @@ define('argos/_ListBase', [
                 '<label>{%: $.label %}</label>',
             '</button>'
         ]),
-        contextSnapShotTemplate: new Simplate([
-            '<h3>{%: $$.title %}</h3>',
-            '<h4>{%: $["$descriptor"] %}</h4>'
-        ]),
         /**
          * @property {HTMLElement}
          * Attach point for the main view content
@@ -585,7 +581,6 @@ define('argos/_ListBase', [
             }
 
             delete this.store;
-            //this.destroyRelatedViewWidgets();
             this.inherited(arguments);
         },
         _getStoreAttr: function() {
