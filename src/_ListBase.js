@@ -839,6 +839,8 @@ define('argos/_ListBase', [
             var prefs, actionPref;
 
             prefs = this.getQuickActionPrefs();
+            prefs = prefs && prefs[this.id];
+
             actionPref = prefs[action && action.actionIndex];
             if (!prefs || !actionPref) {
                 return true;
