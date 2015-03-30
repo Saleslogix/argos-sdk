@@ -247,6 +247,10 @@
           "path": "../src"
         },
         {
+          "text": "_ConfigureBase.js",
+          "path": "../src"
+        },
+        {
           "text": "_ListBase.js",
           "path": "../src"
         },
