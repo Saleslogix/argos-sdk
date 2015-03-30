@@ -9,6 +9,7 @@ define('argos/_RelatedWidgetListMixin', [
     'dojo/aspect',
     'dojo/dom-construct',
     'dojo/query',
+    'dojo/dom-class',
     './RelatedViewManager'
 ], function(
     declare,
@@ -17,9 +18,11 @@ define('argos/_RelatedWidgetListMixin', [
     aspect,
     domConstruct,
     query,
+    domClass,
     RelatedViewManager
 ) {
     var __class = declare('argos._RelatedWidgetListMixin', null, {
+        containerCls: 'related-view-list-container',
         /**
          * The related view definitions for related views for each row.
          */
@@ -34,9 +37,11 @@ define('argos/_RelatedWidgetListMixin', [
         */
          listActionTemplate: new Simplate([
              '<li data-dojo-attach-point="actionsNode" class="actions-row">',
-             '<div data-dojo-attach-point="relatedActionsNode" class="related-view-list action-view"></div></li>'
+             '<div data-dojo-attach-point="relatedActionsNode" class="related-view-list-action"></div></li>'
          ]),
-
+         relatedViewActionTemplate: new Simplate([
+              '<li class="related-view-list action-view"></li>'
+         ]),
 
         startup: function() {
             this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
@@ -57,8 +62,8 @@ define('argos/_RelatedWidgetListMixin', [
              this.inherited(arguments);
         },
         onApplyRowActionPanel: function(actionNodePanel, rowNode) {
-            this.destroyRelatedView(this.currentView);
-            this.currentView = null;
+            this.destroyRelatedView(this.currentRelatedView);
+            this.currentRelatedView = null;
             this.inherited(arguments);
         },
         /**
@@ -152,9 +157,6 @@ define('argos/_RelatedWidgetListMixin', [
             }
             return snapShot;
         },
-        getCurrentRelatedView: function() {
-            return null;
-        },
         destroyRelatedView: function(relatedView) {
             var relatedViewManager;
             if (relatedView) {
@@ -165,34 +167,77 @@ define('argos/_RelatedWidgetListMixin', [
             }
         },
         invokeRelatedViewAction: function(action, selection, additionalOptions) {
-            var relatedView, currentViewId, relatedViewManager, rowNode, entry, addView;
+            var relatedView,
+                relatedViewManager,
+                relatedNode,
+                entry,
+                addView,
+                rowSelected,
+                selectedItems,
+                scrollerNode;
             addView = true;
             relatedView = action['relatedView'];
             if (relatedView) {
                 relatedViewManager = this.getRelatedViewManager(relatedView);
                 if (relatedViewManager) {
-                    if (this.currentView) {
-                        if (this.currentView.id === relatedView.id) {
+                    if (this.currentRelatedView) {
+                        if (this.currentRelatedView.id === relatedView.id) {
                             addView = false;
                         }
-                        this.destroyRelatedView(this.currentView);
-                        this.currentView = null;
+                        //Destroy the current related view;
+                        this.destroyRelatedView(this.currentRelatedView);
+                        this.currentRelatedView = null;
                     }
                     if (addView) {
-                        this.currentView = relatedView;
+                        this.currentRelatedView = relatedView;
                         entry = selection.data;
                         if (!entry.$key) {
                             entry.$key = this.store.getIdentity(entry);
                         }
-                        rowNode = this.relatedActionsNode;
-                        if (rowNode) {
-                            relatedViewManager.addView(entry, rowNode, this);
+                        //Add the related widget to the action node.
+                        //relatedNode = domConstruct.toDom(this.relatedViewActionTemplate.apply(this));
+                        //domConstruct.place(this.actionsNode, relatedNode, 'after', this);
+                        relatedNode =  this.relatedActionsNode;
+                        if (relatedNode) {
+
+                            relatedViewManager.addView(entry, relatedNode, this);
+                        }
+                        selectedItems = this.get('selectionModel').getSelections(),
+                        selectedRow = null;
+                        for (key in selectedItems) {
+                            if (selectedItems.hasOwnProperty(key)) {
+                                selectedRow = selectedItems[key];
+                                break;
+                            }
+                        }
+                        //lets set scroller to the current row.
+                        if (selectedRow) {
+                            scrollerNode = this.get('scroller');
+                            if (scrollerNode) {
+                                scrollerNode.scrollTop = selectedRow.tag.offsetTop;
+                            }
                         }
                     }
-
                 }
             }
-        }
+        },
+        navigateToQuickEdit: function(action, selection, additionalOptions) {
+            var view = App.getView(this.quickEditView || this.EditView || this.insertView),
+                key = selection.data[this.idProperty],
+                options = {
+                    key: key,
+                    selectedEntry: selection.data,
+                    fromContext: this
+                };
+
+            if (additionalOptions) {
+                options = lang.mixin(options, additionalOptions);
+            }
+
+            if (view) {
+                view.show(options);
+            }
+        },
     });
     return __class
 });

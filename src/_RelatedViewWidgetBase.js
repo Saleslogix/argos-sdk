@@ -1,4 +1,4 @@
-/* see copy write file
+/* see copyright file
  */
 
 define('argos/_RelatedViewWidgetBase', [
@@ -20,14 +20,14 @@ define('argos/_RelatedViewWidgetBase', [
          * Simple that defines the HTML Markup
          */
         widgetTemplate: new Simplate([
-           '<div class="related-view {%: $$.cls %}">',
-               '<div data-dojo-attach-point="containerNode">',
+           '<div class="related-view-widget-base {%: $$.cls %}">',
+               '<div data-dojo-attach-point="containerNode" >',
                     '{%! $$.relatedContentTemplate %}',
                '</div>',
            '</div>'
         ]),
         relatedContentTemplate: new Simplate([
-            ''
+          '',
         ]),
         loadingTemplate: new Simplate([
            '<div class="content-loading"><span>{%= $.loadingText %}</span></div>'

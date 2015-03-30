@@ -50,7 +50,7 @@ define('argos/RelatedViewWidget', [
     _RelatedViewWidgetBase
 ) {
     var __class = declare('argos.RelatedViewWidget',[_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], {
-        cls: null,
+        cls: 'related-view-widget',
         nodataText: 'no records found ...',
         selectMoreDataText: 'see ${0} more of ${1} ... ',
         selectMoreDataText2: 'see ${0} more ... ',
