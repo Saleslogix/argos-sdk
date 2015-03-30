@@ -331,6 +331,12 @@ define('argos/_ListBase', [
          * The id of the detail view, or view instance, to show when a row is clicked.
          */
         detailView: null,
+
+        /**
+         * @property {String}
+         * The id of the configure view for quick action preferences
+         */
+        quickActionConfigureView: 'configure_quickactions',
         /**
          * @property {String}
          * The view id to show if there is no `insertView` specified, when
@@ -368,6 +374,11 @@ define('argos/_ListBase', [
          * The text displayed as the default title.
          */
         titleText: 'List',
+        /**
+         * @property {String}
+         * The text displayed for quick action configure.
+         */
+        configureText: 'Configure',
         /**
          * @property {String}
          * The error message to display if rendering a row template is not successful.
@@ -587,7 +598,7 @@ define('argos/_ListBase', [
                 });
             }
 
-            this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
+            this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
             this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
         },
         /**
@@ -695,6 +706,10 @@ define('argos/_ListBase', [
         createActions: function(actions) {
             var i, action, options, actionTemplate;
 
+            if (!this.actionsNode) {
+                return;
+            }
+
             for (i = 0; i < actions.length; i++) {
                 action = actions[i];
                 options = {
@@ -709,6 +724,23 @@ define('argos/_ListBase', [
             }
 
             this.actions = actions;
+        },
+        createSystemActionLayout: function(actions) {
+            return [{
+                id: '__editPrefs__',
+                cls: 'fa fa-cog fa-2x',
+                label: this.configureText,
+                action: 'configureQuickActions'
+            }].concat(actions);
+        },
+        configureQuickActions: function() {
+            var view = App.getView(this.quickActionConfigureView);
+            if (view) {
+                view.show({
+                    viewId: this.id,
+                    actions: this.actions.slice(1)// exclude the first "configure" action
+                });
+            }
         },
         selectEntrySilent: function(key) {
             var enableActions = this.enableActions,// preserve the original value
@@ -859,7 +891,7 @@ define('argos/_ListBase', [
             // IE10 is destroying the child notes of the actionsNode when the list view refreshes,
             // re-create the action DOM before moving on.
             if (this.actionsNode.childNodes.length === 0 && this.actions.length > 0) {
-                this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
+                this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
             }
 
             this.ensureQuickActionPrefs();

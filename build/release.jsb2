@@ -247,10 +247,6 @@
           "path": "../src"
         },
         {
-          "text": "_ConfigureBase.js",
-          "path": "../src"
-        },
-        {
           "text": "_ListBase.js",
           "path": "../src"
         },
@@ -271,6 +267,10 @@
           "path": "../src"
         },
         {
+          "text": "_ConfigureBase.js",
+          "path": "../src"
+        },
+        {
           "text": "Toolbar.js",
           "path": "../src"
         },
@@ -281,6 +281,10 @@
         {
           "text": "PersistentStorage.js",
           "path": "../src"
+        },
+        {
+          "text": "ConfigureQuickActions.js",
+          "path": "../src/Views"
         },
         {
           "text": "FileSelect.js",

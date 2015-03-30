@@ -42,6 +42,7 @@ define('argos/_ConfigureBase', [
         selectionOnly: true,
         allowSelection: true,
         autoClearSelection: false,
+        cls: 'configurable-list',
 
         createToolLayout: function() {
             return this.tools || (this.tools = {

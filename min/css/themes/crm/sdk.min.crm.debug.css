@@ -1036,6 +1036,40 @@ img {
   height: 18px;
   vertical-align: middle;
 }
+.configurable-list .list-content > li {
+  color: #aaa;
+  padding-right: 6px;
+}
+.configurable-list .list-content > li .resource {
+  display: block;
+  margin: -8px 0 -8px -10px;
+  padding: 8px 32px 8px 36px;
+}
+.configurable-list .list-content > li h3 > span:first-child {
+  float: left;
+}
+.configurable-list .list-content > li h3 > [data-action="moveUp"],
+.configurable-list .list-content > li h3 > [data-action="moveDown"] {
+  float: right;
+  display: block;
+  width: 48px;
+  height: 24px;
+  cursor: pointer;
+}
+.configurable-list .list-content > li h3 > .icon {
+  opacity: 0.5;
+  margin-right: .2em;
+}
+.configurable-list .list-content > li:first-child h3 > [data-action="moveUp"],
+.configurable-list .list-content > li:last-child h3 > [data-action="moveDown"] {
+  visibility: hidden;
+}
+.configurable-list .list-content > li.list-item-selected {
+  color: #000;
+}
+.configurable-list .list-content > li.list-item-selected h3 > .icon {
+  opacity: 1.0;
+}
 body {
   color: #1a1a1a;
   background-color: #f8f8f8;
