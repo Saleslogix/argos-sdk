@@ -55,6 +55,7 @@ define('argos/_RelatedWidgetDetailMixin', [
             } else {
                 rowNode = this.inherited(arguments);
             }
+
             return rowNode;
         },
         /**
@@ -67,6 +68,7 @@ define('argos/_RelatedWidgetDetailMixin', [
             if (!this.relatedViewManagers) {
                 this.relatedViewManagers = {};
             }
+
             if (this.relatedViewManagers[relatedView.id]) {
                 relatedViewManager = this.relatedViewManagers[relatedView.id];
             } else {
@@ -82,6 +84,7 @@ define('argos/_RelatedWidgetDetailMixin', [
                 relatedViewManager = new RelatedViewManager(options);
                 this.relatedViewManagers[relatedView.id] = relatedViewManager;
             }
+
             return relatedViewManager;
         },
         onProcessRelatedViews: function(relatedView, rowNode, entry) {
@@ -107,9 +110,12 @@ define('argos/_RelatedWidgetDetailMixin', [
          *  Destroys all of the related view widgets, that was added.
          */
         destroyRelatedViewWidgets: function() {
+            var relatedViewId;
             if (this.relatedViewManagers) {
-                for (var relatedViewId in this.relatedViewManagers) {
-                    this.relatedViewManagers[relatedViewId].destroyViews();
+                for (relatedViewId in this.relatedViewManagers) {
+                    if (this.relatedViewManagers.hasOwnProperty(relatedViewId)) {
+                        this.relatedViewManagers[relatedViewId].destroyViews();
+                    }
                 }
             }
         },
@@ -135,6 +141,6 @@ define('argos/_RelatedWidgetDetailMixin', [
             return snapShot;
         }
     });
-    return __class
+    return __class;
 });
 

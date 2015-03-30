@@ -130,9 +130,12 @@ define('argos/_RelatedWidgetListMixin', [
          *  Destroys all of the related view widgets, that was added.
          */
         destroyRelatedViewWidgets: function() {
+            var relatedViewId;
             if (this.relatedViewManagers) {
-                for (var relatedViewId in this.relatedViewManagers) {
-                    this.relatedViewManagers[relatedViewId].destroyViews();
+                for (relatedViewId in this.relatedViewManagers) {
+                    if (this.relatedViewManagers.hasOwnProperty(relatedViewId)) {
+                        this.relatedViewManagers[relatedViewId].destroyViews();
+                    }
                 }
             }
         },
@@ -172,12 +175,18 @@ define('argos/_RelatedWidgetListMixin', [
                 relatedNode,
                 entry,
                 addView,
-                rowSelected,
+                selectedRow,
                 selectedItems,
-                scrollerNode;
+                scrollerNode,
+                key;
+
             addView = true;
             relatedView = action['relatedView'];
-            if (relatedView) {
+            if(!relatedView.hasOwnProperty('enabled')){
+                relatedView.enabled = true;
+            }
+
+            if (relatedView && relatedView.enabled) {
                 relatedViewManager = this.getRelatedViewManager(relatedView);
                 if (relatedViewManager) {
                     if (this.currentRelatedView) {
@@ -188,21 +197,21 @@ define('argos/_RelatedWidgetListMixin', [
                         this.destroyRelatedView(this.currentRelatedView);
                         this.currentRelatedView = null;
                     }
+
                     if (addView) {
                         this.currentRelatedView = relatedView;
                         entry = selection.data;
                         if (!entry.$key) {
                             entry.$key = this.store.getIdentity(entry);
                         }
-                        //Add the related widget to the action node.
-                        //relatedNode = domConstruct.toDom(this.relatedViewActionTemplate.apply(this));
-                        //domConstruct.place(this.actionsNode, relatedNode, 'after', this);
+
                         relatedNode =  this.relatedActionsNode;
                         if (relatedNode) {
 
                             relatedViewManager.addView(entry, relatedNode, this);
                         }
-                        selectedItems = this.get('selectionModel').getSelections(),
+
+                        selectedItems = this.get('selectionModel').getSelections();
                         selectedRow = null;
                         for (key in selectedItems) {
                             if (selectedItems.hasOwnProperty(key)) {
@@ -210,6 +219,7 @@ define('argos/_RelatedWidgetListMixin', [
                                 break;
                             }
                         }
+
                         //lets set scroller to the current row.
                         if (selectedRow) {
                             scrollerNode = this.get('scroller');
@@ -229,6 +239,9 @@ define('argos/_RelatedWidgetListMixin', [
                     selectedEntry: selection.data,
                     fromContext: this
                 };
+            if (!action.enabled) {
+                return;
+            }
 
             if (additionalOptions) {
                 options = lang.mixin(options, additionalOptions);
@@ -237,8 +250,9 @@ define('argos/_RelatedWidgetListMixin', [
             if (view) {
                 view.show(options);
             }
-        },
+
+        }
     });
-    return __class
+    return __class;
 });
 

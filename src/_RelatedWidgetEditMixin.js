@@ -107,9 +107,12 @@ define('argos/_RelatedWidgetEditMixin', [
          *  Destroys all of the related view widgets, that was added.
          */
         destroyRelatedViewWidgets: function() {
+            var relatedViewId;
             if (this.relatedViewManagers) {
-                for (var relatedViewId in this.relatedViewManagers) {
-                    this.relatedViewManagers[relatedViewId].destroyViews();
+                for (relatedViewId in this.relatedViewManagers) {
+                    if (this.relatedViewManagers.hasOwnProperty(relatedViewId)) {
+                        this.relatedViewManagers[relatedViewId].destroyViews();
+                    }
                 }
             }
         },
@@ -121,6 +124,6 @@ define('argos/_RelatedWidgetEditMixin', [
             this.inherited(arguments);
         }
     });
-    return __class
+    return __class;
 });
 
