@@ -730,7 +730,8 @@ define('argos/_ListBase', [
                 id: '__editPrefs__',
                 cls: 'fa fa-cog fa-2x',
                 label: this.configureText,
-                action: 'configureQuickActions'
+                action: 'configureQuickActions',
+                systemAction: true
             }].concat(actions);
         },
         configureQuickActions: function() {
@@ -738,7 +739,10 @@ define('argos/_ListBase', [
             if (view) {
                 view.show({
                     viewId: this.id,
-                    actions: this.actions.slice(1)// exclude the first "configure" action
+                    actions: array.filter(this.actions, function(action) {
+                        // Exclude system actions
+                        return action && action.systemAction !== true;
+                    })
                 });
             }
         },
