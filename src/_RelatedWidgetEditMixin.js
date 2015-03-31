@@ -20,7 +20,7 @@ define('argos/_RelatedWidgetEditMixin', [
     RelatedViewManager
 ) {
     var __class = declare('argos._RelatedWidgetEditMixin', null, {
-        containerCls: 'related-view-edit-container',
+        cls: null,
         /**
        * @property {Simplate}
        * HTML that is used for detail layout items that point to imbeaded related views, displayed related view widget

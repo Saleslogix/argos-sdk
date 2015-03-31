@@ -20,7 +20,7 @@ define('argos/_RelatedWidgetDetailMixin', [
     RelatedViewManager
 ) {
     var __class = declare('argos._RelatedWidgetDetailMixin', null, {
-        containerCls:'related-view-detail-container',
+        cls: null,
         /**
        * @property {Simplate}
        * HTML that is used for detail layout items that point to imbeaded related views, displayed related view widget
@@ -29,7 +29,7 @@ define('argos/_RelatedWidgetDetailMixin', [
        * * `$$` => view instance
        */
         relatedContentViewsTemplate: new Simplate([
-            '<li class="related-view-detail-content">',
+            '<li class="related-view-detail-content {%= $.cls %}">',
             '<div id="related-content-views"></div>',
             '</li>'
         ]),

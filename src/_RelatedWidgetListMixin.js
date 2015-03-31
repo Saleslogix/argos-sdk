@@ -22,7 +22,6 @@ define('argos/_RelatedWidgetListMixin', [
     RelatedViewManager
 ) {
     var __class = declare('argos._RelatedWidgetListMixin', null, {
-        containerCls: 'related-view-list-container',
         /**
          * The related view definitions for related views for each row.
          */
@@ -39,10 +38,6 @@ define('argos/_RelatedWidgetListMixin', [
              '<li data-dojo-attach-point="actionsNode" class="actions-row">',
              '<div data-dojo-attach-point="relatedActionsNode" class="related-view-list-action"></div></li>'
          ]),
-         relatedViewActionTemplate: new Simplate([
-              '<li class="related-view-list action-view"></li>'
-         ]),
-
         startup: function() {
             this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
             this.inherited(arguments);
@@ -232,13 +227,18 @@ define('argos/_RelatedWidgetListMixin', [
             }
         },
         navigateToQuickEdit: function(action, selection, additionalOptions) {
-            var view = App.getView(this.quickEditView || this.EditView || this.insertView),
+            var view = App.getView(action.editView || this.quickEditView || this.EditView || this.insertView),
                 key = selection.data[this.idProperty],
                 options = {
                     key: key,
                     selectedEntry: selection.data,
                     fromContext: this
                 };
+
+            if (!action.hasOwnProperty('enabled')) {
+                action.enabled = true;
+            }
+
             if (!action.enabled) {
                 return;
             }
