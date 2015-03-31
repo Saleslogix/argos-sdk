@@ -143,16 +143,18 @@ module DocJS
           end
         end
 
-        properties_node.value.each do |property|
-          name = property.name
-          type = get_type_for_node(property.value)
-          value = get_value_for_node(property.value)
-          comment = get_comment_for_node(property)
-          case true
-            when property.value.is_a?(RKelly::Nodes::FunctionExprNode) then
-              result.methods << Meta::Function.new(name, comment)
-            else
-              result.properties << Meta::Property.new(name, comment, type, value)
+        if properties_node.value.is_a? Array
+          properties_node.value.each do |property|
+            name = property.name
+            type = get_type_for_node(property.value)
+            value = get_value_for_node(property.value)
+            comment = get_comment_for_node(property)
+            case true
+              when property.value.is_a?(RKelly::Nodes::FunctionExprNode) then
+                result.methods << Meta::Function.new(name, comment)
+              else
+                result.properties << Meta::Property.new(name, comment, type, value)
+            end
           end
         end
 

@@ -34,6 +34,7 @@ define('argos/Application', [
     'dojo/hash',
     'dojo/has',
     'dojo/dom-construct',
+    'dojo/promise/all',
     'snap',
     'dojo/sniff',
     './ReUI/main'
@@ -49,6 +50,7 @@ define('argos/Application', [
     hash,
     has,
     domConstruct,
+    all,
     snap,
     sniff,
     ReUI
@@ -199,24 +201,37 @@ define('argos/Application', [
         /**
          * Array of all connections for App
          * @property {Object[]}
+         * @private
          */
         _connects: null,
 
         /**
          * Array of handles for App
          * @property {Object[]}
+         * @private
          */
         _signals: null,
 
         /**
+         * @private
          * Array of all subscriptions for App
          */
         _subscribes: null,
+
+        /**
+         * Array of promises to load app state
+         * @property {Array}
+         * @private
+         */
+        _appStatePromises: null,
+
         /**
          * Signifies the App has been initialized
          * @property {Boolean}
+         * @private
          */
         _started: false,
+
         _rootDomNode: null,
         customizations: null,
         services: null,// TODO: Remove
@@ -255,6 +270,7 @@ define('argos/Application', [
          */
         constructor: function(options) {
             this._connects = [];
+            this._appStatePromises = [];
             this._signals = [];
             this._subscribes = [];
 
@@ -368,6 +384,38 @@ define('argos/Application', [
             }.bind(this)));
 
             return this;
+        },
+        /**
+         * Executes the chain of promises registered with registerAppStatePromise.
+         * When all promises are done, a new promise is returned to the caller, and all
+         * registered promises are flushed.
+         * @return {Promise}
+         */
+        initAppState: function() {
+            var promises = array.map(this._appStatePromises, function(item) {
+                var results = item;
+                if (typeof item === 'function') {
+                    results = item();
+                }
+
+                return results;
+            });
+
+            return all(promises).then(function(results) {
+                this.clearAppStatePromises();
+                return results;
+            }.bind(this));
+        },
+        /**
+         * Registers a promise that will resolve when initAppState is invoked.
+         * @param {Promise|Function} promise A promise or a function that returns a promise
+         */
+        registerAppStatePromise: function(promise) {
+            this._appStatePromises.push(promise);
+            return this;
+        },
+        clearAppStatePromises: function() {
+            this._appStatePromises = [];
         },
         onSetOrientation: function(value) {
         },
