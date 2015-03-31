@@ -27,7 +27,7 @@ define('argos/_RelatedViewWidgetBase', [
            '</div>'
         ]),
         relatedContentTemplate: new Simplate([
-          '',
+          ''
         ]),
         loadingTemplate: new Simplate([
            '<div class="content-loading"><span>{%= $.loadingText %}</span></div>'
@@ -36,7 +36,7 @@ define('argos/_RelatedViewWidgetBase', [
             lang.mixin(this, options);
         },
         onInit: function() {
-              this.onLoad();
+            this.onLoad();
         },
         onLoad: function() {
         }

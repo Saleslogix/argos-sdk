@@ -27,7 +27,7 @@ define('argos/Groups/_GroupBySection', [
         * @property {String}
         * The unique (within the current form) name of the field
         */
-         name: null,
+        name: null,
         /**
          * @property {String}
          * Signifies that the field should always be included when the form calls {@link Edit#getValues getValues}.

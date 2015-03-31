@@ -25,19 +25,19 @@ define('argos/_RelatedWidgetListMixin', [
         /**
          * The related view definitions for related views for each row.
          */
-         relatedViews: null,
+        relatedViews: null,
         /**
          * The related view managers for each related view definition.
          */
-         relatedViewManagers: null,
+        relatedViewManagers: null,
         /**
         * @property {Simplate}
         * The template used to render the single list action row.
         */
-         listActionTemplate: new Simplate([
-             '<li data-dojo-attach-point="actionsNode" class="actions-row">',
-             '<div data-dojo-attach-point="relatedActionsNode" class="related-view-list-action"></div></li>'
-         ]),
+        listActionTemplate: new Simplate([
+            '<li data-dojo-attach-point="actionsNode" class="actions-row">',
+            '<div data-dojo-attach-point="relatedActionsNode" class="related-view-list-action"></div></li>'
+        ]),
         startup: function() {
             this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
             this.inherited(arguments);
@@ -50,11 +50,11 @@ define('argos/_RelatedWidgetListMixin', [
         createRelatedViewLayout: function() {
             return this.relatedViews || (this.relatedViews = {});
         },
-        onApplyRowTemplate:function(entry, rowNode){
-             if (this.relatedViews.length > 0) {
-                 this.onProcessRelatedViews(entry, rowNode);
-             }
-             this.inherited(arguments);
+        onApplyRowTemplate: function(entry, rowNode) {
+            if (this.relatedViews.length > 0) {
+                this.onProcessRelatedViews(entry, rowNode);
+            }
+            this.inherited(arguments);
         },
         onApplyRowActionPanel: function(actionNodePanel, rowNode) {
             this.destroyRelatedView(this.currentRelatedView);
@@ -96,7 +96,7 @@ define('argos/_RelatedWidgetListMixin', [
          * @param {Object} rownode the current dom node to add the widget to.
          * @param {Object} entries the data.
          */
-         onProcessRelatedViews: function(entry, rowNode) {
+        onProcessRelatedViews: function(entry, rowNode) {
             var relatedViewManager, i;
             if (this.options && this.options.simpleMode && (this.options.simpleMode === true)) {
                 return;
@@ -177,7 +177,7 @@ define('argos/_RelatedWidgetListMixin', [
 
             addView = true;
             relatedView = action['relatedView'];
-            if(!relatedView.hasOwnProperty('enabled')){
+            if (!relatedView.hasOwnProperty('enabled')) {
                 relatedView.enabled = true;
             }
 
@@ -200,7 +200,7 @@ define('argos/_RelatedWidgetListMixin', [
                             entry.$key = this.store.getIdentity(entry);
                         }
 
-                        relatedNode =  this.relatedActionsNode;
+                        relatedNode = this.relatedActionsNode;
                         if (relatedNode) {
 
                             relatedViewManager.addView(entry, relatedNode, this);

@@ -728,7 +728,7 @@ define('argos/_EditBase', [
                 } else if (field.autoFocus && this._focusField) {
                     throw new Error('Only one field can have autoFocus set to true in the Edit layout.');
                 }
-                
+
                 this.connect(field, 'onShow', this._onShowField);
                 this.connect(field, 'onHide', this._onHideField);
                 this.connect(field, 'onEnable', this._onEnableField);
@@ -985,7 +985,7 @@ define('argos/_EditBase', [
             store = this.get('store');
             if (store) {
                 addOptions = {
-                        overwrite: false
+                    overwrite: false
                 };
                 entry = this.createEntryForInsert(values);
 
@@ -1049,8 +1049,8 @@ define('argos/_EditBase', [
             store = this.get('store');
             if (store) {
                 putOptions = {
-                        overwrite: true,
-                        id: store.getIdentity(this.entry)
+                    overwrite: true,
+                    id: store.getIdentity(this.entry)
                 };
                 entry = this.createEntryForUpdate(values);
 

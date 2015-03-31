@@ -376,7 +376,7 @@ define('argos/Fields/LookupField', [
                 orderBy: this.orderBy,
                 negateHistory: true,
                 continuousScrolling: false,
-                simpleMode:true,
+                simpleMode: true,
                 tools: {
                     tbar: [{
                         id: 'complete',
@@ -390,7 +390,7 @@ define('argos/Fields/LookupField', [
                         fn: this.reui.back,
                         scope: this.reui
                     }]
-                    }
+                }
             };
             expand = ['resourceKind', 'resourcePredicate', 'where', 'previousSelections'];
             dependentValue = this.getDependentValue();

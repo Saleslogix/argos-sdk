@@ -1031,24 +1031,6 @@ img {
   padding: 2px;
   position: relative;
 }
-.related-view-list-action {
-  margin: 4px;
-  padding: 2px;
-  position: relative;
-}
-.related-view-list-container {
-  background-color: #fff;
-  border-radius: 3px;
-}
-.related-view-list-container .action-view {
-  background-color: #f3f3f3;
-}
-.related-view-detail-container {
-  background-color: #9ed927;
-}
-.related-view-edit-container {
-  background-color: #9ed927;
-}
 .pull-to-refresh {
   margin: 20px 0;
   text-align: center;

@@ -33,7 +33,7 @@ define('argos/_RelatedWidgetEditMixin', [
         ]),
         createRowContent: function(layout, content) {
             if (layout['relatedView']) {
-                content.push(this.relatedContentViewsTemplate.apply(layout['relatedView'],this));
+                content.push(this.relatedContentViewsTemplate.apply(layout['relatedView'], this));
             } else {
                 this.inherited(arguments);
             }
