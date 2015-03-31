@@ -2,7 +2,7 @@
  * See copyright file.
  */
 
-define('argos/_RelatedWidgetEditMixin', [
+define('argos/_RelatedViewWidgetDetailMixin', [
     'dojo/_base/declare',
     'dojo/_base/array',
     'dojo/_base/lang',
@@ -19,7 +19,7 @@ define('argos/_RelatedWidgetEditMixin', [
     query,
     RelatedViewManager
 ) {
-    var __class = declare('argos._RelatedWidgetEditMixin', null, {
+    var __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
         cls: null,
         /**
        * @property {Simplate}
@@ -29,33 +29,34 @@ define('argos/_RelatedWidgetEditMixin', [
        * * `$$` => view instance
        */
         relatedContentViewsTemplate: new Simplate([
-            '<div id="{%= $.id %}" class="related-view-edit-content {%= $.cls %}"></div>'
+            '<li class="related-view-detail-content {%= $.cls %}">',
+            '<div id="related-content-views"></div>',
+            '</li>'
         ]),
-        createRowContent: function(layout, content) {
+        contextSnapShotTemplate: new Simplate([
+            '<h4>{%: $["$descriptor"] %}</h4>'
+        ]),
+        createRowNode: function(layout, sectionNode, entry, template, data) {
+            var rowNode, docfrag;
             if (layout['relatedView']) {
-                content.push(this.relatedContentViewsTemplate.apply(layout['relatedView'], this));
+
+                rowNode = query('#related-content-views', sectionNode)[0];
+                if (!rowNode) {
+                    rowNode = domConstruct.toDom(this.relatedContentViewsTemplate.apply(data, this));
+                    domConstruct.place(rowNode, sectionNode, 'last');
+                }
+
+                docfrag = document.createDocumentFragment();
+                docfrag.appendChild(rowNode);
+                this.onProcessRelatedViews(layout['relatedView'], rowNode, entry);
+                if (docfrag.childNodes.length > 0) {
+                    domConstruct.place(docfrag, sectionNode, 'last');
+                }
             } else {
-                this.inherited(arguments);
+                rowNode = this.inherited(arguments);
             }
-        },
-        processData: function(entry) {
-            this.destroyRelatedViewWidgets();
-            this.createRelatedViews(this.layout, entry);
-            this.inherited(arguments);
-        },
-        createRelatedViews: function(layout, entry) {
-            var node;
-            layout.forEach(function(item) {
-                if (item['relatedView']) {
-                    node = query('#' + item['relatedView'].id, this.contentNode)[0];
-                    if (node) {
-                        this.onProcessRelatedViews(item['relatedView'], node, entry);
-                    }
-                }
-                if (item.children) {
-                    this.createRelatedViews(item.children, entry);
-                }
-            }.bind(this));
+
+            return rowNode;
         },
         /**
         * Gets the related view manager for a related view definition.
@@ -67,10 +68,11 @@ define('argos/_RelatedWidgetEditMixin', [
             if (!this.relatedViewManagers) {
                 this.relatedViewManagers = {};
             }
+
             if (this.relatedViewManagers[relatedView.id]) {
                 relatedViewManager = this.relatedViewManagers[relatedView.id];
             } else {
-                //relatedView.id = this.id + '_' + relatedView.id;
+                relatedView.id = this.id + '_' + relatedView.id;
                 relatedViewOptions = {
                 };
                 lang.mixin(relatedViewOptions, relatedView);
@@ -82,6 +84,7 @@ define('argos/_RelatedWidgetEditMixin', [
                 relatedViewManager = new RelatedViewManager(options);
                 this.relatedViewManagers[relatedView.id] = relatedViewManager;
             }
+
             return relatedViewManager;
         },
         onProcessRelatedViews: function(relatedView, rowNode, entry) {
@@ -122,6 +125,20 @@ define('argos/_RelatedWidgetEditMixin', [
         destroy: function() {
             this.destroyRelatedViewWidgets();
             this.inherited(arguments);
+        },
+        requestData: function() {
+            this.destroyRelatedViewWidgets();
+            this.inherited(arguments);
+        },
+        /**
+        * Returns a rendered html snap shot of the entry.
+        */
+        getContextSnapShot: function(options) {
+            var snapShot, entry = this.entry;
+            if (entry) {
+                snapShot = this.contextSnapShotTemplate.apply(entry, this);
+            }
+            return snapShot;
         }
     });
     return __class;

@@ -155,7 +155,7 @@
           "path": "../src"
         },
         {
-          "text": "_RelatedViewDetailMixin.js",
+          "text": "_RelatedViewWidgetDetailMixin.js",
           "path": "../src"
         },
         {
@@ -235,7 +235,7 @@
           "path": "../src"
         },
         {
-          "text": "_RelatedViewEditMixin.js",
+          "text": "_RelatedViewWidgetEditMixin.js",
           "path": "../src"
         },
         {
@@ -271,7 +271,7 @@
           "path": "../src"
         },
         {
-          "text": "_RelatedViewListMixin.js",
+          "text": "_RelatedViewWidgetListMixin.js",
           "path": "../src"
         },
         {

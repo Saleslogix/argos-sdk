@@ -23,15 +23,15 @@
  * @requires argos._EditBase
  * @requires argos._SDataEditMixin
  * @mixins argos._SDataEditMixin
- * @requires argos._RelatedWidgetEditMixin
- * @mixins argos._RelatedWidgetEditMixin
+ * @requires argos._RelatedViewWidgetEditMixin
+ * @mixins argos._RelatedViewWidgetEditMixin
  */
 define('argos/Edit', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     './_EditBase',
     './_SDataEditMixin',
-    './_RelatedWidgetEditMixin'
+    './_RelatedViewWidgetEditMixin'
 ], function(
     declare,
     lang,

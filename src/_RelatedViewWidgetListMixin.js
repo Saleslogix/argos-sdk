@@ -2,7 +2,7 @@
  * See copyright file.
  */
 
-define('argos/_RelatedWidgetListMixin', [
+define('argos/_RelatedViewWidgetListMixin', [
     'dojo/_base/declare',
     'dojo/_base/array',
     'dojo/_base/lang',
@@ -21,7 +21,7 @@ define('argos/_RelatedWidgetListMixin', [
     domClass,
     RelatedViewManager
 ) {
-    var __class = declare('argos._RelatedWidgetListMixin', null, {
+    var __class = declare('argos._RelatedViewWidgetListMixin', null, {
         /**
          * The related view definitions for related views for each row.
          */

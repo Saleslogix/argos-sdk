@@ -20,14 +20,14 @@
  * @alternateClassName List
  * @requires argos._ListBase
  * @requires argos._SDataListMixin
- * @mixins argos._RelatedWidgetListMixin
+ * @mixins argos._RelateViewdWidgetListMixin
  */
 define('argos/List', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     './_ListBase',
     './_SDataListMixin',
-    './_RelatedWidgetListMixin'
+    './_RelatedViewWidgetListMixin'
 ], function(
     declare,
     lang,
