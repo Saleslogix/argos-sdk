@@ -845,10 +845,13 @@ define('argos/_ListBase', [
             return this.app && this.app.preferences && this.app.preferences.quickActions;
         },
         ensureQuickActionPrefs: function() {
-            var appPrefs, actionPrefs;
+            var appPrefs, actionPrefs, filtered;
 
             appPrefs = this.app && this.app.preferences;
             actionPrefs = this.getQuickActionPrefs();
+            filtered = array.filter(this.actions, function(action) {
+                return action && action.systemAction !== true;
+            });
 
             if (!this.actions || !appPrefs) {
                 return;
@@ -862,8 +865,8 @@ define('argos/_ListBase', [
             // If it doesn't exist, or there is a count mismatch (actions created on upgrades perhaps?)
             // re-create the preferences store
             if (!actionPrefs[this.id] ||
-                (actionPrefs[this.id] && actionPrefs[this.id].length !== this.actions.length)) {
-                actionPrefs[this.id] = array.map(this.actions, function(action) {
+                (actionPrefs[this.id] && actionPrefs[this.id].length !== filtered.length)) {
+                actionPrefs[this.id] = array.map(filtered, function(action) {
                     action.visible = true;
                     return action;
                 });
@@ -877,7 +880,10 @@ define('argos/_ListBase', [
             prefs = this.getQuickActionPrefs();
             prefs = prefs && prefs[this.id];
 
-            actionPref = prefs[action && action.actionIndex];
+            actionPref = array.filter(prefs, function(pref) {
+                return pref.id === action.id;
+            })[0];
+
             if (!prefs || !actionPref) {
                 return true;
             }

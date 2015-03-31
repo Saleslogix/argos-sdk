@@ -41,10 +41,49 @@ define('argos/Views/ConfigureQuickActions', [
         },
 
         onSave: function() {
-            var order, selected;
+            var order, selected, save, all;
 
             order = this.getOrderedKeys();
             selected = this.getSelectedKeys();
+            all = this.options.actions;
+
+            all.sort(function(a, b) {
+                var i, j;
+                i = order.indexOf(a.id);
+                j = order.indexOf(b.id);
+
+                if (i < j) {
+                    return -1;
+                }
+
+                if (i > j) {
+                    return 1;
+                }
+
+                return 0;
+            });
+
+            save = array.map(all, function(action, index) {
+                if (selected.indexOf(action.id) >= 0) {
+                    action.visible = true;
+                } else {
+                    action.visible = false;
+                }
+
+                action.actionIndex = index + 1;
+
+                return action;
+            });
+
+            if (!App.preferences) {
+                App.preferences = {};
+            }
+
+            if (!App.preferences.quickActions) {
+                App.preferences.quickActions = {};
+            }
+
+            App.preferences.quickActions[this.options.viewId] = save;
 
             App.persistPreferences();
 
@@ -92,13 +131,13 @@ define('argos/Views/ConfigureQuickActions', [
             return Memory({data: list});
         },
         getSavedOrderedKeys: function() {
-            var save = App.preferences.quickActions[this.options.viewId];
+            var save = this._getQuickActionPrefs();
             return array.map(save, function(action) {
                 return action.id;
             });
         },
         getSavedSelectedKeys: function() {
-            var save = App.preferences.quickActions[this.options.viewId];
+            var save = this._getQuickActionPrefs();
             save = array.filter(save, function(action) {
                 return action.visible === true;
             });
@@ -106,6 +145,9 @@ define('argos/Views/ConfigureQuickActions', [
             return array.map(save, function(action) {
                 return action.id;
             });
+        },
+        _getQuickActionPrefs: function() {
+            return (App.preferences && App.preferences.quickActions && App.preferences.quickActions[this.options.viewId]) || [];
         }
     });
 
