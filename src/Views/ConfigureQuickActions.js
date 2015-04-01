@@ -75,14 +75,7 @@ define('argos/Views/ConfigureQuickActions', [
                 return action;
             });
 
-            if (!App.preferences) {
-                App.preferences = {};
-            }
-
-            if (!App.preferences.quickActions) {
-                App.preferences.quickActions = {};
-            }
-
+            this._ensurePrefs();
             App.preferences.quickActions[this.options.viewId] = save;
 
             App.persistPreferences();
@@ -147,7 +140,17 @@ define('argos/Views/ConfigureQuickActions', [
             });
         },
         _getQuickActionPrefs: function() {
-            return (App.preferences && App.preferences.quickActions && App.preferences.quickActions[this.options.viewId]) || [];
+            this._ensurePrefs();
+            return App.preferences.quickActions[this.options.viewId] || [];
+        },
+        _ensurePrefs: function() {
+            if (!App.preferences) {
+                App.preferences = {};
+            }
+
+            if (!App.preferences.quickActions) {
+                App.preferences.quickActions = {};
+            }
         }
     });
 
