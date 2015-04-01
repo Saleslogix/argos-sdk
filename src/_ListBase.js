@@ -704,10 +704,26 @@ define('argos/_ListBase', [
          * @param {Object[]} actions
          */
         createActions: function(actions) {
-            var i, action, options, actionTemplate;
+            var i, action, options, actionTemplate, systemActions, prefActions;
 
             if (!this.actionsNode) {
                 return;
+            }
+
+            this.actions = actions;
+            this.ensureQuickActionPrefs();
+
+            // Pluck out our system actions that are NOT saved in preferences
+            systemActions = array.filter(actions, function(action) {
+                return action && action.systemAction;
+            });
+
+            // Grab quick actions from the users preferences (ordered and made visible according to user)
+            prefActions = this.app.preferences.quickActions[this.id];
+
+            if (systemActions && prefActions) {
+                // Display system actions first, then the order of what the user specified
+                actions = systemActions.concat(prefActions);
             }
 
             for (i = 0; i < actions.length; i++) {
@@ -722,8 +738,6 @@ define('argos/_ListBase', [
 
                 domConstruct.place(actionTemplate.apply(action, action.id), this.actionsNode, 'last');
             }
-
-            this.actions = actions;
         },
         createSystemActionLayout: function(actions) {
             return [{
@@ -903,8 +917,6 @@ define('argos/_ListBase', [
             if (this.actionsNode.childNodes.length === 0 && this.actions.length > 0) {
                 this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
             }
-
-            this.ensureQuickActionPrefs();
 
             for (i = 0; i < this.actions.length; i++) {
                 action = this.actions[i];

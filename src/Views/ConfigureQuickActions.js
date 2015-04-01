@@ -70,8 +70,6 @@ define('argos/Views/ConfigureQuickActions', [
                     action.visible = false;
                 }
 
-                action.actionIndex = index + 1;
-
                 return action;
             });
 
