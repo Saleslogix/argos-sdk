@@ -10,6 +10,7 @@ define('argos/_ConfigureBase', [
     'dojo/_base/lang',
     'dojo/query',
     'dojo/dom-attr',
+    'dojo/dom-class',
     'dojo/string',
     'argos/_ListBase'
 ], function(
@@ -17,6 +18,7 @@ define('argos/_ConfigureBase', [
     lang,
     query,
     domAttr,
+    domClass,
     string,
     _ListBase
 ) {
@@ -43,6 +45,7 @@ define('argos/_ConfigureBase', [
         allowSelection: true,
         autoClearSelection: false,
         cls: 'configurable-list',
+        lastMovedCls: 'last-moved',
 
         createToolLayout: function() {
             return this.tools || (this.tools = {
@@ -72,20 +75,54 @@ define('argos/_ConfigureBase', [
         onSave: function() {
         },
         moveUp: function(params) {
-            var node = query(params.$source),
-                row = node.parents('li');
+            var node, rows, prev;
 
-            if (row) {
-                row.insertBefore(row.prev('li'));
+            node = query(params.$source);
+            rows = node.parents('li');
+
+            if (rows) {
+                prev = rows.prev('li');
+                rows.insertBefore(prev);
+                this.clearLastMoved();
+
+                // The setTimeout is so the browser doesn't think the last-moved class is part of the node's
+                // initial state (the css transition won't fire)
+                setTimeout(function() {
+                    rows.addClass(this.lastMovedCls);
+                }.bind(this), 5);
             }
         },
         moveDown: function(params) {
-            var node = query(params.$source),
-                row = node.parents('li');
+            var node, rows, next;
 
-            if (row) {
-                row.insertAfter(row.next('li'));
+            node = query(params.$source);
+            rows = node.parents('li');
+
+            if (rows) {
+                next = rows.next('li');
+                rows.insertAfter(next);
+                this.clearLastMoved();
+
+                // The setTimeout is so the browser doesn't think the last-moved class is part of the node's
+                // initial state (the css transition won't fire)
+                setTimeout(function() {
+                    rows.addClass(this.lastMovedCls);
+                }.bind(this), 5);
             }
+        },
+        clearLastMoved: function() {
+            var nodes, cls;
+
+            nodes = query('> li', this.contentNode);
+            cls = this.lastMovedCls;
+
+            nodes.forEach(function(node) {
+                domClass.remove(node, cls);
+            });
+        },
+        activateEntry: function() {
+            this.clearLastMoved();
+            this.inherited(arguments);
         },
         hasMoreData: function() {
             return false;

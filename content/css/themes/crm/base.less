@@ -955,8 +955,12 @@ img {
 }
 
 .configurable-list {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* ios */
+    -webkit-tap-highlight-color: transparent; /* android */
+
     .list-content {
         > li {
+            background-color: #fff;
             color: #aaa;
             padding-right: 6px;
 
@@ -980,6 +984,7 @@ img {
                     width: 48px;
                     height: 24px;
                     cursor: pointer;
+                    text-align: center;
                 }
 
                 > .icon {
@@ -999,6 +1004,18 @@ img {
             h3 > .icon {
                 opacity: 1.0;
             }
+        }
+
+        > li.list-item-selected.last-moved {
+            opacity: 1.0;
+        }
+
+        > li.last-moved {
+            color: #000;
+            background-color: @color-light-turquoise;
+            -webkit-transition: background-color 0.3s linear;
+            transition: background-color 0.3s linear;
+            opacity: 0.5;
         }
     }
 }
