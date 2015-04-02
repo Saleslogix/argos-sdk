@@ -1026,6 +1026,11 @@ img {
 .related-view-widget .loading {
   display: inline-block;
 }
+.related-view-widget-base {
+  margin: 4px;
+  padding: 2px;
+  position: relative;
+}
 .pull-to-refresh {
   margin: 20px 0;
   text-align: center;

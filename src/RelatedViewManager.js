@@ -14,7 +14,7 @@ define('argos/RelatedViewManager',  [
     'dojo/query',
     'dojo/_base/array',
     './Store/SData',
-    './RelatedViewWidget'
+    './_RelatedViewWidgetBase'
 ], function(
     declare,
     lang,

@@ -77,8 +77,8 @@ define('argos/ReUI/main', [
             domClass.remove(R.rootEl, 'transition');
 
             context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
-            on.emit(from, 'aftertransition', {out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
-            on.emit(to, 'aftertransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+            on.emit(from, 'aftertransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+            on.emit(to, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
 
             if (o.complete) {
                 o.complete(from, to, o);
@@ -93,11 +93,11 @@ define('argos/ReUI/main', [
         // dispatch an 'show' event to let the page be aware that is being show as the result of an external
         // event (i.e. browser back/forward navigation).
         if (o.external) {
-            on.emit(to, 'show', {tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+            on.emit(to, 'show', { tag: o.tag, data: o.data, bubbles: true, cancelable: true });
         }
 
-        on.emit(from, 'beforetransition', {out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
-        on.emit(to, 'beforetransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+        on.emit(from, 'beforetransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+        on.emit(to, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
 
         D.unselect(from);
         D.select(to);
@@ -199,7 +199,7 @@ define('argos/ReUI/main', [
             // more often than not, data will only be needed when moving to a previous view (and restoring its state).
 
             if (page) {
-                R.show(page, {external: true, reverse: reverse, tag: info && info.tag, data: info && info.data});
+                R.show(page, { external: true, reverse: reverse, tag: info && info.tag, data: info && info.data });
             }
         }
     };
@@ -311,7 +311,7 @@ define('argos/ReUI/main', [
                 }
 
                 if ((position > -1) && (position === (count - 2))) {
-                     //Added check if history item is just one back.
+                    //Added check if history item is just one back.
 
                     context.history = context.history.splice(0, position + 1);
 
@@ -355,32 +355,32 @@ define('argos/ReUI/main', [
                 o.scroll = !o.reverse;
             }
 
-            on.emit(page, 'load', {bubbles: false, cancelable: true});
+            on.emit(page, 'load', { bubbles: false, cancelable: true });
 
             from = context.page;
 
             if (from) {
-                on.emit(from, 'blur', {bubbles: false, cancelable: true});
+                on.emit(from, 'blur', { bubbles: false, cancelable: true });
             }
 
             context.page = page; // Keep for backwards compat
 
-            on.emit(page, 'focus', {bubbles: false, cancelable: true});
+            on.emit(page, 'focus', { bubbles: false, cancelable: true });
 
             if (from && domAttr.get(page, 'selected') !== 'true') {
                 if (o.reverse) {
-                    on.emit(page, 'unload', {bubbles: false, cancelable: true});
+                    on.emit(page, 'unload', { bubbles: false, cancelable: true });
                 }
 
                 window.setTimeout(transition, R.checkStateEvery, from, page, o);
             } else {
-                on.emit(page, 'beforetransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+                on.emit(page, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
 
                 D.select(page);
 
                 transitionComplete(page, o);
 
-                on.emit(page, 'aftertransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+                on.emit(page, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
             }
         }
     }, config);

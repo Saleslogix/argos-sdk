@@ -20,20 +20,22 @@
  * @alternateClassName List
  * @requires argos._ListBase
  * @requires argos._SDataListMixin
- * @mixins argos._SDataListMixin
+ * @mixins argos._RelateViewdWidgetListMixin
  */
 define('argos/List', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     './_ListBase',
-    './_SDataListMixin'
+    './_SDataListMixin',
+    './_RelatedViewWidgetListMixin'
 ], function(
     declare,
     lang,
     _ListBase,
-    _SDataListMixin
+    _SDataListMixin,
+    _RelatedWidgetListMixin
 ) {
-    var __class = declare('argos.List', [_ListBase, _SDataListMixin], {
+    var __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedWidgetListMixin], {
     });
 
     lang.setObject('Sage.Platform.Mobile.List', __class);

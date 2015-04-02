@@ -23,20 +23,23 @@
  * @requires argos._DetailBase
  * @requires argos._SDataDetailMixin
  * @mixins argos._SDataDetailMixin
+ * @mixins argos._RelatedViewWidgetDetailMixin
  */
 define('argos/Detail', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     './_DetailBase',
-    './_SDataDetailMixin'
+    './_SDataDetailMixin',
+    './_RelatedViewWidgetDetailMixin'
 ], function(
     declare,
     lang,
     _DetailBase,
-    _SDataDetailMixin
+    _SDataDetailMixin,
+    _RelatedWidgetDetailMixin
 ) {
 
-    var __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin], {
+    var __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin], {
     });
 
     lang.setObject('Sage.Platform.Mobile.Detail', __class);

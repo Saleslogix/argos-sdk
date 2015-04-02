@@ -479,7 +479,7 @@ define('argos/_DetailBase', [
             view = App.getView(this.editView);
             if (view) {
                 entry = this.entry;
-                view.show({ entry: entry });
+                view.show({ entry: entry, fromContext:this });
             }
         },
         /**
@@ -499,7 +499,7 @@ define('argos/_DetailBase', [
             if (this.entry) {
                 options.selectedEntry = this.entry;
             }
-
+            options.fromContext = this;
             if (view && options) {
                 view.show(options);
             }

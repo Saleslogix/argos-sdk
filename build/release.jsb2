@@ -127,6 +127,18 @@
           "path": "../src"
         },
         {
+          "text": "_RelatedViewWidgetBase.js",
+          "path": "../src"
+        },
+        {
+          "text": "RelatedViewWidget.js",
+          "path": "../src"
+        },
+        {
+          "text": "RelatedViewManager.js",
+          "path": "../src"
+        },
+        {
           "text": "_DetailBase.js",
           "path": "../src"
         },
@@ -136,6 +148,10 @@
         },
         {
           "text": "_LegacySDataDetailMixin.js",
+          "path": "../src"
+        },
+        {
+          "text": "_RelatedViewWidgetDetailMixin.js",
           "path": "../src"
         },
         {
@@ -215,6 +231,10 @@
           "path": "../src"
         },
         {
+          "text": "_RelatedViewWidgetEditMixin.js",
+          "path": "../src"
+        },
+        {
           "text": "Edit.js",
           "path": "../src"
         },
@@ -231,14 +251,6 @@
           "path": "../src/Groups"
         },
         {
-          "text": "RelatedViewWidget.js",
-          "path": "../src"
-        },
-        {
-          "text": "RelatedViewManager.js",
-          "path": "../src"
-        },
-        {
           "text": "SearchWidget.js",
           "path": "../src"
         },
@@ -252,6 +264,10 @@
         },
         {
           "text": "_LegacySDataListMixin.js",
+          "path": "../src"
+        },
+        {
+          "text": "_RelatedViewWidgetListMixin.js",
           "path": "../src"
         },
         {
