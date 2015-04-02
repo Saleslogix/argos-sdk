@@ -177,50 +177,57 @@ define('argos/_RelatedViewWidgetListMixin', [
 
             addView = true;
             relatedView = action['relatedView'];
+            if (!relatedView) {
+                return;
+            }
+
+            relatedViewManager = this.getRelatedViewManager(relatedView);
+            if (!relatedViewManager) {
+                return;
+            }
+
             if (!relatedView.hasOwnProperty('enabled')) {
                 relatedView.enabled = true;
             }
 
-            if (relatedView && relatedView.enabled) {
-                relatedViewManager = this.getRelatedViewManager(relatedView);
-                if (relatedViewManager) {
-                    if (this.currentRelatedView) {
-                        if (this.currentRelatedView.id === relatedView.id) {
-                            addView = false;
-                        }
-                        //Destroy the current related view;
-                        this.destroyRelatedView(this.currentRelatedView);
-                        this.currentRelatedView = null;
+            if (relatedView.enabled) {
+
+                if (this.currentRelatedView) {
+                    if (this.currentRelatedView.id === relatedView.id) {
+                        addView = false;
+                    }
+                    //Destroy the current related view;
+                    this.destroyRelatedView(this.currentRelatedView);
+                    this.currentRelatedView = null;
+                }
+
+                if (addView) {
+                    this.currentRelatedView = relatedView;
+                    entry = selection.data;
+                    if (!entry.$key) {
+                        entry.$key = this.store.getIdentity(entry);
                     }
 
-                    if (addView) {
-                        this.currentRelatedView = relatedView;
-                        entry = selection.data;
-                        if (!entry.$key) {
-                            entry.$key = this.store.getIdentity(entry);
+                    relatedNode = this.relatedActionsNode;
+                    if (relatedNode) {
+
+                        relatedViewManager.addView(entry, relatedNode, this);
+                    }
+
+                    selectedItems = this.get('selectionModel').getSelections();
+                    selectedRow = null;
+                    for (key in selectedItems) {
+                        if (selectedItems.hasOwnProperty(key)) {
+                            selectedRow = selectedItems[key];
+                            break;
                         }
+                    }
 
-                        relatedNode = this.relatedActionsNode;
-                        if (relatedNode) {
-
-                            relatedViewManager.addView(entry, relatedNode, this);
-                        }
-
-                        selectedItems = this.get('selectionModel').getSelections();
-                        selectedRow = null;
-                        for (key in selectedItems) {
-                            if (selectedItems.hasOwnProperty(key)) {
-                                selectedRow = selectedItems[key];
-                                break;
-                            }
-                        }
-
-                        //lets set scroller to the current row.
-                        if (selectedRow) {
-                            scrollerNode = this.get('scroller');
-                            if (scrollerNode) {
-                                scrollerNode.scrollTop = selectedRow.tag.offsetTop;
-                            }
+                    //lets set scroller to the current row.
+                    if (selectedRow) {
+                        scrollerNode = this.get('scroller');
+                        if (scrollerNode) {
+                            scrollerNode.scrollTop = selectedRow.tag.offsetTop;
                         }
                     }
                 }

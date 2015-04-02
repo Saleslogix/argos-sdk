@@ -677,33 +677,12 @@ define('argos/_EditBase', [
                 }
 
                 this.createRowContent(current, content);
-                // ctor = FieldManager.get(current['type']);
-                // field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
-                //         owner: this
-                //     }, current));
-                // template = field.propertyTemplate || this.propertyTemplate;
-
-                // if (field.autoFocus && !this._focusField) {
-                //     this._focusField = field;
-                // } else if (field.autoFocus && this._focusField) {
-                //     throw new Error('Only one field can have autoFocus set to true in the Edit layout.');
-                // }
-
-
-                // this.connect(field, 'onShow', this._onShowField);
-                // this.connect(field, 'onHide', this._onHideField);
-                // this.connect(field, 'onEnable', this._onEnableField);
-                // this.connect(field, 'onDisable', this._onDisableField);
-
-                // content.push(template.apply(field, this));
             }
 
             content.push(this.sectionEndTemplate.apply(layout, this));
             sectionNode = domConstruct.toDom(content.join(''));
             this.onApplySectionNode(sectionNode, current);
-            //domConstruct.place(content.join(''), this.contentNode, 'last');
             domConstruct.place(sectionNode, this.contentNode, 'last');
-
 
             for (i = 0; i < sectionQueue.length; i++) {
                 current = sectionQueue[i];
