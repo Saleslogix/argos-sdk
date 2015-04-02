@@ -40,7 +40,7 @@ define('argos/Views/ConfigureQuickActions', [
             return App.getView(this.options.viewId);
         },
         onSave: function() {
-            var save, all, selected;
+            var save, all, selected, view;
 
             selected = this.getSelectedKeys();
             all = this._sortActions(this.options.actions, this.getOrderedKeys());
@@ -59,6 +59,12 @@ define('argos/Views/ConfigureQuickActions', [
             App.preferences.quickActions[this.options.viewId] = save;
 
             App.persistPreferences();
+
+            view = this.getConfiguredView();
+            if (view) {
+                view.clear();
+                view.refreshRequired = true;
+            }
 
             ReUI.back();
         },
