@@ -27,13 +27,15 @@ define('argos/ApplicationModule', [
     'dojo/_base/connect',
     'dojo/_base/declare',
     'dojo/_base/lang',
-    './Application'
+    './Application',
+    './Views/ConfigureQuickActions'
 ], function(
     array,
     connect,
     declare,
     lang,
-    Application
+    Application,
+    ConfigureQuickActions
 ) {
 
     var __class = declare('argos.ApplicationModule', null, {
@@ -110,6 +112,7 @@ define('argos/ApplicationModule', [
          * This function should be overriden in the app and be used to register all views.
          */
         loadViews: function() {
+            this.registerView(new ConfigureQuickActions());
         },
         /**
          * @template

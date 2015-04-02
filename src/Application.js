@@ -23,7 +23,7 @@
  * @alternateClassName App
  */
 define('argos/Application', [
-    'dojo/_base/json',
+    'dojo/json',
     'dojo/_base/array',
     'dojo/_base/connect',
     'dojo/aspect',
@@ -458,6 +458,7 @@ define('argos/Application', [
          * Initializes this application as well as the toolbar and all currently registered views.
          */
         init: function() {
+            this.initPreferences();
             this.initConnects();
             this.initSignals();
             this.initCaching();
@@ -467,6 +468,9 @@ define('argos/Application', [
             this.initToolbars();
             this.initReUI();
         },
+        initPreferences: function() {
+            this._loadPreferences();
+        },
         /**
          * Check if the browser supports touch events.
          * @return {Boolean} true if the current browser supports touch events, false otherwise.
@@ -474,6 +478,24 @@ define('argos/Application', [
         supportsTouch: function() {
             // Taken from https://github.com/Modernizr/Modernizr/ (MIT Licensed)
             return ('ontouchstart' in window) || (window.DocumentTouch && document instanceof window.DocumentTouch);
+        },
+        persistPreferences: function() {
+            try {
+                if (window.localStorage) {
+                    window.localStorage.setItem('preferences', json.stringify(this.preferences));
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        },
+        _loadPreferences: function() {
+            try {
+                if (window.localStorage) {
+                    this.preferences = json.parse(window.localStorage.getItem('preferences'));
+                }
+            } catch(e) {
+                console.error(e);
+            }
         },
         /**
          * Establishes various connections to events.
@@ -558,7 +580,7 @@ define('argos/Application', [
                 key = this._createCacheKey(request);
                 feed = window.localStorage.getItem(key);
                 if (feed) {
-                    o.result = json.fromJson(feed);
+                    o.result = json.parse(feed);
                 }
             }
         },
@@ -575,7 +597,7 @@ define('argos/Application', [
                     var key = this._createCacheKey(request);
 
                     window.localStorage.removeItem(key);
-                    window.localStorage.setItem(key, json.toJson(feed));
+                    window.localStorage.setItem(key, json.stringify(feed));
                 }
             }
         },

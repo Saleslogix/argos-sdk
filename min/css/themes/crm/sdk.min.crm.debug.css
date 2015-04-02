@@ -1041,6 +1041,58 @@ img {
   height: 18px;
   vertical-align: middle;
 }
+.configurable-list {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  /* ios */
+  -webkit-tap-highlight-color: transparent;
+  /* android */
+}
+.configurable-list .list-content > li {
+  background-color: #fff;
+  color: #aaa;
+  padding-right: 6px;
+}
+.configurable-list .list-content > li .resource {
+  display: block;
+  margin: -8px 0 -8px -10px;
+  padding: 8px 32px 8px 36px;
+}
+.configurable-list .list-content > li h3 > span:first-child {
+  float: left;
+}
+.configurable-list .list-content > li h3 > [data-action="moveUp"],
+.configurable-list .list-content > li h3 > [data-action="moveDown"] {
+  float: right;
+  display: block;
+  width: 48px;
+  height: 24px;
+  cursor: pointer;
+  text-align: center;
+}
+.configurable-list .list-content > li h3 > .icon {
+  opacity: 0.5;
+  margin-right: .2em;
+}
+.configurable-list .list-content > li:first-child h3 > [data-action="moveUp"],
+.configurable-list .list-content > li:last-child h3 > [data-action="moveDown"] {
+  visibility: hidden;
+}
+.configurable-list .list-content > li.list-item-selected {
+  color: #000;
+}
+.configurable-list .list-content > li.list-item-selected h3 > .icon {
+  opacity: 1.0;
+}
+.configurable-list .list-content > li.list-item-selected.last-moved {
+  opacity: 1.0;
+}
+.configurable-list .list-content > li.last-moved {
+  color: #000;
+  background-color: #6dd9d1;
+  -webkit-transition: background-color 0.3s linear;
+  transition: background-color 0.3s linear;
+  opacity: 0.5;
+}
 body {
   color: #1a1a1a;
   background-color: #f8f8f8;
@@ -1247,6 +1299,10 @@ textarea:focus {
 }
 .toolButton-disabled {
   opacity: 0.25;
+}
+.toolButton-hidden {
+  display: none;
+  visibility: hidden;
 }
 /* signature capture */
 #signature_edit {

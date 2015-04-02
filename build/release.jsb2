@@ -79,10 +79,6 @@
           "path": "../src"
         },
         {
-          "text": "ApplicationModule.js",
-          "path": "../src"
-        },
-        {
           "text": "_ActionMixin.js",
           "path": "../src"
         },
@@ -283,6 +279,10 @@
           "path": "../src"
         },
         {
+          "text": "_ConfigureBase.js",
+          "path": "../src"
+        },
+        {
           "text": "Toolbar.js",
           "path": "../src"
         },
@@ -295,6 +295,10 @@
           "path": "../src"
         },
         {
+          "text": "ConfigureQuickActions.js",
+          "path": "../src/Views"
+        },
+        {
           "text": "FileSelect.js",
           "path": "../src/Views"
         },
@@ -305,7 +309,11 @@
         {
           "text": "_ServiceMixin.js",
           "path": "../src"
-        }
+        },
+        {
+          "text": "ApplicationModule.js",
+          "path": "../src"
+        },
       ]
     }
   ],
