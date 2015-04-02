@@ -79,10 +79,6 @@
           "path": "../src"
         },
         {
-          "text": "ApplicationModule.js",
-          "path": "../src"
-        },
-        {
           "text": "_ActionMixin.js",
           "path": "../src"
         },
@@ -297,7 +293,11 @@
         {
           "text": "_ServiceMixin.js",
           "path": "../src"
-        }
+        },
+        {
+          "text": "ApplicationModule.js",
+          "path": "../src"
+        },
       ]
     }
   ],
