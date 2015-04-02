@@ -85,8 +85,12 @@ define('argos/Views/ConfigureQuickActions', [
                 return 0;
             });
         },
-        requestData: function() {
+        clear: function() {
             this.store = null;
+            this.inherited(arguments);
+        },
+        show: function() {
+            this.refreshRequired = true;
             this.inherited(arguments);
         },
         createStore: function() {
