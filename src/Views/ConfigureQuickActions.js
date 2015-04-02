@@ -39,31 +39,13 @@ define('argos/Views/ConfigureQuickActions', [
         getConfiguredView: function() {
             return App.getView(this.options.viewId);
         },
-
         onSave: function() {
-            var order, selected, save, all;
+            var save, all, selected;
 
-            order = this.getOrderedKeys();
             selected = this.getSelectedKeys();
-            all = this.options.actions;
+            all = this._sortActions(this.options.actions, this.getOrderedKeys());
 
-            all.sort(function(a, b) {
-                var i, j;
-                i = order.indexOf(a.id);
-                j = order.indexOf(b.id);
-
-                if (i < j) {
-                    return -1;
-                }
-
-                if (i > j) {
-                    return 1;
-                }
-
-                return 0;
-            });
-
-            save = array.map(all, function(action, index) {
+            save = array.map(all, function(action) {
                 if (selected.indexOf(action.id) >= 0) {
                     action.visible = true;
                 } else {
@@ -79,6 +61,23 @@ define('argos/Views/ConfigureQuickActions', [
             App.persistPreferences();
 
             ReUI.back();
+        },
+        _sortActions: function(actions, order) {
+            return actions.sort(function(a, b) {
+                var i, j;
+                i = order.indexOf(a.id);
+                j = order.indexOf(b.id);
+
+                if (i < j) {
+                    return -1;
+                }
+
+                if (i > j) {
+                    return 1;
+                }
+
+                return 0;
+            });
         },
         createStore: function() {
             var list = [],
@@ -104,7 +103,7 @@ define('argos/Views/ConfigureQuickActions', [
                 return all.indexOf(key) !== -1;
             });
 
-            list = array.map(this.options.actions, function(action) {
+            list = array.map(this._sortActions(this.options.actions, this.getSavedOrderedKeys()), function(action) {
                 if (reduced.indexOf(action.id) > -1) {
                     return {
                         '$key': action.id,

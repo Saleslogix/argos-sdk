@@ -728,6 +728,11 @@ define('argos/_ListBase', [
 
             for (i = 0; i < actions.length; i++) {
                 action = actions[i];
+
+                if (!action || !action.visible) {
+                    continue;
+                }
+
                 options = {
                     actionIndex: i,
                     hasAccess: (!action.security || (action.security && this.app.hasAccessTo(this.expandExpression(action.security)))) ? true : false
@@ -745,7 +750,8 @@ define('argos/_ListBase', [
                 cls: 'fa fa-cog fa-2x',
                 label: this.configureText,
                 action: 'configureQuickActions',
-                systemAction: true
+                systemAction: true,
+                visible: true
             }].concat(actions);
         },
         configureQuickActions: function() {
@@ -888,22 +894,6 @@ define('argos/_ListBase', [
                 this.app.persistPreferences();
             }
         },
-        isActionVisible: function(action) {
-            var prefs, actionPref;
-
-            prefs = this.getQuickActionPrefs();
-            prefs = prefs && prefs[this.id];
-
-            actionPref = array.filter(prefs, function(pref) {
-                return pref.id === action.id;
-            })[0];
-
-            if (!prefs || !actionPref) {
-                return true;
-            }
-
-            return actionPref.visible;
-        },
         /**
          * Called from checkActionState method and sets the state of the actions from what was selected from the selected row, it sets the disabled state for each action
          * item using the currently selected row as context by passing the action instance the selected row to the
@@ -930,11 +920,8 @@ define('argos/_ListBase', [
                     action.isEnabled = false;
                 }
 
-                action.visible = this.isActionVisible(action);
-
                 if (actionNode) {
                     domClass.toggle(actionNode, 'toolButton-disabled', !action.isEnabled);
-                    domClass.toggle(actionNode, 'toolButton-hidden', !action.visible);
                 }
             }
         },
