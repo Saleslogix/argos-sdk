@@ -88,12 +88,17 @@ define('argos/View', [
          */
         security: null,
         /**
+         * A reference to the globa App object
+         */
+        app: null,
+        /**
          * May be used to specify the service name to use for data requests. Setting false will force the use of the default service.
          * @property {String/Boolean}
          */
         serviceName: false,
         connectionName: false,
-        constructor: function() {
+        constructor: function(options) {
+            this.app = (options && options.app) || window.App;
         },
         startup: function() {
             this.inherited(arguments);
@@ -298,7 +303,7 @@ define('argos/View', [
          * @return {Object} The Sage.SData.Client.SDataService instance.
          */
         getService: function() {
-            return App.getService(this.serviceName); /* if false is passed, the default service will be returned */
+            return this.app.getService(this.serviceName); /* if false is passed, the default service will be returned */
         },
         getConnection: function() {
             return this.getService();

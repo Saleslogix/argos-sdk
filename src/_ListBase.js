@@ -331,6 +331,12 @@ define('argos/_ListBase', [
          * The id of the detail view, or view instance, to show when a row is clicked.
          */
         detailView: null,
+
+        /**
+         * @property {String}
+         * The id of the configure view for quick action preferences
+         */
+        quickActionConfigureView: 'configure_quickactions',
         /**
          * @property {String}
          * The view id to show if there is no `insertView` specified, when
@@ -368,6 +374,11 @@ define('argos/_ListBase', [
          * The text displayed as the default title.
          */
         titleText: 'List',
+        /**
+         * @property {String}
+         * The text displayed for quick action configure.
+         */
+        configureText: 'Configure',
         /**
          * @property {String}
          * The error message to display if rendering a row template is not successful.
@@ -587,7 +598,7 @@ define('argos/_ListBase', [
                 });
             }
 
-            this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
+            this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
             this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
         },
         /**
@@ -639,7 +650,7 @@ define('argos/_ListBase', [
                     id: 'new',
                     cls: 'fa fa-plus fa-fw fa-lg',
                     action: 'navigateToInsertView',
-                    security: App.getViewSecurity(this.insertView, 'insert')
+                    security: this.app.getViewSecurity(this.insertView, 'insert')
                 }]
             });
         },
@@ -693,22 +704,85 @@ define('argos/_ListBase', [
          * @param {Object[]} actions
          */
         createActions: function(actions) {
-            var i, action, options, actionTemplate;
+            var i, action, options, actionTemplate, systemActions, prefActions, visibleActions;
 
-            for (i = 0; i < actions.length; i++) {
-                action = actions[i];
-                options = {
-                    actionIndex: i,
-                    hasAccess: (!action.security || (action.security && App.hasAccessTo(this.expandExpression(action.security)))) ? true : false
-                };
-                actionTemplate = action.template || this.listActionItemTemplate;
-
-                lang.mixin(action, options);
-
-                domConstruct.place(actionTemplate.apply(action, action.id), this.actionsNode, 'last');
+            if (!this.actionsNode) {
+                return;
             }
 
             this.actions = actions;
+            this.ensureQuickActionPrefs();
+
+            // Pluck out our system actions that are NOT saved in preferences
+            systemActions = array.filter(actions, function(action) {
+                return action && action.systemAction;
+            });
+
+            systemActions = systemActions.reduce(function(acc, cur) {
+                var hasID = acc.some(function(item) {
+                    return item.id === cur.id;
+                });
+
+                if (!hasID) {
+                    acc.push(cur);
+                }
+
+                return acc;
+            }, []);
+
+            // Grab quick actions from the users preferences (ordered and made visible according to user)
+            prefActions = this.app.preferences.quickActions[this.id];
+
+            if (systemActions && prefActions) {
+                // Display system actions first, then the order of what the user specified
+                actions = systemActions.concat(prefActions);
+            }
+
+            visibleActions = [];
+
+            for (i = 0; i < actions.length; i++) {
+                action = actions[i];
+
+                if (!action.visible) {
+                    continue;
+                }
+
+                options = {
+                    actionIndex: visibleActions.length,
+                    hasAccess: (!action.security || (action.security && this.app.hasAccessTo(this.expandExpression(action.security)))) ? true : false
+                };
+
+                lang.mixin(action, options);
+
+                actionTemplate = action.template || this.listActionItemTemplate;
+                domConstruct.place(actionTemplate.apply(action, action.id), this.actionsNode, 'last');
+
+                visibleActions.push(action);
+            }
+
+            this.visibleActions = visibleActions;
+        },
+        createSystemActionLayout: function(actions) {
+            return [{
+                id: '__editPrefs__',
+                cls: 'fa fa-cog fa-2x',
+                label: this.configureText,
+                action: 'configureQuickActions',
+                systemAction: true,
+                visible: true
+            }].concat(actions);
+        },
+        configureQuickActions: function() {
+            var view = App.getView(this.quickActionConfigureView);
+            if (view) {
+                view.show({
+                    viewId: this.id,
+                    actions: array.filter(this.actions, function(action) {
+                        // Exclude system actions
+                        return action && action.systemAction !== true;
+                    })
+                });
+            }
         },
         selectEntrySilent: function(key) {
             var enableActions = this.enableActions,// preserve the original value
@@ -738,7 +812,7 @@ define('argos/_ListBase', [
         invokeActionItemBy: function(actionPredicate, key) {
             var actions, selection;
 
-            actions = array.filter(this.actions, actionPredicate);
+            actions = array.filter(this.visibleActions, actionPredicate);
             selection = this.selectEntrySilent(key);
             this.checkActionState();
             array.forEach(actions, function(action) {
@@ -758,7 +832,7 @@ define('argos/_ListBase', [
          */
         invokeActionItem: function(parameters, evt, node) {
             var index = parameters['id'],
-                action = this.actions[index],
+                action = this.visibleActions[index],
                 key,
                 selectedItems = this.get('selectionModel').getSelections(),
                 selection = null;
@@ -794,8 +868,10 @@ define('argos/_ListBase', [
          * action items `enabled` property.
          */
         checkActionState: function() {
-            var selectedItems = this.get('selectionModel').getSelections(),
-                selection = null, key;
+            var selectedItems, selection, key;
+
+            selectedItems = this.get('selectionModel').getSelections();
+            selection = null;
 
             for (key in selectedItems) {
                 if (selectedItems.hasOwnProperty(key)) {
@@ -803,7 +879,50 @@ define('argos/_ListBase', [
                     break;
                 }
             }
+
             this._applyStateToActions(selection);
+        },
+        _clearActions: function() {
+            var children;
+
+            children = this.actionsNode && this.actionsNode.children || [];
+            children = Array.prototype.slice.call(children);
+            array.forEach(children, function(child) {
+                child.remove();
+            });
+        },
+        getQuickActionPrefs: function() {
+            return this.app && this.app.preferences && this.app.preferences.quickActions;
+        },
+        ensureQuickActionPrefs: function() {
+            var appPrefs, actionPrefs, filtered;
+
+            appPrefs = this.app && this.app.preferences;
+            actionPrefs = this.getQuickActionPrefs();
+            filtered = array.filter(this.actions, function(action) {
+                return action && action.systemAction !== true;
+            });
+
+            if (!this.actions || !appPrefs) {
+                return;
+            }
+
+            if (!actionPrefs) {
+                appPrefs.quickActions = {};
+                actionPrefs = appPrefs.quickActions;
+            }
+
+            // If it doesn't exist, or there is a count mismatch (actions created on upgrades perhaps?)
+            // re-create the preferences store
+            if (!actionPrefs[this.id] ||
+                (actionPrefs[this.id] && actionPrefs[this.id].length !== filtered.length)) {
+                actionPrefs[this.id] = array.map(filtered, function(action) {
+                    action.visible = true;
+                    return action;
+                });
+
+                this.app.persistPreferences();
+            }
         },
         /**
          * Called from checkActionState method and sets the state of the actions from what was selected from the selected row, it sets the disabled state for each action
@@ -812,15 +931,19 @@ define('argos/_ListBase', [
          * @param {Object} selection
          */
         _applyStateToActions: function(selection) {
-            var i, action;
-            // IE10 is destroying the child notes of the actionsNode when the list view refreshes,
-            // re-create the action DOM before moving on.
-            if (this.actionsNode.childNodes.length === 0 && this.actions.length > 0) {
-                this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
-            }
+            var i, action, actionNode, visibleAction;
 
-            for (i = 0; i < this.actions.length; i++) {
-                action = this.actions[i];
+            this._clearActions();
+            this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
+
+            for (i = 0; i < this.visibleActions.length; i++) {
+                // The visible action is from our local storage preferences, where the action from the layout
+                // contains functions that will get stripped out converting it to JSON, get the original action
+                // and mix it into the visible so we can work with it.
+                // TODO: This will be a problem throughout visible actions, come up with a better solution
+                visibleAction = this.visibleActions[i];
+                action = lang.mixin(visibleAction, this._getActionById(visibleAction.id));
+                actionNode = this.actionsNode.childNodes[i];
 
                 action.isEnabled = (typeof action['enabled'] === 'undefined')
                     ? true
@@ -830,10 +953,15 @@ define('argos/_ListBase', [
                     action.isEnabled = false;
                 }
 
-                if (this.actionsNode.childNodes[i]) {
-                    domClass.toggle(this.actionsNode.childNodes[i], 'toolButton-disabled', !action.isEnabled);
+                if (actionNode) {
+                    domClass.toggle(actionNode, 'toolButton-disabled', !action.isEnabled);
                 }
             }
+        },
+        _getActionById: function(id) {
+            return array.filter(this.actions, function(action) {
+                return action && action.id === id;
+            })[0];
         },
         /**
          * Handler for showing the list-action panel/bar - it needs to do several things:
@@ -854,7 +982,6 @@ define('argos/_ListBase', [
             domConstruct.place(this.actionsNode, rowNode, 'after');
         },
         onApplyRowActionPanel: function(actionNodePanel, rowNode) {
-
         },
         /**
          * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
@@ -1039,8 +1166,8 @@ define('argos/_ListBase', [
          * If autoClearSelection is true, clear the selection model.
          */
         invokeSingleSelectAction: function() {
-            if (App.bars['tbar']) {
-                App.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction });
+            if (this.app.bars['tbar']) {
+                this.app.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction });
             }
 
             if (this.autoClearSelection) {
@@ -1140,7 +1267,7 @@ define('argos/_ListBase', [
          * property of the passed selection data.
          */
         navigateToRelatedView: function(action, selection, viewId, whereQueryFmt, additionalOptions) {
-            var view = App.getView(viewId),
+            var view = this.app.getView(viewId),
                 options = {
                     where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]]),
                     selectedEntry: selection.data
@@ -1167,7 +1294,7 @@ define('argos/_ListBase', [
          * @param {Object} additionalOptions Additional options to be passed into the next view
          */
         navigateToDetailView: function(key, descriptor, additionalOptions) {
-            var view = App.getView(this.detailView),
+            var view = this.app.getView(this.detailView),
                 options = {
                     descriptor: descriptor, // keep for backwards compat
                     title: descriptor,
@@ -1190,7 +1317,7 @@ define('argos/_ListBase', [
          * @param {Object} additionalOptions Additional options to be passed into the next view.
          */
         navigateToEditView: function(action, selection, additionalOptions) {
-            var view = App.getView(this.editView || this.insertView),
+            var view = this.app.getView(this.editView || this.insertView),
                 key = selection.data[this.idProperty],
                 options = {
                     key: key,
@@ -1212,7 +1339,7 @@ define('argos/_ListBase', [
          * @param {Object} additionalOptions Additional options to be passed into the next view.
          */
         navigateToInsertView: function(el, additionalOptions) {
-            var view = App.getView(this.insertView || this.editView),
+            var view = this.app.getView(this.insertView || this.editView),
                 options = {
                     returnTo: this.id,
                     insert: true
@@ -1486,8 +1613,8 @@ define('argos/_ListBase', [
         emptySelection: function() {
             this._selectionModel.clear();
 
-            if (App.bars['tbar']) {
-                App.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction }); // invoke action of tool
+            if (this.app.bars['tbar']) {
+                this.app.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction }); // invoke action of tool
             }
         },
         /**
