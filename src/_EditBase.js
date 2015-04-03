@@ -394,14 +394,17 @@ define('argos/_EditBase', [
                     id: 'cancel',
                     cls: 'fa fa-ban fa-fw fa-lg',
                     side: 'left',
-                    fn: ReUI.back,
-                    scope: ReUI
+                    action: 'onToolCancel'
                 });
             }
 
             return this.tools || (this.tools = {
                 'tbar': tbar
             });
+        },
+        onToolCancel: function() {
+            this.refreshRequired = true;
+            ReUI.back();
         },
         _getStoreAttr: function() {
             return this.store || (this.store = this.createStore());
