@@ -56,7 +56,7 @@ define('argos/_RelatedViewWidgetListMixin', [
             }
             this.inherited(arguments);
         },
-        onApplyRowActionPanel: function(actionNodePanel, rowNode) {
+        selectEntry: function() {
             this.destroyRelatedView(this.currentRelatedView);
             this.currentRelatedView = null;
             this.inherited(arguments);
@@ -208,12 +208,7 @@ define('argos/_RelatedViewWidgetListMixin', [
                         entry.$key = this.store.getIdentity(entry);
                     }
 
-                    relatedNode = this.relatedActionsNode;
-                    if (relatedNode) {
-
-                        relatedViewManager.addView(entry, relatedNode, this);
-                    }
-
+                    //get selected row
                     selectedItems = this.get('selectionModel').getSelections();
                     selectedRow = null;
                     for (key in selectedItems) {
@@ -224,7 +219,12 @@ define('argos/_RelatedViewWidgetListMixin', [
                     }
 
                     //lets set scroller to the current row.
-                    if (selectedRow) {
+                    if (selectedRow && selectedRow.tag) {
+
+                        // Add the related view to the selected row
+                        relatedViewManager.addView(entry, selectedRow.tag, this);
+
+                        //lets set scroller to the current row.
                         scrollerNode = this.get('scroller');
                         if (scrollerNode) {
                             scrollerNode.scrollTop = selectedRow.tag.offsetTop;
