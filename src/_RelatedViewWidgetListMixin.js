@@ -234,7 +234,7 @@ define('argos/_RelatedViewWidgetListMixin', [
             }
         },
         navigateToQuickEdit: function(action, selection, additionalOptions) {
-            var view = App.getView(action.editView || this.quickEditView || this.EditView || this.insertView),
+            var view = App.getView(action.editView || this.quickEditView || this.editView || this.insertView),
                 key = selection.data[this.idProperty],
                 options = {
                     key: key,
