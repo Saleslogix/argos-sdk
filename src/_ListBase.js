@@ -865,7 +865,9 @@ define('argos/_ListBase', [
             children = this.actionsNode && this.actionsNode.children || [];
             children = Array.prototype.slice.call(children);
             array.forEach(children, function(child) {
-                child.remove();
+                if (child.parentNode) {
+                    child.parentNode.removeChild(child);
+                }
             });
         },
         getQuickActionPrefs: function() {
