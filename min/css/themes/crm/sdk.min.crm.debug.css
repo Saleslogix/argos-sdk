@@ -460,7 +460,6 @@ span {
   top: 0px;
   bottom: 0px;
   overflow: auto;
-  -webkit-overflow-scrolling: touch;
 }
 .scroller.animate {
   -webkit-transition: top 0.3s ease;
@@ -627,7 +626,6 @@ body > .viewContainer > .dialog {
 }
 body > .viewContainer > .panel {
   overflow: auto;
-  -webkit-overflow-scrolling: touch;
 }
 body.transition > .viewContainer > .panel,
 body.transition > .viewContainer > .list {
