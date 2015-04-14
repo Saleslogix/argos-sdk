@@ -683,11 +683,13 @@ define('argos/_ListBase', [
         createActions: function(actions) {
             var i, action, options, actionTemplate, systemActions, prefActions, visibleActions;
 
+            this.actions = actions;
+            this.visibleActions = [];
+
             if (!this.actionsNode) {
                 return;
             }
 
-            this.actions = actions;
             this.ensureQuickActionPrefs();
 
             // Pluck out our system actions that are NOT saved in preferences
@@ -740,14 +742,32 @@ define('argos/_ListBase', [
             this.visibleActions = visibleActions;
         },
         createSystemActionLayout: function(actions) {
-            return [{
-                id: '__editPrefs__',
-                cls: 'fa fa-cog fa-2x',
-                label: this.configureText,
-                action: 'configureQuickActions',
-                systemAction: true,
-                visible: true
-            }].concat(actions);
+            var systemActions, others;
+
+            systemActions = array.filter(actions, function(action) {
+                return action.systemAction === true;
+            });
+
+            others = array.filter(actions, function(action) {
+                return !action.systemAction;
+            });
+
+            if (!others.length) {
+                return [];
+            }
+
+            if (systemActions.length) {
+                return systemActions.concat(others);
+            } else {
+                return [{
+                    id: '__editPrefs__',
+                    cls: 'fa fa-cog fa-2x',
+                    label: this.configureText,
+                    action: 'configureQuickActions',
+                    systemAction: true,
+                    visible: true
+                }].concat(others);
+            }
         },
         configureQuickActions: function() {
             var view = App.getView(this.quickActionConfigureView);
