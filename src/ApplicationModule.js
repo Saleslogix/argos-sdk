@@ -97,9 +97,16 @@ define('argos/ApplicationModule', [
         init: function(application) {
             this.application = application;
 
+            this.loadAppStatPromises();
             this.loadCustomizations();
             this.loadToolbars();
             this.loadViews();
+        },
+        /**
+        * @template
+        * This function should be overriden in the app and be used to register all app state promises.
+        */
+        loadAppStatPromises: function() {
         },
         /**
          * @template
@@ -150,6 +157,15 @@ define('argos/ApplicationModule', [
         registerCustomization: function(set, id, spec) {
             if (this.application) {
                 this.application.registerCustomization(set, id, spec);
+            }
+        },
+        /**
+         * Registers a promise that will resolve when initAppState is invoked.
+         * @param {Promise|Function} promise A promise or a function that returns a promise
+         */
+        registerAppStatePromise: function(promise) {
+            if (this.application) {
+                this.application.registerAppStatePromise(promise);
             }
         }
     });
