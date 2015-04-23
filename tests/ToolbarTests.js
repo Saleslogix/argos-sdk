@@ -1,7 +1,7 @@
 define('tests/ToolbarTests', [
     'dojo/dom-style',
     'dojo/dom-class',
-    'Sage/Platform/Mobile/Toolbar'
+    'argos/Toolbar'
 ], function(
     domStyle,
     domClass,
@@ -9,14 +9,21 @@ define('tests/ToolbarTests', [
 ) {
 return describe('Sage.Platform.Mobile.Toolbar', function() {
 
-    // mock of App
-    window.App = {};
-    window.App.hasAccessTo = jasmine.createSpy().and.callFake(function(val) {
-        // for testing a rejected security call
-        if (val == 'false')
-            return false;
-        else
-            return val;
+    var _app = window.App;
+
+    beforeEach(function() {
+        window.App = {};
+        window.App.hasAccessTo = jasmine.createSpy().and.callFake(function(val) {
+            // for testing a rejected security call
+            if (val == 'false')
+                return false;
+            else
+                return val;
+        });
+    });
+
+    afterEach(function() {
+        window.App = _app;
     });
 
     it('Can show toolbar', function() {

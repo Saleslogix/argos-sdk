@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ArrayOfModelType" nillable="true" type="ArrayOfModelType" />
+  <xs:complexType name="ArrayOfModelType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ModelType" nillable="true" type="ModelType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ModelType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="ModelTypeAssemblyQualifiedName" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

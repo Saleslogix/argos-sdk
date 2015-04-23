@@ -14,7 +14,7 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._CustomizationMixin
+ * @class argos._CustomizationMixin
  * Customization Mixin is a general purpose Customization Engine. It takes a customization object and
  * a layout object and applies the customization defined to the layout.
  *
@@ -29,7 +29,7 @@
  *
  * @alternateClassName _CustomizationMixin
  */
-define('Sage/Platform/Mobile/_CustomizationMixin', [
+define('argos/_CustomizationMixin', [
     'dojo/_base/declare',
     'dojo/_base/lang'
 ], function(
@@ -37,14 +37,17 @@ define('Sage/Platform/Mobile/_CustomizationMixin', [
     lang
 ) {
 
-    var expand = function(expression) {
-        if (typeof expression === 'function')
+    var expand, __class;
+
+    expand = function(expression) {
+        if (typeof expression === 'function') {
             return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-        else
+        } else {
             return expression;
+        }
     };
 
-    return declare('Sage.Platform.Mobile._CustomizationMixin', null, {
+    __class = declare('argos._CustomizationMixin', null, {
         _layoutCompiled: null,
         _layoutCompiledFrom: null,
         id: null,
@@ -65,15 +68,15 @@ define('Sage/Platform/Mobile/_CustomizationMixin', [
                     ? this.customizationSet + '/' + customizationSubSet
                     : this.customizationSet,
                 key = customizationSet + '#' + this.id,
+                customizations,
                 source = layout;
-            if (source === this._layoutCompiledFrom[key] && this._layoutCompiled[key])
+            if (source === this._layoutCompiledFrom[key] && this._layoutCompiled[key]) {
                 return this._layoutCompiled[key]; // same source layout, no changes
+            }
 
-            if (this.enableCustomizations)
-            {
-                var customizations = this._getCustomizationsFor(customizationSubSet);
-                if (customizations && customizations.length > 0)
-                {
+            if (this.enableCustomizations) {
+                customizations = this._getCustomizationsFor(customizationSubSet);
+                if (customizations && customizations.length > 0) {
                     layout = this._compileCustomizedLayout(customizations, source, null);
                 }
             }
@@ -93,36 +96,38 @@ define('Sage/Platform/Mobile/_CustomizationMixin', [
                 customization,
                 stop,
                 row,
+                i,
+                j,
+                k,
+                insertRowsTarget,
+                expandedValue,
+                children,
                 name;
 
-            if (lang.isArray(layout))
-            {
+            if (lang.isArray(layout)) {
                 output = [];
-                
-                for (var i = 0; i < layoutCount; i++)
-                {
+                for (i = 0; i < layoutCount; i++) {
                     row = layout[i];
 
                     /* for compatibility */
                     // will modify the underlying row
-                    if (typeof row['name'] === 'undefined' && typeof row['property'] === 'string')
+                    if (typeof row['name'] === 'undefined' && typeof row['property'] === 'string') {
                         row['name'] = row['property'];
-                    /* */
+                    }
 
                     insertRowsBefore = [];
                     insertRowsAfter = [];
 
-                    for (var j = 0; j < customizationCount; j++)
-                    {
-                        if (applied[j]) continue; // todo: allow a customization to be applied to a layout more than once?
+                    for (j = 0; j < customizationCount; j++) {
+                        if (applied[j]) {
+                            continue; // todo: allow a customization to be applied to a layout more than once?
+                        }
 
                         customization = customizations[j];
                         stop = false;
 
-                        if (expand(customization.at, row, parent, i, layoutCount, customization))
-                        {
-                            switch (customization.type)
-                            {
+                        if (expand(customization.at, row, parent, i, layoutCount, customization)) {
+                            switch (customization.type) {
                                 case 'remove':
                                     // full stop
                                     stop = true;
@@ -135,21 +140,23 @@ define('Sage/Platform/Mobile/_CustomizationMixin', [
                                     break;
                                 case 'modify':
                                     // make a shallow copy if we haven't already
-                                    if (row === layout[i])
+                                    if (row === layout[i]) {
                                         row = lang.mixin({}, row);
-                                    
+                                    }
+
                                     row = lang.mixin(row, expand(customization.value, row));
                                     break;
                                 case 'insert':
-                                    var insertRowsTarget = (customization.where !== 'before')
+                                    insertRowsTarget = (customization.where !== 'before')
                                             ? insertRowsAfter
-                                            : insertRowsBefore,
-                                        expandedValue = expand(customization.value, row);
+                                            : insertRowsBefore;
+                                    expandedValue = expand(customization.value, row);
 
-                                    if (lang.isArray(expandedValue))
+                                    if (lang.isArray(expandedValue)) {
                                         insertRowsTarget.push.apply(insertRowsTarget, expandedValue);
-                                    else
+                                    } else {
                                         insertRowsTarget.push(expandedValue);
+                                    }
 
                                     break;
                             }
@@ -157,19 +164,20 @@ define('Sage/Platform/Mobile/_CustomizationMixin', [
                             applied[j] = true;
                         }
 
-                        if (stop) break;
+                        if (stop) {
+                            break;
+                        }
                     }
 
                     output.push.apply(output, insertRowsBefore);
 
-                    if (row)
-                    {
-                        var children = (row['children'] && 'children') || (row['as'] && 'as');
-                        if (children)
-                        {
+                    if (row) {
+                        children = (row['children'] && 'children') || (row['as'] && 'as');
+                        if (children) {
                             // make a shallow copy if we haven't already
-                            if (row === layout[i])
+                            if (row === layout[i]) {
                                 row = lang.mixin({}, row);
+                            }
 
                             row[children] = this._compileCustomizedLayout(customizations, row[children], row);
                         }
@@ -178,39 +186,40 @@ define('Sage/Platform/Mobile/_CustomizationMixin', [
                     }
                     output.push.apply(output, insertRowsAfter);
                 }
-            
                 /*
                  for any non-applied, insert only, customizations, if they have an `or` property that expands into a true expression
                  the value is applied at the end of the parent group that the `or` property (ideally) matches.
                 */
-                for (var k = 0; k < customizationCount; k++)
-                {
-                    if (applied[k]) continue;
+                for (k = 0; k < customizationCount; k++) {
+                    if (applied[k]) {
+                        continue;
+                    }
 
                     customization = customizations[k];
 
-                    if (customization.type == 'insert' && (expand(customization.or, parent, customization) || (customization.at === true)))
-                    {
+                    if (customization.type === 'insert' && (expand(customization.or, parent, customization) || (customization.at === true))) {
                         output.push(expand(customization.value, null));
                     }
                 }
             }
-            else if (lang.isFunction(layout))
-            {
+            else if (lang.isFunction(layout)) {
                 return this._compileCustomizedLayout(customizations, layout.call(this), name);
-            }
-            else if (lang.isObject(layout))
-            {
+            } else if (lang.isObject(layout)) {
                 output = {};
 
-                for (name in layout)
-                    if (lang.isArray(layout[name]))
+                for (name in layout) {
+                    if (lang.isArray(layout[name])) {
                         output[name] = this._compileCustomizedLayout(customizations, layout[name], name);
-                    else
+                    } else {
                         output[name] = layout[name];
+                    }
+                }
             }
 
             return output;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._CustomizationMixin', __class);
+    return __class;
 });

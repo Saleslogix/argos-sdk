@@ -18,13 +18,13 @@
  * A base model class for views to consume
  * @alternateClassName _ModelBase
  */
-define('Sage/Platform/Mobile/_ModelBase', [
+define('argos/_ModelBase', [
     'dojo/_base/declare',
     'dojo/Evented',
     'dojo/Stateful'
 ], function(declare, Evented, Stateful) {
 
-    return declare('Sage.Platform.Mobile._ModelBase', [Evented, Stateful], {
+    return declare('argos._ModelBase', [Evented, Stateful], {
         metadata: null,
         _metadataGetter: function() {
             return this.metadata;
@@ -32,7 +32,7 @@ define('Sage/Platform/Mobile/_ModelBase', [
         _metadataSetter: function(value) {
             this.metadata = value;
         },
-        getEntry: function (options) {
+        getEntry: function(options) {
         }
     });
 });

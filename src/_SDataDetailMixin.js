@@ -14,26 +14,28 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._SDataDetailMixin
+ * @class argos._SDataDetailMixin
  *
  * Enables SData for the Detail view.
  * Adds the SData store to the view and exposes the needed properties for creating a Entry request.
  *
  * @alternateClassName _SDataDetailMixin
- * @requires Sage.Platform.Mobile.SData
+ * @requires argos.SData
  */
-define('Sage/Platform/Mobile/_SDataDetailMixin', [
+define('argos/_SDataDetailMixin', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/string',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/Store/SData'
+    './Utility',
+    './Store/SData'
 ], function(
     declare,
+    lang,
     string,
     utility,
     SData
 ) {
-    return declare('Sage.Platform.Mobile._SDataDetailMixin', null, {
+    var __class = declare('argos._SDataDetailMixin', null, {
 
         /**
          * @cfg {String} resourceKind
@@ -93,12 +95,29 @@ define('Sage/Platform/Mobile/_SDataDetailMixin', [
         _applyStateToGetOptions: function(getOptions) {
             var options = this.options;
             if (options) {
-                if (options.select) getOptions.select = options.select;
-                if (options.include) getOptions.include = options.include;
-                if (options.contractName) getOptions.contractName = options.contractName;
-                if (options.resourceKind) getOptions.resourceKind = options.resourceKind;
-                if (options.resourceProperty) getOptions.resourceProperty = options.resourceProperty;
-                if (options.resourcePredicate) getOptions.resourcePredicate = options.resourcePredicate;
+                if (options.select) {
+                    getOptions.select = options.select;
+                }
+
+                if (options.include) {
+                    getOptions.include = options.include;
+                }
+
+                if (options.contractName) {
+                    getOptions.contractName = options.contractName;
+                }
+
+                if (options.resourceKind) {
+                    getOptions.resourceKind = options.resourceKind;
+                }
+
+                if (options.resourceProperty) {
+                    getOptions.resourceProperty = options.resourceProperty;
+                }
+
+                if (options.resourcePredicate) {
+                    getOptions.resourcePredicate = options.resourcePredicate;
+                }
             }
         },
         /**
@@ -110,7 +129,7 @@ define('Sage/Platform/Mobile/_SDataDetailMixin', [
          */
         formatRelatedQuery: function(entry, fmt, property) {
             property = property || '$key';
-            return string.substitute(fmt, [utility.getValue(entry, property, "")]);
+            return string.substitute(fmt, [utility.getValue(entry, property, '')]);
         },
         /**
          * Takes a model and applies SData properties set on the view, to the metadata sdata props. This method will
@@ -167,7 +186,10 @@ define('Sage/Platform/Mobile/_SDataDetailMixin', [
             }
 
             return model;
-        },
+        }
     });
+
+    lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
+    return __class;
 });
 

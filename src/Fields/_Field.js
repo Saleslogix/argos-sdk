@@ -14,24 +14,24 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Fields._Field
+ * @class argos.Fields._Field
  * Field is the base class for all field controls. It describes all the functions a field should support giving no implementation itself, merely a shell. The one function that `_Field` does provide that most fields leave untouched is `validate`.
  *
  * All fields are dijit Widgets meaning it goes through the same lifecycle and has all the Widget functionality.
  *
  * @alternateClassName _Field
- * @mixins Sage.Platform.Mobile._ActionMixin
- * @mixins Sage.Platform.Mobile._Templated
- * @requires Sage.Platform.Mobile.FieldManager
+ * @mixins argos._ActionMixin
+ * @mixins argos._Templated
+ * @requires argos.FieldManager
  */
-define('Sage/Platform/Mobile/Fields/_Field', [
+define('argos/Fields/_Field', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
     'dojo/dom-class',
     'dijit/_Widget',
-    'Sage/Platform/Mobile/_ActionMixin',
-    'Sage/Platform/Mobile/_Templated'
+    '../_ActionMixin',
+    '../_Templated'
 ], function(
     declare,
     lang,
@@ -42,7 +42,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
     _Templated
 ) {
 
-    return declare('Sage.Platform.Mobile.Fields._Field', [_Widget, _ActionMixin, _Templated], {
+    var __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Templated], {
         /**
          * @property {View}
          * View that controls the field.
@@ -261,47 +261,54 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          * @return {Boolean/Object} False signifies that everything is okay and the field is valid, `true` or a `string message` indicates that it failed.
          */
         validate: function(value) {
-            if (typeof this.validator === 'undefined')
+            if (typeof this.validator === 'undefined') {
                 return false;
+            }
 
-            var all = lang.isArray(this.validator) ? this.validator : [this.validator];
+            var all,
+                i,
+                current,
+                definition,
+                result;
 
-            for (var i = 0; i < all.length; i++)
-            {
-                var current = all[i],
-                    definition;
+            all = lang.isArray(this.validator) ? this.validator : [this.validator];
 
-                if (current instanceof RegExp)
+            for (i = 0; i < all.length; i++) {
+                current = all[i];
+
+                if (current instanceof RegExp) {
                     definition = {
                         test: current
                     };
-                else if (typeof current === 'function')
+                } else if (typeof current === 'function') {
                     definition = {
                         fn: current
                     };
-                else
+                } else {
                     definition = current;
+                }
 
                 value = typeof value === 'undefined'
                     ? this.getValue()
                     : value;
 
-                var result = typeof definition.fn === 'function'
+                result = typeof definition.fn === 'function'
                     ? definition.fn.call(definition.scope || this, value, this, this.owner)
                     : definition.test instanceof RegExp
                         ? !definition.test.test(value)
                         : false;
 
-                if (result)
-                {
-                    if (definition.message)
+                if (result) {
+                    if (definition.message) {
                         result = typeof definition.message === 'function'
                             ? definition.message.call(definition.scope || this, value, this, this.owner)
                             : string.substitute(definition.message, [value, this.name, this.label]);
+                    }
 
                     return result;
                 }
             }
+
             return false;
         },
         /**
@@ -340,4 +347,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
         onChange: function(value, field) {
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Fields._Field', __class);
+    return __class;
 });

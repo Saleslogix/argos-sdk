@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-define('Sage/Platform/Mobile/Fields/PhoneField', [
+define('argos/Fields/PhoneField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/has',
     'dojo/string',
     '../FieldManager',
@@ -23,6 +24,7 @@ define('Sage/Platform/Mobile/Fields/PhoneField', [
     'dojo/_base/sniff'
 ], function(
     declare,
+    lang,
     has,
     string,
     FieldManager,
@@ -31,7 +33,7 @@ define('Sage/Platform/Mobile/Fields/PhoneField', [
     sniff
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.PhoneField
+     * @class argos.Fields.PhoneField
      * The Phone field is a specialized {@link TextField TextField} that takes a string of numbers
      * and groups them into a phone number on blur or when setting a value directly the value
      * shown to the user gets passed through the
@@ -47,10 +49,10 @@ define('Sage/Platform/Mobile/Fields/PhoneField', [
      *     }
      *
      * @alternateClassName PhoneField
-     * @extends Sage.Platform.Mobile.Fields.TextField
-     * @requires Sage.Platform.Mobile.FieldManager
+     * @extends argos.Fields.TextField
+     * @requires argos.FieldManager
      */
-    var control = declare('Sage.Platform.Mobile.Fields.PhoneField', [TextField], {
+    var control = declare('argos.Fields.PhoneField', [TextField], {
         /**
          * @property {String}
          * Sets the `<input type=` of the field.
@@ -76,11 +78,13 @@ define('Sage/Platform/Mobile/Fields/PhoneField', [
         getValue: function() {
             var value = this.inherited(arguments);
 
-            if (/^\+/.test(value)) return value;
+            if (/^\+/.test(value)) {
+                return value;
+            }
 
             value = format.alphaToPhoneNumeric(value);
 
-            return value.replace(/[^0-9x]/ig, "");
+            return value.replace(/[^0-9x]/ig, '');
         },
         /**
          * Sets the original value if initial is true and sets the input value to the formatted
@@ -109,5 +113,6 @@ define('Sage/Platform/Mobile/Fields/PhoneField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.PhoneField', control);
     return FieldManager.register('phone', control);
 });

@@ -14,17 +14,19 @@
  */
 
 
-define('Sage/Platform/Mobile/Fields/TextAreaField', [
+define('argos/Fields/TextAreaField', [
     'dojo/_base/declare',
-    'Sage/Platform/Mobile/Fields/TextField',
-    'Sage/Platform/Mobile/FieldManager'
+    'dojo/_base/lang',
+    './TextField',
+    '../FieldManager'
 ], function(
     declare,
+    lang,
     TextField,
     FieldManager
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.TextAreaField
+     * @class argos.Fields.TextAreaField
      * The TextAreaField extends the base TextField by changing the input element to
      * an `<textarea>` element with a configurable amount of visible rows.
      *
@@ -38,10 +40,10 @@ define('Sage/Platform/Mobile/Fields/TextAreaField', [
      *     }
      *
      * @alternateClassName TextAreaField
-     * @extends Sage.Platform.Mobile.Fields.TextField
-     * @requires Sage.Platform.Mobile.FieldManager
+     * @extends argos.Fields.TextField
+     * @requires argos.FieldManager
      */
-    var control = declare('Sage.Platform.Mobile.Fields.TextAreaField', [TextField], {
+    var control = declare('argos.Fields.TextAreaField', [TextField], {
         /**
          * @cfg {Number}
          * Number of rows to show visually, does not constrain input.
@@ -68,7 +70,10 @@ define('Sage/Platform/Mobile/Fields/TextAreaField', [
             if (val === null || typeof val === 'undefined') {
                 val = '';
             }
-            if (initial) this.originalValue = val;
+
+            if (initial) {
+                this.originalValue = val;
+            }
 
             this.previousValue = false;
 
@@ -76,5 +81,6 @@ define('Sage/Platform/Mobile/Fields/TextAreaField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.TextAreaField', control);
     return FieldManager.register('textarea', control);
 });

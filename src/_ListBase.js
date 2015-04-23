@@ -14,16 +14,17 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._ListBase
+ * @class argos._ListBase
  * A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
  * selection model built in for selecting rows from the list and may be used in a number of different manners.
- * @extends Sage.Platform.Mobile.View
+ * @extends argos.View
  * @alternateClassName _ListBase
- * @requires Sage.Platform.Mobile.ErrorManager
- * @requires Sage.Platform.Mobile.Utility
- * @requires Sage.Platform.Mobile.SearchWidget
+ * @requires argos.ErrorManager
+ * @requires argos.Utility
+ * @requires argos.SearchWidget
+ * @mixins argos._PullToRefreshMixin
  */
-define('Sage/Platform/Mobile/_ListBase', [
+define('argos/_ListBase', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/array',
@@ -33,18 +34,19 @@ define('Sage/Platform/Mobile/_ListBase', [
     'dojo/dom-class',
     'dojo/dom-construct',
     'dojo/dom-geometry',
+    'dojo/dom-style',
     'dojo/dom',
     'dojo/string',
     'dojo/window',
     'dojo/Deferred',
     'dojo/promise/all',
     'dojo/when',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/ErrorManager',
-    'Sage/Platform/Mobile/View',
-    'Sage/Platform/Mobile/SearchWidget',
-    'Sage/Platform/Mobile/ConfigurableSelectionModel',
-    'Sage/Platform/Mobile/RelatedViewManager'
+    './Utility',
+    './ErrorManager',
+    './View',
+    './SearchWidget',
+    './ConfigurableSelectionModel',
+    './_PullToRefreshMixin'
 ], function(
     declare,
     lang,
@@ -55,6 +57,7 @@ define('Sage/Platform/Mobile/_ListBase', [
     domClass,
     domConstruct,
     domGeom,
+    domStyle,
     dom,
     string,
     win,
@@ -66,11 +69,11 @@ define('Sage/Platform/Mobile/_ListBase', [
     View,
     SearchWidget,
     ConfigurableSelectionModel,
-    RelatedViewManager
+    _PullToRefreshMixin
 ) {
 
-    return declare('Sage.Platform.Mobile._ListBase', [View], {
-        /** 
+    var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
+        /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
          *
@@ -78,8 +81,8 @@ define('Sage/Platform/Mobile/_ListBase', [
          * * remainingContent => remainingContentNode's innerHTML
          */
         attributeMap: {
-            listContent: {node: 'contentNode', type: 'innerHTML'},
-            remainingContent: {node: 'remainingContentNode', type: 'innerHTML'}
+            listContent: { node: 'contentNode', type: 'innerHTML' },
+            remainingContent: { node: 'remainingContentNode', type: 'innerHTML' }
         },
         /**
          * @property {Simplate}
@@ -179,7 +182,6 @@ define('Sage/Platform/Mobile/_ListBase', [
                     '{% } %}',
                 '</button>',
                 '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
-                '<div id="list-item-content-related"></div>',
             '</li>'
         ]),
         /**
@@ -241,7 +243,6 @@ define('Sage/Platform/Mobile/_ListBase', [
                 '<label>{%: $.label %}</label>',
             '</button>'
         ]),
-
         /**
          * @property {HTMLElement}
          * Attach point for the main view content
@@ -326,6 +327,12 @@ define('Sage/Platform/Mobile/_ListBase', [
          * The id of the detail view, or view instance, to show when a row is clicked.
          */
         detailView: null,
+
+        /**
+         * @property {String}
+         * The id of the configure view for quick action preferences
+         */
+        quickActionConfigureView: 'configure_quickactions',
         /**
          * @property {String}
          * The view id to show if there is no `insertView` specified, when
@@ -363,6 +370,11 @@ define('Sage/Platform/Mobile/_ListBase', [
          * The text displayed as the default title.
          */
         titleText: 'List',
+        /**
+         * @property {String}
+         * The text displayed for quick action configure.
+         */
+        configureText: 'Configure',
         /**
          * @property {String}
          * The error message to display if rendering a row template is not successful.
@@ -406,11 +418,6 @@ define('Sage/Platform/Mobile/_ListBase', [
         loadingText: 'loading...',
         /**
          * @property {String}
-         * The text displayed when a data request fails.
-         */
-        requestErrorText: 'A server error occurred while requesting data.',
-        /**
-         * @property {String}
          * The customization identifier for this class. When a customization is registered it is passed
          * a path/identifier which is then matched to this property.
          */
@@ -420,13 +427,11 @@ define('Sage/Platform/Mobile/_ListBase', [
          * The relative path to the checkmark or select icon for row selector
          */
         selectIcon: '',
-
         /**
          * @property {String}
          * CSS class to use for checkmark or select icon for row selector. Overrides selectIcon.
          */
         selectIconClass: 'fa fa-check fa-lg',
-
         /**
          * @property {Object}
          * The search widget instance for the view
@@ -437,7 +442,6 @@ define('Sage/Platform/Mobile/_ListBase', [
          * The class constructor to use for the search widget
          */
         searchWidgetClass: SearchWidget,
-
         /**
          * @property {Boolean}
          * Flag to indicate the default search term has been set.
@@ -468,34 +472,20 @@ define('Sage/Platform/Mobile/_ListBase', [
          * The list action layout definition for the list action bar.
          */
         actions: null,
-
         /**
          * @property {Boolean} If true, will remove the loading button and auto fetch more data when the user scrolls to the bottom of the page.
          */
         continuousScrolling: true,
-
         /**
          * @property {Boolean} Indicates if the list is loading
          */
         listLoading: false,
-
-        /**
-         * The related view definitions for related views for each row.
-         */
-        relatedViews: null,
-
-        /**
-         * The related view managers for each related view definition.
-         */
-        relatedViewManagers: null,
-
         // Store properties
         itemsProperty: '',
         idProperty: '',
         labelProperty: '',
         entityProperty: '',
         versionProperty: '',
-
         /**
          * Setter method for the selection model, also binds the various selection model select events
          * to the respective List event handler for each.
@@ -526,16 +516,15 @@ define('Sage/Platform/Mobile/_ListBase', [
         _getSelectionModelAttr: function() {
             return this._selectionModel;
         },
-        /**
-         * Extends dijit Widget postCreate to setup the selection model, search widget and bind
-         * to the global refresh publish
-         */
-        _onScrollHandle: null,
         constructor: function() {
             this.entries = {};
         },
         postCreate: function() {
             this.inherited(arguments);
+
+            var scrollerNode, searchWidgetCtor;
+
+            scrollerNode = this.get('scroller');
 
             if (this._selectionModel === null) {
                 this.set('selectionModel', new ConfigurableSelectionModel());
@@ -543,7 +532,7 @@ define('Sage/Platform/Mobile/_ListBase', [
             this.subscribe('/app/refresh', this._onRefresh);
 
             if (this.enableSearch) {
-                var searchWidgetCtor = lang.isString(this.searchWidgetClass)
+                searchWidgetCtor = lang.isString(this.searchWidgetClass)
                     ? lang.getObject(this.searchWidgetClass, false)
                     : this.searchWidgetClass;
 
@@ -557,8 +546,23 @@ define('Sage/Platform/Mobile/_ListBase', [
                 this.searchWidget = null;
             }
 
-            domClass.toggle(this.domNode, 'list-hide-search', this.hideSearch);
+            domClass.toggle(this.domNode, 'list-hide-search', this.hideSearch || !this.enableSearch);
             this.clear();
+
+            this.initPullToRefresh(scrollerNode);
+        },
+        shouldStartPullToRefresh: function(scrollerNode) {
+            var selected, shouldStart;
+
+            // Get the base results
+            shouldStart = this.inherited(arguments);
+            selected = domAttr.get(this.domNode, 'selected');
+            return shouldStart && selected === 'true' && !this.listLoading;
+        },
+        onPullToRefreshComplete: function() {
+            this.clear();
+            this.refreshRequired = true;
+            this.refresh();
         },
         /**
          * Called on application startup to configure the search widget if present and create the list actions.
@@ -573,15 +577,14 @@ define('Sage/Platform/Mobile/_ListBase', [
                 });
             }
 
-            this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
-            this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
+            this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
         },
         /**
          * Extends dijit Widget to destroy the search widget before destroying the view.
          */
         destroy: function() {
             if (this.searchWidget) {
-                if(!this.searchWidget._destroyed) {
+                if (!this.searchWidget._destroyed) {
                     this.searchWidget.destroyRecursive();
                 }
 
@@ -589,7 +592,6 @@ define('Sage/Platform/Mobile/_ListBase', [
             }
 
             delete this.store;
-            this.destroyRelatedViewWidgets();
             this.inherited(arguments);
         },
         _getStoreAttr: function() {
@@ -601,11 +603,16 @@ define('Sage/Platform/Mobile/_ListBase', [
         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
         */
         show: function(options, transitionOptions) {
-            if (options){
-               if (options.resetSearch) {
-                   this.defaultSearchTermSet = false;
-               }
+            if (options) {
+                if (options.resetSearch) {
+                    this.defaultSearchTermSet = false;
+                }
+
+                if (options.allowEmptySelection === false && this._selectionModel) {
+                    this._selectionModel.requireSelection = true;
+                }
             }
+
             this.inherited(arguments);
         },
         /**
@@ -620,9 +627,44 @@ define('Sage/Platform/Mobile/_ListBase', [
                     id: 'new',
                     cls: 'fa fa-plus fa-fw fa-lg',
                     action: 'navigateToInsertView',
-                    security: App.getViewSecurity(this.insertView, 'insert')
+                    security: this.app.getViewSecurity(this.insertView, 'insert')
                 }]
             });
+        },
+        createErrorHandlers: function() {
+            this.errorHandlers = this.errorHandlers || [{
+                name: 'Aborted',
+                test: function(error) {
+                    return error.aborted;
+                },
+                handle: function(error, next) {
+                    this.clear();
+                    this.refreshRequired = true;
+                    next();
+                }
+            }, {
+                name: 'AlertError',
+                test: function(error) {
+                    return !error.aborted;
+                },
+                handle: function(error, next) {
+                    alert(this.getErrorMessage(error));
+                    next();
+                }
+            }, {
+                name: 'CatchAll',
+                test: function(error) {
+                    return true;
+                },
+                handle: function(error, next) {
+                    this._logError(error);
+                    this._clearLoading();
+                    next();
+                }
+            }
+            ];
+
+            return this.errorHandlers;
         },
         /**
          * Sets and returns the list-action actions layout definition, this method should be overriden in the view
@@ -639,20 +681,105 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @param {Object[]} actions
          */
         createActions: function(actions) {
-            for (var i = 0; i < actions.length; i++) {
-                var action = actions[i],
-                    options = {
-                        actionIndex: i,
-                        hasAccess: (!action.security || (action.security && App.hasAccessTo(this.expandExpression(action.security)))) ? true : false
-                    },
-                    actionTemplate = action.template || this.listActionItemTemplate;
+            var i, action, options, actionTemplate, systemActions, prefActions, visibleActions;
+
+            this.actions = actions;
+            this.visibleActions = [];
+
+            if (!this.actionsNode) {
+                return;
+            }
+
+            this.ensureQuickActionPrefs();
+
+            // Pluck out our system actions that are NOT saved in preferences
+            systemActions = array.filter(actions, function(action) {
+                return action && action.systemAction;
+            });
+
+            systemActions = systemActions.reduce(function(acc, cur) {
+                var hasID = acc.some(function(item) {
+                    return item.id === cur.id;
+                });
+
+                if (!hasID) {
+                    acc.push(cur);
+                }
+
+                return acc;
+            }, []);
+
+            // Grab quick actions from the users preferences (ordered and made visible according to user)
+            prefActions = this.app.preferences.quickActions[this.id];
+
+            if (systemActions && prefActions) {
+                // Display system actions first, then the order of what the user specified
+                actions = systemActions.concat(prefActions);
+            }
+
+            visibleActions = [];
+
+            for (i = 0; i < actions.length; i++) {
+                action = actions[i];
+
+                if (!action.visible) {
+                    continue;
+                }
+
+                options = {
+                    actionIndex: visibleActions.length,
+                    hasAccess: (!action.security || (action.security && this.app.hasAccessTo(this.expandExpression(action.security)))) ? true : false
+                };
 
                 lang.mixin(action, options);
 
+                actionTemplate = action.template || this.listActionItemTemplate;
                 domConstruct.place(actionTemplate.apply(action, action.id), this.actionsNode, 'last');
+
+                visibleActions.push(action);
             }
 
-            this.actions = actions;
+            this.visibleActions = visibleActions;
+        },
+        createSystemActionLayout: function(actions) {
+            var systemActions, others;
+
+            systemActions = array.filter(actions, function(action) {
+                return action.systemAction === true;
+            });
+
+            others = array.filter(actions, function(action) {
+                return !action.systemAction;
+            });
+
+            if (!others.length) {
+                return [];
+            }
+
+            if (systemActions.length) {
+                return systemActions.concat(others);
+            } else {
+                return [{
+                    id: '__editPrefs__',
+                    cls: 'fa fa-cog fa-2x',
+                    label: this.configureText,
+                    action: 'configureQuickActions',
+                    systemAction: true,
+                    visible: true
+                }].concat(others);
+            }
+        },
+        configureQuickActions: function() {
+            var view = App.getView(this.quickActionConfigureView);
+            if (view) {
+                view.show({
+                    viewId: this.id,
+                    actions: array.filter(this.actions, function(action) {
+                        // Exclude system actions
+                        return action && action.systemAction !== true;
+                    })
+                });
+            }
         },
         selectEntrySilent: function(key) {
             var enableActions = this.enableActions,// preserve the original value
@@ -670,8 +797,10 @@ define('Sage/Platform/Mobile/_ListBase', [
 
                 // We know we are single select, so just grab the first selection
                 for (prop in selectedItems) {
-                    selection = selectedItems[prop];
-                    break;
+                    if (selectedItems.hasOwnProperty(prop)) {
+                        selection = selectedItems[prop];
+                        break;
+                    }
                 }
             }
 
@@ -680,7 +809,7 @@ define('Sage/Platform/Mobile/_ListBase', [
         invokeActionItemBy: function(actionPredicate, key) {
             var actions, selection;
 
-            actions = array.filter(this.actions, actionPredicate);
+            actions = array.filter(this.visibleActions, actionPredicate);
             selection = this.selectEntrySilent(key);
             this.checkActionState();
             array.forEach(actions, function(action) {
@@ -700,14 +829,17 @@ define('Sage/Platform/Mobile/_ListBase', [
          */
         invokeActionItem: function(parameters, evt, node) {
             var index = parameters['id'],
-                action = this.actions[index],
+                action = this.visibleActions[index],
+                key,
                 selectedItems = this.get('selectionModel').getSelections(),
                 selection = null;
 
 
-            for (var key in selectedItems) {
-                selection = selectedItems[key];
-                break;
+            for (key in selectedItems) {
+                if (selectedItems.hasOwnProperty(key)) {
+                    selection = selectedItems[key];
+                    break;
+                }
             }
 
             this._invokeAction(action, selection);
@@ -733,32 +865,84 @@ define('Sage/Platform/Mobile/_ListBase', [
          * action items `enabled` property.
          */
         checkActionState: function() {
-            var selectedItems = this.get('selectionModel').getSelections(),
-                selection = null, key;
+            var selectedItems, selection, key;
+
+            selectedItems = this.get('selectionModel').getSelections();
+            selection = null;
 
             for (key in selectedItems) {
-                selection = selectedItems[key];
-                break;
+                if (selectedItems.hasOwnProperty(key)) {
+                    selection = selectedItems[key];
+                    break;
+                }
             }
+
             this._applyStateToActions(selection);
-           
+        },
+        _clearActions: function() {
+            var children;
+
+            children = this.actionsNode && this.actionsNode.children || [];
+            children = Array.prototype.slice.call(children);
+            array.forEach(children, function(child) {
+                if (child.parentNode) {
+                    child.parentNode.removeChild(child);
+                }
+            });
+        },
+        getQuickActionPrefs: function() {
+            return this.app && this.app.preferences && this.app.preferences.quickActions;
+        },
+        ensureQuickActionPrefs: function() {
+            var appPrefs, actionPrefs, filtered;
+
+            appPrefs = this.app && this.app.preferences;
+            actionPrefs = this.getQuickActionPrefs();
+            filtered = array.filter(this.actions, function(action) {
+                return action && action.systemAction !== true;
+            });
+
+            if (!this.actions || !appPrefs) {
+                return;
+            }
+
+            if (!actionPrefs) {
+                appPrefs.quickActions = {};
+                actionPrefs = appPrefs.quickActions;
+            }
+
+            // If it doesn't exist, or there is a count mismatch (actions created on upgrades perhaps?)
+            // re-create the preferences store
+            if (!actionPrefs[this.id] ||
+                (actionPrefs[this.id] && actionPrefs[this.id].length !== filtered.length)) {
+                actionPrefs[this.id] = array.map(filtered, function(action) {
+                    action.visible = true;
+                    return action;
+                });
+
+                this.app.persistPreferences();
+            }
         },
         /**
          * Called from checkActionState method and sets the state of the actions from what was selected from the selected row, it sets the disabled state for each action
          * item using the currently selected row as context by passing the action instance the selected row to the
          * action items `enabled` property.
-         * @param {Object} selection 
+         * @param {Object} selection
          */
         _applyStateToActions: function(selection) {
-            var i, action;
-            // IE10 is destroying the child notes of the actionsNode when the list view refreshes,
-            // re-create the action DOM before moving on.
-            if (this.actionsNode.childNodes.length === 0 && this.actions.length > 0) {
-                this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'actions'));
-            }
+            var i, action, actionNode, visibleAction;
 
-            for (i = 0; i < this.actions.length; i++) {
-                action = this.actions[i];
+            this._clearActions();
+            this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
+
+            for (i = 0; i < this.visibleActions.length; i++) {
+                // The visible action is from our local storage preferences, where the action from the layout
+                // contains functions that will get stripped out converting it to JSON, get the original action
+                // and mix it into the visible so we can work with it.
+                // TODO: This will be a problem throughout visible actions, come up with a better solution
+                visibleAction = this.visibleActions[i];
+                action = lang.mixin(visibleAction, this._getActionById(visibleAction.id));
+                actionNode = this.actionsNode.childNodes[i];
 
                 action.isEnabled = (typeof action['enabled'] === 'undefined')
                     ? true
@@ -768,10 +952,15 @@ define('Sage/Platform/Mobile/_ListBase', [
                     action.isEnabled = false;
                 }
 
-                if (this.actionsNode.childNodes[i]) {
-                    domClass.toggle(this.actionsNode.childNodes[i], 'toolButton-disabled', !action.isEnabled);
+                if (actionNode) {
+                    domClass.toggle(actionNode, 'toolButton-disabled', !action.isEnabled);
                 }
             }
+        },
+        _getActionById: function(id) {
+            return array.filter(this.actions, function(action) {
+                return action && action.id === id;
+            })[0];
         },
         /**
          * Handler for showing the list-action panel/bar - it needs to do several things:
@@ -792,7 +981,6 @@ define('Sage/Platform/Mobile/_ListBase', [
             domConstruct.place(this.actionsNode, rowNode, 'after');
         },
         onApplyRowActionPanel: function(actionNodePanel, rowNode) {
-
         },
         /**
          * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
@@ -838,7 +1026,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @private
          */
         _onSelectionModelSelect: function(key, data, tag) {
-            var node = dom.byId(tag) || query('li[data-key="'+key+'"]', this.contentNode)[0];
+            var node = dom.byId(tag) || query('li[data-key="' + key + '"]', this.contentNode)[0];
             if (!node) {
                 return;
             }
@@ -859,7 +1047,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @private
          */
         _onSelectionModelDeselect: function(key, data, tag) {
-            var node = dom.byId(tag) || query('li[data-key="'+key+'"]', this.contentNode)[0];
+            var node = dom.byId(tag) || query('li[data-key="' + key + '"]', this.contentNode)[0];
             if (!node) {
                 return;
             }
@@ -883,10 +1071,12 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @private
          */
         _loadPreviousSelections: function() {
-            var previousSelections = this.options && this.options.previousSelections;
+            var previousSelections, i, row;
+
+            previousSelections = this.options && this.options.previousSelections;
             if (previousSelections) {
-                for (var i = 0; i < previousSelections.length; i++) {
-                    var row = query((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [previousSelections[i]])), this.contentNode)[0];
+                for (i = 0; i < previousSelections.length; i++) {
+                    row = query((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [previousSelections[i]])), this.contentNode)[0];
 
                     if (row) {
                         this.activateEntry({
@@ -959,8 +1149,7 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @param {Object} params Collection of `data-` attributes from the node.
          */
         activateEntry: function(params) {
-            if (params.key)
-            {
+            if (params.key) {
                 if (this._selectionModel && this.isNavigationDisabled()) {
                     this._selectionModel.toggle(params.key, this.entries[params.key] || params.descriptor, params.$source);
                     if (this.options.singleSelect && this.options.singleSelectAction) {
@@ -976,8 +1165,8 @@ define('Sage/Platform/Mobile/_ListBase', [
          * If autoClearSelection is true, clear the selection model.
          */
         invokeSingleSelectAction: function() {
-            if (App.bars['tbar']) {
-                App.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction });
+            if (this.app.bars['tbar']) {
+                this.app.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction });
             }
 
             if (this.autoClearSelection) {
@@ -1039,27 +1228,32 @@ define('Sage/Platform/Mobile/_ListBase', [
                 return;
             }
 
-            var searchQuery;
             if (typeof this.defaultSearchTerm === 'function') {
                 this.setSearchTerm(this.defaultSearchTerm());
             } else {
                 this.setSearchTerm(this.defaultSearchTerm);
             }
 
-            searchQuery = this.getSearchQuery();
+            this._updateQuery();
+
+            this.defaultSearchTermSet = true;
+        },
+        _updateQuery: function() {
+            var searchQuery = this.getSearchQuery();
             if (searchQuery) {
                 this.query = searchQuery;
             } else {
                 this.query = '';
             }
-
-            this.defaultSearchTermSet = true;
         },
-        getSearchQuery:function(){
+        getSearchQuery: function() {
+            var results = null;
+
             if (this.searchWidget) {
-                return this.searchWidget.getFormattedSearchQuery();
+                results = this.searchWidget.getFormattedSearchQuery();
             }
-            return null;
+
+            return results;
         },
         /**
          * Helper method for list actions. Takes a view id, data point and where format string, sets the nav options
@@ -1068,13 +1262,19 @@ define('Sage/Platform/Mobile/_ListBase', [
          * @param {Object} selection Data entry for the selection.
          * @param {String} viewId View id to be shown
          * @param {String} whereQueryFmt Where expression format string to be passed. `${0}` will be the `idProperty`
+         * @param {Object} additionalOptions Additional options to be passed into the next view
          * property of the passed selection data.
          */
-        navigateToRelatedView:  function(action, selection, viewId, whereQueryFmt) {
-            var view = App.getView(viewId),
+        navigateToRelatedView: function(action, selection, viewId, whereQueryFmt, additionalOptions) {
+            var view = this.app.getView(viewId),
                 options = {
-                    where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]])
+                    where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]]),
+                    selectedEntry: selection.data
                 };
+
+            if (additionalOptions) {
+                options = lang.mixin(options, additionalOptions);
+            }
 
             this.setSource({
                 entry: selection.data,
@@ -1082,23 +1282,31 @@ define('Sage/Platform/Mobile/_ListBase', [
                 key: selection.data[this.idProperty]
             });
 
-            if (view && options) {
+            if (view) {
                 view.show(options);
             }
         },
         /**
          * Navigates to the defined `this.detailView` passing the params as navigation options.
          * @param {String} key Key of the entry to be shown in detail
-         * @param {String} descriptor Description of the entry, will be used as the top toolbar title text.
+         * @param {String} descriptor Description of the entry, will be used as the top toolbar title text
+         * @param {Object} additionalOptions Additional options to be passed into the next view
          */
-        navigateToDetailView: function(key, descriptor) {
-            var view = App.getView(this.detailView);
-            if (view) {
-                view.show({
+        navigateToDetailView: function(key, descriptor, additionalOptions) {
+            var view = this.app.getView(this.detailView),
+                options = {
                     descriptor: descriptor, // keep for backwards compat
                     title: descriptor,
-                    key: key
-                });
+                    key: key,
+                    fromContext: this
+                };
+
+            if (additionalOptions) {
+                options = lang.mixin(options, additionalOptions);
+            }
+
+            if (view) {
+                view.show(options);
             }
         },
         /**
@@ -1106,28 +1314,49 @@ define('Sage/Platform/Mobile/_ListBase', [
          * property in the navigation options (which is then requested and result used as default data).
          * @param {Object} action Action instance, not used.
          * @param {Object} selection Data entry for the selection.
+         * @param {Object} additionalOptions Additional options to be passed into the next view.
          */
-        navigateToEditView: function(action, selection) {
-            var view = App.getView(this.editView || this.insertView),
-                key = selection.data[this.idProperty];
+        navigateToEditView: function(action, selection, additionalOptions) {
+            var view = this.app.getView(this.editView || this.insertView),
+                key = selection.data[this.idProperty],
+                options = {
+                    key: key,
+                    selectedEntry: selection.data,
+                    fromContext: this
+                };
+
+            if (additionalOptions) {
+                options = lang.mixin(options, additionalOptions);
+            }
+
             if (view) {
-                view.show({
-                    key: key
-                });
+                view.show(options);
             }
         },
         /**
          * Navigates to the defined `this.insertView`, or `this.editView` passing the current views id as the `returnTo`
          * option and setting `insert` to true.
          * @param {HTMLElement} el Node that initiated the event.
+         * @param {Object} additionalOptions Additional options to be passed into the next view.
          */
-        navigateToInsertView: function(el) {
-            var view = App.getView(this.insertView || this.editView);
-            if (view) {
-                view.show({
+        navigateToInsertView: function(el, additionalOptions) {
+            var view = this.app.getView(this.insertView || this.editView),
+                options = {
                     returnTo: this.id,
                     insert: true
-                });
+                };
+
+            // Pass along the selected entry (related list could get it from a quick action)
+            if (this.options.selectedEntry) {
+                options.selectedEntry = this.options.selectedEntry;
+            }
+
+            if (additionalOptions) {
+                options = lang.mixin(options, additionalOptions);
+            }
+
+            if (view) {
+                view.show(options);
             }
         },
         /**
@@ -1148,22 +1377,21 @@ define('Sage/Platform/Mobile/_ListBase', [
          * Initiates the data request.
          */
         requestData: function() {
-            var store, queryOptions;
-
-            this._setLoading();
-
+            var store, queryOptions, request, queryExpression, queryResults;
             store = this.get('store');
+
             if (store) {
+                this._setLoading();
                 // attempt to use a dojo store
                 queryOptions = {
-                        count: this.pageSize,
-                        start: this.position
+                    count: this.pageSize,
+                    start: this.position
                 };
 
                 this._applyStateToQueryOptions(queryOptions);
 
-                var queryExpression = this._buildQueryExpression() || null,
-                    queryResults = store.query(queryExpression, queryOptions);
+                queryExpression = this._buildQueryExpression() || null;
+                queryResults = store.query(queryExpression, queryOptions);
 
                 when(queryResults,
                     this._onQueryComplete.bind(this, queryResults),
@@ -1179,26 +1407,29 @@ define('Sage/Platform/Mobile/_ListBase', [
             try {
                 var start = this.position, scrollerNode = this.get('scroller');
 
-                when(queryResults.total, this._onQueryTotal.bind(this));
+                try {
+                    when(queryResults.total, this._onQueryTotal.bind(this));
 
-                /* todo: move to a more appropriate location */
-                if (this.options && this.options.allowEmptySelection) {
-                    domClass.add(this.domNode, 'list-has-empty-opt');
-                }
-
-                /* remove the loading indicator so that it does not get re-shown while requesting more data */
-                if (start === 0) {
-                    // Check entries.length so we don't clear out the "noData" template
-                    if (entries.length > 0) {
-                        this.set('listContent', '');
+                    /* todo: move to a more appropriate location */
+                    if (this.options && this.options.allowEmptySelection) {
+                        domClass.add(this.domNode, 'list-has-empty-opt');
                     }
 
-                    domConstruct.destroy(this.loadingIndicatorNode);
+                    /* remove the loading indicator so that it does not get re-shown while requesting more data */
+                    if (start === 0) {
+                        // Check entries.length so we don't clear out the "noData" template
+                        if (entries && entries.length > 0) {
+                            this.set('listContent', '');
+                        }
+
+                        domConstruct.destroy(this.loadingIndicatorNode);
+                    }
+
+                    this.processData(entries);
+
+                } finally {
+                    this._clearLoading();
                 }
-
-                this.processData(entries);
-
-                this._clearLoading();
 
                 if (!this._onScrollHandle && this.continuousScrolling) {
                     this._onScrollHandle = this.connect(scrollerNode, 'onscroll', this.onScroll);
@@ -1212,9 +1443,10 @@ define('Sage/Platform/Mobile/_ListBase', [
                 }
             } catch (e) {
                 console.error(e);
+                this._logError({ message: e.message, stack: e.stack }, e.message);
             }
         },
-        createStore: function () {
+        createStore: function() {
             return null;
         },
         onContentChange: function() {
@@ -1250,6 +1482,10 @@ define('Sage/Platform/Mobile/_ListBase', [
         onApplyRowTemplate: function(entry, rowNode) {
         },
         processData: function(entries) {
+            if (!entries) {
+                return;
+            }
+
             var store = this.get('store'),
                 rowNode,
                 docfrag,
@@ -1276,9 +1512,6 @@ define('Sage/Platform/Mobile/_ListBase', [
 
                     docfrag.appendChild(rowNode);
                     this.onApplyRowTemplate(entry, rowNode);
-                    if (this.relatedViews.length > 0) {
-                        this.onProcessRelatedViews(entry, rowNode, entries);
-                    }
                 }
 
                 if (docfrag.childNodes.length > 0) {
@@ -1286,71 +1519,16 @@ define('Sage/Platform/Mobile/_ListBase', [
                 }
             }
         },
-        /**
-         * Gets the related view mnagager for a related view definition.
-         * If a manager is not found a new Related View Manager is created and returned.
-         * @return {Object} RelatedViewManager
-         */
-       getRelatedViewManager: function(relatedView) {
-            var relatedViewManager, options;
-            if (!this.relatedViewManagers){
-                this.relatedViewManagers = {};
-            }
-            if (this.relatedViewManagers[relatedView.id]) {
-                relatedViewManager = this.relatedViewManagers[relatedView.id];
-            } else {
-                options = { id:relatedView.id,
-                    relatedViewConfig: relatedView
-                };
-                relatedViewManager = new RelatedViewManager(options);
-                this.relatedViewManagers[relatedView.id] = relatedViewManager;
-            }
-            return relatedViewManager;
-       },
-        /**
-         *
-         * Add the each entry and row to the RelateView manager wich in turn creates the new related view and renders its content with in the current row.`
-         *
-         * @param {Object} entry the current entry from the data.
-         * @param {Object} rownode the current dom node to add the widget to.
-         * @param {Object} entries the data.
-         */
-        onProcessRelatedViews: function(entry, rowNode, entries) {
-            var relatedViewManager,i;
-            if (this.options && this.options.simpleMode && (this.options.simpleMode === true)) {
-                return;
-            }
-            if (this.relatedViews.length > 0) {
-                try {
-                    for (i = 0; i < this.relatedViews.length; i++) {
-                        if (this.relatedViews[i].enabled) {
-                            relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
-                            if (relatedViewManager) {
-                                relatedViewManager.addView(entry, rowNode);
-                            }
-                        }
-                    }
-                }
-                catch (error) {
-                    console.log('Error processing related views:' + error );
-
-                }
-            }
-        },
-        _onQueryError: function(queryOptions, error) {
-            if (error.aborted) {
-                this.options = false; // force a refresh
-            } else {
-                alert(string.substitute(this.requestErrorText, [error]));
-            }
-
+        _logError: function(error, message) {
             var errorItem = {
                 viewOptions: this.options,
                 serverError: error
             };
-            ErrorManager.addError(this.requestErrorText, errorItem);
 
-            domClass.remove(this.domNode, 'list-loading');
+            ErrorManager.addError(message || this.getErrorMessage(error), errorItem);
+        },
+        _onQueryError: function(queryOptions, error) {
+            this.handleError(error);
         },
         _buildQueryExpression: function() {
             return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
@@ -1375,8 +1553,8 @@ define('Sage/Platform/Mobile/_ListBase', [
         emptySelection: function() {
             this._selectionModel.clear();
 
-            if (App.bars['tbar']) {
-                App.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction }); // invoke action of tool
+            if (this.app.bars['tbar']) {
+                this.app.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction }); // invoke action of tool
             }
         },
         /**
@@ -1387,19 +1565,19 @@ define('Sage/Platform/Mobile/_ListBase', [
         refreshRequiredFor: function(options) {
             if (this.options) {
                 if (options) {
-                    if (this.expandExpression(this.options.stateKey) != this.expandExpression(options.stateKey)) {
+                    if (this.expandExpression(this.options.stateKey) !== this.expandExpression(options.stateKey)) {
                         return true;
                     }
-                    if (this.expandExpression(this.options.where) != this.expandExpression(options.where)) {
+                    if (this.expandExpression(this.options.where) !== this.expandExpression(options.where)) {
                         return true;
                     }
-                    if (this.expandExpression(this.options.query) != this.expandExpression(options.query)) {
+                    if (this.expandExpression(this.options.query) !== this.expandExpression(options.query)) {
                         return true;
                     }
-                    if (this.expandExpression(this.options.resourceKind) != this.expandExpression(options.resourceKind)) {
+                    if (this.expandExpression(this.options.resourceKind) !== this.expandExpression(options.resourceKind)) {
                         return true;
                     }
-                    if (this.expandExpression(this.options.resourcePredicate) != this.expandExpression(options.resourcePredicate)) {
+                    if (this.expandExpression(this.options.resourcePredicate) !== this.expandExpression(options.resourcePredicate)) {
                         return true;
                     }
                 }
@@ -1426,7 +1604,7 @@ define('Sage/Platform/Mobile/_ListBase', [
 
             domClass.toggle(this.domNode, 'list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined')
                 ? this.options.hideSearch
-                : this.hideSearch);
+                : this.hideSearch || !this.enableSearch);
 
             domClass.toggle(this.domNode, 'list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);
 
@@ -1443,10 +1621,9 @@ define('Sage/Platform/Mobile/_ListBase', [
                 this._selectionModel.useSingleSelection(true);
             }
 
-
             if (this.refreshRequired) {
                 this.clear();
-            } else  {
+            } else {
                 // if enabled, clear any pre-existing selections
                 if (this._selectionModel && this.autoClearSelection && !this.enableActions) {
                     this._selectionModel.clear();
@@ -1457,14 +1634,13 @@ define('Sage/Platform/Mobile/_ListBase', [
          * Extends the {@link View#transitionTo parent implementation} to also configure the search widget and
          * load previous selections into the selection model.
          */
-        transitionTo: function()
-        {
+        transitionTo: function() {
             this.configureSearch();
 
             if (this._selectionModel) {
                 this._loadPreviousSelections();
             }
-            
+
             this.inherited(arguments);
         },
         /**
@@ -1475,21 +1651,26 @@ define('Sage/Platform/Mobile/_ListBase', [
         createHashTagQueryLayout: function() {
             // todo: always regenerate this layout? always regenerating allows for all existing customizations
             // to still work, at expense of potential (rare) performance issues if many customizations are registered.
-            var layout = [];
-            for (var name in this.hashTagQueries) {
-                layout.push({
-                    'key': name,
-                    'tag': (this.hashTagQueriesText && this.hashTagQueriesText[name]) || name,
-                    'query': this.hashTagQueries[name]
-                });
+            var layout, name;
+
+            layout = [];
+            for (name in this.hashTagQueries) {
+                if (this.hashTagQueries.hasOwnProperty(name)) {
+                    layout.push({
+                        'key': name,
+                        'tag': (this.hashTagQueriesText && this.hashTagQueriesText[name]) || name,
+                        'query': this.hashTagQueries[name]
+                    });
+                }
             }
+
             return layout;
-            
         },
         /**
          * Called when the view needs to be reset. Invokes the request data process.
          */
         refresh: function() {
+            this.query = this.getSearchQuery() || this.query;
             this.requestData();
         },
         /**
@@ -1527,7 +1708,6 @@ define('Sage/Platform/Mobile/_ListBase', [
             domClass.remove(this.domNode, 'list-has-more');
 
             this.set('listContent', this.loadingTemplate.apply(this));
-            this.destroyRelatedViewWidgets();
         },
         search: function() {
             if (this.searchWidget) {
@@ -1543,28 +1723,13 @@ define('Sage/Platform/Mobile/_ListBase', [
             }
         },
         /**
-         * Sets and returns the related view definition, this method should be overriden in the view
-         * so that you may define the related views that will be add to each row in the list.
-         * @return {Object} this.relatedViews
-         */
-        createRelatedViewLayout: function() {
-            return this.relatedViews || (this.relatedViews = {});
-        },
-        /**
-         *  Destroies all of the realted view widgets, that was added.
-         */
-        destroyRelatedViewWidgets: function() {
-            if (this.relatedViewManagers) {
-                for (var relatedViewId in this.relatedViewManagers) {
-                    this.relatedViewManagers[relatedViewId].destroyViews();
-                }
-            }
-        },
-        /**
          * Returns a promise with the list's count.
          */
         getListCount: function(options, callback) {
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._ListBase', __class);
+    return __class;
 });
- 
+

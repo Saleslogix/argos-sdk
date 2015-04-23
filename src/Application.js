@@ -14,7 +14,7 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Application
+ * @class argos.Application
  * Application is a nexus that provides many routing and global application services that may be used
  * from anywhere within the app.
  *
@@ -22,8 +22,8 @@
  *
  * @alternateClassName App
  */
-define('Sage/Platform/Mobile/Application', [
-    'dojo/_base/json',
+define('argos/Application', [
+    'dojo/json',
     'dojo/_base/array',
     'dojo/_base/connect',
     'dojo/aspect',
@@ -34,10 +34,10 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/hash',
     'dojo/has',
     'dojo/dom-construct',
+    'dojo/promise/all',
     'snap',
     'dojo/sniff',
-    'dojox/mobile/sniff',
-    'Sage/Platform/Mobile/ReUI/main'
+    './ReUI/main'
 ], function(
     json,
     array,
@@ -50,37 +50,43 @@ define('Sage/Platform/Mobile/Application', [
     hash,
     has,
     domConstruct,
+    all,
     snap,
     sniff,
-    mobileSniff,
     ReUI
 ) {
+    var __class,
+        localize,
+        mergeConfiguration,
+        applyLocalizationTo;
 
     // Polyfill for Funcion.bind, taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+    /* jshint ignore:start */
     if (!Function.prototype.bind) {
-      Function.prototype.bind = function (oThis) {
-        if (typeof this !== "function") {
-          // closest thing possible to the ECMAScript 5
-          // internal IsCallable function
-          throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-        }
+        Function.prototype.bind = function(oThis) {
+            if (typeof this !== 'function') {
+                // closest thing possible to the ECMAScript 5
+                // internal IsCallable function
+                throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+            }
 
-        var aArgs = Array.prototype.slice.call(arguments, 1),
-            fToBind = this,
-            fNOP = function () {},
-            fBound = function () {
-              return fToBind.apply(this instanceof fNOP && oThis
-                     ? this
-                     : oThis,
-                     aArgs.concat(Array.prototype.slice.call(arguments)));
-            };
+            var aArgs = Array.prototype.slice.call(arguments, 1),
+                self = this,
+                fNOP = function() {},
+                fBound = function() {
+                    return self.apply(this instanceof fNOP && oThis
+                         ? this
+                         : oThis,
+                         aArgs.concat(Array.prototype.slice.call(arguments)));
+                };
 
-        fNOP.prototype = this.prototype;
-        fBound.prototype = new fNOP();
+            fNOP.prototype = this.prototype;
+            fBound.prototype = new fNOP();
 
-        return fBound;
-      };
+            return fBound;
+        };
     }
+    /* jshint ignore:end */
 
     has.add('html5-file-api', function(global, document) {
         if (has('ie')) {
@@ -97,47 +103,63 @@ define('Sage/Platform/Mobile/Application', [
     lang.extend(Function, {
         // TODO: Deprecate this in favor of the standard "bind", using polyfill if necessary
         bindDelegate: function(scope) {
-            var fn = this;
+            var self,
+                optional;
 
-            if (arguments.length == 1) return function() {
-                return fn.apply(scope || this, arguments);
-            };
+            self = this;
 
-            var optional = Array.prototype.slice.call(arguments, 1);
+            if (arguments.length === 1) {
+                return function() {
+                    return self.apply(scope || this, arguments);
+                };
+            }
+
+            optional = Array.prototype.slice.call(arguments, 1);
             return function() {
                 var called = Array.prototype.slice.call(arguments, 0);
-                return fn.apply(scope || this, called.concat(optional));
+                return self.apply(scope || this, called.concat(optional));
             };
         }
     });
 
-    var applyLocalizationTo = function(object, localization) {
+    applyLocalizationTo = function(object, localization) {
         if (!object) {
             return;
         }
 
-        var target = object.prototype || object;
-        for (var key in localization) {
+        var target,
+            key;
+
+        target = object.prototype || object;
+        for (key in localization) {
             if (lang.isObject(localization[key])) {
                 applyLocalizationTo(target[key], localization[key]);
             } else {
                 target[key] = localization[key];
             }
         }
-    },
+    };
+
     localize = function(name, localization) {
         var target = lang.getObject(name);
-        if (target && target.prototype) target = target.prototype;
-        if (target) applyLocalizationTo(target, localization);
-    },
-    mergeConfiguration = function(baseConfiguration, moduleConfiguration) {
-        if (baseConfiguration)
-        {
-            if (baseConfiguration.modules && moduleConfiguration.modules)
-                baseConfiguration.modules = baseConfiguration.modules.concat(moduleConfiguration.modules);
+        if (target && target.prototype) {
+            target = target.prototype;
+        }
 
-            if (baseConfiguration.connections && moduleConfiguration.connections)
+        if (target) {
+            applyLocalizationTo(target, localization);
+        }
+    };
+
+    mergeConfiguration = function(baseConfiguration, moduleConfiguration) {
+        if (baseConfiguration) {
+            if (baseConfiguration.modules && moduleConfiguration.modules) {
+                baseConfiguration.modules = baseConfiguration.modules.concat(moduleConfiguration.modules);
+            }
+
+            if (baseConfiguration.connections && moduleConfiguration.connections) {
                 baseConfiguration.connections = lang.mixin(baseConfiguration.connections, moduleConfiguration.connections);
+            }
         }
 
         return baseConfiguration;
@@ -148,7 +170,7 @@ define('Sage/Platform/Mobile/Application', [
         'mergeConfiguration': mergeConfiguration
     });
 
-    return declare('Sage.Platform.Mobile.Application', null, {
+    __class = declare('argos.Application', null, {
         /**
          * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
          */
@@ -179,24 +201,37 @@ define('Sage/Platform/Mobile/Application', [
         /**
          * Array of all connections for App
          * @property {Object[]}
+         * @private
          */
         _connects: null,
 
         /**
          * Array of handles for App
          * @property {Object[]}
+         * @private
          */
         _signals: null,
 
         /**
+         * @private
          * Array of all subscriptions for App
          */
         _subscribes: null,
+
+        /**
+         * Array of promises to load app state
+         * @property {Array}
+         * @private
+         */
+        _appStatePromises: null,
+
         /**
          * Signifies the App has been initialized
          * @property {Boolean}
+         * @private
          */
         _started: false,
+
         _rootDomNode: null,
         customizations: null,
         services: null,// TODO: Remove
@@ -235,6 +270,7 @@ define('Sage/Platform/Mobile/Application', [
          */
         constructor: function(options) {
             this._connects = [];
+            this._appStatePromises = [];
             this._signals = [];
             this._subscribes = [];
 
@@ -255,11 +291,14 @@ define('Sage/Platform/Mobile/Application', [
          * Also calls {@link #uninitialize uninitialize}.
          */
         destroy: function() {
+            var name,
+                connection;
+
             array.forEach(this._connects, function(handle) {
                 connect.disconnect(handle);
             });
 
-            array.forEach(this._subscribes, function(handle){
+            array.forEach(this._subscribes, function(handle) {
                 connect.unsubscribe(handle);
             });
 
@@ -267,11 +306,13 @@ define('Sage/Platform/Mobile/Application', [
                 signal.remove();
             });
 
-            for (var name in this._connections) {
-                var connection = this._connections[name];
-                if (connection) {
-                    connection.un('beforerequest', this._loadSDataRequest, this);
-                    connection.un('requestcomplete', this._cacheSDataRequest, this);
+            for (name in this._connections) {
+                if (this._connections.hasOwnProperty(name)) {
+                    connection = this._connections[name];
+                    if (connection) {
+                        connection.un('beforerequest', this._loadSDataRequest, this);
+                        connection.un('requestcomplete', this._cacheSDataRequest, this);
+                    }
                 }
             }
 
@@ -302,16 +343,16 @@ define('Sage/Platform/Mobile/Application', [
          * If caching is enable and App is {@link #isOnline online} the empties the SData cache via {@link #_clearSDataRequestCache _clearSDataRequestCache}.
          */
         initCaching: function() {
-            if (this.enableCaching)
-            {
-                if (this.isOnline())
+            if (this.enableCaching) {
+                if (this.isOnline()) {
                     this._clearSDataRequestCache();
+                }
             }
         },
-        onOffline: function () {
+        onOffline: function() {
             this.onLine = false;
         },
-        onOnline: function () {
+        onOnline: function() {
             this.onLine = true;
         },
         /**
@@ -341,6 +382,40 @@ define('Sage/Platform/Mobile/Application', [
                     connect.publish('/app/setOrientation', [value]);
                 }
             }.bind(this)));
+
+            return this;
+        },
+        /**
+         * Executes the chain of promises registered with registerAppStatePromise.
+         * When all promises are done, a new promise is returned to the caller, and all
+         * registered promises are flushed.
+         * @return {Promise}
+         */
+        initAppState: function() {
+            var promises = array.map(this._appStatePromises, function(item) {
+                var results = item;
+                if (typeof item === 'function') {
+                    results = item();
+                }
+
+                return results;
+            });
+
+            return all(promises).then(function(results) {
+                this.clearAppStatePromises();
+                return results;
+            }.bind(this));
+        },
+        /**
+         * Registers a promise that will resolve when initAppState is invoked.
+         * @param {Promise|Function} promise A promise or a function that returns a promise
+         */
+        registerAppStatePromise: function(promise) {
+            this._appStatePromises.push(promise);
+            return this;
+        },
+        clearAppStatePromises: function() {
+            this._appStatePromises = [];
         },
         onSetOrientation: function(value) {
         },
@@ -349,22 +424,29 @@ define('Sage/Platform/Mobile/Application', [
          */
         initServices: function() {
             // TODO: Remove this method
-            for (var name in this.connections)
-                this.registerService(name, this.connections[name]);
+            for (var name in this.connections) {
+                if (this.connections.hasOwnProperty(name)) {
+                    this.registerService(name, this.connections[name]);
+                }
+            }
         },
         /**
          * Loops through modules and calls their `init()` function.
          */
         initModules: function() {
-            for (var i = 0; i < this.modules.length; i++)
+            for (var i = 0; i < this.modules.length; i++) {
                 this.modules[i].init(this);
+            }
         },
         /**
          * Loops through (tool)bars and calls their `init()` function.
          */
         initToolbars: function() {
-            for (var n in this.bars)
-                this.bars[n].init(); // todo: change to startup
+            for (var n in this.bars) {
+                if (this.bars.hasOwnProperty(n)) {
+                    this.bars[n].init(); // todo: change to startup
+                }
+            }
         },
         /**
          * Sets the global variable `App` to this instance.
@@ -376,6 +458,7 @@ define('Sage/Platform/Mobile/Application', [
          * Initializes this application as well as the toolbar and all currently registered views.
          */
         init: function() {
+            this.initPreferences();
             this.initConnects();
             this.initSignals();
             this.initCaching();
@@ -385,12 +468,46 @@ define('Sage/Platform/Mobile/Application', [
             this.initToolbars();
             this.initReUI();
         },
+        initPreferences: function() {
+            this._loadPreferences();
+        },
+        /**
+         * Check if the browser supports touch events.
+         * @return {Boolean} true if the current browser supports touch events, false otherwise.
+         */
+        supportsTouch: function() {
+            // Taken from https://github.com/Modernizr/Modernizr/ (MIT Licensed)
+            return ('ontouchstart' in window) || (window.DocumentTouch && document instanceof window.DocumentTouch);
+        },
+        persistPreferences: function() {
+            try {
+                if (window.localStorage) {
+                    window.localStorage.setItem('preferences', json.stringify(this.preferences));
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        },
+        _loadPreferences: function() {
+            try {
+                if (window.localStorage) {
+                    this.preferences = json.parse(window.localStorage.getItem('preferences'));
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        },
         /**
          * Establishes various connections to events.
          */
         _startupConnections: function() {
-            for (var name in this.connections)
-                if (this.connections.hasOwnProperty(name)) this.registerConnection(name, this.connections[name]);
+            for (var name in this.connections) {
+                if (this.connections.hasOwnProperty(name)) {
+                    if (this.connections.hasOwnProperty(name)) {
+                        this.registerConnection(name, this.connections[name]);
+                    }
+                }
+            }
 
             /* todo: should we be mixing this in? */
             delete this.connections;
@@ -418,18 +535,21 @@ define('Sage/Platform/Mobile/Application', [
          * Removes all keys from localStorage that start with `sdata.cache`.
          */
         _clearSDataRequestCache: function() {
-            var check = function(k) {
+            var check,
+                i,
+                key;
+
+            check = function(k) {
                 return (/^sdata\.cache/i).test(k);
             };
 
-            if (window.localStorage)
-            {
+            if (window.localStorage) {
                 /* todo: find a better way to detect */
-                for (var i = window.localStorage.length - 1; i >= 0 ; i--)
-                {
-                    var key = window.localStorage.key(i);
-                    if (check(key))
+                for (i = window.localStorage.length - 1; i >= 0 ; i--) {
+                    key = window.localStorage.key(i);
+                    if (check(key)) {
                         window.localStorage.removeItem(key);
+                    }
                 }
             }
         },
@@ -448,16 +568,19 @@ define('Sage/Platform/Mobile/Application', [
          * @param o XHR object with namely the `result` property
          */
         _loadSDataRequest: function(request, o) {
-            // todo: find a better way of indicating that a request can prefer cache
-            if (window.localStorage)
-            {
-                if (this.isOnline() && (request.allowCacheUse !== true)) return;
+            var key,
+                feed;
 
-                var key = this._createCacheKey(request);
-                var feed = window.localStorage.getItem(key);
-                if (feed)
-                {
-                    o.result = json.fromJson(feed);
+            // todo: find a better way of indicating that a request can prefer cache
+            if (window.localStorage) {
+                if (this.isOnline() && (request.allowCacheUse !== true)) {
+                    return;
+                }
+
+                key = this._createCacheKey(request);
+                feed = window.localStorage.getItem(key);
+                if (feed) {
+                    o.result = json.parse(feed);
                 }
             }
         },
@@ -469,14 +592,12 @@ define('Sage/Platform/Mobile/Application', [
          */
         _cacheSDataRequest: function(request, o, feed) {
             /* todo: decide how to handle PUT/POST/DELETE */
-            if (window.localStorage)
-            {
-                if (/get/i.test(o.method) && typeof feed === 'object')
-                {
+            if (window.localStorage) {
+                if (/get/i.test(o.method) && typeof feed === 'object') {
                     var key = this._createCacheKey(request);
 
                     window.localStorage.removeItem(key);
-                    window.localStorage.setItem(key, json.toJson(feed));
+                    window.localStorage.setItem(key, json.stringify(feed));
                 }
             }
         },
@@ -496,14 +617,14 @@ define('Sage/Platform/Mobile/Application', [
 
             this.services[name] = instance;
 
-            if (this.enableCaching && (options.offline || service.offline))
-            {
+            if (this.enableCaching && (options.offline || service.offline)) {
                 instance.on('beforerequest', this._loadSDataRequest, this);
                 instance.on('requestcomplete', this._cacheSDataRequest, this);
             }
 
-            if ((options.isDefault || service.isDefault) || !this.defaultService)
+            if ((options.isDefault || service.isDefault) || !this.defaultService) {
                 this.defaultService = instance;
+            }
 
             return this;
         },
@@ -620,12 +741,18 @@ define('Sage/Platform/Mobile/Application', [
          * @return {View[]} An array containing the currently registered views.
          */
         getViews: function() {
-            var r = [];
-            for (var n in this.views) {
-                r.push(this.views[n]);
+            var results,
+                view;
+
+            results = [];
+
+            for (view in this.views) {
+                if (this.views.hasOwnProperty(view)) {
+                    results.push(this.views[view]);
+                }
             }
 
-            return r;
+            return results;
         },
         /**
          * Checks to see if the passed view instance is the currently active one by comparing it to {@link #getPrimaryActiveView primaryActiveView}.
@@ -652,7 +779,7 @@ define('Sage/Platform/Mobile/Application', [
          * @return {Boolean} True if there is a registered view name matching the key.
          */
         hasView: function(key) {
-            return !!this.getView(key);
+            return !!this._internalGetView({key: key, init: false});
         },
         /**
          * Returns the registered view instance with the associated key.
@@ -660,7 +787,14 @@ define('Sage/Platform/Mobile/Application', [
          * @return {View} view The requested view.
          */
         getView: function(key) {
-            var view;
+            return this._internalGetView({key: key, init: true});
+        },
+        _internalGetView: function(options) {
+            var view, key, init;
+
+            key = options && options.key;
+            init = options && options.init;
+
             if (key) {
                 if (typeof key === 'string') {
                     view = this.views[key];
@@ -668,7 +802,7 @@ define('Sage/Platform/Mobile/Application', [
                     view = this.views[key.id];
                 }
 
-                if (view && !view._started) {
+                if (init && view && !view._started) {
                     view.init();
                     view.placeAt(view._placeAt, 'first');
                     view._started = true;
@@ -677,6 +811,7 @@ define('Sage/Platform/Mobile/Application', [
 
                 return view;
             }
+
             return null;
         },
         /**
@@ -685,7 +820,7 @@ define('Sage/Platform/Mobile/Application', [
          * @param access
          */
         getViewSecurity: function(key, access) {
-            var view = this.getView(key);
+            var view = this._internalGetView({key: key, init: false});
             return (view && view.getSecurity(access));
         },
         /**
@@ -695,8 +830,9 @@ define('Sage/Platform/Mobile/Application', [
          */
         getService: function(name) {
             // TODO: Remove this method
-            if (typeof name === 'string' && this.services[name])
+            if (typeof name === 'string' && this.services[name]) {
                 return this.services[name];
+            }
 
             return this.defaultService;
         },
@@ -708,7 +844,9 @@ define('Sage/Platform/Mobile/Application', [
             return !!this._connections[name];
         },
         getConnection: function(name) {
-            if (this._connections[name]) return this._connections[name];
+            if (this._connections[name]) {
+                return this._connections[name];
+            }
 
             return this._connections['default'];
         },
@@ -717,17 +855,26 @@ define('Sage/Platform/Mobile/Application', [
          * @param {String} title The new title.
          */
         setPrimaryTitle: function(title) {
-            for (var n in this.bars)
-                if (this.bars[n].managed) this.bars[n].set('title', title);
+            for (var n in this.bars) {
+                if (this.bars.hasOwnProperty(n)) {
+                    if (this.bars[n].managed) {
+                        this.bars[n].set('title', title);
+                    }
+                }
+            }
+
+            return this;
         },
         /**
          * Resize handle, publishes the global event `/app/resize` which views may subscribe to.
          */
         onResize: function() {
-            if (this.resizeTimer) clearTimeout(this.resizeTimer);
+            if (this.resizeTimer) {
+                clearTimeout(this.resizeTimer);
+            }
 
-            this.resizeTimer = setTimeout(function(){
-                connect.publish('/app/resize',[]);
+            this.resizeTimer = setTimeout(function() {
+                connect.publish('/app/resize', []);
             }, 100);
         },
         onRegistered: function(view) {
@@ -744,28 +891,29 @@ define('Sage/Platform/Mobile/Application', [
         },
         _onBeforeTransition: function(evt) {
             var view = this.getView(evt.target);
-            if (view)
-            {
-                if (evt.out)
+            if (view) {
+                if (evt.out) {
                     this._beforeViewTransitionAway(view);
-                else
+                } else {
                     this._beforeViewTransitionTo(view);
+                }
             }
         },
         _onAfterTransition: function(evt) {
             var view = this.getView(evt.target);
-            if (view)
-            {
-                if (evt.out)
+            if (view) {
+                if (evt.out) {
                     this._viewTransitionAway(view);
-                else
+                } else {
                     this._viewTransitionTo(view);
+                }
             }
         },
         _onActivate: function(evt) {
             var view = this.getView(evt.target);
-            if (view)
+            if (view) {
                 this._viewActivate(view, evt.tag, evt.data);
+            }
         },
         _beforeViewTransitionAway: function(view) {
             this.onBeforeViewTransitionAway(view);
@@ -775,9 +923,11 @@ define('Sage/Platform/Mobile/Application', [
         _beforeViewTransitionTo: function(view) {
             this.onBeforeViewTransitionTo(view);
 
-            for (var n in this.bars)
-                if (this.bars[n].managed)
+            for (var n in this.bars) {
+                if (this.bars[n].managed) {
                     this.bars[n].clear();
+                }
+            }
 
             view.beforeTransitionTo();
         },
@@ -789,11 +939,16 @@ define('Sage/Platform/Mobile/Application', [
         _viewTransitionTo: function(view) {
             this.onViewTransitionTo(view);
 
-            var tools = (view.options && view.options.tools) || view.getTools() || {};
+            var tools,
+                n;
 
-            for (var n in this.bars)
-                if (this.bars[n].managed)
+            tools = (view.options && view.options.tools) || view.getTools() || {};
+
+            for (n in this.bars) {
+                if (this.bars[n].managed) {
                     this.bars[n].showTools(tools[n]);
+                }
+            }
 
             view.transitionTo();
         },
@@ -801,6 +956,24 @@ define('Sage/Platform/Mobile/Application', [
             this.onViewActivate(view);
 
             view.activate(tag, data);
+        },
+        /**
+         * Searches ReUI.context.history by passing a predicate function that should return true if a match is found, false otherwise.
+         * This is similar to queryNavigationContext, however, this function will return an array of found items instead of a single item.
+         * @param {Function} predicate
+         * @param {Object} scope
+         * @return {Array} context history filtered out by the predicate.
+         */
+        filterNavigationContext: function(predicate, scope) {
+            var list, filtered;
+            list = ReUI.context.history || [];
+            filtered = array.filter(list, function(item) {
+                return predicate.call(scope || this, item.data);
+            }.bind(this));
+
+            return array.map(filtered, function(item) {
+                return item.data;
+            });
         },
         /**
          * Searches ReUI.context.history by passing a predicate function that should return true
@@ -822,9 +995,11 @@ define('Sage/Platform/Mobile/Application', [
 
             depth = depth || 0;
 
-            for (i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++)
-                if (predicate.call(scope || this, list[i].data))
+            for (i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++) {
+                if (predicate.call(scope || this, list[i].data)) {
                     return list[i].data;
+                }
+            }
 
             return false;
         },
@@ -837,24 +1012,27 @@ define('Sage/Platform/Mobile/Application', [
          */
         isNavigationFromResourceKind: function(kind, predicate, scope) {
             var lookup = {};
-            if (lang.isArray(kind))
-                array.forEach(kind, function(item) { this[item] = true;  }, lookup);
-            else
+            if (lang.isArray(kind)) {
+                array.forEach(kind, function(item) {
+                    this[item] = true;
+                }, lookup);
+            } else {
                 lookup[kind] = true;
+            }
 
             return this.queryNavigationContext(function(o) {
                 var context = (o.options && o.options.source) || o,
                     resourceKind = context && context.resourceKind;
 
                 // if a predicate is defined, both resourceKind AND predicate must match.
-                if (lookup[resourceKind])
-                {
-                    if (predicate)
-                    {
-                        if (predicate.call(scope || this, o, context)) return o;
-                    }
-                    else
+                if (lookup[resourceKind]) {
+                    if (predicate) {
+                        if (predicate.call(scope || this, o, context)) {
+                            return o;
+                        }
+                    } else {
                         return o;
+                    }
                 }
             });
         },
@@ -880,19 +1058,26 @@ define('Sage/Platform/Mobile/Application', [
          * @param {Object} spec The customization specification
          */
         registerCustomization: function(path, spec) {
-            if (arguments.length > 2)
-            {
-                var customizationSet = arguments[0],
-                    id = arguments[1];
+            var customizationSet,
+                container,
+                id;
+
+            if (arguments.length > 2) {
+                customizationSet = arguments[0];
+                id = arguments[1];
 
                 spec = arguments[2];
                 path = id
                     ? customizationSet + '#' + id
                     : customizationSet;
             }
-            
-            var container = this.customizations[path] || (this.customizations[path] = []);
-            if (container) container.push(spec);
+
+            container = this.customizations[path] || (this.customizations[path] = []);
+            if (container) {
+                container.push(spec);
+            }
+
+            return this;
         },
         /**
          * Returns the customizations registered for the provided path.
@@ -904,18 +1089,22 @@ define('Sage/Platform/Mobile/Application', [
          * @param {String} path The customization set such as `list/tools#account_list` or `detail#contact_detail`. First half being the type of customization and the second the view id.
          */
         getCustomizationsFor: function(path) {
-            if (arguments.length > 1)
-            {
+            var forPath,
+                segments,
+                customizationSet,
+                forSet;
+
+            if (arguments.length > 1) {
                 path = arguments[1]
                     ? arguments[0] + '#' + arguments[1]
                     : arguments[0];
             }
 
-            var segments = path.split('#'),
-                customizationSet = segments[0];
+            segments = path.split('#');
+            customizationSet = segments[0];
 
-            var forPath = this.customizations[path] || [],
-                forSet = this.customizations[customizationSet] || [];
+            forPath = this.customizations[path] || [];
+            forSet = this.customizations[customizationSet] || [];
 
             return forPath.concat(forSet);
         },
@@ -926,11 +1115,13 @@ define('Sage/Platform/Mobile/Application', [
          * Override this function to load a view in the left drawer.
          */
         showLeftDrawer: function() {
+            return this;
         },
         /**
          * Override this function to load a view in the right drawer.
          */
         showRightDrawer: function() {
+            return this;
         },
         /**
          * Loads Snap.js and assigns the instance to App.snapper. This method would typically be called before navigating to the initial view, so the login page does not contain the menu.
@@ -960,14 +1151,19 @@ define('Sage/Platform/Mobile/Application', [
                 tapToClose: has('ie') ? false : true, // causes issues on windows phones where tapping the close button causes snap.js endDrag to fire, closing the menu before we can check the state properly
                 touchToDrag: false,
                 slideIntent: 40,
-                minDragDistance: 5 
+                minDragDistance: 5
             });
 
             this.snapper = snapper;
 
             this.showLeftDrawer();
             this.showRightDrawer();
+            return this;
         }
     });
+
+    // Backwards compatibility for custom modules still referencing the old declare global
+    lang.setObject('Sage.Platform.Mobile.Application', __class);
+    return __class;
 });
 

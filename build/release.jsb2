@@ -29,10 +29,6 @@
           "path": "../libraries/sdata/"
         },
         {
-          "text": "overthrow.js",
-          "path": "../libraries/overthrow/"
-        },
-        {
           "text": "pouchdb-3.0.6.min.js",
           "path": "../libraries/PouchDB/"
         },
@@ -43,6 +39,25 @@
         {
           "text": "deep-diff-0.2.0.min.js",
           "path": "../libraries/deep-diff/"
+        },
+        {
+          "text": "Chart.min.js",
+          "path": "../libraries/"
+        }
+      ]
+    },
+    {
+      "name": "Argos SDK AMD Dependencies",
+      "file": "content/javascript/argos-amd-dependencies.js",
+      "isDebug": true,
+      "fileIncludes": [
+        {
+          "text": "snap.js",
+          "path": "../libraries/snap/"
+        },
+        {
+          "text": "moment-with-langs.min.js",
+          "path": "../libraries/moment/"
         }
       ]
     },
@@ -87,10 +102,6 @@
           "path": "../src"
         },
         {
-          "text": "ApplicationModule.js",
-          "path": "../src"
-        },
-        {
           "text": "_ActionMixin.js",
           "path": "../src"
         },
@@ -100,6 +111,10 @@
         },
         {
           "text": "_Templated.js",
+          "path": "../src"
+        },
+        {
+          "text": "_ErrorHandleMixin.js",
           "path": "../src"
         },
         {
@@ -135,6 +150,22 @@
           "path": "../src"
         },
         {
+          "text": "_PullToRefreshMixin.js",
+          "path": "../src"
+        },
+        {
+          "text": "_RelatedViewWidgetBase.js",
+          "path": "../src"
+        },
+        {
+          "text": "RelatedViewWidget.js",
+          "path": "../src"
+        },
+        {
+          "text": "RelatedViewManager.js",
+          "path": "../src"
+        },
+        {
           "text": "_DetailBase.js",
           "path": "../src"
         },
@@ -144,6 +175,10 @@
         },
         {
           "text": "_LegacySDataDetailMixin.js",
+          "path": "../src"
+        },
+        {
+          "text": "_RelatedViewWidgetDetailMixin.js",
           "path": "../src"
         },
         {
@@ -223,6 +258,10 @@
           "path": "../src"
         },
         {
+          "text": "_RelatedViewWidgetEditMixin.js",
+          "path": "../src"
+        },
+        {
           "text": "Edit.js",
           "path": "../src"
         },
@@ -237,14 +276,6 @@
         {
           "text": "GroupByValueSection.js",
           "path": "../src/Groups"
-        },
-        {
-          "text": "RelatedViewManager.js",
-          "path": "../src"
-        },
-        {
-          "text": "RelatedViewWidget.js",
-          "path": "../src"
         },
         {
           "text": "SearchWidget.js",
@@ -263,11 +294,19 @@
           "path": "../src"
         },
         {
+          "text": "_RelatedViewWidgetListMixin.js",
+          "path": "../src"
+        },
+        {
           "text": "List.js",
           "path": "../src"
         },
         {
           "text": "GroupedList.js",
+          "path": "../src"
+        },
+        {
+          "text": "_ConfigureBase.js",
           "path": "../src"
         },
         {
@@ -283,6 +322,10 @@
           "path": "../src"
         },
         {
+          "text": "ConfigureQuickActions.js",
+          "path": "../src/Views"
+        },
+        {
           "text": "FileSelect.js",
           "path": "../src/Views"
         },
@@ -293,7 +336,11 @@
         {
           "text": "_ServiceMixin.js",
           "path": "../src"
-        }
+        },
+        {
+          "text": "ApplicationModule.js",
+          "path": "../src"
+        },
       ]
     }
   ],
@@ -316,17 +363,12 @@
     {
       "src": "../libraries/dojo/dojo",
       "dest": "content/dojo/dojo",
-      "filters": "(dojo\\.js|acme\\.js)"
+      "filters": "(dojo\\.js)"
     },
     {
       "src": "../libraries/dojo/dojo/cldr/nls",
       "dest": "content/dojo/dojo/cldr/nls",
       "filters": ".*js"
-    },
-    {
-      "src": "../libraries/dojo/dojox",
-      "dest": "content/dojo/dojox",
-      "filters": "((gfx|svg|shape|path)\\.js)"
     }
   ]
 }

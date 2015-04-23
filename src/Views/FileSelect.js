@@ -14,24 +14,26 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Views.FileSelect
+ * @class argos.Views.FileSelect
  * File Select View is a view for selection files capabilities.
  *
  * @alternateClassName FileSelect
- * @extends Sage.Platform.Mobile.View
+ * @extends argos.View
  */
-define('Sage/Platform/Mobile/Views/FileSelect', [
+define('argos/Views/FileSelect', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/window',
     'dojo/has',
     'dojo/dom-construct',
     'dojo/dom-attr',
     'dojo/dom-class',
     'dojo/dom',
-    'Sage/Platform/Mobile/Fields/TextField',
-    'Sage/Platform/Mobile/View'
+    '../Fields/TextField',
+    '../View'
 ], function(
     declare,
+    lang,
     win,
     has,
     domConstruct,
@@ -42,7 +44,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
     View
 ) {
 
-    return declare('Sage.Platform.Mobile.Views.FileSelect', [View], {
+    var __class = declare('argos.Views.FileSelect', [View], {
         // Localization
         titleText: 'File Select',
         addFileText: 'Click or Tap here to add a file.',
@@ -154,11 +156,11 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             this.fileWrapper.appendChild(node);
             this.btnFileSelect = node;
 
-            this.btnFileSelect.onchange = function(e){
+            this.btnFileSelect.onchange = function(e) {
                 this._onSelectFile(e);
             }.bind(this);
 
-            this.contentNode.innerHTML = "";
+            this.contentNode.innerHTML = '';
             domClass.remove(this.fileArea, 'display-none');
             domClass.remove(this.btnUploadFiles, 'display-none');
             this.onUpdateProgress('');
@@ -173,13 +175,13 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
          * @returns {Array}
          */
         getFileItems: function() {
-            var fileItems, files, description;
+            var fileItems, files, description, i;
             fileItems = [];
             files = this._files;
             description = '';
-            for (var i = 0; i < files.length; i++) {
+            for (i = 0; i < files.length; i++) {
                 description = this._getFileDescription(i);
-                fileItems.push({ 
+                fileItems.push({
                     file: files[i],
                     fileName: files[i].name,
                     description: description
@@ -189,16 +191,18 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         },
         _getFileDescription: function(fileIndex) {
             var n, desc;
-            n = dom.byId("File_" + fileIndex);
+            n = dom.byId('File_' + fileIndex);
             if (n) {
                 desc = n.value;
             }
             return desc;
         },
         _onSelectFile: function(e) {
-            var files = this.btnFileSelect.files;
+            var files, i;
+
+            files = this.btnFileSelect.files;
             if (files && files.length > 0) {
-                for (var i = 0; i < files.length; i++) {
+                for (i = 0; i < files.length; i++) {
                     this._files.push(files[i]);
                 }
                 this._buildForm(files);
@@ -207,16 +211,16 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             domClass.add(this.fileArea, 'display-none');
 
         },
-        _addFile: function (file, index){
-            var filelength, data;
+        _addFile: function(file, index) {
+            var filelength, data, rowNode;
 
             filelength = this._getFileLength(file);
             data = {
                 name: 'File_' + index,
-                fileName: file.name + "  (" + filelength + ")",
+                fileName: file.name + '  (' + filelength + ')',
                 description: this._getDefaultDescription(file.name)
             };
-            var rowNode = domConstruct.place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
+            rowNode = domConstruct.place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
         },
         _getFileLength: function(file) {
             var filelength;
@@ -229,31 +233,31 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
                 filelength = file.size || file.blob.length;
             }
             if (filelength === 0) {
-                filelength += "0 " + this.bytesTextBytes;
+                filelength += '0 ' + this.bytesTextBytes;
             }
             else {
                 if (filelength) {
                     if (filelength > 1024) {
                         if (filelength > 1048576) {
-                            filelength = Math.round(filelength / 1048576) + " MB";
+                            filelength = Math.round(filelength / 1048576) + ' MB';
                         } else {
-                            filelength = Math.round(filelength / 1024) + " KB";
+                            filelength = Math.round(filelength / 1024) + ' KB';
                         }
                     } else {
-                        filelength += " " + this.bytesTextBytesBytes;
+                        filelength += ' ' + this.bytesTextBytesBytes;
                     }
                 }
             }
             return filelength;
         },
         _buildForm: function(files) {
-            var file;
-            for (var i = 0; i < files.length; i++) {
-               file = files[i];
-               this._addFile(file, i);
-           }
-       },
-       _getDefaultDescription: function (filename) {
+            var file, i;
+            for (i = 0; i < files.length; i++) {
+                file = files[i];
+                this._addFile(file, i);
+            }
+        },
+        _getDefaultDescription: function(filename) {
             return filename.replace(/\.[\w]*/, '');
         },
         /**
@@ -274,7 +278,7 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
         onUpdateProgress: function(msg) {
             var n = dom.byId('fileselect-upload-progress');
             if (n) {
-                n.innerHTML = this.loadingText + '' + msg;
+                n.innerHTML = this.loadingText + ' ' + msg;
             }
         },
         /**
@@ -285,5 +289,8 @@ define('Sage/Platform/Mobile/Views/FileSelect', [
             domClass.remove(this.domNode, 'list-loading');
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Views.FileSelect', __class);
+    return __class;
 });
 

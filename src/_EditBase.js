@@ -14,7 +14,7 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._EditBase
+ * @class argos._EditBase
  * An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
  * of a layout similar to Detail rows but are instead Edit fields.
  *
@@ -27,61 +27,61 @@
  * functions and operates.
  *
  * @alternateClassName _EditBase
- * @extends Sage.Platform.Mobile.View
- * @requires Sage.Platform.Mobile.Convert
- * @requires Sage.Platform.Mobile.Utility
- * @requires Sage.Platform.Mobile.Fields.ErrorManager
- * @requires Sage.Platform.Mobile.Fields.FieldManager
- * @requires Sage.Platform.Mobile.Fields.BooleanField
- * @requires Sage.Platform.Mobile.Fields.DecimalField
- * @requires Sage.Platform.Mobile.Fields.DurationField
- * @requires Sage.Platform.Mobile.Fields.HiddenField
- * @requires Sage.Platform.Mobile.Fields.LookupField
- * @requires Sage.Platform.Mobile.Fields.NoteField
- * @requires Sage.Platform.Mobile.Fields.PhoneField
- * @requires Sage.Platform.Mobile.Fields.SelectField
- * @requires Sage.Platform.Mobile.Fields.SignatureField
- * @requires Sage.Platform.Mobile.Fields.TextAreaField
- * @requires Sage.Platform.Mobile.Fields.TextField
+ * @extends argos.View
+ * @requires argos.Convert
+ * @requires argos.Utility
+ * @requires argos.Fields.ErrorManager
+ * @requires argos.Fields.FieldManager
+ * @requires argos.Fields.BooleanField
+ * @requires argos.Fields.DecimalField
+ * @requires argos.Fields.DurationField
+ * @requires argos.Fields.HiddenField
+ * @requires argos.Fields.LookupField
+ * @requires argos.Fields.NoteField
+ * @requires argos.Fields.PhoneField
+ * @requires argos.Fields.SelectField
+ * @requires argos.Fields.SignatureField
+ * @requires argos.Fields.TextAreaField
+ * @requires argos.Fields.TextField
  */
-define('Sage/Platform/Mobile/_EditBase', [
+define('argos/_EditBase', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/connect',
     'dojo/_base/array',
     'dojo/_base/Deferred',
-    'dojo/string',
+    'dojo/_base/window',
     'dojo/dom',
     'dojo/dom-attr',
     'dojo/dom-class',
     'dojo/dom-construct',
     'dojo/query',
-    'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/ErrorManager',
-    'Sage/Platform/Mobile/FieldManager',
-    'Sage/Platform/Mobile/View',
+    './Convert',
+    './Utility',
+    './ErrorManager',
+    './FieldManager',
+    './View',
 
     'dojo/NodeList-manipulate',
-    'Sage/Platform/Mobile/Fields/BooleanField',
-    'Sage/Platform/Mobile/Fields/DateField',
-    'Sage/Platform/Mobile/Fields/DecimalField',
-    'Sage/Platform/Mobile/Fields/DurationField',
-    'Sage/Platform/Mobile/Fields/HiddenField',
-    'Sage/Platform/Mobile/Fields/LookupField',
-    'Sage/Platform/Mobile/Fields/NoteField',
-    'Sage/Platform/Mobile/Fields/PhoneField',
-    'Sage/Platform/Mobile/Fields/SelectField',
-    'Sage/Platform/Mobile/Fields/SignatureField',
-    'Sage/Platform/Mobile/Fields/TextAreaField',
-    'Sage/Platform/Mobile/Fields/TextField'
+    './Fields/BooleanField',
+    './Fields/DateField',
+    './Fields/DecimalField',
+    './Fields/DurationField',
+    './Fields/HiddenField',
+    './Fields/LookupField',
+    './Fields/NoteField',
+    './Fields/PhoneField',
+    './Fields/SelectField',
+    './Fields/SignatureField',
+    './Fields/TextAreaField',
+    './Fields/TextField'
 ], function(
     declare,
     lang,
     connect,
     array,
     Deferred,
-    string,
+    win,
     dom,
     domAttr,
     domClass,
@@ -94,7 +94,7 @@ define('Sage/Platform/Mobile/_EditBase', [
     View
 ) {
 
-    return declare('Sage.Platform.Mobile._EditBase', [View], {
+    var __class = declare('argos._EditBase', [View], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -128,7 +128,7 @@ define('Sage/Platform/Mobile/_EditBase', [
          *
          */
         widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="overthrow edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '{%! $.loadingTemplate %}',
             '{%! $.validationSummaryTemplate %}',
             '{%! $.concurrencySummaryTemplate %}',
@@ -299,10 +299,15 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         loadingText: 'loading...',
         /**
-         * @property {String}
-         * Text alerted to user when any server error occurs.
+         * @property {Object}
+         * Localized error messages. One general error message, and messages by HTTP status code.
          */
-        requestErrorText: 'A server error occured while requesting data.',
+        errorText: {
+            general: 'A server error occured while requesting data.',
+            status: {
+                '410': 'Error saving. This record no longer exists.'
+            }
+        },
         /**
          * @property {String}
          * Text alerted to user when the data has been updated since they last fetched the data.
@@ -324,9 +329,6 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         inserting: null,
 
-        HTTP_STATUS: {
-            PRECONDITION_FAILED: 412
-        },
         _focusField: null,
         _hasFocused: false,
 
@@ -363,7 +365,9 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.inherited(arguments);
 
             for (var name in this.fields) {
-                this.fields[name].init();
+                if (this.fields.hasOwnProperty(name)) {
+                    this.fields[name].init();
+                }
             }
         },
         /**
@@ -377,12 +381,12 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         createToolLayout: function() {
             var tbar = [{
-                    id: 'save',
-                    action: 'save',
-                    cls: 'fa fa-save fa-fw fa-lg',
-                    security: this.options && this.options.insert
-                        ? this.insertSecurity
-                        : this.updateSecurity
+                id: 'save',
+                action: 'save',
+                cls: 'fa fa-save fa-fw fa-lg',
+                security: this.options && this.options.insert
+                    ? this.insertSecurity
+                    : this.updateSecurity
             }];
 
             if (!App.isOnFirstView()) {
@@ -390,14 +394,17 @@ define('Sage/Platform/Mobile/_EditBase', [
                     id: 'cancel',
                     cls: 'fa fa-ban fa-fw fa-lg',
                     side: 'left',
-                    fn: ReUI.back,
-                    scope: ReUI
+                    action: 'onToolCancel'
                 });
             }
 
             return this.tools || (this.tools = {
                 'tbar': tbar
             });
+        },
+        onToolCancel: function() {
+            this.refreshRequired = true;
+            ReUI.back();
         },
         _getStoreAttr: function() {
             return this.store || (this.store = this.createStore());
@@ -548,20 +555,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
         },
         _onGetError: function(getOptions, error) {
-            if (error.aborted) {
-                /* todo: show error message? */
-            } else if (error.status == 404) {
-                /* todo: show error message */
-            } else {
-                alert(string.substitute(this.requestErrorText, [error]));
-            }
-
-            var errorItem = {
-                viewOptions: this.options,
-                serverError: error
-            };
-            ErrorManager.addError(this.requestErrorText, errorItem);
-
+            this.handleError(error);
             domClass.remove(this.domNode, 'panel-loading');
         },
         /**
@@ -594,6 +588,51 @@ define('Sage/Platform/Mobile/_EditBase', [
         createLayout: function() {
             return this.layout || [];
         },
+
+        createErrorHandlers: function() {
+            this.errorHandlers = this.errorHandlers || [{
+                name: 'PreCondition',
+                test: function(error) {
+                    return error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED;
+                },
+                handle: function(error, next) {
+                    next(); // Invoke the next error handler first, the refresh will change a lot of mutable/shared state
+
+                    // Preserve our current form values (all of them),
+                    // and reload the view to fetch the new data.
+                    this.previousValuesAll = this.getValues(true);
+                    this.options.key = this.entry.$key; // Force a fetch by key
+                    delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
+                    this.refresh();
+                }
+            }, {
+                name: 'AlertError',
+                test: function(error) {
+                    return error.status !== this.HTTP_STATUS.PRECONDITION_FAILED;
+                },
+                handle: function(error, next) {
+                    alert(this.getErrorMessage(error));
+                    next();
+                }
+            }, {
+                name: 'CatchAll',
+                test: function(error) {
+                    return true;
+                },
+                handle: function(error, next) {
+                    var errorItem = {
+                        viewOptions: this.options,
+                        serverError: error
+                    };
+
+                    ErrorManager.addError(this.getErrorMessage(error), errorItem);
+                    next();
+                }
+            }
+            ];
+
+            return this.errorHandlers;
+        },
         /**
          *
          * Returns the view key
@@ -618,9 +657,11 @@ define('Sage/Platform/Mobile/_EditBase', [
                 current,
                 ctor,
                 field,
-                template;
+                i,
+                template,
+                sectionNode;
 
-            for (var i = 0; i < rows.length; i++) {
+            for (i = 0; i < rows.length; i++) {
                 current = rows[i];
 
                 if (current['children'] || current['as']) {
@@ -633,24 +674,42 @@ define('Sage/Platform/Mobile/_EditBase', [
                     continue;
                 }
 
-                if (!sectionStarted)
-                {
+                if (!sectionStarted) {
                     sectionStarted = true;
                     content.push(this.sectionBeginTemplate.apply(layout, this));
                 }
 
-                ctor = FieldManager.get(current['type']);
-                field = this.fields[current['name'] || current['property']] = new ctor(lang.mixin({
-                        owner: this
-                    }, current));
+                this.createRowContent(current, content);
+            }
+
+            content.push(this.sectionEndTemplate.apply(layout, this));
+            sectionNode = domConstruct.toDom(content.join(''));
+            this.onApplySectionNode(sectionNode, current);
+            domConstruct.place(sectionNode, this.contentNode, 'last');
+
+            for (i = 0; i < sectionQueue.length; i++) {
+                current = sectionQueue[i];
+
+                this.processLayout(current);
+            }
+        },
+        onApplySectionNode: function(sectionNode, layout) {
+        },
+        createRowContent: function(layout, content) {
+            var ctor, field, template;
+            ctor = FieldManager.get(layout['type']);
+            if (ctor) {
+                field = this.fields[layout['name'] || layout['property']] = new ctor(lang.mixin({
+                    owner: this
+                }, layout));
+
                 template = field.propertyTemplate || this.propertyTemplate;
 
                 if (field.autoFocus && !this._focusField) {
                     this._focusField = field;
                 } else if (field.autoFocus && this._focusField) {
-                    throw new Error("Only one field can have autoFocus set to true in the Edit layout.");
+                    throw new Error('Only one field can have autoFocus set to true in the Edit layout.');
                 }
-
 
                 this.connect(field, 'onShow', this._onShowField);
                 this.connect(field, 'onHide', this._onHideField);
@@ -658,16 +717,6 @@ define('Sage/Platform/Mobile/_EditBase', [
                 this.connect(field, 'onDisable', this._onDisableField);
 
                 content.push(template.apply(field, this));
-            }
-
-            content.push(this.sectionEndTemplate.apply(layout, this));
-
-            domConstruct.place(content.join(''), this.contentNode, 'last');
-
-            for (i = 0; i < sectionQueue.length; i++) {
-                current = sectionQueue[i];
-
-                this.processLayout(current);
             }
         },
         /**
@@ -699,14 +748,20 @@ define('Sage/Platform/Mobile/_EditBase', [
          * Loops all the fields looking for any with the `default` property set, if set apply that
          * value as the initial value of the field. If the value is a function, its expanded then applied.
          */
-        applyFieldDefaults: function(){
-            for (var name in this.fields) {
-                var field = this.fields[name],
+        applyFieldDefaults: function() {
+            var name, field, defaultValue;
+
+            for (name in this.fields) {
+                if (this.fields.hasOwnProperty(name)) {
+                    field = this.fields[name];
                     defaultValue = field['default'];
 
-                if (typeof defaultValue === 'undefined') continue;
+                    if (typeof defaultValue === 'undefined') {
+                        continue;
+                    }
 
-                field.setValue(this.expandExpression(defaultValue, field));
+                    field.setValue(this.expandExpression(defaultValue, field));
+                }
             }
         },
         /**
@@ -714,8 +769,10 @@ define('Sage/Platform/Mobile/_EditBase', [
          */
         clearValues: function() {
             for (var name in this.fields) {
-                this.fields[name].clearHighlight();
-                this.fields[name].clearValue();
+                if (this.fields.hasOwnProperty(name)) {
+                    this.fields[name].clearHighlight();
+                    this.fields[name].clearValue();
+                }
             }
         },
         /**
@@ -731,25 +788,28 @@ define('Sage/Platform/Mobile/_EditBase', [
         setValues: function(values, initial) {
             var noValue = {},
                 field,
+                name,
                 value;
 
-            for (var name in this.fields) {
-                field = this.fields[name];
+            for (name in this.fields) {
+                if (this.fields.hasOwnProperty(name)) {
+                    field = this.fields[name];
 
-                // for now, explicitly hidden fields (via. the field.hide() method) are not included
-                if (field.isHidden()) {
-                    continue;
-                }
+                    // for now, explicitly hidden fields (via. the field.hide() method) are not included
+                    if (field.isHidden()) {
+                        continue;
+                    }
 
-                if (field.applyTo !== false) {
-                    value = utility.getValue(values, field.applyTo, noValue);
-                } else {
-                    value = utility.getValue(values, field.property || name, noValue);
-                }
+                    if (field.applyTo !== false) {
+                        value = utility.getValue(values, field.applyTo, noValue);
+                    } else {
+                        value = utility.getValue(values, field.property || name, noValue);
+                    }
 
-                // fyi: uses the fact that ({} !== {})
-                if (value !== noValue) {
-                    field.setValue(value, initial);
+                    // fyi: uses the fact that ({} !== {})
+                    if (value !== noValue) {
+                        field.setValue(value, initial);
+                    }
                 }
             }
         },
@@ -774,48 +834,52 @@ define('Sage/Platform/Mobile/_EditBase', [
                 prop;
 
             for (name in this.fields) {
-                field = this.fields[name];
-                value = field.getValue();
+                if (this.fields.hasOwnProperty(name)) {
+                    field = this.fields[name];
+                    value = field.getValue();
 
-                include = this.expandExpression(field.include, value, field, this);
-                exclude = this.expandExpression(field.exclude, value, field, this);
+                    include = this.expandExpression(field.include, value, field, this);
+                    exclude = this.expandExpression(field.exclude, value, field, this);
 
-                /**
-                 * include:
-                 *   true: always include value
-                 *   false: always exclude value
-                 * exclude:
-                 *   true: always exclude value
-                 *   false: default handling
-                 */
-                if (include !== undefined && !include) {
-                    continue;
-                }
-                if (exclude !== undefined && exclude) {
-                    continue;
-                }
-
-                // for now, explicitly hidden fields (via. the field.hide() method) are not included
-                if (all || ((field.alwaysUseValue || field.isDirty() || include) && !field.isHidden())) {
-                    if (field.applyTo !== false) {
-                        if (typeof field.applyTo === 'function') {
-                            if (typeof value === 'object') {
-                                // Copy the value properties into our payload object
-                                for (prop in value) {
-                                    payload[prop] = value[prop];
-                                }
-                            }
-
-                            field.applyTo(payload, value);
-                        } else if (typeof field.applyTo === 'string') {
-                            target = utility.getValue(payload, field.applyTo);
-                            lang.mixin(target, value);
-                        }
-                    } else {
-                        utility.setValue(payload, field.property || name, value);
+                    /**
+                     * include:
+                     *   true: always include value
+                     *   false: always exclude value
+                     * exclude:
+                     *   true: always exclude value
+                     *   false: default handling
+                     */
+                    if (include !== undefined && !include) {
+                        continue;
+                    }
+                    if (exclude !== undefined && exclude) {
+                        continue;
                     }
 
-                    empty = false;
+                    // for now, explicitly hidden fields (via. the field.hide() method) are not included
+                    if (all || ((field.alwaysUseValue || field.isDirty() || include) && !field.isHidden())) {
+                        if (field.applyTo !== false) {
+                            if (typeof field.applyTo === 'function') {
+                                if (typeof value === 'object') {
+                                    // Copy the value properties into our payload object
+                                    for (prop in value) {
+                                        if (value.hasOwnProperty(prop)) {
+                                            payload[prop] = value[prop];
+                                        }
+                                    }
+                                }
+
+                                field.applyTo(payload, value);
+                            } else if (typeof field.applyTo === 'string') {
+                                target = utility.getValue(payload, field.applyTo);
+                                lang.mixin(target, value);
+                            }
+                        } else {
+                            utility.setValue(payload, field.property || name, value);
+                        }
+
+                        empty = false;
+                    }
                 }
             }
             return empty ? false : payload;
@@ -826,21 +890,24 @@ define('Sage/Platform/Mobile/_EditBase', [
          * @return {Boolean/Object[]} Returns the array of errors if present or false for no errors.
          */
         validate: function() {
+            var name, field, result;
+
             this.errors = [];
 
-            for (var name in this.fields) {
-                var field = this.fields[name],
-                    result;
+            for (name in this.fields) {
+                if (this.fields.hasOwnProperty(name)) {
+                    field = this.fields[name];
 
-                if (!field.isHidden() && false !== (result = field.validate())) {
-                    domClass.add(field.containerNode, 'row-error');
+                    if (!field.isHidden() && false !== (result = field.validate())) {
+                        domClass.add(field.containerNode, 'row-error');
 
-                    this.errors.push({
-                        name: name,
-                        message: result
-                    });
-                } else {
-                    domClass.remove(field.containerNode, 'row-error');
+                        this.errors.push({
+                            name: name,
+                            message: result
+                        });
+                    } else {
+                        domClass.remove(field.containerNode, 'row-error');
+                    }
                 }
             }
 
@@ -865,7 +932,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                 App.bars.tbar.disableTool('save');
             }
 
-            domClass.add(this.domNode, 'busy');
+            domClass.add(win.body(), 'busy');
         },
         /**
          * Enables the form by setting busy to false and enabling the toolbar
@@ -877,7 +944,7 @@ define('Sage/Platform/Mobile/_EditBase', [
                 App.bars.tbar.enableTool('save');
             }
 
-            domClass.remove(this.domNode, 'busy');
+            domClass.remove(win.body(), 'busy');
         },
         /**
          * Called by save() when performing an insert (create).
@@ -900,7 +967,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             store = this.get('store');
             if (store) {
                 addOptions = {
-                        overwrite: false
+                    overwrite: false
                 };
                 entry = this.createEntryForInsert(values);
 
@@ -923,14 +990,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.onInsertCompleted(result);
         },
         onAddError: function(addOptions, error) {
-            alert(string.substitute(this.requestErrorText, [error]));
-
-            var errorItem = {
-                viewOptions: this.options,
-                serverError: error
-            };
-
-            ErrorManager.addError(this.requestErrorText, errorItem);
+            this.handleError(error);
             this.enable();
         },
         /**
@@ -971,8 +1031,8 @@ define('Sage/Platform/Mobile/_EditBase', [
             store = this.get('store');
             if (store) {
                 putOptions = {
-                        overwrite: true,
-                        id: store.getIdentity(this.entry)
+                    overwrite: true,
+                    id: store.getIdentity(this.entry)
                 };
                 entry = this.createEntryForUpdate(values);
 
@@ -1030,25 +1090,7 @@ define('Sage/Platform/Mobile/_EditBase', [
             this.onUpdateCompleted(result);
         },
         onPutError: function(putOptions, error) {
-            var errorItem;
-
-            if (error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED) {
-                // Preserve our current form values (all of them),
-                // and reload the view to fetch the new data.
-                this.previousValuesAll = this.getValues(true);
-                this.options.key = this.entry.$key; // Force a fetch by key
-                delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
-                this.refresh();
-            } else {
-                alert(string.substitute(this.requestErrorText, [error]));
-            }
-
-            errorItem = {
-                viewOptions: this.options,
-                serverError: error
-            };
-            ErrorManager.addError(this.requestErrorText, errorItem);
-
+            this.handleError(error);
             this.enable();
         },
         /**
@@ -1116,9 +1158,11 @@ define('Sage/Platform/Mobile/_EditBase', [
          * then sets the combined result into the summary validation node and sets the styling to visible
          */
         showValidationSummary: function() {
-            var content = [];
+            var content, i;
 
-            for (var i = 0; i < this.errors.length; i++) {
+            content = [];
+
+            for (i = 0; i < this.errors.length; i++) {
                 content.push(this.validationSummaryItemTemplate.apply(this.errors[i], this.fields[this.errors[i].name]));
             }
 
@@ -1126,9 +1170,11 @@ define('Sage/Platform/Mobile/_EditBase', [
             domClass.add(this.domNode, 'panel-form-error');
         },
         showConcurrencySummary: function() {
-            var content = [];
+            var content, i;
 
-            for (var i = 0; i < this.errors.length; i++) {
+            content = [];
+
+            for (i = 0; i < this.errors.length; i++) {
                 content.push(this.concurrencySummaryItemTemplate.apply(this.errors[i]));
             }
 
@@ -1292,5 +1338,8 @@ define('Sage/Platform/Mobile/_EditBase', [
             }
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._EditBase', __class);
+    return __class;
 });
 

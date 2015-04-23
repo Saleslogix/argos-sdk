@@ -14,23 +14,23 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Toolbar
+ * @class argos.Toolbar
  * Toolbar is a base toolbar class that provides basic rendering of the bar, adding toolbar items and binding their invokacations.
  *
  * Inherits dijit _Widget.
  *
  * @alternateClassName Toolbar
- * @mixins Sage.Platform.Mobile._ActionMixin
- * @mixins Sage.Platform.Mobile._Templated
+ * @mixins argos._ActionMixin
+ * @mixins argos._Templated
  */
-define('Sage/Platform/Mobile/Toolbar', [
+define('argos/Toolbar', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/dom-style',
     'dojo/dom-class',
     'dijit/_Widget',
-    'Sage/Platform/Mobile/_ActionMixin',
-    'Sage/Platform/Mobile/_Templated'
+    './_ActionMixin',
+    './_Templated'
 ], function(
     declare,
     lang,
@@ -40,7 +40,7 @@ define('Sage/Platform/Mobile/Toolbar', [
     _ActionMixin,
     _Templated
 ) {
-    return declare('Sage.Platform.Mobile.Toolbar', [_Widget, _ActionMixin, _Templated], {
+    var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
         /**
          * @property {Simplate}
          * HTML markup of the toolbar
@@ -61,10 +61,11 @@ define('Sage/Platform/Mobile/Toolbar', [
          * @return {String} String expression.
          */
         expandExpression: function(expression) {
-            if (typeof expression === 'function')
+            if (typeof expression === 'function') {
                 return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-            else
+            } else {
                 return expression;
+            }
         },
         /**
          * Called upon application startup.
@@ -80,18 +81,16 @@ define('Sage/Platform/Mobile/Toolbar', [
         invokeTool: function(parameters, evt, node) {
             var id = parameters && parameters.tool,
                 tool = this.tools && this.tools[id],
+                view,
                 source = tool && tool.source;
-            if (source && tool.enabled)
-            {
-                if (source.fn)
-                {
+            if (source && tool.enabled) {
+                if (source.fn) {
                     source.fn.call(source.scope || this, source);
-                }
-                else if (source.action)
-                {
-                    var view = App.getPrimaryActiveView();
-                    if (view && view.hasAction(source.action))
+                } else if (source.action) {
+                    view = App.getPrimaryActiveView();
+                    if (view && view.hasAction(source.action)) {
                         view.invokeAction(source.action, lang.mixin(parameters, {'$tool': source}), evt, node);
+                    }
                 }
             }
         },
@@ -99,13 +98,13 @@ define('Sage/Platform/Mobile/Toolbar', [
          * Sets the toolbar style to block (visibile)
          */
         show: function() {
-            domStyle.set(this.domNode, "display", "block");
+            domStyle.set(this.domNode, 'display', 'block');
         },
         /**
          * Sets the toolbar style to none (hidden)
          */
         hide: function() {
-            domStyle.set(this.domNode, "display", "none");
+            domStyle.set(this.domNode, 'display', 'none');
         },
         /**
          * Empties the toolbar item collection and sets enabled to true
@@ -135,8 +134,9 @@ define('Sage/Platform/Mobile/Toolbar', [
          */
         enableTool: function(id) {
             var tool = this.tools && this.tools[id];
-            if (tool)
+            if (tool) {
                 tool.enabled = true;
+            }
         },
         /**
          * Sets enabled to false of the toolbar item that matches the passed id
@@ -144,8 +144,9 @@ define('Sage/Platform/Mobile/Toolbar', [
          */
         disableTool: function(id) {
             var tool = this.tools && this.tools[id];
-            if (tool)
+            if (tool) {
                 tool.enabled = false;
+            }
         },
         /**
          * Sets busy to true of the toolbar item that matches the passed id
@@ -153,8 +154,9 @@ define('Sage/Platform/Mobile/Toolbar', [
          */
         indicateToolBusy: function(id) {
             var tool = this.tools && this.tools[id];
-            if (tool)
+            if (tool) {
                 tool.busy = true;
+            }
         },
         /**
          * Sets busy to false of the toolbar item that matches the passed id
@@ -162,8 +164,9 @@ define('Sage/Platform/Mobile/Toolbar', [
          */
         clearToolBusy: function(id) {
             var tool = this.tools && this.tools[id];
-            if (tool)
+            if (tool) {
                 tool.busy = false;
+            }
         },
         /**
          * Checks the enabled property of the toolbar item that matches the passed id
@@ -178,23 +181,31 @@ define('Sage/Platform/Mobile/Toolbar', [
          * @param {Object[]} tools Toolbar item array to store.
          */
         showTools: function(tools) {
+            var tool, i;
+
             this.tools = {};
 
-            if (typeof tools == 'undefined') return;
+            if (typeof tools === 'undefined') {
+                return;
+            }
 
-            for (var i = 0; i < tools.length; i++) {
-                var tool = {
+            for (i = 0; i < tools.length; i++) {
+                tool = {
                     busy: false,
-                    enabled: typeof tools[i].enabled != 'undefined' ? tools[i].enabled : true,
+                    enabled: typeof tools[i].enabled !== 'undefined' ? tools[i].enabled : true,
                     source: tools[i]
                 };
 
                 // if tool is enabled, check security
-                if (tool.enabled && tools[i].security)
+                if (tool.enabled && tools[i].security) {
                     tool.enabled = App.hasAccessTo(this.expandExpression(tools[i].security));
+                }
 
                 this.tools[tools[i].id] = tool;
             }
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Toolbar', __class);
+    return __class;
 });

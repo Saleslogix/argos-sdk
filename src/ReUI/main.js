@@ -1,4 +1,4 @@
-define('Sage/Platform/Mobile/ReUI/main', [
+define('argos/ReUI/main', [
     'dojo/_base/lang',
     'dojo/on',
     'dojo/dom',
@@ -17,14 +17,26 @@ define('Sage/Platform/Mobile/ReUI/main', [
     query,
     DomHelper
 ) {
-    var ReUI = {};
+    var ReUI,
+        R,
+        D,
+        transition,
+        config,
+        context,
+        extractInfoFromHash,
+        formatHashForPage,
+        updateOrientationDom,
+        checkOrientationAndLocation,
+        transitionComplete;
+
+    ReUI = {};
 
     ReUI.DomHelper = DomHelper;
 
-    var R = ReUI,
-        D = DomHelper;
+    R = ReUI;
+    D = DomHelper;
 
-    var transitionComplete = function(page, o) {
+    transitionComplete = function(page, o) {
         if (o.track !== false) {
             if (typeof page.id !== 'string' || page.id.length <= 0) {
                 page.id = 'reui-' + (context.counter++);
@@ -58,15 +70,15 @@ define('Sage/Platform/Mobile/ReUI/main', [
         }
     };
 
-    var transition = function(from, to, o) {
+    transition = function(from, to, o) {
         function complete() {
             transitionComplete(to, o);
 
             domClass.remove(R.rootEl, 'transition');
 
             context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
-            on.emit(from, 'aftertransition', {out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
-            on.emit(to, 'aftertransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+            on.emit(from, 'aftertransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+            on.emit(to, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
 
             if (o.complete) {
                 o.complete(from, to, o);
@@ -81,18 +93,18 @@ define('Sage/Platform/Mobile/ReUI/main', [
         // dispatch an 'show' event to let the page be aware that is being show as the result of an external
         // event (i.e. browser back/forward navigation).
         if (o.external) {
-            on.emit(to, 'show', {tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+            on.emit(to, 'show', { tag: o.tag, data: o.data, bubbles: true, cancelable: true });
         }
 
-        on.emit(from, 'beforetransition', {out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
-        on.emit(to, 'beforetransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+        on.emit(from, 'beforetransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+        on.emit(to, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
 
         D.unselect(from);
         D.select(to);
         complete();
     };
 
-    var extractInfoFromHash = function(hash) {
+    extractInfoFromHash = function(hash) {
         var segments = [], position, el;
         if (hash) {
             if (hash.indexOf(R.hashPrefix) === 0) {
@@ -122,14 +134,14 @@ define('Sage/Platform/Mobile/ReUI/main', [
         return false;
     };
 
-    var formatHashForPage = function(page, options) {
+    formatHashForPage = function(page, options) {
         var segments = options && options.tag
             ? [page.id].concat(options.tag)
             : [page.id];
         return R.hashPrefix + segments.join(';');
     };
 
-    var updateOrientationDom = function(value) {
+    updateOrientationDom = function(value) {
         var currentOrient = R.rootEl.getAttribute('orient');
         if (value === currentOrient) {
             return;
@@ -137,10 +149,10 @@ define('Sage/Platform/Mobile/ReUI/main', [
 
         R.rootEl.setAttribute('orient', value);
 
-        if (value == 'portrait') {
+        if (value === 'portrait') {
             domClass.remove(R.rootEl, 'landscape');
             domClass.add(R.rootEl, 'portrait');
-        } else if (value == 'landscape') {
+        } else if (value === 'landscape') {
             domClass.remove(R.rootEl, 'portrait');
             domClass.add(R.rootEl, 'landscape');
         } else {
@@ -149,7 +161,12 @@ define('Sage/Platform/Mobile/ReUI/main', [
         }
     };
 
-    var checkOrientationAndLocation = function() {
+    checkOrientationAndLocation = function() {
+        var reverse,
+            info,
+            page,
+            position;
+
         // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
         if (Math.abs(window.innerHeight - context.height) > 5 || Math.abs(window.innerWidth - context.width) > 5) {
             if (Math.abs(window.innerWidth - context.width) > 5) {
@@ -164,14 +181,12 @@ define('Sage/Platform/Mobile/ReUI/main', [
             return;
         }
 
-        if (context.hash != location.hash) {
+        if (context.hash !== location.hash) {
             // do reverse checking here, loop-and-trim will be done by show
-            var reverse = false,
-                info,
-                page;
+            reverse = false;
 
-            for (var position = context.history.length - 2; position >= 0; position--) {
-                if (context.history[position].hash == location.hash) {
+            for (position = context.history.length - 2; position >= 0; position--) {
+                if (context.history[position].hash === location.hash) {
                     info = context.history[position];
                     reverse = true;
                     break;
@@ -184,12 +199,12 @@ define('Sage/Platform/Mobile/ReUI/main', [
             // more often than not, data will only be needed when moving to a previous view (and restoring its state).
 
             if (page) {
-                R.show(page, {external: true, reverse: reverse, tag: info && info.tag, data: info && info.data});
+                R.show(page, { external: true, reverse: reverse, tag: info && info.tag, data: info && info.data });
             }
         }
     };
 
-    var context = {
+    context = {
         page: false,
         transitioning: false,
         initialized: false,
@@ -200,7 +215,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
         history: []
     };
 
-    var config = window.reConfig || {};
+    config = window.reConfig || {};
 
     lang.mixin(ReUI, {
         rootEl: false,
@@ -290,13 +305,13 @@ define('Sage/Platform/Mobile/ReUI/main', [
 
                 // do loop and trim
                 for (position = count - 1; position >= 0; position--) {
-                    if (context.history[position].hash == hash) {
+                    if (context.history[position].hash === hash) {
                         break;
                     }
                 }
 
-                if ((position > -1) && (position === (count-2))) {
-                     //Added check if history item is just one back. 
+                if ((position > -1) && (position === (count - 2))) {
+                    //Added check if history item is just one back.
 
                     context.history = context.history.splice(0, position + 1);
 
@@ -308,7 +323,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
                     // if the requested hash does not equal the current location hash, trim up history.
                     // location hash will not match requested hash when show is called directly, but will match
                     // for detected location changes (i.e. the back button).
-                    if (location.hash != hash) {
+                    if (location.hash !== hash) {
                         history.go(position - (count - 1));
                     }
                 } else if (o.returnTo) {
@@ -328,7 +343,7 @@ define('Sage/Platform/Mobile/ReUI/main', [
 
                         context.hash = context.history[context.history.length - 1] && context.history[context.history.length - 1].hash;
 
-                        if (location.hash != hash) {
+                        if (location.hash !== hash) {
                             history.go(position - (count - 1));
                         }
                     }
@@ -340,32 +355,32 @@ define('Sage/Platform/Mobile/ReUI/main', [
                 o.scroll = !o.reverse;
             }
 
-            on.emit(page, 'load', {bubbles: false, cancelable: true});
+            on.emit(page, 'load', { bubbles: false, cancelable: true });
 
             from = context.page;
 
             if (from) {
-                on.emit(from, 'blur', {bubbles: false, cancelable: true});
+                on.emit(from, 'blur', { bubbles: false, cancelable: true });
             }
 
             context.page = page; // Keep for backwards compat
 
-            on.emit(page, 'focus', {bubbles: false, cancelable: true});
+            on.emit(page, 'focus', { bubbles: false, cancelable: true });
 
             if (from && domAttr.get(page, 'selected') !== 'true') {
                 if (o.reverse) {
-                    on.emit(page, 'unload', {bubbles: false, cancelable: true});
+                    on.emit(page, 'unload', { bubbles: false, cancelable: true });
                 }
 
                 window.setTimeout(transition, R.checkStateEvery, from, page, o);
             } else {
-                on.emit(page, 'beforetransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+                on.emit(page, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
 
                 D.select(page);
 
                 transitionComplete(page, o);
 
-                on.emit(page, 'aftertransition', {out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true});
+                on.emit(page, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
             }
         }
     }, config);

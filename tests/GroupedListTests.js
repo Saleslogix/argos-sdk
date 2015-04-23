@@ -1,15 +1,36 @@
-define('tests/GroupedListTests', ['dojo/query','dojo/dom-class', 'dojo/text!./feeds/GroupListFeed.json', 'Sage/Platform/Mobile/GroupedList'], function(query, domClass, jsonFeed, GroupedList) {
+define('tests/GroupedListTests', ['dojo/query','dojo/dom-class', 'dojo/text!./feeds/GroupListFeed.json', 'argos/GroupedList'], function(query, domClass, jsonFeed, GroupedList) {
 return describe('Sage.Platform.Mobile.GroupedList', function() {
 
-    var list = new GroupedList();
+    var _app = window.App;
+
     beforeEach(function() {
-        list.destroy();
-        list = new GroupedList();
+        window.App = {
+            history: [],
+            getCurrentPage: function() {
+            },
+            setCurrentPage: function(page) {
+            },
+            getMetricsByResourceKind: function() {
+                return [];
+            },
+            getCustomizationsFor: function() {
+            },
+            enableGroups: true,
+            supportsTouch: function() {
+            }
+        };
+
+        this.list = new GroupedList();
+    });
+
+    afterEach(function() {
+        this.list.destroy();
+        window.App = _app;
     });
 
 
     it('Can return base group tag', function() {
-        var group = list.getGroupForEntry(null);
+        var group = this.list.getGroupForEntry(null);
 
         expect(group.tag).toEqual(1);
         expect(group.title).toEqual('Default');
@@ -17,7 +38,7 @@ return describe('Sage.Platform.Mobile.GroupedList', function() {
 
     it('Can added collapsed class to untoggled node', function() {
         var node = document.createElement('div');
-        list.toggleGroup({$source: node});
+        this.list.toggleGroup({$source: node});
 
         expect(domClass.contains(node, 'collapsed')).toEqual(true);
     });
@@ -26,7 +47,7 @@ return describe('Sage.Platform.Mobile.GroupedList', function() {
 
         domClass.add(node, 'collapsed');
 
-        list.toggleGroup({$source: node});
+        this.list.toggleGroup({$source: node});
 
         expect(domClass.contains(node, 'collapsed')).toEqual(false);
     });
@@ -35,24 +56,24 @@ return describe('Sage.Platform.Mobile.GroupedList', function() {
     xit('Can construct list items from feed', function() {
         var feed = JSON.parse(jsonFeed);
 
-        list.processData(feed);
+        this.list.processData(feed);
 
-        expect(query('> ul > li', list.contentNode).length).toEqual(feed['$totalResults']);
+        expect(query('> ul > li', this.list.contentNode).length).toEqual(feed['$totalResults']);
     });
 
     xit('Can split list items into groups', function() {
         var feed = JSON.parse(jsonFeed);
 
-        list.getGroupForEntry = function(entry) {
+        this.list.getGroupForEntry = function(entry) {
             return {
                 tag: entry.view ? 0 : 1,
                 title: entry.view ? 'Views' : 'Actions'
             }
         };
 
-        list.processData(feed);
+        this.list.processData(feed);
 
-        expect(query('> ul', list.contentNode).length).toEqual(2);
+        expect(query('> ul', this.list.contentNode).length).toEqual(2);
     });
 
 

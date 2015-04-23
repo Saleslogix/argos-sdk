@@ -1,4 +1,4 @@
-define('tests/Fields/_FieldTests', ['dojo/query','Sage/Platform/Mobile/Fields/_Field'], function(query, _Field) {
+define('tests/Fields/_FieldTests', ['dojo/query','argos/Fields/_Field'], function(query, _Field) {
 return describe('Sage.Platform.Mobile.Fields._Field', function() {
 
     it('Returns true as a default for isDirty()', function() {

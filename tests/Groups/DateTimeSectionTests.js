@@ -1,6 +1,6 @@
 define('tests/Groups/DateTimeSectionTests', [
     'moment',
-    'Sage/Platform/Mobile/Groups/DateTimeSection'
+    'argos/Groups/DateTimeSection'
 ], function(moment, DateTimeSection) {
     return describe('Sage.Platform.Mobile.Groups.DateTimeSection', function() {
         it('can get a default section', function() {
@@ -150,6 +150,11 @@ define('tests/Groups/DateTimeSectionTests', [
             value = dts.currentDate.clone().subtract(1, 'days');
             dts.currentDate.startOf('week');
             expect(dts.getSectionKey(value)).not.toBe("LastWeek");
+
+            // Move to the start of the year, ensure last week takes precedence over last year
+            value = dts.currentDate.clone().startOf('year').add(1, 'week').add(2, 'days');
+            dts.currentDate.startOf('week');
+            expect(dts.getSectionKey(value)).not.toBe("LastWeek");
         });
 
         it('should be later this month', function() {
@@ -202,10 +207,15 @@ define('tests/Groups/DateTimeSectionTests', [
 
         it('should be past year', function() {
             var dts = new DateTimeSection(), value;
-            dts.currentDate = moment().endOf('month').subtract(2, 'days');
+            dts.currentDate = moment().month(5).endOf('month').subtract(2, 'days');
 
             value = dts.currentDate.clone().startOf('year').subtract({days: 1});
             expect(dts.getSectionKey(value)).toEqual("PastYear");
+
+            // Check that last month takes precedent over past year
+            dts.currentDate = dts.currentDate.clone().month(0).endOf('month').subtract(2, 'days');
+            value = dts.currentDate.clone().startOf('year').subtract({days: 1});
+            expect(dts.getSectionKey(value)).not.toEqual("PastYear");
         });
 
         it('should be next year', function() {

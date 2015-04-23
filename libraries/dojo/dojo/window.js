@@ -70,13 +70,13 @@ var _24=_5.position(el),_25=_21(el),rtl=_6.getComputedStyle(el).direction.toLowe
 if(el==_1f){
 _24.w=_1d;
 _24.h=_1e;
-if(_1f==_19&&_1a&&rtl){
+if(_1f==_19&&(_1a||_2("trident"))&&rtl){
 _24.x+=_1f.offsetWidth-_24.w;
 }
-if(_24.x<0||!_1a||_1a>=9){
+if(_24.x<0||!_1a||_1a>=9||_2("trident")){
 _24.x=0;
 }
-if(_24.y<0||!_1a||_1a>=9){
+if(_24.y<0||!_1a||_1a>=9||_2("trident")){
 _24.y=0;
 }
 }else{
@@ -118,7 +118,7 @@ var l=_20.x-_24.x,t=_20.y-_24.y,r=l+_20.w-_24.w,bot=t+_20.h-_24.h;
 var s,old;
 if(r*l>0&&(!!el.scrollLeft||el==_1f||el.scrollWidth>el.offsetHeight)){
 s=Math[l<0?"max":"min"](l,r);
-if(rtl&&((_1a==8&&!_1c)||_1a>=9)){
+if(rtl&&((_1a==8&&!_1c)||_1a>=9||_2("trident"))){
 s=-s;
 }
 old=el.scrollLeft;

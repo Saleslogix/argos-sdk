@@ -14,39 +14,39 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._SDataListMixin
+ * @class argos._SDataListMixin
  *
  * Enables SData for the List view.
  * Adds the SData store to the view and exposes the needed properties for creating a Feed request.
  *
  * @alternateClassName _SDataListMixin
- * @requires Sage.Platform.Mobile.SData
- * @requires Sage.Platform.Mobile.Utility
+ * @requires argos.SData
+ * @requires argos.Utility
  */
-define('Sage/Platform/Mobile/_SDataListMixin', [
+define('argos/_SDataListMixin', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/Deferred',
     'dojo/when',
-    'Sage/Platform/Mobile/Store/SData',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/ErrorManager',
     'dojo/dom-construct',
     'dojo/dom-class',
-    'dojo/string'
+    'dojo/string',
+    './Store/SData',
+    './Utility',
+    './ErrorManager'
 ], function(
     declare,
     lang,
     Deferred,
     when,
-    SData,
-    utility,
-    ErrorManager,
     domConstruct,
     domClass,
-    string
+    string,
+    SData,
+    utility,
+    ErrorManager
 ) {
-    return declare('Sage.Platform.Mobile._SDataListMixin', null, {
+    var __class = declare('argos._SDataListMixin', null, {
         /**
          * @property request Object SData request passed into the store. Optional.
          */
@@ -158,14 +158,37 @@ define('Sage/Platform/Mobile/_SDataListMixin', [
         _applyStateToQueryOptions: function(queryOptions) {
             var options = this.options;
             if (options) {
-                if (options.select) queryOptions.select = options.select;
-                if (options.include) queryOptions.include = options.include;
-                if (options.orderBy) queryOptions.sort = options.orderBy;
-                if (options.contractName) queryOptions.contractName = options.contractName;
-                if (options.resourceKind) queryOptions.resourceKind = options.resourceKind;
-                if (options.resourceProperty) queryOptions.resourceProperty = options.resourceProperty;
-                if (options.resourcePredicate) queryOptions.resourcePredicate = options.resourcePredicate;
-                if (options.queryArgs) queryOptions.queryArgs = options.queryArgs;
+                if (options.select) {
+                    queryOptions.select = options.select;
+                }
+
+                if (options.include) {
+                    queryOptions.include = options.include;
+                }
+
+                if (options.orderBy) {
+                    queryOptions.sort = options.orderBy;
+                }
+
+                if (options.contractName) {
+                    queryOptions.contractName = options.contractName;
+                }
+
+                if (options.resourceKind) {
+                    queryOptions.resourceKind = options.resourceKind;
+                }
+
+                if (options.resourceProperty) {
+                    queryOptions.resourceProperty = options.resourceProperty;
+                }
+
+                if (options.resourcePredicate) {
+                    queryOptions.resourcePredicate = options.resourcePredicate;
+                }
+
+                if (options.queryArgs) {
+                    queryOptions.queryArgs = options.queryArgs;
+                }
             }
         },
         formatSearchQuery: function(query) {
@@ -215,4 +238,7 @@ define('Sage/Platform/Mobile/_SDataListMixin', [
             return def.promise;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._SDataListMixin', __class);
+    return __class;
 });

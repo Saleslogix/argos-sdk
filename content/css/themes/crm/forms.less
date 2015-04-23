@@ -16,7 +16,6 @@ input, textarea {
 
 label {
     font-size: @label-font-size;
-    font-weight: bold;
 }
 
 input:focus, textarea:focus {
@@ -35,12 +34,6 @@ input:focus, textarea:focus {
     background-color: transparent;
 }
 
-.viewContainer > .toolbar > .button,
-.toolbar > .button {
-    background-color: @toolbar-button-bg-color;
-    outline: none;
-}
-
 .panel-content > h2 > button {
     float: right;
     background-color: transparent;
@@ -56,6 +49,11 @@ input:focus, textarea:focus {
 
 .toolButton-disabled {
     opacity: @toolbar-button-disabled-opacity;
+}
+
+.toolButton-hidden {
+    display: none;
+    visibility: hidden;
 }
 
 /* signature capture */
@@ -130,6 +128,7 @@ input:focus, textarea:focus {
     left: 0px;
     top: 2px;
     padding: 0;
+    font-size: 25px; /* changes the quick action icon size */
 }
 
 .actions-row > button > img {
@@ -160,10 +159,6 @@ input:focus, textarea:focus {
 }
 
 /* busy */
-.toolbar.busy .actionButton span {
-    padding: 0 0 0 20px;
-}
-
 .panel.busy .actionButton span.indicator {
     margin: 0 10px 0 0;
 }
@@ -210,8 +205,8 @@ input:focus, textarea:focus {
     position: absolute;
     right: 4px;
     display: block;
-    height: 30px;
-    width: 40px;
+    height: 44px;
+    width: 44px;
 }
 
 .row-edit[data-field-type="picklist"] > div > input,
@@ -246,7 +241,6 @@ div.table-layout div.hasButton > button.searchButton {
 div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
     border: 0;
     padding: 0 6px;
-    background-color: transparent;
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -271,6 +265,7 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
     border: 0;
     .box-sizing(border-box);
     height: 32px;
+    vertical-align: middle;
     margin: 0 !important;
 }
 
@@ -335,7 +330,8 @@ button.clear-button:focus {
 /* edit/insert */
 .row > div > input:not([type|=radio]):not([type|=checkbox]),
 .row > input:not([type|=radio]):not([type|=checkbox]) {
-    height: 30px;
+    height: 44px;
+    vertical-align: middle;
     padding: 10px 10px 0 0px;
 }
 
@@ -352,12 +348,6 @@ button.clear-button:focus {
     z-index: 10;
     color: #999;
     padding: 3px 0 0 111px;
-}
-
-.row-edit[data-field-type="address"] > div > div {
-    min-height: 1.5em;
-    padding: 8px 34px 8px 8px;
-    border: @form-border;
 }
 
 .row-edit {
@@ -401,15 +391,19 @@ button.clear-button:focus {
 }
 
 .button {
-    height: 36px;
-    line-height: 30px;
+    height: 44px;
+    vertical-align: middle;
     padding: 0 2px 0 2px;
+    outline: none;
+    border: @button-border;
+    .border-radius(@button-border-radius);
+    background-color: @button-bg-color;
 }
 
 .toolButton {
     position: relative;
-    min-width: 28px;
-    min-height: 28px;
+    min-width: 44px;
+    min-height: 44px;
     padding: 0;
     z-index: 100;
 }
@@ -459,31 +453,20 @@ button.clear-button:focus {
     .border-radius(@toggle-border-radius);
     line-height: @toggle-line-height;
     .user-select(none);
-    width: 50px;
-    height: 28px;
+    width: 70px;
+    height: 44px;
     margin: 3px 0px 3px 0px;
     position: relative;
     right: auto;
     .box-sizing(border-box);
 }
 
-.toggle-vertical {
-    width: 64px;
-    height: 126px;
-    margin: 0;
-    position: relative;
-}
-
 .toggle > .thumb {
     position: absolute;
-    width: 26px;
-    height: 24px;
+    width: 40px;
+    height: 40px;
     background-color: @toggle-thumb-bg-color;
     .border-radius(@toggle-border-radius);
-}
-
-.toggle-vertical > .thumb {
-    width: 64px;
 }
 
 .toggleStateOn > .thumb {
@@ -491,13 +474,45 @@ button.clear-button:focus {
     right: 0px;
 }
 
-.toggleStateOn > .vertical {
-    left: -1px;
-    top: auto;
-    bottom: -1px;
-}
-
 .toggleStateOn {
     background-color: @togglestate-on-bg-color;
     border-color: @togglestate-on-border-bg-color;
+}
+
+.toggle-vertical {
+    width: 64px;
+    height: 126px;
+    margin: 0;
+    position: relative;
+
+    > .thumb {
+        width: 60px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+
+    .toggleOn {
+        height: 60px;
+        width: 64px;
+        top: 0;
+    }
+
+    .toggleOff {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        top: auto;
+        left: 0px;
+    }
+}
+
+.toggle-vertical.toggleStateOn > .toggleOff {
+    display: none;
+}
+
+.toggleStateOn > .vertical {
+    left: 0px;
+    top: auto;
+    bottom: 0px;
 }

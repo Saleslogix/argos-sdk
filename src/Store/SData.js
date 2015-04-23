@@ -14,14 +14,14 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Store.SData
+ * @class argos.Store.SData
  * SData is an extension of dojo.store that is tailored to handling SData parameters, requests,
  * and pre-handling the responses.
  *
- * @requires Sage.Platform.Mobile.Convert
- * @requires Sage.Platform.Mobile.Utility
+ * @requires argos.Convert
+ * @requires argos.Utility
  */
-define('Sage/Platform/Mobile/Store/SData', [
+define('argos/Store/SData', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/array',
@@ -29,9 +29,9 @@ define('Sage/Platform/Mobile/Store/SData', [
     'dojo/store/util/QueryResults',
     'dojo/string',
     'dojo/_base/json',
-    'Sage/Platform/Mobile/Convert',
+    '../Convert',
     '../Utility'
-], function (
+], function(
     declare,
     lang,
     array,
@@ -42,7 +42,7 @@ define('Sage/Platform/Mobile/Store/SData', [
     convert,
     utility
 ) {
-    return declare('Sage.Platform.Mobile.Store.SData', null, {
+    var __class = declare('argos.Store.SData', null, {
         doDateConversion: false,
 
         /* todo: is this the appropriate name for the expansion scope? */
@@ -78,17 +78,18 @@ define('Sage/Platform/Mobile/Store/SData', [
             lang.mixin(this, props);
         },
         _createEntryRequest: function(id, getOptions) {
-            var request = utility.expand(this, getOptions.request || this.request);
+            var request, contractName, resourceKind, dataSet, resourceProperty, resourcePredicate, select, include;
+
+            request = utility.expand(this, getOptions.request || this.request);
             if (request) {
                 request = request.clone();
             } else {
                 id = id || utility.expand(this.scope || this, getOptions.resourcePredicate || this.resourcePredicate);
 
-                var contractName = utility.expand(this.scope || this, getOptions.contractName || this.contractName),
-                    resourceKind = utility.expand(this.scope || this, getOptions.resourceKind || this.resourceKind),
-                    dataSet = utility.expand(this.scope || this, getOptions.dataSet || this.dataSet),
-                    resourceProperty = utility.expand(this.scope || this, getOptions.resourceProperty || this.resourceProperty),
-                    resourcePredicate;
+                contractName = utility.expand(this.scope || this, getOptions.contractName || this.contractName);
+                resourceKind = utility.expand(this.scope || this, getOptions.resourceKind || this.resourceKind);
+                dataSet = utility.expand(this.scope || this, getOptions.dataSet || this.dataSet);
+                resourceProperty = utility.expand(this.scope || this, getOptions.resourceProperty || this.resourceProperty);
 
                 if (id) {
                     resourcePredicate = /\s+/.test(id) ? id : string.substitute("'${0}'", [id]);
@@ -116,8 +117,8 @@ define('Sage/Platform/Mobile/Store/SData', [
                 }
             }
 
-            var select = utility.expand(this.scope || this, getOptions.select || this.select),
-                include = utility.expand(this.scope || this, getOptions.include || this.include);
+            select = utility.expand(this.scope || this, getOptions.select || this.select);
+            include = utility.expand(this.scope || this, getOptions.include || this.include);
 
             if (select && select.length > 0) {
                 request.setQueryArg('select', select.join(','));
@@ -130,18 +131,35 @@ define('Sage/Platform/Mobile/Store/SData', [
             return request;
         },
         _createFeedRequest: function(query, queryOptions) {
-            var request = utility.expand(this, queryOptions.request || this.request);
+            var request,
+                queryName,
+                contractName,
+                resourceKind,
+                resourceProperty,
+                resourcePredicate,
+                applicationName,
+                dataSet,
+                queryArgs,
+                arg,
+                select,
+                include,
+                orderBy,
+                where,
+                order,
+                conditions;
+
+            request = utility.expand(this, queryOptions.request || this.request);
             if (request) {
                 request = request.clone();
             } else {
-                var queryName = utility.expand(this.scope || this, queryOptions.queryName || this.queryName),
-                    contractName = utility.expand(this.scope || this, queryOptions.contractName || this.contractName),
-                    resourceKind = utility.expand(this.scope || this, queryOptions.resourceKind || this.resourceKind),
-                    resourceProperty = utility.expand(this.scope || this, queryOptions.resourceProperty || this.resourceProperty),
-                    resourcePredicate = utility.expand(this.scope || this, queryOptions.resourcePredicate || this.resourcePredicate),
-                    applicationName = utility.expand(this.scope || this, queryOptions.applicationName || this.applicationName),
-                    dataSet = utility.expand(this.scope || this, queryOptions.dataSet || this.dataSet),
-                    queryArgs = utility.expand(this.scope || this, queryOptions.queryArgs || this.queryArgs);
+                queryName = utility.expand(this.scope || this, queryOptions.queryName || this.queryName);
+                contractName = utility.expand(this.scope || this, queryOptions.contractName || this.contractName);
+                resourceKind = utility.expand(this.scope || this, queryOptions.resourceKind || this.resourceKind);
+                resourceProperty = utility.expand(this.scope || this, queryOptions.resourceProperty || this.resourceProperty);
+                resourcePredicate = utility.expand(this.scope || this, queryOptions.resourcePredicate || this.resourcePredicate);
+                applicationName = utility.expand(this.scope || this, queryOptions.applicationName || this.applicationName);
+                dataSet = utility.expand(this.scope || this, queryOptions.dataSet || this.dataSet);
+                queryArgs = utility.expand(this.scope || this, queryOptions.queryArgs || this.queryArgs);
 
                 if (queryName) {
                     request = new Sage.SData.Client.SDataNamedQueryRequest(this.service)
@@ -175,15 +193,17 @@ define('Sage/Platform/Mobile/Store/SData', [
                 }
 
                 if (queryArgs) {
-                    for (var arg in queryArgs) {
-                        request.setQueryArg(arg, queryArgs[arg]);
+                    for (arg in queryArgs) {
+                        if (queryArgs.hasOwnProperty(arg)) {
+                            request.setQueryArg(arg, queryArgs[arg]);
+                        }
                     }
                 }
             }
 
-            var select = utility.expand(this.scope || this, queryOptions.select || this.select),
-                include = utility.expand(this.scope || this, queryOptions.include || this.include),
-                orderBy = utility.expand(this.scope || this, queryOptions.sort || this.orderBy);
+            select = utility.expand(this.scope || this, queryOptions.select || this.select);
+            include = utility.expand(this.scope || this, queryOptions.include || this.include);
+            orderBy = utility.expand(this.scope || this, queryOptions.sort || this.orderBy);
 
             if (select && select.length > 0) {
                 request.setQueryArg('select', select.join(','));
@@ -197,8 +217,8 @@ define('Sage/Platform/Mobile/Store/SData', [
                 if (typeof orderBy === 'string') {
                     request.setQueryArg('orderby', orderBy);
                 } else if (orderBy.length > 0) {
-                    var order = [];
-                    array.forEach(orderBy, function (v) {
+                    order = [];
+                    array.forEach(orderBy, function(v) {
                         if (v.descending) {
                             this.push(v.attribute + ' desc');
                         } else {
@@ -210,9 +230,8 @@ define('Sage/Platform/Mobile/Store/SData', [
                 }
             }
 
-            var where = utility.expand(this.scope || this, queryOptions.where || this.where),
-                conditions = [];
-
+            where = utility.expand(this.scope || this, queryOptions.where || this.where);
+            conditions = [];
 
             if (where) {
                 conditions.push(where);
@@ -241,14 +260,16 @@ define('Sage/Platform/Mobile/Store/SData', [
         _onCancel: function(deferred) {
         },
         _onRequestFeedSuccess: function(queryDeferred, feed) {
+            var items, total, error;
+
             if (feed) {
-                var items = lang.getObject(this.itemsProperty, false, feed),
-                    total = typeof feed['$totalResults'] === 'number' ? feed['$totalResults'] : -1;
+                items = lang.getObject(this.itemsProperty, false, feed);
+                total = typeof feed['$totalResults'] === 'number' ? feed['$totalResults'] : -1;
 
                 queryDeferred.total = total;
                 queryDeferred.resolve(items);
             } else {
-                var error = new Error('The feed result is invalid.');
+                error = new Error('The feed result is invalid.');
 
                 queryDeferred.reject(error);
             }
@@ -290,19 +311,20 @@ define('Sage/Platform/Mobile/Store/SData', [
 
             return entry;
         },
-        get: function(id, /* sdata only */ getOptions) {
+        get: function(id, getOptions/* sdata only */) {
             var handle = {},
                 deferred = new Deferred(),
+                method,
                 request = this._createEntryRequest(id, getOptions || {});
 
-            var method = this.executeGetAs
+            method = this.executeGetAs
                 ? request[this.executeGetAs]
                 : request.read;
 
             handle.value = method.call(request, {
                 success: this._onRequestEntrySuccess.bind(this, deferred),
                 failure: this._onRequestFailure.bind(this, deferred),
-                abort: this._onRequestAbort.bind(this, deferred)
+                aborted: this._onRequestAbort.bind(this, deferred)
             });
 
             return deferred;
@@ -356,6 +378,10 @@ define('Sage/Platform/Mobile/Store/SData', [
             var id = putOptions.id || this.getIdentity(object),
                 entity = putOptions.entity || this.entityName,
                 version = putOptions.version || this.getVersion(object),
+                handle,
+                deferred,
+                request,
+                method,
                 atom = !this.service.isJsonEnabled();
 
             if (id) {
@@ -370,18 +396,18 @@ define('Sage/Platform/Mobile/Store/SData', [
                 object['$etag'] = version;
             }
 
-            var handle = {},
-                deferred = new Deferred(),
-                request = this._createEntryRequest(id, putOptions);
+            handle = {};
+            deferred = new Deferred();
+            request = this._createEntryRequest(id, putOptions);
 
-            var method = putOptions.overwrite
+            method = putOptions.overwrite
                 ? request.update
                 : request.create;
 
             handle.value = method.call(request, object, {
                 success: this._onTransmitEntrySuccess.bind(this, deferred),
                 failure: this._onRequestFailure.bind(this, deferred),
-                abort: this._onRequestAbort.bind(this, deferred)
+                aborted: this._onRequestAbort.bind(this, deferred)
             });
 
             return deferred;
@@ -426,7 +452,7 @@ define('Sage/Platform/Mobile/Store/SData', [
             options = {
                 success: this._onRequestFeedSuccess.bind(this, queryDeferred),
                 failure: this._onRequestFailure.bind(this, queryDeferred),
-                abort: this._onRequestAbort.bind(this, queryDeferred),
+                aborted: this._onRequestAbort.bind(this, queryDeferred),
                 httpMethodOverride: queryOptions && queryOptions['httpMethodOverride']
             };
 
@@ -453,7 +479,7 @@ define('Sage/Platform/Mobile/Store/SData', [
         /**
          * Not implemented in this store.
          */
-        getChildren: function(parent, options){
+        getChildren: function(parent, options) {
         },
         /**
          * Returns any metadata about the object. This may include attribution,
@@ -479,5 +505,8 @@ define('Sage/Platform/Mobile/Store/SData', [
             return null;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Store.SData', __class);
+    return __class;
 });
 

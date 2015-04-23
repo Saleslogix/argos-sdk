@@ -1,93 +1,80 @@
+@import "variables.less";
+@import "mixins.less";
+
 #datetime-picker {
     padding-bottom: 2em;
-}
 
-#datetime-picker .time-content-hidden {
-    display: none !important;
-}
+    .time-content-hidden {
+        display: none !important;
+    }
 
-#datetime-picker table {
-    border-spacing: 6px 0px;
-    padding: 2px;
-    margin: 0.5em auto 0;
-    text-align: center;
-}
+    table {
+        border-collapse: separate;
+        border-spacing: 6px 0px;
+        padding: 2px;
+        margin: 0.5em auto 0;
+        text-align: center;
+    }
 
-#datetime-picker div.calendar-content {
-    padding-bottom: 0;
-}
+    div.calendar-content {
+        padding-bottom: 0;
+    }
 
-#datetime-picker div.date-tt {
-    margin: 0;
-}
+    div.date-tt {
+        margin: 0;
+    }
 
-#datetime-picker table caption {
-    padding: 4px;
-}
+    table caption {
+        padding: 4px;
+    }
 
-.ext-webkit #datetime-picker table caption {
-    width: 100%;
-}
+    td {
+        padding: 0;
+        margin: 0;
+        border: 0;
+        text-align: center;
+        width: 64px;
+    }
 
-/* Webkit caption does not match table width by default */
-#datetime-picker td {
-    padding: 0;
-    margin: 0;
-    border: 0;
-    text-align: center;
-    width: 64px;
-}
+    td > select {
+        font-size: 1.5em;
+        height: 34px;
+        line-height: 34px;
+        border: none;
+        margin: 0;
+        padding: 0;
+        -webkit-appearance: listbox;
+        -moz-appearance: listbox;
+        position: relative; /* Fix android browser issue with -webkit-transform blocking <select> */
+    }
 
-#datetime-picker td > select {
-    font-size: 1.5em;
-    height: 34px;
-    line-height: 34px;
-    border: none;
-    margin: 0;
-    padding: 0;
-    -webkit-appearance: listbox;
-    -moz-appearance: listbox;
-    position: relative; /* Fix android browser issue with -webkit-transform blocking <select> */
-}
+    .datetime-selects td {
+        border: none;
+        border-left: 1px solid #b3b3b3;
+        border-right: 1px solid #b3b3b3;
+    }
 
-#datetime-picker .datetime-selects td {
-    border: none;
-    border-left: 1px solid #b3b3b3;
-    border-right: 1px solid #b3b3b3;
-}
+    td > button {
+        display: block;
+        font-size: 1.5em;
+        width: 100%;
+        margin: 0;
+        height: 46px;
+        line-height: 44px;
+        .border-radius(0px);
+    }
 
-#datetime-picker td > button {
-    display: block;
-    font-size: 1.5em;
-    width: 100%;
-    margin: 0;
-    height: 46px;
-    line-height: 44px;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    border-radius: 0px;
-}
+    .plus > td > button {
+        .border-radius(3px 3px 0px 0px);
+    }
 
-#datetime-picker .plus > td > button {
-    -moz-border-radius-topleft: 3px;
-    -moz-border-radius-topright: 3px;
-    -moz-border-radius-bottomright: 0px;
-    -moz-border-radius-bottomleft: 0px;
-    -webkit-border-radius: 3px 3px 0px 0px;
-    border-radius: 3px 3px 0px 0px;
-}
+    .minus > td > button {
+        .border-radius(0px 0px 3px 3px);
+    }
 
-#datetime-picker .minus > td > button {
-    -moz-border-radius-topleft: 0px;
-    -moz-border-radius-topright: 0px;
-    -moz-border-radius-bottomright: 3px;
-    -moz-border-radius-bottomleft: 3px;
-    -webkit-border-radius: 0px 0px 3px 3px;
-    border-radius: 0px 0px 3px 3px;
-}
-
-#datetime-picker .datetime-tt {
-    border: none !important;
+    .datetime-tt {
+        border: none !important;
+    }
 }
 
 body.landscape > .viewContainer > #generic_calendar > #datetime-picker {

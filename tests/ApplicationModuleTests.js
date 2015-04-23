@@ -1,4 +1,4 @@
-define('tests/ApplicationModuleTests', ['Sage/Platform/Mobile/ApplicationModule'], function(ApplicationModule) {
+define('tests/ApplicationModuleTests', ['argos/ApplicationModule'], function(ApplicationModule) {
 return describe('Sage.Platform.Mobile.ApplicationModule', function() {
 
     it('Can register a view to the set application', function() {
@@ -19,7 +19,10 @@ return describe('Sage.Platform.Mobile.ApplicationModule', function() {
         var module = new ApplicationModule();
 
         module.application = {
-            registerToolbar: function() {}
+            registerToolbar: function() {
+            },
+            registerView: function() {
+            }
         };
 
         spyOn(module.application, 'registerToolbar');
@@ -33,7 +36,10 @@ return describe('Sage.Platform.Mobile.ApplicationModule', function() {
         var module = new ApplicationModule();
 
         module.application = {
-            registerCustomization: function() {}
+            registerCustomization: function() {
+            },
+            registerView: function() {
+            }
         };
 
         spyOn(module.application, 'registerCustomization');
@@ -44,19 +50,32 @@ return describe('Sage.Platform.Mobile.ApplicationModule', function() {
     });
 
     it('Can store a reference to passed application on init', function() {
-        var module = new ApplicationModule();
+        var module, app;
 
-        module.init('test');
+        module = new ApplicationModule();
+        app = {
+            registerView: function() {
+            },
+            name: 'test'
+        };
 
-        expect(module.application).toEqual('test');
+        module.init(app);
+
+        expect(module.application.name).toEqual('test');
     });
 
     it('Calls load customizations on init', function() {
         var module = new ApplicationModule();
 
+        module.loadViews = function() {
+        };
+
         spyOn(module, 'loadCustomizations');
 
-        module.init();
+        module.init({
+            registerView: function() {
+            }
+        });
 
         expect(module.loadCustomizations).toHaveBeenCalled();
     });
@@ -66,7 +85,10 @@ return describe('Sage.Platform.Mobile.ApplicationModule', function() {
 
         spyOn(module, 'loadViews');
 
-        module.init();
+        module.init({
+            registerView: function() {
+            }
+        });
 
         expect(module.loadViews).toHaveBeenCalled();
     });
@@ -74,14 +96,15 @@ return describe('Sage.Platform.Mobile.ApplicationModule', function() {
     it('Calls load toolbars on init', function() {
         var module = new ApplicationModule();
 
+        module.loadViews = function() {
+        };
+
+
         spyOn(module, 'loadToolbars');
 
         module.init();
 
         expect(module.loadToolbars).toHaveBeenCalled();
     });
-
-
-
 });
 });

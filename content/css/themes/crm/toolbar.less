@@ -17,42 +17,30 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
 
-    height: 40px;
+    height: 65px;
     width: 100%;
-    padding: 4px 4px;
 
     display: block;
     z-index: 10;
 }
 
-.viewContainer > .toolbar > h1,
-.toolbar > h1 {
+.viewContainer > .toolbar > .toolbar-title,
+.toolbar > .toolbar-title {
     color: @toolbar-text-color;
-    overflow: hidden;
     display: block;
     margin: 0;
     padding: 0;
-    line-height: 34px;
     text-align: center;
     text-overflow: ellipsis;
+    overflow: hidden;
     white-space: nowrap;
 
     position: absolute;
-    left: 0px;
-    right: 0px;
+    top: 42px;
+    width: 100%;
     z-index: 0;
-}
-
-.viewContainer > .toolbar-size-1 > h1,
-.toolbar-size-1 > h1 {
-    left: 50px;
-    right: 50px;
-}
-
-.viewContainer > .toolbar-size-2 > h1,
-.toolbar-size-2 > h1 {
-    left: 100px;
-    right: 100px;
+    font-size: 18px;
+    font-weight: normal;
 }
 
 .toolbar,
@@ -62,12 +50,25 @@ body > .viewContainer > .toolbar,
     background-color: @toolbar-bg-color;
 }
 
+.viewContainer > .toolbar > .button,
+.toolbar > .button {
+    background-color: @toolbar-button-bg-color;
+    outline: none;
+    border: none;
+    font-size: 1.5em;
+}
+
+.toolbar.busy .actionButton span {
+    padding: 0 0 0 20px;
+}
+
 .toolButton-left {
     float: left;
-    margin-right: 10px;
+    margin-right: 2px;
 }
 
 .toolButton-right {
     float: right;
-    margin-left: 10px;
+    margin-left: 2px;
 }
+

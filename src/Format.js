@@ -14,21 +14,21 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Format
+ * @class argos.Format
  * Format is a singleton that provides various formatting functions.
  * @alternateClassName format
- * @requires Sage.Platform.Mobile.Convert
+ * @requires argos.Convert
  * @singleton
  */
-define('Sage/Platform/Mobile/Format', [
+define('argos/Format', [
     'dojo/_base/json',
     'dojo/_base/lang',
     'dojo/_base/array',
     'dojo/dom-construct',
     'dojo/string',
     'dojo/number',
-    'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/Utility',
+    './Convert',
+    './Utility',
     'moment'
 ], function(
     json,
@@ -41,45 +41,54 @@ define('Sage/Platform/Mobile/Format', [
     utility,
     moment
 ) {
+    var getVectorMaxSize,
+        phoneLettersMap,
+        __class;
 
-    var getVectorMaxSize = function (v) {
+    getVectorMaxSize = function(v) {
         var w = 1,
-            h = 1;
-        for (var i = 0; i < v.length; i++)
-        {
-            for (var j = 0; j < v[i].length; j++)
-            {
-                if (w < v[i][j][0]) { w = v[i][j][0]; }
-                if (h < v[i][j][1]) { h = v[i][j][1]; }
+            h = 1,
+            i,
+            j;
+
+        for (i = 0; i < v.length; i++) {
+            for (j = 0; j < v[i].length; j++) {
+                if (w < v[i][j][0]) {
+                    w = v[i][j][0];
+                }
+
+                if (h < v[i][j][1]) {
+                    h = v[i][j][1];
+                }
             }
         }
         // maybe should return bounding box? (x,y,w,h)
         return { width: w, height: h };
     };
 
-    var phoneLettersMap = [
+    phoneLettersMap = [
         {
             test: /[ABC]/gi,
             val: '2'
-        },{
+        }, {
             test: /[DEF]/gi,
             val: '3'
-        },{
+        }, {
             test: /[GHI]/gi,
             val: '4'
-        },{
+        }, {
             test: /[JKL]/gi,
             val: '5'
-        },{
+        }, {
             test: /[MNO]/gi,
             val: '6'
-        },{
+        }, {
             test: /[PQRS]/gi,
             val: '7'
-        },{
+        }, {
             test: /[TUV]/gi,
             val: '8'
-        },{
+        }, {
             test: /[WXYZwyz]/g, // Note lowercase 'x' should stay for extensions
             val: '9'
         }
@@ -87,13 +96,17 @@ define('Sage/Platform/Mobile/Format', [
 
 
     function isEmpty(val) {
-        if (typeof val !== 'string') return !val;
+        if (typeof val !== 'string') {
+            return !val;
+        }
 
         return (val.length <= 0);
     }
 
     function encode(val) {
-        if (typeof val !== 'string') return val;
+        if (typeof val !== 'string') {
+            return val;
+        }
 
         return val
             .replace(/&/g, '&amp;')
@@ -103,7 +116,9 @@ define('Sage/Platform/Mobile/Format', [
     }
 
     function decode(val) {
-        if (typeof val !== 'string') return val;
+        if (typeof val !== 'string') {
+            return val;
+        }
 
         return val
             .replace(/&amp;/g, '&')
@@ -112,7 +127,7 @@ define('Sage/Platform/Mobile/Format', [
             .replace(/&quot;/g, '"');
     }
 
-    return lang.setObject('Sage.Platform.Mobile.Format', {
+    __class = lang.setObject('argos.Format', {
         /**
          * @property {String}
          * Text used in {@link #yesNo yesNo} formatter for true values
@@ -212,16 +227,16 @@ define('Sage/Platform/Mobile/Format', [
         phoneFormat: [{
             test: /^\+.*/,
             format: '${0}'
-        },{
+        }, {
             test: /^(\d{3})(\d{3,4})$/,
             format: '${3}-${4}'
-        },{
+        }, {
             test: /^(\d{3})(\d{3})(\d{2,4})$/, // 555 555 5555
             format: '(${3})-${4}-${5}'
-        },{
+        }, {
             test: /^(\d{3})(\d{3})(\d{2,4})([^0-9]{1,}.*)$/, // 555 555 5555x
             format: '(${3})-${4}-${5}${6}'
-        },{
+        }, {
             test: /^(\d{11,})(.*)$/,
             format: '${1}'
         }],
@@ -256,8 +271,9 @@ define('Sage/Platform/Mobile/Format', [
          * @return {String} An `<a>` element as a string.
          */
         mail: function(val) {
-            if (typeof val !== 'string')
+            if (typeof val !== 'string') {
                 return val;
+            }
 
             return string.substitute('<a href="mailto:${0}">${0}</a>', [val]);
         },
@@ -267,7 +283,7 @@ define('Sage/Platform/Mobile/Format', [
          * @return {String} String without space on either end
          */
         trim: function(val) {
-            return val.replace(/^\s+|\s+$/g,'');
+            return val.replace(/^\s+|\s+$/g, '');
         },
         /**
          * Takes a date and format string and returns the formatted date as a string.
@@ -283,13 +299,13 @@ define('Sage/Platform/Mobile/Format', [
                     ? convert.toDateFromString(val)
                     : null;
 
-            if (date)
-            {
+            if (date) {
                 date = moment(date);
-                if (utc)
+                if (utc) {
                     date = date.add({minutes: date.zone()});
+                }
 
-                return date.format(fmt || Sage.Platform.Mobile.Format.shortDateFormatText);
+                return date.format(fmt || argos.Format.shortDateFormatText);
             }
 
             return val;
@@ -310,8 +326,9 @@ define('Sage/Platform/Mobile/Format', [
                 return val;
             }
 
-            if (typeof d !== 'number')
+            if (typeof d !== 'number') {
                 d = 2;
+            }
 
             var m = Math.pow(10, d),
                 v = Math.floor(parseFloat(val) * m) / m;
@@ -320,7 +337,7 @@ define('Sage/Platform/Mobile/Format', [
         },
         /**
          * Takes a decimal number, multiplies by 100 and adds the % sign with the number of palces to the right.
-         *  
+         *
          * `perecent(0.35)` => `'35.00%'`
          * `perecent(0.35, 0)` => `'35%'`
          * `percent(2.9950)` => `'299.50%'`
@@ -342,14 +359,14 @@ define('Sage/Platform/Mobile/Format', [
             v = utility.roundNumberTo(intVal, places);
 
             //get the whole number part
-            wp = (Math.floor(v)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace("\\.", '.'));
+            wp = (Math.floor(v)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace('\\.', '.'));
 
             if (places < 1) { // format with out decimal part
                 numberFormated = string.substitute('${0}', [wp]).replace(/ /g, '\u00A0'); //keep numbers from breaking
             } else {
                 dp = v % 1; //get the decimal part
-                dp = dp.toPrecision(places+1); // round to significant pecsion
-                dp = dp.toString(); 
+                dp = dp.toPrecision(places + 1); // round to significant pecsion
+                dp = dp.toString();
                 dp = dp.substr(2, places); //get the whole decimal part
                 numberFormated = string.substitute(
                     '${0}'
@@ -358,7 +375,7 @@ define('Sage/Platform/Mobile/Format', [
                 ).replace(/ /g, '\u00A0'); //keep numbers from breaking
             }
 
-            return string.substitute(Sage.Platform.Mobile.Format.percentFormatText, [numberFormated, Mobile.CultureInfo.numberFormat.percentSymbol]);
+            return string.substitute(argos.Format.percentFormatText, [numberFormated, Mobile.CultureInfo.numberFormat.percentSymbol]);
         },
         /**
          * Takes a boolean value and returns the string Yes or No for true or false
@@ -366,10 +383,12 @@ define('Sage/Platform/Mobile/Format', [
          * @return {String} Yes for true, No for false.
          */
         yesNo: function(val) {
-            if (typeof val === 'string') val = /^true$/i.test(val);
+            if (typeof val === 'string') {
+                val = /^true$/i.test(val);
+            }
 
-            return val ? Sage.Platform.Mobile.Format.yesText || 'Yes'
-                : Sage.Platform.Mobile.Format.noText || 'No';
+            return val ? argos.Format.yesText || 'Yes'
+                : argos.Format.noText || 'No';
         },
         /**
          * Takes a boolean value and returns the string T or F for true or false
@@ -377,11 +396,13 @@ define('Sage/Platform/Mobile/Format', [
          * @return {String} T for true, F for false.
          */
         bool: function(val) {
-            if (typeof val === 'string') val = /^true$/i.test(val);
+            if (typeof val === 'string') {
+                val = /^true$/i.test(val);
+            }
 
             return val
-                ? Sage.Platform.Mobile.Format.trueText || 'T'
-                : Sage.Platform.Mobile.Format.falseText || 'F';
+                ? argos.Format.trueText || 'T'
+                : argos.Format.falseText || 'F';
         },
         /**
          * Takes a string and converts all new lines `\n` to HTML `<br>` elements.
@@ -389,7 +410,9 @@ define('Sage/Platform/Mobile/Format', [
          * @return {String} String with replaced `\n` with `<br>`
          */
         nl2br: function(val) {
-            if (typeof val !== 'string') return val;
+            if (typeof val !== 'string') {
+                return val;
+            }
 
             return val.replace(/\n/g, '<br />');
         },
@@ -399,20 +422,27 @@ define('Sage/Platform/Mobile/Format', [
          * @return {String} A string representation of the minutes as `'n hours m minutes'`
          */
         timespan: function(val) {
-            var v = Sage.Platform.Mobile.Format.fixed(val);
-            if (isNaN(v) || !v) return '';
+            var v, hrs, mins;
 
-            var hrs = Math.floor(v / 60);
-            var mins  = v % 60;
+            v = argos.Format.fixed(val);
+            if (isNaN(v) || !v) {
+                return '';
+            }
 
-            if (hrs)
-                hrs = hrs > 1 ? string.substitute('${0} ${1}', [hrs, (Sage.Platform.Mobile.Format.hoursText || 'hours')])
-                              : string.substitute('${0} ${1}', [hrs, (Sage.Platform.Mobile.Format.hourText || 'hour')]);
-            if (mins)
-                mins = mins > 1 ? string.substitute('${0} ${1}', [mins, (Sage.Platform.Mobile.Format.minutesText || 'minutes')])
-                                : string.substitute('${0} ${1}', [mins, (Sage.Platform.Mobile.Format.minuteText || 'minute')]);
+            hrs = Math.floor(v / 60);
+            mins  = v % 60;
 
-            return (hrs && mins) ? hrs +" "+ mins
+            if (hrs) {
+                hrs = hrs > 1 ? string.substitute('${0} ${1}', [hrs, (argos.Format.hoursText || 'hours')])
+                              : string.substitute('${0} ${1}', [hrs, (argos.Format.hourText || 'hour')]);
+            }
+
+            if (mins) {
+                mins = mins > 1 ? string.substitute('${0} ${1}', [mins, (argos.Format.minutesText || 'minutes')])
+                                : string.substitute('${0} ${1}', [mins, (argos.Format.minuteText || 'minute')]);
+            }
+
+            return (hrs && mins) ? hrs + ' ' + mins
                                  : hrs === 0 ? mins : hrs;
         },
         /**
@@ -423,24 +453,26 @@ define('Sage/Platform/Mobile/Format', [
          * @param {HTMLElement} canvas The `<canvas>` element to be drawn on
          * @param {Object} options Canvas options: scale, lineWidth and penColor.
          */
-        canvasDraw: function (vector, canvas, options) {
+        canvasDraw: function(vector, canvas, options) {
             var scale, x, y,
+                trace,
+                i,
                 context = canvas.getContext('2d');
 
             // Paint canvas white vs. clearing as on Android imageFromVector alpha pixels blacken
             // context.clearRect(0, 0, context.canvas.width, context.canvas.height);
             context.fillStyle = 'rgb(255,255,255)';
-            context.fillRect (0, 0, context.canvas.width, context.canvas.height);
+            context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
             scale               = options && options.scale     ? options.scale     : 1;
             context.lineWidth   = options && options.lineWidth ? options.lineWidth : 1;
             context.strokeStyle = options && options.penColor  ? options.penColor  : 'black';
 
-            for (var trace in vector) {
+            for (trace in vector) {
                 if ( 1 < vector[trace].length) {
                     context.beginPath();
                     context.moveTo(vector[trace][0][0] * scale, vector[trace][0][1] * scale);
-                    for (var i = 1; i < vector[trace].length; i++) {
+                    for (i = 1; i < vector[trace].length; i++) {
                         x = vector[trace][i][0] * scale;
                         y = vector[trace][i][1] * scale;
                         context.lineTo(x, y);
@@ -456,19 +488,24 @@ define('Sage/Platform/Mobile/Format', [
          * @param {Boolean} html Flag for returning image as a data-uri or as a stringified `<img>` element.
          * @return {String} The encoded data of the drawn image, optionally wrapped in `<img>` if html was passed as true
          */
-        imageFromVector: function (vector, options, html) {
+        imageFromVector: function(vector, options, html) {
             var img,
+                size,
                 canvasNode = domConstruct.create('canvas');
 
             options = options || {};
 
-            if (typeof vector == 'string' || vector instanceof String)
-                try { vector = json.fromJson(vector); } catch(e) {}
+            if (typeof vector === 'string' || vector instanceof String) {
+                try {
+                    vector = json.fromJson(vector);
+                } catch(e) {}
+            }
 
-            if (!(vector instanceof Array) || 0 === vector.length)
+            if (!(vector instanceof Array) || 0 === vector.length) {
                 vector = [[]]; // blank image.
+            }
 
-            var size = getVectorMaxSize(vector);
+            size = getVectorMaxSize(vector);
 
             canvasNode.width  = options.width  || size.width;
             canvasNode.height = options.height || size.height;
@@ -478,11 +515,12 @@ define('Sage/Platform/Mobile/Format', [
                 canvasNode.height / size.height
             );
 
-            Sage.Platform.Mobile.Format.canvasDraw(vector, canvasNode, options);
+            argos.Format.canvasDraw(vector, canvasNode, options);
 
             img = canvasNode.toDataURL('image/png');
-            if (img.indexOf("data:image/png") !== 0)
+            if (img.indexOf('data:image/png') !== 0) {
                 img = Canvas2Image.saveAsBMP(canvasNode, true).src;
+            }
 
             return html
                 ? string.substitute(
@@ -503,17 +541,19 @@ define('Sage/Platform/Mobile/Format', [
                 return val;
             }
 
-            val = Sage.Platform.Mobile.Format.alphaToPhoneNumeric(val);
+            val = argos.Format.alphaToPhoneNumeric(val);
 
-            var formatters = Sage.Platform.Mobile.Format.phoneFormat,
+            var formatters = argos.Format.phoneFormat,
+                i,
+                formatter,
+                match,
                 clean = /^\+/.test(val)
                     ? val
                     : val.replace(/[^0-9x]/ig, ''),
                 formattedMatch;
 
-            for (var i = 0; i < formatters.length; i++) {
-                var formatter = formatters[i],
-                    match;
+            for (i = 0; i < formatters.length; i++) {
+                formatter = formatters[i];
 
                 if ((match = formatter.test.exec(clean))) {
                     formattedMatch = string.substitute(formatter.format, [val, clean].concat(match));
@@ -547,13 +587,16 @@ define('Sage/Platform/Mobile/Format', [
                 return 'Unknown';
             }
             if (size < 1024) {
-                return dNumber.format(Math.round(size)) + ' ' + Sage.Platform.Mobile.Format.bytesText;
+                return dNumber.format(Math.round(size)) + ' ' + argos.Format.bytesText;
             }
             else if ((1024 < size) && (size < (1024 * 1000))) {
                 return dNumber.format(Math.round(size / 1024)) + ' KB';
             } else {
-                return dNumber.format(Math.round(size / (1024*1000))) + ' MB';
+                return dNumber.format(Math.round(size / (1024 * 1000))) + ' MB';
             }
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Format', __class);
+    return __class;
 });

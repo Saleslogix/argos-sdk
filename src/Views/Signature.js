@@ -14,25 +14,27 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Views.Signature
+ * @class argos.Views.Signature
  * Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
  *
  * It goes hand-in-hand with {@link SignatureField SignatureField}
  *
  * @alternateClassName SignatureView
- * @extends Sage.Platform.Mobile.View
- * @requires Sage.Platform.Mobile.Format
+ * @extends argos.View
+ * @requires argos.Format
  */
-define('Sage/Platform/Mobile/Views/Signature', [
+define('argos/Views/Signature', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/_base/json',
     'dojo/query',
     'dojo/dom-geometry',
     'dojo/window',
-    'Sage/Platform/Mobile/Format',
-    'Sage/Platform/Mobile/View'
+    '../Format',
+    '../View'
 ], function(
     declare,
+    lang,
     json,
     query,
     domGeom,
@@ -41,7 +43,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
     View
 ) {
 
-    return declare('Sage.Platform.Mobile.Views.Signature', [View], {
+    var __class = declare('argos.Views.Signature', [View], {
         // Localization
         /**
          * @property {String}
@@ -159,9 +161,18 @@ define('Sage/Platform/Mobile/Views/Signature', [
         show: function(options) {
             this.inherited(arguments);
 
-            if (options && options.lineWidth) { this.config.lineWidth = options.lineWidth; }
-            if (options && options.penColor)  { this.config.penColor  = options.penColor;  }
-            if (options && options.drawColor) { this.config.drawColor = options.drawColor; }
+            if (options && options.lineWidth) {
+                this.config.lineWidth = options.lineWidth;
+            }
+
+            if (options && options.penColor) {
+                this.config.penColor  = options.penColor;
+            }
+
+            if (options && options.drawColor) {
+                this.config.drawColor = options.drawColor;
+            }
+
             this.signature = (options && options.signature) ? options.signature : [];
 
             this._sizeCanvas();
@@ -199,7 +210,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
          * @param {Event} e
          * @return Number[]
          */
-        _getCoords: function (e) {
+        _getCoords: function(e) {
             var offset = domGeom.position(this.signatureNode, false);
             return e.touches
                 ? [
@@ -216,7 +227,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
          * Handler for `ontouchstart`, records the starting point and sets the state to down
          * @param {Event} e
          */
-        _penDown: function (e) {
+        _penDown: function(e) {
             this.isPenDown = true;
             this.lastpos = this._getCoords(e);
             this.context.lineWidth = this.config.lineWidth;
@@ -227,8 +238,11 @@ define('Sage/Platform/Mobile/Views/Signature', [
          * Handler for `ontouchmove`, draws the lines between the last postition and current position
          * @param {Event} e
          */
-        _penMove: function (e) {
-            if (!this.isPenDown) { return; }
+        _penMove: function(e) {
+            if (!this.isPenDown) {
+                return;
+            }
+
             this.pos = this._getCoords(e);
             e.preventDefault();
             this.context.beginPath();
@@ -244,11 +258,12 @@ define('Sage/Platform/Mobile/Views/Signature', [
          * Handler for `ontouchend`, saves the final signature and redraws the canvas
          * @param e
          */
-        _penUp: function (e) {
+        _penUp: function(e) {
             e.preventDefault();
             this.isPenDown = false;
-            if (this.trace.length)
+            if (this.trace.length) {
                 this.signature.push(this.trace);
+            }
 
             this.trace = [];
             this.context.strokeStyle = this.config.penColor;
@@ -257,15 +272,14 @@ define('Sage/Platform/Mobile/Views/Signature', [
         /**
          * Undoes the last pen down-to-pen up line by using the buffer
          */
-        _undo: function () {
-            if (this.signature.length)
-            {
+        _undo: function() {
+            if (this.signature.length) {
                 this.buffer = this.signature.pop();
-                if (!this.signature.length)
+                if (!this.signature.length) {
                     this.buffer = [this.buffer];
+                }
 
-            } else if (this.buffer.length)
-            {
+            } else if (this.buffer.length) {
                 this.signature = this.buffer;
             }
             this.redraw(this.signature, this.signatureNode, this.config);
@@ -273,7 +287,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
         /**
          * Sets the canvas width/height based on the size of the window/screen
          */
-        _sizeCanvas: function () {
+        _sizeCanvas: function() {
             this.canvasNodeWidth  = Math.floor(win.getBox().w * 0.92);
 
             this.canvasNodeHeight = Math.min(
@@ -289,7 +303,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
          * drawn signature accordingly to the ratio.
          * @param e
          */
-        onResize: function (e) {
+        onResize: function(e) {
             var newScale,
                 oldWidth  = this.canvasNodeWidth,
                 oldHeight = this.canvasNodeHeight;
@@ -309,7 +323,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
          * @param {HTMLElement} canvas Canvas to be drawn to
          * @param {Object} options Options to be passed to canvasDraw
          */
-        redraw: function (vector, canvas, options) {
+        redraw: function(vector, canvas, options) {
             format.canvasDraw(vector, canvas, options);
         },
         /**
@@ -317,13 +331,15 @@ define('Sage/Platform/Mobile/Views/Signature', [
          * @param {Number} scale Ratio in which to multiply the vector point
          * @return {Number[][]} Rescaled signature array
          */
-        rescale: function (scale) {
-            var rescaled = [];
-            for (var i = 0; i < this.signature.length; i++)
-            {
+        rescale: function(scale) {
+            var rescaled,
+                j,
+                i;
+
+            rescaled = [];
+            for (i = 0; i < this.signature.length; i++) {
                 rescaled.push([]);
-                for (var j = 0; j < this.signature[i].length; j++)
-                {
+                for (j = 0; j < this.signature[i].length; j++) {
                     rescaled[i].push([
                         this.signature[i][j][0] * scale,
                         this.signature[i][j][1] * scale
@@ -337,10 +353,13 @@ define('Sage/Platform/Mobile/Views/Signature', [
          * @return {Number[][]} Optimized signature
          */
         optimizeSignature: function() {
-            var optimized = [];
+            var optimized, i;
 
-            for (var i = 0; i < this.signature.length; i++)
+            optimized = [];
+
+            for (i = 0; i < this.signature.length; i++) {
                 optimized.push(this.optimize(this.signature[i]));
+            }
 
             return optimized;
         },
@@ -351,7 +370,9 @@ define('Sage/Platform/Mobile/Views/Signature', [
          * @return {Number[]} Optimized array
          */
         optimize: function(vector) {
-            if (vector.length < 2) return vector;
+            if (vector.length < 2) {
+                return vector;
+            }
 
             var result = [],
                 minA = 0.95,
@@ -359,30 +380,27 @@ define('Sage/Platform/Mobile/Views/Signature', [
                 rootP = vector[0],
                 lastP = vector[1],
                 rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]],
-                rootL = Math.sqrt(rootV[0]*rootV[0] + rootV[1]*rootV[1]),
+                rootL = Math.sqrt(rootV[0] * rootV[0] + rootV[1] * rootV[1]),
                 currentP,
                 currentV,
                 currentL,
+                i,
                 dotProduct;
 
-            for (var i = 2; i < vector.length; i++)
-            {
+            for (i = 2; i < vector.length; i++) {
                 currentP = vector[i];
                 currentV = [currentP[0] - rootP[0], currentP[1] - rootP[1]];
-                currentL = Math.sqrt(currentV[0]*currentV[0] + currentV[1]*currentV[1]);
-                dotProduct = (rootV[0]*currentV[0] + rootV[1]*currentV[1]) / (rootL*currentL);
+                currentL = Math.sqrt(currentV[0] * currentV[0] + currentV[1] * currentV[1]);
+                dotProduct = (rootV[0] * currentV[0] + rootV[1] * currentV[1]) / (rootL * currentL);
 
-                if (dotProduct < minA || currentL > maxL)
-                {
+                if (dotProduct < minA || currentL > maxL) {
                     result.push(rootP);
 
                     rootP = lastP;
                     lastP = currentP;
                     rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]];
-                    rootL = Math.sqrt(rootV[0]*rootV[0] + rootV[1]*rootV[1]);
-                }
-                else
-                {
+                    rootL = Math.sqrt(rootV[0] * rootV[0] + rootV[1] * rootV[1]);
+                } else {
                     lastP = currentP;
                 }
 
@@ -393,4 +411,7 @@ define('Sage/Platform/Mobile/Views/Signature', [
             return result;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Views.Signature', __class);
+    return __class;
 });

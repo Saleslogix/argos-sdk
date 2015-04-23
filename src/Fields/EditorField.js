@@ -14,7 +14,7 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Fields.EditorField
+ * @class argos.Fields.EditorField
  * The EditorField is not a field per say but a base class for another field type to inherit from. The
  * intent of an EditorField is you have a field where the input should come from another form. EditorField
  * will handle the navigation, gathering values from the other view, going back and applying to the form
@@ -25,19 +25,21 @@
  * the address parts and takes the user to an address_edit with all the street/city/postal etc.
  *
  * @alternateClassName EditorField
- * @extends Sage.Platform.Mobile._Field
+ * @extends argos._Field
  */
-define('Sage/Platform/Mobile/Fields/EditorField', [
+define('argos/Fields/EditorField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/_base/event',
-    'Sage/Platform/Mobile/Fields/_Field'
+    'argos/Fields/_Field'
 ], function(
     declare,
+    lang,
     event,
     _Field
 ) {
 
-    return declare('Sage.Platform.Mobile.Fields.EditorField', [_Field], {
+    var __class = declare('argos.Fields.EditorField', [_Field], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -127,7 +129,7 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
         init: function() {
             this.inherited(arguments);
 
-            this.connect(this.containerNode, "onclick", this._onClick);
+            this.connect(this.containerNode, 'onclick', this._onClick);
         },
         /**
          * Extends the parent implementation to also call {@link #_enableTextElement _enableTextElement}.
@@ -170,7 +172,7 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
                         cls: 'fa fa-check fa-fw fa-lg',
                         fn: this.complete,
                         scope: this
-                    },{
+                    }, {
                         id: 'cancel',
                         cls: 'fa fa-ban fa-fw fa-lg',
                         side: 'left',
@@ -246,10 +248,13 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
          *
          */
         complete: function() {
-            var view = App.getPrimaryActiveView();
-            var success = true;
+            var view,
+                success;
 
-            if (view instanceof Sage.Platform.Mobile.Edit) {
+            view = App.getPrimaryActiveView();
+            success = true;
+
+            if (view instanceof argos.Edit) {
                 view.hideValidationSummary();
 
                 if (view.validate() !== false) {
@@ -328,14 +333,17 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
             if (val) {
                 this.validationValue = this.currentValue = val;
 
-                if (initial) this.originalValue = this.currentValue;
+                if (initial) {
+                    this.originalValue = this.currentValue;
+                }
 
                 this.setText(this.formatValue(val));
-            }
-            else {
+            } else {
                 this.validationValue = this.currentValue = null;
 
-                if (initial) this.originalValue = this.currentValue;
+                if (initial) {
+                    this.originalValue = this.currentValue;
+                }
 
                 this.setText(this.emptyText);
             }
@@ -347,4 +355,7 @@ define('Sage/Platform/Mobile/Fields/EditorField', [
             this.setValue(null, true);
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
+    return __class;
 });

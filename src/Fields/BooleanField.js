@@ -13,21 +13,23 @@
  * limitations under the License.
  */
 
-define('Sage/Platform/Mobile/Fields/BooleanField', [
+define('argos/Fields/BooleanField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/dom-attr',
     'dojo/dom-class',
-    'Sage/Platform/Mobile/Fields/_Field',
-    'Sage/Platform/Mobile/FieldManager'
+    './_Field',
+    '../FieldManager'
 ], function(
     declare,
+    lang,
     domAttr,
     domClass,
     Field,
     FieldManager
 ) {
     /**
-     * @class Sage.Platform.Mobile.Fields.BooleanField
+     * @class argos.Fields.BooleanField
      * The Boolean Field is used for true/false values and is visualized as a toggle or light switch.
      *
      * ###Example:
@@ -39,10 +41,10 @@ define('Sage/Platform/Mobile/Fields/BooleanField', [
      *     }
      *
      * @alternateClassName BooleanField
-     * @extends Sage.Platform.Mobile.Fields._Field
-     * @requires Sage.Platform.Mobile.FieldManager
+     * @extends argos.Fields._Field
+     * @requires argos.FieldManager
      */
-    var control = declare('Sage.Platform.Mobile.Fields.BooleanField', [Field], {
+    var control = declare('argos.Fields.BooleanField', [Field], {
         /**
          * @property {Object}
          * Provides a setter to the toggleNodes toggled attribute
@@ -91,7 +93,9 @@ define('Sage/Platform/Mobile/Fields/BooleanField', [
          * @param {Event} evt The click/tap event
          */
         _onClick: function(evt) {
-            if (this.isDisabled()) return;
+            if (this.isDisabled()) {
+                return;
+            }
 
             var toggledValue = !this.getValue();
 
@@ -117,14 +121,17 @@ define('Sage/Platform/Mobile/Fields/BooleanField', [
                 ? /^(true|t|0)$/i.test(val)
                 : !!val;
 
-            if (initial) this.originalValue = val;
+            if (initial) {
+                this.originalValue = val;
+            }
 
             domAttr.set(this.toggleNode, 'toggled', val);
 
-            if (val === false)
+            if (val === false) {
                 domClass.remove(this.toggleNode, 'toggleStateOn');
-            else
+            } else {
                 domClass.add(this.toggleNode, 'toggleStateOn');
+            }
 
             this.onChange(val, this);
         },
@@ -143,9 +150,10 @@ define('Sage/Platform/Mobile/Fields/BooleanField', [
          * @return {Boolean}
          */
         isDirty: function() {
-            return (this.originalValue != this.getValue());
+            return (this.originalValue !== this.getValue());
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.BooleanField', control);
     return FieldManager.register('boolean', control);
 });

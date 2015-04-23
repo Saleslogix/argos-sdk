@@ -204,7 +204,7 @@ h5,
 }
 p,
 span {
-  font-size: 12px;
+  font-size: 14px;
 }
 .smalltext {
   font-size: 11px;
@@ -217,12 +217,6 @@ span {
 }
 .subtitle {
   font-size: 24px;
-}
-/* Overthrow CSS:
-   Enable overflow: auto on elements with overthrow class when html element has overthrow class too */
-.overthrow-enabled .overthrow {
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
 }
 /* snapjs styles */
 .tall {
@@ -245,17 +239,13 @@ span {
   left: 0;
   right: 0;
   bottom: 0;
+}
+.left-drawer,
+.right-drawer {
+  visibility: hidden;
+  display: none;
   background-color: #0f1e1e;
-}
-.left-drawer,
-.right-drawer {
-  visibility: hidden;
-  display: none;
-}
-.left-drawer,
-.right-drawer {
-  display: none;
-  visibility: hidden;
+  overflow: auto;
 }
 .snapjs-left .left-drawer {
   visibility: visible;
@@ -386,6 +376,7 @@ span {
   visibility: hidden;
   width: 24px;
   height: 24px;
+  line-height: 24px;
   position: absolute;
   top: 8px;
   left: 12px;
@@ -460,11 +451,23 @@ span {
   display: table;
   clear: both;
 }
-.list .scroller {
-  position: absolute;
+.list.list-hide-search .scroller {
+  top: 0px;
+}
+.scroller {
   width: 100%;
-  top: 45px;
+  position: absolute;
+  top: 0px;
   bottom: 0px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.scroller.animate {
+  -webkit-transition: top 0.3s ease;
+  transition: top 0.3s ease;
+}
+.list .scroller {
+  top: 47px;
 }
 .list .item-static-icon {
   width: 24px;
@@ -501,7 +504,7 @@ span {
   padding-left: 32px;
   background: url('../../../images/content-loading-light-green.gif') no-repeat scroll 12px 50%;
 }
-.panel.busy {
+body.busy {
   opacity: 0.5;
 }
 /* fields */
@@ -509,18 +512,19 @@ span {
   display: none;
 }
 .list-search {
-  padding: 1px;
+  padding: 0px;
   position: relative;
 }
 div.table-layout {
   display: table;
   width: 100%;
   padding: 0;
-  background: #fff;
+  background: #13a3f7;
 }
 div.table-layout > div {
   display: table-cell;
   vertical-align: middle;
+  padding: 5px 10px 10px 10px;
 }
 h2 > .collapsed-indicator {
   height: 30px;
@@ -542,6 +546,10 @@ div > .collapsed-indicator {
 .collapsed + div {
   display: none !important;
 }
+.action-list > li.disabled {
+  display: none;
+  visibility: hidden;
+}
 li > .disabled,
 .action-list > li > .disabled {
   opacity: 0.3;
@@ -551,9 +559,18 @@ li > .disabled,
 }
 ul.action-list > li > a > div {
   float: left;
-  margin: 0 0.5em 0 0;
+  margin: 0 5px 0 0;
+  width: 39px;
+  height: 44px;
+  text-align: center;
+  padding: 5px;
+  font-size: 1.5em;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 .action-list > li {
+  height: 44px;
   line-height: 1em !important;
   cursor: pointer !important;
 }
@@ -606,16 +623,20 @@ body > .viewContainer > .list,
 body > .viewContainer > .panel,
 body > .viewContainer > .dialog {
   display: none;
+  visibility: hidden;
+}
+body > .viewContainer > .panel {
+  overflow: auto;
 }
 body.transition > .viewContainer > .panel,
 body.transition > .viewContainer > .list {
   position: absolute;
-  top: 40px;
+  top: 64px;
 }
 body > .viewContainer > .panel,
 body > .viewContainer > .list {
   position: absolute;
-  top: 40px;
+  top: 64px;
   bottom: 0px;
   width: 100%;
   box-sizing: border-box;
@@ -628,7 +649,7 @@ body > .viewContainer > .list {
 body[orient="landscape"] > .viewContainer > .panel,
 body[orient="landscape"] > .viewContainer > .list {
   position: absolute;
-  top: 40px;
+  top: 64px;
   /* Adjust if header toolbar changes */
   bottom: 0px;
   /* Adjust if footer toolbar changes */
@@ -642,6 +663,7 @@ body[orient="landscape"] > .viewContainer > .list {
 }
 body > .viewContainer > [selected="true"] {
   display: block;
+  visibility: visible;
 }
 body > .viewContainer > .dialog {
   top: 0px;
@@ -794,13 +816,14 @@ img {
 .panel-concurrency-summary > ul > li {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 5px 0;
   position: relative;
 }
 .panel-content > ul > li > a,
 .panel-validation-summary > ul > li > a {
   padding: 1px;
-  margin: 0 0 0 30px;
+  margin: 0 0 0 0.25em;
+  /* matches the padding in the labels */
   display: block;
   cursor: pointer;
 }
@@ -831,13 +854,12 @@ img {
 .row > a {
   display: block;
   margin: 0 0 0 0;
-  padding: 0 0 0 30px;
+  padding: 0 0 0 10px;
   position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .href {
-  display: inline-block;
   color: #005ce6;
   text-decoration: none;
   cursor: pointer;
@@ -1005,8 +1027,76 @@ img {
 .related-view-widget .loading {
   display: inline-block;
 }
+.related-view-widget-base {
+  margin: 4px;
+  padding: 2px;
+  position: relative;
+}
+.pull-to-refresh {
+  margin: 20px 0;
+  text-align: center;
+  visibility: hidden;
+}
+.pull-to-refresh > span {
+  margin: 0 10px;
+  height: 18px;
+  vertical-align: middle;
+}
+.configurable-list {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  /* ios */
+  -webkit-tap-highlight-color: transparent;
+  /* android */
+}
+.configurable-list .list-content > li {
+  background-color: #fff;
+  color: #aaa;
+  padding-right: 6px;
+}
+.configurable-list .list-content > li .resource {
+  display: block;
+  margin: -8px 0 -8px -10px;
+  padding: 8px 32px 8px 36px;
+}
+.configurable-list .list-content > li h3 > span:first-child {
+  float: left;
+}
+.configurable-list .list-content > li h3 > [data-action="moveUp"],
+.configurable-list .list-content > li h3 > [data-action="moveDown"] {
+  float: right;
+  display: block;
+  width: 48px;
+  height: 24px;
+  cursor: pointer;
+  text-align: center;
+}
+.configurable-list .list-content > li h3 > .icon {
+  opacity: 0.5;
+  margin-right: .2em;
+}
+.configurable-list .list-content > li:first-child h3 > [data-action="moveUp"],
+.configurable-list .list-content > li:last-child h3 > [data-action="moveDown"] {
+  visibility: hidden;
+}
+.configurable-list .list-content > li.list-item-selected {
+  color: #000;
+}
+.configurable-list .list-content > li.list-item-selected h3 > .icon {
+  opacity: 1.0;
+}
+.configurable-list .list-content > li.list-item-selected.last-moved {
+  opacity: 1.0;
+}
+.configurable-list .list-content > li.last-moved {
+  color: #000;
+  background-color: #6dd9d1;
+  -webkit-transition: background-color 0.3s linear;
+  transition: background-color 0.3s linear;
+  opacity: 0.5;
+}
 body {
   color: #1a1a1a;
+  background-color: #f8f8f8;
 }
 a {
   color: #005ce6;
@@ -1025,8 +1115,10 @@ h5 {
   white-space: nowrap;
 }
 body body > .viewContainer {
-  background: #ffffff;
+  background-color: #f8f8f8;
 }
+.list,
+.scroller,
 .list-content,
 .group-content {
   background-color: #ebebeb;
@@ -1090,7 +1182,6 @@ body body > .viewContainer {
 .panel-content > ul,
 .panel-validation-summary > ul,
 .panel-concurrency-summary > ul {
-  margin: 0.25em;
   border: none;
   background-color: #ffffff;
 }
@@ -1101,19 +1192,22 @@ body body > .viewContainer {
 }
 .panel-content > fieldset > .row,
 .panel-content > div > .row {
-  padding: 0.25em;
+  padding: 0.25em 0.25em 10px 0.25em;
   min-height: 1.5em;
 }
 .panel-content > fieldset > .row > div > label,
 .panel-content > div > .row > div > label,
 .panel-content > div > .row > label {
-  color: #4b5656;
+  color: #9a9a9a;
 }
 .panel-content > fieldset > .row-edit {
   border-top: none;
 }
 .panel-content > fieldset > .row-edit:first-of-type {
   border-top: 0 none black;
+}
+.panel-content > .action-list {
+  background-color: #aee1ff;
 }
 body > .viewContainer {
   border-left: 2px solid #dddee0;
@@ -1140,9 +1234,22 @@ body > .viewContainer {
   padding: 5px;
 }
 .related-item-count {
-  margin: 0 0 0 1px;
+  margin: 0 5px 0 0;
+  min-width: 44px;
+  height: 44px;
+  line-height: 44px;
+  display: inline-block;
+  background-color: #13a3f7;
+  text-align: center;
+  color: #fff;
+  padding: 0 5px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
-.related-item-count,
 .related-item-label {
   color: #005ce6;
 }
@@ -1151,7 +1258,7 @@ body > .viewContainer {
 */
 input,
 textarea {
-  font-size: 12px;
+  font-size: 14px;
   border: 1px solid #b3b3b3;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -1164,8 +1271,7 @@ textarea {
   padding: 7px;
 }
 label {
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 14px;
 }
 input:focus,
 textarea:focus {
@@ -1181,11 +1287,6 @@ textarea:focus {
   color: #dddee0;
   background-color: transparent;
 }
-.viewContainer > .toolbar > .button,
-.toolbar > .button {
-  background-color: transparent;
-  outline: none;
-}
 .panel-content > h2 > button {
   float: right;
   background-color: transparent;
@@ -1199,6 +1300,10 @@ textarea:focus {
 }
 .toolButton-disabled {
   opacity: 0.25;
+}
+.toolButton-hidden {
+  display: none;
+  visibility: hidden;
 }
 /* signature capture */
 #signature_edit {
@@ -1252,7 +1357,7 @@ textarea:focus {
   text-align: center;
   bottom: 2px;
   padding: 0;
-  font-size: 12px;
+  font-size: 14px;
   white-space: nowrap;
   display: block;
   text-overflow: ellipsis;
@@ -1264,6 +1369,8 @@ textarea:focus {
   left: 0px;
   top: 2px;
   padding: 0;
+  font-size: 25px;
+  /* changes the quick action icon size */
 }
 .actions-row > button > img {
   position: absolute;
@@ -1290,9 +1397,6 @@ textarea:focus {
   height: 32px;
 }
 /* busy */
-.toolbar.busy .actionButton span {
-  padding: 0 0 0 20px;
-}
 .panel.busy .actionButton span.indicator {
   margin: 0 10px 0 0;
 }
@@ -1336,8 +1440,8 @@ textarea:focus {
   position: absolute;
   right: 4px;
   display: block;
-  height: 30px;
-  width: 40px;
+  height: 44px;
+  width: 44px;
 }
 .row-edit[data-field-type="picklist"] > div > input,
 .row-edit[data-field-type="lookup"] > div > input,
@@ -1362,12 +1466,11 @@ div.table-layout div.hasButton > button {
   border: 0;
 }
 div.table-layout div.hasButton > button.searchButton {
-  border: none;
+  border: 1px solid #b3b3b3;
 }
 div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
   border: 0;
   padding: 0 6px;
-  background-color: transparent;
   box-shadow: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -1392,6 +1495,7 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   height: 32px;
+  vertical-align: middle;
   margin: 0 !important;
 }
 .list-search .searchButton {
@@ -1450,7 +1554,8 @@ button.clear-button:focus {
 /* edit/insert */
 .row > div > input:not([type|=radio]):not([type|=checkbox]),
 .row > input:not([type|=radio]):not([type|=checkbox]) {
-  height: 30px;
+  height: 44px;
+  vertical-align: middle;
   padding: 10px 10px 0 0px;
 }
 .row-edit[data-field-type="signature"] > div > canvas,
@@ -1465,11 +1570,6 @@ button.clear-button:focus {
   z-index: 10;
   color: #999;
   padding: 3px 0 0 111px;
-}
-.row-edit[data-field-type="address"] > div > div {
-  min-height: 1.5em;
-  padding: 8px 34px 8px 8px;
-  border: 1px solid #b3b3b3;
 }
 .row-edit {
   /*position: relative;*/
@@ -1508,14 +1608,20 @@ button.clear-button:focus {
   padding: 8px 34px 8px 0px;
 }
 .button {
-  height: 36px;
-  line-height: 30px;
+  height: 44px;
+  vertical-align: middle;
   padding: 0 2px 0 2px;
+  outline: none;
+  border: 1px solid #b3b3b3;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  background-color: #dddddd;
 }
 .toolButton {
   position: relative;
-  min-width: 28px;
-  min-height: 28px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0;
   z-index: 100;
 }
@@ -1556,17 +1662,17 @@ button.clear-button:focus {
 .toggle {
   border: 2px solid #b3b3b3;
   background-color: #b3b3b3;
-  border-radius: 14px;
-  -webkit-border-radius: 14px;
-  -moz-border-radius: 14px;
-  line-height: 30px;
+  border-radius: 22px;
+  -webkit-border-radius: 22px;
+  -moz-border-radius: 22px;
+  line-height: 44px;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  width: 50px;
-  height: 28px;
+  width: 70px;
+  height: 44px;
   margin: 3px 0px 3px 0px;
   position: relative;
   right: auto;
@@ -1574,36 +1680,54 @@ button.clear-button:focus {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
+.toggle > .thumb {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
+  border-radius: 22px;
+  -webkit-border-radius: 22px;
+  -moz-border-radius: 22px;
+}
+.toggleStateOn > .thumb {
+  left: auto;
+  right: 0px;
+}
+.toggleStateOn {
+  background-color: #13a3f7;
+  border-color: #13a3f7;
+}
 .toggle-vertical {
   width: 64px;
   height: 126px;
   margin: 0;
   position: relative;
 }
-.toggle > .thumb {
-  position: absolute;
-  width: 26px;
-  height: 24px;
-  background-color: #ffffff;
-  border-radius: 14px;
-  -webkit-border-radius: 14px;
-  -moz-border-radius: 14px;
-}
 .toggle-vertical > .thumb {
-  width: 64px;
+  width: 60px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
-.toggleStateOn > .thumb {
-  left: auto;
-  right: 0px;
+.toggle-vertical .toggleOn {
+  height: 60px;
+  width: 64px;
+  top: 0;
+}
+.toggle-vertical .toggleOff {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  top: auto;
+  left: 0px;
+}
+.toggle-vertical.toggleStateOn > .toggleOff {
+  display: none;
 }
 .toggleStateOn > .vertical {
-  left: -1px;
+  left: 0px;
   top: auto;
-  bottom: -1px;
-}
-.toggleStateOn {
-  background-color: #13a3f7;
-  border-color: #13a3f7;
+  bottom: 0px;
 }
 .viewContainer > .footer-toolbar {
   position: absolute;
@@ -1618,37 +1742,27 @@ button.clear-button:focus {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  height: 40px;
+  height: 65px;
   width: 100%;
-  padding: 4px 4px;
   display: block;
   z-index: 10;
 }
-.viewContainer > .toolbar > h1,
-.toolbar > h1 {
+.viewContainer > .toolbar > .toolbar-title,
+.toolbar > .toolbar-title {
   color: #ffffff;
-  overflow: hidden;
   display: block;
   margin: 0;
   padding: 0;
-  line-height: 34px;
   text-align: center;
   text-overflow: ellipsis;
+  overflow: hidden;
   white-space: nowrap;
   position: absolute;
-  left: 0px;
-  right: 0px;
+  top: 42px;
+  width: 100%;
   z-index: 0;
-}
-.viewContainer > .toolbar-size-1 > h1,
-.toolbar-size-1 > h1 {
-  left: 50px;
-  right: 50px;
-}
-.viewContainer > .toolbar-size-2 > h1,
-.toolbar-size-2 > h1 {
-  left: 100px;
-  right: 100px;
+  font-size: 18px;
+  font-weight: normal;
 }
 .toolbar,
 .viewContainer > .toolbar,
@@ -1656,13 +1770,23 @@ body > .viewContainer > .toolbar,
 .viewContainer > .footer-toolbar {
   background-color: #13a3f7;
 }
+.viewContainer > .toolbar > .button,
+.toolbar > .button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 1.5em;
+}
+.toolbar.busy .actionButton span {
+  padding: 0 0 0 20px;
+}
 .toolButton-left {
   float: left;
-  margin-right: 10px;
+  margin-right: 2px;
 }
 .toolButton-right {
   float: right;
-  margin-left: 10px;
+  margin-left: 2px;
 }
 #datetime-picker {
   padding-bottom: 2em;
@@ -1671,6 +1795,7 @@ body > .viewContainer > .toolbar,
   display: none !important;
 }
 #datetime-picker table {
+  border-collapse: separate;
   border-spacing: 6px 0px;
   padding: 2px;
   margin: 0.5em auto 0;
@@ -1685,10 +1810,6 @@ body > .viewContainer > .toolbar,
 #datetime-picker table caption {
   padding: 4px;
 }
-.ext-webkit #datetime-picker table caption {
-  width: 100%;
-}
-/* Webkit caption does not match table width by default */
 #datetime-picker td {
   padding: 0;
   margin: 0;
@@ -1720,25 +1841,19 @@ body > .viewContainer > .toolbar,
   margin: 0;
   height: 46px;
   line-height: 44px;
+  border-radius: 0px;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
-  border-radius: 0px;
 }
 #datetime-picker .plus > td > button {
-  -moz-border-radius-topleft: 3px;
-  -moz-border-radius-topright: 3px;
-  -moz-border-radius-bottomright: 0px;
-  -moz-border-radius-bottomleft: 0px;
-  -webkit-border-radius: 3px 3px 0px 0px;
   border-radius: 3px 3px 0px 0px;
+  -webkit-border-radius: 3px 3px 0px 0px;
+  -moz-border-radius: 3px 3px 0px 0px;
 }
 #datetime-picker .minus > td > button {
-  -moz-border-radius-topleft: 0px;
-  -moz-border-radius-topright: 0px;
-  -moz-border-radius-bottomright: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-radius: 0px 0px 3px 3px;
   border-radius: 0px 0px 3px 3px;
+  -webkit-border-radius: 0px 0px 3px 3px;
+  -moz-border-radius: 0px 0px 3px 3px;
 }
 #datetime-picker .datetime-tt {
   border: none !important;

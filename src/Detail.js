@@ -14,28 +14,35 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Detail
+ * @class argos.Detail
  *
  * Extends _DetailBase and mixes in _SDataDetailMixin to provide backwards compatibility to consumers.
  *
  * @alternateClassName Detail
- * @extends Sage.Platform.Mobile._DetailBase
- * @requires Sage.Platform.Mobile._DetailBase
- * @requires Sage.Platform.Mobile._SDataDetailMixin
- * @mixins Sage.Platform.Mobile._DetailBase
- * @mixins Sage.Platform.Mobile._SDataDetailMixin
+ * @extends argos._DetailBase
+ * @requires argos._DetailBase
+ * @requires argos._SDataDetailMixin
+ * @mixins argos._SDataDetailMixin
+ * @mixins argos._RelatedViewWidgetDetailMixin
  */
-define('Sage/Platform/Mobile/Detail', [
+define('argos/Detail', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     './_DetailBase',
-    './_SDataDetailMixin'
+    './_SDataDetailMixin',
+    './_RelatedViewWidgetDetailMixin'
 ], function(
     declare,
+    lang,
     _DetailBase,
-    _SDataDetailMixin
+    _SDataDetailMixin,
+    _RelatedWidgetDetailMixin
 ) {
 
-    return declare('Sage.Platform.Mobile.Detail', [_DetailBase, _SDataDetailMixin], {
+    var __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin], {
     });
+
+    lang.setObject('Sage.Platform.Mobile.Detail', __class);
+    return __class;
 });
 

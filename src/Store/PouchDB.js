@@ -3,12 +3,12 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Store.PouchDB
+ * @class argos.Store.PouchDB
  *
- * @requires Sage.Platform.Mobile.Convert
- * @requires Sage.Platform.Mobile.Utility
+ * @requires argos.Convert
+ * @requires argos.Utility
  */
-define('Sage/Platform/Mobile/Store/PouchDB', [
+define('argos/Store/PouchDB', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/array',
@@ -16,9 +16,9 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
     'dojo/store/util/QueryResults',
     'dojo/string',
     'dojo/_base/json',
-    'Sage/Platform/Mobile/Convert',
+    '../Convert',
     '../Utility'
-], function (
+], function(
     declare,
     lang,
     array,
@@ -29,7 +29,7 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
     convert,
     utility
 ) {
-    return declare('Sage.Platform.Mobile.Store.PouchDB', null, {
+    return declare('argos.Store.PouchDB', null, {
 
         // interface properties
         /**
@@ -182,7 +182,7 @@ define('Sage/Platform/Mobile/Store/PouchDB', [
         /**
          * Not implemented in this store.
          */
-        getChildren: function(object, options){
+        getChildren: function() {
         },
         /**
          * Returns any metadata about the object. This may include attribution,

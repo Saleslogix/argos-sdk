@@ -3,15 +3,15 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Groups.GroupByValueSection
+ * @class argos.Groups.GroupByValueSection
  */
-define('Sage/Platform/Mobile/Groups/GroupByValueSection', [
+define('argos/Groups/GroupByValueSection', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
-    'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/Groups/_GroupBySection'
+    '../Convert',
+    '../Utility',
+    './_GroupBySection'
 ], function(
     declare,
     lang,
@@ -21,8 +21,8 @@ define('Sage/Platform/Mobile/Groups/GroupByValueSection', [
     _GroupBySection
 ) {
 
-    return declare('Sage.Platform.Mobile.Groups.GroupByValueSection', [_GroupBySection], {
-        name: 'DateTimeSectionFilter',        
+    var __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
+        name: 'DateTimeSectionFilter',
         displayNameText: 'Group By Value Section',
         width:0,
         constructor: function(o) {
@@ -50,17 +50,19 @@ define('Sage/Platform/Mobile/Groups/GroupByValueSection', [
             }
             return null;
         },
-        getDefaultSection:function(){
+        getDefaultSection: function() {
             return { key: 'Unknown', title: 'Unknown' };
         },
-        _getValueFromWidth:function(value, width){
+        _getValueFromWidth: function(value, width) {
             if (value) {
                 if (width > 0) {
-                    value =value.toString().substring(0,width);
+                    value = value.toString().substring(0, width);
                 }
             }
             return value;
         }
-        
     });
+
+    lang.setObject('Sage.Platform.Mobile.Groups.GroupByValueSection', __class);
+    return __class;
 });

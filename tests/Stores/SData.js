@@ -1,7 +1,7 @@
 define('tests/Stores/SData', [
     'dojo/_base/lang',
     'moment',
-    'Sage/Platform/Mobile/Store/SData'
+    'argos/Store/SData'
 ], function(lang, moment, Store) {
 
     // Create a mock SData service
@@ -27,7 +27,7 @@ define('tests/Stores/SData', [
         } else if (this.callFailure) {
             options.failure.call(options.scope || this, request, options);
         } else if (this.callAbort) {
-            options.abort.call(options.scope || this, request, options);
+            options.aborted.call(options.scope || this, request, options);
         }
     };
     MockService.prototype.readFeed = function(request, options) {
@@ -36,7 +36,7 @@ define('tests/Stores/SData', [
         } else if (this.callFailure) {
             options.failure.call(options.scope || this, request, options);
         } else if (this.callAbort) {
-            options.abort.call(options.scope || this, request, options);
+            options.aborted.call(options.scope || this, request, options);
         }
 
         return this.data;
@@ -62,7 +62,7 @@ define('tests/Stores/SData', [
         } else if (this.callFailure) {
             options.failure.call(options.scope || this, request, options);
         } else if (this.callAbort) {
-            options.abort.call(options.scope || this, request, options);
+            options.aborted.call(options.scope || this, request, options);
         }
 
         return data;
@@ -437,7 +437,6 @@ define('tests/Stores/SData', [
                 orderBy: '',
                 idProperty: '$key',
                 applicationName: 'slx',
-                orderBy: true,
                 where: 'name eq "bar"'
             });
 
@@ -484,7 +483,6 @@ define('tests/Stores/SData', [
                 select: ['a','b','c'],
                 include: ['1','2','3'],
                 queryArgs: {foo: 'bar'},
-                orderBy: '',
                 idProperty: '$key',
                 applicationName: 'slx',
                 orderBy: [{attribute: 'foo', descending: false},{attribute: 'bar', descending: true}]
@@ -507,7 +505,6 @@ define('tests/Stores/SData', [
                 select: ['a','b','c'],
                 include: ['1','2','3'],
                 queryArgs: {foo: 'bar'},
-                orderBy: '',
                 idProperty: '$key',
                 orderBy: 'foo'
             });
@@ -553,13 +550,18 @@ define('tests/Stores/SData', [
             });
 
             // Test update
-            store.service.isJsonEnabled = function() { return false; }
+            store.service.isJsonEnabled = function() {
+                return false;
+            };
+
             promise = store.put({ data: '123'}, { overwrite: true, id: 'foo', entity: 'account', version: '1234' });
             expect(store.service.createEntry).toHaveBeenCalled();
             promise.then(function(results) {
                 expect(results.data).toBe('123');
                 allDone();
-                store.service.isJsonEnabled = function() { return true; }
+                store.service.isJsonEnabled = function() {
+                    return true;
+                };
             });
 
             // Test with no put options

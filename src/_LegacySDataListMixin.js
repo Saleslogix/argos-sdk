@@ -9,20 +9,22 @@
  *
  * @alternateClassName _LegacySDataListMixin
  */
-define('Sage/Platform/Mobile/_LegacySDataListMixin', [
+define('argos/_LegacySDataListMixin', [
     'dojo/_base/declare',
-    'Sage/Platform/Mobile/ErrorManager',
+    'dojo/_base/lang',
+    'argos/ErrorManager',
     'dojo/dom-construct',
     'dojo/dom-class',
     'dojo/string'
 ], function(
     declare,
+    lang,
     ErrorManager,
     domConstruct,
     domClass,
     string
 ) {
-    return declare('Sage.Platform.Mobile._LegacySDataListMixin', null, {
+    var __class = declare('argos._LegacySDataListMixin', null, {
         feed: null,
 
         /**
@@ -166,54 +168,63 @@ define('Sage/Platform/Mobile/_LegacySDataListMixin', [
             var where = [],
                 options = this.options,
                 pageSize = this.pageSize,
+                request,
+                contractName,
+                resourceKindExpr,
+                resourcePropertyExpr,
+                resourcePredicateExpr,
+                querySelectExpr,
+                queryIncludeExpr,
+                queryOrderByExpr,
+                queryWhereExpr,
                 startIndex = this.feed && this.feed['$startIndex'] > 0 && this.feed['$itemsPerPage'] > 0
                     ? this.feed['$startIndex'] + this.feed['$itemsPerPage']
                     : 1;
 
-            var request = new Sage.SData.Client.SDataResourceCollectionRequest(this.getService())
+            request = new Sage.SData.Client.SDataResourceCollectionRequest(this.getService())
                 .setCount(pageSize)
                 .setStartIndex(startIndex);
 
-            var contractName = this.expandExpression((options && options.contractName) || this.contractName);
+            contractName = this.expandExpression((options && options.contractName) || this.contractName);
             if (contractName) {
                 request.setContractName(contractName);
             }
 
-            var resourceKindExpr = this.expandExpression((options && options.resourceKind) || this.resourceKind);
+            resourceKindExpr = this.expandExpression((options && options.resourceKind) || this.resourceKind);
             if (resourceKindExpr) {
                 request.setResourceKind(resourceKindExpr);
             }
 
-            var resourcePropertyExpr = this.expandExpression((options && options.resourceProperty) || this.resourceProperty);
+            resourcePropertyExpr = this.expandExpression((options && options.resourceProperty) || this.resourceProperty);
             if (resourcePropertyExpr) {
                 request
                     .getUri()
                     .setPathSegment(Sage.SData.Client.SDataUri.ResourcePropertyIndex, resourcePropertyExpr);
             }
 
-            var resourcePredicateExpr = this.expandExpression((options && options.resourcePredicate) || this.resourcePredicate);
+            resourcePredicateExpr = this.expandExpression((options && options.resourcePredicate) || this.resourcePredicate);
             if (resourcePredicateExpr) {
                 request
                     .getUri()
                     .setCollectionPredicate(resourcePredicateExpr);
             }
 
-            var querySelectExpr = this.expandExpression((options && options.select) || this.querySelect);
+            querySelectExpr = this.expandExpression((options && options.select) || this.querySelect);
             if (querySelectExpr) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Select, querySelectExpr.join(','));
             }
 
-            var queryIncludeExpr = this.expandExpression(this.queryInclude);
+            queryIncludeExpr = this.expandExpression(this.queryInclude);
             if (queryIncludeExpr) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Include, queryIncludeExpr.join(','));
             }
 
-            var queryOrderByExpr = this.expandExpression((options && options.orderBy) || this.queryOrderBy);
+            queryOrderByExpr = this.expandExpression((options && options.orderBy) || this.queryOrderBy);
             if (queryOrderByExpr) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.OrderBy, queryOrderByExpr);
             }
 
-            var queryWhereExpr = this.expandExpression((options && options.where) || this.queryWhere);
+            queryWhereExpr = this.expandExpression((options && options.where) || this.queryWhere);
             if (queryWhereExpr) {
                 where.push(queryWhereExpr);
             }
@@ -229,10 +240,12 @@ define('Sage/Platform/Mobile/_LegacySDataListMixin', [
             return request;
         },
         hasMoreData: function() {
+            var start, count, total;
+
             if (this.feed && this.feed['$startIndex'] > 0 && this.feed['$itemsPerPage'] > 0 && this.feed['$totalResults'] >= 0) {
-                var start = this.feed['$startIndex'];
-                var count = this.feed['$itemsPerPage'];
-                var total = this.feed['$totalResults'];
+                start = this.feed['$startIndex'];
+                count = this.feed['$itemsPerPage'];
+                total = this.feed['$totalResults'];
 
                 return (start + count <= total);
             } else {
@@ -240,5 +253,8 @@ define('Sage/Platform/Mobile/_LegacySDataListMixin', [
             }
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._LegacySDataListMixin', __class);
+    return __class;
 });
 

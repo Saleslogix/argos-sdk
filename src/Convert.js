@@ -14,12 +14,12 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.Convert
+ * @class argos.Convert
  * Convert provides a number of type transformation functions.
  * @alternateClassName convert
  * @singleton
  */
-define('Sage/Platform/Mobile/Convert', [
+define('argos/Convert', [
     'dojo/_base/lang',
     'moment'
 ], function(
@@ -29,11 +29,12 @@ define('Sage/Platform/Mobile/Convert', [
     var trueRE = /^(true|T)$/i,
         isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/,
         jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//,
+        __class,
         pad = function(n) {
             return n < 10 ? '0' + n : n;
         };
 
-    return lang.setObject('Sage.Platform.Mobile.Convert', {
+    __class = lang.setObject('argos.Convert', {
         /**
          * Takes a string and checks to see if it is `true` or `T`, else returns false
          * @param {String} value String bool value
@@ -52,9 +53,10 @@ define('Sage/Platform/Mobile/Convert', [
          * @return {Boolean} True if it matches ISO or JSON formats, false if not a string or doesn't match.
          */
         isDateString: function(value) {
-            if (typeof value !== 'string')
+            if (typeof value !== 'string') {
                 return false;
-            
+            }
+
             return isoDate.test(value) || jsonDate.test(value);
         },
         /**
@@ -86,15 +88,15 @@ define('Sage/Platform/Mobile/Convert', [
          * @return {Date} Date object from string or original object if not convertable.
          */
         toDateFromString: function(value) {
-            if (typeof value !== 'string')
+            if (typeof value !== 'string') {
                 return value;
+            }
 
             var match,
                 utc,
                 h, m;
 
-            if ((match = jsonDate.exec(value)))
-            {
+            if ((match = jsonDate.exec(value))) {
                 utc = new Date(parseInt(match[1], 10));
 
                 // todo: may not be needed
@@ -112,9 +114,7 @@ define('Sage/Platform/Mobile/Convert', [
                 */
 
                 value = utc;
-            }
-            else if ((match = isoDate.exec(value)))
-            {
+            } else if ((match = isoDate.exec(value))) {
                 utc = moment(new Date(Date.UTC(
                     parseInt(match[1], 10),
                     parseInt(match[2], 10) - 1, // zero based
@@ -124,15 +124,15 @@ define('Sage/Platform/Mobile/Convert', [
                     parseInt(match[6] || 0, 10)
                 )));
 
-                if (match[8] && match[8] !== 'Z')
-                {
+                if (match[8] && match[8] !== 'Z') {
                     h = parseInt(match[10], 10);
                     m = parseInt(match[11], 10);
-                    
-                    if (match[9] === '-')
+
+                    if (match[9] === '-') {
                         utc.add({minutes:((h * 60) + m)});
-                    else
+                    } else {
                         utc.add({minutes:(-1 * ((h * 60) + m))});
+                    }
                 }
 
                 value = utc.toDate();
@@ -141,4 +141,7 @@ define('Sage/Platform/Mobile/Convert', [
             return value;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.Convert', __class);
+    return __class;
 });

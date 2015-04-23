@@ -14,28 +14,30 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.MainToolbar
+ * @class argos.MainToolbar
  * MainToolbar is designed to handle the top application bar with markup and logic to set
  * a title and position toolbar items to the left or right
  * @alternateClassName MainToolbar
- * @extends Sage.Platform.Mobile.Toolbar
+ * @extends argos.Toolbar
  */
-define('Sage/Platform/Mobile/MainToolbar', [
+define('argos/MainToolbar', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/query',
     'dojo/dom-class',
     'dojo/dom-construct',
-    'Sage/Platform/Mobile/Toolbar',
+    'argos/Toolbar',
     'dojo/NodeList-manipulate'
 ], function(
     declare,
+    lang,
     query,
     domClass,
     domConstruct,
     Toolbar
 ) {
 
-    return declare('Sage.Platform.Mobile.MainToolbar', [Toolbar], {
+    var __class = declare('argos.MainToolbar', [Toolbar], {
         /**
          * @property {Object}
          * Used to set the title node's innerHTML
@@ -53,8 +55,8 @@ define('Sage/Platform/Mobile/MainToolbar', [
          * `$` - the toolbar instance
          */
         widgetTemplate: new Simplate([
-            '<div class="toolbar {%= $.cls %}">',            
-            '<h1 id="pageTitle" class="toolbar-title" data-dojo-attach-event="onclick: onTitleClick" data-dojo-attach-point="titleNode">{%= $.titleText %}</h1>',
+            '<div class="toolbar {%= $.cls %}">',
+            '<div id="pageTitle" class="toolbar-title" data-dojo-attach-event="onclick: onTitleClick" data-dojo-attach-point="titleNode">{%= $.titleText %}</div>',
             '</div>'
         ]),
         /**
@@ -93,7 +95,7 @@ define('Sage/Platform/Mobile/MainToolbar', [
         clear: function() {
             this.inherited(arguments);
 
-            query("> [data-action], .toolButton-right", this.domNode).remove();
+            query('> [data-action], .toolButton-right', this.domNode).remove();
         },
         /**
          * Calls parent {@link Toolbar#showTools showTools} which sets the tool collection.
@@ -101,20 +103,21 @@ define('Sage/Platform/Mobile/MainToolbar', [
          * @param {Object[]} tools Array of toolbar item definitions
          */
         showTools: function(tools) {
+            var count, i, toolTemplate, side, tool;
             this.inherited(arguments);
 
             domClass.remove(this.domNode, 'toolbar-size-' + this.size);
-            
-            if (tools)
-            {
-                var count = {left: 0, right: 0};
+            if (tools) {
+                count = {left: 0, right: 0};
 
-                for (var i = 0; i < tools.length; i++)
-                {
-                    count[tools[i].side || 'right'] += 1;
-                    var toolTemplate = tools[i].template || this.toolTemplate;
+                for (i = 0; i < tools.length; i++) {
+                    tool = tools[i];
+                    side = tool.side || 'right';
 
-                    domConstruct.place(toolTemplate.apply(tools[i], this.tools[tools[i].id]), this.domNode, 'last');
+                    count[side] += 1;
+                    toolTemplate = tool.template || this.toolTemplate;
+
+                    domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.domNode, 'last');
                 }
 
                 this.size = Math.max(count.left, count.right);
@@ -127,5 +130,8 @@ define('Sage/Platform/Mobile/MainToolbar', [
         onTitleClick: function(evt) {
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.MainToolbar', __class);
+    return __class;
 });
 

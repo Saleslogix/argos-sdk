@@ -14,19 +14,18 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._DetailBase
+ * @class argos._DetailBase
  * A Detail View represents a single record and should display all the info the user may need about the entry.
  *
  * A Detail entry is identified by its key (idProperty) which is how it requests the data via the endpoint.
  *
  * @alternateClassName _DetailBase
- * @extends Sage.Platform.Mobile.View
- * @requires Sage.Platform.Mobile.Format
- * @requires Sage.Platform.Mobile.Utility
- * @requires Sage.Platform.Mobile.ErrorManager
+ * @extends argos.View
+ * @requires argos.Format
+ * @requires argos.Utility
+ * @requires argos.ErrorManager
  */
-define('Sage/Platform/Mobile/_DetailBase', [
-    'dojo',
+define('argos/_DetailBase', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/Deferred',
@@ -35,12 +34,11 @@ define('Sage/Platform/Mobile/_DetailBase', [
     'dojo/dom',
     'dojo/dom-class',
     'dojo/dom-construct',
-    'Sage/Platform/Mobile/Format',
-    'Sage/Platform/Mobile/Utility',
-    'Sage/Platform/Mobile/ErrorManager',
-    'Sage/Platform/Mobile/View'
+    './Format',
+    './Utility',
+    './ErrorManager',
+    './View'
 ], function(
-    dojo,
     declare,
     lang,
     Deferred,
@@ -55,7 +53,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
     View
 ) {
 
-    return declare('Sage.Platform.Mobile._DetailBase', [View], {
+    var __class = declare('argos._DetailBase', [View], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -64,7 +62,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          *
          */
         attributeMap: {
-            detailContent: {node: 'contentNode', type: 'innerHTML'}
+            detailContent: { node: 'contentNode', type: 'innerHTML' }
         },
         /**
          * @property {Simplate}
@@ -82,7 +80,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          *
          */
         widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '{%! $.loadingTemplate %}',
             '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
             '</div>'
@@ -112,8 +110,8 @@ define('Sage/Platform/Mobile/_DetailBase', [
          */
         sectionBeginTemplate: new Simplate([
             '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-            '{%: ($.title || $.options.title) %}',
             '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
+            '{%: ($.title || $.options.title) %}',
             '</h2>',
             '{% if ($.list || $.options.list) { %}',
             '<ul class="{%= ($.cls || $.options.cls) %}">',
@@ -208,7 +206,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          * * `$$` => view instance
          */
         actionTemplate: new Simplate([
-            '<li class="{%= $.cls %}">',
+            '<li class="{%= $.cls %}{% if ($.disabled) { %} disabled{% } %}">',
             '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
             '{% if ($.icon) { %}',
                 '<img src="{%= $.icon %}" alt="icon" class="icon" />',
@@ -286,11 +284,6 @@ define('Sage/Platform/Mobile/_DetailBase', [
         loadingText: 'loading...',
         /**
          * @property {String}
-         * Text shown when a server error occurs
-         */
-        requestErrorText: 'A server error occurred while requesting data.',
-        /**
-         * @property {String}
          * Text used in the notAvailableTemplate
          */
         notAvailableText: 'The requested data is not available.',
@@ -334,6 +327,54 @@ define('Sage/Platform/Mobile/_DetailBase', [
             this.inherited(arguments);
             this.subscribe('/app/refresh', this._onRefresh);
             this.clear();
+        },
+        createErrorHandlers: function() {
+            this.errorHandlers = this.errorHandlers || [{
+                name: 'Aborted',
+                test: function(error) {
+                    return error.aborted;
+                },
+                handle: function(error, next) {
+                    this.options = false; // force a refresh
+                    next();
+                }
+            }, {
+                name: 'AlertError',
+                test: function(error) {
+                    return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
+                },
+                handle: function(error, next) {
+                    alert(this.getErrorMessage(error));
+                    next();
+                }
+            }, {
+                name: 'NotFound',
+                test: function(error) {
+                    return error.status === this.HTTP_STATUS.NOT_FOUND;
+                },
+                handle: function(error, next) {
+                    domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+                    next();
+                }
+            }, {
+                name: 'CatchAll',
+                test: function(error) {
+                    return true;
+                },
+                handle: function(error, next) {
+                    var errorItem = {
+                        viewOptions: this.options,
+                        serverError: error
+                    };
+
+                    ErrorManager.addError(this.getErrorMessage(error), errorItem);
+                    domClass.remove(this.domNode, 'panel-loading');
+                    next();
+                }
+            }
+            ];
+
+            return this.errorHandlers;
         },
         /**
          * Sets and returns the toolbar item layout definition, this method should be overriden in the view
@@ -446,7 +487,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
             view = App.getView(this.editView);
             if (view) {
                 entry = this.entry;
-                view.show({entry: entry});
+                view.show({ entry: entry, fromContext:this });
             }
         },
         /**
@@ -463,6 +504,10 @@ define('Sage/Platform/Mobile/_DetailBase', [
                 options['descriptor'] = descriptor;
             }
 
+            if (this.entry) {
+                options.selectedEntry = this.entry;
+            }
+            options.fromContext = this;
             if (view && options) {
                 view.show(options);
             }
@@ -495,7 +540,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
          *        cls: 'String', // Optional. Additional CSS class string to be added to the row div
          *        use: Simplate, // Optional. Override the HTML Simplate used for rendering the row (not value)
          *        provider: function(entry, propertyName), // Optional. Function that accepts the data entry and the property name and returns the extracted value. By default simply extracts directly.
-         *        value: Any // Optional. Provide a value directly instead of binding 
+         *        value: Any // Optional. Provide a value directly instead of binding
          *     }
          *
          * @return {Object[]} Detail layout definition
@@ -534,6 +579,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
                 useListTemplate,
                 template,
                 rowNode,
+                rowHtml,
                 item;
 
             for (i = 0; i < rows.length; i++) {
@@ -567,7 +613,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
                 }
 
                 provider = current['provider'] || utility.getValue;
-                property = typeof current['property'] == 'string'
+                property = typeof current['property'] === 'string'
                     ? current['property']
                     : current['name'];
                 value = typeof current['value'] === 'undefined'
@@ -672,9 +718,9 @@ define('Sage/Platform/Mobile/_DetailBase', [
                     template = this.propertyTemplate;
                 }
 
-                rowNode = domConstruct.place(template.apply(data, this), sectionNode);
+                rowNode = this.createRowNode(current, sectionNode, entry, template, data);
                 if (current['relatedItem']) {
-                    try{
+                    try {
                         this._processRelatedItem(data, context, rowNode);
                     } catch (e) {
                         //error processing related node
@@ -697,6 +743,9 @@ define('Sage/Platform/Mobile/_DetailBase', [
 
                 this.processLayout(current, entry);
             }
+        },
+        createRowNode: function(layout, sectionNode, entry, template, data) {
+            return domConstruct.place(template.apply(data, this), sectionNode);
         },
         _getStoreAttr: function() {
             return this.store || (this.store = this.createStore());
@@ -756,27 +805,12 @@ define('Sage/Platform/Mobile/_DetailBase', [
 
                 /* this must take place when the content is visible */
                 this.onContentChange();
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
             }
         },
         _onGetError: function(getOptions, error) {
-            if (error.aborted) {
-                this.options = false; // force a refresh
-            } else if (error.status == 404) {
-                domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
-            } else {
-                alert(string.substitute(this.requestErrorText, [error]));
-            }
-
-            var errorItem = {
-                viewOptions: this.options,
-                serverError: error
-            };
-
-            ErrorManager.addError(this.requestErrorText, errorItem);
-
-            domClass.remove(this.domNode, 'panel-loading');
+            this.handleError(error);
         },
         /**
          * Initiates the request.
@@ -828,8 +862,11 @@ define('Sage/Platform/Mobile/_DetailBase', [
         refreshRequiredFor: function(options) {
             if (this.options) {
                 if (options) {
-                    if (this.options.key !== options.key) return true;
+                    if (this.options.key !== options.key) {
+                        return true;
+                    }
                 }
+
                 return false;
             } else {
                 return this.inherited(arguments);
@@ -907,7 +944,7 @@ define('Sage/Platform/Mobile/_DetailBase', [
         _processRelatedItem: function(data, context, rowNode) {
             var view = App.getView(data['view']), options = {};
 
-            if(view){
+            if (view) {
                 options.where = context ? context['where'] : '';
                 view.getListCount(options).then(function(result) {
                     var labelNode, html;
@@ -915,14 +952,20 @@ define('Sage/Platform/Mobile/_DetailBase', [
                     if (result >= 0) {
                         labelNode = query('.related-item-label', rowNode)[0];
                         if (labelNode) {
-                            html = '<span class="related-item-count">(' + result + ')</span>';
-                            domConstruct.place(html, labelNode, 'after');
+                            html = '<span class="related-item-count">' + result + '</span>';
+                            domConstruct.place(html, labelNode, 'before');
                         } else {
                             console.warn('Missing the "related-item-label" dom node.');
                         }
                     }
                 });
             }
+        },
+        destroy: function() {
+            this.inherited(arguments);
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
+    return __class;
 });

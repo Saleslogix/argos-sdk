@@ -14,25 +14,25 @@
  */
 
 /**
- * @class Sage.Platform.Mobile._SDataEditMixin
+ * @class argos._SDataEditMixin
  *
  * Enables SData for the Edit view.
  * Extends the SDataDetail Mixin by providing functions for $template requests.
  *
  * @alternateClassName _SDataEditMixin
- * @extends Sage.Platform.Mobile._SDataDetailMixin
- * @requires Sage.Platform.Mobile.SData
+ * @extends argos._SDataDetailMixin
+ * @requires argos.SData
  */
-define('Sage/Platform/Mobile/_SDataEditMixin', [
+define('argos/_SDataEditMixin', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
     'dojo/dom-class',
     'dojo/_base/connect',
-    'Sage/Platform/Mobile/Store/SData',
-    'Sage/Platform/Mobile/ErrorManager',
-    'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/_SDataDetailMixin'
+    './Store/SData',
+    './ErrorManager',
+    './Convert',
+    './_SDataDetailMixin'
 ], function(
     declare,
     lang,
@@ -44,7 +44,7 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
     convert,
     _SDataDetailMixin
 ) {
-    return declare('Sage.Platform.Mobile._SDataEditMixin', [_SDataDetailMixin], {
+    var __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
         /**
          * @property {Object}
          * The saved SData response.
@@ -163,8 +163,7 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
          * @param {Object} o The options that were passed when creating the Ajax request.
          */
         onRequestTemplateFailure: function(response, o) {
-            alert(string.substitute(this.requestErrorText, [response, o]));
-            ErrorManager.addError('failure', response);
+            this.handleError(response);
         },
         /**
          * Handler when a request to SData is successful, calls processTemplateEntry
@@ -250,4 +249,7 @@ define('Sage/Platform/Mobile/_SDataEditMixin', [
             return App && App.enableConcurrencyCheck;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._SDataEditMixin', __class);
+    return __class;
 });

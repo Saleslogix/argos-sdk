@@ -7,16 +7,16 @@
  *
  * @alternateClassName _LegacySDataEditMixin
  */
-define('Sage/Platform/Mobile/_LegacySDataEditMixin', [
+define('argos/_LegacySDataEditMixin', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string',
     'dojo/dom-class',
     'dojo/_base/connect',
-    'Sage/Platform/Mobile/Store/SData',
-    'Sage/Platform/Mobile/ErrorManager',
-    'Sage/Platform/Mobile/Convert',
-    'Sage/Platform/Mobile/_SDataDetailMixin'
+    './Store/SData',
+    './ErrorManager',
+    './Convert',
+    './_SDataDetailMixin'
 ], function(
     declare,
     lang,
@@ -28,7 +28,7 @@ define('Sage/Platform/Mobile/_LegacySDataEditMixin', [
     convert,
     _SDataDetailMixin
 ) {
-    return declare('Sage.Platform.Mobile._LegacySDataEditMixin', [_SDataDetailMixin], {
+    var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
         requestData: function() {
             var request;
             request = this.createRequest();
@@ -71,9 +71,11 @@ define('Sage/Platform/Mobile/_LegacySDataEditMixin', [
          * @return {Object} Sage.SData.Client.SDataSingleResourceRequest instance.
          */
         createRequest: function() {
-            var request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
+            var request, key;
 
-            var key = (this.entry && this.entry['$key']) || this.options.key;
+            request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
+            key = (this.entry && this.entry['$key']) || this.options.key;
+
             if (key) {
                 request.setResourceSelector(string.substitute("'${0}'", [key]));
             }
@@ -182,7 +184,6 @@ define('Sage/Platform/Mobile/_LegacySDataEditMixin', [
          */
         createEntryForInsert: function(values) {
             values = this.convertValues(values);
-            
             return lang.mixin(values, {
                 '$name': this.entityName
             });
@@ -285,4 +286,7 @@ define('Sage/Platform/Mobile/_LegacySDataEditMixin', [
             domClass.remove(this.domNode, 'panel-loading');
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile._LegacySDataEditMixin', __class);
+    return __class;
 });

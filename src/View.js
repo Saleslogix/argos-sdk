@@ -14,32 +14,37 @@
  */
 
 /**
- * @class Sage.Platform.Mobile.View
+ * @class argos.View
  * View is the root Class for all views and incorporates all the base features,
  * events, and hooks needed to successfully render, hide, show, and transition.
  *
  * All Views are dijit Widgets, namely utilizing its: widgetTemplate, connections, and attributeMap
  * @alternateClassName View
- * @mixins Sage.Platform.Mobile._ActionMixin
- * @mixins Sage.Platform.Mobile._CustomizationMixin
- * @mixins Sage.Platform.Mobile._Templated
+ * @mixins argos._ActionMixin
+ * @mixins argos._CustomizationMixin
+ * @mixins argos._Templated
+ * @mixins argos._ErrorHandleMixin
  */
-define('Sage/Platform/Mobile/View', [
+define('argos/View', [
     'dojo/_base/declare',
     'dojo/_base/lang',
+    'dojo/_base/array',
     'dijit/_WidgetBase',
-    'Sage/Platform/Mobile/_ActionMixin',
-    'Sage/Platform/Mobile/_CustomizationMixin',
-    'Sage/Platform/Mobile/_Templated'
+    './_ActionMixin',
+    './_CustomizationMixin',
+    './_Templated',
+    './_ErrorHandleMixin'
 ], function(
     declare,
     lang,
+    array,
     _WidgetBase,
     _ActionMixin,
     _CustomizationMixin,
-    _Templated
+    _Templated,
+    _ErrorHandleMixin
 ) {
-    return declare('Sage.Platform.Mobile.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
+    var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated, _ErrorHandleMixin], {
         /**
          * This map provides quick access to HTML properties, most notably the selected property of the container
          */
@@ -83,12 +88,20 @@ define('Sage/Platform/Mobile/View', [
          */
         security: null,
         /**
+         * A reference to the globa App object
+         */
+        app: null,
+        /**
          * May be used to specify the service name to use for data requests. Setting false will force the use of the default service.
          * @property {String/Boolean}
          */
         serviceName: false,
         connectionName: false,
-        constructor: function() {
+        constructor: function(options) {
+            this.app = (options && options.app) || window.App;
+        },
+        startup: function() {
+            this.inherited(arguments);
         },
         /**
          * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
@@ -104,7 +117,7 @@ define('Sage/Platform/Mobile/View', [
          * Called after toolBar layout is created;
          *
          */
-        onToolLayoutCreated:function(tools){
+        onToolLayoutCreated:function(tools) {
         },
         /**
          * Returns the tool layout that defines all toolbar items for the view
@@ -195,8 +208,7 @@ define('Sage/Platform/Mobile/View', [
         },
         activate: function(tag, data) {
             // todo: use tag only?
-            if (data && this.refreshRequiredFor(data.options))
-            {
+            if (data && this.refreshRequiredFor(data.options)) {
                 this.refreshRequired = true;
             }
 
@@ -219,6 +231,8 @@ define('Sage/Platform/Mobile/View', [
          * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
          */
         show: function(options, transitionOptions) {
+            this.errorHandlers = this._createCustomizedLayout(this.createErrorHandlers(), 'errorHandlers');
+
             var tag, data;
 
             if (this.onShow(this) === false) {
@@ -249,10 +263,11 @@ define('Sage/Platform/Mobile/View', [
          * @return {String} String expression.
          */
         expandExpression: function(expression) {
-            if (typeof expression === 'function')
+            if (typeof expression === 'function') {
                 return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-            else
+            } else {
                 return expression;
+            }
         },
         /**
          * Called before the view is transitioned (slide animation complete) to.
@@ -270,8 +285,7 @@ define('Sage/Platform/Mobile/View', [
          * Called after the view has been transitioned (slide animation complete) to.
          */
         transitionTo: function() {
-            if (this.refreshRequired)
-            {
+            if (this.refreshRequired) {
                 this.refreshRequired = false;
                 this.refresh();
             }
@@ -289,7 +303,7 @@ define('Sage/Platform/Mobile/View', [
          * @return {Object} The Sage.SData.Client.SDataService instance.
          */
         getService: function() {
-            return App.getService(this.serviceName); /* if false is passed, the default service will be returned */
+            return this.app.getService(this.serviceName); /* if false is passed, the default service will be returned */
         },
         getConnection: function() {
             return this.getService();
@@ -301,10 +315,11 @@ define('Sage/Platform/Mobile/View', [
          * @return {Object} Options to be used for context.
          */
         getOptionsContext: function() {
-            if (this.options && this.options.negateHistory)
+            if (this.options && this.options.negateHistory) {
                 return { negateHistory: true };
-            else
+            } else {
                 return this.options;
+            }
         },
         /**
          * Returns the context of the view which is a small summary of key properties.
@@ -320,7 +335,10 @@ define('Sage/Platform/Mobile/View', [
          */
         getSecurity: function(access) {
             return this.security;
-        },
+        }
     });
+
+    lang.setObject('Sage.Platform.Mobile.View', __class);
+    return __class;
 });
 

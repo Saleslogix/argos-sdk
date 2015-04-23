@@ -1,18 +1,26 @@
-define('Sage/Platform/Mobile/SelectionModel', [
+define('argos/SelectionModel', [
        'dojo/_base/lang',
        'dojo/_base/declare'
 ], function(
     lang,
     declare
 ) {
-    
+
     /**
-     * @class Sage.Platform.Mobile.SelectionModel
+     * @class argos.SelectionModel
      * SelectionModel provides a simple in-memory store for data that fires events
      * when a item is selected (added) or deselected (removed)
      * @alternateClassName SelectionModel
      */
-    return declare('Sage.Platform.Mobile.SelectionModel', null, {
+    var __class = declare('argos.SelectionModel', null, {
+        // Localization
+        requireSelectionText: 'A selection is required, you cannot de-select the last item.',
+
+        /**
+         * @property {Boolean}
+         * Flag to indicate a selection is required.
+         */
+        requireSelection: false,
         /**
          * @property {Number}
          * Number of selections
@@ -92,11 +100,12 @@ define('Sage/Platform/Mobile/SelectionModel', [
          * @param tag
          */
         select: function(key, data, tag) {
-            if (!this.selections.hasOwnProperty(key))
-            {
+            if (!this.selections.hasOwnProperty(key)) {
                 this.selections[key] = {data: data, tag: tag};
                 this.count++;
-                if (this._fireEvents) this.onSelect(key, data, tag, this);
+                if (this._fireEvents) {
+                    this.onSelect(key, data, tag, this);
+                }
             }
         },
         /**
@@ -107,42 +116,58 @@ define('Sage/Platform/Mobile/SelectionModel', [
          * @param tag
          */
         toggle: function(key, data, tag) {
-            if (this.isSelected(key))
+            if (this.isSelected(key)) {
                 this.deselect(key);
-            else
+            } else {
                 this.select(key, data, tag);
+            }
         },
         /**
          * Removes an item from the store
          * @param {String} key Unique identifier string that was given when the item was added
          */
         deselect: function(key) {
-            if (this.selections.hasOwnProperty(key))
-            {
+            if (this.requireSelection && this.count === 1) {
+                window.alert(this.requireSelectionText);
+                return;
+            }
+
+            if (this.selections.hasOwnProperty(key)) {
                 var selection = this.selections[key];
 
                 delete this.selections[key];
                 this.count--;
 
-                if (this._fireEvents)
+                if (this._fireEvents) {
                     this.onDeselect(key, selection.data, selection.tag, this);
+                }
             }
         },
         /**
          * Removes all items from the store
          */
         clear: function() {
-            if (this.clearAsDeselect)
-            {
-                for (var key in this.selections) this.deselect(key);
-            }
-            else
-            {
+            var original, key;
+
+            original = this.requireSelection;
+
+            if (this.clearAsDeselect) {
+                this.requireSelection = false;
+                for (key in this.selections) {
+                    if (this.selections.hasOwnProperty(key)) {
+                        this.deselect(key);
+                    }
+                }
+
+                this.requireSelection = original;
+            } else {
                 this.selections = {};
                 this.count = 0;
             }
 
-            if (this._fireEvents) this.onClear(this);
+            if (this._fireEvents) {
+                this.onClear(this);
+            }
         },
         /**
          * Determines if the given key is in the selections collection.
@@ -171,11 +196,20 @@ define('Sage/Platform/Mobile/SelectionModel', [
          * @return {String[]} All keys in the store
          */
         getSelectedKeys: function() {
-            var keys = [];
-            for (var key in this.selections)
-                if (this.selections.hasOwnProperty(key))
+            var keys,
+                key;
+
+            keys = [];
+            for (key in this.selections) {
+                if (this.selections.hasOwnProperty(key)) {
                     keys.push(key);
+                }
+            }
+
             return keys;
         }
     });
+
+    lang.setObject('Sage.Platform.Mobile.SelectionModel', __class);
+    return __class;
 });

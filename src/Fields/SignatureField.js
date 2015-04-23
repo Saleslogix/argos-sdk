@@ -13,15 +13,17 @@
  * limitations under the License.
  */
 
-define('Sage/Platform/Mobile/Fields/SignatureField', [
+define('argos/Fields/SignatureField', [
     'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/_base/json',
     'dojo/dom-attr',
-    'Sage/Platform/Mobile/Format',
-    'Sage/Platform/Mobile/Fields/EditorField',
-    'Sage/Platform/Mobile/FieldManager'
+    '../Format',
+    './EditorField',
+    '../FieldManager'
 ], function(
     declare,
+    lang,
     json,
     domAttr,
     format,
@@ -30,7 +32,7 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
 ) {
 
     /**
-     * @class Sage.Platform.Mobile.Fields.SignatureField
+     * @class argos.Fields.SignatureField
      * The SignatureField uses an HTML5 canvas element to render previews of the signature vector
      * provided by it's editor view {@link SignatureView SignatureView}.
      *
@@ -43,12 +45,12 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
      *     }
      *
      * @alternateClassName SignatureField
-     * @extends Sage.Platform.Mobile.Fields.EditorField
-     * @requires Sage.Platform.Mobile.FieldManager
-     * @requires Sage.Platform.Mobile.Views.SignatureView
-     * @requires Sage.Platform.Mobile.Format
+     * @extends argos.Fields.EditorField
+     * @requires argos.FieldManager
+     * @requires argos.Views.SignatureView
+     * @requires argos.Format
      */
-    var control = declare('Sage.Platform.Mobile.Fields.SignatureField', [EditorField], {
+    var control = declare('argos.Fields.SignatureField', [EditorField], {
         // Localization
         /**
          * @property {String}
@@ -115,13 +117,15 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
          * Complete override that gets the editor view, gets the values and calls set value on the field
          */
         getValuesFromView: function() {
-            var view, app;
+            var view,
+                app,
+                value;
+
             app = this.app;
 
             view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
-            if (view)
-            {
-                var value = view.getValues();
+            if (view) {
+                value = view.getValues();
                 this.currentValue = this.validationValue = value;
                 this.setValue(this.currentValue, false);
             }
@@ -132,23 +136,23 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
          * @param val
          * @param initial
          */
-        setValue: function (val, initial) {
-            if (initial) this.originalValue = val;
+        setValue: function(val, initial) {
+            if (initial) {
+                this.originalValue = val;
+            }
 
             this.currentValue = val;
             domAttr.set(this.inputNode, 'value', val || '');
 
-            try
-            {
+            try {
                 this.signature = json.fromJson(val);
-            }
-            catch(e)
-            {
+            } catch(e) {
                 this.signature = [];
             }
 
-            if (!this.signature || Array != this.signature.constructor)
+            if (!this.signature || Array !== this.signature.constructor) {
                 this.signature = [];
+            }
 
             this.signatureNode.src = format.imageFromVector(this.signature, this.config, false);
         },
@@ -169,5 +173,6 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
         }
     });
 
+    lang.setObject('Sage.Platform.Mobile.Fields.SignatureField', control);
     return FieldManager.register('signature', control);
 });
