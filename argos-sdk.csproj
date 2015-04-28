@@ -1110,9 +1110,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="declarations\dojo.d.ts" />
     <TypeScriptCompile Include="src\Application.ts" />
     <TypeScriptCompile Include="src\ApplicationModule.ts" />
-    <TypeScriptCompile Include="src\argos.d.ts" />
+    <TypeScriptCompile Include="declarations\argos.d.ts" />
     <TypeScriptCompile Include="src\Calendar.ts" />
     <TypeScriptCompile Include="src\ConfigurableSelectionModel.ts" />
     <TypeScriptCompile Include="src\Convert.ts" />
@@ -1200,6 +1201,7 @@
     <TypeScriptGeneratesDeclarations>True</TypeScriptGeneratesDeclarations>
     <TypeScriptSourceRoot>D:\code\work\mobile\argos-sdk\src</TypeScriptSourceRoot>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>

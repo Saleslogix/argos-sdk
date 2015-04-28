@@ -1,4 +1,4 @@
-/// <reference path="argos.d.ts"/>
+/// <reference path="../declarations/argos.d.ts"/>
 
 /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
  *

@@ -1,4 +1,6 @@
-﻿declare function define(dependencies: String[], factory: Function): any;
+﻿/// <reference path="dojo.d.ts" />
+
+declare function define(dependencies: String[], factory: Function): any;
 declare function define(mid: String, dependencies: String[], factory: Function): any;
 declare function require(config?: Object, dependencies?: String[], callback?: Function): any;
 
