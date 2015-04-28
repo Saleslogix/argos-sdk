@@ -22,7 +22,8 @@ define('argos/Fields/DateField', [
     '../Format',
     '../FieldManager',
     './EditorField',
-    '../Calendar'
+    '../Calendar',
+    'moment'
 ], function(
     declare,
     lang,
@@ -30,7 +31,8 @@ define('argos/Fields/DateField', [
     domClass,
     format,
     FieldManager,
-    EditorField
+    EditorField,
+    moment
 ) {
     /**
      * @class argos.Fields.DateField
@@ -122,7 +124,7 @@ define('argos/Fields/DateField', [
          * @param {Event} evt Event that caused change to fire.
          */
         _onChange: function(evt) {
-            var val = Date.parseExact(this.inputNode.value, this.dateFormatText);
+            var val = moment(this.inputNode.value, this.dateFormatText).toDate();
 
             if (val) {
                 this.validationValue = this.currentValue = val;
@@ -150,7 +152,7 @@ define('argos/Fields/DateField', [
          * Retrieves the date from the {@link Calendar#getDateTime Calendar} view and sets it to currentValue.
          */
         getValuesFromView: function() {
-            var view = App.getPrimaryActiveView();
+            var view:any = App.getPrimaryActiveView();
             if (view) {
                 this.currentValue = this.validationValue = view.getDateTime();
                 domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing

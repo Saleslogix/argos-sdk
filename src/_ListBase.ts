@@ -1341,7 +1341,7 @@ define('argos/_ListBase', [
          */
         navigateToInsertView: function(el, additionalOptions) {
             var view = this.app.getView(this.insertView || this.editView),
-                options = {
+                options:any = {
                     returnTo: this.id,
                     insert: true
                 };

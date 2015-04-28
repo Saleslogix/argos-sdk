@@ -1,3 +1,5 @@
+/// <reference path="argos.d.ts"/>
+
 /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -380,7 +382,7 @@ define('argos/_EditBase', [
          * @template
          */
         createToolLayout: function() {
-            var tbar = [{
+            var tbar:any = [{
                 id: 'save',
                 action: 'save',
                 cls: 'fa fa-save fa-fw fa-lg',

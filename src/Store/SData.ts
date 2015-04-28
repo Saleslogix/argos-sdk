@@ -283,7 +283,7 @@ define('argos/Store/SData', [
             }
         },
         _onRequestFailure: function(deferred, xhr, xhrOptions) {
-            var error = new Error('An error occurred requesting: ' + xhrOptions.url);
+            var error:any = new Error('An error occurred requesting: ' + xhrOptions.url);
 
             error.xhr = xhr;
             error.status = xhr.status;
@@ -293,7 +293,7 @@ define('argos/Store/SData', [
             deferred.reject(error);
         },
         _onRequestAbort: function(deferred, xhr, xhrOptions) {
-            var error = new Error('An error occurred requesting: ' + xhrOptions.url);
+            var error:any = new Error('An error occurred requesting: ' + xhrOptions.url);
 
             error.xhr = xhr;
             error.status = 0;
@@ -312,7 +312,7 @@ define('argos/Store/SData', [
             return entry;
         },
         get: function(id, getOptions/* sdata only */) {
-            var handle = {},
+            var handle:any = {},
                 deferred = new Deferred(),
                 method,
                 request = this._createEntryRequest(id, getOptions || {});
@@ -442,7 +442,7 @@ define('argos/Store/SData', [
          *
          */
         query: function(query, queryOptions) {
-            var handle = {},
+            var handle:any = {},
                 queryDeferred = new Deferred(this._onCancel.bind(this, handle)),
                 request = this._createFeedRequest(query, queryOptions || {}),
                 method,
