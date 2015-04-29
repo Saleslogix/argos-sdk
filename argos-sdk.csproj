@@ -33,6 +33,13 @@
     <Content Include="content\images\loading-indicator-red.gif" />
     <Content Include="content\images\loading-indicator-white.gif" />
     <Content Include="content\images\refresh.png" />
+    <Content Include="grunt-tasks\grunt-connect.js" />
+    <Content Include="grunt-tasks\grunt-jasmine.js" />
+    <Content Include="grunt-tasks\grunt-jscs.js" />
+    <Content Include="grunt-tasks\grunt-jshint.js" />
+    <Content Include="grunt-tasks\grunt-less.js" />
+    <Content Include="grunt-tasks\grunt-typescript.js" />
+    <Content Include="grunt-tasks\grunt-watch.js" />
     <Content Include="Gruntfile.js" />
     <Content Include="libraries\Base64.js" />
     <Content Include="libraries\canvas2image.js" />
@@ -835,6 +842,8 @@
     <Content Include="libraries\sdata\sdata-client.js" />
     <Content Include="libraries\Simplate.js" />
     <Content Include="libraries\snap\snap.js" />
+    <Content Include="LICENSE.Chart.js" />
+    <Content Include="LICENSE.Snap.js" />
     <Content Include="min\css\themes\crm\sdk.min.crm.css" />
     <Content Include="min\css\themes\crm\sdk.min.crm.debug.css" />
     <Content Include="tests\ApplicationModuleTests.js" />
@@ -1093,6 +1102,21 @@
     <Content Include="GruntRunner.tmpl" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="LICENSE" />
+    <Content Include="LICENSE.Base64" />
+    <Content Include="LICENSE.Datejs" />
+    <Content Include="LICENSE.deep-diff" />
+    <Content Include="LICENSE.ExtCore" />
+    <Content Include="LICENSE.iUI" />
+    <Content Include="LICENSE.Jasmine" />
+    <Content Include="LICENSE.LessJs" />
+    <Content Include="LICENSE.Moment" />
+    <Content Include="LICENSE.ObjTree" />
+    <Content Include="LICENSE.Overthrow" />
+    <Content Include="LICENSE.ReUI" />
+    <Content Include="LICENSE.Simplate" />
+    <Content Include=".jscsrc" />
+    <Content Include=".travis.yml" />
     <None Include="tools\bundler\Configuration\Global\ModelTypes.xsd">
       <SubType>Designer</SubType>
     </None>
