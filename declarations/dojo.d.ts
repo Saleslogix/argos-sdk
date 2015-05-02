@@ -1671,7 +1671,7 @@ declare module dojo {
      * @param selector A CSS selector to search for.     
      * @param context       OptionalAn optional context to limit the searching scope. Only nodes under context will bescanned.     
      */
-    interface query{(selector: String, context?: String): void}
+    interface query{(selector: String, context?: String): any}
     /**
      * Permalink: http://dojotoolkit.org/api/1.9/dojo/query.html
      *
@@ -1713,7 +1713,7 @@ declare module dojo {
      * @param selector A CSS selector to search for.     
      * @param context       OptionalAn optional context to limit the searching scope. Only nodes under context will bescanned.     
      */
-    interface query{(selector: String, context?: HTMLElement): void}
+    interface query{(selector: String, context?: HTMLElement): any}
     interface query {
         /**
          * can be used as AMD plugin to conditionally load new query engine
@@ -4929,7 +4929,7 @@ declare module dojo {
              * @param callback a function that is invoked with three arguments (item,index, array). The return of this function is expected tobe a boolean which determines whether the passed-in itemwill be included in the returned array.             
              * @param thisObject               Optionalmay be used to scope the call to callback             
              */
-            filter(arr: any[], callback: Function, thisObject: Object): any[];
+            filter(arr: any[], callback: Function, thisObject?: Object): any[];
             /**
              * Returns a new Array with those items from arr that match the
              * condition implemented by callback.
@@ -4943,7 +4943,7 @@ declare module dojo {
              * @param callback a function that is invoked with three arguments (item,index, array). The return of this function is expected tobe a boolean which determines whether the passed-in itemwill be included in the returned array.             
              * @param thisObject               Optionalmay be used to scope the call to callback             
              */
-            filter(arr: any[], callback: String, thisObject: Object): any[];
+            filter(arr: any[], callback: String, thisObject?: Object): any[];
             /**
              * for every item in arr, callback is invoked. Return values are ignored.
              * If you want to break out of the loop, consider using array.every() or array.some().
@@ -5686,7 +5686,7 @@ declare module dojo {
              * @param dest The object to which to copy/add all properties contained in source. If dest is falsy, thena new object is manufactured before copying/adding properties begins.             
              * @param sources One of more objects from which to draw all properties to copy into dest. sources are processedleft-to-right and if more than one of these objects contain the same property name, the right-mostvalue "wins".             
              */
-            mixin(dest: Object, sources: Object[]): Object;
+            mixin(dest: Object, ...sources: Object[]): Object;
             /**
              * similar to hitch() except that the scope object is left to be
              * whatever the execution context eventually becomes.
@@ -19208,7 +19208,7 @@ declare module dojo {
          * @param frag the HTML fragment             
          * @param doc               Optionaloptional document to use when creating DOM nodes, defaults todojo/_base/window.doc if not specified.             
          */
-        toDom(frag: String, doc: HTMLDocument): any;
+        toDom(frag: String, doc?: HTMLDocument): any;
     }
     /**
      * Permalink: http://dojotoolkit.org/api/1.9/dojo/dom-prop.html
@@ -28345,5 +28345,25 @@ declare module "dojo/store/util/QueryResults" {
 }
 declare module "dojo/store/util/SimpleQueryEngine" {
     var exp: dojo.store.util.SimpleQueryEngine
+    export=exp;
+}
+
+declare module "dijit/_WidgetBase" {
+    var exp: any;
+    export=exp;
+}
+
+declare module "dijit/registry" {
+    var exp: any;
+    export=exp;
+}
+
+declare module "dijit/_base/wai" {
+    var exp: any;
+    export=exp;
+}
+
+declare module "dijit/_TemplatedMixin" {
+    var exp: any;
     export=exp;
 }
