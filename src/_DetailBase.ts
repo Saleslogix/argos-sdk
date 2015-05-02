@@ -920,7 +920,7 @@ define('argos/_DetailBase', [
             this._navigationOptions = [];
         },
         _processRelatedItem: function(data, context, rowNode) {
-            var view = App.getView(data['view']), options = {};
+            var view = App.getView<_ListBase>(data['view']), options:any = {};
 
             if (view) {
                 options.where = context ? context['where'] : '';
