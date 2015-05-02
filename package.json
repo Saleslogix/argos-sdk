@@ -14,8 +14,8 @@
     "grunt-contrib-jasmine": "~0.8.2",
     "grunt-contrib-less": "^1.0.1",
     "grunt-contrib-watch": "^0.6.1",
+	"grunt-shell": "^1.1.2",
     "grunt-template-jasmine-istanbul": "^0.3.3",
-    "grunt-typescript": "^0.6.1",
-    "typescript": "^1.4.1"
+    "typescript": "^1.5.0-beta"
   }
 }
