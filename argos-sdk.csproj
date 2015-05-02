@@ -35,10 +35,8 @@
     <Content Include="content\images\refresh.png" />
     <Content Include="grunt-tasks\grunt-connect.js" />
     <Content Include="grunt-tasks\grunt-jasmine.js" />
-    <Content Include="grunt-tasks\grunt-jscs.js" />
-    <Content Include="grunt-tasks\grunt-jshint.js" />
     <Content Include="grunt-tasks\grunt-less.js" />
-    <Content Include="grunt-tasks\grunt-typescript.js" />
+    <Content Include="grunt-tasks\grunt-shell.js" />
     <Content Include="grunt-tasks\grunt-watch.js" />
     <Content Include="Gruntfile.js" />
     <Content Include="libraries\Base64.js" />
@@ -1126,6 +1124,7 @@
     <Content Include="tools\bundler\HelpConfiguration.xsx">
       <DependentUpon>HelpConfiguration.xsd</DependentUpon>
     </Content>
+    <Content Include="tsconfig.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
