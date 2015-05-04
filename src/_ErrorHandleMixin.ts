@@ -7,6 +7,12 @@ import _declare = require('dojo/_base/declare');
 import lang = require('dojo/_base/lang');
 import array = require('dojo/_base/array');
 
+interface ErrorHandler {
+    name: string,
+    test: (err: any) => boolean,
+    handle: (err: any, next: () => void) => void
+}
+
 interface _ErrorHandleMixin {
     errorText: {
         general: string,
@@ -17,7 +23,7 @@ interface _ErrorHandleMixin {
 
     errorHandlers: any[],
 
-    createErrorHandlers: () => any[],
+    createErrorHandlers: () => ErrorHandler[],
 
     handleError: (error: any) => void,
 

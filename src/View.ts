@@ -12,6 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import _declare = require('dojo/_base/declare');
+import lang = require('dojo/_base/lang');
+import array = require('dojo/_base/array');
+import _WidgetBase = require('dijit/_WidgetBase');
+import _ActionMixin = require('./_ActionMixin');
+import _CustomizationMixin = require('./_CustomizationMixin');
+import _Templated = require('./_Templated');
+import _ErrorHandleMixin = require('./_ErrorHandleMixin');
 
 /**
  * @class argos.View
@@ -25,16 +33,6 @@
  * @mixins argos._Templated
  * @mixins argos._ErrorHandleMixin
  */
-
-import _declare = require('dojo/_base/declare');
-import lang = require('dojo/_base/lang');
-import array = require('dojo/_base/array');
-import _WidgetBase = require('dijit/_WidgetBase');
-import _ActionMixin = require('./_ActionMixin');
-import _CustomizationMixin = require('./_CustomizationMixin');
-import _Templated = require('./_Templated');
-import _ErrorHandleMixin = require('./_ErrorHandleMixin');
-
 var __class = _declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated, _ErrorHandleMixin], {
     /**
         * This map provides quick access to HTML properties, most notably the selected property of the container
