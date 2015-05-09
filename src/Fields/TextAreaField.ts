@@ -12,75 +12,66 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import declare = require('dojo/_base/declare');
+import lang = require('dojo/_base/lang');
+import TextField = require('./TextField');
+import FieldManager = require('../FieldManager');
 
-
-define('argos/Fields/TextAreaField', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    './TextField',
-    '../FieldManager'
-], function(
-    declare,
-    lang,
-    TextField,
-    FieldManager
-) {
+/**
+ * @class argos.Fields.TextAreaField
+ * The TextAreaField extends the base TextField by changing the input element to
+ * an `<textarea>` element with a configurable amount of visible rows.
+ *
+ * ###Example:
+ *     {
+ *         name: 'Description',
+ *         property: 'Description',
+ *         label: this.descriptionText,
+ *         type: 'textarea',
+ *         rows: 6
+ *     }
+ *
+ * @alternateClassName TextAreaField
+ * @extends argos.Fields.TextField
+ * @requires argos.FieldManager
+ */
+var control = declare('argos.Fields.TextAreaField', [TextField], {
     /**
-     * @class argos.Fields.TextAreaField
-     * The TextAreaField extends the base TextField by changing the input element to
-     * an `<textarea>` element with a configurable amount of visible rows.
-     *
-     * ###Example:
-     *     {
-     *         name: 'Description',
-     *         property: 'Description',
-     *         label: this.descriptionText,
-     *         type: 'textarea',
-     *         rows: 6
-     *     }
-     *
-     * @alternateClassName TextAreaField
-     * @extends argos.Fields.TextField
-     * @requires argos.FieldManager
+     * @cfg {Number}
+     * Number of rows to show visually, does not constrain input.
      */
-    var control = declare('argos.Fields.TextAreaField', [TextField], {
-        /**
-         * @cfg {Number}
-         * Number of rows to show visually, does not constrain input.
-         */
-        rows: 4,
-        /**
-         * @property {Boolean}
-         * Overrides default to hide the clear button.
-         */
-        enableClearButton: false,
-        /**
-         * @property {Simplate}
-         * Simplate that defines the fields HTML Markup
-         *
-         * * `$` => Field instance
-         * * `$$` => Owner View instance
-         *
-         */
-        widgetTemplate: new Simplate([
-            '<label for="{%= $.name %}">{%: $.label %}</label>',
-            '<textarea data-dojo-attach-point="inputNode" name="{%= $.name %}" rows="{%: $.rows %}" {% if ($.readonly) { %} readonly {% } %}></textarea>'
-        ]),
-        setValue: function(val, initial) {
-            if (val === null || typeof val === 'undefined') {
-                val = '';
-            }
-
-            if (initial) {
-                this.originalValue = val;
-            }
-
-            this.previousValue = false;
-
-            this.set('inputValue', val);
+    rows: 4,
+    /**
+     * @property {Boolean}
+     * Overrides default to hide the clear button.
+     */
+    enableClearButton: false,
+    /**
+     * @property {Simplate}
+     * Simplate that defines the fields HTML Markup
+     *
+     * * `$` => Field instance
+     * * `$$` => Owner View instance
+     *
+     */
+    widgetTemplate: new Simplate([
+        '<label for="{%= $.name %}">{%: $.label %}</label>',
+        '<textarea data-dojo-attach-point="inputNode" name="{%= $.name %}" rows="{%: $.rows %}" {% if ($.readonly) { %} readonly {% } %}></textarea>'
+    ]),
+    setValue: function(val, initial) {
+        if (val === null || typeof val === 'undefined') {
+            val = '';
         }
-    });
 
-    lang.setObject('Sage.Platform.Mobile.Fields.TextAreaField', control);
-    return FieldManager.register('textarea', control);
+        if (initial) {
+            this.originalValue = val;
+        }
+
+        this.previousValue = false;
+
+        this.set('inputValue', val);
+    }
 });
+
+lang.setObject('Sage.Platform.Mobile.Fields.TextAreaField', control);
+export = FieldManager.register('textarea', control);

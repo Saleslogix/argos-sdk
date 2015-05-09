@@ -1310,7 +1310,7 @@ declare module dojo {
          * @param now               OptionalOptional. Omit if test is not a function. Provides a way to immediatelyrun the test and cache the result.             
          * @param force               OptionalOptional. If the test already exists and force is truthy, then the existingtest will be replaced; otherwise, add does not replace an existing test (thatis, by default, the first test advice wins).             
          */
-        add(name: String, test: Function, now: boolean, force: boolean): any;
+        add(name: String, test: Function, now?: boolean, force?: boolean): any;
         /**
          * Register a new feature test for some named feature.
          * 
@@ -1319,7 +1319,7 @@ declare module dojo {
          * @param now               OptionalOptional. Omit if test is not a function. Provides a way to immediatelyrun the test and cache the result.             
          * @param force               OptionalOptional. If the test already exists and force is truthy, then the existingtest will be replaced; otherwise, add does not replace an existing test (thatis, by default, the first test advice wins).             
          */
-        add(name: number, test: Function, now: boolean, force: boolean): any;
+        add(name: number, test: Function, now?: boolean, force?: boolean): any;
         /**
          * Deletes the contents of the element passed to test functions.
          * 
@@ -1863,7 +1863,7 @@ declare module dojo {
          * @param update The progress update. Passed to progbacks.             
          * @param strict               OptionalIf strict, will throw an error if the deferred has alreadybeen fulfilled and consequently no progress can be emitted.             
          */
-        progress(update: any, strict: boolean): dojo.promise.Promise;
+        progress(update: any, strict?: boolean): dojo.promise.Promise;
         /**
          * Reject the deferred.
          * Reject the deferred, putting it in an error state.
@@ -1871,7 +1871,7 @@ declare module dojo {
          * @param error The error result of the deferred. Passed to errbacks.             
          * @param strict               OptionalIf strict, will throw an error if the deferred has alreadybeen fulfilled and consequently cannot be rejected.             
          */
-        reject(error: any, strict: boolean): any;
+        reject(error: any, strict?: boolean): any;
         /**
          * Resolve the deferred.
          * Resolve the deferred, putting it in a success state.
@@ -5020,7 +5020,7 @@ declare module dojo {
              * @param fromIndex               Optional            
              * @param findLast               OptionalMakes indexOf() work like lastIndexOf().  Used internally; not meant for external usage.             
              */
-            indexOf(arr: any[], value: Object, fromIndex: number, findLast: boolean): number;
+            indexOf(arr: any[], value: Object, fromIndex?: number, findLast?: boolean): number;
             /**
              * locates the last index of the provided value in the passed
              * array. If the value is not found, -1 is returned.
@@ -5206,7 +5206,7 @@ declare module dojo {
              * @param method A function reference, or name of a function in context.The function identified by method fires after event does.method receives the same arguments as the event.See context argument comments for information on method's scope.             
              * @param dontFix               OptionalIf obj is a DOM node, set dontFix to true to prevent delegationof this connection to the DOM event manager.             
              */
-            connect(obj: Object, event: String, context: Object, method: String, dontFix: boolean): any;
+            connect(obj: Object, event: String, context: Object, method: String, dontFix?: boolean): any;
             /**
              * dojo.connect is a deprecated event handling and delegation method in
              * Dojo. It allows one function to "listen in" on the execution of
@@ -5246,7 +5246,7 @@ declare module dojo {
              * @param method A function reference, or name of a function in context.The function identified by method fires after event does.method receives the same arguments as the event.See context argument comments for information on method's scope.             
              * @param dontFix               OptionalIf obj is a DOM node, set dontFix to true to prevent delegationof this connection to the DOM event manager.             
              */
-            connect(obj: Object, event: String, context: any, method: String, dontFix: boolean): any;
+            connect(obj: Object, event: String, context: any, method: String, dontFix?: boolean): any;
             /**
              * dojo.connect is a deprecated event handling and delegation method in
              * Dojo. It allows one function to "listen in" on the execution of
@@ -5286,7 +5286,7 @@ declare module dojo {
              * @param method A function reference, or name of a function in context.The function identified by method fires after event does.method receives the same arguments as the event.See context argument comments for information on method's scope.             
              * @param dontFix               OptionalIf obj is a DOM node, set dontFix to true to prevent delegationof this connection to the DOM event manager.             
              */
-            connect(obj: Object, event: String, context: Object, method: Function, dontFix: boolean): any;
+            connect(obj: Object, event: String, context: Object, method: Function, dontFix?: boolean): any;
             /**
              * dojo.connect is a deprecated event handling and delegation method in
              * Dojo. It allows one function to "listen in" on the execution of
@@ -5326,7 +5326,7 @@ declare module dojo {
              * @param method A function reference, or name of a function in context.The function identified by method fires after event does.method receives the same arguments as the event.See context argument comments for information on method's scope.             
              * @param dontFix               OptionalIf obj is a DOM node, set dontFix to true to prevent delegationof this connection to the DOM event manager.             
              */
-            connect(obj: Object, event: String, context: any, method: Function, dontFix: boolean): any;
+            connect(obj: Object, event: String, context: any, method: Function, dontFix?: boolean): any;
             /**
              * Ensure that every time obj.event() is called, a message is published
              * on the topic. Returns a handle which can be passed to
@@ -5946,7 +5946,7 @@ declare module dojo {
              * 
              * @param doc               Optional            
              */
-            body(doc: HTMLDocument): any;
+            body(doc?: HTMLDocument): any;
             /**
              * changes the behavior of many core Dojo functions that deal with
              * namespace and DOM lookup, changing them to work in a new global
@@ -16050,7 +16050,7 @@ declare module dojo {
          * 
          * @param objectOrArray       OptionalThe promise will be fulfilled with a list of results if invoked with anarray, or an object of results when passed an object (using the samekeys). If passed neither an object or array it is resolved with anundefined value.     
          */
-        interface all{(objectOrArray?: Object): void}
+        interface all{(objectOrArray?: Object): Promise}
         /**
          * Permalink: http://dojotoolkit.org/api/1.9/dojo/promise/all.html
          *
@@ -16063,7 +16063,7 @@ declare module dojo {
          * 
          * @param objectOrArray       OptionalThe promise will be fulfilled with a list of results if invoked with anarray, or an object of results when passed an object (using the samekeys). If passed neither an object or array it is resolved with anundefined value.     
          */
-        interface all{(objectOrArray?: any[]): void}
+        interface all{(objectOrArray?: any[]): Promise}
         /**
          * Permalink: http://dojotoolkit.org/api/1.9/dojo/promise/first.html
          *
@@ -16890,7 +16890,7 @@ declare module dojo {
          * @param options This provides any configuration information that will be mixed into the store.This should generally include the data property to provide the starting set of data.     
          */
         class Memory extends dojo.store.api.Store {
-            constructor(options: dojo.store.Memory);
+            constructor(options: dojo.store.Memory | any);
             /**
              * The array of all the objects in the memory store
              * 
@@ -18238,7 +18238,7 @@ declare module dojo {
          * @param advice This is function to be called after the original method             
          * @param receiveArguments               OptionalIf this is set to true, the advice function receives the original arguments (from when the original mehtodwas called) rather than the return value of the original/previous method.             
          */
-        after(target: Object, methodName: String, advice: Function, receiveArguments: boolean): any;
+        after(target: Object, methodName: String, advice: Function, receiveArguments?: boolean): any;
         /**
          * The "around" export of the aspect module is a function that can be used to attach
          * "around" advice to a method. The advisor function is immediately executed when
@@ -27133,14 +27133,14 @@ declare module dojo {
          * 
          * @param doc               Optional            
          */
-        getBox(doc: HTMLDocument): Object;
+        getBox(doc?: HTMLDocument): Object;
         /**
          * Scroll the passed node into view using minimal movement, if it is not already.
          * 
          * @param node             
          * @param pos               Optional            
          */
-        scrollIntoView(node: HTMLElement, pos: Object): void;
+        scrollIntoView(node: HTMLElement, pos?: Object): void;
     }
     /**
      * Permalink: http://dojotoolkit.org/api/1.9/dojo/touch.html

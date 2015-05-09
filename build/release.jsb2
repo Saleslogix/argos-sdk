@@ -291,10 +291,6 @@
           "path": "../src-out"
         },
         {
-          "text": "PersistentStorage.js",
-          "path": "../src-out"
-        },
-        {
           "text": "ConfigureQuickActions.js",
           "path": "../src-out/Views"
         },
@@ -305,10 +301,6 @@
         {
           "text": "Signature.js",
           "path": "../src-out/Views"
-        },
-        {
-          "text": "_ServiceMixin.js",
-          "path": "../src-out"
         },
         {
           "text": "ApplicationModule.js",

@@ -7,6 +7,11 @@ declare function require(config?: Object, dependencies?: String[], callback?: Fu
 declare var Sage: any;
 declare var Simplate: any;
 
+declare module "snap" {
+    var exp: any;
+    export = exp;
+}
+
 declare var ReUI: {
     back: () => void;
     context: any;
