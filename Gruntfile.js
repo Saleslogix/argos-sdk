@@ -7,7 +7,8 @@ module.exports = function(grunt) {
     grunt.loadTasks('grunt-tasks');
 
     // Register alias tasks
-    grunt.registerTask('check', ['jshint', 'jscs']);
-    grunt.registerTask('test', ['check', 'connect', 'jasmine:coverage']);
+    grunt.registerTask('ts', ['shell:typescript']);
+    grunt.registerTask('typescript', ['shell:typescript']);
+    grunt.registerTask('test', ['typescript', 'connect', 'jasmine:coverage']);
     grunt.registerTask('default', ['test']);
 };

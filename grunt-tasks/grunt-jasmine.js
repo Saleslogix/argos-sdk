@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
     grunt.config('jasmine', {
         coverage: {
-            src: ['src/**/*.js'],
+            src: ['src-out/**/*.js'],
             options: {
                 specs: 'tests/**/*.js',
                 host: 'http://127.0.0.1:8001/',
