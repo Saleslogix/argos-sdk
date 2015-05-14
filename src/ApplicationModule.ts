@@ -121,6 +121,7 @@ define('argos/ApplicationModule', [
          */
         loadCustomizations: function() {
             if (this.statics._customizationsLoaded) {
+                console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.');
                 return;
             }
 
@@ -134,6 +135,7 @@ define('argos/ApplicationModule', [
          */
         loadViews: function() {
             if (this.statics._viewsLoaded) {
+                console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.');
                 return;
             }
 
@@ -148,6 +150,7 @@ define('argos/ApplicationModule', [
          */
         loadToolbars: function() {
             if (this.statics._toolbarsLoaded) {
+                console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.');
                 return;
             }
 
