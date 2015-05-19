@@ -1,46 +1,29 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.Application
- * Application is a nexus that provides many routing and global application services that may be used
- * from anywhere within the app.
- *
- * It provides a shortcut alias to `window.App` (`App`) with the most common usage being `App.getView(id)`.
- *
- * @alternateClassName App
- */
-define('argos/Application', [
-    'dojo/json',
-    'dojo/_base/array',
-    'dojo/_base/connect',
-    'dojo/aspect',
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/window',
-    'dojo/string',
-    'dojo/hash',
-    'dojo/has',
-    'dojo/dom-construct',
-    'dojo/promise/all',
-    'snap',
-    'dojo/sniff',
-    './ReUI/main'
-], function (json, array, connect, aspect, declare, lang, win, string, hash, has, domConstruct, all, snap, sniff, ReUI) {
+define(["require", "exports", 'dojo/json', 'dojo/_base/array', 'dojo/_base/connect', 'dojo/aspect', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/window', 'dojo/hash', 'dojo/has', 'dojo/dom-construct', 'dojo/promise/all', 'snap', './ReUI/main', "dojo/sniff"], function (require, exports, json, array, connect, aspect, declare, lang, win, hash, has, domConstruct, all, snap, ReUI) {
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * @class argos.Application
+     * Application is a nexus that provides many routing and global application services that may be used
+     * from anywhere within the app.
+     *
+     * It provides a shortcut alias to `window.App` (`App`) with the most common usage being `App.getView(id)`.
+     *
+     * @alternateClassName App
+     */
     var __class, localize, mergeConfiguration, applyLocalizationTo;
     // Polyfill for Funcion.bind, taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
-    /* jshint ignore:start */
     if (!Function.prototype.bind) {
         Function.prototype.bind = function (oThis) {
             if (typeof this !== 'function') {
@@ -58,7 +41,6 @@ define('argos/Application', [
             return fBound;
         };
     }
-    /* jshint ignore:end */
     has.add('html5-file-api', function (global, document) {
         if (has('ie')) {
             return false;

@@ -1,32 +1,22 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.Calendar
- * @alternateClassName Calendar
- */
-define('argos/Calendar', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/string',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    'dojo/dom-style',
-    'argos/View',
-    'moment'
-], function (declare, lang, string, domAttr, domClass, domConstruct, domStyle, View, moment) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-style', './View', 'moment'], function (require, exports, declare, lang, string, domAttr, domClass, domConstruct, domStyle, View, moment) {
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * @class argos.Calendar
+     * @alternateClassName Calendar
+     */
     var pad, uCase, __class;
     pad = function (n) {
         return n < 10 ? '0' + n : n;
@@ -168,7 +158,7 @@ define('argos/Calendar', [
             var el = params.$source, toggledValue = el && (domAttr.get(el, 'toggled') !== true);
             if (el) {
                 domClass.toggle(el, 'toggleStateOn');
-                domAttr.set(el, 'toggled', toggledValue);
+                domAttr.set(el, 'toggled', toggledValue.toString());
             }
             this.updateDatetimeCaption();
         },
@@ -218,11 +208,11 @@ define('argos/Calendar', [
                 : (this.date.hours() || 12), this.is24hrTimeFormat ? 0 : 1, this.is24hrTimeFormat ? 23 : 12);
             this.populateSelector(this.minuteNode, this.date.minutes(), 0, 59);
             if (this.date.hours() < 12) {
-                domAttr.set(this.meridiemNode, 'toggled', true);
+                domAttr.set(this.meridiemNode, 'toggled', 'true');
                 domClass.add(this.meridiemNode, 'toggleStateOn');
             }
             else {
-                domAttr.set(this.meridiemNode, 'toggled', false);
+                domAttr.set(this.meridiemNode, 'toggled', 'false');
                 domClass.remove(this.meridiemNode, 'toggleStateOn');
             }
             this.updateDatetimeCaption();

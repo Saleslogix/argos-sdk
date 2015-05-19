@@ -1,7 +1,4 @@
-define('argos/SelectionModel', [
-    'dojo/_base/lang',
-    'dojo/_base/declare'
-], function (lang, declare) {
+define(["require", "exports", 'dojo/_base/lang', 'dojo/_base/declare'], function (require, exports, lang, declare) {
     /**
      * @class argos.SelectionModel
      * SelectionModel provides a simple in-memory store for data that fires events

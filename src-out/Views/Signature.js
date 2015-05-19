@@ -1,37 +1,14 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.Views.Signature
- * Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
- *
- * It goes hand-in-hand with {@link SignatureField SignatureField}
- *
- * @alternateClassName SignatureView
- * @extends argos.View
- * @requires argos.Format
- */
-define('argos/Views/Signature', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/json',
-    'dojo/query',
-    'dojo/dom-geometry',
-    'dojo/window',
-    '../Format',
-    '../View'
-], function (declare, lang, json, query, domGeom, win, format, View) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/json', 'dojo/query', 'dojo/dom-geometry', 'dojo/window', '../Format', '../View'], function (require, exports, declare, lang, json, query, domGeom, win, format, View) {
+    /**
+     * @class argos.Views.Signature
+     * Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
+     *
+     * It goes hand-in-hand with {@link SignatureField SignatureField}
+     *
+     * @alternateClassName SignatureView
+     * @extends argos.View
+     * @requires argos.Format
+     */
     var __class = declare('argos.Views.Signature', [View], {
         // Localization
         /**
@@ -166,7 +143,7 @@ define('argos/Views/Signature', [
          * @return {String}
          */
         getValues: function () {
-            return json.toJson(this.optimizeSignature());
+            return json.stringify(this.optimizeSignature());
         },
         /**
          * Sets the current value and draws it.
@@ -174,7 +151,7 @@ define('argos/Views/Signature', [
          * @param initial Unused.
          */
         setValue: function (val, initial) {
-            this.signature = val ? json.fromJson(val) : [];
+            this.signature = val ? json.parse(val) : [];
             this.redraw(this.signature, this.signatureNode, this.config);
         },
         /**

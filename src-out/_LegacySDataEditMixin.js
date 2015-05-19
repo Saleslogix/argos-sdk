@@ -1,22 +1,9 @@
-/*
- * Copyright (c) 1997-2014, SalesLogix, NA., LLC. All rights reserved.
- */
-/**
- * _LegacySDataEditMixin enables legacy SData operations for the Edit view.
- *
- * @alternateClassName _LegacySDataEditMixin
- */
-define('argos/_LegacySDataEditMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/string',
-    'dojo/dom-class',
-    'dojo/_base/connect',
-    './Store/SData',
-    './ErrorManager',
-    './Convert',
-    './_SDataDetailMixin'
-], function (declare, lang, string, domClass, connect, SData, ErrorManager, convert, _SDataDetailMixin) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', 'dojo/dom-class', 'dojo/_base/connect', './ErrorManager', './Convert', './_SDataDetailMixin'], function (require, exports, declare, lang, string, domClass, connect, ErrorManager, convert, _SDataDetailMixin) {
+    /**
+     * _LegacySDataEditMixin enables legacy SData operations for the Edit view.
+     *
+     * @alternateClassName _LegacySDataEditMixin
+     */
     var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
         requestData: function () {
             var request;

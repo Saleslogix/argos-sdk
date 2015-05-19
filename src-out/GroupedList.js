@@ -1,36 +1,13 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.GroupedList
- * Grouped List provides a hook for grouping rows before rendering them to the page.
- * The grouping adds a container for the set of rows and is collapsible.
- * Note that it constructs the page sequentially meaning the rows should be in the correct
- * order before attempting to group.
- * @extends argos.List
- * @alternateClassName GroupedList
- */
-define('argos/GroupedList', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/query',
-    'dojo/string',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    './List',
-    './Utility'
-], function (declare, lang, query, string, domClass, domConstruct, List, Utility) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/query', 'dojo/string', 'dojo/dom-class', 'dojo/dom-construct', './List', './Utility'], function (require, exports, declare, lang, query, string, domClass, domConstruct, List, Utility) {
+    /**
+     * @class argos.GroupedList
+     * Grouped List provides a hook for grouping rows before rendering them to the page.
+     * The grouping adds a container for the set of rows and is collapsible.
+     * Note that it constructs the page sequentially meaning the rows should be in the correct
+     * order before attempting to group.
+     * @extends argos.List
+     * @alternateClassName GroupedList
+     */
     var __class = declare('argos.GroupedList', [List], {
         // Localization
         /**

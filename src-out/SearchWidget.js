@@ -1,56 +1,34 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.SearchWidget
- * Search Widget is an SData-enabled search component that {@link List List} uses by default for search.
- *
- * The search widget is a dijit Widget with all the Widget aspects.
- *
- * It supports two types of shortcuts:
- *
- * 1\. `#text` - The key `text` will be replaced with the matching expression. This is a "hashtag".
-
- * 2\. `#!Name eq 'John'` - The `Name eq 'John'` will be inserted directly, avoiding {@link List#formatSearchQuery formatSearchQuery}. This is a "custom expression".
- *
- * Multiple hashtags is supported as well as hashtags with additional text that gets sent through {@link List#formatSearchQuery formatSearchQuery}.
- *
- * To go through a full example, take this expression:
- * `#open #urgent Bob`
- *
- * `#open` is replaced with: `TicketStatus eq 1`
- *
- * `#urgent` is replaced with: `TicketUrgency gt 3`
- *
- * `Bob` is passed to `formatSearchQuery` which returns `TicketId eq ("Bob") or TicketOwner like "Bob"
- *
- * The final result is "anded" together, resulting in this final where clause:
- * `where=(TicketStatus eq 1) and (TicketUrgency gt 3) and (TicketId eq ("Bob") or TicketOwner like "Bob")
- *
- * See the [Defining Hash Tags guide](#!/guides/v2_beyond_the_guide_defining_hashtags) for more information and how it supports localization.
- * @alternateClassName SearchWidget
- * @mixins argos._Templated
- */
-define('argos/SearchWidget', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/event',
-    'dojo/string',
-    'dojo/dom-class',
-    'dijit/_Widget',
-    './_Templated'
-], function (declare, lang, event, string, domClass, _Widget, _Templated) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/string', 'dojo/dom-class', 'dijit/_Widget', './_Templated'], function (require, exports, declare, lang, event, string, domClass, _Widget, _Templated) {
+    /**
+     * @class argos.SearchWidget
+     * Search Widget is an SData-enabled search component that {@link List List} uses by default for search.
+     *
+     * The search widget is a dijit Widget with all the Widget aspects.
+     *
+     * It supports two types of shortcuts:
+     *
+     * 1\. `#text` - The key `text` will be replaced with the matching expression. This is a "hashtag".
+    
+     * 2\. `#!Name eq 'John'` - The `Name eq 'John'` will be inserted directly, avoiding {@link List#formatSearchQuery formatSearchQuery}. This is a "custom expression".
+     *
+     * Multiple hashtags is supported as well as hashtags with additional text that gets sent through {@link List#formatSearchQuery formatSearchQuery}.
+     *
+     * To go through a full example, take this expression:
+     * `#open #urgent Bob`
+     *
+     * `#open` is replaced with: `TicketStatus eq 1`
+     *
+     * `#urgent` is replaced with: `TicketUrgency gt 3`
+     *
+     * `Bob` is passed to `formatSearchQuery` which returns `TicketId eq ("Bob") or TicketOwner like "Bob"
+     *
+     * The final result is "anded" together, resulting in this final where clause:
+     * `where=(TicketStatus eq 1) and (TicketUrgency gt 3) and (TicketId eq ("Bob") or TicketOwner like "Bob")
+     *
+     * See the [Defining Hash Tags guide](#!/guides/v2_beyond_the_guide_defining_hashtags) for more information and how it supports localization.
+     * @alternateClassName SearchWidget
+     * @mixins argos._Templated
+     */
     var __class = declare('argos.SearchWidget', [_Widget, _Templated], {
         /**
          * @property {Object}
@@ -268,6 +246,6 @@ define('argos/SearchWidget', [
             return this.queryNode.value;
         }
     });
-    lang.setObject('Sage.Platform.Mobile.SearchWidget', __class);
+    lang.setObject('Sage.Platform.Mobile.SearchWidget', __class, window);
     return __class;
 });

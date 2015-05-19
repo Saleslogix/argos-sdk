@@ -1,21 +1,11 @@
-/**
- * @class argos.Views.ConfigureQuickActions
- *
- *
- * @extends argos._ConfigureBase
- *
- */
-define('argos/Views/ConfigureQuickActions', [
-    'dojo/_base/declare',
-    'dojo/_base/array',
-    'dojo/_base/lang',
-    'dojo/query',
-    'dojo/string',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/store/Memory',
-    '../_ConfigureBase'
-], function (declare, array, lang, query, string, domAttr, domClass, Memory, _ConfigureBase) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/array', 'dojo/store/Memory', '../_ConfigureBase'], function (require, exports, declare, array, Memory, _ConfigureBase) {
+    /**
+     * @class argos.Views.ConfigureQuickActions
+     *
+     *
+     * @extends argos._ConfigureBase
+     *
+     */
     var __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
         // Localization
         titleText: 'Configure Quick Actions',
@@ -101,7 +91,7 @@ define('argos/Views/ConfigureQuickActions', [
             list = array.filter(list, function (item) {
                 return item !== null;
             });
-            return Memory({ data: list });
+            return new Memory({ data: list });
         },
         getSavedOrderedKeys: function () {
             var save = this._getQuickActionPrefs();

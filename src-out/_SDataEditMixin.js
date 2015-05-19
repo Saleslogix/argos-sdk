@@ -1,38 +1,14 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos._SDataEditMixin
- *
- * Enables SData for the Edit view.
- * Extends the SDataDetail Mixin by providing functions for $template requests.
- *
- * @alternateClassName _SDataEditMixin
- * @extends argos._SDataDetailMixin
- * @requires argos.SData
- */
-define('argos/_SDataEditMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/string',
-    'dojo/dom-class',
-    'dojo/_base/connect',
-    './Store/SData',
-    './ErrorManager',
-    './Convert',
-    './_SDataDetailMixin'
-], function (declare, lang, string, domClass, connect, SData, ErrorManager, convert, _SDataDetailMixin) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/dom-class', './Convert', './_SDataDetailMixin'], function (require, exports, declare, lang, domClass, convert, _SDataDetailMixin) {
+    /**
+     * @class argos._SDataEditMixin
+     *
+     * Enables SData for the Edit view.
+     * Extends the SDataDetail Mixin by providing functions for $template requests.
+     *
+     * @alternateClassName _SDataEditMixin
+     * @extends argos._SDataDetailMixin
+     * @requires argos.SData
+     */
     var __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
         /**
          * @property {Object}

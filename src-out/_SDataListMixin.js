@@ -1,39 +1,14 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos._SDataListMixin
- *
- * Enables SData for the List view.
- * Adds the SData store to the view and exposes the needed properties for creating a Feed request.
- *
- * @alternateClassName _SDataListMixin
- * @requires argos.SData
- * @requires argos.Utility
- */
-define('argos/_SDataListMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/Deferred',
-    'dojo/when',
-    'dojo/dom-construct',
-    'dojo/dom-class',
-    'dojo/string',
-    './Store/SData',
-    './Utility',
-    './ErrorManager'
-], function (declare, lang, Deferred, when, domConstruct, domClass, string, SData, utility, ErrorManager) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/Deferred', 'dojo/when', 'dojo/string', './Store/SData', './Utility'], function (require, exports, declare, lang, Deferred, when, string, SData, utility) {
+    /**
+     * @class argos._SDataListMixin
+     *
+     * Enables SData for the List view.
+     * Adds the SData store to the view and exposes the needed properties for creating a Feed request.
+     *
+     * @alternateClassName _SDataListMixin
+     * @requires argos.SData
+     * @requires argos.Utility
+     */
     var __class = declare('argos._SDataListMixin', null, {
         /**
          * @property request Object SData request passed into the store. Optional.

@@ -1,26 +1,4 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-define('argos/Fields/TextField', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/event',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    './_Field',
-    '../FieldManager'
-], function (declare, lang, event, domAttr, domClass, _Field, FieldManager) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/dom-attr', 'dojo/dom-class', './_Field', '../FieldManager'], function (require, exports, declare, lang, event, domAttr, domClass, _Field, FieldManager) {
     /**
      * @class argos.Fields.TextField
      * The TextField is the base method of inputting just a string that is bound to a `<input type="text">`.
@@ -136,14 +114,14 @@ define('argos/Fields/TextField', [
          */
         enable: function () {
             this.inherited(arguments);
-            domAttr.set(this.inputNode, 'disabled', false);
+            domAttr.set(this.inputNode, 'disabled', 'false');
         },
         /**
          * Extends the parent implementation to set the disabled attribute of the input to true
          */
         disable: function () {
             this.inherited(arguments);
-            domAttr.set(this.inputNode, 'disabled', true);
+            domAttr.set(this.inputNode, 'disabled', 'true');
         },
         focus: function () {
             this.inputNode.focus();

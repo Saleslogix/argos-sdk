@@ -1,52 +1,15 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos._ListBase
- * A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
- * selection model built in for selecting rows from the list and may be used in a number of different manners.
- * @extends argos.View
- * @alternateClassName _ListBase
- * @requires argos.ErrorManager
- * @requires argos.Utility
- * @requires argos.SearchWidget
- * @mixins argos._PullToRefreshMixin
- */
-define('argos/_ListBase', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/array',
-    'dojo/_base/connect',
-    'dojo/query',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    'dojo/dom-geometry',
-    'dojo/dom-style',
-    'dojo/dom',
-    'dojo/string',
-    'dojo/window',
-    'dojo/Deferred',
-    'dojo/promise/all',
-    'dojo/when',
-    './Utility',
-    './ErrorManager',
-    './View',
-    './SearchWidget',
-    './ConfigurableSelectionModel',
-    './_PullToRefreshMixin'
-], function (declare, lang, array, connect, query, domAttr, domClass, domConstruct, domGeom, domStyle, dom, string, win, Deferred, all, when, Utility, ErrorManager, View, SearchWidget, ConfigurableSelectionModel, _PullToRefreshMixin) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/array', 'dojo/_base/connect', 'dojo/query', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-geometry', 'dojo/dom', 'dojo/string', 'dojo/when', './Utility', './ErrorManager', './View', './SearchWidget', './ConfigurableSelectionModel', './_PullToRefreshMixin'], function (require, exports, declare, lang, array, connect, query, domAttr, domClass, domConstruct, domGeom, dom, string, when, Utility, ErrorManager, View, SearchWidget, ConfigurableSelectionModel, _PullToRefreshMixin) {
+    /**
+     * @class argos._ListBase
+     * A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
+     * selection model built in for selecting rows from the list and may be used in a number of different manners.
+     * @extends argos.View
+     * @alternateClassName _ListBase
+     * @requires argos.ErrorManager
+     * @requires argos.Utility
+     * @requires argos.SearchWidget
+     * @mixins argos._PullToRefreshMixin
+     */
     var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         /**
          * @property {Object}

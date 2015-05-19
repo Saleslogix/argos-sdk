@@ -1,17 +1,4 @@
-/**
- * @class argos._PullToRefreshMixin
- * Mixin for pull to refresh actions
- * @alternateClassName _PullToRefreshMixin
- */
-define('argos/_PullToRefreshMixin', [
-    'dojo/_base/declare',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    'dojo/dom-geometry',
-    'dojo/dom-style',
-    'dojo/dom'
-], function (declare, domAttr, domClass, domConstruct, domGeom, domStyle, dom) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-geometry', 'dojo/dom-style'], function (require, exports, declare, domClass, domConstruct, domGeom, domStyle) {
     return declare('argos._PullToRefreshMixin', null, {
         /**
          * @property {Simplate}

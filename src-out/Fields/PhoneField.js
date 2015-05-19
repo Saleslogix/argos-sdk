@@ -1,27 +1,5 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-define('argos/Fields/PhoneField', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/has',
-    'dojo/string',
-    '../FieldManager',
-    './TextField',
-    '../Format',
-    'dojo/_base/sniff'
-], function (declare, lang, has, string, FieldManager, TextField, format, sniff) {
+/// <amd-dependency path="dojo/sniff" />
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/has', '../FieldManager', './TextField', '../Format', "dojo/sniff"], function (require, exports, declare, lang, has, FieldManager, TextField, format) {
     /**
      * @class argos.Fields.PhoneField
      * The Phone field is a specialized {@link TextField TextField} that takes a string of numbers

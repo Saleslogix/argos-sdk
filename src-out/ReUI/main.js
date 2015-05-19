@@ -1,13 +1,4 @@
-define('argos/ReUI/main', [
-    'dojo/_base/lang',
-    'dojo/on',
-    'dojo/dom',
-    'dojo/dom-class',
-    'dojo/dom-attr',
-    'dojo/dom-style',
-    'dojo/query',
-    './DomHelper'
-], function (lang, on, dom, domClass, domAttr, domStyle, query, DomHelper) {
+define(["require", "exports", 'dojo/_base/lang', 'dojo/on', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-attr', './DomHelper'], function (require, exports, lang, on, dom, domClass, domAttr, DomHelper) {
     var ReUI, R, D, transition, config, context, extractInfoFromHash, formatHashForPage, updateOrientationDom, checkOrientationAndLocation, transitionComplete;
     ReUI = {};
     ReUI.DomHelper = DomHelper;

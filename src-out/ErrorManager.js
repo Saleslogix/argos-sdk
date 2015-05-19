@@ -12,20 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * @class argos.ErrorManager
- * ErrorManager is a singleton that parses and stores SData error responses into localStorage.
- * @alternateClassName ErrorManager
- * @singleton
- */
-define('argos/ErrorManager', [
-    'dojo/json',
-    'dojo/_base/lang',
-    'dojo/_base/connect',
-    'dojo/string',
-    'moment',
-    './Utility'
-], function (json, lang, connect, string, moment, utility) {
+define(["require", "exports", 'dojo/json', 'dojo/_base/lang', 'dojo/_base/connect', 'moment', './Utility'], function (require, exports, json, lang, connect, moment, utility) {
+    /**
+     * @class argos.ErrorManager
+     * ErrorManager is a singleton that parses and stores SData error responses into localStorage.
+     * @alternateClassName ErrorManager
+     * @singleton
+     */
     var errors, __class;
     errors = [];
     try {

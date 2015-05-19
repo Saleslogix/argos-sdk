@@ -1,19 +1,9 @@
-/*
- * Copyright (c) 1997-2014, SalesLogix, NA., LLC. All rights reserved.
- */
-/**
- * _LegacySDataDetailMixin enables legacy SData operations for the Detail view.
- *
- * @alternateClassName _LegacySDataDetailMixin
- */
-define('argos/_LegacySDataDetailMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    'dojo/string',
-    './ErrorManager'
-], function (declare, lang, domClass, domConstruct, string, ErrorManager) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/string', './ErrorManager'], function (require, exports, declare, lang, domClass, domConstruct, string, ErrorManager) {
+    /**
+     * _LegacySDataDetailMixin enables legacy SData operations for the Detail view.
+     *
+     * @alternateClassName _LegacySDataDetailMixin
+     */
     var __class = declare('argos._LegacySDataDetailMixin', null, {
         /**
          * Initiates the SData request.

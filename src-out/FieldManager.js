@@ -12,16 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * @class argos.FieldManager
- * Field Manager is a registry for field types that enables the Edit View layouts to
- * simply define `type: 'myFieldType'`.
- * @alternateClassName FieldManager
- * @singleton
- */
-define('argos/FieldManager', [
-    'dojo/_base/lang'
-], function (lang) {
+define(["require", "exports", 'dojo/_base/lang'], function (require, exports, lang) {
+    /**
+     * @class argos.FieldManager
+     * Field Manager is a registry for field types that enables the Edit View layouts to
+     * simply define `type: 'myFieldType'`.
+     * @alternateClassName FieldManager
+     * @singleton
+     */
     var store, __class;
     store = {};
     __class = lang.setObject('argos.FieldManager', {
@@ -47,7 +45,7 @@ define('argos/FieldManager', [
         get: function (name) {
             return store[name];
         }
-    });
-    lang.setObject('Sage.Platform.Mobile.FieldManager', __class);
+    }, window);
+    lang.setObject('Sage.Platform.Mobile.FieldManager', __class, window);
     return __class;
 });
