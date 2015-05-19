@@ -94,24 +94,47 @@ define('argos/ApplicationModule', [
         */
         loadAppStatPromises: function () {
         },
+        statics: {
+            _customizationsLoaded: false,
+            _viewsLoaded: false,
+            _toolbarsLoaded: false
+        },
         /**
          * @template
          * This function should be overriden in the app and be used to register all customizations.
          */
         loadCustomizations: function () {
+            if (this.statics._customizationsLoaded) {
+                console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.');
+                return;
+            }
+            // Load base customizations
+            this.statics._customizationsLoaded = true;
         },
         /**
          * @template
          * This function should be overriden in the app and be used to register all views.
          */
         loadViews: function () {
+            if (this.statics._viewsLoaded) {
+                console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.');
+                return;
+            }
+            // Load base views
             this.registerView(new ConfigureQuickActions());
+            this.statics._viewsLoaded = true;
         },
         /**
          * @template
          * This function should be overriden in the app and be used to register all toolbars.
          */
         loadToolbars: function () {
+            if (this.statics._toolbarsLoaded) {
+                console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.');
+                return;
+            }
+            // Load base toolbars
+            this.statics._toolbarsLoaded = true;
         },
         /**
          * Passes the view instance to {@link App#registerView App.registerView}.
