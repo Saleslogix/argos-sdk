@@ -247,12 +247,13 @@ define('argos/Calendar', [
             this.showTimePicker = this.options && this.options.showTimePicker;
 
             this.date  = moment((this.options && this.options.date) || moment());
-            this.year  = this.date.year();
-            this.month = this.date.month();
 
             if (this._isTimeless()) {
                 this.date.add({minutes: this.date.zone()});
             }
+
+            this.year  = this.date.year();
+            this.month = this.date.month();
 
             var today = moment();
 
