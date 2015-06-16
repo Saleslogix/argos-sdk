@@ -229,7 +229,7 @@ define('argos/Calendar', [
 
             whichField = fields[ (3 > formatIndex)
                 ? this.dateFormat.split(/[^a-z]/i)[formatIndex].charAt(0)
-                : this.timeFormatText.split(/[^a-z]/i)[formatIndex - 3].charAt(0)
+                : this.timeFormatText.replace(/[a]\s/i, '').split(/[^a-z]/i)[formatIndex - 3].charAt(0)
                 ];
 
             whichFormat = ('selectorTemplate' === whichTemplate)
