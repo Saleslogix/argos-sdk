@@ -191,7 +191,7 @@ define('argos/Calendar', [
             var whichTemplate = arguments[0], formatIndex = arguments[1], fields = { y: 'year', Y: 'year', M: 'month', d: 'day', D: 'day', h: 'hour', H: 'hour', m: 'minute' }, whichField, whichFormat;
             whichField = fields[(3 > formatIndex)
                 ? this.dateFormat.split(/[^a-z]/i)[formatIndex].charAt(0)
-                : this.timeFormatText.split(/[^a-z]/i)[formatIndex - 3].charAt(0)];
+                : this.timeFormatText.replace(/[a]\s/i, '').split(/[^a-z]/i)[formatIndex - 3].charAt(0)];
             whichFormat = ('selectorTemplate' === whichTemplate)
                 ? whichField
                 : uCase(whichField);

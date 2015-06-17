@@ -12,7 +12,7 @@ define('argos/_PullToRefreshMixin', [
     'dojo/dom-style',
     'dojo/dom'
 ], function (declare, domAttr, domClass, domConstruct, domGeom, domStyle, dom) {
-    return declare('argos._PullToRefreshMixin', null, {
+    var __class = declare('argos._PullToRefreshMixin', null, {
         /**
          * @property {Simplate}
          */
@@ -23,13 +23,13 @@ define('argos/_PullToRefreshMixin', [
          * @property {Simplate}
          */
         pullRefreshTemplate: new Simplate([
-            '<span class="fa fa-long-arrow-down"></span>{%= $.pullRefreshText %}'
+            '<span class="fa fa-long-arrow-down"></span>{%= $$._getText("pullRefreshText") %}'
         ]),
         /**
          * @property {Simplate}
          */
         pullReleaseTemplate: new Simplate([
-            '<span class="fa fa-long-arrow-up"></span>{%= $.pullReleaseText %}'
+            '<span class="fa fa-long-arrow-up"></span>{%= $$._getText("pullReleaseText") %}'
         ]),
         /**
          * @property {String}
@@ -57,6 +57,9 @@ define('argos/_PullToRefreshMixin', [
         _onTouchEndHandle: null,
         _onTouchMoveHandle: null,
         _onTouchCancelHandle: null,
+        _getText: function (prop) {
+            return __class.prototype[prop];
+        },
         /**
          * @static
          * @property {Object}
@@ -195,4 +198,5 @@ define('argos/_PullToRefreshMixin', [
         onPullToRefreshCancel: function () {
         }
     });
+    return __class;
 });
