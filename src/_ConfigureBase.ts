@@ -191,4 +191,4 @@ var __class = declare('argos._ConfigureBase', [_ListBase], {
     }
 });
 
-export = __class;
+export = <argos._ConfigureBase>__class;

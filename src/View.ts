@@ -86,7 +86,7 @@ var __class = _declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationM
         */
     serviceName: false,
     connectionName: false,
-    constructor: function(options) {
+    constructor: function (options) {
         this.app = (options && options.app) || window.App;
     },
     startup: function() {
@@ -328,4 +328,4 @@ var __class = _declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationM
 });
 
 lang.setObject('Sage.Platform.Mobile.View', __class, window);
-export = __class;
+export = <argos.View>__class;

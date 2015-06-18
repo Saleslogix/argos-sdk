@@ -214,7 +214,7 @@ var __class = declare('argos.Fields.EditorField', [_Field], {
      * `this.validationValue`.
      */
     getValuesFromView: function() {
-        var view = App.getPrimaryActiveView<_EditBase>(),
+        var view = App.getPrimaryActiveView<argos._EditBase>(),
             values = view && view.getValues();
 
         if (view && values) {

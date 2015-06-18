@@ -7,29 +7,6 @@ import _declare = require('dojo/_base/declare');
 import lang = require('dojo/_base/lang');
 import array = require('dojo/_base/array');
 
-interface ErrorHandler {
-    name: string,
-    test: (err: any) => boolean,
-    handle: (err: any, next: () => void) => void
-}
-
-interface _ErrorHandleMixin {
-    errorText: {
-        general: string,
-        status: {}
-    },
-
-    HTTP_STATUS: {},
-
-    errorHandlers: any[],
-
-    createErrorHandlers: () => ErrorHandler[],
-
-    handleError: (error: any) => void,
-
-    getErrorMessage: (error: any) => string
-}
-
 var __class = _declare('argos._ErrorHandleMixin', null, {
     /**
         * @property {Object}
@@ -133,4 +110,4 @@ var __class = _declare('argos._ErrorHandleMixin', null, {
 });
 
 lang.setObject('Sage.Platform.Mobile._ErrorHandleMixin', __class, window);
-export = <_ErrorHandleMixin>__class;
+export = <argos._ErrorHandleMixin>__class;

@@ -903,7 +903,7 @@ var __class = declare('argos._DetailBase', [View], {
         this._navigationOptions = [];
     },
     _processRelatedItem: function(data, context, rowNode) {
-        var view = App.getView<_ListBase>(data['view']), options:any = {};
+        var view = App.getView<argos._ListBase>(data['view']), options:any = {};
 
         if (view) {
             options.where = context ? context['where'] : '';
@@ -928,4 +928,4 @@ var __class = declare('argos._DetailBase', [View], {
 });
 
 lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
-export = __class;
+export = <argos._DetailBase>__class;

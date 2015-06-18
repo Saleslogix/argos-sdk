@@ -1334,5 +1334,5 @@ var __class = declare('argos._EditBase', [View], {
 });
 
 lang.setObject('Sage.Platform.Mobile._EditBase', __class);
-export = __class;
+export = <argos._EditBase>__class;
 

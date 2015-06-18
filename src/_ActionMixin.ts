@@ -129,4 +129,4 @@ var __class = _declare('argos._ActionMixin', null, {
 });
 
 lang.setObject('Sage.Platform.Mobile._ActionMixin', __class, window);
-export = __class;
+export = <argos._ActionMixin>__class;

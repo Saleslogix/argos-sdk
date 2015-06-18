@@ -216,4 +216,4 @@ __class = _declare('argos._CustomizationMixin', null, {
 });
 
 lang.setObject('Sage.Platform.Mobile._CustomizationMixin', __class, window);
-export = __class;
+export = <argos._CustomizationMixin>__class;
