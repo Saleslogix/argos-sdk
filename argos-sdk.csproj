@@ -868,6 +868,7 @@
     <Content Include="tests\Stores\SData.js" />
     <Content Include="tests\ToolbarTests.js" />
     <Content Include="tests\UtilityTests.js" />
+    <Content Include="tests\View.js" />
     <Content Include="tests\_EditBase.js" />
     <Content Include="tools\argos-localizer\argos-localizer.exe" />
     <Content Include="tools\bundler\ActiproSoftware.Shared.Net20.dll" />

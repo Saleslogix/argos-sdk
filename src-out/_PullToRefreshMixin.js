@@ -1,5 +1,10 @@
 define(["require", "exports", 'dojo/_base/declare', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-geometry', 'dojo/dom-style'], function (require, exports, declare, domClass, domConstruct, domGeom, domStyle) {
-    return declare('argos._PullToRefreshMixin', null, {
+    /**
+     * @class argos._PullToRefreshMixin
+     * Mixin for pull to refresh actions
+     * @alternateClassName _PullToRefreshMixin
+     */
+    var __class = declare('argos._PullToRefreshMixin', null, {
         /**
          * @property {Simplate}
          */
@@ -10,13 +15,13 @@ define(["require", "exports", 'dojo/_base/declare', 'dojo/dom-class', 'dojo/dom-
          * @property {Simplate}
          */
         pullRefreshTemplate: new Simplate([
-            '<span class="fa fa-long-arrow-down"></span>{%= $.pullRefreshText %}'
+            '<span class="fa fa-long-arrow-down"></span>{%= $$._getText("pullRefreshText") %}'
         ]),
         /**
          * @property {Simplate}
          */
         pullReleaseTemplate: new Simplate([
-            '<span class="fa fa-long-arrow-up"></span>{%= $.pullReleaseText %}'
+            '<span class="fa fa-long-arrow-up"></span>{%= $$._getText("pullReleaseText") %}'
         ]),
         /**
          * @property {String}
@@ -44,6 +49,9 @@ define(["require", "exports", 'dojo/_base/declare', 'dojo/dom-class', 'dojo/dom-
         _onTouchEndHandle: null,
         _onTouchMoveHandle: null,
         _onTouchCancelHandle: null,
+        _getText: function (prop) {
+            return __class.prototype[prop];
+        },
         /**
          * @static
          * @property {Object}
@@ -182,4 +190,5 @@ define(["require", "exports", 'dojo/_base/declare', 'dojo/dom-class', 'dojo/dom-
         onPullToRefreshCancel: function () {
         }
     });
+    return __class;
 });

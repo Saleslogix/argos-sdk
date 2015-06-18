@@ -181,7 +181,7 @@ define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/str
             var whichTemplate = arguments[0], formatIndex = arguments[1], fields = { y: 'year', Y: 'year', M: 'month', d: 'day', D: 'day', h: 'hour', H: 'hour', m: 'minute' }, whichField, whichFormat;
             whichField = fields[(3 > formatIndex)
                 ? this.dateFormat.split(/[^a-z]/i)[formatIndex].charAt(0)
-                : this.timeFormatText.split(/[^a-z]/i)[formatIndex - 3].charAt(0)];
+                : this.timeFormatText.replace(/[a]\s/i, '').split(/[^a-z]/i)[formatIndex - 3].charAt(0)];
             whichFormat = ('selectorTemplate' === whichTemplate)
                 ? whichField
                 : uCase(whichField);
@@ -193,11 +193,11 @@ define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/str
             this.titleText = options.label ? options.label : this.titleText;
             this.showTimePicker = this.options && this.options.showTimePicker;
             this.date = moment((this.options && this.options.date) || moment());
-            this.year = this.date.year();
-            this.month = this.date.month();
             if (this._isTimeless()) {
                 this.date.add({ minutes: this.date.zone() });
             }
+            this.year = this.date.year();
+            this.month = this.date.month();
             var today = moment();
             this.populateSelector(this.yearNode, this.year, (this.year < today.year() - 10) ? this.year : today.year() - 10, (10 + today.year()) // max 10 years into future - arbitrary limit
             );

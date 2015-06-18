@@ -217,7 +217,7 @@ __class = declare('argos.Calendar', [View], {
 
         whichField = fields[ (3 > formatIndex)
             ? this.dateFormat.split(/[^a-z]/i)[formatIndex].charAt(0)
-            : this.timeFormatText.split(/[^a-z]/i)[formatIndex - 3].charAt(0)
+                : this.timeFormatText.replace(/[a]\s/i, '').split(/[^a-z]/i)[formatIndex - 3].charAt(0)
             ];
 
         whichFormat = ('selectorTemplate' === whichTemplate)
@@ -235,12 +235,13 @@ __class = declare('argos.Calendar', [View], {
         this.showTimePicker = this.options && this.options.showTimePicker;
 
         this.date  = moment((this.options && this.options.date) || moment());
-        this.year  = this.date.year();
-        this.month = this.date.month();
 
         if (this._isTimeless()) {
             this.date.add({minutes: this.date.zone()});
         }
+
+            this.year  = this.date.year();
+            this.month = this.date.month();
 
         var today = moment();
 

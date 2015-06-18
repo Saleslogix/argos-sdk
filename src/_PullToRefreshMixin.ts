@@ -11,7 +11,7 @@ import dom = require('dojo/dom');
  * Mixin for pull to refresh actions
  * @alternateClassName _PullToRefreshMixin
  */
-export = declare('argos._PullToRefreshMixin', null, {
+var __class = declare('argos._PullToRefreshMixin', null, {
     /**
      * @property {Simplate}
      */
@@ -23,14 +23,14 @@ export = declare('argos._PullToRefreshMixin', null, {
      * @property {Simplate}
      */
     pullRefreshTemplate: new Simplate([
-        '<span class="fa fa-long-arrow-down"></span>{%= $.pullRefreshText %}'
+        '<span class="fa fa-long-arrow-down"></span>{%= $$._getText("pullRefreshText") %}'
     ]),
 
     /**
      * @property {Simplate}
      */
     pullReleaseTemplate: new Simplate([
-        '<span class="fa fa-long-arrow-up"></span>{%= $.pullReleaseText %}'
+        '<span class="fa fa-long-arrow-up"></span>{%= $$._getText("pullReleaseText") %}'
     ]),
 
     /**
@@ -63,6 +63,10 @@ export = declare('argos._PullToRefreshMixin', null, {
     _onTouchEndHandle: null,
     _onTouchMoveHandle: null,
     _onTouchCancelHandle: null,
+
+        _getText: function(prop) {
+            return __class.prototype[prop];
+        },
 
     /**
      * @static
@@ -230,3 +234,5 @@ export = declare('argos._PullToRefreshMixin', null, {
     onPullToRefreshCancel: function() {
     }
 });
+
+export = __class;
