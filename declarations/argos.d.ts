@@ -189,25 +189,26 @@ declare module argos {
         isDateString: (value: string) => boolean;
         toIsoStringFromDate: (value: Date) => string;
         toJsonStringFromDate: (value: Date) => string;
-        toDateFromString: (value:string) => Date;
+        toDateFromString: (value: string) => Date;
     }
     interface Detail { }
 
     interface ErrorManager {
-        addError: (serverResponse, requestOptions, viewOptions?, failType?:string) => void;
+        addError: (serverResponse, requestOptions, viewOptions?, failType?: string) => void;
     }
     interface FieldManager {
         register: (name: string, ctor: Function) => Function;
         get: (name: string) => Function;
     }
     interface Format {
-        fixed: any;
-        date: any;
-        phone: any;
-        alphaToPhoneNumeric: any;
-        imageFromVector: any;
-        canvasDraw: any;
-        encode: any;
+        fixed: (val: number | string, d?: number) => number;
+        date: (val: Date | string, fmt: string, utc?: boolean) => string;
+        phone: (val: string, asLink?: boolean) => string;
+        alphaToPhoneNumeric: (val: string) => string;
+        imageFromVector: (vector: number[][]| string, options: any, html?: boolean) => any;
+        canvasDraw: (vector: number[][], canvas: HTMLCanvasElement, options?: any) => void;
+        encode: (val: string) => string;
+        percent: (val: number | string, places: number | string) => string;
     }
     interface GroupedList { }
     interface List { }
@@ -227,7 +228,7 @@ declare module argos {
         expand: (scope: any, expression: Function | any) => any;
         roundNumberTo: (number: number, precision: number) => any;
         joinFields: (seperator: string, fields: string[]) => string;
-        sanitizeForJson: (obj:any) => any;
+        sanitizeForJson: (obj: any) => any;
     }
 }
 
