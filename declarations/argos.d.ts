@@ -1,4 +1,5 @@
 ﻿/// <reference path="dojo.d.ts" />
+/// <reference path="moment.d.ts" />
 declare function define(dependencies: String[], factory: Function): any;
 declare function define(mid: String, dependencies: String[], factory: Function): any;
 declare function require(config?: Object, dependencies?: String[], callback?: Function): any;
@@ -121,6 +122,7 @@ declare module argos {
     }
 
     interface View extends _ActionMixin, Function {
+        (options?: any): void;
         show: any;
         set: any;
         id: string;
@@ -241,7 +243,8 @@ declare module argos {
     }
 
     interface ApplicationModule { }
-    interface Calendar { }
+    interface Calendar extends View {
+    }
     interface ConfigurableSelectionModel extends Function {
         (): void
     }

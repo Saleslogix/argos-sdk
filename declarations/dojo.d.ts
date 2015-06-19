@@ -1286,7 +1286,7 @@ declare module dojo {
      * 
      * @param name The name (if a string) or identifier (if an integer) of the feature to test.     
      */
-    interface has { (name: String): void }
+    interface has { (name: String): any }
     /**
      * Permalink: http://dojotoolkit.org/api/1.9/dojo/has.html
      *
@@ -1296,7 +1296,7 @@ declare module dojo {
      * 
      * @param name The name (if a string) or identifier (if an integer) of the feature to test.     
      */
-    interface has { (name: number): void }
+    interface has { (name: number): any }
     interface has {
         /**
          * 
@@ -5631,7 +5631,7 @@ declare module dojo {
              * @param scope The scope to use when method executes. If method is a string,scope is also the object containing method.             
              * @param method A function to be hitched to scope, or the name of the method inscope to be hitched.             
              */
-            hitch(scope: Object, method: String[]): any;
+            hitch(scope: Object, method: String[], ...rest:any[]): any;
             /**
              * Returns true if it is a built-in function or some other kind of
              * oddball that should report as a function but doesn't
