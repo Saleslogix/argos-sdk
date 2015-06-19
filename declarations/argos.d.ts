@@ -144,7 +144,7 @@ declare module argos {
         getDateTime: () => Date;
     }
 
-    interface _ActionMixin {
+    interface _ActionMixin extends Function {
         hasAction: (name: string, evt?: any, el?: any) => boolean;
         invokeAction: (name: any, parameters: any, evt: any, el: any) => any;
     }
@@ -181,22 +181,54 @@ declare module argos {
 
     interface ApplicationModule { }
     interface Calendar { }
-    interface ConfigurableSelectionModel { }
-    interface Convert { }
+    interface ConfigurableSelectionModel extends Function {
+        (): void
+    }
+    interface Convert {
+        toBoolean: (value: string) => boolean;
+        isDateString: (value: string) => boolean;
+        toIsoStringFromDate: (value: Date) => string;
+        toJsonStringFromDate: (value: Date) => string;
+        toDateFromString: (value:string) => Date;
+    }
     interface Detail { }
 
-    interface ErrorManager { }
-    interface FieldManager { }
-    interface Format { }
+    interface ErrorManager {
+        addError: (serverResponse, requestOptions, viewOptions?, failType?:string) => void;
+    }
+    interface FieldManager {
+        register: (name: string, ctor: Function) => Function;
+        get: (name: string) => Function;
+    }
+    interface Format {
+        fixed: any;
+        date: any;
+        phone: any;
+        alphaToPhoneNumeric: any;
+        imageFromVector: any;
+        canvasDraw: any;
+        encode: any;
+    }
     interface GroupedList { }
     interface List { }
     interface MainToolbar { }
-    interface RelatedViewManager { }
+    interface RelatedViewManager extends Function {
+        (options?): void
+    }
     interface RelatedViewWidget { }
     interface SearchWidget { }
     interface SelectionModel { }
     interface Toolbar { }
-    interface Utility { }
+    interface Utility {
+        escapeSearchQuery: (searchQuery: string) => string;
+        memoize: (fn: (...args: any[]) => any, keyFn: (value) => string) => any;
+        getValue: (o: any, name: string, defaultValue?: any) => any;
+        setValue: (o: any, name: string, val: any) => any;
+        expand: (scope: any, expression: Function | any) => any;
+        roundNumberTo: (number: number, precision: number) => any;
+        joinFields: (seperator: string, fields: string[]) => string;
+        sanitizeForJson: (obj:any) => any;
+    }
 }
 
 declare module "argos/_ActionMixin" {

@@ -136,7 +136,7 @@ __class = lang.setObject('argos.Utility', {
      * Utility function to join fields within a Simplate template.
      */
     joinFields: function(seperator, fields) {
-        var results;
+        var results:string[];
         results = array.filter(fields, function(item) {
             return item !== null && typeof item !== 'undefined' && item !== '';
         });
