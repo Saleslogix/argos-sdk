@@ -20,8 +20,9 @@ define('argos/_PullToRefreshMixin', [
     domStyle,
     dom
 ) {
+    var __class;
 
-    var __class = declare('argos._PullToRefreshMixin', null, {
+    __class = declare('argos._PullToRefreshMixin', null, {
         /**
          * @property {Simplate}
          */
