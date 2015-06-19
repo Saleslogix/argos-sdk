@@ -181,4 +181,4 @@ var control = declare('argos.Fields.DateField', [EditorField], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.DateField', control);
-export = FieldManager.register('date', control);
+export = <argos.Fields.DateField>FieldManager.register('date', control);

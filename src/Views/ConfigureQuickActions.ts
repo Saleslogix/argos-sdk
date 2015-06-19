@@ -153,4 +153,4 @@ var __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
     }
 });
 
-export = __class;
+export = <argos.Views.ConfigureQuickActions>__class;

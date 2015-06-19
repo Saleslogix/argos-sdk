@@ -163,4 +163,4 @@ var control = declare('argos.Fields.SignatureField', [EditorField], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.SignatureField', control);
-export = FieldManager.register('signature', control);
+export = <argos.Fields.SignatureField>FieldManager.register('signature', control);

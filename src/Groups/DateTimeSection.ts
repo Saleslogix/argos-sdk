@@ -281,4 +281,4 @@ var __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Groups.DateTimeSection', __class);
-export = __class;
+export = <argos.Groups.DateTimeSection>__class;

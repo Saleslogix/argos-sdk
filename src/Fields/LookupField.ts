@@ -815,4 +815,4 @@ var control = declare('argos.Fields.LookupField', [_Field], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.LookupField', control);
-export = FieldManager.register('lookup', control);
+export = <argos.Fields.LookupField>FieldManager.register('lookup', control);

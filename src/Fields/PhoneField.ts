@@ -105,4 +105,4 @@ var control = declare('argos.Fields.PhoneField', [TextField], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.PhoneField', control);
-export = FieldManager.register('phone', control);
+export = <argos.Fields.PhoneField>FieldManager.register('phone', control);

@@ -350,4 +350,4 @@ var __class = declare('argos.Fields.EditorField', [_Field], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
-export = __class;
+export = <argos.Fields.EditorField>__class;

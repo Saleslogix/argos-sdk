@@ -401,4 +401,4 @@ var __class = declare('argos.Views.Signature', [View], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Views.Signature', __class);
-export = __class;
+export = <argos.Views.Signature>__class;

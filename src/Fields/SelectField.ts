@@ -67,4 +67,4 @@ var control = declare('argos.Fields.SelectField', [LookupField], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.SelectField', control);
-export = FieldManager.register('select', control);
+export = <argos.Fields.SelectField>FieldManager.register('select', control);

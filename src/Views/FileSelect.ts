@@ -277,4 +277,4 @@ var __class = declare('argos.Views.FileSelect', [View], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Views.FileSelect', __class);
-export = __class;
+export = <argos.Views.FileSelect>__class;

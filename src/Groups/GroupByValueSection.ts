@@ -51,4 +51,4 @@ var __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Groups.GroupByValueSection', __class);
-export = __class;
+export = <argos.Groups.GroupByValueSection>__class;

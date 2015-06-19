@@ -495,5 +495,5 @@ var __class = declare('argos.Store.SData', null, {
 });
 
 lang.setObject('Sage.Platform.Mobile.Store.SData', __class);
-export = __class;
+export = <argos.Store.SData>__class;
 

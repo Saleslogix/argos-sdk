@@ -43,4 +43,4 @@ var control = declare('argos.Fields.NoteField', [TextAreaField], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.NoteField', control);
-export = FieldManager.register('note', control);
+export = <argos.Fields.NoteField>FieldManager.register('note', control);

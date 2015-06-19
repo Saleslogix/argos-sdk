@@ -146,4 +146,4 @@ var control = declare('argos.Fields.BooleanField', [Field], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.BooleanField', control);
-export = FieldManager.register('boolean', control);
+export = <argos.Fields.BooleanField>FieldManager.register('boolean', control);

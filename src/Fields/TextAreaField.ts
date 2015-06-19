@@ -74,4 +74,4 @@ var control = declare('argos.Fields.TextAreaField', [TextField], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.TextAreaField', control);
-export = FieldManager.register('textarea', control);
+export = <argos.Fields.TextAreaField>FieldManager.register('textarea', control);

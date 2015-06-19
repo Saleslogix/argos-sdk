@@ -42,15 +42,76 @@ declare module argos {
     var Edit: Edit
 
     module Fields {
+        interface _Field {
+        }
+
+        interface BooleanField extends _Field {
+        }
+
+        interface DateField extends EditorField {
+        }
+
+        interface DecimalField extends TextField {
+        }
+
+        interface DurationField extends LookupField {
+        }
+
+        interface EditorField extends _Field {
+        }
+
+        interface HiddenField extends TextField {
+        }
+
+        interface LookupField extends _Field {
+        }
+
+        interface NoteField extends TextAreaField {
+        }
+
+        interface PhoneField extends TextField {
+        }
+
+        interface SelectField extends LookupField {
+        }
+
+        interface SignatureField extends EditorField {
+        }
+
+        interface TextAreaField extends TextField {
+        }
+
+        interface TextField extends _Field {
+        }
     }
 
     module Groups {
+        interface _GroupBySection {
+        }
+
+        interface DateTimeSection extends _GroupBySection {
+        }
+
+        interface GroupByValueSection extends _GroupBySection {
+        }
     }
 
     module Store {
+        interface SData {
+            (options: any): void;
+        }
     }
 
     module Views {
+        interface ConfigureQuickActions extends _ConfigureBase {
+            (): void;
+        }
+
+        interface FileSelect extends View {
+        }
+
+        interface Signature extends View {
+        }
     }
 
     interface _ConfigureBase extends _ListBase {
@@ -424,5 +485,110 @@ declare module "argos/Utility" {
 
 declare module "argos/View" {
     var exp: argos.View;
+    export = exp;
+}
+
+declare module "argos/Views/ConfigureQuickActions" {
+    var exp: argos.Views.ConfigureQuickActions;
+    export = exp;
+}
+
+declare module "argos/Views/FileSelect" {
+    var exp: argos.Views.FileSelect;
+    export = exp;
+}
+
+declare module "argos/Views/Signature" {
+    var exp: argos.Views.Signature;
+    export = exp;
+}
+
+declare module "argos/Store/SData" {
+    var exp: argos.Store.SData;
+    export = exp;
+}
+
+declare module "argos/Groups/_GroupBySection" {
+    var exp: argos.Groups._GroupBySection;
+    export = exp;
+}
+
+declare module "argos/Groups/DateTimeSection" {
+    var exp: argos.Groups.DateTimeSection;
+    export = exp;
+}
+
+declare module "argos/Groups/GroupByValueSection" {
+    var exp: argos.Groups.GroupByValueSection;
+    export = exp;
+}
+
+declare module "argos/Fields/_Field" {
+    var exp: argos.Fields._Field;
+    export = exp;
+}
+
+declare module "argos/Fields/BooleanField" {
+    var exp: argos.Fields.BooleanField;
+    export = exp;
+}
+
+declare module "argos/Fields/DateField" {
+    var exp: argos.Fields.DateField;
+    export = exp;
+}
+
+declare module "argos/Fields/DecimalField" {
+    var exp: argos.Fields.DecimalField;
+    export = exp;
+}
+
+declare module "argos/Fields/DurationField" {
+    var exp: argos.Fields.DurationField;
+    export = exp;
+}
+
+declare module "argos/Fields/EditorField" {
+    var exp: argos.Fields.EditorField;
+    export = exp;
+}
+
+declare module "argos/Fields/HiddenField" {
+    var exp: argos.Fields.HiddenField;
+    export = exp;
+}
+
+declare module "argos/Fields/LookupField" {
+    var exp: argos.Fields.LookupField;
+    export = exp;
+}
+
+declare module "argos/Fields/NoteField" {
+    var exp: argos.Fields.NoteField;
+    export = exp;
+}
+
+declare module "argos/Fields/PhoneField" {
+    var exp: argos.Fields.PhoneField;
+    export = exp;
+}
+
+declare module "argos/Fields/SelectField" {
+    var exp: argos.Fields.SelectField;
+    export = exp;
+}
+
+declare module "argos/Fields/SignatureField" {
+    var exp: argos.Fields.SignatureField;
+    export = exp;
+}
+
+declare module "argos/Fields/TextAreaField" {
+    var exp: argos.Fields.TextAreaField;
+    export = exp;
+}
+
+declare module "argos/Fields/TextField" {
+    var exp: argos.Fields.TextField;
     export = exp;
 }

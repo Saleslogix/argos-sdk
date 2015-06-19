@@ -111,4 +111,4 @@ var control = declare('argos.Fields.DecimalField', [TextField], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.DecimalField', control);
-export = FieldManager.register('decimal', control);
+export = <argos.Fields.DecimalField>FieldManager.register('decimal', control);

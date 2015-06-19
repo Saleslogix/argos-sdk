@@ -61,4 +61,4 @@ var control = declare('argos.Fields.HiddenField', [TextField], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.HiddenField', control);
-export = FieldManager.register('hidden', control);
+export = <argos.Fields.HiddenField>FieldManager.register('hidden', control);

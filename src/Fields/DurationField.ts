@@ -387,4 +387,4 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.DurationField', control);
-export = FieldManager.register('duration', control);
+export = <argos.Fields.DurationField>FieldManager.register('duration', control);
