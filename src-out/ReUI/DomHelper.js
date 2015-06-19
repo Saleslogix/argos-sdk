@@ -1,6 +1,5 @@
-define('argos/ReUI/DomHelper', [
-    'dojo/dom-attr'
-], function (domAttr) {
+define(["require", "exports"], function (require, exports) {
+    var domAttr = require('dojo/dom-attr');
     var domHelper;
     domHelper = {
         select: function (el) {

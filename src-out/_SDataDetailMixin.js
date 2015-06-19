@@ -1,33 +1,13 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos._SDataDetailMixin
- *
- * Enables SData for the Detail view.
- * Adds the SData store to the view and exposes the needed properties for creating a Entry request.
- *
- * @alternateClassName _SDataDetailMixin
- * @requires argos.SData
- */
-define('argos/_SDataDetailMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/string',
-    './Utility',
-    './Store/SData'
-], function (declare, lang, string, utility, SData) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', './Utility', './Store/SData'], function (require, exports, declare, lang, string, utility, SData) {
+    /**
+     * @class argos._SDataDetailMixin
+     *
+     * Enables SData for the Detail view.
+     * Adds the SData store to the view and exposes the needed properties for creating a Entry request.
+     *
+     * @alternateClassName _SDataDetailMixin
+     * @requires argos.SData
+     */
     var __class = declare('argos._SDataDetailMixin', null, {
         /**
          * @cfg {String} resourceKind

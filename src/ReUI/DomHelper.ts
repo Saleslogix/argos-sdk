@@ -1,19 +1,13 @@
-define('argos/ReUI/DomHelper', [
-    'dojo/dom-attr'
-], function(
-    domAttr
-) {
-    var domHelper;
+var domAttr = require('dojo/dom-attr');
+var domHelper;
 
-    domHelper = {
-        select: function(el) {
-            domAttr.set(el, 'selected', 'true');
-        },
-        unselect: function(el) {
-            domAttr.remove(el, 'selected');
-        }
-    };
+domHelper = {
+    select: function(el) {
+        domAttr.set(el, 'selected', 'true');
+    },
+    unselect: function(el) {
+        domAttr.remove(el, 'selected');
+    }
+};
 
-    return domHelper;
-});
-
+export = domHelper;

@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import declare = require('dojo/_base/declare');
+import lang = require('dojo/_base/lang');
+import _ListBase = require('./_ListBase');
+import _SDataListMixin = require('./_SDataListMixin');
+import _RelatedViewWidgetListMixin = require('./_RelatedViewWidgetListMixin');
 
 /**
  * @class argos.List
@@ -22,23 +27,8 @@
  * @requires argos._SDataListMixin
  * @mixins argos._RelateViewdWidgetListMixin
  */
-define('argos/List', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    './_ListBase',
-    './_SDataListMixin',
-    './_RelatedViewWidgetListMixin'
-], function(
-    declare,
-    lang,
-    _ListBase,
-    _SDataListMixin,
-    _RelatedWidgetListMixin
-) {
-    var __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedWidgetListMixin], {
-    });
-
-    lang.setObject('Sage.Platform.Mobile.List', __class);
-    return __class;
+var __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedViewWidgetListMixin], {
 });
 
+lang.setObject('Sage.Platform.Mobile.List', __class);
+export = <argos.List>__class;

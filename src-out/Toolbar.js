@@ -1,36 +1,14 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.Toolbar
- * Toolbar is a base toolbar class that provides basic rendering of the bar, adding toolbar items and binding their invokacations.
- *
- * Inherits dijit _Widget.
- *
- * @alternateClassName Toolbar
- * @mixins argos._ActionMixin
- * @mixins argos._Templated
- */
-define('argos/Toolbar', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/dom-style',
-    'dojo/dom-class',
-    'dijit/_Widget',
-    './_ActionMixin',
-    './_Templated'
-], function (declare, lang, domStyle, domClass, _Widget, _ActionMixin, _Templated) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/dom-style', 'dojo/dom-class', 'dijit/_Widget', './_ActionMixin', './_Templated'], function (require, exports, declare, lang, domStyle, domClass, _Widget, _ActionMixin, _Templated) {
+    /**
+     * @class argos.Toolbar
+     * Toolbar is a base toolbar class that provides basic rendering of the bar, adding toolbar items and binding their invokacations.
+     *
+     * Inherits dijit _Widget.
+     *
+     * @alternateClassName Toolbar
+     * @mixins argos._ActionMixin
+     * @mixins argos._Templated
+     */
     var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
         /**
          * @property {Simplate}

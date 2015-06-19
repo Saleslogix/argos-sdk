@@ -1,15 +1,4 @@
-/*
- * See copyright file.
- */
-define('argos/_RelatedViewWidgetDetailMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/array',
-    'dojo/_base/lang',
-    'dojo/aspect',
-    'dojo/dom-construct',
-    'dojo/query',
-    './RelatedViewManager'
-], function (declare, array, lang, aspect, domConstruct, query, RelatedViewManager) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/dom-construct', 'dojo/query', './RelatedViewManager'], function (require, exports, declare, lang, domConstruct, query, RelatedViewManager) {
     var __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
         cls: null,
         /**

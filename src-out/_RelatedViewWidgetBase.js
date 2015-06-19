@@ -1,11 +1,4 @@
-/* see copyright file
- */
-define('argos/_RelatedViewWidgetBase', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dijit/_Widget',
-    './_Templated'
-], function (declare, lang, _Widget, _Templated) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dijit/_Widget', './_Templated'], function (require, exports, declare, lang, _Widget, _Templated) {
     var __class = declare('argos._RelatedViewWidgetBase', [_Widget, _Templated], {
         cls: null,
         loadingText: 'loading ... ',

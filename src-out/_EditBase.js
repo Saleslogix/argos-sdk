@@ -1,80 +1,48 @@
-/// <reference path="../declarations/argos.d.ts"/>
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos._EditBase
- * An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
- * of a layout similar to Detail rows but are instead Edit fields.
- *
- * A unique part of the Edit view is it's lifecycle in comparison to Detail. The Detail view is torn
- * down and rebuilt with every record. With Edit the form is emptied (HTML left in-tact) and new values
- * are applied to the fields.
- *
- * Since Edit Views are typically the "last" view (you always come from a List or Detail view) it warrants
- * special attention to the navigation options that are passed, as they greatly control how the Edit view
- * functions and operates.
- *
- * @alternateClassName _EditBase
- * @extends argos.View
- * @requires argos.Convert
- * @requires argos.Utility
- * @requires argos.Fields.ErrorManager
- * @requires argos.Fields.FieldManager
- * @requires argos.Fields.BooleanField
- * @requires argos.Fields.DecimalField
- * @requires argos.Fields.DurationField
- * @requires argos.Fields.HiddenField
- * @requires argos.Fields.LookupField
- * @requires argos.Fields.NoteField
- * @requires argos.Fields.PhoneField
- * @requires argos.Fields.SelectField
- * @requires argos.Fields.SignatureField
- * @requires argos.Fields.TextAreaField
- * @requires argos.Fields.TextField
- */
-define('argos/_EditBase', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/connect',
-    'dojo/_base/array',
-    'dojo/_base/Deferred',
-    'dojo/_base/window',
-    'dojo/dom',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    'dojo/query',
-    './Convert',
-    './Utility',
-    './ErrorManager',
-    './FieldManager',
-    './View',
-    'dojo/NodeList-manipulate',
-    './Fields/BooleanField',
-    './Fields/DateField',
-    './Fields/DecimalField',
-    './Fields/DurationField',
-    './Fields/HiddenField',
-    './Fields/LookupField',
-    './Fields/NoteField',
-    './Fields/PhoneField',
-    './Fields/SelectField',
-    './Fields/SignatureField',
-    './Fields/TextAreaField',
-    './Fields/TextField'
-], function (declare, lang, connect, array, Deferred, win, dom, domAttr, domClass, domConstruct, query, convert, utility, ErrorManager, FieldManager, View) {
+/// <amd-dependency path="dojo/NodeList-manipulate" />
+/// <amd-dependency path="./Fields/BooleanField" />
+/// <amd-dependency path="./Fields/DateField" />
+/// <amd-dependency path="./Fields/DecimalField" />
+/// <amd-dependency path="./Fields/DurationField" />
+/// <amd-dependency path="./Fields/HiddenField" />
+/// <amd-dependency path="./Fields/LookupField" />
+/// <amd-dependency path="./Fields/NoteField" />
+/// <amd-dependency path="./Fields/PhoneField" />
+/// <amd-dependency path="./Fields/SelectField" />
+/// <amd-dependency path="./Fields/SignatureField" />
+/// <amd-dependency path="./Fields/TextAreaField" />
+/// <amd-dependency path="./Fields/TextField" />
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/connect', 'dojo/_base/array', 'dojo/_base/Deferred', 'dojo/_base/window', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/query', './Utility', './ErrorManager', './FieldManager', './View', "dojo/NodeList-manipulate", "./Fields/BooleanField", "./Fields/DateField", "./Fields/DecimalField", "./Fields/DurationField", "./Fields/HiddenField", "./Fields/LookupField", "./Fields/NoteField", "./Fields/PhoneField", "./Fields/SelectField", "./Fields/SignatureField", "./Fields/TextAreaField", "./Fields/TextField"], function (require, exports, declare, lang, connect, array, Deferred, win, domAttr, domClass, domConstruct, query, utility, ErrorManager, FieldManager, View) {
+    /**
+     * @class argos._EditBase
+     * An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
+     * of a layout similar to Detail rows but are instead Edit fields.
+     *
+     * A unique part of the Edit view is it's lifecycle in comparison to Detail. The Detail view is torn
+     * down and rebuilt with every record. With Edit the form is emptied (HTML left in-tact) and new values
+     * are applied to the fields.
+     *
+     * Since Edit Views are typically the "last" view (you always come from a List or Detail view) it warrants
+     * special attention to the navigation options that are passed, as they greatly control how the Edit view
+     * functions and operates.
+     *
+     * @alternateClassName _EditBase
+     * @extends argos.View
+     * @requires argos.Convert
+     * @requires argos.Utility
+     * @requires argos.Fields.ErrorManager
+     * @requires argos.Fields.FieldManager
+     * @requires argos.Fields.BooleanField
+     * @requires argos.Fields.DecimalField
+     * @requires argos.Fields.DurationField
+     * @requires argos.Fields.HiddenField
+     * @requires argos.Fields.LookupField
+     * @requires argos.Fields.NoteField
+     * @requires argos.Fields.PhoneField
+     * @requires argos.Fields.SelectField
+     * @requires argos.Fields.SignatureField
+     * @requires argos.Fields.TextAreaField
+     * @requires argos.Fields.TextField
+     */
     var __class = declare('argos._EditBase', [View], {
         /**
          * @property {Object}

@@ -1,21 +1,11 @@
-/*
- * Copyright (c) 1997-2014, SalesLogix, NA., LLC. All rights reserved.
- */
-/**
- * _LegacySDataListMixin enables legacy SData operations for the List view.
- *
- * Adds the original SData operations to the view, use this in addition to _SDataListMixin.
- *
- * @alternateClassName _LegacySDataListMixin
- */
-define('argos/_LegacySDataListMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'argos/ErrorManager',
-    'dojo/dom-construct',
-    'dojo/dom-class',
-    'dojo/string'
-], function (declare, lang, ErrorManager, domConstruct, domClass, string) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', './ErrorManager', 'dojo/dom-construct', 'dojo/dom-class', 'dojo/string'], function (require, exports, declare, lang, ErrorManager, domConstruct, domClass, string) {
+    /**
+     * _LegacySDataListMixin enables legacy SData operations for the List view.
+     *
+     * Adds the original SData operations to the view, use this in addition to _SDataListMixin.
+     *
+     * @alternateClassName _LegacySDataListMixin
+     */
     var __class = declare('argos._LegacySDataListMixin', null, {
         feed: null,
         /**

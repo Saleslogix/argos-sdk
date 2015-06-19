@@ -1,37 +1,15 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.Fields._Field
- * Field is the base class for all field controls. It describes all the functions a field should support giving no implementation itself, merely a shell. The one function that `_Field` does provide that most fields leave untouched is `validate`.
- *
- * All fields are dijit Widgets meaning it goes through the same lifecycle and has all the Widget functionality.
- *
- * @alternateClassName _Field
- * @mixins argos._ActionMixin
- * @mixins argos._Templated
- * @requires argos.FieldManager
- */
-define('argos/Fields/_Field', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/string',
-    'dojo/dom-class',
-    'dijit/_Widget',
-    '../_ActionMixin',
-    '../_Templated'
-], function (declare, lang, string, domClass, _Widget, _ActionMixin, _Templated) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', 'dojo/dom-class', 'dijit/_Widget', '../_ActionMixin', '../_Templated'], function (require, exports, declare, lang, string, domClass, _Widget, _ActionMixin, _Templated) {
+    /**
+     * @class argos.Fields._Field
+     * Field is the base class for all field controls. It describes all the functions a field should support giving no implementation itself, merely a shell. The one function that `_Field` does provide that most fields leave untouched is `validate`.
+     *
+     * All fields are dijit Widgets meaning it goes through the same lifecycle and has all the Widget functionality.
+     *
+     * @alternateClassName _Field
+     * @mixins argos._ActionMixin
+     * @mixins argos._Templated
+     * @requires argos.FieldManager
+     */
     var __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Templated], {
         /**
          * @property {View}

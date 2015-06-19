@@ -1,19 +1,4 @@
-/*
- * See copyright file.
- */
-define('argos/RelatedViewManager', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/event',
-    'dojo/string',
-    'dojo/dom-class',
-    'dojo/when',
-    'dojo/dom-construct',
-    'dojo/query',
-    'dojo/_base/array',
-    './Store/SData',
-    './_RelatedViewWidgetBase'
-], function (declare, lang, event, string, domClass, when, domConstruct, query, array, SDataStore, RelatedViewWidget) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', './_RelatedViewWidgetBase'], function (require, exports, declare, lang, _RelatedViewWidgetBase) {
     var _widgetTypes, __class;
     _widgetTypes = {};
     __class = declare('argos.RelatedViewManager', null, {
@@ -25,7 +10,7 @@ define('argos/RelatedViewManager', [
         constructor: function (options) {
             this.relatedViews = {};
             lang.mixin(this, options);
-            this.registerType('default', RelatedViewWidget);
+            this.registerType('default', _RelatedViewWidgetBase);
         },
         destroyViews: function () {
             for (var relatedViewId in this.relatedViews) {
@@ -42,7 +27,7 @@ define('argos/RelatedViewManager', [
             var widgetType;
             widgetType = this.widgetTypes[widgetTypeName];
             if (!widgetType) {
-                widgetType = RelatedViewWidget;
+                widgetType = _RelatedViewWidgetBase;
             }
             return widgetType;
         },
@@ -53,7 +38,7 @@ define('argos/RelatedViewManager', [
                     if (this.enabled) {
                         options = {};
                         if (!this.relatedViewConfig.widgetType) {
-                            this.relatedViewConfig.widgetType = RelatedViewWidget;
+                            this.relatedViewConfig.widgetType = _RelatedViewWidgetBase;
                         }
                         if (typeof this.relatedViewConfig.widgetType === 'string') {
                             this.relatedViewConfig.widgetType = this.getWidgetType(this.relatedViewConfig.widgetType);

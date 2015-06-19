@@ -1,23 +1,4 @@
-/* see copyright file
- */
-define('argos/RelatedViewWidget', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/event',
-    'dojo/on',
-    'dojo/string',
-    'dojo/dom-class',
-    'dojo/when',
-    'dojo/dom-construct',
-    'dojo/query',
-    'dojo/dom-attr',
-    'dojo/_base/connect',
-    'dojo/_base/array',
-    './Store/SData',
-    './_CustomizationMixin',
-    './_ActionMixin',
-    'argos/_RelatedViewWidgetBase'
-], function (declare, lang, event, on, string, domClass, when, domConstruct, query, domAttr, connect, array, SDataStore, _CustomizationMixin, _ActionMixin, _RelatedViewWidgetBase) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/on', 'dojo/string', 'dojo/dom-class', 'dojo/when', 'dojo/dom-construct', 'dojo/dom-attr', 'dojo/_base/connect', 'dojo/_base/array', './Store/SData', './_CustomizationMixin', './_ActionMixin', './_RelatedViewWidgetBase'], function (require, exports, declare, lang, event, on, string, domClass, when, domConstruct, domAttr, connect, array, SDataStore, _CustomizationMixin, _ActionMixin, _RelatedViewWidgetBase) {
     var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], {
         cls: 'related-view-widget',
         nodataText: 'no records found ...',
@@ -286,7 +267,7 @@ define('argos/RelatedViewWidget', [
             else {
                 if (!this.loadingNode) {
                     this.loadingNode = domConstruct.toDom(this.loadingTemplate.apply(this));
-                    domConstruct.place(this.loadingNode, this.relatedViewNode, 'last', this);
+                    domConstruct.place(this.loadingNode, this.relatedViewNode, 'last');
                 }
                 domClass.toggle(this.loadingNode, 'loading');
                 if (this.wait) {
@@ -311,7 +292,7 @@ define('argos/RelatedViewWidget', [
             try {
                 if (!this.itemsNode) {
                     this.itemsNode = domConstruct.toDom("<div id='itemsNode' class='items'><div>");
-                    domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
+                    domConstruct.place(this.itemsNode, this.relatedViewNode, 'last');
                 }
                 if (relatedFeed.length > 0) {
                     domClass.remove(this.containerNode, 'hidden');
@@ -340,7 +321,7 @@ define('argos/RelatedViewWidget', [
                         itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
                         itemNode = domConstruct.toDom(itemHTML);
                         on(itemNode, 'click', this.onSelectViewRow.bind(this));
-                        domConstruct.place(itemNode, this.itemsNode, 'last', this);
+                        domConstruct.place(itemNode, this.itemsNode, 'last');
                     }
                 }
                 else {

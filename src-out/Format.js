@@ -1,35 +1,11 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.Format
- * Format is a singleton that provides various formatting functions.
- * @alternateClassName format
- * @requires argos.Convert
- * @singleton
- */
-define('argos/Format', [
-    'dojo/_base/json',
-    'dojo/_base/lang',
-    'dojo/_base/array',
-    'dojo/dom-construct',
-    'dojo/string',
-    'dojo/number',
-    './Convert',
-    './Utility',
-    'moment'
-], function (json, lang, array, domConstruct, string, dNumber, convert, utility, moment) {
+define(["require", "exports", 'dojo/json', 'dojo/_base/lang', 'dojo/_base/array', 'dojo/dom-construct', 'dojo/string', 'dojo/number', './Convert', './Utility', 'moment'], function (require, exports, json, lang, array, domConstruct, string, dNumber, convert, utility, moment) {
+    /**
+     * @class argos.Format
+     * Format is a singleton that provides various formatting functions.
+     * @alternateClassName format
+     * @requires argos.Convert
+     * @singleton
+     */
     var getVectorMaxSize, phoneLettersMap, __class;
     getVectorMaxSize = function (v) {
         var w = 1, h = 1, i, j;
@@ -431,7 +407,7 @@ define('argos/Format', [
             options = options || {};
             if (typeof vector === 'string' || vector instanceof String) {
                 try {
-                    vector = json.fromJson(vector);
+                    vector = json.parse(vector);
                 }
                 catch (e) { }
             }

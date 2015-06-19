@@ -1168,7 +1168,6 @@
     <TypeScriptCompile Include="src\Groups\_GroupBySection.ts" />
     <TypeScriptCompile Include="src\List.ts" />
     <TypeScriptCompile Include="src\MainToolbar.ts" />
-    <TypeScriptCompile Include="src\PersistentStorage.ts" />
     <TypeScriptCompile Include="src\RelatedViewManager.ts" />
     <TypeScriptCompile Include="src\RelatedViewWidget.ts" />
     <TypeScriptCompile Include="src\ReUI\DomHelper.ts" />
@@ -1200,7 +1199,6 @@
     <TypeScriptCompile Include="src\_SDataDetailMixin.ts" />
     <TypeScriptCompile Include="src\_SDataEditMixin.ts" />
     <TypeScriptCompile Include="src\_SDataListMixin.ts" />
-    <TypeScriptCompile Include="src\_ServiceMixin.ts" />
     <TypeScriptCompile Include="src\_Templated.ts" />
   </ItemGroup>
   <PropertyGroup>
@@ -1226,7 +1224,7 @@
     <TypeScriptOutDir>D:\code\work\mobile\argos-sdk\src-out</TypeScriptOutDir>
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
-    <TypeScriptModuleKind>none</TypeScriptModuleKind>
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>

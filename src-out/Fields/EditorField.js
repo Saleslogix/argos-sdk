@@ -1,37 +1,32 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.Fields.EditorField
- * The EditorField is not a field per say but a base class for another field type to inherit from. The
- * intent of an EditorField is you have a field where the input should come from another form. EditorField
- * will handle the navigation, gathering values from the other view, going back and applying to the form
- * the field is on.
- *
- * A prime example of an editor field extension would be an AddressField - say you are entering a contacts
- * details and need the address. You could make an AddressField that extends EditorField for handling all
- * the address parts and takes the user to an address_edit with all the street/city/postal etc.
- *
- * @alternateClassName EditorField
- * @extends argos._Field
- */
-define('argos/Fields/EditorField', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/event',
-    'argos/Fields/_Field'
-], function (declare, lang, event, _Field) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', './_Field'], function (require, exports, declare, lang, event, _Field) {
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * @class argos.Fields.EditorField
+     * The EditorField is not a field per say but a base class for another field type to inherit from. The
+     * intent of an EditorField is you have a field where the input should come from another form. EditorField
+     * will handle the navigation, gathering values from the other view, going back and applying to the form
+     * the field is on.
+     *
+     * A prime example of an editor field extension would be an AddressField - say you are entering a contacts
+     * details and need the address. You could make an AddressField that extends EditorField for handling all
+     * the address parts and takes the user to an address_edit with all the street/city/postal etc.
+     *
+     * @alternateClassName EditorField
+     * @extends argos._Field
+     */
     var __class = declare('argos.Fields.EditorField', [_Field], {
         /**
          * @property {Object}

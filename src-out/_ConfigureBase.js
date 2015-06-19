@@ -1,19 +1,11 @@
-/**
- * @class argos._ConfigureBase
- *
- *
- * @extends argos._ListBase
- *
- */
-define('argos/_ConfigureBase', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/query',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/string',
-    'argos/_ListBase'
-], function (declare, lang, query, domAttr, domClass, string, _ListBase) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/query', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/string', './_ListBase'], function (require, exports, declare, query, domAttr, domClass, string, _ListBase) {
+    /**
+     * @class argos._ConfigureBase
+     *
+     *
+     * @extends argos._ListBase
+     *
+     */
     var __class = declare('argos._ConfigureBase', [_ListBase], {
         //Templates
         itemTemplate: new Simplate([

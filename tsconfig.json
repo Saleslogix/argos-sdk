@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "module":  "amd",
         "target": "es5",
         "declaration": false,
         "noImplicitAny": false,
@@ -42,7 +43,6 @@
         "./src/Groups/_GroupBySection.ts",
         "./src/List.ts",
         "./src/MainToolbar.ts",
-        "./src/PersistentStorage.ts",
         "./src/ReUI/DomHelper.ts",
         "./src/ReUI/main.ts",
         "./src/RelatedViewManager.ts",
@@ -74,7 +74,6 @@
         "./src/_SDataDetailMixin.ts",
         "./src/_SDataEditMixin.ts",
         "./src/_SDataListMixin.ts",
-        "./src/_ServiceMixin.ts",
         "./src/_Templated.ts"
     ]
 }

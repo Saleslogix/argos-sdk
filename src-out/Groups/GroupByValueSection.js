@@ -1,17 +1,7 @@
-/*
- * Copyright (c) 1997-2013, SalesLogix, NA., LLC. All rights reserved.
- */
-/**
- * @class argos.Groups.GroupByValueSection
- */
-define('argos/Groups/GroupByValueSection', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/string',
-    '../Convert',
-    '../Utility',
-    './_GroupBySection'
-], function (declare, lang, string, Convert, Utility, _GroupBySection) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', '../Utility', './_GroupBySection'], function (require, exports, declare, lang, Utility, _GroupBySection) {
+    /**
+     * @class argos.Groups.GroupByValueSection
+     */
     var __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
         name: 'DateTimeSectionFilter',
         displayNameText: 'Group By Value Section',

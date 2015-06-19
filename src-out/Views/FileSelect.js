@@ -1,36 +1,11 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.Views.FileSelect
- * File Select View is a view for selection files capabilities.
- *
- * @alternateClassName FileSelect
- * @extends argos.View
- */
-define('argos/Views/FileSelect', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/window',
-    'dojo/has',
-    'dojo/dom-construct',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/dom',
-    '../Fields/TextField',
-    '../View'
-], function (declare, lang, win, has, domConstruct, domAttr, domClass, dom, TextField, View) {
+define(["require", "exports", 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/has', 'dojo/dom-construct', 'dojo/dom-class', 'dojo/dom', '../View'], function (require, exports, declare, lang, has, domConstruct, domClass, dom, View) {
+    /**
+     * @class argos.Views.FileSelect
+     * File Select View is a view for selection files capabilities.
+     *
+     * @alternateClassName FileSelect
+     * @extends argos.View
+     */
     var __class = declare('argos.Views.FileSelect', [View], {
         // Localization
         titleText: 'File Select',

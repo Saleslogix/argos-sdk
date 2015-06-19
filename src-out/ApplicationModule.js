@@ -1,34 +1,27 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.ApplicationModule
- * ApplicationModule is intended to be extended in the resulting application so that it
- * references all the views, toolbars and customizations and registers them to App.
- *
- * You may think of ApplicationModule as "loader" or initializer.
- * @alternateClassName ApplicationModule
- * @requires argos.Application
- */
-define('argos/ApplicationModule', [
-    'dojo/_base/array',
-    'dojo/_base/connect',
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    './Application',
-    './Views/ConfigureQuickActions'
-], function (array, connect, declare, lang, Application, ConfigureQuickActions) {
+define(["require", "exports", 'dojo/_base/array', 'dojo/_base/connect', 'dojo/_base/declare', 'dojo/_base/lang', './Views/ConfigureQuickActions'], function (require, exports, array, connect, declare, lang, ConfigureQuickActions) {
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * @class argos.ApplicationModule
+     * ApplicationModule is intended to be extended in the resulting application so that it
+     * references all the views, toolbars and customizations and registers them to App.
+     *
+     * You may think of ApplicationModule as "loader" or initializer.
+     * @alternateClassName ApplicationModule
+     * @requires argos.Application
+     */
     var __class = declare('argos.ApplicationModule', null, {
         /**
          * @property {Array}
