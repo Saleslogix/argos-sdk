@@ -131,5 +131,5 @@ var __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
         return snapShot;
     }
 });
-export = __class;
+export = <argos._RelatedViewWidgetDetailMixin>__class;
 

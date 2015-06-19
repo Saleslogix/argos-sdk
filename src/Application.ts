@@ -1146,5 +1146,5 @@ __class = declare('argos.Application', null, {
 
 // Backwards compatibility for custom modules still referencing the old declare global
 lang.setObject('Sage.Platform.Mobile.Application', __class);
-export = __class;
+export = <argos.Application>__class;
 

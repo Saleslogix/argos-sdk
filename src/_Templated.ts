@@ -64,4 +64,4 @@ var __class = _declare('argos._Templated', [_TemplatedMixin], {
 
 
 lang.setObject('Sage.Platform.Mobile._Templated', __class, window);
-export = __class;
+export = <argos._Templated>__class;

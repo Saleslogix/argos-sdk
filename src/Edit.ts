@@ -35,4 +35,4 @@ var __class = declare('argos.Edit', [_EditBase, _SDataEditMixin, _RelatedWidgetE
 });
 
 lang.setObject('Sage.Platform.Mobile.Edit', __class);
-export =  __class;
+export =  <argos.Edit>__class;

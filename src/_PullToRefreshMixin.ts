@@ -235,4 +235,4 @@ var __class = declare('argos._PullToRefreshMixin', null, {
     }
 });
 
-export = __class;
+export = <argos._PullToRefreshMixin>__class;

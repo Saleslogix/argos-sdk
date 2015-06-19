@@ -250,4 +250,4 @@ var __class = declare('argos._RelatedViewWidgetListMixin', null, {
     }
 });
 
-export = __class;
+export = <argos._RelatedViewWidgetListMixin>__class;

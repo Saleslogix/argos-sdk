@@ -279,4 +279,4 @@ __class = lang.setObject('argos.ErrorManager', {
 });
 
 lang.setObject('Sage.Platform.Mobile.ErrorManager', __class);
-export = __class;
+export = <argos.ErrorManager>__class;

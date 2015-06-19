@@ -273,4 +273,4 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
 });
 
 lang.setObject('Sage.Platform.Mobile._LegacySDataEditMixin', __class);
-export = __class;
+export = <argos._LegacySDataEditMixin>__class;

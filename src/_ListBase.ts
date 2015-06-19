@@ -1707,5 +1707,5 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 });
 
 lang.setObject('Sage.Platform.Mobile._ListBase', __class);
-export = __class;
+export = <argos._ListBase>__class;
 

@@ -205,4 +205,4 @@ var __class = declare('argos.SelectionModel', null, {
 });
 
 lang.setObject('Sage.Platform.Mobile.SelectionModel', __class);
-export = __class;
+export = <argos.SelectionModel>__class;

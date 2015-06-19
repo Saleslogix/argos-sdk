@@ -49,4 +49,4 @@ var __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
 });
 
 lang.setObject('Sage.Platform.Mobile.ConfigurableSelectionModel', __class, window);
-export = __class;
+export = <argos.ConfigurableSelectionModel>__class;

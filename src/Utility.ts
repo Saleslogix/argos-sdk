@@ -196,4 +196,4 @@ __class = lang.setObject('argos.Utility', {
 });
 
 lang.setObject('Sage.Platform.Mobile.Utility', __class);
-export = __class;
+export = <argos.Utility>__class;

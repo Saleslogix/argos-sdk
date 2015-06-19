@@ -34,4 +34,4 @@ var __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedW
 });
 
 lang.setObject('Sage.Platform.Mobile.Detail', __class);
-export = __class;
+export = <argos.Detail>__class;

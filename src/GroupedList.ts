@@ -299,4 +299,4 @@ var __class = declare('argos.GroupedList', [List], {
 });
 
 lang.setObject('Sage.Platform.Mobile.GroupedList', __class);
-export = __class;
+export = <argos.GroupedList>__class;

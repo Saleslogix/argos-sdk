@@ -52,4 +52,4 @@ __class = lang.setObject('argos.FieldManager', {
 }, window);
 
 lang.setObject('Sage.Platform.Mobile.FieldManager', __class, window);
-export = __class;
+export = <argos.FieldManager>__class;

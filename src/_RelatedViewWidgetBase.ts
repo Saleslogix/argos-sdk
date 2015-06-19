@@ -37,4 +37,4 @@ var __class = declare('argos._RelatedViewWidgetBase', [_Widget, _Templated], {
 });
 
 lang.setObject('Sage.Platform.Mobile._RelatedViewWidgetBase', __class);
-export  = __class;
+export  = <argos._RelatedViewWidgetBase>__class;

@@ -31,4 +31,4 @@ var __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedViewWid
 });
 
 lang.setObject('Sage.Platform.Mobile.List', __class);
-export = __class;
+export = <argos.List>__class;

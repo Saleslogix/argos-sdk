@@ -418,4 +418,4 @@ __class = declare('argos.Calendar', [View], {
 });
 
 lang.setObject('Sage.Platform.Mobile.Calendar', __class);
-export = __class;
+export = <argos.Calendar>__class;

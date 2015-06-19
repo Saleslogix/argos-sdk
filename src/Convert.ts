@@ -138,4 +138,4 @@ __class = lang.setObject('argos.Convert', {
 });
 
 lang.setObject('Sage.Platform.Mobile.Convert', __class);
-export = __class;
+export = <argos.Convert>__class;

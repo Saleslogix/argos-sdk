@@ -125,4 +125,4 @@ var __class = declare('argos.MainToolbar', [Toolbar], {
 
 lang.setObject('Sage.Platform.Mobile.MainToolbar', __class);
 
-export = __class;
+export = <argos.MainToolbar>__class;

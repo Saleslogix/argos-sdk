@@ -586,4 +586,4 @@ __class = lang.setObject('argos.Format', {
 });
 
 lang.setObject('Sage.Platform.Mobile.Format', __class);
-export = __class;
+export = <argos.Format>__class;

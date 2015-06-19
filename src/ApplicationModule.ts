@@ -193,4 +193,4 @@ var __class = declare('argos.ApplicationModule', null, {
 });
 
 lang.setObject('Sage.Platform.Mobile.ApplicationModule', __class);
-export = __class;
+export = <argos.ApplicationModule>__class;

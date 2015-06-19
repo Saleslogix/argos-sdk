@@ -114,5 +114,4 @@ var __class = declare('argos._RelatedViewWidgetEditMixin', null, {
         this.inherited(arguments);
     }
 });
-export = __class;
-
+export = <argos._RelatedViewWidgetEditMixin>__class;
