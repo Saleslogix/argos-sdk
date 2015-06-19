@@ -12,7 +12,8 @@ define('argos/_PullToRefreshMixin', [
     'dojo/dom-style',
     'dojo/dom'
 ], function (declare, domAttr, domClass, domConstruct, domGeom, domStyle, dom) {
-    var __class = declare('argos._PullToRefreshMixin', null, {
+    var __class;
+    __class = declare('argos._PullToRefreshMixin', null, {
         /**
          * @property {Simplate}
          */
