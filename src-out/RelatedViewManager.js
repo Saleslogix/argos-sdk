@@ -1,33 +1,47 @@
-/*
- * See copyright file.
- */
-define('argos/RelatedViewManager', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/event',
-    'dojo/string',
-    'dojo/dom-class',
-    'dojo/when',
-    'dojo/dom-construct',
-    'dojo/query',
-    'dojo/_base/array',
-    './Store/SData',
-    './_RelatedViewWidgetBase'
-], function (declare, lang, event, string, domClass, when, domConstruct, query, array, SDataStore, RelatedViewWidget) {
+define('argos/RelatedViewManager', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/string', 'dojo/dom-class', 'dojo/when', 'dojo/dom-construct', 'dojo/query', 'dojo/_base/array', './Store/SData', './_RelatedViewWidgetBase'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojoString, _dojoDomClass, _dojoWhen, _dojoDomConstruct, _dojoQuery, _dojo_baseArray, _StoreSData, _RelatedViewWidgetBase) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+    /*
+     * See copyright file.
+     */
+
+    var _declare = _interopRequireDefault(_dojo_baseDeclare);
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _event = _interopRequireDefault(_dojo_baseEvent);
+
+    var _string = _interopRequireDefault(_dojoString);
+
+    var _domClass = _interopRequireDefault(_dojoDomClass);
+
+    var _when = _interopRequireDefault(_dojoWhen);
+
+    var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
+
+    var _query = _interopRequireDefault(_dojoQuery);
+
+    var _array = _interopRequireDefault(_dojo_baseArray);
+
+    var _SDataStore = _interopRequireDefault(_StoreSData);
+
+    var _RelatedViewWidget = _interopRequireDefault(_RelatedViewWidgetBase);
+
     var _widgetTypes, __class;
+
     _widgetTypes = {};
-    __class = declare('argos.RelatedViewManager', null, {
+    __class = (0, _declare['default'])('argos.RelatedViewManager', null, {
         id: 'relatedViewManager',
         relatedViews: null,
         relatedViewConfig: null,
         widgetTypes: _widgetTypes,
         enabled: true,
-        constructor: function (options) {
+        constructor: function constructor(options) {
             this.relatedViews = {};
-            lang.mixin(this, options);
-            this.registerType('default', RelatedViewWidget);
+            _lang['default'].mixin(this, options);
+            this.registerType('default', _RelatedViewWidget['default']);
         },
-        destroyViews: function () {
+        destroyViews: function destroyViews() {
             for (var relatedViewId in this.relatedViews) {
                 if (this.relatedViews.hasOwnProperty(relatedViewId)) {
                     this.relatedViews[relatedViewId].destroy();
@@ -35,30 +49,30 @@ define('argos/RelatedViewManager', [
             }
             this.relatedViews = {};
         },
-        registerType: function (widgetTypeName, ctor) {
+        registerType: function registerType(widgetTypeName, ctor) {
             this.widgetTypes[widgetTypeName] = ctor;
         },
-        getWidgetType: function (widgetTypeName) {
+        getWidgetType: function getWidgetType(widgetTypeName) {
             var widgetType;
             widgetType = this.widgetTypes[widgetTypeName];
             if (!widgetType) {
-                widgetType = RelatedViewWidget;
+                widgetType = _RelatedViewWidget['default'];
             }
             return widgetType;
         },
-        addView: function (entry, contentNode, owner) {
+        addView: function addView(entry, contentNode, owner) {
             var relatedContentNode, relatedViewNode, relatedViewWidget, relatedResults, options;
             try {
                 if (contentNode) {
                     if (this.enabled) {
                         options = {};
                         if (!this.relatedViewConfig.widgetType) {
-                            this.relatedViewConfig.widgetType = RelatedViewWidget;
+                            this.relatedViewConfig.widgetType = _RelatedViewWidget['default'];
                         }
                         if (typeof this.relatedViewConfig.widgetType === 'string') {
                             this.relatedViewConfig.widgetType = this.getWidgetType(this.relatedViewConfig.widgetType);
                         }
-                        lang.mixin(options, this.relatedViewConfig);
+                        _lang['default'].mixin(options, this.relatedViewConfig);
                         options.id = this.id + '_' + entry.$key;
                         relatedViewWidget = new this.relatedViewConfig.widgetType(options);
                         relatedViewWidget.parentEntry = entry;
@@ -70,13 +84,12 @@ define('argos/RelatedViewManager', [
                         relatedViewWidget.placeAt(contentNode, 'last');
                     }
                 }
-            }
-            catch (error) {
+            } catch (error) {
                 console.log('Error adding related view widgets:' + error);
             }
         }
     });
     // Backwards compatibility for custom modules still referencing the old declare global
-    lang.setObject('Sage.Platform.Mobile.RelatedViewManager', __class);
-    return __class;
+    _lang['default'].setObject('Sage.Platform.Mobile.RelatedViewManager', __class);
+    module.exports = __class;
 });

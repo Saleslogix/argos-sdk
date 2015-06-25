@@ -1,43 +1,53 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos.Format
- * Format is a singleton that provides various formatting functions.
- * @alternateClassName format
- * @requires argos.Convert
- * @singleton
- */
-define('argos/Format', [
-    'dojo/_base/json',
-    'dojo/_base/lang',
-    'dojo/_base/array',
-    'dojo/dom-construct',
-    'dojo/string',
-    'dojo/number',
-    './Convert',
-    './Utility',
-    'moment'
-], function (json, lang, array, domConstruct, string, dNumber, convert, utility, moment) {
+define('argos/Format', ['exports', 'module', 'dojo/_base/json', 'dojo/_base/lang', 'dojo/_base/array', 'dojo/dom-construct', 'dojo/string', 'dojo/number', './Convert', './Utility', 'moment'], function (exports, module, _dojo_baseJson, _dojo_baseLang, _dojo_baseArray, _dojoDomConstruct, _dojoString, _dojoNumber, _Convert, _Utility, _moment) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+
+    var _json = _interopRequireDefault(_dojo_baseJson);
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _array = _interopRequireDefault(_dojo_baseArray);
+
+    var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
+
+    var _string = _interopRequireDefault(_dojoString);
+
+    var _dNumber = _interopRequireDefault(_dojoNumber);
+
+    var _convert = _interopRequireDefault(_Convert);
+
+    var _utility = _interopRequireDefault(_Utility);
+
+    var _moment2 = _interopRequireDefault(_moment);
+
     var getVectorMaxSize, phoneLettersMap, __class;
+
     getVectorMaxSize = function (v) {
-        var w = 1, h = 1, i, j;
+        var w = 1,
+            h = 1,
+            i,
+            j;
+
         for (i = 0; i < v.length; i++) {
             for (j = 0; j < v[i].length; j++) {
                 if (w < v[i][j][0]) {
                     w = v[i][j][0];
                 }
+
                 if (h < v[i][j][1]) {
                     h = v[i][j][1];
                 }
@@ -46,60 +56,65 @@ define('argos/Format', [
         // maybe should return bounding box? (x,y,w,h)
         return { width: w, height: h };
     };
-    phoneLettersMap = [
-        {
-            test: /[ABC]/gi,
-            val: '2'
-        }, {
-            test: /[DEF]/gi,
-            val: '3'
-        }, {
-            test: /[GHI]/gi,
-            val: '4'
-        }, {
-            test: /[JKL]/gi,
-            val: '5'
-        }, {
-            test: /[MNO]/gi,
-            val: '6'
-        }, {
-            test: /[PQRS]/gi,
-            val: '7'
-        }, {
-            test: /[TUV]/gi,
-            val: '8'
-        }, {
-            test: /[WXYZwyz]/g,
-            val: '9'
-        }
-    ];
+
+    phoneLettersMap = [{
+        test: /[ABC]/gi,
+        val: '2'
+    }, {
+        test: /[DEF]/gi,
+        val: '3'
+    }, {
+        test: /[GHI]/gi,
+        val: '4'
+    }, {
+        test: /[JKL]/gi,
+        val: '5'
+    }, {
+        test: /[MNO]/gi,
+        val: '6'
+    }, {
+        test: /[PQRS]/gi,
+        val: '7'
+    }, {
+        test: /[TUV]/gi,
+        val: '8'
+    }, {
+        test: /[WXYZwyz]/g, // Note lowercase 'x' should stay for extensions
+        val: '9'
+    }];
+
     function isEmpty(val) {
         if (typeof val !== 'string') {
             return !val;
         }
-        return (val.length <= 0);
+
+        return val.length <= 0;
     }
+
     function encode(val) {
         if (typeof val !== 'string') {
             return val;
         }
-        return val
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
+
+        return val.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
+
     function decode(val) {
         if (typeof val !== 'string') {
             return val;
         }
-        return val
-            .replace(/&amp;/g, '&')
-            .replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>')
-            .replace(/&quot;/g, '"');
+
+        return val.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
     }
-    __class = lang.setObject('argos.Format', {
+
+    /**
+     * @class argos.Format
+     * Format is a singleton that provides various formatting functions.
+     * @alternateClassName format
+     * @requires argos.Convert
+     * @singleton
+     */
+    __class = _lang['default'].setObject('argos.Format', {
         /**
          * @property {String}
          * Text used in {@link #yesNo yesNo} formatter for true values
@@ -140,7 +155,9 @@ define('argos/Format', [
          * Text used in {@link #timespan timespan} formatter for exactly one minute
          */
         minuteText: 'minute',
+
         shortDateFormatText: 'M/D/YYYY',
+
         /**
         * @property {String}
         * format string for percent
@@ -195,59 +212,65 @@ define('argos/Format', [
          *
          */
         phoneFormat: [{
-                test: /^\+.*/,
-                format: '${0}'
-            }, {
-                test: /^(\d{3})(\d{3,4})$/,
-                format: '${3}-${4}'
-            }, {
-                test: /^(\d{3})(\d{3})(\d{2,4})$/,
-                format: '(${3})-${4}-${5}'
-            }, {
-                test: /^(\d{3})(\d{3})(\d{2,4})([^0-9]{1,}.*)$/,
-                format: '(${3})-${4}-${5}${6}'
-            }, {
-                test: /^(\d{11,})(.*)$/,
-                format: '${1}'
-            }],
+            test: /^\+.*/,
+            format: '${0}'
+        }, {
+            test: /^(\d{3})(\d{3,4})$/,
+            format: '${3}-${4}'
+        }, {
+            test: /^(\d{3})(\d{3})(\d{2,4})$/, // 555 555 5555
+            format: '(${3})-${4}-${5}'
+        }, {
+            test: /^(\d{3})(\d{3})(\d{2,4})([^0-9]{1,}.*)$/, // 555 555 5555x
+            format: '(${3})-${4}-${5}${6}'
+        }, {
+            test: /^(\d{11,})(.*)$/,
+            format: '${1}'
+        }],
         /**
          * Takes a url string and wraps it with an `<a>` element with `href=` pointing to the url.
          * @param {String} val Url string to be wrapped
          * @return {String} An `<a>` element as a string.
          */
-        link: function (val) {
+        link: function link(val) {
             if (typeof val !== 'string') {
                 return val;
             }
+
             // Check if the user specified a URI scheme,
             // does not include all URI Schemes, such as tel:, etc.
-            var schemes = ['://', 'mailto:'], hasURIScheme;
-            hasURIScheme = array.some(schemes, function (scheme) {
+            var schemes = ['://', 'mailto:'],
+                hasURIScheme;
+
+            hasURIScheme = _array['default'].some(schemes, function (scheme) {
                 return val.indexOf(scheme) > -1;
             });
+
             if (hasURIScheme) {
-                return string.substitute('<a target="_blank" href="${0}">${0}</a>', [val]);
+                return _string['default'].substitute('<a target="_blank" href="${0}">${0}</a>', [val]);
             }
+
             // Specify a default URI scheme of http
-            return string.substitute('<a target="_blank" href="http://${0}">${0}</a>', [val]);
+            return _string['default'].substitute('<a target="_blank" href="http://${0}">${0}</a>', [val]);
         },
         /**
          * Takes an email string and wraps it with an `<a>` element with `href="mailto:"` pointing to the email.
          * @param {String} val Email string to be wrapped
          * @return {String} An `<a>` element as a string.
          */
-        mail: function (val) {
+        mail: function mail(val) {
             if (typeof val !== 'string') {
                 return val;
             }
-            return string.substitute('<a href="mailto:${0}">${0}</a>', [val]);
+
+            return _string['default'].substitute('<a href="mailto:${0}">${0}</a>', [val]);
         },
         /**
          * Removes whitespace from from and end of string
          * @param {String} val String to be trimmed
          * @return {String} String without space on either end
          */
-        trim: function (val) {
+        trim: function trim(val) {
             return val.replace(/^\s+|\s+$/g, '');
         },
         /**
@@ -257,19 +280,18 @@ define('argos/Format', [
          * @param {Boolean} utc If a date should be in UTC time set this flag to true to counter-act javascripts built-in timezone applier.
          * @return {String} Date formatted as a string.
          */
-        date: function (val, fmt, utc) {
-            var date = val instanceof Date
-                ? val
-                : convert.isDateString(val)
-                    ? convert.toDateFromString(val)
-                    : null;
+        date: function date(val, fmt, utc) {
+            var date = val instanceof Date ? val : _convert['default'].isDateString(val) ? _convert['default'].toDateFromString(val) : null;
+
             if (date) {
-                date = moment(date);
+                date = (0, _moment2['default'])(date);
                 if (utc) {
                     date = date.add({ minutes: date.zone() });
                 }
+
                 return date.format(fmt || argos.Format.shortDateFormatText);
             }
+
             return val;
         },
         /**
@@ -283,14 +305,18 @@ define('argos/Format', [
          * @param {Number} d Number of decimals places to keep, defaults to 2 if not provided.
          * @return {Number} Fixed number.
          */
-        fixed: function (val, d) {
+        fixed: function fixed(val, d) {
             if (typeof val !== 'number' && typeof val !== 'string') {
                 return val;
             }
+
             if (typeof d !== 'number') {
                 d = 2;
             }
-            var m = Math.pow(10, d), v = Math.floor(parseFloat(val) * m) / m;
+
+            var m = Math.pow(10, d),
+                v = Math.floor(parseFloat(val) * m) / m;
+
             return v;
         },
         /**
@@ -305,64 +331,67 @@ define('argos/Format', [
          * @param {Number/String} places If no value is given the default value will be set to 2.
          * @return {String} Number as a percentage with % sign.
          */
-        percent: function (val, places) {
+        percent: function percent(val, places) {
             var intVal, v, dp, wp, numberFormated;
+
             if (typeof places !== 'number') {
                 places = 2;
             }
+
             places = Math.floor(places);
             intVal = 100 * (parseFloat(val) || 0.00);
-            v = utility.roundNumberTo(intVal, places);
+            v = _utility['default'].roundNumberTo(intVal, places);
+
             //get the whole number part
-            wp = (Math.floor(v)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace('\\.', '.'));
+            wp = Math.floor(v).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace('\\.', '.'));
+
             if (places < 1) {
-                numberFormated = string.substitute('${0}', [wp]).replace(/ /g, '\u00A0'); //keep numbers from breaking
-            }
-            else {
+                // format with out decimal part
+                numberFormated = _string['default'].substitute('${0}', [wp]).replace(/ /g, ' '); //keep numbers from breaking
+            } else {
                 dp = v % 1; //get the decimal part
                 dp = dp.toPrecision(places + 1); // round to significant pecsion
                 dp = dp.toString();
                 dp = dp.substr(2, places); //get the whole decimal part
-                numberFormated = string.substitute('${0}'
-                    + Mobile.CultureInfo.numberFormat.percentDecimalSeparator
-                    + '${1}', [wp, dp]).replace(/ /g, '\u00A0'); //keep numbers from breaking
+                numberFormated = _string['default'].substitute('${0}' + Mobile.CultureInfo.numberFormat.percentDecimalSeparator + '${1}', [wp, dp]).replace(/ /g, ' '); //keep numbers from breaking
             }
-            return string.substitute(argos.Format.percentFormatText, [numberFormated, Mobile.CultureInfo.numberFormat.percentSymbol]);
+
+            return _string['default'].substitute(argos.Format.percentFormatText, [numberFormated, Mobile.CultureInfo.numberFormat.percentSymbol]);
         },
         /**
          * Takes a boolean value and returns the string Yes or No for true or false
          * @param {Boolean/String} val If string it tests if the string is `true` for true, else assumes false
          * @return {String} Yes for true, No for false.
          */
-        yesNo: function (val) {
+        yesNo: function yesNo(val) {
             if (typeof val === 'string') {
                 val = /^true$/i.test(val);
             }
-            return val ? argos.Format.yesText || 'Yes'
-                : argos.Format.noText || 'No';
+
+            return val ? argos.Format.yesText || 'Yes' : argos.Format.noText || 'No';
         },
         /**
          * Takes a boolean value and returns the string T or F for true or false
          * @param {Boolean/String} val If string it tests if the string is `true` for true, else assumes false
          * @return {String} T for true, F for false.
          */
-        bool: function (val) {
+        bool: function bool(val) {
             if (typeof val === 'string') {
                 val = /^true$/i.test(val);
             }
-            return val
-                ? argos.Format.trueText || 'T'
-                : argos.Format.falseText || 'F';
+
+            return val ? argos.Format.trueText || 'T' : argos.Format.falseText || 'F';
         },
         /**
          * Takes a string and converts all new lines `\n` to HTML `<br>` elements.
          * @param {String} val String with newlines
          * @return {String} String with replaced `\n` with `<br>`
          */
-        nl2br: function (val) {
+        nl2br: function nl2br(val) {
             if (typeof val !== 'string') {
                 return val;
             }
+
             return val.replace(/\n/g, '<br />');
         },
         /**
@@ -370,24 +399,26 @@ define('argos/Format', [
          * @param {Number/String} val Number of minutes, will be `parseFloat` before operations and fixed to 2 decimal places
          * @return {String} A string representation of the minutes as `'n hours m minutes'`
          */
-        timespan: function (val) {
+        timespan: function timespan(val) {
             var v, hrs, mins;
+
             v = argos.Format.fixed(val);
             if (isNaN(v) || !v) {
                 return '';
             }
+
             hrs = Math.floor(v / 60);
             mins = v % 60;
+
             if (hrs) {
-                hrs = hrs > 1 ? string.substitute('${0} ${1}', [hrs, (argos.Format.hoursText || 'hours')])
-                    : string.substitute('${0} ${1}', [hrs, (argos.Format.hourText || 'hour')]);
+                hrs = hrs > 1 ? _string['default'].substitute('${0} ${1}', [hrs, argos.Format.hoursText || 'hours']) : _string['default'].substitute('${0} ${1}', [hrs, argos.Format.hourText || 'hour']);
             }
+
             if (mins) {
-                mins = mins > 1 ? string.substitute('${0} ${1}', [mins, (argos.Format.minutesText || 'minutes')])
-                    : string.substitute('${0} ${1}', [mins, (argos.Format.minuteText || 'minute')]);
+                mins = mins > 1 ? _string['default'].substitute('${0} ${1}', [mins, argos.Format.minutesText || 'minutes']) : _string['default'].substitute('${0} ${1}', [mins, argos.Format.minuteText || 'minute']);
             }
-            return (hrs && mins) ? hrs + ' ' + mins
-                : hrs === 0 ? mins : hrs;
+
+            return hrs && mins ? hrs + ' ' + mins : hrs === 0 ? mins : hrs;
         },
         /**
          * Takes a 2D array of `[[x,y],[x,y]]` number coordinates and draws them onto the provided canvas
@@ -397,15 +428,23 @@ define('argos/Format', [
          * @param {HTMLElement} canvas The `<canvas>` element to be drawn on
          * @param {Object} options Canvas options: scale, lineWidth and penColor.
          */
-        canvasDraw: function (vector, canvas, options) {
-            var scale, x, y, trace, i, context = canvas.getContext('2d');
+        canvasDraw: function canvasDraw(vector, canvas, options) {
+            var scale,
+                x,
+                y,
+                trace,
+                i,
+                context = canvas.getContext('2d');
+
             // Paint canvas white vs. clearing as on Android imageFromVector alpha pixels blacken
             // context.clearRect(0, 0, context.canvas.width, context.canvas.height);
             context.fillStyle = 'rgb(255,255,255)';
             context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
             scale = options && options.scale ? options.scale : 1;
             context.lineWidth = options && options.lineWidth ? options.lineWidth : 1;
             context.strokeStyle = options && options.penColor ? options.penColor : 'black';
+
             for (trace in vector) {
                 if (1 < vector[trace].length) {
                     context.beginPath();
@@ -426,30 +465,38 @@ define('argos/Format', [
          * @param {Boolean} html Flag for returning image as a data-uri or as a stringified `<img>` element.
          * @return {String} The encoded data of the drawn image, optionally wrapped in `<img>` if html was passed as true
          */
-        imageFromVector: function (vector, options, html) {
-            var img, size, canvasNode = domConstruct.create('canvas');
+        imageFromVector: function imageFromVector(vector, options, html) {
+            var img,
+                size,
+                canvasNode = _domConstruct['default'].create('canvas');
+
             options = options || {};
+
             if (typeof vector === 'string' || vector instanceof String) {
                 try {
-                    vector = json.fromJson(vector);
-                }
-                catch (e) { }
+                    vector = _json['default'].fromJson(vector);
+                } catch (e) {}
             }
+
             if (!(vector instanceof Array) || 0 === vector.length) {
                 vector = [[]]; // blank image.
             }
+
             size = getVectorMaxSize(vector);
+
             canvasNode.width = options.width || size.width;
             canvasNode.height = options.height || size.height;
+
             options.scale = Math.min(canvasNode.width / size.width, canvasNode.height / size.height);
+
             argos.Format.canvasDraw(vector, canvasNode, options);
+
             img = canvasNode.toDataURL('image/png');
             if (img.indexOf('data:image/png') !== 0) {
                 img = Canvas2Image.saveAsBMP(canvasNode, true).src;
             }
-            return html
-                ? string.substitute('<img src="${0}" width="${1}" height="${2}" alt="${3}" />', [img, options.width, options.height, options.title || ''])
-                : img;
+
+            return html ? _string['default'].substitute('<img src="${0}" width="${1}" height="${2}" alt="${3}" />', [img, options.width, options.height, options.title || '']) : img;
         },
         /**
          * Takes a string phone input and attempts to match it against the predefined
@@ -459,23 +506,32 @@ define('argos/Format', [
          * @param asLink {Boolean} True to put the phone in an anchor element pointing to a tel: uri
          * @returns {String}
          */
-        phone: function (val, asLink) {
+        phone: function phone(val, asLink) {
             if (typeof val !== 'string') {
                 return val;
             }
+
             val = argos.Format.alphaToPhoneNumeric(val);
-            var formatters = argos.Format.phoneFormat, i, formatter, match, clean = /^\+/.test(val)
-                ? val
-                : val.replace(/[^0-9x]/ig, ''), formattedMatch;
+
+            var formatters = argos.Format.phoneFormat,
+                i,
+                formatter,
+                match,
+                clean = /^\+/.test(val) ? val : val.replace(/[^0-9x]/ig, ''),
+                formattedMatch;
+
             for (i = 0; i < formatters.length; i++) {
                 formatter = formatters[i];
-                if ((match = formatter.test.exec(clean))) {
-                    formattedMatch = string.substitute(formatter.format, [val, clean].concat(match));
+
+                if (match = formatter.test.exec(clean)) {
+                    formattedMatch = _string['default'].substitute(formatter.format, [val, clean].concat(match));
                 }
             }
+
             if (formattedMatch) {
-                return asLink ? string.substitute('<a href="tel:${0}">${1}</a>', [clean, formattedMatch]) : formattedMatch;
+                return asLink ? _string['default'].substitute('<a href="tel:${0}">${1}</a>', [clean, formattedMatch]) : formattedMatch;
             }
+
             return val;
         },
         /**
@@ -484,13 +540,13 @@ define('argos/Format', [
          * @param val
          * @returns {String}
          */
-        alphaToPhoneNumeric: function (val) {
+        alphaToPhoneNumeric: function alphaToPhoneNumeric(val) {
             for (var i = 0; i < phoneLettersMap.length; i++) {
                 val = val.replace(phoneLettersMap[i].test, phoneLettersMap[i].val);
             }
             return val;
         },
-        fileSize: function (size) {
+        fileSize: function fileSize(size) {
             size = parseInt(size, 10);
             if (size === 0) {
                 return '0 KB';
@@ -499,16 +555,15 @@ define('argos/Format', [
                 return 'Unknown';
             }
             if (size < 1024) {
-                return dNumber.format(Math.round(size)) + ' ' + argos.Format.bytesText;
-            }
-            else if ((1024 < size) && (size < (1024 * 1000))) {
-                return dNumber.format(Math.round(size / 1024)) + ' KB';
-            }
-            else {
-                return dNumber.format(Math.round(size / (1024 * 1000))) + ' MB';
+                return _dNumber['default'].format(Math.round(size)) + ' ' + argos.Format.bytesText;
+            } else if (1024 < size && size < 1024 * 1000) {
+                return _dNumber['default'].format(Math.round(size / 1024)) + ' KB';
+            } else {
+                return _dNumber['default'].format(Math.round(size / (1024 * 1000))) + ' MB';
             }
         }
     });
-    lang.setObject('Sage.Platform.Mobile.Format', __class);
-    return __class;
+
+    _lang['default'].setObject('Sage.Platform.Mobile.Format', __class);
+    module.exports = __class;
 });

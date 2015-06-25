@@ -1,26 +1,35 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-define('argos/Fields/TextField', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/event',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    './_Field',
-    '../FieldManager'
-], function (declare, lang, event, domAttr, domClass, _Field, FieldManager) {
+define('argos/Fields/TextField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/dom-attr', 'dojo/dom-class', './_Field', '../FieldManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojoDomAttr, _dojoDomClass, _Field2, _FieldManager) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+
+    var _declare = _interopRequireDefault(_dojo_baseDeclare);
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _event = _interopRequireDefault(_dojo_baseEvent);
+
+    var _domAttr = _interopRequireDefault(_dojoDomAttr);
+
+    var _domClass = _interopRequireDefault(_dojoDomClass);
+
+    var _Field3 = _interopRequireDefault(_Field2);
+
+    var _FieldManager2 = _interopRequireDefault(_FieldManager);
+
     /**
      * @class argos.Fields.TextField
      * The TextField is the base method of inputting just a string that is bound to a `<input type="text">`.
@@ -42,7 +51,7 @@ define('argos/Fields/TextField', [
      * @extends argos.Fields._Field
      * @requires argos.FieldManager
      */
-    var control = declare('argos.Fields.TextField', [_Field], {
+    var control = (0, _declare['default'])('argos.Fields.TextField', [_Field3['default']], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -64,13 +73,7 @@ define('argos/Fields/TextField', [
          * * `$$` => Owner View instance
          *
          */
-        widgetTemplate: new Simplate([
-            '<label for="{%= $.name %}">{%: $.label %}</label>',
-            '{% if ($.enableClearButton && !$.readonly) { %}',
-            '<button class="clear-button" tabindex="-1" data-dojo-attach-point="clearNode" data-dojo-attach-event="onclick:_onClearClick"></button>',
-            '{% } %}',
-            '<input data-dojo-attach-point="inputNode" tabindex="0" placeholder="{%: $.placeHolderText %}" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>'
-        ]),
+        widgetTemplate: new Simplate(['<label for="{%= $.name %}">{%: $.label %}</label>', '{% if ($.enableClearButton && !$.readonly) { %}', '<button class="clear-button" tabindex="-1" data-dojo-attach-point="clearNode" data-dojo-attach-event="onclick:_onClearClick"></button>', '{% } %}', '<input data-dojo-attach-point="inputNode" tabindex="0" placeholder="{%: $.placeHolderText %}" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>']),
         /**
          * @property {HTMLElement}
          * The dojo-attach-point reference to the input element
@@ -81,6 +84,7 @@ define('argos/Fields/TextField', [
          * The dojo-attach-point reference to the clear button
          */
         clearNode: null,
+
         /**
          * @cfg {String}
          * Event name for enabling {@link #onNotificationTrigger onNotificationTrigger} function to
@@ -121,11 +125,12 @@ define('argos/Fields/TextField', [
          * Value storage for keeping track of modified/unmodified values. Used in {@link #isDirty isDirty}.
          */
         originalValue: null,
+
         /**
          * Extends the parent implementation to optionally bind the `onkeypress` event if `validInputOnly`
          * is true.
          */
-        init: function () {
+        init: function init() {
             this.inherited(arguments);
             if (this.validInputOnly) {
                 this.connect(this.inputNode, 'onkeypress', this._onKeyPress);
@@ -134,18 +139,19 @@ define('argos/Fields/TextField', [
         /**
          * Extends the parent implementation to set the disabled attribute of the input to false
          */
-        enable: function () {
+        enable: function enable() {
             this.inherited(arguments);
-            domAttr.set(this.inputNode, 'disabled', false);
+            _domAttr['default'].set(this.inputNode, 'disabled', false);
         },
         /**
          * Extends the parent implementation to set the disabled attribute of the input to true
          */
-        disable: function () {
+        disable: function disable() {
             this.inherited(arguments);
-            domAttr.set(this.inputNode, 'disabled', true);
+
+            _domAttr['default'].set(this.inputNode, 'disabled', true);
         },
-        focus: function () {
+        focus: function focus() {
             this.inputNode.focus();
         },
         /**
@@ -156,10 +162,10 @@ define('argos/Fields/TextField', [
          * accepted, if validation fails the key press is rejected and the key is not entered.
          * @param {Event} evt
          */
-        _onKeyPress: function (evt) {
+        _onKeyPress: function _onKeyPress(evt) {
             var v = this.getValue() + evt.keyChar;
             if (this.validate(v)) {
-                event.stop(evt);
+                _event['default'].stop(evt);
                 return false;
             }
         },
@@ -171,10 +177,11 @@ define('argos/Fields/TextField', [
          *
          * @param {Event} evt
          */
-        _onKeyUp: function (evt) {
+        _onKeyUp: function _onKeyUp(evt) {
             if (this.validationTrigger === 'keyup') {
                 this.onValidationTrigger(evt);
             }
+
             if (this.notificationTrigger === 'keyup') {
                 this.onNotificationTrigger(evt);
             }
@@ -186,8 +193,8 @@ define('argos/Fields/TextField', [
          *
          * @param evt
          */
-        _onFocus: function (evt) {
-            domClass.add(this.domNode, 'text-field-active');
+        _onFocus: function _onFocus(evt) {
+            _domClass['default'].add(this.domNode, 'text-field-active');
         },
         /**
          * Handler for the `onblur` event
@@ -197,14 +204,16 @@ define('argos/Fields/TextField', [
          *
          * @param {Event} evt
          */
-        _onBlur: function (evt) {
+        _onBlur: function _onBlur(evt) {
             if (this.validationTrigger === 'blur') {
                 this.onValidationTrigger(evt);
             }
+
             if (this.notificationTrigger === 'blur') {
                 this.onNotificationTrigger(evt);
             }
-            domClass.remove(this.domNode, 'text-field-active');
+
+            _domClass['default'].remove(this.domNode, 'text-field-active');
         },
         /**
          * Handler for the `onclick` event for the clear button.
@@ -213,11 +222,12 @@ define('argos/Fields/TextField', [
          *
          * @param {Event} evt
          */
-        _onClearClick: function (evt) {
-            if (!domClass.contains(this.domNode, 'text-field-active')) {
+        _onClearClick: function _onClearClick(evt) {
+            if (!_domClass['default'].contains(this.domNode, 'text-field-active')) {
                 this.clearValue(true);
-                event.stop(evt);
+                _event['default'].stop(evt);
             }
+
             // Mobile browsers listen to either or both events to show keyboard
             this.inputNode.focus();
             this.inputNode.click();
@@ -227,30 +237,31 @@ define('argos/Fields/TextField', [
          * a direct setting of the value.
          * @param {Event} evt
          */
-        onNotificationTrigger: function (evt) {
+        onNotificationTrigger: function onNotificationTrigger(evt) {
             var currentValue = this.getValue();
+
             if (this.previousValue !== currentValue) {
                 this.onChange(currentValue, this);
             }
+
             this.previousValue = currentValue;
         },
         /**
          * Immediately calls {@link _Field#validate validate} and adds the respective row styling.
          * @param {Event} evt
          */
-        onValidationTrigger: function (evt) {
+        onValidationTrigger: function onValidationTrigger(evt) {
             if (this.validate()) {
-                domClass.add(this.containerNode, 'row-error');
-            }
-            else {
-                domClass.remove(this.containerNode, 'row-error');
+                _domClass['default'].add(this.containerNode, 'row-error');
+            } else {
+                _domClass['default'].remove(this.containerNode, 'row-error');
             }
         },
         /**
          * Returns the input nodes value
          * @return {String}
          */
-        getValue: function () {
+        getValue: function getValue() {
             return this.inputNode.value;
         },
         /**
@@ -259,14 +270,17 @@ define('argos/Fields/TextField', [
          * @param {String} val Value to be set
          * @param {Boolean} initial True if the value is the default/clean value, false if it is a meant as a dirty value
          */
-        setValue: function (val, initial) {
+        setValue: function setValue(val, initial) {
             if (initial) {
                 this.originalValue = val;
             }
+
             this.previousValue = false;
+
             if (val === null || typeof val === 'undefined') {
                 val = '';
             }
+
             this.set('inputValue', val);
         },
         /**
@@ -275,7 +289,7 @@ define('argos/Fields/TextField', [
          * @param {String} val Value to be set
          * @param {Boolean} initial True if the value is the default/clean value, false if it is a meant as a dirty value
          */
-        setValueNoTrigger: function (val, initial) {
+        setValueNoTrigger: function setValueNoTrigger(val, initial) {
             this.setValue(val, initial);
             this.previousValue = this.getValue();
         },
@@ -284,18 +298,20 @@ define('argos/Fields/TextField', [
          * @param {Boolean} asDirty If true it signifies the clearing is meant as destroying an
          * existing value and should then be detected as modified/dirty.
          */
-        clearValue: function (asDirty) {
+        clearValue: function clearValue(asDirty) {
             var initial = asDirty !== true;
+
             this.setValue('', initial);
         },
         /**
          * Determines if the value has been modified from the default/original state
          * @return {Boolean}
          */
-        isDirty: function () {
-            return (this.originalValue !== this.getValue());
+        isDirty: function isDirty() {
+            return this.originalValue !== this.getValue();
         }
     });
-    lang.setObject('Sage.Platform.Mobile.Fields.TextField', control);
-    return FieldManager.register('text', control);
+
+    _lang['default'].setObject('Sage.Platform.Mobile.Fields.TextField', control);
+    module.exports = _FieldManager2['default'].register('text', control);
 });

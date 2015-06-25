@@ -1,81 +1,85 @@
-/// <reference path="../declarations/argos.d.ts"/>
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
- * @class argos._EditBase
- * An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
- * of a layout similar to Detail rows but are instead Edit fields.
- *
- * A unique part of the Edit view is it's lifecycle in comparison to Detail. The Detail view is torn
- * down and rebuilt with every record. With Edit the form is emptied (HTML left in-tact) and new values
- * are applied to the fields.
- *
- * Since Edit Views are typically the "last" view (you always come from a List or Detail view) it warrants
- * special attention to the navigation options that are passed, as they greatly control how the Edit view
- * functions and operates.
- *
- * @alternateClassName _EditBase
- * @extends argos.View
- * @requires argos.Convert
- * @requires argos.Utility
- * @requires argos.Fields.ErrorManager
- * @requires argos.Fields.FieldManager
- * @requires argos.Fields.BooleanField
- * @requires argos.Fields.DecimalField
- * @requires argos.Fields.DurationField
- * @requires argos.Fields.HiddenField
- * @requires argos.Fields.LookupField
- * @requires argos.Fields.NoteField
- * @requires argos.Fields.PhoneField
- * @requires argos.Fields.SelectField
- * @requires argos.Fields.SignatureField
- * @requires argos.Fields.TextAreaField
- * @requires argos.Fields.TextField
- */
-define('argos/_EditBase', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/connect',
-    'dojo/_base/array',
-    'dojo/_base/Deferred',
-    'dojo/_base/window',
-    'dojo/dom',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    'dojo/query',
-    './Convert',
-    './Utility',
-    './ErrorManager',
-    './FieldManager',
-    './View',
-    'dojo/NodeList-manipulate',
-    './Fields/BooleanField',
-    './Fields/DateField',
-    './Fields/DecimalField',
-    './Fields/DurationField',
-    './Fields/HiddenField',
-    './Fields/LookupField',
-    './Fields/NoteField',
-    './Fields/PhoneField',
-    './Fields/SelectField',
-    './Fields/SignatureField',
-    './Fields/TextAreaField',
-    './Fields/TextField'
-], function (declare, lang, connect, array, Deferred, win, dom, domAttr, domClass, domConstruct, query, convert, utility, ErrorManager, FieldManager, View) {
-    var __class = declare('argos._EditBase', [View], {
+define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/connect', 'dojo/_base/array', 'dojo/_base/Deferred', 'dojo/_base/window', 'dojo/dom', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/query', './Convert', './Utility', './ErrorManager', './FieldManager', './View', 'dojo/NodeList-manipulate', './Fields/BooleanField', './Fields/DateField', './Fields/DecimalField', './Fields/DurationField', './Fields/HiddenField', './Fields/LookupField', './Fields/NoteField', './Fields/PhoneField', './Fields/SelectField', './Fields/SignatureField', './Fields/TextAreaField', './Fields/TextField'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseConnect, _dojo_baseArray, _dojo_baseDeferred, _dojo_baseWindow, _dojoDom, _dojoDomAttr, _dojoDomClass, _dojoDomConstruct, _dojoQuery, _Convert, _Utility, _ErrorManager, _FieldManager, _View, _dojoNodeListManipulate, _FieldsBooleanField, _FieldsDateField, _FieldsDecimalField, _FieldsDurationField, _FieldsHiddenField, _FieldsLookupField, _FieldsNoteField, _FieldsPhoneField, _FieldsSelectField, _FieldsSignatureField, _FieldsTextAreaField, _FieldsTextField) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+
+    var _declare = _interopRequireDefault(_dojo_baseDeclare);
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _connect = _interopRequireDefault(_dojo_baseConnect);
+
+    var _array = _interopRequireDefault(_dojo_baseArray);
+
+    var _Deferred = _interopRequireDefault(_dojo_baseDeferred);
+
+    var _win = _interopRequireDefault(_dojo_baseWindow);
+
+    var _dom = _interopRequireDefault(_dojoDom);
+
+    var _domAttr = _interopRequireDefault(_dojoDomAttr);
+
+    var _domClass = _interopRequireDefault(_dojoDomClass);
+
+    var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
+
+    var _query = _interopRequireDefault(_dojoQuery);
+
+    var _convert = _interopRequireDefault(_Convert);
+
+    var _utility = _interopRequireDefault(_Utility);
+
+    var _ErrorManager2 = _interopRequireDefault(_ErrorManager);
+
+    var _FieldManager2 = _interopRequireDefault(_FieldManager);
+
+    var _View2 = _interopRequireDefault(_View);
+
+    /**
+     * @class argos._EditBase
+     * An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
+     * of a layout similar to Detail rows but are instead Edit fields.
+     *
+     * A unique part of the Edit view is it's lifecycle in comparison to Detail. The Detail view is torn
+     * down and rebuilt with every record. With Edit the form is emptied (HTML left in-tact) and new values
+     * are applied to the fields.
+     *
+     * Since Edit Views are typically the "last" view (you always come from a List or Detail view) it warrants
+     * special attention to the navigation options that are passed, as they greatly control how the Edit view
+     * functions and operates.
+     *
+     * @alternateClassName _EditBase
+     * @extends argos.View
+     * @requires argos.Convert
+     * @requires argos.Utility
+     * @requires argos.Fields.ErrorManager
+     * @requires argos.Fields.FieldManager
+     * @requires argos.Fields.BooleanField
+     * @requires argos.Fields.DecimalField
+     * @requires argos.Fields.DurationField
+     * @requires argos.Fields.HiddenField
+     * @requires argos.Fields.LookupField
+     * @requires argos.Fields.NoteField
+     * @requires argos.Fields.PhoneField
+     * @requires argos.Fields.SelectField
+     * @requires argos.Fields.SignatureField
+     * @requires argos.Fields.TextAreaField
+     * @requires argos.Fields.TextField
+     */
+    var __class = (0, _declare['default'])('argos._EditBase', [_View2['default']], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -108,51 +112,28 @@ define('argos/_EditBase', [
          *      resourceKind         set to data-resource-kind
          *
          */
-        widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
-            '{%! $.loadingTemplate %}',
-            '{%! $.validationSummaryTemplate %}',
-            '{%! $.concurrencySummaryTemplate %}',
-            '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
-            '</div>'
-        ]),
+        widgetTemplate: new Simplate(['<div id="{%= $.id %}" title="{%: $.titleText %}" class="edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>', '{%! $.loadingTemplate %}', '{%! $.validationSummaryTemplate %}', '{%! $.concurrencySummaryTemplate %}', '<div class="panel-content" data-dojo-attach-point="contentNode"></div>', '</div>']),
         /**
          * @property {Simplate}
          * HTML shown when data is being loaded.
          *
          * `$` => the view instance
          */
-        loadingTemplate: new Simplate([
-            '<fieldset class="panel-loading-indicator">',
-            '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>',
-            '</fieldset>'
-        ]),
+        loadingTemplate: new Simplate(['<fieldset class="panel-loading-indicator">', '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>', '</fieldset>']),
         /**
          * @property {Simplate}
          * HTML for the validation summary area, this div is shown/hidden as needed.
          *
          * `$` => the view instance
          */
-        validationSummaryTemplate: new Simplate([
-            '<div class="panel-validation-summary">',
-            '<h2>{%: $.validationSummaryText %}</h2>',
-            '<ul data-dojo-attach-point="validationContentNode">',
-            '</ul>',
-            '</div>'
-        ]),
+        validationSummaryTemplate: new Simplate(['<div class="panel-validation-summary">', '<h2>{%: $.validationSummaryText %}</h2>', '<ul data-dojo-attach-point="validationContentNode">', '</ul>', '</div>']),
         /**
          * @property {Simplate}
          * HTML for the concurrency error area, this div is shown/hidden as needed.
          *
          * `$` => the view instance
          */
-        concurrencySummaryTemplate: new Simplate([
-            '<div class="panel-concurrency-summary">',
-            '<h2>{%: $.concurrencySummaryText %}</h2>',
-            '<ul data-dojo-attach-point="concurrencyContentNode">',
-            '</ul>',
-            '</div>'
-        ]),
+        concurrencySummaryTemplate: new Simplate(['<div class="panel-concurrency-summary">', '<h2>{%: $.concurrencySummaryText %}</h2>', '<ul data-dojo-attach-point="concurrencyContentNode">', '</ul>', '</div>']),
         /**
          * @property {Simplate}
          * HTML shown when data is being loaded.
@@ -160,45 +141,26 @@ define('argos/_EditBase', [
          * * `$` => validation error object
          * * `$$` => field instance that the error is on
          */
-        validationSummaryItemTemplate: new Simplate([
-            '<li>',
-            '<a href="#{%= $.name %}">',
-            '<h3>{%: $.message %}</h3>',
-            '<h4>{%: $$.label %}</h4>',
-            '</a>',
-            '</li>'
-        ]),
+        validationSummaryItemTemplate: new Simplate(['<li>', '<a href="#{%= $.name %}">', '<h3>{%: $.message %}</h3>', '<h4>{%: $$.label %}</h4>', '</a>', '</li>']),
         /**
          * @property {Simplate}
          * * `$` => validation error object
          */
-        concurrencySummaryItemTemplate: new Simplate([
-            '<li>',
-            '<h3>{%: $.message %}</h3>',
-            '<h4>{%: $.name %}</h4>',
-            '</li>'
-        ]),
+        concurrencySummaryItemTemplate: new Simplate(['<li>', '<h3>{%: $.message %}</h3>', '<h4>{%: $.name %}</h4>', '</li>']),
         /**
          * @property {Simplate}
          * HTML that starts a new section including the collapsible header
          *
          * `$` => the view instance
          */
-        sectionBeginTemplate: new Simplate([
-            '<h2>',
-            '{%: ($.title || $.options.title) %}',
-            '</h2>',
-            '<fieldset class="{%= ($.cls || $.options.cls) %}">'
-        ]),
+        sectionBeginTemplate: new Simplate(['<h2>', '{%: ($.title || $.options.title) %}', '</h2>', '<fieldset class="{%= ($.cls || $.options.cls) %}">']),
         /**
          * @property {Simplate}
          * HTML that ends a section
          *
          * `$` => the view instance
          */
-        sectionEndTemplate: new Simplate([
-            '</fieldset>'
-        ]),
+        sectionEndTemplate: new Simplate(['</fieldset>']),
         /**
          * @property {Simplate}
          * HTML created for each property (field row).
@@ -206,11 +168,8 @@ define('argos/_EditBase', [
          * * `$` => the field row object defined in {@link #createLayout createLayout}.
          * * `$$` => the view instance
          */
-        propertyTemplate: new Simplate([
-            '<a name="{%= $.name || $.property %}"></a>',
-            '<div class="row row-edit {%= $.cls %}{% if ($.readonly) { %}row-readonly{% } %}" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
-            '</div>'
-        ]),
+        propertyTemplate: new Simplate(['<a name="{%= $.name || $.property %}"></a>', '<div class="row row-edit {%= $.cls %}{% if ($.readonly) { %}row-readonly{% } %}" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">', '</div>']),
+
         /**
          * @cfg {String}
          * The unique identifier of the view
@@ -248,6 +207,7 @@ define('argos/_EditBase', [
          * May be used for verifying the view is accessible for editing entries
          */
         updateSecurity: false,
+
         /**
          * @deprecated
          */
@@ -307,13 +267,15 @@ define('argos/_EditBase', [
          * Flags if the view is in "insert" (create) mode, or if it is in "update" (edit) mode.
          */
         inserting: null,
+
         _focusField: null,
         _hasFocused: false,
+
         /**
          * Extends constructor to initialze `this.fields` to {}
          * @param o
          */
-        constructor: function (o) {
+        constructor: function constructor(o) {
             this.fields = {};
         },
         /**
@@ -323,11 +285,13 @@ define('argos/_EditBase', [
          * On refresh it will clear the values, but leave the layout intact.
          *
          */
-        startup: function () {
+        startup: function startup() {
             this.inherited(arguments);
             this.processLayout(this._createCustomizedLayout(this.createLayout()));
-            query('div[data-field]', this.contentNode).forEach(function (node) {
-                var name = domAttr.get(node, 'data-field'), field = this.fields[name];
+
+            (0, _query['default'])('div[data-field]', this.contentNode).forEach(function (node) {
+                var name = _domAttr['default'].get(node, 'data-field'),
+                    field = this.fields[name];
                 if (field) {
                     field.renderTo(node);
                 }
@@ -336,8 +300,9 @@ define('argos/_EditBase', [
         /**
          * Extends init to also init the fields in `this.fields`.
          */
-        init: function () {
+        init: function init() {
             this.inherited(arguments);
+
             for (var name in this.fields) {
                 if (this.fields.hasOwnProperty(name)) {
                     this.fields[name].init();
@@ -353,15 +318,14 @@ define('argos/_EditBase', [
          * @return {Object} this.tools
          * @template
          */
-        createToolLayout: function () {
+        createToolLayout: function createToolLayout() {
             var tbar = [{
-                    id: 'save',
-                    action: 'save',
-                    cls: 'fa fa-save fa-fw fa-lg',
-                    security: this.options && this.options.insert
-                        ? this.insertSecurity
-                        : this.updateSecurity
-                }];
+                id: 'save',
+                action: 'save',
+                cls: 'fa fa-save fa-fw fa-lg',
+                security: this.options && this.options.insert ? this.insertSecurity : this.updateSecurity
+            }];
+
             if (!App.isOnFirstView()) {
                 tbar.push({
                     id: 'cancel',
@@ -370,15 +334,16 @@ define('argos/_EditBase', [
                     action: 'onToolCancel'
                 });
             }
+
             return this.tools || (this.tools = {
                 'tbar': tbar
             });
         },
-        onToolCancel: function () {
+        onToolCancel: function onToolCancel() {
             this.refreshRequired = true;
             ReUI.back();
         },
-        _getStoreAttr: function () {
+        _getStoreAttr: function _getStoreAttr() {
             return this.store || (this.store = this.createStore());
         },
         /**
@@ -388,8 +353,8 @@ define('argos/_EditBase', [
          *
          * @param {_Field} field Field instance that is being shown
          */
-        _onShowField: function (field) {
-            domClass.remove(field.containerNode, 'row-hidden');
+        _onShowField: function _onShowField(field) {
+            _domClass['default'].remove(field.containerNode, 'row-hidden');
         },
         /**
          * Handler for a fields on hide event.
@@ -398,8 +363,8 @@ define('argos/_EditBase', [
          *
          * @param {_Field} field Field instance that is being hidden
          */
-        _onHideField: function (field) {
-            domClass.add(field.containerNode, 'row-hidden');
+        _onHideField: function _onHideField(field) {
+            _domClass['default'].add(field.containerNode, 'row-hidden');
         },
         /**
          * Handler for a fields on enable event.
@@ -408,8 +373,8 @@ define('argos/_EditBase', [
          *
          * @param {_Field} field Field instance that is being enabled
          */
-        _onEnableField: function (field) {
-            domClass.remove(field.containerNode, 'row-disabled');
+        _onEnableField: function _onEnableField(field) {
+            _domClass['default'].remove(field.containerNode, 'row-disabled');
         },
         /**
          * Handler for a fields on disable event.
@@ -418,8 +383,8 @@ define('argos/_EditBase', [
          *
          * @param {_Field} field Field instance that is being disabled
          */
-        _onDisableField: function (field) {
-            domClass.add(field.containerNode, 'row-disabled');
+        _onDisableField: function _onDisableField(field) {
+            _domClass['default'].add(field.containerNode, 'row-disabled');
         },
         /**
          * Extends invokeAction to first look for the specified function name on the field instance
@@ -430,11 +395,14 @@ define('argos/_EditBase', [
          * @param {HTMLElement} node The node that initiated the event
          * @return {Function} Either calls the fields action or returns the inherited version which looks at the view for the action
          */
-        invokeAction: function (name, parameters, evt, node) {
-            var fieldNode = node && query(node, this.contentNode).parents('[data-field]'), field = this.fields[fieldNode.length > 0 && domAttr.get(fieldNode[0], 'data-field')];
+        invokeAction: function invokeAction(name, parameters, evt, node) {
+            var fieldNode = node && (0, _query['default'])(node, this.contentNode).parents('[data-field]'),
+                field = this.fields[fieldNode.length > 0 && _domAttr['default'].get(fieldNode[0], 'data-field')];
+
             if (field && typeof field[name] === 'function') {
                 return field[name].apply(field, [parameters, evt, node]);
             }
+
             return this.inherited(arguments);
         },
         /**
@@ -444,19 +412,21 @@ define('argos/_EditBase', [
          * @param {HTMLElement} node The node that initiated the event
          * @return {Boolean} If the field has the named function defined
          */
-        hasAction: function (name, evt, node) {
-            var fieldNode = node && query(node, this.contentNode).parents('[data-field]'), field = fieldNode && this.fields[fieldNode.length > 0 && domAttr.get(fieldNode[0], 'data-field')];
+        hasAction: function hasAction(name, evt, node) {
+            var fieldNode = node && (0, _query['default'])(node, this.contentNode).parents('[data-field]'),
+                field = fieldNode && this.fields[fieldNode.length > 0 && _domAttr['default'].get(fieldNode[0], 'data-field')];
+
             if (field && typeof field[name] === 'function') {
                 return true;
             }
+
             return this.inherited(arguments);
         },
-        createStore: function () {
+        createStore: function createStore() {
             return null;
         },
-        onContentChange: function () {
-        },
-        processEntry: function (entry) {
+        onContentChange: function onContentChange() {},
+        processEntry: function processEntry(entry) {
             return entry;
         },
         /**
@@ -464,57 +434,63 @@ define('argos/_EditBase', [
          * @param {Object} entry data
          * @return {Object} entry with actual Date objects
          */
-        convertEntry: function (entry) {
+        convertEntry: function convertEntry(entry) {
             return entry;
         },
-        processData: function (entry) {
+        processData: function processData(entry) {
             var currentValues, diffs;
+
             this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
+
             this.setValues(entry, true);
+
             // Re-apply changes saved from concurrency/precondition failure
             if (this.previousValuesAll) {
                 // Make a copy of the current values, so we can diff them
                 currentValues = this.getValues(true);
+
                 diffs = this.diffs(this.previousValuesAll, currentValues);
+
                 if (diffs.length > 0) {
-                    array.forEach(diffs, function (val) {
+                    _array['default'].forEach(diffs, function (val) {
                         this.errors.push({
                             name: val,
                             message: this.concurrencyErrorText
                         });
                     }, this);
+
                     this.showConcurrencySummary();
-                }
-                else {
+                } else {
                     // No diffs found, attempt to re-save
                     this.save();
                 }
+
                 this.previousValuesAll = null;
             }
+
             // Re-apply any passed changes as they may have been overwritten
             if (this.options.changes) {
                 this.changes = this.options.changes;
                 this.setValues(this.changes);
             }
         },
-        _onGetComplete: function (entry) {
+        _onGetComplete: function _onGetComplete(entry) {
             try {
                 if (entry) {
                     this.processData(entry);
-                }
-                else {
-                }
-                domClass.remove(this.domNode, 'panel-loading');
+                } else {}
+
+                _domClass['default'].remove(this.domNode, 'panel-loading');
+
                 /* this must take place when the content is visible */
                 this.onContentChange();
-            }
-            catch (e) {
+            } catch (e) {
                 console.error(e);
             }
         },
-        _onGetError: function (getOptions, error) {
+        _onGetError: function _onGetError(getOptions, error) {
             this.handleError(error);
-            domClass.remove(this.domNode, 'panel-loading');
+            _domClass['default'].remove(this.domNode, 'panel-loading');
         },
         /**
          * Sets and returns the Edit view layout by following a standard for section and field:
@@ -543,48 +519,51 @@ define('argos/_EditBase', [
          *
          * @return {Object[]} Edit layout definition
          */
-        createLayout: function () {
+        createLayout: function createLayout() {
             return this.layout || [];
         },
-        createErrorHandlers: function () {
+
+        createErrorHandlers: function createErrorHandlers() {
             this.errorHandlers = this.errorHandlers || [{
-                    name: 'PreCondition',
-                    test: function (error) {
-                        return error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED;
-                    },
-                    handle: function (error, next) {
-                        next(); // Invoke the next error handler first, the refresh will change a lot of mutable/shared state
-                        // Preserve our current form values (all of them),
-                        // and reload the view to fetch the new data.
-                        this.previousValuesAll = this.getValues(true);
-                        this.options.key = this.entry.$key; // Force a fetch by key
-                        delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
-                        this.refresh();
-                    }
-                }, {
-                    name: 'AlertError',
-                    test: function (error) {
-                        return error.status !== this.HTTP_STATUS.PRECONDITION_FAILED;
-                    },
-                    handle: function (error, next) {
-                        alert(this.getErrorMessage(error));
-                        next();
-                    }
-                }, {
-                    name: 'CatchAll',
-                    test: function (error) {
-                        return true;
-                    },
-                    handle: function (error, next) {
-                        var errorItem = {
-                            viewOptions: this.options,
-                            serverError: error
-                        };
-                        ErrorManager.addError(this.getErrorMessage(error), errorItem);
-                        next();
-                    }
+                name: 'PreCondition',
+                test: function test(error) {
+                    return error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED;
+                },
+                handle: function handle(error, next) {
+                    next(); // Invoke the next error handler first, the refresh will change a lot of mutable/shared state
+
+                    // Preserve our current form values (all of them),
+                    // and reload the view to fetch the new data.
+                    this.previousValuesAll = this.getValues(true);
+                    this.options.key = this.entry.$key; // Force a fetch by key
+                    delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
+                    this.refresh();
                 }
-            ];
+            }, {
+                name: 'AlertError',
+                test: function test(error) {
+                    return error.status !== this.HTTP_STATUS.PRECONDITION_FAILED;
+                },
+                handle: function handle(error, next) {
+                    alert(this.getErrorMessage(error));
+                    next();
+                }
+            }, {
+                name: 'CatchAll',
+                test: function test(error) {
+                    return true;
+                },
+                handle: function handle(error, next) {
+                    var errorItem = {
+                        viewOptions: this.options,
+                        serverError: error
+                    };
+
+                    _ErrorManager2['default'].addError(this.getErrorMessage(error), errorItem);
+                    next();
+                }
+            }];
+
             return this.errorHandlers;
         },
         /**
@@ -592,95 +571,124 @@ define('argos/_EditBase', [
          * Returns the view key
          * @return {String} View key
          */
-        getTag: function () {
+        getTag: function getTag() {
             var tag = this.options && this.options.entry && this.options.entry[this.idProperty];
             if (!tag) {
                 tag = this.options && this.options.key;
             }
+
             return tag;
         },
-        processLayout: function (layout) {
-            var rows = (layout['children'] || layout['as'] || layout), options = layout['options'] || (layout['options'] = {
+        processLayout: function processLayout(layout) {
+            var rows = layout['children'] || layout['as'] || layout,
+                options = layout['options'] || (layout['options'] = {
                 title: this.detailsText
-            }), sectionQueue = [], sectionStarted = false, content = [], current, ctor, field, i, template, sectionNode;
+            }),
+                sectionQueue = [],
+                sectionStarted = false,
+                content = [],
+                current,
+                ctor,
+                field,
+                i,
+                template,
+                sectionNode;
+
             for (i = 0; i < rows.length; i++) {
                 current = rows[i];
+
                 if (current['children'] || current['as']) {
                     if (sectionStarted) {
                         sectionQueue.push(current);
-                    }
-                    else {
+                    } else {
                         this.processLayout(current);
                     }
+
                     continue;
                 }
+
                 if (!sectionStarted) {
                     sectionStarted = true;
                     content.push(this.sectionBeginTemplate.apply(layout, this));
                 }
+
                 this.createRowContent(current, content);
             }
+
             content.push(this.sectionEndTemplate.apply(layout, this));
-            sectionNode = domConstruct.toDom(content.join(''));
+            sectionNode = _domConstruct['default'].toDom(content.join(''));
             this.onApplySectionNode(sectionNode, current);
-            domConstruct.place(sectionNode, this.contentNode, 'last');
+            _domConstruct['default'].place(sectionNode, this.contentNode, 'last');
+
             for (i = 0; i < sectionQueue.length; i++) {
                 current = sectionQueue[i];
+
                 this.processLayout(current);
             }
         },
-        onApplySectionNode: function (sectionNode, layout) {
-        },
-        createRowContent: function (layout, content) {
+        onApplySectionNode: function onApplySectionNode(sectionNode, layout) {},
+        createRowContent: function createRowContent(layout, content) {
             var ctor, field, template;
-            ctor = FieldManager.get(layout['type']);
+            ctor = _FieldManager2['default'].get(layout['type']);
             if (ctor) {
-                field = this.fields[layout['name'] || layout['property']] = new ctor(lang.mixin({
+                field = this.fields[layout['name'] || layout['property']] = new ctor(_lang['default'].mixin({
                     owner: this
                 }, layout));
+
                 template = field.propertyTemplate || this.propertyTemplate;
+
                 if (field.autoFocus && !this._focusField) {
                     this._focusField = field;
-                }
-                else if (field.autoFocus && this._focusField) {
+                } else if (field.autoFocus && this._focusField) {
                     throw new Error('Only one field can have autoFocus set to true in the Edit layout.');
                 }
+
                 this.connect(field, 'onShow', this._onShowField);
                 this.connect(field, 'onHide', this._onHideField);
                 this.connect(field, 'onEnable', this._onEnableField);
                 this.connect(field, 'onDisable', this._onDisableField);
+
                 content.push(template.apply(field, this));
             }
         },
         /**
          * Initiates the request.
          */
-        requestData: function () {
+        requestData: function requestData() {
             var store, getOptions, getExpression, getResults;
             store = this.get('store');
+
             if (store) {
                 getOptions = {};
+
                 this._applyStateToGetOptions(getOptions);
+
                 getExpression = this._buildGetExpression() || null;
                 getResults = store.get(getExpression, getOptions);
-                Deferred.when(getResults, this._onGetComplete.bind(this), this._onGetError.bind(this, getOptions));
+
+                _Deferred['default'].when(getResults, this._onGetComplete.bind(this), this._onGetError.bind(this, getOptions));
+
                 return getResults;
             }
+
             console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataEditMixin to your edit view?');
         },
         /**
          * Loops all the fields looking for any with the `default` property set, if set apply that
          * value as the initial value of the field. If the value is a function, its expanded then applied.
          */
-        applyFieldDefaults: function () {
+        applyFieldDefaults: function applyFieldDefaults() {
             var name, field, defaultValue;
+
             for (name in this.fields) {
                 if (this.fields.hasOwnProperty(name)) {
                     field = this.fields[name];
                     defaultValue = field['default'];
+
                     if (typeof defaultValue === 'undefined') {
                         continue;
                     }
+
                     field.setValue(this.expandExpression(defaultValue, field));
                 }
             }
@@ -688,7 +696,7 @@ define('argos/_EditBase', [
         /**
          * Loops all fields and calls its `clearValue()`.
          */
-        clearValues: function () {
+        clearValues: function clearValues() {
             for (var name in this.fields) {
                 if (this.fields.hasOwnProperty(name)) {
                     this.fields[name].clearHighlight();
@@ -706,21 +714,27 @@ define('argos/_EditBase', [
          * @param {Object} values data entry, or collection of key/values where key matches a fields property attribute
          * @param {Boolean} initial Initial state of the value, true for clean, false for dirty
          */
-        setValues: function (values, initial) {
-            var noValue = {}, field, name, value;
+        setValues: function setValues(values, initial) {
+            var noValue = {},
+                field,
+                name,
+                value;
+
             for (name in this.fields) {
                 if (this.fields.hasOwnProperty(name)) {
                     field = this.fields[name];
+
                     // for now, explicitly hidden fields (via. the field.hide() method) are not included
                     if (field.isHidden()) {
                         continue;
                     }
+
                     if (field.applyTo !== false) {
-                        value = utility.getValue(values, field.applyTo, noValue);
+                        value = _utility['default'].getValue(values, field.applyTo, noValue);
+                    } else {
+                        value = _utility['default'].getValue(values, field.property || name, noValue);
                     }
-                    else {
-                        value = utility.getValue(values, field.property || name, noValue);
-                    }
+
                     // fyi: uses the fact that ({} !== {})
                     if (value !== noValue) {
                         field.setValue(value, initial);
@@ -737,14 +751,25 @@ define('argos/_EditBase', [
          * @param {Boolean} all True to also include hidden and unmodified values.
          * @return {Object} A single object payload with all the values.
          */
-        getValues: function (all) {
-            var payload = {}, empty = true, field, value, target, include, exclude, name, prop;
+        getValues: function getValues(all) {
+            var payload = {},
+                empty = true,
+                field,
+                value,
+                target,
+                include,
+                exclude,
+                name,
+                prop;
+
             for (name in this.fields) {
                 if (this.fields.hasOwnProperty(name)) {
                     field = this.fields[name];
                     value = field.getValue();
+
                     include = this.expandExpression(field.include, value, field, this);
                     exclude = this.expandExpression(field.exclude, value, field, this);
+
                     /**
                      * include:
                      *   true: always include value
@@ -759,8 +784,9 @@ define('argos/_EditBase', [
                     if (exclude !== undefined && exclude) {
                         continue;
                     }
+
                     // for now, explicitly hidden fields (via. the field.hide() method) are not included
-                    if (all || ((field.alwaysUseValue || field.isDirty() || include) && !field.isHidden())) {
+                    if (all || (field.alwaysUseValue || field.isDirty() || include) && !field.isHidden()) {
                         if (field.applyTo !== false) {
                             if (typeof field.applyTo === 'function') {
                                 if (typeof value === 'object') {
@@ -771,16 +797,16 @@ define('argos/_EditBase', [
                                         }
                                     }
                                 }
+
                                 field.applyTo(payload, value);
+                            } else if (typeof field.applyTo === 'string') {
+                                target = _utility['default'].getValue(payload, field.applyTo);
+                                _lang['default'].mixin(target, value);
                             }
-                            else if (typeof field.applyTo === 'string') {
-                                target = utility.getValue(payload, field.applyTo);
-                                lang.mixin(target, value);
-                            }
+                        } else {
+                            _utility['default'].setValue(payload, field.property || name, value);
                         }
-                        else {
-                            utility.setValue(payload, field.property || name, value);
-                        }
+
                         empty = false;
                     }
                 }
@@ -792,72 +818,78 @@ define('argos/_EditBase', [
          * validation summary area. If no errors, removes the validation summary.
          * @return {Boolean/Object[]} Returns the array of errors if present or false for no errors.
          */
-        validate: function () {
+        validate: function validate() {
             var name, field, result;
+
             this.errors = [];
+
             for (name in this.fields) {
                 if (this.fields.hasOwnProperty(name)) {
                     field = this.fields[name];
+
                     if (!field.isHidden() && false !== (result = field.validate())) {
-                        domClass.add(field.containerNode, 'row-error');
+                        _domClass['default'].add(field.containerNode, 'row-error');
+
                         this.errors.push({
                             name: name,
                             message: result
                         });
-                    }
-                    else {
-                        domClass.remove(field.containerNode, 'row-error');
+                    } else {
+                        _domClass['default'].remove(field.containerNode, 'row-error');
                     }
                 }
             }
-            return this.errors.length > 0
-                ? this.errors
-                : false;
+
+            return this.errors.length > 0 ? this.errors : false;
         },
         /**
          * Determines if the form is currently busy/disabled
          * @return {Boolean}
          */
-        isFormDisabled: function () {
+        isFormDisabled: function isFormDisabled() {
             return this.busy;
         },
         /**
          * Disables the form by setting busy to true and disabling the toolbar.
          */
-        disable: function () {
+        disable: function disable() {
             this.busy = true;
+
             if (App.bars.tbar) {
                 App.bars.tbar.disableTool('save');
             }
-            domClass.add(win.body(), 'busy');
+
+            _domClass['default'].add(_win['default'].body(), 'busy');
         },
         /**
          * Enables the form by setting busy to false and enabling the toolbar
          */
-        enable: function () {
+        enable: function enable() {
             this.busy = false;
+
             if (App.bars.tbar) {
                 App.bars.tbar.enableTool('save');
             }
-            domClass.remove(win.body(), 'busy');
+
+            _domClass['default'].remove(_win['default'].body(), 'busy');
         },
         /**
          * Called by save() when performing an insert (create).
          * Gathers the values, creates the payload for insert, creates the sdata request and
          * calls `create`.
          */
-        insert: function () {
+        insert: function insert() {
             var values;
             this.disable();
+
             values = this.getValues();
             if (values) {
                 this.onInsert(values);
-            }
-            else {
+            } else {
                 ReUI.back();
             }
         },
-        onInsert: function (values) {
+        onInsert: function onInsert(values) {
             var store, addOptions, entry, request;
             store = this.get('store');
             if (store) {
@@ -865,19 +897,22 @@ define('argos/_EditBase', [
                     overwrite: false
                 };
                 entry = this.createEntryForInsert(values);
+
                 this._applyStateToAddOptions(addOptions);
-                Deferred.when(store.add(entry, addOptions), this.onAddComplete.bind(this, entry), this.onAddError.bind(this, addOptions));
+
+                _Deferred['default'].when(store.add(entry, addOptions), this.onAddComplete.bind(this, entry), this.onAddError.bind(this, addOptions));
             }
         },
-        _applyStateToAddOptions: function (addOptions) {
-        },
-        onAddComplete: function (entry, result) {
+        _applyStateToAddOptions: function _applyStateToAddOptions(addOptions) {},
+        onAddComplete: function onAddComplete(entry, result) {
             this.enable();
+
             var message = this._buildRefreshMessage(entry, result);
-            connect.publish('/app/refresh', [message]);
+            _connect['default'].publish('/app/refresh', [message]);
+
             this.onInsertCompleted(result);
         },
-        onAddError: function (addOptions, error) {
+        onAddError: function onAddError(addOptions, error) {
             this.handleError(error);
             this.enable();
         },
@@ -885,17 +920,16 @@ define('argos/_EditBase', [
          * Handler for insert complete, checks for `this.options.returnTo` else it simply goes back.
          * @param entry
          */
-        onInsertCompleted: function (entry) {
+        onInsertCompleted: function onInsertCompleted(entry) {
             if (this.options && this.options.returnTo) {
-                var returnTo = this.options.returnTo, view = App.getView(returnTo);
+                var returnTo = this.options.returnTo,
+                    view = App.getView(returnTo);
                 if (view) {
                     view.show();
-                }
-                else {
+                } else {
                     window.location.hash = returnTo;
                 }
-            }
-            else {
+            } else {
                 ReUI.back();
             }
         },
@@ -904,18 +938,17 @@ define('argos/_EditBase', [
          * Gathers the values, creates the payload for update, creates the sdata request and
          * calls `update`.
          */
-        update: function () {
+        update: function update() {
             var values;
             values = this.getValues();
             if (values) {
                 this.disable();
                 this.onUpdate(values);
-            }
-            else {
+            } else {
                 this.onUpdateCompleted(false);
             }
         },
-        onUpdate: function (values) {
+        onUpdate: function onUpdate(values) {
             var store, putOptions, entry;
             store = this.get('store');
             if (store) {
@@ -924,8 +957,10 @@ define('argos/_EditBase', [
                     id: store.getIdentity(this.entry)
                 };
                 entry = this.createEntryForUpdate(values);
+
                 this._applyStateToPutOptions(putOptions);
-                Deferred.when(store.put(entry, putOptions), this.onPutComplete.bind(this, entry), this.onPutError.bind(this, putOptions));
+
+                _Deferred['default'].when(store.put(entry, putOptions), this.onPutComplete.bind(this, entry), this.onPutError.bind(this, putOptions));
             }
         },
         /**
@@ -933,18 +968,17 @@ define('argos/_EditBase', [
          * creating or updating.
          * @return {Object} Entry/payload
          */
-        createItem: function () {
+        createItem: function createItem() {
             var values = this.getValues();
-            return this.inserting
-                ? this.createEntryForInsert(values)
-                : this.createEntryForUpdate(values);
+
+            return this.inserting ? this.createEntryForInsert(values) : this.createEntryForUpdate(values);
         },
         /**
          * Takes the values object and adds the needed propertiers for updating.
          * @param {Object} values
          * @return {Object} Object with properties for updating
          */
-        createEntryForUpdate: function (values) {
+        createEntryForUpdate: function createEntryForUpdate(values) {
             return this.convertValues(values);
         },
         /**
@@ -952,24 +986,26 @@ define('argos/_EditBase', [
          * @param {Object} values
          * @return {Object} Object with properties for inserting
          */
-        createEntryForInsert: function (values) {
+        createEntryForInsert: function createEntryForInsert(values) {
             return this.convertValues(values);
         },
         /**
          * Function to call to tranform values before save
          */
-        convertValues: function (values) {
+        convertValues: function convertValues(values) {
             return values;
         },
-        _applyStateToPutOptions: function (putOptions) {
-        },
-        onPutComplete: function (entry, result) {
+        _applyStateToPutOptions: function _applyStateToPutOptions(putOptions) {},
+        onPutComplete: function onPutComplete(entry, result) {
             this.enable();
+
             var message = this._buildRefreshMessage(entry, result);
-            connect.publish('/app/refresh', [message]);
+
+            _connect['default'].publish('/app/refresh', [message]);
+
             this.onUpdateCompleted(result);
         },
-        onPutError: function (putOptions, error) {
+        onPutError: function onPutError(putOptions, error) {
             this.handleError(error);
             this.enable();
         },
@@ -982,26 +1018,33 @@ define('argos/_EditBase', [
          * This is done for a concurrency check to indicate what has changed.
          * @returns Array List of property names that have changed
          */
-        diffs: function (left, right) {
-            var acc = [], DeepDiff = window.DeepDiff, diffs, DIFF_EDITED = 'E';
+        diffs: function diffs(left, right) {
+            var acc = [],
+                DeepDiff = window.DeepDiff,
+                diffs,
+                DIFF_EDITED = 'E';
+
             if (DeepDiff) {
-                diffs = DeepDiff.diff(left, right, function (path, key) {
-                    if (array.indexOf(this.diffPropertyIgnores, key) >= 0) {
+                diffs = DeepDiff.diff(left, right, (function (path, key) {
+                    if (_array['default'].indexOf(this.diffPropertyIgnores, key) >= 0) {
                         return true;
                     }
-                }.bind(this));
-                array.forEach(diffs, function (diff) {
+                }).bind(this));
+
+                _array['default'].forEach(diffs, function (diff) {
                     var path = diff.path.join('.');
-                    if (diff.kind === DIFF_EDITED && array.indexOf(acc, path) === -1) {
+                    if (diff.kind === DIFF_EDITED && _array['default'].indexOf(acc, path) === -1) {
                         acc.push(path);
                     }
                 });
             }
+
             return acc;
         },
-        _buildRefreshMessage: function (entry, result) {
+        _buildRefreshMessage: function _buildRefreshMessage(entry, result) {
             if (entry) {
-                var store = this.get('store'), id = store.getIdentity(entry);
+                var store = this.get('store'),
+                    id = store.getIdentity(entry);
                 return {
                     id: id,
                     key: id,
@@ -1013,17 +1056,16 @@ define('argos/_EditBase', [
          * Handler for update complete, checks for `this.options.returnTo` else it simply goes back.
          * @param entry
          */
-        onUpdateCompleted: function (entry) {
+        onUpdateCompleted: function onUpdateCompleted(entry) {
             if (this.options && this.options.returnTo) {
-                var returnTo = this.options.returnTo, view = App.getView(returnTo);
+                var returnTo = this.options.returnTo,
+                    view = App.getView(returnTo);
                 if (view) {
                     view.show();
-                }
-                else {
+                } else {
                     window.location.hash = returnTo;
                 }
-            }
-            else {
+            } else {
                 ReUI.back();
             }
         },
@@ -1031,36 +1073,42 @@ define('argos/_EditBase', [
          * Creates the markup by applying the `validationSummaryItemTemplate` to each entry in `this.errors`
          * then sets the combined result into the summary validation node and sets the styling to visible
          */
-        showValidationSummary: function () {
+        showValidationSummary: function showValidationSummary() {
             var content, i;
+
             content = [];
+
             for (i = 0; i < this.errors.length; i++) {
                 content.push(this.validationSummaryItemTemplate.apply(this.errors[i], this.fields[this.errors[i].name]));
             }
+
             this.set('validationContent', content.join(''));
-            domClass.add(this.domNode, 'panel-form-error');
+            _domClass['default'].add(this.domNode, 'panel-form-error');
         },
-        showConcurrencySummary: function () {
+        showConcurrencySummary: function showConcurrencySummary() {
             var content, i;
+
             content = [];
+
             for (i = 0; i < this.errors.length; i++) {
                 content.push(this.concurrencySummaryItemTemplate.apply(this.errors[i]));
             }
+
             this.set('concurrencyContent', content.join(''));
-            domClass.add(this.domNode, 'panel-form-concurrency-error');
+            _domClass['default'].add(this.domNode, 'panel-form-concurrency-error');
         },
         /**
          * Removes the summary validation visible styling and empties its contents of error markup
          */
-        hideValidationSummary: function () {
-            domClass.remove(this.domNode, 'panel-form-error');
+        hideValidationSummary: function hideValidationSummary() {
+            _domClass['default'].remove(this.domNode, 'panel-form-error');
             this.set('validationContent', '');
         },
         /**
          * Removes teh summary for concurrency errors
          */
-        hideConcurrencySummary: function () {
-            domClass.remove(this.domNode, 'panel-form-concurrency-error');
+        hideConcurrencySummary: function hideConcurrencySummary() {
+            _domClass['default'].remove(this.domNode, 'panel-form-concurrency-error');
             this.set('concurrencyContent', '');
         },
         /**
@@ -1070,20 +1118,22 @@ define('argos/_EditBase', [
          * Then calls either {@link #insert insert} or {@link #update update} based upon `this.inserting`.
          *
          */
-        save: function () {
+        save: function save() {
             if (this.isFormDisabled()) {
                 return;
             }
+
             this.hideValidationSummary();
             this.hideConcurrencySummary();
+
             if (this.validate() !== false) {
                 this.showValidationSummary();
                 return;
             }
+
             if (this.inserting) {
                 this.insert();
-            }
-            else {
+            } else {
                 this.update();
             }
         },
@@ -1091,8 +1141,8 @@ define('argos/_EditBase', [
          * Extends the getContext function to also include the `resourceKind` of the view, `insert`
          * state and `key` of the entry (false if inserting)
          */
-        getContext: function () {
-            return lang.mixin(this.inherited(arguments), {
+        getContext: function getContext() {
+            return _lang['default'].mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind,
                 insert: this.options.insert,
                 key: this.options.insert ? false : this.options.key ? this.options.key : this.options.entry && this.options.entry[this.idProperty]
@@ -1102,34 +1152,36 @@ define('argos/_EditBase', [
          * Wrapper for detecting security for update mode or insert mode
          * @param {String} access Can be either "update" or "insert"
          */
-        getSecurity: function (access) {
+        getSecurity: function getSecurity(access) {
             var lookup = {
                 'update': this.updateSecurity,
                 'insert': this.insertSecurity
             };
+
             return lookup[access];
         },
         /**
          * Extends beforeTransitionTo to add the loading styling if refresh is needed
          */
-        beforeTransitionTo: function () {
+        beforeTransitionTo: function beforeTransitionTo() {
             if (this.refreshRequired) {
-                if (this.options.insert === true || (this.options.key && !this.options.entry)) {
-                    domClass.add(this.domNode, 'panel-loading');
-                }
-                else {
-                    domClass.remove(this.domNode, 'panel-loading');
+                if (this.options.insert === true || this.options.key && !this.options.entry) {
+                    _domClass['default'].add(this.domNode, 'panel-loading');
+                } else {
+                    _domClass['default'].remove(this.domNode, 'panel-loading');
                 }
             }
+
             this.inherited(arguments);
         },
-        onTransitionTo: function () {
+        onTransitionTo: function onTransitionTo() {
             // Focus the default focus field if it exists and it has not already been focused.
             // This flag is important because onTransitionTo will fire multiple times if the user is using lookups and editor type fields that transition away from this view.
             if (this._focusField && !this._hasFocused) {
                 this._focusField.focus();
                 this._hasFocused = true;
             }
+
             this.inherited(arguments);
         },
         /**
@@ -1138,13 +1190,12 @@ define('argos/_EditBase', [
          * External navigation (browser back/forward) never refreshes the edit view as it's always a terminal loop.
          * i.e. you never move "forward" from an edit view; you navigate to child editors, from which you always return.
          */
-        activate: function () {
-        },
+        activate: function activate() {},
         /**
          * Extends refreshRequiredFor to return false if we already have the key the options is passing
          * @param {Object} options Navigation options from previous view
          */
-        refreshRequiredFor: function (options) {
+        refreshRequiredFor: function refreshRequiredFor(options) {
             if (this.options) {
                 if (options) {
                     if (this.options.key && this.options.key === options['key']) {
@@ -1152,6 +1203,7 @@ define('argos/_EditBase', [
                     }
                 }
             }
+
             return this.inherited(arguments);
         },
         /**
@@ -1161,37 +1213,37 @@ define('argos/_EditBase', [
          *
          * Lastly it makes the appropiate data request:
          */
-        refresh: function () {
+        refresh: function refresh() {
             this.onRefresh();
             this.entry = false;
             this.changes = false;
-            this.inserting = (this.options.insert === true);
+            this.inserting = this.options.insert === true;
             this._hasFocused = false;
-            domClass.remove(this.domNode, 'panel-form-error');
-            domClass.remove(this.domNode, 'panel-form-concurrency-error');
+
+            _domClass['default'].remove(this.domNode, 'panel-form-error');
+            _domClass['default'].remove(this.domNode, 'panel-form-concurrency-error');
+
             this.clearValues();
+
             if (this.inserting) {
                 this.onRefreshInsert();
-            }
-            else {
+            } else {
                 this.onRefreshUpdate();
             }
         },
-        onRefresh: function () {
-        },
-        onRefreshInsert: function () {
-        },
-        onRefreshUpdate: function () {
+        onRefresh: function onRefresh() {},
+        onRefreshInsert: function onRefreshInsert() {},
+        onRefreshUpdate: function onRefreshUpdate() {
             // apply as non-modified data
             if (this.options.entry) {
                 this.processData(this.options.entry);
+
                 // apply changes as modified data, since we want this to feed-back through
                 if (this.options.changes) {
                     this.changes = this.options.changes;
                     this.setValues(this.changes);
                 }
-            }
-            else {
+            } else {
                 // if key is passed request that keys entity and process
                 if (this.options.key) {
                     this.requestData();
@@ -1199,6 +1251,9 @@ define('argos/_EditBase', [
             }
         }
     });
-    lang.setObject('Sage.Platform.Mobile._EditBase', __class);
-    return __class;
+
+    _lang['default'].setObject('Sage.Platform.Mobile._EditBase', __class);
+    module.exports = __class;
 });
+
+/* todo: show error message? */

@@ -1,15 +1,15 @@
 module.exports = function(grunt) {
     grunt.config('watch', {
-        scripts: {
-            files: ['src/**/*.js'],
-            tasks: ['jshint'],
+        less: {
+            files: ['content/**/*.less'],
+            tasks: ['less'],
             options: {
                 spawn: false
             }
         },
-        less: {
-            files: ['content/**/*.less'],
-            tasks: ['less'],
+        babel: {
+            files: ['src/**/*.js'],
+            tasks: ['babel'],
             options: {
                 spawn: false
             }
@@ -18,4 +18,3 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-watch');
 };
-
