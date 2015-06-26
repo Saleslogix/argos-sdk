@@ -7,6 +7,7 @@ module.exports = function(grunt) {
             moduleRoot: 'argos',
             sourceRoot: 'src',
             blacklist: [
+                'strict'
             ]
         },
         dist: {
