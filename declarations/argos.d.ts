@@ -6,6 +6,7 @@ declare function require(config?: Object, dependencies?: String[], callback?: Fu
 
 declare var Sage: any;
 declare var Simplate: any;
+declare var Rx: any;
 
 declare var ReUI: {
     back: () => void;
@@ -48,7 +49,7 @@ interface View extends _ActionMixin, Function {
 }
 
 interface _DetailBase extends View {
-    
+
 }
 
 interface _ListBase extends View {
