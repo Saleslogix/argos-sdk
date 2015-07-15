@@ -124,7 +124,7 @@ define('argos/_PullToRefreshMixin', [
                             maxDistance: maxDistance,
                             top: data.top + distance
                         };
-                    }.bind(this))
+                    })
                     .filter(function(data) {
                         return data.distance >= 0;
                     })
