@@ -402,15 +402,15 @@ ul.action-list > li > a > div {
     float: left;
     margin: 0 5px 0 0;
     width: 39px;
-    height: 44px;
+    height: 30px;
     text-align: center;
     padding: 5px;
-    font-size: 1.5em;
+    font-size: 1.1em;
     .box-sizing(border-box);
 }
 
 .action-list > li {
-    height: 44px;
+    height: 30px;
     line-height: 1em !important;
     cursor: pointer !important;
 }
@@ -640,7 +640,8 @@ img {
 }
 
 .panel > ul > li,
-.panel-content > ul > li {
+.panel-content > ul > li,
+.quick-actions > ul > li {
     list-style: none;
     line-height: 28px;
     clear: both;
@@ -670,6 +671,7 @@ img {
 .panel-validation-summary > div,
 .panel-concurrency-summary > div,
 .panel-content > ul,
+.quick-actions > ul,
 .panel-validation-summary > ul,
 .panel-concurrency-summary > ul {
     margin: 0;
@@ -685,6 +687,7 @@ img {
 }
 
 .panel-content > ul > li,
+.quick-actions > ul > li,
 .panel-validation-summary > ul > li,
 .panel-concurrency-summary > ul > li {
     list-style: none;
@@ -694,6 +697,7 @@ img {
 }
 
 .panel-content > ul > li > a,
+.quick-actions > ul > li > a,
 .panel-validation-summary > ul > li > a {
     padding: 1px;
     margin: 0 0 0 0.25em; /* matches the padding in the labels */
@@ -736,6 +740,7 @@ img {
     position: relative;
     overflow: hidden;
     text-overflow: ellipsis;
+    float: right;
 }
 
 .href {

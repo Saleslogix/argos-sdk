@@ -82,7 +82,8 @@ define('argos/_DetailBase', [
         widgetTemplate: new Simplate([
             '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '{%! $.loadingTemplate %}',
-            '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
+            '{%! $.quickActionTemplate %}',
+            '{%! $.tabContentTemplate %}',
             '</div>'
         ]),
         /**
@@ -104,19 +105,70 @@ define('argos/_DetailBase', [
         ]),
         /**
          * @property {Simplate}
-         * HTML that starts a new section including the collapsible header
+         * HTML that creates the quick action list
+         */
+        quickActionTemplate: new Simplate([
+            '<div class="quick-actions" data-dojo-attach-point="quickActions"></div>'
+        ]),
+        /**
+         * @property {Simplate}
+         * HTML that starts a new tab list
+         */
+        tabContentTemplate: new Simplate([
+            '<div class="panel-content" data-dojo-attach-point="contentNode">',
+            '{%! $.tabListTemplate %}',
+            '</div>'
+        ]),
+        /**
+         * @property {Simplate}
+         * HTML that starts a new tab list
+         */
+        tabListTemplate: new Simplate([
+            '<ul class="tab-list" data-dojo-attach-point="tabList"></ul>'
+        ]),
+        tabListAnimTemplate: new Simplate([
+            '<div class="tab-focus-indicator"></div>',
+            '<div class="animated-bar"></div>'
+        ]),
+        /**
+         * @property {Simplate}
+         * HTML that creates a new tab to be placed in the tab list
+         * 
+         * `$` => the view instance
+         */
+        tabListItemTemplate: new Simplate([
+            '<li class="tab" data-action="changeTab">',
+            '{%: ($.title || $.options.title) %}',
+            '</li>'
+        ]),
+        detailHeaderTemplate: new Simplate([
+            '<div class="detail-header">',
+            '{%: $.value %}',
+            '</div>'
+        ]),
+        /**
+         * @property {Simplate}
+         * HTML that starts a new section
          *
          * `$` => the view instance
          */
         sectionBeginTemplate: new Simplate([
-            '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-            '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
-            '{%: ($.title || $.options.title) %}',
-            '</h2>',
+            //'<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
+            //'<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
+            //'{%: ($.title || $.options.title) %}',
+            //'</h2>',
             '{% if ($.list || $.options.list) { %}',
-            '<ul class="{%= ($.cls || $.options.cls) %}">',
+                '{% if ($.cls || $.options.cls) { %}',
+                    '<ul class="{%= ($.cls || $.options.cls) %}">',
+                '{% } else { %}',
+                    '<ul class="detailContent">',
+                '{% } %}',
             '{% } else { %}',
-            '<div class="{%= ($.cls || $.options.cls) %}">',
+                '{% if ($.cls || $.options.cls) { %}',
+                    '<div class="{%= ($.cls || $.options.cls) %}">',
+                '{% } else { %}',
+                    '<div class="detailContent">',
+                '{% } %}',
             '{% } %}'
         ]),
         /**
@@ -269,6 +321,11 @@ define('argos/_DetailBase', [
         editText: 'Edit',
         /**
          * @cfg {String}
+         * Information text that is concatenated with the entity type
+         */
+        informationText: 'Information',
+        /**
+         * @cfg {String}
          * Default title text shown in the top toolbar
          */
         titleText: 'Detail',
@@ -303,6 +360,16 @@ define('argos/_DetailBase', [
          */
         toggleExpandClass: 'fa fa-chevron-right',
         /**
+         * @property {li}
+         * Current tab (html element li) that the view is on
+         */
+        currentTab: null,
+        /**
+         * @property {Array}
+         * Mapping of tab to the section
+         */
+        tabMapping: null,
+        /**
          * @cfg {String}
          * The view id to be taken to when the Edit button is pressed in the toolbar
          */
@@ -327,6 +394,7 @@ define('argos/_DetailBase', [
             this.inherited(arguments);
             this.subscribe('/app/refresh', this._onRefresh);
             this.clear();
+            this.tabMapping = [];
         },
         createErrorHandlers: function() {
             this.errorHandlers = this.errorHandlers || [{
@@ -434,6 +502,53 @@ define('argos/_DetailBase', [
                     domClass.toggle(button, this.toggleExpandClass);
                 }
             }
+        },
+        /**
+         * Changes the tab state in the tab list and changes visibility of content.
+         */
+        changeTab: function(params) {
+            var arr,
+                currentIndex,
+                tabIndex,
+                tab = params.$source;
+            if (tab !== this.currentTab) {
+                arr = [].slice.call(this.tabList.children);
+                currentIndex = arr.indexOf(this.currentTab);
+                tabIndex = arr.indexOf(tab);
+                if (currentIndex > -1 && tabIndex > -1) {
+                    this.tabMapping[currentIndex].style.display = 'none';
+                    this.tabMapping[tabIndex].style.display = 'block';
+                    this.positionFocusState(tab);
+                    this.currentTab.className = 'tab';
+                    tab.className = 'tab selected';
+                    this.currentTab = tab;
+                }
+            }
+        },
+        positionFocusState: function(target) {
+            var posTop = target.offsetTop,
+                posLeft = target.offsetLeft,
+                width = parseInt(target.offsetWidth),
+                height = parseInt(target.offsetHeight),
+                tableTop = this.tabList.offsetTop,
+                tableLeft = this.tabList.offsetLeft,
+                focusState = query(".animated-bar", this.id),
+                cssChanges;
+
+            if (focusState.length > 0) {
+                focusState = focusState[0];
+                focusState.style.left = posLeft - tableLeft + 'px';
+                focusState.style.top = posTop - tableTop + 'px';
+                focusState.style.right = (posTop - tableTop) + width + 'px';
+                focusState.style.bottom = (posTop - tableTop) + height + 'px';
+                focusState.style.width = width + 'px';
+            }
+        },
+        placeDetailHeader: function() {
+            var value = this.id;
+            value = value.split('_')[0];
+            value = value.charAt(0).toUpperCase() + value.slice(1) + " " + this.informationText;
+            domConstruct.place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
         },
         /**
          * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.
@@ -557,6 +672,7 @@ define('argos/_DetailBase', [
                 current,
                 i,
                 section,
+                tab,
                 sectionNode,
                 include,
                 exclude,
@@ -573,6 +689,11 @@ define('argos/_DetailBase', [
                 rowNode,
                 rowHtml,
                 item;
+
+            if (!this.tabList.parentNode) {
+                domConstruct.place(this.tabList, this.contentNode);
+                domConstruct.place(this.tabListAnimTemplate.apply(), this.contentNode);
+            }
 
             for (i = 0; i < rows.length; i++) {
                 current = rows[i];
@@ -599,9 +720,30 @@ define('argos/_DetailBase', [
 
                 if (!sectionStarted) {
                     sectionStarted = true;
-                    section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-                    sectionNode = section.childNodes[1];
-                    domConstruct.place(section, this.contentNode);
+                    if (layout.name === 'QuickActionsSection') {
+                        section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                        sectionNode = section;
+                        domConstruct.place(section, this.quickActions);
+                        //if (this.tabList) {
+                        //    domConstruct.place(section, this.tabList, 'before');
+                        //} else {
+                        //    domConstruct.place(section, this.contentNode);
+                        //}
+                    } else {
+                        tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
+                        section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                        sectionNode = section;
+                        if (this.tabList.children.length === 0) {
+                            // No children, so set the current tab to this tab and set the section to have a display of block
+                            this.currentTab = tab;
+                            this.currentTab.className = 'tab selected';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                        this.tabMapping.push(section);
+                        domConstruct.place(tab, this.tabList);
+                        domConstruct.place(section, this.contentNode);
+                    }
                 }
 
                 provider = current['provider'] || utility.getValue;
@@ -711,6 +853,7 @@ define('argos/_DetailBase', [
                 }
 
                 rowNode = this.createRowNode(current, sectionNode, entry, template, data);
+
                 if (current['relatedItem']) {
                     try {
                         this._processRelatedItem(data, context, rowNode);
@@ -775,6 +918,11 @@ define('argos/_DetailBase', [
 
             if (this.entry) {
                 this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
+
+                if (this.currentTab) {
+                    this.positionFocusState(this.currentTab);
+                }
+                this.placeDetailHeader(this.entry);
             } else {
                 this.set('detailContent', '');
             }
@@ -916,6 +1064,15 @@ define('argos/_DetailBase', [
          */
         clear: function() {
             this.set('detailContent', this.emptyTemplate.apply(this));
+            if (this.tabList) {
+                domConstruct.empty(this.tabList);
+            }
+            if (this.quickActions) {
+                domConstruct.empty(this.quickActions);
+            }
+            if (this.tabMapping) {
+                this.tabMapping = [];
+            }
 
             this._navigationOptions = [];
         },

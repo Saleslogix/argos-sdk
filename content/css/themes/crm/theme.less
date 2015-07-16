@@ -8,7 +8,7 @@ body {
 
 a {
     color: @link-color;
-    text-decoration: underline;
+    text-decoration: none;
     cursor: pointer;
 }
 
@@ -66,6 +66,7 @@ body > .viewContainer {
 .panel-content,
 .panel-loading-indicator {
     background-color: @panel-content-bg-color;
+    padding: 0 15px;
 }
 
 .panel-content > h2 {
@@ -104,8 +105,9 @@ body > .viewContainer {
 }
 
 .panel-content > ul a,
+.quick-actions > ul a,
 .panel-validation-summary > ul a {
-    color: @panel-content-list-link-color;
+    color: @color-lighter-slate;
     text-decoration: @panel-content-list-link-txtdec;
 }
 
@@ -129,8 +131,58 @@ body > .viewContainer {
     border-top: 0 none black;
 }
 
-.panel-content > .action-list {
-    background-color: lighten(@color-light-azure, 15%);
+.quick-actions > .action-list {
+    background-color: @color-deep-slate;
+    padding: 10px 5px 15px 0;
+}
+
+.tab-list {
+    border-bottom: 1px solid @color-lighter-slate !important;
+    height: 30px;
+    list-style: none outside none;
+    overflow: hidden;
+    .tab {
+        border-radius: 2px 2px 0 0;
+        cursor: pointer;
+        display: inline-block;
+        padding: 4px 6px 5px;
+        position: relative;
+        -webkit-transition: background-color 0.25s ease;
+        -moz-transition: background-color 0.25s ease;
+        -ms-transition: background-color 0.25s ease;
+        -o-transition: background-color 0.25s ease;
+        transition: background-color 0.25s ease;
+        color: @color-graphite;
+        font-size: 15px;
+        font-weight: normal;
+        text-decoration: none;
+    }
+    .selected {
+        color: @color-azure;
+    }
+}
+
+.detailContent {
+    padding-top: 15px !important;
+    li {
+        border-bottom: 1px solid @color-lighter-slate;
+    }
+}
+
+.detail-header {
+    padding: 25px 0px 10px 15px !important;
+    font-size: 18px;
+}
+
+.animated-bar {
+    height: 2px;
+    position: relative;
+    background-color: @color-azure;
+    -webkit-transition: left 0.25s ease;
+    -moz-transition: left 0.25s ease;
+    -ms-transition: left 0.25s ease;
+    -o-transition: left 0.25s ease;
+    transition: left 0.25s ease;
 }
 
 body > .viewContainer {
@@ -163,16 +215,14 @@ body > .viewContainer {
 
 .related-item-count {
     margin: 0 5px 0 0;
-    min-width: 44px;
-    height: 44px;
-    line-height: 44px;
+    min-width: 36px;
+    min-height: 36px;
+    line-height: 36px;
     display: inline-block;
     background-color: @color-azure;
     text-align: center;
     color: #fff;
-    padding: 0 5px;
-    .border-radius(3px);
-    .box-sizing(border-box);
+    border-radius: 50%;
 }
 
 .related-item-label {
