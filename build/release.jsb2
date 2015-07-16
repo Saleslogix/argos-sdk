@@ -29,7 +29,7 @@
           "path": "../libraries/sdata/"
         },
         {
-          "text": "pouchdb-3.0.6.min.js",
+          "text": "pouchdb-3.6.0.min.js",
           "path": "../libraries/PouchDB/"
         },
         {
@@ -143,7 +143,7 @@
         },
         {
           "text": "PouchDB.js",
-          "path": "../src/Store"
+          "path": "../src-out/Store/"
         },
         {
           "text": "ErrorManager.js",
