@@ -163,15 +163,10 @@ define('argos/_DetailBase', [
         ]),
         /**
          * @property {Simplate}
-         * HTML that creates a more tab to be placed in the tab list
+         * HTML that creates the detail header displaying information about the tab list
          * 
          * `$` => the view instance
          */
-        moreTabListItemTemplate: new Simplate([
-            '<li class="tab" data-action="changeMoreTab">',
-            '{%: ($.title || $.options.title) %}',
-            '</li>'
-        ]),
         detailHeaderTemplate: new Simplate([
             '<div class="detail-header">',
                 '{%: $.value %}',
@@ -563,55 +558,45 @@ define('argos/_DetailBase', [
          */
         changeTab: function(params) {
             var arr,
+                arrMore,
                 currentIndex,
                 tabIndex,
+                indexShift,
                 moreTab,
                 tab = params.$source;
             if (tab !== this.currentTab) {
                 arr = [].slice.call(this.tabList.children);
+                arrMore = [].slice.call(this.moreTabList.children);
+                indexShift = this.tabList.children.length - 1;
                 currentIndex = arr.indexOf(this.currentTab);
+                if (currentIndex === -1) {
+                    currentIndex = arrMore.indexOf(this.currentTab) + indexShift;
+                }
                 tabIndex = arr.indexOf(tab);
+                if (tabIndex === -1) {
+                    tabIndex = arrMore.indexOf(tab) + indexShift;
+                }
                 if (currentIndex > -1 && tabIndex > -1) {
                     this.tabMapping[currentIndex].style.display = 'none';
                     this.tabMapping[tabIndex].style.display = 'block';
-                    this.positionFocusState(tab);
-                    this.currentTab.className = 'tab';
-                    tab.className = 'tab selected';
-                    this.currentTab = tab;
-                    if (this.moreTabList.children > 0) {
-                        moreTab = query('.more-item', this.id);
-                        if (moreTab.children.length > 0) {
-                            moreTab[0].className = 'tab more-item';
+                    moreTab = query('.more-item', this.id)[0];
+                    if (arr.indexOf(tab) > -1) {
+                        this.positionFocusState(tab);
+                        this.currentTab.className = 'tab';
+                        tab.className = 'tab selected';
+                        this.currentTab = tab;
+                        if (moreTab) {
+                            moreTab.className = 'tab more-item';
+                        }
+                    } else {
+                        if (moreTab) {
+                            this.positionFocusState(moreTab);
+                            moreTab.className = 'tab more-item selected';
+                            this.currentTab.className = 'tab';
+                            tab.className = 'tab selected';
+                            this.currentTab = tab;
                         }
                     }
-                }
-            }
-        },
-        /**
-         * Changes the tab state in the tab list and changes visibility of content.
-         * @param {Object} The event type and source.
-         * @private
-         */
-        changeMoreTab: function(params) {
-            var arr,
-                currentIndex,
-                tabIndex,
-                indexShift,
-                tab = params.$source;
-            if (tab !== this.currentTab) {
-                indexShift = this.tabList.children.length - 1;
-                arr = [].slice.call(this.moreTabList.children);
-                currentIndex = arr.indexOf(this.currentTab) + indexShift;
-                tabIndex = arr.indexOf(tab) + indexShift;
-                if (currentIndex > -1 && tabIndex > -1) {
-                    this.tabMapping[currentIndex].style.display = 'none';
-                    this.tabMapping[tabIndex].style.display = 'block';
-                    tab.className = 'tab selected';
-                    this.currentTab.className = 'tab';
-                    this.currentTab = tab;
-                    tab = query('.more-item', this.id);
-                    this.positionFocusState(tab);
-                    tab.className = 'tab more-item selected';
                 }
             }
         },
@@ -626,27 +611,20 @@ define('argos/_DetailBase', [
                 posTop,
                 posLeft,
                 width,
-                height,
-                tableLeft,
-                tableTop;
+                height;
             if (tab) {
                 if (this.moreTabList.style.visibility === 'hidden') {
                     this.moreTabList.style.visibility = 'visible';
-                    this.currentTab.className = 'tab';
-                    tab.className = 'tab more-item selected';
 
                     if (this.moreTabList.style.left === '') {
                         moreTab = query('.more-item', this.id)[0];
-                        posTop = moreTab.offsetTop,
-                        posLeft = moreTab.offsetLeft,
-                        width = parseInt(moreTab.offsetWidth),
-                        height = parseInt(moreTab.offsetHeight),
-                        tableTop = this.tabList.offsetTop,
-                        tableLeft = this.tabList.offsetLeft,
-                        this.moreTabList.style.left = posLeft - tableLeft + 'px';
-                        this.moreTabList.style.top = posTop - tableTop + 'px';
-                        this.moreTabList.style.right = (posTop - tableTop) + width + 'px';
-                        this.moreTabList.style.bottom = (posTop - tableTop) + height + 'px';
+                        posTop = moreTab.offsetTop;
+                        posLeft = moreTab.offsetLeft;
+                        width = parseInt(moreTab.offsetWidth);
+                        height = parseInt(moreTab.offsetHeight);
+
+                        this.moreTabList.style.left = posLeft - this.moreTabList.offsetWidth + width + 'px';
+                        this.moreTabList.style.top = posTop + height + 'px';
                     }
                 }
                 else {
@@ -705,20 +683,19 @@ define('argos/_DetailBase', [
 
                     this.tabMoreIndex = this.tabMapping.length - 1;
                     this.tabList.children[this.tabMoreIndex].remove();
-                    tab = domConstruct.toDom(this.moreTabListItemTemplate.apply({ title: tab.innerHTML }, this));
                     if (this.tabList.children.length === 1 && this.moreTabList.children.length === 0) {
                         moreTab.className = 'tab more-item selected';
                         this.currentTab = tab;
                     }
-                    domConstruct.place(tab, this.moreTabList);
 
                     if (moreTab.offsetTop > this.tabList.offsetTop) {
                         this.tabMoreIndex = this.tabMapping.length - 2;
-                        replacedTab = this.tabItems[this.tabMoreIndex];
-                        this.tabItems.children[this.tabMoreIndex].remove();
+                        replacedTab = this.tabList.children[this.tabMoreIndex];
+                        this.tabList.children[this.tabMoreIndex].remove();
                         domConstruct.place(replacedTab, this.moreTabList);
                     }
 
+                    domConstruct.place(tab, this.moreTabList);
                     this.inOverflow = true;
                     this.tabMoreIndex++;
                 } else {
@@ -907,11 +884,7 @@ define('argos/_DetailBase', [
                         //    domConstruct.place(section, this.contentNode);
                         //}
                     } else {
-                        if (!this.inOverflow) {
-                            tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
-                        } else {
-                            tab = domConstruct.toDom(this.moreTabListItemTemplate.apply(layout, this));
-                        }
+                        tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
                         section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
                         sectionNode = section;
                         if (this.tabList.children.length === 0) {
@@ -1259,6 +1232,7 @@ define('argos/_DetailBase', [
                 domConstruct.empty(this.tabList);
                 if (this.moreTabList) {
                     domConstruct.empty(this.moreTabList);
+                    this.moreTabList.style.left = '';
                 }
             }
             if (this.quickActions) {
