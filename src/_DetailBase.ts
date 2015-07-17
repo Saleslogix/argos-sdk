@@ -187,7 +187,7 @@ define('argos/_DetailBase', [
                 '{% if ($.cls || $.options.cls) { %}',
                     '<ul class="{%= ($.cls || $.options.cls) %}">',
                 '{% } else { %}',
-                    '<ul class="detailContent">',
+                    '<ul class="detailContent list">',
                 '{% } %}',
             '{% } else { %}',
                 '{% if ($.cls || $.options.cls) { %}',
