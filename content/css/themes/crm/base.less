@@ -326,6 +326,10 @@
     text-align: center !important;
     padding: 1em !important;
     min-height: 1em !important;
+    display: inline-block;
+    span {
+        float: none;
+    }
 }
 
 .content-loading > span {
@@ -726,6 +730,9 @@ img {
 
 .row {
     text-align: left;
+    display: inline-flex;
+    justify-content: space-between;
+    width: 100%;
     clear: both;
     padding: 0 .75em;
 }
