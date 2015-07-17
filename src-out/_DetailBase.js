@@ -623,8 +623,10 @@ define('argos/_DetailBase', [
          * @private
          */
         placeDetailHeader: function () {
-            var value = this.id;
-            value = value.split('_')[0];
+            var value = this.resourceKind;
+            if (value.charAt(value.length - 1) === 's') {
+                value = value.slice(0, value.length - 1);
+            }
             value = value.charAt(0).toUpperCase() + value.slice(1) + " " + this.informationText;
             domConstruct.place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
         },
