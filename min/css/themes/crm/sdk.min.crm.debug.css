@@ -1167,7 +1167,6 @@ body body > .viewContainer {
 }
 .panel-content > h2 {
   border-bottom: 1px solid #c7cbce;
-  background-color: #d9dcde;
   color: #1a1a1a;
   padding: 5px 0 5px 0;
 }
@@ -1517,10 +1516,12 @@ textarea:focus {
   margin: 0;
   padding: 0;
   position: absolute;
-  right: 4px;
+  right: 19px;
   display: block;
   height: 44px;
   width: 44px;
+  background-color: transparent;
+  border: 0;
 }
 .row-edit[data-field-type="picklist"] > div > input,
 .row-edit[data-field-type="lookup"] > div > input,
