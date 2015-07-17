@@ -80,10 +80,11 @@ define('argos/_DetailBase', [
          *
          */
         widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" data-dojo-attach-event="onclick:toggleDropDown" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '{%! $.loadingTemplate %}',
             '{%! $.quickActionTemplate %}',
             '{%! $.tabContentTemplate %}',
+            '{%! $.moreTabListTemplate %}',
             '</div>'
         ]),
         /**
@@ -116,7 +117,7 @@ define('argos/_DetailBase', [
          */
         tabContentTemplate: new Simplate([
             '<div class="panel-content" data-dojo-attach-point="contentNode">',
-            '{%! $.tabListTemplate %}',
+                '{%! $.tabListTemplate %}',
             '</div>'
         ]),
         /**
@@ -125,6 +126,13 @@ define('argos/_DetailBase', [
          */
         tabListTemplate: new Simplate([
             '<ul class="tab-list" data-dojo-attach-point="tabList"></ul>'
+        ]),
+        /**
+         * @property {Simplate}
+         * HTML that starts a new More tab list
+         */
+        moreTabListTemplate: new Simplate([
+            '<ul class="more-tab-dropdown" data-dojo-attach-point="moreTabList"></ul>'
         ]),
         tabListAnimTemplate: new Simplate([
             '<div class="tab-focus-indicator"></div>',
@@ -138,12 +146,35 @@ define('argos/_DetailBase', [
          */
         tabListItemTemplate: new Simplate([
             '<li class="tab" data-action="changeTab">',
+                '{%: ($.title || $.options.title) %}',
+            '</li>'
+        ]),
+        /**
+         * @property {Simplate}
+         * HTML that creates a new tab to be placed in the more tab list
+         * 
+         * `$` => the view instance
+         */
+        moreTabItemTemplate: new Simplate([
+            '<li class="tab more-item" data-action="toggleDropDown">',
+            '{%: ($.title || $.options.title) %}',
+            '<span class="fa fa-angle-down"></span>',
+            '</li>'
+        ]),
+        /**
+         * @property {Simplate}
+         * HTML that creates a more tab to be placed in the tab list
+         * 
+         * `$` => the view instance
+         */
+        moreTabListItemTemplate: new Simplate([
+            '<li class="tab" data-action="changeMoreTab">',
             '{%: ($.title || $.options.title) %}',
             '</li>'
         ]),
         detailHeaderTemplate: new Simplate([
             '<div class="detail-header">',
-            '{%: $.value %}',
+                '{%: $.value %}',
             '</div>'
         ]),
         /**
@@ -321,9 +352,19 @@ define('argos/_DetailBase', [
         editText: 'Edit',
         /**
          * @cfg {String}
+         * Font awesome icon to be used by the more list item
+         */
+        icon: 'fa fa-chevron',
+        /**
+         * @cfg {String}
          * Information text that is concatenated with the entity type
          */
         informationText: 'Information',
+        /**
+         * @cfg {String}
+         * More text that is used as the overflow tab for the tab list
+         */
+        moreText: 'More',
         /**
          * @cfg {String}
          * Default title text shown in the top toolbar
@@ -364,6 +405,16 @@ define('argos/_DetailBase', [
          * Current tab (html element li) that the view is on
          */
         currentTab: null,
+        /**
+         * @property {bool}
+         * Boolean value for whether tabs caused an overflow in the tab list
+         */
+        inOverflow: false,
+        /**
+         * @property {int}
+         * int value representing the index at which the more tab starts (used to place the remaining tabs into the more tab)
+         */
+        tabMoreIndex: null,
         /**
          * @property {Array}
          * Mapping of tab to the section
@@ -491,6 +542,8 @@ define('argos/_DetailBase', [
         },
         /**
          * Toggles the collapsed state of the section.
+         * @param {Object} The event type and source.
+         * @private
          */
         toggleSection: function(params) {
             var node = dom.byId(params.$source), button = null;
@@ -505,11 +558,14 @@ define('argos/_DetailBase', [
         },
         /**
          * Changes the tab state in the tab list and changes visibility of content.
+         * @param {Object} The event type and source.
+         * @private
          */
         changeTab: function(params) {
             var arr,
                 currentIndex,
                 tabIndex,
+                moreTab,
                 tab = params.$source;
             if (tab !== this.currentTab) {
                 arr = [].slice.call(this.tabList.children);
@@ -522,9 +578,90 @@ define('argos/_DetailBase', [
                     this.currentTab.className = 'tab';
                     tab.className = 'tab selected';
                     this.currentTab = tab;
+                    if (this.moreTabList.children > 0) {
+                        moreTab = query('.more-item', this.id);
+                        if (moreTab.children.length > 0) {
+                            moreTab[0].className = 'tab more-item';
+                        }
+                    }
                 }
             }
         },
+        /**
+         * Changes the tab state in the tab list and changes visibility of content.
+         * @param {Object} The event type and source.
+         * @private
+         */
+        changeMoreTab: function(params) {
+            var arr,
+                currentIndex,
+                tabIndex,
+                indexShift,
+                tab = params.$source;
+            if (tab !== this.currentTab) {
+                indexShift = this.tabList.children.length - 1;
+                arr = [].slice.call(this.moreTabList.children);
+                currentIndex = arr.indexOf(this.currentTab) + indexShift;
+                tabIndex = arr.indexOf(tab) + indexShift;
+                if (currentIndex > -1 && tabIndex > -1) {
+                    this.tabMapping[currentIndex].style.display = 'none';
+                    this.tabMapping[tabIndex].style.display = 'block';
+                    tab.className = 'tab selected';
+                    this.currentTab.className = 'tab';
+                    this.currentTab = tab;
+                    tab = query('.more-item', this.id);
+                    this.positionFocusState(tab);
+                    tab.className = 'tab more-item selected';
+                }
+            }
+        },
+        /**
+         * Changes the tab state in the tab list and changes visibility of content.
+         * @param {Object} The event type and source.
+         * @private
+         */
+        toggleDropDown: function(params) {
+            var tab = params.$source,
+                moreTab,
+                posTop,
+                posLeft,
+                width,
+                height,
+                tableLeft,
+                tableTop;
+            if (tab) {
+                if (this.moreTabList.style.visibility === 'hidden') {
+                    this.moreTabList.style.visibility = 'visible';
+                    this.currentTab.className = 'tab';
+                    tab.className = 'tab more-item selected';
+
+                    if (this.moreTabList.style.left === '') {
+                        moreTab = query('.more-item', this.id)[0];
+                        posTop = moreTab.offsetTop,
+                        posLeft = moreTab.offsetLeft,
+                        width = parseInt(moreTab.offsetWidth),
+                        height = parseInt(moreTab.offsetHeight),
+                        tableTop = this.tabList.offsetTop,
+                        tableLeft = this.tabList.offsetLeft,
+                        this.moreTabList.style.left = posLeft - tableLeft + 'px';
+                        this.moreTabList.style.top = posTop - tableTop + 'px';
+                        this.moreTabList.style.right = (posTop - tableTop) + width + 'px';
+                        this.moreTabList.style.bottom = (posTop - tableTop) + height + 'px';
+                    }
+                }
+                else {
+                    this.moreTabList.style.visibility = 'hidden';
+                }
+            }
+            else {
+                this.moreTabList.style.visibility = 'hidden';
+            }
+        },
+        /**
+         * Handler for positioning the focus bar for the tab list.
+         * @param {Object} The target tab in the tabList.
+         * @private
+         */
         positionFocusState: function(target) {
             var posTop = target.offsetTop,
                 posLeft = target.offsetLeft,
@@ -532,8 +669,7 @@ define('argos/_DetailBase', [
                 height = parseInt(target.offsetHeight),
                 tableTop = this.tabList.offsetTop,
                 tableLeft = this.tabList.offsetLeft,
-                focusState = query(".animated-bar", this.id),
-                cssChanges;
+                focusState = query(".animated-bar", this.id);
 
             if (focusState.length > 0) {
                 focusState = focusState[0];
@@ -544,11 +680,52 @@ define('argos/_DetailBase', [
                 focusState.style.width = width + 'px';
             }
         },
+        /**
+         * Handler for the getting the detail resource type from the id and placing the header into the detail view..
+         * @private
+         */
         placeDetailHeader: function() {
             var value = this.id;
             value = value.split('_')[0];
             value = value.charAt(0).toUpperCase() + value.slice(1) + " " + this.informationText;
             domConstruct.place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
+        },
+        /**
+         * Checks the tab to see if it causes an overflow when placed in the tabList, if so then push it a new list element called More.
+         * @param {Object} The tab object.
+         * @private
+         */
+        checkTabOverflow: function(tab) {
+            var moreTab, replacedTab;
+            if (tab.offsetTop > this.tabList.offsetTop) {
+                if (!this.inOverflow) {
+                    moreTab = domConstruct.toDom(this.moreTabItemTemplate.apply({ title: this.moreText + '...' }, this));
+                    moreTab.style.float = 'right';
+                    domConstruct.place(moreTab, this.tabList);
+
+                    this.tabMoreIndex = this.tabMapping.length - 1;
+                    this.tabList.children[this.tabMoreIndex].remove();
+                    tab = domConstruct.toDom(this.moreTabListItemTemplate.apply({ title: tab.innerHTML }, this));
+                    if (this.tabList.children.length === 1 && this.moreTabList.children.length === 0) {
+                        moreTab.className = 'tab more-item selected';
+                        this.currentTab = tab;
+                    }
+                    domConstruct.place(tab, this.moreTabList);
+
+                    if (moreTab.offsetTop > this.tabList.offsetTop) {
+                        this.tabMoreIndex = this.tabMapping.length - 2;
+                        replacedTab = this.tabItems[this.tabMoreIndex];
+                        this.tabItems.children[this.tabMoreIndex].remove();
+                        domConstruct.place(replacedTab, this.moreTabList);
+                    }
+
+                    this.inOverflow = true;
+                    this.tabMoreIndex++;
+                } else {
+                    this.tabList.children[this.tabMoreIndex].remove();
+                    domConstruct.place(tab, this.moreTabList);
+                }
+            }
         },
         /**
          * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.
@@ -730,18 +907,22 @@ define('argos/_DetailBase', [
                         //    domConstruct.place(section, this.contentNode);
                         //}
                     } else {
-                        tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
+                        if (!this.inOverflow) {
+                            tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
+                        } else {
+                            tab = domConstruct.toDom(this.moreTabListItemTemplate.apply(layout, this));
+                        }
                         section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
                         sectionNode = section;
                         if (this.tabList.children.length === 0) {
                             // No children, so set the current tab to this tab and set the section to have a display of block
                             this.currentTab = tab;
-                            this.currentTab.className = 'tab selected';
                         } else {
                             section.style.display = 'none';
                         }
                         this.tabMapping.push(section);
                         domConstruct.place(tab, this.tabList);
+                        this.checkTabOverflow(tab);
                         domConstruct.place(section, this.contentNode);
                     }
                 }
@@ -914,13 +1095,23 @@ define('argos/_DetailBase', [
          * @param {Object} entry Entry from data store
          */
         processEntry: function(entry) {
+            var moreTab;
             this.entry = this.preProcessEntry(entry);
 
             if (this.entry) {
                 this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
 
                 if (this.currentTab) {
-                    this.positionFocusState(this.currentTab);
+                    if (this.tabList.children.length === 1 && this.moreTabList.children.length > 0) {
+                        moreTab = query('.more-item', this.id);
+                        if (moreTab.children.length > 0) {
+                            this.positionFocusState(moreTab[0]);
+                            moreTab.className = 'tab more-item selected';
+                        }
+                    } else {
+                        this.positionFocusState(this.currentTab);
+                        this.currentTab.className = 'tab selected';
+                    }
                 }
                 this.placeDetailHeader(this.entry);
             } else {
@@ -1066,12 +1257,17 @@ define('argos/_DetailBase', [
             this.set('detailContent', this.emptyTemplate.apply(this));
             if (this.tabList) {
                 domConstruct.empty(this.tabList);
+                if (this.moreTabList) {
+                    domConstruct.empty(this.moreTabList);
+                }
             }
             if (this.quickActions) {
                 domConstruct.empty(this.quickActions);
             }
             if (this.tabMapping) {
                 this.tabMapping = [];
+                this.inOverflow = false;
+                this.tabMoreIndex = null;
             }
 
             this._navigationOptions = [];
