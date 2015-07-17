@@ -499,6 +499,10 @@ span {
   text-align: center !important;
   padding: 1em !important;
   min-height: 1em !important;
+  display: inline-block;
+}
+.panel .panel-loading-indicator div.row span {
+  float: none;
 }
 .content-loading > span {
   padding-left: 32px;
@@ -849,6 +853,9 @@ img {
 }
 .row {
   text-align: left;
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
   clear: both;
   padding: 0 .75em;
 }
