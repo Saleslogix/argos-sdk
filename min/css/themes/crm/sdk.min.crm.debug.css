@@ -499,7 +499,6 @@ span {
   text-align: center !important;
   padding: 1em !important;
   min-height: 1em !important;
-  display: inline-block;
 }
 .panel .panel-loading-indicator div.row span {
   float: none;
@@ -842,7 +841,7 @@ img {
   white-space: inherit;
 }
 .row.no-value {
-  display: none;
+  display: none !important;
   visibility: hidden;
 }
 .row > div > label,
@@ -853,9 +852,6 @@ img {
 }
 .row {
   text-align: left;
-  display: inline-flex;
-  justify-content: space-between;
-  width: 100%;
   clear: both;
   padding: 0 .75em;
 }
@@ -1278,6 +1274,11 @@ body body > .viewContainer {
 }
 .detailContent li {
   border-bottom: 1px solid #c8cbd4;
+}
+.detailContent .row {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
 }
 .detail-header {
   padding: 25px 0px 10px 15px !important;
