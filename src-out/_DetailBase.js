@@ -27,7 +27,9 @@
 define('argos/_DetailBase', [
     'dojo/_base/declare',
     'dojo/_base/lang',
+    'dojo/_base/array',
     'dojo/_base/Deferred',
+    'dojo/_base/connect',
     'dojo/query',
     'dojo/string',
     'dojo/dom',
@@ -37,7 +39,7 @@ define('argos/_DetailBase', [
     './Utility',
     './ErrorManager',
     './View'
-], function (declare, lang, Deferred, query, string, dom, domClass, domConstruct, format, utility, ErrorManager, View) {
+], function (declare, lang, array, Deferred, connect, query, string, dom, domClass, domConstruct, format, utility, ErrorManager, View) {
     var __class = declare('argos._DetailBase', [View], {
         /**
          * @property {Object}
@@ -390,6 +392,11 @@ define('argos/_DetailBase', [
          */
         inOverflow: false,
         /**
+         * @property {Object}
+         * dojo connect object associated to the setOrientation event
+         */
+        _orientation: null,
+        /**
          * @property {int}
          * int value representing the index at which the more tab starts (used to place the remaining tabs into the more tab)
          */
@@ -536,24 +543,22 @@ define('argos/_DetailBase', [
          * @private
          */
         changeTab: function (params) {
-            var arr, arrMore, currentIndex, tabIndex, indexShift, moreTab, tab = params.$source;
+            var currentIndex, tabIndex, indexShift, moreTab, tab = params.$source;
             if (tab !== this.currentTab) {
-                arr = [].slice.call(this.tabList.children);
-                arrMore = [].slice.call(this.moreTabList.children);
                 indexShift = this.tabList.children.length - 1;
-                currentIndex = arr.indexOf(this.currentTab);
+                currentIndex = array.indexOf(this.tabList.children, this.currentTab);
                 if (currentIndex === -1) {
-                    currentIndex = arrMore.indexOf(this.currentTab) + indexShift;
+                    currentIndex = array.indexOf(this.moreTabList.children, this.currentTab) + indexShift;
                 }
-                tabIndex = arr.indexOf(tab);
+                tabIndex = array.indexOf(this.tabList.children, tab);
                 if (tabIndex === -1) {
-                    tabIndex = arrMore.indexOf(tab) + indexShift;
+                    tabIndex = array.indexOf(this.moreTabList.children, tab) + indexShift;
                 }
                 if (currentIndex > -1 && tabIndex > -1) {
                     this.tabMapping[currentIndex].style.display = 'none';
                     this.tabMapping[tabIndex].style.display = 'block';
                     moreTab = query('.more-item', this.id)[0];
-                    if (arr.indexOf(tab) > -1) {
+                    if (array.indexOf(this.tabList.children, tab) > -1) {
                         this.positionFocusState(tab);
                         this.currentTab.className = 'tab';
                         tab.className = 'tab selected';
@@ -599,7 +604,53 @@ define('argos/_DetailBase', [
                 }
             }
             else {
-                this.moreTabList.style.visibility = 'hidden';
+                if (params.target !== query('.more-item', this.id)[0]) {
+                    this.moreTabList.style.visibility = 'hidden';
+                }
+            }
+        },
+        /**
+         * Reorganizes the tab when the screen orientation changes.
+         * @private
+         */
+        reorderTabs: function () {
+            var tab, startMoreTab, moreTab, arr;
+            this.inOverflow = false;
+            if (this.moreTabList.children.length > 0) {
+                moreTab = query('.more-item', this.id)[0];
+                if (moreTab) {
+                    this.tabList.children[this.tabList.children.length - 1].remove();
+                }
+                // Need to reference a different array when calling array.forEach since this.moreTabList.children is being modified, hence have arr be this.moreTabList.children
+                arr = [].slice.call(this.moreTabList.children);
+                array.forEach(arr, function (tab) {
+                    this.moreTabList.children[array.indexOf(this.moreTabList.children, tab)].remove();
+                    domConstruct.place(tab, this.tabList);
+                    this.checkTabOverflow(tab);
+                }, this);
+            }
+            else {
+                arr = [].slice.call(this.tabList.children);
+                array.forEach(arr, function (tab) {
+                    if (tab.offsetTop > this.tabList.offsetTop) {
+                        if (!startMoreTab) {
+                            startMoreTab = tab;
+                        }
+                        else {
+                            this.tabList.children[array.indexOf(this.tabList.children, tab)].remove();
+                            domConstruct.place(tab, this.moreTabList);
+                        }
+                    }
+                }, this);
+                this.checkTabOverflow(startMoreTab);
+            }
+            moreTab = query('.more-item', this.id)[0];
+            if (moreTab && array.indexOf(this.moreTabList.children, this.currentTab) > -1) {
+                this.positionFocusState(moreTab);
+                moreTab.className = 'tab more-item selected';
+            }
+            else {
+                this.positionFocusState(this.currentTab);
             }
         },
         /**
@@ -642,14 +693,15 @@ define('argos/_DetailBase', [
                     moreTab = domConstruct.toDom(this.moreTabItemTemplate.apply({ title: this.moreText + '...' }, this));
                     moreTab.style.float = 'right';
                     domConstruct.place(moreTab, this.tabList);
-                    this.tabMoreIndex = this.tabMapping.length - 1;
+                    this.tabMoreIndex = array.indexOf(this.tabList.children, moreTab) - 1;
                     this.tabList.children[this.tabMoreIndex].remove();
                     if (this.tabList.children.length === 1 && this.moreTabList.children.length === 0) {
                         moreTab.className = 'tab more-item selected';
                         this.currentTab = tab;
+                        tab.className = 'tab selected';
                     }
                     if (moreTab.offsetTop > this.tabList.offsetTop) {
-                        this.tabMoreIndex = this.tabMapping.length - 2;
+                        this.tabMoreIndex = this.tabMoreIndex - 1;
                         replacedTab = this.tabList.children[this.tabMoreIndex];
                         this.tabList.children[this.tabMoreIndex].remove();
                         domConstruct.place(replacedTab, this.moreTabList);
@@ -1107,6 +1159,10 @@ define('argos/_DetailBase', [
                 this.clear();
             }
         },
+        onTransitionTo: function () {
+            this.inherited(arguments);
+            this.orientation = connect.subscribe('/app/setOrientation', this, this.reorderTabs);
+        },
         /**
          * If a security breach is detected it sets the content to the notAvailableTemplate, otherwise it calls
          * {@link #requestData requestData} which starts the process sequence.
@@ -1128,6 +1184,7 @@ define('argos/_DetailBase', [
                 if (this.moreTabList) {
                     domConstruct.empty(this.moreTabList);
                     this.moreTabList.style.left = '';
+                    this.moreTabList.style.visibility = 'hidden';
                 }
             }
             if (this.quickActions) {
