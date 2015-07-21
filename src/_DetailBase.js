@@ -616,7 +616,8 @@ define('argos/_DetailBase', [
                 posTop,
                 posLeft,
                 width,
-                height;
+                height,
+                maxHeight;
             if (tab) {
                 if (this.moreTabList.style.visibility === 'hidden') {
                     this.moreTabList.style.visibility = 'visible';
@@ -627,9 +628,11 @@ define('argos/_DetailBase', [
                         posLeft = moreTab.offsetLeft;
                         width = parseInt(moreTab.offsetWidth);
                         height = parseInt(moreTab.offsetHeight);
+                        maxHeight = this.domNode.offsetHeight - this.domNode.offsetTop - posTop;
 
                         this.moreTabList.style.left = posLeft - this.moreTabList.offsetWidth + width + 'px';
                         this.moreTabList.style.top = posTop + height + 'px';
+                        this.moreTabList.style.maxHeight = maxHeight + 'px';
                     }
                 }
                 else {
@@ -647,8 +650,7 @@ define('argos/_DetailBase', [
          * @private
          */
         reorderTabs: function() {
-            var tab,
-                startMoreTab,
+            var startMoreTab,
                 moreTab,
                 arr;
             this.inOverflow = false;
