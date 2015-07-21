@@ -12,13 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 // todo: move to argos-saleslogix; this does not belong here.
+
 define('argos/Fields/NoteField', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     './TextAreaField',
     '../FieldManager'
-], function (declare, lang, TextAreaField, FieldManager) {
+], function(
+    declare,
+    lang,
+    TextAreaField,
+    FieldManager
+) {
     /**
      * @class argos.Fields.NoteField
      * The NoteField is a special case where an overly long text string should be inserted and
@@ -41,7 +48,9 @@ define('argos/Fields/NoteField', [
      * @extends argos.Fields.TextAreaField
      * @requires argos.FieldManager
      */
-    var control = declare('argos.Fields.NoteField', [TextAreaField], {});
+    var control = declare('argos.Fields.NoteField', [TextAreaField], {
+    });
+
     lang.setObject('Sage.Platform.Mobile.Fields.NoteField', control);
     return FieldManager.register('note', control);
 });

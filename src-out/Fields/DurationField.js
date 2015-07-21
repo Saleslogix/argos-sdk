@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 define('argos/Fields/DurationField', [
     'dojo/_base/declare',
     'dojo/_base/lang',
@@ -20,7 +21,15 @@ define('argos/Fields/DurationField', [
     '../Format',
     './LookupField',
     '../FieldManager'
-], function (declare, lang, string, domClass, format, LookupField, FieldManager) {
+], function(
+    declare,
+    lang,
+    string,
+    domClass,
+    format,
+    LookupField,
+    FieldManager
+) {
     /**
      * @class argos.Fields.DurationField
      * The Duration field is a mashup of an auto-complete box and a {@link LookupField LookupField} for handling
@@ -85,6 +94,7 @@ define('argos/Fields/DurationField', [
             '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>'
         ]),
         iconClass: 'fa fa-ellipsis-h fa-lg',
+
         // Localization
         /**
          * @property {String}
@@ -121,6 +131,7 @@ define('argos/Fields/DurationField', [
          * the view to use the currentValue instead of a key/descriptor
          */
         valueTextProperty: false,
+
         /**
          * @property {String}
          * The current unit as detected by the parser
@@ -132,6 +143,7 @@ define('argos/Fields/DurationField', [
          * The current value, expressed as minutes.
          */
         currentValue: 0,
+
         /**
          * @property {RegExp}
          * Regular expression for capturing the phrase (text).
@@ -140,20 +152,29 @@ define('argos/Fields/DurationField', [
          * Second capture is the phrase to be used in auto complete
          */
         autoCompletePhraseRE: /^((?:\d+(?:\.\d*)?|\.\d+)\s*?)(.+)/,
+
         /**
          * @property {RegExp}
          * Regular expression for capturing the value.
          * Only one capture which should correlate to the value portion
          */
         autoCompleteValueRE: /^((?:\d+(?:\.\d*)?|\.\d+))/,
+
         /**
          * Overrides the parent to skip the connections and alter the base capture RegExp's to account for localization
          */
-        init: function () {
+        init: function() {
             // do not use lookups connects
+
             var numberDecimalSeparator = Mobile.CultureInfo.numberFormat.numberDecimalSeparator;
-            this.autoCompletePhraseRE = new RegExp(string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator]));
-            this.autoCompleteValueRE = new RegExp(string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+))', [numberDecimalSeparator]));
+
+            this.autoCompletePhraseRE = new RegExp(
+                string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator])
+            );
+
+            this.autoCompleteValueRE = new RegExp(
+                string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+))', [numberDecimalSeparator])
+            );
         },
         /**
          * Handler for onkeyup on the input. The logic for comparing the matched value and phrase to the autocomplete
@@ -161,12 +182,16 @@ define('argos/Fields/DurationField', [
          * @param {Event} evt onkeyup
          * @private
          */
-        _onKeyUp: function (evt) {
-            var val = this.inputNode.value.toString(), key, match = this.autoCompletePhraseRE.exec(val);
+        _onKeyUp: function(evt) {
+            var val = this.inputNode.value.toString(),
+                key,
+                match = this.autoCompletePhraseRE.exec(val);
+
             if (!match || val.length < 1) {
                 this.hideAutoComplete();
                 return true;
             }
+
             for (key in this.autoCompleteText) {
                 if (this.isWordMatch(match[2], this.autoCompleteText[key])) {
                     this.currentKey = this.autoCompleteText[key];
@@ -174,6 +199,7 @@ define('argos/Fields/DurationField', [
                     return true;
                 }
             }
+
             this.hideAutoComplete();
         },
         /**
@@ -188,26 +214,26 @@ define('argos/Fields/DurationField', [
          * @param {String} word Second string to compare
          * @return {Boolean} True if they are equal.
          */
-        isWordMatch: function (val, word) {
+        isWordMatch: function(val, word) {
             if (val.length > word.length) {
                 val = val.slice(0, word.length);
-            }
-            else {
+            } else {
                 word = word.slice(0, val.length);
             }
+
             return val.toUpperCase() === word.toUpperCase();
         },
         /**
          * Shows the auto-complete version of the phrase
          * @param {String} word Text to put in the autocomplete
          */
-        showAutoComplete: function (word) {
+        showAutoComplete: function(word) {
             this.set('autoCompleteContent', word);
         },
         /**
          * Clears the autocomplete input
          */
-        hideAutoComplete: function () {
+        hideAutoComplete: function() {
             this.set('autoCompleteContent', '');
         },
         /**
@@ -216,14 +242,20 @@ define('argos/Fields/DurationField', [
          * @return {Boolean}
          * @private
          */
-        _onBlur: function (evt) {
-            var val = this.inputNode.value.toString(), match = this.autoCompleteValueRE.exec(val), multiplier = this.getMultiplier(this.currentKey), newValue = 0;
+        _onBlur: function(evt) {
+            var val = this.inputNode.value.toString(),
+                match = this.autoCompleteValueRE.exec(val),
+                multiplier = this.getMultiplier(this.currentKey),
+                newValue = 0;
+
             if (val.length < 1) {
                 return true;
             }
+
             if (!match) {
                 return true;
             }
+
             newValue = parseFloat(match[0]) * multiplier;
             this.setValue(newValue);
         },
@@ -231,7 +263,7 @@ define('argos/Fields/DurationField', [
          * Returns the corresponding value in minutes to the passed key (currentKey)
          * @return {Number}
          */
-        getMultiplier: function (key) {
+        getMultiplier: function(key) {
             var k;
             for (k in this.autoCompleteText) {
                 if (this.autoCompleteText.hasOwnProperty(k) && key === this.autoCompleteText[k]) {
@@ -244,7 +276,7 @@ define('argos/Fields/DurationField', [
          * Returns the current value in minutes
          * @return {Number}
          */
-        getValue: function () {
+        getValue: function() {
             return this.currentValue;
         },
         /**
@@ -252,10 +284,11 @@ define('argos/Fields/DurationField', [
          * @param {Number} val Number of minutes
          * @param init
          */
-        setValue: function (val, init) {
+        setValue: function(val, init) {
             if (val === null || typeof val === 'undefined') {
                 val = 0;
             }
+
             this.currentValue = val;
             this.set('inputValue', this.textFormat(val));
             this.hideAutoComplete();
@@ -265,7 +298,7 @@ define('argos/Fields/DurationField', [
          * @param val
          * @param {String/Number} key Number of minutes (will be converted via parseFloat)
          */
-        setSelection: function (val, key) {
+        setSelection: function(val, key) {
             this.setValue(parseFloat(key));
         },
         /**
@@ -274,8 +307,12 @@ define('argos/Fields/DurationField', [
          * @param {Number} val Number of minutes
          * @return {String}
          */
-        textFormat: function (val) {
-            var stepValue, finalUnit = 1, key, autoCompleteValues = this.autoCompleteText;
+        textFormat: function(val) {
+            var stepValue,
+                finalUnit = 1,
+                key,
+                autoCompleteValues = this.autoCompleteText;
+
             for (key in autoCompleteValues) {
                 if (autoCompleteValues.hasOwnProperty(key)) {
                     stepValue = parseInt(key, 10);
@@ -283,12 +320,14 @@ define('argos/Fields/DurationField', [
                         this.currentKey = autoCompleteValues[key];
                         break;
                     }
+
                     if (val / stepValue >= 1) {
                         finalUnit = stepValue;
                         this.currentKey = autoCompleteValues[key];
                     }
                 }
             }
+
             return this.formatUnit(this.convertUnit(val, finalUnit));
         },
         /**
@@ -297,7 +336,7 @@ define('argos/Fields/DurationField', [
          * @param {Number} to
          * @return {Number}
          */
-        convertUnit: function (val, to) {
+        convertUnit: function(val, to) {
             return format.fixed(val / to, 2);
         },
         /**
@@ -305,26 +344,24 @@ define('argos/Fields/DurationField', [
          * @param {Number} unit
          * @return {string}
          */
-        formatUnit: function (unit) {
+        formatUnit: function(unit) {
             var sval;
             if (isNaN(unit)) {
                 sval = '0';
-            }
-            else {
+            } else {
                 sval = unit.toString().split('.');
                 if (sval.length === 1) {
                     sval = sval[0];
-                }
-                else {
+                } else {
                     if (sval[1] === '0') {
                         sval = sval[0];
-                    }
-                    else {
-                        sval = string.substitute('${0}${1}${2}', [
-                            sval[0],
-                            Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.',
-                            sval[1]
-                        ]);
+                    } else {
+                        sval = string.substitute('${0}${1}${2}',
+                                [
+                                    sval[0],
+                                    Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.',
+                                    sval[1]
+                                ]);
                     }
                 }
             }
@@ -335,7 +372,7 @@ define('argos/Fields/DurationField', [
          * to true and data to `this.data`.
          * @return {Object} Navigation options object to be passed
          */
-        createNavigationOptions: function () {
+        createNavigationOptions: function() {
             var options = this.inherited(arguments);
             options.hideSearch = true;
             options.data = this.expandExpression(this.data);
@@ -345,18 +382,20 @@ define('argos/Fields/DurationField', [
          * Validets the field by verifying it matches one of the auto complete text.
          * @return {Boolean} False for no-errors, true for error.
          */
-        validate: function () {
-            var val = this.inputNode.value.toString(), phraseMatch = this.autoCompletePhraseRE.exec(val);
+        validate: function() {
+            var val = this.inputNode.value.toString(),
+                phraseMatch = this.autoCompletePhraseRE.exec(val);
+
             if (!phraseMatch) {
                 domClass.add(this.containerNode, 'row-error');
                 return string.substitute(this.invalidDurationErrorText, [val]);
-            }
-            else {
+            } else {
                 domClass.remove(this.containerNode, 'row-error');
                 return false;
             }
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Fields.DurationField', control);
     return FieldManager.register('duration', control);
 });

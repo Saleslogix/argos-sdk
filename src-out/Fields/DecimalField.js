@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
 define('argos/Fields/DecimalField', [
     'dojo/_base/declare',
     'dojo/_base/lang',
@@ -19,7 +21,14 @@ define('argos/Fields/DecimalField', [
     './TextField',
     '../FieldManager',
     '../Utility'
-], function (declare, lang, string, TextField, FieldManager, Utility) {
+], function(
+    declare,
+    lang,
+    string,
+    TextField,
+    FieldManager,
+    Utility
+) {
     /**
      * @class argos.Fields.DecimalField
      * The Decimal Field is used for inputting numbers and extends {@link TextField TextField} with:
@@ -57,26 +66,26 @@ define('argos/Fields/DecimalField', [
          * and thousands punctuation.
          * @param {Number/String} val Value to be set
          */
-        setValue: function (val) {
+        setValue: function(val) {
             var perc;
+
             perc = this.getPrecision();
             val = Utility.roundNumberTo(parseFloat(val), perc);
             val = val.toFixed(perc);
             if (isNaN(val)) {
                 if (perc === 0) {
                     val = '0';
-                }
-                else {
+                } else {
                     val = string.substitute('0${0}00', [Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.']);
                 }
-            }
-            else {
+            } else {
                 if (perc !== 0) {
-                    val = string.substitute('${0}${1}${2}', [
-                        parseInt(val, 10),
-                        Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.',
-                        val.substr(-perc)
-                    ]);
+                    val = string.substitute('${0}${1}${2}',
+                        [
+                            parseInt(val, 10),
+                            Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.',
+                            val.substr(-perc)
+                        ]);
                 }
             }
             this.inherited(arguments, [val]);
@@ -86,7 +95,7 @@ define('argos/Fields/DecimalField', [
          * returning it de-converts the punctuation back to `en-US` format.
          * @return {Number}
          */
-        getValue: function () {
+        getValue: function() {
             var value = this.inherited(arguments);
             // SData (and other functions) expect American formatted numbers
             value = value
@@ -100,17 +109,17 @@ define('argos/Fields/DecimalField', [
          * Retrieves the precision the value will be formated and ronded to.
          * @return {Number}
          */
-        getPrecision: function () {
+        getPrecision: function() {
             var perc;
             if (this.precision === 0) {
                 perc = this.precision;
-            }
-            else {
+            } else {
                 perc = this.precision || Mobile.CultureInfo.numberFormat.currencyDecimalDigits;
             }
             return perc;
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Fields.DecimalField', control);
     return FieldManager.register('decimal', control);
 });

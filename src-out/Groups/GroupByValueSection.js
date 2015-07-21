@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 1997-2013, SalesLogix, NA., LLC. All rights reserved.
  */
+
 /**
  * @class argos.Groups.GroupByValueSection
  */
@@ -11,12 +12,20 @@ define('argos/Groups/GroupByValueSection', [
     '../Convert',
     '../Utility',
     './_GroupBySection'
-], function (declare, lang, string, Convert, Utility, _GroupBySection) {
+], function(
+    declare,
+    lang,
+    string,
+    Convert,
+    Utility,
+    _GroupBySection
+) {
+
     var __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
         name: 'DateTimeSectionFilter',
         displayNameText: 'Group By Value Section',
-        width: 0,
-        constructor: function (o) {
+        width:0,
+        constructor: function(o) {
             this.groupByProperty = o.groupByProperty;
             this.sortDirection = o.sortDirection;
             if (o.width) {
@@ -24,10 +33,10 @@ define('argos/Groups/GroupByValueSection', [
             }
             this.init();
         },
-        init: function () {
+        init: function() {
             this.sections = [];
         },
-        getSection: function (entry) {
+        getSection: function(entry) {
             var value;
             if ((this.groupByProperty) && (entry)) {
                 value = Utility.getValue(entry, this.groupByProperty);
@@ -41,10 +50,10 @@ define('argos/Groups/GroupByValueSection', [
             }
             return null;
         },
-        getDefaultSection: function () {
+        getDefaultSection: function() {
             return { key: 'Unknown', title: 'Unknown' };
         },
-        _getValueFromWidth: function (value, width) {
+        _getValueFromWidth: function(value, width) {
             if (value) {
                 if (width > 0) {
                     value = value.toString().substring(0, width);
@@ -53,6 +62,7 @@ define('argos/Groups/GroupByValueSection', [
             return value;
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Groups.GroupByValueSection', __class);
     return __class;
 });

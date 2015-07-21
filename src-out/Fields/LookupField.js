@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 define('argos/Fields/LookupField', [
     'dojo/_base/array',
     'dojo/_base/declare',
@@ -22,7 +23,17 @@ define('argos/Fields/LookupField', [
     '../Utility',
     './_Field',
     '../FieldManager'
-], function (array, declare, event, lang, string, query, utility, _Field, FieldManager) {
+], function(
+    array,
+    declare,
+    event,
+    lang,
+    string,
+    query,
+    utility,
+    _Field,
+    FieldManager
+) {
     /**
      * @class argos.Fields.LookupField
      * The LookupField is similiar to an Edit View in that it is a field that takes the user to another
@@ -83,12 +94,14 @@ define('argos/Fields/LookupField', [
          */
         widgetTemplate: new Simplate([
             '{% if ($.label) { %}',
-            '<label for="{%= $.name %}">{%: $.label %}</label>',
+                '<label for="{%= $.name %}">{%: $.label %}</label>',
             '{% } %}',
             '<button style="z-index: 5;" data-action="buttonClick" class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
             '<input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />'
         ]),
+
         iconClass: 'fa fa-search fa-lg',
+
         // Localization
         /**
          * @property {String}
@@ -116,11 +129,13 @@ define('argos/Fields/LookupField', [
          * The text placed inside the lookup button
          */
         lookupText: '...',
+
         /**
          * @cfg {String}
          * Required. Must be set to a view id of the target lookup view
          */
         view: false,
+
         /**
          * @cfg {Object}
          * Optional. Object to mixin over the view
@@ -242,18 +257,20 @@ define('argos/Fields/LookupField', [
          * The entire selected entry from the target view (not just the key/text properties).
          */
         currentSelection: null,
+
         /**
          * Extends init to connect to the click event, if the field is read only disable and
          * if require selection is false connect to onkeyup and onblur.
          */
-        init: function () {
+        init: function() {
             this.inherited(arguments);
+
             this.connect(this.containerNode, 'onclick', this._onClick);
+
             if (this.isReadOnly()) {
                 this.disable();
                 this.set('inputReadOnly', true);
-            }
-            else if (!this.requireSelection) {
+            } else if (!this.requireSelection) {
                 this.connect(this.inputNode, 'onkeyup', this._onKeyUp);
                 this.connect(this.inputNode, 'onblur', this._onBlur);
             }
@@ -261,18 +278,20 @@ define('argos/Fields/LookupField', [
         /**
          * Extends enable to also remove the disabled attribute
          */
-        enable: function () {
+        enable: function() {
             this.inherited(arguments);
+
             this.set('inputDisabled', false);
         },
         /**
          * Extends disable to also set the disabled attribute
          */
-        disable: function () {
+        disable: function() {
             this.inherited(arguments);
+
             this.set('inputDisabled', true);
         },
-        focus: function () {
+        focus: function() {
             if (!this.isReadOnly()) {
                 this.inputNode.focus();
             }
@@ -281,14 +300,14 @@ define('argos/Fields/LookupField', [
          * Determines if the field is readonly by checking for a target view
          * @return {Boolean}
          */
-        isReadOnly: function () {
+        isReadOnly: function() {
             return !this.view;
         },
         /**
          * Retrieves the value of the field named with `this.dependsOn`
          * @return {String/Object/Number/Boolean}
          */
-        getDependentValue: function () {
+        getDependentValue: function() {
             if (this.dependsOn && this.owner) {
                 var field = this.owner.fields[this.dependsOn];
                 if (field) {
@@ -300,7 +319,7 @@ define('argos/Fields/LookupField', [
          * Retrieves the label string of the field named with `this.dependsOn`
          * @return {String}
          */
-        getDependentLabel: function () {
+        getDependentLabel: function() {
             if (this.dependsOn && this.owner) {
                 var field = this.owner.fields[this.dependsOn];
                 if (field) {
@@ -313,11 +332,10 @@ define('argos/Fields/LookupField', [
          * @param {String/Function} expression Returns string directly, if function it is called and the result returned.
          * @return {String} String expression.
          */
-        expandExpression: function (expression) {
+        expandExpression: function(expression) {
             if (typeof expression === 'function') {
                 return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-            }
-            else {
+            } else {
                 return expression;
             }
         },
@@ -339,8 +357,13 @@ define('argos/Fields/LookupField', [
          * They will be passed the `dependsOn` field value (if defined).
          *
          */
-        createNavigationOptions: function () {
-            var options, expand, dependentValue, item, key;
+        createNavigationOptions: function() {
+            var options,
+                expand,
+                dependentValue,
+                item,
+                key;
+
             options = {
                 enableActions: false,
                 selectionOnly: true,
@@ -356,21 +379,22 @@ define('argos/Fields/LookupField', [
                 simpleMode: true,
                 tools: {
                     tbar: [{
-                            id: 'complete',
-                            cls: 'fa fa-check fa-fw fa-lg',
-                            fn: this.complete,
-                            scope: this
-                        }, {
-                            id: 'cancel',
-                            side: 'left',
-                            cls: 'fa fa-ban fa-fw fa-lg',
-                            fn: this.reui.back,
-                            scope: this.reui
-                        }]
+                        id: 'complete',
+                        cls: 'fa fa-check fa-fw fa-lg',
+                        fn: this.complete,
+                        scope: this
+                    }, {
+                        id: 'cancel',
+                        side: 'left',
+                        cls: 'fa fa-ban fa-fw fa-lg',
+                        fn: this.reui.back,
+                        scope: this.reui
+                    }]
                 }
             };
             expand = ['resourceKind', 'resourcePredicate', 'where', 'previousSelections'];
             dependentValue = this.getDependentValue();
+
             if (options.singleSelect && options.singleSelectAction) {
                 for (key in options.tools.tbar) {
                     if (options.tools.tbar.hasOwnProperty(key)) {
@@ -381,32 +405,38 @@ define('argos/Fields/LookupField', [
                     }
                 }
             }
+
             if (this.dependsOn && !dependentValue) {
                 console.error(string.substitute(this.dependentErrorText, [this.getDependentLabel() || '']));
                 return false;
             }
-            array.forEach(expand, function (item) {
+
+            array.forEach(expand, function(item) {
                 if (this[item]) {
                     options[item] = this.dependsOn // only pass dependentValue if there is a dependency
                         ? this.expandExpression(this[item], dependentValue)
                         : this.expandExpression(this[item]);
                 }
             }, this);
+
             options.dependentValue = dependentValue;
             options.title = this.title;
+
             return options;
         },
         /**
          * Navigates to the `this.view` id passing the options created from {@link #createNavigationOptions createNavigationOptions}.
          */
-        navigateToListView: function () {
-            var view = this.app.getView(this.view), options = this.createNavigationOptions();
+        navigateToListView: function() {
+            var view = this.app.getView(this.view),
+                options = this.createNavigationOptions();
+
             if (view && options && !this.disabled) {
                 lang.mixin(view, this.viewMixin);
                 view.show(options);
             }
         },
-        buttonClick: function () {
+        buttonClick: function() {
             this.navigateToListView();
         },
         /**
@@ -414,8 +444,9 @@ define('argos/Fields/LookupField', [
          * field is not disabled.
          * @param evt
          */
-        _onClick: function (evt) {
+        _onClick: function(evt) {
             var buttonNode = query(evt.target).closest('.button')[0];
+
             if (!this.isDisabled() && (buttonNode || this.requireSelection)) {
                 event.stop(evt);
                 this.navigateToListView();
@@ -426,7 +457,7 @@ define('argos/Fields/LookupField', [
          * `this.notificationTrigger` is `'keyup'`.
          * @param {Event} evt Click event
          */
-        _onKeyUp: function (evt) {
+        _onKeyUp: function(evt) {
             if (!this.isDisabled() && this.notificationTrigger === 'keyup') {
                 this.onNotificationTrigger(evt);
             }
@@ -436,7 +467,7 @@ define('argos/Fields/LookupField', [
          * `this.notificationTrigger` is `'blur'`.
          * @param {Event} evt Blur event
          */
-        _onBlur: function (evt) {
+        _onBlur: function(evt) {
             if (!this.isDisabled() && this.notificationTrigger === 'blur') {
                 this.onNotificationTrigger(evt);
             }
@@ -449,26 +480,29 @@ define('argos/Fields/LookupField', [
          *
          * @param {Event} evt
          */
-        onNotificationTrigger: function (evt) {
+        onNotificationTrigger: function(evt) {
             var currentValue = this.getValue();
+
             if (this.previousValue !== currentValue) {
                 this.onChange(currentValue, this);
             }
+
             this.previousValue = currentValue;
         },
         /**
          * Sets the displayed text of the field
          * @param {String} text
          */
-        setText: function (text) {
+        setText: function(text) {
             this.set('inputValue', text);
+
             this.previousValue = text;
         },
         /**
          * Returns the string text of the field (note, not the value of the field)
          * @return {String}
          */
-        getText: function () {
+        getText: function() {
             return this.inputNode.value;
         },
         /**
@@ -483,16 +517,20 @@ define('argos/Fields/LookupField', [
          * fired and lastly {@link #_onComplete _onComplete} is called in a setTimeout due to bizarre
          * transition issues, namely in IE.
          */
-        complete: function () {
+        complete: function() {
             var view, selectionModel, selections, selectionCount, val, selectionKey;
+
             view = this.app.getPrimaryActiveView();
             selectionModel = view.get('selectionModel');
+
             if (view && selectionModel) {
                 selections = selectionModel.getSelections();
                 selectionCount = selectionModel.getSelectionCount();
+
                 if (selectionCount === 0 && view.options.allowEmptySelection) {
                     this.clearValue(true);
                 }
+
                 if (this.singleSelect) {
                     for (selectionKey in selections) {
                         if (selections.hasOwnProperty(selectionKey)) {
@@ -501,13 +539,14 @@ define('argos/Fields/LookupField', [
                             break;
                         }
                     }
-                }
-                else {
+                } else {
                     if (selectionCount > 0) {
                         this.setSelections(selections);
                     }
                 }
+
                 this.reui.back();
+
                 // if the event is fired before the transition, any XMLHttpRequest created in an event handler and
                 // executing during the transition can potentially fail (status 0).  this might only be an issue with CORS
                 // requests created in this state (the pre-flight request is made, and the request ends with status 0).
@@ -518,36 +557,39 @@ define('argos/Fields/LookupField', [
         /**
          * Forces {@link #onChange onChange} to fire
          */
-        _onComplete: function () {
+        _onComplete: function() {
             this.onChange(this.currentValue, this);
         },
         /**
          * Determines if the field has been altered from the default/template value.
          * @return {Boolean}
          */
-        isDirty: function () {
+        isDirty: function() {
             if (this.originalValue && this.currentValue) {
                 if (this.originalValue.key !== this.currentValue.key) {
                     return true;
                 }
+
                 if (this.originalValue.text !== this.currentValue.text) {
                     return true;
                 }
+
                 if (!this.requireSelection && !this.textTemplate) {
                     if (this.originalValue.text !== this.getText()) {
                         return true;
                     }
                 }
+
                 return false;
             }
+
             if (this.originalValue) {
                 if (!this.requireSelection && !this.textTemplate) {
                     if (this.originalValue.text !== this.getText()) {
                         return true;
                     }
                 }
-            }
-            else {
+            } else {
                 if (!this.requireSelection && !this.textTemplate) {
                     var text = this.getText();
                     if (text && text.length > 0) {
@@ -555,13 +597,14 @@ define('argos/Fields/LookupField', [
                     }
                 }
             }
+
             return (this.originalValue !== this.currentValue);
         },
         /**
          * Returns the current selection that was set from the target list view.
          * @return {Object}
          */
-        getSelection: function () {
+        getSelection: function() {
             return this.currentSelection;
         },
         /**
@@ -569,52 +612,54 @@ define('argos/Fields/LookupField', [
          * several other methods of getting it to that state.
          * @return {Object/String}
          */
-        getValue: function () {
-            var value = null, text = this.getText() || '', 
-            // if valueKeyProperty or valueTextProperty IS NOT EXPLICITLY set to false
-            // and IS NOT defined use keyProperty or textProperty in its place.
-            keyProperty = this.valueKeyProperty !== false
-                ? this.valueKeyProperty || this.keyProperty
-                : false, textProperty = this.valueTextProperty !== false
-                ? this.valueTextProperty || this.textProperty
-                : false;
+        getValue: function() {
+            var value = null,
+                text = this.getText() || '',
+                // if valueKeyProperty or valueTextProperty IS NOT EXPLICITLY set to false
+                // and IS NOT defined use keyProperty or textProperty in its place.
+                keyProperty = this.valueKeyProperty !== false
+                    ? this.valueKeyProperty || this.keyProperty
+                    : false,
+                textProperty = this.valueTextProperty !== false
+                    ? this.valueTextProperty || this.textProperty
+                    : false;
+
             if (keyProperty || textProperty) {
                 if (this.currentValue) {
                     if (keyProperty) {
                         value = utility.setValue(value || {}, keyProperty, this.currentValue.key);
                     }
+
                     // if a text template has been applied there is no way to guarantee a correct
                     // mapping back to the property
                     if (textProperty && !this.textTemplate) {
                         value = utility.setValue(value || {}, textProperty, this.requireSelection ? this.currentValue.text : text);
                     }
-                }
-                else if (!this.requireSelection) {
+                } else if (!this.requireSelection) {
                     if (keyProperty && text.length > 0) {
                         value = utility.setValue(value || {}, keyProperty, text);
                     }
+
                     // if a text template has been applied there is no way to guarantee a correct
                     // mapping back to the property
                     if (textProperty && !this.textTemplate && text.length > 0) {
                         value = utility.setValue(value || {}, textProperty, text);
                     }
                 }
-            }
-            else {
+            } else {
                 if (this.currentValue) {
                     if (this.requireSelection) {
                         value = this.currentValue.key ? this.currentValue.key : this.currentValue;
-                    }
-                    else {
+                    } else {
                         value = this.currentValue.text !== text && !this.textTemplate
                             ? text
                             : this.currentValue.key;
                     }
-                }
-                else if (!this.requireSelection && text.length > 0) {
+                } else if (!this.requireSelection && text.length > 0) {
                     value = text;
                 }
             }
+
             return value;
         },
         /**
@@ -626,7 +671,7 @@ define('argos/Fields/LookupField', [
          * @param {Object[]} values
          * @return {Object/String}
          */
-        formatValue: function (values) {
+        formatValue: function(values) {
             return values;
         },
         /**
@@ -639,13 +684,15 @@ define('argos/Fields/LookupField', [
          *
          * @param {Object[]} values
          */
-        setSelections: function (values) {
+        setSelections: function(values) {
             this.currentValue = (this.formatValue)
                 ? this.formatValue.call(this, values)
                 : values;
+
             var text = (this.textRenderer)
                 ? this.textRenderer.call(this, values)
                 : '';
+
             this.setText(text);
         },
         /**
@@ -661,20 +708,24 @@ define('argos/Fields/LookupField', [
          * @param {Object} val Entire selection entry
          * @param {String} key data-key attribute of the selected row (typically $key from SData)
          */
-        setSelection: function (val, key) {
+        setSelection: function(val, key) {
             var text = utility.getValue(val, this.textProperty);
+
             key = utility.getValue(val, this.keyProperty, val) || key; // if we can extract the key as requested, use it instead of the selection key
+
             if (text && this.textTemplate) {
                 text = this.textTemplate.apply(text, this);
-            }
-            else if (this.textRenderer) {
+            } else if (this.textRenderer) {
                 text = this.textRenderer.call(this, val, key, text);
             }
+
             this.currentSelection = val;
+
             this.currentValue = {
                 key: key || text,
                 text: text || key
             };
+
             this.setText(this.currentValue.text);
         },
         /**
@@ -683,69 +734,82 @@ define('argos/Fields/LookupField', [
          * @param {Object/String} val Value to set
          * @param {Boolean} initial Dirty flag (true is clean)
          */
-        setValue: function (val, initial) {
+        setValue: function(val, initial) {
             // if valueKeyProperty or valueTextProperty IS NOT EXPLICITLY set to false
             // and IS NOT defined use keyProperty or textProperty in its place.
-            var key, text, keyProperty = this.valueKeyProperty !== false
-                ? this.valueKeyProperty || this.keyProperty
-                : false, textProperty = this.valueTextProperty !== false
-                ? this.valueTextProperty || this.textProperty
-                : false;
+            var key,
+                text,
+                keyProperty = this.valueKeyProperty !== false
+                    ? this.valueKeyProperty || this.keyProperty
+                    : false,
+                textProperty = this.valueTextProperty !== false
+                    ? this.valueTextProperty || this.textProperty
+                    : false;
+
             if (typeof val === 'undefined' || val === null) {
                 this.currentValue = false;
                 if (initial) {
                     this.originalValue = this.currentValue;
                 }
+
                 this.setText(this.requireSelection ? this.emptyText : '');
                 return false;
             }
+
             if (keyProperty || textProperty) {
                 if (keyProperty) {
                     key = utility.getValue(val, keyProperty);
                 }
+
                 if (textProperty) {
                     text = utility.getValue(val, textProperty);
                 }
+
                 if (text && this.textTemplate) {
                     text = this.textTemplate.apply(text, this);
-                }
-                else if (this.textRenderer) {
+                } else if (this.textRenderer) {
                     text = this.textRenderer.call(this, val, key, text);
                 }
+
                 if (key || text) {
                     this.currentValue = {
                         key: key || text,
                         text: text || key
                     };
+
                     if (initial) {
                         this.originalValue = this.currentValue;
                     }
+
                     this.setText(this.currentValue.text);
-                }
-                else {
+                } else {
                     this.currentValue = false;
+
                     if (initial) {
                         this.originalValue = this.currentValue;
                     }
+
                     this.setText(this.requireSelection ? this.emptyText : '');
                 }
-            }
-            else {
+            } else {
                 key = val;
                 text = val;
+
                 if (text && this.textTemplate) {
                     text = this.textTemplate.apply(text, this);
-                }
-                else if (this.textRenderer) {
+                } else if (this.textRenderer) {
                     text = this.textRenderer.call(this, val, key, text);
                 }
+
                 this.currentValue = {
                     key: key || text,
                     text: text || key
                 };
+
                 if (initial) {
                     this.originalValue = this.currentValue;
                 }
+
                 this.setText(text);
             }
         },
@@ -756,11 +820,13 @@ define('argos/Fields/LookupField', [
          *
          * @param {Boolean} flag
          */
-        clearValue: function (flag) {
+        clearValue: function(flag) {
             var initial = flag !== true;
+
             this.setValue(null, initial);
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Fields.LookupField', control);
     return FieldManager.register('lookup', control);
 });

@@ -221,7 +221,7 @@ define('argos/Fields/EditorField', [
          * `this.validationValue`.
          */
         getValuesFromView: function() {
-            var view = App.getPrimaryActiveView<_EditBase>(),
+            var view = App.getPrimaryActiveView(),
                 values = view && view.getValues();
 
             if (view && values) {

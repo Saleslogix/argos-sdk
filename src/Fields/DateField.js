@@ -152,7 +152,7 @@ define('argos/Fields/DateField', [
          * Retrieves the date from the {@link Calendar#getDateTime Calendar} view and sets it to currentValue.
          */
         getValuesFromView: function() {
-            var view:any = App.getPrimaryActiveView();
+            var view = App.getPrimaryActiveView();
             if (view) {
                 this.currentValue = this.validationValue = view.getDateTime();
                 domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing

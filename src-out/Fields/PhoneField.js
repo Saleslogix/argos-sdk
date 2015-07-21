@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 define('argos/Fields/PhoneField', [
     'dojo/_base/declare',
     'dojo/_base/lang',
@@ -21,7 +22,16 @@ define('argos/Fields/PhoneField', [
     './TextField',
     '../Format',
     'dojo/_base/sniff'
-], function (declare, lang, has, string, FieldManager, TextField, format, sniff) {
+], function(
+    declare,
+    lang,
+    has,
+    string,
+    FieldManager,
+    TextField,
+    format,
+    sniff
+) {
     /**
      * @class argos.Fields.PhoneField
      * The Phone field is a specialized {@link TextField TextField} that takes a string of numbers
@@ -50,11 +60,13 @@ define('argos/Fields/PhoneField', [
          * Currently only iOS supports non-numbers when a tel field has a default value: [Bug Report](http://code.google.com/p/android/issues/detail?id=19724).
          */
         inputType: has('safari') ? 'tel' : 'text',
+
         /**
          * Formats the displayed value (inputNode value) using {@link format.phone format.phone}.
          */
-        _onBlur: function () {
+        _onBlur: function() {
             this.inherited(arguments);
+
             // temporarily added: http://code.google.com/p/android/issues/detail?id=14519
             this.set('inputValue', format.phone(this.inputNode.value));
         },
@@ -63,12 +75,15 @@ define('argos/Fields/PhoneField', [
          * the value starts with `+` in which it is returned unmodified.
          * @return {String}
          */
-        getValue: function () {
+        getValue: function() {
             var value = this.inherited(arguments);
+
             if (/^\+/.test(value)) {
                 return value;
             }
+
             value = format.alphaToPhoneNumeric(value);
+
             return value.replace(/[^0-9x]/ig, '');
         },
         /**
@@ -77,10 +92,11 @@ define('argos/Fields/PhoneField', [
          * @param {String/Number} val String to set
          * @param {Boolean} initial True if the value is the original/clean value.
          */
-        setValue: function (val, initial) {
+        setValue: function(val, initial) {
             if (initial) {
                 this.originalValue = val;
             }
+
             this.previousValue = false;
             this.set('inputValue', format.phone(val) || '');
         },
@@ -88,7 +104,7 @@ define('argos/Fields/PhoneField', [
          * Currently only calls parent implementation due to an [Android Bug](http://code.google.com/p/android/issues/detail?id=14519).
          * @param {Event} evt Keyup event
          */
-        _onKeyUp: function (evt) {
+        _onKeyUp: function(evt) {
             /*
             // temporarily removed: http://code.google.com/p/android/issues/detail?id=14519
             this.set('inputValue', format.phone(this.inputNode.value, this.getValue()));
@@ -96,6 +112,7 @@ define('argos/Fields/PhoneField', [
             this.inherited(arguments);
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Fields.PhoneField', control);
     return FieldManager.register('phone', control);
 });

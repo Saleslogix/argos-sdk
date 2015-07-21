@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 define('argos/Fields/SignatureField', [
     'dojo/_base/declare',
     'dojo/_base/lang',
@@ -20,7 +21,16 @@ define('argos/Fields/SignatureField', [
     '../Format',
     './EditorField',
     '../FieldManager'
-], function (declare, lang, json, domAttr, format, EditorField, FieldManager) {
+], function(
+    declare,
+    lang,
+    json,
+    domAttr,
+    format,
+    EditorField,
+    FieldManager
+) {
+
     /**
      * @class argos.Fields.SignatureField
      * The SignatureField uses an HTML5 canvas element to render previews of the signature vector
@@ -52,6 +62,7 @@ define('argos/Fields/SignatureField', [
          * Text used within button
          */
         signatureText: '...',
+
         /**
          * @property {Number[][]}
          * A series of x,y coordinates in the format of: `[[0,0],[1,5]]`
@@ -95,17 +106,23 @@ define('argos/Fields/SignatureField', [
          * also passing the `signature` array.
          * @return {Object} Navigation options
          */
-        createNavigationOptions: function () {
+        createNavigationOptions: function() {
             var options = this.inherited(arguments);
+
             options.signature = this.signature;
+
             return options;
         },
         /**
          * Complete override that gets the editor view, gets the values and calls set value on the field
          */
-        getValuesFromView: function () {
-            var view, app, value;
+        getValuesFromView: function() {
+            var view,
+                app,
+                value;
+
             app = this.app;
+
             view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
             if (view) {
                 value = view.getValues();
@@ -119,27 +136,30 @@ define('argos/Fields/SignatureField', [
          * @param val
          * @param initial
          */
-        setValue: function (val, initial) {
+        setValue: function(val, initial) {
             if (initial) {
                 this.originalValue = val;
             }
+
             this.currentValue = val;
             domAttr.set(this.inputNode, 'value', val || '');
+
             try {
                 this.signature = json.fromJson(val);
-            }
-            catch (e) {
+            } catch(e) {
                 this.signature = [];
             }
+
             if (!this.signature || Array !== this.signature.constructor) {
                 this.signature = [];
             }
+
             this.signatureNode.src = format.imageFromVector(this.signature, this.config, false);
         },
         /**
          * Clears the value set to the hidden field
          */
-        clearValue: function () {
+        clearValue: function() {
             this.setValue('', true);
         },
         /**
@@ -148,10 +168,11 @@ define('argos/Fields/SignatureField', [
          * @param val
          * @return {Array/String}
          */
-        formatValue: function (val) {
+        formatValue: function(val) {
             return val;
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Fields.SignatureField', control);
     return FieldManager.register('signature', control);
 });

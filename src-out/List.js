@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos.List
  * List extends _ListBase and mixes in _SDataListMixin to provide backwards compatibility for consumers.
@@ -27,8 +28,17 @@ define('argos/List', [
     './_ListBase',
     './_SDataListMixin',
     './_RelatedViewWidgetListMixin'
-], function (declare, lang, _ListBase, _SDataListMixin, _RelatedWidgetListMixin) {
-    var __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedWidgetListMixin], {});
+], function(
+    declare,
+    lang,
+    _ListBase,
+    _SDataListMixin,
+    _RelatedWidgetListMixin
+) {
+    var __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedWidgetListMixin], {
+    });
+
     lang.setObject('Sage.Platform.Mobile.List', __class);
     return __class;
 });
+

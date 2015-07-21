@@ -7,7 +7,11 @@ define('argos/_ErrorHandleMixin', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/array'
-], function (declare, lang, array) {
+], function(
+    declare,
+    lang,
+    array
+) {
     var __class = declare('argos._ErrorHandleMixin', null, {
         /**
          * @property {Object}
@@ -15,7 +19,8 @@ define('argos/_ErrorHandleMixin', [
          */
         errorText: {
             general: 'A server error occured.',
-            status: {}
+            status: {
+            }
         },
         /**
          * @property {Object}
@@ -47,40 +52,49 @@ define('argos/_ErrorHandleMixin', [
          *
          */
         errorHandlers: null,
+
         /**
          * @return {Array} Returns an array of error handlers
          */
-        createErrorHandlers: function () {
+        createErrorHandlers: function() {
             return this.errorHandlers || [];
         },
         /**
          * Starts matching and executing errorHandlers.
          * @param {Error} error Error to pass to the errorHandlers
          */
-        handleError: function (error) {
+        handleError: function(error) {
             if (!error) {
                 return;
             }
+
             var matches, noop, getNext, len;
-            noop = function () { };
-            matches = array.filter(this.errorHandlers, function (handler) {
+
+            noop = function() {};
+
+            matches = array.filter(this.errorHandlers, function(handler) {
                 return handler.test && handler.test.call(this, error);
             }.bind(this));
+
             len = matches.length;
-            getNext = function (index) {
+
+            getNext = function(index) {
                 // next() chain has ended, return a no-op so calling next() in the last chain won't error
                 if (index === len) {
                     return noop;
                 }
+
                 // Return a closure with index and matches captured.
                 // The handle function can call its "next" param to continue the chain.
-                return function () {
+                return function() {
                     var nextHandler, nextFn;
                     nextHandler = matches[index];
                     nextFn = nextHandler && nextHandler.handle;
+
                     nextFn.call(this, error, getNext(index + 1));
                 }.bind(this);
             }.bind(this);
+
             if (len > 0 && matches[0].handle) {
                 // Start the handle chain, the handle can call next() to continue the iteration
                 matches[0].handle.call(this, error, getNext(1));
@@ -89,14 +103,18 @@ define('argos/_ErrorHandleMixin', [
         /**
          * Gets the general error message, or the error message for the status code.
          */
-        getErrorMessage: function (error) {
+        getErrorMessage: function(error) {
             var message = this.errorText.general;
+
             if (error) {
                 message = this.errorText.status[error.status] || this.errorText.general;
             }
+
             return message;
         }
     });
+
     lang.setObject('Sage.Platform.Mobile._ErrorHandleMixin', __class);
     return __class;
 });
+

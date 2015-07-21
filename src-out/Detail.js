@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos.Detail
  *
@@ -30,8 +31,18 @@ define('argos/Detail', [
     './_DetailBase',
     './_SDataDetailMixin',
     './_RelatedViewWidgetDetailMixin'
-], function (declare, lang, _DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin) {
-    var __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin], {});
+], function(
+    declare,
+    lang,
+    _DetailBase,
+    _SDataDetailMixin,
+    _RelatedWidgetDetailMixin
+) {
+
+    var __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin], {
+    });
+
     lang.setObject('Sage.Platform.Mobile.Detail', __class);
     return __class;
 });
+

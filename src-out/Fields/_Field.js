@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos.Fields._Field
  * Field is the base class for all field controls. It describes all the functions a field should support giving no implementation itself, merely a shell. The one function that `_Field` does provide that most fields leave untouched is `validate`.
@@ -31,7 +32,16 @@ define('argos/Fields/_Field', [
     'dijit/_Widget',
     '../_ActionMixin',
     '../_Templated'
-], function (declare, lang, string, domClass, _Widget, _ActionMixin, _Templated) {
+], function(
+    declare,
+    lang,
+    string,
+    domClass,
+    _Widget,
+    _ActionMixin,
+    _Templated
+) {
+
     var __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Templated], {
         /**
          * @property {View}
@@ -87,14 +97,17 @@ define('argos/Fields/_Field', [
          * the field is constructed
          */
         type: null,
+
         /**
          * @property {Boolean}
          * Flag to indicate if this field should be focused when the form is shown.
          */
         autoFocus: false,
+
         app: null,
         reui: null,
         highlightCls: 'field-highlight',
+
         /**
          * @property {Simplate}
          * Simplate used to define the fields HTML Markup
@@ -111,11 +124,13 @@ define('argos/Fields/_Field', [
          * Passed options object will be mixed into the field, overwriting any defaults.
          * @param {Object} o Override options
          */
-        constructor: function (o) {
+        constructor: function(o) {
             lang.mixin(this, o);
+
             if (this.app === null) {
                 this.app = window.App;
             }
+
             if (this.reui === null) {
                 this.reui = window.ReUI;
             }
@@ -123,14 +138,14 @@ define('argos/Fields/_Field', [
         /**
          * Focuses the input for the field
          */
-        focus: function () {
+        focus: function() {
         },
         /**
          * Inserts the field into the given DOM node using dijit Widget `placeAt(node)` and saves
          * a reference to it to `this.containerNode`.
          * @param {HTMLElement} node Target node to insert the field into
          */
-        renderTo: function (node) {
+        renderTo: function(node) {
             this.containerNode = node; // todo: should node actually be containerNode instead of last rendered node?
             this.placeAt(node);
         },
@@ -138,7 +153,7 @@ define('argos/Fields/_Field', [
          * Calledd during app startup after all fields have been inserted into the view
          * @template
          */
-        init: function () {
+        init: function() {
         },
         /**
          * Determines if the fields' value has changed from the original value. Each field type
@@ -146,20 +161,20 @@ define('argos/Fields/_Field', [
          * @template
          * @return {Boolean} True if the value has been modified (dirty).
          */
-        isDirty: function () {
+        isDirty: function() {
             return true;
         },
         /**
          * Sets disabled to false and fires {@link #onEnable onEnable}.
          */
-        enable: function () {
+        enable: function() {
             this.disabled = false;
             this.onEnable(this);
         },
         /**
          * Sets disabled to true and fires {@link #onDisable onDisable}.
          */
-        disable: function () {
+        disable: function() {
             this.disabled = true;
             this.onDisable(this);
         },
@@ -167,30 +182,30 @@ define('argos/Fields/_Field', [
          * Returns the disabled state
          * @return {Boolean}
          */
-        isDisabled: function () {
+        isDisabled: function() {
             return this.disabled;
         },
         /**
          * Sets hidden to false and fires {@link #onShow onShow}.
          */
-        show: function () {
+        show: function() {
             this.hidden = false;
             this.onShow(this);
         },
         /**
          * Sets hidden to true and fires {@link #onHide onHide}.
          */
-        hide: function () {
+        hide: function() {
             this.hidden = true;
             this.onHide(this);
         },
-        toggleHighlight: function () {
+        toggleHighlight: function() {
             var node = this.domNode;
             if (node) {
                 domClass.toggle(node, this.highlightCls);
             }
         },
-        clearHighlight: function () {
+        clearHighlight: function() {
             var node = this.domNode;
             if (node) {
                 domClass.remove(node, this.highlightCls);
@@ -200,14 +215,14 @@ define('argos/Fields/_Field', [
          * Returns the hidden state
          * @return {Boolean}
          */
-        isHidden: function () {
+        isHidden: function() {
             return this.hidden;
         },
         /**
          * Each field type will need to implement this function to return the value of the field.
          * @template
          */
-        getValue: function () {
+        getValue: function() {
         },
         /**
          * Each field type will need to implement this function to set the value and represent the change visually.
@@ -215,13 +230,13 @@ define('argos/Fields/_Field', [
          * @param {Boolean} initial If true the value is meant to be the default/original/clean value.
          * @template
          */
-        setValue: function (val, initial) {
+        setValue: function(val, initial) {
         },
         /**
          * Each field type will need to implement this function to clear the value and visually.
          * @template
          */
-        clearValue: function () {
+        clearValue: function() {
         },
         /**
          * The validate function determines if there is any errors - meaning it will return false for a "Error free" field.
@@ -245,44 +260,55 @@ define('argos/Fields/_Field', [
          * @param value Value of the field, if not passed then {@link #getValue getValue} is used.
          * @return {Boolean/Object} False signifies that everything is okay and the field is valid, `true` or a `string message` indicates that it failed.
          */
-        validate: function (value) {
+        validate: function(value) {
             if (typeof this.validator === 'undefined') {
                 return false;
             }
-            var all, i, current, definition, result;
+
+            var all,
+                i,
+                current,
+                definition,
+                result;
+
             all = lang.isArray(this.validator) ? this.validator : [this.validator];
+
             for (i = 0; i < all.length; i++) {
                 current = all[i];
+
                 if (current instanceof RegExp) {
                     definition = {
                         test: current
                     };
-                }
-                else if (typeof current === 'function') {
+                } else if (typeof current === 'function') {
                     definition = {
                         fn: current
                     };
-                }
-                else {
+                } else {
                     definition = current;
                 }
+
                 value = typeof value === 'undefined'
                     ? this.getValue()
                     : value;
+
                 result = typeof definition.fn === 'function'
                     ? definition.fn.call(definition.scope || this, value, this, this.owner)
                     : definition.test instanceof RegExp
                         ? !definition.test.test(value)
                         : false;
+
                 if (result) {
                     if (definition.message) {
                         result = typeof definition.message === 'function'
                             ? definition.message.call(definition.scope || this, value, this, this.owner)
                             : string.substitute(definition.message, [value, this.name, this.label]);
                     }
+
                     return result;
                 }
             }
+
             return false;
         },
         /**
@@ -290,37 +316,38 @@ define('argos/Fields/_Field', [
          * @param {_Field} field The field itself
          * @template
          */
-        onEnable: function (field) {
+        onEnable: function(field) {
         },
         /**
          * Event that fires when the field is disabled
          * @param {_Field} field The field itself
          * @template
          */
-        onDisable: function (field) {
+        onDisable: function(field) {
         },
         /**
          * Event that fires when the field is shown
          * @param {_Field} field The field itself
          * @template
          */
-        onShow: function (field) {
+        onShow: function(field) {
         },
         /**
          * Event that fires when the field is hidden
          * @param {_Field} field The field itself
          * @template
          */
-        onHide: function (field) {
+        onHide: function(field) {
         },
         /**
          * Event that fires when the field is changed
          * @param {_Field} field The field itself
          * @template
          */
-        onChange: function (value, field) {
+        onChange: function(value, field) {
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Fields._Field', __class);
     return __class;
 });
