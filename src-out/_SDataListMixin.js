@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos._SDataListMixin
  *
@@ -33,12 +34,24 @@ define('argos/_SDataListMixin', [
     './Store/SData',
     './Utility',
     './ErrorManager'
-], function (declare, lang, Deferred, when, domConstruct, domClass, string, SData, utility, ErrorManager) {
+], function(
+    declare,
+    lang,
+    Deferred,
+    when,
+    domConstruct,
+    domClass,
+    string,
+    SData,
+    utility,
+    ErrorManager
+) {
     var __class = declare('argos._SDataListMixin', null, {
         /**
          * @property request Object SData request passed into the store. Optional.
          */
         request: null,
+
         /**
          * @cfg {String} resourceKind
          * The SData resource kind the view is responsible for.  This will be used as the default resource kind
@@ -84,11 +97,13 @@ define('argos/_SDataListMixin', [
          * The default resource predicate for an SData request.
          */
         resourcePredicate: null,
+
         itemsProperty: '$resources',
         idProperty: '$key',
         labelProperty: '$descriptor',
         entityProperty: '$name',
         versionProperty: '$etag',
+
         /**
          * Constructs a where expression using the provided format string and extracting the needed property from entry
          * @param {Object} entry Data point to extract from.
@@ -96,20 +111,20 @@ define('argos/_SDataListMixin', [
          * @param {String} property Property name to extract from the entry. May be a path: `'Address.City'`.
          * @return {String}
          */
-        formatRelatedQuery: function (entry, fmt, property) {
+        formatRelatedQuery: function(entry, fmt, property) {
             return string.substitute(fmt, [lang.getObject(property || '$key', false, entry)]);
         },
-        getContext: function () {
+        getContext: function() {
             return lang.mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind
             });
         },
-        _onRefresh: function (options) {
+        _onRefresh: function(options) {
             if (this.resourceKind && options.resourceKind === this.resourceKind) {
                 this.refreshRequired = true;
             }
         },
-        createStore: function () {
+        createStore: function() {
             return new SData({
                 service: this.getConnection(),
                 request: this.request,
@@ -130,69 +145,80 @@ define('argos/_SDataListMixin', [
                 scope: this
             });
         },
-        _buildQueryExpression: function () {
-            var options = this.options, passed = options && (options.query || options.where);
+        _buildQueryExpression: function() {
+            var options = this.options,
+                passed = options && (options.query || options.where);
+
             return passed
                 ? this.query
                     ? '(' + utility.expand(this, passed) + ') and (' + this.query + ')'
                     : '(' + utility.expand(this, passed) + ')'
                 : this.query;
         },
-        _applyStateToQueryOptions: function (queryOptions) {
+        _applyStateToQueryOptions: function(queryOptions) {
             var options = this.options;
             if (options) {
                 if (options.select) {
                     queryOptions.select = options.select;
                 }
+
                 if (options.include) {
                     queryOptions.include = options.include;
                 }
+
                 if (options.orderBy) {
                     queryOptions.sort = options.orderBy;
                 }
+
                 if (options.contractName) {
                     queryOptions.contractName = options.contractName;
                 }
+
                 if (options.resourceKind) {
                     queryOptions.resourceKind = options.resourceKind;
                 }
+
                 if (options.resourceProperty) {
                     queryOptions.resourceProperty = options.resourceProperty;
                 }
+
                 if (options.resourcePredicate) {
                     queryOptions.resourcePredicate = options.resourcePredicate;
                 }
+
                 if (options.queryArgs) {
                     queryOptions.queryArgs = options.queryArgs;
                 }
             }
         },
-        formatSearchQuery: function (query) {
+        formatSearchQuery: function(query) {
             return query;
         },
-        escapeSearchQuery: function (query) {
+        escapeSearchQuery: function(query) {
             return (query || '').replace(/"/g, '""');
         },
-        hasMoreData: function () {
+        hasMoreData: function() {
             var start, count, total;
             start = this.position;
             count = this.pageSize;
             total = this.total;
+
             if (start > 0 && count > 0 && total >= 0) {
                 return this.remaining === -1 || this.remaining > 0;
-            }
-            else {
+            } else {
                 return true; // no way to determine, always assume more data
             }
         },
-        getListCount: function (options) {
+        getListCount: function(options) {
             var store, queryOptions, queryResults, def = new Deferred();
+
             store = new SData({
                 service: App.services['crm'],
                 resourceKind: this.resourceKind,
                 contractName: this.contractName,
                 scope: this
             });
+
             queryOptions = {
                 count: 1,
                 start: 0,
@@ -200,15 +226,19 @@ define('argos/_SDataListMixin', [
                 where: options.where,
                 sort: ''
             };
+
             queryResults = store.query(null, queryOptions);
-            when(queryResults, function (relatedFeed) {
+
+            when(queryResults, function(relatedFeed) {
                 def.resolve(queryResults.total);
-            }, function (err) {
+            }, function(err) {
                 def.reject(err);
             });
+
             return def.promise;
         }
     });
+
     lang.setObject('Sage.Platform.Mobile._SDataListMixin', __class);
     return __class;
 });

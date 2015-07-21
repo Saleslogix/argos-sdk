@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos.MainToolbar
  * MainToolbar is designed to handle the top application bar with markup and logic to set
@@ -27,7 +28,15 @@ define('argos/MainToolbar', [
     'dojo/dom-construct',
     'argos/Toolbar',
     'dojo/NodeList-manipulate'
-], function (declare, lang, query, domClass, domConstruct, Toolbar) {
+], function(
+    declare,
+    lang,
+    query,
+    domClass,
+    domConstruct,
+    Toolbar
+) {
+
     var __class = declare('argos.MainToolbar', [Toolbar], {
         /**
          * @property {Object}
@@ -59,14 +68,14 @@ define('argos/MainToolbar', [
          */
         toolTemplate: new Simplate([
             '<button class="button toolButton toolButton-{%= $.side || "right" %} {%= ($$.enabled) ? "" : "toolButton-disabled" %} {%= $.cls %}"',
-            'data-action="invokeTool" data-tool="{%= $.id %}"',
-            'aria-label="{%: $.title || $.id %}">',
-            '{% if ($.icon) { %}',
-            '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
-            '{% } %}',
-            '{% if (!$.cls) { %}',
-            '<span></span>',
-            '{% } %}',
+                    'data-action="invokeTool" data-tool="{%= $.id %}"',
+                    'aria-label="{%: $.title || $.id %}">',
+                '{% if ($.icon) { %}',
+                    '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
+                '{% } %}',
+                '{% if (!$.cls) { %}',
+                    '<span></span>',
+                '{% } %}',
             '</button>'
         ]),
         /**
@@ -74,15 +83,18 @@ define('argos/MainToolbar', [
          * Current number of toolbar items set
          */
         size: 0,
+
         /**
          * Text that is placed into the toolbar titleNode
          */
         titleText: 'Mobile',
+
         /**
          * Calls parent {@link Toolbar#clear clear} and removes all toolbar items from DOM.
          */
-        clear: function () {
+        clear: function() {
             this.inherited(arguments);
+
             query('> [data-action], .toolButton-right', this.domNode).remove();
         },
         /**
@@ -90,19 +102,24 @@ define('argos/MainToolbar', [
          * The collection is then looped over and added to DOM, adding the left or right styling
          * @param {Object[]} tools Array of toolbar item definitions
          */
-        showTools: function (tools) {
+        showTools: function(tools) {
             var count, i, toolTemplate, side, tool;
             this.inherited(arguments);
+
             domClass.remove(this.domNode, 'toolbar-size-' + this.size);
             if (tools) {
-                count = { left: 0, right: 0 };
+                count = {left: 0, right: 0};
+
                 for (i = 0; i < tools.length; i++) {
                     tool = tools[i];
                     side = tool.side || 'right';
+
                     count[side] += 1;
                     toolTemplate = tool.template || this.toolTemplate;
+
                     domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.domNode, 'last');
                 }
+
                 this.size = Math.max(count.left, count.right);
                 domClass.add(this.domNode, 'toolbar-size-' + this.size);
             }
@@ -110,9 +127,11 @@ define('argos/MainToolbar', [
         /**
          * Event handler that fires when the toolbar title is clicked.
          */
-        onTitleClick: function (evt) {
+        onTitleClick: function(evt) {
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.MainToolbar', __class);
     return __class;
 });
+

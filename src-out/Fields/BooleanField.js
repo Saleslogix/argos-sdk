@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 define('argos/Fields/BooleanField', [
     'dojo/_base/declare',
     'dojo/_base/lang',
@@ -19,7 +20,14 @@ define('argos/Fields/BooleanField', [
     'dojo/dom-class',
     './_Field',
     '../FieldManager'
-], function (declare, lang, domAttr, domClass, Field, FieldManager) {
+], function(
+    declare,
+    lang,
+    domAttr,
+    domClass,
+    Field,
+    FieldManager
+) {
     /**
      * @class argos.Fields.BooleanField
      * The Boolean Field is used for true/false values and is visualized as a toggle or light switch.
@@ -42,7 +50,7 @@ define('argos/Fields/BooleanField', [
          * Provides a setter to the toggleNodes toggled attribute
          */
         attributeMap: {
-            toggled: {
+            toggled:{
                 node: 'toggleNode',
                 type: 'attribute',
                 attribute: 'toggled'
@@ -59,7 +67,7 @@ define('argos/Fields/BooleanField', [
         widgetTemplate: new Simplate([
             '<label for="{%= $.name %}">{%: $.label %}</label>',
             '<div class="toggle" data-dojo-attach-point="toggleNode" data-dojo-attach-event="onclick:_onClick" toggled="{%= !!$.checked %}">',
-            '<span class="thumb"></span>',
+                '<span class="thumb"></span>',
             '</div>'
         ]),
         /**
@@ -67,32 +75,37 @@ define('argos/Fields/BooleanField', [
          * The div node that holds the toggled attribute
          */
         toggleNode: null,
+
         /**
          * @property {Boolean}
          * When clearing the boolean field it sets the fields value to `this.checked`
          */
         checked: false,
+
         /**
          * Value used during dirty/modified comparison
          */
         originalValue: null,
+
         /**
          * Fires with the toggle switch is pressed and sets the value to
          * the opposite of the current value
          * @param {Event} evt The click/tap event
          */
-        _onClick: function (evt) {
+        _onClick: function(evt) {
             if (this.isDisabled()) {
                 return;
             }
+
             var toggledValue = !this.getValue();
+
             this.setValue(toggledValue);
         },
         /**
          * Returns the current toggled state
          * @return {Boolean}
          */
-        getValue: function () {
+        getValue: function() {
             return (domAttr.get(this.toggleNode, 'toggled') === true);
         },
         /**
@@ -103,20 +116,23 @@ define('argos/Fields/BooleanField', [
          * @param {Boolean/String/Number} val If string is passed it will use `'true'` or `'t'` for true. If number then 0 for true.
          * @param {Boolean} initial If true sets the value as the original value and is later used for dirty/modified detection.
          */
-        setValue: function (val, initial) {
+        setValue: function(val, initial) {
             val = typeof val === 'string'
                 ? /^(true|t|0)$/i.test(val)
                 : !!val;
+
             if (initial) {
                 this.originalValue = val;
             }
+
             domAttr.set(this.toggleNode, 'toggled', val);
+
             if (val === false) {
                 domClass.remove(this.toggleNode, 'toggleStateOn');
-            }
-            else {
+            } else {
                 domClass.add(this.toggleNode, 'toggleStateOn');
             }
+
             this.onChange(val, this);
         },
         /**
@@ -124,18 +140,20 @@ define('argos/Fields/BooleanField', [
          * `this.checked` as a dirty/modified value.
          * @param {Boolean} flag Signifies if the cleared value should be set as modified (true) or initial (false/undefined)
          */
-        clearValue: function (flag) {
+        clearValue: function(flag) {
             var initial = flag !== true;
+
             this.setValue(this.checked, initial);
         },
         /**
          * Determines if the field has been modified from it's original value
          * @return {Boolean}
          */
-        isDirty: function () {
+        isDirty: function() {
             return (this.originalValue !== this.getValue());
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Fields.BooleanField', control);
     return FieldManager.register('boolean', control);
 });

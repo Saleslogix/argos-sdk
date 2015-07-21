@@ -130,7 +130,7 @@ define('argos/GroupedList', [
          * @param {Object} entry The current entry being processed.
          * @return {Object} Object that contains a tag and title property where tag will be used in comparisons
          */
-        getGroupForEntry: function(entry):any {
+        getGroupForEntry: function(entry) {
             var sectionDef, title;
             if (this._currentGroupBySection) {
                 sectionDef = this._currentGroupBySection.section.getSection(entry);

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos._SDataDetailMixin
  *
@@ -27,8 +28,15 @@ define('argos/_SDataDetailMixin', [
     'dojo/string',
     './Utility',
     './Store/SData'
-], function (declare, lang, string, utility, SData) {
+], function(
+    declare,
+    lang,
+    string,
+    utility,
+    SData
+) {
     var __class = declare('argos._SDataDetailMixin', null, {
+
         /**
          * @cfg {String} resourceKind
          * The SData resource kind the view is responsible for.  This will be used as the default resource kind
@@ -55,12 +63,14 @@ define('argos/_SDataDetailMixin', [
          * The default resource predicate for an SData request.
          */
         resourcePredicate: null,
+
         itemsProperty: '$resources',
         idProperty: '$key',
         labelProperty: '$descriptor',
         entityProperty: '$name',
         versionProperty: '$etag',
-        createStore: function () {
+
+        createStore: function() {
             return new SData({
                 service: this.getConnection(),
                 contractName: this.contractName,
@@ -77,28 +87,34 @@ define('argos/_SDataDetailMixin', [
                 scope: this
             });
         },
-        _buildGetExpression: function () {
+        _buildGetExpression: function() {
             var options = this.options;
+
             return options && (options.id || options.key);
         },
-        _applyStateToGetOptions: function (getOptions) {
+        _applyStateToGetOptions: function(getOptions) {
             var options = this.options;
             if (options) {
                 if (options.select) {
                     getOptions.select = options.select;
                 }
+
                 if (options.include) {
                     getOptions.include = options.include;
                 }
+
                 if (options.contractName) {
                     getOptions.contractName = options.contractName;
                 }
+
                 if (options.resourceKind) {
                     getOptions.resourceKind = options.resourceKind;
                 }
+
                 if (options.resourceProperty) {
                     getOptions.resourceProperty = options.resourceProperty;
                 }
+
                 if (options.resourcePredicate) {
                     getOptions.resourcePredicate = options.resourcePredicate;
                 }
@@ -111,11 +127,13 @@ define('argos/_SDataDetailMixin', [
          * @param {String} property Property name to extract from the entry, may be a path: `Address.City`.
          * @return {String}
          */
-        formatRelatedQuery: function (entry, fmt, property) {
+        formatRelatedQuery: function(entry, fmt, property) {
             property = property || '$key';
             return string.substitute(fmt, [utility.getValue(entry, property, '')]);
         }
     });
+
     lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
     return __class;
 });
+

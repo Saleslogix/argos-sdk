@@ -1341,7 +1341,7 @@ define('argos/_ListBase', [
          */
         navigateToInsertView: function(el, additionalOptions) {
             var view = this.app.getView(this.insertView || this.editView),
-                options:any = {
+                options = {
                     returnTo: this.id,
                     insert: true
                 };
@@ -1735,4 +1735,3 @@ define('argos/_ListBase', [
     lang.setObject('Sage.Platform.Mobile._ListBase', __class);
     return __class;
 });
-

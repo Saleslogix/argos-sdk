@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos.Edit
  *
@@ -31,8 +32,17 @@ define('argos/Edit', [
     './_EditBase',
     './_SDataEditMixin',
     './_RelatedViewWidgetEditMixin'
-], function (declare, lang, _EditBase, _SDataEditMixin, _RelatedWidgetEditMixin) {
-    var __class = declare('argos.Edit', [_EditBase, _SDataEditMixin, _RelatedWidgetEditMixin], {});
+], function(
+    declare,
+    lang,
+    _EditBase,
+    _SDataEditMixin,
+    _RelatedWidgetEditMixin
+) {
+
+    var __class = declare('argos.Edit', [_EditBase, _SDataEditMixin, _RelatedWidgetEditMixin], {
+    });
+
     lang.setObject('Sage.Platform.Mobile.Edit', __class);
     return __class;
 });

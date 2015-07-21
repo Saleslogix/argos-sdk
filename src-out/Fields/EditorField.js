@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos.Fields.EditorField
  * The EditorField is not a field per say but a base class for another field type to inherit from. The
@@ -31,7 +32,13 @@ define('argos/Fields/EditorField', [
     'dojo/_base/lang',
     'dojo/_base/event',
     'argos/Fields/_Field'
-], function (declare, lang, event, _Field) {
+], function(
+    declare,
+    lang,
+    event,
+    _Field
+) {
+
     var __class = declare('argos.Fields.EditorField', [_Field], {
         /**
          * @property {Object}
@@ -46,6 +53,7 @@ define('argos/Fields/EditorField', [
                 attribute: 'value'
             }
         },
+
         /**
          * @property {Simplate}
          * Simplate that defines the fields HTML Markup
@@ -59,7 +67,9 @@ define('argos/Fields/EditorField', [
             '<button class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
             '<input data-dojo-attach-point="inputNode" type="text" />'
         ]),
+
         iconClass: 'fa fa-pencil fa-lg',
+
         // Localization
         /**
          * @property {String}
@@ -81,6 +91,7 @@ define('argos/Fields/EditorField', [
          * Text that may be used in the toolbar item that is passed to the editor view
          */
         completeText: 'Ok',
+
         /**
          * @cfg {String}
          * The view id that the user will be taken to when the edit button is clicked.
@@ -102,46 +113,49 @@ define('argos/Fields/EditorField', [
          * the validationValue is set using `getValues(true)` which returns all values even non-modified ones.
          */
         validationValue: null,
+
         /**
          * Returns the formatted value. This should be overwritten to provide proper formatting
          * @param val
          * @template
          */
-        formatValue: function (val) {
+        formatValue: function(val) {
             return '';
         },
         /**
          * Extends the parent implementation to connect the `onclick` event of the fields container
          * to {@link #_onClick _onClick}.
          */
-        init: function () {
+        init: function() {
             this.inherited(arguments);
+
             this.connect(this.containerNode, 'onclick', this._onClick);
         },
         /**
          * Extends the parent implementation to also call {@link #_enableTextElement _enableTextElement}.
          */
-        enable: function () {
+        enable: function() {
             this.inherited(arguments);
+
             this._enableTextElement();
         },
         /**
          * Sets the input nodes' disabled attribute to false
          */
-        _enableTextElement: function () {
+        _enableTextElement: function() {
             this.inputNode.disabled = false;
         },
         /**
          * Extends the parent implementation to also call {@link #_disableTextElement _disableTextElement}.
          */
-        disable: function () {
+        disable: function() {
             this.inherited(arguments);
             this._disableTextElement();
         },
         /**
          * Sets the input nodes' disabled attribute to true
          */
-        _disableTextElement: function () {
+        _disableTextElement: function() {
             this.inputNode.disabled = true;
         },
         /**
@@ -150,21 +164,21 @@ define('argos/Fields/EditorField', [
          * that operates within this fields scope.
          * @return Navigation options
          */
-        createNavigationOptions: function () {
+        createNavigationOptions: function() {
             return {
                 tools: {
                     tbar: [{
-                            id: 'complete',
-                            cls: 'fa fa-check fa-fw fa-lg',
-                            fn: this.complete,
-                            scope: this
-                        }, {
-                            id: 'cancel',
-                            cls: 'fa fa-ban fa-fw fa-lg',
-                            side: 'left',
-                            fn: ReUI.back,
-                            scope: ReUI
-                        }]
+                        id: 'complete',
+                        cls: 'fa fa-check fa-fw fa-lg',
+                        fn: this.complete,
+                        scope: this
+                    }, {
+                        id: 'cancel',
+                        cls: 'fa fa-ban fa-fw fa-lg',
+                        side: 'left',
+                        fn: ReUI.back,
+                        scope: ReUI
+                    }]
                 },
                 entry: this.originalValue || this.validationValue,
                 changes: this.currentValue,
@@ -175,15 +189,19 @@ define('argos/Fields/EditorField', [
         /**
          * Navigates to the given `this.view` using the options from {@link #createNavigationOptions createNavigationOptions}.
          */
-        navigateToEditView: function () {
+        navigateToEditView: function() {
             if (this.isDisabled()) {
                 return;
             }
-            var view = App.getView(this.view), options = this.createNavigationOptions();
+
+            var view = App.getView(this.view),
+                options = this.createNavigationOptions();
+
             if (view && options) {
                 if (options.title) {
                     view.set('title', options.title);
                 }
+
                 view.show(options);
             }
         },
@@ -194,7 +212,7 @@ define('argos/Fields/EditorField', [
          *
          * @param {Event} evt
          */
-        _onClick: function (evt) {
+        _onClick: function(evt) {
             event.stop(evt);
             this.navigateToEditView();
         },
@@ -202,20 +220,21 @@ define('argos/Fields/EditorField', [
          * Gets the values from the editor view and applies it to the this fields `this.currentValue` and
          * `this.validationValue`.
          */
-        getValuesFromView: function () {
-            var view = App.getPrimaryActiveView(), values = view && view.getValues();
+        getValuesFromView: function() {
+            var view = App.getPrimaryActiveView(),
+                values = view && view.getValues();
+
             if (view && values) {
                 if (this.applyTo) {
                     this.currentValue = values;
-                }
-                else if (this.owner.inserting) {
+                } else if (this.owner.inserting) {
                     // If we are inserting a new value, we want all the fields, not just fields that changed (if the user edited multiple times)
                     this.currentValue = view.getValues(true);
-                }
-                else {
+                } else {
                     // Gets an entry with fields that are dirty
                     this.currentValue = view.createItem();
                 }
+
                 // store all editor values for validation, not only dirty values
                 this.validationValue = view.getValues(true);
             }
@@ -228,24 +247,30 @@ define('argos/Fields/EditorField', [
          * the value, sets the fields text, calls `ReUI.back` and fires {@link #_onComplete _onComplete}.
          *
          */
-        complete: function () {
-            var view, success;
+        complete: function() {
+            var view,
+                success;
+
             view = App.getPrimaryActiveView();
             success = true;
+
             if (view instanceof argos.Edit) {
                 view.hideValidationSummary();
+
                 if (view.validate() !== false) {
                     view.showValidationSummary();
                     return;
                 }
             }
+
             this.getValuesFromView();
+
             this.setText(this.formatValue(this.validationValue));
+
             // todo: remove
             if (view.isValid && !view.isValid()) {
                 return;
-            }
-            else {
+            } else {
                 ReUI.back();
             }
             // if the event is fired before the transition, any XMLHttpRequest created in an event handler and
@@ -262,35 +287,35 @@ define('argos/Fields/EditorField', [
          * Fires {@link #onChange onChange}.
          *
          */
-        _onComplete: function () {
+        _onComplete: function() {
             this.onChange(this.currentValue, this);
         },
         /**
          * Sets the displayed text to the input.
          * @param {String} text
          */
-        setText: function (text) {
+        setText: function(text) {
             this.set('inputValue', text);
         },
         /**
          * Determines if the value has been modified from the default/original state
          * @return {Boolean}
          */
-        isDirty: function () {
+        isDirty: function() {
             return this.originalValue !== this.currentValue;
         },
         /**
          * Returns the current value
          * @return {Object/String/Date/Number}
          */
-        getValue: function () {
+        getValue: function() {
             return this.currentValue;
         },
         /**
          * Extends the parent implementation to use the `this.validationValue` instead of `this.getValue()`.
          * @param value
          */
-        validate: function (value) {
+        validate: function(value) {
             return typeof value === 'undefined'
                 ? this.inherited(arguments, [this.validationValue])
                 : this.inherited(arguments);
@@ -304,29 +329,33 @@ define('argos/Fields/EditorField', [
          * @param {Object/String/Date/Number} val Value to be set
          * @param {Boolean} initial True if the value is the default/clean value, false if it is a meant as a dirty value
          */
-        setValue: function (val, initial) {
+        setValue: function(val, initial) {
             if (val) {
                 this.validationValue = this.currentValue = val;
+
                 if (initial) {
                     this.originalValue = this.currentValue;
                 }
+
                 this.setText(this.formatValue(val));
-            }
-            else {
+            } else {
                 this.validationValue = this.currentValue = null;
+
                 if (initial) {
                     this.originalValue = this.currentValue;
                 }
+
                 this.setText(this.emptyText);
             }
         },
         /**
          * Clears the value by passing `null` to {@link #setValue setValue}
          */
-        clearValue: function () {
+        clearValue: function() {
             this.setValue(null, true);
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
     return __class;
 });

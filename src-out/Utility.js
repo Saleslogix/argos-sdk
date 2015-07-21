@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos.Utility
  * Utility provides functions that are more javascript enhancers than application related code.
@@ -22,79 +23,91 @@ define('argos/Utility', [
     'dojo/_base/lang',
     'dojo/_base/array',
     'dojo/json'
-], function (lang, array, json) {
-    var nameToPathCache, __class, nameToPath;
+], function(
+    lang,
+    array,
+    json
+) {
+    var nameToPathCache,
+        __class,
+        nameToPath;
+
     nameToPathCache = {};
-    nameToPath = function (name) {
+    nameToPath = function(name) {
         var parts, path, i, match;
+
         if (typeof name !== 'string' || name === '.' || name === '') {
             return []; // '', for compatibility
         }
+
         if (nameToPathCache[name]) {
             return nameToPathCache[name];
         }
+
         parts = name.split('.');
         path = [];
+
         for (i = 0; i < parts.length; i++) {
             match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
             if (match) {
                 path.push(match[1]);
                 if (/^\d+$/.test(match[2])) {
                     path.push(parseInt(match[2], 10));
-                }
-                else {
+                } else {
                     path.push(match[2]);
                 }
-            }
-            else {
+            } else {
                 path.push(parts[i]);
             }
         }
+
         nameToPathCache[name] = path.reverse();
         return nameToPathCache[name];
     };
+
     __class = lang.setObject('argos.Utility', {
         /**
          * Replaces a single `"` with two `""` for proper SData query expressions.
          * @param {String} searchQuery Search expression to be escaped.
          * @return {String}
          */
-        escapeSearchQuery: function (searchQuery) {
+        escapeSearchQuery: function(searchQuery) {
             return (searchQuery || '').replace(/"/g, '""');
         },
-        memoize: function (fn, keyFn) {
+        memoize: function(fn, keyFn) {
             var cache = {};
-            keyFn = keyFn || (function (value) {
+            keyFn = keyFn || (function(value) {
                 return value;
             });
-            return function () {
+
+            return function() {
                 var key = keyFn.apply(this, arguments);
                 if (cache[key]) {
                     return cache[key];
-                }
-                else {
+                } else {
                     cache[key] = fn.apply(this, arguments);
                     return cache[key];
                 }
             };
         },
-        getValue: function (o, name, defaultValue) {
+        getValue: function(o, name, defaultValue) {
             var path, current, key;
+
             path = nameToPath(name).slice(0);
             current = o;
             while (current && path.length > 0) {
                 key = path.pop();
                 if (typeof current[key] !== 'undefined') {
                     current = current[key];
-                }
-                else {
+                } else {
                     return typeof defaultValue !== 'undefined' ? defaultValue : null;
                 }
             }
             return current;
         },
-        setValue: function (o, name, val) {
+        setValue: function(o, name, val) {
             var current, path, key, next;
+
             current = o;
             path = nameToPath(name).slice(0);
             while ((typeof current !== 'undefined') && path.length > 1) {
@@ -109,17 +122,17 @@ define('argos/Utility', [
             if (typeof path[0] !== 'undefined') {
                 current[path[0]] = val;
             }
+
             return o;
         },
-        expand: function (scope, expression) {
+        expand: function(scope, expression) {
             if (typeof expression === 'function') {
                 return expression.apply(scope, Array.prototype.slice.call(arguments, 2));
-            }
-            else {
+            } else {
                 return expression;
             }
         },
-        roundNumberTo: function (number, precision) {
+        roundNumberTo: function(number, precision) {
             var k = Math.pow(10, precision);
             return (Math.round(number * k) / k);
         },
@@ -127,11 +140,12 @@ define('argos/Utility', [
          * @function
          * Utility function to join fields within a Simplate template.
          */
-        joinFields: function (seperator, fields) {
+        joinFields: function(seperator, fields) {
             var results;
-            results = array.filter(fields, function (item) {
+            results = array.filter(fields, function(item) {
                 return item !== null && typeof item !== 'undefined' && item !== '';
             });
+
             return results.join(seperator);
         },
         /**
@@ -139,24 +153,26 @@ define('argos/Utility', [
          * @param {Object} obj Object to be cleansed of non-stringify friendly keys/values.
          * @return {Object} Object ready to be JSON.stringified.
          */
-        sanitizeForJson: function (obj) {
+        sanitizeForJson: function(obj) {
             var type, key;
             for (key in obj) {
                 if (obj.hasOwnProperty(key)) {
                     try {
                         type = typeof obj[key];
-                    }
-                    catch (e) {
+                    } catch(e) {
                         delete obj[key];
                         continue;
                     }
+
                     switch (type) {
                         case 'undefined':
                             obj[key] = 'undefined';
                             break;
+
                         case 'function':
                             delete obj[key];
                             break;
+
                         case 'object':
                             if (obj[key] === null) {
                                 obj[key] = 'null';
@@ -171,11 +187,11 @@ define('argos/Utility', [
                         case 'string':
                             try {
                                 obj[key] = json.parse(obj[key]);
+
                                 if (typeof obj[key] === 'object') {
                                     obj[key] = this.sanitizeForJson(obj[key]);
                                 }
-                            }
-                            catch (e) { }
+                            } catch(e) {}
                             break;
                     }
                 }
@@ -183,6 +199,7 @@ define('argos/Utility', [
             return obj;
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Utility', __class);
     return __class;
 });

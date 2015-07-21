@@ -8,6 +8,7 @@
 
     You acknowledge that Swiftpage retains and is not transferring to you any title to or ownership rights in or to any intellectual property in the Software, any modifications thereto, or copies thereof.  Swiftpage may terminate this Agreement, in its sole discretion. Upon termination of this Agreement, you shall return to Swiftpage, or destroy, all originals and copies of all Software (including any support materials furnished by Swiftpage), permanently purge all machine-readable copies of the Software from all computers and storage devices, and to certify to Sage in writing that the foregoing duties have been performed and that you will not in any way use or permit the use of the Software. This Agreement shall be governed by the laws of the State of Colorado.
  */
+
 /**
  * @class argos.Groups._GroupSection
  */
@@ -15,7 +16,12 @@ define('argos/Groups/_GroupBySection', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/string'
-], function (declare, lang, string) {
+], function(
+    declare,
+    lang,
+    string
+) {
+
     var __class = declare('argos.Groups._GroupBySection', null, {
         /**
         * @property {String}
@@ -32,19 +38,20 @@ define('argos/Groups/_GroupBySection', [
          * The SData property that the field will be bound to.
          */
         groupByProperty: null,
-        sortDirection: 'desc',
+        sortDirection:'desc',
         sections: null,
-        constructor: function (o) {
+        constructor: function(o) {
             lang.mixin(this, o);
         },
-        init: function () {
+        init: function() {
         },
-        getGroupSection: function (entry) {
+        getGroupSection: function(entry) {
         },
-        getOrderByQuery: function () {
+        getOrderByQuery: function() {
             return this.groupByProperty + ' ' + this.sortDirection;
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
     return __class;
 });

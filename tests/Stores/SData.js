@@ -52,6 +52,9 @@ define('tests/Stores/SData', [
     MockService.prototype.getDataSet = function() { };
     MockService.prototype.isJsonEnabled = function() { return true;
     };
+    MockService.prototype.getCompact = function() {
+        return true;
+    };
     MockService.prototype.createEntry = function(request, data, options) {
         options.success.call(options.scope || this, data);
         return data;
@@ -679,4 +682,3 @@ define('tests/Stores/SData', [
         });
     });
 });
-

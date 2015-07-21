@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos._SDataEditMixin
  *
@@ -32,13 +33,24 @@ define('argos/_SDataEditMixin', [
     './ErrorManager',
     './Convert',
     './_SDataDetailMixin'
-], function (declare, lang, string, domClass, connect, SData, ErrorManager, convert, _SDataDetailMixin) {
+], function(
+    declare,
+    lang,
+    string,
+    domClass,
+    connect,
+    SData,
+    ErrorManager,
+    convert,
+    _SDataDetailMixin
+) {
     var __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
         /**
          * @property {Object}
          * The saved SData response.
          */
         entry: null,
+
         /**
          * @property {Object}
          * The saved template SData response.
@@ -48,36 +60,39 @@ define('argos/_SDataEditMixin', [
             '$etag',
             '$updated'
         ],
-        _buildRefreshMessage: function (entry, result) {
+
+        _buildRefreshMessage: function(entry, result) {
             var message = this.inherited(arguments);
+
             return lang.mixin(message, {
                 resourceKind: this.resourceKind
             });
         },
-        onRefresh: function () {
+        onRefresh: function() {
             this.entry = false;
         },
-        onRefreshInsert: function () {
+        onRefreshInsert: function() {
             if (this.options.template) {
                 this.processTemplateEntry(this.options.template);
-            }
-            else {
+            } else {
                 this.requestTemplate();
             }
         },
-        createEntryForUpdate: function (values) {
+        createEntryForUpdate: function(values) {
             values = this.inherited(arguments);
             values = lang.mixin(values, {
                 '$key': this.entry['$key'],
                 '$etag': this.entry['$etag'],
                 '$name': this.entry['$name']
             });
+
             if (!this._isConcurrencyCheckEnabled()) {
                 delete values['$etag'];
             }
+
             return values;
         },
-        createEntryForInsert: function (values) {
+        createEntryForInsert: function(values) {
             values = this.inherited(arguments);
             return lang.mixin(values, {
                 '$name': this.entityName
@@ -97,7 +112,7 @@ define('argos/_SDataEditMixin', [
          *
          * @param templateEntry
          */
-        applyContext: function (templateEntry) {
+        applyContext: function(templateEntry) {
         },
         /**
          * Creates Sage.SData.Client.SDataTemplateResourceRequest instance and sets a number of known properties.
@@ -108,26 +123,31 @@ define('argos/_SDataEditMixin', [
          *
          * @return {Object} Sage.SData.Client.SDataTemplateResourceRequest instance.
          */
-        createTemplateRequest: function () {
+        createTemplateRequest: function() {
             var request = new Sage.SData.Client.SDataTemplateResourceRequest(this.getService());
+
             if (this.resourceKind) {
                 request.setResourceKind(this.resourceKind);
             }
+
             if (this.querySelect) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Select, this.querySelect.join(','));
             }
+
             if (this.queryInclude) {
                 request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Include, this.queryInclude.join(','));
             }
+
             if (this.contractName) {
                 request.setContractName(this.contractName);
             }
+
             return request;
         },
         /**
          * Initiates the SData request for the template (default values).
          */
-        requestTemplate: function () {
+        requestTemplate: function() {
             var request = this.createTemplateRequest();
             if (request) {
                 request.read({
@@ -142,14 +162,14 @@ define('argos/_SDataEditMixin', [
          * @param {Object} response The response object.
          * @param {Object} o The options that were passed when creating the Ajax request.
          */
-        onRequestTemplateFailure: function (response, o) {
+        onRequestTemplateFailure: function(response, o) {
             this.handleError(response);
         },
         /**
          * Handler when a request to SData is successful, calls processTemplateEntry
          * @param {Object} entry The SData response
          */
-        onRequestTemplateSuccess: function (entry) {
+        onRequestTemplateSuccess: function(entry) {
             this.processTemplateEntry(entry);
         },
         /**
@@ -165,17 +185,20 @@ define('argos/_SDataEditMixin', [
          *
          * @param {Object} templateEntry SData template entry
          */
-        processTemplateEntry: function (templateEntry) {
+        processTemplateEntry: function(templateEntry) {
             this.templateEntry = this.convertEntry(templateEntry || {});
+
             this.setValues(this.templateEntry, true);
             this.applyFieldDefaults();
             this.applyContext(this.templateEntry);
+
             // if an entry has been passed through options, apply it here, now that the template has been applied.
             // in this case, since we are doing an insert (only time template is used), the entry is applied as modified data.
             if (this.options.entry) {
                 this.entry = this.convertEntry(this.options.entry);
                 this.setValues(this.entry);
             }
+
             domClass.remove(this.domNode, 'panel-loading');
         },
         /**
@@ -184,7 +207,7 @@ define('argos/_SDataEditMixin', [
          * @param {Object} values Payload
          * @return {Object} Entry with string dates
          */
-        convertValues: function (values) {
+        convertValues: function(values) {
             for (var n in values) {
                 if (values[n] instanceof Date) {
                     values[n] = this.getService().isJsonEnabled()
@@ -192,6 +215,7 @@ define('argos/_SDataEditMixin', [
                         : convert.toIsoStringFromDate(values[n]);
                 }
             }
+
             return values;
         },
         /**
@@ -199,29 +223,33 @@ define('argos/_SDataEditMixin', [
          * @param {Object} entry SData entry
          * @return {Object} Entry with actual Date objects
          */
-        convertEntry: function (entry) {
+        convertEntry: function(entry) {
             for (var n in entry) {
                 if (convert.isDateString(entry[n])) {
                     entry[n] = convert.toDateFromString(entry[n]);
                 }
             }
+
             return entry;
         },
-        _applyStateToPutOptions: function (putOptions) {
+        _applyStateToPutOptions: function(putOptions) {
             var store = this.get('store');
+
             if (this._isConcurrencyCheckEnabled()) {
                 // The SData store will take the version and apply it to the etag
                 putOptions.version = store.getVersion(this.entry);
             }
+
             putOptions.entity = store.getEntity(this.entry) || this.entityName;
         },
-        _applyStateToAddOptions: function (addOptions) {
+        _applyStateToAddOptions: function(addOptions) {
             addOptions.entity = this.entityName;
         },
-        _isConcurrencyCheckEnabled: function () {
+        _isConcurrencyCheckEnabled: function() {
             return App && App.enableConcurrencyCheck;
         }
     });
+
     lang.setObject('Sage.Platform.Mobile._SDataEditMixin', __class);
     return __class;
 });
