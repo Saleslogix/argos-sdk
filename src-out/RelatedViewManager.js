@@ -1,7 +1,9 @@
 /*
  * See copyright file.
  */
-define('argos/RelatedViewManager', [
+
+
+define('argos/RelatedViewManager',  [
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/event',
@@ -13,8 +15,22 @@ define('argos/RelatedViewManager', [
     'dojo/_base/array',
     './Store/SData',
     './_RelatedViewWidgetBase'
-], function (declare, lang, event, string, domClass, when, domConstruct, query, array, SDataStore, RelatedViewWidget) {
-    var _widgetTypes, __class;
+], function(
+    declare,
+    lang,
+    event,
+    string,
+    domClass,
+    when,
+    domConstruct,
+    query,
+    array,
+    SDataStore,
+    RelatedViewWidget
+) {
+    var _widgetTypes,
+        __class;
+
     _widgetTypes = {};
     __class = declare('argos.RelatedViewManager', null, {
         id: 'relatedViewManager',
@@ -22,12 +38,12 @@ define('argos/RelatedViewManager', [
         relatedViewConfig: null,
         widgetTypes: _widgetTypes,
         enabled: true,
-        constructor: function (options) {
+        constructor: function(options) {
             this.relatedViews = {};
             lang.mixin(this, options);
             this.registerType('default', RelatedViewWidget);
         },
-        destroyViews: function () {
+        destroyViews: function() {
             for (var relatedViewId in this.relatedViews) {
                 if (this.relatedViews.hasOwnProperty(relatedViewId)) {
                     this.relatedViews[relatedViewId].destroy();
@@ -35,10 +51,10 @@ define('argos/RelatedViewManager', [
             }
             this.relatedViews = {};
         },
-        registerType: function (widgetTypeName, ctor) {
+        registerType: function(widgetTypeName, ctor) {
             this.widgetTypes[widgetTypeName] = ctor;
         },
-        getWidgetType: function (widgetTypeName) {
+        getWidgetType: function(widgetTypeName) {
             var widgetType;
             widgetType = this.widgetTypes[widgetTypeName];
             if (!widgetType) {
@@ -46,8 +62,12 @@ define('argos/RelatedViewManager', [
             }
             return widgetType;
         },
-        addView: function (entry, contentNode, owner) {
-            var relatedContentNode, relatedViewNode, relatedViewWidget, relatedResults, options;
+        addView: function(entry, contentNode, owner) {
+            var relatedContentNode,
+            relatedViewNode,
+            relatedViewWidget,
+            relatedResults,
+            options;
             try {
                 if (contentNode) {
                     if (this.enabled) {
@@ -73,6 +93,7 @@ define('argos/RelatedViewManager', [
             }
             catch (error) {
                 console.log('Error adding related view widgets:' + error);
+
             }
         }
     });

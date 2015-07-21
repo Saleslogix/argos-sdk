@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos.FieldManager
  * Field Manager is a registry for field types that enables the Edit View layouts to
@@ -21,8 +22,12 @@
  */
 define('argos/FieldManager', [
     'dojo/_base/lang'
-], function (lang) {
-    var store, __class;
+], function(
+    lang
+) {
+    var store,
+        __class;
+
     store = {};
     __class = lang.setObject('argos.FieldManager', {
         /**
@@ -35,7 +40,7 @@ define('argos/FieldManager', [
          * @param {String} name Unique string name of field, will be what is used in Edit View layouts.
          * @param {Function} ctor Constructor function of field
          */
-        register: function (name, ctor) {
+        register: function(name, ctor) {
             store[name] = ctor;
             return ctor;
         },
@@ -44,10 +49,11 @@ define('argos/FieldManager', [
          * @param name Unique name of field
          * @return {Function} Constructor for the given field type
          */
-        get: function (name) {
+        get: function(name) {
             return store[name];
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.FieldManager', __class);
     return __class;
 });

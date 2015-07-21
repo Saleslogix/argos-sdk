@@ -1,8 +1,12 @@
 define('argos/ConfigurableSelectionModel', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    './SelectionModel'
-], function (declare, lang, SelectionModel) {
+       'dojo/_base/declare',
+       'dojo/_base/lang',
+       './SelectionModel'
+], function(
+    declare,
+    lang,
+    SelectionModel
+) {
     /**
      * @class argos.ConfigurableSelectionModel
      * The ConfigurableSelectionModel adds the logic to the SelectionModel to only have one item selected at a time via the `singleSelection` flag.
@@ -24,11 +28,10 @@ define('argos/ConfigurableSelectionModel', [
          *
          * @param {Boolean} val The state that `singleSelection` should be in.
          */
-        useSingleSelection: function (val) {
+        useSingleSelection: function(val) {
             if (val && typeof val !== 'undefined' && val !== null) {
                 this.singleSelection = true;
-            }
-            else {
+            } else {
                 this.singleSelection = false;
             }
         },
@@ -39,15 +42,17 @@ define('argos/ConfigurableSelectionModel', [
          * @param {Object} data The item being selected
          * @param tag
          */
-        select: function (key, data, tag) {
+        select: function(key, data, tag) {
             if (this.singleSelection) {
                 if (!this.isSelected(key) || (this.count >= 1)) {
                     this.clear();
                 }
             }
+
             this.inherited(arguments);
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.ConfigurableSelectionModel', __class);
     return __class;
 });

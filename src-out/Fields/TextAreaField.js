@@ -12,12 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
 define('argos/Fields/TextAreaField', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     './TextField',
     '../FieldManager'
-], function (declare, lang, TextField, FieldManager) {
+], function(
+    declare,
+    lang,
+    TextField,
+    FieldManager
+) {
     /**
      * @class argos.Fields.TextAreaField
      * The TextAreaField extends the base TextField by changing the input element to
@@ -59,17 +66,21 @@ define('argos/Fields/TextAreaField', [
             '<label for="{%= $.name %}">{%: $.label %}</label>',
             '<textarea data-dojo-attach-point="inputNode" name="{%= $.name %}" rows="{%: $.rows %}" {% if ($.readonly) { %} readonly {% } %}></textarea>'
         ]),
-        setValue: function (val, initial) {
+        setValue: function(val, initial) {
             if (val === null || typeof val === 'undefined') {
                 val = '';
             }
+
             if (initial) {
                 this.originalValue = val;
             }
+
             this.previousValue = false;
+
             this.set('inputValue', val);
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Fields.TextAreaField', control);
     return FieldManager.register('textarea', control);
 });

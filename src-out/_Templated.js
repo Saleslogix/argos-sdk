@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos._Templated
  */
@@ -25,7 +26,18 @@ define('argos/_Templated', [
     'dijit/registry',
     'dijit/_base/wai',
     'dijit/_TemplatedMixin'
-], function (domConstruct, declare, query, parser, array, lang, registry, wai, _TemplatedMixin) {
+], function(
+    domConstruct,
+    declare,
+    query,
+    parser,
+    array,
+    lang,
+    registry,
+    wai,
+    _TemplatedMixin
+) {
+
     /**
      * _Templated serves as an override for dijit Widgets to enable the use of
      * Simplates for templates.
@@ -33,30 +45,35 @@ define('argos/_Templated', [
      * @alternateClassName _Templated
      */
     var __class = declare('argos._Templated', [_TemplatedMixin], {
-        _stringRepl: function (tmpl) {
+        _stringRepl: function(tmpl) {
             return tmpl;
         },
         /**
          * Processes `this.widgetTemplate` or `this.contentTemplate`
          */
-        buildRendering: function () {
+        buildRendering: function() {
             var root;
+
             if (this.widgetTemplate && this.contentTemplate) {
                 throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
             }
+
             if (this.contentTemplate) {
                 this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
-            }
-            else if (this.widgetTemplate) {
+            } else if (this.widgetTemplate) {
                 this.templateString = this.widgetTemplate.apply(this);
                 root = domConstruct.toDom(this.templateString);
+
                 if (root.nodeType === 11) {
                     this.templateString = ['<div>', this.templateString, '</div>'].join('');
                 }
             }
+
             this.inherited(arguments);
         }
     });
+
+
     lang.setObject('Sage.Platform.Mobile._Templated', __class);
     return __class;
 });

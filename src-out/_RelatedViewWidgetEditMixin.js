@@ -1,6 +1,7 @@
 /*
  * See copyright file.
  */
+
 define('argos/_RelatedViewWidgetEditMixin', [
     'dojo/_base/declare',
     'dojo/_base/array',
@@ -9,7 +10,15 @@ define('argos/_RelatedViewWidgetEditMixin', [
     'dojo/dom-construct',
     'dojo/query',
     './RelatedViewManager'
-], function (declare, array, lang, aspect, domConstruct, query, RelatedViewManager) {
+], function(
+    declare,
+    array,
+    lang,
+    aspect,
+    domConstruct,
+    query,
+    RelatedViewManager
+) {
     var __class = declare('argos._RelatedViewWidgetEditMixin', null, {
         cls: null,
         /**
@@ -22,22 +31,21 @@ define('argos/_RelatedViewWidgetEditMixin', [
         relatedContentViewsTemplate: new Simplate([
             '<div id="{%= $.id %}" class="related-view-edit-content {%= $.cls %}"></div>'
         ]),
-        createRowContent: function (layout, content) {
+        createRowContent: function(layout, content) {
             if (layout['relatedView']) {
                 content.push(this.relatedContentViewsTemplate.apply(layout['relatedView'], this));
-            }
-            else {
+            } else {
                 this.inherited(arguments);
             }
         },
-        processData: function (entry) {
+        processData: function(entry) {
             this.destroyRelatedViewWidgets();
             this.createRelatedViews(this.layout, entry);
             this.inherited(arguments);
         },
-        createRelatedViews: function (layout, entry) {
+        createRelatedViews: function(layout, entry) {
             var node;
-            layout.forEach(function (item) {
+            layout.forEach(function(item) {
                 if (item['relatedView']) {
                     node = query('#' + item['relatedView'].id, this.contentNode)[0];
                     if (node) {
@@ -54,18 +62,19 @@ define('argos/_RelatedViewWidgetEditMixin', [
         * If a manager is not found a new Related View Manager is created and returned.
         * @return {Object} RelatedViewManager
         */
-        getRelatedViewManager: function (relatedView) {
+        getRelatedViewManager: function(relatedView) {
             var relatedViewManager, options, relatedViewOptions;
             if (!this.relatedViewManagers) {
                 this.relatedViewManagers = {};
             }
             if (this.relatedViewManagers[relatedView.id]) {
                 relatedViewManager = this.relatedViewManagers[relatedView.id];
-            }
-            else {
+            } else {
                 //relatedView.id = this.id + '_' + relatedView.id;
-                relatedViewOptions = {};
+                relatedViewOptions = {
+                };
                 lang.mixin(relatedViewOptions, relatedView);
+
                 options = {
                     id: relatedView.id,
                     relatedViewConfig: relatedViewOptions
@@ -75,12 +84,14 @@ define('argos/_RelatedViewWidgetEditMixin', [
             }
             return relatedViewManager;
         },
-        onProcessRelatedViews: function (relatedView, rowNode, entry) {
+        onProcessRelatedViews: function(relatedView, rowNode, entry) {
             var relatedViewManager, i, relatedContentNode;
             try {
+
                 if (typeof relatedView.enabled === 'undefined') {
                     relatedView.enabled = true;
                 }
+
                 if (relatedView.enabled) {
                     relatedViewManager = this.getRelatedViewManager(relatedView);
                     if (relatedViewManager) {
@@ -95,7 +106,7 @@ define('argos/_RelatedViewWidgetEditMixin', [
         /**
          *  Destroys all of the related view widgets, that was added.
          */
-        destroyRelatedViewWidgets: function () {
+        destroyRelatedViewWidgets: function() {
             var relatedViewId;
             if (this.relatedViewManagers) {
                 for (relatedViewId in this.relatedViewManagers) {
@@ -108,10 +119,11 @@ define('argos/_RelatedViewWidgetEditMixin', [
         /**
          * Extends dijit Widget to destroy the search widget before destroying the view.
          */
-        destroy: function () {
+        destroy: function() {
             this.destroyRelatedViewWidgets();
             this.inherited(arguments);
         }
     });
     return __class;
 });
+

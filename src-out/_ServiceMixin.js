@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos._ServiceMixin
  * @alternateClassName _ServiceMixin
@@ -20,10 +21,14 @@
 define('argos/_ServiceMixin', [
     'dojo/_base/declare',
     'dojo/_base/lang'
-], function (declare, lang) {
+], function(
+    declare,
+    lang
+) {
+
     var __class = declare('argos._ServiceMixin', null, {
         serviceMap: null,
-        constructor: function () {
+        constructor: function() {
             var map, property;
             map = this.serviceMap;
             if (map) {
@@ -32,18 +37,21 @@ define('argos/_ServiceMixin', [
                         if (this[property]) {
                             continue; /* skip any that were explicitly mixed in */
                         }
+
                         this[property] = this._resolveService(map[property]);
                     }
                 }
             }
         },
-        _resolveService: function (specification) {
+        _resolveService: function(specification) {
             if (specification && specification.type === 'sdata') {
                 return App.getService(specification.name);
             }
+
             return App.getService(specification);
         }
     });
+
     lang.setObject('Sage.Platform.Mobile._ServiceMixin', __class);
     return __class;
 });

@@ -12,12 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 define('argos/Fields/SelectField', [
     'dojo/_base/declare',
     'dojo/_base/lang',
     './LookupField',
     '../FieldManager'
-], function (declare, lang, LookupField, FieldManager) {
+], function(
+    declare,
+    lang,
+    LookupField,
+    FieldManager
+) {
     /**
      * @class argos.Fields.SelectField
      * The SelectField is a minor extension to te LookupField in that it explicitly hides search and actions.
@@ -59,7 +65,7 @@ define('argos/Fields/SelectField', [
          * Overides the {@link LookupField#createNavigationOptions parent implementation} to set search and actions to
          * hidden and optionally pass data defined on the field.
          */
-        createNavigationOptions: function () {
+        createNavigationOptions: function() {
             var options = this.inherited(arguments);
             options.hideSearch = true;
             options.enableActions = false;
@@ -67,6 +73,7 @@ define('argos/Fields/SelectField', [
             return options;
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.Fields.SelectField', control);
     return FieldManager.register('select', control);
 });

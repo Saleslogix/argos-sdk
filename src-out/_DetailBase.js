@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos._DetailBase
  * A Detail View represents a single record and should display all the info the user may need about the entry.
@@ -37,7 +38,21 @@ define('argos/_DetailBase', [
     './Utility',
     './ErrorManager',
     './View'
-], function (declare, lang, Deferred, query, string, dom, domClass, domConstruct, format, utility, ErrorManager, View) {
+], function(
+    declare,
+    lang,
+    Deferred,
+    query,
+    string,
+    dom,
+    domClass,
+    domConstruct,
+    format,
+    utility,
+    ErrorManager,
+    View
+) {
+
     var __class = declare('argos._DetailBase', [View], {
         /**
          * @property {Object}
@@ -74,7 +89,8 @@ define('argos/_DetailBase', [
          * @property {Simplate}
          * HTML shown when no data is available.
          */
-        emptyTemplate: new Simplate([]),
+        emptyTemplate: new Simplate([
+        ]),
         /**
          * @property {Simplate}
          * HTML shown when data is being loaded.
@@ -126,7 +142,7 @@ define('argos/_DetailBase', [
         propertyTemplate: new Simplate([
             '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}" data-property="{%= $.property || $.name %}">',
             '<label>{%: $.label %}</label>',
-            '<span>{%= $.value %}</span>',
+            '<span>{%= $.value %}</span>', // todo: create a way to allow the value to not be surrounded with a span tag
             '</div>'
         ]),
         /**
@@ -155,14 +171,14 @@ define('argos/_DetailBase', [
          */
         relatedTemplate: new Simplate([
             '<li class="{%= $.cls %}">',
-            '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
-            '{% if ($.icon) { %}',
-            '<img src="{%= $.icon %}" alt="icon" class="icon" />',
-            '{% } else if ($.iconClass) { %}',
-            '<div class="{%= $.iconClass %}" alt="icon"></div>',
-            '{% } %}',
-            '<span class="related-item-label">{%: $.label %}</span>',
-            '</a>',
+                '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
+                    '{% if ($.icon) { %}',
+                        '<img src="{%= $.icon %}" alt="icon" class="icon" />',
+                    '{% } else if ($.iconClass) { %}',
+                        '<div class="{%= $.iconClass %}" alt="icon"></div>',
+                    '{% } %}',
+                    '<span class="related-item-label">{%: $.label %}</span>',
+                '</a>',
             '</li>'
         ]),
         /**
@@ -193,9 +209,9 @@ define('argos/_DetailBase', [
             '<li class="{%= $.cls %}{% if ($.disabled) { %} disabled{% } %}">',
             '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
             '{% if ($.icon) { %}',
-            '<img src="{%= $.icon %}" alt="icon" class="icon" />',
+                '<img src="{%= $.icon %}" alt="icon" class="icon" />',
             '{% } else if ($.iconClass) { %}',
-            '<div class="{%= $.iconClass %}" alt="icon"></div>',
+                '<div class="{%= $.iconClass %}" alt="icon"></div>',
             '{% } %}',
             '<label>{%: $.label %}</label>',
             '<span>{%= $.value %}</span>',
@@ -296,64 +312,68 @@ define('argos/_DetailBase', [
          * Store for mapping layout options to an index on the HTML node
          */
         _navigationOptions: null,
+
         // Store properties
         itemsProperty: '',
         idProperty: '',
         labelProperty: '',
         entityProperty: '',
         versionProperty: '',
+
         /**
          * Extends the dijit widget postCreate to subscribe to the global `/app/refresh` event and clear the view.
          */
-        postCreate: function () {
+        postCreate: function() {
             this.inherited(arguments);
             this.subscribe('/app/refresh', this._onRefresh);
             this.clear();
         },
-        createErrorHandlers: function () {
+        createErrorHandlers: function() {
             this.errorHandlers = this.errorHandlers || [{
-                    name: 'Aborted',
-                    test: function (error) {
-                        return error.aborted;
-                    },
-                    handle: function (error, next) {
-                        this.options = false; // force a refresh
-                        next();
-                    }
-                }, {
-                    name: 'AlertError',
-                    test: function (error) {
-                        return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
-                    },
-                    handle: function (error, next) {
-                        alert(this.getErrorMessage(error));
-                        next();
-                    }
-                }, {
-                    name: 'NotFound',
-                    test: function (error) {
-                        return error.status === this.HTTP_STATUS.NOT_FOUND;
-                    },
-                    handle: function (error, next) {
-                        domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
-                        next();
-                    }
-                }, {
-                    name: 'CatchAll',
-                    test: function (error) {
-                        return true;
-                    },
-                    handle: function (error, next) {
-                        var errorItem = {
-                            viewOptions: this.options,
-                            serverError: error
-                        };
-                        ErrorManager.addError(this.getErrorMessage(error), errorItem);
-                        domClass.remove(this.domNode, 'panel-loading');
-                        next();
-                    }
+                name: 'Aborted',
+                test: function(error) {
+                    return error.aborted;
+                },
+                handle: function(error, next) {
+                    this.options = false; // force a refresh
+                    next();
                 }
+            }, {
+                name: 'AlertError',
+                test: function(error) {
+                    return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
+                },
+                handle: function(error, next) {
+                    alert(this.getErrorMessage(error));
+                    next();
+                }
+            }, {
+                name: 'NotFound',
+                test: function(error) {
+                    return error.status === this.HTTP_STATUS.NOT_FOUND;
+                },
+                handle: function(error, next) {
+                    domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+                    next();
+                }
+            }, {
+                name: 'CatchAll',
+                test: function(error) {
+                    return true;
+                },
+                handle: function(error, next) {
+                    var errorItem = {
+                        viewOptions: this.options,
+                        serverError: error
+                    };
+
+                    ErrorManager.addError(this.getErrorMessage(error), errorItem);
+                    domClass.remove(this.domNode, 'panel-loading');
+                    next();
+                }
+            }
             ];
+
             return this.errorHandlers;
         },
         /**
@@ -362,30 +382,31 @@ define('argos/_DetailBase', [
          * @return {Object} this.tools
          * @template
          */
-        createToolLayout: function () {
+        createToolLayout: function() {
             return this.tools || (this.tools = {
                 'tbar': [{
-                        id: 'edit',
-                        cls: 'fa fa-pencil fa-fw fa-lg',
-                        action: 'navigateToEditView',
-                        security: App.getViewSecurity(this.editView, 'update')
-                    }, {
-                        id: 'refresh',
-                        cls: 'fa fa-refresh fa-fw fa-lg',
-                        action: '_refreshClicked'
-                    }]
+                    id: 'edit',
+                    cls: 'fa fa-pencil fa-fw fa-lg',
+                    action: 'navigateToEditView',
+                    security: App.getViewSecurity(this.editView, 'update')
+                }, {
+                    id: 'refresh',
+                    cls: 'fa fa-refresh fa-fw fa-lg',
+                    action: '_refreshClicked'
+                }]
             });
         },
-        _refreshClicked: function () {
+        _refreshClicked: function() {
             this.clear();
             this.refreshRequired = true;
             this.refresh();
+
             this.onRefreshClicked();
         },
         /**
          * Called when the user clicks the refresh toolbar button.
          */
-        onRefreshClicked: function () {
+        onRefreshClicked: function() {
         },
         /**
          * Extends the {@link _ActionMixin#invokeAction mixins invokeAction} to stop if `data-disableAction` is true
@@ -394,7 +415,7 @@ define('argos/_DetailBase', [
          * @param {Event} evt
          * @param {HTMLElement} el
          */
-        invokeAction: function (name, parameters, evt, el) {
+        invokeAction: function(name, parameters, evt, el) {
             if (parameters && /true/i.test(parameters['disableAction'])) {
                 return;
             }
@@ -403,7 +424,7 @@ define('argos/_DetailBase', [
         /**
          * Toggles the collapsed state of the section.
          */
-        toggleSection: function (params) {
+        toggleSection: function(params) {
             var node = dom.byId(params.$source), button = null;
             if (node) {
                 domClass.toggle(node, 'collapsed');
@@ -419,10 +440,12 @@ define('argos/_DetailBase', [
          * @param {Object} options The object published by the event.
          * @private
          */
-        _onRefresh: function (o) {
+        _onRefresh: function(o) {
             var descriptor = o.data && o.data[this.labelProperty];
+
             if (this.options && this.options.key === o.key) {
                 this.refreshRequired = true;
+
                 if (descriptor) {
                     this.options.title = descriptor;
                     this.set('title', descriptor);
@@ -433,7 +456,7 @@ define('argos/_DetailBase', [
          * Handler for the related entry action, navigates to the defined `data-view` passing the `data-context`.
          * @param {Object} params Collection of `data-` attributes from the source node.
          */
-        activateRelatedEntry: function (params) {
+        activateRelatedEntry: function(params) {
             if (params.context) {
                 this.navigateToRelatedView(params.view, parseInt(params.context, 10), params.descriptor);
             }
@@ -442,7 +465,7 @@ define('argos/_DetailBase', [
          * Handler for the related list action, navigates to the defined `data-view` passing the `data-context`.
          * @param {Object} params Collection of `data-` attributes from the source node.
          */
-        activateRelatedList: function (params) {
+        activateRelatedList: function(params) {
             if (params.context) {
                 this.navigateToRelatedView(params.view, parseInt(params.context, 10), params.descriptor);
             }
@@ -451,12 +474,12 @@ define('argos/_DetailBase', [
          * Navigates to the defined `this.editView` passing the current `this.entry` as default data.
          * @param {HTMLElement} el
          */
-        navigateToEditView: function (el) {
+        navigateToEditView: function(el) {
             var view, entry;
             view = App.getView(this.editView);
             if (view) {
                 entry = this.entry;
-                view.show({ entry: entry, fromContext: this });
+                view.show({ entry: entry, fromContext:this });
             }
         },
         /**
@@ -465,11 +488,14 @@ define('argos/_DetailBase', [
          * @param {Number} slot Index of the context to use in `this._navigationOptions`.
          * @param {String} descriptor Optional descriptor option that is mixed in.
          */
-        navigateToRelatedView: function (id, slot, descriptor) {
-            var options = this._navigationOptions[slot], view = App.getView(id);
+        navigateToRelatedView: function(id, slot, descriptor) {
+            var options = this._navigationOptions[slot],
+                view = App.getView(id);
+
             if (descriptor && options) {
                 options['descriptor'] = descriptor;
             }
+
             if (this.entry) {
                 options.selectedEntry = this.entry;
             }
@@ -511,7 +537,7 @@ define('argos/_DetailBase', [
          *
          * @return {Object[]} Detail layout definition
          */
-        createLayout: function () {
+        createLayout: function() {
             return this.layout || [];
         },
         /**
@@ -520,35 +546,64 @@ define('argos/_DetailBase', [
          * @param {Object[]} layout Layout definition
          * @param {Object} entry data response
          */
-        processLayout: function (layout, entry) {
-            var rows = (layout['children'] || layout['as'] || layout), options = layout['options'] || (layout['options'] = {
-                title: this.detailsText
-            }), sectionQueue = [], sectionStarted = false, callbacks = [], current, i, section, sectionNode, include, exclude, provider, property, value, rendered, formatted, data, hasAccess, context, useListTemplate, template, rowNode, rowHtml, item;
+        processLayout: function(layout, entry) {
+            var rows = (layout['children'] || layout['as'] || layout),
+                options = layout['options'] || (layout['options'] = {
+                    title: this.detailsText
+                }),
+                sectionQueue = [],
+                sectionStarted = false,
+                callbacks = [],
+                current,
+                i,
+                section,
+                sectionNode,
+                include,
+                exclude,
+                provider,
+                property,
+                value,
+                rendered,
+                formatted,
+                data,
+                hasAccess,
+                context,
+                useListTemplate,
+                template,
+                rowNode,
+                rowHtml,
+                item;
+
             for (i = 0; i < rows.length; i++) {
                 current = rows[i];
                 include = this.expandExpression(current['include'], entry);
                 exclude = this.expandExpression(current['exclude'], entry);
+
                 if (include !== undefined && !include) {
                     continue;
                 }
+
                 if (exclude !== undefined && exclude) {
                     continue;
                 }
+
                 if (current['children'] || current['as']) {
                     if (sectionStarted) {
                         sectionQueue.push(current);
-                    }
-                    else {
+                    } else {
                         this.processLayout(current, entry);
                     }
+
                     continue;
                 }
+
                 if (!sectionStarted) {
                     sectionStarted = true;
                     section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
                     sectionNode = section.childNodes[1];
                     domConstruct.place(section, this.contentNode);
                 }
+
                 provider = current['provider'] || utility.getValue;
                 property = typeof current['property'] === 'string'
                     ? current['property']
@@ -556,6 +611,7 @@ define('argos/_DetailBase', [
                 value = typeof current['value'] === 'undefined'
                     ? provider(entry, property, entry)
                     : current['value'];
+
                 if (current['template'] || current['tpl']) {
                     rendered = (current['template'] || current['tpl']).apply(value, this);
                     formatted = current['encode'] === true
@@ -567,34 +623,41 @@ define('argos/_DetailBase', [
                     formatted = current['encode'] === true
                         ? format.encode(rendered)
                         : rendered;
-                }
-                else {
+                } else {
                     formatted = current['encode'] !== false
                         ? format.encode(value)
                         : value;
                 }
+
                 data = lang.mixin({}, {
                     entry: entry,
                     value: formatted,
                     raw: value
                 }, current);
+
                 if (current['descriptor']) {
                     data['descriptor'] = typeof current['descriptor'] === 'function'
                         ? this.expandExpression(current['descriptor'], entry, value)
                         : provider(entry, current['descriptor']);
                 }
+
                 if (current['action']) {
                     data['action'] = this.expandExpression(current['action'], entry, value);
                 }
+
                 hasAccess = App.hasAccessTo(current['security']);
+
                 if (current['security']) {
                     data['disabled'] = !hasAccess;
                 }
+
                 if (current['disabled'] && hasAccess) {
                     data['disabled'] = this.expandExpression(current['disabled'], entry, value);
                 }
+
                 if (current['view']) {
                     context = lang.mixin({}, current['options']);
+
                     if (current['key']) {
                         context['key'] = typeof current['key'] === 'function'
                             ? this.expandExpression(current['key'], entry)
@@ -618,63 +681,65 @@ define('argos/_DetailBase', [
                     if (current['title']) {
                         context['title'] = current['title'];
                     }
+
                     if (current['resetSearch']) {
                         context['resetSearch'] = current['resetSearch'];
-                    }
-                    else {
+                    } else {
                         context['resetSearch'] = true;
                     }
+
                     data['view'] = current['view'];
                     data['context'] = (this._navigationOptions.push(context) - 1);
                 }
+
                 useListTemplate = (layout['list'] || options['list']);
+
                 // priority: use > (relatedPropertyTemplate | relatedTemplate) > (actionPropertyTemplate | actionTemplate) > propertyTemplate
                 if (current['use']) {
                     template = current['use'];
-                }
-                else if (current['view'] && useListTemplate) {
+                } else if (current['view'] && useListTemplate) {
                     template = this.relatedTemplate;
                     current['relatedItem'] = true;
-                }
-                else if (current['view']) {
+                } else if (current['view']) {
                     template = this.relatedPropertyTemplate;
-                }
-                else if (current['action'] && useListTemplate) {
+                } else if (current['action'] && useListTemplate) {
                     template = this.actionTemplate;
-                }
-                else if (current['action']) {
+                } else if (current['action']) {
                     template = this.actionPropertyTemplate;
-                }
-                else {
+                } else {
                     template = this.propertyTemplate;
                 }
+
                 rowNode = this.createRowNode(current, sectionNode, entry, template, data);
                 if (current['relatedItem']) {
                     try {
                         this._processRelatedItem(data, context, rowNode);
-                    }
-                    catch (e) {
+                    } catch (e) {
                         //error processing related node
                         console.error(e);
                     }
                 }
+
                 if (current['onCreate']) {
                     callbacks.push({ row: current, node: rowNode, value: value, entry: entry });
                 }
             }
+
             for (i = 0; i < callbacks.length; i++) {
                 item = callbacks[i];
                 item.row['onCreate'].apply(this, [item.row, item.node, item.value, item.entry]);
             }
+
             for (i = 0; i < sectionQueue.length; i++) {
                 current = sectionQueue[i];
+
                 this.processLayout(current, entry);
             }
         },
-        createRowNode: function (layout, sectionNode, entry, template, data) {
+        createRowNode: function(layout, sectionNode, entry, template, data) {
             return domConstruct.place(template.apply(data, this), sectionNode);
         },
-        _getStoreAttr: function () {
+        _getStoreAttr: function() {
             return this.store || (this.store = this.createStore());
         },
         /**
@@ -682,14 +747,14 @@ define('argos/_DetailBase', [
          * a dojo store of your choosing. There are {@link _SDataDetailMixin Mixins} available for SData.
          * @return {*}
          */
-        createStore: function () {
+        createStore: function() {
             return null;
         },
         /**
          * Required for binding to ScrollContainer which utilizes iScroll that requires to be refreshed when the
          * content (therefor scrollable area) changes.
          */
-        onContentChange: function () {
+        onContentChange: function() {
         },
         /**
          * @template
@@ -697,7 +762,7 @@ define('argos/_DetailBase', [
          * @param {Object} entry Entry from data store
          * @return {Object} By default does not do any processing
          */
-        preProcessEntry: function (entry) {
+        preProcessEntry: function(entry) {
             return entry;
         },
         /**
@@ -705,72 +770,83 @@ define('argos/_DetailBase', [
          * passes it to process layout.
          * @param {Object} entry Entry from data store
          */
-        processEntry: function (entry) {
+        processEntry: function(entry) {
             this.entry = this.preProcessEntry(entry);
+
             if (this.entry) {
                 this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
-            }
-            else {
+            } else {
                 this.set('detailContent', '');
             }
         },
-        _onGetComplete: function (entry) {
+        _onGetComplete: function(entry) {
             try {
                 if (entry) {
                     this.processEntry(entry);
-                }
-                else {
+                } else {
                     domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
                 }
+
                 domClass.remove(this.domNode, 'panel-loading');
+
                 /* this must take place when the content is visible */
                 this.onContentChange();
-            }
-            catch (e) {
+            } catch (e) {
                 console.error(e);
             }
         },
-        _onGetError: function (getOptions, error) {
+        _onGetError: function(getOptions, error) {
             this.handleError(error);
         },
         /**
          * Initiates the request.
          */
-        requestData: function () {
+        requestData: function() {
             var request, store, getExpression, getResults, getOptions;
+
             domClass.add(this.domNode, 'panel-loading');
+
             store = this.get('store');
             if (store) {
                 getOptions = {};
+
                 this._applyStateToGetOptions(getOptions);
+
                 getExpression = this._buildGetExpression() || null;
                 getResults = store.get(getExpression, getOptions);
-                Deferred.when(getResults, this._onGetComplete.bind(this), this._onGetError.bind(this, getOptions));
+
+                Deferred.when(getResults,
+                    this._onGetComplete.bind(this),
+                    this._onGetError.bind(this, getOptions)
+                );
+
                 return getResults;
             }
+
             console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataDetailMixin to your detail view?');
         },
-        _buildGetExpression: function () {
+        _buildGetExpression: function() {
             var options = this.options;
+
             return options && (options.id || options.key);
         },
-        _applyStateToGetOptions: function (getOptions) {
+        _applyStateToGetOptions: function(getOptions) {
         },
         /**
          * Determines if the view should be refresh by inspecting and comparing the passed navigation option key with current key.
          * @param {Object} options Passed navigation options.
          * @return {Boolean} True if the view should be refreshed, false if not.
          */
-        refreshRequiredFor: function (options) {
+        refreshRequiredFor: function(options) {
             if (this.options) {
                 if (options) {
                     if (this.options.key !== options.key) {
                         return true;
                     }
                 }
+
                 return false;
-            }
-            else {
+            } else {
                 return this.inherited(arguments);
             }
         },
@@ -779,31 +855,33 @@ define('argos/_DetailBase', [
          * @param tag
          * @param data
          */
-        activate: function (tag, data) {
+        activate: function(tag, data) {
             var options = data && data.options;
             if (options && options.descriptor) {
                 options.title = options.title || options.descriptor;
             }
+
             this.inherited(arguments);
         },
-        show: function (options) {
+        show: function(options) {
             if (options && options.descriptor) {
                 options.title = options.title || options.descriptor;
             }
+
             this.inherited(arguments);
         },
         /**
          * Returns the view key
          * @return {String} View key
          */
-        getTag: function () {
+        getTag: function() {
             return this.options && this.options.key;
         },
         /**
          * Extends the {@link View#getContext parent implementation} to also set the resourceKind, key and descriptor
          * @return {Object} View context object
          */
-        getContext: function () {
+        getContext: function() {
             return lang.mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind,
                 key: this.options.key,
@@ -814,8 +892,9 @@ define('argos/_DetailBase', [
          * Extends the {@link View#beforeTransitionTo parent implementation} to also clear the view if `refreshRequired` is true
          * @return {Object} View context object
          */
-        beforeTransitionTo: function () {
+        beforeTransitionTo: function() {
             this.inherited(arguments);
+
             if (this.refreshRequired) {
                 this.clear();
             }
@@ -824,43 +903,47 @@ define('argos/_DetailBase', [
          * If a security breach is detected it sets the content to the notAvailableTemplate, otherwise it calls
          * {@link #requestData requestData} which starts the process sequence.
          */
-        refresh: function () {
+        refresh: function() {
             if (this.security && !App.hasAccessTo(this.expandExpression(this.security))) {
                 domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
                 return;
             }
+
             this.requestData();
         },
         /**
          * Clears the view by replacing the content with the empty template and emptying the stored row contexts.
          */
-        clear: function () {
+        clear: function() {
             this.set('detailContent', this.emptyTemplate.apply(this));
+
             this._navigationOptions = [];
         },
-        _processRelatedItem: function (data, context, rowNode) {
+        _processRelatedItem: function(data, context, rowNode) {
             var view = App.getView(data['view']), options = {};
+
             if (view) {
                 options.where = context ? context['where'] : '';
-                view.getListCount(options).then(function (result) {
+                view.getListCount(options).then(function(result) {
                     var labelNode, html;
+
                     if (result >= 0) {
                         labelNode = query('.related-item-label', rowNode)[0];
                         if (labelNode) {
                             html = '<span class="related-item-count">' + result + '</span>';
                             domConstruct.place(html, labelNode, 'before');
-                        }
-                        else {
+                        } else {
                             console.warn('Missing the "related-item-label" dom node.');
                         }
                     }
                 });
             }
         },
-        destroy: function () {
+        destroy: function() {
             this.inherited(arguments);
         }
     });
+
     lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
     return __class;
 });

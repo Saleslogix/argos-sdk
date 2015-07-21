@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos._CustomizationMixin
  * Customization Mixin is a general purpose Customization Engine. It takes a customization object and
@@ -31,68 +32,100 @@
 define('argos/_CustomizationMixin', [
     'dojo/_base/declare',
     'dojo/_base/lang'
-], function (declare, lang) {
+], function(
+    declare,
+    lang
+) {
+
     var expand, __class;
-    expand = function (expression) {
+
+    expand = function(expression) {
         if (typeof expression === 'function') {
             return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-        }
-        else {
+        } else {
             return expression;
         }
     };
+
     __class = declare('argos._CustomizationMixin', null, {
         _layoutCompiled: null,
         _layoutCompiledFrom: null,
         id: null,
         customizationSet: null,
         enableCustomizations: true,
-        constructor: function () {
+        constructor: function() {
             this._layoutCompiled = {};
             this._layoutCompiledFrom = {};
         },
-        _getCustomizationsFor: function (customizationSubSet) {
+        _getCustomizationsFor: function(customizationSubSet) {
             var customizationSet = customizationSubSet
                 ? this.customizationSet + '/' + customizationSubSet
                 : this.customizationSet;
             return App.getCustomizationsFor(customizationSet, this.id);
         },
-        _createCustomizedLayout: function (layout, customizationSubSet) {
+        _createCustomizedLayout: function(layout, customizationSubSet) {
             var customizationSet = customizationSubSet
-                ? this.customizationSet + '/' + customizationSubSet
-                : this.customizationSet, key = customizationSet + '#' + this.id, customizations, source = layout;
+                    ? this.customizationSet + '/' + customizationSubSet
+                    : this.customizationSet,
+                key = customizationSet + '#' + this.id,
+                customizations,
+                source = layout;
             if (source === this._layoutCompiledFrom[key] && this._layoutCompiled[key]) {
                 return this._layoutCompiled[key]; // same source layout, no changes
             }
+
             if (this.enableCustomizations) {
                 customizations = this._getCustomizationsFor(customizationSubSet);
                 if (customizations && customizations.length > 0) {
                     layout = this._compileCustomizedLayout(customizations, source, null);
                 }
             }
+
             this._layoutCompiled[key] = layout;
             this._layoutCompiledFrom[key] = source;
+
             return layout;
         },
-        _compileCustomizedLayout: function (customizations, layout, parent) {
-            var customizationCount = customizations.length, layoutCount = layout.length, applied = {}, output, insertRowsBefore, insertRowsAfter, customization, stop, row, i, j, k, insertRowsTarget, expandedValue, children, name;
+        _compileCustomizedLayout: function(customizations, layout, parent) {
+            var customizationCount = customizations.length,
+                layoutCount = layout.length,
+                applied = {},
+                output,
+                insertRowsBefore,
+                insertRowsAfter,
+                customization,
+                stop,
+                row,
+                i,
+                j,
+                k,
+                insertRowsTarget,
+                expandedValue,
+                children,
+                name;
+
             if (lang.isArray(layout)) {
                 output = [];
                 for (i = 0; i < layoutCount; i++) {
                     row = layout[i];
+
                     /* for compatibility */
                     // will modify the underlying row
                     if (typeof row['name'] === 'undefined' && typeof row['property'] === 'string') {
                         row['name'] = row['property'];
                     }
+
                     insertRowsBefore = [];
                     insertRowsAfter = [];
+
                     for (j = 0; j < customizationCount; j++) {
                         if (applied[j]) {
                             continue; // todo: allow a customization to be applied to a layout more than once?
                         }
+
                         customization = customizations[j];
                         stop = false;
+
                         if (expand(customization.at, row, parent, i, layoutCount, customization)) {
                             switch (customization.type) {
                                 case 'remove':
@@ -110,28 +143,34 @@ define('argos/_CustomizationMixin', [
                                     if (row === layout[i]) {
                                         row = lang.mixin({}, row);
                                     }
+
                                     row = lang.mixin(row, expand(customization.value, row));
                                     break;
                                 case 'insert':
                                     insertRowsTarget = (customization.where !== 'before')
-                                        ? insertRowsAfter
-                                        : insertRowsBefore;
+                                            ? insertRowsAfter
+                                            : insertRowsBefore;
                                     expandedValue = expand(customization.value, row);
+
                                     if (lang.isArray(expandedValue)) {
                                         insertRowsTarget.push.apply(insertRowsTarget, expandedValue);
-                                    }
-                                    else {
+                                    } else {
                                         insertRowsTarget.push(expandedValue);
                                     }
+
                                     break;
                             }
+
                             applied[j] = true;
                         }
+
                         if (stop) {
                             break;
                         }
                     }
+
                     output.push.apply(output, insertRowsBefore);
+
                     if (row) {
                         children = (row['children'] && 'children') || (row['as'] && 'as');
                         if (children) {
@@ -139,8 +178,10 @@ define('argos/_CustomizationMixin', [
                             if (row === layout[i]) {
                                 row = lang.mixin({}, row);
                             }
+
                             row[children] = this._compileCustomizedLayout(customizations, row[children], row);
                         }
+
                         output.push(row);
                     }
                     output.push.apply(output, insertRowsAfter);
@@ -153,7 +194,9 @@ define('argos/_CustomizationMixin', [
                     if (applied[k]) {
                         continue;
                     }
+
                     customization = customizations[k];
+
                     if (customization.type === 'insert' && (expand(customization.or, parent, customization) || (customization.at === true))) {
                         output.push(expand(customization.value, null));
                     }
@@ -161,21 +204,22 @@ define('argos/_CustomizationMixin', [
             }
             else if (lang.isFunction(layout)) {
                 return this._compileCustomizedLayout(customizations, layout.call(this), name);
-            }
-            else if (lang.isObject(layout)) {
+            } else if (lang.isObject(layout)) {
                 output = {};
+
                 for (name in layout) {
                     if (lang.isArray(layout[name])) {
                         output[name] = this._compileCustomizedLayout(customizations, layout[name], name);
-                    }
-                    else {
+                    } else {
                         output[name] = layout[name];
                     }
                 }
             }
+
             return output;
         }
     });
+
     lang.setObject('Sage.Platform.Mobile._CustomizationMixin', __class);
     return __class;
 });

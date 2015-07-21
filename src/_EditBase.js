@@ -382,7 +382,7 @@ define('argos/_EditBase', [
          * @template
          */
         createToolLayout: function() {
-            var tbar:any = [{
+            var tbar = [{
                 id: 'save',
                 action: 'save',
                 cls: 'fa fa-save fa-fw fa-lg',
@@ -1344,4 +1344,3 @@ define('argos/_EditBase', [
     lang.setObject('Sage.Platform.Mobile._EditBase', __class);
     return __class;
 });
-

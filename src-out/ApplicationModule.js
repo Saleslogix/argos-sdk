@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos.ApplicationModule
  * ApplicationModule is intended to be extended in the resulting application so that it
@@ -28,7 +29,15 @@ define('argos/ApplicationModule', [
     'dojo/_base/lang',
     './Application',
     './Views/ConfigureQuickActions'
-], function (array, connect, declare, lang, Application, ConfigureQuickActions) {
+], function(
+    array,
+    connect,
+    declare,
+    lang,
+    Application,
+    ConfigureQuickActions
+) {
+
     var __class = declare('argos.ApplicationModule', null, {
         /**
          * @property {Array}
@@ -49,28 +58,32 @@ define('argos/ApplicationModule', [
          * Mixes in the passed options object into itself
          * @param {Object} options Properties to be mixed in
          */
-        constructor: function (options) {
+        constructor: function(options) {
             this._connects = [];
             this._subscribes = [];
+
             lang.mixin(this, options);
         },
         /**
          * Destroy loops and disconnects all `_connect`s and unsubscribes all `_subscribe`s.
          * Also calls {@link #uninitialize uninitialize}
          */
-        destroy: function () {
-            array.forEach(this._connects, function (handle) {
+        destroy: function() {
+            array.forEach(this._connects, function(handle) {
                 connect.disconnect(handle);
             });
-            array.forEach(this._subscribes, function (handle) {
+
+            array.forEach(this._subscribes, function(handle) {
                 connect.unsubscribe(handle);
             });
+
             this.uninitialize();
         },
         /**
          * Performs any additional destruction requirements
          */
-        uninitialize: function () {
+        uninitialize: function() {
+
         },
         /**
          * Saves the passed application instance and calls:
@@ -81,8 +94,9 @@ define('argos/ApplicationModule', [
          *
          * @param {Object} application
          */
-        init: function (application) {
+        init: function(application) {
             this.application = application;
+
             this.loadAppStatPromises();
             this.loadCustomizations();
             this.loadToolbars();
@@ -92,48 +106,56 @@ define('argos/ApplicationModule', [
         * @template
         * This function should be overriden in the app and be used to register all app state promises.
         */
-        loadAppStatPromises: function () {
+        loadAppStatPromises: function() {
         },
+
         statics: {
             _customizationsLoaded: false,
             _viewsLoaded: false,
             _toolbarsLoaded: false
         },
+
         /**
          * @template
          * This function should be overriden in the app and be used to register all customizations.
          */
-        loadCustomizations: function () {
+        loadCustomizations: function() {
             if (this.statics._customizationsLoaded) {
                 console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.');
                 return;
             }
+
             // Load base customizations
+
             this.statics._customizationsLoaded = true;
         },
         /**
          * @template
          * This function should be overriden in the app and be used to register all views.
          */
-        loadViews: function () {
+        loadViews: function() {
             if (this.statics._viewsLoaded) {
                 console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.');
                 return;
             }
+
             // Load base views
             this.registerView(new ConfigureQuickActions());
+
             this.statics._viewsLoaded = true;
         },
         /**
          * @template
          * This function should be overriden in the app and be used to register all toolbars.
          */
-        loadToolbars: function () {
+        loadToolbars: function() {
             if (this.statics._toolbarsLoaded) {
                 console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.');
                 return;
             }
+
             // Load base toolbars
+
             this.statics._toolbarsLoaded = true;
         },
         /**
@@ -141,7 +163,7 @@ define('argos/ApplicationModule', [
          * @param {Object} view View instance to register
          * @param {DOMNode} domNode Optional. DOM node to place the view in.
          */
-        registerView: function (view, domNode) {
+        registerView: function(view, domNode) {
             if (this.application) {
                 this.application.registerView(view, domNode);
             }
@@ -152,7 +174,7 @@ define('argos/ApplicationModule', [
          * @param {Object} toolbar Toolbar instance to register.
          * @param {DOMNode} domNode Optional. DOM node to place the view in.
          */
-        registerToolbar: function (name, toolbar, domNode) {
+        registerToolbar: function(name, toolbar, domNode) {
             if (this.application) {
                 this.application.registerToolbar(name, toolbar, domNode);
             }
@@ -163,7 +185,7 @@ define('argos/ApplicationModule', [
          * @param {String} id The View id the customization will be applied to
          * @param {Object} spec The customization object containing at least `at` and `type`.
          */
-        registerCustomization: function (set, id, spec) {
+        registerCustomization: function(set, id, spec) {
             if (this.application) {
                 this.application.registerCustomization(set, id, spec);
             }
@@ -172,12 +194,13 @@ define('argos/ApplicationModule', [
          * Registers a promise that will resolve when initAppState is invoked.
          * @param {Promise|Function} promise A promise or a function that returns a promise
          */
-        registerAppStatePromise: function (promise) {
+        registerAppStatePromise: function(promise) {
             if (this.application) {
                 this.application.registerAppStatePromise(promise);
             }
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.ApplicationModule', __class);
     return __class;
 });

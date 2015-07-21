@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @class argos.View
  * View is the root Class for all views and incorporates all the base features,
@@ -33,7 +34,16 @@ define('argos/View', [
     './_CustomizationMixin',
     './_Templated',
     './_ErrorHandleMixin'
-], function (declare, lang, array, _WidgetBase, _ActionMixin, _CustomizationMixin, _Templated, _ErrorHandleMixin) {
+], function(
+    declare,
+    lang,
+    array,
+    _WidgetBase,
+    _ActionMixin,
+    _CustomizationMixin,
+    _Templated,
+    _ErrorHandleMixin
+) {
     var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated, _ErrorHandleMixin], {
         /**
          * This map provides quick access to HTML properties, most notably the selected property of the container
@@ -87,10 +97,10 @@ define('argos/View', [
          */
         serviceName: false,
         connectionName: false,
-        constructor: function (options) {
+        constructor: function(options) {
             this.app = (options && options.app) || window.App;
         },
-        startup: function () {
+        startup: function() {
             this.inherited(arguments);
         },
         /**
@@ -98,7 +108,7 @@ define('argos/View', [
          * the fully customized toolbar layout.
          * @return {Object} The toolbar layout
          */
-        getTools: function () {
+        getTools: function() {
             var tools = this._createCustomizedLayout(this.createToolLayout(), 'tools');
             this.onToolLayoutCreated(tools);
             return tools;
@@ -107,38 +117,39 @@ define('argos/View', [
          * Called after toolBar layout is created;
          *
          */
-        onToolLayoutCreated: function (tools) {
+        onToolLayoutCreated:function(tools) {
         },
         /**
          * Returns the tool layout that defines all toolbar items for the view
          * @return {Object} The toolbar layout
          */
-        createToolLayout: function () {
+        createToolLayout: function() {
             return this.tools || {};
         },
         /**
          * Called on loading of the application.
          */
-        init: function () {
+        init: function() {
             this.startup();
             this.initConnects();
         },
         /**
          * Establishes this views connections to various events
          */
-        initConnects: function () {
+        initConnects: function() {
             var h;
             this._loadConnect = this.connect(this.domNode, 'onload', this._onLoad);
         },
-        _onLoad: function (evt, el, o) {
+        _onLoad: function(evt, el, o) {
             this.disconnect(this._loadConnect);
+
             this.load(evt, el, o);
         },
         /**
          * Called once the first time the view is about to be transitioned to.
          * @deprecated
          */
-        load: function () {
+        load: function() {
             // todo: remove load entirely?
         },
         /**
@@ -146,11 +157,10 @@ define('argos/View', [
          * @param {Object} options Navigation options passed from the previous view.
          * @return {Boolean} True indicates view needs to be refreshed.
          */
-        refreshRequiredFor: function (options) {
+        refreshRequiredFor: function(options) {
             if (this.options) {
                 return !!options; // if options provided, then refresh
-            }
-            else {
+            } else {
                 return true;
             }
         },
@@ -158,59 +168,61 @@ define('argos/View', [
          * Should refresh the view, such as but not limited to:
          * Emptying nodes, requesting data, rendering new content
          */
-        refresh: function () {
+        refresh: function() {
         },
         /**
          * The onBeforeTransitionAway event.
          * @param self
          */
-        onBeforeTransitionAway: function (self) {
+        onBeforeTransitionAway: function(self) {
         },
         /**
          * The onBeforeTransitionTo event.
          * @param self
          */
-        onBeforeTransitionTo: function (self) {
+        onBeforeTransitionTo: function(self) {
         },
         /**
          * The onTransitionAway event.
          * @param self
          */
-        onTransitionAway: function (self) {
+        onTransitionAway: function(self) {
         },
         /**
          * The onTransitionTo event.
          * @param self
          */
-        onTransitionTo: function (self) {
+        onTransitionTo: function(self) {
         },
         /**
          * The onActivate event.
          * @param self
          */
-        onActivate: function (self) {
+        onActivate: function(self) {
         },
         /**
          * The onShow event.
          * @param self
          */
-        onShow: function (self) {
+        onShow: function(self) {
         },
-        activate: function (tag, data) {
+        activate: function(tag, data) {
             // todo: use tag only?
             if (data && this.refreshRequiredFor(data.options)) {
                 this.refreshRequired = true;
             }
+
             this.options = (data && data.options) || this.options || {};
+
             if (this.options.title) {
                 this.set('title', this.options.title);
-            }
-            else {
+            } else {
                 this.set('title', (this.get('title') || this.titleText));
             }
+
             this.onActivate(this);
         },
-        _getScrollerAttr: function () {
+        _getScrollerAttr: function() {
             return this.scrollerNode || this.domNode;
         },
         /**
@@ -218,25 +230,31 @@ define('argos/View', [
          * @param {Object} options The navigation options passed from the previous view.
          * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
          */
-        show: function (options, transitionOptions) {
+        show: function(options, transitionOptions) {
             this.errorHandlers = this._createCustomizedLayout(this.createErrorHandlers(), 'errorHandlers');
+
             var tag, data;
+
             if (this.onShow(this) === false) {
                 return;
             }
+
             if (this.refreshRequiredFor(options)) {
                 this.refreshRequired = true;
             }
+
             this.options = options || this.options || {};
+
             if (this.options.title) {
                 this.set('title', this.options.title);
-            }
-            else {
+            } else {
                 this.set('title', (this.get('title') || this.titleText));
             }
+
             tag = this.getTag();
             data = this.getContext();
-            transitionOptions = lang.mixin(transitionOptions || {}, { tag: tag, data: data });
+
+            transitionOptions = lang.mixin(transitionOptions || {}, {tag: tag, data: data});
             ReUI.show(this.domNode, transitionOptions);
         },
         /**
@@ -244,63 +262,62 @@ define('argos/View', [
          * @param {String/Function} expression Returns string directly, if function it is called and the result returned.
          * @return {String} String expression.
          */
-        expandExpression: function (expression) {
+        expandExpression: function(expression) {
             if (typeof expression === 'function') {
                 return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-            }
-            else {
+            } else {
                 return expression;
             }
         },
         /**
          * Called before the view is transitioned (slide animation complete) to.
          */
-        beforeTransitionTo: function () {
+        beforeTransitionTo: function() {
             this.onBeforeTransitionTo(this);
         },
         /**
          * Called before the view is transitioned (slide animation complete) away from.
          */
-        beforeTransitionAway: function () {
+        beforeTransitionAway: function() {
             this.onBeforeTransitionAway(this);
         },
         /**
          * Called after the view has been transitioned (slide animation complete) to.
          */
-        transitionTo: function () {
+        transitionTo: function() {
             if (this.refreshRequired) {
                 this.refreshRequired = false;
                 this.refresh();
             }
+
             this.onTransitionTo(this);
         },
         /**
          * Called after the view has been transitioned (slide animation complete) away from.
          */
-        transitionAway: function () {
+        transitionAway: function() {
             this.onTransitionAway(this);
         },
         /**
          * Returns the primary SDataService instance for the view.
          * @return {Object} The Sage.SData.Client.SDataService instance.
          */
-        getService: function () {
+        getService: function() {
             return this.app.getService(this.serviceName); /* if false is passed, the default service will be returned */
         },
-        getConnection: function () {
+        getConnection: function() {
             return this.getService();
         },
-        getTag: function () {
+        getTag: function() {
         },
         /**
          * Returns the options used for the View {@link #getContext getContext()}.
          * @return {Object} Options to be used for context.
          */
-        getOptionsContext: function () {
+        getOptionsContext: function() {
             if (this.options && this.options.negateHistory) {
                 return { negateHistory: true };
-            }
-            else {
+            } else {
                 return this.options;
             }
         },
@@ -308,18 +325,20 @@ define('argos/View', [
          * Returns the context of the view which is a small summary of key properties.
          * @return {Object} Vital View properties.
          */
-        getContext: function () {
+        getContext: function() {
             // todo: should we track options?
-            return { id: this.id, options: this.getOptionsContext() };
+            return {id: this.id, options: this.getOptionsContext()};
         },
         /**
          * Returns the defined security.
          * @param access
          */
-        getSecurity: function (access) {
+        getSecurity: function(access) {
             return this.security;
         }
     });
+
     lang.setObject('Sage.Platform.Mobile.View', __class);
     return __class;
 });
+
