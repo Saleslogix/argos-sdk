@@ -14,6 +14,7 @@ define('argos/Groups/_GroupBySection', ['exports', 'module', 'dojo/_base/declare
 
     var _declare = _interopRequireDefault(_dojo_baseDeclare);
 
+<<<<<<< HEAD
     var _lang = _interopRequireDefault(_dojo_baseLang);
 
     var _string = _interopRequireDefault(_dojoString);
@@ -22,6 +23,25 @@ define('argos/Groups/_GroupBySection', ['exports', 'module', 'dojo/_base/declare
      * @class argos.Groups._GroupSection
      */
     var __class = (0, _declare['default'])('argos.Groups._GroupBySection', null, {
+=======
+    You acknowledge that Swiftpage retains and is not transferring to you any title to or ownership rights in or to any intellectual property in the Software, any modifications thereto, or copies thereof.  Swiftpage may terminate this Agreement, in its sole discretion. Upon termination of this Agreement, you shall return to Swiftpage, or destroy, all originals and copies of all Software (including any support materials furnished by Swiftpage), permanently purge all machine-readable copies of the Software from all computers and storage devices, and to certify to Sage in writing that the foregoing duties have been performed and that you will not in any way use or permit the use of the Software. This Agreement shall be governed by the laws of the State of Colorado.
+ */
+
+/**
+ * @class argos.Groups._GroupSection
+ */
+define('argos/Groups/_GroupBySection', [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/string'
+], function(
+    declare,
+    lang,
+    string
+) {
+
+    var __class = declare('argos.Groups._GroupBySection', null, {
+>>>>>>> develop
         /**
         * @property {String}
         * The unique (within the current form) name of the field
@@ -37,18 +57,34 @@ define('argos/Groups/_GroupBySection', ['exports', 'module', 'dojo/_base/declare
          * The SData property that the field will be bound to.
          */
         groupByProperty: null,
-        sortDirection: 'desc',
+        sortDirection:'desc',
         sections: null,
+<<<<<<< HEAD
         constructor: function constructor(o) {
             _lang['default'].mixin(this, o);
         },
         init: function init() {},
         getGroupSection: function getGroupSection(entry) {},
         getOrderByQuery: function getOrderByQuery() {
+=======
+        constructor: function(o) {
+            lang.mixin(this, o);
+        },
+        init: function() {
+        },
+        getGroupSection: function(entry) {
+        },
+        getOrderByQuery: function() {
+>>>>>>> develop
             return this.groupByProperty + ' ' + this.sortDirection;
         }
     });
 
+<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
     module.exports = __class;
+=======
+    lang.setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
+    return __class;
+>>>>>>> develop
 });

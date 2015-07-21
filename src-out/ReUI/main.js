@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-attr', 'dojo/dom-style', 'dojo/query', './DomHelper'], function (exports, module, _dojo_baseLang, _dojoOn, _dojoDom, _dojoDomClass, _dojoDomAttr, _dojoDomStyle, _dojoQuery, _DomHelper) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -27,6 +28,47 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
     D = _DomHelper2['default'];
 
     transitionComplete = function (page, o) {
+=======
+define('argos/ReUI/main', [
+    'dojo/_base/lang',
+    'dojo/on',
+    'dojo/dom',
+    'dojo/dom-class',
+    'dojo/dom-attr',
+    'dojo/dom-style',
+    'dojo/query',
+    './DomHelper'
+], function(
+    lang,
+    on,
+    dom,
+    domClass,
+    domAttr,
+    domStyle,
+    query,
+    DomHelper
+) {
+    var ReUI,
+        R,
+        D,
+        transition,
+        config,
+        context,
+        extractInfoFromHash,
+        formatHashForPage,
+        updateOrientationDom,
+        checkOrientationAndLocation,
+        transitionComplete;
+
+    ReUI = {};
+
+    ReUI.DomHelper = DomHelper;
+
+    R = ReUI;
+    D = DomHelper;
+
+    transitionComplete = function(page, o) {
+>>>>>>> develop
         if (o.track !== false) {
             if (typeof page.id !== 'string' || page.id.length <= 0) {
                 page.id = 'reui-' + context.counter++;
@@ -60,6 +102,7 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
         }
     };
 
+<<<<<<< HEAD
     transition = function (from, to, o) {
         function complete() {
             transitionComplete(to, o);
@@ -69,6 +112,17 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
             context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
             _on['default'].emit(from, 'aftertransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
             _on['default'].emit(to, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+=======
+    transition = function(from, to, o) {
+        function complete() {
+            transitionComplete(to, o);
+
+            domClass.remove(R.rootEl, 'transition');
+
+            context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
+            on.emit(from, 'aftertransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+            on.emit(to, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+>>>>>>> develop
 
             if (o.complete) {
                 o.complete(from, to, o);
@@ -78,7 +132,11 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
         context.transitioning = true;
 
         window.clearInterval(context.check);
+<<<<<<< HEAD
         _domClass['default'].add(R.rootEl, 'transition');
+=======
+        domClass.add(R.rootEl, 'transition');
+>>>>>>> develop
 
         // dispatch an 'show' event to let the page be aware that is being show as the result of an external
         // event (i.e. browser back/forward navigation).
@@ -86,18 +144,28 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
             _on['default'].emit(to, 'show', { tag: o.tag, data: o.data, bubbles: true, cancelable: true });
         }
 
+<<<<<<< HEAD
         _on['default'].emit(from, 'beforetransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
         _on['default'].emit(to, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+=======
+        on.emit(from, 'beforetransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+        on.emit(to, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+>>>>>>> develop
 
         D.unselect(from);
         D.select(to);
         complete();
     };
 
+<<<<<<< HEAD
     extractInfoFromHash = function (hash) {
         var segments = [],
             position,
             el;
+=======
+    extractInfoFromHash = function(hash) {
+        var segments = [], position, el;
+>>>>>>> develop
         if (hash) {
             if (hash.indexOf(R.hashPrefix) === 0) {
                 segments = hash.substr(R.hashPrefix.length).split(';');
@@ -120,17 +188,29 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
             }
 
             return context.history[position - 1];
+
         }
 
         return false;
     };
 
+<<<<<<< HEAD
     formatHashForPage = function (page, options) {
         var segments = options && options.tag ? [page.id].concat(options.tag) : [page.id];
         return R.hashPrefix + segments.join(';');
     };
 
     updateOrientationDom = function (value) {
+=======
+    formatHashForPage = function(page, options) {
+        var segments = options && options.tag
+            ? [page.id].concat(options.tag)
+            : [page.id];
+        return R.hashPrefix + segments.join(';');
+    };
+
+    updateOrientationDom = function(value) {
+>>>>>>> develop
         var currentOrient = R.rootEl.getAttribute('orient');
         if (value === currentOrient) {
             return;
@@ -139,6 +219,7 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
         R.rootEl.setAttribute('orient', value);
 
         if (value === 'portrait') {
+<<<<<<< HEAD
             _domClass['default'].remove(R.rootEl, 'landscape');
             _domClass['default'].add(R.rootEl, 'portrait');
         } else if (value === 'landscape') {
@@ -152,6 +233,24 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
 
     checkOrientationAndLocation = function () {
         var reverse, info, page, position;
+=======
+            domClass.remove(R.rootEl, 'landscape');
+            domClass.add(R.rootEl, 'portrait');
+        } else if (value === 'landscape') {
+            domClass.remove(R.rootEl, 'portrait');
+            domClass.add(R.rootEl, 'landscape');
+        } else {
+            domClass.remove(R.rootEl, 'portrait');
+            domClass.remove(R.rootEl, 'landscape');
+        }
+    };
+
+    checkOrientationAndLocation = function() {
+        var reverse,
+            info,
+            page,
+            position;
+>>>>>>> develop
 
         // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
         if (Math.abs(window.innerHeight - context.height) > 5 || Math.abs(window.innerWidth - context.width) > 5) {
@@ -180,7 +279,11 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
             }
 
             info = info || extractInfoFromHash(location.hash);
+<<<<<<< HEAD
             page = info && _dom['default'].byId(info.page);
+=======
+            page = info && dom.byId(info.page);
+>>>>>>> develop
 
             // more often than not, data will only be needed when moving to a previous view (and restoring its state).
 
@@ -203,7 +306,11 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
 
     config = window.reConfig || {};
 
+<<<<<<< HEAD
     _lang['default'].mixin(ReUI, {
+=======
+    lang.mixin(ReUI, {
+>>>>>>> develop
         rootEl: false,
         titleEl: false,
         pageTitleId: 'pageTitle',
@@ -211,7 +318,11 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
         checkStateEvery: 100,
         context: context,
 
+<<<<<<< HEAD
         init: function init() {
+=======
+        init: function() {
+>>>>>>> develop
             if (context.initialized) {
                 return;
             }
@@ -219,7 +330,11 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
             context.initialized = true;
 
             R.rootEl = R.rootEl || document.body;
+<<<<<<< HEAD
             R.titleEl = R.titleEl || _dom['default'].byId(R.pageTitleId);
+=======
+            R.titleEl = R.titleEl || dom.byId(R.pageTitleId);
+>>>>>>> develop
 
             context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
         },
@@ -227,28 +342,44 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
         /**
          * Called when the screen orientation changes.
          */
+<<<<<<< HEAD
         setOrientation: function setOrientation(value) {
+=======
+        setOrientation: function(value) {
+>>>>>>> develop
             updateOrientationDom(value);
         },
 
         /**
          * @deprecated
          */
+<<<<<<< HEAD
         getCurrentPage: function getCurrentPage() {
+=======
+        getCurrentPage: function() {
+>>>>>>> develop
             return context.page;
         },
 
         /**
          * @deprecated
          */
+<<<<<<< HEAD
         back: function back() {
+=======
+        back: function() {
+>>>>>>> develop
             history.back();
         },
 
         /**
          * Temporarily disables the location and orientation checking.
         */
+<<<<<<< HEAD
         disableLocationCheck: function disableLocationCheck() {
+=======
+        disableLocationCheck: function() {
+>>>>>>> develop
             if (context.check) {
                 window.clearInterval(context.check);
             }
@@ -262,7 +393,11 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
          *   update: False if the transition should not update title and back button, True otherwise.
          *   scroll: False if the transition should not scroll to the top, True otherwise.
         */
+<<<<<<< HEAD
         show: function show(page, o) {
+=======
+        show: function(page, o) {
+>>>>>>> develop
             if (context.transitioning) {
                 return;
             }
@@ -270,7 +405,13 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
             var count, hash, position, from;
 
             o = o || {};
+<<<<<<< HEAD
             page = typeof page === 'string' ? _dom['default'].byId(page) : page;
+=======
+            page = typeof page === 'string'
+                ? dom.byId(page)
+                : page;
+>>>>>>> develop
 
             if (!page) {
                 return;
@@ -294,7 +435,11 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
                     }
                 }
 
+<<<<<<< HEAD
                 if (position > -1 && position === count - 2) {
+=======
+                if ((position > -1) && (position === (count - 2))) {
+>>>>>>> develop
                     //Added check if history item is just one back.
 
                     context.history = context.history.splice(0, position + 1);
@@ -318,7 +463,11 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
                             }
                         }
                     } else if (o.returnTo < 0) {
+<<<<<<< HEAD
                         position = count - 1 + o.returnTo;
+=======
+                        position = (count - 1) + o.returnTo;
+>>>>>>> develop
                     }
 
                     if (position > -1) {
@@ -339,7 +488,11 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
                 o.scroll = !o.reverse;
             }
 
+<<<<<<< HEAD
             _on['default'].emit(page, 'load', { bubbles: false, cancelable: true });
+=======
+            on.emit(page, 'load', { bubbles: false, cancelable: true });
+>>>>>>> develop
 
             from = context.page;
 
@@ -349,22 +502,36 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
 
             context.page = page; // Keep for backwards compat
 
+<<<<<<< HEAD
             _on['default'].emit(page, 'focus', { bubbles: false, cancelable: true });
 
             if (from && _domAttr['default'].get(page, 'selected') !== 'true') {
+=======
+            on.emit(page, 'focus', { bubbles: false, cancelable: true });
+
+            if (from && domAttr.get(page, 'selected') !== 'true') {
+>>>>>>> develop
                 if (o.reverse) {
                     _on['default'].emit(page, 'unload', { bubbles: false, cancelable: true });
                 }
 
                 window.setTimeout(transition, R.checkStateEvery, from, page, o);
             } else {
+<<<<<<< HEAD
                 _on['default'].emit(page, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+=======
+                on.emit(page, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+>>>>>>> develop
 
                 D.select(page);
 
                 transitionComplete(page, o);
 
+<<<<<<< HEAD
                 _on['default'].emit(page, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+=======
+                on.emit(page, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+>>>>>>> develop
             }
         }
     }, config);
@@ -372,3 +539,4 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
     window.ReUI = ReUI;
     module.exports = ReUI;
 });
+

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/query', 'dojo/string', 'dojo/dom-class', 'dojo/dom-construct', './List', './Utility'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoQuery, _dojoString, _dojoDomClass, _dojoDomConstruct, _List, _Utility) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -43,6 +44,53 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
     var _Utility2 = _interopRequireDefault(_Utility);
 
     var __class = (0, _declare['default'])('argos.GroupedList', [_List2['default']], {
+=======
+/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @class argos.GroupedList
+ * Grouped List provides a hook for grouping rows before rendering them to the page.
+ * The grouping adds a container for the set of rows and is collapsible.
+ * Note that it constructs the page sequentially meaning the rows should be in the correct
+ * order before attempting to group.
+ * @extends argos.List
+ * @alternateClassName GroupedList
+ */
+define('argos/GroupedList', [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/query',
+    'dojo/string',
+    'dojo/dom-class',
+    'dojo/dom-construct',
+    './List',
+    './Utility'
+], function(
+    declare,
+    lang,
+    query,
+    string,
+    domClass,
+    domConstruct,
+    List,
+    Utility
+) {
+
+    var __class = declare('argos.GroupedList', [List], {
+>>>>>>> develop
         // Localization
         /**
          * @property {String}
@@ -62,7 +110,16 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * @property {Simplate}
          * Simplate that defines the Group template that includes the header element with collapse button and the row container
          */
+<<<<<<< HEAD
         groupTemplate: new Simplate(['<h2 data-action="toggleGroup" class="{% if ($.collapsed) { %}collapsed{% } %}">', '<button class="fa {% if ($.collapsed) { %}{%: $$.collapsedIconClass %} {% } else { %}{%: $$.expanedIconClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>{%: $.title %}', '</h2>', '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>']),
+=======
+        groupTemplate: new Simplate([
+            '<h2 data-action="toggleGroup" class="{% if ($.collapsed) { %}collapsed{% } %}">',
+            '<button class="fa {% if ($.collapsed) { %}{%: $$.collapsedIconClass %} {% } else { %}{%: $$.expanedIconClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>{%: $.title %}',
+            '</h2>',
+            '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>'
+        ]),
+>>>>>>> develop
 
         /**
          * @property {Simplate}
@@ -110,14 +167,22 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * @param {Object} entry The current entry being processed.
          * @return {Object} Object that contains a tag and title property where tag will be used in comparisons
          */
+<<<<<<< HEAD
         getGroupForEntry: function getGroupForEntry(entry) {
+=======
+        getGroupForEntry: function(entry) {
+>>>>>>> develop
             var sectionDef, title;
             if (this._currentGroupBySection) {
                 sectionDef = this._currentGroupBySection.section.getSection(entry);
                 if (this._currentGroupBySection.description) {
                     title = this._currentGroupBySection.description + ': ' + sectionDef.title;
                 } else {
+<<<<<<< HEAD
                     title = sectionDef.title;
+=======
+                    title =  sectionDef.title;
+>>>>>>> develop
                 }
                 return {
                     tag: sectionDef.key,
@@ -134,7 +199,11 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * Toggles the collapsible state of the clicked group
          * @param {Object} params Object containing the event and other properties
          */
+<<<<<<< HEAD
         toggleGroup: function toggleGroup(params) {
+=======
+        toggleGroup: function(params) {
+>>>>>>> develop
             var node = params.$source,
                 child;
 
@@ -144,10 +213,17 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
                 // Child is the button icon indicator for collapsed/expanded
                 if (child) {
+<<<<<<< HEAD
                     if (_domClass['default'].contains(child, this.expanedIconClass)) {
                         _domClass['default'].replace(child, this.collapsedIconClass, this.expanedIconClass);
                     } else {
                         _domClass['default'].replace(child, this.expanedIconClass, this.collapsedIconClass);
+=======
+                    if (domClass.contains(child, this.expanedIconClass)) {
+                        domClass.replace(child, this.collapsedIconClass, this.expanedIconClass);
+                    } else {
+                        domClass.replace(child, this.expanedIconClass, this.collapsedIconClass);
+>>>>>>> develop
                     }
                 }
             }
@@ -157,9 +233,15 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * @param {Object} feed The SData feed result
          * @deprecated Use processData instead
          */
+<<<<<<< HEAD
         processFeed: function processFeed(feed) {
             var i, entry, entryGroup, rowNode, remaining, getGroupsNode;
             getGroupsNode = _Utility2['default'].memoize(this.getGroupsNode.bind(this), function (entryGroup) {
+=======
+        processFeed: function(feed) {
+            var i, entry, entryGroup, rowNode, remaining, getGroupsNode;
+            getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), function(entryGroup) {
+>>>>>>> develop
                 return entryGroup.tag;
             });
 
@@ -183,7 +265,11 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                     rowNode = _domConstruct['default'].toDom(this.rowTemplate.apply(entry, this));
                     this.onApplyRowTemplate(entry, rowNode);
 
+<<<<<<< HEAD
                     _domConstruct['default'].place(rowNode, getGroupsNode(entryGroup), 'last');
+=======
+                    domConstruct.place(rowNode, getGroupsNode(entryGroup), 'last');
+>>>>>>> develop
                 }
             }
 
@@ -193,6 +279,7 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                 this.set('remainingContent', _string['default'].substitute(this.remainingText, [remaining]));
             }
 
+<<<<<<< HEAD
             _domClass['default'].toggle(this.domNode, 'list-has-more', this.hasMoreData());
         },
         processData: function processData(entries) {
@@ -204,6 +291,13 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                 rowNode,
                 getGroupsNode;
             getGroupsNode = _Utility2['default'].memoize(this.getGroupsNode.bind(this), function (entryGroup) {
+=======
+            domClass.toggle(this.domNode, 'list-has-more', this.hasMoreData());
+        },
+        processData: function(entries) {
+            var i, entry, count = entries.length, store = this.get('store'), entryGroup, rowNode, getGroupsNode;
+            getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), function(entryGroup) {
+>>>>>>> develop
                 return entryGroup.tag;
             });
 
@@ -217,6 +311,7 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                     entry['$groupTag'] = entryGroup.tag;
                     entry['$groupTitle'] = entryGroup.title;
 
+<<<<<<< HEAD
                     rowNode = _domConstruct['default'].toDom(this.rowTemplate.apply(entry, this));
                     this.onApplyRowTemplate(entry, rowNode);
 
@@ -226,6 +321,17 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         },
         getGroupsNode: function getGroupsNode(entryGroup) {
             var results = (0, _query['default'])('[data-group="' + entryGroup.tag + '"]', this.contentNode);
+=======
+                    rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+                    this.onApplyRowTemplate(entry, rowNode);
+
+                    domConstruct.place(rowNode, getGroupsNode(entryGroup), 'last');
+                }
+            }
+        },
+        getGroupsNode: function(entryGroup) {
+            var results = query('[data-group="' + entryGroup.tag + '"]', this.contentNode);
+>>>>>>> develop
             if (results.length > 0) {
                 results = results[0];
             } else {
@@ -241,17 +347,32 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         /**
          * Called on application startup to configure the search widget if present and create the list actions.
          */
+<<<<<<< HEAD
         startup: function startup() {
+=======
+        startup: function() {
+>>>>>>> develop
             this.inherited(arguments);
             this._initGroupBySections();
+
         },
+<<<<<<< HEAD
         _initGroupBySections: function _initGroupBySections() {
+=======
+        _initGroupBySections: function() {
+>>>>>>> develop
             this._groupBySections = this.getGroupBySections();
             this.setDefaultGroupBySection();
             this.applyGroupByOrderBy();
         },
+<<<<<<< HEAD
         setDefaultGroupBySection: function setDefaultGroupBySection() {
             var count, i;
+=======
+        setDefaultGroupBySection: function() {
+            var count,
+                i;
+>>>>>>> develop
 
             count = 0;
             if (this._groupBySections) {
@@ -266,8 +387,14 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                 }
             }
         },
+<<<<<<< HEAD
         getGroupBySection: function getGroupBySection(sectionId) {
             var groupSection, i;
+=======
+        getGroupBySection: function(sectionId) {
+            var groupSection,
+                i;
+>>>>>>> develop
 
             groupSection = null;
             if (this._groupBySections) {
@@ -279,6 +406,7 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
             }
             return groupSection;
         },
+<<<<<<< HEAD
         setCurrentGroupBySection: function setCurrentGroupBySection(sectionId) {
             this._currentGroupBySection = this.getGroupBySection(sectionId);
             this.applyGroupByOrderBy(); //need to refresh view
@@ -287,12 +415,27 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
             return null;
         },
         applyGroupByOrderBy: function applyGroupByOrderBy() {
+=======
+        setCurrentGroupBySection: function(sectionId) {
+            this._currentGroupBySection = this.getGroupBySection(sectionId);
+            this.applyGroupByOrderBy(); //need to refresh view
+        },
+        getGroupBySections: function() {
+            return null;
+        },
+        applyGroupByOrderBy: function() {
+>>>>>>> develop
             if (this._currentGroupBySection) {
                 this.queryOrderBy = this._currentGroupBySection.section.getOrderByQuery();
             }
         }
     });
 
+<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile.GroupedList', __class);
     module.exports = __class;
+=======
+    lang.setObject('Sage.Platform.Mobile.GroupedList', __class);
+    return __class;
+>>>>>>> develop
 });

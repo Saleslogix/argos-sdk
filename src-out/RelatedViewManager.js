@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define('argos/RelatedViewManager', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/string', 'dojo/dom-class', 'dojo/when', 'dojo/dom-construct', 'dojo/query', 'dojo/_base/array', './Store/SData', './_RelatedViewWidgetBase'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojoString, _dojoDomClass, _dojoWhen, _dojoDomConstruct, _dojoQuery, _dojo_baseArray, _StoreSData, _RelatedViewWidgetBase) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -28,6 +29,40 @@ define('argos/RelatedViewManager', ['exports', 'module', 'dojo/_base/declare', '
     var _RelatedViewWidget = _interopRequireDefault(_RelatedViewWidgetBase);
 
     var _widgetTypes, __class;
+=======
+/*
+ * See copyright file.
+ */
+
+
+define('argos/RelatedViewManager',  [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/_base/event',
+    'dojo/string',
+    'dojo/dom-class',
+    'dojo/when',
+    'dojo/dom-construct',
+    'dojo/query',
+    'dojo/_base/array',
+    './Store/SData',
+    './_RelatedViewWidgetBase'
+], function(
+    declare,
+    lang,
+    event,
+    string,
+    domClass,
+    when,
+    domConstruct,
+    query,
+    array,
+    SDataStore,
+    RelatedViewWidget
+) {
+    var _widgetTypes,
+        __class;
+>>>>>>> develop
 
     _widgetTypes = {};
     __class = (0, _declare['default'])('argos.RelatedViewManager', null, {
@@ -36,12 +71,20 @@ define('argos/RelatedViewManager', ['exports', 'module', 'dojo/_base/declare', '
         relatedViewConfig: null,
         widgetTypes: _widgetTypes,
         enabled: true,
+<<<<<<< HEAD
         constructor: function constructor(options) {
+=======
+        constructor: function(options) {
+>>>>>>> develop
             this.relatedViews = {};
             _lang['default'].mixin(this, options);
             this.registerType('default', _RelatedViewWidget['default']);
         },
+<<<<<<< HEAD
         destroyViews: function destroyViews() {
+=======
+        destroyViews: function() {
+>>>>>>> develop
             for (var relatedViewId in this.relatedViews) {
                 if (this.relatedViews.hasOwnProperty(relatedViewId)) {
                     this.relatedViews[relatedViewId].destroy();
@@ -49,10 +92,17 @@ define('argos/RelatedViewManager', ['exports', 'module', 'dojo/_base/declare', '
             }
             this.relatedViews = {};
         },
+<<<<<<< HEAD
         registerType: function registerType(widgetTypeName, ctor) {
             this.widgetTypes[widgetTypeName] = ctor;
         },
         getWidgetType: function getWidgetType(widgetTypeName) {
+=======
+        registerType: function(widgetTypeName, ctor) {
+            this.widgetTypes[widgetTypeName] = ctor;
+        },
+        getWidgetType: function(widgetTypeName) {
+>>>>>>> develop
             var widgetType;
             widgetType = this.widgetTypes[widgetTypeName];
             if (!widgetType) {
@@ -60,8 +110,17 @@ define('argos/RelatedViewManager', ['exports', 'module', 'dojo/_base/declare', '
             }
             return widgetType;
         },
+<<<<<<< HEAD
         addView: function addView(entry, contentNode, owner) {
             var relatedContentNode, relatedViewNode, relatedViewWidget, relatedResults, options;
+=======
+        addView: function(entry, contentNode, owner) {
+            var relatedContentNode,
+            relatedViewNode,
+            relatedViewWidget,
+            relatedResults,
+            options;
+>>>>>>> develop
             try {
                 if (contentNode) {
                     if (this.enabled) {
@@ -86,6 +145,7 @@ define('argos/RelatedViewManager', ['exports', 'module', 'dojo/_base/declare', '
                 }
             } catch (error) {
                 console.log('Error adding related view widgets:' + error);
+
             }
         }
     });

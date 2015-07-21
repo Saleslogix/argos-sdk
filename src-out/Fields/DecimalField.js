@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define('argos/Fields/DecimalField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', './TextField', '../FieldManager', '../Utility'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoString, _TextField, _FieldManager, _Utility) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -28,6 +29,39 @@ define('argos/Fields/DecimalField', ['exports', 'module', 'dojo/_base/declare', 
 
     var _Utility2 = _interopRequireDefault(_Utility);
 
+=======
+/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+define('argos/Fields/DecimalField', [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/string',
+    './TextField',
+    '../FieldManager',
+    '../Utility'
+], function(
+    declare,
+    lang,
+    string,
+    TextField,
+    FieldManager,
+    Utility
+) {
+>>>>>>> develop
     /**
      * @class argos.Fields.DecimalField
      * The Decimal Field is used for inputting numbers and extends {@link TextField TextField} with:
@@ -65,7 +99,11 @@ define('argos/Fields/DecimalField', ['exports', 'module', 'dojo/_base/declare', 
          * and thousands punctuation.
          * @param {Number/String} val Value to be set
          */
+<<<<<<< HEAD
         setValue: function setValue(val) {
+=======
+        setValue: function(val) {
+>>>>>>> develop
             var perc;
 
             perc = this.getPrecision();
@@ -75,11 +113,24 @@ define('argos/Fields/DecimalField', ['exports', 'module', 'dojo/_base/declare', 
                 if (perc === 0) {
                     val = '0';
                 } else {
+<<<<<<< HEAD
                     val = _string['default'].substitute('0${0}00', [Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.']);
                 }
             } else {
                 if (perc !== 0) {
                     val = _string['default'].substitute('${0}${1}${2}', [parseInt(val, 10), Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.', val.substr(-perc)]);
+=======
+                    val = string.substitute('0${0}00', [Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.']);
+                }
+            } else {
+                if (perc !== 0) {
+                    val = string.substitute('${0}${1}${2}',
+                        [
+                            parseInt(val, 10),
+                            Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.',
+                            val.substr(-perc)
+                        ]);
+>>>>>>> develop
                 }
             }
             this.inherited(arguments, [val]);
@@ -89,7 +140,11 @@ define('argos/Fields/DecimalField', ['exports', 'module', 'dojo/_base/declare', 
          * returning it de-converts the punctuation back to `en-US` format.
          * @return {Number}
          */
+<<<<<<< HEAD
         getValue: function getValue() {
+=======
+        getValue: function() {
+>>>>>>> develop
             var value = this.inherited(arguments);
             // SData (and other functions) expect American formatted numbers
             value = value.replace(Mobile.CultureInfo.numberFormat.currencyGroupSeparator, '').replace(Mobile.CultureInfo.numberFormat.numberGroupSeparator, '').replace(Mobile.CultureInfo.numberFormat.currencyDecimalSeparator, '.').replace(Mobile.CultureInfo.numberFormat.numberDecimalSeparator, '.');
@@ -99,7 +154,11 @@ define('argos/Fields/DecimalField', ['exports', 'module', 'dojo/_base/declare', 
          * Retrieves the precision the value will be formated and ronded to.
          * @return {Number}
          */
+<<<<<<< HEAD
         getPrecision: function getPrecision() {
+=======
+        getPrecision: function() {
+>>>>>>> develop
             var perc;
             if (this.precision === 0) {
                 perc = this.precision;
@@ -110,6 +169,11 @@ define('argos/Fields/DecimalField', ['exports', 'module', 'dojo/_base/declare', 
         }
     });
 
+<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile.Fields.DecimalField', control);
     module.exports = _FieldManager2['default'].register('decimal', control);
+=======
+    lang.setObject('Sage.Platform.Mobile.Fields.DecimalField', control);
+    return FieldManager.register('decimal', control);
+>>>>>>> develop
 });

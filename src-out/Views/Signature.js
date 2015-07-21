@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/json', 'dojo/query', 'dojo/dom-geometry', 'dojo/window', '../Format', '../View'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseJson, _dojoQuery, _dojoDomGeometry, _dojoWindow, _Format, _View) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -43,6 +44,54 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
      * @requires argos.Format
      */
     var __class = (0, _declare['default'])('argos.Views.Signature', [_View2['default']], {
+=======
+/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @class argos.Views.Signature
+ * Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
+ *
+ * It goes hand-in-hand with {@link SignatureField SignatureField}
+ *
+ * @alternateClassName SignatureView
+ * @extends argos.View
+ * @requires argos.Format
+ */
+define('argos/Views/Signature', [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/_base/json',
+    'dojo/query',
+    'dojo/dom-geometry',
+    'dojo/window',
+    '../Format',
+    '../View'
+], function(
+    declare,
+    lang,
+    json,
+    query,
+    domGeom,
+    win,
+    format,
+    View
+) {
+
+    var __class = declare('argos.Views.Signature', [View], {
+>>>>>>> develop
         // Localization
         /**
          * @property {String}
@@ -68,7 +117,19 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
          * * `$` => Signature view instance
          *
          */
+<<<<<<< HEAD
         widgetTemplate: new Simplate(['<div id="{%= $.id %}" title="{%: $.titleText %}" class="panel {%= $.cls %}">', '{%! $.canvasTemplate %}', '<div class="buttons">', '<button class="button" data-action="_undo"><span>{%: $.undoText %}</span></button>', '<button class="button" data-action="clearValue"><span>{%: $.clearCanvasText %}</span></button>', '</div>', '<div>']),
+=======
+        widgetTemplate: new Simplate([
+            '<div id="{%= $.id %}" title="{%: $.titleText %}" class="panel {%= $.cls %}">',
+                '{%! $.canvasTemplate %}',
+                '<div class="buttons">',
+                    '<button class="button" data-action="_undo"><span>{%: $.undoText %}</span></button>',
+                    '<button class="button" data-action="clearValue"><span>{%: $.clearCanvasText %}</span></button>',
+                '</div>',
+            '<div>'
+        ]),
+>>>>>>> develop
         /**
          * @property {Simplate}
          * Simplate that defines the canvas with a set width and height
@@ -105,7 +166,7 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
          * @property {Object}
          * Stores where the last drawn point was
          */
-        lastpos: { x: -1, y: -1 },
+        lastpos: {x:-1, y:-1},
         /**
          * @cfg {Object}
          * Stores the passed options for: `scale`, `lineWidth`, `penColor` and `drawColor`.
@@ -147,7 +208,11 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
          * `/app/resize` event and immediately call resize so the canvas is scaled.
          * @param options
          */
+<<<<<<< HEAD
         show: function show(options) {
+=======
+        show: function(options) {
+>>>>>>> develop
             this.inherited(arguments);
 
             if (options && options.lineWidth) {
@@ -155,14 +220,18 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
             }
 
             if (options && options.penColor) {
-                this.config.penColor = options.penColor;
+                this.config.penColor  = options.penColor;
             }
 
             if (options && options.drawColor) {
                 this.config.drawColor = options.drawColor;
             }
 
+<<<<<<< HEAD
             this.signature = options && options.signature ? options.signature : [];
+=======
+            this.signature = (options && options.signature) ? options.signature : [];
+>>>>>>> develop
 
             this._sizeCanvas();
             this.context = this.signatureNode.getContext('2d');
@@ -175,22 +244,36 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
          * Returns the optimized signature array as a JSON string
          * @return {String}
          */
+<<<<<<< HEAD
         getValues: function getValues() {
             return _json['default'].toJson(this.optimizeSignature());
+=======
+        getValues: function() {
+            return json.toJson(this.optimizeSignature());
+>>>>>>> develop
         },
         /**
          * Sets the current value and draws it.
          * @param {String} val JSON-stringified Number[][] of x-y coordinates
          * @param initial Unused.
          */
+<<<<<<< HEAD
         setValue: function setValue(val, initial) {
             this.signature = val ? _json['default'].fromJson(val) : [];
+=======
+        setValue: function(val, initial) {
+            this.signature = val ? json.fromJson(val) : [];
+>>>>>>> develop
             this.redraw(this.signature, this.signatureNode, this.config);
         },
         /**
          * Clears the value and saves the buffer
          */
+<<<<<<< HEAD
         clearValue: function clearValue() {
+=======
+        clearValue: function() {
+>>>>>>> develop
             this.buffer = this.signature;
             this.setValue('', true);
         },
@@ -199,15 +282,34 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
          * @param {Event} e
          * @return Number[]
          */
+<<<<<<< HEAD
         _getCoords: function _getCoords(e) {
             var offset = _domGeom['default'].position(this.signatureNode, false);
             return e.touches ? [e.touches[0].pageX - offset.x, e.touches[0].pageY - offset.y] : [e.clientX - offset.x, e.clientY - offset.y];
+=======
+        _getCoords: function(e) {
+            var offset = domGeom.position(this.signatureNode, false);
+            return e.touches
+                ? [
+                    e.touches[0].pageX - offset.x,
+                    e.touches[0].pageY - offset.y
+                  ]
+                : [
+                    e.clientX - offset.x,
+                    e.clientY - offset.y
+                  ]
+                ;
+>>>>>>> develop
         },
         /**
          * Handler for `ontouchstart`, records the starting point and sets the state to down
          * @param {Event} e
          */
+<<<<<<< HEAD
         _penDown: function _penDown(e) {
+=======
+        _penDown: function(e) {
+>>>>>>> develop
             this.isPenDown = true;
             this.lastpos = this._getCoords(e);
             this.context.lineWidth = this.config.lineWidth;
@@ -218,7 +320,11 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
          * Handler for `ontouchmove`, draws the lines between the last postition and current position
          * @param {Event} e
          */
+<<<<<<< HEAD
         _penMove: function _penMove(e) {
+=======
+        _penMove: function(e) {
+>>>>>>> develop
             if (!this.isPenDown) {
                 return;
             }
@@ -238,7 +344,11 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
          * Handler for `ontouchend`, saves the final signature and redraws the canvas
          * @param e
          */
+<<<<<<< HEAD
         _penUp: function _penUp(e) {
+=======
+        _penUp: function(e) {
+>>>>>>> develop
             e.preventDefault();
             this.isPenDown = false;
             if (this.trace.length) {
@@ -252,12 +362,20 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
         /**
          * Undoes the last pen down-to-pen up line by using the buffer
          */
+<<<<<<< HEAD
         _undo: function _undo() {
+=======
+        _undo: function() {
+>>>>>>> develop
             if (this.signature.length) {
                 this.buffer = this.signature.pop();
                 if (!this.signature.length) {
                     this.buffer = [this.buffer];
                 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop
             } else if (this.buffer.length) {
                 this.signature = this.buffer;
             }
@@ -266,12 +384,24 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
         /**
          * Sets the canvas width/height based on the size of the window/screen
          */
+<<<<<<< HEAD
         _sizeCanvas: function _sizeCanvas() {
             this.canvasNodeWidth = Math.floor(_win['default'].getBox().w * 0.92);
 
             this.canvasNodeHeight = Math.min(Math.floor(this.canvasNodeWidth * 0.5), _win['default'].getBox().h - (0, _query['default'])('.toolbar')[0].offsetHeight);
 
             this.signatureNode.width = this.canvasNodeWidth;
+=======
+        _sizeCanvas: function() {
+            this.canvasNodeWidth  = Math.floor(win.getBox().w * 0.92);
+
+            this.canvasNodeHeight = Math.min(
+                Math.floor(this.canvasNodeWidth * 0.5),
+                win.getBox().h - query('.toolbar')[0].offsetHeight
+            );
+
+            this.signatureNode.width  = this.canvasNodeWidth;
+>>>>>>> develop
             this.signatureNode.height = this.canvasNodeHeight;
         },
         /**
@@ -279,6 +409,7 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
          * drawn signature accordingly to the ratio.
          * @param e
          */
+<<<<<<< HEAD
         onResize: function onResize(e) {
             var newScale,
                 oldWidth = this.canvasNodeWidth,
@@ -286,6 +417,18 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
             this._sizeCanvas();
 
             newScale = Math.min(this.canvasNodeWidth / oldWidth, this.canvasNodeHeight / oldHeight);
+=======
+        onResize: function(e) {
+            var newScale,
+                oldWidth  = this.canvasNodeWidth,
+                oldHeight = this.canvasNodeHeight;
+            this._sizeCanvas();
+
+            newScale = Math.min(
+                this.canvasNodeWidth  / oldWidth,
+                this.canvasNodeHeight / oldHeight
+            );
+>>>>>>> develop
 
             this.signature = this.rescale(newScale);
             this.redraw(this.signature, this.signatureNode, this.config);
@@ -296,16 +439,28 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
          * @param {HTMLElement} canvas Canvas to be drawn to
          * @param {Object} options Options to be passed to canvasDraw
          */
+<<<<<<< HEAD
         redraw: function redraw(vector, canvas, options) {
             _format['default'].canvasDraw(vector, canvas, options);
+=======
+        redraw: function(vector, canvas, options) {
+            format.canvasDraw(vector, canvas, options);
+>>>>>>> develop
         },
         /**
          * Loops through the vector points in the signature and applies the given scale ratio
          * @param {Number} scale Ratio in which to multiply the vector point
          * @return {Number[][]} Rescaled signature array
          */
+<<<<<<< HEAD
         rescale: function rescale(scale) {
             var rescaled, j, i;
+=======
+        rescale: function(scale) {
+            var rescaled,
+                j,
+                i;
+>>>>>>> develop
 
             rescaled = [];
             for (i = 0; i < this.signature.length; i++) {
@@ -320,7 +475,11 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
          * Loops the signature calling optimize on each pen down-to-pen up segment
          * @return {Number[][]} Optimized signature
          */
+<<<<<<< HEAD
         optimizeSignature: function optimizeSignature() {
+=======
+        optimizeSignature: function() {
+>>>>>>> develop
             var optimized, i;
 
             optimized = [];
@@ -337,16 +496,25 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
          * @param {Number[]} vector Array of x,y coordinates to optimize
          * @return {Number[]} Optimized array
          */
+<<<<<<< HEAD
         optimize: function optimize(vector) {
+=======
+        optimize: function(vector) {
+>>>>>>> develop
             if (vector.length < 2) {
                 return vector;
             }
 
             var result = [],
                 minA = 0.95,
+<<<<<<< HEAD
                 maxL = 15.0,
                 // 15.0, 10.0 works well
             rootP = vector[0],
+=======
+                maxL = 15.0, // 15.0, 10.0 works well
+                rootP = vector[0],
+>>>>>>> develop
                 lastP = vector[1],
                 rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]],
                 rootL = Math.sqrt(rootV[0] * rootV[0] + rootV[1] * rootV[1]),
@@ -372,6 +540,7 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
                 } else {
                     lastP = currentP;
                 }
+
             }
 
             result.push(lastP);
@@ -380,6 +549,11 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
         }
     });
 
+<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile.Views.Signature', __class);
     module.exports = __class;
+=======
+    lang.setObject('Sage.Platform.Mobile.Views.Signature', __class);
+    return __class;
+>>>>>>> develop
 });

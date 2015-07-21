@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', 'dojo/dom-class', '../Format', './LookupField', '../FieldManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoString, _dojoDomClass, _Format, _LookupField, _FieldManager) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -30,6 +31,40 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
 
     var _FieldManager2 = _interopRequireDefault(_FieldManager);
 
+=======
+/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+define('argos/Fields/DurationField', [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/string',
+    'dojo/dom-class',
+    '../Format',
+    './LookupField',
+    '../FieldManager'
+], function(
+    declare,
+    lang,
+    string,
+    domClass,
+    format,
+    LookupField,
+    FieldManager
+) {
+>>>>>>> develop
     /**
      * @class argos.Fields.DurationField
      * The Duration field is a mashup of an auto-complete box and a {@link LookupField LookupField} for handling
@@ -158,14 +193,28 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
         /**
          * Overrides the parent to skip the connections and alter the base capture RegExp's to account for localization
          */
+<<<<<<< HEAD
         init: function init() {
+=======
+        init: function() {
+>>>>>>> develop
             // do not use lookups connects
 
             var numberDecimalSeparator = Mobile.CultureInfo.numberFormat.numberDecimalSeparator;
 
+<<<<<<< HEAD
             this.autoCompletePhraseRE = new RegExp(_string['default'].substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator]));
 
             this.autoCompleteValueRE = new RegExp(_string['default'].substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+))', [numberDecimalSeparator]));
+=======
+            this.autoCompletePhraseRE = new RegExp(
+                string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator])
+            );
+
+            this.autoCompleteValueRE = new RegExp(
+                string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+))', [numberDecimalSeparator])
+            );
+>>>>>>> develop
         },
         /**
          * Handler for onkeyup on the input. The logic for comparing the matched value and phrase to the autocomplete
@@ -173,7 +222,11 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * @param {Event} evt onkeyup
          * @private
          */
+<<<<<<< HEAD
         _onKeyUp: function _onKeyUp(evt) {
+=======
+        _onKeyUp: function(evt) {
+>>>>>>> develop
             var val = this.inputNode.value.toString(),
                 key,
                 match = this.autoCompletePhraseRE.exec(val);
@@ -205,7 +258,11 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * @param {String} word Second string to compare
          * @return {Boolean} True if they are equal.
          */
+<<<<<<< HEAD
         isWordMatch: function isWordMatch(val, word) {
+=======
+        isWordMatch: function(val, word) {
+>>>>>>> develop
             if (val.length > word.length) {
                 val = val.slice(0, word.length);
             } else {
@@ -218,13 +275,21 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * Shows the auto-complete version of the phrase
          * @param {String} word Text to put in the autocomplete
          */
+<<<<<<< HEAD
         showAutoComplete: function showAutoComplete(word) {
+=======
+        showAutoComplete: function(word) {
+>>>>>>> develop
             this.set('autoCompleteContent', word);
         },
         /**
          * Clears the autocomplete input
          */
+<<<<<<< HEAD
         hideAutoComplete: function hideAutoComplete() {
+=======
+        hideAutoComplete: function() {
+>>>>>>> develop
             this.set('autoCompleteContent', '');
         },
         /**
@@ -233,7 +298,11 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * @return {Boolean}
          * @private
          */
+<<<<<<< HEAD
         _onBlur: function _onBlur(evt) {
+=======
+        _onBlur: function(evt) {
+>>>>>>> develop
             var val = this.inputNode.value.toString(),
                 match = this.autoCompleteValueRE.exec(val),
                 multiplier = this.getMultiplier(this.currentKey),
@@ -254,7 +323,11 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * Returns the corresponding value in minutes to the passed key (currentKey)
          * @return {Number}
          */
+<<<<<<< HEAD
         getMultiplier: function getMultiplier(key) {
+=======
+        getMultiplier: function(key) {
+>>>>>>> develop
             var k;
             for (k in this.autoCompleteText) {
                 if (this.autoCompleteText.hasOwnProperty(k) && key === this.autoCompleteText[k]) {
@@ -267,7 +340,11 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * Returns the current value in minutes
          * @return {Number}
          */
+<<<<<<< HEAD
         getValue: function getValue() {
+=======
+        getValue: function() {
+>>>>>>> develop
             return this.currentValue;
         },
         /**
@@ -275,7 +352,11 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * @param {Number} val Number of minutes
          * @param init
          */
+<<<<<<< HEAD
         setValue: function setValue(val, init) {
+=======
+        setValue: function(val, init) {
+>>>>>>> develop
             if (val === null || typeof val === 'undefined') {
                 val = 0;
             }
@@ -289,7 +370,11 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * @param val
          * @param {String/Number} key Number of minutes (will be converted via parseFloat)
          */
+<<<<<<< HEAD
         setSelection: function setSelection(val, key) {
+=======
+        setSelection: function(val, key) {
+>>>>>>> develop
             this.setValue(parseFloat(key));
         },
         /**
@@ -298,7 +383,11 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * @param {Number} val Number of minutes
          * @return {String}
          */
+<<<<<<< HEAD
         textFormat: function textFormat(val) {
+=======
+        textFormat: function(val) {
+>>>>>>> develop
             var stepValue,
                 finalUnit = 1,
                 key,
@@ -327,15 +416,24 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * @param {Number} to
          * @return {Number}
          */
+<<<<<<< HEAD
         convertUnit: function convertUnit(val, to) {
             return _format['default'].fixed(val / to, 2);
+=======
+        convertUnit: function(val, to) {
+            return format.fixed(val / to, 2);
+>>>>>>> develop
         },
         /**
          * Formats the unit with correct decimal separator.
          * @param {Number} unit
          * @return {string}
          */
+<<<<<<< HEAD
         formatUnit: function formatUnit(unit) {
+=======
+        formatUnit: function(unit) {
+>>>>>>> develop
             var sval;
             if (isNaN(unit)) {
                 sval = '0';
@@ -347,7 +445,16 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
                     if (sval[1] === '0') {
                         sval = sval[0];
                     } else {
+<<<<<<< HEAD
                         sval = _string['default'].substitute('${0}${1}${2}', [sval[0], Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.', sval[1]]);
+=======
+                        sval = string.substitute('${0}${1}${2}',
+                                [
+                                    sval[0],
+                                    Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.',
+                                    sval[1]
+                                ]);
+>>>>>>> develop
                     }
                 }
             }
@@ -358,7 +465,11 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * to true and data to `this.data`.
          * @return {Object} Navigation options object to be passed
          */
+<<<<<<< HEAD
         createNavigationOptions: function createNavigationOptions() {
+=======
+        createNavigationOptions: function() {
+>>>>>>> develop
             var options = this.inherited(arguments);
             options.hideSearch = true;
             options.data = this.expandExpression(this.data);
@@ -368,20 +479,36 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * Validets the field by verifying it matches one of the auto complete text.
          * @return {Boolean} False for no-errors, true for error.
          */
+<<<<<<< HEAD
         validate: function validate() {
+=======
+        validate: function() {
+>>>>>>> develop
             var val = this.inputNode.value.toString(),
                 phraseMatch = this.autoCompletePhraseRE.exec(val);
 
             if (!phraseMatch) {
+<<<<<<< HEAD
                 _domClass['default'].add(this.containerNode, 'row-error');
                 return _string['default'].substitute(this.invalidDurationErrorText, [val]);
             } else {
                 _domClass['default'].remove(this.containerNode, 'row-error');
+=======
+                domClass.add(this.containerNode, 'row-error');
+                return string.substitute(this.invalidDurationErrorText, [val]);
+            } else {
+                domClass.remove(this.containerNode, 'row-error');
+>>>>>>> develop
                 return false;
             }
         }
     });
 
+<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile.Fields.DurationField', control);
     module.exports = _FieldManager2['default'].register('duration', control);
+=======
+    lang.setObject('Sage.Platform.Mobile.Fields.DurationField', control);
+    return FieldManager.register('duration', control);
+>>>>>>> develop
 });

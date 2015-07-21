@@ -12,12 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import lang from 'dojo/_base/lang';
-
-var store,
-    __class;
-
-store = {};
 
 /**
  * @class argos.FieldManager
@@ -26,30 +20,40 @@ store = {};
  * @alternateClassName FieldManager
  * @singleton
  */
-__class = lang.setObject('argos.FieldManager', {
-    /**
-     * @property {Object}
-     * The type map that translates string type names to constructor functions
-     */
-    types: store,
-    /**
-     * Registers a field type by providing a unique name and the constructor to be called
-     * @param {String} name Unique string name of field, will be what is used in Edit View layouts.
-     * @param {Function} ctor Constructor function of field
-     */
-    register: function(name, ctor) {
-        store[name] = ctor;
-        return ctor;
-    },
-    /**
-     * Retrieves a constructor for the given field name
-     * @param name Unique name of field
-     * @return {Function} Constructor for the given field type
-     */
-    get: function(name) {
-        return store[name];
-    }
-});
+define('argos/FieldManager', [
+    'dojo/_base/lang'
+], function(
+    lang
+) {
+    var store,
+        __class;
 
-lang.setObject('Sage.Platform.Mobile.FieldManager', __class);
-export default __class;
+    store = {};
+    __class = lang.setObject('argos.FieldManager', {
+        /**
+         * @property {Object}
+         * The type map that translates string type names to constructor functions
+         */
+        types: store,
+        /**
+         * Registers a field type by providing a unique name and the constructor to be called
+         * @param {String} name Unique string name of field, will be what is used in Edit View layouts.
+         * @param {Function} ctor Constructor function of field
+         */
+        register: function(name, ctor) {
+            store[name] = ctor;
+            return ctor;
+        },
+        /**
+         * Retrieves a constructor for the given field name
+         * @param name Unique name of field
+         * @return {Function} Constructor for the given field type
+         */
+        get: function(name) {
+            return store[name];
+        }
+    });
+
+    lang.setObject('Sage.Platform.Mobile.FieldManager', __class);
+    return __class;
+});

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'dojo/_base/connect', 'dojo/_base/declare', 'dojo/_base/lang', './Application', './Views/ConfigureQuickActions'], function (exports, module, _dojo_baseArray, _dojo_baseConnect, _dojo_baseDeclare, _dojo_baseLang, _Application, _ViewsConfigureQuickActions) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -38,6 +39,49 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
      * @requires argos.Application
      */
     var __class = (0, _declare['default'])('argos.ApplicationModule', null, {
+=======
+/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @class argos.ApplicationModule
+ * ApplicationModule is intended to be extended in the resulting application so that it
+ * references all the views, toolbars and customizations and registers them to App.
+ *
+ * You may think of ApplicationModule as "loader" or initializer.
+ * @alternateClassName ApplicationModule
+ * @requires argos.Application
+ */
+define('argos/ApplicationModule', [
+    'dojo/_base/array',
+    'dojo/_base/connect',
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    './Application',
+    './Views/ConfigureQuickActions'
+], function(
+    array,
+    connect,
+    declare,
+    lang,
+    Application,
+    ConfigureQuickActions
+) {
+
+    var __class = declare('argos.ApplicationModule', null, {
+>>>>>>> develop
         /**
          * @property {Array}
          * Array of dojo.connect bound to ApplicationModule
@@ -57,16 +101,25 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
          * Mixes in the passed options object into itself
          * @param {Object} options Properties to be mixed in
          */
+<<<<<<< HEAD
         constructor: function constructor(options) {
             this._connects = [];
             this._subscribes = [];
 
             _lang['default'].mixin(this, options);
+=======
+        constructor: function(options) {
+            this._connects = [];
+            this._subscribes = [];
+
+            lang.mixin(this, options);
+>>>>>>> develop
         },
         /**
          * Destroy loops and disconnects all `_connect`s and unsubscribes all `_subscribe`s.
          * Also calls {@link #uninitialize uninitialize}
          */
+<<<<<<< HEAD
         destroy: function destroy() {
             _array['default'].forEach(this._connects, function (handle) {
                 _connect['default'].disconnect(handle);
@@ -74,6 +127,15 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
 
             _array['default'].forEach(this._subscribes, function (handle) {
                 _connect['default'].unsubscribe(handle);
+=======
+        destroy: function() {
+            array.forEach(this._connects, function(handle) {
+                connect.disconnect(handle);
+            });
+
+            array.forEach(this._subscribes, function(handle) {
+                connect.unsubscribe(handle);
+>>>>>>> develop
             });
 
             this.uninitialize();
@@ -81,7 +143,13 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
         /**
          * Performs any additional destruction requirements
          */
+<<<<<<< HEAD
         uninitialize: function uninitialize() {},
+=======
+        uninitialize: function() {
+
+        },
+>>>>>>> develop
         /**
          * Saves the passed application instance and calls:
          *
@@ -91,7 +159,11 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
          *
          * @param {Object} application
          */
+<<<<<<< HEAD
         init: function init(application) {
+=======
+        init: function(application) {
+>>>>>>> develop
             this.application = application;
 
             this.loadAppStatPromises();
@@ -103,7 +175,12 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
         * @template
         * This function should be overriden in the app and be used to register all app state promises.
         */
+<<<<<<< HEAD
         loadAppStatPromises: function loadAppStatPromises() {},
+=======
+        loadAppStatPromises: function() {
+        },
+>>>>>>> develop
 
         statics: {
             _customizationsLoaded: false,
@@ -115,7 +192,11 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
          * @template
          * This function should be overriden in the app and be used to register all customizations.
          */
+<<<<<<< HEAD
         loadCustomizations: function loadCustomizations() {
+=======
+        loadCustomizations: function() {
+>>>>>>> develop
             if (this.statics._customizationsLoaded) {
                 console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.');
                 return;
@@ -129,14 +210,22 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
          * @template
          * This function should be overriden in the app and be used to register all views.
          */
+<<<<<<< HEAD
         loadViews: function loadViews() {
+=======
+        loadViews: function() {
+>>>>>>> develop
             if (this.statics._viewsLoaded) {
                 console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.');
                 return;
             }
 
             // Load base views
+<<<<<<< HEAD
             this.registerView(new _ConfigureQuickActions['default']());
+=======
+            this.registerView(new ConfigureQuickActions());
+>>>>>>> develop
 
             this.statics._viewsLoaded = true;
         },
@@ -144,7 +233,11 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
          * @template
          * This function should be overriden in the app and be used to register all toolbars.
          */
+<<<<<<< HEAD
         loadToolbars: function loadToolbars() {
+=======
+        loadToolbars: function() {
+>>>>>>> develop
             if (this.statics._toolbarsLoaded) {
                 console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.');
                 return;
@@ -159,7 +252,11 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
          * @param {Object} view View instance to register
          * @param {DOMNode} domNode Optional. DOM node to place the view in.
          */
+<<<<<<< HEAD
         registerView: function registerView(view, domNode) {
+=======
+        registerView: function(view, domNode) {
+>>>>>>> develop
             if (this.application) {
                 this.application.registerView(view, domNode);
             }
@@ -170,7 +267,11 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
          * @param {Object} toolbar Toolbar instance to register.
          * @param {DOMNode} domNode Optional. DOM node to place the view in.
          */
+<<<<<<< HEAD
         registerToolbar: function registerToolbar(name, toolbar, domNode) {
+=======
+        registerToolbar: function(name, toolbar, domNode) {
+>>>>>>> develop
             if (this.application) {
                 this.application.registerToolbar(name, toolbar, domNode);
             }
@@ -181,7 +282,11 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
          * @param {String} id The View id the customization will be applied to
          * @param {Object} spec The customization object containing at least `at` and `type`.
          */
+<<<<<<< HEAD
         registerCustomization: function registerCustomization(set, id, spec) {
+=======
+        registerCustomization: function(set, id, spec) {
+>>>>>>> develop
             if (this.application) {
                 this.application.registerCustomization(set, id, spec);
             }
@@ -190,13 +295,22 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
          * Registers a promise that will resolve when initAppState is invoked.
          * @param {Promise|Function} promise A promise or a function that returns a promise
          */
+<<<<<<< HEAD
         registerAppStatePromise: function registerAppStatePromise(promise) {
+=======
+        registerAppStatePromise: function(promise) {
+>>>>>>> develop
             if (this.application) {
                 this.application.registerAppStatePromise(promise);
             }
         }
     });
 
+<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile.ApplicationModule', __class);
     module.exports = __class;
+=======
+    lang.setObject('Sage.Platform.Mobile.ApplicationModule', __class);
+    return __class;
+>>>>>>> develop
 });

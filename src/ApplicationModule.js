@@ -12,12 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import array from 'dojo/_base/array';
-import connect from 'dojo/_base/connect';
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import Application from './Application';
-import ConfigureQuickActions from './Views/ConfigureQuickActions';
 
 /**
  * @class argos.ApplicationModule
@@ -28,168 +22,185 @@ import ConfigureQuickActions from './Views/ConfigureQuickActions';
  * @alternateClassName ApplicationModule
  * @requires argos.Application
  */
-var __class = declare('argos.ApplicationModule', null, {
-    /**
-     * @property {Array}
-     * Array of dojo.connect bound to ApplicationModule
-     */
-    _connects: null,
-    /**
-     * @property {Array}
-     * Array of dojo.subscribe bound to ApplicationModule
-     */
-    _subscribes: null,
-    /**
-     * @property {Object}
-     * The {@link App App} instance for the application
-     */
-    application: null,
-    /**
-     * Mixes in the passed options object into itself
-     * @param {Object} options Properties to be mixed in
-     */
-    constructor: function(options) {
-        this._connects = [];
-        this._subscribes = [];
+define('argos/ApplicationModule', [
+    'dojo/_base/array',
+    'dojo/_base/connect',
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    './Application',
+    './Views/ConfigureQuickActions'
+], function(
+    array,
+    connect,
+    declare,
+    lang,
+    Application,
+    ConfigureQuickActions
+) {
 
-        lang.mixin(this, options);
-    },
-    /**
-     * Destroy loops and disconnects all `_connect`s and unsubscribes all `_subscribe`s.
-     * Also calls {@link #uninitialize uninitialize}
-     */
-    destroy: function() {
-        array.forEach(this._connects, function(handle) {
-            connect.disconnect(handle);
-        });
+    var __class = declare('argos.ApplicationModule', null, {
+        /**
+         * @property {Array}
+         * Array of dojo.connect bound to ApplicationModule
+         */
+        _connects: null,
+        /**
+         * @property {Array}
+         * Array of dojo.subscribe bound to ApplicationModule
+         */
+        _subscribes: null,
+        /**
+         * @property {Object}
+         * The {@link App App} instance for the application
+         */
+        application: null,
+        /**
+         * Mixes in the passed options object into itself
+         * @param {Object} options Properties to be mixed in
+         */
+        constructor: function(options) {
+            this._connects = [];
+            this._subscribes = [];
 
-        array.forEach(this._subscribes, function(handle) {
-            connect.unsubscribe(handle);
-        });
+            lang.mixin(this, options);
+        },
+        /**
+         * Destroy loops and disconnects all `_connect`s and unsubscribes all `_subscribe`s.
+         * Also calls {@link #uninitialize uninitialize}
+         */
+        destroy: function() {
+            array.forEach(this._connects, function(handle) {
+                connect.disconnect(handle);
+            });
 
-        this.uninitialize();
-    },
-    /**
-     * Performs any additional destruction requirements
-     */
-    uninitialize: function() {
+            array.forEach(this._subscribes, function(handle) {
+                connect.unsubscribe(handle);
+            });
 
-    },
-    /**
-     * Saves the passed application instance and calls:
-     *
-     * 1. {@link #loadCustomizations loadCustomizations}
-     * 1. {@link #loadToolbars loadToolbars}
-     * 1. {@link #loadViews loadViews}
-     *
-     * @param {Object} application
-     */
-    init: function(application) {
-        this.application = application;
+            this.uninitialize();
+        },
+        /**
+         * Performs any additional destruction requirements
+         */
+        uninitialize: function() {
 
-        this.loadAppStatPromises();
-        this.loadCustomizations();
-        this.loadToolbars();
-        this.loadViews();
-    },
-    /**
-    * @template
-    * This function should be overriden in the app and be used to register all app state promises.
-    */
-    loadAppStatPromises: function() {
-    },
+        },
+        /**
+         * Saves the passed application instance and calls:
+         *
+         * 1. {@link #loadCustomizations loadCustomizations}
+         * 1. {@link #loadToolbars loadToolbars}
+         * 1. {@link #loadViews loadViews}
+         *
+         * @param {Object} application
+         */
+        init: function(application) {
+            this.application = application;
 
-    statics: {
-        _customizationsLoaded: false,
-        _viewsLoaded: false,
-        _toolbarsLoaded: false
-    },
+            this.loadAppStatPromises();
+            this.loadCustomizations();
+            this.loadToolbars();
+            this.loadViews();
+        },
+        /**
+        * @template
+        * This function should be overriden in the app and be used to register all app state promises.
+        */
+        loadAppStatPromises: function() {
+        },
 
-    /**
-     * @template
-     * This function should be overriden in the app and be used to register all customizations.
-     */
-    loadCustomizations: function() {
-        if (this.statics._customizationsLoaded) {
-            console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.');
-            return;
+        statics: {
+            _customizationsLoaded: false,
+            _viewsLoaded: false,
+            _toolbarsLoaded: false
+        },
+
+        /**
+         * @template
+         * This function should be overriden in the app and be used to register all customizations.
+         */
+        loadCustomizations: function() {
+            if (this.statics._customizationsLoaded) {
+                console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.');
+                return;
+            }
+
+            // Load base customizations
+
+            this.statics._customizationsLoaded = true;
+        },
+        /**
+         * @template
+         * This function should be overriden in the app and be used to register all views.
+         */
+        loadViews: function() {
+            if (this.statics._viewsLoaded) {
+                console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.');
+                return;
+            }
+
+            // Load base views
+            this.registerView(new ConfigureQuickActions());
+
+            this.statics._viewsLoaded = true;
+        },
+        /**
+         * @template
+         * This function should be overriden in the app and be used to register all toolbars.
+         */
+        loadToolbars: function() {
+            if (this.statics._toolbarsLoaded) {
+                console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.');
+                return;
+            }
+
+            // Load base toolbars
+
+            this.statics._toolbarsLoaded = true;
+        },
+        /**
+         * Passes the view instance to {@link App#registerView App.registerView}.
+         * @param {Object} view View instance to register
+         * @param {DOMNode} domNode Optional. DOM node to place the view in.
+         */
+        registerView: function(view, domNode) {
+            if (this.application) {
+                this.application.registerView(view, domNode);
+            }
+        },
+        /**
+         * Passes the toolbar instance to {@link App#registerToolbar App.registerToolbar}.
+         * @param {String} name Unique name of the toolbar to register.
+         * @param {Object} toolbar Toolbar instance to register.
+         * @param {DOMNode} domNode Optional. DOM node to place the view in.
+         */
+        registerToolbar: function(name, toolbar, domNode) {
+            if (this.application) {
+                this.application.registerToolbar(name, toolbar, domNode);
+            }
+        },
+        /**
+         * Passes the customization instance to {@link App#registerCustomization App.registerCustomization}.
+         * @param {String} set The customization set name, or type. Examples: `list`, `detail/tools`, `list/hashTagQueries`
+         * @param {String} id The View id the customization will be applied to
+         * @param {Object} spec The customization object containing at least `at` and `type`.
+         */
+        registerCustomization: function(set, id, spec) {
+            if (this.application) {
+                this.application.registerCustomization(set, id, spec);
+            }
+        },
+        /**
+         * Registers a promise that will resolve when initAppState is invoked.
+         * @param {Promise|Function} promise A promise or a function that returns a promise
+         */
+        registerAppStatePromise: function(promise) {
+            if (this.application) {
+                this.application.registerAppStatePromise(promise);
+            }
         }
+    });
 
-        // Load base customizations
-
-        this.statics._customizationsLoaded = true;
-    },
-    /**
-     * @template
-     * This function should be overriden in the app and be used to register all views.
-     */
-    loadViews: function() {
-        if (this.statics._viewsLoaded) {
-            console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.');
-            return;
-        }
-
-        // Load base views
-        this.registerView(new ConfigureQuickActions());
-
-        this.statics._viewsLoaded = true;
-    },
-    /**
-     * @template
-     * This function should be overriden in the app and be used to register all toolbars.
-     */
-    loadToolbars: function() {
-        if (this.statics._toolbarsLoaded) {
-            console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.');
-            return;
-        }
-
-        // Load base toolbars
-
-        this.statics._toolbarsLoaded = true;
-    },
-    /**
-     * Passes the view instance to {@link App#registerView App.registerView}.
-     * @param {Object} view View instance to register
-     * @param {DOMNode} domNode Optional. DOM node to place the view in.
-     */
-    registerView: function(view, domNode) {
-        if (this.application) {
-            this.application.registerView(view, domNode);
-        }
-    },
-    /**
-     * Passes the toolbar instance to {@link App#registerToolbar App.registerToolbar}.
-     * @param {String} name Unique name of the toolbar to register.
-     * @param {Object} toolbar Toolbar instance to register.
-     * @param {DOMNode} domNode Optional. DOM node to place the view in.
-     */
-    registerToolbar: function(name, toolbar, domNode) {
-        if (this.application) {
-            this.application.registerToolbar(name, toolbar, domNode);
-        }
-    },
-    /**
-     * Passes the customization instance to {@link App#registerCustomization App.registerCustomization}.
-     * @param {String} set The customization set name, or type. Examples: `list`, `detail/tools`, `list/hashTagQueries`
-     * @param {String} id The View id the customization will be applied to
-     * @param {Object} spec The customization object containing at least `at` and `type`.
-     */
-    registerCustomization: function(set, id, spec) {
-        if (this.application) {
-            this.application.registerCustomization(set, id, spec);
-        }
-    },
-    /**
-     * Registers a promise that will resolve when initAppState is invoked.
-     * @param {Promise|Function} promise A promise or a function that returns a promise
-     */
-    registerAppStatePromise: function(promise) {
-        if (this.application) {
-            this.application.registerAppStatePromise(promise);
-        }
-    }
+    lang.setObject('Sage.Platform.Mobile.ApplicationModule', __class);
+    return __class;
 });
-
-lang.setObject('Sage.Platform.Mobile.ApplicationModule', __class);
-export default __class;

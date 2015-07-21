@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define('argos/MainToolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/query', 'dojo/dom-class', 'dojo/dom-construct', 'argos/Toolbar', 'dojo/NodeList-manipulate'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoQuery, _dojoDomClass, _dojoDomConstruct, _argosToolbar, _dojoNodeListManipulate) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -36,6 +37,48 @@ define('argos/MainToolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * @extends argos.Toolbar
      */
     var __class = (0, _declare['default'])('argos.MainToolbar', [_Toolbar['default']], {
+=======
+/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @class argos.MainToolbar
+ * MainToolbar is designed to handle the top application bar with markup and logic to set
+ * a title and position toolbar items to the left or right
+ * @alternateClassName MainToolbar
+ * @extends argos.Toolbar
+ */
+define('argos/MainToolbar', [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/query',
+    'dojo/dom-class',
+    'dojo/dom-construct',
+    'argos/Toolbar',
+    'dojo/NodeList-manipulate'
+], function(
+    declare,
+    lang,
+    query,
+    domClass,
+    domConstruct,
+    Toolbar
+) {
+
+    var __class = declare('argos.MainToolbar', [Toolbar], {
+>>>>>>> develop
         /**
          * @property {Object}
          * Used to set the title node's innerHTML
@@ -60,7 +103,22 @@ define('argos/MainToolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * `$` - The toolbar item object
          * `$$` - The toolbar instance
          */
+<<<<<<< HEAD
         toolTemplate: new Simplate(['<button class="button toolButton toolButton-{%= $.side || "right" %} {%= ($$.enabled) ? "" : "toolButton-disabled" %} {%= $.cls %}"', 'data-action="invokeTool" data-tool="{%= $.id %}"', 'aria-label="{%: $.title || $.id %}">', '{% if ($.icon) { %}', '<img src="{%= $.icon %}" alt="{%= $.id %}" />', '{% } %}', '{% if (!$.cls) { %}', '<span></span>', '{% } %}', '</button>']),
+=======
+        toolTemplate: new Simplate([
+            '<button class="button toolButton toolButton-{%= $.side || "right" %} {%= ($$.enabled) ? "" : "toolButton-disabled" %} {%= $.cls %}"',
+                    'data-action="invokeTool" data-tool="{%= $.id %}"',
+                    'aria-label="{%: $.title || $.id %}">',
+                '{% if ($.icon) { %}',
+                    '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
+                '{% } %}',
+                '{% if (!$.cls) { %}',
+                    '<span></span>',
+                '{% } %}',
+            '</button>'
+        ]),
+>>>>>>> develop
         /**
          * @property {Number}
          * Current number of toolbar items set
@@ -75,16 +133,24 @@ define('argos/MainToolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         /**
          * Calls parent {@link Toolbar#clear clear} and removes all toolbar items from DOM.
          */
+<<<<<<< HEAD
         clear: function clear() {
             this.inherited(arguments);
 
             (0, _query['default'])('> [data-action], .toolButton-right', this.domNode).remove();
+=======
+        clear: function() {
+            this.inherited(arguments);
+
+            query('> [data-action], .toolButton-right', this.domNode).remove();
+>>>>>>> develop
         },
         /**
          * Calls parent {@link Toolbar#showTools showTools} which sets the tool collection.
          * The collection is then looped over and added to DOM, adding the left or right styling
          * @param {Object[]} tools Array of toolbar item definitions
          */
+<<<<<<< HEAD
         showTools: function showTools(tools) {
             var count, i, toolTemplate, side, tool;
             this.inherited(arguments);
@@ -92,6 +158,15 @@ define('argos/MainToolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
             _domClass['default'].remove(this.domNode, 'toolbar-size-' + this.size);
             if (tools) {
                 count = { left: 0, right: 0 };
+=======
+        showTools: function(tools) {
+            var count, i, toolTemplate, side, tool;
+            this.inherited(arguments);
+
+            domClass.remove(this.domNode, 'toolbar-size-' + this.size);
+            if (tools) {
+                count = {left: 0, right: 0};
+>>>>>>> develop
 
                 for (i = 0; i < tools.length; i++) {
                     tool = tools[i];
@@ -100,7 +175,11 @@ define('argos/MainToolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                     count[side] += 1;
                     toolTemplate = tool.template || this.toolTemplate;
 
+<<<<<<< HEAD
                     _domConstruct['default'].place(toolTemplate.apply(tool, this.tools[tool.id]), this.domNode, 'last');
+=======
+                    domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.domNode, 'last');
+>>>>>>> develop
                 }
 
                 this.size = Math.max(count.left, count.right);
@@ -110,9 +189,19 @@ define('argos/MainToolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         /**
          * Event handler that fires when the toolbar title is clicked.
          */
+<<<<<<< HEAD
         onTitleClick: function onTitleClick(evt) {}
     });
 
     _lang['default'].setObject('Sage.Platform.Mobile.MainToolbar', __class);
     module.exports = __class;
+=======
+        onTitleClick: function(evt) {
+        }
+    });
+
+    lang.setObject('Sage.Platform.Mobile.MainToolbar', __class);
+    return __class;
+>>>>>>> develop
 });
+

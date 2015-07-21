@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define('argos/ConfigurableSelectionModel', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', './SelectionModel'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _SelectionModel) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -7,6 +8,17 @@ define('argos/ConfigurableSelectionModel', ['exports', 'module', 'dojo/_base/dec
 
     var _SelectionModel2 = _interopRequireDefault(_SelectionModel);
 
+=======
+define('argos/ConfigurableSelectionModel', [
+       'dojo/_base/declare',
+       'dojo/_base/lang',
+       './SelectionModel'
+], function(
+    declare,
+    lang,
+    SelectionModel
+) {
+>>>>>>> develop
     /**
      * @class argos.ConfigurableSelectionModel
      * The ConfigurableSelectionModel adds the logic to the SelectionModel to only have one item selected at a time via the `singleSelection` flag.
@@ -28,7 +40,11 @@ define('argos/ConfigurableSelectionModel', ['exports', 'module', 'dojo/_base/dec
          *
          * @param {Boolean} val The state that `singleSelection` should be in.
          */
+<<<<<<< HEAD
         useSingleSelection: function useSingleSelection(val) {
+=======
+        useSingleSelection: function(val) {
+>>>>>>> develop
             if (val && typeof val !== 'undefined' && val !== null) {
                 this.singleSelection = true;
             } else {
@@ -42,7 +58,11 @@ define('argos/ConfigurableSelectionModel', ['exports', 'module', 'dojo/_base/dec
          * @param {Object} data The item being selected
          * @param tag
          */
+<<<<<<< HEAD
         select: function select(key, data, tag) {
+=======
+        select: function(key, data, tag) {
+>>>>>>> develop
             if (this.singleSelection) {
                 if (!this.isSelected(key) || this.count >= 1) {
                     this.clear();
@@ -53,6 +73,11 @@ define('argos/ConfigurableSelectionModel', ['exports', 'module', 'dojo/_base/dec
         }
     });
 
+<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile.ConfigurableSelectionModel', __class);
     module.exports = __class;
+=======
+    lang.setObject('Sage.Platform.Mobile.ConfigurableSelectionModel', __class);
+    return __class;
+>>>>>>> develop
 });

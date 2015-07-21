@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define('argos/_Templated', ['exports', 'module', 'dojo/dom-construct', 'dojo/_base/declare', 'dojo/query', 'dojo/parser', 'dojo/_base/array', 'dojo/_base/lang', 'dijit/registry', 'dijit/_base/wai', 'dijit/_TemplatedMixin'], function (exports, module, _dojoDomConstruct, _dojo_baseDeclare, _dojoQuery, _dojoParser, _dojo_baseArray, _dojo_baseLang, _dijitRegistry, _dijit_baseWai, _dijit_TemplatedMixin) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -33,6 +34,47 @@ define('argos/_Templated', ['exports', 'module', 'dojo/dom-construct', 'dojo/_ba
     var _wai = _interopRequireDefault(_dijit_baseWai);
 
     var _TemplatedMixin2 = _interopRequireDefault(_dijit_TemplatedMixin);
+=======
+/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @class argos._Templated
+ */
+define('argos/_Templated', [
+    'dojo/dom-construct',
+    'dojo/_base/declare',
+    'dojo/query',
+    'dojo/parser',
+    'dojo/_base/array',
+    'dojo/_base/lang',
+    'dijit/registry',
+    'dijit/_base/wai',
+    'dijit/_TemplatedMixin'
+], function(
+    domConstruct,
+    declare,
+    query,
+    parser,
+    array,
+    lang,
+    registry,
+    wai,
+    _TemplatedMixin
+) {
+>>>>>>> develop
 
     /**
      * @class argos._Templated
@@ -41,14 +83,23 @@ define('argos/_Templated', ['exports', 'module', 'dojo/dom-construct', 'dojo/_ba
      *
      * @alternateClassName _Templated
      */
+<<<<<<< HEAD
     var __class = (0, _declare['default'])('argos._Templated', [_TemplatedMixin2['default']], {
         _stringRepl: function _stringRepl(tmpl) {
+=======
+    var __class = declare('argos._Templated', [_TemplatedMixin], {
+        _stringRepl: function(tmpl) {
+>>>>>>> develop
             return tmpl;
         },
         /**
          * Processes `this.widgetTemplate` or `this.contentTemplate`
          */
+<<<<<<< HEAD
         buildRendering: function buildRendering() {
+=======
+        buildRendering: function() {
+>>>>>>> develop
             var root;
 
             if (this.widgetTemplate && this.contentTemplate) {
@@ -59,7 +110,11 @@ define('argos/_Templated', ['exports', 'module', 'dojo/dom-construct', 'dojo/_ba
                 this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
             } else if (this.widgetTemplate) {
                 this.templateString = this.widgetTemplate.apply(this);
+<<<<<<< HEAD
                 root = _domConstruct['default'].toDom(this.templateString);
+=======
+                root = domConstruct.toDom(this.templateString);
+>>>>>>> develop
 
                 if (root.nodeType === 11) {
                     this.templateString = ['<div>', this.templateString, '</div>'].join('');
@@ -70,6 +125,12 @@ define('argos/_Templated', ['exports', 'module', 'dojo/dom-construct', 'dojo/_ba
         }
     });
 
+<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile._Templated', __class);
     module.exports = __class;
+=======
+
+    lang.setObject('Sage.Platform.Mobile._Templated', __class);
+    return __class;
+>>>>>>> develop
 });

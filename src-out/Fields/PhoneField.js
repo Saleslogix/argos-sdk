@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/has', 'dojo/string', '../FieldManager', './TextField', '../Format', 'dojo/_base/sniff'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoHas, _dojoString, _FieldManager, _TextField, _Format, _dojo_baseSniff) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -32,6 +33,42 @@ define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'd
 
     var _sniff = _interopRequireDefault(_dojo_baseSniff);
 
+=======
+/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+define('argos/Fields/PhoneField', [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/has',
+    'dojo/string',
+    '../FieldManager',
+    './TextField',
+    '../Format',
+    'dojo/_base/sniff'
+], function(
+    declare,
+    lang,
+    has,
+    string,
+    FieldManager,
+    TextField,
+    format,
+    sniff
+) {
+>>>>>>> develop
     /**
      * @class argos.Fields.PhoneField
      * The Phone field is a specialized {@link TextField TextField} that takes a string of numbers
@@ -59,12 +96,20 @@ define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'd
          *
          * Currently only iOS supports non-numbers when a tel field has a default value: [Bug Report](http://code.google.com/p/android/issues/detail?id=19724).
          */
+<<<<<<< HEAD
         inputType: (0, _has['default'])('safari') ? 'tel' : 'text',
+=======
+        inputType: has('safari') ? 'tel' : 'text',
+>>>>>>> develop
 
         /**
          * Formats the displayed value (inputNode value) using {@link format.phone format.phone}.
          */
+<<<<<<< HEAD
         _onBlur: function _onBlur() {
+=======
+        _onBlur: function() {
+>>>>>>> develop
             this.inherited(arguments);
 
             // temporarily added: http://code.google.com/p/android/issues/detail?id=14519
@@ -75,14 +120,22 @@ define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'd
          * the value starts with `+` in which it is returned unmodified.
          * @return {String}
          */
+<<<<<<< HEAD
         getValue: function getValue() {
+=======
+        getValue: function() {
+>>>>>>> develop
             var value = this.inherited(arguments);
 
             if (/^\+/.test(value)) {
                 return value;
             }
 
+<<<<<<< HEAD
             value = _format['default'].alphaToPhoneNumeric(value);
+=======
+            value = format.alphaToPhoneNumeric(value);
+>>>>>>> develop
 
             return value.replace(/[^0-9x]/ig, '');
         },
@@ -92,7 +145,11 @@ define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'd
          * @param {String/Number} val String to set
          * @param {Boolean} initial True if the value is the original/clean value.
          */
+<<<<<<< HEAD
         setValue: function setValue(val, initial) {
+=======
+        setValue: function(val, initial) {
+>>>>>>> develop
             if (initial) {
                 this.originalValue = val;
             }
@@ -104,7 +161,11 @@ define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'd
          * Currently only calls parent implementation due to an [Android Bug](http://code.google.com/p/android/issues/detail?id=14519).
          * @param {Event} evt Keyup event
          */
+<<<<<<< HEAD
         _onKeyUp: function _onKeyUp(evt) {
+=======
+        _onKeyUp: function(evt) {
+>>>>>>> develop
             /*
             // temporarily removed: http://code.google.com/p/android/issues/detail?id=14519
             this.set('inputValue', format.phone(this.inputNode.value, this.getValue()));
@@ -113,6 +174,11 @@ define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'd
         }
     });
 
+<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile.Fields.PhoneField', control);
     module.exports = _FieldManager2['default'].register('phone', control);
+=======
+    lang.setObject('Sage.Platform.Mobile.Fields.PhoneField', control);
+    return FieldManager.register('phone', control);
+>>>>>>> develop
 });
