@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 define('argos/_ErrorHandleMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/array'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseArray) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -14,31 +13,13 @@ define('argos/_ErrorHandleMixin', ['exports', 'module', 'dojo/_base/declare', 'd
      * @alternateClassName _ErrorHandleMixin
      */
     var __class = (0, _declare['default'])('argos._ErrorHandleMixin', null, {
-=======
-/**
- * @class argos._ErrorHandleMixin
- * General mixin for handling errors in a chainable fashion.
- * @alternateClassName _ErrorHandleMixin
- */
-define('argos/_ErrorHandleMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/array'
-], function(
-    declare,
-    lang,
-    array
-) {
-    var __class = declare('argos._ErrorHandleMixin', null, {
->>>>>>> develop
         /**
          * @property {Object}
          * Localized error messages. One general error message, and messages by HTTP status code.
          */
         errorText: {
             general: 'A server error occured.',
-            status: {
-            }
+            status: {}
         },
         /**
          * @property {Object}
@@ -74,29 +55,20 @@ define('argos/_ErrorHandleMixin', [
         /**
          * @return {Array} Returns an array of error handlers
          */
-<<<<<<< HEAD
         createErrorHandlers: function createErrorHandlers() {
-=======
-        createErrorHandlers: function() {
->>>>>>> develop
             return this.errorHandlers || [];
         },
         /**
          * Starts matching and executing errorHandlers.
          * @param {Error} error Error to pass to the errorHandlers
          */
-<<<<<<< HEAD
         handleError: function handleError(error) {
-=======
-        handleError: function(error) {
->>>>>>> develop
             if (!error) {
                 return;
             }
 
             var matches, noop, getNext, len;
 
-<<<<<<< HEAD
             noop = function () {};
 
             matches = _array['default'].filter(this.errorHandlers, (function (handler) {
@@ -106,17 +78,6 @@ define('argos/_ErrorHandleMixin', [
             len = matches.length;
 
             getNext = (function (index) {
-=======
-            noop = function() {};
-
-            matches = array.filter(this.errorHandlers, function(handler) {
-                return handler.test && handler.test.call(this, error);
-            }.bind(this));
-
-            len = matches.length;
-
-            getNext = function(index) {
->>>>>>> develop
                 // next() chain has ended, return a no-op so calling next() in the last chain won't error
                 if (index === len) {
                     return noop;
@@ -124,23 +85,14 @@ define('argos/_ErrorHandleMixin', [
 
                 // Return a closure with index and matches captured.
                 // The handle function can call its "next" param to continue the chain.
-<<<<<<< HEAD
                 return (function () {
-=======
-                return function() {
->>>>>>> develop
                     var nextHandler, nextFn;
                     nextHandler = matches[index];
                     nextFn = nextHandler && nextHandler.handle;
 
                     nextFn.call(this, error, getNext(index + 1));
-<<<<<<< HEAD
                 }).bind(this);
             }).bind(this);
-=======
-                }.bind(this);
-            }.bind(this);
->>>>>>> develop
 
             if (len > 0 && matches[0].handle) {
                 // Start the handle chain, the handle can call next() to continue the iteration
@@ -150,11 +102,7 @@ define('argos/_ErrorHandleMixin', [
         /**
          * Gets the general error message, or the error message for the status code.
          */
-<<<<<<< HEAD
         getErrorMessage: function getErrorMessage(error) {
-=======
-        getErrorMessage: function(error) {
->>>>>>> develop
             var message = this.errorText.general;
 
             if (error) {
@@ -165,12 +113,6 @@ define('argos/_ErrorHandleMixin', [
         }
     });
 
-<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile._ErrorHandleMixin', __class);
     module.exports = __class;
-=======
-    lang.setObject('Sage.Platform.Mobile._ErrorHandleMixin', __class);
-    return __class;
->>>>>>> develop
 });
-

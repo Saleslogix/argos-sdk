@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 define('argos/ReUI/DomHelper', ['exports', 'module', 'dojo/dom-attr'], function (exports, module, _dojoDomAttr) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -12,24 +11,4 @@ define('argos/ReUI/DomHelper', ['exports', 'module', 'dojo/dom-attr'], function 
             _domAttr['default'].remove(el, 'selected');
         }
     };
-=======
-define('argos/ReUI/DomHelper', [
-    'dojo/dom-attr'
-], function(
-    domAttr
-) {
-    var domHelper;
-
-    domHelper = {
-        select: function(el) {
-            domAttr.set(el, 'selected', 'true');
-        },
-        unselect: function(el) {
-            domAttr.remove(el, 'selected');
-        }
-    };
-
-    return domHelper;
->>>>>>> develop
 });
-

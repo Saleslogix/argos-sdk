@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/window', 'dojo/has', 'dojo/dom-construct', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom', '../Fields/TextField', '../View'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoWindow, _dojoHas, _dojoDomConstruct, _dojoDomAttr, _dojoDomClass, _dojoDom, _FieldsTextField, _View) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -45,61 +44,12 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
     * @extends argos.View
     */
     var __class = (0, _declare['default'])('argos.Views.FileSelect', [_View2['default']], {
-=======
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/**
- * @class argos.Views.FileSelect
- * File Select View is a view for selection files capabilities.
- *
- * @alternateClassName FileSelect
- * @extends argos.View
- */
-define('argos/Views/FileSelect', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/window',
-    'dojo/has',
-    'dojo/dom-construct',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/dom',
-    '../Fields/TextField',
-    '../View'
-], function(
-    declare,
-    lang,
-    win,
-    has,
-    domConstruct,
-    domAttr,
-    domClass,
-    dom,
-    TextField,
-    View
-) {
-
-    var __class = declare('argos.Views.FileSelect', [View], {
->>>>>>> develop
         // Localization
         titleText: 'File Select',
         addFileText: 'Click or Tap here to add a file.',
         uploadText: 'Upload',
         cancelText: 'Cancel',
-        selectFileText:'Select file',
+        selectFileText: 'Select file',
         loadingText: 'Uploading...',
         descriptionText: 'description',
         bytesText: 'bytes',
@@ -115,27 +65,15 @@ define('argos/Views/FileSelect', [
          *      ----------------------------------------------------------------
          *      loadingText         The text to display while loading.
          */
-<<<<<<< HEAD
         loadingTemplate: new Simplate(['<li class="list-loading-indicator"><div id="fileselect-upload-progress">{%= $.loadingText %}</div></li>'
         //'</li>'
-=======
-        loadingTemplate: new Simplate([
-            '<li class="list-loading-indicator"><div id="fileselect-upload-progress">{%= $.loadingText %}</div></li>'
-            //'</li>'
->>>>>>> develop
         ]),
 
         /**
          * @property {Simplate}
          * The template that displays when HTML5 file api is not supported.
          */
-<<<<<<< HEAD
         notSupportedTemplate: new Simplate(['<h2>{%= $$.notSupportedText %}</h2>']),
-=======
-        notSupportedTemplate: new Simplate([
-            '<h2>{%= $$.notSupportedText %}</h2>'
-        ]),
->>>>>>> develop
 
         /**
          * @property {Simplate}
@@ -144,61 +82,23 @@ define('argos/Views/FileSelect', [
          * * `$` => File Select view instance
          *
          */
-<<<<<<< HEAD
         widgetTemplate: new Simplate(['<div title="{%: $.titleText %}" class="panel {%= $.cls %}">', '<div  data-dojo-attach-point="fileArea" class="file-area">', '<div class="file-wrapper">', '<div class="file-wrap" data-dojo-attach-point="fileWrapper">', '<input type="file" data-dojo-attach-point="btnFileSelect" size="71" accept="*/*">', '</div>', '{%: $.addFileText %}', '</div>', '</div>', '<ul class="list-content"  data-dojo-attach-point="contentNode"></ul>', '<div class="buttons">', '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="button inline" data-action="onUploadFiles"><span>{%: $.uploadText %}</span></button>', '<button id="fileSelect-btn-cancel" class="button inline" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>', '</div>', '</div>']),
         /**
          * @property {Simplate} fileTemplate
          */
         fileTemplate: new Simplate(['<li class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">', '<div class="file-name">{%: $.fileName %}</div>', '<div class="file-label"><label>{%: $$.descriptionText %}</label></div>', '<div class="file-text">', '<input id="{%=  $.name %}" type="text" value="{%=  $.description %}">', '</div>', '</li>']),
-=======
-        widgetTemplate: new Simplate([
-            '<div title="{%: $.titleText %}" class="panel {%= $.cls %}">',
-                '<div  data-dojo-attach-point="fileArea" class="file-area">',
-                    '<div class="file-wrapper">',
-                        '<div class="file-wrap" data-dojo-attach-point="fileWrapper">',
-                            '<input type="file" data-dojo-attach-point="btnFileSelect" size="71" accept="*/*">',
-                        '</div>',
-                        '{%: $.addFileText %}',
-                    '</div>',
-                '</div>',
-                '<ul class="list-content"  data-dojo-attach-point="contentNode"></ul>',
-                '<div class="buttons">',
-                    '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="button inline" data-action="onUploadFiles"><span>{%: $.uploadText %}</span></button>',
-                    '<button id="fileSelect-btn-cancel" class="button inline" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
-                '</div>',
-            '</div>'
-        ]),
-        /**
-         * @property {Simplate} fileTemplate
-         */
-        fileTemplate: new Simplate([
-            '<li class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
-               '<div class="file-name">{%: $.fileName %}</div>',
-               '<div class="file-label"><label>{%: $$.descriptionText %}</label></div>',
-               '<div class="file-text">',
-                   '<input id="{%=  $.name %}" type="text" value="{%=  $.description %}">',
-               '</div>',
-            '</li>'
-        ]),
->>>>>>> develop
 
         signatureNode: null,
         id: 'fileSelect_edit',
         btnFileSelect: null,
-        _files:null,
+        _files: null,
         _formParts: [],
 
         /**
          * @constructor
          */
-<<<<<<< HEAD
         constructor: function constructor() {},
         postCreate: function postCreate() {
-=======
-        constructor: function() {
-        },
-        postCreate: function() {
->>>>>>> develop
             this.inherited(arguments);
             _domClass['default'].remove(this.domNode, 'list-loading');
         },
@@ -207,22 +107,13 @@ define('argos/Views/FileSelect', [
          * The onchange event will only fire once per file, so we must re-insert the dom node and re-attach the event.
          * @extends show
          */
-<<<<<<< HEAD
         show: function show(options) {
-=======
-        show: function(options) {
->>>>>>> develop
             var node;
 
             this.inherited(arguments);
 
-<<<<<<< HEAD
             if (!(0, _has['default'])('html5-file-api')) {
                 _domConstruct['default'].place(this.notSupportedTemplate.apply({}, this), this.domNode, 'only');
-=======
-            if (!has('html5-file-api')) {
-                domConstruct.place(this.notSupportedTemplate.apply({}, this), this.domNode, 'only');
->>>>>>> develop
                 return;
             }
 
@@ -232,7 +123,6 @@ define('argos/Views/FileSelect', [
             // Unfortunately IE does not allow you to reset the value of a file input, so we have to clone the node and re-insert it.
             node = this.btnFileSelect.cloneNode();
 
-<<<<<<< HEAD
             _domConstruct['default'].destroy(this.btnFileSelect);
             this.fileWrapper.appendChild(node);
             this.btnFileSelect = node;
@@ -240,42 +130,21 @@ define('argos/Views/FileSelect', [
             this.btnFileSelect.onchange = (function (e) {
                 this._onSelectFile(e);
             }).bind(this);
-=======
-            domConstruct.destroy(this.btnFileSelect);
-            this.fileWrapper.appendChild(node);
-            this.btnFileSelect = node;
-
-            this.btnFileSelect.onchange = function(e) {
-                this._onSelectFile(e);
-            }.bind(this);
->>>>>>> develop
 
             this.contentNode.innerHTML = '';
             _domClass['default'].remove(this.fileArea, 'display-none');
             _domClass['default'].remove(this.btnUploadFiles, 'display-none');
             this.onUpdateProgress('');
         },
-<<<<<<< HEAD
         _browesForFiles: function _browesForFiles(file) {
             this.btnFileSelect.click();
         },
         removeFile: function removeFile(fileId) {},
-=======
-        _browesForFiles: function(file) {
-            this.btnFileSelect.click();
-        },
-        removeFile: function(fileId) {
-        },
->>>>>>> develop
         /**
          * Returns an array of objects with the properties of: file, fileName, and description.
          * @returns {Array}
          */
-<<<<<<< HEAD
         getFileItems: function getFileItems() {
-=======
-        getFileItems: function() {
->>>>>>> develop
             var fileItems, files, description, i;
             fileItems = [];
             files = this._files;
@@ -290,11 +159,7 @@ define('argos/Views/FileSelect', [
             }
             return fileItems;
         },
-<<<<<<< HEAD
         _getFileDescription: function _getFileDescription(fileIndex) {
-=======
-        _getFileDescription: function(fileIndex) {
->>>>>>> develop
             var n, desc;
             n = _dom['default'].byId('File_' + fileIndex);
             if (n) {
@@ -302,11 +167,7 @@ define('argos/Views/FileSelect', [
             }
             return desc;
         },
-<<<<<<< HEAD
         _onSelectFile: function _onSelectFile(e) {
-=======
-        _onSelectFile: function(e) {
->>>>>>> develop
             var files, i;
 
             files = this.btnFileSelect.files;
@@ -316,18 +177,10 @@ define('argos/Views/FileSelect', [
                 }
                 this._buildForm(files);
             }
-<<<<<<< HEAD
             _domClass['default'].remove(this.btnUploadFiles, 'display-none');
             _domClass['default'].add(this.fileArea, 'display-none');
         },
         _addFile: function _addFile(file, index) {
-=======
-            domClass.remove(this.btnUploadFiles, 'display-none');
-            domClass.add(this.fileArea, 'display-none');
-
-        },
-        _addFile: function(file, index) {
->>>>>>> develop
             var filelength, data, rowNode;
 
             filelength = this._getFileLength(file);
@@ -338,11 +191,7 @@ define('argos/Views/FileSelect', [
             };
             rowNode = _domConstruct['default'].place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
         },
-<<<<<<< HEAD
         _getFileLength: function _getFileLength(file) {
-=======
-        _getFileLength: function(file) {
->>>>>>> develop
             var filelength;
 
             filelength = 0;
@@ -368,56 +217,32 @@ define('argos/Views/FileSelect', [
             }
             return filelength;
         },
-<<<<<<< HEAD
         _buildForm: function _buildForm(files) {
-=======
-        _buildForm: function(files) {
->>>>>>> develop
             var file, i;
             for (i = 0; i < files.length; i++) {
                 file = files[i];
                 this._addFile(file, i);
             }
         },
-<<<<<<< HEAD
         _getDefaultDescription: function _getDefaultDescription(filename) {
-=======
-        _getDefaultDescription: function(filename) {
->>>>>>> develop
             return filename.replace(/\.[\w]*/, '');
         },
         /**
          * Handles the display when the user clicks upload.
          */
-<<<<<<< HEAD
         onUploadFiles: function onUploadFiles() {
-=======
-        onUploadFiles: function() {
->>>>>>> develop
             var tpl;
             _domClass['default'].add(this.btnUploadFiles, 'display-none');
             tpl = this.loadingTemplate.apply(this);
-<<<<<<< HEAD
             _domClass['default'].add(this.domNode, 'list-loading');
             _domConstruct['default'].place(tpl, this.contentNode, 'first');
-=======
-            domClass.add(this.domNode, 'list-loading');
-            domConstruct.place(tpl, this.contentNode, 'first');
-        },
-        cancelSelect: function() {
->>>>>>> develop
         },
         cancelSelect: function cancelSelect() {},
         /**
          * Handles the display when progress events are recieved.
          */
-<<<<<<< HEAD
         onUpdateProgress: function onUpdateProgress(msg) {
             var n = _dom['default'].byId('fileselect-upload-progress');
-=======
-        onUpdateProgress: function(msg) {
-            var n = dom.byId('fileselect-upload-progress');
->>>>>>> develop
             if (n) {
                 n.innerHTML = this.loadingText + ' ' + msg;
             }
@@ -425,22 +250,12 @@ define('argos/Views/FileSelect', [
         /**
          * Handles the display when the upload fails.
          */
-<<<<<<< HEAD
         onUpdateFailed: function onUpdateFailed(msg) {
-=======
-        onUpdateFailed: function(msg) {
->>>>>>> develop
             this.onUpdateProgress(msg);
             _domClass['default'].remove(this.domNode, 'list-loading');
         }
     });
 
-<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile.Views.FileSelect', __class);
     module.exports = __class;
-=======
-    lang.setObject('Sage.Platform.Mobile.Views.FileSelect', __class);
-    return __class;
->>>>>>> develop
 });
-

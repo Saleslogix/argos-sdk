@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 define('argos/Fields/HiddenField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', './TextField', '../FieldManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _TextField, _FieldManager) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -25,34 +24,6 @@ define('argos/Fields/HiddenField', ['exports', 'module', 'dojo/_base/declare', '
 
     var _FieldManager2 = _interopRequireDefault(_FieldManager);
 
-=======
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-define('argos/Fields/HiddenField', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    './TextField',
-    '../FieldManager'
-], function(
-    declare,
-    lang,
-    TextField,
-    FieldManager
-) {
->>>>>>> develop
     /**
      * @class argos.Fields.HiddenField
      * The Hidden Field is {@link TextField TextField} but instead binds to an `<input type="hidden"`>.
@@ -70,16 +41,8 @@ define('argos/Fields/HiddenField', [
      * @extends argos.Fields.TextField
      * @requires argos.FieldManager
      */
-<<<<<<< HEAD
     var control = (0, _declare['default'])('argos.Fields.HiddenField', [_TextField2['default']], {
         propertyTemplate: new Simplate(['<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">', '</div>']),
-=======
-    var control = declare('argos.Fields.HiddenField', [TextField], {
-        propertyTemplate: new Simplate([
-            '<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
-            '</div>'
-        ]),
->>>>>>> develop
 
         /**
          * @property {Simplate}
@@ -93,21 +56,12 @@ define('argos/Fields/HiddenField', [
         /**
          * @deprecated
          */
-<<<<<<< HEAD
         bind: function bind() {
-=======
-        bind: function() {
->>>>>>> develop
             // call field's bind. we don't want event handlers for this.
             this.inherited(arguments);
         }
     });
 
-<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile.Fields.HiddenField', control);
     module.exports = _FieldManager2['default'].register('hidden', control);
-=======
-    lang.setObject('Sage.Platform.Mobile.Fields.HiddenField', control);
-    return FieldManager.register('hidden', control);
->>>>>>> develop
 });

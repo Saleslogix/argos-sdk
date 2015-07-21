@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/array', 'dojo/_base/connect', 'dojo/query', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-geometry', 'dojo/dom-style', 'dojo/dom', 'dojo/string', 'dojo/window', 'dojo/Deferred', 'dojo/promise/all', 'dojo/when', './Utility', './ErrorManager', './View', './SearchWidget', './ConfigurableSelectionModel', './_PullToRefreshMixin'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseArray, _dojo_baseConnect, _dojoQuery, _dojoDomAttr, _dojoDomClass, _dojoDomConstruct, _dojoDomGeometry, _dojoDomStyle, _dojoDom, _dojoString, _dojoWindow, _dojoDeferred, _dojoPromiseAll, _dojoWhen, _Utility, _ErrorManager, _View, _SearchWidget, _ConfigurableSelectionModel, _PullToRefreshMixin2) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -73,83 +72,6 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @mixins argos._PullToRefreshMixin
      */
     var __class = (0, _declare['default'])('argos._ListBase', [_View2['default'], _PullToRefreshMixin3['default']], {
-=======
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/**
- * @class argos._ListBase
- * A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
- * selection model built in for selecting rows from the list and may be used in a number of different manners.
- * @extends argos.View
- * @alternateClassName _ListBase
- * @requires argos.ErrorManager
- * @requires argos.Utility
- * @requires argos.SearchWidget
- * @mixins argos._PullToRefreshMixin
- */
-define('argos/_ListBase', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/array',
-    'dojo/_base/connect',
-    'dojo/query',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    'dojo/dom-geometry',
-    'dojo/dom-style',
-    'dojo/dom',
-    'dojo/string',
-    'dojo/window',
-    'dojo/Deferred',
-    'dojo/promise/all',
-    'dojo/when',
-    './Utility',
-    './ErrorManager',
-    './View',
-    './SearchWidget',
-    './ConfigurableSelectionModel',
-    './_PullToRefreshMixin'
-], function(
-    declare,
-    lang,
-    array,
-    connect,
-    query,
-    domAttr,
-    domClass,
-    domConstruct,
-    domGeom,
-    domStyle,
-    dom,
-    string,
-    win,
-    Deferred,
-    all,
-    when,
-    Utility,
-    ErrorManager,
-    View,
-    SearchWidget,
-    ConfigurableSelectionModel,
-    _PullToRefreshMixin
-) {
-
-    var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
->>>>>>> develop
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -176,21 +98,7 @@ define('argos/_ListBase', [
          *      resourceKind         set to data-resource-kind
          *
          */
-<<<<<<< HEAD
         widgetTemplate: new Simplate(['<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>', '<div data-dojo-attach-point="searchNode"></div>', '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">', '{%! $.emptySelectionTemplate %}', '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>', '{%! $.moreTemplate %}', '{%! $.listActionTemplate %}', '</div>', '</div>']),
-=======
-        widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
-                '<div data-dojo-attach-point="searchNode"></div>',
-                '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">',
-                    '{%! $.emptySelectionTemplate %}',
-                    '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
-                    '{%! $.moreTemplate %}',
-                    '{%! $.listActionTemplate %}',
-                '</div>',
-            '</div>'
-        ]),
->>>>>>> develop
         /**
          * @property {Simplate}
          * The template used to render the loading message when the view is requesting more data.
@@ -238,22 +146,7 @@ define('argos/_ListBase', [
          * @property {Simplate}
          * The template used to render a row in the view.  This template includes {@link #itemTemplate}.
          */
-<<<<<<< HEAD
         rowTemplate: new Simplate(['<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">', '<button data-action="selectEntry" class="list-item-selector button">', '{% if ($$.selectIconClass) { %}', '<span class="{%= $$.selectIconClass %}"></span>', '{% } else if ($$.icon || $$.selectIcon) { %}', '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />', '{% } %}', '</button>', '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>', '</li>']),
-=======
-        rowTemplate: new Simplate([
-            '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
-                '<button data-action="selectEntry" class="list-item-selector button">',
-                    '{% if ($$.selectIconClass) { %}',
-                        '<span class="{%= $$.selectIconClass %}"></span>',
-                    '{% } else if ($$.icon || $$.selectIcon) { %}',
-                        '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
-                    '{% } %}',
-                '</button>',
-                '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
-            '</li>'
-        ]),
->>>>>>> develop
         /**
          * @cfg {Simplate}
          * The template used to render the content of a row.  This template is not directly rendered, but is
@@ -292,22 +185,7 @@ define('argos/_ListBase', [
          *      id                  Unique name of action, also used for alt image text
          *      label               Text added below the icon
          */
-<<<<<<< HEAD
         listActionItemTemplate: new Simplate(['<button data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">', '{% if ($.cls) { %}', '<span class="{%= $.cls %}"></span>', '{% } else if ($.icon) { %}', '<img src="{%= $.icon %}" alt="{%= $.id %}" />', '{% } else { %}', '<span class="fa fa-level-down fa-2x"></span>', '{% } %}', '<label>{%: $.label %}</label>', '</button>']),
-=======
-        listActionItemTemplate: new Simplate([
-            '<button data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">',
-                '{% if ($.cls) { %}',
-                    '<span class="{%= $.cls %}"></span>',
-                '{% } else if ($.icon) { %}',
-                    '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
-                '{% } else { %}',
-                    '<span class="fa fa-level-down fa-2x"></span>',
-                '{% } %}',
-                '<label>{%: $.label %}</label>',
-            '</button>'
-        ]),
->>>>>>> develop
         /**
          * @property {HTMLElement}
          * Attach point for the main view content
@@ -449,15 +327,7 @@ define('argos/_ListBase', [
          * @property {Simplate}
          *
          */
-<<<<<<< HEAD
         rowTemplateError: new Simplate(['<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">', '<div class="list-item-content" data-snap-ignore="true">{%: $$.errorRenderText %}</div>', '</li>']),
-=======
-        rowTemplateError: new Simplate([
-            '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
-                '<div class="list-item-content" data-snap-ignore="true">{%: $$.errorRenderText %}</div>',
-            '</li>'
-        ]),
->>>>>>> develop
         /**
          * @property {String}
          * The format string for the text displayed for the remaining record count.  This is used in a {@link String#format} call.
@@ -561,11 +431,7 @@ define('argos/_ListBase', [
          * @param {SelectionModel} selectionModel The selection model instance to save to the view
          * @private
          */
-<<<<<<< HEAD
         _setSelectionModelAttr: function _setSelectionModelAttr(selectionModel) {
-=======
-        _setSelectionModelAttr: function(selectionModel) {
->>>>>>> develop
             if (this._selectionConnects) {
                 _array['default'].forEach(this._selectionConnects, this.disconnect, this);
             }
@@ -574,11 +440,7 @@ define('argos/_ListBase', [
             this._selectionConnects = [];
 
             if (this._selectionModel) {
-                this._selectionConnects.push(
-                    this.connect(this._selectionModel, 'onSelect', this._onSelectionModelSelect),
-                    this.connect(this._selectionModel, 'onDeselect', this._onSelectionModelDeselect),
-                    this.connect(this._selectionModel, 'onClear', this._onSelectionModelClear)
-                );
+                this._selectionConnects.push(this.connect(this._selectionModel, 'onSelect', this._onSelectionModelSelect), this.connect(this._selectionModel, 'onDeselect', this._onSelectionModelDeselect), this.connect(this._selectionModel, 'onClear', this._onSelectionModelClear));
             }
         },
         /**
@@ -586,7 +448,6 @@ define('argos/_ListBase', [
          * @return {SelectionModel}
          * @private
          */
-<<<<<<< HEAD
         _getSelectionModelAttr: function _getSelectionModelAttr() {
             return this._selectionModel;
         },
@@ -594,15 +455,6 @@ define('argos/_ListBase', [
             this.entries = {};
         },
         postCreate: function postCreate() {
-=======
-        _getSelectionModelAttr: function() {
-            return this._selectionModel;
-        },
-        constructor: function() {
-            this.entries = {};
-        },
-        postCreate: function() {
->>>>>>> develop
             this.inherited(arguments);
 
             var scrollerNode, searchWidgetCtor;
@@ -615,13 +467,7 @@ define('argos/_ListBase', [
             this.subscribe('/app/refresh', this._onRefresh);
 
             if (this.enableSearch) {
-<<<<<<< HEAD
                 searchWidgetCtor = _lang['default'].isString(this.searchWidgetClass) ? _lang['default'].getObject(this.searchWidgetClass, false) : this.searchWidgetClass;
-=======
-                searchWidgetCtor = lang.isString(this.searchWidgetClass)
-                    ? lang.getObject(this.searchWidgetClass, false)
-                    : this.searchWidgetClass;
->>>>>>> develop
 
                 this.searchWidget = this.searchWidget || new searchWidgetCtor({
                     'class': 'list-search',
@@ -633,20 +479,12 @@ define('argos/_ListBase', [
                 this.searchWidget = null;
             }
 
-<<<<<<< HEAD
             _domClass['default'].toggle(this.domNode, 'list-hide-search', this.hideSearch || !this.enableSearch);
-=======
-            domClass.toggle(this.domNode, 'list-hide-search', this.hideSearch || !this.enableSearch);
->>>>>>> develop
             this.clear();
 
             this.initPullToRefresh(scrollerNode);
         },
-<<<<<<< HEAD
         shouldStartPullToRefresh: function shouldStartPullToRefresh(scrollerNode) {
-=======
-        shouldStartPullToRefresh: function(scrollerNode) {
->>>>>>> develop
             var selected, shouldStart;
 
             // Get the base results
@@ -654,11 +492,7 @@ define('argos/_ListBase', [
             selected = _domAttr['default'].get(this.domNode, 'selected');
             return shouldStart && selected === 'true' && !this.listLoading;
         },
-<<<<<<< HEAD
         onPullToRefreshComplete: function onPullToRefreshComplete() {
-=======
-        onPullToRefreshComplete: function() {
->>>>>>> develop
             this.clear();
             this.refreshRequired = true;
             this.refresh();
@@ -666,11 +500,7 @@ define('argos/_ListBase', [
         /**
          * Called on application startup to configure the search widget if present and create the list actions.
          */
-<<<<<<< HEAD
         startup: function startup() {
-=======
-        startup: function() {
->>>>>>> develop
             this.inherited(arguments);
 
             if (this.searchWidget) {
@@ -685,11 +515,7 @@ define('argos/_ListBase', [
         /**
          * Extends dijit Widget to destroy the search widget before destroying the view.
          */
-<<<<<<< HEAD
         destroy: function destroy() {
-=======
-        destroy: function() {
->>>>>>> develop
             if (this.searchWidget) {
                 if (!this.searchWidget._destroyed) {
                     this.searchWidget.destroyRecursive();
@@ -701,11 +527,7 @@ define('argos/_ListBase', [
             delete this.store;
             this.inherited(arguments);
         },
-<<<<<<< HEAD
         _getStoreAttr: function _getStoreAttr() {
-=======
-        _getStoreAttr: function() {
->>>>>>> develop
             return this.store || (this.store = this.createStore());
         },
         /**
@@ -713,11 +535,7 @@ define('argos/_ListBase', [
         * @param {Object} options The navigation options passed from the previous view.
         * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
         */
-<<<<<<< HEAD
         show: function show(options, transitionOptions) {
-=======
-        show: function(options, transitionOptions) {
->>>>>>> develop
             if (options) {
                 if (options.resetSearch) {
                     this.defaultSearchTermSet = false;
@@ -736,11 +554,7 @@ define('argos/_ListBase', [
          * @return {Object} this.tools
          * @template
          */
-<<<<<<< HEAD
         createToolLayout: function createToolLayout() {
-=======
-        createToolLayout: function() {
->>>>>>> develop
             return this.tools || (this.tools = {
                 'tbar': [{
                     id: 'new',
@@ -750,7 +564,6 @@ define('argos/_ListBase', [
                 }]
             });
         },
-<<<<<<< HEAD
         createErrorHandlers: function createErrorHandlers() {
             this.errorHandlers = this.errorHandlers || [{
                 name: 'Aborted',
@@ -758,58 +571,30 @@ define('argos/_ListBase', [
                     return error.aborted;
                 },
                 handle: function handle(error, next) {
-=======
-        createErrorHandlers: function() {
-            this.errorHandlers = this.errorHandlers || [{
-                name: 'Aborted',
-                test: function(error) {
-                    return error.aborted;
-                },
-                handle: function(error, next) {
->>>>>>> develop
                     this.clear();
                     this.refreshRequired = true;
                     next();
                 }
             }, {
                 name: 'AlertError',
-<<<<<<< HEAD
                 test: function test(error) {
                     return !error.aborted;
                 },
                 handle: function handle(error, next) {
-=======
-                test: function(error) {
-                    return !error.aborted;
-                },
-                handle: function(error, next) {
->>>>>>> develop
                     alert(this.getErrorMessage(error));
                     next();
                 }
             }, {
                 name: 'CatchAll',
-<<<<<<< HEAD
                 test: function test(error) {
                     return true;
                 },
                 handle: function handle(error, next) {
-=======
-                test: function(error) {
-                    return true;
-                },
-                handle: function(error, next) {
->>>>>>> develop
                     this._logError(error);
                     this._clearLoading();
                     next();
                 }
-<<<<<<< HEAD
             }];
-=======
-            }
-            ];
->>>>>>> develop
 
             return this.errorHandlers;
         },
@@ -818,11 +603,7 @@ define('argos/_ListBase', [
          * so that you may define the action entries for that view.
          * @return {Object} this.acttions
          */
-<<<<<<< HEAD
         createActionLayout: function createActionLayout() {
-=======
-        createActionLayout: function() {
->>>>>>> develop
             return this.actions || {};
         },
         /**
@@ -831,11 +612,7 @@ define('argos/_ListBase', [
          * final actions state.
          * @param {Object[]} actions
          */
-<<<<<<< HEAD
         createActions: function createActions(actions) {
-=======
-        createActions: function(actions) {
->>>>>>> develop
             var i, action, options, actionTemplate, systemActions, prefActions, visibleActions;
 
             this.actions = actions;
@@ -848,21 +625,12 @@ define('argos/_ListBase', [
             this.ensureQuickActionPrefs();
 
             // Pluck out our system actions that are NOT saved in preferences
-<<<<<<< HEAD
             systemActions = _array['default'].filter(actions, function (action) {
                 return action && action.systemAction;
             });
 
             systemActions = systemActions.reduce(function (acc, cur) {
                 var hasID = acc.some(function (item) {
-=======
-            systemActions = array.filter(actions, function(action) {
-                return action && action.systemAction;
-            });
-
-            systemActions = systemActions.reduce(function(acc, cur) {
-                var hasID = acc.some(function(item) {
->>>>>>> develop
                     return item.id === cur.id;
                 });
 
@@ -895,24 +663,16 @@ define('argos/_ListBase', [
                     hasAccess: !action.security || action.security && this.app.hasAccessTo(this.expandExpression(action.security)) ? true : false
                 };
 
-<<<<<<< HEAD
                 _lang['default'].mixin(action, options);
 
                 actionTemplate = action.template || this.listActionItemTemplate;
                 _domConstruct['default'].place(actionTemplate.apply(action, action.id), this.actionsNode, 'last');
-=======
-                lang.mixin(action, options);
-
-                actionTemplate = action.template || this.listActionItemTemplate;
-                domConstruct.place(actionTemplate.apply(action, action.id), this.actionsNode, 'last');
->>>>>>> develop
 
                 visibleActions.push(action);
             }
 
             this.visibleActions = visibleActions;
         },
-<<<<<<< HEAD
         createSystemActionLayout: function createSystemActionLayout(actions) {
             var systemActions, others;
 
@@ -921,16 +681,6 @@ define('argos/_ListBase', [
             });
 
             others = _array['default'].filter(actions, function (action) {
-=======
-        createSystemActionLayout: function(actions) {
-            var systemActions, others;
-
-            systemActions = array.filter(actions, function(action) {
-                return action.systemAction === true;
-            });
-
-            others = array.filter(actions, function(action) {
->>>>>>> develop
                 return !action.systemAction;
             });
 
@@ -951,36 +701,22 @@ define('argos/_ListBase', [
                 }].concat(others);
             }
         },
-<<<<<<< HEAD
         configureQuickActions: function configureQuickActions() {
-=======
-        configureQuickActions: function() {
->>>>>>> develop
             var view = App.getView(this.quickActionConfigureView);
             if (view) {
                 view.show({
                     viewId: this.id,
-<<<<<<< HEAD
                     actions: _array['default'].filter(this.actions, function (action) {
-=======
-                    actions: array.filter(this.actions, function(action) {
->>>>>>> develop
                         // Exclude system actions
                         return action && action.systemAction !== true;
                     })
                 });
             }
         },
-<<<<<<< HEAD
         selectEntrySilent: function selectEntrySilent(key) {
             var enableActions = this.enableActions,
                 // preserve the original value
             selectionModel = this.get('selectionModel'),
-=======
-        selectEntrySilent: function(key) {
-            var enableActions = this.enableActions,// preserve the original value
-                selectionModel = this.get('selectionModel'),
->>>>>>> develop
                 selectedItems,
                 selection,
                 prop;
@@ -1003,7 +739,6 @@ define('argos/_ListBase', [
 
             return selection;
         },
-<<<<<<< HEAD
         invokeActionItemBy: function invokeActionItemBy(actionPredicate, key) {
             var actions, selection;
 
@@ -1011,15 +746,6 @@ define('argos/_ListBase', [
             selection = this.selectEntrySilent(key);
             this.checkActionState();
             _array['default'].forEach(actions, function (action) {
-=======
-        invokeActionItemBy: function(actionPredicate, key) {
-            var actions, selection;
-
-            actions = array.filter(this.visibleActions, actionPredicate);
-            selection = this.selectEntrySilent(key);
-            this.checkActionState();
-            array.forEach(actions, function(action) {
->>>>>>> develop
                 this._invokeAction(action, selection);
             }, this);
         },
@@ -1034,21 +760,13 @@ define('argos/_ListBase', [
          * @param {Event} evt The click/tap event
          * @param {HTMLElement} node The node that invoked the action
          */
-<<<<<<< HEAD
         invokeActionItem: function invokeActionItem(parameters, evt, node) {
-=======
-        invokeActionItem: function(parameters, evt, node) {
->>>>>>> develop
             var index = parameters['id'],
                 action = this.visibleActions[index],
                 key,
                 selectedItems = this.get('selectionModel').getSelections(),
                 selection = null;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
             for (key in selectedItems) {
                 if (selectedItems.hasOwnProperty(key)) {
                     selection = selectedItems[key];
@@ -1058,11 +776,7 @@ define('argos/_ListBase', [
 
             this._invokeAction(action, selection);
         },
-<<<<<<< HEAD
         _invokeAction: function _invokeAction(action, selection) {
-=======
-        _invokeAction: function(action, selection) {
->>>>>>> develop
             if (!action.isEnabled) {
                 return;
             }
@@ -1082,11 +796,7 @@ define('argos/_ListBase', [
          * item using the currently selected row as context by passing the action instance the selected row to the
          * action items `enabled` property.
          */
-<<<<<<< HEAD
         checkActionState: function checkActionState() {
-=======
-        checkActionState: function() {
->>>>>>> develop
             var selectedItems, selection, key;
 
             selectedItems = this.get('selectionModel').getSelections();
@@ -1101,45 +811,26 @@ define('argos/_ListBase', [
 
             this._applyStateToActions(selection);
         },
-<<<<<<< HEAD
         _clearActions: function _clearActions() {
-=======
-        _clearActions: function() {
->>>>>>> develop
             var children;
 
             children = this.actionsNode && this.actionsNode.children || [];
             children = Array.prototype.slice.call(children);
-<<<<<<< HEAD
             _array['default'].forEach(children, function (child) {
-=======
-            array.forEach(children, function(child) {
->>>>>>> develop
                 if (child.parentNode) {
                     child.parentNode.removeChild(child);
                 }
             });
         },
-<<<<<<< HEAD
         getQuickActionPrefs: function getQuickActionPrefs() {
             return this.app && this.app.preferences && this.app.preferences.quickActions;
         },
         ensureQuickActionPrefs: function ensureQuickActionPrefs() {
-=======
-        getQuickActionPrefs: function() {
-            return this.app && this.app.preferences && this.app.preferences.quickActions;
-        },
-        ensureQuickActionPrefs: function() {
->>>>>>> develop
             var appPrefs, actionPrefs, filtered;
 
             appPrefs = this.app && this.app.preferences;
             actionPrefs = this.getQuickActionPrefs();
-<<<<<<< HEAD
             filtered = _array['default'].filter(this.actions, function (action) {
-=======
-            filtered = array.filter(this.actions, function(action) {
->>>>>>> develop
                 return action && action.systemAction !== true;
             });
 
@@ -1154,14 +845,8 @@ define('argos/_ListBase', [
 
             // If it doesn't exist, or there is a count mismatch (actions created on upgrades perhaps?)
             // re-create the preferences store
-<<<<<<< HEAD
             if (!actionPrefs[this.id] || actionPrefs[this.id] && actionPrefs[this.id].length !== filtered.length) {
                 actionPrefs[this.id] = _array['default'].map(filtered, function (action) {
-=======
-            if (!actionPrefs[this.id] ||
-                (actionPrefs[this.id] && actionPrefs[this.id].length !== filtered.length)) {
-                actionPrefs[this.id] = array.map(filtered, function(action) {
->>>>>>> develop
                     action.visible = true;
                     return action;
                 });
@@ -1175,11 +860,7 @@ define('argos/_ListBase', [
          * action items `enabled` property.
          * @param {Object} selection
          */
-<<<<<<< HEAD
         _applyStateToActions: function _applyStateToActions(selection) {
-=======
-        _applyStateToActions: function(selection) {
->>>>>>> develop
             var i, action, actionNode, visibleAction;
 
             this._clearActions();
@@ -1194,13 +875,7 @@ define('argos/_ListBase', [
                 action = _lang['default'].mixin(visibleAction, this._getActionById(visibleAction.id));
                 actionNode = this.actionsNode.childNodes[i];
 
-<<<<<<< HEAD
                 action.isEnabled = typeof action['enabled'] === 'undefined' ? true : this.expandExpression(action['enabled'], action, selection);
-=======
-                action.isEnabled = (typeof action['enabled'] === 'undefined')
-                    ? true
-                    : this.expandExpression(action['enabled'], action, selection);
->>>>>>> develop
 
                 if (!action.hasAccess) {
                     action.isEnabled = false;
@@ -1211,13 +886,8 @@ define('argos/_ListBase', [
                 }
             }
         },
-<<<<<<< HEAD
         _getActionById: function _getActionById(id) {
             return _array['default'].filter(this.actions, function (action) {
-=======
-        _getActionById: function(id) {
-            return array.filter(this.actions, function(action) {
->>>>>>> develop
                 return action && action.id === id;
             })[0];
         },
@@ -1231,7 +901,6 @@ define('argos/_ListBase', [
          *
          * @param {HTMLElement} rowNode The currently selected row node
          */
-<<<<<<< HEAD
         showActionPanel: function showActionPanel(rowNode) {
             this.checkActionState();
             _domClass['default'].add(rowNode, 'list-action-selected');
@@ -1239,17 +908,6 @@ define('argos/_ListBase', [
             this.onApplyRowActionPanel(this.actionsNode, rowNode);
 
             _domConstruct['default'].place(this.actionsNode, rowNode, 'after');
-=======
-        showActionPanel: function(rowNode) {
-            this.checkActionState();
-            domClass.add(rowNode, 'list-action-selected');
-
-            this.onApplyRowActionPanel(this.actionsNode, rowNode);
-
-            domConstruct.place(this.actionsNode, rowNode, 'after');
-        },
-        onApplyRowActionPanel: function(actionNodePanel, rowNode) {
->>>>>>> develop
         },
         onApplyRowActionPanel: function onApplyRowActionPanel(actionNodePanel, rowNode) {},
         /**
@@ -1258,13 +916,8 @@ define('argos/_ListBase', [
          *
          * @param {Object} source The object to set as the options.source.
          */
-<<<<<<< HEAD
         setSource: function setSource(source) {
             _lang['default'].mixin(source, {
-=======
-        setSource: function(source) {
-            lang.mixin(source, {
->>>>>>> develop
                 resourceKind: this.resourceKind
             });
 
@@ -1274,38 +927,23 @@ define('argos/_ListBase', [
          * Hides the passed list-action row/panel by removing the selected styling
          * @param {HTMLElement} rowNode The currently selected row.
          */
-<<<<<<< HEAD
         hideActionPanel: function hideActionPanel(rowNode) {
             _domClass['default'].remove(rowNode, 'list-action-selected');
-=======
-        hideActionPanel: function(rowNode) {
-            domClass.remove(rowNode, 'list-action-selected');
->>>>>>> develop
         },
         /**
          * Determines if the view is a navigatible view or a selection view by returning `this.selectionOnly` or the
          * navigation `this.options.selectionOnly`.
          * @return {Boolean}
          */
-<<<<<<< HEAD
         isNavigationDisabled: function isNavigationDisabled() {
             return this.options && this.options.selectionOnly || this.selectionOnly;
-=======
-        isNavigationDisabled: function() {
-            return ((this.options && this.options.selectionOnly) || (this.selectionOnly));
->>>>>>> develop
         },
         /**
          * Determines if the selections are disabled by checking the `allowSelection` and `enableActions`
          * @return {Boolean}
          */
-<<<<<<< HEAD
         isSelectionDisabled: function isSelectionDisabled() {
             return !(this.options && this.options.selectionOnly || this.enableActions || this.allowSelection);
-=======
-        isSelectionDisabled: function() {
-            return !((this.options && this.options.selectionOnly) || this.enableActions || this.allowSelection);
->>>>>>> develop
         },
         /**
          * Handler for when the selection model adds an item. Adds the selected state to the row or shows the list
@@ -1315,13 +953,8 @@ define('argos/_ListBase', [
          * @param {String/HTMLElement} tag An indentifier, may be the actual row node or some other id.
          * @private
          */
-<<<<<<< HEAD
         _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) {
             var node = _dom['default'].byId(tag) || (0, _query['default'])('li[data-key="' + key + '"]', this.contentNode)[0];
-=======
-        _onSelectionModelSelect: function(key, data, tag) {
-            var node = dom.byId(tag) || query('li[data-key="' + key + '"]', this.contentNode)[0];
->>>>>>> develop
             if (!node) {
                 return;
             }
@@ -1331,11 +964,7 @@ define('argos/_ListBase', [
                 return;
             }
 
-<<<<<<< HEAD
             _domClass['default'].add(node, 'list-item-selected');
-=======
-            domClass.add(node, 'list-item-selected');
->>>>>>> develop
         },
         /**
          * Handler for when the selection model removes an item. Removes the selected state to the row or hides the list
@@ -1345,13 +974,8 @@ define('argos/_ListBase', [
          * @param {String/HTMLElement} tag An indentifier, may be the actual row node or some other id.
          * @private
          */
-<<<<<<< HEAD
         _onSelectionModelDeselect: function _onSelectionModelDeselect(key, data, tag) {
             var node = _dom['default'].byId(tag) || (0, _query['default'])('li[data-key="' + key + '"]', this.contentNode)[0];
-=======
-        _onSelectionModelDeselect: function(key, data, tag) {
-            var node = dom.byId(tag) || query('li[data-key="' + key + '"]', this.contentNode)[0];
->>>>>>> develop
             if (!node) {
                 return;
             }
@@ -1361,42 +985,25 @@ define('argos/_ListBase', [
                 return;
             }
 
-<<<<<<< HEAD
             _domClass['default'].remove(node, 'list-item-selected');
-=======
-            domClass.remove(node, 'list-item-selected');
->>>>>>> develop
         },
         /**
          * Handler for when the selection model clears the selections.
          * @private
          */
-<<<<<<< HEAD
         _onSelectionModelClear: function _onSelectionModelClear() {},
-=======
-        _onSelectionModelClear: function() {
-        },
->>>>>>> develop
         /**
          * Attempts to activate entries passed in `this.options.previousSelections` where previousSelections is an array
          * of data-keys or data-descriptors to search the list rows for.
          * @private
          */
-<<<<<<< HEAD
         _loadPreviousSelections: function _loadPreviousSelections() {
-=======
-        _loadPreviousSelections: function() {
->>>>>>> develop
             var previousSelections, i, row;
 
             previousSelections = this.options && this.options.previousSelections;
             if (previousSelections) {
                 for (i = 0; i < previousSelections.length; i++) {
-<<<<<<< HEAD
                     row = (0, _query['default'])(_string['default'].substitute('[data-key="${0}"], [data-descriptor="${0}"]', [previousSelections[i]]), this.contentNode)[0];
-=======
-                    row = query((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [previousSelections[i]])), this.contentNode)[0];
->>>>>>> develop
 
                     if (row) {
                         this.activateEntry({
@@ -1413,31 +1020,18 @@ define('argos/_ListBase', [
          * @param {Object} options The object published by the event.
          * @private
          */
-<<<<<<< HEAD
         _onRefresh: function _onRefresh(options) {},
         onScroll: function onScroll(evt) {
             var pos, height, scrollTop, scrollHeight, remaining, selected, diff, scrollerNode;
             scrollerNode = this.get('scroller');
             pos = _domGeom['default'].position(scrollerNode, true);
-=======
-        _onRefresh: function(options) {
-        },
-        onScroll: function(evt) {
-            var pos, height, scrollTop, scrollHeight, remaining, selected, diff, scrollerNode;
-            scrollerNode = this.get('scroller');
-            pos = domGeom.position(scrollerNode, true);
->>>>>>> develop
 
             height = pos.h; // viewport height (what user sees)
             scrollHeight = scrollerNode.scrollHeight; // Entire container height
             scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
             remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
 
-<<<<<<< HEAD
             selected = _domAttr['default'].get(this.domNode, 'selected');
-=======
-            selected = domAttr.get(this.domNode, 'selected');
->>>>>>> develop
 
             diff = Math.abs(remaining - height);
 
@@ -1458,13 +1052,8 @@ define('argos/_ListBase', [
          * @param {Event} evt The click/tap event.
          * @param {HTMLElement} node The element that initiated the event.
          */
-<<<<<<< HEAD
         selectEntry: function selectEntry(params, evt, node) {
             var row = (0, _query['default'])(node).closest('[data-key]')[0],
-=======
-        selectEntry: function(params, evt, node) {
-            var row = query(node).closest('[data-key]')[0],
->>>>>>> develop
                 key = row ? row.getAttribute('data-key') : false;
 
             if (this._selectionModel && key) {
@@ -1485,11 +1074,7 @@ define('argos/_ListBase', [
          *
          * @param {Object} params Collection of `data-` attributes from the node.
          */
-<<<<<<< HEAD
         activateEntry: function activateEntry(params) {
-=======
-        activateEntry: function(params) {
->>>>>>> develop
             if (params.key) {
                 if (this._selectionModel && this.isNavigationDisabled()) {
                     this._selectionModel.toggle(params.key, this.entries[params.key] || params.descriptor, params.$source);
@@ -1505,11 +1090,7 @@ define('argos/_ListBase', [
          * Invokes the corresponding top toolbar tool using `this.options.singleSelectAction` as the name.
          * If autoClearSelection is true, clear the selection model.
          */
-<<<<<<< HEAD
         invokeSingleSelectAction: function invokeSingleSelectAction() {
-=======
-        invokeSingleSelectAction: function() {
->>>>>>> develop
             if (this.app.bars['tbar']) {
                 this.app.bars['tbar'].invokeTool({ tool: this.options.singleSelectAction });
             }
@@ -1527,11 +1108,7 @@ define('argos/_ListBase', [
          * @return {String/Boolean} An SData query compatible search expression.
          * @template
          */
-<<<<<<< HEAD
         formatSearchQuery: function formatSearchQuery(searchQuery) {
-=======
-        formatSearchQuery: function(searchQuery) {
->>>>>>> develop
             return false;
         },
         /**
@@ -1539,13 +1116,8 @@ define('argos/_ListBase', [
          * @param {String} searchQuery Search expression to be escaped.
          * @return {String}
          */
-<<<<<<< HEAD
         escapeSearchQuery: function escapeSearchQuery(searchQuery) {
             return _Utility2['default'].escapeSearchQuery(searchQuery);
-=======
-        escapeSearchQuery: function(searchQuery) {
-            return Utility.escapeSearchQuery(searchQuery);
->>>>>>> develop
         },
         /**
          * Handler for the search widgets search.
@@ -1556,11 +1128,7 @@ define('argos/_ListBase', [
          * @param {String} expression String expression as returned from the search widget
          * @private
          */
-<<<<<<< HEAD
         _onSearchExpression: function _onSearchExpression(expression) {
-=======
-        _onSearchExpression: function(expression) {
->>>>>>> develop
             this.clear(false);
             this.queryText = '';
             this.query = expression;
@@ -1571,11 +1139,7 @@ define('argos/_ListBase', [
          * Sets the default search expression (acting as a pre-filter) to `this.options.query` and configures the
          * search widget by passing in the current view context.
          */
-<<<<<<< HEAD
         configureSearch: function configureSearch() {
-=======
-        configureSearch: function() {
->>>>>>> develop
             this.query = this.options && this.options.query || this.query || null;
             if (this.searchWidget) {
                 this.searchWidget.configure({
@@ -1585,11 +1149,7 @@ define('argos/_ListBase', [
 
             this._setDefaultSearchTerm();
         },
-<<<<<<< HEAD
         _setDefaultSearchTerm: function _setDefaultSearchTerm() {
-=======
-        _setDefaultSearchTerm: function() {
->>>>>>> develop
             if (!this.defaultSearchTerm || this.defaultSearchTermSet) {
                 return;
             }
@@ -1604,11 +1164,7 @@ define('argos/_ListBase', [
 
             this.defaultSearchTermSet = true;
         },
-<<<<<<< HEAD
         _updateQuery: function _updateQuery() {
-=======
-        _updateQuery: function() {
->>>>>>> develop
             var searchQuery = this.getSearchQuery();
             if (searchQuery) {
                 this.query = searchQuery;
@@ -1616,11 +1172,7 @@ define('argos/_ListBase', [
                 this.query = '';
             }
         },
-<<<<<<< HEAD
         getSearchQuery: function getSearchQuery() {
-=======
-        getSearchQuery: function() {
->>>>>>> develop
             var results = null;
 
             if (this.searchWidget) {
@@ -1639,21 +1191,12 @@ define('argos/_ListBase', [
          * @param {Object} additionalOptions Additional options to be passed into the next view
          * property of the passed selection data.
          */
-<<<<<<< HEAD
         navigateToRelatedView: function navigateToRelatedView(action, selection, viewId, whereQueryFmt, additionalOptions) {
             var view = this.app.getView(viewId),
                 options = {
                 where: _string['default'].substitute(whereQueryFmt, [selection.data[this.idProperty]]),
                 selectedEntry: selection.data
             };
-=======
-        navigateToRelatedView: function(action, selection, viewId, whereQueryFmt, additionalOptions) {
-            var view = this.app.getView(viewId),
-                options = {
-                    where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]]),
-                    selectedEntry: selection.data
-                };
->>>>>>> develop
 
             if (additionalOptions) {
                 options = _lang['default'].mixin(options, additionalOptions);
@@ -1675,7 +1218,6 @@ define('argos/_ListBase', [
          * @param {String} descriptor Description of the entry, will be used as the top toolbar title text
          * @param {Object} additionalOptions Additional options to be passed into the next view
          */
-<<<<<<< HEAD
         navigateToDetailView: function navigateToDetailView(key, descriptor, additionalOptions) {
             var view = this.app.getView(this.detailView),
                 options = {
@@ -1684,16 +1226,6 @@ define('argos/_ListBase', [
                 key: key,
                 fromContext: this
             };
-=======
-        navigateToDetailView: function(key, descriptor, additionalOptions) {
-            var view = this.app.getView(this.detailView),
-                options = {
-                    descriptor: descriptor, // keep for backwards compat
-                    title: descriptor,
-                    key: key,
-                    fromContext: this
-                };
->>>>>>> develop
 
             if (additionalOptions) {
                 options = _lang['default'].mixin(options, additionalOptions);
@@ -1710,7 +1242,6 @@ define('argos/_ListBase', [
          * @param {Object} selection Data entry for the selection.
          * @param {Object} additionalOptions Additional options to be passed into the next view.
          */
-<<<<<<< HEAD
         navigateToEditView: function navigateToEditView(action, selection, additionalOptions) {
             var view = this.app.getView(this.editView || this.insertView),
                 key = selection.data[this.idProperty],
@@ -1719,16 +1250,6 @@ define('argos/_ListBase', [
                 selectedEntry: selection.data,
                 fromContext: this
             };
-=======
-        navigateToEditView: function(action, selection, additionalOptions) {
-            var view = this.app.getView(this.editView || this.insertView),
-                key = selection.data[this.idProperty],
-                options = {
-                    key: key,
-                    selectedEntry: selection.data,
-                    fromContext: this
-                };
->>>>>>> develop
 
             if (additionalOptions) {
                 options = _lang['default'].mixin(options, additionalOptions);
@@ -1744,21 +1265,12 @@ define('argos/_ListBase', [
          * @param {HTMLElement} el Node that initiated the event.
          * @param {Object} additionalOptions Additional options to be passed into the next view.
          */
-<<<<<<< HEAD
         navigateToInsertView: function navigateToInsertView(el, additionalOptions) {
             var view = this.app.getView(this.insertView || this.editView),
                 options = {
                 returnTo: this.id,
                 insert: true
             };
-=======
-        navigateToInsertView: function(el, additionalOptions) {
-            var view = this.app.getView(this.insertView || this.editView),
-                options = {
-                    returnTo: this.id,
-                    insert: true
-                };
->>>>>>> develop
 
             // Pass along the selected entry (related list could get it from a quick action)
             if (this.options.selectedEntry) {
@@ -1777,7 +1289,6 @@ define('argos/_ListBase', [
          * Deterimines if there is more data to be shown.
          * @return {Boolean} True if the list has more data; False otherwise. Default is true.
          */
-<<<<<<< HEAD
         hasMoreData: function hasMoreData() {},
         _setLoading: function _setLoading() {
             _domClass['default'].add(this.domNode, 'list-loading');
@@ -1785,26 +1296,12 @@ define('argos/_ListBase', [
         },
         _clearLoading: function _clearLoading() {
             _domClass['default'].remove(this.domNode, 'list-loading');
-=======
-        hasMoreData: function() {
-        },
-        _setLoading: function() {
-            domClass.add(this.domNode, 'list-loading');
-            this.listLoading = true;
-        },
-        _clearLoading: function() {
-            domClass.remove(this.domNode, 'list-loading');
->>>>>>> develop
             this.listLoading = false;
         },
         /**
          * Initiates the data request.
          */
-<<<<<<< HEAD
         requestData: function requestData() {
-=======
-        requestData: function() {
->>>>>>> develop
             var store, queryOptions, request, queryExpression, queryResults;
             store = this.get('store');
 
@@ -1821,21 +1318,13 @@ define('argos/_ListBase', [
                 queryExpression = this._buildQueryExpression() || null;
                 queryResults = store.query(queryExpression, queryOptions);
 
-<<<<<<< HEAD
                 (0, _when['default'])(queryResults, this._onQueryComplete.bind(this, queryResults), this._onQueryError.bind(this, queryOptions));
-=======
-                when(queryResults,
-                    this._onQueryComplete.bind(this, queryResults),
-                    this._onQueryError.bind(this, queryOptions)
-                );
->>>>>>> develop
 
                 return queryResults;
             }
 
             console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?');
         },
-<<<<<<< HEAD
         _onQueryComplete: function _onQueryComplete(queryResults, entries) {
             try {
                 var start = this.position,
@@ -1843,14 +1332,6 @@ define('argos/_ListBase', [
 
                 try {
                     (0, _when['default'])(queryResults.total, this._onQueryTotal.bind(this));
-=======
-        _onQueryComplete: function(queryResults, entries) {
-            try {
-                var start = this.position, scrollerNode = this.get('scroller');
-
-                try {
-                    when(queryResults.total, this._onQueryTotal.bind(this));
->>>>>>> develop
 
                     /* todo: move to a more appropriate location */
                     if (this.options && this.options.allowEmptySelection) {
@@ -1864,18 +1345,10 @@ define('argos/_ListBase', [
                             this.set('listContent', '');
                         }
 
-<<<<<<< HEAD
                         _domConstruct['default'].destroy(this.loadingIndicatorNode);
                     }
 
                     this.processData(entries);
-=======
-                        domConstruct.destroy(this.loadingIndicatorNode);
-                    }
-
-                    this.processData(entries);
-
->>>>>>> develop
                 } finally {
                     this._clearLoading();
                 }
@@ -1885,11 +1358,7 @@ define('argos/_ListBase', [
                 }
 
                 this.onContentChange();
-<<<<<<< HEAD
                 _connect['default'].publish('/app/toolbar/update', []);
-=======
-                connect.publish('/app/toolbar/update', []);
->>>>>>> develop
 
                 if (this._selectionModel) {
                     this._loadPreviousSelections();
@@ -1899,7 +1368,6 @@ define('argos/_ListBase', [
                 this._logError({ message: e.message, stack: e.stack }, e.message);
             }
         },
-<<<<<<< HEAD
         createStore: function createStore() {
             return null;
         },
@@ -1908,17 +1376,6 @@ define('argos/_ListBase', [
             return entry;
         },
         _onQueryTotal: function _onQueryTotal(size) {
-=======
-        createStore: function() {
-            return null;
-        },
-        onContentChange: function() {
-        },
-        _processEntry: function(entry) {
-            return entry;
-        },
-        _onQueryTotal: function(size) {
->>>>>>> develop
             var remaining;
 
             this.total = size;
@@ -1931,16 +1388,11 @@ define('argos/_ListBase', [
                     this.remaining = remaining;
                 }
 
-<<<<<<< HEAD
                 _domClass['default'].toggle(this.domNode, 'list-has-more', remaining === -1 || remaining > 0);
-=======
-                domClass.toggle(this.domNode, 'list-has-more', (remaining === -1 || remaining > 0));
->>>>>>> develop
 
                 this.position = this.position + this.pageSize;
             }
         },
-<<<<<<< HEAD
         getRemainingCount: function getRemainingCount() {
             var remaining = this.total > -1 ? this.total - (this.position + this.pageSize) : -1;
 
@@ -1948,18 +1400,6 @@ define('argos/_ListBase', [
         },
         onApplyRowTemplate: function onApplyRowTemplate(entry, rowNode) {},
         processData: function processData(entries) {
-=======
-        getRemainingCount: function() {
-            var remaining = this.total > -1
-                ? this.total - (this.position + this.pageSize)
-                : -1;
-
-            return remaining;
-        },
-        onApplyRowTemplate: function(entry, rowNode) {
-        },
-        processData: function(entries) {
->>>>>>> develop
             if (!entries) {
                 return;
             }
@@ -1985,11 +1425,7 @@ define('argos/_ListBase', [
                     this.entries[store.getIdentity(entry)] = entry;
 
                     try {
-<<<<<<< HEAD
                         rowNode = _domConstruct['default'].toDom(this.rowTemplate.apply(entry, this));
-=======
-                        rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
->>>>>>> develop
                     } catch (err) {
                         console.error(err);
                         rowNode = _domConstruct['default'].toDom(this.rowTemplateError.apply(entry, this));
@@ -2004,17 +1440,12 @@ define('argos/_ListBase', [
                 }
             }
         },
-<<<<<<< HEAD
         _logError: function _logError(error, message) {
-=======
-        _logError: function(error, message) {
->>>>>>> develop
             var errorItem = {
                 viewOptions: this.options,
                 serverError: error
             };
 
-<<<<<<< HEAD
             _ErrorManager2['default'].addError(message || this.getErrorMessage(error), errorItem);
         },
         _onQueryError: function _onQueryError(queryOptions, error) {
@@ -2022,28 +1453,13 @@ define('argos/_ListBase', [
         },
         _buildQueryExpression: function _buildQueryExpression() {
             return _lang['default'].mixin(this.query || {}, this.options && (this.options.query || this.options.where));
-=======
-            ErrorManager.addError(message || this.getErrorMessage(error), errorItem);
-        },
-        _onQueryError: function(queryOptions, error) {
-            this.handleError(error);
-        },
-        _buildQueryExpression: function() {
-            return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
-        },
-        _applyStateToQueryOptions: function(queryOptions) {
->>>>>>> develop
         },
         _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {},
         /**
          * Handler for the more button. Simply calls {@link #requestData requestData} which already has the info for
          * setting the start index as needed.
          */
-<<<<<<< HEAD
         more: function more() {
-=======
-        more: function() {
->>>>>>> develop
             if (this.continuousScrolling) {
                 this.set('remainingContent', this.loadingTemplate.apply(this));
             }
@@ -2054,11 +1470,7 @@ define('argos/_ListBase', [
          * Handler for the none/no selection button is pressed. Used in selection views when not selecting is an option.
          * Invokes the `this.options.singleSelectAction` tool.
          */
-<<<<<<< HEAD
         emptySelection: function emptySelection() {
-=======
-        emptySelection: function() {
->>>>>>> develop
             this._selectionModel.clear();
 
             if (this.app.bars['tbar']) {
@@ -2070,11 +1482,7 @@ define('argos/_ListBase', [
          * @param {Object} options Passed navigation options.
          * @return {Boolean} True if the view should be refreshed, false if not.
          */
-<<<<<<< HEAD
         refreshRequiredFor: function refreshRequiredFor(options) {
-=======
-        refreshRequiredFor: function(options) {
->>>>>>> develop
             if (this.options) {
                 if (options) {
                     if (this.expandExpression(this.options.stateKey) !== this.expandExpression(options.stateKey)) {
@@ -2104,34 +1512,19 @@ define('argos/_ListBase', [
          * the views resourceKind.
          * @return {Object} context.
          */
-<<<<<<< HEAD
         getContext: function getContext() {
-=======
-        getContext: function() {
->>>>>>> develop
             return this.inherited(arguments);
         },
         /**
          * Extends the {@link View#beforeTransitionTo parent implementation} by also toggling the visibility of the views
          * components and clearing the view and selection model as needed.
          */
-<<<<<<< HEAD
         beforeTransitionTo: function beforeTransitionTo() {
             this.inherited(arguments);
 
             _domClass['default'].toggle(this.domNode, 'list-hide-search', this.options && typeof this.options.hideSearch !== 'undefined' ? this.options.hideSearch : this.hideSearch || !this.enableSearch);
 
             _domClass['default'].toggle(this.domNode, 'list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);
-=======
-        beforeTransitionTo: function() {
-            this.inherited(arguments);
-
-            domClass.toggle(this.domNode, 'list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined')
-                ? this.options.hideSearch
-                : this.hideSearch || !this.enableSearch);
-
-            domClass.toggle(this.domNode, 'list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);
->>>>>>> develop
 
             if (this._selectionModel && !this.isSelectionDisabled()) {
                 this._selectionModel.useSingleSelection(this.options.singleSelect);
@@ -2141,11 +1534,7 @@ define('argos/_ListBase', [
                 this.enableActions = this.options.enableActions;
             }
 
-<<<<<<< HEAD
             _domClass['default'].toggle(this.domNode, 'list-show-actions', this.enableActions);
-=======
-            domClass.toggle(this.domNode, 'list-show-actions', this.enableActions);
->>>>>>> develop
             if (this.enableActions) {
                 this._selectionModel.useSingleSelection(true);
             }
@@ -2163,11 +1552,7 @@ define('argos/_ListBase', [
          * Extends the {@link View#transitionTo parent implementation} to also configure the search widget and
          * load previous selections into the selection model.
          */
-<<<<<<< HEAD
         transitionTo: function transitionTo() {
-=======
-        transitionTo: function() {
->>>>>>> develop
             this.configureSearch();
 
             if (this._selectionModel) {
@@ -2181,11 +1566,7 @@ define('argos/_ListBase', [
          * into individual objects in an array to be used in the customization engine.
          * @return {Object[]}
          */
-<<<<<<< HEAD
         createHashTagQueryLayout: function createHashTagQueryLayout() {
-=======
-        createHashTagQueryLayout: function() {
->>>>>>> develop
             // todo: always regenerate this layout? always regenerating allows for all existing customizations
             // to still work, at expense of potential (rare) performance issues if many customizations are registered.
             var layout, name;
@@ -2206,11 +1587,7 @@ define('argos/_ListBase', [
         /**
          * Called when the view needs to be reset. Invokes the request data process.
          */
-<<<<<<< HEAD
         refresh: function refresh() {
-=======
-        refresh: function() {
->>>>>>> develop
             this.query = this.getSearchQuery() || this.query;
             this.requestData();
         },
@@ -2224,11 +1601,7 @@ define('argos/_ListBase', [
          *
          * @param {Boolean} all If true, also clear the search widget.
          */
-<<<<<<< HEAD
         clear: function clear(all) {
-=======
-        clear: function(all) {
->>>>>>> develop
             if (this._selectionModel) {
                 this._selectionModel.suspendEvents();
                 this._selectionModel.clear();
@@ -2250,19 +1623,11 @@ define('argos/_ListBase', [
                 this.hasSearched = false;
             }
 
-<<<<<<< HEAD
             _domClass['default'].remove(this.domNode, 'list-has-more');
 
             this.set('listContent', this.loadingTemplate.apply(this));
         },
         search: function search() {
-=======
-            domClass.remove(this.domNode, 'list-has-more');
-
-            this.set('listContent', this.loadingTemplate.apply(this));
-        },
-        search: function() {
->>>>>>> develop
             if (this.searchWidget) {
                 this.searchWidget.search();
             }
@@ -2270,11 +1635,7 @@ define('argos/_ListBase', [
         /**
         * Sets the query value on the serach widget
         */
-<<<<<<< HEAD
         setSearchTerm: function setSearchTerm(value) {
-=======
-        setSearchTerm: function(value) {
->>>>>>> develop
             if (this.searchWidget) {
                 this.searchWidget.set('queryValue', value);
             }
@@ -2282,18 +1643,9 @@ define('argos/_ListBase', [
         /**
          * Returns a promise with the list's count.
          */
-<<<<<<< HEAD
         getListCount: function getListCount(options, callback) {}
     });
 
     _lang['default'].setObject('Sage.Platform.Mobile._ListBase', __class);
     module.exports = __class;
-=======
-        getListCount: function(options, callback) {
-        }
-    });
-
-    lang.setObject('Sage.Platform.Mobile._ListBase', __class);
-    return __class;
->>>>>>> develop
 });

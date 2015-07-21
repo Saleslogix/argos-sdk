@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 define('argos/Fields/SignatureField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/json', 'dojo/dom-attr', '../Format', './EditorField', '../FieldManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseJson, _dojoDomAttr, _Format, _EditorField, _FieldManager) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -30,40 +29,6 @@ define('argos/Fields/SignatureField', ['exports', 'module', 'dojo/_base/declare'
     var _EditorField2 = _interopRequireDefault(_EditorField);
 
     var _FieldManager2 = _interopRequireDefault(_FieldManager);
-=======
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-define('argos/Fields/SignatureField', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/json',
-    'dojo/dom-attr',
-    '../Format',
-    './EditorField',
-    '../FieldManager'
-], function(
-    declare,
-    lang,
-    json,
-    domAttr,
-    format,
-    EditorField,
-    FieldManager
-) {
->>>>>>> develop
 
     /**
      * @class argos.Fields.SignatureField
@@ -135,11 +100,7 @@ define('argos/Fields/SignatureField', [
          * also passing the `signature` array.
          * @return {Object} Navigation options
          */
-<<<<<<< HEAD
         createNavigationOptions: function createNavigationOptions() {
-=======
-        createNavigationOptions: function() {
->>>>>>> develop
             var options = this.inherited(arguments);
 
             options.signature = this.signature;
@@ -149,15 +110,8 @@ define('argos/Fields/SignatureField', [
         /**
          * Complete override that gets the editor view, gets the values and calls set value on the field
          */
-<<<<<<< HEAD
         getValuesFromView: function getValuesFromView() {
             var view, app, value;
-=======
-        getValuesFromView: function() {
-            var view,
-                app,
-                value;
->>>>>>> develop
 
             app = this.app;
 
@@ -174,29 +128,17 @@ define('argos/Fields/SignatureField', [
          * @param val
          * @param initial
          */
-<<<<<<< HEAD
         setValue: function setValue(val, initial) {
-=======
-        setValue: function(val, initial) {
->>>>>>> develop
             if (initial) {
                 this.originalValue = val;
             }
 
             this.currentValue = val;
-<<<<<<< HEAD
             _domAttr['default'].set(this.inputNode, 'value', val || '');
 
             try {
                 this.signature = _json['default'].fromJson(val);
             } catch (e) {
-=======
-            domAttr.set(this.inputNode, 'value', val || '');
-
-            try {
-                this.signature = json.fromJson(val);
-            } catch(e) {
->>>>>>> develop
                 this.signature = [];
             }
 
@@ -204,20 +146,12 @@ define('argos/Fields/SignatureField', [
                 this.signature = [];
             }
 
-<<<<<<< HEAD
             this.signatureNode.src = _format['default'].imageFromVector(this.signature, this.config, false);
-=======
-            this.signatureNode.src = format.imageFromVector(this.signature, this.config, false);
->>>>>>> develop
         },
         /**
          * Clears the value set to the hidden field
          */
-<<<<<<< HEAD
         clearValue: function clearValue() {
-=======
-        clearValue: function() {
->>>>>>> develop
             this.setValue('', true);
         },
         /**
@@ -226,20 +160,11 @@ define('argos/Fields/SignatureField', [
          * @param val
          * @return {Array/String}
          */
-<<<<<<< HEAD
         formatValue: function formatValue(val) {
-=======
-        formatValue: function(val) {
->>>>>>> develop
             return val;
         }
     });
 
-<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile.Fields.SignatureField', control);
     module.exports = _FieldManager2['default'].register('signature', control);
-=======
-    lang.setObject('Sage.Platform.Mobile.Fields.SignatureField', control);
-    return FieldManager.register('signature', control);
->>>>>>> develop
 });

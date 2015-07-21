@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 define('argos/_LegacySDataDetailMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/string', './ErrorManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoDomClass, _dojoDomConstruct, _dojoString, _ErrorManager) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -28,37 +27,6 @@ define('argos/_LegacySDataDetailMixin', ['exports', 'module', 'dojo/_base/declar
          * Initiates the SData request.
          */
         requestData: function requestData() {
-=======
-/*
- * Copyright (c) 1997-2014, SalesLogix, NA., LLC. All rights reserved.
- */
-
-/**
- * _LegacySDataDetailMixin enables legacy SData operations for the Detail view.
- *
- * @alternateClassName _LegacySDataDetailMixin
- */
-define('argos/_LegacySDataDetailMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    'dojo/string',
-    './ErrorManager'
-], function(
-    declare,
-    lang,
-    domClass,
-    domConstruct,
-    string,
-    ErrorManager
-) {
-    var __class = declare('argos._LegacySDataDetailMixin', null, {
-        /**
-         * Initiates the SData request.
-         */
-        requestData: function() {
->>>>>>> develop
             var request;
             request = this.createRequest();
 
@@ -80,11 +48,7 @@ define('argos/_LegacySDataDetailMixin', [
          *
          * @return {Object} Sage.SData.Client.SDataSingleResourceRequest instance.
          */
-<<<<<<< HEAD
         createRequest: function createRequest() {
-=======
-        createRequest: function() {
->>>>>>> develop
             var request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
 
             /* test for complex selector */
@@ -92,11 +56,7 @@ define('argos/_LegacySDataDetailMixin', [
             if (/(\s+)/.test(this.options.key)) {
                 request.setResourceSelector(this.options.key);
             } else {
-<<<<<<< HEAD
                 request.setResourceSelector(_string['default'].substitute('\'${0}\'', [this.options.key]));
-=======
-                request.setResourceSelector(string.substitute("'${0}'", [this.options.key]));
->>>>>>> develop
             }
 
             if (this.resourceKind) {
@@ -126,11 +86,7 @@ define('argos/_LegacySDataDetailMixin', [
          * layout definition. If no entry is provided, empty the screen.
          * @param {Object} entry SData response
          */
-<<<<<<< HEAD
         processEntry: function processEntry(entry) {
-=======
-        processEntry: function(entry) {
->>>>>>> develop
             this.entry = entry;
 
             if (this.entry) {
@@ -143,11 +99,7 @@ define('argos/_LegacySDataDetailMixin', [
          * Handler when a request to SData is successful
          * @param {Object} entry The SData response
          */
-<<<<<<< HEAD
         onRequestDataSuccess: function onRequestDataSuccess(entry) {
-=======
-        onRequestDataSuccess: function(entry) {
->>>>>>> develop
             this.processEntry(entry);
             _domClass['default'].remove(this.domNode, 'panel-loading');
         },
@@ -156,7 +108,6 @@ define('argos/_LegacySDataDetailMixin', [
          * @param {Object} response The response object.
          * @param {Object} o The options that were passed when creating the Ajax request.
          */
-<<<<<<< HEAD
         onRequestDataFailure: function onRequestDataFailure(response, o) {
             if (response && response.status === 404) {
                 _domConstruct['default'].place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
@@ -166,17 +117,6 @@ define('argos/_LegacySDataDetailMixin', [
             }
 
             _domClass['default'].remove(this.domNode, 'panel-loading');
-=======
-        onRequestDataFailure: function(response, o) {
-            if (response && response.status === 404) {
-                domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
-            } else {
-                alert(string.substitute(this.requestErrorText, [response, o]));
-                ErrorManager.addError('failure', response);
-            }
-
-            domClass.remove(this.domNode, 'panel-loading');
->>>>>>> develop
         },
         /**
          * Handler when an a request is aborted from an SData endpoint.
@@ -186,23 +126,13 @@ define('argos/_LegacySDataDetailMixin', [
          * @param {Object} response The response object.
          * @param {Object} o The options that were passed when creating the Ajax request.
          */
-<<<<<<< HEAD
         onRequestDataAborted: function onRequestDataAborted(response, o) {
-=======
-        onRequestDataAborted: function(response, o) {
->>>>>>> develop
             this.options = false; // force a refresh
             _ErrorManager2['default'].addError('aborted', response);
             _domClass['default'].remove(this.domNode, 'panel-loading');
         }
     });
 
-<<<<<<< HEAD
     _lang['default'].setObject('Sage.Platform.Mobile._LegacySDataDetailMixin', __class);
     module.exports = __class;
-=======
-    lang.setObject('Sage.Platform.Mobile._LegacySDataDetailMixin', __class);
-    return __class;
->>>>>>> develop
 });
-
