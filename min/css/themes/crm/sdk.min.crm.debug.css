@@ -686,6 +686,8 @@ body > .viewContainer > .dialog {
   border: none;
   border-top: 1px solid #6d84a2;
   padding: 0px 6px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   -webkit-border-bottom-left-radius: 5px;
   -webkit-border-bottom-right-radius: 5px;
   -moz-border-bottom-left-radius: 5px;
@@ -866,6 +868,7 @@ img {
   overflow: hidden;
   text-overflow: ellipsis;
   float: right;
+  text-align: right;
 }
 .href {
   color: #368ac0;
@@ -1201,7 +1204,7 @@ body body > .viewContainer {
 }
 .panel-content > fieldset > .row,
 .panel-content > div > .row {
-  padding: 0.25em 0.25em 10px 0.25em;
+  padding: 0.25em 0 10px 0;
   min-height: 1.5em;
 }
 .panel-content > fieldset > .row > div > label,
@@ -1217,7 +1220,7 @@ body body > .viewContainer {
 }
 .quick-actions > .action-list {
   background-color: #313236;
-  padding: 10px 5px 15px 0;
+  padding: 10px 5px 15px 5px;
 }
 .tab-list > .tab,
 .more-tab-dropdown > .tab {
@@ -1255,6 +1258,7 @@ body body > .viewContainer {
   box-shadow: 0 2px 3px #888b94;
   margin: 0;
   padding: 0;
+  overflow-y: auto;
   -webkit-transition: visibility 0.25s ease;
   -moz-transition: visibility 0.25s ease;
   -ms-transition: visibility 0.25s ease;
@@ -1279,8 +1283,11 @@ body body > .viewContainer {
   justify-content: space-between;
   width: 100%;
 }
+.detailContent.list {
+  padding-top: 0 !important;
+}
 .detail-header {
-  padding: 25px 0px 10px 15px !important;
+  padding: 25px 0 10px 0 !important;
   font-size: 18px;
 }
 .animated-bar {
