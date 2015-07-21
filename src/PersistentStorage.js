@@ -12,195 +12,188 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import declare from 'dojo/_base/declare';
+import lang from 'dojo/_base/lang';
+import json from 'dojo/_base/json';
+import convert from './Convert';
+import utility from './Utility';
+
+
+var sosCache,
+    __class;
+
+sosCache = {};
 
 /**
  * @class argos.PersistentStorage
  * @deprecated Not used.
  * @alternateClassName PersistentStorage
  */
-define('argos/PersistentStorage', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/json',
-    './Convert',
-    './Utility'
-], function(
-    declare,
-    lang,
-    json,
-    convert,
-    utility
-) {
-    var sosCache,
-        __class;
+__class = declare('argos.PersistentStorage', null, {
+    name: false,
+    singleObjectStore: false,
+    allowCacheUse: true,
+    serializeValues: true,
 
-    sosCache = {};
-    __class = declare('argos.PersistentStorage', null, {
-        name: false,
-        singleObjectStore: false,
-        allowCacheUse: true,
-        serializeValues: true,
+    constructor: function(options) {
+        lang.mixin(this, options);
+    },
+    formatQualifiedKey: function(name, key) {
+        if (key && key.indexOf(name) !== 0) {
+            return name + '.' + key;
+        }
 
-        constructor: function(options) {
-            lang.mixin(this, options);
-        },
-        formatQualifiedKey: function(name, key) {
-            if (key && key.indexOf(name) !== 0) {
-                return name + '.' + key;
-            }
+        return key;
+    },
+    serializeValue: function(value) {
+        return typeof value === 'object'
+            ? json.toJson(value)
+            : value && value.toString
+                ? value.toString()
+                : value;
+    },
+    deserializeValue: function(value) {
+        if (value && value.indexOf('{') === 0 && value.lastIndexOf('}') === (value.length - 1)) {
+            return json.fromJson(value);
+        }
 
-            return key;
-        },
-        serializeValue: function(value) {
-            return typeof value === 'object'
-                ? json.toJson(value)
-                : value && value.toString
-                    ? value.toString()
-                    : value;
-        },
-        deserializeValue: function(value) {
-            if (value && value.indexOf('{') === 0 && value.lastIndexOf('}') === (value.length - 1)) {
-                return json.fromJson(value);
-            }
+        if (value && value.indexOf('[') === 0 && value.lastIndexOf(']') === (value.length - 1)) {
+            return json.fromJson(value);
+        }
 
-            if (value && value.indexOf('[') === 0 && value.lastIndexOf(']') === (value.length - 1)) {
-                return json.fromJson(value);
-            }
+        if (convert.isDateString(value)) {
+            return convert.toDateFromString(value);
+        }
 
-            if (convert.isDateString(value)) {
-                return convert.toDateFromString(value);
-            }
+        if (/^(true|false)$/.test(value)) {
+            return value === 'true';
+        }
 
-            if (/^(true|false)$/.test(value)) {
-                return value === 'true';
-            }
+        var numeric = parseFloat(value);
+        if (!isNaN(numeric)) {
+            return numeric;
+        }
 
-            var numeric = parseFloat(value);
-            if (!isNaN(numeric)) {
-                return numeric;
-            }
+        return value;
+    },
+    getItem: function(key, options) {
+        options = options || {};
+        var value,
+            encoded,
+            store,
+            serialized,
+            fqKey;
 
-            return value;
-        },
-        getItem: function(key, options) {
-            options = options || {};
-            var value,
-                encoded,
-                store,
-                serialized,
-                fqKey;
-
-            try {
-                if (window.localStorage) {
-                    if (this.singleObjectStore) {
-                        if (this.allowCacheUse && sosCache[this.name]) {
-                            store = sosCache[this.name];
-                        } else {
-                            encoded = window.localStorage.getItem(this.name);
-                            store = json.fromJson(encoded);
-
-                            if (this.allowCacheUse) {
-                                sosCache[this.name] = store;
-                            }
-                        }
-
-                        value = utility.getValue(store, key);
-
-                        if (options.success) {
-                            options.success.call(options.scope || this, value);
-                        }
-
-                        return value;
+        try {
+            if (window.localStorage) {
+                if (this.singleObjectStore) {
+                    if (this.allowCacheUse && sosCache[this.name]) {
+                        store = sosCache[this.name];
                     } else {
-                        fqKey = this.formatQualifiedKey(this.name, key);
-                        serialized = window.localStorage.getItem(fqKey);
+                        encoded = window.localStorage.getItem(this.name);
+                        store = json.fromJson(encoded);
 
-                        value = this.serializeValues && options.serialize !== false
-                                ? this.deserializeValue(serialized)
-                                : serialized;
-
-                        if (options.success) {
-                            options.success.call(options.scope || this, value);
+                        if (this.allowCacheUse) {
+                            sosCache[this.name] = store;
                         }
+                    }
 
-                        return value;
+                    value = utility.getValue(store, key);
+
+                    if (options.success) {
+                        options.success.call(options.scope || this, value);
                     }
+
+                    return value;
                 } else {
-                    if (options.failure) {
-                        options.failure.call(options.scope || this, false);
+                    fqKey = this.formatQualifiedKey(this.name, key);
+                    serialized = window.localStorage.getItem(fqKey);
+
+                    value = this.serializeValues && options.serialize !== false
+                            ? this.deserializeValue(serialized)
+                            : serialized;
+
+                    if (options.success) {
+                        options.success.call(options.scope || this, value);
                     }
+
+                    return value;
                 }
-            } catch (e) {
-                if (options && options.failure) {
-                    options.failure.call(options.scope || this, e);
+            } else {
+                if (options.failure) {
+                    options.failure.call(options.scope || this, false);
                 }
             }
-        },
-        setItem: function(key, value, options) {
-            var fqKey,
-                encoded,
-                store,
-                serialized;
+        } catch (e) {
+            if (options && options.failure) {
+                options.failure.call(options.scope || this, e);
+            }
+        }
+    },
+    setItem: function(key, value, options) {
+        var fqKey,
+            encoded,
+            store,
+            serialized;
 
-            options = options || {};
-            try {
-                if (window.localStorage) {
-                    if (this.singleObjectStore) {
-                        if (this.allowCacheUse && sosCache[this.name]) {
-                            store = sosCache[this.name];
-                        } else {
-                            encoded = window.localStorage.getItem(this.name);
-                            store = (encoded && json.fromJson(encoded)) || {};
-
-                            if (this.allowCacheUse) {
-                                sosCache[this.name] = store;
-                            }
-                        }
-
-                        utility.setValue(store, key, value);
-
-                        encoded = json.toJson(store);
-
-                        window.localStorage.setItem(this.name, encoded);
-
-                        if (options.success) {
-                            options.success.call(options.scope || this);
-                        }
-
-                        return true;
+        options = options || {};
+        try {
+            if (window.localStorage) {
+                if (this.singleObjectStore) {
+                    if (this.allowCacheUse && sosCache[this.name]) {
+                        store = sosCache[this.name];
                     } else {
-                        fqKey = this.formatQualifiedKey(this.name, key);
-                        serialized = this.serializeValues && options.serialize !== false
-                                ? this.serializeValue(value)
-                                : value;
+                        encoded = window.localStorage.getItem(this.name);
+                        store = (encoded && json.fromJson(encoded)) || {};
 
-                        window.localStorage.setItem(fqKey, serialized);
-
-                        if (options.success) {
-                            options.success.call(options.scope || this);
+                        if (this.allowCacheUse) {
+                            sosCache[this.name] = store;
                         }
-
-                        return true;
                     }
+
+                    utility.setValue(store, key, value);
+
+                    encoded = json.toJson(store);
+
+                    window.localStorage.setItem(this.name, encoded);
+
+                    if (options.success) {
+                        options.success.call(options.scope || this);
+                    }
+
+                    return true;
                 } else {
-                    if (options.failure) {
-                        options.failure.call(options.scope || this, false);
+                    fqKey = this.formatQualifiedKey(this.name, key);
+                    serialized = this.serializeValues && options.serialize !== false
+                            ? this.serializeValue(value)
+                            : value;
+
+                    window.localStorage.setItem(fqKey, serialized);
+
+                    if (options.success) {
+                        options.success.call(options.scope || this);
                     }
 
-                    return false;
+                    return true;
                 }
-            } catch (e) {
-                if (options && options.failure) {
-                    options.failure.call(options.scope || this, e);
+            } else {
+                if (options.failure) {
+                    options.failure.call(options.scope || this, false);
                 }
 
                 return false;
             }
-        },
-        clearItem: function(key, options) {
-        }
-    });
+        } catch (e) {
+            if (options && options.failure) {
+                options.failure.call(options.scope || this, e);
+            }
 
-    lang.setObject('Sage.Platform.Mobile.PersistentStorage', __class);
-    return __class;
+            return false;
+        }
+    },
+    clearItem: function(key, options) {
+    }
 });
+
+lang.setObject('Sage.Platform.Mobile.PersistentStorage', __class);
+export default __class;
