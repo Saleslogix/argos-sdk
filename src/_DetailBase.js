@@ -650,8 +650,7 @@ define('argos/_DetailBase', [
          * @private
          */
         reorderTabs: function() {
-            var startMoreTab,
-                moreTab,
+            var moreTab,
                 arr;
             this.inOverflow = false;
             if (this.moreTabList.children.length > 0) {
@@ -668,17 +667,11 @@ define('argos/_DetailBase', [
                 }, this);
             } else {
                 arr = [].slice.call(this.tabList.children);
+                domConstruct.empty(this.tabList);
                 array.forEach(arr, function(tab) {
-                    if (tab.offsetTop > this.tabList.offsetTop) {
-                        if (!startMoreTab) {
-                            startMoreTab = tab;
-                        } else {
-                            this.tabList.children[array.indexOf(this.tabList.children, tab)].remove();
-                            domConstruct.place(tab, this.moreTabList);
-                        }
-                    }
+                        domConstruct.place(tab, this.tabList);
+                        this.checkTabOverflow(tab);
                 }, this);
-                this.checkTabOverflow(startMoreTab);
             }
             moreTab = query('.more-item', this.id)[0];
             if (moreTab && array.indexOf(this.moreTabList.children, this.currentTab) > -1) {
@@ -736,7 +729,7 @@ define('argos/_DetailBase', [
                     moreTab.style.float = 'right';
                     domConstruct.place(moreTab, this.tabList);
 
-                    this.tabMoreIndex = array.indexOf(this.tabList.children, moreTab) - 1;
+                    this.tabMoreIndex = array.indexOf(this.tabList.children, tab);
                     this.tabList.children[this.tabMoreIndex].remove();
                     if (this.tabList.children.length === 1 && this.moreTabList.children.length === 0) {
                         moreTab.className = 'tab more-item selected';
