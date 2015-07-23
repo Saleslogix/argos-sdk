@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import declare from 'dojo/_base/declare';
+import lang from 'dojo/_base/lang';
+import _EditBase from './_EditBase';
+import _SDataEditMixin from './_SDataEditMixin';
+import _RelatedWidgetEditMixin from './_RelatedViewWidgetEditMixin';
 
 /**
  * @class argos.Edit
@@ -26,23 +31,8 @@
  * @requires argos._RelatedViewWidgetEditMixin
  * @mixins argos._RelatedViewWidgetEditMixin
  */
-define('argos/Edit', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    './_EditBase',
-    './_SDataEditMixin',
-    './_RelatedViewWidgetEditMixin'
-], function(
-    declare,
-    lang,
-    _EditBase,
-    _SDataEditMixin,
-    _RelatedWidgetEditMixin
-) {
-
-    var __class = declare('argos.Edit', [_EditBase, _SDataEditMixin, _RelatedWidgetEditMixin], {
-    });
-
-    lang.setObject('Sage.Platform.Mobile.Edit', __class);
-    return __class;
+var __class = declare('argos.Edit', [_EditBase, _SDataEditMixin, _RelatedWidgetEditMixin], {
 });
+
+lang.setObject('Sage.Platform.Mobile.Edit', __class);
+export default __class;

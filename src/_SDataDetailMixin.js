@@ -22,19 +22,12 @@
  * @alternateClassName _SDataDetailMixin
  * @requires argos.SData
  */
-define('argos/_SDataDetailMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/string',
-    './Utility',
-    './Store/SData'
-], function(
-    declare,
-    lang,
-    string,
-    utility,
-    SData
-) {
+import declare from 'dojo/_base/declare';
+import lang from 'dojo/_base/lang';
+import string from 'dojo/string';
+import utility from './Utility';
+import SData from './Store/SData';
+
     var __class = declare('argos._SDataDetailMixin', null, {
 
         /**
@@ -190,6 +183,4 @@ define('argos/_SDataDetailMixin', [
     });
 
     lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
-    return __class;
-});
-
+export default __class;

@@ -198,7 +198,7 @@
             this.completeHeaders = {};
             this.extendedHeaders = {};
             this.uri = new Sage.SData.Client.SDataUri();
-            var includeContent;
+            var includeContent, compact;
 
             if (this.service)
             {
@@ -209,6 +209,8 @@
                 this.uri.setScheme(this.service.getProtocol());
                 this.uri.setHost(this.service.getServerName());
                 this.uri.setPort(this.service.getPort());
+                compact = this.service.getCompact();
+                if (typeof compact !== 'undefined') this.uri.setCompact(compact);
             }
         },
         clone: function() {
@@ -942,7 +944,7 @@
             return this;
         },
         getCompact: function() {
-            return this.queryArgs[C.SDataUri.QueryArgNames];
+            return this.queryArgs[C.SDataUri.QueryArgNames.Compact];
         },
         setIncludeContent: function(value) {
             var name = this.version.major >= 1
@@ -1294,6 +1296,13 @@
         },
         setIncludeContent: function(value) {
             this.uri.setIncludeContent(value);
+            return this;
+        },
+        getCompact: function() {
+            return this.uri.getCompact();
+        },
+        setCompact: function(value) {
+            this.uri.setCompact(value);
             return this;
         },
         getUserAgent: function() {

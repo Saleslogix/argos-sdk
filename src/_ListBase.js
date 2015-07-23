@@ -12,6 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import declare from 'dojo/_base/declare';
+import lang from 'dojo/_base/lang';
+import array from 'dojo/_base/array';
+import connect from 'dojo/_base/connect';
+import query from 'dojo/query';
+import domAttr from 'dojo/dom-attr';
+import domClass from 'dojo/dom-class';
+import domConstruct from 'dojo/dom-construct';
+import domGeom from 'dojo/dom-geometry';
+import domStyle from 'dojo/dom-style';
+import dom from 'dojo/dom';
+import string from 'dojo/string';
+import win from 'dojo/window';
+import Deferred from 'dojo/Deferred';
+import all from 'dojo/promise/all';
+import when from 'dojo/when';
+import Utility from './Utility';
+import ErrorManager from './ErrorManager';
+import View from './View';
+import SearchWidget from './SearchWidget';
+import ConfigurableSelectionModel from './ConfigurableSelectionModel';
+import _PullToRefreshMixin from './_PullToRefreshMixin';
 
 /**
  * @class argos._ListBase
@@ -24,54 +46,6 @@
  * @requires argos.SearchWidget
  * @mixins argos._PullToRefreshMixin
  */
-define('argos/_ListBase', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/array',
-    'dojo/_base/connect',
-    'dojo/query',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    'dojo/dom-geometry',
-    'dojo/dom-style',
-    'dojo/dom',
-    'dojo/string',
-    'dojo/window',
-    'dojo/Deferred',
-    'dojo/promise/all',
-    'dojo/when',
-    './Utility',
-    './ErrorManager',
-    './View',
-    './SearchWidget',
-    './ConfigurableSelectionModel',
-    './_PullToRefreshMixin'
-], function(
-    declare,
-    lang,
-    array,
-    connect,
-    query,
-    domAttr,
-    domClass,
-    domConstruct,
-    domGeom,
-    domStyle,
-    dom,
-    string,
-    win,
-    Deferred,
-    all,
-    when,
-    Utility,
-    ErrorManager,
-    View,
-    SearchWidget,
-    ConfigurableSelectionModel,
-    _PullToRefreshMixin
-) {
-
     var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         /**
          * @property {Object}
@@ -1341,7 +1315,7 @@ define('argos/_ListBase', [
          */
         navigateToInsertView: function(el, additionalOptions) {
             var view = this.app.getView(this.insertView || this.editView),
-                options = {
+            options:any = {
                     returnTo: this.id,
                     insert: true
                 };
@@ -1730,6 +1704,4 @@ define('argos/_ListBase', [
     });
 
     lang.setObject('Sage.Platform.Mobile._ListBase', __class);
-    return __class;
-});
-
+export default __class;

@@ -12,6 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import declare from 'dojo/_base/declare';
+import lang from 'dojo/_base/lang';
+import Deferred from 'dojo/_base/Deferred';
+import query from 'dojo/query';
+import string from 'dojo/string';
+import dom from 'dojo/dom';
+import domClass from 'dojo/dom-class';
+import domConstruct from 'dojo/dom-construct';
+import format from './Format';
+import utility from './Utility';
+import ErrorManager from './ErrorManager';
+import View from './View';
 
 /**
  * @class argos._DetailBase
@@ -25,34 +37,6 @@
  * @requires argos.Utility
  * @requires argos.ErrorManager
  */
-define('argos/_DetailBase', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/Deferred',
-    'dojo/query',
-    'dojo/string',
-    'dojo/dom',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    './Format',
-    './Utility',
-    './ErrorManager',
-    './View'
-], function(
-    declare,
-    lang,
-    Deferred,
-    query,
-    string,
-    dom,
-    domClass,
-    domConstruct,
-    format,
-    utility,
-    ErrorManager,
-    View
-) {
-
     var __class = declare('argos._DetailBase', [View], {
         /**
          * @property {Object}
@@ -942,7 +926,7 @@ define('argos/_DetailBase', [
             this._navigationOptions = [];
         },
         _processRelatedItem: function(data, context, rowNode) {
-            var view = App.getView(data['view']), options = {};
+        var view = App.getView<_ListBase>(data['view']), options:any = {};
 
             if (view) {
                 options.where = context ? context['where'] : '';
@@ -967,5 +951,4 @@ define('argos/_DetailBase', [
     });
 
     lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
-    return __class;
-});
+export default __class;
