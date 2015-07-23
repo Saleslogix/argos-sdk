@@ -1406,7 +1406,6 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
 
             var store = this.get('store'),
                 rowNode,
-                output,
                 docfrag,
                 key,
                 entry,
@@ -1414,8 +1413,6 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
                 count = entries.length;
 
             if (count > 0) {
-                output = [];
-
                 docfrag = document.createDocumentFragment();
                 for (i = 0; i < count; i++) {
                     entry = this._processEntry(entries[i]);

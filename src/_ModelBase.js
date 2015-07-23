@@ -12,27 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import declare from 'dojo/_base/declare';
+import Evented from 'dojo/Evented';
+import Stateful from 'dojo/Stateful';
 
 /**
- * @class Sage.Platform.Mobile._ModelBase
+ * @class argos._ModelBase
  * A base model class for views to consume
  * @alternateClassName _ModelBase
  */
-define('argos/_ModelBase', [
-    'dojo/_base/declare',
-    'dojo/Evented',
-    'dojo/Stateful'
-], function(declare, Evented, Stateful) {
-
-    return declare('argos._ModelBase', [Evented, Stateful], {
-        metadata: null,
-        _metadataGetter: function() {
-            return this.metadata;
-        },
-        _metadataSetter: function(value) {
-            this.metadata = value;
-        },
-        getEntry: function(options) {
-        }
-    });
+export default declare('argos._ModelBase', [Evented, Stateful], {
+    metadata: null,
+    _metadataGetter: function() {
+        return this.metadata;
+    },
+    _metadataSetter: function(value) {
+        this.metadata = value;
+    },
+    getEntry: function(options) {
+    }
 });

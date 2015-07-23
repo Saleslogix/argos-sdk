@@ -926,7 +926,7 @@ import View from './View';
             this._navigationOptions = [];
         },
         _processRelatedItem: function(data, context, rowNode) {
-        var view = App.getView<_ListBase>(data['view']), options:any = {};
+            var view = App.getView(data['view']), options = {};
 
             if (view) {
                 options.where = context ? context['where'] : '';

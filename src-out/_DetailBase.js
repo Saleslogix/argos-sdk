@@ -308,17 +308,25 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * @template
          */
         createToolLayout: function createToolLayout() {
-            return this.tools || (this.tools = {
-                'tbar': [{
+            var tools = [];
+
+            if (this.editView) {
+                tools.push({
                     id: 'edit',
                     cls: 'fa fa-pencil fa-fw fa-lg',
                     action: 'navigateToEditView',
                     security: App.getViewSecurity(this.editView, 'update')
-                }, {
-                    id: 'refresh',
-                    cls: 'fa fa-refresh fa-fw fa-lg',
-                    action: '_refreshClicked'
-                }]
+                });
+            }
+
+            tools.push({
+                id: 'refresh',
+                cls: 'fa fa-refresh fa-fw fa-lg',
+                action: '_refreshClicked'
+            });
+
+            return this.tools || (this.tools = {
+                'tbar': tools
             });
         },
         _refreshClicked: function _refreshClicked() {
@@ -675,6 +683,12 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
             return entry;
         },
         /**
+         * Returns a new instance of a model for the view. Should be overridden by derived classes.
+         */
+        getModel: function getModel() {
+            return null;
+        },
+        /**
          * Takes the entry from the data store, applies customization, applies any custom item process and then
          * passes it to process layout.
          * @param {Object} entry Entry from data store
@@ -711,12 +725,20 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * Initiates the request.
          */
         requestData: function requestData() {
-            var request, store, getExpression, getResults, getOptions;
+            var store, getExpression, getResults, getOptions, model;
 
             _domClass['default'].add(this.domNode, 'panel-loading');
 
+            model = this.getModel();
             store = this.get('store');
-            if (store) {
+
+            if (model) {
+                model.getEntry(this.options).then((function fulfilled(data) {
+                    this._onGetComplete(data);
+                }).bind(this), (function rejected(err) {
+                    this._onGetError(null, err);
+                }).bind(this));
+            } else if (store) {
                 getOptions = {};
 
                 this._applyStateToGetOptions(getOptions);
@@ -727,9 +749,9 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                 _Deferred['default'].when(getResults, this._onGetComplete.bind(this), this._onGetError.bind(this, getOptions));
 
                 return getResults;
+            } else {
+                throw new Error('requestData called without a model or store defined.');
             }
-
-            console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataDetailMixin to your detail view?');
         },
         _buildGetExpression: function _buildGetExpression() {
             var options = this.options;
@@ -825,7 +847,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
             this._navigationOptions = [];
         },
         _processRelatedItem: function _processRelatedItem(data, context, rowNode) {
-            var view = App.getView < _ListBase > data['view'],
+            var view = App.getView(data['view']),
                 options = {};
 
             if (view) {

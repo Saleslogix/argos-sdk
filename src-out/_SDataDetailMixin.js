@@ -48,12 +48,12 @@ define('argos/_SDataDetailMixin', ['exports', 'module', 'dojo/_base/declare', 'd
          * @cfg {String[]}
          * A list of fields to be selected in an SData request.
          */
-        querySelect: null,
+        querySelect: [],
         /**
          * @cfg {String[]?}
          * A list of child properties to be included in an SData request.
          */
-        queryInclude: null,
+        queryInclude: [],
         /**
          * @cfg {String?/Function?}
          * The default resource property for an SData request.
@@ -131,6 +131,61 @@ define('argos/_SDataDetailMixin', ['exports', 'module', 'dojo/_base/declare', 'd
         formatRelatedQuery: function formatRelatedQuery(entry, fmt, property) {
             property = property || '$key';
             return _string['default'].substitute(fmt, [_utility['default'].getValue(entry, property, '')]);
+        },
+        /**
+         * Takes a model and applies SData properties set on the view, to the metadata sdata props. This method will
+         * allow existing customizations to still work with the new model system.
+         * @param model
+         * @returns {_ModelBase}
+         */
+        setSDataModelProperties: function setSDataModelProperties(model) {
+            var resourceKind, querySelect, queryInclude, resourceProperty, resourcePredicate, m;
+            resourceKind = this.resourceKind;
+            querySelect = this.querySelect;
+            queryInclude = this.queryInclude;
+            resourceProperty = this.resourceProperty;
+            resourcePredicate = this.resourcePredicate;
+            m = model.get('metadata');
+
+            if (!m) {
+                m.set('metadata', { sdata: {} });
+            }
+
+            if (!m.sdata) {
+                m.sdata = {};
+            }
+
+            m = m.sdata;
+
+            if (resourceKind) {
+                m.resourceKind = resourceKind;
+            }
+
+            if (querySelect) {
+                if (!m.querySelect) {
+                    m.querySelect = [];
+                }
+
+                m.querySelect.concat(querySelect);
+            }
+
+            if (queryInclude) {
+                if (!m.queryInclude) {
+                    m.queryInclude = [];
+                }
+
+                m.queryInclude.concat(queryInclude);
+            }
+
+            if (resourceProperty) {
+                m.resourceProperty = resourceProperty;
+            }
+
+            if (resourcePredicate) {
+                m.resourcePredicate = resourcePredicate;
+            }
+
+            return model;
         }
     });
 
