@@ -3,7 +3,11 @@ module.exports = function(grunt) {
         options: {
             configFile: '.eslintrc'
         },
-        target: ['src/**/*.js']
+        target: [
+            'src/**/*.js',
+            'tests/**/*.js',
+            'grunt-tasks/**/*.js'
+        ]
     });
 
     grunt.loadNpmTasks('grunt-eslint');
