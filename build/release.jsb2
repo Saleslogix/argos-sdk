@@ -62,21 +62,6 @@
       ]
     },
     {
-      "name": "Argos SDK AMD Dependencies",
-      "file": "content/javascript/argos-amd-dependencies.js",
-      "isDebug": true,
-      "fileIncludes": [
-          {
-              "text": "snap.js",
-              "path": "../libraries/snap/"
-          },
-          {
-              "text": "moment-with-langs.min.js",
-              "path": "../libraries/moment/"
-          }
-      ]
-    },
-    {
       "name": "Argos SDK",
       "file": "content/javascript/argos-sdk.js",
       "isDebug": true,
