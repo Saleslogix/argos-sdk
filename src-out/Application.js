@@ -348,12 +348,16 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * Establishes various connections to events.
          */
         initConnects: function initConnects() {
+            var _this = this;
+
             this._connects.push(_connect['default'].connect(window, 'resize', this, this.onResize));
             this._connects.push(_connect['default'].connect(_win['default'].body(), 'beforetransition', this, this._onBeforeTransition));
             this._connects.push(_connect['default'].connect(_win['default'].body(), 'aftertransition', this, this._onAfterTransition));
             this._connects.push(_connect['default'].connect(_win['default'].body(), 'show', this, this._onActivate));
-            this._connects.push(_connect['default'].connect(window, 'offline', this, this.onOffline));
-            this._connects.push(_connect['default'].connect(window, 'online', this, this.onOnline));
+            window.addEventListener('load', function () {
+                window.addEventListener('online', _this.onOnline.bind(_this));
+                window.addEventListener('offline', _this.onOffline.bind(_this));
+            });
 
             this.onLine = navigator.onLine;
         },

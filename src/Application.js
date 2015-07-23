@@ -345,8 +345,10 @@ __class = declare('argos.Application', null, {
         this._connects.push(connect.connect(win.body(), 'beforetransition', this, this._onBeforeTransition));
         this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
         this._connects.push(connect.connect(win.body(), 'show', this, this._onActivate));
-        this._connects.push(connect.connect(window, 'offline', this, this.onOffline));
-        this._connects.push(connect.connect(window, 'online', this, this.onOnline));
+        window.addEventListener('load', () => {
+            window.addEventListener('online', this.onOnline.bind(this));
+            window.addEventListener('offline', this.onOffline.bind(this));
+        })
 
         this.onLine = navigator.onLine;
     },
