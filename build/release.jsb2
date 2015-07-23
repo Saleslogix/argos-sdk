@@ -67,6 +67,10 @@
       "isDebug": true,
       "fileIncludes": [
         {
+            "text": "_ModelBase.js",
+            "path": "../src-out/"
+        },
+        {
           "text": "DomHelper.js",
           "path": "../src-out/ReUI/"
         },
