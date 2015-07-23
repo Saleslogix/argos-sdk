@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import declare from 'dojo/_base/declare';
+import lang from 'dojo/_base/lang';
+import _DetailBase from './_DetailBase';
+import _SDataDetailMixin from './_SDataDetailMixin';
+import _RelatedWidgetDetailMixin from './_RelatedViewWidgetDetailMixin';
 
 /**
  * @class argos.Detail
@@ -25,24 +30,8 @@
  * @mixins argos._SDataDetailMixin
  * @mixins argos._RelatedViewWidgetDetailMixin
  */
-define('argos/Detail', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    './_DetailBase',
-    './_SDataDetailMixin',
-    './_RelatedViewWidgetDetailMixin'
-], function(
-    declare,
-    lang,
-    _DetailBase,
-    _SDataDetailMixin,
-    _RelatedWidgetDetailMixin
-) {
-
-    var __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin], {
-    });
-
-    lang.setObject('Sage.Platform.Mobile.Detail', __class);
-    return __class;
+var __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin], {
 });
 
+lang.setObject('Sage.Platform.Mobile.Detail', __class);
+export default __class;

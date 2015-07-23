@@ -1,39 +1,37 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', 'dojo/dom-class', '../Format', '../FieldManager', './EditorField', 'moment', '../Calendar'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoString, _dojoDomClass, _Format, _FieldManager, _EditorField, _moment, _Calendar) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
 
-define('argos/Fields/DateField', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/string',
-    'dojo/dom-class',
-    '../Format',
-    '../FieldManager',
-    './EditorField',
-    '../Calendar',
-    'moment'
-], function(
-    declare,
-    lang,
-    string,
-    domClass,
-    format,
-    FieldManager,
-    EditorField,
-    moment
-) {
+    var _declare = _interopRequireDefault(_dojo_baseDeclare);
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _string = _interopRequireDefault(_dojoString);
+
+    var _domClass = _interopRequireDefault(_dojoDomClass);
+
+    var _format = _interopRequireDefault(_Format);
+
+    var _FieldManager2 = _interopRequireDefault(_FieldManager);
+
+    var _EditorField2 = _interopRequireDefault(_EditorField);
+
+    var _moment2 = _interopRequireDefault(_moment);
+
     /**
      * @class argos.Fields.DateField
      * The DateField is an extension of the {@link EditorField EditorField} by accepting Date Objects
@@ -56,7 +54,7 @@ define('argos/Fields/DateField', [
      * @requires argos.FieldManager
      * @requires argos.Format
      */
-    var control = declare('argos.Fields.DateField', [EditorField], {
+    var control = (0, _declare['default'])('argos.Fields.DateField', [_EditorField2['default']], {
         // Localization
         /**
          * @cfg {String}
@@ -70,7 +68,7 @@ define('argos/Fields/DateField', [
          *
          * `${0}` => Label
          */
-        invalidDateFormatErrorText: "Field '${0}' has Invalid date format.",
+        invalidDateFormatErrorText: 'Field \'${0}\' has Invalid date format.',
 
         /**
          * @property {Simplate}
@@ -80,11 +78,7 @@ define('argos/Fields/DateField', [
          * * `$$` => Owner View instance
          *
          */
-        widgetTemplate: new Simplate([
-            '<label for="{%= $.name %}">{%: $.label %}</label>',
-            '<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
-            '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />'
-        ]),
+        widgetTemplate: new Simplate(['<label for="{%= $.name %}">{%: $.label %}</label>', '<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>', '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />']),
 
         iconClass: 'fa fa-calendar fa-lg',
 
@@ -113,8 +107,8 @@ define('argos/Fields/DateField', [
          * @param {Date} value Date to be converted
          * @return {String}
          */
-        formatValue: function(value) {
-            return format.date(value, this.dateFormatText, this.timeless);
+        formatValue: function formatValue(value) {
+            return _format['default'].date(value, this.dateFormatText, this.timeless);
         },
         /**
          * When a value changes it checks that the text in the input field matches the defined
@@ -123,15 +117,15 @@ define('argos/Fields/DateField', [
          * doesn't then current value is empties and the validation styling is added.
          * @param {Event} evt Event that caused change to fire.
          */
-        _onChange: function(evt) {
-            var val = moment(this.inputNode.value, this.dateFormatText).toDate();
+        _onChange: function _onChange(evt) {
+            var val = (0, _moment2['default'])(this.inputNode.value, this.dateFormatText).toDate();
 
             if (val) {
                 this.validationValue = this.currentValue = val;
-                domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+                _domClass['default'].remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
             } else {
                 this.validationValue = this.currentValue = null;
-                domClass.add(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+                _domClass['default'].add(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
             }
         },
         /**
@@ -139,7 +133,7 @@ define('argos/Fields/DateField', [
          * also include the properties `date`, `showTimePicker` and `timeless` with `date` being the current value
          * @return {Object} Navigation options
          */
-        createNavigationOptions: function() {
+        createNavigationOptions: function createNavigationOptions() {
             var options = this.inherited(arguments);
 
             options.date = this.currentValue;
@@ -151,29 +145,27 @@ define('argos/Fields/DateField', [
         /**
          * Retrieves the date from the {@link Calendar#getDateTime Calendar} view and sets it to currentValue.
          */
-        getValuesFromView: function() {
+        getValuesFromView: function getValuesFromView() {
             var view = App.getPrimaryActiveView();
             if (view) {
                 this.currentValue = this.validationValue = view.getDateTime();
-                domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+                _domClass['default'].remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
             }
         },
         /**
          * Determines if the current value has been modified from the original value.
          * @return {Boolean}
          */
-        isDirty: function() {
-            return this.originalValue instanceof Date && this.currentValue instanceof Date
-                ? this.originalValue.getTime() !== this.currentValue.getTime()
-                : this.originalValue !== this.currentValue;
+        isDirty: function isDirty() {
+            return this.originalValue instanceof Date && this.currentValue instanceof Date ? this.originalValue.getTime() !== this.currentValue.getTime() : this.originalValue !== this.currentValue;
         },
         /**
          * Extends the parent {@link EditorField#clearValue clearValue} to also include removing the
          * error validation styling.
          */
-        clearValue: function() {
+        clearValue: function clearValue() {
             this.inherited(arguments);
-            domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+            _domClass['default'].remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
         },
         /**
          * Extends the parent {@link EditorField#validate validate} with a check that makes sure if
@@ -181,15 +173,15 @@ define('argos/Fields/DateField', [
          * in the {@link #_onChange _onChange} function.
          * @return {Boolean/Object} False for no errors. True/Object for invalid.
          */
-        validate: function() {
+        validate: function validate() {
             if (this.inputNode.value !== '' && !this.currentValue) {
-                return string.substitute(this.invalidDateFormatErrorText, [this.label]);
+                return _string['default'].substitute(this.invalidDateFormatErrorText, [this.label]);
             }
 
             return this.inherited(arguments);
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Fields.DateField', control);
-    return FieldManager.register('date', control);
+    _lang['default'].setObject('Sage.Platform.Mobile.Fields.DateField', control);
+    module.exports = _FieldManager2['default'].register('date', control);
 });

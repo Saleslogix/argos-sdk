@@ -1,52 +1,53 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/Deferred', 'dojo/when', 'dojo/dom-construct', 'dojo/dom-class', 'dojo/string', './Store/SData', './Utility', './ErrorManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoDeferred, _dojoWhen, _dojoDomConstruct, _dojoDomClass, _dojoString, _StoreSData, _Utility, _ErrorManager) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-/**
- * @class argos._SDataListMixin
- *
- * Enables SData for the List view.
- * Adds the SData store to the view and exposes the needed properties for creating a Feed request.
- *
- * @alternateClassName _SDataListMixin
- * @requires argos.SData
- * @requires argos.Utility
- */
-define('argos/_SDataListMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/Deferred',
-    'dojo/when',
-    'dojo/dom-construct',
-    'dojo/dom-class',
-    'dojo/string',
-    './Store/SData',
-    './Utility',
-    './ErrorManager'
-], function(
-    declare,
-    lang,
-    Deferred,
-    when,
-    domConstruct,
-    domClass,
-    string,
-    SData,
-    utility,
-    ErrorManager
-) {
-    var __class = declare('argos._SDataListMixin', null, {
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+
+    /**
+     * @class argos._SDataListMixin
+     *
+     * Enables SData for the List view.
+     * Adds the SData store to the view and exposes the needed properties for creating a Feed request.
+     *
+     * @alternateClassName _SDataListMixin
+     * @requires argos.SData
+     * @requires argos.Utility
+     */
+
+    var _declare = _interopRequireDefault(_dojo_baseDeclare);
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _Deferred = _interopRequireDefault(_dojoDeferred);
+
+    var _when = _interopRequireDefault(_dojoWhen);
+
+    var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
+
+    var _domClass = _interopRequireDefault(_dojoDomClass);
+
+    var _string = _interopRequireDefault(_dojoString);
+
+    var _SData = _interopRequireDefault(_StoreSData);
+
+    var _utility = _interopRequireDefault(_Utility);
+
+    var _ErrorManager2 = _interopRequireDefault(_ErrorManager);
+
+    var __class = (0, _declare['default'])('argos._SDataListMixin', null, {
         /**
          * @property request Object SData request passed into the store. Optional.
          */
@@ -111,21 +112,21 @@ define('argos/_SDataListMixin', [
          * @param {String} property Property name to extract from the entry. May be a path: `'Address.City'`.
          * @return {String}
          */
-        formatRelatedQuery: function(entry, fmt, property) {
-            return string.substitute(fmt, [lang.getObject(property || '$key', false, entry)]);
+        formatRelatedQuery: function formatRelatedQuery(entry, fmt, property) {
+            return _string['default'].substitute(fmt, [_lang['default'].getObject(property || '$key', false, entry)]);
         },
-        getContext: function() {
-            return lang.mixin(this.inherited(arguments), {
+        getContext: function getContext() {
+            return _lang['default'].mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind
             });
         },
-        _onRefresh: function(options) {
+        _onRefresh: function _onRefresh(options) {
             if (this.resourceKind && options.resourceKind === this.resourceKind) {
                 this.refreshRequired = true;
             }
         },
-        createStore: function() {
-            return new SData({
+        createStore: function createStore() {
+            return new _SData['default']({
                 service: this.getConnection(),
                 request: this.request,
                 contractName: this.contractName,
@@ -145,17 +146,13 @@ define('argos/_SDataListMixin', [
                 scope: this
             });
         },
-        _buildQueryExpression: function() {
+        _buildQueryExpression: function _buildQueryExpression() {
             var options = this.options,
                 passed = options && (options.query || options.where);
 
-            return passed
-                ? this.query
-                    ? '(' + utility.expand(this, passed) + ') and (' + this.query + ')'
-                    : '(' + utility.expand(this, passed) + ')'
-                : this.query;
+            return passed ? this.query ? '(' + _utility['default'].expand(this, passed) + ') and (' + this.query + ')' : '(' + _utility['default'].expand(this, passed) + ')' : this.query;
         },
-        _applyStateToQueryOptions: function(queryOptions) {
+        _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {
             var options = this.options;
             if (options) {
                 if (options.select) {
@@ -191,13 +188,13 @@ define('argos/_SDataListMixin', [
                 }
             }
         },
-        formatSearchQuery: function(query) {
+        formatSearchQuery: function formatSearchQuery(query) {
             return query;
         },
-        escapeSearchQuery: function(query) {
+        escapeSearchQuery: function escapeSearchQuery(query) {
             return (query || '').replace(/"/g, '""');
         },
-        hasMoreData: function() {
+        hasMoreData: function hasMoreData() {
             var start, count, total;
             start = this.position;
             count = this.pageSize;
@@ -209,10 +206,13 @@ define('argos/_SDataListMixin', [
                 return true; // no way to determine, always assume more data
             }
         },
-        getListCount: function(options) {
-            var store, queryOptions, queryResults, def = new Deferred();
+        getListCount: function getListCount(options) {
+            var store,
+                queryOptions,
+                queryResults,
+                def = new _Deferred['default']();
 
-            store = new SData({
+            store = new _SData['default']({
                 service: App.services['crm'],
                 resourceKind: this.resourceKind,
                 contractName: this.contractName,
@@ -229,9 +229,9 @@ define('argos/_SDataListMixin', [
 
             queryResults = store.query(null, queryOptions);
 
-            when(queryResults, function(relatedFeed) {
+            (0, _when['default'])(queryResults, function (relatedFeed) {
                 def.resolve(queryResults.total);
-            }, function(err) {
+            }, function (err) {
                 def.reject(err);
             });
 
@@ -239,6 +239,6 @@ define('argos/_SDataListMixin', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile._SDataListMixin', __class);
-    return __class;
+    _lang['default'].setObject('Sage.Platform.Mobile._SDataListMixin', __class);
+    module.exports = __class;
 });

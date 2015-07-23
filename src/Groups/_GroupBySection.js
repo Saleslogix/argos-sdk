@@ -8,50 +8,42 @@
 
     You acknowledge that Swiftpage retains and is not transferring to you any title to or ownership rights in or to any intellectual property in the Software, any modifications thereto, or copies thereof.  Swiftpage may terminate this Agreement, in its sole discretion. Upon termination of this Agreement, you shall return to Swiftpage, or destroy, all originals and copies of all Software (including any support materials furnished by Swiftpage), permanently purge all machine-readable copies of the Software from all computers and storage devices, and to certify to Sage in writing that the foregoing duties have been performed and that you will not in any way use or permit the use of the Software. This Agreement shall be governed by the laws of the State of Colorado.
  */
+import declare from 'dojo/_base/declare';
+import lang from 'dojo/_base/lang';
+import string from 'dojo/string';
 
 /**
  * @class argos.Groups._GroupSection
  */
-define('argos/Groups/_GroupBySection', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/string'
-], function(
-    declare,
-    lang,
-    string
-) {
-
-    var __class = declare('argos.Groups._GroupBySection', null, {
-        /**
-        * @property {String}
-        * The unique (within the current form) name of the field
-        */
-        name: null,
-        /**
-         * @property {String}
-         * Signifies that the field should always be included when the form calls {@link Edit#getValues getValues}.
-         */
-        displayName: null,
-        /**
-         * @property {String}
-         * The SData property that the field will be bound to.
-         */
-        groupByProperty: null,
-        sortDirection:'desc',
-        sections: null,
-        constructor: function(o) {
-            lang.mixin(this, o);
-        },
-        init: function() {
-        },
-        getGroupSection: function(entry) {
-        },
-        getOrderByQuery: function() {
-            return this.groupByProperty + ' ' + this.sortDirection;
-        }
-    });
-
-    lang.setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
-    return __class;
+var __class = declare('argos.Groups._GroupBySection', null, {
+    /**
+    * @property {String}
+    * The unique (within the current form) name of the field
+    */
+    name: null,
+    /**
+     * @property {String}
+     * Signifies that the field should always be included when the form calls {@link Edit#getValues getValues}.
+     */
+    displayName: null,
+    /**
+     * @property {String}
+     * The SData property that the field will be bound to.
+     */
+    groupByProperty: null,
+    sortDirection:'desc',
+    sections: null,
+    constructor: function(o) {
+        lang.mixin(this, o);
+    },
+    init: function() {
+    },
+    getGroupSection: function(entry) {
+    },
+    getOrderByQuery: function() {
+        return this.groupByProperty + ' ' + this.sortDirection;
+    }
 });
+
+lang.setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
+export default __class;

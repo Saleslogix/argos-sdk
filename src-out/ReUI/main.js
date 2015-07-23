@@ -1,45 +1,35 @@
-define('argos/ReUI/main', [
-    'dojo/_base/lang',
-    'dojo/on',
-    'dojo/dom',
-    'dojo/dom-class',
-    'dojo/dom-attr',
-    'dojo/dom-style',
-    'dojo/query',
-    './DomHelper'
-], function(
-    lang,
-    on,
-    dom,
-    domClass,
-    domAttr,
-    domStyle,
-    query,
-    DomHelper
-) {
-    var ReUI,
-        R,
-        D,
-        transition,
-        config,
-        context,
-        extractInfoFromHash,
-        formatHashForPage,
-        updateOrientationDom,
-        checkOrientationAndLocation,
-        transitionComplete;
+define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-attr', 'dojo/dom-style', 'dojo/query', './DomHelper'], function (exports, module, _dojo_baseLang, _dojoOn, _dojoDom, _dojoDomClass, _dojoDomAttr, _dojoDomStyle, _dojoQuery, _DomHelper) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _on = _interopRequireDefault(_dojoOn);
+
+    var _dom = _interopRequireDefault(_dojoDom);
+
+    var _domClass = _interopRequireDefault(_dojoDomClass);
+
+    var _domAttr = _interopRequireDefault(_dojoDomAttr);
+
+    var _domStyle = _interopRequireDefault(_dojoDomStyle);
+
+    var _query = _interopRequireDefault(_dojoQuery);
+
+    var _DomHelper2 = _interopRequireDefault(_DomHelper);
+
+    var ReUI, R, D, transition, config, context, extractInfoFromHash, formatHashForPage, updateOrientationDom, checkOrientationAndLocation, transitionComplete;
 
     ReUI = {};
 
-    ReUI.DomHelper = DomHelper;
+    ReUI.DomHelper = _DomHelper2['default'];
 
     R = ReUI;
-    D = DomHelper;
+    D = _DomHelper2['default'];
 
-    transitionComplete = function(page, o) {
+    transitionComplete = function (page, o) {
         if (o.track !== false) {
             if (typeof page.id !== 'string' || page.id.length <= 0) {
-                page.id = 'reui-' + (context.counter++);
+                page.id = 'reui-' + context.counter++;
             }
 
             context.hash = location.hash = formatHashForPage(page, o);
@@ -70,15 +60,15 @@ define('argos/ReUI/main', [
         }
     };
 
-    transition = function(from, to, o) {
+    transition = function (from, to, o) {
         function complete() {
             transitionComplete(to, o);
 
-            domClass.remove(R.rootEl, 'transition');
+            _domClass['default'].remove(R.rootEl, 'transition');
 
             context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
-            on.emit(from, 'aftertransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
-            on.emit(to, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+            _on['default'].emit(from, 'aftertransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+            _on['default'].emit(to, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
 
             if (o.complete) {
                 o.complete(from, to, o);
@@ -88,24 +78,26 @@ define('argos/ReUI/main', [
         context.transitioning = true;
 
         window.clearInterval(context.check);
-        domClass.add(R.rootEl, 'transition');
+        _domClass['default'].add(R.rootEl, 'transition');
 
         // dispatch an 'show' event to let the page be aware that is being show as the result of an external
         // event (i.e. browser back/forward navigation).
         if (o.external) {
-            on.emit(to, 'show', { tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+            _on['default'].emit(to, 'show', { tag: o.tag, data: o.data, bubbles: true, cancelable: true });
         }
 
-        on.emit(from, 'beforetransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
-        on.emit(to, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+        _on['default'].emit(from, 'beforetransition', { out: true, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+        _on['default'].emit(to, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
 
         D.unselect(from);
         D.select(to);
         complete();
     };
 
-    extractInfoFromHash = function(hash) {
-        var segments = [], position, el;
+    extractInfoFromHash = function (hash) {
+        var segments = [],
+            position,
+            el;
         if (hash) {
             if (hash.indexOf(R.hashPrefix) === 0) {
                 segments = hash.substr(R.hashPrefix.length).split(';');
@@ -128,20 +120,17 @@ define('argos/ReUI/main', [
             }
 
             return context.history[position - 1];
-
         }
 
         return false;
     };
 
-    formatHashForPage = function(page, options) {
-        var segments = options && options.tag
-            ? [page.id].concat(options.tag)
-            : [page.id];
+    formatHashForPage = function (page, options) {
+        var segments = options && options.tag ? [page.id].concat(options.tag) : [page.id];
         return R.hashPrefix + segments.join(';');
     };
 
-    updateOrientationDom = function(value) {
+    updateOrientationDom = function (value) {
         var currentOrient = R.rootEl.getAttribute('orient');
         if (value === currentOrient) {
             return;
@@ -150,22 +139,19 @@ define('argos/ReUI/main', [
         R.rootEl.setAttribute('orient', value);
 
         if (value === 'portrait') {
-            domClass.remove(R.rootEl, 'landscape');
-            domClass.add(R.rootEl, 'portrait');
+            _domClass['default'].remove(R.rootEl, 'landscape');
+            _domClass['default'].add(R.rootEl, 'portrait');
         } else if (value === 'landscape') {
-            domClass.remove(R.rootEl, 'portrait');
-            domClass.add(R.rootEl, 'landscape');
+            _domClass['default'].remove(R.rootEl, 'portrait');
+            _domClass['default'].add(R.rootEl, 'landscape');
         } else {
-            domClass.remove(R.rootEl, 'portrait');
-            domClass.remove(R.rootEl, 'landscape');
+            _domClass['default'].remove(R.rootEl, 'portrait');
+            _domClass['default'].remove(R.rootEl, 'landscape');
         }
     };
 
-    checkOrientationAndLocation = function() {
-        var reverse,
-            info,
-            page,
-            position;
+    checkOrientationAndLocation = function () {
+        var reverse, info, page, position;
 
         // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
         if (Math.abs(window.innerHeight - context.height) > 5 || Math.abs(window.innerWidth - context.width) > 5) {
@@ -194,7 +180,7 @@ define('argos/ReUI/main', [
             }
 
             info = info || extractInfoFromHash(location.hash);
-            page = info && dom.byId(info.page);
+            page = info && _dom['default'].byId(info.page);
 
             // more often than not, data will only be needed when moving to a previous view (and restoring its state).
 
@@ -217,7 +203,7 @@ define('argos/ReUI/main', [
 
     config = window.reConfig || {};
 
-    lang.mixin(ReUI, {
+    _lang['default'].mixin(ReUI, {
         rootEl: false,
         titleEl: false,
         pageTitleId: 'pageTitle',
@@ -225,7 +211,7 @@ define('argos/ReUI/main', [
         checkStateEvery: 100,
         context: context,
 
-        init: function() {
+        init: function init() {
             if (context.initialized) {
                 return;
             }
@@ -233,7 +219,7 @@ define('argos/ReUI/main', [
             context.initialized = true;
 
             R.rootEl = R.rootEl || document.body;
-            R.titleEl = R.titleEl || dom.byId(R.pageTitleId);
+            R.titleEl = R.titleEl || _dom['default'].byId(R.pageTitleId);
 
             context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
         },
@@ -241,28 +227,28 @@ define('argos/ReUI/main', [
         /**
          * Called when the screen orientation changes.
          */
-        setOrientation: function(value) {
+        setOrientation: function setOrientation(value) {
             updateOrientationDom(value);
         },
 
         /**
          * @deprecated
          */
-        getCurrentPage: function() {
+        getCurrentPage: function getCurrentPage() {
             return context.page;
         },
 
         /**
          * @deprecated
          */
-        back: function() {
+        back: function back() {
             history.back();
         },
 
         /**
          * Temporarily disables the location and orientation checking.
         */
-        disableLocationCheck: function() {
+        disableLocationCheck: function disableLocationCheck() {
             if (context.check) {
                 window.clearInterval(context.check);
             }
@@ -276,7 +262,7 @@ define('argos/ReUI/main', [
          *   update: False if the transition should not update title and back button, True otherwise.
          *   scroll: False if the transition should not scroll to the top, True otherwise.
         */
-        show: function(page, o) {
+        show: function show(page, o) {
             if (context.transitioning) {
                 return;
             }
@@ -284,9 +270,7 @@ define('argos/ReUI/main', [
             var count, hash, position, from;
 
             o = o || {};
-            page = typeof page === 'string'
-                ? dom.byId(page)
-                : page;
+            page = typeof page === 'string' ? _dom['default'].byId(page) : page;
 
             if (!page) {
                 return;
@@ -310,7 +294,7 @@ define('argos/ReUI/main', [
                     }
                 }
 
-                if ((position > -1) && (position === (count - 2))) {
+                if (position > -1 && position === count - 2) {
                     //Added check if history item is just one back.
 
                     context.history = context.history.splice(0, position + 1);
@@ -334,7 +318,7 @@ define('argos/ReUI/main', [
                             }
                         }
                     } else if (o.returnTo < 0) {
-                        position = (count - 1) + o.returnTo;
+                        position = count - 1 + o.returnTo;
                     }
 
                     if (position > -1) {
@@ -355,37 +339,36 @@ define('argos/ReUI/main', [
                 o.scroll = !o.reverse;
             }
 
-            on.emit(page, 'load', { bubbles: false, cancelable: true });
+            _on['default'].emit(page, 'load', { bubbles: false, cancelable: true });
 
             from = context.page;
 
             if (from) {
-                on.emit(from, 'blur', { bubbles: false, cancelable: true });
+                _on['default'].emit(from, 'blur', { bubbles: false, cancelable: true });
             }
 
             context.page = page; // Keep for backwards compat
 
-            on.emit(page, 'focus', { bubbles: false, cancelable: true });
+            _on['default'].emit(page, 'focus', { bubbles: false, cancelable: true });
 
-            if (from && domAttr.get(page, 'selected') !== 'true') {
+            if (from && _domAttr['default'].get(page, 'selected') !== 'true') {
                 if (o.reverse) {
-                    on.emit(page, 'unload', { bubbles: false, cancelable: true });
+                    _on['default'].emit(page, 'unload', { bubbles: false, cancelable: true });
                 }
 
                 window.setTimeout(transition, R.checkStateEvery, from, page, o);
             } else {
-                on.emit(page, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+                _on['default'].emit(page, 'beforetransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
 
                 D.select(page);
 
                 transitionComplete(page, o);
 
-                on.emit(page, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
+                _on['default'].emit(page, 'aftertransition', { out: false, tag: o.tag, data: o.data, bubbles: true, cancelable: true });
             }
         }
     }, config);
 
     window.ReUI = ReUI;
-    return ReUI;
+    module.exports = ReUI;
 });
-

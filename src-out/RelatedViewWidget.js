@@ -1,43 +1,44 @@
-/* see copyright file
- */
+define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/on', 'dojo/string', 'dojo/dom-class', 'dojo/when', 'dojo/dom-construct', 'dojo/query', 'dojo/dom-attr', 'dojo/_base/connect', 'dojo/_base/array', './Store/SData', './_CustomizationMixin', './_ActionMixin', 'argos/_RelatedViewWidgetBase'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojoOn, _dojoString, _dojoDomClass, _dojoWhen, _dojoDomConstruct, _dojoQuery, _dojoDomAttr, _dojo_baseConnect, _dojo_baseArray, _StoreSData, _CustomizationMixin2, _ActionMixin2, _argos_RelatedViewWidgetBase) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+    /* see copyright file
+     */
 
-define('argos/RelatedViewWidget', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/event',
-    'dojo/on',
-    'dojo/string',
-    'dojo/dom-class',
-    'dojo/when',
-    'dojo/dom-construct',
-    'dojo/query',
-    'dojo/dom-attr',
-    'dojo/_base/connect',
-    'dojo/_base/array',
-    './Store/SData',
-    './_CustomizationMixin',
-    './_ActionMixin',
-    'argos/_RelatedViewWidgetBase'
-], function(
-    declare,
-    lang,
-    event,
-    on,
-    string,
-    domClass,
-    when,
-    domConstruct,
-    query,
-    domAttr,
-    connect,
-    array,
-    SDataStore,
-    _CustomizationMixin,
-    _ActionMixin,
-    _RelatedViewWidgetBase
-) {
-    var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], {
+    var _declare = _interopRequireDefault(_dojo_baseDeclare);
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _event = _interopRequireDefault(_dojo_baseEvent);
+
+    var _on = _interopRequireDefault(_dojoOn);
+
+    var _string = _interopRequireDefault(_dojoString);
+
+    var _domClass = _interopRequireDefault(_dojoDomClass);
+
+    var _when = _interopRequireDefault(_dojoWhen);
+
+    var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
+
+    var _query = _interopRequireDefault(_dojoQuery);
+
+    var _domAttr = _interopRequireDefault(_dojoDomAttr);
+
+    var _connect = _interopRequireDefault(_dojo_baseConnect);
+
+    var _array = _interopRequireDefault(_dojo_baseArray);
+
+    var _SDataStore = _interopRequireDefault(_StoreSData);
+
+    var _CustomizationMixin3 = _interopRequireDefault(_CustomizationMixin2);
+
+    var _ActionMixin3 = _interopRequireDefault(_ActionMixin2);
+
+    var _RelatedViewWidgetBase2 = _interopRequireDefault(_argos_RelatedViewWidgetBase);
+
+    'use babel';
+
+    var __class = (0, _declare['default'])('argos.RelatedViewWidget', [_RelatedViewWidgetBase2['default'], _CustomizationMixin3['default'], _ActionMixin3['default']], {
         cls: 'related-view-widget',
         nodataText: 'no records found ...',
         selectMoreDataText: 'see ${0} more of ${1} ... ',
@@ -87,109 +88,38 @@ define('argos/RelatedViewWidget', [
          * @property {Simplate}
          * Simple that defines the HTML Markup
          */
-        relatedContentTemplate: new Simplate([
-                    '<div  id="tab" data-dojo-attach-point="tabNode" class="',
-                    '{% if ($.autoLoad) { %}',
-                     'tab ',
-                    '{% } else { %}',
-                       'tab collapsed ',
-                    '{% } %}',
-                    '" >',
-                    '<div class="tab-items">',
-                       '{%! $$.relatedViewTabItemsTemplate %}',
-                    '</div>',
-                    '</div>',
-                    '<div class="panel">',
-                        '<div data-dojo-attach-point="actionsNode" class="action-items"></div>',
-                        '<div data-dojo-attach-point="headereNode" class="header">',
-                           '{%! $$.relatedViewHeaderTemplate %}',
-                        '</div>',
-                        '<div  data-dojo-attach-point="relatedViewNode"></div>',
-                        '<div data-dojo-attach-point="footerNode" class="footer">',
-                           '{%! $$.relatedViewFooterTemplate %}',
-                        '</div>',
-                    '</div>'
-        ]),
-        nodataTemplate: new Simplate([
-             '<div class="nodata"> {%: $$.nodataText %}</div>'
-        ]),
-        relatedViewTabItemsTemplate: new Simplate([
-            '<span class="tab-item">',
-            '<div class="tab-icon" data-dojo-attach-event="onclick:onNavigateToList">',
-               '<img src="{%= $.icon %}" alt="{%= $.title %}" />',
-            '</div>',
-            '<div data-dojo-attach-point="titleNode" data-dojo-attach-event="onclick:toggleView"  class="title" >{%: ($.title ) %} </div>',
-            '</span>',
-            '<div class="line-bar"></div>'
-        ]),
-        relatedViewHeaderTemplate: new Simplate([
-            ''
-        ]),
-        relatedViewFooterTemplate: new Simplate([
-                 '<div  data-dojo-attach-point="selectMoreNode" class="action" data-dojo-attach-event="onclick:onSelectMoreData"></div>',
-                 '<div  data-dojo-attach-point="navtoListFooterNode" class="action" data-dojo-attach-event="onclick:onNavigateToList">{%: $$.navToListText %}</div>'
+        relatedContentTemplate: new Simplate(['<div  id="tab" data-dojo-attach-point="tabNode" class="', '{% if ($.autoLoad) { %}', 'tab ', '{% } else { %}', 'tab collapsed ', '{% } %}', '" >', '<div class="tab-items">', '{%! $$.relatedViewTabItemsTemplate %}', '</div>', '</div>', '<div class="panel">', '<div data-dojo-attach-point="actionsNode" class="action-items"></div>', '<div data-dojo-attach-point="headereNode" class="header">', '{%! $$.relatedViewHeaderTemplate %}', '</div>', '<div  data-dojo-attach-point="relatedViewNode"></div>', '<div data-dojo-attach-point="footerNode" class="footer">', '{%! $$.relatedViewFooterTemplate %}', '</div>', '</div>']),
+        nodataTemplate: new Simplate(['<div class="nodata"> {%: $$.nodataText %}</div>']),
+        relatedViewTabItemsTemplate: new Simplate(['<span class="tab-item">', '<div class="tab-icon" data-dojo-attach-event="onclick:onNavigateToList">', '<img src="{%= $.icon %}" alt="{%= $.title %}" />', '</div>', '<div data-dojo-attach-point="titleNode" data-dojo-attach-event="onclick:toggleView"  class="title" >{%: ($.title ) %} </div>', '</span>', '<div class="line-bar"></div>']),
+        relatedViewHeaderTemplate: new Simplate(['']),
+        relatedViewFooterTemplate: new Simplate(['<div  data-dojo-attach-point="selectMoreNode" class="action" data-dojo-attach-event="onclick:onSelectMoreData"></div>', '<div  data-dojo-attach-point="navtoListFooterNode" class="action" data-dojo-attach-event="onclick:onNavigateToList">{%: $$.navToListText %}</div>']),
+        relatedViewRowTemplate: new Simplate(['<div class="row {%: $$.cls %}"  data-relatedkey="{%: $.$key %}" data-descriptor="{%: $.$descriptor %}">', '<div class="item">', '{%! $$.relatedItemTemplate %}', '</div>', '</div>']),
+        relatedItemIconTemplate: new Simplate(['<img src="{%: $$.itemIcon %}" />']),
+        relatedItemHeaderTemplate: new Simplate(['<div>{%: $.$descriptor %}</div>']),
+        relatedItemDetailTemplate: new Simplate(['<div></div>']),
+        relatedItemFooterTemplate: new Simplate(['<div></div>']),
+        relatedItemTemplate: new Simplate(['<div class="item-icon">', '{%! $$.relatedItemIconTemplate %}', '</div>', '<div class="item-header">', '{%! $$.relatedItemHeaderTemplate %}', '</div>', '<div class="item-detail">', '{%! $$.relatedItemDetailTemplate %}', '</div>', '<div class="item-footer">', '{%! $$.relatedItemFooterTemplate %}', '</div>']),
+        loadingTemplate: new Simplate(['<div class="loading-indicator"><div>{%= $.loadingText %}</div></div>']),
 
-        ]),
-        relatedViewRowTemplate: new Simplate([
-            '<div class="row {%: $$.cls %}"  data-relatedkey="{%: $.$key %}" data-descriptor="{%: $.$descriptor %}">',
-                 '<div class="item">',
-                      '{%! $$.relatedItemTemplate %}',
-                 '</div>',
-            '</div>'
-        ]),
-        relatedItemIconTemplate: new Simplate([
-             '<img src="{%: $$.itemIcon %}" />'
-        ]),
-        relatedItemHeaderTemplate: new Simplate([
-              '<div>{%: $.$descriptor %}</div>'
-        ]),
-        relatedItemDetailTemplate: new Simplate([
-              '<div></div>'
-        ]),
-        relatedItemFooterTemplate: new Simplate([
-            '<div></div>'
-        ]),
-        relatedItemTemplate: new Simplate([
-               '<div class="item-icon">',
-                   '{%! $$.relatedItemIconTemplate %}',
-               '</div>',
-               '<div class="item-header">',
-                   '{%! $$.relatedItemHeaderTemplate %}',
-               '</div>',
-               '<div class="item-detail">',
-                  '{%! $$.relatedItemDetailTemplate %}',
-               '</div>',
-               '<div class="item-footer">',
-                   '{%! $$.relatedItemFooterTemplate %}',
-               '</div>'
-        ]),
-        loadingTemplate: new Simplate([
-           '<div class="loading-indicator"><div>{%= $.loadingText %}</div></div>'
-        ]),
-
-        relatedActionTemplate: new Simplate([
-           '<span class="action-item" data-id="{%= $.actionIndex %}">',
-                  '<img src="{%= $.icon %}" alt="{%= $.label %}" />',
-           '</span>'
-        ]),
-        constructor: function(options) {
-            lang.mixin(this, options);
+        relatedActionTemplate: new Simplate(['<span class="action-item" data-id="{%= $.actionIndex %}">', '<img src="{%= $.icon %}" alt="{%= $.label %}" />', '</span>']),
+        constructor: function constructor(options) {
+            _lang['default'].mixin(this, options);
             if (this.titleText) {
                 this.title = this.titleText;
             }
 
             this._subscribes = [];
-            this._subscribes.push(connect.subscribe('/app/refresh', this, this._onAppRefresh));
+            this._subscribes.push(_connect['default'].subscribe('/app/refresh', this, this._onAppRefresh));
         },
-        postCreate: function() {
-            if ((!this.showTab) && (this.tabNode)) {
-                domClass.toggle(this.tabNode, 'hidden');
+        postCreate: function postCreate() {
+            if (!this.showTab && this.tabNode) {
+                _domClass['default'].toggle(this.tabNode, 'hidden');
             }
             if (this.enableActions) {
                 this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'relatedview-actions'));
             }
         },
-        createActionLayout: function() {
+        createActionLayout: function createActionLayout() {
             return this.actions || (this.actions = [{
                 id: 'refresh',
                 cls: 'fa fa-refresh fa-2x',
@@ -203,10 +133,9 @@ define('argos/RelatedViewWidget', [
                 action: 'onNavigateToList',
                 isEnabled: true,
                 fn: this.onNavigateToList.bind(this)
-            }]
-            );
+            }]);
         },
-        createActions: function(actions) {
+        createActions: function createActions(actions) {
             var i, action, actionNode, actionTemplate, options;
             for (i = 0; i < actions.length; i++) {
                 action = actions[i];
@@ -215,15 +144,15 @@ define('argos/RelatedViewWidget', [
                 };
                 actionTemplate = action.template || this.relatedActionTemplate;
 
-                lang.mixin(action, options);
-                actionNode = domConstruct.toDom(actionTemplate.apply(action, action.id));
-                on(actionNode, 'click', this.onInvokeActionItem.bind(this));
-                domConstruct.place(actionNode, this.actionsNode, 'last');
+                _lang['default'].mixin(action, options);
+                actionNode = _domConstruct['default'].toDom(actionTemplate.apply(action, action.id));
+                (0, _on['default'])(actionNode, 'click', this.onInvokeActionItem.bind(this));
+                _domConstruct['default'].place(actionNode, this.actionsNode, 'last');
             }
 
             this.actions = actions;
         },
-        onInvokeActionItem: function(evt) {
+        onInvokeActionItem: function onInvokeActionItem(evt) {
             var action, parameters, index;
             index = evt.currentTarget.attributes['data-id'].value;
             action = this.actions[index];
@@ -231,8 +160,7 @@ define('argos/RelatedViewWidget', [
                 if (action.isEnabled) {
                     if (action['fn']) {
                         action['fn'].call(action['scope'] || this, action);
-                    }
-                    else {
+                    } else {
 
                         if (typeof this[action['action']] === 'function') {
                             this[action['action']](evt);
@@ -240,10 +168,10 @@ define('argos/RelatedViewWidget', [
                     }
                 }
             }
-            event.stop(evt);
+            _event['default'].stop(evt);
         },
-        getStore: function() {
-            var store = new SDataStore({
+        getStore: function getStore() {
+            var store = new _SDataStore['default']({
                 service: App.services['crm'],
                 resourceKind: this.resourceKind,
                 contractName: this.contractName,
@@ -251,10 +179,8 @@ define('argos/RelatedViewWidget', [
             });
             return store;
         },
-        getQueryOptions: function() {
-            var whereExpression,
-                startIndex,
-                queryOptions;
+        getQueryOptions: function getQueryOptions() {
+            var whereExpression, startIndex, queryOptions;
 
             whereExpression = '';
             if (this.hasOwnProperty('where')) {
@@ -275,7 +201,7 @@ define('argos/RelatedViewWidget', [
 
             return queryOptions;
         },
-        fetchData: function() {
+        fetchData: function fetchData() {
             var queryResults, startIndex;
             if (this.startIndex < 1) {
                 this.startIndex = 1;
@@ -285,7 +211,7 @@ define('argos/RelatedViewWidget', [
             this.startIndex = this.startIndex > 0 && this.pageSize > 0 ? this.startIndex + this.pageSize : 1;
             return queryResults;
         },
-        onInit: function() {
+        onInit: function onInit() {
             this._isInitLoad = true;
             this.store = this.store || this.getStore();
             this.queryOptions = this.queryOptions || this.getQueryOptions();
@@ -294,7 +220,7 @@ define('argos/RelatedViewWidget', [
                 this.onLoad();
             }
         },
-        onLoad: function() {
+        onLoad: function onLoad() {
             var data;
             if (this.relatedData) {
 
@@ -308,7 +234,6 @@ define('argos/RelatedViewWidget', [
                     this.pageSize = data.length;
                     this.onApply(data);
                 }
-
             } else if (this.parentCollection) {
                 this.relatedResults = { total: this.parentEntry[this.parentCollectionProperty]['$resources'].length };
                 this.pageSize = this.relatedResults.total;
@@ -316,100 +241,93 @@ define('argos/RelatedViewWidget', [
             } else {
 
                 if (!this.loadingNode) {
-                    this.loadingNode = domConstruct.toDom(this.loadingTemplate.apply(this));
-                    domConstruct.place(this.loadingNode, this.relatedViewNode, 'last', this);
+                    this.loadingNode = _domConstruct['default'].toDom(this.loadingTemplate.apply(this));
+                    _domConstruct['default'].place(this.loadingNode, this.relatedViewNode, 'last', this);
                 }
-                domClass.toggle(this.loadingNode, 'loading');
+                _domClass['default'].toggle(this.loadingNode, 'loading');
                 if (this.wait) {
                     return;
                 }
                 this.relatedResults = this.fetchData();
-                (function(context, relatedResults) {
+                (function (context, relatedResults) {
 
                     try {
-                        when(relatedResults, function(relatedFeed) {
+                        (0, _when['default'])(relatedResults, (function (relatedFeed) {
                             this.onApply(relatedFeed);
-                        }.bind(context));
-                    }
-                    catch (error) {
+                        }).bind(context));
+                    } catch (error) {
                         console.log('Error fetching related view data:' + error);
                     }
                 })(this, this.relatedResults);
             }
             this.isLoaded = true;
         },
-        onApply: function(relatedFeed) {
+        onApply: function onApply(relatedFeed) {
             var i, relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, itemHTML, moreData, restCount, moreCount;
             try {
 
-
                 if (!this.itemsNode) {
-                    this.itemsNode = domConstruct.toDom("<div id='itemsNode' class='items'><div>");
-                    domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
+                    this.itemsNode = _domConstruct['default'].toDom('<div id=\'itemsNode\' class=\'items\'><div>');
+                    _domConstruct['default'].place(this.itemsNode, this.relatedViewNode, 'last', this);
                 }
                 if (relatedFeed.length > 0) {
-                    domClass.remove(this.containerNode, 'hidden');
-                    domClass.remove(this.tabNode, 'collapsed');
+                    _domClass['default'].remove(this.containerNode, 'hidden');
+                    _domClass['default'].remove(this.tabNode, 'collapsed');
                     this.itemCount = this.itemCount + relatedFeed.length;
                     restCount = this.relatedResults.total - this.itemCount;
                     if (restCount > 0) {
-                        moreCount = (restCount >= this.pageSize) ? this.pageSize : restCount;
-                        moreData = string.substitute(this.selectMoreDataText, [moreCount, this.relatedResults.total]);
+                        moreCount = restCount >= this.pageSize ? this.pageSize : restCount;
+                        moreData = _string['default'].substitute(this.selectMoreDataText, [moreCount, this.relatedResults.total]);
                     } else {
                         moreData = '';
                     }
                     if (this.showSelectMore) {
-                        domAttr.set(this.selectMoreNode, { innerHTML: moreData });
+                        _domAttr['default'].set(this.selectMoreNode, { innerHTML: moreData });
                     } else {
-                        domAttr.set(this.selectMoreNode, { innerHTML: '' });
-
+                        _domAttr['default'].set(this.selectMoreNode, { innerHTML: '' });
                     }
                     if (this.showTotalInTab) {
-                        domAttr.set(this.titleNode, { innerHTML: this.title + '  ' + string.substitute(this.totalCountText, [this.relatedResults.total]) });
+                        _domAttr['default'].set(this.titleNode, { innerHTML: this.title + '  ' + _string['default'].substitute(this.totalCountText, [this.relatedResults.total]) });
                     }
                     for (i = 0; i < relatedFeed.length; i++) {
                         itemEntry = relatedFeed[i];
                         itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
                         itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
-                        itemNode = domConstruct.toDom(itemHTML);
-                        on(itemNode, 'click', this.onSelectViewRow.bind(this));
-                        domConstruct.place(itemNode, this.itemsNode, 'last', this);
+                        itemNode = _domConstruct['default'].toDom(itemHTML);
+                        (0, _on['default'])(itemNode, 'click', this.onSelectViewRow.bind(this));
+                        _domConstruct['default'].place(itemNode, this.itemsNode, 'last', this);
                     }
-
                 } else {
                     if (this.hideWhenNoData) {
-                        domClass.add(this.containerNode, 'hidden');
+                        _domClass['default'].add(this.containerNode, 'hidden');
+                    } else {
+                        _domClass['default'].remove(this.containerNode, 'hidden');
                     }
-                    else {
-                        domClass.remove(this.containerNode, 'hidden');
-                    }
-                    domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
+                    _domConstruct['default'].place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
                     if (this.showTotalInTab) {
-                        domAttr.set(this.titleNode, { innerHTML: this.title + '  ' + string.substitute(this.totalCountText, [0, 0]) });
+                        _domAttr['default'].set(this.titleNode, { innerHTML: this.title + '  ' + _string['default'].substitute(this.totalCountText, [0, 0]) });
                     }
-                    domAttr.set(this.selectMoreNode, { innerHTML: '' });
+                    _domAttr['default'].set(this.selectMoreNode, { innerHTML: '' });
                     if (this._isInitLoad) {
                         this._isInitLoad = false;
-                        domClass.toggle(this.tabNode, 'collapsed');
+                        _domClass['default'].toggle(this.tabNode, 'collapsed');
                     }
                 }
-                domClass.toggle(this.loadingNode, 'loading');
-            }
-            catch (error) {
+                _domClass['default'].toggle(this.loadingNode, 'loading');
+            } catch (error) {
                 console.log('Error applying data for related view widget:' + error);
             }
-
         },
-        toggleView: function(evt) {
+        toggleView: function toggleView(evt) {
 
-            domClass.toggle(this.tabNode, 'collapsed');
+            _domClass['default'].toggle(this.tabNode, 'collapsed');
 
             if (!this.isLoaded) {
                 this.onLoad();
             }
             evt.stopPropagation();
         },
-        onSelectViewRow: function(evt) {
+        onSelectViewRow: function onSelectViewRow(evt) {
             var relatedKey, descriptor, options, view;
 
             relatedKey = evt.currentTarget.attributes['data-relatedkey'].value;
@@ -427,7 +345,7 @@ define('argos/RelatedViewWidget', [
             }
             evt.stopPropagation();
         },
-        onNavigateToList: function(evt) {
+        onNavigateToList: function onNavigateToList(evt) {
             var options, view, whereExpression;
 
             if (this.hasOwnProperty('listViewWhere')) {
@@ -458,19 +376,19 @@ define('argos/RelatedViewWidget', [
             }
             evt.stopPropagation();
         },
-        onSelectMoreData: function(evt) {
+        onSelectMoreData: function onSelectMoreData(evt) {
             this.onLoad();
             evt.stopPropagation();
         },
-        onRefreshView: function(evt) {
+        onRefreshView: function onRefreshView(evt) {
             this._onRefreshView();
             evt.stopPropagation();
         },
-        _onRefreshView: function() {
+        _onRefreshView: function _onRefreshView() {
             var view, nodes;
 
             if (this.itemsNode) {
-                domConstruct.destroy(this.itemsNode);
+                _domConstruct['default'].destroy(this.itemsNode);
                 this.itemsNode = null;
             }
             this.startIndex = 1;
@@ -478,23 +396,23 @@ define('argos/RelatedViewWidget', [
             this.isLoaded = false;
             this.onLoad();
         },
-        _onAppRefresh: function(data) {
+        _onAppRefresh: function _onAppRefresh(data) {
             if (data && data.data) {
                 if (data.resourceKind === this.resourceKind) {
-                    if (this.parentEntry && (this.parentEntry[this.parentProperty] === data.data[this.relatedProperty])) {
+                    if (this.parentEntry && this.parentEntry[this.parentProperty] === data.data[this.relatedProperty]) {
                         this._onRefreshView();
                     }
                 }
             }
         },
-        destroy: function() {
-            array.forEach(this._subscribes, function(handle) {
-                connect.unsubscribe(handle);
+        destroy: function destroy() {
+            _array['default'].forEach(this._subscribes, function (handle) {
+                _connect['default'].unsubscribe(handle);
             });
             this.inherited(arguments);
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.RelatedViewWidget', __class);
-    return __class;
+    _lang['default'].setObject('Sage.Platform.Mobile.RelatedViewWidget', __class);
+    module.exports = __class;
 });

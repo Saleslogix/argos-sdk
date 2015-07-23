@@ -1,45 +1,44 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+define('argos/Fields/EditorField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'argos/Fields/_Field'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _argosFields_Field) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-/**
- * @class argos.Fields.EditorField
- * The EditorField is not a field per say but a base class for another field type to inherit from. The
- * intent of an EditorField is you have a field where the input should come from another form. EditorField
- * will handle the navigation, gathering values from the other view, going back and applying to the form
- * the field is on.
- *
- * A prime example of an editor field extension would be an AddressField - say you are entering a contacts
- * details and need the address. You could make an AddressField that extends EditorField for handling all
- * the address parts and takes the user to an address_edit with all the street/city/postal etc.
- *
- * @alternateClassName EditorField
- * @extends argos._Field
- */
-define('argos/Fields/EditorField', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/event',
-    'argos/Fields/_Field'
-], function(
-    declare,
-    lang,
-    event,
-    _Field
-) {
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
 
-    var __class = declare('argos.Fields.EditorField', [_Field], {
+    var _declare = _interopRequireDefault(_dojo_baseDeclare);
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _event = _interopRequireDefault(_dojo_baseEvent);
+
+    var _Field2 = _interopRequireDefault(_argosFields_Field);
+
+    /**
+     * @class argos.Fields.EditorField
+     * The EditorField is not a field per say but a base class for another field type to inherit from. The
+     * intent of an EditorField is you have a field where the input should come from another form. EditorField
+     * will handle the navigation, gathering values from the other view, going back and applying to the form
+     * the field is on.
+     *
+     * A prime example of an editor field extension would be an AddressField - say you are entering a contacts
+     * details and need the address. You could make an AddressField that extends EditorField for handling all
+     * the address parts and takes the user to an address_edit with all the street/city/postal etc.
+     *
+     * @alternateClassName EditorField
+     * @extends argos._Field
+     */
+    var __class = (0, _declare['default'])('argos.Fields.EditorField', [_Field2['default']], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -62,11 +61,7 @@ define('argos/Fields/EditorField', [
          * * `$$` => Owner View instance
          *
          */
-        widgetTemplate: new Simplate([
-            '<label for="{%= $.name %}">{%: $.label %}</label>',
-            '<button class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
-            '<input data-dojo-attach-point="inputNode" type="text" />'
-        ]),
+        widgetTemplate: new Simplate(['<label for="{%= $.name %}">{%: $.label %}</label>', '<button class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>', '<input data-dojo-attach-point="inputNode" type="text" />']),
 
         iconClass: 'fa fa-pencil fa-lg',
 
@@ -119,14 +114,14 @@ define('argos/Fields/EditorField', [
          * @param val
          * @template
          */
-        formatValue: function(val) {
+        formatValue: function formatValue(val) {
             return '';
         },
         /**
          * Extends the parent implementation to connect the `onclick` event of the fields container
          * to {@link #_onClick _onClick}.
          */
-        init: function() {
+        init: function init() {
             this.inherited(arguments);
 
             this.connect(this.containerNode, 'onclick', this._onClick);
@@ -134,7 +129,7 @@ define('argos/Fields/EditorField', [
         /**
          * Extends the parent implementation to also call {@link #_enableTextElement _enableTextElement}.
          */
-        enable: function() {
+        enable: function enable() {
             this.inherited(arguments);
 
             this._enableTextElement();
@@ -142,20 +137,20 @@ define('argos/Fields/EditorField', [
         /**
          * Sets the input nodes' disabled attribute to false
          */
-        _enableTextElement: function() {
+        _enableTextElement: function _enableTextElement() {
             this.inputNode.disabled = false;
         },
         /**
          * Extends the parent implementation to also call {@link #_disableTextElement _disableTextElement}.
          */
-        disable: function() {
+        disable: function disable() {
             this.inherited(arguments);
             this._disableTextElement();
         },
         /**
          * Sets the input nodes' disabled attribute to true
          */
-        _disableTextElement: function() {
+        _disableTextElement: function _disableTextElement() {
             this.inputNode.disabled = true;
         },
         /**
@@ -164,7 +159,7 @@ define('argos/Fields/EditorField', [
          * that operates within this fields scope.
          * @return Navigation options
          */
-        createNavigationOptions: function() {
+        createNavigationOptions: function createNavigationOptions() {
             return {
                 tools: {
                     tbar: [{
@@ -182,14 +177,14 @@ define('argos/Fields/EditorField', [
                 },
                 entry: this.originalValue || this.validationValue,
                 changes: this.currentValue,
-                entityName: this.entityName || (this.owner && this.owner.entityName),
+                entityName: this.entityName || this.owner && this.owner.entityName,
                 negateHistory: true
             };
         },
         /**
          * Navigates to the given `this.view` using the options from {@link #createNavigationOptions createNavigationOptions}.
          */
-        navigateToEditView: function() {
+        navigateToEditView: function navigateToEditView() {
             if (this.isDisabled()) {
                 return;
             }
@@ -212,15 +207,15 @@ define('argos/Fields/EditorField', [
          *
          * @param {Event} evt
          */
-        _onClick: function(evt) {
-            event.stop(evt);
+        _onClick: function _onClick(evt) {
+            _event['default'].stop(evt);
             this.navigateToEditView();
         },
         /**
          * Gets the values from the editor view and applies it to the this fields `this.currentValue` and
          * `this.validationValue`.
          */
-        getValuesFromView: function() {
+        getValuesFromView: function getValuesFromView() {
             var view = App.getPrimaryActiveView(),
                 values = view && view.getValues();
 
@@ -247,9 +242,8 @@ define('argos/Fields/EditorField', [
          * the value, sets the fields text, calls `ReUI.back` and fires {@link #_onComplete _onComplete}.
          *
          */
-        complete: function() {
-            var view,
-                success;
+        complete: function complete() {
+            var view, success;
 
             view = App.getPrimaryActiveView();
             success = true;
@@ -287,38 +281,36 @@ define('argos/Fields/EditorField', [
          * Fires {@link #onChange onChange}.
          *
          */
-        _onComplete: function() {
+        _onComplete: function _onComplete() {
             this.onChange(this.currentValue, this);
         },
         /**
          * Sets the displayed text to the input.
          * @param {String} text
          */
-        setText: function(text) {
+        setText: function setText(text) {
             this.set('inputValue', text);
         },
         /**
          * Determines if the value has been modified from the default/original state
          * @return {Boolean}
          */
-        isDirty: function() {
+        isDirty: function isDirty() {
             return this.originalValue !== this.currentValue;
         },
         /**
          * Returns the current value
          * @return {Object/String/Date/Number}
          */
-        getValue: function() {
+        getValue: function getValue() {
             return this.currentValue;
         },
         /**
          * Extends the parent implementation to use the `this.validationValue` instead of `this.getValue()`.
          * @param value
          */
-        validate: function(value) {
-            return typeof value === 'undefined'
-                ? this.inherited(arguments, [this.validationValue])
-                : this.inherited(arguments);
+        validate: function validate(value) {
+            return typeof value === 'undefined' ? this.inherited(arguments, [this.validationValue]) : this.inherited(arguments);
         },
         /**
          * Sets the current value to the item passed, as the default if initial is true. Then it sets
@@ -329,7 +321,7 @@ define('argos/Fields/EditorField', [
          * @param {Object/String/Date/Number} val Value to be set
          * @param {Boolean} initial True if the value is the default/clean value, false if it is a meant as a dirty value
          */
-        setValue: function(val, initial) {
+        setValue: function setValue(val, initial) {
             if (val) {
                 this.validationValue = this.currentValue = val;
 
@@ -351,11 +343,11 @@ define('argos/Fields/EditorField', [
         /**
          * Clears the value by passing `null` to {@link #setValue setValue}
          */
-        clearValue: function() {
+        clearValue: function clearValue() {
             this.setValue(null, true);
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
-    return __class;
+    _lang['default'].setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
+    module.exports = __class;
 });
