@@ -1,26 +1,25 @@
-/**
- * @class argos._ErrorHandleMixin
- * General mixin for handling errors in a chainable fashion.
- * @alternateClassName _ErrorHandleMixin
- */
-define('argos/_ErrorHandleMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/array'
-], function(
-    declare,
-    lang,
-    array
-) {
-    var __class = declare('argos._ErrorHandleMixin', null, {
+define('argos/_ErrorHandleMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/array'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseArray) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+    var _declare = _interopRequireDefault(_dojo_baseDeclare);
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _array = _interopRequireDefault(_dojo_baseArray);
+
+    /**
+     * @class argos._ErrorHandleMixin
+     * General mixin for handling errors in a chainable fashion.
+     * @alternateClassName _ErrorHandleMixin
+     */
+    var __class = (0, _declare['default'])('argos._ErrorHandleMixin', null, {
         /**
          * @property {Object}
          * Localized error messages. One general error message, and messages by HTTP status code.
          */
         errorText: {
             general: 'A server error occured.',
-            status: {
-            }
+            status: {}
         },
         /**
          * @property {Object}
@@ -56,29 +55,29 @@ define('argos/_ErrorHandleMixin', [
         /**
          * @return {Array} Returns an array of error handlers
          */
-        createErrorHandlers: function() {
+        createErrorHandlers: function createErrorHandlers() {
             return this.errorHandlers || [];
         },
         /**
          * Starts matching and executing errorHandlers.
          * @param {Error} error Error to pass to the errorHandlers
          */
-        handleError: function(error) {
+        handleError: function handleError(error) {
             if (!error) {
                 return;
             }
 
             var matches, noop, getNext, len;
 
-            noop = function() {};
+            noop = function () {};
 
-            matches = array.filter(this.errorHandlers, function(handler) {
+            matches = _array['default'].filter(this.errorHandlers, (function (handler) {
                 return handler.test && handler.test.call(this, error);
-            }.bind(this));
+            }).bind(this));
 
             len = matches.length;
 
-            getNext = function(index) {
+            getNext = (function (index) {
                 // next() chain has ended, return a no-op so calling next() in the last chain won't error
                 if (index === len) {
                     return noop;
@@ -86,14 +85,14 @@ define('argos/_ErrorHandleMixin', [
 
                 // Return a closure with index and matches captured.
                 // The handle function can call its "next" param to continue the chain.
-                return function() {
+                return (function () {
                     var nextHandler, nextFn;
                     nextHandler = matches[index];
                     nextFn = nextHandler && nextHandler.handle;
 
                     nextFn.call(this, error, getNext(index + 1));
-                }.bind(this);
-            }.bind(this);
+                }).bind(this);
+            }).bind(this);
 
             if (len > 0 && matches[0].handle) {
                 // Start the handle chain, the handle can call next() to continue the iteration
@@ -103,7 +102,7 @@ define('argos/_ErrorHandleMixin', [
         /**
          * Gets the general error message, or the error message for the status code.
          */
-        getErrorMessage: function(error) {
+        getErrorMessage: function getErrorMessage(error) {
             var message = this.errorText.general;
 
             if (error) {
@@ -114,7 +113,6 @@ define('argos/_ErrorHandleMixin', [
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile._ErrorHandleMixin', __class);
-    return __class;
+    _lang['default'].setObject('Sage.Platform.Mobile._ErrorHandleMixin', __class);
+    module.exports = __class;
 });
-

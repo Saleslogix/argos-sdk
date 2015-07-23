@@ -1,41 +1,42 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+define('argos/_SDataDetailMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', './Utility', './Store/SData'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoString, _Utility, _StoreSData) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-/**
- * @class argos._SDataDetailMixin
- *
- * Enables SData for the Detail view.
- * Adds the SData store to the view and exposes the needed properties for creating a Entry request.
- *
- * @alternateClassName _SDataDetailMixin
- * @requires argos.SData
- */
-define('argos/_SDataDetailMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/string',
-    './Utility',
-    './Store/SData'
-], function(
-    declare,
-    lang,
-    string,
-    utility,
-    SData
-) {
-    var __class = declare('argos._SDataDetailMixin', null, {
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+
+    /**
+     * @class argos._SDataDetailMixin
+     *
+     * Enables SData for the Detail view.
+     * Adds the SData store to the view and exposes the needed properties for creating a Entry request.
+     *
+     * @alternateClassName _SDataDetailMixin
+     * @requires argos.SData
+     */
+
+    var _declare = _interopRequireDefault(_dojo_baseDeclare);
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _string = _interopRequireDefault(_dojoString);
+
+    var _utility = _interopRequireDefault(_Utility);
+
+    var _SData = _interopRequireDefault(_StoreSData);
+
+    var __class = (0, _declare['default'])('argos._SDataDetailMixin', null, {
 
         /**
          * @cfg {String} resourceKind
@@ -70,8 +71,8 @@ define('argos/_SDataDetailMixin', [
         entityProperty: '$name',
         versionProperty: '$etag',
 
-        createStore: function() {
-            return new SData({
+        createStore: function createStore() {
+            return new _SData['default']({
                 service: this.getConnection(),
                 contractName: this.contractName,
                 resourceKind: this.resourceKind,
@@ -87,12 +88,12 @@ define('argos/_SDataDetailMixin', [
                 scope: this
             });
         },
-        _buildGetExpression: function() {
+        _buildGetExpression: function _buildGetExpression() {
             var options = this.options;
 
             return options && (options.id || options.key);
         },
-        _applyStateToGetOptions: function(getOptions) {
+        _applyStateToGetOptions: function _applyStateToGetOptions(getOptions) {
             var options = this.options;
             if (options) {
                 if (options.select) {
@@ -127,13 +128,12 @@ define('argos/_SDataDetailMixin', [
          * @param {String} property Property name to extract from the entry, may be a path: `Address.City`.
          * @return {String}
          */
-        formatRelatedQuery: function(entry, fmt, property) {
+        formatRelatedQuery: function formatRelatedQuery(entry, fmt, property) {
             property = property || '$key';
-            return string.substitute(fmt, [utility.getValue(entry, property, '')]);
+            return _string['default'].substitute(fmt, [_utility['default'].getValue(entry, property, '')]);
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
-    return __class;
+    _lang['default'].setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
+    module.exports = __class;
 });
-

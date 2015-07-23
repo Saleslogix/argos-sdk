@@ -7,6 +7,6 @@ module.exports = function(grunt) {
     grunt.loadTasks('grunt-tasks');
 
     // Register alias tasks
-    grunt.registerTask('test', ['connect', 'jasmine:coverage']);
+    grunt.registerTask('test', ['babel', 'connect', 'jasmine:coverage']);
     grunt.registerTask('default', ['test']);
 };

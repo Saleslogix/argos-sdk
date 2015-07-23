@@ -1,62 +1,58 @@
-/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/array', 'dojo/_base/Deferred', 'dojo/_base/connect', 'dojo/query', 'dojo/string', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-construct', './Format', './Utility', './ErrorManager', './View'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseArray, _dojo_baseDeferred, _dojo_baseConnect, _dojoQuery, _dojoString, _dojoDom, _dojoDomClass, _dojoDomConstruct, _Format, _Utility, _ErrorManager, _View) {
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-/**
- * @class argos._DetailBase
- * A Detail View represents a single record and should display all the info the user may need about the entry.
- *
- * A Detail entry is identified by its key (idProperty) which is how it requests the data via the endpoint.
- *
- * @alternateClassName _DetailBase
- * @extends argos.View
- * @requires argos.Format
- * @requires argos.Utility
- * @requires argos.ErrorManager
- */
-define('argos/_DetailBase', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/array',
-    'dojo/_base/Deferred',
-    'dojo/_base/connect',
-    'dojo/query',
-    'dojo/string',
-    'dojo/dom',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    './Format',
-    './Utility',
-    './ErrorManager',
-    './View'
-], function (
-	declare, 
-	lang, 
-	array, 
-	Deferred, 
-	connect, 
-	query, 
-	string, 
-	dom, 
-	domClass, 
-	domConstruct, 
-	format, 
-	utility, 
-	ErrorManager, 
-	View
-) {
-    var __class = declare('argos._DetailBase', [View], {
+    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+
+    var _declare = _interopRequireDefault(_dojo_baseDeclare);
+
+    var _lang = _interopRequireDefault(_dojo_baseLang);
+
+    var _Deferred = _interopRequireDefault(_dojo_baseDeferred);
+
+    var _query = _interopRequireDefault(_dojoQuery);
+
+    var _string = _interopRequireDefault(_dojoString);
+
+    var _dom = _interopRequireDefault(_dojoDom);
+
+    var _domClass = _interopRequireDefault(_dojoDomClass);
+
+    var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
+
+    var _format = _interopRequireDefault(_Format);
+
+    var _utility = _interopRequireDefault(_Utility);
+
+    var _ErrorManager2 = _interopRequireDefault(_ErrorManager);
+
+    var _View2 = _interopRequireDefault(_View);
+
+    /**
+     * @class argos._DetailBase
+     * A Detail View represents a single record and should display all the info the user may need about the entry.
+     *
+     * A Detail entry is identified by its key (idProperty) which is how it requests the data via the endpoint.
+     *
+     * @alternateClassName _DetailBase
+     * @extends argos.View
+     * @requires argos.Format
+     * @requires argos.Utility
+     * @requires argos.ErrorManager
+     */
+    var __class = (0, _declare['default'])('argos._DetailBase', [_View2['default']], {
         /**
          * @property {Object}
          * Creates a setter map to html nodes, namely:
@@ -82,31 +78,19 @@ define('argos/_DetailBase', [
          *      resourceKind         set to data-resource-kind
          *
          */
-        widgetTemplate: new Simplate([
-            '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" data-dojo-attach-event="onclick:toggleDropDown" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
-            '{%! $.loadingTemplate %}',
-            '{%! $.quickActionTemplate %}',
-            '{%! $.tabContentTemplate %}',
-            '{%! $.moreTabListTemplate %}',
-            '</div>'
-        ]),
+        widgetTemplate: new Simplate(['<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>', '{%! $.loadingTemplate %}', '{%! $.quickActionTemplate %}', '{%! $.tabContentTemplate %}', '{%! $.moreTabListTemplate %}', '<div class="panel-content" data-dojo-attach-point="contentNode"></div>', '</div>']),
         /**
          * @property {Simplate}
          * HTML shown when no data is available.
          */
-        emptyTemplate: new Simplate([
-        ]),
+        emptyTemplate: new Simplate([]),
         /**
          * @property {Simplate}
          * HTML shown when data is being loaded.
          *
          * `$` => the view instance
          */
-        loadingTemplate: new Simplate([
-            '<div class="panel-loading-indicator">',
-            '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>',
-            '</div>'
-        ]),
+        loadingTemplate: new Simplate(['<div class="panel-loading-indicator">', '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>', '</div>']),
         /**
          * @property {Simplate}
          * HTML that creates the quick action list
@@ -206,13 +190,7 @@ define('argos/_DetailBase', [
          *
          * `$` => the view instance
          */
-        sectionEndTemplate: new Simplate([
-            '{% if ($.list || $.options.list) { %}',
-            '</ul>',
-            '{% } else { %}',
-            '</div>',
-            '{% } %}'
-        ]),
+        sectionEndTemplate: new Simplate(['{% if ($.list || $.options.list) { %}', '</ul>', '{% } else { %}', '</div>', '{% } %}']),
         /**
          * @property {Simplate}
          * HTML that is used for a property in the detail layout
@@ -220,12 +198,8 @@ define('argos/_DetailBase', [
          * * `$` => detail layout row
          * * `$$` => view instance
          */
-        propertyTemplate: new Simplate([
-            '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}" data-property="{%= $.property || $.name %}">',
-            '<label>{%: $.label %}</label>',
-            '<span>{%= $.value %}</span>', // todo: create a way to allow the value to not be surrounded with a span tag
-            '</div>'
-        ]),
+        propertyTemplate: new Simplate(['<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}" data-property="{%= $.property || $.name %}">', '<label>{%: $.label %}</label>', '<span>{%= $.value %}</span>', // todo: create a way to allow the value to not be surrounded with a span tag
+        '</div>']),
         /**
          * @property {Simplate}
          * HTML that is used for detail layout items that point to related views, includes a label and links the value text
@@ -233,16 +207,7 @@ define('argos/_DetailBase', [
          * * `$` => detail layout row
          * * `$$` => view instance
          */
-        relatedPropertyTemplate: new Simplate([
-            '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
-            '<label>{%: $.label %}</label>',
-            '<span>',
-            '<a data-action="activateRelatedEntry" data-view="{%= $.view %}" data-context="{%: $.context %}" data-descriptor="{%: $.descriptor || $.value %}">',
-            '{%= $.value %}',
-            '</a>',
-            '</span>',
-            '</div>'
-        ]),
+        relatedPropertyTemplate: new Simplate(['<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">', '<label>{%: $.label %}</label>', '<span>', '<a data-action="activateRelatedEntry" data-view="{%= $.view %}" data-context="{%: $.context %}" data-descriptor="{%: $.descriptor || $.value %}">', '{%= $.value %}', '</a>', '</span>', '</div>']),
         /**
          * @property {Simplate}
          * HTML that is used for detail layout items that point to related views, displayed as an icon and text
@@ -250,18 +215,7 @@ define('argos/_DetailBase', [
          * * `$` => detail layout row
          * * `$$` => view instance
          */
-        relatedTemplate: new Simplate([
-            '<li class="{%= $.cls %}">',
-                '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
-                    '{% if ($.icon) { %}',
-                        '<img src="{%= $.icon %}" alt="icon" class="icon" />',
-                    '{% } else if ($.iconClass) { %}',
-                        '<div class="{%= $.iconClass %}" alt="icon"></div>',
-                    '{% } %}',
-                    '<span class="related-item-label">{%: $.label %}</span>',
-                '</a>',
-            '</li>'
-        ]),
+        relatedTemplate: new Simplate(['<li class="{%= $.cls %}">', '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">', '{% if ($.icon) { %}', '<img src="{%= $.icon %}" alt="icon" class="icon" />', '{% } else if ($.iconClass) { %}', '<div class="{%= $.iconClass %}" alt="icon"></div>', '{% } %}', '<span class="related-item-label">{%: $.label %}</span>', '</a>', '</li>']),
         /**
          * @property {Simplate}
          * HTML that is used for detail layout items that fire an action, displayed with label and property value
@@ -269,16 +223,7 @@ define('argos/_DetailBase', [
          * * `$` => detail layout row
          * * `$$` => view instance
          */
-        actionPropertyTemplate: new Simplate([
-            '<div class="row {%= $.cls %}">',
-            '<label>{%: $.label %}</label>',
-            '<span>',
-            '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
-            '{%= $.value %}',
-            '</a>',
-            '</span>',
-            '</div>'
-        ]),
+        actionPropertyTemplate: new Simplate(['<div class="row {%= $.cls %}">', '<label>{%: $.label %}</label>', '<span>', '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">', '{%= $.value %}', '</a>', '</span>', '</div>']),
         /**
          * @property {Simplate}
          * HTML that is used for detail layout items that fire an action, displayed as an icon and text
@@ -286,28 +231,14 @@ define('argos/_DetailBase', [
          * * `$` => detail layout row
          * * `$$` => view instance
          */
-        actionTemplate: new Simplate([
-            '<li class="{%= $.cls %}{% if ($.disabled) { %} disabled{% } %}">',
-            '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
-            '{% if ($.icon) { %}',
-                '<img src="{%= $.icon %}" alt="icon" class="icon" />',
-            '{% } else if ($.iconClass) { %}',
-                '<div class="{%= $.iconClass %}" alt="icon"></div>',
-            '{% } %}',
-            '<label>{%: $.label %}</label>',
-            '<span>{%= $.value %}</span>',
-            '</a>',
-            '</li>'
-        ]),
+        actionTemplate: new Simplate(['<li class="{%= $.cls %}{% if ($.disabled) { %} disabled{% } %}">', '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">', '{% if ($.icon) { %}', '<img src="{%= $.icon %}" alt="icon" class="icon" />', '{% } else if ($.iconClass) { %}', '<div class="{%= $.iconClass %}" alt="icon"></div>', '{% } %}', '<label>{%: $.label %}</label>', '<span>{%= $.value %}</span>', '</a>', '</li>']),
         /**
          * @property {Simplate}
          * HTML that is shown when not available
          *
          * `$` => the view instance
          */
-        notAvailableTemplate: new Simplate([
-            '<div class="not-available">{%: $.notAvailableText %}</div>'
-        ]),
+        notAvailableTemplate: new Simplate(['<div class="not-available">{%: $.notAvailableText %}</div>']),
         /**
          * @property {String}
          * The unique identifier of the view
@@ -444,56 +375,55 @@ define('argos/_DetailBase', [
         /**
          * Extends the dijit widget postCreate to subscribe to the global `/app/refresh` event and clear the view.
          */
-        postCreate: function() {
+        postCreate: function postCreate() {
             this.inherited(arguments);
             this.subscribe('/app/refresh', this._onRefresh);
             this.clear();
             this.tabMapping = [];
         },
-        createErrorHandlers: function () {
+        createErrorHandlers: function createErrorHandlers() {
             this.errorHandlers = this.errorHandlers || [{
                     name: 'Aborted',
-                    test: function (error) {
+                test: function test(error) {
                         return error.aborted;
                     },
-                    handle: function (error, next) {
+                handle: function handle(error, next) {
                         this.options = false; // force a refresh
                         next();
                     }
                 }, {
                     name: 'AlertError',
-                    test: function (error) {
+                test: function test(error) {
                         return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
                     },
-                    handle: function (error, next) {
+                handle: function handle(error, next) {
                         alert(this.getErrorMessage(error));
                         next();
                     }
                 }, {
                     name: 'NotFound',
-                    test: function (error) {
+                test: function test(error) {
                         return error.status === this.HTTP_STATUS.NOT_FOUND;
                     },
-                    handle: function (error, next) {
-                        domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+                handle: function handle(error, next) {
+                    _domConstruct['default'].place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
                         next();
                     }
                 }, {
                     name: 'CatchAll',
-                    test: function (error) {
+                test: function test(error) {
                         return true;
                     },
-                    handle: function (error, next) {
+                handle: function handle(error, next) {
                         var errorItem = {
                             viewOptions: this.options,
                             serverError: error
                         };
-                        ErrorManager.addError(this.getErrorMessage(error), errorItem);
-                        domClass.remove(this.domNode, 'panel-loading');
+                    _ErrorManager2['default'].addError(this.getErrorMessage(error), errorItem);
+                    _domClass['default'].remove(this.domNode, 'panel-loading');
                         next();
                     }
-                }
-            ];
+            }];
             return this.errorHandlers;
         },
         /**
@@ -502,7 +432,7 @@ define('argos/_DetailBase', [
          * @return {Object} this.tools
          * @template
          */
-        createToolLayout: function() {
+        createToolLayout: function createToolLayout() {
             return this.tools || (this.tools = {
                 'tbar': [{
                     id: 'edit',
@@ -516,7 +446,7 @@ define('argos/_DetailBase', [
                 }]
             });
         },
-        _refreshClicked: function() {
+        _refreshClicked: function _refreshClicked() {
             this.clear();
             this.refreshRequired = true;
             this.refresh();
@@ -526,8 +456,7 @@ define('argos/_DetailBase', [
         /**
          * Called when the user clicks the refresh toolbar button.
          */
-        onRefreshClicked: function() {
-        },
+        onRefreshClicked: function onRefreshClicked() {},
         /**
          * Extends the {@link _ActionMixin#invokeAction mixins invokeAction} to stop if `data-disableAction` is true
          * @param name
@@ -535,7 +464,7 @@ define('argos/_DetailBase', [
          * @param {Event} evt
          * @param {HTMLElement} el
          */
-        invokeAction: function(name, parameters, evt, el) {
+        invokeAction: function invokeAction(name, parameters, evt, el) {
             if (parameters && /true/i.test(parameters['disableAction'])) {
                 return;
             }
@@ -546,14 +475,15 @@ define('argos/_DetailBase', [
          * @param {Object} The event type and source.
          * @private
          */
-        toggleSection: function(params) {
-            var node = dom.byId(params.$source), button = null;
+        toggleSection: function toggleSection(params) {
+            var node = _dom['default'].byId(params.$source),
+                button = null;
             if (node) {
-                domClass.toggle(node, 'collapsed');
-                button = query('button', node)[0];
+                _domClass['default'].toggle(node, 'collapsed');
+                button = (0, _query['default'])('button', node)[0];
                 if (button) {
-                    domClass.toggle(button, this.toggleCollapseClass);
-                    domClass.toggle(button, this.toggleExpandClass);
+                    _domClass['default'].toggle(button, this.toggleCollapseClass);
+                    _domClass['default'].toggle(button, this.toggleExpandClass);
                 }
             }
         },
@@ -562,23 +492,23 @@ define('argos/_DetailBase', [
          * @param {Object} The event type and source.
          * @private
          */
-        changeTab: function (params) {
+        changeTab: function changeTab(params) {
             var currentIndex, tabIndex, indexShift, moreTab, tab = params.$source;
             if (tab !== this.currentTab) {
                 indexShift = this.tabList.children.length - 1;
-                currentIndex = array.indexOf(this.tabList.children, this.currentTab);
+                currentIndex = _dojo_baseArray.indexOf(this.tabList.children, this.currentTab);
                 if (currentIndex === -1) {
-                    currentIndex = array.indexOf(this.moreTabList.children, this.currentTab) + indexShift;
+                    currentIndex = _dojo_baseArray.indexOf(this.moreTabList.children, this.currentTab) + indexShift;
                 }
-                tabIndex = array.indexOf(this.tabList.children, tab);
+                tabIndex = _dojo_baseArray.indexOf(this.tabList.children, tab);
                 if (tabIndex === -1) {
-                    tabIndex = array.indexOf(this.moreTabList.children, tab) + indexShift;
+                    tabIndex = _dojo_baseArray.indexOf(this.moreTabList.children, tab) + indexShift;
                 }
                 if (currentIndex > -1 && tabIndex > -1) {
                     this.tabMapping[currentIndex].style.display = 'none';
                     this.tabMapping[tabIndex].style.display = 'block';
-                    moreTab = query('.more-item', this.id)[0];
-                    if (array.indexOf(this.tabList.children, tab) > -1) {
+                    moreTab = _dojoQuery('.more-item', this.id)[0];
+                    if (_dojo_baseArray.indexOf(this.tabList.children, tab) > -1) {
                         this.positionFocusState(tab);
                         this.currentTab.className = 'tab';
                         tab.className = 'tab selected';
@@ -604,13 +534,13 @@ define('argos/_DetailBase', [
          * @param {Object} The event type and source.
          * @private
          */
-        toggleDropDown: function (params) {
+        toggleDropDown: function toggleDropDown(params) {
             var tab = params.$source, moreTab, posTop, posLeft, width, height;
             if (tab) {
                 if (this.moreTabList.style.visibility === 'hidden') {
                     this.moreTabList.style.visibility = 'visible';
                     if (this.moreTabList.style.left === '') {
-                        moreTab = query('.more-item', this.id)[0];
+                        moreTab = _dojoQuery('.more-item', this.id)[0];
                         posTop = moreTab.offsetTop;
                         posLeft = moreTab.offsetLeft;
                         width = parseInt(moreTab.offsetWidth);
@@ -624,7 +554,7 @@ define('argos/_DetailBase', [
                 }
             }
             else {
-                if (params.target !== query('.more-item', this.id)[0]) {
+                if (params.target !== _dojoQuery('.more-item', this.id)[0]) {
                     this.moreTabList.style.visibility = 'hidden';
                 }
             }
@@ -633,39 +563,39 @@ define('argos/_DetailBase', [
          * Reorganizes the tab when the screen orientation changes.
          * @private
          */
-        reorderTabs: function () {
+        reorderTabs: function reorderTabs() {
             var tab, startMoreTab, moreTab, arr;
             this.inOverflow = false;
             if (this.moreTabList.children.length > 0) {
-                moreTab = query('.more-item', this.id)[0];
+                moreTab = _dojoQuery('.more-item', this.id)[0];
                 if (moreTab) {
                     this.tabList.children[this.tabList.children.length - 1].remove();
                 }
                 // Need to reference a different array when calling array.forEach since this.moreTabList.children is being modified, hence have arr be this.moreTabList.children
                 arr = [].slice.call(this.moreTabList.children);
-                array.forEach(arr, function (tab) {
-                    this.moreTabList.children[array.indexOf(this.moreTabList.children, tab)].remove();
-                    domConstruct.place(tab, this.tabList);
+                _dojo_baseArray.forEach(arr, function (tab) {
+                    this.moreTabList.children[_dojo_baseArray.indexOf(this.moreTabList.children, tab)].remove();
+                    _dojoDomConstruct.place(tab, this.tabList);
                     this.checkTabOverflow(tab);
                 }, this);
             }
             else {
                 arr = [].slice.call(this.tabList.children);
-                array.forEach(arr, function (tab) {
+                _dojo_baseArray.forEach(arr, function (tab) {
                     if (tab.offsetTop > this.tabList.offsetTop) {
                         if (!startMoreTab) {
                             startMoreTab = tab;
                         }
                         else {
-                            this.tabList.children[array.indexOf(this.tabList.children, tab)].remove();
-                            domConstruct.place(tab, this.moreTabList);
+                            this.tabList.children[_dojo_baseArray.indexOf(this.tabList.children, tab)].remove();
+                            _dojoDomConstruct.place(tab, this.moreTabList);
                         }
                     }
                 }, this);
                 this.checkTabOverflow(startMoreTab);
             }
             moreTab = query('.more-item', this.id)[0];
-            if (moreTab && array.indexOf(this.moreTabList.children, this.currentTab) > -1) {
+            if (moreTab && _dojo_baseArray.indexOf(this.moreTabList.children, this.currentTab) > -1) {
                 this.positionFocusState(moreTab);
                 moreTab.className = 'tab more-item selected';
             }
@@ -678,8 +608,8 @@ define('argos/_DetailBase', [
          * @param {Object} The target tab in the tabList.
          * @private
          */
-        positionFocusState: function (target) {
-            var posTop = target.offsetTop, posLeft = target.offsetLeft, width = parseInt(target.offsetWidth), height = parseInt(target.offsetHeight), tableTop = this.tabList.offsetTop, tableLeft = this.tabList.offsetLeft, focusState = query(".animated-bar", this.id);
+        positionFocusState: function positionFocusState(target) {
+            var posTop = target.offsetTop, posLeft = target.offsetLeft, width = parseInt(target.offsetWidth), height = parseInt(target.offsetHeight), tableTop = this.tabList.offsetTop, tableLeft = this.tabList.offsetLeft, focusState = _dojoQuery(".animated-bar", this.id);
             if (focusState.length > 0) {
                 focusState = focusState[0];
                 focusState.style.left = posLeft - tableLeft + 'px';
@@ -693,27 +623,27 @@ define('argos/_DetailBase', [
          * Handler for the getting the detail resource type from the id and placing the header into the detail view..
          * @private
          */
-        placeDetailHeader: function () {
+        placeDetailHeader: function placeDetailHeader() {
             var value = this.resourceKind;
             if (value.charAt(value.length - 1) === 's') {
                 value = value.slice(0, value.length - 1);
             }
             value = value.charAt(0).toUpperCase() + value.slice(1) + " " + this.informationText;
-            domConstruct.place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
+            _dojoDomConstruct.place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
         },
         /**
          * Checks the tab to see if it causes an overflow when placed in the tabList, if so then push it a new list element called More.
          * @param {Object} The tab object.
          * @private
          */
-        checkTabOverflow: function (tab) {
+        checkTabOverflow: function checkTabOverflow(tab) {
             var moreTab, replacedTab;
             if (tab.offsetTop > this.tabList.offsetTop) {
                 if (!this.inOverflow) {
-                    moreTab = domConstruct.toDom(this.moreTabItemTemplate.apply({ title: this.moreText + '...' }, this));
+                    moreTab = _dojoDomConstruct.toDom(this.moreTabItemTemplate.apply({ title: this.moreText + '...' }, this));
                     moreTab.style.float = 'right';
-                    domConstruct.place(moreTab, this.tabList);
-                    this.tabMoreIndex = array.indexOf(this.tabList.children, moreTab) - 1;
+                    _dojoDomConstruct.place(moreTab, this.tabList);
+                    this.tabMoreIndex = _dojo_baseArray.indexOf(this.tabList.children, tab);
                     this.tabList.children[this.tabMoreIndex].remove();
                     if (this.tabList.children.length === 1 && this.moreTabList.children.length === 0) {
                         moreTab.className = 'tab more-item selected';
@@ -724,15 +654,15 @@ define('argos/_DetailBase', [
                         this.tabMoreIndex = this.tabMoreIndex - 1;
                         replacedTab = this.tabList.children[this.tabMoreIndex];
                         this.tabList.children[this.tabMoreIndex].remove();
-                        domConstruct.place(replacedTab, this.moreTabList);
+                        _dojoDomConstruct.place(replacedTab, this.moreTabList);
                     }
-                    domConstruct.place(tab, this.moreTabList);
+                    _dojoDomConstruct.place(tab, this.moreTabList);
                     this.inOverflow = true;
                     this.tabMoreIndex++;
                 }
                 else {
                     this.tabList.children[this.tabMoreIndex].remove();
-                    domConstruct.place(tab, this.moreTabList);
+                    _dojoDomConstruct.place(tab, this.moreTabList);
                 }
             }
         },
@@ -741,7 +671,7 @@ define('argos/_DetailBase', [
          * @param {Object} options The object published by the event.
          * @private
          */
-        _onRefresh: function(o) {
+        _onRefresh: function _onRefresh(o) {
             var descriptor = o.data && o.data[this.labelProperty];
 
             if (this.options && this.options.key === o.key) {
@@ -757,7 +687,7 @@ define('argos/_DetailBase', [
          * Handler for the related entry action, navigates to the defined `data-view` passing the `data-context`.
          * @param {Object} params Collection of `data-` attributes from the source node.
          */
-        activateRelatedEntry: function(params) {
+        activateRelatedEntry: function activateRelatedEntry(params) {
             if (params.context) {
                 this.navigateToRelatedView(params.view, parseInt(params.context, 10), params.descriptor);
             }
@@ -766,7 +696,7 @@ define('argos/_DetailBase', [
          * Handler for the related list action, navigates to the defined `data-view` passing the `data-context`.
          * @param {Object} params Collection of `data-` attributes from the source node.
          */
-        activateRelatedList: function(params) {
+        activateRelatedList: function activateRelatedList(params) {
             if (params.context) {
                 this.navigateToRelatedView(params.view, parseInt(params.context, 10), params.descriptor);
             }
@@ -775,12 +705,12 @@ define('argos/_DetailBase', [
          * Navigates to the defined `this.editView` passing the current `this.entry` as default data.
          * @param {HTMLElement} el
          */
-        navigateToEditView: function(el) {
+        navigateToEditView: function navigateToEditView(el) {
             var view, entry;
             view = App.getView(this.editView);
             if (view) {
                 entry = this.entry;
-                view.show({ entry: entry, fromContext:this });
+                view.show({ entry: entry, fromContext: this });
             }
         },
         /**
@@ -789,7 +719,7 @@ define('argos/_DetailBase', [
          * @param {Number} slot Index of the context to use in `this._navigationOptions`.
          * @param {String} descriptor Optional descriptor option that is mixed in.
          */
-        navigateToRelatedView: function(id, slot, descriptor) {
+        navigateToRelatedView: function navigateToRelatedView(id, slot, descriptor) {
             var options = this._navigationOptions[slot],
                 view = App.getView(id);
 
@@ -838,7 +768,7 @@ define('argos/_DetailBase', [
          *
          * @return {Object[]} Detail layout definition
          */
-        createLayout: function() {
+        createLayout: function createLayout() {
             return this.layout || [];
         },
         /**
@@ -847,11 +777,12 @@ define('argos/_DetailBase', [
          * @param {Object[]} layout Layout definition
          * @param {Object} entry data response
          */
-        processLayout: function(layout, entry) {
-            var rows = (layout['children'] || layout['as'] || layout),
+        processLayout: function processLayout(layout, entry) {
+            var rows = layout['children'] || layout['as'] || layout,
                 options = layout['options'] || (layout['options'] = {
-                    title: this.detailsText
-            }), sectionQueue = [], 
+                title: this.detailsText
+	    }), 
+		sectionQueue = [], 
 	    	sectionStarted = false, 
 		callbacks = [], 
 		current, 
@@ -905,13 +836,13 @@ define('argos/_DetailBase', [
                 if (!sectionStarted) {
                     sectionStarted = true;
                     if (layout.name === 'QuickActionsSection') {
-                        section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                    section = _dojoDomConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
                         sectionNode = section;
-                        domConstruct.place(section, this.quickActions);
+                        _dojoDomConstruct.place(section, this.quickActions);
                     }
                     else {
-                        tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
-                        section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                        tab = _dojoDomConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
+                        section = _dojoDomConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
                         sectionNode = section;
                         if (this.tabList.children.length === 0) {
                             // No children, so set the current tab to this tab and set the section to have a display of block
@@ -921,47 +852,34 @@ define('argos/_DetailBase', [
                             section.style.display = 'none';
                         }
                         this.tabMapping.push(section);
-                        domConstruct.place(tab, this.tabList);
+                        _dojoDomConstruct.place(tab, this.tabList);
                         this.checkTabOverflow(tab);
-                        domConstruct.place(section, this.contentNode);
+                    _domConstruct['default'].place(section, this.contentNode);
                     }
                 }
 
-                provider = current['provider'] || utility.getValue;
-                property = typeof current['property'] === 'string'
-                    ? current['property']
-                    : current['name'];
-                value = typeof current['value'] === 'undefined'
-                    ? provider(entry, property, entry)
-                    : current['value'];
+                provider = current['provider'] || _utility['default'].getValue;
+                property = typeof current['property'] === 'string' ? current['property'] : current['name'];
+                value = typeof current['value'] === 'undefined' ? provider(entry, property, entry) : current['value'];
 
                 if (current['template'] || current['tpl']) {
                     rendered = (current['template'] || current['tpl']).apply(value, this);
-                    formatted = current['encode'] === true
-                        ? format.encode(rendered)
-                        : rendered;
-                }
-                else if (current['renderer'] && typeof current['renderer'] === 'function') {
+                    formatted = current['encode'] === true ? _format['default'].encode(rendered) : rendered;
+                } else if (current['renderer'] && typeof current['renderer'] === 'function') {
                     rendered = current['renderer'].call(this, value);
-                    formatted = current['encode'] === true
-                        ? format.encode(rendered)
-                        : rendered;
+                    formatted = current['encode'] === true ? _format['default'].encode(rendered) : rendered;
                 } else {
-                    formatted = current['encode'] !== false
-                        ? format.encode(value)
-                        : value;
+                    formatted = current['encode'] !== false ? _format['default'].encode(value) : value;
                 }
 
-                data = lang.mixin({}, {
+                data = _lang['default'].mixin({}, {
                     entry: entry,
                     value: formatted,
                     raw: value
                 }, current);
 
                 if (current['descriptor']) {
-                    data['descriptor'] = typeof current['descriptor'] === 'function'
-                        ? this.expandExpression(current['descriptor'], entry, value)
-                        : provider(entry, current['descriptor']);
+                    data['descriptor'] = typeof current['descriptor'] === 'function' ? this.expandExpression(current['descriptor'], entry, value) : provider(entry, current['descriptor']);
                 }
 
                 if (current['action']) {
@@ -979,12 +897,10 @@ define('argos/_DetailBase', [
                 }
 
                 if (current['view']) {
-                    context = lang.mixin({}, current['options']);
+                    context = _lang['default'].mixin({}, current['options']);
 
                     if (current['key']) {
-                        context['key'] = typeof current['key'] === 'function'
-                            ? this.expandExpression(current['key'], entry)
-                            : provider(entry, current['key']);
+                        context['key'] = typeof current['key'] === 'function' ? this.expandExpression(current['key'], entry) : provider(entry, current['key']);
                     }
                     if (current['where']) {
                         context['where'] = this.expandExpression(current['where'], entry);
@@ -1012,10 +928,10 @@ define('argos/_DetailBase', [
                     }
 
                     data['view'] = current['view'];
-                    data['context'] = (this._navigationOptions.push(context) - 1);
+                    data['context'] = this._navigationOptions.push(context) - 1;
                 }
 
-                useListTemplate = (layout['list'] || options['list']);
+                useListTemplate = layout['list'] || options['list'];
 
                 // priority: use > (relatedPropertyTemplate | relatedTemplate) > (actionPropertyTemplate | actionTemplate) > propertyTemplate
                 if (current['use']) {
@@ -1059,10 +975,10 @@ define('argos/_DetailBase', [
                 this.processLayout(current, entry);
             }
         },
-        createRowNode: function(layout, sectionNode, entry, template, data) {
-            return domConstruct.place(template.apply(data, this), sectionNode);
+        createRowNode: function createRowNode(layout, sectionNode, entry, template, data) {
+            return _domConstruct['default'].place(template.apply(data, this), sectionNode);
         },
-        _getStoreAttr: function() {
+        _getStoreAttr: function _getStoreAttr() {
             return this.store || (this.store = this.createStore());
         },
         /**
@@ -1070,22 +986,21 @@ define('argos/_DetailBase', [
          * a dojo store of your choosing. There are {@link _SDataDetailMixin Mixins} available for SData.
          * @return {*}
          */
-        createStore: function() {
+        createStore: function createStore() {
             return null;
         },
         /**
          * Required for binding to ScrollContainer which utilizes iScroll that requires to be refreshed when the
          * content (therefor scrollable area) changes.
          */
-        onContentChange: function() {
-        },
+        onContentChange: function onContentChange() {},
         /**
          * @template
          * Optional processing of the returned entry before it gets processed into layout.
          * @param {Object} entry Entry from data store
          * @return {Object} By default does not do any processing
          */
-        preProcessEntry: function(entry) {
+        preProcessEntry: function preProcessEntry(entry) {
             return entry;
         },
         /**
@@ -1093,7 +1008,7 @@ define('argos/_DetailBase', [
          * passes it to process layout.
          * @param {Object} entry Entry from data store
          */
-        processEntry: function(entry) {
+        processEntry: function processEntry(entry) {
             var moreTab;
             this.entry = this.preProcessEntry(entry);
 
@@ -1101,7 +1016,7 @@ define('argos/_DetailBase', [
                 this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
                 if (this.currentTab) {
                     if (this.tabList.children.length === 1 && this.moreTabList.children.length > 0) {
-                        moreTab = query('.more-item', this.id);
+                        moreTab = _dojoQuery('.more-item', this.id);
                         if (moreTab.children.length > 0) {
                             this.positionFocusState(moreTab[0]);
                             moreTab.className = 'tab more-item selected';
@@ -1117,15 +1032,15 @@ define('argos/_DetailBase', [
                 this.set('detailContent', '');
             }
         },
-        _onGetComplete: function(entry) {
+        _onGetComplete: function _onGetComplete(entry) {
             try {
                 if (entry) {
                     this.processEntry(entry);
                 } else {
-                    domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+                    _domConstruct['default'].place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
                 }
 
-                domClass.remove(this.domNode, 'panel-loading');
+                _domClass['default'].remove(this.domNode, 'panel-loading');
 
                 /* this must take place when the content is visible */
                 this.onContentChange();
@@ -1133,16 +1048,16 @@ define('argos/_DetailBase', [
                 console.error(e);
             }
         },
-        _onGetError: function(getOptions, error) {
+        _onGetError: function _onGetError(getOptions, error) {
             this.handleError(error);
         },
         /**
          * Initiates the request.
          */
-        requestData: function() {
+        requestData: function requestData() {
             var request, store, getExpression, getResults, getOptions;
 
-            domClass.add(this.domNode, 'panel-loading');
+            _domClass['default'].add(this.domNode, 'panel-loading');
 
             store = this.get('store');
             if (store) {
@@ -1153,29 +1068,25 @@ define('argos/_DetailBase', [
                 getExpression = this._buildGetExpression() || null;
                 getResults = store.get(getExpression, getOptions);
 
-                Deferred.when(getResults,
-                    this._onGetComplete.bind(this),
-                    this._onGetError.bind(this, getOptions)
-                );
+                _Deferred['default'].when(getResults, this._onGetComplete.bind(this), this._onGetError.bind(this, getOptions));
 
                 return getResults;
             }
 
             console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataDetailMixin to your detail view?');
         },
-        _buildGetExpression: function() {
+        _buildGetExpression: function _buildGetExpression() {
             var options = this.options;
 
             return options && (options.id || options.key);
         },
-        _applyStateToGetOptions: function(getOptions) {
-        },
+        _applyStateToGetOptions: function _applyStateToGetOptions(getOptions) {},
         /**
          * Determines if the view should be refresh by inspecting and comparing the passed navigation option key with current key.
          * @param {Object} options Passed navigation options.
          * @return {Boolean} True if the view should be refreshed, false if not.
          */
-        refreshRequiredFor: function(options) {
+        refreshRequiredFor: function refreshRequiredFor(options) {
             if (this.options) {
                 if (options) {
                     if (this.options.key !== options.key) {
@@ -1193,7 +1104,7 @@ define('argos/_DetailBase', [
          * @param tag
          * @param data
          */
-        activate: function(tag, data) {
+        activate: function activate(tag, data) {
             var options = data && data.options;
             if (options && options.descriptor) {
                 options.title = options.title || options.descriptor;
@@ -1201,7 +1112,7 @@ define('argos/_DetailBase', [
 
             this.inherited(arguments);
         },
-        show: function(options) {
+        show: function show(options) {
             if (options && options.descriptor) {
                 options.title = options.title || options.descriptor;
             }
@@ -1212,15 +1123,15 @@ define('argos/_DetailBase', [
          * Returns the view key
          * @return {String} View key
          */
-        getTag: function() {
+        getTag: function getTag() {
             return this.options && this.options.key;
         },
         /**
          * Extends the {@link View#getContext parent implementation} to also set the resourceKind, key and descriptor
          * @return {Object} View context object
          */
-        getContext: function() {
-            return lang.mixin(this.inherited(arguments), {
+        getContext: function getContext() {
+            return _lang['default'].mixin(this.inherited(arguments), {
                 resourceKind: this.resourceKind,
                 key: this.options.key,
                 descriptor: this.options.descriptor
@@ -1230,7 +1141,7 @@ define('argos/_DetailBase', [
          * Extends the {@link View#beforeTransitionTo parent implementation} to also clear the view if `refreshRequired` is true
          * @return {Object} View context object
          */
-        beforeTransitionTo: function() {
+        beforeTransitionTo: function beforeTransitionTo() {
             this.inherited(arguments);
 
             if (this.refreshRequired) {
@@ -1245,9 +1156,9 @@ define('argos/_DetailBase', [
          * If a security breach is detected it sets the content to the notAvailableTemplate, otherwise it calls
          * {@link #requestData requestData} which starts the process sequence.
          */
-        refresh: function() {
+        refresh: function refresh() {
             if (this.security && !App.hasAccessTo(this.expandExpression(this.security))) {
-                domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
+                _domConstruct['default'].place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
                 return;
             }
 
@@ -1256,18 +1167,18 @@ define('argos/_DetailBase', [
         /**
          * Clears the view by replacing the content with the empty template and emptying the stored row contexts.
          */
-        clear: function() {
+        clear: function clear() {
             this.set('detailContent', this.emptyTemplate.apply(this));
             if (this.tabList) {
-                domConstruct.empty(this.tabList);
+                _dojoDomConstruct.empty(this.tabList);
                 if (this.moreTabList) {
-                    domConstruct.empty(this.moreTabList);
+                    _dojoDomConstruct.empty(this.moreTabList);
                     this.moreTabList.style.left = '';
                     this.moreTabList.style.visibility = 'hidden';
                 }
             }
             if (this.quickActions) {
-                domConstruct.empty(this.quickActions);
+                _dojoDomConstruct.empty(this.quickActions);
             }
             if (this.tabMapping) {
                 this.tabMapping = [];
@@ -1276,19 +1187,20 @@ define('argos/_DetailBase', [
             }
             this._navigationOptions = [];
         },
-        _processRelatedItem: function(data, context, rowNode) {
-            var view = App.getView(data['view']), options = {};
+        _processRelatedItem: function _processRelatedItem(data, context, rowNode) {
+            var view = App.getView < _ListBase > data['view'],
+                options = {};
 
             if (view) {
                 options.where = context ? context['where'] : '';
-                view.getListCount(options).then(function(result) {
+                view.getListCount(options).then(function (result) {
                     var labelNode, html;
 
                     if (result >= 0) {
-                        labelNode = query('.related-item-label', rowNode)[0];
+                        labelNode = (0, _query['default'])('.related-item-label', rowNode)[0];
                         if (labelNode) {
                             html = '<span class="related-item-count">' + result + '</span>';
-                            domConstruct.place(html, labelNode, 'before');
+                            _domConstruct['default'].place(html, labelNode, 'before');
                         } else {
                             console.warn('Missing the "related-item-label" dom node.');
                         }
@@ -1296,11 +1208,11 @@ define('argos/_DetailBase', [
                 });
             }
         },
-        destroy: function() {
+        destroy: function destroy() {
             this.inherited(arguments);
         }
     });
 
-    lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
-    return __class;
+    _lang['default'].setObject('Sage.Platform.Mobile._DetailBase', __class);
+    module.exports = __class;
 });

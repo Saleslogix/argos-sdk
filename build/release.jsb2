@@ -35,6 +35,10 @@
         {
           "text": "Chart.min.js",
           "path": "../libraries/"
+        },
+        {
+          "text": "browser-polyfill.min.js",
+          "path": "../libraries/babel"
         }
       ]
     },

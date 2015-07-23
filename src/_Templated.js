@@ -12,68 +12,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import domConstruct from 'dojo/dom-construct';
+import declare from 'dojo/_base/declare';
+import query from 'dojo/query';
+import parser from 'dojo/parser';
+import array from 'dojo/_base/array';
+import lang from 'dojo/_base/lang';
+import registry from 'dijit/registry';
+import wai from 'dijit/_base/wai';
+import _TemplatedMixin from 'dijit/_TemplatedMixin';
 
 /**
  * @class argos._Templated
+ * _Templated serves as an override for dijit Widgets to enable the use of
+ * Simplates for templates.
+ *
+ * @alternateClassName _Templated
  */
-define('argos/_Templated', [
-    'dojo/dom-construct',
-    'dojo/_base/declare',
-    'dojo/query',
-    'dojo/parser',
-    'dojo/_base/array',
-    'dojo/_base/lang',
-    'dijit/registry',
-    'dijit/_base/wai',
-    'dijit/_TemplatedMixin'
-], function(
-    domConstruct,
-    declare,
-    query,
-    parser,
-    array,
-    lang,
-    registry,
-    wai,
-    _TemplatedMixin
-) {
-
+var __class = declare('argos._Templated', [_TemplatedMixin], {
+    _stringRepl: function(tmpl) {
+        return tmpl;
+    },
     /**
-     * _Templated serves as an override for dijit Widgets to enable the use of
-     * Simplates for templates.
-     *
-     * @alternateClassName _Templated
+     * Processes `this.widgetTemplate` or `this.contentTemplate`
      */
-    var __class = declare('argos._Templated', [_TemplatedMixin], {
-        _stringRepl: function(tmpl) {
-            return tmpl;
-        },
-        /**
-         * Processes `this.widgetTemplate` or `this.contentTemplate`
-         */
-        buildRendering: function() {
-            var root;
+    buildRendering: function() {
+        var root;
 
-            if (this.widgetTemplate && this.contentTemplate) {
-                throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
-            }
-
-            if (this.contentTemplate) {
-                this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
-            } else if (this.widgetTemplate) {
-                this.templateString = this.widgetTemplate.apply(this);
-                root = domConstruct.toDom(this.templateString);
-
-                if (root.nodeType === 11) {
-                    this.templateString = ['<div>', this.templateString, '</div>'].join('');
-                }
-            }
-
-            this.inherited(arguments);
+        if (this.widgetTemplate && this.contentTemplate) {
+            throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
         }
-    });
 
+        if (this.contentTemplate) {
+            this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
+        } else if (this.widgetTemplate) {
+            this.templateString = this.widgetTemplate.apply(this);
+            root = domConstruct.toDom(this.templateString);
 
-    lang.setObject('Sage.Platform.Mobile._Templated', __class);
-    return __class;
+            if (root.nodeType === 11) {
+                this.templateString = ['<div>', this.templateString, '</div>'].join('');
+            }
+        }
+
+        this.inherited(arguments);
+    }
 });
+
+lang.setObject('Sage.Platform.Mobile._Templated', __class);
+export default __class;
