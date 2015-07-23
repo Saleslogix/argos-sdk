@@ -20,7 +20,11 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
     var _lang = _interopRequireDefault(_dojo_baseLang);
 
+    var _array = _interopRequireDefault(_dojo_baseArray);
+
     var _Deferred = _interopRequireDefault(_dojo_baseDeferred);
+
+    var _connect = _interopRequireDefault(_dojo_baseConnect);
 
     var _query = _interopRequireDefault(_dojoQuery);
 
@@ -78,7 +82,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          *      resourceKind         set to data-resource-kind
          *
          */
-        widgetTemplate: new Simplate(['<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>', '{%! $.loadingTemplate %}', '{%! $.quickActionTemplate %}', '{%! $.tabContentTemplate %}', '{%! $.moreTabListTemplate %}', '<div class="panel-content" data-dojo-attach-point="contentNode"></div>', '</div>']),
+        widgetTemplate: new Simplate(['<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" data-dojo-attach-event="onclick:toggleDropDown" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>', '{%! $.loadingTemplate %}', '{%! $.quickActionTemplate %}', '{%! $.tabContentTemplate %}', '{%! $.moreTabListTemplate %}', '</div>']),
         /**
          * @property {Simplate}
          * HTML shown when no data is available.
@@ -95,70 +99,44 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * @property {Simplate}
          * HTML that creates the quick action list
          */
-        quickActionTemplate: new Simplate([
-            '<div class="quick-actions" data-dojo-attach-point="quickActions"></div>'
-        ]),
+        quickActionTemplate: new Simplate(['<div class="quick-actions" data-dojo-attach-point="quickActions"></div>']),
         /**
          * @property {Simplate}
          * HTML that starts a new tab list
          */
-        tabContentTemplate: new Simplate([
-            '<div class="panel-content" data-dojo-attach-point="contentNode">',
-            '{%! $.tabListTemplate %}',
-            '</div>'
-        ]),
+        tabContentTemplate: new Simplate(['<div class="panel-content" data-dojo-attach-point="contentNode">', '{%! $.tabListTemplate %}', '</div>']),
         /**
          * @property {Simplate}
          * HTML that starts a new tab list
          */
-        tabListTemplate: new Simplate([
-            '<ul class="tab-list" data-dojo-attach-point="tabList"></ul>'
-        ]),
+        tabListTemplate: new Simplate(['<ul class="tab-list" data-dojo-attach-point="tabList"></ul>']),
         /**
          * @property {Simplate}
          * HTML that starts a new More tab list
          */
-        moreTabListTemplate: new Simplate([
-            '<ul class="more-tab-dropdown" data-dojo-attach-point="moreTabList"></ul>'
-        ]),
-        tabListAnimTemplate: new Simplate([
-            '<div class="tab-focus-indicator"></div>',
-            '<div class="animated-bar"></div>'
-        ]),
+        moreTabListTemplate: new Simplate(['<ul class="more-tab-dropdown" data-dojo-attach-point="moreTabList"></ul>']),
+        tabListAnimTemplate: new Simplate(['<div class="tab-focus-indicator"></div>', '<div class="animated-bar"></div>']),
         /**
          * @property {Simplate}
          * HTML that creates a new tab to be placed in the tab list
-         *
+         * 
          * `$` => the view instance
          */
-        tabListItemTemplate: new Simplate([
-            '<li class="tab" data-action="changeTab">',
-            '{%: ($.title || $.options.title) %}',
-            '</li>'
-        ]),
+        tabListItemTemplate: new Simplate(['<li class="tab" data-action="changeTab">', '{%: ($.title || $.options.title) %}', '</li>']),
         /**
          * @property {Simplate}
          * HTML that creates a new tab to be placed in the more tab list
-         *
+         * 
          * `$` => the view instance
          */
-        moreTabItemTemplate: new Simplate([
-            '<li class="tab more-item" data-action="toggleDropDown">',
-            '{%: ($.title || $.options.title) %}',
-            '<span class="fa fa-angle-down"></span>',
-            '</li>'
-        ]),
+        moreTabItemTemplate: new Simplate(['<li class="tab more-item" data-action="toggleDropDown">', '{%: ($.title || $.options.title) %}', '<span class="fa fa-angle-down"></span>', '</li>']),
         /**
          * @property {Simplate}
          * HTML that creates the detail header displaying information about the tab list
-         *
+         * 
          * `$` => the view instance
          */
-        detailHeaderTemplate: new Simplate([
-            '<div class="detail-header">',
-            '{%: $.value %}',
-            '</div>'
-        ]),
+        detailHeaderTemplate: new Simplate(['<div class="detail-header">', '{%: $.value %}', '</div>']),
         /**
          * @property {Simplate}
          * HTML that starts a new section
@@ -166,24 +144,11 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * `$` => the view instance
          */
         sectionBeginTemplate: new Simplate([
-            //'<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-            //'<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
-            //'{%: ($.title || $.options.title) %}',
-            //'</h2>',
-            '{% if ($.list || $.options.list) { %}',
-            '{% if ($.cls || $.options.cls) { %}',
-            '<ul class="{%= ($.cls || $.options.cls) %}">',
-            '{% } else { %}',
-            '<ul class="detailContent list">',
-            '{% } %}',
-            '{% } else { %}',
-            '{% if ($.cls || $.options.cls) { %}',
-            '<div class="{%= ($.cls || $.options.cls) %}">',
-            '{% } else { %}',
-            '<div class="detailContent">',
-            '{% } %}',
-            '{% } %}'
-        ]),
+        //'<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
+        //'<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
+        //'{%: ($.title || $.options.title) %}',
+        //'</h2>',
+        '{% if ($.list || $.options.list) { %}', '{% if ($.cls || $.options.cls) { %}', '<ul class="{%= ($.cls || $.options.cls) %}">', '{% } else { %}', '<ul class="detailContent list">', '{% } %}', '{% } else { %}', '{% if ($.cls || $.options.cls) { %}', '<div class="{%= ($.cls || $.options.cls) %}">', '{% } else { %}', '<div class="detailContent">', '{% } %}', '{% } %}']),
         /**
          * @property {Simplate}
          * HTML that ends a section
@@ -281,8 +246,8 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         editText: 'Edit',
         /**
          * @cfg {String}
-         * Font awesome icon to be used by the more list item
-         */
+             * Font awesome icon to be used by the more list item
+             */
         icon: 'fa fa-chevron',
         /**
          * @cfg {String}
@@ -383,47 +348,49 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         },
         createErrorHandlers: function createErrorHandlers() {
             this.errorHandlers = this.errorHandlers || [{
-                    name: 'Aborted',
+                name: 'Aborted',
                 test: function test(error) {
-                        return error.aborted;
-                    },
+                    return error.aborted;
+                },
                 handle: function handle(error, next) {
-                        this.options = false; // force a refresh
-                        next();
-                    }
-                }, {
-                    name: 'AlertError',
+                    this.options = false; // force a refresh
+                    next();
+                }
+            }, {
+                name: 'AlertError',
                 test: function test(error) {
-                        return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
-                    },
+                    return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
+                },
                 handle: function handle(error, next) {
-                        alert(this.getErrorMessage(error));
-                        next();
-                    }
-                }, {
-                    name: 'NotFound',
+                    alert(this.getErrorMessage(error));
+                    next();
+                }
+            }, {
+                name: 'NotFound',
                 test: function test(error) {
-                        return error.status === this.HTTP_STATUS.NOT_FOUND;
-                    },
+                    return error.status === this.HTTP_STATUS.NOT_FOUND;
+                },
                 handle: function handle(error, next) {
                     _domConstruct['default'].place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
-                        next();
-                    }
-                }, {
-                    name: 'CatchAll',
+                    next();
+                }
+            }, {
+                name: 'CatchAll',
                 test: function test(error) {
-                        return true;
-                    },
+                    return true;
+                },
                 handle: function handle(error, next) {
-                        var errorItem = {
-                            viewOptions: this.options,
-                            serverError: error
-                        };
+                    var errorItem = {
+                        viewOptions: this.options,
+                        serverError: error
+                    };
+
                     _ErrorManager2['default'].addError(this.getErrorMessage(error), errorItem);
                     _domClass['default'].remove(this.domNode, 'panel-loading');
-                        next();
-                    }
+                    next();
+                }
             }];
+
             return this.errorHandlers;
         },
         /**
@@ -472,8 +439,6 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         },
         /**
          * Toggles the collapsed state of the section.
-         * @param {Object} The event type and source.
-         * @private
          */
         toggleSection: function toggleSection(params) {
             var node = _dom['default'].byId(params.$source),
@@ -493,22 +458,26 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * @private
          */
         changeTab: function changeTab(params) {
-            var currentIndex, tabIndex, indexShift, moreTab, tab = params.$source;
+            var currentIndex,
+                tabIndex,
+                indexShift,
+                moreTab,
+                tab = params.$source;
             if (tab !== this.currentTab) {
                 indexShift = this.tabList.children.length - 1;
-                currentIndex = _dojo_baseArray.indexOf(this.tabList.children, this.currentTab);
+                currentIndex = _array['default'].indexOf(this.tabList.children, this.currentTab);
                 if (currentIndex === -1) {
-                    currentIndex = _dojo_baseArray.indexOf(this.moreTabList.children, this.currentTab) + indexShift;
+                    currentIndex = _array['default'].indexOf(this.moreTabList.children, this.currentTab) + indexShift;
                 }
-                tabIndex = _dojo_baseArray.indexOf(this.tabList.children, tab);
+                tabIndex = _array['default'].indexOf(this.tabList.children, tab);
                 if (tabIndex === -1) {
-                    tabIndex = _dojo_baseArray.indexOf(this.moreTabList.children, tab) + indexShift;
+                    tabIndex = _array['default'].indexOf(this.moreTabList.children, tab) + indexShift;
                 }
                 if (currentIndex > -1 && tabIndex > -1) {
                     this.tabMapping[currentIndex].style.display = 'none';
                     this.tabMapping[tabIndex].style.display = 'block';
-                    moreTab = _dojoQuery('.more-item', this.id)[0];
-                    if (_dojo_baseArray.indexOf(this.tabList.children, tab) > -1) {
+                    moreTab = (0, _query['default'])('.more-item', this.id)[0];
+                    if (_array['default'].indexOf(this.tabList.children, tab) > -1) {
                         this.positionFocusState(tab);
                         this.currentTab.className = 'tab';
                         tab.className = 'tab selected';
@@ -516,8 +485,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                         if (moreTab) {
                             moreTab.className = 'tab more-item';
                         }
-                    }
-                    else {
+                    } else {
                         if (moreTab) {
                             this.positionFocusState(moreTab);
                             moreTab.className = 'tab more-item selected';
@@ -535,26 +503,34 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * @private
          */
         toggleDropDown: function toggleDropDown(params) {
-            var tab = params.$source, moreTab, posTop, posLeft, width, height;
+            var tab = params.$source,
+                moreTab,
+                posTop,
+                posLeft,
+                width,
+                height,
+                maxHeight;
             if (tab) {
                 if (this.moreTabList.style.visibility === 'hidden') {
                     this.moreTabList.style.visibility = 'visible';
+
                     if (this.moreTabList.style.left === '') {
-                        moreTab = _dojoQuery('.more-item', this.id)[0];
+                        moreTab = (0, _query['default'])('.more-item', this.id)[0];
                         posTop = moreTab.offsetTop;
                         posLeft = moreTab.offsetLeft;
                         width = parseInt(moreTab.offsetWidth);
                         height = parseInt(moreTab.offsetHeight);
+                        maxHeight = this.domNode.offsetHeight - this.domNode.offsetTop - posTop;
+
                         this.moreTabList.style.left = posLeft - this.moreTabList.offsetWidth + width + 'px';
                         this.moreTabList.style.top = posTop + height + 'px';
+                        this.moreTabList.style.maxHeight = maxHeight + 'px';
                     }
-                }
-                else {
+                } else {
                     this.moreTabList.style.visibility = 'hidden';
                 }
-            }
-            else {
-                if (params.target !== _dojoQuery('.more-item', this.id)[0]) {
+            } else {
+                if (params.target !== (0, _query['default'])('.more-item', this.id)[0]) {
                     this.moreTabList.style.visibility = 'hidden';
                 }
             }
@@ -564,42 +540,34 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * @private
          */
         reorderTabs: function reorderTabs() {
-            var tab, startMoreTab, moreTab, arr;
+            var moreTab, arr;
+
             this.inOverflow = false;
             if (this.moreTabList.children.length > 0) {
-                moreTab = _dojoQuery('.more-item', this.id)[0];
+                moreTab = (0, _query['default'])('.more-item', this.id)[0];
                 if (moreTab) {
                     this.tabList.children[this.tabList.children.length - 1].remove();
                 }
                 // Need to reference a different array when calling array.forEach since this.moreTabList.children is being modified, hence have arr be this.moreTabList.children
                 arr = [].slice.call(this.moreTabList.children);
-                _dojo_baseArray.forEach(arr, function (tab) {
-                    this.moreTabList.children[_dojo_baseArray.indexOf(this.moreTabList.children, tab)].remove();
-                    _dojoDomConstruct.place(tab, this.tabList);
+                _array['default'].forEach(arr, function (tab) {
+                    this.moreTabList.children[_array['default'].indexOf(this.moreTabList.children, tab)].remove();
+                    _domConstruct['default'].place(tab, this.tabList);
+                    this.checkTabOverflow(tab);
+                }, this);
+            } else {
+                arr = [].slice.call(this.tabList.children);
+                _domConstruct['default'].empty(this.tabList);
+                _array['default'].forEach(arr, function (tab) {
+                    _domConstruct['default'].place(tab, this.tabList);
                     this.checkTabOverflow(tab);
                 }, this);
             }
-            else {
-                arr = [].slice.call(this.tabList.children);
-                _dojo_baseArray.forEach(arr, function (tab) {
-                    if (tab.offsetTop > this.tabList.offsetTop) {
-                        if (!startMoreTab) {
-                            startMoreTab = tab;
-                        }
-                        else {
-                            this.tabList.children[_dojo_baseArray.indexOf(this.tabList.children, tab)].remove();
-                            _dojoDomConstruct.place(tab, this.moreTabList);
-                        }
-                    }
-                }, this);
-                this.checkTabOverflow(startMoreTab);
-            }
-            moreTab = query('.more-item', this.id)[0];
-            if (moreTab && _dojo_baseArray.indexOf(this.moreTabList.children, this.currentTab) > -1) {
+            moreTab = (0, _query['default'])('.more-item', this.id)[0];
+            if (moreTab && _array['default'].indexOf(this.moreTabList.children, this.currentTab) > -1) {
                 this.positionFocusState(moreTab);
                 moreTab.className = 'tab more-item selected';
-            }
-            else {
+            } else {
                 this.positionFocusState(this.currentTab);
             }
         },
@@ -609,13 +577,20 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * @private
          */
         positionFocusState: function positionFocusState(target) {
-            var posTop = target.offsetTop, posLeft = target.offsetLeft, width = parseInt(target.offsetWidth), height = parseInt(target.offsetHeight), tableTop = this.tabList.offsetTop, tableLeft = this.tabList.offsetLeft, focusState = _dojoQuery(".animated-bar", this.id);
+            var posTop = target.offsetTop,
+                posLeft = target.offsetLeft,
+                width = parseInt(target.offsetWidth),
+                height = parseInt(target.offsetHeight),
+                tableTop = this.tabList.offsetTop,
+                tableLeft = this.tabList.offsetLeft,
+                focusState = (0, _query['default'])(".animated-bar", this.id);
+
             if (focusState.length > 0) {
                 focusState = focusState[0];
                 focusState.style.left = posLeft - tableLeft + 'px';
                 focusState.style.top = posTop - tableTop + 'px';
-                focusState.style.right = (posTop - tableTop) + width + 'px';
-                focusState.style.bottom = (posTop - tableTop) + height + 'px';
+                focusState.style.right = posTop - tableTop + width + 'px';
+                focusState.style.bottom = posTop - tableTop + height + 'px';
                 focusState.style.width = width + 'px';
             }
         },
@@ -629,7 +604,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                 value = value.slice(0, value.length - 1);
             }
             value = value.charAt(0).toUpperCase() + value.slice(1) + " " + this.informationText;
-            _dojoDomConstruct.place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
+            _domConstruct['default'].place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
         },
         /**
          * Checks the tab to see if it causes an overflow when placed in the tabList, if so then push it a new list element called More.
@@ -640,29 +615,31 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
             var moreTab, replacedTab;
             if (tab.offsetTop > this.tabList.offsetTop) {
                 if (!this.inOverflow) {
-                    moreTab = _dojoDomConstruct.toDom(this.moreTabItemTemplate.apply({ title: this.moreText + '...' }, this));
+                    moreTab = _domConstruct['default'].toDom(this.moreTabItemTemplate.apply({ title: this.moreText + '...' }, this));
                     moreTab.style.float = 'right';
-                    _dojoDomConstruct.place(moreTab, this.tabList);
-                    this.tabMoreIndex = _dojo_baseArray.indexOf(this.tabList.children, tab);
+                    _domConstruct['default'].place(moreTab, this.tabList);
+
+                    this.tabMoreIndex = _array['default'].indexOf(this.tabList.children, tab);
                     this.tabList.children[this.tabMoreIndex].remove();
                     if (this.tabList.children.length === 1 && this.moreTabList.children.length === 0) {
                         moreTab.className = 'tab more-item selected';
                         this.currentTab = tab;
                         tab.className = 'tab selected';
                     }
+
                     if (moreTab.offsetTop > this.tabList.offsetTop) {
                         this.tabMoreIndex = this.tabMoreIndex - 1;
                         replacedTab = this.tabList.children[this.tabMoreIndex];
                         this.tabList.children[this.tabMoreIndex].remove();
-                        _dojoDomConstruct.place(replacedTab, this.moreTabList);
+                        _domConstruct['default'].place(replacedTab, this.moreTabList);
                     }
-                    _dojoDomConstruct.place(tab, this.moreTabList);
+
+                    _domConstruct['default'].place(tab, this.moreTabList);
                     this.inOverflow = true;
                     this.tabMoreIndex++;
-                }
-                else {
+                } else {
                     this.tabList.children[this.tabMoreIndex].remove();
-                    _dojoDomConstruct.place(tab, this.moreTabList);
+                    _domConstruct['default'].place(tab, this.moreTabList);
                 }
             }
         },
@@ -781,35 +758,36 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
             var rows = layout['children'] || layout['as'] || layout,
                 options = layout['options'] || (layout['options'] = {
                 title: this.detailsText
-	    }), 
-		sectionQueue = [], 
-	    	sectionStarted = false, 
-		callbacks = [], 
-		current, 
-		i, 
-		section, 
-		tab, 
-		sectionNode, 
-		include, 
-		exclude, 
-		provider, 
-		property, 
-		value, 
-		rendered, 
-		formatted, 
-		data, 
-		hasAccess, 
-		context, 
-		useListTemplate, 
-		template, 
-		rowNode, 
-		rowHtml, 
-		item;
-		
+            }),
+                sectionQueue = [],
+                sectionStarted = false,
+                callbacks = [],
+                current,
+                i,
+                section,
+                tab,
+                sectionNode,
+                include,
+                exclude,
+                provider,
+                property,
+                value,
+                rendered,
+                formatted,
+                data,
+                hasAccess,
+                context,
+                useListTemplate,
+                template,
+                rowNode,
+                rowHtml,
+                item;
+
             if (!this.tabList.parentNode) {
-                domConstruct.place(this.tabList, this.contentNode);
-                domConstruct.place(this.tabListAnimTemplate.apply(), this.contentNode);
+                _domConstruct['default'].place(this.tabList, this.contentNode);
+                _domConstruct['default'].place(this.tabListAnimTemplate.apply(), this.contentNode);
             }
+
             for (i = 0; i < rows.length; i++) {
                 current = rows[i];
                 include = this.expandExpression(current['include'], entry);
@@ -836,25 +814,23 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                 if (!sectionStarted) {
                     sectionStarted = true;
                     if (layout.name === 'QuickActionsSection') {
-                    section = _dojoDomConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                        section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
                         sectionNode = section;
-                        _dojoDomConstruct.place(section, this.quickActions);
-                    }
-                    else {
-                        tab = _dojoDomConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
-                        section = _dojoDomConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                        _domConstruct['default'].place(section, this.quickActions);
+                    } else {
+                        tab = _domConstruct['default'].toDom(this.tabListItemTemplate.apply(layout, this));
+                        section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
                         sectionNode = section;
                         if (this.tabList.children.length === 0) {
                             // No children, so set the current tab to this tab and set the section to have a display of block
                             this.currentTab = tab;
-                        }
-                        else {
+                        } else {
                             section.style.display = 'none';
                         }
                         this.tabMapping.push(section);
-                        _dojoDomConstruct.place(tab, this.tabList);
+                        _domConstruct['default'].place(tab, this.tabList);
                         this.checkTabOverflow(tab);
-                    _domConstruct['default'].place(section, this.contentNode);
+                        _domConstruct['default'].place(section, this.contentNode);
                     }
                 }
 
@@ -1014,15 +990,15 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
             if (this.entry) {
                 this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
+
                 if (this.currentTab) {
                     if (this.tabList.children.length === 1 && this.moreTabList.children.length > 0) {
-                        moreTab = _dojoQuery('.more-item', this.id);
+                        moreTab = (0, _query['default'])('.more-item', this.id);
                         if (moreTab.children.length > 0) {
                             this.positionFocusState(moreTab[0]);
                             moreTab.className = 'tab more-item selected';
                         }
-                    }
-                    else {
+                    } else {
                         this.positionFocusState(this.currentTab);
                         this.currentTab.className = 'tab selected';
                     }
@@ -1148,9 +1124,10 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                 this.clear();
             }
         },
-        onTransitionTo: function () {
+        onTransitionTo: function onTransitionTo() {
             this.inherited(arguments);
-            this.orientation = connect.subscribe('/app/setOrientation', this, this.reorderTabs);
+
+            this.orientation = _connect['default'].subscribe('/app/setOrientation', this, this.reorderTabs);
         },
         /**
          * If a security breach is detected it sets the content to the notAvailableTemplate, otherwise it calls
@@ -1170,25 +1147,26 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         clear: function clear() {
             this.set('detailContent', this.emptyTemplate.apply(this));
             if (this.tabList) {
-                _dojoDomConstruct.empty(this.tabList);
+                _domConstruct['default'].empty(this.tabList);
                 if (this.moreTabList) {
-                    _dojoDomConstruct.empty(this.moreTabList);
+                    _domConstruct['default'].empty(this.moreTabList);
                     this.moreTabList.style.left = '';
                     this.moreTabList.style.visibility = 'hidden';
                 }
             }
             if (this.quickActions) {
-                _dojoDomConstruct.empty(this.quickActions);
+                _domConstruct['default'].empty(this.quickActions);
             }
             if (this.tabMapping) {
                 this.tabMapping = [];
                 this.inOverflow = false;
                 this.tabMoreIndex = null;
             }
+
             this._navigationOptions = [];
         },
         _processRelatedItem: function _processRelatedItem(data, context, rowNode) {
-            var view = App.getView < _ListBase > data['view'],
+            var view = App.getView(data['view']),
                 options = {};
 
             if (view) {

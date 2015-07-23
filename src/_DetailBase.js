@@ -904,7 +904,7 @@ var __class = declare('argos._DetailBase', [View], {
                 sectionStarted = true;
                 if (layout.name === 'QuickActionsSection') {
                     section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-                    sectionNode = section.childNodes[1];
+                    sectionNode = section;
                     domConstruct.place(section, this.quickActions);
                 } else {
                     tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
@@ -1275,7 +1275,7 @@ var __class = declare('argos._DetailBase', [View], {
         this._navigationOptions = [];
     },
     _processRelatedItem: function(data, context, rowNode) {
-        var view = App.getView<_ListBase>(data['view']), options:any = {};
+        var view = App.getView(data['view']), options:any = {};
 
         if (view) {
             options.where = context ? context['where'] : '';
