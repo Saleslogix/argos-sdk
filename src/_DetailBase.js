@@ -941,13 +941,14 @@ import View from './View';
                     } else {
                         console.warn('Missing the "related-item-label" dom node.');
                     }
-                });
-            }
-        },
-        destroy: function() {
-            this.inherited(arguments);
+                }
+            });
         }
-    });
+    },
+    destroy: function() {
+        this.inherited(arguments);
+    }
+});
 
-    lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
+lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
 export default __class;
