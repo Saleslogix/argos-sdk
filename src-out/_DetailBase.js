@@ -825,7 +825,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
             this._navigationOptions = [];
         },
         _processRelatedItem: function _processRelatedItem(data, context, rowNode) {
-            var view = App.getView < _ListBase > data['view'],
+            var view = App.getView(data['view']),
                 options = {};
 
             if (view) {

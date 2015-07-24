@@ -359,7 +359,7 @@ var __class = declare('argos._EditBase', [View], {
      * @template
      */
     createToolLayout: function() {
-        var tbar:any = [{
+        var tbar = [{
             id: 'save',
             action: 'save',
             cls: 'fa fa-save fa-fw fa-lg',
