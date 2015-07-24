@@ -100,7 +100,7 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
          * @property {String}
          * Text displayed when an invalid input is detected
          */
-        invalidDurationErrorText: 'Field \'${0}\' is not a valid duration.',
+        invalidDurationErrorText: "Field '${0}' is not a valid duration.",
         /**
          * @property {Object}
          * The auto completed text and their corresponding values in minutes (SData is always minutes)
