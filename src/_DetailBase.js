@@ -915,32 +915,31 @@ import View from './View';
                 return;
             }
 
-            this.requestData();
-        },
-        /**
-         * Clears the view by replacing the content with the empty template and emptying the stored row contexts.
-         */
-        clear: function() {
-            this.set('detailContent', this.emptyTemplate.apply(this));
+        this.requestData();
+    },
+    /**
+     * Clears the view by replacing the content with the empty template and emptying the stored row contexts.
+     */
+    clear: function() {
+        this.set('detailContent', this.emptyTemplate.apply(this));
 
-            this._navigationOptions = [];
-        },
-        _processRelatedItem: function(data, context, rowNode) {
-            var view = App.getView(data['view']), options = {};
+        this._navigationOptions = [];
+    },
+    _processRelatedItem: function(data, context, rowNode) {
+        var view = App.getView(data['view']), options = {};
 
-            if (view) {
-                options.where = context ? context['where'] : '';
-                view.getListCount(options).then(function(result) {
-                    var labelNode, html;
+        if (view) {
+            options.where = context ? context['where'] : '';
+            view.getListCount(options).then(function(result) {
+                var labelNode, html;
 
-                    if (result >= 0) {
-                        labelNode = query('.related-item-label', rowNode)[0];
-                        if (labelNode) {
-                            html = '<span class="related-item-count">' + result + '</span>';
-                            domConstruct.place(html, labelNode, 'before');
-                        } else {
-                            console.warn('Missing the "related-item-label" dom node.');
-                        }
+                if (result >= 0) {
+                    labelNode = query('.related-item-label', rowNode)[0];
+                    if (labelNode) {
+                        html = '<span class="related-item-count">' + result + '</span>';
+                        domConstruct.place(html, labelNode, 'before');
+                    } else {
+                        console.warn('Missing the "related-item-label" dom node.');
                     }
                 });
             }
