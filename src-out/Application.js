@@ -340,10 +340,13 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
         },
         onOffline: function onOffline() {
             this.onLine = false;
+            this.onConnectionChange(this.onLine);
         },
         onOnline: function onOnline() {
             this.onLine = true;
+            this.onConnectionChange(this.onLine);
         },
+        onConnectionChange: function onConnectionChange(online) {},
         /**
          * Establishes various connections to events.
          */

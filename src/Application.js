@@ -333,9 +333,13 @@ __class = declare('argos.Application', null, {
     },
     onOffline: function() {
         this.onLine = false;
+        this.onConnectionChange(this.onLine);
     },
     onOnline: function() {
         this.onLine = true;
+        this.onConnectionChange(this.onLine);
+    },
+    onConnectionChange: function(online) {
     },
     /**
      * Establishes various connections to events.
