@@ -116,10 +116,12 @@ var __class = declare('argos._DetailBase', [View, TabWidget], {
      * `$` => the view instance
      */
     sectionBeginTemplate: new Simplate([
-    // '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-    // '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
-    // '{%: ($.title || $.options.title) %}',
-    // '</h2>',
+    '{% if (!$$.isTabbed) { %}',
+      '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
+      '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
+      '{%: ($.title || $.options.title) %}',
+      '</h2>',
+    '{% } %}',
     '{% if ($.list || $.options.list) { %}',
             '{% if ($.cls || $.options.cls) { %}',
                 '<ul class="{%= ($.cls || $.options.cls) %}">',
@@ -278,6 +280,11 @@ var __class = declare('argos._DetailBase', [View, TabWidget], {
      * Controls if the view should be exposed
      */
     expose: false,
+    /**
+     * @property {Boolean}
+     * Controls whether the view will render as a tab view or the previous list view
+     */
+    isTabbed: true,
     /**
      * @deprecated
      */
@@ -618,7 +625,7 @@ var __class = declare('argos._DetailBase', [View, TabWidget], {
             rowHtml,
             item;
 
-        if (!this.tabList.parentNode) {
+        if (!this.tabList.parentNode && this.isTabbed) {
             domConstruct.place(this.tabList, this.contentNode);
             domConstruct.place(this.tabListAnimTemplate.apply(), this.contentNode);
         }
@@ -648,24 +655,30 @@ var __class = declare('argos._DetailBase', [View, TabWidget], {
 
             if (!sectionStarted) {
                 sectionStarted = true;
-                if (layout.name === 'QuickActionsSection') {
-                    section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-                    sectionNode = section;
-                    domConstruct.place(section, this.quickActions);
+                if (this.isTabbed) {
+                  if (layout.name === 'QuickActionsSection') {
+                      section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                      sectionNode = section;
+                      domConstruct.place(section, this.quickActions);
+                  } else {
+                      tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
+                      section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                      sectionNode = section;
+                      if (this.tabList.children.length === 0) {
+                          // No children, so set the current tab to this tab and set the section to have a display of block
+                          this.currentTab = tab;
+                      } else {
+                          section.style.display = 'none';
+                      }
+                      this.tabMapping.push(section);
+                      domConstruct.place(tab, this.tabList);
+                      this.checkTabOverflow(tab);
+                      domConstruct.place(section, this.contentNode);
+                  }
                 } else {
-                    tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
-                    section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-                    sectionNode = section;
-                    if (this.tabList.children.length === 0) {
-                        // No children, so set the current tab to this tab and set the section to have a display of block
-                        this.currentTab = tab;
-                    } else {
-                        section.style.display = 'none';
-                    }
-                    this.tabMapping.push(section);
-                    domConstruct.place(tab, this.tabList);
-                    this.checkTabOverflow(tab);
-                    domConstruct.place(section, this.contentNode);
+                  section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                  sectionNode = section.childNodes[1];
+                  domConstruct.place(section, this.contentNode);
                 }
             }
 

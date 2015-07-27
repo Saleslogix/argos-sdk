@@ -115,12 +115,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          *
          * `$` => the view instance
          */
-        sectionBeginTemplate: new Simplate([
-        // '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-        // '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
-        // '{%: ($.title || $.options.title) %}',
-        // '</h2>',
-        '{% if ($.list || $.options.list) { %}', '{% if ($.cls || $.options.cls) { %}', '<ul class="{%= ($.cls || $.options.cls) %}">', '{% } else { %}', '<ul class="detailContent list">', '{% } %}', '{% } else { %}', '{% if ($.cls || $.options.cls) { %}', '<div class="{%= ($.cls || $.options.cls) %}">', '{% } else { %}', '<div class="detailContent">', '{% } %}', '{% } %}']),
+        sectionBeginTemplate: new Simplate(['{% if (!$$.isTabbed) { %}', '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">', '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>', '{%: ($.title || $.options.title) %}', '</h2>', '{% } %}', '{% if ($.list || $.options.list) { %}', '{% if ($.cls || $.options.cls) { %}', '<ul class="{%= ($.cls || $.options.cls) %}">', '{% } else { %}', '<ul class="detailContent list">', '{% } %}', '{% } else { %}', '{% if ($.cls || $.options.cls) { %}', '<div class="{%= ($.cls || $.options.cls) %}">', '{% } else { %}', '<div class="detailContent">', '{% } %}', '{% } %}']),
         /**
          * @property {Simplate}
          * HTML that ends a section
@@ -212,6 +207,11 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * Controls if the view should be exposed
          */
         expose: false,
+        /**
+         * @property {Boolean}
+         * Controls whether the view will render as a tab view or the previous list view
+         */
+        isTabbed: true,
         /**
          * @deprecated
          */
@@ -551,7 +551,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                 rowHtml,
                 item;
 
-            if (!this.tabList.parentNode) {
+            if (!this.tabList.parentNode && this.isTabbed) {
                 _domConstruct['default'].place(this.tabList, this.contentNode);
                 _domConstruct['default'].place(this.tabListAnimTemplate.apply(), this.contentNode);
             }
@@ -581,23 +581,29 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
                 if (!sectionStarted) {
                     sectionStarted = true;
-                    if (layout.name === 'QuickActionsSection') {
-                        section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-                        sectionNode = section;
-                        _domConstruct['default'].place(section, this.quickActions);
-                    } else {
-                        tab = _domConstruct['default'].toDom(this.tabListItemTemplate.apply(layout, this));
-                        section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-                        sectionNode = section;
-                        if (this.tabList.children.length === 0) {
-                            // No children, so set the current tab to this tab and set the section to have a display of block
-                            this.currentTab = tab;
+                    if (this.isTabbed) {
+                        if (layout.name === 'QuickActionsSection') {
+                            section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                            sectionNode = section;
+                            _domConstruct['default'].place(section, this.quickActions);
                         } else {
-                            section.style.display = 'none';
+                            tab = _domConstruct['default'].toDom(this.tabListItemTemplate.apply(layout, this));
+                            section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                            sectionNode = section;
+                            if (this.tabList.children.length === 0) {
+                                // No children, so set the current tab to this tab and set the section to have a display of block
+                                this.currentTab = tab;
+                            } else {
+                                section.style.display = 'none';
+                            }
+                            this.tabMapping.push(section);
+                            _domConstruct['default'].place(tab, this.tabList);
+                            this.checkTabOverflow(tab);
+                            _domConstruct['default'].place(section, this.contentNode);
                         }
-                        this.tabMapping.push(section);
-                        _domConstruct['default'].place(tab, this.tabList);
-                        this.checkTabOverflow(tab);
+                    } else {
+                        section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+                        sectionNode = section.childNodes[1];
                         _domConstruct['default'].place(section, this.contentNode);
                     }
                 }
