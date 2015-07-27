@@ -66,7 +66,7 @@ let __class = declare('argos.TabWidget', [_Templated], {
 	moreTabItemTemplate: new Simplate([
 			'<li class="tab more-item" data-action="toggleDropDown">',
 			'{%: ($.title || $.options.title) %}',
-			'<span class="fa fa-angle-down"></span>',
+			'<span class="fa fa-angle-right"></span>',
 			'</li>'
 	]),
 
@@ -153,13 +153,19 @@ let __class = declare('argos.TabWidget', [_Templated], {
 					 posLeft,
 					 width,
 					 height,
-					 maxHeight;
+					 maxHeight,
+					 icon;
+
+			 moreTab = query('.more-item', this.id)[0];
+			 icon = query('.fa', moreTab)[0];
 			 if (tab) {
 					 if (this.moreTabList.style.visibility === 'hidden') {
 							 this.moreTabList.style.visibility = 'visible';
+							 if (icon) {
+							 	icon.className = 'fa fa-angle-down';
+						 	 }
 
 							 if (!this.moreTabList.style.left) {
-									 moreTab = query('.more-item', this.id)[0];
 									 posTop = moreTab.offsetTop;
 									 posLeft = moreTab.offsetLeft;
 									 width = parseInt(moreTab.offsetWidth);
@@ -172,10 +178,16 @@ let __class = declare('argos.TabWidget', [_Templated], {
 							 }
 					 } else {
 									this.moreTabList.style.visibility = 'hidden';
+									if (icon) {
+										icon.className = 'fa fa-angle-right';
+									}
 					 }
 			 } else {
-					 if (params.target !== query('.more-item', this.id)[0]) {
+					 if (params.target !== moreTab) {
 							 this.moreTabList.style.visibility = 'hidden';
+							 if (icon) {
+								 icon.className = 'fa fa-angle-right';
+							 }
 					 }
 			 }
 	 },

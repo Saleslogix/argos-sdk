@@ -62,7 +62,7 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      *
      * `$` => the view instance
      */
-				moreTabItemTemplate: new Simplate(['<li class="tab more-item" data-action="toggleDropDown">', '{%: ($.title || $.options.title) %}', '<span class="fa fa-angle-down"></span>', '</li>']),
+				moreTabItemTemplate: new Simplate(['<li class="tab more-item" data-action="toggleDropDown">', '{%: ($.title || $.options.title) %}', '<span class="fa fa-angle-right"></span>', '</li>']),
 
 				/**
      * @cfg {String}
@@ -147,13 +147,19 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
 						    posLeft,
 						    width,
 						    height,
-						    maxHeight;
+						    maxHeight,
+						    icon;
+
+						moreTab = (0, _query['default'])('.more-item', this.id)[0];
+						icon = (0, _query['default'])('.fa', moreTab)[0];
 						if (tab) {
 								if (this.moreTabList.style.visibility === 'hidden') {
 										this.moreTabList.style.visibility = 'visible';
+										if (icon) {
+												icon.className = 'fa fa-angle-down';
+										}
 
 										if (!this.moreTabList.style.left) {
-												moreTab = (0, _query['default'])('.more-item', this.id)[0];
 												posTop = moreTab.offsetTop;
 												posLeft = moreTab.offsetLeft;
 												width = parseInt(moreTab.offsetWidth);
@@ -166,10 +172,16 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
 										}
 								} else {
 										this.moreTabList.style.visibility = 'hidden';
+										if (icon) {
+												icon.className = 'fa fa-angle-right';
+										}
 								}
 						} else {
-								if (params.target !== (0, _query['default'])('.more-item', this.id)[0]) {
+								if (params.target !== moreTab) {
 										this.moreTabList.style.visibility = 'hidden';
+										if (icon) {
+												icon.className = 'fa fa-angle-right';
+										}
 								}
 						}
 				},
