@@ -272,7 +272,7 @@ var __class = declare('argos.Store.SData', null, {
         }
     },
     _onRequestFailure: function(deferred, xhr, xhrOptions) {
-        var error:any = new Error('An error occurred requesting: ' + xhrOptions.url);
+        var error = new Error('An error occurred requesting: ' + xhrOptions.url);
 
         error.xhr = xhr;
         error.status = xhr.status;
@@ -282,7 +282,7 @@ var __class = declare('argos.Store.SData', null, {
         deferred.reject(error);
     },
     _onRequestAbort: function(deferred, xhr, xhrOptions) {
-        var error:any = new Error('An error occurred requesting: ' + xhrOptions.url);
+        var error = new Error('An error occurred requesting: ' + xhrOptions.url);
 
         error.xhr = xhr;
         error.status = 0;
@@ -301,7 +301,7 @@ var __class = declare('argos.Store.SData', null, {
         return entry;
     },
     get: function(id, getOptions/* sdata only */) {
-        var handle:any = {},
+        var handle = {},
             deferred = new Deferred(),
             method,
             request = this._createEntryRequest(id, getOptions || {});
@@ -431,7 +431,7 @@ var __class = declare('argos.Store.SData', null, {
      *
      */
     query: function(query, queryOptions) {
-        var handle:any = {},
+        var handle = {},
             queryDeferred = new Deferred(this._onCancel.bind(this, handle)),
             request = this._createFeedRequest(query, queryOptions || {}),
             method,

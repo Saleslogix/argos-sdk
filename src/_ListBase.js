@@ -1315,7 +1315,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
      */
     navigateToInsertView: function(el, additionalOptions) {
         var view = this.app.getView(this.insertView || this.editView),
-            options:any = {
+            options = {
                 returnTo: this.id,
                 insert: true
             };
