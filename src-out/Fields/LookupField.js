@@ -103,7 +103,7 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
          *
          * * `${0}` is the label text of the field
          */
-        dependentErrorText: 'A value for \'${0}\' must be selected.',
+        dependentErrorText: "A value for '${0}' must be selected.",
         /**
          * @cfg {String}
          * Text displayed when the field is cleared or set to null

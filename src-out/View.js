@@ -145,7 +145,9 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
          * Called once the first time the view is about to be transitioned to.
          * @deprecated
          */
-        load: function load() {},
+        load: function load() {
+            // todo: remove load entirely?
+        },
         /**
          * Called in {@link #show show()} before ReUI is invoked.
          * @param {Object} options Navigation options passed from the previous view.
@@ -155,8 +157,8 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
             if (this.options) {
                 return !!options; // if options provided, then refresh
             } else {
-                return true;
-            }
+                    return true;
+                }
         },
         /**
          * Should refresh the view, such as but not limited to:
@@ -327,5 +329,3 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
     _lang['default'].setObject('Sage.Platform.Mobile.View', __class);
     module.exports = __class;
 });
-
-// todo: remove load entirely?
