@@ -1,94 +1,176 @@
 @import "variables.less";
 @import "mixins.less";
 
-#datetime-picker {
-    padding-bottom: 2em;
-
-    .time-content-hidden {
-        display: none !important;
-    }
-
-    table {
-        border-collapse: separate;
-        border-spacing: 6px 0px;
-        padding: 2px;
-        margin: 0.5em auto 0;
-        text-align: center;
-    }
-
-    div.calendar-content {
-        padding-bottom: 0;
-    }
-
-    div.date-tt {
-        margin: 0;
-    }
-
-    table caption {
-        padding: 4px;
-    }
-
-    td {
-        padding: 0;
-        margin: 0;
-        border: 0;
-        text-align: center;
-        width: 64px;
-    }
-
-    td > select {
-        font-size: 1.5em;
-        height: 34px;
-        line-height: 34px;
-        border: none;
-        margin: 0;
-        padding: 0;
-        -webkit-appearance: listbox;
-        -moz-appearance: listbox;
-        position: relative; /* Fix android browser issue with -webkit-transform blocking <select> */
-    }
-
-    .datetime-selects td {
-        border: none;
-        border-left: 1px solid #b3b3b3;
-        border-right: 1px solid #b3b3b3;
-    }
-
-    td > button {
-        display: block;
-        font-size: 1.5em;
-        width: 100%;
-        margin: 0;
-        height: 46px;
-        line-height: 44px;
-        .border-radius(0px);
-    }
-
-    .plus > td > button {
-        .border-radius(3px 3px 0px 0px);
-    }
-
-    .minus > td > button {
-        .border-radius(0px 0px 3px 3px);
-    }
-
-    .datetime-tt {
-        border: none !important;
-    }
+.calendar {
+  padding: 0 15px;
 }
 
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker {
-    width: 100%;
-    text-align: center;
+.calendar-header {
+  text-align: center;
+  min-height: 70px;
+  border-bottom: 1px solid @color-lighter-slate;
+
+  .month,
+  .year {
+    font-size: 2rem;
+    color: @color-deep-graphite;
+  }
+
+  .fa {
+    font-size: 2em;
+    color: @color-slate;
+    top: 15px;
+    position: relative;
+  }
+  .fa-angle-left {
+    float: left;
+    padding-left: 20px;
+  }
+  .fa-angle-right {
+    float: right;
+    padding-right: 20px;
+  }
+
 }
 
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .calendar-content,
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content {
-    vertical-align: top;
-    display: inline-block;
-    padding: 0px !important;
+.calendar-table {
+  margin: 15px auto 0;
+  width: 100%;
+  border: 0;
+  color: @color-deep-graphite;
+  font-size: 14px;
+  text-align: center;
+
+  .calendar-weekdays {
+    text-transform: uppercase;
+  }
 }
 
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content {
-    margin-left: 18px;
+.calendar-footer {
+  border-top: 1px solid @color-lighter-slate;
+  min-height: 40px;
+  width: 100%;
+  padding-top: 10px;
+  display: inline-flex;
+  justify-content: space-between;
+
+  .button {
+    background-color: transparent;
+    border: none;
+    font-size: @font-size-h3;
+    font-weight: @button-font-weight;
+    text-transform: uppercase;
+    text-align: @button-text-align;
+    text-decoration: @button-text-decoration;
+    height: 34px;
+    line-height: 34px;
+    min-width: 100px;
+    width: auto;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .tertiary {
+    padding: 0 10px;
+    border-radius: 18px;
+    box-shadow: none;
+    color: @color-slate;
+  }
+
+  .selected {
+    color: @color-azure;
+  }
 }
+
+//
+// #datetime-picker {
+//     padding-bottom: 2em;
+//
+//     .time-content-hidden {
+//         display: none !important;
+//     }
+//
+//     table {
+//         border-collapse: separate;
+//         border-spacing: 6px 0px;
+//         padding: 2px;
+//         margin: 0.5em auto 0;
+//         text-align: center;
+//     }
+//
+//     div.calendar-content {
+//         padding-bottom: 0;
+//     }
+//
+//     div.date-tt {
+//         margin: 0;
+//     }
+//
+//     table caption {
+//         padding: 4px;
+//     }
+//
+//     td {
+//         padding: 0;
+//         margin: 0;
+//         border: 0;
+//         text-align: center;
+//         width: 64px;
+//     }
+//
+//     td > select {
+//         font-size: 1.5em;
+//         height: 34px;
+//         line-height: 34px;
+//         border: none;
+//         margin: 0;
+//         padding: 0;
+//         -webkit-appearance: listbox;
+//         -moz-appearance: listbox;
+//         position: relative; /* Fix android browser issue with -webkit-transform blocking <select> */
+//     }
+//
+//     .datetime-selects td {
+//         border: none;
+//         border-left: 1px solid #b3b3b3;
+//         border-right: 1px solid #b3b3b3;
+//     }
+//
+//     td > button {
+//         display: block;
+//         font-size: 1.5em;
+//         width: 100%;
+//         margin: 0;
+//         height: 46px;
+//         line-height: 44px;
+//         .border-radius(0px);
+//     }
+//
+//     .plus > td > button {
+//         .border-radius(3px 3px 0px 0px);
+//     }
+//
+//     .minus > td > button {
+//         .border-radius(0px 0px 3px 3px);
+//     }
+//
+//     .datetime-tt {
+//         border: none !important;
+//     }
+// }
+//
+// body.landscape > .viewContainer > #generic_calendar > #datetime-picker {
+//     width: 100%;
+//     text-align: center;
+// }
+//
+// body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .calendar-content,
+// body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content {
+//     vertical-align: top;
+//     display: inline-block;
+//     padding: 0px !important;
+// }
+//
+// body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content {
+//     margin-left: 18px;
+// }

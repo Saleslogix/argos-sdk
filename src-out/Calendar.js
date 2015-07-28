@@ -1,355 +1,153 @@
 define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-style', 'argos/View', 'moment'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoString, _dojoDomAttr, _dojoDomClass, _dojoDomConstruct, _dojoDomStyle, _argosView, _moment) {
-    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-    /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
-     *
-     * Licensed under the Apache License, Version 2.0 (the "License");
-     * you may not use this file except in compliance with the License.
-     * You may obtain a copy of the License at
-     *
-     *     http://www.apache.org/licenses/LICENSE-2.0
-     *
-     * Unless required by applicable law or agreed to in writing, software
-     * distributed under the License is distributed on an "AS IS" BASIS,
-     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     * See the License for the specific language governing permissions and
-     * limitations under the License.
-     */
-
-    /**
-     * @class argos.Calendar
-     * @alternateClassName Calendar
-     */
-
-    var _declare = _interopRequireDefault(_dojo_baseDeclare);
-
-    var _lang = _interopRequireDefault(_dojo_baseLang);
-
-    var _string = _interopRequireDefault(_dojoString);
-
-    var _domAttr = _interopRequireDefault(_dojoDomAttr);
-
-    var _domClass = _interopRequireDefault(_dojoDomClass);
-
-    var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
-
-    var _domStyle = _interopRequireDefault(_dojoDomStyle);
-
-    var _View = _interopRequireDefault(_argosView);
-
-    var _moment2 = _interopRequireDefault(_moment);
-
-    var pad, uCase, __class;
-
-    pad = function (n) {
-        return n < 10 ? '0' + n : n;
-    };
-
-    uCase = function (str) {
-        return str.charAt(0).toUpperCase() + str.substring(1);
-    };
-
-    __class = (0, _declare['default'])('argos.Calendar', [_View['default']], {
-        // Localization
-        titleText: 'Calendar',
-        amText: 'AM',
-        pmText: 'PM',
-
-        id: 'generic_calendar',
-        contentNode: null,
-        calendarNode: null,
-        timeNode: null,
-        meridiemNode: null,
-        monthsShortText: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        months: null,
-        dateFormat: (0, _moment2['default'])().lang()._longDateFormat.L,
-        timeFormatText: 'h:mm A',
-        is24hrTimeFormat: (0, _moment2['default'])().lang()._longDateFormat.LT.match(/H\:/),
-        date: false,
-        showTimePicker: false,
-        timeless: false,
-        selectorTemplate: '<select id="${0}-field" data-dojo-attach-point="${0}Node"></select>',
-        incrementTemplate: '<button data-action="increment${0}" class="button">+</button>',
-        decrementTemplate: '<button data-action="decrement${0}" class="button">-</button>',
-        widgetTemplate: new Simplate(['<div id="{%= $.id %}" title="{%: $.titleText %}" class="panel {%= $.cls %}">', '<div class="panel-content" id="datetime-picker">', '<div class="calendar-content">', '<table id="datetime-picker-date" data-dojo-attach-point="datePickControl">', '<caption>&nbsp;</caption>', '<tr class="plus">', '<td>{%= $.localizeViewTemplate("incrementTemplate", 0) %}</td>', '<td>{%= $.localizeViewTemplate("incrementTemplate", 1) %}</td>', '<td>{%= $.localizeViewTemplate("incrementTemplate", 2) %}</td>', '</tr>', '<tr class="datetime-selects">', '<td>{%= $.localizeViewTemplate("selectorTemplate", 0) %}</td>', '<td>{%= $.localizeViewTemplate("selectorTemplate", 1) %}</td>', '<td>{%= $.localizeViewTemplate("selectorTemplate", 2) %}</td>', '</tr>', '<tr class="minus">', '<td>{%= $.localizeViewTemplate("decrementTemplate", 0) %}</td>', '<td>{%= $.localizeViewTemplate("decrementTemplate", 1) %}</td>', '<td>{%= $.localizeViewTemplate("decrementTemplate", 2) %}</td>', '</tr>', '</table>', '</div>', '<div class="time-content" data-dojo-attach-point="timeNode">', '<table id="datetime-picker-time" data-dojo-attach-point="timePickControl">', '<caption>&nbsp;</caption>', '<tr class="plus">', '<td>{%= $.localizeViewTemplate("incrementTemplate", 3) %}</td>', '<td>{%= $.localizeViewTemplate("incrementTemplate", 4) %}</td>', '<td rowspan="3">', '<div class="toggle toggle-vertical meridiem-field" data-action="toggleMeridiem" data-dojo-attach-point="meridiemNode">', '<span class="thumb vertical"></span>', '<span class="toggleOn">{%= $.amText %}</span>', '<span class="toggleOff">{%= $.pmText %}</span>', '</div>', '</td>', '</tr>', '<tr class="datetime-selects">', '<td>{%= $.localizeViewTemplate("selectorTemplate", 3) %}</td>', '<td>{%= $.localizeViewTemplate("selectorTemplate", 4) %}</td>', '</tr>', '<tr class="minus">', '<td>{%= $.localizeViewTemplate("decrementTemplate", 3) %}</td>', '<td>{%= $.localizeViewTemplate("decrementTemplate", 4) %}</td>', '</tr>', '</table>', '</div>', '<div style="clear:both"></div>', '</div>', '</div>']),
-
-        dayNode: null,
-        monthNode: null,
-        yearNode: null,
-        hourNode: null,
-        minuteNode: null,
-        datePickControl: null,
-        timePickControl: null,
-
-        daysInMonth: function daysInMonth() {
-            var date = (0, _moment2['default'])();
-            date.date(1);
-            date.year(this.year);
-            date.month(this.month);
-            return date.daysInMonth();
-        },
-        init: function init() {
-            this.inherited(arguments);
-            this.months = this.monthsShortText;
-            this.dateFormat = (0, _moment2['default'])().lang()._longDateFormat.L;
-            this.is24hrTimeFormat = (0, _moment2['default'])().lang()._longDateFormat.LT.match(/H\:/);
-            this.connect(this.dayNode, 'onchange', this.validate);
-            this.connect(this.monthNode, 'onchange', this.validate);
-            this.connect(this.yearNode, 'onchange', this.validate);
-            this.connect(this.hourNode, 'onchange', this.validate);
-            this.connect(this.minuteNode, 'onchange', this.validate);
-        },
-
-        validate: function validate() {
-            var daysInMonth, isPM, hours, minutes;
-
-            this.year = parseInt(this.yearNode.value, 10);
-            this.month = parseInt(this.monthNode.value, 10);
-            daysInMonth = this.daysInMonth();
-
-            // adjust dayNode selector from changes to monthNode or leap/non-leap year
-            if (this.dayNode.options.length !== daysInMonth) {
-                this.populateSelector(this.dayNode, this.dayNode.selectedIndex + 1, 1, this.daysInMonth());
-            }
-
-            this.date = (0, _moment2['default'])(new Date(this.year, this.month, this.dayNode.value));
-            hours = parseInt(this.hourNode.value, 10);
-            minutes = parseInt(this.minuteNode.value, 10);
-            isPM = this.is24hrTimeFormat ? 11 < hours : _domAttr['default'].get(this.meridiemNode, 'toggled') !== true;
-            hours = isPM ? hours % 12 + 12 : hours % 12;
-
-            if (!this._isTimeless()) {
-                this.date.hours(hours);
-                this.date.minutes(minutes);
-            }
-
-            this.updateDatetimeCaption();
-        },
-        toggleMeridiem: function toggleMeridiem(params) {
-            var el = params.$source,
-                toggledValue = el && _domAttr['default'].get(el, 'toggled') !== true;
-
-            if (el) {
-                _domClass['default'].toggle(el, 'toggleStateOn');
-                _domAttr['default'].set(el, 'toggled', toggledValue);
-            }
-
-            this.updateDatetimeCaption();
-        },
-        populateSelector: function populateSelector(el, val, min, max) {
-            var i, opt;
-
-            if (val > max) {
-                val = max;
-            }
-
-            el.options.length = 0;
-
-            for (i = min; i <= max; i++) {
-                opt = _domConstruct['default'].create('option', {
-                    innerHTML: this.monthNode === el ? uCase(this.months[i]) : pad(i),
-                    value: i,
-                    selected: i === val
-                });
-
-                el.options[el.options.length] = opt;
-            }
-        },
-        localizeViewTemplate: function localizeViewTemplate() {
-            var whichTemplate = arguments[0],
-                formatIndex = arguments[1],
-                fields = { y: 'year', Y: 'year', M: 'month', d: 'day', D: 'day', h: 'hour', H: 'hour', m: 'minute' },
-                whichField,
-                whichFormat;
-
-            whichField = fields[3 > formatIndex ? this.dateFormat.split(/[^a-z]/i)[formatIndex].charAt(0) : this.timeFormatText.replace(/[a]\s/i, '').split(/[^a-z]/i)[formatIndex - 3].charAt(0)];
-
-            whichFormat = 'selectorTemplate' === whichTemplate ? whichField : uCase(whichField);
-
-            return _string['default'].substitute(this[whichTemplate], [whichFormat]);
-        },
-        show: function show(options) {
-            this.inherited(arguments);
-            options = options || this.options;
-
-            this.titleText = options.label ? options.label : this.titleText;
-
-            this.showTimePicker = this.options && this.options.showTimePicker;
-
-            this.date = (0, _moment2['default'])(this.options && this.options.date || (0, _moment2['default'])());
-
-            if (this._isTimeless()) {
-                this.date.add({ minutes: this.date.zone() });
-            }
-
-            this.year = this.date.year();
-            this.month = this.date.month();
-
-            var today = (0, _moment2['default'])();
-
-            this.populateSelector(this.yearNode, this.year, this.year < today.year() - 10 ? this.year : today.year() - 10, 10 + today.year());
-
-            this.populateSelector(this.monthNode, this.month, 0, 11);
-            this.populateSelector(this.dayNode, this.date.date(), 1, this.daysInMonth());
-            this.populateSelector(this.hourNode, this.date.hours() > 12 && !this.is24hrTimeFormat ? this.date.hours() - 12 : this.date.hours() || 12, this.is24hrTimeFormat ? 0 : 1, this.is24hrTimeFormat ? 23 : 12);
-
-            this.populateSelector(this.minuteNode, this.date.minutes(), 0, 59);
-
-            if (this.date.hours() < 12) {
-                _domAttr['default'].set(this.meridiemNode, 'toggled', true);
-                _domClass['default'].add(this.meridiemNode, 'toggleStateOn');
-            } else {
-                _domAttr['default'].set(this.meridiemNode, 'toggled', false);
-                _domClass['default'].remove(this.meridiemNode, 'toggleStateOn');
-            }
-
-            this.updateDatetimeCaption();
-
-            if (this.showTimePicker) {
-                _domClass['default'].remove(this.timeNode, 'time-content-hidden');
-                // hide meridiem toggle when using 24hr time format:
-                if (this.is24hrTimeFormat) {
-                    _domStyle['default'].set(this.meridiemNode.parentNode, 'display', 'none');
-                } else if (12 > this.date.hours()) {
-                    // ensure initial toggle state reflects actual time
-                    _domClass['default'].add(this.meridiemNode, 'toggleStateOn');
-                } else {
-                    _domClass['default'].remove(this.meridiemNode, 'toggleStateOn');
-                }
-            } else {
-                _domClass['default'].add(this.timeNode, 'time-content-hidden');
-            }
-        },
-
-        decrementYear: function decrementYear() {
-            this.decrement(this.yearNode);
-        },
-        decrementMonth: function decrementMonth() {
-            this.decrement(this.monthNode);
-        },
-        decrementDay: function decrementDay() {
-            this.decrement(this.dayNode);
-        },
-        decrementHour: function decrementHour() {
-            this.decrement(this.hourNode);
-            if (11 === this.hourNode.value % 12) {
-                this.toggleMeridiem({ $source: this.meridiemNode });
-            }
-        },
-        decrementMinute: function decrementMinute() {
-            this.decrement(this.minuteNode, 15);
-        },
-        decrement: function decrement(el, inc) {
-            // all fields are <select> elements
-            inc = inc || 1;
-
-            if (0 <= el.selectedIndex - inc) {
-                el.selectedIndex = inc * Math.floor((el.selectedIndex - 1) / inc);
-            } else {
-                if (el === this.yearNode) {
-                    return false;
-                }
-
-                if (el === this.dayNode) {
-                    this.decrementMonth();
-                }
-
-                if (el === this.monthNode) {
-                    this.decrementYear();
-                }
-
-                if (el === this.minuteNode) {
-                    this.decrementHour();
-                }
-
-                el.selectedIndex = el.options.length - inc;
-            }
-
-            this.validate(null, el);
-        },
-
-        incrementYear: function incrementYear() {
-            this.increment(this.yearNode);
-        },
-        incrementMonth: function incrementMonth() {
-            this.increment(this.monthNode);
-        },
-        incrementDay: function incrementDay() {
-            this.increment(this.dayNode);
-        },
-        incrementHour: function incrementHour() {
-            this.increment(this.hourNode);
-
-            if (this.hourNode.selectedIndex === this.hourNode.options.length - 1) {
-                this.toggleMeridiem({ $source: this.meridiemNode });
-            }
-        },
-        incrementMinute: function incrementMinute() {
-            this.increment(this.minuteNode, 15);
-        },
-        increment: function increment(el, inc) {
-            inc = inc || 1;
-
-            if (el.options.length > el.selectedIndex + inc) {
-                el.selectedIndex += inc;
-            } else {
-                if (el === this.yearNode) {
-                    return false;
-                }
-
-                if (el === this.dayNode) {
-                    this.incrementMonth();
-                }
-
-                if (el === this.monthNode) {
-                    this.incrementYear();
-                }
-
-                if (el === this.minuteNode) {
-                    this.incrementHour();
-                }
-
-                el.selectedIndex = 0;
-            }
-
-            this.validate(null, el);
-        },
-        _isTimeless: function _isTimeless() {
-            return this.options && this.options.timeless || this.timeless;
-        },
-        updateDatetimeCaption: function updateDatetimeCaption() {
-            var t = (0, _moment2['default'])(this.getDateTime());
-
-            if (this._isTimeless()) {
-                t.utc();
-            }
-
-            this.datePickControl.caption.innerHTML = t.format('dddd'); // weekday text
-            if (this.showTimePicker) {
-                this.timePickControl.caption.innerHTML = t.format(this.timeFormatText);
-            }
-        },
-        getDateTime: function getDateTime() {
-            var result, hours, isPM, minutes;
-
-            result = (0, _moment2['default'])(this.date);
-            if (!this._isTimeless()) {
-                hours = parseInt(this.hourNode.value, 10);
-                minutes = parseInt(this.minuteNode.value, 10);
-                isPM = this.is24hrTimeFormat ? 11 < hours : _domAttr['default'].get(this.meridiemNode, 'toggled') !== true;
-
-                hours = isPM ? hours % 12 + 12 : hours % 12;
-
-                result.hours(hours);
-                result.minutes(minutes);
-            }
-
-            return result.toDate();
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+  /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *     http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+   */
+
+  /**
+   * @class argos.Calendar
+   * @alternateClassName Calendar
+   */
+
+  var _declare = _interopRequireDefault(_dojo_baseDeclare);
+
+  var _lang = _interopRequireDefault(_dojo_baseLang);
+
+  var _string = _interopRequireDefault(_dojoString);
+
+  var _domAttr = _interopRequireDefault(_dojoDomAttr);
+
+  var _domClass = _interopRequireDefault(_dojoDomClass);
+
+  var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
+
+  var _domStyle = _interopRequireDefault(_dojoDomStyle);
+
+  var _View = _interopRequireDefault(_argosView);
+
+  var _moment2 = _interopRequireDefault(_moment);
+
+  var __class = (0, _declare['default'])('argos.Calendar', [_View['default']], {
+    widgetTemplate: new Simplate(['<div id="{%= $.id %}" class="calendar panel">', '{%! $.calendarHeaderTemplate %}', '{%! $.calendarTableTemplate %}', '{%! $.calendarFooterTemplate %}', '</div>']),
+    calendarHeaderTemplate: new Simplate(['<div class="calendar-header">', '<span class="fa fa-angle-left" data-action="decrementMonth"></span>', '<span class="month" data-dojo-attach-point="monthNode"></span>', '<span class="year" data-dojo-attach-point="yearNode"></span>', '<span class="fa fa-angle-right" data-action="incrementMonth"></span>', '</div>']),
+    calendarTableTemplate: new Simplate(['<table class="calendar-table">', '<thead>', '{%! $.calendarWeekDaysTemplate %}', '</thead>', '<tbody data-dojo-attach-point="weeksNode"></tbody>', '</table>']),
+    calendarFooterTemplate: new Simplate(['<div class="calendar-footer">', '<div class="button tertiary" data-action="clearCalendar">{%= $.clearText %}</div>', '<div class="button tertiary" data-action="goToToday">{%= $.todayText %}</div>', '</div>']),
+    calendarTableDayTemplate: new Simplate(['<td class="day {%= $.month %} {%= $.selected %}">{%= $.day %}</td>']),
+    calendarTableWeekStartTemplate: new Simplate(['<tr class="calendar-week">']),
+    calendarTableWeekEndTemplate: new Simplate(['</tr>']),
+    calendarWeekDaysTemplate: new Simplate(['<tr class="calendar-weekdays">', '<th>{%= $.weekDaysShortText[0] %}</th>', '<th>{%= $.weekDaysShortText[1] %}</th>', '<th>{%= $.weekDaysShortText[2] %}</th>', '<th>{%= $.weekDaysShortText[3] %}</th>', '<th>{%= $.weekDaysShortText[4] %}</th>', '<th>{%= $.weekDaysShortText[5] %}</th>', '<th>{%= $.weekDaysShortText[6] %}</th>', '</tr>']),
+    timePickTemplate: new Simplate(['<div class="time-picker">', '</div>']),
+
+    // Localization
+    titleText: 'Calendar',
+    amText: 'AM',
+    pmText: 'PM',
+    clearText: 'Clear',
+    todayText: 'Today',
+    monthsShortText: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    weekDaysShortText: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+
+    id: 'generic_calendar',
+    showTimePicker: true,
+    // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
+    date: null,
+
+    changeMonthShown: function changeMonthShown(object) {
+      _domConstruct['default'].empty(this.monthNode);
+      _domConstruct['default'].place(object.month, this.monthNode);
+      return true;
+    },
+    changeYearShown: function changeYearShown(object) {
+      _domConstruct['default'].empty(this.yearNode);
+      _domConstruct['default'].place(object.year, this.yearNode);
+      return true;
+    },
+    decrementMonth: function decrementMonth(params) {
+      this.selectedDate.subtract({ months: 1 });
+      return true;
+    },
+    incrementMonth: function incrementMonth(params) {
+      this.selectedDate.add({ months: 1 });
+      return true;
+    },
+    init: function init() {
+      this.inherited(arguments);
+    },
+    renderCalendar: function renderCalendar(object) {
+      var date = object.todayMoment.clone().startOf('month'),
+          prevMonth = object.todayMoment.clone().subtract({ months: 1 });
+      nextMonth = object.todayMoment.clone().add({ month: 1 });
+      daysInMonth = object.todayMoment.daysInMonth(), startingDay = date.day(), weekEnds = [0, 6], data = {
+        day: 1,
+        month: '',
+        selected: ''
+      };
+      //startingDay = date.day();
+
+      // Iterate through the days that are in the start week of the current month but are in the previous month
+      var week = _domConstruct['default'].toDom(this.calendarWeekStartTemplate.apply());
+      for (var day = prevMonth.daysInMonth(); day >= prevMonth.daysInMonth() - startingDay; day--) {
+        data.day = day;
+        _domConstruct['default'].place(this.calendarTableDayTemplate.apply(data, this), week);
+      }
+
+      data.month = 'current-month';
+      for (var day = 1; day <= daysInMonth; day++) {
+        if (day % 7 === 0) {
+          _domConstruct['default'].place(this.calendarWeekEndTemplate.apply(), week);
+          _domConstruct['default'].place(week, this.weeksNode);
+          week = _domConstruct['default'].toDom(this.calendarWeekStartTemplate.apply());
         }
-    });
+        if (day === object.todayMoment.day()) {
+          data.selected = 'selected';
+        } else {
+          data.selected = '';
+        }
+        data.day = day;
+        _domConstruct['default'].place(this.calendarTableDayTemplate.apply(data, this), week);
+      }
 
-    _lang['default'].setObject('Sage.Platform.Mobile.Calendar', __class);
-    module.exports = __class;
+      data.month = '';
+      // Iterate through remaining days of the week based on 7 days in the week
+      for (var day = 1; day <= 1 + weekEnds[1] - nextMonth.day(); day++) {
+        data.day = day;
+        _domConstruct['default'].place(this.calendarTableDayTemplate.apply(data, this), week);
+      }
+      _domConstruct['default'].place(this.calendarWeekEndTemplate.apply(), week);
+      _domConstruct['default'].place(week, this.weeksNode);
+
+      this.date.day = this.selectedDateMoment.day();
+      this.date.month = this.selectedDateMoment.month();
+      this.date.year = this.selectedDateMoment.year();
+
+      return true;
+    },
+    show: function show(options) {
+      this.inherited(arguments);
+      this.date = {};
+      options = options || this.options;
+
+      this.titleText = options.label ? options.label : this.titleText;
+      this.showTimePicker = this.options && this.options.showTimePicker;
+      this.date.selectedDateMoment = (0, _moment2['default'])(this.options && this.options.date || (0, _moment2['default'])());
+      this.date.todayMoment = App.getPrimaryActiveView().getDateTime();
+
+      this.renderCalendar(this.date).changeMonthShown(this.date).changeYearShown(this.date);
+    }
+  });
+
+  _lang['default'].setObject('Sage.Platform.Mobile.Calendar', __class);
+  module.exports = __class;
 });
-// min 10 years in past - arbitrary min
-// max 10 years into future - arbitrary limit
