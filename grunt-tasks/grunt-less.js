@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         },
         production: {
             options: {
-                cleancss: true
+                compress: true
             },
             files: {
                 'min/css/themes/crm/sdk.min.crm.css': 'content/css/themes/crm.less'
@@ -19,4 +19,3 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-less');
 };
-

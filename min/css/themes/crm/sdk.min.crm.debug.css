@@ -244,7 +244,7 @@ span {
 .right-drawer {
   visibility: hidden;
   display: none;
-  background-color: #0f1e1e;
+  background-color: #1a1a1a;
   overflow: auto;
 }
 .snapjs-left .left-drawer {
@@ -519,7 +519,7 @@ div.table-layout {
   display: table;
   width: 100%;
   padding: 0;
-  background: #13a3f7;
+  background: #368ac0;
 }
 div.table-layout > div {
   display: table-cell;
@@ -860,7 +860,7 @@ img {
   text-overflow: ellipsis;
 }
 .href {
-  color: #005ce6;
+  color: #368ac0;
   text-decoration: none;
   cursor: pointer;
 }
@@ -1089,7 +1089,7 @@ img {
 }
 .configurable-list .list-content > li.last-moved {
   color: #000;
-  background-color: #6dd9d1;
+  background-color: #7cc0b5;
   -webkit-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;
   opacity: 0.5;
@@ -1099,7 +1099,7 @@ body {
   background-color: #f8f8f8;
 }
 a {
-  color: #005ce6;
+  color: #368ac0;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -1133,11 +1133,11 @@ body body > .viewContainer {
   padding: 0;
 }
 .contextualContent > .group-content > .list-content > li {
-  background-color: #0f1e1e;
+  background-color: #1a1a1a;
   list-style: none;
   margin: 0;
   position: relative;
-  color: #ffffff;
+  color: #d8d8d8;
   text-decoration: none;
   padding: 8px 0px 8px 8px;
   border-radius: 0px;
@@ -1149,7 +1149,7 @@ body body > .viewContainer {
   margin: 0;
   padding: 0 0 0 4px;
   position: relative;
-  background-color: #4b5656;
+  background-color: #50535a;
   color: #ffffff;
 }
 .panel-content,
@@ -1166,7 +1166,7 @@ body body > .viewContainer {
 .panel-concurrency-summary > h2 {
   border-bottom: 1px solid #1a1a1a;
   border-top: 1px solid #1a1a1a;
-  background-color: #ff6400;
+  background-color: #e4882b;
   color: #ffffff;
 }
 .panel-content > h2:first-child {
@@ -1174,7 +1174,7 @@ body body > .viewContainer {
 }
 .panel-validation-summary > h2:first-child,
 .panel-concurrency-summary > h2:first-child {
-  border-top: 1px solid #ff6400;
+  border-top: 1px solid #e4882b;
 }
 .panel-form-error > .panel-content > h2:first-child {
   border-top: none;
@@ -1207,13 +1207,13 @@ body body > .viewContainer {
   border-top: 0 none black;
 }
 .panel-content > .action-list {
-  background-color: #aee1ff;
+  background-color: #a7d4eb;
 }
 body > .viewContainer {
-  border-left: 2px solid #dddee0;
+  border-left: 0px solid #dddee0;
 }
 .snapjs-left .left-drawer {
-  border-right: 2px solid #dddee0;
+  border-right: 0px solid #dddee0;
 }
 /* Calendar */
 .calendar-content {
@@ -1239,7 +1239,7 @@ body > .viewContainer {
   height: 44px;
   line-height: 44px;
   display: inline-block;
-  background-color: #13a3f7;
+  background-color: #368ac0;
   text-align: center;
   color: #fff;
   padding: 0 5px;
@@ -1251,7 +1251,7 @@ body > .viewContainer {
   -moz-box-sizing: border-box;
 }
 .related-item-label {
-  color: #005ce6;
+  color: #368ac0;
 }
 /*
     Styles for form related items, such as inputs, buttons, fieldsets, labels
@@ -1276,12 +1276,12 @@ label {
 input:focus,
 textarea:focus {
   outline: none;
-  border: 1px solid #13a3f7;
+  border: 1px solid #368ac0;
   background-color: #EAF7FF;
 }
 .list-content > .actions-row > button:active,
 .group-content > .actions-row > button:active {
-  background-color: #61c5ff;
+  background-color: #69b5dd;
 }
 .group-content > h2 > button {
   color: #dddee0;
@@ -1388,7 +1388,7 @@ textarea:focus {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  color: #005ce6;
+  color: #368ac0;
 }
 /* collapsed/expand icons */
 .group-content > h2 > button {
@@ -1660,8 +1660,8 @@ button.clear-button:focus {
   text-align: left !important;
 }
 .toggle {
-  border: 2px solid #b3b3b3;
-  background-color: #b3b3b3;
+  border: 2px solid #999999;
+  background-color: #999999;
   border-radius: 22px;
   -webkit-border-radius: 22px;
   -moz-border-radius: 22px;
@@ -1694,8 +1694,8 @@ button.clear-button:focus {
   right: 0px;
 }
 .toggleStateOn {
-  background-color: #13a3f7;
-  border-color: #13a3f7;
+  background-color: #368ac0;
+  border-color: #368ac0;
 }
 .toggle-vertical {
   width: 64px;
@@ -1768,7 +1768,7 @@ button.clear-button:focus {
 .viewContainer > .toolbar,
 body > .viewContainer > .toolbar,
 .viewContainer > .footer-toolbar {
-  background-color: #13a3f7;
+  background-color: #368ac0;
 }
 .viewContainer > .toolbar > .button,
 .toolbar > .button {
@@ -1788,88 +1788,75 @@ body > .viewContainer > .toolbar,
   float: right;
   margin-left: 2px;
 }
-#datetime-picker {
-  padding-bottom: 2em;
+.calendar {
+  padding: 0 15px;
 }
-#datetime-picker .time-content-hidden {
-  display: none !important;
-}
-#datetime-picker table {
-  border-collapse: separate;
-  border-spacing: 6px 0px;
-  padding: 2px;
-  margin: 0.5em auto 0;
+.calendar-header {
   text-align: center;
+  min-height: 70px;
+  border-bottom: 1px solid #c8cbd4;
 }
-#datetime-picker div.calendar-content {
-  padding-bottom: 0;
+.calendar-header .month,
+.calendar-header .year {
+  font-size: 2rem;
+  color: #383838;
 }
-#datetime-picker div.date-tt {
-  margin: 0;
+.calendar-header .fa {
+  font-size: 2em;
+  color: #50535a;
+  top: 15px;
+  position: relative;
 }
-#datetime-picker table caption {
-  padding: 4px;
+.calendar-header .fa-angle-left {
+  float: left;
+  padding-left: 20px;
 }
-#datetime-picker td {
-  padding: 0;
-  margin: 0;
+.calendar-header .fa-angle-right {
+  float: right;
+  padding-right: 20px;
+}
+.calendar-table {
+  margin: 15px auto 0;
+  width: 100%;
   border: 0;
+  color: #383838;
+  font-size: 14px;
   text-align: center;
-  width: 64px;
 }
-#datetime-picker td > select {
-  font-size: 1.5em;
+.calendar-table .calendar-weekdays {
+  text-transform: uppercase;
+}
+.calendar-footer {
+  border-top: 1px solid #c8cbd4;
+  min-height: 40px;
+  width: 100%;
+  padding-top: 10px;
+  display: inline-flex;
+  justify-content: space-between;
+}
+.calendar-footer .button {
+  background-color: transparent;
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
   height: 34px;
   line-height: 34px;
-  border: none;
-  margin: 0;
-  padding: 0;
-  -webkit-appearance: listbox;
-  -moz-appearance: listbox;
+  min-width: 100px;
+  width: auto;
+  overflow: hidden;
   position: relative;
-  /* Fix android browser issue with -webkit-transform blocking <select> */
 }
-#datetime-picker .datetime-selects td {
-  border: none;
-  border-left: 1px solid #b3b3b3;
-  border-right: 1px solid #b3b3b3;
+.calendar-footer .tertiary {
+  padding: 0 10px;
+  border-radius: 18px;
+  box-shadow: none;
+  color: #50535a;
 }
-#datetime-picker td > button {
-  display: block;
-  font-size: 1.5em;
-  width: 100%;
-  margin: 0;
-  height: 46px;
-  line-height: 44px;
-  border-radius: 0px;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-}
-#datetime-picker .plus > td > button {
-  border-radius: 3px 3px 0px 0px;
-  -webkit-border-radius: 3px 3px 0px 0px;
-  -moz-border-radius: 3px 3px 0px 0px;
-}
-#datetime-picker .minus > td > button {
-  border-radius: 0px 0px 3px 3px;
-  -webkit-border-radius: 0px 0px 3px 3px;
-  -moz-border-radius: 0px 0px 3px 3px;
-}
-#datetime-picker .datetime-tt {
-  border: none !important;
-}
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker {
-  width: 100%;
-  text-align: center;
-}
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .calendar-content,
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content {
-  vertical-align: top;
-  display: inline-block;
-  padding: 0px !important;
-}
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content {
-  margin-left: 18px;
+.calendar-footer .selected {
+  color: #368ac0;
 }
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
