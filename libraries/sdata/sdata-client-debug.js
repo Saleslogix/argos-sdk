@@ -1,5 +1,5 @@
 /*!
- * 
+ *
  */
 /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
  *
@@ -15,9 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         A = Sage.namespace('Sage.SData.Client.Ajax');
 
     var successful = function(code)
@@ -182,7 +183,9 @@
  */
 
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client');
 
     Sage.SData.Client.SDataBaseRequest = Sage.Class.define({
@@ -319,7 +322,9 @@
  */
 
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client');
 
     Sage.SData.Client.SDataApplicationRequest = Sage.SData.Client.SDataBaseRequest.extend({
@@ -367,7 +372,6 @@
         }
     });
 })();
-
 /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -384,7 +388,9 @@
  */
 
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client');
 
     Sage.SData.Client.SDataResourceCollectionRequest = Sage.SData.Client.SDataApplicationRequest.extend({
@@ -430,7 +436,9 @@
  */
 
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client');
 
     Sage.SData.Client.SDataNamedQueryRequest = Sage.SData.Client.SDataResourceCollectionRequest.extend({
@@ -474,7 +482,9 @@
  */
 
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client');
 
     Sage.SData.Client.SDataSingleResourceRequest = Sage.SData.Client.SDataApplicationRequest.extend({
@@ -522,7 +532,9 @@
  */
 
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client');
 
     Sage.SData.Client.SDataResourcePropertyRequest = Sage.SData.Client.SDataSingleResourceRequest.extend({
@@ -561,7 +573,9 @@
  */
 
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client');
 
     Sage.SData.Client.SDataSystemRequest = Sage.SData.Client.SDataBaseRequest.extend({
@@ -605,7 +619,9 @@
  */
 
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client');
 
     Sage.SData.Client.SDataTemplateResourceRequest = Sage.SData.Client.SDataApplicationRequest.extend({
@@ -642,7 +658,9 @@
  */
 
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client');
 
     Sage.SData.Client.SDataServiceOperationRequest = Sage.SData.Client.SDataApplicationRequest.extend({
@@ -686,7 +704,9 @@
  */
 
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client');
 
     Sage.SData.Client.SDataBatchRequest = Sage.SData.Client.SDataApplicationRequest.extend({
@@ -739,7 +759,8 @@
             this.service.commitBatch(this, options);
         }
     });
-})();/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+})();
+/* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -755,7 +776,9 @@
  */
 
 (function(){
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client'),
         trueRE = /^true$/i;
 
@@ -790,7 +813,7 @@
                 major: 0,
                 minor: 0
             }, value);
-            
+
             return this;
         },
         getScheme: function() {
@@ -901,7 +924,7 @@
 
                 this.pathSegments[i] = S.apply({}, segment, this.pathSegments[i]);
             }
-            
+
             return this;
         },
         getStartIndex: function() {
@@ -1115,7 +1138,9 @@
  */
 
 (function() {
-    var S = Sage,
+    "use strict";
+    var Sage = window.Sage,
+        S = Sage,
         C = Sage.namespace('Sage.SData.Client'),
         isDefined = function(value) { return typeof value !== 'undefined' },
         expand = function(options, userName, password) {
@@ -1326,7 +1351,7 @@
                 /* 'User-Agent': this.userAgent */ /* 'User-Agent' cannot be set on XmlHttpRequest */
                 'X-Authorization-Mode': 'no-challenge'
             };
-            
+
             if (this.userName && !this.useCredentialedRequest)
                 headers['Authorization'] = headers['X-Authorization'] = this.createBasicAuthToken();
 
@@ -1338,7 +1363,7 @@
         },
         executeRequest: function(request, options, ajax) {
             /// <param name="request" type="Sage.SData.Client.SDataBaseRequest">request object</param>
-            
+
             // todo: temporary fix for SalesLogix Dynamic Adapter only supporting json selector in format parameter
             if (this.json) request.setQueryArg('format', 'json');
 
@@ -1487,8 +1512,8 @@
                 });
 
                 return;
-            }            
-            
+            }
+
             var o = S.apply({}, {
                 success: function(feed) {
                     var entry = feed['$resources'][0] || false;
@@ -1730,7 +1755,7 @@
             for (var fqPropertyName in value)
             {
                 if (fqPropertyName.charAt(0) === '@') continue;
-                
+
                 firstChild = value[fqPropertyName];
                 break; // will always ever be one property, either an entity, or an array of
             }
@@ -1741,7 +1766,7 @@
                     firstValue = firstChild[0];
                 else
                     firstValue = firstChild;
-                
+
                 if (firstValue && firstValue.hasOwnProperty('@sdata:key')) return true;
             }
 
@@ -1834,7 +1859,7 @@
             applyTo = applyTo || {};
 
             if (entity['$key']) applyTo['@sdata:key'] = entity['$key'];
-       
+
             // todo: is this necessary? does not appear to be looking at the spec
             // if (entity['$url']) applyTo['@sdata:uri'] = entity['$url'];
 
@@ -1911,7 +1936,7 @@
                 else
                 {
                     continue;
-                }   
+                }
 
                 this.convertEntity(ns, name, entity, result);
             }
