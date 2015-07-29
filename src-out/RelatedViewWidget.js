@@ -36,7 +36,7 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
 
     var _RelatedViewWidgetBase2 = _interopRequireDefault(_argos_RelatedViewWidgetBase);
 
-    'use babel';
+    "use babel";
 
     var __class = (0, _declare['default'])('argos.RelatedViewWidget', [_RelatedViewWidgetBase2['default'], _CustomizationMixin3['default'], _ActionMixin3['default']], {
         cls: 'related-view-widget',
@@ -267,7 +267,7 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
             try {
 
                 if (!this.itemsNode) {
-                    this.itemsNode = _domConstruct['default'].toDom('<div id=\'itemsNode\' class=\'items\'><div>');
+                    this.itemsNode = _domConstruct['default'].toDom("<div id='itemsNode' class='items'><div>");
                     _domConstruct['default'].place(this.itemsNode, this.relatedViewNode, 'last', this);
                 }
                 if (relatedFeed.length > 0) {
