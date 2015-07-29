@@ -1,5 +1,5 @@
 /*!
- * 
+ *
  */
 /**
 *
@@ -7,92 +7,91 @@
 *  http://www.webtoolkit.info/
 *
 **/
- 
 var Base64 = {
- 
+
 	// private property
 	_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
- 
+
 	// public method for encoding
 	encode : function (input) {
 		var output = "";
 		var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
 		var i = 0;
- 
+
 		input = Base64._utf8_encode(input);
- 
+
 		while (i < input.length) {
- 
+
 			chr1 = input.charCodeAt(i++);
 			chr2 = input.charCodeAt(i++);
 			chr3 = input.charCodeAt(i++);
- 
+
 			enc1 = chr1 >> 2;
 			enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
 			enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
 			enc4 = chr3 & 63;
- 
+
 			if (isNaN(chr2)) {
 				enc3 = enc4 = 64;
 			} else if (isNaN(chr3)) {
 				enc4 = 64;
 			}
- 
+
 			output = output +
 			this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
 			this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
- 
+
 		}
- 
+
 		return output;
 	},
- 
+
 	// public method for decoding
 	decode : function (input) {
 		var output = "";
 		var chr1, chr2, chr3;
 		var enc1, enc2, enc3, enc4;
 		var i = 0;
- 
+
 		input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
- 
+
 		while (i < input.length) {
- 
+
 			enc1 = this._keyStr.indexOf(input.charAt(i++));
 			enc2 = this._keyStr.indexOf(input.charAt(i++));
 			enc3 = this._keyStr.indexOf(input.charAt(i++));
 			enc4 = this._keyStr.indexOf(input.charAt(i++));
- 
+
 			chr1 = (enc1 << 2) | (enc2 >> 4);
 			chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
 			chr3 = ((enc3 & 3) << 6) | enc4;
- 
+
 			output = output + String.fromCharCode(chr1);
- 
+
 			if (enc3 != 64) {
 				output = output + String.fromCharCode(chr2);
 			}
 			if (enc4 != 64) {
 				output = output + String.fromCharCode(chr3);
 			}
- 
+
 		}
- 
+
 		output = Base64._utf8_decode(output);
- 
+
 		return output;
- 
+
 	},
- 
+
 	// private method for UTF-8 encoding
 	_utf8_encode : function (string) {
 		string = string.replace(/\r\n/g,"\n");
 		var utftext = "";
- 
+
 		for (var n = 0; n < string.length; n++) {
- 
+
 			var c = string.charCodeAt(n);
- 
+
 			if (c < 128) {
 				utftext += String.fromCharCode(c);
 			}
@@ -105,22 +104,22 @@ var Base64 = {
 				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
 				utftext += String.fromCharCode((c & 63) | 128);
 			}
- 
+
 		}
- 
+
 		return utftext;
 	},
- 
+
 	// private method for UTF-8 decoding
 	_utf8_decode : function (utftext) {
 		var string = "";
 		var i = 0;
 		var c = c1 = c2 = 0;
- 
+
 		while ( i < utftext.length ) {
- 
+
 			c = utftext.charCodeAt(i);
- 
+
 			if (c < 128) {
 				string += String.fromCharCode(c);
 				i++;
@@ -136,15 +135,16 @@ var Base64 = {
 				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
 				i += 3;
 			}
- 
+
 		}
- 
+
 		return string;
 	}
- 
+
 };// ========================================================================
 //  XML.ObjTree -- XML source code from/to JavaScript object like E4X
 // ========================================================================
+var XML = window.XML;
 
 if ( typeof(XML) == 'undefined' ) XML = function() {};
 
@@ -706,7 +706,7 @@ parseUri.options = {
 };
 // The Top-Level Namespace
 /*global Sage $ alert*/
-Sage = (function() {
+window.Sage = (function() {
     var apply = function(a, b, c)
     {
         if (a && c) for (var n in c) a[n] = c[n];
@@ -748,7 +748,8 @@ Sage = (function() {
         isArray: isArray,
         __namespace: true
     };
-}());/*
+}());
+/*
     Make a new Class:
     var Person = Sage.Class.define({
 		constructor: function(str) {
@@ -776,7 +777,7 @@ Sage = (function() {
 	** ours defines the extend() method directly on every defined class
 */
 /*global Sage $ alert*/
-if(Sage) {
+if(window.Sage) {
     (function(S) {
         var INITIALIZING = false,
             // straight outta base2
@@ -785,7 +786,7 @@ if(Sage) {
         // The base Class placeholder
         S.Class = function(){};
         // Create a new Class that inherits from this class
-        S.Class.define = function(prop) {
+        S.Class.define = function define(prop) {
             var base = this.prototype;
             // Instantiate a base class (but only create the instance)
             INITIALIZING = true;
@@ -836,17 +837,18 @@ if(Sage) {
             // Enforce the constructor to be what we expect
             Class.constructor = Class;
             // And make this class 'define-able'
-            Class.define = arguments.callee;
+            Class.define = define;
             Class.extend = Class.define; // sounds better for inherited classes
             return Class;
         };
-    }(Sage));
-}/*global Sage $ alert*/
-if(Sage) {
+    }(window.Sage));
+}
+/*global Sage $ alert*/
+if(window.Sage) {
     (function(S) {
         // place the Deferred class into Sage.Utility
         S.namespace('Utility');
-        
+
         S.Utility.Deferred = function(fn, args, scope) {
             var that = this, id,
             c = function() {
@@ -866,12 +868,13 @@ if(Sage) {
                 }
             };
         };
-    }(Sage));
-}// Event class is instantiated by the Evented class. Probably no need
+    }(window.Sage));
+}
+// Event class is instantiated by the Evented class. Probably no need
 // to call this directly
 
 /*global Sage $ alert*/
-if(Sage) {
+if(window.Sage) {
     (function(S) {
         var SLICE = Array.prototype.slice,
             TRUE = true, FALSE = false,
@@ -907,7 +910,7 @@ if(Sage) {
             };
         // place the Event class in Utility
         S.namespace('Utility');
-        
+
         S.Utility.Event = Sage.Class.define({
             constructor: function(obj, name) {
                 this.name = name;
@@ -926,7 +929,7 @@ if(Sage) {
                 }
             },
             createListener: function(fn, scope, o) {
-                o = o || {}; 
+                o = o || {};
                 scope = scope || this.obj;
                 var l = {
                     fn: fn,
@@ -1008,7 +1011,7 @@ if(Sage) {
                     args = SLICE.call(arguments, 0);
                     for (; i < len; i++) {
                         l = listeners[i];
-                        if(l && l.fireFn.apply(l.scope || that.obj || 
+                        if(l && l.fireFn.apply(l.scope || that.obj ||
                             WIN, args) === FALSE) {
                             return (that.firing = FALSE);
                         }
@@ -1018,8 +1021,9 @@ if(Sage) {
                 return TRUE;
             }
         }); // end S.Event class
-    }(Sage));
-}/*
+    }(window.Sage));
+}
+/*
     var Employee = Sage.Evented.extend({
         constructor: function(c) {
             this.name = c.name;
@@ -1039,14 +1043,14 @@ if(Sage) {
 */
 
 /*global Sage $ alert*/
-if(Sage) {
+if(window.Sage) {
     (function(S) {
         var SLICE = Array.prototype.slice,
             TRUE = true, FALSE = false,
             // do not include these
             FILTER = /^(?:scope|delay|buffer|single)$/,
             EACH = S.each;
-        
+
         S.Evented = S.Class.define({
             constructor: function(config) {
                 var that = this,
@@ -1096,7 +1100,7 @@ if(Sage) {
                     for (e in o){
                         oe = o[e];
                         if (!FILTER.test(e)) {
-                            that.addListener(e, oe.fn || oe, oe.scope || 
+                            that.addListener(e, oe.fn || oe, oe.scope ||
                                 o.scope, oe.fn ? oe : o);
                         }
                     }
@@ -1156,10 +1160,10 @@ if(Sage) {
                 EACH(queued, function(e) {
                     that.fireEvent.apply(that, e);
                 });
-            }            
+            }
         }); //end S.Evented
 
         S.Evented.prototype.on = S.Evented.prototype.addListener;
         S.Evented.prototype.un = S.Evented.prototype.removeListener;
-    }(Sage));
+    }(window.Sage));
 }
