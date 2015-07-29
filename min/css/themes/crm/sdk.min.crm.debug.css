@@ -1820,8 +1820,6 @@ body > .viewContainer > .toolbar,
 }
 .calendar-table {
   margin: 15px auto 0;
-  width: 100%;
-  height: 50%;
   border: 0;
   color: #999999;
   font-size: 12px;
