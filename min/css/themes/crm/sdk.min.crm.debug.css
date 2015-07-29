@@ -1826,6 +1826,7 @@ body > .viewContainer > .toolbar,
   color: #999999;
   font-size: 12px;
   border-collapse: separate;
+  border-spacing: 2px;
 }
 .calendar-table .calendar-weekdays {
   text-transform: uppercase;
@@ -1848,6 +1849,9 @@ body > .viewContainer > .toolbar,
 }
 .calendar-table .current-month {
   color: #383838;
+}
+.calendar-table .weekend {
+  background-color: #d8d8d8;
 }
 .calendar-table .selected {
   background-color: #368ac0;

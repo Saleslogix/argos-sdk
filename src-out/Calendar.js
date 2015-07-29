@@ -46,7 +46,7 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
     calendarHeaderTemplate: new Simplate(['<div class="calendar-header">', '<span class="fa fa-angle-left" data-action="decrementMonth"></span>', '<span class="month" data-dojo-attach-point="monthNode"></span>', '<span class="year" data-dojo-attach-point="yearNode"></span>', '<span class="fa fa-angle-right" data-action="incrementMonth"></span>', '</div>']),
     calendarTableTemplate: new Simplate(['<table class="calendar-table">', '<thead>', '{%! $.calendarWeekDaysTemplate %}', '</thead>', '<tbody data-dojo-attach-point="weeksNode"></tbody>', '</table>']),
     calendarFooterTemplate: new Simplate(['<div class="calendar-footer">', '<div class="button tertiary clear" data-action="clearCalendar" data-dojo-attach-point="clearButton">{%= $.clearText %}</div>', '<div class="button tertiary toToday" data-action="goToToday" data-dojo-attach-point="todayButton">{%= $.todayText %}</div>', '</div>']),
-    calendarTableDayTemplate: new Simplate(['<td class="day {%= $.month %} {%= $.selected %} {%= $.isToday %}" data-action="changeDay" data-date="{%= $.date %}">{%= $.day %}</td>']),
+    calendarTableDayTemplate: new Simplate(['<td class="day {%= $.month %} {%= $.weekend %} {%= $.selected %} {%= $.isToday %}" data-action="changeDay" data-date="{%= $.date %}">{%= $.day %}</td>']),
     calendarTableWeekStartTemplate: new Simplate(['<tr class="calendar-week">']),
     calendarTableWeekEndTemplate: new Simplate(['</tr>']),
     calendarWeekDaysTemplate: new Simplate(['<tr class="calendar-weekdays">', '<th>{%= $.weekDaysShortText[0] %}</th>', '<th>{%= $.weekDaysShortText[1] %}</th>', '<th>{%= $.weekDaysShortText[2] %}</th>', '<th>{%= $.weekDaysShortText[3] %}</th>', '<th>{%= $.weekDaysShortText[4] %}</th>', '<th>{%= $.weekDaysShortText[5] %}</th>', '<th>{%= $.weekDaysShortText[6] %}</th>', '</tr>']),
@@ -99,6 +99,23 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       this.yearNode.innerHTML = " " + year;
       return this;
     },
+    checkAndRenderDay: function checkAndRenderDay() {
+      var data = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      var dayIndexer = data.day + data.startingDay - 1;
+      if (data.day === data.todayMoment.date() && data.todayMoment.month() === data.dateMoment.month()) {
+        data.isToday = 'isToday';
+      } else {
+        data.isToday = '';
+      }
+      if (dayIndexer % 7 === data.weekEnds.Sunday || dayIndexer % 7 === data.weekEnds.Saturday) {
+        data.weekend = 'weekend';
+      } else {
+        data.weekend = '';
+      }
+      data.date = data.dateMoment.date(data.day).format('YYYY-MM-DD');
+      _domConstruct['default'].place(this.calendarTableDayTemplate.apply(data, this), data.week);
+    },
     decrementMonth: function decrementMonth(params) {
       this.date.selectedDateMoment.subtract({ months: 1 });
       this.refreshCalendar(this.date);
@@ -118,103 +135,88 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       this.inherited(arguments);
     },
     refreshCalendar: function refreshCalendar() {
-      var object = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+      var date = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       _domConstruct['default'].empty(this.weeksNode);
-      this.renderCalendar(object).changeMonthShown(object).changeYearShown(object);
+      this.renderCalendar(date).changeMonthShown(date).changeYearShown(date);
     },
     renderCalendar: function renderCalendar(_ref3) {
       var todayMoment = _ref3.todayMoment;
       var selectedDateMoment = _ref3.selectedDateMoment;
 
-      // TODO: Refactor the code to call a function that handles the duplicating calls
-      var endPrevMonth = selectedDateMoment.clone().subtract({ months: 1 }).endOf('month'),
-          startNextMonth = selectedDateMoment.clone().add({ month: 1 }).startOf('month'),
-          daysInMonth = selectedDateMoment.daysInMonth(),
+      var daysInMonth = selectedDateMoment.daysInMonth(),
           startingDay = selectedDateMoment.clone().startOf('month').day(),
-          weekEnds = {
-        Sunday: 0,
-        Saturday: 6
-      },
-          data = {};
+          endPrevMonth = selectedDateMoment.clone().startOf('month').subtract({ days: startingDay }),
+          startNextMonth = selectedDateMoment.clone().endOf('month').add({ days: 1 }),
+          data = {
+        todayMoment: todayMoment,
+        selectedDateMoment: selectedDateMoment,
+        dateMoment: endPrevMonth.clone(),
+        week: _domConstruct['default'].toDom(this.calendarTableWeekStartTemplate.apply()),
+        startingDay: endPrevMonth.clone().startOf('month').day(),
+        weekEnds: {
+          Sunday: 0,
+          Saturday: 6
+        }
+      };
 
       // Iterate through the days that are in the start week of the current month but are in the previous month
-      var week = _domConstruct['default'].toDom(this.calendarTableWeekStartTemplate.apply()),
-          dateMoment = endPrevMonth.clone();
-
-      for (var day = endPrevMonth.date() - startingDay + 1; day <= endPrevMonth.date(); day++) {
-        if (day === todayMoment.date() && todayMoment.month() === dateMoment.month()) {
-          data.isToday = ' isToday';
-        } else {
-          data.isToday = '';
-        }
+      for (var day = endPrevMonth.date(); day < endPrevMonth.date() + startingDay; day++) {
         data.day = day;
-        data.date = dateMoment.date(day).format('YYYY-MM-DD');
-        _domConstruct['default'].place(this.calendarTableDayTemplate.apply(data, this), week);
+        this.checkAndRenderDay(data);
       }
 
       data.month = 'current-month';
-      dateMoment = selectedDateMoment.clone();
+      data.startingDay = startingDay;
+      data.dateMoment = selectedDateMoment.clone();
       for (var day = 1; day <= daysInMonth; day++) {
-        if (day === selectedDateMoment.date() && selectedDateMoment.month() === dateMoment.month()) {
+        if (day === selectedDateMoment.date()) {
           data.selected = 'selected';
         } else {
           data.selected = '';
         }
-        if (day === todayMoment.date() && todayMoment.month() === selectedDateMoment.month()) {
-          data.isToday = ' isToday';
-        } else {
-          data.isToday = '';
-        }
         data.day = day;
-        data.date = dateMoment.date(day).format('YYYY-MM-DD');
-        _domConstruct['default'].place(this.calendarTableDayTemplate.apply(data, this), week);
+        this.checkAndRenderDay(data);
         if ((day + startingDay) % 7 === 0) {
-          _domConstruct['default'].place(this.calendarTableWeekEndTemplate.apply(), week);
-          _domConstruct['default'].place(week, this.weeksNode);
-          week = _domConstruct['default'].toDom(this.calendarTableWeekStartTemplate.apply());
+          _domConstruct['default'].place(this.calendarTableWeekEndTemplate.apply(), data.week);
+          _domConstruct['default'].place(data.week, this.weeksNode);
+          data.week = _domConstruct['default'].toDom(this.calendarTableWeekStartTemplate.apply());
         }
       }
 
       data.selected = '';
       data.month = '';
-      dateMoment = startNextMonth.clone();
+      data.startingDay = startNextMonth.day();
+      data.dateMoment = startNextMonth.clone();
       // Iterate through remaining days of the week based on 7 days in the week and ensure there are 6 weeks shown (for consistency)
-      for (var day = 1; day <= 1 + weekEnds.Saturday - startNextMonth.day(); day++) {
-        if (day === todayMoment.date() && todayMoment.month() === dateMoment.month()) {
-          data.isToday = ' isToday';
-        } else {
-          data.isToday = '';
-        }
+      for (var day = 1; day <= 1 + data.weekEnds.Saturday - startNextMonth.day(); day++) {
         data.day = day;
-        data.date = dateMoment.date(day).format('YYYY-MM-DD');
-        _domConstruct['default'].place(this.calendarTableDayTemplate.apply(data, this), week);
+        this.checkAndRenderDay(data);
       }
-      _domConstruct['default'].place(this.calendarTableWeekEndTemplate.apply(), week);
-      _domConstruct['default'].place(week, this.weeksNode);
+      _domConstruct['default'].place(this.calendarTableWeekEndTemplate.apply(), data.week);
+      _domConstruct['default'].place(data.week, this.weeksNode);
 
       if (this.weeksNode.children.length === 5) {
-        week = _domConstruct['default'].toDom(this.calendarTableWeekStartTemplate.apply());
-        for (var day = 2 + weekEnds.Saturday - startNextMonth.day(); day <= 8 + weekEnds.Saturday - startNextMonth.day(); day++) {
-          if (day === todayMoment.date() && todayMoment.month() === dateMoment.month()) {
-            data.isToday = ' isToday';
-          } else {
-            data.isToday = '';
-          }
+        data.week = _domConstruct['default'].toDom(this.calendarTableWeekStartTemplate.apply());
+        for (var day = 2 + data.weekEnds.Saturday - startNextMonth.day(); day <= 8 + data.weekEnds.Saturday - startNextMonth.day(); day++) {
           data.day = day;
-          data.date = dateMoment.date(day).format('YYYY-MM-DD');
-          _domConstruct['default'].place(this.calendarTableDayTemplate.apply(data, this), week);
+          this.checkAndRenderDay(data);
         }
-        _domConstruct['default'].place(this.calendarTableWeekEndTemplate.apply(), week);
-        _domConstruct['default'].place(week, this.weeksNode);
+        _domConstruct['default'].place(this.calendarTableWeekEndTemplate.apply(), data.week);
+        _domConstruct['default'].place(data.week, this.weeksNode);
       }
 
-      this.date.day = selectedDateMoment.date();
-      this.date.month = selectedDateMoment.format("MMMM");
-      this.date.monthNumber = selectedDateMoment.month();
-      this.date.year = selectedDateMoment.year();
+      this.setDateObject(selectedDateMoment);
 
       return this;
+    },
+    setDateObject: function setDateObject() {
+      var dateMoment = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      this.date.day = dateMoment.date();
+      this.date.month = dateMoment.format("MMMM");
+      this.date.monthNumber = dateMoment.month();
+      this.date.year = dateMoment.year();
     },
     show: function show() {
       var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
