@@ -280,20 +280,20 @@ __class = lang.setObject('argos.Format', {
      * @param {Boolean} utc If a date should be in UTC time set this flag to true to counter-act javascripts built-in timezone applier.
      * @return {String} Date formatted as a string.
      */
-    date: function(val, fmt, utc) {
-        var date = val instanceof Date
+    date: function date(val, fmt, utc) {
+        var dateValue = val instanceof Date
             ? val
             : convert.isDateString(val)
                 ? convert.toDateFromString(val)
                 : null;
 
-        if (date) {
-            date = moment(date);
+        if (dateValue) {
+            dateValue = moment(dateValue);
             if (utc) {
-                date = date.add({minutes: date.zone()});
+                dateValue = dateValue.add({minutes: dateValue.zone()});
             }
 
-            return date.format(fmt || argos.Format.shortDateFormatText);
+            return dateValue.format(fmt || argos.Format.shortDateFormatText);
         }
 
         return val;

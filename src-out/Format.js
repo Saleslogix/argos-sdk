@@ -281,15 +281,15 @@ define('argos/Format', ['exports', 'module', 'dojo/_base/json', 'dojo/_base/lang
          * @return {String} Date formatted as a string.
          */
         date: function date(val, fmt, utc) {
-            var date = val instanceof Date ? val : _convert['default'].isDateString(val) ? _convert['default'].toDateFromString(val) : null;
+            var dateValue = val instanceof Date ? val : _convert['default'].isDateString(val) ? _convert['default'].toDateFromString(val) : null;
 
-            if (date) {
-                date = (0, _moment2['default'])(date);
+            if (dateValue) {
+                dateValue = (0, _moment2['default'])(dateValue);
                 if (utc) {
-                    date = date.add({ minutes: date.zone() });
+                    dateValue = dateValue.add({ minutes: dateValue.zone() });
                 }
 
-                return date.format(fmt || argos.Format.shortDateFormatText);
+                return dateValue.format(fmt || argos.Format.shortDateFormatText);
             }
 
             return val;
