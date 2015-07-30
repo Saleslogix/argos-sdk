@@ -27,8 +27,7 @@ import _RelatedWidgetListMixin from './_RelatedViewWidgetListMixin';
  * @requires argos._SDataListMixin
  * @mixins argos._RelateViewdWidgetListMixin
  */
-var __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedWidgetListMixin], {
-});
+var __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedWidgetListMixin], {});
 
 lang.setObject('Sage.Platform.Mobile.List', __class);
 export default __class;

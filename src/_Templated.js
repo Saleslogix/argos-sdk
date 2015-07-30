@@ -30,32 +30,32 @@ import _TemplatedMixin from 'dijit/_TemplatedMixin';
  * @alternateClassName _Templated
  */
 var __class = declare('argos._Templated', [_TemplatedMixin], {
-    _stringRepl: function(tmpl) {
-        return tmpl;
-    },
-    /**
-     * Processes `this.widgetTemplate` or `this.contentTemplate`
-     */
-    buildRendering: function() {
-        var root;
+  _stringRepl: function(tmpl) {
+    return tmpl;
+  },
+  /**
+   * Processes `this.widgetTemplate` or `this.contentTemplate`
+   */
+  buildRendering: function() {
+    var root;
 
-        if (this.widgetTemplate && this.contentTemplate) {
-            throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
-        }
-
-        if (this.contentTemplate) {
-            this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
-        } else if (this.widgetTemplate) {
-            this.templateString = this.widgetTemplate.apply(this);
-            root = domConstruct.toDom(this.templateString);
-
-            if (root.nodeType === 11) {
-                this.templateString = ['<div>', this.templateString, '</div>'].join('');
-            }
-        }
-
-        this.inherited(arguments);
+    if (this.widgetTemplate && this.contentTemplate) {
+      throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
     }
+
+    if (this.contentTemplate) {
+      this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
+    } else if (this.widgetTemplate) {
+      this.templateString = this.widgetTemplate.apply(this);
+      root = domConstruct.toDom(this.templateString);
+
+      if (root.nodeType === 11) {
+        this.templateString = ['<div>', this.templateString, '</div>'].join('');
+      }
+    }
+
+    this.inherited(arguments);
+  }
 });
 
 lang.setObject('Sage.Platform.Mobile._Templated', __class);

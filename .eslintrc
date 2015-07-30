@@ -4,6 +4,21 @@
     "browser": true,                 // browser global variables
     "node": true                     // Node.js global variables and Node.js-specific rules
   },
+  "globals": {
+      "App": false,
+      "Simplate": false,
+      "Sage": false,
+      "Mobile": false,
+      "ReUI": false,
+      "Base64": false,
+      "Canvas2Image": false,
+      "argos": false,
+      "describe": false,
+      "it": false,
+      "expect": false,
+      "spyOn": false,
+      "module": false
+  },
   "ecmaFeatures": {
     "arrowFunctions": true,
     "blockBindings": true,
