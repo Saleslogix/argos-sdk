@@ -1,4 +1,4 @@
-define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/query', 'dojo/string', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-style', 'argos/View', 'moment'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoQuery, _dojoString, _dojoDomAttr, _dojoDomClass, _dojoDomConstruct, _dojoDomStyle, _argosView, _moment) {
+define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/connect', 'dojo/query', 'dojo/string', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-style', 'argos/View', 'moment'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseConnect, _dojoQuery, _dojoString, _dojoDomAttr, _dojoDomClass, _dojoDomConstruct, _dojoDomStyle, _argosView, _moment) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -24,6 +24,8 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
+
+  var _connect = _interopRequireDefault(_dojo_baseConnect);
 
   var _query = _interopRequireDefault(_dojoQuery);
 
@@ -63,6 +65,7 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
 
     id: 'generic_calendar',
     showTimePicker: true,
+    // This boolean value is used to trigger the modal hide and show and must be used by each entity
     isModal: false,
     // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
     date: null,
@@ -78,12 +81,15 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       _domClass['default'].add(params.$source, 'selected');
 
       this.date.selectedDateMoment = (0, _moment2['default'])(params.date, 'YYYY-MM-DD');
+
       if (this.date.selectedDateMoment.date() !== this.date.todayMoment.date()) {
         _domClass['default'].add(this.todayButton, 'selected');
       }
       if (this.date.month !== this.date.selectedDateMoment.month()) {
         this.refreshCalendar(this.date);
       }
+
+      _connect['default'].publish('/app/Calendar/changeDay', this.date);
     },
     changeMonthShown: function changeMonthShown(_ref) {
       var month = _ref.month;
@@ -115,6 +121,17 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       }
       data.date = data.dateMoment.date(data.day).format('YYYY-MM-DD');
       _domConstruct['default'].place(this.calendarTableDayTemplate.apply(data, this), data.week);
+    },
+    clearCalendar: function clearCalendar() {
+      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      var selected = (0, _query['default'])('.selected', this.weeksNode)[0];
+
+      if (selected) {
+        _domClass['default'].remove(selected, 'selected');
+        _domClass['default'].add(this.todayButton, 'selected');
+      }
+      this.date.selectedDateMoment = null;
     },
     decrementMonth: function decrementMonth(params) {
       this.date.selectedDateMoment.subtract({ months: 1 });
@@ -217,11 +234,16 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       this.date.month = dateMoment.format("MMMM");
       this.date.monthNumber = dateMoment.month();
       this.date.year = dateMoment.year();
+      this.date.date = (0, _moment2['default'])(dateMoment).toDate();
+
+      return this;
     },
     show: function show() {
       var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      this.inherited(arguments);
+      if (!this.isModal) {
+        this.inherited(arguments);
+      }
       this.date = {};
       options = options || this.options;
 
@@ -229,7 +251,7 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       this.showTimePicker = this.options && this.options.showTimePicker;
       this.date.selectedDateMoment = (0, _moment2['default'])(this.options && this.options.date || (0, _moment2['default'])());
       this.date.todayMoment = (0, _moment2['default'])();
-      if (!(this.isModal || options.isModal)) {
+      if (this.isModal || options.isModal) {
         this.clearButton.style.display = 'none';
       }
 

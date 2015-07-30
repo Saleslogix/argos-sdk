@@ -54,6 +54,7 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
     id: 'modal-template',
     _orientation: null,
     _parentNode: null,
+    _contentObject: null,
     _backdrop: null,
     showBackdrop: true,
     positioning: 'center',
@@ -134,9 +135,10 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
       return this;
     },
     setContent: function setContent() {
-      var panel = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+      var object = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      _domConstruct['default'].place(panel, this.modalNode);
+      this._contentObject = object;
+      _domConstruct['default'].place(object.domNode, this.modalNode);
       return this;
     },
     setContentPicklist: function setContentPicklist() {
@@ -181,10 +183,6 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
         }
       }
       return this;
-    },
-    destroy: function destroy() {
-      this.inherited(arguments);
-      _connect['default'].unsubscribe(this._orientation);
     }
   });
 

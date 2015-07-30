@@ -14,13 +14,16 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
+import event from 'dojo/_base/event';
+import connect from 'dojo/_base/connect';
 import string from 'dojo/string';
 import domClass from 'dojo/dom-class';
 import format from '../Format';
 import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
 import moment from 'moment';
-import '../Calendar';
+import Calendar from '../Calendar';
+import Modal from '../Modal';
 
 /**
  * @class argos.Fields.DateField
@@ -70,7 +73,8 @@ var control = declare('argos.Fields.DateField', [EditorField], {
      */
     widgetTemplate: new Simplate([
         '<label for="{%= $.name %}">{%: $.label %}</label>',
-        '<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
+        '<button data-dojo-attach-point="triggerNode" data-action="showModal" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
+        //'<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
         '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />'
     ]),
 
@@ -94,7 +98,9 @@ var control = declare('argos.Fields.DateField', [EditorField], {
      * where it controls the the conversion to/from UTC and setting the hour:min:sec to 00:00:05.
      */
     timeless: false,
-
+    modal: null,
+    calendar: null,
+    _calendarListener: null,
     /**
      * Takes a date object and calls {@link format#date format.date} passing the current
      * `dateFormatText` and `timeless` values, formatting the date into a string representation.
@@ -146,6 +152,13 @@ var control = declare('argos.Fields.DateField', [EditorField], {
             domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
         }
     },
+    getValuesFromModal: function(date = {}) {
+        if (this.modal) {
+            this.currentValue = this.validationValue = date.date;
+            this.modal.hideModal();
+            this.inputNode.value = this.formatValue(this.currentValue);
+        }
+    },
     /**
      * Determines if the current value has been modified from the original value.
      * @return {Boolean}
@@ -163,6 +176,28 @@ var control = declare('argos.Fields.DateField', [EditorField], {
         this.inherited(arguments);
         domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
     },
+    showModal: function(params) {
+
+      if (this.isDisabled()) {
+          return;
+      }
+
+      if (!this.modal) {
+        let options = this.createNavigationOptions();
+        this.calendar = new Calendar({ id: 'calendar-modal', isModal: true });
+        this.modal = new Modal({ id: 'date-time-modal' });
+        this.modal.placeModal(this.domNode.offsetParent)
+                  .setContent(this.calendar);
+        this._calendarListener = connect.subscribe('/app/Calendar/changeDay', this, this.getValuesFromModal)
+        this.calendar.show(options);
+      }
+
+      this.modal.showModal(params.$source);
+    },
+   _onClick: function(evt) {
+       event.stop(evt);
+       this.showModal(params = {$source: evt.target});
+   },
     /**
      * Extends the parent {@link EditorField#validate validate} with a check that makes sure if
      * the user has inputted a date manually into the input field that it had successfully validated

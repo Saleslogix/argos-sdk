@@ -19,6 +19,7 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
+import connect from 'dojo/_base/connect';
 import query from 'dojo/query';
 import string from 'dojo/string';
 import domAttr from 'dojo/dom-attr';
@@ -115,6 +116,7 @@ var __class = declare('argos.Calendar', [View], {
 
   id: 'generic_calendar',
   showTimePicker: true,
+  // This boolean value is used to trigger the modal hide and show and must be used by each entity
   isModal: false,
   // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
   date: null,
@@ -130,12 +132,15 @@ var __class = declare('argos.Calendar', [View], {
     domClass.add(params.$source, 'selected');
 
     this.date.selectedDateMoment = moment(params.date, 'YYYY-MM-DD');
+
     if (this.date.selectedDateMoment.date() !== this.date.todayMoment.date()) {
       domClass.add(this.todayButton, 'selected');
     }
     if (this.date.month !== this.date.selectedDateMoment.month()) {
       this.refreshCalendar(this.date);
     }
+
+    connect.publish('/app/Calendar/changeDay', this.date);
   },
   changeMonthShown: function({ month }) {
     domConstruct.empty(this.monthNode);
@@ -161,6 +166,15 @@ var __class = declare('argos.Calendar', [View], {
     }
     data.date = data.dateMoment.date(data.day).format('YYYY-MM-DD');
     domConstruct.place(this.calendarTableDayTemplate.apply(data, this), data.week);
+  },
+  clearCalendar: function(params = {}) {
+    const selected = query('.selected', this.weeksNode)[0];
+
+    if (selected) {
+        domClass.remove(selected, 'selected');
+        domClass.add(this.todayButton, 'selected');
+    }
+    this.date.selectedDateMoment = null;
   },
   decrementMonth: function(params) {
     this.date.selectedDateMoment.subtract({ months: 1 });
@@ -257,9 +271,14 @@ var __class = declare('argos.Calendar', [View], {
     this.date.month = dateMoment.format("MMMM");
     this.date.monthNumber = dateMoment.month();
     this.date.year = dateMoment.year();
+    this.date.date = moment(dateMoment).toDate();
+    
+    return this;
   },
   show: function(options = {}) {
-    this.inherited(arguments);
+    if (!this.isModal) {
+      this.inherited(arguments);
+    }
     this.date = {};
     options = options || this.options;
 
@@ -267,7 +286,7 @@ var __class = declare('argos.Calendar', [View], {
     this.showTimePicker = this.options && this.options.showTimePicker;
     this.date.selectedDateMoment = moment((this.options && this.options.date) || moment());
     this.date.todayMoment = moment();
-    if (!(this.isModal || options.isModal)) {
+    if (this.isModal || options.isModal) {
       this.clearButton.style.display = 'none';
     }
 

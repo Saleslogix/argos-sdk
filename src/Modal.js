@@ -52,6 +52,7 @@ var __class = declare('argos.Modal', [_Widget, _Templated], {
   id: 'modal-template',
   _orientation: null,
   _parentNode: null,
+  _contentObject: null,
   _backdrop: null,
   showBackdrop: true,
   positioning: 'center',
@@ -120,8 +121,9 @@ var __class = declare('argos.Modal', [_Widget, _Templated], {
     domConstruct.place(this.modalNode, parentPanel);
     return this;
   },
-  setContent: function(panel = {}) {
-    domConstruct.place(panel, this.modalNode);
+  setContent: function(object = {}) {
+    this._contentObject = object;
+    domConstruct.place(object.domNode, this.modalNode);
     return this;
   },
   setContentPicklist: function(items = {}) {
@@ -164,10 +166,6 @@ var __class = declare('argos.Modal', [_Widget, _Templated], {
       }
     }
     return this;
-  },
-  destroy: function() {
-    this.inherited(arguments);
-    connect.unsubscribe(this._orientation);
   }
 });
 
