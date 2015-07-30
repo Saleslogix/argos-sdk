@@ -586,6 +586,23 @@ body > .viewContainer > .dialog {
     margin: 2px 0 0 0px;
 }
 
+.modal {
+  visibility: hidden;
+  position: absolute;
+  background-color: @background-light;
+  z-index: 100;
+}
+
+.modal-backdrop {
+  visibility: hidden;
+  background-color: @background-darker;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  opacity: 0.7;
+  z-index: 99;
+}
+
 .no-data {
     text-align: center;
 }
@@ -1025,4 +1042,3 @@ img {
         }
     }
 }
-

@@ -1,4 +1,4 @@
-define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/dom-construct', 'dojo/dom-class', 'dijit/_Widget', 'argos/_Templated'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojoDomConstruct, _dojoDomClass, _dijit_Widget, _argos_Templated) {
+define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/_base/connect', 'dojo/dom-construct', 'dojo/dom-class', 'dojo/query', 'dijit/_Widget', 'argos/_Templated'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojo_baseConnect, _dojoDomConstruct, _dojoDomClass, _dojoQuery, _dijit_Widget, _argos_Templated) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -20,7 +20,7 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
    * @class argos.Modal
    * @alternateClassName Pop-up
    * Recommended order of function chaining to reduce errors:
-   *  If fresh creation - Create -> Place -> Set -> Show
+   *  If fresh creation - Create -> Backdrop? -> Place -> Set -> Show
    *  If on old modal with new content - Empty -> Set -> Show
    *  If on old modal with no new content - Show
    *  To hide modal - Hide
@@ -32,9 +32,13 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
 
   var _event = _interopRequireDefault(_dojo_baseEvent);
 
+  var _connect = _interopRequireDefault(_dojo_baseConnect);
+
   var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
 
   var _domClass = _interopRequireDefault(_dojoDomClass);
+
+  var _query = _interopRequireDefault(_dojoQuery);
 
   var _Widget2 = _interopRequireDefault(_dijit_Widget);
 
@@ -42,25 +46,90 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
 
   var __class = (0, _declare['default'])('argos.Modal', [_Widget2['default'], _Templated2['default']], {
     widgetTemplate: new Simplate(['<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode"></div>']),
+    modalBackdropTemplate: new Simplate(['<div class="modal-backdrop" style="height: {%= $.parentHeight %}"></div>']),
     pickListStartTemplate: new Simplate(['<ul class="picklist dropdown">']),
     pickListEndTemplate: new Simplate(['</ul>']),
     pickListItemTemplate: new Simplate(['<li class="listItem">{%= $.item %}</li>']),
 
     id: 'modal-template',
+    _orientation: null,
     _parentNode: null,
+    _backdrop: null,
+    showBackdrop: true,
+    positioning: 'center',
 
+    calculatePosition: function calculatePosition(_ref) {
+      var offsetTop = _ref.offsetTop;
+      var offsetLeft = _ref.offsetLeft;
+      var offsetRight = _ref.offsetRight;
+      var offsetWidth = _ref.offsetWidth;
+      var offsetHeight = _ref.offsetHeight;
+
+      var position = {};
+
+      switch (this.positioning) {
+        case 'right':
+          position.top = offsetTop + offsetHeight;
+          position.left = offsetLeft - this.modalNode.offsetWidth + offsetWidth;
+          break;
+        case 'left':
+          position.top = offsetTop + offsetHeight;
+          position.left = offsetRight + this.modalNode.offsetWidth - offsetWidth;
+          break;
+        case 'center':
+          position.top = this._parentNode.offsetHeight / 2 + this._parentNode.scrollTop - this.modalNode.offsetHeight / 2;
+          position.left = this._parentNode.offsetWidth / 2 - this.modalNode.offsetWidth / 2;
+          break;
+        default:
+          position.top = this._parentNode.offsetHeight / 2 + this._parentNode.scrollTop - this.modalNode.offsetHeight / 2;
+          position.left = this._parentNode.offsetWidth / 2 - this.modalNode.offsetWidth / 2;
+      }
+
+      if (position.top + this.modalNode.offsetHeight >= this._parentNode.scrollHeight) {
+        position.top = position.top - this.modalNode.offsetHeight - offsetHeight;
+      }
+
+      //this.modalNode.style.maxHeight =  this._parentNode.offsetHeight - this._parentNode.offsetTop - offsetTop + 'px';
+      this.modalNode.style.top = position.top + 'px';
+      this.modalNode.style.left = position.left + 'px';
+      this.modalNode.style.visibility = 'visible';
+      return this;
+    },
     emptyModal: function emptyModal() {
       _domConstruct['default'].empty(this.modalNode);
       return this;
     },
     hideModal: function hideModal() {
+      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      this.toggleBackdrop().toggleParentScroll();
       this.modalNode.style.visibility = 'hidden';
+      return this;
+    },
+    noBackdrop: function noBackdrop() {
+      this.showBackdrop = false;
+      return this;
+    },
+    placeBackdrop: function placeBackdrop() {
+      var parentPanel = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      if (this.showBackdrop) {
+        var existingBackdrop = (0, _query['default'])('.modal-backdrop', parentPanel)[0];
+        if (!existingBackdrop) {
+          this._backdrop = _domConstruct['default'].toDom(this.modalBackdropTemplate.apply({ parentHeight: parentPanel.scrollHeight + 'px' }));
+          this._backdrop.style.visibility = 'hidden';
+          _domConstruct['default'].place(this._backdrop, parentPanel);
+          _connect['default'].connect(this._backdrop, "onclick", this, this.hideModal);
+        }
+      }
       return this;
     },
     placeModal: function placeModal() {
       var parentPanel = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       this._parentNode = parentPanel;
+      this.placeBackdrop(parentPanel);
+      this._orientation = _connect['default'].subscribe('/app/setOrientation', this, this.hideModal);
       _domConstruct['default'].place(this.modalNode, parentPanel);
       return this;
     },
@@ -83,19 +152,39 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
       _domConstruct['default'].place(pickListStart, this.modalNode);
       return this;
     },
-    showModal: function showModal(_ref) {
-      var offsetTop = _ref.offsetTop;
-      var offsetLeft = _ref.offsetLeft;
-      var offsetWidth = _ref.offsetWidth;
-      var offsetHeight = _ref.offsetHeight;
+    showModal: function showModal() {
+      var target = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       if (this._parentNode) {
-        this.modalNode.style.left = posLeft - this.modalNode.offsetWidth + width + 'px';
-        this.modalNode.style.top = posTop + height + 'px';
-        this.modalNode.style.maxHeight = this._parentNode.offsetHeight - this._parentNode.offsetTop - posTop + 'px';
-        this.modalNode.style.visibility = 'visible';
+        this.toggleBackdrop().toggleParentScroll().calculatePosition(target);
       }
       return this;
+    },
+    toggleBackdrop: function toggleBackdrop() {
+      if (this.showBackdrop) {
+        if (this._backdrop) {
+          if (this._backdrop.style.visibility === 'hidden') {
+            this._backdrop.style.visibility = 'visible';
+          } else {
+            this._backdrop.style.visibility = 'hidden';
+          }
+        }
+      }
+      return this;
+    },
+    toggleParentScroll: function toggleParentScroll() {
+      if (this.positioning === 'center') {
+        if (this._parentNode.style.overflow === 'hidden') {
+          this._parentNode.style.overflow = '';
+        } else {
+          this._parentNode.style.overflow = 'hidden';
+        }
+      }
+      return this;
+    },
+    destroy: function destroy() {
+      this.inherited(arguments);
+      _connect['default'].unsubscribe(this._orientation);
     }
   });
 
