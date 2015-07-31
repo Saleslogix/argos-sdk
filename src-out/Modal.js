@@ -50,6 +50,7 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
     pickListStartTemplate: new Simplate(['<ul class="picklist dropdown">']),
     pickListEndTemplate: new Simplate(['</ul>']),
     pickListItemTemplate: new Simplate(['<li class="listItem">{%= $.item %}</li>']),
+    modalToolbarTemplate: new Simplate(['<div class="modal-toolbar">', '<div class="button tertiary">{%= $.cancelText %}</div>', '<div class="button tertiary">{%= $.confirmText %}</div>', '</div>']),
 
     id: 'modal-template',
     _orientation: null,
@@ -58,6 +59,9 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
     _backdrop: null,
     showBackdrop: true,
     positioning: 'center',
+
+    cancelText: 'Cancel',
+    confirmText: 'Confirm',
 
     calculatePosition: function calculatePosition(_ref) {
       var offsetTop = _ref.offsetTop;
@@ -89,8 +93,12 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
       if (position.top + this.modalNode.offsetHeight >= this._parentNode.scrollHeight) {
         position.top = position.top - this.modalNode.offsetHeight - offsetHeight;
       }
+      if (position.top < 0) {
+        position.top = this._parentNode.offsetTop / 2;
+        this.modalNode.style.maxHeight = this._parentNode.offsetHeight - this._parentNode.offsetTop + 'px';
+      }
 
-      //this.modalNode.style.maxHeight =  this._parentNode.offsetHeight - this._parentNode.offsetTop - offsetTop + 'px';
+      this.modalNode.style.maxWidth = this._parentNode.offsetWidth + 'px';
       this.modalNode.style.top = position.top + 'px';
       this.modalNode.style.left = position.left + 'px';
       this.modalNode.style.visibility = 'visible';
@@ -139,6 +147,13 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
 
       this._contentObject = object;
       _domConstruct['default'].place(object.domNode, this.modalNode);
+      _domConstruct['default'].place(this.modalToolbarTemplate.apply(this), this.modalNode);
+      return this;
+    },
+    setContentOptions: function setContentOptions() {
+      var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      this._contentOptions = options;
       return this;
     },
     setContentPicklist: function setContentPicklist() {
@@ -154,11 +169,17 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
       _domConstruct['default'].place(pickListStart, this.modalNode);
       return this;
     },
+    showContent: function showContent() {
+      var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      this._contentObject.show(this._contentOptions || options);
+      return this;
+    },
     showModal: function showModal() {
       var target = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       if (this._parentNode) {
-        this.toggleBackdrop().toggleParentScroll().calculatePosition(target);
+        this.showContent().toggleBackdrop().toggleParentScroll().calculatePosition(target);
       }
       return this;
     },

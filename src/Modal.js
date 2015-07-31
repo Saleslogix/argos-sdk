@@ -48,6 +48,12 @@ var __class = declare('argos.Modal', [_Widget, _Templated], {
   pickListItemTemplate: new Simplate([
     '<li class="listItem">{%= $.item %}</li>'
   ]),
+  modalToolbarTemplate: new Simplate([
+    '<div class="modal-toolbar">',
+      '<div class="button tertiary">{%= $.cancelText %}</div>',
+      '<div class="button tertiary">{%= $.confirmText %}</div>',
+    '</div>'
+  ]),
 
   id: 'modal-template',
   _orientation: null,
@@ -56,6 +62,9 @@ var __class = declare('argos.Modal', [_Widget, _Templated], {
   _backdrop: null,
   showBackdrop: true,
   positioning: 'center',
+
+  cancelText: 'Cancel',
+  confirmText: 'Confirm',
 
   calculatePosition: function({ offsetTop, offsetLeft, offsetRight, offsetWidth, offsetHeight }) {
     const position = {};
@@ -81,8 +90,12 @@ var __class = declare('argos.Modal', [_Widget, _Templated], {
     if (position.top + this.modalNode.offsetHeight >= this._parentNode.scrollHeight) {
       position.top = position.top - this.modalNode.offsetHeight - offsetHeight;
     }
+    if (position.top < 0) {
+      position.top = this._parentNode.offsetTop / 2;
+      this.modalNode.style.maxHeight = this._parentNode.offsetHeight - this._parentNode.offsetTop + 'px';
+    }
 
-    //this.modalNode.style.maxHeight =  this._parentNode.offsetHeight - this._parentNode.offsetTop - offsetTop + 'px';
+    this.modalNode.style.maxWidth =  this._parentNode.offsetWidth + 'px';
     this.modalNode.style.top = position.top + 'px';
     this.modalNode.style.left = position.left + 'px';
     this.modalNode.style.visibility = 'visible';
@@ -124,6 +137,11 @@ var __class = declare('argos.Modal', [_Widget, _Templated], {
   setContent: function(object = {}) {
     this._contentObject = object;
     domConstruct.place(object.domNode, this.modalNode);
+    domConstruct.place(this.modalToolbarTemplate.apply(this), this.modalNode);
+    return this;
+  },
+  setContentOptions: function(options = {}) {
+    this._contentOptions = options;
     return this;
   },
   setContentPicklist: function(items = {}) {
@@ -137,9 +155,14 @@ var __class = declare('argos.Modal', [_Widget, _Templated], {
     domConstruct.place(pickListStart, this.modalNode);
     return this;
   },
+  showContent: function(options = {}) {
+    this._contentObject.show(this._contentOptions || options);
+    return this;
+  },
   showModal: function(target = {}) {
     if (this._parentNode) {
-      this.toggleBackdrop()
+      this.showContent()
+          .toggleBackdrop()
           .toggleParentScroll()
           .calculatePosition(target);
     }

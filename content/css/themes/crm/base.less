@@ -589,8 +589,35 @@ body > .viewContainer > .dialog {
 .modal {
   visibility: hidden;
   position: absolute;
-  background-color: @background-light;
+  background-color: @background-lighter;
   z-index: 100;
+  overflow: scroll;
+
+  .button {
+    background-color: transparent;
+    border: none;
+    font-size: @font-size-h3;
+    font-weight: @button-font-weight;
+    text-transform: uppercase;
+    text-align: @button-text-align;
+    text-decoration: @button-text-decoration;
+    height: 44px;
+    line-height: 44px;
+    min-width: 100px;
+    width: 50%;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    padding: 0;
+  }
+  .tertiary {
+    border-top: 1px solid @color-light-graphite;
+    color: @color-azure;
+    transition: 0.2s background-color ease;
+    -webkit-transition: 0.2s background-color ease;
+    -moz-transition: 0.2s background-color ease;
+    -ms-transition: 0.2s background-color ease;
+  }
 }
 
 .modal-backdrop {

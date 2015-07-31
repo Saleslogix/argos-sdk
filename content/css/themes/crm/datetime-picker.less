@@ -1,7 +1,8 @@
 @import "variables.less";
 @import "mixins.less";
 
-.calendar {
+.calendar,
+.time-select {
   padding: 0 15px;
 }
 
@@ -90,21 +91,21 @@
   padding-top: 10px;
   display: inline-block;
 
-  .button {
-    background-color: transparent;
-    border: none;
-    font-size: @font-size-h3;
-    font-weight: @button-font-weight;
-    text-transform: uppercase;
-    text-align: @button-text-align;
-    text-decoration: @button-text-decoration;
-    height: 34px;
-    line-height: 34px;
-    min-width: 100px;
-    width: auto;
-    overflow: hidden;
-    position: relative;
-  }
+  // .button {
+  //   background-color: transparent;
+  //   border: none;
+  //   font-size: @font-size-h3;
+  //   font-weight: @button-font-weight;
+  //   text-transform: uppercase;
+  //   text-align: @button-text-align;
+  //   text-decoration: @button-text-decoration;
+  //   height: 34px;
+  //   line-height: 34px;
+  //   min-width: 100px;
+  //   width: auto;
+  //   overflow: hidden;
+  //   position: relative;
+  // }
 
   .tertiary {
     padding: 0 10px;
@@ -129,6 +130,26 @@
   .clear {
     float: left;
     color: @color-azure;
+  }
+}
+
+.time-select {
+  .dropdown {
+    width: 75px;
+    display: inline-block;
+  }
+  .dropdown > span {
+    position: absolute;
+    color: @color-deep-graphite;
+    margin-top: 10px;
+    margin-left: -15px;
+  }
+  .meridiem-field {
+
+  }
+  .tertiary {
+    height: 44px;
+    line-height: 44px;
   }
 }
 

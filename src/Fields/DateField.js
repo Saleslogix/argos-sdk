@@ -22,7 +22,7 @@ import format from '../Format';
 import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
 import moment from 'moment';
-import Calendar from '../Calendar';
+import DateTimePicker from '../DateTimePicker';
 import Modal from '../Modal';
 
 /**
@@ -99,7 +99,7 @@ var control = declare('argos.Fields.DateField', [EditorField], {
      */
     timeless: false,
     modal: null,
-    calendar: null,
+    dateTimePicker: null,
     _calendarListener: null,
     /**
      * Takes a date object and calls {@link format#date format.date} passing the current
@@ -184,12 +184,12 @@ var control = declare('argos.Fields.DateField', [EditorField], {
 
       if (!this.modal) {
         let options = this.createNavigationOptions();
-        this.calendar = new Calendar({ id: 'calendar-modal', isModal: true });
+        this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal', isModal: true });
         this.modal = new Modal({ id: 'date-time-modal' });
         this.modal.placeModal(this.domNode.offsetParent)
-                  .setContent(this.calendar);
-        this._calendarListener = connect.subscribe('/app/Calendar/changeDay', this, this.getValuesFromModal)
-        this.calendar.show(options);
+                  .setContent(this.dateTimePicker)
+                  .setContentOptions(options);
+        this._calendarListener = connect.subscribe('/app/Calendar/changeDay', this, this.getValuesFromModal);
       }
 
       this.modal.showModal(params.$source);

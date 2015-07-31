@@ -1,4 +1,4 @@
-define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/_base/connect', 'dojo/string', 'dojo/dom-class', '../Format', '../FieldManager', './EditorField', 'moment', '../Calendar', '../Modal'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojo_baseConnect, _dojoString, _dojoDomClass, _Format, _FieldManager, _EditorField, _moment, _Calendar, _Modal) {
+define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/_base/connect', 'dojo/string', 'dojo/dom-class', '../Format', '../FieldManager', './EditorField', 'moment', '../DateTimePicker', '../Modal'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojo_baseConnect, _dojoString, _dojoDomClass, _Format, _FieldManager, _EditorField, _moment, _DateTimePicker, _Modal) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
     /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -36,7 +36,7 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
 
     var _moment2 = _interopRequireDefault(_moment);
 
-    var _Calendar2 = _interopRequireDefault(_Calendar);
+    var _DateTimePicker2 = _interopRequireDefault(_DateTimePicker);
 
     var _Modal2 = _interopRequireDefault(_Modal);
 
@@ -111,7 +111,7 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
          */
         timeless: false,
         modal: null,
-        calendar: null,
+        dateTimePicker: null,
         _calendarListener: null,
         /**
          * Takes a date object and calls {@link format#date format.date} passing the current
@@ -196,11 +196,10 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
 
             if (!this.modal) {
                 var options = this.createNavigationOptions();
-                this.calendar = new _Calendar2['default']({ id: 'calendar-modal', isModal: true });
+                this.dateTimePicker = new _DateTimePicker2['default']({ id: 'datetime-picker-modal', isModal: true });
                 this.modal = new _Modal2['default']({ id: 'date-time-modal' });
-                this.modal.placeModal(this.domNode.offsetParent).setContent(this.calendar);
+                this.modal.placeModal(this.domNode.offsetParent).setContent(this.dateTimePicker).setContentOptions(options);
                 this._calendarListener = _connect['default'].subscribe('/app/Calendar/changeDay', this, this.getValuesFromModal);
-                this.calendar.show(options);
             }
 
             this.modal.showModal(params.$source);
