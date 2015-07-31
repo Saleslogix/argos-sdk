@@ -1,4 +1,4 @@
-define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/Deferred', 'dojo/query', 'dojo/string', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-construct', './Format', './Utility', './ErrorManager', './View'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseDeferred, _dojoQuery, _dojoString, _dojoDom, _dojoDomClass, _dojoDomConstruct, _Format, _Utility, _ErrorManager, _View) {
+define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/Deferred', 'dojo/query', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-construct', './Format', './Utility', './ErrorManager', './View'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseDeferred, _dojoQuery, _dojoDom, _dojoDomClass, _dojoDomConstruct, _Format, _Utility, _ErrorManager, _View) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -23,8 +23,6 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
   var _Deferred = _interopRequireDefault(_dojo_baseDeferred);
 
   var _query = _interopRequireDefault(_dojoQuery);
-
-  var _string = _interopRequireDefault(_dojoString);
 
   var _dom = _interopRequireDefault(_dojoDom);
 
@@ -258,46 +256,48 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
       this.clear();
     },
     createErrorHandlers: function createErrorHandlers() {
+      var _this = this;
+
       this.errorHandlers = this.errorHandlers || [{
         name: 'Aborted',
         test: function test(error) {
           return error.aborted;
         },
         handle: function handle(error, next) {
-          this.options = false; // force a refresh
+          _this.options = false; // force a refresh
           next();
         }
       }, {
         name: 'AlertError',
         test: function test(error) {
-          return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
+          return error.status !== _this.HTTP_STATUS.NOT_FOUND && !error.aborted;
         },
         handle: function handle(error, next) {
-          alert(this.getErrorMessage(error));
+          alert(_this.getErrorMessage(error)); //eslint-disable-line
           next();
         }
       }, {
         name: 'NotFound',
         test: function test(error) {
-          return error.status === this.HTTP_STATUS.NOT_FOUND;
+          return error.status === _this.HTTP_STATUS.NOT_FOUND;
         },
         handle: function handle(error, next) {
-          _domConstruct['default'].place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+          _domConstruct['default'].place(_this.notAvailableTemplate.apply(_this), _this.contentNode, 'only');
           next();
         }
       }, {
         name: 'CatchAll',
-        test: function test(error) {
+        test: function test() {
           return true;
         },
         handle: function handle(error, next) {
           var errorItem = {
-            viewOptions: this.options,
+            viewOptions: _this.options,
             serverError: error
           };
 
-          _ErrorManager2['default'].addError(this.getErrorMessage(error), errorItem);
-          _domClass['default'].remove(this.domNode, 'panel-loading');
+          _ErrorManager2['default'].addError(_this.getErrorMessage(error), errorItem);
+          _domClass['default'].remove(_this.domNode, 'panel-loading');
           next();
         }
       }];
@@ -342,9 +342,9 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * @param {Event} evt
      * @param {HTMLElement} el
      */
-    invokeAction: function invokeAction(name, parameters, evt, el) {
-      if (parameters && /true/i.test(parameters['disableAction'])) {
-        return;
+    invokeAction: function invokeAction(name, parameters /*, evt, el*/) {
+      if (parameters && /true/i.test(parameters.disableAction)) {
+        return null;
       }
       return this.inherited(arguments);
     },
@@ -352,11 +352,10 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * Toggles the collapsed state of the section.
      */
     toggleSection: function toggleSection(params) {
-      var node = _dom['default'].byId(params.$source),
-          button = null;
+      var node = _dom['default'].byId(params.$source);
       if (node) {
         _domClass['default'].toggle(node, 'collapsed');
-        button = (0, _query['default'])('button', node)[0];
+        var button = (0, _query['default'])('button', node)[0];
         if (button) {
           _domClass['default'].toggle(button, this.toggleCollapseClass);
           _domClass['default'].toggle(button, this.toggleExpandClass);
@@ -402,11 +401,10 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * Navigates to the defined `this.editView` passing the current `this.entry` as default data.
      * @param {HTMLElement} el
      */
-    navigateToEditView: function navigateToEditView(el) {
-      var view, entry;
-      view = App.getView(this.editView);
+    navigateToEditView: function navigateToEditView() {
+      var view = App.getView(this.editView);
       if (view) {
-        entry = this.entry;
+        var entry = this.entry;
         view.show({
           entry: entry,
           fromContext: this
@@ -420,16 +418,17 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * @param {String} descriptor Optional descriptor option that is mixed in.
      */
     navigateToRelatedView: function navigateToRelatedView(id, slot, descriptor) {
-      var options = this._navigationOptions[slot],
-          view = App.getView(id);
+      var options = this._navigationOptions[slot];
+      var view = App.getView(id);
 
       if (descriptor && options) {
-        options['descriptor'] = descriptor;
+        options.descriptor = descriptor;
       }
 
       if (this.entry) {
         options.selectedEntry = this.entry;
       }
+
       options.fromContext = this;
       if (view && options) {
         view.show(options);
@@ -478,37 +477,21 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * @param {Object} entry data response
      */
     processLayout: function processLayout(layout, entry) {
-      var rows = layout['children'] || layout['as'] || layout,
-          options = layout['options'] || (layout['options'] = {
+      var rows = layout.children || layout.as || layout;
+      var options = layout.options || (layout.options = {
         title: this.detailsText
-      }),
-          sectionQueue = [],
-          sectionStarted = false,
-          callbacks = [],
-          current,
-          i,
-          section,
-          sectionNode,
-          include,
-          exclude,
-          provider,
-          property,
-          value,
-          rendered,
-          formatted,
-          data,
-          hasAccess,
-          context,
-          useListTemplate,
-          template,
-          rowNode,
-          rowHtml,
-          item;
+      });
+      var sectionQueue = [];
+      var sectionStarted = false;
+      var callbacks = [];
 
-      for (i = 0; i < rows.length; i++) {
-        current = rows[i];
-        include = this.expandExpression(current['include'], entry);
-        exclude = this.expandExpression(current['exclude'], entry);
+      var sectionNode = undefined;
+
+      for (var i = 0; i < rows.length; i++) {
+        var current = rows[i];
+        var include = this.expandExpression(current.include, entry);
+        var exclude = this.expandExpression(current.exclude, entry);
+        var context = undefined;
 
         if (include !== undefined && !include) {
           continue;
@@ -518,7 +501,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
           continue;
         }
 
-        if (current['children'] || current['as']) {
+        if (current.children || current.as) {
           if (sectionStarted) {
             sectionQueue.push(current);
           } else {
@@ -530,113 +513,115 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
         if (!sectionStarted) {
           sectionStarted = true;
-          section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+          var section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
           sectionNode = section.childNodes[1];
           _domConstruct['default'].place(section, this.contentNode);
         }
 
-        provider = current['provider'] || _utility['default'].getValue;
-        property = typeof current['property'] === 'string' ? current['property'] : current['name'];
-        value = typeof current['value'] === 'undefined' ? provider(entry, property, entry) : current['value'];
-
-        if (current['template'] || current['tpl']) {
-          rendered = (current['template'] || current['tpl']).apply(value, this);
-          formatted = current['encode'] === true ? _format['default'].encode(rendered) : rendered;
-        } else if (current['renderer'] && typeof current['renderer'] === 'function') {
-          rendered = current['renderer'].call(this, value);
-          formatted = current['encode'] === true ? _format['default'].encode(rendered) : rendered;
+        var provider = current.provider || _utility['default'].getValue;
+        var property = typeof current.property === 'string' ? current.property : current.name;
+        var value = typeof current.value === 'undefined' ? provider(entry, property, entry) : current.value;
+        var rendered = undefined;
+        var formatted = undefined;
+        if (current.template || current.tpl) {
+          rendered = (current.template || current.tpl).apply(value, this);
+          formatted = current.encode === true ? _format['default'].encode(rendered) : rendered;
+        } else if (current.renderer && typeof current.renderer === 'function') {
+          rendered = current.renderer.call(this, value);
+          formatted = current.encode === true ? _format['default'].encode(rendered) : rendered;
         } else {
-          formatted = current['encode'] !== false ? _format['default'].encode(value) : value;
+          formatted = current.encode !== false ? _format['default'].encode(value) : value;
         }
 
-        data = _lang['default'].mixin({}, {
+        var data = _lang['default'].mixin({}, {
           entry: entry,
           value: formatted,
           raw: value
         }, current);
 
-        if (current['descriptor']) {
-          data['descriptor'] = typeof current['descriptor'] === 'function' ? this.expandExpression(current['descriptor'], entry, value) : provider(entry, current['descriptor']);
+        if (current.descriptor) {
+          data.descriptor = typeof current.descriptor === 'function' ? this.expandExpression(current.descriptor, entry, value) : provider(entry, current.descriptor);
         }
 
-        if (current['action']) {
-          data['action'] = this.expandExpression(current['action'], entry, value);
+        if (current.action) {
+          data.action = this.expandExpression(current.action, entry, value);
         }
 
-        hasAccess = App.hasAccessTo(current['security']);
+        var hasAccess = App.hasAccessTo(current.security);
 
-        if (current['security']) {
-          data['disabled'] = !hasAccess;
+        if (current.security) {
+          data.disabled = !hasAccess;
         }
 
-        if (current['disabled'] && hasAccess) {
-          data['disabled'] = this.expandExpression(current['disabled'], entry, value);
+        if (current.disabled && hasAccess) {
+          data.disabled = this.expandExpression(current.disabled, entry, value);
         }
 
-        if (current['view']) {
-          context = _lang['default'].mixin({}, current['options']);
+        if (current.view) {
+          context = _lang['default'].mixin({}, current.options);
 
-          if (current['key']) {
-            context['key'] = typeof current['key'] === 'function' ? this.expandExpression(current['key'], entry) : provider(entry, current['key']);
+          if (current.key) {
+            context.key = typeof current.key === 'function' ? this.expandExpression(current.key, entry) : provider(entry, current.key);
           }
-          if (current['where']) {
-            context['where'] = this.expandExpression(current['where'], entry);
+          if (current.where) {
+            context.where = this.expandExpression(current.where, entry);
           }
-          if (current['resourceKind']) {
-            context['resourceKind'] = this.expandExpression(current['resourceKind'], entry);
+          if (current.resourceKind) {
+            context.resourceKind = this.expandExpression(current.resourceKind, entry);
           }
-          if (current['resourceProperty']) {
-            context['resourceProperty'] = this.expandExpression(current['resourceProperty'], entry);
+          if (current.resourceProperty) {
+            context.resourceProperty = this.expandExpression(current.resourceProperty, entry);
           }
-          if (current['resourcePredicate']) {
-            context['resourcePredicate'] = this.expandExpression(current['resourcePredicate'], entry);
+          if (current.resourcePredicate) {
+            context.resourcePredicate = this.expandExpression(current.resourcePredicate, entry);
           }
-          if (current['dataSet']) {
-            context['dataSet'] = this.expandExpression(current['dataSet'], entry);
+          if (current.dataSet) {
+            context.dataSet = this.expandExpression(current.dataSet, entry);
           }
-          if (current['title']) {
-            context['title'] = current['title'];
+          if (current.title) {
+            context.title = current.title;
           }
 
-          if (current['resetSearch']) {
-            context['resetSearch'] = current['resetSearch'];
+          if (current.resetSearch) {
+            context.resetSearch = current.resetSearch;
           } else {
-            context['resetSearch'] = true;
+            context.resetSearch = true;
           }
 
-          data['view'] = current['view'];
-          data['context'] = this._navigationOptions.push(context) - 1;
+          data.view = current.view;
+          data.context = this._navigationOptions.push(context) - 1;
         }
 
-        useListTemplate = layout['list'] || options['list'];
+        var useListTemplate = layout.list || options.list;
 
+        var template = undefined;
         // priority: use > (relatedPropertyTemplate | relatedTemplate) > (actionPropertyTemplate | actionTemplate) > propertyTemplate
-        if (current['use']) {
-          template = current['use'];
-        } else if (current['view'] && useListTemplate) {
+        if (current.use) {
+          template = current.use;
+        } else if (current.view && useListTemplate) {
           template = this.relatedTemplate;
-          current['relatedItem'] = true;
-        } else if (current['view']) {
+          current.relatedItem = true;
+        } else if (current.view) {
           template = this.relatedPropertyTemplate;
-        } else if (current['action'] && useListTemplate) {
+        } else if (current.action && useListTemplate) {
           template = this.actionTemplate;
-        } else if (current['action']) {
+        } else if (current.action) {
           template = this.actionPropertyTemplate;
         } else {
           template = this.propertyTemplate;
         }
 
-        rowNode = this.createRowNode(current, sectionNode, entry, template, data);
-        if (current['relatedItem']) {
+        var rowNode = this.createRowNode(current, sectionNode, entry, template, data);
+        if (current.relatedItem) {
           try {
             this._processRelatedItem(data, context, rowNode);
           } catch (e) {
-            //error processing related node
-            console.error(e);
+            // error processing related node
+            console.error(e); //eslint-disable-line
           }
         }
 
-        if (current['onCreate']) {
+        if (current.onCreate) {
           callbacks.push({
             row: current,
             node: rowNode,
@@ -646,14 +631,13 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         }
       }
 
-      for (i = 0; i < callbacks.length; i++) {
-        item = callbacks[i];
-        item.row['onCreate'].apply(this, [item.row, item.node, item.value, item.entry]);
+      for (var i = 0; i < callbacks.length; i++) {
+        var item = callbacks[i];
+        item.row.onCreate.apply(this, [item.row, item.node, item.value, item.entry]);
       }
 
-      for (i = 0; i < sectionQueue.length; i++) {
-        current = sectionQueue[i];
-
+      for (var i = 0; i < sectionQueue.length; i++) {
+        var current = sectionQueue[i];
         this.processLayout(current, entry);
       }
     },
@@ -712,7 +696,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         /* this must take place when the content is visible */
         this.onContentChange();
       } catch (e) {
-        console.error(e);
+        console.error(e); //eslint-disable-line
       }
     },
     _onGetError: function _onGetError(getOptions, error) {
@@ -722,32 +706,29 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * Initiates the request.
      */
     requestData: function requestData() {
-      var request, store, getExpression, getResults, getOptions;
-
       _domClass['default'].add(this.domNode, 'panel-loading');
 
-      store = this.get('store');
+      var store = this.get('store');
       if (store) {
-        getOptions = {};
+        var getOptions = {};
 
         this._applyStateToGetOptions(getOptions);
 
-        getExpression = this._buildGetExpression() || null;
-        getResults = store.get(getExpression, getOptions);
+        var getExpression = this._buildGetExpression() || null;
+        var getResults = store.get(getExpression, getOptions);
 
         _Deferred['default'].when(getResults, this._onGetComplete.bind(this), this._onGetError.bind(this, getOptions));
 
         return getResults;
       }
 
-      console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataDetailMixin to your detail view?');
+      console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataDetailMixin to your detail view?'); //eslint-disable-line
     },
     _buildGetExpression: function _buildGetExpression() {
       var options = this.options;
-
       return options && (options.id || options.key);
     },
-    _applyStateToGetOptions: function _applyStateToGetOptions(getOptions) {},
+    _applyStateToGetOptions: function _applyStateToGetOptions() {},
     /**
      * Determines if the view should be refresh by inspecting and comparing the passed navigation option key with current key.
      * @param {Object} options Passed navigation options.
@@ -762,9 +743,9 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         }
 
         return false;
-      } else {
-        return this.inherited(arguments);
       }
+
+      return this.inherited(arguments);
     },
     /**
      * Extends the {@link View#activate parent implementation} to set the nav options title attribute to the descriptor
@@ -836,21 +817,19 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
       this._navigationOptions = [];
     },
     _processRelatedItem: function _processRelatedItem(data, context, rowNode) {
-      var view = App.getView(data['view']),
-          options = {};
+      var view = App.getView(data.view);
+      var options = {};
 
       if (view) {
-        options.where = context ? context['where'] : '';
+        options.where = context ? context.where : '';
         view.getListCount(options).then(function (result) {
-          var labelNode, html;
-
           if (result >= 0) {
-            labelNode = (0, _query['default'])('.related-item-label', rowNode)[0];
+            var labelNode = (0, _query['default'])('.related-item-label', rowNode)[0];
             if (labelNode) {
-              html = '<span class="related-item-count">' + result + '</span>';
+              var html = '<span class="related-item-count">' + result + '</span>';
               _domConstruct['default'].place(html, labelNode, 'before');
             } else {
-              console.warn('Missing the "related-item-label" dom node.');
+              console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
             }
           }
         });
@@ -864,3 +843,4 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
   _lang['default'].setObject('Sage.Platform.Mobile._DetailBase', __class);
   module.exports = __class;
 });
+/*el*/ /*getOptions*/

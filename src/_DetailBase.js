@@ -16,7 +16,6 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import Deferred from 'dojo/_base/Deferred';
 import query from 'dojo/query';
-import string from 'dojo/string';
 import dom from 'dojo/dom';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
@@ -37,7 +36,7 @@ import View from './View';
  * @requires argos.Utility
  * @requires argos.ErrorManager
  */
-var __class = declare('argos._DetailBase', [View], {
+const __class = declare('argos._DetailBase', [View], {
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:
@@ -48,8 +47,8 @@ var __class = declare('argos._DetailBase', [View], {
   attributeMap: {
     detailContent: {
       node: 'contentNode',
-      type: 'innerHTML'
-    }
+      type: 'innerHTML',
+    },
   },
   /**
    * @property {Simplate}
@@ -70,7 +69,7 @@ var __class = declare('argos._DetailBase', [View], {
     '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '{%! $.loadingTemplate %}',
     '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -86,7 +85,7 @@ var __class = declare('argos._DetailBase', [View], {
   loadingTemplate: new Simplate([
     '<div class="panel-loading-indicator">',
     '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -103,7 +102,7 @@ var __class = declare('argos._DetailBase', [View], {
     '<ul class="{%= ($.cls || $.options.cls) %}">',
     '{% } else { %}',
     '<div class="{%= ($.cls || $.options.cls) %}">',
-    '{% } %}'
+    '{% } %}',
   ]),
   /**
    * @property {Simplate}
@@ -116,7 +115,7 @@ var __class = declare('argos._DetailBase', [View], {
     '</ul>',
     '{% } else { %}',
     '</div>',
-    '{% } %}'
+    '{% } %}',
   ]),
   /**
    * @property {Simplate}
@@ -129,7 +128,7 @@ var __class = declare('argos._DetailBase', [View], {
     '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}" data-property="{%= $.property || $.name %}">',
     '<label>{%: $.label %}</label>',
     '<span>{%= $.value %}</span>', // todo: create a way to allow the value to not be surrounded with a span tag
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -146,7 +145,7 @@ var __class = declare('argos._DetailBase', [View], {
     '{%= $.value %}',
     '</a>',
     '</span>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -165,7 +164,7 @@ var __class = declare('argos._DetailBase', [View], {
     '{% } %}',
     '<span class="related-item-label">{%: $.label %}</span>',
     '</a>',
-    '</li>'
+    '</li>',
   ]),
   /**
    * @property {Simplate}
@@ -182,7 +181,7 @@ var __class = declare('argos._DetailBase', [View], {
     '{%= $.value %}',
     '</a>',
     '</span>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -202,7 +201,7 @@ var __class = declare('argos._DetailBase', [View], {
     '<label>{%: $.label %}</label>',
     '<span>{%= $.value %}</span>',
     '</a>',
-    '</li>'
+    '</li>',
   ]),
   /**
    * @property {Simplate}
@@ -211,7 +210,7 @@ var __class = declare('argos._DetailBase', [View], {
    * `$` => the view instance
    */
   notAvailableTemplate: new Simplate([
-    '<div class="not-available">{%: $.notAvailableText %}</div>'
+    '<div class="not-available">{%: $.notAvailableText %}</div>',
   ]),
   /**
    * @property {String}
@@ -309,54 +308,52 @@ var __class = declare('argos._DetailBase', [View], {
   /**
    * Extends the dijit widget postCreate to subscribe to the global `/app/refresh` event and clear the view.
    */
-  postCreate: function() {
+  postCreate: function postCreate() {
     this.inherited(arguments);
     this.subscribe('/app/refresh', this._onRefresh);
     this.clear();
   },
-  createErrorHandlers: function() {
+  createErrorHandlers: function createErrorHandlers() {
     this.errorHandlers = this.errorHandlers || [{
       name: 'Aborted',
-      test: function(error) {
+      test: (error) => {
         return error.aborted;
       },
-      handle: function(error, next) {
+      handle: (error, next) => {
         this.options = false; // force a refresh
         next();
-      }
+      },
     }, {
       name: 'AlertError',
-      test: function(error) {
+      test: (error) => {
         return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
       },
-      handle: function(error, next) {
-        alert(this.getErrorMessage(error));
+      handle: (error, next) => {
+        alert(this.getErrorMessage(error));//eslint-disable-line
         next();
-      }
+      },
     }, {
       name: 'NotFound',
-      test: function(error) {
+      test: (error) => {
         return error.status === this.HTTP_STATUS.NOT_FOUND;
       },
-      handle: function(error, next) {
+      handle: (error, next) => {
         domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
         next();
-      }
+      },
     }, {
       name: 'CatchAll',
-      test: function(error) {
-        return true;
-      },
-      handle: function(error, next) {
-        var errorItem = {
+      test: () => true,
+      handle: (error, next) => {
+        const errorItem = {
           viewOptions: this.options,
-          serverError: error
+          serverError: error,
         };
 
         ErrorManager.addError(this.getErrorMessage(error), errorItem);
         domClass.remove(this.domNode, 'panel-loading');
         next();
-      }
+      },
     }];
 
     return this.errorHandlers;
@@ -367,21 +364,21 @@ var __class = declare('argos._DetailBase', [View], {
    * @return {Object} this.tools
    * @template
    */
-  createToolLayout: function() {
+  createToolLayout: function createToolLayout() {
     return this.tools || (this.tools = {
       'tbar': [{
         id: 'edit',
         cls: 'fa fa-pencil fa-fw fa-lg',
         action: 'navigateToEditView',
-        security: App.getViewSecurity(this.editView, 'update')
+        security: App.getViewSecurity(this.editView, 'update'),
       }, {
         id: 'refresh',
         cls: 'fa fa-refresh fa-fw fa-lg',
-        action: '_refreshClicked'
-      }]
+        action: '_refreshClicked',
+      }],
     });
   },
-  _refreshClicked: function() {
+  _refreshClicked: function _refreshClicked() {
     this.clear();
     this.refreshRequired = true;
     this.refresh();
@@ -391,7 +388,7 @@ var __class = declare('argos._DetailBase', [View], {
   /**
    * Called when the user clicks the refresh toolbar button.
    */
-  onRefreshClicked: function() {},
+  onRefreshClicked: function onRefreshClicked() {},
   /**
    * Extends the {@link _ActionMixin#invokeAction mixins invokeAction} to stop if `data-disableAction` is true
    * @param name
@@ -399,21 +396,20 @@ var __class = declare('argos._DetailBase', [View], {
    * @param {Event} evt
    * @param {HTMLElement} el
    */
-  invokeAction: function(name, parameters, evt, el) {
-    if (parameters && /true/i.test(parameters['disableAction'])) {
-      return;
+  invokeAction: function invokeAction(name, parameters/*, evt, el*/) {
+    if (parameters && /true/i.test(parameters.disableAction)) {
+      return null;
     }
     return this.inherited(arguments);
   },
   /**
    * Toggles the collapsed state of the section.
    */
-  toggleSection: function(params) {
-    var node = dom.byId(params.$source),
-      button = null;
+  toggleSection: function toggleSection(params) {
+    const node = dom.byId(params.$source);
     if (node) {
       domClass.toggle(node, 'collapsed');
-      button = query('button', node)[0];
+      const button = query('button', node)[0];
       if (button) {
         domClass.toggle(button, this.toggleCollapseClass);
         domClass.toggle(button, this.toggleExpandClass);
@@ -425,8 +421,8 @@ var __class = declare('argos._DetailBase', [View], {
    * @param {Object} options The object published by the event.
    * @private
    */
-  _onRefresh: function(o) {
-    var descriptor = o.data && o.data[this.labelProperty];
+  _onRefresh: function _onRefresh(o) {
+    const descriptor = o.data && o.data[this.labelProperty];
 
     if (this.options && this.options.key === o.key) {
       this.refreshRequired = true;
@@ -441,7 +437,7 @@ var __class = declare('argos._DetailBase', [View], {
    * Handler for the related entry action, navigates to the defined `data-view` passing the `data-context`.
    * @param {Object} params Collection of `data-` attributes from the source node.
    */
-  activateRelatedEntry: function(params) {
+  activateRelatedEntry: function activateRelatedEntry(params) {
     if (params.context) {
       this.navigateToRelatedView(params.view, parseInt(params.context, 10), params.descriptor);
     }
@@ -450,7 +446,7 @@ var __class = declare('argos._DetailBase', [View], {
    * Handler for the related list action, navigates to the defined `data-view` passing the `data-context`.
    * @param {Object} params Collection of `data-` attributes from the source node.
    */
-  activateRelatedList: function(params) {
+  activateRelatedList: function activateRelatedList(params) {
     if (params.context) {
       this.navigateToRelatedView(params.view, parseInt(params.context, 10), params.descriptor);
     }
@@ -459,14 +455,13 @@ var __class = declare('argos._DetailBase', [View], {
    * Navigates to the defined `this.editView` passing the current `this.entry` as default data.
    * @param {HTMLElement} el
    */
-  navigateToEditView: function(el) {
-    var view, entry;
-    view = App.getView(this.editView);
+  navigateToEditView: function navigateToEditView(/*el*/) {
+    const view = App.getView(this.editView);
     if (view) {
-      entry = this.entry;
+      const entry = this.entry;
       view.show({
         entry: entry,
-        fromContext: this
+        fromContext: this,
       });
     }
   },
@@ -476,17 +471,18 @@ var __class = declare('argos._DetailBase', [View], {
    * @param {Number} slot Index of the context to use in `this._navigationOptions`.
    * @param {String} descriptor Optional descriptor option that is mixed in.
    */
-  navigateToRelatedView: function(id, slot, descriptor) {
-    var options = this._navigationOptions[slot],
-      view = App.getView(id);
+  navigateToRelatedView: function navigateToRelatedView(id, slot, descriptor) {
+    const options = this._navigationOptions[slot];
+    const view = App.getView(id);
 
     if (descriptor && options) {
-      options['descriptor'] = descriptor;
+      options.descriptor = descriptor;
     }
 
     if (this.entry) {
       options.selectedEntry = this.entry;
     }
+
     options.fromContext = this;
     if (view && options) {
       view.show(options);
@@ -525,7 +521,7 @@ var __class = declare('argos._DetailBase', [View], {
    *
    * @return {Object[]} Detail layout definition
    */
-  createLayout: function() {
+  createLayout: function createLayout() {
     return this.layout || [];
   },
   /**
@@ -534,38 +530,22 @@ var __class = declare('argos._DetailBase', [View], {
    * @param {Object[]} layout Layout definition
    * @param {Object} entry data response
    */
-  processLayout: function(layout, entry) {
-    var rows = (layout['children'] || layout['as'] || layout),
-      options = layout['options'] || (layout['options'] = {
-        title: this.detailsText
-      }),
-      sectionQueue = [],
-      sectionStarted = false,
-      callbacks = [],
-      current,
-      i,
-      section,
-      sectionNode,
-      include,
-      exclude,
-      provider,
-      property,
-      value,
-      rendered,
-      formatted,
-      data,
-      hasAccess,
-      context,
-      useListTemplate,
-      template,
-      rowNode,
-      rowHtml,
-      item;
+  processLayout: function processLayout(layout, entry) {
+    const rows = (layout.children || layout.as || layout);
+    const options = layout.options || (layout.options = {
+      title: this.detailsText,
+    });
+    const sectionQueue = [];
+    let sectionStarted = false;
+    const callbacks = [];
 
-    for (i = 0; i < rows.length; i++) {
-      current = rows[i];
-      include = this.expandExpression(current['include'], entry);
-      exclude = this.expandExpression(current['exclude'], entry);
+    let sectionNode;
+
+    for (let i = 0; i < rows.length; i++) {
+      const current = rows[i];
+      const include = this.expandExpression(current.include, entry);
+      const exclude = this.expandExpression(current.exclude, entry);
+      let context;
 
       if (include !== undefined && !include) {
         continue;
@@ -575,7 +555,7 @@ var __class = declare('argos._DetailBase', [View], {
         continue;
       }
 
-      if (current['children'] || current['as']) {
+      if (current.children || current.as) {
         if (sectionStarted) {
           sectionQueue.push(current);
         } else {
@@ -587,137 +567,138 @@ var __class = declare('argos._DetailBase', [View], {
 
       if (!sectionStarted) {
         sectionStarted = true;
-        section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+        const section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
         sectionNode = section.childNodes[1];
         domConstruct.place(section, this.contentNode);
       }
 
-      provider = current['provider'] || utility.getValue;
-      property = typeof current['property'] === 'string' ? current['property'] : current['name'];
-      value = typeof current['value'] === 'undefined' ? provider(entry, property, entry) : current['value'];
-
-      if (current['template'] || current['tpl']) {
-        rendered = (current['template'] || current['tpl']).apply(value, this);
-        formatted = current['encode'] === true ? format.encode(rendered) : rendered;
-      } else if (current['renderer'] && typeof current['renderer'] === 'function') {
-        rendered = current['renderer'].call(this, value);
-        formatted = current['encode'] === true ? format.encode(rendered) : rendered;
+      const provider = current.provider || utility.getValue;
+      const property = typeof current.property === 'string' ? current.property : current.name;
+      const value = typeof current.value === 'undefined' ? provider(entry, property, entry) : current.value;
+      let rendered;
+      let formatted;
+      if (current.template || current.tpl) {
+        rendered = (current.template || current.tpl).apply(value, this);
+        formatted = current.encode === true ? format.encode(rendered) : rendered;
+      } else if (current.renderer && typeof current.renderer === 'function') {
+        rendered = current.renderer.call(this, value);
+        formatted = current.encode === true ? format.encode(rendered) : rendered;
       } else {
-        formatted = current['encode'] !== false ? format.encode(value) : value;
+        formatted = current.encode !== false ? format.encode(value) : value;
       }
 
-      data = lang.mixin({}, {
+      const data = lang.mixin({}, {
         entry: entry,
         value: formatted,
-        raw: value
+        raw: value,
       }, current);
 
-      if (current['descriptor']) {
-        data['descriptor'] = typeof current['descriptor'] === 'function' ? this.expandExpression(current['descriptor'], entry, value) : provider(entry, current['descriptor']);
+      if (current.descriptor) {
+        data.descriptor = typeof current.descriptor === 'function' ? this.expandExpression(current.descriptor, entry, value) : provider(entry, current.descriptor);
       }
 
-      if (current['action']) {
-        data['action'] = this.expandExpression(current['action'], entry, value);
+      if (current.action) {
+        data.action = this.expandExpression(current.action, entry, value);
       }
 
-      hasAccess = App.hasAccessTo(current['security']);
+      const hasAccess = App.hasAccessTo(current.security);
 
-      if (current['security']) {
-        data['disabled'] = !hasAccess;
+      if (current.security) {
+        data.disabled = !hasAccess;
       }
 
-      if (current['disabled'] && hasAccess) {
-        data['disabled'] = this.expandExpression(current['disabled'], entry, value);
+      if (current.disabled && hasAccess) {
+        data.disabled = this.expandExpression(current.disabled, entry, value);
       }
 
-      if (current['view']) {
-        context = lang.mixin({}, current['options']);
+      if (current.view) {
+        context = lang.mixin({}, current.options);
 
-        if (current['key']) {
-          context['key'] = typeof current['key'] === 'function' ? this.expandExpression(current['key'], entry) : provider(entry, current['key']);
+        if (current.key) {
+          context.key = typeof current.key === 'function' ? this.expandExpression(current.key, entry) : provider(entry, current.key);
         }
-        if (current['where']) {
-          context['where'] = this.expandExpression(current['where'], entry);
+        if (current.where) {
+          context.where = this.expandExpression(current.where, entry);
         }
-        if (current['resourceKind']) {
-          context['resourceKind'] = this.expandExpression(current['resourceKind'], entry);
+        if (current.resourceKind) {
+          context.resourceKind = this.expandExpression(current.resourceKind, entry);
         }
-        if (current['resourceProperty']) {
-          context['resourceProperty'] = this.expandExpression(current['resourceProperty'], entry);
+        if (current.resourceProperty) {
+          context.resourceProperty = this.expandExpression(current.resourceProperty, entry);
         }
-        if (current['resourcePredicate']) {
-          context['resourcePredicate'] = this.expandExpression(current['resourcePredicate'], entry);
+        if (current.resourcePredicate) {
+          context.resourcePredicate = this.expandExpression(current.resourcePredicate, entry);
         }
-        if (current['dataSet']) {
-          context['dataSet'] = this.expandExpression(current['dataSet'], entry);
+        if (current.dataSet) {
+          context.dataSet = this.expandExpression(current.dataSet, entry);
         }
-        if (current['title']) {
-          context['title'] = current['title'];
+        if (current.title) {
+          context.title = current.title;
         }
 
-        if (current['resetSearch']) {
-          context['resetSearch'] = current['resetSearch'];
+        if (current.resetSearch) {
+          context.resetSearch = current.resetSearch;
         } else {
-          context['resetSearch'] = true;
+          context.resetSearch = true;
         }
 
-        data['view'] = current['view'];
-        data['context'] = (this._navigationOptions.push(context) - 1);
+        data.view = current.view;
+        data.context = (this._navigationOptions.push(context) - 1);
       }
 
-      useListTemplate = (layout['list'] || options['list']);
+      const useListTemplate = (layout.list || options.list);
 
+      let template;
       // priority: use > (relatedPropertyTemplate | relatedTemplate) > (actionPropertyTemplate | actionTemplate) > propertyTemplate
-      if (current['use']) {
-        template = current['use'];
-      } else if (current['view'] && useListTemplate) {
+      if (current.use) {
+        template = current.use;
+      } else if (current.view && useListTemplate) {
         template = this.relatedTemplate;
-        current['relatedItem'] = true;
-      } else if (current['view']) {
+        current.relatedItem = true;
+      } else if (current.view) {
         template = this.relatedPropertyTemplate;
-      } else if (current['action'] && useListTemplate) {
+      } else if (current.action && useListTemplate) {
         template = this.actionTemplate;
-      } else if (current['action']) {
+      } else if (current.action) {
         template = this.actionPropertyTemplate;
       } else {
         template = this.propertyTemplate;
       }
 
-      rowNode = this.createRowNode(current, sectionNode, entry, template, data);
-      if (current['relatedItem']) {
+      const rowNode = this.createRowNode(current, sectionNode, entry, template, data);
+      if (current.relatedItem) {
         try {
           this._processRelatedItem(data, context, rowNode);
         } catch (e) {
-          //error processing related node
-          console.error(e);
+          // error processing related node
+          console.error(e);//eslint-disable-line
         }
       }
 
-      if (current['onCreate']) {
+      if (current.onCreate) {
         callbacks.push({
           row: current,
           node: rowNode,
           value: value,
-          entry: entry
+          entry: entry,
         });
       }
     }
 
-    for (i = 0; i < callbacks.length; i++) {
-      item = callbacks[i];
-      item.row['onCreate'].apply(this, [item.row, item.node, item.value, item.entry]);
+    for (let i = 0; i < callbacks.length; i++) {
+      const item = callbacks[i];
+      item.row.onCreate.apply(this, [item.row, item.node, item.value, item.entry]);
     }
 
-    for (i = 0; i < sectionQueue.length; i++) {
-      current = sectionQueue[i];
-
+    for (let i = 0; i < sectionQueue.length; i++) {
+      const current = sectionQueue[i];
       this.processLayout(current, entry);
     }
   },
-  createRowNode: function(layout, sectionNode, entry, template, data) {
+  createRowNode: function createRowNode(layout, sectionNode, entry, template, data) {
     return domConstruct.place(template.apply(data, this), sectionNode);
   },
-  _getStoreAttr: function() {
+  _getStoreAttr: function _getStoreAttr() {
     return this.store || (this.store = this.createStore());
   },
   /**
@@ -725,21 +706,21 @@ var __class = declare('argos._DetailBase', [View], {
    * a dojo store of your choosing. There are {@link _SDataDetailMixin Mixins} available for SData.
    * @return {*}
    */
-  createStore: function() {
+  createStore: function createStore() {
     return null;
   },
   /**
    * Required for binding to ScrollContainer which utilizes iScroll that requires to be refreshed when the
    * content (therefor scrollable area) changes.
    */
-  onContentChange: function() {},
+  onContentChange: function onContentChange() {},
   /**
    * @template
    * Optional processing of the returned entry before it gets processed into layout.
    * @param {Object} entry Entry from data store
    * @return {Object} By default does not do any processing
    */
-  preProcessEntry: function(entry) {
+  preProcessEntry: function preProcessEntry(entry) {
     return entry;
   },
   /**
@@ -747,7 +728,7 @@ var __class = declare('argos._DetailBase', [View], {
    * passes it to process layout.
    * @param {Object} entry Entry from data store
    */
-  processEntry: function(entry) {
+  processEntry: function processEntry(entry) {
     this.entry = this.preProcessEntry(entry);
 
     if (this.entry) {
@@ -756,7 +737,7 @@ var __class = declare('argos._DetailBase', [View], {
       this.set('detailContent', '');
     }
   },
-  _onGetComplete: function(entry) {
+  _onGetComplete: function _onGetComplete(entry) {
     try {
       if (entry) {
         this.processEntry(entry);
@@ -769,28 +750,26 @@ var __class = declare('argos._DetailBase', [View], {
       /* this must take place when the content is visible */
       this.onContentChange();
     } catch (e) {
-      console.error(e);
+      console.error(e);//eslint-disable-line
     }
   },
-  _onGetError: function(getOptions, error) {
+  _onGetError: function _onGetError(getOptions, error) {
     this.handleError(error);
   },
   /**
    * Initiates the request.
    */
-  requestData: function() {
-    var request, store, getExpression, getResults, getOptions;
-
+  requestData: function requestData() {
     domClass.add(this.domNode, 'panel-loading');
 
-    store = this.get('store');
+    const store = this.get('store');
     if (store) {
-      getOptions = {};
+      const getOptions = {};
 
       this._applyStateToGetOptions(getOptions);
 
-      getExpression = this._buildGetExpression() || null;
-      getResults = store.get(getExpression, getOptions);
+      const getExpression = this._buildGetExpression() || null;
+      const getResults = store.get(getExpression, getOptions);
 
       Deferred.when(getResults,
         this._onGetComplete.bind(this),
@@ -800,20 +779,19 @@ var __class = declare('argos._DetailBase', [View], {
       return getResults;
     }
 
-    console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataDetailMixin to your detail view?');
+    console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataDetailMixin to your detail view?');//eslint-disable-line
   },
-  _buildGetExpression: function() {
-    var options = this.options;
-
+  _buildGetExpression: function _buildGetExpression() {
+    const options = this.options;
     return options && (options.id || options.key);
   },
-  _applyStateToGetOptions: function(getOptions) {},
+  _applyStateToGetOptions: function _applyStateToGetOptions(/*getOptions*/) {},
   /**
    * Determines if the view should be refresh by inspecting and comparing the passed navigation option key with current key.
    * @param {Object} options Passed navigation options.
    * @return {Boolean} True if the view should be refreshed, false if not.
    */
-  refreshRequiredFor: function(options) {
+  refreshRequiredFor: function refreshRequiredFor(options) {
     if (this.options) {
       if (options) {
         if (this.options.key !== options.key) {
@@ -822,24 +800,24 @@ var __class = declare('argos._DetailBase', [View], {
       }
 
       return false;
-    } else {
-      return this.inherited(arguments);
     }
+
+    return this.inherited(arguments);
   },
   /**
    * Extends the {@link View#activate parent implementation} to set the nav options title attribute to the descriptor
    * @param tag
    * @param data
    */
-  activate: function(tag, data) {
-    var options = data && data.options;
+  activate: function activate(tag, data) {
+    const options = data && data.options;
     if (options && options.descriptor) {
       options.title = options.title || options.descriptor;
     }
 
     this.inherited(arguments);
   },
-  show: function(options) {
+  show: function show(options) {
     if (options && options.descriptor) {
       options.title = options.title || options.descriptor;
     }
@@ -850,25 +828,25 @@ var __class = declare('argos._DetailBase', [View], {
    * Returns the view key
    * @return {String} View key
    */
-  getTag: function() {
+  getTag: function getTag() {
     return this.options && this.options.key;
   },
   /**
    * Extends the {@link View#getContext parent implementation} to also set the resourceKind, key and descriptor
    * @return {Object} View context object
    */
-  getContext: function() {
+  getContext: function getContext() {
     return lang.mixin(this.inherited(arguments), {
       resourceKind: this.resourceKind,
       key: this.options.key,
-      descriptor: this.options.descriptor
+      descriptor: this.options.descriptor,
     });
   },
   /**
    * Extends the {@link View#beforeTransitionTo parent implementation} to also clear the view if `refreshRequired` is true
    * @return {Object} View context object
    */
-  beforeTransitionTo: function() {
+  beforeTransitionTo: function beforeTransitionTo() {
     this.inherited(arguments);
 
     if (this.refreshRequired) {
@@ -879,7 +857,7 @@ var __class = declare('argos._DetailBase', [View], {
    * If a security breach is detected it sets the content to the notAvailableTemplate, otherwise it calls
    * {@link #requestData requestData} which starts the process sequence.
    */
-  refresh: function() {
+  refresh: function refresh() {
     if (this.security && !App.hasAccessTo(this.expandExpression(this.security))) {
       domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
       return;
@@ -890,35 +868,33 @@ var __class = declare('argos._DetailBase', [View], {
   /**
    * Clears the view by replacing the content with the empty template and emptying the stored row contexts.
    */
-  clear: function() {
+  clear: function clear() {
     this.set('detailContent', this.emptyTemplate.apply(this));
 
     this._navigationOptions = [];
   },
-  _processRelatedItem: function(data, context, rowNode) {
-    var view = App.getView(data['view']),
-      options = {};
+  _processRelatedItem: function _processRelatedItem(data, context, rowNode) {
+    const view = App.getView(data.view);
+    const options = {};
 
     if (view) {
-      options.where = context ? context['where'] : '';
-      view.getListCount(options).then(function(result) {
-        var labelNode, html;
-
+      options.where = context ? context.where : '';
+      view.getListCount(options).then((result) => {
         if (result >= 0) {
-          labelNode = query('.related-item-label', rowNode)[0];
+          const labelNode = query('.related-item-label', rowNode)[0];
           if (labelNode) {
-            html = '<span class="related-item-count">' + result + '</span>';
+            const html = '<span class="related-item-count">' + result + '</span>';
             domConstruct.place(html, labelNode, 'before');
           } else {
-            console.warn('Missing the "related-item-label" dom node.');
+            console.warn('Missing the "related-item-label" dom node.');//eslint-disable-line
           }
         }
       });
     }
   },
-  destroy: function() {
+  destroy: function destroy() {
     this.inherited(arguments);
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._DetailBase', __class);

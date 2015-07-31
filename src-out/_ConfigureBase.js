@@ -1,9 +1,7 @@
-define('argos/_ConfigureBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/query', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/string', 'argos/_ListBase'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoQuery, _dojoDomAttr, _dojoDomClass, _dojoString, _argos_ListBase) {
+define('argos/_ConfigureBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/query', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/string', 'argos/_ListBase'], function (exports, module, _dojo_baseDeclare, _dojoQuery, _dojoDomAttr, _dojoDomClass, _dojoString, _argos_ListBase) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
-
-  var _lang = _interopRequireDefault(_dojo_baseLang);
 
   var _query = _interopRequireDefault(_dojoQuery);
 
@@ -23,13 +21,13 @@ define('argos/_ConfigureBase', ['exports', 'module', 'dojo/_base/declare', 'dojo
    *
    */
   var __class = (0, _declare['default'])('argos._ConfigureBase', [_ListBase2['default']], {
-    //Templates
+    // Templates
     itemTemplate: new Simplate(['<h3>', '<span>{%: $.$descriptor %}</span>', '<span data-action="moveUp" class="fa fa-arrow-up"></span>', '<span data-action="moveDown" class="fa fa-arrow-down"></span>', '</h3>']),
 
     // Localization
     titleText: 'Configure',
 
-    //View Properties
+    // View Properties
     id: 'configure_base',
     expose: false,
     enableSearch: false,
@@ -67,46 +65,40 @@ define('argos/_ConfigureBase', ['exports', 'module', 'dojo/_base/declare', 'dojo
      */
     onSave: function onSave() {},
     moveUp: function moveUp(params) {
-      var node, rows, prev;
-
-      node = (0, _query['default'])(params.$source);
-      rows = node.parents('li');
+      var node = (0, _query['default'])(params.$source);
+      var rows = node.parents('li');
 
       if (rows) {
-        prev = rows.prev('li');
+        var prev = rows.prev('li');
         rows.insertBefore(prev);
         this.clearLastMoved();
 
         // The setTimeout is so the browser doesn't think the last-moved class is part of the node's
         // initial state (the css transition won't fire)
-        setTimeout((function () {
+        setTimeout((function addClass() {
           rows.addClass(this.lastMovedCls);
         }).bind(this), 5);
       }
     },
     moveDown: function moveDown(params) {
-      var node, rows, next;
-
-      node = (0, _query['default'])(params.$source);
-      rows = node.parents('li');
+      var node = (0, _query['default'])(params.$source);
+      var rows = node.parents('li');
 
       if (rows) {
-        next = rows.next('li');
+        var next = rows.next('li');
         rows.insertAfter(next);
         this.clearLastMoved();
 
         // The setTimeout is so the browser doesn't think the last-moved class is part of the node's
         // initial state (the css transition won't fire)
-        setTimeout((function () {
+        setTimeout((function addClass() {
           rows.addClass(this.lastMovedCls);
         }).bind(this), 5);
       }
     },
     clearLastMoved: function clearLastMoved() {
-      var nodes, cls;
-
-      nodes = (0, _query['default'])('> li', this.contentNode);
-      cls = this.lastMovedCls;
+      var nodes = (0, _query['default'])('> li', this.contentNode);
+      var cls = this.lastMovedCls;
 
       nodes.forEach(function (node) {
         _domClass['default'].remove(node, cls);
@@ -176,13 +168,10 @@ define('argos/_ConfigureBase', ['exports', 'module', 'dojo/_base/declare', 'dojo
      */
     processData: function processData() {
       this.inherited(arguments);
+      var visible = this.getSavedSelectedKeys();
 
-      var visible, i, row;
-
-      visible = this.getSavedSelectedKeys();
-
-      for (i = 0; i < visible.length; i++) {
-        row = (0, _query['default'])(_string['default'].substitute('[data-key="${0}"]', [visible[i]]), this.domNode)[0];
+      for (var i = 0; i < visible.length; i++) {
+        var row = (0, _query['default'])(_string['default'].substitute('[data-key="${0}"]', [visible[i]]), this.domNode)[0];
         if (row) {
           this._selectionModel.toggle(visible[i], this.entries[visible[i]], row);
         }

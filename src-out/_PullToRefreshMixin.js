@@ -1,9 +1,7 @@
-define('argos/_PullToRefreshMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-geometry', 'dojo/dom-style', 'dojo/dom'], function (exports, module, _dojo_baseDeclare, _dojoDomAttr, _dojoDomClass, _dojoDomConstruct, _dojoDomGeometry, _dojoDomStyle, _dojoDom) {
+define('argos/_PullToRefreshMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-geometry', 'dojo/dom-style'], function (exports, module, _dojo_baseDeclare, _dojoDomClass, _dojoDomConstruct, _dojoDomGeometry, _dojoDomStyle) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
-
-  var _domAttr = _interopRequireDefault(_dojoDomAttr);
 
   var _domClass = _interopRequireDefault(_dojoDomClass);
 
@@ -13,9 +11,7 @@ define('argos/_PullToRefreshMixin', ['exports', 'module', 'dojo/_base/declare', 
 
   var _domStyle = _interopRequireDefault(_dojoDomStyle);
 
-  var _dom = _interopRequireDefault(_dojoDom);
-
-  var __class;
+  var __class = undefined;
 
   /**
    * @class argos._PullToRefreshMixin
@@ -120,30 +116,24 @@ define('argos/_PullToRefreshMixin', ['exports', 'module', 'dojo/_base/declare', 
      * @returns {Boolean}
      */
     shouldStartPullToRefresh: function shouldStartPullToRefresh(scrollerNode) {
-      var scrollTop;
-      scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
+      var scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
       return scrollTop === 0;
     },
 
     _onTouchStart: function _onTouchStart(evt) {
-      var scrollTop, position, style, bannerPos, scrollerNode;
-
       this.pullToRefresh.pulling = false;
       this.pullToRefresh.results = false;
 
-      scrollerNode = this.scrollerNode;
+      var scrollerNode = this.scrollerNode;
 
       if (!scrollerNode) {
         return;
       }
 
-      scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
-
       if (this.shouldStartPullToRefresh(scrollerNode)) {
-        //) {
-        position = _domGeom['default'].position(scrollerNode);
-        bannerPos = _domGeom['default'].position(this.pullRefreshBanner);
-        style = _domStyle['default'].getComputedStyle(scrollerNode); // expensive
+        var position = _domGeom['default'].position(scrollerNode);
+        var bannerPos = _domGeom['default'].position(this.pullRefreshBanner);
+        var style = _domStyle['default'].getComputedStyle(scrollerNode); // expensive
         this.pullToRefresh.bannerHeight = bannerPos.h;
         this.pullToRefresh.scrollerHeight = position.h;
         this.pullToRefresh.scrollerWidth = position.w;
@@ -159,13 +149,9 @@ define('argos/_PullToRefreshMixin', ['exports', 'module', 'dojo/_base/declare', 
       }
     },
     _onTouchMove: function _onTouchMove(evt) {
-      var top,
-          distance,
-          PULL_PADDING = 20,
-          MAX_DISTANCE,
-          scrollerNode;
+      var PULL_PADDING = 20;
 
-      scrollerNode = this.scrollerNode;
+      var scrollerNode = this.scrollerNode;
 
       if (!this.pullToRefresh.pulling || !scrollerNode) {
         return;
@@ -174,20 +160,20 @@ define('argos/_PullToRefreshMixin', ['exports', 'module', 'dojo/_base/declare', 
       _domClass['default'].remove(scrollerNode, this.pullToRefresh.animateCls);
 
       // distance from last drag
-      distance = evt.clientY - this.pullToRefresh.lastY;
+      var distance = evt.clientY - this.pullToRefresh.lastY;
 
-      MAX_DISTANCE = this.pullToRefresh.bannerHeight + PULL_PADDING;
+      var MAX_DISTANCE = this.pullToRefresh.bannerHeight + PULL_PADDING;
 
       // slow down the pull down speed a bit, the user has to drag a bit futher, but it feels a bit more smooth
       distance = distance / 2;
 
       if (distance >= 0) {
         evt.preventDefault();
-        top = this.pullToRefresh.dragTop;
+        var _top = this.pullToRefresh.dragTop;
 
-        top = top + distance;
+        _top = _top + distance;
         _domStyle['default'].set(scrollerNode, {
-          'top': top + 'px',
+          'top': _top + 'px',
           'overflow': 'hidden'
         });
 
@@ -203,9 +189,7 @@ define('argos/_PullToRefreshMixin', ['exports', 'module', 'dojo/_base/declare', 
       }
     },
     _onEndTouchDrag: function _onEndTouchDrag() {
-      var scrollerNode;
-
-      scrollerNode = this.scrollerNode;
+      var scrollerNode = this.scrollerNode;
 
       if (!this.pullRefreshBanner || !scrollerNode || !this.pullToRefresh.pulling) {
         return;

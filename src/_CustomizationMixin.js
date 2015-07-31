@@ -32,43 +32,41 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 
-var expand, __class;
-
-expand = function(expression) {
+const expand = function expand(expression) {
   if (typeof expression === 'function') {
     return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-  } else {
-    return expression;
   }
+
+  return expression;
 };
 
-__class = declare('argos._CustomizationMixin', null, {
+const __class = declare('argos._CustomizationMixin', null, {
   _layoutCompiled: null,
   _layoutCompiledFrom: null,
   id: null,
   customizationSet: null,
   enableCustomizations: true,
-  constructor: function() {
+  constructor: function constructor() {
     this._layoutCompiled = {};
     this._layoutCompiledFrom = {};
   },
-  _getCustomizationsFor: function(customizationSubSet) {
-    var customizationSet = customizationSubSet ? this.customizationSet + '/' + customizationSubSet : this.customizationSet;
+  _getCustomizationsFor: function _getCustomizationsFor(customizationSubSet) {
+    const customizationSet = customizationSubSet ? this.customizationSet + '/' + customizationSubSet : this.customizationSet;
     return App.getCustomizationsFor(customizationSet, this.id);
   },
-  _createCustomizedLayout: function(layout, customizationSubSet) {
-    var customizationSet = customizationSubSet ? this.customizationSet + '/' + customizationSubSet : this.customizationSet,
-      key = customizationSet + '#' + this.id,
-      customizations,
-      source = layout;
+  _createCustomizedLayout: function _createCustomizedLayout(layout, customizationSubSet) {
+    const customizationSet = customizationSubSet ? this.customizationSet + '/' + customizationSubSet : this.customizationSet;
+    const key = customizationSet + '#' + this.id;
+    const source = layout;
+
     if (source === this._layoutCompiledFrom[key] && this._layoutCompiled[key]) {
       return this._layoutCompiled[key]; // same source layout, no changes
     }
 
     if (this.enableCustomizations) {
-      customizations = this._getCustomizationsFor(customizationSubSet);
+      const customizations = this._getCustomizationsFor(customizationSubSet);
       if (customizations && customizations.length > 0) {
-        layout = this._compileCustomizedLayout(customizations, source, null);
+        layout = this._compileCustomizedLayout(customizations, source, null);//eslint-disable-line
       }
     }
 
@@ -77,48 +75,36 @@ __class = declare('argos._CustomizationMixin', null, {
 
     return layout;
   },
-  _compileCustomizedLayout: function(customizations, layout, parent) {
-    var customizationCount = customizations.length,
-      layoutCount = layout.length,
-      applied = {},
-      output,
-      insertRowsBefore,
-      insertRowsAfter,
-      customization,
-      stop,
-      row,
-      i,
-      j,
-      k,
-      insertRowsTarget,
-      expandedValue,
-      children,
-      name;
+  _compileCustomizedLayout: function _compileCustomizedLayout(customizations, layout, parent) {
+    const customizationCount = customizations.length;
+    const layoutCount = layout.length;
+    const applied = {};
+    let output;
 
     if (lang.isArray(layout)) {
       output = [];
-      for (i = 0; i < layoutCount; i++) {
-        row = layout[i];
+      for (let i = 0; i < layoutCount; i++) {
+        let row = layout[i];
 
         /* for compatibility */
         // will modify the underlying row
-        if (typeof row['name'] === 'undefined' && typeof row['property'] === 'string') {
-          row['name'] = row['property'];
+        if (typeof row.name === 'undefined' && typeof row.property === 'string') {
+          row.name = row.property;
         }
 
-        insertRowsBefore = [];
-        insertRowsAfter = [];
+        const insertRowsBefore = [];
+        const insertRowsAfter = [];
 
-        for (j = 0; j < customizationCount; j++) {
+        for (let j = 0; j < customizationCount; j++) {
           if (applied[j]) {
             continue; // todo: allow a customization to be applied to a layout more than once?
           }
 
-          customization = customizations[j];
-          stop = false;
+          const customization = customizations[j];
+          let stop = false;
 
           if (expand(customization.at, row, parent, i, layoutCount, customization)) {
-            switch (customization.type) {
+            switch (customization.type) {//eslint-disable-line
               case 'remove':
                 // full stop
                 stop = true;
@@ -138,8 +124,8 @@ __class = declare('argos._CustomizationMixin', null, {
                 row = lang.mixin(row, expand(customization.value, row));
                 break;
               case 'insert':
-                insertRowsTarget = (customization.where !== 'before') ? insertRowsAfter : insertRowsBefore;
-                expandedValue = expand(customization.value, row);
+                const insertRowsTarget = (customization.where !== 'before') ? insertRowsAfter : insertRowsBefore;
+                const expandedValue = expand(customization.value, row);
 
                 if (lang.isArray(expandedValue)) {
                   insertRowsTarget.push.apply(insertRowsTarget, expandedValue);
@@ -161,7 +147,7 @@ __class = declare('argos._CustomizationMixin', null, {
         output.push.apply(output, insertRowsBefore);
 
         if (row) {
-          children = (row['children'] && 'children') || (row['as'] && 'as');
+          const children = (row.children && 'children') || (row.as && 'as');
           if (children) {
             // make a shallow copy if we haven't already
             if (row === layout[i]) {
@@ -179,12 +165,12 @@ __class = declare('argos._CustomizationMixin', null, {
        for any non-applied, insert only, customizations, if they have an `or` property that expands into a true expression
        the value is applied at the end of the parent group that the `or` property (ideally) matches.
       */
-      for (k = 0; k < customizationCount; k++) {
+      for (let k = 0; k < customizationCount; k++) {
         if (applied[k]) {
           continue;
         }
 
-        customization = customizations[k];
+        const customization = customizations[k];
 
         if (customization.type === 'insert' && (expand(customization.or, parent, customization) || (customization.at === true))) {
           output.push(expand(customization.value, null));
@@ -195,7 +181,7 @@ __class = declare('argos._CustomizationMixin', null, {
     } else if (lang.isObject(layout)) {
       output = {};
 
-      for (name in layout) {
+      for (const name in layout) {
         if (lang.isArray(layout[name])) {
           output[name] = this._compileCustomizedLayout(customizations, layout[name], name);
         } else {
@@ -205,7 +191,7 @@ __class = declare('argos._CustomizationMixin', null, {
     }
 
     return output;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._CustomizationMixin', __class);

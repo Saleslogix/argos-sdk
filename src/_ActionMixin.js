@@ -26,7 +26,7 @@ import 'dojo/NodeList-traverse';
  *
  * @alternateClassName _ActionMixin
  */
-var __class = declare('argos._ActionMixin', null, {
+const __class = declare('argos._ActionMixin', null, {
   /**
    * @property {String}
    * Comma separated (no spaces) list of events to listen to
@@ -35,10 +35,10 @@ var __class = declare('argos._ActionMixin', null, {
   /**
    * Extends the dijit Widget `postCreate` to connect to all events defined in `actionsFrom`.
    */
-  postCreate: function() {
+  postCreate: function postCreate() {
     // todo: add delegation
-    array.forEach(this.actionsFrom.split(','), function(event) {
-      this.connect(this.domNode, event, this._initiateActionFromEvent);
+    array.forEach(this.actionsFrom.split(','), function forEach(evt) {
+      this.connect(this.domNode, evt, this._initiateActionFromEvent);
     }, this);
   },
   /**
@@ -46,8 +46,8 @@ var __class = declare('argos._ActionMixin', null, {
    * @param {HTMLElement} el
    * @return {Boolean}
    */
-  _isValidElementForAction: function(el) {
-    var contained = this.domNode.contains ? this.domNode !== el && this.domNode.contains(el) : !!(this.domNode.compareDocumentPosition(el) & 16);
+  _isValidElementForAction: function _isValidElementForAction(el) {
+    const contained = this.domNode.contains ? this.domNode !== el && this.domNode.contains(el) : !!(this.domNode.compareDocumentPosition(el) & 16);
 
     return (this.domNode === el) || contained;
   },
@@ -55,16 +55,13 @@ var __class = declare('argos._ActionMixin', null, {
    * Takes an event and fires the closest valid `data-action` with the attached `data-` attributes
    * @param {Event} evt
    */
-  _initiateActionFromEvent: function(evt) {
-    var el = query(evt.target).closest('[data-action]')[0],
-      parameters,
-      action = el && domAttr.get(el, 'data-action');
+  _initiateActionFromEvent: function _initiateActionFromEvent(evt) {
+    const el = query(evt.target).closest('[data-action]')[0];
+    const action = el && domAttr.get(el, 'data-action');
 
     if (action && this._isValidElementForAction(el) && this.hasAction(action, evt, el)) {
-      parameters = this._getParametersForAction(action, evt, el);
-
+      const parameters = this._getParametersForAction(action, evt, el);
       this.invokeAction(action, parameters, evt, el);
-
       event.stop(evt);
     }
   },
@@ -75,16 +72,18 @@ var __class = declare('argos._ActionMixin', null, {
    * @param {HTMLElement} el The node that has the `data-action` attribute
    * @return {Object} Object with the original event and source along with all the `data-` attributes in pascal case.
    */
-  _getParametersForAction: function(name, evt, el) {
-    var parameters, i, attrLen, attributeName, parameterName;
-
-    parameters = {
+  _getParametersForAction: function _getParametersForAction(name, evt, el) {
+    const parameters = {
       $event: evt,
-      $source: el
+      $source: el,
     };
 
-    for (i = 0, attrLen = el.attributes.length; i < attrLen; i++) {
-      attributeName = el.attributes[i].name;
+    function replace($0, $1, $2) {
+      return $1.toUpperCase() + $2;
+    }
+
+    for (let i = 0, attrLen = el.attributes.length; i < attrLen; i++) {
+      const attributeName = el.attributes[i].name;
       if (/^((?=data-action)|(?!data))/.test(attributeName)) {
         continue;
       }
@@ -92,10 +91,7 @@ var __class = declare('argos._ActionMixin', null, {
       /* transform hyphenated names to pascal case, minus the data segment, to be in line with HTML5 dataset naming conventions */
       /* see: http://dev.w3.org/html5/spec/elements.html#embedding-custom-non-visible-data */
       /* todo: remove transformation and use dataset when browser support is there */
-      parameterName = attributeName.substr('data-'.length).replace(/-(\w)(\w+)/g, function($0, $1, $2) {
-        return $1.toUpperCase() + $2;
-      });
-
+      const parameterName = attributeName.substr('data-'.length).replace(/-(\w)(\w+)/g, replace);
       parameters[parameterName] = domAttr.get(el, attributeName);
     }
 
@@ -108,7 +104,7 @@ var __class = declare('argos._ActionMixin', null, {
    * @param el
    * @return {Boolean}
    */
-  hasAction: function(name, evt, el) {
+  hasAction: function hasAction(name/*, evt, el*/) {
     return (typeof this[name] === 'function');
   },
   /**
@@ -119,9 +115,9 @@ var __class = declare('argos._ActionMixin', null, {
    * @param {Event} evt The event that fired
    * @param {HTMLElement} el The HTML element that has the `data-action`
    */
-  invokeAction: function(name, parameters, evt, el) {
+  invokeAction: function invokeAction(name, parameters, evt, el) {
     return this[name].apply(this, [parameters, evt, el]);
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._ActionMixin', __class);

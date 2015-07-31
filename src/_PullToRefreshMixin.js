@@ -1,12 +1,10 @@
 import declare from 'dojo/_base/declare';
-import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';
-import dom from 'dojo/dom';
 
-var __class;
+let __class;
 
 /**
  * @class argos._PullToRefreshMixin
@@ -18,21 +16,21 @@ __class = declare('argos._PullToRefreshMixin', null, {
    * @property {Simplate}
    */
   pullRefreshBannerTemplate: new Simplate([
-    '<div class="pull-to-refresh">{%! $.pullRefreshTemplate %}</div>'
+    '<div class="pull-to-refresh">{%! $.pullRefreshTemplate %}</div>',
   ]),
 
   /**
    * @property {Simplate}
    */
   pullRefreshTemplate: new Simplate([
-    '<span class="fa fa-long-arrow-down"></span>{%= $$._getText("pullRefreshText") %}'
+    '<span class="fa fa-long-arrow-down"></span>{%= $$._getText("pullRefreshText") %}',
   ]),
 
   /**
    * @property {Simplate}
    */
   pullReleaseTemplate: new Simplate([
-    '<span class="fa fa-long-arrow-up"></span>{%= $$._getText("pullReleaseText") %}'
+    '<span class="fa fa-long-arrow-up"></span>{%= $$._getText("pullReleaseText") %}',
   ]),
 
   /**
@@ -66,7 +64,7 @@ __class = declare('argos._PullToRefreshMixin', null, {
   _onTouchMoveHandle: null,
   _onTouchCancelHandle: null,
 
-  _getText: function(prop) {
+  _getText: function _getText(prop) {
     return __class.prototype[prop];
   },
 
@@ -88,13 +86,13 @@ __class = declare('argos._PullToRefreshMixin', null, {
     lastX: 0,
     lastY: 0,
     results: false,
-    animateCls: 'animate'
+    animateCls: 'animate',
   },
 
   /**
    * @param {DOMNode} scrollerNode The node that scrollers and should be pulled on to refresh.
    */
-  initPullToRefresh: function(scrollerNode) {
+  initPullToRefresh: function initPullToRefresh(scrollerNode) {
     if (!this.enablePullToRefresh || !window.App.supportsTouch() || !scrollerNode) {
       return;
     }
@@ -116,30 +114,25 @@ __class = declare('argos._PullToRefreshMixin', null, {
    * Reference to the scoller node
    * @returns {Boolean}
    */
-  shouldStartPullToRefresh: function(scrollerNode) {
-    var scrollTop;
-    scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
+  shouldStartPullToRefresh: function shouldStartPullToRefresh(scrollerNode) {
+    const scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
     return scrollTop === 0;
   },
 
-  _onTouchStart: function(evt) {
-    var scrollTop, position, style, bannerPos, scrollerNode;
-
+  _onTouchStart: function _onTouchStart(evt) {
     this.pullToRefresh.pulling = false;
     this.pullToRefresh.results = false;
 
-    scrollerNode = this.scrollerNode;
+    const scrollerNode = this.scrollerNode;
 
     if (!scrollerNode) {
       return;
     }
 
-    scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
-
-    if (this.shouldStartPullToRefresh(scrollerNode)) { //) {
-      position = domGeom.position(scrollerNode);
-      bannerPos = domGeom.position(this.pullRefreshBanner);
-      style = domStyle.getComputedStyle(scrollerNode); // expensive
+    if (this.shouldStartPullToRefresh(scrollerNode)) {
+      const position = domGeom.position(scrollerNode);
+      const bannerPos = domGeom.position(this.pullRefreshBanner);
+      const style = domStyle.getComputedStyle(scrollerNode); // expensive
       this.pullToRefresh.bannerHeight = bannerPos.h;
       this.pullToRefresh.scrollerHeight = position.h;
       this.pullToRefresh.scrollerWidth = position.w;
@@ -154,11 +147,10 @@ __class = declare('argos._PullToRefreshMixin', null, {
       domStyle.set(this.pullRefreshBanner, 'visibility', 'visible');
     }
   },
-  _onTouchMove: function(evt) {
-    var top, distance, PULL_PADDING = 20,
-      MAX_DISTANCE, scrollerNode;
+  _onTouchMove: function _onTouchMove(evt) {
+    const PULL_PADDING = 20;
 
-    scrollerNode = this.scrollerNode;
+    const scrollerNode = this.scrollerNode;
 
     if (!this.pullToRefresh.pulling || !scrollerNode) {
       return;
@@ -167,21 +159,21 @@ __class = declare('argos._PullToRefreshMixin', null, {
     domClass.remove(scrollerNode, this.pullToRefresh.animateCls);
 
     // distance from last drag
-    distance = evt.clientY - this.pullToRefresh.lastY;
+    let distance = evt.clientY - this.pullToRefresh.lastY;
 
-    MAX_DISTANCE = this.pullToRefresh.bannerHeight + PULL_PADDING;
+    const MAX_DISTANCE = this.pullToRefresh.bannerHeight + PULL_PADDING;
 
     // slow down the pull down speed a bit, the user has to drag a bit futher, but it feels a bit more smooth
     distance = distance / 2;
 
     if (distance >= 0) {
       evt.preventDefault();
-      top = this.pullToRefresh.dragTop;
+      let top = this.pullToRefresh.dragTop;
 
       top = top + distance;
       domStyle.set(scrollerNode, {
         'top': top + 'px',
-        'overflow': 'hidden'
+        'overflow': 'hidden',
       });
 
       if (distance > MAX_DISTANCE) {
@@ -195,10 +187,8 @@ __class = declare('argos._PullToRefreshMixin', null, {
       }
     }
   },
-  _onEndTouchDrag: function() {
-    var scrollerNode;
-
-    scrollerNode = this.scrollerNode;
+  _onEndTouchDrag: function _onEndTouchDrag() {
+    const scrollerNode = this.scrollerNode;
 
     if (!this.pullRefreshBanner || !scrollerNode || !this.pullToRefresh.pulling) {
       return;
@@ -207,7 +197,7 @@ __class = declare('argos._PullToRefreshMixin', null, {
     // Restore our original scroller styles
     domStyle.set(scrollerNode, {
       'top': this.pullToRefresh.originalTop,
-      'overflow': this.pullToRefresh.originalOverflow
+      'overflow': this.pullToRefresh.originalOverflow,
     });
 
     domStyle.set(this.pullRefreshBanner, 'visibility', 'hidden');
@@ -228,12 +218,12 @@ __class = declare('argos._PullToRefreshMixin', null, {
   /**
    * Fires when the pull to refresh is successful.
    */
-  onPullToRefreshComplete: function() {},
+  onPullToRefreshComplete: function onPullToRefreshComplete() {},
 
   /**
    * Fires when the pull to refresh is canceled.
    */
-  onPullToRefreshCancel: function() {}
+  onPullToRefreshCancel: function onPullToRefreshCancel() {},
 });
 
 export default __class;

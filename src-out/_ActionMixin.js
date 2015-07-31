@@ -45,8 +45,8 @@ define('argos/_ActionMixin', ['exports', 'module', 'dojo/_base/array', 'dojo/_ba
      */
     postCreate: function postCreate() {
       // todo: add delegation
-      _array['default'].forEach(this.actionsFrom.split(','), function (event) {
-        this.connect(this.domNode, event, this._initiateActionFromEvent);
+      _array['default'].forEach(this.actionsFrom.split(','), function forEach(evt) {
+        this.connect(this.domNode, evt, this._initiateActionFromEvent);
       }, this);
     },
     /**
@@ -64,15 +64,12 @@ define('argos/_ActionMixin', ['exports', 'module', 'dojo/_base/array', 'dojo/_ba
      * @param {Event} evt
      */
     _initiateActionFromEvent: function _initiateActionFromEvent(evt) {
-      var el = (0, _query['default'])(evt.target).closest('[data-action]')[0],
-          parameters,
-          action = el && _domAttr['default'].get(el, 'data-action');
+      var el = (0, _query['default'])(evt.target).closest('[data-action]')[0];
+      var action = el && _domAttr['default'].get(el, 'data-action');
 
       if (action && this._isValidElementForAction(el) && this.hasAction(action, evt, el)) {
-        parameters = this._getParametersForAction(action, evt, el);
-
+        var parameters = this._getParametersForAction(action, evt, el);
         this.invokeAction(action, parameters, evt, el);
-
         _event['default'].stop(evt);
       }
     },
@@ -84,15 +81,17 @@ define('argos/_ActionMixin', ['exports', 'module', 'dojo/_base/array', 'dojo/_ba
      * @return {Object} Object with the original event and source along with all the `data-` attributes in pascal case.
      */
     _getParametersForAction: function _getParametersForAction(name, evt, el) {
-      var parameters, i, attrLen, attributeName, parameterName;
-
-      parameters = {
+      var parameters = {
         $event: evt,
         $source: el
       };
 
-      for (i = 0, attrLen = el.attributes.length; i < attrLen; i++) {
-        attributeName = el.attributes[i].name;
+      function replace($0, $1, $2) {
+        return $1.toUpperCase() + $2;
+      }
+
+      for (var i = 0, attrLen = el.attributes.length; i < attrLen; i++) {
+        var attributeName = el.attributes[i].name;
         if (/^((?=data-action)|(?!data))/.test(attributeName)) {
           continue;
         }
@@ -100,10 +99,7 @@ define('argos/_ActionMixin', ['exports', 'module', 'dojo/_base/array', 'dojo/_ba
         /* transform hyphenated names to pascal case, minus the data segment, to be in line with HTML5 dataset naming conventions */
         /* see: http://dev.w3.org/html5/spec/elements.html#embedding-custom-non-visible-data */
         /* todo: remove transformation and use dataset when browser support is there */
-        parameterName = attributeName.substr('data-'.length).replace(/-(\w)(\w+)/g, function ($0, $1, $2) {
-          return $1.toUpperCase() + $2;
-        });
-
+        var parameterName = attributeName.substr('data-'.length).replace(/-(\w)(\w+)/g, replace);
         parameters[parameterName] = _domAttr['default'].get(el, attributeName);
       }
 
@@ -116,7 +112,7 @@ define('argos/_ActionMixin', ['exports', 'module', 'dojo/_base/array', 'dojo/_ba
      * @param el
      * @return {Boolean}
      */
-    hasAction: function hasAction(name, evt, el) {
+    hasAction: function hasAction(name /*, evt, el*/) {
       return typeof this[name] === 'function';
     },
     /**

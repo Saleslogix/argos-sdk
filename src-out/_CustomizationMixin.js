@@ -37,17 +37,15 @@ define('argos/_CustomizationMixin', ['exports', 'module', 'dojo/_base/declare', 
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
 
-  var expand, __class;
-
-  expand = function (expression) {
+  var expand = function expand(expression) {
     if (typeof expression === 'function') {
       return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-    } else {
-      return expression;
     }
+
+    return expression;
   };
 
-  __class = (0, _declare['default'])('argos._CustomizationMixin', null, {
+  var __class = (0, _declare['default'])('argos._CustomizationMixin', null, {
     _layoutCompiled: null,
     _layoutCompiledFrom: null,
     id: null,
@@ -62,18 +60,18 @@ define('argos/_CustomizationMixin', ['exports', 'module', 'dojo/_base/declare', 
       return App.getCustomizationsFor(customizationSet, this.id);
     },
     _createCustomizedLayout: function _createCustomizedLayout(layout, customizationSubSet) {
-      var customizationSet = customizationSubSet ? this.customizationSet + '/' + customizationSubSet : this.customizationSet,
-          key = customizationSet + '#' + this.id,
-          customizations,
-          source = layout;
+      var customizationSet = customizationSubSet ? this.customizationSet + '/' + customizationSubSet : this.customizationSet;
+      var key = customizationSet + '#' + this.id;
+      var source = layout;
+
       if (source === this._layoutCompiledFrom[key] && this._layoutCompiled[key]) {
         return this._layoutCompiled[key]; // same source layout, no changes
       }
 
       if (this.enableCustomizations) {
-        customizations = this._getCustomizationsFor(customizationSubSet);
+        var customizations = this._getCustomizationsFor(customizationSubSet);
         if (customizations && customizations.length > 0) {
-          layout = this._compileCustomizedLayout(customizations, source, null);
+          layout = this._compileCustomizedLayout(customizations, source, null); //eslint-disable-line
         }
       }
 
@@ -83,55 +81,43 @@ define('argos/_CustomizationMixin', ['exports', 'module', 'dojo/_base/declare', 
       return layout;
     },
     _compileCustomizedLayout: function _compileCustomizedLayout(customizations, layout, parent) {
-      var customizationCount = customizations.length,
-          layoutCount = layout.length,
-          applied = {},
-          output,
-          insertRowsBefore,
-          insertRowsAfter,
-          customization,
-          stop,
-          row,
-          i,
-          j,
-          k,
-          insertRowsTarget,
-          expandedValue,
-          children,
-          name;
+      var customizationCount = customizations.length;
+      var layoutCount = layout.length;
+      var applied = {};
+      var output = undefined;
 
       if (_lang['default'].isArray(layout)) {
         output = [];
-        for (i = 0; i < layoutCount; i++) {
-          row = layout[i];
+        for (var i = 0; i < layoutCount; i++) {
+          var row = layout[i];
 
           /* for compatibility */
           // will modify the underlying row
-          if (typeof row['name'] === 'undefined' && typeof row['property'] === 'string') {
-            row['name'] = row['property'];
+          if (typeof row.name === 'undefined' && typeof row.property === 'string') {
+            row.name = row.property;
           }
 
-          insertRowsBefore = [];
-          insertRowsAfter = [];
+          var insertRowsBefore = [];
+          var insertRowsAfter = [];
 
-          for (j = 0; j < customizationCount; j++) {
+          for (var j = 0; j < customizationCount; j++) {
             if (applied[j]) {
               continue; // todo: allow a customization to be applied to a layout more than once?
             }
 
-            customization = customizations[j];
-            stop = false;
+            var customization = customizations[j];
+            var _stop = false;
 
             if (expand(customization.at, row, parent, i, layoutCount, customization)) {
-              switch (customization.type) {
+              switch (customization.type) {//eslint-disable-line
                 case 'remove':
                   // full stop
-                  stop = true;
+                  _stop = true;
                   row = null;
                   break;
                 case 'replace':
                   // full stop
-                  stop = true;
+                  _stop = true;
                   row = expand(customization.value, row);
                   break;
                 case 'modify':
@@ -143,8 +129,8 @@ define('argos/_CustomizationMixin', ['exports', 'module', 'dojo/_base/declare', 
                   row = _lang['default'].mixin(row, expand(customization.value, row));
                   break;
                 case 'insert':
-                  insertRowsTarget = customization.where !== 'before' ? insertRowsAfter : insertRowsBefore;
-                  expandedValue = expand(customization.value, row);
+                  var insertRowsTarget = customization.where !== 'before' ? insertRowsAfter : insertRowsBefore;
+                  var expandedValue = expand(customization.value, row);
 
                   if (_lang['default'].isArray(expandedValue)) {
                     insertRowsTarget.push.apply(insertRowsTarget, expandedValue);
@@ -158,7 +144,7 @@ define('argos/_CustomizationMixin', ['exports', 'module', 'dojo/_base/declare', 
               applied[j] = true;
             }
 
-            if (stop) {
+            if (_stop) {
               break;
             }
           }
@@ -166,7 +152,7 @@ define('argos/_CustomizationMixin', ['exports', 'module', 'dojo/_base/declare', 
           output.push.apply(output, insertRowsBefore);
 
           if (row) {
-            children = row['children'] && 'children' || row['as'] && 'as';
+            var children = row.children && 'children' || row.as && 'as';
             if (children) {
               // make a shallow copy if we haven't already
               if (row === layout[i]) {
@@ -184,12 +170,12 @@ define('argos/_CustomizationMixin', ['exports', 'module', 'dojo/_base/declare', 
          for any non-applied, insert only, customizations, if they have an `or` property that expands into a true expression
          the value is applied at the end of the parent group that the `or` property (ideally) matches.
         */
-        for (k = 0; k < customizationCount; k++) {
+        for (var k = 0; k < customizationCount; k++) {
           if (applied[k]) {
             continue;
           }
 
-          customization = customizations[k];
+          var customization = customizations[k];
 
           if (customization.type === 'insert' && (expand(customization.or, parent, customization) || customization.at === true)) {
             output.push(expand(customization.value, null));
@@ -200,11 +186,11 @@ define('argos/_CustomizationMixin', ['exports', 'module', 'dojo/_base/declare', 
       } else if (_lang['default'].isObject(layout)) {
         output = {};
 
-        for (name in layout) {
-          if (_lang['default'].isArray(layout[name])) {
-            output[name] = this._compileCustomizedLayout(customizations, layout[name], name);
+        for (var _name in layout) {
+          if (_lang['default'].isArray(layout[_name])) {
+            output[_name] = this._compileCustomizedLayout(customizations, layout[_name], _name);
           } else {
-            output[name] = layout[name];
+            output[_name] = layout[_name];
           }
         }
       }
