@@ -14,7 +14,6 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import array from 'dojo/_base/array';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
@@ -33,7 +32,7 @@ import _ErrorHandleMixin from './_ErrorHandleMixin';
  * @mixins argos._Templated
  * @mixins argos._ErrorHandleMixin
  */
-var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated, _ErrorHandleMixin], {
+const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated, _ErrorHandleMixin], {
   /**
    * This map provides quick access to HTML properties, most notably the selected property of the container
    */
@@ -41,13 +40,13 @@ var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMi
     'title': {
       node: 'domNode',
       type: 'attribute',
-      attribute: 'title'
+      attribute: 'title',
     },
     'selected': {
       node: 'domNode',
       type: 'attribute',
-      attribute: 'selected'
-    }
+      attribute: 'selected',
+    },
   },
   /**
    * The widgetTemplate is a Simplate that will be used as the main HTML markup of the View.
@@ -55,7 +54,7 @@ var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMi
    */
   widgetTemplate: new Simplate([
     '<ul id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow {%= $.cls %}">',
-    '</ul>'
+    '</ul>',
   ]),
   _loadConnect: null,
   /**
@@ -86,10 +85,10 @@ var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMi
    */
   serviceName: false,
   connectionName: false,
-  constructor: function(options) {
+  constructor: function constructor(options) {
     this.app = (options && options.app) || window.App;
   },
-  startup: function() {
+  startup: function startup() {
     this.inherited(arguments);
   },
   /**
@@ -97,8 +96,8 @@ var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMi
    * the fully customized toolbar layout.
    * @return {Object} The toolbar layout
    */
-  getTools: function() {
-    var tools = this._createCustomizedLayout(this.createToolLayout(), 'tools');
+  getTools: function getTools() {
+    const tools = this._createCustomizedLayout(this.createToolLayout(), 'tools');
     this.onToolLayoutCreated(tools);
     return tools;
   },
@@ -106,38 +105,36 @@ var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMi
    * Called after toolBar layout is created;
    *
    */
-  onToolLayoutCreated: function(tools) {},
+  onToolLayoutCreated: function onToolLayoutCreated(/*tools*/) {},
   /**
    * Returns the tool layout that defines all toolbar items for the view
    * @return {Object} The toolbar layout
    */
-  createToolLayout: function() {
+  createToolLayout: function createToolLayout() {
     return this.tools || {};
   },
   /**
    * Called on loading of the application.
    */
-  init: function() {
+  init: function init() {
     this.startup();
     this.initConnects();
   },
   /**
    * Establishes this views connections to various events
    */
-  initConnects: function() {
-    var h;
+  initConnects: function initConnects() {
     this._loadConnect = this.connect(this.domNode, 'onload', this._onLoad);
   },
-  _onLoad: function(evt, el, o) {
+  _onLoad: function _onLoad(evt, el, o) {
     this.disconnect(this._loadConnect);
-
     this.load(evt, el, o);
   },
   /**
    * Called once the first time the view is about to be transitioned to.
    * @deprecated
    */
-  load: function() {
+  load: function load() {
     // todo: remove load entirely?
   },
   /**
@@ -145,49 +142,49 @@ var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMi
    * @param {Object} options Navigation options passed from the previous view.
    * @return {Boolean} True indicates view needs to be refreshed.
    */
-  refreshRequiredFor: function(options) {
+  refreshRequiredFor: function refreshRequiredFor(options) {
     if (this.options) {
       return !!options; // if options provided, then refresh
-    } else {
-      return true;
     }
+
+    return true;
   },
   /**
    * Should refresh the view, such as but not limited to:
    * Emptying nodes, requesting data, rendering new content
    */
-  refresh: function() {},
+  refresh: function refresh() {},
   /**
    * The onBeforeTransitionAway event.
    * @param self
    */
-  onBeforeTransitionAway: function(self) {},
+  onBeforeTransitionAway: function onBeforeTransitionAway(/*self*/) {},
   /**
    * The onBeforeTransitionTo event.
    * @param self
    */
-  onBeforeTransitionTo: function(self) {},
+  onBeforeTransitionTo: function onBeforeTransitionTo(/*self*/) {},
   /**
    * The onTransitionAway event.
    * @param self
    */
-  onTransitionAway: function(self) {},
+  onTransitionAway: function onTransitionAway(/*self*/) {},
   /**
    * The onTransitionTo event.
    * @param self
    */
-  onTransitionTo: function(self) {},
+  onTransitionTo: function onTransitionTo(/*self*/) {},
   /**
    * The onActivate event.
    * @param self
    */
-  onActivate: function(self) {},
+  onActivate: function onActivate(/*self*/) {},
   /**
    * The onShow event.
    * @param self
    */
-  onShow: function(self) {},
-  activate: function(tag, data) {
+  onShow: function onShow(/*self*/) {},
+  activate: function activate(tag, data) {
     // todo: use tag only?
     if (data && this.refreshRequiredFor(data.options)) {
       this.refreshRequired = true;
@@ -203,7 +200,7 @@ var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMi
 
     this.onActivate(this);
   },
-  _getScrollerAttr: function() {
+  _getScrollerAttr: function _getScrollerAttr() {
     return this.scrollerNode || this.domNode;
   },
   /**
@@ -211,10 +208,8 @@ var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMi
    * @param {Object} options The navigation options passed from the previous view.
    * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
    */
-  show: function(options, transitionOptions) {
+  show: function show(options, transitionOptions) {
     this.errorHandlers = this._createCustomizedLayout(this.createErrorHandlers(), 'errorHandlers');
-
-    var tag, data;
 
     if (this.onShow(this) === false) {
       return;
@@ -232,43 +227,43 @@ var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMi
       this.set('title', (this.get('title') || this.titleText));
     }
 
-    tag = this.getTag();
-    data = this.getContext();
+    const tag = this.getTag();
+    const data = this.getContext();
 
-    transitionOptions = lang.mixin(transitionOptions || {}, {
+    const newOptions = lang.mixin(transitionOptions || {}, {
       tag: tag,
-      data: data
+      data: data,
     });
-    ReUI.show(this.domNode, transitionOptions);
+    ReUI.show(this.domNode, newOptions);
   },
   /**
    * Expands the passed expression if it is a function.
    * @param {String/Function} expression Returns string directly, if function it is called and the result returned.
    * @return {String} String expression.
    */
-  expandExpression: function(expression) {
+  expandExpression: function expandExpression(expression) {
     if (typeof expression === 'function') {
       return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-    } else {
-      return expression;
     }
+
+    return expression;
   },
   /**
    * Called before the view is transitioned (slide animation complete) to.
    */
-  beforeTransitionTo: function() {
+  beforeTransitionTo: function beforeTransitionTo() {
     this.onBeforeTransitionTo(this);
   },
   /**
    * Called before the view is transitioned (slide animation complete) away from.
    */
-  beforeTransitionAway: function() {
+  beforeTransitionAway: function beforeTransitionAway() {
     this.onBeforeTransitionAway(this);
   },
   /**
    * Called after the view has been transitioned (slide animation complete) to.
    */
-  transitionTo: function() {
+  transitionTo: function transitionTo() {
     if (this.refreshRequired) {
       this.refreshRequired = false;
       this.refresh();
@@ -279,51 +274,50 @@ var __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMi
   /**
    * Called after the view has been transitioned (slide animation complete) away from.
    */
-  transitionAway: function() {
+  transitionAway: function transitionAway() {
     this.onTransitionAway(this);
   },
   /**
    * Returns the primary SDataService instance for the view.
    * @return {Object} The Sage.SData.Client.SDataService instance.
    */
-  getService: function() {
+  getService: function getService() {
     return this.app.getService(this.serviceName); /* if false is passed, the default service will be returned */
   },
-  getConnection: function() {
+  getConnection: function getConnection() {
     return this.getService();
   },
-  getTag: function() {},
+  getTag: function getTag() {},
   /**
    * Returns the options used for the View {@link #getContext getContext()}.
    * @return {Object} Options to be used for context.
    */
-  getOptionsContext: function() {
+  getOptionsContext: function getOptionsContext() {
     if (this.options && this.options.negateHistory) {
       return {
-        negateHistory: true
+        negateHistory: true,
       };
-    } else {
-      return this.options;
     }
+    return this.options;
   },
   /**
    * Returns the context of the view which is a small summary of key properties.
    * @return {Object} Vital View properties.
    */
-  getContext: function() {
+  getContext: function getContext() {
     // todo: should we track options?
     return {
       id: this.id,
-      options: this.getOptionsContext()
+      options: this.getOptionsContext(),
     };
   },
   /**
    * Returns the defined security.
    * @param access
    */
-  getSecurity: function(access) {
+  getSecurity: function getSecurity(/*access*/) {
     return this.security;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.View', __class);

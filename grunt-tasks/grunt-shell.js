@@ -1,6 +1,5 @@
-﻿module.exports = function (grunt) {
-    grunt.config('shell', {
-    });
+module.exports = function gruntShell(grunt) {
+  grunt.config('shell', {});
 
-    grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-shell');
 };

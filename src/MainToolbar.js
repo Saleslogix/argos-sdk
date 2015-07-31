@@ -27,7 +27,7 @@ import 'dojo/NodeList-manipulate';
  * @alternateClassName MainToolbar
  * @extends argos.Toolbar
  */
-var __class = declare('argos.MainToolbar', [Toolbar], {
+const __class = declare('argos.MainToolbar', [Toolbar], {
   /**
    * @property {Object}
    * Used to set the title node's innerHTML
@@ -35,8 +35,8 @@ var __class = declare('argos.MainToolbar', [Toolbar], {
   attributeMap: {
     'title': {
       node: 'titleNode',
-      type: 'innerHTML'
-    }
+      type: 'innerHTML',
+    },
   },
   /**
    * @property {Simplate}
@@ -47,7 +47,7 @@ var __class = declare('argos.MainToolbar', [Toolbar], {
   widgetTemplate: new Simplate([
     '<div class="toolbar {%= $.cls %}">',
     '<div id="pageTitle" class="toolbar-title" data-dojo-attach-event="onclick: onTitleClick" data-dojo-attach-point="titleNode">{%= $.titleText %}</div>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -66,7 +66,7 @@ var __class = declare('argos.MainToolbar', [Toolbar], {
     '{% if (!$.cls) { %}',
     '<span></span>',
     '{% } %}',
-    '</button>'
+    '</button>',
   ]),
   /**
    * @property {Number}
@@ -82,7 +82,7 @@ var __class = declare('argos.MainToolbar', [Toolbar], {
   /**
    * Calls parent {@link Toolbar#clear clear} and removes all toolbar items from DOM.
    */
-  clear: function() {
+  clear: function clear() {
     this.inherited(arguments);
 
     query('> [data-action], .toolButton-right', this.domNode).remove();
@@ -92,23 +92,21 @@ var __class = declare('argos.MainToolbar', [Toolbar], {
    * The collection is then looped over and added to DOM, adding the left or right styling
    * @param {Object[]} tools Array of toolbar item definitions
    */
-  showTools: function(tools) {
-    var count, i, toolTemplate, side, tool;
+  showTools: function showTools(tools) {
     this.inherited(arguments);
 
     domClass.remove(this.domNode, 'toolbar-size-' + this.size);
     if (tools) {
-      count = {
+      const count = {
         left: 0,
-        right: 0
+        right: 0,
       };
 
-      for (i = 0; i < tools.length; i++) {
-        tool = tools[i];
-        side = tool.side || 'right';
-
+      for (let i = 0; i < tools.length; i++) {
+        const tool = tools[i];
+        const side = tool.side || 'right';
+        const toolTemplate = tool.template || this.toolTemplate;
         count[side] += 1;
-        toolTemplate = tool.template || this.toolTemplate;
 
         domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.domNode, 'last');
       }
@@ -120,7 +118,7 @@ var __class = declare('argos.MainToolbar', [Toolbar], {
   /**
    * Event handler that fires when the toolbar title is clicked.
    */
-  onTitleClick: function(evt) {}
+  onTitleClick: function onTitleClick(/*evt*/) {},
 });
 
 lang.setObject('Sage.Platform.Mobile.MainToolbar', __class);

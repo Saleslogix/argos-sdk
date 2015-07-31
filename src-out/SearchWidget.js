@@ -128,8 +128,7 @@ define('argos/SearchWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_
      * * Fires the {@link #onSearchExpression onSearchExpression} event which {@link List#_onSearchExpression listens to}.
      */
     search: function search() {
-      var formattedQuery;
-      formattedQuery = this.getFormattedSearchQuery();
+      var formattedQuery = this.getFormattedSearchQuery();
       this.onSearchExpression(formattedQuery, this);
     },
     /**
@@ -138,9 +137,9 @@ define('argos/SearchWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_
      * @param {String} query Value of search box
      * @returns {String} query Unformatted query
      */
-    customSearch: function customSearch(query) {
+    customSearch: function customSearch(queryValue) {
       this.customSearchRE.lastIndex = 0;
-      query = query.replace(this.customSearchRE, '');
+      var query = queryValue.replace(this.customSearchRE, '');
       return query;
     },
     /**
@@ -152,22 +151,20 @@ define('argos/SearchWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_
      * @returns {String} query Hash resolved query
      */
     hashTagSearch: function hashTagSearch(query) {
-      var hashLayout = this.hashTagQueries || [],
-          hashQueries = [],
-          match,
-          hashTag,
-          i,
-          hashQueryExpression,
-          additionalSearch = query;
+      var hashLayout = this.hashTagQueries || [];
+      var hashQueries = [];
+      var additionalSearch = query;
 
       this.hashTagSearchRE.lastIndex = 0;
+      var newQuery = query;
+      var match = undefined;
 
-      while (match = this.hashTagSearchRE.exec(query)) {
-        hashTag = match[1];
-        hashQueryExpression = null;
+      while (match = this.hashTagSearchRE.exec(newQuery)) {
+        var hashQueryExpression = null;
+        var hashTag = match[1];
 
         // todo: can optimize later if necessary
-        for (i = 0; i < hashLayout.length && !hashQueryExpression; i++) {
+        for (var i = 0; i < hashLayout.length && !hashQueryExpression; i++) {
           if (hashLayout[i].tag === hashTag) {
             hashQueryExpression = hashLayout[i].query;
           }
@@ -185,15 +182,15 @@ define('argos/SearchWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_
         return this.formatSearchQuery(query);
       }
 
-      query = _string['default'].substitute('(${0})', [hashQueries.join(') and (')]);
+      newQuery = _string['default'].substitute('(${0})', [hashQueries.join(') and (')]);
 
       additionalSearch = additionalSearch.replace(/^\s+|\s+$/g, '');
 
       if (additionalSearch) {
-        query += _string['default'].substitute(' and (${0})', [this.formatSearchQuery(additionalSearch)]);
+        newQuery += _string['default'].substitute(' and (${0})', [this.formatSearchQuery(additionalSearch)]);
       }
 
-      return query;
+      return newQuery;
     },
     /**
      * Configure allows the controller List view to overwrite properties as the passed object will be mixed in.
@@ -211,9 +208,9 @@ define('argos/SearchWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_
     expandExpression: function expandExpression(expression) {
       if (typeof expression === 'function') {
         return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-      } else {
-        return expression;
       }
+
+      return expression;
     },
     /**
      * Clears the search input text and attempts to re-open the keyboard
@@ -239,7 +236,7 @@ define('argos/SearchWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_
     },
     _onMouseUp: function _onMouseUp() {
       // Work around a chrome issue where mouseup after a focus will de-select the text
-      setTimeout((function () {
+      setTimeout((function timeOut() {
         this.queryNode.setSelectionRange(0, 9999);
       }).bind(this), 50);
     },
@@ -260,17 +257,18 @@ define('argos/SearchWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_
      * @param expression
      * @param widget
      */
-    onSearchExpression: function onSearchExpression(expression, widget) {},
+    onSearchExpression: function onSearchExpression() {},
     /**
      * Gets the current search expression as a formatted query.
      * * Gathers the inputted search text
      * * Determines if its a custom expression, hash tag, or normal search
      */
     getFormattedSearchQuery: function getFormattedSearchQuery() {
-      var searchQuery = this.getSearchExpression(),
-          formattedQuery,
-          isCustomMatch = searchQuery && this.customSearchRE.test(searchQuery),
-          isHashTagMatch = searchQuery && this.hashTagSearchRE.test(searchQuery);
+      var searchQuery = this.getSearchExpression();
+      var isCustomMatch = searchQuery && this.customSearchRE.test(searchQuery);
+      var isHashTagMatch = searchQuery && this.hashTagSearchRE.test(searchQuery);
+
+      var formattedQuery = undefined;
 
       switch (true) {
         case isCustomMatch:
@@ -300,3 +298,4 @@ define('argos/SearchWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_
   _lang['default'].setObject('Sage.Platform.Mobile.SearchWidget', __class);
   module.exports = __class;
 });
+/*expression, widget*/

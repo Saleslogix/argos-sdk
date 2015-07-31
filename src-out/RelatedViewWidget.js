@@ -1,4 +1,4 @@
-define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/on', 'dojo/string', 'dojo/dom-class', 'dojo/when', 'dojo/dom-construct', 'dojo/query', 'dojo/dom-attr', 'dojo/_base/connect', 'dojo/_base/array', './Store/SData', './_CustomizationMixin', './_ActionMixin', 'argos/_RelatedViewWidgetBase'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojoOn, _dojoString, _dojoDomClass, _dojoWhen, _dojoDomConstruct, _dojoQuery, _dojoDomAttr, _dojo_baseConnect, _dojo_baseArray, _StoreSData, _CustomizationMixin2, _ActionMixin2, _argos_RelatedViewWidgetBase) {
+define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/on', 'dojo/string', 'dojo/dom-class', 'dojo/when', 'dojo/dom-construct', 'dojo/dom-attr', 'dojo/_base/connect', 'dojo/_base/array', './Store/SData', './_CustomizationMixin', './_ActionMixin', 'argos/_RelatedViewWidgetBase'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojoOn, _dojoString, _dojoDomClass, _dojoWhen, _dojoDomConstruct, _dojoDomAttr, _dojo_baseConnect, _dojo_baseArray, _StoreSData, _CustomizationMixin2, _ActionMixin2, _argos_RelatedViewWidgetBase) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* see copyright file
@@ -19,8 +19,6 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
   var _when = _interopRequireDefault(_dojoWhen);
 
   var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
-
-  var _query = _interopRequireDefault(_dojoQuery);
 
   var _domAttr = _interopRequireDefault(_dojoDomAttr);
 
@@ -134,16 +132,14 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
       }]);
     },
     createActions: function createActions(actions) {
-      var i, action, actionNode, actionTemplate, options;
-      for (i = 0; i < actions.length; i++) {
-        action = actions[i];
-        options = {
+      for (var i = 0; i < actions.length; i++) {
+        var action = actions[i];
+        var options = {
           actionIndex: i
         };
-        actionTemplate = action.template || this.relatedActionTemplate;
-
         _lang['default'].mixin(action, options);
-        actionNode = _domConstruct['default'].toDom(actionTemplate.apply(action, action.id));
+        var actionTemplate = action.template || this.relatedActionTemplate;
+        var actionNode = _domConstruct['default'].toDom(actionTemplate.apply(action, action.id));
         (0, _on['default'])(actionNode, 'click', this.onInvokeActionItem.bind(this));
         _domConstruct['default'].place(actionNode, this.actionsNode, 'last');
       }
@@ -151,17 +147,15 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
       this.actions = actions;
     },
     onInvokeActionItem: function onInvokeActionItem(evt) {
-      var action, parameters, index;
-      index = evt.currentTarget.attributes['data-id'].value;
-      action = this.actions[index];
+      var index = evt.currentTarget.attributes['data-id'].value;
+      var action = this.actions[index];
       if (action) {
         if (action.isEnabled) {
-          if (action['fn']) {
-            action['fn'].call(action['scope'] || this, action);
+          if (action.fn) {
+            action.fn.call(action.scope || this, action);
           } else {
-
-            if (typeof this[action['action']] === 'function') {
-              this[action['action']](evt);
+            if (typeof this[action.action] === 'function') {
+              this[action.action](evt);
             }
           }
         }
@@ -170,7 +164,7 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
     },
     getStore: function getStore() {
       var store = new _SDataStore['default']({
-        service: App.services['crm'],
+        service: App.getService(),
         resourceKind: this.resourceKind,
         contractName: this.contractName,
         scope: this
@@ -178,9 +172,7 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
       return store;
     },
     getQueryOptions: function getQueryOptions() {
-      var whereExpression, startIndex, queryOptions;
-
-      whereExpression = '';
+      var whereExpression = '';
       if (this.hasOwnProperty('where')) {
         if (typeof this.where === 'function') {
           whereExpression = this.where(this.parentEntry);
@@ -189,7 +181,7 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
         }
       }
 
-      queryOptions = {
+      var queryOptions = {
         count: this.pageSize || 1,
         start: 0,
         select: this.select || '',
@@ -200,12 +192,11 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
       return queryOptions;
     },
     fetchData: function fetchData() {
-      var queryResults, startIndex;
       if (this.startIndex < 1) {
         this.startIndex = 1;
       }
       this.queryOptions.start = this.startIndex - 1;
-      queryResults = this.store.query(null, this.queryOptions);
+      var queryResults = this.store.query(null, this.queryOptions);
       this.startIndex = this.startIndex > 0 && this.pageSize > 0 ? this.startIndex + this.pageSize : 1;
       return queryResults;
     },
@@ -219,9 +210,8 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
       }
     },
     onLoad: function onLoad() {
-      var data;
+      var data = undefined;
       if (this.relatedData) {
-
         if (typeof this.relatedData === 'function') {
           data = this.relatedData(this.parentEntry);
         } else {
@@ -236,12 +226,11 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
         }
       } else if (this.parentCollection) {
         this.relatedResults = {
-          total: this.parentEntry[this.parentCollectionProperty]['$resources'].length
+          total: this.parentEntry[this.parentCollectionProperty].$resources.length
         };
         this.pageSize = this.relatedResults.total;
-        this.onApply(this.parentEntry[this.parentCollectionProperty]['$resources']);
+        this.onApply(this.parentEntry[this.parentCollectionProperty].$resources);
       } else {
-
         if (!this.loadingNode) {
           this.loadingNode = _domConstruct['default'].toDom(this.loadingTemplate.apply(this));
           _domConstruct['default'].place(this.loadingNode, this.relatedViewNode, 'last', this);
@@ -252,37 +241,37 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
         }
         this.relatedResults = this.fetchData();
         (function (context, relatedResults) {
-
           try {
-            (0, _when['default'])(relatedResults, (function (relatedFeed) {
+            (0, _when['default'])(relatedResults, (function success(relatedFeed) {
               this.onApply(relatedFeed);
             }).bind(context));
           } catch (error) {
-            console.log('Error fetching related view data:' + error);
+            console.log('Error fetching related view data:' + error); //eslint-disable-line
           }
         })(this, this.relatedResults);
       }
       this.isLoaded = true;
     },
     onApply: function onApply(relatedFeed) {
-      var i, relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, itemHTML, moreData, restCount, moreCount;
       try {
-
         if (!this.itemsNode) {
           this.itemsNode = _domConstruct['default'].toDom('<div id=\'itemsNode\' class=\'items\'><div>');
           _domConstruct['default'].place(this.itemsNode, this.relatedViewNode, 'last', this);
         }
+
         if (relatedFeed.length > 0) {
+          var moreData = undefined;
           _domClass['default'].remove(this.containerNode, 'hidden');
           _domClass['default'].remove(this.tabNode, 'collapsed');
           this.itemCount = this.itemCount + relatedFeed.length;
-          restCount = this.relatedResults.total - this.itemCount;
+          var restCount = this.relatedResults.total - this.itemCount;
           if (restCount > 0) {
-            moreCount = restCount >= this.pageSize ? this.pageSize : restCount;
+            var moreCount = restCount >= this.pageSize ? this.pageSize : restCount;
             moreData = _string['default'].substitute(this.selectMoreDataText, [moreCount, this.relatedResults.total]);
           } else {
             moreData = '';
           }
+
           if (this.showSelectMore) {
             _domAttr['default'].set(this.selectMoreNode, {
               innerHTML: moreData
@@ -292,16 +281,17 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
               innerHTML: ''
             });
           }
+
           if (this.showTotalInTab) {
             _domAttr['default'].set(this.titleNode, {
               innerHTML: this.title + '  ' + _string['default'].substitute(this.totalCountText, [this.relatedResults.total])
             });
           }
-          for (i = 0; i < relatedFeed.length; i++) {
-            itemEntry = relatedFeed[i];
-            itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
-            itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
-            itemNode = _domConstruct['default'].toDom(itemHTML);
+          for (var i = 0; i < relatedFeed.length; i++) {
+            var itemEntry = relatedFeed[i];
+            itemEntry.$descriptor = itemEntry.$descriptor || relatedFeed.$descriptor;
+            var itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
+            var itemNode = _domConstruct['default'].toDom(itemHTML);
             (0, _on['default'])(itemNode, 'click', this.onSelectViewRow.bind(this));
             _domConstruct['default'].place(itemNode, this.itemsNode, 'last', this);
           }
@@ -327,11 +317,10 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
         }
         _domClass['default'].toggle(this.loadingNode, 'loading');
       } catch (error) {
-        console.log('Error applying data for related view widget:' + error);
+        console.log('Error applying data for related view widget:' + error); //eslint-disable-line
       }
     },
     toggleView: function toggleView(evt) {
-
       _domClass['default'].toggle(this.tabNode, 'collapsed');
 
       if (!this.isLoaded) {
@@ -340,26 +329,23 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
       evt.stopPropagation();
     },
     onSelectViewRow: function onSelectViewRow(evt) {
-      var relatedKey, descriptor, options, view;
+      var relatedKey = evt.currentTarget.attributes['data-relatedkey'].value;
+      var descriptor = evt.currentTarget.attributes['data-descriptor'].value;
 
-      relatedKey = evt.currentTarget.attributes['data-relatedkey'].value;
-      descriptor = evt.currentTarget.attributes['data-descriptor'].value;
-
-      options = {
+      var options = {
         descriptor: descriptor,
         key: relatedKey,
         title: descriptor
       };
 
-      view = App.getView(this.detailViewId);
+      var view = App.getView(this.detailViewId);
       if (view) {
         view.show(options);
       }
       evt.stopPropagation();
     },
     onNavigateToList: function onNavigateToList(evt) {
-      var options, view, whereExpression;
-
+      var whereExpression = undefined;
       if (this.hasOwnProperty('listViewWhere')) {
         if (typeof this.listViewWhere === 'function') {
           whereExpression = this.listViewWhere(this.parentEntry);
@@ -376,13 +362,13 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
         }
       }
 
-      options = {
+      var options = {
         descriptor: this.title,
         where: whereExpression,
         title: this.title
       };
 
-      view = App.getView(this.listViewId);
+      var view = App.getView(this.listViewId);
       if (view) {
         view.show(options);
       }
@@ -397,8 +383,6 @@ define('argos/RelatedViewWidget', ['exports', 'module', 'dojo/_base/declare', 'd
       evt.stopPropagation();
     },
     _onRefreshView: function _onRefreshView() {
-      var view, nodes;
-
       if (this.itemsNode) {
         _domConstruct['default'].destroy(this.itemsNode);
         this.itemsNode = null;

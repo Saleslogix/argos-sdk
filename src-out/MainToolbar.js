@@ -86,22 +86,20 @@ define('argos/MainToolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * @param {Object[]} tools Array of toolbar item definitions
      */
     showTools: function showTools(tools) {
-      var count, i, toolTemplate, side, tool;
       this.inherited(arguments);
 
       _domClass['default'].remove(this.domNode, 'toolbar-size-' + this.size);
       if (tools) {
-        count = {
+        var count = {
           left: 0,
           right: 0
         };
 
-        for (i = 0; i < tools.length; i++) {
-          tool = tools[i];
-          side = tool.side || 'right';
-
+        for (var i = 0; i < tools.length; i++) {
+          var tool = tools[i];
+          var side = tool.side || 'right';
+          var toolTemplate = tool.template || this.toolTemplate;
           count[side] += 1;
-          toolTemplate = tool.template || this.toolTemplate;
 
           _domConstruct['default'].place(toolTemplate.apply(tool, this.tools[tool.id]), this.domNode, 'last');
         }
@@ -113,9 +111,10 @@ define('argos/MainToolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
     /**
      * Event handler that fires when the toolbar title is clicked.
      */
-    onTitleClick: function onTitleClick(evt) {}
+    onTitleClick: function onTitleClick() {}
   });
 
   _lang['default'].setObject('Sage.Platform.Mobile.MainToolbar', __class);
   module.exports = __class;
 });
+/*evt*/

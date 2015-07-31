@@ -74,7 +74,7 @@ define('argos/SelectionModel', ['exports', 'module', 'dojo/_base/lang', 'dojo/_b
      * @param self
      * @template
      */
-    onSelect: function onSelect(key, data, tag, self) {},
+    onSelect: function onSelect() {},
     /**
      * Event that happens when an item is deselected/removed.
      * @param {String} key Unique identifier string
@@ -83,12 +83,12 @@ define('argos/SelectionModel', ['exports', 'module', 'dojo/_base/lang', 'dojo/_b
      * @param self
      * @template
      */
-    onDeselect: function onDeselect(key, data, tag, self) {},
+    onDeselect: function onDeselect() {},
     /**
      * Event that happens when the store is cleared
      * @param self
      */
-    onClear: function onClear(self) {},
+    onClear: function onClear() {},
     /**
      * Adds an item to the `selections` if it is not already stored.
      * @param {String} key Unique identifier string
@@ -125,9 +125,9 @@ define('argos/SelectionModel', ['exports', 'module', 'dojo/_base/lang', 'dojo/_b
      * Removes an item from the store
      * @param {String} key Unique identifier string that was given when the item was added
      */
-    deselect: function deselect(key) {
+    deselect: function deslect(key) {
       if (this.requireSelection && this.count === 1) {
-        window.alert(this.requireSelectionText);
+        window.alert(this.requireSelectionText); //eslint-disable-line
         return;
       }
 
@@ -146,13 +146,11 @@ define('argos/SelectionModel', ['exports', 'module', 'dojo/_base/lang', 'dojo/_b
      * Removes all items from the store
      */
     clear: function clear() {
-      var original, key;
-
-      original = this.requireSelection;
+      var original = this.requireSelection;
 
       if (this.clearAsDeselect) {
         this.requireSelection = false;
-        for (key in this.selections) {
+        for (var key in this.selections) {
           if (this.selections.hasOwnProperty(key)) {
             this.deselect(key);
           }
@@ -195,19 +193,15 @@ define('argos/SelectionModel', ['exports', 'module', 'dojo/_base/lang', 'dojo/_b
      * @return {String[]} All keys in the store
      */
     getSelectedKeys: function getSelectedKeys() {
-      var keys, key;
+      var _this = this;
 
-      keys = [];
-      for (key in this.selections) {
-        if (this.selections.hasOwnProperty(key)) {
-          keys.push(key);
-        }
-      }
-
-      return keys;
+      return Object.keys(this.selections).filter(function (key) {
+        _this.selections.hasOwnProperty(key);
+      });
     }
   });
 
   _lang['default'].setObject('Sage.Platform.Mobile.SelectionModel', __class);
   module.exports = __class;
 });
+/*key, data, tag, self*/ /*key, data, tag, self*/ /*self*/

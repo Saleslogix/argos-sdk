@@ -1,4 +1,4 @@
-define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/array', 'dijit/_WidgetBase', './_ActionMixin', './_CustomizationMixin', './_Templated', './_ErrorHandleMixin'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseArray, _dijit_WidgetBase, _ActionMixin2, _CustomizationMixin2, _Templated2, _ErrorHandleMixin2) {
+define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dijit/_WidgetBase', './_ActionMixin', './_CustomizationMixin', './_Templated', './_ErrorHandleMixin'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dijit_WidgetBase, _ActionMixin2, _CustomizationMixin2, _Templated2, _ErrorHandleMixin2) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -19,8 +19,6 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
-
-  var _array = _interopRequireDefault(_dojo_baseArray);
 
   var _WidgetBase2 = _interopRequireDefault(_dijit_WidgetBase);
 
@@ -114,7 +112,7 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
      * Called after toolBar layout is created;
      *
      */
-    onToolLayoutCreated: function onToolLayoutCreated(tools) {},
+    onToolLayoutCreated: function onToolLayoutCreated() {},
     /**
      * Returns the tool layout that defines all toolbar items for the view
      * @return {Object} The toolbar layout
@@ -133,12 +131,10 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
      * Establishes this views connections to various events
      */
     initConnects: function initConnects() {
-      var h;
       this._loadConnect = this.connect(this.domNode, 'onload', this._onLoad);
     },
     _onLoad: function _onLoad(evt, el, o) {
       this.disconnect(this._loadConnect);
-
       this.load(evt, el, o);
     },
     /**
@@ -154,9 +150,9 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
     refreshRequiredFor: function refreshRequiredFor(options) {
       if (this.options) {
         return !!options; // if options provided, then refresh
-      } else {
-        return true;
       }
+
+      return true;
     },
     /**
      * Should refresh the view, such as but not limited to:
@@ -167,32 +163,32 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
      * The onBeforeTransitionAway event.
      * @param self
      */
-    onBeforeTransitionAway: function onBeforeTransitionAway(self) {},
+    onBeforeTransitionAway: function onBeforeTransitionAway() {},
     /**
      * The onBeforeTransitionTo event.
      * @param self
      */
-    onBeforeTransitionTo: function onBeforeTransitionTo(self) {},
+    onBeforeTransitionTo: function onBeforeTransitionTo() {},
     /**
      * The onTransitionAway event.
      * @param self
      */
-    onTransitionAway: function onTransitionAway(self) {},
+    onTransitionAway: function onTransitionAway() {},
     /**
      * The onTransitionTo event.
      * @param self
      */
-    onTransitionTo: function onTransitionTo(self) {},
+    onTransitionTo: function onTransitionTo() {},
     /**
      * The onActivate event.
      * @param self
      */
-    onActivate: function onActivate(self) {},
+    onActivate: function onActivate() {},
     /**
      * The onShow event.
      * @param self
      */
-    onShow: function onShow(self) {},
+    onShow: function onShow() {},
     activate: function activate(tag, data) {
       // todo: use tag only?
       if (data && this.refreshRequiredFor(data.options)) {
@@ -220,8 +216,6 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
     show: function show(options, transitionOptions) {
       this.errorHandlers = this._createCustomizedLayout(this.createErrorHandlers(), 'errorHandlers');
 
-      var tag, data;
-
       if (this.onShow(this) === false) {
         return;
       }
@@ -238,14 +232,14 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
         this.set('title', this.get('title') || this.titleText);
       }
 
-      tag = this.getTag();
-      data = this.getContext();
+      var tag = this.getTag();
+      var data = this.getContext();
 
-      transitionOptions = _lang['default'].mixin(transitionOptions || {}, {
+      var newOptions = _lang['default'].mixin(transitionOptions || {}, {
         tag: tag,
         data: data
       });
-      ReUI.show(this.domNode, transitionOptions);
+      ReUI.show(this.domNode, newOptions);
     },
     /**
      * Expands the passed expression if it is a function.
@@ -255,9 +249,9 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
     expandExpression: function expandExpression(expression) {
       if (typeof expression === 'function') {
         return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-      } else {
-        return expression;
       }
+
+      return expression;
     },
     /**
      * Called before the view is transitioned (slide animation complete) to.
@@ -308,9 +302,8 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
         return {
           negateHistory: true
         };
-      } else {
-        return this.options;
       }
+      return this.options;
     },
     /**
      * Returns the context of the view which is a small summary of key properties.
@@ -327,7 +320,7 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
      * Returns the defined security.
      * @param access
      */
-    getSecurity: function getSecurity(access) {
+    getSecurity: function getSecurity() {
       return this.security;
     }
   });
@@ -335,5 +328,6 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
   _lang['default'].setObject('Sage.Platform.Mobile.View', __class);
   module.exports = __class;
 });
-
+/*tools*/
 // todo: remove load entirely?
+/*self*/ /*self*/ /*self*/ /*self*/ /*self*/ /*self*/ /*access*/

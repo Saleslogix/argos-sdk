@@ -8,7 +8,6 @@ import string from 'dojo/string';
 import domClass from 'dojo/dom-class';
 import when from 'dojo/when';
 import domConstruct from 'dojo/dom-construct';
-import query from 'dojo/query';
 import domAttr from 'dojo/dom-attr';
 import connect from 'dojo/_base/connect';
 import array from 'dojo/_base/array';
@@ -17,7 +16,7 @@ import _CustomizationMixin from './_CustomizationMixin';
 import _ActionMixin from './_ActionMixin';
 import _RelatedViewWidgetBase from 'argos/_RelatedViewWidgetBase';
 
-var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], {
+const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], {
   cls: 'related-view-widget',
   nodataText: 'no records found ...',
   selectMoreDataText: 'see ${0} more of ${1} ... ',
@@ -88,10 +87,10 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
     '<div data-dojo-attach-point="footerNode" class="footer">',
     '{%! $$.relatedViewFooterTemplate %}',
     '</div>',
-    '</div>'
+    '</div>',
   ]),
   nodataTemplate: new Simplate([
-    '<div class="nodata"> {%: $$.nodataText %}</div>'
+    '<div class="nodata"> {%: $$.nodataText %}</div>',
   ]),
   relatedViewTabItemsTemplate: new Simplate([
     '<span class="tab-item">',
@@ -100,14 +99,14 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
     '</div>',
     '<div data-dojo-attach-point="titleNode" data-dojo-attach-event="onclick:toggleView"  class="title" >{%: ($.title ) %} </div>',
     '</span>',
-    '<div class="line-bar"></div>'
+    '<div class="line-bar"></div>',
   ]),
   relatedViewHeaderTemplate: new Simplate([
-    ''
+    '',
   ]),
   relatedViewFooterTemplate: new Simplate([
     '<div  data-dojo-attach-point="selectMoreNode" class="action" data-dojo-attach-event="onclick:onSelectMoreData"></div>',
-    '<div  data-dojo-attach-point="navtoListFooterNode" class="action" data-dojo-attach-event="onclick:onNavigateToList">{%: $$.navToListText %}</div>'
+    '<div  data-dojo-attach-point="navtoListFooterNode" class="action" data-dojo-attach-event="onclick:onNavigateToList">{%: $$.navToListText %}</div>',
 
   ]),
   relatedViewRowTemplate: new Simplate([
@@ -115,19 +114,19 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
     '<div class="item">',
     '{%! $$.relatedItemTemplate %}',
     '</div>',
-    '</div>'
+    '</div>',
   ]),
   relatedItemIconTemplate: new Simplate([
-    '<img src="{%: $$.itemIcon %}" />'
+    '<img src="{%: $$.itemIcon %}" />',
   ]),
   relatedItemHeaderTemplate: new Simplate([
-    '<div>{%: $.$descriptor %}</div>'
+    '<div>{%: $.$descriptor %}</div>',
   ]),
   relatedItemDetailTemplate: new Simplate([
-    '<div></div>'
+    '<div></div>',
   ]),
   relatedItemFooterTemplate: new Simplate([
-    '<div></div>'
+    '<div></div>',
   ]),
   relatedItemTemplate: new Simplate([
     '<div class="item-icon">',
@@ -141,18 +140,18 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
     '</div>',
     '<div class="item-footer">',
     '{%! $$.relatedItemFooterTemplate %}',
-    '</div>'
+    '</div>',
   ]),
   loadingTemplate: new Simplate([
-    '<div class="loading-indicator"><div>{%= $.loadingText %}</div></div>'
+    '<div class="loading-indicator"><div>{%= $.loadingText %}</div></div>',
   ]),
 
   relatedActionTemplate: new Simplate([
     '<span class="action-item" data-id="{%= $.actionIndex %}">',
     '<img src="{%= $.icon %}" alt="{%= $.label %}" />',
-    '</span>'
+    '</span>',
   ]),
-  constructor: function(options) {
+  constructor: function constructor(options) {
     lang.mixin(this, options);
     if (this.titleText) {
       this.title = this.titleText;
@@ -161,7 +160,7 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
     this._subscribes = [];
     this._subscribes.push(connect.subscribe('/app/refresh', this, this._onAppRefresh));
   },
-  postCreate: function() {
+  postCreate: function postCreate() {
     if ((!this.showTab) && (this.tabNode)) {
       domClass.toggle(this.tabNode, 'hidden');
     }
@@ -169,72 +168,64 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
       this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'relatedview-actions'));
     }
   },
-  createActionLayout: function() {
+  createActionLayout: function createActionLayout() {
     return this.actions || (this.actions = [{
       id: 'refresh',
       cls: 'fa fa-refresh fa-2x',
       label: this.refreshViewText,
       action: 'onRefreshView',
-      isEnabled: true
+      isEnabled: true,
     }, {
       id: 'navtoListView',
       label: this.viewContactsActionText,
       cls: 'fa fa-list fa-2x',
       action: 'onNavigateToList',
       isEnabled: true,
-      fn: this.onNavigateToList.bind(this)
+      fn: this.onNavigateToList.bind(this),
     }]);
   },
-  createActions: function(actions) {
-    var i, action, actionNode, actionTemplate, options;
-    for (i = 0; i < actions.length; i++) {
-      action = actions[i];
-      options = {
-        actionIndex: i
+  createActions: function createActions(actions) {
+    for (let i = 0; i < actions.length; i++) {
+      const action = actions[i];
+      const options = {
+        actionIndex: i,
       };
-      actionTemplate = action.template || this.relatedActionTemplate;
-
       lang.mixin(action, options);
-      actionNode = domConstruct.toDom(actionTemplate.apply(action, action.id));
+      const actionTemplate = action.template || this.relatedActionTemplate;
+      const actionNode = domConstruct.toDom(actionTemplate.apply(action, action.id));
       on(actionNode, 'click', this.onInvokeActionItem.bind(this));
       domConstruct.place(actionNode, this.actionsNode, 'last');
     }
 
     this.actions = actions;
   },
-  onInvokeActionItem: function(evt) {
-    var action, parameters, index;
-    index = evt.currentTarget.attributes['data-id'].value;
-    action = this.actions[index];
+  onInvokeActionItem: function onInvokeActionItem(evt) {
+    const index = evt.currentTarget.attributes['data-id'].value;
+    const action = this.actions[index];
     if (action) {
       if (action.isEnabled) {
-        if (action['fn']) {
-          action['fn'].call(action['scope'] || this, action);
+        if (action.fn) {
+          action.fn.call(action.scope || this, action);
         } else {
-
-          if (typeof this[action['action']] === 'function') {
-            this[action['action']](evt);
+          if (typeof this[action.action] === 'function') {
+            this[action.action](evt);
           }
         }
       }
     }
     event.stop(evt);
   },
-  getStore: function() {
-    var store = new SDataStore({
-      service: App.services['crm'],
+  getStore: function getStore() {
+    const store = new SDataStore({
+      service: App.getService(),
       resourceKind: this.resourceKind,
       contractName: this.contractName,
-      scope: this
+      scope: this,
     });
     return store;
   },
-  getQueryOptions: function() {
-    var whereExpression,
-      startIndex,
-      queryOptions;
-
-    whereExpression = '';
+  getQueryOptions: function getQueryOptions() {
+    let whereExpression = '';
     if (this.hasOwnProperty('where')) {
       if (typeof this.where === 'function') {
         whereExpression = this.where(this.parentEntry);
@@ -243,27 +234,26 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
       }
     }
 
-    queryOptions = {
+    const queryOptions = {
       count: this.pageSize || 1,
       start: 0,
       select: this.select || '',
       where: whereExpression,
-      sort: this.sort || ''
+      sort: this.sort || '',
     };
 
     return queryOptions;
   },
-  fetchData: function() {
-    var queryResults, startIndex;
+  fetchData: function fetchData() {
     if (this.startIndex < 1) {
       this.startIndex = 1;
     }
     this.queryOptions.start = this.startIndex - 1;
-    queryResults = this.store.query(null, this.queryOptions);
+    const queryResults = this.store.query(null, this.queryOptions);
     this.startIndex = this.startIndex > 0 && this.pageSize > 0 ? this.startIndex + this.pageSize : 1;
     return queryResults;
   },
-  onInit: function() {
+  onInit: function onInit() {
     this._isInitLoad = true;
     this.store = this.store || this.getStore();
     this.queryOptions = this.queryOptions || this.getQueryOptions();
@@ -272,10 +262,9 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
       this.onLoad();
     }
   },
-  onLoad: function() {
-    var data;
+  onLoad: function onLoad() {
+    let data;
     if (this.relatedData) {
-
       if (typeof this.relatedData === 'function') {
         data = this.relatedData(this.parentEntry);
       } else {
@@ -283,20 +272,18 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
       }
       if (data) {
         this.relatedResults = {
-          total: data.length
+          total: data.length,
         };
         this.pageSize = data.length;
         this.onApply(data);
       }
-
     } else if (this.parentCollection) {
       this.relatedResults = {
-        total: this.parentEntry[this.parentCollectionProperty]['$resources'].length
+        total: this.parentEntry[this.parentCollectionProperty].$resources.length,
       };
       this.pageSize = this.relatedResults.total;
-      this.onApply(this.parentEntry[this.parentCollectionProperty]['$resources']);
+      this.onApply(this.parentEntry[this.parentCollectionProperty].$resources);
     } else {
-
       if (!this.loadingNode) {
         this.loadingNode = domConstruct.toDom(this.loadingTemplate.apply(this));
         domConstruct.place(this.loadingNode, this.relatedViewNode, 'last', this);
@@ -306,63 +293,61 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
         return;
       }
       this.relatedResults = this.fetchData();
-      (function(context, relatedResults) {
-
+      ((context, relatedResults) => {
         try {
-          when(relatedResults, function(relatedFeed) {
+          when(relatedResults, function success(relatedFeed) {
             this.onApply(relatedFeed);
           }.bind(context));
         } catch (error) {
-          console.log('Error fetching related view data:' + error);
+          console.log('Error fetching related view data:' + error);//eslint-disable-line
         }
       })(this, this.relatedResults);
     }
     this.isLoaded = true;
   },
-  onApply: function(relatedFeed) {
-    var i, relatedHTML, itemEntry, itemNode, headerNode, footerNode, itemsNode, itemHTML, moreData, restCount, moreCount;
+  onApply: function onApply(relatedFeed) {
     try {
-
-
       if (!this.itemsNode) {
         this.itemsNode = domConstruct.toDom("<div id='itemsNode' class='items'><div>");
         domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
       }
+
       if (relatedFeed.length > 0) {
+        let moreData;
         domClass.remove(this.containerNode, 'hidden');
         domClass.remove(this.tabNode, 'collapsed');
         this.itemCount = this.itemCount + relatedFeed.length;
-        restCount = this.relatedResults.total - this.itemCount;
+        const restCount = this.relatedResults.total - this.itemCount;
         if (restCount > 0) {
-          moreCount = (restCount >= this.pageSize) ? this.pageSize : restCount;
+          const moreCount = (restCount >= this.pageSize) ? this.pageSize : restCount;
           moreData = string.substitute(this.selectMoreDataText, [moreCount, this.relatedResults.total]);
         } else {
           moreData = '';
         }
+
         if (this.showSelectMore) {
           domAttr.set(this.selectMoreNode, {
-            innerHTML: moreData
+            innerHTML: moreData,
           });
         } else {
           domAttr.set(this.selectMoreNode, {
-            innerHTML: ''
+            innerHTML: '',
           });
-
         }
+
         if (this.showTotalInTab) {
           domAttr.set(this.titleNode, {
-            innerHTML: this.title + '  ' + string.substitute(this.totalCountText, [this.relatedResults.total])
+            innerHTML: this.title + '  ' + string.substitute(this.totalCountText, [this.relatedResults.total]),
           });
         }
-        for (i = 0; i < relatedFeed.length; i++) {
-          itemEntry = relatedFeed[i];
-          itemEntry['$descriptor'] = itemEntry['$descriptor'] || relatedFeed['$descriptor'];
-          itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
-          itemNode = domConstruct.toDom(itemHTML);
+        for (let i = 0; i < relatedFeed.length; i++) {
+          const itemEntry = relatedFeed[i];
+          itemEntry.$descriptor = itemEntry.$descriptor || relatedFeed.$descriptor;
+          const itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
+          const itemNode = domConstruct.toDom(itemHTML);
           on(itemNode, 'click', this.onSelectViewRow.bind(this));
           domConstruct.place(itemNode, this.itemsNode, 'last', this);
         }
-
       } else {
         if (this.hideWhenNoData) {
           domClass.add(this.containerNode, 'hidden');
@@ -372,11 +357,11 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
         domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
         if (this.showTotalInTab) {
           domAttr.set(this.titleNode, {
-            innerHTML: this.title + '  ' + string.substitute(this.totalCountText, [0, 0])
+            innerHTML: this.title + '  ' + string.substitute(this.totalCountText, [0, 0]),
           });
         }
         domAttr.set(this.selectMoreNode, {
-          innerHTML: ''
+          innerHTML: '',
         });
         if (this._isInitLoad) {
           this._isInitLoad = false;
@@ -385,12 +370,10 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
       }
       domClass.toggle(this.loadingNode, 'loading');
     } catch (error) {
-      console.log('Error applying data for related view widget:' + error);
+      console.log('Error applying data for related view widget:' + error);//eslint-disable-line
     }
-
   },
-  toggleView: function(evt) {
-
+  toggleView: function toggleView(evt) {
     domClass.toggle(this.tabNode, 'collapsed');
 
     if (!this.isLoaded) {
@@ -398,27 +381,24 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
     }
     evt.stopPropagation();
   },
-  onSelectViewRow: function(evt) {
-    var relatedKey, descriptor, options, view;
+  onSelectViewRow: function onSelectViewRow(evt) {
+    const relatedKey = evt.currentTarget.attributes['data-relatedkey'].value;
+    const descriptor = evt.currentTarget.attributes['data-descriptor'].value;
 
-    relatedKey = evt.currentTarget.attributes['data-relatedkey'].value;
-    descriptor = evt.currentTarget.attributes['data-descriptor'].value;
-
-    options = {
+    const options = {
       descriptor: descriptor,
       key: relatedKey,
-      title: descriptor
+      title: descriptor,
     };
 
-    view = App.getView(this.detailViewId);
+    const view = App.getView(this.detailViewId);
     if (view) {
       view.show(options);
     }
     evt.stopPropagation();
   },
-  onNavigateToList: function(evt) {
-    var options, view, whereExpression;
-
+  onNavigateToList: function onNavigateToList(evt) {
+    let whereExpression;
     if (this.hasOwnProperty('listViewWhere')) {
       if (typeof this.listViewWhere === 'function') {
         whereExpression = this.listViewWhere(this.parentEntry);
@@ -435,29 +415,27 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
       }
     }
 
-    options = {
+    const options = {
       descriptor: this.title,
       where: whereExpression,
-      title: this.title
+      title: this.title,
     };
 
-    view = App.getView(this.listViewId);
+    const view = App.getView(this.listViewId);
     if (view) {
       view.show(options);
     }
     evt.stopPropagation();
   },
-  onSelectMoreData: function(evt) {
+  onSelectMoreData: function onSelectMoreData(evt) {
     this.onLoad();
     evt.stopPropagation();
   },
-  onRefreshView: function(evt) {
+  onRefreshView: function onRefreshView(evt) {
     this._onRefreshView();
     evt.stopPropagation();
   },
-  _onRefreshView: function() {
-    var view, nodes;
-
+  _onRefreshView: function _onRefreshView() {
     if (this.itemsNode) {
       domConstruct.destroy(this.itemsNode);
       this.itemsNode = null;
@@ -467,7 +445,7 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
     this.isLoaded = false;
     this.onLoad();
   },
-  _onAppRefresh: function(data) {
+  _onAppRefresh: function _onAppRefresh(data) {
     if (data && data.data) {
       if (data.resourceKind === this.resourceKind) {
         if (this.parentEntry && (this.parentEntry[this.parentProperty] === data.data[this.relatedProperty])) {
@@ -476,12 +454,12 @@ var __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Custo
       }
     }
   },
-  destroy: function() {
-    array.forEach(this._subscribes, function(handle) {
+  destroy: function destroy() {
+    array.forEach(this._subscribes, (handle) => {
       connect.unsubscribe(handle);
     });
     this.inherited(arguments);
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.RelatedViewWidget', __class);

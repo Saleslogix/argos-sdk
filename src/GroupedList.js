@@ -31,7 +31,7 @@ import domConstruct from 'dojo/dom-construct';
 import List from './List';
 import Utility from './Utility';
 
-var __class = declare('argos.GroupedList', [List], {
+const __class = declare('argos.GroupedList', [List], {
   // Localization
   /**
    * @property {String}
@@ -53,7 +53,7 @@ var __class = declare('argos.GroupedList', [List], {
     '<div class="group-content" data-dojo-attach-point="contentNode"></div>',
     '{%! $.moreTemplate %}',
     '{%! $.listActionTemplate %}',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -63,7 +63,7 @@ var __class = declare('argos.GroupedList', [List], {
     '<h2 data-action="toggleGroup" class="{% if ($.collapsed) { %}collapsed{% } %}">',
     '<button class="fa {% if ($.collapsed) { %}{%: $$.collapsedIconClass %} {% } else { %}{%: $$.expanedIconClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>{%: $.title %}',
     '</h2>',
-    '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>'
+    '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>',
   ]),
 
   /**
@@ -87,7 +87,7 @@ var __class = declare('argos.GroupedList', [List], {
     '<button class="button" data-action="more">',
     '<span>{%= $.moreText %}</span>',
     '</button>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Object}
@@ -119,10 +119,10 @@ var __class = declare('argos.GroupedList', [List], {
    * @param {Object} entry The current entry being processed.
    * @return {Object} Object that contains a tag and title property where tag will be used in comparisons
    */
-  getGroupForEntry: function(entry) {
-    var sectionDef, title;
+  getGroupForEntry: function getGroupForEntry(entry) {
     if (this._currentGroupBySection) {
-      sectionDef = this._currentGroupBySection.section.getSection(entry);
+      let title;
+      const sectionDef = this._currentGroupBySection.section.getSection(entry);
       if (this._currentGroupBySection.description) {
         title = this._currentGroupBySection.description + ': ' + sectionDef.title;
       } else {
@@ -131,25 +131,25 @@ var __class = declare('argos.GroupedList', [List], {
       return {
         tag: sectionDef.key,
         title: title,
-        collapsed: !!sectionDef.collapsed
+        collapsed: !!sectionDef.collapsed,
       };
     }
+
     return {
       tag: 1,
-      title: 'Default'
+      title: 'Default',
     };
   },
   /**
    * Toggles the collapsible state of the clicked group
    * @param {Object} params Object containing the event and other properties
    */
-  toggleGroup: function(params) {
-    var node = params.$source,
-      child;
+  toggleGroup: function toggleGroup(params) {
+    const node = params.$source;
 
     if (node) {
       domClass.toggle(node, 'collapsed');
-      child = node.children[0];
+      const child = node.children[0];
 
       // Child is the button icon indicator for collapsed/expanded
       if (child) {
@@ -166,9 +166,8 @@ var __class = declare('argos.GroupedList', [List], {
    * @param {Object} feed The SData feed result
    * @deprecated Use processData instead
    */
-  processFeed: function(feed) {
-    var i, entry, entryGroup, rowNode, remaining, getGroupsNode;
-    getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), function(entryGroup) {
+  processFeed: function processFeed(feed) {
+    const getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), function mem(entryGroup) {
       return entryGroup.tag;
     });
 
@@ -178,59 +177,57 @@ var __class = declare('argos.GroupedList', [List], {
 
     this.feed = feed;
 
-    if (this.feed['$totalResults'] === 0) {
+    if (this.feed.$totalResults === 0) {
       this.set('listContent', this.noDataTemplate.apply(this));
-    } else if (feed['$resources']) {
-      for (i = 0; i < feed['$resources'].length; i++) {
-        entry = feed['$resources'][i];
-        entryGroup = this.getGroupForEntry(entry);
+    } else if (feed.$resources) {
+      for (let i = 0; i < feed.$resources.length; i++) {
+        const entry = feed.$resources[i];
+        const entryGroup = this.getGroupForEntry(entry);
 
-        entry['$groupTag'] = entryGroup.tag;
-        entry['$groupTitle'] = entryGroup.title;
+        entry.$groupTag = entryGroup.tag;
+        entry.$groupTitle = entryGroup.title;
 
         this.entries[entry.$key] = entry;
-        rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+        const rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
         this.onApplyRowTemplate(entry, rowNode);
-
         domConstruct.place(rowNode, getGroupsNode(entryGroup), 'last');
       }
     }
 
     // todo: add more robust handling when $totalResults does not exist, i.e., hide element completely
-    if (typeof this.feed['$totalResults'] !== 'undefined') {
-      remaining = this.feed['$totalResults'] - (this.feed['$startIndex'] + this.feed['$itemsPerPage'] - 1);
+    if (typeof this.feed.$totalResults !== 'undefined') {
+      const remaining = this.feed.$totalResults - (this.feed.$startIndex + this.feed.$itemsPerPage - 1);
       this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
     }
 
     domClass.toggle(this.domNode, 'list-has-more', this.hasMoreData());
   },
-  processData: function(entries) {
-    var i, entry, count = entries.length,
-      store = this.get('store'),
-      entryGroup, rowNode, getGroupsNode;
-    getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), function(entryGroup) {
+  processData: function processData(entries) {
+    const count = entries.length;
+    const store = this.get('store');
+    const getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), function memoize(entryGroup) {
       return entryGroup.tag;
     });
 
     if (count > 0) {
-      for (i = 0; i < count; i++) {
-        entry = this._processEntry(entries[i]);
+      for (let i = 0; i < count; i++) {
+        const entry = this._processEntry(entries[i]);
         this.entries[store.getIdentity(entry)] = entry;
 
-        entryGroup = this.getGroupForEntry(entry);
+        const entryGroup = this.getGroupForEntry(entry);
 
-        entry['$groupTag'] = entryGroup.tag;
-        entry['$groupTitle'] = entryGroup.title;
+        entry.$groupTag = entryGroup.tag;
+        entry.$groupTitle = entryGroup.title;
 
-        rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+        const rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
         this.onApplyRowTemplate(entry, rowNode);
 
         domConstruct.place(rowNode, getGroupsNode(entryGroup), 'last');
       }
     }
   },
-  getGroupsNode: function(entryGroup) {
-    var results = query('[data-group="' + entryGroup.tag + '"]', this.contentNode);
+  getGroupsNode: function getGroupsNode(entryGroup) {
+    let results = query('[data-group="' + entryGroup.tag + '"]', this.contentNode);
     if (results.length > 0) {
       results = results[0];
     } else {
@@ -246,24 +243,20 @@ var __class = declare('argos.GroupedList', [List], {
   /**
    * Called on application startup to configure the search widget if present and create the list actions.
    */
-  startup: function() {
+  startup: function startup() {
     this.inherited(arguments);
     this._initGroupBySections();
-
   },
-  _initGroupBySections: function() {
+  _initGroupBySections: function _initGroupBySections() {
     this._groupBySections = this.getGroupBySections();
     this.setDefaultGroupBySection();
     this.applyGroupByOrderBy();
   },
-  setDefaultGroupBySection: function() {
-    var count,
-      i;
-
-    count = 0;
+  setDefaultGroupBySection: function setDefaultGroupBySection() {
+    let count = 0;
     if (this._groupBySections) {
       count = this._groupBySections.length;
-      for (i = 0; i < count; i++) {
+      for (let i = 0; i < count; i++) {
         if (this._groupBySections[i].isDefault === true) {
           this._currentGroupBySection = this._groupBySections[i];
         }
@@ -273,13 +266,10 @@ var __class = declare('argos.GroupedList', [List], {
       }
     }
   },
-  getGroupBySection: function(sectionId) {
-    var groupSection,
-      i;
-
-    groupSection = null;
+  getGroupBySection: function getGroupBySection(sectionId) {
+    let groupSection = null;
     if (this._groupBySections) {
-      for (i = 0; i < this._groupBySections.length; i++) {
+      for (let i = 0; i < this._groupBySections.length; i++) {
         if (this._groupBySections[i].Id === sectionId) {
           groupSection = this._groupBySections[i];
         }
@@ -287,18 +277,18 @@ var __class = declare('argos.GroupedList', [List], {
     }
     return groupSection;
   },
-  setCurrentGroupBySection: function(sectionId) {
+  setCurrentGroupBySection: function setCurrentGroupBySection(sectionId) {
     this._currentGroupBySection = this.getGroupBySection(sectionId);
-    this.applyGroupByOrderBy(); //need to refresh view
+    this.applyGroupByOrderBy(); // need to refresh view
   },
-  getGroupBySections: function() {
+  getGroupBySections: function getGroupBySections() {
     return null;
   },
-  applyGroupByOrderBy: function() {
+  applyGroupByOrderBy: function applyGroupByOrderBy() {
     if (this._currentGroupBySection) {
       this.queryOrderBy = this._currentGroupBySection.section.getOrderByQuery();
     }
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.GroupedList', __class);

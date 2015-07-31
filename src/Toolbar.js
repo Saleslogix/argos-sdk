@@ -30,14 +30,14 @@ import _Templated from './_Templated';
  * @mixins argos._ActionMixin
  * @mixins argos._Templated
  */
-var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
+const __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
   /**
    * @property {Simplate}
    * HTML markup of the toolbar
    */
   widgetTemplate: new Simplate([
     '<div class="toolbar">',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Boolean}
@@ -50,36 +50,34 @@ var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
    * @param {String/Function} expression Returns string directly, if function it is called and the result returned.
    * @return {String} String expression.
    */
-  expandExpression: function(expression) {
+  expandExpression: function expandExpression(expression) {
     if (typeof expression === 'function') {
       return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-    } else {
-      return expression;
     }
+    return expression;
   },
   /**
    * Called upon application startup.
    */
-  init: function() {},
+  init: function init() {},
   /**
    * When a tool is clicked on this function handles matching the node to toolbar item instance and performs the actual action
    * @param {Object} parameters An object of all the `data-` attributes of the node.
    * @param {Event} evt The event object
    * @param {HTMLElement} node The html element that was clicked.
    */
-  invokeTool: function(parameters, evt, node) {
-    var id = parameters && parameters.tool,
-      tool = this.tools && this.tools[id],
-      view,
-      source = tool && tool.source;
+  invokeTool: function invokeTool(parameters, evt, node) {
+    const id = parameters && parameters.tool;
+    const tool = this.tools && this.tools[id];
+    const source = tool && tool.source;
     if (source && tool.enabled) {
       if (source.fn) {
         source.fn.call(source.scope || this, source);
       } else if (source.action) {
-        view = App.getPrimaryActiveView();
+        const view = App.getPrimaryActiveView();
         if (view && view.hasAction(source.action)) {
           view.invokeAction(source.action, lang.mixin(parameters, {
-            '$tool': source
+            '$tool': source,
           }), evt, node);
         }
       }
@@ -88,19 +86,19 @@ var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
   /**
    * Sets the toolbar style to block (visibile)
    */
-  show: function() {
+  show: function show() {
     domStyle.set(this.domNode, 'display', 'block');
   },
   /**
    * Sets the toolbar style to none (hidden)
    */
-  hide: function() {
+  hide: function hide() {
     domStyle.set(this.domNode, 'display', 'none');
   },
   /**
    * Empties the toolbar item collection and sets enabled to true
    */
-  clear: function() {
+  clear: function clear() {
     this.tools = {};
     domClass.remove(this.domNode, 'toolbar-disabled');
     this.enabled = true;
@@ -108,14 +106,14 @@ var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
   /**
    * Removes the disabled style and sets enabled to true
    */
-  enable: function() {
+  enable: function enable() {
     domClass.remove(this.domNode, 'toolbar-disabled');
     this.enabled = true;
   },
   /**
    * Adds a disabled style class and sets enabled to false
    */
-  disable: function() {
+  disable: function disable() {
     domClass.add(this.domNode, 'toolbar-disabled');
     this.enabled = false;
   },
@@ -123,8 +121,8 @@ var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
    * Sets enabled to true of the toolbar item that matches the passed id
    * @param {String} id The id of the tool to enable
    */
-  enableTool: function(id) {
-    var tool = this.tools && this.tools[id];
+  enableTool: function enableTool(id) {
+    const tool = this.tools && this.tools[id];
     if (tool) {
       tool.enabled = true;
     }
@@ -133,8 +131,8 @@ var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
    * Sets enabled to false of the toolbar item that matches the passed id
    * @param {String} id The id of the tool to disable
    */
-  disableTool: function(id) {
-    var tool = this.tools && this.tools[id];
+  disableTool: function disableTool(id) {
+    const tool = this.tools && this.tools[id];
     if (tool) {
       tool.enabled = false;
     }
@@ -143,8 +141,8 @@ var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
    * Sets busy to true of the toolbar item that matches the passed id
    * @param {String} id The id of the tool to indicate busy
    */
-  indicateToolBusy: function(id) {
-    var tool = this.tools && this.tools[id];
+  indicateToolBusy: function indicateToolBusy(id) {
+    const tool = this.tools && this.tools[id];
     if (tool) {
       tool.busy = true;
     }
@@ -153,8 +151,8 @@ var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
    * Sets busy to false of the toolbar item that matches the passed id
    * @param {String} id The id of the tool to set as not busy
    */
-  clearToolBusy: function(id) {
-    var tool = this.tools && this.tools[id];
+  clearToolBusy: function clearToolBusy(id) {
+    const tool = this.tools && this.tools[id];
     if (tool) {
       tool.busy = false;
     }
@@ -164,27 +162,25 @@ var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
    * @param {String} id The id of the tool
    * @return {Boolean} True if the toolbar item is enabled
    */
-  isToolEnabled: function(id) {
+  isToolEnabled: function isToolEnabled(id) {
     return this.tools && this.tools[id] && this.tools[id].enabled;
   },
   /**
    * Replaces the existing toolbar item collection with the passed array of toolbar items and also checks toolbar security
    * @param {Object[]} tools Toolbar item array to store.
    */
-  showTools: function(tools) {
-    var tool, i;
-
+  showTools: function showTools(tools) {
     this.tools = {};
 
     if (typeof tools === 'undefined') {
       return;
     }
 
-    for (i = 0; i < tools.length; i++) {
-      tool = {
+    for (let i = 0; i < tools.length; i++) {
+      const tool = {
         busy: false,
         enabled: typeof tools[i].enabled !== 'undefined' ? tools[i].enabled : true,
-        source: tools[i]
+        source: tools[i],
       };
 
       // if tool is enabled, check security
@@ -194,7 +190,7 @@ var __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
 
       this.tools[tools[i].id] = tool;
     }
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Toolbar', __class);

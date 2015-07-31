@@ -111,9 +111,9 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * @return {Object} Object that contains a tag and title property where tag will be used in comparisons
      */
     getGroupForEntry: function getGroupForEntry(entry) {
-      var sectionDef, title;
       if (this._currentGroupBySection) {
-        sectionDef = this._currentGroupBySection.section.getSection(entry);
+        var title = undefined;
+        var sectionDef = this._currentGroupBySection.section.getSection(entry);
         if (this._currentGroupBySection.description) {
           title = this._currentGroupBySection.description + ': ' + sectionDef.title;
         } else {
@@ -125,6 +125,7 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
           collapsed: !!sectionDef.collapsed
         };
       }
+
       return {
         tag: 1,
         title: 'Default'
@@ -135,12 +136,11 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * @param {Object} params Object containing the event and other properties
      */
     toggleGroup: function toggleGroup(params) {
-      var node = params.$source,
-          child;
+      var node = params.$source;
 
       if (node) {
         _domClass['default'].toggle(node, 'collapsed');
-        child = node.children[0];
+        var child = node.children[0];
 
         // Child is the button icon indicator for collapsed/expanded
         if (child) {
@@ -158,8 +158,7 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * @deprecated Use processData instead
      */
     processFeed: function processFeed(feed) {
-      var i, entry, entryGroup, rowNode, remaining, getGroupsNode;
-      getGroupsNode = _Utility2['default'].memoize(this.getGroupsNode.bind(this), function (entryGroup) {
+      var getGroupsNode = _Utility2['default'].memoize(this.getGroupsNode.bind(this), function mem(entryGroup) {
         return entryGroup.tag;
       });
 
@@ -169,55 +168,49 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
       this.feed = feed;
 
-      if (this.feed['$totalResults'] === 0) {
+      if (this.feed.$totalResults === 0) {
         this.set('listContent', this.noDataTemplate.apply(this));
-      } else if (feed['$resources']) {
-        for (i = 0; i < feed['$resources'].length; i++) {
-          entry = feed['$resources'][i];
-          entryGroup = this.getGroupForEntry(entry);
+      } else if (feed.$resources) {
+        for (var i = 0; i < feed.$resources.length; i++) {
+          var entry = feed.$resources[i];
+          var entryGroup = this.getGroupForEntry(entry);
 
-          entry['$groupTag'] = entryGroup.tag;
-          entry['$groupTitle'] = entryGroup.title;
+          entry.$groupTag = entryGroup.tag;
+          entry.$groupTitle = entryGroup.title;
 
           this.entries[entry.$key] = entry;
-          rowNode = _domConstruct['default'].toDom(this.rowTemplate.apply(entry, this));
+          var rowNode = _domConstruct['default'].toDom(this.rowTemplate.apply(entry, this));
           this.onApplyRowTemplate(entry, rowNode);
-
           _domConstruct['default'].place(rowNode, getGroupsNode(entryGroup), 'last');
         }
       }
 
       // todo: add more robust handling when $totalResults does not exist, i.e., hide element completely
-      if (typeof this.feed['$totalResults'] !== 'undefined') {
-        remaining = this.feed['$totalResults'] - (this.feed['$startIndex'] + this.feed['$itemsPerPage'] - 1);
+      if (typeof this.feed.$totalResults !== 'undefined') {
+        var remaining = this.feed.$totalResults - (this.feed.$startIndex + this.feed.$itemsPerPage - 1);
         this.set('remainingContent', _string['default'].substitute(this.remainingText, [remaining]));
       }
 
       _domClass['default'].toggle(this.domNode, 'list-has-more', this.hasMoreData());
     },
     processData: function processData(entries) {
-      var i,
-          entry,
-          count = entries.length,
-          store = this.get('store'),
-          entryGroup,
-          rowNode,
-          getGroupsNode;
-      getGroupsNode = _Utility2['default'].memoize(this.getGroupsNode.bind(this), function (entryGroup) {
+      var count = entries.length;
+      var store = this.get('store');
+      var getGroupsNode = _Utility2['default'].memoize(this.getGroupsNode.bind(this), function memoize(entryGroup) {
         return entryGroup.tag;
       });
 
       if (count > 0) {
-        for (i = 0; i < count; i++) {
-          entry = this._processEntry(entries[i]);
+        for (var i = 0; i < count; i++) {
+          var entry = this._processEntry(entries[i]);
           this.entries[store.getIdentity(entry)] = entry;
 
-          entryGroup = this.getGroupForEntry(entry);
+          var entryGroup = this.getGroupForEntry(entry);
 
-          entry['$groupTag'] = entryGroup.tag;
-          entry['$groupTitle'] = entryGroup.title;
+          entry.$groupTag = entryGroup.tag;
+          entry.$groupTitle = entryGroup.title;
 
-          rowNode = _domConstruct['default'].toDom(this.rowTemplate.apply(entry, this));
+          var rowNode = _domConstruct['default'].toDom(this.rowTemplate.apply(entry, this));
           this.onApplyRowTemplate(entry, rowNode);
 
           _domConstruct['default'].place(rowNode, getGroupsNode(entryGroup), 'last');
@@ -251,12 +244,10 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
       this.applyGroupByOrderBy();
     },
     setDefaultGroupBySection: function setDefaultGroupBySection() {
-      var count, i;
-
-      count = 0;
+      var count = 0;
       if (this._groupBySections) {
         count = this._groupBySections.length;
-        for (i = 0; i < count; i++) {
+        for (var i = 0; i < count; i++) {
           if (this._groupBySections[i].isDefault === true) {
             this._currentGroupBySection = this._groupBySections[i];
           }
@@ -267,11 +258,9 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
       }
     },
     getGroupBySection: function getGroupBySection(sectionId) {
-      var groupSection, i;
-
-      groupSection = null;
+      var groupSection = null;
       if (this._groupBySections) {
-        for (i = 0; i < this._groupBySections.length; i++) {
+        for (var i = 0; i < this._groupBySections.length; i++) {
           if (this._groupBySections[i].Id === sectionId) {
             groupSection = this._groupBySections[i];
           }
@@ -281,7 +270,7 @@ define('argos/GroupedList', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
     },
     setCurrentGroupBySection: function setCurrentGroupBySection(sectionId) {
       this._currentGroupBySection = this.getGroupBySection(sectionId);
-      this.applyGroupByOrderBy(); //need to refresh view
+      this.applyGroupByOrderBy(); // need to refresh view
     },
     getGroupBySections: function getGroupBySections() {
       return null;

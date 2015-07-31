@@ -22,12 +22,9 @@ define('argos/Utility', ['exports', 'module', 'dojo/_base/lang', 'dojo/_base/arr
 
   var _json = _interopRequireDefault(_dojoJson);
 
-  var nameToPathCache, __class, nameToPath;
-
-  nameToPathCache = {};
-  nameToPath = function (name) {
-    var parts, path, i, match;
-
+  var __class = undefined;
+  var nameToPathCache = {};
+  var nameToPath = function nameToPath(name) {
     if (typeof name !== 'string' || name === '.' || name === '') {
       return []; // '', for compatibility
     }
@@ -36,11 +33,11 @@ define('argos/Utility', ['exports', 'module', 'dojo/_base/lang', 'dojo/_base/arr
       return nameToPathCache[name];
     }
 
-    parts = name.split('.');
-    path = [];
+    var parts = name.split('.');
+    var path = [];
 
-    for (i = 0; i < parts.length; i++) {
-      match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
+    for (var i = 0; i < parts.length; i++) {
+      var match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
       if (match) {
         path.push(match[1]);
         if (/^\d+$/.test(match[2])) {
@@ -74,27 +71,25 @@ define('argos/Utility', ['exports', 'module', 'dojo/_base/lang', 'dojo/_base/arr
     },
     memoize: function memoize(fn, keyFn) {
       var cache = {};
-      keyFn = keyFn || function (value) {
+      var _keyFn = keyFn || function (value) {
         return value;
       };
 
-      return function () {
-        var key = keyFn.apply(this, arguments);
+      return function cached() {
+        var key = _keyFn.apply(this, arguments);
         if (cache[key]) {
           return cache[key];
-        } else {
-          cache[key] = fn.apply(this, arguments);
-          return cache[key];
         }
+
+        cache[key] = fn.apply(this, arguments);
+        return cache[key];
       };
     },
     getValue: function getValue(o, name, defaultValue) {
-      var path, current, key;
-
-      path = nameToPath(name).slice(0);
-      current = o;
+      var path = nameToPath(name).slice(0);
+      var current = o;
       while (current && path.length > 0) {
-        key = path.pop();
+        var key = path.pop();
         if (typeof current[key] !== 'undefined') {
           current = current[key];
         } else {
@@ -104,15 +99,20 @@ define('argos/Utility', ['exports', 'module', 'dojo/_base/lang', 'dojo/_base/arr
       return current;
     },
     setValue: function setValue(o, name, val) {
-      var current, path, key, next;
-
-      current = o;
-      path = nameToPath(name).slice(0);
+      var current = o;
+      var path = nameToPath(name).slice(0);
       while (typeof current !== 'undefined' && path.length > 1) {
-        key = path.pop();
-        next = path[path.length - 1];
-        current = current[key] = typeof current[key] !== 'undefined' ? current[key] : typeof next === 'number' ? [] : {};
+        var key = path.pop();
+        var next = path[path.length - 1];
+        if (typeof current[key] !== 'undefined') {
+          current = current[key] = current[key];
+        } else if (typeof next === 'number') {
+          current = current[key] = [];
+        } else {
+          current = current[key] = {};
+        }
       }
+
       if (typeof path[0] !== 'undefined') {
         current[path[0]] = val;
       }
@@ -122,9 +122,9 @@ define('argos/Utility', ['exports', 'module', 'dojo/_base/lang', 'dojo/_base/arr
     expand: function expand(scope, expression) {
       if (typeof expression === 'function') {
         return expression.apply(scope, Array.prototype.slice.call(arguments, 2));
-      } else {
-        return expression;
       }
+
+      return expression;
     },
     roundNumberTo: function roundNumberTo(number, precision) {
       var k = Math.pow(10, precision);
@@ -135,8 +135,7 @@ define('argos/Utility', ['exports', 'module', 'dojo/_base/lang', 'dojo/_base/arr
      * Utility function to join fields within a Simplate template.
      */
     joinFields: function joinFields(seperator, fields) {
-      var results;
-      results = _array['default'].filter(fields, function (item) {
+      var results = _array['default'].filter(fields, function (item) {
         return item !== null && typeof item !== 'undefined' && item !== '';
       });
 
@@ -148,8 +147,8 @@ define('argos/Utility', ['exports', 'module', 'dojo/_base/lang', 'dojo/_base/arr
      * @return {Object} Object ready to be JSON.stringified.
      */
     sanitizeForJson: function sanitizeForJson(obj) {
-      var type, key;
-      for (key in obj) {
+      var type = undefined;
+      for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
           try {
             type = typeof obj[key];
@@ -158,7 +157,7 @@ define('argos/Utility', ['exports', 'module', 'dojo/_base/lang', 'dojo/_base/arr
             continue;
           }
 
-          switch (type) {
+          switch (type) {//eslint-disable-line
             case 'undefined':
               obj[key] = 'undefined';
               break;
@@ -185,7 +184,7 @@ define('argos/Utility', ['exports', 'module', 'dojo/_base/lang', 'dojo/_base/arr
                 if (typeof obj[key] === 'object') {
                   obj[key] = this.sanitizeForJson(obj[key]);
                 }
-              } catch (e) {}
+              } catch (e) {} //eslint-disable-line
               break;
           }
         }

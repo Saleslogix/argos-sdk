@@ -60,9 +60,8 @@ define('argos/Toolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/
     expandExpression: function expandExpression(expression) {
       if (typeof expression === 'function') {
         return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-      } else {
-        return expression;
       }
+      return expression;
     },
     /**
      * Called upon application startup.
@@ -75,15 +74,14 @@ define('argos/Toolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/
      * @param {HTMLElement} node The html element that was clicked.
      */
     invokeTool: function invokeTool(parameters, evt, node) {
-      var id = parameters && parameters.tool,
-          tool = this.tools && this.tools[id],
-          view,
-          source = tool && tool.source;
+      var id = parameters && parameters.tool;
+      var tool = this.tools && this.tools[id];
+      var source = tool && tool.source;
       if (source && tool.enabled) {
         if (source.fn) {
           source.fn.call(source.scope || this, source);
         } else if (source.action) {
-          view = App.getPrimaryActiveView();
+          var view = App.getPrimaryActiveView();
           if (view && view.hasAction(source.action)) {
             view.invokeAction(source.action, _lang['default'].mixin(parameters, {
               '$tool': source
@@ -179,16 +177,14 @@ define('argos/Toolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/
      * @param {Object[]} tools Toolbar item array to store.
      */
     showTools: function showTools(tools) {
-      var tool, i;
-
       this.tools = {};
 
       if (typeof tools === 'undefined') {
         return;
       }
 
-      for (i = 0; i < tools.length; i++) {
-        tool = {
+      for (var i = 0; i < tools.length; i++) {
+        var tool = {
           busy: false,
           enabled: typeof tools[i].enabled !== 'undefined' ? tools[i].enabled : true,
           source: tools[i]

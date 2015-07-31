@@ -16,14 +16,9 @@ import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
 import json from 'dojo/json';
 
-var nameToPathCache,
-  __class,
-  nameToPath;
-
-nameToPathCache = {};
-nameToPath = function(name) {
-  var parts, path, i, match;
-
+let __class;
+const nameToPathCache = {};
+const nameToPath = function nameToPath(name) {
   if (typeof name !== 'string' || name === '.' || name === '') {
     return []; // '', for compatibility
   }
@@ -32,11 +27,11 @@ nameToPath = function(name) {
     return nameToPathCache[name];
   }
 
-  parts = name.split('.');
-  path = [];
+  const parts = name.split('.');
+  const path = [];
 
-  for (i = 0; i < parts.length; i++) {
-    match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
+  for (let i = 0; i < parts.length; i++) {
+    const match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
     if (match) {
       path.push(match[1]);
       if (/^\d+$/.test(match[2])) {
@@ -65,32 +60,30 @@ __class = lang.setObject('argos.Utility', {
    * @param {String} searchQuery Search expression to be escaped.
    * @return {String}
    */
-  escapeSearchQuery: function(searchQuery) {
+  escapeSearchQuery: function escapeSearchQuery(searchQuery) {
     return (searchQuery || '').replace(/"/g, '""');
   },
-  memoize: function(fn, keyFn) {
-    var cache = {};
-    keyFn = keyFn || (function(value) {
+  memoize: function memoize(fn, keyFn) {
+    const cache = {};
+    const _keyFn = keyFn || ((value) => {
       return value;
     });
 
-    return function() {
-      var key = keyFn.apply(this, arguments);
+    return function cached() {
+      const key = _keyFn.apply(this, arguments);
       if (cache[key]) {
         return cache[key];
-      } else {
-        cache[key] = fn.apply(this, arguments);
-        return cache[key];
       }
+
+      cache[key] = fn.apply(this, arguments);
+      return cache[key];
     };
   },
-  getValue: function(o, name, defaultValue) {
-    var path, current, key;
-
-    path = nameToPath(name).slice(0);
-    current = o;
+  getValue: function getValue(o, name, defaultValue) {
+    const path = nameToPath(name).slice(0);
+    let current = o;
     while (current && path.length > 0) {
-      key = path.pop();
+      const key = path.pop();
       if (typeof current[key] !== 'undefined') {
         current = current[key];
       } else {
@@ -99,40 +92,44 @@ __class = lang.setObject('argos.Utility', {
     }
     return current;
   },
-  setValue: function(o, name, val) {
-    var current, path, key, next;
-
-    current = o;
-    path = nameToPath(name).slice(0);
+  setValue: function setValue(o, name, val) {
+    let current = o;
+    const path = nameToPath(name).slice(0);
     while ((typeof current !== 'undefined') && path.length > 1) {
-      key = path.pop();
-      next = path[path.length - 1];
-      current = current[key] = (typeof current[key] !== 'undefined') ? current[key] : (typeof next === 'number') ? [] : {};
+      const key = path.pop();
+      const next = path[path.length - 1];
+      if (typeof current[key] !== 'undefined') {
+        current = current[key] = current[key];
+      } else if (typeof next === 'number') {
+        current = current[key] = [];
+      } else {
+        current = current[key] = {};
+      }
     }
+
     if (typeof path[0] !== 'undefined') {
       current[path[0]] = val;
     }
 
     return o;
   },
-  expand: function(scope, expression) {
+  expand: function expand(scope, expression) {
     if (typeof expression === 'function') {
       return expression.apply(scope, Array.prototype.slice.call(arguments, 2));
-    } else {
-      return expression;
     }
+
+    return expression;
   },
-  roundNumberTo: function(number, precision) {
-    var k = Math.pow(10, precision);
+  roundNumberTo: function roundNumberTo(number, precision) {
+    const k = Math.pow(10, precision);
     return (Math.round(number * k) / k);
   },
   /**
    * @function
    * Utility function to join fields within a Simplate template.
    */
-  joinFields: function(seperator, fields) {
-    var results;
-    results = array.filter(fields, function(item) {
+  joinFields: function joinFields(seperator, fields) {
+    const results = array.filter(fields, (item) => {
       return item !== null && typeof item !== 'undefined' && item !== '';
     });
 
@@ -143,9 +140,9 @@ __class = lang.setObject('argos.Utility', {
    * @param {Object} obj Object to be cleansed of non-stringify friendly keys/values.
    * @return {Object} Object ready to be JSON.stringified.
    */
-  sanitizeForJson: function(obj) {
-    var type, key;
-    for (key in obj) {
+  sanitizeForJson: function sanitizeForJson(obj) {
+    let type;
+    for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         try {
           type = typeof obj[key];
@@ -154,7 +151,7 @@ __class = lang.setObject('argos.Utility', {
           continue;
         }
 
-        switch (type) {
+        switch (type) {//eslint-disable-line
           case 'undefined':
             obj[key] = 'undefined';
             break;
@@ -181,13 +178,13 @@ __class = lang.setObject('argos.Utility', {
               if (typeof obj[key] === 'object') {
                 obj[key] = this.sanitizeForJson(obj[key]);
               }
-            } catch (e) {}
+            } catch (e) {}//eslint-disable-line
             break;
         }
       }
     }
     return obj;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Utility', __class);

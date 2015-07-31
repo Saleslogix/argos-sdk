@@ -7,7 +7,7 @@ import declare from 'dojo/_base/declare';
  * when a item is selected (added) or deselected (removed)
  * @alternateClassName SelectionModel
  */
-var __class = declare('argos.SelectionModel', null, {
+const __class = declare('argos.SelectionModel', null, {
   // Localization
   requireSelectionText: 'A selection is required, you cannot de-select the last item.',
 
@@ -45,7 +45,7 @@ var __class = declare('argos.SelectionModel', null, {
    * Initializes the selections to be empty and mixes the passed object overriding any default properties.
    * @param {Object} options The object to be mixed in.
    */
-  constructor: function(options) {
+  constructor: function constructor(options) {
     this.selections = {};
 
     lang.mixin(this, options);
@@ -53,13 +53,13 @@ var __class = declare('argos.SelectionModel', null, {
   /**
    * Prevents the firing of action events: onSelect, onDeselect, onClear
    */
-  suspendEvents: function() {
+  suspendEvents: function suspendEvents() {
     this._fireEvents = false;
   },
   /**
    * Enables the firing of action events:  onSelect, onDeselect, onClear
    */
-  resumeEvents: function() {
+  resumeEvents: function resumeEvents() {
     this._fireEvents = true;
   },
   /**
@@ -70,7 +70,7 @@ var __class = declare('argos.SelectionModel', null, {
    * @param self
    * @template
    */
-  onSelect: function(key, data, tag, self) {},
+  onSelect: function onSelect(/*key, data, tag, self*/) {},
   /**
    * Event that happens when an item is deselected/removed.
    * @param {String} key Unique identifier string
@@ -79,23 +79,23 @@ var __class = declare('argos.SelectionModel', null, {
    * @param self
    * @template
    */
-  onDeselect: function(key, data, tag, self) {},
+  onDeselect: function onDeselect(/*key, data, tag, self*/) {},
   /**
    * Event that happens when the store is cleared
    * @param self
    */
-  onClear: function(self) {},
+  onClear: function onClear(/*self*/) {},
   /**
    * Adds an item to the `selections` if it is not already stored.
    * @param {String} key Unique identifier string
    * @param {Object} data The item being selected
    * @param tag
    */
-  select: function(key, data, tag) {
+  select: function select(key, data, tag) {
     if (!this.selections.hasOwnProperty(key)) {
       this.selections[key] = {
         data: data,
-        tag: tag
+        tag: tag,
       };
       this.count++;
       if (this._fireEvents) {
@@ -110,7 +110,7 @@ var __class = declare('argos.SelectionModel', null, {
    * @param {Object} data The item being selected
    * @param tag
    */
-  toggle: function(key, data, tag) {
+  toggle: function toggle(key, data, tag) {
     if (this.isSelected(key)) {
       this.deselect(key);
     } else {
@@ -121,14 +121,14 @@ var __class = declare('argos.SelectionModel', null, {
    * Removes an item from the store
    * @param {String} key Unique identifier string that was given when the item was added
    */
-  deselect: function(key) {
+  deselect: function deslect(key) {
     if (this.requireSelection && this.count === 1) {
-      window.alert(this.requireSelectionText);
+      window.alert(this.requireSelectionText);//eslint-disable-line
       return;
     }
 
     if (this.selections.hasOwnProperty(key)) {
-      var selection = this.selections[key];
+      const selection = this.selections[key];
 
       delete this.selections[key];
       this.count--;
@@ -141,14 +141,12 @@ var __class = declare('argos.SelectionModel', null, {
   /**
    * Removes all items from the store
    */
-  clear: function() {
-    var original, key;
-
-    original = this.requireSelection;
+  clear: function clear() {
+    const original = this.requireSelection;
 
     if (this.clearAsDeselect) {
       this.requireSelection = false;
-      for (key in this.selections) {
+      for (const key in this.selections) {
         if (this.selections.hasOwnProperty(key)) {
           this.deselect(key);
         }
@@ -169,40 +167,32 @@ var __class = declare('argos.SelectionModel', null, {
    * @param {String} key Unique identifier string that was given when the item was added
    * @return {Boolean} True if the item is in the store.
    */
-  isSelected: function(key) {
+  isSelected: function isSelected(key) {
     return !!this.selections[key];
   },
   /**
    * Returns the number of items in the store
    * @return {Number} Current count of items
    */
-  getSelectionCount: function() {
+  getSelectionCount: function getSelectionCount() {
     return this.count;
   },
   /**
    * Returns all items in the store
    * @return {Object} The entire selection collection
    */
-  getSelections: function() {
+  getSelections: function getSelections() {
     return this.selections;
   },
   /**
    * Returns a list of unique identifier keys used in the selection collection
    * @return {String[]} All keys in the store
    */
-  getSelectedKeys: function() {
-    var keys,
-      key;
-
-    keys = [];
-    for (key in this.selections) {
-      if (this.selections.hasOwnProperty(key)) {
-        keys.push(key);
-      }
-    }
-
-    return keys;
-  }
+  getSelectedKeys: function getSelectedKeys() {
+    return Object.keys(this.selections).filter((key) => {
+      this.selections.hasOwnProperty(key);
+    });
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.SelectionModel', __class);
