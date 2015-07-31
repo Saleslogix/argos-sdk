@@ -31,8 +31,7 @@ import _RelatedWidgetEditMixin from './_RelatedViewWidgetEditMixin';
  * @requires argos._RelatedViewWidgetEditMixin
  * @mixins argos._RelatedViewWidgetEditMixin
  */
-var __class = declare('argos.Edit', [_EditBase, _SDataEditMixin, _RelatedWidgetEditMixin], {
-});
+var __class = declare('argos.Edit', [_EditBase, _SDataEditMixin, _RelatedWidgetEditMixin], {});
 
 lang.setObject('Sage.Platform.Mobile.Edit', __class);
 export default __class;

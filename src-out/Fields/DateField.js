@@ -76,7 +76,7 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
          *
          * `${0}` => Label
          */
-        invalidDateFormatErrorText: "Field '${0}' has Invalid date format.",
+    invalidDateFormatErrorText: 'Field \'${0}\' has Invalid date format.',
 
         /**
          * @property {Simplate}
@@ -136,9 +136,9 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
                 this.validationValue = this.currentValue = val;
                 _domClass['default'].remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
             } else {
-                    this.validationValue = this.currentValue = null;
-                    _domClass['default'].add(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
-                }
+	        this.validationValue = this.currentValue = null;
+		_domClass['default'].add(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+	    }
         },
         /**
          * Extends the parent {@link EditorField#createNavigationOptions createNavigationOptions} to
