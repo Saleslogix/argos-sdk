@@ -305,6 +305,11 @@ var __class = declare('argos._DetailBase', [View, TabWidget], {
      */
     titleText: 'Detail',
     /**
+     * @cfg {String}
+     * Default text used in the header title, followed by information
+     */
+    entityText: 'Entity',
+    /**
      * @property {String}
      * Helper string for a basic section header text
      */
@@ -478,11 +483,7 @@ var __class = declare('argos._DetailBase', [View, TabWidget], {
       * @private
       */
      placeDetailHeader: function() {
-         var value = this.resourceKind;
-         if (value.charAt(value.length - 1) === 's') {
-             value = value.slice(0, value.length - 1);
-         }
-         value = value.charAt(0).toUpperCase() + value.slice(1) + " " + this.informationText;
+         const value = this.entityText + " " + this.informationText;
          domConstruct.place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
      },
     /**

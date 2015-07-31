@@ -232,6 +232,11 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          */
         titleText: 'Detail',
         /**
+         * @cfg {String}
+         * Default text used in the header title, followed by information
+         */
+        entityText: 'Entity',
+        /**
          * @property {String}
          * Helper string for a basic section header text
          */
@@ -404,11 +409,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
          * @private
          */
         placeDetailHeader: function placeDetailHeader() {
-            var value = this.resourceKind;
-            if (value.charAt(value.length - 1) === 's') {
-                value = value.slice(0, value.length - 1);
-            }
-            value = value.charAt(0).toUpperCase() + value.slice(1) + " " + this.informationText;
+            var value = this.entityText + " " + this.informationText;
             _domConstruct['default'].place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
         },
         /**
