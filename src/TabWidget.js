@@ -220,7 +220,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
   positionFocusState: function positionFocusState(target) {
     const focusState = query('.animated-bar', this.id)[0];
 
-    if (focusState.length) {
+    if (focusState) {
       const posTop = target.offsetTop;
       const posLeft = target.offsetLeft;
       const width = parseInt(target.offsetWidth, 10);

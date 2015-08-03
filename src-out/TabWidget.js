@@ -207,7 +207,7 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     positionFocusState: function positionFocusState(target) {
       var focusState = (0, _query['default'])('.animated-bar', this.id)[0];
 
-      if (focusState.length) {
+      if (focusState) {
         var posTop = target.offsetTop;
         var posLeft = target.offsetLeft;
         var width = parseInt(target.offsetWidth, 10);
