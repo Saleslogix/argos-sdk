@@ -42,7 +42,7 @@ import FieldManager from '../FieldManager';
  * @extends argos.Fields._Field
  * @requires argos.FieldManager
  */
-var control = declare('argos.Fields.TextField', [_Field], {
+const control = declare('argos.Fields.TextField', [_Field], {
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:
@@ -53,8 +53,8 @@ var control = declare('argos.Fields.TextField', [_Field], {
     inputValue: {
       node: 'inputNode',
       type: 'attribute',
-      attribute: 'value'
-    }
+      attribute: 'value',
+    },
   },
   /**
    * @property {Simplate}
@@ -69,7 +69,7 @@ var control = declare('argos.Fields.TextField', [_Field], {
     '{% if ($.enableClearButton && !$.readonly) { %}',
     '<button class="clear-button" tabindex="-1" data-dojo-attach-point="clearNode" data-dojo-attach-event="onclick:_onClearClick"></button>',
     '{% } %}',
-    '<input data-dojo-attach-point="inputNode" tabindex="0" placeholder="{%: $.placeHolderText %}" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>'
+    '<input data-dojo-attach-point="inputNode" tabindex="0" placeholder="{%: $.placeHolderText %}" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>',
   ]),
   /**
    * @property {HTMLElement}
@@ -127,7 +127,7 @@ var control = declare('argos.Fields.TextField', [_Field], {
    * Extends the parent implementation to optionally bind the `onkeypress` event if `validInputOnly`
    * is true.
    */
-  init: function() {
+  init: function init() {
     this.inherited(arguments);
     if (this.validInputOnly) {
       this.connect(this.inputNode, 'onkeypress', this._onKeyPress);
@@ -136,19 +136,19 @@ var control = declare('argos.Fields.TextField', [_Field], {
   /**
    * Extends the parent implementation to set the disabled attribute of the input to false
    */
-  enable: function() {
+  enable: function enable() {
     this.inherited(arguments);
     domAttr.set(this.inputNode, 'disabled', false);
   },
   /**
    * Extends the parent implementation to set the disabled attribute of the input to true
    */
-  disable: function() {
+  disable: function disable() {
     this.inherited(arguments);
 
     domAttr.set(this.inputNode, 'disabled', true);
   },
-  focus: function() {
+  focus: function focus() {
     this.inputNode.focus();
   },
   /**
@@ -159,8 +159,8 @@ var control = declare('argos.Fields.TextField', [_Field], {
    * accepted, if validation fails the key press is rejected and the key is not entered.
    * @param {Event} evt
    */
-  _onKeyPress: function(evt) {
-    var v = this.getValue() + evt.keyChar;
+  _onKeyPress: function _onKeyPress(evt) {
+    const v = this.getValue() + evt.keyChar;
     if (this.validate(v)) {
       event.stop(evt);
       return false;
@@ -174,7 +174,7 @@ var control = declare('argos.Fields.TextField', [_Field], {
    *
    * @param {Event} evt
    */
-  _onKeyUp: function(evt) {
+  _onKeyUp: function _onKeyUp(evt) {
     if (this.validationTrigger === 'keyup') {
       this.onValidationTrigger(evt);
     }
@@ -190,7 +190,7 @@ var control = declare('argos.Fields.TextField', [_Field], {
    *
    * @param evt
    */
-  _onFocus: function(evt) {
+  _onFocus: function _onFocus(/*evt*/) {
     domClass.add(this.domNode, 'text-field-active');
   },
   /**
@@ -201,7 +201,7 @@ var control = declare('argos.Fields.TextField', [_Field], {
    *
    * @param {Event} evt
    */
-  _onBlur: function(evt) {
+  _onBlur: function _onBlur(evt) {
     if (this.validationTrigger === 'blur') {
       this.onValidationTrigger(evt);
     }
@@ -219,7 +219,7 @@ var control = declare('argos.Fields.TextField', [_Field], {
    *
    * @param {Event} evt
    */
-  _onClearClick: function(evt) {
+  _onClearClick: function _onClearClick(evt) {
     if (!domClass.contains(this.domNode, 'text-field-active')) {
       this.clearValue(true);
       event.stop(evt);
@@ -234,8 +234,8 @@ var control = declare('argos.Fields.TextField', [_Field], {
    * a direct setting of the value.
    * @param {Event} evt
    */
-  onNotificationTrigger: function(evt) {
-    var currentValue = this.getValue();
+  onNotificationTrigger: function onNotificationTrigger(/*evt*/) {
+    const currentValue = this.getValue();
 
     if (this.previousValue !== currentValue) {
       this.onChange(currentValue, this);
@@ -247,7 +247,7 @@ var control = declare('argos.Fields.TextField', [_Field], {
    * Immediately calls {@link _Field#validate validate} and adds the respective row styling.
    * @param {Event} evt
    */
-  onValidationTrigger: function(evt) {
+  onValidationTrigger: function onValidationTrigger(/*evt*/) {
     if (this.validate()) {
       domClass.add(this.containerNode, 'row-error');
     } else {
@@ -258,7 +258,7 @@ var control = declare('argos.Fields.TextField', [_Field], {
    * Returns the input nodes value
    * @return {String}
    */
-  getValue: function() {
+  getValue: function getValue() {
     return this.inputNode.value;
   },
   /**
@@ -267,17 +267,12 @@ var control = declare('argos.Fields.TextField', [_Field], {
    * @param {String} val Value to be set
    * @param {Boolean} initial True if the value is the default/clean value, false if it is a meant as a dirty value
    */
-  setValue: function(val, initial) {
+  setValue: function setValue(val = '', initial) {
     if (initial) {
       this.originalValue = val;
     }
 
     this.previousValue = false;
-
-    if (val === null || typeof val === 'undefined') {
-      val = '';
-    }
-
     this.set('inputValue', val);
   },
   /**
@@ -286,7 +281,7 @@ var control = declare('argos.Fields.TextField', [_Field], {
    * @param {String} val Value to be set
    * @param {Boolean} initial True if the value is the default/clean value, false if it is a meant as a dirty value
    */
-  setValueNoTrigger: function(val, initial) {
+  setValueNoTrigger: function setValueNoTrigger(val, initial) {
     this.setValue(val, initial);
     this.previousValue = this.getValue();
   },
@@ -295,18 +290,17 @@ var control = declare('argos.Fields.TextField', [_Field], {
    * @param {Boolean} asDirty If true it signifies the clearing is meant as destroying an
    * existing value and should then be detected as modified/dirty.
    */
-  clearValue: function(asDirty) {
-    var initial = asDirty !== true;
-
+  clearValue: function clearValue(asDirty) {
+    const initial = asDirty !== true;
     this.setValue('', initial);
   },
   /**
    * Determines if the value has been modified from the default/original state
    * @return {Boolean}
    */
-  isDirty: function() {
+  isDirty: function isDirty() {
     return (this.originalValue !== this.getValue());
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.TextField', control);

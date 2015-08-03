@@ -35,10 +35,10 @@ import FieldManager from '../FieldManager';
  * @extends argos.Fields.TextField
  * @requires argos.FieldManager
  */
-var control = declare('argos.Fields.HiddenField', [TextField], {
+const control = declare('argos.Fields.HiddenField', [TextField], {
   propertyTemplate: new Simplate([
     '<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
-    '</div>'
+    '</div>',
   ]),
 
   /**
@@ -50,15 +50,15 @@ var control = declare('argos.Fields.HiddenField', [TextField], {
    *
    */
   widgetTemplate: new Simplate([
-    '<input data-dojo-attach-point="inputNode" type="hidden">'
+    '<input data-dojo-attach-point="inputNode" type="hidden">',
   ]),
   /**
    * @deprecated
    */
-  bind: function() {
+  bind: function bind() {
     // call field's bind. we don't want event handlers for this.
     this.inherited(arguments);
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.HiddenField', control);

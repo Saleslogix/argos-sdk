@@ -111,10 +111,9 @@ define('argos/MainToolbar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
     /**
      * Event handler that fires when the toolbar title is clicked.
      */
-    onTitleClick: function onTitleClick() {}
+    onTitleClick: function onTitleClick() /*evt*/{}
   });
 
   _lang['default'].setObject('Sage.Platform.Mobile.MainToolbar', __class);
   module.exports = __class;
 });
-/*evt*/

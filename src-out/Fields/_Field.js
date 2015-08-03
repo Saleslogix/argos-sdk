@@ -225,7 +225,7 @@ define('argos/Fields/_Field', ['exports', 'module', 'dojo/_base/declare', 'dojo/
      * @param {Boolean} initial If true the value is meant to be the default/original/clean value.
      * @template
      */
-    setValue: function setValue(val, initial) {},
+    setValue: function setValue() /*val, initial*/{},
     /**
      * Each field type will need to implement this function to clear the value and visually.
      * @template
@@ -258,12 +258,11 @@ define('argos/Fields/_Field', ['exports', 'module', 'dojo/_base/declare', 'dojo/
         return false;
       }
 
-      var all, i, current, definition, result;
+      var all = _lang['default'].isArray(this.validator) ? this.validator : [this.validator];
 
-      all = _lang['default'].isArray(this.validator) ? this.validator : [this.validator];
-
-      for (i = 0; i < all.length; i++) {
-        current = all[i];
+      for (var i = 0; i < all.length; i++) {
+        var current = all[i];
+        var definition = undefined;
 
         if (current instanceof RegExp) {
           definition = {
@@ -277,13 +276,18 @@ define('argos/Fields/_Field', ['exports', 'module', 'dojo/_base/declare', 'dojo/
           definition = current;
         }
 
-        value = typeof value === 'undefined' ? this.getValue() : value;
+        var newValue = typeof value === 'undefined' ? this.getValue() : value;
 
-        result = typeof definition.fn === 'function' ? definition.fn.call(definition.scope || this, value, this, this.owner) : definition.test instanceof RegExp ? !definition.test.test(value) : false;
+        var result = false;
+        if (typeof definition.fn === 'function') {
+          result = definition.fn.call(definition.scope || this, newValue, this, this.owner);
+        } else if (definition.test instanceof RegExp) {
+          result = !definition.test.test(newValue);
+        }
 
         if (result) {
           if (definition.message) {
-            result = typeof definition.message === 'function' ? definition.message.call(definition.scope || this, value, this, this.owner) : _string['default'].substitute(definition.message, [value, this.name, this.label]);
+            result = typeof definition.message === 'function' ? definition.message.call(definition.scope || this, newValue, this, this.owner) : _string['default'].substitute(definition.message, [newValue, this.name, this.label]);
           }
 
           return result;
@@ -297,31 +301,31 @@ define('argos/Fields/_Field', ['exports', 'module', 'dojo/_base/declare', 'dojo/
      * @param {_Field} field The field itself
      * @template
      */
-    onEnable: function onEnable(field) {},
+    onEnable: function onEnable() /*field*/{},
     /**
      * Event that fires when the field is disabled
      * @param {_Field} field The field itself
      * @template
      */
-    onDisable: function onDisable(field) {},
+    onDisable: function onDisable() /*field*/{},
     /**
      * Event that fires when the field is shown
      * @param {_Field} field The field itself
      * @template
      */
-    onShow: function onShow(field) {},
+    onShow: function onShow() /*field*/{},
     /**
      * Event that fires when the field is hidden
      * @param {_Field} field The field itself
      * @template
      */
-    onHide: function onHide(field) {},
+    onHide: function onHide() /*field*/{},
     /**
      * Event that fires when the field is changed
      * @param {_Field} field The field itself
      * @template
      */
-    onChange: function onChange(value, field) {}
+    onChange: function onChange() /*value, field*/{}
   });
 
   _lang['default'].setObject('Sage.Platform.Mobile.Fields._Field', __class);

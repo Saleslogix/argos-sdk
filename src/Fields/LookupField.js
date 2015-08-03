@@ -45,7 +45,7 @@ import FieldManager from '../FieldManager';
  * @requires argos.FieldManager
  * @requires argos.Utility
  */
-var control = declare('argos.Fields.LookupField', [_Field], {
+const control = declare('argos.Fields.LookupField', [_Field], {
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:
@@ -59,18 +59,18 @@ var control = declare('argos.Fields.LookupField', [_Field], {
     inputValue: {
       node: 'inputNode',
       type: 'attribute',
-      attribute: 'value'
+      attribute: 'value',
     },
     inputDisabled: {
       node: 'inputNode',
       type: 'attribute',
-      attribute: 'disabled'
+      attribute: 'disabled',
     },
     inputReadOnly: {
       node: 'inputNode',
       type: 'attribute',
-      attribute: 'readonly'
-    }
+      attribute: 'readonly',
+    },
   },
   /**
    * @property {Simplate}
@@ -85,7 +85,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
     '<label for="{%= $.name %}">{%: $.label %}</label>',
     '{% } %}',
     '<button style="z-index: 5;" data-action="buttonClick" class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
-    '<input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />'
+    '<input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />',
   ]),
 
   iconClass: 'fa fa-search fa-lg',
@@ -250,7 +250,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * Extends init to connect to the click event, if the field is read only disable and
    * if require selection is false connect to onkeyup and onblur.
    */
-  init: function() {
+  init: function init() {
     this.inherited(arguments);
 
     this.connect(this.containerNode, 'onclick', this._onClick);
@@ -266,7 +266,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
   /**
    * Extends enable to also remove the disabled attribute
    */
-  enable: function() {
+  enable: function enable() {
     this.inherited(arguments);
 
     this.set('inputDisabled', false);
@@ -274,12 +274,12 @@ var control = declare('argos.Fields.LookupField', [_Field], {
   /**
    * Extends disable to also set the disabled attribute
    */
-  disable: function() {
+  disable: function disable() {
     this.inherited(arguments);
 
     this.set('inputDisabled', true);
   },
-  focus: function() {
+  focus: function focus() {
     if (!this.isReadOnly()) {
       this.inputNode.focus();
     }
@@ -288,16 +288,16 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * Determines if the field is readonly by checking for a target view
    * @return {Boolean}
    */
-  isReadOnly: function() {
+  isReadOnly: function isReadOnly() {
     return !this.view;
   },
   /**
    * Retrieves the value of the field named with `this.dependsOn`
    * @return {String/Object/Number/Boolean}
    */
-  getDependentValue: function() {
+  getDependentValue: function getDependentValue() {
     if (this.dependsOn && this.owner) {
-      var field = this.owner.fields[this.dependsOn];
+      const field = this.owner.fields[this.dependsOn];
       if (field) {
         return field.getValue();
       }
@@ -307,9 +307,9 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * Retrieves the label string of the field named with `this.dependsOn`
    * @return {String}
    */
-  getDependentLabel: function() {
+  getDependentLabel: function getDependentLabel() {
     if (this.dependsOn && this.owner) {
-      var field = this.owner.fields[this.dependsOn];
+      const field = this.owner.fields[this.dependsOn];
       if (field) {
         return field.label;
       }
@@ -320,12 +320,11 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * @param {String/Function} expression Returns string directly, if function it is called and the result returned.
    * @return {String} String expression.
    */
-  expandExpression: function(expression) {
+  expandExpression: function expandExpression(expression) {
     if (typeof expression === 'function') {
       return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-    } else {
-      return expression;
     }
+    return expression;
   },
   /**
    * Creates the options to be passed in navigation to the target view
@@ -345,14 +344,8 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * They will be passed the `dependsOn` field value (if defined).
    *
    */
-  createNavigationOptions: function() {
-    var options,
-      expand,
-      dependentValue,
-      item,
-      key;
-
-    options = {
+  createNavigationOptions: function createNavigationOptions() {
+    const options = {
       enableActions: false,
       selectionOnly: true,
       singleSelect: this.singleSelect,
@@ -370,23 +363,24 @@ var control = declare('argos.Fields.LookupField', [_Field], {
           id: 'complete',
           cls: 'fa fa-check fa-fw fa-lg',
           fn: this.complete,
-          scope: this
+          scope: this,
         }, {
           id: 'cancel',
           side: 'left',
           cls: 'fa fa-ban fa-fw fa-lg',
           fn: this.reui.back,
-          scope: this.reui
-        }]
-      }
+          scope: this.reui,
+        }],
+      },
     };
-    expand = ['resourceKind', 'resourcePredicate', 'where', 'previousSelections'];
-    dependentValue = this.getDependentValue();
+
+    const expand = ['resourceKind', 'resourcePredicate', 'where', 'previousSelections'];
+    const dependentValue = this.getDependentValue();
 
     if (options.singleSelect && options.singleSelectAction) {
-      for (key in options.tools.tbar) {
+      for (const key in options.tools.tbar) {
         if (options.tools.tbar.hasOwnProperty(key)) {
-          item = options.tools.tbar[key];
+          const item = options.tools.tbar[key];
           if (item.id === options.singleSelectAction) {
             item.cls = 'invisible';
           }
@@ -395,11 +389,11 @@ var control = declare('argos.Fields.LookupField', [_Field], {
     }
 
     if (this.dependsOn && !dependentValue) {
-      console.error(string.substitute(this.dependentErrorText, [this.getDependentLabel() || '']));
+      console.error(string.substitute(this.dependentErrorText, [this.getDependentLabel() || '']));//eslint-disable-line
       return false;
     }
 
-    array.forEach(expand, function(item) {
+    array.forEach(expand, function forEach(item) {
       if (this[item]) {
         options[item] = this.dependsOn // only pass dependentValue if there is a dependency
           ? this.expandExpression(this[item], dependentValue) : this.expandExpression(this[item]);
@@ -414,16 +408,16 @@ var control = declare('argos.Fields.LookupField', [_Field], {
   /**
    * Navigates to the `this.view` id passing the options created from {@link #createNavigationOptions createNavigationOptions}.
    */
-  navigateToListView: function() {
-    var view = this.app.getView(this.view),
-      options = this.createNavigationOptions();
+  navigateToListView: function navigateToListView() {
+    const view = this.app.getView(this.view);
+    const options = this.createNavigationOptions();
 
     if (view && options && !this.disabled) {
       lang.mixin(view, this.viewMixin);
       view.show(options);
     }
   },
-  buttonClick: function() {
+  buttonClick: function buttonClick() {
     this.navigateToListView();
   },
   /**
@@ -431,8 +425,8 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * field is not disabled.
    * @param evt
    */
-  _onClick: function(evt) {
-    var buttonNode = query(evt.target).closest('.button')[0];
+  _onClick: function _onClick(evt) {
+    const buttonNode = query(evt.target).closest('.button')[0];
 
     if (!this.isDisabled() && (buttonNode || this.requireSelection)) {
       event.stop(evt);
@@ -444,7 +438,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * `this.notificationTrigger` is `'keyup'`.
    * @param {Event} evt Click event
    */
-  _onKeyUp: function(evt) {
+  _onKeyUp: function _onKeyUp(evt) {
     if (!this.isDisabled() && this.notificationTrigger === 'keyup') {
       this.onNotificationTrigger(evt);
     }
@@ -454,7 +448,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * `this.notificationTrigger` is `'blur'`.
    * @param {Event} evt Blur event
    */
-  _onBlur: function(evt) {
+  _onBlur: function _onBlur(evt) {
     if (!this.isDisabled() && this.notificationTrigger === 'blur') {
       this.onNotificationTrigger(evt);
     }
@@ -467,8 +461,8 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    *
    * @param {Event} evt
    */
-  onNotificationTrigger: function(evt) {
-    var currentValue = this.getValue();
+  onNotificationTrigger: function onNotificationTrigger(/*evt*/) {
+    const currentValue = this.getValue();
 
     if (this.previousValue !== currentValue) {
       this.onChange(currentValue, this);
@@ -480,7 +474,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * Sets the displayed text of the field
    * @param {String} text
    */
-  setText: function(text) {
+  setText: function setText(text) {
     this.set('inputValue', text);
 
     this.previousValue = text;
@@ -489,7 +483,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * Returns the string text of the field (note, not the value of the field)
    * @return {String}
    */
-  getText: function() {
+  getText: function getText() {
     return this.inputNode.value;
   },
   /**
@@ -504,24 +498,22 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * fired and lastly {@link #_onComplete _onComplete} is called in a setTimeout due to bizarre
    * transition issues, namely in IE.
    */
-  complete: function() {
-    var view, selectionModel, selections, selectionCount, val, selectionKey;
-
-    view = this.app.getPrimaryActiveView();
-    selectionModel = view.get('selectionModel');
+  complete: function complete() {
+    const view = this.app.getPrimaryActiveView();
+    const selectionModel = view.get('selectionModel');
 
     if (view && selectionModel) {
-      selections = selectionModel.getSelections();
-      selectionCount = selectionModel.getSelectionCount();
+      const selections = selectionModel.getSelections();
+      const selectionCount = selectionModel.getSelectionCount();
 
       if (selectionCount === 0 && view.options.allowEmptySelection) {
         this.clearValue(true);
       }
 
       if (this.singleSelect) {
-        for (selectionKey in selections) {
+        for (const selectionKey in selections) {
           if (selections.hasOwnProperty(selectionKey)) {
-            val = selections[selectionKey].data;
+            const val = selections[selectionKey].data;
             this.setSelection(val, selectionKey);
             break;
           }
@@ -544,14 +536,14 @@ var control = declare('argos.Fields.LookupField', [_Field], {
   /**
    * Forces {@link #onChange onChange} to fire
    */
-  _onComplete: function() {
+  _onComplete: function _onComplete() {
     this.onChange(this.currentValue, this);
   },
   /**
    * Determines if the field has been altered from the default/template value.
    * @return {Boolean}
    */
-  isDirty: function() {
+  isDirty: function isDirty() {
     if (this.originalValue && this.currentValue) {
       if (this.originalValue.key !== this.currentValue.key) {
         return true;
@@ -578,7 +570,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
       }
     } else {
       if (!this.requireSelection && !this.textTemplate) {
-        var text = this.getText();
+        const text = this.getText();
         if (text && text.length > 0) {
           return true;
         }
@@ -591,7 +583,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * Returns the current selection that was set from the target list view.
    * @return {Object}
    */
-  getSelection: function() {
+  getSelection: function getSelection() {
     return this.currentSelection;
   },
   /**
@@ -599,13 +591,13 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * several other methods of getting it to that state.
    * @return {Object/String}
    */
-  getValue: function() {
-    var value = null,
-      text = this.getText() || '',
+  getValue: function getValue() {
+    let value = null;
+    const text = this.getText() || '';
       // if valueKeyProperty or valueTextProperty IS NOT EXPLICITLY set to false
       // and IS NOT defined use keyProperty or textProperty in its place.
-      keyProperty = this.valueKeyProperty !== false ? this.valueKeyProperty || this.keyProperty : false,
-      textProperty = this.valueTextProperty !== false ? this.valueTextProperty || this.textProperty : false;
+    const keyProperty = this.valueKeyProperty !== false ? this.valueKeyProperty || this.keyProperty : false;
+    const textProperty = this.valueTextProperty !== false ? this.valueTextProperty || this.textProperty : false;
 
     if (keyProperty || textProperty) {
       if (this.currentValue) {
@@ -652,7 +644,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * @param {Object[]} values
    * @return {Object/String}
    */
-  formatValue: function(values) {
+  formatValue: function formatValue(values) {
     return values;
   },
   /**
@@ -665,10 +657,10 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    *
    * @param {Object[]} values
    */
-  setSelections: function(values) {
+  setSelections: function setSelections(values) {
     this.currentValue = (this.formatValue) ? this.formatValue.call(this, values) : values;
 
-    var text = (this.textRenderer) ? this.textRenderer.call(this, values) : '';
+    const text = (this.textRenderer) ? this.textRenderer.call(this, values) : '';
 
     this.setText(text);
   },
@@ -685,22 +677,21 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * @param {Object} val Entire selection entry
    * @param {String} key data-key attribute of the selected row (typically $key from SData)
    */
-  setSelection: function(val, key) {
-    var text = utility.getValue(val, this.textProperty);
-
-    key = utility.getValue(val, this.keyProperty, val) || key; // if we can extract the key as requested, use it instead of the selection key
+  setSelection: function setSelection(val, key) {
+    let text = utility.getValue(val, this.textProperty);
+    const newKey = utility.getValue(val, this.keyProperty, val) || key; // if we can extract the key as requested, use it instead of the selection key
 
     if (text && this.textTemplate) {
       text = this.textTemplate.apply(text, this);
     } else if (this.textRenderer) {
-      text = this.textRenderer.call(this, val, key, text);
+      text = this.textRenderer.call(this, val, newKey, text);
     }
 
     this.currentSelection = val;
 
     this.currentValue = {
-      key: key || text,
-      text: text || key
+      key: newKey || text,
+      text: text || newKey,
     };
 
     this.setText(this.currentValue.text);
@@ -711,13 +702,13 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    * @param {Object/String} val Value to set
    * @param {Boolean} initial Dirty flag (true is clean)
    */
-  setValue: function(val, initial) {
+  setValue: function setValue(val, initial) {
     // if valueKeyProperty or valueTextProperty IS NOT EXPLICITLY set to false
     // and IS NOT defined use keyProperty or textProperty in its place.
-    var key,
-      text,
-      keyProperty = this.valueKeyProperty !== false ? this.valueKeyProperty || this.keyProperty : false,
-      textProperty = this.valueTextProperty !== false ? this.valueTextProperty || this.textProperty : false;
+    const keyProperty = this.valueKeyProperty !== false ? this.valueKeyProperty || this.keyProperty : false;
+    const textProperty = this.valueTextProperty !== false ? this.valueTextProperty || this.textProperty : false;
+    let key;
+    let text;
 
     if (typeof val === 'undefined' || val === null) {
       this.currentValue = false;
@@ -747,7 +738,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
       if (key || text) {
         this.currentValue = {
           key: key || text,
-          text: text || key
+          text: text || key,
         };
 
         if (initial) {
@@ -776,7 +767,7 @@ var control = declare('argos.Fields.LookupField', [_Field], {
 
       this.currentValue = {
         key: key || text,
-        text: text || key
+        text: text || key,
       };
 
       if (initial) {
@@ -793,11 +784,10 @@ var control = declare('argos.Fields.LookupField', [_Field], {
    *
    * @param {Boolean} flag
    */
-  clearValue: function(flag) {
-    var initial = flag !== true;
-
+  clearValue: function clearValue(flag) {
+    const initial = flag !== true;
     this.setValue(null, initial);
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.LookupField', control);

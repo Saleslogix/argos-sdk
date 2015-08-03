@@ -1,4 +1,4 @@
-define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/has', 'dojo/string', '../FieldManager', './TextField', '../Format', 'dojo/_base/sniff'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoHas, _dojoString, _FieldManager, _TextField, _Format, _dojo_baseSniff) {
+define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/has', '../FieldManager', './TextField', '../Format', 'dojo/_base/sniff'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoHas, _FieldManager, _TextField, _Format, _dojo_baseSniff) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -22,15 +22,11 @@ define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'd
 
   var _has = _interopRequireDefault(_dojoHas);
 
-  var _string = _interopRequireDefault(_dojoString);
-
   var _FieldManager2 = _interopRequireDefault(_FieldManager);
 
   var _TextField2 = _interopRequireDefault(_TextField);
 
   var _format = _interopRequireDefault(_Format);
-
-  var _sniff = _interopRequireDefault(_dojo_baseSniff);
 
   /**
    * @class argos.Fields.PhoneField
@@ -104,7 +100,8 @@ define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'd
      * Currently only calls parent implementation due to an [Android Bug](http://code.google.com/p/android/issues/detail?id=14519).
      * @param {Event} evt Keyup event
      */
-    _onKeyUp: function _onKeyUp(evt) {
+    _onKeyUp: function _onKeyUp() {
+      /*evt*/
       /*
       // temporarily removed: http://code.google.com/p/android/issues/detail?id=14519
       this.set('inputValue', format.phone(this.inputNode.value, this.getValue()));

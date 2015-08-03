@@ -1,11 +1,10 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import string from 'dojo/string';
 
 /**
  * @class argos.Groups._GroupSection
  */
-var __class = declare('argos.Groups._GroupBySection', null, {
+const __class = declare('argos.Groups._GroupBySection', null, {
   /**
    * @property {String}
    * The unique (within the current form) name of the field
@@ -23,14 +22,14 @@ var __class = declare('argos.Groups._GroupBySection', null, {
   groupByProperty: null,
   sortDirection: 'desc',
   sections: null,
-  constructor: function(o) {
+  constructor: function constructor(o) {
     lang.mixin(this, o);
   },
-  init: function() {},
-  getGroupSection: function(entry) {},
-  getOrderByQuery: function() {
+  init: function init() {},
+  getGroupSection: function getGroupSection(/*entry*/) {},
+  getOrderByQuery: function getOrderByQuery() {
     return this.groupByProperty + ' ' + this.sortDirection;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);

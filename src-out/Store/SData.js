@@ -93,7 +93,7 @@ define('argos/Store/SData', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         resourceProperty = _utility['default'].expand(this.scope || this, getOptions.resourceProperty || this.resourceProperty);
 
         if (id) {
-          resourcePredicate = /\s+/.test(id) ? id : _string['default'].substitute('\'${0}\'', [id]);
+          resourcePredicate = /\s+/.test(id) ? id : _string['default'].substitute("'${0}'", [id]);
         }
 
         if (resourceProperty) {

@@ -87,13 +87,12 @@ define('argos/Fields/BooleanField', ['exports', 'module', 'dojo/_base/declare', 
      * the opposite of the current value
      * @param {Event} evt The click/tap event
      */
-    _onClick: function _onClick(evt) {
+    _onClick: function _onClick() /*evt*/{
       if (this.isDisabled()) {
         return;
       }
 
       var toggledValue = !this.getValue();
-
       this.setValue(toggledValue);
     },
     /**
@@ -112,21 +111,21 @@ define('argos/Fields/BooleanField', ['exports', 'module', 'dojo/_base/declare', 
      * @param {Boolean} initial If true sets the value as the original value and is later used for dirty/modified detection.
      */
     setValue: function setValue(val, initial) {
-      val = typeof val === 'string' ? /^(true|t|0)$/i.test(val) : !!val;
+      var newVal = typeof val === 'string' ? /^(true|t|0)$/i.test(val) : !!val;
 
       if (initial) {
-        this.originalValue = val;
+        this.originalValue = newVal;
       }
 
-      _domAttr['default'].set(this.toggleNode, 'toggled', val);
+      _domAttr['default'].set(this.toggleNode, 'toggled', newVal);
 
-      if (val === false) {
+      if (newVal === false) {
         _domClass['default'].remove(this.toggleNode, 'toggleStateOn');
       } else {
         _domClass['default'].add(this.toggleNode, 'toggleStateOn');
       }
 
-      this.onChange(val, this);
+      this.onChange(newVal, this);
     },
     /**
      * Sets the value back to `this.checked` as the initial value. If true is passed it sets
@@ -135,7 +134,6 @@ define('argos/Fields/BooleanField', ['exports', 'module', 'dojo/_base/declare', 
      */
     clearValue: function clearValue(flag) {
       var initial = flag !== true;
-
       this.setValue(this.checked, initial);
     },
     /**

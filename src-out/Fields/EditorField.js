@@ -114,7 +114,7 @@ define('argos/Fields/EditorField', ['exports', 'module', 'dojo/_base/declare', '
      * @param val
      * @template
      */
-    formatValue: function formatValue(val) {
+    formatValue: function formatValue() /*val*/{
       return '';
     },
     /**
@@ -189,8 +189,8 @@ define('argos/Fields/EditorField', ['exports', 'module', 'dojo/_base/declare', '
         return;
       }
 
-      var view = App.getView(this.view),
-          options = this.createNavigationOptions();
+      var view = App.getView(this.view);
+      var options = this.createNavigationOptions();
 
       if (view && options) {
         if (options.title) {
@@ -216,8 +216,8 @@ define('argos/Fields/EditorField', ['exports', 'module', 'dojo/_base/declare', '
      * `this.validationValue`.
      */
     getValuesFromView: function getValuesFromView() {
-      var view = App.getPrimaryActiveView(),
-          values = view && view.getValues();
+      var view = App.getPrimaryActiveView();
+      var values = view && view.getValues();
 
       if (view && values) {
         if (this.applyTo) {
@@ -243,10 +243,7 @@ define('argos/Fields/EditorField', ['exports', 'module', 'dojo/_base/declare', '
      *
      */
     complete: function complete() {
-      var view, success;
-
-      view = App.getPrimaryActiveView();
-      success = true;
+      var view = App.getPrimaryActiveView();
 
       if (view instanceof argos.Edit) {
         view.hideValidationSummary();
@@ -264,16 +261,14 @@ define('argos/Fields/EditorField', ['exports', 'module', 'dojo/_base/declare', '
       // todo: remove
       if (view.isValid && !view.isValid()) {
         return;
-      } else {
-        ReUI.back();
       }
+
+      ReUI.back();
       // if the event is fired before the transition, any XMLHttpRequest created in an event handler and
       // executing during the transition can potentially fail (status 0).  this might only be an issue with CORS
       // requests created in this state (the pre-flight request is made, and the request ends with status 0).
       // wrapping thing in a timeout and placing after the transition starts, mitigates this issue.
-      if (success) {
-        setTimeout(this._onComplete.bind(this), 0);
-      }
+      setTimeout(this._onComplete.bind(this), 0);
     },
     /**
      * Handler for `_onComplete` which is fired after the user has completed the form in the editor view

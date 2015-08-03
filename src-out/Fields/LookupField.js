@@ -103,7 +103,7 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
      *
      * * `${0}` is the label text of the field
      */
-    dependentErrorText: 'A value for \'${0}\' must be selected.',
+    dependentErrorText: "A value for '${0}' must be selected.",
     /**
      * @cfg {String}
      * Text displayed when the field is cleared or set to null
@@ -329,9 +329,8 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
     expandExpression: function expandExpression(expression) {
       if (typeof expression === 'function') {
         return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-      } else {
-        return expression;
       }
+      return expression;
     },
     /**
      * Creates the options to be passed in navigation to the target view
@@ -352,9 +351,7 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
      *
      */
     createNavigationOptions: function createNavigationOptions() {
-      var options, expand, dependentValue, item, key;
-
-      options = {
+      var options = {
         enableActions: false,
         selectionOnly: true,
         singleSelect: this.singleSelect,
@@ -382,13 +379,14 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
           }]
         }
       };
-      expand = ['resourceKind', 'resourcePredicate', 'where', 'previousSelections'];
-      dependentValue = this.getDependentValue();
+
+      var expand = ['resourceKind', 'resourcePredicate', 'where', 'previousSelections'];
+      var dependentValue = this.getDependentValue();
 
       if (options.singleSelect && options.singleSelectAction) {
-        for (key in options.tools.tbar) {
+        for (var key in options.tools.tbar) {
           if (options.tools.tbar.hasOwnProperty(key)) {
-            item = options.tools.tbar[key];
+            var item = options.tools.tbar[key];
             if (item.id === options.singleSelectAction) {
               item.cls = 'invisible';
             }
@@ -397,11 +395,11 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
       }
 
       if (this.dependsOn && !dependentValue) {
-        console.error(_string['default'].substitute(this.dependentErrorText, [this.getDependentLabel() || '']));
+        console.error(_string['default'].substitute(this.dependentErrorText, [this.getDependentLabel() || ''])); //eslint-disable-line
         return false;
       }
 
-      _array['default'].forEach(expand, function (item) {
+      _array['default'].forEach(expand, function forEach(item) {
         if (this[item]) {
           options[item] = this.dependsOn // only pass dependentValue if there is a dependency
           ? this.expandExpression(this[item], dependentValue) : this.expandExpression(this[item]);
@@ -417,8 +415,8 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
      * Navigates to the `this.view` id passing the options created from {@link #createNavigationOptions createNavigationOptions}.
      */
     navigateToListView: function navigateToListView() {
-      var view = this.app.getView(this.view),
-          options = this.createNavigationOptions();
+      var view = this.app.getView(this.view);
+      var options = this.createNavigationOptions();
 
       if (view && options && !this.disabled) {
         _lang['default'].mixin(view, this.viewMixin);
@@ -469,7 +467,7 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
      *
      * @param {Event} evt
      */
-    onNotificationTrigger: function onNotificationTrigger(evt) {
+    onNotificationTrigger: function onNotificationTrigger() /*evt*/{
       var currentValue = this.getValue();
 
       if (this.previousValue !== currentValue) {
@@ -507,23 +505,21 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
      * transition issues, namely in IE.
      */
     complete: function complete() {
-      var view, selectionModel, selections, selectionCount, val, selectionKey;
-
-      view = this.app.getPrimaryActiveView();
-      selectionModel = view.get('selectionModel');
+      var view = this.app.getPrimaryActiveView();
+      var selectionModel = view.get('selectionModel');
 
       if (view && selectionModel) {
-        selections = selectionModel.getSelections();
-        selectionCount = selectionModel.getSelectionCount();
+        var selections = selectionModel.getSelections();
+        var selectionCount = selectionModel.getSelectionCount();
 
         if (selectionCount === 0 && view.options.allowEmptySelection) {
           this.clearValue(true);
         }
 
         if (this.singleSelect) {
-          for (selectionKey in selections) {
+          for (var selectionKey in selections) {
             if (selections.hasOwnProperty(selectionKey)) {
-              val = selections[selectionKey].data;
+              var val = selections[selectionKey].data;
               this.setSelection(val, selectionKey);
               break;
             }
@@ -602,13 +598,12 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
      * @return {Object/String}
      */
     getValue: function getValue() {
-      var value = null,
-          text = this.getText() || '',
-
+      var value = null;
+      var text = this.getText() || '';
       // if valueKeyProperty or valueTextProperty IS NOT EXPLICITLY set to false
       // and IS NOT defined use keyProperty or textProperty in its place.
-      keyProperty = this.valueKeyProperty !== false ? this.valueKeyProperty || this.keyProperty : false,
-          textProperty = this.valueTextProperty !== false ? this.valueTextProperty || this.textProperty : false;
+      var keyProperty = this.valueKeyProperty !== false ? this.valueKeyProperty || this.keyProperty : false;
+      var textProperty = this.valueTextProperty !== false ? this.valueTextProperty || this.textProperty : false;
 
       if (keyProperty || textProperty) {
         if (this.currentValue) {
@@ -690,20 +685,19 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
      */
     setSelection: function setSelection(val, key) {
       var text = _utility['default'].getValue(val, this.textProperty);
-
-      key = _utility['default'].getValue(val, this.keyProperty, val) || key; // if we can extract the key as requested, use it instead of the selection key
+      var newKey = _utility['default'].getValue(val, this.keyProperty, val) || key; // if we can extract the key as requested, use it instead of the selection key
 
       if (text && this.textTemplate) {
         text = this.textTemplate.apply(text, this);
       } else if (this.textRenderer) {
-        text = this.textRenderer.call(this, val, key, text);
+        text = this.textRenderer.call(this, val, newKey, text);
       }
 
       this.currentSelection = val;
 
       this.currentValue = {
-        key: key || text,
-        text: text || key
+        key: newKey || text,
+        text: text || newKey
       };
 
       this.setText(this.currentValue.text);
@@ -717,10 +711,10 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
     setValue: function setValue(val, initial) {
       // if valueKeyProperty or valueTextProperty IS NOT EXPLICITLY set to false
       // and IS NOT defined use keyProperty or textProperty in its place.
-      var key,
-          text,
-          keyProperty = this.valueKeyProperty !== false ? this.valueKeyProperty || this.keyProperty : false,
-          textProperty = this.valueTextProperty !== false ? this.valueTextProperty || this.textProperty : false;
+      var keyProperty = this.valueKeyProperty !== false ? this.valueKeyProperty || this.keyProperty : false;
+      var textProperty = this.valueTextProperty !== false ? this.valueTextProperty || this.textProperty : false;
+      var key = undefined;
+      var text = undefined;
 
       if (typeof val === 'undefined' || val === null) {
         this.currentValue = false;
@@ -798,7 +792,6 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
      */
     clearValue: function clearValue(flag) {
       var initial = flag !== true;
-
       this.setValue(null, initial);
     }
   });

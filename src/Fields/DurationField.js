@@ -48,7 +48,7 @@ import FieldManager from '../FieldManager';
  * @extends argos.Fields.LookupField
  * @requires argos.FieldManager
  */
-var control = declare('argos.Fields.DurationField', [LookupField], {
+const control = declare('argos.Fields.DurationField', [LookupField], {
   /**
    * Maps various attributes of nodes to setters.
    */
@@ -56,18 +56,18 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
     inputValue: {
       node: 'inputNode',
       type: 'attribute',
-      attribute: 'value'
+      attribute: 'value',
     },
     inputDisabled: {
       node: 'inputNode',
       type: 'attribute',
-      attribute: 'disabled'
+      attribute: 'disabled',
     },
     autoCompleteContent: {
       node: 'autoCompleteNode',
       type: 'attribute',
-      attribute: 'innerHTML'
-    }
+      attribute: 'innerHTML',
+    },
   },
   /**
    * @property {Simplate}
@@ -81,7 +81,7 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
     '<label for="{%= $.name %}">{%: $.label %}</label>',
     '<div class="autoComplete-watermark" data-dojo-attach-point="autoCompleteNode"></div>',
     '<button class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" data-dojo-attach-event="onclick:navigateToListView" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
-    '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>'
+    '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>',
   ]),
   iconClass: 'fa fa-ellipsis-h fa-lg',
 
@@ -107,7 +107,7 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
     60: 'hour(s)',
     1440: 'day(s)',
     10080: 'week(s)',
-    525960: 'year(s)'
+    525960: 'year(s)',
   },
   /**
    * @property {Boolean}
@@ -153,10 +153,10 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
   /**
    * Overrides the parent to skip the connections and alter the base capture RegExp's to account for localization
    */
-  init: function() {
+  init: function init() {
     // do not use lookups connects
 
-    var numberDecimalSeparator = Mobile.CultureInfo.numberFormat.numberDecimalSeparator;
+    const numberDecimalSeparator = Mobile.CultureInfo.numberFormat.numberDecimalSeparator;
 
     this.autoCompletePhraseRE = new RegExp(
       string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator])
@@ -172,17 +172,16 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * @param {Event} evt onkeyup
    * @private
    */
-  _onKeyUp: function(evt) {
-    var val = this.inputNode.value.toString(),
-      key,
-      match = this.autoCompletePhraseRE.exec(val);
+  _onKeyUp: function _onKeyUp(/*evt*/) {
+    const val = this.inputNode.value.toString();
+    const match = this.autoCompletePhraseRE.exec(val);
 
     if (!match || val.length < 1) {
       this.hideAutoComplete();
       return true;
     }
 
-    for (key in this.autoCompleteText) {
+    for (const key in this.autoCompleteText) {
       if (this.isWordMatch(match[2], this.autoCompleteText[key])) {
         this.currentKey = this.autoCompleteText[key];
         this.showAutoComplete(match[1] + this.autoCompleteText[key]);
@@ -204,26 +203,29 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * @param {String} word Second string to compare
    * @return {Boolean} True if they are equal.
    */
-  isWordMatch: function(val, word) {
-    if (val.length > word.length) {
-      val = val.slice(0, word.length);
+  isWordMatch: function isWordMatch(val, word) {
+    let newVal = val;
+    let newWord = word;
+
+    if (newVal.length > newWord.length) {
+      newVal = newVal.slice(0, newWord.length);
     } else {
-      word = word.slice(0, val.length);
+      newWord = newWord.slice(0, newVal.length);
     }
 
-    return val.toUpperCase() === word.toUpperCase();
+    return newVal.toUpperCase() === newWord.toUpperCase();
   },
   /**
    * Shows the auto-complete version of the phrase
    * @param {String} word Text to put in the autocomplete
    */
-  showAutoComplete: function(word) {
+  showAutoComplete: function showAutoComplete(word) {
     this.set('autoCompleteContent', word);
   },
   /**
    * Clears the autocomplete input
    */
-  hideAutoComplete: function() {
+  hideAutoComplete: function hideAutoComplete() {
     this.set('autoCompleteContent', '');
   },
   /**
@@ -232,11 +234,11 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * @return {Boolean}
    * @private
    */
-  _onBlur: function(evt) {
-    var val = this.inputNode.value.toString(),
-      match = this.autoCompleteValueRE.exec(val),
-      multiplier = this.getMultiplier(this.currentKey),
-      newValue = 0;
+  _onBlur: function _onBlur(/*evt*/) {
+    const val = this.inputNode.value.toString();
+    const match = this.autoCompleteValueRE.exec(val);
+    const multiplier = this.getMultiplier(this.currentKey);
+    let newValue = 0;
 
     if (val.length < 1) {
       return true;
@@ -253,8 +255,8 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * Returns the corresponding value in minutes to the passed key (currentKey)
    * @return {Number}
    */
-  getMultiplier: function(key) {
-    var k;
+  getMultiplier: function getMultiplier(key) {
+    let k;
     for (k in this.autoCompleteText) {
       if (this.autoCompleteText.hasOwnProperty(k) && key === this.autoCompleteText[k]) {
         break;
@@ -266,7 +268,7 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * Returns the current value in minutes
    * @return {Number}
    */
-  getValue: function() {
+  getValue: function getValue() {
     return this.currentValue;
   },
   /**
@@ -274,13 +276,14 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * @param {Number} val Number of minutes
    * @param init
    */
-  setValue: function(val, init) {
-    if (val === null || typeof val === 'undefined') {
-      val = 0;
+  setValue: function setValue(val = 0/*, init*/) {
+    let newVal = val;
+    if (newVal === null) {
+      newVal = 0;
     }
 
-    this.currentValue = val;
-    this.set('inputValue', this.textFormat(val));
+    this.currentValue = newVal;
+    this.set('inputValue', this.textFormat(newVal));
     this.hideAutoComplete();
   },
   /**
@@ -288,7 +291,7 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * @param val
    * @param {String/Number} key Number of minutes (will be converted via parseFloat)
    */
-  setSelection: function(val, key) {
+  setSelection: function setSelection(val, key) {
     this.setValue(parseFloat(key));
   },
   /**
@@ -297,15 +300,13 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * @param {Number} val Number of minutes
    * @return {String}
    */
-  textFormat: function(val) {
-    var stepValue,
-      finalUnit = 1,
-      key,
-      autoCompleteValues = this.autoCompleteText;
+  textFormat: function textFormat(val) {
+    let finalUnit = 1;
+    const autoCompleteValues = this.autoCompleteText;
 
-    for (key in autoCompleteValues) {
+    for (const key in autoCompleteValues) {
       if (autoCompleteValues.hasOwnProperty(key)) {
-        stepValue = parseInt(key, 10);
+        const stepValue = parseInt(key, 10);
         if (val === 0 && stepValue === 1) {
           this.currentKey = autoCompleteValues[key];
           break;
@@ -326,7 +327,7 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * @param {Number} to
    * @return {Number}
    */
-  convertUnit: function(val, to) {
+  convertUnit: function convertUnit(val, to) {
     return format.fixed(val / to, 2);
   },
   /**
@@ -334,8 +335,8 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * @param {Number} unit
    * @return {string}
    */
-  formatUnit: function(unit) {
-    var sval;
+  formatUnit: function formatUnit(unit) {
+    let sval;
     if (isNaN(unit)) {
       sval = '0';
     } else {
@@ -349,7 +350,7 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
           sval = string.substitute('${0}${1}${2}', [
             sval[0],
             Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.',
-            sval[1]
+            sval[1],
           ]);
         }
       }
@@ -361,8 +362,8 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * to true and data to `this.data`.
    * @return {Object} Navigation options object to be passed
    */
-  createNavigationOptions: function() {
-    var options = this.inherited(arguments);
+  createNavigationOptions: function createNavigationOptions() {
+    const options = this.inherited(arguments);
     options.hideSearch = true;
     options.data = this.expandExpression(this.data);
     return options;
@@ -371,18 +372,18 @@ var control = declare('argos.Fields.DurationField', [LookupField], {
    * Validets the field by verifying it matches one of the auto complete text.
    * @return {Boolean} False for no-errors, true for error.
    */
-  validate: function() {
-    var val = this.inputNode.value.toString(),
-      phraseMatch = this.autoCompletePhraseRE.exec(val);
+  validate: function validate() {
+    const val = this.inputNode.value.toString();
+    const phraseMatch = this.autoCompletePhraseRE.exec(val);
 
     if (!phraseMatch) {
       domClass.add(this.containerNode, 'row-error');
       return string.substitute(this.invalidDurationErrorText, [val]);
-    } else {
-      domClass.remove(this.containerNode, 'row-error');
-      return false;
     }
-  }
+
+    domClass.remove(this.containerNode, 'row-error');
+    return false;
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.DurationField', control);

@@ -66,23 +66,21 @@ define('argos/Fields/DecimalField', ['exports', 'module', 'dojo/_base/declare', 
      * @param {Number/String} val Value to be set
      */
     setValue: function setValue(val) {
-      var perc;
-
-      perc = this.getPrecision();
-      val = _Utility2['default'].roundNumberTo(parseFloat(val), perc);
-      val = val.toFixed(perc);
-      if (isNaN(val)) {
+      var perc = this.getPrecision();
+      var newVal = _Utility2['default'].roundNumberTo(parseFloat(val), perc);
+      newVal = newVal.toFixed(perc);
+      if (isNaN(newVal)) {
         if (perc === 0) {
-          val = '0';
+          newVal = '0';
         } else {
-          val = _string['default'].substitute('0${0}00', [Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.']);
+          newVal = _string['default'].substitute('0${0}00', [Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.']);
         }
       } else {
         if (perc !== 0) {
-          val = _string['default'].substitute('${0}${1}${2}', [parseInt(val, 10), Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.', val.substr(-perc)]);
+          newVal = _string['default'].substitute('${0}${1}${2}', [parseInt(newVal, 10), Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.', newVal.substr(-perc)]);
         }
       }
-      this.inherited(arguments, [val]);
+      this.inherited(arguments, [newVal]);
     },
     /**
      * Retrieves the value from the {@link TextField#getValue parent implementation} but before
@@ -100,7 +98,7 @@ define('argos/Fields/DecimalField', ['exports', 'module', 'dojo/_base/declare', 
      * @return {Number}
      */
     getPrecision: function getPrecision() {
-      var perc;
+      var perc = undefined;
       if (this.precision === 0) {
         perc = this.precision;
       } else {

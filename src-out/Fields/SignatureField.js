@@ -102,22 +102,17 @@ define('argos/Fields/SignatureField', ['exports', 'module', 'dojo/_base/declare'
      */
     createNavigationOptions: function createNavigationOptions() {
       var options = this.inherited(arguments);
-
       options.signature = this.signature;
-
       return options;
     },
     /**
      * Complete override that gets the editor view, gets the values and calls set value on the field
      */
     getValuesFromView: function getValuesFromView() {
-      var view, app, value;
-
-      app = this.app;
-
-      view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
+      var app = this.app;
+      var view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
       if (view) {
-        value = view.getValues();
+        var value = view.getValues();
         this.currentValue = this.validationValue = value;
         this.setValue(this.currentValue, false);
       }

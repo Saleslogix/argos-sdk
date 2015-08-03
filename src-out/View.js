@@ -112,7 +112,7 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
      * Called after toolBar layout is created;
      *
      */
-    onToolLayoutCreated: function onToolLayoutCreated() {},
+    onToolLayoutCreated: function onToolLayoutCreated() /*tools*/{},
     /**
      * Returns the tool layout that defines all toolbar items for the view
      * @return {Object} The toolbar layout
@@ -141,7 +141,9 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
      * Called once the first time the view is about to be transitioned to.
      * @deprecated
      */
-    load: function load() {},
+    load: function load() {
+      // todo: remove load entirely?
+    },
     /**
      * Called in {@link #show show()} before ReUI is invoked.
      * @param {Object} options Navigation options passed from the previous view.
@@ -163,32 +165,32 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
      * The onBeforeTransitionAway event.
      * @param self
      */
-    onBeforeTransitionAway: function onBeforeTransitionAway() {},
+    onBeforeTransitionAway: function onBeforeTransitionAway() /*self*/{},
     /**
      * The onBeforeTransitionTo event.
      * @param self
      */
-    onBeforeTransitionTo: function onBeforeTransitionTo() {},
+    onBeforeTransitionTo: function onBeforeTransitionTo() /*self*/{},
     /**
      * The onTransitionAway event.
      * @param self
      */
-    onTransitionAway: function onTransitionAway() {},
+    onTransitionAway: function onTransitionAway() /*self*/{},
     /**
      * The onTransitionTo event.
      * @param self
      */
-    onTransitionTo: function onTransitionTo() {},
+    onTransitionTo: function onTransitionTo() /*self*/{},
     /**
      * The onActivate event.
      * @param self
      */
-    onActivate: function onActivate() {},
+    onActivate: function onActivate() /*self*/{},
     /**
      * The onShow event.
      * @param self
      */
-    onShow: function onShow() {},
+    onShow: function onShow() /*self*/{},
     activate: function activate(tag, data) {
       // todo: use tag only?
       if (data && this.refreshRequiredFor(data.options)) {
@@ -320,7 +322,7 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
      * Returns the defined security.
      * @param access
      */
-    getSecurity: function getSecurity() {
+    getSecurity: function getSecurity() /*access*/{
       return this.security;
     }
   });
@@ -328,6 +330,3 @@ define('argos/View', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lan
   _lang['default'].setObject('Sage.Platform.Mobile.View', __class);
   module.exports = __class;
 });
-/*tools*/
-// todo: remove load entirely?
-/*self*/ /*self*/ /*self*/ /*self*/ /*self*/ /*self*/ /*access*/
