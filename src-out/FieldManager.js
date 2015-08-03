@@ -18,9 +18,7 @@ define('argos/FieldManager', ['exports', 'module', 'dojo/_base/lang'], function 
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
 
-  var store, __class;
-
-  store = {};
+  var store = {};
 
   /**
    * @class argos.FieldManager
@@ -29,7 +27,7 @@ define('argos/FieldManager', ['exports', 'module', 'dojo/_base/lang'], function 
    * @alternateClassName FieldManager
    * @singleton
    */
-  __class = _lang['default'].setObject('argos.FieldManager', {
+  var __class = _lang['default'].setObject('argos.FieldManager', {
     /**
      * @property {Object}
      * The type map that translates string type names to constructor functions

@@ -14,10 +14,7 @@
  */
 import lang from 'dojo/_base/lang';
 
-var store,
-  __class;
-
-store = {};
+const store = {};
 
 /**
  * @class argos.FieldManager
@@ -26,7 +23,7 @@ store = {};
  * @alternateClassName FieldManager
  * @singleton
  */
-__class = lang.setObject('argos.FieldManager', {
+const __class = lang.setObject('argos.FieldManager', {
   /**
    * @property {Object}
    * The type map that translates string type names to constructor functions
@@ -37,7 +34,7 @@ __class = lang.setObject('argos.FieldManager', {
    * @param {String} name Unique string name of field, will be what is used in Edit View layouts.
    * @param {Function} ctor Constructor function of field
    */
-  register: function(name, ctor) {
+  register: function register(name, ctor) {
     store[name] = ctor;
     return ctor;
   },
@@ -46,9 +43,9 @@ __class = lang.setObject('argos.FieldManager', {
    * @param name Unique name of field
    * @return {Function} Constructor for the given field type
    */
-  get: function(name) {
+  get: function get(name) {
     return store[name];
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.FieldManager', __class);
