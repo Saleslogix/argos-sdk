@@ -1,12 +1,12 @@
-module.exports = function(grunt) {
-    grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json')
-    });
+module.exports = function gruntFile(grunt) {
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+  });
 
-    // Load per-task config from separate files
-    grunt.loadTasks('grunt-tasks');
+  // Load per-task config from separate files
+  grunt.loadTasks('grunt-tasks');
 
-    // Register alias tasks
-    grunt.registerTask('test', ['babel', 'connect', 'jasmine:coverage']);
-    grunt.registerTask('default', ['test']);
+  // Register alias tasks
+  grunt.registerTask('test', ['babel', 'connect', 'jasmine:coverage']);
+  grunt.registerTask('default', ['test']);
 };
