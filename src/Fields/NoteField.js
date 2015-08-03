@@ -39,8 +39,7 @@ import FieldManager from '../FieldManager';
  * @extends argos.Fields.TextAreaField
  * @requires argos.FieldManager
  */
-var control = declare('argos.Fields.NoteField', [TextAreaField], {
-});
+var control = declare('argos.Fields.NoteField', [TextAreaField], {});
 
 lang.setObject('Sage.Platform.Mobile.Fields.NoteField', control);
 export default FieldManager.register('note', control);

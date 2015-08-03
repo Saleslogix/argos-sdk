@@ -16,41 +16,36 @@ import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
 import json from 'dojo/json';
 
-var nameToPathCache,
-    __class,
-    nameToPath;
+let __class;
+const nameToPathCache = {};
+const nameToPath = function nameToPath(name) {
+  if (typeof name !== 'string' || name === '.' || name === '') {
+    return []; // '', for compatibility
+  }
 
-nameToPathCache = {};
-nameToPath = function(name) {
-    var parts, path, i, match;
-
-    if (typeof name !== 'string' || name === '.' || name === '') {
-        return []; // '', for compatibility
-    }
-
-    if (nameToPathCache[name]) {
-        return nameToPathCache[name];
-    }
-
-    parts = name.split('.');
-    path = [];
-
-    for (i = 0; i < parts.length; i++) {
-        match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
-        if (match) {
-            path.push(match[1]);
-            if (/^\d+$/.test(match[2])) {
-                path.push(parseInt(match[2], 10));
-            } else {
-                path.push(match[2]);
-            }
-        } else {
-            path.push(parts[i]);
-        }
-    }
-
-    nameToPathCache[name] = path.reverse();
+  if (nameToPathCache[name]) {
     return nameToPathCache[name];
+  }
+
+  const parts = name.split('.');
+  const path = [];
+
+  for (let i = 0; i < parts.length; i++) {
+    const match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
+    if (match) {
+      path.push(match[1]);
+      if (/^\d+$/.test(match[2])) {
+        path.push(parseInt(match[2], 10));
+      } else {
+        path.push(match[2]);
+      }
+    } else {
+      path.push(parts[i]);
+    }
+  }
+
+  nameToPathCache[name] = path.reverse();
+  return nameToPathCache[name];
 };
 
 /**
@@ -60,138 +55,136 @@ nameToPath = function(name) {
  * @singleton
  */
 __class = lang.setObject('argos.Utility', {
-    /**
-     * Replaces a single `"` with two `""` for proper SData query expressions.
-     * @param {String} searchQuery Search expression to be escaped.
-     * @return {String}
-     */
-    escapeSearchQuery: function(searchQuery) {
-        return (searchQuery || '').replace(/"/g, '""');
-    },
-    memoize: function(fn, keyFn) {
-        var cache = {};
-        keyFn = keyFn || (function(value) {
-            return value;
-        });
+  /**
+   * Replaces a single `"` with two `""` for proper SData query expressions.
+   * @param {String} searchQuery Search expression to be escaped.
+   * @return {String}
+   */
+  escapeSearchQuery: function escapeSearchQuery(searchQuery) {
+    return (searchQuery || '').replace(/"/g, '""');
+  },
+  memoize: function memoize(fn, keyFn) {
+    const cache = {};
+    const _keyFn = keyFn || ((value) => {
+      return value;
+    });
 
-        return function() {
-            var key = keyFn.apply(this, arguments);
-            if (cache[key]) {
-                return cache[key];
-            } else {
-                cache[key] = fn.apply(this, arguments);
-                return cache[key];
-            }
-        };
-    },
-    getValue: function(o, name, defaultValue) {
-        var path, current, key;
+    return function cached() {
+      const key = _keyFn.apply(this, arguments);
+      if (cache[key]) {
+        return cache[key];
+      }
 
-        path = nameToPath(name).slice(0);
-        current = o;
-        while (current && path.length > 0) {
-            key = path.pop();
-            if (typeof current[key] !== 'undefined') {
-                current = current[key];
-            } else {
-                return typeof defaultValue !== 'undefined' ? defaultValue : null;
-            }
-        }
-        return current;
-    },
-    setValue: function(o, name, val) {
-        var current, path, key, next;
-
-        current = o;
-        path = nameToPath(name).slice(0);
-        while ((typeof current !== 'undefined') && path.length > 1) {
-            key = path.pop();
-            next = path[path.length - 1];
-            current = current[key] = (typeof current[key] !== 'undefined')
-                ? current[key]
-                : (typeof next === 'number')
-                    ? []
-                    : {};
-        }
-        if (typeof path[0] !== 'undefined') {
-            current[path[0]] = val;
-        }
-
-        return o;
-    },
-    expand: function(scope, expression) {
-        if (typeof expression === 'function') {
-            return expression.apply(scope, Array.prototype.slice.call(arguments, 2));
-        } else {
-            return expression;
-        }
-    },
-    roundNumberTo: function(number, precision) {
-        var k = Math.pow(10, precision);
-        return (Math.round(number * k) / k);
-    },
-    /**
-     * @function
-     * Utility function to join fields within a Simplate template.
-     */
-    joinFields: function(seperator, fields) {
-        var results;
-        results = array.filter(fields, function(item) {
-            return item !== null && typeof item !== 'undefined' && item !== '';
-        });
-
-        return results.join(seperator);
-    },
-    /**
-     * Sanitizes an Object so that JSON.stringify will work without errors by discarding non-stringable keys.
-     * @param {Object} obj Object to be cleansed of non-stringify friendly keys/values.
-     * @return {Object} Object ready to be JSON.stringified.
-     */
-    sanitizeForJson: function(obj) {
-        var type, key;
-        for (key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                try {
-                    type = typeof obj[key];
-                } catch(e) {
-                    delete obj[key];
-                    continue;
-                }
-
-                switch (type) {
-                    case 'undefined':
-                        obj[key] = 'undefined';
-                        break;
-
-                    case 'function':
-                        delete obj[key];
-                        break;
-
-                    case 'object':
-                        if (obj[key] === null) {
-                            obj[key] = 'null';
-                            break;
-                        }
-                        if (key === 'scope') {
-                            obj[key] = 'null';
-                            break;
-                        }
-                        obj[key] = this.sanitizeForJson(obj[key]);
-                        break;
-                    case 'string':
-                        try {
-                            obj[key] = json.parse(obj[key]);
-
-                            if (typeof obj[key] === 'object') {
-                                obj[key] = this.sanitizeForJson(obj[key]);
-                            }
-                        } catch(e) {}
-                        break;
-                }
-            }
-        }
-        return obj;
+      cache[key] = fn.apply(this, arguments);
+      return cache[key];
+    };
+  },
+  getValue: function getValue(o, name, defaultValue) {
+    const path = nameToPath(name).slice(0);
+    let current = o;
+    while (current && path.length > 0) {
+      const key = path.pop();
+      if (typeof current[key] !== 'undefined') {
+        current = current[key];
+      } else {
+        return typeof defaultValue !== 'undefined' ? defaultValue : null;
+      }
     }
+    return current;
+  },
+  setValue: function setValue(o, name, val) {
+    let current = o;
+    const path = nameToPath(name).slice(0);
+    while ((typeof current !== 'undefined') && path.length > 1) {
+      const key = path.pop();
+      const next = path[path.length - 1];
+      if (typeof current[key] !== 'undefined') {
+        current = current[key] = current[key];
+      } else if (typeof next === 'number') {
+        current = current[key] = [];
+      } else {
+        current = current[key] = {};
+      }
+    }
+
+    if (typeof path[0] !== 'undefined') {
+      current[path[0]] = val;
+    }
+
+    return o;
+  },
+  expand: function expand(scope, expression) {
+    if (typeof expression === 'function') {
+      return expression.apply(scope, Array.prototype.slice.call(arguments, 2));
+    }
+
+    return expression;
+  },
+  roundNumberTo: function roundNumberTo(number, precision) {
+    const k = Math.pow(10, precision);
+    return (Math.round(number * k) / k);
+  },
+  /**
+   * @function
+   * Utility function to join fields within a Simplate template.
+   */
+  joinFields: function joinFields(seperator, fields) {
+    const results = array.filter(fields, (item) => {
+      return item !== null && typeof item !== 'undefined' && item !== '';
+    });
+
+    return results.join(seperator);
+  },
+  /**
+   * Sanitizes an Object so that JSON.stringify will work without errors by discarding non-stringable keys.
+   * @param {Object} obj Object to be cleansed of non-stringify friendly keys/values.
+   * @return {Object} Object ready to be JSON.stringified.
+   */
+  sanitizeForJson: function sanitizeForJson(obj) {
+    let type;
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        try {
+          type = typeof obj[key];
+        } catch (e) {
+          delete obj[key];
+          continue;
+        }
+
+        switch (type) {//eslint-disable-line
+          case 'undefined':
+            obj[key] = 'undefined';
+            break;
+
+          case 'function':
+            delete obj[key];
+            break;
+
+          case 'object':
+            if (obj[key] === null) {
+              obj[key] = 'null';
+              break;
+            }
+            if (key === 'scope') {
+              obj[key] = 'null';
+              break;
+            }
+            obj[key] = this.sanitizeForJson(obj[key]);
+            break;
+          case 'string':
+            try {
+              obj[key] = json.parse(obj[key]);
+
+              if (typeof obj[key] === 'object') {
+                obj[key] = this.sanitizeForJson(obj[key]);
+              }
+            } catch (e) {}//eslint-disable-line
+            break;
+        }
+      }
+    }
+    return obj;
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Utility', __class);

@@ -36,29 +36,29 @@ import FieldManager from '../FieldManager';
  * @requires argos.FieldManager
  */
 var control = declare('argos.Fields.HiddenField', [TextField], {
-    propertyTemplate: new Simplate([
-        '<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
-        '</div>'
-    ]),
+  propertyTemplate: new Simplate([
+    '<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
+    '</div>'
+  ]),
 
-    /**
-     * @property {Simplate}
-     * Simplate that defines the fields HTML Markup
-     *
-     * * `$` => Field instance
-     * * `$$` => Owner View instance
-     *
-     */
-    widgetTemplate: new Simplate([
-        '<input data-dojo-attach-point="inputNode" type="hidden">'
-    ]),
-    /**
-     * @deprecated
-     */
-    bind: function() {
-        // call field's bind. we don't want event handlers for this.
-        this.inherited(arguments);
-    }
+  /**
+   * @property {Simplate}
+   * Simplate that defines the fields HTML Markup
+   *
+   * * `$` => Field instance
+   * * `$$` => Owner View instance
+   *
+   */
+  widgetTemplate: new Simplate([
+    '<input data-dojo-attach-point="inputNode" type="hidden">'
+  ]),
+  /**
+   * @deprecated
+   */
+  bind: function() {
+    // call field's bind. we don't want event handlers for this.
+    this.inherited(arguments);
+  }
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.HiddenField', control);
