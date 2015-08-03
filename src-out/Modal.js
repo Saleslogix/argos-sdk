@@ -1,4 +1,4 @@
-define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/_base/connect', 'dojo/dom-construct', 'dojo/dom-class', 'dojo/query', 'dijit/_Widget', 'argos/_Templated'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojo_baseConnect, _dojoDomConstruct, _dojoDomClass, _dojoQuery, _dijit_Widget, _argos_Templated) {
+define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/array', 'dojo/_base/lang', 'dojo/_base/connect', 'dojo/dom-construct', 'dojo/query', 'dijit/_Widget', 'argos/_Templated'], function (exports, module, _dojo_baseDeclare, _dojo_baseArray, _dojo_baseLang, _dojo_baseConnect, _dojoDomConstruct, _dojoQuery, _dijit_Widget, _argos_Templated) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -28,15 +28,13 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
 
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
 
-  var _lang = _interopRequireDefault(_dojo_baseLang);
+  var _array = _interopRequireDefault(_dojo_baseArray);
 
-  var _event = _interopRequireDefault(_dojo_baseEvent);
+  var _lang = _interopRequireDefault(_dojo_baseLang);
 
   var _connect = _interopRequireDefault(_dojo_baseConnect);
 
   var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
-
-  var _domClass = _interopRequireDefault(_dojoDomClass);
 
   var _query = _interopRequireDefault(_dojoQuery);
 
@@ -45,16 +43,18 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
   var _Templated2 = _interopRequireDefault(_argos_Templated);
 
   var __class = (0, _declare['default'])('argos.Modal', [_Widget2['default'], _Templated2['default']], {
-    widgetTemplate: new Simplate(['<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode"></div>']),
-    modalBackdropTemplate: new Simplate(['<div class="modal-backdrop" style="height: {%= $.parentHeight %}"></div>']),
+    widgetTemplate: new Simplate(['<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode">', '{%! $.modalToolbarTemplate %}', '</div>']),
+    modalBackdropTemplate: new Simplate(['<div class="modal-backdrop" style="height: {%= $.parentHeight %}">', '</div>']),
     pickListStartTemplate: new Simplate(['<ul class="picklist dropdown">']),
     pickListEndTemplate: new Simplate(['</ul>']),
-    pickListItemTemplate: new Simplate(['<li class="listItem">{%= $.item %}</li>']),
-    modalToolbarTemplate: new Simplate(['<div class="modal-toolbar">', '<div class="button tertiary">{%= $.cancelText %}</div>', '<div class="button tertiary">{%= $.confirmText %}</div>', '</div>']),
+    pickListItemTemplate: new Simplate(['<li class="listItem">', '{%= $.item %}', '</li>']),
+    modalToolbarTemplate: new Simplate(['<div class="modal-toolbar">', '{%! $.modalToolbarItemsTemplate %}', '</div>']),
+    modalToolbarItemsTemplate: new Simplate(['<div class="button tertiary" data-dojo-attach-point="cancelButton">{%= $.cancelText %}</div>', '<div class="button tertiary" data-dojo-attach-point="confirmButton">{%= $.confirmText %}</div>']),
 
     id: 'modal-template',
     _orientation: null,
     _parentNode: null,
+    _content: null,
     _contentObject: null,
     _backdrop: null,
     showBackdrop: true,
@@ -104,18 +104,27 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
       this.modalNode.style.visibility = 'visible';
       return this;
     },
+    confirm: function confirm() {
+      var data = [];
+      _array['default'].forEach(this._content, function getData(content) {
+        if (content) {
+          data.push(content.getContent());
+        }
+      }, this);
+      _connect['default'].publish('/app/Modal/confirm', data);
+      this.hideModal();
+      return this;
+    },
     emptyModal: function emptyModal() {
       _domConstruct['default'].empty(this.modalNode);
       return this;
     },
     hideModal: function hideModal() {
-      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
       this.toggleBackdrop().toggleParentScroll();
       this.modalNode.style.visibility = 'hidden';
       return this;
     },
-    noBackdrop: function noBackdrop() {
+    noBackdrop: function noBackDrop() {
       this.showBackdrop = false;
       return this;
     },
@@ -128,7 +137,7 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
           this._backdrop = _domConstruct['default'].toDom(this.modalBackdropTemplate.apply({ parentHeight: parentPanel.scrollHeight + 'px' }));
           this._backdrop.style.visibility = 'hidden';
           _domConstruct['default'].place(this._backdrop, parentPanel);
-          _connect['default'].connect(this._backdrop, "onclick", this, this.hideModal);
+          _connect['default'].connect(this._backdrop, 'onclick', this, this.hideModal);
         }
       }
       return this;
@@ -139,15 +148,22 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
       this._parentNode = parentPanel;
       this.placeBackdrop(parentPanel);
       this._orientation = _connect['default'].subscribe('/app/setOrientation', this, this.hideModal);
+      _connect['default'].connect(this.cancelButton, 'onclick', this, this.hideModal);
+      _connect['default'].connect(this.confirmButton, 'onclick', this, this.confirm);
       _domConstruct['default'].place(this.modalNode, parentPanel);
       return this;
     },
     setContent: function setContent() {
+      var content = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      this._content = content;
+      return this;
+    },
+    setContentObject: function setContentObject() {
       var object = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       this._contentObject = object;
-      _domConstruct['default'].place(object.domNode, this.modalNode);
-      _domConstruct['default'].place(this.modalToolbarTemplate.apply(this), this.modalNode);
+      _domConstruct['default'].place(object.domNode, this.modalNode, 'first');
       return this;
     },
     setContentOptions: function setContentOptions() {
@@ -159,11 +175,13 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
     setContentPicklist: function setContentPicklist() {
       var items = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var pickListStart = _domConstruct['default'].toDom(this.pickListStartTemplate.apply()),
-          pickListEnd = _domConstruct['default'].toDom(this.pickListEndTemplate.apply());
+      var pickListStart = _domConstruct['default'].toDom(this.pickListStartTemplate.apply());
+      var pickListEnd = _domConstruct['default'].toDom(this.pickListEndTemplate.apply());
 
       for (var item in items) {
-        _domConstruct['default'].place(this.pickListItemTemplate.apply(item, this), pickListStart);
+        if (item.value) {
+          _domConstruct['default'].place(this.pickListItemTemplate.apply(item, this), pickListStart);
+        }
       }
       _domConstruct['default'].place(pickListEnd, pickListStart);
       _domConstruct['default'].place(pickListStart, this.modalNode);
@@ -173,6 +191,9 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/la
       var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       this._contentObject.show(this._contentOptions || options);
+      if (this._contentObject.getContent) {
+        this.setContent(this._contentObject.getContent());
+      }
       return this;
     },
     showModal: function showModal() {

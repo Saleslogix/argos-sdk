@@ -98,9 +98,9 @@ var control = declare('argos.Fields.DateField', [EditorField], {
    * where it controls the the conversion to/from UTC and setting the hour:min:sec to 00:00:05.
    */
   timeless: false,
-    modal: null,
-    dateTimePicker: null,
-    _calendarListener: null,
+  modal: null,
+  dateTimePicker: null,
+  _modalListener: null,
   /**
    * Takes a date object and calls {@link format#date format.date} passing the current
    * `dateFormatText` and `timeless` values, formatting the date into a string representation.
@@ -152,13 +152,12 @@ var control = declare('argos.Fields.DateField', [EditorField], {
       domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
     }
   },
-    getValuesFromModal: function(date = {}) {
-        if (this.modal) {
-            this.currentValue = this.validationValue = date.date;
-            this.modal.hideModal();
-            this.inputNode.value = this.formatValue(this.currentValue);
-        }
-    },
+  getValuesFromModal: function getValuesFromModal(data = {}) {
+    if (this.modal) {
+      this.currentValue = this.validationValue = data.date;
+      this.inputNode.value = this.formatValue(this.currentValue);
+    }
+  },
   /**
    * Determines if the current value has been modified from the original value.
    * @return {Boolean}
@@ -174,28 +173,27 @@ var control = declare('argos.Fields.DateField', [EditorField], {
     this.inherited(arguments);
     domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
   },
-    showModal: function(params) {
+  showModal: function showModal(params) {
+    if (this.isDisabled()) {
+      return;
+    }
 
-      if (this.isDisabled()) {
-          return;
-      }
+    if (!this.modal) {
+      const options = this.createNavigationOptions();
+      this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal', isModal: true });
+      this.modal = new Modal({ id: 'date-time-modal' });
+      this.modal.placeModal(this.domNode.offsetParent)
+                .setContentObject(this.dateTimePicker)
+                .setContentOptions(options);
+      this._modalListener = connect.subscribe('/app/Modal/confirm', this, this.getValuesFromModal);
+    }
 
-      if (!this.modal) {
-        let options = this.createNavigationOptions();
-        this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal', isModal: true });
-        this.modal = new Modal({ id: 'date-time-modal' });
-        this.modal.placeModal(this.domNode.offsetParent)
-                  .setContent(this.dateTimePicker)
-                  .setContentOptions(options);
-        this._calendarListener = connect.subscribe('/app/Calendar/changeDay', this, this.getValuesFromModal);
-      }
-
-      this.modal.showModal(params.$source);
-    },
-   _onClick: function(evt) {
-       event.stop(evt);
-       this.showModal(params = {$source: evt.target});
-   },
+    this.modal.showModal(params.$source);
+  },
+  _onClick: function(evt) {
+     event.stop(evt);
+     this.showModal(params = {$source: evt.target});
+  },
   /**
    * Extends the parent {@link EditorField#validate validate} with a check that makes sure if
    * the user has inputted a date manually into the input field that it had successfully validated

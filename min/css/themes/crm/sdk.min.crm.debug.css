@@ -728,6 +728,51 @@ body > .viewContainer > .dialog {
   float: left;
   margin: 2px 0 0 0px;
 }
+.modal {
+  visibility: hidden;
+  position: absolute;
+  background-color: #f8f8f8;
+  z-index: 100;
+  overflow: scroll;
+  padding: 0 15px;
+}
+.modal .button {
+  background-color: transparent;
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  height: 44px;
+  line-height: 44px;
+  min-width: 100px;
+  width: 50%;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  padding: 0;
+}
+.modal .tertiary {
+  color: #368ac0;
+  transition: 0.2s background-color ease;
+  -webkit-transition: 0.2s background-color ease;
+  -moz-transition: 0.2s background-color ease;
+  -ms-transition: 0.2s background-color ease;
+}
+.modal .modal-toolbar {
+  margin-top: 5px;
+  border-top: 1px solid #999999;
+}
+.modal-backdrop {
+  visibility: hidden;
+  background-color: #ebebeb;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  opacity: 0.7;
+  z-index: 99;
+}
 .no-data {
   text-align: center;
 }
@@ -1788,9 +1833,6 @@ body > .viewContainer > .toolbar,
   float: right;
   margin-left: 2px;
 }
-.calendar {
-  padding: 0 15px;
-}
 .calendar-header {
   min-height: 70px;
   border-bottom: 1px solid #c8cbd4;
@@ -1865,24 +1907,10 @@ body > .viewContainer > .toolbar,
   padding-top: 10px;
   display: inline-block;
 }
-.calendar-footer .button {
-  background-color: transparent;
-  border: none;
-  font-size: 14px;
-  font-weight: bold;
-  text-transform: uppercase;
-  text-align: center;
-  text-decoration: none;
-  height: 34px;
-  line-height: 34px;
-  min-width: 100px;
-  width: auto;
-  overflow: hidden;
-  position: relative;
-}
 .calendar-footer .tertiary {
   padding: 0 10px;
   border-radius: 18px;
+  border: 0;
   box-shadow: none;
   color: #50535a;
 }
@@ -1898,6 +1926,21 @@ body > .viewContainer > .toolbar,
 }
 .calendar-footer .clear {
   float: left;
+  color: #368ac0;
+}
+.time-select .dropdown {
+  width: 75px;
+  display: inline-block;
+}
+.time-select .dropdown > span {
+  position: absolute;
+  color: #383838;
+  margin-top: 10px;
+  margin-left: -15px;
+}
+.time-select .tertiary {
+  height: 44px;
+  line-height: 44px;
 }
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome

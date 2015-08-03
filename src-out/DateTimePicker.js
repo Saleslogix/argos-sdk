@@ -36,7 +36,7 @@ define('argos/DateTimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo
   var _TimePicker2 = _interopRequireDefault(_TimePicker);
 
   var __class = (0, _declare['default'])('argos.DateTimePicker', [_Widget2['default'], _Templated2['default']], {
-    widgetTemplate: new Simplate(['<div class="datetime-select" data-dojo-attach-point="dateTimeNode"></div>']),
+    widgetTemplate: new Simplate(['<div class="datetime-select" data-dojo-attach-point="dateTimeNode">', '</div>']),
 
     _calendarNode: null,
     _timeSelectNode: null,
@@ -44,6 +44,9 @@ define('argos/DateTimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo
 
     init: function init() {
       this.inherited(arguments);
+    },
+    getContent: function getContent() {
+      return [this._calendarNode, this._timeSelectNode];
     },
     show: function show() {
       var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];

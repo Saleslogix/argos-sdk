@@ -1,4 +1,4 @@
-define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dijit/_Widget', 'argos/_Templated', './Modal'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dijit_Widget, _argos_Templated, _Modal) {
+define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/dom-attr', 'dojo/dom-class', 'dijit/_Widget', 'argos/_Templated', './Modal'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoDomAttr, _dojoDomClass, _dijit_Widget, _argos_Templated, _Modal) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -25,6 +25,10 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
 
+  var _domAttr = _interopRequireDefault(_dojoDomAttr);
+
+  var _domClass = _interopRequireDefault(_dojoDomClass);
+
   var _Widget2 = _interopRequireDefault(_dijit_Widget);
 
   var _Templated2 = _interopRequireDefault(_argos_Templated);
@@ -38,7 +42,7 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
     meridiemSelectTemplate: new Simplate(['<div class="toggle toggle-horizontal meridiem-field" data-action="toggleMeridiem" data-dojo-attach-point="meridiemNode">', '<span class="thumb horizontal"></span>', '<span class="toggleOn">{%= $.amText %}</span>', '<span class="toggleOff">{%= $.pmText %}</span>', '</div>']),
     listStartTemplate: new Simplate(['<ul class="list">']),
     listEndTemplate: new Simplate(['</ul>']),
-    listItemTemplate: new Simplate(['<li class="list-item">{%= $.value }</li>']),
+    listItemTemplate: new Simplate(['<li class="list-item">', '{%= $.value }', '</li>']),
 
     amText: 'AM',
     pmText: 'PM',
@@ -53,13 +57,16 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
 
     createHourModal: function createHourModal() {
       this._hourModal = new _Modal2['default']({ id: 'hour-modal', showBackdrop: false, positioning: 'right' });
-      this._hourModal.placeModal(this.domNode).setContentPicklist(hourValues);
+      this._hourModal.placeModal(this.domNode).setContentPicklist(this.hourValues);
       return this;
     },
     createMinuteModal: function createMinuteModal() {
       this._minuteModal = new _Modal2['default']({ id: 'minute-modal', showBackdrop: false, positioning: 'right' });
-      this._minuteModal.placeModal(this.domNode).setContentPicklist(minuteValues);
+      this._minuteModal.placeModal(this.domNode).setContentPicklist(this.minuteValues);
       return this;
+    },
+    getContent: function getContent() {
+      return this.timeValue;
     },
     init: function init() {
       this.inherited(arguments);
@@ -69,7 +76,7 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
       if (!this._isTimeless()) {
         this.timeValue.hours = parseInt(this.hourNode.value, 10);
         this.timeValue.minutes = parseInt(this.minuteNode.value, 10);
-        this.timeValue.isPM = this.is24hrTimeFormat ? 11 < hours : domAttr.get(this.meridiemNode, 'toggled') !== true;
+        this.timeValue.isPM = this.is24hrTimeFormat ? this.timeValue.hours > 11 : _domAttr['default'].get(this.meridiemNode, 'toggled') !== true;
 
         this.timeValue.hours = this.timeValue.isPM ? this.timeValue.hours % 12 + 12 : this.timeValue.hours % 12;
       }
@@ -83,12 +90,12 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
     toggleMeridiem: function toggleMeridiem() {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var el = params.$source,
-          toggledValue = el && domAttr.get(el, 'toggled') !== true;
+      var el = params.$source;
 
       if (el) {
-        domClass.toggle(el, 'toggleStateOn');
-        domAttr.set(el, 'toggled', toggledValue);
+        var toggledValue = el && _domAttr['default'].get(el, 'toggled') !== true;
+        _domClass['default'].toggle(el, 'toggleStateOn');
+        _domAttr['default'].set(el, 'toggled', toggledValue);
       }
     },
     toggleMinutes: function toggleMinutes() {

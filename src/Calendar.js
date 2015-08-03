@@ -19,23 +19,19 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import connect from 'dojo/_base/connect';
 import query from 'dojo/query';
-import string from 'dojo/string';
-import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
-import domStyle from 'dojo/dom-style';
 import View from 'argos/View';
 import moment from 'moment';
 
-var __class = declare('argos.Calendar', [View], {
+const __class = declare('argos.Calendar', [View], {
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" class="calendar panel">',
       '{%! $.calendarHeaderTemplate %}',
       '{%! $.calendarTableTemplate %}',
       '{%! $.calendarFooterTemplate %}',
-    '</div>'
+    '</div>',
   ]),
   calendarHeaderTemplate: new Simplate([
     '<div class="calendar-header">',
@@ -43,7 +39,7 @@ var __class = declare('argos.Calendar', [View], {
       '<span class="month" data-dojo-attach-point="monthNode"></span>',
       '<span class="year" data-dojo-attach-point="yearNode"></span>',
       '<span class="fa fa-angle-right" data-action="incrementMonth"></span>',
-    '</div>'
+    '</div>',
   ]),
   calendarTableTemplate: new Simplate([
      '<table class="calendar-table">',
@@ -51,22 +47,24 @@ var __class = declare('argos.Calendar', [View], {
         '{%! $.calendarWeekDaysTemplate %}',
       '</thead>',
       '<tbody data-dojo-attach-point="weeksNode"></tbody>',
-     '</table>'
+     '</table>',
   ]),
   calendarFooterTemplate: new Simplate([
     '<div class="calendar-footer">',
       '<div class="button tertiary clear" data-action="clearCalendar" data-dojo-attach-point="clearButton">{%= $.clearText %}</div>',
       '<div class="button tertiary toToday" data-action="goToToday" data-dojo-attach-point="todayButton">{%= $.todayText %}</div>',
-    '</div>'
+    '</div>',
   ]),
   calendarTableDayTemplate: new Simplate([
-    '<td class="day {%= $.month %} {%= $.weekend %} {%= $.selected %} {%= $.isToday %}" data-action="changeDay" data-date="{%= $.date %}">{%= $.day %}</td>'
+    '<td class="day {%= $.month %} {%= $.weekend %} {%= $.selected %} {%= $.isToday %}" data-action="changeDay" data-date="{%= $.date %}">',
+      '{%= $.day %}',
+    '</td>',
   ]),
   calendarTableWeekStartTemplate: new Simplate([
-    '<tr class="calendar-week">'
+    '<tr class="calendar-week">',
   ]),
   calendarTableWeekEndTemplate: new Simplate([
-    '</tr>'
+    '</tr>',
   ]),
   calendarWeekDaysTemplate: new Simplate([
     '<tr class="calendar-weekdays">',
@@ -77,11 +75,11 @@ var __class = declare('argos.Calendar', [View], {
       '<th>{%= $.weekDaysShortText[4] %}</th>',
       '<th>{%= $.weekDaysShortText[5] %}</th>',
       '<th>{%= $.weekDaysShortText[6] %}</th>',
-    '</tr>'
+    '</tr>',
   ]),
   timePickTemplate: new Simplate([
     '<div class="time-picker">',
-    '</div>'
+    '</div>',
   ]),
 
   // Localization
@@ -102,7 +100,7 @@ var __class = declare('argos.Calendar', [View], {
       'Sep',
       'Oct',
       'Nov',
-      'Dec'
+      'Dec',
   ],
   weekDaysShortText: [
       'Su',
@@ -111,7 +109,7 @@ var __class = declare('argos.Calendar', [View], {
       'We',
       'Th',
       'Fr',
-      'Sa'
+      'Sa',
   ],
 
   id: 'generic_calendar',
@@ -121,12 +119,12 @@ var __class = declare('argos.Calendar', [View], {
   // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
   date: null,
 
-  changeDay: function(params) {
+  changeDay: function changeDay(params) {
     // TODO: Need to register this event to dojo/connect so that the activity feed and then change based on the date chosen.
     const selected = query('.selected', this.weeksNode)[0];
 
     if (selected) {
-        domClass.remove(selected, 'selected');
+      domClass.remove(selected, 'selected');
     }
 
     domClass.add(params.$source, 'selected');
@@ -140,19 +138,19 @@ var __class = declare('argos.Calendar', [View], {
       this.refreshCalendar(this.date);
     }
 
-    connect.publish('/app/Calendar/changeDay', this.date);
+    return this;
   },
-  changeMonthShown: function({ month }) {
+  changeMonthShown: function changeMonthShown({ month }) {
     domConstruct.empty(this.monthNode);
     this.monthNode.innerHTML = month;
     return this;
   },
-  changeYearShown: function({ year }) {
+  changeYearShown: function changeYearShown({ year }) {
     domConstruct.empty(this.yearNode);
-    this.yearNode.innerHTML = " " + year;
+    this.yearNode.innerHTML = ' ' + year;
     return this;
   },
-  checkAndRenderDay: function(data = {}) {
+  checkAndRenderDay: function checkAndRenderDay(data = {}) {
     const dayIndexer = data.day + data.startingDay - 1;
     if (data.day === data.todayMoment.date() && data.todayMoment.month() === data.dateMoment.month()) {
       data.isToday = 'isToday';
@@ -167,53 +165,56 @@ var __class = declare('argos.Calendar', [View], {
     data.date = data.dateMoment.date(data.day).format('YYYY-MM-DD');
     domConstruct.place(this.calendarTableDayTemplate.apply(data, this), data.week);
   },
-  clearCalendar: function(params = {}) {
+  clearCalendar: function clearCalendar() {
     const selected = query('.selected', this.weeksNode)[0];
 
     if (selected) {
-        domClass.remove(selected, 'selected');
-        domClass.add(this.todayButton, 'selected');
+      domClass.remove(selected, 'selected');
+      domClass.add(this.todayButton, 'selected');
     }
     this.date.selectedDateMoment = null;
   },
-  decrementMonth: function(params) {
+  decrementMonth: function decrementMonth() {
     this.date.selectedDateMoment.subtract({ months: 1 });
     this.refreshCalendar(this.date);
   },
-  goToToday: function(params = {}) {
+  getContent: function getContent() {
+    return this.date;
+  },
+  goToToday: function goToToday() {
     domClass.remove(this.todayButton, 'selected');
     this.date.selectedDateMoment = this.date.todayMoment.clone();
     this.refreshCalendar(this.date);
   },
-  incrementMonth: function(params) {
+  incrementMonth: function incrementMonth() {
     this.date.selectedDateMoment.add({ months: 1 });
     this.refreshCalendar(this.date);
   },
-  init: function() {
+  init: function init() {
     this.inherited(arguments);
   },
-  refreshCalendar: function(date = {}) {
+  refreshCalendar: function refreshCalendar(date = {}) {
     domConstruct.empty(this.weeksNode);
     this.renderCalendar(date)
         .changeMonthShown(date)
         .changeYearShown(date);
   },
-  renderCalendar: function({ todayMoment, selectedDateMoment }) {
-    const daysInMonth = selectedDateMoment.daysInMonth(),
-          startingDay = selectedDateMoment.clone().startOf('month').day(),
-          endPrevMonth = selectedDateMoment.clone().startOf('month').subtract({ days: startingDay }),
-          startNextMonth = selectedDateMoment.clone().endOf('month').add({ days: 1 }),
-          data = {
-            todayMoment,
-            selectedDateMoment,
-            dateMoment: endPrevMonth.clone(),
-            week: domConstruct.toDom(this.calendarTableWeekStartTemplate.apply()),
-            startingDay: endPrevMonth.clone().startOf('month').day(),
-            weekEnds: {
-              Sunday: 0,
-              Saturday: 6,
-            },
-          };
+  renderCalendar: function renderCalendar({ todayMoment, selectedDateMoment }) {
+    const daysInMonth = selectedDateMoment.daysInMonth();
+    const startingDay = selectedDateMoment.clone().startOf('month').day();
+    const endPrevMonth = selectedDateMoment.clone().startOf('month').subtract({ days: startingDay });
+    const startNextMonth = selectedDateMoment.clone().endOf('month').add({ days: 1 });
+    const data = {
+      todayMoment,
+      selectedDateMoment,
+      dateMoment: endPrevMonth.clone(),
+      week: domConstruct.toDom(this.calendarTableWeekStartTemplate.apply()),
+      startingDay: endPrevMonth.clone().startOf('month').day(),
+      weekEnds: {
+        Sunday: 0,
+        Saturday: 6,
+      },
+    };
 
     // Iterate through the days that are in the start week of the current month but are in the previous month
     for (let day = endPrevMonth.date(); day < endPrevMonth.date() + startingDay; day++) {
@@ -266,32 +267,32 @@ var __class = declare('argos.Calendar', [View], {
 
     return this;
   },
-  setDateObject: function(dateMoment = {}) {
+  setDateObject: function setDateObject(dateMoment = {}) {
     this.date.day = dateMoment.date();
-    this.date.month = dateMoment.format("MMMM");
+    this.date.month = dateMoment.format('MMMM');
     this.date.monthNumber = dateMoment.month();
     this.date.year = dateMoment.year();
     this.date.date = moment(dateMoment).toDate();
-    
+
     return this;
   },
-  show: function(options = {}) {
+  show: function show(options = {}) {
     if (!this.isModal) {
       this.inherited(arguments);
     }
     this.date = {};
-    options = options || this.options;
+    this.options = options || this.options;
 
-    this.titleText = options.label ? options.label : this.titleText;
+    this.titleText = this.options.label ? this.options.label : this.titleText;
     this.showTimePicker = this.options && this.options.showTimePicker;
     this.date.selectedDateMoment = moment((this.options && this.options.date) || moment());
     this.date.todayMoment = moment();
-    if (this.isModal || options.isModal) {
+    if (this.isModal || this.options.isModal) {
       this.clearButton.style.display = 'none';
     }
 
     this.goToToday(this.date);
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Calendar', __class);

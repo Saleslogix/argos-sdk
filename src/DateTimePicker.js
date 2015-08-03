@@ -25,19 +25,23 @@ import _Templated from 'argos/_Templated';
 import Calendar from './Calendar';
 import TimePicker from './TimePicker';
 
-var __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
+const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
-    '<div class="datetime-select" data-dojo-attach-point="dateTimeNode"></div>'
+    '<div class="datetime-select" data-dojo-attach-point="dateTimeNode">',
+    '</div>',
   ]),
 
   _calendarNode: null,
   _timeSelectNode: null,
   isModal: false,
 
-  init: function() {
+  init: function init() {
     this.inherited(arguments);
   },
-  show: function(options = {}) {
+  getContent: function getContent() {
+    return [ this._calendarNode, this._timeSelectNode ];
+  },
+  show: function show(options = {}) {
     if (!this._calendarNode && !this._timeSelectNode) {
       this._calendarNode = new Calendar({ id: 'datetime-calendar', isModal: this.isModal || options.isModal});
       this._timeSelectNode = new TimePicker({ id: 'datetime-timePicker', showSetTime: false });
@@ -45,7 +49,7 @@ var __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
       domConstruct.place(this._timeSelectNode.domNode, this.dateTimeNode);
       this._calendarNode.show(options);
     }
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.DateTimePicker', __class);

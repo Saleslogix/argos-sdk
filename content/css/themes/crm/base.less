@@ -592,6 +592,7 @@ body > .viewContainer > .dialog {
   background-color: @background-lighter;
   z-index: 100;
   overflow: scroll;
+  padding: 0 15px;
 
   .button {
     background-color: transparent;
@@ -611,12 +612,15 @@ body > .viewContainer > .dialog {
     padding: 0;
   }
   .tertiary {
-    border-top: 1px solid @color-light-graphite;
     color: @color-azure;
     transition: 0.2s background-color ease;
     -webkit-transition: 0.2s background-color ease;
     -moz-transition: 0.2s background-color ease;
     -ms-transition: 0.2s background-color ease;
+  }
+  .modal-toolbar {
+    margin-top: 5px;
+    border-top: 1px solid @color-light-graphite;
   }
 }
 

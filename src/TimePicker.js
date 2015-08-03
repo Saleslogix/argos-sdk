@@ -19,11 +19,13 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
+import domAttr from 'dojo/dom-attr';
+import domClass from 'dojo/dom-class';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
 import Modal from './Modal';
 
-var __class = declare('argos.TimePicker', [_Widget, _Templated], {
+const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="time-select panel">',
       '<div class="time-parts">',
@@ -35,35 +37,37 @@ var __class = declare('argos.TimePicker', [_Widget, _Templated], {
         '{% if ($.showSetTime) { %}',
           '<div class="button tertiary">{%= $.setTimeText %}</div>',
         '{% } %}',
-    '</div>'
+    '</div>',
   ]),
   hourSelectTemplate: new Simplate([
     '<div class="dropdown">',
       '<input class="hours" data-dojo-attach-point="hourNode" data-action="toggleHours"></input>',
       '<span class="fa fa-caret-down"></span>',
-    '</div>'
+    '</div>',
   ]),
   minuteSelectTemplate: new Simplate([
     '<div class="dropdown" data-dojo-attach-point="minuteNode">',
       '<input class="minutes" data-dojo-attach-point="minutesNode" data-action="toggleMinutes"></input>',
       '<span class="fa fa-caret-down"></span>',
-    '</div>'
+    '</div>',
   ]),
   meridiemSelectTemplate: new Simplate([
     '<div class="toggle toggle-horizontal meridiem-field" data-action="toggleMeridiem" data-dojo-attach-point="meridiemNode">',
         '<span class="thumb horizontal"></span>',
         '<span class="toggleOn">{%= $.amText %}</span>',
         '<span class="toggleOff">{%= $.pmText %}</span>',
-    '</div>'
+    '</div>',
   ]),
   listStartTemplate: new Simplate([
-    '<ul class="list">'
+    '<ul class="list">',
   ]),
   listEndTemplate: new Simplate([
-    '</ul>'
+    '</ul>',
   ]),
   listItemTemplate: new Simplate([
-    '<li class="list-item">{%= $.value }</li>'
+    '<li class="list-item">',
+    '{%= $.value }',
+    '</li>',
   ]),
 
   amText: 'AM',
@@ -86,7 +90,7 @@ var __class = declare('argos.TimePicker', [_Widget, _Templated], {
     9,
     10,
     11,
-    12
+    12,
   ],
   minuteValues: [
     5,
@@ -99,31 +103,34 @@ var __class = declare('argos.TimePicker', [_Widget, _Templated], {
     40,
     45,
     50,
-    55
+    55,
   ],
 
-  createHourModal: function() {
+  createHourModal: function createHourModal() {
     this._hourModal = new Modal({ id: 'hour-modal', showBackdrop: false, positioning: 'right' });
     this._hourModal.placeModal(this.domNode)
-                   .setContentPicklist(hourValues);
+                   .setContentPicklist(this.hourValues);
     return this;
   },
-  createMinuteModal: function() {
+  createMinuteModal: function createMinuteModal() {
     this._minuteModal = new Modal({ id: 'minute-modal', showBackdrop: false, positioning: 'right' });
     this._minuteModal.placeModal(this.domNode)
-                     .setContentPicklist(minuteValues);
+                     .setContentPicklist(this.minuteValues);
     return this;
   },
-  init: function() {
+  getContent: function getContent() {
+    return this.timeValue;
+  },
+  init: function init() {
     this.inherited(arguments);
     this.createHourModal()
         .createMinuteModal();
   },
-  setTimeValue: function() {
+  setTimeValue: function setTimeValue() {
     if (!this._isTimeless()) {
       this.timeValue.hours = parseInt(this.hourNode.value, 10);
       this.timeValue.minutes = parseInt(this.minuteNode.value, 10);
-      this.timeValue.isPM = this.is24hrTimeFormat ? (11 < hours) : domAttr.get(this.meridiemNode, 'toggled') !== true;
+      this.timeValue.isPM = this.is24hrTimeFormat ? (this.timeValue.hours > 11) : domAttr.get(this.meridiemNode, 'toggled') !== true;
 
       this.timeValue.hours = this.timeValue.isPM
          ? (this.timeValue.hours % 12) + 12
@@ -131,24 +138,24 @@ var __class = declare('argos.TimePicker', [_Widget, _Templated], {
     }
     return this;
   },
-  toggleHours: function(params = {}) {
+  toggleHours: function toggleHours(params = {}) {
     this._hourModal.showModal(params.$source);
   },
-  toggleMeridiem: function(params = {}) {
-      var el = params.$source,
-          toggledValue = el && (domAttr.get(el, 'toggled') !== true);
+  toggleMeridiem: function toggleMeridiem(params = {}) {
+    const el = params.$source;
 
-      if (el) {
-          domClass.toggle(el, 'toggleStateOn');
-          domAttr.set(el, 'toggled', toggledValue);
-      }
+    if (el) {
+      const toggledValue = el && (domAttr.get(el, 'toggled') !== true);
+      domClass.toggle(el, 'toggleStateOn');
+      domAttr.set(el, 'toggled', toggledValue);
+    }
   },
-  toggleMinutes: function(params = {}) {
+  toggleMinutes: function toggleMinutes(params = {}) {
     this._minuteModal.showModal(params.$source);
   },
-  _isTimeless: function() {
+  _isTimeless: function _isTimeless() {
     return (this.options && this.options.timeless) || this.timeless;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.TimePicker', __class);
