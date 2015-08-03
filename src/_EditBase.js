@@ -18,12 +18,10 @@ import connect from 'dojo/_base/connect';
 import array from 'dojo/_base/array';
 import Deferred from 'dojo/_base/Deferred';
 import win from 'dojo/_base/window';
-import dom from 'dojo/dom';
 import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import query from 'dojo/query';
-import convert from './Convert';
 import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import FieldManager from './FieldManager';
@@ -73,7 +71,7 @@ import './Fields/TextField';
  * @requires argos.Fields.TextAreaField
  * @requires argos.Fields.TextField
  */
-var __class = declare('argos._EditBase', [View], {
+const __class = declare('argos._EditBase', [View], {
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:
@@ -84,12 +82,12 @@ var __class = declare('argos._EditBase', [View], {
   attributeMap: {
     validationContent: {
       node: 'validationContentNode',
-      type: 'innerHTML'
+      type: 'innerHTML',
     },
     concurrencyContent: {
       node: 'concurrencyContentNode',
-      type: 'innerHTML'
-    }
+      type: 'innerHTML',
+    },
   },
   /**
    * @property {Simplate}
@@ -112,7 +110,7 @@ var __class = declare('argos._EditBase', [View], {
     '{%! $.validationSummaryTemplate %}',
     '{%! $.concurrencySummaryTemplate %}',
     '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -123,7 +121,7 @@ var __class = declare('argos._EditBase', [View], {
   loadingTemplate: new Simplate([
     '<fieldset class="panel-loading-indicator">',
     '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>',
-    '</fieldset>'
+    '</fieldset>',
   ]),
   /**
    * @property {Simplate}
@@ -136,7 +134,7 @@ var __class = declare('argos._EditBase', [View], {
     '<h2>{%: $.validationSummaryText %}</h2>',
     '<ul data-dojo-attach-point="validationContentNode">',
     '</ul>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -149,7 +147,7 @@ var __class = declare('argos._EditBase', [View], {
     '<h2>{%: $.concurrencySummaryText %}</h2>',
     '<ul data-dojo-attach-point="concurrencyContentNode">',
     '</ul>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -164,7 +162,7 @@ var __class = declare('argos._EditBase', [View], {
     '<h3>{%: $.message %}</h3>',
     '<h4>{%: $$.label %}</h4>',
     '</a>',
-    '</li>'
+    '</li>',
   ]),
   /**
    * @property {Simplate}
@@ -174,7 +172,7 @@ var __class = declare('argos._EditBase', [View], {
     '<li>',
     '<h3>{%: $.message %}</h3>',
     '<h4>{%: $.name %}</h4>',
-    '</li>'
+    '</li>',
   ]),
   /**
    * @property {Simplate}
@@ -186,7 +184,7 @@ var __class = declare('argos._EditBase', [View], {
     '<h2>',
     '{%: ($.title || $.options.title) %}',
     '</h2>',
-    '<fieldset class="{%= ($.cls || $.options.cls) %}">'
+    '<fieldset class="{%= ($.cls || $.options.cls) %}">',
   ]),
   /**
    * @property {Simplate}
@@ -195,7 +193,7 @@ var __class = declare('argos._EditBase', [View], {
    * `$` => the view instance
    */
   sectionEndTemplate: new Simplate([
-    '</fieldset>'
+    '</fieldset>',
   ]),
   /**
    * @property {Simplate}
@@ -207,7 +205,7 @@ var __class = declare('argos._EditBase', [View], {
   propertyTemplate: new Simplate([
     '<a name="{%= $.name || $.property %}"></a>',
     '<div class="row row-edit {%= $.cls %}{% if ($.readonly) { %}row-readonly{% } %}" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
-    '</div>'
+    '</div>',
   ]),
 
   /**
@@ -284,8 +282,8 @@ var __class = declare('argos._EditBase', [View], {
   errorText: {
     general: 'A server error occured while requesting data.',
     status: {
-      '410': 'Error saving. This record no longer exists.'
-    }
+      '410': 'Error saving. This record no longer exists.',
+    },
   },
   /**
    * @property {String}
@@ -315,7 +313,7 @@ var __class = declare('argos._EditBase', [View], {
    * Extends constructor to initialze `this.fields` to {}
    * @param o
    */
-  constructor: function(o) {
+  constructor: function constructor(/*o*/) {
     this.fields = {};
   },
   /**
@@ -325,13 +323,13 @@ var __class = declare('argos._EditBase', [View], {
    * On refresh it will clear the values, but leave the layout intact.
    *
    */
-  startup: function() {
+  startup: function startup() {
     this.inherited(arguments);
     this.processLayout(this._createCustomizedLayout(this.createLayout()));
 
-    query('div[data-field]', this.contentNode).forEach(function(node) {
-      var name = domAttr.get(node, 'data-field'),
-        field = this.fields[name];
+    query('div[data-field]', this.contentNode).forEach(function forEach(node) {
+      const name = domAttr.get(node, 'data-field');
+      const field = this.fields[name];
       if (field) {
         field.renderTo(node);
       }
@@ -340,10 +338,10 @@ var __class = declare('argos._EditBase', [View], {
   /**
    * Extends init to also init the fields in `this.fields`.
    */
-  init: function() {
+  init: function init() {
     this.inherited(arguments);
 
-    for (var name in this.fields) {
+    for (const name in this.fields) {
       if (this.fields.hasOwnProperty(name)) {
         this.fields[name].init();
       }
@@ -358,12 +356,12 @@ var __class = declare('argos._EditBase', [View], {
    * @return {Object} this.tools
    * @template
    */
-  createToolLayout: function() {
-    var tbar = [{
+  createToolLayout: function createToolLayout() {
+    const tbar = [{
       id: 'save',
       action: 'save',
       cls: 'fa fa-save fa-fw fa-lg',
-      security: this.options && this.options.insert ? this.insertSecurity : this.updateSecurity
+      security: this.options && this.options.insert ? this.insertSecurity : this.updateSecurity,
     }];
 
     if (!App.isOnFirstView()) {
@@ -371,19 +369,19 @@ var __class = declare('argos._EditBase', [View], {
         id: 'cancel',
         cls: 'fa fa-ban fa-fw fa-lg',
         side: 'left',
-        action: 'onToolCancel'
+        action: 'onToolCancel',
       });
     }
 
     return this.tools || (this.tools = {
-      'tbar': tbar
+      'tbar': tbar,
     });
   },
-  onToolCancel: function() {
+  onToolCancel: function onToolCancel() {
     this.refreshRequired = true;
     ReUI.back();
   },
-  _getStoreAttr: function() {
+  _getStoreAttr: function _getStoreAttr() {
     return this.store || (this.store = this.createStore());
   },
   /**
@@ -393,7 +391,7 @@ var __class = declare('argos._EditBase', [View], {
    *
    * @param {_Field} field Field instance that is being shown
    */
-  _onShowField: function(field) {
+  _onShowField: function _onShowField(field) {
     domClass.remove(field.containerNode, 'row-hidden');
   },
   /**
@@ -403,7 +401,7 @@ var __class = declare('argos._EditBase', [View], {
    *
    * @param {_Field} field Field instance that is being hidden
    */
-  _onHideField: function(field) {
+  _onHideField: function _onHideField(field) {
     domClass.add(field.containerNode, 'row-hidden');
   },
   /**
@@ -413,7 +411,7 @@ var __class = declare('argos._EditBase', [View], {
    *
    * @param {_Field} field Field instance that is being enabled
    */
-  _onEnableField: function(field) {
+  _onEnableField: function _onEnableField(field) {
     domClass.remove(field.containerNode, 'row-disabled');
   },
   /**
@@ -423,7 +421,7 @@ var __class = declare('argos._EditBase', [View], {
    *
    * @param {_Field} field Field instance that is being disabled
    */
-  _onDisableField: function(field) {
+  _onDisableField: function _onDisableField(field) {
     domClass.add(field.containerNode, 'row-disabled');
   },
   /**
@@ -435,9 +433,9 @@ var __class = declare('argos._EditBase', [View], {
    * @param {HTMLElement} node The node that initiated the event
    * @return {Function} Either calls the fields action or returns the inherited version which looks at the view for the action
    */
-  invokeAction: function(name, parameters, evt, node) {
-    var fieldNode = node && query(node, this.contentNode).parents('[data-field]'),
-      field = this.fields[fieldNode.length > 0 && domAttr.get(fieldNode[0], 'data-field')];
+  invokeAction: function invokeAction(name, parameters, evt, node) {
+    const fieldNode = node && query(node, this.contentNode).parents('[data-field]');
+    const field = this.fields[fieldNode.length > 0 && domAttr.get(fieldNode[0], 'data-field')];
 
     if (field && typeof field[name] === 'function') {
       return field[name].apply(field, [parameters, evt, node]);
@@ -452,9 +450,9 @@ var __class = declare('argos._EditBase', [View], {
    * @param {HTMLElement} node The node that initiated the event
    * @return {Boolean} If the field has the named function defined
    */
-  hasAction: function(name, evt, node) {
-    var fieldNode = node && query(node, this.contentNode).parents('[data-field]'),
-      field = fieldNode && this.fields[fieldNode.length > 0 && domAttr.get(fieldNode[0], 'data-field')];
+  hasAction: function hasAction(name, evt, node) {
+    const fieldNode = node && query(node, this.contentNode).parents('[data-field]');
+    const field = fieldNode && this.fields[fieldNode.length > 0 && domAttr.get(fieldNode[0], 'data-field')];
 
     if (field && typeof field[name] === 'function') {
       return true;
@@ -462,11 +460,11 @@ var __class = declare('argos._EditBase', [View], {
 
     return this.inherited(arguments);
   },
-  createStore: function() {
+  createStore: function createStore() {
     return null;
   },
-  onContentChange: function() {},
-  processEntry: function(entry) {
+  onContentChange: function onContentChange() {},
+  processEntry: function processEntry(entry) {
     return entry;
   },
   /**
@@ -474,12 +472,10 @@ var __class = declare('argos._EditBase', [View], {
    * @param {Object} entry data
    * @return {Object} entry with actual Date objects
    */
-  convertEntry: function(entry) {
+  convertEntry: function convertEntry(entry) {
     return entry;
   },
-  processData: function(entry) {
-    var currentValues, diffs;
-
+  processData: function processData(entry) {
     this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
 
     this.setValues(entry, true);
@@ -487,15 +483,15 @@ var __class = declare('argos._EditBase', [View], {
     // Re-apply changes saved from concurrency/precondition failure
     if (this.previousValuesAll) {
       // Make a copy of the current values, so we can diff them
-      currentValues = this.getValues(true);
+      const currentValues = this.getValues(true);
 
-      diffs = this.diffs(this.previousValuesAll, currentValues);
+      const diffs = this.diffs(this.previousValuesAll, currentValues);
 
       if (diffs.length > 0) {
-        array.forEach(diffs, function(val) {
+        array.forEach(diffs, function forEach(val) {
           this.errors.push({
             name: val,
-            message: this.concurrencyErrorText
+            message: this.concurrencyErrorText,
           });
         }, this);
 
@@ -514,11 +510,11 @@ var __class = declare('argos._EditBase', [View], {
       this.setValues(this.changes);
     }
   },
-  _onGetComplete: function(entry) {
+  _onGetComplete: function _onGetComplete(entry) {
     try {
       if (entry) {
         this.processData(entry);
-      } else {
+      } else {//eslint-disable-line
         /* todo: show error message? */
       }
 
@@ -527,10 +523,10 @@ var __class = declare('argos._EditBase', [View], {
       /* this must take place when the content is visible */
       this.onContentChange();
     } catch (e) {
-      console.error(e);
+      console.error(e);//eslint-disable-line
     }
   },
-  _onGetError: function(getOptions, error) {
+  _onGetError: function _onGetError(getOptions, error) {
     this.handleError(error);
     domClass.remove(this.domNode, 'panel-loading');
   },
@@ -561,17 +557,17 @@ var __class = declare('argos._EditBase', [View], {
    *
    * @return {Object[]} Edit layout definition
    */
-  createLayout: function() {
+  createLayout: function createLayout() {
     return this.layout || [];
   },
 
-  createErrorHandlers: function() {
+  createErrorHandlers: function createErrorHandlers() {
     this.errorHandlers = this.errorHandlers || [{
       name: 'PreCondition',
-      test: function(error) {
+      test: function testPreCondition(error) {
         return error && error.status === this.HTTP_STATUS.PRECONDITION_FAILED;
       },
-      handle: function(error, next) {
+      handle: function handlePreCondition(error, next) {
         next(); // Invoke the next error handler first, the refresh will change a lot of mutable/shared state
 
         // Preserve our current form values (all of them),
@@ -580,30 +576,30 @@ var __class = declare('argos._EditBase', [View], {
         this.options.key = this.entry.$key; // Force a fetch by key
         delete this.options.entry; // Remove this, or the form will load the entry that came from the detail view
         this.refresh();
-      }
+      },
     }, {
       name: 'AlertError',
-      test: function(error) {
+      test: function testAlert(error) {
         return error.status !== this.HTTP_STATUS.PRECONDITION_FAILED;
       },
-      handle: function(error, next) {
-        alert(this.getErrorMessage(error));
+      handle: function handleAlert(error, next) {
+        alert(this.getErrorMessage(error));//eslint-disable-line
         next();
-      }
+      },
     }, {
       name: 'CatchAll',
-      test: function(error) {
+      test: function testCatchAll() {
         return true;
       },
-      handle: function(error, next) {
-        var errorItem = {
+      handle: function testHandle(error, next) {
+        const errorItem = {
           viewOptions: this.options,
-          serverError: error
+          serverError: error,
         };
 
         ErrorManager.addError(this.getErrorMessage(error), errorItem);
         next();
-      }
+      },
     }];
 
     return this.errorHandlers;
@@ -613,33 +609,25 @@ var __class = declare('argos._EditBase', [View], {
    * Returns the view key
    * @return {String} View key
    */
-  getTag: function() {
-    var tag = this.options && this.options.entry && this.options.entry[this.idProperty];
+  getTag: function getTag() {
+    let tag = this.options && this.options.entry && this.options.entry[this.idProperty];
     if (!tag) {
       tag = this.options && this.options.key;
     }
 
     return tag;
   },
-  processLayout: function(layout) {
-    var rows = (layout['children'] || layout['as'] || layout),
-      options = layout['options'] || (layout['options'] = {
-        title: this.detailsText
-      }),
-      sectionQueue = [],
-      sectionStarted = false,
-      content = [],
-      current,
-      ctor,
-      field,
-      i,
-      template,
-      sectionNode;
+  processLayout: function processLayout(layout) {
+    const rows = (layout.children || layout.as || layout);
+    const sectionQueue = [];
+    const content = [];
+    let sectionStarted = false;
+    let current;
 
-    for (i = 0; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       current = rows[i];
 
-      if (current['children'] || current['as']) {
+      if (current.children || current.as) {
         if (sectionStarted) {
           sectionQueue.push(current);
         } else {
@@ -658,26 +646,25 @@ var __class = declare('argos._EditBase', [View], {
     }
 
     content.push(this.sectionEndTemplate.apply(layout, this));
-    sectionNode = domConstruct.toDom(content.join(''));
+    const sectionNode = domConstruct.toDom(content.join(''));
     this.onApplySectionNode(sectionNode, current);
     domConstruct.place(sectionNode, this.contentNode, 'last');
 
-    for (i = 0; i < sectionQueue.length; i++) {
+    for (let i = 0; i < sectionQueue.length; i++) {
       current = sectionQueue[i];
 
       this.processLayout(current);
     }
   },
-  onApplySectionNode: function(sectionNode, layout) {},
-  createRowContent: function(layout, content) {
-    var ctor, field, template;
-    ctor = FieldManager.get(layout['type']);
-    if (ctor) {
-      field = this.fields[layout['name'] || layout['property']] = new ctor(lang.mixin({
-        owner: this
+  onApplySectionNode: function onApplySectionNode(/*sectionNode, layout*/) {},
+  createRowContent: function createRowContent(layout, content) {
+    const Ctor = FieldManager.get(layout.type);
+    if (Ctor) {
+      const field = this.fields[layout.name || layout.property] = new Ctor(lang.mixin({
+        owner: this,
       }, layout));
 
-      template = field.propertyTemplate || this.propertyTemplate;
+      const template = field.propertyTemplate || this.propertyTemplate;
 
       if (field.autoFocus && !this._focusField) {
         this._focusField = field;
@@ -696,17 +683,16 @@ var __class = declare('argos._EditBase', [View], {
   /**
    * Initiates the request.
    */
-  requestData: function() {
-    var store, getOptions, getExpression, getResults;
-    store = this.get('store');
+  requestData: function requestData() {
+    const store = this.get('store');
 
     if (store) {
-      getOptions = {};
+      const getOptions = {};
 
       this._applyStateToGetOptions(getOptions);
 
-      getExpression = this._buildGetExpression() || null;
-      getResults = store.get(getExpression, getOptions);
+      const getExpression = this._buildGetExpression() || null;
+      const getResults = store.get(getExpression, getOptions);
 
       Deferred.when(getResults,
         this._onGetComplete.bind(this),
@@ -716,19 +702,17 @@ var __class = declare('argos._EditBase', [View], {
       return getResults;
     }
 
-    console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataEditMixin to your edit view?');
+    console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataEditMixin to your edit view?');//eslint-disable-line
   },
   /**
    * Loops all the fields looking for any with the `default` property set, if set apply that
    * value as the initial value of the field. If the value is a function, its expanded then applied.
    */
-  applyFieldDefaults: function() {
-    var name, field, defaultValue;
-
-    for (name in this.fields) {
+  applyFieldDefaults: function applyFieldDefaults() {
+    for (const name in this.fields) {
       if (this.fields.hasOwnProperty(name)) {
-        field = this.fields[name];
-        defaultValue = field['default'];
+        const field = this.fields[name];
+        const defaultValue = field.default;
 
         if (typeof defaultValue === 'undefined') {
           continue;
@@ -741,8 +725,8 @@ var __class = declare('argos._EditBase', [View], {
   /**
    * Loops all fields and calls its `clearValue()`.
    */
-  clearValues: function() {
-    for (var name in this.fields) {
+  clearValues: function clearValues() {
+    for (const name in this.fields) {
       if (this.fields.hasOwnProperty(name)) {
         this.fields[name].clearHighlight();
         this.fields[name].clearValue();
@@ -759,15 +743,13 @@ var __class = declare('argos._EditBase', [View], {
    * @param {Object} values data entry, or collection of key/values where key matches a fields property attribute
    * @param {Boolean} initial Initial state of the value, true for clean, false for dirty
    */
-  setValues: function(values, initial) {
-    var noValue = {},
-      field,
-      name,
-      value;
+  setValues: function setValues(values, initial) {
+    const noValue = {};
 
-    for (name in this.fields) {
+    for (const name in this.fields) {
       if (this.fields.hasOwnProperty(name)) {
-        field = this.fields[name];
+        let value;
+        const field = this.fields[name];
 
         // for now, explicitly hidden fields (via. the field.hide() method) are not included
         if (field.isHidden()) {
@@ -796,24 +778,17 @@ var __class = declare('argos._EditBase', [View], {
    * @param {Boolean} all True to also include hidden and unmodified values.
    * @return {Object} A single object payload with all the values.
    */
-  getValues: function(all) {
-    var payload = {},
-      empty = true,
-      field,
-      value,
-      target,
-      include,
-      exclude,
-      name,
-      prop;
+  getValues: function getValues(all) {
+    const payload = {};
+    let empty = true;
 
-    for (name in this.fields) {
+    for (const name in this.fields) {
       if (this.fields.hasOwnProperty(name)) {
-        field = this.fields[name];
-        value = field.getValue();
+        const field = this.fields[name];
+        const value = field.getValue();
 
-        include = this.expandExpression(field.include, value, field, this);
-        exclude = this.expandExpression(field.exclude, value, field, this);
+        const include = this.expandExpression(field.include, value, field, this);
+        const exclude = this.expandExpression(field.exclude, value, field, this);
 
         /**
          * include:
@@ -836,7 +811,7 @@ var __class = declare('argos._EditBase', [View], {
             if (typeof field.applyTo === 'function') {
               if (typeof value === 'object') {
                 // Copy the value properties into our payload object
-                for (prop in value) {
+                for (const prop in value) {
                   if (value.hasOwnProperty(prop)) {
                     payload[prop] = value[prop];
                   }
@@ -845,7 +820,7 @@ var __class = declare('argos._EditBase', [View], {
 
               field.applyTo(payload, value);
             } else if (typeof field.applyTo === 'string') {
-              target = utility.getValue(payload, field.applyTo);
+              const target = utility.getValue(payload, field.applyTo);
               lang.mixin(target, value);
             }
           } else {
@@ -863,21 +838,20 @@ var __class = declare('argos._EditBase', [View], {
    * validation summary area. If no errors, removes the validation summary.
    * @return {Boolean/Object[]} Returns the array of errors if present or false for no errors.
    */
-  validate: function() {
-    var name, field, result;
-
+  validate: function validate() {
     this.errors = [];
 
-    for (name in this.fields) {
+    for (const name in this.fields) {
       if (this.fields.hasOwnProperty(name)) {
-        field = this.fields[name];
+        const field = this.fields[name];
 
-        if (!field.isHidden() && false !== (result = field.validate())) {
+        const result = field.validate();
+        if (!field.isHidden() && result !== false) {
           domClass.add(field.containerNode, 'row-error');
 
           this.errors.push({
             name: name,
-            message: result
+            message: result,
           });
         } else {
           domClass.remove(field.containerNode, 'row-error');
@@ -891,13 +865,13 @@ var __class = declare('argos._EditBase', [View], {
    * Determines if the form is currently busy/disabled
    * @return {Boolean}
    */
-  isFormDisabled: function() {
+  isFormDisabled: function isFormDisabled() {
     return this.busy;
   },
   /**
    * Disables the form by setting busy to true and disabling the toolbar.
    */
-  disable: function() {
+  disable: function disable() {
     this.busy = true;
 
     if (App.bars.tbar) {
@@ -909,7 +883,7 @@ var __class = declare('argos._EditBase', [View], {
   /**
    * Enables the form by setting busy to false and enabling the toolbar
    */
-  enable: function() {
+  enable: function enable() {
     this.busy = false;
 
     if (App.bars.tbar) {
@@ -923,25 +897,24 @@ var __class = declare('argos._EditBase', [View], {
    * Gathers the values, creates the payload for insert, creates the sdata request and
    * calls `create`.
    */
-  insert: function() {
-    var values;
+  insert: function insert() {
     this.disable();
 
-    values = this.getValues();
+    const values = this.getValues();
     if (values) {
       this.onInsert(values);
     } else {
       ReUI.back();
     }
   },
-  onInsert: function(values) {
-    var store, addOptions, entry, request;
-    store = this.get('store');
+  onInsert: function onInsert(values) {
+    const store = this.get('store');
     if (store) {
-      addOptions = {
-        overwrite: false
+      const addOptions = {
+        overwrite: false,
       };
-      entry = this.createEntryForInsert(values);
+
+      const entry = this.createEntryForInsert(values);
 
       this._applyStateToAddOptions(addOptions);
 
@@ -951,16 +924,16 @@ var __class = declare('argos._EditBase', [View], {
       );
     }
   },
-  _applyStateToAddOptions: function(addOptions) {},
-  onAddComplete: function(entry, result) {
+  _applyStateToAddOptions: function _applyStateToAddOptions(/*addOptions*/) {},
+  onAddComplete: function onAddComplete(entry, result) {
     this.enable();
 
-    var message = this._buildRefreshMessage(entry, result);
+    const message = this._buildRefreshMessage(entry, result);
     connect.publish('/app/refresh', [message]);
 
     this.onInsertCompleted(result);
   },
-  onAddError: function(addOptions, error) {
+  onAddError: function onAddError(addOptions, error) {
     this.handleError(error);
     this.enable();
   },
@@ -968,10 +941,10 @@ var __class = declare('argos._EditBase', [View], {
    * Handler for insert complete, checks for `this.options.returnTo` else it simply goes back.
    * @param entry
    */
-  onInsertCompleted: function(entry) {
+  onInsertCompleted: function onInsertCompleted(/*entry*/) {
     if (this.options && this.options.returnTo) {
-      var returnTo = this.options.returnTo,
-        view = App.getView(returnTo);
+      const returnTo = this.options.returnTo;
+      const view = App.getView(returnTo);
       if (view) {
         view.show();
       } else {
@@ -986,26 +959,23 @@ var __class = declare('argos._EditBase', [View], {
    * Gathers the values, creates the payload for update, creates the sdata request and
    * calls `update`.
    */
-  update: function() {
-    var values;
-    values = this.getValues();
+  update: function update() {
+    const values = this.getValues();
     if (values) {
       this.disable();
       this.onUpdate(values);
-
     } else {
       this.onUpdateCompleted(false);
     }
   },
-  onUpdate: function(values) {
-    var store, putOptions, entry;
-    store = this.get('store');
+  onUpdate: function onUpdate(values) {
+    const store = this.get('store');
     if (store) {
-      putOptions = {
+      const putOptions = {
         overwrite: true,
-        id: store.getIdentity(this.entry)
+        id: store.getIdentity(this.entry),
       };
-      entry = this.createEntryForUpdate(values);
+      const entry = this.createEntryForUpdate(values);
 
       this._applyStateToPutOptions(putOptions);
 
@@ -1020,9 +990,8 @@ var __class = declare('argos._EditBase', [View], {
    * creating or updating.
    * @return {Object} Entry/payload
    */
-  createItem: function() {
-    var values = this.getValues();
-
+  createItem: function createItem() {
+    const values = this.getValues();
     return this.inserting ? this.createEntryForInsert(values) : this.createEntryForUpdate(values);
   },
   /**
@@ -1030,7 +999,7 @@ var __class = declare('argos._EditBase', [View], {
    * @param {Object} values
    * @return {Object} Object with properties for updating
    */
-  createEntryForUpdate: function(values) {
+  createEntryForUpdate: function createEntryForUpdate(values) {
     return this.convertValues(values);
   },
   /**
@@ -1038,26 +1007,26 @@ var __class = declare('argos._EditBase', [View], {
    * @param {Object} values
    * @return {Object} Object with properties for inserting
    */
-  createEntryForInsert: function(values) {
+  createEntryForInsert: function createEntryForInsert(values) {
     return this.convertValues(values);
   },
   /**
    * Function to call to tranform values before save
    */
-  convertValues: function(values) {
+  convertValues: function convertValues(values) {
     return values;
   },
-  _applyStateToPutOptions: function(putOptions) {},
-  onPutComplete: function(entry, result) {
+  _applyStateToPutOptions: function _applyStateToPutOptions(/*putOptions*/) {},
+  onPutComplete: function onPutComplete(entry, result) {
     this.enable();
 
-    var message = this._buildRefreshMessage(entry, result);
+    const message = this._buildRefreshMessage(entry, result);
 
     connect.publish('/app/refresh', [message]);
 
     this.onUpdateCompleted(result);
   },
-  onPutError: function(putOptions, error) {
+  onPutError: function onPutError(putOptions, error) {
     this.handleError(error);
     this.enable();
   },
@@ -1070,21 +1039,20 @@ var __class = declare('argos._EditBase', [View], {
    * This is done for a concurrency check to indicate what has changed.
    * @returns Array List of property names that have changed
    */
-  diffs: function(left, right) {
-    var acc = [],
-      DeepDiff = window.DeepDiff,
-      diffs,
-      DIFF_EDITED = 'E';
+  diffs: function diffs(left, right) {
+    const acc = [];
+    const DeepDiff = window.DeepDiff;
+    const DIFF_EDITED = 'E';
 
     if (DeepDiff) {
-      diffs = DeepDiff.diff(left, right, function(path, key) {
+      const _diffs = DeepDiff.diff(left, right, function deepDiff(path, key) {
         if (array.indexOf(this.diffPropertyIgnores, key) >= 0) {
           return true;
         }
       }.bind(this));
 
-      array.forEach(diffs, function(diff) {
-        var path = diff.path.join('.');
+      array.forEach(_diffs, function forEach(diff) {
+        const path = diff.path.join('.');
         if (diff.kind === DIFF_EDITED && array.indexOf(acc, path) === -1) {
           acc.push(path);
         }
@@ -1093,14 +1061,14 @@ var __class = declare('argos._EditBase', [View], {
 
     return acc;
   },
-  _buildRefreshMessage: function(entry, result) {
+  _buildRefreshMessage: function _buildRefreshMessage(entry, result) {
     if (entry) {
-      var store = this.get('store'),
-        id = store.getIdentity(entry);
+      const store = this.get('store');
+      const id = store.getIdentity(entry);
       return {
         id: id,
         key: id,
-        data: result
+        data: result,
       };
     }
   },
@@ -1108,10 +1076,10 @@ var __class = declare('argos._EditBase', [View], {
    * Handler for update complete, checks for `this.options.returnTo` else it simply goes back.
    * @param entry
    */
-  onUpdateCompleted: function(entry) {
+  onUpdateCompleted: function onUpdateCompleted(/*entry*/) {
     if (this.options && this.options.returnTo) {
-      var returnTo = this.options.returnTo,
-        view = App.getView(returnTo);
+      const returnTo = this.options.returnTo;
+      const view = App.getView(returnTo);
       if (view) {
         view.show();
       } else {
@@ -1125,24 +1093,20 @@ var __class = declare('argos._EditBase', [View], {
    * Creates the markup by applying the `validationSummaryItemTemplate` to each entry in `this.errors`
    * then sets the combined result into the summary validation node and sets the styling to visible
    */
-  showValidationSummary: function() {
-    var content, i;
+  showValidationSummary: function showValidationSummary() {
+    const content = [];
 
-    content = [];
-
-    for (i = 0; i < this.errors.length; i++) {
+    for (let i = 0; i < this.errors.length; i++) {
       content.push(this.validationSummaryItemTemplate.apply(this.errors[i], this.fields[this.errors[i].name]));
     }
 
     this.set('validationContent', content.join(''));
     domClass.add(this.domNode, 'panel-form-error');
   },
-  showConcurrencySummary: function() {
-    var content, i;
+  showConcurrencySummary: function showConcurrencySummary() {
+    const content = [];
 
-    content = [];
-
-    for (i = 0; i < this.errors.length; i++) {
+    for (let i = 0; i < this.errors.length; i++) {
       content.push(this.concurrencySummaryItemTemplate.apply(this.errors[i]));
     }
 
@@ -1152,14 +1116,14 @@ var __class = declare('argos._EditBase', [View], {
   /**
    * Removes the summary validation visible styling and empties its contents of error markup
    */
-  hideValidationSummary: function() {
+  hideValidationSummary: function hideValidationSummary() {
     domClass.remove(this.domNode, 'panel-form-error');
     this.set('validationContent', '');
   },
   /**
    * Removes teh summary for concurrency errors
    */
-  hideConcurrencySummary: function() {
+  hideConcurrencySummary: function hideConcurrencySummary() {
     domClass.remove(this.domNode, 'panel-form-concurrency-error');
     this.set('concurrencyContent', '');
   },
@@ -1170,7 +1134,7 @@ var __class = declare('argos._EditBase', [View], {
    * Then calls either {@link #insert insert} or {@link #update update} based upon `this.inserting`.
    *
    */
-  save: function() {
+  save: function save() {
     if (this.isFormDisabled()) {
       return;
     }
@@ -1193,21 +1157,21 @@ var __class = declare('argos._EditBase', [View], {
    * Extends the getContext function to also include the `resourceKind` of the view, `insert`
    * state and `key` of the entry (false if inserting)
    */
-  getContext: function() {
+  getContext: function getContext() {
     return lang.mixin(this.inherited(arguments), {
       resourceKind: this.resourceKind,
       insert: this.options.insert,
-      key: this.options.insert ? false : this.options.key ? this.options.key : this.options.entry && this.options.entry[this.idProperty]
+      key: this.options.insert ? false : this.options.key ? this.options.key : this.options.entry && this.options.entry[this.idProperty]//eslint-disable-line
     });
   },
   /**
    * Wrapper for detecting security for update mode or insert mode
    * @param {String} access Can be either "update" or "insert"
    */
-  getSecurity: function(access) {
-    var lookup = {
+  getSecurity: function getSecurity(access) {
+    const lookup = {
       'update': this.updateSecurity,
-      'insert': this.insertSecurity
+      'insert': this.insertSecurity,
     };
 
     return lookup[access];
@@ -1215,7 +1179,7 @@ var __class = declare('argos._EditBase', [View], {
   /**
    * Extends beforeTransitionTo to add the loading styling if refresh is needed
    */
-  beforeTransitionTo: function() {
+  beforeTransitionTo: function beforeTransitionTo() {
     if (this.refreshRequired) {
       if (this.options.insert === true || (this.options.key && !this.options.entry)) {
         domClass.add(this.domNode, 'panel-loading');
@@ -1226,7 +1190,7 @@ var __class = declare('argos._EditBase', [View], {
 
     this.inherited(arguments);
   },
-  onTransitionTo: function() {
+  onTransitionTo: function onTransitionTo() {
     // Focus the default focus field if it exists and it has not already been focused.
     // This flag is important because onTransitionTo will fire multiple times if the user is using lookups and editor type fields that transition away from this view.
     if (this._focusField && !this._hasFocused) {
@@ -1242,15 +1206,15 @@ var __class = declare('argos._EditBase', [View], {
    * External navigation (browser back/forward) never refreshes the edit view as it's always a terminal loop.
    * i.e. you never move "forward" from an edit view; you navigate to child editors, from which you always return.
    */
-  activate: function() {},
+  activate: function activate() {},
   /**
    * Extends refreshRequiredFor to return false if we already have the key the options is passing
    * @param {Object} options Navigation options from previous view
    */
-  refreshRequiredFor: function(options) {
+  refreshRequiredFor: function refreshRequiredFor(options) {
     if (this.options) {
       if (options) {
-        if (this.options.key && this.options.key === options['key']) {
+        if (this.options.key && this.options.key === options.key) {
           return false;
         }
       }
@@ -1265,7 +1229,7 @@ var __class = declare('argos._EditBase', [View], {
    *
    * Lastly it makes the appropiate data request:
    */
-  refresh: function() {
+  refresh: function refresh() {
     this.onRefresh();
     this.entry = false;
     this.changes = false;
@@ -1283,9 +1247,9 @@ var __class = declare('argos._EditBase', [View], {
       this.onRefreshUpdate();
     }
   },
-  onRefresh: function() {},
-  onRefreshInsert: function() {},
-  onRefreshUpdate: function() {
+  onRefresh: function onRefresh() {},
+  onRefreshInsert: function onRefreshInsert() {},
+  onRefreshUpdate: function onRefreshUpdate() {
     // apply as non-modified data
     if (this.options.entry) {
       this.processData(this.options.entry);
@@ -1301,7 +1265,7 @@ var __class = declare('argos._EditBase', [View], {
         this.requestData();
       }
     }
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._EditBase', __class);
