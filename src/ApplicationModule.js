@@ -16,7 +16,7 @@ import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import Application from './Application';
+import './Application';
 import ConfigureQuickActions from './Views/ConfigureQuickActions';
 
 /**
@@ -28,7 +28,7 @@ import ConfigureQuickActions from './Views/ConfigureQuickActions';
  * @alternateClassName ApplicationModule
  * @requires argos.Application
  */
-var __class = declare('argos.ApplicationModule', null, {
+const __class = declare('argos.ApplicationModule', null, {
   /**
    * @property {Array}
    * Array of dojo.connect bound to ApplicationModule
@@ -58,12 +58,12 @@ var __class = declare('argos.ApplicationModule', null, {
    * Destroy loops and disconnects all `_connect`s and unsubscribes all `_subscribe`s.
    * Also calls {@link #uninitialize uninitialize}
    */
-  destroy: function() {
-    array.forEach(this._connects, function(handle) {
+  destroy: function destroy() {
+    array.forEach(this._connects, (handle) => {
       connect.disconnect(handle);
     });
 
-    array.forEach(this._subscribes, function(handle) {
+    array.forEach(this._subscribes, (handle) => {
       connect.unsubscribe(handle);
     });
 
@@ -72,8 +72,7 @@ var __class = declare('argos.ApplicationModule', null, {
   /**
    * Performs any additional destruction requirements
    */
-  uninitialize: function() {
-
+  uninitialize: function uninitialize() {
   },
   /**
    * Saves the passed application instance and calls:
@@ -84,33 +83,41 @@ var __class = declare('argos.ApplicationModule', null, {
    *
    * @param {Object} application
    */
-  init: function(application) {
+  init: function init(application) {
     this.application = application;
 
-    this.loadAppStatPromises();
+    this.loadAppStatePromises();
     this.loadCustomizations();
     this.loadToolbars();
     this.loadViews();
   },
+
+  /**
+   * @deprecated - typo, use loadAppStatePromises instead.
+   */
+  loadAppStatPromises: function loadAppStatPromises() {
+    this.loadAppStatePromises();
+  },
+
   /**
    * @template
    * This function should be overriden in the app and be used to register all app state promises.
    */
-  loadAppStatPromises: function() {},
+  loadAppStatePromises: function loadAppStatePromises() {},
 
   statics: {
     _customizationsLoaded: false,
     _viewsLoaded: false,
-    _toolbarsLoaded: false
+    _toolbarsLoaded: false,
   },
 
   /**
    * @template
    * This function should be overriden in the app and be used to register all customizations.
    */
-  loadCustomizations: function() {
+  loadCustomizations: function loadCustomizations() {
     if (this.statics._customizationsLoaded) {
-      console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.');
+      console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.'); // eslint-disable-line
       return;
     }
 
@@ -122,9 +129,9 @@ var __class = declare('argos.ApplicationModule', null, {
    * @template
    * This function should be overriden in the app and be used to register all views.
    */
-  loadViews: function() {
+  loadViews: function loadViews() {
     if (this.statics._viewsLoaded) {
-      console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.');
+      console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.'); // eslint-disable-line
       return;
     }
 
@@ -137,9 +144,9 @@ var __class = declare('argos.ApplicationModule', null, {
    * @template
    * This function should be overriden in the app and be used to register all toolbars.
    */
-  loadToolbars: function() {
+  loadToolbars: function loadToolbars() {
     if (this.statics._toolbarsLoaded) {
-      console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.');
+      console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.'); // eslint-disable-line
       return;
     }
 
@@ -152,7 +159,7 @@ var __class = declare('argos.ApplicationModule', null, {
    * @param {Object} view View instance to register
    * @param {DOMNode} domNode Optional. DOM node to place the view in.
    */
-  registerView: function(view, domNode) {
+  registerView: function registerView(view, domNode) {
     if (this.application) {
       this.application.registerView(view, domNode);
     }
@@ -163,7 +170,7 @@ var __class = declare('argos.ApplicationModule', null, {
    * @param {Object} toolbar Toolbar instance to register.
    * @param {DOMNode} domNode Optional. DOM node to place the view in.
    */
-  registerToolbar: function(name, toolbar, domNode) {
+  registerToolbar: function registerToolbar(name, toolbar, domNode) {
     if (this.application) {
       this.application.registerToolbar(name, toolbar, domNode);
     }
@@ -174,7 +181,7 @@ var __class = declare('argos.ApplicationModule', null, {
    * @param {String} id The View id the customization will be applied to
    * @param {Object} spec The customization object containing at least `at` and `type`.
    */
-  registerCustomization: function(set, id, spec) {
+  registerCustomization: function registerCustomization(set, id, spec) {
     if (this.application) {
       this.application.registerCustomization(set, id, spec);
     }
@@ -183,11 +190,11 @@ var __class = declare('argos.ApplicationModule', null, {
    * Registers a promise that will resolve when initAppState is invoked.
    * @param {Promise|Function} promise A promise or a function that returns a promise
    */
-  registerAppStatePromise: function(promise) {
+  registerAppStatePromise: function registerAppStatePromise(promise) {
     if (this.application) {
       this.application.registerAppStatePromise(promise);
     }
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.ApplicationModule', __class);

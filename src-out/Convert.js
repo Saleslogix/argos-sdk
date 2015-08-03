@@ -27,13 +27,14 @@ define('argos/Convert', ['exports', 'module', 'dojo/_base/lang', 'moment'], func
 
   var _moment2 = _interopRequireDefault(_moment);
 
-  var trueRE = /^(true|T)$/i,
-      isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/,
-      jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//,
-      __class,
-      pad = function pad(n) {
+  var trueRE = /^(true|T)$/i;
+  var isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/;
+  var jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//;
+  var __class = undefined;
+
+  function pad(n) {
     return n < 10 ? '0' + n : n;
-  };
+  }
 
   __class = _lang['default'].setObject('argos.Convert', {
     /**
@@ -83,12 +84,15 @@ define('argos/Convert', ['exports', 'module', 'dojo/_base/lang', 'moment'], func
      * @param {String} value String in the ISO 8601 format `'2012-08-28T08:30:00Z'` or JSON-string format `'/Date(milliseconds)/'`
      * @return {Date} Date object from string or original object if not convertable.
      */
-    toDateFromString: function toDateFromString(value) {
+    toDateFromString: function toDateFromString(v) {
+      var value = v;
+
       if (typeof value !== 'string') {
         return value;
       }
 
-      var match, utc, h, m;
+      var match = undefined;
+      var utc = undefined;
 
       if (match = jsonDate.exec(value)) {
         utc = new Date(parseInt(match[1], 10));
@@ -112,8 +116,8 @@ define('argos/Convert', ['exports', 'module', 'dojo/_base/lang', 'moment'], func
         parseInt(match[3], 10), parseInt(match[4] || 0, 10), parseInt(match[5] || 0, 10), parseInt(match[6] || 0, 10))));
 
         if (match[8] && match[8] !== 'Z') {
-          h = parseInt(match[10], 10);
-          m = parseInt(match[11], 10);
+          var h = parseInt(match[10], 10);
+          var m = parseInt(match[11], 10);
 
           if (match[9] === '-') {
             utc.add({
