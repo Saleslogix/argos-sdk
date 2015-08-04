@@ -48,6 +48,7 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
       domConstruct.place(this._calendarNode.domNode, this.dateTimeNode);
       domConstruct.place(this._timeSelectNode.domNode, this.dateTimeNode);
       this._calendarNode.show(options);
+      this._timeSelectNode.show(options);
     }
   },
 });

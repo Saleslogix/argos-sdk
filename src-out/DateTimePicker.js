@@ -57,6 +57,7 @@ define('argos/DateTimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo
         _domConstruct['default'].place(this._calendarNode.domNode, this.dateTimeNode);
         _domConstruct['default'].place(this._timeSelectNode.domNode, this.dateTimeNode);
         this._calendarNode.show(options);
+        this._timeSelectNode.show(options);
       }
     }
   });

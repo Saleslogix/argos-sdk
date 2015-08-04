@@ -43,13 +43,13 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
   var _Templated2 = _interopRequireDefault(_argos_Templated);
 
   var __class = (0, _declare['default'])('argos.Modal', [_Widget2['default'], _Templated2['default']], {
-    widgetTemplate: new Simplate(['<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode">', '{%! $.modalToolbarTemplate %}', '</div>']),
+    widgetTemplate: new Simplate(['<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode">', '</div>']),
     modalBackdropTemplate: new Simplate(['<div class="modal-backdrop" style="height: {%= $.parentHeight %}">', '</div>']),
     pickListStartTemplate: new Simplate(['<ul class="picklist dropdown">']),
     pickListEndTemplate: new Simplate(['</ul>']),
-    pickListItemTemplate: new Simplate(['<li class="listItem">', '{%= $.item %}', '</li>']),
-    modalToolbarTemplate: new Simplate(['<div class="modal-toolbar">', '{%! $.modalToolbarItemsTemplate %}', '</div>']),
-    modalToolbarItemsTemplate: new Simplate(['<div class="button tertiary" data-dojo-attach-point="cancelButton">{%= $.cancelText %}</div>', '<div class="button tertiary" data-dojo-attach-point="confirmButton">{%= $.confirmText %}</div>']),
+    pickListItemTemplate: new Simplate(['<li class="listItem" data-action="{%= $.action %}">', '{%= $.item %}', '</li>']),
+    modalToolbarTemplate: new Simplate(['<div class="modal-toolbar">', '</div>']),
+    buttonTemplate: new Simplate(['<div class="button tertiary">{%= $.text %}</div>']),
 
     id: 'modal-template',
     _orientation: null,
@@ -57,7 +57,9 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
     _content: null,
     _contentObject: null,
     _backdrop: null,
+    _isPicklist: false,
     showBackdrop: true,
+    showToolbar: true,
     positioning: 'center',
 
     cancelText: 'Cancel',
@@ -71,6 +73,10 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       var offsetHeight = _ref.offsetHeight;
 
       var position = {};
+
+      if (this._isPicklist) {
+        this.modalNode.style.width = offsetWidth + 'px';
+      }
 
       switch (this.positioning) {
         case 'right':
@@ -148,8 +154,6 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       this._parentNode = parentPanel;
       this.placeBackdrop(parentPanel);
       this._orientation = _connect['default'].subscribe('/app/setOrientation', this, this.hideModal);
-      _connect['default'].connect(this.cancelButton, 'onclick', this, this.hideModal);
-      _connect['default'].connect(this.confirmButton, 'onclick', this, this.confirm);
       _domConstruct['default'].place(this.modalNode, parentPanel);
       return this;
     },
@@ -163,7 +167,17 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       var object = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       this._contentObject = object;
-      _domConstruct['default'].place(object.domNode, this.modalNode, 'first');
+      _domConstruct['default'].place(object.domNode, this.modalNode);
+      if (this.showToolbar) {
+        var modalToolbar = _domConstruct['default'].toDom(this.modalToolbarTemplate.apply(this));
+        var cancelButton = _domConstruct['default'].toDom(this.buttonTemplate.apply({ text: this.cancelText }));
+        _connect['default'].connect(cancelButton, 'onclick', this, this.hideModal);
+        _domConstruct['default'].place(cancelButton, modalToolbar);
+        var confirmButton = _domConstruct['default'].toDom(this.buttonTemplate.apply({ text: this.confirmText }));
+        _connect['default'].connect(confirmButton, 'onclick', this, this.confirm);
+        _domConstruct['default'].place(confirmButton, modalToolbar);
+        _domConstruct['default'].place(modalToolbar, this.modalNode);
+      }
       return this;
     },
     setContentOptions: function setContentOptions() {
@@ -172,27 +186,33 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       this._contentOptions = options;
       return this;
     },
-    setContentPicklist: function setContentPicklist() {
-      var items = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    setContentPicklist: function setContentPicklist(_ref2) {
+      var items = _ref2.items;
+      var action = _ref2.action;
+      var actionScope = _ref2.actionScope;
 
       var pickListStart = _domConstruct['default'].toDom(this.pickListStartTemplate.apply());
       var pickListEnd = _domConstruct['default'].toDom(this.pickListEndTemplate.apply());
 
-      for (var item in items) {
-        if (item.value) {
-          _domConstruct['default'].place(this.pickListItemTemplate.apply(item, this), pickListStart);
-        }
-      }
+      _array['default'].forEach(items, function addToModalList(item) {
+        _domConstruct['default'].place(this.pickListItemTemplate.apply({ item: item, action: action }, actionScope), pickListStart);
+      }, this);
       _domConstruct['default'].place(pickListEnd, pickListStart);
       _domConstruct['default'].place(pickListStart, this.modalNode);
+      this._contentObject = pickListStart;
+      this._isPicklist = true;
+      this.modalNode.style.padding = 0;
+
       return this;
     },
     showContent: function showContent() {
       var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      this._contentObject.show(this._contentOptions || options);
-      if (this._contentObject.getContent) {
-        this.setContent(this._contentObject.getContent());
+      if (this._contentObject.show) {
+        this._contentObject.show(this._contentOptions || options);
+        if (this._contentObject.getContent) {
+          this.setContent(this._contentObject.getContent());
+        }
       }
       return this;
     },

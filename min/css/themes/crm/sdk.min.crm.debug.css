@@ -735,6 +735,19 @@ body > .viewContainer > .dialog {
   z-index: 100;
   overflow: scroll;
   padding: 0 15px;
+  top: 0;
+}
+.modal .picklist {
+  height: auto;
+  min-height: inherit;
+  max-height: 260px;
+  overflow: auto;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  text-indent: 10px;
+  border: 1px solid #368ac0;
+  border-bottom: 0;
 }
 .modal .button {
   background-color: transparent;
@@ -1929,7 +1942,9 @@ body > .viewContainer > .toolbar,
   color: #368ac0;
 }
 .time-select .dropdown {
+  color: #5c5c5c;
   width: 75px;
+  line-height: 32px;
   display: inline-block;
 }
 .time-select .dropdown > span {

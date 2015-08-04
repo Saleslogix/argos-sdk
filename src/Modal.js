@@ -34,7 +34,6 @@ import _Templated from 'argos/_Templated';
 const __class = declare('argos.Modal', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode">',
-      '{%! $.modalToolbarTemplate %}',
     '</div>',
   ]),
   modalBackdropTemplate: new Simplate([
@@ -48,18 +47,16 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     '</ul>',
   ]),
   pickListItemTemplate: new Simplate([
-    '<li class="listItem">',
+    '<li class="listItem" data-action="{%= $.action %}">',
     '{%= $.item %}',
     '</li>',
   ]),
   modalToolbarTemplate: new Simplate([
     '<div class="modal-toolbar">',
-    '{%! $.modalToolbarItemsTemplate %}',
     '</div>',
   ]),
-  modalToolbarItemsTemplate: new Simplate([
-    '<div class="button tertiary" data-dojo-attach-point="cancelButton">{%= $.cancelText %}</div>',
-    '<div class="button tertiary" data-dojo-attach-point="confirmButton">{%= $.confirmText %}</div>',
+  buttonTemplate: new Simplate([
+    '<div class="button tertiary">{%= $.text %}</div>',
   ]),
 
   id: 'modal-template',
@@ -68,7 +65,9 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   _content: null,
   _contentObject: null,
   _backdrop: null,
+  _isPicklist: false,
   showBackdrop: true,
+  showToolbar: true,
   positioning: 'center',
 
   cancelText: 'Cancel',
@@ -76,6 +75,10 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
 
   calculatePosition: function calculatePosition({ offsetTop, offsetLeft, offsetRight, offsetWidth, offsetHeight }) {
     const position = {};
+
+    if (this._isPicklist) {
+      this.modalNode.style.width = offsetWidth + 'px';
+    }
 
     switch (this.positioning) {
       case 'right':
@@ -150,8 +153,6 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     this._parentNode = parentPanel;
     this.placeBackdrop(parentPanel);
     this._orientation = connect.subscribe('/app/setOrientation', this, this.hideModal);
-    connect.connect(this.cancelButton, 'onclick', this, this.hideModal);
-    connect.connect(this.confirmButton, 'onclick', this, this.confirm);
     domConstruct.place(this.modalNode, parentPanel);
     return this;
   },
@@ -161,30 +162,44 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   },
   setContentObject: function setContentObject(object = {}) {
     this._contentObject = object;
-    domConstruct.place(object.domNode, this.modalNode, 'first');
+    domConstruct.place(object.domNode, this.modalNode);
+    if (this.showToolbar) {
+      const modalToolbar = domConstruct.toDom(this.modalToolbarTemplate.apply(this));
+      const cancelButton = domConstruct.toDom(this.buttonTemplate.apply({ text: this.cancelText }));
+      connect.connect(cancelButton, 'onclick', this, this.hideModal);
+      domConstruct.place(cancelButton, modalToolbar);
+      const confirmButton = domConstruct.toDom(this.buttonTemplate.apply({ text: this.confirmText }));
+      connect.connect(confirmButton, 'onclick', this, this.confirm);
+      domConstruct.place(confirmButton, modalToolbar);
+      domConstruct.place(modalToolbar, this.modalNode);
+    }
     return this;
   },
   setContentOptions: function setContentOptions(options = {}) {
     this._contentOptions = options;
     return this;
   },
-  setContentPicklist: function setContentPicklist(items = {}) {
+  setContentPicklist: function setContentPicklist({items, action, actionScope}) {
     const pickListStart = domConstruct.toDom(this.pickListStartTemplate.apply());
     const pickListEnd = domConstruct.toDom(this.pickListEndTemplate.apply());
 
-    for (const item in items) {
-      if (item.value) {
-        domConstruct.place(this.pickListItemTemplate.apply(item, this), pickListStart);
-      }
-    }
+    array.forEach(items, function addToModalList(item) {
+      domConstruct.place(this.pickListItemTemplate.apply({item: item, action: action}, actionScope), pickListStart);
+    }, this);
     domConstruct.place(pickListEnd, pickListStart);
     domConstruct.place(pickListStart, this.modalNode);
+    this._contentObject = pickListStart;
+    this._isPicklist = true;
+    this.modalNode.style.padding = 0;
+
     return this;
   },
   showContent: function showContent(options = {}) {
-    this._contentObject.show(this._contentOptions || options);
-    if (this._contentObject.getContent) {
-      this.setContent(this._contentObject.getContent());
+    if (this._contentObject.show) {
+      this._contentObject.show(this._contentOptions || options);
+      if (this._contentObject.getContent) {
+        this.setContent(this._contentObject.getContent());
+      }
     }
     return this;
   },

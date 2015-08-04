@@ -593,7 +593,20 @@ body > .viewContainer > .dialog {
   z-index: 100;
   overflow: scroll;
   padding: 0 15px;
+  top: 0;
 
+  .picklist {
+    height: auto;
+    min-height: inherit;
+    max-height: 260px;
+    overflow: auto;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    text-indent: 10px;
+    border: 1px solid @color-azure;
+    border-bottom: 0;
+  }
   .button {
     background-color: transparent;
     border: none;
