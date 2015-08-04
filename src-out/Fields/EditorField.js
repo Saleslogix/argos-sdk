@@ -114,7 +114,7 @@ define('argos/Fields/EditorField', ['exports', 'module', 'dojo/_base/declare', '
      * @param val
      * @template
      */
-    formatValue: function formatValue() {
+    formatValue: function formatValue() /*val*/{
       return '';
     },
     /**
@@ -346,4 +346,3 @@ define('argos/Fields/EditorField', ['exports', 'module', 'dojo/_base/declare', '
   _lang['default'].setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
   module.exports = __class;
 });
-/*val*/

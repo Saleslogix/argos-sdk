@@ -27,8 +27,7 @@ define('argos/_LegacySDataDetailMixin', ['exports', 'module', 'dojo/_base/declar
      * Initiates the SData request.
      */
     requestData: function requestData() {
-      var request;
-      request = this.createRequest();
+      var request = this.createRequest();
 
       if (request) {
         request.read({
@@ -56,7 +55,7 @@ define('argos/_LegacySDataDetailMixin', ['exports', 'module', 'dojo/_base/declar
       if (/(\s+)/.test(this.options.key)) {
         request.setResourceSelector(this.options.key);
       } else {
-        request.setResourceSelector(_string['default'].substitute('\'${0}\'', [this.options.key]));
+        request.setResourceSelector(_string['default'].substitute("'${0}'", [this.options.key]));
       }
 
       if (this.resourceKind) {
@@ -112,7 +111,7 @@ define('argos/_LegacySDataDetailMixin', ['exports', 'module', 'dojo/_base/declar
       if (response && response.status === 404) {
         _domConstruct['default'].place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
       } else {
-        alert(_string['default'].substitute(this.requestErrorText, [response, o]));
+        alert(_string['default'].substitute(this.requestErrorText, [response, o])); // eslint-disable-line
         _ErrorManager2['default'].addError('failure', response);
       }
 
@@ -126,7 +125,7 @@ define('argos/_LegacySDataDetailMixin', ['exports', 'module', 'dojo/_base/declar
      * @param {Object} response The response object.
      * @param {Object} o The options that were passed when creating the Ajax request.
      */
-    onRequestDataAborted: function onRequestDataAborted(response, o) {
+    onRequestDataAborted: function onRequestDataAborted(response /*, o*/) {
       this.options = false; // force a refresh
       _ErrorManager2['default'].addError('aborted', response);
       _domClass['default'].remove(this.domNode, 'panel-loading');

@@ -30,7 +30,7 @@ define('argos/Groups/_GroupBySection', ['exports', 'module', 'dojo/_base/declare
       _lang['default'].mixin(this, o);
     },
     init: function init() {},
-    getGroupSection: function getGroupSection() {},
+    getGroupSection: function getGroupSection() /*entry*/{},
     getOrderByQuery: function getOrderByQuery() {
       return this.groupByProperty + ' ' + this.sortDirection;
     }
@@ -39,4 +39,3 @@ define('argos/Groups/_GroupBySection', ['exports', 'module', 'dojo/_base/declare
   _lang['default'].setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
   module.exports = __class;
 });
-/*entry*/

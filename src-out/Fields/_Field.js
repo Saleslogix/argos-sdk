@@ -225,7 +225,7 @@ define('argos/Fields/_Field', ['exports', 'module', 'dojo/_base/declare', 'dojo/
      * @param {Boolean} initial If true the value is meant to be the default/original/clean value.
      * @template
      */
-    setValue: function setValue() {},
+    setValue: function setValue() /*val, initial*/{},
     /**
      * Each field type will need to implement this function to clear the value and visually.
      * @template
@@ -301,34 +301,33 @@ define('argos/Fields/_Field', ['exports', 'module', 'dojo/_base/declare', 'dojo/
      * @param {_Field} field The field itself
      * @template
      */
-    onEnable: function onEnable() {},
+    onEnable: function onEnable() /*field*/{},
     /**
      * Event that fires when the field is disabled
      * @param {_Field} field The field itself
      * @template
      */
-    onDisable: function onDisable() {},
+    onDisable: function onDisable() /*field*/{},
     /**
      * Event that fires when the field is shown
      * @param {_Field} field The field itself
      * @template
      */
-    onShow: function onShow() {},
+    onShow: function onShow() /*field*/{},
     /**
      * Event that fires when the field is hidden
      * @param {_Field} field The field itself
      * @template
      */
-    onHide: function onHide() {},
+    onHide: function onHide() /*field*/{},
     /**
      * Event that fires when the field is changed
      * @param {_Field} field The field itself
      * @template
      */
-    onChange: function onChange() {}
+    onChange: function onChange() /*value, field*/{}
   });
 
   _lang['default'].setObject('Sage.Platform.Mobile.Fields._Field', __class);
   module.exports = __class;
 });
-/*val, initial*/ /*field*/ /*field*/ /*field*/ /*field*/ /*value, field*/

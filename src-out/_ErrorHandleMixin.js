@@ -67,17 +67,15 @@ define('argos/_ErrorHandleMixin', ['exports', 'module', 'dojo/_base/declare', 'd
         return;
       }
 
-      var matches, noop, getNext, len;
+      function noop() {}
 
-      noop = function () {};
-
-      matches = _array['default'].filter(this.errorHandlers, (function (handler) {
+      var matches = _array['default'].filter(this.errorHandlers, (function filter(handler) {
         return handler.test && handler.test.call(this, error);
       }).bind(this));
 
-      len = matches.length;
+      var len = matches.length;
 
-      getNext = (function (index) {
+      var getNext = (function getNext(index) {
         // next() chain has ended, return a no-op so calling next() in the last chain won't error
         if (index === len) {
           return noop;
@@ -85,10 +83,9 @@ define('argos/_ErrorHandleMixin', ['exports', 'module', 'dojo/_base/declare', 'd
 
         // Return a closure with index and matches captured.
         // The handle function can call its "next" param to continue the chain.
-        return (function () {
-          var nextHandler, nextFn;
-          nextHandler = matches[index];
-          nextFn = nextHandler && nextHandler.handle;
+        return (function next() {
+          var nextHandler = matches[index];
+          var nextFn = nextHandler && nextHandler.handle;
 
           nextFn.call(this, error, getNext(index + 1));
         }).bind(this);

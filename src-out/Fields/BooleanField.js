@@ -87,7 +87,7 @@ define('argos/Fields/BooleanField', ['exports', 'module', 'dojo/_base/declare', 
      * the opposite of the current value
      * @param {Event} evt The click/tap event
      */
-    _onClick: function _onClick() {
+    _onClick: function _onClick() /*evt*/{
       if (this.isDisabled()) {
         return;
       }
@@ -148,4 +148,3 @@ define('argos/Fields/BooleanField', ['exports', 'module', 'dojo/_base/declare', 
   _lang['default'].setObject('Sage.Platform.Mobile.Fields.BooleanField', control);
   module.exports = _FieldManager2['default'].register('boolean', control);
 });
-/*evt*/
