@@ -100,7 +100,7 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
      * @property {String}
      * Text displayed when an invalid input is detected
      */
-    invalidDurationErrorText: "Field '${0}' is not a valid duration.",
+    invalidDurationErrorText: 'Field \'${0}\' is not a valid duration.',
     /**
      * @property {Object}
      * The auto completed text and their corresponding values in minutes (SData is always minutes)
@@ -173,7 +173,7 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
      * @param {Event} evt onkeyup
      * @private
      */
-    _onKeyUp: function _onKeyUp() /*evt*/{
+    _onKeyUp: function _onKeyUp() {
       var val = this.inputNode.value.toString();
       var match = this.autoCompletePhraseRE.exec(val);
 
@@ -235,7 +235,7 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
      * @return {Boolean}
      * @private
      */
-    _onBlur: function _onBlur() /*evt*/{
+    _onBlur: function _onBlur() {
       var val = this.inputNode.value.toString();
       var match = this.autoCompleteValueRE.exec(val);
       var multiplier = this.getMultiplier(this.currentKey);
@@ -277,8 +277,8 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
      * @param {Number} val Number of minutes
      * @param init
      */
-    setValue: function setValue() /*, init*/{
-      var val = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+    setValue: function setValue() {
+      var val = arguments[0] === undefined ? 0 /*, init*/ : arguments[0];
 
       var newVal = val;
       if (newVal === null) {
@@ -388,3 +388,4 @@ define('argos/Fields/DurationField', ['exports', 'module', 'dojo/_base/declare',
   _lang['default'].setObject('Sage.Platform.Mobile.Fields.DurationField', control);
   module.exports = _FieldManager2['default'].register('duration', control);
 });
+/*evt*/ /*evt*/

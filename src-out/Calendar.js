@@ -39,17 +39,15 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
 
   var _moment2 = _interopRequireDefault(_moment);
 
-  var pad, uCase, __class;
-
-  pad = function (n) {
+  function pad(n) {
     return n < 10 ? '0' + n : n;
-  };
+  }
 
-  uCase = function (str) {
+  function uCase(str) {
     return str.charAt(0).toUpperCase() + str.substring(1);
-  };
+  }
 
-  __class = (0, _declare['default'])('argos.Calendar', [_View['default']], {
+  var __class = (0, _declare['default'])('argos.Calendar', [_View['default']], {
     // Localization
     titleText: 'Calendar',
     amText: 'AM',
@@ -101,11 +99,9 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
     },
 
     validate: function validate() {
-      var daysInMonth, isPM, hours, minutes;
-
       this.year = parseInt(this.yearNode.value, 10);
       this.month = parseInt(this.monthNode.value, 10);
-      daysInMonth = this.daysInMonth();
+      var daysInMonth = this.daysInMonth();
 
       // adjust dayNode selector from changes to monthNode or leap/non-leap year
       if (this.dayNode.options.length !== daysInMonth) {
@@ -113,9 +109,9 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       }
 
       this.date = (0, _moment2['default'])(new Date(this.year, this.month, this.dayNode.value));
-      hours = parseInt(this.hourNode.value, 10);
-      minutes = parseInt(this.minuteNode.value, 10);
-      isPM = this.is24hrTimeFormat ? 11 < hours : _domAttr['default'].get(this.meridiemNode, 'toggled') !== true;
+      var hours = parseInt(this.hourNode.value, 10);
+      var minutes = parseInt(this.minuteNode.value, 10);
+      var isPM = this.is24hrTimeFormat ? hours > 11 : _domAttr['default'].get(this.meridiemNode, 'toggled') !== true;
       hours = isPM ? hours % 12 + 12 : hours % 12;
 
       if (!this._isTimeless()) {
@@ -126,8 +122,8 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       this.updateDatetimeCaption();
     },
     toggleMeridiem: function toggleMeridiem(params) {
-      var el = params.$source,
-          toggledValue = el && _domAttr['default'].get(el, 'toggled') !== true;
+      var el = params.$source;
+      var toggledValue = el && _domAttr['default'].get(el, 'toggled') !== true;
 
       if (el) {
         _domClass['default'].toggle(el, 'toggleStateOn');
@@ -136,17 +132,16 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
 
       this.updateDatetimeCaption();
     },
-    populateSelector: function populateSelector(el, val, min, max) {
-      var i, opt;
-
+    populateSelector: function populateSelector(el, v, min, max) {
+      var val = v;
       if (val > max) {
         val = max;
       }
 
       el.options.length = 0;
 
-      for (i = min; i <= max; i++) {
-        opt = _domConstruct['default'].create('option', {
+      for (var i = min; i <= max; i++) {
+        var opt = _domConstruct['default'].create('option', {
           innerHTML: this.monthNode === el ? uCase(this.months[i]) : pad(i),
           value: i,
           selected: i === val
@@ -156,9 +151,9 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       }
     },
     localizeViewTemplate: function localizeViewTemplate() {
-      var whichTemplate = arguments[0],
-          formatIndex = arguments[1],
-          fields = {
+      var whichTemplate = arguments[0];
+      var formatIndex = arguments[1];
+      var fields = {
         y: 'year',
         Y: 'year',
         M: 'month',
@@ -167,19 +162,16 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
         h: 'hour',
         H: 'hour',
         m: 'minute'
-      },
-          whichField,
-          whichFormat;
+      };
 
-      whichField = fields[3 > formatIndex ? this.dateFormat.split(/[^a-z]/i)[formatIndex].charAt(0) : this.timeFormatText.replace(/[a]\s/i, '').split(/[^a-z]/i)[formatIndex - 3].charAt(0)];
-
-      whichFormat = 'selectorTemplate' === whichTemplate ? whichField : uCase(whichField);
+      var whichField = fields[formatIndex < 3 ? this.dateFormat.split(/[^a-z]/i)[formatIndex].charAt(0) : this.timeFormatText.replace(/[a]\s/i, '').split(/[^a-z]/i)[formatIndex - 3].charAt(0)];
+      var whichFormat = whichTemplate === 'selectorTemplate' ? whichField : uCase(whichField);
 
       return _string['default'].substitute(this[whichTemplate], [whichFormat]);
     },
-    show: function show(options) {
+    show: function show(o) {
       this.inherited(arguments);
-      options = options || this.options;
+      var options = o || this.options;
 
       this.titleText = options.label ? options.label : this.titleText;
 
@@ -198,10 +190,8 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
 
       var today = (0, _moment2['default'])();
 
-      this.populateSelector(this.yearNode, this.year, this.year < today.year() - 10 ? this.year : today.year() - 10, // min 10 years in past - arbitrary min
-      10 + today.year());
+      this.populateSelector(this.yearNode, this.year, this.year < today.year() - 10 ? this.year : today.year() - 10, 10 + today.year());
 
-      // max 10 years into future - arbitrary limit
       this.populateSelector(this.monthNode, this.month, 0, 11);
       this.populateSelector(this.dayNode, this.date.date(), 1, this.daysInMonth());
       this.populateSelector(this.hourNode, this.date.hours() > 12 && !this.is24hrTimeFormat ? this.date.hours() - 12 : this.date.hours() || 12, this.is24hrTimeFormat ? 0 : 1, this.is24hrTimeFormat ? 23 : 12);
@@ -223,7 +213,7 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
         // hide meridiem toggle when using 24hr time format:
         if (this.is24hrTimeFormat) {
           _domStyle['default'].set(this.meridiemNode.parentNode, 'display', 'none');
-        } else if (12 > this.date.hours()) {
+        } else if (this.date.hours() < 12) {
           // ensure initial toggle state reflects actual time
           _domClass['default'].add(this.meridiemNode, 'toggleStateOn');
         } else {
@@ -245,7 +235,7 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
     },
     decrementHour: function decrementHour() {
       this.decrement(this.hourNode);
-      if (11 === this.hourNode.value % 12) {
+      if (this.hourNode.value % 12 === 11) {
         this.toggleMeridiem({
           $source: this.meridiemNode
         });
@@ -254,11 +244,10 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
     decrementMinute: function decrementMinute() {
       this.decrement(this.minuteNode, 15);
     },
-    decrement: function decrement(el, inc) {
+    decrement: function decrement(el) {
+      var inc = arguments[1] === undefined ? 1 : arguments[1];
       // all fields are <select> elements
-      inc = inc || 1;
-
-      if (0 <= el.selectedIndex - inc) {
+      if (el.selectedIndex - inc >= 0) {
         el.selectedIndex = inc * Math.floor((el.selectedIndex - 1) / inc);
       } else {
         if (el === this.yearNode) {
@@ -304,8 +293,8 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
     incrementMinute: function incrementMinute() {
       this.increment(this.minuteNode, 15);
     },
-    increment: function increment(el, inc) {
-      inc = inc || 1;
+    increment: function increment(el) {
+      var inc = arguments[1] === undefined ? 1 : arguments[1];
 
       if (el.options.length > el.selectedIndex + inc) {
         el.selectedIndex += inc;
@@ -347,13 +336,11 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       }
     },
     getDateTime: function getDateTime() {
-      var result, hours, isPM, minutes;
-
-      result = (0, _moment2['default'])(this.date);
+      var result = (0, _moment2['default'])(this.date);
       if (!this._isTimeless()) {
-        hours = parseInt(this.hourNode.value, 10);
-        minutes = parseInt(this.minuteNode.value, 10);
-        isPM = this.is24hrTimeFormat ? 11 < hours : _domAttr['default'].get(this.meridiemNode, 'toggled') !== true;
+        var hours = parseInt(this.hourNode.value, 10);
+        var minutes = parseInt(this.minuteNode.value, 10);
+        var isPM = this.is24hrTimeFormat ? hours > 11 : _domAttr['default'].get(this.meridiemNode, 'toggled') !== true;
 
         hours = isPM ? hours % 12 + 12 : hours % 12;
 
@@ -368,3 +355,5 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
   _lang['default'].setObject('Sage.Platform.Mobile.Calendar', __class);
   module.exports = __class;
 });
+// min 10 years in past - arbitrary min
+// max 10 years into future - arbitrary limit

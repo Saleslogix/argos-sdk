@@ -1,4 +1,4 @@
-define('argos/_RelatedViewWidgetEditMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/array', 'dojo/_base/lang', 'dojo/aspect', 'dojo/dom-construct', 'dojo/query', './RelatedViewManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseArray, _dojo_baseLang, _dojoAspect, _dojoDomConstruct, _dojoQuery, _RelatedViewManager) {
+define('argos/_RelatedViewWidgetEditMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/query', './RelatedViewManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoQuery, _RelatedViewManager) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /*
@@ -7,13 +7,7 @@ define('argos/_RelatedViewWidgetEditMixin', ['exports', 'module', 'dojo/_base/de
 
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
 
-  var _array = _interopRequireDefault(_dojo_baseArray);
-
   var _lang = _interopRequireDefault(_dojo_baseLang);
-
-  var _aspect = _interopRequireDefault(_dojoAspect);
-
-  var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
 
   var _query = _interopRequireDefault(_dojoQuery);
 
@@ -30,8 +24,8 @@ define('argos/_RelatedViewWidgetEditMixin', ['exports', 'module', 'dojo/_base/de
      */
     relatedContentViewsTemplate: new Simplate(['<div id="{%= $.id %}" class="related-view-edit-content {%= $.cls %}"></div>']),
     createRowContent: function createRowContent(layout, content) {
-      if (layout['relatedView']) {
-        content.push(this.relatedContentViewsTemplate.apply(layout['relatedView'], this));
+      if (layout.relatedView) {
+        content.push(this.relatedContentViewsTemplate.apply(layout.relatedView, this));
       } else {
         this.inherited(arguments);
       }
@@ -42,16 +36,17 @@ define('argos/_RelatedViewWidgetEditMixin', ['exports', 'module', 'dojo/_base/de
       this.inherited(arguments);
     },
     createRelatedViews: function createRelatedViews(layout, entry) {
-      var node;
+      var _this = this;
+
       layout.forEach((function (item) {
-        if (item['relatedView']) {
-          node = (0, _query['default'])('#' + item['relatedView'].id, this.contentNode)[0];
+        if (item.relatedView) {
+          var node = (0, _query['default'])('#' + item.relatedView.id, _this.contentNode)[0];
           if (node) {
-            this.onProcessRelatedViews(item['relatedView'], node, entry);
+            _this.onProcessRelatedViews(item.relatedView, node, entry);
           }
         }
         if (item.children) {
-          this.createRelatedViews(item.children, entry);
+          _this.createRelatedViews(item.children, entry);
         }
       }).bind(this));
     },
@@ -61,18 +56,19 @@ define('argos/_RelatedViewWidgetEditMixin', ['exports', 'module', 'dojo/_base/de
      * @return {Object} RelatedViewManager
      */
     getRelatedViewManager: function getRelatedViewManager(relatedView) {
-      var relatedViewManager, options, relatedViewOptions;
       if (!this.relatedViewManagers) {
         this.relatedViewManagers = {};
       }
+
+      var relatedViewManager = undefined;
+
       if (this.relatedViewManagers[relatedView.id]) {
         relatedViewManager = this.relatedViewManagers[relatedView.id];
       } else {
-        //relatedView.id = this.id + '_' + relatedView.id;
-        relatedViewOptions = {};
+        var relatedViewOptions = {};
         _lang['default'].mixin(relatedViewOptions, relatedView);
 
-        options = {
+        var options = {
           id: relatedView.id,
           relatedViewConfig: relatedViewOptions
         };
@@ -82,30 +78,27 @@ define('argos/_RelatedViewWidgetEditMixin', ['exports', 'module', 'dojo/_base/de
       return relatedViewManager;
     },
     onProcessRelatedViews: function onProcessRelatedViews(relatedView, rowNode, entry) {
-      var relatedViewManager, i, relatedContentNode;
       try {
-
         if (typeof relatedView.enabled === 'undefined') {
           relatedView.enabled = true;
         }
 
         if (relatedView.enabled) {
-          relatedViewManager = this.getRelatedViewManager(relatedView);
+          var relatedViewManager = this.getRelatedViewManager(relatedView);
           if (relatedViewManager) {
             relatedViewManager.addView(entry, rowNode, this);
           }
         }
       } catch (error) {
-        console.log('Error processing related view:' + error);
+        console.log('Error processing related view:' + error); // eslint-disable-line
       }
     },
     /**
      *  Destroys all of the related view widgets, that was added.
      */
     destroyRelatedViewWidgets: function destroyRelatedViewWidgets() {
-      var relatedViewId;
       if (this.relatedViewManagers) {
-        for (relatedViewId in this.relatedViewManagers) {
+        for (var relatedViewId in this.relatedViewManagers) {
           if (this.relatedViewManagers.hasOwnProperty(relatedViewId)) {
             this.relatedViewManagers[relatedViewId].destroyViews();
           }

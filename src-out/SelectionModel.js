@@ -74,7 +74,7 @@ define('argos/SelectionModel', ['exports', 'module', 'dojo/_base/lang', 'dojo/_b
      * @param self
      * @template
      */
-    onSelect: function onSelect() /*key, data, tag, self*/{},
+    onSelect: function onSelect() {},
     /**
      * Event that happens when an item is deselected/removed.
      * @param {String} key Unique identifier string
@@ -83,12 +83,12 @@ define('argos/SelectionModel', ['exports', 'module', 'dojo/_base/lang', 'dojo/_b
      * @param self
      * @template
      */
-    onDeselect: function onDeselect() /*key, data, tag, self*/{},
+    onDeselect: function onDeselect() {},
     /**
      * Event that happens when the store is cleared
      * @param self
      */
-    onClear: function onClear() /*self*/{},
+    onClear: function onClear() {},
     /**
      * Adds an item to the `selections` if it is not already stored.
      * @param {String} key Unique identifier string
@@ -204,3 +204,4 @@ define('argos/SelectionModel', ['exports', 'module', 'dojo/_base/lang', 'dojo/_b
   _lang['default'].setObject('Sage.Platform.Mobile.SelectionModel', __class);
   module.exports = __class;
 });
+/*key, data, tag, self*/ /*key, data, tag, self*/ /*self*/

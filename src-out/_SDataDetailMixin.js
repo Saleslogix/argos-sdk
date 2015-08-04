@@ -128,7 +128,8 @@ define('argos/_SDataDetailMixin', ['exports', 'module', 'dojo/_base/declare', 'd
      * @param {String} property Property name to extract from the entry, may be a path: `Address.City`.
      * @return {String}
      */
-    formatRelatedQuery: function formatRelatedQuery(entry, fmt, property) {
+    formatRelatedQuery: function formatRelatedQuery(entry, fmt, prop) {
+      var property = prop;
       property = property || '$key';
       return _string['default'].substitute(fmt, [_utility['default'].getValue(entry, property, '')]);
     }

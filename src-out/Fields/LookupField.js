@@ -103,7 +103,7 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
      *
      * * `${0}` is the label text of the field
      */
-    dependentErrorText: "A value for '${0}' must be selected.",
+    dependentErrorText: 'A value for \'${0}\' must be selected.',
     /**
      * @cfg {String}
      * Text displayed when the field is cleared or set to null
@@ -467,7 +467,7 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
      *
      * @param {Event} evt
      */
-    onNotificationTrigger: function onNotificationTrigger() /*evt*/{
+    onNotificationTrigger: function onNotificationTrigger() {
       var currentValue = this.getValue();
 
       if (this.previousValue !== currentValue) {
@@ -799,3 +799,4 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
   _lang['default'].setObject('Sage.Platform.Mobile.Fields.LookupField', control);
   module.exports = _FieldManager2['default'].register('lookup', control);
 });
+/*evt*/

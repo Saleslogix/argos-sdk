@@ -48,7 +48,7 @@ const __class = declare('argos.ApplicationModule', null, {
    * Mixes in the passed options object into itself
    * @param {Object} options Properties to be mixed in
    */
-  constructor: function(options) {
+  constructor: function constructor(options) {
     this._connects = [];
     this._subscribes = [];
 

@@ -28,7 +28,7 @@ import string from 'dojo/string';
 import utility from './Utility';
 import SData from './Store/SData';
 
-var __class = declare('argos._SDataDetailMixin', null, {
+const __class = declare('argos._SDataDetailMixin', null, {
 
   /**
    * @cfg {String} resourceKind
@@ -63,7 +63,7 @@ var __class = declare('argos._SDataDetailMixin', null, {
   entityProperty: '$name',
   versionProperty: '$etag',
 
-  createStore: function() {
+  createStore: function createStore() {
     return new SData({
       service: this.getConnection(),
       contractName: this.contractName,
@@ -77,16 +77,16 @@ var __class = declare('argos._SDataDetailMixin', null, {
       labelProperty: this.labelProperty,
       entityProperty: this.entityProperty,
       versionProperty: this.versionProperty,
-      scope: this
+      scope: this,
     });
   },
-  _buildGetExpression: function() {
-    var options = this.options;
+  _buildGetExpression: function _buildGetExpression() {
+    const options = this.options;
 
     return options && (options.id || options.key);
   },
-  _applyStateToGetOptions: function(getOptions) {
-    var options = this.options;
+  _applyStateToGetOptions: function _applyStateToGetOptions(getOptions) {
+    const options = this.options;
     if (options) {
       if (options.select) {
         getOptions.select = options.select;
@@ -120,10 +120,11 @@ var __class = declare('argos._SDataDetailMixin', null, {
    * @param {String} property Property name to extract from the entry, may be a path: `Address.City`.
    * @return {String}
    */
-  formatRelatedQuery: function(entry, fmt, property) {
+  formatRelatedQuery: function formatRelatedQuery(entry, fmt, prop) {
+    let property = prop;
     property = property || '$key';
     return string.substitute(fmt, [utility.getValue(entry, property, '')]);
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);

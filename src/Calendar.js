@@ -17,29 +17,25 @@
  * @class argos.Calendar
  * @alternateClassName Calendar
  */
-import declare from 'dojo/_base/declare'
-import lang from 'dojo/_base/lang'
-import string from 'dojo/string'
-import domAttr from 'dojo/dom-attr'
-import domClass from 'dojo/dom-class'
-import domConstruct from 'dojo/dom-construct'
-import domStyle from 'dojo/dom-style'
-import View from 'argos/View'
-import moment from 'moment'
+import declare from 'dojo/_base/declare';
+import lang from 'dojo/_base/lang';
+import string from 'dojo/string';
+import domAttr from 'dojo/dom-attr';
+import domClass from 'dojo/dom-class';
+import domConstruct from 'dojo/dom-construct';
+import domStyle from 'dojo/dom-style';
+import View from 'argos/View';
+import moment from 'moment';
 
-var pad,
-  uCase,
-  __class;
-
-pad = function(n) {
+function pad(n) {
   return n < 10 ? '0' + n : n;
-};
+}
 
-uCase = function(str) {
+function uCase(str) {
   return str.charAt(0).toUpperCase() + str.substring(1);
-};
+}
 
-__class = declare('argos.Calendar', [View], {
+const __class = declare('argos.Calendar', [View], {
   // Localization
   titleText: 'Calendar',
   amText: 'AM',
@@ -62,7 +58,7 @@ __class = declare('argos.Calendar', [View], {
     'Sep',
     'Oct',
     'Nov',
-    'Dec'
+    'Dec',
   ],
   months: null,
   dateFormat: moment().lang()._longDateFormat.L,
@@ -123,7 +119,7 @@ __class = declare('argos.Calendar', [View], {
     '</div>',
     '<div style="clear:both"></div>',
     '</div>',
-    '</div>'
+    '</div>',
   ]),
 
   dayNode: null,
@@ -134,14 +130,14 @@ __class = declare('argos.Calendar', [View], {
   datePickControl: null,
   timePickControl: null,
 
-  daysInMonth: function() {
-    var date = moment();
+  daysInMonth: function daysInMonth() {
+    const date = moment();
     date.date(1);
     date.year(this.year);
     date.month(this.month);
     return date.daysInMonth();
   },
-  init: function() {
+  init: function init() {
     this.inherited(arguments);
     this.months = this.monthsShortText;
     this.dateFormat = moment().lang()._longDateFormat.L;
@@ -153,12 +149,10 @@ __class = declare('argos.Calendar', [View], {
     this.connect(this.minuteNode, 'onchange', this.validate);
   },
 
-  validate: function() {
-    var daysInMonth, isPM, hours, minutes;
-
+  validate: function validate() {
     this.year = parseInt(this.yearNode.value, 10);
     this.month = parseInt(this.monthNode.value, 10);
-    daysInMonth = this.daysInMonth();
+    const daysInMonth = this.daysInMonth();
 
     // adjust dayNode selector from changes to monthNode or leap/non-leap year
     if (this.dayNode.options.length !== daysInMonth) {
@@ -166,9 +160,9 @@ __class = declare('argos.Calendar', [View], {
     }
 
     this.date = moment(new Date(this.year, this.month, this.dayNode.value));
-    hours = parseInt(this.hourNode.value, 10);
-    minutes = parseInt(this.minuteNode.value, 10);
-    isPM = this.is24hrTimeFormat ? 11 < hours : domAttr.get(this.meridiemNode, 'toggled') !== true;
+    let hours = parseInt(this.hourNode.value, 10);
+    const minutes = parseInt(this.minuteNode.value, 10);
+    const isPM = this.is24hrTimeFormat ? hours > 11 : domAttr.get(this.meridiemNode, 'toggled') !== true;
     hours = isPM ? (hours % 12) + 12 : (hours % 12);
 
     if (!this._isTimeless()) {
@@ -178,9 +172,9 @@ __class = declare('argos.Calendar', [View], {
 
     this.updateDatetimeCaption();
   },
-  toggleMeridiem: function(params) {
-    var el = params.$source,
-      toggledValue = el && (domAttr.get(el, 'toggled') !== true);
+  toggleMeridiem: function toggleMeridiem(params) {
+    const el = params.$source;
+    const toggledValue = el && (domAttr.get(el, 'toggled') !== true);
 
     if (el) {
       domClass.toggle(el, 'toggleStateOn');
@@ -189,51 +183,46 @@ __class = declare('argos.Calendar', [View], {
 
     this.updateDatetimeCaption();
   },
-  populateSelector: function(el, val, min, max) {
-    var i,
-      opt;
-
+  populateSelector: function populateSelector(el, v, min, max) {
+    let val = v;
     if (val > max) {
       val = max;
     }
 
     el.options.length = 0;
 
-    for (i = min; i <= max; i++) {
-      opt = domConstruct.create('option', {
+    for (let i = min; i <= max; i++) {
+      const opt = domConstruct.create('option', {
         innerHTML: (this.monthNode === el) ? uCase(this.months[i]) : pad(i),
         value: i,
-        selected: (i === val)
+        selected: (i === val),
       });
 
       el.options[el.options.length] = opt;
     }
   },
-  localizeViewTemplate: function() {
-    var whichTemplate = arguments[0],
-      formatIndex = arguments[1],
-      fields = {
-        y: 'year',
-        Y: 'year',
-        M: 'month',
-        d: 'day',
-        D: 'day',
-        h: 'hour',
-        H: 'hour',
-        m: 'minute'
-      },
-      whichField,
-      whichFormat;
+  localizeViewTemplate: function localizeViewTemplate() {
+    const whichTemplate = arguments[0];
+    const formatIndex = arguments[1];
+    const fields = {
+      y: 'year',
+      Y: 'year',
+      M: 'month',
+      d: 'day',
+      D: 'day',
+      h: 'hour',
+      H: 'hour',
+      m: 'minute',
+    };
 
-    whichField = fields[(3 > formatIndex) ? this.dateFormat.split(/[^a-z]/i)[formatIndex].charAt(0) : this.timeFormatText.replace(/[a]\s/i, '').split(/[^a-z]/i)[formatIndex - 3].charAt(0)];
-
-    whichFormat = ('selectorTemplate' === whichTemplate) ? whichField : uCase(whichField);
+    const whichField = fields[(formatIndex < 3) ? this.dateFormat.split(/[^a-z]/i)[formatIndex].charAt(0) : this.timeFormatText.replace(/[a]\s/i, '').split(/[^a-z]/i)[formatIndex - 3].charAt(0)];
+    const whichFormat = whichTemplate === 'selectorTemplate' ? whichField : uCase(whichField);
 
     return string.substitute(this[whichTemplate], [whichFormat]);
   },
-  show: function(options) {
+  show: function show(o) {
     this.inherited(arguments);
-    options = options || this.options;
+    const options = o || this.options;
 
     this.titleText = options.label ? options.label : this.titleText;
 
@@ -243,14 +232,14 @@ __class = declare('argos.Calendar', [View], {
 
     if (this._isTimeless()) {
       this.date.add({
-        minutes: this.date.zone()
+        minutes: this.date.zone(),
       });
     }
 
     this.year = this.date.year();
     this.month = this.date.month();
 
-    var today = moment();
+    const today = moment();
 
     this.populateSelector(this.yearNode, this.year, (this.year < today.year() - 10) ? this.year : today.year() - 10, // min 10 years in past - arbitrary min
       (10 + today.year()) // max 10 years into future - arbitrary limit
@@ -282,7 +271,7 @@ __class = declare('argos.Calendar', [View], {
       // hide meridiem toggle when using 24hr time format:
       if (this.is24hrTimeFormat) {
         domStyle.set(this.meridiemNode.parentNode, 'display', 'none');
-      } else if (12 > this.date.hours()) {
+      } else if (this.date.hours() < 12) {
         // ensure initial toggle state reflects actual time
         domClass.add(this.meridiemNode, 'toggleStateOn');
       } else {
@@ -293,30 +282,28 @@ __class = declare('argos.Calendar', [View], {
     }
   },
 
-  decrementYear: function() {
+  decrementYear: function decrementYear() {
     this.decrement(this.yearNode);
   },
-  decrementMonth: function() {
+  decrementMonth: function decrementMonth() {
     this.decrement(this.monthNode);
   },
-  decrementDay: function() {
+  decrementDay: function decrementDay() {
     this.decrement(this.dayNode);
   },
-  decrementHour: function() {
+  decrementHour: function decrementHour() {
     this.decrement(this.hourNode);
-    if (11 === this.hourNode.value % 12) {
+    if (this.hourNode.value % 12 === 11) {
       this.toggleMeridiem({
-        $source: this.meridiemNode
+        $source: this.meridiemNode,
       });
     }
   },
-  decrementMinute: function() {
+  decrementMinute: function decrementMinute() {
     this.decrement(this.minuteNode, 15);
   },
-  decrement: function(el, inc) { // all fields are <select> elements
-    inc = inc || 1;
-
-    if (0 <= (el.selectedIndex - inc)) {
+  decrement: function decrement(el, inc = 1) { // all fields are <select> elements
+    if ((el.selectedIndex - inc) >= 0) {
       el.selectedIndex = inc * Math.floor((el.selectedIndex - 1) / inc);
     } else {
       if (el === this.yearNode) {
@@ -341,30 +328,28 @@ __class = declare('argos.Calendar', [View], {
     this.validate(null, el);
   },
 
-  incrementYear: function() {
+  incrementYear: function incrementYear() {
     this.increment(this.yearNode);
   },
-  incrementMonth: function() {
+  incrementMonth: function incrementMonth() {
     this.increment(this.monthNode);
   },
-  incrementDay: function() {
+  incrementDay: function incrementDay() {
     this.increment(this.dayNode);
   },
-  incrementHour: function() {
+  incrementHour: function incrementHour() {
     this.increment(this.hourNode);
 
     if (this.hourNode.selectedIndex === (this.hourNode.options.length - 1)) {
       this.toggleMeridiem({
-        $source: this.meridiemNode
+        $source: this.meridiemNode,
       });
     }
   },
-  incrementMinute: function() {
+  incrementMinute: function incrementMinute() {
     this.increment(this.minuteNode, 15);
   },
-  increment: function(el, inc) {
-    inc = inc || 1;
-
+  increment: function increment(el, inc = 1) {
     if (el.options.length > (el.selectedIndex + inc)) {
       el.selectedIndex += inc;
     } else {
@@ -389,11 +374,11 @@ __class = declare('argos.Calendar', [View], {
 
     this.validate(null, el);
   },
-  _isTimeless: function() {
+  _isTimeless: function _isTimeless() {
     return (this.options && this.options.timeless) || this.timeless;
   },
-  updateDatetimeCaption: function() {
-    var t = moment(this.getDateTime());
+  updateDatetimeCaption: function updateDatetimeCaption() {
+    const t = moment(this.getDateTime());
 
     if (this._isTimeless()) {
       t.utc();
@@ -404,14 +389,12 @@ __class = declare('argos.Calendar', [View], {
       this.timePickControl.caption.innerHTML = t.format(this.timeFormatText);
     }
   },
-  getDateTime: function() {
-    var result, hours, isPM, minutes;
-
-    result = moment(this.date);
+  getDateTime: function getDateTime() {
+    const result = moment(this.date);
     if (!this._isTimeless()) {
-      hours = parseInt(this.hourNode.value, 10);
-      minutes = parseInt(this.minuteNode.value, 10);
-      isPM = this.is24hrTimeFormat ? (11 < hours) : domAttr.get(this.meridiemNode, 'toggled') !== true;
+      let hours = parseInt(this.hourNode.value, 10);
+      const minutes = parseInt(this.minuteNode.value, 10);
+      const isPM = this.is24hrTimeFormat ? (hours > 11) : domAttr.get(this.meridiemNode, 'toggled') !== true;
 
       hours = isPM ? (hours % 12) + 12 : (hours % 12);
 
@@ -420,7 +403,7 @@ __class = declare('argos.Calendar', [View], {
     }
 
     return result.toDate();
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Calendar', __class);

@@ -478,9 +478,7 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       try {
         if (entry) {
           this.processData(entry);
-        } else {
-          /* todo: show error message? */
-        }
+        } else {}
 
         _domClass['default'].remove(this.domNode, 'panel-loading');
 
@@ -1257,3 +1255,5 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
   _lang['default'].setObject('Sage.Platform.Mobile._EditBase', __class);
   module.exports = __class;
 });
+
+/* todo: show error message? */

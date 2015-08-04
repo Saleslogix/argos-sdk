@@ -193,7 +193,7 @@ define('argos/Fields/TextField', ['exports', 'module', 'dojo/_base/declare', 'do
      *
      * @param evt
      */
-    _onFocus: function _onFocus() /*evt*/{
+    _onFocus: function _onFocus() {
       _domClass['default'].add(this.domNode, 'text-field-active');
     },
     /**
@@ -237,7 +237,7 @@ define('argos/Fields/TextField', ['exports', 'module', 'dojo/_base/declare', 'do
      * a direct setting of the value.
      * @param {Event} evt
      */
-    onNotificationTrigger: function onNotificationTrigger() /*evt*/{
+    onNotificationTrigger: function onNotificationTrigger() {
       var currentValue = this.getValue();
 
       if (this.previousValue !== currentValue) {
@@ -250,7 +250,7 @@ define('argos/Fields/TextField', ['exports', 'module', 'dojo/_base/declare', 'do
      * Immediately calls {@link _Field#validate validate} and adds the respective row styling.
      * @param {Event} evt
      */
-    onValidationTrigger: function onValidationTrigger() /*evt*/{
+    onValidationTrigger: function onValidationTrigger() {
       if (this.validate()) {
         _domClass['default'].add(this.containerNode, 'row-error');
       } else {
@@ -311,3 +311,4 @@ define('argos/Fields/TextField', ['exports', 'module', 'dojo/_base/declare', 'do
   _lang['default'].setObject('Sage.Platform.Mobile.Fields.TextField', control);
   module.exports = _FieldManager2['default'].register('text', control);
 });
+/*evt*/ /*evt*/ /*evt*/

@@ -27,14 +27,11 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import Deferred from 'dojo/Deferred';
 import when from 'dojo/when';
-import domConstruct from 'dojo/dom-construct';
-import domClass from 'dojo/dom-class';
 import string from 'dojo/string';
 import SData from './Store/SData';
 import utility from './Utility';
-import ErrorManager from './ErrorManager';
 
-var __class = declare('argos._SDataListMixin', null, {
+const __class = declare('argos._SDataListMixin', null, {
   /**
    * @property request Object SData request passed into the store. Optional.
    */

@@ -1,4 +1,4 @@
-define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/Deferred', 'dojo/when', 'dojo/dom-construct', 'dojo/dom-class', 'dojo/string', './Store/SData', './Utility', './ErrorManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoDeferred, _dojoWhen, _dojoDomConstruct, _dojoDomClass, _dojoString, _StoreSData, _Utility, _ErrorManager) {
+define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/Deferred', 'dojo/when', 'dojo/string', './Store/SData', './Utility'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoDeferred, _dojoWhen, _dojoString, _StoreSData, _Utility) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -35,17 +35,11 @@ define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
 
   var _when = _interopRequireDefault(_dojoWhen);
 
-  var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
-
-  var _domClass = _interopRequireDefault(_dojoDomClass);
-
   var _string = _interopRequireDefault(_dojoString);
 
   var _SData = _interopRequireDefault(_StoreSData);
 
   var _utility = _interopRequireDefault(_Utility);
-
-  var _ErrorManager2 = _interopRequireDefault(_ErrorManager);
 
   var __class = (0, _declare['default'])('argos._SDataListMixin', null, {
     /**

@@ -73,7 +73,7 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
       key = this.entry && this.entry['$key'] || this.options.key;
 
       if (key) {
-        request.setResourceSelector(_string['default'].substitute("'${0}'", [key]));
+        request.setResourceSelector(_string['default'].substitute('\'${0}\'', [key]));
       }
 
       if (this.contractName) {
