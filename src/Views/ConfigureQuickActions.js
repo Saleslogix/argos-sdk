@@ -1,10 +1,5 @@
 import declare from 'dojo/_base/declare';
 import array from 'dojo/_base/array';
-import lang from 'dojo/_base/lang';
-import query from 'dojo/query';
-import string from 'dojo/string';
-import domAttr from 'dojo/dom-attr';
-import domClass from 'dojo/dom-class';
 import Memory from 'dojo/store/Memory';
 import _ConfigureBase from '../_ConfigureBase';
 
@@ -15,25 +10,23 @@ import _ConfigureBase from '../_ConfigureBase';
  * @extends argos._ConfigureBase
  *
  */
-var __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
+const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
   // Localization
   titleText: 'Configure Quick Actions',
 
-  //View Properties
+  // View Properties
   id: 'configure_quickactions',
   idProperty: '$key',
   labelProperty: '$descriptor',
 
-  getConfiguredView: function() {
+  getConfiguredView: function getConfiguredView() {
     return App.getView(this.options.viewId);
   },
-  onSave: function() {
-    var save, all, selected, view;
+  onSave: function onSave() {
+    const selected = this.getSelectedKeys();
+    const all = this._sortActions(this.options.actions, this.getOrderedKeys());
 
-    selected = this.getSelectedKeys();
-    all = this._sortActions(this.options.actions, this.getOrderedKeys());
-
-    save = array.map(all, function(action) {
+    const save = array.map(all, (action) => {
       if (selected.indexOf(action.id) >= 0) {
         action.visible = true;
       } else {
@@ -48,7 +41,7 @@ var __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
 
     App.persistPreferences();
 
-    view = this.getConfiguredView();
+    const view = this.getConfiguredView();
     if (view) {
       view.clear();
       view.refreshRequired = true;
@@ -56,11 +49,10 @@ var __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
 
     ReUI.back();
   },
-  _sortActions: function(actions, order) {
-    return actions.sort(function(a, b) {
-      var i, j;
-      i = order.indexOf(a.id);
-      j = order.indexOf(b.id);
+  _sortActions: function _sortActions(actions, order) {
+    return actions.sort((a, b) => {
+      const i = order.indexOf(a.id);
+      const j = order.indexOf(b.id);
 
       if (i < j) {
         return -1;
@@ -73,26 +65,22 @@ var __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
       return 0;
     });
   },
-  clear: function() {
+  clear: function clear() {
     this.store = null;
     this.inherited(arguments);
   },
-  show: function() {
+  show: function show() {
     this.refreshRequired = true;
     this.inherited(arguments);
   },
-  createStore: function() {
-    var list = [],
-      all = array.map(this.options.actions, function(action) {
-        return action.id;
-      }),
-      order = this.getSavedOrderedKeys(),
-      reduced,
-      combined;
+  createStore: function createStore() {
+    let list = [];
+    const all = array.map(this.options.actions, (action) => action.id);
+    const order = this.getSavedOrderedKeys();
 
     // De-dup id's
-    combined = order.concat(all);
-    reduced = combined.reduce(function(previous, current) {
+    const combined = order.concat(all);
+    let reduced = combined.reduce((previous, current) => {
       if (previous.indexOf(current) === -1) {
         previous.push(current);
       }
@@ -101,50 +89,49 @@ var __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
     }, []);
 
     // The order array could have had stale id's
-    reduced = array.filter(reduced, function(key) {
+    reduced = array.filter(reduced, (key) => {
       return all.indexOf(key) !== -1;
     });
 
-    list = array.map(this._sortActions(this.options.actions, this.getSavedOrderedKeys()), function(action) {
+    list = array.map(this._sortActions(this.options.actions, this.getSavedOrderedKeys()), (action) => {
       if (reduced.indexOf(action.id) > -1) {
         return {
           '$key': action.id,
-          '$descriptor': action.label
+          '$descriptor': action.label,
         };
-      } else {
-        return null;
       }
+      return null;
     });
 
-    list = array.filter(list, function(item) {
+    list = array.filter(list, (item) => {
       return item !== null;
     });
 
-    return Memory({
-      data: list
+    return Memory({// eslint-disable-line
+      data: list,
     });
   },
-  getSavedOrderedKeys: function() {
-    var save = this._getQuickActionPrefs();
-    return array.map(save, function(action) {
+  getSavedOrderedKeys: function getSavedOrderedKeys() {
+    const save = this._getQuickActionPrefs();
+    return array.map(save, (action) => {
       return action.id;
     });
   },
-  getSavedSelectedKeys: function() {
-    var save = this._getQuickActionPrefs();
-    save = array.filter(save, function(action) {
+  getSavedSelectedKeys: function getSavedSelectedKeys() {
+    let save = this._getQuickActionPrefs();
+    save = array.filter(save, (action) => {
       return action.visible === true;
     });
 
-    return array.map(save, function(action) {
+    return array.map(save, (action) => {
       return action.id;
     });
   },
-  _getQuickActionPrefs: function() {
+  _getQuickActionPrefs: function _getQuickActionPrefs() {
     this._ensurePrefs();
     return App.preferences.quickActions[this.options.viewId] || [];
   },
-  _ensurePrefs: function() {
+  _ensurePrefs: function _ensurePrefs() {
     if (!App.preferences) {
       App.preferences = {};
     }
@@ -152,7 +139,7 @@ var __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
     if (!App.preferences.quickActions) {
       App.preferences.quickActions = {};
     }
-  }
+  },
 });
 
 export default __class;
