@@ -190,10 +190,8 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
 
       var today = (0, _moment2['default'])();
 
-      this.populateSelector(this.yearNode, this.year, this.year < today.year() - 10 ? this.year : today.year() - 10, // min 10 years in past - arbitrary min
-      10 + today.year());
+      this.populateSelector(this.yearNode, this.year, this.year < today.year() - 10 ? this.year : today.year() - 10, 10 + today.year());
 
-      // max 10 years into future - arbitrary limit
       this.populateSelector(this.monthNode, this.month, 0, 11);
       this.populateSelector(this.dayNode, this.date.date(), 1, this.daysInMonth());
       this.populateSelector(this.hourNode, this.date.hours() > 12 && !this.is24hrTimeFormat ? this.date.hours() - 12 : this.date.hours() || 12, this.is24hrTimeFormat ? 0 : 1, this.is24hrTimeFormat ? 23 : 12);
@@ -247,7 +245,7 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       this.decrement(this.minuteNode, 15);
     },
     decrement: function decrement(el) {
-      var inc = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+      var inc = arguments[1] === undefined ? 1 : arguments[1];
       // all fields are <select> elements
       if (el.selectedIndex - inc >= 0) {
         el.selectedIndex = inc * Math.floor((el.selectedIndex - 1) / inc);
@@ -296,7 +294,7 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       this.increment(this.minuteNode, 15);
     },
     increment: function increment(el) {
-      var inc = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+      var inc = arguments[1] === undefined ? 1 : arguments[1];
 
       if (el.options.length > el.selectedIndex + inc) {
         el.selectedIndex += inc;
@@ -357,3 +355,5 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
   _lang['default'].setObject('Sage.Platform.Mobile.Calendar', __class);
   module.exports = __class;
 });
+// min 10 years in past - arbitrary min
+// max 10 years into future - arbitrary limit

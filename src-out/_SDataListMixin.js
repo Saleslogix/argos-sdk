@@ -141,10 +141,9 @@ define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
       });
     },
     _buildQueryExpression: function _buildQueryExpression() {
-      var options = this.options,
-          passed = options && (options.query || options.where);
-
-      return passed ? this.query ? '(' + _utility['default'].expand(this, passed) + ') and (' + this.query + ')' : '(' + _utility['default'].expand(this, passed) + ')' : this.query;
+      var options = this.options;
+      var passed = options && (options.query || options.where);
+      return passed ? this.query ? '(' + _utility['default'].expand(this, passed) + ') and (' + this.query + ')' : '(' + _utility['default'].expand(this, passed) + ')' : this.query; // eslint-disable-line
     },
     _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {
       var options = this.options;
@@ -189,31 +188,25 @@ define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
       return (query || '').replace(/"/g, '""');
     },
     hasMoreData: function hasMoreData() {
-      var start, count, total;
-      start = this.position;
-      count = this.pageSize;
-      total = this.total;
+      var start = this.position;
+      var count = this.pageSize;
+      var total = this.total;
 
       if (start > 0 && count > 0 && total >= 0) {
         return this.remaining === -1 || this.remaining > 0;
-      } else {
-        return true; // no way to determine, always assume more data
       }
+      return true; // no way to determine, always assume more data
     },
     getListCount: function getListCount(options) {
-      var store,
-          queryOptions,
-          queryResults,
-          def = new _Deferred['default']();
-
-      store = new _SData['default']({
-        service: App.services['crm'],
+      var def = new _Deferred['default']();
+      var store = new _SData['default']({
+        service: App.services.crm,
         resourceKind: this.resourceKind,
         contractName: this.contractName,
         scope: this
       });
 
-      queryOptions = {
+      var queryOptions = {
         count: 1,
         start: 0,
         select: '',
@@ -221,11 +214,11 @@ define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
         sort: ''
       };
 
-      queryResults = store.query(null, queryOptions);
+      var queryResults = store.query(null, queryOptions);
 
-      (0, _when['default'])(queryResults, function (relatedFeed) {
+      (0, _when['default'])(queryResults, function success() {
         def.resolve(queryResults.total);
-      }, function (err) {
+      }, function error(err) {
         def.reject(err);
       });
 

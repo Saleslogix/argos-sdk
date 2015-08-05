@@ -1,4 +1,4 @@
-define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-attr', 'dojo/dom-style', 'dojo/query', './DomHelper'], function (exports, module, _dojo_baseLang, _dojoOn, _dojoDom, _dojoDomClass, _dojoDomAttr, _dojoDomStyle, _dojoQuery, _DomHelper) {
+define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-attr', './DomHelper'], function (exports, module, _dojo_baseLang, _dojoOn, _dojoDom, _dojoDomClass, _dojoDomAttr, _DomHelper) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
@@ -11,22 +11,79 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
 
   var _domAttr = _interopRequireDefault(_dojoDomAttr);
 
-  var _domStyle = _interopRequireDefault(_dojoDomStyle);
-
-  var _query = _interopRequireDefault(_dojoQuery);
-
   var _DomHelper2 = _interopRequireDefault(_DomHelper);
 
-  var ReUI, R, D, transition, config, context, extractInfoFromHash, formatHashForPage, updateOrientationDom, checkOrientationAndLocation, transitionComplete;
+  var ReUI = {};
+  var R = ReUI;
+  var D = _DomHelper2['default'];
+  var context = {
+    page: false,
+    transitioning: false,
+    initialized: false,
+    counter: 0,
+    width: 0,
+    height: 0,
+    check: 0,
+    history: []
+  };
 
-  ReUI = {};
+  var config = window.reConfig || {};
+  R.DomHelper = _DomHelper2['default'];
 
-  ReUI.DomHelper = _DomHelper2['default'];
+  function formatHashForPage(page, options) {
+    var segments = options && options.tag ? [page.id].concat(options.tag) : [page.id];
+    return R.hashPrefix + segments.join(';');
+  }
 
-  R = ReUI;
-  D = _DomHelper2['default'];
+  function updateOrientationDom(value) {
+    var currentOrient = R.rootEl.getAttribute('orient');
+    if (value === currentOrient) {
+      return;
+    }
 
-  transitionComplete = function (page, o) {
+    R.rootEl.setAttribute('orient', value);
+
+    if (value === 'portrait') {
+      _domClass['default'].remove(R.rootEl, 'landscape');
+      _domClass['default'].add(R.rootEl, 'portrait');
+    } else if (value === 'landscape') {
+      _domClass['default'].remove(R.rootEl, 'portrait');
+      _domClass['default'].add(R.rootEl, 'landscape');
+    } else {
+      _domClass['default'].remove(R.rootEl, 'portrait');
+      _domClass['default'].remove(R.rootEl, 'landscape');
+    }
+  }
+
+  function extractInfoFromHash(hash) {
+    var segments = undefined;
+    var position = undefined;
+
+    if (hash) {
+      if (hash.indexOf(R.hashPrefix) === 0) {
+        segments = hash.substr(R.hashPrefix.length).split(';');
+      }
+
+      return {
+        hash: hash,
+        page: segments[0],
+        tag: segments.length <= 2 ? segments[1] : segments.slice(1)
+      };
+    }
+    // no hash? IE9 can lose it on history.back()
+    var el = R.getCurrentPage();
+    if (el && el.id) {
+      for (position = context.history.length - 1; position > 0; position--) {
+        if (context.history[position].hash.match(el.id)) {
+          break;
+        }
+      }
+    }
+
+    return context.history[position - 1];
+  }
+
+  function transitionComplete(page, o) {
     if (o.track !== false) {
       if (typeof page.id !== 'string' || page.id.length <= 0) {
         page.id = 'reui-' + context.counter++;
@@ -58,9 +115,53 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
         }
       }
     }
-  };
+  }
 
-  transition = function (from, to, o) {
+  function checkOrientationAndLocation() {
+    // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
+    if (Math.abs(window.innerHeight - context.height) > 5 || Math.abs(window.innerWidth - context.width) > 5) {
+      if (Math.abs(window.innerWidth - context.width) > 5) {
+        R.setOrientation(window.innerHeight < window.innerWidth ? 'landscape' : 'portrait');
+      }
+
+      context.height = window.innerHeight;
+      context.width = window.innerWidth;
+    }
+
+    if (context.transitioning) {
+      return;
+    }
+
+    if (context.hash !== location.hash) {
+      // do reverse checking here, loop-and-trim will be done by show
+      var reverse = false;
+      var position = undefined;
+      var info = undefined;
+      for (position = context.history.length - 2; position >= 0; position--) {
+        if (context.history[position].hash === location.hash) {
+          info = context.history[position];
+          reverse = true;
+          break;
+        }
+      }
+
+      info = info || extractInfoFromHash(location.hash);
+      var page = info && _dom['default'].byId(info.page);
+
+      // more often than not, data will only be needed when moving to a previous view (and restoring its state).
+
+      if (page) {
+        R.show(page, {
+          external: true,
+          reverse: reverse,
+          tag: info && info.tag,
+          data: info && info.data
+        });
+      }
+    }
+  }
+
+  function transition(from, to, o) {
     function complete() {
       transitionComplete(to, o);
 
@@ -121,121 +222,7 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
     D.unselect(from);
     D.select(to);
     complete();
-  };
-
-  extractInfoFromHash = function (hash) {
-    var segments = [],
-        position,
-        el;
-    if (hash) {
-      if (hash.indexOf(R.hashPrefix) === 0) {
-        segments = hash.substr(R.hashPrefix.length).split(';');
-      }
-
-      return {
-        hash: hash,
-        page: segments[0],
-        tag: segments.length <= 2 ? segments[1] : segments.slice(1)
-      };
-    } else {
-      // no hash? IE9 can lose it on history.back()
-      el = R.getCurrentPage();
-      if (el && el.id) {
-        for (position = context.history.length - 1; position > 0; position--) {
-          if (context.history[position].hash.match(el.id)) {
-            break;
-          }
-        }
-      }
-
-      return context.history[position - 1];
-    }
-
-    return false;
-  };
-
-  formatHashForPage = function (page, options) {
-    var segments = options && options.tag ? [page.id].concat(options.tag) : [page.id];
-    return R.hashPrefix + segments.join(';');
-  };
-
-  updateOrientationDom = function (value) {
-    var currentOrient = R.rootEl.getAttribute('orient');
-    if (value === currentOrient) {
-      return;
-    }
-
-    R.rootEl.setAttribute('orient', value);
-
-    if (value === 'portrait') {
-      _domClass['default'].remove(R.rootEl, 'landscape');
-      _domClass['default'].add(R.rootEl, 'portrait');
-    } else if (value === 'landscape') {
-      _domClass['default'].remove(R.rootEl, 'portrait');
-      _domClass['default'].add(R.rootEl, 'landscape');
-    } else {
-      _domClass['default'].remove(R.rootEl, 'portrait');
-      _domClass['default'].remove(R.rootEl, 'landscape');
-    }
-  };
-
-  checkOrientationAndLocation = function () {
-    var reverse, info, page, position;
-
-    // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
-    if (Math.abs(window.innerHeight - context.height) > 5 || Math.abs(window.innerWidth - context.width) > 5) {
-      if (Math.abs(window.innerWidth - context.width) > 5) {
-        R.setOrientation(window.innerHeight < window.innerWidth ? 'landscape' : 'portrait');
-      }
-
-      context.height = window.innerHeight;
-      context.width = window.innerWidth;
-    }
-
-    if (context.transitioning) {
-      return;
-    }
-
-    if (context.hash !== location.hash) {
-      // do reverse checking here, loop-and-trim will be done by show
-      reverse = false;
-
-      for (position = context.history.length - 2; position >= 0; position--) {
-        if (context.history[position].hash === location.hash) {
-          info = context.history[position];
-          reverse = true;
-          break;
-        }
-      }
-
-      info = info || extractInfoFromHash(location.hash);
-      page = info && _dom['default'].byId(info.page);
-
-      // more often than not, data will only be needed when moving to a previous view (and restoring its state).
-
-      if (page) {
-        R.show(page, {
-          external: true,
-          reverse: reverse,
-          tag: info && info.tag,
-          data: info && info.data
-        });
-      }
-    }
-  };
-
-  context = {
-    page: false,
-    transitioning: false,
-    initialized: false,
-    counter: 0,
-    width: 0,
-    height: 0,
-    check: 0,
-    history: []
-  };
-
-  config = window.reConfig || {};
+  }
 
   _lang['default'].mixin(ReUI, {
     rootEl: false,
@@ -296,15 +283,14 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
      *   update: False if the transition should not update title and back button, True otherwise.
      *   scroll: False if the transition should not scroll to the top, True otherwise.
      */
-    show: function show(page, o) {
+    show: function show(p) {
+      var o = arguments[1] === undefined ? {} : arguments[1];
+
       if (context.transitioning) {
         return;
       }
 
-      var count, hash, position, from;
-
-      o = o || {};
-      page = typeof page === 'string' ? _dom['default'].byId(page) : page;
+      var page = typeof p === 'string' ? _dom['default'].byId(p) : p;
 
       if (!page) {
         return;
@@ -317,9 +303,9 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
       context.transitioning = true;
 
       if (o.track !== false) {
-        count = context.history.length;
-        hash = formatHashForPage(page, o);
-        position = -1;
+        var count = context.history.length;
+        var hash = formatHashForPage(page, o);
+        var position = -1;
 
         // do loop and trim
         for (position = count - 1; position >= 0; position--) {
@@ -329,7 +315,7 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
         }
 
         if (position > -1 && position === count - 2) {
-          //Added check if history item is just one back.
+          // Added check if history item is just one back.
 
           context.history = context.history.splice(0, position + 1);
 
@@ -358,7 +344,6 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
           if (position > -1) {
             // we fix up the history, but do not flag as trimmed, since we do want the new view to be pushed.
             context.history = context.history.splice(0, position + 1);
-
             context.hash = context.history[context.history.length - 1] && context.history[context.history.length - 1].hash;
 
             if (location.hash !== hash) {
@@ -378,7 +363,7 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
         cancelable: true
       });
 
-      from = context.page;
+      var from = context.page;
 
       if (from) {
         _on['default'].emit(from, 'blur', {

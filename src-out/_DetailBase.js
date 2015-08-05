@@ -401,7 +401,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * Navigates to the defined `this.editView` passing the current `this.entry` as default data.
      * @param {HTMLElement} el
      */
-    navigateToEditView: function navigateToEditView() /*el*/{
+    navigateToEditView: function navigateToEditView() {
       var view = App.getView(this.editView);
       if (view) {
         var entry = this.entry;
@@ -728,7 +728,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
       var options = this.options;
       return options && (options.id || options.key);
     },
-    _applyStateToGetOptions: function _applyStateToGetOptions() /*getOptions*/{},
+    _applyStateToGetOptions: function _applyStateToGetOptions() {},
     /**
      * Determines if the view should be refresh by inspecting and comparing the passed navigation option key with current key.
      * @param {Object} options Passed navigation options.
@@ -843,3 +843,4 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
   _lang['default'].setObject('Sage.Platform.Mobile._DetailBase', __class);
   module.exports = __class;
 });
+/*el*/ /*getOptions*/

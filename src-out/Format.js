@@ -356,12 +356,12 @@ define('argos/Format', ['exports', 'module', 'dojo/_base/json', 'dojo/_base/lang
         // format with out decimal part
         numberFormated = _string['default'].substitute('${0}', [wp]).replace(/ /g, ' '); // keep numbers from breaking
       } else {
-          var dp = v % 1; // get the decimal part
-          dp = dp.toPrecision(decimalPlaces + 1); // round to significant pecsion
-          dp = dp.toString();
-          dp = dp.substr(2, decimalPlaces); // get the whole decimal part
-          numberFormated = _string['default'].substitute('${0}' + Mobile.CultureInfo.numberFormat.percentDecimalSeparator + '${1}', [wp, dp]).replace(/ /g, ' '); // keep numbers from breaking
-        }
+        var dp = v % 1; // get the decimal part
+        dp = dp.toPrecision(decimalPlaces + 1); // round to significant pecsion
+        dp = dp.toString();
+        dp = dp.substr(2, decimalPlaces); // get the whole decimal part
+        numberFormated = _string['default'].substitute('${0}' + Mobile.CultureInfo.numberFormat.percentDecimalSeparator + '${1}', [wp, dp]).replace(/ /g, ' '); // keep numbers from breaking
+      }
 
       return _string['default'].substitute(argos.Format.percentFormatText, [numberFormated, Mobile.CultureInfo.numberFormat.percentSymbol]);
     },

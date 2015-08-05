@@ -55,7 +55,7 @@ define('argos/_LegacySDataDetailMixin', ['exports', 'module', 'dojo/_base/declar
       if (/(\s+)/.test(this.options.key)) {
         request.setResourceSelector(this.options.key);
       } else {
-        request.setResourceSelector(_string['default'].substitute("'${0}'", [this.options.key]));
+        request.setResourceSelector(_string['default'].substitute('\'${0}\'', [this.options.key]));
       }
 
       if (this.resourceKind) {

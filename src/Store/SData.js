@@ -18,7 +18,6 @@ import array from 'dojo/_base/array';
 import Deferred from 'dojo/_base/Deferred';
 import QueryResults from 'dojo/store/util/QueryResults';
 import string from 'dojo/string';
-import json from 'dojo/_base/json';
 import convert from '../Convert';
 import utility from '../Utility';
 
@@ -31,7 +30,7 @@ import utility from '../Utility';
  *
  * @alternateClassName App
  */
-var __class = declare('argos.Store.SData', null, {
+const __class = declare('argos.Store.SData', null, {
   doDateConversion: false,
 
   /* todo: is this the appropriate name for the expansion scope? */
@@ -63,22 +62,22 @@ var __class = declare('argos.Store.SData', null, {
   /**
    * @constructor
    */
-  constructor: function(props) {
+  constructor: function constructor(props) {
     lang.mixin(this, props);
   },
-  _createEntryRequest: function(id, getOptions) {
-    var request, contractName, resourceKind, dataSet, resourceProperty, resourcePredicate, select, include;
-
-    request = utility.expand(this, getOptions.request || this.request);
+  _createEntryRequest: function _createEntryRequest(identity, getOptions) {
+    let request = utility.expand(this, getOptions.request || this.request);
+    let id = identity;
     if (request) {
       request = request.clone();
     } else {
       id = id || utility.expand(this.scope || this, getOptions.resourcePredicate || this.resourcePredicate);
 
-      contractName = utility.expand(this.scope || this, getOptions.contractName || this.contractName);
-      resourceKind = utility.expand(this.scope || this, getOptions.resourceKind || this.resourceKind);
-      dataSet = utility.expand(this.scope || this, getOptions.dataSet || this.dataSet);
-      resourceProperty = utility.expand(this.scope || this, getOptions.resourceProperty || this.resourceProperty);
+      const contractName = utility.expand(this.scope || this, getOptions.contractName || this.contractName);
+      const resourceKind = utility.expand(this.scope || this, getOptions.resourceKind || this.resourceKind);
+      const dataSet = utility.expand(this.scope || this, getOptions.dataSet || this.dataSet);
+      const resourceProperty = utility.expand(this.scope || this, getOptions.resourceProperty || this.resourceProperty);
+      let resourcePredicate;
 
       if (id) {
         resourcePredicate = /\s+/.test(id) ? id : string.substitute("'${0}'", [id]);
@@ -106,8 +105,8 @@ var __class = declare('argos.Store.SData', null, {
       }
     }
 
-    select = utility.expand(this.scope || this, getOptions.select || this.select);
-    include = utility.expand(this.scope || this, getOptions.include || this.include);
+    const select = utility.expand(this.scope || this, getOptions.select || this.select);
+    const include = utility.expand(this.scope || this, getOptions.include || this.include);
 
     if (select && select.length > 0) {
       request.setQueryArg('select', select.join(','));
@@ -119,36 +118,19 @@ var __class = declare('argos.Store.SData', null, {
 
     return request;
   },
-  _createFeedRequest: function(query, queryOptions) {
-    var request,
-      queryName,
-      contractName,
-      resourceKind,
-      resourceProperty,
-      resourcePredicate,
-      applicationName,
-      dataSet,
-      queryArgs,
-      arg,
-      select,
-      include,
-      orderBy,
-      where,
-      order,
-      conditions;
-
-    request = utility.expand(this, queryOptions.request || this.request);
+  _createFeedRequest: function _createFeedRequest(q, queryOptions) {
+    let request = utility.expand(this, queryOptions.request || this.request);
     if (request) {
       request = request.clone();
     } else {
-      queryName = utility.expand(this.scope || this, queryOptions.queryName || this.queryName);
-      contractName = utility.expand(this.scope || this, queryOptions.contractName || this.contractName);
-      resourceKind = utility.expand(this.scope || this, queryOptions.resourceKind || this.resourceKind);
-      resourceProperty = utility.expand(this.scope || this, queryOptions.resourceProperty || this.resourceProperty);
-      resourcePredicate = utility.expand(this.scope || this, queryOptions.resourcePredicate || this.resourcePredicate);
-      applicationName = utility.expand(this.scope || this, queryOptions.applicationName || this.applicationName);
-      dataSet = utility.expand(this.scope || this, queryOptions.dataSet || this.dataSet);
-      queryArgs = utility.expand(this.scope || this, queryOptions.queryArgs || this.queryArgs);
+      const queryName = utility.expand(this.scope || this, queryOptions.queryName || this.queryName);
+      const contractName = utility.expand(this.scope || this, queryOptions.contractName || this.contractName);
+      const resourceKind = utility.expand(this.scope || this, queryOptions.resourceKind || this.resourceKind);
+      const resourceProperty = utility.expand(this.scope || this, queryOptions.resourceProperty || this.resourceProperty);
+      const resourcePredicate = utility.expand(this.scope || this, queryOptions.resourcePredicate || this.resourcePredicate);
+      const applicationName = utility.expand(this.scope || this, queryOptions.applicationName || this.applicationName);
+      const dataSet = utility.expand(this.scope || this, queryOptions.dataSet || this.dataSet);
+      const queryArgs = utility.expand(this.scope || this, queryOptions.queryArgs || this.queryArgs);
 
       if (queryName) {
         request = new Sage.SData.Client.SDataNamedQueryRequest(this.service)
@@ -182,7 +164,7 @@ var __class = declare('argos.Store.SData', null, {
       }
 
       if (queryArgs) {
-        for (arg in queryArgs) {
+        for (const arg in queryArgs) {
           if (queryArgs.hasOwnProperty(arg)) {
             request.setQueryArg(arg, queryArgs[arg]);
           }
@@ -190,9 +172,9 @@ var __class = declare('argos.Store.SData', null, {
       }
     }
 
-    select = utility.expand(this.scope || this, queryOptions.select || this.select);
-    include = utility.expand(this.scope || this, queryOptions.include || this.include);
-    orderBy = utility.expand(this.scope || this, queryOptions.sort || this.orderBy);
+    const select = utility.expand(this.scope || this, queryOptions.select || this.select);
+    const include = utility.expand(this.scope || this, queryOptions.include || this.include);
+    const orderBy = utility.expand(this.scope || this, queryOptions.sort || this.orderBy);
 
     if (select && select.length > 0) {
       request.setQueryArg('select', select.join(','));
@@ -206,8 +188,8 @@ var __class = declare('argos.Store.SData', null, {
       if (typeof orderBy === 'string') {
         request.setQueryArg('orderby', orderBy);
       } else if (orderBy.length > 0) {
-        order = [];
-        array.forEach(orderBy, function(v) {
+        const order = [];
+        array.forEach(orderBy, function forEach(v) {
           if (v.descending) {
             this.push(v.attribute + ' desc');
           } else {
@@ -219,14 +201,14 @@ var __class = declare('argos.Store.SData', null, {
       }
     }
 
-    where = utility.expand(this.scope || this, queryOptions.where || this.where);
-    conditions = [];
+    const where = utility.expand(this.scope || this, queryOptions.where || this.where);
+    const conditions = [];
 
     if (where) {
       conditions.push(where);
     }
 
-    query = utility.expand(this.scope || this, query);
+    const query = utility.expand(this.scope || this, q);
 
     if (query) {
       conditions.push(query);
@@ -246,32 +228,29 @@ var __class = declare('argos.Store.SData', null, {
 
     return request;
   },
-  _onCancel: function(deferred) {},
-  _onRequestFeedSuccess: function(queryDeferred, feed) {
-    var items, total, error;
-
+  _onCancel: function _onCancel(/*deferred*/) {},
+  _onRequestFeedSuccess: function _onRequestFeedSuccess(queryDeferred, feed) {
     if (feed) {
-      items = lang.getObject(this.itemsProperty, false, feed);
-      total = typeof feed['$totalResults'] === 'number' ? feed['$totalResults'] : -1;
+      const items = lang.getObject(this.itemsProperty, false, feed);
+      const total = typeof feed.$totalResults === 'number' ? feed.$totalResults : -1;
 
       queryDeferred.total = total;
       queryDeferred.resolve(items);
     } else {
-      error = new Error('The feed result is invalid.');
-
+      const error = new Error('The feed result is invalid.');
       queryDeferred.reject(error);
     }
   },
-  _onRequestEntrySuccess: function(deferred, entry) {
+  _onRequestEntrySuccess: function _onRequestEntrySuccess(deferred, entry) {
     if (entry) {
       deferred.resolve(this.doDateConversion ? this._handleDateConversion(entry) : entry);
     } else {
-      var error = new Error('The entry result is invalid.');
+      const error = new Error('The entry result is invalid.');
       deferred.reject(error);
     }
   },
-  _onRequestFailure: function(deferred, xhr, xhrOptions) {
-    var error = new Error('An error occurred requesting: ' + xhrOptions.url);
+  _onRequestFailure: function _onRequestFailure(deferred, xhr, xhrOptions) {
+    const error = new Error('An error occurred requesting: ' + xhrOptions.url);
 
     error.xhr = xhr;
     error.status = xhr.status;
@@ -280,8 +259,8 @@ var __class = declare('argos.Store.SData', null, {
 
     deferred.reject(error);
   },
-  _onRequestAbort: function(deferred, xhr, xhrOptions) {
-    var error = new Error('An error occurred requesting: ' + xhrOptions.url);
+  _onRequestAbort: function _onRequestAbort(deferred, xhr, xhrOptions) {
+    const error = new Error('An error occurred requesting: ' + xhrOptions.url);
 
     error.xhr = xhr;
     error.status = 0;
@@ -290,8 +269,8 @@ var __class = declare('argos.Store.SData', null, {
 
     deferred.reject(error);
   },
-  _handleDateConversion: function(entry) {
-    for (var prop in entry) {
+  _handleDateConversion: function _handleDateConversion(entry) {
+    for (const prop in entry) {
       if (convert.isDateString(entry[prop])) {
         entry[prop] = convert.toDateFromString(entry[prop]);
       }
@@ -299,18 +278,16 @@ var __class = declare('argos.Store.SData', null, {
 
     return entry;
   },
-  get: function(id, getOptions /* sdata only */ ) {
-    var handle = {},
-      deferred = new Deferred(),
-      method,
-      request = this._createEntryRequest(id, getOptions || {});
-
-    method = this.executeGetAs ? request[this.executeGetAs] : request.read;
+  get: function get(id, getOptions /* sdata only */ ) {
+    const handle = {};
+    const deferred = new Deferred();
+    const request = this._createEntryRequest(id, getOptions || {});
+    const method = this.executeGetAs ? request[this.executeGetAs] : request.read;
 
     handle.value = method.call(request, {
       success: this._onRequestEntrySuccess.bind(this, deferred),
       failure: this._onRequestFailure.bind(this, deferred),
-      aborted: this._onRequestAbort.bind(this, deferred)
+      aborted: this._onRequestAbort.bind(this, deferred),
     });
 
     return deferred;
@@ -320,8 +297,7 @@ var __class = declare('argos.Store.SData', null, {
    * @param {Object} object The object to get the identity from
    * @returns {String|Number}
    */
-  getIdentity: function(object) {
-
+  getIdentity: function getIdentity(object) {
     return lang.getObject(this.idProperty, false, object);
   },
   /**
@@ -329,7 +305,7 @@ var __class = declare('argos.Store.SData', null, {
    * @param {Object} object The object to get the label from
    * @returns {String}
    */
-  getLabel: function(object) {
+  getLabel: function getLabel(object) {
     return lang.getObject(this.labelProperty, false, object);
   },
   /**
@@ -337,7 +313,7 @@ var __class = declare('argos.Store.SData', null, {
    * @param {Object} object The object to get the entity from
    * @returns {String|Object}
    */
-  getEntity: function(object) {
+  getEntity: function getEntity(object) {
     return lang.getObject(this.entityProperty, false, object);
   },
   /**
@@ -345,7 +321,7 @@ var __class = declare('argos.Store.SData', null, {
    * @param {Object} object The object to get the version from
    * @returns {String}
    */
-  getVersion: function(object) {
+  getVersion: function getVersion(object) {
     return lang.getObject(this.versionProperty, false, object);
   },
   /**
@@ -358,45 +334,38 @@ var __class = declare('argos.Store.SData', null, {
    * @param {Boolean} putOptions.overwrite
    * @returns {String|Number}
    */
-  put: function(object, putOptions) {
-    putOptions = putOptions || {};
-
-    var id = putOptions.id || this.getIdentity(object),
-      entity = putOptions.entity || this.entityName,
-      version = putOptions.version || this.getVersion(object),
-      handle,
-      deferred,
-      request,
-      method,
-      atom = !this.service.isJsonEnabled();
+  put: function put(object, putOptions = {}) {
+    const id = putOptions.id || this.getIdentity(object);
+    const entity = putOptions.entity || this.entityName;
+    const version = putOptions.version || this.getVersion(object);
+    const atom = !this.service.isJsonEnabled();
 
     if (id) {
-      object['$key'] = id;
+      object.$key = id;
     }
 
     if (entity && atom) {
-      object['$name'] = entity;
+      object.$name = entity;
     }
 
     if (version) {
-      object['$etag'] = version;
+      object.$etag = version;
     }
 
-    handle = {};
-    deferred = new Deferred();
-    request = this._createEntryRequest(id, putOptions);
-
-    method = putOptions.overwrite ? request.update : request.create;
+    const handle = {};
+    const deferred = new Deferred();
+    const request = this._createEntryRequest(id, putOptions);
+    const method = putOptions.overwrite ? request.update : request.create;
 
     handle.value = method.call(request, object, {
       success: this._onTransmitEntrySuccess.bind(this, deferred),
       failure: this._onRequestFailure.bind(this, deferred),
-      aborted: this._onRequestAbort.bind(this, deferred)
+      aborted: this._onRequestAbort.bind(this, deferred),
     });
 
     return deferred;
   },
-  _onTransmitEntrySuccess: function(deferred, entry) {
+  _onTransmitEntrySuccess: function _onTransmitEntrySuccess(deferred, entry) {
     deferred.resolve(this.doDateConversion ? this._handleDateConversion(entry) : entry);
   },
   /**
@@ -405,8 +374,7 @@ var __class = declare('argos.Store.SData', null, {
    * @param {Object} addOptions Additional directives for creating objects
    * @param {Boolean} addOptions.overwrite
    */
-  add: function(object, addOptions) {
-    addOptions = addOptions || {};
+  add: function add(object, addOptions = {}) {
     addOptions.overwrite = false;
     return this.put(object, addOptions);
   },
@@ -414,7 +382,7 @@ var __class = declare('argos.Store.SData', null, {
   /**
    * Not implemented in this store.
    */
-  remove: function(id) {},
+  remove: function remove(/*id*/) {},
   /**
    * Queries the store for objects. This does not alter the store, but returns a
    * set of data from the store.
@@ -424,21 +392,20 @@ var __class = declare('argos.Store.SData', null, {
    * @returns {dojo.store.api.Store.QueryResults}
    *
    */
-  query: function(query, queryOptions) {
-    var handle = {},
-      queryDeferred = new Deferred(this._onCancel.bind(this, handle)),
-      request = this._createFeedRequest(query, queryOptions || {}),
-      method,
-      options;
+  query: function query(q, queryOptions) {
+    const handle = {};
+    const queryDeferred = new Deferred(this._onCancel.bind(this, handle));
+    const request = this._createFeedRequest(q, queryOptions || {});
 
     queryDeferred.total = -1;
-    options = {
+    const options = {
       success: this._onRequestFeedSuccess.bind(this, queryDeferred),
       failure: this._onRequestFailure.bind(this, queryDeferred),
       aborted: this._onRequestAbort.bind(this, queryDeferred),
-      httpMethodOverride: queryOptions && queryOptions['httpMethodOverride']
+      httpMethodOverride: queryOptions && queryOptions.httpMethodOverride,
     };
 
+    let method = request.read;
     if (this.executeQueryAs) {
       method = request[this.executeQueryAs];
     } else if (request instanceof Sage.SData.Client.SDataResourcePropertyRequest) {
@@ -446,22 +413,20 @@ var __class = declare('argos.Store.SData', null, {
     } else if (request instanceof Sage.SData.Client.SDataServiceOperationRequest) {
       method = request.execute;
       handle.value = method.call(request, this.entry, options);
-      return QueryResults(queryDeferred);
-    } else {
-      method = request.read;
+      return QueryResults(queryDeferred); // eslint-disable-line
     }
 
     handle.value = method.call(request, options);
-    return QueryResults(queryDeferred);
+    return QueryResults(queryDeferred); // eslint-disable-line
   },
   /**
    * Not implemented in this store.
    */
-  transaction: function() {},
+  transaction: function transaction() {},
   /**
    * Not implemented in this store.
    */
-  getChildren: function(parent, options) {},
+  getChildren: function getChildren(/*parent, options*/) {},
   /**
    * Returns any metadata about the object. This may include attribution,
    * cache directives, history, or version information.
@@ -473,18 +438,18 @@ var __class = declare('argos.Store.SData', null, {
    * @return {String|Object} return.entity
    * @return {String} return.version
    */
-  getMetadata: function(object) {
+  getMetadata: function getMetadata(object) {
     if (object) {
       return {
         id: this.getIdentity(object),
         label: this.getLabel(object),
         entity: this.getEntity(object),
-        version: this.getVersion(object)
+        version: this.getVersion(object),
       };
     }
 
     return null;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Store.SData', __class);

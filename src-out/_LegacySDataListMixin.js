@@ -160,7 +160,7 @@ define('argos/_LegacySDataListMixin', ['exports', 'module', 'dojo/_base/declare'
      * @return {Object} Sage.SData.Client.SDataResourceCollectionRequest instance.
      * @deprecated
      */
-    createRequest: function createRequest() /*o*/{
+    createRequest: function createRequest() {
       var where = [];
       var options = this.options;
       var pageSize = this.pageSize;
@@ -234,3 +234,4 @@ define('argos/_LegacySDataListMixin', ['exports', 'module', 'dojo/_base/declare'
   _lang['default'].setObject('Sage.Platform.Mobile._LegacySDataListMixin', __class);
   module.exports = __class;
 });
+/*o*/

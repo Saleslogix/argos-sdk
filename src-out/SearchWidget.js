@@ -257,7 +257,7 @@ define('argos/SearchWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_
      * @param expression
      * @param widget
      */
-    onSearchExpression: function onSearchExpression() /*expression, widget*/{},
+    onSearchExpression: function onSearchExpression() {},
     /**
      * Gets the current search expression as a formatted query.
      * * Gathers the inputted search text
@@ -298,3 +298,4 @@ define('argos/SearchWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_
   _lang['default'].setObject('Sage.Platform.Mobile.SearchWidget', __class);
   module.exports = __class;
 });
+/*expression, widget*/

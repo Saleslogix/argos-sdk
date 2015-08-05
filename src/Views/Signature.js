@@ -31,7 +31,7 @@ import View from '../View';
  * @extends argos.View
  * @requires argos.Format
  */
-var __class = declare('argos.Views.Signature', [View], {
+const __class = declare('argos.Views.Signature', [View], {
   // Localization
   /**
    * @property {String}
@@ -49,7 +49,7 @@ var __class = declare('argos.Views.Signature', [View], {
    */
   undoText: 'Undo',
 
-  //Templates
+  // Templates
   /**
    * @property {Simplate}
    * Simplate that defines the HTML Markup
@@ -64,14 +64,14 @@ var __class = declare('argos.Views.Signature', [View], {
     '<button class="button" data-action="_undo"><span>{%: $.undoText %}</span></button>',
     '<button class="button" data-action="clearValue"><span>{%: $.clearCanvasText %}</span></button>',
     '</div>',
-    '<div>'
+    '<div>',
   ]),
   /**
    * @property {Simplate}
    * Simplate that defines the canvas with a set width and height
    */
   canvasTemplate: new Simplate([
-    '<canvas data-dojo-attach-point="signatureNode" width="{%: $.canvasNodeWidth %}" height="{%: $.canvasNodeHeight %}" data-dojo-attach-event="onmousedown:_penDown,onmousemove:_penMove,onmouseup:_penUp,ontouchstart:_penDown,ontouchmove:_penMove,ontouchend:_penUp"></canvas>'
+    '<canvas data-dojo-attach-point="signatureNode" width="{%: $.canvasNodeWidth %}" height="{%: $.canvasNodeHeight %}" data-dojo-attach-event="onmousedown:_penDown,onmousemove:_penMove,onmouseup:_penUp,ontouchstart:_penDown,ontouchmove:_penMove,ontouchend:_penUp"></canvas>',
   ]),
   /**
    * @property {HTMLElement}
@@ -79,7 +79,7 @@ var __class = declare('argos.Views.Signature', [View], {
    */
   signatureNode: null,
 
-  //View Properties
+  // View Properties
   /**
    * @property {String}
    * The unique view id
@@ -106,7 +106,7 @@ var __class = declare('argos.Views.Signature', [View], {
    */
   lastpos: {
     x: -1,
-    y: -1
+    y: -1,
   },
   /**
    * @cfg {Object}
@@ -116,7 +116,7 @@ var __class = declare('argos.Views.Signature', [View], {
     scale: 1,
     lineWidth: 3,
     penColor: 'blue',
-    drawColor: 'red'
+    drawColor: 'red',
   },
   /**
    * @property {Boolean}
@@ -149,7 +149,7 @@ var __class = declare('argos.Views.Signature', [View], {
    * `/app/resize` event and immediately call resize so the canvas is scaled.
    * @param options
    */
-  show: function(options) {
+  show: function show(options) {
     this.inherited(arguments);
 
     if (options && options.lineWidth) {
@@ -177,7 +177,7 @@ var __class = declare('argos.Views.Signature', [View], {
    * Returns the optimized signature array as a JSON string
    * @return {String}
    */
-  getValues: function() {
+  getValues: function getValues() {
     return json.toJson(this.optimizeSignature());
   },
   /**
@@ -185,14 +185,14 @@ var __class = declare('argos.Views.Signature', [View], {
    * @param {String} val JSON-stringified Number[][] of x-y coordinates
    * @param initial Unused.
    */
-  setValue: function(val, initial) {
+  setValue: function setValue(val/*, initial*/) {
     this.signature = val ? json.fromJson(val) : [];
     this.redraw(this.signature, this.signatureNode, this.config);
   },
   /**
    * Clears the value and saves the buffer
    */
-  clearValue: function() {
+  clearValue: function clearValue() {
     this.buffer = this.signature;
     this.setValue('', true);
   },
@@ -201,21 +201,21 @@ var __class = declare('argos.Views.Signature', [View], {
    * @param {Event} e
    * @return Number[]
    */
-  _getCoords: function(e) {
-    var offset = domGeom.position(this.signatureNode, false);
+  _getCoords: function _getCoords(e) {
+    const offset = domGeom.position(this.signatureNode, false);
     return e.touches ? [
       e.touches[0].pageX - offset.x,
-      e.touches[0].pageY - offset.y
+      e.touches[0].pageY - offset.y,
     ] : [
       e.clientX - offset.x,
-      e.clientY - offset.y
+      e.clientY - offset.y,
     ];
   },
   /**
    * Handler for `ontouchstart`, records the starting point and sets the state to down
    * @param {Event} e
    */
-  _penDown: function(e) {
+  _penDown: function _penDown(e) {
     this.isPenDown = true;
     this.lastpos = this._getCoords(e);
     this.context.lineWidth = this.config.lineWidth;
@@ -226,7 +226,7 @@ var __class = declare('argos.Views.Signature', [View], {
    * Handler for `ontouchmove`, draws the lines between the last postition and current position
    * @param {Event} e
    */
-  _penMove: function(e) {
+  _penMove: function _penMove(e) {
     if (!this.isPenDown) {
       return;
     }
@@ -246,7 +246,7 @@ var __class = declare('argos.Views.Signature', [View], {
    * Handler for `ontouchend`, saves the final signature and redraws the canvas
    * @param e
    */
-  _penUp: function(e) {
+  _penUp: function _penUp(e) {
     e.preventDefault();
     this.isPenDown = false;
     if (this.trace.length) {
@@ -260,13 +260,12 @@ var __class = declare('argos.Views.Signature', [View], {
   /**
    * Undoes the last pen down-to-pen up line by using the buffer
    */
-  _undo: function() {
+  _undo: function _undo() {
     if (this.signature.length) {
       this.buffer = this.signature.pop();
       if (!this.signature.length) {
         this.buffer = [this.buffer];
       }
-
     } else if (this.buffer.length) {
       this.signature = this.buffer;
     }
@@ -275,7 +274,7 @@ var __class = declare('argos.Views.Signature', [View], {
   /**
    * Sets the canvas width/height based on the size of the window/screen
    */
-  _sizeCanvas: function() {
+  _sizeCanvas: function _sizeCanvas() {
     this.canvasNodeWidth = Math.floor(win.getBox().w * 0.92);
 
     this.canvasNodeHeight = Math.min(
@@ -291,13 +290,12 @@ var __class = declare('argos.Views.Signature', [View], {
    * drawn signature accordingly to the ratio.
    * @param e
    */
-  onResize: function(e) {
-    var newScale,
-      oldWidth = this.canvasNodeWidth,
-      oldHeight = this.canvasNodeHeight;
+  onResize: function onResize(/*e*/) {
+    const oldWidth = this.canvasNodeWidth;
+    const oldHeight = this.canvasNodeHeight;
     this._sizeCanvas();
 
-    newScale = Math.min(
+    const newScale = Math.min(
       this.canvasNodeWidth / oldWidth,
       this.canvasNodeHeight / oldHeight
     );
@@ -311,7 +309,7 @@ var __class = declare('argos.Views.Signature', [View], {
    * @param {HTMLElement} canvas Canvas to be drawn to
    * @param {Object} options Options to be passed to canvasDraw
    */
-  redraw: function(vector, canvas, options) {
+  redraw: function redraw(vector, canvas, options) {
     format.canvasDraw(vector, canvas, options);
   },
   /**
@@ -319,18 +317,14 @@ var __class = declare('argos.Views.Signature', [View], {
    * @param {Number} scale Ratio in which to multiply the vector point
    * @return {Number[][]} Rescaled signature array
    */
-  rescale: function(scale) {
-    var rescaled,
-      j,
-      i;
-
-    rescaled = [];
-    for (i = 0; i < this.signature.length; i++) {
+  rescale: function rescale(scale) {
+    const rescaled = [];
+    for (let i = 0; i < this.signature.length; i++) {
       rescaled.push([]);
-      for (j = 0; j < this.signature[i].length; j++) {
+      for (let j = 0; j < this.signature[i].length; j++) {
         rescaled[i].push([
           this.signature[i][j][0] * scale,
-          this.signature[i][j][1] * scale
+          this.signature[i][j][1] * scale,
         ]);
       }
     }
@@ -340,12 +334,10 @@ var __class = declare('argos.Views.Signature', [View], {
    * Loops the signature calling optimize on each pen down-to-pen up segment
    * @return {Number[][]} Optimized signature
    */
-  optimizeSignature: function() {
-    var optimized, i;
+  optimizeSignature: function optimizeSignature() {
+    const optimized = [];
 
-    optimized = [];
-
-    for (i = 0; i < this.signature.length; i++) {
+    for (let i = 0; i < this.signature.length; i++) {
       optimized.push(this.optimize(this.signature[i]));
     }
 
@@ -357,33 +349,27 @@ var __class = declare('argos.Views.Signature', [View], {
    * @param {Number[]} vector Array of x,y coordinates to optimize
    * @return {Number[]} Optimized array
    */
-  optimize: function(vector) {
+  optimize: function optimize(vector) {
     if (vector.length < 2) {
       return vector;
     }
 
-    var result = [],
-      minA = 0.95,
-      maxL = 15.0, // 15.0, 10.0 works well
-      rootP = vector[0],
-      lastP = vector[1],
-      rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]],
-      rootL = Math.sqrt(rootV[0] * rootV[0] + rootV[1] * rootV[1]),
-      currentP,
-      currentV,
-      currentL,
-      i,
-      dotProduct;
+    const result = [];
+    const minA = 0.95;
+    const maxL = 15.0; // 15.0, 10.0 works well
+    let rootP = vector[0];
+    let lastP = vector[1];
+    let rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]];
+    let rootL = Math.sqrt(rootV[0] * rootV[0] + rootV[1] * rootV[1]);
 
-    for (i = 2; i < vector.length; i++) {
-      currentP = vector[i];
-      currentV = [currentP[0] - rootP[0], currentP[1] - rootP[1]];
-      currentL = Math.sqrt(currentV[0] * currentV[0] + currentV[1] * currentV[1]);
-      dotProduct = (rootV[0] * currentV[0] + rootV[1] * currentV[1]) / (rootL * currentL);
+    for (let i = 2; i < vector.length; i++) {
+      const currentP = vector[i];
+      const currentV = [currentP[0] - rootP[0], currentP[1] - rootP[1]];
+      const currentL = Math.sqrt(currentV[0] * currentV[0] + currentV[1] * currentV[1]);
+      const dotProduct = (rootV[0] * currentV[0] + rootV[1] * currentV[1]) / (rootL * currentL);
 
       if (dotProduct < minA || currentL > maxL) {
         result.push(rootP);
-
         rootP = lastP;
         lastP = currentP;
         rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]];
@@ -391,13 +377,12 @@ var __class = declare('argos.Views.Signature', [View], {
       } else {
         lastP = currentP;
       }
-
     }
 
     result.push(lastP);
 
     return result;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Views.Signature', __class);

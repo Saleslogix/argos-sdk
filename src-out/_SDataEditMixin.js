@@ -104,7 +104,7 @@ define('argos/_SDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
      *
      * @param templateEntry
      */
-    applyContext: function applyContext() /*templateEntry*/{},
+    applyContext: function applyContext() {},
     /**
      * Creates Sage.SData.Client.SDataTemplateResourceRequest instance and sets a number of known properties.
      *
@@ -242,3 +242,4 @@ define('argos/_SDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
   _lang['default'].setObject('Sage.Platform.Mobile._SDataEditMixin', __class);
   module.exports = __class;
 });
+/*templateEntry*/

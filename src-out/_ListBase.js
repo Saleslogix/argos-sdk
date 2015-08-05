@@ -886,7 +886,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
 
       _domConstruct['default'].place(this.actionsNode, rowNode, 'after');
     },
-    onApplyRowActionPanel: function onApplyRowActionPanel() /*actionNodePanel, rowNode*/{},
+    onApplyRowActionPanel: function onApplyRowActionPanel() {},
     /**
      * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
      * that when the next view queries the navigation context we can include the passed param as a data point.
@@ -995,8 +995,8 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @param {Object} options The object published by the event.
      * @private
      */
-    _onRefresh: function _onRefresh() /*options*/{},
-    onScroll: function onScroll() /*evt*/{
+    _onRefresh: function _onRefresh() {},
+    onScroll: function onScroll() {
       var scrollerNode = this.get('scroller');
       var pos = _domGeom['default'].position(scrollerNode, true);
       var height = pos.h; // viewport height (what user sees)
@@ -1081,7 +1081,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @return {String/Boolean} An SData query compatible search expression.
      * @template
      */
-    formatSearchQuery: function formatSearchQuery() /*searchQuery*/{
+    formatSearchQuery: function formatSearchQuery() {
       return false;
     },
     /**
@@ -1370,7 +1370,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       var remaining = this.total > -1 ? this.total - (this.position + this.pageSize) : -1;
       return remaining;
     },
-    onApplyRowTemplate: function onApplyRowTemplate() /*entry, rowNode*/{},
+    onApplyRowTemplate: function onApplyRowTemplate() {},
     processData: function processData(entries) {
       if (!entries) {
         return;
@@ -1418,7 +1418,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     _buildQueryExpression: function _buildQueryExpression() {
       return _lang['default'].mixin(this.query || {}, this.options && (this.options.query || this.options.where));
     },
-    _applyStateToQueryOptions: function _applyStateToQueryOptions() /*queryOptions*/{},
+    _applyStateToQueryOptions: function _applyStateToQueryOptions() {},
     /**
      * Handler for the more button. Simply calls {@link #requestData requestData} which already has the info for
      * setting the start index as needed.
@@ -1607,9 +1607,10 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     /**
      * Returns a promise with the list's count.
      */
-    getListCount: function getListCount() /*options, callback*/{}
+    getListCount: function getListCount() {}
   });
 
   _lang['default'].setObject('Sage.Platform.Mobile._ListBase', __class);
   module.exports = __class;
 });
+/*actionNodePanel, rowNode*/ /*options*/ /*evt*/ /*searchQuery*/ /*entry, rowNode*/ /*queryOptions*/ /*options, callback*/
