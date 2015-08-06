@@ -14,12 +14,7 @@
  */
 import domConstruct from 'dojo/dom-construct';
 import declare from 'dojo/_base/declare';
-import query from 'dojo/query';
-import parser from 'dojo/parser';
-import array from 'dojo/_base/array';
 import lang from 'dojo/_base/lang';
-import registry from 'dijit/registry';
-import wai from 'dijit/_base/wai';
 import _TemplatedMixin from 'dijit/_TemplatedMixin';
 
 /**
@@ -29,33 +24,31 @@ import _TemplatedMixin from 'dijit/_TemplatedMixin';
  *
  * @alternateClassName _Templated
  */
-var __class = declare('argos._Templated', [_TemplatedMixin], {
-    _stringRepl: function(tmpl) {
-        return tmpl;
-    },
-    /**
-     * Processes `this.widgetTemplate` or `this.contentTemplate`
-     */
-    buildRendering: function() {
-        var root;
-
-        if (this.widgetTemplate && this.contentTemplate) {
-            throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
-        }
-
-        if (this.contentTemplate) {
-            this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
-        } else if (this.widgetTemplate) {
-            this.templateString = this.widgetTemplate.apply(this);
-            root = domConstruct.toDom(this.templateString);
-
-            if (root.nodeType === 11) {
-                this.templateString = ['<div>', this.templateString, '</div>'].join('');
-            }
-        }
-
-        this.inherited(arguments);
+const __class = declare('argos._Templated', [_TemplatedMixin], {
+  _stringRepl: function _stringRepl(tmpl) {
+    return tmpl;
+  },
+  /**
+   * Processes `this.widgetTemplate` or `this.contentTemplate`
+   */
+  buildRendering: function buildRendering() {
+    if (this.widgetTemplate && this.contentTemplate) {
+      throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
     }
+
+    if (this.contentTemplate) {
+      this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
+    } else if (this.widgetTemplate) {
+      this.templateString = this.widgetTemplate.apply(this);
+      const root = domConstruct.toDom(this.templateString);
+
+      if (root.nodeType === 11) {
+        this.templateString = ['<div>', this.templateString, '</div>'].join('');
+      }
+    }
+
+    this.inherited(arguments);
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._Templated', __class);

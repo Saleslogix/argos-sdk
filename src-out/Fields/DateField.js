@@ -68,7 +68,7 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
      *
      * `${0}` => Label
      */
-    invalidDateFormatErrorText: "Field '${0}' has Invalid date format.",
+    invalidDateFormatErrorText: 'Field \'${0}\' has Invalid date format.',
 
     /**
      * @property {Simplate}
@@ -117,16 +117,16 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
      * doesn't then current value is empties and the validation styling is added.
      * @param {Event} evt Event that caused change to fire.
      */
-    _onChange: function _onChange(evt) {
+    _onChange: function _onChange() {
       var val = (0, _moment2['default'])(this.inputNode.value, this.dateFormatText).toDate();
 
       if (val) {
         this.validationValue = this.currentValue = val;
         _domClass['default'].remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
       } else {
-          this.validationValue = this.currentValue = null;
-          _domClass['default'].add(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
-        }
+        this.validationValue = this.currentValue = null;
+        _domClass['default'].add(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+      }
     },
     /**
      * Extends the parent {@link EditorField#createNavigationOptions createNavigationOptions} to
@@ -185,3 +185,4 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
   _lang['default'].setObject('Sage.Platform.Mobile.Fields.DateField', control);
   module.exports = _FieldManager2['default'].register('date', control);
 });
+/*evt*/

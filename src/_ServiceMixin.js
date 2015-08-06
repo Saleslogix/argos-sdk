@@ -21,30 +21,29 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 
-var __class = declare('argos._ServiceMixin', null, {
-    serviceMap: null,
-    constructor: function() {
-        var map, property;
-        map = this.serviceMap;
-        if (map) {
-            for (property in map) {
-                if (map.hasOwnProperty(property)) {
-                    if (this[property]) {
-                        continue; /* skip any that were explicitly mixed in */
-                    }
+const __class = declare('argos._ServiceMixin', null, {
+  serviceMap: null,
+  constructor: function constructor() {
+    const map = this.serviceMap;
+    if (map) {
+      for (const property in map) {
+        if (map.hasOwnProperty(property)) {
+          if (this[property]) {
+            continue; /* skip any that were explicitly mixed in */
+          }
 
-                    this[property] = this._resolveService(map[property]);
-                }
-            }
+          this[property] = this._resolveService(map[property]);
         }
-    },
-    _resolveService: function(specification) {
-        if (specification && specification.type === 'sdata') {
-            return App.getService(specification.name);
-        }
-
-        return App.getService(specification);
+      }
     }
+  },
+  _resolveService: function _resolveService(specification) {
+    if (specification && specification.type === 'sdata') {
+      return App.getService(specification.name);
+    }
+
+    return App.getService(specification);
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._ServiceMixin', __class);

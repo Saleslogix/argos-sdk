@@ -1,4 +1,4 @@
-define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array', 'dojo/_base/connect', 'dojo/aspect', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/window', 'dojo/string', 'dojo/hash', 'dojo/has', 'dojo/dom-construct', 'dojo/promise/all', 'snap', 'dojo/sniff', './ReUI/main'], function (exports, module, _dojoJson, _dojo_baseArray, _dojo_baseConnect, _dojoAspect, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseWindow, _dojoString, _dojoHash, _dojoHas, _dojoDomConstruct, _dojoPromiseAll, _snap, _dojoSniff, _ReUIMain) {
+define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array', 'dojo/_base/connect', 'dojo/aspect', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/window', 'dojo/hash', 'dojo/has', 'dojo/dom-construct', 'dojo/promise/all', 'snap', 'dojo/sniff', './ReUI/main'], function (exports, module, _dojoJson, _dojo_baseArray, _dojo_baseConnect, _dojoAspect, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseWindow, _dojoHash, _dojoHas, _dojoDomConstruct, _dojoPromiseAll, _snap, _dojoSniff, _ReUIMain) {
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
     /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -30,8 +30,6 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
 
     var _win = _interopRequireDefault(_dojo_baseWindow);
 
-    var _string = _interopRequireDefault(_dojoString);
-
     var _hash = _interopRequireDefault(_dojoHash);
 
     var _has = _interopRequireDefault(_dojoHas);
@@ -42,88 +40,54 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
 
     var _snap2 = _interopRequireDefault(_snap);
 
-    var _sniff = _interopRequireDefault(_dojoSniff);
-
     var _ReUI = _interopRequireDefault(_ReUIMain);
 
-    var __class, localize, mergeConfiguration, applyLocalizationTo;
-
-    // Polyfill for Funcion.bind, taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
-    /* jshint ignore:start */
-    if (!Function.prototype.bind) {
-        Function.prototype.bind = function (oThis) {
-            if (typeof this !== 'function') {
-                // closest thing possible to the ECMAScript 5
-                // internal IsCallable function
-                throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
-            }
-
-            var aArgs = Array.prototype.slice.call(arguments, 1),
-                self = this,
-                fNOP = function fNOP() {},
-                fBound = function fBound() {
-                return self.apply(this instanceof fNOP && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
-            };
-
-            fNOP.prototype = this.prototype;
-            fBound.prototype = new fNOP();
-
-            return fBound;
-        };
-    }
-    /* jshint ignore:end */
-
-    _has['default'].add('html5-file-api', function (global, document) {
+  _has['default'].add('html5-file-api', function hasFileApi(global) {
         if ((0, _has['default'])('ie')) {
             return false;
         }
 
         if (global.File && global.FileReader && global.FileList && global.Blob) {
             return true;
-        } else {
-            return false;
         }
+    return false;
     });
 
     _lang['default'].extend(Function, {
-        // TODO: Deprecate this in favor of the standard "bind", using polyfill if necessary
+    // TODO: Deprecate this in favor of the standard "bind"
         bindDelegate: function bindDelegate(scope) {
-            var self, optional;
-
-            self = this;
+      var self = this;
 
             if (arguments.length === 1) {
-                return function () {
+        return function bound() {
                     return self.apply(scope || this, arguments);
                 };
             }
 
-            optional = Array.prototype.slice.call(arguments, 1);
-            return function () {
+      var optional = Array.prototype.slice.call(arguments, 1);
+      return function boundWArgs() {
                 var called = Array.prototype.slice.call(arguments, 0);
                 return self.apply(scope || this, called.concat(optional));
             };
         }
     });
 
-    applyLocalizationTo = function (object, localization) {
+  function applyLocalizationTo(object, localization) {
         if (!object) {
             return;
         }
 
-        var target, key;
-
-        target = object.prototype || object;
-        for (key in localization) {
+    var target = object.prototype || object;
+    for (var key in localization) {
             if (_lang['default'].isObject(localization[key])) {
                 applyLocalizationTo(target[key], localization[key]);
             } else {
                 target[key] = localization[key];
             }
         }
-    };
+  }
 
-    localize = function (name, localization) {
+  function localize(name, localization) {
         var target = _lang['default'].getObject(name);
         if (target && target.prototype) {
             target = target.prototype;
@@ -132,9 +96,9 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
         if (target) {
             applyLocalizationTo(target, localization);
         }
-    };
+  }
 
-    mergeConfiguration = function (baseConfiguration, moduleConfiguration) {
+  function mergeConfiguration(baseConfiguration, moduleConfiguration) {
         if (baseConfiguration) {
             if (baseConfiguration.modules && moduleConfiguration.modules) {
                 baseConfiguration.modules = baseConfiguration.modules.concat(moduleConfiguration.modules);
@@ -146,7 +110,7 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
         }
 
         return baseConfiguration;
-    };
+  }
 
     _lang['default'].mixin(_win['default'].global, {
         'localize': localize,
@@ -162,7 +126,7 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
      *
      * @alternateClassName App
      */
-    __class = (0, _declare['default'])('argos.Application', null, {
+  var __class = (0, _declare['default'])('argos.Application', null, {
         /**
          * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
          */
@@ -283,8 +247,6 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * Also calls {@link #uninitialize uninitialize}.
          */
         destroy: function destroy() {
-            var name, connection;
-
             _array['default'].forEach(this._connects, function (handle) {
                 _connect['default'].disconnect(handle);
             });
@@ -297,9 +259,9 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
                 signal.remove();
             });
 
-            for (name in this._connections) {
-                if (this._connections.hasOwnProperty(name)) {
-                    connection = this._connections[name];
+      for (var _name in this._connections) {
+        if (this._connections.hasOwnProperty(_name)) {
+          var connection = this._connections[_name];
                     if (connection) {
                         connection.un('beforerequest', this._loadSDataRequest, this);
                         connection.un('requestcomplete', this._cacheSDataRequest, this);
@@ -319,9 +281,9 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
         initReUI: function initReUI() {
             // prevent ReUI from attempting to load the URLs view as we handle that ourselves.
             // todo: add support for handling the URL?
-            var hash = this.hash();
-            if (hash !== '') {
-                this.redirectHash = hash;
+      var h = this.hash();
+      if (h !== '') {
+        this.redirectHash = h;
             }
 
             location.hash = '';
@@ -369,12 +331,13 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * Establishes signals/handles from dojo's newer APIs
          */
         initSignals: function initSignals() {
+      var _this = this;
+
             this._signals.push(_aspect['default'].after(window.ReUI, 'setOrientation', (function (result, args) {
-                var value;
                 if (args && args.length > 0) {
-                    value = args[0];
-                    this.currentOrientation = value;
-                    this.onSetOrientation(value);
+          var value = args[0];
+          _this.currentOrientation = value;
+          _this.onSetOrientation(value);
                     _connect['default'].publish('/app/setOrientation', [value]);
                 }
             }).bind(this)));
@@ -388,6 +351,8 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @return {Promise}
          */
         initAppState: function initAppState() {
+      var _this2 = this;
+
             var promises = _array['default'].map(this._appStatePromises, function (item) {
                 var results = item;
                 if (typeof item === 'function') {
@@ -397,10 +362,10 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
                 return results;
             });
 
-            return (0, _all['default'])(promises).then((function (results) {
-                this.clearAppStatePromises();
+      return (0, _all['default'])(promises).then(function (results) {
+        _this2.clearAppStatePromises();
                 return results;
-            }).bind(this));
+      });
         },
         /**
          * Registers a promise that will resolve when initAppState is invoked.
@@ -413,15 +378,14 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
         clearAppStatePromises: function clearAppStatePromises() {
             this._appStatePromises = [];
         },
-        onSetOrientation: function onSetOrientation(value) {},
+    onSetOrientation: function onSetOrientation() {},
         /**
          * Loops through connections and calls {@link #registerService registerService} on each.
          */
         initServices: function initServices() {
-            // TODO: Remove this method
-            for (var name in this.connections) {
-                if (this.connections.hasOwnProperty(name)) {
-                    this.registerService(name, this.connections[name]);
+      for (var _name2 in this.connections) {
+        if (this.connections.hasOwnProperty(_name2)) {
+          this.registerService(_name2, this.connections[_name2]);
                 }
             }
         },
@@ -480,7 +444,7 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
                     window.localStorage.setItem('preferences', _json['default'].stringify(this.preferences));
                 }
             } catch (e) {
-                console.error(e);
+        console.error(e); // eslint-disable-line
             }
         },
         _loadPreferences: function _loadPreferences() {
@@ -489,17 +453,17 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
                     this.preferences = _json['default'].parse(window.localStorage.getItem('preferences'));
                 }
             } catch (e) {
-                console.error(e);
+        console.error(e); // eslint-disable-line
             }
         },
         /**
          * Establishes various connections to events.
          */
         _startupConnections: function _startupConnections() {
-            for (var name in this.connections) {
-                if (this.connections.hasOwnProperty(name)) {
-                    if (this.connections.hasOwnProperty(name)) {
-                        this.registerConnection(name, this.connections[name]);
+      for (var _name3 in this.connections) {
+        if (this.connections.hasOwnProperty(_name3)) {
+          if (this.connections.hasOwnProperty(_name3)) {
+            this.registerConnection(_name3, this.connections[_name3]);
                     }
                 }
             }
@@ -529,16 +493,14 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * Removes all keys from localStorage that start with `sdata.cache`.
          */
         _clearSDataRequestCache: function _clearSDataRequestCache() {
-            var check, i, key;
-
-            check = function (k) {
+      function check(k) {
                 return /^sdata\.cache/i.test(k);
-            };
+      }
 
             if (window.localStorage) {
                 /* todo: find a better way to detect */
-                for (i = window.localStorage.length - 1; i >= 0; i--) {
-                    key = window.localStorage.key(i);
+        for (var i = window.localStorage.length - 1; i >= 0; i--) {
+          var key = window.localStorage.key(i);
                     if (check(key)) {
                         window.localStorage.removeItem(key);
                     }
@@ -560,16 +522,14 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @param o XHR object with namely the `result` property
          */
         _loadSDataRequest: function _loadSDataRequest(request, o) {
-            var key, feed;
-
             // todo: find a better way of indicating that a request can prefer cache
             if (window.localStorage) {
                 if (this.isOnline() && request.allowCacheUse !== true) {
                     return;
                 }
 
-                key = this._createCacheKey(request);
-                feed = window.localStorage.getItem(key);
+        var key = this._createCacheKey(request);
+        var feed = window.localStorage.getItem(key);
                 if (feed) {
                     o.result = _json['default'].parse(feed);
                 }
@@ -598,9 +558,8 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @param {Object} service May be a SDataService instance or constructor parameters to create a new SDataService instance.
          * @param {Object} options Optional settings for the registered service.
          */
-        registerService: function registerService(name, service, options) {
-            // TODO: Remove this method
-            options = options || {};
+    registerService: function registerService(name, service) {
+      var options = arguments[2] === undefined ? {} : arguments[2];
 
             var instance = service instanceof Sage.SData.Client.SDataService ? service : new Sage.SData.Client.SDataService(service);
 
@@ -623,8 +582,8 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @param {Object} definition May be a SDataService instance or constructor parameters to create a new SDataService instance.
          * @param {Object} options Optional settings for the registered service.
          */
-        registerConnection: function registerConnection(name, definition, options) {
-            options = options || {};
+    registerConnection: function registerConnection(name, definition) {
+      var options = arguments[2] === undefined ? {} : arguments[2];
 
             var instance = definition instanceof Sage.SData.Client.SDataService ? definition : new Sage.SData.Client.SDataService(definition);
 
@@ -646,12 +605,10 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @param {String} name Name of the SDataService to detect
          */
         hasService: function hasService(name) {
-            // TODO: Remove this method
             return !!this.services[name];
         },
         _createViewContainers: function _createViewContainers() {
-            var node = document.getElementById('viewContainer'),
-                drawers;
+      var node = document.getElementById('viewContainer');
 
             if (node) {
                 this._rootDomNode = node;
@@ -664,7 +621,7 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
                     'class': 'viewContainer'
                 }, _win['default'].body());
 
-                drawers = _domConstruct['default'].create('div', {
+        var drawers = _domConstruct['default'].create('div', {
                     'class': 'drawers absolute'
                 }, _win['default'].body());
 
@@ -703,7 +660,10 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @param {Toolbar} tbar Toolbar instance to register
          * @param {domNode} domNode Optional. A DOM node to place the view in.
          */
-        registerToolbar: function registerToolbar(name, tbar, domNode) {
+    registerToolbar: function registerToolbar(n, t, domNode) {
+      var name = n;
+      var tbar = t;
+
             if (typeof name === 'object') {
                 tbar = name;
                 name = tbar.name;
@@ -728,11 +688,9 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @return {View[]} An array containing the currently registered views.
          */
         getViews: function getViews() {
-            var results, view;
+      var results = [];
 
-            results = [];
-
-            for (view in this.views) {
+      for (var view in this.views) {
                 if (this.views.hasOwnProperty(view)) {
                     results.push(this.views[view]);
                 }
@@ -765,7 +723,10 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @return {Boolean} True if there is a registered view name matching the key.
          */
         hasView: function hasView(key) {
-            return !!this._internalGetView({ key: key, init: false });
+      return !!this._internalGetView({
+        key: key,
+        init: false
+      });
         },
         /**
          * Returns the registered view instance with the associated key.
@@ -773,15 +734,17 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @return {View} view The requested view.
          */
         getView: function getView(key) {
-            return this._internalGetView({ key: key, init: true });
+      return this._internalGetView({
+        key: key,
+        init: true
+      });
         },
         _internalGetView: function _internalGetView(options) {
-            var view, key, init;
-
-            key = options && options.key;
-            init = options && options.init;
+      var key = options && options.key;
+      var init = options && options.init;
 
             if (key) {
+        var view = undefined;
                 if (typeof key === 'string') {
                     view = this.views[key];
                 } else if (typeof key.id === 'string') {
@@ -806,7 +769,10 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @param access
          */
         getViewSecurity: function getViewSecurity(key, access) {
-            var view = this._internalGetView({ key: key, init: false });
+      var view = this._internalGetView({
+        key: key,
+        init: false
+      });
             return view && view.getSecurity(access);
         },
         /**
@@ -815,7 +781,6 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @return {Object} The registered Sage.SData.Client.SDataService instance.
          */
         getService: function getService(name) {
-            // TODO: Remove this method
             if (typeof name === 'string' && this.services[name]) {
                 return this.services[name];
             }
@@ -863,12 +828,12 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
                 _connect['default'].publish('/app/resize', []);
             }, 100);
         },
-        onRegistered: function onRegistered(view) {},
-        onBeforeViewTransitionAway: function onBeforeViewTransitionAway(view) {},
-        onBeforeViewTransitionTo: function onBeforeViewTransitionTo(view) {},
-        onViewTransitionAway: function onViewTransitionAway(view) {},
-        onViewTransitionTo: function onViewTransitionTo(view) {},
-        onViewActivate: function onViewActivate(view, tag, data) {},
+    onRegistered: function onRegistered() {},
+    onBeforeViewTransitionAway: function onBeforeViewTransitionAway() {},
+    onBeforeViewTransitionTo: function onBeforeViewTransitionTo() {},
+    onViewTransitionAway: function onViewTransitionAway() {},
+    onViewTransitionTo: function onViewTransitionTo() {},
+    onViewActivate: function onViewActivate() {},
         _onBeforeTransition: function _onBeforeTransition(evt) {
             var view = this.getView(evt.target);
             if (view) {
@@ -919,11 +884,9 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
         _viewTransitionTo: function _viewTransitionTo(view) {
             this.onViewTransitionTo(view);
 
-            var tools, n;
+      var tools = view.options && view.options.tools || view.getTools() || {};
 
-            tools = view.options && view.options.tools || view.getTools() || {};
-
-            for (n in this.bars) {
+      for (var n in this.bars) {
                 if (this.bars[n].managed) {
                     this.bars[n].showTools(tools[n]);
                 }
@@ -944,13 +907,12 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @return {Array} context history filtered out by the predicate.
          */
         filterNavigationContext: function filterNavigationContext(predicate, scope) {
-            var list, filtered;
-            list = _ReUI['default'].context.history || [];
-            filtered = _array['default'].filter(list, (function (item) {
+      var list = _ReUI['default'].context.history || [];
+      var filtered = _array['default'].filter(list, (function filter(item) {
                 return predicate.call(scope || this, item.data);
             }).bind(this));
 
-            return _array['default'].map(filtered, function (item) {
+      return _array['default'].map(filtered, function map(item) {
                 return item.data;
             });
         },
@@ -962,19 +924,20 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @param {Object} scope
          * @return {Object/Boolean} context History data context if found, false if not.
          */
-        queryNavigationContext: function queryNavigationContext(predicate, depth, scope) {
-            var i, j, list;
+    queryNavigationContext: function queryNavigationContext(predicate, d, s) {
+      var scope = s;
+      var depth = d;
 
             if (typeof depth !== 'number') {
                 scope = depth;
                 depth = 0;
             }
 
-            list = _ReUI['default'].context.history || [];
+      var list = _ReUI['default'].context.history || [];
 
             depth = depth || 0;
 
-            for (i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++) {
+      for (var i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++) {
                 if (predicate.call(scope || this, list[i].data)) {
                     return list[i].data;
                 }
@@ -992,16 +955,16 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
         isNavigationFromResourceKind: function isNavigationFromResourceKind(kind, predicate, scope) {
             var lookup = {};
             if (_lang['default'].isArray(kind)) {
-                _array['default'].forEach(kind, function (item) {
+        _array['default'].forEach(kind, function forEach(item) {
                     this[item] = true;
                 }, lookup);
             } else {
                 lookup[kind] = true;
             }
 
-            return this.queryNavigationContext(function (o) {
-                var context = o.options && o.options.source || o,
-                    resourceKind = context && context.resourceKind;
+      return this.queryNavigationContext(function queryNavigationContext(o) {
+        var context = o.options && o.options.source || o;
+        var resourceKind = context && context.resourceKind;
 
                 // if a predicate is defined, both resourceKind AND predicate must match.
                 if (lookup[resourceKind]) {
@@ -1036,18 +999,19 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          * @param {String} path The customization set such as `list/tools#account_list` or `detail#contact_detail`. First half being the type of customization and the second the view id.
          * @param {Object} spec The customization specification
          */
-        registerCustomization: function registerCustomization(path, spec) {
-            var customizationSet, container, id;
+    registerCustomization: function registerCustomization(p, s) {
+      var path = p;
+      var spec = s;
 
             if (arguments.length > 2) {
-                customizationSet = arguments[0];
-                id = arguments[1];
+        var customizationSet = arguments[0];
+        var id = arguments[1];
 
                 spec = arguments[2];
                 path = id ? customizationSet + '#' + id : customizationSet;
             }
 
-            container = this.customizations[path] || (this.customizations[path] = []);
+      var container = this.customizations[path] || (this.customizations[path] = []);
             if (container) {
                 container.push(spec);
             }
@@ -1063,22 +1027,21 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          *
          * @param {String} path The customization set such as `list/tools#account_list` or `detail#contact_detail`. First half being the type of customization and the second the view id.
          */
-        getCustomizationsFor: function getCustomizationsFor(path) {
-            var forPath, segments, customizationSet, forSet;
+    getCustomizationsFor: function getCustomizationsFor(p) {
+      var path = p;
 
             if (arguments.length > 1) {
                 path = arguments[1] ? arguments[0] + '#' + arguments[1] : arguments[0];
             }
 
-            segments = path.split('#');
-            customizationSet = segments[0];
-
-            forPath = this.customizations[path] || [];
-            forSet = this.customizations[customizationSet] || [];
+      var segments = path.split('#');
+      var customizationSet = segments[0];
+      var forPath = this.customizations[path] || [];
+      var forSet = this.customizations[customizationSet] || [];
 
             return forPath.concat(forSet);
         },
-        hasAccessTo: function hasAccessTo(security) {
+    hasAccessTo: function hasAccessTo() {
             return true;
         },
         /**
@@ -1100,13 +1063,11 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
          */
         loadSnapper: function loadSnapper(element, options) {
             // TODO: Provide a domNode param and default to viewContainer if not provided
-            var snapper, view;
-
             if (this.snapper) {
-                return;
+        return this;
             }
 
-            snapper = new _snap2['default'](options || {
+      var snapper = new _snap2['default'](options || { // eslint-disable-line
                 element: element || document.getElementById('viewContainer'),
                 dragger: null,
                 disable: 'none',
@@ -1136,3 +1097,4 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
     _lang['default'].setObject('Sage.Platform.Mobile.Application', __class);
     module.exports = __class;
 });
+/*value*/ /*view*/ /*view*/ /*view*/ /*view*/ /*view*/ /*view, tag, data*/ /*security*/

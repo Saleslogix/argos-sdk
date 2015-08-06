@@ -30,8 +30,7 @@ import _RelatedWidgetDetailMixin from './_RelatedViewWidgetDetailMixin';
  * @mixins argos._SDataDetailMixin
  * @mixins argos._RelatedViewWidgetDetailMixin
  */
-var __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin], {
-});
+const __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin], {});
 
 lang.setObject('Sage.Platform.Mobile.Detail', __class);
 export default __class;

@@ -36,42 +36,37 @@ import FieldManager from '../FieldManager';
  * @extends argos.Fields.TextField
  * @requires argos.FieldManager
  */
-var control = declare('argos.Fields.TextAreaField', [TextField], {
-    /**
-     * @cfg {Number}
-     * Number of rows to show visually, does not constrain input.
-     */
-    rows: 4,
-    /**
-     * @property {Boolean}
-     * Overrides default to hide the clear button.
-     */
-    enableClearButton: false,
-    /**
-     * @property {Simplate}
-     * Simplate that defines the fields HTML Markup
-     *
-     * * `$` => Field instance
-     * * `$$` => Owner View instance
-     *
-     */
-    widgetTemplate: new Simplate([
-        '<label for="{%= $.name %}">{%: $.label %}</label>',
-        '<textarea data-dojo-attach-point="inputNode" name="{%= $.name %}" rows="{%: $.rows %}" {% if ($.readonly) { %} readonly {% } %}></textarea>'
-    ]),
-    setValue: function(val, initial) {
-        if (val === null || typeof val === 'undefined') {
-            val = '';
-        }
-
-        if (initial) {
-            this.originalValue = val;
-        }
-
-        this.previousValue = false;
-
-        this.set('inputValue', val);
+const control = declare('argos.Fields.TextAreaField', [TextField], {
+  /**
+   * @cfg {Number}
+   * Number of rows to show visually, does not constrain input.
+   */
+  rows: 4,
+  /**
+   * @property {Boolean}
+   * Overrides default to hide the clear button.
+   */
+  enableClearButton: false,
+  /**
+   * @property {Simplate}
+   * Simplate that defines the fields HTML Markup
+   *
+   * * `$` => Field instance
+   * * `$$` => Owner View instance
+   *
+   */
+  widgetTemplate: new Simplate([
+    '<label for="{%= $.name %}">{%: $.label %}</label>',
+    '<textarea data-dojo-attach-point="inputNode" name="{%= $.name %}" rows="{%: $.rows %}" {% if ($.readonly) { %} readonly {% } %}></textarea>',
+  ]),
+  setValue: function setValue(val = '', initial) {
+    if (initial) {
+      this.originalValue = val;
     }
+
+    this.previousValue = false;
+    this.set('inputValue', val);
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.TextAreaField', control);

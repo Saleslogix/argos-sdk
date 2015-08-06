@@ -22,13 +22,12 @@ import Stateful from 'dojo/Stateful';
  * @alternateClassName _ModelBase
  */
 export default declare('argos._ModelBase', [Evented, Stateful], {
-    metadata: null,
-    _metadataGetter: function() {
-        return this.metadata;
-    },
-    _metadataSetter: function(value) {
-        this.metadata = value;
-    },
-    getEntry: function(options) {
-    }
+  metadata: null,
+  _metadataGetter: function _metadataGetter() {
+    return this.metadata;
+  },
+  _metadataSetter: function _metadataSetter(value) {
+    this.metadata = value;
+  },
+  getEntry: function getEntry(/*options*/) {},
 });

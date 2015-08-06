@@ -19,102 +19,61 @@ import aspect from 'dojo/aspect';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import win from 'dojo/_base/window';
-import string from 'dojo/string';
 import hash from 'dojo/hash';
 import has from 'dojo/has';
 import domConstruct from 'dojo/dom-construct';
 import all from 'dojo/promise/all';
 import snap from 'snap';
-import sniff from 'dojo/sniff';
+import 'dojo/sniff';
 import ReUI from './ReUI/main';
 
-var __class,
-    localize,
-    mergeConfiguration,
-    applyLocalizationTo;
-
-// Polyfill for Funcion.bind, taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
-/* jshint ignore:start */
-if (!Function.prototype.bind) {
-    Function.prototype.bind = function(oThis) {
-        if (typeof this !== 'function') {
-            // closest thing possible to the ECMAScript 5
-            // internal IsCallable function
-            throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
-        }
-
-        var aArgs = Array.prototype.slice.call(arguments, 1),
-            self = this,
-            fNOP = function() {},
-            fBound = function() {
-                return self.apply(this instanceof fNOP && oThis
-                     ? this
-                     : oThis,
-                     aArgs.concat(Array.prototype.slice.call(arguments)));
-            };
-
-        fNOP.prototype = this.prototype;
-        fBound.prototype = new fNOP();
-
-        return fBound;
-    };
-}
-/* jshint ignore:end */
-
-has.add('html5-file-api', function(global, document) {
+has.add('html5-file-api', function hasFileApi(global) {
     if (has('ie')) {
         return false;
     }
 
     if (global.File && global.FileReader && global.FileList && global.Blob) {
         return true;
-    } else {
-        return false;
     }
+  return false;
 });
 
 lang.extend(Function, {
-    // TODO: Deprecate this in favor of the standard "bind", using polyfill if necessary
-    bindDelegate: function(scope) {
-        var self,
-            optional;
-
-        self = this;
+  // TODO: Deprecate this in favor of the standard "bind"
+  bindDelegate: function bindDelegate(scope) {
+    const self = this;
 
         if (arguments.length === 1) {
-            return function() {
+      return function bound() {
                 return self.apply(scope || this, arguments);
             };
         }
 
-        optional = Array.prototype.slice.call(arguments, 1);
-        return function() {
-            var called = Array.prototype.slice.call(arguments, 0);
+    const optional = Array.prototype.slice.call(arguments, 1);
+    return function boundWArgs() {
+      const called = Array.prototype.slice.call(arguments, 0);
             return self.apply(scope || this, called.concat(optional));
         };
-    }
+  },
 });
 
-applyLocalizationTo = function(object, localization) {
+function applyLocalizationTo(object, localization) {
     if (!object) {
         return;
     }
 
-    var target,
-        key;
-
-    target = object.prototype || object;
-    for (key in localization) {
+  const target = object.prototype || object;
+  for (const key in localization) {
         if (lang.isObject(localization[key])) {
             applyLocalizationTo(target[key], localization[key]);
         } else {
             target[key] = localization[key];
         }
     }
-};
+}
 
-localize = function(name, localization) {
-    var target = lang.getObject(name);
+function localize(name, localization) {
+  let target = lang.getObject(name);
     if (target && target.prototype) {
         target = target.prototype;
     }
@@ -122,9 +81,9 @@ localize = function(name, localization) {
     if (target) {
         applyLocalizationTo(target, localization);
     }
-};
+}
 
-mergeConfiguration = function(baseConfiguration, moduleConfiguration) {
+function mergeConfiguration(baseConfiguration, moduleConfiguration) {
     if (baseConfiguration) {
         if (baseConfiguration.modules && moduleConfiguration.modules) {
             baseConfiguration.modules = baseConfiguration.modules.concat(moduleConfiguration.modules);
@@ -136,11 +95,11 @@ mergeConfiguration = function(baseConfiguration, moduleConfiguration) {
     }
 
     return baseConfiguration;
-};
+}
 
 lang.mixin(win.global, {
     'localize': localize,
-    'mergeConfiguration': mergeConfiguration
+  'mergeConfiguration': mergeConfiguration,
 });
 
 /**
@@ -152,7 +111,7 @@ lang.mixin(win.global, {
  *
  * @alternateClassName App
  */
-__class = declare('argos.Application', null, {
+const __class = declare('argos.Application', null, {
     /**
      * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
      */
@@ -250,7 +209,7 @@ __class = declare('argos.Application', null, {
      * All options are mixed into App itself
      * @param {Object} options
      */
-    constructor: function(options) {
+  constructor: function constructor(options) {
         this._connects = [];
         this._appStatePromises = [];
         this._signals = [];
@@ -272,25 +231,22 @@ __class = declare('argos.Application', null, {
      * Loops through and disconnections connections and unsubscribes subscriptions.
      * Also calls {@link #uninitialize uninitialize}.
      */
-    destroy: function() {
-        var name,
-            connection;
-
-        array.forEach(this._connects, function(handle) {
+  destroy: function destroy() {
+    array.forEach(this._connects, (handle) => {
             connect.disconnect(handle);
         });
 
-        array.forEach(this._subscribes, function(handle) {
+    array.forEach(this._subscribes, (handle) => {
             connect.unsubscribe(handle);
         });
 
-        array.forEach(this._signals, function(signal) {
+    array.forEach(this._signals, (signal) => {
             signal.remove();
         });
 
-        for (name in this._connections) {
+    for (const name in this._connections) {
             if (this._connections.hasOwnProperty(name)) {
-                connection = this._connections[name];
+        const connection = this._connections[name];
                 if (connection) {
                     connection.un('beforerequest', this._loadSDataRequest, this);
                     connection.un('requestcomplete', this._cacheSDataRequest, this);
@@ -303,18 +259,17 @@ __class = declare('argos.Application', null, {
     /**
      * Shelled function that is called from {@link #destroy destroy}, may be used to release any further handles.
      */
-    uninitialize: function() {
-
+  uninitialize: function uninitialize() {
     },
     /**
      * Cleans up URL to prevent ReUI url handling and then invokes ReUI.
      */
-    initReUI: function() {
+  initReUI: function initReUI() {
         // prevent ReUI from attempting to load the URLs view as we handle that ourselves.
         // todo: add support for handling the URL?
-        var hash = this.hash();
-        if (hash !== '') {
-            this.redirectHash = hash;
+    const h = this.hash();
+    if (h !== '') {
+      this.redirectHash = h;
         }
 
         location.hash = '';
@@ -324,18 +279,18 @@ __class = declare('argos.Application', null, {
     /**
      * If caching is enable and App is {@link #isOnline online} the empties the SData cache via {@link #_clearSDataRequestCache _clearSDataRequestCache}.
      */
-    initCaching: function() {
+  initCaching: function initCaching() {
         if (this.enableCaching) {
             if (this.isOnline()) {
                 this._clearSDataRequestCache();
             }
         }
     },
-    onOffline: function() {
+  onOffline: function onOffline() {
         this.onLine = false;
         this.onConnectionChange(this.onLine);
     },
-    onOnline: function() {
+  onOnline: function onOnline() {
         this.onLine = true;
         this.onConnectionChange(this.onLine);
     },
@@ -344,7 +299,7 @@ __class = declare('argos.Application', null, {
     /**
      * Establishes various connections to events.
      */
-    initConnects: function() {
+  initConnects: function initConnects() {
         this._connects.push(connect.connect(window, 'resize', this, this.onResize));
         this._connects.push(connect.connect(win.body(), 'beforetransition', this, this._onBeforeTransition));
         this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
@@ -360,11 +315,10 @@ __class = declare('argos.Application', null, {
     /**
      * Establishes signals/handles from dojo's newer APIs
      */
-    initSignals: function() {
-        this._signals.push(aspect.after(window.ReUI, 'setOrientation', function(result, args) {
-            var value;
+  initSignals: function initSignals() {
+    this._signals.push(aspect.after(window.ReUI, 'setOrientation', (result, args) => {
             if (args && args.length > 0) {
-                value = args[0];
+        const value = args[0];
                 this.currentOrientation = value;
                 this.onSetOrientation(value);
                 connect.publish('/app/setOrientation', [value]);
@@ -379,9 +333,9 @@ __class = declare('argos.Application', null, {
      * registered promises are flushed.
      * @return {Promise}
      */
-    initAppState: function() {
-        var promises = array.map(this._appStatePromises, function(item) {
-            var results = item;
+  initAppState: function initAppState() {
+    const promises = array.map(this._appStatePromises, (item) => {
+      let results = item;
             if (typeof item === 'function') {
                 results = item();
             }
@@ -389,30 +343,28 @@ __class = declare('argos.Application', null, {
             return results;
         });
 
-        return all(promises).then(function(results) {
+    return all(promises).then((results) => {
             this.clearAppStatePromises();
             return results;
-        }.bind(this));
+    });
     },
     /**
      * Registers a promise that will resolve when initAppState is invoked.
      * @param {Promise|Function} promise A promise or a function that returns a promise
      */
-    registerAppStatePromise: function(promise) {
+  registerAppStatePromise: function registerAppStatePromise(promise) {
         this._appStatePromises.push(promise);
         return this;
     },
-    clearAppStatePromises: function() {
+  clearAppStatePromises: function clearAppStatePromises() {
         this._appStatePromises = [];
     },
-    onSetOrientation: function(value) {
-    },
+  onSetOrientation: function onSetOrientation(/*value*/) {},
     /**
      * Loops through connections and calls {@link #registerService registerService} on each.
      */
-    initServices: function() {
-        // TODO: Remove this method
-        for (var name in this.connections) {
+  initServices: function initServices() {
+    for (const name in this.connections) {
             if (this.connections.hasOwnProperty(name)) {
                 this.registerService(name, this.connections[name]);
             }
@@ -421,16 +373,16 @@ __class = declare('argos.Application', null, {
     /**
      * Loops through modules and calls their `init()` function.
      */
-    initModules: function() {
-        for (var i = 0; i < this.modules.length; i++) {
+  initModules: function initModules() {
+    for (let i = 0; i < this.modules.length; i++) {
             this.modules[i].init(this);
         }
     },
     /**
      * Loops through (tool)bars and calls their `init()` function.
      */
-    initToolbars: function() {
-        for (var n in this.bars) {
+  initToolbars: function initToolbars() {
+    for (const n in this.bars) {
             if (this.bars.hasOwnProperty(n)) {
                 this.bars[n].init(); // todo: change to startup
             }
@@ -439,13 +391,13 @@ __class = declare('argos.Application', null, {
     /**
      * Sets the global variable `App` to this instance.
      */
-    activate: function() {
+  activate: function activate() {
         window.App = this;
     },
     /**
      * Initializes this application as well as the toolbar and all currently registered views.
      */
-    init: function() {
+  init: function init() {
         this.initPreferences();
         this.initConnects();
         this.initSignals();
@@ -456,40 +408,40 @@ __class = declare('argos.Application', null, {
         this.initToolbars();
         this.initReUI();
     },
-    initPreferences: function() {
+  initPreferences: function initPreferences() {
         this._loadPreferences();
     },
     /**
      * Check if the browser supports touch events.
      * @return {Boolean} true if the current browser supports touch events, false otherwise.
      */
-    supportsTouch: function() {
+  supportsTouch: function supportsTouch() {
         // Taken from https://github.com/Modernizr/Modernizr/ (MIT Licensed)
         return ('ontouchstart' in window) || (window.DocumentTouch && document instanceof window.DocumentTouch);
     },
-    persistPreferences: function() {
+  persistPreferences: function persistPreferences() {
         try {
             if (window.localStorage) {
                 window.localStorage.setItem('preferences', json.stringify(this.preferences));
             }
         } catch(e) {
-            console.error(e);
+      console.error(e); // eslint-disable-line
         }
     },
-    _loadPreferences: function() {
+  _loadPreferences: function _loadPreferences() {
         try {
             if (window.localStorage) {
                 this.preferences = json.parse(window.localStorage.getItem('preferences'));
             }
         } catch(e) {
-            console.error(e);
+      console.error(e); // eslint-disable-line
         }
     },
     /**
      * Establishes various connections to events.
      */
-    _startupConnections: function() {
-        for (var name in this.connections) {
+  _startupConnections: function _startupConnections() {
+    for (const name in this.connections) {
             if (this.connections.hasOwnProperty(name)) {
                 if (this.connections.hasOwnProperty(name)) {
                     this.registerConnection(name, this.connections[name]);
@@ -503,13 +455,13 @@ __class = declare('argos.Application', null, {
     /**
      * Sets `_started` to true.
      */
-    run: function() {
+  run: function run() {
         this._started = true;
     },
     /**
      * Returns the `window.navigator.onLine` property for detecting if an internet connection is available.
      */
-    isOnline: function() {
+  isOnline: function isOnline() {
         return window.navigator.onLine;
     },
     /**
@@ -517,24 +469,19 @@ __class = declare('argos.Application', null, {
      * This is useful for disabling the back button (so you don't hit the login page).
      * @returns {boolean}
     */
-    isOnFirstView: function() {
-    },
+  isOnFirstView: function isOnFirstView() {},
     /**
      * Removes all keys from localStorage that start with `sdata.cache`.
      */
-    _clearSDataRequestCache: function() {
-        var check,
-            i,
-            key;
-
-        check = function(k) {
+  _clearSDataRequestCache: function _clearSDataRequestCache() {
+    function check(k) {
             return (/^sdata\.cache/i).test(k);
-        };
+    }
 
         if (window.localStorage) {
             /* todo: find a better way to detect */
-            for (i = window.localStorage.length - 1; i >= 0 ; i--) {
-                key = window.localStorage.key(i);
+      for (let i = window.localStorage.length - 1; i >= 0; i--) {
+        const key = window.localStorage.key(i);
                 if (check(key)) {
                     window.localStorage.removeItem(key);
                 }
@@ -546,7 +493,7 @@ __class = declare('argos.Application', null, {
      * @param {Object} request Sage.SData.Client.SDataBaseRequest
      * @return {String} Key to be used for localStorage cache
      */
-    _createCacheKey: function(request) {
+  _createCacheKey: function _createCacheKey(request) {
         return 'sdata.cache[' + request.build() + ']';
     },
     /**
@@ -555,18 +502,15 @@ __class = declare('argos.Application', null, {
      * @param request Sage.SData.Client.SDataBaseRequest
      * @param o XHR object with namely the `result` property
      */
-    _loadSDataRequest: function(request, o) {
-        var key,
-            feed;
-
+  _loadSDataRequest: function _loadSDataRequest(request, o) {
         // todo: find a better way of indicating that a request can prefer cache
         if (window.localStorage) {
             if (this.isOnline() && (request.allowCacheUse !== true)) {
                 return;
             }
 
-            key = this._createCacheKey(request);
-            feed = window.localStorage.getItem(key);
+      const key = this._createCacheKey(request);
+      const feed = window.localStorage.getItem(key);
             if (feed) {
                 o.result = json.parse(feed);
             }
@@ -578,11 +522,11 @@ __class = declare('argos.Application', null, {
      * @param o XHR object
      * @param feed The data from the request to store
      */
-    _cacheSDataRequest: function(request, o, feed) {
+  _cacheSDataRequest: function _cacheSDataRequest(request, o, feed) {
         /* todo: decide how to handle PUT/POST/DELETE */
         if (window.localStorage) {
             if (/get/i.test(o.method) && typeof feed === 'object') {
-                var key = this._createCacheKey(request);
+        const key = this._createCacheKey(request);
 
                 window.localStorage.removeItem(key);
                 window.localStorage.setItem(key, json.stringify(feed));
@@ -595,13 +539,8 @@ __class = declare('argos.Application', null, {
      * @param {Object} service May be a SDataService instance or constructor parameters to create a new SDataService instance.
      * @param {Object} options Optional settings for the registered service.
      */
-    registerService: function(name, service, options) {
-        // TODO: Remove this method
-        options = options || {};
-
-        var instance = service instanceof Sage.SData.Client.SDataService
-            ? service
-            : new Sage.SData.Client.SDataService(service);
+  registerService: function registerService(name, service, options = {}) {
+    const instance = service instanceof Sage.SData.Client.SDataService ? service : new Sage.SData.Client.SDataService(service);
 
         this.services[name] = instance;
 
@@ -622,12 +561,8 @@ __class = declare('argos.Application', null, {
      * @param {Object} definition May be a SDataService instance or constructor parameters to create a new SDataService instance.
      * @param {Object} options Optional settings for the registered service.
      */
-    registerConnection: function(name, definition, options) {
-        options = options || {};
-
-        var instance = definition instanceof Sage.SData.Client.SDataService
-            ? definition
-            : new Sage.SData.Client.SDataService(definition);
+  registerConnection: function registerConnection(name, definition, options = {}) {
+    const instance = definition instanceof Sage.SData.Client.SDataService ? definition : new Sage.SData.Client.SDataService(definition);
 
         this._connections[name] = instance;
 
@@ -636,8 +571,8 @@ __class = declare('argos.Application', null, {
             instance.on('requestcomplete', this._cacheSDataRequest, this);
         }
 
-        if ((options.isDefault || definition.isDefault) || !this._connections['default']) {
-            this._connections['default'] = instance;
+    if ((options.isDefault || definition.isDefault) || !this._connections.default) {
+      this._connections.default = instance;
         }
 
         return this;
@@ -646,12 +581,11 @@ __class = declare('argos.Application', null, {
      * Determines the the specified service name is found in the Apps service object.
      * @param {String} name Name of the SDataService to detect
      */
-    hasService: function(name) {
-        // TODO: Remove this method
+  hasService: function hasService(name) {
         return !!this.services[name];
     },
-    _createViewContainers: function() {
-        var node = document.getElementById('viewContainer'), drawers;
+  _createViewContainers: function _createViewContainers() {
+    const node = document.getElementById('viewContainer');
 
         if (node) {
             this._rootDomNode = node;
@@ -661,21 +595,20 @@ __class = declare('argos.Application', null, {
         if (this._rootDomNode === null || typeof this._rootDomNode === 'undefined') {
             this._rootDomNode = domConstruct.create('div', {
                 'id': 'viewContainer',
-                'class': 'viewContainer'
+        'class': 'viewContainer',
             }, win.body());
 
-            drawers = domConstruct.create('div', {
-                'class': 'drawers absolute'
+      const drawers = domConstruct.create('div', {
+        'class': 'drawers absolute',
             }, win.body());
 
             domConstruct.create('div', {
-                'class': 'overthrow left-drawer absolute'
+        'class': 'overthrow left-drawer absolute',
             }, drawers);
 
             domConstruct.create('div', {
-                'class': 'overthrow right-drawer absolute'
+        'class': 'overthrow right-drawer absolute',
             }, drawers);
-
         }
     },
     /**
@@ -684,7 +617,7 @@ __class = declare('argos.Application', null, {
      * @param {View} view A view instance to be registered.
      * @param {domNode} domNode Optional. A DOM node to place the view in.
      */
-    registerView: function(view, domNode) {
+  registerView: function registerView(view, domNode) {
         this.views[view.id] = view;
 
         if (!domNode) {
@@ -704,7 +637,10 @@ __class = declare('argos.Application', null, {
      * @param {Toolbar} tbar Toolbar instance to register
      * @param {domNode} domNode Optional. A DOM node to place the view in.
      */
-    registerToolbar: function(name, tbar, domNode) {
+  registerToolbar: function registerToolbar(n, t, domNode) {
+    let name = n;
+    let tbar = t;
+
         if (typeof name === 'object') {
             tbar = name;
             name = tbar.name;
@@ -728,13 +664,10 @@ __class = declare('argos.Application', null, {
      * Returns all the registered views.
      * @return {View[]} An array containing the currently registered views.
      */
-    getViews: function() {
-        var results,
-            view;
+  getViews: function getViews() {
+    const results = [];
 
-        results = [];
-
-        for (view in this.views) {
+    for (const view in this.views) {
             if (this.views.hasOwnProperty(view)) {
                 results.push(this.views[view]);
             }
@@ -747,7 +680,7 @@ __class = declare('argos.Application', null, {
      * @param {View} view
      * @return {Boolean} True if the passed view is the same as the active view.
      */
-    isViewActive: function(view) {
+  isViewActive: function isViewActive(view) {
         // todo: add check for multiple active views.
         return (this.getPrimaryActiveView() === view);
     },
@@ -755,8 +688,8 @@ __class = declare('argos.Application', null, {
      * Talks to ReUI to get the current page or dialog name and then returns the result of {@link #getView getView(name)}.
      * @return {View} Returns the active view instance, if no view is active returns null.
      */
-    getPrimaryActiveView: function() {
-        var el = ReUI.getCurrentPage() || ReUI.getCurrentDialog();
+  getPrimaryActiveView: function getPrimaryActiveView() {
+    const el = ReUI.getCurrentPage() || ReUI.getCurrentDialog();
         if (el) {
             return this.getView(el);
         }
@@ -766,24 +699,29 @@ __class = declare('argos.Application', null, {
      * @param {String} key Unique id of the view.
      * @return {Boolean} True if there is a registered view name matching the key.
      */
-    hasView: function(key) {
-        return !!this._internalGetView({key: key, init: false});
+  hasView: function hasView(key) {
+    return !!this._internalGetView({
+      key: key,
+      init: false,
+    });
     },
     /**
      * Returns the registered view instance with the associated key.
      * @param {String/Object} key The id of the view to return, if object then `key.id` is used.
      * @return {View} view The requested view.
      */
-    getView: function(key) {
-        return this._internalGetView({key: key, init: true});
+  getView: function getView(key) {
+    return this._internalGetView({
+      key: key,
+      init: true,
+    });
     },
-    _internalGetView: function(options) {
-        var view, key, init;
-
-        key = options && options.key;
-        init = options && options.init;
+  _internalGetView: function _internalGetView(options) {
+    const key = options && options.key;
+    const init = options && options.init;
 
         if (key) {
+      let view;
             if (typeof key === 'string') {
                 view = this.views[key];
             } else if (typeof key.id === 'string') {
@@ -807,8 +745,11 @@ __class = declare('argos.Application', null, {
      * @param {String} key Id of the registered view to query.
      * @param access
      */
-    getViewSecurity: function(key, access) {
-        var view = this._internalGetView({key: key, init: false});
+  getViewSecurity: function getViewSecurity(key, access) {
+    const view = this._internalGetView({
+      key: key,
+      init: false,
+    });
         return (view && view.getSecurity(access));
     },
     /**
@@ -816,8 +757,7 @@ __class = declare('argos.Application', null, {
      * @param {String/Boolean} name If string service is looked up by name. If false, default service is returned.
      * @return {Object} The registered Sage.SData.Client.SDataService instance.
      */
-    getService: function(name) {
-        // TODO: Remove this method
+  getService: function getService(name) {
         if (typeof name === 'string' && this.services[name]) {
             return this.services[name];
         }
@@ -828,22 +768,22 @@ __class = declare('argos.Application', null, {
      * Determines the the specified service name is found in the Apps service object.
      * @param {String} name Name of the SDataService to detect
      */
-    hasConnection: function(name) {
+  hasConnection: function hasConnection(name) {
         return !!this._connections[name];
     },
-    getConnection: function(name) {
+  getConnection: function getConnection(name) {
         if (this._connections[name]) {
             return this._connections[name];
         }
 
-        return this._connections['default'];
+    return this._connections.default;
     },
     /**
      * Sets the applications current title.
      * @param {String} title The new title.
      */
-    setPrimaryTitle: function(title) {
-        for (var n in this.bars) {
+  setPrimaryTitle: function setPrimaryTitle(title) {
+    for (const n in this.bars) {
             if (this.bars.hasOwnProperty(n)) {
                 if (this.bars[n].managed) {
                     this.bars[n].set('title', title);
@@ -856,29 +796,23 @@ __class = declare('argos.Application', null, {
     /**
      * Resize handle, publishes the global event `/app/resize` which views may subscribe to.
      */
-    onResize: function() {
+  onResize: function onResize() {
         if (this.resizeTimer) {
             clearTimeout(this.resizeTimer);
         }
 
-        this.resizeTimer = setTimeout(function() {
+    this.resizeTimer = setTimeout(() => {
             connect.publish('/app/resize', []);
         }, 100);
     },
-    onRegistered: function(view) {
-    },
-    onBeforeViewTransitionAway: function(view) {
-    },
-    onBeforeViewTransitionTo: function(view) {
-    },
-    onViewTransitionAway: function(view) {
-    },
-    onViewTransitionTo: function(view) {
-    },
-    onViewActivate: function(view, tag, data) {
-    },
-    _onBeforeTransition: function(evt) {
-        var view = this.getView(evt.target);
+  onRegistered: function onRegistered(/*view*/) {},
+  onBeforeViewTransitionAway: function onBeforeViewTransitionAway(/*view*/) {},
+  onBeforeViewTransitionTo: function onBeforeViewTransitionTo(/*view*/) {},
+  onViewTransitionAway: function onViewTransitionAway(/*view*/) {},
+  onViewTransitionTo: function onViewTransitionTo(/*view*/) {},
+  onViewActivate: function onViewActivate(/*view, tag, data*/) {},
+  _onBeforeTransition: function _onBeforeTransition(evt) {
+    const view = this.getView(evt.target);
         if (view) {
             if (evt.out) {
                 this._beforeViewTransitionAway(view);
@@ -887,8 +821,8 @@ __class = declare('argos.Application', null, {
             }
         }
     },
-    _onAfterTransition: function(evt) {
-        var view = this.getView(evt.target);
+  _onAfterTransition: function _onAfterTransition(evt) {
+    const view = this.getView(evt.target);
         if (view) {
             if (evt.out) {
                 this._viewTransitionAway(view);
@@ -897,21 +831,21 @@ __class = declare('argos.Application', null, {
             }
         }
     },
-    _onActivate: function(evt) {
-        var view = this.getView(evt.target);
+  _onActivate: function _onActivate(evt) {
+    const view = this.getView(evt.target);
         if (view) {
             this._viewActivate(view, evt.tag, evt.data);
         }
     },
-    _beforeViewTransitionAway: function(view) {
+  _beforeViewTransitionAway: function _beforeViewTransitionAway(view) {
         this.onBeforeViewTransitionAway(view);
 
         view.beforeTransitionAway();
     },
-    _beforeViewTransitionTo: function(view) {
+  _beforeViewTransitionTo: function _beforeViewTransitionTo(view) {
         this.onBeforeViewTransitionTo(view);
 
-        for (var n in this.bars) {
+    for (const n in this.bars) {
             if (this.bars[n].managed) {
                 this.bars[n].clear();
             }
@@ -919,20 +853,17 @@ __class = declare('argos.Application', null, {
 
         view.beforeTransitionTo();
     },
-    _viewTransitionAway: function(view) {
+  _viewTransitionAway: function _viewTransitionAway(view) {
         this.onViewTransitionAway(view);
 
         view.transitionAway();
     },
-    _viewTransitionTo: function(view) {
+  _viewTransitionTo: function _viewTransitionTo(view) {
         this.onViewTransitionTo(view);
 
-        var tools,
-            n;
+    const tools = (view.options && view.options.tools) || view.getTools() || {};
 
-        tools = (view.options && view.options.tools) || view.getTools() || {};
-
-        for (n in this.bars) {
+    for (const n in this.bars) {
             if (this.bars[n].managed) {
                 this.bars[n].showTools(tools[n]);
             }
@@ -940,7 +871,7 @@ __class = declare('argos.Application', null, {
 
         view.transitionTo();
     },
-    _viewActivate: function(view, tag, data) {
+  _viewActivate: function _viewActivate(view, tag, data) {
         this.onViewActivate(view);
 
         view.activate(tag, data);
@@ -952,14 +883,13 @@ __class = declare('argos.Application', null, {
      * @param {Object} scope
      * @return {Array} context history filtered out by the predicate.
      */
-    filterNavigationContext: function(predicate, scope) {
-        var list, filtered;
-        list = ReUI.context.history || [];
-        filtered = array.filter(list, function(item) {
+  filterNavigationContext: function filterNavigationContext(predicate, scope) {
+    const list = ReUI.context.history || [];
+    const filtered = array.filter(list, function filter(item) {
             return predicate.call(scope || this, item.data);
         }.bind(this));
 
-        return array.map(filtered, function(item) {
+    return array.map(filtered, function map(item) {
             return item.data;
         });
     },
@@ -971,19 +901,20 @@ __class = declare('argos.Application', null, {
      * @param {Object} scope
      * @return {Object/Boolean} context History data context if found, false if not.
      */
-    queryNavigationContext: function(predicate, depth, scope) {
-        var i, j, list;
+  queryNavigationContext: function queryNavigationContext(predicate, d, s) {
+    let scope = s;
+    let depth = d;
 
         if (typeof depth !== 'number') {
             scope = depth;
             depth = 0;
         }
 
-        list = ReUI.context.history || [];
+    const list = ReUI.context.history || [];
 
         depth = depth || 0;
 
-        for (i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++) {
+    for (let i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++) {
             if (predicate.call(scope || this, list[i].data)) {
                 return list[i].data;
             }
@@ -998,19 +929,19 @@ __class = declare('argos.Application', null, {
      * @param {Object} scope Scope the predicate should be called in.
      * @return {Object} context History data context if found, false if not.
      */
-    isNavigationFromResourceKind: function(kind, predicate, scope) {
-        var lookup = {};
+  isNavigationFromResourceKind: function isNavigationFromResourceKind(kind, predicate, scope) {
+    const lookup = {};
         if (lang.isArray(kind)) {
-            array.forEach(kind, function(item) {
+      array.forEach(kind, function forEach(item) {
                 this[item] = true;
             }, lookup);
         } else {
             lookup[kind] = true;
         }
 
-        return this.queryNavigationContext(function(o) {
-            var context = (o.options && o.options.source) || o,
-                resourceKind = context && context.resourceKind;
+    return this.queryNavigationContext(function queryNavigationContext(o) {
+      const context = (o.options && o.options.source) || o;
+      const resourceKind = context && context.resourceKind;
 
             // if a predicate is defined, both resourceKind AND predicate must match.
             if (lookup[resourceKind]) {
@@ -1045,22 +976,19 @@ __class = declare('argos.Application', null, {
      * @param {String} path The customization set such as `list/tools#account_list` or `detail#contact_detail`. First half being the type of customization and the second the view id.
      * @param {Object} spec The customization specification
      */
-    registerCustomization: function(path, spec) {
-        var customizationSet,
-            container,
-            id;
+  registerCustomization: function registerCustomization(p, s) {
+    let path = p;
+    let spec = s;
 
         if (arguments.length > 2) {
-            customizationSet = arguments[0];
-            id = arguments[1];
+      const customizationSet = arguments[0];
+      const id = arguments[1];
 
             spec = arguments[2];
-            path = id
-                ? customizationSet + '#' + id
-                : customizationSet;
+      path = id ? customizationSet + '#' + id : customizationSet;
         }
 
-        container = this.customizations[path] || (this.customizations[path] = []);
+    const container = this.customizations[path] || (this.customizations[path] = []);
         if (container) {
             container.push(spec);
         }
@@ -1076,39 +1004,33 @@ __class = declare('argos.Application', null, {
      *
      * @param {String} path The customization set such as `list/tools#account_list` or `detail#contact_detail`. First half being the type of customization and the second the view id.
      */
-    getCustomizationsFor: function(path) {
-        var forPath,
-            segments,
-            customizationSet,
-            forSet;
+  getCustomizationsFor: function getCustomizationsFor(p) {
+    let path = p;
 
         if (arguments.length > 1) {
-            path = arguments[1]
-                ? arguments[0] + '#' + arguments[1]
-                : arguments[0];
+      path = arguments[1] ? arguments[0] + '#' + arguments[1] : arguments[0];
         }
 
-        segments = path.split('#');
-        customizationSet = segments[0];
-
-        forPath = this.customizations[path] || [];
-        forSet = this.customizations[customizationSet] || [];
+    const segments = path.split('#');
+    const customizationSet = segments[0];
+    const forPath = this.customizations[path] || [];
+    const forSet = this.customizations[customizationSet] || [];
 
         return forPath.concat(forSet);
     },
-    hasAccessTo: function(security) {
+  hasAccessTo: function hasAccessTo(/*security*/) {
         return true;
     },
     /**
      * Override this function to load a view in the left drawer.
      */
-    showLeftDrawer: function() {
+  showLeftDrawer: function showLeftDrawer() {
         return this;
     },
     /**
      * Override this function to load a view in the right drawer.
      */
-    showRightDrawer: function() {
+  showRightDrawer: function showRightDrawer() {
         return this;
     },
     /**
@@ -1116,15 +1038,13 @@ __class = declare('argos.Application', null, {
      * @param {DOMNode} element Optional. Snap.js options.element property. If not provided defaults to the "viewContaienr" DOMNode.
      * @param {Object} options Optional. Snap.js options object. A default is provided if this is undefined. Providing options will override the element parameter.
      */
-    loadSnapper: function(element, options) {
+  loadSnapper: function loadSnapper(element, options) {
         // TODO: Provide a domNode param and default to viewContainer if not provided
-        var snapper, view;
-
         if (this.snapper) {
-            return;
+      return this;
         }
 
-        snapper = new snap(options || {
+    const snapper = new snap(options || { // eslint-disable-line
             element: element || document.getElementById('viewContainer'),
             dragger: null,
             disable: 'none',
@@ -1139,7 +1059,7 @@ __class = declare('argos.Application', null, {
             tapToClose: has('ie') ? false : true, // causes issues on windows phones where tapping the close button causes snap.js endDrag to fire, closing the menu before we can check the state properly
             touchToDrag: false,
             slideIntent: 40,
-            minDragDistance: 5
+      minDragDistance: 5,
         });
 
         this.snapper = snapper;
@@ -1147,7 +1067,7 @@ __class = declare('argos.Application', null, {
         this.showLeftDrawer();
         this.showRightDrawer();
         return this;
-    }
+  },
 });
 
 // Backwards compatibility for custom modules still referencing the old declare global

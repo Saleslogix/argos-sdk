@@ -28,159 +28,161 @@ import string from 'dojo/string';
 import utility from './Utility';
 import SData from './Store/SData';
 
-    var __class = declare('argos._SDataDetailMixin', null, {
+const __class = declare('argos._SDataDetailMixin', null, {
 
-        /**
-         * @cfg {String} resourceKind
-         * The SData resource kind the view is responsible for.  This will be used as the default resource kind
-         * for all SData requests.
-         */
-        resourceKind: '',
-        /**
-         * @cfg {String[]}
-         * A list of fields to be selected in an SData request.
-         */
-        querySelect: [],
-        /**
-         * @cfg {String[]?}
-         * A list of child properties to be included in an SData request.
-         */
-        queryInclude: [],
-        /**
-         * @cfg {String?/Function?}
-         * The default resource property for an SData request.
-         */
-        resourceProperty: null,
-        /**
-         * @cfg {String?/Function?}
-         * The default resource predicate for an SData request.
-         */
-        resourcePredicate: null,
+  /**
+   * @cfg {String} resourceKind
+   * The SData resource kind the view is responsible for.  This will be used as the default resource kind
+   * for all SData requests.
+   */
+  resourceKind: '',
+  /**
+   * @cfg {String[]}
+   * A list of fields to be selected in an SData request.
+   */
+  querySelect: [],
+  /**
+   * @cfg {String[]?}
+   * A list of child properties to be included in an SData request.
+   */
+  queryInclude: [],
+  /**
+   * @cfg {String?/Function?}
+   * The default resource property for an SData request.
+   */
+  resourceProperty: null,
+  /**
+   * @cfg {String?/Function?}
+   * The default resource predicate for an SData request.
+   */
+  resourcePredicate: null,
 
-        itemsProperty: '$resources',
-        idProperty: '$key',
-        labelProperty: '$descriptor',
-        entityProperty: '$name',
-        versionProperty: '$etag',
+  itemsProperty: '$resources',
+  idProperty: '$key',
+  labelProperty: '$descriptor',
+  entityProperty: '$name',
+  versionProperty: '$etag',
 
-        createStore: function() {
-            return new SData({
-                service: this.getConnection(),
-                contractName: this.contractName,
-                resourceKind: this.resourceKind,
-                resourceProperty: this.resourceProperty,
-                resourcePredicate: this.resourcePredicate,
-                include: this.queryInclude,
-                select: this.querySelect,
-                itemsProperty: this.itemsProperty,
-                idProperty: this.idProperty,
-                labelProperty: this.labelProperty,
-                entityProperty: this.entityProperty,
-                versionProperty: this.versionProperty,
-                scope: this
-            });
-        },
-        _buildGetExpression: function() {
-            var options = this.options;
-
-            return options && (options.id || options.key);
-        },
-        _applyStateToGetOptions: function(getOptions) {
-            var options = this.options;
-            if (options) {
-                if (options.select) {
-                    getOptions.select = options.select;
-                }
-
-                if (options.include) {
-                    getOptions.include = options.include;
-                }
-
-                if (options.contractName) {
-                    getOptions.contractName = options.contractName;
-                }
-
-                if (options.resourceKind) {
-                    getOptions.resourceKind = options.resourceKind;
-                }
-
-                if (options.resourceProperty) {
-                    getOptions.resourceProperty = options.resourceProperty;
-                }
-
-                if (options.resourcePredicate) {
-                    getOptions.resourcePredicate = options.resourcePredicate;
-                }
-            }
-        },
-        /**
-         * Applies the entries property to a format string
-         * @param {Object} entry Data entry
-         * @param {String} fmt Where expression to be formatted, `${0}` will be the extracted property.
-         * @param {String} property Property name to extract from the entry, may be a path: `Address.City`.
-         * @return {String}
-         */
-        formatRelatedQuery: function(entry, fmt, property) {
-            property = property || '$key';
-            return string.substitute(fmt, [utility.getValue(entry, property, '')]);
-        },
-        /**
-         * Takes a model and applies SData properties set on the view, to the metadata sdata props. This method will
-         * allow existing customizations to still work with the new model system.
-         * @param model
-         * @returns {_ModelBase}
-         */
-        setSDataModelProperties: function(model) {
-            var resourceKind, querySelect, queryInclude, resourceProperty, resourcePredicate, m;
-            resourceKind = this.resourceKind;
-            querySelect = this.querySelect;
-            queryInclude = this.queryInclude;
-            resourceProperty = this.resourceProperty;
-            resourcePredicate = this.resourcePredicate;
-            m = model.get('metadata');
-
-            if (!m) {
-                m.set('metadata', { sdata: {}});
-            }
-
-            if (!m.sdata) {
-                m.sdata = {};
-            }
-
-            m = m.sdata;
-
-
-            if (resourceKind) {
-                m.resourceKind = resourceKind;
-            }
-
-            if (querySelect) {
-                if (!m.querySelect) {
-                    m.querySelect = [];
-                }
-
-                m.querySelect.concat(querySelect);
-            }
-
-            if (queryInclude) {
-                if (!m.queryInclude) {
-                    m.queryInclude = [];
-                }
-
-                m.queryInclude.concat(queryInclude);
-            }
-
-            if (resourceProperty) {
-                m.resourceProperty = resourceProperty;
-            }
-
-            if (resourcePredicate) {
-                m.resourcePredicate = resourcePredicate;
-            }
-
-            return model;
-        }
+  createStore: function createStore() {
+    return new SData({
+      service: this.getConnection(),
+      contractName: this.contractName,
+      resourceKind: this.resourceKind,
+      resourceProperty: this.resourceProperty,
+      resourcePredicate: this.resourcePredicate,
+      include: this.queryInclude,
+      select: this.querySelect,
+      itemsProperty: this.itemsProperty,
+      idProperty: this.idProperty,
+      labelProperty: this.labelProperty,
+      entityProperty: this.entityProperty,
+      versionProperty: this.versionProperty,
+      scope: this,
     });
+  },
+  _buildGetExpression: function _buildGetExpression() {
+    const options = this.options;
 
-    lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
+    return options && (options.id || options.key);
+  },
+  _applyStateToGetOptions: function _applyStateToGetOptions(getOptions) {
+    const options = this.options;
+    if (options) {
+      if (options.select) {
+        getOptions.select = options.select;
+      }
+
+      if (options.include) {
+        getOptions.include = options.include;
+      }
+
+      if (options.contractName) {
+        getOptions.contractName = options.contractName;
+      }
+
+      if (options.resourceKind) {
+        getOptions.resourceKind = options.resourceKind;
+      }
+
+      if (options.resourceProperty) {
+        getOptions.resourceProperty = options.resourceProperty;
+      }
+
+      if (options.resourcePredicate) {
+        getOptions.resourcePredicate = options.resourcePredicate;
+      }
+    }
+  },
+  /**
+   * Applies the entries property to a format string
+   * @param {Object} entry Data entry
+   * @param {String} fmt Where expression to be formatted, `${0}` will be the extracted property.
+   * @param {String} property Property name to extract from the entry, may be a path: `Address.City`.
+   * @return {String}
+   */
+  formatRelatedQuery: function formatRelatedQuery(entry, fmt, prop) {
+    let property = prop;
+    property = property || '$key';
+    return string.substitute(fmt, [utility.getValue(entry, property, '')]);
+  },
+  /**
+   * Takes a model and applies SData properties set on the view, to the metadata sdata props. This method will
+   * allow existing customizations to still work with the new model system.
+   * @param model
+   * @returns {_ModelBase}
+   */
+  setSDataModelProperties: function setSDataModelProperties(model) {
+    const resourceKind = this.resourceKind;
+    const querySelect = this.querySelect;
+    const queryInclude = this.queryInclude;
+    const resourceProperty = this.resourceProperty;
+    const resourcePredicate = this.resourcePredicate;
+    let m = model.get('metadata');
+
+    if (!m) {
+      m.set('metadata', {
+        sdata: {},
+      });
+    }
+
+    if (!m.sdata) {
+      m.sdata = {};
+    }
+
+    m = m.sdata;
+
+
+    if (resourceKind) {
+      m.resourceKind = resourceKind;
+    }
+
+    if (querySelect) {
+      if (!m.querySelect) {
+        m.querySelect = [];
+      }
+
+      m.querySelect.concat(querySelect);
+    }
+
+    if (queryInclude) {
+      if (!m.queryInclude) {
+        m.queryInclude = [];
+      }
+
+      m.queryInclude.concat(queryInclude);
+    }
+
+    if (resourceProperty) {
+      m.resourceProperty = resourceProperty;
+    }
+
+    if (resourcePredicate) {
+      m.resourcePredicate = resourcePredicate;
+    }
+
+    return model;
+  },
+});
+
+lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
 export default __class;
