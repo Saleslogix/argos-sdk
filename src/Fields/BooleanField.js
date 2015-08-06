@@ -35,7 +35,7 @@ import FieldManager from '../FieldManager';
  * @extends argos.Fields._Field
  * @requires argos.FieldManager
  */
-var control = declare('argos.Fields.BooleanField', [Field], {
+const control = declare('argos.Fields.BooleanField', [Field], {
   /**
    * @property {Object}
    * Provides a setter to the toggleNodes toggled attribute
@@ -44,8 +44,8 @@ var control = declare('argos.Fields.BooleanField', [Field], {
     toggled: {
       node: 'toggleNode',
       type: 'attribute',
-      attribute: 'toggled'
-    }
+      attribute: 'toggled',
+    },
   },
   /**
    * @property {Simplate}
@@ -59,7 +59,7 @@ var control = declare('argos.Fields.BooleanField', [Field], {
     '<label for="{%= $.name %}">{%: $.label %}</label>',
     '<div class="toggle" data-dojo-attach-point="toggleNode" data-dojo-attach-event="onclick:_onClick" toggled="{%= !!$.checked %}">',
     '<span class="thumb"></span>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {HTMLElement}
@@ -83,20 +83,19 @@ var control = declare('argos.Fields.BooleanField', [Field], {
    * the opposite of the current value
    * @param {Event} evt The click/tap event
    */
-  _onClick: function(evt) {
+  _onClick: function _onClick(/*evt*/) {
     if (this.isDisabled()) {
       return;
     }
 
-    var toggledValue = !this.getValue();
-
+    const toggledValue = !this.getValue();
     this.setValue(toggledValue);
   },
   /**
    * Returns the current toggled state
    * @return {Boolean}
    */
-  getValue: function() {
+  getValue: function getValue() {
     return (domAttr.get(this.toggleNode, 'toggled') === true);
   },
   /**
@@ -107,40 +106,39 @@ var control = declare('argos.Fields.BooleanField', [Field], {
    * @param {Boolean/String/Number} val If string is passed it will use `'true'` or `'t'` for true. If number then 0 for true.
    * @param {Boolean} initial If true sets the value as the original value and is later used for dirty/modified detection.
    */
-  setValue: function(val, initial) {
-    val = typeof val === 'string' ? /^(true|t|0)$/i.test(val) : !!val;
+  setValue: function setValue(val, initial) {
+    const newVal = typeof val === 'string' ? /^(true|t|0)$/i.test(val) : !!val;
 
     if (initial) {
-      this.originalValue = val;
+      this.originalValue = newVal;
     }
 
-    domAttr.set(this.toggleNode, 'toggled', val);
+    domAttr.set(this.toggleNode, 'toggled', newVal);
 
-    if (val === false) {
+    if (newVal === false) {
       domClass.remove(this.toggleNode, 'toggleStateOn');
     } else {
       domClass.add(this.toggleNode, 'toggleStateOn');
     }
 
-    this.onChange(val, this);
+    this.onChange(newVal, this);
   },
   /**
    * Sets the value back to `this.checked` as the initial value. If true is passed it sets
    * `this.checked` as a dirty/modified value.
    * @param {Boolean} flag Signifies if the cleared value should be set as modified (true) or initial (false/undefined)
    */
-  clearValue: function(flag) {
-    var initial = flag !== true;
-
+  clearValue: function clearValue(flag) {
+    const initial = flag !== true;
     this.setValue(this.checked, initial);
   },
   /**
    * Determines if the field has been modified from it's original value
    * @return {Boolean}
    */
-  isDirty: function() {
+  isDirty: function isDirty() {
     return (this.originalValue !== this.getValue());
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.BooleanField', control);

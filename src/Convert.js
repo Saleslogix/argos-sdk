@@ -22,13 +22,14 @@
 import lang from 'dojo/_base/lang';
 import moment from 'moment';
 
-var trueRE = /^(true|T)$/i,
-  isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/,
-  jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//,
-  __class,
-  pad = function(n) {
-    return n < 10 ? '0' + n : n;
-  };
+const trueRE = /^(true|T)$/i;
+const isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/;
+const jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//;
+let __class;
+
+function pad(n) {
+  return n < 10 ? '0' + n : n;
+}
 
 __class = lang.setObject('argos.Convert', {
   /**
@@ -36,7 +37,7 @@ __class = lang.setObject('argos.Convert', {
    * @param {String} value String bool value
    * @return {Boolean} Returns true if string is `true` or `T`.
    */
-  toBoolean: function(value) {
+  toBoolean: function toBoolean(value) {
     return trueRE.test(value);
   },
   /**
@@ -48,7 +49,7 @@ __class = lang.setObject('argos.Convert', {
    * @param {String} value String to be checked to see if it's a date.
    * @return {Boolean} True if it matches ISO or JSON formats, false if not a string or doesn't match.
    */
-  isDateString: function(value) {
+  isDateString: function isDateString(value) {
     if (typeof value !== 'string') {
       return false;
     }
@@ -60,7 +61,7 @@ __class = lang.setObject('argos.Convert', {
    * @param {Date} value Date to be formatted
    * @return {String} ISO 8601 formatted date string
    */
-  toIsoStringFromDate: function(value) {
+  toIsoStringFromDate: function toIsoStringFromDate(value) {
     // adapted from: https://developer.mozilla.org/en/JavaScript/Reference/global_objects/date
     return value.getUTCFullYear() + '-' + pad(value.getUTCMonth() + 1) + '-' + pad(value.getUTCDate()) + 'T' + pad(value.getUTCHours()) + ':' + pad(value.getUTCMinutes()) + ':' + pad(value.getUTCSeconds()) + 'Z';
   },
@@ -69,7 +70,7 @@ __class = lang.setObject('argos.Convert', {
    * @param {Date} value Date to stringify
    * @return {String} JSON string: `'/Date(milliseconds)/'`
    */
-  toJsonStringFromDate: function(value) {
+  toJsonStringFromDate: function toJsonStringFromDate(value) {
     return '/Date(' + value.getTime() + ')/';
   },
   /**
@@ -78,14 +79,15 @@ __class = lang.setObject('argos.Convert', {
    * @param {String} value String in the ISO 8601 format `'2012-08-28T08:30:00Z'` or JSON-string format `'/Date(milliseconds)/'`
    * @return {Date} Date object from string or original object if not convertable.
    */
-  toDateFromString: function(value) {
+  toDateFromString: function toDateFromString(v) {
+    let value = v;
+
     if (typeof value !== 'string') {
       return value;
     }
 
-    var match,
-      utc,
-      h, m;
+    let match;
+    let utc;
 
     if ((match = jsonDate.exec(value))) {
       utc = new Date(parseInt(match[1], 10));
@@ -116,16 +118,16 @@ __class = lang.setObject('argos.Convert', {
       )));
 
       if (match[8] && match[8] !== 'Z') {
-        h = parseInt(match[10], 10);
-        m = parseInt(match[11], 10);
+        const h = parseInt(match[10], 10);
+        const m = parseInt(match[11], 10);
 
         if (match[9] === '-') {
           utc.add({
-            minutes: ((h * 60) + m)
+            minutes: ((h * 60) + m),
           });
         } else {
           utc.add({
-            minutes: (-1 * ((h * 60) + m))
+            minutes: (-1 * ((h * 60) + m)),
           });
         }
       }
@@ -134,7 +136,7 @@ __class = lang.setObject('argos.Convert', {
     }
 
     return value;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Convert', __class);

@@ -60,7 +60,7 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
      */
     undoText: 'Undo',
 
-    //Templates
+    // Templates
     /**
      * @property {Simplate}
      * Simplate that defines the HTML Markup
@@ -80,7 +80,7 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
      */
     signatureNode: null,
 
-    //View Properties
+    // View Properties
     /**
      * @property {String}
      * The unique view id
@@ -186,7 +186,7 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
      * @param {String} val JSON-stringified Number[][] of x-y coordinates
      * @param initial Unused.
      */
-    setValue: function setValue(val, initial) {
+    setValue: function setValue(val /*, initial*/) {
       this.signature = val ? _json['default'].fromJson(val) : [];
       this.redraw(this.signature, this.signatureNode, this.config);
     },
@@ -282,13 +282,12 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
      * drawn signature accordingly to the ratio.
      * @param e
      */
-    onResize: function onResize(e) {
-      var newScale,
-          oldWidth = this.canvasNodeWidth,
-          oldHeight = this.canvasNodeHeight;
+    onResize: function onResize() {
+      var oldWidth = this.canvasNodeWidth;
+      var oldHeight = this.canvasNodeHeight;
       this._sizeCanvas();
 
-      newScale = Math.min(this.canvasNodeWidth / oldWidth, this.canvasNodeHeight / oldHeight);
+      var newScale = Math.min(this.canvasNodeWidth / oldWidth, this.canvasNodeHeight / oldHeight);
 
       this.signature = this.rescale(newScale);
       this.redraw(this.signature, this.signatureNode, this.config);
@@ -308,12 +307,10 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
      * @return {Number[][]} Rescaled signature array
      */
     rescale: function rescale(scale) {
-      var rescaled, j, i;
-
-      rescaled = [];
-      for (i = 0; i < this.signature.length; i++) {
+      var rescaled = [];
+      for (var i = 0; i < this.signature.length; i++) {
         rescaled.push([]);
-        for (j = 0; j < this.signature[i].length; j++) {
+        for (var j = 0; j < this.signature[i].length; j++) {
           rescaled[i].push([this.signature[i][j][0] * scale, this.signature[i][j][1] * scale]);
         }
       }
@@ -324,11 +321,9 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
      * @return {Number[][]} Optimized signature
      */
     optimizeSignature: function optimizeSignature() {
-      var optimized, i;
+      var optimized = [];
 
-      optimized = [];
-
-      for (i = 0; i < this.signature.length; i++) {
+      for (var i = 0; i < this.signature.length; i++) {
         optimized.push(this.optimize(this.signature[i]));
       }
 
@@ -345,29 +340,22 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
         return vector;
       }
 
-      var result = [],
-          minA = 0.95,
-          maxL = 15.0,
-          // 15.0, 10.0 works well
-      rootP = vector[0],
-          lastP = vector[1],
-          rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]],
-          rootL = Math.sqrt(rootV[0] * rootV[0] + rootV[1] * rootV[1]),
-          currentP,
-          currentV,
-          currentL,
-          i,
-          dotProduct;
+      var result = [];
+      var minA = 0.95;
+      var maxL = 15.0; // 15.0, 10.0 works well
+      var rootP = vector[0];
+      var lastP = vector[1];
+      var rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]];
+      var rootL = Math.sqrt(rootV[0] * rootV[0] + rootV[1] * rootV[1]);
 
-      for (i = 2; i < vector.length; i++) {
-        currentP = vector[i];
-        currentV = [currentP[0] - rootP[0], currentP[1] - rootP[1]];
-        currentL = Math.sqrt(currentV[0] * currentV[0] + currentV[1] * currentV[1]);
-        dotProduct = (rootV[0] * currentV[0] + rootV[1] * currentV[1]) / (rootL * currentL);
+      for (var i = 2; i < vector.length; i++) {
+        var currentP = vector[i];
+        var currentV = [currentP[0] - rootP[0], currentP[1] - rootP[1]];
+        var currentL = Math.sqrt(currentV[0] * currentV[0] + currentV[1] * currentV[1]);
+        var dotProduct = (rootV[0] * currentV[0] + rootV[1] * currentV[1]) / (rootL * currentL);
 
         if (dotProduct < minA || currentL > maxL) {
           result.push(rootP);
-
           rootP = lastP;
           lastP = currentP;
           rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]];
@@ -386,3 +374,4 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
   _lang['default'].setObject('Sage.Platform.Mobile.Views.Signature', __class);
   module.exports = __class;
 });
+/*e*/

@@ -29,10 +29,9 @@ define('argos/_ServiceMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/
   var __class = (0, _declare['default'])('argos._ServiceMixin', null, {
     serviceMap: null,
     constructor: function constructor() {
-      var map, property;
-      map = this.serviceMap;
+      var map = this.serviceMap;
       if (map) {
-        for (property in map) {
+        for (var property in map) {
           if (map.hasOwnProperty(property)) {
             if (this[property]) {
               continue; /* skip any that were explicitly mixed in */

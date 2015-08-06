@@ -42,7 +42,7 @@ define('argos/ConfigurableSelectionModel', ['exports', 'module', 'dojo/_base/dec
      * @param {Object} data The item being selected
      * @param tag
      */
-    select: function select(key, data, tag) {
+    select: function select(key /*, data, tag*/) {
       if (this.singleSelection) {
         if (!this.isSelected(key) || this.count >= 1) {
           this.clear();

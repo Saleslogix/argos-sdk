@@ -63,16 +63,13 @@ define('argos/Fields/TextAreaField', ['exports', 'module', 'dojo/_base/declare',
      */
     widgetTemplate: new Simplate(['<label for="{%= $.name %}">{%: $.label %}</label>', '<textarea data-dojo-attach-point="inputNode" name="{%= $.name %}" rows="{%: $.rows %}" {% if ($.readonly) { %} readonly {% } %}></textarea>']),
     setValue: function setValue(val, initial) {
-      if (val === null || typeof val === 'undefined') {
-        val = '';
-      }
+      if (val === undefined) val = '';
 
       if (initial) {
         this.originalValue = val;
       }
 
       this.previousValue = false;
-
       this.set('inputValue', val);
     }
   });

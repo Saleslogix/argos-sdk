@@ -1,4 +1,4 @@
-define('argos/_RelatedViewWidgetListMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/array', 'dojo/_base/lang', 'dojo/aspect', 'dojo/dom-construct', 'dojo/query', 'dojo/dom-class', './RelatedViewManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseArray, _dojo_baseLang, _dojoAspect, _dojoDomConstruct, _dojoQuery, _dojoDomClass, _RelatedViewManager) {
+define('argos/_RelatedViewWidgetListMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', './RelatedViewManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _RelatedViewManager) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /*
@@ -7,17 +7,7 @@ define('argos/_RelatedViewWidgetListMixin', ['exports', 'module', 'dojo/_base/de
 
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
 
-  var _array = _interopRequireDefault(_dojo_baseArray);
-
   var _lang = _interopRequireDefault(_dojo_baseLang);
-
-  var _aspect = _interopRequireDefault(_dojoAspect);
-
-  var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
-
-  var _query = _interopRequireDefault(_dojoQuery);
-
-  var _domClass = _interopRequireDefault(_dojoDomClass);
 
   var _RelatedViewManager2 = _interopRequireDefault(_RelatedViewManager);
 
@@ -64,18 +54,19 @@ define('argos/_RelatedViewWidgetListMixin', ['exports', 'module', 'dojo/_base/de
      * @return {Object} RelatedViewManager
      */
     getRelatedViewManager: function getRelatedViewManager(relatedView) {
-      var relatedViewManager, options, relatedViewOptions;
       if (!this.relatedViewManagers) {
         this.relatedViewManagers = {};
       }
+
+      var relatedViewManager = undefined;
       if (this.relatedViewManagers[relatedView.id]) {
         relatedViewManager = this.relatedViewManagers[relatedView.id];
       } else {
         relatedView.id = this.id + '_' + relatedView.id;
-        relatedViewOptions = {};
+        var relatedViewOptions = {};
         _lang['default'].mixin(relatedViewOptions, relatedView);
 
-        options = {
+        var options = {
           id: relatedView.id,
           relatedViewConfig: relatedViewOptions
         };
@@ -93,15 +84,14 @@ define('argos/_RelatedViewWidgetListMixin', ['exports', 'module', 'dojo/_base/de
      * @param {Object} entries the data.
      */
     onProcessRelatedViews: function onProcessRelatedViews(entry, rowNode) {
-      var relatedViewManager, i;
       if (this.options && this.options.simpleMode && this.options.simpleMode === true) {
         return;
       }
       if (this.relatedViews.length > 0) {
         try {
-          for (i = 0; i < this.relatedViews.length; i++) {
+          for (var i = 0; i < this.relatedViews.length; i++) {
             if (this.relatedViews[i].enabled) {
-              relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
+              var relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
               if (relatedViewManager) {
                 if (!entry.$key) {
                   entry.$key = this.store.getIdentity(entry);
@@ -111,7 +101,7 @@ define('argos/_RelatedViewWidgetListMixin', ['exports', 'module', 'dojo/_base/de
             }
           }
         } catch (error) {
-          console.log('Error processing related views:' + error);
+          console.log('Error processing related views:' + error); // eslint-disable-line
         }
       }
     },
@@ -119,9 +109,8 @@ define('argos/_RelatedViewWidgetListMixin', ['exports', 'module', 'dojo/_base/de
      *  Destroys all of the related view widgets, that was added.
      */
     destroyRelatedViewWidgets: function destroyRelatedViewWidgets() {
-      var relatedViewId;
       if (this.relatedViewManagers) {
-        for (relatedViewId in this.relatedViewManagers) {
+        for (var relatedViewId in this.relatedViewManagers) {
           if (this.relatedViewManagers.hasOwnProperty(relatedViewId)) {
             this.relatedViewManagers[relatedViewId].destroyViews();
           }
@@ -135,7 +124,7 @@ define('argos/_RelatedViewWidgetListMixin', ['exports', 'module', 'dojo/_base/de
       this.destroyRelatedViewWidgets();
       this.inherited(arguments);
     },
-    clear: function clear(all) {
+    clear: function clear() {
       this.inherited(arguments);
       this.destroyRelatedViewWidgets();
     },
@@ -143,32 +132,29 @@ define('argos/_RelatedViewWidgetListMixin', ['exports', 'module', 'dojo/_base/de
      * Returns a rendered html snap shot of the entry.
      */
     getContextSnapShot: function getContextSnapShot(options) {
-      var snapShot,
-          entry = this.entries[options.key];
+      var entry = this.entries[options.key];
+      var snapShot = undefined;
       if (entry) {
         snapShot = this.itemTemplate.apply(entry, this);
       }
       return snapShot;
     },
     destroyRelatedView: function destroyRelatedView(relatedView) {
-      var relatedViewManager;
       if (relatedView) {
-        relatedViewManager = this.getRelatedViewManager(relatedView);
+        var relatedViewManager = this.getRelatedViewManager(relatedView);
         if (relatedViewManager) {
           relatedViewManager.destroyViews();
         }
       }
     },
-    invokeRelatedViewAction: function invokeRelatedViewAction(action, selection, additionalOptions) {
-      var relatedView, relatedViewManager, relatedNode, entry, addView, selectedRow, selectedItems, scrollerNode, key;
-
-      addView = true;
-      relatedView = action['relatedView'];
+    invokeRelatedViewAction: function invokeRelatedViewAction(action, selection) {
+      var addView = true;
+      var relatedView = action.relatedView;
       if (!relatedView) {
         return;
       }
 
-      relatedViewManager = this.getRelatedViewManager(relatedView);
+      var relatedViewManager = this.getRelatedViewManager(relatedView);
       if (!relatedViewManager) {
         return;
       }
@@ -178,41 +164,39 @@ define('argos/_RelatedViewWidgetListMixin', ['exports', 'module', 'dojo/_base/de
       }
 
       if (relatedView.enabled) {
-
         if (this.currentRelatedView) {
           if (this.currentRelatedView.id === relatedView.id) {
             addView = false;
           }
-          //Destroy the current related view;
+          // Destroy the current related view;
           this.destroyRelatedView(this.currentRelatedView);
           this.currentRelatedView = null;
         }
 
         if (addView) {
           this.currentRelatedView = relatedView;
-          entry = selection.data;
+          var entry = selection.data;
           if (!entry.$key) {
             entry.$key = this.store.getIdentity(entry);
           }
 
-          //get selected row
-          selectedItems = this.get('selectionModel').getSelections();
-          selectedRow = null;
-          for (key in selectedItems) {
+          // get selected row
+          var selectedItems = this.get('selectionModel').getSelections();
+          var selectedRow = null;
+          for (var key in selectedItems) {
             if (selectedItems.hasOwnProperty(key)) {
               selectedRow = selectedItems[key];
               break;
             }
           }
 
-          //lets set scroller to the current row.
+          // lets set scroller to the current row.
           if (selectedRow && selectedRow.tag) {
-
             // Add the related view to the selected row
             relatedViewManager.addView(entry, selectedRow.tag, this);
 
-            //lets set scroller to the current row.
-            scrollerNode = this.get('scroller');
+            // lets set scroller to the current row.
+            var scrollerNode = this.get('scroller');
             if (scrollerNode) {
               scrollerNode.scrollTop = selectedRow.tag.offsetTop;
             }
@@ -221,9 +205,9 @@ define('argos/_RelatedViewWidgetListMixin', ['exports', 'module', 'dojo/_base/de
       }
     },
     navigateToQuickEdit: function navigateToQuickEdit(action, selection, additionalOptions) {
-      var view = App.getView(action.editView || this.quickEditView || this.editView || this.insertView),
-          key = selection.data[this.idProperty],
-          options = {
+      var view = App.getView(action.editView || this.quickEditView || this.editView || this.insertView);
+      var key = selection.data[this.idProperty];
+      var options = {
         key: key,
         selectedEntry: selection.data,
         fromContext: this

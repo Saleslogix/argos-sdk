@@ -24,8 +24,6 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
 
-  var _Application2 = _interopRequireDefault(_Application);
-
   var _ConfigureQuickActions = _interopRequireDefault(_ViewsConfigureQuickActions);
 
   /**
@@ -94,16 +92,24 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
     init: function init(application) {
       this.application = application;
 
-      this.loadAppStatPromises();
+      this.loadAppStatePromises();
       this.loadCustomizations();
       this.loadToolbars();
       this.loadViews();
     },
+
+    /**
+     * @deprecated - typo, use loadAppStatePromises instead.
+     */
+    loadAppStatPromises: function loadAppStatPromises() {
+      this.loadAppStatePromises();
+    },
+
     /**
      * @template
      * This function should be overriden in the app and be used to register all app state promises.
      */
-    loadAppStatPromises: function loadAppStatPromises() {},
+    loadAppStatePromises: function loadAppStatePromises() {},
 
     statics: {
       _customizationsLoaded: false,
@@ -117,7 +123,7 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
      */
     loadCustomizations: function loadCustomizations() {
       if (this.statics._customizationsLoaded) {
-        console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.');
+        console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.'); // eslint-disable-line
         return;
       }
 
@@ -131,7 +137,7 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
      */
     loadViews: function loadViews() {
       if (this.statics._viewsLoaded) {
-        console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.');
+        console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.'); // eslint-disable-line
         return;
       }
 
@@ -146,7 +152,7 @@ define('argos/ApplicationModule', ['exports', 'module', 'dojo/_base/array', 'doj
      */
     loadToolbars: function loadToolbars() {
       if (this.statics._toolbarsLoaded) {
-        console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.');
+        console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.'); // eslint-disable-line
         return;
       }
 

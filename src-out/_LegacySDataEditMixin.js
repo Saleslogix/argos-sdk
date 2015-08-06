@@ -1,4 +1,4 @@
-define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', 'dojo/dom-class', 'dojo/_base/connect', './Store/SData', './ErrorManager', './Convert', './_SDataDetailMixin'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoString, _dojoDomClass, _dojo_baseConnect, _StoreSData, _ErrorManager, _Convert, _SDataDetailMixin2) {
+define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', 'dojo/dom-class', 'dojo/_base/connect', './ErrorManager', './Convert', './_SDataDetailMixin'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoString, _dojoDomClass, _dojo_baseConnect, _ErrorManager, _Convert, _SDataDetailMixin2) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
@@ -10,8 +10,6 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
   var _domClass = _interopRequireDefault(_dojoDomClass);
 
   var _connect = _interopRequireDefault(_dojo_baseConnect);
-
-  var _SData = _interopRequireDefault(_StoreSData);
 
   var _ErrorManager2 = _interopRequireDefault(_ErrorManager);
 
@@ -26,8 +24,7 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
    */
   var __class = (0, _declare['default'])('argos._LegacySDataEditMixin', [_SDataDetailMixin3['default']], {
     requestData: function requestData() {
-      var request;
-      request = this.createRequest();
+      var request = this.createRequest();
       if (request) {
         request.read({
           success: this.onRequestDataSuccess,
@@ -42,7 +39,7 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
      * @param {Object} o The options that were passed when creating the Ajax request.
      */
     onRequestDataFailure: function onRequestDataFailure(response, o) {
-      alert(_string['default'].substitute(this.requestErrorText, [response, o]));
+      alert(_string['default'].substitute(this.requestErrorText, [response, o])); // eslint-disable-line
       _ErrorManager2['default'].addError('failure', response);
     },
     /**
@@ -67,10 +64,8 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
      * @return {Object} Sage.SData.Client.SDataSingleResourceRequest instance.
      */
     createRequest: function createRequest() {
-      var request, key;
-
-      request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
-      key = this.entry && this.entry['$key'] || this.options.key;
+      var request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
+      var key = this.entry && this.entry.$key || this.options.key;
 
       if (key) {
         request.setResourceSelector(_string['default'].substitute('\'${0}\'', [key]));
@@ -99,9 +94,8 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
       return request;
     },
     onUpdate: function onUpdate(values) {
-      var entry, request;
-      entry = this.createEntryForUpdate(values);
-      request = this.createRequest();
+      var entry = this.createEntryForUpdate(values);
+      var request = this.createRequest();
       if (request) {
         request.update(entry, {
           success: this.onUpdateSuccess,
@@ -123,7 +117,7 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
 
       _connect['default'].publish('/app/refresh', [{
         resourceKind: this.resourceKind,
-        key: entry['$key'],
+        key: entry.$key,
         data: entry
       }]);
 
@@ -144,7 +138,7 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
      * @param {Object} o The options that were passed when creating the Ajax request.
      */
     onRequestFailure: function onRequestFailure(response, o) {
-      alert(_string['default'].substitute(this.requestErrorText, [response, o]));
+      alert(_string['default'].substitute(this.requestErrorText, [response, o])); // eslint-disable-line
       _ErrorManager2['default'].addError('failure', response);
     },
     /**
@@ -154,7 +148,6 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
      */
     createEntry: function createEntry() {
       var values = this.getValues();
-
       return this.inserting ? this.createEntryForInsert(values) : this.createEntryForUpdate(values);
     },
     /**
@@ -162,13 +155,13 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
      * @param {Object} values
      * @return {Object} Object with added properties
      */
-    createEntryForUpdate: function createEntryForUpdate(values) {
-      values = this.convertValues(values);
+    createEntryForUpdate: function createEntryForUpdate(v) {
+      var values = this.convertValues(v);
 
       return _lang['default'].mixin(values, {
-        '$key': this.entry['$key'],
-        '$etag': this.entry['$etag'],
-        '$name': this.entry['$name']
+        '$key': this.entry.$key,
+        '$etag': this.entry.$etag,
+        '$name': this.entry.$name
       });
     },
     /**
@@ -176,8 +169,8 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
      * @param {Object} values
      * @return {Object} Object with added properties
      */
-    createEntryForInsert: function createEntryForInsert(values) {
-      values = this.convertValues(values);
+    createEntryForInsert: function createEntryForInsert(v) {
+      var values = this.convertValues(v);
       return _lang['default'].mixin(values, {
         '$name': this.entityName
       });
@@ -205,13 +198,12 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
       return _lang['default'].mixin(this.inherited(arguments), {
         resourceKind: this.resourceKind,
         insert: this.options.insert,
-        key: this.options.insert ? false : this.options.entry && this.options.entry['$key']
+        key: this.options.insert ? false : this.options.entry && this.options.entry.$key
       });
     },
     onInsert: function onInsert(values) {
-      var request, entry;
-      entry = this.createEntryForInsert(values);
-      request = this.createRequest();
+      var entry = this.createEntryForInsert(values);
+      var request = this.createRequest();
 
       if (request) {
         request.create(entry, {
@@ -234,7 +226,7 @@ define('argos/_LegacySDataEditMixin', ['exports', 'module', 'dojo/_base/declare'
 
       _connect['default'].publish('/app/refresh', [{
         resourceKind: this.resourceKind,
-        key: entry['$key'],
+        key: entry.$key,
         data: entry
       }]);
 

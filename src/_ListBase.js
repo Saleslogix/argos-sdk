@@ -21,12 +21,8 @@ import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domGeom from 'dojo/dom-geometry';
-import domStyle from 'dojo/dom-style';
 import dom from 'dojo/dom';
 import string from 'dojo/string';
-import win from 'dojo/window';
-import Deferred from 'dojo/Deferred';
-import all from 'dojo/promise/all';
 import when from 'dojo/when';
 import Utility from './Utility';
 import ErrorManager from './ErrorManager';
@@ -46,7 +42,7 @@ import _PullToRefreshMixin from './_PullToRefreshMixin';
  * @requires argos.SearchWidget
  * @mixins argos._PullToRefreshMixin
  */
-var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
+const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:
@@ -57,12 +53,12 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   attributeMap: {
     listContent: {
       node: 'contentNode',
-      type: 'innerHTML'
+      type: 'innerHTML',
     },
     remainingContent: {
       node: 'remainingContentNode',
-      type: 'innerHTML'
-    }
+      type: 'innerHTML',
+    },
   },
   /**
    * @property {Simplate}
@@ -88,7 +84,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     '{%! $.moreTemplate %}',
     '{%! $.listActionTemplate %}',
     '</div>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -101,7 +97,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      loadingText         The text to display while loading.
    */
   loadingTemplate: new Simplate([
-    '<li class="list-loading-indicator"><span class="fa fa-spinner fa-spin"></span><h2>{%= $.loadingText %}</h2></li>'
+    '<li class="list-loading-indicator"><span class="fa fa-spinner fa-spin"></span><h2>{%= $.loadingText %}</h2></li>',
   ]),
   /**
    * @property {Simplate}
@@ -124,7 +120,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     '<button class="button" data-action="more">',
     '<span>{%= $.moreText %}</span>',
     '</button>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -146,7 +142,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     '<button class="button" data-action="emptySelection">',
     '<span>{%= $.emptySelectionText %}</span>',
     '</button>',
-    '</div>'
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -162,7 +158,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     '{% } %}',
     '</button>',
     '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
-    '</li>'
+    '</li>',
   ]),
   /**
    * @cfg {Simplate}
@@ -174,7 +170,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   itemTemplate: new Simplate([
     '<h3>{%: $[$$.labelProperty] %}</h3>',
-    '<h4>{%: $[$$.idProperty] %}</h4>'
+    '<h4>{%: $[$$.idProperty] %}</h4>',
   ]),
   /**
    * @property {Simplate}
@@ -188,14 +184,14 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   noDataTemplate: new Simplate([
     '<li class="no-data">',
     '<h2>{%= $.noDataText %}</h2>',
-    '</li>'
+    '</li>',
   ]),
   /**
    * @property {Simplate}
    * The template used to render the single list action row.
    */
   listActionTemplate: new Simplate([
-    '<li data-dojo-attach-point="actionsNode" class="actions-row"></li>'
+    '<li data-dojo-attach-point="actionsNode" class="actions-row"></li>',
   ]),
   /**
    * @property {Simplate}
@@ -221,7 +217,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     '<span class="fa fa-level-down fa-2x"></span>',
     '{% } %}',
     '<label>{%: $.label %}</label>',
-    '</button>'
+    '</button>',
   ]),
   /**
    * @property {HTMLElement}
@@ -367,7 +363,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   rowTemplateError: new Simplate([
     '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
     '<div class="list-item-content" data-snap-ignore="true">{%: $$.errorRenderText %}</div>',
-    '</li>'
+    '</li>',
   ]),
   /**
    * @property {String}
@@ -472,7 +468,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {SelectionModel} selectionModel The selection model instance to save to the view
    * @private
    */
-  _setSelectionModelAttr: function(selectionModel) {
+  _setSelectionModelAttr: function _setSelectionModelAttr(selectionModel) {
     if (this._selectionConnects) {
       array.forEach(this._selectionConnects, this.disconnect, this);
     }
@@ -493,18 +489,16 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @return {SelectionModel}
    * @private
    */
-  _getSelectionModelAttr: function() {
+  _getSelectionModelAttr: function _getSelectionModelAttr() {
     return this._selectionModel;
   },
-  constructor: function() {
+  constructor: function constructor() {
     this.entries = {};
   },
-  postCreate: function() {
+  postCreate: function postCreate() {
     this.inherited(arguments);
 
-    var scrollerNode, searchWidgetCtor;
-
-    scrollerNode = this.get('scroller');
+    const scrollerNode = this.get('scroller');
 
     if (this._selectionModel === null) {
       this.set('selectionModel', new ConfigurableSelectionModel());
@@ -512,12 +506,12 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.subscribe('/app/refresh', this._onRefresh);
 
     if (this.enableSearch) {
-      searchWidgetCtor = lang.isString(this.searchWidgetClass) ? lang.getObject(this.searchWidgetClass, false) : this.searchWidgetClass;
+      const SearchWidgetCtor = lang.isString(this.searchWidgetClass) ? lang.getObject(this.searchWidgetClass, false) : this.searchWidgetClass;
 
-      this.searchWidget = this.searchWidget || new searchWidgetCtor({
+      this.searchWidget = this.searchWidget || new SearchWidgetCtor({
         'class': 'list-search',
         'owner': this,
-        'onSearchExpression': this._onSearchExpression.bind(this)
+        'onSearchExpression': this._onSearchExpression.bind(this),
       });
       this.searchWidget.placeAt(this.searchNode, 'replace');
     } else {
@@ -529,15 +523,13 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     this.initPullToRefresh(scrollerNode);
   },
-  shouldStartPullToRefresh: function(scrollerNode) {
-    var selected, shouldStart;
-
+  shouldStartPullToRefresh: function shouldStartPullToRefresh() {
     // Get the base results
-    shouldStart = this.inherited(arguments);
-    selected = domAttr.get(this.domNode, 'selected');
+    const shouldStart = this.inherited(arguments);
+    const selected = domAttr.get(this.domNode, 'selected');
     return shouldStart && selected === 'true' && !this.listLoading;
   },
-  onPullToRefreshComplete: function() {
+  onPullToRefreshComplete: function onPullToRefreshComplete() {
     this.clear();
     this.refreshRequired = true;
     this.refresh();
@@ -545,13 +537,13 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   /**
    * Called on application startup to configure the search widget if present and create the list actions.
    */
-  startup: function() {
+  startup: function startup() {
     this.inherited(arguments);
 
     if (this.searchWidget) {
       this.searchWidget.configure({
         'hashTagQueries': this._createCustomizedLayout(this.createHashTagQueryLayout(), 'hashTagQueries'),
-        'formatSearchQuery': this.formatSearchQuery.bind(this)
+        'formatSearchQuery': this.formatSearchQuery.bind(this),
       });
     }
 
@@ -560,7 +552,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   /**
    * Extends dijit Widget to destroy the search widget before destroying the view.
    */
-  destroy: function() {
+  destroy: function destroy() {
     if (this.searchWidget) {
       if (!this.searchWidget._destroyed) {
         this.searchWidget.destroyRecursive();
@@ -572,7 +564,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     delete this.store;
     this.inherited(arguments);
   },
-  _getStoreAttr: function() {
+  _getStoreAttr: function _getStoreAttr() {
     return this.store || (this.store = this.createStore());
   },
   /**
@@ -580,7 +572,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} options The navigation options passed from the previous view.
    * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
    */
-  show: function(options, transitionOptions) {
+  show: function show(options/*, transitionOptions*/) {
     if (options) {
       if (options.resetSearch) {
         this.defaultSearchTermSet = false;
@@ -599,46 +591,46 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @return {Object} this.tools
    * @template
    */
-  createToolLayout: function() {
+  createToolLayout: function createToolLayout() {
     return this.tools || (this.tools = {
       'tbar': [{
         id: 'new',
         cls: 'fa fa-plus fa-fw fa-lg',
         action: 'navigateToInsertView',
-        security: this.app.getViewSecurity(this.insertView, 'insert')
-      }]
+        security: this.app.getViewSecurity(this.insertView, 'insert'),
+      }],
     });
   },
-  createErrorHandlers: function() {
+  createErrorHandlers: function createErrorHandlers() {
     this.errorHandlers = this.errorHandlers || [{
       name: 'Aborted',
-      test: function(error) {
+      test: function testAborted(error) {
         return error.aborted;
       },
-      handle: function(error, next) {
+      handle: function handleAborted(error, next) {
         this.clear();
         this.refreshRequired = true;
         next();
-      }
+      },
     }, {
       name: 'AlertError',
-      test: function(error) {
+      test: function testError(error) {
         return !error.aborted;
       },
-      handle: function(error, next) {
-        alert(this.getErrorMessage(error));
+      handle: function handleError(error, next) {
+        alert(this.getErrorMessage(error)); // eslint-disable-line
         next();
-      }
+      },
     }, {
       name: 'CatchAll',
-      test: function(error) {
+      test: function testCatchAll() {
         return true;
       },
-      handle: function(error, next) {
+      handle: function handleCatchAll(error, next) {
         this._logError(error);
         this._clearLoading();
         next();
-      }
+      },
     }];
 
     return this.errorHandlers;
@@ -648,7 +640,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * so that you may define the action entries for that view.
    * @return {Object} this.acttions
    */
-  createActionLayout: function() {
+  createActionLayout: function createActionLayout() {
     return this.actions || {};
   },
   /**
@@ -657,9 +649,8 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * final actions state.
    * @param {Object[]} actions
    */
-  createActions: function(actions) {
-    var i, action, options, actionTemplate, systemActions, prefActions, visibleActions;
-
+  createActions: function createActions(a) {
+    let actions = a;
     this.actions = actions;
     this.visibleActions = [];
 
@@ -670,12 +661,12 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.ensureQuickActionPrefs();
 
     // Pluck out our system actions that are NOT saved in preferences
-    systemActions = array.filter(actions, function(action) {
+    let systemActions = array.filter(actions, (action) => {
       return action && action.systemAction;
     });
 
-    systemActions = systemActions.reduce(function(acc, cur) {
-      var hasID = acc.some(function(item) {
+    systemActions = systemActions.reduce((acc, cur) => {
+      const hasID = acc.some((item) => {
         return item.id === cur.id;
       });
 
@@ -687,30 +678,30 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }, []);
 
     // Grab quick actions from the users preferences (ordered and made visible according to user)
-    prefActions = this.app.preferences.quickActions[this.id];
+    const prefActions = this.app.preferences.quickActions[this.id];
 
     if (systemActions && prefActions) {
       // Display system actions first, then the order of what the user specified
       actions = systemActions.concat(prefActions);
     }
 
-    visibleActions = [];
+    const visibleActions = [];
 
-    for (i = 0; i < actions.length; i++) {
-      action = actions[i];
+    for (let i = 0; i < actions.length; i++) {
+      const action = actions[i];
 
       if (!action.visible) {
         continue;
       }
 
-      options = {
+      const options = {
         actionIndex: visibleActions.length,
-        hasAccess: (!action.security || (action.security && this.app.hasAccessTo(this.expandExpression(action.security)))) ? true : false
+        hasAccess: (!action.security || (action.security && this.app.hasAccessTo(this.expandExpression(action.security)))) ? true : false,
       };
 
       lang.mixin(action, options);
 
-      actionTemplate = action.template || this.listActionItemTemplate;
+      const actionTemplate = action.template || this.listActionItemTemplate;
       domConstruct.place(actionTemplate.apply(action, action.id), this.actionsNode, 'last');
 
       visibleActions.push(action);
@@ -718,14 +709,12 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     this.visibleActions = visibleActions;
   },
-  createSystemActionLayout: function(actions) {
-    var systemActions, others;
-
-    systemActions = array.filter(actions, function(action) {
+  createSystemActionLayout: function createSystemActionLayout(actions) {
+    const systemActions = array.filter(actions, (action) => {
       return action.systemAction === true;
     });
 
-    others = array.filter(actions, function(action) {
+    const others = array.filter(actions, (action) => {
       return !action.systemAction;
     });
 
@@ -735,45 +724,43 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     if (systemActions.length) {
       return systemActions.concat(others);
-    } else {
-      return [{
-        id: '__editPrefs__',
-        cls: 'fa fa-cog fa-2x',
-        label: this.configureText,
-        action: 'configureQuickActions',
-        systemAction: true,
-        visible: true
-      }].concat(others);
     }
+
+    return [{
+      id: '__editPrefs__',
+      cls: 'fa fa-cog fa-2x',
+      label: this.configureText,
+      action: 'configureQuickActions',
+      systemAction: true,
+      visible: true,
+    }].concat(others);
   },
-  configureQuickActions: function() {
-    var view = App.getView(this.quickActionConfigureView);
+  configureQuickActions: function configureQuickActions() {
+    const view = App.getView(this.quickActionConfigureView);
     if (view) {
       view.show({
         viewId: this.id,
-        actions: array.filter(this.actions, function(action) {
+        actions: array.filter(this.actions, (action) => {
           // Exclude system actions
           return action && action.systemAction !== true;
-        })
+        }),
       });
     }
   },
-  selectEntrySilent: function(key) {
-    var enableActions = this.enableActions, // preserve the original value
-      selectionModel = this.get('selectionModel'),
-      selectedItems,
-      selection,
-      prop;
+  selectEntrySilent: function selectEntrySilent(key) {
+    const enableActions = this.enableActions; // preserve the original value
+    const selectionModel = this.get('selectionModel');
+    let selection;
 
     if (key) {
       this.enableActions = false; // Set to false so the quick actions menu doesn't pop up
       selectionModel.clear();
       selectionModel.toggle(key, this.entries[key]);
-      selectedItems = selectionModel.getSelections();
+      const selectedItems = selectionModel.getSelections();
       this.enableActions = enableActions;
 
       // We know we are single select, so just grab the first selection
-      for (prop in selectedItems) {
+      for (const prop in selectedItems) {
         if (selectedItems.hasOwnProperty(prop)) {
           selection = selectedItems[prop];
           break;
@@ -783,13 +770,11 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     return selection;
   },
-  invokeActionItemBy: function(actionPredicate, key) {
-    var actions, selection;
-
-    actions = array.filter(this.visibleActions, actionPredicate);
-    selection = this.selectEntrySilent(key);
+  invokeActionItemBy: function invokeActionItemBy(actionPredicate, key) {
+    const actions = array.filter(this.visibleActions, actionPredicate);
+    const selection = this.selectEntrySilent(key);
     this.checkActionState();
-    array.forEach(actions, function(action) {
+    array.forEach(actions, function forEach(action) {
       this._invokeAction(action, selection);
     }, this);
   },
@@ -804,15 +789,14 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Event} evt The click/tap event
    * @param {HTMLElement} node The node that invoked the action
    */
-  invokeActionItem: function(parameters, evt, node) {
-    var index = parameters['id'],
-      action = this.visibleActions[index],
-      key,
-      selectedItems = this.get('selectionModel').getSelections(),
-      selection = null;
+  invokeActionItem: function invokeActionItem(parameters/*, evt, node*/) {
+    const index = parameters.id;
+    const action = this.visibleActions[index];
+    const selectedItems = this.get('selectionModel').getSelections();
+    let selection = null;
 
 
-    for (key in selectedItems) {
+    for (const key in selectedItems) {
       if (selectedItems.hasOwnProperty(key)) {
         selection = selectedItems[key];
         break;
@@ -821,17 +805,17 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     this._invokeAction(action, selection);
   },
-  _invokeAction: function(action, selection) {
+  _invokeAction: function _invokeAction(action, selection) {
     if (!action.isEnabled) {
       return;
     }
 
-    if (action['fn']) {
-      action['fn'].call(action['scope'] || this, action, selection);
+    if (action.fn) {
+      action.fn.call(action.scope || this, action, selection);
     } else {
-      if (action['action']) {
-        if (this.hasAction(action['action'])) {
-          this.invokeAction(action['action'], action, selection);
+      if (action.action) {
+        if (this.hasAction(action.action)) {
+          this.invokeAction(action.action, action, selection);
         }
       }
     }
@@ -841,13 +825,11 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * item using the currently selected row as context by passing the action instance the selected row to the
    * action items `enabled` property.
    */
-  checkActionState: function() {
-    var selectedItems, selection, key;
+  checkActionState: function checkActionState() {
+    const selectedItems = this.get('selectionModel').getSelections();
+    let selection = null;
 
-    selectedItems = this.get('selectionModel').getSelections();
-    selection = null;
-
-    for (key in selectedItems) {
+    for (const key in selectedItems) {
       if (selectedItems.hasOwnProperty(key)) {
         selection = selectedItems[key];
         break;
@@ -856,26 +838,22 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     this._applyStateToActions(selection);
   },
-  _clearActions: function() {
-    var children;
-
-    children = this.actionsNode && this.actionsNode.children || [];
+  _clearActions: function _clearActions() {
+    let children = this.actionsNode && this.actionsNode.children || [];
     children = Array.prototype.slice.call(children);
-    array.forEach(children, function(child) {
+    array.forEach(children, (child) => {
       if (child.parentNode) {
         child.parentNode.removeChild(child);
       }
     });
   },
-  getQuickActionPrefs: function() {
+  getQuickActionPrefs: function getQuickActionPrefs() {
     return this.app && this.app.preferences && this.app.preferences.quickActions;
   },
-  ensureQuickActionPrefs: function() {
-    var appPrefs, actionPrefs, filtered;
-
-    appPrefs = this.app && this.app.preferences;
-    actionPrefs = this.getQuickActionPrefs();
-    filtered = array.filter(this.actions, function(action) {
+  ensureQuickActionPrefs: function ensureQuickActionPrefs() {
+    const appPrefs = this.app && this.app.preferences;
+    let actionPrefs = this.getQuickActionPrefs();
+    const filtered = array.filter(this.actions, (action) => {
       return action && action.systemAction !== true;
     });
 
@@ -892,7 +870,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     // re-create the preferences store
     if (!actionPrefs[this.id] ||
       (actionPrefs[this.id] && actionPrefs[this.id].length !== filtered.length)) {
-      actionPrefs[this.id] = array.map(filtered, function(action) {
+      actionPrefs[this.id] = array.map(filtered, (action) => {
         action.visible = true;
         return action;
       });
@@ -906,22 +884,20 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * action items `enabled` property.
    * @param {Object} selection
    */
-  _applyStateToActions: function(selection) {
-    var i, action, actionNode, visibleAction;
-
+  _applyStateToActions: function _applyStateToActions(selection) {
     this._clearActions();
     this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
 
-    for (i = 0; i < this.visibleActions.length; i++) {
+    for (let i = 0; i < this.visibleActions.length; i++) {
       // The visible action is from our local storage preferences, where the action from the layout
       // contains functions that will get stripped out converting it to JSON, get the original action
       // and mix it into the visible so we can work with it.
       // TODO: This will be a problem throughout visible actions, come up with a better solution
-      visibleAction = this.visibleActions[i];
-      action = lang.mixin(visibleAction, this._getActionById(visibleAction.id));
-      actionNode = this.actionsNode.childNodes[i];
+      const visibleAction = this.visibleActions[i];
+      const action = lang.mixin(visibleAction, this._getActionById(visibleAction.id));
+      const actionNode = this.actionsNode.childNodes[i];
 
-      action.isEnabled = (typeof action['enabled'] === 'undefined') ? true : this.expandExpression(action['enabled'], action, selection);
+      action.isEnabled = (typeof action.enabled === 'undefined') ? true : this.expandExpression(action.enabled, action, selection);
 
       if (!action.hasAccess) {
         action.isEnabled = false;
@@ -932,8 +908,8 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       }
     }
   },
-  _getActionById: function(id) {
-    return array.filter(this.actions, function(action) {
+  _getActionById: function _getActionById(id) {
+    return array.filter(this.actions, (action) => {
       return action && action.id === id;
     })[0];
   },
@@ -947,7 +923,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *
    * @param {HTMLElement} rowNode The currently selected row node
    */
-  showActionPanel: function(rowNode) {
+  showActionPanel: function showActionPanel(rowNode) {
     this.checkActionState();
     domClass.add(rowNode, 'list-action-selected');
 
@@ -955,16 +931,16 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     domConstruct.place(this.actionsNode, rowNode, 'after');
   },
-  onApplyRowActionPanel: function(actionNodePanel, rowNode) {},
+  onApplyRowActionPanel: function onApplyRowActionPanel(/*actionNodePanel, rowNode*/) {},
   /**
    * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
    * that when the next view queries the navigation context we can include the passed param as a data point.
    *
    * @param {Object} source The object to set as the options.source.
    */
-  setSource: function(source) {
+  setSource: function setSource(source) {
     lang.mixin(source, {
-      resourceKind: this.resourceKind
+      resourceKind: this.resourceKind,
     });
 
     this.options.source = source;
@@ -973,7 +949,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Hides the passed list-action row/panel by removing the selected styling
    * @param {HTMLElement} rowNode The currently selected row.
    */
-  hideActionPanel: function(rowNode) {
+  hideActionPanel: function hideActionPanel(rowNode) {
     domClass.remove(rowNode, 'list-action-selected');
   },
   /**
@@ -981,14 +957,14 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * navigation `this.options.selectionOnly`.
    * @return {Boolean}
    */
-  isNavigationDisabled: function() {
+  isNavigationDisabled: function isNavigationDisabled() {
     return ((this.options && this.options.selectionOnly) || (this.selectionOnly));
   },
   /**
    * Determines if the selections are disabled by checking the `allowSelection` and `enableActions`
    * @return {Boolean}
    */
-  isSelectionDisabled: function() {
+  isSelectionDisabled: function isSelectionDisabled() {
     return !((this.options && this.options.selectionOnly) || this.enableActions || this.allowSelection);
   },
   /**
@@ -999,8 +975,8 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {String/HTMLElement} tag An indentifier, may be the actual row node or some other id.
    * @private
    */
-  _onSelectionModelSelect: function(key, data, tag) {
-    var node = dom.byId(tag) || query('li[data-key="' + key + '"]', this.contentNode)[0];
+  _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) {
+    const node = dom.byId(tag) || query('li[data-key="' + key + '"]', this.contentNode)[0];
     if (!node) {
       return;
     }
@@ -1020,8 +996,8 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {String/HTMLElement} tag An indentifier, may be the actual row node or some other id.
    * @private
    */
-  _onSelectionModelDeselect: function(key, data, tag) {
-    var node = dom.byId(tag) || query('li[data-key="' + key + '"]', this.contentNode)[0];
+  _onSelectionModelDeselect: function _onSelectionModelDeselect(key, data, tag) {
+    const node = dom.byId(tag) || query('li[data-key="' + key + '"]', this.contentNode)[0];
     if (!node) {
       return;
     }
@@ -1037,25 +1013,23 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Handler for when the selection model clears the selections.
    * @private
    */
-  _onSelectionModelClear: function() {},
+  _onSelectionModelClear: function _onSelectionModelClear() {},
   /**
    * Attempts to activate entries passed in `this.options.previousSelections` where previousSelections is an array
    * of data-keys or data-descriptors to search the list rows for.
    * @private
    */
-  _loadPreviousSelections: function() {
-    var previousSelections, i, row;
-
-    previousSelections = this.options && this.options.previousSelections;
+  _loadPreviousSelections: function _loadPreviousSelections() {
+    const previousSelections = this.options && this.options.previousSelections;
     if (previousSelections) {
-      for (i = 0; i < previousSelections.length; i++) {
-        row = query((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [previousSelections[i]])), this.contentNode)[0];
+      for (let i = 0; i < previousSelections.length; i++) {
+        const row = query((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [previousSelections[i]])), this.contentNode)[0];
 
         if (row) {
           this.activateEntry({
             key: previousSelections[i],
             descriptor: previousSelections[i],
-            $source: row
+            $source: row,
           });
         }
       }
@@ -1066,20 +1040,16 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} options The object published by the event.
    * @private
    */
-  _onRefresh: function(options) {},
-  onScroll: function(evt) {
-    var pos, height, scrollTop, scrollHeight, remaining, selected, diff, scrollerNode;
-    scrollerNode = this.get('scroller');
-    pos = domGeom.position(scrollerNode, true);
-
-    height = pos.h; // viewport height (what user sees)
-    scrollHeight = scrollerNode.scrollHeight; // Entire container height
-    scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
-    remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
-
-    selected = domAttr.get(this.domNode, 'selected');
-
-    diff = Math.abs(remaining - height);
+  _onRefresh: function _onRefresh(/*options*/) {},
+  onScroll: function onScroll(/*evt*/) {
+    const scrollerNode = this.get('scroller');
+    const pos = domGeom.position(scrollerNode, true);
+    const height = pos.h; // viewport height (what user sees)
+    const scrollHeight = scrollerNode.scrollHeight; // Entire container height
+    const scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
+    const remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
+    const selected = domAttr.get(this.domNode, 'selected');
+    const diff = Math.abs(remaining - height);
 
     // Start auto fetching more data if the user is on the last half of the remaining screen
     if (diff <= height / 2) {
@@ -1098,9 +1068,9 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Event} evt The click/tap event.
    * @param {HTMLElement} node The element that initiated the event.
    */
-  selectEntry: function(params, evt, node) {
-    var row = query(node).closest('[data-key]')[0],
-      key = row ? row.getAttribute('data-key') : false;
+  selectEntry: function selectEntry(params, evt, node) {
+    const row = query(node).closest('[data-key]')[0];
+    const key = row ? row.getAttribute('data-key') : false;
 
     if (this._selectionModel && key) {
       this._selectionModel.toggle(key, this.entries[key], row);
@@ -1120,7 +1090,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *
    * @param {Object} params Collection of `data-` attributes from the node.
    */
-  activateEntry: function(params) {
+  activateEntry: function activateEntry(params) {
     if (params.key) {
       if (this._selectionModel && this.isNavigationDisabled()) {
         this._selectionModel.toggle(params.key, this.entries[params.key] || params.descriptor, params.$source);
@@ -1136,10 +1106,10 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Invokes the corresponding top toolbar tool using `this.options.singleSelectAction` as the name.
    * If autoClearSelection is true, clear the selection model.
    */
-  invokeSingleSelectAction: function() {
-    if (this.app.bars['tbar']) {
-      this.app.bars['tbar'].invokeTool({
-        tool: this.options.singleSelectAction
+  invokeSingleSelectAction: function invokeSingleSelectAction() {
+    if (this.app.bars.tbar) {
+      this.app.bars.tbar.invokeTool({
+        tool: this.options.singleSelectAction,
       });
     }
 
@@ -1156,7 +1126,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @return {String/Boolean} An SData query compatible search expression.
    * @template
    */
-  formatSearchQuery: function(searchQuery) {
+  formatSearchQuery: function formatSearchQuery(/*searchQuery*/) {
     return false;
   },
   /**
@@ -1164,7 +1134,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {String} searchQuery Search expression to be escaped.
    * @return {String}
    */
-  escapeSearchQuery: function(searchQuery) {
+  escapeSearchQuery: function escapeSearchQuery(searchQuery) {
     return Utility.escapeSearchQuery(searchQuery);
   },
   /**
@@ -1176,7 +1146,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {String} expression String expression as returned from the search widget
    * @private
    */
-  _onSearchExpression: function(expression) {
+  _onSearchExpression: function _onSearchExpression(expression) {
     this.clear(false);
     this.queryText = '';
     this.query = expression;
@@ -1187,17 +1157,17 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Sets the default search expression (acting as a pre-filter) to `this.options.query` and configures the
    * search widget by passing in the current view context.
    */
-  configureSearch: function() {
+  configureSearch: function configureSearch() {
     this.query = this.options && this.options.query || this.query || null;
     if (this.searchWidget) {
       this.searchWidget.configure({
-        'context': this.getContext()
+        'context': this.getContext(),
       });
     }
 
     this._setDefaultSearchTerm();
   },
-  _setDefaultSearchTerm: function() {
+  _setDefaultSearchTerm: function _setDefaultSearchTerm() {
     if (!this.defaultSearchTerm || this.defaultSearchTermSet) {
       return;
     }
@@ -1212,16 +1182,16 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     this.defaultSearchTermSet = true;
   },
-  _updateQuery: function() {
-    var searchQuery = this.getSearchQuery();
+  _updateQuery: function _updateQuery() {
+    const searchQuery = this.getSearchQuery();
     if (searchQuery) {
       this.query = searchQuery;
     } else {
       this.query = '';
     }
   },
-  getSearchQuery: function() {
-    var results = null;
+  getSearchQuery: function getSearchQuery() {
+    let results = null;
 
     if (this.searchWidget) {
       results = this.searchWidget.getFormattedSearchQuery();
@@ -1239,12 +1209,12 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} additionalOptions Additional options to be passed into the next view
    * property of the passed selection data.
    */
-  navigateToRelatedView: function(action, selection, viewId, whereQueryFmt, additionalOptions) {
-    var view = this.app.getView(viewId),
-      options = {
-        where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]]),
-        selectedEntry: selection.data
-      };
+  navigateToRelatedView: function navigateToRelatedView(action, selection, viewId, whereQueryFmt, additionalOptions) {
+    const view = this.app.getView(viewId);
+    let options = {
+      where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]]),
+      selectedEntry: selection.data,
+    };
 
     if (additionalOptions) {
       options = lang.mixin(options, additionalOptions);
@@ -1253,7 +1223,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.setSource({
       entry: selection.data,
       descriptor: selection.data[this.labelProperty],
-      key: selection.data[this.idProperty]
+      key: selection.data[this.idProperty],
     });
 
     if (view) {
@@ -1266,14 +1236,14 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {String} descriptor Description of the entry, will be used as the top toolbar title text
    * @param {Object} additionalOptions Additional options to be passed into the next view
    */
-  navigateToDetailView: function(key, descriptor, additionalOptions) {
-    var view = this.app.getView(this.detailView),
-      options = {
-        descriptor: descriptor, // keep for backwards compat
-        title: descriptor,
-        key: key,
-        fromContext: this
-      };
+  navigateToDetailView: function navigateToDetailView(key, descriptor, additionalOptions) {
+    const view = this.app.getView(this.detailView);
+    let options = {
+      descriptor: descriptor, // keep for backwards compat
+      title: descriptor,
+      key: key,
+      fromContext: this,
+    };
 
     if (additionalOptions) {
       options = lang.mixin(options, additionalOptions);
@@ -1290,14 +1260,14 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} selection Data entry for the selection.
    * @param {Object} additionalOptions Additional options to be passed into the next view.
    */
-  navigateToEditView: function(action, selection, additionalOptions) {
-    var view = this.app.getView(this.editView || this.insertView),
-      key = selection.data[this.idProperty],
-      options = {
-        key: key,
-        selectedEntry: selection.data,
-        fromContext: this
-      };
+  navigateToEditView: function navigateToEditView(action, selection, additionalOptions) {
+    const view = this.app.getView(this.editView || this.insertView);
+    const key = selection.data[this.idProperty];
+    let options = {
+      key: key,
+      selectedEntry: selection.data,
+      fromContext: this,
+    };
 
     if (additionalOptions) {
       options = lang.mixin(options, additionalOptions);
@@ -1313,12 +1283,12 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {HTMLElement} el Node that initiated the event.
    * @param {Object} additionalOptions Additional options to be passed into the next view.
    */
-  navigateToInsertView: function(el, additionalOptions) {
-    var view = this.app.getView(this.insertView || this.editView),
-      options = {
-        returnTo: this.id,
-        insert: true
-      };
+  navigateToInsertView: function navigateToInsertView(el, additionalOptions) {
+    const view = this.app.getView(this.insertView || this.editView);
+    let options = {
+      returnTo: this.id,
+      insert: true,
+    };
 
     // Pass along the selected entry (related list could get it from a quick action)
     if (this.options.selectedEntry) {
@@ -1337,34 +1307,33 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Deterimines if there is more data to be shown.
    * @return {Boolean} True if the list has more data; False otherwise. Default is true.
    */
-  hasMoreData: function() {},
-  _setLoading: function() {
+  hasMoreData: function hasMoreData() {},
+  _setLoading: function _setLoading() {
     domClass.add(this.domNode, 'list-loading');
     this.listLoading = true;
   },
-  _clearLoading: function() {
+  _clearLoading: function _clearLoading() {
     domClass.remove(this.domNode, 'list-loading');
     this.listLoading = false;
   },
   /**
    * Initiates the data request.
    */
-  requestData: function() {
-    var store, queryOptions, request, queryExpression, queryResults;
-    store = this.get('store');
+  requestData: function requestData() {
+    const store = this.get('store');
 
     if (store) {
       this._setLoading();
       // attempt to use a dojo store
-      queryOptions = {
+      const queryOptions = {
         count: this.pageSize,
-        start: this.position
+        start: this.position,
       };
 
       this._applyStateToQueryOptions(queryOptions);
 
-      queryExpression = this._buildQueryExpression() || null;
-      queryResults = store.query(queryExpression, queryOptions);
+      const queryExpression = this._buildQueryExpression() || null;
+      const queryResults = store.query(queryExpression, queryOptions);
 
       when(queryResults,
         this._onQueryComplete.bind(this, queryResults),
@@ -1374,12 +1343,12 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       return queryResults;
     }
 
-    console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?');
+    console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?'); // eslint-disable-line
   },
-  _onQueryComplete: function(queryResults, entries) {
+  _onQueryComplete: function _onQueryComplete(queryResults, entries) {
     try {
-      var start = this.position,
-        scrollerNode = this.get('scroller');
+      const start = this.position;
+      const scrollerNode = this.get('scroller');
 
       try {
         when(queryResults.total, this._onQueryTotal.bind(this));
@@ -1400,7 +1369,6 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         }
 
         this.processData(entries);
-
       } finally {
         this._clearLoading();
       }
@@ -1416,28 +1384,26 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         this._loadPreviousSelections();
       }
     } catch (e) {
-      console.error(e);
+      console.error(e); // eslint-disable-line
       this._logError({
         message: e.message,
-        stack: e.stack
+        stack: e.stack,
       }, e.message);
     }
   },
-  createStore: function() {
+  createStore: function createStore() {
     return null;
   },
-  onContentChange: function() {},
-  _processEntry: function(entry) {
+  onContentChange: function onContentChange() {},
+  _processEntry: function _processEntry(entry) {
     return entry;
   },
-  _onQueryTotal: function(size) {
-    var remaining;
-
+  _onQueryTotal: function _onQueryTotal(size) {
     this.total = size;
     if (size === 0) {
       this.set('listContent', this.noDataTemplate.apply(this));
     } else {
-      remaining = this.getRemainingCount();
+      const remaining = this.getRemainingCount();
       if (remaining !== -1) {
         this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
         this.remaining = remaining;
@@ -1448,41 +1414,32 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       this.position = this.position + this.pageSize;
     }
   },
-  getRemainingCount: function() {
-    var remaining = this.total > -1 ? this.total - (this.position + this.pageSize) : -1;
-
+  getRemainingCount: function getRemainingCount() {
+    const remaining = this.total > -1 ? this.total - (this.position + this.pageSize) : -1;
     return remaining;
   },
-  onApplyRowTemplate: function(entry, rowNode) {},
-  processData: function(entries) {
+  onApplyRowTemplate: function onApplyRowTemplate(/*entry, rowNode*/) {},
+  processData: function processData(entries) {
     if (!entries) {
       return;
     }
 
-    var store = this.get('store'),
-      rowNode,
-      output,
-      docfrag,
-      key,
-      entry,
-      i,
-      count = entries.length;
+    const store = this.get('store');
+    const count = entries.length;
 
     if (count > 0) {
-      output = [];
-
-      docfrag = document.createDocumentFragment();
-      for (i = 0; i < count; i++) {
-        entry = this._processEntry(entries[i]);
+      const docfrag = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
+        const entry = this._processEntry(entries[i]);
         // If key comes back with nothing, check that the store is properly
         // setup with an idProperty
-        key = store.getIdentity(entry);
         this.entries[store.getIdentity(entry)] = entry;
 
+        let rowNode;
         try {
           rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
         } catch (err) {
-          console.error(err);
+          console.error(err); // eslint-disable-line
           rowNode = domConstruct.toDom(this.rowTemplateError.apply(entry, this));
         }
 
@@ -1495,26 +1452,26 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       }
     }
   },
-  _logError: function(error, message) {
-    var errorItem = {
+  _logError: function _logError(error, message) {
+    const errorItem = {
       viewOptions: this.options,
-      serverError: error
+      serverError: error,
     };
 
     ErrorManager.addError(message || this.getErrorMessage(error), errorItem);
   },
-  _onQueryError: function(queryOptions, error) {
+  _onQueryError: function _onQueryError(queryOptions, error) {
     this.handleError(error);
   },
-  _buildQueryExpression: function() {
+  _buildQueryExpression: function _buildQueryExpression() {
     return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
   },
-  _applyStateToQueryOptions: function(queryOptions) {},
+  _applyStateToQueryOptions: function _applyStateToQueryOptions(/*queryOptions*/) {},
   /**
    * Handler for the more button. Simply calls {@link #requestData requestData} which already has the info for
    * setting the start index as needed.
    */
-  more: function() {
+  more: function more() {
     if (this.continuousScrolling) {
       this.set('remainingContent', this.loadingTemplate.apply(this));
     }
@@ -1525,12 +1482,12 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Handler for the none/no selection button is pressed. Used in selection views when not selecting is an option.
    * Invokes the `this.options.singleSelectAction` tool.
    */
-  emptySelection: function() {
+  emptySelection: function emptySelection() {
     this._selectionModel.clear();
 
-    if (this.app.bars['tbar']) {
-      this.app.bars['tbar'].invokeTool({
-        tool: this.options.singleSelectAction
+    if (this.app.bars.tbar) {
+      this.app.bars.tbar.invokeTool({
+        tool: this.options.singleSelectAction,
       }); // invoke action of tool
     }
   },
@@ -1539,7 +1496,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} options Passed navigation options.
    * @return {Boolean} True if the view should be refreshed, false if not.
    */
-  refreshRequiredFor: function(options) {
+  refreshRequiredFor: function refreshRequiredFor(options) {
     if (this.options) {
       if (options) {
         if (this.expandExpression(this.options.stateKey) !== this.expandExpression(options.stateKey)) {
@@ -1560,23 +1517,23 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       }
 
       return false;
-    } else {
-      return this.inherited(arguments);
     }
+
+    return this.inherited(arguments);
   },
   /**
    * Returns the current views context by expanding upon the {@link View#getContext parent implementation} to include
    * the views resourceKind.
    * @return {Object} context.
    */
-  getContext: function() {
+  getContext: function getContext() {
     return this.inherited(arguments);
   },
   /**
    * Extends the {@link View#beforeTransitionTo parent implementation} by also toggling the visibility of the views
    * components and clearing the view and selection model as needed.
    */
-  beforeTransitionTo: function() {
+  beforeTransitionTo: function beforeTransitionTo() {
     this.inherited(arguments);
 
     domClass.toggle(this.domNode, 'list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined') ? this.options.hideSearch : this.hideSearch || !this.enableSearch);
@@ -1609,7 +1566,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Extends the {@link View#transitionTo parent implementation} to also configure the search widget and
    * load previous selections into the selection model.
    */
-  transitionTo: function() {
+  transitionTo: function transitionTo() {
     this.configureSearch();
 
     if (this._selectionModel) {
@@ -1623,18 +1580,16 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * into individual objects in an array to be used in the customization engine.
    * @return {Object[]}
    */
-  createHashTagQueryLayout: function() {
+  createHashTagQueryLayout: function createHashTagQueryLayout() {
     // todo: always regenerate this layout? always regenerating allows for all existing customizations
     // to still work, at expense of potential (rare) performance issues if many customizations are registered.
-    var layout, name;
-
-    layout = [];
-    for (name in this.hashTagQueries) {
+    const layout = [];
+    for (const name in this.hashTagQueries) {
       if (this.hashTagQueries.hasOwnProperty(name)) {
         layout.push({
           'key': name,
           'tag': (this.hashTagQueriesText && this.hashTagQueriesText[name]) || name,
-          'query': this.hashTagQueries[name]
+          'query': this.hashTagQueries[name],
         });
       }
     }
@@ -1644,7 +1599,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   /**
    * Called when the view needs to be reset. Invokes the request data process.
    */
-  refresh: function() {
+  refresh: function refresh() {
     this.query = this.getSearchQuery() || this.query;
     this.requestData();
   },
@@ -1658,7 +1613,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *
    * @param {Boolean} all If true, also clear the search widget.
    */
-  clear: function(all) {
+  clear: function clear(all) {
     if (this._selectionModel) {
       this._selectionModel.suspendEvents();
       this._selectionModel.clear();
@@ -1684,7 +1639,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     this.set('listContent', this.loadingTemplate.apply(this));
   },
-  search: function() {
+  search: function search() {
     if (this.searchWidget) {
       this.searchWidget.search();
     }
@@ -1692,7 +1647,7 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   /**
    * Sets the query value on the serach widget
    */
-  setSearchTerm: function(value) {
+  setSearchTerm: function setSearchTerm(value) {
     if (this.searchWidget) {
       this.searchWidget.set('queryValue', value);
     }
@@ -1700,7 +1655,8 @@ var __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   /**
    * Returns a promise with the list's count.
    */
-  getListCount: function(options, callback) {}
+  getListCount: function getListCount(/*options, callback*/) {
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._ListBase', __class);

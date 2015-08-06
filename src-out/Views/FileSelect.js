@@ -1,4 +1,4 @@
-define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/window', 'dojo/has', 'dojo/dom-construct', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom', '../Fields/TextField', '../View'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoWindow, _dojoHas, _dojoDomConstruct, _dojoDomAttr, _dojoDomClass, _dojoDom, _FieldsTextField, _View) {
+define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/has', 'dojo/dom-construct', 'dojo/dom-class', 'dojo/dom', '../Fields/TextField', '../View'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoHas, _dojoDomConstruct, _dojoDomClass, _dojoDom, _FieldsTextField, _View) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -20,19 +20,13 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
 
-  var _win = _interopRequireDefault(_dojoWindow);
-
   var _has = _interopRequireDefault(_dojoHas);
 
   var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
 
-  var _domAttr = _interopRequireDefault(_dojoDomAttr);
-
   var _domClass = _interopRequireDefault(_dojoDomClass);
 
   var _dom = _interopRequireDefault(_dojoDom);
-
-  var _TextField = _interopRequireDefault(_FieldsTextField);
 
   var _View2 = _interopRequireDefault(_View);
 
@@ -65,9 +59,7 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
      *      ----------------------------------------------------------------
      *      loadingText         The text to display while loading.
      */
-    loadingTemplate: new Simplate(['<li class="list-loading-indicator"><div id="fileselect-upload-progress">{%= $.loadingText %}</div></li>'
-    //'</li>'
-    ]),
+    loadingTemplate: new Simplate(['<li class="list-loading-indicator"><div id="fileselect-upload-progress">{%= $.loadingText %}</div></li>']),
 
     /**
      * @property {Simplate}
@@ -107,9 +99,7 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
      * The onchange event will only fire once per file, so we must re-insert the dom node and re-attach the event.
      * @extends show
      */
-    show: function show(options) {
-      var node;
-
+    show: function show() {
       this.inherited(arguments);
 
       if (!(0, _has['default'])('html5-file-api')) {
@@ -121,13 +111,13 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
 
       // Reset the input or the onchange will not fire if the same file is uploaded multiple times.
       // Unfortunately IE does not allow you to reset the value of a file input, so we have to clone the node and re-insert it.
-      node = this.btnFileSelect.cloneNode();
+      var node = this.btnFileSelect.cloneNode();
 
       _domConstruct['default'].destroy(this.btnFileSelect);
       this.fileWrapper.appendChild(node);
       this.btnFileSelect = node;
 
-      this.btnFileSelect.onchange = (function (e) {
+      this.btnFileSelect.onchange = (function onchange(e) {
         this._onSelectFile(e);
       }).bind(this);
 
@@ -136,20 +126,19 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
       _domClass['default'].remove(this.btnUploadFiles, 'display-none');
       this.onUpdateProgress('');
     },
-    _browesForFiles: function _browesForFiles(file) {
+    _browesForFiles: function _browesForFiles() {
       this.btnFileSelect.click();
     },
-    removeFile: function removeFile(fileId) {},
+    removeFile: function removeFile() {},
     /**
      * Returns an array of objects with the properties of: file, fileName, and description.
      * @returns {Array}
      */
     getFileItems: function getFileItems() {
-      var fileItems, files, description, i;
-      fileItems = [];
-      files = this._files;
-      description = '';
-      for (i = 0; i < files.length; i++) {
+      var fileItems = [];
+      var files = this._files;
+      var description = '';
+      for (var i = 0; i < files.length; i++) {
         description = this._getFileDescription(i);
         fileItems.push({
           file: files[i],
@@ -160,19 +149,18 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
       return fileItems;
     },
     _getFileDescription: function _getFileDescription(fileIndex) {
-      var n, desc;
-      n = _dom['default'].byId('File_' + fileIndex);
+      var n = _dom['default'].byId('File_' + fileIndex);
+      var desc = undefined;
+
       if (n) {
         desc = n.value;
       }
       return desc;
     },
-    _onSelectFile: function _onSelectFile(e) {
-      var files, i;
-
-      files = this.btnFileSelect.files;
+    _onSelectFile: function _onSelectFile() {
+      var files = this.btnFileSelect.files;
       if (files && files.length > 0) {
-        for (i = 0; i < files.length; i++) {
+        for (var i = 0; i < files.length; i++) {
           this._files.push(files[i]);
         }
         this._buildForm(files);
@@ -181,20 +169,16 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
       _domClass['default'].add(this.fileArea, 'display-none');
     },
     _addFile: function _addFile(file, index) {
-      var filelength, data, rowNode;
-
-      filelength = this._getFileLength(file);
-      data = {
+      var filelength = this._getFileLength(file);
+      var data = {
         name: 'File_' + index,
         fileName: file.name + '  (' + filelength + ')',
         description: this._getDefaultDescription(file.name)
       };
-      rowNode = _domConstruct['default'].place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
+      _domConstruct['default'].place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
     },
     _getFileLength: function _getFileLength(file) {
-      var filelength;
-
-      filelength = 0;
+      var filelength = 0;
       if (file.size === 0) {
         filelength = 0;
       } else {
@@ -218,9 +202,8 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
       return filelength;
     },
     _buildForm: function _buildForm(files) {
-      var file, i;
-      for (i = 0; i < files.length; i++) {
-        file = files[i];
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
         this._addFile(file, i);
       }
     },
@@ -231,9 +214,8 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
      * Handles the display when the user clicks upload.
      */
     onUploadFiles: function onUploadFiles() {
-      var tpl;
       _domClass['default'].add(this.btnUploadFiles, 'display-none');
-      tpl = this.loadingTemplate.apply(this);
+      var tpl = this.loadingTemplate.apply(this);
       _domClass['default'].add(this.domNode, 'list-loading');
       _domConstruct['default'].place(tpl, this.contentNode, 'first');
     },
@@ -259,3 +241,4 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
   _lang['default'].setObject('Sage.Platform.Mobile.Views.FileSelect', __class);
   module.exports = __class;
 });
+/*options*/ /*file*/ /*fileId*/

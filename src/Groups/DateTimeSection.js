@@ -1,7 +1,5 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import string from 'dojo/string';
-import Convert from '../Convert';
 import Utility from '../Utility';
 import _GroupBySection from './_GroupBySection';
 import moment from 'moment';
@@ -9,7 +7,7 @@ import moment from 'moment';
 /**
  * @class argos.Groups.DateTimeSection
  */
-var __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
+const __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
   name: 'DateTimeSectionFilter',
   displayNameText: 'Date Time Section',
   todayText: 'Today',
@@ -34,127 +32,127 @@ var __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
   threeMonthsAgoText: 'Three months ago',
   unknownText: 'Unknown',
 
-  constructor: function(o) {
+  constructor: function constructor(o) {
     declare.safeMixin(this, o);
     this.init();
   },
-  init: function() {
+  init: function init() {
     this.inherited(arguments);
     this.sections = [];
 
     this.sections.push({
       key: 'Today',
       title: this.todayText,
-      value: null
+      value: null,
     });
     this.sections.push({
       key: 'Tomorrow',
       title: this.tomorrowText,
-      value: null
+      value: null,
     });
     this.sections.push({
       key: 'LaterThisWeek',
       title: this.laterThisWeekText,
-      value: null
+      value: null,
     });
     this.sections.push({
       key: 'EarlierThisWeek',
       title: this.earlierThisWeekText,
-      value: null
+      value: null,
     });
     this.sections.push({
       key: 'EarlierThisMonth',
       title: this.thisEarlierMonthText,
       value: null,
-      collapsed: true
+      collapsed: true,
     });
     this.sections.push({
       key: 'LaterThisMonth',
       title: this.thisLaterMonthText,
       value: null,
-      collapsed: true
+      collapsed: true,
     });
     this.sections.push({
       key: 'EarlierThisYear',
       title: this.thisYearEarlierText,
       value: null,
-      collapsed: true
+      collapsed: true,
     });
     this.sections.push({
       key: 'LaterThisYear',
       title: this.thisYearLaterText,
       value: null,
-      collapsed: true
+      collapsed: true,
     });
     this.sections.push({
       key: 'Yesterday',
       title: this.yesterdayText,
-      value: null
+      value: null,
     });
     this.sections.push({
       key: 'LastWeek',
       title: this.lastWeekText,
       value: null,
-      collapsed: true
+      collapsed: true,
     });
     this.sections.push({
       key: 'LastMonth',
       title: this.lastMonthText,
       value: null,
-      collapsed: true
+      collapsed: true,
     });
     this.sections.push({
       key: 'PastYear',
       title: this.pastYearText,
       value: null,
-      collapsed: true
+      collapsed: true,
     });
     this.sections.push({
       key: 'NextYear',
       title: this.nextYearText,
       value: null,
-      collapsed: true
+      collapsed: true,
     });
     this.sections.push({
       key: 'NextMonth',
       title: this.nextMonthText,
       value: null,
-      collapsed: true
+      collapsed: true,
     });
     this.sections.push({
       key: 'NextWeek',
       title: this.nextWeekText,
       value: null,
-      collapsed: true
+      collapsed: true,
     });
     this.sections.push({
       key: 'Future',
       title: this.futureText,
       value: null,
-      collapsed: true
+      collapsed: true,
     });
   },
-  getSection: function(entry) {
-    var value;
+  getSection: function getSection(entry) {
     if ((this.groupByProperty) && (entry)) {
-      value = Utility.getValue(entry, this.groupByProperty);
+      const value = Utility.getValue(entry, this.groupByProperty);
       if (value) {
         return this.getSectionByDateTime(value);
-      } else {
-        return this.getDefaultSection();
       }
+
+      return this.getDefaultSection();
     }
+
     return null;
   },
-  getDefaultSection: function() {
+  getDefaultSection: function getDefaultSection() {
     return {
       key: 'Unknown',
       title: this.unknownText,
-      collapsed: true
+      collapsed: true,
     };
   },
-  getSectionKey: function(value) {
-    var valueDate;
+  getSectionKey: function getSectionKey(value) {
+    let valueDate;
 
     if (!this.currentDate) {
       this.currentDate = moment();
@@ -233,34 +231,34 @@ var __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
 
     return 'Future';
   },
-  isNextYear: function(value) {
+  isNextYear: function isNextYear(value) {
     // Next year excluding anything that could be within the next month (next week, later this week, tomorrow)
     return value.year() === (this.currentDate.year() + 1) &&
       !this.isNextMonth(value);
   },
-  isPastYear: function(value) {
+  isPastYear: function isPastYear(value) {
     return value.year() < this.currentDate.year() &&
       !this.isLastMonth(value);
   },
-  isLaterThisYear: function(value) {
+  isLaterThisYear: function isLaterThisYear(value) {
     // Anything from the end of next month to the end of the year
-    var yearEnd = this.currentDate.clone().endOf('year'),
-      nextMonthEnd = this.currentDate.clone().add(1, 'month').endOf('month');
+    const yearEnd = this.currentDate.clone().endOf('year');
+    const nextMonthEnd = this.currentDate.clone().add(1, 'month').endOf('month');
 
     return value.isAfter(nextMonthEnd) &&
       value.isBefore(yearEnd);
   },
-  isEarlierThisYear: function(value) {
+  isEarlierThisYear: function isEarlierThisYear(value) {
     // Anything at the start of the year up until last month
-    var yearStart = this.currentDate.clone().startOf('year'),
-      lastMonthStart = this.currentDate.clone().subtract(1, 'month').startOf('month');
+    const yearStart = this.currentDate.clone().startOf('year');
+    const lastMonthStart = this.currentDate.clone().subtract(1, 'month').startOf('month');
     return value.isAfter(yearStart) &&
       value.isBefore(lastMonthStart);
   },
-  isNextMonth: function(value) {
+  isNextMonth: function isNextMonth(value) {
     // next month, excluding any potential upcoming days (next week, later this week, tomorrow)
-    var nextMonthStart = this.currentDate.clone().add(1, 'month').startOf('month'),
-      nextMonthEnd = nextMonthStart.clone().endOf('month');
+    const nextMonthStart = this.currentDate.clone().add(1, 'month').startOf('month');
+    const nextMonthEnd = nextMonthStart.clone().endOf('month');
 
     return value.isAfter(nextMonthStart) &&
       value.isBefore(nextMonthEnd) &&
@@ -268,72 +266,72 @@ var __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
       !this.isEarlierThisWeek(value) &&
       !this.isTomorrow(value);
   },
-  isEarlierThisMonth: function(value) {
+  isEarlierThisMonth: function isEarlierThisMonth(value) {
     // Excludes last week
-    var monthStart = this.currentDate.clone().startOf('month'),
-      lastWeekStart = this.currentDate.clone().subtract(1, 'week').startOf('week');
+    const monthStart = this.currentDate.clone().startOf('month');
+    const lastWeekStart = this.currentDate.clone().subtract(1, 'week').startOf('week');
 
     return value.isAfter(monthStart) &&
       value.isBefore(lastWeekStart);
   },
-  isLaterThisMonth: function(value) {
+  isLaterThisMonth: function isLaterThisMonth(value) {
     // Excludes next week
-    var monthEnd = this.currentDate.clone().endOf('month'),
-      nextWeekEnd = this.currentDate.clone().add(1, 'week').endOf('week');
+    const monthEnd = this.currentDate.clone().endOf('month');
+    const nextWeekEnd = this.currentDate.clone().add(1, 'week').endOf('week');
 
     return value.isAfter(nextWeekEnd) &&
       value.isBefore(monthEnd);
   },
-  isNextWeek: function(value) {
-    var nextWeekStart = this.currentDate.clone().add(1, 'week').startOf('week'),
-      nextWeekEnd = nextWeekStart.clone().endOf('week');
+  isNextWeek: function isNextWeek(value) {
+    const nextWeekStart = this.currentDate.clone().add(1, 'week').startOf('week');
+    const nextWeekEnd = nextWeekStart.clone().endOf('week');
 
     return value.isAfter(nextWeekStart) &&
       value.isBefore(nextWeekEnd) &&
       !this.isTomorrow(value);
   },
-  isTomorrow: function(value) {
-    var tomorrow = this.currentDate.clone().add(1, 'days').startOf('day');
-    value = value.clone().startOf('day');
-    return tomorrow.isSame(value);
+  isTomorrow: function isTomorrow(value) {
+    const tomorrow = this.currentDate.clone().add(1, 'days').startOf('day');
+    const newValue = value.clone().startOf('day');
+    return tomorrow.isSame(newValue);
   },
-  isToday: function(value) {
-    var now = this.currentDate.clone().startOf('day');
-    value = value.clone().startOf('day');
-    return now.isSame(value);
+  isToday: function isToday(value) {
+    const now = this.currentDate.clone().startOf('day');
+    const newValue = value.clone().startOf('day');
+    return now.isSame(newValue);
   },
-  isYesterday: function(value) {
-    var yesterday = this.currentDate.clone().subtract(1, 'days').startOf('day');
-    value = value.clone().startOf('day');
-    return yesterday.isSame(value);
+  isYesterday: function isYesterday(value) {
+    const yesterday = this.currentDate.clone().subtract(1, 'days').startOf('day');
+    const newValue = value.clone().startOf('day');
+    return yesterday.isSame(newValue);
   },
-  isLaterThisWeek: function(value) {
+  isLaterThisWeek: function isLaterThisWeek(value) {
     // Excludes today, tomorrow, and yesterday
-    var later = this.currentDate.clone().add(2, 'days').startOf('day'),
-      endWeek = this.currentDate.clone().endOf('week');
+    const later = this.currentDate.clone().add(2, 'days').startOf('day');
+    const endWeek = this.currentDate.clone().endOf('week');
 
     return value.isAfter(later) && value.isBefore(endWeek);
   },
-  isEarlierThisWeek: function(value) {
+  isEarlierThisWeek: function isEarlierThisWeek(value) {
     // Start of week to yesterday
-    var yesterday = this.currentDate.clone().subtract(1, 'days').startOf('day'),
-      weekStart = this.currentDate.clone().startOf('week');
+    const yesterday = this.currentDate.clone().subtract(1, 'days').startOf('day');
+    const weekStart = this.currentDate.clone().startOf('week');
 
     return value.isAfter(weekStart) &&
       value.isBefore(yesterday);
   },
-  isLastWeek: function(value) {
-    var lastWeekStart = this.currentDate.clone().subtract(1, 'week').startOf('week'),
-      lastWeekEnd = lastWeekStart.clone().endOf('week');
+  isLastWeek: function isLastWeek(value) {
+    const lastWeekStart = this.currentDate.clone().subtract(1, 'week').startOf('week');
+    const lastWeekEnd = lastWeekStart.clone().endOf('week');
 
     return value.isAfter(lastWeekStart) &&
       value.isBefore(lastWeekEnd) &&
       !this.isYesterday(value);
   },
-  isLastMonth: function(value) {
+  isLastMonth: function isLastMonth(value) {
     // Last month, excluding any potential past days (earlier this week, last week, yesterday)
-    var lastMonthStart = this.currentDate.clone().subtract(1, 'month').startOf('month'),
-      lastMonthEnd = lastMonthStart.clone().endOf('month');
+    const lastMonthStart = this.currentDate.clone().subtract(1, 'month').startOf('month');
+    const lastMonthEnd = lastMonthStart.clone().endOf('month');
 
     return value.isAfter(lastMonthStart) &&
       value.isBefore(lastMonthEnd) &&
@@ -341,21 +339,19 @@ var __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
       !this.isLastWeek(value) &&
       !this.isYesterday(value);
   },
-  getSectionByKey: function(key, value) {
-    var section;
-    for (section in this.sections) {
+  getSectionByKey: function getSectionByKey(key) {
+    for (const section in this.sections) {
       if (this.sections[section].key === key) {
         return this.sections[section];
       }
     }
     return this.getDefaultSection();
   },
-  getSectionByDateTime: function(value) {
-    var section, key;
-    key = this.getSectionKey(value);
-    section = this.getSectionByKey(key, value);
+  getSectionByDateTime: function getSectionByDateTime(value) {
+    const key = this.getSectionKey(value);
+    const section = this.getSectionByKey(key, value);
     return section;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Groups.DateTimeSection', __class);

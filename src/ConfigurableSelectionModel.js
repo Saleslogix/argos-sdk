@@ -8,7 +8,7 @@ import SelectionModel from './SelectionModel';
  * @alternateClassName ConfigurableSelectionModel
  * @extends argos.SelectionModel
  */
-var __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
+const __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
   /**
    * @property {Boolean}
    * Flag that controls if only one item is selectable at a time. Meaning if this is true
@@ -23,7 +23,7 @@ var __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
    *
    * @param {Boolean} val The state that `singleSelection` should be in.
    */
-  useSingleSelection: function(val) {
+  useSingleSelection: function useSingleSelection(val) {
     if (val && typeof val !== 'undefined' && val !== null) {
       this.singleSelection = true;
     } else {
@@ -37,7 +37,7 @@ var __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
    * @param {Object} data The item being selected
    * @param tag
    */
-  select: function(key, data, tag) {
+  select: function select(key/*, data, tag*/) {
     if (this.singleSelection) {
       if (!this.isSelected(key) || (this.count >= 1)) {
         this.clear();
@@ -45,7 +45,7 @@ var __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
     }
 
     this.inherited(arguments);
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.ConfigurableSelectionModel', __class);

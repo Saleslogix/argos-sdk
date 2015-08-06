@@ -1,4 +1,4 @@
-define('argos/_SDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', 'dojo/dom-class', 'dojo/_base/connect', './Store/SData', './ErrorManager', './Convert', './_SDataDetailMixin'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoString, _dojoDomClass, _dojo_baseConnect, _StoreSData, _ErrorManager, _Convert, _SDataDetailMixin2) {
+define('argos/_SDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/dom-class', './Convert', './_SDataDetailMixin'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoDomClass, _Convert, _SDataDetailMixin2) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -31,15 +31,7 @@ define('argos/_SDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
 
-  var _string = _interopRequireDefault(_dojoString);
-
   var _domClass = _interopRequireDefault(_dojoDomClass);
-
-  var _connect = _interopRequireDefault(_dojo_baseConnect);
-
-  var _SData = _interopRequireDefault(_StoreSData);
-
-  var _ErrorManager2 = _interopRequireDefault(_ErrorManager);
 
   var _convert = _interopRequireDefault(_Convert);
 
@@ -59,7 +51,7 @@ define('argos/_SDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
     templateEntry: null,
     diffPropertyIgnores: ['$etag', '$updated'],
 
-    _buildRefreshMessage: function _buildRefreshMessage(entry, result) {
+    _buildRefreshMessage: function _buildRefreshMessage() {
       var message = this.inherited(arguments);
 
       return _lang['default'].mixin(message, {
@@ -76,21 +68,23 @@ define('argos/_SDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
         this.requestTemplate();
       }
     },
-    createEntryForUpdate: function createEntryForUpdate(values) {
+    createEntryForUpdate: function createEntryForUpdate(v) {
+      var values = v;
       values = this.inherited(arguments);
       values = _lang['default'].mixin(values, {
-        '$key': this.entry['$key'],
-        '$etag': this.entry['$etag'],
-        '$name': this.entry['$name']
+        '$key': this.entry.$key,
+        '$etag': this.entry$etag,
+        '$name': this.entry.$name
       });
 
       if (!this._isConcurrencyCheckEnabled()) {
-        delete values['$etag'];
+        delete values.$etag;
       }
 
       return values;
     },
-    createEntryForInsert: function createEntryForInsert(values) {
+    createEntryForInsert: function createEntryForInsert(v) {
+      var values = v;
       values = this.inherited(arguments);
       return _lang['default'].mixin(values, {
         '$name': this.entityName
@@ -110,7 +104,7 @@ define('argos/_SDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
      *
      * @param templateEntry
      */
-    applyContext: function applyContext(templateEntry) {},
+    applyContext: function applyContext() {},
     /**
      * Creates Sage.SData.Client.SDataTemplateResourceRequest instance and sets a number of known properties.
      *
@@ -159,7 +153,7 @@ define('argos/_SDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
      * @param {Object} response The response object.
      * @param {Object} o The options that were passed when creating the Ajax request.
      */
-    onRequestTemplateFailure: function onRequestTemplateFailure(response, o) {
+    onRequestTemplateFailure: function onRequestTemplateFailure(response /*, o*/) {
       this.handleError(response);
     },
     /**
@@ -248,3 +242,4 @@ define('argos/_SDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
   _lang['default'].setObject('Sage.Platform.Mobile._SDataEditMixin', __class);
   module.exports = __class;
 });
+/*templateEntry*/

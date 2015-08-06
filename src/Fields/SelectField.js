@@ -36,7 +36,7 @@ import FieldManager from '../FieldManager';
  * @extends argos.Fields.LookupField
  * @requires argos.FieldManager
  */
-var control = declare('argos.Fields.SelectField', [LookupField], {
+const control = declare('argos.Fields.SelectField', [LookupField], {
   /**
    * @property {Boolean}
    * Overrides the {@link LookupField LookupField} default to explicitly set it to false forcing
@@ -58,13 +58,13 @@ var control = declare('argos.Fields.SelectField', [LookupField], {
    * Overides the {@link LookupField#createNavigationOptions parent implementation} to set search and actions to
    * hidden and optionally pass data defined on the field.
    */
-  createNavigationOptions: function() {
-    var options = this.inherited(arguments);
+  createNavigationOptions: function createNavigationOptions() {
+    const options = this.inherited(arguments);
     options.hideSearch = true;
     options.enableActions = false;
     options.data = this.expandExpression(this.data);
     return options;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.SelectField', control);

@@ -1,4 +1,4 @@
-define('argos/Groups/GroupByValueSection', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string', '../Convert', '../Utility', './_GroupBySection'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoString, _Convert, _Utility, _GroupBySection2) {
+define('argos/Groups/GroupByValueSection', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', '../Utility', './_GroupBySection'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _Utility, _GroupBySection2) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /**
@@ -8,10 +8,6 @@ define('argos/Groups/GroupByValueSection', ['exports', 'module', 'dojo/_base/dec
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
-
-  var _string = _interopRequireDefault(_dojoString);
-
-  var _Convert2 = _interopRequireDefault(_Convert);
 
   var _Utility2 = _interopRequireDefault(_Utility);
 
@@ -33,18 +29,16 @@ define('argos/Groups/GroupByValueSection', ['exports', 'module', 'dojo/_base/dec
       this.sections = [];
     },
     getSection: function getSection(entry) {
-      var value;
       if (this.groupByProperty && entry) {
-        value = _Utility2['default'].getValue(entry, this.groupByProperty);
+        var value = _Utility2['default'].getValue(entry, this.groupByProperty);
         value = this._getValueFromWidth(value, this.width);
         if (value) {
           return {
             key: value,
             title: value
           };
-        } else {
-          return this.getDefaultSection();
         }
+        return this.getDefaultSection();
       }
       return null;
     },
@@ -57,7 +51,7 @@ define('argos/Groups/GroupByValueSection', ['exports', 'module', 'dojo/_base/dec
     _getValueFromWidth: function _getValueFromWidth(value, width) {
       if (value) {
         if (width > 0) {
-          value = value.toString().substring(0, width);
+          return value.toString().substring(0, width);
         }
       }
       return value;
