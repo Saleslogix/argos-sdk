@@ -302,7 +302,6 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
       this.inherited(arguments);
       this.subscribe('/app/refresh', this._onRefresh);
       this.clear();
-      this.tabMapping = [];
     },
     createErrorHandlers: function createErrorHandlers() {
       var _this = this;
@@ -544,13 +543,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
       var sectionNode = undefined;
 
-      if (!this.tabList.parentNode && this.isTabbed) {
-        _domConstruct['default'].place(this.tabList, this.contentNode);
-        _domConstruct['default'].place(this.tabListAnimTemplate.apply(), this.contentNode);
-        if (!this.moreTabList.parentNode) {
-          _domConstruct['default'].place(this.moreTabList, this.contentNode);
-        }
-      }
+      this.placeTabList(this.contentNode);
 
       for (var i = 0; i < rows.length; i++) {
         var current = rows[i];
@@ -588,17 +581,11 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
               var tab = _domConstruct['default'].toDom(this.tabListItemTemplate.apply(layout, this));
               section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
               sectionNode = section;
-              if (this.tabList.children.length === 0) {
-                // No children, so set the current tab to this tab and set the section to have a display of block
-                this.currentTab = tab;
-              } else {
-                _domStyle['default'].set(section, {
-                  display: 'none'
-                });
-              }
+              _domStyle['default'].set(section, {
+                display: 'none'
+              });
               this.tabMapping.push(section);
-              _domConstruct['default'].place(tab, this.tabList);
-              this.checkTabOverflow(tab);
+              this.tabs.push(tab);
               _domConstruct['default'].place(section, this.contentNode);
             }
           } else {
@@ -769,19 +756,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
       if (this.entry) {
         this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
-
-        if (this.currentTab) {
-          if (this.tabList.children.length === 1 && this.moreTabList.children.length) {
-            var moreTab = (0, _query['default'])('.more-item', this.id)[0];
-            if (moreTab) {
-              this.positionFocusState(moreTab);
-              _domClass['default'].add(moreTab, 'selected');
-            }
-          } else {
-            this.positionFocusState(this.currentTab);
-            _domClass['default'].add(this.currentTab, 'selected');
-          }
-        }
+        this.createTabs(this.tabs);
         this.placeDetailHeader(this.entry);
       } else {
         this.set('detailContent', '');
@@ -922,23 +897,9 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      */
     clear: function clear() {
       this.set('detailContent', this.emptyTemplate.apply(this));
-      if (this.tabList) {
-        _domConstruct['default'].empty(this.tabList);
-        if (this.moreTabList) {
-          _domConstruct['default'].empty(this.moreTabList);
-          _domStyle['default'].set(this.moreTabList, {
-            left: '',
-            visibility: 'hidden'
-          });
-        }
-      }
+      this.clearTabs();
       if (this.quickActions) {
         _domConstruct['default'].empty(this.quickActions);
-      }
-      if (this.tabMapping) {
-        this.tabMapping = [];
-        this.inOverflow = false;
-        this.tabMoreIndex = null;
       }
 
       this._navigationOptions = [];

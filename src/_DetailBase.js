@@ -377,7 +377,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     this.inherited(arguments);
     this.subscribe('/app/refresh', this._onRefresh);
     this.clear();
-    this.tabMapping = [];
   },
   createErrorHandlers: function createErrorHandlers() {
     this.errorHandlers = this.errorHandlers || [{
@@ -615,13 +614,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
     let sectionNode;
 
-    if (!this.tabList.parentNode && this.isTabbed) {
-      domConstruct.place(this.tabList, this.contentNode);
-      domConstruct.place(this.tabListAnimTemplate.apply(), this.contentNode);
-      if (!this.moreTabList.parentNode) {
-        domConstruct.place(this.moreTabList, this.contentNode);
-      }
-    }
+    this.placeTabList(this.contentNode);
 
     for (let i = 0; i < rows.length; i++) {
       const current = rows[i];
@@ -659,17 +652,11 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
             const tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
             section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
             sectionNode = section;
-            if (this.tabList.children.length === 0) {
-              // No children, so set the current tab to this tab and set the section to have a display of block
-              this.currentTab = tab;
-            } else {
-              domStyle.set(section, {
-                display: 'none',
-              });
-            }
+            domStyle.set(section, {
+              display: 'none',
+            });
             this.tabMapping.push(section);
-            domConstruct.place(tab, this.tabList);
-            this.checkTabOverflow(tab);
+            this.tabs.push(tab);
             domConstruct.place(section, this.contentNode);
           }
         } else {
@@ -840,19 +827,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
     if (this.entry) {
       this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
-
-      if (this.currentTab) {
-        if (this.tabList.children.length === 1 && this.moreTabList.children.length) {
-          const moreTab = query('.more-item', this.id)[0];
-          if (moreTab) {
-            this.positionFocusState(moreTab);
-            domClass.add(moreTab, 'selected');
-          }
-        } else {
-          this.positionFocusState(this.currentTab);
-          domClass.add(this.currentTab, 'selected');
-        }
-      }
+      this.createTabs(this.tabs);
       this.placeDetailHeader(this.entry);
     } else {
       this.set('detailContent', '');
@@ -996,23 +971,9 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   clear: function clear() {
     this.set('detailContent', this.emptyTemplate.apply(this));
-    if (this.tabList) {
-      domConstruct.empty(this.tabList);
-      if (this.moreTabList) {
-        domConstruct.empty(this.moreTabList);
-        domStyle.set(this.moreTabList, {
-          left: '',
-          visibility: 'hidden',
-        });
-      }
-    }
+    this.clearTabs();
     if (this.quickActions) {
       domConstruct.empty(this.quickActions);
-    }
-    if (this.tabMapping) {
-      this.tabMapping = [];
-      this.inOverflow = false;
-      this.tabMoreIndex = null;
     }
 
     this._navigationOptions = [];

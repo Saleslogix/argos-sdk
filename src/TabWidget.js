@@ -88,15 +88,24 @@ const __class = declare('argos.TabWidget', [_Templated], {
    */
   tabMoreIndex: null,
   /**
+   * @property {int}
+   * int value representing the index at which the default tab is located
+   */
+  defaultTabIndex: null,
+  /**
    * @property {Array}
    * Mapping of tab to the section
    */
   tabMapping: null,
+  /**
+   * @property {Array}
+   * Array holding the tab dom elements
+   */
+  tabs: null,
 
   /**
    * Changes the tab state in the tab list and changes visibility of content.
    * @param {Object} The event type and source.
-   * @private
    */
   selectedTab: function selectedTab(params) {
     const tab = params.$source;
@@ -141,7 +150,6 @@ const __class = declare('argos.TabWidget', [_Templated], {
   /**
    * Changes the tab state in the tab list and changes visibility of content.
    * @param {Object} The event type and source.
-   * @private
    */
   toggleDropDown: function toggleDropDown(params) {
     const tab = params.$source;
@@ -191,7 +199,6 @@ const __class = declare('argos.TabWidget', [_Templated], {
   },
   /**
    * Reorganizes the tab when the screen orientation changes.
-   * @private
    */
   reorderTabs: function reorderTabs() {
     const moreTab = query('.more-item', this.id)[0];
@@ -223,11 +230,26 @@ const __class = declare('argos.TabWidget', [_Templated], {
     } else {
       this.positionFocusState(this.currentTab);
     }
+    return this;
+  },
+  /**
+   * Sets the parentNode for the tabList
+   */
+  placeTabList: function placeTabList(parentNode = {}) {
+    if (!this.tabList.parentNode && this.isTabbed) {
+      this.tabMapping = [];
+      this.tabs = [];
+      domConstruct.place(this.tabList, parentNode);
+      domConstruct.place(this.tabListAnimTemplate.apply(), parentNode);
+      if (!this.moreTabList.parentNode) {
+        domConstruct.place(this.moreTabList, parentNode);
+      }
+    }
+    return this;
   },
   /**
    * Handler for positioning the focus bar for the tab list.
    * @param {Object} The target tab in the tabList.
-   * @private
    */
   positionFocusState: function positionFocusState(target) {
     const focusState = query('.animated-bar', this.id)[0];
@@ -248,11 +270,11 @@ const __class = declare('argos.TabWidget', [_Templated], {
         width: width + 'px',
       });
     }
+    return this;
   },
   /**
    * Checks the tab to see if it causes an overflow when placed in the tabList, if so then push it a new list element called More.
    * @param {Object} The tab object.
-   * @private
    */
   checkTabOverflow: function checkTabOverflow(tab) {
     if (tab.offsetTop > this.tabList.offsetTop) {
@@ -288,6 +310,75 @@ const __class = declare('argos.TabWidget', [_Templated], {
         domConstruct.place(tab, this.moreTabList);
       }
     }
+    return this;
+  },
+  /**
+   * Function used to create the tabs, should be called by the parent upon completion of populating the tabs array of dom objects
+   * @param {Array} An array of the tab objects.
+  */
+  createTabs: function createTabs(tabs = []) {
+    array.forEach(tabs, function placeTab(tab) {
+      if (this.defaultTabIndex >= 0) {
+        if (this.defaultTabIndex === this.tabList.children.length) {
+          this.currentTab = tab;
+          domStyle.set(this.tabMapping[array.indexOf(tabs, tab)], {
+            display: 'block',
+          });
+        }
+      } else {
+        if (this.tabList.children.length === 0) {
+          this.currentTab = tab;
+          domStyle.set(this.tabMapping[array.indexOf(tabs, tab)], {
+            display: 'block',
+          });
+        }
+      }
+      domConstruct.place(tab, this.tabList);
+      this.checkTabOverflow(tab);
+    }, this);
+
+    if (this.currentTab) {
+      if (this.tabList.children.length === 1 && this.moreTabList.children.length) {
+        const moreTab = query('.more-item', this.id)[0];
+        if (moreTab) {
+          this.positionFocusState(moreTab);
+          domClass.add(moreTab, 'selected');
+        }
+      } else {
+        this.positionFocusState(this.currentTab);
+        domClass.add(this.currentTab, 'selected');
+      }
+    } else {
+      this.currentTab = this.tabs[0];
+      domStyle.set(this.tabMapping[0], {
+        display: 'block',
+      });
+      this.positionFocusState(this.currentTab);
+      domClass.add(this.currentTab, 'selected');
+    }
+    return this;
+  },
+  /**
+   * Function used to clear the tabs, should be called by the parent on it's clear call
+  */
+  clearTabs: function clearTabs() {
+    if (this.tabList) {
+      domConstruct.empty(this.tabList);
+      if (this.moreTabList) {
+        domConstruct.empty(this.moreTabList);
+        domStyle.set(this.moreTabList, {
+          left: '',
+          visibility: 'hidden',
+        });
+      }
+    }
+    if (this.tabMapping) {
+      this.tabs = [];
+      this.tabMapping = [];
+      this.inOverflow = false;
+      this.tabMoreIndex = null;
+    }
+    return this;
   },
 });
 

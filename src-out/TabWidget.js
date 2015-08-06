@@ -79,15 +79,24 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      */
     tabMoreIndex: null,
     /**
+     * @property {int}
+     * int value representing the index at which the default tab is located
+     */
+    defaultTabIndex: null,
+    /**
      * @property {Array}
      * Mapping of tab to the section
      */
     tabMapping: null,
+    /**
+     * @property {Array}
+     * Array holding the tab dom elements
+     */
+    tabs: null,
 
     /**
      * Changes the tab state in the tab list and changes visibility of content.
      * @param {Object} The event type and source.
-     * @private
      */
     selectedTab: function selectedTab(params) {
       var tab = params.$source;
@@ -132,7 +141,6 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     /**
      * Changes the tab state in the tab list and changes visibility of content.
      * @param {Object} The event type and source.
-     * @private
      */
     toggleDropDown: function toggleDropDown(params) {
       var tab = params.$source;
@@ -182,7 +190,6 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     },
     /**
      * Reorganizes the tab when the screen orientation changes.
-     * @private
      */
     reorderTabs: function reorderTabs() {
       var moreTab = (0, _query['default'])('.more-item', this.id)[0];
@@ -214,11 +221,28 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       } else {
         this.positionFocusState(this.currentTab);
       }
+      return this;
+    },
+    /**
+     * Sets the parentNode for the tabList
+     */
+    placeTabList: function placeTabList() {
+      var parentNode = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      if (!this.tabList.parentNode && this.isTabbed) {
+        this.tabMapping = [];
+        this.tabs = [];
+        _domConstruct['default'].place(this.tabList, parentNode);
+        _domConstruct['default'].place(this.tabListAnimTemplate.apply(), parentNode);
+        if (!this.moreTabList.parentNode) {
+          _domConstruct['default'].place(this.moreTabList, parentNode);
+        }
+      }
+      return this;
     },
     /**
      * Handler for positioning the focus bar for the tab list.
      * @param {Object} The target tab in the tabList.
-     * @private
      */
     positionFocusState: function positionFocusState(target) {
       var focusState = (0, _query['default'])('.animated-bar', this.id)[0];
@@ -239,11 +263,11 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
           width: width + 'px'
         });
       }
+      return this;
     },
     /**
      * Checks the tab to see if it causes an overflow when placed in the tabList, if so then push it a new list element called More.
      * @param {Object} The tab object.
-     * @private
      */
     checkTabOverflow: function checkTabOverflow(tab) {
       if (tab.offsetTop > this.tabList.offsetTop) {
@@ -279,6 +303,77 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
           _domConstruct['default'].place(tab, this.moreTabList);
         }
       }
+      return this;
+    },
+    /**
+     * Function used to create the tabs, should be called by the parent upon completion of populating the tabs array of dom objects
+     * @param {Array} An array of the tab objects.
+    */
+    createTabs: function createTabs() {
+      var tabs = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+
+      _array['default'].forEach(tabs, function placeTab(tab) {
+        if (this.defaultTabIndex >= 0) {
+          if (this.defaultTabIndex === this.tabList.children.length) {
+            this.currentTab = tab;
+            _domStyle['default'].set(this.tabMapping[_array['default'].indexOf(tabs, tab)], {
+              display: 'block'
+            });
+          }
+        } else {
+          if (this.tabList.children.length === 0) {
+            this.currentTab = tab;
+            _domStyle['default'].set(this.tabMapping[_array['default'].indexOf(tabs, tab)], {
+              display: 'block'
+            });
+          }
+        }
+        _domConstruct['default'].place(tab, this.tabList);
+        this.checkTabOverflow(tab);
+      }, this);
+
+      if (this.currentTab) {
+        if (this.tabList.children.length === 1 && this.moreTabList.children.length) {
+          var moreTab = (0, _query['default'])('.more-item', this.id)[0];
+          if (moreTab) {
+            this.positionFocusState(moreTab);
+            _domClass['default'].add(moreTab, 'selected');
+          }
+        } else {
+          this.positionFocusState(this.currentTab);
+          _domClass['default'].add(this.currentTab, 'selected');
+        }
+      } else {
+        this.currentTab = this.tabs[0];
+        _domStyle['default'].set(this.tabMapping[0], {
+          display: 'block'
+        });
+        this.positionFocusState(this.currentTab);
+        _domClass['default'].add(this.currentTab, 'selected');
+      }
+      return this;
+    },
+    /**
+     * Function used to clear the tabs, should be called by the parent on it's clear call
+    */
+    clearTabs: function clearTabs() {
+      if (this.tabList) {
+        _domConstruct['default'].empty(this.tabList);
+        if (this.moreTabList) {
+          _domConstruct['default'].empty(this.moreTabList);
+          _domStyle['default'].set(this.moreTabList, {
+            left: '',
+            visibility: 'hidden'
+          });
+        }
+      }
+      if (this.tabMapping) {
+        this.tabs = [];
+        this.tabMapping = [];
+        this.inOverflow = false;
+        this.tabMoreIndex = null;
+      }
+      return this;
     }
   });
 
