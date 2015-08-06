@@ -5,7 +5,9 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
+import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
+import domStyle from 'dojo/dom-style';
 import query from 'dojo/query';
 import _Templated from 'argos/_Templated';
 
@@ -15,9 +17,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * HTML that starts a new tab list
    */
   tabContentTemplate: new Simplate([
-    '<div class="panel-content" data-dojo-attach-point="contentNode">',
     '{%! $.tabListTemplate %}',
-    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -50,7 +50,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * `$` => the view instance
    */
   tabListItemTemplate: new Simplate([
-    '<li class="tab" data-action="changeTab">',
+    '<li class="tab" data-action="selectedTab">',
     '{%: ($.title || $.options.title) %}',
     '</li>',
   ]),
@@ -98,7 +98,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * @param {Object} The event type and source.
    * @private
    */
-  changeTab: function changeTab(params) {
+  selectedTab: function selectedTab(params) {
     const tab = params.$source;
     if (tab !== this.currentTab) {
       const indexShift = this.tabList.children.length - 1;
@@ -106,28 +106,32 @@ const __class = declare('argos.TabWidget', [_Templated], {
       if (currentIndex === -1) {
         currentIndex = array.indexOf(this.moreTabList.children, this.currentTab) + indexShift;
       }
-      let tabIndex = array.indexOf(this.tabList.children, tab);
-      if (tabIndex === -1) {
-        tabIndex = array.indexOf(this.moreTabList.children, tab) + indexShift;
+      let selectedIndex = array.indexOf(this.tabList.children, tab);
+      if (selectedIndex === -1) {
+        selectedIndex = array.indexOf(this.moreTabList.children, tab) + indexShift;
       }
-      if (currentIndex > -1 && tabIndex > -1) {
-        this.tabMapping[currentIndex].style.display = 'none';
-        this.tabMapping[tabIndex].style.display = 'block';
+      if (currentIndex > -1 && selectedIndex > -1) {
+        domStyle.set(this.tabMapping[currentIndex], {
+          display: 'none',
+        });
+        domStyle.set(this.tabMapping[selectedIndex], {
+          display: 'block',
+        });
         const moreTab = query('.more-item', this.id)[0];
         if (array.indexOf(this.tabList.children, tab) > -1) {
           this.positionFocusState(tab);
-          this.currentTab.className = 'tab';
-          tab.className = 'tab selected';
+          domClass.toggle(this.currentTab, 'selected');
+          domClass.toggle(tab, 'selected');
           this.currentTab = tab;
           if (moreTab) {
-            moreTab.className = 'tab more-item';
+            domClass.remove(moreTab, 'selected');
           }
         } else {
           if (moreTab) {
             this.positionFocusState(moreTab);
-            moreTab.className = 'tab more-item selected';
-            this.currentTab.className = 'tab';
-            tab.className = 'tab selected';
+            domClass.add(moreTab, 'selected');
+            domClass.toggle(this.currentTab, 'selected');
+            domClass.toggle(tab, 'selected');
             this.currentTab = tab;
           }
         }
@@ -145,10 +149,12 @@ const __class = declare('argos.TabWidget', [_Templated], {
     const icon = query('.fa', moreTab)[0];
 
     if (tab) {
-      if (this.moreTabList.style.visibility === 'hidden') {
-        this.moreTabList.style.visibility = 'visible';
+      if (domStyle.get(this.moreTabList, 'visibility') === 'hidden') {
+        domStyle.set(this.moreTabList, {
+          visibility: 'visible',
+        });
         if (icon) {
-          icon.className = 'fa fa-angle-down';
+          domClass.replace(icon, 'fa fa-angle-down', 'fa fa-angle-right');
         }
 
         if (!this.moreTabList.style.left) {
@@ -158,21 +164,27 @@ const __class = declare('argos.TabWidget', [_Templated], {
           const height = parseInt(moreTab.offsetHeight, 10);
           const maxHeight = this.domNode.offsetHeight - this.domNode.offsetTop - posTop;
 
-          this.moreTabList.style.left = posLeft - this.moreTabList.offsetWidth + width + 'px';
-          this.moreTabList.style.top = posTop + height + 'px';
-          this.moreTabList.style.maxHeight = maxHeight + 'px';
+          domStyle.set(this.moreTabList, {
+            left: posLeft - this.moreTabList.offsetWidth + width + 'px',
+            top: posTop + height + 'px',
+            maxHeight: maxHeight + 'px',
+          });
         }
       } else {
-        this.moreTabList.style.visibility = 'hidden';
+        domStyle.set(this.moreTabList, {
+          visibility: 'hidden',
+        });
         if (icon) {
-          icon.className = 'fa fa-angle-right';
+          domClass.replace(icon, 'fa fa-angle-right', 'fa fa-angle-down');
         }
       }
     } else {
       if (params.target !== moreTab) {
-        this.moreTabList.style.visibility = 'hidden';
+        domStyle.set(this.moreTabList, {
+          visibility: 'hidden',
+        });
         if (icon) {
-          icon.className = 'fa fa-angle-right';
+          domClass.replace(icon, 'fa fa-angle-right', 'fa fa-angle-down');
         }
       }
     }
@@ -207,7 +219,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
 
     if (moreTab && array.indexOf(this.moreTabList.children, this.currentTab) > -1) {
       this.positionFocusState(moreTab);
-      moreTab.className = 'tab more-item selected';
+      domClass.add(moreTab, 'selected');
     } else {
       this.positionFocusState(this.currentTab);
     }
@@ -228,11 +240,13 @@ const __class = declare('argos.TabWidget', [_Templated], {
       const tableTop = this.tabList.offsetTop;
       const tableLeft = this.tabList.offsetLeft;
 
-      focusState.style.left = posLeft - tableLeft + 'px';
-      focusState.style.top = posTop - tableTop + 'px';
-      focusState.style.right = (posTop - tableTop) + width + 'px';
-      focusState.style.bottom = (posTop - tableTop) + height + 'px';
-      focusState.style.width = width + 'px';
+      domStyle.set(focusState, {
+        left: posLeft - tableLeft + 'px',
+        top: posTop - tableTop + 'px',
+        right: (posTop - tableTop) + width + 'px',
+        bottom: (posTop - tableTop) + height + 'px',
+        width: width + 'px',
+      });
     }
   },
   /**
@@ -246,15 +260,17 @@ const __class = declare('argos.TabWidget', [_Templated], {
         const moreTab = domConstruct.toDom(this.moreTabItemTemplate.apply({
           title: this.moreText + '...',
         }, this));
-        moreTab.style.float = 'right';
+        domStyle.set(moreTab, { // eslint-disable-line
+          float: 'right',
+        });
         domConstruct.place(moreTab, this.tabList);
 
         this.tabMoreIndex = array.indexOf(this.tabList.children, tab);
         this.tabList.children[this.tabMoreIndex].remove();
         if (this.tabList.children.length === 1 && !this.moreTabList.children.length) {
-          moreTab.className = 'tab more-item selected';
+          domClass.add(moreTab, 'selected');
           this.currentTab = tab;
-          tab.className = 'tab selected';
+          domClass.toggle(tab, 'selected');
         }
 
         if (moreTab.offsetTop > this.tabList.offsetTop) {

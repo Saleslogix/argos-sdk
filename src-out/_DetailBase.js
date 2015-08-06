@@ -1,4 +1,4 @@
-define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/Deferred', 'dojo/_base/connect', 'dojo/query', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-construct', './Format', './Utility', './ErrorManager', './View', './TabWidget'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseDeferred, _dojo_baseConnect, _dojoQuery, _dojoDom, _dojoDomClass, _dojoDomConstruct, _Format, _Utility, _ErrorManager, _View, _TabWidget) {
+define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/Deferred', 'dojo/_base/connect', 'dojo/query', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-style', 'dojo/dom-construct', './Format', './Utility', './ErrorManager', './View', './TabWidget'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseDeferred, _dojo_baseConnect, _dojoQuery, _dojoDom, _dojoDomClass, _dojoDomStyle, _dojoDomConstruct, _Format, _Utility, _ErrorManager, _View, _TabWidget) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -29,6 +29,8 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
   var _dom = _interopRequireDefault(_dojoDom);
 
   var _domClass = _interopRequireDefault(_dojoDomClass);
+
+  var _domStyle = _interopRequireDefault(_dojoDomStyle);
 
   var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
 
@@ -83,7 +85,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      *      resourceKind         set to data-resource-kind
      *
      */
-    widgetTemplate: new Simplate(['<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" data-dojo-attach-event="onclick:toggleDropDown" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>', '{%! $.loadingTemplate %}', '{%! $.quickActionTemplate %}', '{%! $.tabContentTemplate %}', '{%! $.moreTabListTemplate %}', '</div>']),
+    widgetTemplate: new Simplate(['<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" data-dojo-attach-event="onclick:toggleDropDown" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>', '{%! $.loadingTemplate %}', '{%! $.quickActionTemplate %}', '<div class="panel-content" data-dojo-attach-point="contentNode">', '{%! $.tabContentTemplate %}', '{%! $.moreTabListTemplate %}', '</div>', '</div>']),
     /**
      * @property {Simplate}
      * HTML shown when no data is available.
@@ -211,6 +213,11 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * Controls whether the view will render as a tab view or the previous list view
      */
     isTabbed: true,
+    /**
+     * @property {Boolean}
+     * Controls whether the view will render as a tab view or the previous list view
+     */
+    quickActionSection: 'QuickActionsSection',
     /**
      * @deprecated
      */
@@ -409,7 +416,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * @private
      */
     placeDetailHeader: function placeDetailHeader() {
-      var value = this.entityText + " " + this.informationText;
+      var value = this.entityText + ' ' + this.informationText;
       _domConstruct['default'].place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
     },
     /**
@@ -540,6 +547,9 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
       if (!this.tabList.parentNode && this.isTabbed) {
         _domConstruct['default'].place(this.tabList, this.contentNode);
         _domConstruct['default'].place(this.tabListAnimTemplate.apply(), this.contentNode);
+        if (!this.moreTabList.parentNode) {
+          _domConstruct['default'].place(this.moreTabList, this.contentNode);
+        }
       }
 
       for (var i = 0; i < rows.length; i++) {
@@ -567,12 +577,13 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         }
 
         if (!sectionStarted) {
+          var section = undefined;
           sectionStarted = true;
           if (this.isTabbed) {
-            if (layout.name === 'QuickActionsSection') {
-              var _section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-              sectionNode = _section;
-              _domConstruct['default'].place(_section, this.quickActions);
+            if (layout.name === this.quickActionSection) {
+              section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+              sectionNode = section;
+              _domConstruct['default'].place(section, this.quickActions);
             } else {
               var tab = _domConstruct['default'].toDom(this.tabListItemTemplate.apply(layout, this));
               section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
@@ -581,7 +592,9 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
                 // No children, so set the current tab to this tab and set the section to have a display of block
                 this.currentTab = tab;
               } else {
-                section.style.display = 'none';
+                _domStyle['default'].set(section, {
+                  display: 'none'
+                });
               }
               this.tabMapping.push(section);
               _domConstruct['default'].place(tab, this.tabList);
@@ -762,11 +775,11 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
             var moreTab = (0, _query['default'])('.more-item', this.id)[0];
             if (moreTab) {
               this.positionFocusState(moreTab);
-              moreTab.className = 'tab more-item selected';
+              _domClass['default'].add(moreTab, 'selected');
             }
           } else {
             this.positionFocusState(this.currentTab);
-            this.currentTab.className = 'tab selected';
+            _domClass['default'].add(this.currentTab, 'selected');
           }
         }
         this.placeDetailHeader(this.entry);
@@ -913,8 +926,10 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         _domConstruct['default'].empty(this.tabList);
         if (this.moreTabList) {
           _domConstruct['default'].empty(this.moreTabList);
-          this.moreTabList.style.left = '';
-          this.moreTabList.style.visibility = 'hidden';
+          _domStyle['default'].set(this.moreTabList, {
+            left: '',
+            visibility: 'hidden'
+          });
         }
       }
       if (this.quickActions) {
