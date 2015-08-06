@@ -1,4 +1,4 @@
-define('argos/_Templated', ['exports', 'module', 'dojo/dom-construct', 'dojo/_base/declare', 'dojo/query', 'dojo/parser', 'dojo/_base/array', 'dojo/_base/lang', 'dijit/registry', 'dijit/_base/wai', 'dijit/_TemplatedMixin'], function (exports, module, _dojoDomConstruct, _dojo_baseDeclare, _dojoQuery, _dojoParser, _dojo_baseArray, _dojo_baseLang, _dijitRegistry, _dijit_baseWai, _dijit_TemplatedMixin) {
+define('argos/_Templated', ['exports', 'module', 'dojo/dom-construct', 'dojo/_base/declare', 'dojo/_base/lang', 'dijit/_TemplatedMixin'], function (exports, module, _dojoDomConstruct, _dojo_baseDeclare, _dojo_baseLang, _dijit_TemplatedMixin) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -20,17 +20,7 @@ define('argos/_Templated', ['exports', 'module', 'dojo/dom-construct', 'dojo/_ba
 
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
 
-  var _query = _interopRequireDefault(_dojoQuery);
-
-  var _parser = _interopRequireDefault(_dojoParser);
-
-  var _array = _interopRequireDefault(_dojo_baseArray);
-
   var _lang = _interopRequireDefault(_dojo_baseLang);
-
-  var _registry = _interopRequireDefault(_dijitRegistry);
-
-  var _wai = _interopRequireDefault(_dijit_baseWai);
 
   var _TemplatedMixin2 = _interopRequireDefault(_dijit_TemplatedMixin);
 
@@ -49,8 +39,6 @@ define('argos/_Templated', ['exports', 'module', 'dojo/dom-construct', 'dojo/_ba
      * Processes `this.widgetTemplate` or `this.contentTemplate`
      */
     buildRendering: function buildRendering() {
-      var root;
-
       if (this.widgetTemplate && this.contentTemplate) {
         throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
       }
@@ -59,7 +47,7 @@ define('argos/_Templated', ['exports', 'module', 'dojo/dom-construct', 'dojo/_ba
         this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
       } else if (this.widgetTemplate) {
         this.templateString = this.widgetTemplate.apply(this);
-        root = _domConstruct['default'].toDom(this.templateString);
+        var root = _domConstruct['default'].toDom(this.templateString);
 
         if (root.nodeType === 11) {
           this.templateString = ['<div>', this.templateString, '</div>'].join('');

@@ -1,19 +1,9 @@
-define('argos/Views/ConfigureQuickActions', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/array', 'dojo/_base/lang', 'dojo/query', 'dojo/string', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/store/Memory', '../_ConfigureBase'], function (exports, module, _dojo_baseDeclare, _dojo_baseArray, _dojo_baseLang, _dojoQuery, _dojoString, _dojoDomAttr, _dojoDomClass, _dojoStoreMemory, _ConfigureBase2) {
+define('argos/Views/ConfigureQuickActions', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/array', 'dojo/store/Memory', '../_ConfigureBase'], function (exports, module, _dojo_baseDeclare, _dojo_baseArray, _dojoStoreMemory, _ConfigureBase2) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
 
   var _array = _interopRequireDefault(_dojo_baseArray);
-
-  var _lang = _interopRequireDefault(_dojo_baseLang);
-
-  var _query = _interopRequireDefault(_dojoQuery);
-
-  var _string = _interopRequireDefault(_dojoString);
-
-  var _domAttr = _interopRequireDefault(_dojoDomAttr);
-
-  var _domClass = _interopRequireDefault(_dojoDomClass);
 
   var _Memory = _interopRequireDefault(_dojoStoreMemory);
 
@@ -30,7 +20,7 @@ define('argos/Views/ConfigureQuickActions', ['exports', 'module', 'dojo/_base/de
     // Localization
     titleText: 'Configure Quick Actions',
 
-    //View Properties
+    // View Properties
     id: 'configure_quickactions',
     idProperty: '$key',
     labelProperty: '$descriptor',
@@ -39,12 +29,10 @@ define('argos/Views/ConfigureQuickActions', ['exports', 'module', 'dojo/_base/de
       return App.getView(this.options.viewId);
     },
     onSave: function onSave() {
-      var save, all, selected, view;
+      var selected = this.getSelectedKeys();
+      var all = this._sortActions(this.options.actions, this.getOrderedKeys());
 
-      selected = this.getSelectedKeys();
-      all = this._sortActions(this.options.actions, this.getOrderedKeys());
-
-      save = _array['default'].map(all, function (action) {
+      var save = _array['default'].map(all, function (action) {
         if (selected.indexOf(action.id) >= 0) {
           action.visible = true;
         } else {
@@ -59,7 +47,7 @@ define('argos/Views/ConfigureQuickActions', ['exports', 'module', 'dojo/_base/de
 
       App.persistPreferences();
 
-      view = this.getConfiguredView();
+      var view = this.getConfiguredView();
       if (view) {
         view.clear();
         view.refreshRequired = true;
@@ -69,9 +57,8 @@ define('argos/Views/ConfigureQuickActions', ['exports', 'module', 'dojo/_base/de
     },
     _sortActions: function _sortActions(actions, order) {
       return actions.sort(function (a, b) {
-        var i, j;
-        i = order.indexOf(a.id);
-        j = order.indexOf(b.id);
+        var i = order.indexOf(a.id);
+        var j = order.indexOf(b.id);
 
         if (i < j) {
           return -1;
@@ -93,17 +80,15 @@ define('argos/Views/ConfigureQuickActions', ['exports', 'module', 'dojo/_base/de
       this.inherited(arguments);
     },
     createStore: function createStore() {
-      var list = [],
-          all = _array['default'].map(this.options.actions, function (action) {
+      var list = [];
+      var all = _array['default'].map(this.options.actions, function (action) {
         return action.id;
-      }),
-          order = this.getSavedOrderedKeys(),
-          reduced,
-          combined;
+      });
+      var order = this.getSavedOrderedKeys();
 
       // De-dup id's
-      combined = order.concat(all);
-      reduced = combined.reduce(function (previous, current) {
+      var combined = order.concat(all);
+      var reduced = combined.reduce(function (previous, current) {
         if (previous.indexOf(current) === -1) {
           previous.push(current);
         }
@@ -122,16 +107,15 @@ define('argos/Views/ConfigureQuickActions', ['exports', 'module', 'dojo/_base/de
             '$key': action.id,
             '$descriptor': action.label
           };
-        } else {
-          return null;
         }
+        return null;
       });
 
       list = _array['default'].filter(list, function (item) {
         return item !== null;
       });
 
-      return (0, _Memory['default'])({
+      return (0, _Memory['default'])({ // eslint-disable-line
         data: list
       });
     },

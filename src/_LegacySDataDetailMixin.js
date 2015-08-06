@@ -13,20 +13,19 @@ import ErrorManager from './ErrorManager';
  *
  * @alternateClassName _LegacySDataDetailMixin
  */
-var __class = declare('argos._LegacySDataDetailMixin', null, {
+const __class = declare('argos._LegacySDataDetailMixin', null, {
   /**
    * Initiates the SData request.
    */
-  requestData: function() {
-    var request;
-    request = this.createRequest();
+  requestData: function requestData() {
+    const request = this.createRequest();
 
     if (request) {
       request.read({
         success: this.onRequestDataSuccess,
         failure: this.onRequestDataFailure,
         aborted: this.onRequestDataAborted,
-        scope: this
+        scope: this,
       });
     }
   },
@@ -39,8 +38,8 @@ var __class = declare('argos._LegacySDataDetailMixin', null, {
    *
    * @return {Object} Sage.SData.Client.SDataSingleResourceRequest instance.
    */
-  createRequest: function() {
-    var request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
+  createRequest: function createRequest() {
+    const request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
 
     /* test for complex selector */
     /* todo: more robust test required? */
@@ -77,7 +76,7 @@ var __class = declare('argos._LegacySDataDetailMixin', null, {
    * layout definition. If no entry is provided, empty the screen.
    * @param {Object} entry SData response
    */
-  processEntry: function(entry) {
+  processEntry: function processEntry(entry) {
     this.entry = entry;
 
     if (this.entry) {
@@ -90,7 +89,7 @@ var __class = declare('argos._LegacySDataDetailMixin', null, {
    * Handler when a request to SData is successful
    * @param {Object} entry The SData response
    */
-  onRequestDataSuccess: function(entry) {
+  onRequestDataSuccess: function onRequestDataSuccess(entry) {
     this.processEntry(entry);
     domClass.remove(this.domNode, 'panel-loading');
   },
@@ -99,11 +98,11 @@ var __class = declare('argos._LegacySDataDetailMixin', null, {
    * @param {Object} response The response object.
    * @param {Object} o The options that were passed when creating the Ajax request.
    */
-  onRequestDataFailure: function(response, o) {
+  onRequestDataFailure: function onRequestDataFailure(response, o) {
     if (response && response.status === 404) {
       domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
     } else {
-      alert(string.substitute(this.requestErrorText, [response, o]));
+      alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
       ErrorManager.addError('failure', response);
     }
 
@@ -117,11 +116,11 @@ var __class = declare('argos._LegacySDataDetailMixin', null, {
    * @param {Object} response The response object.
    * @param {Object} o The options that were passed when creating the Ajax request.
    */
-  onRequestDataAborted: function(response, o) {
+  onRequestDataAborted: function onRequestDataAborted(response/*, o*/) {
     this.options = false; // force a refresh
     ErrorManager.addError('aborted', response);
     domClass.remove(this.domNode, 'panel-loading');
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._LegacySDataDetailMixin', __class);

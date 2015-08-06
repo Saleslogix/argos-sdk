@@ -3,7 +3,6 @@ import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import domClass from 'dojo/dom-class';
 import connect from 'dojo/_base/connect';
-import SData from './Store/SData';
 import ErrorManager from './ErrorManager';
 import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';
@@ -13,15 +12,14 @@ import _SDataDetailMixin from './_SDataDetailMixin';
  *
  * @alternateClassName _LegacySDataEditMixin
  */
-var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
-  requestData: function() {
-    var request;
-    request = this.createRequest();
+const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
+  requestData: function requestData() {
+    const request = this.createRequest();
     if (request) {
       request.read({
         success: this.onRequestDataSuccess,
         failure: this.onRequestDataFailure,
-        scope: this
+        scope: this,
       });
     }
   },
@@ -30,15 +28,15 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * @param {Object} response The response object.
    * @param {Object} o The options that were passed when creating the Ajax request.
    */
-  onRequestDataFailure: function(response, o) {
-    alert(string.substitute(this.requestErrorText, [response, o]));
+  onRequestDataFailure: function onRequestDataFailure(response, o) {
+    alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
     ErrorManager.addError('failure', response);
   },
   /**
    * Handler when a request to SData is successful, calls processEntry
    * @param {Object} entry The SData response
    */
-  onRequestDataSuccess: function(entry) {
+  onRequestDataSuccess: function onRequestDataSuccess(entry) {
     this.processEntry(entry);
 
     if (this.options.changes) {
@@ -55,11 +53,9 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    *
    * @return {Object} Sage.SData.Client.SDataSingleResourceRequest instance.
    */
-  createRequest: function() {
-    var request, key;
-
-    request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
-    key = (this.entry && this.entry['$key']) || this.options.key;
+  createRequest: function createRequest() {
+    const request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
+    const key = (this.entry && this.entry.$key) || this.options.key;
 
     if (key) {
       request.setResourceSelector(string.substitute("'${0}'", [key]));
@@ -87,15 +83,14 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
 
     return request;
   },
-  onUpdate: function(values) {
-    var entry, request;
-    entry = this.createEntryForUpdate(values);
-    request = this.createRequest();
+  onUpdate: function onUpdate(values) {
+    const entry = this.createEntryForUpdate(values);
+    const request = this.createRequest();
     if (request) {
       request.update(entry, {
         success: this.onUpdateSuccess,
         failure: this.onUpdateFailure,
-        scope: this
+        scope: this,
       });
     }
   },
@@ -107,13 +102,13 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    *
    * @param entry
    */
-  onUpdateSuccess: function(entry) {
+  onUpdateSuccess: function onUpdateSuccess(entry) {
     this.enable();
 
     connect.publish('/app/refresh', [{
       resourceKind: this.resourceKind,
-      key: entry['$key'],
-      data: entry
+      key: entry.$key,
+      data: entry,
     }]);
 
     this.onUpdateCompleted(entry);
@@ -123,7 +118,7 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * @param {Object} response The response object.
    * @param {Object} o The options that were passed when creating the Ajax request.
    */
-  onUpdateFailure: function(response, o) {
+  onUpdateFailure: function onUpdateFailure(response, o) {
     this.enable();
     this.onRequestFailure(response, o);
   },
@@ -132,8 +127,8 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * @param {Object} response The response object.
    * @param {Object} o The options that were passed when creating the Ajax request.
    */
-  onRequestFailure: function(response, o) {
-    alert(string.substitute(this.requestErrorText, [response, o]));
+  onRequestFailure: function onRequestFailure(response, o) {
+    alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
     ErrorManager.addError('failure', response);
   },
   /**
@@ -141,9 +136,8 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * create for inserting or updating.
    * @return {Object} SData entry/payload
    */
-  createEntry: function() {
-    var values = this.getValues();
-
+  createEntry: function createEntry() {
+    const values = this.getValues();
     return this.inserting ? this.createEntryForInsert(values) : this.createEntryForUpdate(values);
   },
   /**
@@ -151,13 +145,13 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * @param {Object} values
    * @return {Object} Object with added properties
    */
-  createEntryForUpdate: function(values) {
-    values = this.convertValues(values);
+  createEntryForUpdate: function createEntryForUpdate(v) {
+    const values = this.convertValues(v);
 
     return lang.mixin(values, {
-      '$key': this.entry['$key'],
-      '$etag': this.entry['$etag'],
-      '$name': this.entry['$name']
+      '$key': this.entry.$key,
+      '$etag': this.entry.$etag,
+      '$name': this.entry.$name,
     });
   },
   /**
@@ -165,10 +159,10 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * @param {Object} values
    * @return {Object} Object with added properties
    */
-  createEntryForInsert: function(values) {
-    values = this.convertValues(values);
+  createEntryForInsert: function createEntryForInsert(v) {
+    const values = this.convertValues(v);
     return lang.mixin(values, {
-      '$name': this.entityName
+      '$name': this.entityName,
     });
   },
   /**
@@ -177,8 +171,8 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * @param {Object} values Payload
    * @return {Object} Entry with string dates
    */
-  convertValues: function(values) {
-    for (var n in values) {
+  convertValues: function convertValues(values) {
+    for (const n in values) {
       if (values[n] instanceof Date) {
         values[n] = this.getService().isJsonEnabled() ? convert.toJsonStringFromDate(values[n]) : convert.toIsoStringFromDate(values[n]);
       }
@@ -190,23 +184,22 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * Extends the getContext function to also include the `resourceKind` of the view, `insert`
    * state and `key` of the entry (false if inserting)
    */
-  getContext: function() {
+  getContext: function getContext() {
     return lang.mixin(this.inherited(arguments), {
       resourceKind: this.resourceKind,
       insert: this.options.insert,
-      key: this.options.insert ? false : this.options.entry && this.options.entry['$key']
+      key: this.options.insert ? false : this.options.entry && this.options.entry.$key,
     });
   },
-  onInsert: function(values) {
-    var request, entry;
-    entry = this.createEntryForInsert(values);
-    request = this.createRequest();
+  onInsert: function onInsert(values) {
+    const entry = this.createEntryForInsert(values);
+    const request = this.createRequest();
 
     if (request) {
       request.create(entry, {
         success: this.onInsertSuccess,
         failure: this.onInsertFailure,
-        scope: this
+        scope: this,
       });
     }
   },
@@ -218,13 +211,13 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    *
    * @param entry
    */
-  onInsertSuccess: function(entry) {
+  onInsertSuccess: function onInsertSuccess(entry) {
     this.enable();
 
     connect.publish('/app/refresh', [{
       resourceKind: this.resourceKind,
-      key: entry['$key'],
-      data: entry
+      key: entry.$key,
+      data: entry,
     }]);
 
     this.onInsertCompleted(entry);
@@ -235,11 +228,11 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * @param response
    * @param o
    */
-  onInsertFailure: function(response, o) {
+  onInsertFailure: function onInsertFailure(response, o) {
     this.enable();
     this.onRequestFailure(response, o);
   },
-  onRefreshUpdate: function() {
+  onRefreshUpdate: function onRefreshUpdate() {
     if (this.options.entry) {
       this.processEntry(this.options.entry);
 
@@ -260,12 +253,12 @@ var __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * `this.entry` and applies the values.
    * @param entry
    */
-  processEntry: function(entry) {
+  processEntry: function processEntry(entry) {
     this.entry = this.convertEntry(entry || {});
     this.setValues(this.entry, true);
 
     domClass.remove(this.domNode, 'panel-loading');
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._LegacySDataEditMixin', __class);

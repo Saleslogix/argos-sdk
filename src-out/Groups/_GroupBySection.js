@@ -1,11 +1,9 @@
-define('argos/Groups/_GroupBySection', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/string'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoString) {
+define('argos/Groups/_GroupBySection', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
-
-  var _string = _interopRequireDefault(_dojoString);
 
   /**
    * @class argos.Groups._GroupSection
@@ -32,7 +30,7 @@ define('argos/Groups/_GroupBySection', ['exports', 'module', 'dojo/_base/declare
       _lang['default'].mixin(this, o);
     },
     init: function init() {},
-    getGroupSection: function getGroupSection(entry) {},
+    getGroupSection: function getGroupSection() {},
     getOrderByQuery: function getOrderByQuery() {
       return this.groupByProperty + ' ' + this.sortDirection;
     }
@@ -41,3 +39,4 @@ define('argos/Groups/_GroupBySection', ['exports', 'module', 'dojo/_base/declare
   _lang['default'].setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
   module.exports = __class;
 });
+/*entry*/

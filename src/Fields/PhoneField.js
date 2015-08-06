@@ -16,11 +16,10 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import has from 'dojo/has';
-import string from 'dojo/string';
 import FieldManager from '../FieldManager';
 import TextField from './TextField';
 import format from '../Format';
-import sniff from 'dojo/_base/sniff';
+import 'dojo/_base/sniff';
 
 /**
  * @class argos.Fields.PhoneField
@@ -42,7 +41,7 @@ import sniff from 'dojo/_base/sniff';
  * @extends argos.Fields.TextField
  * @requires argos.FieldManager
  */
-var control = declare('argos.Fields.PhoneField', [TextField], {
+const control = declare('argos.Fields.PhoneField', [TextField], {
   /**
    * @property {String}
    * Sets the `<input type=` of the field.
@@ -54,7 +53,7 @@ var control = declare('argos.Fields.PhoneField', [TextField], {
   /**
    * Formats the displayed value (inputNode value) using {@link format.phone format.phone}.
    */
-  _onBlur: function() {
+  _onBlur: function _onBlur() {
     this.inherited(arguments);
 
     // temporarily added: http://code.google.com/p/android/issues/detail?id=14519
@@ -65,8 +64,8 @@ var control = declare('argos.Fields.PhoneField', [TextField], {
    * the value starts with `+` in which it is returned unmodified.
    * @return {String}
    */
-  getValue: function() {
-    var value = this.inherited(arguments);
+  getValue: function getValue() {
+    let value = this.inherited(arguments);
 
     if (/^\+/.test(value)) {
       return value;
@@ -82,7 +81,7 @@ var control = declare('argos.Fields.PhoneField', [TextField], {
    * @param {String/Number} val String to set
    * @param {Boolean} initial True if the value is the original/clean value.
    */
-  setValue: function(val, initial) {
+  setValue: function setValue(val, initial) {
     if (initial) {
       this.originalValue = val;
     }
@@ -94,13 +93,13 @@ var control = declare('argos.Fields.PhoneField', [TextField], {
    * Currently only calls parent implementation due to an [Android Bug](http://code.google.com/p/android/issues/detail?id=14519).
    * @param {Event} evt Keyup event
    */
-  _onKeyUp: function(evt) {
+  _onKeyUp: function _onKeyUp(/*evt*/) {
     /*
     // temporarily removed: http://code.google.com/p/android/issues/detail?id=14519
     this.set('inputValue', format.phone(this.inputNode.value, this.getValue()));
     */
     this.inherited(arguments);
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.PhoneField', control);

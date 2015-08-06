@@ -1,4 +1,4 @@
-define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/array', 'dojo/_base/connect', 'dojo/query', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-geometry', 'dojo/dom-style', 'dojo/dom', 'dojo/string', 'dojo/window', 'dojo/Deferred', 'dojo/promise/all', 'dojo/when', './Utility', './ErrorManager', './View', './SearchWidget', './ConfigurableSelectionModel', './_PullToRefreshMixin'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseArray, _dojo_baseConnect, _dojoQuery, _dojoDomAttr, _dojoDomClass, _dojoDomConstruct, _dojoDomGeometry, _dojoDomStyle, _dojoDom, _dojoString, _dojoWindow, _dojoDeferred, _dojoPromiseAll, _dojoWhen, _Utility, _ErrorManager, _View, _SearchWidget, _ConfigurableSelectionModel, _PullToRefreshMixin2) {
+define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/array', 'dojo/_base/connect', 'dojo/query', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-geometry', 'dojo/dom', 'dojo/string', 'dojo/when', './Utility', './ErrorManager', './View', './SearchWidget', './ConfigurableSelectionModel', './_PullToRefreshMixin'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseArray, _dojo_baseConnect, _dojoQuery, _dojoDomAttr, _dojoDomClass, _dojoDomConstruct, _dojoDomGeometry, _dojoDom, _dojoString, _dojoWhen, _Utility, _ErrorManager, _View, _SearchWidget, _ConfigurableSelectionModel, _PullToRefreshMixin2) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -34,17 +34,9 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
 
   var _domGeom = _interopRequireDefault(_dojoDomGeometry);
 
-  var _domStyle = _interopRequireDefault(_dojoDomStyle);
-
   var _dom = _interopRequireDefault(_dojoDom);
 
   var _string = _interopRequireDefault(_dojoString);
-
-  var _win = _interopRequireDefault(_dojoWindow);
-
-  var _Deferred = _interopRequireDefault(_dojoDeferred);
-
-  var _all = _interopRequireDefault(_dojoPromiseAll);
 
   var _when = _interopRequireDefault(_dojoWhen);
 
@@ -463,9 +455,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     postCreate: function postCreate() {
       this.inherited(arguments);
 
-      var scrollerNode, searchWidgetCtor;
-
-      scrollerNode = this.get('scroller');
+      var scrollerNode = this.get('scroller');
 
       if (this._selectionModel === null) {
         this.set('selectionModel', new _ConfigurableSelectionModel2['default']());
@@ -473,9 +463,9 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       this.subscribe('/app/refresh', this._onRefresh);
 
       if (this.enableSearch) {
-        searchWidgetCtor = _lang['default'].isString(this.searchWidgetClass) ? _lang['default'].getObject(this.searchWidgetClass, false) : this.searchWidgetClass;
+        var SearchWidgetCtor = _lang['default'].isString(this.searchWidgetClass) ? _lang['default'].getObject(this.searchWidgetClass, false) : this.searchWidgetClass;
 
-        this.searchWidget = this.searchWidget || new searchWidgetCtor({
+        this.searchWidget = this.searchWidget || new SearchWidgetCtor({
           'class': 'list-search',
           'owner': this,
           'onSearchExpression': this._onSearchExpression.bind(this)
@@ -490,12 +480,10 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
 
       this.initPullToRefresh(scrollerNode);
     },
-    shouldStartPullToRefresh: function shouldStartPullToRefresh(scrollerNode) {
-      var selected, shouldStart;
-
+    shouldStartPullToRefresh: function shouldStartPullToRefresh() {
       // Get the base results
-      shouldStart = this.inherited(arguments);
-      selected = _domAttr['default'].get(this.domNode, 'selected');
+      var shouldStart = this.inherited(arguments);
+      var selected = _domAttr['default'].get(this.domNode, 'selected');
       return shouldStart && selected === 'true' && !this.listLoading;
     },
     onPullToRefreshComplete: function onPullToRefreshComplete() {
@@ -541,7 +529,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @param {Object} options The navigation options passed from the previous view.
      * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
      */
-    show: function show(options, transitionOptions) {
+    show: function show(options /*, transitionOptions*/) {
       if (options) {
         if (options.resetSearch) {
           this.defaultSearchTermSet = false;
@@ -573,29 +561,29 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     createErrorHandlers: function createErrorHandlers() {
       this.errorHandlers = this.errorHandlers || [{
         name: 'Aborted',
-        test: function test(error) {
+        test: function testAborted(error) {
           return error.aborted;
         },
-        handle: function handle(error, next) {
+        handle: function handleAborted(error, next) {
           this.clear();
           this.refreshRequired = true;
           next();
         }
       }, {
         name: 'AlertError',
-        test: function test(error) {
+        test: function testError(error) {
           return !error.aborted;
         },
-        handle: function handle(error, next) {
-          alert(this.getErrorMessage(error));
+        handle: function handleError(error, next) {
+          alert(this.getErrorMessage(error)); // eslint-disable-line
           next();
         }
       }, {
         name: 'CatchAll',
-        test: function test(error) {
+        test: function testCatchAll() {
           return true;
         },
-        handle: function handle(error, next) {
+        handle: function handleCatchAll(error, next) {
           this._logError(error);
           this._clearLoading();
           next();
@@ -618,9 +606,8 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * final actions state.
      * @param {Object[]} actions
      */
-    createActions: function createActions(actions) {
-      var i, action, options, actionTemplate, systemActions, prefActions, visibleActions;
-
+    createActions: function createActions(a) {
+      var actions = a;
       this.actions = actions;
       this.visibleActions = [];
 
@@ -631,7 +618,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       this.ensureQuickActionPrefs();
 
       // Pluck out our system actions that are NOT saved in preferences
-      systemActions = _array['default'].filter(actions, function (action) {
+      var systemActions = _array['default'].filter(actions, function (action) {
         return action && action.systemAction;
       });
 
@@ -648,30 +635,30 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       }, []);
 
       // Grab quick actions from the users preferences (ordered and made visible according to user)
-      prefActions = this.app.preferences.quickActions[this.id];
+      var prefActions = this.app.preferences.quickActions[this.id];
 
       if (systemActions && prefActions) {
         // Display system actions first, then the order of what the user specified
         actions = systemActions.concat(prefActions);
       }
 
-      visibleActions = [];
+      var visibleActions = [];
 
-      for (i = 0; i < actions.length; i++) {
-        action = actions[i];
+      for (var i = 0; i < actions.length; i++) {
+        var action = actions[i];
 
         if (!action.visible) {
           continue;
         }
 
-        options = {
+        var options = {
           actionIndex: visibleActions.length,
           hasAccess: !action.security || action.security && this.app.hasAccessTo(this.expandExpression(action.security)) ? true : false
         };
 
         _lang['default'].mixin(action, options);
 
-        actionTemplate = action.template || this.listActionItemTemplate;
+        var actionTemplate = action.template || this.listActionItemTemplate;
         _domConstruct['default'].place(actionTemplate.apply(action, action.id), this.actionsNode, 'last');
 
         visibleActions.push(action);
@@ -680,13 +667,11 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       this.visibleActions = visibleActions;
     },
     createSystemActionLayout: function createSystemActionLayout(actions) {
-      var systemActions, others;
-
-      systemActions = _array['default'].filter(actions, function (action) {
+      var systemActions = _array['default'].filter(actions, function (action) {
         return action.systemAction === true;
       });
 
-      others = _array['default'].filter(actions, function (action) {
+      var others = _array['default'].filter(actions, function (action) {
         return !action.systemAction;
       });
 
@@ -696,16 +681,16 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
 
       if (systemActions.length) {
         return systemActions.concat(others);
-      } else {
-        return [{
-          id: '__editPrefs__',
-          cls: 'fa fa-cog fa-2x',
-          label: this.configureText,
-          action: 'configureQuickActions',
-          systemAction: true,
-          visible: true
-        }].concat(others);
       }
+
+      return [{
+        id: '__editPrefs__',
+        cls: 'fa fa-cog fa-2x',
+        label: this.configureText,
+        action: 'configureQuickActions',
+        systemAction: true,
+        visible: true
+      }].concat(others);
     },
     configureQuickActions: function configureQuickActions() {
       var view = App.getView(this.quickActionConfigureView);
@@ -720,22 +705,19 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       }
     },
     selectEntrySilent: function selectEntrySilent(key) {
-      var enableActions = this.enableActions,
-          // preserve the original value
-      selectionModel = this.get('selectionModel'),
-          selectedItems,
-          selection,
-          prop;
+      var enableActions = this.enableActions; // preserve the original value
+      var selectionModel = this.get('selectionModel');
+      var selection = undefined;
 
       if (key) {
         this.enableActions = false; // Set to false so the quick actions menu doesn't pop up
         selectionModel.clear();
         selectionModel.toggle(key, this.entries[key]);
-        selectedItems = selectionModel.getSelections();
+        var selectedItems = selectionModel.getSelections();
         this.enableActions = enableActions;
 
         // We know we are single select, so just grab the first selection
-        for (prop in selectedItems) {
+        for (var prop in selectedItems) {
           if (selectedItems.hasOwnProperty(prop)) {
             selection = selectedItems[prop];
             break;
@@ -746,12 +728,10 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       return selection;
     },
     invokeActionItemBy: function invokeActionItemBy(actionPredicate, key) {
-      var actions, selection;
-
-      actions = _array['default'].filter(this.visibleActions, actionPredicate);
-      selection = this.selectEntrySilent(key);
+      var actions = _array['default'].filter(this.visibleActions, actionPredicate);
+      var selection = this.selectEntrySilent(key);
       this.checkActionState();
-      _array['default'].forEach(actions, function (action) {
+      _array['default'].forEach(actions, function forEach(action) {
         this._invokeAction(action, selection);
       }, this);
     },
@@ -766,14 +746,13 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @param {Event} evt The click/tap event
      * @param {HTMLElement} node The node that invoked the action
      */
-    invokeActionItem: function invokeActionItem(parameters, evt, node) {
-      var index = parameters['id'],
-          action = this.visibleActions[index],
-          key,
-          selectedItems = this.get('selectionModel').getSelections(),
-          selection = null;
+    invokeActionItem: function invokeActionItem(parameters /*, evt, node*/) {
+      var index = parameters.id;
+      var action = this.visibleActions[index];
+      var selectedItems = this.get('selectionModel').getSelections();
+      var selection = null;
 
-      for (key in selectedItems) {
+      for (var key in selectedItems) {
         if (selectedItems.hasOwnProperty(key)) {
           selection = selectedItems[key];
           break;
@@ -787,12 +766,12 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
         return;
       }
 
-      if (action['fn']) {
-        action['fn'].call(action['scope'] || this, action, selection);
+      if (action.fn) {
+        action.fn.call(action.scope || this, action, selection);
       } else {
-        if (action['action']) {
-          if (this.hasAction(action['action'])) {
-            this.invokeAction(action['action'], action, selection);
+        if (action.action) {
+          if (this.hasAction(action.action)) {
+            this.invokeAction(action.action, action, selection);
           }
         }
       }
@@ -803,12 +782,10 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * action items `enabled` property.
      */
     checkActionState: function checkActionState() {
-      var selectedItems, selection, key;
+      var selectedItems = this.get('selectionModel').getSelections();
+      var selection = null;
 
-      selectedItems = this.get('selectionModel').getSelections();
-      selection = null;
-
-      for (key in selectedItems) {
+      for (var key in selectedItems) {
         if (selectedItems.hasOwnProperty(key)) {
           selection = selectedItems[key];
           break;
@@ -818,9 +795,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       this._applyStateToActions(selection);
     },
     _clearActions: function _clearActions() {
-      var children;
-
-      children = this.actionsNode && this.actionsNode.children || [];
+      var children = this.actionsNode && this.actionsNode.children || [];
       children = Array.prototype.slice.call(children);
       _array['default'].forEach(children, function (child) {
         if (child.parentNode) {
@@ -832,11 +807,9 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       return this.app && this.app.preferences && this.app.preferences.quickActions;
     },
     ensureQuickActionPrefs: function ensureQuickActionPrefs() {
-      var appPrefs, actionPrefs, filtered;
-
-      appPrefs = this.app && this.app.preferences;
-      actionPrefs = this.getQuickActionPrefs();
-      filtered = _array['default'].filter(this.actions, function (action) {
+      var appPrefs = this.app && this.app.preferences;
+      var actionPrefs = this.getQuickActionPrefs();
+      var filtered = _array['default'].filter(this.actions, function (action) {
         return action && action.systemAction !== true;
       });
 
@@ -867,21 +840,19 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @param {Object} selection
      */
     _applyStateToActions: function _applyStateToActions(selection) {
-      var i, action, actionNode, visibleAction;
-
       this._clearActions();
       this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
 
-      for (i = 0; i < this.visibleActions.length; i++) {
+      for (var i = 0; i < this.visibleActions.length; i++) {
         // The visible action is from our local storage preferences, where the action from the layout
         // contains functions that will get stripped out converting it to JSON, get the original action
         // and mix it into the visible so we can work with it.
         // TODO: This will be a problem throughout visible actions, come up with a better solution
-        visibleAction = this.visibleActions[i];
-        action = _lang['default'].mixin(visibleAction, this._getActionById(visibleAction.id));
-        actionNode = this.actionsNode.childNodes[i];
+        var visibleAction = this.visibleActions[i];
+        var action = _lang['default'].mixin(visibleAction, this._getActionById(visibleAction.id));
+        var actionNode = this.actionsNode.childNodes[i];
 
-        action.isEnabled = typeof action['enabled'] === 'undefined' ? true : this.expandExpression(action['enabled'], action, selection);
+        action.isEnabled = typeof action.enabled === 'undefined' ? true : this.expandExpression(action.enabled, action, selection);
 
         if (!action.hasAccess) {
           action.isEnabled = false;
@@ -915,7 +886,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
 
       _domConstruct['default'].place(this.actionsNode, rowNode, 'after');
     },
-    onApplyRowActionPanel: function onApplyRowActionPanel(actionNodePanel, rowNode) {},
+    onApplyRowActionPanel: function onApplyRowActionPanel() {},
     /**
      * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
      * that when the next view queries the navigation context we can include the passed param as a data point.
@@ -1004,12 +975,10 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @private
      */
     _loadPreviousSelections: function _loadPreviousSelections() {
-      var previousSelections, i, row;
-
-      previousSelections = this.options && this.options.previousSelections;
+      var previousSelections = this.options && this.options.previousSelections;
       if (previousSelections) {
-        for (i = 0; i < previousSelections.length; i++) {
-          row = (0, _query['default'])(_string['default'].substitute('[data-key="${0}"], [data-descriptor="${0}"]', [previousSelections[i]]), this.contentNode)[0];
+        for (var i = 0; i < previousSelections.length; i++) {
+          var row = (0, _query['default'])(_string['default'].substitute('[data-key="${0}"], [data-descriptor="${0}"]', [previousSelections[i]]), this.contentNode)[0];
 
           if (row) {
             this.activateEntry({
@@ -1026,20 +995,16 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @param {Object} options The object published by the event.
      * @private
      */
-    _onRefresh: function _onRefresh(options) {},
-    onScroll: function onScroll(evt) {
-      var pos, height, scrollTop, scrollHeight, remaining, selected, diff, scrollerNode;
-      scrollerNode = this.get('scroller');
-      pos = _domGeom['default'].position(scrollerNode, true);
-
-      height = pos.h; // viewport height (what user sees)
-      scrollHeight = scrollerNode.scrollHeight; // Entire container height
-      scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
-      remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
-
-      selected = _domAttr['default'].get(this.domNode, 'selected');
-
-      diff = Math.abs(remaining - height);
+    _onRefresh: function _onRefresh() {},
+    onScroll: function onScroll() {
+      var scrollerNode = this.get('scroller');
+      var pos = _domGeom['default'].position(scrollerNode, true);
+      var height = pos.h; // viewport height (what user sees)
+      var scrollHeight = scrollerNode.scrollHeight; // Entire container height
+      var scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
+      var remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
+      var selected = _domAttr['default'].get(this.domNode, 'selected');
+      var diff = Math.abs(remaining - height);
 
       // Start auto fetching more data if the user is on the last half of the remaining screen
       if (diff <= height / 2) {
@@ -1059,8 +1024,8 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @param {HTMLElement} node The element that initiated the event.
      */
     selectEntry: function selectEntry(params, evt, node) {
-      var row = (0, _query['default'])(node).closest('[data-key]')[0],
-          key = row ? row.getAttribute('data-key') : false;
+      var row = (0, _query['default'])(node).closest('[data-key]')[0];
+      var key = row ? row.getAttribute('data-key') : false;
 
       if (this._selectionModel && key) {
         this._selectionModel.toggle(key, this.entries[key], row);
@@ -1097,8 +1062,8 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * If autoClearSelection is true, clear the selection model.
      */
     invokeSingleSelectAction: function invokeSingleSelectAction() {
-      if (this.app.bars['tbar']) {
-        this.app.bars['tbar'].invokeTool({
+      if (this.app.bars.tbar) {
+        this.app.bars.tbar.invokeTool({
           tool: this.options.singleSelectAction
         });
       }
@@ -1116,7 +1081,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @return {String/Boolean} An SData query compatible search expression.
      * @template
      */
-    formatSearchQuery: function formatSearchQuery(searchQuery) {
+    formatSearchQuery: function formatSearchQuery() {
       return false;
     },
     /**
@@ -1200,8 +1165,8 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * property of the passed selection data.
      */
     navigateToRelatedView: function navigateToRelatedView(action, selection, viewId, whereQueryFmt, additionalOptions) {
-      var view = this.app.getView(viewId),
-          options = {
+      var view = this.app.getView(viewId);
+      var options = {
         where: _string['default'].substitute(whereQueryFmt, [selection.data[this.idProperty]]),
         selectedEntry: selection.data
       };
@@ -1227,8 +1192,8 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @param {Object} additionalOptions Additional options to be passed into the next view
      */
     navigateToDetailView: function navigateToDetailView(key, descriptor, additionalOptions) {
-      var view = this.app.getView(this.detailView),
-          options = {
+      var view = this.app.getView(this.detailView);
+      var options = {
         descriptor: descriptor, // keep for backwards compat
         title: descriptor,
         key: key,
@@ -1251,9 +1216,9 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @param {Object} additionalOptions Additional options to be passed into the next view.
      */
     navigateToEditView: function navigateToEditView(action, selection, additionalOptions) {
-      var view = this.app.getView(this.editView || this.insertView),
-          key = selection.data[this.idProperty],
-          options = {
+      var view = this.app.getView(this.editView || this.insertView);
+      var key = selection.data[this.idProperty];
+      var options = {
         key: key,
         selectedEntry: selection.data,
         fromContext: this
@@ -1274,8 +1239,8 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * @param {Object} additionalOptions Additional options to be passed into the next view.
      */
     navigateToInsertView: function navigateToInsertView(el, additionalOptions) {
-      var view = this.app.getView(this.insertView || this.editView),
-          options = {
+      var view = this.app.getView(this.insertView || this.editView);
+      var options = {
         returnTo: this.id,
         insert: true
       };
@@ -1310,33 +1275,32 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * Initiates the data request.
      */
     requestData: function requestData() {
-      var store, queryOptions, request, queryExpression, queryResults;
-      store = this.get('store');
+      var store = this.get('store');
 
       if (store) {
         this._setLoading();
         // attempt to use a dojo store
-        queryOptions = {
+        var queryOptions = {
           count: this.pageSize,
           start: this.position
         };
 
         this._applyStateToQueryOptions(queryOptions);
 
-        queryExpression = this._buildQueryExpression() || null;
-        queryResults = store.query(queryExpression, queryOptions);
+        var queryExpression = this._buildQueryExpression() || null;
+        var queryResults = store.query(queryExpression, queryOptions);
 
         (0, _when['default'])(queryResults, this._onQueryComplete.bind(this, queryResults), this._onQueryError.bind(this, queryOptions));
 
         return queryResults;
       }
 
-      console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?');
+      console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?'); // eslint-disable-line
     },
     _onQueryComplete: function _onQueryComplete(queryResults, entries) {
       try {
-        var start = this.position,
-            scrollerNode = this.get('scroller');
+        var start = this.position;
+        var scrollerNode = this.get('scroller');
 
         try {
           (0, _when['default'])(queryResults.total, this._onQueryTotal.bind(this));
@@ -1372,7 +1336,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
           this._loadPreviousSelections();
         }
       } catch (e) {
-        console.error(e);
+        console.error(e); // eslint-disable-line
         this._logError({
           message: e.message,
           stack: e.stack
@@ -1387,13 +1351,11 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       return entry;
     },
     _onQueryTotal: function _onQueryTotal(size) {
-      var remaining;
-
       this.total = size;
       if (size === 0) {
         this.set('listContent', this.noDataTemplate.apply(this));
       } else {
-        remaining = this.getRemainingCount();
+        var remaining = this.getRemainingCount();
         if (remaining !== -1) {
           this.set('remainingContent', _string['default'].substitute(this.remainingText, [remaining]));
           this.remaining = remaining;
@@ -1406,39 +1368,30 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     },
     getRemainingCount: function getRemainingCount() {
       var remaining = this.total > -1 ? this.total - (this.position + this.pageSize) : -1;
-
       return remaining;
     },
-    onApplyRowTemplate: function onApplyRowTemplate(entry, rowNode) {},
+    onApplyRowTemplate: function onApplyRowTemplate() {},
     processData: function processData(entries) {
       if (!entries) {
         return;
       }
 
-      var store = this.get('store'),
-          rowNode,
-          output,
-          docfrag,
-          key,
-          entry,
-          i,
-          count = entries.length;
+      var store = this.get('store');
+      var count = entries.length;
 
       if (count > 0) {
-        output = [];
-
-        docfrag = document.createDocumentFragment();
-        for (i = 0; i < count; i++) {
-          entry = this._processEntry(entries[i]);
+        var docfrag = document.createDocumentFragment();
+        for (var i = 0; i < count; i++) {
+          var entry = this._processEntry(entries[i]);
           // If key comes back with nothing, check that the store is properly
           // setup with an idProperty
-          key = store.getIdentity(entry);
           this.entries[store.getIdentity(entry)] = entry;
 
+          var rowNode = undefined;
           try {
             rowNode = _domConstruct['default'].toDom(this.rowTemplate.apply(entry, this));
           } catch (err) {
-            console.error(err);
+            console.error(err); // eslint-disable-line
             rowNode = _domConstruct['default'].toDom(this.rowTemplateError.apply(entry, this));
           }
 
@@ -1465,7 +1418,7 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     _buildQueryExpression: function _buildQueryExpression() {
       return _lang['default'].mixin(this.query || {}, this.options && (this.options.query || this.options.where));
     },
-    _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {},
+    _applyStateToQueryOptions: function _applyStateToQueryOptions() {},
     /**
      * Handler for the more button. Simply calls {@link #requestData requestData} which already has the info for
      * setting the start index as needed.
@@ -1484,8 +1437,8 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     emptySelection: function emptySelection() {
       this._selectionModel.clear();
 
-      if (this.app.bars['tbar']) {
-        this.app.bars['tbar'].invokeTool({
+      if (this.app.bars.tbar) {
+        this.app.bars.tbar.invokeTool({
           tool: this.options.singleSelectAction
         }); // invoke action of tool
       }
@@ -1516,9 +1469,9 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
         }
 
         return false;
-      } else {
-        return this.inherited(arguments);
       }
+
+      return this.inherited(arguments);
     },
     /**
      * Returns the current views context by expanding upon the {@link View#getContext parent implementation} to include
@@ -1582,15 +1535,13 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     createHashTagQueryLayout: function createHashTagQueryLayout() {
       // todo: always regenerate this layout? always regenerating allows for all existing customizations
       // to still work, at expense of potential (rare) performance issues if many customizations are registered.
-      var layout, name;
-
-      layout = [];
-      for (name in this.hashTagQueries) {
-        if (this.hashTagQueries.hasOwnProperty(name)) {
+      var layout = [];
+      for (var _name in this.hashTagQueries) {
+        if (this.hashTagQueries.hasOwnProperty(_name)) {
           layout.push({
-            'key': name,
-            'tag': this.hashTagQueriesText && this.hashTagQueriesText[name] || name,
-            'query': this.hashTagQueries[name]
+            'key': _name,
+            'tag': this.hashTagQueriesText && this.hashTagQueriesText[_name] || _name,
+            'query': this.hashTagQueries[_name]
           });
         }
       }
@@ -1656,9 +1607,10 @@ define('argos/_ListBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     /**
      * Returns a promise with the list's count.
      */
-    getListCount: function getListCount(options, callback) {}
+    getListCount: function getListCount() {}
   });
 
   _lang['default'].setObject('Sage.Platform.Mobile._ListBase', __class);
   module.exports = __class;
 });
+/*actionNodePanel, rowNode*/ /*options*/ /*evt*/ /*searchQuery*/ /*entry, rowNode*/ /*queryOptions*/ /*options, callback*/

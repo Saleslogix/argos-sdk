@@ -40,7 +40,7 @@ import FieldManager from '../FieldManager';
  * @requires argos.Views.SignatureView
  * @requires argos.Format
  */
-var control = declare('argos.Fields.SignatureField', [EditorField], {
+const control = declare('argos.Fields.SignatureField', [EditorField], {
   // Localization
   /**
    * @property {String}
@@ -75,7 +75,7 @@ var control = declare('argos.Fields.SignatureField', [EditorField], {
     lineWidth: 1,
     penColor: 'blue',
     width: 180,
-    height: 50
+    height: 50,
   },
   /**
    * @property {Simplate}
@@ -89,33 +89,26 @@ var control = declare('argos.Fields.SignatureField', [EditorField], {
     '<label for="{%= $.name %}">{%: $.label %}</label>',
     '<button class="button simpleSubHeaderButton" aria-label="{%: $.signatureLabelText %}"><span aria-hidden="true">{%: $.signatureText %}</span></button>',
     '<img data-dojo-attach-point="signatureNode" src="" width="{%: $.config.width %}" height="{%: $.config.height %}" alt="" />',
-    '<input data-dojo-attach-point="inputNode" type="hidden">'
+    '<input data-dojo-attach-point="inputNode" type="hidden">',
   ]),
   /**
    * Extends the {@link EditorField#createNavigationOptions parent} implementation by
    * also passing the `signature` array.
    * @return {Object} Navigation options
    */
-  createNavigationOptions: function() {
-    var options = this.inherited(arguments);
-
+  createNavigationOptions: function createNavigationOptions() {
+    const options = this.inherited(arguments);
     options.signature = this.signature;
-
     return options;
   },
   /**
    * Complete override that gets the editor view, gets the values and calls set value on the field
    */
-  getValuesFromView: function() {
-    var view,
-      app,
-      value;
-
-    app = this.app;
-
-    view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
+  getValuesFromView: function getValuesFromView() {
+    const app = this.app;
+    const view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
     if (view) {
-      value = view.getValues();
+      const value = view.getValues();
       this.currentValue = this.validationValue = value;
       this.setValue(this.currentValue, false);
     }
@@ -126,7 +119,7 @@ var control = declare('argos.Fields.SignatureField', [EditorField], {
    * @param val
    * @param initial
    */
-  setValue: function(val, initial) {
+  setValue: function setValue(val, initial) {
     if (initial) {
       this.originalValue = val;
     }
@@ -149,7 +142,7 @@ var control = declare('argos.Fields.SignatureField', [EditorField], {
   /**
    * Clears the value set to the hidden field
    */
-  clearValue: function() {
+  clearValue: function clearValue() {
     this.setValue('', true);
   },
   /**
@@ -158,9 +151,9 @@ var control = declare('argos.Fields.SignatureField', [EditorField], {
    * @param val
    * @return {Array/String}
    */
-  formatValue: function(val) {
+  formatValue: function formatValue(val) {
     return val;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields.SignatureField', control);

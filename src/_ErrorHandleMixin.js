@@ -7,14 +7,14 @@ import array from 'dojo/_base/array';
  * General mixin for handling errors in a chainable fashion.
  * @alternateClassName _ErrorHandleMixin
  */
-var __class = declare('argos._ErrorHandleMixin', null, {
+const __class = declare('argos._ErrorHandleMixin', null, {
   /**
    * @property {Object}
    * Localized error messages. One general error message, and messages by HTTP status code.
    */
   errorText: {
     general: 'A server error occured.',
-    status: {}
+    status: {},
   },
   /**
    * @property {Object}
@@ -38,7 +38,7 @@ var __class = declare('argos._ErrorHandleMixin', null, {
     REQUEST_URI_TOO_LONG: 414,
     UNSUPPORTED_MEDIA_TYPE: 415,
     REQUESTED_RANGE_NOT_SATISFIABLE: 416,
-    EXPECTATION_FAILED: 417
+    EXPECTATION_FAILED: 417,
   },
   /**
    * @property {Array} errorHandlers
@@ -50,29 +50,27 @@ var __class = declare('argos._ErrorHandleMixin', null, {
   /**
    * @return {Array} Returns an array of error handlers
    */
-  createErrorHandlers: function() {
+  createErrorHandlers: function createErrorHandlers() {
     return this.errorHandlers || [];
   },
   /**
    * Starts matching and executing errorHandlers.
    * @param {Error} error Error to pass to the errorHandlers
    */
-  handleError: function(error) {
+  handleError: function handleError(error) {
     if (!error) {
       return;
     }
 
-    var matches, noop, getNext, len;
+    function noop() {}
 
-    noop = function() {};
-
-    matches = array.filter(this.errorHandlers, function(handler) {
+    const matches = array.filter(this.errorHandlers, function filter(handler) {
       return handler.test && handler.test.call(this, error);
     }.bind(this));
 
-    len = matches.length;
+    const len = matches.length;
 
-    getNext = function(index) {
+    const getNext = function getNext(index) {
       // next() chain has ended, return a no-op so calling next() in the last chain won't error
       if (index === len) {
         return noop;
@@ -80,10 +78,9 @@ var __class = declare('argos._ErrorHandleMixin', null, {
 
       // Return a closure with index and matches captured.
       // The handle function can call its "next" param to continue the chain.
-      return function() {
-        var nextHandler, nextFn;
-        nextHandler = matches[index];
-        nextFn = nextHandler && nextHandler.handle;
+      return function next() {
+        const nextHandler = matches[index];
+        const nextFn = nextHandler && nextHandler.handle;
 
         nextFn.call(this, error, getNext(index + 1));
       }.bind(this);
@@ -97,15 +94,15 @@ var __class = declare('argos._ErrorHandleMixin', null, {
   /**
    * Gets the general error message, or the error message for the status code.
    */
-  getErrorMessage: function(error) {
-    var message = this.errorText.general;
+  getErrorMessage: function getErrorMessage(error) {
+    let message = this.errorText.general;
 
     if (error) {
       message = this.errorText.status[error.status] || this.errorText.general;
     }
 
     return message;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._ErrorHandleMixin', __class);

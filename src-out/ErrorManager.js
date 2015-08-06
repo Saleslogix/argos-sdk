@@ -1,4 +1,4 @@
-define('argos/ErrorManager', ['exports', 'module', 'dojo/json', 'dojo/_base/lang', 'dojo/_base/connect', 'dojo/string', 'moment', './Utility'], function (exports, module, _dojoJson, _dojo_baseLang, _dojo_baseConnect, _dojoString, _moment, _Utility) {
+define('argos/ErrorManager', ['exports', 'module', 'dojo/json', 'dojo/_base/lang', 'dojo/_base/connect', 'moment', './Utility'], function (exports, module, _dojoJson, _dojo_baseLang, _dojo_baseConnect, _moment, _Utility) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -16,35 +16,31 @@ define('argos/ErrorManager', ['exports', 'module', 'dojo/json', 'dojo/_base/lang
    * limitations under the License.
    */
 
-  var _json = _interopRequireDefault(_dojoJson);
+  var _json2 = _interopRequireDefault(_dojoJson);
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
 
   var _connect = _interopRequireDefault(_dojo_baseConnect);
 
-  var _string = _interopRequireDefault(_dojoString);
-
   var _moment2 = _interopRequireDefault(_moment);
 
   var _utility = _interopRequireDefault(_Utility);
 
-  var errors, __class;
-
-  errors = [];
+  var errors = [];
 
   try {
     if (window.localStorage) {
-      errors = _json['default'].parse(window.localStorage.getItem('errorlog')) || [];
+      errors = _json2['default'].parse(window.localStorage.getItem('errorlog')) || [];
     }
-  } catch (e) {}
+  } catch (e) {} // eslint-disable-line
   /**
    * @class argos.ErrorManager
    * ErrorManager is a singleton that parses and stores SData error responses into localStorage.
    * @alternateClassName ErrorManager
    * @singleton
    */
-  __class = _lang['default'].setObject('argos.ErrorManager', {
-    //Localization
+  var __class = _lang['default'].setObject('argos.ErrorManager', {
+    // Localization
 
     /**
      * Text used in place of statusText for aborted errors.
@@ -71,7 +67,7 @@ define('argos/ErrorManager', ['exports', 'module', 'dojo/json', 'dojo/_base/lang
         '$key': new Date().getTime(),
         'Date': (0, _moment2['default'])().format(),
         'Description': description,
-        'Error': _json['default'].stringify(_utility['default'].sanitizeForJson(error))
+        'Error': _json2['default'].stringify(_utility['default'].sanitizeForJson(error))
       };
 
       this.checkCacheSize();
@@ -93,12 +89,11 @@ define('argos/ErrorManager', ['exports', 'module', 'dojo/json', 'dojo/_base/lang
         return;
       }
 
-      var errorDate = new Date(),
-          dateStamp = new Date().getTime(),
-          errorItem = {
+      var dateStamp = new Date().getTime();
+      var errorItem = {
         '$key': dateStamp,
         'Date': (0, _moment2['default'])().format(),
-        'Error': _json['default'].stringify(_utility['default'].sanitizeForJson({
+        'Error': _json2['default'].stringify(_utility['default'].sanitizeForJson({
           serverResponse: serverResponse,
           requestOptions: requestOptions,
           viewOptions: viewOptions,
@@ -139,14 +134,14 @@ define('argos/ErrorManager', ['exports', 'module', 'dojo/json', 'dojo/_base/lang
      * @param {String} json Json formatted string or array.
      * @return {Object} Javascript object from json string.
      */
-    fromJsonArray: function fromJsonArray(json) {
-      var o;
+    fromJsonArray: function fromJsonArray(_json) {
+      var o = undefined;
       try {
-        o = json.parse(json);
+        o = _json2['default'].parse(_json);
         o = o[0];
       } catch (e) {
         o = {
-          message: json,
+          message: _json,
           severity: ''
         };
       }
@@ -183,7 +178,7 @@ define('argos/ErrorManager', ['exports', 'module', 'dojo/json', 'dojo/_base/lang
     serializeValues: function serializeValues(obj) {
       for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
-          switch (typeof obj[key]) {
+          switch (typeof obj[key]) {//eslint-disable-line
             case 'undefined':
               obj[key] = 'undefined';
               break;
@@ -215,8 +210,8 @@ define('argos/ErrorManager', ['exports', 'module', 'dojo/json', 'dojo/_base/lang
      * and removing old errors as needed
      */
     checkCacheSize: function checkCacheSize() {
-      var errLength = errors.length,
-          cacheSizeIndex = this.errorCacheSizeMax - 1;
+      var errLength = errors.length;
+      var cacheSizeIndex = this.errorCacheSizeMax - 1;
 
       if (errLength > cacheSizeIndex) {
         this.removeError(0, errLength - cacheSizeIndex);
@@ -230,11 +225,9 @@ define('argos/ErrorManager', ['exports', 'module', 'dojo/json', 'dojo/_base/lang
      * @return {Object} Returns the first error item in the match set or null if none found
      */
     getError: function getError(key, value) {
-      var errorList, i;
+      var errorList = this.getAllErrors();
 
-      errorList = this.getAllErrors();
-
-      for (i = 0; i < errorList.length; i++) {
+      for (var i = 0; i < errorList.length; i++) {
         if (errorList[i][key] === parseInt(value, 10)) {
           return errorList[i];
         }
@@ -275,10 +268,10 @@ define('argos/ErrorManager', ['exports', 'module', 'dojo/json', 'dojo/_base/lang
     save: function save() {
       try {
         if (window.localStorage) {
-          window.localStorage.setItem('errorlog', _json['default'].stringify(errors));
+          window.localStorage.setItem('errorlog', _json2['default'].stringify(errors));
         }
       } catch (e) {
-        console.error(e);
+        console.error(e); //eslint-disable-line
       }
     }
   });

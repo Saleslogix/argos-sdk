@@ -1,4 +1,4 @@
-define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/Deferred', 'dojo/when', 'dojo/dom-construct', 'dojo/dom-class', 'dojo/string', './Store/SData', './Utility', './ErrorManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoDeferred, _dojoWhen, _dojoDomConstruct, _dojoDomClass, _dojoString, _StoreSData, _Utility, _ErrorManager) {
+define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/Deferred', 'dojo/when', 'dojo/string', './Store/SData', './Utility'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoDeferred, _dojoWhen, _dojoString, _StoreSData, _Utility) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -35,17 +35,11 @@ define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
 
   var _when = _interopRequireDefault(_dojoWhen);
 
-  var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
-
-  var _domClass = _interopRequireDefault(_dojoDomClass);
-
   var _string = _interopRequireDefault(_dojoString);
 
   var _SData = _interopRequireDefault(_StoreSData);
 
   var _utility = _interopRequireDefault(_Utility);
-
-  var _ErrorManager2 = _interopRequireDefault(_ErrorManager);
 
   var __class = (0, _declare['default'])('argos._SDataListMixin', null, {
     /**
@@ -147,10 +141,9 @@ define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
       });
     },
     _buildQueryExpression: function _buildQueryExpression() {
-      var options = this.options,
-          passed = options && (options.query || options.where);
-
-      return passed ? this.query ? '(' + _utility['default'].expand(this, passed) + ') and (' + this.query + ')' : '(' + _utility['default'].expand(this, passed) + ')' : this.query;
+      var options = this.options;
+      var passed = options && (options.query || options.where);
+      return passed ? this.query ? '(' + _utility['default'].expand(this, passed) + ') and (' + this.query + ')' : '(' + _utility['default'].expand(this, passed) + ')' : this.query; // eslint-disable-line
     },
     _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {
       var options = this.options;
@@ -195,31 +188,25 @@ define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
       return (query || '').replace(/"/g, '""');
     },
     hasMoreData: function hasMoreData() {
-      var start, count, total;
-      start = this.position;
-      count = this.pageSize;
-      total = this.total;
+      var start = this.position;
+      var count = this.pageSize;
+      var total = this.total;
 
       if (start > 0 && count > 0 && total >= 0) {
         return this.remaining === -1 || this.remaining > 0;
-      } else {
-        return true; // no way to determine, always assume more data
       }
+      return true; // no way to determine, always assume more data
     },
     getListCount: function getListCount(options) {
-      var store,
-          queryOptions,
-          queryResults,
-          def = new _Deferred['default']();
-
-      store = new _SData['default']({
-        service: App.services['crm'],
+      var def = new _Deferred['default']();
+      var store = new _SData['default']({
+        service: App.services.crm,
         resourceKind: this.resourceKind,
         contractName: this.contractName,
         scope: this
       });
 
-      queryOptions = {
+      var queryOptions = {
         count: 1,
         start: 0,
         select: '',
@@ -227,11 +214,11 @@ define('argos/_SDataListMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
         sort: ''
       };
 
-      queryResults = store.query(null, queryOptions);
+      var queryResults = store.query(null, queryOptions);
 
-      (0, _when['default'])(queryResults, function (relatedFeed) {
+      (0, _when['default'])(queryResults, function success() {
         def.resolve(queryResults.total);
-      }, function (err) {
+      }, function error(err) {
         def.reject(err);
       });
 

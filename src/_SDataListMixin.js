@@ -27,14 +27,11 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import Deferred from 'dojo/Deferred';
 import when from 'dojo/when';
-import domConstruct from 'dojo/dom-construct';
-import domClass from 'dojo/dom-class';
 import string from 'dojo/string';
 import SData from './Store/SData';
 import utility from './Utility';
-import ErrorManager from './ErrorManager';
 
-var __class = declare('argos._SDataListMixin', null, {
+const __class = declare('argos._SDataListMixin', null, {
   /**
    * @property request Object SData request passed into the store. Optional.
    */
@@ -99,20 +96,20 @@ var __class = declare('argos._SDataListMixin', null, {
    * @param {String} property Property name to extract from the entry. May be a path: `'Address.City'`.
    * @return {String}
    */
-  formatRelatedQuery: function(entry, fmt, property) {
+  formatRelatedQuery: function formatRelatedQuery(entry, fmt, property) {
     return string.substitute(fmt, [lang.getObject(property || '$key', false, entry)]);
   },
-  getContext: function() {
+  getContext: function getContext() {
     return lang.mixin(this.inherited(arguments), {
-      resourceKind: this.resourceKind
+      resourceKind: this.resourceKind,
     });
   },
-  _onRefresh: function(options) {
+  _onRefresh: function _onRefresh(options) {
     if (this.resourceKind && options.resourceKind === this.resourceKind) {
       this.refreshRequired = true;
     }
   },
-  createStore: function() {
+  createStore: function createStore() {
     return new SData({
       service: this.getConnection(),
       request: this.request,
@@ -130,17 +127,16 @@ var __class = declare('argos._SDataListMixin', null, {
       labelProperty: this.labelProperty,
       entityProperty: this.entityProperty,
       versionProperty: this.versionProperty,
-      scope: this
+      scope: this,
     });
   },
-  _buildQueryExpression: function() {
-    var options = this.options,
-      passed = options && (options.query || options.where);
-
-    return passed ? this.query ? '(' + utility.expand(this, passed) + ') and (' + this.query + ')' : '(' + utility.expand(this, passed) + ')' : this.query;
+  _buildQueryExpression: function _buildQueryExpression() {
+    const options = this.options;
+    const passed = options && (options.query || options.where);
+    return passed ? this.query ? '(' + utility.expand(this, passed) + ') and (' + this.query + ')' : '(' + utility.expand(this, passed) + ')' : this.query;// eslint-disable-line
   },
-  _applyStateToQueryOptions: function(queryOptions) {
-    var options = this.options;
+  _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {
+    const options = this.options;
     if (options) {
       if (options.select) {
         queryOptions.select = options.select;
@@ -175,52 +171,49 @@ var __class = declare('argos._SDataListMixin', null, {
       }
     }
   },
-  formatSearchQuery: function(query) {
+  formatSearchQuery: function formatSearchQuery(query) {
     return query;
   },
-  escapeSearchQuery: function(query) {
+  escapeSearchQuery: function escapeSearchQuery(query) {
     return (query || '').replace(/"/g, '""');
   },
-  hasMoreData: function() {
-    var start, count, total;
-    start = this.position;
-    count = this.pageSize;
-    total = this.total;
+  hasMoreData: function hasMoreData() {
+    const start = this.position;
+    const count = this.pageSize;
+    const total = this.total;
 
     if (start > 0 && count > 0 && total >= 0) {
       return this.remaining === -1 || this.remaining > 0;
-    } else {
-      return true; // no way to determine, always assume more data
     }
+    return true; // no way to determine, always assume more data
   },
-  getListCount: function(options) {
-    var store, queryOptions, queryResults, def = new Deferred();
-
-    store = new SData({
-      service: App.services['crm'],
+  getListCount: function getListCount(options) {
+    const def = new Deferred();
+    const store = new SData({
+      service: App.services.crm,
       resourceKind: this.resourceKind,
       contractName: this.contractName,
-      scope: this
+      scope: this,
     });
 
-    queryOptions = {
+    const queryOptions = {
       count: 1,
       start: 0,
       select: '',
       where: options.where,
-      sort: ''
+      sort: '',
     };
 
-    queryResults = store.query(null, queryOptions);
+    const queryResults = store.query(null, queryOptions);
 
-    when(queryResults, function(relatedFeed) {
+    when(queryResults, function success() {
       def.resolve(queryResults.total);
-    }, function(err) {
+    }, function error(err) {
       def.reject(err);
     });
 
     return def.promise;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._SDataListMixin', __class);

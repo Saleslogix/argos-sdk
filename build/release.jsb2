@@ -295,10 +295,6 @@
           "path": "../src-out/"
         },
         {
-          "text": "PersistentStorage.js",
-          "path": "../src-out/"
-        },
-        {
           "text": "ConfigureQuickActions.js",
           "path": "../src-out/Views/"
         },

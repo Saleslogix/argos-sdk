@@ -3,16 +3,14 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import string from 'dojo/string';
-import Convert from '../Convert';
 import Utility from '../Utility';
 import _GroupBySection from './_GroupBySection';
 
-var __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
+const __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
   name: 'DateTimeSectionFilter',
   displayNameText: 'Group By Value Section',
   width: 0,
-  constructor: function(o) {
+  constructor: function constructor(o) {
     this.groupByProperty = o.groupByProperty;
     this.sortDirection = o.sortDirection;
     if (o.width) {
@@ -20,39 +18,37 @@ var __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
     }
     this.init();
   },
-  init: function() {
+  init: function init() {
     this.sections = [];
   },
-  getSection: function(entry) {
-    var value;
+  getSection: function getSection(entry) {
     if ((this.groupByProperty) && (entry)) {
-      value = Utility.getValue(entry, this.groupByProperty);
+      let value = Utility.getValue(entry, this.groupByProperty);
       value = this._getValueFromWidth(value, this.width);
       if (value) {
         return {
           key: value,
-          title: value
+          title: value,
         };
-      } else {
-        return this.getDefaultSection();
       }
+      return this.getDefaultSection();
     }
     return null;
   },
-  getDefaultSection: function() {
+  getDefaultSection: function getDefaultSection() {
     return {
       key: 'Unknown',
-      title: 'Unknown'
+      title: 'Unknown',
     };
   },
-  _getValueFromWidth: function(value, width) {
+  _getValueFromWidth: function _getValueFromWidth(value, width) {
     if (value) {
       if (width > 0) {
-        value = value.toString().substring(0, width);
+        return value.toString().substring(0, width);
       }
     }
     return value;
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Groups.GroupByValueSection', __class);
