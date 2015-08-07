@@ -68,7 +68,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
     values = this.inherited(arguments);
     values = lang.mixin(values, {
       '$key': this.entry.$key,
-      '$etag': this.entry$etag,
+      '$etag': this.entry.$etag,
       '$name': this.entry.$name,
     });
 
