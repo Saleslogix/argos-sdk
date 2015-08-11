@@ -204,7 +204,8 @@ define('argos/_EditBase', [
          * `$` => the view instance
          */
         sectionBeginTemplate: new Simplate([
-            '<h2>',
+            '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
+            '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
             '{%: ($.title || $.options.title) %}',
             '</h2>',
             '<fieldset class="{%= ($.cls || $.options.cls) %}">'
@@ -314,6 +315,21 @@ define('argos/_EditBase', [
          */
         concurrencyErrorText: 'Another user has updated this field.',
         /**
+         * @property {String}
+         * ARIA label text for a collapsible section header
+        */
+        toggleCollapseText: 'toggle collapse',
+        /**
+         * @property {String}
+         * CSS class for the collapse button when in a expanded state
+        */
+        toggleCollapseClass: 'fa fa-chevron-down',
+        /**
+         * @property {String}
+         * CSS class for the collapse button when in a collapsed state
+        */
+        toggleExpandClass: 'fa fa-chevron-right',
+        /**
          * @property {Object}
          * Collection of the fields in the layout where the key is the `name` of the field.
          */
@@ -408,6 +424,21 @@ define('argos/_EditBase', [
         },
         _getStoreAttr: function() {
             return this.store || (this.store = this.createStore());
+        },
+        /**
+         * Toggles the collapsed state of the section.
+         */
+        toggleSection: function toggleSection(params) {
+          var node, button;
+          node = dom.byId(params.$source);
+          if (node) {
+            domClass.toggle(node, 'collapsed');
+            button = query('button', node)[0];
+            if (button) {
+              domClass.toggle(button, this.toggleCollapseClass);
+              domClass.toggle(button, this.toggleExpandClass);
+            }
+          }
         },
         /**
          * Handler for a fields on show event.
@@ -1342,4 +1373,3 @@ define('argos/_EditBase', [
     lang.setObject('Sage.Platform.Mobile._EditBase', __class);
     return __class;
 });
-
