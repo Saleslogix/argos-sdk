@@ -20,6 +20,7 @@ import Deferred from 'dojo/_base/Deferred';
 import win from 'dojo/_base/window';
 import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
+import dom from 'dojo/dom';
 import domConstruct from 'dojo/dom-construct';
 import query from 'dojo/query';
 import utility from './Utility';
@@ -180,7 +181,8 @@ const __class = declare('argos._EditBase', [View], {
    * `$` => the view instance
    */
   sectionBeginTemplate: new Simplate([
-    '<h2>',
+    '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
+    '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
     '{%: ($.title || $.options.title) %}',
     '</h2>',
     '<fieldset class="{%= ($.cls || $.options.cls) %}">',
@@ -290,6 +292,21 @@ const __class = declare('argos._EditBase', [View], {
    */
   concurrencyErrorText: 'Another user has updated this field.',
   /**
+   * @property {String}
+   * ARIA label text for a collapsible section header
+   */
+  toggleCollapseText: 'toggle collapse',
+  /**
+   * @property {String}
+   * CSS class for the collapse button when in a expanded state
+   */
+  toggleCollapseClass: 'fa fa-chevron-down',
+  /**
+   * @property {String}
+   * CSS class for the collapse button when in a collapsed state
+   */
+  toggleExpandClass: 'fa fa-chevron-right',
+  /**
    * @property {Object}
    * Collection of the fields in the layout where the key is the `name` of the field.
    */
@@ -312,7 +329,7 @@ const __class = declare('argos._EditBase', [View], {
    * Extends constructor to initialze `this.fields` to {}
    * @param o
    */
-  constructor: function constructor(/*o*/) {
+  constructor: function constructor( /*o*/ ) {
     this.fields = {};
   },
   /**
@@ -326,13 +343,14 @@ const __class = declare('argos._EditBase', [View], {
     this.inherited(arguments);
     this.processLayout(this._createCustomizedLayout(this.createLayout()));
 
-    query('div[data-field]', this.contentNode).forEach(function forEach(node) {
-      const name = domAttr.get(node, 'data-field');
-      const field = this.fields[name];
-      if (field) {
-        field.renderTo(node);
-      }
-    }, this);
+    query('div[data-field]', this.contentNode)
+      .forEach(function forEach(node) {
+        const name = domAttr.get(node, 'data-field');
+        const field = this.fields[name];
+        if (field) {
+          field.renderTo(node);
+        }
+      }, this);
   },
   /**
    * Extends init to also init the fields in `this.fields`.
@@ -384,6 +402,20 @@ const __class = declare('argos._EditBase', [View], {
     return this.store || (this.store = this.createStore());
   },
   /**
+   * Toggles the collapsed state of the section.
+   */
+  toggleSection: function toggleSection(params) {
+    const node = dom.byId(params.$source);
+    if (node) {
+      domClass.toggle(node, 'collapsed');
+      const button = query('button', node)[0];
+      if (button) {
+        domClass.toggle(button, this.toggleCollapseClass);
+        domClass.toggle(button, this.toggleExpandClass);
+      }
+    }
+  },
+  /**
    * Handler for a fields on show event.
    *
    * Removes the row-hidden css class.
@@ -433,7 +465,8 @@ const __class = declare('argos._EditBase', [View], {
    * @return {Function} Either calls the fields action or returns the inherited version which looks at the view for the action
    */
   invokeAction: function invokeAction(name, parameters, evt, node) {
-    const fieldNode = node && query(node, this.contentNode).parents('[data-field]');
+    const fieldNode = node && query(node, this.contentNode)
+      .parents('[data-field]');
     const field = this.fields[fieldNode.length > 0 && domAttr.get(fieldNode[0], 'data-field')];
 
     if (field && typeof field[name] === 'function') {
@@ -450,7 +483,8 @@ const __class = declare('argos._EditBase', [View], {
    * @return {Boolean} If the field has the named function defined
    */
   hasAction: function hasAction(name, evt, node) {
-    const fieldNode = node && query(node, this.contentNode).parents('[data-field]');
+    const fieldNode = node && query(node, this.contentNode)
+      .parents('[data-field]');
     const field = fieldNode && this.fields[fieldNode.length > 0 && domAttr.get(fieldNode[0], 'data-field')];
 
     if (field && typeof field[name] === 'function') {
@@ -512,7 +546,7 @@ const __class = declare('argos._EditBase', [View], {
     try {
       if (entry) {
         this.processData(entry);
-      } else {// eslint-disable-line
+      } else { // eslint-disable-line
         /* todo: show error message? */
       }
 
@@ -521,7 +555,7 @@ const __class = declare('argos._EditBase', [View], {
       /* this must take place when the content is visible */
       this.onContentChange();
     } catch (e) {
-      console.error(e);// eslint-disable-line
+      console.error(e); // eslint-disable-line
     }
   },
   _onGetError: function _onGetError(getOptions, error) {
@@ -581,7 +615,7 @@ const __class = declare('argos._EditBase', [View], {
         return error.status !== this.HTTP_STATUS.PRECONDITION_FAILED;
       },
       handle: function handleAlert(error, next) {
-        alert(this.getErrorMessage(error));// eslint-disable-line
+        alert(this.getErrorMessage(error)); // eslint-disable-line
         next();
       },
     }, {
@@ -624,7 +658,7 @@ const __class = declare('argos._EditBase', [View], {
 
     if (!layout.options) {
       layout.options = {
-          title: this.detailsText,
+        title: this.detailsText,
       };
     }
 
@@ -660,7 +694,7 @@ const __class = declare('argos._EditBase', [View], {
       this.processLayout(current);
     }
   },
-  onApplySectionNode: function onApplySectionNode(/*sectionNode, layout*/) {},
+  onApplySectionNode: function onApplySectionNode( /*sectionNode, layout*/ ) {},
   createRowContent: function createRowContent(layout, content) {
     const Ctor = FieldManager.get(layout.type);
     if (Ctor) {
@@ -926,7 +960,7 @@ const __class = declare('argos._EditBase', [View], {
       );
     }
   },
-  _applyStateToAddOptions: function _applyStateToAddOptions(/*addOptions*/) {},
+  _applyStateToAddOptions: function _applyStateToAddOptions( /*addOptions*/ ) {},
   onAddComplete: function onAddComplete(entry, result) {
     this.enable();
 
@@ -943,7 +977,7 @@ const __class = declare('argos._EditBase', [View], {
    * Handler for insert complete, checks for `this.options.returnTo` else it simply goes back.
    * @param entry
    */
-  onInsertCompleted: function onInsertCompleted(/*entry*/) {
+  onInsertCompleted: function onInsertCompleted( /*entry*/ ) {
     if (this.options && this.options.returnTo) {
       const returnTo = this.options.returnTo;
       const view = App.getView(returnTo);
@@ -1019,7 +1053,7 @@ const __class = declare('argos._EditBase', [View], {
   convertValues: function convertValues(values) {
     return values;
   },
-  _applyStateToPutOptions: function _applyStateToPutOptions(/*putOptions*/) {},
+  _applyStateToPutOptions: function _applyStateToPutOptions( /*putOptions*/ ) {},
   onPutComplete: function onPutComplete(entry, result) {
     this.enable();
 
@@ -1079,7 +1113,7 @@ const __class = declare('argos._EditBase', [View], {
    * Handler for update complete, checks for `this.options.returnTo` else it simply goes back.
    * @param entry
    */
-  onUpdateCompleted: function onUpdateCompleted(/*entry*/) {
+  onUpdateCompleted: function onUpdateCompleted( /*entry*/ ) {
     if (this.options && this.options.returnTo) {
       const returnTo = this.options.returnTo;
       const view = App.getView(returnTo);

@@ -1,4 +1,4 @@
-define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/connect', 'dojo/_base/array', 'dojo/_base/Deferred', 'dojo/_base/window', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/query', './Utility', './ErrorManager', './FieldManager', './View', 'dojo/NodeList-manipulate', './Fields/BooleanField', './Fields/DateField', './Fields/DecimalField', './Fields/DurationField', './Fields/HiddenField', './Fields/LookupField', './Fields/NoteField', './Fields/PhoneField', './Fields/SelectField', './Fields/SignatureField', './Fields/TextAreaField', './Fields/TextField'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseConnect, _dojo_baseArray, _dojo_baseDeferred, _dojo_baseWindow, _dojoDomAttr, _dojoDomClass, _dojoDomConstruct, _dojoQuery, _Utility, _ErrorManager, _FieldManager, _View, _dojoNodeListManipulate, _FieldsBooleanField, _FieldsDateField, _FieldsDecimalField, _FieldsDurationField, _FieldsHiddenField, _FieldsLookupField, _FieldsNoteField, _FieldsPhoneField, _FieldsSelectField, _FieldsSignatureField, _FieldsTextAreaField, _FieldsTextField) {
+define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/connect', 'dojo/_base/array', 'dojo/_base/Deferred', 'dojo/_base/window', 'dojo/dom-attr', 'dojo/dom-class', 'dojo/dom', 'dojo/dom-construct', 'dojo/query', './Utility', './ErrorManager', './FieldManager', './View', 'dojo/NodeList-manipulate', './Fields/BooleanField', './Fields/DateField', './Fields/DecimalField', './Fields/DurationField', './Fields/HiddenField', './Fields/LookupField', './Fields/NoteField', './Fields/PhoneField', './Fields/SelectField', './Fields/SignatureField', './Fields/TextAreaField', './Fields/TextField'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseConnect, _dojo_baseArray, _dojo_baseDeferred, _dojo_baseWindow, _dojoDomAttr, _dojoDomClass, _dojoDom, _dojoDomConstruct, _dojoQuery, _Utility, _ErrorManager, _FieldManager, _View, _dojoNodeListManipulate, _FieldsBooleanField, _FieldsDateField, _FieldsDecimalField, _FieldsDurationField, _FieldsHiddenField, _FieldsLookupField, _FieldsNoteField, _FieldsPhoneField, _FieldsSelectField, _FieldsSignatureField, _FieldsTextAreaField, _FieldsTextField) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -31,6 +31,8 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
   var _domAttr = _interopRequireDefault(_dojoDomAttr);
 
   var _domClass = _interopRequireDefault(_dojoDomClass);
+
+  var _dom = _interopRequireDefault(_dojoDom);
 
   var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
 
@@ -148,7 +150,7 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      *
      * `$` => the view instance
      */
-    sectionBeginTemplate: new Simplate(['<h2>', '{%: ($.title || $.options.title) %}', '</h2>', '<fieldset class="{%= ($.cls || $.options.cls) %}">']),
+    sectionBeginTemplate: new Simplate(['<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">', '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>', '{%: ($.title || $.options.title) %}', '</h2>', '<fieldset class="{%= ($.cls || $.options.cls) %}">']),
     /**
      * @property {Simplate}
      * HTML that ends a section
@@ -248,6 +250,21 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      */
     concurrencyErrorText: 'Another user has updated this field.',
     /**
+     * @property {String}
+     * ARIA label text for a collapsible section header
+     */
+    toggleCollapseText: 'toggle collapse',
+    /**
+     * @property {String}
+     * CSS class for the collapse button when in a expanded state
+     */
+    toggleCollapseClass: 'fa fa-chevron-down',
+    /**
+     * @property {String}
+     * CSS class for the collapse button when in a collapsed state
+     */
+    toggleExpandClass: 'fa fa-chevron-right',
+    /**
      * @property {Object}
      * Collection of the fields in the layout where the key is the `name` of the field.
      */
@@ -340,6 +357,20 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     },
     _getStoreAttr: function _getStoreAttr() {
       return this.store || (this.store = this.createStore());
+    },
+    /**
+     * Toggles the collapsed state of the section.
+     */
+    toggleSection: function toggleSection(params) {
+      var node = _dom['default'].byId(params.$source);
+      if (node) {
+        _domClass['default'].toggle(node, 'collapsed');
+        var button = (0, _query['default'])('button', node)[0];
+        if (button) {
+          _domClass['default'].toggle(button, this.toggleCollapseClass);
+          _domClass['default'].toggle(button, this.toggleExpandClass);
+        }
+      }
     },
     /**
      * Handler for a fields on show event.
