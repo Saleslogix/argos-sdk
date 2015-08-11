@@ -289,8 +289,8 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   isTabbed: true,
   /**
-   * @property {Boolean}
-   * Controls whether the view will render as a tab view or the previous list view
+   * @property {String}
+   * Controls how the view determines the quick action section by mapping this string with that on the detail view (should be overwritten)
    */
   quickActionSection: 'QuickActionsSection',
   /**
