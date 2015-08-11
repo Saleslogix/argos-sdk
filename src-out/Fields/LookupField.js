@@ -467,7 +467,7 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
      *
      * @param {Event} evt
      */
-    onNotificationTrigger: function onNotificationTrigger() {
+    onNotificationTrigger: function onNotificationTrigger() /*evt*/{
       var currentValue = this.getValue();
 
       if (this.previousValue !== currentValue) {
@@ -799,4 +799,3 @@ define('argos/Fields/LookupField', ['exports', 'module', 'dojo/_base/array', 'do
   _lang['default'].setObject('Sage.Platform.Mobile.Fields.LookupField', control);
   module.exports = _FieldManager2['default'].register('lookup', control);
 });
-/*evt*/

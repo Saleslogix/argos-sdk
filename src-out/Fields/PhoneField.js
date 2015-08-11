@@ -101,6 +101,7 @@ define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'd
      * @param {Event} evt Keyup event
      */
     _onKeyUp: function _onKeyUp() {
+      /*evt*/
       /*
       // temporarily removed: http://code.google.com/p/android/issues/detail?id=14519
       this.set('inputValue', format.phone(this.inputNode.value, this.getValue()));
@@ -112,4 +113,3 @@ define('argos/Fields/PhoneField', ['exports', 'module', 'dojo/_base/declare', 'd
   _lang['default'].setObject('Sage.Platform.Mobile.Fields.PhoneField', control);
   module.exports = _FieldManager2['default'].register('phone', control);
 });
-/*evt*/

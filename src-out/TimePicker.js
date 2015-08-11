@@ -1,4 +1,4 @@
-define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/connect', 'dojo/dom-attr', 'dojo/dom-class', 'dijit/_Widget', 'argos/_Templated', './Modal'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseConnect, _dojoDomAttr, _dojoDomClass, _dijit_Widget, _argos_Templated, _Modal) {
+define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/_base/connect', 'dojo/dom-attr', 'dojo/dom-class', 'dijit/_Widget', 'argos/_Templated', './Modal'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojo_baseConnect, _dojoDomAttr, _dojoDomClass, _dijit_Widget, _argos_Templated, _Modal) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -25,6 +25,8 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
 
   var _lang = _interopRequireDefault(_dojo_baseLang);
 
+  var _event = _interopRequireDefault(_dojo_baseEvent);
+
   var _connect = _interopRequireDefault(_dojo_baseConnect);
 
   var _domAttr = _interopRequireDefault(_dojoDomAttr);
@@ -39,8 +41,8 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
 
   var __class = (0, _declare['default'])('argos.TimePicker', [_Widget2['default'], _Templated2['default']], {
     widgetTemplate: new Simplate(['<div class="time-select panel">', '<div class="time-parts">', '{%! $.hourSelectTemplate %}', ' : ', '{%! $.minuteSelectTemplate %}', '{%! $.meridiemSelectTemplate %}', '</div>', '{% if ($.showSetTime) { %}', '<div class="button tertiary">{%= $.setTimeText %}</div>', '{% } %}', '</div>']),
-    hourSelectTemplate: new Simplate(['<div class="dropdown">', '<input class="hours" data-dojo-attach-point="hourNode"></input>', '<span class="fa fa-caret-down"></span>', '</div>']),
-    minuteSelectTemplate: new Simplate(['<div class="dropdown" data-action="toggleMinutes">', '<input class="minutes" data-dojo-attach-point="minuteNode"></input>', '<span class="fa fa-caret-down"></span>', '</div>']),
+    hourSelectTemplate: new Simplate(['<div class="dropdown" data-dojo-attach-point="hourNode">', '<input class="hours"></input>', '<span class="fa fa-caret-down"></span>', '</div>']),
+    minuteSelectTemplate: new Simplate(['<div class="dropdown" data-dojo-attach-point="minuteNode">', '<input class="minutes"></input>', '<span class="fa fa-caret-down"></span>', '</div>']),
     meridiemSelectTemplate: new Simplate(['<div class="toggle toggle-horizontal meridiem-field" data-action="toggleMeridiem" data-dojo-attach-point="meridiemNode">', '<span class="thumb horizontal"></span>', '<span class="toggleOn">{%= $.amText %}</span>', '<span class="toggleOff">{%= $.pmText %}</span>', '</div>']),
     listStartTemplate: new Simplate(['<ul class="list">']),
     listEndTemplate: new Simplate(['</ul>']),
@@ -66,7 +68,7 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
     createMinuteModal: function createMinuteModal() {
       this._minuteModal = new _Modal2['default']({ id: 'minute-modal', showBackdrop: false, positioning: 'right' });
       this._minuteModal.placeModal(this.domNode.offsetParent).setContentPicklist({ items: this.minuteValues, action: 'setSelectedMinute', actionScope: this });
-      // connect.connect(this.minutesNode, 'onclick', this, this.toggleMinutes);
+      _connect['default'].connect(this.minuteNode, 'onclick', this, this.toggleMinutes);
       return this;
     },
     getContent: function getContent() {
@@ -76,11 +78,13 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       var entity = params;
+      return entity;
     },
     setSelectedMinute: function getSelectedMinute() {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       var entity = params;
+      return entity;
     },
     setTimeValue: function setTimeValue() {
       if (!this._isTimeless()) {
@@ -95,10 +99,11 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
     show: function show() {
       this.createHourModal().createMinuteModal();
     },
-    toggleHours: function toggleHours(_ref) {
-      var target = _ref.target;
+    toggleHours: function toggleHours() {
+      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      this._hourModal.showModal(target);
+      this._hourModal.toggleModal(params.target);
+      _event['default'].stop(params);
     },
     toggleMeridiem: function toggleMeridiem() {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -111,10 +116,11 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
         _domAttr['default'].set(el, 'toggled', toggledValue);
       }
     },
-    toggleMinutes: function toggleMinutes(_ref2) {
-      var target = _ref2.target;
+    toggleMinutes: function toggleMinutes() {
+      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      this._minuteModal.showModal(target);
+      this._minuteModal.toggleModal(params.target);
+      _event['default'].stop(params);
     },
     _isTimeless: function _isTimeless() {
       return this.options && this.options.timeless || this.timeless;

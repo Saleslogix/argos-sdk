@@ -371,7 +371,7 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
     clearAppStatePromises: function clearAppStatePromises() {
       this._appStatePromises = [];
     },
-    onSetOrientation: function onSetOrientation() {},
+    onSetOrientation: function onSetOrientation() /*value*/{},
     /**
      * Loops through connections and calls {@link #registerService registerService} on each.
      */
@@ -552,7 +552,7 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
      * @param {Object} options Optional settings for the registered service.
      */
     registerService: function registerService(name, service) {
-      var options = arguments[2] === undefined ? {} : arguments[2];
+      var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
       var instance = service instanceof Sage.SData.Client.SDataService ? service : new Sage.SData.Client.SDataService(service);
 
@@ -576,7 +576,7 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
      * @param {Object} options Optional settings for the registered service.
      */
     registerConnection: function registerConnection(name, definition) {
-      var options = arguments[2] === undefined ? {} : arguments[2];
+      var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
       var instance = definition instanceof Sage.SData.Client.SDataService ? definition : new Sage.SData.Client.SDataService(definition);
 
@@ -821,12 +821,12 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
         _connect['default'].publish('/app/resize', []);
       }, 100);
     },
-    onRegistered: function onRegistered() {},
-    onBeforeViewTransitionAway: function onBeforeViewTransitionAway() {},
-    onBeforeViewTransitionTo: function onBeforeViewTransitionTo() {},
-    onViewTransitionAway: function onViewTransitionAway() {},
-    onViewTransitionTo: function onViewTransitionTo() {},
-    onViewActivate: function onViewActivate() {},
+    onRegistered: function onRegistered() /*view*/{},
+    onBeforeViewTransitionAway: function onBeforeViewTransitionAway() /*view*/{},
+    onBeforeViewTransitionTo: function onBeforeViewTransitionTo() /*view*/{},
+    onViewTransitionAway: function onViewTransitionAway() /*view*/{},
+    onViewTransitionTo: function onViewTransitionTo() /*view*/{},
+    onViewActivate: function onViewActivate() /*view, tag, data*/{},
     _onBeforeTransition: function _onBeforeTransition(evt) {
       var view = this.getView(evt.target);
       if (view) {
@@ -1034,7 +1034,7 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
 
       return forPath.concat(forSet);
     },
-    hasAccessTo: function hasAccessTo() {
+    hasAccessTo: function hasAccessTo() /*security*/{
       return true;
     },
     /**
@@ -1090,4 +1090,3 @@ define('argos/Application', ['exports', 'module', 'dojo/json', 'dojo/_base/array
   _lang['default'].setObject('Sage.Platform.Mobile.Application', __class);
   module.exports = __class;
 });
-/*value*/ /*view*/ /*view*/ /*view*/ /*view*/ /*view*/ /*view, tag, data*/ /*security*/

@@ -216,6 +216,10 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
 
       this.setDateObject(selectedDateMoment);
 
+      if (this.date.monthNumber !== (0, _moment2['default'])().month()) {
+        _domClass['default'].add(this.todayButton, 'selected');
+      }
+
       return this;
     },
     setDateObject: function setDateObject() {

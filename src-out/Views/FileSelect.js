@@ -99,7 +99,7 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
      * The onchange event will only fire once per file, so we must re-insert the dom node and re-attach the event.
      * @extends show
      */
-    show: function show() {
+    show: function show() /*options*/{
       this.inherited(arguments);
 
       if (!(0, _has['default'])('html5-file-api')) {
@@ -126,10 +126,10 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
       _domClass['default'].remove(this.btnUploadFiles, 'display-none');
       this.onUpdateProgress('');
     },
-    _browesForFiles: function _browesForFiles() {
+    _browesForFiles: function _browesForFiles() /*file*/{
       this.btnFileSelect.click();
     },
-    removeFile: function removeFile() {},
+    removeFile: function removeFile() /*fileId*/{},
     /**
      * Returns an array of objects with the properties of: file, fileName, and description.
      * @returns {Array}
@@ -241,4 +241,3 @@ define('argos/Views/FileSelect', ['exports', 'module', 'dojo/_base/declare', 'do
   _lang['default'].setObject('Sage.Platform.Mobile.Views.FileSelect', __class);
   module.exports = __class;
 });
-/*options*/ /*file*/ /*fileId*/

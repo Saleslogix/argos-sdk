@@ -74,7 +74,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
   widgetTemplate: new Simplate([
     '<label for="{%= $.name %}">{%: $.label %}</label>',
     '<button data-dojo-attach-point="triggerNode" data-action="showModal" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
-    //'<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
+    // '<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
     '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />',
   ]),
 
@@ -190,9 +190,10 @@ const control = declare('argos.Fields.DateField', [EditorField], {
 
     this.modal.showModal(params.$source);
   },
-  _onClick: function(evt) {
-     event.stop(evt);
-     this.showModal(params = {$source: evt.target});
+  _onClick: function _onClick(evt) {
+    event.stop(evt);
+    const params = {$source: evt.target};
+    this.showModal(params);
   },
   /**
    * Extends the parent {@link EditorField#validate validate} with a check that makes sure if

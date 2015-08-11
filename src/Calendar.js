@@ -265,6 +265,10 @@ const __class = declare('argos.Calendar', [View], {
 
     this.setDateObject(selectedDateMoment);
 
+    if (this.date.monthNumber !== moment().month()) {
+      domClass.add(this.todayButton, 'selected');
+    }
+
     return this;
   },
   setDateObject: function setDateObject(dateMoment = {}) {

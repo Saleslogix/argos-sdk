@@ -284,7 +284,7 @@ define('argos/ReUI/main', ['exports', 'module', 'dojo/_base/lang', 'dojo/on', 'd
      *   scroll: False if the transition should not scroll to the top, True otherwise.
      */
     show: function show(p) {
-      var o = arguments[1] === undefined ? {} : arguments[1];
+      var o = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
       if (context.transitioning) {
         return;

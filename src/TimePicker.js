@@ -19,6 +19,7 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
+import event from 'dojo/_base/event';
 import connect from 'dojo/_base/connect';
 import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
@@ -41,14 +42,14 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     '</div>',
   ]),
   hourSelectTemplate: new Simplate([
-    '<div class="dropdown">',
-      '<input class="hours" data-dojo-attach-point="hourNode"></input>',
+    '<div class="dropdown" data-dojo-attach-point="hourNode">',
+      '<input class="hours"></input>',
       '<span class="fa fa-caret-down"></span>',
     '</div>',
   ]),
   minuteSelectTemplate: new Simplate([
-    '<div class="dropdown" data-action="toggleMinutes">',
-      '<input class="minutes" data-dojo-attach-point="minuteNode"></input>',
+    '<div class="dropdown" data-dojo-attach-point="minuteNode">',
+      '<input class="minutes"></input>',
       '<span class="fa fa-caret-down"></span>',
     '</div>',
   ]),
@@ -118,7 +119,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     this._minuteModal = new Modal({ id: 'minute-modal', showBackdrop: false, positioning: 'right' });
     this._minuteModal.placeModal(this.domNode.offsetParent)
                      .setContentPicklist({ items: this.minuteValues, action: 'setSelectedMinute', actionScope: this });
-    // connect.connect(this.minutesNode, 'onclick', this, this.toggleMinutes);
+    connect.connect(this.minuteNode, 'onclick', this, this.toggleMinutes);
     return this;
   },
   getContent: function getContent() {
@@ -126,9 +127,11 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   },
   setSelectedHour: function getSelectedHour(params = {}) {
     const entity = params;
+    return entity;
   },
   setSelectedMinute: function getSelectedMinute(params = {}) {
     const entity = params;
+    return entity;
   },
   setTimeValue: function setTimeValue() {
     if (!this._isTimeless()) {
@@ -146,8 +149,9 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     this.createHourModal()
         .createMinuteModal();
   },
-  toggleHours: function toggleHours({ target }) {
-    this._hourModal.showModal(target);
+  toggleHours: function toggleHours(params = {}) {
+    this._hourModal.toggleModal(params.target);
+    event.stop(params);
   },
   toggleMeridiem: function toggleMeridiem(params = {}) {
     const el = params.$source;
@@ -158,8 +162,9 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
       domAttr.set(el, 'toggled', toggledValue);
     }
   },
-  toggleMinutes: function toggleMinutes({ target }) {
-    this._minuteModal.showModal(target);
+  toggleMinutes: function toggleMinutes(params = {}) {
+    this._minuteModal.toggleModal(params.target);
+    event.stop(params);
   },
   _isTimeless: function _isTimeless() {
     return (this.options && this.options.timeless) || this.timeless;

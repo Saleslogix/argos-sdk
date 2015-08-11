@@ -103,7 +103,7 @@ define('argos/Convert', ['exports', 'module', 'dojo/_base/lang', 'moment'], func
         {
             h = parseInt(match[3]);
             m = parseInt(match[4]);
-              if (match[2] === '-')
+             if (match[2] === '-')
                 utc.addMinutes((h * 60) + m);
             else
                 utc.addMinutes(-1 * ((h * 60) + m));

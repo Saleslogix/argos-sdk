@@ -87,7 +87,7 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
      *
      */
     widgetTemplate: new Simplate(['<label for="{%= $.name %}">{%: $.label %}</label>', '<button data-dojo-attach-point="triggerNode" data-action="showModal" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
-    //'<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
+    // '<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
     '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />']),
 
     iconClass: 'fa fa-calendar fa-lg',
@@ -129,7 +129,7 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
      * doesn't then current value is empties and the validation styling is added.
      * @param {Event} evt Event that caused change to fire.
      */
-    _onChange: function _onChange() {
+    _onChange: function _onChange() /*evt*/{
       var val = (0, _moment2['default'])(this.inputNode.value, this.dateFormatText).toDate();
 
       if (val) {
@@ -204,7 +204,8 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
     },
     _onClick: function _onClick(evt) {
       _event['default'].stop(evt);
-      this.showModal(params = { $source: evt.target });
+      var params = { $source: evt.target };
+      this.showModal(params);
     },
     /**
      * Extends the parent {@link EditorField#validate validate} with a check that makes sure if
@@ -224,4 +225,3 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
   _lang['default'].setObject('Sage.Platform.Mobile.Fields.DateField', control);
   module.exports = _FieldManager2['default'].register('date', control);
 });
-/*evt*/

@@ -282,7 +282,7 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
      * drawn signature accordingly to the ratio.
      * @param e
      */
-    onResize: function onResize() {
+    onResize: function onResize() /*e*/{
       var oldWidth = this.canvasNodeWidth;
       var oldHeight = this.canvasNodeHeight;
       this._sizeCanvas();
@@ -374,4 +374,3 @@ define('argos/Views/Signature', ['exports', 'module', 'dojo/_base/declare', 'doj
   _lang['default'].setObject('Sage.Platform.Mobile.Views.Signature', __class);
   module.exports = __class;
 });
-/*e*/

@@ -270,7 +270,7 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * Extends constructor to initialze `this.fields` to {}
      * @param o
      */
-    constructor: function constructor() {
+    constructor: function constructor() /*o*/{
       this.fields = {};
     },
     /**
@@ -470,7 +470,9 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       try {
         if (entry) {
           this.processData(entry);
-        } else {}
+        } else {// eslint-disable-line
+          /* todo: show error message? */
+        }
 
         _domClass['default'].remove(this.domNode, 'panel-loading');
 
@@ -616,7 +618,7 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
         this.processLayout(current);
       }
     },
-    onApplySectionNode: function onApplySectionNode() {},
+    onApplySectionNode: function onApplySectionNode() /*sectionNode, layout*/{},
     createRowContent: function createRowContent(layout, content) {
       var Ctor = _FieldManager2['default'].get(layout.type);
       if (Ctor) {
@@ -876,7 +878,7 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
         _Deferred['default'].when(store.add(entry, addOptions), this.onAddComplete.bind(this, entry), this.onAddError.bind(this, addOptions));
       }
     },
-    _applyStateToAddOptions: function _applyStateToAddOptions() {},
+    _applyStateToAddOptions: function _applyStateToAddOptions() /*addOptions*/{},
     onAddComplete: function onAddComplete(entry, result) {
       this.enable();
 
@@ -893,7 +895,7 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * Handler for insert complete, checks for `this.options.returnTo` else it simply goes back.
      * @param entry
      */
-    onInsertCompleted: function onInsertCompleted() {
+    onInsertCompleted: function onInsertCompleted() /*entry*/{
       if (this.options && this.options.returnTo) {
         var returnTo = this.options.returnTo;
         var view = App.getView(returnTo);
@@ -966,7 +968,7 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
     convertValues: function convertValues(values) {
       return values;
     },
-    _applyStateToPutOptions: function _applyStateToPutOptions() {},
+    _applyStateToPutOptions: function _applyStateToPutOptions() /*putOptions*/{},
     onPutComplete: function onPutComplete(entry, result) {
       this.enable();
 
@@ -1026,7 +1028,7 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
      * Handler for update complete, checks for `this.options.returnTo` else it simply goes back.
      * @param entry
      */
-    onUpdateCompleted: function onUpdateCompleted() {
+    onUpdateCompleted: function onUpdateCompleted() /*entry*/{
       if (this.options && this.options.returnTo) {
         var returnTo = this.options.returnTo;
         var view = App.getView(returnTo);
@@ -1221,6 +1223,3 @@ define('argos/_EditBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
   _lang['default'].setObject('Sage.Platform.Mobile._EditBase', __class);
   module.exports = __class;
 });
-/*o*/ // eslint-disable-line
-/* todo: show error message? */
-/*sectionNode, layout*/ /*addOptions*/ /*entry*/ /*putOptions*/ /*entry*/

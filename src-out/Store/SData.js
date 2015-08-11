@@ -233,7 +233,7 @@ define('argos/Store/SData', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
       return request;
     },
-    _onCancel: function _onCancel() {},
+    _onCancel: function _onCancel() /*deferred*/{},
     _onRequestFeedSuccess: function _onRequestFeedSuccess(queryDeferred, feed) {
       if (feed) {
         var items = _lang['default'].getObject(this.itemsProperty, false, feed);
@@ -340,7 +340,7 @@ define('argos/Store/SData', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * @returns {String|Number}
      */
     put: function put(object) {
-      var putOptions = arguments[1] === undefined ? {} : arguments[1];
+      var putOptions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
       var id = putOptions.id || this.getIdentity(object);
       var entity = putOptions.entity || this.entityName;
@@ -382,7 +382,7 @@ define('argos/Store/SData', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * @param {Boolean} addOptions.overwrite
      */
     add: function add(object) {
-      var addOptions = arguments[1] === undefined ? {} : arguments[1];
+      var addOptions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
       addOptions.overwrite = false;
       return this.put(object, addOptions);
@@ -391,7 +391,7 @@ define('argos/Store/SData', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
     /**
      * Not implemented in this store.
      */
-    remove: function remove() {},
+    remove: function remove() /*id*/{},
     /**
      * Queries the store for objects. This does not alter the store, but returns a
      * set of data from the store.
@@ -435,7 +435,7 @@ define('argos/Store/SData', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
     /**
      * Not implemented in this store.
      */
-    getChildren: function getChildren() {},
+    getChildren: function getChildren() /*parent, options*/{},
     /**
      * Returns any metadata about the object. This may include attribution,
      * cache directives, history, or version information.
@@ -464,4 +464,3 @@ define('argos/Store/SData', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
   _lang['default'].setObject('Sage.Platform.Mobile.Store.SData', __class);
   module.exports = __class;
 });
-/*deferred*/ /*id*/ /*parent, options*/
