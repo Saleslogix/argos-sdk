@@ -1,4 +1,4 @@
-define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/array', 'dojo/_base/lang', 'dojo/_base/connect', 'dojo/dom-construct', 'dojo/dom-style', 'dojo/query', 'dijit/_Widget', 'argos/_Templated', 'argos/ModalManager'], function (exports, module, _dojo_baseDeclare, _dojo_baseArray, _dojo_baseLang, _dojo_baseConnect, _dojoDomConstruct, _dojoDomStyle, _dojoQuery, _dijit_Widget, _argos_Templated, _argosModalManager) {
+define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/array', 'dojo/_base/lang', 'dojo/_base/connect', 'dojo/dom-construct', 'dojo/dom-style', 'dojo/query', 'dijit/_Widget', 'argos/_Templated'], function (exports, module, _dojo_baseDeclare, _dojo_baseArray, _dojo_baseLang, _dojo_baseConnect, _dojoDomConstruct, _dojoDomStyle, _dojoQuery, _dijit_Widget, _argos_Templated) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -44,9 +44,7 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
 
   var _Templated2 = _interopRequireDefault(_argos_Templated);
 
-  var _ModalManager = _interopRequireDefault(_argosModalManager);
-
-  var __class = (0, _declare['default'])('argos.Modal', [_Widget2['default'], _Templated2['default'], _ModalManager['default']], {
+  var __class = (0, _declare['default'])('argos.Modal', [_Widget2['default'], _Templated2['default']], {
     widgetTemplate: new Simplate(['<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode" data-action="clickModal">', '</div>']),
     modalBackdropTemplate: new Simplate(['<div class="modal-backdrop" style="height: {%= $.parentHeight %}">', '</div>']),
     pickListStartTemplate: new Simplate(['<ul class="picklist dropdown">']),

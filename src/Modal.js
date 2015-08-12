@@ -31,9 +31,8 @@ import domStyle from 'dojo/dom-style';
 import query from 'dojo/query';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
-import ModalManager from 'argos/ModalManager';
 
-const __class = declare('argos.Modal', [_Widget, _Templated, ModalManager], {
+const __class = declare('argos.Modal', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode" data-action="clickModal">',
     '</div>',
