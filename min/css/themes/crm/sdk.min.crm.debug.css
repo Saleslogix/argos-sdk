@@ -732,7 +732,6 @@ body > .viewContainer > .dialog {
   visibility: hidden;
   position: absolute;
   background-color: #f8f8f8;
-  z-index: 100;
   overflow: scroll;
   padding: 0 15px;
   top: 0;
@@ -748,6 +747,10 @@ body > .viewContainer > .dialog {
   text-indent: 10px;
   border: 1px solid #368ac0;
   border-bottom: 0;
+}
+.modal .picklist .selected {
+  background-color: #368ac0;
+  color: #fff;
 }
 .modal .button {
   background-color: transparent;
@@ -783,8 +786,8 @@ body > .viewContainer > .dialog {
   position: absolute;
   width: 100%;
   top: 0;
+  left: 0;
   opacity: 0.7;
-  z-index: 99;
 }
 .no-data {
   text-align: center;
@@ -1944,6 +1947,9 @@ body > .viewContainer > .toolbar,
 .time-parts {
   text-align: center;
 }
+.time-select {
+  margin: 5px 0;
+}
 .time-select .dropdown {
   color: #5c5c5c;
   width: 75px;
@@ -1969,6 +1975,7 @@ body > .viewContainer > .toolbar,
 .time-select .meridiem-field .thumb {
   height: 28px;
   width: 33px;
+  right: 0;
 }
 .time-select .meridiem-field .toggleOn {
   float: left;
@@ -1986,6 +1993,9 @@ body > .viewContainer > .toolbar,
 .time-select .tertiary {
   height: 44px;
   line-height: 44px;
+}
+.toggleStateOn > .thumb {
+  left: 0;
 }
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome

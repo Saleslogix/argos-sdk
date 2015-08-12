@@ -152,9 +152,11 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
     }
   },
-  getValuesFromModal: function getValuesFromModal(data = {}) {
+  getValuesFromModal: function getValuesFromModal(data = []) {
     if (this.modal) {
-      this.currentValue = this.validationValue = data.date;
+      data['datetime-calendar'].selectedDateMoment.hours(data['datetime-timePicker'].hours);
+      data['datetime-calendar'].selectedDateMoment.minutes(data['datetime-timePicker'].minutes);
+      this.currentValue = this.validationValue = data['datetime-calendar'].selectedDateMoment.toDate();
       this.inputNode.value = this.formatValue(this.currentValue);
     }
   },

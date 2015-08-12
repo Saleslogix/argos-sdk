@@ -21,7 +21,6 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import event from 'dojo/_base/event';
 import connect from 'dojo/_base/connect';
-import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
@@ -43,18 +42,18 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   ]),
   hourSelectTemplate: new Simplate([
     '<div class="dropdown" data-dojo-attach-point="hourNode">',
-      '<input class="hours"></input>',
+      '<input class="hours" data-dojo-attach-point="hours"></input>',
       '<span class="fa fa-caret-down"></span>',
     '</div>',
   ]),
   minuteSelectTemplate: new Simplate([
     '<div class="dropdown" data-dojo-attach-point="minuteNode">',
-      '<input class="minutes"></input>',
+      '<input class="minutes" data-dojo-attach-point="minutes"></input>',
       '<span class="fa fa-caret-down"></span>',
     '</div>',
   ]),
   meridiemSelectTemplate: new Simplate([
-    '<div class="toggle toggle-horizontal meridiem-field" data-action="toggleMeridiem" data-dojo-attach-point="meridiemNode">',
+    '<div class="toggle toggle-horizontal meridiem-field" data-dojo-attach-point="meridiemNode">',
         '<span class="thumb horizontal"></span>',
         '<span class="toggleOn">{%= $.amText %}</span>',
         '<span class="toggleOff">{%= $.pmText %}</span>',
@@ -79,39 +78,44 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   timeValue: null,
   _hourModal: null,
   _minuteModal: null,
+  _selectedHour: null,
+  _selectedMinute: null,
+  timeless: false,
   showSetTime: true,
   hourValues: [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
   ],
   minuteValues: [
-    5,
-    10,
-    15,
-    20,
-    25,
-    30,
-    35,
-    40,
-    45,
-    50,
-    55,
+    '00',
+    '05',
+    '10',
+    '15',
+    '20',
+    '25',
+    '30',
+    '35',
+    '40',
+    '45',
+    '50',
+    '55',
   ],
 
   createHourModal: function createHourModal() {
     this._hourModal = new Modal({ id: 'hour-modal', showBackdrop: false, positioning: 'right' });
     this._hourModal.placeModal(this.domNode.offsetParent)
                    .setContentPicklist({ items: this.hourValues, action: 'setSelectedHour', actionScope: this });
+    this.setSelectedHour({ target: this._hourModal.getContent().children[0] });
     connect.connect(this.hourNode, 'onclick', this, this.toggleHours);
     return this;
   },
@@ -119,25 +123,42 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     this._minuteModal = new Modal({ id: 'minute-modal', showBackdrop: false, positioning: 'right' });
     this._minuteModal.placeModal(this.domNode.offsetParent)
                      .setContentPicklist({ items: this.minuteValues, action: 'setSelectedMinute', actionScope: this });
+    this.setSelectedMinute({ target: this._minuteModal.getContent().children[0] });
     connect.connect(this.minuteNode, 'onclick', this, this.toggleMinutes);
     return this;
   },
   getContent: function getContent() {
+    this.hideModals();
+    this.setTimeValue();
     return this.timeValue;
   },
-  setSelectedHour: function getSelectedHour(params = {}) {
-    const entity = params;
-    return entity;
+  hideModals: function hideModals() {
+    this._hourModal.hideModal();
+    this._minuteModal.hideModal();
   },
-  setSelectedMinute: function getSelectedMinute(params = {}) {
-    const entity = params;
-    return entity;
+  setSelectedHour: function getSelectedHour({ target }) {
+    domClass.add(target, 'selected');
+    if (this._selectedHour) {
+      domClass.remove(this._selectedHour, 'selected');
+    }
+    this._selectedHour = target;
+    this._hourModal.hideModal();
+    this.hours.value = target.innerHTML;
+  },
+  setSelectedMinute: function getSelectedMinute({ target }) {
+    domClass.add(target, 'selected');
+    if (this._selectedMinute) {
+      domClass.remove(this._selectedMinute, 'selected');
+    }
+    this._selectedMinute = target;
+    this._minuteModal.hideModal();
+    this.minutes.value = target.innerHTML;
   },
   setTimeValue: function setTimeValue() {
     if (!this._isTimeless()) {
-      this.timeValue.hours = parseInt(this.hourNode.value, 10);
-      this.timeValue.minutes = parseInt(this.minuteNode.value, 10);
-      this.timeValue.isPM = this.is24hrTimeFormat ? (this.timeValue.hours > 11) : domAttr.get(this.meridiemNode, 'toggled') !== true;
+      this.timeValue.hours = parseInt(this.hours.value, 10);
+      this.timeValue.minutes = parseInt(this.minutes.value, 10);
+      this.timeValue.isPM = domClass.contains(this.meridiemNode, 'toggleStateOn');
 
       this.timeValue.hours = this.timeValue.isPM
          ? (this.timeValue.hours % 12) + 12
@@ -146,24 +167,34 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     return this;
   },
   show: function show() {
+    this.timeValue = {
+      isPM: false,
+    };
     this.createHourModal()
         .createMinuteModal();
+    connect.connect(this.meridiemNode, 'onclick', this, this.toggleMeridiem);
   },
   toggleHours: function toggleHours(params = {}) {
-    this._hourModal.toggleModal(params.target);
+    if (params.target === this.hourNode) {
+      this._hourModal.toggleModal(params.target);
+    } else {
+      // Means the icon was clicked, thus go to the parent node (the div)
+      this._hourModal.toggleModal(params.target.parentNode);
+    }
     event.stop(params);
   },
-  toggleMeridiem: function toggleMeridiem(params = {}) {
-    const el = params.$source;
-
-    if (el) {
-      const toggledValue = el && (domAttr.get(el, 'toggled') !== true);
-      domClass.toggle(el, 'toggleStateOn');
-      domAttr.set(el, 'toggled', toggledValue);
+  toggleMeridiem: function toggleMeridiem({ target }) {
+    if (target) {
+      domClass.toggle(this.meridiemNode, 'toggleStateOn');
     }
   },
   toggleMinutes: function toggleMinutes(params = {}) {
-    this._minuteModal.toggleModal(params.target);
+    if (params.target === this.minuteNode) {
+      this._minuteModal.toggleModal(params.target);
+    } else {
+      // Means the icon was clicked, thus go to the parent node (the div)
+      this._minuteModal.toggleModal(params.target.parentNode);
+    }
     event.stop(params);
   },
   _isTimeless: function _isTimeless() {

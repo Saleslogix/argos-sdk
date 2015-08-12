@@ -59,6 +59,14 @@
       "isDebug": true,
       "fileIncludes": [
         {
+          "text": "DateTimePicker.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "TimePicker.js",
+          "path": "../src-out/"
+        },
+        {
           "text": "Modal.js",
           "path": "../src-out/"
         },

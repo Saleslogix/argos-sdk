@@ -165,10 +165,12 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
       }
     },
     getValuesFromModal: function getValuesFromModal() {
-      var data = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+      var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
       if (this.modal) {
-        this.currentValue = this.validationValue = data.date;
+        data['datetime-calendar'].selectedDateMoment.hours(data['datetime-timePicker'].hours);
+        data['datetime-calendar'].selectedDateMoment.minutes(data['datetime-timePicker'].minutes);
+        this.currentValue = this.validationValue = data['datetime-calendar'].selectedDateMoment.toDate();
         this.inputNode.value = this.formatValue(this.currentValue);
       }
     },

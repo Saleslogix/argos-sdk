@@ -590,7 +590,6 @@ body > .viewContainer > .dialog {
   visibility: hidden;
   position: absolute;
   background-color: @background-lighter;
-  z-index: 100;
   overflow: scroll;
   padding: 0 15px;
   top: 0;
@@ -606,6 +605,11 @@ body > .viewContainer > .dialog {
     text-indent: 10px;
     border: 1px solid @color-azure;
     border-bottom: 0;
+
+    .selected {
+      background-color: @color-azure;
+      color: #fff;
+    }
   }
   .button {
     background-color: transparent;
@@ -643,8 +647,8 @@ body > .viewContainer > .dialog {
   position: absolute;
   width: 100%;
   top: 0;
+  left: 0;
   opacity: 0.7;
-  z-index: 99;
 }
 
 .no-data {

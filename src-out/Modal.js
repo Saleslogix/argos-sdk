@@ -45,11 +45,11 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
   var _Templated2 = _interopRequireDefault(_argos_Templated);
 
   var __class = (0, _declare['default'])('argos.Modal', [_Widget2['default'], _Templated2['default']], {
-    widgetTemplate: new Simplate(['<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode" data-action="clickModal">', '</div>']),
+    widgetTemplate: new Simplate(['<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode">', '</div>']),
     modalBackdropTemplate: new Simplate(['<div class="modal-backdrop" style="height: {%= $.parentHeight %}">', '</div>']),
     pickListStartTemplate: new Simplate(['<ul class="picklist dropdown">']),
     pickListEndTemplate: new Simplate(['</ul>']),
-    pickListItemTemplate: new Simplate(['<li class="listItem" data-action="{%= $.action %}">', '{%= $.item %}', '</li>']),
+    pickListItemTemplate: new Simplate(['<li class="listItem">', '{%= $.item %}', '</li>']),
     modalToolbarTemplate: new Simplate(['<div class="modal-toolbar">', '</div>']),
     buttonTemplate: new Simplate(['<div class="button tertiary">{%= $.text %}</div>']),
 
@@ -61,6 +61,7 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
     _contentObject: null,
     _backdrop: null,
     _isPicklist: false,
+    _cancelButton: null,
     showBackdrop: true,
     showToolbar: true,
     positioning: 'center',
@@ -115,18 +116,17 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
         maxWidth: this._parentNode.offsetWidth + 'px',
         top: position.top + 'px',
         left: position.left + 'px',
-        visibility: 'visible'
+        visibility: 'visible',
+        overflow: 'hidden',
+        zIndex: _domStyle['default'].get(this._parentNode, 'zIndex') + 10
       });
       return this;
     },
-    clickModal: function clickModal() {
-      event.preventDefault();
-    },
     confirm: function confirm() {
-      var data = [];
+      var data = {};
       _array['default'].forEach(this._content, function getData(content) {
         if (content) {
-          data.push(content.getContent());
+          data[content.id] = content.getContent();
         }
       }, this);
       _connect['default'].publish('/app/Modal/confirm', data);
@@ -137,10 +137,13 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       _domConstruct['default'].empty(this.modalNode);
       return this;
     },
+    getContent: function getContent() {
+      return this._contentObject;
+    },
     hideModal: function hideModal() {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      if (params && params.target && params.target.offsetParent === this.modalNode) {
+      if (params && params.target && params.target !== this._cancelButton && params.target.offsetParent === this.modalNode) {
         return this;
       }
 
@@ -161,16 +164,24 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
     placeBackdrop: function placeBackdrop() {
       var parentPanel = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      if (this.showBackdrop) {
-        var existingBackdrop = (0, _query['default'])('.modal-backdrop', parentPanel)[0];
-        if (!existingBackdrop) {
-          this._backdrop = _domConstruct['default'].toDom(this.modalBackdropTemplate.apply({ parentHeight: parentPanel.scrollHeight + 'px' }));
+      var existingBackdrop = (0, _query['default'])('.modal-backdrop', parentPanel)[0];
+      if (!existingBackdrop) {
+        this._backdrop = _domConstruct['default'].toDom(this.modalBackdropTemplate.apply({ parentHeight: parentPanel.scrollHeight + 'px' }));
+        if (!this.showBackdrop) {
           _domStyle['default'].set(this._backdrop, {
-            visbility: 'hidden'
+            backgroundColor: 'transparent'
           });
-          _domConstruct['default'].place(this._backdrop, parentPanel);
-          // connect.connect(this._backdrop, 'onclick', this, this.hideModal);
         }
+        var parentZValue = _domStyle['default'].get(parentPanel, 'zIndex');
+        _domStyle['default'].set(this._backdrop, {
+          visbility: 'hidden',
+          zIndex: parentZValue + 10
+        });
+        _domConstruct['default'].place(this._backdrop, parentPanel);
+        _connect['default'].connect(this._backdrop, 'onclick', this, this.hideModal);
+      } else {
+        this._backdrop = existingBackdrop;
+        _connect['default'].connect(this._backdrop, 'onclick', this, this.hideModal);
       }
       return this;
     },
@@ -178,9 +189,18 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       var parentPanel = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       this._parentNode = parentPanel;
+      if (parentPanel._parentNode) {
+        this._parentNode = parentPanel._parentNode;
+      }
       this.placeBackdrop(parentPanel);
       this._orientation = _connect['default'].subscribe('/app/setOrientation', this, this.hideModal);
       _domConstruct['default'].place(this.modalNode, parentPanel);
+      return this;
+    },
+    refreshOverflow: function refreshOverflow() {
+      _domStyle['default'].set(this.modalNode, {
+        overflow: 'scroll'
+      });
       return this;
     },
     setContent: function setContent() {
@@ -197,6 +217,7 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       if (this.showToolbar) {
         var modalToolbar = _domConstruct['default'].toDom(this.modalToolbarTemplate.apply(this));
         var cancelButton = _domConstruct['default'].toDom(this.buttonTemplate.apply({ text: this.cancelText }));
+        this._cancelButton = cancelButton;
         _connect['default'].connect(cancelButton, 'onclick', this, this.hideModal);
         _domConstruct['default'].place(cancelButton, modalToolbar);
         var confirmButton = _domConstruct['default'].toDom(this.buttonTemplate.apply({ text: this.confirmText }));
@@ -221,7 +242,7 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       var pickListEnd = _domConstruct['default'].toDom(this.pickListEndTemplate.apply());
 
       _array['default'].forEach(items, function addToModalList(item) {
-        _domConstruct['default'].place(this.pickListItemTemplate.apply({ item: item, action: action }, actionScope), pickListStart);
+        _domConstruct['default'].place(this.pickListItemTemplate.apply({ item: item }, this), pickListStart);
       }, this);
       _domConstruct['default'].place(pickListEnd, pickListStart);
       _domConstruct['default'].place(pickListStart, this.modalNode);
@@ -231,11 +252,8 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
         padding: 0,
         overflow: 'hidden'
       });
+      _connect['default'].connect(pickListStart, 'onclick', actionScope, actionScope[action]);
 
-      return this;
-    },
-    setParentListener: function setParentListener() {
-      this._parentListener = _connect['default'].connect(this._parentNode, 'onclick', this, this.hideModal);
       return this;
     },
     showContent: function showContent() {
@@ -253,7 +271,7 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       var target = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       if (this._parentNode) {
-        this.showContent().toggleBackdrop().toggleParentScroll().setParentListener().calculatePosition(target);
+        this.showContent().toggleBackdrop().toggleParentScroll().calculatePosition(target);
       }
       return this;
     },
