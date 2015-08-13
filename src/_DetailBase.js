@@ -780,7 +780,7 @@ const __class = declare('argos._DetailBase', [View], {
     const store = this.get('store');
 
     if (model) {
-      model.getEntry(this.options).then(function fulfilled(data) {
+      return model.getEntry(this.options).then(function fulfilled(data) {
         this._onGetComplete(data);
       }.bind(this), function rejected(err) {
         this._onGetError(null, err);
