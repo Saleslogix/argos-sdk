@@ -100,6 +100,11 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * Array holding the tab dom elements
    */
   tabs: null,
+  /**
+   * @property {Object}
+   * Moretab object that is used to aggregate extra tabs
+   */
+  moreTab: null,
 
   /**
    * Changes the tab state in the tab list and changes visibility of content.
@@ -124,19 +129,17 @@ const __class = declare('argos.TabWidget', [_Templated], {
         domStyle.set(this.tabMapping[selectedIndex], {
           display: 'block',
         });
-        const moreTab = query('.more-item', this.id)[0];
         if (array.indexOf(this.tabList.children, tab) > -1) {
           this.positionFocusState(tab);
           domClass.toggle(this.currentTab, 'selected');
           domClass.toggle(tab, 'selected');
           this.currentTab = tab;
-          if (moreTab) {
-            domClass.remove(moreTab, 'selected');
+          if (this.moreTab) {
+            domClass.remove(this.moreTab, 'selected');
           }
         } else {
-          if (moreTab) {
-            this.positionFocusState(moreTab);
-            domClass.add(moreTab, 'selected');
+          if (this.moreTab) {
+            this.tabFocusSelect(this.moreTab);
             domClass.toggle(this.currentTab, 'selected');
             domClass.toggle(tab, 'selected');
             this.currentTab = tab;
@@ -145,14 +148,17 @@ const __class = declare('argos.TabWidget', [_Templated], {
       }
     }
   },
+  tabFocusSelect: function tabFocusSelect(tab = {}) {
+    this.positionFocusState(tab);
+    domClass.add(tab, 'selected');
+  },
   /**
    * Changes the tab state in the tab list and changes visibility of content.
    * @param {Object} The event type and source.
    */
   toggleDropDown: function toggleDropDown(params) {
     const tab = params.$source;
-    const moreTab = query('.more-item', this.id)[0];
-    const icon = query('.fa', moreTab)[0];
+    const icon = query('.fa', this.moreTab)[0];
 
     if (tab) {
       if (domStyle.get(this.moreTabList, 'visibility') === 'hidden') {
@@ -164,10 +170,10 @@ const __class = declare('argos.TabWidget', [_Templated], {
         }
 
         if (!this.moreTabList.style.left) {
-          const posTop = moreTab.offsetTop;
-          const posLeft = moreTab.offsetLeft;
-          const width = parseInt(moreTab.offsetWidth, 10);
-          const height = parseInt(moreTab.offsetHeight, 10);
+          const posTop = this.moreTab.offsetTop;
+          const posLeft = this.moreTab.offsetLeft;
+          const width = parseInt(this.moreTab.offsetWidth, 10);
+          const height = parseInt(this.moreTab.offsetHeight, 10);
           const maxHeight = this.domNode.offsetHeight - this.domNode.offsetTop - posTop;
 
           domStyle.set(this.moreTabList, {
@@ -185,7 +191,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
         }
       }
     } else {
-      if (params.target !== moreTab) {
+      if (params.target !== this.moreTab) {
         domStyle.set(this.moreTabList, {
           visibility: 'hidden',
         });
@@ -199,11 +205,10 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * Reorganizes the tab when the screen orientation changes.
    */
   reorderTabs: function reorderTabs() {
-    const moreTab = query('.more-item', this.id)[0];
     this.inOverflow = false;
 
     if (this.moreTabList.children.length > 0) {
-      if (moreTab) {
+      if (this.moreTab) {
         this.tabList.children[this.tabList.children.length - 1].remove();
       }
       // Need to reference a different array when calling array.forEach since this.moreTabList.children is being modified, hence have arr be this.moreTabList.children
@@ -222,9 +227,8 @@ const __class = declare('argos.TabWidget', [_Templated], {
       }, this);
     }
 
-    if (moreTab && array.indexOf(this.moreTabList.children, this.currentTab) > -1) {
-      this.positionFocusState(moreTab);
-      domClass.add(moreTab, 'selected');
+    if (this.moreTab && array.indexOf(this.moreTabList.children, this.currentTab) > -1) {
+      this.tabFocusSelect(this.moreTab);
     } else {
       this.positionFocusState(this.currentTab);
     }
@@ -271,29 +275,35 @@ const __class = declare('argos.TabWidget', [_Templated], {
     return this;
   },
   /**
+   * Creates the moretab and sets the style to float right
+   */
+  createMoretab: function createMoretab() {
+    this.moreTab = domConstruct.toDom(this.moreTabItemTemplate.apply({
+      title: this.moreText + '...',
+    }, this));
+    domStyle.set(this.moreTab, { // eslint-disable-line
+      float: 'right',
+    });
+    domConstruct.place(this.moreTab, this.tabList);
+    return this;
+  },
+  /**
    * Checks the tab to see if it causes an overflow when placed in the tabList, if so then push it a new list element called More.
    * @param {Object} The tab object.
    */
   checkTabOverflow: function checkTabOverflow(tab) {
     if (tab.offsetTop > this.tabList.offsetTop) {
       if (!this.inOverflow) {
-        const moreTab = domConstruct.toDom(this.moreTabItemTemplate.apply({
-          title: this.moreText + '...',
-        }, this));
-        domStyle.set(moreTab, { // eslint-disable-line
-          float: 'right',
-        });
-        domConstruct.place(moreTab, this.tabList);
-
+        this.createMoretab();
         this.tabMoreIndex = array.indexOf(this.tabList.children, tab);
         this.tabList.children[this.tabMoreIndex].remove();
         if (this.tabList.children.length === 1 && !this.moreTabList.children.length) {
-          domClass.add(moreTab, 'selected');
+          domClass.add(this.moreTab, 'selected');
           this.currentTab = tab;
           domClass.toggle(tab, 'selected');
         }
 
-        if (moreTab.offsetTop > this.tabList.offsetTop) {
+        if (this.moreTab.offsetTop > this.tabList.offsetTop) {
           this.tabMoreIndex = this.tabMoreIndex - 1;
           const replacedTab = this.tabList.children[this.tabMoreIndex];
           this.tabList.children[this.tabMoreIndex].remove();
@@ -337,22 +347,18 @@ const __class = declare('argos.TabWidget', [_Templated], {
 
     if (this.currentTab) {
       if (this.tabList.children.length === 1 && this.moreTabList.children.length) {
-        const moreTab = query('.more-item', this.id)[0];
-        if (moreTab) {
-          this.positionFocusState(moreTab);
-          domClass.add(moreTab, 'selected');
+        if (this.moreTab) {
+          this.tabFocusSelect(this.moreTab);
         }
       } else {
-        this.positionFocusState(this.currentTab);
-        domClass.add(this.currentTab, 'selected');
+        this.tabFocusSelect(this.currentTab);
       }
     } else {
       this.currentTab = this.tabs[0];
       domStyle.set(this.tabMapping[0], {
         display: 'block',
       });
-      this.positionFocusState(this.currentTab);
-      domClass.add(this.currentTab, 'selected');
+      this.tabFocusSelect(this.currentTab);
     }
     return this;
   },
