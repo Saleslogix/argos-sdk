@@ -1852,7 +1852,6 @@ body > .viewContainer > .toolbar,
   min-height: 70px;
   border-bottom: 1px solid #c8cbd4;
   line-height: 77px;
-  position: relative;
   text-align: center;
 }
 .calendar-header .month,
@@ -1952,6 +1951,9 @@ body > .viewContainer > .toolbar,
 .time-select {
   padding: 5px 0;
 }
+.time-select .toggleStateOn > .thumb {
+  left: 0;
+}
 .time-select .dropdown {
   color: #5c5c5c;
   width: 75px;
@@ -1996,9 +1998,6 @@ body > .viewContainer > .toolbar,
 .time-select .tertiary {
   height: 44px;
   line-height: 44px;
-}
-.toggleStateOn > .thumb {
-  left: 0;
 }
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome

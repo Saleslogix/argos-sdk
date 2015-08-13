@@ -46,6 +46,14 @@ define('argos/DateTimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo
     getContent: function getContent() {
       return [this._calendarNode, this._timeSelectNode];
     },
+    hideChildModals: function hideChildModals() {
+      if (this._calendarNode.hideModals) {
+        this._calendarNode.hideModals();
+      }
+      if (this._timeSelectNode.hideModals) {
+        this._timeSelectNode.hideModals();
+      }
+    },
     show: function show() {
       var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 

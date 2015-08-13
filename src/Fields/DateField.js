@@ -15,7 +15,6 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import event from 'dojo/_base/event';
-import connect from 'dojo/_base/connect';
 import string from 'dojo/string';
 import domClass from 'dojo/dom-class';
 import format from '../Format';
@@ -152,7 +151,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
     }
   },
-  getValuesFromModal: function getValuesFromModal(data = []) {
+  getValuesFromModal: function getValuesFromModal(data = {}) {
     if (this.modal) {
       data['datetime-calendar'].selectedDateMoment.hours(data['datetime-timePicker'].hours);
       data['datetime-calendar'].selectedDateMoment.minutes(data['datetime-timePicker'].minutes);
@@ -187,10 +186,9 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       this.modal.placeModal(this.domNode.offsetParent)
                 .setContentObject(this.dateTimePicker)
                 .setContentOptions(options);
-      this._modalListener = connect.subscribe('/app/Modal/confirm', this, this.getValuesFromModal);
     }
 
-    this.modal.showModal(params.$source);
+    this.modal.showModal(params.$source).then(this.getValuesFromModal.bind(this));
   },
   _onClick: function _onClick(evt) {
     event.stop(evt);

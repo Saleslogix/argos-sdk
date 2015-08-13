@@ -136,14 +136,14 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       this.date.selectedDateMoment = null;
     },
     createMonthModal: function createMonthModal() {
-      this._monthModal = new _Modal['default']({ id: 'month-modal', showBackdrop: false, positioning: 'right' });
+      this._monthModal = new _Modal['default']({ id: 'month-modal', showBackdrop: false, positioning: 'center', closeAction: 'hideMonthModal', actionScope: this });
       this._monthModal.placeModal(this.domNode.offsetParent).setContentPicklist({ items: this.monthsText, action: 'setSelectedMonth', actionScope: this, defaultValue: this.date.selectedDateMoment.format('MMMM') });
       this._currentMonth = this._monthModal.getSelected();
       this._todayMonth = this._currentMonth;
       return this;
     },
     createYearModal: function createYearModal() {
-      this._yearModal = new _Modal['default']({ id: 'year-modal', showBackdrop: false, positioning: 'right' });
+      this._yearModal = new _Modal['default']({ id: 'year-modal', showBackdrop: false, positioning: 'center', closeAction: 'hideYearModal', actionScope: this });
       this._yearModal.placeModal(this.domNode.offsetParent).setContentPicklist({ items: this.getYearRange(), action: 'setSelectedYear', actionScope: this, defaultValue: this.date.selectedDateMoment.format('YYYY') });
       this._currentYear = this._yearModal.getSelected();
       this._todayYear = this._currentYear;
@@ -168,6 +168,18 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
         items.push(i);
       }
       return items;
+    },
+    hideModals: function hideModals() {
+      this.hideYearModal();
+      this.hideMonthModal();
+    },
+    hideMonthModal: function hideMonthModal() {
+      _domClass['default'].remove(this.monthNode, 'selected');
+      this._monthModal.hideModal();
+    },
+    hideYearModal: function hideYearModal() {
+      _domClass['default'].remove(this.yearNode, 'selected');
+      this._yearModal.hideModal();
     },
     incrementMonth: function incrementMonth() {
       this.date.selectedDateMoment.add({ months: 1 });

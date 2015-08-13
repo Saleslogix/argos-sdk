@@ -1,4 +1,4 @@
-define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/array', 'dojo/_base/connect', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-prop', 'dojo/dom-style', 'dojo/query', 'dijit/_Widget', 'argos/_Templated'], function (exports, module, _dojo_baseDeclare, _dojo_baseArray, _dojo_baseConnect, _dojoDomClass, _dojoDomConstruct, _dojoDomProp, _dojoDomStyle, _dojoQuery, _dijit_Widget, _argos_Templated) {
+define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/array', 'dojo/_base/connect', 'dojo/Deferred', 'dojo/dom-class', 'dojo/dom-construct', 'dojo/dom-prop', 'dojo/dom-style', 'dojo/query', 'dijit/_Widget', 'argos/_Templated'], function (exports, module, _dojo_baseDeclare, _dojo_baseArray, _dojo_baseConnect, _dojoDeferred, _dojoDomClass, _dojoDomConstruct, _dojoDomProp, _dojoDomStyle, _dojoQuery, _dijit_Widget, _argos_Templated) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -32,6 +32,8 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
 
   var _connect = _interopRequireDefault(_dojo_baseConnect);
 
+  var _Deferred = _interopRequireDefault(_dojoDeferred);
+
   var _domClass = _interopRequireDefault(_dojoDomClass);
 
   var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
@@ -58,7 +60,6 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
     id: 'modal-template',
     _orientation: null,
     _parentNode: null,
-    _parentListener: null,
     _content: null,
     _contentObject: null,
     _backdrop: null,
@@ -66,9 +67,12 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
     _picklistSelected: null,
     _cancelButton: null,
     _eventConnections: [], // TODO: Clear connections upon modal destroy
+    _deferred: null,
     showBackdrop: true,
     showToolbar: true,
-    positioning: 'center',
+    closeAction: null,
+    actionScope: null,
+    positioning: '',
 
     cancelText: 'Cancel',
     confirmText: 'Confirm',
@@ -84,40 +88,54 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       if (this._isPicklist) {
         // This call needs to take place before positioning so that the width of the modal is accounted for
         _domStyle['default'].set(this.modalNode, {
-          minWidth: offsetWidth + 'px',
-          overflow: 'hidden'
+          minWidth: offsetWidth + 'px'
         });
-        position.border = _domStyle['default'].get(this._contentObject, 'borderWidth');
       }
+
+      this.refreshModalSize();
+
+      var parentHeight = _domProp['default'].get(this._parentNode, 'offsetHeight');
+      var parentWidth = _domProp['default'].get(this._parentNode, 'offsetWidth');
+      var parentScrollTop = _domProp['default'].get(this._parentNode, 'scrollTop');
+      var parentScrollHeight = _domProp['default'].get(this._parentNode, 'scrollHeight');
+      var modalHeight = _domProp['default'].get(this.modalNode, 'offsetHeight');
+      var modalWidth = _domProp['default'].get(this.modalNode, 'offsetWidth');
 
       switch (this.positioning) {
         case 'right':
           position.top = offsetTop + offsetHeight;
-          position.left = offsetLeft - (this.modalNode.offsetWidth - offsetWidth) - position.border;
+          position.left = offsetLeft - modalWidth + offsetWidth;
           break;
         case 'left':
           position.top = offsetTop + offsetHeight;
-          position.left = offsetLeft - position.border;
+          position.left = offsetLeft;
           break;
         case 'center':
-          position.top = this._parentNode.offsetHeight / 2 + this._parentNode.scrollTop - this.modalNode.offsetHeight / 2;
-          position.left = this._parentNode.offsetWidth / 2 - this.modalNode.offsetWidth / 2;
+          position.top = offsetTop + offsetHeight;
+          position.left = offsetLeft + (offsetWidth - modalWidth) / 2;
           break;
         default:
-          position.top = this._parentNode.offsetHeight / 2 + this._parentNode.scrollTop - this.modalNode.offsetHeight / 2;
-          position.left = this._parentNode.offsetWidth / 2 - this.modalNode.offsetWidth / 2;
+          position.top = (parentHeight - modalHeight) / 2 + parentScrollTop;
+          position.left = (parentWidth - modalWidth) / 2;
       }
 
-      if (position.top + this.modalNode.offsetHeight >= this._parentNode.scrollHeight) {
-        position.top = position.top - this.modalNode.offsetHeight - offsetHeight;
+      if (position.top + modalHeight >= parentScrollHeight) {
+        position.top = position.top - modalHeight - offsetHeight;
       }
-      if (position.top < this._parentNode.scrollTop) {
-        position.top = this._parentNode.offsetTop / 2 + this._parentNode.scrollTop;
-        _domStyle['default'].set(this.modalNode, {
-          maxHeight: this._parentNode.offsetHeight - this._parentNode.offsetTop + 'px',
-          overflowY: 'scroll'
-        });
+
+      if (position.top < parentScrollTop) {
+        position.top = parentScrollTop;
       }
+
+      _domStyle['default'].set(this.modalNode, {
+        maxWidth: parentWidth + 'px',
+        top: position.top + 'px',
+        left: position.left + 'px',
+        zIndex: _domStyle['default'].get(this._parentNode, 'zIndex') + 10,
+        maxHeight: parentHeight + 'px',
+        visibility: 'visible',
+        overflow: 'auto'
+      });
 
       if (this._isPicklist) {
         if (position.top > offsetTop) {
@@ -131,13 +149,6 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
         }
       }
 
-      _domStyle['default'].set(this.modalNode, {
-        maxWidth: this._parentNode.offsetWidth + 'px',
-        top: position.top + 'px',
-        left: position.left + 'px',
-        visibility: 'visible',
-        zIndex: _domStyle['default'].get(this._parentNode, 'zIndex') + 10
-      });
       return this;
     },
     confirm: function confirm() {
@@ -147,7 +158,7 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
           data[content.id] = content.getContent();
         }
       }, this);
-      _connect['default'].publish('/app/Modal/confirm', data);
+      this._deferred.resolve(data);
       this.hideModal();
       return this;
     },
@@ -161,6 +172,12 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
     getSelected: function getSelected() {
       return this._picklistSelected;
     },
+    hideChildModals: function hideChildModals() {
+      if (this.getContent().hideChildModals) {
+        this.getContent().hideChildModals();
+      }
+      return this;
+    },
     hideModal: function hideModal() {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
@@ -169,13 +186,10 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
           return this;
         }
 
-        this.toggleBackdrop().toggleParentScroll();
+        this.toggleBackdrop().toggleParentScroll().hideChildModals();
         _domStyle['default'].set(this.modalNode, {
           visibility: 'hidden'
         });
-        if (this._parentListener) {
-          this._parentListener.remove();
-        }
       }
       return this;
     },
@@ -200,9 +214,13 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
           zIndex: parentZValue + 10
         });
         _domConstruct['default'].place(this._backdrop, parentPanel);
-        this._eventConnections.push(_connect['default'].connect(this._backdrop, 'onclick', this, this.hideModal));
       } else {
         this._backdrop = existingBackdrop;
+      }
+      if (this.actionScope && this.closeAction) {
+        // If close action is specified use that action, otherwise default to closing the modal
+        this._eventConnections.push(_connect['default'].connect(this._backdrop, 'onclick', this.actionScope, this.actionScope[this.closeAction]));
+      } else {
         this._eventConnections.push(_connect['default'].connect(this._backdrop, 'onclick', this, this.hideModal));
       }
       return this;
@@ -222,6 +240,17 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
     refreshOverflow: function refreshOverflow() {
       _domStyle['default'].set(this.modalNode, {
         overflow: 'scroll'
+      });
+      return this;
+    },
+    refreshModalSize: function refreshModalSize() {
+      _domStyle['default'].set(this.modalNode, {
+        width: 'auto',
+        height: 'auto',
+        maxHeight: '',
+        maxWidth: '',
+        top: '',
+        left: ''
       });
       return this;
     },
@@ -302,22 +331,23 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       var target = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       if (this._parentNode) {
+        this._deferred = new _Deferred['default']();
         this.showContent().toggleBackdrop().toggleParentScroll().calculatePosition(target);
       }
-      return this;
+      return this._deferred;
     },
     toggleBackdrop: function toggleBackdrop() {
-      if (this.showBackdrop) {
-        if (this._backdrop) {
-          if (_domStyle['default'].get(this._backdrop, 'visibility') === 'hidden') {
-            _domStyle['default'].set(this._backdrop, {
-              visibility: 'visible'
-            });
-          } else {
-            _domStyle['default'].set(this._backdrop, {
-              visibility: 'hidden'
-            });
-          }
+      if (this._backdrop) {
+        if (_domStyle['default'].get(this._backdrop, 'visibility') === 'hidden') {
+          _domStyle['default'].set(this._backdrop, {
+            visibility: 'visible',
+            height: _domProp['default'].get(this._parentNode, 'scrollHeight') + 'px',
+            zIndex: _domStyle['default'].get(this._parentNode, 'zIndex') + 5
+          });
+        } else {
+          _domStyle['default'].set(this._backdrop, {
+            visibility: 'hidden'
+          });
         }
       }
       return this;

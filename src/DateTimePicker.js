@@ -40,6 +40,14 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
   getContent: function getContent() {
     return [ this._calendarNode, this._timeSelectNode ];
   },
+  hideChildModals: function hideChildModals() {
+    if (this._calendarNode.hideModals) {
+      this._calendarNode.hideModals();
+    }
+    if (this._timeSelectNode.hideModals) {
+      this._timeSelectNode.hideModals();
+    }
+  },
   show: function show(options = {}) {
     if (!this._calendarNode && !this._timeSelectNode) {
       this._calendarNode = new Calendar({ id: 'datetime-calendar', isModal: this.isModal || options.isModal});

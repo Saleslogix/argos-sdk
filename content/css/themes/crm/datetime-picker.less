@@ -5,7 +5,6 @@
   min-height: 70px;
   border-bottom: 1px solid @color-lighter-slate;
   line-height: 77px;
-  position: relative;
   text-align: center;
 
   .month,
@@ -139,6 +138,10 @@
 .time-select {
   padding: 5px 0;
 
+  .toggleStateOn > .thumb {
+    left: 0;
+  }
+
   .dropdown {
     color: @color-graphite;
     width: 75px;
@@ -185,9 +188,6 @@
     height: 44px;
     line-height: 44px;
   }
-}
-.toggleStateOn > .thumb {
-  left: 0;
 }
 
 //

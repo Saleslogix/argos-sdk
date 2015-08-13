@@ -25,6 +25,7 @@
 import declare from 'dojo/_base/declare';
 import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
+import Deferred from 'dojo/Deferred';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domProp from 'dojo/dom-prop';
@@ -64,7 +65,6 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   id: 'modal-template',
   _orientation: null,
   _parentNode: null,
-  _parentListener: null,
   _content: null,
   _contentObject: null,
   _backdrop: null,
@@ -72,9 +72,12 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   _picklistSelected: null,
   _cancelButton: null,
   _eventConnections: [], // TODO: Clear connections upon modal destroy
+  _deferred: null,
   showBackdrop: true,
   showToolbar: true,
-  positioning: 'center',
+  closeAction: null,
+  actionScope: null,
+  positioning: '',
 
   cancelText: 'Cancel',
   confirmText: 'Confirm',
@@ -86,39 +89,53 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       // This call needs to take place before positioning so that the width of the modal is accounted for
       domStyle.set(this.modalNode, {
         minWidth: offsetWidth + 'px',
-        overflow: 'hidden',
       });
-      position.border = domStyle.get(this._contentObject, 'borderWidth');
     }
+
+    this.refreshModalSize();
+
+    const parentHeight = domProp.get(this._parentNode, 'offsetHeight');
+    const parentWidth = domProp.get(this._parentNode, 'offsetWidth');
+    const parentScrollTop = domProp.get(this._parentNode, 'scrollTop');
+    const parentScrollHeight = domProp.get(this._parentNode, 'scrollHeight');
+    const modalHeight = domProp.get(this.modalNode, 'offsetHeight');
+    const modalWidth = domProp.get(this.modalNode, 'offsetWidth');
 
     switch (this.positioning) {
       case 'right':
         position.top = offsetTop + offsetHeight;
-        position.left = offsetLeft - (this.modalNode.offsetWidth - offsetWidth) - position.border;
+        position.left = offsetLeft - modalWidth + offsetWidth;
       break;
       case 'left':
         position.top = offsetTop + offsetHeight;
-        position.left = offsetLeft - position.border;
+        position.left = offsetLeft;
       break;
       case 'center':
-        position.top = (this._parentNode.offsetHeight / 2) + this._parentNode.scrollTop - (this.modalNode.offsetHeight / 2);
-        position.left = this._parentNode.offsetWidth / 2 - this.modalNode.offsetWidth / 2;
+        position.top = offsetTop + offsetHeight;
+        position.left = offsetLeft + (offsetWidth - modalWidth) / 2;
       break;
       default:
-        position.top = (this._parentNode.offsetHeight / 2) + this._parentNode.scrollTop - (this.modalNode.offsetHeight / 2);
-        position.left = this._parentNode.offsetWidth / 2 - this.modalNode.offsetWidth / 2;
+        position.top = ((parentHeight - modalHeight) / 2) + parentScrollTop;
+        position.left = (parentWidth - modalWidth) / 2;
     }
 
-    if (position.top + this.modalNode.offsetHeight >= this._parentNode.scrollHeight) {
-      position.top = position.top - this.modalNode.offsetHeight - offsetHeight;
+    if (position.top + modalHeight >= parentScrollHeight) {
+      position.top = position.top - modalHeight - offsetHeight;
     }
-    if (position.top < this._parentNode.scrollTop) {
-      position.top = this._parentNode.offsetTop / 2 + this._parentNode.scrollTop;
-      domStyle.set(this.modalNode, {
-        maxHeight: this._parentNode.offsetHeight - this._parentNode.offsetTop + 'px',
-        overflowY: 'scroll',
-      });
+
+    if (position.top < parentScrollTop) {
+      position.top = parentScrollTop;
     }
+
+    domStyle.set(this.modalNode, {
+      maxWidth: parentWidth + 'px',
+      top: position.top + 'px',
+      left: position.left + 'px',
+      zIndex: domStyle.get(this._parentNode, 'zIndex') + 10,
+      maxHeight: parentHeight + 'px',
+      visibility: 'visible',
+      overflow: 'auto',
+    });
 
     if (this._isPicklist) {
       if (position.top > offsetTop) {
@@ -132,13 +149,6 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       }
     }
 
-    domStyle.set(this.modalNode, {
-      maxWidth: this._parentNode.offsetWidth + 'px',
-      top: position.top + 'px',
-      left: position.left + 'px',
-      visibility: 'visible',
-      zIndex: domStyle.get(this._parentNode, 'zIndex') + 10,
-    });
     return this;
   },
   confirm: function confirm() {
@@ -148,7 +158,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
         data[content.id] = content.getContent();
       }
     }, this);
-    connect.publish('/app/Modal/confirm', data);
+    this._deferred.resolve(data);
     this.hideModal();
     return this;
   },
@@ -162,6 +172,12 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   getSelected: function getSelected() {
     return this._picklistSelected;
   },
+  hideChildModals: function hideChildModals() {
+    if (this.getContent().hideChildModals) {
+      this.getContent().hideChildModals();
+    }
+    return this;
+  },
   hideModal: function hideModal(params = {}) {
     if (domStyle.get(this.modalNode, 'visibility') === 'visible') {
       if (params && params.target && params.target !== this._cancelButton && params.target.offsetParent === this.modalNode) {
@@ -169,13 +185,11 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       }
 
       this.toggleBackdrop()
-          .toggleParentScroll();
+          .toggleParentScroll()
+          .hideChildModals();
       domStyle.set(this.modalNode, {
         visibility: 'hidden',
       });
-      if (this._parentListener) {
-        this._parentListener.remove();
-      }
     }
     return this;
   },
@@ -198,9 +212,13 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
         zIndex: parentZValue + 10,
       });
       domConstruct.place(this._backdrop, parentPanel);
-      this._eventConnections.push(connect.connect(this._backdrop, 'onclick', this, this.hideModal));
     } else {
       this._backdrop = existingBackdrop;
+    }
+    if (this.actionScope && this.closeAction) {
+      // If close action is specified use that action, otherwise default to closing the modal
+      this._eventConnections.push(connect.connect(this._backdrop, 'onclick', this.actionScope, this.actionScope[this.closeAction]));
+    } else {
       this._eventConnections.push(connect.connect(this._backdrop, 'onclick', this, this.hideModal));
     }
     return this;
@@ -218,6 +236,17 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   refreshOverflow: function refreshOverflow() {
     domStyle.set(this.modalNode, {
       overflow: 'scroll',
+    });
+    return this;
+  },
+  refreshModalSize: function refreshModalSize() {
+    domStyle.set(this.modalNode, {
+      width: 'auto',
+      height: 'auto',
+      maxHeight: '',
+      maxWidth: '',
+      top: '',
+      left: '',
     });
     return this;
   },
@@ -283,25 +312,26 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   },
   showModal: function showModal(target = {}) {
     if (this._parentNode) {
+      this._deferred = new Deferred();
       this.showContent()
           .toggleBackdrop()
           .toggleParentScroll()
           .calculatePosition(target);
     }
-    return this;
+    return this._deferred;
   },
   toggleBackdrop: function toggleBackdrop() {
-    if (this.showBackdrop) {
-      if (this._backdrop) {
-        if (domStyle.get(this._backdrop, 'visibility') === 'hidden') {
-          domStyle.set(this._backdrop, {
-            visibility: 'visible',
-          });
-        } else {
-          domStyle.set(this._backdrop, {
-            visibility: 'hidden',
-          });
-        }
+    if (this._backdrop) {
+      if (domStyle.get(this._backdrop, 'visibility') === 'hidden') {
+        domStyle.set(this._backdrop, {
+          visibility: 'visible',
+          height: domProp.get(this._parentNode, 'scrollHeight') + 'px',
+          zIndex: domStyle.get(this._parentNode, 'zIndex') + 5,
+        });
+      } else {
+        domStyle.set(this._backdrop, {
+          visibility: 'hidden',
+        });
       }
     }
     return this;

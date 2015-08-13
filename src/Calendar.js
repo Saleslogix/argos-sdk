@@ -184,7 +184,7 @@ const __class = declare('argos.Calendar', [View], {
     this.date.selectedDateMoment = null;
   },
   createMonthModal: function createMonthModal() {
-    this._monthModal = new Modal({ id: 'month-modal', showBackdrop: false, positioning: 'right' });
+    this._monthModal = new Modal({ id: 'month-modal', showBackdrop: false, positioning: 'center', closeAction: 'hideMonthModal', actionScope: this });
     this._monthModal.placeModal(this.domNode.offsetParent)
                    .setContentPicklist({ items: this.monthsText, action: 'setSelectedMonth', actionScope: this, defaultValue: this.date.selectedDateMoment.format('MMMM') });
     this._currentMonth = this._monthModal.getSelected();
@@ -192,7 +192,7 @@ const __class = declare('argos.Calendar', [View], {
     return this;
   },
   createYearModal: function createYearModal() {
-    this._yearModal = new Modal({ id: 'year-modal', showBackdrop: false, positioning: 'right' });
+    this._yearModal = new Modal({ id: 'year-modal', showBackdrop: false, positioning: 'center', closeAction: 'hideYearModal', actionScope: this });
     this._yearModal.placeModal(this.domNode.offsetParent)
                    .setContentPicklist({ items: this.getYearRange(), action: 'setSelectedYear', actionScope: this, defaultValue: this.date.selectedDateMoment.format('YYYY')});
     this._currentYear = this._yearModal.getSelected();
@@ -219,6 +219,18 @@ const __class = declare('argos.Calendar', [View], {
       items.push(i);
     }
     return items;
+  },
+  hideModals: function hideModals() {
+    this.hideYearModal();
+    this.hideMonthModal();
+  },
+  hideMonthModal: function hideMonthModal() {
+    domClass.remove(this.monthNode, 'selected');
+    this._monthModal.hideModal();
+  },
+  hideYearModal: function hideYearModal() {
+    domClass.remove(this.yearNode, 'selected');
+    this._yearModal.hideModal();
   },
   incrementMonth: function incrementMonth() {
     this.date.selectedDateMoment.add({ months: 1 });

@@ -1,4 +1,4 @@
-define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/_base/connect', 'dojo/string', 'dojo/dom-class', '../Format', '../FieldManager', './EditorField', 'moment', '../DateTimePicker', '../Modal'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojo_baseConnect, _dojoString, _dojoDomClass, _Format, _FieldManager, _EditorField, _moment, _DateTimePicker, _Modal) {
+define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/string', 'dojo/dom-class', '../Format', '../FieldManager', './EditorField', 'moment', '../DateTimePicker', '../Modal'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseEvent, _dojoString, _dojoDomClass, _Format, _FieldManager, _EditorField, _moment, _DateTimePicker, _Modal) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -21,8 +21,6 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
   var _lang = _interopRequireDefault(_dojo_baseLang);
 
   var _event = _interopRequireDefault(_dojo_baseEvent);
-
-  var _connect = _interopRequireDefault(_dojo_baseConnect);
 
   var _string = _interopRequireDefault(_dojoString);
 
@@ -165,7 +163,7 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
       }
     },
     getValuesFromModal: function getValuesFromModal() {
-      var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+      var data = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       if (this.modal) {
         data['datetime-calendar'].selectedDateMoment.hours(data['datetime-timePicker'].hours);
@@ -199,10 +197,9 @@ define('argos/Fields/DateField', ['exports', 'module', 'dojo/_base/declare', 'do
         this.dateTimePicker = new _DateTimePicker2['default']({ id: 'datetime-picker-modal', isModal: true });
         this.modal = new _Modal2['default']({ id: 'date-time-modal' });
         this.modal.placeModal(this.domNode.offsetParent).setContentObject(this.dateTimePicker).setContentOptions(options);
-        this._modalListener = _connect['default'].subscribe('/app/Modal/confirm', this, this.getValuesFromModal);
       }
 
-      this.modal.showModal(params.$source);
+      this.modal.showModal(params.$source).then(this.getValuesFromModal.bind(this));
     },
     _onClick: function _onClick(evt) {
       _event['default'].stop(evt);
