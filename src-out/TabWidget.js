@@ -25,36 +25,34 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
   var __class = (0, _declare['default'])('argos.TabWidget', [_Templated2['default']], {
     /**
      * @property {Simplate}
-     * HTML that starts a new tab list
+     * HTML that defines a new tab list
      */
     tabContentTemplate: new Simplate(['{%! $.tabListTemplate %}']),
     /**
      * @property {Simplate}
-     * HTML that starts a new tab list
+     * HTML that defines a new tab list
      */
     tabListTemplate: new Simplate(['<ul class="tab-list" data-dojo-attach-point="tabList">', '</ul>']),
     /**
      * @property {Simplate}
-     * HTML that starts a new More tab list
+     * HTML that defines a new More tab list
      */
     moreTabListTemplate: new Simplate(['<ul class="more-tab-dropdown" data-dojo-attach-point="moreTabList">', '</ul>']),
     /**
      * @property {Simplate}
-     * HTML that starts a new animation bar
+     * HTML that defines a new animation bar
      */
     tabListAnimTemplate: new Simplate(['<div class="tab-focus-indicator"></div>', '<div class="animated-bar"></div>']),
     /**
      * @property {Simplate}
-     * HTML that creates a new tab to be placed in the tab list
+     * HTML that defines a new tab to be placed in the tab list
      *
-     * `$` => the view instance
      */
     tabListItemTemplate: new Simplate(['<li class="tab" data-action="selectedTab">', '{%: ($.title || $.options.title) %}', '</li>']),
     /**
      * @property {Simplate}
-     * HTML that creates a new tab to be placed in the more tab list
+     * HTML that defines a new tab to be placed in the more tab list
      *
-     * `$` => the view instance
      */
     moreTabItemTemplate: new Simplate(['<li class="tab more-item" data-action="toggleDropDown">', '{%: ($.title || $.options.title) %}', '<span class="fa fa-angle-right"></span>', '</li>']),
 
