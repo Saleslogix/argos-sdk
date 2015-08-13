@@ -25,7 +25,7 @@
           "path": "../libraries/sdata/"
         },
         {
-          "text": "pouchdb-3.6.0.min.js",
+          "text": "pouchdb-4.0.0.min.js",
           "path": "../libraries/PouchDB/"
         },
         {
