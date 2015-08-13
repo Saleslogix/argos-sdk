@@ -1,4 +1,4 @@
-define('argos/DateTimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/dom-construct', 'dijit/_Widget', 'argos/_Templated', './Calendar', './TimePicker'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojoDomConstruct, _dijit_Widget, _argos_Templated, _Calendar, _TimePicker) {
+define('argos/DateTimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/dom-construct', 'dijit/_Widget', 'argos/_Templated', './Calendar', './TimePicker'], function (exports, module, _dojo_baseDeclare, _dojoDomConstruct, _dijit_Widget, _argos_Templated, _Calendar, _TimePicker) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -22,8 +22,6 @@ define('argos/DateTimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo
    */
 
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
-
-  var _lang = _interopRequireDefault(_dojo_baseLang);
 
   var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
 
@@ -62,6 +60,5 @@ define('argos/DateTimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo
     }
   });
 
-  _lang['default'].setObject('Sage.Platform.Mobile.DateTimePicker', __class);
   module.exports = __class;
 });

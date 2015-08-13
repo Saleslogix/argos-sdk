@@ -24,9 +24,10 @@
  */
 import declare from 'dojo/_base/declare';
 import array from 'dojo/_base/array';
-import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
+import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
+import domProp from 'dojo/dom-prop';
 import domStyle from 'dojo/dom-style';
 import query from 'dojo/query';
 import _Widget from 'dijit/_Widget';
@@ -48,7 +49,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     '</ul>',
   ]),
   pickListItemTemplate: new Simplate([
-    '<li class="listItem">',
+    '<li class="listItem" data-value="{%= $.item %}">',
     '{%= $.item %}',
     '</li>',
   ]),
@@ -68,7 +69,9 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   _contentObject: null,
   _backdrop: null,
   _isPicklist: false,
+  _picklistSelected: null,
   _cancelButton: null,
+  _eventConnections: [], // TODO: Clear connections upon modal destroy
   showBackdrop: true,
   showToolbar: true,
   positioning: 'center',
@@ -76,23 +79,26 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   cancelText: 'Cancel',
   confirmText: 'Confirm',
 
-  calculatePosition: function calculatePosition({ offsetTop, offsetLeft, offsetRight, offsetWidth, offsetHeight }) {
+  calculatePosition: function calculatePosition({ offsetTop, offsetLeft, offsetWidth, offsetHeight }) {
     const position = {};
 
     if (this._isPicklist) {
+      // This call needs to take place before positioning so that the width of the modal is accounted for
       domStyle.set(this.modalNode, {
-        width: offsetWidth + 'px',
+        minWidth: offsetWidth + 'px',
+        overflow: 'hidden',
       });
+      position.border = domStyle.get(this._contentObject, 'borderWidth');
     }
 
     switch (this.positioning) {
       case 'right':
         position.top = offsetTop + offsetHeight;
-        position.left = offsetLeft - this.modalNode.offsetWidth + offsetWidth;
+        position.left = offsetLeft - (this.modalNode.offsetWidth - offsetWidth) - position.border;
       break;
       case 'left':
         position.top = offsetTop + offsetHeight;
-        position.left = offsetRight + this.modalNode.offsetWidth - offsetWidth;
+        position.left = offsetLeft - position.border;
       break;
       case 'center':
         position.top = (this._parentNode.offsetHeight / 2) + this._parentNode.scrollTop - (this.modalNode.offsetHeight / 2);
@@ -106,11 +112,24 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     if (position.top + this.modalNode.offsetHeight >= this._parentNode.scrollHeight) {
       position.top = position.top - this.modalNode.offsetHeight - offsetHeight;
     }
-    if (position.top < 0) {
-      position.top = this._parentNode.offsetTop / 2;
+    if (position.top < this._parentNode.scrollTop) {
+      position.top = this._parentNode.offsetTop / 2 + this._parentNode.scrollTop;
       domStyle.set(this.modalNode, {
         maxHeight: this._parentNode.offsetHeight - this._parentNode.offsetTop + 'px',
+        overflowY: 'scroll',
       });
+    }
+
+    if (this._isPicklist) {
+      if (position.top > offsetTop) {
+        domStyle.set(this._contentObject, {
+          borderTop: '0',
+        });
+      } else {
+        domStyle.set(this._contentObject, {
+          borderBottom: '0',
+        });
+      }
     }
 
     domStyle.set(this.modalNode, {
@@ -118,7 +137,6 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       top: position.top + 'px',
       left: position.left + 'px',
       visibility: 'visible',
-      overflow: 'hidden',
       zIndex: domStyle.get(this._parentNode, 'zIndex') + 10,
     });
     return this;
@@ -141,20 +159,24 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   getContent: function getContent() {
     return this._contentObject;
   },
+  getSelected: function getSelected() {
+    return this._picklistSelected;
+  },
   hideModal: function hideModal(params = {}) {
-    if (params && params.target && params.target !== this._cancelButton && params.target.offsetParent === this.modalNode) {
-      return this;
-    }
+    if (domStyle.get(this.modalNode, 'visibility') === 'visible') {
+      if (params && params.target && params.target !== this._cancelButton && params.target.offsetParent === this.modalNode) {
+        return this;
+      }
 
-    this.toggleBackdrop()
-        .toggleParentScroll();
-    domStyle.set(this.modalNode, {
-      visibility: 'hidden',
-    });
-    if (this._parentListener) {
-      this._parentListener.remove();
+      this.toggleBackdrop()
+          .toggleParentScroll();
+      domStyle.set(this.modalNode, {
+        visibility: 'hidden',
+      });
+      if (this._parentListener) {
+        this._parentListener.remove();
+      }
     }
-    event.preventDefault();
     return this;
   },
   noBackdrop: function noBackDrop() {
@@ -176,10 +198,10 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
         zIndex: parentZValue + 10,
       });
       domConstruct.place(this._backdrop, parentPanel);
-      connect.connect(this._backdrop, 'onclick', this, this.hideModal);
+      this._eventConnections.push(connect.connect(this._backdrop, 'onclick', this, this.hideModal));
     } else {
       this._backdrop = existingBackdrop;
-      connect.connect(this._backdrop, 'onclick', this, this.hideModal);
+      this._eventConnections.push(connect.connect(this._backdrop, 'onclick', this, this.hideModal));
     }
     return this;
   },
@@ -189,7 +211,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       this._parentNode = parentPanel._parentNode;
     }
     this.placeBackdrop(parentPanel);
-    this._orientation = connect.subscribe('/app/setOrientation', this, this.hideModal);
+    this._orientation = this._eventConnections.push(connect.subscribe('/app/setOrientation', this, this.hideModal));
     domConstruct.place(this.modalNode, parentPanel);
     return this;
   },
@@ -210,10 +232,10 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       const modalToolbar = domConstruct.toDom(this.modalToolbarTemplate.apply(this));
       const cancelButton = domConstruct.toDom(this.buttonTemplate.apply({ text: this.cancelText }));
       this._cancelButton = cancelButton;
-      connect.connect(cancelButton, 'onclick', this, this.hideModal);
+      this._eventConnections.push(connect.connect(cancelButton, 'onclick', this, this.hideModal));
       domConstruct.place(cancelButton, modalToolbar);
       const confirmButton = domConstruct.toDom(this.buttonTemplate.apply({ text: this.confirmText }));
-      connect.connect(confirmButton, 'onclick', this, this.confirm);
+      this._eventConnections.push(connect.connect(confirmButton, 'onclick', this, this.confirm));
       domConstruct.place(confirmButton, modalToolbar);
       domConstruct.place(modalToolbar, this.modalNode);
     }
@@ -223,12 +245,17 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     this._contentOptions = options;
     return this;
   },
-  setContentPicklist: function setContentPicklist({items, action, actionScope}) {
+  setContentPicklist: function setContentPicklist({items, action, actionScope, defaultValue}) {
     const pickListStart = domConstruct.toDom(this.pickListStartTemplate.apply());
     const pickListEnd = domConstruct.toDom(this.pickListEndTemplate.apply());
 
     array.forEach(items, function addToModalList(item) {
-      domConstruct.place(this.pickListItemTemplate.apply({item: item}, this), pickListStart);
+      const dom = domConstruct.toDom(this.pickListItemTemplate.apply({item: item}, this));
+      domConstruct.place(dom, pickListStart);
+      if (item.toString() === defaultValue) {
+        this._picklistSelected = dom;
+        domClass.add(dom, 'selected');
+      }
     }, this);
     domConstruct.place(pickListEnd, pickListStart);
     domConstruct.place(pickListStart, this.modalNode);
@@ -238,7 +265,10 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       padding: 0,
       overflow: 'hidden',
     });
-    connect.connect(pickListStart, 'onclick', actionScope, actionScope[action]);
+    if (this._picklistSelected) {
+      domProp.set(pickListStart, 'scrollTop', domProp.get(this._picklistSelected, 'offsetTop'));
+    }
+    this._eventConnections.push(connect.connect(pickListStart, 'onclick', actionScope, actionScope[action]));
 
     return this;
   },
@@ -285,20 +315,17 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     return this;
   },
   toggleParentScroll: function toggleParentScroll() {
-    if (this.positioning === 'center') {
-      if (domStyle.get(this._parentNode, 'overflow') === 'hidden') {
-        domStyle.set(this._parentNode, {
-          overflow: '',
-        });
-      } else {
-        domStyle.set(this._parentNode, {
-          overflow: 'hidden',
-        });
-      }
+    if (domStyle.get(this._parentNode, 'overflow') === 'hidden') {
+      domStyle.set(this._parentNode, {
+        overflow: '',
+      });
+    } else {
+      domStyle.set(this._parentNode, {
+        overflow: 'hidden',
+      });
     }
     return this;
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Modal', __class);
 export default __class;

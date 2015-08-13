@@ -18,7 +18,6 @@
  * @alternateClassName Date Time Select
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import domConstruct from 'dojo/dom-construct';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
@@ -53,5 +52,4 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.DateTimePicker', __class);
 export default __class;

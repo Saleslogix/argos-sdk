@@ -18,11 +18,14 @@
  * @alternateClassName Calendar
  */
 import declare from 'dojo/_base/declare';
+import array from 'dojo/_base/array';
 import lang from 'dojo/_base/lang';
 import query from 'dojo/query';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
+import domProp from 'dojo/dom-prop';
 import View from 'argos/View';
+import Modal from 'argos/Modal';
 import moment from 'moment';
 
 const __class = declare('argos.Calendar', [View], {
@@ -36,8 +39,8 @@ const __class = declare('argos.Calendar', [View], {
   calendarHeaderTemplate: new Simplate([
     '<div class="calendar-header">',
       '<span class="fa fa-angle-left" data-action="decrementMonth"></span>',
-      '<span class="month" data-dojo-attach-point="monthNode"></span>',
-      '<span class="year" data-dojo-attach-point="yearNode"></span>',
+      '<span class="month" data-dojo-attach-point="monthNode" data-action="toggleMonthModal"></span>',
+      '<span class="year" data-dojo-attach-point="yearNode" data-action="toggleYearModal"></span>',
       '<span class="fa fa-angle-right" data-action="incrementMonth"></span>',
     '</div>',
   ]),
@@ -88,19 +91,19 @@ const __class = declare('argos.Calendar', [View], {
   pmText: 'PM',
   clearText: 'Clear',
   todayText: 'Today',
-  monthsShortText: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
+  monthsText: [
+      'January',
+      'February',
+      'March',
+      'April',
       'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
   ],
   weekDaysShortText: [
       'Su',
@@ -118,6 +121,12 @@ const __class = declare('argos.Calendar', [View], {
   isModal: false,
   // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
   date: null,
+  _monthModal: null,
+  _currentMonth: null,
+  _todayMonth: null,
+  _yearModal: null,
+  _currentYear: null,
+  _todayYear: null,
 
   changeDay: function changeDay(params) {
     // TODO: Need to register this event to dojo/connect so that the activity feed and then change based on the date chosen.
@@ -174,6 +183,22 @@ const __class = declare('argos.Calendar', [View], {
     }
     this.date.selectedDateMoment = null;
   },
+  createMonthModal: function createMonthModal() {
+    this._monthModal = new Modal({ id: 'month-modal', showBackdrop: false, positioning: 'right' });
+    this._monthModal.placeModal(this.domNode.offsetParent)
+                   .setContentPicklist({ items: this.monthsText, action: 'setSelectedMonth', actionScope: this, defaultValue: this.date.selectedDateMoment.format('MMMM') });
+    this._currentMonth = this._monthModal.getSelected();
+    this._todayMonth = this._currentMonth;
+    return this;
+  },
+  createYearModal: function createYearModal() {
+    this._yearModal = new Modal({ id: 'year-modal', showBackdrop: false, positioning: 'right' });
+    this._yearModal.placeModal(this.domNode.offsetParent)
+                   .setContentPicklist({ items: this.getYearRange(), action: 'setSelectedYear', actionScope: this, defaultValue: this.date.selectedDateMoment.format('YYYY')});
+    this._currentYear = this._yearModal.getSelected();
+    this._todayYear = this._currentYear;
+    return this;
+  },
   decrementMonth: function decrementMonth() {
     this.date.selectedDateMoment.subtract({ months: 1 });
     this.refreshCalendar(this.date);
@@ -184,7 +209,16 @@ const __class = declare('argos.Calendar', [View], {
   goToToday: function goToToday() {
     domClass.remove(this.todayButton, 'selected');
     this.date.selectedDateMoment = this.date.todayMoment.clone();
-    this.refreshCalendar(this.date);
+    this.refreshCalendar(this.date)
+        .setDropdownsToday();
+  },
+  getYearRange: function getYearRange() {
+    const items = [];
+    const thisYear = this.date.todayMoment.year();
+    for (let i = thisYear - 50; i <= thisYear + 50; i++) {
+      items.push(i);
+    }
+    return items;
   },
   incrementMonth: function incrementMonth() {
     this.date.selectedDateMoment.add({ months: 1 });
@@ -198,6 +232,7 @@ const __class = declare('argos.Calendar', [View], {
     this.renderCalendar(date)
         .changeMonthShown(date)
         .changeYearShown(date);
+    return this;
   },
   renderCalendar: function renderCalendar({ todayMoment, selectedDateMoment }) {
     const daysInMonth = selectedDateMoment.daysInMonth();
@@ -280,6 +315,45 @@ const __class = declare('argos.Calendar', [View], {
 
     return this;
   },
+  setDropdownsToday: function setDropdownsToday() {
+    if (this._currentMonth !== this._todayMonth) {
+      domClass.remove(this._currentMonth, 'selected');
+      domClass.add(this._todayMonth, 'selected');
+      domProp.set(this._monthModal.getContent(), 'scrollTop', domProp.get(this._todayMonth, 'offsetTop'));
+    }
+    if (this._currentYear !== this._todayYear) {
+      domClass.remove(this._currentYear, 'selected');
+      domClass.add(this._todayYear, 'selected');
+      domProp.set(this._yearModal.getContent(), 'scrollTop', domProp.get(this._todayYear, 'offsetTop'));
+    }
+    return this;
+  },
+  setSelectedMonth: function setSelectedMonth({ target }) {
+    if (target) {
+      domClass.add(target, 'selected');
+      if (this._currentMonth) {
+        domClass.remove(this._currentMonth, 'selected');
+      }
+      this._currentMonth = target;
+      this.date.selectedDateMoment.month(array.indexOf(this._monthModal.getContent().children, target));
+      this.toggleMonthModal();
+      this.refreshCalendar(this.date);
+    }
+    return this;
+  },
+  setSelectedYear: function setSelectedYear({ target }) {
+    if (target) {
+      domClass.add(target, 'selected');
+      if (this._currentYear) {
+        domClass.remove(this._currentYear, 'selected');
+      }
+      this._currentYear = target;
+      this.date.selectedDateMoment.year(parseInt(target.innerHTML, 10));
+      this.toggleYearModal();
+      this.refreshCalendar(this.date);
+    }
+    return this;
+  },
   show: function show(options = {}) {
     if (!this.isModal) {
       this.inherited(arguments);
@@ -294,8 +368,18 @@ const __class = declare('argos.Calendar', [View], {
     if (this.isModal || this.options.isModal) {
       this.clearButton.style.display = 'none';
     }
+    this.createMonthModal()
+        .createYearModal();
 
     this.goToToday(this.date);
+  },
+  toggleMonthModal: function toggleMonthModal(params = {}) {
+    domClass.toggle(this.monthNode, 'selected');
+    this._monthModal.toggleModal(params.$source);
+  },
+  toggleYearModal: function toggleYearModal(params = {}) {
+    domClass.toggle(this.yearNode, 'selected');
+    this._yearModal.toggleModal(params.$source);
   },
 });
 
