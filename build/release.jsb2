@@ -63,8 +63,11 @@
       "isDebug": true,
       "fileIncludes": [
         {
-            "text": "_ModelBase.js",
-            "path": "../src-out/"
+          "text": "_ModelBase.js",
+          "path": "../src-out/"
+        },
+          "text": "TabWidget.js",
+          "path": "../src-out/"
         },
         {
           "text": "DomHelper.js",
