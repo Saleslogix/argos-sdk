@@ -108,10 +108,9 @@ const __class = declare('argos.TabWidget', [_Templated], {
 
   /**
    * Changes the tab state in the tab list and changes visibility of content.
-   * @param {Object} The event type and source.
+   * @param {Object} The tab to change to
    */
-  selectedTab: function selectedTab(params) {
-    const tab = params.$source;
+  changeTab: function changeTab(tab = {}) {
     if (tab !== this.currentTab) {
       const indexShift = this.tabList.children.length - 1;
       let currentIndex = array.indexOf(this.tabList.children, this.currentTab);
@@ -147,6 +146,14 @@ const __class = declare('argos.TabWidget', [_Templated], {
         }
       }
     }
+  },
+  /**
+   * Changes the tab state in the tab list and changes visibility of content.
+   * @param {Object} The event type and source.
+   */
+  selectedTab: function selectedTab(params) {
+    const tab = params.$source;
+    this.changeTab(tab);
   },
   tabFocusSelect: function tabFocusSelect(tab = {}) {
     this.positionFocusState(tab);

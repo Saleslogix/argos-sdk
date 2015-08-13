@@ -99,10 +99,11 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
 
     /**
      * Changes the tab state in the tab list and changes visibility of content.
-     * @param {Object} The event type and source.
+     * @param {Object} The tab to change to
      */
-    selectedTab: function selectedTab(params) {
-      var tab = params.$source;
+    changeTab: function changeTab() {
+      var tab = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
       if (tab !== this.currentTab) {
         var indexShift = this.tabList.children.length - 1;
         var currentIndex = _array['default'].indexOf(this.tabList.children, this.currentTab);
@@ -138,6 +139,14 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
           }
         }
       }
+    },
+    /**
+     * Changes the tab state in the tab list and changes visibility of content.
+     * @param {Object} The event type and source.
+     */
+    selectedTab: function selectedTab(params) {
+      var tab = params.$source;
+      this.changeTab(tab);
     },
     tabFocusSelect: function tabFocusSelect() {
       var tab = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
