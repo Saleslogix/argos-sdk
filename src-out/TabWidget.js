@@ -332,7 +332,7 @@ define('argos/TabWidget', ['exports', 'module', 'dojo/_base/declare', 'dojo/_bas
       var tabs = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
       _array['default'].forEach(tabs, function placeTab(tab) {
-        if (this.defaultTabIndex >= 0) {
+        if (this.defaultTabIndex && this.defaultTabIndex >= 0) {
           if (this.defaultTabIndex === this.tabList.children.length) {
             this.currentTab = tab;
             _domStyle['default'].set(this.tabMapping[_array['default'].indexOf(tabs, tab)], {
