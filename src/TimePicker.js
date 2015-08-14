@@ -42,13 +42,13 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   ]),
   hourSelectTemplate: new Simplate([
     '<div class="dropdown" data-dojo-attach-point="hourNode">',
-      '<input class="hours" data-dojo-attach-point="hours"></input>',
+      '<input class="hours" readonly="true" data-dojo-attach-point="hours"></input>',
       '<span class="fa fa-caret-down"></span>',
     '</div>',
   ]),
   minuteSelectTemplate: new Simplate([
     '<div class="dropdown" data-dojo-attach-point="minuteNode">',
-      '<input class="minutes" data-dojo-attach-point="minutes"></input>',
+      '<input class="minutes" readonly="true" data-dojo-attach-point="minutes"></input>',
       '<span class="fa fa-caret-down"></span>',
     '</div>',
   ]),

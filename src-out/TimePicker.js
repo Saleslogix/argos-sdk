@@ -39,8 +39,8 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
 
   var __class = (0, _declare['default'])('argos.TimePicker', [_Widget2['default'], _Templated2['default']], {
     widgetTemplate: new Simplate(['<div class="time-select panel">', '<div class="time-parts">', '{%! $.hourSelectTemplate %}', ' : ', '{%! $.minuteSelectTemplate %}', '{%! $.meridiemSelectTemplate %}', '</div>', '{% if ($.showSetTime) { %}', '<div class="button tertiary">{%= $.setTimeText %}</div>', '{% } %}', '</div>']),
-    hourSelectTemplate: new Simplate(['<div class="dropdown" data-dojo-attach-point="hourNode">', '<input class="hours" data-dojo-attach-point="hours"></input>', '<span class="fa fa-caret-down"></span>', '</div>']),
-    minuteSelectTemplate: new Simplate(['<div class="dropdown" data-dojo-attach-point="minuteNode">', '<input class="minutes" data-dojo-attach-point="minutes"></input>', '<span class="fa fa-caret-down"></span>', '</div>']),
+    hourSelectTemplate: new Simplate(['<div class="dropdown" data-dojo-attach-point="hourNode">', '<input class="hours" readonly="true" data-dojo-attach-point="hours"></input>', '<span class="fa fa-caret-down"></span>', '</div>']),
+    minuteSelectTemplate: new Simplate(['<div class="dropdown" data-dojo-attach-point="minuteNode">', '<input class="minutes" readonly="true" data-dojo-attach-point="minutes"></input>', '<span class="fa fa-caret-down"></span>', '</div>']),
     meridiemSelectTemplate: new Simplate(['<div class="toggle toggle-horizontal meridiem-field" data-dojo-attach-point="meridiemNode">', '<span class="thumb horizontal"></span>', '<span class="toggleOn">{%= $.amText %}</span>', '<span class="toggleOff">{%= $.pmText %}</span>', '</div>']),
     listStartTemplate: new Simplate(['<ul class="list">']),
     listEndTemplate: new Simplate(['</ul>']),
