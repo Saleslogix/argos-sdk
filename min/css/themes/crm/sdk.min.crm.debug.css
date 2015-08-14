@@ -1361,7 +1361,7 @@ textarea:focus {
 }
 .list-content > .actions-row > button:active,
 .group-content > .actions-row > button:active {
-  background-color: #69b5dd;
+  background-color: #50535a;
 }
 .group-content > h2 > button {
   color: #c8cbd4;
@@ -1417,8 +1417,9 @@ textarea:focus {
   display: inline;
 }
 .list-loading .list-more .button span {
-  padding: 0 0 0 20px;
-  color: #555;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #5c5c5c;
 }
 .actions-row > button {
   position: relative;
