@@ -15,14 +15,17 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import Deferred from 'dojo/_base/Deferred';
+import connect from 'dojo/_base/connect';
 import query from 'dojo/query';
 import dom from 'dojo/dom';
 import domClass from 'dojo/dom-class';
+import domStyle from 'dojo/dom-style';
 import domConstruct from 'dojo/dom-construct';
 import format from './Format';
 import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import View from './View';
+import TabWidget from './TabWidget';
 
 /**
  * @class argos._DetailBase
@@ -36,7 +39,7 @@ import View from './View';
  * @requires argos.Utility
  * @requires argos.ErrorManager
  */
-const __class = declare('argos._DetailBase', [View], {
+const __class = declare('argos._DetailBase', [View, TabWidget], {
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:
@@ -66,9 +69,13 @@ const __class = declare('argos._DetailBase', [View], {
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
-    '{%! $.loadingTemplate %}',
-    '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
+    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" data-dojo-attach-event="onclick:toggleDropDown" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+      '{%! $.loadingTemplate %}',
+      '{%! $.quickActionTemplate %}',
+      '<div class="panel-content" data-dojo-attach-point="contentNode">',
+        '{%! $.tabContentTemplate %}',
+        '{%! $.moreTabListTemplate %}',
+      '</div>',
     '</div>',
   ]),
   /**
@@ -89,19 +96,47 @@ const __class = declare('argos._DetailBase', [View], {
   ]),
   /**
    * @property {Simplate}
-   * HTML that starts a new section including the collapsible header
+   * HTML that creates the quick action list
+   */
+  quickActionTemplate: new Simplate([
+    '<div class="quick-actions" data-dojo-attach-point="quickActions"></div>',
+  ]),
+  /**
+   * @property {Simplate}
+   * HTML that creates the detail header displaying information about the tab list
+   *
+   * `$` => the view instance
+   */
+  detailHeaderTemplate: new Simplate([
+    '<div class="detail-header">',
+    '{%: $.value %}',
+    '</div>',
+  ]),
+  /**
+   * @property {Simplate}
+   * HTML that starts a new section
    *
    * `$` => the view instance
    */
   sectionBeginTemplate: new Simplate([
-    '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-    '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
-    '{%: ($.title || $.options.title) %}',
-    '</h2>',
+    '{% if (!$$.isTabbed) { %}',
+        '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
+        '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
+        '{%: ($.title || $.options.title) %}',
+        '</h2>',
+    '{% } %}',
     '{% if ($.list || $.options.list) { %}',
-    '<ul class="{%= ($.cls || $.options.cls) %}">',
+      '{% if ($.cls || $.options.cls) { %}',
+        '<ul class="{%= ($.cls || $.options.cls) %}">',
+      '{% } else { %}',
+        '<ul class="detailContent list">',
+      '{% } %}',
     '{% } else { %}',
-    '<div class="{%= ($.cls || $.options.cls) %}">',
+      '{% if ($.cls || $.options.cls) { %}',
+        '<div class="{%= ($.cls || $.options.cls) %}">',
+          '{% } else { %}',
+            '<div class="detailContent">',
+          '{% } %}',
     '{% } %}',
   ]),
   /**
@@ -249,14 +284,39 @@ const __class = declare('argos._DetailBase', [View], {
    */
   expose: false,
   /**
+   * @property {Boolean}
+   * Controls whether the view will render as a tab view or the previous list view
+   */
+  isTabbed: true,
+  /**
+   * @property {String}
+   * Controls how the view determines the quick action section by mapping this string with that on the detail view (should be overwritten)
+   */
+  quickActionSection: 'QuickActionsSection',
+  /**
    * @deprecated
    */
   editText: 'Edit',
   /**
    * @cfg {String}
+   * Font awesome icon to be used by the more list item
+   */
+  icon: 'fa fa-chevron',
+  /**
+   * @cfg {String}
+   * Information text that is concatenated with the entity type
+   */
+  informationText: 'Information',
+  /**
+   * @cfg {String}
    * Default title text shown in the top toolbar
    */
   titleText: 'Detail',
+  /**
+   * @cfg {String}
+   * Default text used in the header title, followed by information
+   */
+  entityText: 'Entity',
   /**
    * @property {String}
    * Helper string for a basic section header text
@@ -287,6 +347,11 @@ const __class = declare('argos._DetailBase', [View], {
    * CSS class for the collapse button when in a collapsed state
    */
   toggleExpandClass: 'fa fa-chevron-right',
+  /**
+   * @property {Object}
+   * dojo connect object associated to the setOrientation event
+   */
+  _orientation: null,
   /**
    * @cfg {String}
    * The view id to be taken to when the Edit button is pressed in the toolbar
@@ -417,6 +482,14 @@ const __class = declare('argos._DetailBase', [View], {
     }
   },
   /**
+   * Handler for the getting the detail resource type from the id and placing the header into the detail view..
+   * @private
+   */
+  placeDetailHeader: function placeDetailHeader() {
+    const value = this.entityText + ' ' + this.informationText;
+    domConstruct.place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
+  },
+  /**
    * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.
    * @param {Object} options The object published by the event.
    * @private
@@ -541,6 +614,8 @@ const __class = declare('argos._DetailBase', [View], {
 
     let sectionNode;
 
+    this.placeTabList(this.contentNode);
+
     for (let i = 0; i < rows.length; i++) {
       const current = rows[i];
       const include = this.expandExpression(current.include, entry);
@@ -566,10 +641,29 @@ const __class = declare('argos._DetailBase', [View], {
       }
 
       if (!sectionStarted) {
+        let section;
         sectionStarted = true;
-        const section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-        sectionNode = section.childNodes[1];
-        domConstruct.place(section, this.contentNode);
+        if (this.isTabbed) {
+          if (layout.name === this.quickActionSection) {
+            section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+            sectionNode = section;
+            domConstruct.place(section, this.quickActions);
+          } else {
+            const tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
+            section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+            sectionNode = section;
+            domStyle.set(section, {
+              display: 'none',
+            });
+            this.tabMapping.push(section);
+            this.tabs.push(tab);
+            domConstruct.place(section, this.contentNode);
+          }
+        } else {
+          section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+          sectionNode = section.childNodes[1];
+          domConstruct.place(section, this.contentNode);
+        }
       }
 
       const provider = current.provider || utility.getValue;
@@ -733,6 +827,8 @@ const __class = declare('argos._DetailBase', [View], {
 
     if (this.entry) {
       this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
+      this.createTabs(this.tabs);
+      this.placeDetailHeader(this.entry);
     } else {
       this.set('detailContent', '');
     }
@@ -853,6 +949,11 @@ const __class = declare('argos._DetailBase', [View], {
       this.clear();
     }
   },
+  onTransitionTo: function onTransitionTo() {
+    this.inherited(arguments);
+
+    this.orientation = connect.subscribe('/app/setOrientation', this, this.reorderTabs);
+  },
   /**
    * If a security breach is detected it sets the content to the notAvailableTemplate, otherwise it calls
    * {@link #requestData requestData} which starts the process sequence.
@@ -870,6 +971,10 @@ const __class = declare('argos._DetailBase', [View], {
    */
   clear: function clear() {
     this.set('detailContent', this.emptyTemplate.apply(this));
+    this.clearTabs();
+    if (this.quickActions) {
+      domConstruct.empty(this.quickActions);
+    }
 
     this._navigationOptions = [];
   },

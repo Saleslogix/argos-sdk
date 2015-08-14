@@ -1,4 +1,4 @@
-define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/Deferred', 'dojo/query', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-construct', './Format', './Utility', './ErrorManager', './View'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseDeferred, _dojoQuery, _dojoDom, _dojoDomClass, _dojoDomConstruct, _Format, _Utility, _ErrorManager, _View) {
+define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/lang', 'dojo/_base/Deferred', 'dojo/_base/connect', 'dojo/query', 'dojo/dom', 'dojo/dom-class', 'dojo/dom-style', 'dojo/dom-construct', './Format', './Utility', './ErrorManager', './View', './TabWidget'], function (exports, module, _dojo_baseDeclare, _dojo_baseLang, _dojo_baseDeferred, _dojo_baseConnect, _dojoQuery, _dojoDom, _dojoDomClass, _dojoDomStyle, _dojoDomConstruct, _Format, _Utility, _ErrorManager, _View, _TabWidget) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
@@ -22,11 +22,15 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
   var _Deferred = _interopRequireDefault(_dojo_baseDeferred);
 
+  var _connect = _interopRequireDefault(_dojo_baseConnect);
+
   var _query = _interopRequireDefault(_dojoQuery);
 
   var _dom = _interopRequireDefault(_dojoDom);
 
   var _domClass = _interopRequireDefault(_dojoDomClass);
+
+  var _domStyle = _interopRequireDefault(_dojoDomStyle);
 
   var _domConstruct = _interopRequireDefault(_dojoDomConstruct);
 
@@ -37,6 +41,8 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
   var _ErrorManager2 = _interopRequireDefault(_ErrorManager);
 
   var _View2 = _interopRequireDefault(_View);
+
+  var _TabWidget2 = _interopRequireDefault(_TabWidget);
 
   /**
    * @class argos._DetailBase
@@ -50,7 +56,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
    * @requires argos.Utility
    * @requires argos.ErrorManager
    */
-  var __class = (0, _declare['default'])('argos._DetailBase', [_View2['default']], {
+  var __class = (0, _declare['default'])('argos._DetailBase', [_View2['default'], _TabWidget2['default']], {
     /**
      * @property {Object}
      * Creates a setter map to html nodes, namely:
@@ -79,7 +85,7 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      *      resourceKind         set to data-resource-kind
      *
      */
-    widgetTemplate: new Simplate(['<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>', '{%! $.loadingTemplate %}', '<div class="panel-content" data-dojo-attach-point="contentNode"></div>', '</div>']),
+    widgetTemplate: new Simplate(['<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" data-dojo-attach-event="onclick:toggleDropDown" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>', '{%! $.loadingTemplate %}', '{%! $.quickActionTemplate %}', '<div class="panel-content" data-dojo-attach-point="contentNode">', '{%! $.tabContentTemplate %}', '{%! $.moreTabListTemplate %}', '</div>', '</div>']),
     /**
      * @property {Simplate}
      * HTML shown when no data is available.
@@ -94,11 +100,23 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
     loadingTemplate: new Simplate(['<div class="panel-loading-indicator">', '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>', '</div>']),
     /**
      * @property {Simplate}
-     * HTML that starts a new section including the collapsible header
+     * HTML that creates the quick action list
+     */
+    quickActionTemplate: new Simplate(['<div class="quick-actions" data-dojo-attach-point="quickActions"></div>']),
+    /**
+     * @property {Simplate}
+     * HTML that creates the detail header displaying information about the tab list
      *
      * `$` => the view instance
      */
-    sectionBeginTemplate: new Simplate(['<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">', '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>', '{%: ($.title || $.options.title) %}', '</h2>', '{% if ($.list || $.options.list) { %}', '<ul class="{%= ($.cls || $.options.cls) %}">', '{% } else { %}', '<div class="{%= ($.cls || $.options.cls) %}">', '{% } %}']),
+    detailHeaderTemplate: new Simplate(['<div class="detail-header">', '{%: $.value %}', '</div>']),
+    /**
+     * @property {Simplate}
+     * HTML that starts a new section
+     *
+     * `$` => the view instance
+     */
+    sectionBeginTemplate: new Simplate(['{% if (!$$.isTabbed) { %}', '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">', '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>', '{%: ($.title || $.options.title) %}', '</h2>', '{% } %}', '{% if ($.list || $.options.list) { %}', '{% if ($.cls || $.options.cls) { %}', '<ul class="{%= ($.cls || $.options.cls) %}">', '{% } else { %}', '<ul class="detailContent list">', '{% } %}', '{% } else { %}', '{% if ($.cls || $.options.cls) { %}', '<div class="{%= ($.cls || $.options.cls) %}">', '{% } else { %}', '<div class="detailContent">', '{% } %}', '{% } %}']),
     /**
      * @property {Simplate}
      * HTML that ends a section
@@ -191,14 +209,39 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      */
     expose: false,
     /**
+     * @property {Boolean}
+     * Controls whether the view will render as a tab view or the previous list view
+     */
+    isTabbed: true,
+    /**
+     * @property {String}
+     * Controls how the view determines the quick action section by mapping this string with that on the detail view (should be overwritten)
+     */
+    quickActionSection: 'QuickActionsSection',
+    /**
      * @deprecated
      */
     editText: 'Edit',
     /**
      * @cfg {String}
+     * Font awesome icon to be used by the more list item
+     */
+    icon: 'fa fa-chevron',
+    /**
+     * @cfg {String}
+     * Information text that is concatenated with the entity type
+     */
+    informationText: 'Information',
+    /**
+     * @cfg {String}
      * Default title text shown in the top toolbar
      */
     titleText: 'Detail',
+    /**
+     * @cfg {String}
+     * Default text used in the header title, followed by information
+     */
+    entityText: 'Entity',
     /**
      * @property {String}
      * Helper string for a basic section header text
@@ -229,6 +272,11 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      * CSS class for the collapse button when in a collapsed state
      */
     toggleExpandClass: 'fa fa-chevron-right',
+    /**
+     * @property {Object}
+     * dojo connect object associated to the setOrientation event
+     */
+    _orientation: null,
     /**
      * @cfg {String}
      * The view id to be taken to when the Edit button is pressed in the toolbar
@@ -363,6 +411,14 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
       }
     },
     /**
+     * Handler for the getting the detail resource type from the id and placing the header into the detail view..
+     * @private
+     */
+    placeDetailHeader: function placeDetailHeader() {
+      var value = this.entityText + ' ' + this.informationText;
+      _domConstruct['default'].place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
+    },
+    /**
      * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.
      * @param {Object} options The object published by the event.
      * @private
@@ -487,6 +543,8 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
       var sectionNode = undefined;
 
+      this.placeTabList(this.contentNode);
+
       for (var i = 0; i < rows.length; i++) {
         var current = rows[i];
         var include = this.expandExpression(current.include, entry);
@@ -512,10 +570,29 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         }
 
         if (!sectionStarted) {
+          var section = undefined;
           sectionStarted = true;
-          var section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-          sectionNode = section.childNodes[1];
-          _domConstruct['default'].place(section, this.contentNode);
+          if (this.isTabbed) {
+            if (layout.name === this.quickActionSection) {
+              section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+              sectionNode = section;
+              _domConstruct['default'].place(section, this.quickActions);
+            } else {
+              var tab = _domConstruct['default'].toDom(this.tabListItemTemplate.apply(layout, this));
+              section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+              sectionNode = section;
+              _domStyle['default'].set(section, {
+                display: 'none'
+              });
+              this.tabMapping.push(section);
+              this.tabs.push(tab);
+              _domConstruct['default'].place(section, this.contentNode);
+            }
+          } else {
+            section = _domConstruct['default'].toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+            sectionNode = section.childNodes[1];
+            _domConstruct['default'].place(section, this.contentNode);
+          }
         }
 
         var provider = current.provider || _utility['default'].getValue;
@@ -679,6 +756,8 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
 
       if (this.entry) {
         this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
+        this.createTabs(this.tabs);
+        this.placeDetailHeader(this.entry);
       } else {
         this.set('detailContent', '');
       }
@@ -796,6 +875,11 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
         this.clear();
       }
     },
+    onTransitionTo: function onTransitionTo() {
+      this.inherited(arguments);
+
+      this.orientation = _connect['default'].subscribe('/app/setOrientation', this, this.reorderTabs);
+    },
     /**
      * If a security breach is detected it sets the content to the notAvailableTemplate, otherwise it calls
      * {@link #requestData requestData} which starts the process sequence.
@@ -813,6 +897,10 @@ define('argos/_DetailBase', ['exports', 'module', 'dojo/_base/declare', 'dojo/_b
      */
     clear: function clear() {
       this.set('detailContent', this.emptyTemplate.apply(this));
+      this.clearTabs();
+      if (this.quickActions) {
+        _domConstruct['default'].empty(this.quickActions);
+      }
 
       this._navigationOptions = [];
     },

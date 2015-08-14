@@ -500,6 +500,9 @@ span {
   padding: 1em !important;
   min-height: 1em !important;
 }
+.panel .panel-loading-indicator div.row span {
+  float: none;
+}
 .content-loading > span {
   padding-left: 32px;
   background: url('../../../images/content-loading-light-green.gif') no-repeat scroll 12px 50%;
@@ -561,16 +564,16 @@ ul.action-list > li > a > div {
   float: left;
   margin: 0 5px 0 0;
   width: 39px;
-  height: 44px;
+  height: 30px;
   text-align: center;
   padding: 5px;
-  font-size: 1.5em;
+  font-size: 1.1em;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
 .action-list > li {
-  height: 44px;
+  height: 30px;
   line-height: 1em !important;
   cursor: pointer !important;
 }
@@ -683,6 +686,8 @@ body > .viewContainer > .dialog {
   border: none;
   border-top: 1px solid #6d84a2;
   padding: 0px 6px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   -webkit-border-bottom-left-radius: 5px;
   -webkit-border-bottom-right-radius: 5px;
   -moz-border-bottom-left-radius: 5px;
@@ -833,7 +838,8 @@ img {
   user-select: none;
 }
 .panel > ul > li,
-.panel-content > ul > li {
+.panel-content > ul > li,
+.quick-actions > ul > li {
   list-style: none;
   line-height: 28px;
   clear: both;
@@ -859,6 +865,7 @@ img {
 .panel-validation-summary > div,
 .panel-concurrency-summary > div,
 .panel-content > ul,
+.quick-actions > ul,
 .panel-validation-summary > ul,
 .panel-concurrency-summary > ul {
   margin: 0;
@@ -872,6 +879,7 @@ img {
   padding: 0 0 0 0;
 }
 .panel-content > ul > li,
+.quick-actions > ul > li,
 .panel-validation-summary > ul > li,
 .panel-concurrency-summary > ul > li {
   list-style: none;
@@ -880,6 +888,7 @@ img {
   position: relative;
 }
 .panel-content > ul > li > a,
+.quick-actions > ul > li > a,
 .panel-validation-summary > ul > li > a {
   padding: 1px;
   margin: 0 0 0 0.25em;
@@ -894,7 +903,7 @@ img {
   white-space: inherit;
 }
 .row.no-value {
-  display: none;
+  display: none !important;
   visibility: hidden;
 }
 .row > div > label,
@@ -918,6 +927,8 @@ img {
   position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
+  float: right;
+  text-align: right;
 }
 .href {
   color: #368ac0;
@@ -1160,7 +1171,7 @@ body {
 }
 a {
   color: #368ac0;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
 }
 h1,
@@ -1215,10 +1226,10 @@ body body > .viewContainer {
 .panel-content,
 .panel-loading-indicator {
   background-color: #ffffff;
+  padding: 0 15px;
 }
 .panel-content > h2 {
   border-bottom: 1px solid #c7cbce;
-  background-color: #d9dcde;
   color: #1a1a1a;
   padding: 5px 0 5px 0;
 }
@@ -1246,13 +1257,14 @@ body body > .viewContainer {
   background-color: #ffffff;
 }
 .panel-content > ul a,
+.quick-actions > ul a,
 .panel-validation-summary > ul a {
-  color: inherit;
+  color: #c8cbd4;
   text-decoration: none;
 }
 .panel-content > fieldset > .row,
 .panel-content > div > .row {
-  padding: 0.25em 0.25em 10px 0.25em;
+  padding: 0.25em 0 10px 0;
   min-height: 1.5em;
 }
 .panel-content > fieldset > .row > div > label,
@@ -1266,8 +1278,82 @@ body body > .viewContainer {
 .panel-content > fieldset > .row-edit:first-of-type {
   border-top: 0 none black;
 }
-.panel-content > .action-list {
-  background-color: #a7d4eb;
+.quick-actions > .action-list {
+  background-color: #313236;
+  padding: 10px 5px 15px 5px;
+}
+.tab-list > .tab,
+.more-tab-dropdown > .tab {
+  border-radius: 2px 2px 0 0;
+  cursor: pointer;
+  padding: 4px 6px 5px;
+  position: relative;
+  -webkit-transition: background-color 0.25s ease;
+  -moz-transition: background-color 0.25s ease;
+  -ms-transition: background-color 0.25s ease;
+  -o-transition: background-color 0.25s ease;
+  transition: background-color 0.25s ease;
+  color: #5c5c5c;
+  font-size: 15px;
+  font-weight: normal;
+  text-decoration: none;
+}
+.tab-list {
+  border-bottom: 1px solid #c8cbd4 !important;
+  height: 30px;
+  list-style: none outside none;
+  overflow: hidden;
+}
+.tab-list .tab {
+  display: inline-block;
+}
+.tab-list .selected {
+  color: #368ac0;
+}
+.more-tab-dropdown {
+  position: absolute;
+  visibility: hidden;
+  z-index: 10;
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 3px #888b94;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+.more-tab-dropdown .tab {
+  display: block;
+}
+.more-tab-dropdown .selected {
+  background-color: #368ac0;
+  color: #fff;
+}
+.detailContent {
+  padding-top: 15px !important;
+}
+.detailContent li {
+  border-bottom: 1px solid #c8cbd4;
+}
+.detailContent .row {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.detailContent.list {
+  padding-top: 0 !important;
+}
+.detail-header {
+  padding: 25px 0 10px 0 !important;
+  font-size: 18px;
+}
+.animated-bar {
+  height: 2px;
+  position: relative;
+  background-color: #368ac0;
+  -webkit-transition: left 0.25s ease;
+  -moz-transition: left 0.25s ease;
+  -ms-transition: left 0.25s ease;
+  -o-transition: left 0.25s ease;
+  transition: left 0.25s ease;
 }
 body > .viewContainer {
   border-left: 0px solid #dddee0;
@@ -1295,20 +1381,14 @@ body > .viewContainer {
 }
 .related-item-count {
   margin: 0 5px 0 0;
-  min-width: 44px;
-  height: 44px;
-  line-height: 44px;
+  min-width: 36px;
+  min-height: 36px;
+  line-height: 36px;
   display: inline-block;
   background-color: #368ac0;
   text-align: center;
   color: #fff;
-  padding: 0 5px;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
+  border-radius: 50%;
 }
 .related-item-label {
   color: #368ac0;
@@ -1344,7 +1424,7 @@ textarea:focus {
   background-color: #69b5dd;
 }
 .group-content > h2 > button {
-  color: #dddee0;
+  color: #c8cbd4;
   background-color: transparent;
 }
 .panel-content > h2 > button {
@@ -1448,7 +1528,7 @@ textarea:focus {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  color: #368ac0;
+  color: #888b94;
 }
 /* collapsed/expand icons */
 .group-content > h2 > button {
@@ -1498,10 +1578,12 @@ textarea:focus {
   margin: 0;
   padding: 0;
   position: absolute;
-  right: 4px;
+  right: 19px;
   display: block;
   height: 44px;
   width: 44px;
+  background-color: transparent;
+  border: 0;
 }
 .row-edit[data-field-type="picklist"] > div > input,
 .row-edit[data-field-type="lookup"] > div > input,

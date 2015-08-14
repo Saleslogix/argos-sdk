@@ -73,7 +73,7 @@ define('argos/_SDataEditMixin', ['exports', 'module', 'dojo/_base/declare', 'doj
       values = this.inherited(arguments);
       values = _lang['default'].mixin(values, {
         '$key': this.entry.$key,
-        '$etag': this.entry$etag,
+        '$etag': this.entry.$etag,
         '$name': this.entry.$name
       });
 

@@ -71,6 +71,10 @@
           "path": "../src-out/"
         },
         {
+          "text": "TabWidget.js",
+          "path": "../src-out/"
+        },
+        {
           "text": "DomHelper.js",
           "path": "../src-out/ReUI/"
         },
