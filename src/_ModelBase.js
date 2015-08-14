@@ -23,11 +23,21 @@ import Stateful from 'dojo/Stateful';
  */
 export default declare('argos._ModelBase', [Evented, Stateful], {
   metadata: null,
+  app: null,
+  entityName: '',
+  _appGetter: function _appGetter() {
+    return this.app || window.App;
+  },
+  _appSetter: function _appSetter(value) {
+    this.app = value;
+  },
   _metadataGetter: function _metadataGetter() {
     return this.metadata;
   },
   _metadataSetter: function _metadataSetter(value) {
     this.metadata = value;
   },
-  getEntry: function getEntry(/*options*/) {},
+  getEntry: function getEntry(options) { // eslint-disable-line
+  },
+  createStore: function createStore() {},
 });
