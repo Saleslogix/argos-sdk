@@ -333,7 +333,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
   */
   createTabs: function createTabs(tabs = []) {
     array.forEach(tabs, function placeTab(tab) {
-      if (this.defaultTabIndex >= 0) {
+      if (this.defaultTabIndex && this.defaultTabIndex >= 0) {
         if (this.defaultTabIndex === this.tabList.children.length) {
           this.currentTab = tab;
           domStyle.set(this.tabMapping[array.indexOf(tabs, tab)], {
