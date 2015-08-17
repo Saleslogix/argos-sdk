@@ -4,14 +4,18 @@ if [ -d "deploy" ]; then
     rm -rf deploy
 fi
 
-mkdir -p deploy/content/ext
-mkdir -p deploy/content/datejs
 mkdir -p deploy/content/javascript
 mkdir -p deploy/content/images
-mkdir -p deploy/content/css
+mkdir -p deploy/content/css/themes/fonts
+mkdir -p deploy/content/dojo/dojo
+mkdir -p deploy/content/dojo/selector
+mkdir -p deploy/content/dijit
+mkdir -p deploy/content/dojox
 
-# .NET Build Tool
-# mono tools/JsBit/JsBit.exe -p "build/release.jsb2" -d "."
+grunt clean:css
+grunt clean:js
+grunt babel
+grunt less
 
 # Java Build Tool
-$JAVA_HOME/bin/java -Dfile.encoding=UTF-8 -jar "tools/JSBuilder/JSBuilder2.jar" -v -p "build/release.jsb2" -d "."
+java -Dfile.encoding=UTF-8 -jar "tools/JSBuilder/JSBuilder2.jar" -v -p "build/release.jsb2" -d "."

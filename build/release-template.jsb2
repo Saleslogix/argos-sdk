@@ -7,9 +7,6 @@
 		"file": "content/javascript/argos-dependencies.js",
 		"isDebug": true,
 		"fileIncludes": [{
-		    "text": "json2.js",
-		    "path": "../libraries/"
-		},{
 			"text": "Simplate.js",
 			"path": "../libraries/"
 		},{
