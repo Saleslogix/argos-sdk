@@ -80,6 +80,10 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    */
   app: null,
   /**
+   * Localization ID for identifying the view's needed strings
+   */
+  localeId: '',
+  /**
    * May be used to specify the service name to use for data requests. Setting false will force the use of the default service.
    * @property {String/Boolean}
    */
@@ -87,6 +91,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   connectionName: false,
   constructor: function constructor(options) {
     this.app = (options && options.app) || window.App;
+    this.loadStrings();
   },
   startup: function startup() {
     this.inherited(arguments);
@@ -317,6 +322,17 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    */
   getSecurity: function getSecurity(/*access*/) {
     return this.security;
+  },
+  /**
+   * Loads the views strings from l20n
+   */
+  loadStrings: function loadStrings() {
+    const entity = App.localeContext.getEntitySync(this.localeId);
+    for (const attribute in entity.attributes) {
+      if (entity.attributes.hasOwnProperty(attribute)) {
+        this[attribute] = entity.attributes[attribute];
+      }
+    }
   },
 });
 
