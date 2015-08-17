@@ -20,11 +20,16 @@ import _TemplatedMixin from 'dijit/_TemplatedMixin';
 /**
  * @class argos._Templated
  * _Templated serves as an override for dijit Widgets to enable the use of
- * Simplates for templates.
+ * Simplates for templates it also holds the function to pull the resource strings from l20n.
  *
  * @alternateClassName _Templated
  */
 const __class = declare('argos._Templated', [_TemplatedMixin], {
+  /**
+   * Localization ID for identifying the objects needed strings
+   */
+  localeId: '',
+
   _stringRepl: function _stringRepl(tmpl) {
     return tmpl;
   },
@@ -48,6 +53,17 @@ const __class = declare('argos._Templated', [_TemplatedMixin], {
     }
 
     this.inherited(arguments);
+  },
+  /**
+   * Loads the views strings from l20n
+   */
+  loadStrings: function loadStrings() {
+    const entity = App.localeContext.getEntitySync(this.localeId);
+    for (const attribute in entity.attributes) {
+      if (entity.attributes.hasOwnProperty(attribute)) {
+        this[attribute] = entity.attributes[attribute];
+      }
+    }
   },
 });
 
