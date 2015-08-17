@@ -38,7 +38,7 @@
         },
         {
           "text": "browser-polyfill.min.js",
-          "path": "../libraries/babel"
+          "path": "../libraries/babel/"
         }
       ]
     },
@@ -64,9 +64,6 @@
       "fileIncludes": [
         {
           "text": "_ModelBase.js",
-          "path": "../src-out/"
-        },
-          "text": "TabWidget.js",
           "path": "../src-out/"
         },
         {
@@ -103,6 +100,10 @@
         },
         {
           "text": "_ErrorHandleMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "TabWidget.js",
           "path": "../src-out/"
         },
         {
@@ -324,35 +325,35 @@
         {
           "text": "ApplicationModule.js",
           "path": "../src-out/"
-        },
+        }
       ]
     }
   ],
   "resources": [
     {
-      "src": "../libraries/font-awesome-4.1.0/fonts/",
-      "dest": "content/css/themes/fonts/",
+      "src": "../libraries/font-awesome-4.1.0/fonts",
+      "dest": "content/css/themes/fonts",
       "filters": ".*(\\.otf|\\.eot|\\.svg|\\.ttf|\\.woff)"
     },
     {
-      "src": "../content/",
+      "src": "../content",
       "dest": "content",
       "filters": ".*(\\.css|\\.jpg|\\.png|\\.gif)"
     },
     {
-      "src": "../min/",
+      "src": "../min",
       "dest": "content",
       "filters": ".*(\\.css)"
     },
     {
-      "src": "../libraries/dojo/dojo/",
+      "src": "../libraries/dojo/dojo",
       "dest": "content/dojo/dojo",
       "filters": "(dojo\\.js)"
     },
     {
-      "src": "../libraries/dojo/dojo/cldr/nls/",
+      "src": "../libraries/dojo/dojo/cldr/nls",
       "dest": "content/dojo/dojo/cldr/nls",
-      "filters": ".*js"
+      "filters": ".*\\.js"
     }
   ]
 }
