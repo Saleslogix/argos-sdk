@@ -63,7 +63,6 @@ const __class = declare('argos._PullToRefreshMixin', null, {
   _getText: function _getText(prop) {
     return __class.prototype[prop];
   },
-
   /**
    * @param {DOMNode} scrollerNode The node that scrollers and should be pulled on to refresh.
    */
@@ -80,6 +79,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
 
     const touchstart = Rx.Observable.fromEvent(scrollerNode, 'touchstart')
       .filter(function filterShouldPull(evt) {
+        // The implmentor of this mixin should determine what shouldStartPullToRefresh is.
         return this.shouldStartPullToRefresh(this.scrollerNode) && evt.touches[0];
       }.bind(this))
       .map(function mapPull(e) {
@@ -89,6 +89,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
         const bannerPos = domGeom.position(this.pullRefreshBanner);
         const style = domStyle.getComputedStyle(scrollerNode); // expensive
 
+        // We filtered out if the drag should start, so we are mapping the initial state here.
         return {
           bannerHeight: bannerPos.h,
           topCss: style.top,
@@ -101,13 +102,16 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     const touchcancel = Rx.Observable.fromEvent(scrollerNode, 'touchcancel');
     const touchend = Rx.Observable.fromEvent(scrollerNode, 'touchend');
     const done = touchcancel.merge(touchend);
+
+    // Merge the touchstart and dragging observables
     const dragging = touchstart.flatMap(function flatMapDragging(data) {
-      let distance;
-      let maxDistance;
+      let distance; // current dragged distance
+      let maxDistance; // required distance to trigger a refresh
       return touchmove
         .map(function mapMoves(evt) {
           const touches = evt.touches[0];
-          distance = (touches.clientY - data.y) / 2;
+          const weight = 2; // slow the drag
+          distance = (touches.clientY - data.y) / weight;
           maxDistance = data.bannerHeight + 20;
           return {
             evt: evt,
@@ -117,6 +121,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
           };
         })
         .filter(function filterDistance(d) {
+          // Prevent the user from dragging the pane above our starting point
           return d.distance >= 0;
         })
         .takeUntil(done.map(function doneMap() {
@@ -129,6 +134,8 @@ const __class = declare('argos._PullToRefreshMixin', null, {
           domStyle.set(this.pullRefreshBanner, 'visibility', 'hidden');
           domClass.add(this.scrollerNode, this.animateCls);
 
+          // Check if we dragged over the threshold (maxDistance),
+          // if so, fire the callbacks the views will implement.
           if (distance > maxDistance) {
             this.onPullToRefreshComplete();
           } else {
@@ -151,7 +158,6 @@ const __class = declare('argos._PullToRefreshMixin', null, {
       }
     }.bind(this));
   },
-
   /**
    * Derived class must implement this to determine when pull to refresh should start. This is called when onTouchStart is fired.
    * @param {DOMNode} scrollerNode
@@ -162,12 +168,10 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     const scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
     return scrollTop === 0;
   },
-
   /**
    * Fires when the pull to refresh is successful.
    */
   onPullToRefreshComplete: function onPullToRefreshComplete() {},
-
   /**
    * Fires when the pull to refresh is canceled.
    */
