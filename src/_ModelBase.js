@@ -22,7 +22,6 @@ import Stateful from 'dojo/Stateful';
  * @alternateClassName _ModelBase
  */
 export default declare('argos._ModelBase', [Evented, Stateful], {
-  metadata: null,
   app: null,
   entityName: '',
   _appGetter: function _appGetter() {
@@ -31,11 +30,11 @@ export default declare('argos._ModelBase', [Evented, Stateful], {
   _appSetter: function _appSetter(value) {
     this.app = value;
   },
-  _metadataGetter: function _metadataGetter() {
-    return this.metadata;
-  },
-  _metadataSetter: function _metadataSetter(value) {
-    this.metadata = value;
+  /**
+   * Initializes the model with options.
+   * @param options
+   */
+  init: function(options){
   },
   getEntry: function getEntry(options) { // eslint-disable-line
   },

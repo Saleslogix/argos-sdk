@@ -119,6 +119,23 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   init: function init() {
     this.startup();
     this.initConnects();
+    this.initModel();
+  },
+  /**
+   * Initializes the model instance that is return with the curernt view.
+   * 
+   */ 
+  initModel: function initModel() {
+    this._model = this.getModel();
+    if(this._model){
+      this._model.init(this);
+    }
+  },
+  /**
+   * Returns a new instance of a model for the view. Should be overridden by derived classes.
+   */
+  getModel: function getModel() {
+    return null;
   },
   /**
    * Establishes this views connections to various events

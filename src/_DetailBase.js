@@ -826,12 +826,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     return entry;
   },
   /**
-   * Returns a new instance of a model for the view. Should be overridden by derived classes.
-   */
-  getModel: function getModel() {
-    return null;
-  },
-  /**
    * Takes the entry from the data store, applies customization, applies any custom item process and then
    * passes it to process layout.
    * @param {Object} entry Entry from data store
@@ -872,11 +866,10 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   requestData: function requestData() {
     domClass.add(this.domNode, 'panel-loading');
 
-    const model = this.getModel();
     const store = this.get('store');
 
-    if (model) {
-      return model.getEntry(this.options).then(function fulfilled(data) {
+    if (this._model) {
+      return this._model.getEntry(this.options).then(function fulfilled(data) {
         this._onGetComplete(data);
       }.bind(this), function rejected(err) {
         this._onGetError(null, err);

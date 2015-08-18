@@ -63,7 +63,11 @@
       "isDebug": true,
       "fileIncludes": [
         {
-          "text": "_ModelBase.js",
+           "text": "_ModelBase.js",
+           "path": "../src-out/"
+        },
+        {
+          "text": "_SDataModelMixin.js",
           "path": "../src-out/"
         },
         {

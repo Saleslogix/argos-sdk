@@ -124,64 +124,7 @@ const __class = declare('argos._SDataDetailMixin', null, {
     let property = prop;
     property = property || '$key';
     return string.substitute(fmt, [utility.getValue(entry, property, '')]);
-  },
-  /**
-   * Takes a model and applies SData properties set on the view, to the metadata sdata props. This method will
-   * allow existing customizations to still work with the new model system.
-   * @param model
-   * @returns {_ModelBase}
-   */
-  setSDataModelProperties: function setSDataModelProperties(model) {
-    const resourceKind = this.resourceKind;
-    const querySelect = this.querySelect;
-    const queryInclude = this.queryInclude;
-    const resourceProperty = this.resourceProperty;
-    const resourcePredicate = this.resourcePredicate;
-    let m = model.get('metadata');
-
-    if (!m) {
-      m.set('metadata', {
-        sdata: {},
-      });
-    }
-
-    if (!m.sdata) {
-      m.sdata = {};
-    }
-
-    m = m.sdata;
-
-
-    if (resourceKind) {
-      m.resourceKind = resourceKind;
-    }
-
-    if (querySelect) {
-      if (!m.querySelect) {
-        m.querySelect = [];
-      }
-
-      m.querySelect.concat(querySelect);
-    }
-
-    if (queryInclude) {
-      if (!m.queryInclude) {
-        m.queryInclude = [];
-      }
-
-      m.queryInclude.concat(queryInclude);
-    }
-
-    if (resourceProperty) {
-      m.resourceProperty = resourceProperty;
-    }
-
-    if (resourcePredicate) {
-      m.resourcePredicate = resourcePredicate;
-    }
-
-    return model;
-  },
+  }  
 });
 
 lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
