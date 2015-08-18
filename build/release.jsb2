@@ -63,10 +63,6 @@
       "isDebug": true,
       "fileIncludes": [
         {
-          "text": "TabWidget.js",
-          "path": "../src-out/"
-        },
-        {
           "text": "SelectionModel.js",
           "path": "../src-out/"
         },
@@ -92,6 +88,10 @@
         },
         {
           "text": "_ErrorHandleMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "TabWidget.js",
           "path": "../src-out/"
         },
         {
