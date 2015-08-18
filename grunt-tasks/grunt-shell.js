@@ -1,15 +1,5 @@
-﻿module.exports = function (grunt) {
-    grunt.config('shell', {
-        typescript: {
-            command: 'node node_modules/typescript/bin/tsc',
-            options: {
-                execOptions: {
-                    cwd: '.'
-                }
-            }
-        }
-    });
+module.exports = function gruntShell(grunt) {
+  grunt.config('shell', {});
 
-    grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-shell');
 };
-
