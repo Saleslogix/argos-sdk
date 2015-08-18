@@ -23,199 +23,198 @@
  * @requires argos.SData
  * @requires argos.Utility
  */
-define('argos/_SDataListMixin', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/Deferred',
-    'dojo/when',
-    'dojo/dom-construct',
-    'dojo/dom-class',
-    'dojo/string',
-    './Store/SData',
-    './Utility',
-    './ErrorManager'
-], function(
-    declare,
-    lang,
-    Deferred,
-    when,
-    domConstruct,
-    domClass,
-    string,
-    SData,
-    utility,
-    ErrorManager
-) {
-    var __class = declare('argos._SDataListMixin', null, {
-        /**
-         * @property request Object SData request passed into the store. Optional.
-         */
-        request: null,
+import declare from 'dojo/_base/declare';
+import lang from 'dojo/_base/lang';
+import Deferred from 'dojo/Deferred';
+import when from 'dojo/when';
+import string from 'dojo/string';
+import SData from './Store/SData';
+import utility from './Utility';
 
-        /**
-         * @cfg {String} resourceKind
-         * The SData resource kind the view is responsible for.  This will be used as the default resource kind
-         * for all SData requests.
-         */
-        resourceKind: '',
-        /**
-         * @cfg {String[]}
-         * A list of fields to be selected in an SData request.
-         */
-        querySelect: null,
-        /**
-         * @cfg {String[]?}
-         * A list of child properties to be included in an SData request.
-         */
-        queryInclude: null,
-        /**
-         * @cfg {String}
-         * The default order by expression for an SData request.
-         */
-        queryOrderBy: null,
-        /**
-         * @cfg {String/Function}
-         * The default where expression for an SData request.
-         */
-        queryWhere: null,
-        /**
-         * @cfg {Object}
-         * Key/value map of additional query arguments to add to the request.
-         * Example:
-         *     queryArgs: { _filter: 'Active' }
-         *
-         *     /sdata/app/dynamic/-/resource?_filter=Active&where=""&format=json
-         */
-        queryArgs: null,
-        /**
-         * @cfg {String?/Function?}
-         * The default resource property for an SData request.
-         */
-        resourceProperty: null,
-        /**
-         * @cfg {String?/Function?}
-         * The default resource predicate for an SData request.
-         */
-        resourcePredicate: null,
+const __class = declare('argos._SDataListMixin', null, {
+  /**
+   * @property request Object SData request passed into the store. Optional.
+   */
+  request: null,
 
-        itemsProperty: '$resources',
-        idProperty: '$key',
-        labelProperty: '$descriptor',
-        entityProperty: '$name',
-        versionProperty: '$etag',
+  /**
+   * @cfg {String} resourceKind
+   * The SData resource kind the view is responsible for.  This will be used as the default resource kind
+   * for all SData requests.
+   */
+  resourceKind: '',
+  /**
+   * @cfg {String[]}
+   * A list of fields to be selected in an SData request.
+   */
+  querySelect: null,
+  /**
+   * @cfg {String[]?}
+   * A list of child properties to be included in an SData request.
+   */
+  queryInclude: null,
+  /**
+   * @cfg {String}
+   * The default order by expression for an SData request.
+   */
+  queryOrderBy: null,
+  /**
+   * @cfg {String/Function}
+   * The default where expression for an SData request.
+   */
+  queryWhere: null,
+  /**
+   * @cfg {Object}
+   * Key/value map of additional query arguments to add to the request.
+   * Example:
+   *     queryArgs: { _filter: 'Active' }
+   *
+   *     /sdata/app/dynamic/-/resource?_filter=Active&where=""&format=json
+   */
+  queryArgs: null,
+  /**
+   * @cfg {String?/Function?}
+   * The default resource property for an SData request.
+   */
+  resourceProperty: null,
+  /**
+   * @cfg {String?/Function?}
+   * The default resource predicate for an SData request.
+   */
+  resourcePredicate: null,
 
-        /**
-         * Constructs a where expression using the provided format string and extracting the needed property from entry
-         * @param {Object} entry Data point to extract from.
-         * @param {String} fmt Format string to be replaced where `${0}` will be the extracted property.
-         * @param {String} property Property name to extract from the entry. May be a path: `'Address.City'`.
-         * @return {String}
-         */
-        formatRelatedQuery: function(entry, fmt, property) {
-            return string.substitute(fmt, [lang.getObject(property || '$key', false, entry)]);
-        },
-        getContext: function() {
-            return lang.mixin(this.inherited(arguments), {
-                resourceKind: this.resourceKind
-            });
-        },
-        _onRefresh: function(options) {
-            if (this.resourceKind && options.resourceKind === this.resourceKind) {
-                this.refreshRequired = true;
-            }
-        },
-        createStore: function() {
-            return new SData({
-                service: this.getConnection(),
-                request: this.request,
-                contractName: this.contractName,
-                resourceKind: this.resourceKind,
-                resourceProperty: this.resourceProperty,
-                resourcePredicate: this.resourcePredicate,
-                include: this.queryInclude,
-                select: this.querySelect,
-                where: this.queryWhere,
-                queryArgs: this.queryArgs,
-                orderBy: this.queryOrderBy,
-                itemsProperty: this.itemsProperty,
-                idProperty: this.idProperty,
-                labelProperty: this.labelProperty,
-                entityProperty: this.entityProperty,
-                versionProperty: this.versionProperty,
-                scope: this
-            });
-        },
-        _buildQueryExpression: function() {
-            var options = this.options,
-                passed = options && (options.query || options.where);
+  itemsProperty: '$resources',
+  idProperty: '$key',
+  labelProperty: '$descriptor',
+  entityProperty: '$name',
+  versionProperty: '$etag',
 
-            return passed
-                ? this.query
-                    ? '(' + utility.expand(this, passed) + ') and (' + this.query + ')'
-                    : '(' + utility.expand(this, passed) + ')'
-                : this.query;
-        },
-        _applyStateToQueryOptions: function(queryOptions) {
-            var options = this.options;
-            if (options) {
-                if (options.select) queryOptions.select = options.select;
-                if (options.include) queryOptions.include = options.include;
-                if (options.orderBy) queryOptions.sort = options.orderBy;
-                if (options.contractName) queryOptions.contractName = options.contractName;
-                if (options.resourceKind) queryOptions.resourceKind = options.resourceKind;
-                if (options.resourceProperty) queryOptions.resourceProperty = options.resourceProperty;
-                if (options.resourcePredicate) queryOptions.resourcePredicate = options.resourcePredicate;
-                if (options.queryArgs) queryOptions.queryArgs = options.queryArgs;
-            }
-        },
-        formatSearchQuery: function(query) {
-            return query;
-        },
-        escapeSearchQuery: function(query) {
-            return (query || '').replace(/"/g, '""');
-        },
-        hasMoreData: function() {
-            var start, count, total;
-            start = this.position;
-            count = this.pageSize;
-            total = this.total;
+  /**
+   * Constructs a where expression using the provided format string and extracting the needed property from entry
+   * @param {Object} entry Data point to extract from.
+   * @param {String} fmt Format string to be replaced where `${0}` will be the extracted property.
+   * @param {String} property Property name to extract from the entry. May be a path: `'Address.City'`.
+   * @return {String}
+   */
+  formatRelatedQuery: function formatRelatedQuery(entry, fmt, property) {
+    return string.substitute(fmt, [lang.getObject(property || '$key', false, entry)]);
+  },
+  getContext: function getContext() {
+    return lang.mixin(this.inherited(arguments), {
+      resourceKind: this.resourceKind,
+    });
+  },
+  _onRefresh: function _onRefresh(options) {
+    if (this.resourceKind && options.resourceKind === this.resourceKind) {
+      this.refreshRequired = true;
+    }
+  },
+  createStore: function createStore() {
+    return new SData({
+      service: this.getConnection(),
+      request: this.request,
+      contractName: this.contractName,
+      resourceKind: this.resourceKind,
+      resourceProperty: this.resourceProperty,
+      resourcePredicate: this.resourcePredicate,
+      include: this.queryInclude,
+      select: this.querySelect,
+      where: this.queryWhere,
+      queryArgs: this.queryArgs,
+      orderBy: this.queryOrderBy,
+      itemsProperty: this.itemsProperty,
+      idProperty: this.idProperty,
+      labelProperty: this.labelProperty,
+      entityProperty: this.entityProperty,
+      versionProperty: this.versionProperty,
+      scope: this,
+    });
+  },
+  _buildQueryExpression: function _buildQueryExpression() {
+    const options = this.options;
+    const passed = options && (options.query || options.where);
+    return passed ? this.query ? '(' + utility.expand(this, passed) + ') and (' + this.query + ')' : '(' + utility.expand(this, passed) + ')' : this.query;// eslint-disable-line
+  },
+  _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {
+    const options = this.options;
+    if (options) {
+      if (options.select) {
+        queryOptions.select = options.select;
+      }
 
-            if (start > 0 && count > 0 && total >= 0) {
-                return this.remaining === -1 || this.remaining > 0;
-            } else {
-                return true; // no way to determine, always assume more data
-            }
-        },
-        getListCount: function(options) {
-            var store, queryOptions, queryResults, def = new Deferred();
+      if (options.include) {
+        queryOptions.include = options.include;
+      }
 
-            store = new SData({
-                service: App.services['crm'],
-                resourceKind: this.resourceKind,
-                contractName: this.contractName,
-                scope: this
-            });
+      if (options.orderBy) {
+        queryOptions.sort = options.orderBy;
+      }
 
-            queryOptions = {
-                count: 1,
-                start: 0,
-                select: '',
-                where: options.where,
-                sort: ''
-            };
+      if (options.contractName) {
+        queryOptions.contractName = options.contractName;
+      }
 
-            queryResults = store.query(null, queryOptions);
+      if (options.resourceKind) {
+        queryOptions.resourceKind = options.resourceKind;
+      }
 
-            when(queryResults, function(relatedFeed) {
-                def.resolve(queryResults.total);
-            }, function(err) {
-                def.reject(err);
-            });
+      if (options.resourceProperty) {
+        queryOptions.resourceProperty = options.resourceProperty;
+      }
 
-            return def.promise;
-        }
+      if (options.resourcePredicate) {
+        queryOptions.resourcePredicate = options.resourcePredicate;
+      }
+
+      if (options.queryArgs) {
+        queryOptions.queryArgs = options.queryArgs;
+      }
+    }
+  },
+  formatSearchQuery: function formatSearchQuery(query) {
+    return query;
+  },
+  escapeSearchQuery: function escapeSearchQuery(query) {
+    return (query || '').replace(/"/g, '""');
+  },
+  hasMoreData: function hasMoreData() {
+    const start = this.position;
+    const count = this.pageSize;
+    const total = this.total;
+
+    if (start > 0 && count > 0 && total >= 0) {
+      return this.remaining === -1 || this.remaining > 0;
+    }
+    return true; // no way to determine, always assume more data
+  },
+  getListCount: function getListCount(options) {
+    const def = new Deferred();
+    const store = new SData({
+      service: App.services.crm,
+      resourceKind: this.resourceKind,
+      contractName: this.contractName,
+      scope: this,
     });
 
-    lang.setObject('Sage.Platform.Mobile._SDataListMixin', __class);
-    return __class;
+    const queryOptions = {
+      count: 1,
+      start: 0,
+      select: '',
+      where: options.where,
+      sort: '',
+    };
+
+    const queryResults = store.query(null, queryOptions);
+
+    when(queryResults, function success() {
+      def.resolve(queryResults.total);
+    }, function error(err) {
+      def.reject(err);
+    });
+
+    return def.promise;
+  },
 });
+
+lang.setObject('Sage.Platform.Mobile._SDataListMixin', __class);
+export default __class;

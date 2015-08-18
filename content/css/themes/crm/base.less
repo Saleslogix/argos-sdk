@@ -326,6 +326,9 @@
     text-align: center !important;
     padding: 1em !important;
     min-height: 1em !important;
+    span {
+        float: none;
+    }
 }
 
 .content-loading > span {
@@ -402,15 +405,15 @@ ul.action-list > li > a > div {
     float: left;
     margin: 0 5px 0 0;
     width: 39px;
-    height: 44px;
+    height: 30px;
     text-align: center;
     padding: 5px;
-    font-size: 1.5em;
+    font-size: 1.1em;
     .box-sizing(border-box);
 }
 
 .action-list > li {
-    height: 44px;
+    height: 30px;
     line-height: 1em !important;
     cursor: pointer !important;
 }
@@ -469,11 +472,11 @@ body > .viewContainer > .list,
 body > .viewContainer > .panel,
 body > .viewContainer > .dialog {
     display: none;
+    visibility: hidden;
 }
 
 body > .viewContainer > .panel {
     overflow: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 body.transition > .viewContainer > .panel,
@@ -510,6 +513,7 @@ body[orient="landscape"] > .viewContainer > .list {
 
 body > .viewContainer > [selected="true"] {
     display: block;
+    visibility: visible;
 }
 
 body > .viewContainer > .dialog {
@@ -531,6 +535,8 @@ body > .viewContainer > .dialog {
     border: none;
     border-top: 1px solid #6d84a2;
     padding: 0px 6px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     -webkit-border-bottom-left-radius: 5px;
     -webkit-border-bottom-right-radius: 5px;
     -moz-border-bottom-left-radius: 5px;
@@ -639,7 +645,8 @@ img {
 }
 
 .panel > ul > li,
-.panel-content > ul > li {
+.panel-content > ul > li,
+.quick-actions > ul > li {
     list-style: none;
     line-height: 28px;
     clear: both;
@@ -669,6 +676,7 @@ img {
 .panel-validation-summary > div,
 .panel-concurrency-summary > div,
 .panel-content > ul,
+.quick-actions > ul,
 .panel-validation-summary > ul,
 .panel-concurrency-summary > ul {
     margin: 0;
@@ -684,6 +692,7 @@ img {
 }
 
 .panel-content > ul > li,
+.quick-actions > ul > li,
 .panel-validation-summary > ul > li,
 .panel-concurrency-summary > ul > li {
     list-style: none;
@@ -693,6 +702,7 @@ img {
 }
 
 .panel-content > ul > li > a,
+.quick-actions > ul > li > a,
 .panel-validation-summary > ul > li > a {
     padding: 1px;
     margin: 0 0 0 0.25em; /* matches the padding in the labels */
@@ -708,7 +718,7 @@ img {
 }
 
 .row.no-value {
-    display: none;
+    display: none !important;
     visibility: hidden;
 }
 
@@ -735,6 +745,8 @@ img {
     position: relative;
     overflow: hidden;
     text-overflow: ellipsis;
+    float: right;
+    text-align: right;
 }
 
 .href {
@@ -930,8 +942,7 @@ img {
     padding: 1em;
 }
 
-.related-view-widget .loading-indicator div,
-{
+.related-view-widget .loading-indicator div {
     background: url('../../../images/loading-indicator-white.gif') no-repeat scroll 0 50%;
     padding: 0 0 0 20px;
     display: inline-block;
@@ -940,6 +951,12 @@ img {
 
 .related-view-widget .loading {
     display: inline-block;
+}
+.related-view-widget-base {
+    margin: 4px;
+    padding: 2px;
+    position: relative;
+
 }
 
 .pull-to-refresh {
@@ -953,3 +970,70 @@ img {
         vertical-align: middle;
     }
 }
+
+.configurable-list {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* ios */
+    -webkit-tap-highlight-color: transparent; /* android */
+
+    .list-content {
+        > li {
+            background-color: #fff;
+            color: #aaa;
+            padding-right: 6px;
+
+            .resource {
+                display: block;
+                margin: -8px 0 -8px -10px;
+                padding: 8px 32px 8px 36px;
+            }
+
+            h3 {
+                > span {
+                    &:first-child {
+                        float: left;
+                    }
+                }
+
+                > [data-action="moveUp"],
+                > [data-action="moveDown"] {
+                    float: right;
+                    display: block;
+                    width: 48px;
+                    height: 24px;
+                    cursor: pointer;
+                    text-align: center;
+                }
+
+                > .icon {
+                    opacity: 0.5;
+                    margin-right: .2em;
+                }
+            }
+
+            &:first-child h3 > [data-action="moveUp"],
+            &:last-child h3 > [data-action="moveDown"] {
+                visibility: hidden;
+            }
+        }
+
+        > li.list-item-selected {
+            color: #000;
+            h3 > .icon {
+                opacity: 1.0;
+            }
+        }
+
+        > li.list-item-selected.last-moved {
+            opacity: 1.0;
+        }
+
+        > li.last-moved {
+            color: #000;
+            background-color: @color-light-turquoise;
+            -webkit-transition: background-color 0.3s linear;
+            transition: background-color 0.3s linear;
+            opacity: 0.5;
+        }
+    }
+}
+

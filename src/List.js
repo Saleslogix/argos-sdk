@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import declare from 'dojo/_base/declare';
+import lang from 'dojo/_base/lang';
+import _ListBase from './_ListBase';
+import _SDataListMixin from './_SDataListMixin';
+import _RelatedWidgetListMixin from './_RelatedViewWidgetListMixin';
 
 /**
  * @class argos.List
@@ -20,23 +25,9 @@
  * @alternateClassName List
  * @requires argos._ListBase
  * @requires argos._SDataListMixin
- * @mixins argos._SDataListMixin
+ * @mixins argos._RelateViewdWidgetListMixin
  */
-define('argos/List', [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    './_ListBase',
-    './_SDataListMixin'
-], function(
-    declare,
-    lang,
-    _ListBase,
-    _SDataListMixin
-) {
-    var __class = declare('argos.List', [_ListBase, _SDataListMixin], {
-    });
+const __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedWidgetListMixin], {});
 
-    lang.setObject('Sage.Platform.Mobile.List', __class);
-    return __class;
-});
-
+lang.setObject('Sage.Platform.Mobile.List', __class);
+export default __class;

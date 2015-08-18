@@ -52,6 +52,9 @@ define('tests/Stores/SData', [
     MockService.prototype.getDataSet = function() { };
     MockService.prototype.isJsonEnabled = function() { return true;
     };
+    MockService.prototype.getCompact = function() {
+        return true;
+    };
     MockService.prototype.createEntry = function(request, data, options) {
         options.success.call(options.scope || this, data);
         return data;
@@ -437,7 +440,6 @@ define('tests/Stores/SData', [
                 orderBy: '',
                 idProperty: '$key',
                 applicationName: 'slx',
-                orderBy: true,
                 where: 'name eq "bar"'
             });
 
@@ -484,7 +486,6 @@ define('tests/Stores/SData', [
                 select: ['a','b','c'],
                 include: ['1','2','3'],
                 queryArgs: {foo: 'bar'},
-                orderBy: '',
                 idProperty: '$key',
                 applicationName: 'slx',
                 orderBy: [{attribute: 'foo', descending: false},{attribute: 'bar', descending: true}]
@@ -507,7 +508,6 @@ define('tests/Stores/SData', [
                 select: ['a','b','c'],
                 include: ['1','2','3'],
                 queryArgs: {foo: 'bar'},
-                orderBy: '',
                 idProperty: '$key',
                 orderBy: 'foo'
             });
@@ -553,13 +553,18 @@ define('tests/Stores/SData', [
             });
 
             // Test update
-            store.service.isJsonEnabled = function() { return false; }
+            store.service.isJsonEnabled = function() {
+                return false;
+            };
+
             promise = store.put({ data: '123'}, { overwrite: true, id: 'foo', entity: 'account', version: '1234' });
             expect(store.service.createEntry).toHaveBeenCalled();
             promise.then(function(results) {
                 expect(results.data).toBe('123');
                 allDone();
-                store.service.isJsonEnabled = function() { return true; }
+                store.service.isJsonEnabled = function() {
+                    return true;
+                };
             });
 
             // Test with no put options
@@ -581,7 +586,7 @@ define('tests/Stores/SData', [
             });
         });
 
-        it('can get using a custom request', function() {
+        it('can get using a custom request', function(done) {
             var store, promise, service = new MockService();
             store = new Store({
                 service: service,
@@ -677,4 +682,3 @@ define('tests/Stores/SData', [
         });
     });
 });
-
