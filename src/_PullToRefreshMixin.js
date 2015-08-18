@@ -9,7 +9,6 @@ import domConstruct from 'dojo/dom-construct';
 import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';
 
-
 const __class = declare('argos._PullToRefreshMixin', null, {
   /**
    * @property {Simplate}
