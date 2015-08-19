@@ -67,10 +67,6 @@
            "path": "../src-out/"
         },
         {
-          "text": "_SDataModelMixin.js",
-          "path": "../src-out/"
-        },
-        {
           "text": "DomHelper.js",
           "path": "../src-out/ReUI/"
         },
@@ -137,6 +133,10 @@
         {
           "text": "PouchDB.js",
           "path": "../src-out/Store/"
+        },
+        {
+          "text": "_SDataModelMixin.js",
+          "path": "../src-out/"
         },
         {
           "text": "ErrorManager.js",
