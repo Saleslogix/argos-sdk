@@ -16,6 +16,7 @@ import domConstruct from 'dojo/dom-construct';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import _TemplatedMixin from 'dijit/_TemplatedMixin';
+import _l20nMixin from 'argos/_l20nMixin';
 
 /**
  * @class argos._Templated
@@ -24,11 +25,7 @@ import _TemplatedMixin from 'dijit/_TemplatedMixin';
  *
  * @alternateClassName _Templated
  */
-const __class = declare('argos._Templated', [_TemplatedMixin], {
-  /**
-   * Localization ID for identifying the objects needed strings
-   */
-  localeId: '',
+const __class = declare('argos._Templated', [_TemplatedMixin, _l20nMixin], {
 
   _stringRepl: function _stringRepl(tmpl) {
     return tmpl;
@@ -53,17 +50,6 @@ const __class = declare('argos._Templated', [_TemplatedMixin], {
     }
 
     this.inherited(arguments);
-  },
-  /**
-   * Loads the views strings from l20n
-   */
-  loadStrings: function loadStrings() {
-    const entity = App.localeContext.getEntitySync(this.localeId);
-    for (const attribute in entity.attributes) {
-      if (entity.attributes.hasOwnProperty(attribute)) {
-        this[attribute] = entity.attributes[attribute];
-      }
-    }
   },
 });
 

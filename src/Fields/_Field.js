@@ -124,9 +124,6 @@ const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Template
     if (this.reui === null) {
       this.reui = window.ReUI;
     }
-
-    // Call the load strings function to get the string resources from l20n
-    this.loadStrings();
   },
   /**
    * Focuses the input for the field
