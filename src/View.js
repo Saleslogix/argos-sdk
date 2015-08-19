@@ -87,7 +87,6 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   connectionName: false,
   constructor: function constructor(options) {
     this.app = (options && options.app) || window.App;
-    this.loadStrings();
   },
   startup: function startup() {
     this.inherited(arguments);
