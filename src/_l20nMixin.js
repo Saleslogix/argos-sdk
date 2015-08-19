@@ -34,10 +34,12 @@ const __class = declare('argos._l20nMixin', null, {
    * Loads the views strings from l20n
    */
   loadStrings: function loadStrings() {
-    const entity = App.localeContext.getEntitySync(this.localeId);
-    for (const attribute in entity.attributes) {
-      if (entity.attributes.hasOwnProperty(attribute)) {
-        this[attribute] = entity.attributes[attribute];
+    if (window.localeContext) {
+      const entity = window.localeContext.getEntitySync(this.localeId);
+      for (const attribute in entity.attributes) {
+        if (entity.attributes.hasOwnProperty(attribute)) {
+          this[attribute] = entity.attributes[attribute];
+        }
       }
     }
   },
