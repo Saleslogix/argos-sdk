@@ -87,10 +87,6 @@
            "path": "../src-out/"
         },
         {
-           "text": "OfflineManager.js",
-           "path": "../src-out/"
-        },
-        {
           "text": "_ActionMixin.js",
           "path": "../src-out/"
         },
@@ -137,6 +133,10 @@
         {
           "text": "PouchDB.js",
           "path": "../src-out/Store/"
+        },
+        {
+           "text": "OfflineManager.js",
+           "path": "../src-out/"
         },
         {
           "text": "_SDataModelMixin.js",
