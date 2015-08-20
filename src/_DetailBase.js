@@ -26,6 +26,7 @@ import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import View from './View';
 import TabWidget from './TabWidget';
+import _DetailOfflineMixin from './_DetailOfflineMixin';
 
 /**
  * @class argos._DetailBase
@@ -39,7 +40,7 @@ import TabWidget from './TabWidget';
  * @requires argos.Utility
  * @requires argos.ErrorManager
  */
-const __class = declare('argos._DetailBase', [View, TabWidget], {
+const __class = declare('argos._DetailBase', [View, TabWidget, _DetailOfflineMixin], {
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:
@@ -811,11 +812,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   createStore: function createStore() {
     return null;
   },
-  /**
-   * Required for binding to ScrollContainer which utilizes iScroll that requires to be refreshed when the
-   * content (therefor scrollable area) changes.
-   */
-  onContentChange: function onContentChange() {},
   /**
    * @template
    * Optional processing of the returned entry before it gets processed into layout.

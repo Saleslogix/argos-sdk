@@ -124,7 +124,7 @@ const __class = declare('argos._SDataDetailMixin', null, {
     let property = prop;
     property = property || '$key';
     return string.substitute(fmt, [utility.getValue(entry, property, '')]);
-  }  
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);

@@ -123,11 +123,10 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   },
   /**
    * Initializes the model instance that is return with the curernt view.
-   * 
-   */ 
+   */
   initModel: function initModel() {
     this._model = this.getModel();
-    if(this._model){
+    if (this._model) {
       this._model.init(this);
     }
   },
@@ -334,6 +333,12 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    */
   getSecurity: function getSecurity(/*access*/) {
     return this.security;
+  },
+  /**
+  * Required for binding to ScrollContainer which utilizes iScroll that requires to be refreshed when the
+  * content (therefor scrollable area) changes.
+  */
+  onContentChange: function onContentChange() {
   },
 });
 

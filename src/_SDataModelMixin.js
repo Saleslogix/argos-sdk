@@ -14,6 +14,7 @@
  */
 import declare from 'dojo/_base/declare';
 import SDataStore from './Store/SData';
+import Deferred from 'dojo/Deferred';
 
 
 /**
@@ -21,8 +22,7 @@ import SDataStore from './Store/SData';
  * A mixin that provides SData specific methods and properties
  * @alternateClassName _SDataModelMixin
  */
-export default declare('argos._SDataModelMixin',null, {
- 
+export default declare('argos._SDataModelMixin', null, {
   /**
    * @cfg {String} resourceKind
    * The SData resource kind the view is responsible for.  This will be used as the default resource kind
@@ -59,8 +59,8 @@ export default declare('argos._SDataModelMixin',null, {
    * Initializes the model with options that are SData specific.
    * @param options
    */
-  init: function(options){
-    if(options){
+  init: function init(options) {
+    if (options) {
       if (options.resourceKind) {
         this.resourceKind = options.resourceKind;
       }
@@ -88,7 +88,7 @@ export default declare('argos._SDataModelMixin',null, {
       if (options.resourcePredicate) {
         this.resourcePredicate = options.resourcePredicate;
       }
-    }  
+    }
   },
   getOptions: function getOptionsFn(options) {
     const getOptions = {};
@@ -105,7 +105,7 @@ export default declare('argos._SDataModelMixin',null, {
   },
   getId: function getId(options) {
     return options && (options.id || options.key);
-  }, 
+  },
   createStore: function createStore(service) {
     const app = this.get('app');
     return new SDataStore({

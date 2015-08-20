@@ -34,9 +34,10 @@ export default declare('argos._ModelBase', [Evented, Stateful], {
    * Initializes the model with options.
    * @param options
    */
-  init: function(options){
+  init: function init() {
   },
-  getEntry: function getEntry(options) { // eslint-disable-line
+  getEntry: function getEntry() { // eslint-disable-line
   },
-  createStore: function createStore() {},
+  createStore: function createStore() {
+  },
 });
