@@ -83,8 +83,12 @@
           "path": "../src-out/"
         },
         {
-          "text": "Application.js",
-          "path": "../src-out/"
+           "text": "Application.js",
+           "path": "../src-out/"
+        },
+        {
+           "text": "OfflineManager.js",
+           "path": "../src-out/"
         },
         {
           "text": "_ActionMixin.js",
@@ -155,7 +159,11 @@
           "path": "../src-out/"
         },
         {
-          "text": "RelatedViewManager.js",
+            "text": "RelatedViewManager.js",
+            "path": "../src-out/"
+        },
+        {
+          "text": "_DetailOfflineMixin.js",
           "path": "../src-out/"
         },
         {
