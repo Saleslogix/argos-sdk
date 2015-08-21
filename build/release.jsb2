@@ -319,10 +319,10 @@
   ],
   "resources": [
     {
-      "src": "../localization/locales",
-      "dest": "localization/argos-sdk",
+      "src": "../localization/locales/argos",
+      "dest": "localization/locales/argos",
       "filters": ".*(\\.l20n)",
-    }
+    },
     {
       "src": "../libraries/font-awesome-4.1.0/fonts",
       "dest": "content/css/themes/fonts",
