@@ -1,6 +1,6 @@
 import lang from 'dojo/_base/lang';
 import declare from 'dojo/_base/declare';
-import _l20nMixin from 'argos/_l20nMixin';
+import _L20NMixin from 'argos/_L20NMixin';
 
 /**
  * @class argos.SelectionModel
@@ -8,7 +8,7 @@ import _l20nMixin from 'argos/_l20nMixin';
  * when a item is selected (added) or deselected (removed)
  * @alternateClassName SelectionModel
  */
-const __class = declare('argos.SelectionModel', [ _l20nMixin ], {
+const __class = declare('argos.SelectionModel', [ _L20NMixin ], {
   // Localization
   localeId: 'selectionModel',
 

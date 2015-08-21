@@ -16,7 +16,7 @@ import domConstruct from 'dojo/dom-construct';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import _TemplatedMixin from 'dijit/_TemplatedMixin';
-import _l20nMixin from 'argos/_l20nMixin';
+import _L20NMixin from 'argos/_L20NMixin';
 
 /**
  * @class argos._Templated
@@ -25,7 +25,7 @@ import _l20nMixin from 'argos/_l20nMixin';
  *
  * @alternateClassName _Templated
  */
-const __class = declare('argos._Templated', [_TemplatedMixin, _l20nMixin], {
+const __class = declare('argos._Templated', [_TemplatedMixin, _L20NMixin], {
 
   _stringRepl: function _stringRepl(tmpl) {
     return tmpl;

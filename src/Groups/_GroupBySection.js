@@ -1,11 +1,11 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import _l20nMixin from 'argos/_l20nMixin';
+import _L20NMixin from 'argos/_L20NMixin';
 
 /**
  * @class argos.Groups._GroupSection
  */
-const __class = declare('argos.Groups._GroupBySection', [ _l20nMixin ], {
+const __class = declare('argos.Groups._GroupBySection', [ _L20NMixin ], {
   /**
    * @property {String}
    * The unique (within the current form) name of the field

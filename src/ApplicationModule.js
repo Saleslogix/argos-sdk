@@ -16,9 +16,10 @@ import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import './Application';
 import ConfigureQuickActions from './Views/ConfigureQuickActions';
-import _l20nMixin from 'argos/_l20nMixin';
+import _L20NMixin from './_L20NMixin';
+import './Application';
+import './CultureInfo';
 
 /**
  * @class argos.ApplicationModule
@@ -29,7 +30,7 @@ import _l20nMixin from 'argos/_l20nMixin';
  * @alternateClassName ApplicationModule
  * @requires argos.Application
  */
-const __class = declare('argos.ApplicationModule', [ _l20nMixin ], {
+const __class = declare('argos.ApplicationModule', [_L20NMixin], {
   /**
    * @property {Array}
    * Array of dojo.connect bound to ApplicationModule
@@ -73,8 +74,7 @@ const __class = declare('argos.ApplicationModule', [ _l20nMixin ], {
   /**
    * Performs any additional destruction requirements
    */
-  uninitialize: function uninitialize() {
-  },
+  uninitialize: function uninitialize() {},
   /**
    * Saves the passed application instance and calls:
    *

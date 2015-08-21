@@ -21,7 +21,7 @@ import dNumber from 'dojo/number';
 import convert from './Convert';
 import utility from './Utility';
 import moment from 'moment';
-import _l20nMixin from 'argos/_l20nMixin';
+import _L20NMixin from 'argos/_L20NMixin';
 
 const getVectorMaxSize = function getVectorMaxSize(v) {
   let w = 1;
@@ -514,6 +514,6 @@ __class = lang.setObject('argos.Format', {
   },
 });
 
-lang.mixin(__class, _l20nMixin);
+lang.mixin(__class, _L20NMixin);
 lang.setObject('Sage.Platform.Mobile.Format', __class);
 export default __class;

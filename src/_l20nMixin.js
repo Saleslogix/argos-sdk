@@ -21,7 +21,7 @@ import declare from 'dojo/_base/declare';
  *
  * @alternateClassName _Templated
  */
-const __class = declare('argos._l20nMixin', null, {
+const __class = declare('argos._L20NMixin', null, {
   /**
    * Localization ID for identifying the objects needed strings
    */
