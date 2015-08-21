@@ -19,6 +19,7 @@ import domClass from 'dojo/dom-class';
 import format from '../Format';
 import LookupField from './LookupField';
 import FieldManager from '../FieldManager';
+import Utility from 'argos/Utility';
 
 /**
  * @class argos.Fields.DurationField
@@ -86,16 +87,7 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
   iconClass: 'fa fa-ellipsis-h fa-lg',
 
   // Localization
-  /**
-   * @property {String}
-   * Text used when no value or null is set to the field
-   */
-  emptyText: '',
-  /**
-   * @property {String}
-   * Text displayed when an invalid input is detected
-   */
-  invalidDurationErrorText: "Field '${0}' is not a valid duration.",
+  localeId: 'durationField',
   /**
    * @property {Object}
    * The auto completed text and their corresponding values in minutes (SData is always minutes)
@@ -103,12 +95,15 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
    * Override ride this object to change the autocomplete units or their localization.
    */
   autoCompleteText: {
-    1: 'minute(s)',
-    60: 'hour(s)',
-    1440: 'day(s)',
-    10080: 'week(s)',
-    525960: 'year(s)',
   },
+  autoCompleteKeys: [
+    1,
+    60,
+    1440,
+    10080,
+    525960,
+  ],
+  autoCompleteValues: null,
   /**
    * @property {Boolean}
    * Overrides the {@link LookupField LookupField} default to explicitly set it to false forcing
@@ -165,6 +160,17 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
     this.autoCompleteValueRE = new RegExp(
       string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+))', [numberDecimalSeparator])
     );
+
+    if (!this.autoCompleteValues) {
+      this.autoCompleteValues = [
+        this.minutes,
+        this.hours,
+        this.days,
+        this.weeks,
+        this.years,
+      ];
+      Utility.extendObjectKeyValue(this.autoCompleteText, this.autoCompleteKeys, this.autoCompleteValues);
+    }
   },
   /**
    * Handler for onkeyup on the input. The logic for comparing the matched value and phrase to the autocomplete

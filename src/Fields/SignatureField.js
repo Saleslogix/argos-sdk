@@ -42,16 +42,7 @@ import FieldManager from '../FieldManager';
  */
 const control = declare('argos.Fields.SignatureField', [EditorField], {
   // Localization
-  /**
-   * @property {String}
-   * Text used for ARIA label
-   */
-  signatureLabelText: 'signature',
-  /**
-   * @property {String}
-   * Text used within button
-   */
-  signatureText: '...',
+  localeId: 'signatureField',
 
   /**
    * @property {Number[][]}

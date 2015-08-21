@@ -1,0 +1,35 @@
+<dateField ""
+    emptyText: ''
+    dateFormatText: "MM/DD/YYYY"
+    invalidDateFormatErrorText: "Field '${0}' has Invalid date format."
+>
+
+<durationField ""
+  minutes: "minute(s)"
+  hours: "hour(s)"
+  days: "day(s)"
+  weeks: "week(s)"
+  years: "year(s)"
+  invalidDurationErrorText: "Field '${0}' is not a valid duration."
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "edit"
+  lookupText: "..."
+  emptyText: "empty"
+  completeText: "Ok"
+>
+
+<lookupField ""
+  dependentErrorText: "A value for '${0}' must be selected."
+  emptyText: ""
+  completeText: "Select"
+  lookupLabelText: "lookup"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "signature"
+  signatureText: "..."
+>

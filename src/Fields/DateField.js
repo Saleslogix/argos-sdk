@@ -46,19 +46,7 @@ import '../Calendar';
  */
 const control = declare('argos.Fields.DateField', [EditorField], {
   // Localization
-  /**
-   * @cfg {String}
-   * The text shown when no value (or null/undefined) is set to the field.
-   */
-  emptyText: '',
-  dateFormatText: 'MM/DD/YYYY',
-  /**
-   * @property {String}
-   * The error validation message for this field.
-   *
-   * `${0}` => Label
-   */
-  invalidDateFormatErrorText: "Field '${0}' has Invalid date format.",
+  localeId: 'dateField',
 
   /**
    * @property {Simplate}

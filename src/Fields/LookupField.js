@@ -91,32 +91,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
   iconClass: 'fa fa-search fa-lg',
 
   // Localization
-  /**
-   * @property {String}
-   * Error text shown when validation fails.
-   *
-   * * `${0}` is the label text of the field
-   */
-  dependentErrorText: "A value for '${0}' must be selected.",
-  /**
-   * @cfg {String}
-   * Text displayed when the field is cleared or set to null
-   */
-  emptyText: '',
-  /**
-   * @deprecated
-   */
-  completeText: 'Select',
-  /**
-   * @property {String}
-   * The ARIA label text in the lookup button
-   */
-  lookupLabelText: 'lookup',
-  /**
-   * @property {String}
-   * The text placed inside the lookup button
-   */
-  lookupText: '...',
+  localeId: 'lookupField',
 
   /**
    * @cfg {String}
