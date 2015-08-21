@@ -1,5 +1,6 @@
 import lang from 'dojo/_base/lang';
 import declare from 'dojo/_base/declare';
+import _l20nMixin from 'argos/_l20nMixin';
 
 /**
  * @class argos.SelectionModel
@@ -7,9 +8,9 @@ import declare from 'dojo/_base/declare';
  * when a item is selected (added) or deselected (removed)
  * @alternateClassName SelectionModel
  */
-const __class = declare('argos.SelectionModel', null, {
+const __class = declare('argos.SelectionModel', [ _l20nMixin ], {
   // Localization
-  requireSelectionText: 'A selection is required, you cannot de-select the last item.',
+  localeId: 'selectionModel',
 
   /**
    * @property {Boolean}

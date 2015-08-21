@@ -62,10 +62,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * @property {String}
    */
   id: 'generic_view',
-  /**
-   * The titleText string will be applied to the top toolbar during {@link #show show}.
-   */
-  titleText: 'Generic View',
+  localeId: 'view',
   /**
    * This views toolbar layout that defines all toolbar items in all toolbars.
    * @property {Object}

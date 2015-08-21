@@ -74,10 +74,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    */
   size: 0,
 
-  /**
-   * Text that is placed into the toolbar titleNode
-   */
-  titleText: 'Mobile',
+  localeId: 'mainToolbar',
 
   /**
    * Calls parent {@link Toolbar#clear clear} and removes all toolbar items from DOM.

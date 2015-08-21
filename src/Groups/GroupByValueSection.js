@@ -8,7 +8,7 @@ import _GroupBySection from './_GroupBySection';
 
 const __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
   name: 'DateTimeSectionFilter',
-  displayNameText: 'Group By Value Section',
+  localeId: 'groupByValueSection',
   width: 0,
   constructor: function constructor(o) {
     this.groupByProperty = o.groupByProperty;

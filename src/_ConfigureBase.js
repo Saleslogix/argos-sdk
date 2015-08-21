@@ -23,7 +23,7 @@ const __class = declare('argos._ConfigureBase', [_ListBase], {
   ]),
 
   // Localization
-  titleText: 'Configure',
+  localeId: 'configureBase',
 
   // View Properties
   id: 'configure_base',

@@ -37,9 +37,7 @@ function uCase(str) {
 
 const __class = declare('argos.Calendar', [View], {
   // Localization
-  titleText: 'Calendar',
-  amText: 'AM',
-  pmText: 'PM',
+  localeId: 'calendar',
 
   id: 'generic_calendar',
   contentNode: null,
@@ -47,18 +45,6 @@ const __class = declare('argos.Calendar', [View], {
   timeNode: null,
   meridiemNode: null,
   monthsShortText: [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
   ],
   months: null,
   dateFormat: moment().lang()._longDateFormat.L,
@@ -139,7 +125,22 @@ const __class = declare('argos.Calendar', [View], {
   },
   init: function init() {
     this.inherited(arguments);
-    this.months = this.monthsShortText;
+    const months = [
+      this.january,
+      this.february,
+      this.march,
+      this.april,
+      this.may,
+      this.june,
+      this.july,
+      this.august,
+      this.september,
+      this.october,
+      this.november,
+      this.december,
+    ];
+    months.push(this.monthsShortText);
+    this.months = months;
     this.dateFormat = moment().lang()._longDateFormat.L;
     this.is24hrTimeFormat = moment().lang()._longDateFormat.LT.match(/H\:/);
     this.connect(this.dayNode, 'onchange', this.validate);

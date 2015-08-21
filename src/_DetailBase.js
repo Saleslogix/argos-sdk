@@ -253,6 +253,11 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   id: 'generic_detail',
   /**
+   * @property {String}
+   * The unique identifier for localization of the view
+   */
+  localeId: 'detailBase',
+  /**
    * @property {Object}
    * The dojo store this view will use for data exchange.
    */
@@ -294,49 +299,10 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   quickActionSection: 'QuickActionsSection',
   /**
-   * @deprecated
-   */
-  editText: 'Edit',
-  /**
    * @cfg {String}
    * Font awesome icon to be used by the more list item
    */
   icon: 'fa fa-chevron',
-  /**
-   * @cfg {String}
-   * Information text that is concatenated with the entity type
-   */
-  informationText: 'Information',
-  /**
-   * @cfg {String}
-   * Default title text shown in the top toolbar
-   */
-  titleText: 'Detail',
-  /**
-   * @cfg {String}
-   * Default text used in the header title, followed by information
-   */
-  entityText: 'Entity',
-  /**
-   * @property {String}
-   * Helper string for a basic section header text
-   */
-  detailsText: 'Details',
-  /**
-   * @property {String}
-   * Text shown while loading and used in loadingTemplate
-   */
-  loadingText: 'loading...',
-  /**
-   * @property {String}
-   * Text used in the notAvailableTemplate
-   */
-  notAvailableText: 'The requested data is not available.',
-  /**
-   * @property {String}
-   * ARIA label text for a collapsible section header
-   */
-  toggleCollapseText: 'toggle collapse',
   /**
    * @property {String}
    * CSS class for the collapse button when in a expanded state

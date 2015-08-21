@@ -21,6 +21,7 @@ import dNumber from 'dojo/number';
 import convert from './Convert';
 import utility from './Utility';
 import moment from 'moment';
+import _l20nMixin from 'argos/_l20nMixin';
 
 const getVectorMaxSize = function getVectorMaxSize(v) {
   let w = 1;
@@ -113,56 +114,6 @@ let __class;
  */
 __class = lang.setObject('argos.Format', {
   /**
-   * @property {String}
-   * Text used in {@link #yesNo yesNo} formatter for true values
-   */
-  yesText: 'Yes',
-  /**
-   * @property {String}
-   * Text used in {@link #yesNo yesNo} formatter for false values
-   */
-  noText: 'No',
-  /**
-   * @property {String}
-   * Text used in {@link #bool bool} formatter for true values
-   */
-  trueText: 'T',
-  /**
-   * @property {String}
-   * Text used in {@link #bool bool} formatter for false values
-   */
-  falseText: 'F',
-  /**
-   * @property {String}
-   * Text used in {@link #timespan timespan} formatter for more than one hour
-   */
-  hoursText: 'hours',
-  /**
-   * @property {String}
-   * Text used in {@link #timespan timespan} formatter for exactly one hour
-   */
-  hourText: 'hour',
-  /**
-   * @property {String}
-   * Text used in {@link #timespan timespan} formatter for more than one minute
-   */
-  minutesText: 'minutes',
-  /**
-   * @property {String}
-   * Text used in {@link #timespan timespan} formatter for exactly one minute
-   */
-  minuteText: 'minute',
-
-  shortDateFormatText: 'M/D/YYYY',
-
-  /**
-   * @property {String}
-   * format string for percent
-   * * `${0}` - percent value
-   * * `${1}` - percent synmbol "%"
-   */
-  percentFormatText: '${0}${1}',
-  /**
    * Takes a String and encodes `&`, `<`, `>`, `"` to HTML entities
    * @param {String} String to encode
    * @return {String} Html encoded string
@@ -180,11 +131,6 @@ __class = lang.setObject('argos.Format', {
    * @return {Boolean} If passed item is empty
    */
   isEmpty: isEmpty,
-  /**
-   * @property {String}
-   * Text used in file size  formatter
-   */
-  bytesText: 'bytes',
   /**
    * @property {Object[]}
    * Array of objects that have the keys `test` and `format` where `test` is a RegExp that
@@ -568,5 +514,6 @@ __class = lang.setObject('argos.Format', {
   },
 });
 
+lang.mixin(__class, _l20nMixin);
 lang.setObject('Sage.Platform.Mobile.Format', __class);
 export default __class;

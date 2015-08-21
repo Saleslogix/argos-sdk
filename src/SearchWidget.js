@@ -85,11 +85,7 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
     '</div>',
   ]),
 
-  /**
-   * @property {String}
-   * Text that is used when no value is in the search box - "placeholder" text.
-   */
-  searchText: 'Search',
+  localeId: 'searchWidget',
 
   /**
    * @property {RegExp}

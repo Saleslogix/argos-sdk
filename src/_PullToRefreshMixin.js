@@ -33,16 +33,7 @@ __class = declare('argos._PullToRefreshMixin', null, {
     '<span class="fa fa-long-arrow-up"></span>{%= $$._getText("pullReleaseText") %}',
   ]),
 
-  /**
-   * @property {String}
-   * Text to indicate a pull to refresh
-   */
-  pullRefreshText: 'Pull down to refresh...',
-  /**
-   * @property {String}
-   * Text to indicate the user should release to cause the refresh
-   */
-  pullReleaseText: 'Release to refresh...',
+  localeId: 'pullToRefreshMixin',
 
   /**
    * @property {Boolean} enablePullToRefresh If true, will enable the user to drag down and refresh the list. Default is true.

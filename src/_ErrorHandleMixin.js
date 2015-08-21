@@ -1,6 +1,7 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
+import Utility from 'argos/Utility';
 
 /**
  * @class argos._ErrorHandleMixin
@@ -13,9 +14,12 @@ const __class = declare('argos._ErrorHandleMixin', null, {
    * Localized error messages. One general error message, and messages by HTTP status code.
    */
   errorText: {
-    general: 'A server error occured.',
-    status: {},
   },
+  errorKeys: [
+    'general',
+    'status',
+  ],
+  errorValues: null,
   /**
    * @property {Object}
    * Http Error Status codes. See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
@@ -95,6 +99,13 @@ const __class = declare('argos._ErrorHandleMixin', null, {
    * Gets the general error message, or the error message for the status code.
    */
   getErrorMessage: function getErrorMessage(error) {
+    if (!this.errorValues) {
+      this.errorValues = [
+        this.general,
+        {},
+      ];
+      Utility.extendObjectKeyValue(this.errorText, this.errorKeys, this.errorValues);
+    }
     let message = this.errorText.general;
 
     if (error) {

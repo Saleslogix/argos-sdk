@@ -33,11 +33,7 @@ import Utility from './Utility';
 
 const __class = declare('argos.GroupedList', [List], {
   // Localization
-  /**
-   * @property {String}
-   * Text used in ARIA label for collapsible button
-   */
-  toggleCollapseText: 'toggle collapse',
+  localeId: 'groupedList',
 
   collapsedIconClass: 'fa-chevron-right',
   expanedIconClass: 'fa-chevron-down',

@@ -65,11 +65,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
     '</li>',
   ]),
 
-  /**
-   * @cfg {String}
-   * More text that is used as the overflow tab for the tab list
-   */
-  moreText: 'More',
+  localeId: 'tabWidget',
   /**
    * @property {li}
    * Current tab (html element li) that the view is on

@@ -7,7 +7,7 @@ import _Templated from './_Templated';
 
 const __class = declare('argos._RelatedViewWidgetBase', [_Widget, _Templated], {
   cls: null,
-  loadingText: 'loading ... ',
+  localeId: 'relatedViewWidgetBase',
   /**
    * @property {Simplate}
    * Simple that defines the HTML Markup

@@ -9,28 +9,7 @@ import moment from 'moment';
  */
 const __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
   name: 'DateTimeSectionFilter',
-  displayNameText: 'Date Time Section',
-  todayText: 'Today',
-  tomorrowText: 'Tomorrow',
-  laterThisWeekText: 'Later this week',
-  earlierThisWeekText: 'Earlier this week',
-  thisLaterMonthText: 'Later this month',
-  thisEarlierMonthText: 'Earlier this month',
-  thisYearEarlierText: 'Earlier this year',
-  thisYearLaterText: 'Later this year',
-  yesterdayText: 'Yesterday',
-  lastWeekText: 'Last week',
-  lastMonthText: 'Last month',
-  pastYearText: 'Past year(s)',
-  nextYearText: 'Next year',
-  nextMonthText: 'Next month',
-  nextWeekText: 'Next week',
-  futureText: 'Future',
-  twoWeeksAgoText: 'Two weeks ago',
-  threeWeeksAgoText: 'Three weeks ago',
-  twoMonthsAgoText: 'Two months ago',
-  threeMonthsAgoText: 'Three months ago',
-  unknownText: 'Unknown',
+  localeId: 'dateTimeSection',
 
   constructor: function constructor(o) {
     declare.safeMixin(this, o);

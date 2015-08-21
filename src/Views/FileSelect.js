@@ -30,15 +30,7 @@ import View from '../View';
  */
 const __class = declare('argos.Views.FileSelect', [View], {
   // Localization
-  titleText: 'File Select',
-  addFileText: 'Click or Tap here to add a file.',
-  uploadText: 'Upload',
-  cancelText: 'Cancel',
-  selectFileText: 'Select file',
-  loadingText: 'Uploading...',
-  descriptionText: 'description',
-  bytesText: 'bytes',
-  notSupportedText: 'Adding attachments is not supported by your device.',
+  localeId: 'fileSelect',
 
   /**
    * @property {Simplate}

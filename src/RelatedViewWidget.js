@@ -18,14 +18,6 @@ import _RelatedViewWidgetBase from 'argos/_RelatedViewWidgetBase';
 
 const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], {
   cls: 'related-view-widget',
-  nodataText: 'no records found ...',
-  selectMoreDataText: 'see ${0} more of ${1} ... ',
-  selectMoreDataText2: 'see ${0} more ... ',
-  navToListText: 'see list',
-  loadingText: 'loading ... ',
-  refreshViewText: 'refresh',
-  itemOfCountText: ' ${0} of ${1}',
-  totalCountText: ' (${0})',
   parentProperty: '$key',
   parentEntry: null,
   relatedProperty: '$key',
@@ -33,7 +25,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   itemsNode: null,
   loadingNode: null,
   id: 'related-view',
-  titleText: 'Related View',
+  localeId: 'relatedViewWidget',
   detailViewId: null,
   listViewId: null,
   listViewWhere: null,

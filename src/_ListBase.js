@@ -260,6 +260,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The id for the view, and it's main DOM element.
    */
   id: 'generic_list',
+  localeId: 'listBase',
   /**
    * @cfg {String}
    * The SData resource kind the view is responsible for.  This will be used as the default resource kind

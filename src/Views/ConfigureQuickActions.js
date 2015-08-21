@@ -12,7 +12,7 @@ import _ConfigureBase from '../_ConfigureBase';
  */
 const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
   // Localization
-  titleText: 'Configure Quick Actions',
+  localeId: 'configureQuickActions',
 
   // View Properties
   id: 'configure_quickactions',

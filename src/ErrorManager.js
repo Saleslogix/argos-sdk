@@ -33,15 +33,7 @@ try {
  */
 const __class = lang.setObject('argos.ErrorManager', {
   // Localization
-
-  /**
-   * Text used in place of statusText for aborted errors.
-   */
-  abortedText: 'Aborted',
-  /**
-   * Text put in place of the scope property to prevent circular references.
-   */
-  scopeSaveText: 'Scope is not saved in error report',
+  localeId: 'errorManager',
 
   /**
    * @property {Number}

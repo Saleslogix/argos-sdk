@@ -33,21 +33,7 @@ import View from '../View';
  */
 const __class = declare('argos.Views.Signature', [View], {
   // Localization
-  /**
-   * @property {String}
-   * Text shown in the top toolbar header
-   */
-  titleText: 'Signature',
-  /**
-   * @property {String}
-   * Text shown in the clear button
-   */
-  clearCanvasText: 'Erase',
-  /**
-   * @property {String}
-   * Text shown in the undo button
-   */
-  undoText: 'Undo',
+  localeId: 'signature',
 
   // Templates
   /**
