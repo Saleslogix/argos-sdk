@@ -351,6 +351,12 @@ const __class = declare('argos._EditBase', [View], {
           field.renderTo(node);
         }
       }, this);
+
+    const sections = query('h2', this.contentNode);
+    if (sections.length === 1) {
+      domAttr.remove(sections[0], 'data-action');
+      domConstruct.destroy(sections[0].children[0]);
+    }
   },
   /**
    * Extends init to also init the fields in `this.fields`.
