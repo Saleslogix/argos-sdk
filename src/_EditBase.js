@@ -355,7 +355,10 @@ const __class = declare('argos._EditBase', [View], {
     const sections = query('h2', this.contentNode);
     if (sections.length === 1) {
       domAttr.remove(sections[0], 'data-action');
-      domConstruct.destroy(sections[0].children[0]);
+      const button = query('button[class*="fa-chevron"]', sections[0]);
+      if (button[0]) {
+        domConstruct.destroy(button[0]);
+      }
     }
   },
   /**
