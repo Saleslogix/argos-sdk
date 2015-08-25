@@ -63,6 +63,11 @@ const __class = declare('argos.Calendar', [View], {
       '{%= $.day %}',
     '</td>',
   ]),
+  calendarTableDayActiveTemplate: new Simplate([
+    '<div class="day__active">',
+      '{%= $.count %}',
+    '</div>',
+  ]),
   calendarTableWeekStartTemplate: new Simplate([
     '<tr class="calendar-week">',
   ]),
@@ -79,10 +84,6 @@ const __class = declare('argos.Calendar', [View], {
       '<th>{%= $.weekDaysShortText[5] %}</th>',
       '<th>{%= $.weekDaysShortText[6] %}</th>',
     '</tr>',
-  ]),
-  timePickTemplate: new Simplate([
-    '<div class="time-picker">',
-    '</div>',
   ]),
 
   // Localization
@@ -117,6 +118,7 @@ const __class = declare('argos.Calendar', [View], {
 
   id: 'generic_calendar',
   showTimePicker: true,
+  showSubValues: true,
   // This boolean value is used to trigger the modal hide and show and must be used by each entity
   isModal: false,
   // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
@@ -172,7 +174,12 @@ const __class = declare('argos.Calendar', [View], {
       data.weekend = '';
     }
     data.date = data.dateMoment.date(data.day).format('YYYY-MM-DD');
-    domConstruct.place(this.calendarTableDayTemplate.apply(data, this), data.week);
+    const day = domConstruct.toDom(this.calendarTableDayTemplate.apply(data, this));
+    if (this.showSubValues) {
+      this.setSubValue(data.date)
+          .setActiveDay(day);
+    }
+    domConstruct.place(day, data.week);
   },
   clearCalendar: function clearCalendar() {
     const selected = query('.selected', this.weeksNode)[0];
@@ -184,17 +191,25 @@ const __class = declare('argos.Calendar', [View], {
     this.date.selectedDateMoment = null;
   },
   createMonthModal: function createMonthModal() {
-    this._monthModal = new Modal({ id: 'month-modal', showBackdrop: false, positioning: 'center', closeAction: 'hideMonthModal', actionScope: this });
-    this._monthModal.placeModal(this.domNode.offsetParent)
-                   .setContentPicklist({ items: this.monthsText, action: 'setSelectedMonth', actionScope: this, defaultValue: this.date.selectedDateMoment.format('MMMM') });
+    this._monthModal = new Modal({ id: 'month-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideMonthModal', actionScope: this });
+    if (this.domNode.offsetParent) {
+      this._monthModal.placeModal(this.domNode.offsetParent);
+    } else {
+      this._monthModal.placeModal(this.domNode);
+    }
+    this._monthModal.setContentPicklist({ items: this.monthsText, action: 'setSelectedMonth', actionScope: this, defaultValue: this.date.selectedDateMoment.format('MMMM') });
     this._currentMonth = this._monthModal.getSelected();
     this._todayMonth = this._currentMonth;
     return this;
   },
   createYearModal: function createYearModal() {
-    this._yearModal = new Modal({ id: 'year-modal', showBackdrop: false, positioning: 'center', closeAction: 'hideYearModal', actionScope: this });
-    this._yearModal.placeModal(this.domNode.offsetParent)
-                   .setContentPicklist({ items: this.getYearRange(), action: 'setSelectedYear', actionScope: this, defaultValue: this.date.selectedDateMoment.format('YYYY')});
+    this._yearModal = new Modal({ id: 'year-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideYearModal', actionScope: this });
+    if (this.domNode.offsetParent) {
+      this._yearModal.placeModal(this.domNode.offsetParent);
+    } else {
+      this._yearModal.placeModal(this.domNode);
+    }
+    this._yearModal.setContentPicklist({ items: this.getYearRange(), action: 'setSelectedYear', actionScope: this, defaultValue: this.date.selectedDateMoment.format('YYYY')});
     this._currentYear = this._yearModal.getSelected();
     this._todayYear = this._currentYear;
     return this;
@@ -211,6 +226,10 @@ const __class = declare('argos.Calendar', [View], {
     this.date.selectedDateMoment = this.date.todayMoment.clone();
     this.refreshCalendar(this.date)
         .setDropdownsToday();
+  },
+  getDateTime: function getDateTime() {
+    const result = this.date.selectedDateMoment;
+    return result.toDate();
   },
   getYearRange: function getYearRange() {
     const items = [];
@@ -318,6 +337,13 @@ const __class = declare('argos.Calendar', [View], {
 
     return this;
   },
+  setActiveDay: function setActiveDay(day = {}) {
+    if (day.subValue) {
+      const active = domConstruct.toDom(this.calendarTableDayActiveTemplate.apply({ count: day.subValue }, this));
+      domConstruct.place(active, day, 'last');
+    }
+    return this;
+  },
   setDateObject: function setDateObject(dateMoment = {}) {
     this.date.day = dateMoment.date();
     this.date.month = dateMoment.format('MMMM');
@@ -364,6 +390,9 @@ const __class = declare('argos.Calendar', [View], {
       this.toggleYearModal();
       this.refreshCalendar(this.date);
     }
+    return this;
+  },
+  setSubValue: function setSubValue() {
     return this;
   },
   show: function show(options = {}) {

@@ -24,6 +24,7 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
    *  If on old modal with new content - Empty -> Set -> Show
    *  If on old modal with no new content - Show
    *  To hide modal - Hide
+   *  Destroy modal - Destroy
    */
 
   var _declare = _interopRequireDefault(_dojo_baseDeclare);
@@ -138,6 +139,9 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       });
 
       if (this._isPicklist) {
+        if (this._picklistSelected) {
+          _domProp['default'].set(this.getContent(), 'scrollTop', _domProp['default'].get(this._picklistSelected, 'offsetTop'));
+        }
         if (position.top > offsetTop) {
           _domStyle['default'].set(this._contentObject, {
             borderTop: '0'
@@ -160,6 +164,11 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
       }, this);
       this._deferred.resolve(data);
       this.hideModal();
+      return this;
+    },
+    destroy: function destroy() {
+      this.emptyModal();
+      _domConstruct['default'].destroy(this.modalNode);
       return this;
     },
     emptyModal: function emptyModal() {
@@ -309,9 +318,6 @@ define('argos/Modal', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base/ar
         padding: 0,
         overflow: 'hidden'
       });
-      if (this._picklistSelected) {
-        _domProp['default'].set(pickListStart, 'scrollTop', _domProp['default'].get(this._picklistSelected, 'offsetTop'));
-      }
       this._eventConnections.push(_connect['default'].connect(pickListStart, 'onclick', actionScope, actionScope[action]));
 
       return this;

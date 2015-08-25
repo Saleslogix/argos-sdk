@@ -112,7 +112,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   ],
 
   createHourModal: function createHourModal() {
-    this._hourModal = new Modal({ id: 'hour-modal', showBackdrop: false, positioning: 'right' });
+    this._hourModal = new Modal({ id: 'hour-modal ' + this.id, showBackdrop: false, positioning: 'right' });
     this._hourModal.placeModal(this.domNode.offsetParent)
                    .setContentPicklist({ items: this.hourValues, action: 'setSelectedHour', actionScope: this });
     this.setSelectedHour({ target: this._hourModal.getContent().children[0] });
@@ -120,7 +120,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     return this;
   },
   createMinuteModal: function createMinuteModal() {
-    this._minuteModal = new Modal({ id: 'minute-modal', showBackdrop: false, positioning: 'right' });
+    this._minuteModal = new Modal({ id: 'minute-modal ' + this.id, showBackdrop: false, positioning: 'right' });
     this._minuteModal.placeModal(this.domNode.offsetParent)
                      .setContentPicklist({ items: this.minuteValues, action: 'setSelectedMinute', actionScope: this });
     this.setSelectedMinute({ target: this._minuteModal.getContent().children[0] });

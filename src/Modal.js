@@ -21,6 +21,7 @@
  *  If on old modal with new content - Empty -> Set -> Show
  *  If on old modal with no new content - Show
  *  To hide modal - Hide
+ *  Destroy modal - Destroy
  */
 import declare from 'dojo/_base/declare';
 import array from 'dojo/_base/array';
@@ -138,6 +139,9 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     });
 
     if (this._isPicklist) {
+      if (this._picklistSelected) {
+        domProp.set(this.getContent(), 'scrollTop', domProp.get(this._picklistSelected, 'offsetTop'));
+      }
       if (position.top > offsetTop) {
         domStyle.set(this._contentObject, {
           borderTop: '0',
@@ -160,6 +164,11 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     }, this);
     this._deferred.resolve(data);
     this.hideModal();
+    return this;
+  },
+  destroy: function destroy() {
+    this.emptyModal();
+    domConstruct.destroy(this.modalNode);
     return this;
   },
   emptyModal: function emptyModal() {
@@ -294,9 +303,6 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       padding: 0,
       overflow: 'hidden',
     });
-    if (this._picklistSelected) {
-      domProp.set(pickListStart, 'scrollTop', domProp.get(this._picklistSelected, 'offsetTop'));
-    }
     this._eventConnections.push(connect.connect(pickListStart, 'onclick', actionScope, actionScope[action]));
 
     return this;

@@ -47,10 +47,10 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
     calendarTableTemplate: new Simplate(['<table class="calendar-table">', '<thead>', '{%! $.calendarWeekDaysTemplate %}', '</thead>', '<tbody data-dojo-attach-point="weeksNode"></tbody>', '</table>']),
     calendarFooterTemplate: new Simplate(['<div class="calendar-footer">', '<div class="button tertiary clear" data-action="clearCalendar" data-dojo-attach-point="clearButton">{%= $.clearText %}</div>', '<div class="button tertiary toToday" data-action="goToToday" data-dojo-attach-point="todayButton">{%= $.todayText %}</div>', '</div>']),
     calendarTableDayTemplate: new Simplate(['<td class="day {%= $.month %} {%= $.weekend %} {%= $.selected %} {%= $.isToday %}" data-action="changeDay" data-date="{%= $.date %}">', '{%= $.day %}', '</td>']),
+    calendarTableDayActiveTemplate: new Simplate(['<div class="day__active">', '{%= $.count %}', '</div>']),
     calendarTableWeekStartTemplate: new Simplate(['<tr class="calendar-week">']),
     calendarTableWeekEndTemplate: new Simplate(['</tr>']),
     calendarWeekDaysTemplate: new Simplate(['<tr class="calendar-weekdays">', '<th>{%= $.weekDaysShortText[0] %}</th>', '<th>{%= $.weekDaysShortText[1] %}</th>', '<th>{%= $.weekDaysShortText[2] %}</th>', '<th>{%= $.weekDaysShortText[3] %}</th>', '<th>{%= $.weekDaysShortText[4] %}</th>', '<th>{%= $.weekDaysShortText[5] %}</th>', '<th>{%= $.weekDaysShortText[6] %}</th>', '</tr>']),
-    timePickTemplate: new Simplate(['<div class="time-picker">', '</div>']),
 
     // Localization
     titleText: 'Calendar',
@@ -63,6 +63,7 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
 
     id: 'generic_calendar',
     showTimePicker: true,
+    showSubValues: true,
     // This boolean value is used to trigger the modal hide and show and must be used by each entity
     isModal: false,
     // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
@@ -124,7 +125,11 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
         data.weekend = '';
       }
       data.date = data.dateMoment.date(data.day).format('YYYY-MM-DD');
-      _domConstruct['default'].place(this.calendarTableDayTemplate.apply(data, this), data.week);
+      var day = _domConstruct['default'].toDom(this.calendarTableDayTemplate.apply(data, this));
+      if (this.showSubValues) {
+        this.setSubValue(data.date).setActiveDay(day);
+      }
+      _domConstruct['default'].place(day, data.week);
     },
     clearCalendar: function clearCalendar() {
       var selected = (0, _query['default'])('.selected', this.weeksNode)[0];
@@ -136,15 +141,25 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       this.date.selectedDateMoment = null;
     },
     createMonthModal: function createMonthModal() {
-      this._monthModal = new _Modal['default']({ id: 'month-modal', showBackdrop: false, positioning: 'center', closeAction: 'hideMonthModal', actionScope: this });
-      this._monthModal.placeModal(this.domNode.offsetParent).setContentPicklist({ items: this.monthsText, action: 'setSelectedMonth', actionScope: this, defaultValue: this.date.selectedDateMoment.format('MMMM') });
+      this._monthModal = new _Modal['default']({ id: 'month-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideMonthModal', actionScope: this });
+      if (this.domNode.offsetParent) {
+        this._monthModal.placeModal(this.domNode.offsetParent);
+      } else {
+        this._monthModal.placeModal(this.domNode);
+      }
+      this._monthModal.setContentPicklist({ items: this.monthsText, action: 'setSelectedMonth', actionScope: this, defaultValue: this.date.selectedDateMoment.format('MMMM') });
       this._currentMonth = this._monthModal.getSelected();
       this._todayMonth = this._currentMonth;
       return this;
     },
     createYearModal: function createYearModal() {
-      this._yearModal = new _Modal['default']({ id: 'year-modal', showBackdrop: false, positioning: 'center', closeAction: 'hideYearModal', actionScope: this });
-      this._yearModal.placeModal(this.domNode.offsetParent).setContentPicklist({ items: this.getYearRange(), action: 'setSelectedYear', actionScope: this, defaultValue: this.date.selectedDateMoment.format('YYYY') });
+      this._yearModal = new _Modal['default']({ id: 'year-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideYearModal', actionScope: this });
+      if (this.domNode.offsetParent) {
+        this._yearModal.placeModal(this.domNode.offsetParent);
+      } else {
+        this._yearModal.placeModal(this.domNode);
+      }
+      this._yearModal.setContentPicklist({ items: this.getYearRange(), action: 'setSelectedYear', actionScope: this, defaultValue: this.date.selectedDateMoment.format('YYYY') });
       this._currentYear = this._yearModal.getSelected();
       this._todayYear = this._currentYear;
       return this;
@@ -160,6 +175,10 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
       _domClass['default'].remove(this.todayButton, 'selected');
       this.date.selectedDateMoment = this.date.todayMoment.clone();
       this.refreshCalendar(this.date).setDropdownsToday();
+    },
+    getDateTime: function getDateTime() {
+      var result = this.date.selectedDateMoment;
+      return result.toDate();
     },
     getYearRange: function getYearRange() {
       var items = [];
@@ -269,6 +288,15 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
 
       return this;
     },
+    setActiveDay: function setActiveDay() {
+      var day = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      if (day.subValue) {
+        var active = _domConstruct['default'].toDom(this.calendarTableDayActiveTemplate.apply({ count: day.subValue }, this));
+        _domConstruct['default'].place(active, day, 'last');
+      }
+      return this;
+    },
     setDateObject: function setDateObject() {
       var dateMoment = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
@@ -321,6 +349,9 @@ define('argos/Calendar', ['exports', 'module', 'dojo/_base/declare', 'dojo/_base
         this.toggleYearModal();
         this.refreshCalendar(this.date);
       }
+      return this;
+    },
+    setSubValue: function setSubValue() {
       return this;
     },
     show: function show() {

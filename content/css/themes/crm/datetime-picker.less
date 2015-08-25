@@ -48,6 +48,7 @@
   }
 
   .day {
+    position: relative;
     border: 1px solid transparent;
     border-radius: 50%;
     -webkit-border-radius: 50%;
@@ -61,6 +62,21 @@
     -moz-transition: 0.2s background-color ease;
     -ms-transition: 0.2s background-color ease;
     text-align: center;
+  }
+  .day__active {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    min-width: 1.5em;
+    min-height: 1.5em;
+    line-height: 1.5em;
+    font-size: @font-size-h5;
+    color: @color-black;
+    background-color: @color-amber;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
   }
 
   .current-month {
@@ -88,21 +104,21 @@
   padding-top: 10px;
   display: inline-block;
 
-  // .button {
-  //   background-color: transparent;
-  //   border: none;
-  //   font-size: @font-size-h3;
-  //   font-weight: @button-font-weight;
-  //   text-transform: uppercase;
-  //   text-align: @button-text-align;
-  //   text-decoration: @button-text-decoration;
-  //   height: 34px;
-  //   line-height: 34px;
-  //   min-width: 100px;
-  //   width: auto;
-  //   overflow: hidden;
-  //   position: relative;
-  // }
+  .button {
+    background-color: transparent;
+    border: none;
+    font-size: @font-size-h3;
+    font-weight: @button-font-weight;
+    text-transform: uppercase;
+    text-align: @button-text-align;
+    text-decoration: @button-text-decoration;
+    height: 34px;
+    line-height: 34px;
+    min-width: 100px;
+    width: auto;
+    overflow: hidden;
+    position: relative;
+  }
 
   .tertiary {
     padding: 0 10px;

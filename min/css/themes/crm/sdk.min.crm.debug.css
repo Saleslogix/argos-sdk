@@ -393,9 +393,7 @@ span {
   left: 6px;
   line-height: 30px;
   padding: 0 2px 0 2px;
-  color: #000;
-  text-shadow: #fff 0px 1px 0px;
-  border: 1px solid #ececec;
+  color: #50535a;
 }
 .list-show-actions .list-item-selector > img {
   position: absolute;
@@ -459,7 +457,8 @@ span {
   position: absolute;
   top: 0px;
   bottom: 0px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 .scroller.animate {
@@ -1421,7 +1420,7 @@ textarea:focus {
 }
 .list-content > .actions-row > button:active,
 .group-content > .actions-row > button:active {
-  background-color: #69b5dd;
+  background-color: #50535a;
 }
 .group-content > h2 > button {
   color: #c8cbd4;
@@ -1477,8 +1476,9 @@ textarea:focus {
   display: inline;
 }
 .list-loading .list-more .button span {
-  padding: 0 0 0 20px;
-  color: #555;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #5c5c5c;
 }
 .actions-row > button {
   position: relative;
@@ -1972,6 +1972,7 @@ body > .viewContainer > .toolbar,
   color: #383838;
 }
 .calendar-table .day {
+  position: relative;
   border: 1px solid transparent;
   border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -1985,6 +1986,21 @@ body > .viewContainer > .toolbar,
   -moz-transition: 0.2s background-color ease;
   -ms-transition: 0.2s background-color ease;
   text-align: center;
+}
+.calendar-table .day__active {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 1.5em;
+  min-height: 1.5em;
+  line-height: 1.5em;
+  font-size: 10px;
+  color: #1a1a1a;
+  background-color: #efa836;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
 }
 .calendar-table .current-month {
   color: #383838;
@@ -2005,6 +2021,21 @@ body > .viewContainer > .toolbar,
   width: 100%;
   padding-top: 10px;
   display: inline-block;
+}
+.calendar-footer .button {
+  background-color: transparent;
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  height: 34px;
+  line-height: 34px;
+  min-width: 100px;
+  width: auto;
+  overflow: hidden;
+  position: relative;
 }
 .calendar-footer .tertiary {
   padding: 0 10px;

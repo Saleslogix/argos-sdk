@@ -61,14 +61,14 @@ define('argos/TimePicker', ['exports', 'module', 'dojo/_base/declare', 'dojo/_ba
     minuteValues: ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'],
 
     createHourModal: function createHourModal() {
-      this._hourModal = new _Modal2['default']({ id: 'hour-modal', showBackdrop: false, positioning: 'right' });
+      this._hourModal = new _Modal2['default']({ id: 'hour-modal ' + this.id, showBackdrop: false, positioning: 'right' });
       this._hourModal.placeModal(this.domNode.offsetParent).setContentPicklist({ items: this.hourValues, action: 'setSelectedHour', actionScope: this });
       this.setSelectedHour({ target: this._hourModal.getContent().children[0] });
       _connect['default'].connect(this.hourNode, 'onclick', this, this.toggleHours);
       return this;
     },
     createMinuteModal: function createMinuteModal() {
-      this._minuteModal = new _Modal2['default']({ id: 'minute-modal', showBackdrop: false, positioning: 'right' });
+      this._minuteModal = new _Modal2['default']({ id: 'minute-modal ' + this.id, showBackdrop: false, positioning: 'right' });
       this._minuteModal.placeModal(this.domNode.offsetParent).setContentPicklist({ items: this.minuteValues, action: 'setSelectedMinute', actionScope: this });
       this.setSelectedMinute({ target: this._minuteModal.getContent().children[0] });
       _connect['default'].connect(this.minuteNode, 'onclick', this, this.toggleMinutes);
