@@ -72,6 +72,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   _isPicklist: false,
   _picklistSelected: null,
   _cancelButton: null,
+  _modalConnection: null,
   _eventConnections: [], // TODO: Clear connections upon modal destroy
   _deferred: null,
   showBackdrop: true,
@@ -83,6 +84,10 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   cancelText: 'Cancel',
   confirmText: 'Confirm',
 
+  attachEventListener: function attachEventListener() {
+    this._modalConnection = connect.connect(this.modalNode, 'onclick', this, this.modalClick);
+    return this;
+  },
   calculatePosition: function calculatePosition({ offsetTop, offsetLeft, offsetWidth, offsetHeight }) {
     const position = {};
 
@@ -200,6 +205,10 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
         visibility: 'hidden',
       });
     }
+    return this;
+  },
+  modalClick: function modalClick() {
+    connect.disconnect(this._modalConnection);
     return this;
   },
   noBackdrop: function noBackDrop() {
@@ -322,6 +331,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       this.showContent()
           .toggleBackdrop()
           .toggleParentScroll()
+          .attachEventListener()
           .calculatePosition(target);
     }
     return this._deferred;
