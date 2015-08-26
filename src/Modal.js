@@ -77,6 +77,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   _deferred: null,
   showBackdrop: true,
   showToolbar: true,
+  disableParentScroll: true,
   closeAction: null,
   actionScope: null,
   positioning: '',
@@ -361,14 +362,16 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     return this;
   },
   toggleParentScroll: function toggleParentScroll() {
-    if (domStyle.get(this._parentNode, 'overflow') === 'hidden') {
-      domStyle.set(this._parentNode, {
-        overflow: '',
-      });
-    } else {
-      domStyle.set(this._parentNode, {
-        overflow: 'hidden',
-      });
+    if (this.disableParentScroll) {
+      if (domStyle.get(this._parentNode, 'overflow') === 'hidden') {
+        domStyle.set(this._parentNode, {
+          overflow: '',
+        });
+      } else {
+        domStyle.set(this._parentNode, {
+          overflow: 'hidden',
+        });
+      }
     }
     return this;
   },

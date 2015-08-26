@@ -52,6 +52,7 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   barSize: 100,
   positioning: 'toast--top-right',
   showProgressBar: true,
+  disableParentScroll: false,
   _progressBar: null,
   _toasts: [],
   _timeouts: [],
@@ -115,6 +116,9 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
     if (toast) {
       domConstruct.destroy(toast);
     }
+  },
+  hide: function hide() {
+    this.hideModal();
   },
   hideToast: function hideToast(toast = {}) {
     if (toast) {
