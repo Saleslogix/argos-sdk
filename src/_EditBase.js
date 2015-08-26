@@ -351,6 +351,15 @@ const __class = declare('argos._EditBase', [View], {
           field.renderTo(node);
         }
       }, this);
+
+    const sections = query('h2', this.contentNode);
+    if (sections.length === 1) {
+      domAttr.remove(sections[0], 'data-action');
+      const button = query('button[class*="fa-chevron"]', sections[0]);
+      if (button[0]) {
+        domConstruct.destroy(button[0]);
+      }
+    }
   },
   /**
    * Extends init to also init the fields in `this.fields`.
