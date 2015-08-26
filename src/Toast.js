@@ -17,6 +17,8 @@
  * @class argos.Toast
  * @alternateClassName Global Pop-up
  */
+import array from 'dojo/_base/array';
+import connect from 'dojo/_base/connect';
 import declare from 'dojo/_base/declare';
 import fx from 'dojo/_base/fx';
 import domClass from 'dojo/dom-class';
@@ -29,16 +31,18 @@ import Modal from 'argos/Modal';
 
 const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   toastTemplate: new Simplate([
-    '<button class="toast__btn-close fa fa-times"></button>',
-    '<span class="toast__title">',
-      '{%= $.title %}',
-    '</span>',
-    '<span class="toast__message">',
-      '{%= $.message %}',
-    '</span>',
-    '{% if ($.showProgressBar) { %}',
-      '<div class="toast__progressBar"></div>',
-    '{% } %}',
+    '<div class="toast">',
+      '<button class="toast__btn-close fa fa-times"></button>',
+      '<span class="toast__title">',
+        '{%= $.title %}',
+      '</span>',
+      '<span class="toast__message">',
+        '{%= $.message %}',
+      '</span>',
+      '{% if ($.showProgressBar) { %}',
+        '<div class="toast__progressBar"></div>',
+      '{% } %}',
+    '</div>',
   ]),
   id: 'toast',
   title: 'Title',
@@ -49,11 +53,29 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   positioning: 'toast--top-right',
   showProgressBar: true,
   _progressBar: null,
+  _toasts: [],
+  _timeouts: [],
+  _connections: [],
 
-  animateBar: function animateBar() {
-    if (this._progressBar) {
+  addToast: function addToast(options = {}) {
+    this.title = options.title || this.title;
+    this.message = options.message || this.message;
+    this.toastTime = options.toastTime || this.toastTime;
+    this.barSize = options.barSize || this.barSize;
+    this.showProgressBar = options.showProgressBar || this.showProgressBar;
+    const toasty = domConstruct.toDom(this.toastTemplate.apply(this));
+    if (this.showProgressBar) {
+      toasty._progressBar = query('.toast__progressBar', toasty)[0];
+    }
+    domConstruct.place(toasty, this.modalNode);
+    this._toasts.push(toasty);
+    this._connections.push(connect.connect(query('.toast__btn-close', toasty)[0], 'onclick', this, this.closeButton));
+    this.setTimer(toasty);
+  },
+  animateBar: function animateBar(toast = {}) {
+    if (toast._progressBar) {
       fx.animateProperty({
-        node: this._progressBar,
+        node: toast._progressBar,
         properties: {
           width: 0,
         },
@@ -77,50 +99,54 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   },
   calculatePosition: function calculatePosition() {
     domClass.remove(this.modalNode, 'panel');
-    domClass.add(this.modalNode, 'toast');
+    domClass.add(this.modalNode, 'toast__queue');
     this.applyPositioning();
     return this;
   },
-  hideToast: function hideToast() {
-    domStyle.set(this._progressBar, {
-      width: 0,
-    });
-    domStyle.set(this.modalNode, {
-      visibility: 'hidden',
-    });
-    setTimeout(this.destroy.bind(this), 200);
-    return this;
+  closeButton: function closeButton({ target }) {
+    const indexOf = array.indexOf(this._toasts, target.offsetParent);
+    if (indexOf > -1) {
+      const toast = this._toasts.splice(indexOf, 1)[0];
+      connect.disconnect(this._connections.splice(indexOf, 1)[0]);
+      this.hideToast(toast);
+    }
   },
-  modalClick: function modalClick({ target }) {
-    if (target === query('.toast__btn-close', this.modalNode)[0]) {
-      this.inherited(arguments);
-      this.hideToast();
+  destroyToast: function destroyToast(toast = {}) {
+    if (toast) {
+      domConstruct.destroy(toast);
+    }
+  },
+  hideToast: function hideToast(toast = {}) {
+    if (toast) {
+      domStyle.set(toast, {
+        visibility: 'hidden',
+      });
+      this.destroyToast(toast);
     }
     return this;
+  },
+  hideToastTimeout: function hideToastTimeout() {
+    clearTimeout(this._timeouts.shift());
+    const toast = this._toasts.shift();
+    connect.disconnect(this._connections.shift());
+    this.hideToast(toast);
   },
   placeModal: function placeModal(parentPanel = {}) {
     this._parentNode = parentPanel;
     domConstruct.place(this.modalNode, this._parentNode);
     return this;
   },
-  setTimer: function setTimer() {
-    this.animateBar();
-    setTimeout(this.hideToast.bind(this), this.toastTime);
+  setTimer: function setTimer(toast = {}) {
+    this.animateBar(toast);
+    this._timeouts.push(setTimeout(this.hideToastTimeout.bind(this), this.toastTime));
     return this;
   },
   show: function show() {
     const body = query('body')[0];
     if (body) {
-      const toasty = domConstruct.toDom(this.toastTemplate.apply(this));
-      if (this.showProgressBar) {
-        this._progressBar = query('.toast__progressBar', toasty)[0];
-      }
-      domConstruct.place(toasty, this.modalNode);
-      this.placeModal(App.getPrimaryActiveView().ownerDocumentBody)
-          .setContent(toasty)
-          .calculatePosition()
-          .attachEventListener()
-          .setTimer();
+      this.placeModal(body)
+          .setContent(this.toasts)
+          .calculatePosition();
     }
   },
   showModal: function showModal() {
