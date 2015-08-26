@@ -710,7 +710,9 @@ define('argos/_ListBase', [
             }, []);
 
             // Grab quick actions from the users preferences (ordered and made visible according to user)
-            prefActions = this.app.preferences.quickActions[this.id];
+            if (this.app.preferences && this.app.preferences.quickActions) {
+              prefActions = this.app.preferences.quickActions[this.id];
+            }
 
             if (systemActions && prefActions) {
                 // Display system actions first, then the order of what the user specified
