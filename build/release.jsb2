@@ -35,6 +35,10 @@
         {
           "text": "browser-polyfill.min.js",
           "path": "../libraries/babel/"
+        },
+        {
+          "text": "l20n.min.js",
+          "path": "../libraries/l20n/"
         }
       ]
     },
