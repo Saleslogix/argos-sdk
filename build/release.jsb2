@@ -9,7 +9,7 @@
       "isDebug": true,
       "fileIncludes": [
         {
-          "text": "l20n.min.js",
+          "text": "l20n.js",
           "path": "../libraries/l20n/"
         },
         {
