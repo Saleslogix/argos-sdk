@@ -31,9 +31,15 @@ import domConstruct from 'dojo/dom-construct';
 import List from './List';
 import Utility from './Utility';
 
+const resource = window.localeContext.getEntitySync('groupedList').attributes;
+
 const __class = declare('argos.GroupedList', [List], {
   // Localization
-  localeId: 'groupedList',
+  /**
+   * @property {String}
+   * Text used in ARIA label for collapsible button
+   */
+  toggleCollapseText: resource.toggleCollapseText,
 
   collapsedIconClass: 'fa-chevron-right',
   expanedIconClass: 'fa-chevron-down',

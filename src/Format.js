@@ -21,7 +21,8 @@ import dNumber from 'dojo/number';
 import convert from './Convert';
 import utility from './Utility';
 import moment from 'moment';
-import _L20NMixin from 'argos/_L20NMixin';
+
+const resource = window.localeContext.getEntitySync('format').attributes;
 
 const getVectorMaxSize = function getVectorMaxSize(v) {
   let w = 1;
@@ -114,6 +115,56 @@ let __class;
  */
 __class = lang.setObject('argos.Format', {
   /**
+   * @property {String}
+   * Text used in {@link #yesNo yesNo} formatter for true values
+   */
+  yesText: resource.yesText,
+  /**
+   * @property {String}
+   * Text used in {@link #yesNo yesNo} formatter for false values
+   */
+  noText: resource.noText,
+  /**
+   * @property {String}
+   * Text used in {@link #bool bool} formatter for true values
+   */
+  trueText: resource.trueText,
+  /**
+   * @property {String}
+   * Text used in {@link #bool bool} formatter for false values
+   */
+  falseText: resource.falseText,
+  /**
+   * @property {String}
+   * Text used in {@link #timespan timespan} formatter for more than one hour
+   */
+  hoursText: resource.hoursText,
+  /**
+   * @property {String}
+   * Text used in {@link #timespan timespan} formatter for exactly one hour
+   */
+  hourText: resource.hourText,
+  /**
+   * @property {String}
+   * Text used in {@link #timespan timespan} formatter for more than one minute
+   */
+  minutesText: resource.minutesText,
+  /**
+   * @property {String}
+   * Text used in {@link #timespan timespan} formatter for exactly one minute
+   */
+  minuteText: resource.minuteText,
+
+  shortDateFormatText: resource.shortDateFormatText,
+
+  /**
+   * @property {String}
+   * format string for percent
+   * * `${0}` - percent value
+   * * `${1}` - percent synmbol "%"
+   */
+  percentFormatText: resource.percentFormatText,
+  /**
    * Takes a String and encodes `&`, `<`, `>`, `"` to HTML entities
    * @param {String} String to encode
    * @return {String} Html encoded string
@@ -131,6 +182,11 @@ __class = lang.setObject('argos.Format', {
    * @return {Boolean} If passed item is empty
    */
   isEmpty: isEmpty,
+  /**
+   * @property {String}
+   * Text used in file size  formatter
+   */
+  bytesText: resource.bytesText,
   /**
    * @property {Object[]}
    * Array of objects that have the keys `test` and `format` where `test` is a RegExp that
@@ -514,6 +570,5 @@ __class = lang.setObject('argos.Format', {
   },
 });
 
-lang.mixin(__class, _L20NMixin);
 lang.setObject('Sage.Platform.Mobile.Format', __class);
 export default __class;

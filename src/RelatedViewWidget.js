@@ -16,8 +16,19 @@ import _CustomizationMixin from './_CustomizationMixin';
 import _ActionMixin from './_ActionMixin';
 import _RelatedViewWidgetBase from 'argos/_RelatedViewWidgetBase';
 
+const resource = window.localeContext.getEntitySync('relatedViewWidget').attributes;
+
 const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], {
   cls: 'related-view-widget',
+  nodataText: resource.nodataText,
+  selectMoreDataText: resource.selectMoreDataText,
+  selectMoreDataText2: resource.selectMoreDataText2,
+  navToListText: resource.navToListText,
+  loadingText: resource.loadingText,
+  refreshViewText: resource.refreshViewText,
+  itemOfCountText: resource.itemOfCountText,
+  totalCountText: resource.totalCountText,
+  titleText: resource.titleText,
   parentProperty: '$key',
   parentEntry: null,
   relatedProperty: '$key',
@@ -25,7 +36,6 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   itemsNode: null,
   loadingNode: null,
   id: 'related-view',
-  localeId: 'relatedViewWidget',
   detailViewId: null,
   listViewId: null,
   listViewWhere: null,

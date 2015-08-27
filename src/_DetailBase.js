@@ -27,6 +27,8 @@ import ErrorManager from './ErrorManager';
 import View from './View';
 import TabWidget from './TabWidget';
 
+const resource = window.localeContext.getEntitySync('detailBase').attributes;
+
 /**
  * @class argos._DetailBase
  * A Detail View represents a single record and should display all the info the user may need about the entry.
@@ -253,11 +255,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   id: 'generic_detail',
   /**
-   * @property {String}
-   * The unique identifier for localization of the view
-   */
-  localeId: 'detailBase',
-  /**
    * @property {Object}
    * The dojo store this view will use for data exchange.
    */
@@ -299,10 +296,49 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   quickActionSection: 'QuickActionsSection',
   /**
+   * @deprecated
+   */
+  editText: resource.editText,
+  /**
    * @cfg {String}
    * Font awesome icon to be used by the more list item
    */
   icon: 'fa fa-chevron',
+  /**
+   * @cfg {String}
+   * Information text that is concatenated with the entity type
+   */
+  informationText: resource.informationText,
+  /**
+   * @cfg {String}
+   * Default title text shown in the top toolbar
+   */
+  titleText: resource.titleText,
+  /**
+   * @cfg {String}
+   * Default text used in the header title, followed by information
+   */
+  entityText: resource.entityText,
+  /**
+   * @property {String}
+   * Helper string for a basic section header text
+   */
+  detailsText: resource.detailsText,
+  /**
+   * @property {String}
+   * Text shown while loading and used in loadingTemplate
+   */
+  loadingText: resource.loadingText,
+  /**
+   * @property {String}
+   * Text used in the notAvailableTemplate
+   */
+  notAvailableText: resource.notAvailableText,
+  /**
+   * @property {String}
+   * ARIA label text for a collapsible section header
+   */
+  toggleCollapseText: resource.toggleCollapseText,
   /**
    * @property {String}
    * CSS class for the collapse button when in a expanded state

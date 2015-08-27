@@ -27,6 +27,8 @@ import domStyle from 'dojo/dom-style';
 import View from 'argos/View';
 import moment from 'moment';
 
+const resource = window.localeContext.getEntitySync('calendar').attributes;
+
 function pad(n) {
   return n < 10 ? '0' + n : n;
 }
@@ -37,7 +39,9 @@ function uCase(str) {
 
 const __class = declare('argos.Calendar', [View], {
   // Localization
-  localeId: 'calendar',
+  titleText: resource.titleText,
+  amText: resource.amText,
+  pmText: resource.pmText,
 
   id: 'generic_calendar',
   contentNode: null,
@@ -45,6 +49,18 @@ const __class = declare('argos.Calendar', [View], {
   timeNode: null,
   meridiemNode: null,
   monthsShortText: [
+    resource.january,
+    resource.february,
+    resource.march,
+    resource.april,
+    resource.may,
+    resource.june,
+    resource.july,
+    resource.august,
+    resource.september,
+    resource.october,
+    resource.november,
+    resource.december,
   ],
   months: null,
   dateFormat: moment().lang()._longDateFormat.L,
@@ -125,22 +141,7 @@ const __class = declare('argos.Calendar', [View], {
   },
   init: function init() {
     this.inherited(arguments);
-    const months = [
-      this.january,
-      this.february,
-      this.march,
-      this.april,
-      this.may,
-      this.june,
-      this.july,
-      this.august,
-      this.september,
-      this.october,
-      this.november,
-      this.december,
-    ];
-    months.push(this.monthsShortText);
-    this.months = months;
+    this.months = this.monthsShortText;
     this.dateFormat = moment().lang()._longDateFormat.L;
     this.is24hrTimeFormat = moment().lang()._longDateFormat.LT.match(/H\:/);
     this.connect(this.dayNode, 'onchange', this.validate);

@@ -67,10 +67,6 @@
           "path": "../src-out/"
         },
         {
-          "text": "_L20NMixin.js",
-          "path": "../src-out/"
-        },
-        {
           "text": "DomHelper.js",
           "path": "../src-out/ReUI/"
         },

@@ -185,16 +185,6 @@ __class = lang.setObject('argos.Utility', {
     }
     return obj;
   },
-  extendObjectKeyValue: function createObjectKeyValue(obj = {}, keys = [], values = []) {
-    if (keys.length === values.length) {
-      for (let i = 0; i < keys.length; i++) {
-        if (!obj[keys[i]]) {
-          obj[keys[i]] = values[i];
-        }
-      }
-    }
-    return false;
-  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Utility', __class);

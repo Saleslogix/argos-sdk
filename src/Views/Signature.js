@@ -21,6 +21,8 @@ import win from 'dojo/window';
 import format from '../Format';
 import View from '../View';
 
+const resource = window.localeContext.getEntitySync('signature').attributes;
+
 /**
  * @class argos.Views.Signature
  * Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
@@ -33,7 +35,21 @@ import View from '../View';
  */
 const __class = declare('argos.Views.Signature', [View], {
   // Localization
-  localeId: 'signature',
+  /**
+   * @property {String}
+   * Text shown in the top toolbar header
+   */
+  titleText: resource.titleText,
+  /**
+   * @property {String}
+   * Text shown in the clear button
+   */
+  clearCanvasText: resource.clearCanvasText,
+  /**
+   * @property {String}
+   * Text shown in the undo button
+   */
+  undoText: resource.undoText,
 
   // Templates
   /**

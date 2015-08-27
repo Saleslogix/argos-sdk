@@ -41,6 +41,8 @@ import './Fields/SignatureField';
 import './Fields/TextAreaField';
 import './Fields/TextField';
 
+const resource = window.localeContext.getEntitySync('editBase').attributes;
+
 /**
  * @class argos._EditBase
  * An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
@@ -214,7 +216,6 @@ const __class = declare('argos._EditBase', [View], {
    * The unique identifier of the view
    */
   id: 'generic_edit',
-  localeId: 'editBase',
   store: null,
   /**
    * @property {Object}
@@ -248,13 +249,55 @@ const __class = declare('argos._EditBase', [View], {
    */
   updateSecurity: false,
 
+  /**
+   * @deprecated
+   */
+  saveText: resource.saveText,
+  /**
+   * @cfg {String}
+   * Default title text shown in the top toolbar
+   */
+  titleText: resource.titleText,
+  /**
+   * @cfg {String}
+   * The text placed in the header when there are validation errors
+   */
+  validationSummaryText: resource.validationSummaryText,
+  /**
+   * @cfg {String}
+   * The text placed in the header when there are validation errors
+   */
+  concurrencySummaryText: resource.concurrencySummaryText,
+  /**
+   * @property {String}
+   * Default text used in the section header
+   */
+  detailsText: resource.detailsText,
+  /**
+   * @property {String}
+   * Text shown while the view is loading.
+   */
+  loadingText: resource.loadingText,
+  /**
+   * @property {Object}
+   * Localized error messages. One general error message, and messages by HTTP status code.
+   */
   errorText: {
+    general: resource.errorGeneral,
+    status: {
+      '410': resource.error401,
+    },
   },
-  errorKeys: [
-    'general',
-    'status',
-  ],
-  errorValues: null,
+  /**
+   * @property {String}
+   * Text alerted to user when the data has been updated since they last fetched the data.
+   */
+  concurrencyErrorText: resource.concurrencyErrorText,
+  /**
+   * @property {String}
+   * ARIA label text for a collapsible section header
+   */
+  toggleCollapseText: resource.toggleCollapseText,
   /**
    * @property {String}
    * CSS class for the collapse button when in a expanded state
@@ -471,13 +514,6 @@ const __class = declare('argos._EditBase', [View], {
     this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
 
     this.setValues(entry, true);
-    if (!this.errorValues) {
-      this.errorValues = [
-        this.errorGeneral,
-        this.error401,
-      ];
-      utility.extendObjectKeyValue(this.errorText, this.errorKeys, this.errorValues);
-    }
 
     // Re-apply changes saved from concurrency/precondition failure
     if (this.previousValuesAll) {

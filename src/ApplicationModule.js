@@ -17,7 +17,6 @@ import connect from 'dojo/_base/connect';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import ConfigureQuickActions from './Views/ConfigureQuickActions';
-import _L20NMixin from './_L20NMixin';
 import './Application';
 import './CultureInfo';
 
@@ -30,7 +29,7 @@ import './CultureInfo';
  * @alternateClassName ApplicationModule
  * @requires argos.Application
  */
-const __class = declare('argos.ApplicationModule', [_L20NMixin], {
+const __class = declare('argos.ApplicationModule', null, {
   /**
    * @property {Array}
    * Array of dojo.connect bound to ApplicationModule
@@ -88,7 +87,6 @@ const __class = declare('argos.ApplicationModule', [_L20NMixin], {
     this.application = application;
 
     this.loadAppStatePromises();
-    this.loadStrings();
     this.loadCustomizations();
     this.loadToolbars();
     this.loadViews();

@@ -4,12 +4,35 @@ import Utility from '../Utility';
 import _GroupBySection from './_GroupBySection';
 import moment from 'moment';
 
+const resource = window.localeContext.getEntitySync('dateTimeSection').attributes;
+
 /**
  * @class argos.Groups.DateTimeSection
  */
 const __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
   name: 'DateTimeSectionFilter',
-  localeId: 'dateTimeSection',
+  displayNameText: resource.displayNameText,
+  todayText: resource.todayText,
+  tomorrowText: resource.tomorrowText,
+  laterThisWeekText: resource.laterThisWeekText,
+  earlierThisWeekText: resource.earlierThisWeekText,
+  thisLaterMonthText: resource.thisLaterMonthText,
+  thisEarlierMonthText: resource.thisEarlierMonthText,
+  thisYearEarlierText: resource.thisYearEarlierText,
+  thisYearLaterText: resource.thisYearLaterText,
+  yesterdayText: resource.yesterdayText,
+  lastWeekText: resource.lastWeekText,
+  lastMonthText: resource.lastMonthText,
+  pastYearText: resource.pastYearText,
+  nextYearText: resource.nextYearText,
+  nextMonthText: resource.nextMonthText,
+  nextWeekText: resource.nextWeekText,
+  futureText: resource.futureText,
+  twoWeeksAgoText: resource.twoWeeksAgoText,
+  threeWeeksAgoText: resource.threeWeeksAgoText,
+  twoMonthsAgoText: resource.twoMonthsAgoText,
+  threeMonthsAgoText: resource.threeMonthsAgoText,
+  unknownText: resource.unknownText,
 
   constructor: function constructor(o) {
     declare.safeMixin(this, o);

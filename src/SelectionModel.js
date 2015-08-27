@@ -1,6 +1,7 @@
 import lang from 'dojo/_base/lang';
 import declare from 'dojo/_base/declare';
-import _L20NMixin from 'argos/_L20NMixin';
+
+const resource = window.localeContext.getEntitySync('selectionModel').attributes;
 
 /**
  * @class argos.SelectionModel
@@ -8,9 +9,9 @@ import _L20NMixin from 'argos/_L20NMixin';
  * when a item is selected (added) or deselected (removed)
  * @alternateClassName SelectionModel
  */
-const __class = declare('argos.SelectionModel', [ _L20NMixin ], {
+const __class = declare('argos.SelectionModel', null, {
   // Localization
-  localeId: 'selectionModel',
+  requireSelectionText: resource.requireSelectionText,
 
   /**
    * @property {Boolean}

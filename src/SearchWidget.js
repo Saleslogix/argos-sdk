@@ -20,6 +20,8 @@ import domClass from 'dojo/dom-class';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
 
+const resource = window.localeContext.getEntitySync('searchWidget').attributes;
+
 /**
  * @class argos.SearchWidget
  * Search Widget is an SData-enabled search component that {@link List List} uses by default for search.
@@ -85,7 +87,11 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
     '</div>',
   ]),
 
-  localeId: 'searchWidget',
+  /**
+   * @property {String}
+   * Text that is used when no value is in the search box - "placeholder" text.
+   */
+  searchText: resource.searchText,
 
   /**
    * @property {RegExp}
