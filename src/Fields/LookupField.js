@@ -22,6 +22,8 @@ import utility from '../Utility';
 import _Field from './_Field';
 import FieldManager from '../FieldManager';
 
+const resource = window.localeContext.getEntitySync('lookupField').attributes;
+
 /**
  * @class argos.Fields.LookupField
  * The LookupField is similiar to an Edit View in that it is a field that takes the user to another
@@ -91,7 +93,32 @@ const control = declare('argos.Fields.LookupField', [_Field], {
   iconClass: 'fa fa-search fa-lg',
 
   // Localization
-  localeId: 'lookupField',
+  /**
+   * @property {String}
+   * Error text shown when validation fails.
+   *
+   * * `${0}` is the label text of the field
+   */
+  dependentErrorText: resource.dependentErrorText,
+  /**
+   * @cfg {String}
+   * Text displayed when the field is cleared or set to null
+   */
+  emptyText: resource.emptyText,
+  /**
+   * @deprecated
+   */
+  completeText: resource.completeText,
+  /**
+   * @property {String}
+   * The ARIA label text in the lookup button
+   */
+  lookupLabelText: resource.lookupLabelText,
+  /**
+   * @property {String}
+   * The text placed inside the lookup button
+   */
+  lookupText: resource.lookupText,
 
   /**
    * @cfg {String}
