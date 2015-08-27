@@ -259,8 +259,7 @@ const __class = declare('argos.Application', null, {
   /**
    * Shelled function that is called from {@link #destroy destroy}, may be used to release any further handles.
    */
-  uninitialize: function uninitialize() {
-  },
+  uninitialize: function uninitialize() {},
   /**
    * Cleans up URL to prevent ReUI url handling and then invokes ReUI.
    */
@@ -288,10 +287,13 @@ const __class = declare('argos.Application', null, {
   },
   onOffline: function onOffline() {
     this.onLine = false;
+    this.onConnectionChange(this.onLine);
   },
   onOnline: function onOnline() {
     this.onLine = true;
+    this.onConnectionChange(this.onLine);
   },
+  onConnectionChange: function onConnectionChange(/*online*/) {},
   /**
    * Establishes various connections to events.
    */
@@ -300,8 +302,10 @@ const __class = declare('argos.Application', null, {
     this._connects.push(connect.connect(win.body(), 'beforetransition', this, this._onBeforeTransition));
     this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
     this._connects.push(connect.connect(win.body(), 'show', this, this._onActivate));
-    this._connects.push(connect.connect(window, 'offline', this, this.onOffline));
-    this._connects.push(connect.connect(window, 'online', this, this.onOnline));
+    window.addEventListener('load', () => {
+      window.addEventListener('online', this.onOnline.bind(this));
+      window.addEventListener('offline', this.onOffline.bind(this));
+    });
 
     this.onLine = navigator.onLine;
   },
@@ -353,7 +357,7 @@ const __class = declare('argos.Application', null, {
   clearAppStatePromises: function clearAppStatePromises() {
     this._appStatePromises = [];
   },
-  onSetOrientation: function onSetOrientation(/*value*/) {},
+  onSetOrientation: function onSetOrientation( /*value*/ ) {},
   /**
    * Loops through connections and calls {@link #registerService registerService} on each.
    */
@@ -799,12 +803,12 @@ const __class = declare('argos.Application', null, {
       connect.publish('/app/resize', []);
     }, 100);
   },
-  onRegistered: function onRegistered(/*view*/) {},
-  onBeforeViewTransitionAway: function onBeforeViewTransitionAway(/*view*/) {},
-  onBeforeViewTransitionTo: function onBeforeViewTransitionTo(/*view*/) {},
-  onViewTransitionAway: function onViewTransitionAway(/*view*/) {},
-  onViewTransitionTo: function onViewTransitionTo(/*view*/) {},
-  onViewActivate: function onViewActivate(/*view, tag, data*/) {},
+  onRegistered: function onRegistered( /*view*/ ) {},
+  onBeforeViewTransitionAway: function onBeforeViewTransitionAway( /*view*/ ) {},
+  onBeforeViewTransitionTo: function onBeforeViewTransitionTo( /*view*/ ) {},
+  onViewTransitionAway: function onViewTransitionAway( /*view*/ ) {},
+  onViewTransitionTo: function onViewTransitionTo( /*view*/ ) {},
+  onViewActivate: function onViewActivate( /*view, tag, data*/ ) {},
   _onBeforeTransition: function _onBeforeTransition(evt) {
     const view = this.getView(evt.target);
     if (view) {
@@ -1012,7 +1016,7 @@ const __class = declare('argos.Application', null, {
 
     return forPath.concat(forSet);
   },
-  hasAccessTo: function hasAccessTo(/*security*/) {
+  hasAccessTo: function hasAccessTo( /*security*/ ) {
     return true;
   },
   /**

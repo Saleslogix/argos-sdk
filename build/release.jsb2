@@ -25,6 +25,10 @@
           "path": "../libraries/sdata/"
         },
         {
+          "text": "pouchdb-4.0.0.min.js",
+          "path": "../libraries/PouchDB/"
+        },
+        {
           "text": "deep-diff-0.2.0.min.js",
           "path": "../libraries/deep-diff/"
         },
@@ -59,6 +63,10 @@
       "isDebug": true,
       "fileIncludes": [
         {
+           "text": "_ModelBase.js",
+           "path": "../src-out/"
+        },
+        {
           "text": "DomHelper.js",
           "path": "../src-out/ReUI/"
         },
@@ -75,8 +83,8 @@
           "path": "../src-out/"
         },
         {
-          "text": "Application.js",
-          "path": "../src-out/"
+           "text": "Application.js",
+           "path": "../src-out/"
         },
         {
           "text": "_ActionMixin.js",
@@ -123,6 +131,18 @@
           "path": "../src-out/Store/"
         },
         {
+          "text": "PouchDB.js",
+          "path": "../src-out/Store/"
+        },
+        {
+           "text": "OfflineManager.js",
+           "path": "../src-out/"
+        },
+        {
+          "text": "_SDataModelMixin.js",
+          "path": "../src-out/"
+        },
+        {
           "text": "ErrorManager.js",
           "path": "../src-out/"
         },
@@ -139,7 +159,11 @@
           "path": "../src-out/"
         },
         {
-          "text": "RelatedViewManager.js",
+            "text": "RelatedViewManager.js",
+            "path": "../src-out/"
+        },
+        {
+          "text": "_DetailOfflineMixin.js",
           "path": "../src-out/"
         },
         {

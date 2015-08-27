@@ -572,7 +572,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} options The navigation options passed from the previous view.
    * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
    */
-  show: function show(options/*, transitionOptions*/) {
+  show: function show(options /*, transitionOptions*/ ) {
     if (options) {
       if (options.resetSearch) {
         this.defaultSearchTermSet = false;
@@ -789,7 +789,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Event} evt The click/tap event
    * @param {HTMLElement} node The node that invoked the action
    */
-  invokeActionItem: function invokeActionItem(parameters/*, evt, node*/) {
+  invokeActionItem: function invokeActionItem(parameters /*, evt, node*/ ) {
     const index = parameters.id;
     const action = this.visibleActions[index];
     const selectedItems = this.get('selectionModel').getSelections();
@@ -931,7 +931,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     domConstruct.place(this.actionsNode, rowNode, 'after');
   },
-  onApplyRowActionPanel: function onApplyRowActionPanel(/*actionNodePanel, rowNode*/) {},
+  onApplyRowActionPanel: function onApplyRowActionPanel( /*actionNodePanel, rowNode*/ ) {},
   /**
    * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
    * that when the next view queries the navigation context we can include the passed param as a data point.
@@ -1040,8 +1040,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} options The object published by the event.
    * @private
    */
-  _onRefresh: function _onRefresh(/*options*/) {},
-  onScroll: function onScroll(/*evt*/) {
+  _onRefresh: function _onRefresh( /*options*/ ) {},
+  onScroll: function onScroll( /*evt*/ ) {
     const scrollerNode = this.get('scroller');
     const pos = domGeom.position(scrollerNode, true);
     const height = pos.h; // viewport height (what user sees)
@@ -1126,7 +1126,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @return {String/Boolean} An SData query compatible search expression.
    * @template
    */
-  formatSearchQuery: function formatSearchQuery(/*searchQuery*/) {
+  formatSearchQuery: function formatSearchQuery( /*searchQuery*/ ) {
     return false;
   },
   /**
@@ -1418,7 +1418,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const remaining = this.total > -1 ? this.total - (this.position + this.pageSize) : -1;
     return remaining;
   },
-  onApplyRowTemplate: function onApplyRowTemplate(/*entry, rowNode*/) {},
+  onApplyRowTemplate: function onApplyRowTemplate( /*entry, rowNode*/ ) {},
   processData: function processData(entries) {
     if (!entries) {
       return;
@@ -1466,7 +1466,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   _buildQueryExpression: function _buildQueryExpression() {
     return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
   },
-  _applyStateToQueryOptions: function _applyStateToQueryOptions(/*queryOptions*/) {},
+  _applyStateToQueryOptions: function _applyStateToQueryOptions( /*queryOptions*/ ) {},
   /**
    * Handler for the more button. Simply calls {@link #requestData requestData} which already has the info for
    * setting the start index as needed.
@@ -1655,8 +1655,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   /**
    * Returns a promise with the list's count.
    */
-  getListCount: function getListCount(/*options, callback*/) {
-  },
+  getListCount: function getListCount( /*options, callback*/ ) {},
 });
 
 lang.setObject('Sage.Platform.Mobile._ListBase', __class);

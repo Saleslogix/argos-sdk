@@ -18,8 +18,14 @@
     <!-- Simplate -->
     <script type="text/javascript" src="../libraries/Simplate.js"></script>
 
+    <!-- PouchDB -->
+    <script type="text/javascript" src="../libraries/PouchDB/pouchdb-4.0.0.min.js"></script>
+
     <!-- Deep Diff -->
     <script type="text/javascript" src="../libraries/deep-diff/deep-diff-0.2.0.min.js"></script>
+
+    <!-- Bluebird -->
+    <script type="text/javascript" src="../libraries/bluebird.js"></script>
 
     <!-- Dojo -->
     <script type="text/javascript" src="../libraries/dojo/dojo/dojo.js" data-dojo-config="parseOnLoad:false, async:true"></script>
@@ -70,6 +76,7 @@
         'tests/Fields/TextFieldTests',
         'tests/Fields/DecimalFieldTests',
         'tests/Groups/DateTimeSectionTests',
+        'tests/Stores/PouchDB',
         'tests/Stores/SData',
         '../libraries/jasmine-2.0.0/boot.js'
     ], function () {
