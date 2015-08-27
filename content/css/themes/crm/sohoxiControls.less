@@ -80,3 +80,40 @@
   position: absolute;
   background-color: @color-azure;
 }
+
+// Animation
+
+.effect-scale {
+  -webkit-animation-duration: .25s;
+  animation-duration: .25s;
+  -webkit-animation-name: animScale;
+  animation-name: animScale;
+}
+
+.effect-scale-hide {
+  -webkit-animation-duration: .25s;
+  animation-duration: .25s;
+  -webkit-animation-name: animScaleOut;
+  animation-name: animScaleOut;
+  opacity: 0;
+}
+
+@-webkit-keyframes animScale {
+  0% { opacity: 0; -webkit-transform: translate3d(0, 40px, 0) scale3d(.1, .6, 1); }
+  100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+}
+
+@keyframes animScale {
+  0% { opacity: 0; transform: translate3d(0, 40px, 0) scale3d(.1, .6, 1); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+}
+
+@-webkit-keyframes animScaleOut {
+  0% { opacity: 1; -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+  100% { opacity: 0; -webkit-transform: translate3d(0, 40px, 0) scale3d(.1, .6, 1); }
+}
+
+@keyframes animScaleOut {
+  0% { opacity: 1; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+  100% { opacity: 0; transform: translate3d(0, 40px, 0) scale3d(.1, .6, 1); }
+}

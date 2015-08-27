@@ -23,7 +23,6 @@ import declare from 'dojo/_base/declare';
 import fx from 'dojo/_base/fx';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
-import domStyle from 'dojo/dom-style';
 import query from 'dojo/query';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
@@ -31,7 +30,7 @@ import Modal from 'argos/Modal';
 
 const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   toastTemplate: new Simplate([
-    '<div class="toast">',
+    '<div class="toast effect-scale">',
       '<button class="toast__btn-close fa fa-times"></button>',
       '<span class="toast__title">',
         '{%= $.title %}',
@@ -108,24 +107,21 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
     const indexOf = array.indexOf(this._toasts, target.offsetParent);
     if (indexOf > -1) {
       const toast = this._toasts.splice(indexOf, 1)[0];
+      clearTimeout(this._timeouts.shift());
       connect.disconnect(this._connections.splice(indexOf, 1)[0]);
       this.hideToast(toast);
     }
   },
-  destroyToast: function destroyToast(toast = {}) {
-    if (toast) {
-      domConstruct.destroy(toast);
-    }
+  destroyToast: function destroyToast() {
+    domConstruct.destroy(this);
   },
   hide: function hide() {
     this.hideModal();
   },
   hideToast: function hideToast(toast = {}) {
     if (toast) {
-      domStyle.set(toast, {
-        visibility: 'hidden',
-      });
-      this.destroyToast(toast);
+      domClass.add(toast, 'effect-scale-hide');
+      setTimeout(this.destroyToast.bind(toast), 500);
     }
     return this;
   },
