@@ -32,6 +32,7 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   toastTemplate: new Simplate([
     '<div class="toast effect-scale">',
       '<button class="toast__btn-close fa fa-times"></button>',
+      '<div class="toast__icon {%= $.icon %}" ></div>',
       '<span class="toast__title">',
         '{%= $.title %}',
       '</span>',
@@ -46,6 +47,7 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   id: 'toast',
   title: 'Title',
   message: 'This is a toast',
+  icon: '',
   // Time toast will be displayed (in milliseconds)
   toastTime: 6000,
   barSize: 100,
@@ -60,6 +62,7 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   addToast: function addToast(options = {}) {
     this.title = options.title || this.title;
     this.message = options.message || this.message;
+    this.icon = options.icon || this.icon;
     this.toastTime = options.toastTime || this.toastTime;
     this.barSize = options.barSize || this.barSize;
     this.showProgressBar = options.showProgressBar || this.showProgressBar;
@@ -144,8 +147,10 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   show: function show() {
     const body = query('body')[0];
     if (body) {
-      this.placeModal(body)
-          .setContent(this.toasts)
+      if (!this._parentNode) {
+        this.placeModal(body);
+      }
+      this.setContent(this.toasts)
           .calculatePosition();
     }
   },

@@ -2,6 +2,7 @@
 @import "mixins.less";
 
 .toast__queue {
+  padding: 0;
   max-width: 60%;
   position: fixed;
   z-index: 8000;
@@ -52,11 +53,12 @@
 
 .toast__btn-close {
   cursor: pointer;
-  height: 20px;
   position: absolute;
   right: 6px;
   top: 11px;
   width: 20px;
+  height: 20px;
+  padding: 0;
   background-color: #fff;
   border: none;
   color: @color-slate;
@@ -64,6 +66,19 @@
 .toast__btn-close:hover,
 .toast__btn-close:active {
   color: @color-azure;
+}
+
+.toast__icon {
+  position: absolute;
+  right: 6px;
+  bottom: 11px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  text-align: center;
+  background-color: #fff;
+  border: none;
+  color: @color-slate;
 }
 
 .toast__progressBar {
