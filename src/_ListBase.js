@@ -1410,7 +1410,9 @@ define('argos/_ListBase', [
                 var start = this.position, scrollerNode = this.get('scroller');
 
                 try {
-                    when(queryResults.total, this._onQueryTotal.bind(this));
+                    when(queryResults.total, 
+                      this._onQueryTotal.bind(this),
+                      this._onQueryTotalError.bind(this));
 
                     /* todo: move to a more appropriate location */
                     if (this.options && this.options.allowEmptySelection) {
@@ -1455,6 +1457,9 @@ define('argos/_ListBase', [
         },
         _processEntry: function(entry) {
             return entry;
+        },
+        _onQueryTotalError: function(error) {
+          this.handleError(error);
         },
         _onQueryTotal: function(size) {
             var remaining;
@@ -1737,4 +1742,3 @@ define('argos/_ListBase', [
     lang.setObject('Sage.Platform.Mobile._ListBase', __class);
     return __class;
 });
-
