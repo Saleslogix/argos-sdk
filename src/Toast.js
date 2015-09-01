@@ -21,6 +21,7 @@ import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
 import declare from 'dojo/_base/declare';
 import fx from 'dojo/_base/fx';
+import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import query from 'dojo/query';
@@ -32,7 +33,7 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   toastTemplate: new Simplate([
     '<div class="toast effect-scale">',
       '<button class="toast__btn-close fa fa-times"></button>',
-      '<div class="toast__icon {%= $.icon %}" ></div>',
+      '<div class="toast__icon {%= $.icon %}" focusable="false" aria-hidden="true"></div>',
       '<span class="toast__title">',
         '{%= $.title %}',
       '</span>',
@@ -103,6 +104,8 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   calculatePosition: function calculatePosition() {
     domClass.remove(this.modalNode, 'panel');
     domClass.add(this.modalNode, 'toast__queue');
+    domAttr.set(this.modalNode, 'aria-relevant', 'additions');
+    domAttr.set(this.modalNode, 'aria-live', 'polite');
     this.applyPositioning();
     return this;
   },
