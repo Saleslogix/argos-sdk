@@ -138,9 +138,16 @@ const __class = declare('argos.Calendar', [View], {
       domClass.remove(selected, 'selected');
     }
 
-    domClass.add(params.$source, 'selected');
+    if (params.$source) {
+      domClass.add(params.$source, 'selected');
+      if (domClass.contains(params.$source, 'isToday')) {
+        domClass.remove(this.todayButton, 'selected');
+      }
+    }
 
-    this.date.selectedDateMoment = moment(params.date, 'YYYY-MM-DD');
+    if (params.date) {
+      this.date.selectedDateMoment = moment(params.date, 'YYYY-MM-DD');
+    }
 
     if (this.date.selectedDateMoment.date() !== this.date.todayMoment.date()) {
       domClass.add(this.todayButton, 'selected');
@@ -223,13 +230,20 @@ const __class = declare('argos.Calendar', [View], {
   },
   goToToday: function goToToday() {
     domClass.remove(this.todayButton, 'selected');
-    this.date.selectedDateMoment = this.date.todayMoment.clone();
-    this.refreshCalendar(this.date)
+    const day = query('.isToday', this.weeksNode)[0];
+    let params = {};
+    if (day) {
+      params = { $source: day, date: day.dataset.date };
+    }
+    this.changeDay(params)
         .setDropdownsToday();
   },
   getDateTime: function getDateTime() {
     const result = this.date.selectedDateMoment;
     return result.toDate();
+  },
+  getSelectedDateMoment: function getSelectedDateMoment() {
+    return this.date.selectedDateMoment;
   },
   getYearRange: function getYearRange() {
     const items = [];
