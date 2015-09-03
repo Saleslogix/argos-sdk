@@ -2,7 +2,6 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import Utility from '../Utility';
 import _GroupBySection from './_GroupBySection';
-import moment from 'moment';
 
 /**
  * @class argos.Groups.DateTimeSection
@@ -165,8 +164,8 @@ const __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
     }
 
     if (this.momentLang) {
-      valueDate.lang(this.momentLang);
-      this.currentDate.lang(this.momentLang);
+      valueDate.locale(this.momentLang);
+      this.currentDate.locale(this.momentLang);
     }
 
     if (this.isLastMonth(valueDate)) {
