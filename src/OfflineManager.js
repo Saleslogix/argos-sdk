@@ -3,7 +3,6 @@
  *
  */
 import Store from './Store/PouchDB';
-import moment from 'moment';
 import Deferred from 'dojo/Deferred';
 
 const store = new Store({

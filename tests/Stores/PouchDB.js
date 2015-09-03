@@ -1,13 +1,11 @@
 define('tests/Stores/PouchDB', [
     'dojo/_base/lang',
     'dojo/when',
-    'moment',
     'Sage/Platform/Mobile/Store/PouchDB'
 ],
 function(
     lang,
     when,
-    moment,
     Store
 ) {
 
@@ -134,4 +132,3 @@ function(
         });
     });
 });
-
