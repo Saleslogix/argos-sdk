@@ -48,6 +48,7 @@ const __class = {
         _id: id,
         entity: view.entry,
         createDate: moment().toDate(),
+        modifyDate: moment().toDate(),
         resourceKind: this.resourceKind,
         storedBy: view.id,
         entityName: model.entityName,
