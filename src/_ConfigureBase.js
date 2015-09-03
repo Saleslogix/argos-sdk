@@ -3,7 +3,7 @@ import query from 'dojo/query';
 import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import string from 'dojo/string';
-import _ListBase from 'argos/_ListBase';
+import DraggableList from 'argos/DraggableList';
 
 /**
  * @class argos._ConfigureBase
@@ -12,7 +12,7 @@ import _ListBase from 'argos/_ListBase';
  * @extends argos._ListBase
  *
  */
-const __class = declare('argos._ConfigureBase', [_ListBase], {
+const __class = declare('argos._ConfigureBase', [ DraggableList ], {
   // Templates
   itemTemplate: new Simplate([
     '<h3>',
