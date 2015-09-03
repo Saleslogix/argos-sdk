@@ -678,7 +678,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }, []);
 
     // Grab quick actions from the users preferences (ordered and made visible according to user)
-    const prefActions = this.app.preferences.quickActions[this.id];
+    let prefActions;
+    if (this.app.preferences && this.app.preferences.quickActions) {
+      prefActions = this.app.preferences.quickActions[this.id];
+    }
 
     if (systemActions && prefActions) {
       // Display system actions first, then the order of what the user specified
@@ -1351,7 +1354,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       const scrollerNode = this.get('scroller');
 
       try {
-        when(queryResults.total, this._onQueryTotal.bind(this));
+        when(queryResults.total,
+          this._onQueryTotal.bind(this),
+          this._onQueryTotalError.bind(this));
 
         /* todo: move to a more appropriate location */
         if (this.options && this.options.allowEmptySelection) {
@@ -1397,6 +1402,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   onContentChange: function onContentChange() {},
   _processEntry: function _processEntry(entry) {
     return entry;
+  },
+  _onQueryTotalError: function(error) {
+    this.handleError(error);
   },
   _onQueryTotal: function _onQueryTotal(size) {
     this.total = size;
