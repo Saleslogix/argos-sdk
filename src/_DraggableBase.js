@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import array from 'dojo/_base/array';
 import declare from 'dojo/_base/declare';
 import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';
@@ -27,8 +28,9 @@ const __class = declare('argos._DraggableBase', null, {
   _previousElement: null,
   _nextElement: null,
   _type: null,
+  _class: null,
   _isDragging: false,
-  includeScroll: false, // This is the dojo includeScroll for dom-geometry
+  includeScroll: true, // This is the dojo includeScroll for dom-geometry
   allowScroll: true, // This tells the draggble object that the container should scroll when the source is brought to the top/bottom
   scrollSpeed: 2, // This is the scroll speed in pixels
   zIndex: null,
@@ -118,6 +120,14 @@ const __class = declare('argos._DraggableBase', null, {
       }
     }
   },
+  findSource: function findSource(element = {}) {
+    if (this._class) {
+      return this.findSourceFromClass(element);
+    } else if (this._type) {
+      return this.findSourceFromType(element);
+    }
+    return null;
+  },
   findSourceFromType: function findSourceFromType(element = {}) {
     if (element === this._container) {
       return false;
@@ -127,8 +137,17 @@ const __class = declare('argos._DraggableBase', null, {
     }
     return this.findSourceFromType(element.parentNode);
   },
+  findSourceFromClass: function findSourceFromClass(element = {}) {
+    if (element === this._container) {
+      return false;
+    }
+    if (array.indexOf(element.classList, this._class) !== -1) {
+      return element;
+    }
+    return this.findSourceFromType(element.parentNode);
+  },
   getPositionOf: function getPositionOf(element = {}) {
-    const position = domGeom.position(element, this._includeScroll);
+    const position = domGeom.position(element, this.includeScroll);
     if (position.y !== element.offsetTop) {
       position.offset = position.y - element.offsetTop;
     } else {
@@ -137,25 +156,31 @@ const __class = declare('argos._DraggableBase', null, {
     return position;
   },
   onTouchStart: function onTouchStart(touch = {}) {
-    this._source = this.findSourceFromType(touch.target);
-    this._position = this.getPositionOf(this._source);
-    this._previousElement = this._source.previousSibling;
-    this._nextElement = this._source.nextSibling;
+    this._source = this.findSource(touch.target);
+    if (this._source) {
+      this._position = this.getPositionOf(this._source);
+      this._previousElement = this._source.previousSibling;
+      this._nextElement = this._source.nextSibling;
+    }
   },
   onTouchMove: function onTouchMove(touch = {}) {
-    const touchMovement = touch.changedTouches[0];
-    if (touchMovement) {
-      if (!this._isDragging) {
-        this._isDragging = true;
-        this.applyInitialStyling();
+    if (this._source) {
+      const touchMovement = touch.changedTouches[0];
+      if (touchMovement) {
+        if (!this._isDragging) {
+          this._isDragging = true;
+          this.applyInitialStyling();
+        }
+        this.computeMovement(touchMovement);
       }
-      this.computeMovement(touchMovement);
     }
   },
   onTouchEnd: function onTouchEnd(touch = {}) {
-    this.placeItem(touch)
-        .removeStyling()
-        .clearValues();
+    if (this._source) {
+      this.placeItem(touch)
+          .removeStyling()
+          .clearValues();
+    }
   },
   placeItem: function placeItem() {
     domStyle.set(this._source, {
@@ -192,6 +217,10 @@ const __class = declare('argos._DraggableBase', null, {
     }
     return this;
   },
+  setClass: function setClass(className = {}) {
+    this._class = className;
+    return this;
+  },
   setMargins: function setMargins(element = {}, marginType = {}) {
     let sourceMargins = domStyle.get(this._source, 'marginBottom') + domStyle.get(this._source, 'marginTop');
     if (!(sourceMargins > 0)) {
@@ -207,16 +236,6 @@ const __class = declare('argos._DraggableBase', null, {
       });
     }
     return this;
-    // if (marginType === 'bottom') {
-    //   domStyle.set(element, {
-    //     marginBottom: element.previousMargin + 'px',
-    //   });
-    // }else if (marginType === 'top') {
-    //   domStyle.set(element, {
-    //     marginTop: element.previousMargin + 'px',
-    //   });
-    // }
-    // return this;
   },
   setType: function setType(type = {}) {
     this._type = type;
