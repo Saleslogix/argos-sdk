@@ -35,6 +35,10 @@
         {
           "text": "browser-polyfill.min.js",
           "path": "../libraries/babel/"
+        },
+        {
+          "text": "moment-with-locales.js",
+          "path": "../libraries/moment/"
         }
       ]
     },
@@ -46,10 +50,6 @@
         {
           "text": "snap.js",
           "path": "../libraries/snap/"
-        },
-        {
-          "text": "moment-with-langs.min.js",
-          "path": "../libraries/moment/"
         }
       ]
     },

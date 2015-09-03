@@ -15,7 +15,6 @@
 import json from 'dojo/json';
 import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
-import moment from 'moment';
 import utility from './Utility';
 
 let errors = [];

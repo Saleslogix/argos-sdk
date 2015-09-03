@@ -25,7 +25,6 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domStyle from 'dojo/dom-style';
 import View from 'argos/View';
-import moment from 'moment';
 
 function pad(n) {
   return n < 10 ? '0' + n : n;
