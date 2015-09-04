@@ -142,6 +142,9 @@ __class = lang.setObject('argos.Utility', {
    */
   sanitizeForJson: function sanitizeForJson(obj) {
     let type;
+
+    obj.__visited__ = true;
+
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         try {
@@ -169,6 +172,11 @@ __class = lang.setObject('argos.Utility', {
               obj[key] = 'null';
               break;
             }
+            // break circular references
+            if (obj[key].__visited__) {
+              obj[key] = 'null';
+              break;
+            }
             obj[key] = this.sanitizeForJson(obj[key]);
             break;
           case 'string':
@@ -183,6 +191,8 @@ __class = lang.setObject('argos.Utility', {
         }
       }
     }
+
+    delete obj.__visited__;
     return obj;
   },
 });

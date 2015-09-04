@@ -20,7 +20,6 @@ import domClass from 'dojo/dom-class';
 import format from '../Format';
 import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
-import moment from 'moment';
 import DateTimePicker from '../DateTimePicker';
 import Modal from '../Modal';
 

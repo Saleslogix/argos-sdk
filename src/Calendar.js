@@ -26,7 +26,6 @@ import domConstruct from 'dojo/dom-construct';
 import domProp from 'dojo/dom-prop';
 import View from 'argos/View';
 import Modal from 'argos/Modal';
-import moment from 'moment';
 
 const __class = declare('argos.Calendar', [View], {
   widgetTemplate: new Simplate([
