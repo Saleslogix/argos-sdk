@@ -22,15 +22,23 @@ import OfflineManager from './OfflineManager';
  * @alternateClassName _DetailOfflineMixin
  */
 export default declare('argos._DetailOfflineMixin', null, {
+
   onContentChange: function onContentChange() {
     if (this.enableOffline) {
       this.saveOffline();
     }
   },
   saveOffline: function saveOffline() {
-    OfflineManager.saveOffline(this).then(function success() {
+    OfflineManager.saveDetailView(this).then(function success() {
     }, function err(error) {
       console.error(error);// eslint-disable-line
     });
+  },
+  getOfflineDescription: function getOfflineDescription() {
+    return this.entry.$descriptor;
+  },
+  getOfflineIcon: function getOfflineIcon() {
+    const model = this.getModel();
+    return model.iconClass;
   },
 });

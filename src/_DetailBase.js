@@ -26,7 +26,6 @@ import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import View from './View';
 import TabWidget from './TabWidget';
-import _DetailOfflineMixin from './_DetailOfflineMixin';
 
 /**
  * @class argos._DetailBase
@@ -40,7 +39,7 @@ import _DetailOfflineMixin from './_DetailOfflineMixin';
  * @requires argos.Utility
  * @requires argos.ErrorManager
  */
-const __class = declare('argos._DetailBase', [View, TabWidget, _DetailOfflineMixin], {
+const __class = declare('argos._DetailBase', [View, TabWidget], {
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:

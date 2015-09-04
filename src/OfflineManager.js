@@ -19,11 +19,17 @@ const __class = {
     });
   },
   /**
+   * @returns {PouchDB Store}
+   */
+  getStore: function getStore() {
+    return store;
+  },
+  /**
    *
    * @param view Required instance of a detail view
    * @returns {Promise}
    */
-  saveOffline: function saveOffline(view) {
+  saveDetailView: function saveDetailView(view) {
     const def = new Deferred();
     if (!view) {
       def.reject('A detail view must be specified.');
@@ -40,29 +46,38 @@ const __class = {
       results.entity = view.entry;
       results.modifyDate = moment().toDate();
       results.entityName = model.entityName;
+      results.description = view.getOfflineDescription();
+      results.entityName = model.entityName;
+      results.entityDisplayName = model.entityDisplayName;
 
       return store.put(results);
     }, function queryError() {
       // Fetching the doc/entity failed, so we will insert a new doc instead.
       doc = {
         _id: id,
+        type: 'detail',
         entity: view.entry,
         createDate: moment().toDate(),
         modifyDate: moment().toDate(),
         resourceKind: this.resourceKind,
         storedBy: view.id,
+        viewId: view.id,
+        iconClass: view.getOfflineIcon(),
+        description: view.getOfflineDescription(),
         entityName: model.entityName,
+        entityDisplayName: model.entityDisplayName,
       };
 
       return store.add(doc);
     });
   },
+
   /**
    *
    * @param view
    * @returns {window.Promise}
    */
-  removeOffline: function removeOffline(view) {
+  removeDetailView: function removeDetailView(view) {
     const def = new Deferred();
     if (!view) {
       def.reject('A detail view must be specified.');
@@ -73,6 +88,7 @@ const __class = {
 
     return store.remove(id);
   },
+
 };
 
 export default __class;

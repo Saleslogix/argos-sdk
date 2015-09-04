@@ -145,9 +145,13 @@ export default declare('argos.Store.PouchDB', null, {
   /**
    * Returns an object's identity using this.idProperty
    * @param {Object} object The object to get the identity from
+   * @param {String} string The optional identity property
    * @returns {String|Number}
    */
-  getIdentity: function getIdentity(object) {
+  getIdentity: function getIdentity(object, idProperty) {
+    if (idProperty) {
+      return lang.getObject(idProperty, false, object);
+    }
     return lang.getObject(this.idProperty, false, object);
   },
   queryEngine: function queryEngine(/*query, options*/) {},

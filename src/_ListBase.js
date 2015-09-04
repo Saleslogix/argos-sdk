@@ -1432,7 +1432,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       return;
     }
 
-    const store = this.get('store');
     const count = entries.length;
 
     if (count > 0) {
@@ -1441,7 +1440,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         const entry = this._processEntry(entries[i]);
         // If key comes back with nothing, check that the store is properly
         // setup with an idProperty
-        this.entries[store.getIdentity(entry)] = entry;
+        this.entries[this.getIdentity(entry)] = entry;
 
         let rowNode;
         try {
@@ -1459,6 +1458,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         domConstruct.place(docfrag, this.contentNode, 'last');
       }
     }
+  },
+  getIdentity: function getIdentity(entry) {
+    const store = this.get('store');
+    return store.getIdentity(entry, this.idProperty);
   },
   _logError: function _logError(error, message) {
     const errorItem = {
