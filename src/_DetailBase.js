@@ -394,7 +394,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
       },
       handle: (error, next) => {
-        alert(this.getErrorMessage(error));//eslint-disable-line
+        alert(this.getErrorMessage(error)); //eslint-disable-line
         next();
       },
     }, {
@@ -433,17 +433,25 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * @template
    */
   createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
-      'tbar': [{
+    const tools = [];
+
+    if (this.editView) {
+      tools.push({
         id: 'edit',
         cls: 'fa fa-pencil fa-fw fa-lg',
         action: 'navigateToEditView',
         security: App.getViewSecurity(this.editView, 'update'),
-      }, {
-        id: 'refresh',
-        cls: 'fa fa-refresh fa-fw fa-lg',
-        action: '_refreshClicked',
-      }],
+      });
+    }
+
+    tools.push({
+      id: 'refresh',
+      cls: 'fa fa-refresh fa-fw fa-lg',
+      action: '_refreshClicked',
+    });
+
+    return this.tools || (this.tools = {
+      'tbar': tools,
     });
   },
   _refreshClicked: function _refreshClicked() {
@@ -464,7 +472,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * @param {Event} evt
    * @param {HTMLElement} el
    */
-  invokeAction: function invokeAction(name, parameters/*, evt, el*/) {
+  invokeAction: function invokeAction(name, parameters /*, evt, el*/ ) {
     if (parameters && /true/i.test(parameters.disableAction)) {
       return null;
     }
@@ -531,7 +539,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * Navigates to the defined `this.editView` passing the current `this.entry` as default data.
    * @param {HTMLElement} el
    */
-  navigateToEditView: function navigateToEditView(/*el*/) {
+  navigateToEditView: function navigateToEditView( /*el*/ ) {
     const view = App.getView(this.editView);
     if (view) {
       const entry = this.entry;
@@ -768,7 +776,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
           this._processRelatedItem(data, context, rowNode);
         } catch (e) {
           // error processing related node
-          console.error(e);//eslint-disable-line
+          console.error(e); //eslint-disable-line
         }
       }
 
@@ -807,11 +815,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     return null;
   },
   /**
-   * Required for binding to ScrollContainer which utilizes iScroll that requires to be refreshed when the
-   * content (therefor scrollable area) changes.
-   */
-  onContentChange: function onContentChange() {},
-  /**
    * @template
    * Optional processing of the returned entry before it gets processed into layout.
    * @param {Object} entry Entry from data store
@@ -849,7 +852,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       /* this must take place when the content is visible */
       this.onContentChange();
     } catch (e) {
-      console.error(e);//eslint-disable-line
+      console.error(e); //eslint-disable-line
     }
   },
   _onGetError: function _onGetError(getOptions, error) {
@@ -862,7 +865,14 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     domClass.add(this.domNode, 'panel-loading');
 
     const store = this.get('store');
-    if (store) {
+
+    if (this._model) {
+      return this._model.getEntry(this.options).then(function fulfilled(data) {
+        this._onGetComplete(data);
+      }.bind(this), function rejected(err) {
+        this._onGetError(null, err);
+      }.bind(this));
+    } else if (store) {
       const getOptions = {};
 
       this._applyStateToGetOptions(getOptions);
@@ -878,13 +888,13 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       return getResults;
     }
 
-    console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataDetailMixin to your detail view?');//eslint-disable-line
+    throw new Error('requestData called without a model or store defined.');
   },
   _buildGetExpression: function _buildGetExpression() {
     const options = this.options;
     return options && (options.id || options.key);
   },
-  _applyStateToGetOptions: function _applyStateToGetOptions(/*getOptions*/) {},
+  _applyStateToGetOptions: function _applyStateToGetOptions( /*getOptions*/ ) {},
   /**
    * Determines if the view should be refresh by inspecting and comparing the passed navigation option key with current key.
    * @param {Object} options Passed navigation options.
@@ -994,7 +1004,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
             const html = '<span class="related-item-count">' + result + '</span>';
             domConstruct.place(html, labelNode, 'before');
           } else {
-            console.warn('Missing the "related-item-label" dom node.');//eslint-disable-line
+            console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
           }
         }
       });
