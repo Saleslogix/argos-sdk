@@ -1403,7 +1403,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   _processEntry: function _processEntry(entry) {
     return entry;
   },
-  _onQueryTotalError: function(error) {
+  _onQueryTotalError: function _onQueryTotalError(error) {
     this.handleError(error);
   },
   _onQueryTotal: function _onQueryTotal(size) {
@@ -1464,12 +1464,15 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     return store.getIdentity(entry, this.idProperty);
   },
   _logError: function _logError(error, message) {
+    const fromContext = this.options.fromContext;
+    this.options.fromContext = null;
     const errorItem = {
       viewOptions: this.options,
       serverError: error,
     };
 
     ErrorManager.addError(message || this.getErrorMessage(error), errorItem);
+    this.options.fromContext = fromContext;
   },
   _onQueryError: function _onQueryError(queryOptions, error) {
     this.handleError(error);

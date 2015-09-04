@@ -633,12 +633,15 @@ const __class = declare('argos._EditBase', [View], {
         return true;
       },
       handle: function handleCatchAll(error, next) {
+        const fromContext = this.options.fromContext;
+        this.options.fromContext = null;
         const errorItem = {
           viewOptions: this.options,
           serverError: error,
         };
 
         ErrorManager.addError(this.getErrorMessage(error), errorItem);
+        this.options.fromContext = fromContext;
         next();
       },
     }];

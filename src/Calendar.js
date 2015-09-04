@@ -60,7 +60,7 @@ const __class = declare('argos.Calendar', [View], {
     'Dec',
   ],
   months: null,
-  dateFormat:  moment.localeData().longDateFormat('L'),
+  dateFormat: moment.localeData().longDateFormat('L'),
   timeFormatText: 'h:mm A',
   is24hrTimeFormat: moment.localeData().longDateFormat('LT').match(/H\:/),
   date: false,
