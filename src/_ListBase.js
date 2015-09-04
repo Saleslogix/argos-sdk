@@ -1461,12 +1461,15 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
   },
   _logError: function _logError(error, message) {
+    const fromContext = this.options.fromContext;
+    this.options.fromContext = null;
     const errorItem = {
       viewOptions: this.options,
       serverError: error,
     };
 
     ErrorManager.addError(message || this.getErrorMessage(error), errorItem);
+    this.options.fromContext = fromContext;
   },
   _onQueryError: function _onQueryError(queryOptions, error) {
     this.handleError(error);
