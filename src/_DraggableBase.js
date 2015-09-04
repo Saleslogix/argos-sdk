@@ -38,6 +38,8 @@ const __class = declare('argos._DraggableBase', null, {
   scrollSpeed: 2, // This is the scroll speed in pixels
   zIndex: null,
 
+  // TODO: Need to add functionality for scrolling, using scrollSpeed and checking allowScroll
+
   applyInitialStyling: function applyInitialStyling() {
     const containerZ = domStyle.get(this._container, 'zIndex');
     if (!this.zIndex) {
