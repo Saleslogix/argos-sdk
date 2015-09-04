@@ -28,7 +28,8 @@ import _DraggableBase from './_DraggableBase';
 const __class = declare('argos.DraggableList', [List, _DraggableBase], {
   show: function show() {
     this.setupDraggable(this.contentNode)
-        .setType('li');
+        .setClass('draggable')
+        .setParentTypeToDrag('li');
     this.inherited(arguments);
   },
 });

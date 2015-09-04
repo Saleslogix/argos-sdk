@@ -30,9 +30,11 @@ const __class = declare('argos._DraggableBase', null, {
   _nextElement: null,
   _type: null,
   _class: null,
+  _parentTypeToDrag: null, // This is used when the draggable class is a child of the parent that is desired to drag (ex. a button within a div)
+  _parentClassToDrag: null,
   _isDragging: false,
   includeScroll: true, // This is the dojo includeScroll for dom-geometry
-  allowScroll: true, // This tells the draggble object that the container should scroll when the source is brought to the top/bottom
+  allowScroll: true, // This tells the draggable object that the container should scroll when the source is brought to the top/bottom
   scrollSpeed: 2, // This is the scroll speed in pixels
   zIndex: null,
 
@@ -56,7 +58,7 @@ const __class = declare('argos._DraggableBase', null, {
     domStyle.set(this._source, {
       opacity: '0.3',
       position: 'absolute',
-      width: domGeom.position(this._container, false).w + 'px',
+      width: domStyle.get(this._source, 'width') + 'px',
       top: this._position.y - this._position.offset + 'px',
     });
     domStyle.set(this._container, {
@@ -130,31 +132,37 @@ const __class = declare('argos._DraggableBase', null, {
       }
     }
   },
+  findByClass: function findByClass(element = {}, byClass = {}) {
+    if (element === this._container) {
+      return false;
+    }
+    if (array.indexOf(element.classList, byClass) !== -1) {
+      return element;
+    }
+    return this.findByClass(element.parentNode, byClass);
+  },
+  findByType: function findByType(element = {}, byType = {}) {
+    if (element === this._container) {
+      return null;
+    }
+    if (element.localName === byType) {
+      return element;
+    }
+    return this.findByType(element.parentNode, byType);
+  },
   findSource: function findSource(element = {}) {
+    let source;
     if (this._class) {
-      return this.findSourceFromClass(element);
+      source = this.findByClass(element, this._class);
     } else if (this._type) {
-      return this.findSourceFromType(element);
+      source = this.findByType(element, this._type);
     }
-    return null;
-  },
-  findSourceFromType: function findSourceFromType(element = {}) {
-    if (element === this._container) {
-      return false;
+    if (this._parentClassToDrag) {
+      source = this.findByClass(source, this._parentClassToDrag);
+    } else if (this._parentTypeToDrag) {
+      source = this.findByType(source, this._parentTypeToDrag);
     }
-    if (element.localName === this._type) {
-      return element;
-    }
-    return this.findSourceFromType(element.parentNode);
-  },
-  findSourceFromClass: function findSourceFromClass(element = {}) {
-    if (element === this._container) {
-      return false;
-    }
-    if (array.indexOf(element.classList, this._class) !== -1) {
-      return element;
-    }
-    return this.findSourceFromType(element.parentNode);
+    return source;
   },
   getPositionOf: function getPositionOf(element = {}) {
     const position = domGeom.position(element, this.includeScroll);
@@ -254,6 +262,13 @@ const __class = declare('argos._DraggableBase', null, {
       });
     }
     return this;
+  },
+  setParentTypeToDrag: function setParentTypeToDrag(parentType = {}) {
+    this._parentTypeToDrag = parentType;
+    return this;
+  },
+  setParentClassToDrag: function setParentClassToDrag(parentClass = {}) {
+    this._parentClassToDrag = parentClass;
   },
   setType: function setType(type = {}) {
     this._type = type;

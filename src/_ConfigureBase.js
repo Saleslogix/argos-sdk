@@ -17,8 +17,9 @@ const __class = declare('argos._ConfigureBase', [ DraggableList ], {
   itemTemplate: new Simplate([
     '<h3>',
     '<span>{%: $.$descriptor %}</span>',
-    '<span data-action="moveUp" class="fa fa-arrow-up"></span>',
-    '<span data-action="moveDown" class="fa fa-arrow-down"></span>',
+    '<span class="draggable fa fa-circle-o"></span>',
+    // '<span data-action="moveUp" class="fa fa-arrow-up"></span>',
+    // '<span data-action="moveDown" class="fa fa-arrow-down"></span>',
     '</h3>',
   ]),
 
