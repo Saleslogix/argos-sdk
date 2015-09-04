@@ -59,6 +59,14 @@
       "isDebug": true,
       "fileIncludes": [
         {
+          "text": "DraggableList.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_DraggabeBase.js",
+          "path": "../src-out/"
+        },
+        {
           "text": "DomHelper.js",
           "path": "../src-out/ReUI/"
         },
