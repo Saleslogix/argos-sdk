@@ -14,6 +14,7 @@
  */
 import array from 'dojo/_base/array';
 import declare from 'dojo/_base/declare';
+import domConstruct from 'dojo/dom-construct';
 import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';
 
@@ -98,6 +99,9 @@ const __class = declare('argos._DraggableBase', null, {
         this.resetMargins(this._previousElement, 'bottom');
         this._nextElement = this._previousElement;
         this._previousElement = this._previousElement.previousSibling;
+        if (this._previousElement === this._source) {
+          this._previousElement = this._previousElement.previousSibling;
+        }
         this.applyStyling();
       } else if (this._nextElement) {
         // This is the case where the selected element is between two elements in the container
@@ -106,6 +110,9 @@ const __class = declare('argos._DraggableBase', null, {
           this.resetMargins(this._previousElement, 'bottom');
           this._previousElement = this._nextElement;
           this._nextElement = this._nextElement.nextSibling;
+          if (this._nextElement === this._source) {
+            this._nextElement = this._nextElement.nextSibling;
+          }
           this.applyStyling();
         }
       }
@@ -116,6 +123,9 @@ const __class = declare('argos._DraggableBase', null, {
         this.resetMargins(this._nextElement, 'top');
         this._previousElement = this._nextElement;
         this._nextElement = this._nextElement.nextSibling;
+        if (this._nextElement === this._source) {
+          this._nextElement = this._nextElement.nextSibling;
+        }
         this.applyStyling();
       }
     }
@@ -183,6 +193,14 @@ const __class = declare('argos._DraggableBase', null, {
     }
   },
   placeItem: function placeItem() {
+    this._source = this._container.removeChild(this._source);
+    if (this._previousElement) {
+      // This accounts for when the source is between two nodes or the last element in the container
+      domConstruct.place(this._source, this._previousElement, 'after');
+    } else {
+      // This is the situation in which the source was placed as the first element of the container
+      domConstruct.place(this._source, this._nextElement, 'before');
+    }
     domStyle.set(this._source, {
       top: '',
     });
