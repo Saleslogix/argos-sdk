@@ -20,7 +20,6 @@ import string from 'dojo/string';
 import dNumber from 'dojo/number';
 import convert from './Convert';
 import utility from './Utility';
-import moment from 'moment';
 
 const getVectorMaxSize = function getVectorMaxSize(v) {
   let w = 1;
