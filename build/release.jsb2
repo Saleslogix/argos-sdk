@@ -67,6 +67,18 @@
            "path": "../src-out/Models/"
         },
         {
+           "text": "Manager.js",
+           "path": "../src-out/Models/"
+        },
+        {
+           "text": "Types.js",
+           "path": "../src-out/Models/"
+        },
+        {
+           "text": "Adapter.js",
+           "path": "../src-out/Models/"
+        },
+        {
           "text": "DomHelper.js",
           "path": "../src-out/ReUI/"
         },
