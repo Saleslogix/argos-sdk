@@ -64,7 +64,7 @@
       "fileIncludes": [
         {
            "text": "_ModelBase.js",
-           "path": "../src-out/"
+           "path": "../src-out/Models/"
         },
         {
           "text": "DomHelper.js",
@@ -135,12 +135,12 @@
           "path": "../src-out/Store/"
         },
         {
-           "text": "OfflineManager.js",
-           "path": "../src-out/"
+           "text": "Manager.js",
+           "path": "../src-out/Offline/"
         },
         {
           "text": "_SDataModelMixin.js",
-          "path": "../src-out/"
+          "path": "../src-out/Models/"
         },
         {
           "text": "ErrorManager.js",
@@ -164,7 +164,7 @@
         },
         {
           "text": "_DetailOfflineMixin.js",
-          "path": "../src-out/"
+          "path": "../src-out/Offline/"
         },
         {
           "text": "_DetailBase.js",

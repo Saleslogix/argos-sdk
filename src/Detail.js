@@ -17,7 +17,7 @@ import lang from 'dojo/_base/lang';
 import _DetailBase from './_DetailBase';
 import _SDataDetailMixin from './_SDataDetailMixin';
 import _RelatedWidgetDetailMixin from './_RelatedViewWidgetDetailMixin';
-import _DetailOfflineMixin from './_DetailOfflineMixin';
+import _DetailOfflineMixin from './Offline/_DetailOfflineMixin';
 
 /**
  * @class argos.Detail

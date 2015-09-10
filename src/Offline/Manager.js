@@ -1,8 +1,8 @@
 /**
- * @class crm.OfflineManager
+ * @class argos.Offline.Manager
  *
  */
-import Store from './Store/PouchDB';
+import Store from '../Store/PouchDB';
 import Deferred from 'dojo/Deferred';
 
 const store = new Store({

@@ -21,7 +21,7 @@ import Stateful from 'dojo/Stateful';
  * A base model class for views to consume
  * @alternateClassName _ModelBase
  */
-export default declare('argos._ModelBase', [Evented, Stateful], {
+export default declare('argos.Models._ModelBase', [Evented, Stateful], {
   app: null,
   entityName: '',
   _appGetter: function _appGetter() {

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import OfflineManager from './OfflineManager';
+import OfflineManager from './Manager';
 
 
 /**
@@ -21,7 +21,7 @@ import OfflineManager from './OfflineManager';
  * A mixin that provides the detail view offline specific methods and properties
  * @alternateClassName _DetailOfflineMixin
  */
-export default declare('argos._DetailOfflineMixin', null, {
+export default declare('argos.Offline._DetailOfflineMixin', null, {
 
   onContentChange: function onContentChange() {
     if (this.enableOffline) {

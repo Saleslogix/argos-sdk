@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import SDataStore from './Store/SData';
+import SDataStore from '../Store/SData';
 import Deferred from 'dojo/Deferred';
 
 
@@ -22,7 +22,7 @@ import Deferred from 'dojo/Deferred';
  * A mixin that provides SData specific methods and properties
  * @alternateClassName _SDataModelMixin
  */
-export default declare('argos._SDataModelMixin', null, {
+export default declare('argos.Models._SDataModelMixin', null, {
   /**
    * @cfg {String} resourceKind
    * The SData resource kind the view is responsible for.  This will be used as the default resource kind
