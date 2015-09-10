@@ -19,6 +19,7 @@ import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
 import _Templated from './_Templated';
 import _ErrorHandleMixin from './_ErrorHandleMixin';
+import Adapter from './Models/Adapter';
 
 /**
  * @class argos.View
@@ -79,6 +80,11 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * A reference to the globa App object
    */
   app: null,
+
+  /**
+   * Registered model name to use.
+   */
+  modelName: '',
   /**
    * May be used to specify the service name to use for data requests. Setting false will force the use of the default service.
    * @property {String/Boolean}
@@ -131,11 +137,12 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     }
   },
   /**
-   * Returns a new instance of a model for the view. Should be overridden by derived classes.
+   * Returns a new instance of a model for the view.
    */
-  getModel: function getModel() {
-    return null;
-  },
+   getModel: function getModel() {
+     const model = Adapter.getModel(this.modelName);
+     return model;
+   },
   /**
    * Establishes this views connections to various events
    */
