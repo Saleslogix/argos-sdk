@@ -738,7 +738,13 @@ const __class = declare('argos._EditBase', [View], {
   requestData: function requestData() {
     const store = this.get('store');
 
-    if (store) {
+    if (this._model) {
+      return this._model.getEntry(this.options).then(function fulfilled(data) {
+        this._onGetComplete(data);
+      }.bind(this), function rejected(err) {
+        this._onGetError(null, err);
+      }.bind(this));
+    } else if (store) {
       const getOptions = {};
 
       this._applyStateToGetOptions(getOptions);
@@ -754,7 +760,7 @@ const __class = declare('argos._EditBase', [View], {
       return getResults;
     }
 
-    console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataEditMixin to your edit view?'); // eslint-disable-line
+    console.warn('Error requesting data, no model or store was defined. Did you mean to mixin _SDataEditMixin to your edit view?'); // eslint-disable-line
   },
   /**
    * Loops all the fields looking for any with the `default` property set, if set apply that
@@ -960,14 +966,18 @@ const __class = declare('argos._EditBase', [View], {
   },
   onInsert: function onInsert(values) {
     const store = this.get('store');
-    if (store) {
-      const addOptions = {
-        overwrite: false,
-      };
-      const entry = this.createEntryForInsert(values);
-
-      this._applyStateToAddOptions(addOptions);
-
+    const addOptions = {
+      overwrite: false,
+    };
+    const entry = this.createEntryForInsert(values);
+    this._applyStateToAddOptions(addOptions);
+    if (this._model) {
+      this._model.insertEntry(entry, addOptions).then(function success(data) {
+        this.onAddComplete(entry, data);
+      }.bind(this), function failure(err) {
+        this.onAddError(addOptions, err);
+      }.bind(this));
+    } else if (store) {
       Deferred.when(store.add(entry, addOptions),
         this.onAddComplete.bind(this, entry),
         this.onAddError.bind(this, addOptions)
@@ -1020,15 +1030,18 @@ const __class = declare('argos._EditBase', [View], {
   },
   onUpdate: function onUpdate(values) {
     const store = this.get('store');
-    if (store) {
-      const putOptions = {
-        overwrite: true,
-        id: store.getIdentity(this.entry),
-      };
-
-      const entry = this.createEntryForUpdate(values);
-      this._applyStateToPutOptions(putOptions);
-
+    const putOptions = {
+      overwrite: true,
+    };
+    const entry = this.createEntryForUpdate(values);
+    this._applyStateToPutOptions(putOptions);
+    if (this._model) {
+      this._model.updateEntry(entry, putOptions).then(function success(data) {
+        this.onPutComplete(entry, data);
+      }.bind(this), function failure(err) {
+        this.onPutError(putOptions, err);
+      }.bind(this));
+    } else if (store) {
       Deferred.when(store.put(entry, putOptions),
         this.onPutComplete.bind(this, entry),
         this.onPutError.bind(this, putOptions)

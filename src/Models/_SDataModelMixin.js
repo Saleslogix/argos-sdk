@@ -23,39 +23,55 @@ import Deferred from 'dojo/Deferred';
  * @alternateClassName _SDataModelMixin
  */
 export default declare('argos.Models._SDataModelMixin', null, {
-  list: {
-    querySelect: [],
-    queryInclude: [],
-    resourceProperty: null,
-    resourcePredicate: null,
-    where: null,
-    queryArgs: null,
-    queryOrderBy: null,
-  },
-  detail: {
-    querySelect: [],
-    queryInclude: [],
-    resourceProperty: null,
-    resourcePredicate: null,
-  },
-  edit: {
-    querySelect: [],
-    queryInclude: [],
-    resourceProperty: null,
-    resourcePredicate: null,
-  },
+  list: null,
+  detail: null,
+  edit: null,
   resourceKind: '',
   itemsProperty: '$resources',
   idProperty: '$key',
   labelProperty: '$descriptor',
   entityProperty: '$name',
   versionProperty: '$etag',
+  _initMode: {
+    list: () => {
+      this.list = {
+        querySelect: [],
+        queryInclude: [],
+        resourceProperty: null,
+        resourcePredicate: null,
+        where: null,
+        queryArgs: null,
+        queryOrderBy: null,
+      };
+    },
+    detail: () => {
+      this.detail = {
+        querySelect: [],
+        queryInclude: [],
+        resourceProperty: null,
+        resourcePredicate: null,
+      };
+    },
+    edit: () => {
+      this.edit = {
+        querySelect: [],
+        queryInclude: [],
+        resourceProperty: null,
+        resourcePredicate: null,
+      };
+    },
+  },
   /**
    * Initializes the model with options that are SData specific.
    * @param options
    */
   init: function init({resourceKind, querySelect, queryInclude, queryWhere,
     queryArgs, queryOrderBy, resourceProperty, resourcePredicate, viewType}) {
+    const initFn = this._initMode[viewType];
+    if (initFn) {
+      initFn.apply(this, arguments);
+    }
+
     const viewTypeOptions = this[viewType];
     if (resourceKind) {
       this.resourceKind = resourceKind;
