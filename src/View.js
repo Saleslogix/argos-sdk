@@ -85,6 +85,11 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * Registered model name to use.
    */
   modelName: '',
+
+  /**
+   * View type (detail, edit, list, etc)
+   */
+  viewType: 'view',
   /**
    * May be used to specify the service name to use for data requests. Setting false will force the use of the default service.
    * @property {String/Boolean}
@@ -131,8 +136,9 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * Initializes the model instance that is return with the curernt view.
    */
   initModel: function initModel() {
-    this._model = this.getModel();
-    if (this._model) {
+    const model = this.getModel();
+    if (model) {
+      this._model = model;
       this._model.init(this);
     }
   },

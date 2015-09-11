@@ -247,6 +247,8 @@ const __class = declare('argos._EditBase', [View], {
    */
   updateSecurity: false,
 
+  viewType: 'edit',
+
   /**
    * @deprecated
    */

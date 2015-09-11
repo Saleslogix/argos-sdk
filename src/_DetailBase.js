@@ -302,6 +302,8 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * Font awesome icon to be used by the more list item
    */
   icon: 'fa fa-chevron',
+
+  viewType: 'detail',
   /**
    * @cfg {String}
    * Information text that is concatenated with the entity type

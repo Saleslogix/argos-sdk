@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
+import lang from 'dojo/_base/lang';
 import SDataStore from '../Store/SData';
 import Deferred from 'dojo/Deferred';
-
 
 /**
  * @class argos._SDataModeMixin
@@ -23,33 +23,28 @@ import Deferred from 'dojo/Deferred';
  * @alternateClassName _SDataModelMixin
  */
 export default declare('argos.Models._SDataModelMixin', null, {
-  /**
-   * @cfg {String} resourceKind
-   * The SData resource kind the view is responsible for.  This will be used as the default resource kind
-   * for all SData requests.
-   */
+  list: {
+    querySelect: [],
+    queryInclude: [],
+    resourceProperty: null,
+    resourcePredicate: null,
+    where: null,
+    queryArgs: null,
+    queryOrderBy: null,
+  },
+  detail: {
+    querySelect: [],
+    queryInclude: [],
+    resourceProperty: null,
+    resourcePredicate: null,
+  },
+  edit: {
+    querySelect: [],
+    queryInclude: [],
+    resourceProperty: null,
+    resourcePredicate: null,
+  },
   resourceKind: '',
-  /**
-   * @cfg {String[]}
-   * A list of fields to be selected in an SData request.
-   */
-  querySelect: [],
-  /**
-   * @cfg {String[]?}
-   * A list of child properties to be included in an SData request.
-   */
-  queryInclude: [],
-  /**
-   * @cfg {String?/Function?}
-   * The default resource property for an SData request.
-   */
-  resourceProperty: null,
-  /**
-   * @cfg {String?/Function?}
-   * The default resource predicate for an SData request.
-   */
-  resourcePredicate: null,
-
   itemsProperty: '$resources',
   idProperty: '$key',
   labelProperty: '$descriptor',
@@ -59,35 +54,55 @@ export default declare('argos.Models._SDataModelMixin', null, {
    * Initializes the model with options that are SData specific.
    * @param options
    */
-  init: function init(options) {
-    if (options) {
-      if (options.resourceKind) {
-        this.resourceKind = options.resourceKind;
+  init: function init({resourceKind, querySelect, queryInclude, queryWhere,
+    queryArgs, queryOrderBy, resourceProperty, resourcePredicate, viewType}) {
+    const viewTypeOptions = this[viewType];
+    if (resourceKind) {
+      this.resourceKind = resourceKind;
+    }
+
+    if (querySelect) {
+      if (!viewTypeOptions.querySelect) {
+        viewTypeOptions.querySelect = [];
       }
 
-      if (options.querySelect) {
-        if (!this.querySelect) {
-          this.querySelect = [];
+      viewTypeOptions.querySelect.concat(querySelect);
+    }
+
+    if (queryInclude) {
+      if (!viewTypeOptions.queryInclude) {
+        viewTypeOptions.queryInclude = [];
+      }
+
+      viewTypeOptions.queryInclude.concat(queryInclude);
+    }
+
+    if (queryWhere) {
+      viewTypeOptions.queryWhere = queryWhere;
+    }
+
+    if (queryArgs) {
+      viewTypeOptions.queryArgs = lang.mixin({}, viewTypeOptions.queryArgs, queryArgs);
+    }
+
+    if (queryOrderBy) {
+      if (Array.isArray(queryOrderBy)) {
+        if (!viewTypeOptions.queryOrderBy) {
+          viewTypeOptions.queryOrderBy = [];
         }
 
-        this.querySelect.concat(options.querySelect);
+        viewTypeOptions.queryOrderBy.concat(queryInclude);
+      } else {
+        viewTypeOptions.queryOrderBy = queryOrderBy;
       }
+    }
 
-      if (options.queryInclude) {
-        if (!this.queryInclude) {
-          this.queryInclude = [];
-        }
+    if (resourceProperty) {
+      viewTypeOptions.resourceProperty = resourceProperty;
+    }
 
-        this.queryInclude.concat(options.queryInclude);
-      }
-
-      if (options.resourceProperty) {
-        this.resourceProperty = options.resourceProperty;
-      }
-
-      if (options.resourcePredicate) {
-        this.resourcePredicate = options.resourcePredicate;
-      }
+    if (resourcePredicate) {
+      viewTypeOptions.resourcePredicate = resourcePredicate;
     }
   },
   getOptions: function getOptionsFn(options) {
@@ -106,29 +121,39 @@ export default declare('argos.Models._SDataModelMixin', null, {
   getId: function getId(options) {
     return options && (options.id || options.key);
   },
-  createStore: function createStore(service) {
+  createStore: function createStore(type = 'detail', service) {
     const app = this.get('app');
+    const config = this;
+    const typedConfig = this[type];
+
     return new SDataStore({
       service: service || app.getService(false),
-      contractName: this.contractName,
-      resourceKind: this.resourceKind,
-      resourceProperty: this.resourceProperty,
-      resourcePredicate: this.resourcePredicate,
-      include: this.queryInclude,
-      select: this.querySelect,
-      itemsProperty: this.itemsProperty,
-      idProperty: this.idProperty,
-      labelProperty: this.labelProperty,
-      entityProperty: this.entityProperty,
-      versionProperty: this.versionProperty,
+      contractName: config.contractName,
+      resourceKind: config.resourceKind,
+
+      resourceProperty: typedConfig.resourceProperty,
+      resourcePredicate: typedConfig.resourcePredicate,
+      include: typedConfig.queryInclude,
+      select: typedConfig.querySelect,
+      where: typedConfig.queryWhere,
+      queryArgs: typedConfig.queryArgs,
+      orderBy: typedConfig.queryOrderBy,
+
+      itemsProperty: config.itemsProperty,
+      idProperty: config.idProperty,
+      labelProperty: config.labelProperty,
+      entityProperty: config.entityProperty,
+      versionProperty: config.versionProperty,
       scope: this,
     });
   },
-  getEntries: function getEntries(query) { // eslint-disable-line
-    return {};
+
+  getEntries: function getEntries(query, options) { // eslint-disable-line
+    const store = this.createStore('list');
+    return store.query(query, options);
   },
   getEntry: function getEntry(options) {
-    const store = this.createStore();
+    const store = this.createStore('detail');
     return store.get(this.getId(options), this.getOptions(options));
   },
   insertEntry: function insertEntry(entry, options) {
@@ -142,9 +167,10 @@ export default declare('argos.Models._SDataModelMixin', null, {
       throw new Error('No store set.');
     }
 
-    return this.validate(entry).then(function fulfilled() {
-      return store.put(entry, options);
-    }); // Since we left off the reject handler, it will propagate up if there is a validation error
+    return this.validate(entry)
+      .then(function fulfilled() {
+        return store.put(entry, options);
+      }); // Since we left off the reject handler, it will propagate up if there is a validation error
   },
   /**
    * If an entry is valid, validate should return a promise that resolves to true. If the entry is not valid,

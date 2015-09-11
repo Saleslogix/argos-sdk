@@ -456,6 +456,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {Boolean} Indicates if the list is loading
    */
   listLoading: false,
+  viewType: 'list',
   // Store properties
   itemsProperty: '',
   idProperty: '',
@@ -1325,28 +1326,29 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   requestData: function requestData() {
     const store = this.get('store');
 
-    if (store) {
-      this._setLoading();
-      // attempt to use a dojo store
-      const queryOptions = {
-        count: this.pageSize,
-        start: this.position,
-      };
-
-      this._applyStateToQueryOptions(queryOptions);
-
-      const queryExpression = this._buildQueryExpression() || null;
-      const queryResults = store.query(queryExpression, queryOptions);
-
-      when(queryResults,
-        this._onQueryComplete.bind(this, queryResults),
-        this._onQueryError.bind(this, queryOptions)
-      );
-
-      return queryResults;
+    if (!store && !this._model) {
+      console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?'); // eslint-disable-line
+      return null;
     }
 
-    console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?'); // eslint-disable-line
+    this._setLoading();
+    const queryOptions = {};
+    this._applyStateToQueryOptions(queryOptions);
+
+    const queryExpression = this._buildQueryExpression() || null;
+    let queryResults;
+    if (this._model) {
+      queryResults = this._model.getEntries(queryExpression, queryOptions);
+    } else {
+      queryResults = store.query(queryExpression, queryOptions);
+    }
+
+    when(queryResults,
+      this._onQueryComplete.bind(this, queryResults),
+      this._onQueryError.bind(this, queryOptions)
+    );
+
+    return queryResults;
   },
   _onQueryComplete: function _onQueryComplete(queryResults, entries) {
     try {

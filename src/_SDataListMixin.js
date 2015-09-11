@@ -137,6 +137,9 @@ const __class = declare('argos._SDataListMixin', null, {
   },
   _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {
     const options = this.options;
+
+    queryOptions.count = this.pageSize;
+    queryOptions.start = this.position;
     if (options) {
       if (options.select) {
         queryOptions.select = options.select;

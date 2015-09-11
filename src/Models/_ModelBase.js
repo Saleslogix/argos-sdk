@@ -23,7 +23,6 @@ import Stateful from 'dojo/Stateful';
  */
 export default declare('argos.Models._ModelBase', [Evented, Stateful], {
   app: null,
-  entityName: '',
   _appGetter: function _appGetter() {
     return this.app || window.App;
   },
@@ -36,8 +35,14 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful], {
    */
   init: function init() {
   },
-  getEntry: function getEntry() { // eslint-disable-line
+  getEntry: function getEntry(options) { // eslint-disable-line
   },
-  createStore: function createStore() {
+  getEntries: function getEntries(query, options) { // eslint-disable-line
+  },
+  insertEntry: function insertEntry(entry, options) {// eslint-disable-line
+  },
+  updateEntry: function updateEntry(entry, options) { // eslint-disable-line
+  },
+  deleteEntry: function deleteEntry(entry, options) { // eslint-disable-line
   },
 });
