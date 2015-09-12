@@ -1332,14 +1332,20 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
 
     this._setLoading();
-    const queryOptions = {};
-    this._applyStateToQueryOptions(queryOptions);
 
-    const queryExpression = this._buildQueryExpression() || null;
     let queryResults;
+    let queryOptions;
+
     if (this._model) {
-      queryResults = this._model.getEntries(queryExpression, queryOptions);
+      // Todo: find a better way to transfer this state.
+      this.options.count = this.pageSize;
+      this.options.start = this.position;
+      queryResults = this._model.getEntries(this.query, this.options);
     } else {
+      queryOptions = {};
+      this._applyStateToQueryOptions(queryOptions);
+
+      const queryExpression = this._buildQueryExpression() || null;
       queryResults = store.query(queryExpression, queryOptions);
     }
 

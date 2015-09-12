@@ -16,6 +16,7 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import SDataStore from '../Store/SData';
 import Deferred from 'dojo/Deferred';
+import utility from '../Utility';
 
 /**
  * @class argos._SDataModeMixin
@@ -126,16 +127,24 @@ export default declare('argos.Models._SDataModelMixin', null, {
     if (options) {
       if (options.select) getOptions.select = options.select;
       if (options.include) getOptions.include = options.include;
+      if (options.orderBy) getOptions.orderBy = options.orderBy;
       if (options.contractName) getOptions.contractName = options.contractName;
       if (options.resourceKind) getOptions.resourceKind = options.resourceKind;
       if (options.resourceProperty) getOptions.resourceProperty = options.resourceProperty;
       if (options.resourcePredicate) getOptions.resourcePredicate = options.resourcePredicate;
+      if (options.queryArgs) getOptions.queryArgs = options.queryArgs;
+      if (options.start) getOptions.start = options.start;
+      if (options.count) getOptions.count = options.count;
     }
 
     return getOptions;
   },
   getId: function getId(options) {
     return options && (options.id || options.key);
+  },
+  buildQueryExpression: function _buildQueryExpression(query, options) {
+    const passed = options && (options.query || options.where);
+    return passed ? query ? '(' + utility.expand(this, passed) + ') and (' + query + ')' : '(' + utility.expand(this, passed) + ')' : query;// eslint-disable-line
   },
   createStore: function createStore(type = 'detail', service) {
     const app = this.get('app');
@@ -166,7 +175,7 @@ export default declare('argos.Models._SDataModelMixin', null, {
 
   getEntries: function getEntries(query, options) { // eslint-disable-line
     const store = this.createStore('list');
-    return store.query(query, options);
+    return store.query(this.buildQueryExpression(query, options), this.getOptions(options));
   },
   getEntry: function getEntry(options) {
     const store = this.createStore('detail');
