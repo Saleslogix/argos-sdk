@@ -335,7 +335,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
           .attachEventListener()
           .calculatePosition(target);
     }
-    return this._deferred;
+    return this._deferred.promise;
   },
   toggleBackdrop: function toggleBackdrop() {
     if (this._backdrop) {

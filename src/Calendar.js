@@ -164,7 +164,7 @@ const __class = declare('argos.Calendar', [View], {
   },
   changeYearShown: function changeYearShown({ year }) {
     domConstruct.empty(this.yearNode);
-    this.yearNode.innerHTML = ' ' + year;
+    this.yearNode.innerHTML = year;
     return this;
   },
   checkAndRenderDay: function checkAndRenderDay(data = {}) {
@@ -179,7 +179,7 @@ const __class = declare('argos.Calendar', [View], {
     } else {
       data.weekend = '';
     }
-    data.date = data.dateMoment.date(data.day).format('YYYY-MM-DD');
+    data.date = data.dateMoment.clone().date(data.day).format('YYYY-MM-DD');
     const day = domConstruct.toDom(this.calendarTableDayTemplate.apply(data, this));
     if (this.showSubValues) {
       this.setSubValue(data.date)

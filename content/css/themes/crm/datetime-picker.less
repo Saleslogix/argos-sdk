@@ -11,6 +11,10 @@
   line-height: 60px;
   text-align: center;
 
+  .month {
+    margin-right: 0.5rem;
+  }
+
   .month,
   .year {
     font-size: @font-size-subtitle;
@@ -54,10 +58,7 @@
   .day {
     position: relative;
     border: 1px solid transparent;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
+    .border-radius(50%);
     height: 35px;
     width: 35px;
     background-color: inherit;
@@ -77,10 +78,7 @@
     font-size: @font-size-h5;
     color: @color-black;
     background-color: @color-amber;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
+    .border-radius(50%);
   }
 
   .current-month {
@@ -126,7 +124,7 @@
 
   .tertiary {
     padding: 0 10px;
-    border-radius: 18px;
+    .border-radius(18px);
     border: 0;
     box-shadow: none;
     color: @color-slate;
@@ -209,96 +207,3 @@
     line-height: 44px;
   }
 }
-
-//
-// #datetime-picker {
-//     padding-bottom: 2em;
-//
-//     .time-content-hidden {
-//         display: none !important;
-//     }
-//
-//     table {
-//         border-collapse: separate;
-//         border-spacing: 6px 0px;
-//         padding: 2px;
-//         margin: 0.5em auto 0;
-//         text-align: center;
-//     }
-//
-//     div.calendar-content {
-//         padding-bottom: 0;
-//     }
-//
-//     div.date-tt {
-//         margin: 0;
-//     }
-//
-//     table caption {
-//         padding: 4px;
-//     }
-//
-//     td {
-//         padding: 0;
-//         margin: 0;
-//         border: 0;
-//         text-align: center;
-//         width: 64px;
-//     }
-//
-//     td > select {
-//         font-size: 1.5em;
-//         height: 34px;
-//         line-height: 34px;
-//         border: none;
-//         margin: 0;
-//         padding: 0;
-//         -webkit-appearance: listbox;
-//         -moz-appearance: listbox;
-//         position: relative; /* Fix android browser issue with -webkit-transform blocking <select> */
-//     }
-//
-//     .datetime-selects td {
-//         border: none;
-//         border-left: 1px solid #b3b3b3;
-//         border-right: 1px solid #b3b3b3;
-//     }
-//
-//     td > button {
-//         display: block;
-//         font-size: 1.5em;
-//         width: 100%;
-//         margin: 0;
-//         height: 46px;
-//         line-height: 44px;
-//         .border-radius(0px);
-//     }
-//
-//     .plus > td > button {
-//         .border-radius(3px 3px 0px 0px);
-//     }
-//
-//     .minus > td > button {
-//         .border-radius(0px 0px 3px 3px);
-//     }
-//
-//     .datetime-tt {
-//         border: none !important;
-//     }
-// }
-//
-// body.landscape > .viewContainer > #generic_calendar > #datetime-picker {
-//     width: 100%;
-//     text-align: center;
-// }
-//
-// body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .calendar-content,
-// body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content {
-//     vertical-align: top;
-//     display: inline-block;
-//     padding: 0px !important;
-// }
-//
-// body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content {
-//     margin-left: 18px;
-// }
