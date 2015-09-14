@@ -349,7 +349,7 @@ const __class = declare('argos._DraggableBase', null, {
         toScroll.scrollTop = currentScrollTop + speed;
         this.computeMovement(this._scrollingTouch);
       } else {
-        toScroll.scrollTop = toScroll.scrollHeight - currentScrollTop - toScroll.offsetHeight;
+        toScroll.scrollTop = toScroll.scrollHeight - toScroll.offsetHeight + this._position.h;
         this.clearScrollTimer();
       }
     }
