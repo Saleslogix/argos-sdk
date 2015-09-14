@@ -1403,7 +1403,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   _processEntry: function _processEntry(entry) {
     return entry;
   },
-  _onQueryTotalError: function(error) {
+  _onQueryTotalError: function _onQueryTotalError(error) {
     this.handleError(error);
   },
   _onQueryTotal: function _onQueryTotal(size) {
