@@ -122,6 +122,7 @@ const __class = declare('argos.Calendar', [View], {
   isModal: false,
   // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
   date: null,
+  noClearButton: false,
   _monthModal: null,
   _currentMonth: null,
   _todayMonth: null,
@@ -419,7 +420,7 @@ const __class = declare('argos.Calendar', [View], {
     this.showTimePicker = this.options && this.options.showTimePicker;
     this.date.selectedDateMoment = moment((this.options && this.options.date) || moment());
     this.date.todayMoment = moment();
-    if (this.isModal || this.options.isModal) {
+    if (this.isModal || this.options.isModal || this.noClearButton || this.options.noClearButton) {
       this.clearButton.style.display = 'none';
     }
     this.createMonthModal()
