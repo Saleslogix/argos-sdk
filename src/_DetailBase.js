@@ -412,12 +412,15 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       name: 'CatchAll',
       test: () => true,
       handle: (error, next) => {
+        const fromContext = this.options.fromContext;
+        this.options.fromContext = null;
         const errorItem = {
           viewOptions: this.options,
           serverError: error,
         };
 
         ErrorManager.addError(this.getErrorMessage(error), errorItem);
+        this.options.fromContext = fromContext;
         domClass.remove(this.domNode, 'panel-loading');
         next();
       },

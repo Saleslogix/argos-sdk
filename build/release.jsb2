@@ -39,6 +39,10 @@
         {
           "text": "browser-polyfill.min.js",
           "path": "../libraries/babel/"
+        },
+        {
+          "text": "moment-with-locales.js",
+          "path": "../libraries/moment/"
         }
       ]
     },
@@ -50,10 +54,6 @@
         {
           "text": "snap.js",
           "path": "../libraries/snap/"
-        },
-        {
-          "text": "moment-with-langs.min.js",
-          "path": "../libraries/moment/"
         }
       ]
     },
@@ -332,9 +332,9 @@
       "filters": ".*(\\.l20n)",
     },
     {
-      "src": "../libraries/font-awesome-4.1.0/fonts",
+      "src": "../libraries/font-awesome-4.4.0/fonts",
       "dest": "content/css/themes/fonts",
-      "filters": ".*(\\.otf|\\.eot|\\.svg|\\.ttf|\\.woff)"
+      "filters": ".*(\\.otf|\\.eot|\\.svg|\\.ttf|\\.woff|\\.woff2)"
     },
     {
       "src": "../content",

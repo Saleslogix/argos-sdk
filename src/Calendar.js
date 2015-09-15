@@ -25,7 +25,6 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domStyle from 'dojo/dom-style';
 import View from 'argos/View';
-import moment from 'moment';
 
 const resource = window.localeContext.getEntitySync('calendar').attributes;
 
@@ -63,9 +62,9 @@ const __class = declare('argos.Calendar', [View], {
     resource.december,
   ],
   months: null,
-  dateFormat: moment().lang()._longDateFormat.L,
+  dateFormat: moment.localeData().longDateFormat('L'),
   timeFormatText: 'h:mm A',
-  is24hrTimeFormat: moment().lang()._longDateFormat.LT.match(/H\:/),
+  is24hrTimeFormat: moment.localeData().longDateFormat('LT').match(/H\:/),
   date: false,
   showTimePicker: false,
   timeless: false,
@@ -142,8 +141,8 @@ const __class = declare('argos.Calendar', [View], {
   init: function init() {
     this.inherited(arguments);
     this.months = this.monthsShortText;
-    this.dateFormat = moment().lang()._longDateFormat.L;
-    this.is24hrTimeFormat = moment().lang()._longDateFormat.LT.match(/H\:/);
+    this.dateFormat = moment.localeData().longDateFormat('L');
+    this.is24hrTimeFormat = moment.localeData().longDateFormat('LT').match(/H\:/);
     this.connect(this.dayNode, 'onchange', this.validate);
     this.connect(this.monthNode, 'onchange', this.validate);
     this.connect(this.yearNode, 'onchange', this.validate);

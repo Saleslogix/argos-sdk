@@ -353,6 +353,15 @@ const __class = declare('argos._EditBase', [View], {
           field.renderTo(node);
         }
       }, this);
+
+    const sections = query('h2', this.contentNode);
+    if (sections.length === 1) {
+      domAttr.remove(sections[0], 'data-action');
+      const button = query('button[class*="fa-chevron"]', sections[0]);
+      if (button[0]) {
+        domConstruct.destroy(button[0]);
+      }
+    }
   },
   /**
    * Extends init to also init the fields in `this.fields`.
@@ -626,12 +635,15 @@ const __class = declare('argos._EditBase', [View], {
         return true;
       },
       handle: function handleCatchAll(error, next) {
+        const fromContext = this.options.fromContext;
+        this.options.fromContext = null;
         const errorItem = {
           viewOptions: this.options,
           serverError: error,
         };
 
         ErrorManager.addError(this.getErrorMessage(error), errorItem);
+        this.options.fromContext = fromContext;
         next();
       },
     }];

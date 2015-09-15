@@ -76,7 +76,8 @@ __class = declare('argos._PullToRefreshMixin', null, {
    */
   pullToRefresh: {
     originalTop: '0px',
-    originalOverflow: '',
+    originalOverflowY: '',
+    originalOverflowX: '',
     bannerHeight: 0,
     scrollerHeight: 0,
     scrollerWidth: 0,
@@ -138,7 +139,8 @@ __class = declare('argos._PullToRefreshMixin', null, {
       this.pullToRefresh.scrollerHeight = position.h;
       this.pullToRefresh.scrollerWidth = position.w;
       this.pullToRefresh.originalTop = style.top;
-      this.pullToRefresh.originalOverflow = style.overflow;
+      this.pullToRefresh.originalOverflowY = style.overflowY;
+      this.pullToRefresh.originalOverflowX = style.overflowX;
       this.pullToRefresh.dragTop = parseInt(style.top, 10);
       this.pullToRefresh.dragStartY = this.pullToRefresh.lastY = evt.clientY;
       this.pullToRefresh.dragStartX = this.pullToRefresh.lastX = evt.clientX;
@@ -174,7 +176,8 @@ __class = declare('argos._PullToRefreshMixin', null, {
       top = top + distance;
       domStyle.set(scrollerNode, {
         'top': top + 'px',
-        'overflow': 'hidden',
+        'overflow-y': 'hidden',
+        'overflow-x': 'hidden',
       });
 
       if (distance > MAX_DISTANCE) {
@@ -198,7 +201,8 @@ __class = declare('argos._PullToRefreshMixin', null, {
     // Restore our original scroller styles
     domStyle.set(scrollerNode, {
       'top': this.pullToRefresh.originalTop,
-      'overflow': this.pullToRefresh.originalOverflow,
+      'overflow-y': this.pullToRefresh.originalOverflowY,
+      'overflow-x': this.pullToRefresh.originalOverflowX,
     });
 
     domStyle.set(this.pullRefreshBanner, 'visibility', 'hidden');
