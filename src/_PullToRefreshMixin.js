@@ -5,6 +5,7 @@ import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';
 
 let __class;
+const resource = window.localeContext.getEntitySync('pullToRefreshMixin').attributes;
 
 /**
  * @class argos._PullToRefreshMixin
@@ -37,12 +38,12 @@ __class = declare('argos._PullToRefreshMixin', null, {
    * @property {String}
    * Text to indicate a pull to refresh
    */
-  pullRefreshText: 'Pull down to refresh...',
+  pullRefreshText: resource.pullRefreshText,
   /**
    * @property {String}
    * Text to indicate the user should release to cause the refresh
    */
-  pullReleaseText: 'Release to refresh...',
+  pullReleaseText: resource.pullReleaseText,
 
   /**
    * @property {Boolean} enablePullToRefresh If true, will enable the user to drag down and refresh the list. Default is true.

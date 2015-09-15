@@ -21,6 +21,8 @@ import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
 import '../Calendar';
 
+const resource = window.localeContext.getEntitySync('dateField').attributes;
+
 /**
  * @class argos.Fields.DateField
  * The DateField is an extension of the {@link EditorField EditorField} by accepting Date Objects
@@ -49,15 +51,15 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * @cfg {String}
    * The text shown when no value (or null/undefined) is set to the field.
    */
-  emptyText: '',
-  dateFormatText: 'MM/DD/YYYY',
+  emptyText: resource.emptyText,
+  dateFormatText: resource.dateFormatText,
   /**
    * @property {String}
    * The error validation message for this field.
    *
    * `${0}` => Label
    */
-  invalidDateFormatErrorText: "Field '${0}' has Invalid date format.",
+  invalidDateFormatErrorText: resource.invalidDateFormatErrorText,
 
   /**
    * @property {Simplate}

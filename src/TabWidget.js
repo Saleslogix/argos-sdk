@@ -11,6 +11,8 @@ import domStyle from 'dojo/dom-style';
 import query from 'dojo/query';
 import _Templated from 'argos/_Templated';
 
+const resource = window.localeContext.getEntitySync('tabWidget').attributes;
+
 const __class = declare('argos.TabWidget', [_Templated], {
   /**
    * @property {Simplate}
@@ -69,7 +71,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * @cfg {String}
    * More text that is used as the overflow tab for the tab list
    */
-  moreText: 'More',
+  moreText: resource.moreText,
   /**
    * @property {li}
    * Current tab (html element li) that the view is on
