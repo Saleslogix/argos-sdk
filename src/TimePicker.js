@@ -23,7 +23,7 @@ import event from 'dojo/_base/event';
 import connect from 'dojo/_base/connect';
 import domClass from 'dojo/dom-class';
 import _Widget from 'dijit/_Widget';
-import _Templated from 'argos/_Templated';
+import _Templated from './_Templated';
 import Modal from './Modal';
 
 const __class = declare('argos.TimePicker', [_Widget, _Templated], {

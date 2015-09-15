@@ -26,8 +26,8 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import query from 'dojo/query';
 import _Widget from 'dijit/_Widget';
-import _Templated from 'argos/_Templated';
-import Modal from 'argos/Modal';
+import _Templated from './_Templated';
+import Modal from './Modal';
 
 const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   toastTemplate: new Simplate([

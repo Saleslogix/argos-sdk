@@ -24,10 +24,12 @@ import query from 'dojo/query';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domProp from 'dojo/dom-prop';
-import View from 'argos/View';
-import Modal from 'argos/Modal';
+import _ActionMixin from './_ActionMixin';
+import _Widget from 'dijit/_Widget';
+import _Templated from './_Templated';
+import Modal from './Modal';
 
-const __class = declare('argos.Calendar', [View], {
+const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], {
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" class="calendar panel">',
       '{%! $.calendarHeaderTemplate %}',
