@@ -59,14 +59,6 @@
       "isDebug": true,
       "fileIncludes": [
         {
-          "text": "Modal.js",
-          "path": "../src-out/"
-        },
-        {
-          "text": "TimePicker.js",
-          "path": "../src-out/"
-        },
-        {
           "text": "DomHelper.js",
           "path": "../src-out/ReUI/"
         },
@@ -96,6 +88,18 @@
         },
         {
           "text": "_Templated.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Modal.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Toast.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "TimePicker.js",
           "path": "../src-out/"
         },
         {
