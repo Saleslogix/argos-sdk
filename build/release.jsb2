@@ -59,19 +59,11 @@
       "isDebug": true,
       "fileIncludes": [
         {
-          "text": "DateTimePicker.js",
-          "path": "../src-out/"
-        },
-        {
-          "text": "TimePicker.js",
-          "path": "../src-out/"
-        },
-        {
           "text": "Modal.js",
           "path": "../src-out/"
         },
         {
-          "text": "TabWidget.js",
+          "text": "TimePicker.js",
           "path": "../src-out/"
         },
         {
@@ -120,6 +112,10 @@
         },
         {
           "text": "Calendar.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "DateTimePicker.js",
           "path": "../src-out/"
         },
         {

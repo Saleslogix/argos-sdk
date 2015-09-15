@@ -64,7 +64,7 @@ const __class = declare('argos.Calendar', [View], {
   ]),
   calendarTableDayActiveTemplate: new Simplate([
     '<div class="day__active">',
-      '{%= $.count %}',
+      // '{%= $.count %}',
     '</div>',
   ]),
   calendarTableWeekStartTemplate: new Simplate([
@@ -183,7 +183,7 @@ const __class = declare('argos.Calendar', [View], {
     data.date = data.dateMoment.clone().date(data.day).format('YYYY-MM-DD');
     const day = domConstruct.toDom(this.calendarTableDayTemplate.apply(data, this));
     if (this.showSubValues) {
-      this.setSubValue(data.date)
+      this.setSubValue(day, data)
           .setActiveDay(day);
     }
     domConstruct.place(day, data.week);
