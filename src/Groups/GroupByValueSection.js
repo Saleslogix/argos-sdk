@@ -6,9 +6,11 @@ import lang from 'dojo/_base/lang';
 import Utility from '../Utility';
 import _GroupBySection from './_GroupBySection';
 
+const resource = window.localeContext.getEntitySync('groupByValueSection').attributes;
+
 const __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
   name: 'DateTimeSectionFilter',
-  displayNameText: 'Group By Value Section',
+  displayNameText: resource.displayNameText,
   width: 0,
   constructor: function constructor(o) {
     this.groupByProperty = o.groupByProperty;

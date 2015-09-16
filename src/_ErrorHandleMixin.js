@@ -2,6 +2,8 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
 
+const resource = window.localeContext.getEntitySync('errorHandleMixin').attributes;
+
 /**
  * @class argos._ErrorHandleMixin
  * General mixin for handling errors in a chainable fashion.
@@ -13,7 +15,7 @@ const __class = declare('argos._ErrorHandleMixin', null, {
    * Localized error messages. One general error message, and messages by HTTP status code.
    */
   errorText: {
-    general: 'A server error occured.',
+    general: resource.general,
     status: {},
   },
   /**

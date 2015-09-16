@@ -25,6 +25,9 @@
   <!-- moment -->
   <script type="text/javascript" src="libraries/moment/moment-with-locales.js"></script>
 
+  <!-- L20N.js -->
+  <script type="text/javascript" src="libraries/l20n/l20n.js"></script>
+
   <!-- Dojo -->
   <script type="text/javascript" src="libraries/dojo/dojo/dojo.js" data-dojo-config="parseOnLoad:false, async:true"></script>
   <script type="text/javascript">
@@ -53,17 +56,51 @@
 </head>
 <body>
   <script type="text/javascript">
-  <% with (scripts) { %>
-  require([
-  <% specs.forEach(function(spec) { %>
-    '<%= spec.replace("./tests", "tests").replace(".js", "") %>',
-  <% }); %>
-    '<%= boot %>',
-    '<%= reporters[0] %>',
-    '<%= reporters[1] %>'
-  ], function() {
-  });
-  <% }; %>
+  function buildContext() {
+        var filePaths = {
+          './localization/locales/argos': [
+            'strings.l20n',
+            'regional.l20n'
+          ]
+        };
+        var supportedLocales = [
+          'en'
+        ];
+        var ctx = L20n.getContext();
+        var defaultLocale = 'en';
+        var currentLocale = 'en';
+
+        Object.keys(filePaths).forEach(function(path) {
+          var files = filePaths[path];
+          files.forEach(function(file) {
+            ctx.linkResource(function(locale) {
+              return [path, locale, file].join('/');
+            });
+          });
+        });
+        ctx.registerLocales(defaultLocale, supportedLocales);
+        ctx.requestLocales(currentLocale);
+        window.localeContext = ctx;
+        return ctx;
+      }
+
+      <% with (scripts) { %>
+        var ctx = buildContext();
+        ctx.ready(function() {
+          require([
+          <% specs.forEach(function(spec) { %>
+            '<%= spec.replace("./tests", "tests").replace(".js", "") %>',
+          <% }); %>
+          ]);
+        });
+
+        require([
+          '<%= boot %>',
+          '<%= reporters[0] %>',
+          '<%= reporters[1] %>'
+        ]);
+
+      <% }; %>
   </script>
 </body>
 </html>

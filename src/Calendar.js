@@ -29,6 +29,8 @@ import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
 import Modal from './Modal';
 
+const resource = window.localeContext.getEntitySync('calendar').attributes;
+
 const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], {
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" class="calendar panel">',
@@ -88,24 +90,24 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   ]),
 
   // Localization
-  titleText: 'Calendar',
-  amText: 'AM',
-  pmText: 'PM',
+  titleText: resource.titleText,
+  amText: resource.amText,
+  pmText: resource.pmText,
   clearText: 'Clear',
   todayText: 'Today',
   monthsText: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
+    resource.january,
+    resource.february,
+    resource.march,
+    resource.april,
+    resource.may,
+    resource.june,
+    resource.july,
+    resource.august,
+    resource.september,
+    resource.october,
+    resource.november,
+    resource.december,
   ],
   weekDaysShortText: [
       'Su',

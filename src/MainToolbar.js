@@ -20,6 +20,8 @@ import domConstruct from 'dojo/dom-construct';
 import Toolbar from 'argos/Toolbar';
 import 'dojo/NodeList-manipulate';
 
+const resource = window.localeContext.getEntitySync('mainToolbar').attributes;
+
 /**
  * @class argos.MainToolbar
  * MainToolbar is designed to handle the top application bar with markup and logic to set
@@ -77,7 +79,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
   /**
    * Text that is placed into the toolbar titleNode
    */
-  titleText: 'Mobile',
+  titleText: resource.titleText,
 
   /**
    * Calls parent {@link Toolbar#clear clear} and removes all toolbar items from DOM.

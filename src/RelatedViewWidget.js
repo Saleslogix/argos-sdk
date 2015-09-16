@@ -16,16 +16,19 @@ import _CustomizationMixin from './_CustomizationMixin';
 import _ActionMixin from './_ActionMixin';
 import _RelatedViewWidgetBase from 'argos/_RelatedViewWidgetBase';
 
+const resource = window.localeContext.getEntitySync('relatedViewWidget').attributes;
+
 const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], {
   cls: 'related-view-widget',
-  nodataText: 'no records found ...',
-  selectMoreDataText: 'see ${0} more of ${1} ... ',
-  selectMoreDataText2: 'see ${0} more ... ',
-  navToListText: 'see list',
-  loadingText: 'loading ... ',
-  refreshViewText: 'refresh',
-  itemOfCountText: ' ${0} of ${1}',
-  totalCountText: ' (${0})',
+  nodataText: resource.nodataText,
+  selectMoreDataText: resource.selectMoreDataText,
+  selectMoreDataText2: resource.selectMoreDataText2,
+  navToListText: resource.navToListText,
+  loadingText: resource.loadingText,
+  refreshViewText: resource.refreshViewText,
+  itemOfCountText: resource.itemOfCountText,
+  totalCountText: resource.totalCountText,
+  titleText: resource.titleText,
   parentProperty: '$key',
   parentEntry: null,
   relatedProperty: '$key',
@@ -33,7 +36,6 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   itemsNode: null,
   loadingNode: null,
   id: 'related-view',
-  titleText: 'Related View',
   detailViewId: null,
   listViewId: null,
   listViewWhere: null,

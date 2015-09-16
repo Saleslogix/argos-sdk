@@ -21,6 +21,8 @@ import format from '../Format';
 import EditorField from './EditorField';
 import FieldManager from '../FieldManager';
 
+const resource = window.localeContext.getEntitySync('signatureField').attributes;
+
 /**
  * @class argos.Fields.SignatureField
  * The SignatureField uses an HTML5 canvas element to render previews of the signature vector
@@ -46,12 +48,12 @@ const control = declare('argos.Fields.SignatureField', [EditorField], {
    * @property {String}
    * Text used for ARIA label
    */
-  signatureLabelText: 'signature',
+  signatureLabelText: resource.signatureLabelText,
   /**
    * @property {String}
    * Text used within button
    */
-  signatureText: '...',
+  signatureText: resource.signatureText,
 
   /**
    * @property {Number[][]}
