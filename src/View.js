@@ -21,6 +21,8 @@ import _Templated from './_Templated';
 import _ErrorHandleMixin from './_ErrorHandleMixin';
 import Adapter from './Models/Adapter';
 
+const resource = window.localeContext.getEntitySync('view').attributes;
+
 /**
  * @class argos.View
  * View is the root Class for all views and incorporates all the base features,
@@ -66,7 +68,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   /**
    * The titleText string will be applied to the top toolbar during {@link #show show}.
    */
-  titleText: 'Generic View',
+  titleText: resource.titleText,
   /**
    * This views toolbar layout that defines all toolbar items in all toolbars.
    * @property {Object}

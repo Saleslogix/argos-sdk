@@ -26,6 +26,8 @@ import domConstruct from 'dojo/dom-construct';
 import domStyle from 'dojo/dom-style';
 import View from 'argos/View';
 
+const resource = window.localeContext.getEntitySync('calendar').attributes;
+
 function pad(n) {
   return n < 10 ? '0' + n : n;
 }
@@ -36,9 +38,9 @@ function uCase(str) {
 
 const __class = declare('argos.Calendar', [View], {
   // Localization
-  titleText: 'Calendar',
-  amText: 'AM',
-  pmText: 'PM',
+  titleText: resource.titleText,
+  amText: resource.amText,
+  pmText: resource.pmText,
 
   id: 'generic_calendar',
   contentNode: null,
@@ -46,18 +48,18 @@ const __class = declare('argos.Calendar', [View], {
   timeNode: null,
   meridiemNode: null,
   monthsShortText: [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    resource.january,
+    resource.february,
+    resource.march,
+    resource.april,
+    resource.may,
+    resource.june,
+    resource.july,
+    resource.august,
+    resource.september,
+    resource.october,
+    resource.november,
+    resource.december,
   ],
   months: null,
   dateFormat: moment.localeData().longDateFormat('L'),

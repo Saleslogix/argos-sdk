@@ -9,6 +9,10 @@
       "isDebug": true,
       "fileIncludes": [
         {
+          "text": "l20n.js",
+          "path": "../libraries/l20n/"
+        },
+        {
           "text": "Simplate.js",
           "path": "../libraries/"
         },
@@ -77,6 +81,10 @@
         {
            "text": "Adapter.js",
            "path": "../src-out/Models/"
+        },
+        {
+          "text": "CultureInfo.js",
+          "path": "../src-out/"
         },
         {
           "text": "DomHelper.js",
@@ -354,6 +362,11 @@
     }
   ],
   "resources": [
+    {
+      "src": "../localization/locales/argos",
+      "dest": "localization/locales/argos",
+      "filters": ".*(\\.l20n)",
+    },
     {
       "src": "../libraries/font-awesome-4.4.0/fonts",
       "dest": "content/css/themes/fonts",
