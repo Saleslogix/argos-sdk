@@ -156,7 +156,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     if (this.date.selectedDateMoment.date() !== this.date.todayMoment.date()) {
       domClass.add(this.todayButton, 'selected');
     }
-    if (this.date.month !== this.date.selectedDateMoment.month()) {
+    if (this.date.monthNumber !== this.date.selectedDateMoment.month()) {
       this.refreshCalendar(this.date);
     }
 
