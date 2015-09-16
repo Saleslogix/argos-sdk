@@ -157,13 +157,13 @@
   december: "Dec"
   clearText: "Clear"
   todayText: "Today"
-  sundayAbbreviated: 'Su'
-  mondayAbbreviated: 'Mo'
-  tuesdayAbbreviated: 'Tu'
-  wednesdayAbbreviated: 'We'
-  thursdayAbbreviated: 'Th'
-  fridayAbbreviated: 'Fr'
-  saturdayAbbreviated: 'Sa'
+  sundayAbbreviated: "Su"
+  mondayAbbreviated: "Mo"
+  tuesdayAbbreviated: "Tu"
+  wednesdayAbbreviated: "We"
+  thursdayAbbreviated: "Th"
+  fridayAbbreviated: "Fr"
+  saturdayAbbreviated: "Sa"
 >
 
 <errorManager ""
