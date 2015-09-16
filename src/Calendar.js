@@ -233,14 +233,16 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     return this.date;
   },
   goToToday: function goToToday() {
-    domClass.remove(this.todayButton, 'selected');
-    const day = query('.isToday', this.weeksNode)[0];
-    let params = {};
-    if (day) {
-      params = { $source: day, date: day.dataset.date };
+    if (domClass.contains(this.todayButton, 'selected')) {
+      domClass.remove(this.todayButton, 'selected');
+      const day = query('.isToday', this.weeksNode)[0];
+      let params = {};
+      if (day) {
+        params = { $source: day, date: day.dataset.date };
+      }
+      this.changeDay(params)
+          .setDropdownsToday();
     }
-    this.changeDay(params)
-        .setDropdownsToday();
   },
   getDateTime: function getDateTime() {
     const result = this.date.selectedDateMoment;
@@ -430,6 +432,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     this.createMonthModal()
         .createYearModal();
 
+    domClass.add(this.todayButton, 'selected');
     this.goToToday(this.date);
   },
   toggleMonthModal: function toggleMonthModal(params = {}) {
