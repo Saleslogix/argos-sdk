@@ -88,17 +88,19 @@
         var ctx = buildContext();
         ctx.ready(function() {
           require([
-            '<%= boot %>',
-            '<%= reporters[0] %>',
-            '<%= reporters[1] %>'
-          ])
+          <% specs.forEach(function(spec) { %>
+            '<%= spec.replace("./tests", "tests").replace(".js", "") %>',
+          <% }); %>
+          ]);
         });
+
         require([
-        <% specs.forEach(function(spec) { %>
-          '<%= spec.replace("./tests", "tests").replace(".js", "") %>',
-        <% }); %>
+          '<%= boot %>',
+          '<%= reporters[0] %>',
+          '<%= reporters[1] %>'
         ]);
-        <% }; %>
+
+      <% }; %>
   </script>
 </body>
 </html>
