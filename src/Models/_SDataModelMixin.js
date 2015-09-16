@@ -17,50 +17,32 @@ import lang from 'dojo/_base/lang';
 import SDataStore from '../Store/SData';
 import Deferred from 'dojo/Deferred';
 import utility from '../Utility';
+import _CustomizationMixin from '../_CustomizationMixin';
 
 /**
  * @class argos._SDataModeMixin
  * A mixin that provides SData specific methods and properties
  * @alternateClassName _SDataModelMixin
  */
-export default declare('argos.Models._SDataModelMixin', null, {
-  list: null,
-  detail: null,
-  edit: null,
+export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
+  customizationSet: 'models',
   resourceKind: '',
   itemsProperty: '$resources',
   idProperty: '$key',
   labelProperty: '$descriptor',
   entityProperty: '$name',
   versionProperty: '$etag',
-  _initMode: {
-    list: () => {
-      this.list = {
-        querySelect: [],
-        queryInclude: [],
-        resourceProperty: null,
-        resourcePredicate: null,
-        where: null,
-        queryArgs: null,
-        queryOrderBy: null,
-      };
-    },
-    detail: () => {
-      this.detail = {
-        querySelect: [],
-        queryInclude: [],
-        resourceProperty: null,
-        resourcePredicate: null,
-      };
-    },
-    edit: () => {
-      this.edit = {
-        querySelect: [],
-        queryInclude: [],
-        resourceProperty: null,
-        resourcePredicate: null,
-      };
-    },
+  layout: null,
+  createLayout: function createLayout() {
+    return [];
+  },
+  _getLayoutByName: function _getLayoutByName(name = '') {
+    if (!this.layout) {
+      console.warn('No layout defined');// eslint-disable-line
+    }
+
+    const results = this.layout.filter((layoutItem) => layoutItem.name === name);
+    return results[0];
   },
   /**
    * Initializes the model with options that are SData specific.
@@ -68,58 +50,91 @@ export default declare('argos.Models._SDataModelMixin', null, {
    */
   init: function init({resourceKind, querySelect, queryInclude, queryWhere,
     queryArgs, queryOrderBy, resourceProperty, resourcePredicate, viewType}) {
-    const initFn = this._initMode[viewType];
-    if (initFn) {
-      initFn.apply(this, arguments);
-    }
+    this.layout = this.layout || this._createCustomizedLayout(this.createLayout());
 
-    const viewTypeOptions = this[viewType];
+    const layoutItem = this._getLayoutByName(viewType);
     if (resourceKind) {
       this.resourceKind = resourceKind;
     }
 
+    if (!layoutItem) {
+      return;
+    }
+
+    // Attempt to mixin the view's querySelect, queryInclude, queryWhere,
+    // queryArgs, queryOrderBy, resourceProperty, resourcePredicate properties
+    // into the layout. The past method of extending a querySelect for example,
+    // was to modify the protoype of the view's querySelect array.
     if (querySelect) {
-      if (!viewTypeOptions.querySelect) {
-        viewTypeOptions.querySelect = [];
+      /* eslint-disable */
+      console.warn(`A view's querySelect is deprecated. Register a customization
+      to the models layout instead.`);
+      /* eslint-enable */
+      if (!layoutItem.querySelect) {
+        layoutItem.querySelect = [];
       }
 
-      viewTypeOptions.querySelect.concat(querySelect);
+      layoutItem.querySelect.concat(querySelect);
     }
 
     if (queryInclude) {
-      if (!viewTypeOptions.queryInclude) {
-        viewTypeOptions.queryInclude = [];
+      /* eslint-disable */
+      console.warn(`A view's queryInclude is deprecated. Register a customization
+      to the models layout instead.`);
+      /* eslint-enable */
+      if (!layoutItem.queryInclude) {
+        layoutItem.queryInclude = [];
       }
 
-      viewTypeOptions.queryInclude.concat(queryInclude);
+      layoutItem.queryInclude.concat(queryInclude);
     }
 
     if (queryWhere) {
-      viewTypeOptions.queryWhere = queryWhere;
+      /* eslint-disable */
+      console.warn(`A view's queryWhere is deprecated. Register a customization
+      to the models layout instead.`);
+      /* eslint-enable */
+      layoutItem.queryWhere = queryWhere;
     }
 
     if (queryArgs) {
-      viewTypeOptions.queryArgs = lang.mixin({}, viewTypeOptions.queryArgs, queryArgs);
+      /* eslint-disable */
+      console.warn(`A view's queryArgs is deprecated. Register a customization
+      to the models layout instead.`);
+      /* eslint-enable */
+      layoutItem.queryArgs = lang.mixin({}, layoutItem.queryArgs, queryArgs);
     }
 
     if (queryOrderBy) {
+      /* eslint-disable */
+      console.warn(`A view's queryOrderBy is deprecated. Register a customization
+      to the models layout instead.`);
+      /* eslint-enable */
       if (Array.isArray(queryOrderBy)) {
-        if (!viewTypeOptions.queryOrderBy) {
-          viewTypeOptions.queryOrderBy = [];
+        if (!layoutItem.queryOrderBy) {
+          layoutItem.queryOrderBy = [];
         }
 
-        viewTypeOptions.queryOrderBy.concat(queryInclude);
+        layoutItem.queryOrderBy.concat(queryInclude);
       } else {
-        viewTypeOptions.queryOrderBy = queryOrderBy;
+        layoutItem.queryOrderBy = queryOrderBy;
       }
     }
 
     if (resourceProperty) {
-      viewTypeOptions.resourceProperty = resourceProperty;
+      /* eslint-disable */
+      console.warn(`A view's resourceProperty is deprecated. Register a customization
+      to the models layout instead.`);
+      /* eslint-enable */
+      layoutItem.resourceProperty = resourceProperty;
     }
 
     if (resourcePredicate) {
-      viewTypeOptions.resourcePredicate = resourcePredicate;
+      /* eslint-disable */
+      console.warn(`A view's resourcePredicate is deprecated. Register a customization
+      to the models layout instead.`);
+      /* eslint-enable */
+      layoutItem.resourcePredicate = resourcePredicate;
     }
   },
   getOptions: function getOptionsFn(options) {
@@ -149,7 +164,7 @@ export default declare('argos.Models._SDataModelMixin', null, {
   createStore: function createStore(type = 'detail', service) {
     const app = this.get('app');
     const config = this;
-    const typedConfig = this[type];
+    const typedConfig = this._getLayoutByName(type);
 
     return new SDataStore({
       service: service || app.getService(false),
