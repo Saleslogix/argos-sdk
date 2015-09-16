@@ -154,9 +154,9 @@ const control = declare('argos.Fields.DateField', [EditorField], {
   },
   getValuesFromModal: function getValuesFromModal(data = {}) {
     if (this.modal) {
-      data['datetime-calendar'].selectedDateMoment.hours(data['datetime-timePicker'].hours);
-      data['datetime-calendar'].selectedDateMoment.minutes(data['datetime-timePicker'].minutes);
-      this.currentValue = this.validationValue = data['datetime-calendar'].selectedDateMoment.toDate();
+      data.calendar.selectedDateMoment.hours(data.timePicker.hours);
+      data.calendar.selectedDateMoment.minutes(data.timePicker.minutes);
+      this.currentValue = this.validationValue = data.calendar.selectedDateMoment.toDate();
       this.inputNode.value = this.formatValue(this.currentValue);
     }
   },
@@ -182,8 +182,8 @@ const control = declare('argos.Fields.DateField', [EditorField], {
 
     if (!this.modal) {
       const options = this.createNavigationOptions();
-      this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal', isModal: true });
-      this.modal = new Modal({ id: 'date-time-modal' });
+      this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
+      this.modal = new Modal({ id: 'date-time-modal ' + this.id });
       this.modal.placeModal(this.domNode.offsetParent)
                 .setContentObject(this.dateTimePicker)
                 .setContentOptions(options);

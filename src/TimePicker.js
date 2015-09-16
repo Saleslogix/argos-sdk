@@ -80,6 +80,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   _minuteModal: null,
   _selectedHour: null,
   _selectedMinute: null,
+  _widgetName: 'timePicker',
   timeless: false,
   showSetTime: true,
   hourValues: [

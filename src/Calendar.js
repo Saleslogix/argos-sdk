@@ -133,6 +133,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   _yearModal: null,
   _currentYear: null,
   _todayYear: null,
+  _widgetName: 'calendar',
 
   changeDay: function changeDay(params) {
     // TODO: Need to register this event to dojo/connect so that the activity feed and then change based on the date chosen.

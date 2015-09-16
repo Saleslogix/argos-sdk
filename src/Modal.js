@@ -163,10 +163,8 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   },
   confirm: function confirm() {
     const data = {};
-    array.forEach(this._content, function getData(content) {
-      if (content) {
-        data[content.id] = content.getContent();
-      }
+    array.forEach(this._content, (content) => {
+      data[content._widgetName] = content.getContent();
     }, this);
     this._deferred.resolve(data);
     this.hideModal();

@@ -50,8 +50,8 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
   },
   show: function show(options = {}) {
     if (!this._calendarNode && !this._timeSelectNode) {
-      this._calendarNode = new Calendar({ id: 'datetime-calendar', isModal: this.isModal || options.isModal});
-      this._timeSelectNode = new TimePicker({ id: 'datetime-timePicker', showSetTime: false });
+      this._calendarNode = new Calendar({ id: 'datetime-calendar ' + this.id, isModal: this.isModal || options.isModal});
+      this._timeSelectNode = new TimePicker({ id: 'datetime-timePicker ' + this.id, showSetTime: false });
       domConstruct.place(this._calendarNode.domNode, this.dateTimeNode);
       domConstruct.place(this._timeSelectNode.domNode, this.dateTimeNode);
       this._calendarNode.show(options);
