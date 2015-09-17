@@ -273,7 +273,12 @@ const __class = declare('argos._DraggableBase', null, {
   },
   onTouchMove: function onTouchMove(touch = {}) {
     if (this._source) {
-      const touchMovement = touch.changedTouches[0];
+      let touchMovement;
+      if (touch.type === 'mousemove') {
+        touchMovement = touch;
+      } else {
+        touchMovement = touch.changedTouches[0];
+      }
       if (touchMovement) {
         if (!this._isDragging) {
           this._isDragging = true;
@@ -420,6 +425,9 @@ const __class = declare('argos._DraggableBase', null, {
       this._container.addEventListener('touchstart', this.onTouchStart.bind(this), false);
       this._container.addEventListener('touchmove', this.onTouchMove.bind(this), false);
       this._container.addEventListener('touchend', this.onTouchEnd.bind(this), false);
+      this._container.addEventListener('mousedown', this.onTouchStart.bind(this), false);
+      this._container.addEventListener('mousemove', this.onTouchMove.bind(this), false);
+      this._container.addEventListener('mouseup', this.onTouchEnd.bind(this), false);
     }
     return this;
   },

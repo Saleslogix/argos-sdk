@@ -28,14 +28,14 @@ import _DraggableBase from './_DraggableBase';
 const __class = declare('argos.DraggableList', [List, _DraggableBase], {
   rowTemplate: new Simplate([
     '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}" class="list-item-draggable">',
-    '<button data-action="selectEntry" class="list-item-selector button">',
-    '{% if ($$.selectIconClass) { %}',
-    '<span class="{%= $$.selectIconClass %}"></span>',
-    '{% } else if ($$.icon || $$.selectIcon) { %}',
-    '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
-    '{% } %}',
-    '</button>',
-    '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
+      '<button data-action="selectEntry" class="list-item-selector button">',
+        '{% if ($$.selectIconClass) { %}',
+          '<span class="{%= $$.selectIconClass %}"></span>',
+        '{% } else if ($$.icon || $$.selectIcon) { %}',
+          '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
+        '{% } %}',
+      '</button>',
+      '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
     '</li>',
   ]),
   show: function show() {
