@@ -1,0 +1,131 @@
+@import "variables.less";
+@import "mixins.less";
+
+.toast__queue {
+  padding: 0;
+  max-width: 60%;
+  position: fixed;
+  z-index: 8000;
+  overflow: hidden;
+}
+.toast {
+  position: relative;
+  width: auto;
+  visibility: visible;
+  margin: 0 0 6px;
+  overflow: hidden;
+  padding: 10px 32px 10px 12px;
+  background-color: #fff;
+  color: @color-deep-slate;
+  .box-shadow( 0 0 5px rgba(0, 0, 0, 0.2));
+}
+
+.toast--top-right {
+  top: 10px;
+  right: 10px;
+}
+
+.toast--top-left {
+  top: 10px;
+  left: 10px;
+}
+
+.toast--bottom-right {
+  bottom: 10px;
+  right: 10px;
+}
+
+.toast--bottom-left {
+  bottom: 10px;
+  left: 10px;
+}
+
+.toast__title {
+  color: @color-deeper-graphite;
+  display: block;
+  font-weight: bold;
+  margin: 4.5px 0 8px;
+}
+
+.toast__message {
+  display: block;
+  margin-bottom: 5px;
+  padding-right: 5px;
+}
+
+.toast__btn-close {
+  cursor: pointer;
+  position: absolute;
+  right: 6px;
+  top: 11px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background-color: #fff;
+  border: none;
+  color: @color-slate;
+}
+.toast__btn-close:hover,
+.toast__btn-close:active {
+  color: @color-azure;
+}
+
+.toast__icon {
+  position: absolute;
+  right: 6px;
+  bottom: 11px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  text-align: center;
+  background-color: #fff;
+  border: none;
+  color: @color-slate;
+}
+
+.toast__progressBar {
+  height: 3px;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  overflow: hidden;
+  position: absolute;
+  background-color: @color-azure;
+}
+
+// Animation
+
+.effect-scale {
+  -webkit-animation-duration: .25s;
+  animation-duration: .25s;
+  -webkit-animation-name: animScale;
+  animation-name: animScale;
+}
+
+.effect-scale-hide {
+  -webkit-animation-duration: .25s;
+  animation-duration: .25s;
+  -webkit-animation-name: animScaleOut;
+  animation-name: animScaleOut;
+  opacity: 0;
+}
+
+@-webkit-keyframes animScale {
+  0% { opacity: 0; -webkit-transform: translate3d(0, 40px, 0) scale3d(.1, .6, 1); }
+  100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+}
+
+@keyframes animScale {
+  0% { opacity: 0; transform: translate3d(0, 40px, 0) scale3d(.1, .6, 1); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+}
+
+@-webkit-keyframes animScaleOut {
+  0% { opacity: 1; -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+  100% { opacity: 0; -webkit-transform: translate3d(0, 40px, 0) scale3d(.1, .6, 1); }
+}
+
+@keyframes animScaleOut {
+  0% { opacity: 1; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+  100% { opacity: 0; transform: translate3d(0, 40px, 0) scale3d(.1, .6, 1); }
+}

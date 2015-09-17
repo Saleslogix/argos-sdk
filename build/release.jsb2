@@ -99,6 +99,18 @@
           "path": "../src-out/"
         },
         {
+          "text": "Modal.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Toast.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "TimePicker.js",
+          "path": "../src-out/"
+        },
+        {
           "text": "_ErrorHandleMixin.js",
           "path": "../src-out/"
         },
@@ -112,6 +124,10 @@
         },
         {
           "text": "Calendar.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "DateTimePicker.js",
           "path": "../src-out/"
         },
         {

@@ -1,94 +1,208 @@
 @import "variables.less";
 @import "mixins.less";
 
-#datetime-picker {
-    padding-bottom: 2em;
-
-    .time-content-hidden {
-        display: none !important;
-    }
-
-    table {
-        border-collapse: separate;
-        border-spacing: 6px 0px;
-        padding: 2px;
-        margin: 0.5em auto 0;
-        text-align: center;
-    }
-
-    div.calendar-content {
-        padding-bottom: 0;
-    }
-
-    div.date-tt {
-        margin: 0;
-    }
-
-    table caption {
-        padding: 4px;
-    }
-
-    td {
-        padding: 0;
-        margin: 0;
-        border: 0;
-        text-align: center;
-        width: 64px;
-    }
-
-    td > select {
-        font-size: 1.5em;
-        height: 34px;
-        line-height: 34px;
-        border: none;
-        margin: 0;
-        padding: 0;
-        -webkit-appearance: listbox;
-        -moz-appearance: listbox;
-        position: relative; /* Fix android browser issue with -webkit-transform blocking <select> */
-    }
-
-    .datetime-selects td {
-        border: none;
-        border-left: 1px solid #b3b3b3;
-        border-right: 1px solid #b3b3b3;
-    }
-
-    td > button {
-        display: block;
-        font-size: 1.5em;
-        width: 100%;
-        margin: 0;
-        height: 46px;
-        line-height: 44px;
-        .border-radius(0px);
-    }
-
-    .plus > td > button {
-        .border-radius(3px 3px 0px 0px);
-    }
-
-    .minus > td > button {
-        .border-radius(0px 0px 3px 3px);
-    }
-
-    .datetime-tt {
-        border: none !important;
-    }
+.calendar {
+  background-color: #fff;
 }
 
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker {
-    width: 100%;
+.calendar-header {
+  min-height: 60px;
+  border-bottom: 1px solid @color-lighter-slate;
+  line-height: 60px;
+  text-align: center;
+
+  .month {
+    margin-right: 0.5rem;
+  }
+
+  .month,
+  .year {
+    font-size: @font-size-subtitle;
+    color: @color-deep-graphite;
+    top: 15px;
+  }
+
+  .fa {
+    font-size: @icon-size;
+    color: @color-slate;
+    top: 15px;
+    line-height: inherit;
+  }
+  .fa-angle-left {
+    float: left;
+    padding-left: 20px;
+  }
+  .fa-angle-right {
+    float: right;
+    padding-right: 20px;
+  }
+
+  .selected {
+    color: @color-azure;
+  }
+}
+
+.calendar-table {
+  margin: 15px auto 0;
+  border: 0;
+  color: @color-light-graphite;
+  font-size: @font-size-h4;
+  border-collapse: separate;
+  border-spacing: 2px;
+
+  .calendar-weekdays {
+    text-transform: uppercase;
+    color: @color-deep-graphite;
+  }
+
+  .day {
+    position: relative;
+    border: 1px solid transparent;
+    .border-radius(50%);
+    height: 35px;
+    width: 35px;
+    background-color: inherit;
+    transition: 0.2s background-color ease;
+    -webkit-transition: 0.2s background-color ease;
+    -moz-transition: 0.2s background-color ease;
+    -ms-transition: 0.2s background-color ease;
     text-align: center;
+  }
+  .day__active {
+    position: absolute;
+    top: 25px;
+    right: 14.5px;
+    min-width: 0.5em;
+    min-height: 0.5em;
+    line-height: 0.5em;
+    font-size: @font-size-h5;
+    color: @color-black;
+    background-color: @color-amber;
+    .border-radius(50%);
+  }
+
+  .current-month {
+    color: @color-deep-graphite;
+  }
+
+  .weekend {
+    background-color: @color-lighter-graphite;
+  }
+
+  .selected {
+    background-color: @color-azure;
+    color: @toolbar-text-color;
+  }
+
+  .isToday {
+    border-color: @color-deeper-graphite;
+  }
 }
 
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .calendar-content,
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content {
-    vertical-align: top;
+.calendar-footer {
+  min-height: 34px;
+  width: 100%;
+  padding-top: 5px;
+  display: inline-block;
+
+  .button {
+    background-color: transparent;
+    border: none;
+    font-size: @font-size-h3;
+    font-weight: @button-font-weight;
+    text-transform: uppercase;
+    text-align: @button-text-align;
+    text-decoration: @button-text-decoration;
+    height: 34px;
+    line-height: 34px;
+    min-width: 100px;
+    width: auto;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .tertiary {
+    padding: 0 10px;
+    .border-radius(18px);
+    border: 0;
+    box-shadow: none;
+    color: @color-slate;
+  }
+
+  .selected {
+    color: @color-azure;
+  }
+
+  .toToday,
+  .clear {
+    position: relative;
+  }
+
+  .toToday {
+    float: right;
+  }
+
+  .clear {
+    float: left;
+    color: @color-azure;
+  }
+}
+
+.time-parts {
+  text-align: center;
+}
+
+.time-select {
+  padding: 5px 0;
+
+  .toggleStateOn > .thumb {
+    left: 0;
+  }
+
+  .dropdown {
+    color: @color-graphite;
+    width: 75px;
+    line-height: 32px;
+    height: 32px;
     display: inline-block;
-    padding: 0px !important;
-}
+  }
+  .dropdown > span {
+    position: absolute;
+    color: @color-deep-graphite;
+    margin-top: 10px;
+    margin-left: -15px;
+  }
+  .meridiem-field {
+    display: inline-block;
+    height: 32px;
+    line-height: 32px;
+    vertical-align: middle;
+    margin: 0 0 1px 10px;
+    background-color: @color-azure;
+    border-color: @color-azure;
 
-body.landscape > .viewContainer > #generic_calendar > #datetime-picker > .time-content {
-    margin-left: 18px;
+    .thumb {
+      height: 28px;
+      width: 33px;
+      right: 0;
+    }
+    .toggleOn {
+      float: left;
+      padding-left: 5px;
+    }
+    .toggleOff {
+      float: right;
+      padding-right: 5px;
+    }
+    .toggleOn,
+    .toggleOff {
+      color: #fff;
+      text-transform: uppercase;
+      line-height: 28px;
+    }
+  }
+  .tertiary {
+    height: 44px;
+    line-height: 44px;
+  }
 }
