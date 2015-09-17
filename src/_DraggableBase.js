@@ -14,7 +14,6 @@
  */
 import array from 'dojo/_base/array';
 import declare from 'dojo/_base/declare';
-// import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';

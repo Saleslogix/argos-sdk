@@ -20,8 +20,6 @@ const __class = declare('argos._ConfigureBase', [ DraggableList ], {
     '<h3>',
     '<span>{%: $.$descriptor %}</span>',
     '<span class="draggable fa fa-bars"></span>',
-    // '<span data-action="moveUp" class="fa fa-arrow-up"></span>',
-    // '<span data-action="moveDown" class="fa fa-arrow-down"></span>',
     '</h3>',
   ]),
 
