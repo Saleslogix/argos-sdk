@@ -41,6 +41,8 @@ import './Fields/SignatureField';
 import './Fields/TextAreaField';
 import './Fields/TextField';
 
+const resource = window.localeContext.getEntitySync('editBase').attributes;
+
 /**
  * @class argos._EditBase
  * An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
@@ -250,52 +252,52 @@ const __class = declare('argos._EditBase', [View], {
   /**
    * @deprecated
    */
-  saveText: 'Save',
+  saveText: resource.saveText,
   /**
    * @cfg {String}
    * Default title text shown in the top toolbar
    */
-  titleText: 'Edit',
+  titleText: resource.titleText,
   /**
    * @cfg {String}
    * The text placed in the header when there are validation errors
    */
-  validationSummaryText: 'Validation Summary',
+  validationSummaryText: resource.validationSummaryText,
   /**
    * @cfg {String}
    * The text placed in the header when there are validation errors
    */
-  concurrencySummaryText: 'Concurrency Error(s)',
+  concurrencySummaryText: resource.concurrencySummaryText,
   /**
    * @property {String}
    * Default text used in the section header
    */
-  detailsText: 'Details',
+  detailsText: resource.detailsText,
   /**
    * @property {String}
    * Text shown while the view is loading.
    */
-  loadingText: 'loading...',
+  loadingText: resource.loadingText,
   /**
    * @property {Object}
    * Localized error messages. One general error message, and messages by HTTP status code.
    */
   errorText: {
-    general: 'A server error occured while requesting data.',
+    general: resource.errorGeneral,
     status: {
-      '410': 'Error saving. This record no longer exists.',
+      '410': resource.error401,
     },
   },
   /**
    * @property {String}
    * Text alerted to user when the data has been updated since they last fetched the data.
    */
-  concurrencyErrorText: 'Another user has updated this field.',
+  concurrencyErrorText: resource.concurrencyErrorText,
   /**
    * @property {String}
    * ARIA label text for a collapsible section header
    */
-  toggleCollapseText: 'toggle collapse',
+  toggleCollapseText: resource.toggleCollapseText,
   /**
    * @property {String}
    * CSS class for the collapse button when in a expanded state
@@ -633,12 +635,15 @@ const __class = declare('argos._EditBase', [View], {
         return true;
       },
       handle: function handleCatchAll(error, next) {
+        const fromContext = this.options.fromContext;
+        this.options.fromContext = null;
         const errorItem = {
           viewOptions: this.options,
           serverError: error,
         };
 
         ErrorManager.addError(this.getErrorMessage(error), errorItem);
+        this.options.fromContext = fromContext;
         next();
       },
     }];

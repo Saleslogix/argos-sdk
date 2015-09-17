@@ -9,6 +9,10 @@
       "isDebug": true,
       "fileIncludes": [
         {
+          "text": "l20n.js",
+          "path": "../libraries/l20n/"
+        },
+        {
           "text": "Simplate.js",
           "path": "../libraries/"
         },
@@ -58,6 +62,10 @@
       "file": "content/javascript/argos-sdk.js",
       "isDebug": true,
       "fileIncludes": [
+      	{
+          "text": "CultureInfo.js",
+          "path": "../src-out/"
+        },
         {
           "text": "DraggableList.js",
           "path": "../src-out/"
@@ -99,6 +107,18 @@
           "path": "../src-out/"
         },
         {
+          "text": "Modal.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Toast.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "TimePicker.js",
+          "path": "../src-out/"
+        },
+        {
           "text": "_ErrorHandleMixin.js",
           "path": "../src-out/"
         },
@@ -112,6 +132,10 @@
         },
         {
           "text": "Calendar.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "DateTimePicker.js",
           "path": "../src-out/"
         },
         {
@@ -326,6 +350,11 @@
     }
   ],
   "resources": [
+    {
+      "src": "../localization/locales/argos",
+      "dest": "localization/locales/argos",
+      "filters": ".*(\\.l20n)",
+    },
     {
       "src": "../libraries/font-awesome-4.4.0/fonts",
       "dest": "content/css/themes/fonts",

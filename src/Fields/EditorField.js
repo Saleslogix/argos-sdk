@@ -63,26 +63,7 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
   iconClass: 'fa fa-pencil fa-lg',
 
   // Localization
-  /**
-   * @property {String}
-   * The ARIA label text
-   */
-  lookupLabelText: 'edit',
-  /**
-   * @property {String}
-   * Text placed in the lookup button
-   */
-  lookupText: '...',
-  /**
-   * @property {String}
-   * Value placed when the field is cleared or set to null
-   */
-  emptyText: 'empty',
-  /**
-   * @property {String}
-   * Text that may be used in the toolbar item that is passed to the editor view
-   */
-  completeText: 'Ok',
+  localeId: 'editorField',
 
   /**
    * @cfg {String}

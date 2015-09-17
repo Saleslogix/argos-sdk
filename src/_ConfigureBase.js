@@ -5,6 +5,8 @@ import domClass from 'dojo/dom-class';
 import string from 'dojo/string';
 import DraggableList from 'argos/DraggableList';
 
+const resource = window.localeContext.getEntitySync('configureBase').attributes;
+
 /**
  * @class argos._ConfigureBase
  *
@@ -24,7 +26,7 @@ const __class = declare('argos._ConfigureBase', [ DraggableList ], {
   ]),
 
   // Localization
-  titleText: 'Configure',
+  titleText: resource.titleText,
 
   // View Properties
   id: 'configure_base',

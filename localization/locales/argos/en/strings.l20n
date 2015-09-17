@@ -1,0 +1,222 @@
+<dateField ""
+    emptyText: ''
+    dateFormatText: "MM/DD/YYYY"
+    invalidDateFormatErrorText: "Field '${0}' has Invalid date format."
+>
+
+<durationField ""
+  minutes: "minute(s)"
+  hours: "hour(s)"
+  days: "day(s)"
+  weeks: "week(s)"
+  years: "year(s)"
+  invalidDurationErrorText: "Field '${0}' is not a valid duration."
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "edit"
+  lookupText: "..."
+  emptyText: "empty"
+  completeText: "Ok"
+>
+
+<lookupField ""
+  dependentErrorText: "A value for '${0}' must be selected."
+  emptyText: ""
+  completeText: "Select"
+  lookupLabelText: "lookup"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "signature"
+  signatureText: "..."
+>
+
+<dateTimeSection ""
+  displayNameText: "Date Time Section"
+  todayText: "Today"
+  tomorrowText: "Tomorrow"
+  laterThisWeekText: "Later this week"
+  earlierThisWeekText: "Earlier this week"
+  thisLaterMonthText: "Later this month"
+  thisEarlierMonthText: "Earlier this month"
+  thisYearEarlierText: "Earlier this year"
+  thisYearLaterText: "Later this year"
+  yesterdayText: "Yesterday"
+  lastWeekText: "Last week"
+  lastMonthText: "Last month"
+  pastYearText: "Past year(s)"
+  nextYearText: "Next year"
+  nextMonthText: "Next month"
+  nextWeekText: "Next week"
+  futureText: "Future"
+  twoWeeksAgoText: "Two weeks ago"
+  threeWeeksAgoText: "Three weeks ago"
+  twoMonthsAgoText: "Two months ago"
+  threeMonthsAgoText: "Three months ago"
+  unknownText: "Unknown"
+>
+
+<groupByValueSection ""
+  displayNameText: "Group By Value Section"
+>
+
+<configureQuickActions ""
+  titleText: "Configure Quick Actions"
+>
+
+<fileSelect ""
+  titleText: "File Select"
+  addFileText: "Click or Tap here to add a file."
+  uploadText: "Upload"
+  cancelText: "Cancel"
+  selectFileText: "Select file"
+  loadingText: "Uploading..."
+  descriptionText: "description"
+  bytesText: "bytes"
+  notSupportedText: "Adding attachments is not supported by your device."
+>
+
+<signature ""
+  titleText: "Signature"
+  clearCanvasText: "Erase"
+  undoText: "Undo"
+>
+
+<configureBase ""
+  titleText: "Configure"
+>
+
+<detailBase ""
+  informationText: "Information"
+  titleText: "Detail"
+  entityText: "Entity"
+  detailsText: "Details"
+  loadingText: "loading..."
+  notAvailableText: "The requested data is not available."
+  toggleCollapseText: "toggle collapse"
+  editText: "Edit"
+>
+
+<editBase ""
+  concurrencyErrorText: "Another user has updated this field."
+  toggleCollapseText: "toggle collapse"
+  saveText: "Save"
+  titleText: "Edit"
+  validationSummaryText: "Validation Summary"
+  concurrencySummaryText: "Concurrency Error(s)"
+  detailsText: "Details"
+  loadingText: "loading..."
+  errorGeneral: "A server error occured while requesting data."
+  error410:  "Error saving. This record no longer exists."
+>
+
+<errorHandleMixin ""
+  general: 'A server error occured.'
+>
+
+<listBase ""
+  moreText: "Retrieve More Records"
+  emptySelectionText: "None"
+  titleText: "List"
+  configureText: "Configure"
+  errorRenderText: "Error rendering row template."
+  remainingText: "${0} records remaining"
+  cancelText: "Cancel"
+  insertText: "New"
+  noDataText: "no records"
+  loadingText: "loading..."
+>
+
+<pullToRefreshMixin ""
+  pullRefreshText: "Pull down to refresh..."
+  pullReleaseText: "Release to refresh..."
+>
+
+<relatedViewWidgetBase ""
+  loadingText: "loading ... "
+>
+
+<calendar ""
+  titleText: "Calendar"
+  amText: "AM"
+  pmText: "PM"
+  january: "January"
+  february: "February"
+  march: "March"
+  april: "April"
+  may: "May"
+  june: "June"
+  july: "July"
+  august: "August"
+  september: "September"
+  october: "October"
+  november: "November"
+  december: "December"
+  clearText: "Clear"
+  todayText: "Today"
+  sundayAbbreviated: "Su"
+  mondayAbbreviated: "Mo"
+  tuesdayAbbreviated: "Tu"
+  wednesdayAbbreviated: "We"
+  thursdayAbbreviated: "Th"
+  fridayAbbreviated: "Fr"
+  saturdayAbbreviated: "Sa"
+>
+
+<errorManager ""
+  abortedText: "Aborted"
+  scopeSaveText: "Scope is not saved in error report"
+>
+
+<format ""
+  yesText: "Yes"
+  noText: "No"
+  trueText: "T"
+  falseText: "F"
+  hoursText: "hours"
+  hourText: "hour"
+  minutesText: "minutes"
+  minuteText: "minute"
+  shortDateFormatText: "M/D/YYYY"
+  percentFormatText: "${0}${1}"
+  bytesText: "bytes"
+>
+
+<groupedList ""
+ toggleCollapseText: "toggle collapse"
+>
+
+<mainToolbar ""
+  titleText: "Mobile"
+>
+
+<relatedViewWidget ""
+  nodataText: "no records found ..."
+  selectMoreDataText: "see ${0} more of ${1} ... "
+  selectMoreDataText2: "see ${0} more ... "
+  navToListText: "see list"
+  loadingText: "loading ... "
+  refreshViewText: "refresh"
+  itemOfCountText: " ${0} of ${1}"
+  totalCountText: " (${0})"
+  titleText: "Related View"
+>
+
+<searchWidget ""
+ searchText: "Search"
+>
+
+<selectionModel ""
+  requireSelectionText: "A selection is required, you cannot de-select the last item."
+>
+
+<tabWidget ""
+ moreText: "More"
+>
+
+<view ""
+ titleText: "Generic View"
+>

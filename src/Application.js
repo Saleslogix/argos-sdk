@@ -24,8 +24,8 @@ import has from 'dojo/has';
 import domConstruct from 'dojo/dom-construct';
 import all from 'dojo/promise/all';
 import snap from 'snap';
-import 'dojo/sniff';
 import ReUI from './ReUI/main';
+import 'dojo/sniff';
 
 has.add('html5-file-api', function hasFileApi(global) {
   if (has('ie')) {

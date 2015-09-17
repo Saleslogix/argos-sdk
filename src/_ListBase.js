@@ -31,6 +31,8 @@ import SearchWidget from './SearchWidget';
 import ConfigurableSelectionModel from './ConfigurableSelectionModel';
 import _PullToRefreshMixin from './_PullToRefreshMixin';
 
+const resource = window.localeContext.getEntitySync('listBase').attributes;
+
 /**
  * @class argos._ListBase
  * A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
@@ -260,6 +262,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The id for the view, and it's main DOM element.
    */
   id: 'generic_list',
+
   /**
    * @cfg {String}
    * The SData resource kind the view is responsible for.  This will be used as the default resource kind
@@ -335,27 +338,27 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The text displayed in the more button.
    * @type {String}
    */
-  moreText: 'Retrieve More Records',
+  moreText: resource.moreText,
   /**
    * @property {String}
    * The text displayed in the emptySelection button.
    */
-  emptySelectionText: 'None',
+  emptySelectionText: resource.emptySelectionText,
   /**
    * @property {String}
    * The text displayed as the default title.
    */
-  titleText: 'List',
+  titleText: resource.titleText,
   /**
    * @property {String}
    * The text displayed for quick action configure.
    */
-  configureText: 'Configure',
+  configureText: resource.configureText,
   /**
    * @property {String}
    * The error message to display if rendering a row template is not successful.
    */
-  errorRenderText: 'Error rendering row template.',
+  errorRenderText: resource.errorRenderText,
   /**
    * @property {Simplate}
    *
@@ -369,29 +372,29 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {String}
    * The format string for the text displayed for the remaining record count.  This is used in a {@link String#format} call.
    */
-  remainingText: '${0} records remaining',
+  remainingText: resource.remainingText,
   /**
    * @property {String}
    * The text displayed on the cancel button.
    * @deprecated
    */
-  cancelText: 'Cancel',
+  cancelText: resource.cancelText,
   /**
    * @property {String}
    * The text displayed on the insert button.
    * @deprecated
    */
-  insertText: 'New',
+  insertText: resource.insertText,
   /**
    * @property {String}
    * The text displayed when no records are available.
    */
-  noDataText: 'no records',
+  noDataText: resource.noDataText,
   /**
    * @property {String}
    * The text displayed when data is being requested.
    */
-  loadingText: 'loading...',
+  loadingText: resource.loadingText,
   /**
    * @property {String}
    * The customization identifier for this class. When a customization is registered it is passed
@@ -1461,12 +1464,15 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
   },
   _logError: function _logError(error, message) {
+    const fromContext = this.options.fromContext;
+    this.options.fromContext = null;
     const errorItem = {
       viewOptions: this.options,
       serverError: error,
     };
 
     ErrorManager.addError(message || this.getErrorMessage(error), errorItem);
+    this.options.fromContext = fromContext;
   },
   _onQueryError: function _onQueryError(queryOptions, error) {
     this.handleError(error);

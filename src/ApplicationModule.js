@@ -16,8 +16,9 @@ import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import './Application';
 import ConfigureQuickActions from './Views/ConfigureQuickActions';
+import './Application';
+import './CultureInfo';
 
 /**
  * @class argos.ApplicationModule
@@ -72,8 +73,7 @@ const __class = declare('argos.ApplicationModule', null, {
   /**
    * Performs any additional destruction requirements
    */
-  uninitialize: function uninitialize() {
-  },
+  uninitialize: function uninitialize() {},
   /**
    * Saves the passed application instance and calls:
    *
