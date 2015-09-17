@@ -109,7 +109,15 @@ const __class = declare('argos._DraggableBase', null, {
   },
   checkAtTop: function checkAtTop(sourceTop = {}) {
     if (sourceTop <= this._scrollerPos.offset) {
-      return true;
+      if (this._scroller) {
+        if (this._scroller.scrollTop <= 0) {
+          return true;
+        }
+        return false;
+      }
+      if (this._container.scrollTop <= 0) {
+        return true;
+      }
     }
     return false;
   },
