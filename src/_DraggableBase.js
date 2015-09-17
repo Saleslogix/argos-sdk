@@ -369,7 +369,7 @@ const __class = declare('argos._DraggableBase', null, {
   },
   scrollTimer: function scrollTimer() {
     let scrollSpeed = 0;
-    if (this._scrollDirection === 'down' && this._source.offsetTop < this._container.lastChild.offsetTop + this._position.h) {
+    if (this._scrollDirection === 'down' && this._source.offsetTop < this._container.lastChild.offsetTop + this._position.h && this._source !== this._container.lastChild) {
       let x = (this._scrollingTouch.pageY - this._scrollerPos.offset - this._scrollerPos.h * (1 - this.scrollAt)) / (this._scrollerPos.h * this.scrollAt); // (this._scrollerPos.h - this._scrollerPos.h * (1 - this.scrollAt))
       if (x < 0) {
         x = 0;
