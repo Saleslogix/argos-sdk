@@ -236,6 +236,10 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   goToToday: function goToToday() {
     if (domClass.contains(this.todayButton, 'selected')) {
       domClass.remove(this.todayButton, 'selected');
+      if (this.date.selectedDateMoment.month() !== this.date.todayMoment.month() || this.date.selectedDateMoment.year() !== this.date.todayMoment.year()) {
+        this.date.selectedDateMoment = this.date.todayMoment;
+        this.refreshCalendar(this.date);
+      }
       const day = query('.isToday', this.weeksNode)[0];
       let params = {};
       if (day) {
