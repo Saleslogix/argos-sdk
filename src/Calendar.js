@@ -137,28 +137,30 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
 
   changeDay: function changeDay(params) {
     // TODO: Need to register this event to dojo/connect so that the activity feed and then change based on the date chosen.
-    const selected = query('.selected', this.weeksNode)[0];
+    if (params) {
+      const selected = query('.selected', this.weeksNode)[0];
 
-    if (selected) {
-      domClass.remove(selected, 'selected');
-    }
-
-    if (params.$source) {
-      domClass.add(params.$source, 'selected');
-      if (domClass.contains(params.$source, 'isToday')) {
-        domClass.remove(this.todayButton, 'selected');
+      if (selected) {
+        domClass.remove(selected, 'selected');
       }
-    }
 
-    if (params.date) {
-      this.date.selectedDateMoment = moment(params.date, 'YYYY-MM-DD');
-    }
+      if (params.$source) {
+        domClass.add(params.$source, 'selected');
+        if (domClass.contains(params.$source, 'isToday')) {
+          domClass.remove(this.todayButton, 'selected');
+        }
+      }
 
-    if (this.date.selectedDateMoment.date() !== this.date.todayMoment.date()) {
-      domClass.add(this.todayButton, 'selected');
-    }
-    if (this.date.monthNumber !== this.date.selectedDateMoment.month()) {
-      this.refreshCalendar(this.date);
+      if (params.date) {
+        this.date.selectedDateMoment = moment(params.date, 'YYYY-MM-DD');
+      }
+
+      if (this.date.selectedDateMoment.date() !== this.date.todayMoment.date()) {
+        domClass.add(this.todayButton, 'selected');
+      }
+      if (this.date.monthNumber !== this.date.selectedDateMoment.month()) {
+        this.refreshCalendar(this.date);
+      }
     }
 
     return this;
@@ -175,7 +177,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   },
   checkAndRenderDay: function checkAndRenderDay(data = {}) {
     const dayIndexer = data.day + data.startingDay - 1;
-    if (data.day === data.todayMoment.date() && data.todayMoment.month() === data.dateMoment.month()) {
+    if (data.day === data.todayMoment.date() && data.todayMoment.month() === data.dateMoment.month() && data.todayMoment.year() === data.dateMoment.year()) {
       data.isToday = 'isToday';
     } else {
       data.isToday = '';
@@ -319,6 +321,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     for (let day = 1; day <= daysInMonth; day++) {
       if (day === selectedDateMoment.date()) {
         data.selected = 'selected';
+        this.date.dayNode = day;
       } else {
         data.selected = '';
       }
@@ -354,9 +357,10 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
       domConstruct.place(data.week, this.weeksNode);
     }
 
-    this.setDateObject(selectedDateMoment);
+    this.setDateObject(selectedDateMoment)
+        .changeDay(null);
 
-    if (this.date.monthNumber !== moment().month()) {
+    if (this.date.monthNumber !== moment().month() || this.date.year !== moment().year()) {
       domClass.add(this.todayButton, 'selected');
     }
 
