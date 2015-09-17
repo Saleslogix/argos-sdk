@@ -338,11 +338,11 @@ const __class = declare('argos._DraggableBase', null, {
   resetMargins: function resetMargins(element = {}, marginType = {}) {
     if (marginType === 'bottom') {
       domStyle.set(element, {
-        marginBottom: '1px',// element.previousMargin + 'px',
+        marginBottom: element.previousMargin + 'px',
       });
     }else if (marginType === 'top') {
       domStyle.set(element, {
-        marginTop: '1px',// element.previousMargin + 'px',
+        marginTop: element.previousMargin + 'px',
       });
     }
     return this;
