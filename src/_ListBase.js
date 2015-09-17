@@ -1343,13 +1343,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       // Todo: find a better way to transfer this state.
       this.options.count = this.pageSize;
       this.options.start = this.position;
-      queryResults = this._model.getEntries(this.query, this.options);
+      queryResults = this.requestDataUsingModel();
     } else {
       queryOptions = {};
       this._applyStateToQueryOptions(queryOptions);
 
       const queryExpression = this._buildQueryExpression() || null;
-      queryResults = store.query(queryExpression, queryOptions);
+      queryResults = this.requestDataUsingStore(queryExpression, queryOptions);
     }
 
     when(queryResults,
@@ -1358,6 +1358,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     );
 
     return queryResults;
+  },
+  requestDataUsingModel: function requestDataUsingModel() {
+    return this._model.getEntries(this.query, this.options);
+  },
+  requestDataUsingStore: function requestDataUsingStore(queryExpression, queryOptions) {
+    const store = this.get('store');
+    return store.query(queryExpression, queryOptions);
   },
   _onQueryComplete: function _onQueryComplete(queryResults, entries) {
     try {

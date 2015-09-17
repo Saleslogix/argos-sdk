@@ -871,7 +871,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     const store = this.get('store');
 
     if (this._model) {
-      return this._model.getEntry(this.options).then(function fulfilled(data) {
+      return this.requestDataUsingModel().then(function fulfilled(data) {
         this._onGetComplete(data);
       }.bind(this), function rejected(err) {
         this._onGetError(null, err);
@@ -882,7 +882,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       this._applyStateToGetOptions(getOptions);
 
       const getExpression = this._buildGetExpression() || null;
-      const getResults = store.get(getExpression, getOptions);
+      const getResults = this.requestDataUsingStore(getExpression, getOptions);
 
       Deferred.when(getResults,
         this._onGetComplete.bind(this),
@@ -893,6 +893,13 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     }
 
     throw new Error('requestData called without a model or store defined.');
+  },
+  requestDataUsingModel: function requestDataUsingModel() {
+    return this._model.getEntry(this.options);
+  },
+  requestDataUsingStore: function requestDataUsingStore(getExpression, getOptions) {
+    const store = this.get('store');
+    return store.get(getExpression, getOptions);
   },
   _buildGetExpression: function _buildGetExpression() {
     const options = this.options;

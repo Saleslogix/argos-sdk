@@ -741,7 +741,7 @@ const __class = declare('argos._EditBase', [View], {
     const store = this.get('store');
 
     if (this._model) {
-      return this._model.getEntry(this.options).then(function fulfilled(data) {
+      return this.requestDataUsingModel().then(function fulfilled(data) {
         this._onGetComplete(data);
       }.bind(this), function rejected(err) {
         this._onGetError(null, err);
@@ -752,7 +752,7 @@ const __class = declare('argos._EditBase', [View], {
       this._applyStateToGetOptions(getOptions);
 
       const getExpression = this._buildGetExpression() || null;
-      const getResults = store.get(getExpression, getOptions);
+      const getResults = this.requestDataUsingStore(getExpression, getOptions);
 
       Deferred.when(getResults,
         this._onGetComplete.bind(this),
@@ -763,6 +763,13 @@ const __class = declare('argos._EditBase', [View], {
     }
 
     console.warn('Error requesting data, no model or store was defined. Did you mean to mixin _SDataEditMixin to your edit view?'); // eslint-disable-line
+  },
+  requestDataUsingModel: function requestDataUsingModel() {
+    return this._model.getEntry(this.options);
+  },
+  requestDataUsingStore: function requestDataUsingStore(getExpression, getOptions) {
+    const store = this.get('store');
+    return store.get(getExpression, getOptions);
   },
   /**
    * Loops all the fields looking for any with the `default` property set, if set apply that
