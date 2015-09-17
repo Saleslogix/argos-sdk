@@ -106,7 +106,7 @@ const __class = declare('argos._DraggableBase', null, {
     }
     return this;
   },
-  checkAtTop: function checkAtTop(sourceTop = {}) {
+  checkAtTop: function checkAtTop(sourceTop) {
     if (sourceTop <= this._scrollerPos.offset) {
       if (this._scroller) {
         if (this._scroller.scrollTop <= 0) {
@@ -177,7 +177,7 @@ const __class = declare('argos._DraggableBase', null, {
     this._position = this.getPositionOf(this._source);
     return this;
   },
-  computePrevNext: function computePrevNext(sourceTop = {}) {
+  computePrevNext: function computePrevNext(sourceTop) {
     const sourceBot = sourceTop + this._position.h;
     if (this._previousElement) {
       // This is the case where the selected element is the last element of the container

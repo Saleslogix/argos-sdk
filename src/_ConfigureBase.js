@@ -3,7 +3,7 @@ import query from 'dojo/query';
 import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import string from 'dojo/string';
-import DraggableList from 'argos/DraggableList';
+import DraggableList from './DraggableList';
 
 const resource = window.localeContext.getEntitySync('configureBase').attributes;
 
