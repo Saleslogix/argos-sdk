@@ -161,10 +161,10 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
     const passed = options && (options.query || options.where);
     return passed ? query ? '(' + utility.expand(this, passed) + ') and (' + query + ')' : '(' + utility.expand(this, passed) + ')' : query;// eslint-disable-line
   },
-  createStore: function createStore(type = 'detail', service) {
+  createStore: function createStore(layoutName = 'detail', service) {
     const app = this.get('app');
     const config = this;
-    const typedConfig = this._getLayoutByName(type);
+    const typedConfig = this._getLayoutByName(layoutName);
 
     return new SDataStore({
       service: service || app.getService(false),
