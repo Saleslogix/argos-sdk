@@ -162,12 +162,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     return this;
   },
   confirm: function confirm() {
-    const data = {};
-    array.forEach(this._content, (content) => {
-      data[content._widgetName] = content.getContent();
-    }, this);
-    this._deferred.resolve(data);
-    this.hideModal();
+    this.resolveDeferred();
     return this;
   },
   destroy: function destroy() {
@@ -181,6 +176,9 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   },
   getContent: function getContent() {
     return this._contentObject;
+  },
+  getDeferred: function getDeferred() {
+    return this._deferred;
   },
   getSelected: function getSelected() {
     return this._picklistSelected;
@@ -214,6 +212,10 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     this.showBackdrop = false;
     return this;
   },
+  passDeferredToContent: function passDeferredToContent() {
+    this.getContent()._deferred = this._deferred;
+    return this;
+  },
   placeBackdrop: function placeBackdrop(parentPanel = {}) {
     const existingBackdrop = query('.modal-backdrop', parentPanel)[0];
     if (!existingBackdrop) {
@@ -231,6 +233,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       domConstruct.place(this._backdrop, parentPanel);
     } else {
       this._backdrop = existingBackdrop;
+      // this.toggleBackdrop();
     }
     if (this.actionScope && this.closeAction) {
       // If close action is specified use that action, otherwise default to closing the modal
@@ -267,13 +270,27 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     });
     return this;
   },
+  resolveDeferred: function resolveDeferred(receivedData = {}) {
+    const data = receivedData;
+    array.forEach(this._content, (content) => {
+      data[content._widgetName] = content.getContent();
+    }, this);
+    this._deferred.resolve(data);
+    this.hideModal();
+    return this;
+  },
   setContent: function setContent(content = {}) {
-    this._content = content;
+    if (content) {
+      this._content = content;
+    } else {
+      this._content = [this.getContent()];
+    }
     return this;
   },
   setContentObject: function setContentObject(object = {}) {
     this._contentObject = object;
     domConstruct.place(object.domNode, this.modalNode);
+    object._modalNode = this;
     if (this.showToolbar) {
       const modalToolbar = domConstruct.toDom(this.modalToolbarTemplate.apply(this));
       const cancelButton = domConstruct.toDom(this.buttonTemplate.apply({ text: this.cancelText }));
@@ -328,6 +345,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     if (this._parentNode) {
       this._deferred = new Deferred();
       this.showContent()
+          .passDeferredToContent()
           .toggleBackdrop()
           .toggleParentScroll()
           .attachEventListener()
