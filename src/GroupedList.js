@@ -60,10 +60,12 @@ define('argos/GroupedList', [
         widgetTemplate: new Simplate([
             '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
             '<div data-dojo-attach-point="searchNode"></div>',
+            '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">',
             '{%! $.emptySelectionTemplate %}',
             '<div class="group-content" data-dojo-attach-point="contentNode"></div>',
             '{%! $.moreTemplate %}',
             '{%! $.listActionTemplate %}',
+            '</div>',
             '</div>'
         ]),
         /**

@@ -247,6 +247,10 @@ span {
   background-color: #0f1e1e;
   overflow: auto;
 }
+.left-drawer .scroller,
+.right-drawer .scroller {
+  background-color: #0f1e1e;
+}
 .snapjs-left .left-drawer {
   visibility: visible;
   display: block;
@@ -1128,11 +1132,11 @@ body body > .viewContainer {
   background-color: #ffffff;
 }
 /*For the separate Contextual Menu*/
-.contextualContent > .group-content > .list-content {
+.contextualContent > .scroller > .group-content > .list-content {
   margin: 0;
   padding: 0;
 }
-.contextualContent > .group-content > .list-content > li {
+.contextualContent > .scroller > .group-content > .list-content > li {
   background-color: #0f1e1e;
   list-style: none;
   margin: 0;
