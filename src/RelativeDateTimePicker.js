@@ -105,8 +105,8 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
       this.modal = new Modal({ id: 'date-time-modal ' + this.id, disableParentScroll: false });
       this.modal.placeModal(this.domNode.offsetParent)
             .setContentObject(dateTimePicker);
-      this.modal.showModal().then(this.resolveDeferred.bind(this));
     }
+    this.modal.showModal().then(this.resolveDeferred.bind(this));
     // this.destroy();
   },
 });
