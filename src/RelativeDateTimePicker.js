@@ -44,7 +44,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   _deferred: null,
   _selectedTime: null,
   _widgetName: 'relativeDateTimePicker',
-  _modal: null,
+  _dateTimeModal: null,
   isModal: false,
   titleText: resource.titleText,
   pickDateTimeText: resource.pickDateTimeText,
@@ -62,6 +62,9 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
     return this._selectedTime;
   },
   hideChildModals: function hideChildModals() {
+    if (this._dateTimeModal) {
+      this._dateTimeModal.hideModal();
+    }
     return;
   },
   makeItem: function makeItem(tLeft, time, displayAs) {
@@ -100,13 +103,13 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   },
   toDateTimePicker: function toDateTimePicker() {
     this.hideModal();
-    if (!this.modal) {
+    if (!this._dateTimeModal) {
       const dateTimePicker = new DateTimePicker({ isModal: true });
-      this.modal = new Modal({ id: 'date-time-modal ' + this.id, disableParentScroll: false });
-      this.modal.placeModal(this.domNode.offsetParent)
+      this._dateTimeModal = new Modal({ id: 'date-time-modal ' + this.id, disableParentScroll: false });
+      this._dateTimeModal.placeModal(this.domNode.offsetParent)
             .setContentObject(dateTimePicker);
     }
-    this.modal.showModal().then(this.resolveDeferred.bind(this));
+    this._dateTimeModal.showModal().then(this.resolveDeferred.bind(this));
     // this.destroy();
   },
 });

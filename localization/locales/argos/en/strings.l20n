@@ -223,7 +223,7 @@
 
 <relativeDateTimePicker ""
   titleText: "Around..."
-  pickDateTimeText: "Pick Date & Time"
+  pickDateTimeText: "Advanced"
   thisEveningText: "This Evening"
   tomorrowMorningText: "Tomorrow Morning"
   tomorrowAfternoonText: "Tomorrow Evening"
