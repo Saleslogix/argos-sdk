@@ -285,6 +285,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   init: function init() {
     this.inherited(arguments);
   },
+  postRenderCalendar: function postRenderCalendar() {},
   refreshCalendar: function refreshCalendar(date = {}) {
     domConstruct.empty(this.weeksNode);
     this.renderCalendar(date)
@@ -357,12 +358,13 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
       domConstruct.place(data.week, this.weeksNode);
     }
 
-    this.setDateObject(selectedDateMoment)
-        .changeDay(null);
+    this.setDateObject(selectedDateMoment);
 
     if (this.date.monthNumber !== moment().month() || this.date.year !== moment().year()) {
       domClass.add(this.todayButton, 'selected');
     }
+
+    this.postRenderCalendar();
 
     return this;
   },
