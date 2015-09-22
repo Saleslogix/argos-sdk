@@ -131,6 +131,10 @@
           "path": "../src-out/"
         },
         {
+          "text": "RelativeDateTimePicker.js",
+          "path": "../src-out/"
+        },
+        {
           "text": "Convert.js",
           "path": "../src-out/"
         },
