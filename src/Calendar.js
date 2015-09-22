@@ -433,8 +433,8 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
 
     this.titleText = this.options.label ? this.options.label : this.titleText;
     this.showTimePicker = this.options && this.options.showTimePicker;
-    this.date.selectedDateMoment = moment((this.options && this.options.date) || moment());
-    this.date.todayMoment = moment();
+    this.date.selectedDateMoment = moment((this.options && this.options.date) || moment().clone());
+    this.date.todayMoment = moment().clone();
     if (this.isModal || this.options.isModal || this.noClearButton || this.options.noClearButton) {
       this.clearButton.style.display = 'none';
     }
