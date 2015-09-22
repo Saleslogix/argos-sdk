@@ -45,6 +45,8 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   _selectedTime: null,
   _widgetName: 'relativeDateTimePicker',
   _dateTimeModal: null,
+  morningHours: 8,
+  eveningHours: 15,
   isModal: false,
   titleText: resource.titleText,
   pickDateTimeText: resource.pickDateTimeText,
@@ -75,16 +77,16 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   makeListItems: function makeListItems() {
     let tempTime = moment();
     if (tempTime.hours() <= 12) {
-      tempTime = moment().clone().hours(15).minutes(0).seconds(0);
+      tempTime = moment().clone().hours(this.eveningHours).minutes(0).seconds(0);
       this.makeItem(this.thisEveningText, tempTime, 'h:mm A');
     }
-    tempTime = moment().clone().add(1, 'days').hours(8).minutes(0).seconds(0);
+    tempTime = moment().clone().add(1, 'days').hours(this.morningHours).minutes(0).seconds(0);
     this.makeItem(this.tomorrowMorningText, tempTime, 'h:mm A');
-    tempTime = tempTime.clone().add(7, 'hours');
+    tempTime = tempTime.clone().add(this.eveningHours - this.morningHours, 'hours');
     this.makeItem(this.tomorrowAfternoonText, tempTime, 'h:mm A');
-    tempTime = moment().clone().startOf('week').add(7, 'days').hours(8).minutes(0);
+    tempTime = moment().clone().startOf('week').add(7, 'days').hours(this.morningHours).minutes(0);
     this.makeItem(this.nextWeekText, tempTime, 'ddd h:mm A');
-    tempTime = moment().clone().startOf('month').add(1, 'month').hours(8).minutes(0);
+    tempTime = moment().clone().startOf('month').add(1, 'month').hours(this.morningHours).minutes(0);
     this.makeItem(this.nextMonthText, tempTime, 'ddd h:mm A');
     return this;
   },
@@ -110,7 +112,6 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
             .setContentObject(dateTimePicker);
     }
     this._dateTimeModal.showModal().then(this.resolveDeferred.bind(this));
-    // this.destroy();
   },
 });
 

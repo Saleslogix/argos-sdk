@@ -212,10 +212,6 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     this.showBackdrop = false;
     return this;
   },
-  passDeferredToContent: function passDeferredToContent() {
-    this.getContent()._deferred = this._deferred;
-    return this;
-  },
   placeBackdrop: function placeBackdrop(parentPanel = {}) {
     const existingBackdrop = query('.modal-backdrop', parentPanel)[0];
     if (!existingBackdrop) {
@@ -233,7 +229,6 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       domConstruct.place(this._backdrop, parentPanel);
     } else {
       this._backdrop = existingBackdrop;
-      // this.toggleBackdrop();
     }
     if (this.actionScope && this.closeAction) {
       // If close action is specified use that action, otherwise default to closing the modal
@@ -345,7 +340,6 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     if (this._parentNode) {
       this._deferred = new Deferred();
       this.showContent()
-          .passDeferredToContent()
           .toggleBackdrop()
           .toggleParentScroll()
           .attachEventListener()

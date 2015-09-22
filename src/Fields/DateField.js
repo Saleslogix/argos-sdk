@@ -21,7 +21,6 @@ import format from '../Format';
 import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
 import RelativeDateTimePicker from '../RelativeDateTimePicker';
-// import DateTimePicker from '../DateTimePicker';
 import Modal from '../Modal';
 
 const resource = window.localeContext.getEntitySync('dateField').attributes;
@@ -188,7 +187,6 @@ const control = declare('argos.Fields.DateField', [EditorField], {
 
     if (!this.modal) {
       const options = this.createNavigationOptions();
-      // this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
       this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
       this.modal = new Modal({ id: 'date-time-modal ' + this.id, confirmText: this.dateTimePicker.pickDateTimeText, confirm: this.dateTimePicker.toDateTimePicker });
       this.modal.placeModal(this.domNode.offsetParent)
