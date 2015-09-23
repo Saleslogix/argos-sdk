@@ -41,6 +41,7 @@ const __class = declare('argos._DraggableBase', null, {
   includeScroll: false, // This is the dojo includeScroll for dom-geometry
   allowScroll: true, // This tells the draggable object that the container should scroll when the source is brought to the top/bottom
   scrollSpeed: 15, // This is the scroll speed in pixels
+  scrollInterval: 16, // This is the scrolling interval in ms, using 16 you will get approximately 60fps (1000ms/60frames ~ 16.67ms/frame)
   scrollAt: 0.15, // This is a percentage to tell the draggable value to scroll once it reaches +-scrollAt of the container height
   zIndex: null,
 
@@ -125,13 +126,13 @@ const __class = declare('argos._DraggableBase', null, {
       this._scrollingTouch = touch;
       if (!this._isScrolling) {
         this._scrollDirection = 'down';
-        this._isScrolling = setInterval(this.scrollTimer.bind(this), 16);
+        this._isScrolling = setInterval(this.scrollTimer.bind(this), this.scrollInterval);
       }
     } else if (touch.pageY < this._scrollerPos.h * this.scrollAt + this._scrollerPos.offset) {
       this._scrollingTouch = touch;
       if (!this._isScrolling) {
         this._scrollDirection = 'up';
-        this._isScrolling = setInterval(this.scrollTimer.bind(this), 16);
+        this._isScrolling = setInterval(this.scrollTimer.bind(this), this.scrollInterval);
       }
     } else {
       this.clearScrollTimer();
