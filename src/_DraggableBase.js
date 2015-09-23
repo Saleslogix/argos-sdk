@@ -48,10 +48,10 @@ const __class = declare('argos._DraggableBase', null, {
 
   accountForAnimation: function accountForAnimation() {
     if (this._previousElement) {
-      return this._position.h - domStyle.get(this._previousElement, 'marginBottom') + 2;
+      return this._position.h - domStyle.get(this._previousElement, 'marginBottom') + this._source.previousMarginBottom + this._source.previousMarginTop;
     }
     if (this._nextElement) {
-      return this._position.h - domStyle.get(this._nextElement, 'marginTop') + 2;
+      return this._position.h - domStyle.get(this._nextElement, 'marginTop') + this._source.previousMarginBottom + this._source.previousMarginTop;
     }
     return 0;
   },
@@ -273,6 +273,8 @@ const __class = declare('argos._DraggableBase', null, {
       }
     }
     if (this._source) {
+      this._source.previousMarginBottom = domStyle.get(this._source, 'marginBottom');
+      this._source.previousMarginTop = domStyle.get(this._source, 'marginTop');
       this._position = this.getPositionOf(this._source);
       this._previousElement = this._source.previousSibling;
       this._nextElement = this._source.nextSibling;
@@ -397,7 +399,7 @@ const __class = declare('argos._DraggableBase', null, {
     return this;
   },
   setMargins: function setMargins(element = {}, marginType = {}) {
-    let sourceMargins = domStyle.get(this._source, 'marginBottom') + domStyle.get(this._source, 'marginTop');
+    let sourceMargins = this._source.previousMarginBottom + this._source.previousMarginTop;
     if (!(sourceMargins > 0)) {
       sourceMargins = 0;
     }
