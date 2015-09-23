@@ -4,6 +4,7 @@
  */
 import Store from '../Store/PouchDB';
 import Deferred from 'dojo/Deferred';
+import MODEL_TYPES from '../Models/Types';
 
 const store = new Store({
   databaseName: 'crm-offline',
@@ -88,7 +89,31 @@ const __class = {
 
     return store.remove(id);
   },
+  briefCaseEntity: function briefCaseEntity(entityName, entityId, options) {
+    let onlineModel = null;
+    let offlineModel = null;
+    let entityPromise;
+    const def = new Deferred();
 
+    onlineModel = App.ModelManager.getModel(entityName, MODEL_TYPES.SDATA);
+    offlineModel = App.ModelManager.getModel(entityName, MODEL_TYPES.OFFLINE);
+
+    if (onlineModel && offlineModel) {
+      entityPromise = onlineModel.getEntity(entityId, options);
+      entityPromise.then(function(entry) {
+        if (entry) {
+          offlineModel.saveEntry(entry, options).then(function(result) {
+            def.resolve(result);
+          }, function(err) {
+            def.reject(err);
+          });
+        }
+      });
+    } else {
+      def.reject('model not found.');
+    }
+    return def;
+  },
 };
 
 export default __class;

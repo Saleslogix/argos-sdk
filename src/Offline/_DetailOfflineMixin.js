@@ -23,6 +23,31 @@ import OfflineManager from './Manager';
  */
 export default declare('argos.Offline._DetailOfflineMixin', null, {
 
+  createToolLayout: function createToolLayout() {
+    if (this.tools) {
+      return this.tools;
+    }
+    const tools = this.inherited(arguments);
+    if (tools && tools.tbar && this.enableOffline) {
+      tools.tbar.push({
+        id: 'briefCase',
+        cls: 'fa fa-suitcase fa-fw fa-lg',
+        action: 'briefCaseEntity',
+        security: '',
+      });
+    }
+    return tools;
+  },
+  briefCaseEntity: function briefCaseEntity(action, selection) { // eslint-disable-line
+    const options = {includeRelated: true};
+    const entityName = this.modelName;
+    const entityId = this.entry.$key; // thie should be resolved from the model or adapter.
+
+    OfflineManager.briefCaseEntity(entityName, entityId, options).then(function success() {
+    }, function err(error) {
+      console.error(error);// eslint-disable-line
+    });
+  },
   onContentChange: function onContentChange() {
     if (this.enableOffline) {
       this.saveOffline();
