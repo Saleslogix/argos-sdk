@@ -20,7 +20,7 @@ import domClass from 'dojo/dom-class';
 import format from '../Format';
 import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
-import DateTimePicker from '../DateTimePicker';
+import RelativeDateTimePicker from '../RelativeDateTimePicker';
 import Modal from '../Modal';
 
 const resource = window.localeContext.getEntitySync('dateField').attributes;
@@ -154,9 +154,14 @@ const control = declare('argos.Fields.DateField', [EditorField], {
   },
   getValuesFromModal: function getValuesFromModal(data = {}) {
     if (this.modal) {
-      data.calendar.selectedDateMoment.hours(data.timePicker.hours);
-      data.calendar.selectedDateMoment.minutes(data.timePicker.minutes);
-      this.currentValue = this.validationValue = data.calendar.selectedDateMoment.toDate();
+      if (data.relativeDateTimePicker) {
+        this.currentValue = this.validationValue = data.relativeDateTimePicker.toDate();
+      } else {
+        // This is the case where the user went to the specific date time selector
+        data.calendar.selectedDateMoment.hours(data.timePicker.hours);
+        data.calendar.selectedDateMoment.minutes(data.timePicker.minutes);
+        this.currentValue = this.validationValue = data.calendar.selectedDateMoment.toDate();
+      }
       this.inputNode.value = this.formatValue(this.currentValue);
     }
   },
@@ -182,8 +187,8 @@ const control = declare('argos.Fields.DateField', [EditorField], {
 
     if (!this.modal) {
       const options = this.createNavigationOptions();
-      this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
-      this.modal = new Modal({ id: 'date-time-modal ' + this.id });
+      this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
+      this.modal = new Modal({ id: 'date-time-modal ' + this.id, confirmText: this.dateTimePicker.pickDateTimeText, confirm: this.dateTimePicker.toDateTimePicker });
       this.modal.placeModal(this.domNode.offsetParent)
                 .setContentObject(this.dateTimePicker)
                 .setContentOptions(options);

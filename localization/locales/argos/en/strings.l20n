@@ -220,3 +220,13 @@
 <view ""
  titleText: "Generic View"
 >
+
+<relativeDateTimePicker ""
+  titleText: "Around..."
+  pickDateTimeText: "Advanced"
+  thisEveningText: "This Evening"
+  tomorrowMorningText: "Tomorrow Morning"
+  tomorrowAfternoonText: "Tomorrow Evening"
+  nextWeekText: "Next Week"
+  nextMonthText: "Next Month"
+>
