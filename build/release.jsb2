@@ -67,10 +67,6 @@
           "path": "../src-out/"
         },
         {
-          "text": "DraggableList.js",
-          "path": "../src-out/"
-        },
-        {
           "text": "_DraggabeBase.js",
           "path": "../src-out/"
         },
@@ -312,6 +308,10 @@
         },
         {
           "text": "List.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "DraggableList.js",
           "path": "../src-out/"
         },
         {
