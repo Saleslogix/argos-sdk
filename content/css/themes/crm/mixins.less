@@ -1,25 +1,39 @@
 .border-radius (@size) {
-    border-radius: @arguments;
+    border-radius:         @arguments;
     -webkit-border-radius: @arguments;
-    -moz-border-radius: @arguments;
+    -moz-border-radius:    @arguments;
 }
 
 .box-shadow (@box) {
-    box-shadow: @box;
+    box-shadow:         @box;
     -webkit-box-shadow: @box;
-    -moz-box-shadow: @box;
+    -moz-box-shadow:    @box;
 }
 
 .box-sizing (@sizing) {
-    box-sizing: @sizing;
+    box-sizing:         @sizing;
     -webkit-box-sizing: @sizing;
-    -moz-box-sizing: @sizing;
+    -moz-box-sizing:    @sizing;
+}
+
+.transform (@scale) {
+  transform:         @arguments;
+  -webkit-transform: @arguments;
+  -moz-transform:    @arguments;
+  -o-transform:      @arguments;
+}
+
+.transition (@value) {
+  transition:         @arguments;
+  -webkit-transition: @arguments;
+  -moz-transition:    @arguments;
+  -o-transition:      @arguments;
 }
 
 .user-select (@select) {
     -webkit-user-select: @select;
-    -khtml-user-select: @select;
-    -moz-user-select: @select;
-    -ms-user-select: @select;
-    user-select: @select;
+    -khtml-user-select:  @select;
+    -moz-user-select:    @select;
+    -ms-user-select:     @select;
+    user-select:         @select;
 }

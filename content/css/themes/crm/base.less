@@ -1056,6 +1056,9 @@ img {
             }
 
             h3 {
+              vertical-align: middle;
+              line-height: 24px;
+
                 > span {
                     &:first-child {
                         float: left;
@@ -1070,6 +1073,16 @@ img {
                     height: 24px;
                     cursor: pointer;
                     text-align: center;
+                }
+
+                > .draggable {
+                  float: right;
+                  width: 24px;
+                  height: 24px;
+                  line-height: 24px;
+                  cursor: pointer;
+                  text-align: center;
+                  .transform(scale(1.5, 0.75));
                 }
 
                 > .icon {
