@@ -13,11 +13,14 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import SDataStore from '../Store/SData';
 import Deferred from 'dojo/Deferred';
+import all from 'dojo/promise/all';
+import when from 'dojo/when';
+import string from 'dojo/string';
 import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
+import MODEL_TYPES from './Types';
 
 /**
  * @class argos._SDataModeMixin
@@ -26,117 +29,35 @@ import _CustomizationMixin from '../_CustomizationMixin';
  */
 export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
   customizationSet: 'models',
+  entityName: '',
+  modelName: '',
   resourceKind: '',
   itemsProperty: '$resources',
   idProperty: '$key',
   labelProperty: '$descriptor',
   entityProperty: '$name',
   versionProperty: '$etag',
-  layout: null,
-  createLayout: function createLayout() {
-    return [];
-  },
-  _getLayoutByName: function _getLayoutByName(name = '') {
-    if (!this.layout) {
-      console.warn('No layout defined');// eslint-disable-line
+  queryModels: null,
+  relationships: null,
+  ModelType: MODEL_TYPES.SDATA,
+  _getQueryModelByName: function _getQueryModelByName(name) {
+    if (!this.queryModels) {
+      console.warn('No query Models defined');// eslint-disable-line
     }
 
-    const results = this.layout.filter((layoutItem) => layoutItem.name === name);
+    const results = this.queryModels.filter((model) => model.name === name);
     return results[0];
   },
-  /**
-   * Initializes the model with options that are SData specific.
-   * @param options
-   */
-  init: function init({resourceKind, querySelect, queryInclude, queryWhere,
-    queryArgs, queryOrderBy, resourceProperty, resourcePredicate, viewType}) {
-    this.layout = this.layout || this._createCustomizedLayout(this.createLayout());
-
-    const layoutItem = this._getLayoutByName(viewType);
-    if (resourceKind) {
-      this.resourceKind = resourceKind;
-    }
-
-    if (!layoutItem) {
-      return;
-    }
-
-    // Attempt to mixin the view's querySelect, queryInclude, queryWhere,
-    // queryArgs, queryOrderBy, resourceProperty, resourcePredicate properties
-    // into the layout. The past method of extending a querySelect for example,
-    // was to modify the protoype of the view's querySelect array.
-    if (querySelect) {
-      /* eslint-disable */
-      console.warn(`A view's querySelect is deprecated. Register a customization
-      to the models layout instead.`);
-      /* eslint-enable */
-      if (!layoutItem.querySelect) {
-        layoutItem.querySelect = [];
-      }
-
-      layoutItem.querySelect.concat(querySelect);
-    }
-
-    if (queryInclude) {
-      /* eslint-disable */
-      console.warn(`A view's queryInclude is deprecated. Register a customization
-      to the models layout instead.`);
-      /* eslint-enable */
-      if (!layoutItem.queryInclude) {
-        layoutItem.queryInclude = [];
-      }
-
-      layoutItem.queryInclude.concat(queryInclude);
-    }
-
-    if (queryWhere) {
-      /* eslint-disable */
-      console.warn(`A view's queryWhere is deprecated. Register a customization
-      to the models layout instead.`);
-      /* eslint-enable */
-      layoutItem.queryWhere = queryWhere;
-    }
-
-    if (queryArgs) {
-      /* eslint-disable */
-      console.warn(`A view's queryArgs is deprecated. Register a customization
-      to the models layout instead.`);
-      /* eslint-enable */
-      layoutItem.queryArgs = lang.mixin({}, layoutItem.queryArgs, queryArgs);
-    }
-
-    if (queryOrderBy) {
-      /* eslint-disable */
-      console.warn(`A view's queryOrderBy is deprecated. Register a customization
-      to the models layout instead.`);
-      /* eslint-enable */
-      if (Array.isArray(queryOrderBy)) {
-        if (!layoutItem.queryOrderBy) {
-          layoutItem.queryOrderBy = [];
-        }
-
-        layoutItem.queryOrderBy.concat(queryInclude);
-      } else {
-        layoutItem.queryOrderBy = queryOrderBy;
-      }
-    }
-
-    if (resourceProperty) {
-      /* eslint-disable */
-      console.warn(`A view's resourceProperty is deprecated. Register a customization
-      to the models layout instead.`);
-      /* eslint-enable */
-      layoutItem.resourceProperty = resourceProperty;
-    }
-
-    if (resourcePredicate) {
-      /* eslint-disable */
-      console.warn(`A view's resourcePredicate is deprecated. Register a customization
-      to the models layout instead.`);
-      /* eslint-enable */
-      layoutItem.resourcePredicate = resourcePredicate;
-    }
-  },
+    init: function init() {
+      this.queryModels = this.queryModels || this._createCustomizedLayout(this.createQueryModels(), 'queryModel');
+      this.relationships = this.relationships || this._createCustomizedLayout(this.createRelationships(), 'relationships');
+    },
+    createQueryModels: function createQueryModels() {
+      return [];
+    },
+    createRelationships: function createRelationships() {
+      return [];
+    },
   getOptions: function getOptionsFn(options) {
     const getOptions = {};
     if (options) {
@@ -161,10 +82,10 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
     const passed = options && (options.query || options.where);
     return passed ? query ? '(' + utility.expand(this, passed) + ') and (' + query + ')' : '(' + utility.expand(this, passed) + ')' : query;// eslint-disable-line
   },
-  createStore: function createStore(type = 'detail', service) {
+  createStore: function createStore(type, service) {
     const app = this.get('app');
     const config = this;
-    const typedConfig = this._getLayoutByName(type);
+    const typedConfig = this._getQueryModelByName(type);
 
     return new SDataStore({
       service: service || app.getService(false),
@@ -226,5 +147,153 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
 
     def.reject('The entry is null or undefined.');
     return def.promise;
+  },
+
+  getEntity: function getEntity(entityId, options) {
+    let queryResults;
+    let relatedRequests;
+    let queryOptions;
+    const queryModelName = (options && options.queryModelName) ? options.queryModelName : 'detail';
+    const store = this.createStore(queryModelName);
+    const def = new Deferred();
+    const includeRelated = (options && options.includeRelated) ? options.includeRelated : false;
+
+    if (store) {
+      queryOptions = {
+      };
+      relatedRequests = [];
+      queryResults = store.get(entityId, queryOptions);
+      when(queryResults, function(relatedFeed) { // eslint-disable-line
+        const odef = def;
+        const entity = queryResults.results[0];
+        if (includeRelated) {
+          relatedRequests = this.getRelatedRequests(entity);
+        }
+        if (relatedRequests.length > 0) {
+          all(relatedRequests).then(
+              function(relatedResults) {
+                this.applyRelatedResults(entity, relatedResults);
+                odef.resolve(entity);
+              }.bind(this),
+              function(err) {
+                odef.reject(err);
+              }.bind(this));
+        } else {
+          def.resolve(entity);
+        }
+      }.bind(this), function(err) {
+        def.reject(err);
+      }.bind(this));
+
+      return def.promise;
+    }
+  },
+  getEntities: function getEntities(options) {
+    let queryResults;
+    let queryOptions;
+    const queryModelName = (options && options.queryModelName) ? options.queryModelName : 'list';
+    const def = new Deferred();
+    const store = this.createStore(queryModelName);
+    let optionsTemp = options;
+
+    if (!optionsTemp) {
+      optionsTemp = {};
+    }
+
+    if (store) {
+      queryOptions = {
+        count: (optionsTemp.count) ? optionsTemp.count : null,
+        start: (optionsTemp.start) ? optionsTemp.start : null,
+        where: (optionsTemp.where) ? optionsTemp.where : null,
+        sort: (optionsTemp.orderBy) ? optionsTemp.orderBy : null,
+      };
+
+      queryResults = store.query(null, queryOptions);
+
+      when(queryResults, function(entities) {
+        def.resolve(entities);
+      }.bind(this), function(err) {
+        def.reject(err);
+      }.bind(this));
+
+      return def.promise;
+    }
+  },
+  getRelatedRequests: function getRelatedRequests(entity) {
+    const self = this;
+    const requests = [];
+    this.relationships.forEach(function(rel) {
+      let request = null;
+      if (!rel.disabled) {
+        request = self.getRelatedRequest(entity, rel);
+        if (request) {
+          requests.push(request);
+        }
+      }
+    });
+    return requests;
+  },
+  getRelatedRequest: function getRelatedRequest(entity, relationship, options) {
+    let model;
+    let queryOptions;
+    let queryResults;
+    const def = new Deferred();
+    model = App.ModelManager.getModel(relationship.childEntity, MODEL_TYPES.SDATA);
+    if (model) {
+      queryOptions = this.getRelatedQueryOptions(entity, relationship, options);
+      if (queryOptions) {
+        queryResults = model.getEntities(queryOptions);
+        when(queryResults, function(entities) {
+          const results = {
+            entityName: model.entityName,
+            entities: entities,
+          };
+          def.resolve(results);
+        }, function(err) {
+          def.reject(err);
+        });
+        return def.promise;
+      }
+    }
+  },
+  getRelatedQueryOptions: function getRelatedQueryOptions(entity, relationship, options) {
+    let queryOptions;
+    let parentDataPath;
+    let childDataPath;
+    let relatedValue;
+    let where;
+    let optionsTemp = options;
+    if (!optionsTemp) {
+      optionsTemp = {};
+    }
+    queryOptions = {
+      count: (optionsTemp.count) ? optionsTemp.count : null,
+      start: (optionsTemp.start) ? optionsTemp.start : null,
+      where: (optionsTemp.where) ? optionsTemp.where : null,
+      sort: (optionsTemp.orderBy) ? optionsTemp.orderBy : null,
+      queryModelName: (relationship.queryModelName) ? relationship.queryModelName : 'detail',
+    };
+    if (relationship.ParentEntity === this.entityName) {
+      parentDataPath = this.idProperty;
+    } else {
+      parentDataPath = (relationship.parentDataPath) ? relationship.parentDataPath : relationship.parentProperty;
+    }
+    childDataPath = (relationship.childDataPath) ? relationship.childDataPath : relationship.childProperty;
+    relatedValue = utility.getValue(entity, parentDataPath);
+    where = "${0} eq '${1}'";
+    if (!relatedValue) {
+      return null;
+    }
+    queryOptions.where = string.substitute(where, [childDataPath, relatedValue]);
+    return queryOptions;
+  },
+  applyRelatedResults: function applyRelatedResults(entity, relatedResults) {
+    let relatedEntities;
+    const self = this;
+    relatedEntities = [];
+    relatedResults.forEach(function(result) {
+      relatedEntities.push(result);
+    });
+    entity.$relatedEntities = relatedEntities;
   },
 });

@@ -25,6 +25,7 @@ import domConstruct from 'dojo/dom-construct';
 import all from 'dojo/promise/all';
 import snap from 'snap';
 import ReUI from './ReUI/main';
+import ModelManager from './Models/Manager';
 import 'dojo/sniff';
 
 has.add('html5-file-api', function hasFileApi(global) {
@@ -205,6 +206,7 @@ const __class = declare('argos.Application', null, {
    * @property {int}
    */
   maxUploadFileSize: 4000000,
+  ModelManager: null,
   /**
    * All options are mixed into App itself
    * @param {Object} options
@@ -224,7 +226,7 @@ const __class = declare('argos.Application', null, {
 
     this.context = {};
     this.viewShowOptions = [];
-
+    this.ModelManager = ModelManager;
     lang.mixin(this, options);
   },
   /**

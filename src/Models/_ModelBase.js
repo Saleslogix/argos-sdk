@@ -29,12 +29,14 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful], {
   _appSetter: function _appSetter(value) {
     this.app = value;
   },
+  entityName: null,
+  ModelType: null,
   /**
    * Initializes the model with options.
    * @param options
    */
   init: function init() {
-  },
+  },  
   getEntry: function getEntry(options) { // eslint-disable-line
   },
   getEntries: function getEntries(query, options) { // eslint-disable-line
@@ -44,5 +46,7 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful], {
   updateEntry: function updateEntry(entry, options) { // eslint-disable-line
   },
   deleteEntry: function deleteEntry(entry, options) { // eslint-disable-line
+  },
+  saveEntry: function saveEntry(entry, options) { // eslint-disable-line
   },
 });

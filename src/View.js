@@ -141,7 +141,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     const model = this.getModel();
     if (model) {
       this._model = model;
-      this._model.init(this);
+      this._model.init();
     }
   },
   /**
