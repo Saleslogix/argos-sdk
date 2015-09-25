@@ -36,7 +36,7 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful], {
    * @param options
    */
   init: function init() {
-  },  
+  },
   getEntry: function getEntry(options) { // eslint-disable-line
   },
   getEntries: function getEntries(query, options) { // eslint-disable-line

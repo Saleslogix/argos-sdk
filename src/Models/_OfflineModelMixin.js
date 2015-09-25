@@ -15,9 +15,9 @@
 import declare from 'dojo/_base/declare';
 import PouchDB from 'argos/Store/PouchDB';
 import Deferred from 'dojo/Deferred';
-import all from 'dojo/promise/all';
-import when from 'dojo/when';
-import string from 'dojo/string';
+// import all from 'dojo/promise/all';
+// import when from 'dojo/when';
+// import string from 'dojo/string';
 import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
 import MODEL_TYPES from './Types';
@@ -27,6 +27,8 @@ import MODEL_TYPES from './Types';
  * A mixin that provides SData specific methods and properties
  * @alternateClassName _SDataModelMixin
  */
+const databaseName = 'crm-offline';
+const _store = new PouchDB({databaseName: databaseName});
 export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin], {
   customizationSet: 'models',
   entityName: '',
@@ -38,85 +40,110 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
   entityProperty: '$name',
   versionProperty: '$etag',
   store: null,
-  databaseName: 'crm-offline',
-  ModelType: MODEL_TYPES.OFFLINE, 
+
+  ModelType: MODEL_TYPES.OFFLINE,
   getStore: function getStore() {
-    if (this.store) {
-      this.store = new PouchDB({databaseName: this.databaseName});
+    if (!this.store) {
+      this.store = _store;
+      // this.store.put({_id: 'author_info',body: {firstName: 'Bill', lastName: 'Edney'}});
+      // this.store._db.destroy();
+      // this.store = new PouchDB({databaseName: this.databaseName});
     }
     return this.store;
   },
-  getId: function getId(entity) {
+  getAllIds: function getAllIds() {
+    // The results from this query should just get cached/updated/stored
+    // globally when the application goes offline. This will
+    // prevent some timing issues with calling this async on list loads.
+    const store = this.getStore();
+    return store.query(function queryFn(doc, emit) {
+      emit(doc._id);
+    });
+  },
+  getEntityId: function getEntityId(entity) {
     return utility.getValue(entity, this.idProperty);
   },
+  getDocId: function getEntityId(entity) {
+    return this.getEntityId(entity);
+  },
+  getEntity: function getEntity(entityId) {
+     const store = this.getStore();
+     const def = new Deferred();
+     store.get(entityId).then(function querySuccess(results) {
+       def.resolve(results);
+     }, function queryFailed(err) {
+       def.reject(err);
+     });
+     return def;
+  },
   saveEntity: function saveEntity(entity, options) {
+    const def = new Deferred();
+    this.updateEntity(entity, options).then(function updateSuccess(result) {
+      def.resolve(result);
+    }, function updateFailed() {
+      // Fetching the doc/entity failed, so we will insert a new doc instead.
+      const odef = def;
+      this.insertEntity(entity, options).then(function insertSuccess(result) {
+        odef.rsolve(result);
+      }, function insertFailed(err) {
+        odef.reject(err);
+      });
+    }.bind(this));
+    return def.promise;
+  },
+  insertEntity: function insertEntity(entity, options) {
     const store = this.getStore();
     const def = new Deferred();
-    let entityId = this.getId(entity);
-    this.getEntity(entityId).then(function querySuccess(results) {
-      return this.updateEntity(entity, options);
-    }, function queryError() {
-      // Fetching the doc/entity failed, so we will insert a new doc instead.
-      return this.insertEntity(entity, options)
-    });
-
-    if (entity.$relatedEntities) {
-      this.saveRelatedEntities(entity.$relatedEntities);
-      entity.relatedEntities = null;
-    }
-    const doc = this.wrap(entity);
-    this.store.add(doc);
+    const doc = this.wrap(entity, options);
+    store.add(doc).when(function insertSuccess(result) {
+      def.resolve(result);
+    },
+    function insertFailed(err) {
+      def.reject('error inserting entity: ' + err);
+    }.bind(this));
+    return def.promise;
   },
-  insertEntity: function insertEntity() {
-    if (entity.$relatedEntities) {
-      this.saveRelatedEntities(entity.$relatedEntities);
-      entity.relatedEntities = null;
-    }
-    const doc = this.wrap(entity);
-    this.store.add(doc);
-  },
-  updateEntity: function updateEntity() {
-  },
-  saveDetailView: function saveDetailView(view) {
+  updateEntity: function updateEntity(entity, options) {
+    const store = this.getStore();
     const def = new Deferred();
-    if (!view) {
-      def.reject('A detail view must be specified.');
-      return def.promise;
-    }
-
-    const model = view.getModel();
-    const id = view.entry[view.idProperty || '$key'];
+    const entityId = this.getEntityId(entity, options);
+    this.getEntity(entityId).then(function querySuccess(doc) {
+      doc.entity = entity;
+      doc.modifyDate = moment().toDate();
+      doc.description = this.getEntityDescription(entity);
+      store.put(doc).then(function updateSuccess(result) {
+        def.resolve(result);
+      }, function updateFailed(err) {
+        def.reject('error updating entity: ' + err);
+      });
+    }.bind(this), function queryError(err) {
+      def.reject('entity not found to update:' + err);
+    }.bind(this));
+    return def.promise;
+  },
+  createEntity: function createEntity() {
+    const entity = {}; // need to dynamicly create Properties;
+    entity.Id = null;
+    entity.CreateDate = moment().toDate();
+    entity.ModifyDate = moment().toDate();
+    return entity;
+  },
+  wrap: function wrap(entity) {
     let doc;
-
-    // Try to fetch the previously cached doc/entity
-    return store.get(id).then(function querySuccess(results) {
-      // Refresh the offline store with the latest info
-      results.entity = view.entry;
-      results.modifyDate = moment().toDate();
-      results.entityName = model.entityName;
-      results.description = view.getOfflineDescription();
-      results.entityName = model.entityName;
-      results.entityDisplayName = model.entityDisplayName;
-
-      return store.put(results);
-    }, function queryError() {
-      // Fetching the doc/entity failed, so we will insert a new doc instead.
-      doc = {
-        _id: id,
-        type: 'detail',
-        entity: view.entry,
-        createDate: moment().toDate(),
-        modifyDate: moment().toDate(),
-        resourceKind: this.resourceKind,
-        storedBy: view.id,
-        viewId: view.id,
-        iconClass: view.getOfflineIcon(),
-        description: view.getOfflineDescription(),
-        entityName: model.entityName,
-        entityDisplayName: model.entityDisplayName,
-      };
-
-      return store.add(doc);
-    });
+    doc = {
+      _id: this.getDocId(entity),
+      entity: entity,
+      entityId: this.getEntityId(entity),
+      createDate: moment().toDate(),
+      modifyDate: moment().toDate(),
+      resourceKind: this.resourceKind,
+      description: this.getEntityDescription(entity),
+      entityName: this.entityName,
+      entityDisplayName: this.entityDisplayName,
+    };
+    return doc;
+  },
+  getEntityDescription: function getEntityDescription(entity) {
+    return utility.getValue(entity, this.labelProperty);
   },
 });

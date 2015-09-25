@@ -148,7 +148,12 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
     def.reject('The entry is null or undefined.');
     return def.promise;
   },
-
+  getEntityId: function getEntityId(entity) {
+    return utility.getValue(entity, this.idProperty);
+  },
+  getEntityDescription: function getEntityDescription(entity) {
+    return entity[this.labelProperty];
+  },
   getEntity: function getEntity(entityId, options) {
     let queryResults;
     let relatedRequests;
@@ -289,7 +294,6 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
   },
   applyRelatedResults: function applyRelatedResults(entity, relatedResults) {
     let relatedEntities;
-    const self = this;
     relatedEntities = [];
     relatedResults.forEach(function(result) {
       relatedEntities.push(result);
