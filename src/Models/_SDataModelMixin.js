@@ -260,7 +260,7 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
       sort: (optionsTemp.orderBy) ? optionsTemp.orderBy : null,
       queryModelName: (relationship.queryModelName) ? relationship.queryModelName : 'detail',
     };
-    if (relationship.ParentEntity === this.entityName) {
+    if (relationship.parentEntity === this.entityName) {
       parentDataPath = this.idProperty;
     } else {
       parentDataPath = (relationship.parentDataPath) ? relationship.parentDataPath : relationship.parentProperty;
