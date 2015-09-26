@@ -6,7 +6,7 @@ import MODEL_TYPES from '../Types';
 const __class = declare('argos.Models.Offline.RecentlyViewed', [_OfflineModelBase], {
   entityName: 'RecentlyViewed',
   modelName: 'RecentlyViewed',
-  createEntity: function createEntity(view, viewsModel) {
+  createEntry: function createEntity(view, viewsModel) {
     const entity = {}; // need to dynamicly create Properties;
     entity.$key = view.id + '_' + view.entry[view.idProperty || '$key'];
     entity.$descriptor = viewsModel.getEntityDescription(view.entry);

@@ -48,16 +48,16 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
     const results = this.queryModels.filter((model) => model.name === name);
     return results[0];
   },
-    init: function init() {
-      this.queryModels = this.queryModels || this._createCustomizedLayout(this.createQueryModels(), 'queryModel');
-      this.relationships = this.relationships || this._createCustomizedLayout(this.createRelationships(), 'relationships');
-    },
-    createQueryModels: function createQueryModels() {
-      return [];
-    },
-    createRelationships: function createRelationships() {
-      return [];
-    },
+  init: function init() {
+    this.queryModels = this.queryModels || this._createCustomizedLayout(this.createQueryModels(), 'queryModel');
+    this.relationships = this.relationships || this._createCustomizedLayout(this.createRelationships(), 'relationships');
+  },
+  createQueryModels: function createQueryModels() {
+    return [];
+  },
+  createRelationships: function createRelationships() {
+    return [];
+  },
   getOptions: function getOptionsFn(options) {
     const getOptions = {};
     if (options) {
@@ -109,16 +109,16 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
     });
   },
 
-  getEntries: function getEntries(query, options) { // eslint-disable-line
+  xgetEntries: function xgetEntries(query, options) { // eslint-disable-line
     const store = this.createStore('list');
     return store.query(this.buildQueryExpression(query, options), this.getOptions(options));
   },
-  getEntry: function getEntry(options) {
+  xgetEntry: function xgetEntry(options) {
     const store = this.createStore('detail');
     return store.get(this.getId(options), this.getOptions(options));
   },
   insertEntry: function insertEntry(entry, options) {
-    const store = this.createStore();
+    const store = this.createStore('detail');
     return store.add(entry, options);
   },
   updateEntry: function updateEntry(entry, options) {
@@ -154,37 +154,34 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
   getEntityDescription: function getEntityDescription(entity) {
     return entity[this.labelProperty];
   },
-  getEntity: function getEntity(entityId, options) {
+  getEntry: function getEntry(entityId, options) {
     let queryResults;
     let relatedRequests;
-    let queryOptions;
     const queryModelName = (options && options.queryModelName) ? options.queryModelName : 'detail';
     const store = this.createStore(queryModelName);
     const def = new Deferred();
     const includeRelated = (options && options.includeRelated) ? options.includeRelated : false;
-
+    const queryOptions = this.getOptions(options);
     if (store) {
-      queryOptions = {
-      };
       relatedRequests = [];
       queryResults = store.get(entityId, queryOptions);
       when(queryResults, function(relatedFeed) { // eslint-disable-line
         const odef = def;
-        const entity = queryResults.results[0];
+        const entry = queryResults.results[0];
         if (includeRelated) {
-          relatedRequests = this.getRelatedRequests(entity);
+          relatedRequests = this.getRelatedRequests(entry);
         }
         if (relatedRequests.length > 0) {
           all(relatedRequests).then(
               function(relatedResults) {
-                this.applyRelatedResults(entity, relatedResults);
-                odef.resolve(entity);
+                this.applyRelatedResults(entry, relatedResults);
+                odef.resolve(entry);
               }.bind(this),
               function(err) {
                 odef.reject(err);
               }.bind(this));
         } else {
-          def.resolve(entity);
+          def.resolve(entry);
         }
       }.bind(this), function(err) {
         def.reject(err);
@@ -193,44 +190,29 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
       return def.promise;
     }
   },
-  getEntities: function getEntities(options) {
+  getEntries: function getEntries(query, options) {
     let queryResults;
-    let queryOptions;
     const queryModelName = (options && options.queryModelName) ? options.queryModelName : 'list';
     const def = new Deferred();
     const store = this.createStore(queryModelName);
-    let optionsTemp = options;
+    const queryOptions = this.getOptions(options);
+    const queryExpression = this.buildQueryExpression(query, options);
+    queryResults = store.query(queryExpression, queryOptions);
+    when(queryResults, function(entities) {
+      def.resolve(entities);
+    }.bind(this), function(err) {
+      def.reject(err);
+    }.bind(this));
 
-    if (!optionsTemp) {
-      optionsTemp = {};
-    }
-
-    if (store) {
-      queryOptions = {
-        count: (optionsTemp.count) ? optionsTemp.count : null,
-        start: (optionsTemp.start) ? optionsTemp.start : null,
-        where: (optionsTemp.where) ? optionsTemp.where : null,
-        sort: (optionsTemp.orderBy) ? optionsTemp.orderBy : null,
-      };
-
-      queryResults = store.query(null, queryOptions);
-
-      when(queryResults, function(entities) {
-        def.resolve(entities);
-      }.bind(this), function(err) {
-        def.reject(err);
-      }.bind(this));
-
-      return def.promise;
-    }
+    return def.promise;
   },
-  getRelatedRequests: function getRelatedRequests(entity) {
+  getRelatedRequests: function getRelatedRequests(entry) {
     const self = this;
     const requests = [];
     this.relationships.forEach(function(rel) {
       let request = null;
       if (!rel.disabled) {
-        request = self.getRelatedRequest(entity, rel);
+        request = self.getRelatedRequest(entry, rel);
         if (request) {
           requests.push(request);
         }
@@ -238,16 +220,16 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
     });
     return requests;
   },
-  getRelatedRequest: function getRelatedRequest(entity, relationship, options) {
+  getRelatedRequest: function getRelatedRequest(entry, relationship, options) {
     let model;
     let queryOptions;
     let queryResults;
     const def = new Deferred();
     model = App.ModelManager.getModel(relationship.childEntity, MODEL_TYPES.SDATA);
     if (model) {
-      queryOptions = this.getRelatedQueryOptions(entity, relationship, options);
+      queryOptions = this.getRelatedQueryOptions(entry, relationship, options);
       if (queryOptions) {
-        queryResults = model.getEntities(queryOptions);
+        queryResults = model.getEntries(null, queryOptions);
         when(queryResults, function(entities) {
           const results = {
             entityName: model.entityName,
@@ -261,7 +243,7 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
       }
     }
   },
-  getRelatedQueryOptions: function getRelatedQueryOptions(entity, relationship, options) {
+  getRelatedQueryOptions: function getRelatedQueryOptions(entry, relationship, options) {
     let queryOptions;
     let parentDataPath;
     let childDataPath;
@@ -284,7 +266,7 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
       parentDataPath = (relationship.parentDataPath) ? relationship.parentDataPath : relationship.parentProperty;
     }
     childDataPath = (relationship.childDataPath) ? relationship.childDataPath : relationship.childProperty;
-    relatedValue = utility.getValue(entity, parentDataPath);
+    relatedValue = utility.getValue(entry, parentDataPath);
     where = "${0} eq '${1}'";
     if (!relatedValue) {
       return null;
@@ -292,12 +274,12 @@ export default declare('argos.Models._SDataModelMixin', [_CustomizationMixin], {
     queryOptions.where = string.substitute(where, [childDataPath, relatedValue]);
     return queryOptions;
   },
-  applyRelatedResults: function applyRelatedResults(entity, relatedResults) {
+  applyRelatedResults: function applyRelatedResults(entry, relatedResults) {
     let relatedEntities;
     relatedEntities = [];
     relatedResults.forEach(function(result) {
       relatedEntities.push(result);
     });
-    entity.$relatedEntities = relatedEntities;
+    entry.$relatedEntities = relatedEntities;
   },
 });

@@ -20,7 +20,6 @@ import Deferred from 'dojo/Deferred';
 // import string from 'dojo/string';
 import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
-import MODEL_TYPES from './Types';
 
 /**
  * @class argos._SDataModeMixin
@@ -31,17 +30,6 @@ const databaseName = 'crm-offline';
 const _store = new PouchDB({databaseName: databaseName});
 export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin], {
   customizationSet: 'models',
-  entityName: '',
-  modelName: '',
-  resourceKind: '',
-  itemsProperty: '$resources',
-  idProperty: '$key',
-  labelProperty: '$descriptor',
-  entityProperty: '$name',
-  versionProperty: '$etag',
-  store: null,
-
-  ModelType: MODEL_TYPES.OFFLINE,
   getStore: function getStore() {
     if (!this.store) {
       this.store = _store;
@@ -60,42 +48,42 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
       emit(doc._id);
     });
   },
-  getEntityId: function getEntityId(entity) {
-    return utility.getValue(entity, this.idProperty);
+  getEntityId: function getEntityId(entry) {
+    return utility.getValue(entry, this.idProperty);
   },
-  getDocId: function getEntityId(entity) {
-    return this.getEntityId(entity);
+  getDocId: function getEntityId(entry) {
+    return this.getEntityId(entry);
   },
-  getEntity: function getEntity(entityId) {
-     const store = this.getStore();
-     const def = new Deferred();
-     store.get(entityId).then(function querySuccess(results) {
-       def.resolve(results);
-     }, function queryFailed(err) {
-       def.reject(err);
-     });
-     return def;
-  },
-  saveEntity: function saveEntity(entity, options) {
+  getEntry: function getEntry(entityId) {
+    const store = this.getStore();
     const def = new Deferred();
-    this.updateEntity(entity, options).then(function updateSuccess(result) {
+    store.get(entityId).then(function querySuccess(results) {
+      def.resolve(results);
+    }, function queryFailed(err) {
+      def.reject(err);
+    });
+    return def;
+  },
+  saveEntry: function saveEntity(entry, options) {
+    const def = new Deferred();
+    this.updateEntry(entry, options).then(function updateSuccess(result) {
       def.resolve(result);
     }, function updateFailed() {
       // Fetching the doc/entity failed, so we will insert a new doc instead.
       const odef = def;
-      this.insertEntity(entity, options).then(function insertSuccess(result) {
-        odef.rsolve(result);
+      this.insertEntry(entry, options).then(function insertSuccess(result) {
+        odef.resolve(result);
       }, function insertFailed(err) {
         odef.reject(err);
       });
     }.bind(this));
     return def.promise;
   },
-  insertEntity: function insertEntity(entity, options) {
+  insertEntry: function insertEntry(entry, options) {
     const store = this.getStore();
     const def = new Deferred();
-    const doc = this.wrap(entity, options);
-    store.add(doc).when(function insertSuccess(result) {
+    const doc = this.wrap(entry, options);
+    store.add(doc).then(function insertSuccess(result) {
       def.resolve(result);
     },
     function insertFailed(err) {
@@ -103,14 +91,14 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
     }.bind(this));
     return def.promise;
   },
-  updateEntity: function updateEntity(entity, options) {
+  updateEntry: function updateEntity(entry, options) {
     const store = this.getStore();
     const def = new Deferred();
-    const entityId = this.getEntityId(entity, options);
-    this.getEntity(entityId).then(function querySuccess(doc) {
-      doc.entity = entity;
+    const entityId = this.getEntityId(entry, options);
+    this.getEntry(entityId).then(function querySuccess(doc) {
+      doc.entity = entry;
       doc.modifyDate = moment().toDate();
-      doc.description = this.getEntityDescription(entity);
+      doc.description = this.getEntityDescription(entry);
       store.put(doc).then(function updateSuccess(result) {
         def.resolve(result);
       }, function updateFailed(err) {
@@ -121,29 +109,29 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
     }.bind(this));
     return def.promise;
   },
-  createEntity: function createEntity() {
-    const entity = {}; // need to dynamicly create Properties;
-    entity.Id = null;
-    entity.CreateDate = moment().toDate();
-    entity.ModifyDate = moment().toDate();
-    return entity;
+  createEntry: function createEntry() {
+    const entry = {}; // need to dynamicly create Properties;
+    entry.Id = null;
+    entry.CreateDate = moment().toDate();
+    entry.ModifyDate = moment().toDate();
+    return entry;
   },
-  wrap: function wrap(entity) {
+  wrap: function wrap(entry) {
     let doc;
     doc = {
-      _id: this.getDocId(entity),
-      entity: entity,
-      entityId: this.getEntityId(entity),
+      _id: this.getDocId(entry),
+      entity: entry,
+      entityId: this.getEntityId(entry),
       createDate: moment().toDate(),
       modifyDate: moment().toDate(),
       resourceKind: this.resourceKind,
-      description: this.getEntityDescription(entity),
+      description: this.getEntityDescription(entry),
       entityName: this.entityName,
       entityDisplayName: this.entityDisplayName,
     };
     return doc;
   },
-  getEntityDescription: function getEntityDescription(entity) {
-    return utility.getValue(entity, this.labelProperty);
+  getEntityDescription: function getEntityDescription(entry) {
+    return utility.getValue(entry, this.labelProperty);
   },
 });

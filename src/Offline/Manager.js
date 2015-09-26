@@ -20,12 +20,12 @@ const __class = {
     const onlineModel = view.getModel();
     const offlineModel = App.ModelManager.getModel(onlineModel.entityName, MODEL_TYPES.OFFLINE);
     const rvModel = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
-    const rvEntity = rvModel.createEntity(view, onlineModel);
-    rvModel.saveEntity(rvEntity).then(function onSeccess(rvResult) {
+    const rvEntry = rvModel.createEntry(view, onlineModel);
+    rvModel.saveEntry(rvEntry).then(function onSuccess(rvResult) {
       const odef = def;
-      offlineModel.saveEntity(view.entry).then(function onEntrySeccess() {
+      offlineModel.saveEntry(view.entry).then(function onSaveEntitySuccess() {
         odef.resolve(rvResult);
-      }, function onEntryFailure(err) {
+      }, function onSaveEntityFailure(err) {
         odef.reject(err);
       });
     }, function onFailure(err) {
@@ -46,7 +46,7 @@ const __class = {
     }
     const id = view.entry[view.idProperty || '$key'];
     const rvModel = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
-    return rvModel.deleteEntity(id);
+    return rvModel.deleteEntry(id);
   },
   briefCaseEntity: function briefCaseEntity(entityName, entityId, options) {
     let onlineModel = null;
@@ -58,10 +58,10 @@ const __class = {
     offlineModel = App.ModelManager.getModel(entityName, MODEL_TYPES.OFFLINE);
 
     if (onlineModel && offlineModel) {
-      entityPromise = onlineModel.getEntity(entityId, options);
+      entityPromise = onlineModel.getEntry(entityId, options);
       entityPromise.then(function(entity) {
         if (entity) {
-          offlineModel.saveEntity(entity, options).then(function(result) {
+          offlineModel.saveEntry(entity, options).then(function(result) {
             def.resolve(result);
           }, function(err) {
             def.reject(err);

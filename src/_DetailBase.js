@@ -895,7 +895,8 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     throw new Error('requestData called without a model or store defined.');
   },
   requestDataUsingModel: function requestDataUsingModel() {
-    return this._model.getEntry(this.options);
+    const key = this._buildGetExpression();
+    return this._model.getEntry(key, this.options);
   },
   requestDataUsingStore: function requestDataUsingStore(getExpression, getOptions) {
     const store = this.get('store');
