@@ -15,11 +15,12 @@
 import declare from 'dojo/_base/declare';
 import PouchDB from 'argos/Store/PouchDB';
 import Deferred from 'dojo/Deferred';
-// import all from 'dojo/promise/all';
+import all from 'dojo/promise/all';
 // import when from 'dojo/when';
 // import string from 'dojo/string';
 import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
+import MODEL_TYPES from './Types';
 
 /**
  * @class argos._SDataModeMixin
@@ -66,15 +67,24 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
   },
   saveEntry: function saveEntity(entry, options) {
     const def = new Deferred();
-    this.updateEntry(entry, options).then(function updateSuccess(result) {
-      def.resolve(result);
-    }, function updateFailed() {
-      // Fetching the doc/entity failed, so we will insert a new doc instead.
+    this.updateEntry(entry, options).then(function updateSuccess(updateResult) {
       const odef = def;
-      this.insertEntry(entry, options).then(function insertSuccess(result) {
-        odef.resolve(result);
-      }, function insertFailed(err) {
+      this.saveRelatedEntries(entry, options).then( function updateRelatedSuccess() {
+        odef.resolve(updateResult);
+      }.bind(this), function updateRelatedFailed(err) {
         odef.reject(err);
+      });
+    }.bind(this), function updateFailed() {
+      // Fetching the doc/entity failed, so we will insert a new doc instead.
+      this.insertEntry(entry, options).then(function insertSuccess(insertResult) {
+        const odef = def;
+        this.saveRelatedEntries(entry, options).then( function insertRelatedSuccess() {
+          odef.resolve(insertResult);
+        }.bind(this), function insertRelatedFailed(err) {
+          odef.reject(err);
+        });
+      }.bind(this), function insertFailed(err) {
+        def.reject(err);
       });
     }.bind(this));
     return def.promise;
@@ -88,7 +98,7 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
     },
     function insertFailed(err) {
       def.reject('error inserting entity: ' + err);
-    }.bind(this));
+    });
     return def.promise;
   },
   updateEntry: function updateEntity(entry, options) {
@@ -101,9 +111,9 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
       doc.description = this.getEntityDescription(entry);
       store.put(doc).then(function updateSuccess(result) {
         def.resolve(result);
-      }, function updateFailed(err) {
+      }.bind(this), function updateFailed(err) {
         def.reject('error updating entity: ' + err);
-      });
+      }.bind(this));
     }.bind(this), function queryError(err) {
       def.reject('entity not found to update:' + err);
     }.bind(this));
@@ -115,6 +125,32 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
     entry.CreateDate = moment().toDate();
     entry.ModifyDate = moment().toDate();
     return entry;
+  },
+  saveRelatedEntries: function(parentEntry, options) {
+    const entries = (parentEntry && parentEntry.$relatedEntities) ? parentEntry.$relatedEntities : [];
+    const relatedPromises = [];
+    const def = new Deferred();
+    entries.forEach(function(related) {
+      const model = App.ModelManager.getModel(related.entityName, MODEL_TYPES.OFFLINE);
+      if (model && related.entities) {
+        related.entities.forEach(function(relatedEntry) {
+          const promise = model.saveEntry(relatedEntry, options);
+          relatedPromises.push(promise);
+        }.bind(this));
+      }
+    });
+    if (relatedPromises.length > 0) {
+      all(relatedPromises).then(
+          function(relatedResults) {
+            def.resolve(relatedResults);
+          },
+          function(err) {
+            def.reject(err);
+          });
+    } else {
+      def.resolve(parentEntry);
+    }
+    return def.promise;
   },
   wrap: function wrap(entry) {
     let doc;
