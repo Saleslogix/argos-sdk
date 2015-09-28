@@ -16,7 +16,7 @@ import declare from 'dojo/_base/declare';
 import PouchDB from 'argos/Store/PouchDB';
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
-// import when from 'dojo/when';
+import when from 'dojo/when';
 // import string from 'dojo/string';
 import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
@@ -169,5 +169,32 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
   },
   getEntityDescription: function getEntityDescription(entry) {
     return utility.getValue(entry, this.labelProperty);
+  },
+  getEntries: function getEntries(query, options) {
+    const store = this.getStore();
+    const def = new Deferred();
+    const queryExpression = this.buildQueryExpression(query, options);
+    const queryResults = store.query(queryExpression, options);
+    when(queryResults, function(docs) {
+      const entities = this.unWrapEntities(docs);
+      def.resolve(entities);
+    }.bind(this), function(err) {
+      def.reject(err);
+    }.bind(this));
+    return def.promise;
+  },
+  buildQueryExpression: function buildQueryExpression(query, options) {
+    return function queryFn(doc, emit) {
+      if (doc.entityName === this.entityName) {
+        emit(doc.modifyDate, doc);
+      }
+    }.bind(this);
+  },
+  unWrapEntities: function unWrapEntities(docs) {
+    const entities = [];
+    docs.forEach(function(doc) {
+      entities.push(doc.value.entity);
+    });
+    return entities;
   },
 });
