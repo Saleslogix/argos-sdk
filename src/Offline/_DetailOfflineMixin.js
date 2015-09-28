@@ -39,7 +39,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     return tools;
   },
   briefCaseEntity: function briefCaseEntity(action, selection) { // eslint-disable-line
-    const options = {includeRelated: true};
+    const options = {view: this, includeRelated: true};
     const entityName = this.modelName;
     const entityId = this.entry.$key; // thie should be resolved from the model or adapter.
 

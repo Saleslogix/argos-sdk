@@ -22,6 +22,7 @@ import './CultureInfo';
 import './Models/_OfflineModelBase';
 import './Models/_SDataModelBase';
 import './Models/Offline/RecentlyViewed';
+import './Models/Offline/Briefcase';
 
 /**
  * @class argos.ApplicationModule

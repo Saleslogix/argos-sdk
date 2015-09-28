@@ -59,19 +59,29 @@ const __class = {
 
     if (onlineModel && offlineModel) {
       entityPromise = onlineModel.getEntry(entityId, options);
-      entityPromise.then(function(entity) {
-        if (entity) {
-          offlineModel.saveEntry(entity, options).then(function(result) {
-            def.resolve(result);
-          }, function(err) {
+      entityPromise.then(function(entry) {
+        if (entry) {
+          const briefcaseModel = App.ModelManager.getModel('Briefcase', MODEL_TYPES.OFFLINE);
+          const briefcaseEntry = briefcaseModel.createEntry(entry, onlineModel, options);
+          briefcaseModel.saveEntry(briefcaseEntry).then(function bcEntrySuccess(briefcase) {
+            const odef = def;
+            offlineModel.saveEntry(entry, options).then(function bcEntitySuccess(result) {
+              console.log('Briefcased entity:' + briefcaseEntry.entityName + ' entityId;' + briefcaseEntry.entityId);
+              odef.resolve(result);
+            }, function bcEntityFailure(err) {
+              odef.reject(err);
+            }.bind(this));
+          }, function bcEntryFailure(err) {
             def.reject(err);
           });
+        } else {
+          def.reject('entity not found.' );
         }
       });
     } else {
       def.reject('model not found.');
     }
-    return def;
+    return def.promise;
   },
 };
 
