@@ -6,20 +6,19 @@ import MODEL_TYPES from '../Types';
 const __class = declare('argos.Models.Offline.RecentlyViewed', [_OfflineModelBase], {
   entityName: 'RecentlyViewed',
   modelName: 'RecentlyViewed',
-  createEntry: function createEntity(view, viewsModel) {
+  createEntry: function createEntity(viewId, entry, model) {
     const entity = {}; // need to dynamicly create Properties;
-    entity.$key = view.id + '_' + view.entry[view.idProperty || '$key'];
-    entity.$descriptor = viewsModel.getEntityDescription(view.entry);
+    entity.$key = viewId + '_' + model.getEntityId(entry);
+    entity.$descriptor = model.getEntityDescription(entry);
     entity.createDate = moment().toDate();
     entity.modifyDate = moment().toDate();
-    entity.entityId = viewsModel.getEntityId(view.entry);
-    entity.entityName = viewsModel.entityName;
-    entity.description = viewsModel.getEntityDescription(view.entry);
-    entity.entityDisplayName = viewsModel.entityDisplayName;
-    entity.resourceKind = viewsModel.resourceKind;
-    entity.storedBy = view.id;
-    entity.viewId = view.id;
-    entity.iconClass = view.getOfflineIcon();
+    entity.entityId = model.getEntityId(entry);
+    entity.entityName = model.entityName;
+    entity.description = model.getEntityDescription(entry);
+    entity.entityDisplayName = model.entityDisplayName;
+    entity.resourceKind = model.resourceKind;
+    entity.viewId = viewId;
+    entity.iconClass = model.getIconClass(entry);
     return entity;
   },
   xbuildQueryExpression: function xbuildQueryExpression() {

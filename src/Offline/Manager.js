@@ -3,6 +3,7 @@
  *
  */
 import Deferred from 'dojo/Deferred';
+import all from 'dojo/promise/all';
 import MODEL_TYPES from '../Models/Types';
 
 const __class = {
@@ -20,7 +21,7 @@ const __class = {
     const onlineModel = view.getModel();
     const offlineModel = App.ModelManager.getModel(onlineModel.entityName, MODEL_TYPES.OFFLINE);
     const rvModel = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
-    const rvEntry = rvModel.createEntry(view, onlineModel);
+    const rvEntry = rvModel.createEntry(view.id, view.entry, onlineModel);
     rvModel.saveEntry(rvEntry).then(function onSuccess(rvResult) {
       const odef = def;
       offlineModel.saveEntry(view.entry).then(function onSaveEntitySuccess() {
@@ -70,7 +71,7 @@ const __class = {
               odef.resolve(result);
             }, function bcEntityFailure(err) {
               odef.reject(err);
-            }.bind(this));
+            });
           }, function bcEntryFailure(err) {
             def.reject(err);
           });
@@ -80,6 +81,28 @@ const __class = {
       });
     } else {
       def.reject('model not found.');
+    }
+    return def.promise;
+  },
+  briefCaseEntities: function briefCaseEntities(entities) {
+    const def = new Deferred();
+    const briefcaseRequests = [];
+    entities.forEach((entity) => {
+      const entityName = entity.entityName;
+      const entityId = entity.entityId;
+      const requestOptions = entity.options;
+      const requestPromise = this.briefCaseEntity(entityName, entityId, requestOptions);
+      briefcaseRequests.push(requestPromise);
+    });
+
+    if (briefcaseRequests.length > 0) {
+      all(briefcaseRequests).then((results) => {
+        def.resolve(results);
+      }, (err) => {
+        def.reject(err);
+      });
+    } else {
+      def.resolve();
     }
     return def.promise;
   },

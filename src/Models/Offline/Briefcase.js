@@ -6,7 +6,7 @@ import MODEL_TYPES from '../Types';
 const __class = declare('argos.Models.Offline.Briefcase', [_OfflineModelBase], {
   entityName: 'Briefcase',
   modelName: 'Briefcase',
-  createEntry: function createEntity( entry, model, options) {
+  createEntry: function createEntity(entry, model, options) {
     const entity = {}; // need to dynamicly create Properties;
     entity.$key = model.entityName + '_' + model.getEntityId(entry);
     entity.$descriptor = model.getEntityDescription(entry);
@@ -17,8 +17,8 @@ const __class = declare('argos.Models.Offline.Briefcase', [_OfflineModelBase], {
     entity.description = model.getEntityDescription(entry);
     entity.entityDisplayName = model.entityDisplayName;
     entity.resourceKind = model.resourceKind;
-    entity.viewId = (options && options.view) ? options.view.id : '';
-    entity.iconClass = (options && options.view) ? options.view.getOfflineIcon() : '';
+    entity.viewId = (options && options.viewId) ? options.viewId : model.detailViewId;
+    entity.iconClass = (options && options.iconClass) ? options.iconClass : model.getIconClass(entry);
     return entity;
   },
 });

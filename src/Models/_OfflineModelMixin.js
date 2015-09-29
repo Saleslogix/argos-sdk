@@ -199,11 +199,11 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
   unWrapEntities: function unWrapEntities(docs) {
     const entities = [];
     docs.forEach(function(doc) {
-      entities.push(this.unWrapEntity(doc.doc));
+      entities.push(this.unWrapEntity(doc));
     }.bind(this));
     return entities;
   },
   unWrapEntity: function unWrapEntity(doc) {
-      return doc.entity;
+      return doc.doc.entity;
   },
 });

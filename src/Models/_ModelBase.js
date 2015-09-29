@@ -31,6 +31,7 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful], {
   },
   entityName: null,
   ModelType: null,
+  iconClass: null,
   /**
    * Initializes the model with options.
    * @param options
@@ -48,5 +49,8 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful], {
   deleteEntry: function deleteEntry(entry, options) { // eslint-disable-line
   },
   saveEntry: function saveEntry(entry, options) { // eslint-disable-line
+  },
+  getIconClass: function getIconClass() {
+    return this.iconClass;
   },
 });
