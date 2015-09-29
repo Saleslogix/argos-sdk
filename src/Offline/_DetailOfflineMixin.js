@@ -43,7 +43,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     const entityId = this.entry.$key; // thie should be resolved from the model or adapter.
     const options = {
       includeRelated: true,
-      viewId: this.viewId,
+      viewId: this.id,
     };
     OfflineManager.briefCaseEntity(entityName, entityId, options).then(function success() {
     }, function err(error) {

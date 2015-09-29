@@ -49,6 +49,41 @@ const __class = {
     const rvModel = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
     return rvModel.deleteEntry(id);
   },
+  removeBriefcase: function removeBriefcase(briefcaseId) {
+    const def = new Deferred();
+    if (!briefcaseId) {
+      def.reject('A briefcase id view must be specified.');
+      return def.promise;
+    }
+    const bcModel = App.ModelManager.getModel('Briefcase', MODEL_TYPES.OFFLINE);
+    bcModel.getEntry(briefcaseId).then((briefcase) => {
+      if (briefcase) {
+        const entityName = briefcase.entity.entityName;
+        const entityId = briefcase.entity.entityId;
+        const odef = def;
+        bcModel.deleteEntry(briefcaseId).then(() => {
+          const entityModel = App.ModelManager.getModel(entityName, MODEL_TYPES.OFFLINE);
+          const oodef = odef;
+          if (entityModel) {
+            entityModel.deleteEntry(entityId).then((result) => {
+              oodef.resolve(result);
+            }, (err) => {
+              oodef.reject(err);
+            });
+          } else {
+            odef.reject('Entity model not found:' + entityName);
+          }
+        }, (err) => {
+          def.reject(err);
+        });
+      } else {
+        def.reject('briefcase not found');
+      }
+    }, (err) => {
+      def.reject(err);
+    });
+    return def.promise;
+  },
   briefCaseEntity: function briefCaseEntity(entityName, entityId, options) {
     let onlineModel = null;
     let offlineModel = null;
@@ -60,11 +95,11 @@ const __class = {
 
     if (onlineModel && offlineModel) {
       entityPromise = onlineModel.getEntry(entityId, options);
-      entityPromise.then(function(entry) {
+      entityPromise.then((entry) => {
         if (entry) {
           const briefcaseModel = App.ModelManager.getModel('Briefcase', MODEL_TYPES.OFFLINE);
           const briefcaseEntry = briefcaseModel.createEntry(entry, onlineModel, options);
-          briefcaseModel.saveEntry(briefcaseEntry).then(function bcEntrySuccess(briefcase) {
+          briefcaseModel.saveEntry(briefcaseEntry).then(function bcEntrySuccess() {
             const odef = def;
             offlineModel.saveEntry(entry, options).then(function bcEntitySuccess(result) {
               console.log('Briefcased entity:' + briefcaseEntry.entityName + ' entityId;' + briefcaseEntry.entityId);

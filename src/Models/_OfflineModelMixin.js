@@ -127,6 +127,21 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
     entry.ModifyDate = moment().toDate();
     return entry;
   },
+  deleteEntry: function deleteEntry(entityId) {
+    const def = new Deferred();
+    const store = this.getStore();
+    store.get(entityId).then((doc) => {
+      const odef = def;
+      store.remove(doc._id, doc._rev).then((result) => {
+        odef.resolve(result);
+      }, (err) => {
+        odef.reject(err);
+      });
+    }, (err) => {
+      def.reject(err);
+    });
+    return def.promise;
+  },
   saveRelatedEntries: function(parentEntry, options) {
     const entries = (parentEntry && parentEntry.$relatedEntities) ? parentEntry.$relatedEntities : [];
     const relatedPromises = [];
@@ -177,7 +192,7 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
     const queryOptions = {
       include_docs: true,
       descending: true,
-      };
+    };
     lang.mixin(queryOptions, options);
     const queryExpression = this.buildQueryExpression(query, queryOptions);
     const queryResults = store.query(queryExpression, queryOptions);
@@ -204,6 +219,6 @@ export default declare('argos.Models._OfflineModelMixin', [_CustomizationMixin],
     return entities;
   },
   unWrapEntity: function unWrapEntity(doc) {
-      return doc.doc.entity;
+    return doc.doc.entity;
   },
 });
