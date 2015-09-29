@@ -26,6 +26,7 @@ import all from 'dojo/promise/all';
 import snap from 'snap';
 import ReUI from './ReUI/main';
 import ready from 'dojo/ready';
+import util from './Utility';
 import 'dojo/sniff';
 
 has.add('html5-file-api', function hasFileApi(global) {
@@ -206,6 +207,16 @@ const __class = declare('argos.Application', null, {
    * @property {int}
    */
   maxUploadFileSize: 4000000,
+
+  /*
+   * Timeout for the connection check.
+   */
+  PING_TIMEOUT: 1000,
+
+  /*
+   * Static resource to request on the ping. Should be a small file.
+   */
+  PING_RESOURCE: 'content/images/blank.gif',
   /**
    * All options are mixed into App itself
    * @param {Object} options
@@ -310,19 +321,19 @@ const __class = declare('argos.Application', null, {
       window.addEventListener('offline', this.onOffline.bind(this));
     });
 
-    this.ping().then((results) => {
-      this.onLine = results;
-    });
+    this.ping().then((results) => this._updateConnectionState(results));
   },
 
-  PING_TIMEOUT: 1000,
-  PING_RESOURCE: 'content/images/blank.gif',
   /**
    * Returns a promise. The results are true of the resource came back
    * before the PING_TIMEOUT. The promise is rejected if there is timeout or
    * the response is not a 200 or 304.
    */
   ping: function ping() {
+    return util.debounce(this._ping, this.PING_TIMEOUT)();
+  },
+
+  _ping: function _ping() {
     return new Promise((resolve) => {
       const xhr = new XMLHttpRequest();
       xhr.timeout = this.PING_TIMEOUT;
