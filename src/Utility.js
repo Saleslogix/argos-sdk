@@ -79,6 +79,17 @@ __class = lang.setObject('argos.Utility', {
       return cache[key];
     };
   },
+  debounce: function debounce(fn, wait) {
+    let handle = null;
+    return function debounced() {
+      window.clearTimeout(handle);
+      const context = this;
+      const args = arguments;
+      handle = window.setTimeout(() => {
+        fn.apply(context, args);
+      }, wait);
+    };
+  },
   getValue: function getValue(o, name, defaultValue) {
     const path = nameToPath(name).slice(0);
     let current = o;
