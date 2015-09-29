@@ -247,8 +247,8 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
       if (day) {
         params = { $source: day, date: day.dataset.date };
       }
-      this.changeDay(params)
-          .setDropdownsToday();
+      this.changeDay(params);
+      this.setDropdownsToday();
     }
   },
   getDateTime: function getDateTime() {
