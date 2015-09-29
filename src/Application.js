@@ -25,6 +25,7 @@ import domConstruct from 'dojo/dom-construct';
 import all from 'dojo/promise/all';
 import snap from 'snap';
 import ReUI from './ReUI/main';
+import ready from 'dojo/ready';
 import 'dojo/sniff';
 
 has.add('html5-file-api', function hasFileApi(global) {
@@ -286,12 +287,14 @@ const __class = declare('argos.Application', null, {
     }
   },
   onOffline: function onOffline() {
-    this.onLine = false;
-    this.onConnectionChange(this.onLine);
+    this.ping().then((results) => this._updateConnectionState(results));
   },
   onOnline: function onOnline() {
-    this.onLine = true;
-    this.onConnectionChange(this.onLine);
+    this.ping().then((results) => this._updateConnectionState(results));
+  },
+  _updateConnectionState: function _updateConnectionState(online) {
+    this.onLine = online;
+    this.onConnectionChange(online);
   },
   onConnectionChange: function onConnectionChange(/*online*/) {},
   /**
@@ -302,12 +305,44 @@ const __class = declare('argos.Application', null, {
     this._connects.push(connect.connect(win.body(), 'beforetransition', this, this._onBeforeTransition));
     this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
     this._connects.push(connect.connect(win.body(), 'show', this, this._onActivate));
-    window.addEventListener('load', () => {
+    ready(() => {
       window.addEventListener('online', this.onOnline.bind(this));
       window.addEventListener('offline', this.onOffline.bind(this));
     });
 
-    this.onLine = navigator.onLine;
+    this.ping().then((results) => {
+      this.onLine = results;
+    });
+  },
+
+  PING_TIMEOUT: 1000,
+  PING_RESOURCE: 'content/images/blank.gif',
+  /**
+   * Returns a promise. The results are true of the resource came back
+   * before the PING_TIMEOUT. The promise is rejected if there is timeout or
+   * the response is not a 200 or 304.
+   */
+  ping: function ping() {
+    return new Promise((resolve) => {
+      const xhr = new XMLHttpRequest();
+      xhr.timeout = this.PING_TIMEOUT;
+      xhr.ontimeout = () => resolve(false);
+      xhr.onload = () => {
+        const DONE = 4;
+        const HTTP_OK = 200;
+        const HTTP_NOT_MODIFIED = 304;
+
+        if (xhr.readyState === DONE) {
+          if (xhr.status === HTTP_OK || xhr.status === HTTP_NOT_MODIFIED) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      xhr.open('GET', this.PING_RESOURCE);
+      xhr.send();
+    });
   },
 
   /**
