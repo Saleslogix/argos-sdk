@@ -236,6 +236,13 @@ const __class = declare('argos.Application', null, {
 
     this.context = {};
     this.viewShowOptions = [];
+    this.ping = util.debounce((action) => {
+      this._ping().then((results) => {
+        if (typeof action === 'function') {
+          action(results);
+        }
+      });
+    }, this.PING_TIMEOUT);
 
     lang.mixin(this, options);
   },
@@ -298,10 +305,10 @@ const __class = declare('argos.Application', null, {
     }
   },
   onOffline: function onOffline() {
-    this.ping().then((results) => this._updateConnectionState(results));
+    this.ping((results) => this._updateConnectionState(results));
   },
   onOnline: function onOnline() {
-    this.ping().then((results) => this._updateConnectionState(results));
+    this.ping((results) => this._updateConnectionState(results));
   },
   _updateConnectionState: function _updateConnectionState(online) {
     this.onLine = online;
@@ -321,7 +328,7 @@ const __class = declare('argos.Application', null, {
       window.addEventListener('offline', this.onOffline.bind(this));
     });
 
-    this.ping().then((results) => this._updateConnectionState(results));
+    this.ping((results) => this._updateConnectionState(results));
   },
 
   /**
@@ -329,10 +336,6 @@ const __class = declare('argos.Application', null, {
    * before the PING_TIMEOUT. The promise is rejected if there is timeout or
    * the response is not a 200 or 304.
    */
-  ping: function ping() {
-    return util.debounce(this._ping, this.PING_TIMEOUT)();
-  },
-
   _ping: function _ping() {
     return new Promise((resolve) => {
       const xhr = new XMLHttpRequest();
