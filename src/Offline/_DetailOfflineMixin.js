@@ -45,8 +45,9 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
       includeRelated: true,
       viewId: this.id,
     };
-    OfflineManager.briefCaseEntity(entityName, entityId, options).then(function success() {
-    }, function err(error) {
+    OfflineManager.briefCaseEntity(entityName, entityId, options).then((result) => {
+      this.onEntityBriefcased(result);
+    }, (error) => {
       console.error(error);// eslint-disable-line
     });
   },
@@ -67,5 +68,11 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
   getOfflineIcon: function getOfflineIcon() {
     const model = this.getModel();
     return model.getIconClass();
+  },
+  onEntityBriefcased: function onEntityBriefcased() {
+    const view = this.app.getView('briefcase_list');
+    if (view) {
+      view.show({});
+    }
   },
 });
