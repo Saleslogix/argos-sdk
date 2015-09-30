@@ -67,6 +67,10 @@
       "isDebug": true,
       "fileIncludes": [
         {
+          "text": "Utility.js",
+          "path": "../src-out/"
+        },
+        {
            "text": "_ModelBase.js",
            "path": "../src-out/Models/"
         },
@@ -160,10 +164,6 @@
         },
         {
           "text": "Convert.js",
-          "path": "../src-out/"
-        },
-        {
-          "text": "Utility.js",
           "path": "../src-out/"
         },
         {
