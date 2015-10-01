@@ -31,6 +31,7 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domProp from 'dojo/dom-prop';
 import domStyle from 'dojo/dom-style';
+import on from 'dojo/on';
 import query from 'dojo/query';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
@@ -351,6 +352,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
           .toggleBackdrop()
           .toggleParentScroll()
           .attachEventListener()
+          .toolbarListener()
           .calculatePosition(target);
     }
     return this._deferred.promise;
@@ -391,6 +393,13 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
         });
       }
     }
+    return this;
+  },
+  toolbarListener: function toolbarListener() {
+    const tbarListener = on(App.bars.tbar, 'click', () => {
+      this.hideModal();
+      tbarListener.remove();
+    });
     return this;
   },
 });
