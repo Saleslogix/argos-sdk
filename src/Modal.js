@@ -80,7 +80,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   disableParentScroll: true,
   closeAction: null,
   actionScope: null,
-  positioning: '',
+  positioning: null,
 
   cancelText: 'Cancel',
   confirmText: 'Confirm',
@@ -94,15 +94,15 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
 
     const parentHeight = domProp.get(this._parentNode, 'offsetHeight');
 
+    this.refreshModalSize();
+
     if (this._isPicklist) {
       // This call needs to take place before positioning so that the width of the modal is accounted for
       domStyle.set(this.modalNode, {
         minWidth: offsetWidth + 'px',
-        maxWidth: parentHeight + 'px',
+        maxHeight: parentHeight + 'px',
       });
     }
-
-    this.refreshModalSize();
 
     const parentWidth = domProp.get(this._parentNode, 'offsetWidth');
     const parentScrollTop = domProp.get(this._parentNode, 'scrollTop');
@@ -137,7 +137,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       position.top = parentScrollTop;
     }
 
-    if (position.top < parentHeight) {
+    if (position.top < parentHeight && this._isPicklist) {
       modalTop = position.top;
     }
 
@@ -173,6 +173,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     return this;
   },
   destroy: function destroy() {
+    this.inherited(arguments);
     this.emptyModal();
     domConstruct.destroy(this.modalNode);
     return this;
