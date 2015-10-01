@@ -92,21 +92,24 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   calculatePosition: function calculatePosition({ offsetTop, offsetLeft, offsetWidth, offsetHeight }) {
     const position = {};
 
+    const parentHeight = domProp.get(this._parentNode, 'offsetHeight');
+
     if (this._isPicklist) {
       // This call needs to take place before positioning so that the width of the modal is accounted for
       domStyle.set(this.modalNode, {
         minWidth: offsetWidth + 'px',
+        maxWidth: parentHeight + 'px',
       });
     }
 
     this.refreshModalSize();
 
-    const parentHeight = domProp.get(this._parentNode, 'offsetHeight');
     const parentWidth = domProp.get(this._parentNode, 'offsetWidth');
     const parentScrollTop = domProp.get(this._parentNode, 'scrollTop');
     const parentScrollHeight = domProp.get(this._parentNode, 'scrollHeight');
     const modalHeight = domProp.get(this.modalNode, 'offsetHeight');
     const modalWidth = domProp.get(this.modalNode, 'offsetWidth');
+    let modalTop = 0;
 
     switch (this.positioning) {
       case 'right':
@@ -134,12 +137,16 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       position.top = parentScrollTop;
     }
 
+    if (position.top < parentHeight) {
+      modalTop = position.top;
+    }
+
     domStyle.set(this.modalNode, {
       maxWidth: parentWidth + 'px',
       top: position.top + 'px',
       left: position.left + 'px',
       zIndex: domStyle.get(this._parentNode, 'zIndex') + 10,
-      maxHeight: parentHeight + 'px',
+      maxHeight: parentHeight - modalTop + 'px',
       visibility: 'visible',
       overflow: 'auto',
     });
