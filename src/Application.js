@@ -311,6 +311,11 @@ const __class = declare('argos.Application', null, {
     this.ping((results) => this._updateConnectionState(results));
   },
   _updateConnectionState: function _updateConnectionState(online) {
+    // Don't fire the onConnectionChange if we are in the same state.
+    if (this.onLine === online) {
+      return;
+    }
+
     this.onLine = online;
     this.onConnectionChange(online);
   },
@@ -510,7 +515,7 @@ const __class = declare('argos.Application', null, {
    * Returns the `window.navigator.onLine` property for detecting if an internet connection is available.
    */
   isOnline: function isOnline() {
-    return window.navigator.onLine;
+    return this.onLine;
   },
   /**
    * Returns true/false if the current view is the first/initial view.
