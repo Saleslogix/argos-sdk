@@ -341,6 +341,7 @@ const __class = declare('argos.Application', null, {
       const xhr = new XMLHttpRequest();
       xhr.timeout = this.PING_TIMEOUT;
       xhr.ontimeout = () => resolve(false);
+      xhr.onerror = () => resolve(false);
       xhr.onload = () => {
         const DONE = 4;
         const HTTP_OK = 200;
