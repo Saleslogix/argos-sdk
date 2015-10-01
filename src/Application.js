@@ -304,10 +304,10 @@ const __class = declare('argos.Application', null, {
       }
     }
   },
-  onOffline: function onOffline() {
+  _onOffline: function _onOffline() {
     this.ping((results) => this._updateConnectionState(results));
   },
-  onOnline: function onOnline() {
+  _onOnline: function _onOnline() {
     this.ping((results) => this._updateConnectionState(results));
   },
   _updateConnectionState: function _updateConnectionState(online) {
@@ -329,8 +329,8 @@ const __class = declare('argos.Application', null, {
     this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
     this._connects.push(connect.connect(win.body(), 'show', this, this._onActivate));
     ready(() => {
-      window.addEventListener('online', this.onOnline.bind(this));
-      window.addEventListener('offline', this.onOffline.bind(this));
+      window.addEventListener('online', this._onOnline.bind(this));
+      window.addEventListener('offline', this._onOffline.bind(this));
     });
 
     this.ping((results) => this._updateConnectionState(results));
