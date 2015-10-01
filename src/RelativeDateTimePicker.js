@@ -66,7 +66,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
       title: this.titleText,
       children: [{
         label: this.thisEveningText,
-        time: moment().clone().add(1, 'days').hours(this.morningHours).minutes(0).seconds(0),
+        time: moment().clone().hours(this.eveningHours).minutes(0).seconds(0),
         format: 'h:mm A',
       }, {
         label: this.tomorrowMorningText,
@@ -74,7 +74,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
         format: 'h:mm A',
       }, {
         label: this.tomorrowAfternoonText,
-        time: moment().clone().startOf('week').add(7, 'days').hours(this.morningHours).minutes(0),
+        time: moment().clone().startOf('week').add(7, 'days').hours(this.eveningHours).minutes(0),
         format: 'h:mm A',
       }, {
         label: this.nextWeekText,
