@@ -252,6 +252,9 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     if (parentPanel._parentNode) {
       this._parentNode = parentPanel._parentNode;
     }
+    domStyle.set(this.modalNode, {
+      maxHeight: domProp.get(this._parentNode, 'offsetHeight') + 'px',
+    });
     this.placeBackdrop(parentPanel);
     this._orientation = this._eventConnections.push(connect.subscribe('/app/setOrientation', this, this.hideModal));
     domConstruct.place(this.modalNode, parentPanel);
