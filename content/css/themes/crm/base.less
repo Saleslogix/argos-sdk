@@ -1051,7 +1051,9 @@ img {
         > li {
             background-color: #fff;
             color: #aaa;
-            padding-right: 6px;
+            padding: 0;
+            height: 40px;
+            line-height: 40px;
 
             .resource {
                 display: block;
@@ -1061,7 +1063,7 @@ img {
 
             h3 {
               vertical-align: middle;
-              line-height: 24px;
+              line-height: 40px;
 
                 > span {
                     &:first-child {
@@ -1069,21 +1071,12 @@ img {
                     }
                 }
 
-                > [data-action="moveUp"],
-                > [data-action="moveDown"] {
-                    float: right;
-                    display: block;
-                    width: 48px;
-                    height: 24px;
-                    cursor: pointer;
-                    text-align: center;
-                }
-
                 > .draggable {
                   float: right;
                   width: 24px;
-                  height: 24px;
-                  line-height: 24px;
+                  height: 40px;
+                  line-height: 40px;
+                  margin-right: 15px;
                   cursor: pointer;
                   text-align: center;
                   .transform(scale(1.5, 0.75));
