@@ -279,6 +279,7 @@ const __class = declare('argos._DraggableBase', null, {
       this._position = this.getPositionOf(this._source);
       this._previousElement = this._source.previousSibling;
       this._nextElement = this._source.nextSibling;
+      touch.preventDefault();
     }
   },
   onTouchMove: function onTouchMove(touch = {}) {
@@ -435,6 +436,7 @@ const __class = declare('argos._DraggableBase', null, {
       this._container.addEventListener('touchstart', this.onTouchStart.bind(this), false);
       this._container.addEventListener('touchmove', this.onTouchMove.bind(this), false);
       this._container.addEventListener('touchend', this.onTouchEnd.bind(this), false);
+      this._container.addEventListener('touchcancel', this.onTouchEnd.bind(this), false);
       this._container.addEventListener('mousedown', this.onTouchStart.bind(this), false);
       this._container.addEventListener('mousemove', this.onTouchMove.bind(this), false);
       this._container.addEventListener('mouseup', this.onTouchEnd.bind(this), false);
