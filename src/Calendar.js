@@ -261,7 +261,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   getYearRange: function getYearRange() {
     const items = [];
     const thisYear = this.date.todayMoment.year();
-    for (let i = thisYear - 50; i <= thisYear + 50; i++) {
+    for (let i = thisYear - 10; i <= thisYear + 10; i++) {
       items.push(i);
     }
     return items;
