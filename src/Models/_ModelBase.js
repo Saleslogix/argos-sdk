@@ -15,28 +15,48 @@
 import declare from 'dojo/_base/declare';
 import Evented from 'dojo/Evented';
 import Stateful from 'dojo/Stateful';
+import utility from '../Utility';
+import _CustomizationMixin from '../_CustomizationMixin';
 
 /**
  * @class argos._ModelBase
  * A base model class for views to consume
  * @alternateClassName _ModelBase
  */
-export default declare('argos.Models._ModelBase', [Evented, Stateful], {
+export default declare('argos.Models._ModelBase', [Evented, Stateful, _CustomizationMixin], {
   app: null,
+  resourceKind: null,
+  itemsProperty: '$resources',
+  idProperty: '$key',
+  labelProperty: '$descriptor',
+  entityProperty: '$name',
+  versionProperty: '$etag',
+  entityName: 'Entity',
+  entityDisplayName: 'Entity',
+  entityDisplayNamePlural: 'Entities',
+  modelName: null,
+  modelType: null,
+  iconClass: 'fa fa-cloud fa-2x',
+  detailViewId: null,
+  listViewId: null,
+  editViewId: null,
+  relationships: null,
+  createRelationships: function createRelationships() {
+    return [];
+  },
   _appGetter: function _appGetter() {
     return this.app || window.App;
   },
   _appSetter: function _appSetter(value) {
     this.app = value;
   },
-  entityName: null,
-  ModelType: null,
-  iconClass: null,
+
   /**
    * Initializes the model with options.
    * @param options
    */
   init: function init() {
+    this.relationships = this.relationships || this._createCustomizedLayout(this.createRelationships(), 'relationships');
   },
   getEntry: function getEntry(options) { // eslint-disable-line
   },
@@ -52,5 +72,11 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful], {
   },
   getIconClass: function getIconClass() {
     return this.iconClass;
+  },
+  getEntityDescription: function getEntityDescription(entry) {
+    return utility.getValue(entry, this.labelProperty);
+  },
+  getEntityId: function getEntityId(entry) {
+    return utility.getValue(entry, this.idProperty);
   },
 });

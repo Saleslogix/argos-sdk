@@ -58,8 +58,8 @@ const __class = {
     const bcModel = App.ModelManager.getModel('Briefcase', MODEL_TYPES.OFFLINE);
     bcModel.getEntry(briefcaseId).then((briefcase) => {
       if (briefcase) {
-        const entityName = briefcase.entity.entityName;
-        const entityId = briefcase.entity.entityId;
+        const entityName = briefcase.entityName;
+        const entityId = briefcase.entityId;
         const odef = def;
         bcModel.deleteEntry(briefcaseId).then(() => {
           const entityModel = App.ModelManager.getModel(entityName, MODEL_TYPES.OFFLINE);

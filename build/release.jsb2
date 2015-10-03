@@ -67,8 +67,24 @@
       "isDebug": true,
       "fileIncludes": [
         {
-           "text": "_ModelBase.js",
-           "path": "../src-out/Models/"
+          "text": "_ModelBase.js",
+          "path": "../src-out/Models/"
+        },
+        {
+          "text": "_SDataModelBase.js",
+          "path": "../src-out/Models/"
+        },
+        {
+          "text": "_OfflineModelBase.js",
+          "path": "../src-out/Models/"
+        },
+        {
+          "text": "Briefcase.js",
+          "path": "../src-out/Models/Offline"
+        },
+        {
+           "text": "RecentlyViewed.js",
+           "path": "../src-out/Models/Offline"
         },
         {
            "text": "Manager.js",
@@ -159,10 +175,6 @@
            "path": "../src-out/Offline/"
         },
         {
-          "text": "_SDataModelMixin.js",
-          "path": "../src-out/Models/"
-        },
-        {
           "text": "ErrorManager.js",
           "path": "../src-out/"
         },
@@ -184,6 +196,10 @@
         },
         {
           "text": "_DetailOfflineMixin.js",
+          "path": "../src-out/Offline/"
+        },
+        {
+          "text": "_ListOfflineMixin.js",
           "path": "../src-out/Offline/"
         },
         {
