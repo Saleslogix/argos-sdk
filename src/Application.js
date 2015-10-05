@@ -339,7 +339,6 @@ const __class = declare('argos.Application', null, {
   _ping: function _ping() {
     return new Promise((resolve) => {
       const xhr = new XMLHttpRequest();
-      xhr.timeout = this.PING_TIMEOUT;
       xhr.ontimeout = () => resolve(false);
       xhr.onload = () => {
         const DONE = 4;
@@ -355,6 +354,7 @@ const __class = declare('argos.Application', null, {
         }
       };
       xhr.open('GET', this.PING_RESOURCE);
+      xhr.timeout = this.PING_TIMEOUT;
       xhr.send();
     });
   },
