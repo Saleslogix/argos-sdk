@@ -296,6 +296,12 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
   getSearchExpression: function getSearchExpression() {
     return this.queryNode.value;
   },
+  disable: function disable() {
+    this.queryNode.disabled = true;
+  },
+  enable: function enable() {
+    this.queryNode.disabled = false;
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.SearchWidget', __class);
