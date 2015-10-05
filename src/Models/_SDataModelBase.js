@@ -5,15 +5,12 @@ import all from 'dojo/promise/all';
 import when from 'dojo/when';
 import string from 'dojo/string';
 import utility from '../Utility';
-// import _SDataModelMixin from './_SDataModelMixin';
 import _ModelBase from './_ModelBase';
-// import _CustomizationMixin from '../_CustomizationMixin';
 import Manager from './Manager';
 import MODEL_TYPES from './Types';
 
 const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
   queryModels: null,
-  // relationships: null,
   ModelType: MODEL_TYPES.SDATA,
 
   _getQueryModelByName: function _getQueryModelByName(name) {
@@ -27,30 +24,26 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
   init: function init() {
     this.inherited(arguments);
     this.queryModels = this.queryModels || this._createCustomizedLayout(this.createQueryModels(), 'queryModel');
-    // this.relationships = this.relationships || this._createCustomizedLayout(this.createRelationships(), 'relationships');
   },
   createQueryModels: function createQueryModels() {
     return [];
   },
-  xcreateRelationships: function xcreateRelationships() {
-    return [];
-  },
-  getOptions: function getOptionsFn(options) {
-    const getOptions = {};
+  getOptions: function getOptions(options) {
+    const tempOptions = {};
     if (options) {
-      if (options.select) getOptions.select = options.select;
-      if (options.include) getOptions.include = options.include;
-      if (options.orderBy) getOptions.orderBy = options.orderBy;
-      if (options.contractName) getOptions.contractName = options.contractName;
-      if (options.resourceKind) getOptions.resourceKind = options.resourceKind;
-      if (options.resourceProperty) getOptions.resourceProperty = options.resourceProperty;
-      if (options.resourcePredicate) getOptions.resourcePredicate = options.resourcePredicate;
-      if (options.queryArgs) getOptions.queryArgs = options.queryArgs;
-      if (options.start) getOptions.start = options.start;
-      if (options.count) getOptions.count = options.count;
+      if (options.select) tempOptions.select = options.select;
+      if (options.include) tempOptions.include = options.include;
+      if (options.orderBy) tempOptions.orderBy = options.orderBy;
+      if (options.contractName) tempOptions.contractName = options.contractName;
+      if (options.resourceKind) tempOptions.resourceKind = options.resourceKind;
+      if (options.resourceProperty) tempOptions.resourceProperty = options.resourceProperty;
+      if (options.resourcePredicate) tempOptions.resourcePredicate = options.resourcePredicate;
+      if (options.queryArgs) tempOptions.queryArgs = options.queryArgs;
+      if (options.start) tempOptions.start = options.start;
+      if (options.count) tempOptions.count = options.count;
     }
 
-    return getOptions;
+    return tempOptions;
   },
   getId: function getId(options) {
     return options && (options.id || options.key);
@@ -135,19 +128,19 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
         }
         if (relatedRequests.length > 0) {
           all(relatedRequests).then(
-              function(relatedResults) {
+              (relatedResults) => {
                 this.applyRelatedResults(entry, relatedResults);
                 odef.resolve(entry);
               }.bind(this),
-              function(err) {
+              (err) => {
                 odef.reject(err);
-              }.bind(this));
+              });
         } else {
           def.resolve(entry);
         }
-      }.bind(this), function(err) {
+      }.bind(this), (err) => {
         def.reject(err);
-      }.bind(this));
+      });
 
       return def.promise;
     }
@@ -159,19 +152,20 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     const store = this.createStore(queryModelName);
     const queryOptions = this.getOptions(options);
     const queryExpression = this.buildQueryExpression(query, options);
+
     queryResults = store.query(queryExpression, queryOptions);
-    when(queryResults, function(entities) {
+    when(queryResults, (entities) => {
       def.resolve(entities);
-    }.bind(this), function(err) {
+    }, (err) => {
       def.reject(err);
-    }.bind(this));
+    });
 
     return def.promise;
   },
   getRelatedRequests: function getRelatedRequests(entry) {
     const self = this;
     const requests = [];
-    this.relationships.forEach(function(rel) {
+    this.relationships.forEach((rel) => {
       let request = null;
       if (!rel.disabled) {
         request = self.getRelatedRequest(entry, rel);
@@ -192,7 +186,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
       queryOptions = this.getRelatedQueryOptions(entry, relationship, options);
       if (queryOptions) {
         queryResults = model.getEntries(null, queryOptions);
-        when(queryResults, function(entities) {
+        when(queryResults, (entities) => {
           const results = {
             entityName: model.entityName,
             entityDisplayName: model.entityDisplayName,
@@ -202,7 +196,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
             entities: entities,
           };
           def.resolve(results);
-        }, function(err) {
+        }, (err) => {
           def.reject(err);
         });
         return def.promise;
@@ -243,7 +237,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
   applyRelatedResults: function applyRelatedResults(entry, relatedResults) {
     let relatedEntities;
     relatedEntities = [];
-    relatedResults.forEach(function(result) {
+    relatedResults.forEach((result) => {
       relatedEntities.push(result);
     });
     entry.$relatedEntities = relatedEntities;

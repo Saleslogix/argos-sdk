@@ -4,11 +4,8 @@ import PouchDB from 'argos/Store/PouchDB';
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
 import when from 'dojo/when';
-// import string from 'dojo/string';
-// import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
 import _ModelBase from './_ModelBase';
-// import _OfflineModelMixin from './_OfflineModelMixin';
 import Manager from './Manager';
 import MODEL_TYPES from './Types';
 
@@ -22,9 +19,6 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   getStore: function getStore() {
     if (!this.store) {
       this.store = _store;
-      // this.store.put({_id: 'author_info',body: {firstName: 'Bill', lastName: 'Edney'}});
-      // this.store._db.destroy();
-      // this.store = new PouchDB({databaseName: this.databaseName});
     }
     return this.store;
   },
@@ -65,7 +59,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       const odef = def;
       this.saveRelatedEntries(entry, options).then( function updateRelatedSuccess() {
         odef.resolve(updateResult);
-      }.bind(this), function updateRelatedFailed(err) {
+      }, function updateRelatedFailed(err) {
         odef.reject(err);
       });
     }.bind(this), function updateFailed() {
@@ -74,7 +68,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
         const odef = def;
         this.saveRelatedEntries(entry, options).then( function insertRelatedSuccess() {
           odef.resolve(insertResult);
-        }.bind(this), function insertRelatedFailed(err) {
+        }, function insertRelatedFailed(err) {
           odef.reject(err);
         });
       }.bind(this), function insertFailed(err) {
@@ -100,17 +94,18 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     const def = new Deferred();
     const entityId = this.getEntityId(entry, options);
     this.getEntryDoc(entityId).then(function querySuccess(doc) {
+      const odef = def;
       doc.entity = entry;
       doc.modifyDate = moment().toDate();
       doc.description = this.getEntityDescription(entry);
       store.put(doc).then(function updateSuccess(result) {
-        def.resolve(result);
-      }.bind(this), function updateFailed(err) {
-        def.reject('error updating entity: ' + err);
-      }.bind(this));
+        odef.resolve(result);
+      }, function updateFailed(err) {
+        odef.reject('error updating entity: ' + err);
+      });
     }.bind(this), function queryError(err) {
       def.reject('entity not found to update:' + err);
-    }.bind(this));
+    });
     return def.promise;
   },
   createEntry: function createEntry() {
@@ -135,25 +130,25 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     });
     return def.promise;
   },
-  saveRelatedEntries: function(parentEntry, options) {
+  saveRelatedEntries: function saveRelatedEntries(parentEntry, options) {
     const entries = (parentEntry && parentEntry.$relatedEntities) ? parentEntry.$relatedEntities : [];
     const relatedPromises = [];
     const def = new Deferred();
-    entries.forEach(function(related) {
+    entries.forEach((related) => {
       const model = App.ModelManager.getModel(related.entityName, MODEL_TYPES.OFFLINE);
       if (model && related.entities) {
-        related.entities.forEach(function(relatedEntry) {
+        related.entities.forEach((relatedEntry) => {
           const promise = model.saveEntry(relatedEntry, options);
           relatedPromises.push(promise);
-        }.bind(this));
+        });
       }
     });
     if (relatedPromises.length > 0) {
       all(relatedPromises).then(
-          function(relatedResults) {
+          (relatedResults) => {
             def.resolve(relatedResults);
           },
-          function(err) {
+          (err) => {
             def.reject(err);
           });
     } else {
@@ -192,15 +187,15 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     lang.mixin(queryOptions, options);
     const queryExpression = this.buildQueryExpression(query, queryOptions);
     const queryResults = store.query(queryExpression, queryOptions);
-    when(queryResults, function(docs) {
+    when(queryResults, (docs) => {
       const entities = this.unWrapEntities(docs);
       def.resolve(entities);
-    }.bind(this), function(err) {
+    }.bind(this), (err) => {
       def.reject(err);
-    }.bind(this));
+    });
     return def.promise;
   },
-  buildQueryExpression: function buildQueryExpression(query, options) {
+  buildQueryExpression: function buildQueryExpression(query, options) { // eslint-disable-line
     return function queryFn(doc, emit) {
       if (doc.entityName === this.entityName) {
         emit(doc.modifyDate);
@@ -209,7 +204,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   },
   unWrapEntities: function unWrapEntities(docs) {
     const entities = [];
-    docs.forEach(function(doc) {
+    docs.forEach((doc) => {
       entities.push(this.unWrap(doc.doc));
     }.bind(this));
     return entities;

@@ -102,7 +102,7 @@ const __class = {
           briefcaseModel.saveEntry(briefcaseEntry).then(function bcEntrySuccess() {
             const odef = def;
             offlineModel.saveEntry(entry, options).then(function bcEntitySuccess(result) {
-              console.log('Briefcased entity:' + briefcaseEntry.entityName + ' entityId;' + briefcaseEntry.entityId);
+              console.log('Briefcased entity:' + briefcaseEntry.entityName + ' entityId;' + briefcaseEntry.entityId); // eslint-disable-line
               odef.resolve(result);
             }, function bcEntityFailure(err) {
               odef.reject(err);
