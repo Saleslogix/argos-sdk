@@ -158,9 +158,10 @@ const control = declare('argos.Fields.DateField', [EditorField], {
         this.currentValue = this.validationValue = data.relativeDateTimePicker.toDate();
       } else {
         // This is the case where the user went to the specific date time selector
-        data.calendar.selectedDateMoment.hours(data.timePicker.hours);
-        data.calendar.selectedDateMoment.minutes(data.timePicker.minutes);
-        this.currentValue = this.validationValue = data.calendar.selectedDateMoment.toDate();
+        const date = data.calendar.selectedDateMoment.clone();
+        date.hours(data.timePicker.hours);
+        date.minutes(data.timePicker.minutes);
+        this.currentValue = this.validationValue = date.toDate();
       }
       this.inputNode.value = this.formatValue(this.currentValue);
     }
