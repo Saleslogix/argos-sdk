@@ -304,13 +304,18 @@ const __class = declare('argos.Application', null, {
       }
     }
   },
-  onOffline: function onOffline() {
+  _onOffline: function _onOffline() {
     this.ping((results) => this._updateConnectionState(results));
   },
-  onOnline: function onOnline() {
+  _onOnline: function _onOnline() {
     this.ping((results) => this._updateConnectionState(results));
   },
   _updateConnectionState: function _updateConnectionState(online) {
+    // Don't fire the onConnectionChange if we are in the same state.
+    if (this.onLine === online) {
+      return;
+    }
+
     this.onLine = online;
     this.onConnectionChange(online);
   },
@@ -324,8 +329,8 @@ const __class = declare('argos.Application', null, {
     this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
     this._connects.push(connect.connect(win.body(), 'show', this, this._onActivate));
     ready(() => {
-      window.addEventListener('online', this.onOnline.bind(this));
-      window.addEventListener('offline', this.onOffline.bind(this));
+      window.addEventListener('online', this._onOnline.bind(this));
+      window.addEventListener('offline', this._onOffline.bind(this));
     });
 
     this.ping((results) => this._updateConnectionState(results));
@@ -340,6 +345,7 @@ const __class = declare('argos.Application', null, {
     return new Promise((resolve) => {
       const xhr = new XMLHttpRequest();
       xhr.ontimeout = () => resolve(false);
+      xhr.onerror = () => resolve(false);
       xhr.onload = () => {
         const DONE = 4;
         const HTTP_OK = 200;
@@ -509,7 +515,7 @@ const __class = declare('argos.Application', null, {
    * Returns the `window.navigator.onLine` property for detecting if an internet connection is available.
    */
   isOnline: function isOnline() {
-    return window.navigator.onLine;
+    return this.onLine;
   },
   /**
    * Returns true/false if the current view is the first/initial view.
