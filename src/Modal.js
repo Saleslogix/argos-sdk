@@ -351,12 +351,23 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   showModal: function showModal(target = {}) {
     if (this._parentNode) {
       this._deferred = new Deferred();
-      this.showContent()
-          .toggleBackdrop()
-          .toggleParentScroll()
-          .attachEventListener()
-          .toolbarListener()
-          .calculatePosition(target);
+      if (!domClass.contains(window.ReUI.rootEl, 'keyboard-up')) {
+        this.showContent()
+            .toggleBackdrop()
+            .toggleParentScroll()
+            .attachEventListener()
+            .toolbarListener()
+            .calculatePosition(target);
+      } else {
+        setTimeout(() => {
+          this.showContent()
+              .toggleBackdrop()
+              .toggleParentScroll()
+              .attachEventListener()
+              .toolbarListener()
+              .calculatePosition(target);
+        }, 300);
+      }
     }
     return this._deferred.promise;
   },
