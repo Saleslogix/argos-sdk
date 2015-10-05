@@ -3,7 +3,7 @@ import query from 'dojo/query';
 import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import string from 'dojo/string';
-import _ListBase from 'argos/_ListBase';
+import DraggableList from './DraggableList';
 
 const resource = window.localeContext.getEntitySync('configureBase').attributes;
 
@@ -14,13 +14,12 @@ const resource = window.localeContext.getEntitySync('configureBase').attributes;
  * @extends argos._ListBase
  *
  */
-const __class = declare('argos._ConfigureBase', [_ListBase], {
+const __class = declare('argos._ConfigureBase', [ DraggableList ], {
   // Templates
   itemTemplate: new Simplate([
     '<h3>',
     '<span>{%: $.$descriptor %}</span>',
-    '<span data-action="moveUp" class="fa fa-arrow-up"></span>',
-    '<span data-action="moveDown" class="fa fa-arrow-down"></span>',
+    '<span class="draggable fa fa-bars"></span>',
     '</h3>',
   ]),
 

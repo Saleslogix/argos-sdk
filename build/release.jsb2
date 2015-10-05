@@ -67,8 +67,16 @@
       "isDebug": true,
       "fileIncludes": [
         {
+          "text": "Utility.js",
+          "path": "../src-out/"
+        },
+        {
           "text": "_ModelBase.js",
           "path": "../src-out/Models/"
+        },
+        {
+           "text": "Manager.js",
+           "path": "../src-out/Models/"
         },
         {
           "text": "_SDataModelBase.js",
@@ -87,10 +95,6 @@
            "path": "../src-out/Models/Offline"
         },
         {
-           "text": "Manager.js",
-           "path": "../src-out/Models/"
-        },
-        {
            "text": "Types.js",
            "path": "../src-out/Models/"
         },
@@ -100,6 +104,10 @@
         },
         {
           "text": "CultureInfo.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_DraggableBase.js",
           "path": "../src-out/"
         },
         {
@@ -135,6 +143,18 @@
           "path": "../src-out/"
         },
         {
+          "text": "Modal.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Toast.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "TimePicker.js",
+          "path": "../src-out/"
+        },
+        {
           "text": "_ErrorHandleMixin.js",
           "path": "../src-out/"
         },
@@ -151,11 +171,15 @@
           "path": "../src-out/"
         },
         {
-          "text": "Convert.js",
+          "text": "DateTimePicker.js",
           "path": "../src-out/"
         },
         {
-          "text": "Utility.js",
+          "text": "RelativeDateTimePicker.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Convert.js",
           "path": "../src-out/"
         },
         {
@@ -173,6 +197,10 @@
         {
            "text": "Manager.js",
            "path": "../src-out/Offline/"
+        },
+        {
+          "text": "_SDataModelMixin.js",
+          "path": "../src-out/Models/"
         },
         {
           "text": "ErrorManager.js",
@@ -196,10 +224,6 @@
         },
         {
           "text": "_DetailOfflineMixin.js",
-          "path": "../src-out/Offline/"
-        },
-        {
-          "text": "_ListOfflineMixin.js",
           "path": "../src-out/Offline/"
         },
         {
@@ -336,6 +360,10 @@
         },
         {
           "text": "List.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "DraggableList.js",
           "path": "../src-out/"
         },
         {

@@ -25,6 +25,8 @@ import domConstruct from 'dojo/dom-construct';
 import all from 'dojo/promise/all';
 import snap from 'snap';
 import ReUI from './ReUI/main';
+import ready from 'dojo/ready';
+import util from './Utility';
 import ModelManager from './Models/Manager';
 import 'dojo/sniff';
 
@@ -206,11 +208,21 @@ const __class = declare('argos.Application', null, {
    * @property {int}
    */
   maxUploadFileSize: 4000000,
-  ModelManager: null,
+
+  /*
+   * Timeout for the connection check.
+   */
+  PING_TIMEOUT: 1000,
+
+  /*
+   * Static resource to request on the ping. Should be a small file.
+   */
+  PING_RESOURCE: 'content/images/blank.gif',
   /**
    * All options are mixed into App itself
    * @param {Object} options
    */
+  ModelManager: null,
   constructor: function constructor(options) {
     this._connects = [];
     this._appStatePromises = [];
@@ -226,6 +238,14 @@ const __class = declare('argos.Application', null, {
 
     this.context = {};
     this.viewShowOptions = [];
+    this.ping = util.debounce((action) => {
+      this._ping().then((results) => {
+        if (typeof action === 'function') {
+          action(results);
+        }
+      });
+    }, this.PING_TIMEOUT);
+
     this.ModelManager = ModelManager;
     lang.mixin(this, options);
   },
@@ -245,16 +265,6 @@ const __class = declare('argos.Application', null, {
     array.forEach(this._signals, (signal) => {
       signal.remove();
     });
-
-    for (const name in this._connections) {
-      if (this._connections.hasOwnProperty(name)) {
-        const connection = this._connections[name];
-        if (connection) {
-          connection.un('beforerequest', this._loadSDataRequest, this);
-          connection.un('requestcomplete', this._cacheSDataRequest, this);
-        }
-      }
-    }
 
     this.uninitialize();
   },
@@ -277,23 +287,20 @@ const __class = declare('argos.Application', null, {
 
     ReUI.init();
   },
-  /**
-   * If caching is enable and App is {@link #isOnline online} the empties the SData cache via {@link #_clearSDataRequestCache _clearSDataRequestCache}.
-   */
-  initCaching: function initCaching() {
-    if (this.enableCaching) {
-      if (this.isOnline()) {
-        this._clearSDataRequestCache();
-      }
+  _onOffline: function _onOffline() {
+    this.ping((results) => this._updateConnectionState(results));
+  },
+  _onOnline: function _onOnline() {
+    this.ping((results) => this._updateConnectionState(results));
+  },
+  _updateConnectionState: function _updateConnectionState(online) {
+    // Don't fire the onConnectionChange if we are in the same state.
+    if (this.onLine === online) {
+      return;
     }
-  },
-  onOffline: function onOffline() {
-    this.onLine = false;
-    this.onConnectionChange(this.onLine);
-  },
-  onOnline: function onOnline() {
-    this.onLine = true;
-    this.onConnectionChange(this.onLine);
+
+    this.onLine = online;
+    this.onConnectionChange(online);
   },
   onConnectionChange: function onConnectionChange(/*online*/) {},
   /**
@@ -304,12 +311,41 @@ const __class = declare('argos.Application', null, {
     this._connects.push(connect.connect(win.body(), 'beforetransition', this, this._onBeforeTransition));
     this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
     this._connects.push(connect.connect(win.body(), 'show', this, this._onActivate));
-    window.addEventListener('load', () => {
-      window.addEventListener('online', this.onOnline.bind(this));
-      window.addEventListener('offline', this.onOffline.bind(this));
+    ready(() => {
+      window.addEventListener('online', this._onOnline.bind(this));
+      window.addEventListener('offline', this._onOffline.bind(this));
     });
 
-    this.onLine = navigator.onLine;
+    this.ping((results) => this._updateConnectionState(results));
+  },
+
+  /**
+   * Returns a promise. The results are true of the resource came back
+   * before the PING_TIMEOUT. The promise is rejected if there is timeout or
+   * the response is not a 200 or 304.
+   */
+  _ping: function _ping() {
+    return new Promise((resolve) => {
+      const xhr = new XMLHttpRequest();
+      xhr.ontimeout = () => resolve(false);
+      xhr.onerror = () => resolve(false);
+      xhr.onload = () => {
+        const DONE = 4;
+        const HTTP_OK = 200;
+        const HTTP_NOT_MODIFIED = 304;
+
+        if (xhr.readyState === DONE) {
+          if (xhr.status === HTTP_OK || xhr.status === HTTP_NOT_MODIFIED) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      xhr.open('GET', this.PING_RESOURCE);
+      xhr.timeout = this.PING_TIMEOUT;
+      xhr.send();
+    });
   },
 
   /**
@@ -401,7 +437,6 @@ const __class = declare('argos.Application', null, {
     this.initPreferences();
     this.initConnects();
     this.initSignals();
-    this.initCaching();
     this.initServices(); // TODO: Remove
     this._startupConnections();
     this.initModules();
@@ -462,7 +497,7 @@ const __class = declare('argos.Application', null, {
    * Returns the `window.navigator.onLine` property for detecting if an internet connection is available.
    */
   isOnline: function isOnline() {
-    return window.navigator.onLine;
+    return this.onLine;
   },
   /**
    * Returns true/false if the current view is the first/initial view.
@@ -470,69 +505,7 @@ const __class = declare('argos.Application', null, {
    * @returns {boolean}
    */
   isOnFirstView: function isOnFirstView() {},
-  /**
-   * Removes all keys from localStorage that start with `sdata.cache`.
-   */
-  _clearSDataRequestCache: function _clearSDataRequestCache() {
-    function check(k) {
-      return (/^sdata\.cache/i).test(k);
-    }
 
-    if (window.localStorage) {
-      /* todo: find a better way to detect */
-      for (let i = window.localStorage.length - 1; i >= 0; i--) {
-        const key = window.localStorage.key(i);
-        if (check(key)) {
-          window.localStorage.removeItem(key);
-        }
-      }
-    }
-  },
-  /**
-   * Creates a cache key based on the URL of the request
-   * @param {Object} request Sage.SData.Client.SDataBaseRequest
-   * @return {String} Key to be used for localStorage cache
-   */
-  _createCacheKey: function _createCacheKey(request) {
-    return 'sdata.cache[' + request.build() + ']';
-  },
-  /**
-   * If the app is {@link #isOnline offline} and cache is allowed this function will attempt to load the passed
-   * request from localStorage by {@link #_createCacheKey creating} a key from the requested URL.
-   * @param request Sage.SData.Client.SDataBaseRequest
-   * @param o XHR object with namely the `result` property
-   */
-  _loadSDataRequest: function _loadSDataRequest(request, o) {
-    // todo: find a better way of indicating that a request can prefer cache
-    if (window.localStorage) {
-      if (this.isOnline() && (request.allowCacheUse !== true)) {
-        return;
-      }
-
-      const key = this._createCacheKey(request);
-      const feed = window.localStorage.getItem(key);
-      if (feed) {
-        o.result = json.parse(feed);
-      }
-    }
-  },
-  /**
-   * Attempts to store all GET request results into localStorage
-   * @param request SData request
-   * @param o XHR object
-   * @param feed The data from the request to store
-   */
-  _cacheSDataRequest: function _cacheSDataRequest(request, o, feed) {
-    /* todo: decide how to handle PUT/POST/DELETE */
-    if (window.localStorage) {
-      if (/get/i.test(o.method) && typeof feed === 'object') {
-        const key = this._createCacheKey(request);
-
-        window.localStorage.removeItem(key);
-        window.localStorage.setItem(key, json.stringify(feed));
-      }
-    }
-  },
   /**
    * Optional creates, then registers an Sage.SData.Client.SDataService and adds the result to `App.services`.
    * @param {String} name Unique identifier for the service.
@@ -543,11 +516,6 @@ const __class = declare('argos.Application', null, {
     const instance = service instanceof Sage.SData.Client.SDataService ? service : new Sage.SData.Client.SDataService(service);
 
     this.services[name] = instance;
-
-    if (this.enableCaching && (options.offline || service.offline)) {
-      instance.on('beforerequest', this._loadSDataRequest, this);
-      instance.on('requestcomplete', this._cacheSDataRequest, this);
-    }
 
     if ((options.isDefault || service.isDefault) || !this.defaultService) {
       this.defaultService = instance;
@@ -565,11 +533,6 @@ const __class = declare('argos.Application', null, {
     const instance = definition instanceof Sage.SData.Client.SDataService ? definition : new Sage.SData.Client.SDataService(definition);
 
     this._connections[name] = instance;
-
-    if (this.enableCaching && (options.offline || definition.offline)) {
-      instance.on('beforerequest', this._loadSDataRequest, this);
-      instance.on('requestcomplete', this._cacheSDataRequest, this);
-    }
 
     if ((options.isDefault || definition.isDefault) || !this._connections.default) {
       this._connections.default = instance;

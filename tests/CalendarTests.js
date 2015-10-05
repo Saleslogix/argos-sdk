@@ -1,5 +1,5 @@
 define('tests/CalendarTests', ['dojo/dom-attr','dojo/dom-class','argos/Calendar'], function(domAttr, domClass, Calendar) {
-return describe('Sage.Platform.Mobile.Calendar', function() {
+return xdescribe('Sage.Platform.Mobile.Calendar', function() {
 
     var calendar = new Calendar();
     beforeEach(function() {
@@ -72,7 +72,7 @@ return describe('Sage.Platform.Mobile.Calendar', function() {
         calendar.year = 2012;
         expect(calendar.daysInMonth()).toEqual(31);
     });
-    
+
     it('Can add toggleStateOn to meridiem node', function() {
         var node = document.createElement('div');
 
