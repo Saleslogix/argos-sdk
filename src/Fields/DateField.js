@@ -198,8 +198,6 @@ const control = declare('argos.Fields.DateField', [EditorField], {
   },
   _onClick: function _onClick(evt) {
     event.stop(evt);
-    const params = {$source: evt.target};
-    this.showModal(params);
   },
   /**
    * Extends the parent {@link EditorField#validate validate} with a check that makes sure if

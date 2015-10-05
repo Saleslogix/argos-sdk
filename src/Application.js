@@ -263,16 +263,6 @@ const __class = declare('argos.Application', null, {
       signal.remove();
     });
 
-    for (const name in this._connections) {
-      if (this._connections.hasOwnProperty(name)) {
-        const connection = this._connections[name];
-        if (connection) {
-          connection.un('beforerequest', this._loadSDataRequest, this);
-          connection.un('requestcomplete', this._cacheSDataRequest, this);
-        }
-      }
-    }
-
     this.uninitialize();
   },
   /**
@@ -293,16 +283,6 @@ const __class = declare('argos.Application', null, {
     location.hash = '';
 
     ReUI.init();
-  },
-  /**
-   * If caching is enable and App is {@link #isOnline online} the empties the SData cache via {@link #_clearSDataRequestCache _clearSDataRequestCache}.
-   */
-  initCaching: function initCaching() {
-    if (this.enableCaching) {
-      if (this.isOnline()) {
-        this._clearSDataRequestCache();
-      }
-    }
   },
   _onOffline: function _onOffline() {
     this.ping((results) => this._updateConnectionState(results));
@@ -454,7 +434,6 @@ const __class = declare('argos.Application', null, {
     this.initPreferences();
     this.initConnects();
     this.initSignals();
-    this.initCaching();
     this.initServices(); // TODO: Remove
     this._startupConnections();
     this.initModules();
@@ -523,69 +502,7 @@ const __class = declare('argos.Application', null, {
    * @returns {boolean}
    */
   isOnFirstView: function isOnFirstView() {},
-  /**
-   * Removes all keys from localStorage that start with `sdata.cache`.
-   */
-  _clearSDataRequestCache: function _clearSDataRequestCache() {
-    function check(k) {
-      return (/^sdata\.cache/i).test(k);
-    }
 
-    if (window.localStorage) {
-      /* todo: find a better way to detect */
-      for (let i = window.localStorage.length - 1; i >= 0; i--) {
-        const key = window.localStorage.key(i);
-        if (check(key)) {
-          window.localStorage.removeItem(key);
-        }
-      }
-    }
-  },
-  /**
-   * Creates a cache key based on the URL of the request
-   * @param {Object} request Sage.SData.Client.SDataBaseRequest
-   * @return {String} Key to be used for localStorage cache
-   */
-  _createCacheKey: function _createCacheKey(request) {
-    return 'sdata.cache[' + request.build() + ']';
-  },
-  /**
-   * If the app is {@link #isOnline offline} and cache is allowed this function will attempt to load the passed
-   * request from localStorage by {@link #_createCacheKey creating} a key from the requested URL.
-   * @param request Sage.SData.Client.SDataBaseRequest
-   * @param o XHR object with namely the `result` property
-   */
-  _loadSDataRequest: function _loadSDataRequest(request, o) {
-    // todo: find a better way of indicating that a request can prefer cache
-    if (window.localStorage) {
-      if (this.isOnline() && (request.allowCacheUse !== true)) {
-        return;
-      }
-
-      const key = this._createCacheKey(request);
-      const feed = window.localStorage.getItem(key);
-      if (feed) {
-        o.result = json.parse(feed);
-      }
-    }
-  },
-  /**
-   * Attempts to store all GET request results into localStorage
-   * @param request SData request
-   * @param o XHR object
-   * @param feed The data from the request to store
-   */
-  _cacheSDataRequest: function _cacheSDataRequest(request, o, feed) {
-    /* todo: decide how to handle PUT/POST/DELETE */
-    if (window.localStorage) {
-      if (/get/i.test(o.method) && typeof feed === 'object') {
-        const key = this._createCacheKey(request);
-
-        window.localStorage.removeItem(key);
-        window.localStorage.setItem(key, json.stringify(feed));
-      }
-    }
-  },
   /**
    * Optional creates, then registers an Sage.SData.Client.SDataService and adds the result to `App.services`.
    * @param {String} name Unique identifier for the service.
@@ -596,11 +513,6 @@ const __class = declare('argos.Application', null, {
     const instance = service instanceof Sage.SData.Client.SDataService ? service : new Sage.SData.Client.SDataService(service);
 
     this.services[name] = instance;
-
-    if (this.enableCaching && (options.offline || service.offline)) {
-      instance.on('beforerequest', this._loadSDataRequest, this);
-      instance.on('requestcomplete', this._cacheSDataRequest, this);
-    }
 
     if ((options.isDefault || service.isDefault) || !this.defaultService) {
       this.defaultService = instance;
@@ -618,11 +530,6 @@ const __class = declare('argos.Application', null, {
     const instance = definition instanceof Sage.SData.Client.SDataService ? definition : new Sage.SData.Client.SDataService(definition);
 
     this._connections[name] = instance;
-
-    if (this.enableCaching && (options.offline || definition.offline)) {
-      instance.on('beforerequest', this._loadSDataRequest, this);
-      instance.on('requestcomplete', this._cacheSDataRequest, this);
-    }
 
     if ((options.isDefault || definition.isDefault) || !this._connections.default) {
       this._connections.default = instance;

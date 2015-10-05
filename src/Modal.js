@@ -31,6 +31,7 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domProp from 'dojo/dom-prop';
 import domStyle from 'dojo/dom-style';
+import on from 'dojo/on';
 import query from 'dojo/query';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
@@ -80,7 +81,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   disableParentScroll: true,
   closeAction: null,
   actionScope: null,
-  positioning: '',
+  positioning: null,
 
   cancelText: 'Cancel',
   confirmText: 'Confirm',
@@ -92,21 +93,24 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   calculatePosition: function calculatePosition({ offsetTop, offsetLeft, offsetWidth, offsetHeight }) {
     const position = {};
 
+    const parentHeight = domProp.get(this._parentNode, 'offsetHeight');
+
+    this.refreshModalSize();
+
     if (this._isPicklist) {
       // This call needs to take place before positioning so that the width of the modal is accounted for
       domStyle.set(this.modalNode, {
         minWidth: offsetWidth + 'px',
+        maxHeight: parentHeight + 'px',
       });
     }
 
-    this.refreshModalSize();
-
-    const parentHeight = domProp.get(this._parentNode, 'offsetHeight');
     const parentWidth = domProp.get(this._parentNode, 'offsetWidth');
     const parentScrollTop = domProp.get(this._parentNode, 'scrollTop');
     const parentScrollHeight = domProp.get(this._parentNode, 'scrollHeight');
     const modalHeight = domProp.get(this.modalNode, 'offsetHeight');
     const modalWidth = domProp.get(this.modalNode, 'offsetWidth');
+    let modalTop = 0;
 
     switch (this.positioning) {
       case 'right':
@@ -134,12 +138,16 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       position.top = parentScrollTop;
     }
 
+    if (position.top < parentHeight && this._isPicklist) {
+      modalTop = position.top;
+    }
+
     domStyle.set(this.modalNode, {
       maxWidth: parentWidth + 'px',
       top: position.top + 'px',
       left: position.left + 'px',
       zIndex: domStyle.get(this._parentNode, 'zIndex') + 10,
-      maxHeight: parentHeight + 'px',
+      maxHeight: parentHeight - modalTop + 'px',
       visibility: 'visible',
       overflow: 'auto',
     });
@@ -166,6 +174,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     return this;
   },
   destroy: function destroy() {
+    this.inherited(arguments);
     this.emptyModal();
     domConstruct.destroy(this.modalNode);
     return this;
@@ -243,6 +252,9 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     if (parentPanel._parentNode) {
       this._parentNode = parentPanel._parentNode;
     }
+    domStyle.set(this.modalNode, {
+      maxHeight: domProp.get(this._parentNode, 'offsetHeight') + 'px',
+    });
     this.placeBackdrop(parentPanel);
     this._orientation = this._eventConnections.push(connect.subscribe('/app/setOrientation', this, this.hideModal));
     domConstruct.place(this.modalNode, parentPanel);
@@ -343,6 +355,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
           .toggleBackdrop()
           .toggleParentScroll()
           .attachEventListener()
+          .toolbarListener()
           .calculatePosition(target);
     }
     return this._deferred.promise;
@@ -383,6 +396,13 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
         });
       }
     }
+    return this;
+  },
+  toolbarListener: function toolbarListener() {
+    const tbarListener = on(App.bars.tbar, 'click', () => {
+      this.hideModal();
+      tbarListener.remove();
+    });
     return this;
   },
 });

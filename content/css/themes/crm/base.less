@@ -599,7 +599,7 @@ body > .viewContainer > .dialog {
   visibility: hidden;
   position: absolute;
   background-color: #fff;
-  overflow: scroll;
+  overflow: auto;
   padding: 0 15px;
   top: 0;
   box-shadow: 0 0 5px @color-light-slate;
@@ -607,13 +607,16 @@ body > .viewContainer > .dialog {
   .picklist {
     height: auto;
     min-height: inherit;
-    max-height: 260px;
     position: relative;
     overflow: auto;
     margin: 0;
     padding: 0;
     text-indent: 10px;
     border: 1px solid @color-azure;
+
+    li {
+      padding-right: 30px;
+    }
 
     .selected {
       background-color: @color-azure;
@@ -1048,7 +1051,9 @@ img {
         > li {
             background-color: #fff;
             color: #aaa;
-            padding-right: 6px;
+            padding: 0;
+            height: 40px;
+            line-height: 40px;
 
             .resource {
                 display: block;
@@ -1058,7 +1063,7 @@ img {
 
             h3 {
               vertical-align: middle;
-              line-height: 24px;
+              line-height: 40px;
 
                 > span {
                     &:first-child {
@@ -1066,21 +1071,12 @@ img {
                     }
                 }
 
-                > [data-action="moveUp"],
-                > [data-action="moveDown"] {
-                    float: right;
-                    display: block;
-                    width: 48px;
-                    height: 24px;
-                    cursor: pointer;
-                    text-align: center;
-                }
-
                 > .draggable {
                   float: right;
                   width: 24px;
-                  height: 24px;
-                  line-height: 24px;
+                  height: 40px;
+                  line-height: 40px;
+                  margin-right: 15px;
                   cursor: pointer;
                   text-align: center;
                   .transform(scale(1.5, 0.75));
