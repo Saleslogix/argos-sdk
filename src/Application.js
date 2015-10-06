@@ -542,6 +542,7 @@ const __class = declare('argos.Application', null, {
     return this;
   },
   onRequestTimeout: function _onTimeout() {
+    this.ping((results) => this._updateConnectionState(results));
   },
   /**
    * Determines the the specified service name is found in the Apps service object.
