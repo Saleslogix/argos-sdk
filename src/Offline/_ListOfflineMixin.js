@@ -21,7 +21,7 @@ import OfflineManager from './Manager';
  * A mixin that provides the detail view offline specific methods and properties
  * @alternateClassName _DetailOfflineMixin
  */
-export default declare('argos.Offline._DetailOfflineMixin', null, {
+export default declare('argos.Offline._ListOfflineMixin', null, {
 
   createToolLayout: function createToolLayout() {
     if (this.tools) {
@@ -32,44 +32,44 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
       tools.tbar.push({
         id: 'briefCase',
         cls: 'fa fa-suitcase fa-fw fa-lg',
-        action: 'briefCaseEntity',
+        action: 'briefCaseList',
         security: '',
       });
     }
     return tools;
   },
-  briefCaseEntity: function briefCaseEntity(action, selection) { // eslint-disable-line
-    const entityName = this.modelName;
-    const entityId = this.entry.$key; // thie should be resolved from the model or adapter.
-    const options = {
-      includeRelated: true,
-      viewId: this.id,
-    };
-    OfflineManager.briefCaseEntity(entityName, entityId, options).then((result) => {
-      this.onEntityBriefcased(result);
-    }, (error) => {
-      console.error(error);// eslint-disable-line
-    });
-  },
-  onContentChange: function onContentChange() {
-    if (this.enableOffline) {
-      this.saveOffline();
+  briefCaseList: function briefCaseList(action, selection) { // eslint-disable-line
+    const entities = [];
+    if (this.entries) {
+      for (const entryId in this.entries) {
+        if (this.entries.hasOwnProperty(entryId)) {
+          entities.push(this.createBriefcaseEntity(this.entries[entryId]));
+        }
+      }
     }
-  },
-  saveOffline: function saveOffline() {
-    OfflineManager.saveDetailView(this).then(function success() {
-    }, function err(error) {
-      console.error(error);// eslint-disable-line
+    OfflineManager.briefCaseEntities(entities).then((result) => {
+      this.onListBriefcased(result);
+    }, (err) => {
+      console.error(err);// eslint-disable-line
     });
   },
-  getOfflineDescription: function getOfflineDescription() {
-    return this.entry.$descriptor;
+  createBriefcaseEntity: function createBriefcaseEntity(entry) {
+    const entity = {
+      entityId: this.getIdentity(entry),
+      entityName: this.entityName,
+      options: {
+        includeRelated: true,
+        viewId: this.detailView,
+        iconClass: this.getOfflineIcon(),
+      },
+    };
+    return entity;
   },
   getOfflineIcon: function getOfflineIcon() {
     const model = this.getModel();
     return model.getIconClass();
   },
-  onEntityBriefcased: function onEntityBriefcased() {
+  onListBriefcased: function onListBriefcased() {
     const view = this.app.getView('briefcase_list');
     if (view) {
       view.show({});

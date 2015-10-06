@@ -19,6 +19,15 @@ const __class = lang.setObject('argos.Models.Manager', {
       return value.get(modelType);
     }
   },
+  getModel: function getModel(modelName, modelType) {
+    const ModelCtor = this.get(modelName, modelType);
+    let model = null;
+    if (ModelCtor) {
+      model = new ModelCtor();
+      model.init();
+    }
+    return model;
+  },
   store: store,
 });
 

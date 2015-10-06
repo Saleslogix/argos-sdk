@@ -1478,6 +1478,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
   },
   getIdentity: function getIdentity(entry) {
+    if (this._model) {
+      return this._model.getEntityId(entry);
+    }
+
     const store = this.get('store');
     return store.getIdentity(entry, this.idProperty);
   },

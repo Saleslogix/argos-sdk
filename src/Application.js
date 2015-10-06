@@ -27,6 +27,7 @@ import snap from 'snap';
 import ReUI from './ReUI/main';
 import ready from 'dojo/ready';
 import util from './Utility';
+import ModelManager from './Models/Manager';
 import 'dojo/sniff';
 
 has.add('html5-file-api', function hasFileApi(global) {
@@ -221,6 +222,7 @@ const __class = declare('argos.Application', null, {
    * All options are mixed into App itself
    * @param {Object} options
    */
+  ModelManager: null,
   constructor: function constructor(options) {
     this._connects = [];
     this._appStatePromises = [];
@@ -244,6 +246,7 @@ const __class = declare('argos.Application', null, {
       });
     }, this.PING_TIMEOUT);
 
+    this.ModelManager = ModelManager;
     lang.mixin(this, options);
   },
   /**
