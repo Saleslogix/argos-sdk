@@ -16,6 +16,36 @@
     -moz-box-sizing:    @sizing;
 }
 
+.display-flex () {
+  display: -webkit-flex;
+  display: flex;
+}
+
+.display-inline-flex () {
+  display: -webkit-inline-flex;
+  display: inline-flex;
+}
+
+.flex (@value) {
+  -webkit-flex: auto;
+  flex:         auto;
+}
+
+.flex-basis (@value) {
+  -webkit-flex-basis: @value;
+  flex-basis:         @value;
+}
+
+.flex-flow (@value) {
+  -webkit-flex-flow: @value;
+  flex-flow:         @value;
+}
+
+.flex-grow (@value) {
+  -webkit-flex-grow: @value;
+  flex-grow:         @value;
+}
+
 .transform (@scale) {
   transform:         @arguments;
   -webkit-transform: @arguments;

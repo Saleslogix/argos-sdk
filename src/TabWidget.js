@@ -218,12 +218,12 @@ const __class = declare('argos.TabWidget', [_Templated], {
 
     if (this.moreTabList.children.length > 0) {
       if (this.moreTab) {
-        this.tabList.children[this.tabList.children.length - 1].remove();
+        this.ieFixRemove(this.tabList.children, this.tabList.children.length - 1);
       }
       // Need to reference a different array when calling array.forEach since this.moreTabList.children is being modified, hence have arr be this.moreTabList.children
       const arr = [].slice.call(this.moreTabList.children);
       array.forEach(arr, function placeFromMoreTab(tab) {
-        this.moreTabList.children[array.indexOf(this.moreTabList.children, tab)].remove();
+        this.ieFixRemove(this.moreTabList.children, array.indexOf(this.moreTabList.children, tab));
         domConstruct.place(tab, this.tabList);
         this.checkTabOverflow(tab);
       }, this);
@@ -304,7 +304,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
       if (!this.inOverflow) {
         this.createMoretab();
         this.tabMoreIndex = array.indexOf(this.tabList.children, tab);
-        this.tabList.children[this.tabMoreIndex].remove();
+        this.ieFixRemove(this.tabList.children, this.tabMoreIndex);
         if (this.tabList.children.length === 1 && !this.moreTabList.children.length) {
           domClass.add(this.moreTab, 'selected');
           this.currentTab = tab;
@@ -314,7 +314,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
         if (this.moreTab.offsetTop > this.tabList.offsetTop) {
           this.tabMoreIndex = this.tabMoreIndex - 1;
           const replacedTab = this.tabList.children[this.tabMoreIndex];
-          this.tabList.children[this.tabMoreIndex].remove();
+          this.ieFixRemove(this.tabList.children, this.tabMoreIndex);
           domConstruct.place(replacedTab, this.moreTabList);
         }
 
@@ -322,7 +322,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
         this.inOverflow = true;
         this.tabMoreIndex++;
       } else {
-        this.tabList.children[this.tabMoreIndex].remove();
+        this.ieFixRemove(this.tabList.children, this.tabMoreIndex);
         domConstruct.place(tab, this.moreTabList);
       }
     }
@@ -391,6 +391,13 @@ const __class = declare('argos.TabWidget', [_Templated], {
       this.tabMoreIndex = null;
     }
     return this;
+  },
+  ieFixRemove: function ieFixRemove(arr = [], indexToRemove = 0) {
+    if (arr.remove) {
+      return arr[indexToRemove].remove();
+    } else if (arr.removeChild) {
+      return arr.removeChild(indexToRemove);
+    }
   },
 });
 
