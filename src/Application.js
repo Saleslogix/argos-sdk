@@ -514,6 +514,8 @@ const __class = declare('argos.Application', null, {
 
     this.services[name] = instance;
 
+    instance.on('requesttimeout', this.onRequestTimeout, this);
+
     if ((options.isDefault || service.isDefault) || !this.defaultService) {
       this.defaultService = instance;
     }
@@ -531,11 +533,15 @@ const __class = declare('argos.Application', null, {
 
     this._connections[name] = instance;
 
+    instance.on('requesttimeout', this.onRequestTimeout, this);
+
     if ((options.isDefault || definition.isDefault) || !this._connections.default) {
       this._connections.default = instance;
     }
 
     return this;
+  },
+  onRequestTimeout: function _onTimeout() {
   },
   /**
    * Determines the the specified service name is found in the Apps service object.

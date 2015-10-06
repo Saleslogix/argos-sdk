@@ -146,7 +146,7 @@
             if (o.async !== false)
             {
                 // Set the timeout only if the request is async
-                if (typeof o.requestTimeout === 'number' && o.requestTimeout >= 0 && xhr.hasOwnProperty('timeout'))
+                if (typeof o.requestTimeout === 'number' && o.requestTimeout >= 0 && typeof xhr.timeout === 'number')
                 {
                     xhr.timeout = o.requestTimeout;
                     bindOnTimeout(xhr, o);
