@@ -53,7 +53,7 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
       console.error(err);// eslint-disable-line
     });
   },
-  createBriefcaseEntity: function createBriefcaseEntry(entry) {
+  createBriefcaseEntity: function createBriefcaseEntity(entry) {
     const entity = {
       entityId: this.getIdentity(entry),
       entityName: this.entityName,

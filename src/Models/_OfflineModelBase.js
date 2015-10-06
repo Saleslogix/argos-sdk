@@ -132,14 +132,18 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   },
   saveRelatedEntries: function saveRelatedEntries(parentEntry, options) {
     const entries = (parentEntry && parentEntry.$relatedEntities) ? parentEntry.$relatedEntities : [];
-    const relatedPromises = [];
+    let relatedPromises = [];
     const def = new Deferred();
     entries.forEach((related) => {
       const model = App.ModelManager.getModel(related.entityName, MODEL_TYPES.OFFLINE);
       if (model && related.entities) {
-        related.entities.forEach((relatedEntry) => {
-          const promise = model.saveEntry(relatedEntry, options);
-          relatedPromises.push(promise);
+       // related.entities.forEach((relatedEntry) => {
+       //   const promise = model.saveEntry(relatedEntry, options);
+       //   relatedPromises.push(promise);
+      //  });
+
+        relatedPromises = related.entities.map((relatedEntry) => {
+          return model.saveEntry(relatedEntry, options);
         });
       }
     });
@@ -203,11 +207,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     }.bind(this);
   },
   unWrapEntities: function unWrapEntities(docs) {
-    const entities = [];
-    docs.forEach((doc) => {
-      entities.push(this.unWrap(doc.doc));
-    }.bind(this));
-    return entities;
+    return docs.map((doc) => this.unWrap(doc.doc));
   },
 });
 

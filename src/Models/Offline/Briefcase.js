@@ -3,9 +3,14 @@ import _OfflineModelBase from '../_OfflineModelBase';
 import Manager from '../Manager';
 import MODEL_TYPES from '../Types';
 
+const resource = window.localeContext.getEntitySync('briefcaseModel').attributes;
+
 const __class = declare('argos.Models.Offline.Briefcase', [_OfflineModelBase], {
   entityName: 'Briefcase',
   modelName: 'Briefcase',
+  entityDisplayName: resource.entityDisplayName,
+  entityDisplayNamePlural: resource.entityDisplayNamePlural,
+
   createEntry: function createEntity(entry, model, options) {
     const entity = {}; // need to dynamicly create Properties;
     entity.$key = model.entityName + '_' + model.getEntityId(entry);

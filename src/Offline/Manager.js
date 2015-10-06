@@ -121,15 +121,20 @@ const __class = {
   },
   briefCaseEntities: function briefCaseEntities(entities) {
     const def = new Deferred();
-    const briefcaseRequests = [];
-    entities.forEach((entity) => {
+    let briefcaseRequests = [];
+    // entities.forEach((entity) => {
+    //  const entityName = entity.entityName;
+    //  const entityId = entity.entityId;
+    //  const requestOptions = entity.options;
+    //  const requestPromise = this.briefCaseEntity(entityName, entityId, requestOptions);
+    //  briefcaseRequests.push(requestPromise);
+    // });
+    briefcaseRequests = entities.map((entity) => {
       const entityName = entity.entityName;
       const entityId = entity.entityId;
       const requestOptions = entity.options;
-      const requestPromise = this.briefCaseEntity(entityName, entityId, requestOptions);
-      briefcaseRequests.push(requestPromise);
+      return this.briefCaseEntity(entityName, entityId, requestOptions);
     });
-
     if (briefcaseRequests.length > 0) {
       all(briefcaseRequests).then((results) => {
         def.resolve(results);
