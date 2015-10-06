@@ -227,6 +227,10 @@
           "path": "../src-out/Offline/"
         },
         {
+          "text": "_ListOfflineMixin.js",
+          "path": "../src-out/Offline/"
+        },
+        {
           "text": "_DetailBase.js",
           "path": "../src-out/"
         },
