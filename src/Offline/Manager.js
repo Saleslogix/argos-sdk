@@ -122,13 +122,6 @@ const __class = {
   briefCaseEntities: function briefCaseEntities(entities) {
     const def = new Deferred();
     let briefcaseRequests = [];
-    // entities.forEach((entity) => {
-    //  const entityName = entity.entityName;
-    //  const entityId = entity.entityId;
-    //  const requestOptions = entity.options;
-    //  const requestPromise = this.briefCaseEntity(entityName, entityId, requestOptions);
-    //  briefcaseRequests.push(requestPromise);
-    // });
     briefcaseRequests = entities.map((entity) => {
       const entityName = entity.entityName;
       const entityId = entity.entityId;

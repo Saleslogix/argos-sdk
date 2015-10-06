@@ -137,11 +137,6 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     entries.forEach((related) => {
       const model = App.ModelManager.getModel(related.entityName, MODEL_TYPES.OFFLINE);
       if (model && related.entities) {
-       // related.entities.forEach((relatedEntry) => {
-       //   const promise = model.saveEntry(relatedEntry, options);
-       //   relatedPromises.push(promise);
-      //  });
-
         relatedPromises = related.entities.map((relatedEntry) => {
           return model.saveEntry(relatedEntry, options);
         });
