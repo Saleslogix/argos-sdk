@@ -115,10 +115,10 @@ function checkOrientationAndLocation() {
     if (Math.abs(window.innerWidth - context.width) > 5) {
       R.setOrientation(window.innerHeight < window.innerWidth ? 'landscape' : 'portrait');
     } else {
-      if (domClass.contains(R.rootEl, 'keyboard-up')) {
-        domClass.remove(R.rootEl, 'keyboard-up');
+      if (domClass.contains(R.rootEl, 'android-keyboard-up')) {
+        domClass.remove(R.rootEl, 'android-keyboard-up');
       } else {
-        domClass.add(R.rootEl, 'keyboard-up');
+        domClass.add(R.rootEl, 'android-keyboard-up');
       }
     }
 
