@@ -26,7 +26,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * HTML that defines a new tab list
    */
   tabListTemplate: new Simplate([
-    '<ul class="tab-list" data-dojo-attach-point="tabList">',
+    '<ul class="tab-list" data-dojo-attach-point="tabList" onclick="">',
     '</ul>',
   ]),
   /**
@@ -275,7 +275,6 @@ const __class = declare('argos.TabWidget', [_Templated], {
 
       domStyle.set(focusState, {
         left: posLeft - tableLeft + 'px',
-        top: posTop - tableTop + 'px',
         right: (posTop - tableTop) + width + 'px',
         bottom: (posTop - tableTop) + height + 'px',
         width: width + 'px',
