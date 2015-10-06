@@ -146,7 +146,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       maxWidth: parentWidth + 'px',
       top: position.top + 'px',
       left: position.left + 'px',
-      zIndex: domStyle.get(this._parentNode, 'zIndex') + 10,
+      zIndex: this.getZValue(this._parentNode) + 10,
       maxHeight: parentHeight - modalTop + 'px',
       visibility: 'visible',
       overflow: 'auto',
@@ -189,6 +189,13 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   getDeferred: function getDeferred() {
     return this._deferred;
   },
+  getZValue: function getZValue(dom = {}) {
+    let value = domStyle.get(dom, 'zIndex');
+    if (value === 'auto') {
+      value = 0;
+    }
+    return value;
+  },
   getSelected: function getSelected() {
     return this._picklistSelected;
   },
@@ -230,7 +237,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
           backgroundColor: 'transparent',
         });
       }
-      const parentZValue = domStyle.get(parentPanel, 'zIndex');
+      const parentZValue = this.getZValue(parentPanel);
       domStyle.set(this._backdrop, {
         visbility: 'hidden',
         zIndex: parentZValue + 10,
