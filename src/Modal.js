@@ -358,7 +358,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   showModal: function showModal(target = {}) {
     if (this._parentNode) {
       this._deferred = new Deferred();
-      if (!domClass.contains(window.ReUI.rootEl, 'keyboard-up')) {
+      if (!domClass.contains(window.ReUI.rootEl, 'android-keyboard-up')) {
         this.showContent()
             .toggleBackdrop()
             .toggleParentScroll()
