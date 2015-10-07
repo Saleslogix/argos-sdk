@@ -6,6 +6,7 @@ import all from 'dojo/promise/all';
 import when from 'dojo/when';
 import _CustomizationMixin from '../_CustomizationMixin';
 import _ModelBase from './_ModelBase';
+import QueryResults from 'dojo/store/util/QueryResults';
 import Manager from './Manager';
 import MODEL_TYPES from './Types';
 
@@ -192,6 +193,9 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     }.bind(this), (err) => {
       def.reject(err);
     });
+    if (options.returnQueryResults) {
+      return QueryResults(def.promise); // eslint-disable-line
+    }
     return def.promise;
   },
   buildQueryExpression: function buildQueryExpression(query, options) { // eslint-disable-line
@@ -203,6 +207,16 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   },
   unWrapEntities: function unWrapEntities(docs) {
     return docs.map((doc) => this.unWrap(doc.doc));
+  },
+  getRelatedCount: function getRelatedCount(relationship, entry) {
+    return 99;
+  },
+  buildRelatedQueryExpression: function buildRelatedQueryExpression(relationship, entry) {
+    return function queryFn(doc, emit) {
+      if (doc.entityName === this.entityName) {
+        emit(doc.modifyDate);
+      }
+    }.bind(this);
   },
 });
 

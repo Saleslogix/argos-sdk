@@ -154,12 +154,14 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     const queryExpression = this.buildQueryExpression(query, options);
 
     queryResults = store.query(queryExpression, queryOptions);
+    if (options.returnQueryResults) {
+      return queryResults;
+    }
     when(queryResults, (entities) => {
       def.resolve(entities);
     }, (err) => {
       def.reject(err);
     });
-
     return def.promise;
   },
   getRelatedRequests: function getRelatedRequests(entry) {
