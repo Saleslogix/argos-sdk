@@ -129,15 +129,11 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
                        .setContentPicklist({ items: this.minuteValues, action: 'setSelectedMinute', actionScope: this });
       connect.connect(this.minuteNode, 'onclick', this, this.toggleMinutes);
     }
-    if (initial % 5 === 0) {
-      this.setSelectedMinute({ target: this._minuteModal.getContent().children[this.minuteValues.indexOf(initial)] });
-    } else {
-      let value = Math.ceil(initial / 5) * 5;
-      if (value >= 60) {
-        value = 55;
-      }
-      this.setSelectedMinute({ target: this._minuteModal.getContent().children[this.minuteValues.indexOf(`${value}`)] });
+    let value = Math.ceil(initial / 5) * 5;
+    if (value >= 60) {
+      value = 55;
     }
+    this.setSelectedMinute({ target: this._minuteModal.getContent().children[this.minuteValues.indexOf(`${value}`)] });
     return this;
   },
   getContent: function getContent() {

@@ -136,7 +136,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   _widgetName: 'calendar',
 
   changeDay: function changeDay(params) {
-    // TODO: Need to register this event to dojo/connect so that the activity feed and then change based on the date chosen.
     if (params) {
       const selected = query('.selected', this.weeksNode)[0];
 
@@ -207,11 +206,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   createMonthModal: function createMonthModal() {
     if (!this._monthModal) {
       this._monthModal = new Modal({ id: 'month-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideMonthModal', actionScope: this });
-      if (this.domNode.offsetParent) {
-        this._monthModal.placeModal(this.domNode.offsetParent);
-      } else {
-        this._monthModal.placeModal(this.domNode);
-      }
+      this._monthModal.placeModal(this.domNode.offsetParent || this.domNode);
       this._monthModal.setContentPicklist({ items: this.monthsText, action: 'setSelectedMonth', actionScope: this, defaultValue: this.date.selectedDateMoment.format('MMMM') });
       this._currentMonth = this._monthModal.getSelected();
       this._todayMonth = this._currentMonth;
@@ -221,11 +216,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   createYearModal: function createYearModal() {
     if (!this._yearModal) {
       this._yearModal = new Modal({ id: 'year-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideYearModal', actionScope: this });
-      if (this.domNode.offsetParent) {
-        this._yearModal.placeModal(this.domNode.offsetParent);
-      } else {
-        this._yearModal.placeModal(this.domNode);
-      }
+      this._yearModal.placeModal(this.domNode.offsetParent || this.domNode);
       this._yearModal.setContentPicklist({ items: this.getYearRange(), action: 'setSelectedYear', actionScope: this, defaultValue: this.date.selectedDateMoment.format('YYYY')});
       this._currentYear = this._yearModal.getSelected();
       this._todayYear = this._currentYear;
