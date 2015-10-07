@@ -56,9 +56,9 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
      '</table>',
   ]),
   calendarFooterTemplate: new Simplate([
-    '<div class="calendar-footer">',
-      '<div class="button tertiary clear" data-action="clearCalendar" data-dojo-attach-point="clearButton">{%= $.clearText %}</div>',
-      '<div class="button tertiary toToday" data-action="goToToday" data-dojo-attach-point="todayButton">{%= $.todayText %}</div>',
+    '<div class="calendar-footer" data-dojo-attach-point="footerNode">',
+      '<div class="button button--secondary clear" data-action="clearCalendar" data-dojo-attach-point="clearButton">{%= $.clearText %}</div>',
+      '<div class="button button--secondary toToday" data-action="goToToday" data-dojo-attach-point="todayButton">{%= $.todayText %}</div>',
     '</div>',
   ]),
   calendarTableDayTemplate: new Simplate([
