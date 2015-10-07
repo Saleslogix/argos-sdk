@@ -99,7 +99,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * Sent as part of navigation options to {@link Calendar Calendar}, where it controls the
    * display of the relative date time picker.
    */
-  showRelativeDateTime: true,
+  showRelativeDateTime: false,
   /**
    * @cfg {Boolean}
    * Used in formatted and sent as part of navigation options to {@link Calendar Calendar},
@@ -194,13 +194,13 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       return;
     }
 
+    const options = this.createNavigationOptions();
     if (!this.modal) {
-      const options = this.createNavigationOptions();
       if (this.showRelativeDateTime) {
         this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
         this.modal = new Modal({ id: 'date-time-modal ' + this.id, confirmText: this.dateTimePicker.pickDateTimeText, confirm: this.dateTimePicker.toDateTimePicker });
       } else {
-        this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
+        this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true, showTimePicker: this.showTimePicker });
         this.modal = new Modal({ id: 'date-time-modal ' + this.id });
       }
       this.modal.placeModal(this.domNode.offsetParent)
@@ -208,7 +208,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
                 .setContentOptions(options);
     }
 
-    this.modal.showModal(params.$source).then(this.getValuesFromModal.bind(this));
+    this.modal.setContentOptions(options).showModal(params.$source).then(this.getValuesFromModal.bind(this));
   },
   _onClick: function _onClick(evt) {
     event.stop(evt);
