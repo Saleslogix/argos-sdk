@@ -133,6 +133,9 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     if (value >= 60) {
       value = 55;
     }
+    if (value === 0) {
+      value = '00';
+    }
     this.setSelectedMinute({ target: this._minuteModal.getContent().children[this.minuteValues.indexOf(`${value}`)] });
     return this;
   },
