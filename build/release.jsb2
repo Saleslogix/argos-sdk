@@ -71,6 +71,30 @@
           "path": "../src-out/"
         },
         {
+          "text": "Convert.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_CustomizationMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Format.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "SData.js",
+          "path": "../src-out/Store/"
+        },
+        {
+          "text": "PouchDB.js",
+          "path": "../src-out/Store/"
+        },
+        {
+           "text": "Types.js",
+           "path": "../src-out/Models/"
+        },
+        {
           "text": "_ModelBase.js",
           "path": "../src-out/Models/"
         },
@@ -93,10 +117,6 @@
         {
            "text": "RecentlyViewed.js",
            "path": "../src-out/Models/Offline"
-        },
-        {
-           "text": "Types.js",
-           "path": "../src-out/Models/"
         },
         {
            "text": "Adapter.js",
@@ -132,10 +152,6 @@
         },
         {
           "text": "_ActionMixin.js",
-          "path": "../src-out/"
-        },
-        {
-          "text": "_CustomizationMixin.js",
           "path": "../src-out/"
         },
         {
@@ -177,22 +193,6 @@
         {
           "text": "RelativeDateTimePicker.js",
           "path": "../src-out/"
-        },
-        {
-          "text": "Convert.js",
-          "path": "../src-out/"
-        },
-        {
-          "text": "Format.js",
-          "path": "../src-out/"
-        },
-        {
-          "text": "SData.js",
-          "path": "../src-out/Store/"
-        },
-        {
-          "text": "PouchDB.js",
-          "path": "../src-out/Store/"
         },
         {
            "text": "Manager.js",
