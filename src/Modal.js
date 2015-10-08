@@ -101,7 +101,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       // This call needs to take place before positioning so that the width of the modal is accounted for
       domStyle.set(this.modalNode, {
         minWidth: offsetWidth + 'px',
-        maxHeight: parentHeight + 'px',
+        maxHeight: parentHeight * 2 / 3 + 'px',
       });
     }
 

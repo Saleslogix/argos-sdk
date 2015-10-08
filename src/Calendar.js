@@ -56,9 +56,9 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
      '</table>',
   ]),
   calendarFooterTemplate: new Simplate([
-    '<div class="calendar-footer">',
-      '<div class="button tertiary clear" data-action="clearCalendar" data-dojo-attach-point="clearButton">{%= $.clearText %}</div>',
-      '<div class="button tertiary toToday" data-action="goToToday" data-dojo-attach-point="todayButton">{%= $.todayText %}</div>',
+    '<div class="calendar-footer" data-dojo-attach-point="footerNode">',
+      '<div class="button button--secondary clear" data-action="clearCalendar" data-dojo-attach-point="clearButton">{%= $.clearText %}</div>',
+      '<div class="button button--secondary toToday" data-action="goToToday" data-dojo-attach-point="todayButton">{%= $.todayText %}</div>',
     '</div>',
   ]),
   calendarTableDayTemplate: new Simplate([
@@ -136,7 +136,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   _widgetName: 'calendar',
 
   changeDay: function changeDay(params) {
-    // TODO: Need to register this event to dojo/connect so that the activity feed and then change based on the date chosen.
     if (params) {
       const selected = query('.selected', this.weeksNode)[0];
 
@@ -205,27 +204,23 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     this.date.selectedDateMoment = null;
   },
   createMonthModal: function createMonthModal() {
-    this._monthModal = new Modal({ id: 'month-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideMonthModal', actionScope: this });
-    if (this.domNode.offsetParent) {
-      this._monthModal.placeModal(this.domNode.offsetParent);
-    } else {
-      this._monthModal.placeModal(this.domNode);
+    if (!this._monthModal) {
+      this._monthModal = new Modal({ id: 'month-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideMonthModal', actionScope: this });
+      this._monthModal.placeModal(this.domNode.offsetParent || this.domNode);
+      this._monthModal.setContentPicklist({ items: this.monthsText, action: 'setSelectedMonth', actionScope: this, defaultValue: this.date.selectedDateMoment.format('MMMM') });
+      this._currentMonth = this._monthModal.getSelected();
+      this._todayMonth = this._currentMonth;
     }
-    this._monthModal.setContentPicklist({ items: this.monthsText, action: 'setSelectedMonth', actionScope: this, defaultValue: this.date.selectedDateMoment.format('MMMM') });
-    this._currentMonth = this._monthModal.getSelected();
-    this._todayMonth = this._currentMonth;
     return this;
   },
   createYearModal: function createYearModal() {
-    this._yearModal = new Modal({ id: 'year-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideYearModal', actionScope: this });
-    if (this.domNode.offsetParent) {
-      this._yearModal.placeModal(this.domNode.offsetParent);
-    } else {
-      this._yearModal.placeModal(this.domNode);
+    if (!this._yearModal) {
+      this._yearModal = new Modal({ id: 'year-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideYearModal', actionScope: this });
+      this._yearModal.placeModal(this.domNode.offsetParent || this.domNode);
+      this._yearModal.setContentPicklist({ items: this.getYearRange(), action: 'setSelectedYear', actionScope: this, defaultValue: this.date.selectedDateMoment.format('YYYY')});
+      this._currentYear = this._yearModal.getSelected();
+      this._todayYear = this._currentYear;
     }
-    this._yearModal.setContentPicklist({ items: this.getYearRange(), action: 'setSelectedYear', actionScope: this, defaultValue: this.date.selectedDateMoment.format('YYYY')});
-    this._currentYear = this._yearModal.getSelected();
-    this._todayYear = this._currentYear;
     return this;
   },
   decrementMonth: function decrementMonth() {
@@ -427,9 +422,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     return this;
   },
   show: function show(options = {}) {
-    if (!this.isModal) {
-      this.inherited(arguments);
-    }
     this.date = {};
     this.options = options || this.options;
 
@@ -444,7 +436,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
         .createYearModal();
 
     domClass.add(this.todayButton, 'selected');
-    this.goToToday(this.date);
+    this.refreshCalendar(this.date);
   },
   toggleMonthModal: function toggleMonthModal(params = {}) {
     domClass.toggle(this.monthNode, 'selected');

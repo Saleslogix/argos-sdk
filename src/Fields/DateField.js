@@ -20,6 +20,7 @@ import domClass from 'dojo/dom-class';
 import format from '../Format';
 import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
+import DateTimePicker from '../DateTimePicker';
 import RelativeDateTimePicker from '../RelativeDateTimePicker';
 import Modal from '../Modal';
 
@@ -38,7 +39,8 @@ const resource = window.localeContext.getEntitySync('dateField').attributes;
  *         label: this.startDateText,
  *         type: 'date',
  *         dateFormatText: 'MM/DD HH:mm:ss',
- *         showTimerPicker: true
+ *         showTimerPicker: true,
+ *         showRelativeDateTime: true
  *     }
  *
  * @alternateClassName DateField
@@ -92,6 +94,12 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * display of the hour/minute inputs.
    */
   showTimePicker: false,
+  /**
+   * @cfg {Boolean}
+   * Sent as part of navigation options to {@link Calendar Calendar}, where it controls the
+   * display of the relative date time picker.
+   */
+  showRelativeDateTime: false,
   /**
    * @cfg {Boolean}
    * Used in formatted and sent as part of navigation options to {@link Calendar Calendar},
@@ -186,16 +194,21 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       return;
     }
 
+    const options = this.createNavigationOptions();
     if (!this.modal) {
-      const options = this.createNavigationOptions();
-      this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
-      this.modal = new Modal({ id: 'date-time-modal ' + this.id, confirmText: this.dateTimePicker.pickDateTimeText, confirm: this.dateTimePicker.toDateTimePicker });
+      if (this.showRelativeDateTime) {
+        this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
+        this.modal = new Modal({ id: 'date-time-modal ' + this.id, confirmText: this.dateTimePicker.pickDateTimeText, confirm: this.dateTimePicker.toDateTimePicker });
+      } else {
+        this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true, showTimePicker: this.showTimePicker });
+        this.modal = new Modal({ id: 'date-time-modal ' + this.id });
+      }
       this.modal.placeModal(this.domNode.offsetParent)
                 .setContentObject(this.dateTimePicker)
                 .setContentOptions(options);
     }
 
-    this.modal.showModal(params.$source).then(this.getValuesFromModal.bind(this));
+    this.modal.setContentOptions(options).showModal(params.$source).then(this.getValuesFromModal.bind(this));
   },
   _onClick: function _onClick(evt) {
     event.stop(evt);

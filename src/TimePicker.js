@@ -112,20 +112,31 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     '55',
   ],
 
-  createHourModal: function createHourModal() {
-    this._hourModal = new Modal({ id: 'hour-modal ' + this.id, showBackdrop: false, positioning: 'right' });
-    this._hourModal.placeModal(this.domNode.offsetParent)
-                   .setContentPicklist({ items: this.hourValues, action: 'setSelectedHour', actionScope: this });
-    this.setSelectedHour({ target: this._hourModal.getContent().children[0] });
-    connect.connect(this.hourNode, 'onclick', this, this.toggleHours);
+  createHourModal: function createHourModal(initial) {
+    if (!this._hourModal) {
+      this._hourModal = new Modal({ id: 'hour-modal ' + this.id, showBackdrop: false, positioning: 'right' });
+      this._hourModal.placeModal(this.domNode.offsetParent)
+                     .setContentPicklist({ items: this.hourValues, action: 'setSelectedHour', actionScope: this });
+      connect.connect(this.hourNode, 'onclick', this, this.toggleHours);
+    }
+    this.setSelectedHour({ target: this._hourModal.getContent().children[this.hourValues.indexOf(initial)] });
     return this;
   },
-  createMinuteModal: function createMinuteModal() {
-    this._minuteModal = new Modal({ id: 'minute-modal ' + this.id, showBackdrop: false, positioning: 'right' });
-    this._minuteModal.placeModal(this.domNode.offsetParent)
-                     .setContentPicklist({ items: this.minuteValues, action: 'setSelectedMinute', actionScope: this });
-    this.setSelectedMinute({ target: this._minuteModal.getContent().children[0] });
-    connect.connect(this.minuteNode, 'onclick', this, this.toggleMinutes);
+  createMinuteModal: function createMinuteModal(initial) {
+    if (!this._minuteModal) {
+      this._minuteModal = new Modal({ id: 'minute-modal ' + this.id, showBackdrop: false, positioning: 'right' });
+      this._minuteModal.placeModal(this.domNode.offsetParent)
+                       .setContentPicklist({ items: this.minuteValues, action: 'setSelectedMinute', actionScope: this });
+      connect.connect(this.minuteNode, 'onclick', this, this.toggleMinutes);
+    }
+    let value = Math.ceil(initial / 5) * 5;
+    if (value >= 60) {
+      value = 55;
+    }
+    if (value === 0) {
+      value = '00';
+    }
+    this.setSelectedMinute({ target: this._minuteModal.getContent().children[this.minuteValues.indexOf(`${value}`)] });
     return this;
   },
   getContent: function getContent() {
@@ -137,7 +148,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     this._hourModal.hideModal();
     this._minuteModal.hideModal();
   },
-  setSelectedHour: function getSelectedHour({ target }) {
+  setSelectedHour: function setSelectedHour({ target }) {
     domClass.add(target, 'selected');
     if (this._selectedHour) {
       domClass.remove(this._selectedHour, 'selected');
@@ -146,7 +157,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     this._hourModal.hideModal();
     this.hours.value = target.innerHTML;
   },
-  setSelectedMinute: function getSelectedMinute({ target }) {
+  setSelectedMinute: function setSelectedMinute({ target }) {
     domClass.add(target, 'selected');
     if (this._selectedMinute) {
       domClass.remove(this._selectedMinute, 'selected');
@@ -167,12 +178,24 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     }
     return this;
   },
-  show: function show() {
+  show: function show(options = {}) {
     this.timeValue = {
       isPM: false,
     };
-    this.createHourModal()
-        .createMinuteModal();
+    const date = moment(options.date) || moment();
+    let hour = date.hours() || 1;
+    let meridiemToggled = false;
+    if (hour > 12) {
+      hour = hour % 12;
+      meridiemToggled = true;
+    }
+    let minutes = date.minutes() || 0;
+    if (minutes === 0) {
+      minutes = '00';
+    }
+    this.createHourModal(`${hour}`)
+        .createMinuteModal(`${minutes}`)
+        .toggleMeridiem({target: meridiemToggled});
     connect.connect(this.meridiemNode, 'onclick', this, this.toggleMeridiem);
   },
   toggleHours: function toggleHours(params = {}) {
