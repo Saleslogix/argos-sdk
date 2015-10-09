@@ -4,6 +4,7 @@ import PouchDB from 'argos/Store/PouchDB';
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
 import when from 'dojo/when';
+import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
 import _ModelBase from './_ModelBase';
 import QueryResults from 'dojo/store/util/QueryResults';
@@ -198,10 +199,14 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     }
     return def.promise;
   },
-  buildQueryExpression: function buildQueryExpression(query, options) { // eslint-disable-line
+  buildQueryExpression: function buildQueryExpression(queryExpression, options) { // eslint-disable-line
     return function queryFn(doc, emit) {
       if (doc.entityName === this.entityName) {
-        emit(doc.modifyDate);
+        if (queryExpression && (typeof queryExpression === 'function')) {
+          queryExpression.apply(this, [doc, emit]);
+        } else {
+          emit(doc.modifyDate);
+        }
       }
     }.bind(this);
   },
@@ -209,11 +214,44 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     return docs.map((doc) => this.unWrap(doc.doc));
   },
   getRelatedCount: function getRelatedCount(relationship, entry) {
-    return 99;
+    const def = new Deferred();
+    const model = App.ModelManager.getModel(relationship.childEntity, MODEL_TYPES.OFFLINE);
+    if (model) {
+      const queryExpression = this.buildRelatedQueryExpression(relationship, entry);
+      const queryOptions = {
+        returnQueryResults: true,
+      };
+      return model.getEntries(queryExpression, queryOptions);
+    }
+    def.resolve({total: 0});
+    return def.promise;
   },
   buildRelatedQueryExpression: function buildRelatedQueryExpression(relationship, entry) {
     return function queryFn(doc, emit) {
-      if (doc.entityName === this.entityName) {
+      let parentDataPath;
+      let childDataPath;
+      let parentValue;
+      let childValue;
+      if (relationship.parentProperty) {
+        parentDataPath = (relationship.parentDataPath) ? relationship.parentDataPath : relationship.parentProperty;
+      } else {
+        parentDataPath = this.idProperty;
+      }
+
+      if (relationship.childProperty) {
+        childDataPath = (relationship.childDataPath) ? relationship.childDataPath : relationship.childProperty;
+        if (relationship.childPropertyType && (relationship.childPropertyType === 'object')) {
+          childDataPath = relationship.childProperty + '.' + this.idProperty;
+        }
+      } else {
+        childDataPath = this.idProperty;
+      }
+
+      parentValue = utility.getValue(entry, parentDataPath);
+      if (doc.entity) {
+        childValue = utility.getValue(doc.entity, childDataPath);
+      }
+      if ((parentValue && childValue) && (childValue === parentValue)) {
         emit(doc.modifyDate);
       }
     }.bind(this);

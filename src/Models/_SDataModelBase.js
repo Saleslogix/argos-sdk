@@ -212,9 +212,11 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     let relatedValue;
     let where;
     let optionsTemp = options;
+
     if (!optionsTemp) {
       optionsTemp = {};
     }
+
     queryOptions = {
       count: (optionsTemp.count) ? optionsTemp.count : null,
       start: (optionsTemp.start) ? optionsTemp.start : null,
@@ -222,17 +224,28 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
       sort: (optionsTemp.orderBy) ? optionsTemp.orderBy : null,
       queryModelName: (relationship.queryModelName) ? relationship.queryModelName : 'detail',
     };
-    if (relationship.parentPrimaryKey) {
-      parentDataPath = this.idProperty;
-    } else {
+
+    if (relationship.parentProperty) {
       parentDataPath = (relationship.parentDataPath) ? relationship.parentDataPath : relationship.parentProperty;
+    } else {
+      parentDataPath = this.idProperty;
     }
-    childDataPath = (relationship.childDataPath) ? relationship.childDataPath : relationship.childProperty;
+
+    if (relationship.childProperty) {
+      childDataPath = (relationship.childDataPath) ? relationship.childDataPath : relationship.childProperty;
+      if (relationship.childPropertyType && (relationship.childPropertyType === 'object')) {
+        childDataPath = relationship.childProperty + '.Id';
+      }
+    } else {
+      childDataPath = 'Id';
+    }
+
     relatedValue = utility.getValue(entry, parentDataPath);
     where = "${0} eq '${1}'";
     if (!relatedValue) {
       return null;
     }
+
     queryOptions.where = string.substitute(where, [childDataPath, relatedValue]);
     return queryOptions;
   },
