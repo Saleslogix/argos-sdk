@@ -1338,17 +1338,20 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     let queryResults;
     let queryOptions;
-
+    let queryExpression;
     if (this._model) {
       // Todo: find a better way to transfer this state.
       this.options.count = this.pageSize;
       this.options.start = this.position;
-      queryResults = this.requestDataUsingModel();
+      queryOptions = {};
+      this._applyStateToQueryOptions(queryOptions);
+      queryExpression = this._buildQueryExpression() || null;
+      queryResults = this.requestDataUsingModel(queryExpression, queryOptions);
     } else {
       queryOptions = {};
       this._applyStateToQueryOptions(queryOptions);
 
-      const queryExpression = this._buildQueryExpression() || null;
+      queryExpression = this._buildQueryExpression() || null;
       queryResults = this.requestDataUsingStore(queryExpression, queryOptions);
     }
 
@@ -1359,8 +1362,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     return queryResults;
   },
-  requestDataUsingModel: function requestDataUsingModel() {
-    return this._model.getEntries(this.query, this.options);
+  requestDataUsingModel: function requestDataUsingModel(queryExpression, options) {
+    const queryOptions = {
+      returnQueryResults: true,
+      queryModelName: this.queryModelName,
+    };
+    lang.mixin(queryOptions, options);
+    return this._model.getEntries(queryExpression, queryOptions);
   },
   requestDataUsingStore: function requestDataUsingStore(queryExpression, queryOptions) {
     const store = this.get('store');
@@ -1460,13 +1468,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         // setup with an idProperty
         this.entries[this.getIdentity(entry)] = entry;
 
-        let rowNode;
-        try {
-          rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
-        } catch (err) {
-          console.error(err); // eslint-disable-line
-          rowNode = domConstruct.toDom(this.rowTemplateError.apply(entry, this));
-        }
+        const rowNode = this.createItemRowNode(entry);
 
         docfrag.appendChild(rowNode);
         this.onApplyRowTemplate(entry, rowNode);
@@ -1476,6 +1478,16 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         domConstruct.place(docfrag, this.contentNode, 'last');
       }
     }
+  },
+  createItemRowNode: function createItemRowNode(entry) {
+    let rowNode = null;
+    try {
+      rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+    } catch (err) {
+      console.error(err); // eslint-disable-line
+      rowNode = domConstruct.toDom(this.rowTemplateError.apply(entry, this));
+    }
+    return rowNode;
   },
   getIdentity: function getIdentity(entry) {
     if (this._model) {

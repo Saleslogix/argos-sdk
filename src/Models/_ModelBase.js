@@ -79,4 +79,8 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful, _Customiza
   getEntityId: function getEntityId(entry) {
     return utility.getValue(entry, this.idProperty);
   },
+  buildQueryExpression: function buildQueryExpression(query, options) { // eslint-disable-line
+  },
+  buildRelatedQueryExpression: function buildRelatedQueryExpression(relationship, entry) { // eslint-disable-line
+  },
 });
