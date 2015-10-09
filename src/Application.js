@@ -290,14 +290,14 @@ const __class = declare('argos.Application', null, {
    * Establishes signals/handles from dojo's newer APIs
    */
   initSignals: function initSignals() {
-    this._signals.push(aspect.after(window.ReUI, 'setOrientation', (result, args) => {
+    this._signals.push(aspect.after(window.ReUI, 'setOrientation', ((result, args) => {
       if (args && args.length > 0) {
         const value = args[0];
         this.currentOrientation = value;
         this.onSetOrientation(value);
         connect.publish('/app/setOrientation', [value]);
       }
-    }.bind(this)));
+    }).bind(this)));
 
     return this;
   },
