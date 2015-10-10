@@ -31,7 +31,7 @@ const __class = declare('argos._RelatedViewWidgetEditMixin', null, {
     this.inherited(arguments);
   },
   createRelatedViews: function createRelatedViews(layout, entry) {
-    layout.forEach((item) => {
+    layout.forEach(((item) => {
       if (item.relatedView) {
         const node = query('#' + item.relatedView.id, this.contentNode)[0];
         if (node) {
@@ -41,7 +41,7 @@ const __class = declare('argos._RelatedViewWidgetEditMixin', null, {
       if (item.children) {
         this.createRelatedViews(item.children, entry);
       }
-    }.bind(this));
+    }).bind(this));
   },
   /**
    * Gets the related view manager for a related view definition.
