@@ -289,8 +289,8 @@ __class = lang.setObject('argos.Format', {
     if (dateValue) {
       dateValue = moment(dateValue);
       if (utc) {
-        dateValue = dateValue.add({
-          minutes: dateValue.zone(),
+        dateValue = dateValue.subtract({
+          minutes: dateValue.utcOffset(),
         });
       }
 
