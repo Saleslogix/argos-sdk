@@ -228,7 +228,11 @@ const __class = declare('argos.TabWidget', [_Templated], {
         this.checkTabOverflow(tab);
       }, this);
     } else {
-      const arr = [].slice.call(this.tabList.cloneNode(true).children);
+      let temp = this.tabList.children;
+      if (!temp[0].remove) { // Check if is IE
+        temp = this.tabList.cloneNode(true).children;
+      }
+      const arr = [].slice.call(temp);
       domConstruct.empty(this.tabList);
       array.forEach(arr, function recreateTabList(tab) {
         domConstruct.place(tab, this.tabList);
