@@ -52,6 +52,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   eveningHours: 15,
   showThisEveningUntil: 12,
   isModal: false,
+  showTimePicker: true,
   titleText: resource.titleText,
   pickDateTimeText: resource.pickDateTimeText,
   thisEveningText: resource.thisEveningText,
@@ -130,7 +131,8 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
       this._selectedTime = null;
     }
   },
-  show: function show() {
+  show: function show(options = {}) {
+    this.showTimePicker = options.showTimePicker;
     this.layout = this.layout || this._createCustomizedLayout(this.createLayout());
     if (!this.listNode.children.length) {
       this.processLayout();
@@ -145,7 +147,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
       this._dateTimeModal.placeModal(this.domNode.offsetParent)
             .setContentObject(dateTimePicker);
     }
-    this._dateTimeModal.showModal().then(this.resolveDeferred.bind(this));
+    this._dateTimeModal.setContentOptions(this.getContentOptions()).showModal().then(this.resolveDeferred.bind(this));
   },
 });
 

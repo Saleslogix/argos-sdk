@@ -427,7 +427,15 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
 
     this.titleText = this.options.label ? this.options.label : this.titleText;
     this.showTimePicker = this.options && this.options.showTimePicker;
-    this.date.selectedDateMoment = moment((this.options && this.options.date) || moment().clone());
+    if (this.options.timeless) {
+      const startDate = moment(this.options && this.options.date);
+      startDate.subtract({
+        minutes: startDate.utcOffset(),
+      });
+      this.date.selectedDateMoment = startDate;
+    } else {
+      this.date.selectedDateMoment = moment((this.options && this.options.date) || moment().clone());
+    }
     this.date.todayMoment = moment();
     if (this.isModal || this.options.isModal || this.noClearButton || this.options.noClearButton) {
       this.clearButton.style.display = 'none';

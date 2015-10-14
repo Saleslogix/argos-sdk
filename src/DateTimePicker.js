@@ -19,6 +19,7 @@
  */
 import declare from 'dojo/_base/declare';
 import domConstruct from 'dojo/dom-construct';
+import domStyle from 'dojo/dom-style';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
 import Calendar from './Calendar';
@@ -50,19 +51,30 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
     }
   },
   show: function show(options = {}) {
+    this.showTimePicker = options.showTimePicker;
     if (!this._calendarNode) {
       this._calendarNode = new Calendar({ id: 'datetime-calendar ' + this.id, isModal: this.isModal || options.isModal});
       domConstruct.place(this._calendarNode.domNode, this.dateTimeNode);
       this._calendarNode.show(options);
-      if (this.showTimePicker) {
-        this._timeSelectNode = new TimePicker({ id: 'datetime-timePicker ' + this.id, showSetTime: false });
-        domConstruct.place(this._timeSelectNode.domNode, this.dateTimeNode);
-        this._timeSelectNode.show(options);
+      this._timeSelectNode = new TimePicker({ id: 'datetime-timePicker ' + this.id, showSetTime: false });
+      domConstruct.place(this._timeSelectNode.domNode, this.dateTimeNode);
+      this._timeSelectNode.show(options);
+      if (!this.showTimePicker) {
+        domStyle.set(this._timeSelectNode.domNode, {
+          display: 'none',
+        });
       }
     } else {
       this._calendarNode.show(options);
-      if (this.showTimePicker && this._timeSelectNode) {
+      if (this.showTimePicker) {
         this._timeSelectNode.show(options);
+        domStyle.set(this._timeSelectNode.domNode, {
+          display: 'block',
+        });
+      } else {
+        domStyle.set(this._timeSelectNode.domNode, {
+          display: 'none',
+        });
       }
     }
   },

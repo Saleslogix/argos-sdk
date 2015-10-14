@@ -186,6 +186,9 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   getContent: function getContent() {
     return this._contentObject;
   },
+  getContentOptions: function getContentOptions() {
+    return this._contentOptions;
+  },
   getDeferred: function getDeferred() {
     return this._deferred;
   },
