@@ -50,6 +50,14 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
       this._timeSelectNode.hideModals();
     }
   },
+  removeListeners: function removeListeners() {
+    if (this._calendarNode && this._calendarNode.removeListeners) {
+      this._calendarNode.removeListeners();
+    }
+    if (this._timeSelectNode && this._timeSelectNode.removeListeners) {
+      this._timeSelectNode.removeListeners();
+    }
+  },
   show: function show(options = {}) {
     this.showTimePicker = options.showTimePicker;
     if (!this._calendarNode) {

@@ -221,6 +221,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
         visibility: 'hidden',
       });
     }
+    this.onHide();
     return this;
   },
   modalClick: function modalClick() {
@@ -231,6 +232,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     this.showBackdrop = false;
     return this;
   },
+  onHide: function onHide() {},
   placeBackdrop: function placeBackdrop(parentPanel = {}) {
     const existingBackdrop = query('.modal-backdrop', parentPanel)[0];
     if (!existingBackdrop) {

@@ -143,7 +143,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
     this.hideModal();
     if (!this._dateTimeModal) {
       const dateTimePicker = new DateTimePicker({ isModal: true });
-      this._dateTimeModal = new Modal({ id: 'date-time-modal ' + this.id });
+      this._dateTimeModal = new Modal({ id: 'date-time-modal ' + this.id, onHide: dateTimePicker.removeListeners.bind(dateTimePicker) });
       this._dateTimeModal.placeModal(this.domNode.offsetParent)
             .setContentObject(dateTimePicker);
     }

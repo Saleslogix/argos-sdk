@@ -205,7 +205,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
         this.modal = new Modal({ id: 'date-time-modal ' + this.id, confirmText: this.dateTimePicker.pickDateTimeText, confirm: this.dateTimePicker.toDateTimePicker });
       } else {
         this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
-        this.modal = new Modal({ id: 'date-time-modal ' + this.id });
+        this.modal = new Modal({ id: 'date-time-modal ' + this.id, onHide: this.dateTimePicker.removeListeners.bind(this.dateTimePicker) });
       }
       this.modal.placeModal(this.domNode.offsetParent)
                 .setContentObject(this.dateTimePicker);
