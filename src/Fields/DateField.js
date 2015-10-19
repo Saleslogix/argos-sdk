@@ -20,6 +20,7 @@ import domClass from 'dojo/dom-class';
 import format from '../Format';
 import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
+import DateTimePicker from '../DateTimePicker';
 import RelativeDateTimePicker from '../RelativeDateTimePicker';
 import Modal from '../Modal';
 
@@ -38,7 +39,8 @@ const resource = window.localeContext.getEntitySync('dateField').attributes;
  *         label: this.startDateText,
  *         type: 'date',
  *         dateFormatText: 'MM/DD HH:mm:ss',
- *         showTimerPicker: true
+ *         showTimerPicker: true,
+ *         showRelativeDateTime: true
  *     }
  *
  * @alternateClassName DateField
@@ -92,6 +94,12 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * display of the hour/minute inputs.
    */
   showTimePicker: false,
+  /**
+   * @cfg {Boolean}
+   * Sent as part of navigation options to {@link Calendar Calendar}, where it controls the
+   * display of the relative date time picker.
+   */
+  showRelativeDateTime: true,
   /**
    * @cfg {Boolean}
    * Used in formatted and sent as part of navigation options to {@link Calendar Calendar},
@@ -158,9 +166,14 @@ const control = declare('argos.Fields.DateField', [EditorField], {
         this.currentValue = this.validationValue = data.relativeDateTimePicker.toDate();
       } else {
         // This is the case where the user went to the specific date time selector
-        data.calendar.selectedDateMoment.hours(data.timePicker.hours);
-        data.calendar.selectedDateMoment.minutes(data.timePicker.minutes);
-        this.currentValue = this.validationValue = data.calendar.selectedDateMoment.toDate();
+        if (data.calendar) {
+          const date = data.calendar.selectedDateMoment.clone();
+          if (data.timePicker) {
+            date.hours(data.timePicker.hours);
+            date.minutes(data.timePicker.minutes);
+          }
+          this.currentValue = this.validationValue = date.toDate();
+        }
       }
       this.inputNode.value = this.formatValue(this.currentValue);
     }
@@ -185,16 +198,20 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       return;
     }
 
+    const options = this.createNavigationOptions();
     if (!this.modal) {
-      const options = this.createNavigationOptions();
-      this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
-      this.modal = new Modal({ id: 'date-time-modal ' + this.id, confirmText: this.dateTimePicker.pickDateTimeText, confirm: this.dateTimePicker.toDateTimePicker });
+      if (this.showRelativeDateTime) {
+        this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
+        this.modal = new Modal({ id: 'date-time-modal ' + this.id, confirmText: this.dateTimePicker.pickDateTimeText, confirm: this.dateTimePicker.toDateTimePicker });
+      } else {
+        this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
+        this.modal = new Modal({ id: 'date-time-modal ' + this.id, onHide: this.dateTimePicker.removeListeners.bind(this.dateTimePicker) });
+      }
       this.modal.placeModal(this.domNode.offsetParent)
-                .setContentObject(this.dateTimePicker)
-                .setContentOptions(options);
+                .setContentObject(this.dateTimePicker);
     }
 
-    this.modal.showModal(params.$source).then(this.getValuesFromModal.bind(this));
+    this.modal.setContentOptions(options).showModal(params.$source).then(this.getValuesFromModal.bind(this));
   },
   _onClick: function _onClick(evt) {
     event.stop(evt);

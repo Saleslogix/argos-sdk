@@ -1,6 +1,34 @@
 @import "variables.less";
 @import "mixins.less";
 
+.button--primary {
+  background-color: @color-azure;
+  border: 1px solid @color-azure;
+  color: #fff;
+}
+
+.button--primary:not([DISABLED]):hover {
+  background-color: @color-deep-azure;
+  border: 1px solid @color-deep-azure;
+}
+
+.button--secondary {
+  background-color: @color-light-slate;
+  border: 1px solid @color-light-slate;
+  color: #fff;
+}
+
+.button--secondary:not([DISABLED]):hover {
+  background-color: #656871;
+  border: 1px solid #656871;
+}
+
+.button--primary,
+.button--secondary {
+  border-radius: 2px;
+  padding: 0 15px;
+}
+
 .toast__queue {
   padding: 0;
   max-width: 60%;

@@ -359,7 +359,7 @@ const __class = declare('argos.Application', null, {
         this.onSetOrientation(value);
         connect.publish('/app/setOrientation', [value]);
       }
-    }.bind(this)));
+    }));
 
     return this;
   },

@@ -19,6 +19,7 @@
  */
 import declare from 'dojo/_base/declare';
 import domConstruct from 'dojo/dom-construct';
+import domStyle from 'dojo/dom-style';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
 import Calendar from './Calendar';
@@ -33,29 +34,56 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
   _calendarNode: null,
   _timeSelectNode: null,
   isModal: false,
+  showTimePicker: true,
 
   init: function init() {
     this.inherited(arguments);
   },
   getContent: function getContent() {
-    return [ this._calendarNode, this._timeSelectNode ];
+    return this.showTimePicker ? [ this._calendarNode, this._timeSelectNode ] : [ this._calendarNode ];
   },
   hideChildModals: function hideChildModals() {
-    if (this._calendarNode.hideModals) {
+    if (this._calendarNode && this._calendarNode.hideModals) {
       this._calendarNode.hideModals();
     }
-    if (this._timeSelectNode.hideModals) {
+    if (this._timeSelectNode && this._timeSelectNode.hideModals) {
       this._timeSelectNode.hideModals();
     }
   },
+  removeListeners: function removeListeners() {
+    if (this._calendarNode && this._calendarNode.removeListeners) {
+      this._calendarNode.removeListeners();
+    }
+    if (this._timeSelectNode && this._timeSelectNode.removeListeners) {
+      this._timeSelectNode.removeListeners();
+    }
+  },
   show: function show(options = {}) {
-    if (!this._calendarNode && !this._timeSelectNode) {
+    this.showTimePicker = options.showTimePicker;
+    if (!this._calendarNode) {
       this._calendarNode = new Calendar({ id: 'datetime-calendar ' + this.id, isModal: this.isModal || options.isModal});
-      this._timeSelectNode = new TimePicker({ id: 'datetime-timePicker ' + this.id, showSetTime: false });
       domConstruct.place(this._calendarNode.domNode, this.dateTimeNode);
-      domConstruct.place(this._timeSelectNode.domNode, this.dateTimeNode);
       this._calendarNode.show(options);
+      this._timeSelectNode = new TimePicker({ id: 'datetime-timePicker ' + this.id, showSetTime: false });
+      domConstruct.place(this._timeSelectNode.domNode, this.dateTimeNode);
       this._timeSelectNode.show(options);
+      if (!this.showTimePicker) {
+        domStyle.set(this._timeSelectNode.domNode, {
+          display: 'none',
+        });
+      }
+    } else {
+      this._calendarNode.show(options);
+      if (this.showTimePicker) {
+        this._timeSelectNode.show(options);
+        domStyle.set(this._timeSelectNode.domNode, {
+          display: 'block',
+        });
+      } else {
+        domStyle.set(this._timeSelectNode.domNode, {
+          display: 'none',
+        });
+      }
     }
   },
 });

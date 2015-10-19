@@ -101,7 +101,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       // This call needs to take place before positioning so that the width of the modal is accounted for
       domStyle.set(this.modalNode, {
         minWidth: offsetWidth + 'px',
-        maxHeight: parentHeight + 'px',
+        maxHeight: parentHeight * 2 / 3 + 'px',
       });
     }
 
@@ -146,7 +146,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       maxWidth: parentWidth + 'px',
       top: position.top + 'px',
       left: position.left + 'px',
-      zIndex: domStyle.get(this._parentNode, 'zIndex') + 10,
+      zIndex: this.getZValue(this._parentNode) + 10,
       maxHeight: parentHeight - modalTop + 'px',
       visibility: 'visible',
       overflow: 'auto',
@@ -186,8 +186,18 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   getContent: function getContent() {
     return this._contentObject;
   },
+  getContentOptions: function getContentOptions() {
+    return this._contentOptions;
+  },
   getDeferred: function getDeferred() {
     return this._deferred;
+  },
+  getZValue: function getZValue(dom = {}) {
+    let value = domStyle.get(dom, 'zIndex');
+    if (value === 'auto') {
+      value = 0;
+    }
+    return value;
   },
   getSelected: function getSelected() {
     return this._picklistSelected;
@@ -211,6 +221,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
         visibility: 'hidden',
       });
     }
+    this.onHide();
     return this;
   },
   modalClick: function modalClick() {
@@ -221,6 +232,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     this.showBackdrop = false;
     return this;
   },
+  onHide: function onHide() {},
   placeBackdrop: function placeBackdrop(parentPanel = {}) {
     const existingBackdrop = query('.modal-backdrop', parentPanel)[0];
     if (!existingBackdrop) {
@@ -230,7 +242,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
           backgroundColor: 'transparent',
         });
       }
-      const parentZValue = domStyle.get(parentPanel, 'zIndex');
+      const parentZValue = this.getZValue(parentPanel);
       domStyle.set(this._backdrop, {
         visbility: 'hidden',
         zIndex: parentZValue + 10,
@@ -351,12 +363,23 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   showModal: function showModal(target = {}) {
     if (this._parentNode) {
       this._deferred = new Deferred();
-      this.showContent()
-          .toggleBackdrop()
-          .toggleParentScroll()
-          .attachEventListener()
-          .toolbarListener()
-          .calculatePosition(target);
+      if (!domClass.contains(window.ReUI.rootEl, 'android-keyboard-up')) {
+        this.showContent()
+            .toggleBackdrop()
+            .toggleParentScroll()
+            .attachEventListener()
+            .toolbarListener()
+            .calculatePosition(target);
+      } else {
+        setTimeout(() => {
+          this.showContent()
+              .toggleBackdrop()
+              .toggleParentScroll()
+              .attachEventListener()
+              .toolbarListener()
+              .calculatePosition(target);
+        }, 300);
+      }
     }
     return this._deferred.promise;
   },
