@@ -221,9 +221,14 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       const queryOptions = {
         returnQueryResults: true,
       };
-      return model.getEntries(queryExpression, queryOptions);
+      model.getEntries(queryExpression, queryOptions).then((result) => {
+        def.resolve(result.length);
+      }, () => {
+        def.resolve(-1);
+      });
+    } else {
+      def.resolve(-1);
     }
-    def.resolve({total: 0});
     return def.promise;
   },
   buildRelatedQueryExpression: function buildRelatedQueryExpression(relationship, entry) {
