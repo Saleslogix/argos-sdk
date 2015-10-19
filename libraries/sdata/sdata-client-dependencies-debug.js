@@ -1,5 +1,5 @@
 /*!
- *
+ * SData Client Dependencies
  */
 /**
 *

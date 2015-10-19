@@ -1,5 +1,5 @@
 /*!
- *
+ * SData Client
  */
 /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
  *
