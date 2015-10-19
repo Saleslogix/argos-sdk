@@ -2,6 +2,9 @@
     emptyText: ''
     dateFormatText: "MM/DD/YYYY"
     invalidDateFormatErrorText: "Field '${0}' has Invalid date format."
+    cancelText: "Cancel"
+    confirmText: "Confirm"
+    advancedText: "Advanced"
 >
 
 <durationField ""

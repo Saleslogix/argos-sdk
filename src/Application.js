@@ -25,6 +25,7 @@ import domConstruct from 'dojo/dom-construct';
 import all from 'dojo/promise/all';
 import snap from 'snap';
 import ReUI from './ReUI/main';
+import Modal from './Modal';
 import 'dojo/sniff';
 
 has.add('html5-file-api', function hasFileApi(global) {
@@ -380,9 +381,15 @@ const __class = declare('argos.Application', null, {
     this.initModules();
     this.initToolbars();
     this.initReUI();
+    this.initModal();
   },
   initPreferences: function initPreferences() {
     this._loadPreferences();
+  },
+  initModal: function initModal() {
+    this.modal = new Modal();
+    this.modal.place(document.body)
+              .hide();
   },
   /**
    * Check if the browser supports touch events.
