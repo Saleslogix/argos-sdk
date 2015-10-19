@@ -4,6 +4,7 @@ if [ -d "deploy" ]; then
     rm -rf deploy
 fi
 
+mkdir -p deploy/localization/locales/argos
 mkdir -p deploy/content/javascript
 mkdir -p deploy/content/images
 mkdir -p deploy/content/css/themes/fonts
@@ -18,4 +19,7 @@ grunt babel
 grunt less
 
 # Java Build Tool
-java -Dfile.encoding=UTF-8 -jar "tools/JSBuilder/JSBuilder2.jar" -v -p "build/release.jsb2" -d "."
+#java -Dfile.encoding=UTF-8 -jar "tools/JSBuilder/JSBuilder2.jar" --verbose --projectFile "build/release.jsb2" --homeDir "."
+
+# Requires mono
+mono tools/JsBit/jsbit.exe -p "build/release.jsb2" -d "."

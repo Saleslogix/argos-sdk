@@ -21,6 +21,8 @@ import dom from 'dojo/dom';
 import '../Fields/TextField';
 import View from '../View';
 
+const resource = window.localeContext.getEntitySync('fileSelect').attributes;
+
 /**
  * @class argos.Views.FileSelect
  * File Select View is a view for selection files capabilities.
@@ -30,15 +32,15 @@ import View from '../View';
  */
 const __class = declare('argos.Views.FileSelect', [View], {
   // Localization
-  titleText: 'File Select',
-  addFileText: 'Click or Tap here to add a file.',
-  uploadText: 'Upload',
-  cancelText: 'Cancel',
-  selectFileText: 'Select file',
-  loadingText: 'Uploading...',
-  descriptionText: 'description',
-  bytesText: 'bytes',
-  notSupportedText: 'Adding attachments is not supported by your device.',
+  titleText: resource.titleText,
+  addFileText: resource.addFileText,
+  uploadText: resource.uploadText,
+  cancelText: resource.cancelText,
+  selectFileText: resource.selectFileText,
+  loadingText: resource.loadingText,
+  descriptionText: resource.descriptionText,
+  bytesText: resource.bytesText,
+  notSupportedText: resource.notSupportedText,
 
   /**
    * @property {Simplate}

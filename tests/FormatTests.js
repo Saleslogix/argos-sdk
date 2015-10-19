@@ -1,5 +1,5 @@
 define('tests/FormatTests', ['argos/Format'], function(format) {
-return describe('Sage.Platform.Mobile.Format', function() {
+return describe('argos.Format', function() {
 
     it('Can tell if empty string is empty', function() {
         var testStr = '';
@@ -161,7 +161,7 @@ return describe('Sage.Platform.Mobile.Format', function() {
         var testStr = .01;
         var places = 0;
         expect(format.percent(testStr, places)).toEqual('1%');
-    });   
+    });
     it('Can present as percent - double digit', function() {
         var testStr = .25;
         var places = 0;
@@ -193,7 +193,7 @@ return describe('Sage.Platform.Mobile.Format', function() {
         expect(format.percent(testStr, places)).toEqual('1,999.99%');
     });
     it('Can present as percent - rounded up', function() {
-        var testStr = .155; 
+        var testStr = .155;
         var places = 0;
         expect(format.percent(testStr, places)).toEqual('16%');
     });
@@ -203,7 +203,7 @@ return describe('Sage.Platform.Mobile.Format', function() {
         expect(format.percent(testStr, places)).toEqual('15%');
     });
     it('Can present as percent - change location of percent symbol', function() {
-        var testStr = .10; 
+        var testStr = .10;
         var places = 0;
         format.percentFormatText = '${1}${0}';
         expect(format.percent(testStr, places)).toEqual('%10');

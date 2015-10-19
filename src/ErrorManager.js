@@ -15,9 +15,9 @@
 import json from 'dojo/json';
 import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
-import moment from 'moment';
 import utility from './Utility';
 
+const resource = window.localeContext.getEntitySync('errorManager').attributes;
 let errors = [];
 
 try {
@@ -37,11 +37,11 @@ const __class = lang.setObject('argos.ErrorManager', {
   /**
    * Text used in place of statusText for aborted errors.
    */
-  abortedText: 'Aborted',
+  abortedText: resource.abortedText,
   /**
    * Text put in place of the scope property to prevent circular references.
    */
-  scopeSaveText: 'Scope is not saved in error report',
+  scopeSaveText: resource.scopeSaveText,
 
   /**
    * @property {Number}

@@ -22,6 +22,8 @@ import utility from '../Utility';
 import _Field from './_Field';
 import FieldManager from '../FieldManager';
 
+const resource = window.localeContext.getEntitySync('lookupField').attributes;
+
 /**
  * @class argos.Fields.LookupField
  * The LookupField is similiar to an Edit View in that it is a field that takes the user to another
@@ -97,26 +99,26 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    *
    * * `${0}` is the label text of the field
    */
-  dependentErrorText: "A value for '${0}' must be selected.",
+  dependentErrorText: resource.dependentErrorText,
   /**
    * @cfg {String}
    * Text displayed when the field is cleared or set to null
    */
-  emptyText: '',
+  emptyText: resource.emptyText,
   /**
    * @deprecated
    */
-  completeText: 'Select',
+  completeText: resource.completeText,
   /**
    * @property {String}
    * The ARIA label text in the lookup button
    */
-  lookupLabelText: 'lookup',
+  lookupLabelText: resource.lookupLabelText,
   /**
    * @property {String}
    * The text placed inside the lookup button
    */
-  lookupText: '...',
+  lookupText: resource.lookupText,
 
   /**
    * @cfg {String}

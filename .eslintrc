@@ -18,7 +18,8 @@
       "expect": false,
       "spyOn": false,
       "module": false,
-      "Rx": false
+      "Rx": false,
+      "moment": false
   },
   "ecmaFeatures": {
     "arrowFunctions": true,

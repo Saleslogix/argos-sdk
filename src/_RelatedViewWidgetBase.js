@@ -5,9 +5,11 @@ import lang from 'dojo/_base/lang';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
 
+const resource = window.localeContext.getEntitySync('relatedViewWidgetBase').attributes;
+
 const __class = declare('argos._RelatedViewWidgetBase', [_Widget, _Templated], {
   cls: null,
-  loadingText: 'loading ... ',
+  loadingText: resource.loadingText,
   /**
    * @property {Simplate}
    * Simple that defines the HTML Markup

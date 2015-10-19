@@ -1,51 +1,96 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
-    <title>Argos-sdk Test Runner</title>
-    <!-- jasmine -->
-    <link rel="stylesheet" type="text/css" href="../libraries/jasmine-2.0.0/jasmine.css">
-    <script type="text/javascript" src="../libraries/jasmine-2.0.0/jasmine.js"></script>
-    <script type="text/javascript" src="../libraries/jasmine-2.0.0/jasmine-html.js"></script>
+  <title>Argos-sdk Test Runner</title>
+  <!-- jasmine -->
+  <link rel="stylesheet" type="text/css" href="../libraries/jasmine-2.0.0/jasmine.css">
+  <script type="text/javascript" src="../libraries/jasmine-2.0.0/jasmine.js"></script>
+  <script type="text/javascript" src="../libraries/jasmine-2.0.0/jasmine-html.js"></script>
 
-    <!-- JSON -->
-    <script type="text/javascript" src="../libraries/json2.js"></script>
+  <!-- SData Client Library -->
+  <script type="text/javascript" src="../libraries/sdata/sdata-client-dependencies-debug.js"></script>
+  <script type="text/javascript" src="../libraries/sdata/sdata-client-debug.js"></script>
 
-    <!-- SData Client Library -->
-    <script type="text/javascript" src="../libraries/sdata/sdata-client-dependencies-debug.js"></script>
-    <script type="text/javascript" src="../libraries/sdata/sdata-client-debug.js"></script>
+  <!-- Simplate -->
+  <script type="text/javascript" src="../libraries/Simplate.js"></script>
 
-    <!-- Simplate -->
-    <script type="text/javascript" src="../libraries/Simplate.js"></script>
+  <!-- Deep Diff -->
+  <script type="text/javascript" src="../libraries/deep-diff/deep-diff-0.2.0.min.js"></script>
 
-    <!-- Deep Diff -->
-    <script type="text/javascript" src="../libraries/deep-diff/deep-diff-0.2.0.min.js"></script>
+  <!-- moment -->
+  <script type="text/javascript" src="../libraries/moment/moment-with-locales.js"></script>
 
-    <!-- Dojo -->
-    <script type="text/javascript" src="../libraries/dojo/dojo/dojo.js" data-dojo-config="parseOnLoad:false, async:true"></script>
-    <script type="text/javascript">
+  <!-- L20N.js -->
+  <script type="text/javascript" src="../libraries/l20n/l20n.js"></script>
+
+  <!-- Dojo -->
+  <script type="text/javascript" src="../libraries/dojo/dojo/dojo.js" data-dojo-config="parseOnLoad:false, async:true"></script>
+  <script type="text/javascript">
     require({
-        baseUrl: "./",
-        packages: [
-            { name: 'dojo', location: '../libraries/dojo/dojo' },
-            { name: 'dijit', location: '../libraries/dojo/dijit' },
-            { name: 'dojox', location: '../libraries/dojo/dojox' },
-            { name: 'snap', location: '../libraries/snap', main: 'snap' },
-            { name: 'moment', location: '../libraries/moment', main: 'moment-with-langs.min' },
-            { name: 'argos', location: '../src-out' },
-            { name: 'tests', location: '.' }
-        ],
-        map: {
-            '*': {
-                'Sage/Platform/Mobile': 'argos'
-            }
+      baseUrl: "./",
+      packages: [{
+        name: 'dojo',
+        location: '../libraries/dojo/dojo'
+      }, {
+        name: 'dijit',
+        location: '../libraries/dojo/dijit'
+      }, {
+        name: 'dojox',
+        location: '../libraries/dojo/dojox'
+      }, {
+        name: 'snap',
+        location: '../libraries/snap',
+        main: 'snap'
+      }, {
+        name: 'argos',
+        location: '../src-out'
+      }, {
+        name: 'tests',
+        location: '.'
+      }],
+      map: {
+        '*': {
+          'Sage/Platform/Mobile': 'argos'
         }
+      }
     });
-    </script>
+  </script>
 </head>
+
 <body>
-<script type="text/javascript">
-    require([
+  <script type="text/javascript">
+    function buildContext() {
+      var filePaths = {
+        '../localization/locales/argos': [
+          'strings.l20n',
+          'regional.l20n'
+        ]
+      };
+      var supportedLocales = [
+        'en'
+      ];
+      var ctx = L20n.getContext();
+      var defaultLocale = 'en';
+      var currentLocale = 'en';
+
+      Object.keys(filePaths).forEach(function(path) {
+        var files = filePaths[path];
+        files.forEach(function(file) {
+          ctx.linkResource(function(locale) {
+            return [path, locale, file].join('/');
+          });
+        });
+      });
+      ctx.registerLocales(defaultLocale, supportedLocales);
+      ctx.requestLocales(currentLocale);
+      window.localeContext = ctx;
+      return ctx;
+    }
+    var ctx = buildContext();
+    ctx.ready(function() {
+      require([
         'tests/localization/en',
         'tests/ApplicationModuleTests',
         'tests/CalendarTests',
@@ -70,10 +115,11 @@
         'tests/Fields/TextFieldTests',
         'tests/Fields/DecimalFieldTests',
         'tests/Groups/DateTimeSectionTests',
-        'tests/Stores/SData',
-        '../libraries/jasmine-2.0.0/boot.js'
-    ], function () {
+        'tests/Stores/SData'
+      ]);
     });
-</script>
+    require(['../libraries/jasmine-2.0.0/boot.js']);
+  </script>
 </body>
+
 </html>

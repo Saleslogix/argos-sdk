@@ -16,14 +16,17 @@
   <!-- Simplate -->
   <script type="text/javascript" src="libraries/Simplate.js"></script>
 
-  <!-- Overthrow -->
-  <script type="text/javascript" src="libraries/overthrow/overthrow.js"></script>
-
   <!-- canvas2image for when HTMLCanvasElement.prototype.toDataURL isn't available -->
   <script type="text/javascript" src="libraries/canvas2image.js"></script>
 
   <!-- Deep Diff -->
   <script type="text/javascript" src="libraries/deep-diff/deep-diff-0.2.0.min.js"></script>
+
+  <!-- moment -->
+  <script type="text/javascript" src="libraries/moment/moment-with-locales.js"></script>
+
+  <!-- L20N.js -->
+  <script type="text/javascript" src="libraries/l20n/l20n.js"></script>
 
   <!-- Dojo -->
   <script type="text/javascript" src="libraries/dojo/dojo/dojo.js" data-dojo-config="parseOnLoad:false, async:true"></script>
@@ -34,7 +37,6 @@
             { name: 'dojo', location: 'libraries/dojo/dojo' },
             { name: 'dijit', location: 'libraries/dojo/dijit' },
             { name: 'snap', location: 'libraries/snap', main: 'snap' },
-            { name: 'moment', location: '../libraries/moment', main: 'moment-with-langs.min' },
             { name: 'argos', location: '.grunt/grunt-contrib-jasmine/src-out' },// istanbul outputs the instrumented to this temp folder
             { name: 'tests', location: 'tests' }
         ],
@@ -54,17 +56,51 @@
 </head>
 <body>
   <script type="text/javascript">
-  <% with (scripts) { %>
-  require([
-  <% specs.forEach(function(spec) { %>
-    '<%= spec.replace("./tests", "tests").replace(".js", "") %>',
-  <% }); %>
-    '<%= boot %>',
-    '<%= reporters[0] %>',
-    '<%= reporters[1] %>'
-  ], function() {
-  });
-  <% }; %>
+  function buildContext() {
+        var filePaths = {
+          './localization/locales/argos': [
+            'strings.l20n',
+            'regional.l20n'
+          ]
+        };
+        var supportedLocales = [
+          'en'
+        ];
+        var ctx = L20n.getContext();
+        var defaultLocale = 'en';
+        var currentLocale = 'en';
+
+        Object.keys(filePaths).forEach(function(path) {
+          var files = filePaths[path];
+          files.forEach(function(file) {
+            ctx.linkResource(function(locale) {
+              return [path, locale, file].join('/');
+            });
+          });
+        });
+        ctx.registerLocales(defaultLocale, supportedLocales);
+        ctx.requestLocales(currentLocale);
+        window.localeContext = ctx;
+        return ctx;
+      }
+
+      <% with (scripts) { %>
+        var ctx = buildContext();
+        ctx.ready(function() {
+          require([
+          <% specs.forEach(function(spec) { %>
+            '<%= spec.replace("./tests", "tests").replace(".js", "") %>',
+          <% }); %>
+          ]);
+        });
+
+        require([
+          '<%= boot %>',
+          '<%= reporters[0] %>',
+          '<%= reporters[1] %>'
+        ]);
+
+      <% }; %>
   </script>
 </body>
 </html>

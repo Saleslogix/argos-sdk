@@ -9,7 +9,15 @@ import domConstruct from 'dojo/dom-construct';
 import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';
 
-const __class = declare('argos._PullToRefreshMixin', null, {
+let __class;
+const resource = window.localeContext.getEntitySync('pullToRefreshMixin').attributes;
+
+/**
+ * @class argos._PullToRefreshMixin
+ * Mixin for pull to refresh actions
+ * @alternateClassName _PullToRefreshMixin
+ */
+__class = declare('argos._PullToRefreshMixin', null, {
   /**
    * @property {Simplate}
    */
@@ -35,12 +43,12 @@ const __class = declare('argos._PullToRefreshMixin', null, {
    * @property {String}
    * Text to indicate a pull to refresh
    */
-  pullRefreshText: 'Pull down to refresh...',
+  pullRefreshText: resource.pullRefreshText,
   /**
    * @property {String}
    * Text to indicate the user should release to cause the refresh
    */
-  pullReleaseText: 'Release to refresh...',
+  pullReleaseText: resource.pullReleaseText,
 
   /**
    * @property {Boolean} enablePullToRefresh If true, will enable the user to drag down and refresh the list. Default is true.
@@ -92,7 +100,8 @@ const __class = declare('argos._PullToRefreshMixin', null, {
         return {
           bannerHeight: bannerPos.h,
           topCss: style.top,
-          overflowCss: style.overflow,
+          overflowCssY: style.overflowY,
+          overflowCssX: style.overflowX,
           top: parseInt(style.top, 10),
           y: evt.clientY,
         };
@@ -127,7 +136,8 @@ const __class = declare('argos._PullToRefreshMixin', null, {
           // Restore our original scroller styles
           domStyle.set(this.scrollerNode, {
             'top': data.topCss,
-            'overflow': data.overflowCss,
+            'overflow-y': data.overflowCssY,
+            'overflow-x': data.overflowCssX,
           });
 
           domStyle.set(this.pullRefreshBanner, 'visibility', 'hidden');

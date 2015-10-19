@@ -1,6 +1,8 @@
 import lang from 'dojo/_base/lang';
 import declare from 'dojo/_base/declare';
 
+const resource = window.localeContext.getEntitySync('selectionModel').attributes;
+
 /**
  * @class argos.SelectionModel
  * SelectionModel provides a simple in-memory store for data that fires events
@@ -9,7 +11,7 @@ import declare from 'dojo/_base/declare';
  */
 const __class = declare('argos.SelectionModel', null, {
   // Localization
-  requireSelectionText: 'A selection is required, you cannot de-select the last item.',
+  requireSelectionText: resource.requireSelectionText,
 
   /**
    * @property {Boolean}

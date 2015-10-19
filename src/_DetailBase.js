@@ -27,6 +27,8 @@ import ErrorManager from './ErrorManager';
 import View from './View';
 import TabWidget from './TabWidget';
 
+const resource = window.localeContext.getEntitySync('detailBase').attributes;
+
 /**
  * @class argos._DetailBase
  * A Detail View represents a single record and should display all the info the user may need about the entry.
@@ -296,7 +298,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   /**
    * @deprecated
    */
-  editText: 'Edit',
+  editText: resource.editText,
   /**
    * @cfg {String}
    * Font awesome icon to be used by the more list item
@@ -306,37 +308,37 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * @cfg {String}
    * Information text that is concatenated with the entity type
    */
-  informationText: 'Information',
+  informationText: resource.informationText,
   /**
    * @cfg {String}
    * Default title text shown in the top toolbar
    */
-  titleText: 'Detail',
+  titleText: resource.titleText,
   /**
    * @cfg {String}
    * Default text used in the header title, followed by information
    */
-  entityText: 'Entity',
+  entityText: resource.entityText,
   /**
    * @property {String}
    * Helper string for a basic section header text
    */
-  detailsText: 'Details',
+  detailsText: resource.detailsText,
   /**
    * @property {String}
    * Text shown while loading and used in loadingTemplate
    */
-  loadingText: 'loading...',
+  loadingText: resource.loadingText,
   /**
    * @property {String}
    * Text used in the notAvailableTemplate
    */
-  notAvailableText: 'The requested data is not available.',
+  notAvailableText: resource.notAvailableText,
   /**
    * @property {String}
    * ARIA label text for a collapsible section header
    */
-  toggleCollapseText: 'toggle collapse',
+  toggleCollapseText: resource.toggleCollapseText,
   /**
    * @property {String}
    * CSS class for the collapse button when in a expanded state
@@ -410,12 +412,15 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       name: 'CatchAll',
       test: () => true,
       handle: (error, next) => {
+        const fromContext = this.options.fromContext;
+        this.options.fromContext = null;
         const errorItem = {
           viewOptions: this.options,
           serverError: error,
         };
 
         ErrorManager.addError(this.getErrorMessage(error), errorItem);
+        this.options.fromContext = fromContext;
         domClass.remove(this.domNode, 'panel-loading');
         next();
       },

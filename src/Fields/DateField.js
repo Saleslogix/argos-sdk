@@ -14,13 +14,17 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
+import event from 'dojo/_base/event';
 import string from 'dojo/string';
 import domClass from 'dojo/dom-class';
 import format from '../Format';
 import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
-import moment from 'moment';
-import '../Calendar';
+import DateTimePicker from '../DateTimePicker';
+import RelativeDateTimePicker from '../RelativeDateTimePicker';
+import Modal from '../Modal';
+
+const resource = window.localeContext.getEntitySync('dateField').attributes;
 
 /**
  * @class argos.Fields.DateField
@@ -35,7 +39,8 @@ import '../Calendar';
  *         label: this.startDateText,
  *         type: 'date',
  *         dateFormatText: 'MM/DD HH:mm:ss',
- *         showTimerPicker: true
+ *         showTimerPicker: true,
+ *         showRelativeDateTime: true
  *     }
  *
  * @alternateClassName DateField
@@ -50,15 +55,15 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * @cfg {String}
    * The text shown when no value (or null/undefined) is set to the field.
    */
-  emptyText: '',
-  dateFormatText: 'MM/DD/YYYY',
+  emptyText: resource.emptyText,
+  dateFormatText: resource.dateFormatText,
   /**
    * @property {String}
    * The error validation message for this field.
    *
    * `${0}` => Label
    */
-  invalidDateFormatErrorText: "Field '${0}' has Invalid date format.",
+  invalidDateFormatErrorText: resource.invalidDateFormatErrorText,
 
   /**
    * @property {Simplate}
@@ -70,7 +75,8 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    */
   widgetTemplate: new Simplate([
     '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
+    '<button data-dojo-attach-point="triggerNode" data-action="showModal" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
+    // '<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
     '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />',
   ]),
 
@@ -90,11 +96,19 @@ const control = declare('argos.Fields.DateField', [EditorField], {
   showTimePicker: false,
   /**
    * @cfg {Boolean}
+   * Sent as part of navigation options to {@link Calendar Calendar}, where it controls the
+   * display of the relative date time picker.
+   */
+  showRelativeDateTime: true,
+  /**
+   * @cfg {Boolean}
    * Used in formatted and sent as part of navigation options to {@link Calendar Calendar},
    * where it controls the the conversion to/from UTC and setting the hour:min:sec to 00:00:05.
    */
   timeless: false,
-
+  modal: null,
+  dateTimePicker: null,
+  _modalListener: null,
   /**
    * Takes a date object and calls {@link format#date format.date} passing the current
    * `dateFormatText` and `timeless` values, formatting the date into a string representation.
@@ -146,6 +160,24 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
     }
   },
+  getValuesFromModal: function getValuesFromModal(data = {}) {
+    if (this.modal) {
+      if (data.relativeDateTimePicker) {
+        this.currentValue = this.validationValue = data.relativeDateTimePicker.toDate();
+      } else {
+        // This is the case where the user went to the specific date time selector
+        if (data.calendar) {
+          const date = data.calendar.selectedDateMoment.clone();
+          if (data.timePicker) {
+            date.hours(data.timePicker.hours);
+            date.minutes(data.timePicker.minutes);
+          }
+          this.currentValue = this.validationValue = date.toDate();
+        }
+      }
+      this.inputNode.value = this.formatValue(this.currentValue);
+    }
+  },
   /**
    * Determines if the current value has been modified from the original value.
    * @return {Boolean}
@@ -160,6 +192,29 @@ const control = declare('argos.Fields.DateField', [EditorField], {
   clearValue: function clearValue() {
     this.inherited(arguments);
     domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+  },
+  showModal: function showModal(params) {
+    if (this.isDisabled()) {
+      return;
+    }
+
+    const options = this.createNavigationOptions();
+    if (!this.modal) {
+      if (this.showRelativeDateTime) {
+        this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
+        this.modal = new Modal({ id: 'date-time-modal ' + this.id, confirmText: this.dateTimePicker.pickDateTimeText, confirm: this.dateTimePicker.toDateTimePicker });
+      } else {
+        this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
+        this.modal = new Modal({ id: 'date-time-modal ' + this.id, onHide: this.dateTimePicker.removeListeners.bind(this.dateTimePicker) });
+      }
+      this.modal.placeModal(this.domNode.offsetParent)
+                .setContentObject(this.dateTimePicker);
+    }
+
+    this.modal.setContentOptions(options).showModal(params.$source).then(this.getValuesFromModal.bind(this));
+  },
+  _onClick: function _onClick(evt) {
+    event.stop(evt);
   },
   /**
    * Extends the parent {@link EditorField#validate validate} with a check that makes sure if
