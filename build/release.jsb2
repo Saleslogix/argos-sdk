@@ -45,7 +45,7 @@
           "path": "../libraries/moment/"
         },
         {
-          "text": "rx.all.min.js",
+          "text": "rx.all.js",
           "path": "../libraries/rx/"
         }
       ]
