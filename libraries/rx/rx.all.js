@@ -1,5 +1,9 @@
-// Copyright (c) Microsoft, All rights reserved. See License.txt in the project root for license information.
+/*!
+ * RxJS
+ */
 
+// Copyright (c) Microsoft, All rights reserved. See License.txt in the project root for license information.
+/*eslint-disable*/
 ;(function (undefined) {
 
   var objectTypes = {
@@ -56,7 +60,7 @@
   function cloneArray(arr) { for(var a = [], i = 0, len = arr.length; i < len; i++) { a.push(arr[i]); } return a;}
 
   var errorObj = {e: {}};
-  
+
   function tryCatcherGen(tryCatchTarget) {
     return function tryCatcher() {
       try {
@@ -2480,7 +2484,7 @@ var ObserveOnObservable = (function (__super__) {
       this.a = [];
       AbstractObserver.call(this);
     }
-    
+
     InnerObserver.prototype.next = function (x) { this.a.push(x); };
     InnerObserver.prototype.error = function (e) { this.o.onError(e);  };
     InnerObserver.prototype.completed = function () { this.o.onNext(this.a); this.o.onCompleted(); };
@@ -2888,7 +2892,7 @@ var ObserveOnObservable = (function (__super__) {
           observer.onNext(changes[i]);
         }
       }
-      
+
       Array.observe(array, observerFn);
 
       return function () {
@@ -4822,7 +4826,7 @@ observableProto.zipIterable = function () {
   };
 
   /**
-   *  Repeats the source observable sequence upon error each time the notifier emits or until it successfully terminates. 
+   *  Repeats the source observable sequence upon error each time the notifier emits or until it successfully terminates.
    *  if the notifier completes, the observable sequence completes.
    *
    * @example
@@ -5598,11 +5602,11 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
       this.skipCount = count;
       __super__.call(this);
     }
-    
+
     SkipObservable.prototype.subscribeCore = function (o) {
       return this.source.subscribe(new InnerObserver(o, this.skipCount));
     };
-    
+
     function InnerObserver(o, c) {
       this.c = c;
       this.r = c;
@@ -5611,7 +5615,7 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
     }
     InnerObserver.prototype.onNext = function (x) {
       if (this.isStopped) { return; }
-      if (this.r <= 0) { 
+      if (this.r <= 0) {
         this.o.onNext(x);
       } else {
         this.r--;
@@ -5632,10 +5636,10 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
       }
       return false;
     };
-    
+
     return SkipObservable;
-  }(ObservableBase));  
-  
+  }(ObservableBase));
+
   /**
    * Bypasses a specified number of elements in an observable sequence and then returns the remaining elements.
    * @param {Number} count The number of elements to skip before returning the remaining elements.
@@ -5702,17 +5706,17 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
 
   var TakeObservable = (function(__super__) {
     inherits(TakeObservable, __super__);
-    
+
     function TakeObservable(source, count) {
       this.source = source;
       this.takeCount = count;
       __super__.call(this);
     }
-    
+
     TakeObservable.prototype.subscribeCore = function (o) {
       return this.source.subscribe(new InnerObserver(o, this.takeCount));
     };
-    
+
     function InnerObserver(o, c) {
       this.o = o;
       this.c = c;
@@ -5749,10 +5753,10 @@ Rx.Observable.prototype.flatMapLatest = function(selector, resultSelector, thisA
         return false;
       }
     };
-    
+
     return TakeObservable;
-  }(ObservableBase));  
-  
+  }(ObservableBase));
+
   /**
    *  Returns a specified number of contiguous elements from the start of an observable sequence, using the specified scheduler for the edge case of take(0).
    * @param {Number} count The number of elements to return.
@@ -7395,7 +7399,7 @@ function createCbHandler(o, ctx, selector) {
  */
 Observable.fromCallback = function (fn, ctx, selector) {
   return function () {
-    typeof ctx === 'undefined' && (ctx = this); 
+    typeof ctx === 'undefined' && (ctx = this);
 
     var len = arguments.length, args = new Array(len)
     for(var i = 0; i < len; i++) { args[i] = arguments[i]; }
@@ -7445,7 +7449,7 @@ function createNodeHandler(o, ctx, selector) {
  */
 Observable.fromNodeCallback = function (fn, ctx, selector) {
   return function () {
-    typeof ctx === 'undefined' && (ctx = this); 
+    typeof ctx === 'undefined' && (ctx = this);
     var len = arguments.length, args = new Array(len);
     for(var i = 0; i < len; i++) { args[i] = arguments[i]; }
     return createNodeObservable(fn, ctx, selector, args);
@@ -7778,7 +7782,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
               o.onCompleted();
             }
           );
-      return subscription;      
+      return subscription;
     };
 
     PausableBufferedObservable.prototype.pause = function () {
@@ -8781,10 +8785,10 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
     };
     return WhileEnumerable;
   }(Enumerable));
-  
+
   function enumerableWhile(condition, source) {
     return new WhileEnumerable(condition, source);
-  }  
+  }
 
    /**
    *  Returns an observable sequence that is the result of invoking the selector on the source sequence, without sharing subscriptions.
@@ -8798,7 +8802,7 @@ Observable.fromNodeCallback = function (fn, ctx, selector) {
   };
 
    /**
-   *  Determines whether an observable collection contains values. 
+   *  Determines whether an observable collection contains values.
    *
    * @example
    *  1 - res = Rx.Observable.if(condition, obs1);
