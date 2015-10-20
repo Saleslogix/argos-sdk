@@ -132,7 +132,7 @@ __class = declare('argos._PullToRefreshMixin', null, {
           // Prevent the user from dragging the pane above our starting point
           return d.distance >= 0;
         })
-        .takeUntil(done.map(function doneMap() {
+        .takeUntil(done.doAction(function doneMap() {
           // Restore our original scroller styles
           domStyle.set(this.scrollerNode, {
             'top': data.topCss,
