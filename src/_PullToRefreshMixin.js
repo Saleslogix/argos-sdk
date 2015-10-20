@@ -133,7 +133,8 @@ __class = declare('argos._PullToRefreshMixin', null, {
           return d.distance >= 0;
         })
         .takeUntil(done.doAction(() => {
-          // Restore our original scroller styles
+          // The "done" observable is a combination of touch end and touch cancel.
+          // We should restore the UI state and invoke callbacks here.
           domStyle.set(this.scrollerNode, {
             'top': data.topCss,
             'overflow-y': data.overflowCssY,
@@ -153,6 +154,8 @@ __class = declare('argos._PullToRefreshMixin', null, {
         }));
     });
 
+    // Listen to the "dragging" observable which is a combination of our touch
+    // start and touch drag. Update the UI while dragging here.
     dragging.subscribe(function onNext(data) {
       data.evt.preventDefault();
       domStyle.set(this.scrollerNode, {
