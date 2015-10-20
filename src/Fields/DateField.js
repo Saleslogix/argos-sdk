@@ -159,18 +159,20 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
     }
   },
-  getValuesFromRelativeDateTime: function getValuesFromRelativeDateTime(data = {}) {
-    this.currentValue = this.validationValue = data.toDate();
-    this.inputNode.value = this.formatValue(this.currentValue);
-  },
-  getValuesfromDateTimePicker: function getValuesfromDateTimePicker(data = {}) {
-    const date = data.calendar.selectedDateMoment.clone();
-    if (data.timePicker) {
-      date.hours(data.timePicker.hours);
-      date.minutes(data.timePicker.minutes);
+  getValuesFromModal: function getValuesFromModal(data = {}) {
+    if (data.calendar.selectedDateMoment) {
+      // This is the case where the DateTimePicker was used to select the date
+      const date = data.calendar.selectedDateMoment.clone();
+      if (data.time) {
+        date.hours(data.time.hours);
+        date.minutes(data.time.minutes);
+      }
+      this.currentValue = this.validationValue = date.toDate();
+      this.inputNode.value = this.formatValue(this.currentValue);
+    } else {
+      this.currentValue = this.validationValue = data.toDate();
+      this.inputNode.value = this.formatValue(this.currentValue);
     }
-    this.currentValue = this.validationValue = date.toDate();
-    this.inputNode.value = this.formatValue(this.currentValue);
   },
   /**
    * Determines if the current value has been modified from the original value.
@@ -195,7 +197,6 @@ const control = declare('argos.Fields.DateField', [EditorField], {
     const options = this.createNavigationOptions();
 
     let toolbar;
-    let resolveFunc;
     if (this.showRelativeDateTime) {
       this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
       toolbar = [
@@ -210,7 +211,6 @@ const control = declare('argos.Fields.DateField', [EditorField], {
           context: this.dateTimePicker,
         },
       ];
-      resolveFunc = this.getValuesFromRelativeDateTime;
     } else {
       this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
       toolbar = [
@@ -224,10 +224,9 @@ const control = declare('argos.Fields.DateField', [EditorField], {
           text: resource.confirmText,
         },
       ];
-      resolveFunc = this.getValuesfromDateTimePicker;
     }
 
-    App.modal.add(this.dateTimePicker, toolbar, options).then(resolveFunc.bind(this));
+    App.modal.add(this.dateTimePicker, toolbar, options).then(this.getValuesFromModal.bind(this));
   },
   _onClick: function _onClick(evt) {
     event.stop(evt);

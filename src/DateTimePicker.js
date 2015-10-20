@@ -34,7 +34,7 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
   _calendarNode: null,
   _timeSelectNode: null,
   isModal: false,
-  showTimePicker: true,
+  showTimePicker: false,
 
   init: function init() {
     this.inherited(arguments);

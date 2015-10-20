@@ -57,7 +57,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
    * @param context: the context of the action
    */
   buttonTemplate: new Simplate([
-    '<div class="button {%= $.className %}" data-action="{%= $.action %}">{%= $.text %}</div>',
+    '<div class="button {%= $.className %}">{%= $.text %}</div>',
   ]),
 
   id: 'modal-template',
@@ -152,8 +152,10 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     }
     return this;
   },
-  onContainerClick: function onContainerClick() {
-    this.hide();
+  onContainerClick: function onContainerClick(evt) {
+    if (evt.srcElement === this.modalContainer || evt.srcElement === this.overlay) {
+      this.hide();
+    }
   },
   place: function place(parent) {
     if (parent) {

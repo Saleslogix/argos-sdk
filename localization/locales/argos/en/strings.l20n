@@ -232,4 +232,6 @@
   tomorrowAfternoonText: "Tomorrow Evening"
   nextWeekText: "Next Week"
   nextMonthText: "Next Month"
+  cancelText: "Cancel"
+  confirmText: "Confirm"
 >

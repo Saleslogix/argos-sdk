@@ -10,6 +10,13 @@
   border-bottom: 1px solid @color-lighter-slate;
   line-height: 60px;
   text-align: center;
+  font-size: 24px;
+
+  > .calendar__header__icon {
+    color: @color-slate;
+    top: 15px;
+    line-height: inherit;
+  }
 
   .month {
     margin-right: 0.5rem;
@@ -17,29 +24,24 @@
 
   .month,
   .year {
-    font-size: @font-size-subtitle;
     color: @color-deep-graphite;
-    top: 15px;
+    display: inline-block;
   }
+}
 
-  .fa {
-    font-size: @icon-size;
-    color: @color-slate;
-    top: 15px;
-    line-height: inherit;
-  }
-  .fa-angle-left {
-    float: left;
-    padding-left: 20px;
-  }
-  .fa-angle-right {
-    float: right;
-    padding-right: 20px;
-  }
+.calendar__header__icon {
+  color: @color-slate;
+  top: 15px;
+  line-height: inherit;
+}
 
-  .selected {
-    color: @color-azure;
-  }
+.calendar__header__icon--left {
+  float: left;
+  padding-left: 15px;
+}
+.calendar__header__icon--right {
+  float: right;
+  padding-right: 15px;
 }
 
 .calendar-table {
@@ -89,13 +91,12 @@
     background-color: @color-lighter-graphite;
   }
 
-  .selected {
-    background-color: @color-azure;
-    color: @toolbar-text-color;
-  }
-
   .isToday {
     border-color: @color-deeper-graphite;
+  }
+  .selected {
+    background-color: @color-azure;
+    color: #fff;
   }
 }
 
@@ -157,19 +158,6 @@
     left: 0;
   }
 
-  .dropdown {
-    color: @color-graphite;
-    width: 75px;
-    line-height: 32px;
-    height: 32px;
-    display: inline-block;
-  }
-  .dropdown > span {
-    position: absolute;
-    color: @color-deep-graphite;
-    margin-top: 10px;
-    margin-left: -15px;
-  }
   .meridiem-field {
     display: inline-block;
     height: 32px;

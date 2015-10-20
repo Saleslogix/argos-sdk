@@ -24,7 +24,6 @@ import _Templated from './_Templated';
 import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
 import DateTimePicker from './DateTimePicker';
-import Modal from './Modal';
 
 const resource = window.localeContext.getEntitySync('relativeDateTimePicker').attributes;
 
@@ -154,7 +153,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
         text: resource.confirmText,
       },
     ];
-    App.modal.add(dateTimePicker, toolbar, this.options).then(this._modalNode.resolveDeferred);
+    App.modal.add(dateTimePicker, toolbar, this.options).then(this._deferred.resolve);
   },
 });
 

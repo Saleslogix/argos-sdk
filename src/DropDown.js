@@ -15,392 +15,226 @@
 
 import declare from 'dojo/_base/declare';
 import array from 'dojo/_base/array';
-import connect from 'dojo/_base/connect';
-import Deferred from 'dojo/Deferred';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
-import domProp from 'dojo/dom-prop';
+import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';
 import on from 'dojo/on';
 import query from 'dojo/query';
 import _Widget from 'dijit/_Widget';
-import _Templated from 'argos/_Templated';
+import _Templated from './_Templated';
 
-const __class = declare('argos.DropDown', [_Widget, _Templated], {
+const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
-    '<div class="modal__container" data-dojo-attach-point="modalContainer">',
-      '<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode">',
+    '<div class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownNode">',
+      '<label class="dropdown__label">{%: $.label %}</label>',
+      '<input readOnly class="dropdown__input" data-dojo-attach-point="dropdownInput"></input>',
+      '<span class="dropdown__icon {%: $.icon %}"></span>',
+      '<select class="dropdown__select dropdown__select--hidden" data-dojo-attach-point="dropdownSelect"></select>',
       '</div>',
     '</div>',
   ]),
-  modalBackdropTemplate: new Simplate([
-    '<div class="modal-backdrop" style="height: {%= $.parentHeight %}">',
+  listTemplate: new Simplate([
+    '<div class="dropdown {%: $.dropdownClass %} dropdown--absolute dropdown--hidden">',
+      '<label class="dropdown__label">{%: $.label %}</label>',
+      '<input readOnly class="dropdown__input dropdown__input--absolute" value="{%: $.value %}"></input>',
+      '<span class="dropdown__icon {%: $.icon %}"></span>',
     '</div>',
   ]),
-  pickListStartTemplate: new Simplate([
-    '<ul class="picklist dropdown">',
+  listStartTemplate: new Simplate([
+    '<ul class="dropdown__list">',
   ]),
-  pickListEndTemplate: new Simplate([
+  listEndTemplate: new Simplate([
     '</ul>',
   ]),
-  pickListItemTemplate: new Simplate([
-    '<li class="listItem" data-value="{%= $.item %}">',
-    '{%= $.item %}',
+  listItemTemplate: new Simplate([
+    '<li class="dropdown__list__item" data-value="{%= $.item %}">',
+      '{%= $.item %}',
     '</li>',
   ]),
-  modalToolbarTemplate: new Simplate([
-    '<div class="modal-toolbar">',
-    '</div>',
+  overlayTemplate: new Simplate([
+    '<div class="dropdown__overlay"></div>',
   ]),
-  buttonTemplate: new Simplate([
-    '<div class="button tertiary">{%= $.text %}</div>',
+  selectItemTemplate: new Simplate([
+    '<option value="{%: $.item %}">{%: $.item %}</option>',
   ]),
 
-  id: 'modal-template',
-  _orientation: null,
-  _parentNode: null,
-  _content: null,
-  _contentObject: null,
-  _backdrop: null,
-  _isPicklist: false,
-  _picklistSelected: null,
-  _cancelButton: null,
-  _modalConnection: null,
-  _eventConnections: [], // TODO: Clear connections upon modal destroy
-  _deferred: null,
-  showBackdrop: true,
-  showToolbar: true,
-  disableParentScroll: true,
-  closeAction: null,
-  actionScope: null,
-  positioning: null,
+  dropdownClass: '',
+  icon: 'fa fa-caret-down',
+  id: 'dropdown-template',
+  multiSelect: false,
+  openIcon: 'fa fa-caret-up',
+  _action: null,
+  _actionScope: null,
+  _eventConnections: [],
+  _ghost: null,
+  _list: null,
+  _overlay: null,
+  _overlayEvent: null,
+  _selected: null,
 
-  cancelText: 'Cancel',
-  confirmText: 'Confirm',
-
-  attachEventListener: function attachEventListener() {
-    this._modalConnection = connect.connect(this.modalNode, 'onclick', this, this.modalClick);
-    return this;
-  },
-  calculatePosition: function calculatePosition({ offsetTop, offsetLeft, offsetWidth, offsetHeight }) {
-    const position = {};
-
-    this.refreshModalSize();
-
-    if (this._isPicklist) {
-      // This call needs to take place before positioning so that the width of the modal is accounted for
-      domStyle.set(this.modalNode, {
-        minWidth: offsetWidth + 'px',
-      });
-    }
-
-    const modalWidth = domProp.get(this.modalNode, 'offsetWidth');
-
-    switch (this.positioning) {
-      case 'right':
-        position.top = offsetTop + offsetHeight;
-        position.left = offsetLeft - modalWidth + offsetWidth;
-      break;
-      case 'left':
-        position.top = offsetTop + offsetHeight;
-        position.left = offsetLeft;
-      break;
-      case 'center':
-        position.top = 0;
-        position.left = 0;
-      break;
-      default:
-        position.top = 0;
-        position.left = 0;
-    }
-
-    domStyle.set(this.modalNode, {
-      top: position.top + 'px',
-      left: position.left + 'px',
-      visibility: 'visible',
-      overflow: 'auto',
+  createGhost: function createGhost(top = false) {
+    const listStart = domConstruct.toDom(this.listStartTemplate.apply(this));
+    const listEnd = domConstruct.toDom(this.listEndTemplate.apply(this));
+    array.forEach(this.dropdownSelect.options, (item) => {
+      const dom = domConstruct.toDom(this.listItemTemplate.apply({item: item.text}, this));
+      domConstruct.place(dom, listStart);
+      if (item.value === this.dropdownSelect.value) {
+        this._selected = dom;
+        domClass.add(dom, 'dropdown__list__item--selected');
+      }
     });
-
-    if (this._isPicklist) {
-      if (this._picklistSelected) {
-        domProp.set(this.getContent(), 'scrollTop', domProp.get(this._picklistSelected, 'offsetTop'));
-      }
-      if (position.top > offsetTop) {
-        domStyle.set(this._contentObject, {
-          borderTop: '0',
-        });
-      } else {
-        domStyle.set(this._contentObject, {
-          borderBottom: '0',
-        });
-      }
+    this._eventConnections.push(on(listStart, 'click', this.onListClick.bind(this)));
+    domConstruct.place(listEnd, listStart);
+    if (this._ghost) {
+      domConstruct.destroy(this._ghost);
     }
+    this._ghost = domConstruct.toDom(this.listTemplate.apply({ value: this._selected.innerHTML, icon: this.openIcon, label: this.label, dropdownClass: this.dropdownClass }, this));
+
+    const dropdownIcon = query('.dropdown__icon', this._ghost)[0];
+    if (dropdownIcon) {
+      this._eventConnections.push(on(dropdownIcon, 'click', this.hide.bind(this)));
+    }
+    let position = 'last';
+    if (top) {
+      position = 'first';
+    }
+    domConstruct.place(listStart, this._ghost, position);
+    this._list = listStart;
+    domConstruct.place(this._ghost, document.body);
+  },
+  createList: function createList({items, defaultValue, action = null, actionScope = null}) {
+    this._action = action;
+    this._actionScope = actionScope;
+    this._defaultValue = defaultValue;
+    array.forEach(items, function addToModalList(item) {
+      const option = domConstruct.toDom(this.selectItemTemplate.apply({item: item}, this));
+      domConstruct.place(option, this.dropdownSelect);
+    }, this);
+    this.dropdownSelect.value = this.dropdownInput.value = defaultValue;
+    this._eventConnections.push(on(this.dropdownNode, 'click', this.onClick.bind(this)));
+    this.createGhost();
 
     return this;
   },
-  confirm: function confirm() {
-    this.resolveDeferred();
-    return this;
+  createOverlay: function createOverlay() {
+    this.destroyOverlay();
+    this._overlay = domConstruct.toDom(this.overlayTemplate.apply(this));
+    domConstruct.place(this._overlay, document.body);
+    this._overlayEvent = on(this._overlay, 'click', this.onOverlayClick.bind(this));
   },
   destroy: function destroy() {
+    this._eventConnections.forEach( (evt) => {
+      evt.remove();
+    });
+    this._eventConnections = [];
+    domConstruct.destroy(this._ghost);
+    this.destroyOverlay();
     this.inherited(arguments);
-    this.emptyModal();
-    domConstruct.destroy(this.modalNode);
-    return this;
   },
-  emptyModal: function emptyModal() {
-    domConstruct.empty(this.modalNode);
-    return this;
-  },
-  getContent: function getContent() {
-    return this._contentObject;
-  },
-  getContentOptions: function getContentOptions() {
-    return this._contentOptions;
-  },
-  getDeferred: function getDeferred() {
-    return this._deferred;
-  },
-  getZValue: function getZValue(dom = {}) {
-    let value = domStyle.get(dom, 'zIndex');
-    if (value === 'auto') {
-      value = 0;
+  destroyOverlay: function destroyOverlay() {
+    if (this._overlay) {
+      domConstruct.destroy(this._overlay);
+      this._overlayEvent.remove();
     }
-    return value;
   },
   getSelected: function getSelected() {
-    return this._picklistSelected;
+    return this._selected;
   },
-  hideChildModals: function hideChildModals() {
-    if (this.getContent().hideChildModals) {
-      this.getContent().hideChildModals();
-    }
+  getValue: function getValue() {
+    return this.dropdownSelect.value;
+  },
+  hide: function hide() {
+    this.destroyOverlay();
+    domClass.add(this._ghost, 'dropdown--hidden');
     return this;
   },
-  hideModal: function hideModal(params = {}) {
-    if (domStyle.get(this.modalNode, 'visibility') === 'visible') {
-      if (params && params.target && params.target !== this._cancelButton && params.target.offsetParent === this.modalNode) {
-        return this;
-      }
-
-      this.toggleBackdrop()
-          .toggleParentScroll()
-          .hideChildModals();
-      domStyle.set(this.modalNode, {
-        visibility: 'hidden',
-      });
-      domStyle.set(this.modalContainer, {
-        display: 'none',
-      });
-    }
-    this.onHide();
-    return this;
-  },
-  modalClick: function modalClick() {
-    connect.disconnect(this._modalConnection);
-    return this;
-  },
-  noBackdrop: function noBackDrop() {
-    this.showBackdrop = false;
-    return this;
-  },
-  onHide: function onHide() {},
-  placeBackdrop: function placeBackdrop(parentPanel = {}) {
-    const existingBackdrop = query('.modal-backdrop', parentPanel)[0];
-    if (!existingBackdrop) {
-      this._backdrop = domConstruct.toDom(this.modalBackdropTemplate.apply({ parentHeight: parentPanel.scrollHeight + 'px' }));
-      if (!this.showBackdrop) {
-        domStyle.set(this._backdrop, {
-          backgroundColor: 'transparent',
-        });
-      }
-      domStyle.set(this._backdrop, {
-        visbility: 'hidden',
-      });
-      domConstruct.place(this._backdrop, this.modalContainer);
-    } else {
-      this._backdrop = existingBackdrop;
-    }
-    if (this.actionScope && this.closeAction) {
-      // If close action is specified use that action, otherwise default to closing the modal
-      this._eventConnections.push(connect.connect(this._backdrop, 'onclick', this.actionScope, this.actionScope[this.closeAction]));
-    } else {
-      this._eventConnections.push(connect.connect(this._backdrop, 'onclick', this, this.hideModal));
-    }
-    return this;
-  },
-  placeModal: function placeModal() {
-    const node = query('.modal__container', document.body)[0];
-    let toPlace = this.modalContainer;
-    if (!node) {
-      this._parentNode = document.body;
-    } else {
-      this._parentNode = node;
-      toPlace = this.modalNode;
-    }
-    this.placeBackdrop(this._parentNode);
-    this._orientation = this._eventConnections.push(connect.subscribe('/app/setOrientation', this, this.hideModal));
-    domConstruct.place(toPlace, this._parentNode);
-    return this;
-  },
-  refreshOverflow: function refreshOverflow() {
-    domStyle.set(this.modalNode, {
-      overflow: 'scroll',
-    });
-    return this;
-  },
-  refreshModalSize: function refreshModalSize() {
-    domStyle.set(this.modalNode, {
-      width: 'auto',
-      height: 'auto',
-      maxHeight: '',
-      maxWidth: '',
-      top: '',
-      left: '',
-    });
-    return this;
-  },
-  resolveDeferred: function resolveDeferred(receivedData = {}) {
-    const data = receivedData;
-    array.forEach(this._content, (content) => {
-      data[content._widgetName] = content.getContent();
-    }, this);
-    this._deferred.resolve(data);
-    this.hideModal();
-    return this;
-  },
-  setContent: function setContent(content = {}) {
-    if (content) {
-      this._content = content;
-    } else {
-      this._content = [this.getContent()];
-    }
-    return this;
-  },
-  setContentObject: function setContentObject(object = {}) {
-    this._contentObject = object;
-    domConstruct.place(object.domNode, this.modalNode);
-    object._modalNode = this;
-    if (this.showToolbar) {
-      const modalToolbar = domConstruct.toDom(this.modalToolbarTemplate.apply(this));
-      const cancelButton = domConstruct.toDom(this.buttonTemplate.apply({ text: this.cancelText }));
-      this._cancelButton = cancelButton;
-      this._eventConnections.push(connect.connect(cancelButton, 'onclick', this, this.hideModal));
-      domConstruct.place(cancelButton, modalToolbar);
-      const confirmButton = domConstruct.toDom(this.buttonTemplate.apply({ text: this.confirmText }));
-      this._eventConnections.push(connect.connect(confirmButton, 'onclick', this, this.confirm));
-      domConstruct.place(confirmButton, modalToolbar);
-      domConstruct.place(modalToolbar, this.modalNode);
-    }
-    return this;
-  },
-  setContentOptions: function setContentOptions(options = {}) {
-    this._contentOptions = options;
-    return this;
-  },
-  setContentPicklist: function setContentPicklist({items, action, actionScope, defaultValue}) {
-    const pickListStart = domConstruct.toDom(this.pickListStartTemplate.apply());
-    const pickListEnd = domConstruct.toDom(this.pickListEndTemplate.apply());
-
-    array.forEach(items, function addToModalList(item) {
-      const dom = domConstruct.toDom(this.pickListItemTemplate.apply({item: item}, this));
-      domConstruct.place(dom, pickListStart);
-      if (item.toString() === defaultValue) {
-        this._picklistSelected = dom;
-        domClass.add(dom, 'selected');
-      }
-    }, this);
-    domConstruct.place(pickListEnd, pickListStart);
-    domConstruct.place(pickListStart, this.modalNode);
-    this._contentObject = pickListStart;
-    this._isPicklist = true;
-    domStyle.set(this.modalNode, {
-      padding: 0,
-      overflow: 'hidden',
-    });
-    this._eventConnections.push(connect.connect(pickListStart, 'onclick', actionScope, actionScope[action]));
-
-    return this;
-  },
-  showContent: function showContent(options = {}) {
-    if (this._contentObject.show) {
-      this._contentObject.show(this._contentOptions || options);
-      if (this._contentObject.getContent) {
-        this.setContent(this._contentObject.getContent());
-      }
-    }
-    domStyle.set(this.modalContainer, {
-      display: '',
-    });
-    return this;
-  },
-  showModal: function showModal(target = {}) {
-    if (this._parentNode) {
-      this._deferred = new Deferred();
-      if (!domClass.contains(window.ReUI.rootEl, 'android-keyboard-up')) {
-        this.showContent()
-            .toggleBackdrop()
-            .toggleParentScroll()
-            .attachEventListener()
-            .toolbarListener()
-            .calculatePosition(target);
-      } else {
-        setTimeout(() => {
-          this.showContent()
-              .toggleBackdrop()
-              .toggleParentScroll()
-              .attachEventListener()
-              .toolbarListener()
-              .calculatePosition(target);
-        }, 300);
-      }
-    }
-    return this._deferred.promise;
-  },
-  toggleBackdrop: function toggleBackdrop() {
-    if (this._backdrop) {
-      if (domStyle.get(this._backdrop, 'visibility') === 'hidden') {
-        domStyle.set(this._backdrop, {
-          visibility: 'visible',
-          height: domProp.get(this._parentNode, 'scrollHeight') + 'px',
-          zIndex: domStyle.get(this._parentNode, 'zIndex') + 5,
+  onClick: function onClick(evt) {
+    if (evt.currentTarget) {
+      const pos = domGeom.position(evt.currentTarget, true);
+      const ghostHeight = domStyle.get(this._ghost, 'height');
+      if (pos.y + ghostHeight <= window.innerHeight) {
+        if (domClass.contains(this._ghost, 'dropdown--onTop')) {
+          this.createGhost(false);
+          domClass.remove(this._ghost, 'dropdown--onTop');
+        }
+        domStyle.set(this._ghost, {
+          top: `${pos.y}px`,
+          left: `${pos.x}px`,
         });
       } else {
-        domStyle.set(this._backdrop, {
-          visibility: 'hidden',
+        if (!domClass.contains(this._ghost, 'dropdown--onTop')) {
+          this.createGhost(true);
+          domClass.add(this._ghost, 'dropdown--onTop');
+        }
+        domStyle.set(this._ghost, {
+          top: `${pos.y - ghostHeight + pos.h}px`,
+          left: `${pos.x}px`,
         });
       }
+      this.updateGhost(this.dropdownSelect.value);
+      this.createOverlay();
+      this.toggle();
+      this._list.scrollTop = this._selected.offsetTop - this._selected.offsetHeight;
+      evt.preventDefault();
+      evt.stopPropagation();
+    }
+  },
+  onListClick: function onListClick({ target }) {
+    this.updateSelected(target);
+    if (!this.multiSelect) {
+      this.hide();
+      this.setValue(target.innerHTML);
+    } // TODO: Add in what will happen for a multiSelect dropdown
+    if (this._action && this._actionScope) {
+      this._actionScope[this._action]();
+    }
+  },
+  onOverlayClick: function onOverlayClick(evt) {
+    if (!domClass.contains(this._ghost, 'dropdown--hidden')) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.hide();
+      domConstruct.destroy(this._overlay);
+    }
+  },
+  setSelected: function setSelected(value = {}) {
+    if (value !== this._selected) {
+      this._selected = value;
+      this.setValue(value.innerHTML);
+    }
+  },
+  setValue: function setValue(value) {
+    if (value === 0 || value) {
+      this.dropdownSelect.value = this.dropdownInput.value = value;
+    }
+  },
+  show: function show() {
+    this.toggle();
+  },
+  toggle: function toggle() {
+    domClass.toggle(this._ghost, 'dropdown--hidden');
+    if (domClass.contains(this._ghost, 'dropdown--hidden')) {
+      this.destroyOverlay();
+    }
+  },
+  updateGhost: function updateGhost(value) {
+    const current = query(`[data-value=${value}]`, this._list)[0];
+    const input = query('.dropdown__input', this._ghost)[0];
+    if (current) {
+      this.updateSelected(current);
+    }
+    if (input) {
+      input.value = this.dropdownSelect.value;
     }
     return this;
   },
-  toggleModal: function toggleModal(target = {}) {
-    if (domStyle.get(this.modalNode, 'visibility') === 'visible') {
-      this.hideModal();
-    } else {
-      this.showModal(target);
+  updateSelected: function updateSelected(target) {
+    domClass.add(target, 'dropdown__list__item--selected');
+    if (this._selected && this._selected !== target) {
+      domClass.remove(this._selected, 'dropdown__list__item--selected');
     }
-    return this;
-  },
-  toggleParentScroll: function toggleParentScroll() {
-    if (this.disableParentScroll) {
-      if (domStyle.get(this._parentNode, 'overflow') === 'hidden') {
-        domStyle.set(this._parentNode, {
-          overflow: '',
-        });
-      } else {
-        domStyle.set(this._parentNode, {
-          overflow: 'hidden',
-        });
-      }
-    }
-    return this;
-  },
-  toolbarListener: function toolbarListener() {
-    const tbarListener = on(App.bars.tbar, 'click', () => {
-      this.hideModal();
-      tbarListener.remove();
-    });
-    return this;
+    this._selected = target;
   },
 });
 
