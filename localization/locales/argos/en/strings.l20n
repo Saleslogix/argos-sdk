@@ -2,6 +2,9 @@
     emptyText: ''
     dateFormatText: "MM/DD/YYYY"
     invalidDateFormatErrorText: "Field '${0}' has Invalid date format."
+    cancelText: "Cancel"
+    confirmText: "Confirm"
+    advancedText: "Advanced"
 >
 
 <durationField ""
@@ -229,6 +232,8 @@
   tomorrowAfternoonText: "Tomorrow Evening"
   nextWeekText: "Next Week"
   nextMonthText: "Next Month"
+  cancelText: "Cancel"
+  confirmText: "Confirm"
 >
 <briefcaseModel ""
   entityDisplayName: "Briefcase"

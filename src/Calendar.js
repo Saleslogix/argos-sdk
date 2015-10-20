@@ -18,16 +18,14 @@
  * @alternateClassName Calendar
  */
 import declare from 'dojo/_base/declare';
-import array from 'dojo/_base/array';
 import lang from 'dojo/_base/lang';
 import query from 'dojo/query';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
-import domProp from 'dojo/dom-prop';
 import _ActionMixin from './_ActionMixin';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
-import Modal from './Modal';
+import Dropdown from './Dropdown';
 
 const resource = window.localeContext.getEntitySync('calendar').attributes;
 
@@ -41,10 +39,10 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   ]),
   calendarHeaderTemplate: new Simplate([
     '<div class="calendar-header">',
-      '<span class="fa fa-angle-left" data-action="decrementMonth"></span>',
-      '<span class="month" data-dojo-attach-point="monthNode" data-action="toggleMonthModal"></span>',
-      '<span class="year" data-dojo-attach-point="yearNode" data-action="toggleYearModal"></span>',
-      '<span class="fa fa-angle-right" data-action="incrementMonth"></span>',
+      '<span class="calendar__header__icon calendar__header__icon--left fa fa-angle-left" data-action="decrementMonth"></span>',
+      '<div class="month" data-dojo-attach-point="monthNode" data-action="toggleMonthModal"></div>',
+      '<div class="year" data-dojo-attach-point="yearNode" data-action="toggleYearModal"></div>',
+      '<span class="fa fa-angle-right calendar__header__icon calendar__header__icon--right " data-action="incrementMonth"></span>',
     '</div>',
   ]),
   calendarTableTemplate: new Simplate([
@@ -68,7 +66,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   ]),
   calendarTableDayActiveTemplate: new Simplate([
     '<div class="day__active">',
-      // '{%= $.count %}',
     '</div>',
   ]),
   calendarTableWeekStartTemplate: new Simplate([
@@ -127,10 +124,10 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
   date: null,
   noClearButton: false,
-  _monthModal: null,
+  _monthDropdown: null,
   _currentMonth: null,
   _todayMonth: null,
-  _yearModal: null,
+  _yearDropdown: null,
   _currentYear: null,
   _todayYear: null,
   _widgetName: 'calendar',
@@ -165,13 +162,11 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     return this;
   },
   changeMonthShown: function changeMonthShown({ month }) {
-    domConstruct.empty(this.monthNode);
-    this.monthNode.innerHTML = month;
+    this._monthDropdown.setValue(month);
     return this;
   },
   changeYearShown: function changeYearShown({ year }) {
-    domConstruct.empty(this.yearNode);
-    this.yearNode.innerHTML = year;
+    this._yearDropdown.setValue(year);
     return this;
   },
   checkAndRenderDay: function checkAndRenderDay(data = {}) {
@@ -203,29 +198,32 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     }
     this.date.selectedDateMoment = null;
   },
-  createMonthModal: function createMonthModal() {
-    if (!this._monthModal) {
-      this._monthModal = new Modal({ id: 'month-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideMonthModal', actionScope: this });
-      this._monthModal.placeModal(this.domNode.offsetParent || this.domNode);
-      this._monthModal.setContentPicklist({ items: this.monthsText, action: 'setSelectedMonth', actionScope: this, defaultValue: this.date.selectedDateMoment.format('MMMM') });
-      this._currentMonth = this._monthModal.getSelected();
-      this._todayMonth = this._currentMonth;
+  createMonthDropdown: function createMonthDropdown() {
+    if (!this._monthDropdown) {
+      this._monthDropdown = new Dropdown({ id: 'month-dropdown', dropdownClass: 'dropdown--medium' });
+      this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.format('MMMM'), action: 'setMonth', actionScope: this });
+      this._todayMonth = this._monthDropdown.getSelected();
+      domConstruct.place(this._monthDropdown.domNode, this.monthNode);
     }
     return this;
   },
-  createYearModal: function createYearModal() {
-    if (!this._yearModal) {
-      this._yearModal = new Modal({ id: 'year-modal ' + this.id, showBackdrop: false, positioning: 'center', closeAction: 'hideYearModal', actionScope: this });
-      this._yearModal.placeModal(this.domNode.offsetParent || this.domNode);
-      this._yearModal.setContentPicklist({ items: this.getYearRange(), action: 'setSelectedYear', actionScope: this, defaultValue: this.date.selectedDateMoment.format('YYYY')});
-      this._currentYear = this._yearModal.getSelected();
-      this._todayYear = this._currentYear;
+  createYearDropdown: function createYearDropdown() {
+    if (!this._yearDropdown) {
+      this._yearDropdown = new Dropdown({ id: 'year-dropdown' });
+      this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY'), action: 'setYear', actionScope: this });
+      this._todayYear = this._yearDropdown.getSelected();
+      domConstruct.place(this._yearDropdown.domNode, this.yearNode);
     }
     return this;
   },
   decrementMonth: function decrementMonth() {
     this.date.selectedDateMoment.subtract({ months: 1 });
     this.refreshCalendar(this.date);
+  },
+  destroy: function destroy() {
+    this._yearDropdown.destroy();
+    this._monthDropdown.destroy();
+    this.inherited(arguments);
   },
   getContent: function getContent() {
     return this.date;
@@ -267,11 +265,11 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   },
   hideMonthModal: function hideMonthModal() {
     domClass.remove(this.monthNode, 'selected');
-    this._monthModal.hideModal();
+    this._monthDropdown.hide();
   },
   hideYearModal: function hideYearModal() {
     domClass.remove(this.yearNode, 'selected');
-    this._yearModal.hideModal();
+    this._yearDropdown.hide();
   },
   incrementMonth: function incrementMonth() {
     this.date.selectedDateMoment.add({ months: 1 });
@@ -380,46 +378,24 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     return this;
   },
   setDropdownsToday: function setDropdownsToday() {
-    if (this._currentMonth !== this._todayMonth) {
-      domClass.remove(this._currentMonth, 'selected');
-      domClass.add(this._todayMonth, 'selected');
-      domProp.set(this._monthModal.getContent(), 'scrollTop', domProp.get(this._todayMonth, 'offsetTop'));
+    if (this._monthDropdown.getSelected() !== this._todayMonth) {
+      this._monthDropdown.setSelected(this._todayMonth.innerHTML);
     }
-    if (this._currentYear !== this._todayYear) {
-      domClass.remove(this._currentYear, 'selected');
-      domClass.add(this._todayYear, 'selected');
-      domProp.set(this._yearModal.getContent(), 'scrollTop', domProp.get(this._todayYear, 'offsetTop'));
+    if (this._yearDropdown.getSelected() !== this._todayYear) {
+      this._yearDropdown.setSelected(this._todayYear.innerHTML);
     }
     return this;
   },
-  setSelectedMonth: function setSelectedMonth({ target }) {
-    if (target) {
-      domClass.add(target, 'selected');
-      if (this._currentMonth) {
-        domClass.remove(this._currentMonth, 'selected');
-      }
-      this._currentMonth = target;
-      this.date.selectedDateMoment.month(array.indexOf(this._monthModal.getContent().children, target));
-      this.toggleMonthModal();
-      this.refreshCalendar(this.date);
-    }
-    return this;
-  },
-  setSelectedYear: function setSelectedYear({ target }) {
-    if (target) {
-      domClass.add(target, 'selected');
-      if (this._currentYear) {
-        domClass.remove(this._currentYear, 'selected');
-      }
-      this._currentYear = target;
-      this.date.selectedDateMoment.year(parseInt(target.innerHTML, 10));
-      this.toggleYearModal();
-      this.refreshCalendar(this.date);
-    }
-    return this;
+  setMonth: function setMonth() {
+    this.date.selectedDateMoment.month(this._monthDropdown.getValue());
+    this.refreshCalendar(this.date);
   },
   setSubValue: function setSubValue() {
     return this;
+  },
+  setYear: function setYear() {
+    this.date.selectedDateMoment.year(this._yearDropdown.getValue());
+    this.refreshCalendar(this.date);
   },
   show: function show(options = {}) {
     this.date = {};
@@ -440,19 +416,11 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     if (this.isModal || this.options.isModal || this.noClearButton || this.options.noClearButton) {
       this.clearButton.style.display = 'none';
     }
-    this.createMonthModal()
-        .createYearModal();
+    this.createMonthDropdown()
+        .createYearDropdown();
 
     domClass.add(this.todayButton, 'selected');
     this.refreshCalendar(this.date);
-  },
-  toggleMonthModal: function toggleMonthModal(params = {}) {
-    domClass.toggle(this.monthNode, 'selected');
-    this._monthModal.toggleModal(params.$source);
-  },
-  toggleYearModal: function toggleYearModal(params = {}) {
-    domClass.toggle(this.yearNode, 'selected');
-    this._yearModal.toggleModal(params.$source);
   },
 });
 

@@ -34,13 +34,20 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
   _calendarNode: null,
   _timeSelectNode: null,
   isModal: false,
-  showTimePicker: true,
+  showTimePicker: false,
 
   init: function init() {
     this.inherited(arguments);
   },
   getContent: function getContent() {
-    return this.showTimePicker ? [ this._calendarNode, this._timeSelectNode ] : [ this._calendarNode ];
+    const data = {};
+    if (this._calendarNode && this._calendarNode.getContent) {
+      data.calendar = this._calendarNode.getContent();
+    }
+    if (this.showTimePicker && this._timeSelectNode && this._timeSelectNode.getContent) {
+      data.time = this._timeSelectNode.getContent();
+    }
+    return data;
   },
   hideChildModals: function hideChildModals() {
     if (this._calendarNode && this._calendarNode.hideModals) {

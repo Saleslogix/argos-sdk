@@ -120,6 +120,9 @@
             "text": "ErrorManager.js",
             "path": "../src-out/"
           }, {
+            "text": "Dropdown.js",
+            "path": "../src-out/"
+          }, {
             "text": "_Field.js",
             "path": "../src-out/Fields/"
           }, {
@@ -171,6 +174,12 @@
             "text": "_LegacySDataListMixin.js",
             "path": "../src-out/"
           }, {
+            "text": "Calendar.js",
+            "path": "../src-out/"
+          }, {
+            "text": "TimePicker.js",
+            "path": "../src-out/"
+          }, {
             "text": "BooleanField.js",
             "path": "../src-out/Fields/"
           }, {
@@ -182,12 +191,6 @@
           }, {
             "text": "TextField.js",
             "path": "../src-out/Fields/"
-          }, {
-            "text": "Calendar.js",
-            "path": "../src-out/"
-          }, {
-            "text": "TimePicker.js",
-            "path": "../src-out/"
           }, {
             "text": "Toast.js",
             "path": "../src-out/"
@@ -228,6 +231,9 @@
             "text": "Application.js",
             "path": "../src-out/"
           }, {
+            "text": "DateTimePicker.js",
+            "path": "../src-out/"
+          }, {
             "text": "SignatureField.js",
             "path": "../src-out/Fields/"
           }, {
@@ -248,9 +254,6 @@
           }, {
             "text": "TextAreaField.js",
             "path": "../src-out/Fields/"
-          }, {
-            "text": "DateTimePicker.js",
-            "path": "../src-out/"
           }, {
             "text": "_RelatedViewWidgetDetailMixin.js",
             "path": "../src-out/"
@@ -285,11 +288,11 @@
             "text": "RecentlyViewed.js",
             "path": "../src-out/Models/Offline/"
           }, {
-            "text": "NoteField.js",
-            "path": "../src-out/Fields/"
-          }, {
             "text": "RelativeDateTimePicker.js",
             "path": "../src-out/"
+          }, {
+            "text": "NoteField.js",
+            "path": "../src-out/Fields/"
           }, {
             "text": "Detail.js",
             "path": "../src-out/"

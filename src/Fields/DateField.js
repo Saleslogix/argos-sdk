@@ -22,7 +22,6 @@ import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
 import DateTimePicker from '../DateTimePicker';
 import RelativeDateTimePicker from '../RelativeDateTimePicker';
-import Modal from '../Modal';
 
 const resource = window.localeContext.getEntitySync('dateField').attributes;
 
@@ -161,20 +160,17 @@ const control = declare('argos.Fields.DateField', [EditorField], {
     }
   },
   getValuesFromModal: function getValuesFromModal(data = {}) {
-    if (this.modal) {
-      if (data.relativeDateTimePicker) {
-        this.currentValue = this.validationValue = data.relativeDateTimePicker.toDate();
-      } else {
-        // This is the case where the user went to the specific date time selector
-        if (data.calendar) {
-          const date = data.calendar.selectedDateMoment.clone();
-          if (data.timePicker) {
-            date.hours(data.timePicker.hours);
-            date.minutes(data.timePicker.minutes);
-          }
-          this.currentValue = this.validationValue = date.toDate();
-        }
+    if (data.calendar.selectedDateMoment) {
+      // This is the case where the DateTimePicker was used to select the date
+      const date = data.calendar.selectedDateMoment.clone();
+      if (data.time) {
+        date.hours(data.time.hours);
+        date.minutes(data.time.minutes);
       }
+      this.currentValue = this.validationValue = date.toDate();
+      this.inputNode.value = this.formatValue(this.currentValue);
+    } else {
+      this.currentValue = this.validationValue = data.toDate();
       this.inputNode.value = this.formatValue(this.currentValue);
     }
   },
@@ -193,25 +189,44 @@ const control = declare('argos.Fields.DateField', [EditorField], {
     this.inherited(arguments);
     domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
   },
-  showModal: function showModal(params) {
+  showModal: function showModal() {
     if (this.isDisabled()) {
       return;
     }
 
     const options = this.createNavigationOptions();
-    if (!this.modal) {
-      if (this.showRelativeDateTime) {
-        this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
-        this.modal = new Modal({ id: 'date-time-modal ' + this.id, confirmText: this.dateTimePicker.pickDateTimeText, confirm: this.dateTimePicker.toDateTimePicker });
-      } else {
-        this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
-        this.modal = new Modal({ id: 'date-time-modal ' + this.id, onHide: this.dateTimePicker.removeListeners.bind(this.dateTimePicker) });
-      }
-      this.modal.placeModal(this.domNode.offsetParent)
-                .setContentObject(this.dateTimePicker);
+
+    let toolbar;
+    if (this.showRelativeDateTime) {
+      this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
+      toolbar = [
+        {
+          action: 'cancel',
+          className: 'button--flat button--flat--split',
+          text: resource.cancelText,
+        }, {
+          action: this.dateTimePicker.toDateTimePicker,
+          className: 'button--flat button--flat--split',
+          text: resource.advancedText,
+          context: this.dateTimePicker,
+        },
+      ];
+    } else {
+      this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
+      toolbar = [
+        {
+          action: 'cancel',
+          className: 'button--flat button--flat--split',
+          text: resource.cancelText,
+        }, {
+          action: 'resolve',
+          className: 'button--flat button--flat--split',
+          text: resource.confirmText,
+        },
+      ];
     }
 
-    this.modal.setContentOptions(options).showModal(params.$source).then(this.getValuesFromModal.bind(this));
+    App.modal.add(this.dateTimePicker, toolbar, options).then(this.getValuesFromModal.bind(this));
   },
   _onClick: function _onClick(evt) {
     event.stop(evt);
