@@ -19,6 +19,9 @@
   <!-- Deep Diff -->
   <script type="text/javascript" src="../libraries/deep-diff/deep-diff-0.2.0.min.js"></script>
 
+  <!-- PouchDB -->
+  <script type="text/javascript" src="../libraries/PouchDB/pouchdb-4.0.1.min.js"></script>
+
   <!-- moment -->
   <script type="text/javascript" src="../libraries/moment/moment-with-locales.js"></script>
 
@@ -115,10 +118,12 @@
         'tests/Fields/TextFieldTests',
         'tests/Fields/DecimalFieldTests',
         'tests/Groups/DateTimeSectionTests',
+        'tests/Stores/PouchDB',
         'tests/Stores/SData'
       ]);
     });
     require(['../libraries/jasmine-2.0.0/boot.js']);
+
   </script>
 </body>
 

@@ -459,6 +459,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {Boolean} Indicates if the list is loading
    */
   listLoading: false,
+  viewType: 'list',
   // Store properties
   itemsProperty: '',
   idProperty: '',
@@ -575,7 +576,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} options The navigation options passed from the previous view.
    * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
    */
-  show: function show(options/*, transitionOptions*/) {
+  show: function show(options /*, transitionOptions*/ ) {
     if (options) {
       if (options.resetSearch) {
         this.defaultSearchTermSet = false;
@@ -795,7 +796,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Event} evt The click/tap event
    * @param {HTMLElement} node The node that invoked the action
    */
-  invokeActionItem: function invokeActionItem(parameters/*, evt, node*/) {
+  invokeActionItem: function invokeActionItem(parameters /*, evt, node*/ ) {
     const index = parameters.id;
     const action = this.visibleActions[index];
     const selectedItems = this.get('selectionModel').getSelections();
@@ -937,7 +938,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     domConstruct.place(this.actionsNode, rowNode, 'after');
   },
-  onApplyRowActionPanel: function onApplyRowActionPanel(/*actionNodePanel, rowNode*/) {},
+  onApplyRowActionPanel: function onApplyRowActionPanel( /*actionNodePanel, rowNode*/ ) {},
   /**
    * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
    * that when the next view queries the navigation context we can include the passed param as a data point.
@@ -1046,8 +1047,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} options The object published by the event.
    * @private
    */
-  _onRefresh: function _onRefresh(/*options*/) {},
-  onScroll: function onScroll(/*evt*/) {
+  _onRefresh: function _onRefresh( /*options*/ ) {},
+  onScroll: function onScroll( /*evt*/ ) {
     const scrollerNode = this.get('scroller');
     const pos = domGeom.position(scrollerNode, true);
     const height = pos.h; // viewport height (what user sees)
@@ -1132,7 +1133,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @return {String/Boolean} An SData query compatible search expression.
    * @template
    */
-  formatSearchQuery: function formatSearchQuery(/*searchQuery*/) {
+  formatSearchQuery: function formatSearchQuery( /*searchQuery*/ ) {
     return false;
   },
   /**
@@ -1328,28 +1329,50 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   requestData: function requestData() {
     const store = this.get('store');
 
-    if (store) {
-      this._setLoading();
-      // attempt to use a dojo store
-      const queryOptions = {
-        count: this.pageSize,
-        start: this.position,
-      };
-
-      this._applyStateToQueryOptions(queryOptions);
-
-      const queryExpression = this._buildQueryExpression() || null;
-      const queryResults = store.query(queryExpression, queryOptions);
-
-      when(queryResults,
-        this._onQueryComplete.bind(this, queryResults),
-        this._onQueryError.bind(this, queryOptions)
-      );
-
-      return queryResults;
+    if (!store && !this._model) {
+      console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?'); // eslint-disable-line
+      return null;
     }
 
-    console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?'); // eslint-disable-line
+    this._setLoading();
+
+    let queryResults;
+    let queryOptions;
+    let queryExpression;
+    if (this._model) {
+      // Todo: find a better way to transfer this state.
+      this.options.count = this.pageSize;
+      this.options.start = this.position;
+      queryOptions = {};
+      this._applyStateToQueryOptions(queryOptions);
+      queryExpression = this._buildQueryExpression() || null;
+      queryResults = this.requestDataUsingModel(queryExpression, queryOptions);
+    } else {
+      queryOptions = {};
+      this._applyStateToQueryOptions(queryOptions);
+
+      queryExpression = this._buildQueryExpression() || null;
+      queryResults = this.requestDataUsingStore(queryExpression, queryOptions);
+    }
+
+    when(queryResults,
+      this._onQueryComplete.bind(this, queryResults),
+      this._onQueryError.bind(this, queryOptions)
+    );
+
+    return queryResults;
+  },
+  requestDataUsingModel: function requestDataUsingModel(queryExpression, options) {
+    const queryOptions = {
+      returnQueryResults: true,
+      queryModelName: this.queryModelName,
+    };
+    lang.mixin(queryOptions, options);
+    return this._model.getEntries(queryExpression, queryOptions);
+  },
+  requestDataUsingStore: function requestDataUsingStore(queryExpression, queryOptions) {
+    const store = this.get('store');
+    return store.query(queryExpression, queryOptions);
   },
   _onQueryComplete: function _onQueryComplete(queryResults, entries) {
     try {
@@ -1429,13 +1452,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const remaining = this.total > -1 ? this.total - (this.position + this.pageSize) : -1;
     return remaining;
   },
-  onApplyRowTemplate: function onApplyRowTemplate(/*entry, rowNode*/) {},
+  onApplyRowTemplate: function onApplyRowTemplate( /*entry, rowNode*/ ) {},
   processData: function processData(entries) {
     if (!entries) {
       return;
     }
 
-    const store = this.get('store');
     const count = entries.length;
 
     if (count > 0) {
@@ -1444,15 +1466,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         const entry = this._processEntry(entries[i]);
         // If key comes back with nothing, check that the store is properly
         // setup with an idProperty
-        this.entries[store.getIdentity(entry)] = entry;
+        this.entries[this.getIdentity(entry)] = entry;
 
-        let rowNode;
-        try {
-          rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
-        } catch (err) {
-          console.error(err); // eslint-disable-line
-          rowNode = domConstruct.toDom(this.rowTemplateError.apply(entry, this));
-        }
+        const rowNode = this.createItemRowNode(entry);
 
         docfrag.appendChild(rowNode);
         this.onApplyRowTemplate(entry, rowNode);
@@ -1462,6 +1478,24 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         domConstruct.place(docfrag, this.contentNode, 'last');
       }
     }
+  },
+  createItemRowNode: function createItemRowNode(entry) {
+    let rowNode = null;
+    try {
+      rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+    } catch (err) {
+      console.error(err); // eslint-disable-line
+      rowNode = domConstruct.toDom(this.rowTemplateError.apply(entry, this));
+    }
+    return rowNode;
+  },
+  getIdentity: function getIdentity(entry) {
+    if (this._model) {
+      return this._model.getEntityId(entry);
+    }
+
+    const store = this.get('store');
+    return store.getIdentity(entry, this.idProperty);
   },
   _logError: function _logError(error, message) {
     const fromContext = this.options.fromContext;
@@ -1480,7 +1514,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   _buildQueryExpression: function _buildQueryExpression() {
     return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
   },
-  _applyStateToQueryOptions: function _applyStateToQueryOptions(/*queryOptions*/) {},
+  _applyStateToQueryOptions: function _applyStateToQueryOptions( /*queryOptions*/ ) {},
   /**
    * Handler for the more button. Simply calls {@link #requestData requestData} which already has the info for
    * setting the start index as needed.
@@ -1669,8 +1703,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   /**
    * Returns a promise with the list's count.
    */
-  getListCount: function getListCount(/*options, callback*/) {
-  },
+  getListCount: function getListCount( /*options, callback*/ ) {},
 });
 
 lang.setObject('Sage.Platform.Mobile._ListBase', __class);

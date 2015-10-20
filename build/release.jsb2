@@ -29,6 +29,10 @@
           "path": "../libraries/sdata/"
         },
         {
+          "text": "pouchdb-4.0.1.min.js",
+          "path": "../libraries/PouchDB/"
+        },
+        {
           "text": "deep-diff-0.2.0.min.js",
           "path": "../libraries/deep-diff/"
         },
@@ -62,6 +66,12 @@
       "file": "content/javascript/argos-sdk.js",
       "isDebug": true,
       "fileIncludes": [{
+            "text": "Utility.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Manager.js",
+            "path": "../src-out/Models/"
+          }, {
             "text": "CultureInfo.js",
             "path": "../src-out/"
           }, {
@@ -80,20 +90,23 @@
             "text": "_DraggableBase.js",
             "path": "../src-out/"
           }, {
-            "text": "Utility.js",
-            "path": "../src-out/"
-          }, {
             "text": "FieldManager.js",
             "path": "../src-out/"
           }, {
             "text": "_GroupBySection.js",
             "path": "../src-out/Groups/"
           }, {
-            "text": "DomHelper.js",
-            "path": "../src-out/ReUI/"
+            "text": "Types.js",
+            "path": "../src-out/Models/"
           }, {
             "text": "_CustomizationMixin.js",
             "path": "../src-out/"
+          }, {
+            "text": "PouchDB.js",
+            "path": "../src-out/Store/"
+          }, {
+            "text": "DomHelper.js",
+            "path": "../src-out/ReUI/"
           }, {
             "text": "_ErrorHandleMixin.js",
             "path": "../src-out/"
@@ -102,6 +115,9 @@
             "path": "../src-out/"
           }, {
             "text": "_ServiceMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "ErrorManager.js",
             "path": "../src-out/"
           }, {
             "text": "_Field.js",
@@ -125,9 +141,6 @@
             "text": "ConfigurableSelectionModel.js",
             "path": "../src-out/"
           }, {
-            "text": "ErrorManager.js",
-            "path": "../src-out/"
-          }, {
             "text": "Format.js",
             "path": "../src-out/"
           }, {
@@ -140,10 +153,22 @@
             "text": "GroupByValueSection.js",
             "path": "../src-out/Groups/"
           }, {
+            "text": "Adapter.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "Manager.js",
+            "path": "../src-out/Offline/"
+          }, {
+            "text": "_ModelBase.js",
+            "path": "../src-out/Models/"
+          }, {
             "text": "main.js",
             "path": "../src-out/ReUI/"
           }, {
-            "text": "View.js",
+            "text": "_LegacySDataDetailMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_LegacySDataListMixin.js",
             "path": "../src-out/"
           }, {
             "text": "BooleanField.js",
@@ -173,11 +198,8 @@
             "text": "RelatedViewManager.js",
             "path": "../src-out/"
           }, {
-            "text": "_LegacySDataDetailMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_LegacySDataListMixin.js",
-            "path": "../src-out/"
+            "text": "_SDataModelMixin.js",
+            "path": "../src-out/Models/"
           }, {
             "text": "RelatedViewWidget.js",
             "path": "../src-out/"
@@ -188,16 +210,22 @@
             "text": "_SDataListMixin.js",
             "path": "../src-out/"
           }, {
+            "text": "View.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_DetailOfflineMixin.js",
+            "path": "../src-out/Offline/"
+          }, {
+            "text": "_ListOfflineMixin.js",
+            "path": "../src-out/Offline/"
+          }, {
+            "text": "_OfflineModelBase.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "_SDataModelBase.js",
+            "path": "../src-out/Models/"
+          }, {
             "text": "Application.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Signature.js",
-            "path": "../src-out/Views/"
-          }, {
-            "text": "_DetailBase.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_ListBase.js",
             "path": "../src-out/"
           }, {
             "text": "SignatureField.js",
@@ -221,9 +249,6 @@
             "text": "TextAreaField.js",
             "path": "../src-out/Fields/"
           }, {
-            "text": "FileSelect.js",
-            "path": "../src-out/Views/"
-          }, {
             "text": "DateTimePicker.js",
             "path": "../src-out/"
           }, {
@@ -242,8 +267,23 @@
             "text": "_SDataEditMixin.js",
             "path": "../src-out/"
           }, {
-            "text": "DraggableList.js",
+            "text": "FileSelect.js",
+            "path": "../src-out/Views/"
+          }, {
+            "text": "Signature.js",
+            "path": "../src-out/Views/"
+          }, {
+            "text": "_DetailBase.js",
             "path": "../src-out/"
+          }, {
+            "text": "_ListBase.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Briefcase.js",
+            "path": "../src-out/Models/Offline/"
+          }, {
+            "text": "RecentlyViewed.js",
+            "path": "../src-out/Models/Offline/"
           }, {
             "text": "NoteField.js",
             "path": "../src-out/Fields/"
@@ -254,28 +294,31 @@
             "text": "Detail.js",
             "path": "../src-out/"
           }, {
-            "text": "List.js",
+            "text": "DraggableList.js",
             "path": "../src-out/"
           }, {
-            "text": "_ConfigureBase.js",
+            "text": "List.js",
             "path": "../src-out/"
           }, {
             "text": "DateField.js",
             "path": "../src-out/Fields/"
           }, {
+            "text": "_ConfigureBase.js",
+            "path": "../src-out/"
+          }, {
             "text": "GroupedList.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_EditBase.js",
             "path": "../src-out/"
           }, {
             "text": "ConfigureQuickActions.js",
             "path": "../src-out/Views/"
           }, {
-            "text": "_EditBase.js",
+            "text": "Edit.js",
             "path": "../src-out/"
           }, {
             "text": "ApplicationModule.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Edit.js",
             "path": "../src-out/"
           }
       ]
