@@ -19,6 +19,7 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';
+import keys from 'dojo/keys';
 import on from 'dojo/on';
 import query from 'dojo/query';
 import _Widget from 'dijit/_Widget';
@@ -91,6 +92,10 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     }
     this._ghost = domConstruct.toDom(this.listTemplate.apply({ value: this._selected.innerHTML, icon: this.openIcon, label: this.label, dropdownClass: this.dropdownClass }, this));
 
+    const dropdownInput = query('.dropdown__input', this._ghost)[0];
+    if (dropdownInput) {
+      this._eventConnections.push(on(dropdownInput, 'keydown', this.onKeyPress.bind(this)));
+    }
     const dropdownIcon = query('.dropdown__icon', this._ghost)[0];
     if (dropdownIcon) {
       this._eventConnections.push(on(dropdownIcon, 'click', this.hide.bind(this)));
@@ -150,32 +155,60 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     return this;
   },
   onClick: function onClick(evt) {
-    if (evt.currentTarget) {
-      const pos = domGeom.position(evt.currentTarget, true);
-      const ghostHeight = domStyle.get(this._ghost, 'height');
-      if (pos.y + ghostHeight <= window.innerHeight) {
-        if (domClass.contains(this._ghost, 'dropdown--onTop')) {
-          this.createGhost(false);
-          domClass.remove(this._ghost, 'dropdown--onTop');
+    if (evt.currentTarget === this.dropdownNode) {
+      this.show();
+      evt.preventDefault();
+      evt.stopPropagation();
+    }
+  },
+  onKeyPress: function onKeyPress(evt) {
+    let prevent = true;
+    switch (evt.keyCode) {
+      case keys.UP_ARROW:
+        if (!domClass.contains(this._ghost, 'dropdown--hidden')) {
+          if (this._selected.previousSibling) {
+            this.updateSelected(this._selected.previousSibling);
+            this.updateGhost(this._selected.innerHTML);
+            this.scrollListTo(this._selected);
+          }
+        } else {
+          this.show();
         }
-        domStyle.set(this._ghost, {
-          top: `${pos.y}px`,
-          left: `${pos.x}px`,
-        });
-      } else {
-        if (!domClass.contains(this._ghost, 'dropdown--onTop')) {
-          this.createGhost(true);
-          domClass.add(this._ghost, 'dropdown--onTop');
+        break;
+      case keys.DOWN_ARROW:
+        if (!domClass.contains(this._ghost, 'dropdown--hidden')) {
+          if (this._selected.nextSibling) {
+            this.updateSelected(this._selected.nextSibling);
+            this.updateGhost(this._selected.innerHTML);
+            this.scrollListTo(this._selected);
+          }
+        } else {
+          this.show();
         }
-        domStyle.set(this._ghost, {
-          top: `${pos.y - ghostHeight + pos.h}px`,
-          left: `${pos.x}px`,
-        });
-      }
-      this.updateGhost(this.dropdownSelect.value);
-      this.createOverlay();
-      this.toggle();
-      this._list.scrollTop = this._selected.offsetTop - this._selected.offsetHeight;
+        break;
+      case keys.TAB:
+        prevent = false;
+        this.hide();
+        break;
+      case keys.ESCAPE:
+      case keys.CLEAR:
+        this.hide();
+        break;
+      case keys.ENTER:
+      case keys.SPACE:
+        this.onListClick({ target: this._selected });
+        break;
+      case keys.HOME:
+        this.updateSelected(this._list.children[0]);
+        this.scrollListTo(this._selected);
+        break;
+      case keys.END:
+        this.updateSelected(this._list.children[this._list.children.length - 1]);
+        this.scrollListTo(this._selected);
+        break;
+      default:
+    }
+    if (prevent) {
       evt.preventDefault();
       evt.stopPropagation();
     }
@@ -198,6 +231,15 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       domConstruct.destroy(this._overlay);
     }
   },
+  postCreate: function postCreate() {
+    this.inherited(arguments);
+    this._eventConnections.push(on(this.dropdownInput, 'keydown', this.onKeyPress.bind(this)));
+  },
+  scrollListTo: function scrollListTo(target) {
+    if (target) {
+      this._list.scrollTop = target.offsetTop - target.offsetHeight;
+    }
+  },
   setSelected: function setSelected(value = {}) {
     if (value !== this._selected) {
       this._selected = value;
@@ -210,7 +252,31 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     }
   },
   show: function show() {
+    const pos = domGeom.position(this.dropdownNode, true);
+    const ghostHeight = domStyle.get(this._ghost, 'height');
+    if (pos.y + ghostHeight <= window.innerHeight) {
+      if (domClass.contains(this._ghost, 'dropdown--onTop')) {
+        this.createGhost(false);
+        domClass.remove(this._ghost, 'dropdown--onTop');
+      }
+      domStyle.set(this._ghost, {
+        top: `${pos.y}px`,
+        left: `${pos.x}px`,
+      });
+    } else {
+      if (!domClass.contains(this._ghost, 'dropdown--onTop')) {
+        this.createGhost(true);
+        domClass.add(this._ghost, 'dropdown--onTop');
+      }
+      domStyle.set(this._ghost, {
+        top: `${pos.y - ghostHeight + pos.h}px`,
+        left: `${pos.x}px`,
+      });
+    }
+    this.updateGhost(this.dropdownSelect.value);
+    this.createOverlay();
     this.toggle();
+    this.scrollListTo(this._selected);
   },
   toggle: function toggle() {
     domClass.toggle(this._ghost, 'dropdown--hidden');

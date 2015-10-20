@@ -44,18 +44,23 @@
   outline-color: transparent;
 }
 
-.dropdown__input:focus {
-  border: 0;
-}
-
 .dropdown__input--absolute {
   .border-radius(0);
   border: 0;
   border-bottom: 1px solid @color-lighter-graphite;
+  border-top: 1px solid transparent;
+}
+
+.dropdown__input--absolute:focus {
+  .border-radius(0);
+  border: 0;
+  border-bottom: 1px solid @color-lighter-graphite;
+  border-top: 1px solid transparent;
 }
 
 .dropdown--onTop .dropdown__input--absolute {
   border-top: 1px solid @color-lighter-graphite;
+  border-bottom: 1px solid transparent;
 }
 
 .dropdown__list {
