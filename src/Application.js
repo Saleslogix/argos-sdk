@@ -25,6 +25,9 @@ import domConstruct from 'dojo/dom-construct';
 import all from 'dojo/promise/all';
 import snap from 'snap';
 import ReUI from './ReUI/main';
+import ready from 'dojo/ready';
+import util from './Utility';
+import ModelManager from './Models/Manager';
 import 'dojo/sniff';
 
 has.add('html5-file-api', function hasFileApi(global) {
@@ -205,10 +208,21 @@ const __class = declare('argos.Application', null, {
    * @property {int}
    */
   maxUploadFileSize: 4000000,
+
+  /*
+   * Timeout for the connection check.
+   */
+  PING_TIMEOUT: 1000,
+
+  /*
+   * Static resource to request on the ping. Should be a small file.
+   */
+  PING_RESOURCE: 'content/images/blank.gif',
   /**
    * All options are mixed into App itself
    * @param {Object} options
    */
+  ModelManager: null,
   constructor: function constructor(options) {
     this._connects = [];
     this._appStatePromises = [];
@@ -224,7 +238,15 @@ const __class = declare('argos.Application', null, {
 
     this.context = {};
     this.viewShowOptions = [];
+    this.ping = util.debounce((action) => {
+      this._ping().then((results) => {
+        if (typeof action === 'function') {
+          action(results);
+        }
+      });
+    }, this.PING_TIMEOUT);
 
+    this.ModelManager = ModelManager;
     lang.mixin(this, options);
   },
   /**
@@ -249,8 +271,7 @@ const __class = declare('argos.Application', null, {
   /**
    * Shelled function that is called from {@link #destroy destroy}, may be used to release any further handles.
    */
-  uninitialize: function uninitialize() {
-  },
+  uninitialize: function uninitialize() {},
   /**
    * Cleans up URL to prevent ReUI url handling and then invokes ReUI.
    */
@@ -266,12 +287,22 @@ const __class = declare('argos.Application', null, {
 
     ReUI.init();
   },
-  onOffline: function onOffline() {
-    this.onLine = false;
+  _onOffline: function _onOffline() {
+    this.ping((results) => this._updateConnectionState(results));
   },
-  onOnline: function onOnline() {
-    this.onLine = true;
+  _onOnline: function _onOnline() {
+    this.ping((results) => this._updateConnectionState(results));
   },
+  _updateConnectionState: function _updateConnectionState(online) {
+    // Don't fire the onConnectionChange if we are in the same state.
+    if (this.onLine === online) {
+      return;
+    }
+
+    this.onLine = online;
+    this.onConnectionChange(online);
+  },
+  onConnectionChange: function onConnectionChange(/*online*/) {},
   /**
    * Establishes various connections to events.
    */
@@ -280,10 +311,41 @@ const __class = declare('argos.Application', null, {
     this._connects.push(connect.connect(win.body(), 'beforetransition', this, this._onBeforeTransition));
     this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
     this._connects.push(connect.connect(win.body(), 'show', this, this._onActivate));
-    this._connects.push(connect.connect(window, 'offline', this, this.onOffline));
-    this._connects.push(connect.connect(window, 'online', this, this.onOnline));
+    ready(() => {
+      window.addEventListener('online', this._onOnline.bind(this));
+      window.addEventListener('offline', this._onOffline.bind(this));
+    });
 
-    this.onLine = navigator.onLine;
+    this.ping((results) => this._updateConnectionState(results));
+  },
+
+  /**
+   * Returns a promise. The results are true of the resource came back
+   * before the PING_TIMEOUT. The promise is rejected if there is timeout or
+   * the response is not a 200 or 304.
+   */
+  _ping: function _ping() {
+    return new Promise((resolve) => {
+      const xhr = new XMLHttpRequest();
+      xhr.ontimeout = () => resolve(false);
+      xhr.onerror = () => resolve(false);
+      xhr.onload = () => {
+        const DONE = 4;
+        const HTTP_OK = 200;
+        const HTTP_NOT_MODIFIED = 304;
+
+        if (xhr.readyState === DONE) {
+          if (xhr.status === HTTP_OK || xhr.status === HTTP_NOT_MODIFIED) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      xhr.open('GET', this.PING_RESOURCE);
+      xhr.timeout = this.PING_TIMEOUT;
+      xhr.send();
+    });
   },
 
   /**
@@ -333,7 +395,7 @@ const __class = declare('argos.Application', null, {
   clearAppStatePromises: function clearAppStatePromises() {
     this._appStatePromises = [];
   },
-  onSetOrientation: function onSetOrientation(/*value*/) {},
+  onSetOrientation: function onSetOrientation( /*value*/ ) {},
   /**
    * Loops through connections and calls {@link #registerService registerService} on each.
    */
@@ -435,7 +497,7 @@ const __class = declare('argos.Application', null, {
    * Returns the `window.navigator.onLine` property for detecting if an internet connection is available.
    */
   isOnline: function isOnline() {
-    return window.navigator.onLine;
+    return this.onLine;
   },
   /**
    * Returns true/false if the current view is the first/initial view.
@@ -455,6 +517,8 @@ const __class = declare('argos.Application', null, {
 
     this.services[name] = instance;
 
+    instance.on('requesttimeout', this.onRequestTimeout, this);
+
     if ((options.isDefault || service.isDefault) || !this.defaultService) {
       this.defaultService = instance;
     }
@@ -472,11 +536,16 @@ const __class = declare('argos.Application', null, {
 
     this._connections[name] = instance;
 
+    instance.on('requesttimeout', this.onRequestTimeout, this);
+
     if ((options.isDefault || definition.isDefault) || !this._connections.default) {
       this._connections.default = instance;
     }
 
     return this;
+  },
+  onRequestTimeout: function _onTimeout() {
+    this.ping((results) => this._updateConnectionState(results));
   },
   /**
    * Determines the the specified service name is found in the Apps service object.
@@ -706,12 +775,12 @@ const __class = declare('argos.Application', null, {
       connect.publish('/app/resize', []);
     }, 100);
   },
-  onRegistered: function onRegistered(/*view*/) {},
-  onBeforeViewTransitionAway: function onBeforeViewTransitionAway(/*view*/) {},
-  onBeforeViewTransitionTo: function onBeforeViewTransitionTo(/*view*/) {},
-  onViewTransitionAway: function onViewTransitionAway(/*view*/) {},
-  onViewTransitionTo: function onViewTransitionTo(/*view*/) {},
-  onViewActivate: function onViewActivate(/*view, tag, data*/) {},
+  onRegistered: function onRegistered( /*view*/ ) {},
+  onBeforeViewTransitionAway: function onBeforeViewTransitionAway( /*view*/ ) {},
+  onBeforeViewTransitionTo: function onBeforeViewTransitionTo( /*view*/ ) {},
+  onViewTransitionAway: function onViewTransitionAway( /*view*/ ) {},
+  onViewTransitionTo: function onViewTransitionTo( /*view*/ ) {},
+  onViewActivate: function onViewActivate( /*view, tag, data*/ ) {},
   _onBeforeTransition: function _onBeforeTransition(evt) {
     const view = this.getView(evt.target);
     if (view) {
@@ -919,7 +988,7 @@ const __class = declare('argos.Application', null, {
 
     return forPath.concat(forSet);
   },
-  hasAccessTo: function hasAccessTo(/*security*/) {
+  hasAccessTo: function hasAccessTo( /*security*/ ) {
     return true;
   },
   /**

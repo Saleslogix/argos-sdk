@@ -230,3 +230,12 @@
   nextWeekText: "Next Week"
   nextMonthText: "Next Month"
 >
+<briefcaseModel ""
+  entityDisplayName: "Briefcase"
+  entityDisplayNamePlural : "Briefcases"
+>
+
+<recentlyViewedModel ""
+  entityDisplayName: "Recently Viewed"
+  entityDisplayNamePlural : "RecentlyViewed"
+>

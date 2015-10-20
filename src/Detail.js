@@ -17,6 +17,7 @@ import lang from 'dojo/_base/lang';
 import _DetailBase from './_DetailBase';
 import _SDataDetailMixin from './_SDataDetailMixin';
 import _RelatedWidgetDetailMixin from './_RelatedViewWidgetDetailMixin';
+import _DetailOfflineMixin from './Offline/_DetailOfflineMixin';
 
 /**
  * @class argos.Detail
@@ -30,7 +31,7 @@ import _RelatedWidgetDetailMixin from './_RelatedViewWidgetDetailMixin';
  * @mixins argos._SDataDetailMixin
  * @mixins argos._RelatedViewWidgetDetailMixin
  */
-const __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin], {});
+const __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin, _DetailOfflineMixin], {});
 
 lang.setObject('Sage.Platform.Mobile.Detail', __class);
 export default __class;
