@@ -20,7 +20,6 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import event from 'dojo/_base/event';
-import aspect from 'dojo/aspect';
 import on from 'dojo/on';
 import domClass from 'dojo/dom-class';
 import _Widget from 'dijit/_Widget';
