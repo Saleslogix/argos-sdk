@@ -121,7 +121,6 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
       relatedRequests = [];
       queryResults = store.get(entityId, queryOptions);
       when(queryResults, function(relatedFeed) { // eslint-disable-line
-        const odef = def;
         const entry = queryResults.results[0];
         if (includeRelated) {
           relatedRequests = this.getRelatedRequests(entry);
@@ -130,10 +129,10 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
           all(relatedRequests).then(
               (relatedResults) => {
                 this.applyRelatedResults(entry, relatedResults);
-                odef.resolve(entry);
+                def.resolve(entry);
               }.bind(this),
               (err) => {
-                odef.reject(err);
+                def.reject(err);
               });
         } else {
           def.resolve(entry);
