@@ -130,7 +130,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
               (relatedResults) => {
                 this.applyRelatedResults(entry, relatedResults);
                 def.resolve(entry);
-              }.bind(this),
+              },
               (err) => {
                 def.reject(err);
               });

@@ -191,7 +191,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     when(queryResults, (docs) => {
       const entities = this.unWrapEntities(docs);
       def.resolve(entities);
-    }.bind(this), (err) => {
+    }, (err) => {
       def.reject(err);
     });
     if (options.returnQueryResults) {
