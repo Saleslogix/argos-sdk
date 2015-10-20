@@ -85,11 +85,11 @@ __class = declare('argos._PullToRefreshMixin', null, {
     this.scrollerNode = scrollerNode;
 
     const touchstart = Rx.Observable.fromEvent(scrollerNode, 'touchstart')
-      .filter(function filterShouldPull(evt) {
+      .filter((evt) => {
         // The implmentor of this mixin should determine what shouldStartPullToRefresh is.
         return this.shouldStartPullToRefresh(this.scrollerNode) && evt.touches[0];
-      }.bind(this))
-      .map(function mapPull(e) {
+      })
+      .map((e) => {
         const evt = e.touches[0];
         domStyle.set(this.pullRefreshBanner, 'visibility', 'visible');
         domClass.remove(this.scrollerNode, this.animateCls);
@@ -105,18 +105,18 @@ __class = declare('argos._PullToRefreshMixin', null, {
           top: parseInt(style.top, 10),
           y: evt.clientY,
         };
-      }.bind(this));
+      });
     const touchmove = Rx.Observable.fromEvent(scrollerNode, 'touchmove');
     const touchcancel = Rx.Observable.fromEvent(scrollerNode, 'touchcancel');
     const touchend = Rx.Observable.fromEvent(scrollerNode, 'touchend');
     const done = touchcancel.merge(touchend);
 
     // Merge the touchstart and dragging observables
-    const dragging = touchstart.flatMap(function flatMapDragging(data) {
+    const dragging = touchstart.flatMap((data) => {
       let distance; // current dragged distance
       let maxDistance; // required distance to trigger a refresh
       return touchmove
-        .map(function mapMoves(evt) {
+        .map((evt) => {
           const touches = evt.touches[0];
           const weight = 2; // slow the drag
           distance = (touches.clientY - data.y) / weight;
@@ -128,11 +128,11 @@ __class = declare('argos._PullToRefreshMixin', null, {
             top: data.top + distance,
           };
         })
-        .filter(function filterDistance(d) {
+        .filter((d) => {
           // Prevent the user from dragging the pane above our starting point
           return d.distance >= 0;
         })
-        .takeUntil(done.doAction(function doneMap() {
+        .takeUntil(done.doAction(() => {
           // Restore our original scroller styles
           domStyle.set(this.scrollerNode, {
             'top': data.topCss,
@@ -150,8 +150,8 @@ __class = declare('argos._PullToRefreshMixin', null, {
           } else {
             this.onPullToRefreshCancel();
           }
-        }.bind(this)));
-    }.bind(this));
+        }));
+    });
 
     dragging.subscribe(function onNext(data) {
       data.evt.preventDefault();
