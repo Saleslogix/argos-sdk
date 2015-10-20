@@ -29,6 +29,10 @@
           "path": "../libraries/sdata/"
         },
         {
+          "text": "pouchdb-4.0.1.min.js",
+          "path": "../libraries/PouchDB/"
+        },
+        {
           "text": "deep-diff-0.2.0.min.js",
           "path": "../libraries/deep-diff/"
         },
@@ -61,223 +65,347 @@
       "name": "Argos SDK",
       "file": "content/javascript/argos-sdk.js",
       "isDebug": true,
-      "fileIncludes": [{
-            "text": "CultureInfo.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_ActionMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_Templated.js",
-            "path": "../src-out/"
-          }, {
-            "text": "SelectionModel.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Convert.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_DraggableBase.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Utility.js",
-            "path": "../src-out/"
-          }, {
-            "text": "FieldManager.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_GroupBySection.js",
-            "path": "../src-out/Groups/"
-          }, {
-            "text": "DomHelper.js",
-            "path": "../src-out/ReUI/"
-          }, {
-            "text": "_CustomizationMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_ErrorHandleMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_PullToRefreshMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_ServiceMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_Field.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "Modal.js",
-            "path": "../src-out/"
-          }, {
-            "text": "SearchWidget.js",
-            "path": "../src-out/"
-          }, {
-            "text": "TabWidget.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Toolbar.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_RelatedViewWidgetBase.js",
-            "path": "../src-out/"
-          }, {
-            "text": "ConfigurableSelectionModel.js",
-            "path": "../src-out/"
-          }, {
-            "text": "ErrorManager.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Format.js",
-            "path": "../src-out/"
-          }, {
-            "text": "SData.js",
-            "path": "../src-out/Store/"
-          }, {
-            "text": "DateTimeSection.js",
-            "path": "../src-out/Groups/"
-          }, {
-            "text": "GroupByValueSection.js",
-            "path": "../src-out/Groups/"
-          }, {
-            "text": "main.js",
-            "path": "../src-out/ReUI/"
-          }, {
-            "text": "View.js",
-            "path": "../src-out/"
-          }, {
-            "text": "BooleanField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "EditorField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "LookupField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "TextField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "Calendar.js",
-            "path": "../src-out/"
-          }, {
-            "text": "TimePicker.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Toast.js",
-            "path": "../src-out/"
-          }, {
-            "text": "MainToolbar.js",
-            "path": "../src-out/"
-          }, {
+      "fileIncludes": [
+        {
+          "text": "Utility.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Convert.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_CustomizationMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Format.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "SData.js",
+          "path": "../src-out/Store/"
+        },
+        {
+          "text": "PouchDB.js",
+          "path": "../src-out/Store/"
+        },
+        {
+           "text": "Types.js",
+           "path": "../src-out/Models/"
+        },
+        {
+          "text": "_ModelBase.js",
+          "path": "../src-out/Models/"
+        },
+        {
+           "text": "Manager.js",
+           "path": "../src-out/Models/"
+        },
+        {
+          "text": "_SDataModelBase.js",
+          "path": "../src-out/Models/"
+        },
+        {
+          "text": "_OfflineModelBase.js",
+          "path": "../src-out/Models/"
+        },
+        {
+          "text": "Briefcase.js",
+          "path": "../src-out/Models/Offline"
+        },
+        {
+           "text": "RecentlyViewed.js",
+           "path": "../src-out/Models/Offline"
+        },
+        {
+           "text": "Adapter.js",
+           "path": "../src-out/Models/"
+        },
+        {
+          "text": "CultureInfo.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_DraggableBase.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "DomHelper.js",
+          "path": "../src-out/ReUI/"
+        },
+        {
+          "text": "main.js",
+          "path": "../src-out/ReUI/"
+        },
+        {
+          "text": "SelectionModel.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "ConfigurableSelectionModel.js",
+          "path": "../src-out/"
+        },
+        {
+           "text": "Application.js",
+           "path": "../src-out/"
+        },
+        {
+          "text": "_ActionMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_Templated.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Modal.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Toast.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "TimePicker.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_ErrorHandleMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "TabWidget.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "View.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Calendar.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "DateTimePicker.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "RelativeDateTimePicker.js",
+          "path": "../src-out/"
+        },
+        {
+           "text": "Manager.js",
+           "path": "../src-out/Offline/"
+        },
+        {
+          "text": "_SDataModelMixin.js",
+          "path": "../src-out/Models/"
+        },
+        {
+          "text": "ErrorManager.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_PullToRefreshMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_RelatedViewWidgetBase.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "RelatedViewWidget.js",
+          "path": "../src-out/"
+        },
+        {
             "text": "RelatedViewManager.js",
             "path": "../src-out/"
-          }, {
-            "text": "_LegacySDataDetailMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_LegacySDataListMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "RelatedViewWidget.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_SDataDetailMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_SDataListMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Application.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Signature.js",
-            "path": "../src-out/Views/"
-          }, {
-            "text": "_DetailBase.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_ListBase.js",
-            "path": "../src-out/"
-          }, {
-            "text": "SignatureField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "DurationField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "SelectField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "DecimalField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "HiddenField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "PhoneField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "TextAreaField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "FileSelect.js",
-            "path": "../src-out/Views/"
-          }, {
-            "text": "DateTimePicker.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_RelatedViewWidgetDetailMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_RelatedViewWidgetEditMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_RelatedViewWidgetListMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_LegacySDataEditMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_SDataEditMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "DraggableList.js",
-            "path": "../src-out/"
-          }, {
-            "text": "NoteField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "RelativeDateTimePicker.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Detail.js",
-            "path": "../src-out/"
-          }, {
-            "text": "List.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_ConfigureBase.js",
-            "path": "../src-out/"
-          }, {
-            "text": "DateField.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "GroupedList.js",
-            "path": "../src-out/"
-          }, {
-            "text": "ConfigureQuickActions.js",
-            "path": "../src-out/Views/"
-          }, {
-            "text": "_EditBase.js",
-            "path": "../src-out/"
-          }, {
-            "text": "ApplicationModule.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Edit.js",
-            "path": "../src-out/"
-          }
+        },
+        {
+          "text": "_DetailOfflineMixin.js",
+          "path": "../src-out/Offline/"
+        },
+        {
+          "text": "_ListOfflineMixin.js",
+          "path": "../src-out/Offline/"
+        },
+        {
+          "text": "_DetailBase.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_SDataDetailMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_LegacySDataDetailMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_RelatedViewWidgetDetailMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Detail.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "FieldManager.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_Field.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "BooleanField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "EditorField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "DateField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "TextField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "DecimalField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "LookupField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "DurationField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "HiddenField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "PhoneField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "SelectField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "SignatureField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "TextAreaField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "NoteField.js",
+          "path": "../src-out/Fields/"
+        },
+        {
+          "text": "_EditBase.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_SDataEditMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_LegacySDataEditMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_RelatedViewWidgetEditMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Edit.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_GroupBySection.js",
+          "path": "../src-out/Groups/"
+        },
+        {
+          "text": "DateTimeSection.js",
+          "path": "../src-out/Groups/"
+        },
+        {
+          "text": "GroupByValueSection.js",
+          "path": "../src-out/Groups/"
+        },
+        {
+          "text": "SearchWidget.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_ListBase.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_SDataListMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_LegacySDataListMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_RelatedViewWidgetListMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "List.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "DraggableList.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "GroupedList.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "_ConfigureBase.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "Toolbar.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "MainToolbar.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "ConfigureQuickActions.js",
+          "path": "../src-out/Views/"
+        },
+        {
+          "text": "FileSelect.js",
+          "path": "../src-out/Views/"
+        },
+        {
+          "text": "Signature.js",
+          "path": "../src-out/Views/"
+        },
+        {
+          "text": "_ServiceMixin.js",
+          "path": "../src-out/"
+        },
+        {
+          "text": "ApplicationModule.js",
+          "path": "../src-out/"
+        }
       ]
     }
   ],

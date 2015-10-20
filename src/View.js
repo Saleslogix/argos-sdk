@@ -19,6 +19,7 @@ import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
 import _Templated from './_Templated';
 import _ErrorHandleMixin from './_ErrorHandleMixin';
+import Adapter from './Models/Adapter';
 
 const resource = window.localeContext.getEntitySync('view').attributes;
 
@@ -81,6 +82,16 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * A reference to the globa App object
    */
   app: null,
+
+  /**
+   * Registered model name to use.
+   */
+  modelName: '',
+
+  /**
+   * View type (detail, edit, list, etc)
+   */
+  viewType: 'view',
   /**
    * May be used to specify the service name to use for data requests. Setting false will force the use of the default service.
    * @property {String/Boolean}
@@ -121,7 +132,25 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   init: function init() {
     this.startup();
     this.initConnects();
+    this.initModel();
   },
+  /**
+   * Initializes the model instance that is return with the curernt view.
+   */
+  initModel: function initModel() {
+    const model = this.getModel();
+    if (model) {
+      this._model = model;
+      this._model.init();
+    }
+  },
+  /**
+   * Returns a new instance of a model for the view.
+   */
+   getModel: function getModel() {
+     const model = Adapter.getModel(this.modelName);
+     return model;
+   },
   /**
    * Establishes this views connections to various events
    */
@@ -319,6 +348,12 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    */
   getSecurity: function getSecurity(/*access*/) {
     return this.security;
+  },
+  /**
+  * Required for binding to ScrollContainer which utilizes iScroll that requires to be refreshed when the
+  * content (therefor scrollable area) changes.
+  */
+  onContentChange: function onContentChange() {
   },
 });
 
