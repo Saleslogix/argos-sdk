@@ -244,3 +244,21 @@
   entityDisplayName: "Recently Viewed"
   entityDisplayNamePlural : "RecentlyViewed"
 >
+
+<busyIndicator ""
+  loadingText: "Loading"
+>
+
+<_listOfflineMixin
+  cancelText: "Cancel"
+  okayText: "Okay"
+  completeText: "Complete"
+  goToListViewText: "Items have been briefcased. Would you like to move to the briefcase list view?"
+>
+
+<_detailOfflineMixin
+  cancelText: "Cancel"
+  okayText: "Okay"
+  completeText: "Complete"
+  goToDetailViewText: "Item and related items have been briefcased. Would you like to move to the briefcase list view?"
+>

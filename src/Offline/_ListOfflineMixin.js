@@ -14,6 +14,9 @@
  */
 import declare from 'dojo/_base/declare';
 import OfflineManager from './Manager';
+import BusyIndicator from '../BusyIndicator';
+
+const resource = window.localeContext.getEntitySync('_listOfflineMixin').attributes;
 
 
 /**
@@ -39,6 +42,14 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     return tools;
   },
   briefCaseList: function briefCaseList(action, selection) { // eslint-disable-line
+    // Start busy indicator modal
+    App.modal.disableClose = true;
+    App.modal.showToolbar = false;
+    const busyIndicator = new BusyIndicator({ id: 'busyIndicator__offline-list-briefcase' });
+    const loadingModal = App.modal.add(busyIndicator);
+    const busyDeferred = busyIndicator.start();
+
+    // Start briefcasing
     const entities = [];
     if (this.entries) {
       for (const entryId in this.entries) {
@@ -48,7 +59,25 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
       }
     }
     OfflineManager.briefCaseEntities(entities).then((result) => {
-      this.onListBriefcased(result);
+      // Show complete modal dialog
+      App.modal.disableClose = false;
+      App.modal.showToolbar = true;
+      loadingModal.resolve(true);
+      busyDeferred.resolve(true);
+      const toolbar = [
+        {
+          action: 'cancel',
+          className: 'button--flat button--flat--split',
+          text: resource.cancelText,
+        }, {
+          action: 'resolve',
+          className: 'button--flat button--flat--split',
+          text: resource.okayText,
+        },
+      ];
+      // Attach resolve to move to briefcase list (if user hits okay)
+      const modalDeferred = App.modal.add({ title: resource.completeText, content: resource.goToListViewText, getContent: () => { return result; } }, toolbar);
+      modalDeferred.then(this.onListBriefcased.bind(this));
     }, (err) => {
       console.error(err);// eslint-disable-line
     });

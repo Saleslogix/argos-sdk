@@ -14,6 +14,9 @@
  */
 import declare from 'dojo/_base/declare';
 import OfflineManager from './Manager';
+import BusyIndicator from '../BusyIndicator';
+
+const resource = window.localeContext.getEntitySync('_detailOfflineMixin').attributes;
 
 
 /**
@@ -39,6 +42,14 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     return tools;
   },
   briefCaseEntity: function briefCaseEntity(action, selection) { // eslint-disable-line
+    // Start busy indicator modal
+    App.modal.disableClose = true;
+    App.modal.showToolbar = false;
+    const busyIndicator = new BusyIndicator({ id: 'busyIndicator__offline-detail-briefcase' });
+    const loadingModal = App.modal.add(busyIndicator);
+    const busyDeferred = busyIndicator.start();
+
+    // Start briefcasing
     const entityName = this.modelName;
     const entityId = this.entry.$key; // thie should be resolved from the model or adapter.
     const options = {
@@ -46,7 +57,25 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
       viewId: this.id,
     };
     OfflineManager.briefCaseEntity(entityName, entityId, options).then((result) => {
-      this.onEntityBriefcased(result);
+      // Show complete modal dialog
+      App.modal.disableClose = false;
+      App.modal.showToolbar = true;
+      loadingModal.resolve(true);
+      busyDeferred.resolve(true);
+      const toolbar = [
+        {
+          action: 'cancel',
+          className: 'button--flat button--flat--split',
+          text: resource.cancelText,
+        }, {
+          action: 'resolve',
+          className: 'button--flat button--flat--split',
+          text: resource.okayText,
+        },
+      ];
+      // Attach resolve to move to briefcase detail (if user hits okay)
+      const modalDeferred = App.modal.add({ title: resource.completeText, content: resource.goToDetailViewText, getContent: () => { return result; } }, toolbar);
+      modalDeferred.then(this.onEntityBriefcased.bind(this));
     }, (error) => {
       console.error(error);// eslint-disable-line
     });

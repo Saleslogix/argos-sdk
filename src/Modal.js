@@ -33,6 +33,10 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       '{%! $.modalOverlayTemplate %}',
     '</div>',
   ]),
+  dialogContentTemplate: new Simplate([
+    '<div class="modal__header__title">{%: $.title %}</div>',
+    '<p class="modal__content__text">{%: $.content %}</p>',
+  ]),
   modalContentTemplate: new Simplate([
     '<div class="modal__content">',
     '</div>',
@@ -70,6 +74,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     'cancel': function cancel() { return this.hide; },
     'resolve': function resolve() { return this.resolveDeferred; },
   },
+  disableClose: false,
   historyLength: 5,
   lockScroll: true,
   trackHistory: true,
@@ -106,6 +111,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
         .createModalToolbar(toolbarActions)
         ._lockScroll()
         .show();
+    content._deferred.then(this.hide.bind(this));
     return content._deferred;
   },
   attachContainerListener: function attachContainerListener() {
@@ -136,21 +142,29 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
    * Hide the modalContainer to avoid capturing events
   */
   hide: function hide() {
-    this.removeContainerListener()
-        .removeActionListeners()
-        ._unlockScroll();
-    if (this._content && this._content.destroy) {
-      this._content.destroy();
-    }
-    if (this.showToolbar) {
-      domConstruct.empty(this.modalNode);
-      this.removeActionListeners();
-    }
-    domClass.add(this.modalContainer, 'modal__container--hidden');
-    if (this.showOverlay) {
-      domClass.add(this.overlay, 'modal__overlay--hidden');
+    if (!this.disableClose) {
+      this.removeContainerListener()
+          .removeActionListeners()
+          ._unlockScroll();
+      if (this._content && this._content.destroy) {
+        this._content.destroy();
+      }
+      if (this.showToolbar) {
+        domConstruct.empty(this.modalNode);
+        this.removeActionListeners();
+      }
+      domClass.add(this.modalContainer, 'modal__container--hidden');
+      if (this.showOverlay) {
+        domClass.add(this.overlay, 'modal__overlay--hidden');
+      }
     }
     return this;
+  },
+  isNotSimpleDialog: function isNotSimpleDialog() {
+    if (this._content.domNode) {
+      return true;
+    }
+    return false;
   },
   onContainerClick: function onContainerClick(evt) {
     if (evt.srcElement === this.modalContainer || evt.srcElement === this.overlay) {
@@ -194,10 +208,11 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     if (this._content && this._content.getContent) {
       data = this._content.getContent();
     } else {
-      console.log('Modal content does not have a getContent function call to retrieve the data, add this to allow data to be returned'); // eslint-disable-line
+      if (this.isNotSimpleDialog()) {
+        console.log('Modal content does not have a getContent function call to retrieve the data, add this to allow data to be returned'); // eslint-disable-line
+      }
     }
     this._content._deferred.resolve(data);
-    this.hide();
     return this;
   },
   setContent: function setContent(content) {
@@ -219,10 +234,17 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     if (this._content && this._content.show) {
       this._content.show(options);
       const content = domConstruct.toDom(this.modalContentTemplate.apply(this));
-      domConstruct.place(this._content.domNode, content);
+      domConstruct.place(this._content.domNode || this._content, content);
       domConstruct.place(content, this.modalNode);
     } else {
-      console.log('Current modal content does not have a show function, did you forget to add this?'); // eslint-disable-line
+      if (this.isNotSimpleDialog()) {
+        console.log('Current modal content does not have a show function, did you forget to add this?'); // eslint-disable-line
+      } else {
+        const content = domConstruct.toDom(this.modalContentTemplate.apply(this));
+        const simpleDialog = domConstruct.toDom(this.dialogContentTemplate.apply(this._content, this));
+        domConstruct.place(simpleDialog, content);
+        domConstruct.place(content, this.modalNode);
+      }
     }
     return this;
   },
