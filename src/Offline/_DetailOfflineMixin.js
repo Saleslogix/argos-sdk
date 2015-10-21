@@ -57,9 +57,17 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
       const modalPromise = this.createCompleteDialog(busyIndicator, result);
       modalPromise.then(this.onEntityBriefcased.bind(this));
     }, (error) => {
-      this.createCompleteDialog(busyIndicator);
+      this.createAlertDialog(busyIndicator);
       console.error(error);// eslint-disable-line
     });
+  },
+  createAlertDialog: function createAlertDialog(busyIndicator) {
+    App.modal.disableClose = false;
+    App.modal.showToolbar = true;
+    App.modal.resolveDeferred(true);
+    busyIndicator.complete(true);
+    // Attach resolve to move to briefcase list (if user hits okay)
+    return App.modal.createSimpleDialog({ title: 'alert', content: resource.interruptedText, getContent: () => { return; }, leftButton: 'cancel', rightButton: 'okay' });
   },
   createBusyModal: function createBusyModal() {
     App.modal.disableClose = true;
