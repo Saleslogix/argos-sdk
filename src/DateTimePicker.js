@@ -49,14 +49,6 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
     }
     return data;
   },
-  hideChildModals: function hideChildModals() {
-    if (this._calendarNode && this._calendarNode.hideModals) {
-      this._calendarNode.hideModals();
-    }
-    if (this._timeSelectNode && this._timeSelectNode.hideModals) {
-      this._timeSelectNode.hideModals();
-    }
-  },
   removeListeners: function removeListeners() {
     if (this._calendarNode && this._calendarNode.removeListeners) {
       this._calendarNode.removeListeners();

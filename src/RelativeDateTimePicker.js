@@ -93,12 +93,6 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   getContent: function getContent() {
     return this._selectedTime;
   },
-  hideChildModals: function hideChildModals() {
-    if (this._dateTimeModal) {
-      this._dateTimeModal.hideModal();
-    }
-    return;
-  },
   makeItem: function makeItem({label, time, format}) {
     const item = domConstruct.toDom(this.listItemTemplate.apply({ textLeft: label, textRight: time.format(format) }));
     item.time = time;

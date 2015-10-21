@@ -29,20 +29,20 @@ const __class = declare('argos/BusyIndicator', [ _Widget, _Templated ], {
   isAsync: true,
   label: resource.loadingText,
 
-  complete: function complete() {
+  complete: function complete(result = {}) {
     domClass.remove(this._busyIndicator, 'busyIndicator--active');
+    this._busyDeferred.resolve(result);
   },
   show: function show() {},
   start: function start() {
     this._busyDeferred = new Deferred();
-    this._busyDeferred.then(this.complete.bind(this));
 
     const indicator = domConstruct.toDom(this.busyIndicatorTemplate.apply(this));
     domConstruct.place(indicator, this.busyIndicatorNode);
     this._busyIndicator = this.busyIndicatorNode.children[0];
     domClass.add(this._busyIndicator, 'busyIndicator--active');
 
-    return this._busyDeferred;
+    return this._busyDeferred.promise;
   },
 });
 

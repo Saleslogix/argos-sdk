@@ -112,7 +112,7 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
         ._lockScroll()
         .show();
     content._deferred.then(this.hide.bind(this));
-    return content._deferred;
+    return content._deferred.promise;
   },
   attachContainerListener: function attachContainerListener() {
     this.removeContainerListener();

@@ -47,7 +47,7 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     App.modal.showToolbar = false;
     const busyIndicator = new BusyIndicator({ id: 'busyIndicator__offline-list-briefcase' });
     const loadingModal = App.modal.add(busyIndicator);
-    const busyDeferred = busyIndicator.start();
+    busyIndicator.start();
 
     // Start briefcasing
     const entities = [];
@@ -62,8 +62,8 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
       // Show complete modal dialog
       App.modal.disableClose = false;
       App.modal.showToolbar = true;
-      loadingModal.resolve(true);
-      busyDeferred.resolve(true);
+      loadingModal.resolveDeferred(true);
+      busyIndicator.complete(true);
       const toolbar = [
         {
           action: 'cancel',

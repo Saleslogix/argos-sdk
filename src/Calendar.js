@@ -259,18 +259,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     }
     return items;
   },
-  hideModals: function hideModals() {
-    this.hideYearModal();
-    this.hideMonthModal();
-  },
-  hideMonthModal: function hideMonthModal() {
-    domClass.remove(this.monthNode, 'selected');
-    this._monthDropdown.hide();
-  },
-  hideYearModal: function hideYearModal() {
-    domClass.remove(this.yearNode, 'selected');
-    this._yearDropdown.hide();
-  },
   incrementMonth: function incrementMonth() {
     this.date.selectedDateMoment.add({ months: 1 });
     this.refreshCalendar(this.date);

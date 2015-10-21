@@ -140,14 +140,9 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     this.inherited(arguments);
   },
   getContent: function getContent() {
-    this.hideModals();
     this.setTimeValue();
     this.removeListeners();
     return this.timeValue;
-  },
-  hideModals: function hideModals() {
-    this._hourDropdown.hide();
-    this._minuteDropdown.hide();
   },
   removeListeners: function removeListeners() {
     if (this._meridiemListener) {
