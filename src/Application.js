@@ -1038,6 +1038,13 @@ const __class = declare('argos.Application', null, {
     this.showRightDrawer();
     return this;
   },
+  setToolBarMode: function setToolBarMode(onLine) {
+    for (const n in this.bars) {
+      if (this.bars[n].managed) {
+        this.bars[n].setMode(onLine);
+      }
+    }
+  },
 });
 
 // Backwards compatibility for custom modules still referencing the old declare global
