@@ -26,6 +26,8 @@ import on from 'dojo/on';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
 
+const resource = window.localeContext.getEntitySync('modal').attributes;
+
 const __class = declare('argos.Modal', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="modal__container" data-dojo-attach-point="modalContainer">',
@@ -70,9 +72,21 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   _content: null,
   _containerListener: null,
   _history: [],
-  defaultToolbarItems: {
+  defaultHeaderText: {
+    'alert': resource.alertText,
+    'complete': resource.completeText,
+    'edit': resource.editText,
+    'warning': resource.warningText,
+  },
+  defaultToolbarActions: {
     'cancel': function cancel() { return this.hide; },
     'resolve': function resolve() { return this.resolveDeferred; },
+  },
+  defaultToolbarText: {
+    'cancel': resource.cancelText,
+    'confirm': resource.confirmText,
+    'okay': resource.okayText,
+    'submit': resource.submitText,
   },
   disableClose: false,
   historyLength: 5,
@@ -123,8 +137,8 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     if (this.showToolbar) {
       const toolbar = domConstruct.toDom(this.modalToolbarTemplate.apply(this));
       toolbarActions.forEach( (toolbarItem) => {
-        if (this.defaultToolbarItems[toolbarItem.action]) {
-          toolbarItem.action = this.defaultToolbarItems[toolbarItem.action].bind(this)();
+        if (this.defaultToolbarActions[toolbarItem.action]) {
+          toolbarItem.action = this.defaultToolbarActions[toolbarItem.action].bind(this)();
           toolbarItem.context = this;
         }
         const item = domConstruct.toDom(this.buttonTemplate.apply(toolbarItem, this));
@@ -134,6 +148,25 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
       domConstruct.place(toolbar, this.modalNode);
     }
     return this;
+  },
+  createSimpleDialog: function createSimpleDialog(options = {}) {
+    const dialog = {
+      title: this.defaultHeaderText[options.title] || options.title,
+      content: options.content,
+      getContent: options.getContent,
+    };
+    const toolbar = [
+      {
+        action: 'cancel',
+        className: 'button--flat button--flat--split',
+        text: this.defaultToolbarText[options.leftButton] || resource.cancelText,
+      }, {
+        action: 'resolve',
+        className: 'button--flat button--flat--split',
+        text: this.defaultToolbarText[options.rightButton] || resource.okayText,
+      },
+    ];
+    return this.add(dialog, toolbar);
   },
   getHistory: function getHistory() {
     return this._history;

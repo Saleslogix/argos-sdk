@@ -43,12 +43,7 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
   },
   briefCaseList: function briefCaseList(action, selection) { // eslint-disable-line
     // Start busy indicator modal
-    App.modal.disableClose = true;
-    App.modal.showToolbar = false;
-    const busyIndicator = new BusyIndicator({ id: 'busyIndicator__offline-list-briefcase' });
-    const loadingModal = App.modal.add(busyIndicator);
-    busyIndicator.start();
-
+    const busyIndicator = this.createBusyModal();
     // Start briefcasing
     const entities = [];
     if (this.entries) {
@@ -60,25 +55,11 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     }
     OfflineManager.briefCaseEntities(entities).then((result) => {
       // Show complete modal dialog
-      App.modal.disableClose = false;
-      App.modal.showToolbar = true;
-      loadingModal.resolveDeferred(true);
-      busyIndicator.complete(true);
-      const toolbar = [
-        {
-          action: 'cancel',
-          className: 'button--flat button--flat--split',
-          text: resource.cancelText,
-        }, {
-          action: 'resolve',
-          className: 'button--flat button--flat--split',
-          text: resource.okayText,
-        },
-      ];
-      // Attach resolve to move to briefcase list (if user hits okay)
-      const modalDeferred = App.modal.add({ title: resource.completeText, content: resource.goToListViewText, getContent: () => { return result; } }, toolbar);
-      modalDeferred.then(this.onListBriefcased.bind(this));
+      const modalPromise = this.createCompleteDialog(busyIndicator, result);
+      modalPromise.then(this.onListBriefcased.bind(this));
     }, (err) => {
+      // Show complete modal dialog
+      this.createCompleteDialog(busyIndicator);
       console.error(err);// eslint-disable-line
     });
   },
@@ -93,6 +74,22 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
       },
     };
     return entity;
+  },
+  createBusyModal: function createBusyModal() {
+    App.modal.disableClose = true;
+    App.modal.showToolbar = false;
+    const busyIndicator = new BusyIndicator({ id: 'busyIndicator__offline-list-briefcase' });
+    App.modal.add(busyIndicator);
+    busyIndicator.start();
+    return busyIndicator;
+  },
+  createCompleteDialog: function createCompleteDialog(busyIndicator, result = {}) {
+    App.modal.disableClose = false;
+    App.modal.showToolbar = true;
+    App.modal.resolveDeferred(true);
+    busyIndicator.complete(true);
+    // Attach resolve to move to briefcase list (if user hits okay)
+    return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToListViewText, getContent: () => { return result; }, leftButton: 'cancel', rightButton: 'okay' });
   },
   getOfflineIcon: function getOfflineIcon() {
     const model = this.getModel();
