@@ -36,7 +36,7 @@ const __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
    * HTML markup of the toolbar
    */
   widgetTemplate: new Simplate([
-    '<div class="toolbar offline">',
+    '<div class="toolbar">',
     '</div>',
   ]),
   /**
