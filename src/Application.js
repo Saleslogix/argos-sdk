@@ -282,7 +282,6 @@ const __class = declare('argos.Application', null, {
       this.redirectHash = h;
     }
 
-    //location.hash = '';
     history.replaceState(null, '', '#');
     ReUI.init();
   },

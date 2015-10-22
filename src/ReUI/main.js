@@ -248,26 +248,10 @@ lang.mixin(ReUI, {
     context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
   },
 
-  switchHistorySet: function switchHistorySet(name) {
+  resetHistory: function resetHistory() {
     const length = context.history.length;
     history.go(-length);
-    console.log(`Went back ${-length}`);
-    // Keep a reference to the current history set
-    context.historySets[context.historySet] = context.history;
-
-    // Update to the new history set, restore the previous state
-    context.historySet = name;
-    context.history = context.historySets[name] || [];
-  },
-
-  restoreLastHistory: function restoreLastHistory() {
-    console.log(`History length: ${context.history.length}`);
-    if (context.history.length === 0) {
-      return false;
-    }
-
-    setTimeout(() => window.location.replace(context.history[context.history.length - 1].hash), 1);
-    return true;
+    context.history = [];
   },
 
   /**
@@ -298,13 +282,6 @@ lang.mixin(ReUI, {
     if (context.check) {
       window.clearInterval(context.check);
     }
-  },
-
-  enableLocationCheck: function enableLocationCheck() {
-    if (context.check) {
-      window.clearInterval(context.check);
-    }
-    context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
   },
 
   /**
