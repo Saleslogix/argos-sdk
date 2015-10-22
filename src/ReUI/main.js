@@ -17,11 +17,6 @@ const context = {
   height: 0,
   check: 0,
   history: [],
-  historySet: 'primary',
-  historySets: {
-    primary: [],
-    secondary: [],
-  },
 };
 
 const config = window.reConfig || {};
@@ -235,13 +230,12 @@ lang.mixin(ReUI, {
   checkStateEvery: 100,
   context: context,
 
-  init: function init(historySet = 'primary') {
+  init: function init() {
     if (context.initialized) {
       return;
     }
 
     context.initialized = true;
-    context.historySet = historySet;
     R.rootEl = R.rootEl || document.body;
     R.titleEl = R.titleEl || dom.byId(R.pageTitleId);
 
