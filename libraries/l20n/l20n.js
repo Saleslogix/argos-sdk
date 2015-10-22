@@ -1,3 +1,6 @@
+/*!
+ * L20N
+ */
 (function(window, undefined) {
 
 function define(name, payload) {
