@@ -2,6 +2,9 @@
     emptyText: ''
     dateFormatText: "MM/DD/YYYY"
     invalidDateFormatErrorText: "Field '${0}' has Invalid date format."
+    cancelText: "Cancel"
+    confirmText: "Confirm"
+    advancedText: "Advanced"
 >
 
 <durationField ""
@@ -229,6 +232,8 @@
   tomorrowAfternoonText: "Tomorrow Evening"
   nextWeekText: "Next Week"
   nextMonthText: "Next Month"
+  cancelText: "Cancel"
+  confirmText: "Confirm"
 >
 <briefcaseModel ""
   entityDisplayName: "Briefcase"
@@ -238,4 +243,29 @@
 <recentlyViewedModel ""
   entityDisplayName: "Recently Viewed"
   entityDisplayNamePlural : "RecentlyViewed"
+>
+
+<busyIndicator ""
+  loadingText: "Loading"
+  progressText: "Progress"
+>
+
+<modal
+  alertText: "Alert"
+  completeText: "Complete"
+  cancelText: "Cancel"
+  confirmText: "Confirm"
+  editText: "Edit"
+  okayText: "Okay"
+  submitText: "Submit"
+  warningText: "Warning"
+>
+<_listOfflineMixin
+  goToListViewText: "Items have been briefcased. Would you like to move to the briefcase list view?"
+  interruptedText: "The process was interrupted and was not able to fully complete. Please try the process again to fully briefcase the items."
+>
+
+<_detailOfflineMixin
+  goToDetailViewText: "Item and related items have been briefcased. Would you like to move to the briefcase list view?"
+  interruptedText: "The process was interrupted and was not able to fully complete. Please try the process again to fully briefcase the items."
 >

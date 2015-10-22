@@ -24,7 +24,6 @@ import _Templated from './_Templated';
 import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
 import DateTimePicker from './DateTimePicker';
-import Modal from './Modal';
 
 const resource = window.localeContext.getEntitySync('relativeDateTimePicker').attributes;
 
@@ -94,12 +93,6 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   getContent: function getContent() {
     return this._selectedTime;
   },
-  hideChildModals: function hideChildModals() {
-    if (this._dateTimeModal) {
-      this._dateTimeModal.hideModal();
-    }
-    return;
-  },
   makeItem: function makeItem({label, time, format}) {
     const item = domConstruct.toDom(this.listItemTemplate.apply({ textLeft: label, textRight: time.format(format) }));
     item.time = time;
@@ -132,6 +125,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
     }
   },
   show: function show(options = {}) {
+    this.options = options;
     this.showTimePicker = options.showTimePicker;
     this.layout = this.layout || this._createCustomizedLayout(this.createLayout());
     if (!this.listNode.children.length) {
@@ -140,14 +134,20 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
     return;
   },
   toDateTimePicker: function toDateTimePicker() {
-    this.hideModal();
-    if (!this._dateTimeModal) {
-      const dateTimePicker = new DateTimePicker({ isModal: true });
-      this._dateTimeModal = new Modal({ id: 'date-time-modal ' + this.id, onHide: dateTimePicker.removeListeners.bind(dateTimePicker) });
-      this._dateTimeModal.placeModal(this.domNode.offsetParent)
-            .setContentObject(dateTimePicker);
-    }
-    this._dateTimeModal.setContentOptions(this.getContentOptions()).showModal().then(this.resolveDeferred.bind(this));
+    App.modal.hide();
+    const dateTimePicker = new DateTimePicker({ isModal: true });
+    const toolbar = [
+      {
+        action: 'cancel',
+        className: 'button--flat button--flat--split',
+        text: resource.cancelText,
+      }, {
+        action: 'resolve',
+        className: 'button--flat button--flat--split',
+        text: resource.confirmText,
+      },
+    ];
+    App.modal.add(dateTimePicker, toolbar, this.options).then(this._deferred.resolve);
   },
 });
 

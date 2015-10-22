@@ -24,6 +24,7 @@ import fx from 'dojo/_base/fx';
 import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
+import on from 'dojo/on';
 import query from 'dojo/query';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
@@ -49,18 +50,30 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   title: 'Title',
   message: 'This is a toast',
   icon: '',
+  historyLength: 50,
   // Time toast will be displayed (in milliseconds)
   toastTime: 6000,
   barSize: 100,
-  positioning: 'toast--top-right',
+  _containerPosition: {
+    'right': function positionRight() {
+      domClass.add(this.modalContainer, 'toast__container--right');
+      domClass.add(this.modalNode, 'toast__queue--right');
+    },
+    'left': function positionLeft() {
+      domClass.add(this.modalContainer, 'toast__container--left');
+      domClass.add(this.modalNode, 'toast__queue--left');
+    },
+  },
+  containerPosition: 'right',
   showProgressBar: true,
+  showOverlay: false,
   disableParentScroll: false,
   _progressBar: null,
   _toasts: [],
   _timeouts: [],
   _connections: [],
 
-  addToast: function addToast(options = {}) {
+  add: function add(options = {}) {
     this.title = options.title || this.title;
     this.message = options.message || this.message;
     this.icon = options.icon || this.icon;
@@ -73,6 +86,7 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
     }
     domConstruct.place(toasty, this.modalNode);
     this._toasts.push(toasty);
+    this.pushHistory(toasty);
     this._connections.push(connect.connect(query('.toast__btn-close', toasty)[0], 'onclick', this, this.closeButton));
     this.setTimer(toasty);
   },
@@ -89,20 +103,14 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
     return this;
   },
   applyPositioning: function applyPositioning() {
-    switch (this.positioning) {
-      case 'toast--top-right':
-      case 'toast--top-left':
-      case 'toast--bottom-right':
-      case 'toast--bottom-left':
-        domClass.add(this.modalNode, this.positioning);
-        break;
-      default:
-        domClass.add(this.modalNode, 'toast--top-right');
+    if (this._containerPosition[this.containerPosition]) {
+      this._containerPosition[this.containerPosition].bind(this)();
     }
     return this;
   },
   calculatePosition: function calculatePosition() {
     domClass.remove(this.modalNode, 'panel');
+    domClass.add(this.modalContainer, 'toast__container');
     domClass.add(this.modalNode, 'toast__queue');
     domAttr.set(this.modalNode, 'aria-relevant', 'additions');
     domAttr.set(this.modalNode, 'aria-live', 'polite');
@@ -121,9 +129,6 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
   destroyToast: function destroyToast() {
     domConstruct.destroy(this);
   },
-  hide: function hide() {
-    this.hideModal();
-  },
   hideToast: function hideToast(toast = {}) {
     if (toast) {
       domClass.add(toast, 'effect-scale-hide');
@@ -137,10 +142,11 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
     connect.disconnect(this._connections.shift());
     this.hideToast(toast);
   },
-  placeModal: function placeModal(parentPanel = {}) {
-    this._parentNode = parentPanel;
-    domConstruct.place(this.modalNode, this._parentNode);
-    return this;
+  onContainerClick: function onContainerClick(evt) {
+    on.emit(evt.path[1], 'click', { // evt.path[1] used to pass event to the toasts
+      bubbles: true,
+      cancelable: true,
+    });
   },
   setTimer: function setTimer(toast = {}) {
     this.animateBar(toast);
@@ -148,17 +154,10 @@ const __class = declare('argos.Toast', [_Widget, _Templated, Modal], {
     return this;
   },
   show: function show() {
-    const body = query('body')[0];
-    if (body) {
-      if (!this._parentNode) {
-        this.placeModal(body);
-      }
-      this.setContent(this.toasts)
-          .calculatePosition();
-    }
-  },
-  showModal: function showModal() {
-    this.show();
+    this.inherited(arguments);
+    this.place(document.body)
+        .setContent(this.toasts)
+        .calculatePosition();
   },
 });
 

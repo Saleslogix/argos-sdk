@@ -19,6 +19,7 @@
       "expect": false,
       "spyOn": false,
       "module": false,
+      "Rx": false,
       "moment": false
   },
   "ecmaFeatures": {
