@@ -239,11 +239,9 @@ const __class = declare('argos.Application', null, {
 
     this.context = {};
     this.viewShowOptions = [];
-    this.ping = util.debounce((action) => {
+    this.ping = util.debounce(() => {
       this._ping().then((results) => {
-        if (typeof action === 'function') {
-          action(results);
-        }
+        this._updateConnectionState(results);
       });
     }, this.PING_TIMEOUT);
 
@@ -284,15 +282,14 @@ const __class = declare('argos.Application', null, {
       this.redirectHash = h;
     }
 
-    location.hash = '';
-
+    history.replaceState(null, '', '#');
     ReUI.init();
   },
   _onOffline: function _onOffline() {
-    this.ping((results) => this._updateConnectionState(results));
+    this.ping();
   },
   _onOnline: function _onOnline() {
-    this.ping((results) => this._updateConnectionState(results));
+    this.ping();
   },
   _updateConnectionState: function _updateConnectionState(online) {
     // Don't fire the onConnectionChange if we are in the same state.
@@ -317,7 +314,7 @@ const __class = declare('argos.Application', null, {
       window.addEventListener('offline', this._onOffline.bind(this));
     });
 
-    this.ping((results) => this._updateConnectionState(results));
+    this.ping();
   },
 
   /**
@@ -552,7 +549,7 @@ const __class = declare('argos.Application', null, {
     return this;
   },
   onRequestTimeout: function _onTimeout() {
-    this.ping((results) => this._updateConnectionState(results));
+    this.ping();
   },
   /**
    * Determines the the specified service name is found in the Apps service object.
