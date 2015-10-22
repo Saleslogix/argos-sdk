@@ -182,7 +182,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     let queryOptions;
     let queryResults;
     const def = new Deferred();
-    model = App.ModelManager.getModel(relationship.childEntity, MODEL_TYPES.SDATA);
+    model = App.ModelManager.getModel(relationship.relatedEntity, MODEL_TYPES.SDATA);
     if (model) {
       queryOptions = this.getRelatedQueryOptions(entry, relationship, options);
       if (queryOptions) {
@@ -207,7 +207,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
   getRelatedQueryOptions: function getRelatedQueryOptions(entry, relationship, options) {
     let queryOptions;
     let parentDataPath;
-    let childDataPath;
+    let relatedDataPath;
     let relatedValue;
     let where;
     let optionsTemp = options;
@@ -226,17 +226,20 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
 
     if (relationship.parentProperty) {
       parentDataPath = (relationship.parentDataPath) ? relationship.parentDataPath : relationship.parentProperty;
+      if (relationship.parentPropertyType && (relationship.parentPropertyType === 'object')) {
+        parentDataPath = relationship.parentProperty + '.$key';
+      }
     } else {
       parentDataPath = this.idProperty;
     }
 
-    if (relationship.childProperty) {
-      childDataPath = (relationship.childDataPath) ? relationship.childDataPath : relationship.childProperty;
-      if (relationship.childPropertyType && (relationship.childPropertyType === 'object')) {
-        childDataPath = relationship.childProperty + '.Id';
+    if (relationship.relatedProperty) {
+      relatedDataPath = (relationship.relatedDataPath) ? relationship.relatedDataPath : relationship.relatedProperty;
+      if (relationship.relatedPropertyType && (relationship.relatedPropertyType === 'object')) {
+        relatedDataPath = relationship.relatedProperty + '.Id';
       }
     } else {
-      childDataPath = 'Id';
+      relatedDataPath = 'Id';
     }
 
     relatedValue = utility.getValue(entry, parentDataPath);
@@ -244,8 +247,14 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     if (!relatedValue) {
       return null;
     }
-
-    queryOptions.where = string.substitute(where, [childDataPath, relatedValue]);
+    queryOptions.where = string.substitute(where, [relatedDataPath, relatedValue]);
+    if (relationship.where) {
+      if (typeof relationship.where === 'function') {
+        queryOptions.where = relationship.where.apply(this, [entry]);
+      } else {
+        queryOptions.where = queryOptions.where + ' and ' + relationship.where;
+      }
+    }
     return queryOptions;
   },
   applyRelatedResults: function applyRelatedResults(entry, relatedResults) {

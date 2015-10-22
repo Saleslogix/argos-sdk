@@ -215,7 +215,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   },
   getRelatedCount: function getRelatedCount(relationship, entry) {
     const def = new Deferred();
-    const model = App.ModelManager.getModel(relationship.childEntity, MODEL_TYPES.OFFLINE);
+    const model = App.ModelManager.getModel(relationship.relatedEntity, MODEL_TYPES.OFFLINE);
     if (model) {
       const queryExpression = this.buildRelatedQueryExpression(relationship, entry);
       const queryOptions = {
@@ -234,29 +234,32 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   buildRelatedQueryExpression: function buildRelatedQueryExpression(relationship, entry) {
     return function queryFn(doc, emit) {
       let parentDataPath;
-      let childDataPath;
+      let relatedDataPath;
       let parentValue;
-      let childValue;
+      let relatedValue;
       if (relationship.parentProperty) {
         parentDataPath = (relationship.parentDataPath) ? relationship.parentDataPath : relationship.parentProperty;
+        if (relationship.parentPropertyType && (relationship.parentPropertyType === 'object')) {
+          parentDataPath = relationship.parentProperty + '.$key';
+        }
       } else {
         parentDataPath = this.idProperty;
       }
 
-      if (relationship.childProperty) {
-        childDataPath = (relationship.childDataPath) ? relationship.childDataPath : relationship.childProperty;
-        if (relationship.childPropertyType && (relationship.childPropertyType === 'object')) {
-          childDataPath = relationship.childProperty + '.' + this.idProperty;
+      if (relationship.relatedProperty) {
+        relatedDataPath = (relationship.relatedDataPath) ? relationship.relatedDataPath : relationship.relatedProperty;
+        if (relationship.relatedPropertyType && (relationship.relatedPropertyType === 'object')) {
+          relatedDataPath = relationship.relatedProperty + '.$key';
         }
       } else {
-        childDataPath = this.idProperty;
+        relatedDataPath = '$key';
       }
 
       parentValue = utility.getValue(entry, parentDataPath);
       if (doc.entity) {
-        childValue = utility.getValue(doc.entity, childDataPath);
+        relatedValue = utility.getValue(doc.entity, relatedDataPath);
       }
-      if ((parentValue && childValue) && (childValue === parentValue)) {
+      if ((parentValue && relatedValue) && (relatedValue === parentValue)) {
         emit(doc.modifyDate);
       }
     }.bind(this);

@@ -3,17 +3,17 @@ import _OfflineModelBase from '../_OfflineModelBase';
 import Manager from '../Manager';
 import MODEL_TYPES from '../Types';
 
-const resource = window.localeContext.getEntitySync('briefcaseModel').attributes;
+const resource = window.localeContext.getEntitySync('recentlyViewedModel').attributes;
 
-const __class = declare('argos.Models.Offline.Briefcase', [_OfflineModelBase], {
-  entityName: 'Briefcase',
-  modelName: 'Briefcase',
+const __class = declare('argos.Models.RecentlyViewed.Offline', [_OfflineModelBase], {
+  entityName: 'RecentlyViewed',
+  modelName: 'RecentlyViewed',
   entityDisplayName: resource.entityDisplayName,
   entityDisplayNamePlural: resource.entityDisplayNamePlural,
 
-  createEntry: function createEntity(entry, model, options) {
+  createEntry: function createEntity(viewId, entry, model) {
     const entity = {}; // need to dynamicly create Properties;
-    entity.$key = model.entityName + '_' + model.getEntityId(entry);
+    entity.$key = viewId + '_' + model.getEntityId(entry);
     entity.$descriptor = model.getEntityDescription(entry);
     entity.createDate = moment().toDate();
     entity.modifyDate = moment().toDate();
@@ -22,11 +22,11 @@ const __class = declare('argos.Models.Offline.Briefcase', [_OfflineModelBase], {
     entity.description = model.getEntityDescription(entry);
     entity.entityDisplayName = model.entityDisplayName;
     entity.resourceKind = model.resourceKind;
-    entity.viewId = (options && options.viewId) ? options.viewId : model.detailViewId;
-    entity.iconClass = (options && options.iconClass) ? options.iconClass : model.getIconClass(entry);
+    entity.viewId = viewId;
+    entity.iconClass = model.getIconClass(entry);
     return entity;
   },
 });
 
-Manager.register('Briefcase', MODEL_TYPES.OFFLINE, __class);
+Manager.register('RecentlyViewed', MODEL_TYPES.OFFLINE, __class);
 export default __class;
