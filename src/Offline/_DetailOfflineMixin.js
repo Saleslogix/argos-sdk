@@ -14,6 +14,9 @@
  */
 import declare from 'dojo/_base/declare';
 import OfflineManager from './Manager';
+import BusyIndicator from '../BusyIndicator';
+
+const resource = window.localeContext.getEntitySync('_detailOfflineMixin').attributes;
 
 
 /**
@@ -39,6 +42,10 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     return tools;
   },
   briefCaseEntity: function briefCaseEntity(action, selection) { // eslint-disable-line
+    // Start busy indicator modal
+    const busyIndicator = this.createBusyModal();
+
+    // Start briefcasing
     const entityName = this.modelName;
     const entityId = this.entry.$key; // thie should be resolved from the model or adapter.
     const options = {
@@ -46,10 +53,37 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
       viewId: this.id,
     };
     OfflineManager.briefCaseEntity(entityName, entityId, options).then((result) => {
-      this.onEntityBriefcased(result);
+      // Show complete modal dialog
+      const modalPromise = this.createCompleteDialog(busyIndicator, result);
+      modalPromise.then(this.onEntityBriefcased.bind(this));
     }, (error) => {
+      this.createAlertDialog(busyIndicator);
       console.error(error);// eslint-disable-line
     });
+  },
+  createAlertDialog: function createAlertDialog(busyIndicator) {
+    App.modal.disableClose = false;
+    App.modal.showToolbar = true;
+    App.modal.resolveDeferred(true);
+    busyIndicator.complete(true);
+    // Attach resolve to move to briefcase list (if user hits okay)
+    return App.modal.createSimpleDialog({ title: 'alert', content: resource.interruptedText, getContent: () => { return; }, leftButton: 'cancel', rightButton: 'confirm' });
+  },
+  createBusyModal: function createBusyModal() {
+    App.modal.disableClose = true;
+    App.modal.showToolbar = false;
+    const busyIndicator = new BusyIndicator({ id: 'busyIndicator__offline-list-briefcase' });
+    App.modal.add(busyIndicator);
+    busyIndicator.start();
+    return busyIndicator;
+  },
+  createCompleteDialog: function createCompleteDialog(busyIndicator, result = {}) {
+    App.modal.disableClose = false;
+    App.modal.showToolbar = true;
+    App.modal.resolveDeferred(true);
+    busyIndicator.complete(true);
+    // Attach resolve to move to briefcase list (if user hits okay)
+    return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToDetailViewText, getContent: () => { return result; }, leftButton: 'cancel', rightButton: 'okay' });
   },
   onContentChange: function onContentChange() {
     if (this.enableOffline) {

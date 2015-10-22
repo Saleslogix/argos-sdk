@@ -26,12 +26,18 @@ import on from 'dojo/on';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
 
+const resource = window.localeContext.getEntitySync('modal').attributes;
+
 const __class = declare('argos.Modal', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="modal__container" data-dojo-attach-point="modalContainer">',
       '{%! $.modalTemplate %}',
       '{%! $.modalOverlayTemplate %}',
     '</div>',
+  ]),
+  dialogContentTemplate: new Simplate([
+    '<div class="modal__header__title">{%: $.title %}</div>',
+    '<p class="modal__content__text">{%: $.content %}</p>',
   ]),
   modalContentTemplate: new Simplate([
     '<div class="modal__content">',
@@ -66,10 +72,23 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   _content: null,
   _containerListener: null,
   _history: [],
-  defaultToolbarItems: {
+  defaultHeaderText: {
+    'alert': resource.alertText,
+    'complete': resource.completeText,
+    'edit': resource.editText,
+    'warning': resource.warningText,
+  },
+  defaultToolbarActions: {
     'cancel': function cancel() { return this.hide; },
     'resolve': function resolve() { return this.resolveDeferred; },
   },
+  defaultToolbarText: {
+    'cancel': resource.cancelText,
+    'confirm': resource.confirmText,
+    'okay': resource.okayText,
+    'submit': resource.submitText,
+  },
+  disableClose: false,
   historyLength: 5,
   lockScroll: true,
   trackHistory: true,
@@ -106,7 +125,8 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
         .createModalToolbar(toolbarActions)
         ._lockScroll()
         .show();
-    return content._deferred;
+    content._deferred.then(this.hide.bind(this));
+    return content._deferred.promise;
   },
   attachContainerListener: function attachContainerListener() {
     this.removeContainerListener();
@@ -117,8 +137,8 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     if (this.showToolbar) {
       const toolbar = domConstruct.toDom(this.modalToolbarTemplate.apply(this));
       toolbarActions.forEach( (toolbarItem) => {
-        if (this.defaultToolbarItems[toolbarItem.action]) {
-          toolbarItem.action = this.defaultToolbarItems[toolbarItem.action].bind(this)();
+        if (this.defaultToolbarActions[toolbarItem.action]) {
+          toolbarItem.action = this.defaultToolbarActions[toolbarItem.action].bind(this)();
           toolbarItem.context = this;
         }
         const item = domConstruct.toDom(this.buttonTemplate.apply(toolbarItem, this));
@@ -129,6 +149,25 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     }
     return this;
   },
+  createSimpleDialog: function createSimpleDialog(options = {}) {
+    const dialog = {
+      title: this.defaultHeaderText[options.title] || options.title,
+      content: options.content,
+      getContent: options.getContent,
+    };
+    const toolbar = [
+      {
+        action: 'cancel',
+        className: 'button--flat button--flat--split',
+        text: this.defaultToolbarText[options.leftButton] || resource.cancelText,
+      }, {
+        action: 'resolve',
+        className: 'button--flat button--flat--split',
+        text: this.defaultToolbarText[options.rightButton] || resource.okayText,
+      },
+    ];
+    return this.add(dialog, toolbar);
+  },
   getHistory: function getHistory() {
     return this._history;
   },
@@ -136,21 +175,29 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
    * Hide the modalContainer to avoid capturing events
   */
   hide: function hide() {
-    this.removeContainerListener()
-        .removeActionListeners()
-        ._unlockScroll();
-    if (this._content && this._content.destroy) {
-      this._content.destroy();
-    }
-    if (this.showToolbar) {
-      domConstruct.empty(this.modalNode);
-      this.removeActionListeners();
-    }
-    domClass.add(this.modalContainer, 'modal__container--hidden');
-    if (this.showOverlay) {
-      domClass.add(this.overlay, 'modal__overlay--hidden');
+    if (!this.disableClose) {
+      this.removeContainerListener()
+          .removeActionListeners()
+          ._unlockScroll();
+      if (this._content && this._content.destroy) {
+        this._content.destroy();
+      }
+      if (this.showToolbar) {
+        domConstruct.empty(this.modalNode);
+        this.removeActionListeners();
+      }
+      domClass.add(this.modalContainer, 'modal__container--hidden');
+      if (this.showOverlay) {
+        domClass.add(this.overlay, 'modal__overlay--hidden');
+      }
     }
     return this;
+  },
+  isNotSimpleDialog: function isNotSimpleDialog() {
+    if (this._content.domNode) {
+      return true;
+    }
+    return false;
   },
   onContainerClick: function onContainerClick(evt) {
     if (evt.srcElement === this.modalContainer || evt.srcElement === this.overlay) {
@@ -194,10 +241,11 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     if (this._content && this._content.getContent) {
       data = this._content.getContent();
     } else {
-      console.log('Modal content does not have a getContent function call to retrieve the data, add this to allow data to be returned'); // eslint-disable-line
+      if (this.isNotSimpleDialog()) {
+        console.log('Modal content does not have a getContent function call to retrieve the data, add this to allow data to be returned'); // eslint-disable-line
+      }
     }
     this._content._deferred.resolve(data);
-    this.hide();
     return this;
   },
   setContent: function setContent(content) {
@@ -219,10 +267,17 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
     if (this._content && this._content.show) {
       this._content.show(options);
       const content = domConstruct.toDom(this.modalContentTemplate.apply(this));
-      domConstruct.place(this._content.domNode, content);
+      domConstruct.place(this._content.domNode || this._content, content);
       domConstruct.place(content, this.modalNode);
     } else {
-      console.log('Current modal content does not have a show function, did you forget to add this?'); // eslint-disable-line
+      if (this.isNotSimpleDialog()) {
+        console.log('Current modal content does not have a show function, did you forget to add this?'); // eslint-disable-line
+      } else {
+        const content = domConstruct.toDom(this.modalContentTemplate.apply(this));
+        const simpleDialog = domConstruct.toDom(this.dialogContentTemplate.apply(this._content, this));
+        domConstruct.place(simpleDialog, content);
+        domConstruct.place(content, this.modalNode);
+      }
     }
     return this;
   },

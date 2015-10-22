@@ -84,7 +84,7 @@ const __class = {
     });
     return def.promise;
   },
-  briefCaseEntity: function briefCaseEntity(entityName, entityId, options) {
+  briefCaseEntity: function briefCaseEntity(entityName, entityId, options, defProgress) {
     let onlineModel = null;
     let offlineModel = null;
     let entityPromise;
@@ -104,6 +104,9 @@ const __class = {
             offlineModel.saveEntry(entry, options).then(function bcEntitySuccess(result) {
               console.log('Briefcased entity:' + briefcaseEntry.entityName + ' entityId;' + briefcaseEntry.entityId); // eslint-disable-line
               odef.resolve(result);
+              if (defProgress) {
+                defProgress.progress();
+              }
             }, function bcEntityFailure(err) {
               odef.reject(err);
             });
@@ -126,7 +129,7 @@ const __class = {
       const entityName = entity.entityName;
       const entityId = entity.entityId;
       const requestOptions = entity.options;
-      return this.briefCaseEntity(entityName, entityId, requestOptions);
+      return this.briefCaseEntity(entityName, entityId, requestOptions, def);
     });
     if (briefcaseRequests.length > 0) {
       all(briefcaseRequests).then((results) => {
