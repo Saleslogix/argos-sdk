@@ -208,9 +208,6 @@
             "text": "MainToolbar.js",
             "path": "../src-out/"
           }, {
-            "text": "_SDataModelMixin.js",
-            "path": "../src-out/Models/"
-          }, {
             "text": "RelatedViewWidget.js",
             "path": "../src-out/"
           }, {
@@ -289,11 +286,11 @@
             "text": "_ListBase.js",
             "path": "../src-out/"
           }, {
-            "text": "Briefcase.js",
-            "path": "../src-out/Models/Offline/"
+            "text": "Offline.js",
+            "path": "../src-out/Models/Briefcase/"
           }, {
-            "text": "RecentlyViewed.js",
-            "path": "../src-out/Models/Offline/"
+            "text": "Offline.js",
+            "path": "../src-out/Models/RecentlyViewed/"
           }, {
             "text": "RelativeDateTimePicker.js",
             "path": "../src-out/"
