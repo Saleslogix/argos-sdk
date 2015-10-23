@@ -252,7 +252,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
       if (typeof relationship.where === 'function') {
         queryOptions.where = relationship.where.apply(this, [entry]);
       } else {
-        queryOptions.where = queryOptions.where + ' and ' + relationship.where;
+        queryOptions.where = `${queryOptions.where} and ${relationship.where}`;
       }
     }
     return queryOptions;
