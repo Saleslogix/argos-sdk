@@ -125,10 +125,18 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * @param {Event} evt Event that caused change to fire.
    */
   _onChange: function _onChange(/*evt*/) {
-    const val = moment(this.inputNode.value, this.dateFormatText).toDate();
+    const jsDate = new Date(this.inputNode.value);
+    let date = moment(this.inputNode.value, this.dateFormatText, true);
+    if (moment(jsDate).isValid() && !date.isValid()) {
+      date = moment(jsDate);
+    }
+    const val = date.isValid();
 
     if (val) {
-      this.validationValue = this.currentValue = val;
+      this.validationValue = this.currentValue = date.toDate();
+      if (this.inputNode.value !== date.format(this.dateFormatText)) {
+        this.inputNode.value = date.format(this.dateFormatText);
+      }
       domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
     } else {
       this.validationValue = this.currentValue = null;
