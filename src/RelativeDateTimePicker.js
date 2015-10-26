@@ -104,8 +104,8 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
       const currentTime = moment();
       if (currentTime.hours() <= this.showThisEveningUntil) {
         this.makeItem(children[startIndex]);
-        startIndex++;
       }
+      startIndex++;
     }
     for (let i = startIndex; i < children.length; i++) {
       this.makeItem(children[i]);
