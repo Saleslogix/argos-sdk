@@ -28,6 +28,16 @@ const __class = lang.setObject('argos.Models.Manager', {
     }
     return model;
   },
+  getModels: function getModels(modelType) {
+    const models = [];
+    for (const key of store.keys()) {
+      const model = this.getModel(key, modelType);
+      if (model) {
+        models.push(model);
+      }
+    }
+    return models;
+  },
   store: store,
 });
 

@@ -142,6 +142,28 @@ const __class = {
     }
     return def.promise;
   },
+  getUsage: function getUsage() {
+    const def = new Deferred();
+    let usageRequests = [];
+    const models = App.ModelManager.getModels(MODEL_TYPES.OFFLINE);
+    usageRequests = models.map((model) => {
+      if ((model.entityName !== 'RecentlyViewed') && (model.entityName !== 'Briefcase')) {
+        return model.getUsage();
+      }
+    });
+    if (usageRequests.length > 0) {
+      all(usageRequests).then((results) => {
+        const usage = {};
+        usage.entites = results;
+        def.resolve(usage);
+      }, (err) => {
+        def.reject(err);
+      });
+    } else {
+      def.resolve();
+    }
+    return def.promise;
+  },
 };
 
 export default __class;
