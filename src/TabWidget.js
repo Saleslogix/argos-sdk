@@ -229,10 +229,15 @@ const __class = declare('argos.TabWidget', [_Templated], {
       }, this);
     } else {
       let temp = this.tabList.children;
+      let isIE = false;
       if (!temp[0].remove) { // Check if is IE
         temp = this.tabList.cloneNode(true).children;
+        isIE = true;
       }
       const arr = [].slice.call(temp);
+      if (isIE) {
+        this.currentTab = arr[array.indexOf(this.tabList.children, this.currentTab)];
+      }
       domConstruct.empty(this.tabList);
       array.forEach(arr, function recreateTabList(tab) {
         domConstruct.place(tab, this.tabList);
