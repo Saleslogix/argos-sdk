@@ -181,6 +181,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       this.currentValue = this.validationValue = data.toDate();
       this.inputNode.value = this.formatValue(this.currentValue);
     }
+    domClass.add(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
   },
   /**
    * Determines if the current value has been modified from the original value.
