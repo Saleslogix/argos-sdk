@@ -239,6 +239,11 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this._orientation = connect.subscribe('/app/setOrientation', this, this.hide);
     this._eventConnections.push(on(this.dropdownInput, 'keydown', this.onKeyPress.bind(this)));
   },
+  scrollListTo: function scrollListTo(target) {
+    if (target) {
+      this._list.scrollTop = target.offsetTop - target.offsetHeight;
+    }
+  },
   scrollToDropdown: function scrollToDropdown() {
     const scrollParent = this.dropdownNode.offsetParent;
     if (scrollParent) {
@@ -247,11 +252,6 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       } else if (this.dropdownNode.offsetTop > scrollParent.scrollTop && this.dropdownNode.offsetTop + this.dropdownNode.offsetHeight > scrollParent.scrollTop + scrollParent.offsetHeight) {
         scrollParent.scrollTop = this.dropdownNode.offsetTop + this.dropdownNode.offsetHeight - scrollParent.offsetHeight;
       }
-    }
-  },
-  scrollListTo: function scrollListTo(target) {
-    if (target) {
-      this._list.scrollTop = target.offsetTop - target.offsetHeight;
     }
   },
   setSelected: function setSelected(value = {}) {
