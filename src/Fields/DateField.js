@@ -151,7 +151,11 @@ const control = declare('argos.Fields.DateField', [EditorField], {
   createNavigationOptions: function createNavigationOptions() {
     const options = this.inherited(arguments);
 
-    options.date = this.currentValue;
+    if (this.currentValue !== '' && this.currentValue !== null) {
+      options.date = this.currentValue;
+    } else {
+      options.date = moment();
+    }
     options.showTimePicker = this.showTimePicker;
     options.timeless = this.timeless;
 
