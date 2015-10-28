@@ -245,7 +245,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       if (scrollParent.scrollTop > this.dropdownNode.offsetTop) {
         scrollParent.scrollTop = this.dropdownNode.offsetTop;
       } else if (this.dropdownNode.offsetTop > scrollParent.scrollTop && this.dropdownNode.offsetTop + this.dropdownNode.offsetHeight > scrollParent.scrollTop + scrollParent.offsetHeight) {
-        scrollParent.scrollTop = this.dropdownNode.offsetTop + this.dropdownNode.offsetHeight - scrollParent.offsetHeight; // scrollParent.scrollTop + this.dropdownNode.offsetHeight - (scrollParent.scrollTop + scrollParent.offsetHeight - this.dropdownNode.offsetTop);
+        scrollParent.scrollTop = this.dropdownNode.offsetTop + this.dropdownNode.offsetHeight - scrollParent.offsetHeight;
       }
     }
   },
