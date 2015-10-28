@@ -15,6 +15,7 @@
 
 import declare from 'dojo/_base/declare';
 import array from 'dojo/_base/array';
+import connect from 'dojo/_base/connect';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domGeom from 'dojo/dom-geometry';
@@ -70,6 +71,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   _eventConnections: [],
   _ghost: null,
   _list: null,
+  _orientation: null,
   _overlay: null,
   _overlayEvent: null,
   _selected: null,
@@ -156,6 +158,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   },
   onClick: function onClick(evt) {
     if (evt.currentTarget === this.dropdownNode) {
+      this.scrollToDropdown();
       this.show();
       evt.preventDefault();
       evt.stopPropagation();
@@ -233,7 +236,13 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   },
   postCreate: function postCreate() {
     this.inherited(arguments);
+    this._orientation = connect.subscribe('/app/setOrientation', this, this.hide);
     this._eventConnections.push(on(this.dropdownInput, 'keydown', this.onKeyPress.bind(this)));
+  },
+  scrollToDropdown: function scrollToDropdown() {
+    if (this.dropdownNode.offsetParent && this.dropdownNode.offsetParent.scrollTop < this.dropdownNode.offsetTop) {
+      this.dropdownNode.offsetParent.scrollTop = this.dropdownNode.offsetTop;
+    }
   },
   scrollListTo: function scrollListTo(target) {
     if (target) {
@@ -254,7 +263,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   show: function show() {
     const pos = domGeom.position(this.dropdownNode, true);
     const ghostHeight = domStyle.get(this._ghost, 'height');
-    if (pos.y + ghostHeight <= window.innerHeight) {
+    if (pos.y <= App._rootDomNode.offsetHeight / 2) {
       if (domClass.contains(this._ghost, 'dropdown--onTop')) {
         this.createGhost(false);
         domClass.remove(this._ghost, 'dropdown--onTop');
@@ -263,6 +272,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
         top: `${pos.y}px`,
         left: `${pos.x}px`,
       });
+      this.trimHeight(false);
     } else {
       if (!domClass.contains(this._ghost, 'dropdown--onTop')) {
         this.createGhost(true);
@@ -272,6 +282,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
         top: `${pos.y - ghostHeight + pos.h}px`,
         left: `${pos.x}px`,
       });
+      this.trimHeight(true);
     }
     this.updateGhost(this.dropdownSelect.value);
     this.createOverlay();
@@ -282,6 +293,32 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     domClass.toggle(this._ghost, 'dropdown--hidden');
     if (domClass.contains(this._ghost, 'dropdown--hidden')) {
       this.destroyOverlay();
+    }
+  },
+  trimHeight: function trimHeight(top = false) {
+    const ghostList = query('.dropdown__list', this._ghost)[0];
+    if (ghostList) {
+      const dropdownHeight = domStyle.get(this.dropdownNode, 'height');
+      const ghostHeight = domStyle.get(this._ghost, 'height');
+      const ghostTop = domStyle.get(this._ghost, 'top');
+      const borderTop = domStyle.get(this._ghost, 'borderTopWidth');
+      const borderBottom = domStyle.get(this._ghost, 'borderBottomWidth');
+      if (!top && ghostTop + ghostHeight > App._rootDomNode.offsetHeight) {
+        domStyle.set(this._ghost, {
+          height: '',
+        });
+        domStyle.set(ghostList, {
+          height: `${App._rootDomNode.offsetHeight - dropdownHeight - ghostTop}px`,
+        });
+      } else if (top && ghostTop < 0) {
+        domStyle.set(this._ghost, {
+          top: `0px`,
+          height: `${ghostHeight + ghostTop}px`,
+        });
+        domStyle.set(ghostList, {
+          height: `${ghostHeight + ghostTop - dropdownHeight - borderTop - borderBottom}px`,
+        });
+      }
     }
   },
   updateGhost: function updateGhost(value) {
