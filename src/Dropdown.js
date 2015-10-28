@@ -240,8 +240,13 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this._eventConnections.push(on(this.dropdownInput, 'keydown', this.onKeyPress.bind(this)));
   },
   scrollToDropdown: function scrollToDropdown() {
-    if (this.dropdownNode.offsetParent && this.dropdownNode.offsetParent.scrollTop < this.dropdownNode.offsetTop) {
-      this.dropdownNode.offsetParent.scrollTop = this.dropdownNode.offsetTop;
+    const scrollParent = this.dropdownNode.offsetParent;
+    if (scrollParent) {
+      if (scrollParent.scrollTop > this.dropdownNode.offsetTop) {
+        scrollParent.scrollTop = this.dropdownNode.offsetTop;
+      } else if (this.dropdownNode.offsetTop > scrollParent.scrollTop && this.dropdownNode.offsetTop + this.dropdownNode.offsetHeight > scrollParent.scrollTop + scrollParent.offsetHeight) {
+        scrollParent.scrollTop = this.dropdownNode.offsetTop + this.dropdownNode.offsetHeight - scrollParent.offsetHeight; // scrollParent.scrollTop + this.dropdownNode.offsetHeight - (scrollParent.scrollTop + scrollParent.offsetHeight - this.dropdownNode.offsetTop);
+      }
     }
   },
   scrollListTo: function scrollListTo(target) {
