@@ -51,8 +51,8 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   meridiemSelectTemplate: new Simplate([
     '<div class="toggle toggle-horizontal meridiem-field" data-dojo-attach-point="meridiemNode">',
         '<span class="thumb horizontal"></span>',
-        '<span class="toggleOn">{%= $.amText %}</span>',
-        '<span class="toggleOff">{%= $.pmText %}</span>',
+        '<span class="toggleOn">{%= $.pmText %}</span>',
+        '<span class="toggleOff">{%= $.amText %}</span>',
     '</div>',
   ]),
   listStartTemplate: new Simplate([
