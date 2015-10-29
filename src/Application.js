@@ -300,6 +300,12 @@ const __class = declare('argos.Application', null, {
     this.onLine = online;
     this.onConnectionChange(online);
   },
+  forceOnline: function forceOnline() {
+    this._updateConnectionState(true);
+  },
+  forceOffline: function forceOffline() {
+    this._updateConnectionState(false);
+  },
   onConnectionChange: function onConnectionChange(/*online*/) {},
   /**
    * Establishes various connections to events.
