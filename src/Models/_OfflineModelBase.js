@@ -8,7 +8,6 @@ import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
 import _ModelBase from './_ModelBase';
 import QueryResults from 'dojo/store/util/QueryResults';
-// import Manager from './Manager';
 import MODEL_TYPES from './Types';
 
 const databaseName = 'crm-offline';
@@ -271,7 +270,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     const store = this.getStore();
     const def = new Deferred();
     const queryOptions = {
-      include_docs: false,
+      include_docs: true,
       descending: true,
     };
     const queryExpression = this.buildQueryExpression(null, queryOptions);
@@ -279,9 +278,11 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     when(queryResults, (docs) => {
       const usage = {};
       const size = this._getDocSize(docs[0]);
+      usage.iconClass = this.iconClass;
       usage.entityName = this.entityName;
       usage.description = this.entityDisplayNamePlural;
       usage.count = docs.length;
+      usage.sizeAVG = size;
       usage.size = usage.count * (size ? size : 10);
       def.resolve(usage);
     }, (err) => {
@@ -300,5 +301,4 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   },
 });
 
-// Manager.register('_OfflineModelBase', MODEL_TYPES.OFFLINE, __class);
 export default __class;

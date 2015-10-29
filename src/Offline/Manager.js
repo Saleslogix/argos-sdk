@@ -145,16 +145,20 @@ const __class = {
   getUsage: function getUsage() {
     const def = new Deferred();
     let usageRequests = [];
-    const models = App.ModelManager.getModels(MODEL_TYPES.OFFLINE);
-    usageRequests = models.map((model) => {
-      if ((model.entityName !== 'RecentlyViewed') && (model.entityName !== 'Briefcase')) {
-        return model.getUsage();
+
+    const models = App.ModelManager.getModels(MODEL_TYPES.OFFLINE).filter((model) => {
+      if (model && (model.entityName !== 'RecentlyViewed') && (model.entityName !== 'Briefcase')) {
+        return model;
       }
     });
+
+    usageRequests = models.map((model) => {
+      return model.getUsage();
+    });
+
     if (usageRequests.length > 0) {
       all(usageRequests).then((results) => {
-        const usage = {};
-        usage.entites = results;
+        const usage = this._calculateUsage(results);
         def.resolve(usage);
       }, (err) => {
         def.reject(err);
@@ -163,6 +167,25 @@ const __class = {
       def.resolve();
     }
     return def.promise;
+  },
+  _calculateUsage: function _calculateUsage(entityUsage) {
+    const usage = {};
+    usage.count = 0;
+    usage.size = 0;
+    usage.entities = entityUsage;
+    entityUsage.forEach((item) => {
+      if (item) {
+        usage.count = usage.count + item.count;
+        usage.size = usage.size + item.size;
+      }
+    });
+    entityUsage.forEach((item) => {
+      if (item) {
+        item.countPercent = (usage.count) ? (item.count / usage.count) : 0;
+        item.sizePercent = (usage.size) ? (item.size / usage.size) : 0;
+      }
+    });
+    return usage;
   },
 };
 
