@@ -281,7 +281,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     const def = new Deferred();
     const queryOptions = {
       include_docs: true,
-      descending: true,
+      descending: false,
     };
     const queryExpression = this.buildQueryExpression(null, queryOptions);
     const queryResults = store.query(queryExpression, queryOptions);
@@ -291,6 +291,8 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       usage.iconClass = this.iconClass;
       usage.entityName = this.entityName;
       usage.description = this.entityDisplayNamePlural;
+      usage.oldestDate = (docs[0]) ? moment(docs[0].doc.modifyDate).toDate() : null; // see decending = false;
+      usage.newestDate = (docs[docs.length - 1]) ? moment(docs[docs.length - 1].doc.modifyDate).toDate() : null;
       usage.count = docs.length;
       usage.sizeAVG = size;
       usage.size = usage.count * (size ? size : 10);
@@ -337,6 +339,14 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       def.reject(err);
     });
     return def.promise;
+  },
+  createKey: function createKey() {
+    const d = new Date().getTime();
+    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function genkey(c) { // eslint-disable-line
+      const r = (d + Math.random() * 16) % 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return `{this.entityName.toLowwer()}-{uuid}`;
   },
 });
 

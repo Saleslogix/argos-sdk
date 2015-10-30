@@ -147,7 +147,7 @@ const __class = {
     let usageRequests = [];
 
     const models = App.ModelManager.getModels(MODEL_TYPES.OFFLINE).filter((model) => {
-      if (model && (model.entityName !== 'RecentlyViewed') && (model.entityName !== 'Briefcase')) {
+      if (model && !model.isSystem ) {
         return model;
       }
     });
