@@ -121,12 +121,22 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     const store = this.getStore();
     store.get(entityId).then((doc) => {
       const odef = def;
-      store.remove(doc._id, doc._rev).then((result) => {
+      this._removeDoc(doc).then((result) => {
         this.onEntryDelete(entityId);
         odef.resolve(result);
       }, (err) => {
         odef.reject(err);
       });
+    }, (err) => {
+      def.reject(err);
+    });
+    return def.promise;
+  },
+  _removeDoc: function _removeDoc(doc) {
+    const def = new Deferred();
+    const store = this.getStore();
+    store.remove(doc._id, doc._rev).then((result) => {
+      def.resolve(result);
     }, (err) => {
       def.reject(err);
     });
@@ -298,6 +308,35 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       size = charSize * jsonString.length;
     }
     return size;
+  },
+  clearData: function clearData(query, options) {
+    const store = this.getStore();
+    const def = new Deferred();
+    const queryOptions = {
+      include_docs: true,
+      descending: true,
+    };
+    lang.mixin(queryOptions, options);
+    const queryExpression = this.buildQueryExpression(query, queryOptions);
+    const queryResults = store.query(queryExpression, queryOptions);
+    when(queryResults, (docs) => {
+      const odef = def;
+      const deleteRequests = docs.map((doc) => {
+        return this._removeDoc(doc.doc);
+      });
+      if (deleteRequests.length > 0) {
+        all(deleteRequests).then((results) => {
+          odef.resolve(results);
+        }, (err) => {
+          odef.reject(err);
+        });
+      } else {
+        def.resolve();
+      }
+    }, (err) => {
+      def.reject(err);
+    });
+    return def.promise;
   },
 });
 

@@ -187,6 +187,29 @@ const __class = {
     });
     return usage;
   },
+  clearData: function clearData(options) {
+    const def = new Deferred();
+    let requests = [];
+
+    const models = App.ModelManager.getModels(MODEL_TYPES.OFFLINE).filter((model) => {
+      if (model && (model.entityName !== 'Authentication')) {
+        return model;
+      }
+    });
+    requests = models.map((model) => {
+      return model.clearData(null, options);
+    });
+    if (requests.length > 0) {
+      all(requests).then((results) => {
+        def.resolve(results);
+      }, (err) => {
+        def.reject(err);
+      });
+    } else {
+      def.resolve();
+    }
+    return def.promise;
+  },
 };
 
 export default __class;
