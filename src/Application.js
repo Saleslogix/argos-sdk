@@ -213,7 +213,12 @@ const __class = declare('argos.Application', null, {
   /*
    * Timeout for the connection check.
    */
-  PING_TIMEOUT: 1000,
+  PING_TIMEOUT: 3000,
+
+  /**
+   * Number of times to attempt to ping.
+   */
+  PING_RETRY: 5,
 
   /*
    * Static resource to request on the ping. Should be a small file.
@@ -240,9 +245,25 @@ const __class = declare('argos.Application', null, {
     this.context = {};
     this.viewShowOptions = [];
     this.ping = util.debounce(() => {
-      this._ping().then((results) => {
-        this._updateConnectionState(results);
-      });
+      const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
+        .flatMap(() => {
+          return Rx.Observable.fromPromise(this._ping())
+            .flatMap((results) => {
+              if (!results) {
+                return Rx.Observable.throw(new Error());
+              }
+
+              return Rx.Observable.just(results);
+            });
+        })
+        .retry(this.PING_RETRY)
+        .take(1);
+
+      ping$.subscribe(function onNext() {
+        this._updateConnectionState(true);
+      }.bind(this), function onError() {
+        this._updateConnectionState(false);
+      }.bind(this));
     }, this.PING_TIMEOUT);
 
     this.ModelManager = ModelManager;
