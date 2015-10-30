@@ -210,10 +210,20 @@ const __class = declare('argos.Application', null, {
    */
   maxUploadFileSize: 4000000,
 
-  /*
+  /**
    * Timeout for the connection check.
    */
-  PING_TIMEOUT: 1000,
+  PING_TIMEOUT: 3000,
+
+  /**
+   * Ping debounce time.
+   */
+  PING_DEBOUNCE: 1000,
+
+  /**
+   * Number of times to attempt to ping.
+   */
+  PING_RETRY: 5,
 
   /*
    * Static resource to request on the ping. Should be a small file.
@@ -240,10 +250,26 @@ const __class = declare('argos.Application', null, {
     this.context = {};
     this.viewShowOptions = [];
     this.ping = util.debounce(() => {
-      this._ping().then((results) => {
-        this._updateConnectionState(results);
-      });
-    }, this.PING_TIMEOUT);
+      const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
+        .flatMap(() => {
+          return Rx.Observable.fromPromise(this._ping())
+            .flatMap((online) => {
+              if (online) {
+                return Rx.Observable.just(online);
+              }
+
+              return Rx.Observable.throw(new Error());
+            });
+        })
+        .retry(this.PING_RETRY)
+        .take(1);
+
+      ping$.subscribe(function onNext() {
+        this._updateConnectionState(true);
+      }.bind(this), function onError() {
+        this._updateConnectionState(false);
+      }.bind(this));
+    }, this.PING_DEBOUNCE);
 
     this.ModelManager = ModelManager;
     lang.mixin(this, options);
@@ -306,7 +332,7 @@ const __class = declare('argos.Application', null, {
   forceOffline: function forceOffline() {
     this._updateConnectionState(false);
   },
-  onConnectionChange: function onConnectionChange(/*online*/) {},
+  onConnectionChange: function onConnectionChange( /*online*/ ) {},
   /**
    * Establishes various connections to events.
    */
@@ -383,10 +409,11 @@ const __class = declare('argos.Application', null, {
       return results;
     });
 
-    return all(promises).then((results) => {
-      this.clearAppStatePromises();
-      return results;
-    });
+    return all(promises)
+      .then((results) => {
+        this.clearAppStatePromises();
+        return results;
+      });
   },
   /**
    * Registers a promise that will resolve when initAppState is invoked.
@@ -454,7 +481,7 @@ const __class = declare('argos.Application', null, {
   initModal: function initModal() {
     this.modal = new Modal();
     this.modal.place(document.body)
-              .hide();
+      .hide();
   },
   /**
    * Check if the browser supports touch events.
