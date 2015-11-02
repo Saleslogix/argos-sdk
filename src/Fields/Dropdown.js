@@ -23,10 +23,10 @@ import domStyle from 'dojo/dom-style';
 import keys from 'dojo/keys';
 import on from 'dojo/on';
 import query from 'dojo/query';
-import _Widget from 'dijit/_Widget';
-import _Templated from './_Templated';
+import FieldManager from '../FieldManager';
+import _Field from './_Field';
 
-const __class = declare('argos.Dropdown', [_Widget, _Templated], {
+const __class = declare('argos.Dropdown', [_Field], {
   widgetTemplate: new Simplate([
     '<div class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownNode">',
       '<label class="dropdown__label">{%: $.label %}</label>',
@@ -65,9 +65,9 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   icon: 'fa fa-caret-down',
   id: 'dropdown-template',
   multiSelect: false,
+  onSelect: null,
+  onSelectScope: null,
   openIcon: 'fa fa-caret-up',
-  _action: null,
-  _actionScope: null,
   _eventConnections: [],
   _ghost: null,
   _list: null,
@@ -110,9 +110,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this._list = listStart;
     domConstruct.place(this._ghost, document.body);
   },
-  createList: function createList({items, defaultValue, action = null, actionScope = null}) {
-    this._action = action;
-    this._actionScope = actionScope;
+  createList: function createList({items, defaultValue}) {
     this._defaultValue = defaultValue;
     array.forEach(items, function addToModalList(item) {
       const option = domConstruct.toDom(this.selectItemTemplate.apply({key: item.key, value: item.value}, this));
@@ -226,8 +224,8 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       this.hide();
       this.setValue(target.dataset.value);
     } // TODO: Add in what will happen for a multiSelect dropdown
-    if (this._action && this._actionScope) {
-      this._actionScope[this._action]();
+    if (this.onSelect && this.onSelectScope) {
+      this.onSelectScope[this.onSelect]();
     }
   },
   onOverlayClick: function onOverlayClick(evt) {
@@ -258,15 +256,27 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       }
     }
   },
+  setOnSelect: function setOnSelect(value) {
+    if (value) {
+      this.onSelect = value;
+    }
+    return this;
+  },
+  setOnSelectScope: function setOnSelectScope(scope) {
+    if (scope) {
+      this._onSelectScope = scope;
+    }
+    return this;
+  },
   setSelected: function setSelected(value = {}) {
     if (value !== this._selected) {
       this._selected = value;
-      this.setValue(value.innerHTML);
+      this.setValue(value.dataset.value);
     }
   },
   setValue: function setValue(value) {
     if (value === 0 || value) {
-      this.dropdownSelect.value = this.dropdownInput.value = value;
+      this.dropdownSelect.value = value;
       this.dropdownInput.value = this.getText();
     }
   },
@@ -279,7 +289,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
         domClass.remove(this._ghost, 'dropdown--onTop');
       }
       domStyle.set(this._ghost, {
-        top: `${pos.y}px`,
+        top: `${pos.y - domStyle.get(this.dropdownInput, 'borderTopWidth')}px`,
         left: `${pos.x}px`,
       });
       this.trimHeight(false);
@@ -289,7 +299,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
         domClass.add(this._ghost, 'dropdown--onTop');
       }
       domStyle.set(this._ghost, {
-        top: `${pos.y - ghostHeight + pos.h}px`,
+        top: `${pos.y + domStyle.get(this.dropdownInput, 'borderBottomWidth') - ghostHeight + pos.h}px`,
         left: `${pos.x}px`,
       });
       this.trimHeight(true);
@@ -351,4 +361,5 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   },
 });
 
+export default FieldManager.register('dropdown', __class);
 export default __class;

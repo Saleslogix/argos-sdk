@@ -5,7 +5,7 @@ import domStyle from 'dojo/dom-style';
 import query from 'dojo/query';
 import Deferred from 'dojo/Deferred';
 import _Widget from 'dijit/_Widget';
-import _Templated from './_Templated';
+import _Templated from '../_Templated';
 
 const resource = window.localeContext.getEntitySync('busyIndicator').attributes;
 

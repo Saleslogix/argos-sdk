@@ -24,7 +24,7 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
-import Dropdown from './Dropdown';
+import Dropdown from './Fields/Dropdown';
 
 const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
