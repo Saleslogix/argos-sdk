@@ -98,6 +98,8 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    */
   serviceName: false,
   connectionName: false,
+  connectionState: null,
+  enableOfflineSupport: false,
   constructor: function constructor(options) {
     this.app = (options && options.app) || window.App;
   },
@@ -129,11 +131,38 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   /**
    * Called on loading of the application.
    */
-  init: function init() {
+  init: function init(state$) {
     this.startup();
     this.initConnects();
     this.initModel();
+    this.initState(state$);
   },
+  initState: function initState(state$) {
+    this.state$ = state$;
+    this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
+  },
+  _updateConnectionState: function _updateConnectionState(state) {
+    if (this.connectionState === state) {
+      return;
+    }
+
+    const oldState = this.connectionState;
+    this.connectionState = state;
+    if (oldState !== null) {
+      this.onConnectionStateChange(state);
+    }
+  },
+  onConnectionStateChange: function onConnectionStateChange(state) { // eslint-disable-line
+  },
+  _onStateChange: function _onStateChange(val) {
+    this._updateConnectionState(val.connectionState);
+    this.onStateChange(val);
+  },
+  _onStateError: function _onStateError(error) {
+    this.onStateError(error);
+  },
+  onStateChange: function onStateChange(val) {}, // eslint-disable-line
+  onStateError: function onStateError(error) {}, // eslint-disable-line
   /**
    * Initializes the model instance that is return with the curernt view.
    */

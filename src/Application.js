@@ -29,6 +29,9 @@ import ready from 'dojo/ready';
 import util from './Utility';
 import ModelManager from './Models/Manager';
 import Modal from './Modal';
+import {model} from './Model';
+import {intent} from './Intent';
+import {updateConnectionState} from './Intents/update-connection';
 import 'dojo/sniff';
 
 has.add('html5-file-api', function hasFileApi(global) {
@@ -249,6 +252,10 @@ const __class = declare('argos.Application', null, {
 
     this.context = {};
     this.viewShowOptions = [];
+    const actions = intent();
+    this.state$ = model(actions);
+    this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
+
     this.ping = util.debounce(() => {
       const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
         .flatMap(() => {
@@ -265,10 +272,10 @@ const __class = declare('argos.Application', null, {
         .take(1);
 
       ping$.subscribe(function onNext() {
-        this._updateConnectionState(true);
-      }.bind(this), function onError() {
-        this._updateConnectionState(false);
-      }.bind(this));
+        updateConnectionState(true);
+      }, function onError() {
+        updateConnectionState(false);
+      });
     }, this.PING_DEBOUNCE);
 
     this.ModelManager = ModelManager;
@@ -317,6 +324,15 @@ const __class = declare('argos.Application', null, {
   _onOnline: function _onOnline() {
     this.ping();
   },
+  _onStateChange: function _onStateChange(val) {
+    this._updateConnectionState(val.connectionState);
+    this.onStateChange(val);
+  },
+  _onStateError: function _onStateError(error) {
+    this.onStateError(error);
+  },
+  onStateChange: function onStateChange(val) {}, // eslint-disable-line
+  onStateError: function onStateError(error) {}, // eslint-disable-line
   _updateConnectionState: function _updateConnectionState(online) {
     // Don't fire the onConnectionChange if we are in the same state.
     if (this.onLine === online) {
@@ -327,10 +343,10 @@ const __class = declare('argos.Application', null, {
     this.onConnectionChange(online);
   },
   forceOnline: function forceOnline() {
-    this._updateConnectionState(true);
+    updateConnectionState(true);
   },
   forceOffline: function forceOffline() {
-    this._updateConnectionState(false);
+    updateConnectionState(false);
   },
   onConnectionChange: function onConnectionChange( /*online*/ ) {},
   /**
@@ -736,7 +752,7 @@ const __class = declare('argos.Application', null, {
       }
 
       if (init && view && !view._started) {
-        view.init();
+        view.init(this.state$);
         view.placeAt(view._placeAt, 'first');
         view._started = true;
         view._placeAt = null;
