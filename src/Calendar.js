@@ -26,7 +26,7 @@ import domConstruct from 'dojo/dom-construct';
 import _ActionMixin from './_ActionMixin';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
-import Dropdown from './Fields/Dropdown';
+import Dropdown from 'argos/Dropdown';
 
 const resource = window.localeContext.getEntitySync('calendar').attributes;
 
@@ -453,10 +453,10 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   },
   setDropdownsToday: function setDropdownsToday() {
     if (this._monthDropdown.getSelected() !== this._todayMonth) {
-      this._monthDropdown.setSelected(this._todayMonth.innerHTML);
+      this._monthDropdown.setSelected(this._todayMonth);
     }
     if (this._yearDropdown.getSelected() !== this._todayYear) {
-      this._yearDropdown.setSelected(this._todayYear.innerHTML);
+      this._yearDropdown.setSelected(this._todayYear);
     }
     return this;
   },

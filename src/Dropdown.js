@@ -23,10 +23,10 @@ import domStyle from 'dojo/dom-style';
 import keys from 'dojo/keys';
 import on from 'dojo/on';
 import query from 'dojo/query';
-import FieldManager from '../FieldManager';
-import _Field from './_Field';
+import _Widget from 'dijit/_Widget';
+import _Templated from 'argos/_Templated';
 
-const __class = declare('argos.Dropdown', [_Field], {
+const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownNode">',
       '<label class="dropdown__label">{%: $.label %}</label>',
@@ -361,5 +361,4 @@ const __class = declare('argos.Dropdown', [_Field], {
   },
 });
 
-export default FieldManager.register('dropdown', __class);
 export default __class;

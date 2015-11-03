@@ -31,6 +31,7 @@ import 'dojo/NodeList-manipulate';
 import './Fields/BooleanField';
 import './Fields/DateField';
 import './Fields/DecimalField';
+import './Fields/DropdownField';
 import './Fields/DurationField';
 import './Fields/HiddenField';
 import './Fields/LookupField';
