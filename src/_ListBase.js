@@ -656,7 +656,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   createActions: function createActions(a) {
     let actions = a;
-    this.actions = actions;
+    this.actions = actions.reduce(this._removeActionDuplicates, []);
     this.visibleActions = [];
 
     if (!this.actionsNode) {
@@ -866,8 +866,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     let actionPrefs = this.getQuickActionPrefs();
     const filtered = array.filter(this.actions, (action) => {
       return action && action.systemAction !== true;
-    })
-    .reduce(this._removeActionDuplicates, []);
+    });
 
     if (!this.actions || !appPrefs) {
       return;
