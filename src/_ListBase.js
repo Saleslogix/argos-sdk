@@ -31,7 +31,8 @@ import SearchWidget from './SearchWidget';
 import ConfigurableSelectionModel from './ConfigurableSelectionModel';
 import _PullToRefreshMixin from './_PullToRefreshMixin';
 
-const resource = window.localeContext.getEntitySync('listBase').attributes;
+const resource = window.localeContext.getEntitySync('listBase')
+  .attributes;
 
 /**
  * @class argos._ListBase
@@ -669,17 +670,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       return action && action.systemAction;
     });
 
-    systemActions = systemActions.reduce((acc, cur) => {
-      const hasID = acc.some((item) => {
-        return item.id === cur.id;
-      });
-
-      if (!hasID) {
-        acc.push(cur);
-      }
-
-      return acc;
-    }, []);
+    systemActions = systemActions.reduce(this._removeActionDuplicates, []);
 
     // Grab quick actions from the users preferences (ordered and made visible according to user)
     let prefActions;
@@ -799,7 +790,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   invokeActionItem: function invokeActionItem(parameters /*, evt, node*/ ) {
     const index = parameters.id;
     const action = this.visibleActions[index];
-    const selectedItems = this.get('selectionModel').getSelections();
+    const selectedItems = this.get('selectionModel')
+      .getSelections();
     let selection = null;
 
 
@@ -833,7 +825,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * action items `enabled` property.
    */
   checkActionState: function checkActionState() {
-    const selectedItems = this.get('selectionModel').getSelections();
+    const selectedItems = this.get('selectionModel')
+      .getSelections();
     let selection = null;
 
     for (const key in selectedItems) {
@@ -857,12 +850,24 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   getQuickActionPrefs: function getQuickActionPrefs() {
     return this.app && this.app.preferences && this.app.preferences.quickActions;
   },
+  _removeActionDuplicates: function _removeActionDuplicates(acc, cur) {
+    const hasID = acc.some((item) => {
+      return item.id === cur.id;
+    });
+
+    if (!hasID) {
+      acc.push(cur);
+    }
+
+    return acc;
+  },
   ensureQuickActionPrefs: function ensureQuickActionPrefs() {
     const appPrefs = this.app && this.app.preferences;
     let actionPrefs = this.getQuickActionPrefs();
     const filtered = array.filter(this.actions, (action) => {
       return action && action.systemAction !== true;
-    });
+    })
+    .reduce(this._removeActionDuplicates, []);
 
     if (!this.actions || !appPrefs) {
       return;
@@ -1076,7 +1081,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {HTMLElement} node The element that initiated the event.
    */
   selectEntry: function selectEntry(params, evt, node) {
-    const row = query(node).closest('[data-key]')[0];
+    const row = query(node)
+      .closest('[data-key]')[0];
     const key = row ? row.getAttribute('data-key') : false;
 
     if (this._selectionModel && key) {
