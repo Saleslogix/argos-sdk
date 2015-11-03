@@ -16,11 +16,11 @@ const __class = declare('argos/BusyIndicator', [ _Widget, _Templated ], {
   ]),
   busyIndicatorTemplate: new Simplate([
       '<div class="busyIndicator">',
-        '<div class="busyIndicator__bar busyIndicator__bar--one"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--two"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--three"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--four"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--five"></div>',
+        '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--one"></div>',
+        '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--two"></div>',
+        '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--three"></div>',
+        '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--four"></div>',
+        '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--five"></div>',
       '</div>',
       '<span class="busyIndicator__label">{%: $.label %}</span>',
   ]),
@@ -38,8 +38,9 @@ const __class = declare('argos/BusyIndicator', [ _Widget, _Templated ], {
   id: 'busyIndicator-template',
   isAsync: true,
   label: resource.loadingText,
-  totalProgress: null,
   progressText: resource.progressText,
+  size: 'large',
+  totalProgress: null,
 
   complete: function complete(result = {}) {
     domClass.remove(this._busyIndicator, 'busyIndicator--active');

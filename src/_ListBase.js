@@ -99,7 +99,16 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      loadingText         The text to display while loading.
    */
   loadingTemplate: new Simplate([
-    '<li class="list-loading-indicator"><span class="fa fa-spinner fa-spin"></span><h2>{%= $.loadingText %}</h2></li>',
+    '<div class="busyIndicator__container" aria-live="polite">',
+      '<div class="busyIndicator busyIndicator--active">',
+        '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
+        '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
+        '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
+        '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--four"></div>',
+        '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--five"></div>',
+      '</div>',
+      '<span class="busyIndicator__label">{%: $.loadingText %}</span>',
+    '</div>',
   ]),
   /**
    * @property {Simplate}
