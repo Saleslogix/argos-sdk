@@ -218,7 +218,7 @@ const __class = {
     return def.promise;
   },
   getClearDataQueryExpression: function getClearDataQueryExpression(options) {
-    if (options) {
+    if (options && !options.clearAll) {
       const olderThanDate = this.getOlderThanDate(options.olderThan);
       return function queryFn(doc, emit) {
         const recordDate = moment(convert.toDateFromString(doc.modifyDate));
@@ -263,6 +263,30 @@ const __class = {
   getOlderThanValues: function getOlderThanValues() {
     const values = [0, 1, 2, 3, 4, 5, 6, 7];
     return values;
+  },
+  secureData: function secureData() {
+    const def = new Deferred();
+    const model = App.ModelManager.getModel('Authentication', MODEL_TYPES.OFFLINE);
+    if (model) {
+      model.hasAuthenticationChanged(App.context.user.$key).then((result) => {
+        let options = this.getOptions();
+        if (result) {
+          options = {
+            clearAll: true,
+          };
+        }
+        this.clearData(options).then(() => {
+          def.resolve();
+        }, (err) => {
+          def.reject(err);
+        });
+      }, (err) => {
+        def.reject(err);
+      });
+    } else {
+      def.resolve();
+    }
+    return def.promise;
   },
 };
 

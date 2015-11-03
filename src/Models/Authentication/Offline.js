@@ -2,6 +2,7 @@ import declare from 'dojo/_base/declare';
 import _OfflineModelBase from '../_OfflineModelBase';
 import Manager from '../Manager';
 import MODEL_TYPES from '../Types';
+import Deferred from 'dojo/Deferred';
 
 const resource = window.localeContext.getEntitySync('autenticationModel').attributes;
 
@@ -11,18 +12,33 @@ const __class = declare('argos.Models.Autentication.Offline', [_OfflineModelBase
   entityDisplayName: resource.entityDisplayName,
   entityDisplayNamePlural: resource.entityDisplayNamePlural,
   isSystem: true,
-  createEntry: function createEntity() {
+  createEntry: function createEntity(userId) {
     const entity = {}; // need to dynamicly create Properties;
-    entity.$key = this.createKey();
+    entity.$key = 'Auth_00000000000';
     entity.$descriptor = resource.entityDisplayName;
     entity.CreateDate = moment().toDate();
     entity.ModifyDate = moment().toDate();
-    entity.UserName = null;
-    entity.Password = null;
-    entity.IsAuthenticated = false;
-    entity.AuthenticationDate = null;
-    entity.FullName = null;
+    entity.userId = userId;
     return entity;
+  },
+  hasAuthenticationChanged: function hasAuthenticationChanged(userId) {
+    const def = new Deferred();
+    this.getEntry('Auth_00000000000').then((entry) => {
+      if (entry) {
+        if (entry.userId === userId) {
+          def.resolve(false);
+        } else {
+          def.resolve(true);
+          entry.userId = userId;
+          this.updateEntry(entry);
+        }
+      }
+    }, () => {
+      def.resolve(true);
+      const newEntry = this.createEntry(userId);
+      this.insertEntry(newEntry);
+    });
+    return def.promise;
   },
 });
 
