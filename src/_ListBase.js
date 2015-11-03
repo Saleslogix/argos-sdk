@@ -683,7 +683,7 @@ define('argos/_ListBase', [
         createActions: function(actions) {
             var i, action, options, actionTemplate, systemActions, prefActions, visibleActions;
 
-            this.actions = actions;
+            this.actions = actions.reduce(this._removeActionDuplicates, []);
             this.visibleActions = [];
 
             if (!this.actionsNode) {
@@ -903,8 +903,7 @@ define('argos/_ListBase', [
             actionPrefs = this.getQuickActionPrefs();
             filtered = array.filter(this.actions, function(action) {
                 return action && action.systemAction !== true;
-            })
-            .reduce(this._removeActionDuplicates, []);
+            });
 
             if (!this.actions || !appPrefs) {
                 return;
@@ -1412,7 +1411,7 @@ define('argos/_ListBase', [
                 var start = this.position, scrollerNode = this.get('scroller');
 
                 try {
-                    when(queryResults.total, 
+                    when(queryResults.total,
                       this._onQueryTotal.bind(this),
                       this._onQueryTotalError.bind(this));
 

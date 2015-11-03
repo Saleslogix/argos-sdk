@@ -91,13 +91,13 @@ define('argos/_ErrorHandleMixin', [
                     nextHandler = matches[index];
                     nextFn = nextHandler && nextHandler.handle;
 
-                    nextFn.call(this, error, getNext(index + 1));
+                    nextFn.call(this, error, getNext.call(this, index + 1));
                 }.bind(this);
             }.bind(this);
 
             if (len > 0 && matches[0].handle) {
                 // Start the handle chain, the handle can call next() to continue the iteration
-                matches[0].handle.call(this, error, getNext(1));
+                matches[0].handle.call(this, error, getNext.call(this, 1));
             }
         },
         /**
@@ -117,4 +117,3 @@ define('argos/_ErrorHandleMixin', [
     lang.setObject('Sage.Platform.Mobile._ErrorHandleMixin', __class);
     return __class;
 });
-
