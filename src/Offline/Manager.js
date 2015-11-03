@@ -5,8 +5,11 @@
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
 import MODEL_TYPES from '../Models/Types';
+import convert from 'argos/Convert';
 
 const __class = {
+
+  defaultOlderThan: 2,
   /**
    *
    * @param view Required instance of a detail view
@@ -190,14 +193,18 @@ const __class = {
   clearData: function clearData(options) {
     const def = new Deferred();
     let requests = [];
-
+    let defaultOptions = options;
+    if (!defaultOptions) {
+      defaultOptions = this.getOptions();
+    }
+    const queryExpression = this.getClearDataQueryExpression(defaultOptions);
     const models = App.ModelManager.getModels(MODEL_TYPES.OFFLINE).filter((model) => {
       if (model && (model.entityName !== 'Authentication')) {
         return model;
       }
     });
     requests = models.map((model) => {
-      return model.clearData(null, options);
+      return model.clearData(queryExpression, options);
     });
     if (requests.length > 0) {
       all(requests).then((results) => {
@@ -209,6 +216,53 @@ const __class = {
       def.resolve();
     }
     return def.promise;
+  },
+  getClearDataQueryExpression: function getClearDataQueryExpression(options) {
+    if (options) {
+      const olderThanDate = this.getOlderThanDate(options.olderThan);
+      return function queryFn(doc, emit) {
+        const recordDate = moment(convert.toDateFromString(doc.modifyDate));
+        if (olderThanDate && (recordDate.isBefore(olderThanDate.startOf('day')))) {
+          emit(doc.modifyDate);
+        }
+      };
+    }
+    return null;
+  },
+  getOlderThanDate: function getOlderThanDate(olderThan) {
+    let olderThanDate = null;
+    if (olderThan || olderThan === 0) {
+      olderThanDate = moment().subtract(olderThan - 1, 'days').startOf('day');
+    }
+    return olderThanDate;
+  },
+  getOptions: function getOptions() {
+    let options;
+    if (!App.preferences.offlineOptions) {
+      options = this.getDefaultOptions();
+      App.preferences.offlineOptions = options;
+      App.persistPreferences();
+    } else {
+      options = App.preferences.offlineOptions;
+    }
+
+    return options;
+  },
+  saveOptions: function saveOptions(options) {
+    if (options) {
+      App.preferences.offlineOptions = options;
+      App.persistPreferences();
+    }
+  },
+  getDefaultOptions: function getDefaultOptions() {
+    const options = {
+      olderThan: this.defaultOlderThan,
+    };
+    return options;
+  },
+  getOlderThanValues: function getOlderThanValues() {
+    const values = [0, 1, 2, 3, 4, 5, 6, 7];
+    return values;
   },
 };
 
