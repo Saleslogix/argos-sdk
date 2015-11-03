@@ -26,7 +26,7 @@ const __class = declare('argos._RelatedViewWidgetBase', [_Widget, _Templated], {
   ]),
   loadingTemplate: new Simplate([
     '<div class="busyIndicator__container" aria-live="polite">',
-      '<div class="busyIndicator busyIndicator--active">',
+      '<div class="busyIndicator busyIndicator--large busyIndicator--active">',
         '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
         '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
         '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',

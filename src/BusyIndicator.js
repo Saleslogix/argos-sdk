@@ -15,7 +15,7 @@ const __class = declare('argos/BusyIndicator', [ _Widget, _Templated ], {
     '</div>',
   ]),
   busyIndicatorTemplate: new Simplate([
-      '<div class="busyIndicator">',
+      '<div class="busyIndicator busyIndicator--{%: $.size %}">',
         '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--one"></div>',
         '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--two"></div>',
         '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--three"></div>',
