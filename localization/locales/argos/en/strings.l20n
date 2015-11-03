@@ -97,7 +97,7 @@
   titleText: "Detail"
   entityText: "Entity"
   detailsText: "Details"
-  loadingText: "loading..."
+  loadingText: "Loading"
   notAvailableText: "The requested data is not available."
   toggleCollapseText: "toggle collapse"
   editText: "Edit"
@@ -111,7 +111,7 @@
   validationSummaryText: "Validation Summary"
   concurrencySummaryText: "Concurrency Error(s)"
   detailsText: "Details"
-  loadingText: "loading..."
+  loadingText: "Loading"
   errorGeneral: "A server error occured while requesting data."
   error410:  "Error saving. This record no longer exists."
 >
@@ -130,7 +130,7 @@
   cancelText: "Cancel"
   insertText: "New"
   noDataText: "no records"
-  loadingText: "loading..."
+  loadingText: "Loading"
 >
 
 <pullToRefreshMixin ""
@@ -139,7 +139,7 @@
 >
 
 <relatedViewWidgetBase ""
-  loadingText: "loading ... "
+  loadingText: "Loading"
 >
 
 <calendar ""
@@ -201,7 +201,7 @@
   selectMoreDataText: "see ${0} more of ${1} ... "
   selectMoreDataText2: "see ${0} more ... "
   navToListText: "see list"
-  loadingText: "loading ... "
+  loadingText: "Loading"
   refreshViewText: "refresh"
   itemOfCountText: " ${0} of ${1}"
   totalCountText: " (${0})"
