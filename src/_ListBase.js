@@ -697,17 +697,7 @@ define('argos/_ListBase', [
                 return action && action.systemAction;
             });
 
-            systemActions = systemActions.reduce(function(acc, cur) {
-                var hasID = acc.some(function(item) {
-                    return item.id === cur.id;
-                });
-
-                if (!hasID) {
-                    acc.push(cur);
-                }
-
-                return acc;
-            }, []);
+            systemActions = systemActions.reduce(this._removeActionDuplicates, []);
 
             // Grab quick actions from the users preferences (ordered and made visible according to user)
             if (this.app.preferences && this.app.preferences.quickActions) {
@@ -895,6 +885,17 @@ define('argos/_ListBase', [
         getQuickActionPrefs: function() {
             return this.app && this.app.preferences && this.app.preferences.quickActions;
         },
+        _removeActionDuplicates: function(acc, cur) {
+          var hasID = acc.some(function(item) {
+              return item.id === cur.id;
+          });
+
+          if (!hasID) {
+              acc.push(cur);
+          }
+
+          return acc;
+        },
         ensureQuickActionPrefs: function() {
             var appPrefs, actionPrefs, filtered;
 
@@ -902,7 +903,8 @@ define('argos/_ListBase', [
             actionPrefs = this.getQuickActionPrefs();
             filtered = array.filter(this.actions, function(action) {
                 return action && action.systemAction !== true;
-            });
+            })
+            .reduce(this._removeActionDuplicates, []);
 
             if (!this.actions || !appPrefs) {
                 return;
