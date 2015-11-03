@@ -34,6 +34,10 @@ const __class = declare('argos.DropdownField', [_Field, Dropdown], {
     evt.preventDefault();
     evt.stopPropagation();
   },
+  renderTo: function renderTo() {
+    this.inherited(arguments);
+    // TODO: Place in the getData function call and createList call here so the dropdown will be created with the relevant data
+  },
   /**
    * Extends the parent implementation to connect the `onclick` event of the fields container
    * to {@link #_onClick _onClick}.
