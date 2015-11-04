@@ -261,6 +261,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     if (minutes === 0) {
       minutes = '00';
     }
+    this.timeValue.seconds = date.seconds();
     this.createHourDropdown(`${hour}`)
         .createMinuteDropdown(`${minutes}`)
         .setMeridiem(meridiemToggled);

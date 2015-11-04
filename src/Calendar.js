@@ -304,6 +304,12 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     this.inherited(arguments);
   },
   getContent: function getContent() {
+    if (this.options.timeless) {
+      // Revert back to timeless
+      this.date.selectedDateMoment.add({
+        minutes: this.date.selectedDateMoment.utcOffset(),
+      });
+    }
     return this.date;
   },
   goToToday: function goToToday() {
@@ -478,6 +484,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     this.titleText = this.options.label ? this.options.label : this.titleText;
     this.showTimePicker = this.options && this.options.showTimePicker;
     if (this.options.timeless) {
+      // Undo timeless
       const startDate = moment(this.options && this.options.date);
       startDate.subtract({
         minutes: startDate.utcOffset(),

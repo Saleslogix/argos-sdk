@@ -177,6 +177,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       if (data.time) {
         date.hours(data.time.hours);
         date.minutes(data.time.minutes);
+        date.seconds(data.time.seconds);
       }
       this.currentValue = this.validationValue = date.toDate();
       this.inputNode.value = this.formatValue(this.currentValue);
