@@ -318,7 +318,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     const ghostIcon = query('.dropdown__icon', this._ghost)[0];
     if (ghostIcon) {
       domStyle.set(ghostIcon, {
-        marginTop: `${pos.h / 2 - domStyle.get(ghostIcon, 'height')}px`,
+        marginTop: `${pos.h / 2 - domStyle.get(ghostIcon, 'height') / 2}px`,
       });
     }
     this.updateGhost(this.dropdownSelect.value);
