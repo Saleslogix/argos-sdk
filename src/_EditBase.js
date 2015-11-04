@@ -418,7 +418,7 @@ const __class = declare('argos._EditBase', [View], {
       'tbar': tbar,
     });
   },
-  onToolCancel: function createToolLayout() {
+  onToolCancel: function onToolCancel() {
     this.refreshRequired = true;
     ReUI.back();
   },
