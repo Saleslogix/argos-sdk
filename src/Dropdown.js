@@ -38,7 +38,6 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   ]),
   listTemplate: new Simplate([
     '<div class="dropdown {%: $.dropdownClass %} dropdown--absolute dropdown--hidden">',
-      '<label class="dropdown__label">{%: $.label %}</label>',
       '<input readOnly class="dropdown__input dropdown__input--absolute" value="{%: $.value %}"></input>',
       '<span class="dropdown__icon {%: $.icon %}"></span>',
     '</div>',
@@ -282,7 +281,6 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   },
   show: function show() {
     const pos = domGeom.position(this.dropdownInput, true);
-    const ghostHeight = domStyle.get(this._ghost, 'height');
     if (pos.y <= App._rootDomNode.offsetHeight / 2) {
       if (domClass.contains(this._ghost, 'dropdown--onTop')) {
         this.createGhost(false);
@@ -291,6 +289,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       domStyle.set(this._ghost, {
         top: `${pos.y - domStyle.get(this.dropdownInput, 'borderTopWidth')}px`,
         left: `${pos.x}px`,
+        width: `${pos.w}px`,
       });
       this.trimHeight(false);
     } else {
@@ -298,11 +297,29 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
         this.createGhost(true);
         domClass.add(this._ghost, 'dropdown--onTop');
       }
+      if (!this._listItemHeight) {
+        this._listItemHeight = domStyle.get(this._list, 'lineHeight');
+      }
+      const ghostMaxHeight = domStyle.get(this._ghost, 'maxHeight');
+      const ghostHeight = this._listItemHeight * this._list.children.length + pos.h < ghostMaxHeight ? this._listItemHeight * this._list.children.length + pos.h : ghostMaxHeight;
       domStyle.set(this._ghost, {
         top: `${pos.y + domStyle.get(this.dropdownInput, 'borderBottomWidth') - ghostHeight + pos.h}px`,
         left: `${pos.x}px`,
+        width: `${pos.w}px`,
       });
       this.trimHeight(true);
+    }
+    const ghostInput = query('.dropdown__input', this._ghost)[0];
+    if (ghostInput) {
+      domStyle.set(ghostInput, {
+        height: `${pos.h}px`,
+      });
+    }
+    const ghostIcon = query('.dropdown__icon', this._ghost)[0];
+    if (ghostIcon) {
+      domStyle.set(ghostIcon, {
+        marginTop: `${pos.h / 2 - domStyle.get(ghostIcon, 'height')}px`,
+      });
     }
     this.updateGhost(this.dropdownSelect.value);
     this.createOverlay();

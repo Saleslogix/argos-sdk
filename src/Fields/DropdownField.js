@@ -35,6 +35,7 @@ const __class = declare('argos.DropdownField', [_Field, Dropdown], {
     evt.stopPropagation();
   },
   renderTo: function renderTo() {
+    this.createList({items: this.items, defaultValue: this.defaultValue});
     this.inherited(arguments);
     // TODO: Place in the getData function call and createList call here so the dropdown will be created with the relevant data
   },
