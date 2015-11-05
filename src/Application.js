@@ -28,7 +28,7 @@ import ReUI from './ReUI/main';
 import ready from 'dojo/ready';
 import util from './Utility';
 import ModelManager from './Models/Manager';
-import Modal from './Modal';
+import Modal from './Dialogs/Modal';
 import 'dojo/sniff';
 
 has.add('html5-file-api', function hasFileApi(global) {

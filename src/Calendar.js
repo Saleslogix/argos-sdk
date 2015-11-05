@@ -26,7 +26,7 @@ import domConstruct from 'dojo/dom-construct';
 import _ActionMixin from './_ActionMixin';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
-import Dropdown from './Dropdown';
+import Dropdown from 'argos/Dropdown';
 
 const resource = window.localeContext.getEntitySync('calendar').attributes;
 
@@ -94,18 +94,54 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   clearText: resource.clearText,
   todayText: resource.todayText,
   monthsText: [
-    resource.january,
-    resource.february,
-    resource.march,
-    resource.april,
-    resource.may,
-    resource.june,
-    resource.july,
-    resource.august,
-    resource.september,
-    resource.october,
-    resource.november,
-    resource.december,
+    {
+      value: resource.january,
+      key: 'january',
+    },
+    {
+      value: resource.february,
+      key: 'february',
+    },
+    {
+      value: resource.march,
+      key: 'march',
+    },
+    {
+      value: resource.april,
+      key: 'april',
+    },
+    {
+      value: resource.may,
+      key: 'may',
+    },
+    {
+      value: resource.june,
+      key: 'june',
+    },
+    {
+      value: resource.july,
+      key: 'july',
+    },
+    {
+      value: resource.august,
+      key: 'august',
+    },
+    {
+      value: resource.september,
+      key: 'september',
+    },
+    {
+      value: resource.october,
+      key: 'october',
+    },
+    {
+      value: resource.november,
+      key: 'november',
+    },
+    {
+      value: resource.december,
+      key: 'december',
+    },
   ],
   weekDaysShortText: [
     resource.sundayAbbreviated,
@@ -145,7 +181,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     return this;
   },
   changeMonthShown: function changeMonthShown({ month }) {
-    this._monthDropdown.setValue(month);
+    this._monthDropdown.setValue(month.toLowerCase());
     return this;
   },
   changeSingleDay: function changeSingleDay(params) {
@@ -242,8 +278,8 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   },
   createMonthDropdown: function createMonthDropdown() {
     if (!this._monthDropdown) {
-      this._monthDropdown = new Dropdown({ id: 'month-dropdown ' + this.id, dropdownClass: 'dropdown--medium' });
-      this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.format('MMMM'), action: 'setMonth', actionScope: this });
+      this._monthDropdown = new Dropdown({ id: 'month-dropdown ' + this.id, dropdownClass: 'dropdown--medium', onSelect: 'setMonth', onSelectScope: this });
+      this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.format('MMMM').toLowerCase()});
       this._todayMonth = this._monthDropdown.getSelected();
       domConstruct.place(this._monthDropdown.domNode, this.monthNode);
     }
@@ -251,8 +287,8 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   },
   createYearDropdown: function createYearDropdown() {
     if (!this._yearDropdown) {
-      this._yearDropdown = new Dropdown({ id: 'year-dropdown ' + this.id });
-      this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY'), action: 'setYear', actionScope: this });
+      this._yearDropdown = new Dropdown({ id: 'year-dropdown ' + this.id, onSelect: 'setYear', onSelectScope: this });
+      this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY')});
       this._todayYear = this._yearDropdown.getSelected();
       domConstruct.place(this._yearDropdown.domNode, this.yearNode);
     }
@@ -303,7 +339,12 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     const items = [];
     const thisYear = this.date.todayMoment.year();
     for (let i = thisYear - 10; i <= thisYear + 10; i++) {
-      items.push(i);
+      items.push(
+        {
+          value: i,
+          key: i,
+        }
+      );
     }
     return items;
   },
@@ -418,10 +459,10 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   },
   setDropdownsToday: function setDropdownsToday() {
     if (this._monthDropdown.getSelected() !== this._todayMonth) {
-      this._monthDropdown.setSelected(this._todayMonth.innerHTML);
+      this._monthDropdown.setSelected(this._todayMonth);
     }
     if (this._yearDropdown.getSelected() !== this._todayYear) {
-      this._yearDropdown.setSelected(this._todayYear.innerHTML);
+      this._yearDropdown.setSelected(this._todayYear);
     }
     return this;
   },
