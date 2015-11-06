@@ -478,22 +478,6 @@ const __class = declare('argos.Application', null, {
     }
     return def.promise;
   },
-  initAppState: function initAppState() {
-    const promises = array.map(this._appStatePromises, (item) => {
-      let results = item;
-      if (typeof item === 'function') {
-        results = item();
-      }
-
-      return results;
-    });
-
-    return all(promises)
-      .then((results) => {
-        this.clearAppStatePromises();
-        return results;
-      });
-  },
   /**
    * Registers a promise that will resolve when initAppState is invoked.
    * @param {Promise|Function} promise A promise or a function that returns a promise
