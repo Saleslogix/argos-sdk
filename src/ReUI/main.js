@@ -236,11 +236,16 @@ lang.mixin(ReUI, {
     }
 
     context.initialized = true;
-
     R.rootEl = R.rootEl || document.body;
     R.titleEl = R.titleEl || dom.byId(R.pageTitleId);
 
     context.check = window.setInterval(checkOrientationAndLocation, R.checkStateEvery);
+  },
+
+  resetHistory: function resetHistory() {
+    const length = context.history.length;
+    history.go(-length);
+    context.history = [];
   },
 
   /**

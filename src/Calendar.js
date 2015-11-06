@@ -18,6 +18,7 @@
  * @alternateClassName Calendar
  */
 import declare from 'dojo/_base/declare';
+import array from 'dojo/_base/array';
 import lang from 'dojo/_base/lang';
 import query from 'dojo/query';
 import domClass from 'dojo/dom-class';
@@ -25,7 +26,7 @@ import domConstruct from 'dojo/dom-construct';
 import _ActionMixin from './_ActionMixin';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
-import Dropdown from './Dropdown';
+import Dropdown from 'argos/Dropdown';
 
 const resource = window.localeContext.getEntitySync('calendar').attributes;
 
@@ -93,18 +94,54 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   clearText: resource.clearText,
   todayText: resource.todayText,
   monthsText: [
-    resource.january,
-    resource.february,
-    resource.march,
-    resource.april,
-    resource.may,
-    resource.june,
-    resource.july,
-    resource.august,
-    resource.september,
-    resource.october,
-    resource.november,
-    resource.december,
+    {
+      value: resource.january,
+      key: 'january',
+    },
+    {
+      value: resource.february,
+      key: 'february',
+    },
+    {
+      value: resource.march,
+      key: 'march',
+    },
+    {
+      value: resource.april,
+      key: 'april',
+    },
+    {
+      value: resource.may,
+      key: 'may',
+    },
+    {
+      value: resource.june,
+      key: 'june',
+    },
+    {
+      value: resource.july,
+      key: 'july',
+    },
+    {
+      value: resource.august,
+      key: 'august',
+    },
+    {
+      value: resource.september,
+      key: 'september',
+    },
+    {
+      value: resource.october,
+      key: 'october',
+    },
+    {
+      value: resource.november,
+      key: 'november',
+    },
+    {
+      value: resource.december,
+      key: 'december',
+    },
   ],
   weekDaysShortText: [
     resource.sundayAbbreviated,
@@ -116,53 +153,91 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     resource.saturdayAbbreviated,
   ],
 
-  id: 'generic_calendar',
-  showTimePicker: true,
-  showSubValues: true,
-  // This boolean value is used to trigger the modal hide and show and must be used by each entity
-  isModal: false,
   // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
   date: null,
+  id: 'generic_calendar',
+  // This boolean value is used to trigger the modal hide and show and must be used by each entity
+  isModal: false,
   noClearButton: false,
-  _monthDropdown: null,
+  showTimePicker: true,
+  showSubValues: true,
   _currentMonth: null,
-  _todayMonth: null,
-  _yearDropdown: null,
   _currentYear: null,
+  _monthDropdown: null,
+  _selectWeek: false,
+  _selectedDay: null,
+  _todayMonth: null,
   _todayYear: null,
   _widgetName: 'calendar',
+  _yearDropdown: null,
 
   changeDay: function changeDay(params) {
+    if (!this._selectWeek) {
+      this.changeSingleDay(params);
+    } else {
+      this.changeWeek(params);
+    }
+
+    return this;
+  },
+  changeMonthShown: function changeMonthShown({ month }) {
+    this._monthDropdown.setValue(month.toLowerCase());
+    return this;
+  },
+  changeSingleDay: function changeSingleDay(params) {
     if (params) {
-      const selected = query('.selected', this.weeksNode)[0];
+      const selected = query('.selected', this.weeksNode);
+
+      if (selected) {
+        array.forEach(selected, (day) => {
+          domClass.remove(day, 'selected');
+        });
+      }
 
       if (selected) {
         domClass.remove(selected, 'selected');
       }
 
       if (params.$source) {
+        this._selectedDay = params.$source;
         domClass.add(params.$source, 'selected');
-        if (domClass.contains(params.$source, 'isToday')) {
-          domClass.remove(this.todayButton, 'selected');
-        }
       }
 
       if (params.date) {
         this.date.selectedDateMoment = moment(params.date, 'YYYY-MM-DD');
       }
 
-      if (this.date.selectedDateMoment.date() !== this.date.todayMoment.date()) {
-        domClass.add(this.todayButton, 'selected');
-      }
       if (this.date.monthNumber !== this.date.selectedDateMoment.month()) {
         this.refreshCalendar(this.date);
       }
     }
-
     return this;
   },
-  changeMonthShown: function changeMonthShown({ month }) {
-    this._monthDropdown.setValue(month);
+  changeWeek: function changeWeek(params) {
+    if (params) {
+      const selected = query('.selected', this.weeksNode);
+
+      if (selected) {
+        array.forEach(selected, (day) => {
+          domClass.remove(day, 'selected');
+        });
+      }
+
+      if (params.$source.parentNode) {
+        this._selectedDay = params.$source;
+        array.forEach(params.$source.parentNode.children, (day) => {
+          domClass.add(day, 'selected');
+        });
+      }
+
+      if (params.date) {
+        this.date.selectedDateMoment = moment(params.date, 'YYYY-MM-DD');
+      }
+
+      if (this.date.monthNumber !== this.date.selectedDateMoment.month()) {
+        this.refreshCalendar(this.date);
+      }
+    }
     return this;
   },
   changeYearShown: function changeYearShown({ year }) {
@@ -183,6 +258,9 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     }
     data.date = data.dateMoment.clone().date(data.day).format('YYYY-MM-DD');
     const day = domConstruct.toDom(this.calendarTableDayTemplate.apply(data, this));
+    if (data.day === this.date.dayNode && data.month === 'current-month') {
+      this._selectedDay = day;
+    }
     if (this.showSubValues) {
       this.setSubValue(day, data)
           .setActiveDay(day);
@@ -200,8 +278,8 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   },
   createMonthDropdown: function createMonthDropdown() {
     if (!this._monthDropdown) {
-      this._monthDropdown = new Dropdown({ id: 'month-dropdown ' + this.id, dropdownClass: 'dropdown--medium' });
-      this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.format('MMMM'), action: 'setMonth', actionScope: this });
+      this._monthDropdown = new Dropdown({ id: 'month-dropdown ' + this.id, dropdownClass: 'dropdown--medium', onSelect: 'setMonth', onSelectScope: this });
+      this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.format('MMMM').toLowerCase()});
       this._todayMonth = this._monthDropdown.getSelected();
       domConstruct.place(this._monthDropdown.domNode, this.monthNode);
     }
@@ -209,8 +287,8 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   },
   createYearDropdown: function createYearDropdown() {
     if (!this._yearDropdown) {
-      this._yearDropdown = new Dropdown({ id: 'year-dropdown ' + this.id });
-      this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY'), action: 'setYear', actionScope: this });
+      this._yearDropdown = new Dropdown({ id: 'year-dropdown ' + this.id, onSelect: 'setYear', onSelectScope: this });
+      this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY')});
       this._todayYear = this._yearDropdown.getSelected();
       domConstruct.place(this._yearDropdown.domNode, this.yearNode);
     }
@@ -226,6 +304,12 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     this.inherited(arguments);
   },
   getContent: function getContent() {
+    if (this.options.timeless) {
+      // Revert back to timeless
+      this.date.selectedDateMoment.add({
+        minutes: this.date.selectedDateMoment.utcOffset(),
+      });
+    }
     return this.date;
   },
   goToToday: function goToToday() {
@@ -255,7 +339,12 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     const items = [];
     const thisYear = this.date.todayMoment.year();
     for (let i = thisYear - 10; i <= thisYear + 10; i++) {
-      items.push(i);
+      items.push(
+        {
+          value: i,
+          key: i,
+        }
+      );
     }
     return items;
   },
@@ -266,7 +355,11 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   init: function init() {
     this.inherited(arguments);
   },
-  postRenderCalendar: function postRenderCalendar() {},
+  postRenderCalendar: function postRenderCalendar() {
+    if (this._selectWeek) {
+      this.changeWeek({ $source: this._selectedDay });
+    }
+  },
   refreshCalendar: function refreshCalendar(date = {}) {
     domConstruct.empty(this.weeksNode);
     this.renderCalendar(date)
@@ -315,7 +408,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
         data.week = domConstruct.toDom(this.calendarTableWeekStartTemplate.apply());
       }
     }
-
 
     data.selected = '';
     data.month = '';
@@ -367,10 +459,10 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   },
   setDropdownsToday: function setDropdownsToday() {
     if (this._monthDropdown.getSelected() !== this._todayMonth) {
-      this._monthDropdown.setSelected(this._todayMonth.innerHTML);
+      this._monthDropdown.setSelected(this._todayMonth);
     }
     if (this._yearDropdown.getSelected() !== this._todayYear) {
-      this._yearDropdown.setSelected(this._todayYear.innerHTML);
+      this._yearDropdown.setSelected(this._todayYear);
     }
     return this;
   },
@@ -392,6 +484,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     this.titleText = this.options.label ? this.options.label : this.titleText;
     this.showTimePicker = this.options && this.options.showTimePicker;
     if (this.options.timeless) {
+      // Undo timeless
       const startDate = moment(this.options && this.options.date);
       startDate.subtract({
         minutes: startDate.utcOffset(),
@@ -409,6 +502,10 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
 
     domClass.add(this.todayButton, 'selected');
     this.refreshCalendar(this.date);
+  },
+  toggleSelectWeek: function toggleSelectWeek() {
+    this._selectWeek = !this._selectWeek;
+    this.changeDay({ $source: this._selectedDay });
   },
 });
 

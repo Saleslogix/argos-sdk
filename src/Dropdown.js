@@ -15,6 +15,7 @@
 
 import declare from 'dojo/_base/declare';
 import array from 'dojo/_base/array';
+import connect from 'dojo/_base/connect';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domGeom from 'dojo/dom-geometry';
@@ -23,7 +24,7 @@ import keys from 'dojo/keys';
 import on from 'dojo/on';
 import query from 'dojo/query';
 import _Widget from 'dijit/_Widget';
-import _Templated from './_Templated';
+import _Templated from 'argos/_Templated';
 
 const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
@@ -37,7 +38,6 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   ]),
   listTemplate: new Simplate([
     '<div class="dropdown {%: $.dropdownClass %} dropdown--absolute dropdown--hidden">',
-      '<label class="dropdown__label">{%: $.label %}</label>',
       '<input readOnly class="dropdown__input dropdown__input--absolute" value="{%: $.value %}"></input>',
       '<span class="dropdown__icon {%: $.icon %}"></span>',
     '</div>',
@@ -49,27 +49,28 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     '</ul>',
   ]),
   listItemTemplate: new Simplate([
-    '<li class="dropdown__list__item" data-value="{%= $.item %}">',
-      '{%= $.item %}',
+    '<li class="dropdown__list__item" data-value="{%= $.key || $.value %}">',
+      '{%= $.value %}',
     '</li>',
   ]),
   overlayTemplate: new Simplate([
     '<div class="dropdown__overlay"></div>',
   ]),
   selectItemTemplate: new Simplate([
-    '<option value="{%: $.item %}">{%: $.item %}</option>',
+    '<option value="{%: $.key || $.value %}">{%: $.value %}</option>',
   ]),
 
   dropdownClass: '',
   icon: 'fa fa-caret-down',
   id: 'dropdown-template',
   multiSelect: false,
+  onSelect: null,
+  onSelectScope: null,
   openIcon: 'fa fa-caret-up',
-  _action: null,
-  _actionScope: null,
   _eventConnections: [],
   _ghost: null,
   _list: null,
+  _orientation: null,
   _overlay: null,
   _overlayEvent: null,
   _selected: null,
@@ -78,7 +79,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     const listStart = domConstruct.toDom(this.listStartTemplate.apply(this));
     const listEnd = domConstruct.toDom(this.listEndTemplate.apply(this));
     array.forEach(this.dropdownSelect.options, (item) => {
-      const dom = domConstruct.toDom(this.listItemTemplate.apply({item: item.text}, this));
+      const dom = domConstruct.toDom(this.listItemTemplate.apply({key: item.value, value: item.text}, this));
       domConstruct.place(dom, listStart);
       if (item.value === this.dropdownSelect.value) {
         this._selected = dom;
@@ -90,7 +91,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     if (this._ghost) {
       domConstruct.destroy(this._ghost);
     }
-    this._ghost = domConstruct.toDom(this.listTemplate.apply({ value: this._selected.innerHTML, icon: this.openIcon, label: this.label, dropdownClass: this.dropdownClass }, this));
+    this._ghost = domConstruct.toDom(this.listTemplate.apply({ value: this.getText(), icon: this.openIcon, label: this.label, dropdownClass: this.dropdownClass }, this));
 
     const dropdownInput = query('.dropdown__input', this._ghost)[0];
     if (dropdownInput) {
@@ -108,16 +109,15 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this._list = listStart;
     domConstruct.place(this._ghost, document.body);
   },
-  createList: function createList({items, defaultValue, action = null, actionScope = null}) {
-    this._action = action;
-    this._actionScope = actionScope;
+  createList: function createList({items, defaultValue}) {
     this._defaultValue = defaultValue;
     array.forEach(items, function addToModalList(item) {
-      const option = domConstruct.toDom(this.selectItemTemplate.apply({item: item}, this));
+      const option = domConstruct.toDom(this.selectItemTemplate.apply({key: item.key, value: item.value}, this));
       domConstruct.place(option, this.dropdownSelect);
     }, this);
-    this.dropdownSelect.value = this.dropdownInput.value = defaultValue;
-    this._eventConnections.push(on(this.dropdownNode, 'click', this.onClick.bind(this)));
+    this.dropdownSelect.value = defaultValue;
+    this.dropdownInput.value = this.getText();
+    this._eventConnections.push(on(this.dropdownInput, 'click', this.onClick.bind(this)));
     this.createGhost();
 
     return this;
@@ -146,6 +146,9 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   getSelected: function getSelected() {
     return this._selected;
   },
+  getText: function getText() {
+    return this.dropdownSelect.options[this.dropdownSelect.selectedIndex].text;
+  },
   getValue: function getValue() {
     return this.dropdownSelect.value;
   },
@@ -155,7 +158,8 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     return this;
   },
   onClick: function onClick(evt) {
-    if (evt.currentTarget === this.dropdownNode) {
+    if (evt.currentTarget === this.dropdownInput) {
+      this.scrollToDropdown();
       this.show();
       evt.preventDefault();
       evt.stopPropagation();
@@ -168,7 +172,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
         if (!domClass.contains(this._ghost, 'dropdown--hidden')) {
           if (this._selected.previousSibling) {
             this.updateSelected(this._selected.previousSibling);
-            this.updateGhost(this._selected.innerHTML);
+            this.updateGhost(this._selected.dataset.value);
             this.scrollListTo(this._selected);
           }
         } else {
@@ -179,7 +183,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
         if (!domClass.contains(this._ghost, 'dropdown--hidden')) {
           if (this._selected.nextSibling) {
             this.updateSelected(this._selected.nextSibling);
-            this.updateGhost(this._selected.innerHTML);
+            this.updateGhost(this._selected.dataset.value);
             this.scrollListTo(this._selected);
           }
         } else {
@@ -217,10 +221,10 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this.updateSelected(target);
     if (!this.multiSelect) {
       this.hide();
-      this.setValue(target.innerHTML);
+      this.setValue(target.dataset.value);
     } // TODO: Add in what will happen for a multiSelect dropdown
-    if (this._action && this._actionScope) {
-      this._actionScope[this._action]();
+    if (this.onSelect && this.onSelectScope) {
+      this.onSelectScope[this.onSelect]();
     }
   },
   onOverlayClick: function onOverlayClick(evt) {
@@ -233,6 +237,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   },
   postCreate: function postCreate() {
     this.inherited(arguments);
+    this._orientation = connect.subscribe('/app/setOrientation', this, this.hide);
     this._eventConnections.push(on(this.dropdownInput, 'keydown', this.onKeyPress.bind(this)));
   },
   scrollListTo: function scrollListTo(target) {
@@ -240,37 +245,80 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       this._list.scrollTop = target.offsetTop - target.offsetHeight;
     }
   },
+  scrollToDropdown: function scrollToDropdown() {
+    const scrollParent = this.dropdownNode.offsetParent;
+    if (scrollParent) {
+      if (scrollParent.scrollTop > this.dropdownNode.offsetTop) {
+        scrollParent.scrollTop = this.dropdownNode.offsetTop;
+      } else if (this.dropdownNode.offsetTop > scrollParent.scrollTop && this.dropdownNode.offsetTop + this.dropdownNode.offsetHeight > scrollParent.scrollTop + scrollParent.offsetHeight) {
+        scrollParent.scrollTop = this.dropdownNode.offsetTop + this.dropdownNode.offsetHeight - scrollParent.offsetHeight;
+      }
+    }
+  },
+  setOnSelect: function setOnSelect(value) {
+    if (value) {
+      this.onSelect = value;
+    }
+    return this;
+  },
+  setOnSelectScope: function setOnSelectScope(scope) {
+    if (scope) {
+      this._onSelectScope = scope;
+    }
+    return this;
+  },
   setSelected: function setSelected(value = {}) {
     if (value !== this._selected) {
       this._selected = value;
-      this.setValue(value.innerHTML);
+      this.setValue(value.dataset.value);
     }
   },
   setValue: function setValue(value) {
     if (value === 0 || value) {
-      this.dropdownSelect.value = this.dropdownInput.value = value;
+      this.dropdownSelect.value = value;
+      this.dropdownInput.value = this.getText();
     }
   },
   show: function show() {
-    const pos = domGeom.position(this.dropdownNode, true);
-    const ghostHeight = domStyle.get(this._ghost, 'height');
-    if (pos.y + ghostHeight <= window.innerHeight) {
+    const pos = domGeom.position(this.dropdownInput, true);
+    if (pos.y <= App._rootDomNode.offsetHeight / 2) {
       if (domClass.contains(this._ghost, 'dropdown--onTop')) {
         this.createGhost(false);
         domClass.remove(this._ghost, 'dropdown--onTop');
       }
       domStyle.set(this._ghost, {
-        top: `${pos.y}px`,
+        top: `${pos.y - domStyle.get(this.dropdownInput, 'borderTopWidth')}px`,
         left: `${pos.x}px`,
+        width: `${pos.w}px`,
       });
+      this.trimHeight(false);
     } else {
       if (!domClass.contains(this._ghost, 'dropdown--onTop')) {
         this.createGhost(true);
         domClass.add(this._ghost, 'dropdown--onTop');
       }
+      if (!this._listItemHeight) {
+        this._listItemHeight = domStyle.get(this._list, 'lineHeight');
+      }
+      const ghostMaxHeight = domStyle.get(this._ghost, 'maxHeight');
+      const ghostHeight = this._listItemHeight * this._list.children.length + pos.h < ghostMaxHeight ? this._listItemHeight * this._list.children.length + pos.h : ghostMaxHeight;
       domStyle.set(this._ghost, {
-        top: `${pos.y - ghostHeight + pos.h}px`,
+        top: `${pos.y + domStyle.get(this.dropdownInput, 'borderBottomWidth') - ghostHeight + pos.h}px`,
         left: `${pos.x}px`,
+        width: `${pos.w}px`,
+      });
+      this.trimHeight(true);
+    }
+    const ghostInput = query('.dropdown__input', this._ghost)[0];
+    if (ghostInput) {
+      domStyle.set(ghostInput, {
+        height: `${pos.h}px`,
+      });
+    }
+    const ghostIcon = query('.dropdown__icon', this._ghost)[0];
+    if (ghostIcon) {
+      domStyle.set(ghostIcon, {
+        marginTop: `${pos.h / 2 - domStyle.get(ghostIcon, 'height') / 2}px`,
       });
     }
     this.updateGhost(this.dropdownSelect.value);
@@ -284,6 +332,32 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       this.destroyOverlay();
     }
   },
+  trimHeight: function trimHeight(top = false) {
+    const ghostList = query('.dropdown__list', this._ghost)[0];
+    if (ghostList) {
+      const dropdownHeight = domStyle.get(this.dropdownInput, 'height');
+      const ghostHeight = domStyle.get(this._ghost, 'height');
+      const ghostTop = domStyle.get(this._ghost, 'top');
+      const borderTop = domStyle.get(this._ghost, 'borderTopWidth');
+      const borderBottom = domStyle.get(this._ghost, 'borderBottomWidth');
+      if (!top && ghostTop + ghostHeight > App._rootDomNode.offsetHeight) {
+        domStyle.set(this._ghost, {
+          height: '',
+        });
+        domStyle.set(ghostList, {
+          height: `${App._rootDomNode.offsetHeight - dropdownHeight - ghostTop}px`,
+        });
+      } else if (top && ghostTop < 0) {
+        domStyle.set(this._ghost, {
+          top: `0px`,
+          height: `${ghostHeight + ghostTop}px`,
+        });
+        domStyle.set(ghostList, {
+          height: `${ghostHeight + ghostTop - dropdownHeight - borderTop - borderBottom}px`,
+        });
+      }
+    }
+  },
   updateGhost: function updateGhost(value) {
     const current = query(`[data-value=${value}]`, this._list)[0];
     const input = query('.dropdown__input', this._ghost)[0];
@@ -291,7 +365,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       this.updateSelected(current);
     }
     if (input) {
-      input.value = this.dropdownSelect.value;
+      input.value = this.getText();
     }
     return this;
   },

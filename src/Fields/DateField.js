@@ -75,7 +75,6 @@ const control = declare('argos.Fields.DateField', [EditorField], {
   widgetTemplate: new Simplate([
     '<label for="{%= $.name %}">{%: $.label %}</label>',
     '<button data-dojo-attach-point="triggerNode" data-action="showModal" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
-    // '<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
     '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />',
   ]),
 
@@ -125,10 +124,18 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * @param {Event} evt Event that caused change to fire.
    */
   _onChange: function _onChange(/*evt*/) {
-    const val = moment(this.inputNode.value, this.dateFormatText).toDate();
+    const jsDate = new Date(this.inputNode.value);
+    let date = moment(this.inputNode.value, this.dateFormatText, true);
+    if (moment(jsDate).isValid() && !date.isValid()) {
+      date = moment(jsDate);
+    }
+    const val = date.isValid();
 
     if (val) {
-      this.validationValue = this.currentValue = val;
+      this.validationValue = this.currentValue = date.toDate();
+      if (this.inputNode.value !== date.format(this.dateFormatText)) {
+        this.inputNode.value = date.format(this.dateFormatText);
+      }
       domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
     } else {
       this.validationValue = this.currentValue = null;
@@ -143,7 +150,11 @@ const control = declare('argos.Fields.DateField', [EditorField], {
   createNavigationOptions: function createNavigationOptions() {
     const options = this.inherited(arguments);
 
-    options.date = this.currentValue;
+    if (this.currentValue !== '' && this.currentValue !== null) {
+      options.date = this.currentValue;
+    } else {
+      options.date = moment();
+    }
     options.showTimePicker = this.showTimePicker;
     options.timeless = this.timeless;
 
@@ -166,6 +177,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       if (data.time) {
         date.hours(data.time.hours);
         date.minutes(data.time.minutes);
+        date.seconds(data.time.seconds);
       }
       this.currentValue = this.validationValue = date.toDate();
       this.inputNode.value = this.formatValue(this.currentValue);
@@ -173,6 +185,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       this.currentValue = this.validationValue = data.toDate();
       this.inputNode.value = this.formatValue(this.currentValue);
     }
+    domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
   },
   /**
    * Determines if the current value has been modified from the original value.

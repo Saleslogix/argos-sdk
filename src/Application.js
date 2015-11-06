@@ -28,7 +28,7 @@ import ReUI from './ReUI/main';
 import ready from 'dojo/ready';
 import util from './Utility';
 import ModelManager from './Models/Manager';
-import Modal from './Modal';
+import Modal from './Dialogs/Modal';
 import BusyIndicator from './BusyIndicator';
 import Deferred from 'dojo/Deferred';
 import 'dojo/sniff';
@@ -212,10 +212,20 @@ const __class = declare('argos.Application', null, {
    */
   maxUploadFileSize: 4000000,
 
-  /*
+  /**
    * Timeout for the connection check.
    */
-  PING_TIMEOUT: 1000,
+  PING_TIMEOUT: 3000,
+
+  /**
+   * Ping debounce time.
+   */
+  PING_DEBOUNCE: 1000,
+
+  /**
+   * Number of times to attempt to ping.
+   */
+  PING_RETRY: 5,
 
   /*
    * Static resource to request on the ping. Should be a small file.
@@ -241,13 +251,27 @@ const __class = declare('argos.Application', null, {
 
     this.context = {};
     this.viewShowOptions = [];
-    this.ping = util.debounce((action) => {
-      this._ping().then((results) => {
-        if (typeof action === 'function') {
-          action(results);
-        }
-      });
-    }, this.PING_TIMEOUT);
+    this.ping = util.debounce(() => {
+      const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
+        .flatMap(() => {
+          return Rx.Observable.fromPromise(this._ping())
+            .flatMap((online) => {
+              if (online) {
+                return Rx.Observable.just(online);
+              }
+
+              return Rx.Observable.throw(new Error());
+            });
+        })
+        .retry(this.PING_RETRY)
+        .take(1);
+
+      ping$.subscribe(function onNext() {
+        this._updateConnectionState(true);
+      }.bind(this), function onError() {
+        this._updateConnectionState(false);
+      }.bind(this));
+    }, this.PING_DEBOUNCE);
 
     this.ModelManager = ModelManager;
     lang.mixin(this, options);
@@ -286,15 +310,14 @@ const __class = declare('argos.Application', null, {
       this.redirectHash = h;
     }
 
-    location.hash = '';
-
+    history.replaceState(null, '', '#');
     ReUI.init();
   },
   _onOffline: function _onOffline() {
-    this.ping((results) => this._updateConnectionState(results));
+    this.ping();
   },
   _onOnline: function _onOnline() {
-    this.ping((results) => this._updateConnectionState(results));
+    this.ping();
   },
   _updateConnectionState: function _updateConnectionState(online) {
     // Don't fire the onConnectionChange if we are in the same state.
@@ -305,7 +328,13 @@ const __class = declare('argos.Application', null, {
     this.onLine = online;
     this.onConnectionChange(online);
   },
-  onConnectionChange: function onConnectionChange(/*online*/) {},
+  forceOnline: function forceOnline() {
+    this._updateConnectionState(true);
+  },
+  forceOffline: function forceOffline() {
+    this._updateConnectionState(false);
+  },
+  onConnectionChange: function onConnectionChange( /*online*/ ) {},
   /**
    * Establishes various connections to events.
    */
@@ -319,7 +348,7 @@ const __class = declare('argos.Application', null, {
       window.addEventListener('offline', this._onOffline.bind(this));
     });
 
-    this.ping((results) => this._updateConnectionState(results));
+    this.ping();
   },
 
   /**
@@ -404,25 +433,11 @@ const __class = declare('argos.Application', null, {
         }
       }
     });
-    // App.modal.disableClose = true;
-    // App.modal.showToolbar = false;
-    // const indicator = new BusyIndicator({
-    //  id: 'busyIndicator__appState_',
-    //  label: 'loadding options plaease wait.',
-    // });
-    // indicator.start();
-    // App.modal.add(indicator);
     return this._initAppStateSequence(0, sequences).then((results) => {
       this.clearAppStatePromises();
-      // indicator.complete(true);
-      // App.modal.disableClose = false;
-      // App.modal.hide();
       return results;
     }, (err) => {
       this.clearAppStatePromises();
-      // indicator.complete(true);
-      // App.modal.disableClose = false;
-      // App.modal.hide();
       return err;
     });
   },
@@ -463,46 +478,21 @@ const __class = declare('argos.Application', null, {
     }
     return def.promise;
   },
-  initAppState2: function initAppState2() {
-    const indicators = [];
+  initAppState: function initAppState() {
     const promises = array.map(this._appStatePromises, (item) => {
       let results = item;
       if (typeof item === 'function') {
         results = item();
-      } else {
-        if (item.name && (typeof item.fn === 'function')) {
-          indicators.push({
-            name: item.name,
-            indicator: new BusyIndicator({
-              id: 'busyIndicator__appState_' + item.name,
-              label: 'Initializing: ' + item.description,
-            }),
-          });
-          results = item.fn();
-        }
       }
+
       return results;
     });
-    App.modal.disableClose = true;
-    App.modal.showToolbar = false;
 
-    indicators.forEach((item) => {
-      App.modal.add(item.indicator);
-      item.indicator.start();
-    });
-
-    return all(promises).then((results) => {
-      this.clearAppStatePromises();
-      indicators.forEach((item) => {
-        item.indicator.complete(true);
+    return all(promises)
+      .then((results) => {
+        this.clearAppStatePromises();
+        return results;
       });
-      App.modal.disableClose = false;
-      App.modal.hide();
-      return results;
-    }, () => {
-      App.modal.disableClose = false;
-      App.modal.hide();
-    });
   },
   /**
    * Registers a promise that will resolve when initAppState is invoked.
@@ -570,7 +560,7 @@ const __class = declare('argos.Application', null, {
   initModal: function initModal() {
     this.modal = new Modal();
     this.modal.place(document.body)
-              .hide();
+      .hide();
   },
   /**
    * Check if the browser supports touch events.
@@ -671,7 +661,7 @@ const __class = declare('argos.Application', null, {
     return this;
   },
   onRequestTimeout: function _onTimeout() {
-    this.ping((results) => this._updateConnectionState(results));
+    this.ping();
   },
   /**
    * Determines the the specified service name is found in the Apps service object.

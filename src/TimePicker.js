@@ -24,7 +24,7 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
-import Dropdown from './Dropdown';
+import Dropdown from 'argos/Dropdown';
 
 const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
@@ -51,8 +51,8 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   meridiemSelectTemplate: new Simplate([
     '<div class="toggle toggle-horizontal meridiem-field" data-dojo-attach-point="meridiemNode">',
         '<span class="thumb horizontal"></span>',
-        '<span class="toggleOn">{%= $.amText %}</span>',
-        '<span class="toggleOff">{%= $.pmText %}</span>',
+        '<span class="toggleOn">{%= $.pmText %}</span>',
+        '<span class="toggleOff">{%= $.amText %}</span>',
     '</div>',
   ]),
   listStartTemplate: new Simplate([
@@ -83,32 +83,104 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   timeless: false,
   showSetTime: true,
   hourValues: [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12',
+    {
+      value: '1',
+      key: '1',
+    },
+    {
+      value: '2',
+      key: '2',
+    },
+    {
+      value: '3',
+      key: '3',
+    },
+    {
+      value: '4',
+      key: '4',
+    },
+    {
+      value: '5',
+      key: '5',
+    },
+    {
+      value: '6',
+      key: '6',
+    },
+    {
+      value: '7',
+      key: '7',
+    },
+    {
+      value: '8',
+      key: '8',
+    },
+    {
+      value: '9',
+      key: '9',
+    },
+    {
+      value: '10',
+      key: '10',
+    },
+    {
+      value: '11',
+      key: '11',
+    },
+    {
+      value: '12',
+      key: '12',
+    },
   ],
   minuteValues: [
-    '00',
-    '05',
-    '10',
-    '15',
-    '20',
-    '25',
-    '30',
-    '35',
-    '40',
-    '45',
-    '50',
-    '55',
+    {
+      value: '00',
+      key: '00',
+    },
+    {
+      value: '05',
+      key: '05',
+    },
+    {
+      value: '10',
+      key: '10',
+    },
+    {
+      value: '15',
+      key: '15',
+    },
+    {
+      value: '20',
+      key: '20',
+    },
+    {
+      value: '25',
+      key: '25',
+    },
+    {
+      value: '30',
+      key: '30',
+    },
+    {
+      value: '35',
+      key: '35',
+    },
+    {
+      value: '40',
+      key: '40',
+    },
+    {
+      value: '45',
+      key: '45',
+    },
+    {
+      value: '50',
+      key: '50',
+    },
+    {
+      value: '55',
+      key: '55',
+    },
   ],
 
   createHourDropdown: function createHourDropdown(initial) {
@@ -189,6 +261,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     if (minutes === 0) {
       minutes = '00';
     }
+    this.timeValue.seconds = date.seconds();
     this.createHourDropdown(`${hour}`)
         .createMinuteDropdown(`${minutes}`)
         .setMeridiem(meridiemToggled);

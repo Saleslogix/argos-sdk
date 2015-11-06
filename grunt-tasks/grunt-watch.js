@@ -9,7 +9,7 @@ module.exports = function gruntWatch(grunt) {
     },
     babel: {
       files: ['src/**/*.js'],
-      tasks: ['babel'],
+      tasks: ['lint'],
       options: {
         spawn: false,
       },

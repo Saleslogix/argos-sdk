@@ -63,7 +63,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
   moreTabItemTemplate: new Simplate([
     '<li class="tab more-item" data-action="toggleDropDown">',
     '{%: ($.title || $.options.title) %}',
-    '<span class="fa fa-angle-right"></span>',
+    '<span class="fa fa-fw fa-angle-right"></span>',
     '</li>',
   ]),
 
@@ -175,7 +175,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
           visibility: 'visible',
         });
         if (icon) {
-          domClass.replace(icon, 'fa fa-angle-down', 'fa fa-angle-right');
+          domClass.replace(icon, 'fa-angle-down', 'fa-angle-right');
         }
 
         if (!this.moreTabList.style.left) {
@@ -196,11 +196,11 @@ const __class = declare('argos.TabWidget', [_Templated], {
           visibility: 'hidden',
         });
         if (icon) {
-          domClass.replace(icon, 'fa fa-angle-right', 'fa fa-angle-down');
+          domClass.replace(icon, 'fa-angle-right', 'fa-angle-down');
         }
       }
     } else {
-      if (params.target !== this.moreTab) {
+      if (params.target !== this.moreTab && params.target !== icon) {
         domStyle.set(this.moreTabList, {
           visibility: 'hidden',
         });
@@ -229,10 +229,15 @@ const __class = declare('argos.TabWidget', [_Templated], {
       }, this);
     } else {
       let temp = this.tabList.children;
+      let isIE = false;
       if (!temp[0].remove) { // Check if is IE
         temp = this.tabList.cloneNode(true).children;
+        isIE = true;
       }
       const arr = [].slice.call(temp);
+      if (isIE) {
+        this.currentTab = arr[array.indexOf(this.tabList.children, this.currentTab)];
+      }
       domConstruct.empty(this.tabList);
       array.forEach(arr, function recreateTabList(tab) {
         domConstruct.place(tab, this.tabList);

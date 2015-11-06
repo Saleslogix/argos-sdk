@@ -24,7 +24,7 @@ import domConstruct from 'dojo/dom-construct';
 import domStyle from 'dojo/dom-style';
 import on from 'dojo/on';
 import _Widget from 'dijit/_Widget';
-import _Templated from 'argos/_Templated';
+import _Templated from '../_Templated';
 
 const resource = window.localeContext.getEntitySync('modal').attributes;
 
