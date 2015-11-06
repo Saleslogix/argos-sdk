@@ -29,9 +29,11 @@ import ready from 'dojo/ready';
 import util from './Utility';
 import ModelManager from './Models/Manager';
 import Modal from './Dialogs/Modal';
-import BusyIndicator from './BusyIndicator';
+import BusyIndicator from './Dialogs/BusyIndicator';
 import Deferred from 'dojo/Deferred';
 import 'dojo/sniff';
+
+const resource = window.localeContext.getEntitySync('application').attributes;
 
 has.add('html5-file-api', function hasFileApi(global) {
   if (has('ie')) {
@@ -410,7 +412,7 @@ const __class = declare('argos.Application', null, {
         if (!seq) {
           seq = {
             seq: 0,
-            description: 'Loading application state',
+            description: resource.loadingApplicationStateText,
             items: [],
           };
           sequences.push(seq);
@@ -433,6 +435,11 @@ const __class = declare('argos.Application', null, {
         }
       }
     });
+    // Sort the sequence ascending so we can processes them in the right order.
+    sequences.sort((a, b) => {
+      return a.seq > b.seq;
+    });
+
     return this._initAppStateSequence(0, sequences).then((results) => {
       this.clearAppStatePromises();
       return results;
@@ -448,7 +455,7 @@ const __class = declare('argos.Application', null, {
     if (seq) {
       const indicator = new BusyIndicator({
         id: 'busyIndicator__appState_' + seq.seq,
-        label: 'Initializing: ' + seq.description,
+        label: resource.initializingText + ' ' + seq.description,
       });
       App.modal.disableClose = true;
       App.modal.showToolbar = false;
@@ -474,7 +481,7 @@ const __class = declare('argos.Application', null, {
         def.reject(err);
       });
     } else {
-      def.resolve('no sequence');
+      def.resolve();
     }
     return def.promise;
   },

@@ -9,7 +9,7 @@ import convert from 'argos/Convert';
 
 const __class = {
 
-  defaultOlderThan: 2,
+  defaultClearOlderThan: 2,
   /**
    *
    * @param view Required instance of a detail view
@@ -219,17 +219,17 @@ const __class = {
   },
   getClearDataQueryExpression: function getClearDataQueryExpression(options) {
     if (options && !options.clearAll) {
-      const olderThanDate = this.getOlderThanDate(options.olderThan);
+      const clearOlderThanDate = this.getClearOlderThanDate(options.clearOlderThan);
       return function queryFn(doc, emit) {
         const recordDate = moment(convert.toDateFromString(doc.modifyDate));
-        if (olderThanDate && (recordDate.isBefore(olderThanDate.startOf('day')))) {
+        if (clearOlderThanDate && (recordDate.isBefore(clearOlderThanDate.startOf('day')))) {
           emit(doc.modifyDate);
         }
       };
     }
     return null;
   },
-  getOlderThanDate: function getOlderThanDate(olderThan) {
+  getClearOlderThanDate: function getClearOlderThanDate(olderThan) {
     let olderThanDate = null;
     if (olderThan || olderThan === 0) {
       olderThanDate = moment().subtract(olderThan - 1, 'days').startOf('day');
@@ -256,12 +256,38 @@ const __class = {
   },
   getDefaultOptions: function getDefaultOptions() {
     const options = {
-      olderThan: this.defaultOlderThan,
+      clearOlderThan: this.defaultClearOlderThan,
     };
     return options;
   },
-  getOlderThanValues: function getOlderThanValues() {
-    const values = [0, 1, 2, 3, 4, 5, 6, 7];
+  getClearOlderThanValues: function getClearOlderThanValues() {
+    const values = [
+      {
+        key: 0,
+        value: 0,
+      }, {
+        key: 1,
+        value: 1,
+      }, {
+        key: 2,
+        value: 2,
+      }, {
+        key: 3,
+        value: 3,
+      }, {
+        key: 4,
+        value: 4,
+      }, {
+        key: 5,
+        value: 5,
+      }, {
+        key: 6,
+        value: 6,
+      }, {
+        key: 7,
+        value: 7,
+      }];
+
     return values;
   },
   secureData: function secureData() {
