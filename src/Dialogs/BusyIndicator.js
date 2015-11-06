@@ -9,7 +9,7 @@ import _Templated from '../_Templated';
 
 const resource = window.localeContext.getEntitySync('busyIndicator').attributes;
 
-const __class = declare('argos/BusyIndicator', [ _Widget, _Templated ], {
+const __class = declare('argos.Dialogs.BusyIndicator', [ _Widget, _Templated ], {
   widgetTemplate: new Simplate([
     '<div class="busyIndicator__container" aria-live="polite" data-dojo-attach-point="busyIndicatorNode">',
     '</div>',

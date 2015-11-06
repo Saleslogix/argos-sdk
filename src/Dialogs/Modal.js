@@ -28,7 +28,7 @@ import _Templated from '../_Templated';
 
 const resource = window.localeContext.getEntitySync('modal').attributes;
 
-const __class = declare('argos.Modal', [_Widget, _Templated], {
+const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="modal__container" data-dojo-attach-point="modalContainer">',
       '{%! $.modalTemplate %}',
