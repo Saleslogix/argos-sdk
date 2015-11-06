@@ -29,6 +29,8 @@ import ready from 'dojo/ready';
 import util from './Utility';
 import ModelManager from './Models/Manager';
 import Modal from './Modal';
+import BusyIndicator from './BusyIndicator';
+import Deferred from 'dojo/Deferred';
 import 'dojo/sniff';
 
 has.add('html5-file-api', function hasFileApi(global) {
@@ -371,18 +373,135 @@ const __class = declare('argos.Application', null, {
    * @return {Promise}
    */
   initAppState: function initAppState() {
+    const sequences = [];
+    this._appStatePromises.forEach((item) => {
+      let seq;
+      if (typeof item === 'function') {
+        seq = sequences.find(x => x.seq === 0);
+        if (!seq) {
+          seq = {
+            seq: 0,
+            description: 'Loading application state',
+            items: [],
+          };
+          sequences.push(seq);
+        }
+        seq.items.push({
+          name: 'default',
+          description: '',
+          fn: item,
+        });
+      } else {
+        if (item.seq && item.items ) {
+          seq = sequences.find(x => x.seq === ((item.seq) ? item.seq : 0));
+          if (seq) {
+            item.items.forEach((_item) => {
+              seq.items.push(_item);
+            });
+          } else {
+            sequences.push(item);
+          }
+        }
+      }
+    });
+    // App.modal.disableClose = true;
+    // App.modal.showToolbar = false;
+    // const indicator = new BusyIndicator({
+    //  id: 'busyIndicator__appState_',
+    //  label: 'loadding options plaease wait.',
+    // });
+    // indicator.start();
+    // App.modal.add(indicator);
+    return this._initAppStateSequence(0, sequences).then((results) => {
+      this.clearAppStatePromises();
+      // indicator.complete(true);
+      // App.modal.disableClose = false;
+      // App.modal.hide();
+      return results;
+    }, (err) => {
+      this.clearAppStatePromises();
+      // indicator.complete(true);
+      // App.modal.disableClose = false;
+      // App.modal.hide();
+      return err;
+    });
+  },
+  _initAppStateSequence: function _initAppStateSequnce(index, sequences) {
+    const def = new Deferred();
+    const seq = sequences[index];
+
+    if (seq) {
+      const indicator = new BusyIndicator({
+        id: 'busyIndicator__appState_' + seq.seq,
+        label: 'Initializing: ' + seq.description,
+      });
+      App.modal.disableClose = true;
+      App.modal.showToolbar = false;
+      App.modal.add(indicator);
+      indicator.start();
+      const promises = array.map(seq.items, (item)=> {
+        return item.fn();
+      });
+
+      all(promises).then(() => {
+        App.modal.disableClose = false;
+        App.modal.hide();
+        indicator.complete(true);
+        this._initAppStateSequence(index + 1, sequences).then((results) => {
+          def.resolve(results);
+        }, (err) => {
+          def.reject(err);
+        });
+      }, (err) => {
+        App.modal.disableClose = false;
+        App.modal.hide();
+        indicator.complete(true);
+        def.reject(err);
+      });
+    } else {
+      def.resolve('no sequence');
+    }
+    return def.promise;
+  },
+  initAppState2: function initAppState2() {
+    const indicators = [];
     const promises = array.map(this._appStatePromises, (item) => {
       let results = item;
       if (typeof item === 'function') {
         results = item();
+      } else {
+        if (item.name && (typeof item.fn === 'function')) {
+          indicators.push({
+            name: item.name,
+            indicator: new BusyIndicator({
+              id: 'busyIndicator__appState_' + item.name,
+              label: 'Initializing: ' + item.description,
+            }),
+          });
+          results = item.fn();
+        }
       }
-
       return results;
+    });
+    App.modal.disableClose = true;
+    App.modal.showToolbar = false;
+
+    indicators.forEach((item) => {
+      App.modal.add(item.indicator);
+      item.indicator.start();
     });
 
     return all(promises).then((results) => {
       this.clearAppStatePromises();
+      indicators.forEach((item) => {
+        item.indicator.complete(true);
+      });
+      App.modal.disableClose = false;
+      App.modal.hide();
       return results;
+    }, () => {
+      App.modal.disableClose = false;
+      App.modal.hide();
     });
   },
   /**
