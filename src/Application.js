@@ -401,6 +401,47 @@ const __class = declare('argos.Application', null, {
    * Executes the chain of promises registered with registerAppStatePromise.
    * When all promises are done, a new promise is returned to the caller, and all
    * registered promises are flushed.
+   * Each app state can be processed all at once or in a specfic seqence.
+   * Example:
+   * We can register  App state seqeunces as the following, where each sequence
+   * is proccessed in a desending order form 0 to n. The first two in this example are defeulted to a
+   * sequence of zero (0) and are procced first in which after the next sequence (1) is proccessed
+   * and once all of its items are finshed then the last sequence 2 will start and process all of its items.
+   *
+   * If two seqences have the same number then thay will get combinded as if they where registerd together.
+   * Aso not all items whith in a process are processed and ansync of each other and may not finish at the same time.
+   *
+   * To make two items process one after the other simpley put them in to diffrent sequences.
+   *
+   *   this.registerAppStatePromise(() => {some functions that returns a promise});
+   *   this.registerAppStatePromise(() => {some functions that returns a promise});
+   *
+   *   this.registerAppStatePromise({
+   *     seq: 1,
+   *     description: 'Sequence 1',
+   *     items: [{
+   *       name: 'itemA',
+   *       description: 'item A',
+   *       fn: () => { some functions that returns a promise },
+   *       }, {
+   *         name: 'itemb',
+   *         description: 'Item B',
+   *         fn: () => {some functions that returns a promise},
+   *       }],
+   *   });
+   *
+   *   this.registerAppStatePromise({
+   *     seq: 2,
+   *     description: 'Sequence 2',
+   *     items: [{
+   *       name: 'item C',
+   *       description: 'item C',
+   *       fn: () => { some functions that returns a promise },
+   *       },
+   *    });
+   *
+   * There are there App state seqences re
+   *
    * @return {Promise}
    */
   initAppState: function initAppState() {
@@ -448,11 +489,16 @@ const __class = declare('argos.Application', null, {
       return err;
     });
   },
+  /**
+   * Process a app state sequence and start the next sequnce when done.
+   * @param {index) the index of the sequence to start
+   * @param {sequences) an array of sequences
+   */
   _initAppStateSequence: function _initAppStateSequnce(index, sequences) {
     const def = new Deferred();
     const seq = sequences[index];
 
-    if (seq) {
+    if (seq) { // We need to send an observable and get ride of the ui element.
       const indicator = new BusyIndicator({
         id: 'busyIndicator__appState_' + seq.seq,
         label: resource.initializingText + ' ' + seq.description,
