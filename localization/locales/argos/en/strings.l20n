@@ -269,9 +269,3 @@
   goToDetailViewText: "Item and related items have been briefcased. Would you like to move to the briefcase list view?"
   interruptedText: "The process was interrupted and was not able to fully complete. Please try the process again to fully briefcase the items."
 >
-
-<applicationSDK ""
-  initializingText: "Initializing:"
-  loadingApplicationStateText: "Loading appliction state",
-  pleaseWaitText: "Please wait."
->
