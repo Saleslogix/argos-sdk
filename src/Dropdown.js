@@ -67,7 +67,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   onSelect: null,
   onSelectScope: null,
   openIcon: 'fa fa-caret-up',
-  _eventConnections: [],
+  _eventConnections: null,
   _ghost: null,
   _list: null,
   _orientation: null,
@@ -75,6 +75,9 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   _overlayEvent: null,
   _selected: null,
 
+  constructor: function constructor() {
+    this._eventConnections = [];
+  },
   createGhost: function createGhost(top = false) {
     const listStart = domConstruct.toDom(this.listStartTemplate.apply(this));
     const listEnd = domConstruct.toDom(this.listEndTemplate.apply(this));
@@ -117,7 +120,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     }, this);
     this.dropdownSelect.value = defaultValue;
     this.dropdownInput.value = this.getText();
-    this._eventConnections.push(on(this.dropdownInput, 'click', this.onClick.bind(this)));
+    this._eventConnections.push(on(this.dropdownNode, 'click', this.onClick.bind(this)));
     this.createGhost();
 
     return this;
@@ -158,7 +161,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     return this;
   },
   onClick: function onClick(evt) {
-    if (evt.currentTarget === this.dropdownInput) {
+    if (evt.currentTarget === this.dropdownNode) {
       this.scrollToDropdown();
       this.show();
       evt.preventDefault();
