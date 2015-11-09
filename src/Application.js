@@ -503,17 +503,17 @@ const __class = declare('argos.Application', null, {
         id: 'busyIndicator__appState_' + seq.seq,
         label: resource.initializingText + ' ' + seq.description,
       });
-      App.modal.disableClose = true;
-      App.modal.showToolbar = false;
-      App.modal.add(indicator);
+      this.modal.disableClose = true;
+      this.modal.showToolbar = false;
+      this.modal.add(indicator);
       indicator.start();
       const promises = array.map(seq.items, (item)=> {
         return item.fn();
       });
 
       all(promises).then(() => {
-        App.modal.disableClose = false;
-        App.modal.hide();
+        this.modal.disableClose = false;
+        this.modal.hide();
         indicator.complete(true);
         this._initAppStateSequence(index + 1, sequences).then((results) => {
           def.resolve(results);
@@ -521,8 +521,8 @@ const __class = declare('argos.Application', null, {
           def.reject(err);
         });
       }, (err) => {
-        App.modal.disableClose = false;
-        App.modal.hide();
+        this.modal.disableClose = false;
+        this.modal.hide();
         indicator.complete(true);
         def.reject(err);
       });

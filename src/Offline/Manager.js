@@ -150,9 +150,7 @@ const __class = {
     let usageRequests = [];
 
     const models = App.ModelManager.getModels(MODEL_TYPES.OFFLINE).filter((model) => {
-      if (model && !model.isSystem ) {
-        return model;
-      }
+      return model && !model.isSystem;
     });
 
     usageRequests = models.map((model) => {
