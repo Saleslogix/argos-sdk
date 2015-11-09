@@ -121,7 +121,15 @@ body > .viewContainer {
 .panel-content > div > .row > label {
     color: @form-label-color;
     padding: @panel-content-label-padding;
-    width: 25%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.detailContent > fieldset > .row > div > label,
+.detailContent > .row > div > label,
+.detailContent > .row > label {
+  width: 25%;
 }
 
 .panel-content > fieldset > .row-edit {
