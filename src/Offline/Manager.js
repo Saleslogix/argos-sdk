@@ -290,30 +290,6 @@ const __class = {
 
     return values;
   },
-  secureData: function secureData() {
-    const def = new Deferred();
-    const model = App.ModelManager.getModel('Authentication', MODEL_TYPES.OFFLINE);
-    if (model) {
-      model.hasAuthenticationChanged(App.context.user.$key).then((result) => {
-        let options = this.getOptions();
-        if (result) {
-          options = {
-            clearAll: true,
-          };
-        }
-        this.clearData(options).then(() => {
-          def.resolve();
-        }, (err) => {
-          def.reject(err);
-        });
-      }, (err) => {
-        def.reject(err);
-      });
-    } else {
-      def.resolve();
-    }
-    return def.promise;
-  },
 };
 
 export default __class;

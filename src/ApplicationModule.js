@@ -21,7 +21,6 @@ import './Application';
 import './CultureInfo';
 import './Models/RecentlyViewed/Offline';
 import './Models/Briefcase/Offline';
-import './Models/Authentication/Offline';
 
 /**
  * @class argos.ApplicationModule
