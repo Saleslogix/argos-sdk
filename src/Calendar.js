@@ -355,6 +355,11 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   init: function init() {
     this.inherited(arguments);
   },
+  isActive: function isActive(day) {
+    if (day) {
+      return query('.day__active', day)[0];
+    }
+  },
   postRenderCalendar: function postRenderCalendar() {
     if (this._selectWeek) {
       this.changeWeek({ $source: this._selectedDay });
@@ -365,6 +370,15 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     this.renderCalendar(date)
         .changeMonthShown(date)
         .changeYearShown(date);
+    return this;
+  },
+  removeActive: function removeActive(day) {
+    if (day) {
+      const active = this.isActive(day);
+      if (active) {
+        domConstruct.destroy(active);
+      }
+    }
     return this;
   },
   renderCalendar: function renderCalendar({ todayMoment, selectedDateMoment }) {
