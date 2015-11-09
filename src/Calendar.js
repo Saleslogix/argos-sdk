@@ -272,7 +272,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
 
     if (selected) {
       domClass.remove(selected, 'selected');
-      domClass.add(this.todayButton, 'selected');
     }
     this.date.selectedDateMoment = null;
   },
@@ -313,20 +312,17 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     return this.date;
   },
   goToToday: function goToToday() {
-    if (domClass.contains(this.todayButton, 'selected')) {
-      domClass.remove(this.todayButton, 'selected');
-      if (this.date.selectedDateMoment.month() !== this.date.todayMoment.month() || this.date.selectedDateMoment.year() !== this.date.todayMoment.year()) {
-        this.date.selectedDateMoment = this.date.todayMoment;
-        this.refreshCalendar(this.date);
-      }
-      const day = query('.isToday', this.weeksNode)[0];
-      let params = {};
-      if (day) {
-        params = { $source: day, date: day.dataset.date };
-      }
-      this.changeDay(params);
-      this.setDropdownsToday();
+    if (this.date.selectedDateMoment.month() !== this.date.todayMoment.month() || this.date.selectedDateMoment.year() !== this.date.todayMoment.year()) {
+      this.date.selectedDateMoment = this.date.todayMoment;
+      this.refreshCalendar(this.date);
     }
+    const day = query('.isToday', this.weeksNode)[0];
+    let params = {};
+    if (day) {
+      params = { $source: day, date: day.dataset.date };
+    }
+    this.changeDay(params);
+    this.setDropdownsToday();
   },
   getDateTime: function getDateTime() {
     const result = this.date.selectedDateMoment;
@@ -433,10 +429,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
 
     this.setDateObject(selectedDateMoment);
 
-    if (this.date.monthNumber !== moment().month() || this.date.year !== moment().year()) {
-      domClass.add(this.todayButton, 'selected');
-    }
-
     this.postRenderCalendar();
 
     return this;
@@ -500,7 +492,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     this.createMonthDropdown()
         .createYearDropdown();
 
-    domClass.add(this.todayButton, 'selected');
     this.refreshCalendar(this.date);
   },
   toggleSelectWeek: function toggleSelectWeek() {
