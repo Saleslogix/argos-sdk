@@ -204,7 +204,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
         domStyle.set(this.moreTabList, {
           visibility: 'hidden',
         });
-        if (icon) {
+        if (icon && this.moreTab) {
           domClass.replace(icon, 'fa fa-angle-right', 'fa fa-angle-down');
         }
       }
