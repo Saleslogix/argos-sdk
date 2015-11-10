@@ -119,6 +119,11 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   */
   add: function add(content = {}, toolbarActions = [], options = {}) {
     content._deferred = new Deferred();
+    if (toolbarActions.length) {
+      this.showToolbar = true;
+    } else {
+      this.showToolbar = false;
+    }
     this.pushHistory(this._content)
         .setContent(content)
         .showContent(options)
