@@ -640,7 +640,9 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
     let sectionNode;
 
-    this.placeTabList(this.contentNode);
+    if (this.isTabbed) {
+      this.placeTabList(this.contentNode);
+    }
 
     for (let i = 0; i < rows.length; i++) {
       const current = rows[i];
@@ -848,8 +850,10 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
     if (this.entry) {
       this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
-      this.createTabs(this.tabs);
-      this.placeDetailHeader(this.entry);
+      if (this.isTabbed) {
+        this.createTabs(this.tabs);
+        this.placeDetailHeader(this.entry);
+      }
     } else {
       this.set('detailContent', '');
     }
