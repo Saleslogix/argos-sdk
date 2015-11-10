@@ -8,7 +8,6 @@ import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
 import _ModelBase from './_ModelBase';
 import QueryResults from 'dojo/store/util/QueryResults';
-import Manager from './Manager';
 import MODEL_TYPES from './Types';
 
 const databaseName = 'crm-offline';
@@ -122,7 +121,8 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     const store = this.getStore();
     store.get(entityId).then((doc) => {
       const odef = def;
-      store.remove(doc._id, doc._rev).then((result) => {
+      this._removeDoc(doc).then((result) => {
+        this.onEntryDelete(entityId);
         odef.resolve(result);
       }, (err) => {
         odef.reject(err);
@@ -131,6 +131,18 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       def.reject(err);
     });
     return def.promise;
+  },
+  _removeDoc: function _removeDoc(doc) {
+    const def = new Deferred();
+    const store = this.getStore();
+    store.remove(doc._id, doc._rev).then((result) => {
+      def.resolve(result);
+    }, (err) => {
+      def.reject(err);
+    });
+    return def.promise;
+  },
+  onEntryDelete: function onEntryDelete() {
   },
   saveRelatedEntries: function saveRelatedEntries(parentEntry, options) {
     const entries = (parentEntry && parentEntry.$relatedEntities) ? parentEntry.$relatedEntities : [];
@@ -264,7 +276,78 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       }
     }.bind(this);
   },
+  getUsage: function getUsage() {
+    const store = this.getStore();
+    const def = new Deferred();
+    const queryOptions = {
+      include_docs: true,
+      descending: false,
+    };
+    const queryExpression = this.buildQueryExpression(null, queryOptions);
+    const queryResults = store.query(queryExpression, queryOptions);
+    when(queryResults, (docs) => {
+      const usage = {};
+      const size = this._getDocSize(docs[0]);
+      usage.iconClass = this.iconClass;
+      usage.entityName = this.entityName;
+      usage.description = this.entityDisplayNamePlural;
+      usage.oldestDate = (docs[0]) ? moment(docs[0].doc.modifyDate).toDate() : null; // see decending = false;
+      usage.newestDate = (docs[docs.length - 1]) ? moment(docs[docs.length - 1].doc.modifyDate).toDate() : null;
+      usage.count = docs.length;
+      usage.sizeAVG = size;
+      usage.size = usage.count * (size ? size : 10);
+      def.resolve(usage);
+    }, (err) => {
+      def.reject(err);
+    });
+    return def.promise;
+  },
+  _getDocSize: function _getDocSize(doc) {
+    let size = 0;
+    const charSize = 2; // 2 bytes
+    if (doc) {
+      const jsonString = JSON.stringify(doc);
+      size = charSize * jsonString.length;
+    }
+    return size;
+  },
+  clearData: function clearData(query, options) {
+    const store = this.getStore();
+    const def = new Deferred();
+    const queryOptions = {
+      include_docs: true,
+      descending: true,
+    };
+    lang.mixin(queryOptions, options);
+    const queryExpression = this.buildQueryExpression(query, queryOptions);
+    const queryResults = store.query(queryExpression, queryOptions);
+    when(queryResults, (docs) => {
+      const odef = def;
+      const deleteRequests = docs.map((doc) => {
+        return this._removeDoc(doc.doc);
+      });
+      if (deleteRequests.length > 0) {
+        all(deleteRequests).then((results) => {
+          odef.resolve(results);
+        }, (err) => {
+          odef.reject(err);
+        });
+      } else {
+        def.resolve();
+      }
+    }, (err) => {
+      def.reject(err);
+    });
+    return def.promise;
+  },
+  createKey: function createKey() {
+    const d = new Date().getTime();
+    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function genkey(c) { // eslint-disable-line
+      const r = (d + Math.random() * 16) % 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return `{this.entityName.toLowwer()}-{uuid}`;
+  },
 });
 
-Manager.register('_OfflineModelBase', MODEL_TYPES.OFFLINE, __class);
 export default __class;

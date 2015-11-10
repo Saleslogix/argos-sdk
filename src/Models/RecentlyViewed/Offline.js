@@ -10,7 +10,7 @@ const __class = declare('argos.Models.RecentlyViewed.Offline', [_OfflineModelBas
   modelName: 'RecentlyViewed',
   entityDisplayName: resource.entityDisplayName,
   entityDisplayNamePlural: resource.entityDisplayNamePlural,
-
+  isSystem: true,
   createEntry: function createEntity(viewId, entry, model) {
     const entity = {}; // need to dynamicly create Properties;
     entity.$key = viewId + '_' + model.getEntityId(entry);

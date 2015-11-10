@@ -5,8 +5,11 @@
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
 import MODEL_TYPES from '../Models/Types';
+import convert from 'argos/Convert';
 
 const __class = {
+
+  defaultClearOlderThan: 2,
   /**
    *
    * @param view Required instance of a detail view
@@ -141,6 +144,149 @@ const __class = {
       def.resolve();
     }
     return def.promise;
+  },
+  getUsage: function getUsage() {
+    const def = new Deferred();
+    let usageRequests = [];
+
+    const models = App.ModelManager.getModels(MODEL_TYPES.OFFLINE).filter((model) => {
+      return model && !model.isSystem;
+    });
+
+    usageRequests = models.map((model) => {
+      return model.getUsage();
+    });
+
+    if (usageRequests.length > 0) {
+      all(usageRequests).then((results) => {
+        const usage = this._calculateUsage(results);
+        def.resolve(usage);
+      }, (err) => {
+        def.reject(err);
+      });
+    } else {
+      def.resolve();
+    }
+    return def.promise;
+  },
+  _calculateUsage: function _calculateUsage(entityUsage) {
+    const usage = {};
+    usage.count = 0;
+    usage.size = 0;
+    usage.entities = entityUsage;
+    entityUsage.forEach((item) => {
+      if (item) {
+        usage.count = usage.count + item.count;
+        usage.size = usage.size + item.size;
+      }
+    });
+    entityUsage.forEach((item) => {
+      if (item) {
+        item.countPercent = (usage.count) ? (item.count / usage.count) : 0;
+        item.sizePercent = (usage.size) ? (item.size / usage.size) : 0;
+      }
+    });
+    return usage;
+  },
+  clearData: function clearData(options) {
+    const def = new Deferred();
+    let requests = [];
+    let defaultOptions = options;
+    if (!defaultOptions) {
+      defaultOptions = this.getOptions();
+    }
+    const queryExpression = this.getClearDataQueryExpression(defaultOptions);
+    const models = App.ModelManager.getModels(MODEL_TYPES.OFFLINE).filter((model) => {
+      if (model && (model.entityName !== 'Authentication')) {
+        return model;
+      }
+    });
+    requests = models.map((model) => {
+      return model.clearData(queryExpression, options);
+    });
+    if (requests.length > 0) {
+      all(requests).then((results) => {
+        def.resolve(results);
+      }, (err) => {
+        def.reject(err);
+      });
+    } else {
+      def.resolve();
+    }
+    return def.promise;
+  },
+  getClearDataQueryExpression: function getClearDataQueryExpression(options) {
+    if (options && !options.clearAll) {
+      const clearOlderThanDate = this.getClearOlderThanDate(options.clearOlderThan);
+      return function queryFn(doc, emit) {
+        const recordDate = moment(convert.toDateFromString(doc.modifyDate));
+        if (clearOlderThanDate && (recordDate.isBefore(clearOlderThanDate.startOf('day')))) {
+          emit(doc.modifyDate);
+        }
+      };
+    }
+    return null;
+  },
+  getClearOlderThanDate: function getClearOlderThanDate(olderThan) {
+    let olderThanDate = null;
+    if (olderThan || olderThan === 0) {
+      olderThanDate = moment().subtract(olderThan - 1, 'days').startOf('day');
+    }
+    return olderThanDate;
+  },
+  getOptions: function getOptions() {
+    let options;
+    if (!App.preferences.offlineOptions) {
+      options = this.getDefaultOptions();
+      App.preferences.offlineOptions = options;
+      App.persistPreferences();
+    } else {
+      options = App.preferences.offlineOptions;
+    }
+
+    return options;
+  },
+  saveOptions: function saveOptions(options) {
+    if (options) {
+      App.preferences.offlineOptions = options;
+      App.persistPreferences();
+    }
+  },
+  getDefaultOptions: function getDefaultOptions() {
+    const options = {
+      clearOlderThan: this.defaultClearOlderThan,
+    };
+    return options;
+  },
+  getClearOlderThanValues: function getClearOlderThanValues() {
+    const values = [
+      {
+        key: 0,
+        value: 0,
+      }, {
+        key: 1,
+        value: 1,
+      }, {
+        key: 2,
+        value: 2,
+      }, {
+        key: 3,
+        value: 3,
+      }, {
+        key: 4,
+        value: 4,
+      }, {
+        key: 5,
+        value: 5,
+      }, {
+        key: 6,
+        value: 6,
+      }, {
+        key: 7,
+        value: 7,
+      }];
+
+    return values;
   },
 };
 

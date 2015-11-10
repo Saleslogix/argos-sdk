@@ -19,8 +19,6 @@ import lang from 'dojo/_base/lang';
 import ConfigureQuickActions from './Views/ConfigureQuickActions';
 import './Application';
 import './CultureInfo';
-import './Models/_OfflineModelBase';
-import './Models/_SDataModelBase';
 import './Models/RecentlyViewed/Offline';
 import './Models/Briefcase/Offline';
 

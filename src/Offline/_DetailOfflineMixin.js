@@ -85,7 +85,8 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     // Attach resolve to move to briefcase list (if user hits okay)
     return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToDetailViewText, getContent: () => { return result; }, leftButton: 'cancel', rightButton: 'okay' });
   },
-  onContentChange: function onContentChange() {
+  show: function show() {
+    this.inherited(arguments);
     if (this.enableOffline) {
       this.saveOffline();
     }

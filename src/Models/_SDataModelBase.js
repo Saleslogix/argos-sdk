@@ -6,7 +6,6 @@ import when from 'dojo/when';
 import string from 'dojo/string';
 import utility from '../Utility';
 import _ModelBase from './_ModelBase';
-import Manager from './Manager';
 import MODEL_TYPES from './Types';
 
 const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
@@ -267,5 +266,4 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
   },
 });
 
-Manager.register('_SDataModelBase', MODEL_TYPES.SDATA, __class);
 export default __class;
