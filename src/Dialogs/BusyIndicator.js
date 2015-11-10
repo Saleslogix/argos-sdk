@@ -11,7 +11,7 @@ const resource = window.localeContext.getEntitySync('busyIndicator').attributes;
 
 const __class = declare('argos.Dialogs.BusyIndicator', [ _Widget, _Templated ], {
   widgetTemplate: new Simplate([
-    '<div class="busyIndicator__container" aria-live="polite" data-dojo-attach-point="busyIndicatorNode">',
+    '<div class="busyIndicator__container {%: $.containerClass %}" aria-live="polite" data-dojo-attach-point="busyIndicatorNode">',
     '</div>',
   ]),
   busyIndicatorTemplate: new Simplate([
@@ -35,6 +35,7 @@ const __class = declare('argos.Dialogs.BusyIndicator', [ _Widget, _Templated ], 
   _busyIndicator: null,
   _progressBar: null,
   busyIndicatorLabel: null,
+  containerClass: null,
   currentProgress: null,
   id: 'busyIndicator-template',
   isAsync: true,
