@@ -227,7 +227,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       this.setValue(target.dataset.value);
     } // TODO: Add in what will happen for a multiSelect dropdown
     if (this.onSelect && this.onSelectScope) {
-      this.onSelectScope[this.onSelect]();
+      this.onSelect.bind(this.onSelectScope)();
     }
   },
   onOverlayClick: function onOverlayClick(evt) {
