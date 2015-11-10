@@ -83,8 +83,8 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
       this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
       if (this.isTabbed) {
         this.createTabs(this.tabs);
+        this.placeDetailHeader(this.entry);
       }
-      this.placeDetailHeader(this.entry);
     } else {
       this.set('detailContent', '');
     }
