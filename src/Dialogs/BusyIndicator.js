@@ -22,7 +22,7 @@ const __class = declare('argos.Dialogs.BusyIndicator', [ _Widget, _Templated ], 
         '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--four"></div>',
         '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--five"></div>',
       '</div>',
-      '<span class="busyIndicator__label">{%: $.label %}</span>',
+      '<span class="busyIndicator__label">{%: $.labelText %}</span>',
   ]),
   progressBarTemplate: new Simplate([
     '<div class="busyIndicator__progress">',
@@ -34,12 +34,12 @@ const __class = declare('argos.Dialogs.BusyIndicator', [ _Widget, _Templated ], 
   _busyDeferred: null,
   _busyIndicator: null,
   _progressBar: null,
-  busyIndicatorLabel: null,
   containerClass: null,
   currentProgress: null,
   id: 'busyIndicator-template',
   isAsync: true,
-  label: resource.loadingText,
+  label: null,
+  labelText: resource.loadingText,
   progressLabel: null,
   progressText: resource.progressText,
   size: 'large',
@@ -56,7 +56,7 @@ const __class = declare('argos.Dialogs.BusyIndicator', [ _Widget, _Templated ], 
     const indicator = domConstruct.toDom(this.busyIndicatorTemplate.apply(this));
     domConstruct.place(indicator, this.busyIndicatorNode);
     this._busyIndicator = this.busyIndicatorNode.children[0];
-    this.busyIndicatorLabel = query('.busyIndicator__label', this.busyIndicatorNode)[0];
+    this.label = query('.busyIndicator__label', this.busyIndicatorNode)[0];
     domClass.add(this._busyIndicator, 'busyIndicator--active');
 
     if (!this.isAsync || (options.isAsync !== undefined && !options.isAsync)) {
