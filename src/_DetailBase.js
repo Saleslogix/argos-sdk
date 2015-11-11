@@ -93,7 +93,18 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   loadingTemplate: new Simplate([
     '<div class="panel-loading-indicator">',
-    '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>',
+    '<div class="row">',
+      '<div class="busyIndicator__container" aria-live="polite">',
+        '<div class="busyIndicator busyIndicator--large busyIndicator--active">',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--four"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--five"></div>',
+        '</div>',
+        '<span class="busyIndicator__label">{%: $.loadingText %}</span>',
+      '</div>',
+    '</div>',
     '</div>',
   ]),
   /**
@@ -629,7 +640,9 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
     let sectionNode;
 
-    this.placeTabList(this.contentNode);
+    if (this.isTabbed) {
+      this.placeTabList(this.contentNode);
+    }
 
     for (let i = 0; i < rows.length; i++) {
       const current = rows[i];
@@ -837,8 +850,10 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
     if (this.entry) {
       this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
-      this.createTabs(this.tabs);
-      this.placeDetailHeader(this.entry);
+      if (this.isTabbed) {
+        this.createTabs(this.tabs);
+        this.placeDetailHeader(this.entry);
+      }
     } else {
       this.set('detailContent', '');
     }

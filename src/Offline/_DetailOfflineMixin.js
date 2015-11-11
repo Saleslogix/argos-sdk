@@ -14,7 +14,7 @@
  */
 import declare from 'dojo/_base/declare';
 import OfflineManager from './Manager';
-import BusyIndicator from '../BusyIndicator';
+import BusyIndicator from '../Dialogs/BusyIndicator';
 
 const resource = window.localeContext.getEntitySync('_detailOfflineMixin').attributes;
 
@@ -87,6 +87,15 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
   },
   onContentChange: function onContentChange() {
     if (this.enableOffline) {
+      this.saveOffline();
+    }
+  },
+  show: function show() {
+    this.inherited(arguments);
+    // Check if we are coming back to a previously fetched entry.
+    // refreshRequired is an indication we are switching to a new entry and
+    // this.entry will be stale.
+    if (!this.refreshRequired && this.entry && this.enableOffline) {
       this.saveOffline();
     }
   },

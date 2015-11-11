@@ -31,6 +31,7 @@ import 'dojo/NodeList-manipulate';
 import './Fields/BooleanField';
 import './Fields/DateField';
 import './Fields/DecimalField';
+import './Fields/DropdownField';
 import './Fields/DurationField';
 import './Fields/HiddenField';
 import './Fields/LookupField';
@@ -122,7 +123,18 @@ const __class = declare('argos._EditBase', [View], {
    */
   loadingTemplate: new Simplate([
     '<fieldset class="panel-loading-indicator">',
-    '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>',
+    '<div class="row">',
+      '<div class="busyIndicator__container" aria-live="polite">',
+        '<div class="busyIndicator busyIndicator--large busyIndicator--active">',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--four"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--five"></div>',
+        '</div>',
+        '<span class="busyIndicator__label">{%: $.loadingText %}</span>',
+      '</div>',
+    '</div>',
     '</fieldset>',
   ]),
   /**
@@ -407,7 +419,7 @@ const __class = declare('argos._EditBase', [View], {
       'tbar': tbar,
     });
   },
-  onToolCancel: function createToolLayout() {
+  onToolCancel: function onToolCancel() {
     this.refreshRequired = true;
     ReUI.back();
   },

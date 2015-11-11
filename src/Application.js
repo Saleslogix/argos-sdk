@@ -28,11 +28,15 @@ import ReUI from './ReUI/main';
 import ready from 'dojo/ready';
 import util from './Utility';
 import ModelManager from './Models/Manager';
-import Modal from './Modal';
 import {model} from './Model';
 import {intent} from './Intent';
 import {updateConnectionState} from './Intents/update-connection';
+import Modal from './Dialogs/Modal';
+import BusyIndicator from './Dialogs/BusyIndicator';
+import Deferred from 'dojo/Deferred';
 import 'dojo/sniff';
+
+const resource = window.localeContext.getEntitySync('application').attributes;
 
 has.add('html5-file-api', function hasFileApi(global) {
   if (has('ie')) {
@@ -413,23 +417,135 @@ const __class = declare('argos.Application', null, {
    * Executes the chain of promises registered with registerAppStatePromise.
    * When all promises are done, a new promise is returned to the caller, and all
    * registered promises are flushed.
+   * Each app state can be processed all at once or in a specfic seqence.
+   * Example:
+   * We can register  App state seqeunces as the following, where each sequence
+   * is proccessed in a desending order form 0 to n. The first two in this example are defeulted to a
+   * sequence of zero (0) and are procced first in which after the next sequence (1) is proccessed
+   * and once all of its items are finshed then the last sequence 2 will start and process all of its items.
+   *
+   * If two seqences have the same number then thay will get combinded as if they where registerd together.
+   * Aso not all items whith in a process are processed and ansync of each other and may not finish at the same time.
+   *
+   * To make two items process one after the other simpley put them in to diffrent sequences.
+   *
+   *   this.registerAppStatePromise(() => {some functions that returns a promise});
+   *   this.registerAppStatePromise(() => {some functions that returns a promise});
+   *
+   *   this.registerAppStatePromise({
+   *     seq: 1,
+   *     description: 'Sequence 1',
+   *     items: [{
+   *       name: 'itemA',
+   *       description: 'item A',
+   *       fn: () => { some functions that returns a promise },
+   *       }, {
+   *         name: 'itemb',
+   *         description: 'Item B',
+   *         fn: () => {some functions that returns a promise},
+   *       }],
+   *   });
+   *
+   *   this.registerAppStatePromise({
+   *     seq: 2,
+   *     description: 'Sequence 2',
+   *     items: [{
+   *       name: 'item C',
+   *       description: 'item C',
+   *       fn: () => { some functions that returns a promise },
+   *       },
+   *    });
+   *
+   * There are there App state seqences re
+   *
    * @return {Promise}
    */
   initAppState: function initAppState() {
-    const promises = array.map(this._appStatePromises, (item) => {
-      let results = item;
+    const sequences = [];
+    this._appStatePromises.forEach((item) => {
+      let seq;
       if (typeof item === 'function') {
-        results = item();
+        seq = sequences.find(x => x.seq === 0);
+        if (!seq) {
+          seq = {
+            seq: 0,
+            description: resource.loadingApplicationStateText,
+            items: [],
+          };
+          sequences.push(seq);
+        }
+        seq.items.push({
+          name: 'default',
+          description: '',
+          fn: item,
+        });
+      } else {
+        if (item.seq && item.items ) {
+          seq = sequences.find(x => x.seq === ((item.seq) ? item.seq : 0));
+          if (seq) {
+            item.items.forEach((_item) => {
+              seq.items.push(_item);
+            });
+          } else {
+            sequences.push(item);
+          }
+        }
       }
-
-      return results;
+    });
+    // Sort the sequence ascending so we can processes them in the right order.
+    sequences.sort((a, b) => {
+      return a.seq > b.seq;
     });
 
-    return all(promises)
-      .then((results) => {
-        this.clearAppStatePromises();
-        return results;
+    return this._initAppStateSequence(0, sequences).then((results) => {
+      this.clearAppStatePromises();
+      return results;
+    }, (err) => {
+      this.clearAppStatePromises();
+      return err;
+    });
+  },
+  /**
+   * Process a app state sequence and start the next sequnce when done.
+   * @param {index) the index of the sequence to start
+   * @param {sequences) an array of sequences
+   */
+  _initAppStateSequence: function _initAppStateSequnce(index, sequences) {
+    const def = new Deferred();
+    const seq = sequences[index];
+
+    if (seq) { // We need to send an observable and get ride of the ui element.
+      const indicator = new BusyIndicator({
+        id: 'busyIndicator__appState_' + seq.seq,
+        label: resource.initializingText + ' ' + seq.description,
       });
+      this.modal.disableClose = true;
+      this.modal.showToolbar = false;
+      this.modal.add(indicator);
+      indicator.start();
+      const promises = array.map(seq.items, (item)=> {
+        return item.fn();
+      });
+
+      all(promises).then(() => {
+        this.modal.disableClose = false;
+        this.modal.hide();
+        indicator.complete(true);
+        this._initAppStateSequence(index + 1, sequences).then((results) => {
+          def.resolve(results);
+        }, (err) => {
+          def.reject(err);
+        });
+      }, (err) => {
+        this.modal.disableClose = false;
+        this.modal.hide();
+        indicator.complete(true);
+        def.reject(err);
+      });
+    } else {
+      def.resolve();
+    }
+    return def.promise;
   },
   /**
    * Registers a promise that will resolve when initAppState is invoked.

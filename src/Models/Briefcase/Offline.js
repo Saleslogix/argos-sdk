@@ -10,7 +10,7 @@ const __class = declare('argos.Models.Briefcase.Offline', [_OfflineModelBase], {
   modelName: 'Briefcase',
   entityDisplayName: resource.entityDisplayName,
   entityDisplayNamePlural: resource.entityDisplayNamePlural,
-
+  isSystem: true,
   createEntry: function createEntity(entry, model, options) {
     const entity = {}; // need to dynamicly create Properties;
     entity.$key = model.entityName + '_' + model.getEntityId(entry);

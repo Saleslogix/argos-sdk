@@ -1,5 +1,5 @@
 .busyIndicator__container {
-  width: 200px;
+  min-width: 200px;
   height: 150px;
   text-align: center;
   vertical-align: middle;
@@ -9,12 +9,8 @@
 .busyIndicator {
   box-sizing: border-box;
   display: inline-block;
-  height: 6.2em;
-  margin: .8em;
   opacity: 0;
-  margin-top: 35px;
   position: relative;
-  width: 6.2em;
   .transition(opacity 500ms);
 }
 
@@ -22,13 +18,49 @@
   opacity: 1;
 }
 
+.busyIndicator--small {
+  height: 2em;
+  margin: 0;
+  margin-top: 0;
+  width: 2.4em;
+}
+
+.busyIndicator--medium {
+  height: 4.1em;
+  margin: 0.4em;
+  margin-top: 15px;
+  width: 4.3em;
+}
+
+.busyIndicator--large {
+  height: 6.2em;
+  margin: .8em;
+  margin-top: 35px;
+  width: 6.2em;
+}
+
 .busyIndicator__bar {
   background-color: @color-azure;
   display: inline-block;
+  .animation(stretchdelay 1s infinite ease-in-out);
+}
+
+.busyIndicator__bar--small {
+  height: 2em;
+  margin-right: 0.2em;
+  width: 0.24em
+}
+
+.busyIndicator__bar--medium {
+  height: 3.5em;
+  margin-right: .35em;
+  width: 0.42em;
+}
+
+.busyIndicator__bar--large {
   height: 5em;
   margin-right: .5em;
   width: .6em;
-  .animation(stretchdelay 1s infinite ease-in-out);
 }
 
 .busyIndicator__bar--one {

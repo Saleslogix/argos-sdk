@@ -75,7 +75,6 @@ const control = declare('argos.Fields.DateField', [EditorField], {
   widgetTemplate: new Simplate([
     '<label for="{%= $.name %}">{%: $.label %}</label>',
     '<button data-dojo-attach-point="triggerNode" data-action="showModal" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
-    // '<button data-dojo-attach-point="triggerNode" data-action="navigateToEditView" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
     '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />',
   ]),
 
@@ -178,6 +177,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       if (data.time) {
         date.hours(data.time.hours);
         date.minutes(data.time.minutes);
+        date.seconds(data.time.seconds);
       }
       this.currentValue = this.validationValue = date.toDate();
       this.inputNode.value = this.formatValue(this.currentValue);

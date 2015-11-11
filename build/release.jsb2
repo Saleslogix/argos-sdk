@@ -82,10 +82,10 @@
             "text": "CultureInfo.js",
             "path": "../src-out/"
           }, {
-            "text": "_Templated.js",
+            "text": "_ActionMixin.js",
             "path": "../src-out/"
           }, {
-            "text": "_ActionMixin.js",
+            "text": "_Templated.js",
             "path": "../src-out/"
           }, {
             "text": "SelectionModel.js",
@@ -134,13 +134,16 @@
             "path": "../src-out/"
           }, {
             "text": "BusyIndicator.js",
-            "path": "../src-out/"
+            "path": "../src-out/Dialogs/"
+          }, {
+            "text": "Modal.js",
+            "path": "../src-out/Dialogs/"
           }, {
             "text": "Dropdown.js",
             "path": "../src-out/"
           }, {
-            "text": "Modal.js",
-            "path": "../src-out/"
+            "text": "_Field.js",
+            "path": "../src-out/Fields/"
           }, {
             "text": "SearchWidget.js",
             "path": "../src-out/"
@@ -148,13 +151,10 @@
             "text": "TabWidget.js",
             "path": "../src-out/"
           }, {
-            "text": "_RelatedViewWidgetBase.js",
+            "text": "Toolbar.js",
             "path": "../src-out/"
           }, {
-            "text": "_Field.js",
-            "path": "../src-out/Fields/"
-          }, {
-            "text": "Toolbar.js",
+            "text": "_RelatedViewWidgetBase.js",
             "path": "../src-out/"
           }, {
             "text": "ConfigurableSelectionModel.js",
@@ -193,19 +193,19 @@
             "text": "_LegacySDataListMixin.js",
             "path": "../src-out/"
           }, {
+            "text": "Toast.js",
+            "path": "../src-out/Dialogs/"
+          }, {
             "text": "Calendar.js",
             "path": "../src-out/"
           }, {
             "text": "TimePicker.js",
             "path": "../src-out/"
           }, {
-            "text": "Toast.js",
-            "path": "../src-out/"
-          }, {
-            "text": "RelatedViewManager.js",
-            "path": "../src-out/"
-          }, {
             "text": "BooleanField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "DropdownField.js",
             "path": "../src-out/Fields/"
           }, {
             "text": "EditorField.js",
@@ -218,6 +218,9 @@
             "path": "../src-out/Fields/"
           }, {
             "text": "MainToolbar.js",
+            "path": "../src-out/"
+          }, {
+            "text": "RelatedViewManager.js",
             "path": "../src-out/"
           }, {
             "text": "RelatedViewWidget.js",
@@ -250,15 +253,6 @@
             "text": "DateTimePicker.js",
             "path": "../src-out/"
           }, {
-            "text": "_RelatedViewWidgetDetailMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_RelatedViewWidgetEditMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_RelatedViewWidgetListMixin.js",
-            "path": "../src-out/"
-          }, {
             "text": "SignatureField.js",
             "path": "../src-out/Fields/"
           }, {
@@ -279,6 +273,15 @@
           }, {
             "text": "TextAreaField.js",
             "path": "../src-out/Fields/"
+          }, {
+            "text": "_RelatedViewWidgetDetailMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_RelatedViewWidgetEditMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_RelatedViewWidgetListMixin.js",
+            "path": "../src-out/"
           }, {
             "text": "_LegacySDataEditMixin.js",
             "path": "../src-out/"

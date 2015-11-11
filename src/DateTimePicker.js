@@ -44,7 +44,7 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
     if (this._calendarNode && this._calendarNode.getContent) {
       data.calendar = this._calendarNode.getContent();
     }
-    if (this.showTimePicker && this._timeSelectNode && this._timeSelectNode.getContent) {
+    if (this._timeSelectNode && this._timeSelectNode.getContent) {
       data.time = this._timeSelectNode.getContent();
     }
     return data;

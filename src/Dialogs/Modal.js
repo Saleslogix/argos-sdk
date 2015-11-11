@@ -24,11 +24,11 @@ import domConstruct from 'dojo/dom-construct';
 import domStyle from 'dojo/dom-style';
 import on from 'dojo/on';
 import _Widget from 'dijit/_Widget';
-import _Templated from 'argos/_Templated';
+import _Templated from '../_Templated';
 
 const resource = window.localeContext.getEntitySync('modal').attributes;
 
-const __class = declare('argos.Modal', [_Widget, _Templated], {
+const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="modal__container" data-dojo-attach-point="modalContainer">',
       '{%! $.modalTemplate %}',
@@ -119,6 +119,11 @@ const __class = declare('argos.Modal', [_Widget, _Templated], {
   */
   add: function add(content = {}, toolbarActions = [], options = {}) {
     content._deferred = new Deferred();
+    if (toolbarActions.length) {
+      this.showToolbar = true;
+    } else {
+      this.showToolbar = false;
+    }
     this.pushHistory(this._content)
         .setContent(content)
         .showContent(options)
