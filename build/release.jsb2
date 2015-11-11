@@ -76,6 +76,9 @@
             "text": "Manager.js",
             "path": "../src-out/Models/"
           }, {
+            "text": "update-connection.js",
+            "path": "../src-out/Intents/"
+          }, {
             "text": "CultureInfo.js",
             "path": "../src-out/"
           }, {
@@ -100,6 +103,9 @@
             "text": "_GroupBySection.js",
             "path": "../src-out/Groups/"
           }, {
+            "text": "Connection.js",
+            "path": "../src-out/Models/"
+          }, {
             "text": "Types.js",
             "path": "../src-out/Models/"
           }, {
@@ -122,6 +128,9 @@
             "path": "../src-out/"
           }, {
             "text": "ErrorManager.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Intent.js",
             "path": "../src-out/"
           }, {
             "text": "BusyIndicator.js",
@@ -162,6 +171,9 @@
           }, {
             "text": "GroupByValueSection.js",
             "path": "../src-out/Groups/"
+          }, {
+            "text": "Model.js",
+            "path": "../src-out/"
           }, {
             "text": "Adapter.js",
             "path": "../src-out/Models/"

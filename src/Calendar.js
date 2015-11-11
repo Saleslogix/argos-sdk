@@ -277,7 +277,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   },
   createMonthDropdown: function createMonthDropdown() {
     if (!this._monthDropdown) {
-      this._monthDropdown = new Dropdown({ id: 'month-dropdown ' + this.id, dropdownClass: 'dropdown--medium', onSelect: 'setMonth', onSelectScope: this });
+      this._monthDropdown = new Dropdown({ id: 'month-dropdown ' + this.id, dropdownClass: 'dropdown--medium', onSelect: this.setMonth, onSelectScope: this });
       this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.format('MMMM').toLowerCase()});
       this._todayMonth = this._monthDropdown.getSelected();
       domConstruct.place(this._monthDropdown.domNode, this.monthNode);
@@ -286,7 +286,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   },
   createYearDropdown: function createYearDropdown() {
     if (!this._yearDropdown) {
-      this._yearDropdown = new Dropdown({ id: 'year-dropdown ' + this.id, onSelect: 'setYear', onSelectScope: this });
+      this._yearDropdown = new Dropdown({ id: 'year-dropdown ' + this.id, onSelect: this.setYear, onSelectScope: this });
       this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY')});
       this._todayYear = this._yearDropdown.getSelected();
       domConstruct.place(this._yearDropdown.domNode, this.yearNode);
