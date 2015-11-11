@@ -26,6 +26,20 @@ const __class = declare('argos.Models.Briefcase.Offline', [_OfflineModelBase], {
     entity.iconClass = (options && options.iconClass) ? options.iconClass : model.getIconClass(entry);
     return entity;
   },
+  deleteEntryByEntityContext: function deleteEntryByEntityContext(entityId, entityName) {
+    const queryExpression = function map(doc, emit) {
+      if ((doc.entity.entityId === entityId) && (doc.entity.entityName === entityName)) {
+        emit(doc.entity);
+      }
+    };
+    this.getEntries(queryExpression).then((entries)=> {
+      if (entries) {
+        entries.forEach((entry) => {
+          this.deleteEntry(entry.$key);
+        });
+      }
+    });
+  },
 });
 
 Manager.register('Briefcase', MODEL_TYPES.OFFLINE, __class);

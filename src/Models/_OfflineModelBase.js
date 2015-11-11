@@ -206,7 +206,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     }, (err) => {
       def.reject(err);
     });
-    if (options.returnQueryResults) {
+    if (queryOptions && queryOptions.returnQueryResults) {
       return QueryResults(def.promise); // eslint-disable-line
     }
     return def.promise;
