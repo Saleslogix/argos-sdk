@@ -85,9 +85,17 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     // Attach resolve to move to briefcase list (if user hits okay)
     return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToDetailViewText, getContent: () => { return result; }, leftButton: 'cancel', rightButton: 'okay' });
   },
+  onContentChange: function onContentChange() {
+    if (this.enableOffline) {
+      this.saveOffline();
+    }
+  },
   show: function show() {
     this.inherited(arguments);
-    if (this.enableOffline) {
+    // Check if we are coming back to a previously fetched entry.
+    // refreshRequired is an indication we are switching to a new entry and
+    // this.entry will be stale.
+    if (!this.refreshRequired && this.entry && this.enableOffline) {
       this.saveOffline();
     }
   },
