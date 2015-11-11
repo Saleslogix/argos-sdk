@@ -494,7 +494,15 @@ const __class = declare('argos.Application', null, {
     });
     // Sort the sequence ascending so we can processes them in the right order.
     sequences.sort((a, b) => {
-      return a.seq > b.seq;
+      if (a.seq > b.seq) {
+        return 1;
+      }
+
+      if (a.seq < b.seq) {
+        return -1;
+      }
+
+      return 0;
     });
 
     return this._initAppStateSequence(0, sequences).then((results) => {
