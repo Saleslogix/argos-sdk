@@ -298,9 +298,11 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
   },
   disable: function disable() {
     this.queryNode.disabled = true;
+    domClass.add(this.domNode, 'disabled');
   },
   enable: function enable() {
     this.queryNode.disabled = false;
+    domClass.remove(this.domNode, 'disabled');
   },
 });
 
