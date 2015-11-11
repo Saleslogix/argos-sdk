@@ -2,7 +2,6 @@ import declare from 'dojo/_base/declare';
 import domConstruct from 'dojo/dom-construct';
 import domClass from 'dojo/dom-class';
 import domStyle from 'dojo/dom-style';
-import query from 'dojo/query';
 import Deferred from 'dojo/Deferred';
 import _Widget from 'dijit/_Widget';
 import _Templated from '../_Templated';
@@ -13,6 +12,7 @@ const __class = declare('argos.Dialogs.BusyIndicator', [ _Widget, _Templated ], 
   widgetTemplate: new Simplate([
     '<div class="busyIndicator__container {%: $.containerClass %}" aria-live="polite" data-dojo-attach-point="busyIndicatorNode">',
       '{%! $.busyIndicatorTemplate %}',
+      '{%! $.progressBarTemplate %}',
     '</div>',
   ]),
   busyIndicatorTemplate: new Simplate([
@@ -26,10 +26,14 @@ const __class = declare('argos.Dialogs.BusyIndicator', [ _Widget, _Templated ], 
       '<span class="busyIndicator__label" data-dojo-attach-point="labelNode">{%: $.label %}</span>',
   ]),
   progressBarTemplate: new Simplate([
-    '<div class="busyIndicator__progress">',
-      '<span class="busyIndicator__progress__label" data-dojo-attach-point="progressLabelNode">{%: $.progressText %}</span>',
-      '<div class="busyIndicator__progress__bar" data-dojo-attach-point="_progressBar"></div>',
+    '<div class="busyIndicator__progress" data-dojo-attach-point="progressNode">',
     '</div>',
+  ]),
+  progressLabelTemplate: new Simplate([
+    '<span class="busyIndicator__progress__label">{%: $.progressText %}</span>',
+  ]),
+  barTemplate: new Simplate([
+    '<div class="busyIndicator__progress__bar"></div>',
   ]),
 
   _busyDeferred: null,
@@ -56,10 +60,10 @@ const __class = declare('argos.Dialogs.BusyIndicator', [ _Widget, _Templated ], 
     domClass.add(this.busyIndicatorNode, 'busyIndicator--active');
 
     if (!this.isAsync || (options.isAsync !== undefined && !options.isAsync)) {
-      const progressBar = domConstruct.toDom(this.progressBarTemplate.apply(this));
-      domConstruct.place(progressBar, this.busyIndicatorNode);
-      this._progressBar = query('.busyIndicator__progress__bar', progressBar)[0];
-      this.progressLabelNode = query('.busyIndicator__progress__label', progressBar)[0];
+      this._progressBar = domConstruct.toDom(this.barTemplate.apply(this));
+      this.progressLabelNode = domConstruct.toDom(this.progressLabelTemplate.apply(this));
+      domConstruct.place(this.progressLabelNode, this.progressNode);
+      domConstruct.place(this._progressBar, this.progressNode);
       this.currentProgress = options.current || 0;
       this.totalProgress = options.total || options.count || 0;
     }
