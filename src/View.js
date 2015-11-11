@@ -146,6 +146,8 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       return;
     }
 
+    this.initModel();
+
     const oldState = this.connectionState;
     this.connectionState = state;
     if (oldState !== null) {
