@@ -64,8 +64,8 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
   createAlertDialog: function createAlertDialog(busyIndicator) {
     App.modal.disableClose = false;
     App.modal.showToolbar = true;
-    App.modal.resolveDeferred(true);
     busyIndicator.complete(true);
+    App.modal.resolveDeferred(true);
     // Attach resolve to move to briefcase list (if user hits okay)
     return App.modal.createSimpleDialog({ title: 'alert', content: resource.interruptedText, getContent: () => { return; }, leftButton: 'cancel', rightButton: 'confirm' });
   },
@@ -80,8 +80,8 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
   createCompleteDialog: function createCompleteDialog(busyIndicator, result = {}) {
     App.modal.disableClose = false;
     App.modal.showToolbar = true;
-    App.modal.resolveDeferred(true);
     busyIndicator.complete(true);
+    App.modal.resolveDeferred(true);
     // Attach resolve to move to briefcase list (if user hits okay)
     return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToDetailViewText, getContent: () => { return result; }, leftButton: 'cancel', rightButton: 'okay' });
   },

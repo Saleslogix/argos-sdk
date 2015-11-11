@@ -124,8 +124,8 @@ const __class = declare('argos._EditBase', [View], {
   loadingTemplate: new Simplate([
     '<fieldset class="panel-loading-indicator">',
     '<div class="row">',
-      '<div class="busyIndicator__container" aria-live="polite">',
-        '<div class="busyIndicator busyIndicator--large busyIndicator--active">',
+      '<div class="busyIndicator__container busyIndicator--active" aria-live="polite">',
+        '<div class="busyIndicator busyIndicator--large">',
           '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
           '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
           '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
