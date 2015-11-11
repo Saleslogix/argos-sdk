@@ -543,10 +543,18 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const selected = domAttr.get(this.domNode, 'selected');
     return shouldStart && selected === 'true' && !this.listLoading;
   },
-  onPullToRefreshComplete: function onPullToRefreshComplete() {
+  forceRefresh: function forceRefresh() {
     this.clear();
     this.refreshRequired = true;
     this.refresh();
+  },
+  onPullToRefreshComplete: function onPullToRefreshComplete() {
+    this.forceRefresh();
+  },
+  onConnectionStateChange: function onConnectionStateChange(state) {
+    if (state === true && this.enableOfflineSupport) {
+      this.refreshRequired = true;
+    }
   },
   /**
    * Called on application startup to configure the search widget if present and create the list actions.
