@@ -536,18 +536,18 @@ const __class = declare('argos.Application', null, {
       });
 
       all(promises).then(() => {
+        indicator.complete(true);
         this.modal.disableClose = false;
         this.modal.hide();
-        indicator.complete(true);
         this._initAppStateSequence(index + 1, sequences).then((results) => {
           def.resolve(results);
         }, (err) => {
           def.reject(err);
         });
       }, (err) => {
+        indicator.complete(true);
         this.modal.disableClose = false;
         this.modal.hide();
-        indicator.complete(true);
         def.reject(err);
       });
     } else {

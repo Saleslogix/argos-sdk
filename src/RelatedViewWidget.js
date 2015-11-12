@@ -145,8 +145,8 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
     '</div>',
   ]),
   loadingTemplate: new Simplate([
-    '<div class="busyIndicator__container" aria-live="polite">',
-      '<div class="busyIndicator busyIndicator--large busyIndicator--active">',
+    '<div class="busyIndicator__container busyIndicator--active" aria-live="polite">',
+      '<div class="busyIndicator busyIndicator--large">',
         '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
         '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
         '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
