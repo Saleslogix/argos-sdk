@@ -310,7 +310,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
           queryModel.queryOrderBy = [];
         }
 
-        queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryInclude.filter( (item) => {
+        queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter( (item) => {
           return queryModel.queryOrderBy.indexOf(item) < 0;
         }));
       } else {
