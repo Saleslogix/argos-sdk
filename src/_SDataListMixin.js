@@ -254,7 +254,7 @@ const __class = declare('argos._SDataListMixin', null, {
         queryModel.querySelect = [];
       }
 
-      queryModel.querySelect.concat(this.querySelect);
+      queryModel.querySelect = queryModel.querySelect.concat(this.querySelect);
     }
 
     if (this.queryInclude) {
@@ -265,7 +265,7 @@ const __class = declare('argos._SDataListMixin', null, {
         queryModel.queryInclude = [];
       }
 
-      queryModel.queryInclude.concat(this.queryInclude);
+      queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude);
     }
 
     if (this.queryWhere) {
@@ -291,7 +291,7 @@ const __class = declare('argos._SDataListMixin', null, {
           queryModel.queryOrderBy = [];
         }
 
-        queryModel.queryOrderBy.concat(this.queryInclude);
+        queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryInclude);
       } else {
         queryModel.queryOrderBy = this.queryOrderBy;
       }
