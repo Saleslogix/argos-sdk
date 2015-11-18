@@ -69,7 +69,7 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     }, (err) => {
       // Show complete modal dialog
       this.createAlertDialog(busyIndicator);
-      ErrorManager.addSimpleError('error briefcasing: ' + this.id, err);
+      ErrorManager.addSimpleError(resource.errorBriefcasingText + ' ' + this.id, err);
     }, () => {
       busyIndicator.updateProgress();
     });
@@ -94,7 +94,7 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     }, (err) => {
       // Show complete modal dialog
       this.createAlertDialog(busyIndicator);
-      ErrorManager.addSimpleError('error briefcasing: ' + this.id, err);
+      ErrorManager.addSimpleError(resource.errorBriefcasingText + ' ' + this.id, err);
     }, () => {
       busyIndicator.updateProgress();
     });
@@ -124,7 +124,7 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     App.modal.showToolbar = false;
     const busyIndicator = new BusyIndicator({
       id: 'busyIndicator__offline-list-briefcase',
-      label: 'Briefcasing please wait.',
+      label: resource.briefcasingText,
     });
     App.modal.add(busyIndicator);
     busyIndicator.start({isAsync: false, total: count});

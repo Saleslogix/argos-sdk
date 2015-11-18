@@ -38,7 +38,6 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
         cls: 'fa fa-suitcase fa-fw fa-lg',
         action: 'briefCaseEntity',
         security: '',
-        enabled: App.enableOfflineSupport,
       });
     }
     return tools;
@@ -59,7 +58,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
       const modalPromise = this.createCompleteDialog(busyIndicator, result);
       modalPromise.then(this.onEntityBriefcased.bind(this));
     }, (error) => {
-      ErrorManager.addSimpleError('error briefcasing: ' + this.id, error);
+      ErrorManager.addSimpleError(resource.errorBriefcasingText + ' ' + this.id, error);
       this.createAlertDialog(busyIndicator);
     });
   },
@@ -76,7 +75,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     App.modal.showToolbar = false;
     const busyIndicator = new BusyIndicator({
       id: 'busyIndicator__offline-list-briefcase',
-      label: 'Briefcasing please wait.',
+      label: resource.BriefcasingText,
     });
     App.modal.add(busyIndicator);
     busyIndicator.start();
@@ -108,7 +107,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     if (App.enableOfflineSupport) {
       OfflineManager.saveDetailView(this).then(function success() {
       }, function err(error) {
-        ErrorManager.addSimpleError('error saving offline view: ' + this.id, error);
+        ErrorManager.addSimpleError(resource.errorSavingOfflineViewText + ' ' + this.id, error);
       });
     }
   },
