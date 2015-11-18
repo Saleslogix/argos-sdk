@@ -75,7 +75,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     App.modal.showToolbar = false;
     const busyIndicator = new BusyIndicator({
       id: 'busyIndicator__offline-list-briefcase',
-      label: resource.BriefcasingText,
+      label: resource.briefcasingText,
     });
     App.modal.add(busyIndicator);
     busyIndicator.start();
