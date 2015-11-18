@@ -74,6 +74,31 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
       busyIndicator.updateProgress();
     });
   },
+  briefCaseItem: function briefCaseItem(briefcaseItem) { // eslint-disable-line
+    // Start busy indicator modal
+    const busyIndicator = this.createBusyModal(1);
+    // Start briefcasing
+    const entity = this.createBriefcaseEntity(briefcaseItem);
+    OfflineManager.briefCaseEntity(entity.entityName, entity.entityId, entity.options).then((result) => {
+      // Show complete modal dialog
+      if (!this.autoNavigateToBriefcase) {
+        const modalPromise = this.createCompleteDialog(busyIndicator, result);
+        modalPromise.then(this.onListBriefcased.bind(this));
+      } else {
+        App.modal.disableClose = false;
+        App.modal.showToolbar = true;
+        busyIndicator.complete(true);
+        App.modal.hide();
+        this.onListBriefcased();
+      }
+    }, (err) => {
+      // Show complete modal dialog
+      this.createAlertDialog(busyIndicator);
+      ErrorManager.addSimpleError('error briefcasing: ' + this.id, err);
+    }, () => {
+      busyIndicator.updateProgress();
+    });
+  },
   createBriefcaseEntity: function createBriefcaseEntity(entry) {
     const entity = {
       entityId: this.getIdentity(entry),
