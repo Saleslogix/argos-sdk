@@ -15,6 +15,7 @@
 import declare from 'dojo/_base/declare';
 import OfflineManager from './Manager';
 import BusyIndicator from '../Dialogs/BusyIndicator';
+import ErrorManager from '../ErrorManager';
 
 const resource = window.localeContext.getEntitySync('_detailOfflineMixin').attributes;
 
@@ -31,7 +32,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
       return this.tools;
     }
     const tools = this.inherited(arguments);
-    if (tools && tools.tbar && this.enableOffline) {
+    if (tools && tools.tbar && this.enableOffline && App.enableOfflineSupport) {
       tools.tbar.push({
         id: 'briefCase',
         cls: 'fa fa-suitcase fa-fw fa-lg',
@@ -57,8 +58,8 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
       const modalPromise = this.createCompleteDialog(busyIndicator, result);
       modalPromise.then(this.onEntityBriefcased.bind(this));
     }, (error) => {
+      ErrorManager.addSimpleError(resource.errorBriefcasingText + ' ' + this.id, error);
       this.createAlertDialog(busyIndicator);
-      console.error(error);// eslint-disable-line
     });
   },
   createAlertDialog: function createAlertDialog(busyIndicator) {
@@ -72,7 +73,10 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
   createBusyModal: function createBusyModal() {
     App.modal.disableClose = true;
     App.modal.showToolbar = false;
-    const busyIndicator = new BusyIndicator({ id: 'busyIndicator__offline-list-briefcase' });
+    const busyIndicator = new BusyIndicator({
+      id: 'busyIndicator__offline-list-briefcase',
+      label: resource.BriefcasingText,
+    });
     App.modal.add(busyIndicator);
     busyIndicator.start();
     return busyIndicator;
@@ -100,10 +104,12 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     }
   },
   saveOffline: function saveOffline() {
-    OfflineManager.saveDetailView(this).then(function success() {
-    }, function err(error) {
-      console.error(error);// eslint-disable-line
-    });
+    if (App.enableOfflineSupport) {
+      OfflineManager.saveDetailView(this).then(function success() {
+      }, function err(error) {
+        ErrorManager.addSimpleError(resource.errorSavingOfflineViewText + ' ' + this.id, error);
+      });
+    }
   },
   getOfflineDescription: function getOfflineDescription() {
     return this.entry.$descriptor;

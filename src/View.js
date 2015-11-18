@@ -386,6 +386,13 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   */
   onContentChange: function onContentChange() {
   },
+  /**
+   * Returns true if view is disabled.
+   * @return {Boolean}.
+   */
+  isDisabled: function isDisabled() {
+    return false;
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.View', __class);

@@ -119,6 +119,8 @@ const __class = {
         } else {
           def.reject('entity not found.' );
         }
+      }, (err) => {
+        def.reject(err);
       });
     } else {
       def.reject('model not found.');
@@ -206,6 +208,9 @@ const __class = {
     });
     if (requests.length > 0) {
       all(requests).then((results) => {
+        const prefOptions = this.getOptions();
+        prefOptions.lastClearedDate = moment().toDate();
+        this.saveOptions(prefOptions);
         def.resolve(results);
       }, (err) => {
         def.reject(err);

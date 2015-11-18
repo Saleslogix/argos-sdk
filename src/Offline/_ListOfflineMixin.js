@@ -15,6 +15,7 @@
 import declare from 'dojo/_base/declare';
 import OfflineManager from './Manager';
 import BusyIndicator from '../Dialogs/BusyIndicator';
+import ErrorManager from '../ErrorManager';
 
 const resource = window.localeContext.getEntitySync('_listOfflineMixin').attributes;
 
@@ -25,13 +26,13 @@ const resource = window.localeContext.getEntitySync('_listOfflineMixin').attribu
  * @alternateClassName _DetailOfflineMixin
  */
 export default declare('argos.Offline._ListOfflineMixin', null, {
-
+  autoNavigateToBriefcase: false,
   createToolLayout: function createToolLayout() {
     if (this.tools) {
       return this.tools;
     }
     const tools = this.inherited(arguments);
-    if (tools && tools.tbar && this.enableOffline) {
+    if (tools && tools.tbar && this.enableOffline && App.enableOfflineSupport) {
       tools.tbar.push({
         id: 'briefCase',
         cls: 'fa fa-suitcase fa-fw fa-lg',
@@ -55,12 +56,45 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     }
     OfflineManager.briefCaseEntities(entities).then((result) => {
       // Show complete modal dialog
-      const modalPromise = this.createCompleteDialog(busyIndicator, result);
-      modalPromise.then(this.onListBriefcased.bind(this));
+      if (!this.autoNavigateToBriefcase) {
+        const modalPromise = this.createCompleteDialog(busyIndicator, result);
+        modalPromise.then(this.onListBriefcased.bind(this));
+      } else {
+        App.modal.disableClose = false;
+        App.modal.showToolbar = true;
+        busyIndicator.complete(true);
+        App.modal.hide();
+        this.onListBriefcased();
+      }
     }, (err) => {
       // Show complete modal dialog
       this.createAlertDialog(busyIndicator);
-      console.error(err);// eslint-disable-line
+      ErrorManager.addSimpleError(resource.errorBriefcasingText + ' ' + this.id, err);
+    }, () => {
+      busyIndicator.updateProgress();
+    });
+  },
+  briefCaseItem: function briefCaseItem(briefcaseItem) { // eslint-disable-line
+    // Start busy indicator modal
+    const busyIndicator = this.createBusyModal(1);
+    // Start briefcasing
+    const entity = this.createBriefcaseEntity(briefcaseItem);
+    OfflineManager.briefCaseEntity(entity.entityName, entity.entityId, entity.options).then((result) => {
+      // Show complete modal dialog
+      if (!this.autoNavigateToBriefcase) {
+        const modalPromise = this.createCompleteDialog(busyIndicator, result);
+        modalPromise.then(this.onListBriefcased.bind(this));
+      } else {
+        App.modal.disableClose = false;
+        App.modal.showToolbar = true;
+        busyIndicator.complete(true);
+        App.modal.hide();
+        this.onListBriefcased();
+      }
+    }, (err) => {
+      // Show complete modal dialog
+      this.createAlertDialog(busyIndicator);
+      ErrorManager.addSimpleError(resource.errorBriefcasingText + ' ' + this.id, err);
     }, () => {
       busyIndicator.updateProgress();
     });
@@ -88,7 +122,10 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
   createBusyModal: function createBusyModal(count) {
     App.modal.disableClose = true;
     App.modal.showToolbar = false;
-    const busyIndicator = new BusyIndicator({ id: 'busyIndicator__offline-list-briefcase' });
+    const busyIndicator = new BusyIndicator({
+      id: 'busyIndicator__offline-list-briefcase',
+      label: resource.briefcasingText,
+    });
     App.modal.add(busyIndicator);
     busyIndicator.start({isAsync: false, total: count});
     return busyIndicator;

@@ -35,6 +35,7 @@ import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
 import Deferred from 'dojo/Deferred';
 import 'dojo/sniff';
+import ErrorManager from './ErrorManager';
 
 const resource = window.localeContext.getEntitySync('application').attributes;
 
@@ -461,6 +462,7 @@ const __class = declare('argos.Application', null, {
    * @return {Promise}
    */
   initAppState: function initAppState() {
+    const def = new Deferred();
     const sequences = [];
     this._appStatePromises.forEach((item) => {
       let seq;
@@ -505,13 +507,14 @@ const __class = declare('argos.Application', null, {
       return 0;
     });
 
-    return this._initAppStateSequence(0, sequences).then((results) => {
+    this._initAppStateSequence(0, sequences).then((results) => {
       this.clearAppStatePromises();
-      return results;
+      def.resolve(results);
     }, (err) => {
       this.clearAppStatePromises();
-      return err;
+      def.reject(err);
     });
+    return def.promise;
   },
   /**
    * Process a app state sequence and start the next sequnce when done.
@@ -534,17 +537,21 @@ const __class = declare('argos.Application', null, {
       const promises = array.map(seq.items, (item)=> {
         return item.fn();
       });
-
+      const odef = def;
       all(promises).then(() => {
         indicator.complete(true);
         this.modal.disableClose = false;
         this.modal.hide();
         this._initAppStateSequence(index + 1, sequences).then((results) => {
-          def.resolve(results);
+          odef.resolve(results);
         }, (err) => {
-          def.reject(err);
+          indicator.complete(true);
+          this.modal.disableClose = false;
+          this.modal.hide();
+          odef.reject(err);
         });
       }, (err) => {
+        ErrorManager.addSimpleError(indicator.label, err);
         indicator.complete(true);
         this.modal.disableClose = false;
         this.modal.hide();

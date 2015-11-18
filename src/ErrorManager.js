@@ -265,6 +265,24 @@ const __class = lang.setObject('argos.ErrorManager', {
       console.error(e);//eslint-disable-line
     }
   },
+  showErrorDialog: function showErrorDialog(title, message, onOkay) {
+    App.modal.disableClose = true;
+    App.modal.showToolbar = true;
+    App.modal.resolveDeferred(true);
+    const promise = App.modal.createSimpleDialog({
+      title: (title) ? title : 'alert',
+      content: message,
+      getContent: () => { return; },
+      rightButton: 'okay',
+    });
+    promise.then(() => {
+      App.modal.disableClose = false;
+      App.modal.hide();
+      if (onOkay) {
+        onOkay();
+      }
+    });
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.ErrorManager', __class);
