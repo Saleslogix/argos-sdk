@@ -82,7 +82,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     return store.add(entry, options);
   },
   updateEntry: function updateEntry(entry, options) {
-    const store = this.createStore();
+    const store = this.createStore('edit');
 
     if (!store) {
       throw new Error('No store set.');
