@@ -680,6 +680,10 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    * @param {String} key data-key attribute of the selected row (typically $key from SData)
    */
   setSelection: function setSelection(val, key) {
+    this.currentSelection = val;
+    if (val === null || typeof val === 'undefined') {
+      return false;
+    }
     let text = utility.getValue(val, this.textProperty);
     const newKey = utility.getValue(val, this.keyProperty, val) || key; // if we can extract the key as requested, use it instead of the selection key
 
@@ -688,8 +692,6 @@ const control = declare('argos.Fields.LookupField', [_Field], {
     } else if (this.textRenderer) {
       text = this.textRenderer.call(this, val, newKey, text);
     }
-
-    this.currentSelection = val;
 
     this.currentValue = {
       key: newKey || text,
@@ -788,6 +790,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    */
   clearValue: function clearValue(flag) {
     const initial = flag !== true;
+    this.setSelection(null);
     this.setValue(null, initial);
   },
 });
