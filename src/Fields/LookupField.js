@@ -684,9 +684,21 @@ const control = declare('argos.Fields.LookupField', [_Field], {
     if (val === null || typeof val === 'undefined') {
       return false;
     }
-    const keyProperty = this.valueKeyProperty !== false ? this.valueKeyProperty || this.keyProperty : false;
-    val[keyProperty] = key || utility.getValue(val, keyProperty, val) || val[keyProperty];
-    this.setValue(val);
+    let text = utility.getValue(val, this.textProperty);
+    const newKey = utility.getValue(val, this.keyProperty, val) || key; // if we can extract the key as requested, use it instead of the selection key
+
+    if (text && this.textTemplate) {
+      text = this.textTemplate.apply(text, this);
+    } else if (this.textRenderer) {
+      text = this.textRenderer.call(this, val, newKey, text);
+    }
+
+    this.currentValue = {
+     key: newKey || text,
+     text: text || newKey,
+    };
+
+    this.setText(this.currentValue.text);
   },
   /**
    * Sets the given value to `this.currentValue` using the initial flag if to set it as
