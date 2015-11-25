@@ -199,6 +199,9 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     if (value === 0) {
       value = '00';
     }
+    if (value === 5) {
+      value = '05';
+    }
     if (!this._minuteDropdown) {
       this._minuteDropdown = new Dropdown({ id: 'minute-modal' });
       this._minuteDropdown.createList({ items: this.minuteValues, defaultValue: `${value}` });
