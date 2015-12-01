@@ -48,12 +48,12 @@ const __class = declare('argos._SDataListMixin', null, {
    * @cfg {String[]}
    * A list of fields to be selected in an SData request.
    */
-  querySelect: null,
+  querySelect: [],
   /**
    * @cfg {String[]?}
    * A list of child properties to be included in an SData request.
    */
-  queryInclude: null,
+  queryInclude: [],
   /**
    * @cfg {String}
    * The default order by expression for an SData request.

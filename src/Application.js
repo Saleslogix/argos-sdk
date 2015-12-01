@@ -69,6 +69,12 @@ lang.extend(Function, {
   },
 });
 
+// Patching backwards compatablity so that customizations will not break and where moment 
+// was required.
+define('moment', [], function () {
+  return window.moment;
+});
+
 function applyLocalizationTo(object, localization) {
   if (!object) {
     return;

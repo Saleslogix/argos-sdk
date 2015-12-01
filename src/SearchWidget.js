@@ -297,12 +297,16 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
     return this.queryNode.value;
   },
   disable: function disable() {
-    this.queryNode.disabled = true;
-    domClass.add(this.domNode, 'disabled');
+    if (this.queryNode) {
+      this.queryNode.disabled = true;
+      domClass.add(this.domNode, 'disabled');
+    }
   },
   enable: function enable() {
-    this.queryNode.disabled = false;
-    domClass.remove(this.domNode, 'disabled');
+    if (this.queryNode) {
+      this.queryNode.disabled = false;
+      domClass.remove(this.domNode, 'disabled');
+    }
   },
 });
 
