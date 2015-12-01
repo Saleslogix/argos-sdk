@@ -175,11 +175,27 @@ const __class = {
     const usage = {};
     usage.count = 0;
     usage.size = 0;
+    usage.sizeAVG = 0;
     usage.entities = entityUsage;
+    usage.oldestDate = null;
+    usage.newestDate = null;
     entityUsage.forEach((item) => {
       if (item) {
         usage.count = usage.count + item.count;
         usage.size = usage.size + item.size;
+        const avg = usage.size / usage.count;
+        usage.sizeAVG = Number.isNaN(avg) ? 0 : avg;
+        if (item.newestDate) {
+          if (!usage.newestDate || usage.newestDate.valueOf() < item.newestDate.valueOf()) {
+            usage.newestDate = item.newestDate;
+          }
+        }
+
+        if (item.oldestDate) {
+          if (!usage.oldestDate || item.oldestDate.valueOf() < usage.oldestDate.valueOf()) {
+            usage.oldestDate = item.oldestDate;
+          }
+        }
       }
     });
     entityUsage.forEach((item) => {
