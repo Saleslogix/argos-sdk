@@ -69,9 +69,9 @@ lang.extend(Function, {
   },
 });
 
-// Patching backwards compatablity so that customizations will not break and where moment 
+// Patching backwards compatablity so that customizations will not break and where moment
 // was required.
-define('moment', [], function () {
+define('moment', [], function getMoment() { // eslint-disable-line
   return window.moment;
 });
 

@@ -222,22 +222,32 @@ const __class = {
   },
   getClearDataQueryExpression: function getClearDataQueryExpression(options) {
     if (options && !options.clearAll) {
-      const clearOlderThanDate = this.getClearOlderThanDate(options.clearOlderThan);
       return function queryFn(doc, emit) {
-        const recordDate = moment(convert.toDateFromString(doc.modifyDate));
-        if (clearOlderThanDate && (recordDate.isBefore(clearOlderThanDate.startOf('day')))) {
+        if (this.isDocOlderThan(doc, options)) {
           emit(doc.modifyDate);
         }
-      };
+      }.bind(this);
     }
     return null;
   },
-  getClearOlderThanDate: function getClearOlderThanDate(olderThan) {
-    let olderThanDate = null;
-    if (olderThan || olderThan === 0) {
-      olderThanDate = moment().subtract(olderThan - 1, 'days').startOf('day');
+  isDocOlderThan: function isDocOlderThan(doc, options) {
+    let olderThan = 0;
+    if (options && options.clearOlderThan) {
+      olderThan = (typeof options.clearOlderThan === 'string') ? parseInt(options.clearOlderThan) : options.clearOlderThan ;
     }
-    return olderThanDate;
+    if (!doc.modifyDate) {
+      return true;
+    }
+    if(olderThan === 0) {
+      return true;
+    }
+    const recordDate = moment(convert.toDateFromString(doc.modifyDate));
+    const currentDate = moment();
+    const adjDate = recordDate.add(olderThan + 1, 'days');
+    if (adjDate.isBefore(currentDate)) {
+      return true;
+    }
+    return false;
   },
   getOptions: function getOptions() {
     let options;
