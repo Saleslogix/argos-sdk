@@ -233,12 +233,12 @@ const __class = {
   isDocOlderThan: function isDocOlderThan(doc, options) {
     let olderThan = 0;
     if (options && options.clearOlderThan) {
-      olderThan = (typeof options.clearOlderThan === 'string') ? parseInt(options.clearOlderThan) : options.clearOlderThan ;
+      olderThan = (typeof options.clearOlderThan === 'string') ? parseInt(options.clearOlderThan, 10) : options.clearOlderThan;
     }
     if (!doc.modifyDate) {
       return true;
     }
-    if(olderThan === 0) {
+    if (olderThan === 0) {
       return true;
     }
     const recordDate = moment(convert.toDateFromString(doc.modifyDate));
