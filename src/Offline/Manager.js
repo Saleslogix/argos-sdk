@@ -259,8 +259,8 @@ const __class = {
     }
     const recordDate = moment(convert.toDateFromString(doc.modifyDate));
     const currentDate = moment();
-    const adjDate = recordDate.add(olderThan + 1, 'days');
-    if (adjDate.isBefore(currentDate)) {
+    const days = currentDate.diff(recordDate, 'days');
+    if (days > olderThan) {
       return true;
     }
     return false;
