@@ -83,15 +83,21 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
   },
   updateEntry: function updateEntry(entry, options) {
     const store = this.createStore('edit');
-
+    const def = new Deferred();
     if (!store) {
       throw new Error('No store set.');
     }
-
-    return this.validate(entry)
-      .then(function fulfilled() {
-        return store.put(entry, options);
-      }); // Since we left off the reject handler, it will propagate up if there is a validation error
+    this.validate(entry).then(function fulfilled() {
+      store.put(entry, options).then((result) => {
+        this.onEntryUpdated(result, entry);
+        def.resolve();
+      }.bind(this));
+    }.bind(this), function validationError(err) {
+      def.reject(err);
+    }); // Since we left off the reject handler, it will propagate up if there is a validation error
+    return def.promise;
+  },
+  onEntryUpdated: function onEntryUpdated(result, orginalEntry) { // eslint-disable-line
   },
   /**
    * If an entry is valid, validate should return a promise that resolves to true. If the entry is not valid,
