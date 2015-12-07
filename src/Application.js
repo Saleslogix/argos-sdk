@@ -242,7 +242,7 @@ const __class = declare('argos.Application', null, {
   /*
    * Static resource to request on the ping. Should be a small file.
    */
-  PING_RESOURCE: 'content/images/ping.gif',
+  PING_RESOURCE: 'ping.gif',
   /**
    * All options are mixed into App itself
    * @param {Object} options
