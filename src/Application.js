@@ -399,7 +399,7 @@ const __class = declare('argos.Application', null, {
           }
         }
       };
-      xhr.open('GET', this.PING_RESOURCE);
+      xhr.open('GET', `${this.PING_RESOURCE}?cache=${Math.random()}`);
       xhr.timeout = this.PING_TIMEOUT;
       xhr.send();
     });
