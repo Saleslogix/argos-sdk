@@ -90,7 +90,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     this.validate(entry).then(function fulfilled() {
       store.put(entry, options).then((result) => {
         this.onEntryUpdated(result, entry);
-        def.resolve();
+        def.resolve(result);
       }.bind(this));
     }.bind(this), function validationError(err) {
       def.reject(err);
