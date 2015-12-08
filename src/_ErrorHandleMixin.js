@@ -1,8 +1,9 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('errorHandleMixin').attributes;
+const resource = getResource('errorHandleMixin');
 
 /**
  * @class argos._ErrorHandleMixin

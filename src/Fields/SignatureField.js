@@ -20,8 +20,9 @@ import domAttr from 'dojo/dom-attr';
 import format from '../Format';
 import EditorField from './EditorField';
 import FieldManager from '../FieldManager';
+import getResource from '../I18n';
 
-const resource = window.localeContext.getEntitySync('signatureField').attributes;
+const resource = getResource('signatureField');
 
 /**
  * @class argos.Fields.SignatureField

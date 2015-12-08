@@ -27,6 +27,7 @@ import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import FieldManager from './FieldManager';
 import View from './View';
+import getResource from './I18n';
 import 'dojo/NodeList-manipulate';
 import './Fields/BooleanField';
 import './Fields/DateField';
@@ -42,7 +43,7 @@ import './Fields/SignatureField';
 import './Fields/TextAreaField';
 import './Fields/TextField';
 
-const resource = window.localeContext.getEntitySync('editBase').attributes;
+const resource = getResource('editBase');
 
 /**
  * @class argos._EditBase

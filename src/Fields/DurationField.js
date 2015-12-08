@@ -19,8 +19,9 @@ import domClass from 'dojo/dom-class';
 import format from '../Format';
 import LookupField from './LookupField';
 import FieldManager from '../FieldManager';
+import getResource from '../I18n';
 
-const resource = window.localeContext.getEntitySync('durationField').attributes;
+const resource = getResource('durationField');
 
 /**
  * @class argos.Fields.DurationField

@@ -16,8 +16,9 @@ import declare from 'dojo/_base/declare';
 import OfflineManager from './Manager';
 import BusyIndicator from '../Dialogs/BusyIndicator';
 import ErrorManager from '../ErrorManager';
+import getResource from '../I18n';
 
-const resource = window.localeContext.getEntitySync('_detailOfflineMixin').attributes;
+const resource = getResource('_detailOfflineMixin');
 
 
 /**

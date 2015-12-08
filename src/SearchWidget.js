@@ -19,8 +19,9 @@ import string from 'dojo/string';
 import domClass from 'dojo/dom-class';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('searchWidget').attributes;
+const resource = getResource('searchWidget');
 
 /**
  * @class argos.SearchWidget

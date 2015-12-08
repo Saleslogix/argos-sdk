@@ -24,8 +24,9 @@ import _Templated from './_Templated';
 import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
 import DateTimePicker from './DateTimePicker';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('relativeDateTimePicker').attributes;
+const resource = getResource('relativeDateTimePicker');
 
 const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _ActionMixin, _CustomizationMixin], {
   widgetTemplate: new Simplate([

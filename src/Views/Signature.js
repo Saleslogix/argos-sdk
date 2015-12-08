@@ -20,8 +20,9 @@ import domGeom from 'dojo/dom-geometry';
 import win from 'dojo/window';
 import format from '../Format';
 import View from '../View';
+import getResource from '../I18n';
 
-const resource = window.localeContext.getEntitySync('signature').attributes;
+const resource = getResource('signature');
 
 /**
  * @class argos.Views.Signature

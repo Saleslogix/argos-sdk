@@ -30,9 +30,9 @@ import View from './View';
 import SearchWidget from './SearchWidget';
 import ConfigurableSelectionModel from './ConfigurableSelectionModel';
 import _PullToRefreshMixin from './_PullToRefreshMixin';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('listBase')
-  .attributes;
+const resource = getResource('listBase');
 
 /**
  * @class argos._ListBase

@@ -8,9 +8,10 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';
+import getResource from './I18n';
 
 let __class;
-const resource = window.localeContext.getEntitySync('pullToRefreshMixin').attributes;
+const resource = getResource('pullToRefreshMixin');
 
 /**
  * @class argos._PullToRefreshMixin

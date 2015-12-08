@@ -15,8 +15,9 @@ import SDataStore from './Store/SData';
 import _CustomizationMixin from './_CustomizationMixin';
 import _ActionMixin from './_ActionMixin';
 import _RelatedViewWidgetBase from 'argos/_RelatedViewWidgetBase';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('relatedViewWidget').attributes;
+const resource = getResource('relatedViewWidget');
 
 const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], {
   cls: 'related-view-widget',

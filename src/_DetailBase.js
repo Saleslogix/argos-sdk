@@ -26,8 +26,9 @@ import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import View from './View';
 import TabWidget from './TabWidget';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('detailBase').attributes;
+const resource = getResource('detailBase');
 
 /**
  * @class argos._DetailBase

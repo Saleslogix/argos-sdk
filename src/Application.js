@@ -34,10 +34,11 @@ import {updateConnectionState} from './Intents/update-connection';
 import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
 import Deferred from 'dojo/Deferred';
-import 'dojo/sniff';
 import ErrorManager from './ErrorManager';
+import getResource from './I18n';
+import 'dojo/sniff';
 
-const resource = window.localeContext.getEntitySync('application').attributes;
+const resource = getResource('application');
 
 has.add('html5-file-api', function hasFileApi(global) {
   if (has('ie')) {

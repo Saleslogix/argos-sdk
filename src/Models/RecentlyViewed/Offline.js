@@ -2,8 +2,9 @@ import declare from 'dojo/_base/declare';
 import _OfflineModelBase from '../_OfflineModelBase';
 import Manager from '../Manager';
 import MODEL_TYPES from '../Types';
+import getResource from '../../I18n';
 
-const resource = window.localeContext.getEntitySync('recentlyViewedModel').attributes;
+const resource = getResource('recentlyViewedModel');
 
 const __class = declare('argos.Models.RecentlyViewed.Offline', [_OfflineModelBase], {
   entityName: 'RecentlyViewed',

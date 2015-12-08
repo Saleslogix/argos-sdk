@@ -25,8 +25,9 @@ import domStyle from 'dojo/dom-style';
 import on from 'dojo/on';
 import _Widget from 'dijit/_Widget';
 import _Templated from '../_Templated';
+import getResource from '../I18n';
 
-const resource = window.localeContext.getEntitySync('modal').attributes;
+const resource = getResource('modal');
 
 const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   widgetTemplate: new Simplate([

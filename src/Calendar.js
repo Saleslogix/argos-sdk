@@ -27,8 +27,9 @@ import _ActionMixin from './_ActionMixin';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
 import Dropdown from 'argos/Dropdown';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('calendar').attributes;
+const resource = getResource('calendar');
 
 const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], {
   widgetTemplate: new Simplate([

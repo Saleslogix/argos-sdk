@@ -20,8 +20,9 @@ import _CustomizationMixin from './_CustomizationMixin';
 import _Templated from './_Templated';
 import _ErrorHandleMixin from './_ErrorHandleMixin';
 import Adapter from './Models/Adapter';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('view').attributes;
+const resource = getResource('view');
 
 /**
  * @class argos.View

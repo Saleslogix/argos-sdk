@@ -21,8 +21,9 @@ import query from 'dojo/query';
 import utility from '../Utility';
 import _Field from './_Field';
 import FieldManager from '../FieldManager';
+import getResource from '../I18n';
 
-const resource = window.localeContext.getEntitySync('lookupField').attributes;
+const resource = getResource('lookupField');
 
 /**
  * @class argos.Fields.LookupField
