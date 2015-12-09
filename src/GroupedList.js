@@ -30,8 +30,9 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import List from './List';
 import Utility from './Utility';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('groupedList').attributes;
+const resource = getResource('groupedList');
 
 const __class = declare('argos.GroupedList', [List], {
   // Localization

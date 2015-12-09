@@ -18,10 +18,11 @@ import has from 'dojo/has';
 import domConstruct from 'dojo/dom-construct';
 import domClass from 'dojo/dom-class';
 import dom from 'dojo/dom';
-import '../Fields/TextField';
+import getResource from '../I18n';
 import View from '../View';
+import '../Fields/TextField';
 
-const resource = window.localeContext.getEntitySync('fileSelect').attributes;
+const resource = getResource('fileSelect');
 
 /**
  * @class argos.Views.FileSelect

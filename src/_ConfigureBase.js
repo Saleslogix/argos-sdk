@@ -4,8 +4,9 @@ import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import string from 'dojo/string';
 import DraggableList from './DraggableList';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('configureBase').attributes;
+const resource = getResource('configureBase');
 
 /**
  * @class argos._ConfigureBase

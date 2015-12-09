@@ -79,6 +79,9 @@
             "text": "update-connection.js",
             "path": "../src-out/Intents/"
           }, {
+            "text": "I18n.js",
+            "path": "../src-out/"
+          }, {
             "text": "CultureInfo.js",
             "path": "../src-out/"
           }, {
@@ -86,9 +89,6 @@
             "path": "../src-out/"
           }, {
             "text": "_Templated.js",
-            "path": "../src-out/"
-          }, {
-            "text": "SelectionModel.js",
             "path": "../src-out/"
           }, {
             "text": "Convert.js",
@@ -118,19 +118,22 @@
             "text": "DomHelper.js",
             "path": "../src-out/ReUI/"
           }, {
-            "text": "_ErrorHandleMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_PullToRefreshMixin.js",
-            "path": "../src-out/"
-          }, {
             "text": "_ServiceMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Intent.js",
             "path": "../src-out/"
           }, {
             "text": "ErrorManager.js",
             "path": "../src-out/"
           }, {
-            "text": "Intent.js",
+            "text": "SelectionModel.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_ErrorHandleMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_PullToRefreshMixin.js",
             "path": "../src-out/"
           }, {
             "text": "BusyIndicator.js",
@@ -155,9 +158,6 @@
             "path": "../src-out/"
           }, {
             "text": "_RelatedViewWidgetBase.js",
-            "path": "../src-out/"
-          }, {
-            "text": "ConfigurableSelectionModel.js",
             "path": "../src-out/"
           }, {
             "text": "Format.js",
@@ -191,6 +191,9 @@
             "path": "../src-out/"
           }, {
             "text": "_LegacySDataListMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "ConfigurableSelectionModel.js",
             "path": "../src-out/"
           }, {
             "text": "Toast.js",

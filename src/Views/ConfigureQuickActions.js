@@ -2,8 +2,9 @@ import declare from 'dojo/_base/declare';
 import array from 'dojo/_base/array';
 import Memory from 'dojo/store/Memory';
 import _ConfigureBase from '../_ConfigureBase';
+import getResource from '../I18n';
 
-const resource = window.localeContext.getEntitySync('configureQuickActions').attributes;
+const resource = getResource('configureQuickActions');
 
 /**
  * @class argos.Views.ConfigureQuickActions

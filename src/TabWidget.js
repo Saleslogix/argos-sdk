@@ -10,8 +10,9 @@ import domConstruct from 'dojo/dom-construct';
 import domStyle from 'dojo/dom-style';
 import query from 'dojo/query';
 import _Templated from 'argos/_Templated';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('tabWidget').attributes;
+const resource = getResource('tabWidget');
 
 const __class = declare('argos.TabWidget', [_Templated], {
   /**

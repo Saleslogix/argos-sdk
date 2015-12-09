@@ -16,8 +16,9 @@ import json from 'dojo/json';
 import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
 import utility from './Utility';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('errorManager').attributes;
+const resource = getResource('errorManager');
 let errors = [];
 
 try {

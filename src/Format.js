@@ -20,8 +20,9 @@ import string from 'dojo/string';
 import dNumber from 'dojo/number';
 import convert from './Convert';
 import utility from './Utility';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('format').attributes;
+const resource = getResource('format');
 
 const getVectorMaxSize = function getVectorMaxSize(v) {
   let w = 1;

@@ -4,8 +4,9 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('relatedViewWidgetBase').attributes;
+const resource = getResource('relatedViewWidgetBase');
 
 const __class = declare('argos._RelatedViewWidgetBase', [_Widget, _Templated], {
   cls: null,

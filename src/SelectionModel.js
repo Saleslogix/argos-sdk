@@ -1,7 +1,8 @@
 import lang from 'dojo/_base/lang';
 import declare from 'dojo/_base/declare';
+import getResource from './I18n';
 
-const resource = window.localeContext.getEntitySync('selectionModel').attributes;
+const resource = getResource('selectionModel');
 
 /**
  * @class argos.SelectionModel

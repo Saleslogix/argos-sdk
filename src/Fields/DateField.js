@@ -22,8 +22,9 @@ import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
 import DateTimePicker from '../DateTimePicker';
 import RelativeDateTimePicker from '../RelativeDateTimePicker';
+import getResource from '../I18n';
 
-const resource = window.localeContext.getEntitySync('dateField').attributes;
+const resource = getResource('dateField');
 
 /**
  * @class argos.Fields.DateField

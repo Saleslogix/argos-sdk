@@ -17,10 +17,11 @@ import lang from 'dojo/_base/lang';
 import query from 'dojo/query';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
-import Toolbar from 'argos/Toolbar';
+import Toolbar from './Toolbar';
+import getResource from './I18n';
 import 'dojo/NodeList-manipulate';
 
-const resource = window.localeContext.getEntitySync('mainToolbar').attributes;
+const resource = getResource('mainToolbar');
 
 /**
  * @class argos.MainToolbar
