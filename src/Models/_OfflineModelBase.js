@@ -348,6 +348,19 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     });
     return `{this.entityName.toLowwer()}-{uuid}`;
   },
+  removeFromAuxiliaryEntities: function removeFromAuxiliaryEntities(entityId) {
+    const def = new Deferred();
+    const rvModel = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
+    const bcModel = App.ModelManager.getModel('Briefcase', MODEL_TYPES.OFFLINE);
+    if (rvModel) {
+      rvModel.deleteEntryByEntityContext(entityId, this.entityName);
+    }
+    if (bcModel) {
+      bcModel.deleteEntryByEntityContext(entityId, this.entityName);
+    }
+    def.resolve();
+    return def.promise;
+  },
 });
 
 export default __class;
