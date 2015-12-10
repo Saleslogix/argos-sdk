@@ -283,6 +283,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   },
   setSelected: function setSelected(value = {}) {
     if (value !== this._selected) {
+      this.updateSelected(value);
       this._selected = value;
       this.setValue(value.dataset.value);
     }
