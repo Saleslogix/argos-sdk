@@ -22,7 +22,7 @@ const resource = getResource('_detailOfflineMixin');
 
 
 /**
- * @class argos._DetailOfflineMixin
+ * @class argos.Offline._DetailOfflineMixin
  * A mixin that provides the detail view offline specific methods and properties
  * @alternateClassName _DetailOfflineMixin
  */

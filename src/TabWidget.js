@@ -1,7 +1,3 @@
-/**
- * @class argos.TabWidget
- * @alternateClassName TabWidget
- */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
@@ -14,6 +10,10 @@ import getResource from './I18n';
 
 const resource = getResource('tabWidget');
 
+/**
+ * @class argos.TabWidget
+ * @alternateClassName TabWidget
+ */
 const __class = declare('argos.TabWidget', [_Templated], {
   /**
    * @property {Simplate}

@@ -1,12 +1,12 @@
-/**
- * @class argos.Offline.Manager
- *
- */
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
 import MODEL_TYPES from '../Models/Types';
 import convert from 'argos/Convert';
 
+/**
+ * @class argos.Offline.Manager
+ *
+ */
 const __class = {
 
   defaultClearOlderThan: 2,

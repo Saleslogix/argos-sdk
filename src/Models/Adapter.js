@@ -1,6 +1,9 @@
 import Manager from './Manager';
 import MODEL_TYPES from './Types';
 
+/**
+ * @class argos.Models.Adapter
+ */
 export default {
   getModel: function getModel(entityName) {
     let Ctor;

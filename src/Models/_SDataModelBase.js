@@ -8,6 +8,10 @@ import utility from '../Utility';
 import _ModelBase from './_ModelBase';
 import MODEL_TYPES from './Types';
 
+/**
+ * @class argos.Models._SDataModelBase
+ * Base for online sdata models
+ */
 const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
   queryModels: null,
   ModelType: MODEL_TYPES.SDATA,

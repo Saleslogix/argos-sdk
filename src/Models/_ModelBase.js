@@ -19,7 +19,7 @@ import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
 
 /**
- * @class argos._ModelBase
+ * @class argos.Models._ModelBase
  * A base model class for views to consume
  * @alternateClassName _ModelBase
  */

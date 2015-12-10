@@ -2,6 +2,9 @@ import lang from 'dojo/_base/lang';
 
 const store = new Map();
 
+/**
+ * @class argos.Models.Manager
+ */
 const __class = lang.setObject('argos.Models.Manager', {
   register: function register(modelName, modelType, ctor) {
     let value = new Map();

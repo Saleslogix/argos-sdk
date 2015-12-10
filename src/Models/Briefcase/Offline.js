@@ -6,6 +6,9 @@ import getResource from '../../I18n';
 
 const resource = getResource('briefcaseModel');
 
+/**
+ * @class argos.Models.Briefcase.Offline
+ */
 const __class = declare('argos.Models.Briefcase.Offline', [_OfflineModelBase], {
   entityName: 'Briefcase',
   modelName: 'Briefcase',

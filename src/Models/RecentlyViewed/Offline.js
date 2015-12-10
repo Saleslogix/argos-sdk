@@ -6,6 +6,9 @@ import getResource from '../../I18n';
 
 const resource = getResource('recentlyViewedModel');
 
+/**
+ * @class argos.Models.RecentlyViewed.Offline
+ */
 const __class = declare('argos.Models.RecentlyViewed.Offline', [_OfflineModelBase], {
   entityName: 'RecentlyViewed',
   modelName: 'RecentlyViewed',
