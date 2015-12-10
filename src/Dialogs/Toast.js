@@ -14,7 +14,7 @@
  */
 
 /**
- * @class argos.Toast
+ * @class argos.Dialogs.Toast
  * @alternateClassName Global Pop-up
  */
 import array from 'dojo/_base/array';

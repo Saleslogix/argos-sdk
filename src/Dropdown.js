@@ -26,6 +26,9 @@ import query from 'dojo/query';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
 
+/**
+ * @class argos.Dropdown
+ */
 const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownNode">',

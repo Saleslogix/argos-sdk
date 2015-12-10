@@ -9,6 +9,9 @@ import getResource from '../I18n';
 
 const resource = getResource('busyIndicator');
 
+/**
+ * @class argos.Dialogs.BusyIndicator
+ */
 const __class = declare('argos.Dialogs.BusyIndicator', [ _Widget, _Templated ], {
   widgetTemplate: new Simplate([
     '<div class="busyIndicator__container {%: $.containerClass %}" aria-live="polite" data-dojo-attach-point="busyIndicatorNode">',

@@ -12,11 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @class argos.Modal
- * @alternateClassName Pop-up
- */
 import declare from 'dojo/_base/declare';
 import Deferred from 'dojo/Deferred';
 import domClass from 'dojo/dom-class';
@@ -29,6 +24,10 @@ import getResource from '../I18n';
 
 const resource = getResource('modal');
 
+/**
+ * @class argos.Dialogs.Modal
+ * @alternateClassName Pop-up
+ */
 const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="modal__container" data-dojo-attach-point="modalContainer">',
