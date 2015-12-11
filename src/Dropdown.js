@@ -149,6 +149,14 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       this._overlayEvent.remove();
     }
   },
+  findValue: function findValue(text) {
+    const value = array.filter(this._list.children, (element) => {
+      if (element.innerText === text) {
+        return element;
+      }
+    });
+    return value[0];
+  },
   getSelected: function getSelected() {
     return this._selected;
   },
@@ -275,6 +283,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   },
   setSelected: function setSelected(value = {}) {
     if (value !== this._selected) {
+      this.updateSelected(value);
       this._selected = value;
       this.setValue(value.dataset.value);
     }
