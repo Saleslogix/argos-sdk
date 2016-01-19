@@ -33,7 +33,7 @@ const __class = declare('argos.Dialogs.Toast', [_Widget, _Templated, Modal], {
   ]),
   id: 'toast',
   title: 'Title',
-  message: 'This is a toast',
+  message: 'Message',
   icon: '',
   historyLength: 50,
   // Time toast will be displayed (in milliseconds)
