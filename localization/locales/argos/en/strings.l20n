@@ -274,3 +274,10 @@
   errorBriefcasingText: "Error briefcasing"
   errorSavingOfflineViewText: "error saving offline view:"
 >
+
+<sdkApplication
+  connectionToastTitleText: "Connection"
+  checkingText: "Checking connectivity"
+  loadingApplicationStateText: "Loading application state"
+  initializingText: "Initializing:"
+>

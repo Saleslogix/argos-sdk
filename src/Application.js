@@ -28,6 +28,7 @@ import ReUI from './ReUI/main';
 import ready from 'dojo/ready';
 import util from './Utility';
 import ModelManager from './Models/Manager';
+import Toast from './Dialogs/Toast';
 import {model} from './Model';
 import {intent} from './Intent';
 import {updateConnectionState} from './Intents/update-connection';
@@ -38,7 +39,7 @@ import ErrorManager from './ErrorManager';
 import getResource from './I18n';
 import 'dojo/sniff';
 
-const resource = getResource('application');
+const resource = getResource('sdkApplication');
 
 has.add('html5-file-api', function hasFileApi(global) {
   if (has('ie')) {
@@ -269,6 +270,7 @@ const __class = declare('argos.Application', null, {
     this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
 
     this.ping = util.debounce(() => {
+      this.toast.add({ message: resource.checkingText, title: resource.connectionToastTitleText });
       const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
         .flatMap(() => {
           return Rx.Observable.fromPromise(this._ping())
@@ -628,7 +630,12 @@ const __class = declare('argos.Application', null, {
     this.initToolbars();
     this.initReUI();
     this.initModal();
+    this.initToasts();
   },
+  initToasts: function initToasts() {
+  this.toast = new Toast();
+  this.toast.show();
+},
   initPreferences: function initPreferences() {
     this._loadPreferences();
   },
