@@ -13,7 +13,9 @@ define('tests/MainToolbarTests', [
   MainToolbar
 ) {
   return describe('Sage.Platform.Mobile.MainToolbar', function() {
-
+    var mockApp = {
+      onLine: true
+    };
     it('Can clear right toolbar items', function() {
       var bar = new MainToolbar();
 
@@ -27,7 +29,7 @@ define('tests/MainToolbarTests', [
     });
 
     it('Can update size class when showing tools', function() {
-      var bar = new MainToolbar();
+      var bar = new MainToolbar({app: mockApp});
 
       bar.showTools([
       {
@@ -42,7 +44,7 @@ define('tests/MainToolbarTests', [
     });
 
     it('Can add left side button toolbar item', function() {
-      var bar = new MainToolbar();
+      var bar = new MainToolbar({app: mockApp});
 
       bar.showTools([
       {
@@ -56,7 +58,7 @@ define('tests/MainToolbarTests', [
     });
 
     it('Can add right side button toolbar item', function() {
-      var bar = new MainToolbar();
+      var bar = new MainToolbar({app: mockApp});
 
       bar.showTools([
       {
@@ -70,7 +72,7 @@ define('tests/MainToolbarTests', [
     });
 
     it('Can handle no tools', function() {
-      var bar = new MainToolbar();
+      var bar = new MainToolbar({app: mockApp});
 
       bar.showTools();
       expect(bar.size)

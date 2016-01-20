@@ -99,7 +99,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     this.inherited(arguments);
 
     domClass.remove(this.domNode, 'toolbar-size-' + this.size);
-    let onLine = App.onLine;
+    let onLine = this.app.onLine;
     if (tools) {
       const count = {
         left: 0,
