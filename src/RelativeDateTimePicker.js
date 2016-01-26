@@ -77,6 +77,12 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
     this.inherited(arguments);
   },
   getContent: function getContent() {
+    if (this.options.timeless) {
+      this._selectedTime.hours(0).minutes(0).seconds(0);
+      this._selectedTime.add({
+        minutes: this._selectedTime.utcOffset(),
+      });
+    }
     return this._selectedTime;
   },
   makeItem: function makeItem({label, time, format}) {
