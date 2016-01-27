@@ -211,7 +211,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
     const options = this.createNavigationOptions();
 
     let toolbar;
-    if (this.showRelativeDateTime) {
+    if (this.showRelativeDateTime && !options.timeless) {
       this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
       toolbar = [
         {
