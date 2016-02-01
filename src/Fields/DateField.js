@@ -98,7 +98,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * Sent as part of navigation options to {@link Calendar Calendar}, where it controls the
    * display of the relative date time picker.
    */
-  showRelativeDateTime: true,
+  showRelativeDateTime: false,
   /**
    * @cfg {Boolean}
    * Used in formatted and sent as part of navigation options to {@link Calendar Calendar},
