@@ -9,5 +9,6 @@ module.exports = function(grunt) {
     // Register alias tasks
     grunt.registerTask('check', ['jshint', 'jscs']);
     grunt.registerTask('test', ['check', 'connect', 'jasmine:coverage']);
+    grunt.registerTask('lint', ['jshint']);
     grunt.registerTask('default', ['test']);
 };
