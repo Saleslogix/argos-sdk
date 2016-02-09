@@ -805,7 +805,7 @@ const __class = declare('argos.Application', null, {
     return this;
   },
   registerViewRoute: function registerViewRoute(view) {
-    if (!view) {
+    if (!view || view.getRoute !== typeof 'function') {
       return;
     }
 
