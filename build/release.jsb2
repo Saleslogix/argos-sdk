@@ -119,9 +119,6 @@
             "text": "PouchDB.js",
             "path": "../src-out/Store/"
           }, {
-            "text": "_SDataModelBase.js",
-            "path": "../src-out/Models/"
-          }, {
             "text": "_ServiceMixin.js",
             "path": "../src-out/"
           }, {
@@ -246,6 +243,9 @@
             "path": "../src-out/Offline/"
           }, {
             "text": "_OfflineModelBase.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "_SDataModelBase.js",
             "path": "../src-out/Models/"
           }, {
             "text": "Application.js",
