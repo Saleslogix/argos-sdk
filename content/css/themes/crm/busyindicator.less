@@ -1,0 +1,129 @@
+.busyIndicator__container {
+  min-width: 200px;
+  height: 150px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 10px;
+  opacity: 0;
+}
+
+.busyIndicator {
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  .transition(opacity 500ms);
+}
+
+.busyIndicator--active {
+  opacity: 1;
+}
+
+.busyIndicator--small {
+  height: 2em;
+  margin: 0;
+  margin-top: 0;
+  width: 2.4em;
+}
+
+.busyIndicator--medium {
+  height: 4.1em;
+  margin: 0.4em;
+  margin-top: 15px;
+  width: 4.3em;
+}
+
+.busyIndicator--large {
+  height: 6.2em;
+  margin: .8em;
+  margin-top: 35px;
+  width: 6.2em;
+}
+
+.busyIndicator__bar {
+  background-color: @color-azure;
+  display: inline-block;
+  .animation(stretchdelay 1s infinite ease-in-out);
+}
+
+.busyIndicator__bar--small {
+  height: 2em;
+  margin-right: 0.2em;
+  width: 0.24em
+}
+
+.busyIndicator__bar--medium {
+  height: 3.5em;
+  margin-right: .35em;
+  width: 0.42em;
+}
+
+.busyIndicator__bar--large {
+  height: 5em;
+  margin-right: .5em;
+  width: .6em;
+}
+
+.busyIndicator__bar--one {
+  .animation-delay(-0.5s);
+}
+
+.busyIndicator__bar--two {
+  .animation-delay(-0.4s);
+}
+
+.busyIndicator__bar--three {
+  .animation-delay(-0.3s);
+}
+
+.busyIndicator__bar--four {
+  .animation-delay(-0.2s);
+}
+
+.busyIndicator__bar--five {
+  .animation-delay(-0.1s);
+}
+
+.busyIndicator__label {
+  color: @color-azure;
+  font-size: 16px;
+  display: block;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility !important;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+  font-weight: normal;
+  line-height: normal;
+}
+
+.busyIndicator__progress {
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.busyIndicator__progress__label {
+  display: block;
+  font-size: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.busyIndicator__progress__bar {
+  height: 3px;
+  width: 0;
+  overflow: hidden;
+  background-color: @color-azure;
+  .transition(width 0.3s ease);
+}
+
+@-webkit-keyframes stretchdelay {
+  0%, 70%, 100% { .transform(scaleY(.4)); }
+  35% { .transform(scaleY(1)); }
+}
+
+@keyframes stretchdelay {
+  0%, 70%, 100% { .transform(scaleY(.4)); }
+  35% { .transform(scaleY(1)); }
+}

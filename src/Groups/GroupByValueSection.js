@@ -5,10 +5,13 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import Utility from '../Utility';
 import _GroupBySection from './_GroupBySection';
+import getResource from '../I18n';
+
+const resource = getResource('groupByValueSection');
 
 const __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
   name: 'DateTimeSectionFilter',
-  displayNameText: 'Group By Value Section',
+  displayNameText: resource.displayNameText,
   width: 0,
   constructor: function constructor(o) {
     this.groupByProperty = o.groupByProperty;

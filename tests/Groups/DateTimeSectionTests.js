@@ -1,7 +1,6 @@
 define('tests/Groups/DateTimeSectionTests', [
-    'moment',
     'argos/Groups/DateTimeSection'
-], function(moment, DateTimeSection) {
+], function(DateTimeSection) {
     return describe('Sage.Platform.Mobile.Groups.DateTimeSection', function() {
         it('can get a default section', function() {
             var dts = new DateTimeSection();
@@ -235,4 +234,3 @@ define('tests/Groups/DateTimeSectionTests', [
         });
     });
 });
-

@@ -20,7 +20,9 @@ import string from 'dojo/string';
 import dNumber from 'dojo/number';
 import convert from './Convert';
 import utility from './Utility';
-import moment from 'moment';
+import getResource from './I18n';
+
+const resource = getResource('format');
 
 const getVectorMaxSize = function getVectorMaxSize(v) {
   let w = 1;
@@ -116,44 +118,44 @@ __class = lang.setObject('argos.Format', {
    * @property {String}
    * Text used in {@link #yesNo yesNo} formatter for true values
    */
-  yesText: 'Yes',
+  yesText: resource.yesText,
   /**
    * @property {String}
    * Text used in {@link #yesNo yesNo} formatter for false values
    */
-  noText: 'No',
+  noText: resource.noText,
   /**
    * @property {String}
    * Text used in {@link #bool bool} formatter for true values
    */
-  trueText: 'T',
+  trueText: resource.trueText,
   /**
    * @property {String}
    * Text used in {@link #bool bool} formatter for false values
    */
-  falseText: 'F',
+  falseText: resource.falseText,
   /**
    * @property {String}
    * Text used in {@link #timespan timespan} formatter for more than one hour
    */
-  hoursText: 'hours',
+  hoursText: resource.hoursText,
   /**
    * @property {String}
    * Text used in {@link #timespan timespan} formatter for exactly one hour
    */
-  hourText: 'hour',
+  hourText: resource.hourText,
   /**
    * @property {String}
    * Text used in {@link #timespan timespan} formatter for more than one minute
    */
-  minutesText: 'minutes',
+  minutesText: resource.minutesText,
   /**
    * @property {String}
    * Text used in {@link #timespan timespan} formatter for exactly one minute
    */
-  minuteText: 'minute',
+  minuteText: resource.minuteText,
 
-  shortDateFormatText: 'M/D/YYYY',
+  shortDateFormatText: resource.shortDateFormatText,
 
   /**
    * @property {String}
@@ -161,7 +163,7 @@ __class = lang.setObject('argos.Format', {
    * * `${0}` - percent value
    * * `${1}` - percent synmbol "%"
    */
-  percentFormatText: '${0}${1}',
+  percentFormatText: resource.percentFormatText,
   /**
    * Takes a String and encodes `&`, `<`, `>`, `"` to HTML entities
    * @param {String} String to encode
@@ -184,7 +186,7 @@ __class = lang.setObject('argos.Format', {
    * @property {String}
    * Text used in file size  formatter
    */
-  bytesText: 'bytes',
+  bytesText: resource.bytesText,
   /**
    * @property {Object[]}
    * Array of objects that have the keys `test` and `format` where `test` is a RegExp that
@@ -288,8 +290,8 @@ __class = lang.setObject('argos.Format', {
     if (dateValue) {
       dateValue = moment(dateValue);
       if (utc) {
-        dateValue = dateValue.add({
-          minutes: dateValue.zone(),
+        dateValue = dateValue.subtract({
+          minutes: dateValue.utcOffset(),
         });
       }
 

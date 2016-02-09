@@ -1,0 +1,126 @@
+.dropdown {
+  color: @color-graphite;
+  position: relative;
+  width: 75px;
+  height: 32px;
+  line-height: 32px;
+  display: inline-block;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.dropdown--medium {
+  width: 100px;
+}
+
+.dropdown--absolute {
+  position: absolute;
+  height: auto;
+  max-height: 294px;
+  border: 1px solid @color-azure;
+  .border-radius(3px);
+  .box-sizing(border-box);
+  z-index: 100;
+}
+
+.dropdown--hidden {
+  display: none;
+}
+
+.dropdown__icon {
+  position: absolute;
+  color: @color-deep-graphite;
+  font-size: 14px;
+  height: 14px;
+  width: 14px;
+  margin-top: 10px;
+  margin-left: -15px;
+  text-align: center;
+}
+
+.dropdown__input {
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 15px;
+  outline: none;
+  outline-color: transparent;
+}
+
+.dropdown__input--absolute {
+  .border-radius(0);
+  border: 0;
+  border-bottom: 1px solid @color-lighter-graphite;
+  border-top: 1px solid transparent;
+}
+
+.dropdown__input--absolute:focus {
+  .border-radius(0);
+  border: 0;
+  border-bottom: 1px solid @color-lighter-graphite;
+  border-top: 1px solid transparent;
+}
+
+.dropdown--onTop .dropdown__input--absolute {
+  border-top: 1px solid @color-lighter-graphite;
+  border-bottom: 1px solid transparent;
+}
+
+.dropdown__list {
+  background-color: #fff;
+  color: #5c5c5c;
+  font-size: 14px;
+  height: auto;
+  width: 100%;
+  line-height: 32px;
+  max-height: 260px;
+  min-height: inherit;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  text-indent: 10px;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  list-style: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility !important;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+  font-weight: normal;
+  .transition(height 0.3s ease 0s);
+  .box-sizing(border-box);
+}
+
+.dropdown__list--hidden {
+  display:none;
+  height: 0;
+}
+
+.dropdown__list__item {
+  width: 100%;
+  height: 32px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown__list__item--selected {
+  background-color: @color-azure;
+  color: @toolbar-text-color;
+}
+
+.dropdown__overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  z-index: 99;
+}
+
+.dropdown__select--hidden {
+  display: none;
+}

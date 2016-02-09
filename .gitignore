@@ -24,6 +24,7 @@ obj/
 [Bb]in
 [Dd]ebug*/
 [Rr]elease*/
+.vscode/*
 
 #Tooling
 _ReSharper*/

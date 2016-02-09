@@ -18,391 +18,500 @@
  * @alternateClassName Calendar
  */
 import declare from 'dojo/_base/declare';
+import array from 'dojo/_base/array';
 import lang from 'dojo/_base/lang';
-import string from 'dojo/string';
-import domAttr from 'dojo/dom-attr';
+import query from 'dojo/query';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
-import domStyle from 'dojo/dom-style';
-import View from 'argos/View';
-import moment from 'moment';
+import _ActionMixin from './_ActionMixin';
+import _Widget from 'dijit/_Widget';
+import _Templated from './_Templated';
+import Dropdown from 'argos/Dropdown';
+import getResource from './I18n';
 
-function pad(n) {
-  return n < 10 ? '0' + n : n;
-}
+const resource = getResource('calendar');
 
-function uCase(str) {
-  return str.charAt(0).toUpperCase() + str.substring(1);
-}
-
-const __class = declare('argos.Calendar', [View], {
-  // Localization
-  titleText: 'Calendar',
-  amText: 'AM',
-  pmText: 'PM',
-
-  id: 'generic_calendar',
-  contentNode: null,
-  calendarNode: null,
-  timeNode: null,
-  meridiemNode: null,
-  monthsShortText: [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ],
-  months: null,
-  dateFormat: moment().lang()._longDateFormat.L,
-  timeFormatText: 'h:mm A',
-  is24hrTimeFormat: moment().lang()._longDateFormat.LT.match(/H\:/),
-  date: false,
-  showTimePicker: false,
-  timeless: false,
-  selectorTemplate: '<select id="${0}-field" data-dojo-attach-point="${0}Node"></select>',
-  incrementTemplate: '<button data-action="increment${0}" class="button">+</button>',
-  decrementTemplate: '<button data-action="decrement${0}" class="button">-</button>',
+const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], {
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%: $.titleText %}" class="panel {%= $.cls %}">',
-    '<div class="panel-content" id="datetime-picker">',
-    '<div class="calendar-content">',
-    '<table id="datetime-picker-date" data-dojo-attach-point="datePickControl">',
-    '<caption>&nbsp;</caption>',
-    '<tr class="plus">',
-    '<td>{%= $.localizeViewTemplate("incrementTemplate", 0) %}</td>',
-    '<td>{%= $.localizeViewTemplate("incrementTemplate", 1) %}</td>',
-    '<td>{%= $.localizeViewTemplate("incrementTemplate", 2) %}</td>',
-    '</tr>',
-    '<tr class="datetime-selects">',
-    '<td>{%= $.localizeViewTemplate("selectorTemplate", 0) %}</td>',
-    '<td>{%= $.localizeViewTemplate("selectorTemplate", 1) %}</td>',
-    '<td>{%= $.localizeViewTemplate("selectorTemplate", 2) %}</td>',
-    '</tr>',
-    '<tr class="minus">',
-    '<td>{%= $.localizeViewTemplate("decrementTemplate", 0) %}</td>',
-    '<td>{%= $.localizeViewTemplate("decrementTemplate", 1) %}</td>',
-    '<td>{%= $.localizeViewTemplate("decrementTemplate", 2) %}</td>',
-    '</tr>',
-    '</table>',
-    '</div>',
-    '<div class="time-content" data-dojo-attach-point="timeNode">',
-    '<table id="datetime-picker-time" data-dojo-attach-point="timePickControl">',
-    '<caption>&nbsp;</caption>',
-    '<tr class="plus">',
-    '<td>{%= $.localizeViewTemplate("incrementTemplate", 3) %}</td>',
-    '<td>{%= $.localizeViewTemplate("incrementTemplate", 4) %}</td>',
-    '<td rowspan="3">',
-    '<div class="toggle toggle-vertical meridiem-field" data-action="toggleMeridiem" data-dojo-attach-point="meridiemNode">',
-    '<span class="thumb vertical"></span>',
-    '<span class="toggleOn">{%= $.amText %}</span>',
-    '<span class="toggleOff">{%= $.pmText %}</span>',
-    '</div>',
-    '</td>',
-    '</tr>',
-    '<tr class="datetime-selects">',
-    '<td>{%= $.localizeViewTemplate("selectorTemplate", 3) %}</td>',
-    '<td>{%= $.localizeViewTemplate("selectorTemplate", 4) %}</td>',
-    '</tr>',
-    '<tr class="minus">',
-    '<td>{%= $.localizeViewTemplate("decrementTemplate", 3) %}</td>',
-    '<td>{%= $.localizeViewTemplate("decrementTemplate", 4) %}</td>',
-    '</tr>',
-    '</table>',
-    '</div>',
-    '<div style="clear:both"></div>',
-    '</div>',
+    '<div id="{%= $.id %}" class="calendar panel">',
+      '{%! $.calendarHeaderTemplate %}',
+      '{%! $.calendarTableTemplate %}',
+      '{%! $.calendarFooterTemplate %}',
     '</div>',
   ]),
+  calendarHeaderTemplate: new Simplate([
+    '<div class="calendar-header">',
+      '<span class="calendar__header__icon calendar__header__icon--left fa fa-angle-left" data-action="decrementMonth"></span>',
+      '<div class="month" data-dojo-attach-point="monthNode" data-action="toggleMonthModal"></div>',
+      '<div class="year" data-dojo-attach-point="yearNode" data-action="toggleYearModal"></div>',
+      '<span class="fa fa-angle-right calendar__header__icon calendar__header__icon--right " data-action="incrementMonth"></span>',
+    '</div>',
+  ]),
+  calendarTableTemplate: new Simplate([
+     '<table class="calendar-table">',
+      '<thead>',
+        '{%! $.calendarWeekDaysTemplate %}',
+      '</thead>',
+      '<tbody data-dojo-attach-point="weeksNode"></tbody>',
+     '</table>',
+  ]),
+  calendarFooterTemplate: new Simplate([
+    '<div class="calendar-footer" data-dojo-attach-point="footerNode">',
+      '<div class="button button--secondary clear" data-action="clearCalendar" data-dojo-attach-point="clearButton">{%= $.clearText %}</div>',
+      '<div class="button button--secondary toToday" data-action="goToToday" data-dojo-attach-point="todayButton">{%= $.todayText %}</div>',
+    '</div>',
+  ]),
+  calendarTableDayTemplate: new Simplate([
+    '<td class="day {%= $.month %} {%= $.weekend %} {%= $.selected %} {%= $.isToday %}" data-action="changeDay" data-date="{%= $.date %}">',
+      '{%= $.day %}',
+    '</td>',
+  ]),
+  calendarTableDayActiveTemplate: new Simplate([
+    '<div class="day__active">',
+    '</div>',
+  ]),
+  calendarTableWeekStartTemplate: new Simplate([
+    '<tr class="calendar-week">',
+  ]),
+  calendarTableWeekEndTemplate: new Simplate([
+    '</tr>',
+  ]),
+  calendarWeekDaysTemplate: new Simplate([
+    '<tr class="calendar-weekdays">',
+      '<th>{%= $.weekDaysShortText[0] %}</th>',
+      '<th>{%= $.weekDaysShortText[1] %}</th>',
+      '<th>{%= $.weekDaysShortText[2] %}</th>',
+      '<th>{%= $.weekDaysShortText[3] %}</th>',
+      '<th>{%= $.weekDaysShortText[4] %}</th>',
+      '<th>{%= $.weekDaysShortText[5] %}</th>',
+      '<th>{%= $.weekDaysShortText[6] %}</th>',
+    '</tr>',
+  ]),
 
-  dayNode: null,
-  monthNode: null,
-  yearNode: null,
-  hourNode: null,
-  minuteNode: null,
-  datePickControl: null,
-  timePickControl: null,
+  // Localization
+  titleText: resource.titleText,
+  amText: resource.amText,
+  pmText: resource.pmText,
+  clearText: resource.clearText,
+  todayText: resource.todayText,
+  monthsText: [
+    {
+      value: resource.january,
+      key: 'january',
+    },
+    {
+      value: resource.february,
+      key: 'february',
+    },
+    {
+      value: resource.march,
+      key: 'march',
+    },
+    {
+      value: resource.april,
+      key: 'april',
+    },
+    {
+      value: resource.may,
+      key: 'may',
+    },
+    {
+      value: resource.june,
+      key: 'june',
+    },
+    {
+      value: resource.july,
+      key: 'july',
+    },
+    {
+      value: resource.august,
+      key: 'august',
+    },
+    {
+      value: resource.september,
+      key: 'september',
+    },
+    {
+      value: resource.october,
+      key: 'october',
+    },
+    {
+      value: resource.november,
+      key: 'november',
+    },
+    {
+      value: resource.december,
+      key: 'december',
+    },
+  ],
+  weekDaysShortText: [
+    resource.sundayAbbreviated,
+    resource.mondayAbbreviated,
+    resource.tuesdayAbbreviated,
+    resource.wednesdayAbbreviated,
+    resource.thursdayAbbreviated,
+    resource.fridayAbbreviated,
+    resource.saturdayAbbreviated,
+  ],
 
-  daysInMonth: function daysInMonth() {
-    const date = moment();
-    date.date(1);
-    date.year(this.year);
-    date.month(this.month);
-    return date.daysInMonth();
+  // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
+  date: null,
+  id: 'generic_calendar',
+  // This boolean value is used to trigger the modal hide and show and must be used by each entity
+  isModal: false,
+  noClearButton: false,
+  showTimePicker: true,
+  showSubValues: true,
+  _currentMonth: null,
+  _currentYear: null,
+  _monthDropdown: null,
+  _selectWeek: false,
+  _selectedDay: null,
+  _todayMonth: null,
+  _todayYear: null,
+  _widgetName: 'calendar',
+  _yearDropdown: null,
+
+  changeDay: function changeDay(params) {
+    if (!this._selectWeek) {
+      this.changeSingleDay(params);
+    } else {
+      this.changeWeek(params);
+    }
+
+    return this;
+  },
+  changeMonthShown: function changeMonthShown({ month }) {
+    this._monthDropdown.setValue(month.toLowerCase());
+    return this;
+  },
+  changeSingleDay: function changeSingleDay(params) {
+    if (params) {
+      const selected = query('.selected', this.weeksNode);
+
+      if (selected) {
+        array.forEach(selected, (day) => {
+          domClass.remove(day, 'selected');
+        });
+      }
+
+      if (selected) {
+        domClass.remove(selected, 'selected');
+      }
+
+      if (params.$source) {
+        this._selectedDay = params.$source;
+        domClass.add(params.$source, 'selected');
+      }
+
+      if (params.date) {
+        this.date.selectedDateMoment = moment(params.date, 'YYYY-MM-DD');
+      }
+
+      if (this.date.monthNumber !== this.date.selectedDateMoment.month()) {
+        this.refreshCalendar(this.date);
+      }
+    }
+    return this;
+  },
+  changeWeek: function changeWeek(params) {
+    if (params) {
+      const selected = query('.selected', this.weeksNode);
+
+      if (selected) {
+        array.forEach(selected, (day) => {
+          domClass.remove(day, 'selected');
+        });
+      }
+
+      if (params.$source.parentNode) {
+        this._selectedDay = params.$source;
+        array.forEach(params.$source.parentNode.children, (day) => {
+          domClass.add(day, 'selected');
+        });
+      }
+
+      if (params.date) {
+        this.date.selectedDateMoment = moment(params.date, 'YYYY-MM-DD');
+      }
+
+      if (this.date.monthNumber !== this.date.selectedDateMoment.month()) {
+        this.refreshCalendar(this.date);
+      }
+    }
+    return this;
+  },
+  changeYearShown: function changeYearShown({ year }) {
+    this._yearDropdown.setValue(year);
+    return this;
+  },
+  checkAndRenderDay: function checkAndRenderDay(data = {}) {
+    const dayIndexer = data.day + data.startingDay - 1;
+    if (data.day === data.todayMoment.date() && data.todayMoment.month() === data.dateMoment.month() && data.todayMoment.year() === data.dateMoment.year()) {
+      data.isToday = 'isToday';
+    } else {
+      data.isToday = '';
+    }
+    if (dayIndexer % 7 === data.weekEnds.Sunday || dayIndexer % 7 === data.weekEnds.Saturday) {
+      data.weekend = 'weekend';
+    } else {
+      data.weekend = '';
+    }
+    data.date = data.dateMoment.clone().date(data.day).format('YYYY-MM-DD');
+    const day = domConstruct.toDom(this.calendarTableDayTemplate.apply(data, this));
+    if (data.day === this.date.dayNode && data.month === 'current-month') {
+      this._selectedDay = day;
+    }
+    if (this.showSubValues) {
+      this.setSubValue(day, data)
+          .setActiveDay(day);
+    }
+    domConstruct.place(day, data.week);
+  },
+  clearCalendar: function clearCalendar() {
+    const selected = query('.selected', this.weeksNode)[0];
+
+    if (selected) {
+      domClass.remove(selected, 'selected');
+    }
+    this.date.selectedDateMoment = null;
+  },
+  createMonthDropdown: function createMonthDropdown() {
+    if (!this._monthDropdown) {
+      this._monthDropdown = new Dropdown({ id: 'month-dropdown ' + this.id, dropdownClass: 'dropdown--medium', onSelect: this.setMonth, onSelectScope: this });
+      this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.format('MMMM').toLowerCase()});
+      this._todayMonth = this._monthDropdown.findValue(this.date.todayMoment.format('MMMM'));
+      domConstruct.place(this._monthDropdown.domNode, this.monthNode);
+    }
+    return this;
+  },
+  createYearDropdown: function createYearDropdown() {
+    if (!this._yearDropdown) {
+      this._yearDropdown = new Dropdown({ id: 'year-dropdown ' + this.id, onSelect: this.setYear, onSelectScope: this });
+      this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY')});
+      this._todayYear = this._yearDropdown.findValue(this.date.todayMoment.format('YYYY'));
+      domConstruct.place(this._yearDropdown.domNode, this.yearNode);
+    }
+    return this;
+  },
+  decrementMonth: function decrementMonth() {
+    this.date.selectedDateMoment.subtract({ months: 1 });
+    this.refreshCalendar(this.date);
+  },
+  destroy: function destroy() {
+    this._yearDropdown.destroy();
+    this._monthDropdown.destroy();
+    this.inherited(arguments);
+  },
+  getContent: function getContent() {
+    if (this.options.timeless) {
+      // Revert back to timeless
+      this.date.selectedDateMoment.add({
+        minutes: this.date.selectedDateMoment.utcOffset(),
+      });
+    }
+    return this.date;
+  },
+  goToToday: function goToToday() {
+    if (this.date.selectedDateMoment.month() !== this.date.todayMoment.month() || this.date.selectedDateMoment.year() !== this.date.todayMoment.year()) {
+      this.date.selectedDateMoment = this.date.todayMoment;
+      this.refreshCalendar(this.date);
+    }
+    const day = query('.isToday', this.weeksNode)[0];
+    let params = {};
+    if (day) {
+      params = { $source: day, date: day.dataset.date };
+    }
+    this.changeDay(params);
+    this.setDropdownsToday();
+  },
+  getDateTime: function getDateTime() {
+    const result = this.date.selectedDateMoment;
+    return result.toDate();
+  },
+  getSelectedDateMoment: function getSelectedDateMoment() {
+    return this.date.selectedDateMoment;
+  },
+  getYearRange: function getYearRange() {
+    const items = [];
+    const thisYear = this.date.todayMoment.year();
+    for (let i = thisYear - 10; i <= thisYear + 10; i++) {
+      items.push(
+        {
+          value: i,
+          key: i,
+        }
+      );
+    }
+    return items;
+  },
+  incrementMonth: function incrementMonth() {
+    this.date.selectedDateMoment.add({ months: 1 });
+    this.refreshCalendar(this.date);
   },
   init: function init() {
     this.inherited(arguments);
-    this.months = this.monthsShortText;
-    this.dateFormat = moment().lang()._longDateFormat.L;
-    this.is24hrTimeFormat = moment().lang()._longDateFormat.LT.match(/H\:/);
-    this.connect(this.dayNode, 'onchange', this.validate);
-    this.connect(this.monthNode, 'onchange', this.validate);
-    this.connect(this.yearNode, 'onchange', this.validate);
-    this.connect(this.hourNode, 'onchange', this.validate);
-    this.connect(this.minuteNode, 'onchange', this.validate);
   },
-
-  validate: function validate() {
-    this.year = parseInt(this.yearNode.value, 10);
-    this.month = parseInt(this.monthNode.value, 10);
-    const daysInMonth = this.daysInMonth();
-
-    // adjust dayNode selector from changes to monthNode or leap/non-leap year
-    if (this.dayNode.options.length !== daysInMonth) {
-      this.populateSelector(this.dayNode, this.dayNode.selectedIndex + 1, 1, this.daysInMonth());
-    }
-
-    this.date = moment(new Date(this.year, this.month, this.dayNode.value));
-    let hours = parseInt(this.hourNode.value, 10);
-    const minutes = parseInt(this.minuteNode.value, 10);
-    const isPM = this.is24hrTimeFormat ? hours > 11 : domAttr.get(this.meridiemNode, 'toggled') !== true;
-    hours = isPM ? (hours % 12) + 12 : (hours % 12);
-
-    if (!this._isTimeless()) {
-      this.date.hours(hours);
-      this.date.minutes(minutes);
-    }
-
-    this.updateDatetimeCaption();
-  },
-  toggleMeridiem: function toggleMeridiem(params) {
-    const el = params.$source;
-    const toggledValue = el && (domAttr.get(el, 'toggled') !== true);
-
-    if (el) {
-      domClass.toggle(el, 'toggleStateOn');
-      domAttr.set(el, 'toggled', toggledValue);
-    }
-
-    this.updateDatetimeCaption();
-  },
-  populateSelector: function populateSelector(el, v, min, max) {
-    let val = v;
-    if (val > max) {
-      val = max;
-    }
-
-    el.options.length = 0;
-
-    for (let i = min; i <= max; i++) {
-      const opt = domConstruct.create('option', {
-        innerHTML: (this.monthNode === el) ? uCase(this.months[i]) : pad(i),
-        value: i,
-        selected: (i === val),
-      });
-
-      el.options[el.options.length] = opt;
+  isActive: function isActive(day) {
+    if (day) {
+      return query('.day__active', day)[0];
     }
   },
-  localizeViewTemplate: function localizeViewTemplate() {
-    const whichTemplate = arguments[0];
-    const formatIndex = arguments[1];
-    const fields = {
-      y: 'year',
-      Y: 'year',
-      M: 'month',
-      d: 'day',
-      D: 'day',
-      h: 'hour',
-      H: 'hour',
-      m: 'minute',
+  postRenderCalendar: function postRenderCalendar() {
+    if (this._selectWeek) {
+      this.changeWeek({ $source: this._selectedDay });
+    }
+  },
+  refreshCalendar: function refreshCalendar(date = {}) {
+    domConstruct.empty(this.weeksNode);
+    this.renderCalendar(date)
+        .changeMonthShown(date)
+        .changeYearShown(date);
+    return this;
+  },
+  removeActive: function removeActive(day) {
+    if (day) {
+      const active = this.isActive(day);
+      if (active) {
+        domConstruct.destroy(active);
+      }
+    }
+    return this;
+  },
+  renderCalendar: function renderCalendar({ todayMoment, selectedDateMoment }) {
+    const daysInMonth = selectedDateMoment.daysInMonth();
+    const startingDay = selectedDateMoment.clone().startOf('month').day();
+    const endPrevMonth = selectedDateMoment.clone().startOf('month').subtract({ days: startingDay });
+    const startNextMonth = selectedDateMoment.clone().endOf('month').add({ days: 1 });
+    const data = {
+      todayMoment,
+      selectedDateMoment,
+      dateMoment: endPrevMonth.clone(),
+      week: domConstruct.toDom(this.calendarTableWeekStartTemplate.apply()),
+      startingDay: endPrevMonth.clone().startOf('month').day(),
+      weekEnds: {
+        Sunday: 0,
+        Saturday: 6,
+      },
     };
 
-    const whichField = fields[(formatIndex < 3) ? this.dateFormat.split(/[^a-z]/i)[formatIndex].charAt(0) : this.timeFormatText.replace(/[a]\s/i, '').split(/[^a-z]/i)[formatIndex - 3].charAt(0)];
-    const whichFormat = whichTemplate === 'selectorTemplate' ? whichField : uCase(whichField);
-
-    return string.substitute(this[whichTemplate], [whichFormat]);
-  },
-  show: function show(o) {
-    this.inherited(arguments);
-    const options = o || this.options;
-
-    this.titleText = options.label ? options.label : this.titleText;
-
-    this.showTimePicker = this.options && this.options.showTimePicker;
-
-    this.date = moment((this.options && this.options.date) || moment());
-
-    if (this._isTimeless()) {
-      this.date.add({
-        minutes: this.date.zone(),
-      });
+    // Iterate through the days that are in the start week of the current month but are in the previous month
+    for (let day = endPrevMonth.date(); day < endPrevMonth.date() + startingDay; day++) {
+      data.day = day;
+      this.checkAndRenderDay(data);
     }
 
-    this.year = this.date.year();
-    this.month = this.date.month();
-
-    const today = moment();
-
-    this.populateSelector(this.yearNode, this.year, (this.year < today.year() - 10) ? this.year : today.year() - 10, // min 10 years in past - arbitrary min
-      (10 + today.year()) // max 10 years into future - arbitrary limit
-    );
-
-    this.populateSelector(this.monthNode, this.month, 0, 11);
-    this.populateSelector(this.dayNode, this.date.date(), 1, this.daysInMonth());
-    this.populateSelector(this.hourNode,
-      this.date.hours() > 12 && !this.is24hrTimeFormat ? this.date.hours() - 12 : (this.date.hours() || 12),
-      this.is24hrTimeFormat ? 0 : 1,
-      this.is24hrTimeFormat ? 23 : 12
-    );
-
-    this.populateSelector(this.minuteNode, this.date.minutes(), 0, 59);
-
-    if (this.date.hours() < 12) {
-      domAttr.set(this.meridiemNode, 'toggled', true);
-      domClass.add(this.meridiemNode, 'toggleStateOn');
-    } else {
-      domAttr.set(this.meridiemNode, 'toggled', false);
-      domClass.remove(this.meridiemNode, 'toggleStateOn');
-    }
-
-
-    this.updateDatetimeCaption();
-
-    if (this.showTimePicker) {
-      domClass.remove(this.timeNode, 'time-content-hidden');
-      // hide meridiem toggle when using 24hr time format:
-      if (this.is24hrTimeFormat) {
-        domStyle.set(this.meridiemNode.parentNode, 'display', 'none');
-      } else if (this.date.hours() < 12) {
-        // ensure initial toggle state reflects actual time
-        domClass.add(this.meridiemNode, 'toggleStateOn');
+    data.month = 'current-month';
+    data.startingDay = startingDay;
+    data.dateMoment = selectedDateMoment.clone();
+    for (let day = 1; day <= daysInMonth; day++) {
+      if (day === selectedDateMoment.date()) {
+        data.selected = 'selected';
+        this.date.dayNode = day;
       } else {
-        domClass.remove(this.meridiemNode, 'toggleStateOn');
+        data.selected = '';
       }
-    } else {
-      domClass.add(this.timeNode, 'time-content-hidden');
+      data.day = day;
+      this.checkAndRenderDay(data);
+      if ((day + startingDay) % 7 === 0) {
+        domConstruct.place(this.calendarTableWeekEndTemplate.apply(), data.week);
+        domConstruct.place(data.week, this.weeksNode);
+        data.week = domConstruct.toDom(this.calendarTableWeekStartTemplate.apply());
+      }
     }
-  },
 
-  decrementYear: function decrementYear() {
-    this.decrement(this.yearNode);
+    data.selected = '';
+    data.month = '';
+    data.startingDay = startNextMonth.day();
+    data.dateMoment = startNextMonth.clone();
+    // Iterate through remaining days of the week based on 7 days in the week and ensure there are 6 weeks shown (for consistency)
+    for (let day = 1; day <= (1 + data.weekEnds.Saturday - startNextMonth.day()); day++) {
+      data.day = day;
+      this.checkAndRenderDay(data);
+    }
+    domConstruct.place(this.calendarTableWeekEndTemplate.apply(), data.week);
+    domConstruct.place(data.week, this.weeksNode);
+
+    if (this.weeksNode.children.length === 5) {
+      data.week = domConstruct.toDom(this.calendarTableWeekStartTemplate.apply());
+      for (let day = 2 + data.weekEnds.Saturday - startNextMonth.day(); day <= (8 + data.weekEnds.Saturday - startNextMonth.day()); day++) {
+        data.day = day;
+        this.checkAndRenderDay(data);
+      }
+      domConstruct.place(this.calendarTableWeekEndTemplate.apply(), data.week);
+      domConstruct.place(data.week, this.weeksNode);
+    }
+
+    this.setDateObject(selectedDateMoment);
+
+    this.postRenderCalendar();
+
+    return this;
   },
-  decrementMonth: function decrementMonth() {
-    this.decrement(this.monthNode);
+  setActiveDay: function setActiveDay(day = {}) {
+    if (day.subValue) {
+      const active = domConstruct.toDom(this.calendarTableDayActiveTemplate.apply({ count: day.subValue }, this));
+      domConstruct.place(active, day, 'last');
+    }
+    return this;
   },
-  decrementDay: function decrementDay() {
-    this.decrement(this.dayNode);
+  setDateObject: function setDateObject(dateMoment = {}) {
+    this.date.day = dateMoment.date();
+    this.date.month = dateMoment.format('MMMM');
+    this.date.monthNumber = dateMoment.month();
+    this.date.year = dateMoment.year();
+    this.date.date = moment(dateMoment).toDate();
+
+    return this;
   },
-  decrementHour: function decrementHour() {
-    this.decrement(this.hourNode);
-    if (this.hourNode.value % 12 === 11) {
-      this.toggleMeridiem({
-        $source: this.meridiemNode,
+  setDropdownsToday: function setDropdownsToday() {
+    if (this._monthDropdown.getSelected() !== this._todayMonth) {
+      this._monthDropdown.setSelected(this._todayMonth);
+    }
+    if (this._yearDropdown.getSelected() !== this._todayYear) {
+      this._yearDropdown.setSelected(this._todayYear);
+    }
+    return this;
+  },
+  setMonth: function setMonth() {
+    this.date.selectedDateMoment.month(this._monthDropdown.getValue());
+    this.refreshCalendar(this.date);
+  },
+  setSubValue: function setSubValue() {
+    return this;
+  },
+  setYear: function setYear() {
+    this.date.selectedDateMoment.year(this._yearDropdown.getValue());
+    this.refreshCalendar(this.date);
+  },
+  show: function show(options = {}) {
+    this.date = {};
+    this.options = options || this.options;
+
+    this.titleText = this.options.label ? this.options.label : this.titleText;
+    this.showTimePicker = this.options && this.options.showTimePicker;
+    if (this.options.timeless) {
+      // Undo timeless
+      const startDate = moment(this.options && this.options.date);
+      startDate.subtract({
+        minutes: startDate.utcOffset(),
       });
-    }
-  },
-  decrementMinute: function decrementMinute() {
-    this.decrement(this.minuteNode, 15);
-  },
-  decrement: function decrement(el, inc = 1) { // all fields are <select> elements
-    if ((el.selectedIndex - inc) >= 0) {
-      el.selectedIndex = inc * Math.floor((el.selectedIndex - 1) / inc);
+      this.date.selectedDateMoment = startDate;
     } else {
-      if (el === this.yearNode) {
-        return false;
-      }
-
-      if (el === this.dayNode) {
-        this.decrementMonth();
-      }
-
-      if (el === this.monthNode) {
-        this.decrementYear();
-      }
-
-      if (el === this.minuteNode) {
-        this.decrementHour();
-      }
-
-      el.selectedIndex = el.options.length - inc;
+      this.date.selectedDateMoment = moment((this.options && this.options.date) || moment().clone());
     }
-
-    this.validate(null, el);
-  },
-
-  incrementYear: function incrementYear() {
-    this.increment(this.yearNode);
-  },
-  incrementMonth: function incrementMonth() {
-    this.increment(this.monthNode);
-  },
-  incrementDay: function incrementDay() {
-    this.increment(this.dayNode);
-  },
-  incrementHour: function incrementHour() {
-    this.increment(this.hourNode);
-
-    if (this.hourNode.selectedIndex === (this.hourNode.options.length - 1)) {
-      this.toggleMeridiem({
-        $source: this.meridiemNode,
-      });
+    this.date.todayMoment = moment();
+    if (this.isModal || this.options.isModal || this.noClearButton || this.options.noClearButton) {
+      this.clearButton.style.display = 'none';
     }
+    this.createMonthDropdown()
+        .createYearDropdown();
+
+    this.refreshCalendar(this.date);
   },
-  incrementMinute: function incrementMinute() {
-    this.increment(this.minuteNode, 15);
-  },
-  increment: function increment(el, inc = 1) {
-    if (el.options.length > (el.selectedIndex + inc)) {
-      el.selectedIndex += inc;
-    } else {
-      if (el === this.yearNode) {
-        return false;
-      }
-
-      if (el === this.dayNode) {
-        this.incrementMonth();
-      }
-
-      if (el === this.monthNode) {
-        this.incrementYear();
-      }
-
-      if (el === this.minuteNode) {
-        this.incrementHour();
-      }
-
-      el.selectedIndex = 0;
-    }
-
-    this.validate(null, el);
-  },
-  _isTimeless: function _isTimeless() {
-    return (this.options && this.options.timeless) || this.timeless;
-  },
-  updateDatetimeCaption: function updateDatetimeCaption() {
-    const t = moment(this.getDateTime());
-
-    if (this._isTimeless()) {
-      t.utc();
-    }
-
-    this.datePickControl.caption.innerHTML = t.format('dddd'); // weekday text
-    if (this.showTimePicker) {
-      this.timePickControl.caption.innerHTML = t.format(this.timeFormatText);
-    }
-  },
-  getDateTime: function getDateTime() {
-    const result = moment(this.date);
-    if (!this._isTimeless()) {
-      let hours = parseInt(this.hourNode.value, 10);
-      const minutes = parseInt(this.minuteNode.value, 10);
-      const isPM = this.is24hrTimeFormat ? (hours > 11) : domAttr.get(this.meridiemNode, 'toggled') !== true;
-
-      hours = isPM ? (hours % 12) + 12 : (hours % 12);
-
-      result.hours(hours);
-      result.minutes(minutes);
-    }
-
-    return result.toDate();
+  toggleSelectWeek: function toggleSelectWeek() {
+    this._selectWeek = !this._selectWeek;
+    this.changeDay({ $source: this._selectedDay });
   },
 });
 

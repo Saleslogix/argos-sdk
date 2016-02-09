@@ -93,8 +93,9 @@ input:focus, textarea:focus {
 }
 
 .list-loading .list-more .button span {
-    padding: 0 0 0 20px;
-    color: #555;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: @color-graphite;
 }
 
 .actions-row > button {
@@ -199,7 +200,8 @@ input:focus, textarea:focus {
 .row-edit[data-field-type="name"] > .button,
 .row-edit[data-field-type="date"] > .button,
 .row-edit[data-field-type="note"] > .button,
-.row-edit[data-field-type="signature"] > div > .button {
+.row-edit[data-field-type="signature"] > div > .button,
+.row-edit[data-field-type="recurrences"] > div > .button {
     margin: 0;
     padding: 0;
     position: absolute;
@@ -467,6 +469,7 @@ button.clear-button:focus {
     position: absolute;
     width: 40px;
     height: 40px;
+    left: 0;
     background-color: @toggle-thumb-bg-color;
     .border-radius(@toggle-border-radius);
 }

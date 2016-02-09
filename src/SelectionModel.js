@@ -1,5 +1,8 @@
 import lang from 'dojo/_base/lang';
 import declare from 'dojo/_base/declare';
+import getResource from './I18n';
+
+const resource = getResource('selectionModel');
 
 /**
  * @class argos.SelectionModel
@@ -9,7 +12,7 @@ import declare from 'dojo/_base/declare';
  */
 const __class = declare('argos.SelectionModel', null, {
   // Localization
-  requireSelectionText: 'A selection is required, you cannot de-select the last item.',
+  requireSelectionText: resource.requireSelectionText,
 
   /**
    * @property {Boolean}

@@ -59,6 +59,31 @@ return describe('Sage.Platform.Mobile.Utility', function() {
         expect(spy.adder.calls.count()).toEqual(1);
     });
 
+    it('Can debounce', function(done) {
+      var count = 0;
+      var fn = utility.debounce(function() {
+        count++;
+      }, 1000);
+      fn();
+      fn();
+      fn();
+      expect(count).toEqual(0);
+      setTimeout(function() {
+        expect(count).toEqual(1);
+        done();
+      }, 1000);
+    });
+
+    it('Can debounce with args', function(done) {
+      var fn = utility.debounce(function(a,b,c) {
+        expect(a).toEqual('a');
+        expect(b).toEqual('b');
+        expect(c).toEqual('c');
+        done();
+      }, 1000);
+      fn('a', 'b', 'c');
+    });
+
     it('Can expand an expression', function() {
         expect(utility.expand(null, function() {
             return '123';
@@ -128,4 +153,3 @@ return describe('Sage.Platform.Mobile.Utility', function() {
     });
 });
 });
-

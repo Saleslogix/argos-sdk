@@ -22,13 +22,9 @@ import convert from '../Convert';
 import utility from '../Utility';
 
 /**
- * @class argos.Application
- * Application is a nexus that provides many routing and global application services that may be used
- * from anywhere within the app.
- *
- * It provides a shortcut alias to `window.App` (`App`) with the most common usage being `App.getView(id)`.
- *
- * @alternateClassName App
+ * @class argos.Store.SData
+ * SData is an extension of dojo.store that is tailored to handling SData parameters, requests,
+ * and pre-handling the responses.
  */
 const __class = declare('argos.Store.SData', null, {
   doDateConversion: false,

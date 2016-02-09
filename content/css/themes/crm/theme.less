@@ -38,12 +38,12 @@ body > .viewContainer {
 }
 
 /*For the separate Contextual Menu*/
-.contextualContent > .group-content > .list-content {
+.contextualContent > .scroller > .group-content > .list-content {
     margin: 0;
     padding: 0;
 }
 
-.contextualContent > .group-content > .list-content > li {
+.contextualContent > .scroller > .group-content > .list-content > li {
     background-color: @menu-list-item-bg-color;
     list-style: none;
     margin: 0;
@@ -120,6 +120,16 @@ body > .viewContainer {
 .panel-content > div > .row > div > label,
 .panel-content > div > .row > label {
     color: @form-label-color;
+    padding: @panel-content-label-padding;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.detailContent > fieldset > .row > div > label,
+.detailContent > .row > div > label,
+.detailContent > .row > label {
+  width: 25%;
 }
 
 .panel-content > fieldset > .row-edit {
@@ -189,8 +199,6 @@ body > .viewContainer {
         border-bottom: 1px solid @color-lighter-slate;
     }
     .row {
-        display: inline-flex;
-        justify-content: space-between;
         width: 100%;
     }
 }
@@ -204,7 +212,12 @@ body > .viewContainer {
     font-size: 18px;
 }
 
+.detail-sub-header {
+    padding: 2px 0 2px 0 !important;
+    font-size: 16px;
+}
 .animated-bar {
+    top: -2px;
     height: 2px;
     position: relative;
     background-color: @color-azure;

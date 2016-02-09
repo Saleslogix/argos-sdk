@@ -1,8 +1,7 @@
 define('tests/Stores/SData', [
     'dojo/_base/lang',
-    'moment',
     'argos/Store/SData'
-], function(lang, moment, Store) {
+], function(lang, Store) {
 
     // Create a mock SData service
     function MockService(options) {

@@ -41,7 +41,7 @@ const __class = declare('argos._RelatedViewWidgetEditMixin', null, {
       if (item.children) {
         this.createRelatedViews(item.children, entry);
       }
-    }.bind(this));
+    });
   },
   /**
    * Gets the related view manager for a related view definition.

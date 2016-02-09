@@ -30,6 +30,7 @@ import when from 'dojo/when';
 import string from 'dojo/string';
 import SData from './Store/SData';
 import utility from './Utility';
+import MODEL_TYPES from 'argos/Models/Types';
 
 const __class = declare('argos._SDataListMixin', null, {
   /**
@@ -47,12 +48,12 @@ const __class = declare('argos._SDataListMixin', null, {
    * @cfg {String[]}
    * A list of fields to be selected in an SData request.
    */
-  querySelect: null,
+  querySelect: [],
   /**
    * @cfg {String[]?}
    * A list of child properties to be included in an SData request.
    */
-  queryInclude: null,
+  queryInclude: [],
   /**
    * @cfg {String}
    * The default order by expression for an SData request.
@@ -137,6 +138,9 @@ const __class = declare('argos._SDataListMixin', null, {
   },
   _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {
     const options = this.options;
+
+    queryOptions.count = this.pageSize;
+    queryOptions.start = this.position;
     if (options) {
       if (options.select) {
         queryOptions.select = options.select;
@@ -213,6 +217,105 @@ const __class = declare('argos._SDataListMixin', null, {
     });
 
     return def.promise;
+  },
+  initModel: function initModel() {
+    const model = this.getModel();
+    if (model) {
+      this._model = model;
+      this._model.init();
+      if (this._model.ModelType === MODEL_TYPES.SDATA) {
+        this._applyViewToModel(this._model);
+      }
+    }
+  },
+  _applyViewToModel: function _applyViewToModel(model) {
+    if (!model) {
+      return;
+    }
+
+    const queryModel = model._getQueryModelByName('list');
+    if (this.resourceKind) {
+      model.resourceKind = this.resourceKind;
+    }
+
+    if (!queryModel) {
+      return;
+    }
+
+    // Attempt to mixin the view's querySelect, queryInclude, queryWhere,
+    // queryArgs, queryOrderBy, resourceProperty, resourcePredicate properties
+    // into the layout. The past method of extending a querySelect for example,
+    // was to modify the protoype of the view's querySelect array.
+    if (this.querySelect) {
+      /* eslint-disable */
+      console.warn(`A view's querySelect is deprecated. Register a customization to the models layout instead.`);
+      /* eslint-enable */
+      if (!queryModel.querySelect) {
+        queryModel.querySelect = [];
+      }
+
+      queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter( (item) => {
+        return queryModel.querySelect.indexOf(item) < 0;
+      }));
+    }
+
+    if (this.queryInclude) {
+      /* eslint-disable */
+      console.warn(`A view's queryInclude is deprecated. Register a customization to the models layout instead.`);
+      /* eslint-enable */
+      if (!queryModel.queryInclude) {
+        queryModel.queryInclude = [];
+      }
+
+      queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter( (item) => {
+        return queryModel.queryInclude.indexOf(item) < 0;
+      }));
+    }
+
+    if (this.queryWhere) {
+      /* eslint-disable */
+      console.warn(`A view's queryWhere is deprecated. Register a customization to the models layout instead.`);
+      /* eslint-enable */
+      queryModel.queryWhere = this.queryWhere;
+    }
+
+    if (this.queryArgs) {
+      /* eslint-disable */
+      console.warn(`A view's queryArgs is deprecated. Register a customization to the models layout instead.`);
+      /* eslint-enable */
+      queryModel.queryArgs = lang.mixin({}, queryModel.queryArgs, this.queryArgs);
+    }
+
+    if (this.queryOrderBy) {
+      /* eslint-disable */
+      console.warn(`A view's queryOrderBy is deprecated. Register a customization to the models layout instead.`);
+      /* eslint-enable */
+      if (Array.isArray(this.queryOrderBy)) {
+        if (!queryModel.queryOrderBy) {
+          queryModel.queryOrderBy = [];
+        }
+
+        queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter( (item) => {
+          return queryModel.queryOrderBy.indexOf(item) < 0;
+        }));
+      } else {
+        queryModel.queryOrderBy = this.queryOrderBy;
+      }
+    }
+
+    if (this.resourceProperty) {
+      /* eslint-disable */
+      console.warn(`A view's resourceProperty is deprecated. Register a customization to the models layout instead.`);
+      /* eslint-enable */
+      queryModel.resourceProperty = this.resourceProperty;
+    }
+
+    if (this.resourcePredicate) {
+      /* eslint-disable */
+      console.warn(`A view's resourcePredicate is deprecated. Register a customization to the models layout instead.`);
+      /* eslint-enable */
+      queryModel.resourcePredicate = this.resourcePredicate;
+    }
   },
 });
 

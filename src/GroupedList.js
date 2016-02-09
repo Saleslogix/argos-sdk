@@ -30,6 +30,9 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import List from './List';
 import Utility from './Utility';
+import getResource from './I18n';
+
+const resource = getResource('groupedList');
 
 const __class = declare('argos.GroupedList', [List], {
   // Localization
@@ -37,7 +40,7 @@ const __class = declare('argos.GroupedList', [List], {
    * @property {String}
    * Text used in ARIA label for collapsible button
    */
-  toggleCollapseText: 'toggle collapse',
+  toggleCollapseText: resource.toggleCollapseText,
 
   collapsedIconClass: 'fa-chevron-right',
   expanedIconClass: 'fa-chevron-down',
@@ -49,10 +52,12 @@ const __class = declare('argos.GroupedList', [List], {
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '<div data-dojo-attach-point="searchNode"></div>',
+    '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">',
     '{%! $.emptySelectionTemplate %}',
     '<div class="group-content" data-dojo-attach-point="contentNode"></div>',
     '{%! $.moreTemplate %}',
     '{%! $.listActionTemplate %}',
+    '</div>',
     '</div>',
   ]),
   /**

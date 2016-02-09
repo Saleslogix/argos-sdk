@@ -1,5 +1,5 @@
 /*!
- *
+ * SData Client
  */
 /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
  *
@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 (function(){
     "use strict";
     var Sage = window.Sage,
@@ -69,8 +70,10 @@
     };
 
     var onTimeout = function(xhr, o) {
-        if (o.failure)
-            o.failure.call(o.scope || this, xhr, o);
+        var handler = o.timeout || o.failure;
+        if (handler) {
+            handler.call(o.scope || this, xhr, o);
+        }
     };
 
     var bindOnTimeout = function(xhr, o) {
@@ -101,7 +104,7 @@
 
     Sage.apply(Sage.SData.Client.Ajax, {
         request: function(o) {
-            var o = S.apply({}, o);
+            o = S.apply({}, o);
 
             o.params = S.apply({}, o.params);
             o.headers = S.apply({}, o.headers);
@@ -143,9 +146,9 @@
             if (o.async !== false)
             {
                 // Set the timeout only if the request is async
-                if (typeof o.timeout === 'number' && o.timeout >= 0 && xhr.hasOwnProperty('timeout'))
+                if (typeof o.requestTimeout === 'number' && o.requestTimeout >= 0 && typeof xhr.timeout === 'number')
                 {
-                    xhr.timeout = o.timeout;
+                    xhr.timeout = o.requestTimeout;
                     bindOnTimeout(xhr, o);
                 }
 
@@ -1142,7 +1145,7 @@
     var Sage = window.Sage,
         S = Sage,
         C = Sage.namespace('Sage.SData.Client'),
-        isDefined = function(value) { return typeof value !== 'undefined' },
+        isDefined = function(value) { return typeof value !== 'undefined'; },
         expand = function(options, userName, password) {
             var result = {},
                 url = typeof options === 'object'
@@ -1227,7 +1230,8 @@
                 'beforerequest',
                 'requestcomplete',
                 'requestexception',
-                'requestaborted'
+                'requestaborted',
+                'requesttimeout'
             );
         },
         isJsonEnabled: function() {
@@ -1393,13 +1397,20 @@
 
                     if (options.aborted)
                         options.aborted.call(options.scope || this, response, opt);
+                },
+                timeout: function(response, opt) {
+                    this.fireEvent('requesttimeout', request, opt, response);
+
+                    if (options.timeout) {
+                        options.timeout.call(options.scope || this, response, opt);
+                    }
                 }
             }, ajax);
 
             S.apply(o.headers, this.createHeadersForRequest(request), request.completeHeaders);
 
             if (typeof this.timeout === 'number') {
-                o.timeout = this.timeout;
+                o.requestTimeout = this.timeout;
             }
 
             /* we only handle `Accept` for now */
@@ -1787,21 +1798,22 @@
                 var hasNS = nsRE.exec(fqPropertyName),
                     propertyNS = hasNS ? hasNS[1] : false,
                     propertyName = hasNS ? hasNS[2] : fqPropertyName,
+                    converted = null,
                     value = entity[fqPropertyName];
 
                 if (typeof value === 'object')
                 {
                     if (value.hasOwnProperty('@xsi:nil')) // null
                     {
-                        var converted = null;
+                        converted = null;
                     }
                     else if (this.isIncludedReference(propertyNS, propertyName, value)) // included reference
                     {
-                        var converted = this.convertEntity(propertyNS, propertyName, value);
+                        converted = this.convertEntity(propertyNS, propertyName, value);
                     }
                     else if (this.isIncludedCollection(propertyNS, propertyName, value)) // included collection
                     {
-                        var converted = this.convertEntityCollection(propertyNS, propertyName, value);
+                        converted = this.convertEntityCollection(propertyNS, propertyName, value);
                     }
                     else // no conversion, read only
                     {
@@ -1969,7 +1981,7 @@
             return {'entry': result};
         },
         convertFeed: function(feed) {
-            var result = {};
+            var result = {}, i;
 
             if (feed['opensearch:totalResults'])
                 result['$totalResults'] = parseInt(unwrap(feed['opensearch:totalResults']));
@@ -1983,7 +1995,7 @@
             if (feed['link'])
             {
                 result['$link'] = {};
-                for (var i = 0; i < feed['link'].length; i++)
+                for (i = 0; i < feed['link'].length; i++)
                     result['$link'][feed['link'][i]['@rel']] = feed['link'][i]['@href'];
 
                 if (result['$link']['self'])
@@ -1993,7 +2005,7 @@
             result['$resources'] = [];
 
             if (S.isArray(feed['entry']))
-                for (var i = 0; i < feed['entry'].length; i++)
+                for (i = 0; i < feed['entry'].length; i++)
                     result['$resources'].push(this.convertEntry(feed['entry'][i]));
             else if (typeof feed['entry'] === 'object')
                 result['$resources'].push(this.convertEntry(feed['entry']));
@@ -2023,10 +2035,11 @@
             if (!response.responseText) return null;
 
             var contentType = response.getResponseHeader && response.getResponseHeader('Content-Type');
+            var doc;
 
             if (/application\/json/i.test(contentType) || (!contentType && this.isJsonEnabled()))
             {
-                var doc = JSON.parse(response.responseText);
+                doc = JSON.parse(response.responseText);
 
                 // doing this for parity with below, since with JSON, SData will always
                 // adhere to the format, regardless of the User-Agent.
@@ -2043,7 +2056,7 @@
             }
             else
             {
-                var doc = this.parseFeedXml(response.responseText);
+                doc = this.parseFeedXml(response.responseText);
 
                 // depending on the User-Agent the SIF will either send back a feed, or a single entry
                 // todo: is this the right way to handle this? should there be better detection?

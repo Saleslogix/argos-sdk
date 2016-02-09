@@ -22,6 +22,10 @@ import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
 import _Templated from './_Templated';
 import _ErrorHandleMixin from './_ErrorHandleMixin';
+import Adapter from './Models/Adapter';
+import getResource from './I18n';
+
+const resource = getResource('view');
 
 /**
  * @class argos.View
@@ -68,7 +72,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   /**
    * The titleText string will be applied to the top toolbar during {@link #show show}.
    */
-  titleText: 'Generic View',
+  titleText: resource.titleText,
   /**
    * This views toolbar layout that defines all toolbar items in all toolbars.
    * @property {Object}
@@ -82,12 +86,24 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * A reference to the globa App object
    */
   app: null,
+
+  /**
+   * Registered model name to use.
+   */
+  modelName: '',
+
+  /**
+   * View type (detail, edit, list, etc)
+   */
+  viewType: 'view',
   /**
    * May be used to specify the service name to use for data requests. Setting false will force the use of the default service.
    * @property {String/Boolean}
    */
   serviceName: false,
   connectionName: false,
+  connectionState: null,
+  enableOfflineSupport: false,
   constructor: function constructor(options) {
     this.app = (options && options.app) || window.App;
   },
@@ -125,10 +141,57 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   /**
    * Called on loading of the application.
    */
-  init: function init() {
+  init: function init(state$) {
     this.startup();
     this.initConnects();
+    this.initModel();
+    this.initState(state$);
   },
+  initState: function initState(state$) {
+    this.state$ = state$;
+    this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
+  },
+  _updateConnectionState: function _updateConnectionState(state) {
+    if (this.connectionState === state) {
+      return;
+    }
+
+    this.initModel();
+
+    const oldState = this.connectionState;
+    this.connectionState = state;
+    if (oldState !== null) {
+      this.onConnectionStateChange(state);
+    }
+  },
+  onConnectionStateChange: function onConnectionStateChange(state) { // eslint-disable-line
+  },
+  _onStateChange: function _onStateChange(val) {
+    this._updateConnectionState(val.connectionState);
+    this.onStateChange(val);
+  },
+  _onStateError: function _onStateError(error) {
+    this.onStateError(error);
+  },
+  onStateChange: function onStateChange(val) {}, // eslint-disable-line
+  onStateError: function onStateError(error) {}, // eslint-disable-line
+  /**
+   * Initializes the model instance that is return with the curernt view.
+   */
+  initModel: function initModel() {
+    const model = this.getModel();
+    if (model) {
+      this._model = model;
+      this._model.init();
+    }
+  },
+  /**
+   * Returns a new instance of a model for the view.
+   */
+   getModel: function getModel() {
+     const model = Adapter.getModel(this.modelName);
+     return model;
+   },
   /**
    * Establishes this views connections to various events
    */
@@ -562,6 +625,19 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    */
   routeShow: function routeShow(ctx, next) { // eslint-disable-line
     this.open();
+  },
+  /*
+  * Required for binding to ScrollContainer which utilizes iScroll that requires to be refreshed when the
+  * content (therefor scrollable area) changes.
+  */
+  onContentChange: function onContentChange() {
+  },
+  /**
+   * Returns true if view is disabled.
+   * @return {Boolean}.
+   */
+  isDisabled: function isDisabled() {
+    return false;
   },
 });
 

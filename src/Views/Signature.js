@@ -20,6 +20,9 @@ import domGeom from 'dojo/dom-geometry';
 import win from 'dojo/window';
 import format from '../Format';
 import View from '../View';
+import getResource from '../I18n';
+
+const resource = getResource('signature');
 
 /**
  * @class argos.Views.Signature
@@ -37,17 +40,17 @@ const __class = declare('argos.Views.Signature', [View], {
    * @property {String}
    * Text shown in the top toolbar header
    */
-  titleText: 'Signature',
+  titleText: resource.titleText,
   /**
    * @property {String}
    * Text shown in the clear button
    */
-  clearCanvasText: 'Erase',
+  clearCanvasText: resource.clearCanvasText,
   /**
    * @property {String}
    * Text shown in the undo button
    */
-  undoText: 'Undo',
+  undoText: resource.undoText,
 
   // Templates
   /**

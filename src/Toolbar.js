@@ -45,6 +45,9 @@ const __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
    */
   enabled: true,
   managed: true,
+  constructor: function constructor(options = {}) {
+    this.app = options.app || window.App;
+  },
   /**
    * Expands the passed expression if it is a function.
    * @param {String/Function} expression Returns string directly, if function it is called and the result returned.
@@ -74,7 +77,7 @@ const __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
       if (source.fn) {
         source.fn.call(source.scope || this, source);
       } else if (source.action) {
-        const view = App.getPrimaryActiveView();
+        const view = this.app.getPrimaryActiveView();
         if (view && view.hasAction(source.action)) {
           view.invokeAction(source.action, lang.mixin(parameters, {
             '$tool': source,
@@ -185,7 +188,7 @@ const __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
 
       // if tool is enabled, check security
       if (tool.enabled && tools[i].security) {
-        tool.enabled = App.hasAccessTo(this.expandExpression(tools[i].security));
+        tool.enabled = this.app.hasAccessTo(this.expandExpression(tools[i].security));
       }
 
       this.tools[tools[i].id] = tool;

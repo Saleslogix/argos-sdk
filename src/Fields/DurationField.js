@@ -19,6 +19,9 @@ import domClass from 'dojo/dom-class';
 import format from '../Format';
 import LookupField from './LookupField';
 import FieldManager from '../FieldManager';
+import getResource from '../I18n';
+
+const resource = getResource('durationField');
 
 /**
  * @class argos.Fields.DurationField
@@ -90,12 +93,12 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
    * @property {String}
    * Text used when no value or null is set to the field
    */
-  emptyText: '',
+  emptyText: resource.emptyText,
   /**
    * @property {String}
    * Text displayed when an invalid input is detected
    */
-  invalidDurationErrorText: "Field '${0}' is not a valid duration.",
+  invalidDurationErrorText: resource.invalidDurationErrorText,
   /**
    * @property {Object}
    * The auto completed text and their corresponding values in minutes (SData is always minutes)
@@ -103,11 +106,11 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
    * Override ride this object to change the autocomplete units or their localization.
    */
   autoCompleteText: {
-    1: 'minute(s)',
-    60: 'hour(s)',
-    1440: 'day(s)',
-    10080: 'week(s)',
-    525960: 'year(s)',
+    1: resource.minutes,
+    60: resource.hours,
+    1440: resource.days,
+    10080: resource.weeks,
+    525960: resource.years,
   },
   /**
    * @property {Boolean}

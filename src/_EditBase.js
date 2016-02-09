@@ -27,10 +27,12 @@ import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import FieldManager from './FieldManager';
 import View from './View';
+import getResource from './I18n';
 import 'dojo/NodeList-manipulate';
 import './Fields/BooleanField';
 import './Fields/DateField';
 import './Fields/DecimalField';
+import './Fields/DropdownField';
 import './Fields/DurationField';
 import './Fields/HiddenField';
 import './Fields/LookupField';
@@ -40,6 +42,8 @@ import './Fields/SelectField';
 import './Fields/SignatureField';
 import './Fields/TextAreaField';
 import './Fields/TextField';
+
+const resource = getResource('editBase');
 
 /**
  * @class argos._EditBase
@@ -120,7 +124,18 @@ const __class = declare('argos._EditBase', [View], {
    */
   loadingTemplate: new Simplate([
     '<fieldset class="panel-loading-indicator">',
-    '<div class="row"><span class="fa fa-spinner fa-spin"></span><div>{%: $.loadingText %}</div></div>',
+    '<div class="row">',
+      '<div class="busyIndicator__container busyIndicator--active" aria-live="polite">',
+        '<div class="busyIndicator busyIndicator--large">',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--four"></div>',
+          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--five"></div>',
+        '</div>',
+        '<span class="busyIndicator__label">{%: $.loadingText %}</span>',
+      '</div>',
+    '</div>',
     '</fieldset>',
   ]),
   /**
@@ -247,55 +262,57 @@ const __class = declare('argos._EditBase', [View], {
    */
   updateSecurity: false,
 
+  viewType: 'edit',
+
   /**
    * @deprecated
    */
-  saveText: 'Save',
+  saveText: resource.saveText,
   /**
    * @cfg {String}
    * Default title text shown in the top toolbar
    */
-  titleText: 'Edit',
+  titleText: resource.titleText,
   /**
    * @cfg {String}
    * The text placed in the header when there are validation errors
    */
-  validationSummaryText: 'Validation Summary',
+  validationSummaryText: resource.validationSummaryText,
   /**
    * @cfg {String}
    * The text placed in the header when there are validation errors
    */
-  concurrencySummaryText: 'Concurrency Error(s)',
+  concurrencySummaryText: resource.concurrencySummaryText,
   /**
    * @property {String}
    * Default text used in the section header
    */
-  detailsText: 'Details',
+  detailsText: resource.detailsText,
   /**
    * @property {String}
    * Text shown while the view is loading.
    */
-  loadingText: 'loading...',
+  loadingText: resource.loadingText,
   /**
    * @property {Object}
    * Localized error messages. One general error message, and messages by HTTP status code.
    */
   errorText: {
-    general: 'A server error occured while requesting data.',
+    general: resource.errorGeneral,
     status: {
-      '410': 'Error saving. This record no longer exists.',
+      '410': resource.error401,
     },
   },
   /**
    * @property {String}
    * Text alerted to user when the data has been updated since they last fetched the data.
    */
-  concurrencyErrorText: 'Another user has updated this field.',
+  concurrencyErrorText: resource.concurrencyErrorText,
   /**
    * @property {String}
    * ARIA label text for a collapsible section header
    */
-  toggleCollapseText: 'toggle collapse',
+  toggleCollapseText: resource.toggleCollapseText,
   /**
    * @property {String}
    * CSS class for the collapse button when in a expanded state
@@ -351,6 +368,15 @@ const __class = declare('argos._EditBase', [View], {
           field.renderTo(node);
         }
       }, this);
+
+    const sections = query('h2', this.contentNode);
+    if (sections.length === 1) {
+      domAttr.remove(sections[0], 'data-action');
+      const button = query('button[class*="fa-chevron"]', sections[0]);
+      if (button[0]) {
+        domConstruct.destroy(button[0]);
+      }
+    }
   },
   /**
    * Extends init to also init the fields in `this.fields`.
@@ -394,7 +420,7 @@ const __class = declare('argos._EditBase', [View], {
       'tbar': tbar,
     });
   },
-  onToolCancel: function createToolLayout() {
+  onToolCancel: function onToolCancel() {
     this.refreshRequired = true;
     ReUI.back();
   },
@@ -624,12 +650,15 @@ const __class = declare('argos._EditBase', [View], {
         return true;
       },
       handle: function handleCatchAll(error, next) {
+        const fromContext = this.options.fromContext;
+        this.options.fromContext = null;
         const errorItem = {
           viewOptions: this.options,
           serverError: error,
         };
 
         ErrorManager.addError(this.getErrorMessage(error), errorItem);
+        this.options.fromContext = fromContext;
         next();
       },
     }];
@@ -724,13 +753,19 @@ const __class = declare('argos._EditBase', [View], {
   requestData: function requestData() {
     const store = this.get('store');
 
-    if (store) {
+    if (this._model) {
+      return this.requestDataUsingModel().then(function fulfilled(data) {
+        this._onGetComplete(data);
+      }.bind(this), function rejected(err) {
+        this._onGetError(null, err);
+      }.bind(this));
+    } else if (store) {
       const getOptions = {};
 
       this._applyStateToGetOptions(getOptions);
 
       const getExpression = this._buildGetExpression() || null;
-      const getResults = store.get(getExpression, getOptions);
+      const getResults = this.requestDataUsingStore(getExpression, getOptions);
 
       Deferred.when(getResults,
         this._onGetComplete.bind(this),
@@ -740,7 +775,14 @@ const __class = declare('argos._EditBase', [View], {
       return getResults;
     }
 
-    console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataEditMixin to your edit view?'); // eslint-disable-line
+    console.warn('Error requesting data, no model or store was defined. Did you mean to mixin _SDataEditMixin to your edit view?'); // eslint-disable-line
+  },
+  requestDataUsingModel: function requestDataUsingModel() {
+    return this._model.getEntry(this.options);
+  },
+  requestDataUsingStore: function requestDataUsingStore(getExpression, getOptions) {
+    const store = this.get('store');
+    return store.get(getExpression, getOptions);
   },
   /**
    * Loops all the fields looking for any with the `default` property set, if set apply that
@@ -946,14 +988,18 @@ const __class = declare('argos._EditBase', [View], {
   },
   onInsert: function onInsert(values) {
     const store = this.get('store');
-    if (store) {
-      const addOptions = {
-        overwrite: false,
-      };
-      const entry = this.createEntryForInsert(values);
-
-      this._applyStateToAddOptions(addOptions);
-
+    const addOptions = {
+      overwrite: false,
+    };
+    const entry = this.createEntryForInsert(values);
+    this._applyStateToAddOptions(addOptions);
+    if (this._model) {
+      this._model.insertEntry(entry, addOptions).then(function success(data) {
+        this.onAddComplete(entry, data);
+      }.bind(this), function failure(err) {
+        this.onAddError(addOptions, err);
+      }.bind(this));
+    } else if (store) {
       Deferred.when(store.add(entry, addOptions),
         this.onAddComplete.bind(this, entry),
         this.onAddError.bind(this, addOptions)
@@ -1006,15 +1052,18 @@ const __class = declare('argos._EditBase', [View], {
   },
   onUpdate: function onUpdate(values) {
     const store = this.get('store');
-    if (store) {
-      const putOptions = {
-        overwrite: true,
-        id: store.getIdentity(this.entry),
-      };
-
-      const entry = this.createEntryForUpdate(values);
-      this._applyStateToPutOptions(putOptions);
-
+    const putOptions = {
+      overwrite: true,
+    };
+    const entry = this.createEntryForUpdate(values);
+    this._applyStateToPutOptions(putOptions);
+    if (this._model) {
+      this._model.updateEntry(entry, putOptions).then(function success(data) {
+        this.onPutComplete(entry, data);
+      }.bind(this), function failure(err) {
+        this.onPutError(putOptions, err);
+      }.bind(this));
+    } else if (store) {
       Deferred.when(store.put(entry, putOptions),
         this.onPutComplete.bind(this, entry),
         this.onPutError.bind(this, putOptions)

@@ -18,8 +18,11 @@ import has from 'dojo/has';
 import domConstruct from 'dojo/dom-construct';
 import domClass from 'dojo/dom-class';
 import dom from 'dojo/dom';
-import '../Fields/TextField';
+import getResource from '../I18n';
 import View from '../View';
+import '../Fields/TextField';
+
+const resource = getResource('fileSelect');
 
 /**
  * @class argos.Views.FileSelect
@@ -30,15 +33,15 @@ import View from '../View';
  */
 const __class = declare('argos.Views.FileSelect', [View], {
   // Localization
-  titleText: 'File Select',
-  addFileText: 'Click or Tap here to add a file.',
-  uploadText: 'Upload',
-  cancelText: 'Cancel',
-  selectFileText: 'Select file',
-  loadingText: 'Uploading...',
-  descriptionText: 'description',
-  bytesText: 'bytes',
-  notSupportedText: 'Adding attachments is not supported by your device.',
+  titleText: resource.titleText,
+  addFileText: resource.addFileText,
+  uploadText: resource.uploadText,
+  cancelText: resource.cancelText,
+  selectFileText: resource.selectFileText,
+  loadingText: resource.loadingText,
+  descriptionText: resource.descriptionText,
+  bytesText: resource.bytesText,
+  notSupportedText: resource.notSupportedText,
 
   /**
    * @property {Simplate}

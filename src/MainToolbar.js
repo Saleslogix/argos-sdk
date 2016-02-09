@@ -17,8 +17,11 @@ import lang from 'dojo/_base/lang';
 import query from 'dojo/query';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
-import Toolbar from 'argos/Toolbar';
+import Toolbar from './Toolbar';
+import getResource from './I18n';
 import 'dojo/NodeList-manipulate';
+
+const resource = getResource('mainToolbar');
 
 /**
  * @class argos.MainToolbar
@@ -77,7 +80,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
   /**
    * Text that is placed into the toolbar titleNode
    */
-  titleText: 'Mobile',
+  titleText: resource.titleText,
 
   /**
    * Calls parent {@link Toolbar#clear clear} and removes all toolbar items from DOM.
@@ -96,6 +99,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     this.inherited(arguments);
 
     domClass.remove(this.domNode, 'toolbar-size-' + this.size);
+    let onLine = this.app.onLine;
     if (tools) {
       const count = {
         left: 0,
@@ -107,18 +111,27 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         const side = tool.side || 'right';
         const toolTemplate = tool.template || this.toolTemplate;
         count[side] += 1;
-
+        if (tool.offline) {
+          onLine = false;
+        }
         domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.domNode, 'last');
       }
 
       this.size = Math.max(count.left, count.right);
       domClass.add(this.domNode, 'toolbar-size-' + this.size);
+      this.setMode(onLine);
     }
   },
   /**
    * Event handler that fires when the toolbar title is clicked.
    */
   onTitleClick: function onTitleClick(/*evt*/) {},
+  setMode: function setMode(onLine) {
+    domClass.remove(this.domNode, 'offline');
+    if (!onLine) {
+      domClass.add(this.domNode, 'offline');
+    }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.MainToolbar', __class);

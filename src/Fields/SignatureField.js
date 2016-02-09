@@ -20,6 +20,9 @@ import domAttr from 'dojo/dom-attr';
 import format from '../Format';
 import EditorField from './EditorField';
 import FieldManager from '../FieldManager';
+import getResource from '../I18n';
+
+const resource = getResource('signatureField');
 
 /**
  * @class argos.Fields.SignatureField
@@ -46,12 +49,12 @@ const control = declare('argos.Fields.SignatureField', [EditorField], {
    * @property {String}
    * Text used for ARIA label
    */
-  signatureLabelText: 'signature',
+  signatureLabelText: resource.signatureLabelText,
   /**
    * @property {String}
    * Text used within button
    */
-  signatureText: '...',
+  signatureText: resource.signatureText,
 
   /**
    * @property {Number[][]}

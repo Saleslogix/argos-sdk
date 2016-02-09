@@ -1,7 +1,3 @@
-/**
- * @class argos.TabWidget
- * @alternateClassName TabWidget
- */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
@@ -10,7 +6,14 @@ import domConstruct from 'dojo/dom-construct';
 import domStyle from 'dojo/dom-style';
 import query from 'dojo/query';
 import _Templated from 'argos/_Templated';
+import getResource from './I18n';
 
+const resource = getResource('tabWidget');
+
+/**
+ * @class argos.TabWidget
+ * @alternateClassName TabWidget
+ */
 const __class = declare('argos.TabWidget', [_Templated], {
   /**
    * @property {Simplate}
@@ -24,7 +27,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * HTML that defines a new tab list
    */
   tabListTemplate: new Simplate([
-    '<ul class="tab-list" data-dojo-attach-point="tabList">',
+    '<ul class="tab-list" data-dojo-attach-point="tabList" onclick="">',
     '</ul>',
   ]),
   /**
@@ -61,7 +64,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
   moreTabItemTemplate: new Simplate([
     '<li class="tab more-item" data-action="toggleDropDown">',
     '{%: ($.title || $.options.title) %}',
-    '<span class="fa fa-angle-right"></span>',
+    '<span class="fa fa-fw fa-angle-right"></span>',
     '</li>',
   ]),
 
@@ -69,7 +72,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * @cfg {String}
    * More text that is used as the overflow tab for the tab list
    */
-  moreText: 'More',
+  moreText: resource.moreText,
   /**
    * @property {li}
    * Current tab (html element li) that the view is on
@@ -173,7 +176,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
           visibility: 'visible',
         });
         if (icon) {
-          domClass.replace(icon, 'fa fa-angle-down', 'fa fa-angle-right');
+          domClass.replace(icon, 'fa-angle-down', 'fa-angle-right');
         }
 
         if (!this.moreTabList.style.left) {
@@ -194,15 +197,15 @@ const __class = declare('argos.TabWidget', [_Templated], {
           visibility: 'hidden',
         });
         if (icon) {
-          domClass.replace(icon, 'fa fa-angle-right', 'fa fa-angle-down');
+          domClass.replace(icon, 'fa-angle-right', 'fa-angle-down');
         }
       }
     } else {
-      if (params.target !== this.moreTab) {
+      if (params.target !== this.moreTab && params.target !== icon) {
         domStyle.set(this.moreTabList, {
           visibility: 'hidden',
         });
-        if (icon) {
+        if (icon && this.moreTab) {
           domClass.replace(icon, 'fa fa-angle-right', 'fa fa-angle-down');
         }
       }
@@ -216,17 +219,26 @@ const __class = declare('argos.TabWidget', [_Templated], {
 
     if (this.moreTabList.children.length > 0) {
       if (this.moreTab) {
-        this.tabList.children[this.tabList.children.length - 1].remove();
+        this.ieFixRemove(this.tabList, this.tabList.children.length - 1);
       }
       // Need to reference a different array when calling array.forEach since this.moreTabList.children is being modified, hence have arr be this.moreTabList.children
       const arr = [].slice.call(this.moreTabList.children);
       array.forEach(arr, function placeFromMoreTab(tab) {
-        this.moreTabList.children[array.indexOf(this.moreTabList.children, tab)].remove();
+        this.ieFixRemove(this.moreTabList, array.indexOf(this.moreTabList.children, tab));
         domConstruct.place(tab, this.tabList);
         this.checkTabOverflow(tab);
       }, this);
     } else {
-      const arr = [].slice.call(this.tabList.children);
+      let temp = this.tabList.children;
+      let isIE = false;
+      if (!temp[0].remove) { // Check if is IE
+        temp = this.tabList.cloneNode(true).children;
+        isIE = true;
+      }
+      const arr = [].slice.call(temp);
+      if (isIE) {
+        this.currentTab = arr[array.indexOf(this.tabList.children, this.currentTab)];
+      }
       domConstruct.empty(this.tabList);
       array.forEach(arr, function recreateTabList(tab) {
         domConstruct.place(tab, this.tabList);
@@ -273,7 +285,6 @@ const __class = declare('argos.TabWidget', [_Templated], {
 
       domStyle.set(focusState, {
         left: posLeft - tableLeft + 'px',
-        top: posTop - tableTop + 'px',
         right: (posTop - tableTop) + width + 'px',
         bottom: (posTop - tableTop) + height + 'px',
         width: width + 'px',
@@ -303,7 +314,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
       if (!this.inOverflow) {
         this.createMoretab();
         this.tabMoreIndex = array.indexOf(this.tabList.children, tab);
-        this.tabList.children[this.tabMoreIndex].remove();
+        this.ieFixRemove(this.tabList, this.tabMoreIndex);
         if (this.tabList.children.length === 1 && !this.moreTabList.children.length) {
           domClass.add(this.moreTab, 'selected');
           this.currentTab = tab;
@@ -313,7 +324,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
         if (this.moreTab.offsetTop > this.tabList.offsetTop) {
           this.tabMoreIndex = this.tabMoreIndex - 1;
           const replacedTab = this.tabList.children[this.tabMoreIndex];
-          this.tabList.children[this.tabMoreIndex].remove();
+          this.ieFixRemove(this.tabList, this.tabMoreIndex);
           domConstruct.place(replacedTab, this.moreTabList);
         }
 
@@ -321,7 +332,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
         this.inOverflow = true;
         this.tabMoreIndex++;
       } else {
-        this.tabList.children[this.tabMoreIndex].remove();
+        this.ieFixRemove(this.tabList, this.tabMoreIndex);
         domConstruct.place(tab, this.moreTabList);
       }
     }
@@ -390,6 +401,12 @@ const __class = declare('argos.TabWidget', [_Templated], {
       this.tabMoreIndex = null;
     }
     return this;
+  },
+  ieFixRemove: function ieFixRemove(parent, indexToRemove = 0) {
+    if (parent.children[indexToRemove].remove) {
+      return parent.children[indexToRemove].remove();
+    }
+    return parent.removeChild(parent.children[indexToRemove]);
   },
 });
 

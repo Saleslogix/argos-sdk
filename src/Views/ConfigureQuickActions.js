@@ -2,6 +2,9 @@ import declare from 'dojo/_base/declare';
 import array from 'dojo/_base/array';
 import Memory from 'dojo/store/Memory';
 import _ConfigureBase from '../_ConfigureBase';
+import getResource from '../I18n';
+
+const resource = getResource('configureQuickActions');
 
 /**
  * @class argos.Views.ConfigureQuickActions
@@ -12,7 +15,7 @@ import _ConfigureBase from '../_ConfigureBase';
  */
 const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
   // Localization
-  titleText: 'Configure Quick Actions',
+  titleText: resource.titleText,
 
   // View Properties
   id: 'configure_quickactions',

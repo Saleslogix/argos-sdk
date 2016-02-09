@@ -1,6 +1,9 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
+import getResource from './I18n';
+
+const resource = getResource('errorHandleMixin');
 
 /**
  * @class argos._ErrorHandleMixin
@@ -13,7 +16,7 @@ const __class = declare('argos._ErrorHandleMixin', null, {
    * Localized error messages. One general error message, and messages by HTTP status code.
    */
   errorText: {
-    general: 'A server error occured.',
+    general: resource.general,
     status: {},
   },
   /**
@@ -82,13 +85,13 @@ const __class = declare('argos._ErrorHandleMixin', null, {
         const nextHandler = matches[index];
         const nextFn = nextHandler && nextHandler.handle;
 
-        nextFn.call(this, error, getNext(index + 1));
+        nextFn.call(this, error, getNext.call(this, index + 1));
       }.bind(this);
     }.bind(this);
 
     if (len > 0 && matches[0].handle) {
       // Start the handle chain, the handle can call next() to continue the iteration
-      matches[0].handle.call(this, error, getNext(1));
+      matches[0].handle.call(this, error, getNext.call(this, 1));
     }
   },
   /**

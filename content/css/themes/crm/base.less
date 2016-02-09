@@ -35,6 +35,10 @@
     display: none;
     background-color: @menu-list-item-bg-color;
     overflow: auto;
+    .list .scroller {
+      background-color: @menu-list-item-bg-color;
+      top: 42px;
+    }
 }
 
 .snapjs-left .left-drawer {
@@ -202,9 +206,7 @@
     line-height: 30px;
     padding: 0 2px 0 2px;
 
-    color: #000;
-    text-shadow: #fff 0px 1px 0px;
-    border: 1px solid #ececec;
+    color: @color-slate;
 }
 
 .list-show-actions .list-item-selector > img {
@@ -279,7 +281,8 @@
     position: absolute;
     top: 0px;
     bottom: 0px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
 
     &.animate {
@@ -319,7 +322,6 @@
 /* detail veiw */
 .panel .panel-loading-indicator div.row > div {
     display: inline-block;
-    padding: 0 0 0 20px;
 }
 
 .panel .panel-loading-indicator div.row {
@@ -421,6 +423,7 @@ ul.action-list > li > a > div {
 .action-list > li > a > span {
     display: block;
     min-height: 1em;
+    max-height: 1.5em;
     line-height: inherit;
     padding: 2px 0 0 0;
     color: #777;
@@ -620,7 +623,6 @@ img {
 }
 
 .panel-loading > .panel-loading-indicator span {
-    display: inline;
     padding: 0;
 }
 
@@ -741,12 +743,11 @@ img {
 .row > a {
     display: block;
     margin: 0 0 0 0;
-    padding: 0 0 0 10px;
+    width: 70%;
     position: relative;
     overflow: hidden;
     text-overflow: ellipsis;
     float: right;
-    text-align: right;
 }
 
 .href {
@@ -979,7 +980,9 @@ img {
         > li {
             background-color: #fff;
             color: #aaa;
-            padding-right: 6px;
+            padding: 0;
+            height: 40px;
+            line-height: 40px;
 
             .resource {
                 display: block;
@@ -988,20 +991,24 @@ img {
             }
 
             h3 {
+              vertical-align: middle;
+              line-height: 40px;
+
                 > span {
                     &:first-child {
                         float: left;
                     }
                 }
 
-                > [data-action="moveUp"],
-                > [data-action="moveDown"] {
-                    float: right;
-                    display: block;
-                    width: 48px;
-                    height: 24px;
-                    cursor: pointer;
-                    text-align: center;
+                > .draggable {
+                  float: right;
+                  width: 24px;
+                  height: 40px;
+                  line-height: 40px;
+                  margin-right: 15px;
+                  cursor: pointer;
+                  text-align: center;
+                  .transform(scale(1.5, 0.75));
                 }
 
                 > .icon {
@@ -1036,4 +1043,3 @@ img {
         }
     }
 }
-
