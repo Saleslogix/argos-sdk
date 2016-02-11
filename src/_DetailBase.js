@@ -990,10 +990,19 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       this.clear();
     }
   },
+  onTransitionAway: function onTransitionAway() {
+    this.inherited(arguments);
+
+    if (this._orientation) {
+      this._orientation.remove();
+    }
+  },
   onTransitionTo: function onTransitionTo() {
     this.inherited(arguments);
 
-    this.orientation = connect.subscribe('/app/setOrientation', this, this.reorderTabs);
+    if (this.isTabbed) {
+      this._orientation = connect.subscribe('/app/setOrientation', this, this.reorderTabs);
+    }
   },
   /**
    * If a security breach is detected it sets the content to the notAvailableTemplate, otherwise it calls
