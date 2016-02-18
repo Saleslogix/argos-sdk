@@ -45,6 +45,8 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   tomorrowAfternoonText: resource.tomorrowAfternoonText,
   nextWeekText: resource.nextWeekText,
   nextMonthText: resource.nextMonthText,
+  hoursFormat: resource.hoursFormat,
+  dayHoursFormat: resource.dayHoursFormat,
 
 
   createLayout: function createLayout() {
@@ -53,23 +55,23 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
       children: [{
         label: this.thisEveningText,
         time: moment().clone().hours(this.eveningHours).minutes(0).seconds(0),
-        format: 'h:mm A',
+        format: this.hoursFormat,
       }, {
         label: this.tomorrowMorningText,
         time: moment().clone().add(1, 'days').hours(this.morningHours).minutes(0).seconds(0),
-        format: 'h:mm A',
+        format: this.hoursFormat,
       }, {
         label: this.tomorrowAfternoonText,
         time: moment().clone().add(1, 'days').hours(this.eveningHours).minutes(0).seconds(0),
-        format: 'h:mm A',
+        format: this.hoursFormat,
       }, {
         label: this.nextWeekText,
         time: moment().clone().startOf('week').add(7, 'days').hours(this.morningHours).minutes(0).seconds(0),
-        format: 'ddd h:mm A',
+        format: this.dayHoursFormat,
       }, {
         label: this.nextMonthText,
         time: moment().clone().startOf('month').add(1, 'month').hours(this.morningHours).minutes(0).seconds(0),
-        format: 'ddd h:mm A',
+        format: this.dayHoursFormat,
       }],
     }];
   },
