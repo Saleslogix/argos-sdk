@@ -52,7 +52,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     '</ul>',
   ]),
   listItemTemplate: new Simplate([
-    '<li class="dropdown__list__item" data-value="{%= $.key || $.value %}">',
+    '<li class="dropdown__list__item" data-key="{%= $.key %}" data-value="{%= $.value %}">',
       '{%= $.value %}',
     '</li>',
   ]),
@@ -60,7 +60,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     '<div class="dropdown__overlay"></div>',
   ]),
   selectItemTemplate: new Simplate([
-    '<option value="{%: $.key || $.value %}">{%: $.value %}</option>',
+    '<option value="{%: $.key %}">{%: $.value %}</option>',
   ]),
 
   dropdownClass: '',
@@ -235,7 +235,11 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this.updateSelected(target);
     if (!this.multiSelect) {
       this.hide();
-      this.setValue(target.dataset.value);
+      let keyToNum = Number(target.dataset.key);
+      if (isNaN(keyToNum)) {
+        keyToNum = target.dataset.key;
+      }
+      this.setValue(keyToNum);
     } // TODO: Add in what will happen for a multiSelect dropdown
     if (this.onSelect && this.onSelectScope) {
       this.onSelect.bind(this.onSelectScope)();
