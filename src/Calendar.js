@@ -97,51 +97,51 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   monthsText: [
     {
       value: resource.january,
-      key: 'january',
+      key: 0,
     },
     {
       value: resource.february,
-      key: 'february',
+      key: 1,
     },
     {
       value: resource.march,
-      key: 'march',
+      key: 2,
     },
     {
       value: resource.april,
-      key: 'april',
+      key: 3,
     },
     {
       value: resource.may,
-      key: 'may',
+      key: 4,
     },
     {
       value: resource.june,
-      key: 'june',
+      key: 5,
     },
     {
       value: resource.july,
-      key: 'july',
+      key: 6,
     },
     {
       value: resource.august,
-      key: 'august',
+      key: 7,
     },
     {
       value: resource.september,
-      key: 'september',
+      key: 8,
     },
     {
       value: resource.october,
-      key: 'october',
+      key: 9,
     },
     {
       value: resource.november,
-      key: 'november',
+      key: 10,
     },
     {
       value: resource.december,
-      key: 'december',
+      key: 11,
     },
   ],
   weekDaysShortText: [
@@ -167,8 +167,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   _monthDropdown: null,
   _selectWeek: false,
   _selectedDay: null,
-  _todayMonth: null,
-  _todayYear: null,
   _widgetName: 'calendar',
   _yearDropdown: null,
 
@@ -181,8 +179,8 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
 
     return this;
   },
-  changeMonthShown: function changeMonthShown({ month }) {
-    this._monthDropdown.setValue(month.toLowerCase());
+  changeMonthShown: function changeMonthShown({ monthNumber }) {
+    this._monthDropdown.setValue(monthNumber);
     return this;
   },
   changeSingleDay: function changeSingleDay(params) {
@@ -279,8 +277,7 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   createMonthDropdown: function createMonthDropdown() {
     if (!this._monthDropdown) {
       this._monthDropdown = new Dropdown({ id: 'month-dropdown ' + this.id, dropdownClass: 'dropdown--medium', onSelect: this.setMonth, onSelectScope: this });
-      this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.format('MMMM').toLowerCase()});
-      this._todayMonth = this._monthDropdown.findValue(this.date.todayMoment.format('MMMM'));
+      this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.month()});
       domConstruct.place(this._monthDropdown.domNode, this.monthNode);
     }
     return this;
@@ -289,7 +286,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     if (!this._yearDropdown) {
       this._yearDropdown = new Dropdown({ id: 'year-dropdown ' + this.id, onSelect: this.setYear, onSelectScope: this });
       this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY')});
-      this._todayYear = this._yearDropdown.findValue(this.date.todayMoment.format('YYYY'));
       domConstruct.place(this._yearDropdown.domNode, this.yearNode);
     }
     return this;
@@ -323,7 +319,6 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
       params = { $source: day, date: day.dataset.date };
     }
     this.changeDay(params);
-    this.setDropdownsToday();
   },
   getDateTime: function getDateTime() {
     const result = this.date.selectedDateMoment;
@@ -464,17 +459,9 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
 
     return this;
   },
-  setDropdownsToday: function setDropdownsToday() {
-    if (this._monthDropdown.getSelected() !== this._todayMonth) {
-      this._monthDropdown.setSelected(this._todayMonth);
-    }
-    if (this._yearDropdown.getSelected() !== this._todayYear) {
-      this._yearDropdown.setSelected(this._todayYear);
-    }
-    return this;
-  },
   setMonth: function setMonth() {
-    this.date.selectedDateMoment.month(this._monthDropdown.getValue());
+    const monthNumber = Number(this._monthDropdown.getValue());
+    this.date.selectedDateMoment.month(monthNumber);
     this.refreshCalendar(this.date);
   },
   setSubValue: function setSubValue() {
