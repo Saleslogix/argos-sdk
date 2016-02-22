@@ -161,7 +161,10 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     return this._selected;
   },
   getText: function getText() {
-    return this.dropdownSelect.options[this.dropdownSelect.selectedIndex].text;
+    if (this.dropdownSelect.selectedIndex !== -1) {
+      return this.dropdownSelect.options[this.dropdownSelect.selectedIndex].text;
+    }
+    return '';
   },
   getValue: function getValue() {
     return this.dropdownSelect.value;
