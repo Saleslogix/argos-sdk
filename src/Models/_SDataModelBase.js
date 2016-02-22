@@ -95,8 +95,8 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
       store.put(entry, options).then((result) => {
         this.onEntryUpdated(result, entry);
         def.resolve(result);
-      }.bind(this));
-    }.bind(this), function validationError(err) {
+      });
+    }, function validationError(err) {
       def.reject(err);
     }); // Since we left off the reject handler, it will propagate up if there is a validation error
     return def.promise;
