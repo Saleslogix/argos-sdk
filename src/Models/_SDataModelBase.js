@@ -91,7 +91,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     if (!store) {
       throw new Error('No store set.');
     }
-    this.validate(entry).then(function fulfilled() {
+    this.validate(entry).then(() => {
       store.put(entry, options).then((result) => {
         this.onEntryUpdated(result, entry);
         def.resolve(result);
