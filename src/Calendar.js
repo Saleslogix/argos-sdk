@@ -176,8 +176,10 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     } else {
       this.changeWeek(params);
     }
-
+    this.onChangeDay(params);
     return this;
+  },
+  onChangeDay: function onChangeDay() {
   },
   changeMonthShown: function changeMonthShown({ monthNumber }) {
     this._monthDropdown.setValue(monthNumber);
@@ -309,10 +311,9 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     return this.date;
   },
   goToToday: function goToToday() {
-    if (this.date.selectedDateMoment.month() !== this.date.todayMoment.month() || this.date.selectedDateMoment.year() !== this.date.todayMoment.year()) {
-      this.date.selectedDateMoment = this.date.todayMoment;
-      this.refreshCalendar(this.date);
-    }
+    this.date.todayMoment = this.getCurrentDateMoment();
+    this.date.selectedDateMoment = this.date.todayMoment;
+    this.refreshCalendar(this.date); // This will reload the data.
     const day = query('.isToday', this.weeksNode)[0];
     let params = {};
     if (day) {
@@ -323,6 +324,9 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
   getDateTime: function getDateTime() {
     const result = this.date.selectedDateMoment;
     return result.toDate();
+  },
+  getCurrentDateMoment: function getCurrentDateMoment() {
+    return moment();
   },
   getSelectedDateMoment: function getSelectedDateMoment() {
     return this.date.selectedDateMoment;
@@ -358,11 +362,18 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
     }
   },
   refreshCalendar: function refreshCalendar(date = {}) {
+    this._refreshCalendar(date);
+    this.onRefreshCalendar(true);
+    return this;
+  },
+  _refreshCalendar: function refreshCalendar(date = {}) {
     domConstruct.empty(this.weeksNode);
     this.renderCalendar(date)
         .changeMonthShown(date)
         .changeYearShown(date);
     return this;
+  },
+  onRefreshCalendar: function onRefreshCalendar() {
   },
   removeActive: function removeActive(day) {
     if (day) {
@@ -372,6 +383,11 @@ const __class = declare('argos.Calendar', [ _Widget, _ActionMixin, _Templated], 
       }
     }
     return this;
+  },
+  refresh: function refresh(options) {
+    this.date.todayMoment = this.getCurrentDateMoment();
+    this._refreshCalendar(this.date);
+    this.onRefreshCalendar(options);
   },
   renderCalendar: function renderCalendar({ todayMoment, selectedDateMoment }) {
     const daysInMonth = selectedDateMoment.daysInMonth();
