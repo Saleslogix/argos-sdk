@@ -26,7 +26,14 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
   },
   init: function init() {
     this.inherited(arguments);
-    this.queryModels = this.queryModels || this._createCustomizedLayout(this.createQueryModels(), 'queryModel');
+
+    if (!this.queryModels) {
+      this.queryModels = this._createCustomizedLayout(this.createQueryModels(), 'queryModel');
+      this.queryModels.forEach((queryModel) => {
+        queryModel.querySelect = this._createCustomizedLayout(queryModel.querySelect, `${queryModel.name}/querySelect`);
+        queryModel.queryInclude = this._createCustomizedLayout(queryModel.queryInclude, `${queryModel.name}/queryInclude`);
+      });
+    }
   },
   createQueryModels: function createQueryModels() {
     return [];

@@ -10,6 +10,7 @@ const resource = getResource('briefcaseModel');
  * @class argos.Models.Briefcase.Offline
  */
 const __class = declare('argos.Models.Briefcase.Offline', [_OfflineModelBase], {
+  id: 'briefcase_offline_model',
   entityName: 'Briefcase',
   modelName: 'Briefcase',
   entityDisplayName: resource.entityDisplayName,
