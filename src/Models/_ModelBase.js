@@ -24,6 +24,8 @@ import _CustomizationMixin from '../_CustomizationMixin';
  * @alternateClassName _ModelBase
  */
 export default declare('argos.Models._ModelBase', [Evented, Stateful, _CustomizationMixin], {
+  id: null,
+  customizationSet: 'models',
   app: null,
   resourceKind: null,
   itemsProperty: '$resources',
