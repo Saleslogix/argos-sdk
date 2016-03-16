@@ -70,101 +70,101 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   hourValues: [
     {
       value: '1',
-      key: '1',
+      key: 1,
     },
     {
       value: '2',
-      key: '2',
+      key: 2,
     },
     {
       value: '3',
-      key: '3',
+      key: 3,
     },
     {
       value: '4',
-      key: '4',
+      key: 4,
     },
     {
       value: '5',
-      key: '5',
+      key: 5,
     },
     {
       value: '6',
-      key: '6',
+      key: 6,
     },
     {
       value: '7',
-      key: '7',
+      key: 7,
     },
     {
       value: '8',
-      key: '8',
+      key: 8,
     },
     {
       value: '9',
-      key: '9',
+      key: 9,
     },
     {
       value: '10',
-      key: '10',
+      key: 10,
     },
     {
       value: '11',
-      key: '11',
+      key: 11,
     },
     {
       value: '12',
-      key: '12',
+      key: 12,
     },
   ],
   minuteValues: [
     {
       value: '00',
-      key: '00',
+      key: 0,
     },
     {
       value: '05',
-      key: '05',
+      key: 5,
     },
     {
       value: '10',
-      key: '10',
+      key: 10,
     },
     {
       value: '15',
-      key: '15',
+      key: 15,
     },
     {
       value: '20',
-      key: '20',
+      key: 20,
     },
     {
       value: '25',
-      key: '25',
+      key: 25,
     },
     {
       value: '30',
-      key: '30',
+      key: 30,
     },
     {
       value: '35',
-      key: '35',
+      key: 35,
     },
     {
       value: '40',
-      key: '40',
+      key: 40,
     },
     {
       value: '45',
-      key: '45',
+      key: 45,
     },
     {
       value: '50',
-      key: '50',
+      key: 50,
     },
     {
       value: '55',
-      key: '55',
+      key: 55,
     },
   ],
 
