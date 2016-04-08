@@ -43,6 +43,7 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
   },
   show: function show(options = {}) {
     this.showTimePicker = options.showTimePicker;
+    this.ensureOptions(options);
     if (!this._calendarNode) {
       this._calendarNode = new Calendar({ id: 'datetime-calendar ' + this.id, isModal: this.isModal || options.isModal});
       domConstruct.place(this._calendarNode.domNode, this.dateTimeNode);
@@ -66,6 +67,15 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
         domStyle.set(this._timeSelectNode.domNode, {
           display: 'none',
         });
+      }
+    }
+  },
+  ensureOptions: function ensureOptions(options) {
+    if (options.date && (options.date instanceof Date) && (options.date.toString() === 'Invalid Date')) {
+      if (options.timeless) {
+        options.date = moment().toDate();
+      } else {
+        options.date = moment().toDate();
       }
     }
   },
