@@ -53,14 +53,24 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   ]),
   listItemTemplate: new Simplate([
     '<li class="dropdown__list__item" data-key="{%= $.key %}" data-value="{%= $.value %}">',
-      '{%= $.value %}',
+       '{% if ($.text) { %}',
+       '{%= $.text %}',
+       '{% } else { %}',
+       '{%= $.value %}',
+       '{% } %}',
     '</li>',
   ]),
   overlayTemplate: new Simplate([
     '<div class="dropdown__overlay"></div>',
   ]),
   selectItemTemplate: new Simplate([
-    '<option value="{%: $.key %}">{%: $.value %}</option>',
+    '<option value="{%= $.value %}">',
+       '{% if ($.text) { %}',
+       '{%= $.text %}',
+       '{% } else { %}',
+       '{%= $.value %}',
+       '{% } %}',
+    '</option>',
   ]),
 
   dropdownClass: '',
@@ -77,21 +87,22 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   _overlay: null,
   _overlayEvent: null,
   _selected: null,
-
+  items: null,
   constructor: function constructor() {
     this._eventConnections = [];
+    this.items = [];
   },
   createGhost: function createGhost(top = false) {
     const listStart = domConstruct.toDom(this.listStartTemplate.apply(this));
     const listEnd = domConstruct.toDom(this.listEndTemplate.apply(this));
-    array.forEach(this.dropdownSelect.options, (item) => {
-      const dom = domConstruct.toDom(this.listItemTemplate.apply({key: item.value, value: item.text}, this));
+    array.forEach(this.items, (item) => {
+      const dom = domConstruct.toDom(this.listItemTemplate.apply({key: item.key, value: item.value, text: item.text}, this));
       domConstruct.place(dom, listStart);
       if (item.value === this.dropdownSelect.value) {
         this._selected = dom;
         domClass.add(dom, 'dropdown__list__item--selected');
       }
-    });
+    }, this);
     this._eventConnections.push(on(listStart, 'click', this.onListClick.bind(this)));
     domConstruct.place(listEnd, listStart);
     if (this._ghost) {
@@ -116,13 +127,26 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     domConstruct.place(this._ghost, document.body);
   },
   createList: function createList({items, defaultValue}) {
+    let itemFound = null;
+    this.items = items;
     this._defaultValue = defaultValue;
+
     array.forEach(items, function addToModalList(item) {
-      const option = domConstruct.toDom(this.selectItemTemplate.apply({key: item.key, value: item.value}, this));
+      if (item.value === defaultValue) {
+        itemFound = item;
+      }
+      const option = domConstruct.toDom(this.selectItemTemplate.apply({key: item.key, value: item.value, text: item.text}, this));
       domConstruct.place(option, this.dropdownSelect);
     }, this);
-    this.dropdownSelect.value = defaultValue;
-    this.dropdownInput.value = this.getText();
+
+    if (itemFound) {
+      this.dropdownSelect.value = itemFound.value;
+      this.dropdownInput.value = (itemFound.text) ? itemFound.text : itemFound.value;
+    } else {
+      this.dropdownSelect.value = defaultValue;
+      this.dropdownInput.value = defaultValue;
+    }
+
     this._eventConnections.push(on(this.dropdownNode, 'click', this.onClick.bind(this)));
     this.createGhost();
 
@@ -161,10 +185,12 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     return this._selected;
   },
   getText: function getText() {
-    return this.dropdownSelect.options[this.dropdownSelect.selectedIndex].text;
+    const text = (this.dropdownSelect.options[this.dropdownSelect.selectedIndex]) ? this.dropdownSelect.options[this.dropdownSelect.selectedIndex].text : '';
+    return text;
   },
   getValue: function getValue() {
-    return this.dropdownSelect.value;
+    const value = (this.dropdownSelect.options[this.dropdownSelect.selectedIndex]) ? this.dropdownSelect.options[this.dropdownSelect.selectedIndex].value : this.dropdownInput.value;
+    return value;
   },
   hide: function hide() {
     this.destroyOverlay();
@@ -235,11 +261,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this.updateSelected(target);
     if (!this.multiSelect) {
       this.hide();
-      let keyToNum = Number(target.dataset.key);
-      if (isNaN(keyToNum)) {
-        keyToNum = target.dataset.key;
-      }
-      this.setValue(keyToNum);
+      this.setValue(target.dataset.value);
     } // TODO: Add in what will happen for a multiSelect dropdown
     if (this.onSelect && this.onSelectScope) {
       this.onSelect.bind(this.onSelectScope)();
