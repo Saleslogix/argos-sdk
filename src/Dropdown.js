@@ -140,7 +140,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
 
     if (this.itemMustExist && !itemFound) {
       itemFound = { key: -1, value: defaultValue, text: defaultValue };
-      this.items.splice(0, 1, itemFound);
+      this.items.splice(0, 0, itemFound);
     }
 
     array.forEach(items, function addToModalList(item) {
