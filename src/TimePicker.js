@@ -170,7 +170,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
 
   createHourDropdown: function createHourDropdown(initial) {
     if (!this._hourDropdown) {
-      this._hourDropdown = new Dropdown({ id: 'hour-dropdown' });
+      this._hourDropdown = new Dropdown({ id: 'hour-dropdown', itemMustExist: true });
       this._hourDropdown.createList({ items: this.hourValues, defaultValue: `${initial}` });
       domConstruct.place(this._hourDropdown.domNode, this.hourNode, 'replace');
     }
@@ -187,7 +187,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     }
 
     if (!this._minuteDropdown) {
-      this._minuteDropdown = new Dropdown({ id: 'minute-modal' });
+      this._minuteDropdown = new Dropdown({ id: 'minute-modal', itemMustExist: true });
       this._minuteDropdown.createList({ items: this.minuteValues, defaultValue: `${value}` });
       domConstruct.place(this._minuteDropdown.domNode, this.minuteNode, 'replace');
     }

@@ -31,7 +31,7 @@ import _Templated from 'argos/_Templated';
  */
 const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
-    '<div class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownNode">',
+    '<div id="{%= $.id %}_dropdownNode" class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownNode">',
       '<label class="dropdown__label">{%: $.label %}</label>',
       '<input readOnly class="dropdown__input" data-dojo-attach-point="dropdownInput"></input>',
       '<span class="dropdown__icon {%: $.icon %}"></span>',
@@ -40,7 +40,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     '</div>',
   ]),
   listTemplate: new Simplate([
-    '<div class="dropdown {%: $.dropdownClass %} dropdown--absolute dropdown--hidden">',
+    '<div id="{%= $.id %}_dropdown_list" class="dropdown {%: $.dropdownClass %} dropdown--absolute dropdown--hidden">',
       '<input readOnly class="dropdown__input dropdown__input--absolute" value="{%: $.value %}"></input>',
       '<span class="dropdown__icon {%: $.icon %}"></span>',
     '</div>',
@@ -88,6 +88,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   _overlayEvent: null,
   _selected: null,
   items: null,
+  itemMustExist: false,
   constructor: function constructor() {
     this._eventConnections = [];
     this.items = [];
@@ -108,7 +109,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     if (this._ghost) {
       domConstruct.destroy(this._ghost);
     }
-    this._ghost = domConstruct.toDom(this.listTemplate.apply({ value: this.getText(), icon: this.openIcon, label: this.label, dropdownClass: this.dropdownClass }, this));
+    this._ghost = domConstruct.toDom(this.listTemplate.apply({id: this.id, value: this.getText(), icon: this.openIcon, label: this.label, dropdownClass: this.dropdownClass }, this));
 
     const dropdownInput = query('.dropdown__input', this._ghost)[0];
     if (dropdownInput) {
@@ -131,10 +132,18 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this.items = items;
     this._defaultValue = defaultValue;
 
-    array.forEach(items, function addToModalList(item) {
+    array.forEach(items, function findItem(item) {
       if (item.value === defaultValue) {
         itemFound = item;
       }
+    }, this);
+
+    if (this.itemMustExist && !itemFound) {
+      itemFound = { key: -1, value: defaultValue, text: defaultValue };
+      this.items.splice(0, 1, itemFound);
+    }
+
+    array.forEach(items, function addToModalList(item) {
       const option = domConstruct.toDom(this.selectItemTemplate.apply({key: item.key, value: item.value, text: item.text}, this));
       domConstruct.place(option, this.dropdownSelect);
     }, this);
