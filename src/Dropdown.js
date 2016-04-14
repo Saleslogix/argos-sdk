@@ -129,7 +129,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   },
   createList: function createList({items, defaultValue}) {
     let itemFound = null;
-    this.items = items;
+    this.items = (items) ? items : [];
     this._defaultValue = defaultValue;
 
     array.forEach(items, function findItem(item) {
