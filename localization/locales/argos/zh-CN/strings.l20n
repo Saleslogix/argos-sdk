@@ -240,9 +240,13 @@
   nextMonthText: "下个月"
   cancelText: "取消"
   confirmText: "确认"
+>
+
+<relativeDateTimePickerDateTimeFormat ""
   hoursFormat:  "A h:mm"
   dayHoursFormat: "ddd A h:mm"
 >
+
 <briefcaseModel ""
   entityDisplayName: "公文包"
   entityDisplayNamePlural : "公文包"

@@ -240,9 +240,13 @@
   nextMonthText: "Nächster Monat"
   cancelText: "Abbrechen"
   confirmText: "Bestätigen"
+>
+
+<relativeDateTimePickerDateTimeFormat ""
   hoursFormat:  "H:mm"
   dayHoursFormat: "DDD H:mm"
 >
+
 <briefcaseModel ""
   entityDisplayName: "Aktentasche"
   entityDisplayNamePlural : "Aktentaschen"

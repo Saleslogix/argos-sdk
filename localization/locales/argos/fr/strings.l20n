@@ -240,9 +240,13 @@
   nextMonthText: "Mois prochain"
   cancelText: "Annuler"
   confirmText: "Confirmer"
+>
+
+<relativeDateTimePickerDateTimeFormat ""
   hoursFormat:  "h:mm"
   dayHoursFormat: "ddd h:mm"
 >
+
 <briefcaseModel ""
   entityDisplayName: "Porte-documents"
   entityDisplayNamePlural : "Porte-documents"

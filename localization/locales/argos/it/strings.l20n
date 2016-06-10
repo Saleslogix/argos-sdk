@@ -240,9 +240,13 @@
   nextMonthText: "Mese successivo"
   cancelText: "Annulla"
   confirmText: "Conferma"
+>
+
+<relativeDateTimePickerDateTimeFormat ""
   hoursFormat:  "H:mm"
   dayHoursFormat: "ddd D/M/YYYY H:mm"
 >
+
 <briefcaseModel ""
   entityDisplayName: "Sincronia file"
   entityDisplayNamePlural : "Sincronie file"

@@ -240,9 +240,13 @@
   nextMonthText: "Следующий месяц"
   cancelText: "Отмена"
   confirmText: "Подтвердить"
-  hoursFormat:  "H:mm"
-  dayHoursFormat: "ddd ч:мм A"
 >
+
+<relativeDateTimePickerDateTimeFormat ""
+  hoursFormat:  "H:mm"
+  dayHoursFormat: "ddd H:mm"
+>
+
 <briefcaseModel ""
   entityDisplayName: "Портфель"
   entityDisplayNamePlural : "Портфели"

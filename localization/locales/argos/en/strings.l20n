@@ -240,9 +240,13 @@
   nextMonthText: "Next Month"
   cancelText: "Cancel"
   confirmText: "Confirm"
+>
+
+<relativeDateTimePickerDateTimeFormat ""
   hoursFormat:  "h:mm A"
   dayHoursFormat: "ddd h:mm A"
 >
+
 <briefcaseModel ""
   entityDisplayName: "Briefcase"
   entityDisplayNamePlural : "Briefcases"
