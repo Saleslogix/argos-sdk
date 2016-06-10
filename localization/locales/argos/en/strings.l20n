@@ -1,10 +1,13 @@
 <dateField ""
-    emptyText: ''
-    dateFormatText: "MM/DD/YYYY"
-    invalidDateFormatErrorText: "Field '${0}' has Invalid date format."
-    cancelText: "Cancel"
-    confirmText: "Confirm"
-    advancedText: "Advanced"
+  emptyText: ''
+  invalidDateFormatErrorText: "Field '${0}' has Invalid date format."
+  cancelText: "Cancel"
+  confirmText: "Confirm"
+  advancedText: "Advanced"
+>
+
+<dateFieldDateTimeFormat ""
+  dateFormatText: "MM/DD/YYYY"
 >
 
 <durationField ""
@@ -183,9 +186,12 @@
   hourText: "hour"
   minutesText: "minutes"
   minuteText: "minute"
-  shortDateFormatText: "M/D/YYYY"
   percentFormatText: "${0}${1}"
   bytesText: "bytes"
+>
+
+<formatDateTimeFormat""
+  shortDateFormatText: "M/D/YYYY"
 >
 
 <groupedList ""
