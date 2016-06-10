@@ -8,6 +8,7 @@ import DateTimePicker from './DateTimePicker';
 import getResource from './I18n';
 
 const resource = getResource('relativeDateTimePicker');
+const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
 
 /**
  * @class argos.DateTimePicker
@@ -45,8 +46,8 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   tomorrowAfternoonText: resource.tomorrowAfternoonText,
   nextWeekText: resource.nextWeekText,
   nextMonthText: resource.nextMonthText,
-  hoursFormat: resource.hoursFormat,
-  dayHoursFormat: resource.dayHoursFormat,
+  hoursFormat: dtFormatResource.hoursFormat,
+  dayHoursFormat: dtFormatResource.dayHoursFormat,
 
 
   createLayout: function createLayout() {

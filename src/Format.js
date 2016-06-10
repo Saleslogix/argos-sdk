@@ -23,6 +23,7 @@ import utility from './Utility';
 import getResource from './I18n';
 
 const resource = getResource('format');
+const dtFormatResource = getResource('formatDateTimeFormat');
 
 const getVectorMaxSize = function getVectorMaxSize(v) {
   let w = 1;
@@ -155,7 +156,7 @@ __class = lang.setObject('argos.Format', {
    */
   minuteText: resource.minuteText,
 
-  shortDateFormatText: resource.shortDateFormatText,
+  shortDateFormatText: dtFormatResource.shortDateFormatText,
 
   /**
    * @property {String}
