@@ -243,8 +243,8 @@
 >
 
 <relativeDateTimePickerDateTimeFormat ""
-  hoursFormat:  "h:mm"
-  dayHoursFormat: "ddd h:mm"
+  hoursFormat:  "H:mm"
+  dayHoursFormat: "ddd H:mm"
 >
 
 <briefcaseModel ""
