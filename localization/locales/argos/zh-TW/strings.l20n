@@ -7,7 +7,7 @@
 >
 
 <dateFieldDateTimeFormat ""
-  dateFormatText: "YYYY/MM/DD"
+  dateFormatText: "YYYY-MM-DD"
 >
 
 <durationField ""
@@ -191,7 +191,7 @@
 >
 
 <formatDateTimeFormat ""
-  shortDateFormatText: "YYYY/M/D"
+  shortDateFormatText: "YYYY-M-D"
 >
 
 <groupedList ""
