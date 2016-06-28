@@ -230,6 +230,12 @@
  titleText: "Generic View"
 >
 
+<timePicker ""
+  amText: "AM",
+  pmText: "PM",
+  setTimeText: "Set Time",
+>
+
 <relativeDateTimePicker ""
   titleText: "Around..."
   pickDateTimeText: "Advanced"

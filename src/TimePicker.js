@@ -6,6 +6,9 @@ import domConstruct from 'dojo/dom-construct';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
 import Dropdown from 'argos/Dropdown';
+import getResource from './I18n';
+
+const resource = getResource('timePicker');
 
 /**
  * @class argos.TimePicker
@@ -52,9 +55,9 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     '</li>',
   ]),
 
-  amText: 'AM',
-  pmText: 'PM',
-  setTimeText: 'Set Time',
+  amText: resource.amText,
+  pmText: resource.pmText,
+  setTimeText: resource.setTimeText,
 
   timeValue: null,
   _hourDropdown: null,

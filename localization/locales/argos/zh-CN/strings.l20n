@@ -230,6 +230,12 @@
  titleText: "通用视图"
 >
 
+<timePicker ""
+  amText: "AM",
+  pmText: "PM",
+  setTimeText: "Set Time",
+>
+
 <relativeDateTimePicker ""
   titleText: "周围..."
   pickDateTimeText: "高级"
