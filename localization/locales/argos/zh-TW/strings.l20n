@@ -6,10 +6,6 @@
   advancedText: "進階"
 >
 
-<dateFieldDateTimeFormat ""
-  dateFormatText: "YYYY-MM-DD"
->
-
 <durationField ""
   minutes: "分鐘"
   hours: "小時"
@@ -190,10 +186,6 @@
   bytesText: "位元組"
 >
 
-<formatDateTimeFormat ""
-  shortDateFormatText: "YYYY-M-D"
->
-
 <groupedList ""
  toggleCollapseText: "切換摺疊"
 >
@@ -246,11 +238,6 @@
   nextMonthText: "下個月"
   cancelText: "取消"
   confirmText: "確認"
->
-
-<relativeDateTimePickerDateTimeFormat ""
-  hoursFormat:  "h:mm A"
-  dayHoursFormat: "ddd h:mm A"
 >
 
 <briefcaseModel ""
