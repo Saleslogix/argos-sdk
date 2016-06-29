@@ -53,3 +53,16 @@
   }
 }
 """>
+
+<dateFieldDateTimeFormat ""
+  dateFormatText: "MM/DD/YYYY"
+>
+
+<formatDateTimeFormat ""
+  shortDateFormatText: "M/D/YYYY"
+>
+
+<relativeDateTimePickerDateTimeFormat ""
+  hoursFormat:  "h:mm A"
+  dayHoursFormat: "ddd h:mm A"
+>

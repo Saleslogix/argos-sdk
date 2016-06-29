@@ -6,10 +6,6 @@
   advancedText: "Дополнительно"
 >
 
-<dateFieldDateTimeFormat ""
-  dateFormatText: "DD.MM.YYYY"
->
-
 <durationField ""
   minutes: "минуты"
   hours: "часы"
@@ -190,10 +186,6 @@
   bytesText: "байт"
 >
 
-<formatDateTimeFormat ""
-  shortDateFormatText: "D.M.YYYY"
->
-
 <groupedList ""
  toggleCollapseText: "показать/скрыть"
 >
@@ -246,11 +238,6 @@
   nextMonthText: "Следующий месяц"
   cancelText: "Отмена"
   confirmText: "Подтвердить"
->
-
-<relativeDateTimePickerDateTimeFormat ""
-  hoursFormat:  "H:mm"
-  dayHoursFormat: "ddd H:mm"
 >
 
 <briefcaseModel ""

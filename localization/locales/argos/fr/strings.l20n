@@ -6,10 +6,6 @@
   advancedText: "Avancé"
 >
 
-<dateFieldDateTimeFormat ""
-  dateFormatText: "DD/MM/YYYY"
->
-
 <durationField ""
   minutes: "minute(s)"
   hours: "Heure(s)"
@@ -190,10 +186,6 @@
   bytesText: "octets"
 >
 
-<formatDateTimeFormat ""
-  shortDateFormatText: "D/M/YYYY"
->
-
 <groupedList ""
  toggleCollapseText: "développer/réduire"
 >
@@ -246,11 +238,6 @@
   nextMonthText: "Mois prochain"
   cancelText: "Annuler"
   confirmText: "Confirmer"
->
-
-<relativeDateTimePickerDateTimeFormat ""
-  hoursFormat:  "H:mm"
-  dayHoursFormat: "ddd H:mm"
 >
 
 <briefcaseModel ""

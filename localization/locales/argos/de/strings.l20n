@@ -6,10 +6,6 @@
   advancedText: "Erweitert"
 >
 
-<dateFieldDateTimeFormat ""
-  dateFormatText: "DD.MM.YYYY"
->
-
 <durationField ""
   minutes: "Minute(n)"
   hours: "Stunde(n)"
@@ -190,10 +186,6 @@
   bytesText: "Byte"
 >
 
-<formatDateTimeFormat ""
-  shortDateFormatText: "D.M.YYYY"
->
-
 <groupedList ""
  toggleCollapseText: "ein-/ausblenden"
 >
@@ -248,11 +240,6 @@
   confirmText: "Bestätigen"
 >
 
-<relativeDateTimePickerDateTimeFormat ""
-  hoursFormat:  "H:mm"
-  dayHoursFormat: "ddd H:mm"
->
-
 <briefcaseModel ""
   entityDisplayName: "Aktentasche"
   entityDisplayNamePlural : "Aktentaschen"
@@ -278,6 +265,7 @@
   submitText: "Übergeben"
   warningText: "Warnung"
 >
+
 <_listOfflineMixin
   goToListViewText: "Einträge wurden in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
   interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Einträge vollständig in die Aktentasche zu verschieben."
