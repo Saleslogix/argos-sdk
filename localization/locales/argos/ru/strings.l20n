@@ -223,8 +223,8 @@
 >
 
 <timePicker ""
-  amText: "AM"
-  pmText: "PM"
+  amText: "д. п."
+  pmText: "п. п."
   setTimeText: "Set Time"
 >
 

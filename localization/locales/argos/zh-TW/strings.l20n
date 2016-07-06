@@ -223,8 +223,8 @@
 >
 
 <timePicker ""
-  amText: "AM"
-  pmText: "PM"
+  amText: "上午"
+  pmText: "下午"
   setTimeText: "Set Time"
 >
 
