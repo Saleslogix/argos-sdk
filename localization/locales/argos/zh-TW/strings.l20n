@@ -223,9 +223,9 @@
 >
 
 <timePicker ""
-  amText: "AM",
-  pmText: "PM",
-  setTimeText: "Set Time",
+  amText: "上午"
+  pmText: "下午"
+  setTimeText: "Set Time"
 >
 
 <relativeDateTimePicker ""
