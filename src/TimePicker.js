@@ -6,6 +6,9 @@ import domConstruct from 'dojo/dom-construct';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
 import Dropdown from 'argos/Dropdown';
+import getResource from './I18n';
+
+const resource = getResource('timePicker');
 
 /**
  * @class argos.TimePicker
@@ -52,9 +55,9 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     '</li>',
   ]),
 
-  amText: 'AM',
-  pmText: 'PM',
-  setTimeText: 'Set Time',
+  amText: resource.amText,
+  pmText: resource.pmText,
+  setTimeText: resource.setTimeText,
 
   timeValue: null,
   _hourDropdown: null,
@@ -67,128 +70,140 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   _widgetName: 'timePicker',
   timeless: false,
   showSetTime: true,
-  hourValues: [
-    {
-      value: '1',
-      key: 1,
-    },
-    {
-      value: '2',
-      key: 2,
-    },
-    {
-      value: '3',
-      key: 3,
-    },
-    {
-      value: '4',
-      key: 4,
-    },
-    {
-      value: '5',
-      key: 5,
-    },
-    {
-      value: '6',
-      key: 6,
-    },
-    {
-      value: '7',
-      key: 7,
-    },
-    {
-      value: '8',
-      key: 8,
-    },
-    {
-      value: '9',
-      key: 9,
-    },
-    {
-      value: '10',
-      key: 10,
-    },
-    {
-      value: '11',
-      key: 11,
-    },
-    {
-      value: '12',
-      key: 12,
-    },
-  ],
-  minuteValues: [
-    {
-      value: '00',
-      key: 0,
-    },
-    {
-      value: '05',
-      key: 5,
-    },
-    {
-      value: '10',
-      key: 10,
-    },
-    {
-      value: '15',
-      key: 15,
-    },
-    {
-      value: '20',
-      key: 20,
-    },
-    {
-      value: '25',
-      key: 25,
-    },
-    {
-      value: '30',
-      key: 30,
-    },
-    {
-      value: '35',
-      key: 35,
-    },
-    {
-      value: '40',
-      key: 40,
-    },
-    {
-      value: '45',
-      key: 45,
-    },
-    {
-      value: '50',
-      key: 50,
-    },
-    {
-      value: '55',
-      key: 55,
-    },
-  ],
-
+  hourValues: null,
+  minuteValues: null,
+  createHourLayout: function createHourLayout() {
+    if (!this.hourValues) {
+      this.hourValues = [
+        {
+          value: '1',
+          key: '1',
+        },
+        {
+          value: '2',
+          key: '2',
+        },
+        {
+          value: '3',
+          key: '3',
+        },
+        {
+          value: '4',
+          key: '4',
+        },
+        {
+          value: '5',
+          key: '5',
+        },
+        {
+          value: '6',
+          key: '6',
+        },
+        {
+          value: '7',
+          key: '7',
+        },
+        {
+          value: '8',
+          key: '8',
+        },
+        {
+          value: '9',
+          key: '9',
+        },
+        {
+          value: '10',
+          key: '10',
+        },
+        {
+          value: '11',
+          key: '11',
+        },
+        {
+          value: '12',
+          key: '12',
+        },
+      ];
+    }
+    return this.hourValues;
+  },
+  createMinuteLayout: function createMinuteLayout() {
+    if (!this.minuteValues) {
+      this.minuteValues = [
+        {
+          value: '00',
+          key: '0',
+        },
+        {
+          value: '05',
+          key: '5',
+        },
+        {
+          value: '10',
+          key: '10',
+        },
+        {
+          value: '15',
+          key: '15',
+        },
+        {
+          value: '20',
+          key: '20',
+        },
+        {
+          value: '25',
+          key: '25',
+        },
+        {
+          value: '30',
+          key: '30',
+        },
+        {
+          value: '35',
+          key: '35',
+        },
+        {
+          value: '40',
+          key: '40',
+        },
+        {
+          value: '45',
+          key: '45',
+        },
+        {
+          value: '50',
+          key: '50',
+        },
+        {
+          value: '55',
+          key: '55',
+        },
+      ];
+    }
+    return this.minuteValues;
+  },
   createHourDropdown: function createHourDropdown(initial) {
     if (!this._hourDropdown) {
-      this._hourDropdown = new Dropdown({ id: 'hour-dropdown' });
+      this.createHourLayout();
+      this._hourDropdown = new Dropdown({ id: 'hour-dropdown', itemMustExist: true });
       this._hourDropdown.createList({ items: this.hourValues, defaultValue: `${initial}` });
       domConstruct.place(this._hourDropdown.domNode, this.hourNode, 'replace');
     }
     return this;
   },
   createMinuteDropdown: function createMinuteDropdown(initial) {
-    let value = Math.ceil(initial / 5) * 5;
-    if (value >= 60) {
-      value = 55;
+    const tempValue = Math.ceil(initial / 1) * 1;
+    let value = initial;
+    if (tempValue >= 60) {
+      value = '59';
     }
-    if (value === 0) {
+    if (tempValue === 0) {
       value = '00';
     }
-    if (value === 5) {
-      value = '05';
-    }
+
     if (!this._minuteDropdown) {
-      this._minuteDropdown = new Dropdown({ id: 'minute-modal' });
+      this.createMinuteLayout();
+      this._minuteDropdown = new Dropdown({ id: 'minute-modal', itemMustExist: true });
       this._minuteDropdown.createList({ items: this.minuteValues, defaultValue: `${value}` });
       domConstruct.place(this._minuteDropdown.domNode, this.minuteNode, 'replace');
     }
@@ -246,8 +261,9 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
       hour = 12;
     }
     let minutes = date.minutes() || 0;
-    if (minutes === 0) {
-      minutes = '00';
+    if (minutes < 10) {
+      minutes = '' + minutes;
+      minutes = Array(2).join('0') + minutes;
     }
     this.timeValue.seconds = date.seconds();
     this.createHourDropdown(`${hour}`)

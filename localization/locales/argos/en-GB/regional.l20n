@@ -1,13 +1,13 @@
 /* CultureInfo contains a JSON blob that must be updated per locale. */
 <CultureInfo """
 {
-  "name": "en",
-  "englishName": "English (United States)",
-  "nativeName": "English (United States)",
+  "name": "en-GB",
+  "englishName": "English (United Kingdom)",
+  "nativeName": "English (United Kingdom)",
   "numberFormat": {
     "currencyDecimalDigits": 2,
     "currencyDecimalSeparator": ".",
-    "isReadOnly": false,
+    "isReadOnly": true,
     "currencyGroupSizes": [
       3
     ],
@@ -18,9 +18,9 @@
       3
     ],
     "currencyGroupSeparator": ",",
-    "currencySymbol": "$",
+    "currencySymbol": "£",
     "naNSymbol": "NaN",
-    "currencyNegativePattern": 0,
+    "currencyNegativePattern": 1,
     "numberNegativePattern": 1,
     "percentPositivePattern": 0,
     "percentNegativePattern": 0,
@@ -55,14 +55,14 @@
 """>
 
 <dateFieldDateTimeFormat ""
-  dateFormatText: "MM/DD/YYYY"
+  dateFormatText: "DD/MM/YYYY"
 >
 
 <formatDateTimeFormat ""
-  shortDateFormatText: "M/D/YYYY"
+  shortDateFormatText: "D/M/YYYY"
 >
 
 <relativeDateTimePickerDateTimeFormat ""
-  hoursFormat:  "h:mm A"
-  dayHoursFormat: "ddd h:mm A"
+  hoursFormat:  "H:mm"
+  dayHoursFormat: "ddd H:mm"
 >

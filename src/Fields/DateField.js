@@ -25,6 +25,7 @@ import RelativeDateTimePicker from '../RelativeDateTimePicker';
 import getResource from '../I18n';
 
 const resource = getResource('dateField');
+const dtFormatResource = getResource('dateFieldDateTimeFormat');
 
 /**
  * @class argos.Fields.DateField
@@ -56,7 +57,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * The text shown when no value (or null/undefined) is set to the field.
    */
   emptyText: resource.emptyText,
-  dateFormatText: resource.dateFormatText,
+  dateFormatText: dtFormatResource.dateFormatText,
   /**
    * @property {String}
    * The error validation message for this field.
