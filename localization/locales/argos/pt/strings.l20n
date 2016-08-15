@@ -1,9 +1,9 @@
-<dateField ""
+ï»¿<dateField ""
   emptyText: ''
-  invalidDateFormatErrorText: "O Campo '${0}' tem formato de data inválido."
+  invalidDateFormatErrorText: "O Campo '${0}' tem formato de data invÃ¡lido."
   cancelText: "Cancelar"
   confirmText: "Confirmar"
-  advancedText: "Avançado"
+  advancedText: "AvanÃ§ado"
 >
 
 <durationField ""
@@ -12,7 +12,7 @@
   days: "dia(s)"
   weeks: "semana(s)"
   years: "ano(s)"
-  invalidDurationErrorText: "O Campo '${0}' não é uma duração válida."
+  invalidDurationErrorText: "O Campo '${0}' nÃ£o Ã© uma duraÃ§Ã£o vÃ¡lida."
   emptyText: ""
 >
 
@@ -37,36 +37,36 @@
 >
 
 <dateTimeSection ""
-  displayNameText: "Seção de Data e Hora"
+  displayNameText: "SeÃ§Ã£o de Data e Hora"
   todayText: "Hoje"
-  tomorrowText: "Amanhã"
+  tomorrowText: "AmanhÃ£"
   laterThisWeekText: "Mais para o final da semana"
-  earlierThisWeekText: "Mais para o início da semana"
-  thisLaterMonthText: "Mais para o final do mês"
-  thisEarlierMonthText: "Mais para o início do mês"
-  thisYearEarlierText: "Mais para o início do ano"
+  earlierThisWeekText: "Mais para o inÃ­cio da semana"
+  thisLaterMonthText: "Mais para o final do mÃªs"
+  thisEarlierMonthText: "Mais para o inÃ­cio do mÃªs"
+  thisYearEarlierText: "Mais para o inÃ­cio do ano"
   thisYearLaterText: "Mais para o final do ano"
   yesterdayText: "Ontem"
-  lastWeekText: "Última semana"
-  lastMonthText: "Último mês"
+  lastWeekText: "Ãšltima semana"
+  lastMonthText: "Ãšltimo mÃªs"
   pastYearText: "Ano(s) anterior(es)"
-  nextYearText: "Próximo ano"
-  nextMonthText: "Próximo mês"
-  nextWeekText: "Próxima semana"
+  nextYearText: "PrÃ³ximo ano"
+  nextMonthText: "PrÃ³ximo mÃªs"
+  nextWeekText: "PrÃ³xima semana"
   futureText: "Futuro"
-  twoWeeksAgoText: "Duas semanas atrás"
-  threeWeeksAgoText: "Três semanas atrás"
-  twoMonthsAgoText: "Dois meses atrás"
-  threeMonthsAgoText: "Três meses atrás"
+  twoWeeksAgoText: "Duas semanas atrÃ¡s"
+  threeWeeksAgoText: "TrÃªs semanas atrÃ¡s"
+  twoMonthsAgoText: "Dois meses atrÃ¡s"
+  threeMonthsAgoText: "TrÃªs meses atrÃ¡s"
   unknownText: "Desconhecido"
 >
 
 <groupByValueSection ""
-  displayNameText: "Agrupar por Seção de Valor"
+  displayNameText: "Agrupar por SeÃ§Ã£o de Valor"
 >
 
 <configureQuickActions ""
-  titleText: "Configurar Ações Rápidas"
+  titleText: "Configurar AÃ§Ãµes RÃ¡pidas"
 >
 
 <fileSelect ""
@@ -76,9 +76,9 @@
   cancelText: "Cancelar"
   selectFileText: "Selecionar arquivo"
   loadingText: "Carregando..."
-  descriptionText: "descrição"
+  descriptionText: "descriÃ§Ã£o"
   bytesText: "bytes"
-  notSupportedText: "A inclusão de anexos não é suportado pelo seu dispositivo."
+  notSupportedText: "A inclusÃ£o de anexos nÃ£o Ã© suportado pelo seu dispositivo."
 >
 
 <signature ""
@@ -92,27 +92,27 @@
 >
 
 <detailBase ""
-  informationText: "Informação"
+  informationText: "InformaÃ§Ã£o"
   titleText: "Detalhe"
   entityText: "Entidade"
   detailsText: "Detalhes"
   loadingText: "Carregando"
-  notAvailableText: "O dado solicitado não está disponível."
+  notAvailableText: "O dado solicitado nÃ£o estÃ¡ disponÃ­vel."
   toggleCollapseText: "alternar recolher"
   editText: "Editar"
 >
 
 <editBase ""
-  concurrencyErrorText: "Outro usuário atualizou este campo."
+  concurrencyErrorText: "Outro usuÃ¡rio atualizou este campo."
   toggleCollapseText: "alternar recolher"
   saveText: "Salvar"
   titleText: "Editar"
-  validationSummaryText: "Resumo de Validação"
+  validationSummaryText: "Resumo de ValidaÃ§Ã£o"
   concurrencySummaryText: "Simultaneidade de Erro(s)"
   detailsText: "Detalhes"
   loadingText: "Carregando"
   errorGeneral: "Ocorreu um erro no servidor enquanto os dados eram solicitados."
-  error410:  "Erro ao salvar. Este registro não existe."
+  error410:  "Erro ao salvar. Este registro nÃ£o existe."
 >
 
 <errorHandleMixin ""
@@ -134,7 +134,7 @@
 
 <pullToRefreshMixin ""
   pullRefreshText: "Puxe para baixo para atualizar..."
-  pullReleaseText: "Disponibilizar para atualização..."
+  pullReleaseText: "Disponibilizar para atualizaÃ§Ã£o..."
 >
 
 <relatedViewWidgetBase ""
@@ -142,12 +142,12 @@
 >
 
 <calendar ""
-  titleText: "Calendário"
+  titleText: "CalendÃ¡rio"
   amText: "AM"
   pmText: "PM"
   january: "Janeiro"
   february: "Fevereiro"
-  march: "Março"
+  march: "MarÃ§o"
   april: "Abril"
   may: "Maio"
   june: "Junho"
@@ -170,12 +170,12 @@
 
 <errorManager ""
   abortedText: "Abortado"
-  scopeSaveText: "O escopo não foi salvo no relatório de erro"
+  scopeSaveText: "O escopo nÃ£o foi salvo no relatÃ³rio de erro"
 >
 
 <format ""
   yesText: "Sim"
-  noText: "Não"
+  noText: "NÃ£o"
   trueText: "V"
   falseText: "F"
   hoursText: "horas"
@@ -203,7 +203,7 @@
   refreshViewText: "atualizar"
   itemOfCountText: " ${0} de ${1}"
   totalCountText: " (${0})"
-  titleText: "Visualização Relacionada"
+  titleText: "VisualizaÃ§Ã£o Relacionada"
 >
 
 <searchWidget ""
@@ -211,7 +211,7 @@
 >
 
 <selectionModel ""
-  requireSelectionText: "Uma seleção é requerida, você não pode desmarcar o último item."
+  requireSelectionText: "Uma seleÃ§Ã£o Ã© requerida, vocÃª nÃ£o pode desmarcar o Ãºltimo item."
 >
 
 <tabWidget ""
@@ -219,7 +219,7 @@
 >
 
 <view ""
- titleText: "Visualização Genérica"
+ titleText: "VisualizaÃ§Ã£o GenÃ©rica"
 >
 
 <timePicker ""
@@ -230,12 +230,12 @@
 
 <relativeDateTimePicker ""
   titleText: "Por volta de..."
-  pickDateTimeText: "Avançado"
+  pickDateTimeText: "AvanÃ§ado"
   thisEveningText: "Esta Noite"
-  tomorrowMorningText: "Amanhã de Manhã"
-  tomorrowAfternoonText: "Amanhã à Noite"
-  nextWeekText: "Próxima Semana"
-  nextMonthText: "Próximo Mês"
+  tomorrowMorningText: "AmanhÃ£ de ManhÃ£"
+  tomorrowAfternoonText: "AmanhÃ£ Ã  Noite"
+  nextWeekText: "PrÃ³xima Semana"
+  nextMonthText: "PrÃ³ximo MÃªs"
   cancelText: "Cancelar"
   confirmText: "Confirmar"
 >
@@ -266,23 +266,23 @@
   warningText: "Aviso"
 >
 <_listOfflineMixin
-  goToListViewText: "Os itens foram colocados na Maleta. Você gostaria de mudar para a visualização em lista da maleta?"
-  interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Favor tentar o processo de colocar os itens na maleta novamente."
+  goToListViewText: "Os itens foram colocados na Maleta. VocÃª gostaria de mudar para a visualizaÃ§Ã£o em lista da maleta?"
+  interruptedText: "O processo foi interrompido e nÃ£o foi possÃ­vel concluÃ­-lo totalmente. Favor tentar o processo de colocar os itens na maleta novamente."
   briefcasingText: "Agrupando na pasta, favor aguardar."
   errorBriefcasingText: "Erro ao agrupar na pasta"
 >
 
 <_detailOfflineMixin
-  goToDetailViewText: "O Item e os itens relacionados foram colocados na maleta. Você gostaria de mudar para a visualização em lista da maleta?"
-  interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Favor tentar o processo de colocar os itens na maleta novamente."
+  goToDetailViewText: "O Item e os itens relacionados foram colocados na maleta. VocÃª gostaria de mudar para a visualizaÃ§Ã£o em lista da maleta?"
+  interruptedText: "O processo foi interrompido e nÃ£o foi possÃ­vel concluÃ­-lo totalmente. Favor tentar o processo de colocar os itens na maleta novamente."
   briefcasingText: "Agrupando na pasta, favor aguardar."
   errorBriefcasingText: "Erro ao agrupar na pasta"
-  errorSavingOfflineViewText: "erro ao salvar a visualização desconectada:"
+  errorSavingOfflineViewText: "erro ao salvar a visualizaÃ§Ã£o desconectada:"
 >
 
 <sdkApplication
-  connectionToastTitleText: "Conexão"
+  connectionToastTitleText: "ConexÃ£o"
   checkingText: "Verificando conectividade"
-  loadingApplicationStateText: "Carregando estado da aplicação"
+  loadingApplicationStateText: "Carregando estado da aplicaÃ§Ã£o"
   initializingText: "Inicializando:"
 >

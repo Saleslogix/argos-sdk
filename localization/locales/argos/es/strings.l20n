@@ -1,6 +1,6 @@
-<dateField ""
+ï»¿<dateField ""
   emptyText: ''
-  invalidDateFormatErrorText: "Campo '${0}' tiene un formato de fecha inválido."
+  invalidDateFormatErrorText: "Campo '${0}' tiene un formato de fecha invÃ¡lido."
   cancelText: "Cancelar"
   confirmText: "Confirmar"
   advancedText: "Avanzado"
@@ -9,17 +9,17 @@
 <durationField ""
   minutes: "minuto(s)"
   hours: "hora(s)"
-  days: "día(s)"
+  days: "dÃ­a(s)"
   weeks: "semana(s)"
-  years: "año(s)"
-  invalidDurationErrorText: "Campo '${0}' no es una duración válida."
+  years: "aÃ±o(s)"
+  invalidDurationErrorText: "Campo '${0}' no es una duraciÃ³n vÃ¡lida."
   emptyText: ""
 >
 
 <editorField ""
   lookupLabelText: "editar"
   lookupText: "..."
-  emptyText: "vacío"
+  emptyText: "vacÃ­o"
   completeText: "Ok"
 >
 
@@ -27,7 +27,7 @@
   dependentErrorText: "Un valor para '${0}' debe ser seleccionado."
   emptyText: ""
   completeText: "Seleccionar"
-  lookupLabelText: "búsqueda"
+  lookupLabelText: "bÃºsqueda"
   lookupText: "..."
 >
 
@@ -37,20 +37,20 @@
 >
 
 <dateTimeSection ""
-  displayNameText: "Sección Fecha Hora"
+  displayNameText: "SecciÃ³n Fecha Hora"
   todayText: "Hoy"
-  tomorrowText: "Mañana"
-  laterThisWeekText: "A finales de está semana"
-  earlierThisWeekText: "A principios de está semana"
-  thisLaterMonthText: "A finales de esté mes"
-  thisEarlierMonthText: "A principios de esté mes"
-  thisYearEarlierText: "A principios de esté año"
-  thisYearLaterText: "A finales de esté año"
+  tomorrowText: "MaÃ±ana"
+  laterThisWeekText: "A finales de estÃ¡ semana"
+  earlierThisWeekText: "A principios de estÃ¡ semana"
+  thisLaterMonthText: "A finales de estÃ© mes"
+  thisEarlierMonthText: "A principios de estÃ© mes"
+  thisYearEarlierText: "A principios de estÃ© aÃ±o"
+  thisYearLaterText: "A finales de estÃ© aÃ±o"
   yesterdayText: "Ayer"
-  lastWeekText: "Última semana"
-  lastMonthText: "Último mes"
-  pastYearText: "Último(s) año(s)"
-  nextYearText: "Siguiente año"
+  lastWeekText: "Ãšltima semana"
+  lastMonthText: "Ãšltimo mes"
+  pastYearText: "Ãšltimo(s) aÃ±o(s)"
+  nextYearText: "Siguiente aÃ±o"
   nextMonthText: "Siguiente mes"
   nextWeekText: "Siguiente semana"
   futureText: "Futuro"
@@ -62,21 +62,21 @@
 >
 
 <groupByValueSection ""
-  displayNameText: "Agrupado Por la Sección Valor"
+  displayNameText: "Agrupado Por la SecciÃ³n Valor"
 >
 
 <configureQuickActions ""
-  titleText: "Configure Acciones Rápidas"
+  titleText: "Configure Acciones RÃ¡pidas"
 >
 
 <fileSelect ""
   titleText: "Seleccionar Archivo"
-  addFileText: "Clic o Tocar aquí para adicionar un archivo."
+  addFileText: "Clic o Tocar aquÃ­ para adicionar un archivo."
   uploadText: "Subir"
   cancelText: "Cancelar"
   selectFileText: "Seleccionar archivo"
   loadingText: "Cargando..."
-  descriptionText: "descripción"
+  descriptionText: "descripciÃ³n"
   bytesText: "bytes"
   notSupportedText: "No es posible adjuntar archivos desde su dispositivo."
 >
@@ -92,26 +92,26 @@
 >
 
 <detailBase ""
-  informationText: "Información"
+  informationText: "InformaciÃ³n"
   titleText: "Detalle"
   entityText: "Entidad"
   detailsText: "Detalles"
   loadingText: "Cargando"
-  notAvailableText: "La información solicitada no está disponible."
+  notAvailableText: "La informaciÃ³n solicitada no estÃ¡ disponible."
   toggleCollapseText: "contraer"
   editText: "editar"
 >
 
 <editBase ""
-  concurrencyErrorText: "Otro usuario actualizó esté campo."
+  concurrencyErrorText: "Otro usuario actualizÃ³ estÃ© campo."
   toggleCollapseText: "contraer"
   saveText: "Guardar"
   titleText: "editar"
-  validationSummaryText: "Resumen Validación"
+  validationSummaryText: "Resumen ValidaciÃ³n"
   concurrencySummaryText: "Error(es) de Concurrencia"
   detailsText: "Detalles"
   loadingText: "Cargando"
-  errorGeneral: "Ha ocurrido un error en el servidor mientras se estaba solicitando información."
+  errorGeneral: "Ha ocurrido un error en el servidor mientras se estaba solicitando informaciÃ³n."
   error410:  "Error salvando. Este registro ya no existe."
 >
 
@@ -120,7 +120,7 @@
 >
 
 <listBase ""
-  moreText: "Recuperar más registros"
+  moreText: "Recuperar mÃ¡s registros"
   emptySelectionText: "Ninguno"
   titleText: "Lista"
   configureText: "Configurar"
@@ -134,7 +134,7 @@
 
 <pullToRefreshMixin ""
   pullRefreshText: "Pulse para bajo para actualizar..."
-  pullReleaseText: "Liberación actualización..."
+  pullReleaseText: "LiberaciÃ³n actualizaciÃ³n..."
 >
 
 <relatedViewWidgetBase ""
@@ -165,12 +165,12 @@
   wednesdayAbbreviated: "Mi"
   thursdayAbbreviated: "Ju"
   fridayAbbreviated: "Vi"
-  saturdayAbbreviated: "Sá"
+  saturdayAbbreviated: "SÃ¡"
 >
 
 <errorManager ""
   abortedText: "Abortado"
-  scopeSaveText: "El ámbito no se guarda en el informe de errores"
+  scopeSaveText: "El Ã¡mbito no se guarda en el informe de errores"
 >
 
 <format ""
@@ -195,9 +195,9 @@
 >
 
 <relatedViewWidget ""
-  nodataText: "no se encontrarón registros..."
-  selectMoreDataText: "ver ${0} más de ${1} ... "
-  selectMoreDataText2: "ver ${0} más ... "
+  nodataText: "no se encontrarÃ³n registros..."
+  selectMoreDataText: "ver ${0} mÃ¡s de ${1} ... "
+  selectMoreDataText2: "ver ${0} mÃ¡s ... "
   navToListText: "ver la lista"
   loadingText: "Cargando"
   refreshViewText: "actualizar"
@@ -211,15 +211,15 @@
 >
 
 <selectionModel ""
-  requireSelectionText: "Una selección es requerida, usted no puede des seleccionar el último ítem."
+  requireSelectionText: "Una selecciÃ³n es requerida, usted no puede des seleccionar el Ãºltimo Ã­tem."
 >
 
 <tabWidget ""
- moreText: "Más"
+ moreText: "MÃ¡s"
 >
 
 <view ""
- titleText: "Vista Genérica"
+ titleText: "Vista GenÃ©rica"
 >
 
 <timePicker ""
@@ -232,8 +232,8 @@
   titleText: "Alrededor..."
   pickDateTimeText: "Avanzado"
   thisEveningText: "Esta tarde"
-  tomorrowMorningText: "Mañana en la mañana"
-  tomorrowAfternoonText: "Mañana en la tarde"
+  tomorrowMorningText: "MaÃ±ana en la maÃ±ana"
+  tomorrowAfternoonText: "MaÃ±ana en la tarde"
   nextWeekText: "Siguiente semana"
   nextMonthText: "Siguiente mes"
   cancelText: "Cancelar"
@@ -241,7 +241,7 @@
 >
 
 <briefcaseModel ""
-  entityDisplayName: "Maletín"
+  entityDisplayName: "MaletÃ­n"
   entityDisplayNamePlural : "Maletines"
 >
 
@@ -266,23 +266,23 @@
   warningText: "Advertencia"
 >
 <_listOfflineMixin
-  goToListViewText: "Los ítems estan en el maletín. ¿Desea mover para ver la lista del maletín?"
-  interruptedText: "El proceso fue interrumpido y no fue posible completarlo en su totalidad. Por favor, intente de nuevo el proceso para la totalidad de los ítems del maletín."
-  briefcasingText: "Archivando el maletín, por favor, espere."
-  errorBriefcasingText: "Error archivando el maletín"
+  goToListViewText: "Los Ã­tems estan en el maletÃ­n. Â¿Desea mover para ver la lista del maletÃ­n?"
+  interruptedText: "El proceso fue interrumpido y no fue posible completarlo en su totalidad. Por favor, intente de nuevo el proceso para la totalidad de los Ã­tems del maletÃ­n."
+  briefcasingText: "Archivando el maletÃ­n, por favor, espere."
+  errorBriefcasingText: "Error archivando el maletÃ­n"
 >
 
 <_detailOfflineMixin
-  goToDetailViewText: "El ítem y los ítems relacionados estan en el maletín. ¿Desea mover para ver la lista del maletín?"
-  interruptedText: "El proceso fue interrumpido y no fue posible completarlo en su totalidad. Por favor, intente de nuevo el proceso para la totalidad de los ítems del maletín."
-  briefcasingText: "Archivando el maletín, por favor, espere."
+  goToDetailViewText: "El Ã­tem y los Ã­tems relacionados estan en el maletÃ­n. Â¿Desea mover para ver la lista del maletÃ­n?"
+  interruptedText: "El proceso fue interrumpido y no fue posible completarlo en su totalidad. Por favor, intente de nuevo el proceso para la totalidad de los Ã­tems del maletÃ­n."
+  briefcasingText: "Archivando el maletÃ­n, por favor, espere."
   errorBriefcasingText: "Error archivando el portafolio"
-  errorSavingOfflineViewText: "error guardando vista fuera de línea:"
+  errorSavingOfflineViewText: "error guardando vista fuera de lÃ­nea:"
 >
 
 <sdkApplication
-  connectionToastTitleText: "Conexión"
+  connectionToastTitleText: "ConexiÃ³n"
   checkingText: "Verificar conectividad"
-  loadingApplicationStateText: "Estado de carga de la aplicación"
+  loadingApplicationStateText: "Estado de carga de la aplicaciÃ³n"
   initializingText: "Inicializando:"
 >

@@ -1,4 +1,4 @@
-/* CultureInfo contains a JSON blob that must be updated per locale. */
+﻿/* CultureInfo contains a JSON blob that must be updated per locale. */
 <CultureInfo """
 {
   "nome": "in",
