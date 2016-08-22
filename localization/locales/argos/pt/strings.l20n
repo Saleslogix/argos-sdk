@@ -1,4 +1,4 @@
-﻿<dateField ""
+<dateField ""
   emptyText: ''
   invalidDateFormatErrorText: "O Campo '${0}' tem formato de data inválido."
   cancelText: "Cancelar"
@@ -277,7 +277,7 @@
   interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Favor tentar o processo de colocar os itens na maleta novamente."
   briefcasingText: "Agrupando na pasta, favor aguardar."
   errorBriefcasingText: "Erro ao agrupar na pasta"
-  errorSavingOfflineViewText: "erro ao salvar a visualização desconectada:"
+  errorSavingOfflineViewText: "erro ao salvar a visualização offline:"
 >
 
 <sdkApplication
