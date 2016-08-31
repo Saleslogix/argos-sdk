@@ -6,7 +6,7 @@
   "nativeName": "English (United States)",
   "numberFormat": {
     "currencyDecimalDigits": 2,
-    "currencyDecimalSeparator": ".",
+    "currencyDecimalSeparator": ",",
     "isReadOnly": false,
     "currencyGroupSizes": [
       3
@@ -17,7 +17,7 @@
     "percentGroupSizes": [
       3
     ],
-    "currencyGroupSeparator": ",",
+    "currencyGroupSeparator": ".",
     "currencySymbol": "$",
     "naNSymbol": "NaN",
     "currencyNegativePattern": 0,
@@ -27,14 +27,14 @@
     "negativeInfinitySymbol": "-Infinito",
     "negativeSign": "-",
     "numberDecimalDigits": 2,
-    "numberDecimalSeparator": ".",
-    "numberGroupSeparator": ",",
+    "numberDecimalSeparator": ",",
+    "numberGroupSeparator": ".",
     "currencyPositivePattern": 0,
     "positiveInfinitySymbol": "Infinito",
     "positiveSign": "+",
     "percentDecimalDigits": 2,
-    "percentDecimalSeparator": ".",
-    "percentGroupSeparator": ",",
+    "percentDecimalSeparator": ",",
+    "percentGroupSeparator": ".",
     "percentSymbol": "%",
     "perMilleSymbol": "‰",
     "nativeDigits": [

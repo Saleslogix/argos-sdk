@@ -1,4 +1,4 @@
-﻿<dateField ""
+<dateField ""
   emptyText: ''
   invalidDateFormatErrorText: "Campo '${0}' tiene un formato de fecha inválido."
   cancelText: "Cancelar"

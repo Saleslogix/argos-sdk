@@ -63,6 +63,6 @@
 >
 
 <relativeDateTimePickerDateTimeFormat ""
-  hoursFormat:  "h:mm A"
-  dayHoursFormat: "ddd h:mm A"
+  hoursFormat:  "H:mm A"
+  dayHoursFormat: "ddd H:mm A"
 >
