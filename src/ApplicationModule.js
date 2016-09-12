@@ -95,6 +95,15 @@ const __class = declare('argos.ApplicationModule', null, {
   },
 
   /**
+   * initDynamic is invoked after appStatePromises run.
+   */
+  initDynamic: function initDynamic() {
+    this.loadCustomizationsDynamic();
+    this.loadToolbarsDynamic();
+    this.loadViewsDynamic();
+  },
+
+  /**
    * @deprecated - typo, use loadAppStatePromises instead.
    */
   loadAppStatPromises: function loadAppStatPromises() {
@@ -126,6 +135,24 @@ const __class = declare('argos.ApplicationModule', null, {
     // Load base customizations
 
     this.statics._customizationsLoaded = true;
+  },
+
+  /**
+   * loadCustomizationsDynamic is invoked after appStatePromises run.
+   */
+  loadCustomizationsDynamic: function loadCustomizationsDynamic() {
+  },
+
+  /**
+   * loadToolbarsDynamic is invoked after appStatePromises run.
+   */
+  loadToolbarsDynamic: function loadToolbarsDynamic() {
+  },
+
+  /**
+   * loadViewsDynamic is invoked after appStatePromises run.
+   */
+  loadViewsDynamic: function loadViewsDynamic() {
   },
   /**
    * @template

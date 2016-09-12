@@ -518,6 +518,7 @@ const __class = declare('argos.Application', null, {
 
     this._initAppStateSequence(0, sequences).then((results) => {
       this.clearAppStatePromises();
+      this.initModulesDynamic();
       def.resolve(results);
     }, (err) => {
       this.clearAppStatePromises();
@@ -599,6 +600,14 @@ const __class = declare('argos.Application', null, {
   initModules: function initModules() {
     for (let i = 0; i < this.modules.length; i++) {
       this.modules[i].init(this);
+    }
+  },
+  /**
+   * Loops through modules and calls their `initDynamic()` function.
+   */
+  initModulesDynamic: function initModules() {
+    for (let i = 0; i < this.modules.length; i++) {
+      this.modules[i].initDynamic(this);
     }
   },
   /**
