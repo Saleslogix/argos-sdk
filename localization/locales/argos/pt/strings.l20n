@@ -257,7 +257,7 @@
 
 <modal
   alertText: "Alerta"
-  completeText: "Completar"
+  completeText: "Concluído"
   cancelText: "Cancelar"
   confirmText: "Confirmar"
   editText: "Editar"
@@ -266,7 +266,7 @@
   warningText: "Aviso"
 >
 <_listOfflineMixin
-  goToListViewText: "Os itens foram colocados na Maleta. Você gostaria de mudar para a visualização em lista da maleta?"
+  goToListViewText: "Os itens foram colocados na maleta. Você gostaria de mudar para a visualização em lista da maleta?"
   interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Favor tentar o processo de colocar os itens na maleta novamente."
   briefcasingText: "Agrupando na pasta, favor aguardar."
   errorBriefcasingText: "Erro ao agrupar na pasta"
