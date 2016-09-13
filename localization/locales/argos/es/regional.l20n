@@ -1,7 +1,7 @@
 /* CultureInfo contains a JSON blob that must be updated per locale. */
 <CultureInfo """
 {
-  "nombre": "en",
+  "name": "es",
   "englishName": "English (United States)",
   "nativeName": "English (United States)",
   "numberFormat": {
