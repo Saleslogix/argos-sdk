@@ -128,6 +128,10 @@ const __class = declare('argos.Dialogs.Toast', [_Widget, _Templated, Modal], {
     this.hideToast(toast);
   },
   onContainerClick: function onContainerClick(evt) {
+    if (!evt || !evt.path) {
+      return;
+    }
+
     on.emit(evt.path[1], 'click', { // evt.path[1] used to pass event to the toasts
       bubbles: true,
       cancelable: true,

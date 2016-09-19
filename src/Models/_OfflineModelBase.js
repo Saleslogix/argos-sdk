@@ -11,7 +11,7 @@ import QueryResults from 'dojo/store/util/QueryResults';
 import MODEL_TYPES from './Types';
 
 const databaseName = 'crm-offline';
-const _store = new PouchDB({databaseName: databaseName});
+const _store = new PouchDB(databaseName);
 
 /**
  * @class argos.Models._OfflineModelBase
