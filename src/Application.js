@@ -270,7 +270,11 @@ const __class = declare('argos.Application', null, {
     this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
 
     this.ping = options.ping || util.debounce(() => {
-      this.toast.add({ message: resource.checkingText, title: resource.connectionToastTitleText });
+      this.toast.add({
+        message: resource.checkingText,
+        title: resource.connectionToastTitleText,
+        toastTime: this.PING_TIMEOUT,
+      });
       const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
         .flatMap(() => {
           return Rx.Observable.fromPromise(this._ping())
