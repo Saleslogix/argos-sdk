@@ -350,7 +350,7 @@ __class = lang.setObject('argos.Format', {
     const v = utility.roundNumberTo(intVal, decimalPlaces);
 
     // get the whole number part
-    const wp = (Math.floor(v)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace('\\.', '.'));
+    const wp = (((intVal >= 0) ? Math.floor(v) : Math.ceil(v))).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace('\\.', '.'));
     let numberFormated;
     if (decimalPlaces < 1) { // format with out decimal part
       numberFormated = string.substitute('${0}', [wp]).replace(/ /g, '\u00A0'); // keep numbers from breaking
@@ -358,7 +358,8 @@ __class = lang.setObject('argos.Format', {
       let dp = v % 1; // get the decimal part
       dp = dp.toPrecision(decimalPlaces + 1); // round to significant pecsion
       dp = dp.toString();
-      dp = dp.substr(2, decimalPlaces); // get the whole decimal part
+      let pos = (dp.indexOf('.') > -1 ? dp.indexOf('.') + 1 : 2);
+      dp = dp.substr(pos, decimalPlaces); // get the whole decimal part
       numberFormated = string.substitute(
         '${0}' + Mobile.CultureInfo.numberFormat.percentDecimalSeparator + '${1}', [wp, dp]
       ).replace(/ /g, '\u00A0'); // keep numbers from breaking
