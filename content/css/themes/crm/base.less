@@ -482,6 +482,10 @@ body > .viewContainer > .panel {
     overflow: auto;
 }
 
+body > .viewContainer > .panel.link-view {
+    overflow: hidden;
+}
+
 body.transition > .viewContainer > .panel,
 body.transition > .viewContainer > .list {
     position: absolute;
@@ -970,6 +974,14 @@ img {
         height: 18px;
         vertical-align: middle;
     }
+}
+
+.link-view {
+  .link-node {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
 }
 
 .configurable-list {

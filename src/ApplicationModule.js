@@ -17,6 +17,7 @@ import connect from 'dojo/_base/connect';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import ConfigureQuickActions from './Views/ConfigureQuickActions';
+import LinkView from './Views/Link';
 import './Application';
 import './CultureInfo';
 import './Models/RecentlyViewed/Offline';
@@ -166,6 +167,7 @@ const __class = declare('argos.ApplicationModule', null, {
 
     // Load base views
     this.registerView(new ConfigureQuickActions());
+    this.registerView(new LinkView());
 
     this.statics._viewsLoaded = true;
   },
