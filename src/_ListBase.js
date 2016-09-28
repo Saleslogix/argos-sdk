@@ -709,6 +709,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         continue;
       }
 
+      if (!action.security) {
+        var orig = a.find(x => x.id === action.id);
+        if (orig && orig.security) {
+          action.security = orig.security; // Reset the security value
+        }
+      }
+
       const options = {
         actionIndex: visibleActions.length,
         hasAccess: (!action.security || (action.security && this.app.hasAccessTo(this.expandExpression(action.security)))) ? true : false,
