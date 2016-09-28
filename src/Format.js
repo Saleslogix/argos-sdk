@@ -248,6 +248,11 @@ __class = lang.setObject('argos.Format', {
       return string.substitute('<a target="_blank" href="${0}">${0}</a>', [val]);
     }
 
+    // Skip returning the href link if saved to iOS desktop
+    if (window.navigator.standalone) {
+      return val;
+    }
+
     // Specify a default URI scheme of http
     return string.substitute('<a target="_blank" href="http://${0}">${0}</a>', [val]);
   },

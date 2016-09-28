@@ -295,6 +295,9 @@
             "text": "FileSelect.js",
             "path": "../src-out/Views/"
           }, {
+            "text": "Link.js",
+            "path": "../src-out/Views/"
+          }, {
             "text": "Signature.js",
             "path": "../src-out/Views/"
           }, {
