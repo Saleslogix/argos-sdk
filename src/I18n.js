@@ -1,3 +1,7 @@
+import lang from 'dojo/_base/lang';
+
 export default function getResource(id) {
-  return window.localeContext.getEntitySync(id).attributes;
+  const defaultAttributes = window.defaultLocaleContext.getEntitySync(id).attributes;
+  const currentAttributes = window.localeContext.getEntitySync(id).attributes;
+  return lang.mixin(defaultAttributes, currentAttributes);
 }
