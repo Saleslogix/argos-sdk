@@ -5,10 +5,21 @@
     "type": "git",
     "url": "https://github.com/Saleslogix/argos-sdk"
   },
+  "watch": {
+    "lint": "src/**/*.js",
+    "build": "src/**/*.js",
+    "less": {
+      "patterns": ["content"],
+      "extensions": "less"
+    }
+  },
   "scripts": {
     "test": "grunt test",
+    "build": "grunt babel",
+    "less": "grunt less",
     "lint": "eslint ./src",
-    "lint-fix": "eslint --fix ./src"
+    "lint-fix": "eslint --fix ./src",
+    "watch": "npm-watch"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",
@@ -20,8 +31,8 @@
     "grunt-contrib-connect": "^0.10.1",
     "grunt-contrib-jasmine": "~0.8.2",
     "grunt-contrib-less": "^1.0.1",
-    "grunt-contrib-watch": "^0.6.1",
     "grunt-shell": "^1.1.2",
-    "grunt-template-jasmine-istanbul": "^0.3.3"
+    "grunt-template-jasmine-istanbul": "^0.3.3",
+    "npm-watch": "^0.1.6"
   }
 }
