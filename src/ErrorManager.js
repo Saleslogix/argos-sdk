@@ -57,10 +57,10 @@ const __class = lang.setObject('argos.ErrorManager', {
    */
   addSimpleError: function addSimpleError(description, error) {
     const errorItem = {
-      '$key': new Date().getTime(),
-      'Date': moment().format(),
-      'Description': description,
-      'Error': json.stringify(utility.sanitizeForJson(error)),
+      $key: new Date().getTime(),
+      Date: moment().format(),
+      Description: description,
+      Error: json.stringify(utility.sanitizeForJson(error)),
     };
 
     this.checkCacheSize();
@@ -78,21 +78,21 @@ const __class = lang.setObject('argos.ErrorManager', {
    */
   addError: function addError(serverResponse, requestOptions, viewOptions, failType) {
     if (typeof serverResponse === 'string' && arguments.length === 2) {
-      this.addSimpleError.apply(this, arguments);
+      this.addSimpleError.apply(this, arguments); //eslint-disable-line
       return;
     }
 
     const dateStamp = new Date().getTime();
     const errorItem = {
-        '$key': dateStamp,
-        'Date': moment().format(),
-        'Error': json.stringify(utility.sanitizeForJson({
-          serverResponse: serverResponse,
-          requestOptions: requestOptions,
-          viewOptions: viewOptions,
-          failType: failType,
-        })),
-      };
+      $key: dateStamp,
+      Date: moment().format(),
+      Error: json.stringify(utility.sanitizeForJson({
+        serverResponse,
+        requestOptions,
+        viewOptions,
+        failType,
+      })),
+    };
 
     this.checkCacheSize();
     errors.push(errorItem);
@@ -107,15 +107,15 @@ const __class = lang.setObject('argos.ErrorManager', {
    */
   extractFailureResponse: function extractFailureResponse(response) {
     const failureResponse = {
-      '$descriptor': response.statusText,
-      'serverResponse': {
-        'readyState': response.readyState,
-        'responseXML': response.responseXML,
-        'status': response.status,
-        'responseType': response.responseType,
-        'withCredentials': response.withCredentials,
-        'responseText': response.responseText ? this.fromJsonArray(response.responseText) : '',
-        'statusText': response.statusText,
+      $descriptor: response.statusText,
+      serverResponse: {
+        readyState: response.readyState,
+        responseXML: response.responseXML,
+        status: response.status,
+        responseType: response.responseType,
+        withCredentials: response.withCredentials,
+        responseText: response.responseText ? this.fromJsonArray(response.responseText) : '',
+        statusText: response.statusText,
       },
     };
     return failureResponse;
@@ -149,15 +149,15 @@ const __class = lang.setObject('argos.ErrorManager', {
    */
   extractAbortResponse: function extractAbortResponse(response) {
     const abortResponse = {
-      '$descriptor': this.abortedText,
-      'serverResponse': {
-        'readyState': 4,
-        'responseXML': '',
-        'status': 0,
-        'responseType': '',
-        'withCredentials': response.withCredentials,
-        'responseText': '',
-        'statusText': this.abortedText,
+      $descriptor: this.abortedText,
+      serverResponse: {
+        readyState: 4,
+        responseXML: '',
+        status: 0,
+        responseType: '',
+        withCredentials: response.withCredentials,
+        responseText: '',
+        statusText: this.abortedText,
       },
     };
     return abortResponse;

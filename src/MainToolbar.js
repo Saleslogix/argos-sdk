@@ -36,7 +36,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    * Used to set the title node's innerHTML
    */
   attributeMap: {
-    'title': {
+    title: {
       node: 'titleNode',
       type: 'innerHTML',
     },
@@ -98,7 +98,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
   showTools: function showTools(tools) {
     this.inherited(arguments);
 
-    domClass.remove(this.domNode, 'toolbar-size-' + this.size);
+    domClass.remove(this.domNode, `toolbar-size-${this.size}`);
     let onLine = this.app.onLine;
     if (tools) {
       const count = {
@@ -118,14 +118,14 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
       }
 
       this.size = Math.max(count.left, count.right);
-      domClass.add(this.domNode, 'toolbar-size-' + this.size);
+      domClass.add(this.domNode, `toolbar-size-${this.size}`);
       this.setMode(onLine);
     }
   },
   /**
    * Event handler that fires when the toolbar title is clicked.
    */
-  onTitleClick: function onTitleClick(/*evt*/) {},
+  onTitleClick: function onTitleClick(/* evt*/) {},
   setMode: function setMode(onLine) {
     domClass.remove(this.domNode, 'offline');
     if (!onLine) {

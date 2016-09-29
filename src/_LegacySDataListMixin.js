@@ -151,7 +151,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
    * @return {Object} Sage.SData.Client.SDataResourceCollectionRequest instance.
    * @deprecated
    */
-  createRequest: function createRequest(/*o*/) {
+  createRequest: function createRequest(/* o*/) {
     const where = [];
     const options = this.options;
     const pageSize = this.pageSize;

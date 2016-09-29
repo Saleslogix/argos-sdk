@@ -1,4 +1,4 @@
-import {connection} from './Models/Connection';
+import { connection } from './Models/Connection';
 
 /**
  * Collects intents/actions and returns a combined Observable for all the state
@@ -15,5 +15,5 @@ function model(actions) {
 }
 
 export {
-  model
+  model,
 };

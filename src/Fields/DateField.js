@@ -125,7 +125,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * doesn't then current value is empties and the validation styling is added.
    * @param {Event} evt Event that caused change to fire.
    */
-  _onChange: function _onChange(/*evt*/) {
+  _onChange: function _onChange(/* evt*/) {
     const jsDate = new Date(this.inputNode.value);
     let date = moment(this.inputNode.value, this.dateFormatText, true);
     if (moment(jsDate).isValid() && !date.isValid()) {
@@ -213,7 +213,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
 
     let toolbar;
     if (this.showRelativeDateTime && !options.timeless) {
-      this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
+      this.dateTimePicker = new RelativeDateTimePicker({ id: `relative-datetime-picker-modal ${this.id}`, isModal: true });
       toolbar = [
         {
           action: 'cancel',
@@ -227,7 +227,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
         },
       ];
     } else {
-      this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
+      this.dateTimePicker = new DateTimePicker({ id: `datetime-picker-modal ${this.id}`, isModal: true });
       toolbar = [
         {
           action: 'cancel',

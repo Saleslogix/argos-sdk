@@ -464,7 +464,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    *
    * @param {Event} evt
    */
-  onNotificationTrigger: function onNotificationTrigger(/*evt*/) {
+  onNotificationTrigger: function onNotificationTrigger(/* evt*/) {
     const currentValue = this.getValue();
 
     if (this.previousValue !== currentValue) {
@@ -695,8 +695,8 @@ const control = declare('argos.Fields.LookupField', [_Field], {
     }
 
     this.currentValue = {
-     key: newKey || text,
-     text: text || newKey,
+      key: newKey || text,
+      text: text || newKey,
     };
 
     this.setText(this.currentValue.text);

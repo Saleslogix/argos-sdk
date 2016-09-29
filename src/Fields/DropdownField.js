@@ -21,11 +21,11 @@ import _Field from 'argos/Fields/_Field';
 const __class = declare('argos.DropdownField', [_Field, Dropdown], {
   widgetTemplate: new Simplate([
     '<div data-dojo-attach-point="dropdownNode">',
-      '<label>{%: $.label %}</label>',
-      '<input readOnly data-dojo-attach-point="dropdownInput"></input>',
-      '<span class="{%: $.icon %}" style="position: absolute;color: #383838;font-size: 14px;height: 14px;width: 14px;margin-top: 15px;margin-left: -15px;tex-align: center;"></span>',
-      '<select class="dropdown__select--hidden" data-dojo-attach-point="dropdownSelect"></select>',
-      '</div>',
+    '<label>{%: $.label %}</label>',
+    '<input readOnly data-dojo-attach-point="dropdownInput"></input>',
+    '<span class="{%: $.icon %}" style="position: absolute;color: #383838;font-size: 14px;height: 14px;width: 14px;margin-top: 15px;margin-left: -15px;tex-align: center;"></span>',
+    '<select class="dropdown__select--hidden" data-dojo-attach-point="dropdownSelect"></select>',
+    '</div>',
     '</div>',
   ]), // TODO: Remove the inline styling applied here... only organized way to override the nested styling occurring.
   onClick: function onClick(evt) {
@@ -35,7 +35,7 @@ const __class = declare('argos.DropdownField', [_Field, Dropdown], {
     evt.stopPropagation();
   },
   renderTo: function renderTo() {
-    this.createList({items: this.items, defaultValue: this.defaultValue});
+    this.createList({ items: this.items, defaultValue: this.defaultValue });
     this.inherited(arguments);
     // TODO: Place in the getData function call and createList call here so the dropdown will be created with the relevant data
   },

@@ -73,7 +73,7 @@ const __class = declare('argos.SelectionModel', null, {
    * @param self
    * @template
    */
-  onSelect: function onSelect(/*key, data, tag, self*/) {},
+  onSelect: function onSelect(/* key, data, tag, self*/) {},
   /**
    * Event that happens when an item is deselected/removed.
    * @param {String} key Unique identifier string
@@ -82,12 +82,12 @@ const __class = declare('argos.SelectionModel', null, {
    * @param self
    * @template
    */
-  onDeselect: function onDeselect(/*key, data, tag, self*/) {},
+  onDeselect: function onDeselect(/* key, data, tag, self*/) {},
   /**
    * Event that happens when the store is cleared
    * @param self
    */
-  onClear: function onClear(/*self*/) {},
+  onClear: function onClear(/* self*/) {},
   /**
    * Adds an item to the `selections` if it is not already stored.
    * @param {String} key Unique identifier string
@@ -97,8 +97,8 @@ const __class = declare('argos.SelectionModel', null, {
   select: function select(key, data, tag) {
     if (!this.selections.hasOwnProperty(key)) {
       this.selections[key] = {
-        data: data,
-        tag: tag,
+        data,
+        tag,
       };
       this.count++;
       if (this._fireEvents) {
@@ -193,7 +193,7 @@ const __class = declare('argos.SelectionModel', null, {
    */
   getSelectedKeys: function getSelectedKeys() {
     return Object.keys(this.selections).filter((key) => {
-      this.selections.hasOwnProperty(key);
+      return this.selections.hasOwnProperty(key);
     });
   },
 });

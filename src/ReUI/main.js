@@ -57,7 +57,7 @@ function extractInfoFromHash(hash) {
     }
 
     return {
-      hash: hash,
+      hash,
       page: segments[0],
       tag: segments.length <= 2 ? segments[1] : segments.slice(1),
     };
@@ -78,7 +78,7 @@ function extractInfoFromHash(hash) {
 function transitionComplete(page, o) {
   if (o.track !== false) {
     if (typeof page.id !== 'string' || page.id.length <= 0) {
-      page.id = 'reui-' + (context.counter++);
+      page.id = `reui-${context.counter++}`;
     }
 
     context.hash = location.hash = formatHashForPage(page, o);
@@ -151,7 +151,7 @@ function checkOrientationAndLocation() {
     if (page) {
       R.show(page, {
         external: true,
-        reverse: reverse,
+        reverse,
         tag: info && info.tag,
         data: info && info.data,
       });
@@ -228,7 +228,7 @@ lang.mixin(ReUI, {
   pageTitleId: 'pageTitle',
   hashPrefix: '#_',
   checkStateEvery: 100,
-  context: context,
+  context,
 
   init: function init() {
     if (context.initialized) {

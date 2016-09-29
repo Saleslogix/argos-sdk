@@ -59,7 +59,7 @@ const __class = declare('argos._RelatedViewWidgetListMixin', null, {
     if (this.relatedViewManagers[relatedView.id]) {
       relatedViewManager = this.relatedViewManagers[relatedView.id];
     } else {
-      relatedView.id = this.id + '_' + relatedView.id;
+      relatedView.id = `${this.id}_${relatedView.id}`;
       const relatedViewOptions = {};
       lang.mixin(relatedViewOptions, relatedView);
 
@@ -205,7 +205,7 @@ const __class = declare('argos._RelatedViewWidgetListMixin', null, {
     const view = App.getView(action.editView || this.quickEditView || this.editView || this.insertView);
     const key = selection.data[this.idProperty];
     let options = {
-      key: key,
+      key,
       selectedEntry: selection.data,
       fromContext: this,
     };

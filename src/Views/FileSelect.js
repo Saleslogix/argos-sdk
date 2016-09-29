@@ -121,7 +121,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
    * The onchange event will only fire once per file, so we must re-insert the dom node and re-attach the event.
    * @extends show
    */
-  show: function show(/*options*/) {
+  show: function show(/* options*/) {
     this.inherited(arguments);
 
     if (!has('html5-file-api')) {
@@ -148,10 +148,10 @@ const __class = declare('argos.Views.FileSelect', [View], {
     domClass.remove(this.btnUploadFiles, 'display-none');
     this.onUpdateProgress('');
   },
-  _browesForFiles: function _browesForFiles(/*file*/) {
+  _browesForFiles: function _browesForFiles(/* file*/) {
     this.btnFileSelect.click();
   },
-  removeFile: function removeFile(/*fileId*/) {},
+  removeFile: function removeFile(/* fileId*/) {},
   /**
    * Returns an array of objects with the properties of: file, fileName, and description.
    * @returns {Array}
@@ -165,13 +165,13 @@ const __class = declare('argos.Views.FileSelect', [View], {
       fileItems.push({
         file: files[i],
         fileName: files[i].name,
-        description: description,
+        description,
       });
     }
     return fileItems;
   },
   _getFileDescription: function _getFileDescription(fileIndex) {
-    const n = dom.byId('File_' + fileIndex);
+    const n = dom.byId(`File_${fileIndex}`);
     let desc;
 
     if (n) {
@@ -193,8 +193,8 @@ const __class = declare('argos.Views.FileSelect', [View], {
   _addFile: function _addFile(file, index) {
     const filelength = this._getFileLength(file);
     const data = {
-      name: 'File_' + index,
-      fileName: file.name + '  (' + filelength + ')',
+      name: `File_${index}`,
+      fileName: `${file.name}  (${filelength})`,
       description: this._getDefaultDescription(file.name),
     };
     domConstruct.place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
@@ -207,17 +207,17 @@ const __class = declare('argos.Views.FileSelect', [View], {
       filelength = file.size || file.blob.length;
     }
     if (filelength === 0) {
-      filelength += '0 ' + this.bytesTextBytes;
+      filelength += `0 ${this.bytesTextBytes}`;
     } else {
       if (filelength) {
         if (filelength > 1024) {
           if (filelength > 1048576) {
-            filelength = Math.round(filelength / 1048576) + ' MB';
+            filelength = `${Math.round(filelength / 1048576)} MB`;
           } else {
-            filelength = Math.round(filelength / 1024) + ' KB';
+            filelength = `${Math.round(filelength / 1024)} KB`;
           }
         } else {
-          filelength += ' ' + this.bytesTextBytesBytes;
+          filelength += ` ${this.bytesTextBytesBytes}`;
         }
       }
     }
@@ -248,7 +248,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
   onUpdateProgress: function onUpdateProgress(msg) {
     const n = dom.byId('fileselect-upload-progress');
     if (n) {
-      n.innerHTML = this.loadingText + ' ' + msg;
+      n.innerHTML = `${this.loadingText} ${msg}`;
     }
   },
   /**

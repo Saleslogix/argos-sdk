@@ -33,7 +33,7 @@ const __class = declare('argos._RelatedViewWidgetEditMixin', null, {
   createRelatedViews: function createRelatedViews(layout, entry) {
     layout.forEach((item) => {
       if (item.relatedView) {
-        const node = query('#' + item.relatedView.id, this.contentNode)[0];
+        const node = query(`#${item.relatedView.id}`, this.contentNode)[0];
         if (node) {
           this.onProcessRelatedViews(item.relatedView, node, entry);
         }

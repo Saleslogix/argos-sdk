@@ -29,9 +29,9 @@ import ready from 'dojo/ready';
 import util from './Utility';
 import ModelManager from './Models/Manager';
 import Toast from './Dialogs/Toast';
-import {model} from './Model';
-import {intent} from './Intent';
-import {updateConnectionState} from './Intents/update-connection';
+import { model } from './Model';
+import { intent } from './Intent';
+import { updateConnectionState } from './Intents/update-connection';
 import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
 import Deferred from 'dojo/Deferred';
@@ -41,7 +41,7 @@ import 'dojo/sniff';
 
 const resource = getResource('sdkApplication');
 
-has.add('html5-file-api', function hasFileApi(global) {
+has.add('html5-file-api', (global) => {
   if (has('ie')) {
     return false;
   }
@@ -118,8 +118,8 @@ function mergeConfiguration(baseConfiguration, moduleConfiguration) {
 }
 
 lang.mixin(win.global, {
-  'localize': localize,
-  'mergeConfiguration': mergeConfiguration,
+  localize,
+  mergeConfiguration,
 });
 
 /**
@@ -140,7 +140,7 @@ const __class = declare('argos.Application', null, {
   /**
    * Instance of a ReUI
    */
-  ReUI: ReUI,
+  ReUI,
 
   /**
    * @property viewShowOptions {Array} Array with one configuration object that gets pushed before showing a view.
@@ -199,7 +199,7 @@ const __class = declare('argos.Application', null, {
   _connections: null,
   modules: null,
   views: null,
-  hash: hash,
+  hash,
   onLine: true,
   _currentPage: null,
   /**
@@ -289,9 +289,9 @@ const __class = declare('argos.Application', null, {
         .retry(this.PING_RETRY)
         .take(1);
 
-      ping$.subscribe(function onNext() {
+      ping$.subscribe(() => {
         updateConnectionState(true);
-      }, function onError() {
+      }, () => {
         updateConnectionState(false);
       });
     }, this.PING_DEBOUNCE);
@@ -366,7 +366,7 @@ const __class = declare('argos.Application', null, {
   forceOffline: function forceOffline() {
     updateConnectionState(false);
   },
-  onConnectionChange: function onConnectionChange( /*online*/ ) {},
+  onConnectionChange: function onConnectionChange(/* online*/) {},
   /**
    * Establishes various connections to events.
    */
@@ -495,7 +495,7 @@ const __class = declare('argos.Application', null, {
           fn: item,
         });
       } else {
-        if (item.seq && item.items ) {
+        if (item.seq && item.items) {
           seq = sequences.find(x => x.seq === ((item.seq) ? item.seq : 0));
           if (seq) {
             item.items.forEach((_item) => {
@@ -541,14 +541,14 @@ const __class = declare('argos.Application', null, {
 
     if (seq) { // We need to send an observable and get ride of the ui element.
       const indicator = new BusyIndicator({
-        id: 'busyIndicator__appState_' + seq.seq,
-        label: resource.initializingText + ' ' + seq.description,
+        id: `busyIndicator__appState_${seq.seq}`,
+        label: `${resource.initializingText} ${seq.description}`,
       });
       this.modal.disableClose = true;
       this.modal.showToolbar = false;
       this.modal.add(indicator);
       indicator.start();
-      const promises = array.map(seq.items, (item)=> {
+      const promises = array.map(seq.items, (item) => {
         return item.fn();
       });
       const odef = def;
@@ -587,7 +587,7 @@ const __class = declare('argos.Application', null, {
   clearAppStatePromises: function clearAppStatePromises() {
     this._appStatePromises = [];
   },
-  onSetOrientation: function onSetOrientation( /*value*/ ) {},
+  onSetOrientation: function onSetOrientation(/* value*/) {},
   /**
    * Loops through connections and calls {@link #registerService registerService} on each.
    */
@@ -646,9 +646,9 @@ const __class = declare('argos.Application', null, {
     this.initToasts();
   },
   initToasts: function initToasts() {
-  this.toast = new Toast();
-  this.toast.show();
-},
+    this.toast = new Toast();
+    this.toast.show();
+  },
   initPreferences: function initPreferences() {
     this._loadPreferences();
   },
@@ -775,20 +775,20 @@ const __class = declare('argos.Application', null, {
 
     if (this._rootDomNode === null || typeof this._rootDomNode === 'undefined') {
       this._rootDomNode = domConstruct.create('div', {
-        'id': 'viewContainer',
-        'class': 'viewContainer',
+        id: 'viewContainer',
+        class: 'viewContainer',
       }, win.body());
 
       const drawers = domConstruct.create('div', {
-        'class': 'drawers absolute',
+        class: 'drawers absolute',
       }, win.body());
 
       domConstruct.create('div', {
-        'class': 'overthrow left-drawer absolute',
+        class: 'overthrow left-drawer absolute',
       }, drawers);
 
       domConstruct.create('div', {
-        'class': 'overthrow right-drawer absolute',
+        class: 'overthrow right-drawer absolute',
       }, drawers);
     }
   },
@@ -882,7 +882,7 @@ const __class = declare('argos.Application', null, {
    */
   hasView: function hasView(key) {
     return !!this._internalGetView({
-      key: key,
+      key,
       init: false,
     });
   },
@@ -893,7 +893,7 @@ const __class = declare('argos.Application', null, {
    */
   getView: function getView(key) {
     return this._internalGetView({
-      key: key,
+      key,
       init: true,
     });
   },
@@ -928,7 +928,7 @@ const __class = declare('argos.Application', null, {
    */
   getViewSecurity: function getViewSecurity(key, access) {
     const view = this._internalGetView({
-      key: key,
+      key,
       init: false,
     });
     return (view && view.getSecurity(access));
@@ -986,12 +986,12 @@ const __class = declare('argos.Application', null, {
       connect.publish('/app/resize', []);
     }, 100);
   },
-  onRegistered: function onRegistered( /*view*/ ) {},
-  onBeforeViewTransitionAway: function onBeforeViewTransitionAway( /*view*/ ) {},
-  onBeforeViewTransitionTo: function onBeforeViewTransitionTo( /*view*/ ) {},
-  onViewTransitionAway: function onViewTransitionAway( /*view*/ ) {},
-  onViewTransitionTo: function onViewTransitionTo( /*view*/ ) {},
-  onViewActivate: function onViewActivate( /*view, tag, data*/ ) {},
+  onRegistered: function onRegistered(/* view*/) {},
+  onBeforeViewTransitionAway: function onBeforeViewTransitionAway(/* view*/) {},
+  onBeforeViewTransitionTo: function onBeforeViewTransitionTo(/* view*/) {},
+  onViewTransitionAway: function onViewTransitionAway(/* view*/) {},
+  onViewTransitionTo: function onViewTransitionTo(/* view*/) {},
+  onViewActivate: function onViewActivate(/* view, tag, data*/) {},
   _onBeforeTransition: function _onBeforeTransition(evt) {
     const view = this.getView(evt.target);
     if (view) {
@@ -1066,11 +1066,11 @@ const __class = declare('argos.Application', null, {
    */
   filterNavigationContext: function filterNavigationContext(predicate, scope) {
     const list = ReUI.context.history || [];
-    const filtered = array.filter(list, function filter(item) {
+    const filtered = array.filter(list, (item) => {
       return predicate.call(scope || this, item.data);
-    }.bind(this));
+    });
 
-    return array.map(filtered, function map(item) {
+    return array.map(filtered, (item) => {
       return item.data;
     });
   },
@@ -1166,7 +1166,7 @@ const __class = declare('argos.Application', null, {
       const id = arguments[1];
 
       spec = arguments[2];
-      path = id ? customizationSet + '#' + id : customizationSet;
+      path = id ? `${customizationSet}#${id}` : customizationSet;
     }
 
     const container = this.customizations[path] || (this.customizations[path] = []);
@@ -1189,7 +1189,7 @@ const __class = declare('argos.Application', null, {
     let path = p;
 
     if (arguments.length > 1) {
-      path = arguments[1] ? arguments[0] + '#' + arguments[1] : arguments[0];
+      path = arguments[1] ? `${arguments[0]}#${arguments[1]}` : arguments[0];
     }
 
     const segments = path.split('#');
@@ -1199,7 +1199,7 @@ const __class = declare('argos.Application', null, {
 
     return forPath.concat(forSet);
   },
-  hasAccessTo: function hasAccessTo( /*security*/ ) {
+  hasAccessTo: function hasAccessTo(/* security*/) {
     return true;
   },
   /**

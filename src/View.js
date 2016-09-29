@@ -41,12 +41,12 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * This map provides quick access to HTML properties, most notably the selected property of the container
    */
   attributeMap: {
-    'title': {
+    title: {
       node: 'domNode',
       type: 'attribute',
       attribute: 'title',
     },
-    'selected': {
+    selected: {
       node: 'domNode',
       type: 'attribute',
       attribute: 'selected',
@@ -121,7 +121,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * Called after toolBar layout is created;
    *
    */
-  onToolLayoutCreated: function onToolLayoutCreated(/*tools*/) {},
+  onToolLayoutCreated: function onToolLayoutCreated(/* tools*/) {},
   /**
    * Returns the tool layout that defines all toolbar items for the view
    * @return {Object} The toolbar layout
@@ -179,10 +179,10 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   /**
    * Returns a new instance of a model for the view.
    */
-   getModel: function getModel() {
-     const model = Adapter.getModel(this.modelName);
-     return model;
-   },
+  getModel: function getModel() {
+    const model = Adapter.getModel(this.modelName);
+    return model;
+  },
   /**
    * Establishes this views connections to various events
    */
@@ -221,32 +221,32 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * The onBeforeTransitionAway event.
    * @param self
    */
-  onBeforeTransitionAway: function onBeforeTransitionAway(/*self*/) {},
+  onBeforeTransitionAway: function onBeforeTransitionAway(/* self*/) {},
   /**
    * The onBeforeTransitionTo event.
    * @param self
    */
-  onBeforeTransitionTo: function onBeforeTransitionTo(/*self*/) {},
+  onBeforeTransitionTo: function onBeforeTransitionTo(/* self*/) {},
   /**
    * The onTransitionAway event.
    * @param self
    */
-  onTransitionAway: function onTransitionAway(/*self*/) {},
+  onTransitionAway: function onTransitionAway(/* self*/) {},
   /**
    * The onTransitionTo event.
    * @param self
    */
-  onTransitionTo: function onTransitionTo(/*self*/) {},
+  onTransitionTo: function onTransitionTo(/* self*/) {},
   /**
    * The onActivate event.
    * @param self
    */
-  onActivate: function onActivate(/*self*/) {},
+  onActivate: function onActivate(/* self*/) {},
   /**
    * The onShow event.
    * @param self
    */
-  onShow: function onShow(/*self*/) {},
+  onShow: function onShow(/* self*/) {},
   activate: function activate(tag, data) {
     // todo: use tag only?
     if (data && this.refreshRequiredFor(data.options)) {
@@ -294,8 +294,8 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     const data = this.getContext();
 
     const newOptions = lang.mixin(transitionOptions || {}, {
-      tag: tag,
-      data: data,
+      tag,
+      data,
     });
     ReUI.show(this.domNode, newOptions);
   },
@@ -378,7 +378,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * Returns the defined security.
    * @param access
    */
-  getSecurity: function getSecurity(/*access*/) {
+  getSecurity: function getSecurity(/* access*/) {
     return this.security;
   },
   /**

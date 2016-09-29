@@ -18,7 +18,7 @@ const __class = declare('argos.Models.RecentlyViewed.Offline', [_OfflineModelBas
   isSystem: true,
   createEntry: function createEntity(viewId, entry, model) {
     const entity = {}; // need to dynamicly create Properties;
-    entity.$key = viewId + '_' + model.getEntityId(entry);
+    entity.$key = `${viewId}_${model.getEntityId(entry)}`;
     entity.$descriptor = model.getEntityDescription(entry);
     entity.createDate = moment().toDate();
     entity.modifyDate = moment().toDate();
@@ -37,7 +37,7 @@ const __class = declare('argos.Models.RecentlyViewed.Offline', [_OfflineModelBas
         emit(doc.entity);
       }
     };
-    this.getEntries(queryExpression).then((entries)=> {
+    this.getEntries(queryExpression).then((entries) => {
       if (entries) {
         entries.forEach((entry) => {
           this.deleteEntry(entry.$key);

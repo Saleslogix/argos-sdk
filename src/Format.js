@@ -106,7 +106,6 @@ function decode(val) {
     .replace(/&quot;/g, '"');
 }
 
-let __class;
 /**
  * @class argos.Format
  * Format is a singleton that provides various formatting functions.
@@ -114,7 +113,7 @@ let __class;
  * @requires argos.Convert
  * @singleton
  */
-__class = lang.setObject('argos.Format', {
+const __class = lang.setObject('argos.Format', {
   /**
    * @property {String}
    * Text used in {@link #yesNo yesNo} formatter for true values
@@ -170,19 +169,19 @@ __class = lang.setObject('argos.Format', {
    * @param {String} String to encode
    * @return {String} Html encoded string
    */
-  encode: encode,
+  encode,
   /**
    * Takes a String and decodes `&`, `<`, `>`, `"` from HTML entities back to the character
    * @param {String} String to decode
    * @return {String} Html decoded string
    */
-  decode: decode,
+  decode,
   /**
    * Determines if the given item is an empty string or empty arry
    * @param {String/Array} Item to check if empty
    * @return {Boolean} If passed item is empty
    */
-  isEmpty: isEmpty,
+  isEmpty,
   /**
    * @property {String}
    * Text used in file size  formatter
@@ -240,7 +239,7 @@ __class = lang.setObject('argos.Format', {
     // Check if the user specified a URI scheme,
     // does not include all URI Schemes, such as tel:, etc.
     const schemes = ['://', 'mailto:'];
-    const hasURIScheme = array.some(schemes, function some(scheme) {
+    const hasURIScheme = array.some(schemes, (scheme) => {
       return val.indexOf(scheme) > -1;
     });
 
@@ -355,7 +354,7 @@ __class = lang.setObject('argos.Format', {
     const v = utility.roundNumberTo(intVal, decimalPlaces);
 
     // get the whole number part
-    const wp = (((intVal >= 0) ? Math.floor(v) : Math.ceil(v))).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace('\\.', '.'));
+    const wp = (((intVal >= 0) ? Math.floor(v) : Math.ceil(v))).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${Mobile.CultureInfo.numberFormat.percentGroupSeparator.replace('\\.', '.')}`);
     let numberFormated;
     if (decimalPlaces < 1) { // format with out decimal part
       numberFormated = string.substitute('${0}', [wp]).replace(/ /g, '\u00A0'); // keep numbers from breaking
@@ -363,10 +362,10 @@ __class = lang.setObject('argos.Format', {
       let dp = v % 1; // get the decimal part
       dp = dp.toPrecision(decimalPlaces + 1); // round to significant pecsion
       dp = dp.toString();
-      let pos = (dp.indexOf('.') > -1 ? dp.indexOf('.') + 1 : 2);
+      const pos = (dp.indexOf('.') > -1 ? dp.indexOf('.') + 1 : 2);
       dp = dp.substr(pos, decimalPlaces); // get the whole decimal part
       numberFormated = string.substitute(
-        '${0}' + Mobile.CultureInfo.numberFormat.percentDecimalSeparator + '${1}', [wp, dp]
+        `\${0}${Mobile.CultureInfo.numberFormat.percentDecimalSeparator}\${1}`, [wp, dp]
       ).replace(/ /g, '\u00A0'); // keep numbers from breaking
     }
 
@@ -536,7 +535,7 @@ __class = lang.setObject('argos.Format', {
     for (let i = 0; i < formatters.length; i++) {
       const formatter = formatters[i];
       let match;
-      if ((match = formatter.test.exec(clean))) {
+      if ((match = formatter.test.exec(clean))) { // eslint-disable-line
         formattedMatch = string.substitute(formatter.format, [phoneVal, clean].concat(match));
       }
     }
@@ -569,11 +568,11 @@ __class = lang.setObject('argos.Format', {
       return 'Unknown';
     }
     if (parsedSize < 1024) {
-      return dNumber.format(Math.round(parsedSize)) + ' ' + argos.Format.bytesText;
+      return `${dNumber.format(Math.round(parsedSize))} ${argos.Format.bytesText}`;
     } else if ((parsedSize > 1024) && (parsedSize < (1024 * 1000))) {
-      return dNumber.format(Math.round(parsedSize / 1024)) + ' KB';
+      return `${dNumber.format(Math.round(parsedSize / 1024))} KB`;
     }
-    return dNumber.format(Math.round(parsedSize / (1024 * 1000))) + ' MB';
+    return `${dNumber.format(Math.round(parsedSize / (1024 * 1000)))} MB`;
   },
 });
 

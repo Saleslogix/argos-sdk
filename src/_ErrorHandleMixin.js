@@ -67,9 +67,9 @@ const __class = declare('argos._ErrorHandleMixin', null, {
 
     function noop() {}
 
-    const matches = array.filter(this.errorHandlers, function filter(handler) {
+    const matches = array.filter(this.errorHandlers, (handler) => {
       return handler.test && handler.test.call(this, error);
-    }.bind(this));
+    });
 
     const len = matches.length;
 

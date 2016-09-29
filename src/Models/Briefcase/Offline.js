@@ -18,7 +18,7 @@ const __class = declare('argos.Models.Briefcase.Offline', [_OfflineModelBase], {
   isSystem: true,
   createEntry: function createEntity(entry, model, options) {
     const entity = {}; // need to dynamicly create Properties;
-    entity.$key = model.entityName + '_' + model.getEntityId(entry);
+    entity.$key = `${model.entityName}_${model.getEntityId(entry)}`;
     entity.$descriptor = model.getEntityDescription(entry);
     entity.createDate = moment().toDate();
     entity.modifyDate = moment().toDate();
@@ -37,7 +37,7 @@ const __class = declare('argos.Models.Briefcase.Offline', [_OfflineModelBase], {
         emit(doc.entity);
       }
     };
-    this.getEntries(queryExpression).then((entries)=> {
+    this.getEntries(queryExpression).then((entries) => {
       if (entries) {
         entries.forEach((entry) => {
           this.deleteEntry(entry.$key);

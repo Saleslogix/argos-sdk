@@ -26,9 +26,9 @@ const __class = declare('argos.Groups._GroupBySection', null, {
     lang.mixin(this, o);
   },
   init: function init() {},
-  getGroupSection: function getGroupSection(/*entry*/) {},
+  getGroupSection: function getGroupSection(/* entry*/) {},
   getOrderByQuery: function getOrderByQuery() {
-    return this.groupByProperty + ' ' + this.sortDirection;
+    return `${this.groupByProperty} ${this.sortDirection}`;
   },
 });
 

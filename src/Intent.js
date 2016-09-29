@@ -1,4 +1,4 @@
-import {updateConnection$} from './Intents/update-connection';
+import { updateConnection$ } from './Intents/update-connection';
 
 /**
  * Returns an object with all intents.

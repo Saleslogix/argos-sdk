@@ -187,9 +187,9 @@ const __class = declare('argos.TabWidget', [_Templated], {
           const maxHeight = this.domNode.offsetHeight - this.domNode.offsetTop - posTop;
 
           domStyle.set(this.moreTabList, {
-            left: posLeft - this.moreTabList.offsetWidth + width + 'px',
-            top: posTop + height + 'px',
-            maxHeight: maxHeight + 'px',
+            left: `${posLeft - this.moreTabList.offsetWidth + width}px`,
+            top: `${posTop + height}px`,
+            maxHeight: `${maxHeight}px`,
           });
         }
       } else {
@@ -284,10 +284,10 @@ const __class = declare('argos.TabWidget', [_Templated], {
       const tableLeft = this.tabList.offsetLeft;
 
       domStyle.set(focusState, {
-        left: posLeft - tableLeft + 'px',
-        right: (posTop - tableTop) + width + 'px',
-        bottom: (posTop - tableTop) + height + 'px',
-        width: width + 'px',
+        left: `${posLeft - tableLeft}px`,
+        right: `${(posTop - tableTop) + width}px`,
+        bottom: `${(posTop - tableTop) + height}px`,
+        width: `${width}px`,
       });
     }
     return this;
@@ -297,7 +297,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
    */
   createMoretab: function createMoretab() {
     this.moreTab = domConstruct.toDom(this.moreTabItemTemplate.apply({
-      title: this.moreText + '...',
+      title: `${this.moreText}...`,
     }, this));
     domStyle.set(this.moreTab, { // eslint-disable-line
       float: 'right',
