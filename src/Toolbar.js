@@ -80,7 +80,7 @@ const __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
         const view = this.app.getPrimaryActiveView();
         if (view && view.hasAction(source.action)) {
           view.invokeAction(source.action, lang.mixin(parameters, {
-            '$tool': source,
+            $tool: source,
           }), evt, node);
         }
       }

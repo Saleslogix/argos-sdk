@@ -17,15 +17,15 @@ const resource = getResource('timePicker');
 const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="time-select panel">',
-      '<div class="time-parts">',
-      '{%! $.hourSelectTemplate %}',
-      ' : ',
-      '{%! $.minuteSelectTemplate %}',
-      '{%! $.meridiemSelectTemplate %}',
-      '</div>',
-        '{% if ($.showSetTime) { %}',
-          '<div class="button tertiary">{%= $.setTimeText %}</div>',
-        '{% } %}',
+    '<div class="time-parts">',
+    '{%! $.hourSelectTemplate %}',
+    ' : ',
+    '{%! $.minuteSelectTemplate %}',
+    '{%! $.meridiemSelectTemplate %}',
+    '</div>',
+    '{% if ($.showSetTime) { %}',
+    '<div class="button tertiary">{%= $.setTimeText %}</div>',
+    '{% } %}',
     '</div>',
   ]),
   hourSelectTemplate: new Simplate([
@@ -38,9 +38,9 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   ]),
   meridiemSelectTemplate: new Simplate([
     '<div class="toggle toggle-horizontal meridiem-field" data-dojo-attach-point="meridiemNode">',
-        '<span class="thumb horizontal"></span>',
-        '<span class="toggleOn">{%= $.pmText %}</span>',
-        '<span class="toggleOff">{%= $.amText %}</span>',
+    '<span class="thumb horizontal"></span>',
+    '<span class="toggleOn">{%= $.pmText %}</span>',
+    '<span class="toggleOff">{%= $.amText %}</span>',
     '</div>',
   ]),
   listStartTemplate: new Simplate([
@@ -262,7 +262,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     }
     let minutes = date.minutes() || 0;
     if (minutes < 10) {
-      minutes = '' + minutes;
+      minutes = `${minutes}`;
       minutes = Array(2).join('0') + minutes;
     }
     this.timeValue.seconds = date.seconds();

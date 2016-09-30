@@ -73,12 +73,12 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" data-dojo-attach-event="onclick:toggleDropDown" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
-      '{%! $.loadingTemplate %}',
-      '{%! $.quickActionTemplate %}',
-      '<div class="panel-content" data-dojo-attach-point="contentNode">',
-        '{%! $.tabContentTemplate %}',
-        '{%! $.moreTabListTemplate %}',
-      '</div>',
+    '{%! $.loadingTemplate %}',
+    '{%! $.quickActionTemplate %}',
+    '<div class="panel-content" data-dojo-attach-point="contentNode">',
+    '{%! $.tabContentTemplate %}',
+    '{%! $.moreTabListTemplate %}',
+    '</div>',
     '</div>',
   ]),
   /**
@@ -95,16 +95,16 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   loadingTemplate: new Simplate([
     '<div class="panel-loading-indicator">',
     '<div class="row">',
-      '<div class="busyIndicator__container busyIndicator--active" aria-live="polite">',
-        '<div class="busyIndicator busyIndicator--large">',
-          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
-          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
-          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
-          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--four"></div>',
-          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--five"></div>',
-        '</div>',
-        '<span class="busyIndicator__label">{%: $.loadingText %}</span>',
-      '</div>',
+    '<div class="busyIndicator__container busyIndicator--active" aria-live="polite">',
+    '<div class="busyIndicator busyIndicator--large">',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--four"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--five"></div>',
+    '</div>',
+    '<span class="busyIndicator__label">{%: $.loadingText %}</span>',
+    '</div>',
     '</div>',
     '</div>',
   ]),
@@ -134,23 +134,23 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   sectionBeginTemplate: new Simplate([
     '{% if (!$$.isTabbed) { %}',
-        '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-        '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
-        '{%: ($.title || $.options.title) %}',
-        '</h2>',
+    '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
+    '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
+    '{%: ($.title || $.options.title) %}',
+    '</h2>',
     '{% } %}',
     '{% if ($.list || $.options.list) { %}',
-      '{% if ($.cls || $.options.cls) { %}',
-        '<ul class="{%= ($.cls || $.options.cls) %}">',
-      '{% } else { %}',
-        '<ul class="detailContent list">',
-      '{% } %}',
+    '{% if ($.cls || $.options.cls) { %}',
+    '<ul class="{%= ($.cls || $.options.cls) %}">',
     '{% } else { %}',
-      '{% if ($.cls || $.options.cls) { %}',
-        '<div class="{%= ($.cls || $.options.cls) %}">',
-          '{% } else { %}',
-            '<div class="detailContent">',
-          '{% } %}',
+    '<ul class="detailContent list">',
+    '{% } %}',
+    '{% } else { %}',
+    '{% if ($.cls || $.options.cls) { %}',
+    '<div class="{%= ($.cls || $.options.cls) %}">',
+    '{% } else { %}',
+    '<div class="detailContent">',
+    '{% } %}',
     '{% } %}',
   ]),
   /**
@@ -467,7 +467,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     });
 
     return this.tools || (this.tools = {
-      'tbar': tools,
+      tbar: tools,
     });
   },
   _refreshClicked: function _refreshClicked() {
@@ -488,7 +488,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * @param {Event} evt
    * @param {HTMLElement} el
    */
-  invokeAction: function invokeAction(name, parameters /*, evt, el*/ ) {
+  invokeAction: function invokeAction(name, parameters /* , evt, el*/) {
     if (parameters && /true/i.test(parameters.disableAction)) {
       return null;
     }
@@ -513,8 +513,8 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * @private
    */
   placeDetailHeader: function placeDetailHeader() {
-    const value = this.entityText + ' ' + this.informationText;
-    domConstruct.place(this.detailHeaderTemplate.apply({ value: value }, this), this.tabList, 'before');
+    const value = `${this.entityText} ${this.informationText}`;
+    domConstruct.place(this.detailHeaderTemplate.apply({ value }, this), this.tabList, 'before');
   },
   /**
    * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.
@@ -555,12 +555,12 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * Navigates to the defined `this.editView` passing the current `this.entry` as default data.
    * @param {HTMLElement} el
    */
-  navigateToEditView: function navigateToEditView( /*el*/ ) {
+  navigateToEditView: function navigateToEditView(/* el*/) {
     const view = App.getView(this.editView);
     if (view) {
       const entry = this.entry;
       view.show({
-        entry: entry,
+        entry,
         fromContext: this,
       });
     }
@@ -711,7 +711,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       }
 
       const data = lang.mixin({}, {
-        entry: entry,
+        entry,
         value: formatted,
         raw: value,
       }, current);
@@ -802,8 +802,8 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         callbacks.push({
           row: current,
           node: rowNode,
-          value: value,
-          entry: entry,
+          value,
+          entry,
         });
       }
     }
@@ -887,11 +887,11 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     const store = this.get('store');
 
     if (this._model) {
-      return this.requestDataUsingModel().then(function fulfilled(data) {
+      return this.requestDataUsingModel().then((data) => {
         this._onGetComplete(data);
-      }.bind(this), function rejected(err) {
+      }, (err) => {
         this._onGetError(null, err);
-      }.bind(this));
+      });
     } else if (store) {
       const getOptions = {};
 
@@ -922,7 +922,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     const options = this.options;
     return options && (options.id || options.key);
   },
-  _applyStateToGetOptions: function _applyStateToGetOptions( /*getOptions*/ ) {},
+  _applyStateToGetOptions: function _applyStateToGetOptions(/* getOptions*/) {},
   /**
    * Determines if the view should be refresh by inspecting and comparing the passed navigation option key with current key.
    * @param {Object} options Passed navigation options.
@@ -1038,7 +1038,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         if (result >= 0) {
           const labelNode = query('.related-item-label', rowNode)[0];
           if (labelNode) {
-            const html = '<span class="related-item-count">' + result + '</span>';
+            const html = `<span class="related-item-count">${result}</span>`;
             domConstruct.place(html, labelNode, 'before');
           } else {
             console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line

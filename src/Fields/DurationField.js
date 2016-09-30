@@ -175,7 +175,7 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
    * @param {Event} evt onkeyup
    * @private
    */
-  _onKeyUp: function _onKeyUp(/*evt*/) {
+  _onKeyUp: function _onKeyUp(/* evt*/) {
     const val = this.inputNode.value.toString();
     const match = this.autoCompletePhraseRE.exec(val);
 
@@ -237,7 +237,7 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
    * @return {Boolean}
    * @private
    */
-  _onBlur: function _onBlur(/*evt*/) {
+  _onBlur: function _onBlur(/* evt*/) {
     const val = this.inputNode.value.toString();
     const match = this.autoCompleteValueRE.exec(val);
     const multiplier = this.getMultiplier(this.currentKey);
@@ -279,7 +279,7 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
    * @param {Number} val Number of minutes
    * @param init
    */
-  setValue: function setValue(val = 0/*, init*/) {
+  setValue: function setValue(val = 0/* , init*/) {
     let newVal = val;
     if (newVal === null) {
       newVal = 0;
@@ -358,7 +358,7 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
         }
       }
     }
-    return sval + ' ' + this.currentKey;
+    return `${sval} ${this.currentKey}`;
   },
   /**
    * Extends the {@link LookupField#createNavigationOptions parent implementation} to explicitly set hide search

@@ -149,9 +149,9 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
     const values = this.convertValues(v);
 
     return lang.mixin(values, {
-      '$key': this.entry.$key,
-      '$etag': this.entry.$etag,
-      '$name': this.entry.$name,
+      $key: this.entry.$key,
+      $etag: this.entry.$etag,
+      $name: this.entry.$name,
     });
   },
   /**
@@ -162,7 +162,7 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
   createEntryForInsert: function createEntryForInsert(v) {
     const values = this.convertValues(v);
     return lang.mixin(values, {
-      '$name': this.entityName,
+      $name: this.entityName,
     });
   },
   /**

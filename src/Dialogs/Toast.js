@@ -18,17 +18,17 @@ import Modal from './Modal';
 const __class = declare('argos.Dialogs.Toast', [_Widget, _Templated, Modal], {
   toastTemplate: new Simplate([
     '<div class="toast effect-scale">',
-      '<button class="toast__btn-close fa fa-times"></button>',
-      '<div class="toast__icon {%= $.icon %}" focusable="false" aria-hidden="true"></div>',
-      '<span class="toast__title">',
-        '{%= $.title %}',
-      '</span>',
-      '<span class="toast__message">',
-        '{%= $.message %}',
-      '</span>',
-      '{% if ($.showProgressBar) { %}',
-        '<div class="toast__progressBar"></div>',
-      '{% } %}',
+    '<button class="toast__btn-close fa fa-times"></button>',
+    '<div class="toast__icon {%= $.icon %}" focusable="false" aria-hidden="true"></div>',
+    '<span class="toast__title">',
+    '{%= $.title %}',
+    '</span>',
+    '<span class="toast__message">',
+    '{%= $.message %}',
+    '</span>',
+    '{% if ($.showProgressBar) { %}',
+    '<div class="toast__progressBar"></div>',
+    '{% } %}',
     '</div>',
   ]),
   id: 'toast',
@@ -40,11 +40,11 @@ const __class = declare('argos.Dialogs.Toast', [_Widget, _Templated, Modal], {
   toastTime: 6000,
   barSize: 100,
   _containerPosition: {
-    'right': function positionRight() {
+    right: function positionRight() {
       domClass.add(this.modalContainer, 'toast__container--right');
       domClass.add(this.modalNode, 'toast__queue--right');
     },
-    'left': function positionLeft() {
+    left: function positionLeft() {
       domClass.add(this.modalContainer, 'toast__container--left');
       domClass.add(this.modalNode, 'toast__queue--left');
     },

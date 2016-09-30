@@ -32,17 +32,17 @@ import _Templated from 'argos/_Templated';
 const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}_dropdownNode" class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownNode">',
-      '<label class="dropdown__label">{%: $.label %}</label>',
-      '<input readOnly class="dropdown__input" data-dojo-attach-point="dropdownInput"></input>',
-      '<span class="dropdown__icon {%: $.icon %}"></span>',
-      '<select class="dropdown__select dropdown__select--hidden" data-dojo-attach-point="dropdownSelect"></select>',
-      '</div>',
+    '<label class="dropdown__label">{%: $.label %}</label>',
+    '<input readOnly class="dropdown__input" data-dojo-attach-point="dropdownInput"></input>',
+    '<span class="dropdown__icon {%: $.icon %}"></span>',
+    '<select class="dropdown__select dropdown__select--hidden" data-dojo-attach-point="dropdownSelect"></select>',
+    '</div>',
     '</div>',
   ]),
   listTemplate: new Simplate([
     '<div id="{%= $.id %}_dropdown_list" class="dropdown {%: $.dropdownClass %} dropdown--absolute dropdown--hidden">',
-      '<input readOnly class="dropdown__input dropdown__input--absolute" value="{%: $.value %}"></input>',
-      '<span class="dropdown__icon {%: $.icon %}"></span>',
+    '<input readOnly class="dropdown__input dropdown__input--absolute" value="{%: $.value %}"></input>',
+    '<span class="dropdown__icon {%: $.icon %}"></span>',
     '</div>',
   ]),
   listStartTemplate: new Simplate([
@@ -53,11 +53,11 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   ]),
   listItemTemplate: new Simplate([
     '<li class="dropdown__list__item" data-key="{%= $.key %}" data-value="{%= $.value %}">',
-       '{% if ($.text) { %}',
-       '{%= $.text %}',
-       '{% } else { %}',
-       '{%= $.value %}',
-       '{% } %}',
+    '{% if ($.text) { %}',
+    '{%= $.text %}',
+    '{% } else { %}',
+    '{%= $.value %}',
+    '{% } %}',
     '</li>',
   ]),
   overlayTemplate: new Simplate([
@@ -65,11 +65,11 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   ]),
   selectItemTemplate: new Simplate([
     '<option value="{%= $.value %}">',
-       '{% if ($.text) { %}',
-       '{%= $.text %}',
-       '{% } else { %}',
-       '{%= $.value %}',
-       '{% } %}',
+    '{% if ($.text) { %}',
+    '{%= $.text %}',
+    '{% } else { %}',
+    '{%= $.value %}',
+    '{% } %}',
     '</option>',
   ]),
 
@@ -97,7 +97,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     const listStart = domConstruct.toDom(this.listStartTemplate.apply(this));
     const listEnd = domConstruct.toDom(this.listEndTemplate.apply(this));
     array.forEach(this.items, (item) => {
-      const dom = domConstruct.toDom(this.listItemTemplate.apply({key: item.key, value: item.value, text: item.text}, this));
+      const dom = domConstruct.toDom(this.listItemTemplate.apply({ key: item.key, value: item.value, text: item.text }, this));
       domConstruct.place(dom, listStart);
       if (item.value === this.dropdownSelect.value) {
         this._selected = dom;
@@ -109,7 +109,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     if (this._ghost) {
       domConstruct.destroy(this._ghost);
     }
-    this._ghost = domConstruct.toDom(this.listTemplate.apply({id: this.id, value: this.getText(), icon: this.openIcon, label: this.label, dropdownClass: this.dropdownClass }, this));
+    this._ghost = domConstruct.toDom(this.listTemplate.apply({ id: this.id, value: this.getText(), icon: this.openIcon, label: this.label, dropdownClass: this.dropdownClass }, this));
 
     const dropdownInput = query('.dropdown__input', this._ghost)[0];
     if (dropdownInput) {
@@ -127,12 +127,12 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this._list = listStart;
     domConstruct.place(this._ghost, document.body);
   },
-  createList: function createList({items, defaultValue}) {
+  createList: function createList({ items, defaultValue }) {
     let itemFound = null;
     this.items = (items) ? items : [];
     this._defaultValue = defaultValue;
 
-    array.forEach(items, function findItem(item) {
+    array.forEach(items, (item) => {
       if (item.value === defaultValue) {
         itemFound = item;
       }
@@ -144,7 +144,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     }
 
     array.forEach(items, function addToModalList(item) {
-      const option = domConstruct.toDom(this.selectItemTemplate.apply({key: item.key, value: item.value, text: item.text}, this));
+      const option = domConstruct.toDom(this.selectItemTemplate.apply({ key: item.key, value: item.value, text: item.text }, this));
       domConstruct.place(option, this.dropdownSelect);
     }, this);
 
@@ -168,7 +168,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this._overlayEvent = on(this._overlay, 'click', this.onOverlayClick.bind(this));
   },
   destroy: function destroy() {
-    this._eventConnections.forEach( (evt) => {
+    this._eventConnections.forEach((evt) => {
       evt.remove();
     });
     this._eventConnections = [];
@@ -399,7 +399,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
         });
       } else if (top && ghostTop < 0) {
         domStyle.set(this._ghost, {
-          top: `0px`,
+          top: '0px',
           height: `${ghostHeight + ghostTop}px`,
         });
         domStyle.set(ghostList, {

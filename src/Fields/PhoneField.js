@@ -93,7 +93,7 @@ const control = declare('argos.Fields.PhoneField', [TextField], {
    * Currently only calls parent implementation due to an [Android Bug](http://code.google.com/p/android/issues/detail?id=14519).
    * @param {Event} evt Keyup event
    */
-  _onKeyUp: function _onKeyUp(/*evt*/) {
+  _onKeyUp: function _onKeyUp(/* evt*/) {
     /*
     // temporarily removed: http://code.google.com/p/android/issues/detail?id=14519
     this.set('inputValue', format.phone(this.inputNode.value, this.getValue()));

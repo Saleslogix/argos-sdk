@@ -24,13 +24,12 @@ import lang from 'dojo/_base/lang';
 const trueRE = /^(true|T)$/i;
 const isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/;
 const jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//;
-let __class;
 
 function pad(n) {
-  return n < 10 ? '0' + n : n;
+  return n < 10 ? `0${n}` : n;
 }
 
-__class = lang.setObject('argos.Convert', {
+const __class = lang.setObject('argos.Convert', {
   /**
    * Takes a string and checks to see if it is `true` or `T`, else returns false
    * @param {String} value String bool value
@@ -62,7 +61,7 @@ __class = lang.setObject('argos.Convert', {
    */
   toIsoStringFromDate: function toIsoStringFromDate(value) {
     // adapted from: https://developer.mozilla.org/en/JavaScript/Reference/global_objects/date
-    return value.getUTCFullYear() + '-' + pad(value.getUTCMonth() + 1) + '-' + pad(value.getUTCDate()) + 'T' + pad(value.getUTCHours()) + ':' + pad(value.getUTCMinutes()) + ':' + pad(value.getUTCSeconds()) + 'Z';
+    return `${value.getUTCFullYear()}-${pad(value.getUTCMonth() + 1)}-${pad(value.getUTCDate())}T${pad(value.getUTCHours())}:${pad(value.getUTCMinutes())}:${pad(value.getUTCSeconds())}Z`;
   },
   /**
    * Takes a Date object and returns it in JSON-string format: `'/Date(milliseconds)/'`
@@ -70,7 +69,7 @@ __class = lang.setObject('argos.Convert', {
    * @return {String} JSON string: `'/Date(milliseconds)/'`
    */
   toJsonStringFromDate: function toJsonStringFromDate(value) {
-    return '/Date(' + value.getTime() + ')/';
+    return `/Date(${value.getTime()})/`;
   },
   /**
    * Takes a string and tests it to see if its an ISO 8601 string or a JSON-string.
@@ -88,7 +87,7 @@ __class = lang.setObject('argos.Convert', {
     let match;
     let utc;
 
-    if ((match = jsonDate.exec(value))) {
+    if ((match = jsonDate.exec(value))) { //eslint-disable-line
       utc = new Date(parseInt(match[1], 10));
 
       // todo: may not be needed
@@ -106,7 +105,7 @@ __class = lang.setObject('argos.Convert', {
       */
 
       value = utc;
-    } else if ((match = isoDate.exec(value))) {
+    } else if ((match = isoDate.exec(value))) { // eslint-disable-line
       utc = moment(new Date(Date.UTC(
         parseInt(match[1], 10),
         parseInt(match[2], 10) - 1, // zero based

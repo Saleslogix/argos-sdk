@@ -162,7 +162,7 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
     let newQuery = query;
     let match;
 
-    while ((match = this.hashTagSearchRE.exec(newQuery))) {
+    while ((match = this.hashTagSearchRE.exec(newQuery))) { // eslint-disable-line
       let hashQueryExpression = null;
       const hashTag = match[1];
 
@@ -239,9 +239,9 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
   },
   _onMouseUp: function _onMouseUp() {
     // Work around a chrome issue where mouseup after a focus will de-select the text
-    setTimeout(function timeOut() {
+    setTimeout(() => {
       this.queryNode.setSelectionRange(0, 9999);
-    }.bind(this), 50);
+    }, 50);
   },
   /**
    * Detects the enter/return key and fires {@link #search search}
@@ -260,7 +260,7 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
    * @param expression
    * @param widget
    */
-  onSearchExpression: function onSearchExpression(/*expression, widget*/) {
+  onSearchExpression: function onSearchExpression(/* expression, widget*/) {
   },
   /**
    * Gets the current search expression as a formatted query.

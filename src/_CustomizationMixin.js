@@ -51,12 +51,12 @@ const __class = declare('argos._CustomizationMixin', null, {
     this._layoutCompiledFrom = {};
   },
   _getCustomizationsFor: function _getCustomizationsFor(customizationSubSet) {
-    const customizationSet = customizationSubSet ? this.customizationSet + '/' + customizationSubSet : this.customizationSet;
+    const customizationSet = customizationSubSet ? `${this.customizationSet}/${customizationSubSet}` : this.customizationSet;
     return App.getCustomizationsFor(customizationSet, this.id);
   },
   _createCustomizedLayout: function _createCustomizedLayout(layout, customizationSubSet) {
-    const customizationSet = customizationSubSet ? this.customizationSet + '/' + customizationSubSet : this.customizationSet;
-    const key = customizationSet + '#' + this.id;
+    const customizationSet = customizationSubSet ? `${this.customizationSet}/${customizationSubSet}` : this.customizationSet;
+    const key = `${customizationSet}#${this.id}`;
     const source = layout;
 
     if (source === this._layoutCompiledFrom[key] && this._layoutCompiled[key]) {
@@ -123,12 +123,12 @@ const __class = declare('argos._CustomizationMixin', null, {
 
                 row = lang.mixin(row, expand(customization.value, row));
                 break;
-              case 'insert':
+              case 'insert'://eslint-disable-line
                 const insertRowsTarget = (customization.where !== 'before') ? insertRowsAfter : insertRowsBefore;
                 const expandedValue = expand(customization.value, row);
 
                 if (lang.isArray(expandedValue)) {
-                  insertRowsTarget.push.apply(insertRowsTarget, expandedValue);
+                  insertRowsTarget.push.apply(insertRowsTarget, expandedValue); //eslint-disable-line
                 } else {
                   insertRowsTarget.push(expandedValue);
                 }
@@ -144,7 +144,7 @@ const __class = declare('argos._CustomizationMixin', null, {
           }
         }
 
-        output.push.apply(output, insertRowsBefore);
+        output.push.apply(output, insertRowsBefore);//eslint-disable-line
 
         if (row) {
           const children = (row.children && 'children') || (row.as && 'as');
@@ -159,7 +159,7 @@ const __class = declare('argos._CustomizationMixin', null, {
 
           output.push(row);
         }
-        output.push.apply(output, insertRowsAfter);
+        output.push.apply(output, insertRowsAfter);//eslint-disable-line
       }
       /*
        for any non-applied, insert only, customizations, if they have an `or` property that expands into a true expression

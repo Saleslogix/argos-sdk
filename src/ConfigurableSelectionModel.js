@@ -37,7 +37,7 @@ const __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
    * @param {Object} data The item being selected
    * @param tag
    */
-  select: function select(key/*, data, tag*/) {
+  select: function select(key/* , data, tag*/) {
     if (this.singleSelection) {
       if (!this.isSelected(key) || (this.count >= 1)) {
         this.clear();

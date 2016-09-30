@@ -12,22 +12,22 @@ const resource = getResource('busyIndicator');
 /**
  * @class argos.Dialogs.BusyIndicator
  */
-const __class = declare('argos.Dialogs.BusyIndicator', [ _Widget, _Templated ], {
+const __class = declare('argos.Dialogs.BusyIndicator', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="busyIndicator__container {%: $.containerClass %}" aria-live="polite" data-dojo-attach-point="busyIndicatorNode">',
-      '{%! $.busyIndicatorTemplate %}',
-      '{%! $.progressBarTemplate %}',
+    '{%! $.busyIndicatorTemplate %}',
+    '{%! $.progressBarTemplate %}',
     '</div>',
   ]),
   busyIndicatorTemplate: new Simplate([
-      '<div class="busyIndicator busyIndicator--{%: $.size %}">',
-        '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--one"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--two"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--three"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--four"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--five"></div>',
-      '</div>',
-      '<span class="busyIndicator__label" data-dojo-attach-point="labelNode">{%: $.label %}</span>',
+    '<div class="busyIndicator busyIndicator--{%: $.size %}">',
+    '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--one"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--two"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--three"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--four"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--{%: $.size %} busyIndicator__bar--five"></div>',
+    '</div>',
+    '<span class="busyIndicator__label" data-dojo-attach-point="labelNode">{%: $.label %}</span>',
   ]),
   progressBarTemplate: new Simplate([
     '<div class="busyIndicator__progress" data-dojo-attach-point="progressNode">',

@@ -104,7 +104,7 @@ const __class = declare('argos._ActionMixin', null, {
    * @param el
    * @return {Boolean}
    */
-  hasAction: function hasAction(name/*, evt, el*/) {
+  hasAction: function hasAction(name/* , evt, el*/) {
     return (typeof this[name] === 'function');
   },
   /**

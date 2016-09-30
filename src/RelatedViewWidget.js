@@ -147,14 +147,14 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   ]),
   loadingTemplate: new Simplate([
     '<div class="busyIndicator__container busyIndicator--active" aria-live="polite">',
-      '<div class="busyIndicator busyIndicator--large">',
-        '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--four"></div>',
-        '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--five"></div>',
-      '</div>',
-      '<span class="busyIndicator__label">{%: $.loadingText %}</span>',
+    '<div class="busyIndicator busyIndicator--large">',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--four"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--five"></div>',
+    '</div>',
+    '<span class="busyIndicator__label">{%: $.loadingText %}</span>',
     '</div>',
   ]),
 
@@ -349,7 +349,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
 
         if (this.showTotalInTab) {
           domAttr.set(this.titleNode, {
-            innerHTML: this.title + '  ' + string.substitute(this.totalCountText, [this.relatedResults.total]),
+            innerHTML: `${this.title}  ${string.substitute(this.totalCountText, [this.relatedResults.total])}`,
           });
         }
         for (let i = 0; i < relatedFeed.length; i++) {
@@ -369,7 +369,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
         domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
         if (this.showTotalInTab) {
           domAttr.set(this.titleNode, {
-            innerHTML: this.title + '  ' + string.substitute(this.totalCountText, [0, 0]),
+            innerHTML: `${this.title}  ${string.substitute(this.totalCountText, [0, 0])}`,
           });
         }
         domAttr.set(this.selectMoreNode, {
@@ -398,7 +398,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
     const descriptor = evt.currentTarget.attributes['data-descriptor'].value;
 
     const options = {
-      descriptor: descriptor,
+      descriptor,
       key: relatedKey,
       title: descriptor,
     };

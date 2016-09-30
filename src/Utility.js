@@ -16,7 +16,6 @@ import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
 import json from 'dojo/json';
 
-let __class;
 const nameToPathCache = {};
 const nameToPath = function nameToPath(name) {
   if (typeof name !== 'string' || name === '.' || name === '') {
@@ -54,7 +53,7 @@ const nameToPath = function nameToPath(name) {
  * @alternateClassName Utility
  * @singleton
  */
-__class = lang.setObject('argos.Utility', {
+const __class = lang.setObject('argos.Utility', {
   /**
    * Replaces a single `"` with two `""` for proper SData query expressions.
    * @param {String} searchQuery Search expression to be escaped.

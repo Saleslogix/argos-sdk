@@ -65,7 +65,7 @@ const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Template
    *
    * Note the word `default` must be in quotes as default is a reserved word in javascript.
    */
-  'default': undefined,
+  default: undefined,
   /**
    * @property {String}
    * The unique (within the current form) name of the field
@@ -217,7 +217,7 @@ const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Template
    * @param {Boolean} initial If true the value is meant to be the default/original/clean value.
    * @template
    */
-  setValue: function setValue(/*val, initial*/) {},
+  setValue: function setValue(/* val, initial*/) {},
   /**
    * Each field type will need to implement this function to clear the value and visually.
    * @template
@@ -293,31 +293,31 @@ const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Template
    * @param {_Field} field The field itself
    * @template
    */
-  onEnable: function onEnable(/*field*/) {},
+  onEnable: function onEnable(/* field*/) {},
   /**
    * Event that fires when the field is disabled
    * @param {_Field} field The field itself
    * @template
    */
-  onDisable: function onDisable(/*field*/) {},
+  onDisable: function onDisable(/* field*/) {},
   /**
    * Event that fires when the field is shown
    * @param {_Field} field The field itself
    * @template
    */
-  onShow: function onShow(/*field*/) {},
+  onShow: function onShow(/* field*/) {},
   /**
    * Event that fires when the field is hidden
    * @param {_Field} field The field itself
    * @template
    */
-  onHide: function onHide(/*field*/) {},
+  onHide: function onHide(/* field*/) {},
   /**
    * Event that fires when the field is changed
    * @param {_Field} field The field itself
    * @template
    */
-  onChange: function onChange(/*value, field*/) {},
+  onChange: function onChange(/* value, field*/) {},
 });
 
 lang.setObject('Sage.Platform.Mobile.Fields._Field', __class);

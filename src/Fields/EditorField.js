@@ -92,7 +92,7 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
    * @param val
    * @template
    */
-  formatValue: function formatValue(/*val*/) {
+  formatValue: function formatValue(/* val*/) {
     return '';
   },
   /**
