@@ -14,7 +14,6 @@
  */
 import json from 'dojo/_base/json';
 import lang from 'dojo/_base/lang';
-import array from 'dojo/_base/array';
 import domConstruct from 'dojo/dom-construct';
 import string from 'dojo/string';
 import dNumber from 'dojo/number';
@@ -236,20 +235,23 @@ const __class = lang.setObject('argos.Format', {
       return val;
     }
 
-    // Check if the user specified a URI scheme,
-    // does not include all URI Schemes, such as tel:, etc.
-    const schemes = ['://', 'mailto:'];
-    const hasURIScheme = array.some(schemes, (scheme) => {
-      return val.indexOf(scheme) > -1;
-    });
-
-    if (hasURIScheme) {
-      return string.substitute('<a target="_blank" href="${0}">${0}</a>', [val]);
-    }
+    // Allowed schemes when fullscreen mode
+    const allowedStandAloneSchemes = ['tel:', 'sms:', 'mailto:'];
+    const allowStandAlone = allowedStandAloneSchemes.some(v => val.indexOf(v) > -1);
 
     // Skip returning the href link if saved to iOS desktop
-    if (window.navigator.standalone) {
+    if (!allowStandAlone && window.navigator.standalone) {
       return val;
+    }
+
+    // Check if the user specified a URI scheme,
+    // does not include all URI Schemes
+    const schemes = ['://', 'mailto:', 'tel:', 'sms:'];
+    const [scheme] = schemes.filter(v => val.indexOf(v) > -1);
+
+    if (scheme && scheme.length) {
+      const index = val.indexOf(scheme) + scheme.length;
+      return `<a target="_blank" href="${val}">${val.substring(index)}</a>`;
     }
 
     // Specify a default URI scheme of http

@@ -1,3 +1,4 @@
+/* eslint-disable */
 define('tests/FormatTests', ['argos/Format'], function(format) {
 return describe('argos.Format', function() {
 
@@ -66,6 +67,22 @@ return describe('argos.Format', function() {
         var testStr = 'www.google.com';
         expect(format.link(testStr)).toEqual('<a target="_blank" href="http://www.google.com">www.google.com</a>');
     });
+
+    it('Can create sms link', function() {
+        var testStr = 'sms:55512345678';
+        expect(format.link(testStr)).toEqual('<a target="_blank" href="sms:55512345678">55512345678</a>');
+    });
+
+    it('Can create tel link', function() {
+        var testStr = 'tel:18005551234';
+        expect(format.link(testStr)).toEqual('<a target="_blank" href="tel:18005551234">18005551234</a>');
+    });
+
+    it('Can create mailto link', function() {
+        var testStr = 'mailto:john.doe@foo.test';
+        expect(format.link(testStr)).toEqual('<a target="_blank" href="mailto:john.doe@foo.test">john.doe@foo.test</a>');
+    });
+
     it('Can return original value when creating a link for a non-string', function() {
         var testStr = 1;
         expect(format.link(testStr)).toEqual(1);
