@@ -247,7 +247,7 @@
 
 <recentlyViewedModel ""
   entityDisplayName: "Recently Viewed"
-  entityDisplayNamePlural : "RecentlyViewed"
+  entityDisplayNamePlural : "Recently Viewed"
 >
 
 <busyIndicator ""
