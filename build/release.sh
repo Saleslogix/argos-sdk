@@ -15,8 +15,8 @@ mkdir -p deploy/content/dojox
 
 grunt clean:css
 grunt clean:js
-grunt babel
 grunt less
+npm run build
 
 # Java Build Tool
 #java -Dfile.encoding=UTF-8 -jar "tools/JSBuilder/JSBuilder2.jar" --verbose --projectFile "build/release.jsb2" --homeDir "."
