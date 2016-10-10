@@ -30,7 +30,7 @@ The products sub-folder is for applications that reference the SDK.
 ### Building the source
 - Open a command prompt in the argos-sdk directory (C:\code\mobile\argos-sdk)
 - Run `npm install` to install dependencies specified in the project.json file
-- Run `grunt build`
+- Run `npm run build`
 
 ### Development
 
