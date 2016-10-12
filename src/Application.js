@@ -606,13 +606,18 @@ const __class = declare('argos.Application', null, {
       this.modules[i].init(this);
     }
   },
+  isDynamicInitialized: false,
   /**
    * Loops through modules and calls their `initDynamic()` function.
    */
   initModulesDynamic: function initModules() {
+    if (this.isDynamicInitialized) {
+      return;
+    }
     for (let i = 0; i < this.modules.length; i++) {
       this.modules[i].initDynamic(this);
     }
+    this.isDynamicInitialized = true;
   },
   /**
    * Loops through (tool)bars and calls their `init()` function.
