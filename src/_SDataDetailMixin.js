@@ -124,7 +124,12 @@ const __class = declare('argos._SDataDetailMixin', null, {
   formatRelatedQuery: function formatRelatedQuery(entry, fmt, prop) {
     let property = prop;
     property = property || '$key';
-    return string.substitute(fmt, [utility.getValue(entry, property, '')]);
+    const rawValue = utility.getValue(entry, property, '');
+    if (typeof rawValue !== 'undefined' && rawValue !== null) {
+      return string.substitute(fmt, [rawValue]);
+    }
+
+    return '';
   },
   /**
    * Initializes the model instance that is return with the curernt view.
