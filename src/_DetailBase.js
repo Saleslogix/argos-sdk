@@ -1032,19 +1032,24 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     const view = App.getView(data.view);
     const options = {};
 
-    if (view) {
-      options.where = context ? context.where : '';
-      view.getListCount(options).then((result) => {
-        if (result >= 0) {
-          const labelNode = query('.related-item-label', rowNode)[0];
-          if (labelNode) {
-            const html = `<span class="related-item-count">${result}</span>`;
-            domConstruct.place(html, labelNode, 'before');
-          } else {
-            console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
-          }
+    const renderRelated = (result) => {
+      if (result >= 0) {
+        const labelNode = query('.related-item-label', rowNode)[0];
+        if (labelNode) {
+          const html = `<span class="related-item-count">${result}</span>`;
+          domConstruct.place(html, labelNode, 'before');
+        } else {
+          console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
         }
-      });
+      }
+    };
+
+    if (view && context && context.where) {
+      options.where = context.where;
+      view.getListCount(options)
+        .then(renderRelated);
+    } else {
+      renderRelated(0);
     }
   },
   destroy: function destroy() {
