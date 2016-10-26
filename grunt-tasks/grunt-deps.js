@@ -1,4 +1,3 @@
-/* eslint-disable */
 module.exports = function gruntDeps(grunt) {
   grunt.config('argos-deps', {
     files: '../src/**/*.js',
@@ -7,8 +6,8 @@ module.exports = function gruntDeps(grunt) {
     output: 'release.jsb2',
     modules: [{
       name: 'argos',
-      location: '../src'
-    }]
+      location: '../src',
+    }],
   });
 
   grunt.loadNpmTasks('grunt-argos-deps');

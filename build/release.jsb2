@@ -70,28 +70,16 @@
       "file": "content/javascript/argos-sdk.js",
       "isDebug": true,
       "fileIncludes": [{
-            "text": "Utility.js",
+            "text": "_ActionMixin.js",
             "path": "../src-out/"
-          }, {
-            "text": "Manager.js",
-            "path": "../src-out/Models/"
-          }, {
-            "text": "update-connection.js",
-            "path": "../src-out/Intents/"
           }, {
             "text": "I18n.js",
             "path": "../src-out/"
           }, {
-            "text": "CultureInfo.js",
+            "text": "_CustomizationMixin.js",
             "path": "../src-out/"
           }, {
-            "text": "_ActionMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_Templated.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Convert.js",
+            "text": "Utility.js",
             "path": "../src-out/"
           }, {
             "text": "_DraggableBase.js",
@@ -100,17 +88,32 @@
             "text": "FieldManager.js",
             "path": "../src-out/"
           }, {
+            "text": "Convert.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_Templated.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Types.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "_ServiceMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Manager.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "update-connection.js",
+            "path": "../src-out/Intents/"
+          }, {
+            "text": "CultureInfo.js",
+            "path": "../src-out/"
+          }, {
             "text": "_GroupBySection.js",
             "path": "../src-out/Groups/"
           }, {
             "text": "Connection.js",
             "path": "../src-out/Models/"
-          }, {
-            "text": "Types.js",
-            "path": "../src-out/Models/"
-          }, {
-            "text": "_CustomizationMixin.js",
-            "path": "../src-out/"
           }, {
             "text": "PouchDB.js",
             "path": "../src-out/Store/"
@@ -118,22 +121,28 @@
             "text": "DomHelper.js",
             "path": "../src-out/ReUI/"
           }, {
-            "text": "_ServiceMixin.js",
+            "text": "_ErrorHandleMixin.js",
             "path": "../src-out/"
           }, {
-            "text": "Intent.js",
-            "path": "../src-out/"
-          }, {
-            "text": "ErrorManager.js",
+            "text": "_PullToRefreshMixin.js",
             "path": "../src-out/"
           }, {
             "text": "SelectionModel.js",
             "path": "../src-out/"
           }, {
-            "text": "_ErrorHandleMixin.js",
+            "text": "ErrorManager.js",
             "path": "../src-out/"
           }, {
-            "text": "_PullToRefreshMixin.js",
+            "text": "_ModelBase.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "Format.js",
+            "path": "../src-out/"
+          }, {
+            "text": "SData.js",
+            "path": "../src-out/Store/"
+          }, {
+            "text": "_RelatedViewWidgetBase.js",
             "path": "../src-out/"
           }, {
             "text": "BusyIndicator.js",
@@ -157,14 +166,14 @@
             "text": "Toolbar.js",
             "path": "../src-out/"
           }, {
-            "text": "_RelatedViewWidgetBase.js",
-            "path": "../src-out/"
+            "text": "Manager.js",
+            "path": "../src-out/Offline/"
           }, {
-            "text": "Format.js",
-            "path": "../src-out/"
+            "text": "Adapter.js",
+            "path": "../src-out/Models/"
           }, {
-            "text": "SData.js",
-            "path": "../src-out/Store/"
+            "text": "Intent.js",
+            "path": "../src-out/"
           }, {
             "text": "DateTimeSection.js",
             "path": "../src-out/Groups/"
@@ -175,17 +184,11 @@
             "text": "Model.js",
             "path": "../src-out/"
           }, {
-            "text": "Adapter.js",
-            "path": "../src-out/Models/"
-          }, {
-            "text": "Manager.js",
-            "path": "../src-out/Offline/"
-          }, {
-            "text": "_ModelBase.js",
-            "path": "../src-out/Models/"
-          }, {
             "text": "main.js",
             "path": "../src-out/ReUI/"
+          }, {
+            "text": "ConfigurableSelectionModel.js",
+            "path": "../src-out/"
           }, {
             "text": "_LegacySDataDetailMixin.js",
             "path": "../src-out/"
@@ -193,7 +196,22 @@
             "text": "_LegacySDataListMixin.js",
             "path": "../src-out/"
           }, {
-            "text": "ConfigurableSelectionModel.js",
+            "text": "_OfflineModelBase.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "_SDataDetailMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_SDataListMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_SDataModelBase.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "RelatedViewManager.js",
+            "path": "../src-out/"
+          }, {
+            "text": "RelatedViewWidget.js",
             "path": "../src-out/"
           }, {
             "text": "Toast.js",
@@ -223,32 +241,35 @@
             "text": "MainToolbar.js",
             "path": "../src-out/"
           }, {
-            "text": "RelatedViewManager.js",
-            "path": "../src-out/"
-          }, {
-            "text": "RelatedViewWidget.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_SDataDetailMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_SDataListMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "View.js",
-            "path": "../src-out/"
-          }, {
             "text": "_DetailOfflineMixin.js",
             "path": "../src-out/Offline/"
           }, {
             "text": "_ListOfflineMixin.js",
             "path": "../src-out/Offline/"
           }, {
-            "text": "_OfflineModelBase.js",
-            "path": "../src-out/Models/"
+            "text": "View.js",
+            "path": "../src-out/"
           }, {
-            "text": "_SDataModelBase.js",
-            "path": "../src-out/Models/"
+            "text": "Offline.js",
+            "path": "../src-out/Models/Briefcase/"
+          }, {
+            "text": "Offline.js",
+            "path": "../src-out/Models/RecentlyViewed/"
+          }, {
+            "text": "_LegacySDataEditMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_SDataEditMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_RelatedViewWidgetDetailMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_RelatedViewWidgetEditMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_RelatedViewWidgetListMixin.js",
+            "path": "../src-out/"
           }, {
             "text": "Application.js",
             "path": "../src-out/"
@@ -277,19 +298,10 @@
             "text": "TextAreaField.js",
             "path": "../src-out/Fields/"
           }, {
-            "text": "_RelatedViewWidgetDetailMixin.js",
+            "text": "_DetailBase.js",
             "path": "../src-out/"
           }, {
-            "text": "_RelatedViewWidgetEditMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_RelatedViewWidgetListMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_LegacySDataEditMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_SDataEditMixin.js",
+            "text": "_ListBase.js",
             "path": "../src-out/"
           }, {
             "text": "FileSelect.js",
@@ -300,18 +312,6 @@
           }, {
             "text": "Signature.js",
             "path": "../src-out/Views/"
-          }, {
-            "text": "_DetailBase.js",
-            "path": "../src-out/"
-          }, {
-            "text": "_ListBase.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Offline.js",
-            "path": "../src-out/Models/Briefcase/"
-          }, {
-            "text": "Offline.js",
-            "path": "../src-out/Models/RecentlyViewed/"
           }, {
             "text": "RelativeDateTimePicker.js",
             "path": "../src-out/"

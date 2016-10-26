@@ -20,6 +20,15 @@ module.exports = function gruntJasmine(grunt) {
         },
       },
     },
+    basic: {
+      src: ['src-out/**/*.js'],
+      options: {
+        specs: 'tests/**/*.js',
+        host: 'http://127.0.0.1:8001/',
+        template: 'GruntRunnerBasic.tmpl',
+        summary: true,
+      },
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-jasmine');
