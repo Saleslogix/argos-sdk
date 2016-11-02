@@ -3,11 +3,14 @@
 <head>
   <meta charset="utf-8">
   <title>Jasmine Spec Runner</title>
+  <% css.forEach(function(style){ %>
+    <link rel="stylesheet" type="text/css" href="<%= style %>">
+  <% }); %>
+
   <% with (scripts) { %>
     <% [].concat(polyfills, jasmine, vendor, helpers).forEach(function(script){ %>
     <script src="<%= script %>"></script>
     <% }) %>
-
   <% }; %>
   <!-- SData Client Library -->
   <script type="text/javascript" src="libraries/sdata/sdata-client-dependencies-debug.js"></script>
@@ -15,9 +18,6 @@
 
   <!-- Simplate -->
   <script type="text/javascript" src="libraries/Simplate.js"></script>
-
-  <!-- canvas2image for when HTMLCanvasElement.prototype.toDataURL isn't available -->
-  <script type="text/javascript" src="libraries/canvas2image.js"></script>
 
   <!-- PouchDB -->
   <script type="text/javascript" src="libraries/PouchDB/pouchdb-4.0.3.min.js"></script>
@@ -46,7 +46,7 @@
             { name: 'dojo', location: 'libraries/dojo/dojo' },
             { name: 'dijit', location: 'libraries/dojo/dijit' },
             { name: 'snap', location: 'libraries/snap', main: 'snap' },
-            { name: 'argos', location: '.grunt/grunt-contrib-jasmine/src-out' },// istanbul outputs the instrumented to this temp folder
+            { name: 'argos', location: 'src-out' },
             { name: 'tests', location: 'tests' }
         ],
         map: {
@@ -59,9 +59,6 @@
   <% css.forEach(function(style){ %>
   <link rel="stylesheet" type="text/css" href="<%= style %>">
   <% }); %>
-
-
-
 </head>
 <body>
   <script type="text/javascript">
@@ -95,21 +92,18 @@
       }
 
       <% with (scripts) { %>
-        var ctx = buildContext();
-        ctx.ready(function() {
-          require([
-          <% specs.forEach(function(spec) { %>
-            '<%= spec.replace("./tests", "tests").replace(".js", "") %>',
-          <% }); %>
-          ]);
-        });
-
+      var ctx = buildContext();
+      ctx.ready(function() {
         require([
-          '<%= boot %>',
-          '<%= reporters[0] %>',
-          '<%= reporters[1] %>'
+          'tests/all'
         ]);
+      });
 
+      require([
+        '<%= boot %>',
+        '<%= reporters[0] %>',
+        '<%= reporters[1] %>'
+      ]);
       <% }; %>
   </script>
 </body>
