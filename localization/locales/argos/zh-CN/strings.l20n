@@ -93,9 +93,9 @@
 
 <detailBase ""
   informationText: "信息"
-  titleText: "详细信息"
+  titleText: "明细"
   entityText: "实体"
-  detailsText: "详细信息"
+  detailsText: "明细"
   loadingText: "正在加载"
   notAvailableText: "请求的数据不可用。"
   toggleCollapseText: "切换折叠"
@@ -103,16 +103,16 @@
 >
 
 <editBase ""
-  concurrencyErrorText: "其他用户已更新该字段。"
+  concurrencyErrorText: "另一个用户已更新该字段。"
   toggleCollapseText: "切换折叠"
   saveText: "保存"
   titleText: "编辑"
   validationSummaryText: "验证摘要"
   concurrencySummaryText: "并行性错误"
-  detailsText: "详细信息"
+  detailsText: "明细"
   loadingText: "正在加载"
   errorGeneral: "请求数据时发生服务器错误。"
-  error410:  "保存时发生错误。此记录不再存在。"
+  error410:  "保存时出现错误。此记录不再存在。"
 >
 
 <errorHandleMixin ""
@@ -191,7 +191,7 @@
 >
 
 <mainToolbar ""
-  titleText: "Mobile"
+  titleText: "移动电话"
 >
 
 <relatedViewWidget ""
@@ -225,7 +225,7 @@
 <timePicker ""
   amText: "上午"
   pmText: "下午"
-  setTimeText: "Set Time"
+  setTimeText: "设置时间"
 >
 
 <relativeDateTimePicker ""
@@ -247,7 +247,7 @@
 
 <recentlyViewedModel ""
   entityDisplayName: "最近查看"
-  entityDisplayNamePlural : "RecentlyViewed"
+  entityDisplayNamePlural : "最近查看"
 >
 
 <busyIndicator ""

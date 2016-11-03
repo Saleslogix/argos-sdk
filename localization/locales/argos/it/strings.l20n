@@ -3,7 +3,7 @@
   invalidDateFormatErrorText: "Formato data del campo '${0}' non valido."
   cancelText: "Annulla"
   confirmText: "Conferma"
-  advancedText: "Avanzate"
+  advancedText: "Avanzato"
 >
 
 <durationField ""
@@ -207,7 +207,7 @@
 >
 
 <searchWidget ""
- searchText: "Cerca"
+ searchText: "Ricerca"
 >
 
 <selectionModel ""
@@ -225,12 +225,12 @@
 <timePicker ""
   amText: "AM"
   pmText: "PM"
-  setTimeText: "Set Time"
+  setTimeText: "Imposta l’ora"
 >
 
 <relativeDateTimePicker ""
   titleText: "Circa..."
-  pickDateTimeText: "Avanzate"
+  pickDateTimeText: "Avanzato"
   thisEveningText: "Questa sera"
   tomorrowMorningText: "Domani mattina"
   tomorrowAfternoonText: "Domani sera"
@@ -247,7 +247,7 @@
 
 <recentlyViewedModel ""
   entityDisplayName: "Visualizzati di recente"
-  entityDisplayNamePlural : "RecentlyViewed"
+  entityDisplayNamePlural : "Visualizzati di recente"
 >
 
 <busyIndicator ""
