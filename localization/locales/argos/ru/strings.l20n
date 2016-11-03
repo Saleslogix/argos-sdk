@@ -1,6 +1,6 @@
 <dateField ""
   emptyText: ''
-  invalidDateFormatErrorText: "Некорректный формат даты в поле \"${0}\"."
+  invalidDateFormatErrorText: "Некорректный формат даты в поле "${0}"."
   cancelText: "Отмена"
   confirmText: "Подтвердить"
   advancedText: "Дополнительно"
@@ -10,21 +10,21 @@
   minutes: "минуты"
   hours: "часы"
   days: "дни"
-  weeks: "нед."
-  years: "г."
-  invalidDurationErrorText: "Поле \"${0}\" не является допустимой длительностью."
+  weeks: "недели"
+  years: "годы"
+  invalidDurationErrorText: "Поле "${0}" не является допустимой длительностью."
   emptyText: ""
 >
 
 <editorField ""
-  lookupLabelText: "Изменить"
+  lookupLabelText: "изменить"
   lookupText: "..."
   emptyText: "пусто"
   completeText: "OK"
 >
 
 <lookupField ""
-  dependentErrorText: "Необходимо выбрать значение \"${0}\"."
+  dependentErrorText: "Необходимо выбрать значение "${0}"."
   emptyText: ""
   completeText: "Выбрать"
   lookupLabelText: "поиск"
@@ -76,19 +76,19 @@
   cancelText: "Отмена"
   selectFileText: "Выбрать файл"
   loadingText: "Загрузка..."
-  descriptionText: "Описание"
+  descriptionText: "описание"
   bytesText: "байт"
   notSupportedText: "Ваше устройство не поддерживает добавление вложений."
 >
 
 <signature ""
-  titleText: "подпись"
+  titleText: "Подпись"
   clearCanvasText: "Очистить"
   undoText: "Отменить ввод"
 >
 
 <configureBase ""
-  titleText: "Конфигурировать"
+  titleText: "Настроить"
 >
 
 <detailBase ""
@@ -123,11 +123,11 @@
   moreText: "Получить больше записей"
   emptySelectionText: "Нет"
   titleText: "Список"
-  configureText: "Конфигурировать"
+  configureText: "Настроить"
   errorRenderText: "Ошибка при визуализации шаблона строки."
   remainingText: "Осталось записей: ${0}"
   cancelText: "Отмена"
-  insertText: "Создать"
+  insertText: "Новый"
   noDataText: "Нет записей"
   loadingText: "Загрузка"
 >
@@ -143,8 +143,8 @@
 
 <calendar ""
   titleText: "Календарь"
-  amText: "д. п."
-  pmText: "п. п."
+  amText: "до полудня"
+  pmText: "после полудня"
   january: "Январь"
   february: "Февраль"
   march: "Март"
@@ -195,8 +195,8 @@
 >
 
 <relatedViewWidget ""
-  nodataText: "записи не найдены ..."
-  selectMoreDataText: "показать еще ${0} ${1} ... "
+  nodataText: "записи не найдены..."
+  selectMoreDataText: "показать еще ${0} ${1}... "
   selectMoreDataText2: "см. еще ${0}... "
   navToListText: "см. список"
   loadingText: "Загрузка"
@@ -223,9 +223,9 @@
 >
 
 <timePicker ""
-  amText: "AM"
-  pmText: "PM"
-  setTimeText: "Set Time"
+  amText: "до полудня"
+  pmText: "после полудня"
+  setTimeText: "Установленное время"
 >
 
 <relativeDateTimePicker ""
@@ -247,7 +247,7 @@
 
 <recentlyViewedModel ""
   entityDisplayName: "Недавно просмотренные"
-  entityDisplayNamePlural : "RecentlyViewed"
+  entityDisplayNamePlural : "Недавно просмотренные"
 >
 
 <busyIndicator ""

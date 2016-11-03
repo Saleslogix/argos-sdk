@@ -223,9 +223,9 @@
 >
 
 <timePicker ""
-  amText: "AM"
-  pmText: "PM"
-  setTimeText: "Set Time"
+  amText: "Morgens"
+  pmText: "Abends"
+  setTimeText: "Zeit festlegen"
 >
 
 <relativeDateTimePicker ""
@@ -247,7 +247,7 @@
 
 <recentlyViewedModel ""
   entityDisplayName: "Zuletzt angezeigt"
-  entityDisplayNamePlural : "RecentlyViewed"
+  entityDisplayNamePlural : "Zuletzt angezeigt"
 >
 
 <busyIndicator ""
@@ -265,7 +265,6 @@
   submitText: "Übergeben"
   warningText: "Warnung"
 >
-
 <_listOfflineMixin
   goToListViewText: "Einträge wurden in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
   interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Einträge vollständig in die Aktentasche zu verschieben."
