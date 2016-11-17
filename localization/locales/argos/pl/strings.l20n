@@ -1,8 +1,8 @@
 <dateField ""
   emptyText: ''
-  invalidDateFormatErrorText: "B³êdny format daty w polu '${0}'."
+  invalidDateFormatErrorText: "BÂ³Ãªdny format daty w polu '${0}'."
   cancelText: "Anuluj"
-  confirmText: "ZatwierdŸ"
+  confirmText: "ZatwierdÅ¸"
   advancedText: "Zaawansowane"
 >
 
@@ -12,7 +12,7 @@
   days: "dn."
   weeks: "tygodni"
   years: "lat"
-  invalidDurationErrorText: "B³êdny czas trwania w polu '${0}'."
+  invalidDurationErrorText: "BÂ³Ãªdny czas trwania w polu '${0}'."
   emptyText: ""
 >
 
@@ -24,7 +24,7 @@
 >
 
 <lookupField ""
-  dependentErrorText: "Wybierz wartoœæ dla '${0}'."
+  dependentErrorText: "Wybierz wartoÅ“Ã¦ dla '${0}'."
   emptyText: ""
   completeText: "Wybierz"
   lookupLabelText: "wyszukiwanie"
@@ -37,53 +37,53 @@
 >
 
 <dateTimeSection ""
-  displayNameText: "Wybór daty i czasu"
-  todayText: "Dziœ"
+  displayNameText: "WybÃ³r daty i czasu"
+  todayText: "DziÅ“"
   tomorrowText: "Jutro"
-  laterThisWeekText: "PóŸniej w tym tygodniu"
-  earlierThisWeekText: "Wczeœniej w tym tygodniu"
-  thisLaterMonthText: "PóŸniej w tym miesi¹cu"
-  thisEarlierMonthText: "Wczeœniej w tym miesi¹cu"
-  thisYearEarlierText: "Wczeœniej w tym roku"
-  thisYearLaterText: "PóŸniej w tym roku"
+  laterThisWeekText: "PÃ³Å¸niej w tym tygodniu"
+  earlierThisWeekText: "WczeÅ“niej w tym tygodniu"
+  thisLaterMonthText: "PÃ³Å¸niej w tym miesiÂ¹cu"
+  thisEarlierMonthText: "WczeÅ“niej w tym miesiÂ¹cu"
+  thisYearEarlierText: "WczeÅ“niej w tym roku"
+  thisYearLaterText: "PÃ³Å¸niej w tym roku"
   yesterdayText: "Wczoraj"
-  lastWeekText: "Ostatni tydzieñ"
-  lastMonthText: "Ostatni miesi¹c"
-  pastYearText: "Wczeœniejsze lata"
+  lastWeekText: "Ostatni tydzieÃ±"
+  lastMonthText: "Ostatni miesiÂ¹c"
+  pastYearText: "WczeÅ“niejsze lata"
   nextYearText: "Kolejny rok"
-  nextMonthText: "Kolejny miesi¹c"
-  nextWeekText: "Kolejny tydzieñ"
-  futureText: "Przysz³oœæ"
+  nextMonthText: "Kolejny miesiÂ¹c"
+  nextWeekText: "Kolejny tydzieÃ±"
+  futureText: "PrzyszÂ³oÅ“Ã¦"
   twoWeeksAgoText: "Dwa tygodnie temu"
   threeWeeksAgoText: "Trzy tygodnie temu"
-  twoMonthsAgoText: "Dwa miesi¹ce temu"
-  threeMonthsAgoText: "Trzy miesi¹ce temu"
+  twoMonthsAgoText: "Dwa miesiÂ¹ce temu"
+  threeMonthsAgoText: "Trzy miesiÂ¹ce temu"
   unknownText: "Nieznany"
 >
 
 <groupByValueSection ""
-  displayNameText: "Grupa wg wyboru wartoœci"
+  displayNameText: "Grupa wg wyboru wartoÅ“ci"
 >
 
 <configureQuickActions ""
-  titleText: "Konfiguracja szybkich czynnoœci"
+  titleText: "Konfiguracja szybkich czynnoÅ“ci"
 >
 
 <fileSelect ""
-  titleText: "Wybór pola"
-  addFileText: "Aby dodaæ plik, kliknij/dotknij tutaj."
+  titleText: "WybÃ³r pola"
+  addFileText: "Aby dodaÃ¦ plik, kliknij/dotknij tutaj."
   uploadText: "Wczytaj"
   cancelText: "Anuluj"
   selectFileText: "Wybierz plik"
   loadingText: "Wczytywanie..."
   descriptionText: "opis"
   bytesText: "B"
-  notSupportedText: "Twoje urz¹dzenie nie obs³uguje dodawania za³¹czników."
+  notSupportedText: "Twoje urzÂ¹dzenie nie obsÂ³uguje dodawania zaÂ³Â¹cznikÃ³w."
 >
 
 <signature ""
   titleText: "podpis"
-  clearCanvasText: "Wyma¿"
+  clearCanvasText: "WymaÂ¿"
   undoText: "Cofnij"
 >
 
@@ -93,48 +93,48 @@
 
 <detailBase ""
   informationText: "Informacje"
-  titleText: "Szczegó³y"
+  titleText: "SzczegÃ³Â³y"
   entityText: "Encja"
-  detailsText: "Szczegó³y"
+  detailsText: "SzczegÃ³Â³y"
   loadingText: "Wczytywanie"
-  notAvailableText: "¯¹dane dane s¹ niedostêpne."
-  toggleCollapseText: "zwiñ/rozwiñ"
+  notAvailableText: "Â¯Â¹dane dane sÂ¹ niedostÃªpne."
+  toggleCollapseText: "zwiÃ±/rozwiÃ±"
   editText: "edycja"
 >
 
 <editBase ""
-  concurrencyErrorText: "To pole zosta³o zaktualizowane przez innego u¿ytkownika."
-  toggleCollapseText: "zwiñ/rozwiñ"
+  concurrencyErrorText: "To pole zostaÂ³o zaktualizowane przez innego uÂ¿ytkownika."
+  toggleCollapseText: "zwiÃ±/rozwiÃ±"
   saveText: "Zapisz"
   titleText: "edycja"
   validationSummaryText: "Podsumowanie zatwierdzenia"
-  concurrencySummaryText: "B³êdy zgodnoœci"
-  detailsText: "Szczegó³y"
+  concurrencySummaryText: "BÂ³Ãªdy zgodnoÅ“ci"
+  detailsText: "SzczegÃ³Â³y"
   loadingText: "Wczytywanie"
-  errorGeneral: "Podczas ¿¹dania danych wyst¹pi³ b³¹d serwera."
-  error410:  "B³¹d zapisu. Ten rekord ju¿ nie istnieje."
+  errorGeneral: "Podczas Â¿Â¹dania danych wystÂ¹piÂ³ bÂ³Â¹d serwera."
+  error410:  "BÂ³Â¹d zapisu. Ten rekord juÂ¿ nie istnieje."
 >
 
 <errorHandleMixin ""
-  general: 'B³¹d serwera.'
+  general: 'BÂ³Â¹d serwera.'
 >
 
 <listBase ""
-  moreText: "Pobierz wiêcej rekordów"
+  moreText: "Pobierz wiÃªcej rekordÃ³w"
   emptySelectionText: "Brak"
   titleText: "Lista"
   configureText: "Konfiguruj"
-  errorRenderText: "B³¹d przedk³adania szablonu wierszy."
-  remainingText: "Pozosta³e rekordy: ${0}"
+  errorRenderText: "BÂ³Â¹d przedkÂ³adania szablonu wierszy."
+  remainingText: "PozostaÂ³e rekordy: ${0}"
   cancelText: "Anuluj"
   insertText: "Nowy"
-  noDataText: "brak rekordów"
+  noDataText: "brak rekordÃ³w"
   loadingText: "Wczytywanie"
 >
 
 <pullToRefreshMixin ""
-  pullRefreshText: "Przeci¹gnij w dó³, aby odœwie¿yæ..."
-  pullReleaseText: "Upuœæ, aby odœwie¿yæ..."
+  pullRefreshText: "PrzeciÂ¹gnij w dÃ³Â³, aby odÅ“wieÂ¿yÃ¦..."
+  pullReleaseText: "UpuÅ“Ã¦, aby odÅ“wieÂ¿yÃ¦..."
 >
 
 <relatedViewWidgetBase ""
@@ -143,26 +143,26 @@
 
 <calendar ""
   titleText: "Kalendarz"
-  amText: "przed po³udniem"
-  pmText: "po po³udniu"
-  january: "Styczeñ"
+  amText: "przed poÂ³udniem"
+  pmText: "po poÂ³udniu"
+  january: "StyczeÃ±"
   february: "Luty"
   march: "Marzec"
-  april: "Kwiecieñ"
+  april: "KwiecieÃ±"
   may: "Maj"
   june: "Czerwiec"
   july: "Lipiec"
-  august: "Sierpieñ"
-  september: "Wrzesieñ"
-  october: "PaŸdziernik"
+  august: "SierpieÃ±"
+  september: "WrzesieÃ±"
+  october: "PaÅ¸dziernik"
   november: "Listopad"
-  december: "Grudzieñ"
-  clearText: "Wyczyœæ"
-  todayText: "Dziœ"
+  december: "GrudzieÃ±"
+  clearText: "WyczyÅ“Ã¦"
+  todayText: "DziÅ“"
   sundayAbbreviated: "Nd"
   mondayAbbreviated: "Pon"
   tuesdayAbbreviated: "Wt"
-  wednesdayAbbreviated: "Œr"
+  wednesdayAbbreviated: "Å’r"
   thursdayAbbreviated: "Czw"
   fridayAbbreviated: "Pt"
   saturdayAbbreviated: "Sob"
@@ -170,7 +170,7 @@
 
 <errorManager ""
   abortedText: "Przerwano"
-  scopeSaveText: "Na raporcie b³êdu nie zapisano zakresu"
+  scopeSaveText: "Na raporcie bÂ³Ãªdu nie zapisano zakresu"
 >
 
 <format ""
@@ -187,23 +187,23 @@
 >
 
 <groupedList ""
- toggleCollapseText: "zwiñ/rozwiñ"
+ toggleCollapseText: "zwiÃ±/rozwiÃ±"
 >
 
 <mainToolbar ""
-  titleText: "Komórka"
+  titleText: "KomÃ³rka"
 >
 
 <relatedViewWidget ""
-  nodataText: "nie znaleziono rekordów..."
-  selectMoreDataText: "Zobacz o ${0} wiêcej ${1}... "
-  selectMoreDataText2: "Zobacz ${0} wiêcej... "
-  navToListText: "zobacz listê"
+  nodataText: "nie znaleziono rekordÃ³w..."
+  selectMoreDataText: "Zobacz o ${0} wiÃªcej ${1}... "
+  selectMoreDataText2: "Zobacz ${0} wiÃªcej... "
+  navToListText: "zobacz listÃª"
   loadingText: "Wczytywanie"
-  refreshViewText: "odœwie¿"
+  refreshViewText: "odÅ“wieÂ¿"
   itemOfCountText: " ${0} z ${1}"
   totalCountText: " (${0})"
-  titleText: "Widok powi¹zany"
+  titleText: "Widok powiÂ¹zany"
 >
 
 <searchWidget ""
@@ -211,78 +211,78 @@
 >
 
 <selectionModel ""
-  requireSelectionText: "Wybór jest wymagany; nie mo¿na odznaczyæ ostatniej pozycji."
+  requireSelectionText: "WybÃ³r jest wymagany; nie moÂ¿na odznaczyÃ¦ ostatniej pozycji."
 >
 
 <tabWidget ""
- moreText: "Wiêcej"
+ moreText: "WiÃªcej"
 >
 
 <view ""
- titleText: "Widok ogólny"
+ titleText: "Widok ogÃ³lny"
 >
 
 <timePicker ""
-  amText: "przed po³udniem"
-  pmText: "po po³udniu"
-  setTimeText: "Ustaw godzinê"
+  amText: "przed poÂ³udniem"
+  pmText: "po poÂ³udniu"
+  setTimeText: "Ustaw godzinÃª"
 >
 
 <relativeDateTimePicker ""
-  titleText: "Oko³o..."
+  titleText: "OkoÂ³o..."
   pickDateTimeText: "Zaawansowane"
-  thisEveningText: "Dziœ wieczorem"
+  thisEveningText: "DziÅ“ wieczorem"
   tomorrowMorningText: "Jutro rano"
   tomorrowAfternoonText: "Jutro wieczorem"
-  nextWeekText: "Kolejny tydzieñ"
-  nextMonthText: "Kolejny miesi¹c"
+  nextWeekText: "Kolejny tydzieÃ±"
+  nextMonthText: "Kolejny miesiÂ¹c"
   cancelText: "Anuluj"
-  confirmText: "ZatwierdŸ"
+  confirmText: "ZatwierdÅ¸"
 >
 
 <briefcaseModel ""
-  entityDisplayName: "Aktówka"
-  entityDisplayNamePlural : "Aktówki"
+  entityDisplayName: "AktÃ³wka"
+  entityDisplayNamePlural : "AktÃ³wki"
 >
 
 <recentlyViewedModel ""
-  entityDisplayName: "Ostatnio przegl¹dane"
-  entityDisplayNamePlural : "Ostatnio wyœwietlane"
+  entityDisplayName: "Ostatnio przeglÂ¹dane"
+  entityDisplayNamePlural : "Ostatnio wyÅ“wietlane"
 >
 
 <busyIndicator ""
   loadingText: "Wczytywanie"
-  progressText: "Postêp"
+  progressText: "PostÃªp"
 >
 
 <modal
   alertText: "Alert"
-  completeText: "Zakoñczenie"
+  completeText: "ZakoÃ±czenie"
   cancelText: "Anuluj"
-  confirmText: "ZatwierdŸ"
+  confirmText: "ZatwierdÅ¸"
   editText: "edycja"
   okayText: "OK"
-  submitText: "ZatwierdŸ"
-  warningText: "Ostrze¿enie"
+  submitText: "ZatwierdÅ¸"
+  warningText: "OstrzeÂ¿enie"
 >
 <_listOfflineMixin
-  goToListViewText: "Pozycje zosta³y umieszczone w aktówce. Czy przejœæ do widoku listy aktówek?"
-  interruptedText: "Proces zosta³ przerwany i nie uda³o siê go w pe³ni ukoñczyæ. Aby przenieœæ wszystkie pozycji do aktówki, nale¿y uruchomiæ proces ponownie."
-  briefcasingText: "Trwa przenoszenie do aktówki; proszê czekaæ."
-  errorBriefcasingText: "B³¹d przenoszenia do aktówki."
+  goToListViewText: "Pozycje zostaÂ³y umieszczone w aktÃ³wce. Czy przejÅ“Ã¦ do widoku listy aktÃ³wek?"
+  interruptedText: "Proces zostaÂ³ przerwany i nie udaÂ³o siÃª go w peÂ³ni ukoÃ±czyÃ¦. Aby przenieÅ“Ã¦ wszystkie pozycji do aktÃ³wki, naleÂ¿y uruchomiÃ¦ proces ponownie."
+  briefcasingText: "Trwa przenoszenie do aktÃ³wki; proszÃª czekaÃ¦."
+  errorBriefcasingText: "BÂ³Â¹d przenoszenia do aktÃ³wki."
 >
 
 <_detailOfflineMixin
-  goToDetailViewText: "Pozycja oraz pozycje z ni¹ powi¹zane zosta³y przeniesione do aktówki. Czy przejœæ do widoku listy aktówek?"
-  interruptedText: "Proces zosta³ przerwany i nie uda³o siê go w pe³ni ukoñczyæ. Aby przenieœæ wszystkie pozycji do aktówki, nale¿y uruchomiæ proces ponownie."
-  briefcasingText: "Trwa przenoszenie do aktówki; proszê czekaæ."
-  errorBriefcasingText: "B³¹d przenoszenia do aktówki."
-  errorSavingOfflineViewText: "B³¹d zapisywania widoku offline:"
+  goToDetailViewText: "Pozycja oraz pozycje z niÂ¹ powiÂ¹zane zostaÂ³y przeniesione do aktÃ³wki. Czy przejÅ“Ã¦ do widoku listy aktÃ³wek?"
+  interruptedText: "Proces zostaÂ³ przerwany i nie udaÂ³o siÃª go w peÂ³ni ukoÃ±czyÃ¦. Aby przenieÅ“Ã¦ wszystkie pozycji do aktÃ³wki, naleÂ¿y uruchomiÃ¦ proces ponownie."
+  briefcasingText: "Trwa przenoszenie do aktÃ³wki; proszÃª czekaÃ¦."
+  errorBriefcasingText: "BÂ³Â¹d przenoszenia do aktÃ³wki."
+  errorSavingOfflineViewText: "BÂ³Â¹d zapisywania widoku offline:"
 >
 
 <sdkApplication
-  connectionToastTitleText: "Po³¹czenie"
-  checkingText: "Sprawdzanie ³¹cznoœci"
+  connectionToastTitleText: "PoÂ³Â¹czenie"
+  checkingText: "Sprawdzanie Â³Â¹cznoÅ“ci"
   loadingApplicationStateText: "Wczytywanie danych aplikacji"
   initializingText: "Inicjalizacja:"
 >
