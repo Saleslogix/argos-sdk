@@ -1,0 +1,288 @@
+<dateField ""
+  emptyText: ''
+  invalidDateFormatErrorText: "B³êdny format daty w polu '${0}'."
+  cancelText: "Anuluj"
+  confirmText: "ZatwierdŸ"
+  advancedText: "Zaawansowane"
+>
+
+<durationField ""
+  minutes: "min."
+  hours: "godz."
+  days: "dn."
+  weeks: "tygodni"
+  years: "lat"
+  invalidDurationErrorText: "B³êdny czas trwania w polu '${0}'."
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "edycja"
+  lookupText: "..."
+  emptyText: "puste"
+  completeText: "OK"
+>
+
+<lookupField ""
+  dependentErrorText: "Wybierz wartoœæ dla '${0}'."
+  emptyText: ""
+  completeText: "Wybierz"
+  lookupLabelText: "wyszukiwanie"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "podpis"
+  signatureText: "..."
+>
+
+<dateTimeSection ""
+  displayNameText: "Wybór daty i czasu"
+  todayText: "Dziœ"
+  tomorrowText: "Jutro"
+  laterThisWeekText: "PóŸniej w tym tygodniu"
+  earlierThisWeekText: "Wczeœniej w tym tygodniu"
+  thisLaterMonthText: "PóŸniej w tym miesi¹cu"
+  thisEarlierMonthText: "Wczeœniej w tym miesi¹cu"
+  thisYearEarlierText: "Wczeœniej w tym roku"
+  thisYearLaterText: "PóŸniej w tym roku"
+  yesterdayText: "Wczoraj"
+  lastWeekText: "Ostatni tydzieñ"
+  lastMonthText: "Ostatni miesi¹c"
+  pastYearText: "Wczeœniejsze lata"
+  nextYearText: "Kolejny rok"
+  nextMonthText: "Kolejny miesi¹c"
+  nextWeekText: "Kolejny tydzieñ"
+  futureText: "Przysz³oœæ"
+  twoWeeksAgoText: "Dwa tygodnie temu"
+  threeWeeksAgoText: "Trzy tygodnie temu"
+  twoMonthsAgoText: "Dwa miesi¹ce temu"
+  threeMonthsAgoText: "Trzy miesi¹ce temu"
+  unknownText: "Nieznany"
+>
+
+<groupByValueSection ""
+  displayNameText: "Grupa wg wyboru wartoœci"
+>
+
+<configureQuickActions ""
+  titleText: "Konfiguracja szybkich czynnoœci"
+>
+
+<fileSelect ""
+  titleText: "Wybór pola"
+  addFileText: "Aby dodaæ plik, kliknij/dotknij tutaj."
+  uploadText: "Wczytaj"
+  cancelText: "Anuluj"
+  selectFileText: "Wybierz plik"
+  loadingText: "Wczytywanie..."
+  descriptionText: "opis"
+  bytesText: "B"
+  notSupportedText: "Twoje urz¹dzenie nie obs³uguje dodawania za³¹czników."
+>
+
+<signature ""
+  titleText: "podpis"
+  clearCanvasText: "Wyma¿"
+  undoText: "Cofnij"
+>
+
+<configureBase ""
+  titleText: "Konfiguruj"
+>
+
+<detailBase ""
+  informationText: "Informacje"
+  titleText: "Szczegó³y"
+  entityText: "Encja"
+  detailsText: "Szczegó³y"
+  loadingText: "Wczytywanie"
+  notAvailableText: "¯¹dane dane s¹ niedostêpne."
+  toggleCollapseText: "zwiñ/rozwiñ"
+  editText: "edycja"
+>
+
+<editBase ""
+  concurrencyErrorText: "To pole zosta³o zaktualizowane przez innego u¿ytkownika."
+  toggleCollapseText: "zwiñ/rozwiñ"
+  saveText: "Zapisz"
+  titleText: "edycja"
+  validationSummaryText: "Podsumowanie zatwierdzenia"
+  concurrencySummaryText: "B³êdy zgodnoœci"
+  detailsText: "Szczegó³y"
+  loadingText: "Wczytywanie"
+  errorGeneral: "Podczas ¿¹dania danych wyst¹pi³ b³¹d serwera."
+  error410:  "B³¹d zapisu. Ten rekord ju¿ nie istnieje."
+>
+
+<errorHandleMixin ""
+  general: 'B³¹d serwera.'
+>
+
+<listBase ""
+  moreText: "Pobierz wiêcej rekordów"
+  emptySelectionText: "Brak"
+  titleText: "Lista"
+  configureText: "Konfiguruj"
+  errorRenderText: "B³¹d przedk³adania szablonu wierszy."
+  remainingText: "Pozosta³e rekordy: ${0}"
+  cancelText: "Anuluj"
+  insertText: "Nowy"
+  noDataText: "brak rekordów"
+  loadingText: "Wczytywanie"
+>
+
+<pullToRefreshMixin ""
+  pullRefreshText: "Przeci¹gnij w dó³, aby odœwie¿yæ..."
+  pullReleaseText: "Upuœæ, aby odœwie¿yæ..."
+>
+
+<relatedViewWidgetBase ""
+  loadingText: "Wczytywanie"
+>
+
+<calendar ""
+  titleText: "Kalendarz"
+  amText: "przed po³udniem"
+  pmText: "po po³udniu"
+  january: "Styczeñ"
+  february: "Luty"
+  march: "Marzec"
+  april: "Kwiecieñ"
+  may: "Maj"
+  june: "Czerwiec"
+  july: "Lipiec"
+  august: "Sierpieñ"
+  september: "Wrzesieñ"
+  october: "PaŸdziernik"
+  november: "Listopad"
+  december: "Grudzieñ"
+  clearText: "Wyczyœæ"
+  todayText: "Dziœ"
+  sundayAbbreviated: "Nd"
+  mondayAbbreviated: "Pon"
+  tuesdayAbbreviated: "Wt"
+  wednesdayAbbreviated: "Œr"
+  thursdayAbbreviated: "Czw"
+  fridayAbbreviated: "Pt"
+  saturdayAbbreviated: "Sob"
+>
+
+<errorManager ""
+  abortedText: "Przerwano"
+  scopeSaveText: "Na raporcie b³êdu nie zapisano zakresu"
+>
+
+<format ""
+  yesText: "Tak"
+  noText: "Nie"
+  trueText: "P"
+  falseText: "F"
+  hoursText: "godz."
+  hourText: "godz."
+  minutesText: "min."
+  minuteText: "min."
+  percentFormatText: "${0}${1}"
+  bytesText: "B"
+>
+
+<groupedList ""
+ toggleCollapseText: "zwiñ/rozwiñ"
+>
+
+<mainToolbar ""
+  titleText: "Komórka"
+>
+
+<relatedViewWidget ""
+  nodataText: "nie znaleziono rekordów..."
+  selectMoreDataText: "Zobacz o ${0} wiêcej ${1}... "
+  selectMoreDataText2: "Zobacz ${0} wiêcej... "
+  navToListText: "zobacz listê"
+  loadingText: "Wczytywanie"
+  refreshViewText: "odœwie¿"
+  itemOfCountText: " ${0} z ${1}"
+  totalCountText: " (${0})"
+  titleText: "Widok powi¹zany"
+>
+
+<searchWidget ""
+ searchText: "Szukaj"
+>
+
+<selectionModel ""
+  requireSelectionText: "Wybór jest wymagany; nie mo¿na odznaczyæ ostatniej pozycji."
+>
+
+<tabWidget ""
+ moreText: "Wiêcej"
+>
+
+<view ""
+ titleText: "Widok ogólny"
+>
+
+<timePicker ""
+  amText: "przed po³udniem"
+  pmText: "po po³udniu"
+  setTimeText: "Ustaw godzinê"
+>
+
+<relativeDateTimePicker ""
+  titleText: "Oko³o..."
+  pickDateTimeText: "Zaawansowane"
+  thisEveningText: "Dziœ wieczorem"
+  tomorrowMorningText: "Jutro rano"
+  tomorrowAfternoonText: "Jutro wieczorem"
+  nextWeekText: "Kolejny tydzieñ"
+  nextMonthText: "Kolejny miesi¹c"
+  cancelText: "Anuluj"
+  confirmText: "ZatwierdŸ"
+>
+
+<briefcaseModel ""
+  entityDisplayName: "Aktówka"
+  entityDisplayNamePlural : "Aktówki"
+>
+
+<recentlyViewedModel ""
+  entityDisplayName: "Ostatnio przegl¹dane"
+  entityDisplayNamePlural : "Ostatnio wyœwietlane"
+>
+
+<busyIndicator ""
+  loadingText: "Wczytywanie"
+  progressText: "Postêp"
+>
+
+<modal
+  alertText: "Alert"
+  completeText: "Zakoñczenie"
+  cancelText: "Anuluj"
+  confirmText: "ZatwierdŸ"
+  editText: "edycja"
+  okayText: "OK"
+  submitText: "ZatwierdŸ"
+  warningText: "Ostrze¿enie"
+>
+<_listOfflineMixin
+  goToListViewText: "Pozycje zosta³y umieszczone w aktówce. Czy przejœæ do widoku listy aktówek?"
+  interruptedText: "Proces zosta³ przerwany i nie uda³o siê go w pe³ni ukoñczyæ. Aby przenieœæ wszystkie pozycji do aktówki, nale¿y uruchomiæ proces ponownie."
+  briefcasingText: "Trwa przenoszenie do aktówki; proszê czekaæ."
+  errorBriefcasingText: "B³¹d przenoszenia do aktówki."
+>
+
+<_detailOfflineMixin
+  goToDetailViewText: "Pozycja oraz pozycje z ni¹ powi¹zane zosta³y przeniesione do aktówki. Czy przejœæ do widoku listy aktówek?"
+  interruptedText: "Proces zosta³ przerwany i nie uda³o siê go w pe³ni ukoñczyæ. Aby przenieœæ wszystkie pozycji do aktówki, nale¿y uruchomiæ proces ponownie."
+  briefcasingText: "Trwa przenoszenie do aktówki; proszê czekaæ."
+  errorBriefcasingText: "B³¹d przenoszenia do aktówki."
+  errorSavingOfflineViewText: "B³¹d zapisywania widoku offline:"
+>
+
+<sdkApplication
+  connectionToastTitleText: "Po³¹czenie"
+  checkingText: "Sprawdzanie ³¹cznoœci"
+  loadingApplicationStateText: "Wczytywanie danych aplikacji"
+  initializingText: "Inicjalizacja:"
+>
