@@ -508,6 +508,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   },
   constructor: function constructor() {
     this.entries = {};
+    this._loadedSelections = {};
   },
   postCreate: function postCreate() {
     this.inherited(arguments);
@@ -1049,6 +1050,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @private
    */
   _onSelectionModelClear: function _onSelectionModelClear() {},
+
+  /**
+   * Cache of loaded selections
+   */
+  _loadedSelections: null,
+
   /**
    * Attempts to activate entries passed in `this.options.previousSelections` where previousSelections is an array
    * of data-keys or data-descriptors to search the list rows for.
@@ -1058,14 +1065,19 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const previousSelections = this.options && this.options.previousSelections;
     if (previousSelections) {
       for (let i = 0; i < previousSelections.length; i++) {
-        const row = query((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [previousSelections[i]])), this.contentNode)[0];
+        const key = previousSelections[i];
+        const row = query((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [key])), this.contentNode)[0];
 
-        if (row) {
+        if (row && this._loadedSelections[key] !== true) {
           this.activateEntry({
-            key: previousSelections[i],
-            descriptor: previousSelections[i],
+            key,
+            descriptor: key,
             $source: row,
           });
+
+          // Flag that this previous selection has been loaded, since this function can be called
+          // multiple times, while paging through long lists. clear() will reset.
+          this._loadedSelections[key] = true;
         }
       }
     }
@@ -1697,6 +1709,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       this._selectionModel.resumeEvents();
     }
 
+    this._loadedSelections = {};
     this.requestedFirstPage = false;
     this.entries = {};
     this.position = 0;
