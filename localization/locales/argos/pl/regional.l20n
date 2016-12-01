@@ -1,7 +1,7 @@
 /* CultureInfo contains a JSON blob that must be updated per locale. */
 <CultureInfo """
 {
-  "name": "Ang",
+  "imię i nazwisko": "Ang",
   "englishName": "Angielski (Stany Zjednoczone)",
   "nativeName": "Angielski (Stany Zjednoczone)",
   "numberFormat": {
@@ -24,19 +24,19 @@
     "numberNegativePattern": 1,
     "percentPositivePattern": 0,
     "percentNegativePattern": 0,
-    "negativeInfinitySymbol": "-Niesko?czono??",
+    "negativeInfinitySymbol": "-Nieskończoność",
     "negativeSign": "-",
     "numberDecimalDigits": 2,
     "numberDecimalSeparator": ",",
     "numberGroupSeparator": ".",
     "currencyPositivePattern": 0,
-    "positiveInfinitySymbol": "Niesko?czono??",
+    "positiveInfinitySymbol": "Nieskończoność",
     "positiveSign": "+",
     "percentDecimalDigits": 2,
     "percentDecimalSeparator": ",",
     "percentGroupSeparator": ".",
     "percentSymbol": "%",
-    "perMilleSymbol": "?",
+    "perMilleSymbol": "‰",
     "nativeDigits": [
       "0",
       "1",
