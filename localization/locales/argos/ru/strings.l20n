@@ -143,8 +143,8 @@
 
 <calendar ""
   titleText: "Календарь"
-  amText: "до полудня"
-  pmText: "после полудня"
+  amText: "AM"
+  pmText: "PM"
   january: "Январь"
   february: "Февраль"
   march: "Март"

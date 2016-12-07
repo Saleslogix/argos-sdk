@@ -143,8 +143,8 @@
 
 <calendar ""
   titleText: "Kalender"
-  amText: "Morgens"
-  pmText: "Abends"
+  amText: "AM"
+  pmText: "PM"
   january: "Januar"
   february: "Februar"
   march: "März"
