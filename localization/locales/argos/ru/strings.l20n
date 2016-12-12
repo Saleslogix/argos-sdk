@@ -223,8 +223,8 @@
 >
 
 <timePicker ""
-  amText: "до полудня"
-  pmText: "после полудня"
+  amText: "AM"
+  pmText: "PM"
   setTimeText: "Установленное время"
 >
 
