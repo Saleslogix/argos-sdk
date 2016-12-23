@@ -18,8 +18,8 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import ConfigureQuickActions from './Views/ConfigureQuickActions';
 import LinkView from './Views/Link';
+import initCulture from './CultureInfo';
 import './Application';
-import './CultureInfo';
 import './Models/RecentlyViewed/Offline';
 import './Models/Briefcase/Offline';
 
@@ -89,6 +89,7 @@ const __class = declare('argos.ApplicationModule', null, {
   init: function init(application) {
     this.application = application;
 
+    initCulture();
     this.loadAppStatePromises();
     this.loadCustomizations();
     this.loadToolbars();
