@@ -534,8 +534,34 @@ const __class = declare('argos._EditBase', [View], {
   convertEntry: function convertEntry(entry) {
     return entry;
   },
+  processFieldLevelSecurity: function processFieldLevelSecurity() {
+    const { $permissions: permissions } = this.entry;
+    // permissions is an array of objects:
+    // { name: "FieldName", access: "ReadOnly" }
+    if (permissions && permissions.length) {
+      permissions.forEach((p) => {
+        const { name, access } = p;
+        const field = this.fields[name];
+        if (!field) {
+          return;
+        }
+
+        // TODO: How do we handle fields that have validation tied to them?
+        if (access === 'NoAccess') {
+          field.disable();
+          field.hide();
+        } else if (access === 'ReadOnly') {
+          field.disable();
+        }
+      });
+    }
+  },
   processData: function processData(entry) {
     this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
+
+    if (this.entry.$permissions) {
+      this.processFieldLevelSecurity();
+    }
 
     this.setValues(entry, true);
 
