@@ -51,6 +51,10 @@
         {
           "text": "rx.all.js",
           "path": "../libraries/rx/"
+        },
+        {
+          "text": "common.bundle.js",
+          "path": "../libraries/icrm/"
         }
       ]
     },
@@ -127,6 +131,9 @@
             "text": "_PullToRefreshMixin.js",
             "path": "../src-out/"
           }, {
+            "text": "Format.js",
+            "path": "../src-out/"
+          }, {
             "text": "SelectionModel.js",
             "path": "../src-out/"
           }, {
@@ -135,9 +142,6 @@
           }, {
             "text": "_ModelBase.js",
             "path": "../src-out/Models/"
-          }, {
-            "text": "Format.js",
-            "path": "../src-out/"
           }, {
             "text": "SData.js",
             "path": "../src-out/Store/"

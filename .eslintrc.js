@@ -26,7 +26,8 @@ module.exports = {
     "spyOn": false,
     "module": false,
     "Rx": false,
-    "moment": false
+    "moment": false,
+    "ICRMCommonSDK": false
   },
   rules: {
     /**

@@ -21,13 +21,7 @@
  */
 import lang from 'dojo/_base/lang';
 
-const trueRE = /^(true|T)$/i;
-const isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/;
-const jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//;
-
-function pad(n) {
-  return n < 10 ? `0${n}` : n;
-}
+const convert = window.ICRMCommonSDK.convert;
 
 const __class = lang.setObject('argos.Convert', {
   /**
@@ -35,9 +29,7 @@ const __class = lang.setObject('argos.Convert', {
    * @param {String} value String bool value
    * @return {Boolean} Returns true if string is `true` or `T`.
    */
-  toBoolean: function toBoolean(value) {
-    return trueRE.test(value);
-  },
+  toBoolean: convert.toBoolean,
   /**
    * Takes a string and checks to see if it is an ISO formatted date or a JSON-string date
    *
@@ -47,94 +39,26 @@ const __class = lang.setObject('argos.Convert', {
    * @param {String} value String to be checked to see if it's a date.
    * @return {Boolean} True if it matches ISO or JSON formats, false if not a string or doesn't match.
    */
-  isDateString: function isDateString(value) {
-    if (typeof value !== 'string') {
-      return false;
-    }
-
-    return isoDate.test(value) || jsonDate.test(value);
-  },
+  isDateString: convert.isDateString,
   /**
    * Takes a Date object and converts it to a ISO 8601 formatted string
    * @param {Date} value Date to be formatted
    * @return {String} ISO 8601 formatted date string
    */
-  toIsoStringFromDate: function toIsoStringFromDate(value) {
-    // adapted from: https://developer.mozilla.org/en/JavaScript/Reference/global_objects/date
-    return `${value.getUTCFullYear()}-${pad(value.getUTCMonth() + 1)}-${pad(value.getUTCDate())}T${pad(value.getUTCHours())}:${pad(value.getUTCMinutes())}:${pad(value.getUTCSeconds())}Z`;
-  },
+  toIsoStringFromDate: convert.toIsoStringFromDate,
   /**
    * Takes a Date object and returns it in JSON-string format: `'/Date(milliseconds)/'`
    * @param {Date} value Date to stringify
    * @return {String} JSON string: `'/Date(milliseconds)/'`
    */
-  toJsonStringFromDate: function toJsonStringFromDate(value) {
-    return `/Date(${value.getTime()})/`;
-  },
+  toJsonStringFromDate: convert.toJsonStringFromDate,
   /**
    * Takes a string and tests it to see if its an ISO 8601 string or a JSON-string.
    * If a match is found it is parsed into a Date object and returned, else the original value is returned.
    * @param {String} value String in the ISO 8601 format `'2012-08-28T08:30:00Z'` or JSON-string format `'/Date(milliseconds)/'`
    * @return {Date} Date object from string or original object if not convertable.
    */
-  toDateFromString: function toDateFromString(v) {
-    let value = v;
-
-    if (typeof value !== 'string') {
-      return value;
-    }
-
-    let match;
-    let utc;
-
-    if ((match = jsonDate.exec(value))) { //eslint-disable-line
-      utc = new Date(parseInt(match[1], 10));
-
-      // todo: may not be needed
-      /*
-      if (match[2])
-      {
-          h = parseInt(match[3]);
-          m = parseInt(match[4]);
-
-          if (match[2] === '-')
-              utc.addMinutes((h * 60) + m);
-          else
-              utc.addMinutes(-1 * ((h * 60) + m));
-      }
-      */
-
-      value = utc;
-    } else if ((match = isoDate.exec(value))) { // eslint-disable-line
-      utc = moment(new Date(Date.UTC(
-        parseInt(match[1], 10),
-        parseInt(match[2], 10) - 1, // zero based
-        parseInt(match[3], 10),
-        parseInt(match[4] || 0, 10),
-        parseInt(match[5] || 0, 10),
-        parseInt(match[6] || 0, 10)
-      )));
-
-      if (match[8] && match[8] !== 'Z') {
-        const h = parseInt(match[10], 10);
-        const m = parseInt(match[11], 10);
-
-        if (match[9] === '-') {
-          utc.add({
-            minutes: ((h * 60) + m),
-          });
-        } else {
-          utc.add({
-            minutes: (-1 * ((h * 60) + m)),
-          });
-        }
-      }
-
-      value = utc.toDate();
-    }
-
-    return value;
-  },
+  toDateFromString: convert.toDateFromString,
 });
 
 lang.setObject('Sage.Platform.Mobile.Convert', __class);
