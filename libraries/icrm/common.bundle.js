@@ -88,19 +88,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony export (immutable) */ exports["fixed"] = fixed;
 /* harmony export (immutable) */ exports["percent"] = percent;
 
-const bigNumberAbbrText = {
+var bigNumberAbbrText = {
     billion: 'B',
     million: 'M',
     thousand: 'K',
 };
 function bigNumber(val) {
-    let numParse = typeof val !== 'number' ? parseFloat(val) : val;
-    const absVal = Math.abs(numParse);
-    const text = bigNumberAbbrText;
+    var numParse = typeof val !== 'number' ? parseFloat(val) : val;
+    var absVal = Math.abs(numParse);
+    var text = bigNumberAbbrText;
     if (isNaN(numParse)) {
         return val;
     }
-    let results = numParse.toString();
+    var results = numParse.toString();
     if (absVal >= 1000000000) {
         numParse = numParse / 1000000000;
         numParse = decimalAdjust('round', numParse, -1);
@@ -163,12 +163,12 @@ function fixed(val, d) {
     if (typeof val !== 'number' && typeof val !== 'string') {
         return val;
     }
-    let decimals = 2;
+    var decimals = 2;
     if (typeof d === 'number') {
         decimals = d;
     }
-    const m = Math.pow(10, decimals);
-    const v = Math.floor(parseFloat(val) * m) / m;
+    var m = Math.pow(10, decimals);
+    var v = Math.floor(parseFloat(val) * m) / m;
     return v;
 }
 /**
@@ -187,27 +187,30 @@ function fixed(val, d) {
  *  formatted string with the percent symbol correctly placed, defaults to 'number%'
  * @return {string} Number as a percentage with % sign.
  */
-function percent(val, places, percentFormatter = (number) => `${number}%`, percentGroupSeparator = ',', percentDecimalSeparator = '.') {
-    let decimalPlaces = 2;
+function percent(val, places, percentFormatter, percentGroupSeparator, percentDecimalSeparator) {
+    if (percentFormatter === void 0) { percentFormatter = function (number) { return number + "%"; }; }
+    if (percentGroupSeparator === void 0) { percentGroupSeparator = ','; }
+    if (percentDecimalSeparator === void 0) { percentDecimalSeparator = '.'; }
+    var decimalPlaces = 2;
     if (typeof places === 'number') {
         decimalPlaces = places;
     }
     decimalPlaces = Math.floor(decimalPlaces);
-    const intVal = 100 * (parseFloat(val) || 0.00);
-    const v = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utility__["roundNumberTo"])(intVal, decimalPlaces);
+    var intVal = 100 * (parseFloat(val) || 0.00);
+    var v = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utility__["roundNumberTo"])(intVal, decimalPlaces);
     // get the whole number part
-    const wp = (((intVal >= 0) ? Math.floor(v) : Math.ceil(v))).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${percentGroupSeparator.replace('\\.', '.')}`);
-    let numberFormated;
+    var wp = (((intVal >= 0) ? Math.floor(v) : Math.ceil(v))).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + percentGroupSeparator.replace('\\.', '.'));
+    var numberFormated;
     if (decimalPlaces < 1) {
-        numberFormated = `${wp}`.replace(/ /g, '\u00A0'); // keep numbers from breaking
+        numberFormated = ("" + wp).replace(/ /g, '\u00A0'); // keep numbers from breaking
     }
     else {
-        let dp = v % 1; // get the decimal part
+        var dp = v % 1; // get the decimal part
         dp = dp.toPrecision(decimalPlaces + 1); // round to significant pecsion
         dp = dp.toString();
-        const pos = (dp.indexOf('.') > -1 ? dp.indexOf('.') + 1 : 2);
+        var pos = (dp.indexOf('.') > -1 ? dp.indexOf('.') + 1 : 2);
         dp = dp.substr(pos, decimalPlaces); // get the whole decimal part
-        numberFormated = `${wp}${percentDecimalSeparator}${dp}`.replace(/ /g, '\u00A0'); // keep numbers from breaking
+        numberFormated = ("" + wp + percentDecimalSeparator + dp).replace(/ /g, '\u00A0'); // keep numbers from breaking
     }
     return percentFormatter(numberFormated);
 }
@@ -219,6 +222,8 @@ function percent(val, places, percentFormatter = (number) => `${number}%`, perce
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(exports, "isiOSDesktop", function() { return isiOSDesktop; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "getVectorMaxSize", function() { return getVectorMaxSize; });
 /* harmony export (immutable) */ exports["canvasDraw"] = canvasDraw;
 /* harmony export (immutable) */ exports["decode"] = decode;
 /* harmony export (immutable) */ exports["encode"] = encode;
@@ -226,14 +231,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony export (immutable) */ exports["link"] = link;
 /* harmony export (immutable) */ exports["mail"] = mail;
 /* harmony export (immutable) */ exports["nl2br"] = nl2br;
-const isiOSDesktop = () => window.navigator['standalone'];
-/* harmony export (immutable) */ exports["isiOSDesktop"] = isiOSDesktop;
-
-const getVectorMaxSize = function getVectorMaxSize(v) {
-    let w = 1;
-    let h = 1;
-    for (let i = 0; i < v.length; i++) {
-        for (let j = 0; j < v[i].length; j++) {
+var isiOSDesktop = function () { return window.navigator['standalone']; };
+var getVectorMaxSize = function getVectorMaxSize(v) {
+    var w = 1;
+    var h = 1;
+    for (var i = 0; i < v.length; i++) {
+        for (var j = 0; j < v[i].length; j++) {
             if (w < v[i][j][0]) {
                 w = v[i][j][0];
             }
@@ -248,8 +251,6 @@ const getVectorMaxSize = function getVectorMaxSize(v) {
         height: h,
     };
 };
-/* harmony export (immutable) */ exports["getVectorMaxSize"] = getVectorMaxSize;
-
 /**
  * Takes a 2D array of `[[x,y],[x,y]]` number coordinates and draws them onto the provided canvas
  * The first point marks where the "pen" starts, each sequential point is then "drawn to" as if holding a
@@ -259,21 +260,21 @@ const getVectorMaxSize = function getVectorMaxSize(v) {
  * @param {Object} options Canvas options: scale, lineWidth and penColor.
  */
 function canvasDraw(vector, canvas, options) {
-    const context = canvas.getContext('2d');
+    var context = canvas.getContext('2d');
     // Paint canvas white vs. clearing as on Android imageFromVector alpha pixels blacken
     // context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.fillStyle = 'rgb(255,255,255)';
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-    const scale = options && options.scale ? options.scale : 1;
+    var scale = options && options.scale ? options.scale : 1;
     context.lineWidth = options && options.lineWidth ? options.lineWidth : 1;
     context.strokeStyle = options && options.penColor ? options.penColor : 'black';
-    for (const trace in vector) {
+    for (var trace in vector) {
         if (vector[trace].length > 1) {
             context.beginPath();
             context.moveTo(vector[trace][0][0] * scale, vector[trace][0][1] * scale);
-            for (let i = 1; i < vector[trace].length; i++) {
-                const x = vector[trace][i][0] * scale;
-                const y = vector[trace][i][1] * scale;
+            for (var i = 1; i < vector[trace].length; i++) {
+                var x = vector[trace][i][0] * scale;
+                var y = vector[trace][i][1] * scale;
                 context.lineTo(x, y);
             }
             context.stroke();
@@ -317,9 +318,10 @@ function encode(val) {
  * @param {boolean} html Flag for returning image as a data-uri or as a stringified `<img>` element.
  * @return {string} The encoded data of the drawn image, optionally wrapped in `<img>` if html was passed as true
  */
-function imageFromVector(vector, options = {}, html) {
-    const canvasNode = document.createElement('canvas');
-    let _vector;
+function imageFromVector(vector, options, html) {
+    if (options === void 0) { options = {}; }
+    var canvasNode = document.createElement('canvas');
+    var _vector;
     if (typeof vector === 'string' || vector instanceof String) {
         try {
             _vector = JSON.parse(vector);
@@ -331,43 +333,44 @@ function imageFromVector(vector, options = {}, html) {
             [],
         ]; // blank image.
     }
-    const size = getVectorMaxSize(_vector);
+    var size = getVectorMaxSize(_vector);
     canvasNode.width = options.width || size.width;
     canvasNode.height = options.height || size.height;
     options.scale = Math.min(canvasNode.width / size.width, canvasNode.height / size.height);
     canvasDraw(_vector, canvasNode, options);
-    let img = canvasNode.toDataURL('image/png');
+    var img = canvasNode.toDataURL('image/png');
     if (img.indexOf('data:image/png') !== 0) {
     }
-    return html ? `<img src="${img}" width="${options.width}" height="${options.height}" alt="${options.title || ''}" />` : img;
+    return html ? "<img src=\"" + img + "\" width=\"" + options.width + "\" height=\"" + options.height + "\" alt=\"" + (options.title || '') + "\" />" : img;
 }
 /**
  * Takes a url string and wraps it with an `<a>` element with `href=` pointing to the url.
  * @param {string} val Url string to be wrapped
  * @return {string} An `<a>` element as a string.
  */
-function link(val, iOSDesktop = false) {
+function link(val, iOSDesktop) {
+    if (iOSDesktop === void 0) { iOSDesktop = false; }
     // TODO: Figure out how to get iOSDesktop to default to isiOSDesktop without breaking unit tests
     if (typeof val !== 'string') {
         return val;
     }
     // Allowed schemes when fullscreen mode
-    const allowedStandAloneSchemes = ['tel:', 'sms:', 'mailto:'];
-    const allowStandAlone = allowedStandAloneSchemes.some(v => val.indexOf(v) > -1);
+    var allowedStandAloneSchemes = ['tel:', 'sms:', 'mailto:'];
+    var allowStandAlone = allowedStandAloneSchemes.some(function (v) { return val.indexOf(v) > -1; });
     // Skip returning the href link if saved to iOS desktop
     if (!allowStandAlone && iOSDesktop) {
         return val;
     }
     // Check if the user specified a URI scheme,
     // does not include all URI Schemes
-    const schemes = ['://', 'mailto:', 'tel:', 'sms:'];
-    const [scheme] = schemes.filter(v => val.indexOf(v) > -1);
+    var schemes = ['://', 'mailto:', 'tel:', 'sms:'];
+    var scheme = schemes.filter(function (v) { return val.indexOf(v) > -1; })[0];
     if (scheme && scheme.length) {
-        const index = val.indexOf(scheme) + scheme.length;
-        return `<a target="_blank" href="${val}">${val.substring(index)}</a>`;
+        var index = val.indexOf(scheme) + scheme.length;
+        return "<a target=\"_blank\" href=\"" + val + "\">" + val.substring(index) + "</a>";
     }
     // Specify a default URI scheme of http
-    return `<a target="_blank" href="http://${val}">${val}</a>`;
+    return "<a target=\"_blank\" href=\"http://" + val + "\">" + val + "</a>";
 }
 /**
  * Takes an email string and wraps it with an `<a>` element with `href="mailto:"` pointing to the email.
@@ -378,7 +381,7 @@ function mail(val) {
     if (typeof val !== 'string') {
         return val;
     }
-    return `<a href="mailto:${val}">${val}</a>`;
+    return "<a href=\"mailto:" + val + "\">" + val + "</a>";
 }
 /**
  * Takes a string and converts all new lines `\n` to HTML `<br>` elements.
@@ -412,8 +415,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @param {boolean|string} val If string it tests if the string is `true` for true, else assumes false
  * @return {string} Defaulted to T for true, F for false.
  */
-function bool(val, trueText = 'T', falseText = 'F') {
-    let results = val;
+function bool(val, trueText, falseText) {
+    if (trueText === void 0) { trueText = 'T'; }
+    if (falseText === void 0) { falseText = 'F'; }
+    var results = val;
     if (typeof val === 'string') {
         results = /^true$/i.test(val);
     }
@@ -432,8 +437,9 @@ function collapseSpace(text) {
  * @param {number} size file size
  * @return {string} String representation of the file size
  */
-function fileSize(size, bytesText = 'bytes') {
-    const parsedSize = parseInt(size, 10);
+function fileSize(size, bytesText) {
+    if (bytesText === void 0) { bytesText = 'bytes'; }
+    var parsedSize = parseInt(size, 10);
     if (parsedSize === 0) {
         return '0 KB';
     }
@@ -441,12 +447,12 @@ function fileSize(size, bytesText = 'bytes') {
         return 'Unknown';
     }
     if (parsedSize < 1024) {
-        return `${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__number__["fixed"])(Math.round(parsedSize))} ${bytesText}`;
+        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__number__["fixed"])(Math.round(parsedSize)) + " " + bytesText;
     }
     else if ((parsedSize > 1024) && (parsedSize < (1024 * 1000))) {
-        return `${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__number__["fixed"])(Math.round(parsedSize / 1024))} KB`;
+        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__number__["fixed"])(Math.round(parsedSize / 1024)) + " KB";
     }
-    return `${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__number__["fixed"])(Math.round(parsedSize / (1024 * 1000)))} MB`;
+    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__number__["fixed"])(Math.round(parsedSize / (1024 * 1000))) + " MB";
 }
 /**
  * Checks whether a string isEmpty
@@ -472,8 +478,10 @@ function trim(val) {
  * @param {boolean|string} val If string it tests if the string is `true` for true, else assumes false
  * @return {string} Yes for true, No for false.
  */
-function yesNo(val, yesText = 'Yes', noText = 'No') {
-    let results = val;
+function yesNo(val, yesText, noText) {
+    if (yesText === void 0) { yesText = 'Yes'; }
+    if (noText === void 0) { noText = 'No'; }
+    var results = val;
     if (typeof val === 'string') {
         results = /^true$/i.test(val);
     }
@@ -495,11 +503,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony export (immutable) */ exports["toIsoStringFromDate"] = toIsoStringFromDate;
 /* harmony export (immutable) */ exports["toJsonStringFromDate"] = toJsonStringFromDate;
 
-const trueRE = /^(true|T)$/i;
-const isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/;
-const jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//;
+var trueRE = /^(true|T)$/i;
+var isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/;
+var jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//;
 function pad(n) {
-    return n < 10 ? `0${n}` : n;
+    return n < 10 ? "0" + n : n;
 }
 /**
  * Takes a string and checks to see if it is an ISO formatted date or a JSON-string date
@@ -531,12 +539,12 @@ function toBoolean(value) {
  * @return {Date} Date object from string or original object if not convertable.
  */
 function toDateFromString(v) {
-    let value = v;
+    var value = v;
     if (typeof value !== 'string') {
         return value;
     }
-    let match;
-    let utc;
+    var match;
+    var utc;
     if ((match = jsonDate.exec(value))) {
         utc = new Date(parseInt(match[1], 10));
         // todo: may not be needed
@@ -558,8 +566,8 @@ function toDateFromString(v) {
         utc = __WEBPACK_IMPORTED_MODULE_0_moment__(new Date(Date.UTC(parseInt(match[1], 10), parseInt(match[2], 10) - 1, // zero based
         parseInt(match[3], 10), parseInt(match[4] || 0, 10), parseInt(match[5] || 0, 10), parseInt(match[6] || 0, 10))));
         if (match[8] && match[8] !== 'Z') {
-            const h = parseInt(match[10], 10);
-            const m = parseInt(match[11], 10);
+            var h = parseInt(match[10], 10);
+            var m = parseInt(match[11], 10);
             if (match[9] === '-') {
                 utc.add({
                     minutes: ((h * 60) + m),
@@ -582,7 +590,7 @@ function toDateFromString(v) {
  */
 function toIsoStringFromDate(value) {
     // adapted from: https://developer.mozilla.org/en/JavaScript/Reference/global_objects/date
-    return `${value.getUTCFullYear()}-${pad(value.getUTCMonth() + 1)}-${pad(value.getUTCDate())}T${pad(value.getUTCHours())}:${pad(value.getUTCMinutes())}:${pad(value.getUTCSeconds())}Z`;
+    return value.getUTCFullYear() + "-" + pad(value.getUTCMonth() + 1) + "-" + pad(value.getUTCDate()) + "T" + pad(value.getUTCHours()) + ":" + pad(value.getUTCMinutes()) + ":" + pad(value.getUTCSeconds()) + "Z";
 }
 /**
  * Takes a Date object and returns it in JSON-string format: `'/Date(milliseconds)/'`
@@ -590,14 +598,14 @@ function toIsoStringFromDate(value) {
  * @return {string} JSON string: `'/Date(milliseconds)/'`
  */
 function toJsonStringFromDate(value) {
-    return `/Date(${value.getTime()})/`;
+    return "/Date(" + value.getTime() + ")/";
 }
-const Convert = {
-    isDateString,
-    toBoolean,
-    toDateFromString,
-    toIsoStringFromDate,
-    toJsonStringFromDate,
+var Convert = {
+    isDateString: isDateString,
+    toBoolean: toBoolean,
+    toDateFromString: toDateFromString,
+    toIsoStringFromDate: toIsoStringFromDate,
+    toJsonStringFromDate: toJsonStringFromDate,
 };
 // if (window) {
 //   window['Jupiter'] = Object.assign({}, window['Jupiter'], { Convert })
@@ -611,14 +619,13 @@ const Convert = {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(exports, "userActivityFormatText", function() { return userActivityFormatText; });
 /* harmony export (immutable) */ exports["userActivityStatus"] = userActivityStatus;
-const userActivityFormatText = {
+var userActivityFormatText = {
     asUnconfirmed: 'Unconfirmed',
     asAccepted: 'Accepted',
     asDeclned: 'Declined',
 };
-/* harmony export (immutable) */ exports["userActivityFormatText"] = userActivityFormatText;
-
 /**
  * Converts the passed type using the passed string format,
  * defaults to English
@@ -640,6 +647,8 @@ function userActivityStatus(val, activityFormatText) {
 Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__html__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__string__ = __webpack_require__(2);
+/* harmony export (binding) */ __webpack_require__.d(exports, "addressCultureFormats", function() { return addressCultureFormats; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "countryCultures", function() { return countryCultures; });
 /* harmony export (immutable) */ exports["addressItems"] = addressItems;
 /* harmony export (immutable) */ exports["address"] = address;
 /* harmony export (immutable) */ exports["resolveAddressCulture"] = resolveAddressCulture;
@@ -650,7 +659,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Address Culture Formats as defined by crm.Format.address
  * http://msdn.microsoft.com/en-us/library/cc195167.aspx
  */
-const addressCultureFormats = {
+var addressCultureFormats = {
     en: 'a1|a2|a3|m, R p|C',
     'en-GB': 'a1|a2|a3|M|P|C',
     fr: 'a1|a2|a3|p M|C',
@@ -658,13 +667,11 @@ const addressCultureFormats = {
     it: 'a1|a2|a3|p m Z|C',
     ru: 'a1|a2|a3|p m|C',
 };
-/* harmony export (immutable) */ exports["addressCultureFormats"] = addressCultureFormats;
-
 /**
  * Country name to culture identification
  * http://msdn.microsoft.com/en-us/goglobal/bb896001.aspx
  */
-const countryCultures = {
+var countryCultures = {
     USA: 'en',
     'United States': 'en',
     'United States of America': 'en',
@@ -681,21 +688,19 @@ const countryCultures = {
     Germany: 'de',
     Deutschland: 'de',
 };
-/* harmony export (immutable) */ exports["countryCultures"] = countryCultures;
-
 function addressItems(addr, fmt) {
     function isEmpty(line) {
-        const filterSymbols = line.replace(/,|\(|\)|\.|>|-|<|;|:|'|"|\/|\?|\[|\]|{|}|_|=|\+|\\|\||!|@|#|\$|%|\^|&|\*|`|~/g, '').trim();
+        var filterSymbols = line.replace(/,|\(|\)|\.|>|-|<|;|:|'|"|\/|\?|\[|\]|{|}|_|=|\+|\\|\||!|@|#|\$|%|\^|&|\*|`|~/g, '').trim();
         return filterSymbols === '';
     }
     if (!fmt) {
-        const culture = resolveAddressCulture(addr);
+        var culture = resolveAddressCulture(addr);
         fmt = addressCultureFormats[culture] || addressCultureFormats.en;
     }
-    const lines = (fmt.indexOf('|') === -1) ? [fmt] : fmt.split('|');
-    return lines.map(line => replaceAddressPart(line, addr))
-        .filter(line => !isEmpty(line))
-        .map(line => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__html__["encode"])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__string__["collapseSpace"])(line)));
+    var lines = (fmt.indexOf('|') === -1) ? [fmt] : fmt.split('|');
+    return lines.map(function (line) { return replaceAddressPart(line, addr); })
+        .filter(function (line) { return !isEmpty(line); })
+        .map(function (line) { return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__html__["encode"])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__string__["collapseSpace"])(line)); });
 }
 /**
 Converts the given value using the provided format, joining with the separator character
@@ -733,20 +738,21 @@ function address(addr, asText, separator, fmt) {
     if (!addr) {
         return '';
     }
-    const parts = addressItems(addr, fmt);
+    var parts = addressItems(addr, fmt);
     if (asText) {
         if (separator === true) {
             separator = '\n';
         }
         return parts.join(separator || '<br />');
     }
-    return `<a href="javascript:App.showMapForAddress(\'${encodeURIComponent(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__html__["decode"])(parts.join(' ')))}\');">${parts.join('<br />')}</a>`;
+    return "<a href=\"javascript:App.showMapForAddress('" + encodeURIComponent(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__html__["decode"])(parts.join(' '))) + "');\">" + parts.join('<br />') + "</a>";
 }
-function resolveAddressCulture({ Country }) {
+function resolveAddressCulture(_a) {
+    var Country = _a.Country;
     return countryCultures[Country] || 'en';
 }
 function replaceAddressPart(fmt, o) {
-    return fmt.replace(/s|S|a1|a2|a3|a4|m|M|z|Z|r|R|p|P|c|C/g, (part) => {
+    return fmt.replace(/s|S|a1|a2|a3|a4|m|M|z|Z|r|R|p|P|c|C/g, function (part) {
         switch (part) {
             case 's':
                 return o.Salutation || '';
@@ -794,28 +800,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony export (immutable) */ exports["currency"] = currency;
 /* harmony export (immutable) */ exports["fixedLocale"] = fixedLocale;
 /* harmony export (immutable) */ exports["multiCurrency"] = multiCurrency;
-function currency(_val, currencyDecimalSeparator = '.', currencyGroupSeparator = ',') {
-    let val = _val;
+function currency(_val, currencyDecimalSeparator, currencyGroupSeparator) {
+    if (currencyDecimalSeparator === void 0) { currencyDecimalSeparator = '.'; }
+    if (currencyGroupSeparator === void 0) { currencyGroupSeparator = ','; }
+    var val = _val;
     if (isNaN(val) || val === null) {
         return val;
     }
     if (typeof val === 'string') {
         val = parseFloat(val);
     }
-    const v = val.toFixed(2); // only 2 decimal places
-    const f = Math.floor(parseFloat((100 * (v - Math.floor(v))).toPrecision(2))); // for fractional part, only need 2 significant digits
-    const first = (Math.floor(v)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${currencyGroupSeparator.replace('\\.', '.')}`);
-    const last = (f.toString().length < 2) ? `0${f.toString()}` : f.toString();
-    return `${first}${currencyDecimalSeparator}${last}`.replace(/ /g, '\u00A0'); // keep numbers from breaking
+    var v = val.toFixed(2); // only 2 decimal places
+    var f = Math.floor(parseFloat((100 * (v - Math.floor(v))).toPrecision(2))); // for fractional part, only need 2 significant digits
+    var first = (Math.floor(v)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + currencyGroupSeparator.replace('\\.', '.'));
+    var last = (f.toString().length < 2) ? "0" + f.toString() : f.toString();
+    return ("" + first + currencyDecimalSeparator + last).replace(/ /g, '\u00A0'); // keep numbers from breaking
 }
-function fixedLocale(_val, _d, numberGroupSeparator = ',', numberDecimalSeparator = '.') {
-    let val = _val;
-    let d = _d;
-    let p;
-    let v;
-    let f;
-    let fVal;
-    let num;
+function fixedLocale(_val, _d, numberGroupSeparator, numberDecimalSeparator) {
+    if (numberGroupSeparator === void 0) { numberGroupSeparator = ','; }
+    if (numberDecimalSeparator === void 0) { numberDecimalSeparator = '.'; }
+    var val = _val;
+    var d = _d;
+    var p;
+    var v;
+    var f;
+    var fVal;
+    var num;
     if (isNaN(val) || val === null) {
         return val;
     }
@@ -839,10 +849,10 @@ function fixedLocale(_val, _d, numberGroupSeparator = ',', numberDecimalSeparato
         f = 0;
     }
     num = Math.floor(v).toString();
-    num = num.replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${numberGroupSeparator.replace('\\.', '.')}`);
+    num = num.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + numberGroupSeparator.replace('\\.', '.'));
     if (d > 0) {
-        const frac = (f.toString().length < d) ? '' : f.toString();
-        fVal = `${num}${numberDecimalSeparator}${frac}`;
+        var frac = (f.toString().length < d) ? '' : f.toString();
+        fVal = "" + num + numberDecimalSeparator + frac;
     }
     else {
         fVal = num;
@@ -850,7 +860,7 @@ function fixedLocale(_val, _d, numberGroupSeparator = ',', numberDecimalSeparato
     return fVal.replace(/ /g, '\u00A0'); // keep numbers from breaking
 }
 function multiCurrency(val, code) {
-    return `${currency(val)} ${code}`;
+    return currency(val) + " " + code;
 }
 
 
@@ -877,8 +887,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @param {boolean} utc If a date should be in UTC time set this flag to true to counter-act javascripts built-in timezone applier.
  * @return {string} Date formatted as a string.
  */
-function date(val, fmt = 'M/D/YYYY', utc, shortDateFormatText = 'M/D/YYYY') {
-    let dateValue;
+function date(val, fmt, utc, shortDateFormatText) {
+    if (fmt === void 0) { fmt = 'M/D/YYYY'; }
+    if (shortDateFormatText === void 0) { shortDateFormatText = 'M/D/YYYY'; }
+    var dateValue;
     if (val instanceof Date) {
         dateValue = val;
     }
@@ -900,7 +912,7 @@ function date(val, fmt = 'M/D/YYYY', utc, shortDateFormatText = 'M/D/YYYY') {
     return val;
 }
 function relativeDate(_date, timeless) {
-    let date = __WEBPACK_IMPORTED_MODULE_0_moment__(_date);
+    var date = __WEBPACK_IMPORTED_MODULE_0_moment__(_date);
     if (!date || !date.isValid()) {
         throw new Error('Invalid date passed into Format.relativeDate');
     }
@@ -921,21 +933,25 @@ function relativeDate(_date, timeless) {
  * @param {string} minuteText string to display next to a minute value of one, defualts to 'minute'
  * @return {string} A string representation of the minutes as `'n hours m minutes'`
  */
-function timespan(val, hoursText = 'hours', hourText = 'hour', minutesText = 'minutes', minuteText = 'minute') {
-    const v = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__number__["fixed"])(val);
+function timespan(val, hoursText, hourText, minutesText, minuteText) {
+    if (hoursText === void 0) { hoursText = 'hours'; }
+    if (hourText === void 0) { hourText = 'hour'; }
+    if (minutesText === void 0) { minutesText = 'minutes'; }
+    if (minuteText === void 0) { minuteText = 'minute'; }
+    var v = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__number__["fixed"])(val);
     if (isNaN(v) || !v) {
         return '';
     }
-    let hrs = Math.floor(v / 60);
-    let mins = v % 60;
+    var hrs = Math.floor(v / 60);
+    var mins = v % 60;
     if (hrs) {
-        hrs = hrs > 1 ? `${hrs} ${hoursText}` : `${hrs} ${hourText}`;
+        hrs = hrs > 1 ? hrs + " " + hoursText : hrs + " " + hourText;
     }
     if (mins) {
-        mins = mins > 1 ? `${mins} ${minutesText}` : `${mins} ${minuteText}`;
+        mins = mins > 1 ? mins + " " + minutesText : mins + " " + minuteText;
     }
     if (hrs && mins) {
-        return `${hrs} ${mins}`;
+        return hrs + " " + mins;
     }
     else if (hrs === 0) {
         return mins;
@@ -966,8 +982,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @param {string} val
  * @returns {string}
  */ function formatUserInitial(user) {
-    const firstLast = resolveFirstLast(user);
-    const initials = [firstLast[0].substr(0, 1)];
+    var firstLast = resolveFirstLast(user);
+    var initials = [firstLast[0].substr(0, 1)];
     if (firstLast[1]) {
         initials.push(firstLast[1].substr(0, 1));
     }
@@ -980,7 +996,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @returns {string}
  */
 function formatByUser(user) {
-    const name = resolveFirstLast(user);
+    var name = resolveFirstLast(user);
     return name.join(' ');
 }
 /**
@@ -995,7 +1011,7 @@ function nameLF(val) {
         return '';
     }
     if (val.LastName && val.FirstName) {
-        return `${val.LastName}, ${val.FirstName}`;
+        return val.LastName + ", " + val.FirstName;
     }
     return val.LastName ? val.LastName : val.FirstName;
 }
@@ -1006,9 +1022,9 @@ function nameLF(val) {
  * @returns {string}
  */
 function resolveFirstLast(name) {
-    let firstLast = [];
+    var firstLast = [];
     if (name.indexOf(' ') !== -1) {
-        const names = name.split(' ');
+        var names = name.split(' ');
         if (names[0].indexOf(',') !== -1) {
             firstLast = [names[1], names[0].slice(0, -1)];
         }
@@ -1029,9 +1045,10 @@ function resolveFirstLast(name) {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(exports, "phoneFormat", function() { return phoneFormat; });
 /* harmony export (immutable) */ exports["alphaToPhoneNumeric"] = alphaToPhoneNumeric;
 /* harmony export (immutable) */ exports["phone"] = phone;
-const phoneLettersMap = [{
+var phoneLettersMap = [{
         test: /[ABC]/gi,
         val: '2',
     }, {
@@ -1079,24 +1096,22 @@ const phoneLettersMap = [{
  * If you plan to override this value make sure you include the default ones provided.
  *
  */
-const phoneFormat = [{
+var phoneFormat = [{
         test: /^\+.*/,
-        format: args => args[0],
+        format: function (args) { return args[0]; },
     }, {
         test: /^(\d{3})(\d{3,4})$/,
-        format: args => `${args[3]}-${args[4]}`,
+        format: function (args) { return args[3] + "-" + args[4]; },
     }, {
         test: /^(\d{3})(\d{3})(\d{2,4})$/,
-        format: args => `(${args[3]})-${args[4]}-${args[5]}`,
+        format: function (args) { return "(" + args[3] + ")-" + args[4] + "-" + args[5]; },
     }, {
         test: /^(\d{3})(\d{3})(\d{2,4})([^0-9]{1,}.*)$/,
-        format: args => `(${args[3]})-${args[4]}-${args[5]}${args[6]}`,
+        format: function (args) { return "(" + args[3] + ")-" + args[4] + "-" + args[5] + args[6]; },
     }, {
         test: /^(\d{11,})(.*)$/,
-        format: args => args[1],
+        format: function (args) { return args[1]; },
     }];
-/* harmony export (immutable) */ exports["phoneFormat"] = phoneFormat;
-
 /**
  * Takes a string input and converts A-Z to their respective phone number character
  * `1800CALLME` -> `1800225563`
@@ -1104,8 +1119,8 @@ const phoneFormat = [{
  * @returns {string}
  */
 function alphaToPhoneNumeric(val) {
-    let phoneVal = val;
-    for (let i = 0; i < phoneLettersMap.length; i++) {
+    var phoneVal = val;
+    for (var i = 0; i < phoneLettersMap.length; i++) {
         phoneVal = phoneVal.replace(phoneLettersMap[i].test, phoneLettersMap[i].val);
     }
     return phoneVal;
@@ -1118,20 +1133,21 @@ function alphaToPhoneNumeric(val) {
  * @param asLink {boolean} True to put the phone in an anchor element pointing to a tel: uri
  * @returns {string}
  */
-function phone(val, asLink = false) {
-    const phoneVal = alphaToPhoneNumeric(val);
-    const formatters = phoneFormat;
-    const clean = /^\+/.test(phoneVal) ? phoneVal : phoneVal.replace(/[^0-9x]/ig, '');
-    let formattedMatch;
-    for (let i = 0; i < formatters.length; i++) {
-        const formatter = formatters[i];
-        let match;
+function phone(val, asLink) {
+    if (asLink === void 0) { asLink = false; }
+    var phoneVal = alphaToPhoneNumeric(val);
+    var formatters = phoneFormat;
+    var clean = /^\+/.test(phoneVal) ? phoneVal : phoneVal.replace(/[^0-9x]/ig, '');
+    var formattedMatch;
+    for (var i = 0; i < formatters.length; i++) {
+        var formatter = formatters[i];
+        var match = void 0;
         if (match = formatter.test.exec(clean)) {
             formattedMatch = formatter.format([phoneVal, clean].concat(match));
         }
     }
     if (formattedMatch) {
-        return asLink ? `<a href="tel:${clean}">${formattedMatch}</a>` : formattedMatch;
+        return asLink ? "<a href=\"tel:" + clean + "\">" + formattedMatch + "</a>" : formattedMatch;
     }
     return phoneVal;
 }
@@ -1154,7 +1170,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * A string with the activity id seperated by a semi-colon
  * @returns {string}
  */ function getRealActivityId(activityId) {
-    let id = activityId;
+    var id = activityId;
     if (activityId) {
         if (activityId.indexOf(';') > 0) {
             id = activityId.substring(0, 12);
@@ -1176,18 +1192,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony export (immutable) */ exports["memoize"] = memoize;
 /* harmony export (immutable) */ exports["getValue"] = getValue;
 /* harmony export (immutable) */ exports["setValue"] = setValue;
-const nameToPathCache = {};
-const nameToPath = function nameToPath(name) {
+var nameToPathCache = {};
+var nameToPath = function nameToPath(name) {
     if (typeof name !== 'string' || name === '.' || name === '') {
         return []; // '', for compatibility
     }
     if (nameToPathCache[name]) {
         return nameToPathCache[name];
     }
-    const parts = name.split('.');
-    const path = [];
-    for (let i = 0; i < parts.length; i++) {
-        const match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
+    var parts = name.split('.');
+    var path = [];
+    for (var i = 0; i < parts.length; i++) {
+        var match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
         if (match) {
             path.push(match[1]);
             if (/^\d+$/.test(match[2])) {
@@ -1205,12 +1221,12 @@ const nameToPath = function nameToPath(name) {
     return nameToPathCache[name];
 };
 function memoize(fn, keyFn) {
-    const cache = {};
-    const _keyFn = keyFn || ((value) => {
+    var cache = {};
+    var _keyFn = keyFn || (function (value) {
         return value;
     });
     return function cached() {
-        const key = _keyFn.apply(this, arguments);
+        var key = _keyFn.apply(this, arguments);
         if (cache[key]) {
             return cache[key];
         }
@@ -1219,10 +1235,10 @@ function memoize(fn, keyFn) {
     };
 }
 function getValue(o, name, defaultValue) {
-    const path = nameToPath(name).slice(0);
-    let current = o;
+    var path = nameToPath(name).slice(0);
+    var current = o;
     while (current && path.length > 0) {
-        const key = path.pop();
+        var key = path.pop();
         if (typeof current[key] !== 'undefined') {
             current = current[key];
         }
@@ -1233,11 +1249,11 @@ function getValue(o, name, defaultValue) {
     return current;
 }
 function setValue(o, name, val) {
-    let current = o;
-    const path = nameToPath(name).slice(0);
+    var current = o;
+    var path = nameToPath(name).slice(0);
     while ((typeof current !== 'undefined') && path.length > 1) {
-        const key = path.pop();
-        const next = path[path.length - 1];
+        var key = path.pop();
+        var next = path[path.length - 1];
         if (typeof current[key] !== 'undefined') {
             current = current[key] = current[key];
         }
@@ -1264,8 +1280,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony export (immutable) */ exports["dojoDeclare"] = dojoDeclare;
 function recursiveDeclare(tokens, depthLeft, val) {
     if (depthLeft > 0) {
-        const property = tokens[tokens.length - depthLeft];
-        const obj = {};
+        var property = tokens[tokens.length - depthLeft];
+        var obj = {};
         obj[property] = recursiveDeclare(tokens, depthLeft - 1, val);
         return obj;
     }
@@ -1279,15 +1295,16 @@ function recursiveDeclare(tokens, depthLeft, val) {
  * MUST FIGURE OUT HOW TO HANDLE CALLS TO this.inherited(arguments) TO
  * CHAIN FUNCTION CALLS TO PARENT
  */
-function dojoDeclare(moduleString, mixins, newObj = {}) {
-    const tokens = moduleString.split('.');
+function dojoDeclare(moduleString, mixins, newObj) {
+    if (newObj === void 0) { newObj = {}; }
+    var tokens = moduleString.split('.');
     // Expect mixins to be a factory function for the class
-    const mixedObj = Object.assign({}, ...mixins.map(mixin => {
+    var mixedObj = Object.assign.apply(Object, [{}].concat(mixins.map(function (mixin) {
         if (typeof mixin === 'function') {
             return mixin();
         }
         return mixin;
-    }), newObj);
+    }), [newObj]));
     return recursiveDeclare(tokens, tokens.length, mixedObj);
 }
 
@@ -1301,19 +1318,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony export (immutable) */ exports["base64ArrayBuffer"] = base64ArrayBuffer;
 /* harmony export (immutable) */ exports["getFileExtension"] = getFileExtension;
 function base64ArrayBuffer(arrayBuffer) {
-    let base64 = '';
-    let chunk;
-    let a;
-    let b;
-    let c;
-    let d;
-    const encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-    const bytes = new Uint8Array(arrayBuffer);
-    const byteLength = bytes.byteLength;
-    const byteRemainder = byteLength % 3;
-    const mainLength = byteLength - byteRemainder;
+    var base64 = '';
+    var chunk;
+    var a;
+    var b;
+    var c;
+    var d;
+    var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    var bytes = new Uint8Array(arrayBuffer);
+    var byteLength = bytes.byteLength;
+    var byteRemainder = byteLength % 3;
+    var mainLength = byteLength - byteRemainder;
     // Main loop deals with bytes in chunks of 3
-    for (let i = 0; i < mainLength; i = i + 3) {
+    for (var i = 0; i < mainLength; i = i + 3) {
         // Combine the three bytes into a single integer
         chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
         // Use bitmasks to extract 6-bit segments from the triplet
@@ -1330,7 +1347,7 @@ function base64ArrayBuffer(arrayBuffer) {
         a = (chunk & 252) >> 2; // 252 = (2^6 - 1) << 2
         // Set the 4 least significant bits to zero
         b = (chunk & 3) << 4; // 3   = 2^2 - 1
-        base64 += `${encodings[a] + encodings[b]}==`;
+        base64 += encodings[a] + encodings[b] + "==";
     }
     else if (byteRemainder === 2) {
         chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1];
@@ -1338,7 +1355,7 @@ function base64ArrayBuffer(arrayBuffer) {
         b = (chunk & 1008) >> 4; // 1008  = (2^6 - 1) << 4
         // Set the 2 least significant bits to zero
         c = (chunk & 15) << 2; // 15    = 2^4 - 1
-        base64 += `${encodings[a] + encodings[b] + encodings[c]}=`;
+        base64 += encodings[a] + encodings[b] + encodings[c] + "=";
     }
     return base64;
 }
@@ -1362,6 +1379,7 @@ function getFileExtension(fileName) {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(exports, "aggregateLookup", function() { return aggregateLookup; });
 /* harmony export (immutable) */ exports["expand"] = expand;
 /* harmony export (immutable) */ exports["joinFields"] = joinFields;
 /**
@@ -1369,20 +1387,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 /**
  * Lookup table for the aggregate functions used by DashboardWidget
- */ const aggregateLookup = {
+ */ var aggregateLookup = {
     'calcProfit': function calcProfit(fn, widget, data) {
-        const revenue = data[0];
-        const cost = data[1];
+        var revenue = data[0];
+        var cost = data[1];
         return fn.call(widget, revenue, cost);
     },
     'calcMargin': function calcMargin(fn, widget, data) {
-        const revenue = data[0];
-        const cost = data[1];
+        var revenue = data[0];
+        var cost = data[1];
         return fn.call(widget, revenue, cost);
     },
     'calcYoYRevenue': function calcYoYRevenue(fn, widget, data) {
-        const pastYear = data[0];
-        const between = data[1];
+        var pastYear = data[0];
+        var between = data[1];
         return fn.call(widget, pastYear, between);
     },
     'calcYoYProfit': function calcYoYProfit(fn, widget, data) {
@@ -1395,8 +1413,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         return fn.call(widget, data);
     },
 };
-/* harmony export (immutable) */ exports["aggregateLookup"] = aggregateLookup;
-
 function expand(scope, expression) {
     if (typeof expression === 'function') {
         return expression.apply(scope, Array.prototype.slice.call(arguments, 2));
@@ -1408,7 +1424,7 @@ function expand(scope, expression) {
  * Utility function to join fields within a Simplate template.
  */
 function joinFields(seperator, fields) {
-    const results = fields.filter(item => item !== null && typeof item !== 'undefined' && item !== '');
+    var results = fields.filter(function (item) { return item !== null && typeof item !== 'undefined' && item !== ''; });
     return results.join(seperator);
 }
 /**
@@ -1462,12 +1478,12 @@ function joinFields(seperator, fields) {
 Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony export (immutable) */ exports["debounce"] = debounce;
 function debounce(fn, wait) {
-    let handle = null;
+    var handle = null;
     return function debounced() {
         window.clearTimeout(handle);
-        const context = this;
-        const args = arguments;
-        handle = window.setTimeout(() => {
+        var context = this;
+        var args = arguments;
+        handle = window.setTimeout(function () {
             fn.apply(context, args);
         }, wait);
     };
@@ -1512,7 +1528,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 
 
-const Utility = Object.assign({}, __WEBPACK_IMPORTED_MODULE_0__activity__, __WEBPACK_IMPORTED_MODULE_1__data__, __WEBPACK_IMPORTED_MODULE_2__dojo_declare__, __WEBPACK_IMPORTED_MODULE_3__file__, __WEBPACK_IMPORTED_MODULE_4__function__, __WEBPACK_IMPORTED_MODULE_5__http__, __WEBPACK_IMPORTED_MODULE_6__math__, __WEBPACK_IMPORTED_MODULE_7__string__);
+var Utility = Object.assign({}, __WEBPACK_IMPORTED_MODULE_0__activity__, __WEBPACK_IMPORTED_MODULE_1__data__, __WEBPACK_IMPORTED_MODULE_2__dojo_declare__, __WEBPACK_IMPORTED_MODULE_3__file__, __WEBPACK_IMPORTED_MODULE_4__function__, __WEBPACK_IMPORTED_MODULE_5__http__, __WEBPACK_IMPORTED_MODULE_6__math__, __WEBPACK_IMPORTED_MODULE_7__string__);
 // if (window) {
 //   window['Jupiter'] = Object.assign({}, window['Jupiter'], { Utility })
 // }
@@ -1535,7 +1551,7 @@ const Utility = Object.assign({}, __WEBPACK_IMPORTED_MODULE_0__activity__, __WEB
 Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony export (immutable) */ exports["roundNumberTo"] = roundNumberTo;
 function roundNumberTo(number, precision) {
-    const k = Math.pow(10, precision);
+    var k = Math.pow(10, precision);
     return Math.round(number * k) / k;
 }
 
@@ -1559,9 +1575,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @param {Object} obj Object to be cleansed of non-stringify friendly keys/values.
  * @return {Object} Object ready to be JSON.stringified.
  */ function sanitizeForJson(obj) {
-    let type;
+    var type;
     obj.__visited__ = true;
-    for (const key in obj) {
+    for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
             try {
                 type = typeof obj[key];
@@ -1608,21 +1624,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
     delete obj.__visited__;
     return obj;
 }
-function stripQueryArgs(url = '') {
-    const idx = url.indexOf('?');
+function stripQueryArgs(url) {
+    if (url === void 0) { url = ''; }
+    var idx = url.indexOf('?');
     if (idx > -1) {
         return url.substr(0, idx);
     }
     return url;
 }
-function trimText(text = '', wordCount = 0) {
-    const words = text.split(' ');
+function trimText(text, wordCount) {
+    if (text === void 0) { text = ''; }
+    if (wordCount === void 0) { wordCount = 0; }
+    var words = text.split(' ');
     if (words.length > wordCount) {
-        const intermediate = words.slice(0, wordCount);
+        var intermediate = words.slice(0, wordCount);
         if (intermediate[wordCount - 1].endsWith('.')) {
             intermediate[wordCount - 1] = intermediate[wordCount - 1].slice(0, -1);
         }
-        const value = `${intermediate.join(' ')} ...`;
+        var value = intermediate.join(' ') + " ...";
         return value;
     }
     return text;
@@ -1721,7 +1740,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 
 
-const Format = Object.assign({}, __WEBPACK_IMPORTED_MODULE_0__activity__, __WEBPACK_IMPORTED_MODULE_1__address__, __WEBPACK_IMPORTED_MODULE_2__currency__, __WEBPACK_IMPORTED_MODULE_3__date__, __WEBPACK_IMPORTED_MODULE_4__html__, __WEBPACK_IMPORTED_MODULE_5__name__, __WEBPACK_IMPORTED_MODULE_6__number__, __WEBPACK_IMPORTED_MODULE_7__phone__, __WEBPACK_IMPORTED_MODULE_8__string__);
+var Format = Object.assign({}, __WEBPACK_IMPORTED_MODULE_0__activity__, __WEBPACK_IMPORTED_MODULE_1__address__, __WEBPACK_IMPORTED_MODULE_2__currency__, __WEBPACK_IMPORTED_MODULE_3__date__, __WEBPACK_IMPORTED_MODULE_4__html__, __WEBPACK_IMPORTED_MODULE_5__name__, __WEBPACK_IMPORTED_MODULE_6__number__, __WEBPACK_IMPORTED_MODULE_7__phone__, __WEBPACK_IMPORTED_MODULE_8__string__);
 // if (window) {
 //   window['Jupiter'] = Object.assign({}, window['Jupiter'], { Format });
 // }
