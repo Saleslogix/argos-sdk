@@ -50,7 +50,8 @@
       "9"
     ],
     "digitSubstitution": 1
-  }
+  },
+  "default24HourClock": false
 }
 """>
 
@@ -66,4 +67,6 @@
 <relativeDateTimePickerDateTimeFormat ""
   hoursFormat:  "A h:mm"
   dayHoursFormat: "ddd A h:mm"
+  hoursFormat24:  "H:mm"
+  dayHoursFormat24: "ddd H:mm"
 >

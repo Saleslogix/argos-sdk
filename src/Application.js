@@ -662,6 +662,9 @@ const __class = declare('argos.Application', null, {
     this.modal.place(document.body)
       .hide();
   },
+  is24HourClock: function is24HourClock() {
+    return (JSON.parse(window.localStorage.getItem('use24HourClock') || Mobile.CultureInfo.default24HourClock.toString()) === true);
+  },
   /**
    * Check if the browser supports touch events.
    * @return {Boolean} true if the current browser supports touch events, false otherwise.
