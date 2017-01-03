@@ -1119,7 +1119,8 @@ var phoneFormat = [{
  * @returns {string}
  */
 function alphaToPhoneNumeric(val) {
-    var phoneVal = val;
+    if (val === void 0) { val = ""; }
+    var phoneVal = val || '';
     for (var i = 0; i < phoneLettersMap.length; i++) {
         phoneVal = phoneVal.replace(phoneLettersMap[i].test, phoneLettersMap[i].val);
     }
@@ -1134,6 +1135,7 @@ function alphaToPhoneNumeric(val) {
  * @returns {string}
  */
 function phone(val, asLink) {
+    if (val === void 0) { val = ''; }
     if (asLink === void 0) { asLink = false; }
     var phoneVal = alphaToPhoneNumeric(val);
     var formatters = phoneFormat;

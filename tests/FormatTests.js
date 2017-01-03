@@ -417,5 +417,15 @@ return describe('argos.Format', function() {
         var testStr = '1-800-CALL-JEFF';
         expect(format.phone(testStr)).toEqual('180022555333');
     });
+    it('Can format a phone with a null value.', function() {
+        var testStr = null;
+        expect(format.phone(testStr)).toEqual('');
+
+        testStr = '';
+        expect(format.phone(testStr)).toEqual('');
+
+        testStr = undefined;
+        expect(format.phone(testStr)).toEqual('');
+    });
   });
 });
