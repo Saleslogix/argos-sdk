@@ -534,8 +534,11 @@ const __class = declare('argos._EditBase', [View], {
   convertEntry: function convertEntry(entry) {
     return entry;
   },
+  processFieldLevelSecurity: function processFieldLevelSecurity(entry) { // eslint-disable-line
+  },
   processData: function processData(entry) {
     this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
+    this.processFieldLevelSecurity(this.entry);
 
     this.setValues(entry, true);
 
