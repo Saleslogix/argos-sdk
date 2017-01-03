@@ -175,12 +175,12 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     let hour = date.hours();
     let meridiemToggled = false;
     if (hour >= 12) {
-      if (hour !== 12 && !this.use24HourClock) {
+      if (hour !== 12 && !App.is24HourClock()) {
         hour = hour % 12;
       }
       meridiemToggled = true;
     }
-    if (hour === 0 && !this.use24HourClock) {
+    if (hour === 0 && !App.is24HourClock()) {
       hour = 12;
     }
     let minutes = date.minutes() || 0;
@@ -191,7 +191,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     this.timeValue.seconds = date.seconds();
     this.createHourDropdown(`${hour}`)
         .createMinuteDropdown(`${minutes}`);
-    if (!this.use24HourClock) {
+    if (!App.is24HourClock()) {
       this.setMeridiem(meridiemToggled);
       this._meridiemListener = on(this.meridiemNode, 'click', this.toggleMeridiem.bind(this));
     } else {
