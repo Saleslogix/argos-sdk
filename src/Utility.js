@@ -30,7 +30,7 @@ const nameToPath = function nameToPath(name) {
   const path = [];
 
   for (let i = 0; i < parts.length; i++) {
-    const match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);
+    const match = parts[i].match(/([a-zA-Z0-9_$]+)\[([^\]]+)\]/);// eslint-disable-line
     if (match) {
       path.push(match[1]);
       if (/^\d+$/.test(match[2])) {

@@ -223,8 +223,8 @@
 >
 
 <timePicker ""
-  amText: "Morgens"
-  pmText: "Abends"
+  amText: "AM"
+  pmText: "PM"
   setTimeText: "Zeit festlegen"
 >
 
