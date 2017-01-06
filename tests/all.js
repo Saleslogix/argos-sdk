@@ -4,6 +4,7 @@ define([
   'tests/ApplicationModuleTests',
   'tests/CalendarTests',
   'tests/ConvertTests',
+  'tests/CustomizationTests',
   'tests/ErrorManagerTests',
   'tests/FieldManagerTests',
   'tests/Fields/_FieldTests',
