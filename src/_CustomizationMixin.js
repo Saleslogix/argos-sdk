@@ -31,7 +31,9 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import { createCustomizedLayout } from './Customization';
+// import { createCustomizedLayout } from './Customization';
+
+const customization = ICRMCustomizationSDK;
 
 const __class = declare('argos._CustomizationMixin', null, {
   id: null,
@@ -45,7 +47,7 @@ const __class = declare('argos._CustomizationMixin', null, {
   _createCustomizedLayout: function _createCustomizedLayout(layout, customizationSubSet) {
     const customizations = this._getCustomizationsFor(customizationSubSet);
     if (this.enableCustomizations) {
-      return createCustomizedLayout(layout, customizations, this.customizationSet, this.id, customizationSubSet);
+      return customization.createCustomizedLayout(layout, customizations, this.customizationSet, this.id, customizationSubSet);
     }
 
     return layout;

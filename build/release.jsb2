@@ -55,6 +55,10 @@
         {
           "text": "common.bundle.js",
           "path": "../libraries/icrm/"
+        },
+        {
+          "text": "customization.bundle.js",
+          "path": "../libraries/icrm/"
         }
       ]
     },
@@ -78,6 +82,9 @@
             "path": "../src-out/"
           }, {
             "text": "I18n.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_CustomizationMixin.js",
             "path": "../src-out/"
           }, {
             "text": "Utility.js",
@@ -134,11 +141,11 @@
             "text": "SelectionModel.js",
             "path": "../src-out/"
           }, {
-            "text": "Customization.js",
-            "path": "../src-out/"
-          }, {
             "text": "ErrorManager.js",
             "path": "../src-out/"
+          }, {
+            "text": "_ModelBase.js",
+            "path": "../src-out/Models/"
           }, {
             "text": "SData.js",
             "path": "../src-out/Store/"
@@ -191,14 +198,14 @@
             "text": "ConfigurableSelectionModel.js",
             "path": "../src-out/"
           }, {
-            "text": "_CustomizationMixin.js",
-            "path": "../src-out/"
-          }, {
             "text": "_LegacySDataDetailMixin.js",
             "path": "../src-out/"
           }, {
             "text": "_LegacySDataListMixin.js",
             "path": "../src-out/"
+          }, {
+            "text": "_OfflineModelBase.js",
+            "path": "../src-out/Models/"
           }, {
             "text": "_SDataDetailMixin.js",
             "path": "../src-out/"
@@ -206,7 +213,13 @@
             "text": "_SDataListMixin.js",
             "path": "../src-out/"
           }, {
+            "text": "_SDataModelBase.js",
+            "path": "../src-out/Models/"
+          }, {
             "text": "RelatedViewManager.js",
+            "path": "../src-out/"
+          }, {
+            "text": "RelatedViewWidget.js",
             "path": "../src-out/"
           }, {
             "text": "Toast.js",
@@ -242,14 +255,14 @@
             "text": "_ListOfflineMixin.js",
             "path": "../src-out/Offline/"
           }, {
-            "text": "_ModelBase.js",
-            "path": "../src-out/Models/"
-          }, {
-            "text": "RelatedViewWidget.js",
-            "path": "../src-out/"
-          }, {
             "text": "View.js",
             "path": "../src-out/"
+          }, {
+            "text": "Offline.js",
+            "path": "../src-out/Models/Briefcase/"
+          }, {
+            "text": "Offline.js",
+            "path": "../src-out/Models/RecentlyViewed/"
           }, {
             "text": "_LegacySDataEditMixin.js",
             "path": "../src-out/"
@@ -293,12 +306,6 @@
             "text": "TextAreaField.js",
             "path": "../src-out/Fields/"
           }, {
-            "text": "_OfflineModelBase.js",
-            "path": "../src-out/Models/"
-          }, {
-            "text": "_SDataModelBase.js",
-            "path": "../src-out/Models/"
-          }, {
             "text": "_DetailBase.js",
             "path": "../src-out/"
           }, {
@@ -319,12 +326,6 @@
           }, {
             "text": "NoteField.js",
             "path": "../src-out/Fields/"
-          }, {
-            "text": "Offline.js",
-            "path": "../src-out/Models/Briefcase/"
-          }, {
-            "text": "Offline.js",
-            "path": "../src-out/Models/RecentlyViewed/"
           }, {
             "text": "Detail.js",
             "path": "../src-out/"
