@@ -27,7 +27,8 @@ module.exports = {
     "module": false,
     "Rx": false,
     "moment": false,
-    "ICRMCommonSDK": false
+    "ICRMCommonSDK": false,
+    "ICRMCustomizationSDK": false
   },
   rules: {
     /**
