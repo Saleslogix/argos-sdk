@@ -105,7 +105,6 @@ const __class = {
           briefcaseModel.saveEntry(briefcaseEntry).then(() => {
             const odef = def;
             offlineModel.saveEntry(entry, options).then((result) => {
-              console.log('Briefcased entity:' + briefcaseEntry.entityName + ' entityId;' + briefcaseEntry.entityId); // eslint-disable-line
               odef.resolve(result);
               if (defProgress) {
                 defProgress.progress();
@@ -215,11 +214,19 @@ const __class = {
     }
     const queryExpression = this.getClearDataQueryExpression(defaultOptions);
     const models = App.ModelManager.getModels(MODEL_TYPES.OFFLINE).filter((model) => {
-      if (model && (model.entityName !== 'Authentication')) {
-        return model;
+      if (!model) {
+        return false;
       }
 
-      return null;
+      if (Array.isArray(defaultOptions.skipModels)) {
+        return defaultOptions.skipModels.indexOf(model.entityName) === -1;
+      }
+
+      if (model.entityName !== 'Authentication') {
+        return true;
+      }
+
+      return false;
     });
     requests = models.map((model) => {
       return model.clearData(queryExpression, options);
@@ -239,14 +246,31 @@ const __class = {
     return def.promise;
   },
   getClearDataQueryExpression: function getClearDataQueryExpression(options) {
-    if (options && !options.clearAll) {
-      return function queryFn(doc, emit) {
-        if (this.isDocOlderThan(doc, options)) {
+    const { clearAll, recent, briefcased } = options;
+
+    if (clearAll) {
+      return null;
+    }
+
+    if (recent) {
+      return (doc, emit) => {
+        if (this.isDocOlderThan(doc, options) && doc.entityName === 'RecentlyViewed') {
           emit(doc.modifyDate);
         }
-      }.bind(this);
+      };
+    } else if (briefcased) {
+      return (doc, emit) => {
+        if (this.isDocOlderThan(doc, options) && doc.entityName === 'Briefcase') {
+          emit(doc.modifyDate);
+        }
+      };
     }
-    return null;
+
+    return (doc, emit) => {
+      if (this.isDocOlderThan(doc, options)) {
+        emit(doc.modifyDate);
+      }
+    };
   },
   isDocOlderThan: function isDocOlderThan(doc, options) {
     let olderThan = 0;
