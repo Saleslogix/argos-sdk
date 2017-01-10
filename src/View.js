@@ -312,7 +312,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   },
   hashPrefix: '#!',
   currentHash: '',
-  transitionComplete: function transitionComplete(page, options) {
+  transitionComplete: function transitionComplete(_page, options) {
     if (options.track !== false) {
       this.currentHash = location.hash;
 
@@ -394,10 +394,10 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   *   scroll: False if the transition should not scroll to the top, True otherwise.
   */
   open: function open() {
-    const page = this.domNode;
+    const p = this.domNode;
     const options = this._transitionOptions || {};
 
-    if (!page) {
+    if (!p) {
       return;
     }
 
@@ -453,7 +453,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       options.scroll = !options.reverse;
     }
 
-    on.emit(page, 'load', {
+    on.emit(p, 'load', {
       bubbles: false,
       cancelable: true,
     });
@@ -467,24 +467,24 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       });
     }
 
-    App.setCurrentPage(page);
+    App.setCurrentPage(p);
 
-    on.emit(page, 'focus', {
+    on.emit(p, 'focus', {
       bubbles: false,
       cancelable: true,
     });
 
-    if (from && domAttr.get(page, 'selected') !== 'true') {
+    if (from && domAttr.get(p, 'selected') !== 'true') {
       if (options.reverse) {
-        on.emit(page, 'unload', {
+        on.emit(p, 'unload', {
           bubbles: false,
           cancelable: true,
         });
       }
 
-      window.setTimeout(this.transition.bind(this), App.checkOrientationTime, from, page, options);
+      window.setTimeout(this.transition.bind(this), App.checkOrientationTime, from, p, options);
     } else {
-      on.emit(page, 'beforetransition', {
+      on.emit(p, 'beforetransition', {
         out: false,
         tag: options.tag,
         data: options.data,
@@ -492,11 +492,11 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
         cancelable: true,
       });
 
-      this.select(page);
+      this.select(p);
 
-      this.transitionComplete(page, options);
+      this.transitionComplete(p, options);
 
-      on.emit(page, 'aftertransition', {
+      on.emit(p, 'aftertransition', {
         out: false,
         tag: options.tag,
         data: options.data,

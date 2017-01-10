@@ -22,8 +22,8 @@ const context = {
 const config = window.reConfig || {};
 R.DomHelper = DomHelper;
 
-function formatHashForPage(page, options) {
-  const segments = options && options.tag ? [page.id].concat(options.tag) : [page.id];
+function formatHashForPage(_page, options) {
+  const segments = options && options.tag ? [_page.id].concat(options.tag) : [_page.id];
   return R.hashPrefix + segments.join(';');
 }
 
@@ -75,18 +75,18 @@ function extractInfoFromHash(hash) {
   return context.history[position - 1];
 }
 
-function transitionComplete(page, o) {
+function transitionComplete(_page, o) {
   if (o.track !== false) {
-    if (typeof page.id !== 'string' || page.id.length <= 0) {
-      page.id = `reui-${context.counter++}`;
+    if (typeof _page.id !== 'string' || _page.id.length <= 0) {
+      _page.id = `reui-${context.counter++}`;
     }
 
-    context.hash = location.hash = formatHashForPage(page, o);
+    context.hash = location.hash = formatHashForPage(_page, o);
 
     if (o.trimmed !== true) {
       context.history.push({
         hash: context.hash,
-        page: page.id,
+        page: _page.id,
         tag: o.tag,
         data: o.data,
       });
@@ -97,11 +97,11 @@ function transitionComplete(page, o) {
 
   if (o.update !== false) {
     if (R.titleEl) {
-      if (page.title) {
-        R.titleEl.innerHTML = page.title;
+      if (_page.title) {
+        R.titleEl.innerHTML = _page.title;
       }
 
-      const titleCls = page.getAttribute('titleCls') || page.getAttribute('ttlclass');
+      const titleCls = _page.getAttribute('titleCls') || _page.getAttribute('ttlclass');
       if (titleCls) {
         R.titleEl.className = titleCls;
       }
@@ -144,12 +144,12 @@ function checkOrientationAndLocation() {
     }
 
     info = info || extractInfoFromHash(location.hash);
-    const page = info && dom.byId(info.page);
+    const _page = info && dom.byId(info.page);
 
     // more often than not, data will only be needed when moving to a previous view (and restoring its state).
 
-    if (page) {
-      R.show(page, {
+    if (_page) {
+      R.show(_page, {
         external: true,
         reverse,
         tag: info && info.tag,
@@ -291,13 +291,13 @@ lang.mixin(ReUI, {
       return;
     }
 
-    const page = typeof p === 'string' ? dom.byId(p) : p;
+    const _page = typeof p === 'string' ? dom.byId(p) : p;
 
-    if (!page) {
+    if (!_page) {
       return;
     }
 
-    if (context.hash === formatHashForPage(page, o)) {
+    if (context.hash === formatHashForPage(_page, o)) {
       return;
     }
 
@@ -305,7 +305,7 @@ lang.mixin(ReUI, {
 
     if (o.track !== false) {
       const count = context.history.length;
-      const hash = formatHashForPage(page, o);
+      const hash = formatHashForPage(_page, o);
       let position = -1;
 
       // do loop and trim
@@ -359,7 +359,7 @@ lang.mixin(ReUI, {
       o.scroll = !o.reverse;
     }
 
-    on.emit(page, 'load', {
+    on.emit(_page, 'load', {
       bubbles: false,
       cancelable: true,
     });
@@ -373,24 +373,24 @@ lang.mixin(ReUI, {
       });
     }
 
-    context.page = page; // Keep for backwards compat
+    context.page = _page; // Keep for backwards compat
 
-    on.emit(page, 'focus', {
+    on.emit(_page, 'focus', {
       bubbles: false,
       cancelable: true,
     });
 
-    if (from && domAttr.get(page, 'selected') !== 'true') {
+    if (from && domAttr.get(_page, 'selected') !== 'true') {
       if (o.reverse) {
-        on.emit(page, 'unload', {
+        on.emit(_page, 'unload', {
           bubbles: false,
           cancelable: true,
         });
       }
 
-      window.setTimeout(transition, R.checkStateEvery, from, page, o);
+      window.setTimeout(transition, R.checkStateEvery, from, _page, o);
     } else {
-      on.emit(page, 'beforetransition', {
+      on.emit(_page, 'beforetransition', {
         out: false,
         tag: o.tag,
         data: o.data,
@@ -398,11 +398,11 @@ lang.mixin(ReUI, {
         cancelable: true,
       });
 
-      D.select(page);
+      D.select(_page);
 
-      transitionComplete(page, o);
+      transitionComplete(_page, o);
 
-      on.emit(page, 'aftertransition', {
+      on.emit(_page, 'aftertransition', {
         out: false,
         tag: o.tag,
         data: o.data,

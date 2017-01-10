@@ -15,7 +15,7 @@
 import json from 'dojo/json';
 import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
-import aspect from 'dojo/aspect';
+// import aspect from 'dojo/aspect';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import win from 'dojo/_base/window';
@@ -334,7 +334,7 @@ const __class = declare('argos.Application', null, {
   /**
    * Initialize the hash and save the redirect hash if any
    */
-  initHash: function initReUI() {
+  initHash: function initHash() {
     const h = this.hash();
     if (h !== '') {
       this.redirectHash = h;
@@ -426,14 +426,14 @@ const __class = declare('argos.Application', null, {
    * Establishes signals/handles from dojo's newer APIs
    */
   initSignals: function initSignals() {
-    this._signals.push(aspect.after(window.ReUI, 'setOrientation', (result, args) => {
-      if (args && args.length > 0) {
-        const value = args[0];
-        this.currentOrientation = value;
-        this.onSetOrientation(value);
-        connect.publish('/app/setOrientation', [value]);
-      }
-    }));
+    // this._signals.push(aspect.after(window.ReUI, 'setOrientation', (result, args) => {
+    //   if (args && args.length > 0) {
+    //     const value = args[0];
+    //     this.currentOrientation = value;
+    //     this.onSetOrientation(value);
+    //     connect.publish('/app/setOrientation', [value]);
+    //   }
+    // }));
 
     return this;
   },
@@ -724,6 +724,7 @@ const __class = declare('argos.Application', null, {
     this._started = true;
     this.startOrientationCheck();
     page({
+      dispatch: false,
       hashbang: true,
     });
   },
@@ -837,7 +838,7 @@ const __class = declare('argos.Application', null, {
     return this;
   },
   registerViewRoute: function registerViewRoute(view) {
-    if (!view || view.getRoute !== typeof 'function') {
+    if (!view || typeof view.getRoute !== 'function') {
       return;
     }
 
@@ -955,8 +956,8 @@ const __class = declare('argos.Application', null, {
    * Sets the current page(domNode)
    * @param {DOMNode}
    */
-  setCurrentPage: function setCurrentPage(page) {
-    this._currentPage = page;
+  setCurrentPage: function setCurrentPage(_page) {
+    this._currentPage = _page;
   },
   /**
    * Gets the current page(domNode)
