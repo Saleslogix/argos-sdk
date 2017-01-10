@@ -826,7 +826,15 @@ const __class = declare('argos.Application', null, {
       this._createViewContainers();
     }
 
-    view._placeAt = domNode || this._rootDomNode;
+    let node = domNode || this._rootDomNode;
+
+    if (view.viewType === 'ReactComponent') {
+      node = domConstruct.create('div', {
+        class: 'component-wrapper',
+      }, node);
+    }
+
+    view._placeAt = node;
 
     this.onRegistered(view);
 
