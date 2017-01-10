@@ -1356,7 +1356,7 @@ const __class = declare('argos._EditBase', [View], {
     }
   },
   getRoute: function getRoute() {
-    return this.id + '/:key?';
+    return `${this.id}/:key?`;
   },
   buildRoute: function buildRoute() {
     const parts = [];
