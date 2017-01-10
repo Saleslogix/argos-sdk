@@ -11,7 +11,7 @@ import QueryResults from 'dojo/store/util/QueryResults';
 import MODEL_TYPES from './Types';
 
 const databaseName = 'crm-offline';
-const _store = new PouchDB({databaseName: databaseName});
+const _store = new PouchDB(databaseName);
 
 /**
  * @class argos.Models._OfflineModelBase
@@ -32,7 +32,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     // globally when the application goes offline. This will
     // prevent some timing issues with calling this async on list loads.
     const store = this.getStore();
-    return store.query(function queryFn(doc, emit) {
+    return store.query((doc, emit) => {
       emit(doc._id);
     });
   },
@@ -41,9 +41,9 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   },
   getEntry: function getEntry(entityId) {
     const def = new Deferred();
-    this.getEntryDoc(entityId).then(function querySuccess(doc) {
+    this.getEntryDoc(entityId).then((doc) => {
       def.resolve(this.unWrap(doc));
-    }.bind(this), function queryFailed(err) {
+    }, (err) => {
       def.reject(err);
     });
     return def;
@@ -51,46 +51,46 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   getEntryDoc: function getEntry(entityId) {
     const store = this.getStore();
     const def = new Deferred();
-    store.get(entityId).then(function querySuccess(results) {
+    store.get(entityId).then((results) => {
       def.resolve(results);
-    }, function queryFailed(err) {
+    }, (err) => {
       def.reject(err);
     });
     return def;
   },
   saveEntry: function saveEntity(entry, options) {
     const def = new Deferred();
-    this.updateEntry(entry, options).then(function updateSuccess(updateResult) {
+    this.updateEntry(entry, options).then((updateResult) => {
       const odef = def;
-      this.saveRelatedEntries(entry, options).then( function updateRelatedSuccess() {
+      this.saveRelatedEntries(entry, options).then(() => {
         odef.resolve(updateResult);
-      }, function updateRelatedFailed(err) {
+      }, (err) => {
         odef.reject(err);
       });
-    }.bind(this), function updateFailed() {
+    }, () => {
       // Fetching the doc/entity failed, so we will insert a new doc instead.
-      this.insertEntry(entry, options).then(function insertSuccess(insertResult) {
+      this.insertEntry(entry, options).then((insertResult) => {
         const odef = def;
-        this.saveRelatedEntries(entry, options).then( function insertRelatedSuccess() {
+        this.saveRelatedEntries(entry, options).then(() => {
           odef.resolve(insertResult);
-        }, function insertRelatedFailed(err) {
+        }, (err) => {
           odef.reject(err);
         });
-      }.bind(this), function insertFailed(err) {
+      }, (err) => {
         def.reject(err);
       });
-    }.bind(this));
+    });
     return def.promise;
   },
   insertEntry: function insertEntry(entry, options) {
     const store = this.getStore();
     const def = new Deferred();
     const doc = this.wrap(entry, options);
-    store.add(doc).then(function insertSuccess(result) {
+    store.add(doc).then((result) => {
       def.resolve(result);
     },
-    function insertFailed(err) {
-      def.reject('error inserting entity: ' + err);
+    (err) => {
+      def.reject(`error inserting entity: ${err}`);
     });
     return def.promise;
   },
@@ -98,18 +98,18 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     const store = this.getStore();
     const def = new Deferred();
     const entityId = this.getEntityId(entry, options);
-    this.getEntryDoc(entityId).then(function querySuccess(doc) {
+    this.getEntryDoc(entityId).then((doc) => {
       const odef = def;
       doc.entity = entry;
       doc.modifyDate = moment().toDate();
       doc.description = this.getEntityDescription(entry);
-      store.put(doc).then(function updateSuccess(result) {
+      store.put(doc).then((result) => {
         odef.resolve(result);
-      }, function updateFailed(err) {
-        odef.reject('error updating entity: ' + err);
+      }, (err) => {
+        odef.reject(`error updating entity: ${err}`);
       });
-    }.bind(this), function queryError(err) {
-      def.reject('entity not found to update:' + err);
+    }, (err) => {
+      def.reject(`entity not found to update:${err}`);
     });
     return def.promise;
   },
@@ -174,8 +174,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     return def.promise;
   },
   wrap: function wrap(entry) {
-    let doc;
-    doc = {
+    const doc = {
       _id: this.getDocId(entry),
       entity: entry,
       entityId: this.getEntityId(entry),
@@ -227,7 +226,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     }.bind(this);
   },
   unWrapEntities: function unWrapEntities(docs) {
-    return docs.map((doc) => this.unWrap(doc.doc));
+    return docs.map(doc => this.unWrap(doc.doc));
   },
   getRelatedCount: function getRelatedCount(relationship, entry) {
     const def = new Deferred();
@@ -251,12 +250,11 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     return function queryFn(doc, emit) {
       let parentDataPath;
       let relatedDataPath;
-      let parentValue;
       let relatedValue;
       if (relationship.parentProperty) {
         parentDataPath = (relationship.parentDataPath) ? relationship.parentDataPath : relationship.parentProperty;
         if (relationship.parentPropertyType && (relationship.parentPropertyType === 'object')) {
-          parentDataPath = relationship.parentProperty + '.$key';
+          parentDataPath = `${relationship.parentProperty}.$key`;
         }
       } else {
         parentDataPath = this.idProperty;
@@ -265,13 +263,13 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       if (relationship.relatedProperty) {
         relatedDataPath = (relationship.relatedDataPath) ? relationship.relatedDataPath : relationship.relatedProperty;
         if (relationship.relatedPropertyType && (relationship.relatedPropertyType === 'object')) {
-          relatedDataPath = relationship.relatedProperty + '.$key';
+          relatedDataPath = `${relationship.relatedProperty}.$key`;
         }
       } else {
         relatedDataPath = '$key';
       }
 
-      parentValue = utility.getValue(entry, parentDataPath);
+      const parentValue = utility.getValue(entry, parentDataPath);
       if (doc.entity) {
         relatedValue = utility.getValue(doc.entity, relatedDataPath);
       }
@@ -350,7 +348,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       const r = (d + Math.random() * 16) % 16 | 0;
       return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
-    return `{this.entityName.toLowwer()}-{uuid}`;
+    return '{this.entityName.toLowwer()}-{uuid}';
   },
   removeFromAuxiliaryEntities: function removeFromAuxiliaryEntities(entityId) {
     const def = new Deferred();

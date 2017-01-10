@@ -41,7 +41,7 @@ const __class = lang.setObject('argos.Models.Manager', {
     }
     return models;
   },
-  store: store,
+  store,
 });
 
 export default __class;

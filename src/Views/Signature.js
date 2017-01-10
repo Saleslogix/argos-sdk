@@ -188,7 +188,7 @@ const __class = declare('argos.Views.Signature', [View], {
    * @param {String} val JSON-stringified Number[][] of x-y coordinates
    * @param initial Unused.
    */
-  setValue: function setValue(val/*, initial*/) {
+  setValue: function setValue(val/* , initial*/) {
     this.signature = val ? json.fromJson(val) : [];
     this.redraw(this.signature, this.signatureNode, this.config);
   },
@@ -293,7 +293,7 @@ const __class = declare('argos.Views.Signature', [View], {
    * drawn signature accordingly to the ratio.
    * @param e
    */
-  onResize: function onResize(/*e*/) {
+  onResize: function onResize(/* e*/) {
     const oldWidth = this.canvasNodeWidth;
     const oldHeight = this.canvasNodeHeight;
     this._sizeCanvas();

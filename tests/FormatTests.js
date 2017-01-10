@@ -1,3 +1,4 @@
+/* eslint-disable */
 define('tests/FormatTests', ['argos/Format'], function(format) {
 return describe('argos.Format', function() {
 
@@ -66,6 +67,22 @@ return describe('argos.Format', function() {
         var testStr = 'www.google.com';
         expect(format.link(testStr)).toEqual('<a target="_blank" href="http://www.google.com">www.google.com</a>');
     });
+
+    it('Can create sms link', function() {
+        var testStr = 'sms:55512345678';
+        expect(format.link(testStr)).toEqual('<a target="_blank" href="sms:55512345678">55512345678</a>');
+    });
+
+    it('Can create tel link', function() {
+        var testStr = 'tel:18005551234';
+        expect(format.link(testStr)).toEqual('<a target="_blank" href="tel:18005551234">18005551234</a>');
+    });
+
+    it('Can create mailto link', function() {
+        var testStr = 'mailto:john.doe@foo.test';
+        expect(format.link(testStr)).toEqual('<a target="_blank" href="mailto:john.doe@foo.test">john.doe@foo.test</a>');
+    });
+
     it('Can return original value when creating a link for a non-string', function() {
         var testStr = 1;
         expect(format.link(testStr)).toEqual(1);
@@ -202,11 +219,106 @@ return describe('argos.Format', function() {
         var places = 0;
         expect(format.percent(testStr, places)).toEqual('15%');
     });
+    it('Can present as percent - negative number', function() {
+        var testStr = -1;
+        var places = 0;
+        expect(format.percent(testStr, places)).toEqual('-100%');
+    });
+    it('Can present as percent - negative single digit with default places of 2', function() {
+        var testStr = -.01;
+        expect(format.percent(testStr)).toEqual('-1.00%');
+    });
+    it('Can present as percent - negative single digit with places set to 2', function() {
+        var testStr = -.01;
+        var places = 2;
+        expect(format.percent(testStr, places)).toEqual('-1.00%');
+    });
+    it('Can present as percent - negative single digit with places set to 3', function() {
+        var testStr = -.01;
+        var places = 3;
+        expect(format.percent(testStr, places)).toEqual('-1.000%');
+    });
+    it('Can present as percent - negative single digit with places set to 3 and no rounding', function() {
+        var testStr = -.01015;
+        var places = 3;
+        expect(format.percent(testStr, places)).toEqual('-1.015%');
+    });
+    it('Can present as percent - negative single digit with places set to 3 and rounding up', function() {
+        var testStr = -.010155;
+        var places = 3;
+        expect(format.percent(testStr, places)).toEqual('-1.016%');
+    });
+    it('Can present as percent - negative single digit with places set to 3 and rounding down', function() {
+        var testStr = -.010154;
+        var places = 3;
+        expect(format.percent(testStr, places)).toEqual('-1.015%');
+    });
+    it('Can present as percent - negative single digit with places set to 0 and rounding up', function() {
+        var testStr = -.01561;
+        var places = 0;
+        expect(format.percent(testStr, places)).toEqual('-2%');
+    });
+    it('Can present as percent - negative single digit with places set to 0 and rounding down', function() {
+        var testStr = -.01455;
+        var places = 0;
+        expect(format.percent(testStr, places)).toEqual('-1%');
+    });
+    it('Can present as percent - negative single digit', function() {
+        var testStr = -.01;
+        var places = 0;
+        expect(format.percent(testStr, places)).toEqual('-1%');
+    });
+    it('Can present as percent - negative double digit', function() {
+        var testStr = -.25;
+        var places = 0;
+        expect(format.percent(testStr, places)).toEqual('-25%');
+    });
+    it('Can present as percent - negative triple digit', function() {
+        var testStr = -2;
+        var places = 0;
+        expect(format.percent(testStr, places)).toEqual('-200%');
+    });
+    it('Can present as percent - negative quad digit', function() {
+        var testStr = -10;
+        var places = 0;
+        expect(format.percent(testStr, places)).toEqual('-1,000%');
+    });
+    it('Can present as percent - negative quad digit with places set to 2 no round', function() {
+        var testStr = -20.0001;
+        var places = 2;
+        expect(format.percent(testStr, places)).toEqual('-2,000.01%');
+    });
+    it('Can present as percent - negative quad digit with places set to 2 round up', function() {
+        var testStr = -20.00005;
+        var places = 2;
+        expect(format.percent(testStr, places)).toEqual('-2,000.00%');
+    });
+    it('Can present as percent - negative quad digit with places set to 2 round down', function() {
+        var testStr = -19.99994;
+        var places = 2;
+        expect(format.percent(testStr, places)).toEqual('-1,999.99%');
+    });
+    it('Can present as percent - negative rounded up', function() {
+        var testStr = -.155;
+        var places = 0;
+        expect(format.percent(testStr, places)).toEqual('-15%');
+    });
+    it('Can present as percent - negative rounded down', function() {
+        var testStr = -.156;
+        var places = 0;
+        expect(format.percent(testStr, places)).toEqual('-16%');
+    });
     it('Can present as percent - change location of percent symbol', function() {
         var testStr = .10;
         var places = 0;
         format.percentFormatText = '${1}${0}';
         expect(format.percent(testStr, places)).toEqual('%10');
+    });
+    it('Can present as percent - negative change location of percent symbol', function() {
+        var testStr = -.10;
+        var places = 0;
+        format.percentFormatText = '${1}${0}';
+        expect(format.percent(testStr, places)).toEqual('%-10');
     });
 
     it('Can present true string to default yes string (Yes)', function() {
@@ -301,18 +413,19 @@ return describe('argos.Format', function() {
         var testStr = '1234567890x123';
         expect(format.phone(testStr)).toEqual('(123)-456-7890x123');
     });
-    it('Can call alphaToPhoneNumeric when formatting a phone number', function() {
-        spyOn(format, 'alphaToPhoneNumeric').and.returnValue('test');
-
-        format.phone('test');
-
-        expect(format.alphaToPhoneNumeric).toHaveBeenCalled();
-    });
     it('Can format a phone number with mixed numbers and alphas', function() {
         var testStr = '1-800-CALL-JEFF';
         expect(format.phone(testStr)).toEqual('180022555333');
     });
+    it('Can format a phone with a null value.', function() {
+        var testStr = null;
+        expect(format.phone(testStr)).toEqual('');
 
+        testStr = '';
+        expect(format.phone(testStr)).toEqual('');
 
-});
+        testStr = undefined;
+        expect(format.phone(testStr)).toEqual('');
+    });
+  });
 });

@@ -1,0 +1,288 @@
+<dateField ""
+  emptyText: ''
+  invalidDateFormatErrorText: "欄位 '${0}' 的日期格式無效。"
+  cancelText: "取消"
+  confirmText: "確認"
+  advancedText: "進階"
+>
+
+<durationField ""
+  minutes: "分鐘"
+  hours: "小時"
+  days: "天"
+  weeks: "週"
+  years: "年"
+  invalidDurationErrorText: "欄位 '${0}' 不是有效的持續時間。"
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "編輯"
+  lookupText: "..."
+  emptyText: "空白"
+  completeText: "確定"
+>
+
+<lookupField ""
+  dependentErrorText: "必須為 '${0}' 選取值。"
+  emptyText: ""
+  completeText: "選取"
+  lookupLabelText: "查閱"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "簽名"
+  signatureText: "..."
+>
+
+<dateTimeSection ""
+  displayNameText: "日期時間區段"
+  todayText: "今天"
+  tomorrowText: "明天"
+  laterThisWeekText: "本週末"
+  earlierThisWeekText: "本週初"
+  thisLaterMonthText: "本月末"
+  thisEarlierMonthText: "本月初"
+  thisYearEarlierText: "今年年初"
+  thisYearLaterText: "今年年末"
+  yesterdayText: "昨天"
+  lastWeekText: "上週"
+  lastMonthText: "上個月"
+  pastYearText: "過去一 (幾) 年"
+  nextYearText: "明年"
+  nextMonthText: "下個月"
+  nextWeekText: "下週"
+  futureText: "未來"
+  twoWeeksAgoText: "兩週前"
+  threeWeeksAgoText: "三週前"
+  twoMonthsAgoText: "兩個月前"
+  threeMonthsAgoText: "三個月前"
+  unknownText: "不明"
+>
+
+<groupByValueSection ""
+  displayNameText: "依值分組區段"
+>
+
+<configureQuickActions ""
+  titleText: "設定快速動作"
+>
+
+<fileSelect ""
+  titleText: "檔案選取"
+  addFileText: "按一下或點選這裡以新增檔案。"
+  uploadText: "上傳"
+  cancelText: "取消"
+  selectFileText: "選取檔案"
+  loadingText: "上傳中..."
+  descriptionText: "描述"
+  bytesText: "位元組"
+  notSupportedText: "您的裝置不支援新增附件。"
+>
+
+<signature ""
+  titleText: "簽名"
+  clearCanvasText: "清除"
+  undoText: "復原"
+>
+
+<configureBase ""
+  titleText: "設定"
+>
+
+<detailBase ""
+  informationText: "資訊"
+  titleText: "詳細資料"
+  entityText: "實體"
+  detailsText: "詳細資料"
+  loadingText: "載入"
+  notAvailableText: "要求的資料無法使用。"
+  toggleCollapseText: "切換摺疊"
+  editText: "編輯"
+>
+
+<editBase ""
+  concurrencyErrorText: "其他使用者已更新此欄位。"
+  toggleCollapseText: "切換摺疊"
+  saveText: "儲存"
+  titleText: "編輯"
+  validationSummaryText: "驗證摘要"
+  concurrencySummaryText: "並行錯誤"
+  detailsText: "詳細資料"
+  loadingText: "載入"
+  errorGeneral: "要求資料時發生伺服器錯誤。"
+  error410:  "儲存時發生錯誤。此記錄已不再存在。"
+>
+
+<errorHandleMixin ""
+  general: 'A server error occured.'
+>
+
+<listBase ""
+  moreText: "擷取更多記錄"
+  emptySelectionText: "無"
+  titleText: "清單"
+  configureText: "設定"
+  errorRenderText: "轉譯列範本時發生錯誤。"
+  remainingText: "剩餘 ${0} 筆記錄"
+  cancelText: "取消"
+  insertText: "新增"
+  noDataText: "無記錄"
+  loadingText: "載入"
+>
+
+<pullToRefreshMixin ""
+  pullRefreshText: "下拉以重新整理..."
+  pullReleaseText: "放開以重新整理..."
+>
+
+<relatedViewWidgetBase ""
+  loadingText: "載入"
+>
+
+<calendar ""
+  titleText: "行事曆"
+  amText: "上午"
+  pmText: "下午"
+  january: "一月"
+  february: "二月"
+  march: "三月"
+  april: "四月"
+  may: "5 月"
+  june: "六月"
+  july: "七月"
+  august: "八月"
+  september: "九月"
+  october: "十月"
+  november: "十一月"
+  december: "十二月"
+  clearText: "清除"
+  todayText: "今天"
+  sundayAbbreviated: "週日"
+  mondayAbbreviated: "週一"
+  tuesdayAbbreviated: "週二"
+  wednesdayAbbreviated: "週三"
+  thursdayAbbreviated: "週四"
+  fridayAbbreviated: "週五"
+  saturdayAbbreviated: "週六"
+>
+
+<errorManager ""
+  abortedText: "已中止"
+  scopeSaveText: "未將範圍儲存至錯誤報告中"
+>
+
+<format ""
+  yesText: "是"
+  noText: "否"
+  trueText: "T"
+  falseText: "F"
+  hoursText: "小時"
+  hourText: "小時"
+  minutesText: "分鐘"
+  minuteText: "分鐘"
+  percentFormatText: "${0}${1}"
+  bytesText: "位元組"
+>
+
+<groupedList ""
+ toggleCollapseText: "切換摺疊"
+>
+
+<mainToolbar ""
+  titleText: "行動電話"
+>
+
+<relatedViewWidget ""
+  nodataText: "找不到記錄..."
+  selectMoreDataText: "再查看 ${0} 個 ${1}... "
+  selectMoreDataText2: "再查看 ${0} 個 ... "
+  navToListText: "查看清單"
+  loadingText: "載入"
+  refreshViewText: "重新整理"
+  itemOfCountText: " ${0} / ${1}"
+  totalCountText: " (${0})"
+  titleText: "相關檢視"
+>
+
+<searchWidget ""
+ searchText: "搜尋"
+>
+
+<selectionModel ""
+  requireSelectionText: "必須選取項目，您不能取消選取最後一個項目。"
+>
+
+<tabWidget ""
+ moreText: "更多"
+>
+
+<view ""
+ titleText: "一般檢視"
+>
+
+<timePicker ""
+  amText: "上午"
+  pmText: "下午"
+  setTimeText: "設定時間"
+>
+
+<relativeDateTimePicker ""
+  titleText: "大約..."
+  pickDateTimeText: "進階"
+  thisEveningText: "這個晚上"
+  tomorrowMorningText: "明天早上"
+  tomorrowAfternoonText: "明天晚上"
+  nextWeekText: "下週"
+  nextMonthText: "下個月"
+  cancelText: "取消"
+  confirmText: "確認"
+>
+
+<briefcaseModel ""
+  entityDisplayName: "公事包"
+  entityDisplayNamePlural : "公事包"
+>
+
+<recentlyViewedModel ""
+  entityDisplayName: "最近檢視"
+  entityDisplayNamePlural : "最近檢視"
+>
+
+<busyIndicator ""
+  loadingText: "載入"
+  progressText: "進度"
+>
+
+<modal
+  alertText: "警示"
+  completeText: "完成"
+  cancelText: "取消"
+  confirmText: "確認"
+  editText: "編輯"
+  okayText: "確定"
+  submitText: "提交"
+  warningText: "警告"
+>
+<_listOfflineMixin
+  goToListViewText: "已經簡述項目。是否要移至公事包清單檢視？"
+  interruptedText: "程序已中斷，無法全部完成。請嘗試重新處理充分簡述項目。"
+  briefcasingText: "正在進行簡述，請稍候。"
+  errorBriefcasingText: "簡述錯誤"
+>
+
+<_detailOfflineMixin
+  goToDetailViewText: "已經簡述項目與相關項目。是否要移至公事包清單檢視？"
+  interruptedText: "程序已中斷，無法全部完成。請嘗試重新處理充分簡述項目。"
+  briefcasingText: "正在進行簡述，請稍候。"
+  errorBriefcasingText: "簡述錯誤"
+  errorSavingOfflineViewText: "儲存離線檢視時發生錯誤："
+>
+
+<sdkApplication
+  connectionToastTitleText: "連線"
+  checkingText: "檢查連線狀態"
+  loadingApplicationStateText: "載入應用程式狀態"
+  initializingText: "初始化："
+>

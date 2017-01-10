@@ -21,12 +21,19 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
       console.warn('No query Models defined');// eslint-disable-line
     }
 
-    const results = this.queryModels.filter((model) => model.name === name);
+    const results = this.queryModels.filter(model => model.name === name);
     return results[0];
   },
   init: function init() {
     this.inherited(arguments);
-    this.queryModels = this.queryModels || this._createCustomizedLayout(this.createQueryModels(), 'queryModel');
+
+    if (!this.queryModels) {
+      this.queryModels = this._createCustomizedLayout(this.createQueryModels(), 'queryModel');
+      this.queryModels.forEach((queryModel) => {
+        queryModel.querySelect = this._createCustomizedLayout(queryModel.querySelect, `${queryModel.name}/querySelect`);
+        queryModel.queryInclude = this._createCustomizedLayout(queryModel.queryInclude, `${queryModel.name}/queryInclude`);
+      });
+    }
   },
   createQueryModels: function createQueryModels() {
     return [];
@@ -91,12 +98,12 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     if (!store) {
       throw new Error('No store set.');
     }
-    this.validate(entry).then(function fulfilled() {
+    this.validate(entry).then(() => {
       store.put(entry, options).then((result) => {
         this.onEntryUpdated(result, entry);
         def.resolve(result);
       });
-    }, function validationError(err) {
+    }, (err) => {
       def.reject(err);
     }); // Since we left off the reject handler, it will propagate up if there is a validation error
     return def.promise;
@@ -154,14 +161,13 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     }
   },
   getEntries: function getEntries(query, options) {
-    let queryResults;
     const queryModelName = (options && options.queryModelName) ? options.queryModelName : 'list';
     const def = new Deferred();
     const store = this.createStore(queryModelName);
     const queryOptions = this.getOptions(options);
     const queryExpression = this.buildQueryExpression(query, options);
 
-    queryResults = store.query(queryExpression, queryOptions);
+    const queryResults = store.query(queryExpression, queryOptions);
     if (options && options.returnQueryResults) {
       return queryResults;
     }
@@ -187,11 +193,10 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     return requests;
   },
   getRelatedRequest: function getRelatedRequest(entry, relationship, options) {
-    let model;
     let queryOptions;
     let queryResults;
     const def = new Deferred();
-    model = App.ModelManager.getModel(relationship.relatedEntity, MODEL_TYPES.SDATA);
+    const model = App.ModelManager.getModel(relationship.relatedEntity, MODEL_TYPES.SDATA);
     if (model) {
       queryOptions = this.getRelatedQueryOptions(entry, relationship, options);
       if (queryOptions) {
@@ -201,9 +206,9 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
             entityName: model.entityName,
             entityDisplayName: model.entityDisplayName,
             entityDisplayNamePlural: model.entityDisplayNamePlural,
-            relationship: relationship,
+            relationship,
             count: entities.length,
-            entities: entities,
+            entities,
           };
           def.resolve(results);
         }, (err) => {
@@ -214,18 +219,15 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     }
   },
   getRelatedQueryOptions: function getRelatedQueryOptions(entry, relationship, options) {
-    let queryOptions;
     let parentDataPath;
     let relatedDataPath;
-    let relatedValue;
-    let where;
     let optionsTemp = options;
 
     if (!optionsTemp) {
       optionsTemp = {};
     }
 
-    queryOptions = {
+    const queryOptions = {
       count: (optionsTemp.count) ? optionsTemp.count : null,
       start: (optionsTemp.start) ? optionsTemp.start : null,
       where: (optionsTemp.where) ? optionsTemp.where : null,
@@ -236,7 +238,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     if (relationship.parentProperty) {
       parentDataPath = (relationship.parentDataPath) ? relationship.parentDataPath : relationship.parentProperty;
       if (relationship.parentPropertyType && (relationship.parentPropertyType === 'object')) {
-        parentDataPath = relationship.parentProperty + '.$key';
+        parentDataPath = `${relationship.parentProperty}.$key`;
       }
     } else {
       parentDataPath = this.idProperty;
@@ -245,14 +247,14 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     if (relationship.relatedProperty) {
       relatedDataPath = (relationship.relatedDataPath) ? relationship.relatedDataPath : relationship.relatedProperty;
       if (relationship.relatedPropertyType && (relationship.relatedPropertyType === 'object')) {
-        relatedDataPath = relationship.relatedProperty + '.Id';
+        relatedDataPath = `${relationship.relatedProperty}.Id`;
       }
     } else {
       relatedDataPath = 'Id';
     }
 
-    relatedValue = utility.getValue(entry, parentDataPath);
-    where = "${0} eq '${1}'";
+    const relatedValue = utility.getValue(entry, parentDataPath);
+    const where = "${0} eq '${1}'";
     if (!relatedValue) {
       return null;
     }
@@ -267,8 +269,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     return queryOptions;
   },
   applyRelatedResults: function applyRelatedResults(entry, relatedResults) {
-    let relatedEntities;
-    relatedEntities = [];
+    const relatedEntities = [];
     relatedResults.forEach((result) => {
       relatedEntities.push(result);
     });

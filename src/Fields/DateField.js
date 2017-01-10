@@ -25,6 +25,7 @@ import RelativeDateTimePicker from '../RelativeDateTimePicker';
 import getResource from '../I18n';
 
 const resource = getResource('dateField');
+const dtFormatResource = getResource('dateFieldDateTimeFormat');
 
 /**
  * @class argos.Fields.DateField
@@ -56,7 +57,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * The text shown when no value (or null/undefined) is set to the field.
    */
   emptyText: resource.emptyText,
-  dateFormatText: resource.dateFormatText,
+  dateFormatText: dtFormatResource.dateFormatText,
   /**
    * @property {String}
    * The error validation message for this field.
@@ -124,7 +125,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * doesn't then current value is empties and the validation styling is added.
    * @param {Event} evt Event that caused change to fire.
    */
-  _onChange: function _onChange(/*evt*/) {
+  _onChange: function _onChange(/* evt*/) {
     const jsDate = new Date(this.inputNode.value);
     let date = moment(this.inputNode.value, this.dateFormatText, true);
     if (moment(jsDate).isValid() && !date.isValid()) {
@@ -212,7 +213,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
 
     let toolbar;
     if (this.showRelativeDateTime && !options.timeless) {
-      this.dateTimePicker = new RelativeDateTimePicker({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
+      this.dateTimePicker = new RelativeDateTimePicker({ id: `relative-datetime-picker-modal ${this.id}`, isModal: true });
       toolbar = [
         {
           action: 'cancel',
@@ -226,7 +227,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
         },
       ];
     } else {
-      this.dateTimePicker = new DateTimePicker({ id: 'datetime-picker-modal ' + this.id, isModal: true });
+      this.dateTimePicker = new DateTimePicker({ id: `datetime-picker-modal ${this.id}`, isModal: true });
       toolbar = [
         {
           action: 'cancel',

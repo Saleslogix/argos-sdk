@@ -190,7 +190,7 @@ const control = declare('argos.Fields.TextField', [_Field], {
    *
    * @param evt
    */
-  _onFocus: function _onFocus(/*evt*/) {
+  _onFocus: function _onFocus(/* evt*/) {
     domClass.add(this.domNode, 'text-field-active');
   },
   /**
@@ -234,7 +234,7 @@ const control = declare('argos.Fields.TextField', [_Field], {
    * a direct setting of the value.
    * @param {Event} evt
    */
-  onNotificationTrigger: function onNotificationTrigger(/*evt*/) {
+  onNotificationTrigger: function onNotificationTrigger(/* evt*/) {
     const currentValue = this.getValue();
 
     if (this.previousValue !== currentValue) {
@@ -247,7 +247,7 @@ const control = declare('argos.Fields.TextField', [_Field], {
    * Immediately calls {@link _Field#validate validate} and adds the respective row styling.
    * @param {Event} evt
    */
-  onValidationTrigger: function onValidationTrigger(/*evt*/) {
+  onValidationTrigger: function onValidationTrigger(/* evt*/) {
     if (this.validate()) {
       domClass.add(this.containerNode, 'row-error');
     } else {

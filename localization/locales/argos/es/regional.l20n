@@ -1,0 +1,71 @@
+/* CultureInfo contains a JSON blob that must be updated per locale. */
+<CultureInfo """
+{
+  "name": "es",
+  "englishName": "English (United States)",
+  "nativeName": "English (United States)",
+  "numberFormat": {
+    "currencyDecimalDigits": 2,
+    "currencyDecimalSeparator": ",",
+    "isReadOnly": false,
+    "currencyGroupSizes": [
+      3
+    ],
+    "numberGroupSizes": [
+      3
+    ],
+    "percentGroupSizes": [
+      3
+    ],
+    "currencyGroupSeparator": ".",
+    "currencySymbol": "$",
+    "naNSymbol": "NaN",
+    "currencyNegativePattern": 0,
+    "numberNegativePattern": 1,
+    "percentPositivePattern": 0,
+    "percentNegativePattern": 0,
+    "negativeInfinitySymbol": "-Infinito",
+    "negativeSign": "-",
+    "numberDecimalDigits": 2,
+    "numberDecimalSeparator": ",",
+    "numberGroupSeparator": ".",
+    "currencyPositivePattern": 0,
+    "positiveInfinitySymbol": "Infinito",
+    "positiveSign": "+",
+    "percentDecimalDigits": 2,
+    "percentDecimalSeparator": ",",
+    "percentGroupSeparator": ".",
+    "percentSymbol": "%",
+    "perMilleSymbol": "‰",
+    "nativeDigits": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "digitSubstitution": 1
+  },
+  "default24HourClock": false
+}
+""">
+
+<dateFieldDateTimeFormat ""
+  dateFormatText: "DD/MM/YYYY"
+>
+
+<formatDateTimeFormat ""
+  shortDateFormatText: "D/M/YYYY"
+>
+
+<relativeDateTimePickerDateTimeFormat ""
+  hoursFormat:  "h:mm A"
+  dayHoursFormat: "ddd h:mm A"
+  hoursFormat24:  "H:mm"
+  dayHoursFormat24: "ddd H:mm"
+>

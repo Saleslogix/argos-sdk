@@ -124,7 +124,12 @@ const __class = declare('argos._SDataDetailMixin', null, {
   formatRelatedQuery: function formatRelatedQuery(entry, fmt, prop) {
     let property = prop;
     property = property || '$key';
-    return string.substitute(fmt, [utility.getValue(entry, property, '')]);
+    const rawValue = utility.getValue(entry, property, '');
+    if (typeof rawValue !== 'undefined' && rawValue !== null) {
+      return string.substitute(fmt, [rawValue]);
+    }
+
+    return '';
   },
   /**
    * Initializes the model instance that is return with the curernt view.
@@ -157,7 +162,7 @@ const __class = declare('argos._SDataDetailMixin', null, {
     // queryArgs, queryOrderBy, resourceProperty, resourcePredicate properties
     // into the layout. The past method of extending a querySelect for example,
     // was to modify the protoype of the view's querySelect array.
-    if (this.querySelect) {
+    if (this.querySelect && this.querySelect.length) {
       /* eslint-disable */
       console.warn(`A view's querySelect is deprecated. Register a customization to the models layout instead.`);
       /* eslint-enable */
@@ -165,12 +170,12 @@ const __class = declare('argos._SDataDetailMixin', null, {
         queryModel.querySelect = [];
       }
 
-      queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter( (item) => {
+      queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter((item) => {
         return queryModel.querySelect.indexOf(item) < 0;
       }));
     }
 
-    if (this.queryInclude) {
+    if (this.queryInclude && this.queryInclude.length) {
       /* eslint-disable */
       console.warn(`A view's queryInclude is deprecated. Register a customization to the models layout instead.`);
       /* eslint-enable */
@@ -178,7 +183,7 @@ const __class = declare('argos._SDataDetailMixin', null, {
         queryModel.queryInclude = [];
       }
 
-      queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter( (item) => {
+      queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter((item) => {
         return queryModel.queryInclude.indexOf(item) < 0;
       }));
     }
@@ -197,7 +202,7 @@ const __class = declare('argos._SDataDetailMixin', null, {
       queryModel.queryArgs = lang.mixin({}, queryModel.queryArgs, this.queryArgs);
     }
 
-    if (this.queryOrderBy) {
+    if (this.queryOrderBy && this.queryOrderBy.length) {
       /* eslint-disable */
       console.warn(`A view's queryOrderBy is deprecated. Register a customization to the models layout instead.`);
       /* eslint-enable */
@@ -206,7 +211,7 @@ const __class = declare('argos._SDataDetailMixin', null, {
           queryModel.queryOrderBy = [];
         }
 
-        queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter( (item) => {
+        queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter((item) => {
           return queryModel.queryOrderBy.indexOf(item) < 0;
         }));
       } else {

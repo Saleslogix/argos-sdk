@@ -44,7 +44,7 @@ export default declare('argos.Store.PouchDB', null, {
   },
   get: function get(id, options) {
     const deferred = new Deferred();
-    this._db.get(id, options || {}, function pouchGetSuccess(err, doc) {
+    this._db.get(id, options || {}, (err, doc) => {
       if (!err) {
         deferred.resolve(doc);
       } else {
@@ -83,7 +83,7 @@ export default declare('argos.Store.PouchDB', null, {
     // Query is sorted by key on CouchDB, queryOptions.descending can be set to true.
     // There is no queryOptions.sort array like a dojo store would expect.
 
-    this._db.query(q, queryOptions, function pouchDBQuerySuccess(err, response) {
+    this._db.query(q, queryOptions, (err, response) => {
       if (!err) {
         deferred.total = response.total_rows;
         deferred.resolve(response.rows);
@@ -138,9 +138,9 @@ export default declare('argos.Store.PouchDB', null, {
    * @returns {window.Promise}
    */
   remove: function remove(id) {
-    return this._db.get(id).then(function pouchDBRemoveSuccess(doc) {
+    return this._db.get(id).then((doc) => {
       return this._db.remove(doc);
-    }.bind(this));
+    });
   },
   /**
    * Returns an object's identity using this.idProperty
@@ -154,7 +154,7 @@ export default declare('argos.Store.PouchDB', null, {
     }
     return lang.getObject(this.idProperty, false, object);
   },
-  queryEngine: function queryEngine(/*query, options*/) {},
+  queryEngine: function queryEngine(/* query, options*/) {},
   /**
    * Not implemented in this store.
    */

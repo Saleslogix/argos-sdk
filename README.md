@@ -1,34 +1,45 @@
-Saleslogix Argos Platform SDK
-=================
+# Infor CRM Argos Platform SDK
+argos-sdk is a JavaScript and HTML5 mobile SDK built on top of the [dojo library](http://dojotoolkit.org/). Out of the box it comes with a [SData client library](https://github.com/Saleslogix/SDataJavaScriptClientLib) for communicating to [SData](http://sage.github.io/SData-2.0/pages/core/0100/) endpoints.
 
-Installation
-------------
+## Installation
+
 ### Prerequisites
-*	None
+
+- [NodeJS](https://nodejs.org)
 
 ### Clone repository
-*	Open a command prompt.
-*	change to the base directory where you want to download source code, eg
 
-		cd \projects
-*	Execute the following commands (clone shown with SSH URL. Substitute with HTTP or Git Read-Only URL as applicable)
-		
-		mkdir saleslogix\mobile\products (or "mkdir -p saleslogix\mobile\products" from Git Bash)
-		cd saleslogix\mobile
-		git clone git@github.com:Saleslogix/argos-sdk.git
+- Open a command prompt.
+- change to the base directory where you want to download source code, eg
 
-__Note:__ If you're downloading the source zip file instead of using git directly, the net of the above is that you will want to establish a root folder for the argos projects (in our case, we used "mobile"). Put argos-sdk in that root folder, and any product-specific projects (such as argos-saleslogix) under a products sub-folder. When you download and extract the zip file, you will probably have a top-level folder named something like "Saleslogix-argos-sdk-nnnnn". It is this folder that you will want to rename to "argos-sdk".
+  `cd C:\code`
+
+- Execute the following commands (clone shown with SSH URL. Substitute with HTTP or Git Read-Only URL as applicable)
+
+  - `mkdir mobile`
+  - `cd mobile`
+  - `git clone git@github.com:Saleslogix/argos-sdk.git`
 
 You should end up with a folder structure like this:
-    source\saleslogix\mobile\argos-sdk
-    source\saleslogix\mobile\products\<products like argos-saleslogix go here>
+
+- C:\code\mobile\argos-sdk\
+- C:\code\mobile\products\
+
+The products sub-folder is for applications that reference the SDK.
+
+### Building the source
+- Open a command prompt in the argos-sdk directory (C:\code\mobile\argos-sdk)
+- Run `npm install` to install dependencies specified in the project.json file
+- Run `npm run build`
 
 ### Development
-Ensure you have a MIME type setup for .less files. Example using web.config in IIS7:
+
+Ensure you have a MIME type setup for .less files. Example using web.config in IIS:
+
 ```
 <system.webServer>
-	<staticContent>
-    		<mimeMap fileExtension=".less" mimeType="text/css" />
-	</staticContent>
+    <staticContent>
+            <mimeMap fileExtension=".less" mimeType="text/css" />
+    </staticContent>
 </system.webServer>
 ```

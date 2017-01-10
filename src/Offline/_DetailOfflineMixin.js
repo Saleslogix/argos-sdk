@@ -59,7 +59,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
       const modalPromise = this.createCompleteDialog(busyIndicator, result);
       modalPromise.then(this.onEntityBriefcased.bind(this));
     }, (error) => {
-      ErrorManager.addSimpleError(resource.errorBriefcasingText + ' ' + this.id, error);
+      ErrorManager.addSimpleError(`${resource.errorBriefcasingText} ${this.id}`, error);
       this.createAlertDialog(busyIndicator);
     });
   },
@@ -106,9 +106,9 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
   },
   saveOffline: function saveOffline() {
     if (App.enableOfflineSupport) {
-      OfflineManager.saveDetailView(this).then(function success() {
+      OfflineManager.saveDetailView(this).then(() => {
       }, function err(error) {
-        ErrorManager.addSimpleError(resource.errorSavingOfflineViewText + ' ' + this.id, error);
+        ErrorManager.addSimpleError(`${resource.errorSavingOfflineViewText} ${this.id}`, error);
       });
     }
   },

@@ -1,0 +1,288 @@
+<dateField ""
+  emptyText: ''
+  invalidDateFormatErrorText: "Feld '${0}' enthält ein ungültiges Datumsformat."
+  cancelText: "Abbrechen"
+  confirmText: "Bestätigen"
+  advancedText: "Erweitert"
+>
+
+<durationField ""
+  minutes: "Minute(n)"
+  hours: "Stunde(n)"
+  days: "Tag(e)"
+  weeks: "Woche(n)"
+  years: "Jahr(e)"
+  invalidDurationErrorText: "Feld '${0}' ist keine gültige Zeitspanne."
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "bearbeiten"
+  lookupText: "..."
+  emptyText: "leer"
+  completeText: "OK"
+>
+
+<lookupField ""
+  dependentErrorText: "Es muss ein Wert für '${0}' ausgewählt werden."
+  emptyText: ""
+  completeText: "Auswählen"
+  lookupLabelText: "suchen"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "Unterschrift"
+  signatureText: "..."
+>
+
+<dateTimeSection ""
+  displayNameText: "Datums-/Uhrzeitabschnitt"
+  todayText: "Heute"
+  tomorrowText: "Morgen"
+  laterThisWeekText: "Späterer Zeitpunkt in dieser Woche"
+  earlierThisWeekText: "Früherer Zeitpunkt in dieser Woche"
+  thisLaterMonthText: "Späterer Zeitpunkt in diesem Monat"
+  thisEarlierMonthText: "Früherer Zeitpunkt in diesem Monat"
+  thisYearEarlierText: "Früherer Zeitpunkt in diesem Jahr"
+  thisYearLaterText: "Späterer Zeitpunkt in diesem Jahr"
+  yesterdayText: "Gestern"
+  lastWeekText: "Letzte Woche"
+  lastMonthText: "Letzter Monat"
+  pastYearText: "Vergange(s) Jahr(e)"
+  nextYearText: "Nächstes Jahr"
+  nextMonthText: "Nächster Monat"
+  nextWeekText: "Nächste Woche"
+  futureText: "Zukunft"
+  twoWeeksAgoText: "Vor zwei Wochen"
+  threeWeeksAgoText: "Vor drei Wochen"
+  twoMonthsAgoText: "Vor zwei Monaten"
+  threeMonthsAgoText: "Vor drei Monaten"
+  unknownText: "Unbekannt"
+>
+
+<groupByValueSection ""
+  displayNameText: "Nach Wertauswahl gruppieren"
+>
+
+<configureQuickActions ""
+  titleText: "Schnellaktionen konfigurieren"
+>
+
+<fileSelect ""
+  titleText: "Dateiauswahl"
+  addFileText: "Zum Hinzufügen einer Datei hier klicken oder tippen."
+  uploadText: "Hochladen"
+  cancelText: "Abbrechen"
+  selectFileText: "Datei auswählen"
+  loadingText: "Hochladen läuft..."
+  descriptionText: "Beschreibung"
+  bytesText: "Byte"
+  notSupportedText: "Das Hinzufügen von Anhängen wird von Ihrem Gerät nicht unterstützt."
+>
+
+<signature ""
+  titleText: "Unterschrift"
+  clearCanvasText: "Löschen"
+  undoText: "Rückgängig"
+>
+
+<configureBase ""
+  titleText: "Konfigurieren"
+>
+
+<detailBase ""
+  informationText: "Informationen"
+  titleText: "Detail"
+  entityText: "Entität"
+  detailsText: "Details"
+  loadingText: "Ladevorgang läuft"
+  notAvailableText: "Die angeforderten Daten sind nicht verfügbar."
+  toggleCollapseText: "ein-/ausblenden"
+  editText: "Bearbeiten"
+>
+
+<editBase ""
+  concurrencyErrorText: "Ein anderer Benutzer hat dieses Feld aktualisiert."
+  toggleCollapseText: "ein-/ausblenden"
+  saveText: "Speichern"
+  titleText: "Bearbeiten"
+  validationSummaryText: "Validierungszusammenfassung"
+  concurrencySummaryText: "Fehler infolge gleichzeitigen Zugriffs"
+  detailsText: "Details"
+  loadingText: "Ladevorgang läuft"
+  errorGeneral: "Bei der Anforderung von Daten ist ein Serverfehler aufgetreten."
+  error410:  "Fehler beim Speichern. Dieser Datensatz ist nicht mehr vorhanden."
+>
+
+<errorHandleMixin ""
+  general: 'A server error occured.'
+>
+
+<listBase ""
+  moreText: "Mehr Datensätze abrufen"
+  emptySelectionText: "Keine"
+  titleText: "Liste"
+  configureText: "Konfigurieren"
+  errorRenderText: "Fehler beim Darstellen der Zeilenvorlage."
+  remainingText: "${0} Datensätze verbleibend"
+  cancelText: "Abbrechen"
+  insertText: "Neu"
+  noDataText: "Keine Datensätze"
+  loadingText: "Ladevorgang läuft"
+>
+
+<pullToRefreshMixin ""
+  pullRefreshText: "Zum Aktualisieren nach unten ziehen..."
+  pullReleaseText: "Zum Aktualisieren loslassen..."
+>
+
+<relatedViewWidgetBase ""
+  loadingText: "Ladevorgang läuft"
+>
+
+<calendar ""
+  titleText: "Kalender"
+  amText: "AM"
+  pmText: "PM"
+  january: "Januar"
+  february: "Februar"
+  march: "März"
+  april: "April"
+  may: "Mai"
+  june: "Juni"
+  july: "Juli"
+  august: "August"
+  september: "September"
+  october: "Oktober"
+  november: "November"
+  december: "Dezember"
+  clearText: "Löschen"
+  todayText: "Heute"
+  sundayAbbreviated: "So"
+  mondayAbbreviated: "Mo"
+  tuesdayAbbreviated: "Di"
+  wednesdayAbbreviated: "Mi"
+  thursdayAbbreviated: "Do"
+  fridayAbbreviated: "Fr"
+  saturdayAbbreviated: "Sa"
+>
+
+<errorManager ""
+  abortedText: "Abgebrochen"
+  scopeSaveText: "Umfang wird nicht in Fehlerbericht gespeichert."
+>
+
+<format ""
+  yesText: "Ja"
+  noText: "Nein"
+  trueText: "T"
+  falseText: "F"
+  hoursText: "Stunden"
+  hourText: "Stunde"
+  minutesText: "Minuten"
+  minuteText: "Minute"
+  percentFormatText: "${0}${1}"
+  bytesText: "Byte"
+>
+
+<groupedList ""
+ toggleCollapseText: "ein-/ausblenden"
+>
+
+<mainToolbar ""
+  titleText: "Mobil"
+>
+
+<relatedViewWidget ""
+  nodataText: "keine Datensätze gefunden ..."
+  selectMoreDataText: "siehe ${0} mehr von ${1} ... "
+  selectMoreDataText2: "siehe ${0} mehr ... "
+  navToListText: "siehe Liste"
+  loadingText: "Ladevorgang läuft"
+  refreshViewText: "aktualisieren"
+  itemOfCountText: " ${0} von ${1}"
+  totalCountText: " (${0})"
+  titleText: "Zugehörige Ansicht"
+>
+
+<searchWidget ""
+ searchText: "Suchen"
+>
+
+<selectionModel ""
+  requireSelectionText: "Eine Auswahl ist erforderlich. Sie können die Auswahl für den letzten Eintrag nicht aufheben."
+>
+
+<tabWidget ""
+ moreText: "Weitere"
+>
+
+<view ""
+ titleText: "Allgemeine Ansicht"
+>
+
+<timePicker ""
+  amText: "AM"
+  pmText: "PM"
+  setTimeText: "Zeit festlegen"
+>
+
+<relativeDateTimePicker ""
+  titleText: "Etwa..."
+  pickDateTimeText: "Erweitert"
+  thisEveningText: "Dieser Abend"
+  tomorrowMorningText: "Morgen Vormittag"
+  tomorrowAfternoonText: "Morgen Abend"
+  nextWeekText: "Nächste Woche"
+  nextMonthText: "Nächster Monat"
+  cancelText: "Abbrechen"
+  confirmText: "Bestätigen"
+>
+
+<briefcaseModel ""
+  entityDisplayName: "Aktentasche"
+  entityDisplayNamePlural : "Aktentaschen"
+>
+
+<recentlyViewedModel ""
+  entityDisplayName: "Zuletzt angezeigt"
+  entityDisplayNamePlural : "Zuletzt angezeigt"
+>
+
+<busyIndicator ""
+  loadingText: "Ladevorgang läuft"
+  progressText: "Fortschritt"
+>
+
+<modal
+  alertText: "Warnung"
+  completeText: "Abschließen"
+  cancelText: "Abbrechen"
+  confirmText: "Bestätigen"
+  editText: "Bearbeiten"
+  okayText: "OK"
+  submitText: "Übergeben"
+  warningText: "Warnung"
+>
+<_listOfflineMixin
+  goToListViewText: "Einträge wurden in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
+  interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Einträge vollständig in die Aktentasche zu verschieben."
+  briefcasingText: "Einträge werden in Aktentasche verschoben, bitte warten."
+  errorBriefcasingText: "Fehler beim Verschieben in Aktentasche"
+>
+
+<_detailOfflineMixin
+  goToDetailViewText: "Eintrag und zugehörige Einträge wurden bereits in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
+  interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Einträge vollständig in die Aktentasche zu verschieben."
+  briefcasingText: "Einträge werden in Aktentasche verschoben, bitte warten."
+  errorBriefcasingText: "Fehler beim Verschieben in Aktentasche"
+  errorSavingOfflineViewText: "Fehler beim Speichern der Offline-Ansicht:"
+>
+
+<sdkApplication
+  connectionToastTitleText: "Verbindung"
+  checkingText: "Verbindung wird geprüft"
+  loadingApplicationStateText: "Anwendungsstatus wird geladen"
+  initializingText: "Wird initialisiert:"
+>

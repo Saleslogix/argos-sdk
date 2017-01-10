@@ -83,7 +83,7 @@ const control = declare('argos.Fields.BooleanField', [Field], {
    * the opposite of the current value
    * @param {Event} evt The click/tap event
    */
-  _onClick: function _onClick(/*evt*/) {
+  _onClick: function _onClick(/* evt*/) {
     if (this.isDisabled()) {
       return;
     }

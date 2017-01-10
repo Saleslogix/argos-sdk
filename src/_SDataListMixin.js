@@ -210,9 +210,9 @@ const __class = declare('argos._SDataListMixin', null, {
 
     const queryResults = store.query(null, queryOptions);
 
-    when(queryResults, function success() {
+    when(queryResults, () => {
       def.resolve(queryResults.total);
-    }, function error(err) {
+    }, (err) => {
       def.reject(err);
     });
 
@@ -246,7 +246,7 @@ const __class = declare('argos._SDataListMixin', null, {
     // queryArgs, queryOrderBy, resourceProperty, resourcePredicate properties
     // into the layout. The past method of extending a querySelect for example,
     // was to modify the protoype of the view's querySelect array.
-    if (this.querySelect) {
+    if (this.querySelect && this.querySelect.length) {
       /* eslint-disable */
       console.warn(`A view's querySelect is deprecated. Register a customization to the models layout instead.`);
       /* eslint-enable */
@@ -254,12 +254,12 @@ const __class = declare('argos._SDataListMixin', null, {
         queryModel.querySelect = [];
       }
 
-      queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter( (item) => {
+      queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter((item) => {
         return queryModel.querySelect.indexOf(item) < 0;
       }));
     }
 
-    if (this.queryInclude) {
+    if (this.queryInclude && this.queryInclude.length) {
       /* eslint-disable */
       console.warn(`A view's queryInclude is deprecated. Register a customization to the models layout instead.`);
       /* eslint-enable */
@@ -267,7 +267,7 @@ const __class = declare('argos._SDataListMixin', null, {
         queryModel.queryInclude = [];
       }
 
-      queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter( (item) => {
+      queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter((item) => {
         return queryModel.queryInclude.indexOf(item) < 0;
       }));
     }
@@ -286,7 +286,7 @@ const __class = declare('argos._SDataListMixin', null, {
       queryModel.queryArgs = lang.mixin({}, queryModel.queryArgs, this.queryArgs);
     }
 
-    if (this.queryOrderBy) {
+    if (this.queryOrderBy && this.queryOrderBy.length) {
       /* eslint-disable */
       console.warn(`A view's queryOrderBy is deprecated. Register a customization to the models layout instead.`);
       /* eslint-enable */
@@ -295,7 +295,7 @@ const __class = declare('argos._SDataListMixin', null, {
           queryModel.queryOrderBy = [];
         }
 
-        queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter( (item) => {
+        queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter((item) => {
           return queryModel.queryOrderBy.indexOf(item) < 0;
         }));
       } else {

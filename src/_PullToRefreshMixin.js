@@ -10,7 +10,6 @@ import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';
 import getResource from './I18n';
 
-let __class;
 const resource = getResource('pullToRefreshMixin');
 
 /**
@@ -18,7 +17,7 @@ const resource = getResource('pullToRefreshMixin');
  * Mixin for pull to refresh actions
  * @alternateClassName _PullToRefreshMixin
  */
-__class = declare('argos._PullToRefreshMixin', null, {
+const __class = declare('argos._PullToRefreshMixin', null, {
   /**
    * @property {Simplate}
    */
@@ -123,9 +122,9 @@ __class = declare('argos._PullToRefreshMixin', null, {
           distance = (touches.clientY - data.y) / weight;
           maxDistance = data.bannerHeight + 20;
           return {
-            evt: evt,
-            distance: distance,
-            maxDistance: maxDistance,
+            evt,
+            distance,
+            maxDistance,
             top: data.top + distance,
           };
         })
@@ -137,7 +136,7 @@ __class = declare('argos._PullToRefreshMixin', null, {
           // The "done" observable is a combination of touch end and touch cancel.
           // We should restore the UI state and invoke callbacks here.
           domStyle.set(this.scrollerNode, {
-            'top': data.topCss,
+            top: data.topCss,
             'overflow-y': data.overflowCssY,
             'overflow-x': data.overflowCssX,
           });
@@ -157,11 +156,11 @@ __class = declare('argos._PullToRefreshMixin', null, {
 
     // Listen to the "dragging" observable which is a combination of our touch
     // start and touch drag. Update the UI while dragging here.
-    dragging.subscribe(function onNext(data) {
+    dragging.subscribe((data) => {
       data.evt.preventDefault();
       domStyle.set(this.scrollerNode, {
-        'top': data.top + 'px',
-        'overflow': 'hidden',
+        top: `${data.top}px`,
+        overflow: 'hidden',
       });
 
       if (data.distance > data.maxDistance) {
@@ -169,7 +168,7 @@ __class = declare('argos._PullToRefreshMixin', null, {
       } else {
         this.pullRefreshBanner.innerHTML = this.pullRefreshTemplate.apply(this);
       }
-    }.bind(this));
+    });
   },
   /**
    * Derived class must implement this to determine when pull to refresh should start. This is called when onTouchStart is fired.

@@ -17,8 +17,8 @@ const resource = getResource('modal');
 const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="modal__container" data-dojo-attach-point="modalContainer">',
-      '{%! $.modalTemplate %}',
-      '{%! $.modalOverlayTemplate %}',
+    '{%! $.modalTemplate %}',
+    '{%! $.modalOverlayTemplate %}',
     '</div>',
   ]),
   dialogContentTemplate: new Simplate([
@@ -59,20 +59,20 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   _containerListener: null,
   _history: [],
   defaultHeaderText: {
-    'alert': resource.alertText,
-    'complete': resource.completeText,
-    'edit': resource.editText,
-    'warning': resource.warningText,
+    alert: resource.alertText,
+    complete: resource.completeText,
+    edit: resource.editText,
+    warning: resource.warningText,
   },
   defaultToolbarActions: {
-    'cancel': function cancel() { return this.hide; },
-    'resolve': function resolve() { return this.resolveDeferred; },
+    cancel: function cancel() { return this.hide; },
+    resolve: function resolve() { return this.resolveDeferred; },
   },
   defaultToolbarText: {
-    'cancel': resource.cancelText,
-    'confirm': resource.confirmText,
-    'okay': resource.okayText,
-    'submit': resource.submitText,
+    cancel: resource.cancelText,
+    confirm: resource.confirmText,
+    okay: resource.okayText,
+    submit: resource.submitText,
   },
   disableClose: false,
   historyLength: 5,
@@ -127,7 +127,7 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   createModalToolbar: function createModalToolbar(toolbarActions = []) {
     if (this.showToolbar) {
       const toolbar = domConstruct.toDom(this.modalToolbarTemplate.apply(this));
-      toolbarActions.forEach( (toolbarItem) => {
+      toolbarActions.forEach((toolbarItem) => {
         if (this.defaultToolbarActions[toolbarItem.action]) {
           toolbarItem.action = this.defaultToolbarActions[toolbarItem.action].bind(this)();
           toolbarItem.context = this;
@@ -221,7 +221,7 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   },
   removeActionListeners: function removeActionListeners() {
     if (this._actionListeners) {
-      this._actionListeners.forEach( (listener) => {
+      this._actionListeners.forEach((listener) => {
         listener.remove();
       });
     }

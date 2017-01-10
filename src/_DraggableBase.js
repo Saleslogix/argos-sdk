@@ -63,8 +63,8 @@ const __class = declare('argos._DraggableBase', null, {
     domStyle.set(this._source, {
       opacity: '0.3',
       position: 'absolute',
-      width: domStyle.get(this._source, 'width') + 'px',
-      top: this._position.y - this._position.offset + 'px',
+      width: `${domStyle.get(this._source, 'width')}px`,
+      top: `${this._position.y - this._position.offset}px`,
     });
     if (this._scroller) {
       domStyle.set(this._scroller, {
@@ -76,7 +76,7 @@ const __class = declare('argos._DraggableBase', null, {
       });
     }
     domStyle.set(this._container, {
-      height: containerHeight + this._position.h + 'px',
+      height: `${containerHeight + this._position.h}px`,
     });
     this.applyStyling();
     return this;
@@ -159,7 +159,7 @@ const __class = declare('argos._DraggableBase', null, {
     }
     this.computePrevNext(sourceTop);
     domStyle.set(this._source, {
-      top: sourceTop - this._position.offset + 'px',
+      top: `${sourceTop - this._position.offset}px`,
     });
     this._position = this.getPositionOf(this._source);
     return this;
@@ -327,11 +327,11 @@ const __class = declare('argos._DraggableBase', null, {
   resetMargins: function resetMargins(element = {}, marginType = {}) {
     if (marginType === 'bottom') {
       domStyle.set(element, {
-        marginBottom: element.previousMargin + 'px',
+        marginBottom: `${element.previousMargin}px`,
       });
-    }else if (marginType === 'top') {
+    } else if (marginType === 'top') {
       domStyle.set(element, {
-        marginTop: element.previousMargin + 'px',
+        marginTop: `${element.previousMargin}px`,
       });
     }
     return this;
@@ -393,11 +393,11 @@ const __class = declare('argos._DraggableBase', null, {
     }
     if (marginType === 'bottom') {
       domStyle.set(element, {
-        marginBottom: element.previousMargin + sourceMargins + this._position.h + 'px',
+        marginBottom: `${element.previousMargin + sourceMargins + this._position.h}px`,
       });
     } else if (marginType === 'top') {
       domStyle.set(element, {
-        marginTop: element.previousMargin + sourceMargins + this._position.h + 'px',
+        marginTop: `${element.previousMargin + sourceMargins + this._position.h}px`,
       });
     }
     return this;

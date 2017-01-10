@@ -125,16 +125,16 @@ const __class = declare('argos._EditBase', [View], {
   loadingTemplate: new Simplate([
     '<fieldset class="panel-loading-indicator">',
     '<div class="row">',
-      '<div class="busyIndicator__container busyIndicator--active" aria-live="polite">',
-        '<div class="busyIndicator busyIndicator--large">',
-          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
-          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
-          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
-          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--four"></div>',
-          '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--five"></div>',
-        '</div>',
-        '<span class="busyIndicator__label">{%: $.loadingText %}</span>',
-      '</div>',
+    '<div class="busyIndicator__container busyIndicator--active" aria-live="polite">',
+    '<div class="busyIndicator busyIndicator--large">',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--four"></div>',
+    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--five"></div>',
+    '</div>',
+    '<span class="busyIndicator__label">{%: $.loadingText %}</span>',
+    '</div>',
     '</div>',
     '</fieldset>',
   ]),
@@ -300,7 +300,7 @@ const __class = declare('argos._EditBase', [View], {
   errorText: {
     general: resource.errorGeneral,
     status: {
-      '410': resource.error401,
+      410: resource.error401,
     },
   },
   /**
@@ -346,7 +346,7 @@ const __class = declare('argos._EditBase', [View], {
    * Extends constructor to initialze `this.fields` to {}
    * @param o
    */
-  constructor: function constructor( /*o*/ ) {
+  constructor: function constructor(/* o*/) {
     this.fields = {};
   },
   /**
@@ -417,7 +417,7 @@ const __class = declare('argos._EditBase', [View], {
     }
 
     return this.tools || (this.tools = {
-      'tbar': tbar,
+      tbar,
     });
   },
   onToolCancel: function onToolCancel() {
@@ -534,8 +534,11 @@ const __class = declare('argos._EditBase', [View], {
   convertEntry: function convertEntry(entry) {
     return entry;
   },
+  processFieldLevelSecurity: function processFieldLevelSecurity(entry) { // eslint-disable-line
+  },
   processData: function processData(entry) {
     this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
+    this.processFieldLevelSecurity(this.entry);
 
     this.setValues(entry, true);
 
@@ -723,7 +726,7 @@ const __class = declare('argos._EditBase', [View], {
       this.processLayout(current);
     }
   },
-  onApplySectionNode: function onApplySectionNode( /*sectionNode, layout*/ ) {},
+  onApplySectionNode: function onApplySectionNode(/* sectionNode, layout*/) {},
   createRowContent: function createRowContent(layout, content) {
     const Ctor = FieldManager.get(layout.type);
     if (Ctor) {
@@ -754,11 +757,11 @@ const __class = declare('argos._EditBase', [View], {
     const store = this.get('store');
 
     if (this._model) {
-      return this.requestDataUsingModel().then(function fulfilled(data) {
+      return this.requestDataUsingModel().then((data) => {
         this._onGetComplete(data);
-      }.bind(this), function rejected(err) {
+      }, (err) => {
         this._onGetError(null, err);
-      }.bind(this));
+      });
     } else if (store) {
       const getOptions = {};
 
@@ -929,7 +932,7 @@ const __class = declare('argos._EditBase', [View], {
           domClass.add(field.containerNode, 'row-error');
 
           this.errors.push({
-            name: name,
+            name,
             message: result,
           });
         } else {
@@ -994,11 +997,11 @@ const __class = declare('argos._EditBase', [View], {
     const entry = this.createEntryForInsert(values);
     this._applyStateToAddOptions(addOptions);
     if (this._model) {
-      this._model.insertEntry(entry, addOptions).then(function success(data) {
+      this._model.insertEntry(entry, addOptions).then((data) => {
         this.onAddComplete(entry, data);
-      }.bind(this), function failure(err) {
+      }, (err) => {
         this.onAddError(addOptions, err);
-      }.bind(this));
+      });
     } else if (store) {
       Deferred.when(store.add(entry, addOptions),
         this.onAddComplete.bind(this, entry),
@@ -1006,7 +1009,7 @@ const __class = declare('argos._EditBase', [View], {
       );
     }
   },
-  _applyStateToAddOptions: function _applyStateToAddOptions( /*addOptions*/ ) {},
+  _applyStateToAddOptions: function _applyStateToAddOptions(/* addOptions*/) {},
   onAddComplete: function onAddComplete(entry, result) {
     this.enable();
 
@@ -1023,7 +1026,7 @@ const __class = declare('argos._EditBase', [View], {
    * Handler for insert complete, checks for `this.options.returnTo` else it simply goes back.
    * @param entry
    */
-  onInsertCompleted: function onInsertCompleted( /*entry*/ ) {
+  onInsertCompleted: function onInsertCompleted(/* entry*/) {
     if (this.options && this.options.returnTo) {
       const returnTo = this.options.returnTo;
       const view = App.getView(returnTo);
@@ -1058,11 +1061,11 @@ const __class = declare('argos._EditBase', [View], {
     const entry = this.createEntryForUpdate(values);
     this._applyStateToPutOptions(putOptions);
     if (this._model) {
-      this._model.updateEntry(entry, putOptions).then(function success(data) {
+      this._model.updateEntry(entry, putOptions).then((data) => {
         this.onPutComplete(entry, data);
-      }.bind(this), function failure(err) {
+      }, (err) => {
         this.onPutError(putOptions, err);
-      }.bind(this));
+      });
     } else if (store) {
       Deferred.when(store.put(entry, putOptions),
         this.onPutComplete.bind(this, entry),
@@ -1102,7 +1105,7 @@ const __class = declare('argos._EditBase', [View], {
   convertValues: function convertValues(values) {
     return values;
   },
-  _applyStateToPutOptions: function _applyStateToPutOptions( /*putOptions*/ ) {},
+  _applyStateToPutOptions: function _applyStateToPutOptions(/* putOptions*/) {},
   onPutComplete: function onPutComplete(entry, result) {
     this.enable();
 
@@ -1131,11 +1134,11 @@ const __class = declare('argos._EditBase', [View], {
     const DIFF_EDITED = 'E';
 
     if (DeepDiff) {
-      const _diffs = DeepDiff.diff(left, right, function deepDiff(path, key) {
+      const _diffs = DeepDiff.diff(left, right, (path, key) => {
         if (array.indexOf(this.diffPropertyIgnores, key) >= 0) {
           return true;
         }
-      }.bind(this));
+      });
 
       array.forEach(_diffs, (diff) => {
         const path = diff.path.join('.');
@@ -1152,7 +1155,7 @@ const __class = declare('argos._EditBase', [View], {
       const store = this.get('store');
       const id = store.getIdentity(entry);
       return {
-        id: id,
+        id,
         key: id,
         data: result,
       };
@@ -1162,7 +1165,7 @@ const __class = declare('argos._EditBase', [View], {
    * Handler for update complete, checks for `this.options.returnTo` else it simply goes back.
    * @param entry
    */
-  onUpdateCompleted: function onUpdateCompleted( /*entry*/ ) {
+  onUpdateCompleted: function onUpdateCompleted(/* entry*/) {
     if (this.options && this.options.returnTo) {
       const returnTo = this.options.returnTo;
       const view = App.getView(returnTo);
@@ -1256,8 +1259,8 @@ const __class = declare('argos._EditBase', [View], {
    */
   getSecurity: function getSecurity(access) {
     const lookup = {
-      'update': this.updateSecurity,
-      'insert': this.insertSecurity,
+      update: this.updateSecurity,
+      insert: this.insertSecurity,
     };
 
     return lookup[access];

@@ -68,9 +68,9 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
     let values = v;
     values = this.inherited(arguments);
     values = lang.mixin(values, {
-      '$key': this.entry.$key,
-      '$etag': this.entry.$etag,
-      '$name': this.entry.$name,
+      $key: this.entry.$key,
+      $etag: this.entry.$etag,
+      $name: this.entry.$name,
     });
 
     if (!this._isConcurrencyCheckEnabled()) {
@@ -83,7 +83,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
     let values = v;
     values = this.inherited(arguments);
     return lang.mixin(values, {
-      '$name': this.entityName,
+      $name: this.entityName,
     });
   },
   /**
@@ -100,7 +100,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
    *
    * @param templateEntry
    */
-  applyContext: function applyContext(/*templateEntry*/) {},
+  applyContext: function applyContext(/* templateEntry*/) {},
   /**
    * Creates Sage.SData.Client.SDataTemplateResourceRequest instance and sets a number of known properties.
    *
@@ -149,7 +149,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
    * @param {Object} response The response object.
    * @param {Object} o The options that were passed when creating the Ajax request.
    */
-  onRequestTemplateFailure: function onRequestTemplateFailure(response/*, o*/) {
+  onRequestTemplateFailure: function onRequestTemplateFailure(response/* , o*/) {
     this.handleError(response);
   },
   /**
@@ -217,6 +217,28 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
 
     return entry;
   },
+  processFieldLevelSecurity: function processFieldLevelSecurity(entry) {
+    const { $permissions: permissions } = entry;
+    // permissions is an array of objects:
+    // { name: "FieldName", access: "ReadOnly" }
+    if (permissions && permissions.length) {
+      permissions.forEach((p) => {
+        const { name, access } = p;
+        const field = this.fields[name];
+        if (!field) {
+          return;
+        }
+
+        // TODO: How do we handle fields that have validation tied to them?
+        if (access === 'NoAccess') {
+          field.disable();
+          field.hide();
+        } else if (access === 'ReadOnly') {
+          field.disable();
+        }
+      });
+    }
+  },
   _applyStateToPutOptions: function _applyStateToPutOptions(putOptions) {
     const store = this.get('store');
 
@@ -261,7 +283,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
     // queryArgs, queryOrderBy, resourceProperty, resourcePredicate properties
     // into the layout. The past method of extending a querySelect for example,
     // was to modify the protoype of the view's querySelect array.
-    if (this.querySelect) {
+    if (this.querySelect && this.querySelect.length) {
       /* eslint-disable */
       console.warn(`A view's querySelect is deprecated. Register a customization to the models layout instead.`);
       /* eslint-enable */
@@ -269,12 +291,12 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
         queryModel.querySelect = [];
       }
 
-      queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter( (item) => {
+      queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter((item) => {
         return queryModel.querySelect.indexOf(item) < 0;
       }));
     }
 
-    if (this.queryInclude) {
+    if (this.queryInclude && this.queryInclude.length) {
       /* eslint-disable */
       console.warn(`A view's queryInclude is deprecated. Register a customization to the models layout instead.`);
       /* eslint-enable */
@@ -282,7 +304,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
         queryModel.queryInclude = [];
       }
 
-      queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter( (item) => {
+      queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter((item) => {
         return queryModel.queryInclude.indexOf(item) < 0;
       }));
     }
@@ -301,7 +323,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
       queryModel.queryArgs = lang.mixin({}, queryModel.queryArgs, this.queryArgs);
     }
 
-    if (this.queryOrderBy) {
+    if (this.queryOrderBy && this.queryOrderBy.length) {
       /* eslint-disable */
       console.warn(`A view's queryOrderBy is deprecated. Register a customization to the models layout instead.`);
       /* eslint-enable */
@@ -310,7 +332,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
           queryModel.queryOrderBy = [];
         }
 
-        queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter( (item) => {
+        queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter((item) => {
           return queryModel.queryOrderBy.indexOf(item) < 0;
         }));
       } else {

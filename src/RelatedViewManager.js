@@ -48,7 +48,7 @@ const __class = declare('argos.RelatedViewManager', null, {
             this.relatedViewConfig.widgetType = this.getWidgetType(this.relatedViewConfig.widgetType);
           }
           lang.mixin(options, this.relatedViewConfig);
-          options.id = this.id + '_' + entry.$key;
+          options.id = `${this.id}_${entry.$key}`;
           const relatedViewWidget = new this.relatedViewConfig.widgetType(options);//eslint-disable-line
           relatedViewWidget.parentEntry = entry;
           relatedViewWidget.parentResourceKind = owner.resourceKind;

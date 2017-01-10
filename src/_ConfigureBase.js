@@ -15,7 +15,7 @@ const resource = getResource('configureBase');
  * @extends argos._ListBase
  *
  */
-const __class = declare('argos._ConfigureBase', [ DraggableList ], {
+const __class = declare('argos._ConfigureBase', [DraggableList], {
   // Templates
   itemTemplate: new Simplate([
     '<h3>',
@@ -75,9 +75,9 @@ const __class = declare('argos._ConfigureBase', [ DraggableList ], {
 
       // The setTimeout is so the browser doesn't think the last-moved class is part of the node's
       // initial state (the css transition won't fire)
-      setTimeout(function addClass() {
+      setTimeout(() => {
         rows.addClass(this.lastMovedCls);
-      }.bind(this), 5);
+      }, 5);
     }
   },
   moveDown: function moveDown(params) {
@@ -91,9 +91,9 @@ const __class = declare('argos._ConfigureBase', [ DraggableList ], {
 
       // The setTimeout is so the browser doesn't think the last-moved class is part of the node's
       // initial state (the css transition won't fire)
-      setTimeout(function addClass() {
+      setTimeout(() => {
         rows.addClass(this.lastMovedCls);
-      }.bind(this), 5);
+      }, 5);
     }
   },
   clearLastMoved: function clearLastMoved() {

@@ -92,7 +92,7 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
    * @param val
    * @template
    */
-  formatValue: function formatValue( /*val*/ ) {
+  formatValue: function formatValue(/* val*/) {
     return '';
   },
   /**
@@ -149,7 +149,8 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
           id: 'cancel',
           cls: 'fa fa-ban fa-fw fa-lg',
           side: 'left',
-          fn: App.back,
+          fn: ReUI.back,
+          scope: ReUI,
         }],
       },
       entry: this.originalValue || this.validationValue,
@@ -216,7 +217,7 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
    * the view shown is the editor view but the function is fired in scope of the field.
    *
    * It gets a handler of the current active view and validates the form, if it passes it gathers
-   * the value, sets the fields text, calls `history.back` and fires {@link #_onComplete _onComplete}.
+   * the value, sets the fields text, calls `ReUI.back` and fires {@link #_onComplete _onComplete}.
    *
    */
   complete: function complete() {
@@ -240,7 +241,7 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
       return;
     }
 
-    history.back();
+    ReUI.back();
     // if the event is fired before the transition, any XMLHttpRequest created in an event handler and
     // executing during the transition can potentially fail (status 0).  this might only be an issue with CORS
     // requests created in this state (the pre-flight request is made, and the request ends with status 0).

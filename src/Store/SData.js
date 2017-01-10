@@ -187,7 +187,7 @@ const __class = declare('argos.Store.SData', null, {
         const order = [];
         array.forEach(orderBy, function forEach(v) {
           if (v.descending) {
-            this.push(v.attribute + ' desc');
+            this.push(`${v.attribute} desc`);
           } else {
             this.push(v.attribute);
           }
@@ -211,7 +211,7 @@ const __class = declare('argos.Store.SData', null, {
     }
 
     if (conditions.length > 0) {
-      request.setQueryArg('where', '(' + conditions.join(') and (') + ')');
+      request.setQueryArg('where', `(${conditions.join(') and (')})`);
     }
 
     if (typeof queryOptions.start !== 'undefined') {
@@ -224,7 +224,7 @@ const __class = declare('argos.Store.SData', null, {
 
     return request;
   },
-  _onCancel: function _onCancel(/*deferred*/) {},
+  _onCancel: function _onCancel(/* deferred*/) {},
   _onRequestFeedSuccess: function _onRequestFeedSuccess(queryDeferred, feed) {
     if (feed) {
       const items = lang.getObject(this.itemsProperty, false, feed);
@@ -246,7 +246,7 @@ const __class = declare('argos.Store.SData', null, {
     }
   },
   _onRequestFailure: function _onRequestFailure(deferred, xhr, xhrOptions) {
-    const error = new Error('An error occurred requesting: ' + xhrOptions.url);
+    const error = new Error(`An error occurred requesting: ${xhrOptions.url}`);
 
     error.xhr = xhr;
     error.status = xhr.status;
@@ -256,7 +256,7 @@ const __class = declare('argos.Store.SData', null, {
     deferred.reject(error);
   },
   _onRequestAbort: function _onRequestAbort(deferred, xhr, xhrOptions) {
-    const error = new Error('An error occurred requesting: ' + xhrOptions.url);
+    const error = new Error(`An error occurred requesting: ${xhrOptions.url}`);
 
     error.xhr = xhr;
     error.status = 0;
@@ -274,7 +274,7 @@ const __class = declare('argos.Store.SData', null, {
 
     return entry;
   },
-  get: function get(id, getOptions /* sdata only */ ) {
+  get: function get(id, getOptions /* sdata only */) {
     const handle = {};
     const deferred = new Deferred();
     const request = this._createEntryRequest(id, getOptions || {});
@@ -378,7 +378,7 @@ const __class = declare('argos.Store.SData', null, {
   /**
    * Not implemented in this store.
    */
-  remove: function remove(/*id*/) {},
+  remove: function remove(/* id*/) {},
   /**
    * Queries the store for objects. This does not alter the store, but returns a
    * set of data from the store.
@@ -422,7 +422,7 @@ const __class = declare('argos.Store.SData', null, {
   /**
    * Not implemented in this store.
    */
-  getChildren: function getChildren(/*parent, options*/) {},
+  getChildren: function getChildren(/* parent, options*/) {},
   /**
    * Returns any metadata about the object. This may include attribution,
    * cache directives, history, or version information.

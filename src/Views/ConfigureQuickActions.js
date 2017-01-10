@@ -78,7 +78,7 @@ const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
   },
   createStore: function createStore() {
     let list = [];
-    const all = array.map(this.options.actions, (action) => action.id);
+    const all = array.map(this.options.actions, action => action.id);
     const order = this.getSavedOrderedKeys();
 
     // De-dup id's
@@ -99,8 +99,8 @@ const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
     list = array.map(this._sortActions(this.options.actions, this.getSavedOrderedKeys()), (action) => {
       if (reduced.indexOf(action.id) > -1) {
         return {
-          '$key': action.id,
-          '$descriptor': action.label,
+          $key: action.id,
+          $descriptor: action.label,
         };
       }
       return null;

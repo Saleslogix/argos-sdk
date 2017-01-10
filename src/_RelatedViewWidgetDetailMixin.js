@@ -59,7 +59,7 @@ const __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
     if (this.relatedViewManagers[relatedView.id]) {
       relatedViewManager = this.relatedViewManagers[relatedView.id];
     } else {
-      relatedView.id = this.id + '_' + relatedView.id;
+      relatedView.id = `${this.id}_${relatedView.id}`;
       const relatedViewOptions = {};
       lang.mixin(relatedViewOptions, relatedView);
 

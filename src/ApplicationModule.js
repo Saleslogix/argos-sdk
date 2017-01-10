@@ -17,6 +17,7 @@ import connect from 'dojo/_base/connect';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import ConfigureQuickActions from './Views/ConfigureQuickActions';
+import LinkView from './Views/Link';
 import './Application';
 import './CultureInfo';
 import './Models/RecentlyViewed/Offline';
@@ -95,6 +96,15 @@ const __class = declare('argos.ApplicationModule', null, {
   },
 
   /**
+   * initDynamic is invoked after appStatePromises run.
+   */
+  initDynamic: function initDynamic() {
+    this.loadCustomizationsDynamic();
+    this.loadToolbarsDynamic();
+    this.loadViewsDynamic();
+  },
+
+  /**
    * @deprecated - typo, use loadAppStatePromises instead.
    */
   loadAppStatPromises: function loadAppStatPromises() {
@@ -127,6 +137,24 @@ const __class = declare('argos.ApplicationModule', null, {
 
     this.statics._customizationsLoaded = true;
   },
+
+  /**
+   * loadCustomizationsDynamic is invoked after appStatePromises run.
+   */
+  loadCustomizationsDynamic: function loadCustomizationsDynamic() {
+  },
+
+  /**
+   * loadToolbarsDynamic is invoked after appStatePromises run.
+   */
+  loadToolbarsDynamic: function loadToolbarsDynamic() {
+  },
+
+  /**
+   * loadViewsDynamic is invoked after appStatePromises run.
+   */
+  loadViewsDynamic: function loadViewsDynamic() {
+  },
   /**
    * @template
    * This function should be overriden in the app and be used to register all views.
@@ -139,6 +167,7 @@ const __class = declare('argos.ApplicationModule', null, {
 
     // Load base views
     this.registerView(new ConfigureQuickActions());
+    this.registerView(new LinkView());
 
     this.statics._viewsLoaded = true;
   },

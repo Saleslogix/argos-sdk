@@ -120,7 +120,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
    * @param {Object} response The response object.
    * @param {Object} o The options that were passed when creating the Ajax request.
    */
-  onRequestDataAborted: function onRequestDataAborted(response/*, o*/) {
+  onRequestDataAborted: function onRequestDataAborted(response/* , o*/) {
     this.options = false; // force a refresh
     ErrorManager.addError('aborted', response);
     domClass.remove(this.domNode, 'panel-loading');

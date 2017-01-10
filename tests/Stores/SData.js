@@ -1,3 +1,4 @@
+/* eslint-disable */
 define('tests/Stores/SData', [
     'dojo/_base/lang',
     'argos/Store/SData'
@@ -670,14 +671,13 @@ define('tests/Stores/SData', [
             expect(store.getMetadata()).toBe(null);
         });
 
-        it('can not remove (not supported)', function() {
-            var store = new Store();
-            try {
+        xit('can not remove (not supported)', function() {
+            var remove = function() {
+                var store = new Store();
                 store.remove();
-            } catch(err) {
-                // If we throw an error, perhaps remove was implemented and a service dependency wasn't satisfied here.
-                expect(true).toBe(false);
-            }
+            };
+
+            expect(remove).toThrow();
         });
     });
 });

@@ -44,12 +44,12 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * This map provides quick access to HTML properties, most notably the selected property of the container
    */
   attributeMap: {
-    'title': {
+    title: {
       node: 'domNode',
       type: 'attribute',
       attribute: 'title',
     },
-    'selected': {
+    selected: {
       node: 'domNode',
       type: 'attribute',
       attribute: 'selected',
@@ -130,7 +130,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * Called after toolBar layout is created;
    *
    */
-  onToolLayoutCreated: function onToolLayoutCreated( /*tools*/ ) {},
+  onToolLayoutCreated: function onToolLayoutCreated(/* tools*/) {},
   /**
    * Returns the tool layout that defines all toolbar items for the view
    * @return {Object} The toolbar layout
@@ -188,10 +188,10 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   /**
    * Returns a new instance of a model for the view.
    */
-   getModel: function getModel() {
-     const model = Adapter.getModel(this.modelName);
-     return model;
-   },
+  getModel: function getModel() {
+    const model = Adapter.getModel(this.modelName);
+    return model;
+  },
   /**
    * Establishes this views connections to various events
    */
@@ -230,32 +230,32 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * The onBeforeTransitionAway event.
    * @param self
    */
-  onBeforeTransitionAway: function onBeforeTransitionAway( /*self*/ ) {},
+  onBeforeTransitionAway: function onBeforeTransitionAway(/* self*/) {},
   /**
    * The onBeforeTransitionTo event.
    * @param self
    */
-  onBeforeTransitionTo: function onBeforeTransitionTo( /*self*/ ) {},
+  onBeforeTransitionTo: function onBeforeTransitionTo(/* self*/) {},
   /**
    * The onTransitionAway event.
    * @param self
    */
-  onTransitionAway: function onTransitionAway( /*self*/ ) {},
+  onTransitionAway: function onTransitionAway(/* self*/) {},
   /**
    * The onTransitionTo event.
    * @param self
    */
-  onTransitionTo: function onTransitionTo( /*self*/ ) {},
+  onTransitionTo: function onTransitionTo(/* self*/) {},
   /**
    * The onActivate event.
    * @param self
    */
-  onActivate: function onActivate( /*self*/ ) {},
+  onActivate: function onActivate(/* self*/) {},
   /**
    * The onShow event.
    * @param self
    */
-  onShow: function onShow( /*self*/ ) {},
+  onShow: function onShow(/* self*/) {},
   activate: function activate(tag, data) {
     // todo: use tag only?
     if (data && this.refreshRequiredFor(data.options)) {
@@ -277,7 +277,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   },
   _transitionOptions: null,
   /**
-   * Shows the view using iUI in order to transition to the new element.
+   * Shows the view using pagejs in order to transition to the new element.
    * @param {Object} options The navigation options passed from the previous view.
    * @param transitionOptions {Object} Optional transition object that is forwarded to open.
    */
@@ -304,8 +304,8 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     const data = this.getContext();
 
     const to = lang.mixin(transitionOptions || {}, {
-      tag: tag,
-      data: data,
+      tag,
+      data,
     });
     this._transitionOptions = to;
     page(this.buildRoute());
@@ -386,13 +386,13 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     complete.apply(this);
   },
   /**
-   * Available Options:
-   *   horizontal: True if the transition is horizontal, False otherwise.
-   *   reverse: True if the transition is a reverse transition (right/down), False otherwise.
-   *   track: False if the transition should not be tracked in history, True otherwise.
-   *   update: False if the transition should not update title and back button, True otherwise.
-   *   scroll: False if the transition should not scroll to the top, True otherwise.
-   */
+  * Available Options:
+  *   horizontal: True if the transition is horizontal, False otherwise.
+  *   reverse: True if the transition is a reverse transition (right/down), False otherwise.
+  *   track: False if the transition should not be tracked in history, True otherwise.
+  *   update: False if the transition should not update title and back button, True otherwise.
+  *   scroll: False if the transition should not scroll to the top, True otherwise.
+  */
   open: function open() {
     const page = this.domNode;
     const options = this._transitionOptions || {};
@@ -584,17 +584,17 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * Returns the defined security.
    * @param access
    */
-  getSecurity: function getSecurity( /*access*/ ) {
+  getSecurity: function getSecurity(/* access*/) {
     return this.security;
   },
   /**
-   * @property {String}
-   * Route passed into the router. RegEx expressions are also accepted.
-   */
+  * @property {String}
+  * Route passed into the router. RegEx expressions are also accepted.
+  */
   route: '',
   /**
-   * Gets the route associated with this view. Returns this.id if no route is defined.
-   */
+  * Gets the route associated with this view. Returns this.id if no route is defined.
+  */
   getRoute: function getRoute() {
     if ((typeof this.route === 'string' && this.route.length > 0) || this.route instanceof RegExp) {
       return this.route;
@@ -603,30 +603,30 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     return this.id;
   },
   /**
-   * Show method calls this to build a route that it can navigate to. If you add a custom route,
-   * this should change to build a route that can match that.
-   * @returns {String}
-   */
+  * Show method calls this to build a route that it can navigate to. If you add a custom route,
+  * this should change to build a route that can match that.
+  * @returns {String}
+  */
   buildRoute: function buildRoute() {
     return this.id;
   },
   /**
-   * Fires first when a route is triggered. Any pre-loading should happen here.
-   * @param {Object} ctx
-   * @param {Function} next
-   */
+  * Fires first when a route is triggered. Any pre-loading should happen here.
+  * @param {Object} ctx
+  * @param {Function} next
+  */
   routeLoad: function routeLoad(ctx, next) {
     next();
   },
   /**
-   * Fires second when a route is triggered. Any pre-loading should happen here.
-   * @param {Object} ctx
-   * @param {Function} next
-   */
+  * Fires second when a route is triggered. Any pre-loading should happen here.
+  * @param {Object} ctx
+  * @param {Function} next
+  */
   routeShow: function routeShow(ctx, next) { // eslint-disable-line
     this.open();
   },
-  /*
+ /*
   * Required for binding to ScrollContainer which utilizes iScroll that requires to be refreshed when the
   * content (therefor scrollable area) changes.
   */
@@ -640,7 +640,6 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     return false;
   },
 });
-
 
 lang.setObject('Sage.Platform.Mobile.View', __class);
 export default __class;

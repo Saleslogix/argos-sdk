@@ -31,166 +31,26 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
+// import { createCustomizedLayout } from './Customization';
 
-const expand = function expand(expression) {
-  if (typeof expression === 'function') {
-    return expression.apply(this, Array.prototype.slice.call(arguments, 1));
-  }
-
-  return expression;
-};
+const customization = ICRMCustomizationSDK;
 
 const __class = declare('argos._CustomizationMixin', null, {
-  _layoutCompiled: null,
-  _layoutCompiledFrom: null,
   id: null,
   customizationSet: null,
   enableCustomizations: true,
-  constructor: function constructor() {
-    this._layoutCompiled = {};
-    this._layoutCompiledFrom = {};
-  },
+
   _getCustomizationsFor: function _getCustomizationsFor(customizationSubSet) {
-    const customizationSet = customizationSubSet ? this.customizationSet + '/' + customizationSubSet : this.customizationSet;
+    const customizationSet = customizationSubSet ? `${this.customizationSet}/${customizationSubSet}` : this.customizationSet;
     return App.getCustomizationsFor(customizationSet, this.id);
   },
   _createCustomizedLayout: function _createCustomizedLayout(layout, customizationSubSet) {
-    const customizationSet = customizationSubSet ? this.customizationSet + '/' + customizationSubSet : this.customizationSet;
-    const key = customizationSet + '#' + this.id;
-    const source = layout;
-
-    if (source === this._layoutCompiledFrom[key] && this._layoutCompiled[key]) {
-      return this._layoutCompiled[key]; // same source layout, no changes
-    }
-
+    const customizations = this._getCustomizationsFor(customizationSubSet);
     if (this.enableCustomizations) {
-      const customizations = this._getCustomizationsFor(customizationSubSet);
-      if (customizations && customizations.length > 0) {
-        layout = this._compileCustomizedLayout(customizations, source, null);//eslint-disable-line
-      }
+      return customization.createCustomizedLayout(layout, customizations, this.customizationSet, this.id, customizationSubSet);
     }
-
-    this._layoutCompiled[key] = layout;
-    this._layoutCompiledFrom[key] = source;
 
     return layout;
-  },
-  _compileCustomizedLayout: function _compileCustomizedLayout(customizations, layout, parent) {
-    const customizationCount = customizations.length;
-    const layoutCount = layout.length;
-    const applied = {};
-    let output;
-
-    if (lang.isArray(layout)) {
-      output = [];
-      for (let i = 0; i < layoutCount; i++) {
-        let row = layout[i];
-
-        /* for compatibility */
-        // will modify the underlying row
-        if (typeof row.name === 'undefined' && typeof row.property === 'string') {
-          row.name = row.property;
-        }
-
-        const insertRowsBefore = [];
-        const insertRowsAfter = [];
-
-        for (let j = 0; j < customizationCount; j++) {
-          if (applied[j]) {
-            continue; // todo: allow a customization to be applied to a layout more than once?
-          }
-
-          const customization = customizations[j];
-          let stop = false;
-
-          if (expand(customization.at, row, parent, i, layoutCount, customization)) {
-            switch (customization.type) {//eslint-disable-line
-              case 'remove':
-                // full stop
-                stop = true;
-                row = null;
-                break;
-              case 'replace':
-                // full stop
-                stop = true;
-                row = expand(customization.value, row);
-                break;
-              case 'modify':
-                // make a shallow copy if we haven't already
-                if (row === layout[i]) {
-                  row = lang.mixin({}, row);
-                }
-
-                row = lang.mixin(row, expand(customization.value, row));
-                break;
-              case 'insert':
-                const insertRowsTarget = (customization.where !== 'before') ? insertRowsAfter : insertRowsBefore;
-                const expandedValue = expand(customization.value, row);
-
-                if (lang.isArray(expandedValue)) {
-                  insertRowsTarget.push.apply(insertRowsTarget, expandedValue);
-                } else {
-                  insertRowsTarget.push(expandedValue);
-                }
-
-                break;
-            }
-
-            applied[j] = true;
-          }
-
-          if (stop) {
-            break;
-          }
-        }
-
-        output.push.apply(output, insertRowsBefore);
-
-        if (row) {
-          const children = (row.children && 'children') || (row.as && 'as');
-          if (children) {
-            // make a shallow copy if we haven't already
-            if (row === layout[i]) {
-              row = lang.mixin({}, row);
-            }
-
-            row[children] = this._compileCustomizedLayout(customizations, row[children], row);
-          }
-
-          output.push(row);
-        }
-        output.push.apply(output, insertRowsAfter);
-      }
-      /*
-       for any non-applied, insert only, customizations, if they have an `or` property that expands into a true expression
-       the value is applied at the end of the parent group that the `or` property (ideally) matches.
-      */
-      for (let k = 0; k < customizationCount; k++) {
-        if (applied[k]) {
-          continue;
-        }
-
-        const customization = customizations[k];
-
-        if (customization.type === 'insert' && (expand(customization.or, parent, customization) || (customization.at === true))) {
-          output.push(expand(customization.value, null));
-        }
-      }
-    } else if (lang.isFunction(layout)) {
-      return this._compileCustomizedLayout(customizations, layout.call(this), name);
-    } else if (lang.isObject(layout)) {
-      output = {};
-
-      for (const name in layout) {
-        if (lang.isArray(layout[name])) {
-          output[name] = this._compileCustomizedLayout(customizations, layout[name], name);
-        } else {
-          output[name] = layout[name];
-        }
-      }
-    }
-
-    return output;
   },
 });
 

@@ -25,14 +25,14 @@ const __class = {
     const offlineModel = App.ModelManager.getModel(onlineModel.entityName, MODEL_TYPES.OFFLINE);
     const rvModel = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
     const rvEntry = rvModel.createEntry(view.id, view.entry, onlineModel);
-    rvModel.saveEntry(rvEntry).then(function onSuccess(rvResult) {
+    rvModel.saveEntry(rvEntry).then((rvResult) => {
       const odef = def;
-      offlineModel.saveEntry(view.entry).then(function onSaveEntitySuccess() {
+      offlineModel.saveEntry(view.entry).then(() => {
         odef.resolve(rvResult);
-      }, function onSaveEntityFailure(err) {
+      }, (err) => {
         odef.reject(err);
       });
-    }, function onFailure(err) {
+    }, (err) => {
       def.reject(err);
     });
     return def.promise;
@@ -74,7 +74,7 @@ const __class = {
               oodef.reject(err);
             });
           } else {
-            odef.reject('Entity model not found:' + entityName);
+            odef.reject(`Entity model not found:${entityName}`);
           }
         }, (err) => {
           def.reject(err);
@@ -102,22 +102,22 @@ const __class = {
         if (entry) {
           const briefcaseModel = App.ModelManager.getModel('Briefcase', MODEL_TYPES.OFFLINE);
           const briefcaseEntry = briefcaseModel.createEntry(entry, onlineModel, options);
-          briefcaseModel.saveEntry(briefcaseEntry).then(function bcEntrySuccess() {
+          briefcaseModel.saveEntry(briefcaseEntry).then(() => {
             const odef = def;
-            offlineModel.saveEntry(entry, options).then(function bcEntitySuccess(result) {
+            offlineModel.saveEntry(entry, options).then((result) => {
               console.log('Briefcased entity:' + briefcaseEntry.entityName + ' entityId;' + briefcaseEntry.entityId); // eslint-disable-line
               odef.resolve(result);
               if (defProgress) {
                 defProgress.progress();
               }
-            }, function bcEntityFailure(err) {
+            }, (err) => {
               odef.reject(err);
             });
-          }, function bcEntryFailure(err) {
+          }, (err) => {
             def.reject(err);
           });
         } else {
-          def.reject('entity not found.' );
+          def.reject('entity not found.');
         }
       }, (err) => {
         def.reject(err);
@@ -218,6 +218,8 @@ const __class = {
       if (model && (model.entityName !== 'Authentication')) {
         return model;
       }
+
+      return null;
     });
     requests = models.map((model) => {
       return model.clearData(queryExpression, options);

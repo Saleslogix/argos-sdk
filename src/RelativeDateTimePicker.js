@@ -8,6 +8,7 @@ import DateTimePicker from './DateTimePicker';
 import getResource from './I18n';
 
 const resource = getResource('relativeDateTimePicker');
+const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
 
 /**
  * @class argos.DateTimePicker
@@ -16,14 +17,14 @@ const resource = getResource('relativeDateTimePicker');
 const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _ActionMixin, _CustomizationMixin], {
   widgetTemplate: new Simplate([
     '<div class="relative-datetime-select" data-dojo-attach-point="relativeDateTimeNode">',
-      '<div class="relative-datetime-select__title">{%: $.titleText %}</div>',
-      '<ul class="simpleList" data-dojo-attach-point="listNode"></ul>',
+    '<div class="relative-datetime-select__title">{%: $.titleText %}</div>',
+    '<ul class="simpleList" data-dojo-attach-point="listNode"></ul>',
     '</div>',
   ]),
   listItemTemplate: new Simplate([
     '<li class="simpleList__item" data-time="{%: $.time %}" data-action="select">',
-      '<div class="item__text--left">{%: $.textLeft %}</div>',
-      '<div class="item__text--right">{%: $.textRight %}</div>',
+    '<div class="item__text--left">{%: $.textLeft %}</div>',
+    '<div class="item__text--right">{%: $.textRight %}</div>',
     '</li>',
   ]),
 
@@ -45,6 +46,10 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   tomorrowAfternoonText: resource.tomorrowAfternoonText,
   nextWeekText: resource.nextWeekText,
   nextMonthText: resource.nextMonthText,
+  hoursFormat: dtFormatResource.hoursFormat,
+  dayHoursFormat: dtFormatResource.dayHoursFormat,
+  hoursFormat24: dtFormatResource.hoursFormat24,
+  dayHoursFormat24: dtFormatResource.dayHoursFormat24,
 
 
   createLayout: function createLayout() {
@@ -52,24 +57,50 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
       title: this.titleText,
       children: [{
         label: this.thisEveningText,
-        time: moment().clone().hours(this.eveningHours).minutes(0).seconds(0),
-        format: 'h:mm A',
+        time: moment()
+          .clone()
+          .hours(this.eveningHours)
+          .minutes(0)
+          .seconds(0),
+        format: (App.is24HourClock()) ? this.hoursFormat24 : this.hoursFormat,
       }, {
         label: this.tomorrowMorningText,
-        time: moment().clone().add(1, 'days').hours(this.morningHours).minutes(0).seconds(0),
-        format: 'h:mm A',
+        time: moment()
+          .clone()
+          .add(1, 'days')
+          .hours(this.morningHours)
+          .minutes(0)
+          .seconds(0),
+        format: (App.is24HourClock()) ? this.hoursFormat24 : this.hoursFormat,
       }, {
         label: this.tomorrowAfternoonText,
-        time: moment().clone().add(1, 'days').hours(this.eveningHours).minutes(0).seconds(0),
-        format: 'h:mm A',
+        time: moment()
+          .clone()
+          .add(1, 'days')
+          .hours(this.eveningHours)
+          .minutes(0)
+          .seconds(0),
+        format: (App.is24HourClock()) ? this.hoursFormat24 : this.hoursFormat,
       }, {
         label: this.nextWeekText,
-        time: moment().clone().startOf('week').add(7, 'days').hours(this.morningHours).minutes(0).seconds(0),
-        format: 'ddd h:mm A',
+        time: moment()
+          .clone()
+          .startOf('week')
+          .add(7, 'days')
+          .hours(this.morningHours)
+          .minutes(0)
+          .seconds(0),
+        format: (App.is24HourClock()) ? this.dayHoursFormat24 : this.dayHoursFormat,
       }, {
         label: this.nextMonthText,
-        time: moment().clone().startOf('month').add(1, 'month').hours(this.morningHours).minutes(0).seconds(0),
-        format: 'ddd h:mm A',
+        time: moment()
+          .clone()
+          .startOf('month')
+          .add(1, 'month')
+          .hours(this.morningHours)
+          .minutes(0)
+          .seconds(0),
+        format: (App.is24HourClock()) ? this.dayHoursFormat24 : this.dayHoursFormat,
       }],
     }];
   },
@@ -79,12 +110,12 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   getContent: function getContent() {
     return this._selectedTime;
   },
-  makeItem: function makeItem({label, time, format}) {
+  makeItem: function makeItem({ label, time, format }) {
     const item = domConstruct.toDom(this.listItemTemplate.apply({ textLeft: label, textRight: time.format(format) }));
     item.time = time;
     domConstruct.place(item, this.listNode);
   },
-  makeListItems: function makeListItems({title, children}) {
+  makeListItems: function makeListItems({ title, children }) {
     let startIndex = 0;
     if (title === this.titleText) {
       const currentTime = moment();

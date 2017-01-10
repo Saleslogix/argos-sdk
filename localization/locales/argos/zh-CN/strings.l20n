@@ -1,0 +1,288 @@
+<dateField ""
+  emptyText: ''
+  invalidDateFormatErrorText: "字段“${0}”的日期格式无效。"
+  cancelText: "取消"
+  confirmText: "确认"
+  advancedText: "高级"
+>
+
+<durationField ""
+  minutes: "分钟"
+  hours: "小时"
+  days: "天"
+  weeks: "周"
+  years: "年"
+  invalidDurationErrorText: "字段“${0}”不是有效的持续时间。"
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "编辑"
+  lookupText: "..."
+  emptyText: "空"
+  completeText: "确定"
+>
+
+<lookupField ""
+  dependentErrorText: "必须为“${0}”选择值。"
+  emptyText: ""
+  completeText: "选择"
+  lookupLabelText: "查找"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "签名"
+  signatureText: "..."
+>
+
+<dateTimeSection ""
+  displayNameText: "日期时间部分"
+  todayText: "今天"
+  tomorrowText: "明天"
+  laterThisWeekText: "本周晚些时候"
+  earlierThisWeekText: "本周早些时候"
+  thisLaterMonthText: "本月晚些时候"
+  thisEarlierMonthText: "本月早些时候"
+  thisYearEarlierText: "今年早些时候"
+  thisYearLaterText: "今年晚些时候"
+  yesterdayText: "昨天"
+  lastWeekText: "上一周"
+  lastMonthText: "上个月"
+  pastYearText: "去年"
+  nextYearText: "明年"
+  nextMonthText: "下个月"
+  nextWeekText: "下一周"
+  futureText: "未来"
+  twoWeeksAgoText: "两周前"
+  threeWeeksAgoText: "三周前"
+  twoMonthsAgoText: "两个月前"
+  threeMonthsAgoText: "三个月前"
+  unknownText: "未知"
+>
+
+<groupByValueSection ""
+  displayNameText: "按值部分进行分组"
+>
+
+<configureQuickActions ""
+  titleText: "配置快速操作"
+>
+
+<fileSelect ""
+  titleText: "文件选择"
+  addFileText: "单击或点击此处以添加文件。"
+  uploadText: "上传"
+  cancelText: "取消"
+  selectFileText: "选择文件"
+  loadingText: "正在上传..."
+  descriptionText: "描述"
+  bytesText: "字节"
+  notSupportedText: "您的设备不支持添加附件。"
+>
+
+<signature ""
+  titleText: "签名"
+  clearCanvasText: "擦除"
+  undoText: "撤销"
+>
+
+<configureBase ""
+  titleText: "配置"
+>
+
+<detailBase ""
+  informationText: "信息"
+  titleText: "明细"
+  entityText: "实体"
+  detailsText: "明细"
+  loadingText: "正在加载"
+  notAvailableText: "请求的数据不可用。"
+  toggleCollapseText: "切换折叠"
+  editText: "编辑"
+>
+
+<editBase ""
+  concurrencyErrorText: "另一个用户已更新该字段。"
+  toggleCollapseText: "切换折叠"
+  saveText: "保存"
+  titleText: "编辑"
+  validationSummaryText: "验证摘要"
+  concurrencySummaryText: "并行性错误"
+  detailsText: "明细"
+  loadingText: "正在加载"
+  errorGeneral: "请求数据时发生服务器错误。"
+  error410:  "保存时出现错误。此记录不再存在。"
+>
+
+<errorHandleMixin ""
+  general: 'A server error occured.'
+>
+
+<listBase ""
+  moreText: "检索更多记录"
+  emptySelectionText: "无"
+  titleText: "列表"
+  configureText: "配置"
+  errorRenderText: "呈现行模板时出错。"
+  remainingText: "剩余 ${0} 条记录"
+  cancelText: "取消"
+  insertText: "新建"
+  noDataText: "无记录"
+  loadingText: "正在加载"
+>
+
+<pullToRefreshMixin ""
+  pullRefreshText: "通过下拉进行刷新..."
+  pullReleaseText: "通过释放进行刷新..."
+>
+
+<relatedViewWidgetBase ""
+  loadingText: "正在加载"
+>
+
+<calendar ""
+  titleText: "日历"
+  amText: "上午"
+  pmText: "下午"
+  january: "一月"
+  february: "二月"
+  march: "三月"
+  april: "四月"
+  may: "五月"
+  june: "六月"
+  july: "七月"
+  august: "八月"
+  september: "九月"
+  october: "十月"
+  november: "十一月"
+  december: "十二月"
+  clearText: "清除"
+  todayText: "今天"
+  sundayAbbreviated: "周日"
+  mondayAbbreviated: "周一"
+  tuesdayAbbreviated: "周二"
+  wednesdayAbbreviated: "周三"
+  thursdayAbbreviated: "周四"
+  fridayAbbreviated: "周五"
+  saturdayAbbreviated: "周六"
+>
+
+<errorManager ""
+  abortedText: "已中止"
+  scopeSaveText: "未在错误报告中保存作用域"
+>
+
+<format ""
+  yesText: "是"
+  noText: "否"
+  trueText: "T"
+  falseText: "F"
+  hoursText: "小时"
+  hourText: "小时"
+  minutesText: "分钟"
+  minuteText: "分钟"
+  percentFormatText: "${0}${1}"
+  bytesText: "字节"
+>
+
+<groupedList ""
+ toggleCollapseText: "切换折叠"
+>
+
+<mainToolbar ""
+  titleText: "移动电话"
+>
+
+<relatedViewWidget ""
+  nodataText: "找不到任何记录..."
+  selectMoreDataText: "查看另外 ${0} 个 ${1} ... "
+  selectMoreDataText2: "查看另外 ${0} 个... "
+  navToListText: "查看列表"
+  loadingText: "正在加载"
+  refreshViewText: "刷新"
+  itemOfCountText: " ${0} 个 ${1}"
+  totalCountText: " (${0})"
+  titleText: "相关视图"
+>
+
+<searchWidget ""
+ searchText: "搜索"
+>
+
+<selectionModel ""
+  requireSelectionText: "必须进行选择，不能取消选择最后一项。"
+>
+
+<tabWidget ""
+ moreText: "更多"
+>
+
+<view ""
+ titleText: "通用视图"
+>
+
+<timePicker ""
+  amText: "上午"
+  pmText: "下午"
+  setTimeText: "设置时间"
+>
+
+<relativeDateTimePicker ""
+  titleText: "周围..."
+  pickDateTimeText: "高级"
+  thisEveningText: "今晚"
+  tomorrowMorningText: "明早"
+  tomorrowAfternoonText: "明晚"
+  nextWeekText: "下一周"
+  nextMonthText: "下个月"
+  cancelText: "取消"
+  confirmText: "确认"
+>
+
+<briefcaseModel ""
+  entityDisplayName: "公文包"
+  entityDisplayNamePlural : "公文包"
+>
+
+<recentlyViewedModel ""
+  entityDisplayName: "最近查看"
+  entityDisplayNamePlural : "最近查看"
+>
+
+<busyIndicator ""
+  loadingText: "正在加载"
+  progressText: "进度"
+>
+
+<modal
+  alertText: "警报"
+  completeText: "完成"
+  cancelText: "取消"
+  confirmText: "确认"
+  editText: "编辑"
+  okayText: "确定"
+  submitText: "提交"
+  warningText: "警告"
+>
+<_listOfflineMixin
+  goToListViewText: "项目已加入公文包。是否要移至公文包列表视图?"
+  interruptedText: "处理已中断，无法完全完成。请再次重试此处理以将项目完全加入公文包。"
+  briefcasingText: "正在加入公文包，请稍候。"
+  errorBriefcasingText: "加入公文包时出错"
+>
+
+<_detailOfflineMixin
+  goToDetailViewText: "项目和相关项已加入公文包。是否要移至公文包列表视图?"
+  interruptedText: "处理已中断，无法完全完成。请再次重试此处理以将项目完全加入公文包。"
+  briefcasingText: "正在加入公文包，请稍候。"
+  errorBriefcasingText: "加入公文包时出错"
+  errorSavingOfflineViewText: "保存离线视图时出错"
+>
+
+<sdkApplication
+  connectionToastTitleText: "连接"
+  checkingText: "正在检查连接"
+  loadingApplicationStateText: "正在加载应用程序状态"
+  initializingText: "正在初始化:"
+>

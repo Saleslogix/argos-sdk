@@ -371,7 +371,8 @@ const control = declare('argos.Fields.LookupField', [_Field], {
           id: 'cancel',
           side: 'left',
           cls: 'fa fa-ban fa-fw fa-lg',
-          fn: App.back,
+          fn: this.reui.back,
+          scope: this.reui,
         }],
       },
     };
@@ -391,7 +392,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
     }
 
     if (this.dependsOn && !dependentValue) {
-      console.error(string.substitute(this.dependentErrorText, [this.getDependentLabel() || ''])); //eslint-disable-line
+      console.error(string.substitute(this.dependentErrorText, [this.getDependentLabel() || '']));//eslint-disable-line
       return false;
     }
 
@@ -428,8 +429,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    * @param evt
    */
   _onClick: function _onClick(evt) {
-    const buttonNode = query(evt.target)
-      .closest('.button')[0];
+    const buttonNode = query(evt.target).closest('.button')[0];
 
     if (!this.isDisabled() && (buttonNode || this.requireSelection)) {
       event.stop(evt);
@@ -464,7 +464,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    *
    * @param {Event} evt
    */
-  onNotificationTrigger: function onNotificationTrigger( /*evt*/ ) {
+  onNotificationTrigger: function onNotificationTrigger(/* evt*/) {
     const currentValue = this.getValue();
 
     if (this.previousValue !== currentValue) {
@@ -497,7 +497,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    *
    * The target view must be the currently active view and must have a selection model.
    *
-   * The values are gathered and passed to {@link #setSelection setSelection}, `history.back()` is
+   * The values are gathered and passed to {@link #setSelection setSelection}, `ReUI.back()` is
    * fired and lastly {@link #_onComplete _onComplete} is called in a setTimeout due to bizarre
    * transition issues, namely in IE.
    */
@@ -527,7 +527,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
         }
       }
 
-      history.back();
+      this.reui.back();
 
       // if the event is fired before the transition, any XMLHttpRequest created in an event handler and
       // executing during the transition can potentially fail (status 0).  this might only be an issue with CORS
@@ -597,8 +597,8 @@ const control = declare('argos.Fields.LookupField', [_Field], {
   getValue: function getValue() {
     let value = null;
     const text = this.getText() || '';
-    // if valueKeyProperty or valueTextProperty IS NOT EXPLICITLY set to false
-    // and IS NOT defined use keyProperty or textProperty in its place.
+      // if valueKeyProperty or valueTextProperty IS NOT EXPLICITLY set to false
+      // and IS NOT defined use keyProperty or textProperty in its place.
     const keyProperty = this.valueKeyProperty !== false ? this.valueKeyProperty || this.keyProperty : false;
     const textProperty = this.valueTextProperty !== false ? this.valueTextProperty || this.textProperty : false;
 
@@ -695,8 +695,8 @@ const control = declare('argos.Fields.LookupField', [_Field], {
     }
 
     this.currentValue = {
-     key: newKey || text,
-     text: text || newKey,
+      key: newKey || text,
+      text: text || newKey,
     };
 
     this.setText(this.currentValue.text);

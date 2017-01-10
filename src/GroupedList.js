@@ -129,13 +129,13 @@ const __class = declare('argos.GroupedList', [List], {
       let title;
       const sectionDef = this._currentGroupBySection.section.getSection(entry);
       if (this._currentGroupBySection.description) {
-        title = this._currentGroupBySection.description + ': ' + sectionDef.title;
+        title = `${this._currentGroupBySection.description}: ${sectionDef.title}`;
       } else {
         title = sectionDef.title;
       }
       return {
         tag: sectionDef.key,
-        title: title,
+        title,
         collapsed: !!sectionDef.collapsed,
       };
     }
@@ -172,7 +172,7 @@ const __class = declare('argos.GroupedList', [List], {
    * @deprecated Use processData instead
    */
   processFeed: function processFeed(feed) {
-    const getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), function mem(entryGroup) {
+    const getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), (entryGroup) => {
       return entryGroup.tag;
     });
 
@@ -210,7 +210,7 @@ const __class = declare('argos.GroupedList', [List], {
   processData: function processData(entries) {
     const count = entries.length;
     const store = this.get('store');
-    const getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), function memoize(entryGroup) {
+    const getGroupsNode = Utility.memoize(this.getGroupsNode.bind(this), (entryGroup) => {
       return entryGroup.tag;
     });
 
@@ -232,7 +232,7 @@ const __class = declare('argos.GroupedList', [List], {
     }
   },
   getGroupsNode: function getGroupsNode(entryGroup) {
-    let results = query('[data-group="' + entryGroup.tag + '"]', this.contentNode);
+    let results = query(`[data-group="${entryGroup.tag}"]`, this.contentNode);
     if (results.length > 0) {
       results = results[0];
     } else {
@@ -240,7 +240,7 @@ const __class = declare('argos.GroupedList', [List], {
       results = domConstruct.toDom(this.groupTemplate.apply(entryGroup, this));
       domConstruct.place(results, this.contentNode, 'last');
       // re-query what we just place in (which was a doc frag)
-      results = query('[data-group="' + entryGroup.tag + '"]', this.contentNode)[0];
+      results = query(`[data-group="${entryGroup.tag}"]`, this.contentNode)[0];
     }
 
     return results;

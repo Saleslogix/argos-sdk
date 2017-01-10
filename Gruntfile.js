@@ -7,8 +7,7 @@ module.exports = function gruntFile(grunt) {
   grunt.loadTasks('grunt-tasks');
 
   // Register alias tasks
-  grunt.registerTask('build', ['clean', 'babel', 'less']);
-  grunt.registerTask('test', ['babel', 'connect', 'jasmine:coverage']);
-  grunt.registerTask('lint', ['babel', 'eslint']);
-  grunt.registerTask('default', ['test']);
+  grunt.registerTask('build', ['clean', 'less']);
+  grunt.registerTask('test', ['connect', 'jasmine:coverage']);
+  grunt.registerTask('test:basic', ['connect', 'jasmine:basic']);
 };
