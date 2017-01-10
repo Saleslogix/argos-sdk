@@ -775,18 +775,18 @@ const __class = declare('argos.Application', null, {
     return !!this.services[name];
   },
   _createViewContainers: function _createViewContainers(domNode) {
+    // If a domNode is provided, create the app's dom under this
+    if (domNode && !this._rootDomNode) {
+      this._rootDomNode = domNode;
+      this._createDrawerDOM();
+      return;
+    }
+
     // Check for the default div id of "viewContainer" (multiple calls)
     const defaultAppID = 'viewContainer';
     const node = document.getElementById(defaultAppID);
     if (node) {
       this._rootDomNode = node;
-      return;
-    }
-
-    // If a domNode is provided, create the app's dom under this
-    if (domNode && !this._rootDomNode) {
-      this._rootDomNode = domNode;
-      this._createDrawerDOM();
       return;
     }
 
