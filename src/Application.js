@@ -139,7 +139,7 @@ const __class = declare('argos.Application', null, {
 
   ReUI: {
     back: function back() {
-      history.back();
+      page.back();
     },
     context: {
       history: null,
@@ -169,6 +169,8 @@ const __class = declare('argos.Application', null, {
    * @private
    */
   _connects: null,
+
+  _embedded: true,
 
   /**
    * Array of handles for App
@@ -329,7 +331,9 @@ const __class = declare('argos.Application', null, {
    */
   uninitialize: function uninitialize() {},
   back: function back() {
-    history.back();
+    if (!this._embedded) {
+      history.back();
+    }
   },
   /**
    * Initialize the hash and save the redirect hash if any
@@ -340,7 +344,9 @@ const __class = declare('argos.Application', null, {
       this.redirectHash = h;
     }
 
-    location.hash = '';
+    if (!this._embedded) {
+      location.hash = '';
+    }
 
     // Backwards compatibility for global uses of ReUI
     window.ReUI = this.ReUI;
@@ -726,6 +732,7 @@ const __class = declare('argos.Application', null, {
     page({
       dispatch: false,
       hashbang: true,
+      usingUrl: false,
     });
   },
   /**

@@ -34,6 +34,10 @@
 
   var dispatch = true;
 
+  // TODO: Push this into page.js library
+  var usingUrl = true;
+  var tempRoutes = [];
+
 
   /**
    * Decode URL components (query string, pathname, hash).
@@ -165,6 +169,8 @@
       document.addEventListener(clickEvent, onclick, false);
     }
     if (true === options.hashbang) hashbang = true;
+    // TODO: Push this into page.js library
+    if (false === options.usingUrl) usingUrl = false;
     if (!dispatch) return;
     var url = (hashbang && ~location.hash.indexOf('#!')) ? location.hash.substr(2) + location.search : location.pathname + location.search + location.hash;
     page.replace(url, null, true, dispatch);
@@ -216,7 +222,22 @@
     if (page.len > 0) {
       // this may need more testing to see if all browsers
       // wait for the next tick to go back in history
-      history.back();
+
+      // TODO: Push this into page.js library
+      if (usingUrl) {
+        history.back();
+      } else {
+        let route = base;
+        if (tempRoutes.length > 1) {
+          tempRoutes.pop();
+          route = tempRoutes.pop();
+          route = route.path ? route.path : route;
+        }
+        setTimeout(function() {
+          page.show(route, state);
+        });
+      }
+
       page.len--;
     } else if (path) {
       setTimeout(function() {
@@ -416,6 +437,13 @@
 
   Context.prototype.pushState = function() {
     page.len++;
+
+    // TODO: Push this into page.js library
+    if (!usingUrl) {
+      tempRoutes.push(this.state);
+      return;
+    }
+
     history.pushState(this.state, this.title, hashbang && this.path !== '/' ? '#!' + this.path : this.canonicalPath);
   };
 
@@ -427,6 +455,11 @@
 
   Context.prototype.save = function() {
     var self = this;
+
+    // TODO: Push this into page.js library
+    if (!usingUrl) {
+      return;
+    }
 
     /*
      * Wrap history.replaceState in a setTimeout to allow the dispatching queue
