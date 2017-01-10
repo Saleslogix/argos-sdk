@@ -638,7 +638,8 @@ const __class = declare('argos.Application', null, {
   /**
    * Initializes this application as well as the toolbar and all currently registered views.
    */
-  init: function init() {
+  init: function init(domNode) {
+    this._createViewContainers(domNode);
     this.initPreferences();
     this.initConnects();
     this.initSignals();
@@ -773,32 +774,44 @@ const __class = declare('argos.Application', null, {
   hasService: function hasService(name) {
     return !!this.services[name];
   },
-  _createViewContainers: function _createViewContainers() {
-    const node = document.getElementById('viewContainer');
+  _createViewContainers: function _createViewContainers(domNode) {
+    // If a domNode is provided, create the app's dom under this
+    if (domNode && !this._rootDomNode) {
+      this._rootDomNode = domNode;
+      this._createDrawerDOM();
+      return;
+    }
 
+    // Check for the default div id of "viewContainer" (multiple calls)
+    const defaultAppID = 'viewContainer';
+    const node = document.getElementById(defaultAppID);
     if (node) {
       this._rootDomNode = node;
       return;
     }
 
+    // Nothing was provided, create a default
     if (this._rootDomNode === null || typeof this._rootDomNode === 'undefined') {
       this._rootDomNode = domConstruct.create('div', {
-        id: 'viewContainer',
-        class: 'viewContainer',
+        id: defaultAppID,
+        class: defaultAppID,
       }, win.body());
 
-      const drawers = domConstruct.create('div', {
-        class: 'drawers absolute',
-      }, win.body());
-
-      domConstruct.create('div', {
-        class: 'overthrow left-drawer absolute',
-      }, drawers);
-
-      domConstruct.create('div', {
-        class: 'overthrow right-drawer absolute',
-      }, drawers);
+      this._createDrawerDOM();
     }
+  },
+  _createDrawerDOM: function _createDrawerDOM() {
+    const drawers = domConstruct.create('div', {
+      class: 'drawers absolute',
+    }, win.body());
+
+    domConstruct.create('div', {
+      class: 'overthrow left-drawer absolute',
+    }, drawers);
+
+    domConstruct.create('div', {
+      class: 'overthrow right-drawer absolute',
+    }, drawers);
   },
   /**
    * Registers a view with the application and renders it to HTML.
@@ -1224,7 +1237,7 @@ const __class = declare('argos.Application', null, {
   },
   /**
    * Loads Snap.js and assigns the instance to App.snapper. This method would typically be called before navigating to the initial view, so the login page does not contain the menu.
-   * @param {DOMNode} element Optional. Snap.js options.element property. If not provided defaults to the "viewContaienr" DOMNode.
+   * @param {DOMNode} element Optional. Snap.js options.element property. If not provided defaults to the App's _rootDomNode.
    * @param {Object} options Optional. Snap.js options object. A default is provided if this is undefined. Providing options will override the element parameter.
    */
   loadSnapper: function loadSnapper(element, options) {
@@ -1234,7 +1247,7 @@ const __class = declare('argos.Application', null, {
     }
 
     const snapper = new snap(options || { // eslint-disable-line
-      element: element || document.getElementById('viewContainer'),
+      element: element || this._rootDomNode,
       dragger: null,
       disable: 'none',
       addBodyClasses: true,
