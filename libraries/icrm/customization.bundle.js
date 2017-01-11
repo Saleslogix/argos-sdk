@@ -86,12 +86,12 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createCustomizedLayout = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.normalizeCustomizationSet = normalizeCustomizationSet;
 exports.getCustomizationSetKey = getCustomizationSetKey;
+exports.createCustomizedLayout = createCustomizedLayout;
 exports.compileCustomizedLayout = compileCustomizedLayout;
 
 var _icrmJsCommon = __webpack_require__(1);
@@ -138,7 +138,7 @@ function getCustomizationSetKey(customizationSet, id, customizationSubSet) {
   return key;
 }
 
-function _createCustomizedLayout(layout, customizations, customizationSet, id, customizationSubSet) {
+function createCustomizedLayout(layout, customizations, customizationSet, id, customizationSubSet) {
   customizationSet = normalizeCustomizationSet(customizationSet, customizationSubSet);
 
   if (customizations && customizations.length > 0) {
@@ -147,10 +147,6 @@ function _createCustomizedLayout(layout, customizations, customizationSet, id, c
 
   return layout;
 }
-
-var createCustomizedLayout = exports.createCustomizedLayout = _icrmJsCommon.utility.memoize(_createCustomizedLayout, function (_, __, customizationSet, id, customizationSubSet) {
-  return getCustomizationSetKey(customizationSet, id, customizationSubSet);
-});
 
 function compileCustomizedLayout(customizations, layout, parent) {
   var customizationCount = customizations.length;
