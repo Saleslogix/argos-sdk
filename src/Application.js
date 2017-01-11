@@ -830,7 +830,8 @@ const __class = declare('argos.Application', null, {
 
     if (React.isValidElement(view)) {
       node = domConstruct.create('div', {
-        class: 'component-wrapper',
+        id: 'component-wrapper',
+        class: 'overflow panel'
       }, node);
 
       // Create an instance of the component

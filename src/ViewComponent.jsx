@@ -10,9 +10,9 @@ export default class ViewComponent extends React.Component {
     return (
       <div
         title={this.props.title}
-        className={`overthrow ${this.props.cls}`}
         ref={(div) => { this.domNode = div; }}>
-      {this.props.children}
+        <h1>Some empty content.</h1>
+        {this.props.children}
     </div>);
   }
 
@@ -57,6 +57,6 @@ export default class ViewComponent extends React.Component {
       tag,
       data,
     });
-    ReUI.show(this.domNode, newOptions);
+    ReUI.show(this.domNode.parentNode, newOptions);
   }
 }
