@@ -394,7 +394,7 @@ const __class = declare('argos._EditBase', [View], {
    * Sets and returns the toolbar item layout definition, this method should be overriden in the view
    * so that you may define the views toolbar items.
    *
-   * By default it adds a save button bound to `this.save()` and cancel that fires `ReUI.back()`
+   * By default it adds a save button bound to `this.save()` and cancel that fires `history.back()`
    *
    * @return {Object} this.tools
    * @template
@@ -986,7 +986,7 @@ const __class = declare('argos._EditBase', [View], {
     if (values) {
       this.onInsert(values);
     } else {
-      ReUI.back();
+      history.back();
     }
   },
   onInsert: function onInsert(values) {
@@ -1036,7 +1036,7 @@ const __class = declare('argos._EditBase', [View], {
         window.location.hash = returnTo;
       }
     } else {
-      ReUI.back();
+      history.back();
     }
   },
   /**
@@ -1175,7 +1175,7 @@ const __class = declare('argos._EditBase', [View], {
         window.location.hash = returnTo;
       }
     } else {
-      ReUI.back();
+      history.back();
     }
   },
   /**
@@ -1354,6 +1354,21 @@ const __class = declare('argos._EditBase', [View], {
         this.requestData();
       }
     }
+  },
+  getRoute: function getRoute() {
+    return `${this.id}/:key?`;
+  },
+  buildRoute: function buildRoute() {
+    const parts = [];
+    const id = this.id;
+    parts.push(id);
+
+    const key = this.getTag() || (this.entry && this.entry[this.idProperty]);
+    if (key) {
+      parts.push(key);
+    }
+
+    return parts.join('/');
   },
 });
 
