@@ -3,6 +3,7 @@ export default class ViewComponent extends React.Component {
   // See: https://facebook.github.io/react/docs/react-component.html
   constructor(props) {
     super(props);
+    // todo: use proptype validation
     this.id = props.id;
     this._started = false;
   }
@@ -11,12 +12,19 @@ export default class ViewComponent extends React.Component {
   }
 
   render() {
+    console.dir(this.props);
+    console.dir(this.state);
     return (
-      <div
-        title={this.props.title}
-        ref={(div) => { this.domNode = div; }}>
-        {this.props.children}
-    </div>);
+      <ReactRedux.Provider
+        store={this.props.store}
+        >
+          <div
+            title={this.props.title}
+            ref={(div) => { this.domNode = div; }}>
+            {this.props.children}
+          </div>
+      </ReactRedux.Provider>
+    );
   }
 
   componentDidMount() {

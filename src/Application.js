@@ -22,6 +22,7 @@ import win from 'dojo/_base/window';
 import hash from 'dojo/hash';
 import has from 'dojo/has';
 import domConstruct from 'dojo/dom-construct';
+import ViewComponent from './ViewComponent';
 import all from 'dojo/promise/all';
 import snap from 'snap';
 import ReUI from './ReUI/main';
@@ -640,6 +641,7 @@ const __class = declare('argos.Application', null, {
    * Initializes this application as well as the toolbar and all currently registered views.
    */
   init: function init(domNode) {
+    this.initStore();
     this._createViewContainers(domNode);
     this.initPreferences();
     this.initConnects();
@@ -651,6 +653,12 @@ const __class = declare('argos.Application', null, {
     this.initReUI();
     this.initModal();
     this.initToasts();
+  },
+  initStore: function initStore() {
+    // todo: implement this for real
+    this.store = Redux.createStore((state, action) => {//eslint-disable-line
+      return state;
+    }, { initial: 'state' });
   },
   initToasts: function initToasts() {
     this.toast = new Toast();
@@ -837,7 +845,10 @@ const __class = declare('argos.Application', null, {
       }, node);
 
       // Create an instance of the component
-      view = ReactDOM.render(view, node);
+      view = ReactDOM.render(React.createElement(ViewComponent, {
+        store: this.store,
+        id,
+      }, view), node);
     } else {
       view._placeAt = node;
     }

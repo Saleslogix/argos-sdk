@@ -33,6 +33,8 @@ module.exports = {
     "moment": false,
     "React": false,
     "ReactDOM": false,
+    "Redux": false,
+    "ReactRedux": false,
     "ICRMCommonSDK": false,
     "ICRMCustomizationSDK": false
   },
