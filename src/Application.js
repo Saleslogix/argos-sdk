@@ -139,6 +139,11 @@ const __class = declare('argos.Application', null, {
 
   ReUI: {
     back: function back() {
+      if (this.context && this.context.history) {
+        // Have to call twice as page will re-add the view you are returning to
+        this.context.history.pop();
+        this.context.history.pop();
+      }
       page.back();
     },
     context: {
