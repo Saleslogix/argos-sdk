@@ -3,6 +3,7 @@ export default class ViewComponent extends React.Component {
     super(props);
     this.id = props.id;
     this.viewType = 'ReactComponent';
+    this._started = false;
   }
 
   render() {
@@ -22,8 +23,8 @@ export default class ViewComponent extends React.Component {
 
   }
 
-  placeAt(domNode) {
-    ReactDOM.render(this.render(), domNode);
+  placeAt() {
+    this._started = true;
   }
 
   refreshRequiredFor(options) {// eslint-disable-line

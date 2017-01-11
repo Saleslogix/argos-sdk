@@ -820,7 +820,7 @@ const __class = declare('argos.Application', null, {
    * @param {domNode} domNode Optional. A DOM node to place the view in.
    */
   registerView: function registerView(view, domNode) {
-    this.views[view.id] = view;
+    let id = view.id;
 
     if (!domNode) {
       this._createViewContainers();
@@ -828,13 +828,19 @@ const __class = declare('argos.Application', null, {
 
     let node = domNode || this._rootDomNode;
 
-    if (view.viewType === 'ReactComponent') {
+    if (React.isValidElement(view)) {
       node = domConstruct.create('div', {
         class: 'component-wrapper',
       }, node);
+
+      // Create an instance of the component
+      id = view.props.id;
+      view = ReactDOM.render(view, node);
+    } else {
+      view._placeAt = node;
     }
 
-    view._placeAt = node;
+    this.views[id] = view;
 
     this.onRegistered(view);
 
