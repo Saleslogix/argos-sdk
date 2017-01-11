@@ -829,13 +829,13 @@ const __class = declare('argos.Application', null, {
     let node = domNode || this._rootDomNode;
 
     if (React.isValidElement(view)) {
+      id = view.props.id;
       node = domConstruct.create('div', {
-        id: 'component-wrapper',
-        class: 'overflow panel'
+        id: `component-wrapper-${id}`,
+        class: 'overflow panel',
       }, node);
 
       // Create an instance of the component
-      id = view.props.id;
       view = ReactDOM.render(view, node);
     } else {
       view._placeAt = node;

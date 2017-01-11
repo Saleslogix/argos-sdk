@@ -170,8 +170,15 @@ const __class = declare('argos.ApplicationModule', null, {
     this.registerView(new ConfigureQuickActions());
     this.registerView(new LinkView());
     this.registerView(React.createElement(ViewComponent, {
-      id: 'view_component',
-    }));
+      id: 'view1',
+    }, [
+      React.createElement('div', null, 'View1'),
+    ]));
+    this.registerView(React.createElement(ViewComponent, {
+      id: 'view2',
+    }, [
+      React.createElement('div', null, 'View2'),
+    ]));
 
     this.statics._viewsLoaded = true;
   },
