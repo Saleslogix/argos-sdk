@@ -361,7 +361,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   titleText: resource.titleText,
   /**
    * @property {String}
->>>>>>> develop
    * The text displayed for quick action configure.
    */
   configureText: resource.configureText,

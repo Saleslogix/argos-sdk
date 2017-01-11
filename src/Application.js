@@ -15,7 +15,6 @@
 import json from 'dojo/json';
 import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
-// import aspect from 'dojo/aspect';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import win from 'dojo/_base/window';
@@ -442,15 +441,6 @@ const __class = declare('argos.Application', null, {
    * Establishes signals/handles from dojo's newer APIs
    */
   initSignals: function initSignals() {
-    // this._signals.push(aspect.after(window.ReUI, 'setOrientation', (result, args) => {
-    //   if (args && args.length > 0) {
-    //     const value = args[0];
-    //     this.currentOrientation = value;
-    //     this.onSetOrientation(value);
-    //     connect.publish('/app/setOrientation', [value]);
-    //   }
-    // }));
-
     return this;
   },
   /**
