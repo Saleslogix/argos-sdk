@@ -175,7 +175,12 @@ const __class = declare('argos.Application', null, {
    */
   _connects: null,
 
-  _embedded: true,
+  /**
+   * Boolean for whether the application is an embedded app or not
+   * @property {boolean}
+   * @private
+   */
+  _embedded: false,
 
   /**
    * Array of handles for App
@@ -737,7 +742,7 @@ const __class = declare('argos.Application', null, {
     page({
       dispatch: false,
       hashbang: true,
-      usingUrl: false,
+      usingUrl: !this._embedded,
     });
   },
   /**
