@@ -265,6 +265,7 @@ const __class = declare('argos.Application', null, {
 
     this.context = {};
     this.viewShowOptions = [];
+    // TODO: Replace these
     const actions = intent();
     this.state$ = model(actions);
     this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));

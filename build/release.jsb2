@@ -53,6 +53,18 @@
           "path": "../libraries/rx/"
         },
         {
+          "text": "redux.min.js",
+          "path": "../libraries/redux/"
+        },
+        {
+          "text": "react.min.js",
+          "path": "../libraries/react/"
+        },
+        {
+          "text": "react-dom.min.js",
+          "path": "../libraries/react/"
+        },
+        {
           "text": "common.bundle.js",
           "path": "../libraries/icrm/"
         },
@@ -113,6 +125,9 @@
           }, {
             "text": "update-connection.js",
             "path": "../src-out/Intents/"
+          }, {
+            "text": "ViewComponent.js",
+            "path": "../src-out/"
           }, {
             "text": "CultureInfo.js",
             "path": "../src-out/"

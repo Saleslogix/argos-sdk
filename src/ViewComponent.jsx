@@ -1,9 +1,13 @@
 export default class ViewComponent extends React.Component {
+  // Mounting lifecycle
+  // See: https://facebook.github.io/react/docs/react-component.html
   constructor(props) {
     super(props);
     this.id = props.id;
-    this.viewType = 'ReactComponent';
     this._started = false;
+  }
+
+  componentWillMount() {
   }
 
   render() {
@@ -11,15 +15,36 @@ export default class ViewComponent extends React.Component {
       <div
         title={this.props.title}
         ref={(div) => { this.domNode = div; }}>
-        <h1>Some empty content.</h1>
         {this.props.children}
     </div>);
   }
 
-  onShow() {// eslint-disable-line
+  componentDidMount() {
   }
 
-  init() {// eslint-disable-line
+  // Updating lifecycle
+  componentWillReceiveProps(nextProps) {// eslint-disable-line
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {// eslint-disable-line
+    return true;
+  }
+
+  componentWillUpdate(nextProps, nextState) {// eslint-disable-line
+  }
+
+  componentDidUpdate(prevProps, prevState) {// eslint-disable-line
+  }
+
+  // Unmounting lifecycle
+  componentWillUnmount() {
+  }
+
+  // Legacy
+  onShow() {
+  }
+
+  init() {
 
   }
 
@@ -30,7 +55,7 @@ export default class ViewComponent extends React.Component {
   refreshRequiredFor(options) {// eslint-disable-line
   }
 
-  getTag() {// eslint-disable-line
+  getTag() {
   }
 
   getContext() {
