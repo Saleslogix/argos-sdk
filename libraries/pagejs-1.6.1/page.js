@@ -2,8 +2,6 @@
 (function (process){
   /* globals require, module */
 
-  'use strict';
-
   /**
    * Module dependencies.
    */
@@ -227,7 +225,7 @@
       if (usingUrl) {
         history.back();
       } else {
-        let route = base;
+        var route = base;
         if (tempRoutes.length > 1) {
           tempRoutes.pop();
           route = tempRoutes.pop();
