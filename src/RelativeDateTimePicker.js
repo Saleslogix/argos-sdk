@@ -48,6 +48,8 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   nextMonthText: resource.nextMonthText,
   hoursFormat: dtFormatResource.hoursFormat,
   dayHoursFormat: dtFormatResource.dayHoursFormat,
+  hoursFormat24: dtFormatResource.hoursFormat24,
+  dayHoursFormat24: dtFormatResource.dayHoursFormat24,
 
 
   createLayout: function createLayout() {
@@ -60,7 +62,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
           .hours(this.eveningHours)
           .minutes(0)
           .seconds(0),
-        format: this.hoursFormat,
+        format: (App.is24HourClock()) ? this.hoursFormat24 : this.hoursFormat,
       }, {
         label: this.tomorrowMorningText,
         time: moment()
@@ -69,7 +71,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
           .hours(this.morningHours)
           .minutes(0)
           .seconds(0),
-        format: this.hoursFormat,
+        format: (App.is24HourClock()) ? this.hoursFormat24 : this.hoursFormat,
       }, {
         label: this.tomorrowAfternoonText,
         time: moment()
@@ -78,7 +80,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
           .hours(this.eveningHours)
           .minutes(0)
           .seconds(0),
-        format: this.hoursFormat,
+        format: (App.is24HourClock()) ? this.hoursFormat24 : this.hoursFormat,
       }, {
         label: this.nextWeekText,
         time: moment()
@@ -88,7 +90,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
           .hours(this.morningHours)
           .minutes(0)
           .seconds(0),
-        format: this.dayHoursFormat,
+        format: (App.is24HourClock()) ? this.dayHoursFormat24 : this.dayHoursFormat,
       }, {
         label: this.nextMonthText,
         time: moment()
@@ -98,7 +100,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
           .hours(this.morningHours)
           .minutes(0)
           .seconds(0),
-        format: this.dayHoursFormat,
+        format: (App.is24HourClock()) ? this.dayHoursFormat24 : this.dayHoursFormat,
       }],
     }];
   },

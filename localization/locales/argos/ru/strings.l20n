@@ -1,6 +1,6 @@
 <dateField ""
   emptyText: ''
-  invalidDateFormatErrorText: "Некорректный формат даты в поле "${0}"."
+  invalidDateFormatErrorText: "Некорректный формат даты в поле \"${0}\"."
   cancelText: "Отмена"
   confirmText: "Подтвердить"
   advancedText: "Дополнительно"
@@ -12,7 +12,7 @@
   days: "дни"
   weeks: "недели"
   years: "годы"
-  invalidDurationErrorText: "Поле "${0}" не является допустимой длительностью."
+  invalidDurationErrorText: "Поле \"${0}\" не является допустимой длительностью."
   emptyText: ""
 >
 
@@ -24,7 +24,7 @@
 >
 
 <lookupField ""
-  dependentErrorText: "Необходимо выбрать значение "${0}"."
+  dependentErrorText: "Необходимо выбрать значение \"${0}\"."
   emptyText: ""
   completeText: "Выбрать"
   lookupLabelText: "поиск"
@@ -143,8 +143,8 @@
 
 <calendar ""
   titleText: "Календарь"
-  amText: "до полудня"
-  pmText: "после полудня"
+  amText: "AM"
+  pmText: "PM"
   january: "Январь"
   february: "Февраль"
   march: "Март"
@@ -223,8 +223,8 @@
 >
 
 <timePicker ""
-  amText: "до полудня"
-  pmText: "после полудня"
+  amText: "AM"
+  pmText: "PM"
   setTimeText: "Установленное время"
 >
 

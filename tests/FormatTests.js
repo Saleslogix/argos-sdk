@@ -413,18 +413,19 @@ return describe('argos.Format', function() {
         var testStr = '1234567890x123';
         expect(format.phone(testStr)).toEqual('(123)-456-7890x123');
     });
-    it('Can call alphaToPhoneNumeric when formatting a phone number', function() {
-        spyOn(format, 'alphaToPhoneNumeric').and.returnValue('test');
-
-        format.phone('test');
-
-        expect(format.alphaToPhoneNumeric).toHaveBeenCalled();
-    });
     it('Can format a phone number with mixed numbers and alphas', function() {
         var testStr = '1-800-CALL-JEFF';
         expect(format.phone(testStr)).toEqual('180022555333');
     });
+    it('Can format a phone with a null value.', function() {
+        var testStr = null;
+        expect(format.phone(testStr)).toEqual('');
 
+        testStr = '';
+        expect(format.phone(testStr)).toEqual('');
 
-});
+        testStr = undefined;
+        expect(format.phone(testStr)).toEqual('');
+    });
+  });
 });
