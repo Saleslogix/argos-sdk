@@ -13,8 +13,7 @@
  * limitations under the License.
  */
 import lang from 'dojo/_base/lang';
-
-const util = ICRMCommonSDK.utility;
+import { utility as util } from '@infor/icrm-js-common';
 
 /**
  * @class argos.Utility
