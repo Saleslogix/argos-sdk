@@ -269,33 +269,6 @@ const __class = declare('argos.Application', null, {
     this.state$ = model(actions);
     this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
 
-    this.ping = options.ping || util.debounce(() => {
-      this.toast.add({
-        message: resource.checkingText,
-        title: resource.connectionToastTitleText,
-        toastTime: this.PING_TIMEOUT,
-      });
-      const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
-        .flatMap(() => {
-          return Rx.Observable.fromPromise(this._ping())
-            .flatMap((online) => {
-              if (online) {
-                return Rx.Observable.just(online);
-              }
-
-              return Rx.Observable.throw(new Error());
-            });
-        })
-        .retry(this.PING_RETRY)
-        .take(1);
-
-      ping$.subscribe(() => {
-        updateConnectionState(true);
-      }, () => {
-        updateConnectionState(false);
-      });
-    }, this.PING_DEBOUNCE);
-
     this.ModelManager = ModelManager;
     lang.mixin(this, options);
   },
@@ -641,6 +614,8 @@ const __class = declare('argos.Application', null, {
   init: function init(domNode) {
     this._createViewContainers(domNode);
     this.initPreferences();
+    this.initToasts();
+    this.initPing();
     this.initConnects();
     this.initSignals();
     this.initServices(); // TODO: Remove
@@ -649,11 +624,43 @@ const __class = declare('argos.Application', null, {
     this.initToolbars();
     this.initReUI();
     this.initModal();
-    this.initToasts();
   },
   initToasts: function initToasts() {
     this.toast = new Toast();
     this.toast.show();
+  },
+  initPing: function initPing() {
+    // this.ping will be set if ping was passed as an options to the ctor
+    if (this.ping) {
+      return;
+    }
+
+    this.ping = util.debounce(() => {
+      this.toast.add({
+        message: resource.checkingText,
+        title: resource.connectionToastTitleText,
+        toastTime: this.PING_TIMEOUT,
+      });
+      const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
+        .flatMap(() => {
+          return Rx.Observable.fromPromise(this._ping())
+            .flatMap((online) => {
+              if (online) {
+                return Rx.Observable.just(online);
+              }
+
+              return Rx.Observable.throw(new Error());
+            });
+        })
+        .retry(this.PING_RETRY)
+        .take(1);
+
+      ping$.subscribe(() => {
+        updateConnectionState(true);
+      }, () => {
+        updateConnectionState(false);
+      });
+    }, this.PING_DEBOUNCE);
   },
   initPreferences: function initPreferences() {
     this._loadPreferences();
