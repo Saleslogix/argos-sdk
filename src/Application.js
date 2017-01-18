@@ -39,6 +39,9 @@ import ErrorManager from './ErrorManager';
 import getResource from './I18n';
 import 'dojo/sniff';
 
+import moment from 'moment';
+import Rx from 'rxjs';
+
 const resource = getResource('sdkApplication');
 
 has.add('html5-file-api', (global) => {
@@ -74,7 +77,7 @@ lang.extend(Function, {
 // Patching backwards compatablity so that customizations will not break and where moment
 // was required.
 define('moment', [], function getMoment() { // eslint-disable-line
-  return window.moment;
+  return moment;
 });
 
 function applyLocalizationTo(object, localization) {

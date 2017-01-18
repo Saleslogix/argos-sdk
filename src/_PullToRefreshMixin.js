@@ -10,6 +10,8 @@ import domGeom from 'dojo/dom-geometry';
 import domStyle from 'dojo/dom-style';
 import getResource from './I18n';
 
+import Rx from 'rxjs';
+
 const resource = getResource('pullToRefreshMixin');
 
 /**

@@ -10,6 +10,8 @@ import getResource from './I18n';
 import domStyle from 'dojo/dom-style';
 import string from 'dojo/string';
 
+import moment from 'moment';
+
 const resource = getResource('timePicker');
 
 /**

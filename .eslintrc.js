@@ -17,16 +17,13 @@ module.exports = {
     "Mobile": false,
     "ReUI": false,
     "Base64": false,
-    "PouchDB": false,
     "Canvas2Image": false,
     "argos": false,
     "describe": false,
     "it": false,
     "expect": false,
     "spyOn": false,
-    "module": false,
-    "Rx": false,
-    "moment": false
+    "module": false
   },
   rules: {
     /**

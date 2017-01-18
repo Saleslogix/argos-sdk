@@ -7,6 +7,8 @@ import _CustomizationMixin from './_CustomizationMixin';
 import DateTimePicker from './DateTimePicker';
 import getResource from './I18n';
 
+import moment from 'moment';
+
 const resource = getResource('relativeDateTimePicker');
 const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
 

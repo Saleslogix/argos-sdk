@@ -10,6 +10,8 @@ import _ModelBase from './_ModelBase';
 import QueryResults from 'dojo/store/util/QueryResults';
 import MODEL_TYPES from './Types';
 
+import moment from 'moment';
+
 const databaseName = 'crm-offline';
 const _store = new PouchDBStore(databaseName);
 
