@@ -8,7 +8,7 @@ const updateConnection$ = new Rx.ReplaySubject(1);
  * @param {Boolean} Connection state
  */
 function updateConnectionState(state) {
-  updateConnection$.onNext(state);
+  updateConnection$.next(state);
 }
 
 export { updateConnectionState, updateConnection$ };
