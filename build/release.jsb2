@@ -75,6 +75,10 @@
         {
           "text": "customization.bundle.js",
           "path": "../libraries/icrm/"
+        },
+        {
+          "text": "page.js",
+          "path": "../libraries/pagejs-1.6.1/"
         }
       ]
     },
@@ -145,9 +149,6 @@
             "text": "PouchDB.js",
             "path": "../src-out/Store/"
           }, {
-            "text": "DomHelper.js",
-            "path": "../src-out/ReUI/"
-          }, {
             "text": "_ErrorHandleMixin.js",
             "path": "../src-out/"
           }, {
@@ -210,9 +211,6 @@
           }, {
             "text": "Model.js",
             "path": "../src-out/"
-          }, {
-            "text": "main.js",
-            "path": "../src-out/ReUI/"
           }, {
             "text": "ConfigurableSelectionModel.js",
             "path": "../src-out/"

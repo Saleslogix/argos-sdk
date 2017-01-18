@@ -19,6 +19,7 @@ module.exports = {
     "Simplate": false,
     "Sage": false,
     "Mobile": false,
+    "page": false,
     "ReUI": false,
     "Base64": false,
     "PouchDB": false,

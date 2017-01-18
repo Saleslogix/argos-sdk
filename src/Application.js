@@ -15,17 +15,16 @@
 import json from 'dojo/json';
 import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
-import aspect from 'dojo/aspect';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import win from 'dojo/_base/window';
 import hash from 'dojo/hash';
 import has from 'dojo/has';
+import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import ViewComponent from './ViewComponent';
 import all from 'dojo/promise/all';
 import snap from 'snap';
-import ReUI from './ReUI/main';
 import ready from 'dojo/ready';
 import util from './Utility';
 import ModelManager from './Models/Manager';
@@ -138,10 +137,19 @@ const __class = declare('argos.Application', null, {
    */
   enableConcurrencyCheck: false,
 
-  /**
-   * Instance of a ReUI
-   */
-  ReUI,
+  ReUI: {
+    back: function back() {
+      if (this.context && this.context.history) {
+        // Have to call twice as page will re-add the view you are returning to
+        this.context.history.pop();
+        this.context.history.pop();
+      }
+      page.back();
+    },
+    context: {
+      history: null,
+    },
+  },
 
   /**
    * @property viewShowOptions {Array} Array with one configuration object that gets pushed before showing a view.
@@ -166,6 +174,13 @@ const __class = declare('argos.Application', null, {
    * @private
    */
   _connects: null,
+
+  /**
+   * Boolean for whether the application is an embedded app or not
+   * @property {boolean}
+   * @private
+   */
+  _embedded: false,
 
   /**
    * Array of handles for App
@@ -264,7 +279,9 @@ const __class = declare('argos.Application', null, {
     this.views = {};
     this.bars = {};
 
-    this.context = {};
+    this.context = {
+      history: [],
+    };
     this.viewShowOptions = [];
     // TODO: Replace these
     const actions = intent();
@@ -324,19 +341,27 @@ const __class = declare('argos.Application', null, {
    * Shelled function that is called from {@link #destroy destroy}, may be used to release any further handles.
    */
   uninitialize: function uninitialize() {},
+  back: function back() {
+    if (!this._embedded) {
+      history.back();
+    }
+  },
   /**
-   * Cleans up URL to prevent ReUI url handling and then invokes ReUI.
+   * Initialize the hash and save the redirect hash if any
    */
-  initReUI: function initReUI() {
-    // prevent ReUI from attempting to load the URLs view as we handle that ourselves.
-    // todo: add support for handling the URL?
+  initHash: function initHash() {
     const h = this.hash();
     if (h !== '') {
       this.redirectHash = h;
     }
 
-    history.replaceState(null, '', '#');
-    ReUI.init();
+    if (!this._embedded) {
+      location.hash = '';
+    }
+
+    // Backwards compatibility for global uses of ReUI
+    window.ReUI = this.ReUI;
+    window.ReUI.context.history = this.context.history;
   },
   _onOffline: function _onOffline() {
     this.ping();
@@ -418,15 +443,6 @@ const __class = declare('argos.Application', null, {
    * Establishes signals/handles from dojo's newer APIs
    */
   initSignals: function initSignals() {
-    this._signals.push(aspect.after(window.ReUI, 'setOrientation', (result, args) => {
-      if (args && args.length > 0) {
-        const value = args[0];
-        this.currentOrientation = value;
-        this.onSetOrientation(value);
-        connect.publish('/app/setOrientation', [value]);
-      }
-    }));
-
     return this;
   },
   /**
@@ -650,7 +666,8 @@ const __class = declare('argos.Application', null, {
     this._startupConnections();
     this.initModules();
     this.initToolbars();
-    this.initReUI();
+    this.initHash();
+    this.startOrientationCheck();
     this.initModal();
     this.initToasts();
   },
@@ -721,6 +738,12 @@ const __class = declare('argos.Application', null, {
    */
   run: function run() {
     this._started = true;
+    this.startOrientationCheck();
+    page({
+      dispatch: false,
+      hashbang: true,
+      usingUrl: !this._embedded,
+    });
   },
   /**
    * Returns the `window.navigator.onLine` property for detecting if an internet connection is available.
@@ -855,9 +878,18 @@ const __class = declare('argos.Application', null, {
 
     this.views[id] = view;
 
+    this.registerViewRoute(view);
+
     this.onRegistered(view);
 
     return this;
+  },
+  registerViewRoute: function registerViewRoute(view) {
+    if (!view || typeof view.getRoute !== 'function') {
+      return;
+    }
+
+    page(view.getRoute(), view.routeLoad.bind(view), view.routeShow.bind(view));
   },
   /**
    * Registers a toolbar with the application and renders it to HTML.
@@ -913,15 +945,73 @@ const __class = declare('argos.Application', null, {
     // todo: add check for multiple active views.
     return (this.getPrimaryActiveView() === view);
   },
+  updateOrientationDom: function updateOrientationDom(value) {
+    const body = document.body;
+    const currentOrient = body.getAttribute('orient');
+    if (value === currentOrient) {
+      return;
+    }
+
+    body.setAttribute('orient', value);
+
+    if (value === 'portrait') {
+      domClass.remove(body, 'landscape');
+      domClass.add(body, 'portrait');
+    } else if (value === 'landscape') {
+      domClass.remove(body, 'portrait');
+      domClass.add(body, 'landscape');
+    } else {
+      domClass.remove(body, 'portrait');
+      domClass.remove(body, 'landscape');
+    }
+
+    this.currentOrientation = value;
+    this.onSetOrientation(value);
+    connect.publish('/app/setOrientation', [value]);
+  },
+  checkOrientation: function checkOrientation() {
+    const context = this.context;
+    // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
+    if (Math.abs(window.innerHeight - context.height) > 5 || Math.abs(window.innerWidth - context.width) > 5) {
+      if (Math.abs(window.innerWidth - context.width) > 5) {
+        this.updateOrientationDom(window.innerHeight < window.innerWidth ? 'landscape' : 'portrait');
+      }
+
+      context.height = window.innerHeight;
+      context.width = window.innerWidth;
+    }
+  },
+  checkOrientationTime: 100,
+  orientationCheckHandle: null,
+  startOrientationCheck: function startOrientationCheck() {
+    this.orientationCheckHandle = window.setInterval(this.checkOrientation.bind(this), this.checkOrientationTime);
+  },
+  stopOrientationCheck: function stopOrientationCheck() {
+    window.clearInterval(this.orientationCheckHandle);
+  },
   /**
-   * Talks to ReUI to get the current page or dialog name and then returns the result of {@link #getView getView(name)}.
+   * Gets the current page and then returns the result of {@link #getView getView(name)}.
    * @return {View} Returns the active view instance, if no view is active returns null.
    */
   getPrimaryActiveView: function getPrimaryActiveView() {
-    const el = ReUI.getCurrentPage() || ReUI.getCurrentDialog();
+    const el = this.getCurrentPage();
     if (el) {
       return this.getView(el);
     }
+  },
+  /**
+   * Sets the current page(domNode)
+   * @param {DOMNode}
+   */
+  setCurrentPage: function setCurrentPage(_page) {
+    this._currentPage = _page;
+  },
+  /**
+   * Gets the current page(domNode)
+   * @returns {DOMNode}
+   */
+  getCurrentPage: function getCurrentPage() {
+    return this._currentPage;
   },
   /**
    * Determines if any registered view has been registered with the provided key.
@@ -1106,14 +1196,14 @@ const __class = declare('argos.Application', null, {
     view.activate(tag, data);
   },
   /**
-   * Searches ReUI.context.history by passing a predicate function that should return true if a match is found, false otherwise.
+   * Searches App.context.history by passing a predicate function that should return true if a match is found, false otherwise.
    * This is similar to queryNavigationContext, however, this function will return an array of found items instead of a single item.
    * @param {Function} predicate
    * @param {Object} scope
    * @return {Array} context history filtered out by the predicate.
    */
   filterNavigationContext: function filterNavigationContext(predicate, scope) {
-    const list = ReUI.context.history || [];
+    const list = this.context.history || [];
     const filtered = array.filter(list, (item) => {
       return predicate.call(scope || this, item.data);
     });
@@ -1123,7 +1213,7 @@ const __class = declare('argos.Application', null, {
     });
   },
   /**
-   * Searches ReUI.context.history by passing a predicate function that should return true
+   * Searches App.context.history by passing a predicate function that should return true
    * when a match is found.
    * @param {Function} predicate Function that is called in the provided scope with the current history iteration. It should return true if the history item is the desired context.
    * @param {Number} depth
@@ -1139,7 +1229,7 @@ const __class = declare('argos.Application', null, {
       depth = 0;
     }
 
-    const list = ReUI.context.history || [];
+    const list = this.context.history || [];
 
     depth = depth || 0;
 
