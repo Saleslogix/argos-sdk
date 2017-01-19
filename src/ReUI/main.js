@@ -244,7 +244,10 @@ lang.mixin(ReUI, {
 
   resetHistory: function resetHistory() {
     const length = context.history.length;
-    history.go(-length);
+    if (length > 0) {
+      history.go(-length);
+    }
+
     context.history = [];
   },
 
