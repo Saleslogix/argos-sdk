@@ -134,7 +134,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
           // Prevent the user from dragging the pane above our starting point
           return d.distance >= 0;
         })
-        .takeUntil(done.doAction(() => {
+        .takeUntil(done.do(() => {
           // The "done" observable is a combination of touch end and touch cancel.
           // We should restore the UI state and invoke callbacks here.
           domStyle.set(this.scrollerNode, {
