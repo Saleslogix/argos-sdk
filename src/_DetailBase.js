@@ -223,7 +223,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * * `$$` => view instance
    */
   actionPropertyTemplate: new Simplate([
-    '<div class="row {%= $.cls %}">',
+    '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
     '<label>{%: $.label %}</label>',
     '<span>',
     '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
