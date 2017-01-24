@@ -1979,6 +1979,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 exports.sanitizeForJson = sanitizeForJson;
 exports.stripQueryArgs = stripQueryArgs;
 exports.trimText = trimText;
+exports.escapeSearchQuery = escapeSearchQuery;
 /**
  * Sanitizes an Object so that JSON.stringify will work without errors by discarding non-stringable keys.
  * @param {Object} obj Object to be cleansed of non-stringify friendly keys/values.
@@ -2065,6 +2066,10 @@ function trimText() {
     return value;
   }
   return text;
+}
+
+function escapeSearchQuery(searchQuery) {
+  return (searchQuery || '').replace(/"/g, '""');
 }
 
 /***/ },
