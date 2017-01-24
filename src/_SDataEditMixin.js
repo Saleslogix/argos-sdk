@@ -217,7 +217,16 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
 
     return entry;
   },
+  resetInteractionState: function resetInteractionState() {
+    Object.keys(this.fields)
+      .forEach((k) => {
+        const field = this.fields[k];
+        field.enable();
+        field.show();
+      });
+  },
   processFieldLevelSecurity: function processFieldLevelSecurity(entry) {
+    this.resetInteractionState();
     const { $permissions: permissions } = entry;
     // permissions is an array of objects:
     // { name: "FieldName", access: "ReadOnly" }

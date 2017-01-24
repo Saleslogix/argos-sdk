@@ -140,6 +140,19 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
     }
     return this;
   },
+  createSimpleAlert: function createSimpleAlert(options = {}) {
+    const dialog = {
+      title: this.defaultHeaderText[options.title] || options.title,
+      content: options.content,
+      getContent: options.getContent,
+    };
+    const toolbar = [{
+      action: 'resolve',
+      className: 'button--flat button--flat--split',
+      text: resource.okayText,
+    }];
+    return this.add(dialog, toolbar);
+  },
   createSimpleDialog: function createSimpleDialog(options = {}) {
     const dialog = {
       title: this.defaultHeaderText[options.title] || options.title,
