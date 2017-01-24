@@ -12,6 +12,7 @@ mkdir deploy\content\dojo\dijit
 mkdir deploy\content\dojo\dojox
 
 call grunt clean:css clean:js less
+call npm run build
 
 REM .NET Build Tool
 tools\JsBit\jsbit.exe -p "build/release.jsb2" -d "."
