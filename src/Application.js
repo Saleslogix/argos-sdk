@@ -37,6 +37,9 @@ import BusyIndicator from './Dialogs/BusyIndicator';
 import Deferred from 'dojo/Deferred';
 import ErrorManager from './ErrorManager';
 import getResource from './I18n';
+import { createStore } from 'redux';
+import { isValidElement, createElement } from 'react';
+import { render } from 'react-dom';
 import 'dojo/sniff';
 
 // import moment from 'moment';
@@ -650,7 +653,7 @@ const __class = declare('argos.Application', null, {
   },
   initStore: function initStore() {
     // todo: implement this for real
-    this.store = Redux.createStore((state, action) => {//eslint-disable-line
+    this.store = createStore((state, action) => {//eslint-disable-line
       return state;
     }, { initial: 'state' });
   },
@@ -870,7 +873,7 @@ const __class = declare('argos.Application', null, {
 
     let node = domNode || this._rootDomNode;
 
-    if (React.isValidElement(view)) {
+    if (isValidElement(view)) {
       id = view.props.id;
       node = domConstruct.create('div', {
         id: `component-wrapper-${id}`,
@@ -878,7 +881,7 @@ const __class = declare('argos.Application', null, {
       }, node);
 
       // Create an instance of the component
-      view = ReactDOM.render(React.createElement(ViewComponent, {
+      view = render(createElement(ViewComponent, {
         store: this.store,
         id,
       }, view), node);

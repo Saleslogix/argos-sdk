@@ -1,6 +1,8 @@
 import on from 'dojo/on';
 import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
+import React from 'react';
+import { Provider } from 'react-redux';
 
 export default class ViewComponent extends React.Component {
   // Mounting lifecycle
@@ -22,7 +24,7 @@ export default class ViewComponent extends React.Component {
     console.dir(this.props);
     console.dir(this.state);
     return (
-      <ReactRedux.Provider
+      <Provider
         store={this.props.store}
         >
           <div
@@ -30,7 +32,7 @@ export default class ViewComponent extends React.Component {
             ref={(div) => { this.domNode = div; }}>
             {this.props.children}
           </div>
-      </ReactRedux.Provider>
+      </Provider>
     );
   }
 
