@@ -3,7 +3,7 @@ import lang from 'dojo/_base/lang';
 import Deferred from 'dojo/_base/Deferred';
 import QueryResults from 'dojo/store/util/QueryResults';
 
-import PouchDB from 'pouchdb';
+import PouchDB from 'pouchdb-browser';
 
 /**
  * @class argos.Store.PouchDB
