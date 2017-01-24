@@ -1,14 +1,69 @@
-/*
-	Copyright (c) 2004-2011, The Dojo Foundation All Rights Reserved.
-	Available via Academic Free License >= 2.1 OR the modified BSD license.
-	see: http://dojotoolkit.org/license for details
-*/
+define({ root:
 
-//>>built
-define("dojo/cldr/nls/number",{root:{scientificFormat:"#E0","currencySpacing-afterCurrency-currencyMatch":"[:^S:]",infinity:"\u221e",superscriptingExponent:"\u00d7",list:";",percentSign:"%",minusSign:"-","currencySpacing-beforeCurrency-surroundingMatch":"[:digit:]","decimalFormat-short":"000T","currencySpacing-afterCurrency-insertBetween":"\u00a0",nan:"NaN",plusSign:"+","currencySpacing-afterCurrency-surroundingMatch":"[:digit:]","currencySpacing-beforeCurrency-currencyMatch":"[:^S:]",currencyFormat:"\u00a4\u00a0#,##0.00",
-perMille:"\u2030",group:",",percentFormat:"#,##0%","decimalFormat-long":"000T",decimalFormat:"#,##0.###",decimal:".","currencySpacing-beforeCurrency-insertBetween":"\u00a0",exponential:"E"},af:!0,"af-na":!0,agq:!0,ak:!0,am:!0,ar:!0,"ar-dz":!0,"ar-eg":!0,"ar-lb":!0,"ar-ly":!0,"ar-ma":!0,"ar-mr":!0,"ar-ps":!0,"ar-qa":!0,"ar-sa":!0,"ar-sy":!0,"ar-tn":!0,"ar-ye":!0,as:!0,asa:!0,az:!0,"az-cyrl":!0,bas:!0,be:!0,bem:!0,bez:!0,bg:!0,bm:!0,bn:!0,"bn-in":!0,bo:!0,br:!0,brx:!0,bs:!0,"bs-cyrl":!0,ca:!0,cgg:!0,
-chr:!0,cs:!0,cy:!0,da:!0,dav:!0,de:!0,"de-at":!0,"de-ch":!0,"de-li":!0,dje:!0,dua:!0,dyo:!0,dz:!0,ebu:!0,ee:!0,el:!0,"el-cy":!0,en:!0,"en-150":!0,"en-au":!0,"en-be":!0,"en-in":!0,"en-us-posix":!0,"en-za":!0,eo:!0,es:!0,"es-419":!0,"es-ar":!0,"es-bo":!0,"es-cl":!0,"es-co":!0,"es-cr":!0,"es-ec":!0,"es-gq":!0,"es-mx":!0,"es-py":!0,"es-uy":!0,"es-ve":!0,et:!0,eu:!0,ewo:!0,fa:!0,"fa-af":!0,ff:!0,fi:!0,fil:!0,fo:!0,fr:!0,"fr-be":!0,"fr-ch":!0,"fr-lu":!0,ga:!0,gl:!0,gsw:!0,gu:!0,guz:!0,gv:!0,ha:!0,"ha-sd":!0,
-haw:!0,he:!0,hi:!0,hr:!0,hu:!0,hy:!0,id:!0,ig:!0,ii:!0,is:!0,it:!0,"it-ch":!0,ja:!0,jgo:!0,jmc:!0,ka:!0,kab:!0,kam:!0,kde:!0,kea:!0,khq:!0,ki:!0,kk:!0,kkj:!0,kl:!0,kln:!0,km:!0,kn:!0,ko:!0,kok:!0,ks:!0,ksb:!0,ksf:!0,"ku-tr":!0,kw:!0,ky:!0,lg:!0,ln:!0,lo:!0,lt:!0,lu:!0,luo:!0,luy:!0,lv:!0,mas:!0,mer:!0,mfe:!0,mg:!0,mgh:!0,mgo:!0,mk:!0,ml:!0,mn:!0,mo:!0,mr:!0,ms:!0,"ms-latn-bn":!0,mt:!0,mua:!0,my:!0,naq:!0,nb:!0,nd:!0,ne:!0,nl:!0,"nl-be":!0,nmg:!0,nn:!0,nnh:!0,nr:!0,nso:!0,nus:!0,nyn:!0,om:!0,or:!0,
-pa:!0,"pa-arab":!0,"pa-pk":!0,pl:!0,ps:!0,pt:!0,"pt-pt":!0,rm:!0,rn:!0,ro:!0,rof:!0,ru:!0,rw:!0,rwk:!0,saq:!0,sbp:!0,seh:!0,ses:!0,sg:!0,sh:!0,shi:!0,"shi-latn":!0,si:!0,sk:!0,sl:!0,sn:!0,so:!0,sq:!0,sr:!0,"sr-latn":!0,ss:!0,st:!0,sv:!0,sw:!0,swc:!0,ta:!0,"ta-my":!0,"ta-sg":!0,te:!0,teo:!0,th:!0,ti:!0,tn:!0,to:!0,tr:!0,ts:!0,twq:!0,tzm:!0,ug:!0,uk:!0,ur:!0,"ur-in":!0,uz:!0,"uz-af":!0,"uz-arab":!0,"uz-cyrl":!0,vai:!0,"vai-latn":!0,ve:!0,vi:!0,vun:!0,xh:!0,xog:!0,yav:!0,yo:!0,"yo-bj":!0,zgh:!0,zh:!0,
-"zh-hans-hk":!0,"zh-hans-mo":!0,"zh-hans-sg":!0,"zh-hant":!0,"zh-hant-hk":!0,"zh-hk":!0,"zh-mo":!0,"zh-tw":!0,zu:!0});
-//# sourceMappingURL=number.js.map
+//begin v1.x content
+{
+	"scientificFormat": "#E0",
+	"currencySpacing-afterCurrency-currencyMatch": "[:^S:]",
+	"infinity": "∞",
+	"superscriptingExponent": "×",
+	"list": ";",
+	"percentSign": "%",
+	"minusSign": "-",
+	"currencySpacing-beforeCurrency-surroundingMatch": "[:digit:]",
+	"decimalFormat-short": "000T",
+	"currencySpacing-afterCurrency-insertBetween": " ",
+	"nan": "NaN",
+	"plusSign": "+",
+	"currencySpacing-afterCurrency-surroundingMatch": "[:digit:]",
+	"currencySpacing-beforeCurrency-currencyMatch": "[:^S:]",
+	"currencyFormat": "¤ #,##0.00",
+	"perMille": "‰",
+	"group": ",",
+	"percentFormat": "#,##0%",
+	"decimalFormat-long": "000T",
+	"decimalFormat": "#,##0.###",
+	"decimal": ".",
+	"currencySpacing-beforeCurrency-insertBetween": " ",
+	"exponential": "E"
+}
+//end v1.x content
+,
+	"ar": true,
+	"bs": true,
+	"ca": true,
+	"cs": true,
+	"da": true,
+	"de": true,
+	"el": true,
+	"en": true,
+	"en-au": true,
+	"es": true,
+	"fi": true,
+	"fr": true,
+	"fr-ch": true,
+	"he": true,
+	"hr": true,
+	"hu": true,
+	"id": true,
+	"it": true,
+	"ja": true,
+	"ko": true,
+	"mk": true,
+	"nb": true,
+	"nl": true,
+	"pl": true,
+	"pt": true,
+	"pt-pt": true,
+	"ro": true,
+	"ru": true,
+	"sk": true,
+	"sl": true,
+	"sr": true,
+	"sv": true,
+	"th": true,
+	"tr": true,
+	"zh": true,
+	"zh-hant": true,
+	"zh-hk": true,
+	"zh-tw": true
+});
