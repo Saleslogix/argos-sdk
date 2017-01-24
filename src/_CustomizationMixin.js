@@ -31,9 +31,7 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-// import { createCustomizedLayout } from './Customization';
-
-const customization = ICRMCustomizationSDK;
+import * as customization from '@infor/icrm-js-customization';
 
 const __class = declare('argos._CustomizationMixin', null, {
   id: null,

@@ -6,6 +6,8 @@ import _Templated from 'argos/_Templated';
 import Calendar from './Calendar';
 import TimePicker from './TimePicker';
 
+import moment from 'moment';
+
 /**
  * @class argos.DateTimePicker
  */

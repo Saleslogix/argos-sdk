@@ -18,6 +18,8 @@ import connect from 'dojo/_base/connect';
 import utility from './Utility';
 import getResource from './I18n';
 
+import moment from 'moment';
+
 const resource = getResource('errorManager');
 let errors = [];
 

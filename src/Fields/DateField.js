@@ -24,6 +24,8 @@ import DateTimePicker from '../DateTimePicker';
 import RelativeDateTimePicker from '../RelativeDateTimePicker';
 import getResource from '../I18n';
 
+import moment from 'moment';
+
 const resource = getResource('dateField');
 const dtFormatResource = getResource('dateFieldDateTimeFormat');
 

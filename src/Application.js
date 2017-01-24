@@ -39,6 +39,9 @@ import ErrorManager from './ErrorManager';
 import getResource from './I18n';
 import 'dojo/sniff';
 
+// import moment from 'moment';
+import Rx from 'rxjs';
+
 const resource = getResource('sdkApplication');
 
 has.add('html5-file-api', (global) => {
@@ -73,9 +76,9 @@ lang.extend(Function, {
 
 // Patching backwards compatablity so that customizations will not break and where moment
 // was required.
-define('moment', [], function getMoment() { // eslint-disable-line
-  return window.moment;
-});
+// define('moment', [], function getMoment() { // eslint-disable-line
+//   return moment;
+// });
 
 function applyLocalizationTo(object, localization) {
   if (!object) {
@@ -287,33 +290,6 @@ const __class = declare('argos.Application', null, {
     const actions = intent();
     this.state$ = model(actions);
     this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
-
-    this.ping = options.ping || util.debounce(() => {
-      this.toast.add({
-        message: resource.checkingText,
-        title: resource.connectionToastTitleText,
-        toastTime: this.PING_TIMEOUT,
-      });
-      const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
-        .flatMap(() => {
-          return Rx.Observable.fromPromise(this._ping())
-            .flatMap((online) => {
-              if (online) {
-                return Rx.Observable.just(online);
-              }
-
-              return Rx.Observable.throw(new Error());
-            });
-        })
-        .retry(this.PING_RETRY)
-        .take(1);
-
-      ping$.subscribe(() => {
-        updateConnectionState(true);
-      }, () => {
-        updateConnectionState(false);
-      });
-    }, this.PING_DEBOUNCE);
 
     this.ModelManager = ModelManager;
     lang.mixin(this, options);
@@ -660,6 +636,8 @@ const __class = declare('argos.Application', null, {
     this.initStore();
     this._createViewContainers(domNode);
     this.initPreferences();
+    this.initToasts();
+    this.initPing();
     this.initConnects();
     this.initSignals();
     this.initServices(); // TODO: Remove
@@ -669,7 +647,6 @@ const __class = declare('argos.Application', null, {
     this.initHash();
     this.startOrientationCheck();
     this.initModal();
-    this.initToasts();
   },
   initStore: function initStore() {
     // todo: implement this for real
@@ -680,6 +657,39 @@ const __class = declare('argos.Application', null, {
   initToasts: function initToasts() {
     this.toast = new Toast();
     this.toast.show();
+  },
+  initPing: function initPing() {
+    // this.ping will be set if ping was passed as an options to the ctor
+    if (this.ping) {
+      return;
+    }
+
+    this.ping = util.debounce(() => {
+      this.toast.add({
+        message: resource.checkingText,
+        title: resource.connectionToastTitleText,
+        toastTime: this.PING_TIMEOUT,
+      });
+      const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
+        .flatMap(() => {
+          return Rx.Observable.fromPromise(this._ping())
+            .flatMap((online) => {
+              if (online) {
+                return Rx.Observable.of(online);
+              }
+
+              return Rx.Observable.throw(new Error());
+            });
+        })
+        .retry(this.PING_RETRY)
+        .take(1);
+
+      ping$.subscribe(() => {
+        updateConnectionState(true);
+      }, () => {
+        updateConnectionState(false);
+      });
+    }, this.PING_DEBOUNCE);
   },
   initPreferences: function initPreferences() {
     this._loadPreferences();

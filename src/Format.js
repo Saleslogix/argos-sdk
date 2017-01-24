@@ -15,11 +15,10 @@
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import getResource from './I18n';
+import { format } from '@infor/icrm-js-common';
 
 const resource = getResource('format');
 const dtFormatResource = getResource('formatDateTimeFormat');
-
-const format = ICRMCommonSDK.format;
 
 /**
  * @class argos.Format
