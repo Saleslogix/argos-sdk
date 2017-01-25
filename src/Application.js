@@ -37,9 +37,11 @@ import BusyIndicator from './Dialogs/BusyIndicator';
 import Deferred from 'dojo/Deferred';
 import ErrorManager from './ErrorManager';
 import getResource from './I18n';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { isValidElement, createElement } from 'react';
 import { render } from 'react-dom';
+import { sdk } from './reducers';
+import Scene from './Scene';
 import 'dojo/sniff';
 
 // import moment from 'moment';
@@ -650,6 +652,10 @@ const __class = declare('argos.Application', null, {
     this.initHash();
     this.startOrientationCheck();
     this.initModal();
+    this.initScene();
+  },
+  initScene: function initScene() {
+    this.scene = new Scene(this.store);
   },
   initStore: function initStore() {
     this.store = createStore(this.getReducer(),
@@ -657,9 +663,7 @@ const __class = declare('argos.Application', null, {
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
   },
   getReducer: function getReducer() {
-    return function(state, action) { // eslint-disable-line
-      return state;
-    };
+    return sdk;
   },
   getInitialState: function getInitialState() {
     return {};
@@ -1068,7 +1072,7 @@ const __class = declare('argos.Application', null, {
       }
 
       if (init && view && !view._started) {
-        view.init(this.state$);
+        view.init(this.state$, this.store);
         view.placeAt(view._placeAt, 'first');
         view._started = true;
         view._placeAt = null;
