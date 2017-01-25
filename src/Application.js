@@ -652,10 +652,17 @@ const __class = declare('argos.Application', null, {
     this.initModal();
   },
   initStore: function initStore() {
-    // todo: implement this for real
-    this.store = createStore((state, action) => {//eslint-disable-line
+    this.store = createStore(this.getReducer(),
+      this.getInitialState(),
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+  },
+  getReducer: function getReducer() {
+    return function(state, action) { // eslint-disable-line
       return state;
-    }, { initial: 'state' });
+    };
+  },
+  getInitialState: function getInitialState() {
+    return {};
   },
   initToasts: function initToasts() {
     this.toast = new Toast();
