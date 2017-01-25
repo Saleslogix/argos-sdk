@@ -35,7 +35,7 @@ import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
 import Deferred from 'dojo/Deferred';
 import ErrorManager from './ErrorManager';
-import getResource from './I18n';
+import { getResource, ensureLocalized } from './I18n';
 import 'dojo/sniff';
 
 // import moment from 'moment';
@@ -291,6 +291,7 @@ const __class = declare('argos.Application', null, {
 
     this.ModelManager = ModelManager;
     lang.mixin(this, options);
+    ensureLocalized('sdkApplication', this);
   },
   /**
    * Loops through and disconnections connections and unsubscribes subscriptions.
