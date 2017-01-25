@@ -15,7 +15,7 @@ export function ensureLocalized(id, context) {
   }
 }
 
-export default function getResource(id) {
+export function getResource(id) {
   const { defaultLocaleContext, localeContext } = window;
   if (!defaultLocaleContext || !localeContext) {
     deferredLocalizing[id] = [];
@@ -35,3 +35,9 @@ export default function getResource(id) {
   const currentAttributes = localeContext.getEntitySync(id).attributes;
   return lang.mixin(defaultAttributes, currentAttributes);
 }
+
+export function getLocalizationForComponent(id) {
+  return getResource(id);
+}
+
+export default getResource;
