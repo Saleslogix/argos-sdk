@@ -49,14 +49,15 @@ A view might want to indicate a new viewset should be created in the middle of n
 */
 
 export function sdk(state = initialSDKState, action) {
-  switch (action.type) {
+  const { type, payload, error, meta } = action; // eslint-disable-line
+  switch (type) {
     case SET_MAX_VIEWPORTS:
       return Object.assign({}, state, {
-        maxviewports: action.max,
+        maxviewports: payload.max,
       });
     case INSERT_HISTORY:
       return Object.assign({}, state, {
-        history: [...state.history, action.data],
+        history: [...state.history, payload.data],
       });
     default:
       return state;
