@@ -1,6 +1,7 @@
 // action Types
 export const SET_MAX_VIEWPORTS = 'SET_MAX_VIEWPORTS';
 export const INSERT_HISTORY = 'INSERT_HISTORY';
+export const SET_VIEWSET = 'SET_VIEWSET';
 
 /*
 
@@ -25,6 +26,15 @@ export function setMaxViewPorts(max) {
     type: SET_MAX_VIEWPORTS,
     payload: {
       max,
+    },
+  };
+}
+
+export function setViewSet(viewset) {
+  return {
+    type: SET_VIEWSET,
+    payload: {
+      viewset,
     },
   };
 }

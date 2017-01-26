@@ -24,7 +24,6 @@ import _Templated from './_Templated';
 import _ErrorHandleMixin from './_ErrorHandleMixin';
 import Adapter from './Models/Adapter';
 import getResource from './I18n';
-import { insertHistory } from './actions';
 
 const resource = getResource('view');
 
@@ -316,7 +315,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   currentHash: '',
   transitionComplete: function transitionComplete(_page, options) {
     if (options.track !== false) {
-      this.currentHash = location.hash;
+      this.currentHash = window && window.location.hash || '';
 
       if (options.trimmed !== true) {
         const data = {
@@ -326,7 +325,6 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
           data: options.data,
         };
         App.context.history.push(data);
-        this.store.dispatch(insertHistory(data));
       }
     }
   },
