@@ -24,6 +24,7 @@ import _Templated from './_Templated';
 import _ErrorHandleMixin from './_ErrorHandleMixin';
 import Adapter from './Models/Adapter';
 import getResource from './I18n';
+import { insertHistory } from './actions';
 
 const resource = getResource('view');
 
@@ -141,11 +142,12 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   /**
    * Called on loading of the application.
    */
-  init: function init(state$) {
+  init: function init(state$, store) {
     this.startup();
     this.initConnects();
     this.initModel();
     this.initState(state$);
+    this.store = store;
   },
   initState: function initState(state$) {
     this.state$ = state$;
@@ -317,12 +319,14 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       this.currentHash = location.hash;
 
       if (options.trimmed !== true) {
-        App.context.history.push({
+        const data = {
           hash: this.currentHash,
           page: this.id,
           tag: options.tag,
           data: options.data,
-        });
+        };
+        App.context.history.push(data);
+        this.store.dispatch(insertHistory(data));
       }
     }
   },
