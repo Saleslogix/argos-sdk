@@ -5,7 +5,6 @@ import {
 } from '../actions';
 
 const initialSDKState = {
-  viewports: 0,
   maxviewports: 2,
   viewset: [],
   history: [],

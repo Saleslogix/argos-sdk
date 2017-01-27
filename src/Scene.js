@@ -48,6 +48,17 @@ export default class Scene {
     this.store = store;
   }
 
+  _select(id, value) {
+    const domNode = document.getElementById(id);
+    if (domNode) {
+      domNode.setAttribute('selected', value);
+    }
+  }
+
+  _setSelectedState(views, state) {
+    views.forEach(id => this._select(id, state));
+  }
+
   show(view, options) {
     const store = this.store;
     const state = store.getState();
@@ -60,18 +71,23 @@ export default class Scene {
 
     const viewIndex = viewset.indexOf(view.id);
     let newViewSet;
+    let removedViews = [];
 
     if (viewIndex > -1) {
       // The view already exists in the viewset, preserve up to that view, removing everything to the right
       newViewSet = [...viewset].slice(0, viewIndex + 1);
+      removedViews = viewset.slice(viewIndex + 1);
     } else if (viewset.length < maxviewports) {
       // Push new item on
       newViewSet = [...viewset, view.id];
     } else {
       // Insert the new id, shift all indexes to the left, removing the first
       newViewSet = [...viewset, view.id].slice(1);
+      removedViews = viewset.slice(0, 1);
     }
 
+    console.dir(removedViews);
+    this._setSelectedState(removedViews, false);
     const currentHash = window && window.location.hash || '';
 
     const data = {
@@ -84,5 +100,6 @@ export default class Scene {
 
     store.dispatch(setViewSet(newViewSet));
     store.dispatch(insertHistory(data));
+    this._select(view.id, true);
   }
 }
