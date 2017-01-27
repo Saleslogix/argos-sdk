@@ -142,9 +142,11 @@ const __class = declare('argos.Dialogs.Toast', [_Widget, _Templated, Modal], {
     this._timeouts.push(setTimeout(this.hideToastTimeout.bind(this), this.toastTime));
     return this;
   },
-  show: function show() {
+  show: function show({
+    rootElement,
+  } = {}) {
     this.inherited(arguments);
-    this.place(document.body)
+    this.place(rootElement || document.body)
         .setContent(this.toasts)
         .calculatePosition();
   },

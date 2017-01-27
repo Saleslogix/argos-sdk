@@ -338,7 +338,7 @@
     background: url('../../../images/content-loading-light-green.gif') no-repeat scroll 12px 50%;
 }
 
-body.busy {
+.busy {
     opacity: 0.5;
 }
 
@@ -455,7 +455,7 @@ body {
     overflow: hidden;
 }
 
-body > .viewContainer {
+.viewContainer {
     position: absolute;
     padding: 40px 0 0 0;
     margin: 0;
@@ -466,34 +466,34 @@ body > .viewContainer {
     .box-sizing(border-box);
 }
 
-body[orient="landscape"] {
+[orient="landscape"] {
     min-height: 268px;
     overflow: hidden;
 }
 
-body > .viewContainer > .list,
-body > .viewContainer > .panel,
-body > .viewContainer > .dialog {
+.viewContainer > .list,
+.viewContainer > .panel,
+.viewContainer > .dialog {
     display: none;
     visibility: hidden;
 }
 
-body > .viewContainer > .panel {
+.viewContainer > .panel {
     overflow: auto;
 }
 
-body > .viewContainer > .panel.link-view {
+.viewContainer > .panel.link-view {
     overflow: hidden;
 }
 
-body.transition > .viewContainer > .panel,
-body.transition > .viewContainer > .list {
+.transition > .viewContainer > .panel,
+.transition > .viewContainer > .list {
     position: absolute;
     top: 64px;
 }
 
-body > .viewContainer > .panel,
-body > .viewContainer > .list {
+.viewContainer > .panel,
+.viewContainer > .list {
     position: absolute;
     top: 64px;
     bottom: 0px;
@@ -504,8 +504,8 @@ body > .viewContainer > .list {
     -webkit-transform: translateZ(0);
 }
 
-body[orient="landscape"] > .viewContainer > .panel,
-body[orient="landscape"] > .viewContainer > .list {
+[orient="landscape"] > .viewContainer > .panel,
+[orient="landscape"] > .viewContainer > .list {
     position: absolute;
     top: 64px; /* Adjust if header toolbar changes */
     bottom: 0px; /* Adjust if footer toolbar changes */
@@ -518,12 +518,12 @@ body[orient="landscape"] > .viewContainer > .list {
     transition-timing-function: ease, ease;
 }
 
-body > .viewContainer > [selected="true"] {
+.viewContainer > [selected="true"] {
     display: block;
     visibility: visible;
 }
 
-body > .viewContainer > .dialog {
+.viewContainer > .dialog {
     top: 0px;
     bottom: 0px;
     width: 100%;

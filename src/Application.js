@@ -212,6 +212,7 @@ const __class = declare('argos.Application', null, {
   _started: false,
 
   _rootDomNode: null,
+  _containerNode: null,
   customizations: null,
   services: null, // TODO: Remove
   _connections: null,
@@ -648,7 +649,9 @@ const __class = declare('argos.Application', null, {
   },
   initToasts: function initToasts() {
     this.toast = new Toast();
-    this.toast.show();
+    this.toast.show({
+      rootElement: this._containerNode,
+    });
   },
   initPing: function initPing() {
     // this.ping will be set if ping was passed as an options to the ctor
@@ -688,7 +691,7 @@ const __class = declare('argos.Application', null, {
   },
   initModal: function initModal() {
     this.modal = new Modal();
-    this.modal.place(document.body)
+    this.modal.place(this._containerNode)
       .hide();
   },
   is24HourClock: function is24HourClock() {
@@ -811,7 +814,11 @@ const __class = declare('argos.Application', null, {
   _createViewContainers: function _createViewContainers(domNode) {
     // If a domNode is provided, create the app's dom under this
     if (domNode && !this._rootDomNode) {
-      this._rootDomNode = domNode;
+      const contentDiv = domConstruct.create('div', {
+        class: 'viewContainer',
+      }, domNode);
+      this._containerNode = domNode;
+      this._rootDomNode = contentDiv;
       this._createDrawerDOM();
       return;
     }
@@ -837,7 +844,7 @@ const __class = declare('argos.Application', null, {
   _createDrawerDOM: function _createDrawerDOM() {
     const drawers = domConstruct.create('div', {
       class: 'drawers absolute',
-    }, win.body());
+    }, this._containerNode);
 
     domConstruct.create('div', {
       class: 'overthrow left-drawer absolute',
