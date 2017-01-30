@@ -20,8 +20,9 @@ import lang from 'dojo/_base/lang';
 import win from 'dojo/_base/window';
 import hash from 'dojo/hash';
 import has from 'dojo/has';
-import domConstruct from 'dojo/dom-construct';
 import domClass from 'dojo/dom-class';
+import domConstruct from 'dojo/dom-construct';
+import ViewComponent from './ViewComponent';
 import all from 'dojo/promise/all';
 import snap from 'snap';
 import ready from 'dojo/ready';
@@ -35,7 +36,12 @@ import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
 import Deferred from 'dojo/Deferred';
 import ErrorManager from './ErrorManager';
-import { getResource, getLocalizationForComponent } from './I18n';
+import getResource from './I18n';
+import { createStore, combineReducers } from 'redux';
+import { isValidElement, createElement } from 'react';
+import { render } from 'react-dom';
+import { sdk } from './reducers';
+import Scene from './Scene';
 import 'dojo/sniff';
 
 // import moment from 'moment';
@@ -212,7 +218,6 @@ const __class = declare('argos.Application', null, {
   _started: false,
 
   _rootDomNode: null,
-  _containerNode: null,
   customizations: null,
   services: null, // TODO: Remove
   _connections: null,
@@ -286,13 +291,13 @@ const __class = declare('argos.Application', null, {
       history: [],
     };
     this.viewShowOptions = [];
+    // TODO: Replace these
     const actions = intent();
     this.state$ = model(actions);
     this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
 
     this.ModelManager = ModelManager;
     lang.mixin(this, options);
-    lang.mixin(this, getLocalizationForComponent('sdkApplication'));
   },
   /**
    * Loops through and disconnections connections and unsubscribes subscriptions.
@@ -633,6 +638,7 @@ const __class = declare('argos.Application', null, {
    * Initializes this application as well as the toolbar and all currently registered views.
    */
   init: function init(domNode) {
+    this.initStore();
     this._createViewContainers(domNode);
     this.initPreferences();
     this.initToasts();
@@ -646,12 +652,25 @@ const __class = declare('argos.Application', null, {
     this.initHash();
     this.startOrientationCheck();
     this.initModal();
+    this.initScene();
+  },
+  initScene: function initScene() {
+    this.scene = new Scene(this.store);
+  },
+  initStore: function initStore() {
+    this.store = createStore(this.getReducer(),
+      this.getInitialState(),
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+  },
+  getReducer: function getReducer() {
+    return sdk;
+  },
+  getInitialState: function getInitialState() {
+    return {};
   },
   initToasts: function initToasts() {
     this.toast = new Toast();
-    this.toast.show({
-      rootElement: this._containerNode,
-    });
+    this.toast.show();
   },
   initPing: function initPing() {
     // this.ping will be set if ping was passed as an options to the ctor
@@ -691,7 +710,7 @@ const __class = declare('argos.Application', null, {
   },
   initModal: function initModal() {
     this.modal = new Modal();
-    this.modal.place(this._containerNode)
+    this.modal.place(document.body)
       .hide();
   },
   is24HourClock: function is24HourClock() {
@@ -814,11 +833,7 @@ const __class = declare('argos.Application', null, {
   _createViewContainers: function _createViewContainers(domNode) {
     // If a domNode is provided, create the app's dom under this
     if (domNode && !this._rootDomNode) {
-      const contentDiv = domConstruct.create('div', {
-        class: 'viewContainer',
-      }, domNode);
-      this._containerNode = domNode;
-      this._rootDomNode = contentDiv;
+      this._rootDomNode = domNode;
       this._createDrawerDOM();
       return;
     }
@@ -844,7 +859,7 @@ const __class = declare('argos.Application', null, {
   _createDrawerDOM: function _createDrawerDOM() {
     const drawers = domConstruct.create('div', {
       class: 'drawers absolute',
-    }, this._containerNode);
+    }, win.body());
 
     domConstruct.create('div', {
       class: 'overthrow left-drawer absolute',
@@ -861,13 +876,31 @@ const __class = declare('argos.Application', null, {
    * @param {domNode} domNode Optional. A DOM node to place the view in.
    */
   registerView: function registerView(view, domNode) {
-    this.views[view.id] = view;
+    let id = view.id;
 
     if (!domNode) {
       this._createViewContainers();
     }
 
-    view._placeAt = domNode || this._rootDomNode;
+    let node = domNode || this._rootDomNode;
+
+    if (isValidElement(view)) {
+      id = view.props.id;
+      node = domConstruct.create('div', {
+        id: `component-wrapper-${id}`,
+        class: 'overflow panel',
+      }, node);
+
+      // Create an instance of the component
+      view = render(createElement(ViewComponent, {
+        store: this.store,
+        id,
+      }, view), node);
+    } else {
+      view._placeAt = node;
+    }
+
+    this.views[id] = view;
 
     this.registerViewRoute(view);
 
@@ -1039,7 +1072,7 @@ const __class = declare('argos.Application', null, {
       }
 
       if (init && view && !view._started) {
-        view.init(this.state$);
+        view.init(this.state$, this.store);
         view.placeAt(view._placeAt, 'first');
         view._started = true;
         view._placeAt = null;

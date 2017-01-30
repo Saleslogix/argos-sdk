@@ -3,11 +3,15 @@ module.exports = {
     es6: true,
     browser: true
   },
+  plugins: [
+    "react"
+  ],
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
     ecmaFeatures: {
-      modules: true
+      modules: true,
+      jsx: true,
     }
   },
   "globals": {
@@ -47,8 +51,8 @@ module.exports = {
 
     // enforce that class methods use "this"
     // http://eslint.org/docs/rules/class-methods-use-this
-    'class-methods-use-this': ['error', {
-      exceptMethods: [],
+    'class-methods-use-this': ['off', {
+      exceptMethods: ['render'],
     }],
 
     // require return statements to either always or never specify values
