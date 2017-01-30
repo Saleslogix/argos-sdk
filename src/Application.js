@@ -37,7 +37,7 @@ import BusyIndicator from './Dialogs/BusyIndicator';
 import Deferred from 'dojo/Deferred';
 import ErrorManager from './ErrorManager';
 import getResource from './I18n';
-import { createStore, combineReducers } from 'redux';
+import { createStore } from 'redux';
 import { isValidElement, createElement } from 'react';
 import { render } from 'react-dom';
 import { sdk } from './reducers';
