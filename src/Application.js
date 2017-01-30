@@ -670,10 +670,10 @@ const __class = declare('argos.Application', null, {
     return {};
   },
   initToasts: function initToasts() {
-    this.toast = new Toast({
+    this.toast = new Toast();
+    this.toast.show({
       rootElement: this._containerNode,
     });
-    this.toast.show();
   },
   initPing: function initPing() {
     // this.ping will be set if ping was passed as an options to the ctor
