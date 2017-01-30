@@ -456,6 +456,8 @@ body {
 }
 
 body > .viewContainer {
+    display: flex;
+    flex-direction: row;
     position: absolute;
     padding: 40px 0 0 0;
     margin: 0;
@@ -494,10 +496,9 @@ body.transition > .viewContainer > .list {
 
 body > .viewContainer > .panel,
 body > .viewContainer > .list {
-    position: absolute;
-    top: 64px;
-    bottom: 0px;
-    width: 100%;
+    position: relative;
+    flex-grow: 1;
+    top: 25px;
     .box-sizing(border-box);
     -webkit-transition-duration: 200ms;
     -webkit-transition-property: -webkit-transform;
