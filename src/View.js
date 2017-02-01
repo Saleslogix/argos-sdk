@@ -147,7 +147,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     this.initConnects();
     this.initModel();
     this.initState(state$);
-    this.store = store;
+    this.appStore = store;
   },
   initState: function initState(state$) {
     this.state$ = state$;
@@ -178,7 +178,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   onStateChange: function onStateChange(val) {}, // eslint-disable-line
   onStateError: function onStateError(error) {}, // eslint-disable-line
   /**
-   * Initializes the model instance that is return with the curernt view.
+   * Initializes the model instance that is returned with the current view.
    */
   initModel: function initModel() {
     const model = this.getModel();
@@ -326,7 +326,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
           data: options.data,
         };
         App.context.history.push(data);
-        this.store.dispatch(insertHistory(data));
+        this.appStore.dispatch(insertHistory(data));
       }
     }
   },

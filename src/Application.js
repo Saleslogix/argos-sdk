@@ -850,6 +850,8 @@ const __class = declare('argos.Application', null, {
     const node = document.getElementById(defaultAppID);
     if (node) {
       this._rootDomNode = node;
+      // Set containerNode to rootNode for backwards compatibility
+      this._containerNode = this._rootDomNode;
       return;
     }
 
@@ -875,6 +877,12 @@ const __class = declare('argos.Application', null, {
     domConstruct.create('div', {
       class: 'overthrow right-drawer absolute',
     }, drawers);
+  },
+  /**
+   * Returns the dom associated to the container element
+   */
+  getContainerNode: function getContainerNode() {
+    return this._containerNode || this._rootDomNode;
   },
   /**
    * Registers a view with the application and renders it to HTML.
@@ -1394,6 +1402,12 @@ const __class = declare('argos.Application', null, {
       return this;
     }
 
+    let snapWidth = 266;
+    const viewWidth = (this._containerNode && this._containerNode.offsetWidth) || 0;
+    if (viewWidth <= snapWidth) {
+      snapWidth = Math.floor(0.83 * viewWidth) - 1;
+    }
+
     const snapper = new snap(options || { // eslint-disable-line
       element: element || this._rootDomNode,
       dragger: null,
@@ -1404,8 +1418,8 @@ const __class = declare('argos.Application', null, {
       flickThreshold: 50,
       transitionSpeed: 0.2,
       easing: 'ease',
-      maxPosition: 266,
-      minPosition: -266,
+      maxPosition: snapWidth,
+      minPosition: -1 * snapWidth,
       tapToClose: has('ie') ? false : true, // causes issues on windows phones where tapping the close button causes snap.js endDrag to fire, closing the menu before we can check the state properly
       touchToDrag: false,
       slideIntent: 40,
