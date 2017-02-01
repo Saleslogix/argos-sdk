@@ -4,8 +4,12 @@ export default function getResource(id) {
   const { defaultLocaleContext, localeContext } = window;
   if (!defaultLocaleContext || !localeContext) {
     return new Proxy({}, {
+      properties: [],
       get(target, name) {
-        return name in target ? target[name] : '';
+        if (name in target) {
+          return target[name];
+        }
+        return '';
       },
     });
   }
