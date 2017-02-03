@@ -174,7 +174,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
    */
   processTemplateEntry: function processTemplateEntry(templateEntry) {
     this.templateEntry = this.convertEntry(templateEntry || {});
-
+    this.resetInteractionState();
     this.setValues(this.templateEntry, true);
     this.applyFieldDefaults();
     this.applyContext(this.templateEntry);
