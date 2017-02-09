@@ -325,7 +325,7 @@ const __class = declare('argos.Application', null, {
   uninitialize: function uninitialize() {},
   back: function back() {
     if (!this._embedded) {
-      history.back();
+      page.back();
     }
   },
   /**
