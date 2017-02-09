@@ -42,6 +42,7 @@ import { isValidElement, createElement } from 'react';
 import { render } from 'react-dom';
 import { sdk } from './reducers';
 import Scene from './Scene';
+import page from 'page';
 import 'dojo/sniff';
 
 // import moment from 'moment';

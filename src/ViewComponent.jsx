@@ -3,6 +3,7 @@ import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import React from 'react';
 import { Provider } from 'react-redux';
+import page from 'page';
 
 export default class ViewComponent extends React.Component {
   // Mounting lifecycle

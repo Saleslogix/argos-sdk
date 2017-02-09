@@ -25,6 +25,7 @@ import _ErrorHandleMixin from './_ErrorHandleMixin';
 import Adapter from './Models/Adapter';
 import getResource from './I18n';
 import { insertHistory } from './actions';
+import page from 'page';
 
 const resource = getResource('view');
 

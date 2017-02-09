@@ -28,6 +28,7 @@ import ErrorManager from './ErrorManager';
 import FieldManager from './FieldManager';
 import View from './View';
 import getResource from './I18n';
+import DeepDiff from 'deepdiff';
 import 'dojo/NodeList-manipulate';
 import './Fields/BooleanField';
 import './Fields/DateField';
@@ -1130,7 +1131,6 @@ const __class = declare('argos._EditBase', [View], {
    */
   diffs: function diffs(left, right) {
     const acc = [];
-    const DeepDiff = window.DeepDiff;
     const DIFF_EDITED = 'E';
 
     if (DeepDiff) {

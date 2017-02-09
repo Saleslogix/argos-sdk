@@ -1,5 +1,6 @@
+/* eslint-disable */
 /*!
- * 
+ *
  */
 /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
  *
@@ -1150,7 +1151,6 @@
  */
 
 (function() {
-    "use strict";
     var Sage = window.Sage,
         S = Sage,
         C = Sage.namespace('Sage.SData.Client'),
@@ -2172,5 +2172,3 @@ XML.ObjTree.prototype.scalar_to_xml = function ( name, text ) {
 XML.ObjTree.prototype.xml_escape = function ( text ) {
   console.warn('xml_escape is not implemented.');
 };
-
-
