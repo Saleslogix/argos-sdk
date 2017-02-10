@@ -22,8 +22,6 @@ export default class ViewComponent extends React.Component {
   }
 
   render() {
-    console.dir(this.props);
-    console.dir(this.state);
     return (
       <Provider
         store={this.props.store}
