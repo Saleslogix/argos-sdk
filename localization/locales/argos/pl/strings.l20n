@@ -1,0 +1,288 @@
+<dateField ""
+  emptyText: ''
+  invalidDateFormatErrorText: "Błędny format daty w polu '${0}'."
+  cancelText: "Anuluj"
+  confirmText: "Zatwierdź"
+  advancedText: "Zaawansowane"
+>
+
+<durationField ""
+  minutes: "min."
+  hours: "godz."
+  days: "dn."
+  weeks: "tygodni"
+  years: "lat"
+  invalidDurationErrorText: "Błędny czas trwania w polu '${0}'."
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "edycja"
+  lookupText: "..."
+  emptyText: "puste"
+  completeText: "OK"
+>
+
+<lookupField ""
+  dependentErrorText: "Wybierz wartość dla '${0}'."
+  emptyText: ""
+  completeText: "Wybierz"
+  lookupLabelText: "wyszukiwanie"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "podpis"
+  signatureText: "..."
+>
+
+<dateTimeSection ""
+  displayNameText: "Wybór daty i czasu"
+  todayText: "Dziś"
+  tomorrowText: "Jutro"
+  laterThisWeekText: "Później w tym tygodniu"
+  earlierThisWeekText: "Wcześniej w tym tygodniu"
+  thisLaterMonthText: "Później w tym miesiącu"
+  thisEarlierMonthText: "Wcześniej w tym miesiącu"
+  thisYearEarlierText: "Wcześniej w tym roku"
+  thisYearLaterText: "Później w tym roku"
+  yesterdayText: "Wczoraj"
+  lastWeekText: "Ostatni tydzień"
+  lastMonthText: "Ostatni miesiąc"
+  pastYearText: "Wcześniejsze lata"
+  nextYearText: "Kolejny rok"
+  nextMonthText: "Kolejny miesiąc"
+  nextWeekText: "Kolejny tydzień"
+  futureText: "Przyszłość"
+  twoWeeksAgoText: "Dwa tygodnie temu"
+  threeWeeksAgoText: "Trzy tygodnie temu"
+  twoMonthsAgoText: "Dwa miesiące temu"
+  threeMonthsAgoText: "Trzy miesiące temu"
+  unknownText: "Nieznany"
+>
+
+<groupByValueSection ""
+  displayNameText: "Grupa wg wyboru wartości"
+>
+
+<configureQuickActions ""
+  titleText: "Konfiguracja szybkich czynności"
+>
+
+<fileSelect ""
+  titleText: "Wybór pola"
+  addFileText: "Aby dodać plik, kliknij/dotknij tutaj."
+  uploadText: "Wczytaj"
+  cancelText: "Anuluj"
+  selectFileText: "Wybierz plik"
+  loadingText: "Wczytywanie..."
+  descriptionText: "opis"
+  bytesText: "B"
+  notSupportedText: "Twoje urządzenie nie obsługuje dodawania załączników."
+>
+
+<signature ""
+  titleText: "podpis"
+  clearCanvasText: "Wymaż"
+  undoText: "Cofnij"
+>
+
+<configureBase ""
+  titleText: "Konfiguruj"
+>
+
+<detailBase ""
+  informationText: "Informacje"
+  titleText: "Szczegóły"
+  entityText: "Encja"
+  detailsText: "Szczegóły"
+  loadingText: "Wczytywanie"
+  notAvailableText: "Żądane dane są niedostępne."
+  toggleCollapseText: "zwiń/rozwiń"
+  editText: "edycja"
+>
+
+<editBase ""
+  concurrencyErrorText: "To pole zostało zaktualizowane przez innego użytkownika."
+  toggleCollapseText: "zwiń/rozwiń"
+  saveText: "Zapisz"
+  titleText: "edycja"
+  validationSummaryText: "Podsumowanie zatwierdzenia"
+  concurrencySummaryText: "Błędy zgodności"
+  detailsText: "Szczegóły"
+  loadingText: "Wczytywanie"
+  errorGeneral: "Podczas żądania danych wystąpił błąd serwera."
+  error410:  "Błąd zapisu. Ten rekord już nie istnieje."
+>
+
+<errorHandleMixin ""
+  general: 'Błąd serwera.'
+>
+
+<listBase ""
+  moreText: "Pobierz więcej rekordów"
+  emptySelectionText: "Brak"
+  titleText: "Lista"
+  configureText: "Konfiguruj"
+  errorRenderText: "Błąd przedkładania szablonu wierszy."
+  remainingText: "Pozostałe rekordy: ${0}"
+  cancelText: "Anuluj"
+  insertText: "Nowy"
+  noDataText: "brak rekordów"
+  loadingText: "Wczytywanie"
+>
+
+<pullToRefreshMixin ""
+  pullRefreshText: "Przeciągnij w dół, aby odświeżyć..."
+  pullReleaseText: "Upuść, aby odświeżyć..."
+>
+
+<relatedViewWidgetBase ""
+  loadingText: "Wczytywanie"
+>
+
+<calendar ""
+  titleText: "Kalendarz"
+  amText: "przed południem"
+  pmText: "po południu"
+  january: "Styczeń"
+  february: "Luty"
+  march: "Marzec"
+  april: "Kwiecień"
+  may: "Maj"
+  june: "Czerwiec"
+  july: "Lipiec"
+  august: "Sierpień"
+  september: "Wrzesień"
+  october: "Październik"
+  november: "Listopad"
+  december: "Grudzień"
+  clearText: "Wyczyść"
+  todayText: "Dziś"
+  sundayAbbreviated: "Nd"
+  mondayAbbreviated: "Pon"
+  tuesdayAbbreviated: "Wt"
+  wednesdayAbbreviated: "Śr"
+  thursdayAbbreviated: "Czw"
+  fridayAbbreviated: "Pt"
+  saturdayAbbreviated: "Sob"
+>
+
+<errorManager ""
+  abortedText: "Przerwano"
+  scopeSaveText: "Na raporcie błędu nie zapisano zakresu"
+>
+
+<format ""
+  yesText: "Tak"
+  noText: "Nie"
+  trueText: "P"
+  falseText: "F"
+  hoursText: "godz."
+  hourText: "godz."
+  minutesText: "min."
+  minuteText: "min."
+  percentFormatText: "${0}${1}"
+  bytesText: "B"
+>
+
+<groupedList ""
+ toggleCollapseText: "zwiń/rozwiń"
+>
+
+<mainToolbar ""
+  titleText: "Komórka"
+>
+
+<relatedViewWidget ""
+  nodataText: "nie znaleziono rekordów..."
+  selectMoreDataText: "Zobacz o ${0} więcej ${1}... "
+  selectMoreDataText2: "Zobacz ${0} więcej... "
+  navToListText: "zobacz listę"
+  loadingText: "Wczytywanie"
+  refreshViewText: "odśwież"
+  itemOfCountText: " ${0} z ${1}"
+  totalCountText: " (${0})"
+  titleText: "Widok powiązany"
+>
+
+<searchWidget ""
+ searchText: "Szukaj"
+>
+
+<selectionModel ""
+  requireSelectionText: "Wybór jest wymagany; nie można odznaczyć ostatniej pozycji."
+>
+
+<tabWidget ""
+ moreText: "Więcej"
+>
+
+<view ""
+ titleText: "Widok ogólny"
+>
+
+<timePicker ""
+  amText: "przed południem"
+  pmText: "po południu"
+  setTimeText: "Ustaw godzinę"
+>
+
+<relativeDateTimePicker ""
+  titleText: "Około..."
+  pickDateTimeText: "Zaawansowane"
+  thisEveningText: "Dziś wieczorem"
+  tomorrowMorningText: "Jutro rano"
+  tomorrowAfternoonText: "Jutro wieczorem"
+  nextWeekText: "Kolejny tydzień"
+  nextMonthText: "Kolejny miesiąc"
+  cancelText: "Anuluj"
+  confirmText: "Zatwierdź"
+>
+
+<briefcaseModel ""
+  entityDisplayName: "Aktówka"
+  entityDisplayNamePlural : "Aktówki"
+>
+
+<recentlyViewedModel ""
+  entityDisplayName: "Ostatnio przeglądane"
+  entityDisplayNamePlural : "Ostatnio wyświetlane"
+>
+
+<busyIndicator ""
+  loadingText: "Wczytywanie"
+  progressText: "Postęp"
+>
+
+<modal
+  alertText: "Alert"
+  completeText: "Zakończenie"
+  cancelText: "Anuluj"
+  confirmText: "Zatwierdź"
+  editText: "edycja"
+  okayText: "OK"
+  submitText: "Zatwierdź"
+  warningText: "Ostrzeżenie"
+>
+<_listOfflineMixin
+  goToListViewText: "Pozycje zostały umieszczone w aktówce. Czy przejść do widoku listy aktówek?"
+  interruptedText: "Proces został przerwany i nie udało się go w pełni ukończyć. Aby przenieść wszystkie pozycji do aktówki, należy uruchomić proces ponownie."
+  briefcasingText: "Trwa przenoszenie do aktówki; proszę czekać."
+  errorBriefcasingText: "Błąd przenoszenia do aktówki."
+>
+
+<_detailOfflineMixin
+  goToDetailViewText: "Pozycja oraz pozycje z nią powiązane zostały przeniesione do aktówki. Czy przejść do widoku listy aktówek?"
+  interruptedText: "Proces został przerwany i nie udało się go w pełni ukończyć. Aby przenieść wszystkie pozycji do aktówki, należy uruchomić proces ponownie."
+  briefcasingText: "Trwa przenoszenie do aktówki; proszę czekać."
+  errorBriefcasingText: "Błąd przenoszenia do aktówki."
+  errorSavingOfflineViewText: "Błąd zapisywania widoku offline:"
+>
+
+<sdkApplication
+  connectionToastTitleText: "Połączenie"
+  checkingText: "Sprawdzanie łączności"
+  loadingApplicationStateText: "Wczytywanie danych aplikacji"
+  initializingText: "Inicjalizacja:"
+>
