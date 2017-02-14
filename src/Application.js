@@ -22,7 +22,6 @@ import hash from 'dojo/hash';
 import has from 'dojo/has';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
-import ViewComponent from './ViewComponent';
 import all from 'dojo/promise/all';
 import snap from 'snap';
 import ready from 'dojo/ready';
@@ -38,8 +37,6 @@ import Deferred from 'dojo/Deferred';
 import ErrorManager from './ErrorManager';
 import getResource from './I18n';
 import { createStore } from 'redux';
-import { isValidElement, createElement } from 'react';
-import { render } from 'react-dom';
 import { sdk } from './reducers';
 import Scene from './Scene';
 import page from 'page';
@@ -884,30 +881,14 @@ const __class = declare('argos.Application', null, {
    * @param {domNode} domNode Optional. A DOM node to place the view in.
    */
   registerView: function registerView(view, domNode) {
-    let id = view.id;
+    const id = view.id;
 
     if (!domNode) {
       this._createViewContainers();
     }
 
-    let node = domNode || this._rootDomNode;
-
-    if (isValidElement(view)) {
-      id = view.props.id;
-      node = domConstruct.create('div', {
-        id: `component-wrapper-${id}`,
-        class: 'overflow panel',
-      }, node);
-
-      // Create an instance of the component
-      view = render(createElement(ViewComponent, {
-        store: this.store,
-        id,
-      }, view), node);
-    } else {
-      view._placeAt = node;
-    }
-
+    const node = domNode || this._rootDomNode;
+    view._placeAt = node;
     this.views[id] = view;
 
     this.registerViewRoute(view);
