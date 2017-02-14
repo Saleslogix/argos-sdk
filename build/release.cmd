@@ -1,10 +1,10 @@
 @echo off
 
-if exist dist (
-	rmdir dist /S /Q
+if exist deploy (
+	rmdir deploy /S /Q
 )
 
-mkdir dist\localization
+mkdir deploy\localization
 
 REM .NET Build Tool
 tools\JsBit\jsbit.exe -p "build/release.jsb2" -d "."
