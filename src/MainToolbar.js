@@ -19,6 +19,7 @@ import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import Toolbar from './Toolbar';
 import getResource from './I18n';
+import $ from 'jquery';
 import 'dojo/NodeList-manipulate';
 
 const resource = getResource('mainToolbar');
@@ -47,11 +48,37 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    *
    * `$` - the toolbar instance
    */
-  widgetTemplate: new Simplate([
+  /* widgetTemplate: new Simplate([
     '<div class="toolbar {%= $.cls %}">',
     '<div id="pageTitle" class="toolbar-title" data-dojo-attach-event="onclick: onTitleClick" data-dojo-attach-point="titleNode">{%= $.titleText %}</div>',
     '</div>',
-  ]),
+  ]),*/
+  widgetTemplate: new Simplate([`
+    <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
+      data-breakpoint="desktop" style="height: 100%;">
+      <div class="accordion panel inverse has-icons" data-options="{allowOnePane: true}">
+      </div>
+    </nav>
+    <header class="header azure07 is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
+      <div class="toolbar has-title-button" role="toolbar" aria-label="Layouts">
+        <div class="title">
+          <button class="btn-icon application-menu-trigger hide-focus" type="button" tabindex="0">
+              <span class="audible">Show navigation</span>
+              <span class="icon app-header">
+                <span class="one"></span>
+                <span class="two"></span>
+                <span class="three"></span>
+              </span>
+          </button>
+          <h1>
+            <span id="pageTitle" data-dojo-attach-point="titleNode" data-dojo-attach-event="onclick: onTitleClick">{%= $.titleText %}</span>
+          </h1>
+        </div>
+        <div class="buttonset" data-dojo-attach-point="toolNode">
+        </div>
+      </div>
+    </header>
+  `]),
   /**
    * @property {Simplate}
    * Simplate that defines the toolbar item HTML Markup
@@ -59,17 +86,15 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    * `$` - The toolbar item object
    * `$$` - The toolbar instance
    */
-  toolTemplate: new Simplate([
-    '<button class="button toolButton toolButton-{%= $.side || "right" %} {%= ($$.enabled) ? "" : "toolButton-disabled" %} {%= $.cls %}"',
-    'data-action="invokeTool" data-tool="{%= $.id %}"',
-    'aria-label="{%: $.title || $.id %}">',
-    '{% if ($.icon) { %}',
-    '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
-    '{% } %}',
-    '{% if (!$.cls) { %}',
-    '<span></span>',
-    '{% } %}',
-    '</button>',
+  toolTemplate: new Simplate([`
+      <button
+        class="btn-icon hide-focus {%= $.cls %}"
+        type="button"
+        data-action="invokeTool"
+        data-tool="{%= $.id %}">
+          <span class="audible">{%: $.title || $.id %}</span>
+      </button>
+    `,
   ]),
   /**
    * @property {Number}
@@ -106,6 +131,8 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         right: 0,
       };
 
+      $(this.toolNode).empty();
+
       for (let i = 0; i < tools.length; i++) {
         const tool = tools[i];
         const side = tool.side || 'right';
@@ -114,8 +141,13 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         if (tool.offline) {
           onLine = false;
         }
-        domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.domNode, 'last');
+        domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.toolNode, 'last');
       }
+
+      /*const toolbar = $('.toolbar');
+      if (toolbar) {
+        toolbar.toolbar();
+      }*/
 
       this.size = Math.max(count.left, count.right);
       domClass.add(this.domNode, `toolbar-size-${this.size}`);

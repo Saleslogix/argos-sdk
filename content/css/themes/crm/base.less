@@ -1,7 +1,6 @@
 @import "variables.less";
 @import "mixins.less";
 
-/* snapjs styles */
 .tall {
     height: 100%;
 }
@@ -21,86 +20,6 @@
 .right {
     float: right;
 }
-
-.drawers {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.left-drawer,
-.right-drawer {
-    visibility: hidden;
-    display: none;
-    background-color: @menu-list-item-bg-color;
-    overflow: auto;
-    .list .scroller {
-      background-color: @menu-list-item-bg-color;
-      top: 42px;
-    }
-}
-
-.snapjs-left .left-drawer {
-    visibility: visible;
-    display: block;
-}
-
-.snapjs-right .right-drawer {
-    visibility: visible;
-    display: block;
-}
-
-.left-drawer, .right-drawer {
-    top: 0;
-    left: 0;
-    width: 265px;
-    max-width: 83%;
-    bottom: 0;
-    -webkit-transition-property: top, bottom;
-    transition-property: top, bottom;
-    -webkit-transition-duration: .2s, .2s;
-    transition-duration: .2s, .2s;
-    -webkit-transition-timing-function: linear, linear;
-    transition-timing-function: linear, linear;
-}
-
-.left-drawer {
-    z-index: 2;
-}
-
-.right-drawer {
-    left: auto;
-    right: 0;
-    z-index: 1;
-}
-
-.left-drawer,
-.right-drawer {
-    -webkit-transition: width 0.3s ease;
-    -moz-transition: width 0.3s ease;
-    -o-transition: width 0.3s ease;
-    transition: width 0.3s ease;
-}
-
-.drawer-inner {
-    -webkit-transition: opacity 0.3s ease;
-    -moz-transition: opacity 0.3s ease;
-    -o-transition: opacity 0.3s ease;
-    transition: opacity 0.3s ease;
-}
-
-.snapjs-expand-left .drawer-inner,
-.snapjs-expand-right .drawer-inner {
-    opacity: 0;
-}
-
-.snapjs-expand-left .left-drawer,
-.snapjs-expand-right .right-drawer {
-    width: 100%;
-}
-
-/* end snapjs styles*/
 
 .list-content > li {
     cursor: pointer;

@@ -169,7 +169,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
     '{% } %}',
     '</button>',
-    '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
+    '<div class="list-item-content">{%! $$.itemTemplate %}</div>',
     '</li>',
   ]),
   /**
@@ -375,7 +375,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   rowTemplateError: new Simplate([
     '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
-    '<div class="list-item-content" data-snap-ignore="true">{%: $$.errorRenderText %}</div>',
+    '<div class="list-item-content">{%: $$.errorRenderText %}</div>',
     '</li>',
   ]),
   /**

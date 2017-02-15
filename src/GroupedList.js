@@ -50,25 +50,25 @@ const __class = declare('argos.GroupedList', [List], {
    * Simplate that defines the HTML Markup. This override adds the needed styling.
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '<div data-dojo-attach-point="searchNode"></div>',
-    '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">',
     '{%! $.emptySelectionTemplate %}',
-    '<div class="group-content" data-dojo-attach-point="contentNode"></div>',
+    '<div class="accordion panel inverse has-icons" data-options="{allowOnePane: false}" data-dojo-attach-point="contentNode"></div>',
     '{%! $.moreTemplate %}',
     '{%! $.listActionTemplate %}',
-    '</div>',
     '</div>',
   ]),
   /**
    * @property {Simplate}
    * Simplate that defines the Group template that includes the header element with collapse button and the row container
    */
-  groupTemplate: new Simplate([
-    '<h2 data-action="toggleGroup" class="{% if ($.collapsed) { %}collapsed{% } %}">',
-    '<button class="fa {% if ($.collapsed) { %}{%: $$.collapsedIconClass %} {% } else { %}{%: $$.expanedIconClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>{%: $.title %}',
-    '</h2>',
-    '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>',
+  groupTemplate: new Simplate([`
+      <div class="accordion-header has-chevron hide-focus" role="presentation">
+        <a aria-haspopup="true" role="button" aria-expanded="true">{%: $.title %}</a>
+      </div>
+      <div class="accordion-pane is-expanded" data-group="{%= $.tag %}">
+      </div>
+    `,
   ]),
 
   /**

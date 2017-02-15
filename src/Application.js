@@ -23,7 +23,6 @@ import has from 'dojo/has';
 import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import all from 'dojo/promise/all';
-import snap from 'snap';
 import ready from 'dojo/ready';
 import util from './Utility';
 import ModelManager from './Models/Manager';
@@ -162,11 +161,6 @@ const __class = declare('argos.Application', null, {
    * Allows passing in options via routing. Value gets removed once the view is shown.
    */
   viewShowOptions: null,
-
-  /**
-   * Instance of a Snap.js object (https://github.com/jakiestfu/Snap.js/)
-   */
-  snapper: null,
 
   /**
    * @property {String}
@@ -839,7 +833,6 @@ const __class = declare('argos.Application', null, {
       }, domNode);
       this._containerNode = domNode;
       this._rootDomNode = contentDiv;
-      this._createDrawerDOM();
       return;
     }
 
@@ -859,22 +852,7 @@ const __class = declare('argos.Application', null, {
         id: defaultAppID,
         class: defaultAppID,
       }, win.body());
-
-      this._createDrawerDOM();
     }
-  },
-  _createDrawerDOM: function _createDrawerDOM() {
-    const drawers = domConstruct.create('div', {
-      class: 'drawers absolute',
-    }, this._containerNode);
-
-    domConstruct.create('div', {
-      class: 'overthrow left-drawer absolute',
-    }, drawers);
-
-    domConstruct.create('div', {
-      class: 'overthrow right-drawer absolute',
-    }, drawers);
   },
   /**
    * Returns the dom associated to the container element
@@ -938,7 +916,7 @@ const __class = declare('argos.Application', null, {
       this._createViewContainers();
     }
 
-    tbar.placeAt(domNode || this._rootDomNode, 'last');
+    tbar.placeAt(domNode || this._containerNode, 'first');
 
     return this;
   },
@@ -1371,47 +1349,6 @@ const __class = declare('argos.Application', null, {
    * Override this function to load a view in the right drawer.
    */
   showRightDrawer: function showRightDrawer() {
-    return this;
-  },
-  /**
-   * Loads Snap.js and assigns the instance to App.snapper. This method would typically be called before navigating to the initial view, so the login page does not contain the menu.
-   * @param {DOMNode} element Optional. Snap.js options.element property. If not provided defaults to the App's _rootDomNode.
-   * @param {Object} options Optional. Snap.js options object. A default is provided if this is undefined. Providing options will override the element parameter.
-   */
-  loadSnapper: function loadSnapper(element, options) {
-    // TODO: Provide a domNode param and default to viewContainer if not provided
-    if (this.snapper) {
-      return this;
-    }
-
-    let snapWidth = 266;
-    const viewWidth = (this._containerNode && this._containerNode.offsetWidth) || 0;
-    if (viewWidth <= snapWidth) {
-      snapWidth = Math.floor(0.83 * viewWidth) - 1;
-    }
-
-    const snapper = new snap(options || { // eslint-disable-line
-      element: element || this._rootDomNode,
-      dragger: null,
-      disable: 'none',
-      addBodyClasses: true,
-      hyperextensible: false,
-      resistance: 0.1,
-      flickThreshold: 50,
-      transitionSpeed: 0.2,
-      easing: 'ease',
-      maxPosition: snapWidth,
-      minPosition: -1 * snapWidth,
-      tapToClose: has('ie') ? false : true, // causes issues on windows phones where tapping the close button causes snap.js endDrag to fire, closing the menu before we can check the state properly
-      touchToDrag: false,
-      slideIntent: 40,
-      minDragDistance: 5,
-    });
-
-    this.snapper = snapper;
-
-    this.showLeftDrawer();
-    this.showRightDrawer();
     return this;
   },
   setToolBarMode: function setToolBarMode(onLine) {
