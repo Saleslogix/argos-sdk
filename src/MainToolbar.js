@@ -132,6 +132,25 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
       domClass.add(this.domNode, 'offline');
     }
   },
+
+  disableTool: function disableTool(id) {
+    this.inherited(arguments);
+    const result = this._getToolDOMNode(id);
+    if (result) {
+      domClass.add(result, 'toolButton-disabled');
+    }
+  },
+  enableTool: function enableTool(id) {
+    this.inherited(arguments);
+    const result = this._getToolDOMNode(id);
+    if (result) {
+      domClass.remove(result, 'toolButton-disabled');
+    }
+  },
+  _getToolDOMNode: function _getToolDOMNode(id) {
+    const [result] = query(`[data-tool=${id}]`, this.domNode);
+    return result;
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.MainToolbar', __class);
