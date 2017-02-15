@@ -29,6 +29,7 @@ import FieldManager from './FieldManager';
 import View from './View';
 import getResource from './I18n';
 import DeepDiff from 'deepdiff';
+import page from 'page';
 import 'dojo/NodeList-manipulate';
 import './Fields/BooleanField';
 import './Fields/DateField';
@@ -395,7 +396,7 @@ const __class = declare('argos._EditBase', [View], {
    * Sets and returns the toolbar item layout definition, this method should be overriden in the view
    * so that you may define the views toolbar items.
    *
-   * By default it adds a save button bound to `this.save()` and cancel that fires `history.back()`
+   * By default it adds a save button bound to `this.save()` and cancel that fires `page.back()`
    *
    * @return {Object} this.tools
    * @template
@@ -987,7 +988,7 @@ const __class = declare('argos._EditBase', [View], {
     if (values) {
       this.onInsert(values);
     } else {
-      history.back();
+      page.back();
     }
   },
   onInsert: function onInsert(values) {
@@ -1037,7 +1038,7 @@ const __class = declare('argos._EditBase', [View], {
         window.location.hash = returnTo;
       }
     } else {
-      history.back();
+      page.back();
     }
   },
   /**
@@ -1175,7 +1176,7 @@ const __class = declare('argos._EditBase', [View], {
         window.location.hash = returnTo;
       }
     } else {
-      history.back();
+      page.back();
     }
   },
   /**
