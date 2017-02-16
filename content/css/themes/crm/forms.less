@@ -34,12 +34,6 @@ input:focus, textarea:focus {
     background-color: transparent;
 }
 
-.panel-content > h2 > button {
-    float: right;
-    background-color: transparent;
-    border: none;
-}
-
 .toolButton,
 .headerButton {
     color: @toolbar-text-color;
@@ -185,49 +179,6 @@ input:focus, textarea:focus {
     cursor: default;
 }
 
-.row-edit[data-field-type="picklist"] > div > .button,
-.row-edit[data-field-type="lookup"] > div > .button,
-.row-edit[data-field-type="select"] > div > .button,
-.row-edit[data-field-type="address"] > div > .button,
-.row-edit[data-field-type="name"] > div > .button,
-.row-edit[data-field-type="date"] > div > .button,
-.row-edit[data-field-type="note"] > div > .button,
-.row-edit[data-field-type="duration"] > div > .button,
-.row-edit[data-field-type="picklist"] > .button,
-.row-edit[data-field-type="lookup"] > .button,
-.row-edit[data-field-type="select"] > .button,
-.row-edit[data-field-type="address"] > .button,
-.row-edit[data-field-type="name"] > .button,
-.row-edit[data-field-type="date"] > .button,
-.row-edit[data-field-type="note"] > .button,
-.row-edit[data-field-type="signature"] > div > .button,
-.row-edit[data-field-type="recurrences"] > div > .button {
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    right: 19px;
-    display: block;
-    height: 44px;
-    width: 44px;
-    background-color: transparent;
-    border: 0;
-}
-
-.row-edit[data-field-type="picklist"] > div > input,
-.row-edit[data-field-type="lookup"] > div > input,
-.row-edit[data-field-type="select"] > div > input,
-.row-edit[data-field-type="name"] > div > input,
-.row-edit[data-field-type="date"] > div > input,
-.row-edit[data-field-type="note"] > div > input,
-.row-edit[data-field-type="picklist"] > input,
-.row-edit[data-field-type="lookup"] > input,
-.row-edit[data-field-type="select"] > input,
-.row-edit[data-field-type="name"] > input,
-.row-edit[data-field-type="date"] > input,
-.row-edit[data-field-type="note"] > input {
-    padding: 8px 34px 8px 0px;
-}
-
 div.table-layout div.hasButton {
     width: 30px;
     white-space: nowrap;
@@ -329,65 +280,6 @@ div.search-active button.clear-button,
 .text-field-active > button.clear-button,
 button.clear-button:focus {
     background: url('../../../images/delete.png') no-repeat 50% 50%;
-}
-
-/* edit/insert */
-.row > div > input:not([type|=radio]):not([type|=checkbox]),
-.row > input:not([type|=radio]):not([type|=checkbox]) {
-    height: 44px;
-    vertical-align: middle;
-    padding: 10px 10px 0 0px;
-}
-
-.row-edit[data-field-type="signature"] > div > canvas,
-.row-edit[data-field-type="signature"] > div > img {
-    margin-left: 0px;
-}
-
-.row-edit[data-field-type="duration"] > div > .autoComplete-watermark {
-    position: absolute;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    z-index: 10;
-    color: #999;
-    padding: 3px 0 0 111px;
-}
-
-.row-edit {
-    /*position: relative;*/
-    padding: 2px 0.75em;
-}
-
-.row > div > input[type|=radio], .row > div > input[type|=checkbox],
-.row > input[type|=radio], .row > input[type|=checkbox] {
-    margin: 7px 7px 0 0;
-    height: 25px;
-    width: 25px;
-    display: block;
-}
-
-.row > div > input:not([type|=radio]):not([type|=checkbox]),
-.row > input:not([type|=radio]):not([type|=checkbox]) {
-    -webkit-appearance: none;
-
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-
-    margin: 0;
-    padding: 8px 34px 8px 8px;
-}
-
-.row > div > input[type|=radio], .row > div > input[type|=checkbox],
-.row > input[type|=radio], .row > div > input[type|=checkbox] {
-    margin: 7px 7px 0 0;
-    height: 25px;
-    width: 25px;
 }
 
 .text-input {

@@ -66,7 +66,7 @@ const __class = declare('argos.GroupedList', [List], {
       <div class="accordion-header has-chevron hide-focus" role="presentation">
         <a aria-haspopup="true" role="button" aria-expanded="true">{%: $.title %}</a>
       </div>
-      <div class="accordion-pane is-expanded" data-group="{%= $.tag %}">
+      <div class="accordion-pane" data-group="{%= $.tag %}">
       </div>
     `,
   ]),

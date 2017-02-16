@@ -662,9 +662,8 @@ const __class = declare('argos.Application', null, {
     return {};
   },
   initToasts: function initToasts() {
-    this.toast = new Toast();
-    this.toast.show({
-      rootElement: this._containerNode,
+    this.toast = new Toast({
+      containerNode: this.getContainerNode(),
     });
   },
   initPing: function initPing() {

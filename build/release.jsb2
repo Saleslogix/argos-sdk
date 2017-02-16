@@ -3,6 +3,17 @@
   "licenseText": "",
   "deployDir": "deploy/",
   "pkgs": [
+  {
+      "name": "Argos SDK Global Dependencies",
+      "file": "content/javascript/argos-dependencies.js",
+      "isDebug": true,
+      "fileIncludes": [
+        {
+          "text": "jquery.js",
+          "path": "../node_modules/jquery/dist/"
+        }
+      ]
+    }
   ],
   "resources": [
     {

@@ -222,7 +222,7 @@ const __class = declare('argos._EditBase', [View], {
    */
   propertyTemplate: new Simplate([
     '<a name="{%= $.name || $.property %}"></a>',
-    '<div class="row row-edit {%= $.cls %}{% if ($.readonly) { %}row-readonly{% } %}" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
+    '<div class="row-edit {%= $.cls %}{% if ($.readonly) { %}row-readonly{% } %}" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
     '</div>',
   ]),
 

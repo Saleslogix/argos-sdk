@@ -64,12 +64,24 @@ const control = declare('argos.Fields.TextField', [_Field], {
    * * `$$` => Owner View instance
    *
    */
-  widgetTemplate: new Simplate([
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '{% if ($.enableClearButton && !$.readonly) { %}',
-    '<button class="clear-button" tabindex="-1" data-dojo-attach-point="clearNode" data-dojo-attach-event="onclick:_onClearClick"></button>',
-    '{% } %}',
-    '<input data-dojo-attach-point="inputNode" tabindex="0" placeholder="{%: $.placeHolderText %}" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>',
+  widgetTemplate: new Simplate([`
+      <div class="field">
+        <label for="{%= $.name %}">{%: $.label %}</label>
+        <input
+          data-dojo-attach-point="inputNode"
+          type="{%: $.inputType %}"
+          id="{%= $.name %}"
+          name="{%= $.name %}"
+          placeholder="{%: $.placeHolderText %}"
+          {% if ($.readonly) { %} readonly {% } %}
+          >
+      </div>
+    `,
+    // '<label for="{%= $.name %}">{%: $.label %}</label>',
+    // '{% if ($.enableClearButton && !$.readonly) { %}',
+    // '<button class="clear-button" tabindex="-1" data-dojo-attach-point="clearNode" data-dojo-attach-event="onclick:_onClearClick"></button>',
+    // '{% } %}',
+    // '<input data-dojo-attach-point="inputNode" tabindex="0" placeholder="{%: $.placeHolderText %}" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>',
   ]),
   /**
    * @property {HTMLElement}

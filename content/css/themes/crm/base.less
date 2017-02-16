@@ -239,20 +239,6 @@
     margin: 0;
 }
 
-/* detail veiw */
-.panel .panel-loading-indicator div.row > div {
-    display: inline-block;
-}
-
-.panel .panel-loading-indicator div.row {
-    text-align: center !important;
-    padding: 1em !important;
-    min-height: 1em !important;
-    span {
-        float: none;
-    }
-}
-
 .content-loading > span {
     padding-left: 32px;
     background: url('../../../images/content-loading-light-green.gif') no-repeat scroll 12px 50%;
@@ -393,7 +379,8 @@ body {
 
 .viewContainer > .list,
 .viewContainer > .panel,
-.viewContainer > .dialog {
+.viewContainer > .dialog,
+.viewContainer > .view {
     display: none;
     visibility: hidden;
 }
@@ -555,129 +542,15 @@ img {
     display: block;
 }
 
-.panel-content > h2,
-.panel-validation-summary > h2,
-.panel-concurrency-summary > h2 {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    margin: 0;
-    padding: 0 0 0 2px;
-    z-index: 5;
-    position: relative;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-}
-
-.panel > ul > li,
-.panel-content > ul > li,
-.quick-actions > ul > li {
-    list-style: none;
-    line-height: 28px;
-    clear: both;
-}
-
 .panel-validation-summary > ul > li,
 .panel-concurrency-summary > ul > li {
     list-style: none;
     clear: both;
-}
-
-.panel-content > ul > li > img.icon,
-.panel-content > ul > li > * > img.icon,
-.panel-validation-summary > ul > li > img.icon
-.panel-validation-summary > ul > li > * > img.icon {
-    border: 0 none black;
-    margin: 0 .5em 0 0;
-    width: 24px;
-    height: 24px;
-    float: left;
-}
-
-.panel-content > fieldset,
-.panel-validation-summary > fieldset,
-.panel-concurrency-summary > fieldset,
-.panel-content > div,
-.panel-validation-summary > div,
-.panel-concurrency-summary > div,
-.panel-content > ul,
-.quick-actions > ul,
-.panel-validation-summary > ul,
-.panel-concurrency-summary > ul {
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-
-.panel-content > fieldset:last-child,
-.panel-content > ul:last-child,
-.panel-content > div:last-child {
-    margin: 0;
-    padding: 0 0 0 0;
-}
-
-.panel-content > ul > li,
-.quick-actions > ul > li,
-.panel-validation-summary > ul > li,
-.panel-concurrency-summary > ul > li {
-    list-style: none;
-    margin: 0;
-    padding: 5px 0;
-    position: relative;
-}
-
-.panel-content > ul > li > a,
-.quick-actions > ul > li > a,
-.panel-validation-summary > ul > li > a {
-    padding: 1px;
-    margin: 0 0 0 0.25em; /* matches the padding in the labels */
-    display: block;
-    cursor: pointer;
-}
-
-.panel-validation-summary > ul > li > a > h3,
-.panel-concurrency-summary > ul > li > h3 {
-    overflow: visible;
-    text-overflow: inherit;
-    white-space: inherit;
 }
 
 .row.no-value {
     display: none !important;
     visibility: hidden;
-}
-
-.row > div > label,
-.row > label {
-    margin: 0px;
-    padding: 0;
-    position: relative;
-}
-
-.row {
-    text-align: left;
-    clear: both;
-    padding: 0 .75em;
-}
-
-.row > div > span,
-.row > div > a,
-.row > span,
-.row > a {
-    display: block;
-    margin: 0 0 0 0;
-    width: 70%;
-    position: relative;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    float: right;
-}
-
-.href {
-    color: @link-color;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 .not-available {

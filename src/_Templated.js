@@ -12,10 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import domConstruct from 'dojo/dom-construct';
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import _TemplatedMixin from 'dijit/_TemplatedMixin';
+import $ from 'jquery';
 
 /**
  * @class argos._Templated
@@ -41,14 +41,20 @@ const __class = declare('argos._Templated', [_TemplatedMixin], {
       this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
     } else if (this.widgetTemplate) {
       this.templateString = this.widgetTemplate.apply(this);
-      const root = domConstruct.toDom(this.templateString);
+      const root = $(this.templateString);
 
-      if (root.nodeType === 11) {
+      if (root.length > 1) {
         this.templateString = ['<div>', this.templateString, '</div>'].join('');
       }
     }
 
     this.inherited(arguments);
+  },
+  startup: function startup() {
+    this.inherited(arguments);
+    this.initSoho();
+  },
+  initSoho: function initSoho() {
   },
 });
 

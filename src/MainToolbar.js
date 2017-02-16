@@ -56,7 +56,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
   widgetTemplate: new Simplate([`
     <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
       data-breakpoint="desktop" style="height: 100%;">
-      <div class="accordion panel inverse has-icons" data-options="{allowOnePane: true}">
+      <div class="accordion panel inverse has-icons" data-options="{allowOnePane: false}">
       </div>
     </nav>
     <header class="header azure07 is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
@@ -115,6 +115,19 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
 
     query('> [data-action], .toolButton-right', this.domNode).remove();
   },
+  initSoho: function sohoInit() {
+    const menu = $('.application-menu', this.domNode);
+    menu.applicationmenu();
+
+    const accordion = $('.accordion .panel', this.domNode);
+    accordion.accordion();
+
+    const header = $('.header', this.domNode);
+    header.header();
+
+    const toolbar = $('.toolbar', this.domNode);
+    toolbar.toolbar();
+  },
   /**
    * Calls parent {@link Toolbar#showTools showTools} which sets the tool collection.
    * The collection is then looped over and added to DOM, adding the left or right styling
@@ -144,10 +157,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.toolNode, 'last');
       }
 
-      /* const toolbar = $('.toolbar');
-      if (toolbar) {
-        toolbar.toolbar();
-      }*/
+      this.initSoho();
 
       this.size = Math.max(count.left, count.right);
       domClass.add(this.domNode, `toolbar-size-${this.size}`);
