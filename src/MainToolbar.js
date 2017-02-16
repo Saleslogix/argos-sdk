@@ -144,7 +144,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.toolNode, 'last');
       }
 
-      /*const toolbar = $('.toolbar');
+      /* const toolbar = $('.toolbar');
       if (toolbar) {
         toolbar.toolbar();
       }*/
