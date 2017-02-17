@@ -17,11 +17,6 @@ import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
 import array from 'dojo/_base/array';
 import Deferred from 'dojo/_base/Deferred';
-import win from 'dojo/_base/window';
-import domAttr from 'dojo/dom-attr';
-import domClass from 'dojo/dom-class';
-import dom from 'dojo/dom';
-import domConstruct from 'dojo/dom-construct';
 import query from 'dojo/query';
 import utility from './Utility';
 import ErrorManager from './ErrorManager';
@@ -30,6 +25,7 @@ import View from './View';
 import getResource from './I18n';
 import DeepDiff from 'deepdiff';
 import page from 'page';
+import $ from 'jquery';
 import 'dojo/NodeList-manipulate';
 import './Fields/BooleanField';
 import './Fields/DateField';
@@ -364,7 +360,7 @@ const __class = declare('argos._EditBase', [View], {
 
     query('div[data-field]', this.contentNode)
       .forEach(function forEach(node) {
-        const name = domAttr.get(node, 'data-field');
+        const name = $(node).attr('data-field');
         const field = this.fields[name];
         if (field) {
           field.renderTo(node);
@@ -373,10 +369,10 @@ const __class = declare('argos._EditBase', [View], {
 
     const sections = query('h2', this.contentNode);
     if (sections.length === 1) {
-      domAttr.remove(sections[0], 'data-action');
+      $(sections[0]).removeAttr('data-action');
       const button = query('button[class*="fa-chevron"]', sections[0]);
       if (button[0]) {
-        domConstruct.destroy(button[0]);
+        $(button[0]).remove();
       }
     }
   },
@@ -433,13 +429,13 @@ const __class = declare('argos._EditBase', [View], {
    * Toggles the collapsed state of the section.
    */
   toggleSection: function toggleSection(params) {
-    const node = dom.byId(params.$source);
-    if (node) {
-      domClass.toggle(node, 'collapsed');
-      const button = query('button', node)[0];
-      if (button) {
-        domClass.toggle(button, this.toggleCollapseClass);
-        domClass.toggle(button, this.toggleExpandClass);
+    const node = $(`#${params.$source}`);
+    if (node.length) {
+      node.toggleClass('collapsed');
+      const button = $('button', node).first();
+      if (button.length) {
+        button.toggleClass(this.toggleCollapseClass);
+        button.toggleClass(this.toggleExpandClass);
       }
     }
   },
@@ -451,7 +447,7 @@ const __class = declare('argos._EditBase', [View], {
    * @param {_Field} field Field instance that is being shown
    */
   _onShowField: function _onShowField(field) {
-    domClass.remove(field.containerNode, 'row-hidden');
+    $(field.containerNode).removeClass('row-hidden');
   },
   /**
    * Handler for a fields on hide event.
@@ -461,7 +457,7 @@ const __class = declare('argos._EditBase', [View], {
    * @param {_Field} field Field instance that is being hidden
    */
   _onHideField: function _onHideField(field) {
-    domClass.add(field.containerNode, 'row-hidden');
+    $(field.containerNode).addClass('row-hidden');
   },
   /**
    * Handler for a fields on enable event.
@@ -471,7 +467,7 @@ const __class = declare('argos._EditBase', [View], {
    * @param {_Field} field Field instance that is being enabled
    */
   _onEnableField: function _onEnableField(field) {
-    domClass.remove(field.containerNode, 'row-disabled');
+    $(field.containerNode).removeClass('row-disabled');
   },
   /**
    * Handler for a fields on disable event.
@@ -481,7 +477,7 @@ const __class = declare('argos._EditBase', [View], {
    * @param {_Field} field Field instance that is being disabled
    */
   _onDisableField: function _onDisableField(field) {
-    domClass.add(field.containerNode, 'row-disabled');
+    $(field.containerNode).addClass('row-disabled');
   },
   /**
    * Extends invokeAction to first look for the specified function name on the field instance
@@ -495,7 +491,7 @@ const __class = declare('argos._EditBase', [View], {
   invokeAction: function invokeAction(name, parameters, evt, node) {
     const fieldNode = node && query(node, this.contentNode)
       .parents('[data-field]');
-    const field = this.fields[fieldNode.length > 0 && domAttr.get(fieldNode[0], 'data-field')];
+    const field = this.fields[fieldNode.length > 0 && $(fieldNode[0]).attr('data-field')];
 
     if (field && typeof field[name] === 'function') {
       return field[name].apply(field, [parameters, evt, node]);
@@ -513,7 +509,7 @@ const __class = declare('argos._EditBase', [View], {
   hasAction: function hasAction(name, evt, node) {
     const fieldNode = node && query(node, this.contentNode)
       .parents('[data-field]');
-    const field = fieldNode && this.fields[fieldNode.length > 0 && domAttr.get(fieldNode[0], 'data-field')];
+    const field = fieldNode && this.fields[fieldNode.length > 0 && $(fieldNode[0]).attr('data-field')];
 
     if (field && typeof field[name] === 'function') {
       return true;
@@ -581,7 +577,7 @@ const __class = declare('argos._EditBase', [View], {
         /* todo: show error message? */
       }
 
-      domClass.remove(this.domNode, 'panel-loading');
+      $(this.domNode).removeClass('panel-loading');
 
       /* this must take place when the content is visible */
       this.onContentChange();
@@ -591,7 +587,7 @@ const __class = declare('argos._EditBase', [View], {
   },
   _onGetError: function _onGetError(getOptions, error) {
     this.handleError(error);
-    domClass.remove(this.domNode, 'panel-loading');
+    $(this.domNode).removeClass('panel-loading');
   },
   /**
    * Sets and returns the Edit view layout by following a standard for section and field:
@@ -718,9 +714,9 @@ const __class = declare('argos._EditBase', [View], {
     }
 
     content.push(this.sectionEndTemplate.apply(layout, this));
-    const sectionNode = domConstruct.toDom(content.join(''));
-    this.onApplySectionNode(sectionNode, current);
-    domConstruct.place(sectionNode, this.contentNode, 'last');
+    const sectionNode = $(content.join(''));
+    this.onApplySectionNode(sectionNode.get(0), current);
+    $(this.contentNode).append(sectionNode);
 
     for (let i = 0; i < sectionQueue.length; i++) {
       current = sectionQueue[i];
@@ -931,14 +927,14 @@ const __class = declare('argos._EditBase', [View], {
 
         const result = field.validate();
         if (!field.isHidden() && result !== false) {
-          domClass.add(field.containerNode, 'row-error');
+          $(field.containerNode).addClass('row-error');
 
           this.errors.push({
             name,
             message: result,
           });
         } else {
-          domClass.remove(field.containerNode, 'row-error');
+          $(field.containerNode).removeClass('row-error');
         }
       }
     }
@@ -962,7 +958,7 @@ const __class = declare('argos._EditBase', [View], {
       App.bars.tbar.disableTool('save');
     }
 
-    domClass.add(win.body(), 'busy');
+    $('body').addClass('busy');// TODO: Make this the root/app container node
   },
   /**
    * Enables the form by setting busy to false and enabling the toolbar
@@ -974,7 +970,7 @@ const __class = declare('argos._EditBase', [View], {
       App.bars.tbar.enableTool('save');
     }
 
-    domClass.remove(win.body(), 'busy');
+    $('body').removeClass('busy');// TODO: Make this the root/app container node
   },
   /**
    * Called by save() when performing an insert (create).
@@ -1191,7 +1187,7 @@ const __class = declare('argos._EditBase', [View], {
     }
 
     this.set('validationContent', content.join(''));
-    domClass.add(this.domNode, 'panel-form-error');
+    $(this.domNode).addClass('panel-form-error');
   },
   showConcurrencySummary: function showConcurrencySummary() {
     const content = [];
@@ -1201,20 +1197,20 @@ const __class = declare('argos._EditBase', [View], {
     }
 
     this.set('concurrencyContent', content.join(''));
-    domClass.add(this.domNode, 'panel-form-concurrency-error');
+    $(this.domNode).addClass('panel-form-concurrency-error');
   },
   /**
    * Removes the summary validation visible styling and empties its contents of error markup
    */
   hideValidationSummary: function hideValidationSummary() {
-    domClass.remove(this.domNode, 'panel-form-error');
+    $(this.domNode).removeClass('panel-form-error');
     this.set('validationContent', '');
   },
   /**
    * Removes teh summary for concurrency errors
    */
   hideConcurrencySummary: function hideConcurrencySummary() {
-    domClass.remove(this.domNode, 'panel-form-concurrency-error');
+    $(this.domNode).removeClass('panel-form-concurrency-error');
     this.set('concurrencyContent', '');
   },
   /**
@@ -1272,9 +1268,9 @@ const __class = declare('argos._EditBase', [View], {
   beforeTransitionTo: function beforeTransitionTo() {
     if (this.refreshRequired) {
       if (this.options.insert === true || (this.options.key && !this.options.entry)) {
-        domClass.add(this.domNode, 'panel-loading');
+        $(this.domNode).addClass('panel-loading');
       } else {
-        domClass.remove(this.domNode, 'panel-loading');
+        $(this.domNode).removeClass('panel-loading');
       }
     }
 
@@ -1326,8 +1322,8 @@ const __class = declare('argos._EditBase', [View], {
     this.inserting = (this.options.insert === true);
     this._hasFocused = false;
 
-    domClass.remove(this.domNode, 'panel-form-error');
-    domClass.remove(this.domNode, 'panel-form-concurrency-error');
+    $(this.domNode).removeClass('panel-form-error');
+    $(this.domNode).removeClass('panel-form-concurrency-error');
 
     this.clearValues();
 

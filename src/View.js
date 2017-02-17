@@ -14,8 +14,6 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import domAttr from 'dojo/dom-attr';
-import domClass from 'dojo/dom-class';
 import on from 'dojo/on';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from './_ActionMixin';
@@ -26,6 +24,7 @@ import Adapter from './Models/Adapter';
 import getResource from './I18n';
 import { insertHistory } from './actions';
 import page from 'page';
+import $ from 'jquery';
 
 const resource = getResource('view');
 
@@ -113,10 +112,10 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     this.inherited(arguments);
   },
   select: function select(node) {
-    domAttr.set(node, 'selected', 'true');
+    $(node).attr('selected', 'true');
   },
   unselect: function unselect(node) {
-    domAttr.remove(node, 'selected');
+    $(node).removeAttr('selected');
   },
   /**
    * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
@@ -334,7 +333,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   transition: function transition(from, to, options) {
     function complete() {
       this.transitionComplete(to, options);
-      domClass.remove(document.body, 'transition');
+      $('body').removeClass('transition');
 
       App.startOrientationCheck();
       on.emit(from, 'aftertransition', {
@@ -358,7 +357,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     }
 
     App.stopOrientationCheck();
-    domClass.add(document.body, 'transition');
+    $('body').addClass('transition');
 
     // dispatch an 'show' event to let the page be aware that is being show as the result of an external
     // event (i.e. browser back/forward navigation).
@@ -479,7 +478,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       cancelable: true,
     });
 
-    if (from && domAttr.get(p, 'selected') !== 'true') {
+    if (from && $(p).attr('selected') !== 'true') {
       if (options.reverse) {
         on.emit(p, 'unload', {
           bubbles: false,

@@ -5,8 +5,8 @@ import array from 'dojo/_base/array';
 import declare from 'dojo/_base/declare';
 import event from 'dojo/_base/event';
 import lang from 'dojo/_base/lang';
-import domAttr from 'dojo/dom-attr';
 import query from 'dojo/query';
+import $ from 'jquery';
 import 'dojo/NodeList-traverse';
 
 /**
@@ -57,7 +57,7 @@ const __class = declare('argos._ActionMixin', null, {
    */
   _initiateActionFromEvent: function _initiateActionFromEvent(evt) {
     const el = query(evt.target).closest('[data-action]')[0];
-    const action = el && domAttr.get(el, 'data-action');
+    const action = $(el).attr('data-action');
 
     if (action && this._isValidElementForAction(el) && this.hasAction(action, evt, el)) {
       const parameters = this._getParametersForAction(action, evt, el);
@@ -92,7 +92,7 @@ const __class = declare('argos._ActionMixin', null, {
       /* see: http://dev.w3.org/html5/spec/elements.html#embedding-custom-non-visible-data */
       /* todo: remove transformation and use dataset when browser support is there */
       const parameterName = attributeName.substr('data-'.length).replace(/-(\w)(\w+)/g, replace);
-      parameters[parameterName] = domAttr.get(el, attributeName);
+      parameters[parameterName] = $(el).attr(attributeName);
     }
 
     return parameters;

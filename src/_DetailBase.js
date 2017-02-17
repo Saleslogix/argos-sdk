@@ -16,17 +16,13 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import Deferred from 'dojo/_base/Deferred';
 import connect from 'dojo/_base/connect';
-import query from 'dojo/query';
-import dom from 'dojo/dom';
-import domClass from 'dojo/dom-class';
-import domStyle from 'dojo/dom-style';
-import domConstruct from 'dojo/dom-construct';
 import format from './Format';
 import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import View from './View';
 import TabWidget from './TabWidget';
 import getResource from './I18n';
+import $ from 'jquery';
 
 const resource = getResource('detailBase');
 
@@ -419,7 +415,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         return error.status === this.HTTP_STATUS.NOT_FOUND;
       },
       handle: (error, next) => {
-        domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+        $(this.contentNode).empty().append(this.notAvailableTemplate.apply(this));
         next();
       },
     }, {
@@ -435,7 +431,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
         ErrorManager.addError(this.getErrorMessage(error), errorItem);
         this.options.fromContext = fromContext;
-        domClass.remove(this.domNode, 'panel-loading');
+        $(this.domNode).removeClass('panel-loading');
         next();
       },
     }];
@@ -498,13 +494,13 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * Toggles the collapsed state of the section.
    */
   toggleSection: function toggleSection(params) {
-    const node = dom.byId(params.$source);
-    if (node) {
-      domClass.toggle(node, 'collapsed');
-      const button = query('button', node)[0];
-      if (button) {
-        domClass.toggle(button, this.toggleCollapseClass);
-        domClass.toggle(button, this.toggleExpandClass);
+    const node = $(`#${params.$source}`);
+    if (node.length) {
+      node.toggleClass('collapsed');
+      const button = $('button', node).first();
+      if (button.length) {
+        button.toggleClass(this.toggleCollapseClass);
+        button.toggleClass(this.toggleExpandClass);
       }
     }
   },
@@ -514,7 +510,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   placeDetailHeader: function placeDetailHeader() {
     const value = `${this.entityText} ${this.informationText}`;
-    domConstruct.place(this.detailHeaderTemplate.apply({ value }, this), this.tabList, 'before');
+    $(this.tabList).before(this.detailHeaderTemplate.apply({ value }, this));
   },
   /**
    * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.
@@ -674,24 +670,24 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         sectionStarted = true;
         if (this.isTabbed) {
           if (layout.name === this.quickActionSection) {
-            section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-            sectionNode = section;
-            domConstruct.place(section, this.quickActions);
+            section = $(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+            sectionNode = section.get(0);
+            $(this.quickActions).append(section);
           } else {
-            const tab = domConstruct.toDom(this.tabListItemTemplate.apply(layout, this));
-            section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-            sectionNode = section;
-            domStyle.set(section, {
+            const tab = $(this.tabListItemTemplate.apply(layout, this)).get(0);
+            section = $(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+            sectionNode = section.get(0);
+            section.css({
               display: 'none',
             });
-            this.tabMapping.push(section);
+            this.tabMapping.push(section.get(0));
             this.tabs.push(tab);
-            domConstruct.place(section, this.contentNode);
+            $(this.contentNode).append(section);
           }
         } else {
-          section = domConstruct.toDom(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
-          sectionNode = section.childNodes[1];
-          domConstruct.place(section, this.contentNode);
+          section = $(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
+          sectionNode = section.get(0).childNodes[1];
+          $(this.contentNode).append(section);
         }
       }
 
@@ -819,7 +815,9 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     }
   },
   createRowNode: function createRowNode(layout, sectionNode, entry, template, data) {
-    return domConstruct.place(template.apply(data, this), sectionNode);
+    const frag = $(template.apply(data, this));
+    $(sectionNode).append(frag);
+    return frag.get(0);
   },
   _getStoreAttr: function _getStoreAttr() {
     return this.store || (this.store = this.createStore());
@@ -864,10 +862,10 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       if (entry) {
         this.processEntry(entry);
       } else {
-        domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+        $(this.contentNode).empty().append(this.notAvailableTemplate.apply(this));
       }
 
-      domClass.remove(this.domNode, 'panel-loading');
+      $(this.domNode).removeClass('panel-loading');
 
       /* this must take place when the content is visible */
       this.onContentChange();
@@ -882,7 +880,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * Initiates the request.
    */
   requestData: function requestData() {
-    domClass.add(this.domNode, 'panel-loading');
+    $(this.domNode).addClass('panel-loading');
 
     const store = this.get('store');
 
@@ -1010,7 +1008,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   refresh: function refresh() {
     if (this.security && !App.hasAccessTo(this.expandExpression(this.security))) {
-      domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
+      $(this.contentNode).append(this.notAvailableTemplate.apply(this));
       return;
     }
 
@@ -1023,7 +1021,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     this.set('detailContent', this.emptyTemplate.apply(this));
     this.clearTabs();
     if (this.quickActions) {
-      domConstruct.empty(this.quickActions);
+      $(this.quickActions).empty();
     }
 
     this._navigationOptions = [];
@@ -1034,10 +1032,9 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
     const renderRelated = (result) => {
       if (result >= 0) {
-        const labelNode = query('.related-item-label', rowNode)[0];
-        if (labelNode) {
-          const html = `<span class="related-item-count">${result}</span>`;
-          domConstruct.place(html, labelNode, 'before');
+        const labelNode = $('.related-item-label', rowNode).first();
+        if (labelNode.length) {
+          labelNode.prepend(`<span class="related-item-count">${result}</span>`);
         } else {
           console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
         }
