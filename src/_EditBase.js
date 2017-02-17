@@ -809,7 +809,6 @@ const __class = declare('argos._EditBase', [View], {
   clearValues: function clearValues() {
     for (const name in this.fields) {
       if (this.fields.hasOwnProperty(name)) {
-        this.fields[name].clearHighlight();
         this.fields[name].clearValue();
       }
     }

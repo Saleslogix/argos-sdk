@@ -17,11 +17,6 @@ import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
 import query from 'dojo/query';
-import domAttr from 'dojo/dom-attr';
-import domClass from 'dojo/dom-class';
-import domConstruct from 'dojo/dom-construct';
-import domGeom from 'dojo/dom-geometry';
-import dom from 'dojo/dom';
 import string from 'dojo/string';
 import when from 'dojo/when';
 import Utility from './Utility';
@@ -31,6 +26,7 @@ import SearchWidget from './SearchWidget';
 import ConfigurableSelectionModel from './ConfigurableSelectionModel';
 import _PullToRefreshMixin from './_PullToRefreshMixin';
 import getResource from './I18n';
+import $ from 'jquery';
 
 const resource = getResource('listBase');
 
@@ -533,7 +529,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       this.searchWidget = null;
     }
 
-    domClass.toggle(this.domNode, 'list-hide-search', this.hideSearch || !this.enableSearch);
+    if (this.hideSearch || !this.enableSearch) {
+      $(this.domNode).addClass('list-hide-search');
+    }
+
     this.clear();
 
     this.initPullToRefresh(scrollerNode);
@@ -541,7 +540,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   shouldStartPullToRefresh: function shouldStartPullToRefresh() {
     // Get the base results
     const shouldStart = this.inherited(arguments);
-    const selected = domAttr.get(this.domNode, 'selected');
+    const selected = $(this.domNode).attr('selected');
     return shouldStart && selected === 'true' && !this.listLoading;
   },
   forceRefresh: function forceRefresh() {
@@ -725,7 +724,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       lang.mixin(action, options);
 
       const actionTemplate = action.template || this.listActionItemTemplate;
-      domConstruct.place(actionTemplate.apply(action, action.id), this.actionsNode, 'last');
+      $(this.actionsNode).append(actionTemplate.apply(action, action.id));
 
       visibleActions.push(action);
     }
@@ -940,7 +939,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       }
 
       if (actionNode) {
-        domClass.toggle(actionNode, 'toolButton-disabled', !action.isEnabled);
+        $(actionNode).toggleClass('toolButton-disabled', !action.isEnabled);
       }
     }
   },
@@ -961,11 +960,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   showActionPanel: function showActionPanel(rowNode) {
     this.checkActionState();
-    domClass.add(rowNode, 'list-action-selected');
+    $(rowNode).addClass('list-action-selected');
 
     this.onApplyRowActionPanel(this.actionsNode, rowNode);
-
-    domConstruct.place(this.actionsNode, rowNode, 'after');
+    $(rowNode).after(this.actionsNode);
   },
   onApplyRowActionPanel: function onApplyRowActionPanel(/* actionNodePanel, rowNode*/) {},
   /**
@@ -986,7 +984,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {HTMLElement} rowNode The currently selected row.
    */
   hideActionPanel: function hideActionPanel(rowNode) {
-    domClass.remove(rowNode, 'list-action-selected');
+    $(rowNode).removeClass('list-action-selected');
   },
   /**
    * Determines if the view is a navigatible view or a selection view by returning `this.selectionOnly` or the
@@ -1012,17 +1010,17 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @private
    */
   _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) {
-    const node = dom.byId(tag) || query(`li[data-key="${key}"]`, this.contentNode)[0];
-    if (!node) {
+    const node = $(tag) || $(`li[data-key='${key}']`, this.contentNode).first();
+    if (!node.length) {
       return;
     }
 
     if (this.enableActions) {
-      this.showActionPanel(node);
+      this.showActionPanel(node.get(0));
       return;
     }
 
-    domClass.add(node, 'list-item-selected');
+    node.addClass('list-item-selected');
   },
   /**
    * Handler for when the selection model removes an item. Removes the selected state to the row or hides the list
@@ -1033,17 +1031,17 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @private
    */
   _onSelectionModelDeselect: function _onSelectionModelDeselect(key, data, tag) {
-    const node = dom.byId(tag) || query(`li[data-key="${key}"]`, this.contentNode)[0];
-    if (!node) {
+    const node = $(tag) || $(`li[data-key="${key}"]`, this.contentNode).first();
+    if (!node.length) {
       return;
     }
 
     if (this.enableActions) {
-      this.hideActionPanel(node);
+      this.hideActionPanel(node.get(0));
       return;
     }
 
-    domClass.remove(node, 'list-item-selected');
+    node.removeClass('list-item-selected');
   },
   /**
    * Handler for when the selection model clears the selections.
@@ -1090,12 +1088,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   _onRefresh: function _onRefresh(/* options*/) {},
   onScroll: function onScroll(/* evt*/) {
     const scrollerNode = this.get('scroller');
-    const pos = domGeom.position(scrollerNode, true);
-    const height = pos.h; // viewport height (what user sees)
+    const height = $(scrollerNode).height(); // viewport height (what user sees)
     const scrollHeight = scrollerNode.scrollHeight; // Entire container height
     const scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
     const remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
-    const selected = domAttr.get(this.domNode, 'selected');
+    const selected = $(this.domNode).attr('selected');
     const diff = Math.abs(remaining - height);
 
     // Start auto fetching more data if the user is on the last half of the remaining screen
@@ -1357,11 +1354,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   hasMoreData: function hasMoreData() {},
   _setLoading: function _setLoading() {
-    domClass.add(this.domNode, 'list-loading');
+    $(this.domNode).addClass('list-loading');
     this.listLoading = true;
   },
   _clearLoading: function _clearLoading() {
-    domClass.remove(this.domNode, 'list-loading');
+    $(this.domNode).removeClass('list-loading');
     this.listLoading = false;
   },
   /**
@@ -1427,7 +1424,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
         /* todo: move to a more appropriate location */
         if (this.options && this.options.allowEmptySelection) {
-          domClass.add(this.domNode, 'list-has-empty-opt');
+          $(this.domNode).addClass('list-has-empty-opt');
         }
 
         /* remove the loading indicator so that it does not get re-shown while requesting more data */
@@ -1437,7 +1434,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
             this.set('listContent', '');
           }
 
-          domConstruct.destroy(this.loadingIndicatorNode);
+          $(this.loadingIndicatorNode).remove();
         }
 
         this.processData(entries);
@@ -1484,7 +1481,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         this.remaining = remaining;
       }
 
-      domClass.toggle(this.domNode, 'list-has-more', (remaining === -1 || remaining > 0));
+      $(this.domNode).toggleClass('list-has-more', (remaining === -1 || remaining > 0));
 
       this.position = this.position + this.pageSize;
     }
@@ -1516,19 +1513,19 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       }
 
       if (docfrag.childNodes.length > 0) {
-        domConstruct.place(docfrag, this.contentNode, 'last');
+        $(this.contentNode).append(docfrag);
       }
     }
   },
   createItemRowNode: function createItemRowNode(entry) {
     let rowNode = null;
     try {
-      rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+      rowNode = $(this.rowTemplate.apply(entry, this));
     } catch (err) {
       console.error(err); // eslint-disable-line
-      rowNode = domConstruct.toDom(this.rowTemplateError.apply(entry, this));
+      rowNode = $(this.rowTemplateError.apply(entry, this));
     }
-    return rowNode;
+    return rowNode.get(0);
   },
   getIdentity: function getIdentity(entry) {
     if (this._model) {
@@ -1625,9 +1622,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   beforeTransitionTo: function beforeTransitionTo() {
     this.inherited(arguments);
 
-    domClass.toggle(this.domNode, 'list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined') ? this.options.hideSearch : this.hideSearch || !this.enableSearch);
+    $(this.domNode).toggleClass('list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined') ? this.options.hideSearch : this.hideSearch || !this.enableSearch);
 
-    domClass.toggle(this.domNode, 'list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);
+    $(this.domNode).toggleClass('list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);
 
     if (this._selectionModel && !this.isSelectionDisabled()) {
       this._selectionModel.useSingleSelection(this.options.singleSelect);
@@ -1637,7 +1634,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       this.enableActions = this.options.enableActions;
     }
 
-    domClass.toggle(this.domNode, 'list-show-actions', this.enableActions);
+    $(this.domNode).toggleClass('list-show-actions', this.enableActions);
     if (this.enableActions) {
       this._selectionModel.useSingleSelection(true);
     }
@@ -1725,7 +1722,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       this.hasSearched = false;
     }
 
-    domClass.remove(this.domNode, 'list-has-more');
+    $(this.domNode).removeClass('list-has-more');
 
     this.set('listContent', this.loadingTemplate.apply(this));
   },
