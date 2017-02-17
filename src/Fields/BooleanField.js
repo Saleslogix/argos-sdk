@@ -14,11 +14,8 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import domAttr from 'dojo/dom-attr';
-import domClass from 'dojo/dom-class';
 import Field from './_Field';
 import FieldManager from '../FieldManager';
-import $ from 'jquery';
 
 /**
  * @class argos.Fields.BooleanField
