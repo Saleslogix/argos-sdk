@@ -541,7 +541,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     // Get the base results
     const shouldStart = this.inherited(arguments);
     const selected = $(this.domNode).attr('selected');
-    return shouldStart && selected === 'true' && !this.listLoading;
+    return shouldStart && selected === 'selected' && !this.listLoading;
   },
   forceRefresh: function forceRefresh() {
     this.clear();

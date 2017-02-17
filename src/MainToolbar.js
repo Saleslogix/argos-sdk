@@ -15,8 +15,6 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import query from 'dojo/query';
-import domClass from 'dojo/dom-class';
-import domConstruct from 'dojo/dom-construct';
 import Toolbar from './Toolbar';
 import getResource from './I18n';
 import $ from 'jquery';
@@ -56,8 +54,6 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
   widgetTemplate: new Simplate([`
     <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
       data-breakpoint="desktop" style="height: 100%;">
-      <div class="accordion panel inverse has-icons" data-options="{allowOnePane: false}">
-      </div>
     </nav>
     <header class="header azure07 is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
       <div class="toolbar has-title-button" role="toolbar" aria-label="Layouts">
@@ -136,7 +132,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
   showTools: function showTools(tools) {
     this.inherited(arguments);
 
-    domClass.remove(this.domNode, `toolbar-size-${this.size}`);
+    $(this.domNode).removeClass(`toolbar-size-${this.size}`);
     let onLine = this.app.onLine;
     if (tools) {
       const count = {
@@ -154,13 +150,13 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         if (tool.offline) {
           onLine = false;
         }
-        domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.toolNode, 'last');
+        $(this.toolNode).append(toolTemplate.apply(tool, this.tools[tool.id]));
       }
 
       this.initSoho();
 
       this.size = Math.max(count.left, count.right);
-      domClass.add(this.domNode, `toolbar-size-${this.size}`);
+      $(this.domNode).addClass(`toolbar-size-${this.size}`);
       this.setMode(onLine);
     }
   },
@@ -169,9 +165,9 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    */
   onTitleClick: function onTitleClick(/* evt*/) {},
   setMode: function setMode(onLine) {
-    domClass.remove(this.domNode, 'offline');
+    $(this.domNode).removeClass('offline');
     if (!onLine) {
-      domClass.add(this.domNode, 'offline');
+      $(this.domNode).addClass('offline');
     }
   },
 });

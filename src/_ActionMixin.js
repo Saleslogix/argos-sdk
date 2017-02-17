@@ -6,6 +6,7 @@ import declare from 'dojo/_base/declare';
 import event from 'dojo/_base/event';
 import lang from 'dojo/_base/lang';
 import query from 'dojo/query';
+import domAttr from 'dojo/dom-attr';
 import $ from 'jquery';
 import 'dojo/NodeList-traverse';
 
@@ -38,6 +39,8 @@ const __class = declare('argos._ActionMixin', null, {
   postCreate: function postCreate() {
     // todo: add delegation
     array.forEach(this.actionsFrom.split(','), function forEach(evt) {
+      console.dir(this.domNode);
+      console.log(evt);
       this.connect(this.domNode, evt, this._initiateActionFromEvent);
     }, this);
   },
@@ -56,9 +59,12 @@ const __class = declare('argos._ActionMixin', null, {
    * @param {Event} evt
    */
   _initiateActionFromEvent: function _initiateActionFromEvent(evt) {
+    console.log("Event: " + evt);
     const el = query(evt.target).closest('[data-action]')[0];
-    const action = $(el).attr('data-action');
+    //const action = $(el).attr('data-action');
+    const action = el && domAttr.get(el, 'data-action');
 
+    console.log(action);
     if (action && this._isValidElementForAction(el) && this.hasAction(action, evt, el)) {
       const parameters = this._getParametersForAction(action, evt, el);
       this.invokeAction(action, parameters, evt, el);

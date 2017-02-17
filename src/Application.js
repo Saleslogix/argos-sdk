@@ -20,8 +20,6 @@ import lang from 'dojo/_base/lang';
 import win from 'dojo/_base/window';
 import hash from 'dojo/hash';
 import has from 'dojo/has';
-import domClass from 'dojo/dom-class';
-import domConstruct from 'dojo/dom-construct';
 import all from 'dojo/promise/all';
 import ready from 'dojo/ready';
 import util from './Utility';
@@ -39,6 +37,7 @@ import { createStore } from 'redux';
 import { sdk } from './reducers';
 import Scene from './Scene';
 import page from 'page';
+import $ from 'jquery';
 import 'dojo/sniff';
 
 // import moment from 'moment';
@@ -827,11 +826,9 @@ const __class = declare('argos.Application', null, {
   _createViewContainers: function _createViewContainers(domNode) {
     // If a domNode is provided, create the app's dom under this
     if (domNode && !this._rootDomNode) {
-      const contentDiv = domConstruct.create('div', {
-        class: 'viewContainer',
-      }, domNode);
+      $(domNode).append('<div class="viewContainer"></div>');
       this._containerNode = domNode;
-      this._rootDomNode = contentDiv;
+      this._rootDomNode = $('.viewContainer', domNode).get(0);
       return;
     }
 
@@ -847,10 +844,8 @@ const __class = declare('argos.Application', null, {
 
     // Nothing was provided, create a default
     if (this._rootDomNode === null || typeof this._rootDomNode === 'undefined') {
-      this._rootDomNode = domConstruct.create('div', {
-        id: defaultAppID,
-        class: defaultAppID,
-      }, win.body());
+      $('body').append(`<div id="${defaultAppID}" class="${defaultAppID}"></div>`);
+      this._rootDomNode = $(`#${defaultAppID}`).get(0);
     }
   },
   /**
@@ -944,23 +939,23 @@ const __class = declare('argos.Application', null, {
     return (this.getPrimaryActiveView() === view);
   },
   updateOrientationDom: function updateOrientationDom(value) {
-    const body = document.body;
-    const currentOrient = body.getAttribute('orient');
+    const root = $(this.getContainerNode());
+    const currentOrient = root.attr('orient');
     if (value === currentOrient) {
       return;
     }
 
-    body.setAttribute('orient', value);
+    root.attr('orient', value);
 
     if (value === 'portrait') {
-      domClass.remove(body, 'landscape');
-      domClass.add(body, 'portrait');
+      root.removeClass('landscape');
+      root.addClass('portrait');
     } else if (value === 'landscape') {
-      domClass.remove(body, 'portrait');
-      domClass.add(body, 'landscape');
+      root.removeClass('portrait');
+      root.addClass('landscape');
     } else {
-      domClass.remove(body, 'portrait');
-      domClass.remove(body, 'landscape');
+      root.removeClass('portrait');
+      root.removeClass('landscape');
     }
 
     this.currentOrientation = value;

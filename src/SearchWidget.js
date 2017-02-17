@@ -16,10 +16,10 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import event from 'dojo/_base/event';
 import string from 'dojo/string';
-import domClass from 'dojo/dom-class';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
 import getResource from './I18n';
+import $ from 'jquery';
 
 const resource = getResource('searchWidget');
 
@@ -119,7 +119,7 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
    * Sets search text to empty and removes active styling
    */
   clear: function clear() {
-    domClass.remove(this.domNode, 'search-active');
+    $(this.domNode).removeClass('search-active');
     this.set('queryValue', '');
   },
   /**
@@ -229,13 +229,13 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
    * Tests to see if the search input is empty and toggles the active styling
    */
   _onBlur: function _onBlur() {
-    domClass.toggle(this.domNode, 'search-active', !!this.queryNode.value);
+    $(this.domNode).toggleClass('search-active', !!this.queryNode.value);
   },
   /**
    * Adds the search active styling
    */
   _onFocus: function _onFocus() {
-    domClass.add(this.domNode, 'search-active');
+    $(this.domNode).addClass('search-active');
   },
   _onMouseUp: function _onMouseUp() {
     // Work around a chrome issue where mouseup after a focus will de-select the text
@@ -300,13 +300,13 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
   disable: function disable() {
     if (this.queryNode) {
       this.queryNode.disabled = true;
-      domClass.add(this.domNode, 'disabled');
+      $(this.domNode).addClass('disabled');
     }
   },
   enable: function enable() {
     if (this.queryNode) {
       this.queryNode.disabled = false;
-      domClass.remove(this.domNode, 'disabled');
+      $(this.domNode).removeClass('disabled');
     }
   },
 });

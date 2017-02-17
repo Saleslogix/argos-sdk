@@ -4,10 +4,7 @@
  * @alternateClassName _PullToRefreshMixin
  */
 import declare from 'dojo/_base/declare';
-import domClass from 'dojo/dom-class';
-import domConstruct from 'dojo/dom-construct';
-import domGeom from 'dojo/dom-geometry';
-import domStyle from 'dojo/dom-style';
+import $ from 'jquery';
 import getResource from './I18n';
 
 import Rx from 'rxjs';
@@ -80,8 +77,8 @@ const __class = declare('argos._PullToRefreshMixin', null, {
       return;
     }
 
-    this.pullRefreshBanner = domConstruct.toDom(this.pullRefreshBannerTemplate.apply(this));
-    domConstruct.place(this.pullRefreshBanner, scrollerNode, 'before');
+    this.pullRefreshBanner = $(this.pullRefreshBannerTemplate.apply(this)).get(0);
+    $(scrollerNode).before(this.pullRefreshBanner);
 
     // Pull down to refresh touch handles
     this.scrollerNode = scrollerNode;
@@ -89,18 +86,24 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     const touchstart = Rx.Observable.fromEvent(scrollerNode, 'touchstart')
       .filter((evt) => {
         // The implmentor of this mixin should determine what shouldStartPullToRefresh is.
-        return this.shouldStartPullToRefresh(this.scrollerNode) && evt.touches[0];
+        const shouldStart = this.shouldStartPullToRefresh(this.scrollerNode);
+        const results = shouldStart && evt.touches[0];
+        return results;
       })
       .map((e) => {
         const evt = e.touches[0];
-        domStyle.set(this.pullRefreshBanner, 'visibility', 'visible');
-        domClass.remove(this.scrollerNode, this.animateCls);
-        const bannerPos = domGeom.position(this.pullRefreshBanner);
-        const style = domStyle.getComputedStyle(scrollerNode); // expensive
+        $(this.pullRefreshBanner).css('visibility', 'visible');
+        $(this.scrollerNode).removeClass(this.animateCls);
+        const bannerHeight = $(this.pullRefreshBanner).height();
+        const style = {
+          top: $(scrollerNode).position().top,
+          overflowY: $(scrollerNode).css('overflowY'),
+          overflowX: $(scrollerNode).css('overflowX'),
+        }; // expensive
 
         // We filtered out if the drag should start, so we are mapping the initial state here.
         return {
-          bannerHeight: bannerPos.h,
+          bannerHeight,
           topCss: style.top,
           overflowCssY: style.overflowY,
           overflowCssX: style.overflowX,
@@ -137,14 +140,14 @@ const __class = declare('argos._PullToRefreshMixin', null, {
         .takeUntil(done.do(() => {
           // The "done" observable is a combination of touch end and touch cancel.
           // We should restore the UI state and invoke callbacks here.
-          domStyle.set(this.scrollerNode, {
+          $(this.scrollerNode).css({
             top: data.topCss,
             'overflow-y': data.overflowCssY,
             'overflow-x': data.overflowCssX,
           });
 
-          domStyle.set(this.pullRefreshBanner, 'visibility', 'hidden');
-          domClass.add(this.scrollerNode, this.animateCls);
+          $(this.pullRefreshBanner).css('visibility', 'hidden');
+          $(this.scrollerNode).addClass(this.animateCls);
 
           // Check if we dragged over the threshold (maxDistance),
           // if so, fire the callbacks the views will implement.
@@ -160,7 +163,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     // start and touch drag. Update the UI while dragging here.
     dragging.subscribe((data) => {
       data.evt.preventDefault();
-      domStyle.set(this.scrollerNode, {
+      $(this.scrollerNode).css({
         top: `${data.top}px`,
         overflow: 'hidden',
       });

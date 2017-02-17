@@ -15,11 +15,11 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
-import domClass from 'dojo/dom-class';
 import format from '../Format';
 import LookupField from './LookupField';
 import FieldManager from '../FieldManager';
 import getResource from '../I18n';
+import $ from 'jquery';
 
 const resource = getResource('durationField');
 
@@ -380,11 +380,11 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
     const phraseMatch = this.autoCompletePhraseRE.exec(val);
 
     if (!phraseMatch) {
-      domClass.add(this.containerNode, 'row-error');
+      $(this.containerNode).addClass('row-error');
       return string.substitute(this.invalidDurationErrorText, [val]);
     }
 
-    domClass.remove(this.containerNode, 'row-error');
+    $(this.containerNode).removeClass('row-error');
     return false;
   },
 });
