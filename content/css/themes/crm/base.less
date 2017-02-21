@@ -379,13 +379,13 @@ body {
 .transition > .viewContainer > .panel,
 .transition > .viewContainer > .list {
     position: absolute;
-    top: 64px;
+    top: 60px;
 }
 
 .viewContainer > .panel,
 .viewContainer > .list {
     position: absolute;
-    top: 64px;
+    top: 60px;
     bottom: 0px;
     width: 100%;
     .box-sizing(border-box);
@@ -397,7 +397,7 @@ body {
 [orient="landscape"] > .viewContainer > .panel,
 [orient="landscape"] > .viewContainer > .list {
     position: absolute;
-    top: 64px; /* Adjust if header toolbar changes */
+    top: 60px; /* Adjust if header toolbar changes */
     bottom: 0px; /* Adjust if footer toolbar changes */
     width: 100%;
     -webkit-transition-property: top, bottom;
@@ -766,11 +766,7 @@ img {
 
     .list-content {
         > li {
-            background-color: #fff;
-            color: #aaa;
-            padding: 0;
-            height: 40px;
-            line-height: 40px;
+
 
             .resource {
                 display: block;
@@ -779,9 +775,6 @@ img {
             }
 
             h3 {
-              vertical-align: middle;
-              line-height: 40px;
-
                 > span {
                     &:first-child {
                         float: left;

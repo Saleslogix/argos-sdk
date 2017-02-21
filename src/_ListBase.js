@@ -74,16 +74,34 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      resourceKind         set to data-resource-kind
    *
    */
-  widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
-    '<div data-dojo-attach-point="searchNode"></div>',
-    '<div class="listview {% if ($$.allowSelection) { %}is-multiselect is-selectable{% } %}" role="listbox" aria-label="List" data-dojo-attach-point="scrollerNode">',
-    '{%! $.emptySelectionTemplate %}',
-    '<ul class="list-content" role="presentation" data-dojo-attach-point="contentNode"></ul>',
-    '{%! $.moreTemplate %}',
-    '{%! $.listActionTemplate %}',
-    '</div>',
-    '</div>',
+  widgetTemplate: new Simplate([`
+    <div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
+      <div data-dojo-attach-point="searchNode"></div>
+      {% if ($$.isNavigationDisabled()) { %}
+      <div class="contextual-toolbar toolbar is-hidden">
+        <div class="buttonset">
+          <button class="btn-tertiary" title="Assign Selected Items" type="button">Assign</button>
+          <button class="btn-tertiary" id="remove" title="Remove Selected Items" type="button">Remove</button>
+        </div>
+      </div>
+      {% } %}
+      <div class="listview {% if ($$.isNavigationDisabled()) { %}is-muliselect is-selectable is-toolbar-open{% } %}"
+        role="listbox"
+        aria-label="List"
+        {% if ($$.isNavigationDisabled()) { %}
+        data-selectable="multiple"
+        {% } else { %}
+        data-selectable="false"
+        {% } %}
+        data-dojo-attach-point="scrollerNode">
+        {%! $.emptySelectionTemplate %}
+        <ul class="list-content" role="presentation" data-dojo-attach-point="contentNode"></ul>
+        {%! $.moreTemplate %}
+        {%! $.listActionTemplate %}
+      </div>
+    </div>
+    `,
+
   ]),
   /**
    * @property {Simplate}
@@ -516,7 +534,15 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this._loadedSelections = {};
   },
   initSoho: function initSoho() {
-    $(this.domNode).initialize();
+    const listview = $('.listview', this.domNode).first();
+    if (listview.length) {
+      listview.listview();
+      listview.off('selected');
+      listview.on('selected', this._onListViewSelected);
+    }
+  },
+  _onListViewSelected: function _onListViewSelected() {
+    console.dir(arguments);
   },
   postCreate: function postCreate() {
     this.inherited(arguments);
