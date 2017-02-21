@@ -450,7 +450,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     if (this.editView) {
       tools.push({
         id: 'edit',
-        cls: 'fa fa-pencil fa-fw fa-lg',
+        svg: 'edit',
         action: 'navigateToEditView',
         security: App.getViewSecurity(this.editView, 'update'),
       });
@@ -458,7 +458,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
     tools.push({
       id: 'refresh',
-      cls: 'fa fa-refresh fa-fw fa-lg',
+      svg: 'refresh',
       action: '_refreshClicked',
     });
 

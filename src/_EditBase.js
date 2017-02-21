@@ -401,14 +401,14 @@ const __class = declare('argos._EditBase', [View], {
     const tbar = [{
       id: 'save',
       action: 'save',
-      cls: 'fa fa-save fa-fw fa-lg',
+      svg: 'save',
       security: this.options && this.options.insert ? this.insertSecurity : this.updateSecurity,
     }];
 
     if (!App.isOnFirstView()) {
       tbar.push({
         id: 'cancel',
-        cls: 'fa fa-ban fa-fw fa-lg',
+        svg: 'cancel',
         side: 'left',
         action: 'onToolCancel',
       });

@@ -75,11 +75,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '<div data-dojo-attach-point="searchNode"></div>',
-    '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">',
+    '<div class="listview" role="listbox" aria-label="List" data-dojo-attach-point="scrollerNode">',
     '{%! $.emptySelectionTemplate %}',
-    '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
+    '<ul class="list-content" role="presentation" data-dojo-attach-point="contentNode"></ul>',
     '{%! $.moreTemplate %}',
     '{%! $.listActionTemplate %}',
     '</div>',
@@ -199,7 +199,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render the single list action row.
    */
   listActionTemplate: new Simplate([
-    '<li data-dojo-attach-point="actionsNode" class="actions-row"></li>',
+    '<li class="actions-row">',
+    '<ul data-dojo-attach-point="actionsNode"></ul>',
+    '</li>',
   ]),
   /**
    * @property {Simplate}
@@ -216,7 +218,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      label               Text added below the icon
    */
   listActionItemTemplate: new Simplate([
-    '<button data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">',
+    '<li><button data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">',
     '{% if ($.cls) { %}',
     '<span class="{%= $.cls %}"></span>',
     '{% } else if ($.icon) { %}',
@@ -225,7 +227,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     '<span class="fa fa-level-down fa-2x"></span>',
     '{% } %}',
     '<label>{%: $.label %}</label>',
-    '</button>',
+    '</button></li>',
   ]),
   /**
    * @property {HTMLElement}
@@ -617,7 +619,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     return this.tools || (this.tools = {
       tbar: [{
         id: 'new',
-        cls: 'fa fa-plus fa-fw fa-lg',
+        svg: 'add',
         action: 'navigateToInsertView',
         security: this.app.getViewSecurity(this.insertView, 'insert'),
       }],

@@ -36,7 +36,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     if (tools && tools.tbar && this.enableOffline && App.enableOfflineSupport) {
       tools.tbar.push({
         id: 'briefCase',
-        cls: 'fa fa-suitcase fa-fw fa-lg',
+        svg: 'roles',
         action: 'briefCaseEntity',
         security: '',
       });

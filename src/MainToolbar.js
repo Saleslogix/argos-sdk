@@ -88,7 +88,12 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         type="button"
         data-action="invokeTool"
         data-tool="{%= $.id %}">
-          <span class="audible">{%: $.title || $.id %}</span>
+        {% if ($.svg) { %}
+        <svg aria-hidden="true" focusable="false" role="presentation" class="icon">
+          <use xlink:href="#icon-{%= $.svg %}"/>
+        </svg>
+        {% } %}
+        <span class="audible">{%: $.title || $.id %}</span>
       </button>
     `,
   ]),

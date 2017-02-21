@@ -15,22 +15,6 @@ const __class = declare('argos.Views.Link', [View], {
     '</iframe>',
     '</div>',
   ]),
-  /*
-  Skip adding the open external link for now. This view is not general purpose (yet) and only
-  used for opening maps.
-  createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
-      tbar: [{
-        id: 'view_external',
-        cls: 'fa fa-external-link fa-lg',
-        action: 'openExternal',
-      }],
-    });
-  },
-  openExternal: function openExternal() {
-    window.open(this._getLink(), 'externalWin', '');
-  },
-  */
   _getLink: function _getLink() {
     const { link } = this.options;
     return link || this.link;

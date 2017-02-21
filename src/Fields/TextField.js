@@ -84,11 +84,6 @@ const control = declare('argos.Fields.TextField', [_Field], {
           >
       </div>
     `,
-    // '<label for="{%= $.name %}">{%: $.label %}</label>',
-    // '{% if ($.enableClearButton && !$.readonly) { %}',
-    // '<button class="clear-button" tabindex="-1" data-dojo-attach-point="clearNode" data-dojo-attach-event="onclick:_onClearClick"></button>',
-    // '{% } %}',
-    // '<input data-dojo-attach-point="inputNode" tabindex="0" placeholder="{%: $.placeHolderText %}" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>',
   ]),
   /**
    * @property {HTMLElement}

@@ -24,11 +24,6 @@ input:focus, textarea:focus {
     background-color: #EAF7FF;
 }
 
-.list-content > .actions-row > button:active,
-.group-content > .actions-row > button:active {
-    background-color: @list-action-active-bg-color;
-}
-
 .group-content > h2 > button {
     color: @color-lighter-slate;
     background-color: transparent;
@@ -92,47 +87,9 @@ input:focus, textarea:focus {
   color: @color-graphite;
 }
 
-.actions-row > button {
-    position: relative;
-    float: left;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: 64px;
-    height: 40px;
-    text-align: center;
-    background: none;
-    border: 0 solid #000;
-}
-
-.actions-row > button > label {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    bottom: 2px;
-    padding: 0;
-    font-size: @font-size-paragraph;
-    white-space: nowrap;
-    display: block;
-    text-overflow: ellipsis;
-    overflow-x: hidden;
-}
-
-.actions-row > button > span {
-    position: absolute;
-    width: 100%;
-    left: 0px;
-    top: 2px;
-    padding: 0;
-    font-size: 25px; /* changes the quick action icon size */
-}
-
-.actions-row > button > img {
-    position: absolute;
-    top: 0px;
-    left: 25%;
-    padding: 2px 2px 0 2px;
-    width: 24px;
-    height: 24px;
+.actions-row > li {
+  display: inline;
+  border: none;
 }
 
 .action-list > li > a > label {
@@ -177,28 +134,6 @@ input:focus, textarea:focus {
 .row-readonly > div {
     opacity: 0.5;
     cursor: default;
-}
-
-div.table-layout div.hasButton {
-    width: 30px;
-    white-space: nowrap;
-}
-
-div.table-layout div.hasButton > button {
-    margin: 0;
-    border: 0;
-}
-
-div.table-layout div.hasButton > button.searchButton {
-    border: @button-border;
-}
-
-div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
-    border: 0;
-    padding: 0 6px;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
 }
 
 .clear-button {
@@ -261,25 +196,6 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
     line-height: 32px;
     padding: 0 8px 0 6px;
     font-weight: normal;
-}
-
-.search-active label {
-    display: none;
-}
-
-.search-active .dismissButton {
-    display: block;
-}
-
-.search-widget button.clear-button {
-    position: static;
-    height: 30px;
-}
-
-div.search-active button.clear-button,
-.text-field-active > button.clear-button,
-button.clear-button:focus {
-    background: url('../../../images/delete.png') no-repeat 50% 50%;
 }
 
 .text-input {
