@@ -115,7 +115,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     const menu = $('.application-menu', this.domNode);
     menu.applicationmenu();
 
-    const accordion = $('.accordion .panel', this.domNode);
+    const accordion = $('.accordion.panel', this.domNode);
     accordion.accordion();
 
     const header = $('.header', this.domNode);
