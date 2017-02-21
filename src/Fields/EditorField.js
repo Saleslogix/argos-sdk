@@ -142,12 +142,12 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
       tools: {
         tbar: [{
           id: 'complete',
-          cls: 'fa fa-check fa-fw fa-lg',
+          svg: 'check',
           fn: this.complete,
           scope: this,
         }, {
           id: 'cancel',
-          cls: 'fa fa-ban fa-fw fa-lg',
+          svg: 'cancel',
           side: 'left',
           fn: ReUI.back,
           scope: ReUI,

@@ -41,12 +41,12 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
     return this.tools || (this.tools = {
       tbar: [{
         id: 'save',
-        cls: 'fa fa-check fa-fw fa-lg',
+        svg: 'check',
         fn: this.onSave,
         scope: this,
       }, {
         id: 'cancel',
-        cls: 'fa fa-ban fa-fw fa-lg',
+        svg: 'cancel',
         side: 'left',
         fn: this.onCancel,
         scope: ReUI,

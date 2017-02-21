@@ -77,7 +77,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '<div data-dojo-attach-point="searchNode"></div>',
-    '<div class="listview" role="listbox" aria-label="List" data-dojo-attach-point="scrollerNode">',
+    '<div class="listview {% if ($$.allowSelection) { %}is-multiselect is-selectable{% } %}" role="listbox" aria-label="List" data-dojo-attach-point="scrollerNode">',
     '{%! $.emptySelectionTemplate %}',
     '<ul class="list-content" role="presentation" data-dojo-attach-point="contentNode"></ul>',
     '{%! $.moreTemplate %}',
@@ -156,17 +156,24 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {Simplate}
    * The template used to render a row in the view.  This template includes {@link #itemTemplate}.
    */
-  rowTemplate: new Simplate([
-    '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
-    '<button data-action="selectEntry" class="list-item-selector button">',
-    '{% if ($$.selectIconClass) { %}',
-    '<span class="{%= $$.selectIconClass %}"></span>',
-    '{% } else if ($$.icon || $$.selectIcon) { %}',
-    '<img src="{%= $$.icon || $$.selectIcon %}" class="icon" />',
-    '{% } %}',
-    '</button>',
-    '<div class="list-item-content">{%! $$.itemTemplate %}</div>',
-    '</li>',
+  rowTemplate: new Simplate([`
+    <li data-key="{%= $[$$.idProperty] %}">
+      <div class="widget">
+        <div class="widget-header">
+          <h2 class="widget-title">{%: $[$$.labelProperty] %}</h2>
+          <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $[$$.idProperty] %}">
+            <span class="audible">Actions</span>
+            <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+              <use xlink:href="#icon-more"></use>
+            </svg>
+          </button>
+        </div>
+        <div class="card-content" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">
+          {%! $$.itemTemplate %}
+        </div>
+      </div>
+    </li>
+    `,
   ]),
   /**
    * @cfg {Simplate}
@@ -507,6 +514,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   constructor: function constructor() {
     this.entries = {};
     this._loadedSelections = {};
+  },
+  initSoho: function initSoho() {
+    $(this.domNode).initialize();
   },
   postCreate: function postCreate() {
     this.inherited(arguments);
@@ -1011,8 +1021,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {String/HTMLElement} tag An indentifier, may be the actual row node or some other id.
    * @private
    */
-  _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) {
-    const node = $(tag) || $(`li[data-key='${key}']`, this.contentNode).first();
+  _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) { // eslint-disable-line
+    const node = $(`li[data-key='${key}']`, this.contentNode).first();
     if (!node.length) {
       return;
     }
@@ -1023,6 +1033,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
 
     node.addClass('list-item-selected');
+    node.removeClass('list-item-de-selected');
   },
   /**
    * Handler for when the selection model removes an item. Removes the selected state to the row or hides the list
@@ -1044,6 +1055,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
 
     node.removeClass('list-item-selected');
+    node.addClass('list-item-de-selected');
   },
   /**
    * Handler for when the selection model clears the selections.
@@ -1082,6 +1094,20 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       }
     }
   },
+  applyRowIndicators: function applyRowIndicators(entry, rowNode) {
+    if (this.itemIndicators && this.itemIndicators.length > 0) {
+      const topIndicatorsNode = query('> #top_item_indicators', rowNode);
+      const bottomIndicatorsNode = query('> #bottom_item_indicators', rowNode);
+      if (bottomIndicatorsNode[0] && topIndicatorsNode[0]) {
+        if (bottomIndicatorsNode[0].childNodes.length === 0 && topIndicatorsNode[0].childNodes.length === 0) {
+          this.createIndicators(topIndicatorsNode[0], bottomIndicatorsNode[0], this._createCustomizedLayout(this.itemIndicators, 'indicators'), entry);
+        }
+      }
+    }
+  },
+  createIndicatorLayout: function createIndicatorLayout() {
+    return this.itemIndicators || (this.itemIndicators = []);
+  },
   /**
    * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the resourceKind matches.
    * @param {Object} options The object published by the event.
@@ -1114,13 +1140,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Event} evt The click/tap event.
    * @param {HTMLElement} node The element that initiated the event.
    */
-  selectEntry: function selectEntry(params, evt, node) {
-    const row = query(node)
-      .closest('[data-key]')[0];
-    const key = row ? row.getAttribute('data-key') : false;
+  selectEntry: function selectEntry(params) {
+    const row = $(`li[data-key='${params.key}']`, this.contentNode).first();
+    const key = row ? row.attr('data-key') : false;
 
     if (this._selectionModel && key) {
-      this._selectionModel.toggle(key, this.entries[key], row);
+      this._selectionModel.toggle(key, this.entries[key], row.get(0));
     }
 
     if (this.options.singleSelect && this.options.singleSelectAction && !this.enableActions) {
@@ -1414,6 +1439,75 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const store = this.get('store');
     return store.query(queryExpression, queryOptions);
   },
+  postMixInProperties: function postMixInProperties() {
+    this.inherited(arguments);
+    this.createIndicatorLayout();
+  },
+  getItemActionKey: function getItemActionKey(entry) {
+    return entry.$key || entry[this.idProperty];
+  },
+  getItemDescriptor: function getItemDescriptor(entry) {
+    return entry.$descriptor || entry[this.labelProperty];
+  },
+  getItemIconClass: function getItemIconClass() {
+    return this.itemIconClass;
+  },
+  getItemIconSource: function getItemIconSource() {
+    return this.itemIcon || this.icon || this.selectIcon;
+  },
+  getItemIconAlt: function getItemIconAlt() {
+    return this.itemIconAltText;
+  },
+  createIndicators: function createIndicators(topIndicatorsNode, bottomIndicatorsNode, indicators, entry) {
+    const self = this;
+    for (let i = 0; i < indicators.length; i++) {
+      const indicator = indicators[i];
+      const iconPath = indicator.iconPath || self.itemIndicatorIconPath;
+      if (indicator.onApply) {
+        try {
+          indicator.onApply(entry, self);
+        } catch (err) {
+          indicator.isEnabled = false;
+        }
+      }
+      const options = {
+        indicatorIndex: i,
+        indicatorIcon: indicator.icon ? iconPath + indicator.icon : '',
+        iconCls: indicator.cls || '',
+      };
+
+      const indicatorTemplate = indicator.template || self.itemIndicatorTemplate;
+
+      lang.mixin(indicator, options);
+
+      if (indicator.isEnabled === false) {
+        indicator.label = '';
+        if (indicator.cls) {
+          indicator.iconCls = `${indicator.cls} disabled`;
+        } else {
+          indicator.indicatorIcon = indicator.icon ? `${iconPath}disabled_${indicator.icon}` : '';
+        }
+      } else {
+        indicator.indicatorIcon = indicator.icon ? iconPath + indicator.icon : '';
+      }
+
+      if (indicator.isEnabled === false && indicator.showIcon === false) {
+        return;
+      }
+
+      if (self.itemIndicatorShowDisabled || indicator.isEnabled) {
+        if (indicator.isEnabled === false && indicator.showIcon === false) {
+          return;
+        }
+        const indicatorHTML = indicatorTemplate.apply(indicator, indicator.id);
+        if (indicator.location === 'top') {
+          $(topIndicatorsNode).append(indicatorHTML);
+        } else {
+          $(bottomIndicatorsNode).append(indicatorHTML);
+        }
+      }
+    }
+  },
   _onQueryComplete: function _onQueryComplete(queryResults, entries) {
     try {
       const start = this.position;
@@ -1440,6 +1534,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         }
 
         this.processData(entries);
+        this.initSoho();
       } finally {
         this._clearLoading();
       }
@@ -1492,7 +1587,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const remaining = this.total > -1 ? this.total - (this.position + this.pageSize) : -1;
     return remaining;
   },
-  onApplyRowTemplate: function onApplyRowTemplate(/* entry, rowNode*/) {},
+  onApplyRowTemplate: function onApplyRowTemplate(entry, rowNode) {
+    this.applyRowIndicators(entry, rowNode);
+  },
   processData: function processData(entries) {
     if (!entries) {
       return;

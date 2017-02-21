@@ -364,13 +364,13 @@ const control = declare('argos.Fields.LookupField', [_Field], {
       tools: {
         tbar: [{
           id: 'complete',
-          cls: 'fa fa-check fa-fw fa-lg',
+          svg: 'check',
           fn: this.complete,
           scope: this,
         }, {
           id: 'cancel',
           side: 'left',
-          cls: 'fa fa-ban fa-fw fa-lg',
+          svg: 'cancel',
           fn: this.reui.back,
           scope: this.reui,
         }],
