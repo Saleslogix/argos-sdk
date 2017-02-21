@@ -542,7 +542,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
   },
   _onListViewSelected: function _onListViewSelected() {
-    console.dir(arguments);
+    console.dir(arguments); //eslint-disable-line
   },
   postCreate: function postCreate() {
     this.inherited(arguments);
