@@ -65,13 +65,21 @@ const control = declare('argos.Fields.TextField', [_Field], {
    */
   widgetTemplate: new Simplate([`
       <div class="field">
-        <label for="{%= $.name %}">{%: $.label %}</label>
+        <label for="{%= $.name %}"
+          {% if ($.required) { %}
+          class="required"
+          {% } %}
+          >{%: $.label %}</label>
         <input
           data-dojo-attach-point="inputNode"
           type="{%: $.inputType %}"
           id="{%= $.name %}"
           name="{%= $.name %}"
           placeholder="{%: $.placeHolderText %}"
+          {% if ($.required) { %}
+            data-validate="required"
+            class="required"
+          {% } %}
           {% if ($.readonly) { %} readonly {% } %}
           >
       </div>
@@ -92,6 +100,12 @@ const control = declare('argos.Fields.TextField', [_Field], {
    * The dojo-attach-point reference to the clear button
    */
   clearNode: null,
+
+  /**
+   * required should be true if the field requires input. Defaults to false.
+   * @type {Boolean}
+   */
+  required: false,
 
   /**
    * @cfg {String}
