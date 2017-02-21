@@ -350,7 +350,7 @@ const __class = declare('argos.Application', null, {
   uninitialize: function uninitialize() {},
   back: function back() {
     if (!this._embedded) {
-      page.back();
+      ReUI.back();
     }
   },
   /**
