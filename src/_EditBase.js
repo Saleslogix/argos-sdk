@@ -29,7 +29,6 @@ import FieldManager from './FieldManager';
 import View from './View';
 import getResource from './I18n';
 import DeepDiff from 'deepdiff';
-import page from 'page';
 import 'dojo/NodeList-manipulate';
 import './Fields/BooleanField';
 import './Fields/DateField';
