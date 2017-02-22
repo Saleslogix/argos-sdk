@@ -159,13 +159,17 @@ const __class = declare('argos.Application', null, {
         const returnTo = from.data && from.data.options && from.data.options.returnTo;
 
         if (returnTo) {
-          let returnIndex = this.app.context.history.reverse()
-                                .findIndex(val => val.page === returnTo);
+          let returnIndex = -1;
+          this.app.context.history.forEach((val, index) => {
+            if (val.page === returnTo) {
+              returnIndex = index;
+            }
+          });
           // Since want to find last index of page, must reverse index
           if (returnIndex !== -1) {
             returnIndex = (this.app.context.history.length - 1) - returnIndex;
+            this.app.context.history.splice(returnIndex);
           }
-          this.app.context.history.splice(returnIndex);
           page.redirect(returnTo);
           return;
         }

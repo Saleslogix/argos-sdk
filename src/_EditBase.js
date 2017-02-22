@@ -396,7 +396,7 @@ const __class = declare('argos._EditBase', [View], {
    * Sets and returns the toolbar item layout definition, this method should be overriden in the view
    * so that you may define the views toolbar items.
    *
-   * By default it adds a save button bound to `this.save()` and cancel that fires `page.back()`
+   * By default it adds a save button bound to `this.save()` and cancel that fires `ReUI.back()`
    *
    * @return {Object} this.tools
    * @template
