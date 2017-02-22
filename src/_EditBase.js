@@ -24,7 +24,6 @@ import FieldManager from './FieldManager';
 import View from './View';
 import getResource from './I18n';
 import DeepDiff from 'deepdiff';
-import page from 'page';
 import $ from 'jquery';
 import 'dojo/NodeList-manipulate';
 import './Fields/BooleanField';
