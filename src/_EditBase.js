@@ -983,7 +983,7 @@ const __class = declare('argos._EditBase', [View], {
     if (values) {
       this.onInsert(values);
     } else {
-      page.back();
+      ReUI.back();
     }
   },
   onInsert: function onInsert(values) {
@@ -1033,7 +1033,7 @@ const __class = declare('argos._EditBase', [View], {
         window.location.hash = returnTo;
       }
     } else {
-      page.back();
+      ReUI.back();
     }
   },
   /**
@@ -1171,7 +1171,7 @@ const __class = declare('argos._EditBase', [View], {
         window.location.hash = returnTo;
       }
     } else {
-      page.back();
+      ReUI.back();
     }
   },
   /**

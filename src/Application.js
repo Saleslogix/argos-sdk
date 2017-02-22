@@ -142,13 +142,37 @@ const __class = declare('argos.Application', null, {
   enableConcurrencyCheck: false,
 
   ReUI: {
+    app: null,
     back: function back() {
-      if (this.context && this.context.history) {
-        // Have to call twice as page will re-add the view you are returning to
-        this.context.history.pop();
-        this.context.history.pop();
+      if (!this.app) {
+        return;
       }
-      page.back();
+      if (this.app.context &&
+            this.app.context.history &&
+              this.app.context.history.length > 0) {
+        // Note: PageJS will push the page back onto the stack once viewed
+        const from = this.app.context.history.pop();
+        page.len--;
+
+        const returnTo = from.data && from.data.options && from.data.options.returnTo;
+
+        if (returnTo) {
+          let returnIndex = this.app.context.history.reverse()
+                                .findIndex(val => val.page === returnTo);
+          // Since want to find last index of page, must reverse index
+          if (returnIndex !== -1) {
+            returnIndex = (this.app.context.history.length - 1) - returnIndex;
+          }
+          this.app.context.history.splice(returnIndex);
+          page.redirect(returnTo);
+          return;
+        }
+
+        const to = this.app.context.history.pop();
+        page.redirect(to.page);
+        return;
+      }
+      page.back(this.app.homeViewId);
     },
     context: {
       history: null,
@@ -288,6 +312,9 @@ const __class = declare('argos.Application', null, {
     this.state$ = model(actions);
     this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
 
+    // For routing need to know homeViewId
+    this.ReUI.app = this;
+
     this.ModelManager = ModelManager;
     lang.mixin(this, options);
   },
@@ -316,7 +343,7 @@ const __class = declare('argos.Application', null, {
   uninitialize: function uninitialize() {},
   back: function back() {
     if (!this._embedded) {
-      page.back();
+      ReUI.back();
     }
   },
   /**
