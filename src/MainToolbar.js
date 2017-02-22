@@ -56,7 +56,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
       data-breakpoint="desktop" style="height: 100%;">
     </nav>
     <header class="header azure07 is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
-      <div class="toolbar has-title-button" role="toolbar" aria-label="Layouts">
+      <div class="toolbar has-more-button has-title-button" role="toolbar" aria-label="Layouts">
         <div class="title">
           <button class="btn-icon application-menu-trigger hide-focus" type="button" tabindex="0">
               <span class="audible">Show navigation</span>
@@ -71,6 +71,33 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
           </h1>
         </div>
         <div class="buttonset" data-dojo-attach-point="toolNode">
+        </div>
+        <div class="more">
+          <button class="btn-actions page-changer hide-focus" type="button" aria-haspopup="true" aria-controls="app-toolbar-more">
+            <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-more"></use>
+            </svg>
+            <span class="audible" data-translate="text">More...</span>
+          </button>
+          <div class="popupmenu-wrapper bottom" role="application" aria-hidden="true">
+            <ul id="app-toolbar-more" class="popupmenu is-selectable" role="menu" aria-hidden="true">
+              <li class="heading" role="presentation">Theme</li>
+              <li class="is-selectable" role="presentation"><a href="#" data-theme="grey-theme" tabindex="-1" role="menuitemcheckbox" aria-checked="true">Light</a></li>
+              <li class="is-selectable" role="presentation"><a href="#" data-theme="dark-theme" tabindex="-1" role="menuitem">Dark</a></li>
+              <li class="is-selectable is-checked" role="presentation"><a href="#" data-theme="high-contrast-theme" tabindex="-1" role="menuitem">High Contrast</a></li>
+              <li class="separator" role="presentation"></li>
+              <li class="heading" role="presentation">Personalization</li>
+              <li class="is-selectable is-checked" role="presentation"><a data-rgbcolor="" href="#" tabindex="-1" role="menuitemcheckbox" aria-checked="true">Default</a></li>
+              <li class="is-selectable" role="presentation"><a data-rgbcolor="#368AC0" href="#" tabindex="-1" role="menuitem">Azure</a></li>
+              <li class="is-selectable" role="presentation"><a data-rgbcolor="#EFA836" href="#" tabindex="-1" role="menuitem">Amber</a></li>
+              <li class="is-selectable" role="presentation"><a data-rgbcolor="#9279A6" href="#" tabindex="-1" role="menuitem">Amethyst</a></li>
+              <li class="is-selectable" role="presentation"><a data-rgbcolor="#579E95" href="#" tabindex="-1" role="menuitem">Turqoise</a></li>
+              <li class="is-selectable" role="presentation"><a data-rgbcolor="#76B051" href="#" tabindex="-1" role="menuitem">Emerald</a></li>
+              <li class="is-selectable" role="presentation"><a data-rgbcolor="#5C5C5C" href="#" tabindex="-1" role="menuitem">Graphite</a></li>
+            </ul>
+            <div class="arrow">
+            </div>
+          </div>
         </div>
       </div>
     </header>
@@ -128,6 +155,10 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
 
     const toolbar = $('.toolbar', this.domNode);
     toolbar.toolbar();
+    this.toolbar = toolbar.data('toolbar');
+
+    const themeMenu = $('#app-toolbar-more', this.domNode);
+    themeMenu.popupmenu();
   },
   /**
    * Calls parent {@link Toolbar#showTools showTools} which sets the tool collection.

@@ -4,45 +4,14 @@
 @import "variables.less";
 @import "mixins.less";
 
-input, textarea {
-    font-size: @font-size-input;
-    border: @form-border;
-    .box-sizing(border-box);
-    .border-radius(3px);
-    width: 100%;
-    margin: 0 0 8px 0;
-    padding: 7px;
-}
-
-label {
-    font-size: @label-font-size;
-}
-
-input:focus, textarea:focus {
-    outline: none;
-    border: 1px solid @color-azure;
-    background-color: #EAF7FF;
-}
 
 .group-content > h2 > button {
     color: @color-lighter-slate;
     background-color: transparent;
 }
 
-.toolButton,
-.headerButton {
-    color: @toolbar-text-color;
-    background-color: @toolbar-button-bg-color;
-    border: @toolbar-button-border;
-}
-
 .toolButton-disabled {
     opacity: @toolbar-button-disabled-opacity;
-}
-
-.toolButton-hidden {
-    display: none;
-    visibility: hidden;
 }
 
 /* signature capture */
@@ -65,28 +34,6 @@ input:focus, textarea:focus {
     margin: 0 1em;
 }
 
-.list-more .button, .list-empty-opt .button {
-    height: 40px;
-    line-height: 40px;
-    cursor: pointer;
-}
-
-.list-has-more .list-more .button, .list-has-empty-opt .list-empty-opt .button {
-    width: 100%;
-}
-
-.list-loading .list-more .button span,
-.panel.busy .actionButton span.indicator {
-    visibility: visible;
-    display: inline;
-}
-
-.list-loading .list-more .button span {
-  text-transform: uppercase;
-  font-weight: bold;
-  color: @color-graphite;
-}
-
 .actions-row > li {
   display: inline;
   border: none;
@@ -103,23 +50,6 @@ input:focus, textarea:focus {
     color: @color-light-slate;
 }
 
-/* collapsed/expand icons */
-.group-content > h2 > button {
-    float: right;
-    border: none;
-    height: 32px;
-}
-
-/* busy */
-.panel.busy .actionButton span.indicator {
-    margin: 0 10px 0 0;
-}
-
-.panel .actionButton span.indicator {
-    visibility: hidden;
-    display: none;
-}
-
 .row-disabled > div > button,
 .row-disabled > div > input,
 .row-disabled > div > div,
@@ -134,103 +64,6 @@ input:focus, textarea:focus {
 .row-readonly > div {
     opacity: 0.5;
     cursor: default;
-}
-
-.clear-button {
-    position: absolute;
-    right: 4px;
-    margin: 1px 1px 0 0 !important;
-    padding: 0;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 101;
-    width: 30px;
-    height: 30px;
-    display: block;
-}
-
-/* search */
-.list-search input {
-    border: 0;
-    .box-sizing(border-box);
-    height: 32px;
-    vertical-align: middle;
-    margin: 0 !important;
-}
-
-.list-search .searchButton {
-    cursor: pointer;
-    line-height: 30px;
-    padding: 0 8px 0 6px;
-    border: solid 1px #000;
-    text-align: center;
-    z-index: 100;
-
-    .box-sizing(border-box);
-    display: inline-block;
-    height: 35px;
-}
-
-.list-search .dismissButton {
-    cursor: pointer;
-    line-height: 30px;
-    text-align: center;
-    z-index: 100;
-
-    .box-sizing(border-box);
-    position: absolute;
-    display: inline-block;
-    height: 32px;
-    width: 32px;
-    right: 70px;
-    top: 6px;
-    border: solid 1px black;
-}
-
-.list-search label {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    color: #aaa;
-    line-height: 32px;
-    padding: 0 8px 0 6px;
-    font-weight: normal;
-}
-
-.text-input {
-    padding: 8px 34px 8px 0px;
-}
-
-.button {
-    height: 44px;
-    vertical-align: middle;
-    padding: 0 2px 0 2px;
-    outline: none;
-    border: @button-border;
-    .border-radius(@button-border-radius);
-    background-color: @button-bg-color;
-}
-
-.toolButton {
-    position: relative;
-    min-width: 44px;
-    min-height: 44px;
-    padding: 0;
-    z-index: 100;
-}
-
-.toolButton > img {
-    margin: 4px;
-}
-
-.toolButton > span {
-    display: inline-block;
-    background-repeat: no-repeat;
-    background-position: center center;
-    margin: 4px;
-    width: 24px;
-    height: 24px;
 }
 
 .file-wrap > input {
@@ -257,75 +90,4 @@ input:focus, textarea:focus {
 .file-label > label {
     font-weight: bold !important;
     text-align: left !important;
-}
-
-.toggle {
-    border: @toggle-border;
-    background-color: @toggle-bg-color;
-    .border-radius(@toggle-border-radius);
-    line-height: @toggle-line-height;
-    .user-select(none);
-    width: 70px;
-    height: 44px;
-    margin: 3px 0px 3px 0px;
-    position: relative;
-    right: auto;
-    .box-sizing(border-box);
-}
-
-.toggle > .thumb {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    left: 0;
-    background-color: @toggle-thumb-bg-color;
-    .border-radius(@toggle-border-radius);
-}
-
-.toggleStateOn > .thumb {
-    left: auto;
-    right: 0px;
-}
-
-.toggleStateOn {
-    background-color: @togglestate-on-bg-color;
-    border-color: @togglestate-on-border-bg-color;
-}
-
-.toggle-vertical {
-    width: 64px;
-    height: 126px;
-    margin: 0;
-    position: relative;
-
-    > .thumb {
-        width: 60px;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-    }
-
-    .toggleOn {
-        height: 60px;
-        width: 64px;
-        top: 0;
-    }
-
-    .toggleOff {
-        position: absolute;
-        width: 100%;
-        bottom: 0;
-        top: auto;
-        left: 0px;
-    }
-}
-
-.toggle-vertical.toggleStateOn > .toggleOff {
-    display: none;
-}
-
-.toggleStateOn > .vertical {
-    left: 0px;
-    top: auto;
-    bottom: 0px;
 }

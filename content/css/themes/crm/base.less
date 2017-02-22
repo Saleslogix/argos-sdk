@@ -1,6 +1,11 @@
 @import "variables.less";
 @import "mixins.less";
 
+.list-content .card-content {
+  height: auto;
+  padding: 10px;
+}
+
 .tall {
     height: 100%;
 }
@@ -21,32 +26,7 @@
     float: right;
 }
 
-.list-content > li {
-    cursor: pointer;
-}
-
 .list-more, .list-empty-opt {
-    .toolButton {
-        position: relative;
-        min-width: 28px;
-        min-height: 28px;
-        padding: 0;
-        z-index: 100;
-    }
-
-    .toolButton > img {
-        margin: 4px;
-    }
-
-    .toolButton > span {
-        display: inline-block;
-        background-repeat: no-repeat;
-        background-position: center center;
-        margin: 4px;
-        width: 24px;
-        height: 24px;
-    }
-
     .toolButton-left {
         float: left;
         margin-right: 10px;
@@ -95,68 +75,6 @@
     display: inline-block;
     text-align: center;
     overflow: inherit;
-}
-
-.list-content > li > a {
-    padding: 8px 32px 8px 36px;
-}
-
-/* list selection */
-.list .list-item-selector {
-    visibility: hidden;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    position: absolute;
-    top: 8px;
-    left: 12px;
-    z-index: 10;
-    background: none;
-    border: 0 none #000;
-    padding: 0 2px 0 0px;
-    color: @black-darker;
-}
-
-.list-show-actions .list-item-selector {
-    visibility: visible !important;
-    width: 38px;
-    height: 38px;
-    left: 6px;
-
-    line-height: 30px;
-    padding: 0 2px 0 2px;
-
-    color: @color-slate;
-}
-
-.list-show-actions .list-item-selector > img {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    border: none 0 black;
-}
-
-.list-item-static-selector {
-    div {
-        width: 100%;
-        text-align: center;
-    }
-
-    .icon {
-        padding-left: 8px;
-    }
-
-    .fa-stack {
-        top: -7px;
-    }
-
-    visibility: visible;
-    width: 38px;
-    position: absolute;
-    top: 8px;
-    left: 6px;
-    bottom: 0px;
-    z-index: 10;
 }
 
 .list-action-selected + .actions-row {
@@ -446,46 +364,8 @@ body {
     display: inline-block;
 }
 
-.list-content,
-.group-content {
-    margin: 0;
-    padding: 0;
-}
-
-.list-content > li,
-.group-content > li {
-    list-style: none;
-    margin: 0px 0px 1px 0px;
-    padding: 4px 0px 4px 10px;
-    position: relative;
-}
-
-.list-content > li,
-.group-content > li {
-    padding: 8px 32px 8px 6px;
-}
-
-.list-show-selectors .list-item-content,
-.list-item-static-selector + .list-item-content {
-    padding-left: 42px;
-}
-
 .actions-enabled + .list-item-content {
     padding-left: 40px;
-}
-
-.list-content > li > img.icon,
-.list-content > li > * > img.icon {
-    border: 0 none black;
-    margin: 0 .5em 0 0;
-    width: 24px;
-    height: 24px;
-    float: left;
-}
-
-.list-content > li > .list-selector {
-    float: left;
-    margin: 2px 0 0 0px;
 }
 
 .no-data {
@@ -494,10 +374,6 @@ body {
 
 .no-data > h3 {
     white-space: normal;
-}
-
-img {
-    border: 0 none black;
 }
 
 .panel > .panel-loading-indicator {

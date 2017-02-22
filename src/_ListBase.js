@@ -76,7 +76,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   widgetTemplate: new Simplate([`
     <div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
-      <div data-dojo-attach-point="searchNode"></div>
+      <div class="toolbar" role="toolbar" aria-label="List Toolbar">
+        <div data-dojo-attach-point="searchNode"></div>
+      </div>
       {% if ($$.isNavigationDisabled()) { %}
       <div class="contextual-toolbar toolbar is-hidden">
         <div class="buttonset">
@@ -1748,8 +1750,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.inherited(arguments);
 
     $(this.domNode).toggleClass('list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined') ? this.options.hideSearch : this.hideSearch || !this.enableSearch);
-
-    $(this.domNode).toggleClass('list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);
 
     if (this._selectionModel && !this.isSelectionDisabled()) {
       this._selectionModel.useSingleSelection(this.options.singleSelect);
