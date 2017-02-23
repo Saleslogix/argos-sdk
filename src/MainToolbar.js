@@ -144,21 +144,31 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     query('> [data-action], .toolButton-right', this.domNode).remove();
   },
   initSoho: function sohoInit() {
+    if (this._sohoInit) {
+      return;
+    }
+
     const menu = $('.application-menu', this.domNode);
     menu.applicationmenu();
+    this.appMenu = menu.data('applicationmenu');
 
     const accordion = $('.accordion.panel', this.domNode);
     accordion.accordion();
 
     const header = $('.header', this.domNode);
     header.header();
+    this.header = header.data('header');
 
     const toolbar = $('.toolbar', this.domNode);
     toolbar.toolbar();
     this.toolbar = toolbar.data('toolbar');
-
-    const themeMenu = $('#app-toolbar-more', this.domNode);
-    themeMenu.popupmenu();
+    this._sohoInit = true;
+  },
+  _sohoInit: false,
+  updateSoho: function updateSoho() {
+    this.initSoho();
+    this.toolbar.updated();
+    this.appMenu.updated();
   },
   /**
    * Calls parent {@link Toolbar#showTools showTools} which sets the tool collection.
@@ -189,7 +199,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         $(this.toolNode).append(toolTemplate.apply(tool, this.tools[tool.id]));
       }
 
-      this.initSoho();
+      this.updateSoho();
 
       this.size = Math.max(count.left, count.right);
       $(this.domNode).addClass(`toolbar-size-${this.size}`);

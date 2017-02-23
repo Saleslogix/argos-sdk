@@ -56,6 +56,8 @@ const __class = declare('argos._Templated', [_TemplatedMixin], {
   },
   initSoho: function initSoho() {
   },
+  updateSoho: function updateSoho() {
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile._Templated', __class);

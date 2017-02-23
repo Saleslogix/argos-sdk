@@ -539,9 +539,17 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const listview = $('.listview', this.domNode).first();
     if (listview.length) {
       listview.listview();
+      this.listview = listview.data('listview');
       listview.off('selected');
       listview.on('selected', this._onListViewSelected);
     }
+  },
+  updateSoho: function updateSoho() {
+    if (!this.listview) {
+      return;
+    }
+
+    this.listview.updated();
   },
   _onListViewSelected: function _onListViewSelected() {
     console.dir(arguments); //eslint-disable-line
@@ -1562,7 +1570,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         }
 
         this.processData(entries);
-        this.initSoho();
+        this.updateSoho();
       } finally {
         this._clearLoading();
       }
