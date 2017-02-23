@@ -71,14 +71,12 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
    * Simple that defines the HTML Markup
    */
   widgetTemplate: new Simplate([`
-    <div class="field">
-      <span class="searchfield-wrapper">
-        <input type="text" placeholder="{%= $.searchText %}" name="query" class="searchfield" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onkeypress:_onKeyPress" />
-        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-search"></use>
-        </svg>
-      </span>
-    </div>
+    <span class="searchfield-wrapper">
+      <input type="text" placeholder="{%= $.searchText %}" name="query" class="searchfield" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onkeypress:_onKeyPress" />
+      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-search"></use>
+      </svg>
+    </span>
     `,
   ]),
 

@@ -77,7 +77,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   widgetTemplate: new Simplate([`
     <div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
       <div class="toolbar" role="toolbar" aria-label="List Toolbar">
-        <div data-dojo-attach-point="searchNode"></div>
+        <div class="buttonset">
+          <div data-dojo-attach-point="searchNode"></div>
+        </div>
       </div>
       {% if ($$.isNavigationDisabled()) { %}
       <div class="contextual-toolbar toolbar is-hidden">
@@ -543,6 +545,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       listview.off('selected');
       listview.on('selected', this._onListViewSelected);
     }
+    const toolbar = $('.toolbar', this.domNode);
+    toolbar.toolbar();
+    this.toolbar = toolbar.data('toolbar');
   },
   updateSoho: function updateSoho() {
     if (!this.listview) {
@@ -550,6 +555,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
 
     this.listview.updated();
+    this.toolbar.updated();
   },
   _onListViewSelected: function _onListViewSelected() {
     console.dir(arguments); //eslint-disable-line
