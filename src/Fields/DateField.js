@@ -77,12 +77,21 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    *
    */
   widgetTemplate: new Simplate([
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '<button data-dojo-attach-point="triggerNode" data-action="showModal" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
-    '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />',
+    `<label for="{%= $.name %}">{%: $.label %}</label>
+    <div class="field-control-wrapper">
+      <button 
+        data-dojo-attach-point="triggerNode" 
+        data-action="showModal" 
+        class="button field-control-trigger whiteButton" 
+        aria-label="{%: $.lookupLabelText %}">
+          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+          </svg>
+        </button>
+      <input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />
+    </div>`,
   ]),
-
-  iconClass: 'fa fa-calendar fa-lg',
+  iconClass: 'calendar',
 
   /**
    * @property {String}

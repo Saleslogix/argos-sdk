@@ -193,7 +193,7 @@ const __class = declare('argos._EditBase', [View], {
    * `$` => the view instance
    */
   sectionBeginTemplate: new Simplate([
-    '<h2 data-action="toggleSection" class="{% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
+    '<h2 data-action="toggleSection" class="title {% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
     '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
     '{%: ($.title || $.options.title) %}',
     '</h2>',
@@ -362,6 +362,7 @@ const __class = declare('argos._EditBase', [View], {
         const name = $(node).attr('data-field');
         const field = this.fields[name];
         if (field) {
+          $(field.domNode).addClass('field');
           field.renderTo(node);
         }
       }, this);
