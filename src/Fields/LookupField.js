@@ -99,7 +99,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
       <input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />
     </div>`,
   ]),
-  iconClass: 'more',
+  iconClass: 'search',
 
   // Localization
   /**
