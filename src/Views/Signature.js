@@ -61,7 +61,7 @@ const __class = declare('argos.Views.Signature', [View], {
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%: $.titleText %}" class="panel {%= $.cls %}">',
+    '<div id="{%= $.id %}" class="panel {%= $.cls %}">',
     '{%! $.canvasTemplate %}',
     '<div class="buttons">',
     '<button class="button" data-action="_undo"><span>{%: $.undoText %}</span></button>',

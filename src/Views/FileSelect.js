@@ -73,7 +73,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
    *
    */
   widgetTemplate: new Simplate([
-    '<div title="{%: $.titleText %}" class="panel {%= $.cls %}">',
+    '<div class="panel {%= $.cls %}">',
     '<div  data-dojo-attach-point="fileArea" class="file-area">',
     '<div class="file-wrapper">',
     '<div class="file-wrap" data-dojo-attach-point="fileWrapper">',
