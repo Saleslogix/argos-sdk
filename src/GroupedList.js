@@ -50,7 +50,7 @@ const __class = declare('argos.GroupedList', [List], {
    * Simplate that defines the HTML Markup. This override adds the needed styling.
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" class="overthrow list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '<div data-dojo-attach-point="searchNode"></div>',
     '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">',
     '{%! $.emptySelectionTemplate %}',

@@ -79,7 +79,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '<div data-dojo-attach-point="searchNode"></div>',
     '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">',
     '{%! $.emptySelectionTemplate %}',

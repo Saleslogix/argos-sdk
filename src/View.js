@@ -62,7 +62,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * @property {Simplate}
    */
   widgetTemplate: new Simplate([
-    '<ul id="{%= $.id %}" class="overthrow {%= $.cls %}">',
+    '<ul id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow {%= $.cls %}">',
     '</ul>',
   ]),
   _loadConnect: null,
