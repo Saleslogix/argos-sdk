@@ -77,7 +77,12 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    *
    */
   widgetTemplate: new Simplate([
-    `<label for="{%= $.name %}">{%: $.label %}</label>
+    `<label for="{%= $.name %}"
+      {% if ($.required) { %}
+        class="required"
+      {% } %}>
+      {%: $.label %}
+    </label>
     <div class="field-control-wrapper">
       <button 
         data-dojo-attach-point="triggerNode" 
@@ -88,7 +93,15 @@ const control = declare('argos.Fields.DateField', [EditorField], {
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
           </svg>
         </button>
-      <input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />
+      <input 
+        data-dojo-attach-point="inputNode" 
+        data-dojo-attach-event="onchange:_onChange" 
+        type="text"
+        {% if ($.required) { %}
+          data-validate="required"
+          class="required"
+        {% } %}
+        />
     </div>`,
   ]),
   iconClass: 'calendar',
@@ -99,6 +112,11 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * {@link Calendar Calendars} view id.
    */
   view: 'generic_calendar',
+  /**
+   * required should be true if the field requires input. Defaults to false.
+   * @type {Boolean}
+   */
+  required: false,
   /**
    * @cfg {Boolean}
    * Sent as part of navigation options to {@link Calendar Calendar}, where it controls the

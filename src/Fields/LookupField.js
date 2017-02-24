@@ -85,7 +85,12 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    */
   widgetTemplate: new Simplate([
     `{% if ($.label) { %}
-    <label for="{%= $.name %}">{%: $.label %}</label>
+    <label for="{%= $.name %}"
+      {% if ($.required) { %}
+        class="required"
+      {% } %}>
+        {%: $.label %}
+    </label>
     {% } %}
     <div class="field-control-wrapper">
       <button class="field-control-trigger"
@@ -96,7 +101,15 @@ const control = declare('argos.Fields.LookupField', [_Field], {
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
         </svg>
       </button>
-      <input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />
+      <input data-dojo-attach-point="inputNode" 
+        type="text" 
+        {% if ($.requireSelection) { %}
+        readonly="readonly"{% } %}
+        {% if ($.required) { %}
+            data-validate="required"
+            class="required"
+          {% } %}
+        />
     </div>`,
   ]),
   iconClass: 'search',
@@ -145,6 +158,11 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    * The default `valueKeyProperty` if `valueKeyProperty` is not defined.
    */
   keyProperty: '$key',
+  /**
+   * required should be true if the field requires input. Defaults to false.
+   * @type {Boolean}
+   */
+  required: false,
   /**
    * @property {String}
    * The default `valueTextProperty` if `valueTextProperty` is not defined.
