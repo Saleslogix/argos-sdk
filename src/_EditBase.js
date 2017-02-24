@@ -1028,17 +1028,17 @@ const __class = declare('argos._EditBase', [View], {
    * @param entry
    */
   onInsertCompleted: function onInsertCompleted(/* entry*/) {
-    if (this.options && this.options.returnTo) {
-      const returnTo = this.options.returnTo;
-      const view = App.getView(returnTo);
-      if (view) {
-        view.show();
-      } else {
-        window.location.hash = returnTo;
-      }
-    } else {
-      ReUI.back();
-    }
+    // if (this.options && this.options.returnTo) {
+    //   const returnTo = this.options.returnTo;
+    //   const view = App.getView(returnTo);
+    //   if (view) {
+    //     view.show();
+    //   } else {
+    //     window.location.hash = returnTo;
+    //   }
+    // } else {
+    ReUI.back();
+    // }
   },
   /**
    * Called by save() when performing an update (edit).
@@ -1166,17 +1166,17 @@ const __class = declare('argos._EditBase', [View], {
    * @param entry
    */
   onUpdateCompleted: function onUpdateCompleted(/* entry*/) {
-    if (this.options && this.options.returnTo) {
-      const returnTo = this.options.returnTo;
-      const view = App.getView(returnTo);
-      if (view) {
-        view.show();
-      } else {
-        window.location.hash = returnTo;
-      }
-    } else {
-      ReUI.back();
-    }
+    // if (this.options && this.options.returnTo) {
+    //   const returnTo = this.options.returnTo;
+    //   const view = App.getView(returnTo);
+    //   if (view) {
+    //     view.show();
+    //   } else {
+    //     window.location.hash = returnTo;
+    //   }
+    // } else {
+    ReUI.back();
+    // }
   },
   /**
    * Creates the markup by applying the `validationSummaryItemTemplate` to each entry in `this.errors`
