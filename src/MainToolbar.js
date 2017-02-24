@@ -46,11 +46,6 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    *
    * `$` - the toolbar instance
    */
-  /* widgetTemplate: new Simplate([
-    '<div class="toolbar {%= $.cls %}">',
-    '<div id="pageTitle" class="toolbar-title" data-dojo-attach-event="onclick: onTitleClick" data-dojo-attach-point="titleNode">{%= $.titleText %}</div>',
-    '</div>',
-  ]),*/
   widgetTemplate: new Simplate([`
     <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
       data-breakpoint="desktop" style="height: 100%;">

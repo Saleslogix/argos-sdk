@@ -76,36 +76,60 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   widgetTemplate: new Simplate([`
     <div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
-      <div class="toolbar" role="toolbar" aria-label="List Toolbar">
-        <div class="buttonset">
-          <div data-dojo-attach-point="searchNode"></div>
+      <div id="tabs-{%= $.id %}" class="tab-container horizontal">
+        <ul class="tab-list" role="tablist" aria-multiselectable="false">
+          <li class="tab is-selected" role="presentation"><a href="#tab-list-{%= $.id %}">List</a></li>
+          <li class="tab" role="presentation"><a href="#tab-settings-{%= $.id %}">Settings</a></li>
+        </ul>
+        <div id="tab-list-{%= $.id %}">
+          <div class="toolbar has-more-button" role="toolbar" aria-label="List Toolbar">
+            <div class="buttonset" data-dojo-attach-point="toolNode">
+              <div data-dojo-attach-point="searchNode"></div>
+            </div>
+            <div class="more">
+              <button class="btn-actions is-selected hide-focus" type="button" aria-haspopup="true" aria-controls="list_toolbar_popupmenu_{%= $.id %}">
+                <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+                  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-more">
+                  </use>
+                </svg>
+                <span class="audible">More Actions</span>
+              </button>
+              <div class="popupmenu-wrapper bottom" role="application" aria-hidden="true">
+                <ul id="list_toolbar_popupmenu_{%= $.id %}" class="popupmenu is-selectable" role="menu" aria-hidden="true">
+                </ul>
+                <div class="arrow"></div>
+              </div>
+            </div>
+          </div>
+          {% if ($$.isNavigationDisabled()) { %}
+          <div class="contextual-toolbar toolbar is-hidden">
+            <div class="buttonset">
+              <button class="btn-tertiary" title="Assign Selected Items" type="button">Assign</button>
+              <button class="btn-tertiary" id="remove" title="Remove Selected Items" type="button">Remove</button>
+            </div>
+          </div>
+          {% } %}
+          <div class="listview {% if ($$.isNavigationDisabled()) { %}is-muliselect is-selectable is-toolbar-open{% } %}"
+            role="listbox"
+            aria-label="List"
+            {% if ($$.isNavigationDisabled()) { %}
+            data-selectable="multiple"
+            {% } else { %}
+            data-selectable="false"
+            {% } %}
+            data-dojo-attach-point="scrollerNode">
+            {%! $.emptySelectionTemplate %}
+            <ul class="list-content" role="presentation" data-dojo-attach-point="contentNode"></ul>
+            {%! $.moreTemplate %}
+            {%! $.listActionTemplate %}
+          </div>
         </div>
-      </div>
-      {% if ($$.isNavigationDisabled()) { %}
-      <div class="contextual-toolbar toolbar is-hidden">
-        <div class="buttonset">
-          <button class="btn-tertiary" title="Assign Selected Items" type="button">Assign</button>
-          <button class="btn-tertiary" id="remove" title="Remove Selected Items" type="button">Remove</button>
+        <div id="tab-settings-{%= $.id %}">
+          <h1>Settings</h1>
         </div>
-      </div>
-      {% } %}
-      <div class="listview {% if ($$.isNavigationDisabled()) { %}is-muliselect is-selectable is-toolbar-open{% } %}"
-        role="listbox"
-        aria-label="List"
-        {% if ($$.isNavigationDisabled()) { %}
-        data-selectable="multiple"
-        {% } else { %}
-        data-selectable="false"
-        {% } %}
-        data-dojo-attach-point="scrollerNode">
-        {%! $.emptySelectionTemplate %}
-        <ul class="list-content" role="presentation" data-dojo-attach-point="contentNode"></ul>
-        {%! $.moreTemplate %}
-        {%! $.listActionTemplate %}
       </div>
     </div>
     `,
-
   ]),
   /**
    * @property {Simplate}
@@ -538,6 +562,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this._loadedSelections = {};
   },
   initSoho: function initSoho() {
+    const tabs = $('.tab-container', this.domNode).first();
+    if (tabs.length) {
+      tabs.tabs();
+      this.tabs = tabs.data('tabs');
+    }
+
     const listview = $('.listview', this.domNode).first();
     if (listview.length) {
       listview.listview();
@@ -545,7 +575,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       listview.off('selected');
       listview.on('selected', this._onListViewSelected);
     }
-    const toolbar = $('.toolbar', this.domNode);
+    const toolbar = $('.toolbar', this.domNode).first();
     toolbar.toolbar();
     this.toolbar = toolbar.data('toolbar');
   },

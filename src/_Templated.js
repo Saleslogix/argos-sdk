@@ -52,7 +52,9 @@ const __class = declare('argos._Templated', [_TemplatedMixin], {
   },
   startup: function startup() {
     this.inherited(arguments);
-    this.initSoho();
+    setTimeout(() => {
+      this.initSoho();
+    }, 1);
   },
   initSoho: function initSoho() {
   },
