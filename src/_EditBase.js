@@ -193,11 +193,13 @@ const __class = declare('argos._EditBase', [View], {
    * `$` => the view instance
    */
   sectionBeginTemplate: new Simplate([
-    '<h2 data-action="toggleSection" class="title {% if ($.collapsed || $.options.collapsed) { %}collapsed{% } %}">',
-    '<button class="{% if ($.collapsed) { %}{%: $$.toggleExpandClass %}{% } else { %}{%: $$.toggleCollapseClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>',
-    '{%: ($.title || $.options.title) %}',
-    '</h2>',
-    '<fieldset class="{%= ($.cls || $.options.cls) %}">',
+    `<div class="accordion">
+      <div class="accordion-header is-selected">
+        <a href="#"><span>{%: ($.title || $.options.title) %}</span></a>
+      </div>
+      <div class="accordion-pane">
+        <fieldset class="accordion-content {%= ($.cls || $.options.cls) %}">
+    `,
   ]),
   /**
    * @property {Simplate}
@@ -206,7 +208,7 @@ const __class = declare('argos._EditBase', [View], {
    * `$` => the view instance
    */
   sectionEndTemplate: new Simplate([
-    '</fieldset>',
+    '</fieldset></div></div>',
   ]),
   /**
    * @property {Simplate}
@@ -311,16 +313,6 @@ const __class = declare('argos._EditBase', [View], {
    */
   toggleCollapseText: resource.toggleCollapseText,
   /**
-   * @property {String}
-   * CSS class for the collapse button when in a expanded state
-   */
-  toggleCollapseClass: 'fa fa-chevron-down',
-  /**
-   * @property {String}
-   * CSS class for the collapse button when in a collapsed state
-   */
-  toggleExpandClass: 'fa fa-chevron-right',
-  /**
    * @property {Object}
    * Collection of the fields in the layout where the key is the `name` of the field.
    */
@@ -366,15 +358,6 @@ const __class = declare('argos._EditBase', [View], {
           field.renderTo(node);
         }
       }, this);
-
-    const sections = query('h2', this.contentNode);
-    if (sections.length === 1) {
-      $(sections[0]).removeAttr('data-action');
-      const button = query('button[class*="fa-chevron"]', sections[0]);
-      if (button[0]) {
-        $(button[0]).remove();
-      }
-    }
   },
   /**
    * Extends init to also init the fields in `this.fields`.
@@ -424,20 +407,6 @@ const __class = declare('argos._EditBase', [View], {
   },
   _getStoreAttr: function _getStoreAttr() {
     return this.store || (this.store = this.createStore());
-  },
-  /**
-   * Toggles the collapsed state of the section.
-   */
-  toggleSection: function toggleSection(params) {
-    const node = $(`#${params.$source}`);
-    if (node.length) {
-      node.toggleClass('collapsed');
-      const button = $('button', node).first();
-      if (button.length) {
-        button.toggleClass(this.toggleCollapseClass);
-        button.toggleClass(this.toggleExpandClass);
-      }
-    }
   },
   /**
    * Handler for a fields on show event.
@@ -715,6 +684,7 @@ const __class = declare('argos._EditBase', [View], {
 
     content.push(this.sectionEndTemplate.apply(layout, this));
     const sectionNode = $(content.join(''));
+    sectionNode.accordion();
     this.onApplySectionNode(sectionNode.get(0), current);
     $(this.contentNode).append(sectionNode);
 
