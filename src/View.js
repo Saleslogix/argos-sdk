@@ -49,7 +49,6 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     title: {
       node: 'domNode',
       type: 'attribute',
-      attribute: 'title',
     },
     selected: {
       node: 'domNode',
