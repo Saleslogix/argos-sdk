@@ -84,14 +84,22 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    *
    */
   widgetTemplate: new Simplate([
-    '{% if ($.label) { %}',
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '{% } %}',
-    '<button style="z-index: 5;" data-action="buttonClick" class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
-    '<input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />',
+    `{% if ($.label) { %}
+    <label for="{%= $.name %}">{%: $.label %}</label>
+    {% } %}
+    <div class="field-control-wrapper">
+      <button class="field-control-trigger"
+        aria-label="{%: $.lookupLabelText %}"
+        data-action="buttonClick"
+        title="{%: $.lookupText %}">
+        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+        </svg>
+      </button>
+      <input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />
+    </div>`,
   ]),
-
-  iconClass: 'fa fa-search fa-lg',
+  iconClass: 'search',
 
   // Localization
   /**

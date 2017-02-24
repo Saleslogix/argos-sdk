@@ -4,6 +4,9 @@
 @import "variables.less";
 @import "mixins.less";
 
+input, textarea {
+    width: 100%;
+}
 
 .group-content > h2 > button {
     color: @color-lighter-slate;
@@ -90,4 +93,26 @@
 .file-label > label {
     font-weight: bold !important;
     text-align: left !important;
+}
+.field-control-wrapper {
+    margin-bottom: 20px;
+    position: relative;
+}
+.field-control-trigger {
+    cursor: pointer;
+    display: inline-block;
+    height: 34px;
+    top: 0;
+    right: 0;
+    outline: 0;
+    position: absolute;
+    width: 34px;
+} 
+.field-control-trigger .icon {
+    background-color: inherit;
+    fill: #5c5c5c;
+    height: 18px;
+    pointer-events: none;
+    right: 0px;
+    width: 18px;
 }
