@@ -28,14 +28,24 @@ const __class = declare('argos._PullToRefreshMixin', null, {
    * @property {Simplate}
    */
   pullRefreshTemplate: new Simplate([
-    '<span class="fa fa-long-arrow-down"></span>{%= $$._getText("pullRefreshText") %}',
+    `<button type="button" class="btn-icon hide-focus">
+          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-down-arrow"></use>
+          </svg>
+      </button>
+      <span>{%= $$._getText("pullRefreshText") %}</span>`,
   ]),
 
   /**
    * @property {Simplate}
    */
   pullReleaseTemplate: new Simplate([
-    '<span class="fa fa-long-arrow-up"></span>{%= $$._getText("pullReleaseText") %}',
+    `<button type="button" class="btn-icon hide-focus">
+          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-up-arrow"></use>
+          </svg>
+      </button>
+      <span>{%= $$._getText("pullReleaseText") %}</span>`,
   ]),
 
   /**
@@ -82,10 +92,13 @@ const __class = declare('argos._PullToRefreshMixin', null, {
 
     // Pull down to refresh touch handles
     this.scrollerNode = scrollerNode;
+    const style = {
+      top: $(scrollerNode).position().top,
+    };
 
     const touchstart = Rx.Observable.fromEvent(scrollerNode, 'touchstart')
       .filter((evt) => {
-        // The implmentor of this mixin should determine what shouldStartPullToRefresh is.
+        // The implementor of this mixin should determine what shouldStartPullToRefresh is.
         const shouldStart = this.shouldStartPullToRefresh(this.scrollerNode);
         const results = shouldStart && evt.touches[0];
         return results;
@@ -95,18 +108,11 @@ const __class = declare('argos._PullToRefreshMixin', null, {
         $(this.pullRefreshBanner).css('visibility', 'visible');
         $(this.scrollerNode).removeClass(this.animateCls);
         const bannerHeight = $(this.pullRefreshBanner).height();
-        const style = {
-          top: $(scrollerNode).position().top,
-          overflowY: $(scrollerNode).css('overflowY'),
-          overflowX: $(scrollerNode).css('overflowX'),
-        }; // expensive
 
         // We filtered out if the drag should start, so we are mapping the initial state here.
         return {
           bannerHeight,
           topCss: style.top,
-          overflowCssY: style.overflowY,
-          overflowCssX: style.overflowX,
           top: parseInt(style.top, 10),
           y: evt.clientY,
         };

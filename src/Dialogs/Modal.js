@@ -1,12 +1,12 @@
 import declare from 'dojo/_base/declare';
 import Deferred from 'dojo/Deferred';
-import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
-import domStyle from 'dojo/dom-style';
 import on from 'dojo/on';
 import _Widget from 'dijit/_Widget';
 import _Templated from '../_Templated';
 import getResource from '../I18n';
+
+import $ from 'jquery';
 
 const resource = getResource('modal');
 
@@ -83,17 +83,13 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
 
   _lockScroll: function _lockScroll() {
     if (this.lockScroll) {
-      this._bodyOverflow = domStyle.get(document.body, 'overflow');
-      domStyle.set(document.body, {
-        overflow: 'hidden',
-      });
+      this._bodyOverflow = $(document.body).css('overflow');
+      $(document.body).css('overflow', 'hidden');
     }
     return this;
   },
   _unlockScroll: function _unlockScroll() {
-    domStyle.set(document.body, {
-      overflow: this._bodyOverflow || '',
-    });
+    $(document.body).css('overflow', this._bodyOverflow || '');
   },
   /**
    * Used to change the content of the modal node (aka what is displayed)
@@ -190,9 +186,10 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
         domConstruct.empty(this.modalNode);
         this.removeActionListeners();
       }
-      domClass.add(this.modalContainer, 'modal__container--hidden');
+      $(this.modalContainer).addClass('modal__container--hidden');
       if (this.showOverlay) {
-        domClass.add(this.overlay, 'modal__overlay--hidden');
+        $(this.overlay).addClass('modal__overlay--hidden');
+        $(this.modalNode).removeClass('is-visible');
       }
     }
     return this;
@@ -261,9 +258,10 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   },
   show: function show() {
     this.attachContainerListener();
-    domClass.remove(this.modalContainer, 'modal__container--hidden');
+    $(this.modalContainer).removeClass('modal__container--hidden');
     if (this.showOverlay) {
-      domClass.remove(this.overlay, 'modal__overlay--hidden');
+      $(this.overlay).removeClass('modal__overlay--hidden');
+      $(this.modalNode).addClass('is-visible');
     }
     return this;
   },
@@ -287,16 +285,12 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   },
   updateZIndex: function updateZIndex(above) {
     if (above) {
-      let value = domStyle.get(above, 'zIndex');
+      let value = $(above).css('zIndex');
       if (!value || value === 'auto') {
         value = 0;
       }
-      domStyle.set(this.modalContainer, {
-        zIndex: value,
-      });
-      domStyle.set(this.modalNode, {
-        zIndex: value + 1,
-      });
+      $(this.modalContainer).css('zIndex', value);
+      $(this.modalNode).css('zIndex', value + 1);
       return this;
     }
   },
