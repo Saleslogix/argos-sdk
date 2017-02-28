@@ -42,11 +42,19 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
     '</div>',
   ]),
   calendarHeaderTemplate: new Simplate([
-    '<div class="calendar-header">',
-    '<span class="calendar__header__icon calendar__header__icon--left fa fa-angle-left" data-action="decrementMonth"></span>',
+    '<div class="calendar__header">',
+    `<button type="button" class="btn-icon hide-focus" data-action="decrementMonth">
+      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-previous-page"></use>
+      </svg>
+    </button>`,
     '<div class="month" data-dojo-attach-point="monthNode" data-action="toggleMonthModal"></div>',
     '<div class="year" data-dojo-attach-point="yearNode" data-action="toggleYearModal"></div>',
-    '<span class="fa fa-angle-right calendar__header__icon calendar__header__icon--right " data-action="incrementMonth"></span>',
+    `<button type="button" class="btn-icon hide-focus" data-action="incrementMonth">
+      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-next-page"></use>
+      </svg>
+    </button>`,
     '</div>',
   ]),
   calendarTableTemplate: new Simplate([
@@ -292,7 +300,7 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
   },
   createMonthDropdown: function createMonthDropdown() {
     if (!this._monthDropdown) {
-      this._monthDropdown = new Dropdown({ id: `month-dropdown ${this.id}`, dropdownClass: 'dropdown--medium', onSelect: this.setMonth, onSelectScope: this });
+      this._monthDropdown = new Dropdown({ id: `month-dropdown ${this.id}`, dropdownClass: 'dropdown--medium input-sm', onSelect: this.setMonth, onSelectScope: this });
       this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.month() });
       domConstruct.place(this._monthDropdown.domNode, this.monthNode);
     }
@@ -300,7 +308,7 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
   },
   createYearDropdown: function createYearDropdown() {
     if (!this._yearDropdown) {
-      this._yearDropdown = new Dropdown({ id: `year-dropdown ${this.id}`, onSelect: this.setYear, onSelectScope: this });
+      this._yearDropdown = new Dropdown({ id: `year-dropdown ${this.id}`, onSelect: this.setYear, dropdownClass: 'dropdown-mx', onSelectScope: this });
       this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY') });
       domConstruct.place(this._yearDropdown.domNode, this.yearNode);
     }

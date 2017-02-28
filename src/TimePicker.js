@@ -1,16 +1,15 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import on from 'dojo/on';
-import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
 import Dropdown from 'argos/Dropdown';
 import getResource from './I18n';
-import domStyle from 'dojo/dom-style';
 import string from 'dojo/string';
 
 import moment from 'moment';
+import $ from 'jquery';
 
 const resource = getResource('timePicker');
 
@@ -41,11 +40,14 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
     '</div>',
   ]),
   meridiemSelectTemplate: new Simplate([
-    '<div class="toggle toggle-horizontal meridiem-field" data-dojo-attach-point="meridiemNode">',
-    '<span class="thumb horizontal"></span>',
-    '<span class="toggleOn">{%= $.pmText %}</span>',
-    '<span class="toggleOff">{%= $.amText %}</span>',
-    '</div>',
+    `<div class="switch" data-dojo-attach-point="meridiemNode">
+        <input
+          type="checkbox"
+          name="AMPMToggleNode"
+          id="AMPMToggleNode"
+          class="switch" />
+        <label class="toggleAMPM" for="AMPMToggleNode">{%= $.amText %}</label>
+      </div>`,
   ]),
   listStartTemplate: new Simplate([
     '<ul class="list">',
@@ -64,6 +66,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   setTimeText: resource.setTimeText,
 
   timeValue: null,
+  _showAM: null,
   _hourDropdown: null,
   _hourValue: null,
   _meridiemListener: null,
@@ -100,7 +103,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   createHourDropdown: function createHourDropdown(initial) {
     if (!this._hourDropdown) {
       this.createHourLayout();
-      this._hourDropdown = new Dropdown({ id: 'hour-dropdown', itemMustExist: true });
+      this._hourDropdown = new Dropdown({ id: 'hour-dropdown', itemMustExist: true, dropdownClass: 'dropdown-mx' });
       this._hourDropdown.createList({ items: this.hourValues, defaultValue: `${initial}` });
       domConstruct.place(this._hourDropdown.domNode, this.hourNode, 'replace');
     }
@@ -118,7 +121,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
 
     if (!this._minuteDropdown) {
       this.createMinuteLayout();
-      this._minuteDropdown = new Dropdown({ id: 'minute-modal', itemMustExist: true });
+      this._minuteDropdown = new Dropdown({ id: 'minute-modal', itemMustExist: true, dropdownClass: 'dropdown-mx' });
       this._minuteDropdown.createList({ items: this.minuteValues, defaultValue: `${value}` });
       domConstruct.place(this._minuteDropdown.domNode, this.minuteNode, 'replace');
     }
@@ -141,9 +144,9 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
   },
   setMeridiem: function setMeridiem(value) {
     if (value) {
-      domClass.add(this.meridiemNode, 'toggleStateOn');
+      $(this.meridiemNode).addClass('toggleStateOn');
     } else {
-      domClass.remove(this.meridiemNode, 'toggleStateOn');
+      $(this.meridiemNode).removeClass('toggleStateOn');
     }
     return this;
   },
@@ -161,7 +164,7 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
       } else {
         this.timeValue.hours = parseInt(this._hourDropdown.getValue(), 10);
         this.timeValue.minutes = parseInt(this._minuteDropdown.getValue(), 10);
-        this.timeValue.isPM = domClass.contains(this.meridiemNode, 'toggleStateOn');
+        this.timeValue.isPM = $(this.meridiemNode).hasClass('toggleStateOn');
         this.timeValue.hours = this.timeValue.isPM
            ? (this.timeValue.hours % 12) + 12
            : (this.timeValue.hours % 12);
@@ -195,14 +198,20 @@ const __class = declare('argos.TimePicker', [_Widget, _Templated], {
         .createMinuteDropdown(`${minutes}`);
     if (!App.is24HourClock()) {
       this.setMeridiem(meridiemToggled);
-      this._meridiemListener = on(this.meridiemNode, 'click', this.toggleMeridiem.bind(this));
+      this._meridiemListener = on(this.meridiemNode.children[0], 'click', this.toggleMeridiem.bind(this));
     } else {
-      domStyle.set(this.meridiemNode, 'display', 'none');
+      $(this.meridiemNode).css('display', 'none');
     }
   },
   toggleMeridiem: function toggleMeridiem({ target }) {
+    this._showAM = !this._showAM;
     if (target) {
-      domClass.toggle(this.meridiemNode, 'toggleStateOn');
+      $(this.meridiemNode).toggleClass('toggleStateOn');
+      if (this._showAM) {
+        $(target).next().html(this.pmText);
+      } else {
+        $(target).next().html(this.amText);
+      }
     }
   },
   _isTimeless: function _isTimeless() {

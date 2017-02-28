@@ -14,8 +14,10 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
+import array from 'dojo/_base/array';
 import query from 'dojo/query';
 import Toolbar from './Toolbar';
+import domConstruct from 'dojo/dom-construct';
 import getResource from './I18n';
 import $ from 'jquery';
 import 'dojo/NodeList-manipulate';
@@ -75,20 +77,12 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
             <span class="audible" data-translate="text">More...</span>
           </button>
           <div class="popupmenu-wrapper bottom" role="application" aria-hidden="true">
-            <ul id="app-toolbar-more" class="popupmenu is-selectable" role="menu" aria-hidden="true">
+            <ul id="app-toolbar-more" class="popupmenu is-selectable" role="menu" aria-hidden="true" >
               <li class="heading" role="presentation">Theme</li>
-              <li class="is-selectable" role="presentation"><a href="#" data-theme="grey-theme" tabindex="-1" role="menuitemcheckbox" aria-checked="true">Light</a></li>
-              <li class="is-selectable" role="presentation"><a href="#" data-theme="dark-theme" tabindex="-1" role="menuitem">Dark</a></li>
-              <li class="is-selectable is-checked" role="presentation"><a href="#" data-theme="high-contrast-theme" tabindex="-1" role="menuitem">High Contrast</a></li>
+              <div data-dojo-attach-point="themeNode"></div>
               <li class="separator" role="presentation"></li>
               <li class="heading" role="presentation">Personalization</li>
-              <li class="is-selectable is-checked" role="presentation"><a data-rgbcolor="" href="#" tabindex="-1" role="menuitemcheckbox" aria-checked="true">Default</a></li>
-              <li class="is-selectable" role="presentation"><a data-rgbcolor="#368AC0" href="#" tabindex="-1" role="menuitem">Azure</a></li>
-              <li class="is-selectable" role="presentation"><a data-rgbcolor="#EFA836" href="#" tabindex="-1" role="menuitem">Amber</a></li>
-              <li class="is-selectable" role="presentation"><a data-rgbcolor="#9279A6" href="#" tabindex="-1" role="menuitem">Amethyst</a></li>
-              <li class="is-selectable" role="presentation"><a data-rgbcolor="#579E95" href="#" tabindex="-1" role="menuitem">Turqoise</a></li>
-              <li class="is-selectable" role="presentation"><a data-rgbcolor="#76B051" href="#" tabindex="-1" role="menuitem">Emerald</a></li>
-              <li class="is-selectable" role="presentation"><a data-rgbcolor="#5C5C5C" href="#" tabindex="-1" role="menuitem">Graphite</a></li>
+              <div data-dojo-attach-point="personalizationNode"></div>
             </ul>
             <div class="arrow">
             </div>
@@ -97,6 +91,58 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
       </div>
     </header>
   `]),
+  themeTemplate: new Simplate([
+    '<li class="is-selectable ',
+    '{% if($.name === $.selected) { %}',
+    'is-checked',
+    '{% }  %}',
+    '">',
+    '<a href="#" tabindex="-1" role="menuitemcheckbox" data-theme="{%= $.data %}">{%= $.name %}</a>',
+    '</li>',
+  ]),
+  personalizationTemplate: new Simplate([
+    '<li class="is-selectable ',
+    '{% if($.name === $.selected) { %}',
+    'is-checked',
+    '{% }  %}',
+    '">',
+    '<a href="#" tabindex="-1" role="menuitem" data-rgbcolor="{%= $.data %}">{%= $.name %}</a>',
+    '</li>',
+  ]),
+  selectedTheme: 'Light',
+  selectedPersonalization: 'Default',
+  themes: [{
+    name: 'Light',
+    data: 'light-theme',
+  }, {
+    name: 'Dark',
+    data: 'dark-theme',
+  }, {
+    name: 'High Contrast',
+    data: 'high-contrast-theme',
+  }],
+  personalizations: [{
+    name: 'Default',
+    data: '',
+  }, {
+    name: 'Azure',
+    data: '#368AC0',
+  }, {
+    name: 'Amber',
+    data: '#EFA836',
+  }, {
+    name: 'Amethyst',
+    data: '#9279A6',
+  }, {
+    name: 'Turqoise',
+    data: '#579E95',
+  }, {
+    name: 'Emerald',
+    data: '#76B051',
+  }, {
+    name: 'Graphite',
+    data: '#5C5C5C',
+  }],
   /**
    * @property {Simplate}
    * Simplate that defines the toolbar item HTML Markup
@@ -138,10 +184,30 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
 
     query('> [data-action], .toolButton-right', this.domNode).remove();
   },
+  buildPersonalizations: function buildPersonalizations() {
+    array.forEach(this.personalizations, function addToPersList(item) {
+      const pers = domConstruct.toDom(this.personalizationTemplate.apply({
+        name: item.name,
+        data: item.data,
+        selected: this.selectedPersonalization,
+      }, this));
+      domConstruct.place(pers, this.personalizationNode);
+    }, this);
+
+    array.forEach(this.themes, function addToThemeList(item) {
+      const theme = domConstruct.toDom(this.themeTemplate.apply({
+        name: item.name,
+        data: item.data,
+        selected: this.selectedTheme,
+      }, this));
+      domConstruct.place(theme, this.themeNode);
+    }, this);
+  },
   initSoho: function sohoInit() {
     if (this._sohoInit) {
       return;
     }
+    this.buildPersonalizations();
 
     const menu = $('.application-menu', this.domNode);
     menu.applicationmenu();
@@ -157,6 +223,12 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     const toolbar = $('.toolbar', this.domNode);
     toolbar.toolbar();
     this.toolbar = toolbar.data('toolbar');
+
+    // init personalization
+    $('body').personalize({
+      startingColor: null,
+    });
+
     this._sohoInit = true;
   },
   _sohoInit: false,

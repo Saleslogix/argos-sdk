@@ -5,12 +5,8 @@
   background-color: #fff;
 }
 
-.calendar-header {
-  min-height: 60px;
+.calendar__header {
   border-bottom: 1px solid @color-lighter-slate;
-  line-height: 60px;
-  text-align: center;
-  font-size: 24px;
 
   > .calendar__header__icon {
     color: @color-slate;
@@ -151,6 +147,10 @@
   text-align: center;
 }
 
+.time-parts > div {
+  display: inline-block;
+}
+
 .time-select {
   padding: 5px 0;
 
@@ -220,4 +220,15 @@
 .item__text--right {
   float: right;
   text-align: right;
+}
+
+.calendar-footer > .switch{
+    clear: none;
+    float:left;
+    margin-left: 10px
+}
+/* reset soho calendar-table with below style */
+.calendarContainer .calendar-table {
+  width: auto;
+  padding: 0;
 }
