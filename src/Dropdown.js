@@ -82,6 +82,9 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     $(this.dropdownSelect).dropdown({
       noSearch: true,
     });
+    if (itemFound) {
+      this.setValue(itemFound.value);
+    }
     if (this.onSelect) {
       $(this.dropdownSelect).on('change', this.onSelect.bind(this.onSelectScope || this));
     }
@@ -92,7 +95,6 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       evt.remove();
     });
     this._eventConnections = [];
-    domConstruct.destroy(this._ghost);
     this.inherited(arguments);
   },
   findValue: function findValue(text) {
@@ -117,7 +119,6 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   postCreate: function postCreate() {
     this.inherited(arguments);
   },
-
   setValue: function setValue(value) {
     if (value === 0 || value) {
       this.dropdownSelect.value = value;

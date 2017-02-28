@@ -308,7 +308,7 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
   },
   createYearDropdown: function createYearDropdown() {
     if (!this._yearDropdown) {
-      this._yearDropdown = new Dropdown({ id: `year-dropdown ${this.id}`, onSelect: this.setYear, dropdownClass: 'input-sm', onSelectScope: this });
+      this._yearDropdown = new Dropdown({ id: `year-dropdown ${this.id}`, onSelect: this.setYear, dropdownClass: 'dropdown-mx', onSelectScope: this });
       this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY') });
       domConstruct.place(this._yearDropdown.domNode, this.yearNode);
     }
