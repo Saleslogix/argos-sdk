@@ -400,11 +400,15 @@ body {
 .panel-form-concurrency-error > .panel-concurrency-summary {
     display: block;
 }
-
+.panel-validation-summary > h2:first-child,
+.panel-concurrency-summary > h2:first-child {
+    padding: 10px;
+}
 .panel-validation-summary > ul > li,
 .panel-concurrency-summary > ul > li {
     list-style: none;
     clear: both;
+    margin: 5px 10px;
 }
 
 .row.no-value {

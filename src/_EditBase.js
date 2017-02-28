@@ -171,8 +171,7 @@ const __class = declare('argos._EditBase', [View], {
   validationSummaryItemTemplate: new Simplate([
     '<li>',
     '<a href="#{%= $.name %}">',
-    '<h3>{%: $.message %}</h3>',
-    '<h4>{%: $$.label %}</h4>',
+    '<span><b>{%: $$.label %}</b>: {%: $.message %}</span>',
     '</a>',
     '</li>',
   ]),
@@ -182,8 +181,7 @@ const __class = declare('argos._EditBase', [View], {
    */
   concurrencySummaryItemTemplate: new Simplate([
     '<li>',
-    '<h3>{%: $.message %}</h3>',
-    '<h4>{%: $.name %}</h4>',
+    '<span><b>{%: $$.name %}</b>: {%: $.message %}</span>',
     '</li>',
   ]),
   /**
