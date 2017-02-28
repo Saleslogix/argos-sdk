@@ -160,14 +160,13 @@ const __class = declare('argos.Application', null, {
 
         if (returnTo) {
           let returnIndex = -1;
+          // Finds the last index of the returnTo
           this.app.context.history.forEach((val, index) => {
             if (val.page === returnTo) {
               returnIndex = index;
             }
           });
-          // Since want to find last index of page, must reverse index
           if (returnIndex !== -1) {
-            returnIndex = (this.app.context.history.length - 1) - returnIndex;
             this.app.context.history.splice(returnIndex);
           }
           page.redirect(returnTo);
