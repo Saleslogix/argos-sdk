@@ -36,6 +36,7 @@ import getResource from './I18n';
 import { createStore } from 'redux';
 import { sdk } from './reducers';
 import Scene from './Scene';
+import { render } from './SohoIcons';
 import page from 'page';
 import $ from 'jquery';
 import 'dojo/sniff';
@@ -657,6 +658,7 @@ const __class = declare('argos.Application', null, {
    * Initializes this application as well as the toolbar and all currently registered views.
    */
   init: function init(domNode) {
+    this.initIcons();
     this.initStore();
     this._createViewContainers(domNode);
     this.initPreferences();
@@ -672,6 +674,9 @@ const __class = declare('argos.Application', null, {
     this.startOrientationCheck();
     this.initModal();
     this.initScene();
+  },
+  initIcons: function initIcons() {
+    render();
   },
   initScene: function initScene() {
     this.scene = new Scene(this.store);
