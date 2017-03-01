@@ -269,7 +269,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     if (this.options.title) {
       this.set('title', this.options.title);
     } else {
-      this.set('title', (this.get('title') || this.titleText));
+      this.set('title', this.titleText);
     }
 
     this.onActivate(this);
@@ -299,7 +299,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     if (this.options.title) {
       this.set('title', this.options.title);
     } else {
-      this.set('title', (this.get('title') || this.titleText));
+      this.set('title', this.titleText);
     }
 
     const tag = this.getTag();

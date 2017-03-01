@@ -158,13 +158,16 @@ const __class = declare('argos.Application', null, {
         const returnTo = from.data && from.data.options && from.data.options.returnTo;
 
         if (returnTo) {
-          let returnIndex = this.app.context.history.reverse()
-                                .findIndex(val => val.page === returnTo);
-          // Since want to find last index of page, must reverse index
+          let returnIndex = -1;
+          // Finds the last index of the returnTo
+          this.app.context.history.forEach((val, index) => {
+            if (val.page === returnTo) {
+              returnIndex = index;
+            }
+          });
           if (returnIndex !== -1) {
-            returnIndex = (this.app.context.history.length - 1) - returnIndex;
+            this.app.context.history.splice(returnIndex);
           }
-          this.app.context.history.splice(returnIndex);
           page.redirect(returnTo);
           return;
         }
@@ -286,6 +289,11 @@ const __class = declare('argos.Application', null, {
    * Static resource to request on the ping. Should be a small file.
    */
   PING_RESOURCE: 'ping.gif',
+
+  /**
+   * Instance of SoHo Xi applicationmenu.
+   */
+  applicationmenu: null,
   /**
    * All options are mixed into App itself
    * @param {Object} options
@@ -662,6 +670,7 @@ const __class = declare('argos.Application', null, {
     this.initStore();
     this.initAppDOM(domNode);
     this.initPreferences();
+    this.initSoho();
     this.initToasts();
     this.initPing();
     this.initConnects();
@@ -677,6 +686,12 @@ const __class = declare('argos.Application', null, {
   },
   initIcons: function initIcons() {
     render();
+  },
+  initSoho: function initSoho() {
+    const container = this.getAppContainerNode();
+    const menu = $('.application-menu', container).first();
+    menu.applicationmenu();
+    this.applicationmenu = menu.data('applicationmenu');
   },
   initScene: function initScene() {
     this.scene = new Scene(this.store);

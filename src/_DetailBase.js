@@ -737,6 +737,9 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         }
         if (current.where) {
           context.where = this.expandExpression(current.where, entry);
+          if (context.where === '') {
+            data.disabled = true;
+          }
         }
         if (current.resourceKind) {
           context.resourceKind = this.expandExpression(current.resourceKind, entry);
