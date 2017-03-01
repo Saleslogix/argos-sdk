@@ -87,9 +87,9 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * Function used to clear the tabs, should be called by the parent on it's clear call
   */
   clearTabs: function clearTabs() {
-    if (this.tabContainer && this.tabs) {
+    if (this.tabList && this.tabs) {
       $(this.tabContainer).data('tabs').destroy();
-      domConstruct.empty(this.tabContainer);
+      domConstruct.empty(this.tabList);
     }
     if (this.tabMapping) {
       this.tabs = [];
