@@ -49,9 +49,6 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    * `$` - the toolbar instance
    */
   widgetTemplate: new Simplate([`
-    <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
-      data-breakpoint="desktop" style="height: 100%;">
-    </nav>
     <header class="header azure07 is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
       <div class="toolbar has-more-button has-title-button" role="toolbar" aria-label="Layouts">
         <div class="title">
@@ -209,14 +206,16 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     }
     this.buildPersonalizations();
 
-    const menu = $('.application-menu', this.domNode);
+    const container = App.getAppContainerNode();
+    const menu = $('.application-menu', container).first();
     menu.applicationmenu();
     this.appMenu = menu.data('applicationmenu');
 
-    const accordion = $('.accordion.panel', this.domNode);
+    const accordion = $('.accordion.panel', container);
     accordion.accordion();
+    this.accordion = accordion.data('accordion');
 
-    const header = $('.header', this.domNode);
+    const header = $('.header', container).first();
     header.header();
     this.header = header.data('header');
 
@@ -236,6 +235,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     this.initSoho();
     this.toolbar.updated();
     this.appMenu.updated();
+    this.header.updated();
   },
   /**
    * Calls parent {@link Toolbar#showTools showTools} which sets the tool collection.

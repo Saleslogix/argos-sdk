@@ -233,8 +233,8 @@ const __class = declare('argos.Application', null, {
    */
   _started: false,
 
-  _rootDomNode: null,
-  _containerNode: null,
+  _viewContainerNode: null,
+  _appContainerNode: null,
   customizations: null,
   services: null, // TODO: Remove
   _connections: null,
@@ -660,7 +660,7 @@ const __class = declare('argos.Application', null, {
   init: function init(domNode) {
     this.initIcons();
     this.initStore();
-    this._createViewContainers(domNode);
+    this.initAppDOM(domNode);
     this.initPreferences();
     this.initToasts();
     this.initPing();
@@ -735,7 +735,7 @@ const __class = declare('argos.Application', null, {
   },
   initModal: function initModal() {
     this.modal = new Modal();
-    this.modal.place(this._containerNode)
+    this.modal.place(this._appContainerNode)
       .hide();
   },
   is24HourClock: function is24HourClock() {
@@ -855,36 +855,60 @@ const __class = declare('argos.Application', null, {
   hasService: function hasService(name) {
     return !!this.services[name];
   },
-  _createViewContainers: function _createViewContainers(domNode) {
-    // If a domNode is provided, create the app's dom under this
-    if (domNode && !this._rootDomNode) {
-      $(domNode).append('<div class="viewContainer"></div>');
-      this._containerNode = domNode;
-      this._rootDomNode = $('.viewContainer', domNode).get(0);
+  initAppDOM: function initAppDOM(domNode) {
+    if (this._viewContainerNode && this._appContainerNode) {
       return;
     }
 
-    // Check for the default div id of "viewContainer" (multiple calls)
-    const defaultAppID = 'viewContainer';
-    const node = document.getElementById(defaultAppID);
-    if (node) {
-      this._rootDomNode = node;
-      // Set containerNode to rootNode for backwards compatibility
-      this._containerNode = this._rootDomNode;
+    // If a domNode is provided, create the app's dom under this
+    if (domNode) {
+      this._appContainerNode = domNode;
+      this._createViewContainerNode();
       return;
     }
 
     // Nothing was provided, create a default
-    if (this._rootDomNode === null || typeof this._rootDomNode === 'undefined') {
-      $('body').append(`<div id="${defaultAppID}" class="${defaultAppID}"></div>`);
-      this._rootDomNode = $(`#${defaultAppID}`).get(0);
+    this._createAppContainerNode();
+    this._createViewContainerNode();
+  },
+  _createAppContainerNode: function _createAppContainerNode() {
+    const defaultAppContainerId = 'rootNode';
+    $('body').append(`
+      <div id="${defaultAppContainerId}">
+      </div>
+    `);
+    this._appContainerNode = $(`#${defaultAppContainerId}`).get(0);
+  },
+  _createViewContainerNode: function _createViewContainerNode() {
+    if (!this._appContainerNode) {
+      throw new Error('Set the app container node before creating the view container node.');
     }
+
+    const defaultViewContainerId = 'viewContainer';
+    const defaultViewContainerClasses = 'page-container scrollable viewContainer';
+    $(this._appContainerNode).append(`
+      <nav id="application-menu" data-open-on-large="true" class="application-menu show-shadow"
+        data-breakpoint="desktop" style="height: 100%;">
+      </nav>
+      <div class="page-container scrollable tbarContainer">
+        <div id="${defaultViewContainerId}" class="${defaultViewContainerClasses}"></div>
+      </div>
+    `);
+
+    this._viewContainerNode = $(`#${defaultViewContainerId}`).get(0);
   },
   /**
-   * Returns the dom associated to the container element
+   * Returns the dom associated to the container element.
+   * @deprecated
    */
   getContainerNode: function getContainerNode() {
-    return this._containerNode || this._rootDomNode;
+    return this._appContainerNode || this._viewContainerNode;
+  },
+  getAppContainerNode: function getAppContainerNode() {
+    return this._appContainerNode;
+  },
+  getViewContainerNode: function getViewContainerNode() {
+    return this._viewContainerNode;
   },
   /**
    * Registers a view with the application and renders it to HTML.
@@ -895,11 +919,7 @@ const __class = declare('argos.Application', null, {
   registerView: function registerView(view, domNode) {
     const id = view.id;
 
-    if (!domNode) {
-      this._createViewContainers();
-    }
-
-    const node = domNode || this._rootDomNode;
+    const node = domNode || this._viewContainerNode;
     view._placeAt = node;
     this.views[id] = view;
 
@@ -938,11 +958,9 @@ const __class = declare('argos.Application', null, {
       tbar.init();
     }
 
-    if (!domNode) {
-      this._createViewContainers();
-    }
-
-    tbar.placeAt(domNode || this._containerNode, 'first');
+    const tbarNode = $('> .tbarContainer', this._appContainerNode).get(0);
+    const node = domNode || tbarNode;
+    tbar.placeAt(node, 'first');
 
     return this;
   },
