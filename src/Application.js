@@ -289,6 +289,11 @@ const __class = declare('argos.Application', null, {
    * Static resource to request on the ping. Should be a small file.
    */
   PING_RESOURCE: 'ping.gif',
+
+  /**
+   * Instance of SoHo Xi applicationmenu.
+   */
+  applicationmenu: null,
   /**
    * All options are mixed into App itself
    * @param {Object} options
@@ -665,6 +670,7 @@ const __class = declare('argos.Application', null, {
     this.initStore();
     this.initAppDOM(domNode);
     this.initPreferences();
+    this.initSoho();
     this.initToasts();
     this.initPing();
     this.initConnects();
@@ -680,6 +686,12 @@ const __class = declare('argos.Application', null, {
   },
   initIcons: function initIcons() {
     render();
+  },
+  initSoho: function initSoho() {
+    const container = this.getAppContainerNode();
+    const menu = $('.application-menu', container).first();
+    menu.applicationmenu();
+    this.applicationmenu = menu.data('applicationmenu');
   },
   initScene: function initScene() {
     this.scene = new Scene(this.store);

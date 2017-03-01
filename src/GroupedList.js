@@ -43,6 +43,7 @@ const __class = declare('argos.GroupedList', [List], {
 
   collapsedIconClass: 'fa-chevron-right',
   expanedIconClass: 'fa-chevron-down',
+  accordion: null,
 
   /**
    * @property {Simplate}
@@ -184,6 +185,7 @@ const __class = declare('argos.GroupedList', [List], {
     }
 
     $(this.domNode).toggleClass('list-has-more', this.hasMoreData());
+    this.updateSoho();
   },
   processData: function processData(entries) {
     const count = entries.length;
@@ -270,6 +272,16 @@ const __class = declare('argos.GroupedList', [List], {
   applyGroupByOrderBy: function applyGroupByOrderBy() {
     if (this._currentGroupBySection) {
       this.queryOrderBy = this._currentGroupBySection.section.getOrderByQuery();
+    }
+  },
+  initSoho: function initSoho() {
+    const accordion = $('.accordion.panel', this.domNode);
+    accordion.accordion();
+    this.accordion = accordion.data('accordion');
+  },
+  updateSoho: function updateSoho() {
+    if (this.accordion) {
+      this.accordion.updated();
     }
   },
 });

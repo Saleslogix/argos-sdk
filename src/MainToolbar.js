@@ -200,20 +200,13 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
       domConstruct.place(theme, this.themeNode);
     }, this);
   },
-  initSoho: function sohoInit() {
+  initSoho: function initSoho() {
     if (this._sohoInit) {
       return;
     }
     this.buildPersonalizations();
 
     const container = App.getAppContainerNode();
-    const menu = $('.application-menu', container).first();
-    menu.applicationmenu();
-    this.appMenu = menu.data('applicationmenu');
-
-    const accordion = $('.accordion.panel', container);
-    accordion.accordion();
-    this.accordion = accordion.data('accordion');
 
     const header = $('.header', container).first();
     header.header();
@@ -234,7 +227,6 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
   updateSoho: function updateSoho() {
     this.initSoho();
     this.toolbar.updated();
-    this.appMenu.updated();
     this.header.updated();
   },
   /**
