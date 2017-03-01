@@ -73,7 +73,7 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
   ]),
   calendarTableDayTemplate: new Simplate([
     '<td class="day {%= $.month %} {%= $.weekend %} {%= $.selected %} {%= $.isToday %}" data-action="changeDay" data-date="{%= $.date %}">',
-    '{%= $.day %}',
+    '<span>{%= $.day %}</span>',
     '</td>',
   ]),
   calendarTableDayActiveTemplate: new Simplate([
