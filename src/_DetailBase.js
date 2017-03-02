@@ -15,13 +15,13 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import Deferred from 'dojo/_base/Deferred';
-import connect from 'dojo/_base/connect';
 import format from './Format';
 import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import View from './View';
 import TabWidget from './TabWidget';
 import getResource from './I18n';
+
 import $ from 'jquery';
 
 const resource = getResource('detailBase');
@@ -68,12 +68,11 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" data-dojo-attach-event="onclick:toggleDropDown" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '{%! $.loadingTemplate %}',
     '{%! $.quickActionTemplate %}',
     '<div class="panel-content" data-dojo-attach-point="contentNode">',
     '{%! $.tabContentTemplate %}',
-    '{%! $.moreTabListTemplate %}',
     '</div>',
     '</div>',
   ]),
@@ -137,15 +136,15 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     '{% } %}',
     '{% if ($.list || $.options.list) { %}',
     '{% if ($.cls || $.options.cls) { %}',
-    '<ul class="{%= ($.cls || $.options.cls) %}">',
+    '<ul class="tab-panel {%= ($.cls || $.options.cls) %}" id="{%: $.name %}">',
     '{% } else { %}',
-    '<ul class="detailContent list">',
+    '<ul class="detailContent tab-panel list" id="{%: $.name %}">',
     '{% } %}',
     '{% } else { %}',
     '{% if ($.cls || $.options.cls) { %}',
-    '<div class="{%= ($.cls || $.options.cls) %}">',
+    '<div class="tab-panel {%= ($.cls || $.options.cls) %}" id="{%: $.name %}">',
     '{% } else { %}',
-    '<div class="detailContent">',
+    '<div class="detailContent tab-panel" id="{%: $.name %}">',
     '{% } %}',
     '{% } %}',
   ]),
@@ -510,7 +509,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   placeDetailHeader: function placeDetailHeader() {
     const value = `${this.entityText} ${this.informationText}`;
-    $(this.tabList).before(this.detailHeaderTemplate.apply({ value }, this));
+    $(this.tabContainer).before(this.detailHeaderTemplate.apply({ value }, this));
   },
   /**
    * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.
@@ -682,12 +681,12 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
             });
             this.tabMapping.push(section.get(0));
             this.tabs.push(tab);
-            $(this.contentNode).append(section);
+            $(this.tabContainer).append(section);
           }
         } else {
           section = $(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
           sectionNode = section.get(0).childNodes[1];
-          $(this.contentNode).append(section);
+          $(this.tabContainer).append(section);
         }
       }
 
@@ -1000,10 +999,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   },
   onTransitionTo: function onTransitionTo() {
     this.inherited(arguments);
-
-    if (this.isTabbed) {
-      this._orientation = connect.subscribe('/app/setOrientation', this, this.reorderTabs);
-    }
   },
   /**
    * If a security breach is detected it sets the content to the notAvailableTemplate, otherwise it calls

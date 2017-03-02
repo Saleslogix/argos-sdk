@@ -1,10 +1,6 @@
 @import "variables.less";
 @import "mixins.less";
-
-.calendar {
-  background-color: #fff;
-}
-
+ 
 .calendar__header {
   border-bottom: 1px solid @color-lighter-slate;
 
@@ -25,51 +21,16 @@
   }
 }
 
-.calendar__header__icon {
-  color: @color-slate;
-  top: 15px;
-  line-height: inherit;
-}
-
-.calendar__header__icon--left {
-  float: left;
-  padding-left: 15px;
-}
-.calendar__header__icon--right {
-  float: right;
-  padding-right: 15px;
-}
 
 .calendar-table {
-  margin: 15px auto 0;
-  border: 0;
-  color: @color-light-graphite;
-  font-size: @font-size-h4;
-  border-collapse: separate;
-  border-spacing: 2px;
-
-  .calendar-weekdays {
-    text-transform: uppercase;
-    color: @color-deep-graphite;
-  }
 
   .day {
     position: relative;
-    border: 1px solid transparent;
-    .border-radius(50%);
-    height: 35px;
-    width: 35px;
-    background-color: inherit;
-    transition: 0.2s background-color ease;
-    -webkit-transition: 0.2s background-color ease;
-    -moz-transition: 0.2s background-color ease;
-    -ms-transition: 0.2s background-color ease;
-    text-align: center;
   }
   .day__active {
     position: absolute;
-    top: 25px;
-    right: 14.5px;
+    top: 28px;
+    right: 17.5px;
     min-width: 0.5em;
     min-height: 0.5em;
     line-height: 0.5em;
@@ -78,24 +39,10 @@
     background-color: @color-amber;
     .border-radius(50%);
   }
-
-  .current-month {
-    color: @color-deep-graphite;
-  }
-
   .weekend {
-    background-color: @color-lighter-graphite;
-  }
-
-  .isToday {
-    border-color: @color-deeper-graphite;
-  }
-  .selected {
-    background-color: @color-azure;
-    color: #fff;
+    background-color: rgba(216,216,216, .5);
   }
 }
-
 .calendar-footer {
   min-height: 34px;
   width: 100%;
@@ -123,10 +70,6 @@
     box-shadow: none;
     color: @color-slate;
   }
-
-  // .selected {
-  //   color: @color-azure;
-  // }
 
   .toToday,
   .clear {

@@ -73,7 +73,7 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
   ]),
   calendarTableDayTemplate: new Simplate([
     '<td class="day {%= $.month %} {%= $.weekend %} {%= $.selected %} {%= $.isToday %}" data-action="changeDay" data-date="{%= $.date %}">',
-    '{%= $.day %}',
+    '<span>{%= $.day %}</span>',
     '</td>',
   ]),
   calendarTableDayActiveTemplate: new Simplate([
@@ -209,21 +209,21 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
   },
   changeSingleDay: function changeSingleDay(params) {
     if (params) {
-      const selected = query('.selected', this.weeksNode);
+      const selected = query('.is-selected', this.weeksNode);
 
       if (selected) {
         array.forEach(selected, (day) => {
-          domClass.remove(day, 'selected');
+          domClass.remove(day, 'is-selected');
         });
       }
 
       if (selected) {
-        domClass.remove(selected, 'selected');
+        domClass.remove(selected, 'is-selected');
       }
 
       if (params.$source) {
         this._selectedDay = params.$source;
-        domClass.add(params.$source, 'selected');
+        domClass.add(params.$source, 'is-selected');
       }
 
       if (params.date) {
@@ -238,18 +238,18 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
   },
   changeWeek: function changeWeek(params) {
     if (params) {
-      const selected = query('.selected', this.weeksNode);
+      const selected = query('.is-selected', this.weeksNode);
 
       if (selected) {
         array.forEach(selected, (day) => {
-          domClass.remove(day, 'selected');
+          domClass.remove(day, 'is-selected');
         });
       }
 
       if (params.$source.parentNode) {
         this._selectedDay = params.$source;
         array.forEach(params.$source.parentNode.children, (day) => {
-          domClass.add(day, 'selected');
+          domClass.add(day, 'is-selected');
         });
       }
 
@@ -270,7 +270,7 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
   checkAndRenderDay: function checkAndRenderDay(data = {}) {
     const dayIndexer = data.day + data.startingDay - 1;
     if (data.day === data.todayMoment.date() && data.todayMoment.month() === data.dateMoment.month() && data.todayMoment.year() === data.dateMoment.year()) {
-      data.isToday = 'isToday';
+      data.isToday = 'is-today';
     } else {
       data.isToday = '';
     }
@@ -281,7 +281,7 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
     }
     data.date = data.dateMoment.clone().date(data.day).format('YYYY-MM-DD');
     const day = domConstruct.toDom(this.calendarTableDayTemplate.apply(data, this));
-    if (data.day === this.date.dayNode && data.month === 'current-month') {
+    if (data.day === this.date.dayNode && data.month.indexOf('alternate') === -1) {
       this._selectedDay = day;
     }
     if (this.showSubValues) {
@@ -291,10 +291,10 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
     domConstruct.place(day, data.week);
   },
   clearCalendar: function clearCalendar() {
-    const selected = query('.selected', this.weeksNode)[0];
+    const selected = query('.is-selected', this.weeksNode)[0];
 
     if (selected) {
-      domClass.remove(selected, 'selected');
+      domClass.remove(selected, 'is-selected');
     }
     this.date.selectedDateMoment = null;
   },
@@ -336,7 +336,7 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
     this.date.todayMoment = this.getCurrentDateMoment();
     this.date.selectedDateMoment = this.date.todayMoment;
     this.refreshCalendar(this.date); // This will reload the data.
-    const day = query('.isToday', this.weeksNode)[0];
+    const day = query('.is-today', this.weeksNode)[0];
     let params = {};
     if (day) {
       params = { $source: day, date: day.dataset.date };
@@ -429,17 +429,18 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
     };
 
     // Iterate through the days that are in the start week of the current month but are in the previous month
+    data.month = 'alternate prev-month';
     for (let day = endPrevMonth.date(); day < endPrevMonth.date() + startingDay; day++) {
       data.day = day;
       this.checkAndRenderDay(data);
     }
 
-    data.month = 'current-month';
+    data.month = '';
     data.startingDay = startingDay;
     data.dateMoment = selectedDateMoment.clone();
     for (let day = 1; day <= daysInMonth; day++) {
       if (day === selectedDateMoment.date()) {
-        data.selected = 'selected';
+        data.selected = 'is-selected';
         this.date.dayNode = day;
       } else {
         data.selected = '';
@@ -454,10 +455,10 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
     }
 
     data.selected = '';
-    data.month = '';
     data.startingDay = startNextMonth.day();
     data.dateMoment = startNextMonth.clone();
     // Iterate through remaining days of the week based on 7 days in the week and ensure there are 6 weeks shown (for consistency)
+    data.month = 'alternate next-month';
     for (let day = 1; day <= (1 + data.weekEnds.Saturday - startNextMonth.day()); day++) {
       data.day = day;
       this.checkAndRenderDay(data);
