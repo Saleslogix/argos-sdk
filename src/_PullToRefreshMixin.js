@@ -62,7 +62,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
   /**
    * @property {Boolean} enablePullToRefresh If true, will enable the user to drag down and refresh the list. Default is true.
    */
-  enablePullToRefresh: true,
+  enablePullToRefresh: false, // TODO: Fix this for SoHo Xi
 
   /**
    * @property {DOMNode}
