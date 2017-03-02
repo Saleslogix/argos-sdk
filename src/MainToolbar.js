@@ -60,8 +60,8 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
                 <span class="three"></span>
               </span>
           </button>
-          <h1>
-            <span id="pageTitle" data-dojo-attach-point="titleNode" data-dojo-attach-event="onclick: onTitleClick">{%= $.titleText %}</span>
+          <h1 data-dojo-attach-point="titleNode">
+            {%= $.titleText %}
           </h1>
         </div>
         <div class="buttonset" data-dojo-attach-point="toolNode">
@@ -204,6 +204,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     if (this._sohoInit) {
       return;
     }
+
     this.buildPersonalizations();
 
     const container = App.getAppContainerNode();
@@ -215,6 +216,8 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     const toolbar = $('.toolbar', this.domNode);
     toolbar.toolbar();
     this.toolbar = toolbar.data('toolbar');
+
+    $('.title > h1', this.domNode).on('click', this.onTitleClick);
 
     // init personalization
     $('body').personalize({
