@@ -272,6 +272,7 @@ body {
 .viewContainer > .dialog,
 .viewContainer > .view {
     display: none;
+    position: relative;
     visibility: hidden;
 }
 
@@ -319,6 +320,7 @@ body {
 
 .no-data {
     text-align: center;
+    background-color: white;
 }
 
 .no-data > h3 {
@@ -566,10 +568,11 @@ body {
 }
 
 .pull-to-refresh {
-    margin: 20px 0;
+    top: 40px;
+    width: 100%;
     text-align: center;
+    position: absolute;
     visibility: hidden;
-
     > span {
         margin: 0 10px;
         height: 18px;
