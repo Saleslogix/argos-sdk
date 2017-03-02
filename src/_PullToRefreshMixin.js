@@ -33,7 +33,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-down-arrow"></use>
           </svg>
       </button>
-      <span>{%= $$._getText("pullRefreshText") %}</span>`,
+      <p>{%= $$._getText("pullRefreshText") %}</p>`,
   ]),
 
   /**
@@ -45,7 +45,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-up-arrow"></use>
           </svg>
       </button>
-      <span>{%= $$._getText("pullReleaseText") %}</span>`,
+      <p>{%= $$._getText("pullReleaseText") %}</p>`,
   ]),
 
   /**
