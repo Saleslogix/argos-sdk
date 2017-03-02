@@ -241,7 +241,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   noDataTemplate: new Simplate([
     '<li class="no-data">',
-    '<h2>{%= $.noDataText %}</h2>',
+    '<p>{%= $.noDataText %}</p>',
     '</li>',
   ]),
   /**
