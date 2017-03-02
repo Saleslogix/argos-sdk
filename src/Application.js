@@ -294,6 +294,13 @@ const __class = declare('argos.Application', null, {
    * Instance of SoHo Xi applicationmenu.
    */
   applicationmenu: null,
+
+  /**
+   * Instance of SoHo Xi modal dialog for view settings. This was previously in
+   * the right drawer.
+   * @type {Modal}
+   */
+  viewSettingsModal: null,
   /**
    * All options are mixed into App itself
    * @param {Object} options
@@ -692,6 +699,10 @@ const __class = declare('argos.Application', null, {
     const menu = $('.application-menu', container).first();
     menu.applicationmenu();
     this.applicationmenu = menu.data('applicationmenu');
+
+    const viewSettingsModal = $('.modal.view-settings', container).first();
+    viewSettingsModal.modal();
+    this.viewSettingsModal = viewSettingsModal.data('modal');
   },
   initScene: function initScene() {
     this.scene = new Scene(this.store);
@@ -903,10 +914,22 @@ const __class = declare('argos.Application', null, {
     const defaultViewContainerClasses = 'page-container scrollable viewContainer';
     $(this._appContainerNode).append(`
       <nav id="application-menu" data-open-on-large="true" class="application-menu show-shadow"
-        data-breakpoint="desktop" style="height: 100%;">
+        data-breakpoint="tablet">
       </nav>
       <div class="page-container scrollable tbarContainer">
         <div id="${defaultViewContainerId}" class="${defaultViewContainerClasses}"></div>
+        <div class="modal view-settings" role="dialog" aria-modal="true" aria-hidden="false">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1>View Settings</h1>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-buttonset">
+              <button type="button" class="btn-modal" style="width:100%">Close</button>
+            </div>
+          </div>
+        </div>
       </div>
     `);
 
