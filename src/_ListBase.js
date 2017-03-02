@@ -227,8 +227,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @template
    */
   itemTemplate: new Simplate([
-    '<h3>{%: $[$$.labelProperty] %}</h3>',
-    '<h4>{%: $[$$.idProperty] %}</h4>',
+    '<p class="listview-heading">{%: $[$$.labelProperty] %}</h4>',
+    '<p class="listview-subheading">{%: $[$$.idProperty] %}</p>',
   ]),
   /**
    * @property {Simplate}

@@ -17,10 +17,10 @@ const resource = getResource('configureBase');
 const __class = declare('argos._ConfigureBase', [DraggableList], {
   // Templates
   itemTemplate: new Simplate([
-    '<h3>',
+    '<h4>',
     '<span>{%: $.$descriptor %}</span>',
     '<span class="draggable fa fa-bars"></span>',
-    '</h3>',
+    '</h4>',
   ]),
 
   // Localization
