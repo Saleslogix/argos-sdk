@@ -214,10 +214,6 @@
   requireSelectionText: "A selection is required, you cannot de-select the last item."
 >
 
-<tabWidget ""
- moreText: "More"
->
-
 <view ""
  titleText: "Generic View"
 >
