@@ -64,7 +64,7 @@ const __class = declare('argos.GroupedList', [List], {
    */
   groupTemplate: new Simplate([`
       <div class="accordion-header has-chevron hide-focus" role="presentation">
-        <a aria-haspopup="true" role="button" aria-expanded="true">{%: $.title %}</a>
+        <a aria-haspopup="true" role="button">{%: $.title %}</a>
       </div>
       <div class="accordion-pane" data-group="{%= $.tag %}">
       </div>

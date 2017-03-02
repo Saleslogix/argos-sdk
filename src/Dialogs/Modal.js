@@ -30,7 +30,7 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
     '</div>',
   ]),
   modalTemplate: new Simplate([
-    '<div id="{%= $.id %}" class="modal panel" data-dojo-attach-point="modalNode">',
+    '<div id="{%= $.id %}" class="crm-modal panel" data-dojo-attach-point="modalNode">',
     '</div>',
   ]),
   modalToolbarTemplate: new Simplate([

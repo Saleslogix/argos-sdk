@@ -3,11 +3,7 @@ import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
 import domConstruct from 'dojo/dom-construct';
 import _Templated from 'argos/_Templated';
-import getResource from './I18n';
-
 import $ from 'jquery';
-
-const resource = getResource('tabWidget');
 
 /**
  * @class argos.TabWidget
