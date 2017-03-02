@@ -136,13 +136,13 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     '{% if ($.cls || $.options.cls) { %}',
     '<ul class="tab-panel {%= ($.cls || $.options.cls) %}" id="{%: $.name %}">',
     '{% } else { %}',
-    '<ul class="detailContent tab-panel list" id="{%: $.name %}">',
+    '<ul class="detailContent tab-panel listview" id="{%: $.name %}">',
     '{% } %}',
     '{% } else { %}',
     '{% if ($.cls || $.options.cls) { %}',
     '<div class="tab-panel {%= ($.cls || $.options.cls) %}" id="{%: $.name %}">',
     '{% } else { %}',
-    '<div class="detailContent tab-panel" id="{%: $.name %}">',
+    '<div class="detailContent tab-panel summary-form" id="{%: $.name %}">',
     '{% } %}',
     '{% } %}',
   ]),
@@ -169,7 +169,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   propertyTemplate: new Simplate([
     '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}" data-property="{%= $.property || $.name %}">',
     '<label>{%: $.label %}</label>',
-    '<span>{%= $.value %}</span>', // todo: create a way to allow the value to not be surrounded with a span tag
+    '<span class="data">{%= $.value %}</span>', // todo: create a way to allow the value to not be surrounded with a span tag
     '</div>',
   ]),
   /**
@@ -182,7 +182,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   relatedPropertyTemplate: new Simplate([
     '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
     '<label>{%: $.label %}</label>',
-    '<span>',
+    '<span class="data">',
     '<a data-action="activateRelatedEntry" data-view="{%= $.view %}" data-context="{%: $.context %}" data-descriptor="{%: $.descriptor || $.value %}">',
     '{%= $.value %}',
     '</a>',
@@ -218,7 +218,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   actionPropertyTemplate: new Simplate([
     '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
     '<label>{%: $.label %}</label>',
-    '<span>',
+    '<span class="data">',
     '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
     '{%= $.value %}',
     '</a>',
@@ -238,10 +238,14 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     '{% if ($.icon) { %}',
     '<img src="{%= $.icon %}" alt="icon" class="icon" />',
     '{% } else if ($.iconClass) { %}',
-    '<div class="{%= $.iconClass %}" alt="icon"></div>',
+    `<button type="button" class="btn-icon hide-focus">
+      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+      </svg>
+    </button>`,
     '{% } %}',
     '<label>{%: $.label %}</label>',
-    '<span>{%= $.value %}</span>',
+    '<span class="data">{%= $.value %}</span>',
     '</a>',
     '</li>',
   ]),
