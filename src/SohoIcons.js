@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 export function render(element = 'body') {
   $(element).prepend(`
-    <div class="svg-icons">
+    <div class="svg-icons" style="display:none">
       <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svg-icons">
     <!--Keep Alphabetized -->
 
@@ -783,7 +783,7 @@ export function render(element = 'body') {
     </symbol>
   </svg>
 </div>
-<div class="svg-icons-extended">
+<div class="svg-icons-extended" style="display:none">
   <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svg-icons">
       <!--Keep Alphabetized -->
 
