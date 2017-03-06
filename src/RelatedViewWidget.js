@@ -5,12 +5,11 @@ import lang from 'dojo/_base/lang';
 import event from 'dojo/_base/event';
 import on from 'dojo/on';
 import string from 'dojo/string';
-import domClass from 'dojo/dom-class';
 import when from 'dojo/when';
 import domConstruct from 'dojo/dom-construct';
-import domAttr from 'dojo/dom-attr';
 import connect from 'dojo/_base/connect';
 import array from 'dojo/_base/array';
+import $ from 'jquery';
 import SDataStore from './Store/SData';
 import _CustomizationMixin from './_CustomizationMixin';
 import _ActionMixin from './_ActionMixin';
@@ -174,7 +173,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   },
   postCreate: function postCreate() {
     if ((!this.showTab) && (this.tabNode)) {
-      domClass.toggle(this.tabNode, 'hidden');
+      $(this.tabNode).toggleClass('hidden');
     }
     if (this.enableActions) {
       this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'relatedview-actions'));
@@ -300,7 +299,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
         this.loadingNode = domConstruct.toDom(this.loadingTemplate.apply(this));
         domConstruct.place(this.loadingNode, this.relatedViewNode, 'last', this);
       }
-      domClass.toggle(this.loadingNode, 'loading');
+      $(this.loadingNode).toggleClass('loading');
       if (this.wait) {
         return;
       }
@@ -326,8 +325,8 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
 
       if (relatedFeed.length > 0) {
         let moreData;
-        domClass.remove(this.containerNode, 'hidden');
-        domClass.remove(this.tabNode, 'collapsed');
+        $(this.containerNode).removeClass('hidden');
+        $(this.tabNode).removeClass('collapsed');
         this.itemCount = this.itemCount + relatedFeed.length;
         const restCount = this.relatedResults.total - this.itemCount;
         if (restCount > 0) {
@@ -338,17 +337,17 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
         }
 
         if (this.showSelectMore) {
-          domAttr.set(this.selectMoreNode, {
+          $(this.selectMoreNode).attr({
             innerHTML: moreData,
           });
         } else {
-          domAttr.set(this.selectMoreNode, {
+          $(this.selectMoreNode).attr({
             innerHTML: '',
           });
         }
 
         if (this.showTotalInTab) {
-          domAttr.set(this.titleNode, {
+          $(this.titleNode).attr({
             innerHTML: `${this.title}  ${string.substitute(this.totalCountText, [this.relatedResults.total])}`,
           });
         }
@@ -362,31 +361,31 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
         }
       } else {
         if (this.hideWhenNoData) {
-          domClass.add(this.containerNode, 'hidden');
+          $(this.containerNode).addClass('hidden');
         } else {
-          domClass.remove(this.containerNode, 'hidden');
+          $(this.containerNode).removeClass('hidden');
         }
         domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
         if (this.showTotalInTab) {
-          domAttr.set(this.titleNode, {
+          $(this.titleNode).attr({
             innerHTML: `${this.title}  ${string.substitute(this.totalCountText, [0, 0])}`,
           });
         }
-        domAttr.set(this.selectMoreNode, {
+        $(this.selectMoreNode).attr({
           innerHTML: '',
         });
         if (this._isInitLoad) {
           this._isInitLoad = false;
-          domClass.toggle(this.tabNode, 'collapsed');
+          $(this.tabNode).toggleClass('collapsed');
         }
       }
-      domClass.toggle(this.loadingNode, 'loading');
+      $(this.loadingNode).toggleClass('loading');
     } catch (error) {
       console.log('Error applying data for related view widget:' + error);//eslint-disable-line
     }
   },
   toggleView: function toggleView(evt) {
-    domClass.toggle(this.tabNode, 'collapsed');
+    $(this.tabNode).toggleClass('collapsed');
 
     if (!this.isLoaded) {
       this.onLoad();

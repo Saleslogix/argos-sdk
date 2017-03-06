@@ -1,9 +1,9 @@
 import declare from 'dojo/_base/declare';
 import domConstruct from 'dojo/dom-construct';
-import domClass from 'dojo/dom-class';
 import domStyle from 'dojo/dom-style';
 import Deferred from 'dojo/Deferred';
 import _Widget from 'dijit/_Widget';
+import $ from 'jquery';
 import _Templated from '../_Templated';
 import getResource from '../I18n';
 
@@ -58,14 +58,14 @@ const __class = declare('argos.Dialogs.BusyIndicator', [_Widget, _Templated], {
   totalProgress: null,
 
   complete: function complete(result = {}) {
-    domClass.remove(this.busyIndicatorNode, 'busyIndicator--active');
+    $(this.busyIndicatorNode).removeClass('busyIndicator--active');
     this._busyDeferred.resolve(result);
   },
   show: function show() {},
   start: function start(options = {}) {
     this._busyDeferred = new Deferred();
 
-    domClass.add(this.busyIndicatorNode, 'busyIndicator--active');
+    $(this.busyIndicatorNode).addClass('busyIndicator--active');
 
     if (!this.isAsync || (options.isAsync !== undefined && !options.isAsync)) {
       this._progressBar = domConstruct.toDom(this.barTemplate.apply(this));

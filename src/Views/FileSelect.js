@@ -16,8 +16,7 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import has from 'dojo/has';
 import domConstruct from 'dojo/dom-construct';
-import domClass from 'dojo/dom-class';
-import dom from 'dojo/dom';
+import $ from 'jquery';
 import getResource from '../I18n';
 import View from '../View';
 import '../Fields/TextField';
@@ -114,7 +113,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
   constructor: function constructor() {},
   postCreate: function postCreate() {
     this.inherited(arguments);
-    domClass.remove(this.domNode, 'list-loading');
+    $(this.domNode).removeClass('list-loading');
   },
   /**
    * Extends the @{link Sage.Platlform.Mobile.View} show to clear out the onchange event of the file input.
@@ -144,8 +143,8 @@ const __class = declare('argos.Views.FileSelect', [View], {
     }.bind(this);
 
     this.contentNode.innerHTML = '';
-    domClass.remove(this.fileArea, 'display-none');
-    domClass.remove(this.btnUploadFiles, 'display-none');
+    $(this.fileArea).removeClass('display-none');
+    $(this.btnUploadFiles).removeClass('display-none');
     this.onUpdateProgress('');
   },
   _browesForFiles: function _browesForFiles(/* file*/) {
@@ -171,7 +170,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
     return fileItems;
   },
   _getFileDescription: function _getFileDescription(fileIndex) {
-    const n = dom.byId(`File_${fileIndex}`);
+    const n = document.getElementById(`File_${fileIndex}`);
     let desc;
 
     if (n) {
@@ -187,8 +186,8 @@ const __class = declare('argos.Views.FileSelect', [View], {
       }
       this._buildForm(files);
     }
-    domClass.remove(this.btnUploadFiles, 'display-none');
-    domClass.add(this.fileArea, 'display-none');
+    $(this.btnUploadFiles).removeClass('display-none');
+    $(this.fileArea).addClass('display-none');
   },
   _addFile: function _addFile(file, index) {
     const filelength = this._getFileLength(file);
@@ -236,9 +235,9 @@ const __class = declare('argos.Views.FileSelect', [View], {
    * Handles the display when the user clicks upload.
    */
   onUploadFiles: function onUploadFiles() {
-    domClass.add(this.btnUploadFiles, 'display-none');
+    $(this.btnUploadFiles).addClass('display-none');
     const tpl = this.loadingTemplate.apply(this);
-    domClass.add(this.domNode, 'list-loading');
+    $(this.domNode).addClass('list-loading');
     domConstruct.place(tpl, this.contentNode, 'first');
   },
   cancelSelect: function cancelSelect() {},
@@ -246,7 +245,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
    * Handles the display when progress events are recieved.
    */
   onUpdateProgress: function onUpdateProgress(msg) {
-    const n = dom.byId('fileselect-upload-progress');
+    const n = document.getElementById('fileselect-upload-progress');
     if (n) {
       n.innerHTML = `${this.loadingText} ${msg}`;
     }
@@ -256,7 +255,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
    */
   onUpdateFailed: function onUpdateFailed(msg) {
     this.onUpdateProgress(msg);
-    domClass.remove(this.domNode, 'list-loading');
+    $(this.domNode).removeClass('list-loading');
   },
 });
 

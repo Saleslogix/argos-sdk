@@ -3,9 +3,9 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
 import string from 'dojo/string';
+import $ from 'jquery';
 import ErrorManager from './ErrorManager';
 
 /**
@@ -95,7 +95,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
    */
   onRequestDataSuccess: function onRequestDataSuccess(entry) {
     this.processEntry(entry);
-    domClass.remove(this.domNode, 'panel-loading');
+    $(this.domNode).removeClass('panel-loading');
   },
   /**
    * Handler when an error occurs while request data from the SData endpoint.
@@ -110,7 +110,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
       ErrorManager.addError('failure', response);
     }
 
-    domClass.remove(this.domNode, 'panel-loading');
+    $(this.domNode).removeClass('panel-loading');
   },
   /**
    * Handler when an a request is aborted from an SData endpoint.
@@ -123,7 +123,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
   onRequestDataAborted: function onRequestDataAborted(response/* , o*/) {
     this.options = false; // force a refresh
     ErrorManager.addError('aborted', response);
-    domClass.remove(this.domNode, 'panel-loading');
+    $(this.domNode).removeClass('panel-loading');
   },
 });
 

@@ -21,8 +21,8 @@ import declare from 'dojo/_base/declare';
 import array from 'dojo/_base/array';
 import lang from 'dojo/_base/lang';
 import query from 'dojo/query';
-import domClass from 'dojo/dom-class';
 import domConstruct from 'dojo/dom-construct';
+import $ from 'jquery';
 import _ActionMixin from './_ActionMixin';
 import _Widget from 'dijit/_Widget';
 import _Templated from './_Templated';
@@ -213,17 +213,17 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
 
       if (selected) {
         array.forEach(selected, (day) => {
-          domClass.remove(day, 'is-selected');
+          $(day).removeClass('is-selected');
         });
       }
 
       if (selected) {
-        domClass.remove(selected, 'is-selected');
+        $(selected).removeClass('is-selected');
       }
 
       if (params.$source) {
         this._selectedDay = params.$source;
-        domClass.add(params.$source, 'is-selected');
+        $(params.$source).addClass('is-selected');
       }
 
       if (params.date) {
@@ -242,14 +242,14 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
 
       if (selected) {
         array.forEach(selected, (day) => {
-          domClass.remove(day, 'is-selected');
+          $(day).removeClass('is-selected');
         });
       }
 
       if (params.$source.parentNode) {
         this._selectedDay = params.$source;
         array.forEach(params.$source.parentNode.children, (day) => {
-          domClass.add(day, 'is-selected');
+          $(day).addClass('is-selected');
         });
       }
 
@@ -294,7 +294,7 @@ const __class = declare('argos.Calendar', [_Widget, _ActionMixin, _Templated], {
     const selected = query('.is-selected', this.weeksNode)[0];
 
     if (selected) {
-      domClass.remove(selected, 'is-selected');
+      $(selected).removeClass('is-selected');
     }
     this.date.selectedDateMoment = null;
   },

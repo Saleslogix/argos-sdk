@@ -1,8 +1,8 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
-import domClass from 'dojo/dom-class';
 import connect from 'dojo/_base/connect';
+import $ from 'jquery';
 import ErrorManager from './ErrorManager';
 import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';
@@ -257,7 +257,7 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
     this.entry = this.convertEntry(entry || {});
     this.setValues(this.entry, true);
 
-    domClass.remove(this.domNode, 'panel-loading');
+    $(this.domNode).removeClass('panel-loading');
   },
 });
 

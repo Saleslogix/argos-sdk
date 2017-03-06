@@ -25,7 +25,7 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import domClass from 'dojo/dom-class';
+import $ from 'jquery';
 import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';
 import MODEL_TYPES from 'argos/Models/Types';
@@ -186,7 +186,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
       this.setValues(this.entry);
     }
 
-    domClass.remove(this.domNode, 'panel-loading');
+    $(this.domNode).removeClass('panel-loading');
   },
   /**
    * Does the reverse of {@link #convertEntry convertEntry} in that it loops the payload being
