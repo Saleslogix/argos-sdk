@@ -712,6 +712,18 @@ const __class = declare('argos.Application', null, {
       this.getInitialState(),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
   },
+  showApplicationMenuOnLarge: function showApplicationMenuOnLarge() {
+    this.applicationmenu.settings.openOnLarge = true;
+    if (this.applicationmenu.isLargerThanBreakpoint()) {
+      this.applicationmenu.openMenu();
+    }
+  },
+  hideApplicationMenuOnLarge: function hideApplicationMenuOnLarge() {
+    this.applicationmenu.settings.openOnLarge = true;
+    if (this.applicationmenu.isLargerThanBreakpoint()) {
+      this.applicationmenu.closeMenu();
+    }
+  },
   getReducer: function getReducer() {
     return sdk;
   },
@@ -913,7 +925,7 @@ const __class = declare('argos.Application', null, {
     const defaultViewContainerId = 'viewContainer';
     const defaultViewContainerClasses = 'page-container scrollable viewContainer';
     $(this._appContainerNode).append(`
-      <nav id="application-menu" data-open-on-large="true" class="application-menu show-shadow"
+      <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
         data-breakpoint="tablet">
       </nav>
       <div class="page-container scrollable tbarContainer">
