@@ -678,9 +678,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
             const tab = $(this.tabListItemTemplate.apply(layout, this)).get(0);
             section = $(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
             sectionNode = section.get(0);
-            section.css({
-              display: 'none',
-            });
             this.tabMapping.push(section.get(0));
             this.tabs.push(tab);
             $(this.tabContainer).append(section);
@@ -1034,7 +1031,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       if (result >= 0) {
         const labelNode = $('.related-item-label', rowNode).first();
         if (labelNode.length) {
-          labelNode.prepend(`<span class="related-item-count">${result}</span>`);
+          labelNode.prepend(`<span class="info badge">${result}</span>`);
         } else {
           console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
         }
