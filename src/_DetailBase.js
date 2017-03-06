@@ -678,9 +678,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
             const tab = $(this.tabListItemTemplate.apply(layout, this)).get(0);
             section = $(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
             sectionNode = section.get(0);
-            section.css({
-              display: 'none',
-            });
             this.tabMapping.push(section.get(0));
             this.tabs.push(tab);
             $(this.tabContainer).append(section);

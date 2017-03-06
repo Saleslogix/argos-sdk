@@ -1,7 +1,5 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import array from 'dojo/_base/array';
-import domConstruct from 'dojo/dom-construct';
 import _Templated from 'argos/_Templated';
 import $ from 'jquery';
 
@@ -64,7 +62,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
     if (!this.tabContainer.parentNode && this.isTabbed) {
       this.tabMapping = [];
       this.tabs = [];
-      domConstruct.place(this.tabContainer, parentNode);
+      $(parentNode).html(this.tabContainer);
     }
     return this;
   },
@@ -73,8 +71,8 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * @param {Array} An array of the tab objects.
   */
   createTabs: function createTabs(tabs = []) {
-    array.forEach(tabs, function placeTab(tab) {
-      domConstruct.place(tab, this.tabList);
+    $(tabs).each((i, tab) => {
+      $(this.tabList).append(tab);
     }, this);
     $(this.tabContainer).tabs();
     return this;
@@ -85,7 +83,8 @@ const __class = declare('argos.TabWidget', [_Templated], {
   clearTabs: function clearTabs() {
     if (this.tabList && this.tabs) {
       $(this.tabContainer).data('tabs').destroy();
-      domConstruct.empty(this.tabList);
+      $(this.tabList).empty();
+      $('.detailContent', this.tabContainer).remove();
     }
     if (this.tabMapping) {
       this.tabs = [];
