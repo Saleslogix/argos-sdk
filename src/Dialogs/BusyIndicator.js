@@ -1,6 +1,5 @@
 import declare from 'dojo/_base/declare';
 import domConstruct from 'dojo/dom-construct';
-import domStyle from 'dojo/dom-style';
 import Deferred from 'dojo/Deferred';
 import _Widget from 'dijit/_Widget';
 import $ from 'jquery';
@@ -81,7 +80,7 @@ const __class = declare('argos.Dialogs.BusyIndicator', [_Widget, _Templated], {
   updateProgress: function updateProgress() {
     this.currentProgress = this.currentProgress + 1;
     if (this._progressBar) {
-      domStyle.set(this._progressBar, {
+      $(this._progressBar).css({
         width: `${100 * this.currentProgress / this.totalProgress}%`,
       });
     }
