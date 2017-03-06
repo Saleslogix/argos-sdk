@@ -1031,7 +1031,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       if (result >= 0) {
         const labelNode = $('.related-item-label', rowNode).first();
         if (labelNode.length) {
-          labelNode.prepend(`<span class="related-item-count">${result}</span>`);
+          labelNode.prepend(`<span class="info badge">${result}</span>`);
         } else {
           console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
         }
