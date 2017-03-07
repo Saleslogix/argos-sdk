@@ -615,7 +615,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @template
    */
   createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
+    const toolbar = this.tools || (this.tools = {
       tbar: [{
         id: 'new',
         cls: 'fa fa-plus fa-fw fa-lg',
@@ -623,6 +623,15 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         security: this.app.getViewSecurity(this.insertView, 'insert'),
       }],
     });
+    if ((toolbar.tbar && !this._refreshAdded) && !window.App.supportsTouch()) {
+      this.tools.tbar.push({
+        id: 'refresh',
+        cls: 'fa fa-refresh fa-fw fa-lg',
+        action: '_refreshList',
+      });
+      this._refreshAdded = true;
+    }
+    return toolbar;
   },
   createErrorHandlers: function createErrorHandlers() {
     this.errorHandlers = this.errorHandlers || [{
@@ -1081,6 +1090,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         }
       }
     }
+  },
+  _refreshList: function _refreshList() {
+    this.forceRefresh();
   },
   /**
    * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the resourceKind matches.
