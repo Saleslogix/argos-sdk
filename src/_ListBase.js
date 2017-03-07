@@ -631,7 +631,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       });
       this._refreshAdded = true;
     }
-    return toolbar;
+    return this.tools;
   },
   createErrorHandlers: function createErrorHandlers() {
     this.errorHandlers = this.errorHandlers || [{
