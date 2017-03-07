@@ -167,8 +167,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   moreTemplate: new Simplate([
     '<div class="list-more" data-dojo-attach-point="moreNode">',
-    '<div class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></div>',
-    '<button class="button" data-action="more">',
+    '<p class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></p>',
+    '<button class="btn" data-action="more">',
     '<span>{%= $.moreText %}</span>',
     '</button>',
     '</div>',
@@ -1183,17 +1183,16 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   _onRefresh: function _onRefresh(/* options*/) {},
   onScroll: function onScroll(/* evt*/) {
-    const scrollerNode = this.get('scroller');
+    const scrollerNode = this.get('scroller').parentNode.parentNode;
     const height = $(scrollerNode).height(); // viewport height (what user sees)
     const scrollHeight = scrollerNode.scrollHeight; // Entire container height
     const scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
     const remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
-    const selected = $(this.domNode).attr('selected');
     const diff = Math.abs(remaining - height);
-
+    const selected = $(this.get('scroller').parentNode).attr('selected');
     // Start auto fetching more data if the user is on the last half of the remaining screen
     if (diff <= height / 2) {
-      if (selected === 'true' && this.hasMoreData() && !this.listLoading) {
+      if (selected === 'selected' && this.hasMoreData() && !this.listLoading) {
         this.more();
       }
     }
@@ -1606,9 +1605,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       } finally {
         this._clearLoading();
       }
-
-      if (!this._onScrollHandle && this.continuousScrolling) {
-        this._onScrollHandle = this.connect(scrollerNode, 'onscroll', this.onScroll);
+      if (this.continuousScrolling) {
+        $(scrollerNode.parentNode.parentNode).scroll(() => {
+          this.onScroll();
+        });
       }
 
       this.onContentChange();
@@ -1875,11 +1875,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.requestedFirstPage = false;
     this.entries = {};
     this.position = 0;
-
-    if (this._onScrollHandle) {
-      this.disconnect(this._onScrollHandle);
-      this._onScrollHandle = null;
-    }
 
     if (all === true && this.searchWidget) {
       this.searchWidget.clear();
