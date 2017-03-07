@@ -89,7 +89,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   loadingTemplate: new Simplate([
     '<div class="panel-loading-indicator">',
-    '<div class="busy-indicator-container" aria-live="polite">',
+    '<div class="busy-indicator-container blocked-ui" aria-live="polite">',
     '<div class="busy-indicator active">',
     '<div class="bar one"></div>',
     '<div class="bar two"></div>',
