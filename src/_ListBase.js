@@ -615,7 +615,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     this.clear();
 
-    this.initPullToRefresh(scrollerNode);
+    this.initPullToRefresh(App.getViewContainerNode(), scrollerNode);
   },
   shouldStartPullToRefresh: function shouldStartPullToRefresh() {
     // Get the base results
@@ -1183,7 +1183,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   _onRefresh: function _onRefresh(/* options*/) {},
   onScroll: function onScroll(/* evt*/) {
-    const scrollerNode = this.get('scroller');
+    const scrollerNode = App.getViewContainerNode(); // this.get('scroller');
     const height = $(scrollerNode).height(); // viewport height (what user sees)
     const scrollHeight = scrollerNode.scrollHeight; // Entire container height
     const scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
@@ -1193,7 +1193,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     // Start auto fetching more data if the user is on the last half of the remaining screen
     if (diff <= height / 2) {
-      if (selected === 'true' && this.hasMoreData() && !this.listLoading) {
+      if (selected === 'selected' && this.hasMoreData() && !this.listLoading) {
         this.more();
       }
     }
@@ -1608,7 +1608,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       }
 
       if (!this._onScrollHandle && this.continuousScrolling) {
-        this._onScrollHandle = this.connect(scrollerNode, 'onscroll', this.onScroll);
+        this._onScrollHandle = this.connect(App.getViewContainerNode(), 'onscroll', this.onScroll);
       }
 
       this.onContentChange();
