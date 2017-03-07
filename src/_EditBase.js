@@ -395,7 +395,7 @@ const __class = declare('argos._EditBase', [View], {
    * Sets and returns the toolbar item layout definition, this method should be overriden in the view
    * so that you may define the views toolbar items.
    *
-   * By default it adds a save button bound to `this.save()` and cancel that fires `history.back()`
+   * By default it adds a save button bound to `this.save()` and cancel that fires `ReUI.back()`
    *
    * @return {Object} this.tools
    * @template
@@ -987,7 +987,7 @@ const __class = declare('argos._EditBase', [View], {
     if (values) {
       this.onInsert(values);
     } else {
-      history.back();
+      ReUI.back();
     }
   },
   onInsert: function onInsert(values) {
@@ -1028,17 +1028,8 @@ const __class = declare('argos._EditBase', [View], {
    * @param entry
    */
   onInsertCompleted: function onInsertCompleted(/* entry*/) {
-    if (this.options && this.options.returnTo) {
-      const returnTo = this.options.returnTo;
-      const view = App.getView(returnTo);
-      if (view) {
-        view.show();
-      } else {
-        window.location.hash = returnTo;
-      }
-    } else {
-      history.back();
-    }
+    // returnTo is handled by ReUI back
+    ReUI.back();
   },
   /**
    * Called by save() when performing an update (edit).
@@ -1166,17 +1157,8 @@ const __class = declare('argos._EditBase', [View], {
    * @param entry
    */
   onUpdateCompleted: function onUpdateCompleted(/* entry*/) {
-    if (this.options && this.options.returnTo) {
-      const returnTo = this.options.returnTo;
-      const view = App.getView(returnTo);
-      if (view) {
-        view.show();
-      } else {
-        window.location.hash = returnTo;
-      }
-    } else {
-      history.back();
-    }
+    // returnTo is handled by ReUI back
+    ReUI.back();
   },
   /**
    * Creates the markup by applying the `validationSummaryItemTemplate` to each entry in `this.errors`

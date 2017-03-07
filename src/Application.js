@@ -143,11 +143,37 @@ export default class Application {
     this.enableConcurrencyCheck = false;
 
     this.ReUI = {
+      app: null,
       back: function back() {
-        if (this.context && this.context.history) { // Have to call twice as page will re-add the view you are returning to this.context.history.pop();
-          this.context.history.pop();
+        if (!this.app) {
+          return;
         }
-        page.back();
+        if (this.app.context &&
+              this.app.context.history &&
+                this.app.context.history.length > 0) {
+          // Note: PageJS will push the page back onto the stack once viewed
+          const from = this.app.context.history.pop();
+          page.len--;
+
+          const returnTo = from.data && from.data.options && from.data.options.returnTo;
+
+          if (returnTo) {
+            let returnIndex = this.app.context.history.reverse()
+                                  .findIndex(val => val.page === returnTo);
+            // Since want to find last index of page, must reverse index
+            if (returnIndex !== -1) {
+              returnIndex = (this.app.context.history.length - 1) - returnIndex;
+            }
+            this.app.context.history.splice(returnIndex);
+            page.redirect(returnTo);
+            return;
+          }
+
+          const to = this.app.context.history.pop();
+          page.redirect(to.page);
+          return;
+        }
+        page.back(this.app.homeViewId);
       },
       context: {
         history: null,
@@ -295,6 +321,9 @@ export default class Application {
     this.state$ = model(actions);
     this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
 
+    // For routing need to know homeViewId
+    this.ReUI.app = this;
+
     this.ModelManager = ModelManager;
     lang.mixin(this, options);
   }
@@ -327,7 +356,7 @@ export default class Application {
 
   back() {
     if (!this._embedded) {
-      history.back();
+      ReUI.back();
     }
   }
 
@@ -892,6 +921,8 @@ export default class Application {
     const node = document.getElementById(defaultAppID);
     if (node) {
       this._rootDomNode = node;
+      // Set containerNode to rootNode for backwards compatibility
+      this._containerNode = this._rootDomNode;
       return;
     }
 
@@ -918,6 +949,13 @@ export default class Application {
     domConstruct.create('div', {
       class: 'overthrow right-drawer absolute',
     }, drawers);
+  }
+
+  /**
+   * Returns the dom associated to the container element
+   */
+  getContainerNode() {
+    return this._containerNode || this._rootDomNode;
   }
 
   /**
@@ -1463,6 +1501,12 @@ export default class Application {
       return this;
     }
 
+    let snapWidth = 266;
+    const viewWidth = (this._containerNode && this._containerNode.offsetWidth) || 0;
+    if (viewWidth <= snapWidth) {
+      snapWidth = Math.floor(0.83 * viewWidth) - 1;
+    }
+
     const snapper = new snap(options || { // eslint-disable-line
       element: element || this._rootDomNode,
       dragger: null,
@@ -1473,8 +1517,8 @@ export default class Application {
       flickThreshold: 50,
       transitionSpeed: 0.2,
       easing: 'ease',
-      maxPosition: 266,
-      minPosition: -266,
+      maxPosition: snapWidth,
+      minPosition: -1 * snapWidth,
       tapToClose: has('ie') ? false : true, // causes issues on windows phones where tapping the close button causes snap.js endDrag to fire, closing the menu before we can check the state properly
       touchToDrag: false,
       slideIntent: 40,
