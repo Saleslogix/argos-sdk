@@ -1573,7 +1573,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   _onQueryComplete: function _onQueryComplete(queryResults, entries) {
     try {
       const start = this.position;
-      const scrollerNode = this.get('scroller');
 
       try {
         when(queryResults.total,
