@@ -249,9 +249,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render the single list action row.
    */
   listActionTemplate: new Simplate([
-    '<li class="actions-row">',
-    '<ul data-dojo-attach-point="actionsNode"></ul>',
-    '</li>',
+    '<div class="actions-row" data-dojo-attach-point="actionsNode">',
+    '</div>',
   ]),
   /**
    * @property {Simplate}
@@ -267,18 +266,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      id                  Unique name of action, also used for alt image text
    *      label               Text added below the icon
    */
-  listActionItemTemplate: new Simplate([
-    '<li><button data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">',
-    '{% if ($.cls) { %}',
-    '<span class="{%= $.cls %}"></span>',
-    '{% } else if ($.icon) { %}',
-    '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
-    '{% } else { %}',
-    '<span class="fa fa-level-down fa-2x"></span>',
-    '{% } %}',
-    '<label>{%: $.label %}</label>',
-    '</button></li>',
-  ]),
+  listActionItemTemplate: new Simplate([`
+    <button type="button" class="btn" data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">
+      <span>{%: $.label %}</span>
+    </button>
+  `]),
   /**
    * @property {HTMLElement}
    * Attach point for the main view content
@@ -830,7 +822,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     return [{
       id: '__editPrefs__',
-      cls: 'fa fa-cog fa-2x',
+      cls: 'settings',
       label: this.configureText,
       action: 'configureQuickActions',
       systemAction: true,
@@ -1040,10 +1032,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   showActionPanel: function showActionPanel(rowNode) {
     this.checkActionState();
-    $(rowNode).addClass('list-action-selected');
+    const row = $(rowNode);
 
     this.onApplyRowActionPanel(this.actionsNode, rowNode);
-    $(rowNode).after(this.actionsNode);
+    const node = $(this.actionsNode).detach();
+    row.append(node);
+    node.addClass('list-action-selected');
   },
   onApplyRowActionPanel: function onApplyRowActionPanel(/* actionNodePanel, rowNode*/) {},
   /**
@@ -1063,8 +1057,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Hides the passed list-action row/panel by removing the selected styling
    * @param {HTMLElement} rowNode The currently selected row.
    */
-  hideActionPanel: function hideActionPanel(rowNode) {
-    $(rowNode).removeClass('list-action-selected');
+  hideActionPanel: function hideActionPanel() {
+    $(this.actionsNode).removeClass('list-action-selected');
   },
   /**
    * Determines if the view is a navigatible view or a selection view by returning `this.selectionOnly` or the
