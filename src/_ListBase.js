@@ -1599,6 +1599,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       } finally {
         this._clearLoading();
       }
+
       if (!this._onScrollHandle && this.continuousScrolling) {
         this._onScrollHandle = this.connect(App.getViewContainerNode(), 'onscroll', this.onScroll);
       }
@@ -1867,6 +1868,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.requestedFirstPage = false;
     this.entries = {};
     this.position = 0;
+
+    if (this._onScrollHandle) {
+      this.disconnect(this._onScrollHandle);
+      this._onScrollHandle = null;
+    }
 
     if (all === true && this.searchWidget) {
       this.searchWidget.clear();
