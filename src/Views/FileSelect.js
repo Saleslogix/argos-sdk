@@ -125,7 +125,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
   show: function show(/* options*/) {
     this.inherited(arguments);
 
-    if (!has('html5-file-api')) {
+    if (!App.supportsFileAPI()) {
       domConstruct.place(this.notSupportedTemplate.apply({}, this), this.domNode, 'only');
       return;
     }
