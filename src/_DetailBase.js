@@ -478,14 +478,15 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   },
   _refreshClicked: function _refreshClicked() {
     // If the user has hit refresh already, let the interface load first set of assets
-    if (!this.isRefreshing) {
-      this.isRefreshing = true;
-      this.clear();
-      this.refreshRequired = true;
-      this.refresh();
-
-      this.onRefreshClicked();
+    if (this.isRefreshing) {
+      return;
     }
+    this.isRefreshing = true;
+    this.clear();
+    this.refreshRequired = true;
+    this.refresh();
+
+    this.onRefreshClicked();
   },
   /**
    * Called when the user clicks the refresh toolbar button.
@@ -887,6 +888,8 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       this.onContentChange();
     } catch (e) {
       console.error(e); //eslint-disable-line
+    } finally {
+      this.isRefreshing = false;
     }
   },
   _onGetError: function _onGetError(getOptions, error) {

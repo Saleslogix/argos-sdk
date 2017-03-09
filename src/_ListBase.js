@@ -476,6 +476,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   labelProperty: '',
   entityProperty: '',
   versionProperty: '',
+  isRefreshing: false,
   /**
    * Setter method for the selection model, also binds the various selection model select events
    * to the respective List event handler for each.
@@ -1460,6 +1461,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         this.processData(entries);
       } finally {
         this._clearLoading();
+        this.isRefreshing = false;
       }
 
       if (!this._onScrollHandle && this.continuousScrolling) {
@@ -1708,6 +1710,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Called when the view needs to be reset. Invokes the request data process.
    */
   refresh: function refresh() {
+    if (this.isRefreshing) {
+      return;
+    }
+    this.isRefreshing = true;
     this.query = this.getSearchQuery() || this.query;
     this.requestData();
   },
