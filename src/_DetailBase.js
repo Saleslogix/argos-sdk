@@ -378,12 +378,11 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * Store for mapping layout options to an index on the HTML node
    */
   _navigationOptions: null,
-
-  isRefreshing: false,
   /**
    * @property {Boolean}
    * Flag to signal that the interface is loading and clicking refresh will be ignored to prevent double entity loading
    */
+  isRefreshing: false,
 
   // Store properties
   itemsProperty: '',
