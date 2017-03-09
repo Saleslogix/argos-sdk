@@ -62,7 +62,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
   /**
    * @property {Boolean} enablePullToRefresh If true, will enable the user to drag down and refresh the list. Default is true.
    */
-  enablePullToRefresh: false, // TODO: Fix this for SoHo Xi
+  enablePullToRefresh: true,
 
   /**
    * @property {DOMNode}
@@ -74,6 +74,11 @@ const __class = declare('argos._PullToRefreshMixin', null, {
    */
   scrollerNode: null,
 
+  /**
+   * @property {DOMNode}
+   */
+  dragNode: null,
+
   animateCls: 'animate',
 
   _getText: function _getText(prop) {
@@ -81,22 +86,30 @@ const __class = declare('argos._PullToRefreshMixin', null, {
   },
   /**
    * @param {DOMNode} scrollerNode The node that scrollers and should be pulled on to refresh.
+   * @param {DOMNode} dragNode The node that the user will drag. Defaults to scrollerNode if not specified.
    */
-  initPullToRefresh: function initPullToRefresh(scrollerNode) {
+  initPullToRefresh: function initPullToRefresh(scrollerNode, dragNode) {
     if (!this.enablePullToRefresh || !window.App.supportsTouch() || !scrollerNode) {
       return;
     }
 
     this.pullRefreshBanner = $(this.pullRefreshBannerTemplate.apply(this)).get(0);
-    $(scrollerNode).before(this.pullRefreshBanner);
+    $(dragNode).before(this.pullRefreshBanner);
 
     // Pull down to refresh touch handles
     this.scrollerNode = scrollerNode;
+
+    if (dragNode) {
+      this.dragNode = dragNode;
+    } else {
+      this.dragNode = scrollerNode;
+    }
+
     const style = {
-      top: $(scrollerNode).position().top,
+      top: $(dragNode).position().top,
     };
 
-    const touchstart = Rx.Observable.fromEvent(scrollerNode, 'touchstart')
+    const touchstart = Rx.Observable.fromEvent(dragNode, 'touchstart')
       .filter((evt) => {
         // The implementor of this mixin should determine what shouldStartPullToRefresh is.
         const shouldStart = this.shouldStartPullToRefresh(this.scrollerNode);
@@ -106,7 +119,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
       .map((e) => {
         const evt = e.touches[0];
         $(this.pullRefreshBanner).css('visibility', 'visible');
-        $(this.scrollerNode).removeClass(this.animateCls);
+        $(this.dragNode).removeClass(this.animateCls);
         const bannerHeight = $(this.pullRefreshBanner).height();
 
         // We filtered out if the drag should start, so we are mapping the initial state here.
@@ -117,9 +130,9 @@ const __class = declare('argos._PullToRefreshMixin', null, {
           y: evt.clientY,
         };
       });
-    const touchmove = Rx.Observable.fromEvent(scrollerNode, 'touchmove');
-    const touchcancel = Rx.Observable.fromEvent(scrollerNode, 'touchcancel');
-    const touchend = Rx.Observable.fromEvent(scrollerNode, 'touchend');
+    const touchmove = Rx.Observable.fromEvent(dragNode, 'touchmove');
+    const touchcancel = Rx.Observable.fromEvent(dragNode, 'touchcancel');
+    const touchend = Rx.Observable.fromEvent(dragNode, 'touchend');
     const done = touchcancel.merge(touchend);
 
     // Merge the touchstart and dragging observables
@@ -146,14 +159,14 @@ const __class = declare('argos._PullToRefreshMixin', null, {
         .takeUntil(done.do(() => {
           // The "done" observable is a combination of touch end and touch cancel.
           // We should restore the UI state and invoke callbacks here.
-          $(this.scrollerNode).css({
+          $(this.dragNode).css({
             top: data.topCss,
             'overflow-y': data.overflowCssY,
             'overflow-x': data.overflowCssX,
           });
 
           $(this.pullRefreshBanner).css('visibility', 'hidden');
-          $(this.scrollerNode).addClass(this.animateCls);
+          $(this.dragNode).addClass(this.animateCls);
 
           // Check if we dragged over the threshold (maxDistance),
           // if so, fire the callbacks the views will implement.
@@ -169,7 +182,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     // start and touch drag. Update the UI while dragging here.
     dragging.subscribe((data) => {
       data.evt.preventDefault();
-      $(this.scrollerNode).css({
+      $(this.dragNode).css({
         top: `${data.top}px`,
         overflow: 'hidden',
       });
