@@ -893,6 +893,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   },
   _onGetError: function _onGetError(getOptions, error) {
     this.handleError(error);
+    this.isRefreshing = false;
   },
   /**
    * Initiates the request.

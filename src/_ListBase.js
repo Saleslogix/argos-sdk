@@ -1570,6 +1570,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   },
   _onQueryError: function _onQueryError(queryOptions, error) {
     this.handleError(error);
+    this.isRefreshing = false;
   },
   _buildQueryExpression: function _buildQueryExpression() {
     return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
