@@ -379,6 +379,12 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   _navigationOptions: null,
 
+  isRefreshing: false,
+  /**
+   * @property {Boolean}
+   * Flag to signal that the interface is loading and clicking refresh will be ignored to prevent double entity loading
+   */
+
   // Store properties
   itemsProperty: '',
   idProperty: '',
@@ -471,11 +477,15 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     });
   },
   _refreshClicked: function _refreshClicked() {
-    this.clear();
-    this.refreshRequired = true;
-    this.refresh();
+    // If the user has hit refresh already, let the interface load first set of assets
+    if (!this.isRefreshing) {
+      this.isRefreshing = true;
+      this.clear();
+      this.refreshRequired = true;
+      this.refresh();
 
-    this.onRefreshClicked();
+      this.onRefreshClicked();
+    }
   },
   /**
    * Called when the user clicks the refresh toolbar button.
@@ -820,6 +830,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       const current = sectionQueue[i];
       this.processLayout(current, entry);
     }
+    this.isRefreshing = false;
   },
   createRowNode: function createRowNode(layout, sectionNode, entry, template, data) {
     return domConstruct.place(template.apply(data, this), sectionNode);
