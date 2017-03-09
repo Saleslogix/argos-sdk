@@ -53,7 +53,10 @@ const __class = declare('argos.Views.FileSelect', [View], {
    *      loadingText         The text to display while loading.
    */
   loadingTemplate: new Simplate([
-    '<li class="list-loading-indicator"><div id="fileselect-upload-progress">{%= $.loadingText %}</div></li>',
+    '<li><label id="progress-label">{%= $.loadingText %}</label></li>',
+    `<li class="progress">
+      <div class="progress-bar" id="progressbar" aria-labelledby="progress-label"></div>
+    </li>`,
   ]),
 
   /**
@@ -72,19 +75,20 @@ const __class = declare('argos.Views.FileSelect', [View], {
    *
    */
   widgetTemplate: new Simplate([
-    '<div title="{%: $.titleText %}" class="panel {%= $.cls %}">',
+    '<div title="{%: $.titleText %}" class="panel panel-content {%= $.cls %}">',
+    '<br>', // TODO: find a way to pad top on panel
     '<div  data-dojo-attach-point="fileArea" class="file-area">',
-    '<div class="file-wrapper">',
-    '<div class="file-wrap" data-dojo-attach-point="fileWrapper">',
-    '<input type="file" data-dojo-attach-point="btnFileSelect" size="71" accept="*/*">',
+    `<div class="field" data-dojo-attach-point="fileWrapper">
+      <label class="fileupload" data-dojo-attach-point="fileupload">
+          <span class="audible">{%: $.addFileText %}</span>
+          <input type="file" data-dojo-attach-point="btnFileSelect" name="file-input" size="71" accept="*/*"/>
+      </label>
+    </div>`,
     '</div>',
-    '{%: $.addFileText %}',
-    '</div>',
-    '</div>',
-    '<ul class="list-content"  data-dojo-attach-point="contentNode"></ul>',
+    '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
     '<div class="buttons">',
-    '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="button inline" data-action="onUploadFiles"><span>{%: $.uploadText %}</span></button>',
-    '<button id="fileSelect-btn-cancel" class="button inline" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
+    '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="btn-primary" data-action="onUploadFiles"><span>{%: $.uploadText %}</span></button>',
+    '<button id="fileSelect-btn-cancel" class="btn" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
     '</div>',
     '</div>',
   ]),
@@ -93,11 +97,9 @@ const __class = declare('argos.Views.FileSelect', [View], {
    */
   fileTemplate: new Simplate([
     '<li class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
-    '<div class="file-name">{%: $.fileName %}</div>',
-    '<div class="file-label"><label>{%: $$.descriptionText %}</label></div>',
-    '<div class="file-text">',
+    '<p class="file-name">{%: $.fileName %}</p>',
+    '<label>{%: $$.descriptionText %}</label>',
     '<input id="{%=  $.name %}" type="text" value="{%=  $.description %}">',
-    '</div>',
     '</li>',
   ]),
 
@@ -131,12 +133,11 @@ const __class = declare('argos.Views.FileSelect', [View], {
     this._files = [];
 
     // Reset the input or the onchange will not fire if the same file is uploaded multiple times.
-    // Unfortunately IE does not allow you to reset the value of a file input, so we have to clone the node and re-insert it.
-    const node = this.btnFileSelect.cloneNode();
+    if ($(this.fileupload).data('fileupload')) {
+      $(this.fileupload).data('fileupload').destroy();
+    }
 
-    domConstruct.destroy(this.btnFileSelect);
-    this.fileWrapper.appendChild(node);
-    this.btnFileSelect = node;
+    $(this.fileupload).fileupload();
 
     this.btnFileSelect.onchange = function onchange(e) {
       this._onSelectFile(e);
@@ -239,15 +240,17 @@ const __class = declare('argos.Views.FileSelect', [View], {
     const tpl = this.loadingTemplate.apply(this);
     $(this.domNode).addClass('list-loading');
     domConstruct.place(tpl, this.contentNode, 'first');
+    $('#progressbar', this.contentNode).progress();
   },
   cancelSelect: function cancelSelect() {},
   /**
    * Handles the display when progress events are recieved.
    */
   onUpdateProgress: function onUpdateProgress(msg) {
-    const n = document.getElementById('fileselect-upload-progress');
-    if (n) {
-      n.innerHTML = `${this.loadingText} ${msg}`;
+    const progressbar = $('#progressbar', this.contentNode);
+    if (progressbar.length) {
+      progressbar.data('progress').update(msg.replace('%', ''));
+      $('#progress-label', this.contentNode).text(`${this.loadingText} ${msg}`);
     }
   },
   /**

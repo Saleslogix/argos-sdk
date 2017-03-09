@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "File Select"
-  addFileText: "Click or Tap here to add a file."
+  addFileText: "Choose a file to add"
   uploadText: "Upload"
   cancelText: "Cancel"
   selectFileText: "Select file"

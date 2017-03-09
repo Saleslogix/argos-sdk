@@ -89,7 +89,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   loadingTemplate: new Simplate([
     '<div class="panel-loading-indicator">',
-    '<div class="busy-indicator-container" aria-live="polite">',
+    '<div class="busy-indicator-container blocked-ui" aria-live="polite">',
     '<div class="busy-indicator active">',
     '<div class="bar one"></div>',
     '<div class="bar two"></div>',
@@ -204,7 +204,19 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     '{% } else if ($.iconClass) { %}',
     '<div class="{%= $.iconClass %}" alt="icon"></div>',
     '{% } %}',
-    '<span class="related-item-label">{%: $.label %}</span>',
+    '<span class="related-item-label">',
+    '<div class="busy-xs badge"',
+    '<div class="busy-indicator-container" aria-live="polite">',
+    '<div class="busy-indicator active">',
+    '<div class="bar one"></div>',
+    '<div class="bar two"></div>',
+    '<div class="bar three"></div>',
+    '<div class="bar four"></div>',
+    '<div class="bar five"></div>',
+    '</div>',
+    '</div>',
+    '</div>',
+    '{%: $.label %}</span>',
     '</a>',
     '</li>',
   ]),
@@ -1031,6 +1043,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       if (result >= 0) {
         const labelNode = $('.related-item-label', rowNode).first();
         if (labelNode.length) {
+          $('.busy-xs', labelNode).remove();
           labelNode.prepend(`<span class="info badge">${result}</span>`);
         } else {
           console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
