@@ -1183,7 +1183,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   _onRefresh: function _onRefresh(/* options*/) {},
   onScroll: function onScroll(/* evt*/) {
-    const scrollerNode = this.get('scroller').parentNode.parentNode;
+    const scrollerNode = App.getViewContainerNode();
     const height = $(scrollerNode).height(); // viewport height (what user sees)
     const scrollHeight = scrollerNode.scrollHeight; // Entire container height
     const scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
@@ -1605,10 +1605,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       } finally {
         this._clearLoading();
       }
-      if (this.continuousScrolling) {
-        $(scrollerNode.parentNode.parentNode).scroll(() => {
-          this.onScroll();
-        });
+      if (!this._onScrollHandle && this.continuousScrolling) {
+        this._onScrollHandle = this.connect(App.getViewContainerNode(), 'onscroll', this.onScroll);
       }
 
       this.onContentChange();
