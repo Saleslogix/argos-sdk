@@ -1182,8 +1182,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const scrollHeight = scrollerNode.scrollHeight; // Entire container height
     const scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
     const remaining = scrollHeight - scrollTop; // Height we have remaining to scroll
-    const diff = Math.abs(remaining - height);
     const selected = $(this.get('scroller').parentNode).attr('selected');
+    const diff = Math.abs(remaining - height);
+
     // Start auto fetching more data if the user is on the last half of the remaining screen
     if (diff <= height / 2) {
       if (selected === 'selected' && this.hasMoreData() && !this.listLoading) {
