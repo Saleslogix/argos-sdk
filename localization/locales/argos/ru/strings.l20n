@@ -17,10 +17,10 @@
 >
 
 <editorField ""
-  lookupLabelText: "изменить"
+  lookupLabelText: "редактировать"
   lookupText: "..."
   emptyText: "пусто"
-  completeText: "OK"
+  completeText: "OК"
 >
 
 <lookupField ""
@@ -66,7 +66,7 @@
 >
 
 <configureQuickActions ""
-  titleText: "Настроить экспресс-действия"
+  titleText: "Настроить быстрые действия"
 >
 
 <fileSelect ""
@@ -99,14 +99,14 @@
   loadingText: "Загрузка"
   notAvailableText: "Запрошенные данные недоступны."
   toggleCollapseText: "показать/скрыть"
-  editText: "Изменить"
+  editText: "Редактировать"
 >
 
 <editBase ""
   concurrencyErrorText: "Другой пользователь обновил это поле."
   toggleCollapseText: "показать/скрыть"
   saveText: "Сохранить"
-  titleText: "Изменить"
+  titleText: "Редактировать"
   validationSummaryText: "Сводка проверки"
   concurrencySummaryText: "Ошибки при совместном доступе"
   detailsText: "Подробности"
@@ -260,7 +260,7 @@
   completeText: "Завершить"
   cancelText: "Отмена"
   confirmText: "Подтвердить"
-  editText: "Изменить"
+  editText: "Редактировать"
   okayText: "ОК"
   submitText: "Отправить"
   warningText: "Предупреждение"
@@ -283,6 +283,6 @@
 <sdkApplication
   connectionToastTitleText: "Подключение"
   checkingText: "Проверка подключения"
-  loadingApplicationStateText: "Загрузка состояния приложения"
+  loadingApplicationStateText: "Состояние загрузки приложения"
   initializingText: "Инициализация:"
 >
