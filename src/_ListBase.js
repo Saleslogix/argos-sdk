@@ -112,7 +112,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       </div>
       {% } %}
       <div class="column">
-        <div class="{% if ($$.isNavigationDisabled()) { %}is-muliselect is-selectable is-toolbar-open{% } %}"
+        <div class="{% if ($$.isNavigationDisabled()) { %} is-muliselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
           {% if ($$.isNavigationDisabled()) { %}
           data-selectable="multiple"
           {% } else { %}
@@ -120,7 +120,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           {% } %}
           data-dojo-attach-point="scrollerNode">
           {%! $.emptySelectionTemplate %}
-          <div role="presentation" data-dojo-attach-point="contentNode"></div>
+          {% if ($$.isCardView) { %}
+            <div role="presentation" data-dojo-attach-point="contentNode"></div>
+          {% } else { %}
+            <ul role="presentation" data-dojo-attach-point="contentNode"></ul>
+          {% } %}
           {%! $.moreTemplate %}
         </div>
       </div>
@@ -175,6 +179,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     '</button>',
     '</div>',
   ]),
+  /**
+   * @property {Boolean}
+   * Indicates whether a template is a card view or a list
+   */
+  isCardView: true,
   /**
    * @property {Simplate}
    * Template used on lookups to have empty Selection option.
