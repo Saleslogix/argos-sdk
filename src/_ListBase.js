@@ -518,6 +518,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   labelProperty: '',
   entityProperty: '',
   versionProperty: '',
+  isRefreshing: false,
   /**
    * Setter method for the selection model, also binds the various selection model select events
    * to the respective List event handler for each.
@@ -1139,6 +1140,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     if (previousSelections) {
       for (let i = 0; i < previousSelections.length; i++) {
         const key = previousSelections[i];
+
+        // Set initial state of previous selection to unloaded (false)
+        if (!this._loadedSelections.hasOwnProperty(key)) {
+          this._loadedSelections[key] = false;
+        }
+
         const row = query((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [key])), this.contentNode)[0];
 
         if (row && this._loadedSelections[key] !== true) {
@@ -1171,6 +1178,16 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   },
   _refreshList: function _refreshList() {
     this.forceRefresh();
+  },
+  /**
+   * Returns this.options.previousSelections that have not been loaded or paged to
+   * @return {Array}
+   */
+  getUnloadedSelections: function getUnloadedSelections() {
+    return Object.keys(this._loadedSelections)
+      .filter((key) => {
+        return this._loadedSelections[key] === false;
+      });
   },
   /**
    * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the resourceKind matches.
@@ -1251,6 +1268,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     if (this.autoClearSelection) {
       this._selectionModel.clear();
+      this._loadedSelections = {};
     }
   },
   /**
@@ -1600,6 +1618,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         this.updateSoho(); // TODO: remove this from here - it updates toolbar even on more list fetch
       } finally {
         this._clearLoading();
+        this.isRefreshing = false;
       }
 
       if (!this._onScrollHandle && this.continuousScrolling) {
@@ -1716,6 +1735,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   },
   _onQueryError: function _onQueryError(queryOptions, error) {
     this.handleError(error);
+    this.isRefreshing = false;
   },
   _buildQueryExpression: function _buildQueryExpression() {
     return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
@@ -1738,6 +1758,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   emptySelection: function emptySelection() {
     this._selectionModel.clear();
+    this._loadedSelections = {};
 
     if (this.app.bars.tbar) {
       this.app.bars.tbar.invokeTool({
@@ -1811,6 +1832,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       // if enabled, clear any pre-existing selections
       if (this._selectionModel && this.autoClearSelection && !this.enableActions) {
         this._selectionModel.clear();
+        this._loadedSelections = {};
       }
     }
   },
@@ -1852,6 +1874,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Called when the view needs to be reset. Invokes the request data process.
    */
   refresh: function refresh() {
+    if (this.isRefreshing) {
+      return;
+    }
+    this.isRefreshing = true;
     this.query = this.getSearchQuery() || this.query;
     this.requestData();
   },
