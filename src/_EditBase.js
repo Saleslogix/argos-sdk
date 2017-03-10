@@ -619,7 +619,6 @@ const __class = declare('argos._EditBase', [View], {
         const fromContext = this.options.fromContext;
         this.options.fromContext = null;
         const errorItem = {
-          viewOptions: this.options,
           serverError: error,
         };
 
@@ -982,8 +981,8 @@ const __class = declare('argos._EditBase', [View], {
     this.onInsertCompleted(result);
   },
   onAddError: function onAddError(addOptions, error) {
-    this.handleError(error);
     this.enable();
+    this.handleError(error);
   },
   /**
    * Handler for insert complete, checks for `this.options.returnTo` else it simply goes back.
@@ -1070,8 +1069,8 @@ const __class = declare('argos._EditBase', [View], {
     this.onUpdateCompleted(result);
   },
   onPutError: function onPutError(putOptions, error) {
-    this.handleError(error);
     this.enable();
+    this.handleError(error);
   },
   /**
    * Array of strings that will get ignored when the diffing runs.

@@ -534,6 +534,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
     if (view && selectionModel) {
       const selections = selectionModel.getSelections();
       const selectionCount = selectionModel.getSelectionCount();
+      const unloadedSelections = view.getUnloadedSelections();
 
       if (selectionCount === 0 && view.options.allowEmptySelection) {
         this.clearValue(true);
@@ -549,7 +550,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
         }
       } else {
         if (selectionCount > 0) {
-          this.setSelections(selections);
+          this.setSelections(selections, unloadedSelections);
         }
       }
 
@@ -685,11 +686,12 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    * Sets the displayed text using `this.textRenderer`.
    *
    * @param {Object[]} values
+   * @param {Object[]} unloadedValues option.previousSelections that were not loaded by the view.
    */
-  setSelections: function setSelections(values) {
-    this.currentValue = (this.formatValue) ? this.formatValue.call(this, values) : values;
+  setSelections: function setSelections(values, unloadedValues) {
+    this.currentValue = (this.formatValue) ? this.formatValue.call(this, values, unloadedValues) : values;
 
-    const text = (this.textRenderer) ? this.textRenderer.call(this, values) : '';
+    const text = (this.textRenderer) ? this.textRenderer.call(this, values, unloadedValues) : '';
 
     this.setText(text);
   },
