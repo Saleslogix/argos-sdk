@@ -111,18 +111,20 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         </div>
       </div>
       {% } %}
-      <div class="listview {% if ($$.isNavigationDisabled()) { %}is-muliselect is-selectable is-toolbar-open{% } %}"
-        role="listbox"
-        aria-label="List"
-        {% if ($$.isNavigationDisabled()) { %}
-        data-selectable="multiple"
-        {% } else { %}
-        data-selectable="false"
-        {% } %}
-        data-dojo-attach-point="scrollerNode">
-        {%! $.emptySelectionTemplate %}
-        <ul class="list-content" role="presentation" data-dojo-attach-point="contentNode"></ul>
-        {%! $.moreTemplate %}
+      <div class="column">
+        <div class="{% if ($$.isNavigationDisabled()) { %}is-muliselect is-selectable is-toolbar-open{% } %}"
+          {% if ($$.isNavigationDisabled()) { %}
+          data-selectable="multiple"
+          {% } else { %}
+          data-selectable="false"
+          {% } %}
+          data-dojo-attach-point="scrollerNode">
+          {%! $.emptySelectionTemplate %}
+          <div role="presentation" data-dojo-attach-point="contentNode"></div>
+          {%! $.moreTemplate %}
+        </div>
+      </div>
+      <div style="display: none" data-dojo-attach-point="actionsContent">
         {%! $.listActionTemplate %}
       </div>
     </div>
@@ -200,7 +202,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render a row in the view.  This template includes {@link #itemTemplate}.
    */
   rowTemplate: new Simplate([`
-    <li data-key="{%= $[$$.idProperty] %}">
+    <div data-key="{%= $[$$.idProperty] %}">
       <div class="widget">
         <div class="widget-header">
           <h2 class="widget-title">{%: $[$$.labelProperty] %}</h2>
@@ -215,7 +217,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           {%! $$.itemTemplate %}
         </div>
       </div>
-    </li>
+    </div>
     `,
   ]),
   /**
@@ -227,8 +229,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @template
    */
   itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: $[$$.labelProperty] %}</p>',
-    '<p class="listview-subheading">{%: $[$$.idProperty] %}</p>',
+    '<p>{%: $[$$.labelProperty] %}</p>',
+    '<p class="micro-text">{%: $[$$.idProperty] %}</p>',
   ]),
   /**
    * @property {Simplate}
@@ -240,17 +242,17 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      noDataText          The text to display if there is no data.
    */
   noDataTemplate: new Simplate([
-    '<li class="no-data">',
+    '<div class="no-data">',
     '<p>{%= $.noDataText %}</p>',
-    '</li>',
+    '</div>',
   ]),
   /**
    * @property {Simplate}
    * The template used to render the single list action row.
    */
   listActionTemplate: new Simplate([
-    '<div class="actions-row" data-dojo-attach-point="actionsNode">',
-    '</div>',
+    '<ul data-dojo-attach-point="actionsNode">',
+    '</ul>',
   ]),
   /**
    * @property {Simplate}
@@ -267,9 +269,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      label               Text added below the icon
    */
   listActionItemTemplate: new Simplate([`
-    <button type="button" class="btn" data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">
-      <span>{%: $.label %}</span>
-    </button>
+    <li><a></a><button type="button" data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">
+      {%: $.label %}
+    </button></li>
   `]),
   /**
    * @property {HTMLElement}
@@ -414,9 +416,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *
    */
   rowTemplateError: new Simplate([
-    '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
+    '<div data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
     '<div class="list-item-content">{%: $$.errorRenderText %}</div>',
-    '</li>',
+    '</div>',
   ]),
   /**
    * @property {String}
@@ -551,13 +553,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this._loadedSelections = {};
   },
   initSoho: function initSoho() {
-    const listview = $('.listview', this.domNode).first();
-    if (listview.length) {
-      listview.listview();
-      this.listview = listview.data('listview');
-      listview.off('selected');
-      listview.on('selected', this._onListViewSelected);
-    }
     const toolbar = $('.toolbar', this.domNode).first();
     toolbar.toolbar();
     this.toolbar = toolbar.data('toolbar');
@@ -568,11 +563,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   openSettings: function openSettings() {
   },
   updateSoho: function updateSoho() {
-    if (!this.listview) {
-      return;
-    }
-
-    this.listview.updated();
     this.toolbar.updated();
   },
   _onListViewSelected: function _onListViewSelected() {
@@ -906,7 +896,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         break;
       }
     }
-
+    console.log(selection);
     this._invokeAction(action, selection);
   },
   _invokeAction: function _invokeAction(action, selection) {
@@ -1039,15 +1029,15 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *
    * @param {HTMLElement} rowNode The currently selected row node
    */
-  showActionPanel: function showActionPanel(rowNode) {
-    this.checkActionState();
-    const row = $(rowNode);
+  // showActionPanel: function showActionPanel(rowNode) {
+  //   this.checkActionState();
+  //   const row = $(rowNode);
 
-    this.onApplyRowActionPanel(this.actionsNode, rowNode);
-    const node = $(this.actionsNode).detach();
-    row.append(node);
-    node.addClass('list-action-selected');
-  },
+  //   this.onApplyRowActionPanel(this.actionsNode, rowNode);
+  //   const node = $(this.actionsNode).detach();
+  //   row.append(node);
+  //   node.addClass('list-action-selected');
+  // },
   onApplyRowActionPanel: function onApplyRowActionPanel(/* actionNodePanel, rowNode*/) {},
   /**
    * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
@@ -1066,9 +1056,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Hides the passed list-action row/panel by removing the selected styling
    * @param {HTMLElement} rowNode The currently selected row.
    */
-  hideActionPanel: function hideActionPanel() {
-    $(this.actionsNode).removeClass('list-action-selected');
-  },
+  // hideActionPanel: function hideActionPanel() {
+  //   $(this.actionsNode).removeClass('list-action-selected');
+  // },
   /**
    * Determines if the view is a navigatible view or a selection view by returning `this.selectionOnly` or the
    * navigation `this.options.selectionOnly`.
@@ -1093,13 +1083,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @private
    */
   _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) { // eslint-disable-line
-    const node = $(`li[data-key='${key}']`, this.contentNode).first();
+    const node = $(`div[data-key='${key}']`, this.contentNode).first();
     if (!node.length) {
       return;
     }
 
     if (this.enableActions) {
-      this.showActionPanel(node.get(0));
+      // this.showActionPanel(node.get(0));
       return;
     }
 
@@ -1115,13 +1105,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @private
    */
   _onSelectionModelDeselect: function _onSelectionModelDeselect(key, data, tag) {
-    const node = $(tag) || $(`li[data-key="${key}"]`, this.contentNode).first();
+    const node = $(tag) || $(`div[data-key="${key}"]`, this.contentNode).first();
     if (!node.length) {
       return;
     }
 
     if (this.enableActions) {
-      this.hideActionPanel(node.get(0));
+      // this.hideActionPanel(node.get(0));
       return;
     }
 
@@ -1215,7 +1205,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {HTMLElement} node The element that initiated the event.
    */
   selectEntry: function selectEntry(params) {
-    const row = $(`li[data-key='${params.key}']`, this.contentNode).first();
+    const row = $(`div[data-key='${params.key}']`, this.contentNode).first();
     const key = row ? row.attr('data-key') : false;
 
     if (this._selectionModel && key) {
@@ -1607,7 +1597,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         }
 
         this.processData(entries);
-        this.updateSoho();
+        this.updateSoho(); // TODO: remove this from here - it updates toolbar even on more list fetch
       } finally {
         this._clearLoading();
       }
@@ -1693,6 +1683,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     let rowNode = null;
     try {
       rowNode = $(this.rowTemplate.apply(entry, this));
+
+      $(this.actionsContent.children[0]).clone().appendTo(rowNode.find('.widget-header'));
+
+      // initialize popupmenus on each card
+      const btn = rowNode.find('.btn-actions');
+      $(btn).popupmenu();
     } catch (err) {
       console.error(err); // eslint-disable-line
       rowNode = $(this.rowTemplateError.apply(entry, this));
