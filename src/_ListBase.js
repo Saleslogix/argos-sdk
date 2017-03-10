@@ -991,9 +991,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * action items `enabled` property.
    * @param {Object} selection
    */
-  _applyStateToActions: function _applyStateToActions(selection) {
+  _applyStateToActions: function _applyStateToActions(selection, rowNode) {
+    if (!rowNode) {
+      return;
+    }
     this._clearActions();
     this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
+    const actionRow = $(rowNode).find('.actions-row')[0];
 
     for (let i = 0; i < this.visibleActions.length; i++) {
       // The visible action is from our local storage preferences, where the action from the layout
@@ -1002,7 +1006,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       // TODO: This will be a problem throughout visible actions, come up with a better solution
       const visibleAction = this.visibleActions[i];
       const action = lang.mixin(visibleAction, this._getActionById(visibleAction.id));
-      const actionNode = this.actionsNode.childNodes[i];
+      const actionNode = actionRow.children[i];
 
       action.isEnabled = (typeof action.enabled === 'undefined') ? true : this.expandExpression(action.enabled, action, selection);
 
@@ -1031,10 +1035,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {HTMLElement} rowNode The currently selected row node
    */
   showActionPanel: function showActionPanel(rowNode) {
-    this.checkActionState();
+    const actionNode = $(rowNode).find('.actions-row');
+    this.checkActionState(actionNode);
 
-    this.onApplyRowActionPanel(this.actionsNode, rowNode);
-    $(this.actionsNode).addClass('list-action-selected');
+    this.onApplyRowActionPanel(actionNode, rowNode);
   },
   onApplyRowActionPanel: function onApplyRowActionPanel(/* actionNodePanel, rowNode*/) {},
   /**
@@ -1055,7 +1059,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {HTMLElement} rowNode The currently selected row.
    */
   hideActionPanel: function hideActionPanel() {
-    $(this.actionsNode).removeClass('list-action-selected');
   },
   /**
    * Determines if the view is a navigatible view or a selection view by returning `this.selectionOnly` or the
