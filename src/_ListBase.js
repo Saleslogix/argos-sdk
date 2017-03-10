@@ -1029,15 +1029,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *
    * @param {HTMLElement} rowNode The currently selected row node
    */
-  // showActionPanel: function showActionPanel(rowNode) {
-  //   this.checkActionState();
-  //   const row = $(rowNode);
+  showActionPanel: function showActionPanel(rowNode) {
+    this.checkActionState();
 
-  //   this.onApplyRowActionPanel(this.actionsNode, rowNode);
-  //   const node = $(this.actionsNode).detach();
-  //   row.append(node);
-  //   node.addClass('list-action-selected');
-  // },
+    this.onApplyRowActionPanel(this.actionsNode, rowNode);
+    $(this.actionsNode).addClass('list-action-selected');
+  },
   onApplyRowActionPanel: function onApplyRowActionPanel(/* actionNodePanel, rowNode*/) {},
   /**
    * Sets the `this.options.source` to passed param after adding the views resourceKind. This function is used so
@@ -1056,9 +1053,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Hides the passed list-action row/panel by removing the selected styling
    * @param {HTMLElement} rowNode The currently selected row.
    */
-  // hideActionPanel: function hideActionPanel() {
-  //   $(this.actionsNode).removeClass('list-action-selected');
-  // },
+  hideActionPanel: function hideActionPanel() {
+    $(this.actionsNode).removeClass('list-action-selected');
+  },
   /**
    * Determines if the view is a navigatible view or a selection view by returning `this.selectionOnly` or the
    * navigation `this.options.selectionOnly`.
@@ -1089,7 +1086,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
 
     if (this.enableActions) {
-      // this.showActionPanel(node.get(0));
+      this.showActionPanel(node.get(0));
       return;
     }
 
@@ -1111,7 +1108,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
 
     if (this.enableActions) {
-      // this.hideActionPanel(node.get(0));
+      this.hideActionPanel(node.get(0));
       return;
     }
 
