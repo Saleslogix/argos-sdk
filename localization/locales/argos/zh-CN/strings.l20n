@@ -49,8 +49,8 @@
   yesterdayText: "昨天"
   lastWeekText: "上一周"
   lastMonthText: "上个月"
-  pastYearText: "去年"
-  nextYearText: "明年"
+  pastYearText: "过去几年"
+  nextYearText: "下一年"
   nextMonthText: "下个月"
   nextWeekText: "下一周"
   futureText: "未来"
@@ -143,8 +143,8 @@
 
 <calendar ""
   titleText: "日历"
-  amText: "上午"
-  pmText: "下午"
+  amText: "AM"
+  pmText: "PM"
   january: "一月"
   february: "二月"
   march: "三月"
@@ -201,7 +201,7 @@
   navToListText: "查看列表"
   loadingText: "正在加载"
   refreshViewText: "刷新"
-  itemOfCountText: " ${0} 个 ${1}"
+  itemOfCountText: " 第 ${0} 个，共 ${1} 个"
   totalCountText: " (${0})"
   titleText: "相关视图"
 >
@@ -223,8 +223,8 @@
 >
 
 <timePicker ""
-  amText: "上午"
-  pmText: "下午"
+  amText: "AM"
+  pmText: "PM"
   setTimeText: "设置时间"
 >
 
@@ -277,7 +277,7 @@
   interruptedText: "处理已中断，无法完全完成。请再次重试此处理以将项目完全加入公文包。"
   briefcasingText: "正在加入公文包，请稍候。"
   errorBriefcasingText: "加入公文包时出错"
-  errorSavingOfflineViewText: "保存离线视图时出错"
+  errorSavingOfflineViewText: "保存离线视图时出错："
 >
 
 <sdkApplication

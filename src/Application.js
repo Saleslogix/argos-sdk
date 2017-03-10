@@ -12,14 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import array from 'dojo/_base/array';
-import connect from 'dojo/_base/connect';
-import lang from 'dojo/_base/lang';
-import win from 'dojo/_base/window';
-import hash from 'dojo/hash';
-import has from 'dojo/has';
-import all from 'dojo/promise/all';
-import ready from 'dojo/ready';
 import util from './Utility';
 import ModelManager from './Models/Manager';
 import Toast from './Dialogs/Toast';
@@ -28,102 +20,33 @@ import { intent } from './Intent';
 import { updateConnectionState } from './Intents/update-connection';
 import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
-import Deferred from 'dojo/Deferred';
 import ErrorManager from './ErrorManager';
 import getResource from './I18n';
-import { createStore } from 'redux';
 import { sdk } from './reducers';
 import Scene from './Scene';
 import { render } from './SohoIcons';
+import { createStore } from 'redux';
 import page from 'page';
 import $ from 'jquery';
-import 'dojo/sniff';
-
-// import moment from 'moment';
 import Rx from 'rxjs';
 
 const resource = getResource('sdkApplication');
 
-has.add('html5-file-api', (global) => {
-  if (has('ie')) {
-    return false;
-  }
+Function.prototype.bindDelegate = function bindDelegate(scope) { //eslint-disable-line
+  const self = this;
 
-  if (global.File && global.FileReader && global.FileList && global.Blob) {
-    return true;
-  }
-  return false;
-});
-
-lang.extend(Function, {
-  // TODO: Deprecate this in favor of the standard "bind"
-  bindDelegate: function bindDelegate(scope) {
-    const self = this;
-
-    if (arguments.length === 1) {
-      return function bound() {
-        return self.apply(scope || this, arguments);
-      };
-    }
-
-    const optional = Array.prototype.slice.call(arguments, 1);
-    return function boundWArgs() {
-      const called = Array.prototype.slice.call(arguments, 0);
-      return self.apply(scope || this, called.concat(optional));
+  if (arguments.length === 1) {
+    return function bound() {
+      return self.apply(scope || this, arguments);
     };
-  },
-});
-
-// Patching backwards compatablity so that customizations will not break and where moment
-// was required.
-// define('moment', [], function getMoment() { // eslint-disable-line
-//   return moment;
-// });
-
-function applyLocalizationTo(object, localization) {
-  if (!object) {
-    return;
   }
 
-  const target = object.prototype || object;
-  for (const key in localization) {
-    if (lang.isObject(localization[key])) {
-      applyLocalizationTo(target[key], localization[key]);
-    } else {
-      target[key] = localization[key];
-    }
-  }
-}
-
-function localize(name, localization) {
-  let target = lang.getObject(name);
-  if (target && target.prototype) {
-    target = target.prototype;
-  }
-
-  if (target) {
-    applyLocalizationTo(target, localization);
-  }
-}
-
-function mergeConfiguration(baseConfiguration, moduleConfiguration) {
-  if (baseConfiguration) {
-    if (baseConfiguration.modules && moduleConfiguration.modules) {
-      baseConfiguration.modules = baseConfiguration.modules.concat(moduleConfiguration.modules);
-    }
-
-    if (baseConfiguration.connections && moduleConfiguration.connections) {
-      baseConfiguration.connections = lang.mixin(baseConfiguration.connections, moduleConfiguration.connections);
-    }
-  }
-
-  return baseConfiguration;
-}
-
-lang.mixin(win.global, {
-  localize,
-  mergeConfiguration,
-});
+  const optional = Array.prototype.slice.call(arguments, 1);
+  return function boundWArgs() {
+    const called = Array.prototype.slice.call(arguments, 0);
+    return self.apply(scope || this, called.concat(optional));
+  };
+};
 
 /**
  * @class argos.Application
@@ -197,31 +120,11 @@ export default class Application {
     this.currentOrientation = 'portrait';
 
     /**
-     * Array of all connections for App
-     * @property {Object[]}
-     * @private
-     */
-    this._connects = null;
-
-    /**
      * Boolean for whether the application is an embedded app or not
      * @property {boolean}
      * @private
      */
     this._embedded = false;
-
-    /**
-     * Array of handles for App
-     * @property {Object[]}
-     * @private
-     */
-    this._signals = null;
-
-    /**
-     * @private
-     * Array of all subscriptions for App
-     */
-    this._subscribes = null;
 
     /**
      * Array of promises to load app state
@@ -244,7 +147,6 @@ export default class Application {
     this._connections = null;
     this.modules = null;
     this.views = null;
-    this.hash = hash;
     this.onLine = true;
     this._currentPage = null;
     /**
@@ -258,7 +160,6 @@ export default class Application {
      * @property {Object}
      */
     this.defaultService = null;
-    this.resizeTimer = null;
 
     /**
      * The hash to redirect to after login.
@@ -297,12 +198,7 @@ export default class Application {
     this.ModelManager = null;
     this.isDynamicInitialized = false;
 
-    this.checkOrientationTime = 100;
-    this.orientationCheckHandle = null;
-    this._connects = [];
     this._appStatePromises = [];
-    this._signals = [];
-    this._subscribes = [];
 
     this.customizations = {};
     this.services = {}; // TODO: Remove
@@ -336,7 +232,7 @@ export default class Application {
      * @type {Modal}
     */
     this.viewSettingsModal = null;
-    lang.mixin(this, options);
+    Object.assign(this, options);
   }
 
   /**
@@ -344,18 +240,12 @@ export default class Application {
    * Also calls {@link #uninitialize uninitialize}.
    */
   destroy() {
-    array.forEach(this._connects, (handle) => {
-      connect.disconnect(handle);
-    });
-
-    array.forEach(this._subscribes, (handle) => {
-      connect.unsubscribe(handle);
-    });
-
-    array.forEach(this._signals, (signal) => {
-      signal.remove();
-    });
-
+    $(window).off('resize', this.onResize.bind(this));
+    $('body').off('beforetransition', this._onBeforeTransition.bind(this));
+    $('body').off('aftertransition', this._onAfterTransition.bind(this));
+    $('body').off('show', this._onActivate.bind(this));
+    $(window).off('online', this._onOnline.bind(this));
+    $(window).off('offline', this._onOffline.bind(this));
     this.uninitialize();
   }
 
@@ -375,7 +265,7 @@ export default class Application {
    * Initialize the hash and save the redirect hash if any
    */
   initHash() {
-    const h = this.hash();
+    const h = location.hash;
     if (h !== '') {
       this.redirectHash = h;
     }
@@ -432,13 +322,13 @@ export default class Application {
    * Establishes various connections to events.
    */
   initConnects() {
-    this._connects.push(connect.connect(window, 'resize', this, this.onResize));
-    this._connects.push(connect.connect(win.body(), 'beforetransition', this, this._onBeforeTransition));
-    this._connects.push(connect.connect(win.body(), 'aftertransition', this, this._onAfterTransition));
-    this._connects.push(connect.connect(win.body(), 'show', this, this._onActivate));
-    ready(() => {
-      window.addEventListener('online', this._onOnline.bind(this));
-      window.addEventListener('offline', this._onOffline.bind(this));
+    $(window).on('resize', this.onResize.bind(this));
+    $('body').on('beforetransition', this._onBeforeTransition.bind(this));
+    $('body').on('aftertransition', this._onAfterTransition.bind(this));
+    $('body').on('show', this._onActivate.bind(this));
+    $.ready(() => {
+      $(window).on('online', this._onOnline.bind(this));
+      $(window).on('offline', this._onOffline.bind(this));
     });
 
     this.ping();
@@ -471,13 +361,6 @@ export default class Application {
       xhr.timeout = this.PING_TIMEOUT;
       xhr.send();
     });
-  }
-
-  /**
-   * Establishes signals/handles from dojo's newer APIs
-   */
-  initSignals() {
-    return this;
   }
 
   /**
@@ -528,60 +411,60 @@ export default class Application {
    * @return {Promise}
    */
   initAppState() {
-    const def = new Deferred();
-    const sequences = [];
-    this._appStatePromises.forEach((item) => {
-      let seq;
-      if (typeof item === 'function') {
-        seq = sequences.find(x => x.seq === 0);
-        if (!seq) {
-          seq = {
-            seq: 0,
-            description: resource.loadingApplicationStateText,
-            items: [],
-          };
-          sequences.push(seq);
-        }
-        seq.items.push({
-          name: 'default',
-          description: '',
-          fn: item,
-        });
-      } else {
-        if (item.seq && item.items) {
-          seq = sequences.find(x => x.seq === ((item.seq) ? item.seq : 0));
-          if (seq) {
-            item.items.forEach((_item) => {
-              seq.items.push(_item);
-            });
-          } else {
-            sequences.push(item);
+    return new Promise((resolve, reject) => {
+      const sequences = [];
+      this._appStatePromises.forEach((item) => {
+        let seq;
+        if (typeof item === 'function') {
+          seq = sequences.find(x => x.seq === 0);
+          if (!seq) {
+            seq = {
+              seq: 0,
+              description: resource.loadingApplicationStateText,
+              items: [],
+            };
+            sequences.push(seq);
+          }
+          seq.items.push({
+            name: 'default',
+            description: '',
+            fn: item,
+          });
+        } else {
+          if (item.seq && item.items) {
+            seq = sequences.find(x => x.seq === ((item.seq) ? item.seq : 0));
+            if (seq) {
+              item.items.forEach((_item) => {
+                seq.items.push(_item);
+              });
+            } else {
+              sequences.push(item);
+            }
           }
         }
-      }
-    });
-    // Sort the sequence ascending so we can processes them in the right order.
-    sequences.sort((a, b) => {
-      if (a.seq > b.seq) {
-        return 1;
-      }
+      });
+      // Sort the sequence ascending so we can processes them in the right order.
+      sequences.sort((a, b) => {
+        if (a.seq > b.seq) {
+          return 1;
+        }
 
-      if (a.seq < b.seq) {
-        return -1;
-      }
+        if (a.seq < b.seq) {
+          return -1;
+        }
 
-      return 0;
-    });
+        return 0;
+      });
 
-    this._initAppStateSequence(0, sequences).then((results) => {
-      this.clearAppStatePromises();
-      this.initModulesDynamic();
-      def.resolve(results);
-    }, (err) => {
-      this.clearAppStatePromises();
-      def.reject(err);
+      this._initAppStateSequence(0, sequences).then((results) => {
+        this.clearAppStatePromises();
+        this.initModulesDynamic();
+        resolve(results);
+      }, (err) => {
+        this.clearAppStatePromises();
+        reject(err);
+      });
     });
-    return def.promise;
   }
 
   /**
@@ -590,45 +473,44 @@ export default class Application {
    * @param {sequences) an array of sequences
    */
   _initAppStateSequence(index, sequences) {
-    const def = new Deferred();
-    const seq = sequences[index];
+    return new Promise((resolve, reject) => {
+      const seq = sequences[index];
+      if (seq) { // We need to send an observable and get ride of the ui element.
+        const indicator = new BusyIndicator({
+          id: `busyIndicator__appState_${seq.seq}`,
+          label: `${resource.initializingText} ${seq.description}`,
+        });
+        this.modal.disableClose = true;
+        this.modal.showToolbar = false;
+        this.modal.add(indicator);
+        indicator.start();
+        const promises = seq.items.map((item) => {
+          return item.fn();
+        });
 
-    if (seq) { // We need to send an observable and get ride of the ui element.
-      const indicator = new BusyIndicator({
-        id: `busyIndicator__appState_${seq.seq}`,
-        label: `${resource.initializingText} ${seq.description}`,
-      });
-      this.modal.disableClose = true;
-      this.modal.showToolbar = false;
-      this.modal.add(indicator);
-      indicator.start();
-      const promises = array.map(seq.items, (item) => {
-        return item.fn();
-      });
-      const odef = def;
-      all(promises).then(() => {
-        indicator.complete(true);
-        this.modal.disableClose = false;
-        this.modal.hide();
-        this._initAppStateSequence(index + 1, sequences).then((results) => {
-          odef.resolve(results);
-        }, (err) => {
+        Promise.all(promises).then(() => {
           indicator.complete(true);
           this.modal.disableClose = false;
           this.modal.hide();
-          odef.reject(err);
+          this._initAppStateSequence(index + 1, sequences).then((results) => {
+            resolve(results);
+          }, (err) => {
+            indicator.complete(true);
+            this.modal.disableClose = false;
+            this.modal.hide();
+            reject(err);
+          });
+        }, (err) => {
+          ErrorManager.addSimpleError(indicator.label, err);
+          indicator.complete(true);
+          this.modal.disableClose = false;
+          this.modal.hide();
+          reject(err);
         });
-      }, (err) => {
-        ErrorManager.addSimpleError(indicator.label, err);
-        indicator.complete(true);
-        this.modal.disableClose = false;
-        this.modal.hide();
-        def.reject(err);
-      });
-    } else {
-      def.resolve();
-    }
-    return def.promise;
+      } else {
+        resolve();
+      }
+    });
   }
 
   /**
@@ -709,13 +591,11 @@ export default class Application {
     this.initToasts();
     this.initPing();
     this.initConnects();
-    this.initSignals();
     this.initServices(); // TODO: Remove
     this._startupConnections();
     this.initModules();
     this.initToolbars();
     this.initHash();
-    this.startOrientationCheck();
     this.initModal();
     this.initScene();
   }
@@ -830,6 +710,22 @@ export default class Application {
     return ('ontouchstart' in window) || (window.DocumentTouch && document instanceof window.DocumentTouch);
   }
 
+  supportsFileAPI() {
+    if (this.isIE()) {
+      return false;
+    }
+
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+      return true;
+    }
+
+    return false;
+  }
+
+  isIE() {
+    return /MSIE|Trident/.test(window.navigator.userAgent);
+  }
+
   persistPreferences() {
     try {
       if (window.localStorage) {
@@ -871,7 +767,7 @@ export default class Application {
    */
   run() {
     this._started = true;
-    this.startOrientationCheck();
+    this.registerOrientationCheck(this.updateOrientationDom.bind(this));
     page({
       dispatch: false,
       hashbang: true,
@@ -1123,28 +1019,21 @@ export default class Application {
 
     this.currentOrientation = value;
     this.onSetOrientation(value);
-    connect.publish('/app/setOrientation', [value]);
+    // connect.publish('/app/setOrientation', [value]); // TODO: Push this state into redux
   }
 
-  checkOrientation() {
-    const context = this.context;
-    // Check if screen dimensions changed. Ignore changes where only the height changes (the android keyboard will cause this)
-    if (Math.abs(window.innerHeight - context.height) > 5 || Math.abs(window.innerWidth - context.width) > 5) {
-      if (Math.abs(window.innerWidth - context.width) > 5) {
-        this.updateOrientationDom(window.innerHeight < window.innerWidth ? 'landscape' : 'portrait');
+  registerOrientationCheck(callback) {
+    const match = window.matchMedia('(orientation: portrait)');
+
+    const checkMedia = (m) => {
+      if (m.matches) {
+        callback('portrait');
+      } else {
+        callback('landscape');
       }
-
-      context.height = window.innerHeight;
-      context.width = window.innerWidth;
-    }
-  }
-
-  startOrientationCheck() {
-    this.orientationCheckHandle = window.setInterval(this.checkOrientation.bind(this), this.checkOrientationTime);
-  }
-
-  stopOrientationCheck() {
-    window.clearInterval(this.orientationCheckHandle);
+    };
+    match.addListener(checkMedia);
+    checkMedia(match);
   }
 
   /**
@@ -1282,16 +1171,9 @@ export default class Application {
   }
 
   /**
-   * Resize handle, publishes the global event `/app/resize` which views may subscribe to.
+   * Resize handle
    */
   onResize() {
-    if (this.resizeTimer) {
-      clearTimeout(this.resizeTimer);
-    }
-
-    this.resizeTimer = setTimeout(() => {
-      connect.publish('/app/resize', []);
-    }, 100);
   }
 
   onRegistered(/* view*/) {}
@@ -1388,11 +1270,11 @@ export default class Application {
    */
   filterNavigationContext(predicate, scope) {
     const list = this.context.history || [];
-    const filtered = array.filter(list, (item) => {
+    const filtered = list.filter((item) => {
       return predicate.call(scope || this, item.data);
     });
 
-    return array.map(filtered, (item) => {
+    return filtered.map((item) => {
       return item.data;
     });
   }
@@ -1436,8 +1318,8 @@ export default class Application {
    */
   isNavigationFromResourceKind(kind, predicate, scope) {
     const lookup = {};
-    if (lang.isArray(kind)) {
-      array.forEach(kind, function forEach(item) {
+    if (Array.isArray(kind)) {
+      kind.forEach(function forEach(item) {
         this[item] = true;
       }, lookup);
     } else {
