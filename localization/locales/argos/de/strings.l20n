@@ -49,7 +49,7 @@
   yesterdayText: "Gestern"
   lastWeekText: "Letzte Woche"
   lastMonthText: "Letzter Monat"
-  pastYearText: "Vergange(s) Jahr(e)"
+  pastYearText: "Vergang. Jahr(e)"
   nextYearText: "Nächstes Jahr"
   nextMonthText: "Nächster Monat"
   nextWeekText: "Nächste Woche"
@@ -134,7 +134,7 @@
 
 <pullToRefreshMixin ""
   pullRefreshText: "Zum Aktualisieren nach unten ziehen..."
-  pullReleaseText: "Zum Aktualisieren loslassen..."
+  pullReleaseText: "Zum Aktualisieren freigeben..."
 >
 
 <relatedViewWidgetBase ""
@@ -157,7 +157,7 @@
   october: "Oktober"
   november: "November"
   december: "Dezember"
-  clearText: "Löschen"
+  clearText: "Auswahl aufheben"
   todayText: "Heute"
   sundayAbbreviated: "So"
   mondayAbbreviated: "Mo"
@@ -262,7 +262,7 @@
   confirmText: "Bestätigen"
   editText: "Bearbeiten"
   okayText: "OK"
-  submitText: "Übergeben"
+  submitText: "Senden"
   warningText: "Warnung"
 >
 <_listOfflineMixin

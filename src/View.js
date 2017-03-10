@@ -335,7 +335,6 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       this.transitionComplete(to, options);
       $('body').removeClass('transition');
 
-      App.startOrientationCheck();
       on.emit(from, 'aftertransition', {
         out: true,
         tag: options.tag,
@@ -356,7 +355,6 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       }
     }
 
-    App.stopOrientationCheck();
     $('body').addClass('transition');
 
     // dispatch an 'show' event to let the page be aware that is being show as the result of an external

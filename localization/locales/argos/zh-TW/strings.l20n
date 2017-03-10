@@ -1,6 +1,6 @@
 <dateField ""
   emptyText: ''
-  invalidDateFormatErrorText: "欄位 '${0}' 的日期格式無效。"
+  invalidDateFormatErrorText: "欄位「${0}」的日期格式無效。"
   cancelText: "取消"
   confirmText: "確認"
   advancedText: "進階"
@@ -12,19 +12,19 @@
   days: "天"
   weeks: "週"
   years: "年"
-  invalidDurationErrorText: "欄位 '${0}' 不是有效的持續時間。"
+  invalidDurationErrorText: "欄位「${0}」不是有效的持續時間。"
   emptyText: ""
 >
 
 <editorField ""
   lookupLabelText: "編輯"
   lookupText: "..."
-  emptyText: "空白"
+  emptyText: "空"
   completeText: "確定"
 >
 
 <lookupField ""
-  dependentErrorText: "必須為 '${0}' 選取值。"
+  dependentErrorText: "必須為「${0}」選取值。"
   emptyText: ""
   completeText: "選取"
   lookupLabelText: "查閱"
@@ -143,13 +143,13 @@
 
 <calendar ""
   titleText: "行事曆"
-  amText: "上午"
-  pmText: "下午"
+  amText: "AM"
+  pmText: "PM"
   january: "一月"
   february: "二月"
   march: "三月"
   april: "四月"
-  may: "5 月"
+  may: "五月"
   june: "六月"
   july: "七月"
   august: "八月"
@@ -223,8 +223,8 @@
 >
 
 <timePicker ""
-  amText: "上午"
-  pmText: "下午"
+  amText: "AM"
+  pmText: "PM"
   setTimeText: "設定時間"
 >
 
@@ -266,15 +266,15 @@
   warningText: "警告"
 >
 <_listOfflineMixin
-  goToListViewText: "已經簡述項目。是否要移至公事包清單檢視？"
-  interruptedText: "程序已中斷，無法全部完成。請嘗試重新處理充分簡述項目。"
+  goToListViewText: "項目已經新增至公事包。是否要移至公事包清單檢視？"
+  interruptedText: "程序已中斷，無法全部完成。請嘗試重新處理，以將項目完全新增至公事包。"
   briefcasingText: "正在進行簡述，請稍候。"
   errorBriefcasingText: "簡述錯誤"
 >
 
 <_detailOfflineMixin
-  goToDetailViewText: "已經簡述項目與相關項目。是否要移至公事包清單檢視？"
-  interruptedText: "程序已中斷，無法全部完成。請嘗試重新處理充分簡述項目。"
+  goToDetailViewText: "項目與相關項目已新增至公事包。是否要移至公事包清單檢視？"
+  interruptedText: "程序已中斷，無法全部完成。請嘗試重新處理，以將項目完全新增至公事包。"
   briefcasingText: "正在進行簡述，請稍候。"
   errorBriefcasingText: "簡述錯誤"
   errorSavingOfflineViewText: "儲存離線檢視時發生錯誤："

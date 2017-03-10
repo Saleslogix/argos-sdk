@@ -147,11 +147,6 @@ const __class = declare('argos.Views.Signature', [View], {
    */
   canvasNodeHeight: 120,
 
-  /**
-   * Extends parent implementation to store the options to `this.config`, subscribe to the
-   * `/app/resize` event and immediately call resize so the canvas is scaled.
-   * @param options
-   */
   show: function show(options) {
     this.inherited(arguments);
 
@@ -171,8 +166,7 @@ const __class = declare('argos.Views.Signature', [View], {
 
     this._sizeCanvas();
     this.context = this.signatureNode.getContext('2d');
-
-    this.subscribe('/app/resize', this.onResize);
+    $(window).on('resize', this.onResize.bind(this));
 
     this.redraw(this.signature, this.signatureNode, this.config);
   },
