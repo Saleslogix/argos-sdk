@@ -160,7 +160,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
           // The "done" observable is a combination of touch end and touch cancel.
           // We should restore the UI state and invoke callbacks here.
           $(this.dragNode).css({
-            top: data.topCss,
+            'margin-top': data.topCss,
             'overflow-y': data.overflowCssY,
             'overflow-x': data.overflowCssX,
           });
@@ -183,7 +183,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     dragging.subscribe((data) => {
       data.evt.preventDefault();
       $(this.dragNode).css({
-        top: `${data.top}px`,
+        'margin-top': `${data.top}px`,
         overflow: 'hidden',
       });
 

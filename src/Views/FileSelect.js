@@ -74,7 +74,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
    *
    */
   widgetTemplate: new Simplate([
-    '<div title="{%: $.titleText %}" class="panel panel-content {%= $.cls %}">',
+    '<div title="{%: $.titleText %}" class="panel column {%= $.cls %}">',
     '<br>', // TODO: find a way to pad top on panel
     '<div  data-dojo-attach-point="fileArea" class="file-area">',
     `<div class="field" data-dojo-attach-point="fileWrapper">

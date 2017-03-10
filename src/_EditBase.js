@@ -110,7 +110,7 @@ const __class = declare('argos._EditBase', [View], {
     '{%! $.loadingTemplate %}',
     '{%! $.validationSummaryTemplate %}',
     '{%! $.concurrencySummaryTemplate %}',
-    '<div class="panel-content" data-dojo-attach-point="contentNode"></div>',
+    '<div class="column" data-dojo-attach-point="contentNode"></div>',
     '</div>',
   ]),
   /**
