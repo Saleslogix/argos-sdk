@@ -867,7 +867,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   invokeActionItemBy: function invokeActionItemBy(actionPredicate, key) {
     const actions = array.filter(this.visibleActions, actionPredicate);
     const selection = this.selectEntrySilent(key);
-    this.checkActionState();
+    // this.checkActionState();
     array.forEach(actions, function forEach(action) {
       this._invokeAction(action, selection);
     }, this);
@@ -1036,7 +1036,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   showActionPanel: function showActionPanel(rowNode) {
     const actionNode = $(rowNode).find('.actions-row');
-    this.checkActionState(actionNode);
+    // this.checkActionState(actionNode);
 
     this.onApplyRowActionPanel(actionNode, rowNode);
   },
