@@ -16,7 +16,6 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
-import query from 'dojo/query';
 import string from 'dojo/string';
 import when from 'dojo/when';
 import Utility from './Utility';
@@ -223,7 +222,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           </button>
         </div>
         <div class="card-content" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">
-          {%! $$.itemTemplate %}
+          {%! $$.itemRowContentTemplate %}
         </div>
       </div>
     </div>
@@ -282,6 +281,29 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       {%: $.label %}
     </button></li>
   `]),
+    /**
+   * @property {Simplate}
+   * The template used to render row content template
+   */
+  itemRowContentTemplate: new Simplate([
+    '<div id="top_item_indicators" class="list-item-indicator-content"></div>',
+    '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
+    '<div id="bottom_item_indicators" class="list-item-indicator-content"></div>',
+    '<div id="list-item-content-related"></div>',
+  ]),
+  /**
+   * @property {Simplate}
+   * The template used to render item indicator
+   */
+  itemIndicatorTemplate: new Simplate([
+    '<span{% if ($.iconCls) { %} class="{%= $.iconCls %}" {% } %}>',
+    '{% if ($.showIcon === false) { %}',
+    '{%: $.valueText %}',
+    '{% } else if ($.indicatorIcon && !$.iconCls) { %}',
+    '<img src="{%= $.indicatorIcon %}" alt="{%= $.label %}" />',
+    '{% } %}',
+    '</span>',
+  ]),
   /**
    * @property {HTMLElement}
    * Attach point for the main view content
@@ -1155,7 +1177,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           this._loadedSelections[key] = false;
         }
 
-        const row = query((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [key])), this.contentNode)[0];
+        const row = $((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [key])), this.contentNode)[0];
 
         if (row && this._loadedSelections[key] !== true) {
           this.activateEntry({
@@ -1173,11 +1195,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   },
   applyRowIndicators: function applyRowIndicators(entry, rowNode) {
     if (this.itemIndicators && this.itemIndicators.length > 0) {
-      const topIndicatorsNode = query('> #top_item_indicators', rowNode);
-      const bottomIndicatorsNode = query('> #bottom_item_indicators', rowNode);
+      const topIndicatorsNode = $('#top_item_indicators', rowNode);
+      const bottomIndicatorsNode = $('#bottom_item_indicators', rowNode);
       if (bottomIndicatorsNode[0] && topIndicatorsNode[0]) {
         if (bottomIndicatorsNode[0].childNodes.length === 0 && topIndicatorsNode[0].childNodes.length === 0) {
-          this.createIndicators(topIndicatorsNode[0], bottomIndicatorsNode[0], this._createCustomizedLayout(this.itemIndicators, 'indicators'), entry);
+          const customizeLayout = this._createCustomizedLayout(this.itemIndicators, 'indicators');
+          this.createIndicators(topIndicatorsNode[0], bottomIndicatorsNode[0], customizeLayout, entry);
         }
       }
     }
