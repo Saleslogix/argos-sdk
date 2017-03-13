@@ -112,7 +112,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       </div>
       {% } %}
       <div class="column">
-        <div class="{% if ($$.isNavigationDisabled()) { %} is-muliselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
+        <div class="{% if ($$.isNavigationDisabled()) { %} is-multiselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
           {% if ($$.isNavigationDisabled()) { %}
           data-selectable="multiple"
           {% } else { %}
