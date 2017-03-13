@@ -268,7 +268,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * `$` => the view instance
    */
   notAvailableTemplate: new Simplate([
-    '<div class="not-available">{%: $.notAvailableText %}</div>',
+    '<p class="not-available">{%: $.notAvailableText %}</p>',
   ]),
   /**
    * @property {String}
