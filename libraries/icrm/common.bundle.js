@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 21);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -561,11 +561,11 @@ function link(val) {
 
   if (scheme && scheme.length) {
     var index = val.indexOf(scheme) + scheme.length;
-    return '<a target="_blank" href="' + val + '">' + val.substring(index) + '</a>';
+    return '<a class="hyperlink" target="_blank" href="' + val + '">' + val.substring(index) + '</a>';
   }
 
   // Specify a default URI scheme of http
-  return '<a target="_blank" href="http://' + val + '">' + val + '</a>';
+  return '<a class="hyperlink" target="_blank" href="http://' + val + '">' + val + '</a>';
 }
 
 /**
@@ -578,7 +578,7 @@ function mail(val) {
     return val;
   }
 
-  return '<a href="mailto:' + val + '">' + val + '</a>';
+  return '<a class="hyperlink" href="mailto:' + val + '">' + val + '</a>';
 }
 
 /**
@@ -712,7 +712,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _activity = __webpack_require__(14);
+var _activity = __webpack_require__(15);
 
 Object.keys(_activity).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -724,7 +724,7 @@ Object.keys(_activity).forEach(function (key) {
   });
 });
 
-var _data = __webpack_require__(15);
+var _data = __webpack_require__(16);
 
 Object.keys(_data).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -736,7 +736,7 @@ Object.keys(_data).forEach(function (key) {
   });
 });
 
-var _file = __webpack_require__(16);
+var _file = __webpack_require__(17);
 
 Object.keys(_file).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -748,7 +748,7 @@ Object.keys(_file).forEach(function (key) {
   });
 });
 
-var _function = __webpack_require__(17);
+var _function = __webpack_require__(18);
 
 Object.keys(_function).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -760,7 +760,7 @@ Object.keys(_function).forEach(function (key) {
   });
 });
 
-var _http = __webpack_require__(18);
+var _http = __webpack_require__(19);
 
 Object.keys(_http).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -772,7 +772,7 @@ Object.keys(_http).forEach(function (key) {
   });
 });
 
-var _math = __webpack_require__(19);
+var _math = __webpack_require__(20);
 
 Object.keys(_math).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -784,7 +784,7 @@ Object.keys(_math).forEach(function (key) {
   });
 });
 
-var _string = __webpack_require__(20);
+var _string = __webpack_require__(21);
 
 Object.keys(_string).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1048,7 +1048,7 @@ function address(addr, asText, separator, fmt) {
     return parts.join(separator || '<br />');
   }
 
-  return '<a href="javascript:App.showMapForAddress(\'' + encodeURIComponent((0, _html.decode)(parts.join(' '))) + '\');">' + parts.join('<br />') + '</a>';
+  return '<a class="hyperlink" href="javascript:App.showMapForAddress(\'' + encodeURIComponent((0, _html.decode)(parts.join(' '))) + '\');">' + parts.join('<br />') + '</a>';
 }
 
 /***/ },
@@ -1357,6 +1357,18 @@ Object.keys(_phone).forEach(function (key) {
   });
 });
 
+var _picklist = __webpack_require__(14);
+
+Object.keys(_picklist).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _picklist[key];
+    }
+  });
+});
+
 var _string = __webpack_require__(3);
 
 Object.keys(_string).forEach(function (key) {
@@ -1385,11 +1397,13 @@ var NumberFormat = _interopRequireWildcard(_number);
 
 var PhoneFormat = _interopRequireWildcard(_phone);
 
+var PickListFormat = _interopRequireWildcard(_picklist);
+
 var StringFormat = _interopRequireWildcard(_string);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var Format = Object.assign({}, ActivityFormat, AddressFormat, CurrencyFormat, DateFormat, HTMLFormat, NameFormat, NumberFormat, PhoneFormat, StringFormat);
+var Format = Object.assign({}, ActivityFormat, AddressFormat, CurrencyFormat, DateFormat, HTMLFormat, NameFormat, NumberFormat, PhoneFormat, PickListFormat, StringFormat);
 
 // if (window) {
 //   window['Jupiter'] = Object.assign({}, window['Jupiter'], { Format });
@@ -1573,7 +1587,7 @@ var phoneFormat = exports.phoneFormat = [{
  * @returns {string}
  */
 function alphaToPhoneNumeric() {
-  var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+  var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
   var phoneVal = val || '';
   for (var i = 0; i < phoneLettersMap.length; i++) {
@@ -1601,14 +1615,14 @@ function phone() {
 
   for (var i = 0; i < formatters.length; i++) {
     var formatter = formatters[i];
-    var match = void 0;
-    if (match = formatter.test.exec(clean)) {
+    var match = formatter.test.exec(clean);
+    if (match) {
       formattedMatch = formatter.format([phoneVal, clean].concat(match));
     }
   }
 
   if (formattedMatch) {
-    return asLink ? '<a href="tel:' + clean + '">' + formattedMatch + '</a>' : formattedMatch;
+    return asLink ? '<a class="hyperlink" href="tel:' + clean + '">' + formattedMatch + '</a>' : formattedMatch;
   }
 
   return phoneVal;
@@ -1616,6 +1630,124 @@ function phone() {
 
 /***/ },
 /* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.picklist = picklist;
+var StorageType = { CODE: 0, ID: 1, TEXT: 2 };
+var DataDisplayType = { CODE: 0, ID: 1, TEXT: 2 };
+
+function getStoredXByY(value, getX, byY, picklistObj) {
+  /* function is private cannot be static */ //eslint-disable-line
+  if (picklistObj.items) {
+    for (var i = 0; i < picklistObj.items.length; i++) {
+      var item = picklistObj.items[i];
+      // console.log(`${getX} : ${byY} => ${value} ?= ${item[byY]}`);
+      if (item[byY] === value) {
+        if (item[getX]) {
+          return item[getX];
+        }
+      }
+    }
+  }
+  return value;
+}
+function getStoredTextById(value, picklistObj) {
+  return getStoredXByY(value, 'text', 'id', picklistObj);
+}
+function getStoredTextByCode(value, picklistObj) {
+  return getStoredXByY(value, 'text', 'code', picklistObj);
+}
+function getStoredIdByCode(value, picklistObj) {
+  return getStoredXByY(value, 'id', 'code', picklistObj);
+}
+function getStoredIdByText(value, picklistObj) {
+  return getStoredXByY(value, 'id', 'text', picklistObj);
+}
+function getStoredCodeById(value, picklistObj) {
+  return getStoredXByY(value, 'code', 'id', picklistObj);
+}
+function getStoredCodeByText(value, picklistObj) {
+  return getStoredXByY(value, 'code', 'text', picklistObj);
+}
+
+function getStoredText(value, picklistObj) {
+  switch (picklistObj.display) {
+    case DataDisplayType.ID:
+      // console.log('display is id');
+      return getStoredIdByText(value, picklistObj);
+    case DataDisplayType.CODE:
+      // console.log('display is code');
+      return getStoredCodeByText(value, picklistObj);
+    default:
+      // StorageType.ID
+      // console.log('display is text');
+      return value;
+  }
+}
+function getStoredId(value, picklistObj) {
+  switch (picklistObj.display) {
+    case DataDisplayType.TEXT:
+      // console.log('display is text');
+      return getStoredTextById(value, picklistObj);
+    case DataDisplayType.CODE:
+      // console.log('display is code');
+      return getStoredCodeById(value, picklistObj);
+    default:
+      // StorageType.ID
+      // console.log('display is id');
+      return value;
+  }
+}
+function getStoredCode(value, picklistObj) {
+  switch (picklistObj.display) {
+    case DataDisplayType.ID:
+      // console.log('display is id');
+      return getStoredIdByCode(value, picklistObj);
+    case DataDisplayType.TEXT:
+      // console.log('display is Text');
+      return getStoredTextByCode(value, picklistObj);
+    default:
+      // StorageType.Code
+      // console.log('display is code');
+      return value;
+  }
+}
+/**
+* @function takes a string value and using the informaton known about the pick list, to generate a display value. If one is not found the value provided is displayed.
+* @param {String} value the data that needs to be formatted. In this context formatting could mean using the service to display an acceptable localization,
+*            or it could mean displaying a different value stored at the item level. ie the value is stored as code, but want to display id... not too useful, but could happen.
+* @return {String} value based on the current picklist's usage metadata. A picklist can be stored as a code, text, or id, but displayed as a code, text, or id... so function, and a collection of helpers, will handle returning the correct value.
+*/
+function picklist(value, picklistObj) {
+  /* console.log('object : %o', picklistObj);
+  console.log('Store.CODE : %o', StorageType, StorageType.CODE);
+  console.log('Store.ID : %o', StorageType, StorageType.ID);
+  console.log('Store.TEXT : %o', StorageType, StorageType.TEXT);
+  console.log('Store.CODE : %o', DataDisplayType, StorageType.CODE);
+  console.log('Store.ID : %o', DataDisplayType, StorageType.ID);
+  console.log('Store.TEXT : %o', DataDisplayType, StorageType.TEXT); */
+  switch (picklistObj.storage) {
+    case StorageType.CODE:
+      // console.log('Storage is code');
+      return getStoredCode(value, picklistObj);
+    case StorageType.ID:
+      // console.log('Storage is id');
+      return getStoredId(value, picklistObj);
+    default:
+      // StorageType.Text
+      // console.log('Storage is using text');
+      return getStoredText(value, picklistObj);
+  }
+}
+
+/***/ },
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1643,7 +1775,7 @@ function getRealActivityId(activityId) {
 }
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1740,7 +1872,7 @@ function setValue(o, name, val) {
 }
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1818,7 +1950,7 @@ function getFileExtension(fileName) {
 }
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1925,7 +2057,7 @@ function joinFields(seperator, fields) {
 // }
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1948,7 +2080,7 @@ function debounce(fn, wait) {
 }
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1964,7 +2096,7 @@ function roundNumberTo(number, precision) {
 }
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2073,7 +2205,7 @@ function escapeSearchQuery(searchQuery) {
 }
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
