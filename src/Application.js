@@ -232,7 +232,6 @@ export default class Application {
      * @type {Modal}
     */
     this.viewSettingsModal = null;
-    Object.assign(this, options);
   }
 
   /**
