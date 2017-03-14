@@ -159,6 +159,7 @@ const control = declare('argos.Fields.TextField', [_Field], {
   enable: function enable() {
     this.inherited(arguments);
     $(this.inputNode).css('disabled', false);
+    $(this.inputNode).enable();
   },
   /**
    * Extends the parent implementation to set the disabled attribute of the input to true
@@ -167,6 +168,7 @@ const control = declare('argos.Fields.TextField', [_Field], {
     this.inherited(arguments);
 
     $(this.inputNode).css('disabled', true);
+    $(this.inputNode).disable();
   },
   focus: function focus() {
     this.inputNode.focus();
