@@ -58,7 +58,7 @@ Function.prototype.bindDelegate = function bindDelegate(scope) { //eslint-disabl
  * @alternateClassName App
  */
 export default class Application {
-  constructor(options) {
+  constructor() {
     /**
      * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
      */
