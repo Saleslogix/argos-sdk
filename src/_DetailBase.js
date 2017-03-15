@@ -872,31 +872,30 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   processEntry: function processEntry(entry) {
     this.entry = this.preProcessEntry(entry);
 
-    this.preProcessEntryAsync(entry).then((nextEntry) => {
-      this.entry = nextEntry;
-      if (this.entry) {
-        this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
-        if (this.isTabbed) {
-          this.createTabs(this.tabs);
-          this.placeDetailHeader(this.entry);
-        }
-      } else {
-        this.set('detailContent', '');
+    if (this.entry) {
+      this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
+      if (this.isTabbed) {
+        this.createTabs(this.tabs);
+        this.placeDetailHeader(this.entry);
       }
-    });
+    } else {
+      this.set('detailContent', '');
+    }
   },
   _onGetComplete: function _onGetComplete(entry) {
     try {
-      if (entry) {
-        this.processEntry(entry);
-      } else {
-        domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
-      }
+      this.preProcessEntryAsync(entry).then((nextEntry) => {
+        if (nextEntry) {
+          this.processEntry(nextEntry);
+        } else {
+          domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+        }
 
-      domClass.remove(this.domNode, 'panel-loading');
+        domClass.remove(this.domNode, 'panel-loading');
 
-      /* this must take place when the content is visible */
-      this.onContentChange();
+        /* this must take place when the content is visible */
+        this.onContentChange();
+      });
     } catch (e) {
       console.error(e); //eslint-disable-line
     } finally {
