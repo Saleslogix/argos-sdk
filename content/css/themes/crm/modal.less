@@ -1,4 +1,4 @@
-.modal {
+.crm-modal {
   position: relative;
   max-width: 95%;
   max-height: 95%;
@@ -14,7 +14,7 @@
 }
 
 .modal__container {
-  position: fixed;
+  position: absolute;
   .display-flex();
   align-items: center;
   box-sizing: border-box;
@@ -49,9 +49,9 @@
 }
 
 .modal__overlay {
-  opacity: 0.3;
+  opacity: 0.7;
   visibility: visible;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   height: 100%;

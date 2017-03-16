@@ -1,10 +1,9 @@
 import declare from 'dojo/_base/declare';
 import query from 'dojo/query';
-import domAttr from 'dojo/dom-attr';
-import domClass from 'dojo/dom-class';
 import string from 'dojo/string';
 import DraggableList from './DraggableList';
 import getResource from './I18n';
+import $ from 'jquery';
 
 const resource = getResource('configureBase');
 
@@ -18,10 +17,10 @@ const resource = getResource('configureBase');
 const __class = declare('argos._ConfigureBase', [DraggableList], {
   // Templates
   itemTemplate: new Simplate([
-    '<h3>',
+    '<h4>',
     '<span>{%: $.$descriptor %}</span>',
     '<span class="draggable fa fa-bars"></span>',
-    '</h3>',
+    '</h4>',
   ]),
 
   // Localization
@@ -42,12 +41,12 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
     return this.tools || (this.tools = {
       tbar: [{
         id: 'save',
-        cls: 'fa fa-check fa-fw fa-lg',
+        svg: 'check',
         fn: this.onSave,
         scope: this,
       }, {
         id: 'cancel',
-        cls: 'fa fa-ban fa-fw fa-lg',
+        svg: 'cancel',
         side: 'left',
         fn: this.onCancel,
         scope: ReUI,
@@ -101,7 +100,7 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
     const cls = this.lastMovedCls;
 
     nodes.forEach((node) => {
-      domClass.remove(node, cls);
+      $(node).removeClass(cls);
     });
   },
   activateEntry: function activateEntry() {
@@ -122,7 +121,7 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
     // Using forEach instead of map, because if we return a mapped NodeList to the caller, storing that in local storage will generate an error,
     // for some reason there is a _parent attribute on the NodeList that maeks it recursive.
     query('.list-item-selected', this.domNode).filter('[data-key]').forEach((node) => {
-      const key = domAttr.get(node, 'data-key');
+      const key = $(node).attr('data-key');
       if (key) {
         results.push(key);
       }
@@ -140,7 +139,7 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
     // Using forEach instead of map, because if we return a mapped NodeList to the caller, storing that in local storage will generate an error,
     // for some reason there is a _parent attribute on the NodeList that maeks it recursive.
     query('li', this.domNode).filter('[data-key]').forEach((node) => {
-      const key = domAttr.get(node, 'data-key');
+      const key = $(node).attr('data-key');
       if (key) {
         results.push(key);
       }

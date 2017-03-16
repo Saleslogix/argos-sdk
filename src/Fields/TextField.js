@@ -16,10 +16,9 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import event from 'dojo/_base/event';
-import domAttr from 'dojo/dom-attr';
-import domClass from 'dojo/dom-class';
 import _Field from './_Field';
 import FieldManager from '../FieldManager';
+import $ from 'jquery';
 
 /**
  * @class argos.Fields.TextField
@@ -64,12 +63,27 @@ const control = declare('argos.Fields.TextField', [_Field], {
    * * `$$` => Owner View instance
    *
    */
-  widgetTemplate: new Simplate([
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '{% if ($.enableClearButton && !$.readonly) { %}',
-    '<button class="clear-button" tabindex="-1" data-dojo-attach-point="clearNode" data-dojo-attach-event="onclick:_onClearClick"></button>',
-    '{% } %}',
-    '<input data-dojo-attach-point="inputNode" tabindex="0" placeholder="{%: $.placeHolderText %}" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>',
+  widgetTemplate: new Simplate([`
+      <div class="field">
+        <label for="{%= $.name %}"
+          {% if ($.required) { %}
+          class="required"
+          {% } %}
+          >{%: $.label %}</label>
+        <input
+          data-dojo-attach-point="inputNode"
+          type="{%: $.inputType %}"
+          id="{%= $.name %}"
+          name="{%= $.name %}"
+          placeholder="{%: $.placeHolderText %}"
+          {% if ($.required) { %}
+            data-validate="required"
+            class="required"
+          {% } %}
+          {% if ($.readonly) { %} readonly {% } %}
+          >
+      </div>
+    `,
   ]),
   /**
    * @property {HTMLElement}
@@ -81,6 +95,12 @@ const control = declare('argos.Fields.TextField', [_Field], {
    * The dojo-attach-point reference to the clear button
    */
   clearNode: null,
+
+  /**
+   * required should be true if the field requires input. Defaults to false.
+   * @type {Boolean}
+   */
+  required: false,
 
   /**
    * @cfg {String}
@@ -138,7 +158,8 @@ const control = declare('argos.Fields.TextField', [_Field], {
    */
   enable: function enable() {
     this.inherited(arguments);
-    domAttr.set(this.inputNode, 'disabled', false);
+    $(this.inputNode).css('disabled', false);
+    $(this.inputNode).enable();
   },
   /**
    * Extends the parent implementation to set the disabled attribute of the input to true
@@ -146,7 +167,8 @@ const control = declare('argos.Fields.TextField', [_Field], {
   disable: function disable() {
     this.inherited(arguments);
 
-    domAttr.set(this.inputNode, 'disabled', true);
+    $(this.inputNode).css('disabled', true);
+    $(this.inputNode).disable();
   },
   focus: function focus() {
     this.inputNode.focus();
@@ -184,16 +206,6 @@ const control = declare('argos.Fields.TextField', [_Field], {
     }
   },
   /**
-   * Handler for the `onfocus` event.
-   *
-   * Adds the active styling which is used for detecting state in the clear button click handler.
-   *
-   * @param evt
-   */
-  _onFocus: function _onFocus(/* evt*/) {
-    domClass.add(this.domNode, 'text-field-active');
-  },
-  /**
    * Handler for the `onblur` event
    *
    * If either the `validationTrigger` or `notificationTrigger` is set to `blur` then it will fire
@@ -209,25 +221,6 @@ const control = declare('argos.Fields.TextField', [_Field], {
     if (this.notificationTrigger === 'blur') {
       this.onNotificationTrigger(evt);
     }
-
-    domClass.remove(this.domNode, 'text-field-active');
-  },
-  /**
-   * Handler for the `onclick` event for the clear button.
-   *
-   * Clears the value and attempts to re-open the mobile keyboard display
-   *
-   * @param {Event} evt
-   */
-  _onClearClick: function _onClearClick(evt) {
-    if (!domClass.contains(this.domNode, 'text-field-active')) {
-      this.clearValue(true);
-      event.stop(evt);
-    }
-
-    // Mobile browsers listen to either or both events to show keyboard
-    this.inputNode.focus();
-    this.inputNode.click();
   },
   /**
    * Fires {@link _Field#onChange onChange} if the value has changed since the previous notification event or
@@ -249,9 +242,9 @@ const control = declare('argos.Fields.TextField', [_Field], {
    */
   onValidationTrigger: function onValidationTrigger(/* evt*/) {
     if (this.validate()) {
-      domClass.add(this.containerNode, 'row-error');
+      $(this.containerNode).addClass('row-error');
     } else {
-      domClass.remove(this.containerNode, 'row-error');
+      $(this.containerNode).removeClass('row-error');
     }
   },
   /**

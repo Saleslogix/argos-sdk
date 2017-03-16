@@ -13,8 +13,8 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import ErrorManager from 'argos/ErrorManager';
 import domConstruct from 'dojo/dom-construct';
-import domClass from 'dojo/dom-class';
 import string from 'dojo/string';
+import $ from 'jquery';
 
 const __class = declare('argos._LegacySDataListMixin', null, {
   feed: null,
@@ -23,7 +23,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
    * Initiates the SData request.
    */
   requestData: function requestData() {
-    domClass.add(this.domNode, 'list-loading');
+    $(this.domNode).addClass('list-loading');
     this.listLoading = true;
 
     const request = this.createRequest();
@@ -42,7 +42,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
   onRequestDataSuccess: function onRequestDataSuccess(feed) {
     this.processFeed(feed);
 
-    domClass.remove(this.domNode, 'list-loading');
+    $(this.domNode).removeClass('list-loading');
     this.listLoading = false;
 
     if (!this._onScrollHandle && this.continuousScrolling) {
@@ -58,7 +58,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
   onRequestDataFailure: function onRequestDataFailure(response, o) {
     alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
     ErrorManager.addError('failure', response);
-    domClass.remove(this.domNode, 'list-loading');
+    $(this.domNode).removeClass('list-loading');
     this.listLoading = false;
   },
   /**
@@ -74,7 +74,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
     this.options = false; // force a refresh
     ErrorManager.addError('aborted', response);
 
-    domClass.remove(this.domNode, 'list-loading');
+    $(this.domNode).removeClass('list-loading');
     this.listLoading = false;
   },
   clear: function clear() {
@@ -125,10 +125,10 @@ const __class = declare('argos._LegacySDataListMixin', null, {
       this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
     }
 
-    domClass.toggle(this.domNode, 'list-has-more', this.hasMoreData());
+    $(this.domNode).toggleClass('list-has-more', this.hasMoreData());
 
     if (this.options.allowEmptySelection) {
-      domClass.add(this.domNode, 'list-has-empty-opt');
+      $(this.domNode).addClass('list-has-empty-opt');
     }
 
     this._loadPreviousSelections();

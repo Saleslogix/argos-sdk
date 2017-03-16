@@ -14,11 +14,10 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import domStyle from 'dojo/dom-style';
-import domClass from 'dojo/dom-class';
 import _Widget from 'dijit/_Widget';
 import _ActionMixin from './_ActionMixin';
 import _Templated from './_Templated';
+import $ from 'jquery';
 
 /**
  * @class argos.Toolbar
@@ -90,34 +89,34 @@ const __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
    * Sets the toolbar style to block (visibile)
    */
   show: function show() {
-    domStyle.set(this.domNode, 'display', 'block');
+    $(this.domNode).css('display', 'block');
   },
   /**
    * Sets the toolbar style to none (hidden)
    */
   hide: function hide() {
-    domStyle.set(this.domNode, 'display', 'none');
+    $(this.domNode).css('display', 'none');
   },
   /**
    * Empties the toolbar item collection and sets enabled to true
    */
   clear: function clear() {
     this.tools = {};
-    domClass.remove(this.domNode, 'toolbar-disabled');
+    $(this.domNode).removeClass('toolbar-disabled');
     this.enabled = true;
   },
   /**
    * Removes the disabled style and sets enabled to true
    */
   enable: function enable() {
-    domClass.remove(this.domNode, 'toolbar-disabled');
+    $(this.domNode).removeClass('toolbar-disabled');
     this.enabled = true;
   },
   /**
    * Adds a disabled style class and sets enabled to false
    */
   disable: function disable() {
-    domClass.add(this.domNode, 'toolbar-disabled');
+    $(this.domNode).removeClass('toolbar-disabled');
     this.enabled = false;
   },
   /**

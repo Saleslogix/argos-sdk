@@ -3,46 +3,14 @@
   "licenseText": "",
   "deployDir": "deploy/",
   "pkgs": [
-    {
+  {
       "name": "Argos SDK Global Dependencies",
       "file": "content/javascript/argos-dependencies.js",
       "isDebug": true,
       "fileIncludes": [
         {
-          "text": "l20n.js",
-          "path": "../libraries/l20n/"
-        },
-        {
-          "text": "Simplate.js",
-          "path": "../libraries/"
-        },
-        {
-          "text": "canvas2image.js",
-          "path": "../libraries/"
-        },
-        {
-          "text": "sdata-client-dependencies-debug.js",
-          "path": "../libraries/sdata/"
-        },
-        {
-          "text": "sdata-client-debug.js",
-          "path": "../libraries/sdata/"
-        },
-        {
-          "text": "deep-diff-0.2.0.min.js",
-          "path": "../libraries/deep-diff/"
-        },
-        {
-          "text": "Chart.min.js",
-          "path": "../libraries/"
-        },
-        {
-          "text": "browser-polyfill.min.js",
-          "path": "../libraries/babel/"
-        },
-        {
-          "text": "page.js",
-          "path": "../libraries/pagejs-1.6.1/"
+          "text": "jquery.js",
+          "path": "../node_modules/jquery/dist/"
         }
       ]
     }
@@ -52,21 +20,6 @@
       "src": "../localization/locales/argos",
       "dest": "localization/locales/argos",
       "filters": ".*(\\.l20n)",
-    },
-    {
-      "src": "../libraries/font-awesome-4.4.0/fonts",
-      "dest": "content/css/themes/fonts",
-      "filters": ".*(\\.otf|\\.eot|\\.svg|\\.ttf|\\.woff|\\.woff2)"
-    },
-    {
-      "src": "../content",
-      "dest": "content",
-      "filters": ".*(\\.css|\\.jpg|\\.png|\\.gif)"
-    },
-    {
-      "src": "../min",
-      "dest": "content",
-      "filters": ".*(\\.css)"
     },
     {
       "src": "../libraries/dojo/dojo",

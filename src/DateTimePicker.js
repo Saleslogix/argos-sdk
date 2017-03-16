@@ -1,12 +1,11 @@
 import declare from 'dojo/_base/declare';
 import domConstruct from 'dojo/dom-construct';
-import domStyle from 'dojo/dom-style';
 import _Widget from 'dijit/_Widget';
 import _Templated from 'argos/_Templated';
 import Calendar from './Calendar';
 import TimePicker from './TimePicker';
-
 import moment from 'moment';
+import $ from 'jquery';
 
 /**
  * @class argos.DateTimePicker
@@ -54,7 +53,7 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
       domConstruct.place(this._timeSelectNode.domNode, this.dateTimeNode);
       this._timeSelectNode.show(options);
       if (!this.showTimePicker) {
-        domStyle.set(this._timeSelectNode.domNode, {
+        $(this._timeSelectNode.domNode).css({
           display: 'none',
         });
       }
@@ -62,11 +61,11 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
       this._calendarNode.show(options);
       if (this.showTimePicker) {
         this._timeSelectNode.show(options);
-        domStyle.set(this._timeSelectNode.domNode, {
+        $(this._timeSelectNode.domNode).css({
           display: 'block',
         });
       } else {
-        domStyle.set(this._timeSelectNode.domNode, {
+        $(this._timeSelectNode.domNode).css({
           display: 'none',
         });
       }

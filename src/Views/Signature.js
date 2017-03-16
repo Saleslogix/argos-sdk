@@ -16,11 +16,11 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import json from 'dojo/_base/json';
 import query from 'dojo/query';
-import domGeom from 'dojo/dom-geometry';
 import win from 'dojo/window';
 import format from '../Format';
 import View from '../View';
 import getResource from '../I18n';
+import $ from 'jquery';
 
 const resource = getResource('signature');
 
@@ -147,11 +147,6 @@ const __class = declare('argos.Views.Signature', [View], {
    */
   canvasNodeHeight: 120,
 
-  /**
-   * Extends parent implementation to store the options to `this.config`, subscribe to the
-   * `/app/resize` event and immediately call resize so the canvas is scaled.
-   * @param options
-   */
   show: function show(options) {
     this.inherited(arguments);
 
@@ -171,8 +166,7 @@ const __class = declare('argos.Views.Signature', [View], {
 
     this._sizeCanvas();
     this.context = this.signatureNode.getContext('2d');
-
-    this.subscribe('/app/resize', this.onResize);
+    $(window).on('resize', this.onResize.bind(this));
 
     this.redraw(this.signature, this.signatureNode, this.config);
   },
@@ -205,13 +199,13 @@ const __class = declare('argos.Views.Signature', [View], {
    * @return Number[]
    */
   _getCoords: function _getCoords(e) {
-    const offset = domGeom.position(this.signatureNode, false);
+    const offset = $(this.signatureNode).position();
     return e.touches ? [
-      e.touches[0].pageX - offset.x,
-      e.touches[0].pageY - offset.y,
+      e.touches[0].pageX - offset.left,
+      e.touches[0].pageY - offset.top,
     ] : [
-      e.clientX - offset.x,
-      e.clientY - offset.y,
+      e.clientX - offset.left,
+      e.clientY - offset.top,
     ];
   },
   /**

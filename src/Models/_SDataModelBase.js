@@ -102,10 +102,12 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
       store.put(entry, options).then((result) => {
         this.onEntryUpdated(result, entry);
         def.resolve(result);
+      }, (err) => {
+        def.reject(err);
       });
     }, (err) => {
       def.reject(err);
-    }); // Since we left off the reject handler, it will propagate up if there is a validation error
+    });
     return def.promise;
   },
   onEntryUpdated: function onEntryUpdated(result, orginalEntry) { // eslint-disable-line

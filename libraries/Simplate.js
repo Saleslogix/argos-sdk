@@ -129,7 +129,7 @@
     var trim = function(val) {
         return val.replace(trimRE, '');
     };
-        
+
     var parse = function(markup, o) {
 
         var tagBegin = o.tags.begin,
@@ -141,7 +141,7 @@
         {
             var key = tagBegin + tagEnd,
                 regex = cacheRE[key] || (cacheRE[key] = new RegExp(tagBegin + '(.*?)' + tagEnd));
-            
+
             fragments = markup.split(regex);
             return fragments;
         }
@@ -261,22 +261,6 @@
             return this.fn.call(container || this, data, container || data);
         }
     });
-
-    if (typeof exports !== 'undefined') {
-        // Server
-        if (typeof module !== 'undefined' && module.exports) {
-            exports = module.exports = Simplate;
-        }
-
-        exports.Simplate = Simplate;
-    } else {
-        // Browser (use AMD if avail)
-        if (typeof define === 'function' && define.amd) {
-            define('Simplate', [], function() {
-                return Simplate;
-            });
-        }
-    }
 
     root.Simplate = Simplate;
 })();

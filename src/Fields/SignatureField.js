@@ -16,11 +16,11 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import json from 'dojo/_base/json';
-import domAttr from 'dojo/dom-attr';
 import format from '../Format';
 import EditorField from './EditorField';
 import FieldManager from '../FieldManager';
 import getResource from '../I18n';
+import $ from 'jquery';
 
 const resource = getResource('signatureField');
 
@@ -128,7 +128,7 @@ const control = declare('argos.Fields.SignatureField', [EditorField], {
     }
 
     this.currentValue = val;
-    domAttr.set(this.inputNode, 'value', val || '');
+    $(this.inputNode).css('value', val || '');
 
     try {
       this.signature = json.fromJson(val);

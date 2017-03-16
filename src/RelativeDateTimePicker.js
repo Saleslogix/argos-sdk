@@ -25,8 +25,8 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   ]),
   listItemTemplate: new Simplate([
     '<li class="simpleList__item" data-time="{%: $.time %}" data-action="select">',
-    '<div class="item__text--left">{%: $.textLeft %}</div>',
-    '<div class="item__text--right">{%: $.textRight %}</div>',
+    '<div class="item__text--left"><span>{%: $.textLeft %}</span></div>',
+    '<div class="item__text--right"><span>{%: $.textRight %}</span></div>',
     '</li>',
   ]),
 

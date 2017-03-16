@@ -84,14 +84,35 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    *
    */
   widgetTemplate: new Simplate([
-    '{% if ($.label) { %}',
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '{% } %}',
-    '<button style="z-index: 5;" data-action="buttonClick" class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
-    '<input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />',
+    `{% if ($.label) { %}
+    <label for="{%= $.name %}"
+      {% if ($.required) { %}
+        class="required"
+      {% } %}>
+        {%: $.label %}
+    </label>
+    {% } %}
+    <div class="field-control-wrapper">
+      <button class="field-control-trigger"
+        aria-label="{%: $.lookupLabelText %}"
+        data-action="buttonClick"
+        title="{%: $.lookupText %}">
+        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+        </svg>
+      </button>
+      <input data-dojo-attach-point="inputNode" 
+        type="text" 
+        {% if ($.requireSelection) { %}
+        readonly="readonly"{% } %}
+        {% if ($.required) { %}
+            data-validate="required"
+            class="required"
+          {% } %}
+        />
+    </div>`,
   ]),
-
-  iconClass: 'fa fa-search fa-lg',
+  iconClass: 'search',
 
   // Localization
   /**
@@ -137,6 +158,11 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    * The default `valueKeyProperty` if `valueKeyProperty` is not defined.
    */
   keyProperty: '$key',
+  /**
+   * required should be true if the field requires input. Defaults to false.
+   * @type {Boolean}
+   */
+  required: false,
   /**
    * @property {String}
    * The default `valueTextProperty` if `valueTextProperty` is not defined.
@@ -364,13 +390,13 @@ const control = declare('argos.Fields.LookupField', [_Field], {
       tools: {
         tbar: [{
           id: 'complete',
-          cls: 'fa fa-check fa-fw fa-lg',
+          svg: 'check',
           fn: this.complete,
           scope: this,
         }, {
           id: 'cancel',
           side: 'left',
-          cls: 'fa fa-ban fa-fw fa-lg',
+          svg: 'cancel',
           fn: this.reui.back,
           scope: this.reui,
         }],
@@ -508,6 +534,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
     if (view && selectionModel) {
       const selections = selectionModel.getSelections();
       const selectionCount = selectionModel.getSelectionCount();
+      const unloadedSelections = view.getUnloadedSelections();
 
       if (selectionCount === 0 && view.options.allowEmptySelection) {
         this.clearValue(true);
@@ -523,7 +550,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
         }
       } else {
         if (selectionCount > 0) {
-          this.setSelections(selections);
+          this.setSelections(selections, unloadedSelections);
         }
       }
 
@@ -659,11 +686,12 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    * Sets the displayed text using `this.textRenderer`.
    *
    * @param {Object[]} values
+   * @param {Object[]} unloadedValues option.previousSelections that were not loaded by the view.
    */
-  setSelections: function setSelections(values) {
-    this.currentValue = (this.formatValue) ? this.formatValue.call(this, values) : values;
+  setSelections: function setSelections(values, unloadedValues) {
+    this.currentValue = (this.formatValue) ? this.formatValue.call(this, values, unloadedValues) : values;
 
-    const text = (this.textRenderer) ? this.textRenderer.call(this, values) : '';
+    const text = (this.textRenderer) ? this.textRenderer.call(this, values, unloadedValues) : '';
 
     this.setText(text);
   },

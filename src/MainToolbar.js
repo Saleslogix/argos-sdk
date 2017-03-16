@@ -14,11 +14,12 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
+import array from 'dojo/_base/array';
 import query from 'dojo/query';
-import domClass from 'dojo/dom-class';
-import domConstruct from 'dojo/dom-construct';
 import Toolbar from './Toolbar';
+import domConstruct from 'dojo/dom-construct';
 import getResource from './I18n';
+import $ from 'jquery';
 import 'dojo/NodeList-manipulate';
 
 const resource = getResource('mainToolbar');
@@ -47,11 +48,98 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    *
    * `$` - the toolbar instance
    */
-  widgetTemplate: new Simplate([
-    '<div class="toolbar {%= $.cls %}">',
-    '<div id="pageTitle" class="toolbar-title" data-dojo-attach-event="onclick: onTitleClick" data-dojo-attach-point="titleNode">{%= $.titleText %}</div>',
-    '</div>',
+  widgetTemplate: new Simplate([`
+    <header class="header azure07 is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
+      <div class="toolbar has-more-button has-title-button" role="toolbar" aria-label="Layouts">
+        <div class="title">
+          <button class="btn-icon application-menu-trigger hide-focus" type="button" tabindex="0">
+              <span class="audible">Show navigation</span>
+              <span class="icon app-header">
+                <span class="one"></span>
+                <span class="two"></span>
+                <span class="three"></span>
+              </span>
+          </button>
+          <h1 data-dojo-attach-point="titleNode">
+            {%= $.titleText %}
+          </h1>
+        </div>
+        <div class="buttonset" data-dojo-attach-point="toolNode">
+        </div>
+        <div class="more">
+          <button class="btn-actions page-changer hide-focus" type="button" aria-haspopup="true" aria-controls="app-toolbar-more">
+            <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-more"></use>
+            </svg>
+            <span class="audible" data-translate="text">More...</span>
+          </button>
+          <div class="popupmenu-wrapper bottom" role="application" aria-hidden="true">
+            <ul id="app-toolbar-more" class="popupmenu is-selectable" role="menu" aria-hidden="true" >
+              <li class="heading" role="presentation">Theme</li>
+              <div data-dojo-attach-point="themeNode"></div>
+              <li class="separator" role="presentation"></li>
+              <li class="heading" role="presentation">Personalization</li>
+              <div data-dojo-attach-point="personalizationNode"></div>
+            </ul>
+            <div class="arrow">
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  `]),
+  themeTemplate: new Simplate([
+    '<li class="is-selectable ',
+    '{% if($.name === $.selected) { %}',
+    'is-checked',
+    '{% }  %}',
+    '">',
+    '<a href="#" tabindex="-1" role="menuitemcheckbox" data-theme="{%= $.data %}">{%= $.name %}</a>',
+    '</li>',
   ]),
+  personalizationTemplate: new Simplate([
+    '<li class="is-selectable ',
+    '{% if($.name === $.selected) { %}',
+    'is-checked',
+    '{% }  %}',
+    '">',
+    '<a href="#" tabindex="-1" role="menuitem" data-rgbcolor="{%= $.data %}">{%= $.name %}</a>',
+    '</li>',
+  ]),
+  selectedTheme: 'Light',
+  selectedPersonalization: 'Default',
+  themes: [{
+    name: 'Light',
+    data: 'light-theme',
+  }, {
+    name: 'Dark',
+    data: 'dark-theme',
+  }, {
+    name: 'High Contrast',
+    data: 'high-contrast-theme',
+  }],
+  personalizations: [{
+    name: 'Default',
+    data: '',
+  }, {
+    name: 'Azure',
+    data: '#368AC0',
+  }, {
+    name: 'Amber',
+    data: '#EFA836',
+  }, {
+    name: 'Amethyst',
+    data: '#9279A6',
+  }, {
+    name: 'Turqoise',
+    data: '#579E95',
+  }, {
+    name: 'Emerald',
+    data: '#76B051',
+  }, {
+    name: 'Graphite',
+    data: '#5C5C5C',
+  }],
   /**
    * @property {Simplate}
    * Simplate that defines the toolbar item HTML Markup
@@ -59,17 +147,20 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    * `$` - The toolbar item object
    * `$$` - The toolbar instance
    */
-  toolTemplate: new Simplate([
-    '<button class="button toolButton toolButton-{%= $.side || "right" %} {%= ($$.enabled) ? "" : "toolButton-disabled" %} {%= $.cls %}"',
-    'data-action="invokeTool" data-tool="{%= $.id %}"',
-    'aria-label="{%: $.title || $.id %}">',
-    '{% if ($.icon) { %}',
-    '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
-    '{% } %}',
-    '{% if (!$.cls) { %}',
-    '<span></span>',
-    '{% } %}',
-    '</button>',
+  toolTemplate: new Simplate([`
+      <button
+        class="btn-icon hide-focus {%= $.cls %}"
+        type="button"
+        data-action="invokeTool"
+        data-tool="{%= $.id %}">
+        {% if ($.svg) { %}
+        <svg aria-hidden="true" focusable="false" role="presentation" class="icon">
+          <use xlink:href="#icon-{%= $.svg %}"/>
+        </svg>
+        {% } %}
+        <span class="audible">{%: $.title || $.id %}</span>
+      </button>
+    `,
   ]),
   /**
    * @property {Number}
@@ -90,6 +181,57 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
 
     query('> [data-action], .toolButton-right', this.domNode).remove();
   },
+  buildPersonalizations: function buildPersonalizations() {
+    array.forEach(this.personalizations, function addToPersList(item) {
+      const pers = domConstruct.toDom(this.personalizationTemplate.apply({
+        name: item.name,
+        data: item.data,
+        selected: this.selectedPersonalization,
+      }, this));
+      domConstruct.place(pers, this.personalizationNode);
+    }, this);
+
+    array.forEach(this.themes, function addToThemeList(item) {
+      const theme = domConstruct.toDom(this.themeTemplate.apply({
+        name: item.name,
+        data: item.data,
+        selected: this.selectedTheme,
+      }, this));
+      domConstruct.place(theme, this.themeNode);
+    }, this);
+  },
+  initSoho: function initSoho() {
+    if (this._sohoInit) {
+      return;
+    }
+
+    this.buildPersonalizations();
+
+    const container = App.getAppContainerNode();
+
+    const header = $('.header', container).first();
+    header.header();
+    this.header = header.data('header');
+
+    const toolbar = $('.toolbar', this.domNode);
+    toolbar.toolbar();
+    this.toolbar = toolbar.data('toolbar');
+
+    $('.title > h1', this.domNode).on('click', this.onTitleClick);
+
+    // init personalization
+    $('body').personalize({
+      startingColor: null,
+    });
+
+    this._sohoInit = true;
+  },
+  _sohoInit: false,
+  updateSoho: function updateSoho() {
+    this.initSoho();
+    this.toolbar.updated();
+    this.header.updated();
+  },
   /**
    * Calls parent {@link Toolbar#showTools showTools} which sets the tool collection.
    * The collection is then looped over and added to DOM, adding the left or right styling
@@ -98,13 +240,15 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
   showTools: function showTools(tools) {
     this.inherited(arguments);
 
-    domClass.remove(this.domNode, `toolbar-size-${this.size}`);
+    $(this.domNode).removeClass(`toolbar-size-${this.size}`);
     let onLine = this.app.onLine;
     if (tools) {
       const count = {
         left: 0,
         right: 0,
       };
+
+      $(this.toolNode).empty();
 
       for (let i = 0; i < tools.length; i++) {
         const tool = tools[i];
@@ -114,11 +258,13 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         if (tool.offline) {
           onLine = false;
         }
-        domConstruct.place(toolTemplate.apply(tool, this.tools[tool.id]), this.domNode, 'last');
+        $(this.toolNode).append(toolTemplate.apply(tool, this.tools[tool.id]));
       }
 
+      this.updateSoho();
+
       this.size = Math.max(count.left, count.right);
-      domClass.add(this.domNode, `toolbar-size-${this.size}`);
+      $(this.domNode).addClass(`toolbar-size-${this.size}`);
       this.setMode(onLine);
     }
   },
@@ -127,10 +273,29 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    */
   onTitleClick: function onTitleClick(/* evt*/) {},
   setMode: function setMode(onLine) {
-    domClass.remove(this.domNode, 'offline');
+    $(this.domNode).removeClass('offline');
     if (!onLine) {
-      domClass.add(this.domNode, 'offline');
+      $(this.domNode).addClass('offline');
     }
+  },
+
+  disableTool: function disableTool(id) {
+    this.inherited(arguments);
+    const result = this._getToolDOMNode(id);
+    if (result) {
+      $(result).addClass('toolButton-disabled');
+    }
+  },
+  enableTool: function enableTool(id) {
+    this.inherited(arguments);
+    const result = this._getToolDOMNode(id);
+    if (result) {
+      $(result).removeClass('toolButton-disabled');
+    }
+  },
+  _getToolDOMNode: function _getToolDOMNode(id) {
+    const [result] = query(`[data-tool=${id}]`, this.domNode);
+    return result;
   },
 });
 

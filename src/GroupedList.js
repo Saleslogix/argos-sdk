@@ -26,11 +26,10 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import query from 'dojo/query';
 import string from 'dojo/string';
-import domClass from 'dojo/dom-class';
-import domConstruct from 'dojo/dom-construct';
 import List from './List';
 import Utility from './Utility';
 import getResource from './I18n';
+import $ from 'jquery';
 
 const resource = getResource('groupedList');
 
@@ -44,31 +43,32 @@ const __class = declare('argos.GroupedList', [List], {
 
   collapsedIconClass: 'fa-chevron-right',
   expanedIconClass: 'fa-chevron-down',
+  accordion: null,
 
   /**
    * @property {Simplate}
    * Simplate that defines the HTML Markup. This override adds the needed styling.
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow list grouped-list{%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="list grouped-list listview-search {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '<div data-dojo-attach-point="searchNode"></div>',
-    '<div class="overthrow scroller" data-dojo-attach-point="scrollerNode">',
     '{%! $.emptySelectionTemplate %}',
-    '<div class="group-content" data-dojo-attach-point="contentNode"></div>',
+    '<div class="accordion panel inverse has-icons" data-options="{allowOnePane: false}" data-dojo-attach-point="contentNode"></div>',
     '{%! $.moreTemplate %}',
     '{%! $.listActionTemplate %}',
-    '</div>',
     '</div>',
   ]),
   /**
    * @property {Simplate}
    * Simplate that defines the Group template that includes the header element with collapse button and the row container
    */
-  groupTemplate: new Simplate([
-    '<h2 data-action="toggleGroup" class="{% if ($.collapsed) { %}collapsed{% } %}">',
-    '<button class="fa {% if ($.collapsed) { %}{%: $$.collapsedIconClass %} {% } else { %}{%: $$.expanedIconClass %}{% } %}" aria-label="{%: $$.toggleCollapseText %}"></button>{%: $.title %}',
-    '</h2>',
-    '<ul data-group="{%= $.tag %}" class="list-content {%= $.cls %}"></ul>',
+  groupTemplate: new Simplate([`
+      <div class="accordion-header has-chevron hide-focus" role="presentation">
+        <a aria-haspopup="true" role="button">{%: $.title %}</a>
+      </div>
+      <div class="accordion-pane" data-group="{%= $.tag %}">
+      </div>
+    `,
   ]),
 
   /**
@@ -146,27 +146,6 @@ const __class = declare('argos.GroupedList', [List], {
     };
   },
   /**
-   * Toggles the collapsible state of the clicked group
-   * @param {Object} params Object containing the event and other properties
-   */
-  toggleGroup: function toggleGroup(params) {
-    const node = params.$source;
-
-    if (node) {
-      domClass.toggle(node, 'collapsed');
-      const child = node.children[0];
-
-      // Child is the button icon indicator for collapsed/expanded
-      if (child) {
-        if (domClass.contains(child, this.expanedIconClass)) {
-          domClass.replace(child, this.collapsedIconClass, this.expanedIconClass);
-        } else {
-          domClass.replace(child, this.expanedIconClass, this.collapsedIconClass);
-        }
-      }
-    }
-  },
-  /**
    * Overwrites the parent {@link List#processFeed processFeed} to introduce grouping by group tags, see {@link #getGroupForEntry getGroupForEntry}.
    * @param {Object} feed The SData feed result
    * @deprecated Use processData instead
@@ -193,9 +172,9 @@ const __class = declare('argos.GroupedList', [List], {
         entry.$groupTitle = entryGroup.title;
 
         this.entries[entry.$key] = entry;
-        const rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
-        this.onApplyRowTemplate(entry, rowNode);
-        domConstruct.place(rowNode, getGroupsNode(entryGroup), 'last');
+        const rowNode = $(this.rowTemplate.apply(entry, this));
+        this.onApplyRowTemplate(entry, rowNode.get(0));
+        $(getGroupsNode(entryGroup)).append(rowNode);
       }
     }
 
@@ -205,7 +184,8 @@ const __class = declare('argos.GroupedList', [List], {
       this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
     }
 
-    domClass.toggle(this.domNode, 'list-has-more', this.hasMoreData());
+    $(this.domNode).toggleClass('list-has-more', this.hasMoreData());
+    this.updateSoho();
   },
   processData: function processData(entries) {
     const count = entries.length;
@@ -224,10 +204,10 @@ const __class = declare('argos.GroupedList', [List], {
         entry.$groupTag = entryGroup.tag;
         entry.$groupTitle = entryGroup.title;
 
-        const rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
-        this.onApplyRowTemplate(entry, rowNode);
+        const rowNode = $(this.rowTemplate.apply(entry, this));
+        this.onApplyRowTemplate(entry, rowNode.get(0));
 
-        domConstruct.place(rowNode, getGroupsNode(entryGroup), 'last');
+        $(getGroupsNode(entryGroup)).append(rowNode);
       }
     }
   },
@@ -237,8 +217,8 @@ const __class = declare('argos.GroupedList', [List], {
       results = results[0];
     } else {
       // Does not exist, lets create it
-      results = domConstruct.toDom(this.groupTemplate.apply(entryGroup, this));
-      domConstruct.place(results, this.contentNode, 'last');
+      results = $(this.groupTemplate.apply(entryGroup, this));
+      $(this.contentNode).append(results);
       // re-query what we just place in (which was a doc frag)
       results = query(`[data-group="${entryGroup.tag}"]`, this.contentNode)[0];
     }
@@ -292,6 +272,16 @@ const __class = declare('argos.GroupedList', [List], {
   applyGroupByOrderBy: function applyGroupByOrderBy() {
     if (this._currentGroupBySection) {
       this.queryOrderBy = this._currentGroupBySection.section.getOrderByQuery();
+    }
+  },
+  initSoho: function initSoho() {
+    const accordion = $('.accordion.panel', this.domNode);
+    accordion.accordion();
+    this.accordion = accordion.data('accordion');
+  },
+  updateSoho: function updateSoho() {
+    if (this.accordion) {
+      this.accordion.updated();
     }
   },
 });

@@ -25,7 +25,7 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import domClass from 'dojo/dom-class';
+import $ from 'jquery';
 import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';
 import MODEL_TYPES from 'argos/Models/Types';
@@ -174,7 +174,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
    */
   processTemplateEntry: function processTemplateEntry(templateEntry) {
     this.templateEntry = this.convertEntry(templateEntry || {});
-
+    this.resetInteractionState();
     this.setValues(this.templateEntry, true);
     this.applyFieldDefaults();
     this.applyContext(this.templateEntry);
@@ -186,7 +186,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
       this.setValues(this.entry);
     }
 
-    domClass.remove(this.domNode, 'panel-loading');
+    $(this.domNode).removeClass('panel-loading');
   },
   /**
    * Does the reverse of {@link #convertEntry convertEntry} in that it loops the payload being
@@ -218,13 +218,33 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
     return entry;
   },
   resetInteractionState: function resetInteractionState() {
-    Object.keys(this.fields)
+    if (this._previousFieldState === null) {
+      this._previousFieldState = {};
+      return;
+    }
+
+    // Restore the previous state of each field before the security was applied
+    Object.keys(this._previousFieldState)
       .forEach((k) => {
         const field = this.fields[k];
-        field.enable();
-        field.show();
+        const previousState = this._previousFieldState[k];
+
+        if (previousState.disabled) {
+          field.disable();
+        } else {
+          field.enable();
+        }
+
+        if (previousState.hidden) {
+          field.hide();
+        } else {
+          field.show();
+        }
       });
+
+    this._previousFieldState = {};
   },
+  _previousFieldState: null,
   processFieldLevelSecurity: function processFieldLevelSecurity(entry) {
     this.resetInteractionState();
     const { $permissions: permissions } = entry;
@@ -238,7 +258,12 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
           return;
         }
 
-        // TODO: How do we handle fields that have validation tied to them?
+        // Capture the current state before we apply the changes
+        this._previousFieldState[name] = {
+          disabled: field.isDisabled(),
+          hidden: field.isHidden(),
+        };
+
         if (access === 'NoAccess') {
           field.disable();
           field.hide();

@@ -27,7 +27,6 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
-import domClass from 'dojo/dom-class';
 import _Widget from 'dijit/_Widget';
 import _ActionMixin from '../_ActionMixin';
 import _Templated from '../_Templated';
@@ -186,18 +185,6 @@ const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Template
   hide: function hide() {
     this.hidden = true;
     this.onHide(this);
-  },
-  toggleHighlight: function toggleHighlight() {
-    const node = this.domNode;
-    if (node) {
-      domClass.toggle(node, this.highlightCls);
-    }
-  },
-  clearHighlight: function clearHighlight() {
-    const node = this.domNode;
-    if (node) {
-      domClass.remove(node, this.highlightCls);
-    }
   },
   /**
    * Returns the hidden state

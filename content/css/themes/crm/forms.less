@@ -5,28 +5,7 @@
 @import "mixins.less";
 
 input, textarea {
-    font-size: @font-size-input;
-    border: @form-border;
-    .box-sizing(border-box);
-    .border-radius(3px);
     width: 100%;
-    margin: 0 0 8px 0;
-    padding: 7px;
-}
-
-label {
-    font-size: @label-font-size;
-}
-
-input:focus, textarea:focus {
-    outline: none;
-    border: 1px solid @color-azure;
-    background-color: #EAF7FF;
-}
-
-.list-content > .actions-row > button:active,
-.group-content > .actions-row > button:active {
-    background-color: @list-action-active-bg-color;
 }
 
 .group-content > h2 > button {
@@ -34,26 +13,8 @@ input:focus, textarea:focus {
     background-color: transparent;
 }
 
-.panel-content > h2 > button {
-    float: right;
-    background-color: transparent;
-    border: none;
-}
-
-.toolButton,
-.headerButton {
-    color: @toolbar-text-color;
-    background-color: @toolbar-button-bg-color;
-    border: @toolbar-button-border;
-}
-
 .toolButton-disabled {
     opacity: @toolbar-button-disabled-opacity;
-}
-
-.toolButton-hidden {
-    display: none;
-    visibility: hidden;
 }
 
 /* signature capture */
@@ -76,97 +37,18 @@ input:focus, textarea:focus {
     margin: 0 1em;
 }
 
-.list-more .button, .list-empty-opt .button {
-    height: 40px;
-    line-height: 40px;
-    cursor: pointer;
-}
-
-.list-has-more .list-more .button, .list-has-empty-opt .list-empty-opt .button {
-    width: 100%;
-}
-
-.list-loading .list-more .button span,
-.panel.busy .actionButton span.indicator {
-    visibility: visible;
-    display: inline;
-}
-
-.list-loading .list-more .button span {
-  text-transform: uppercase;
-  font-weight: bold;
-  color: @color-graphite;
-}
-
-.actions-row > button {
-    position: relative;
-    float: left;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: 64px;
-    height: 40px;
-    text-align: center;
-    background: none;
-    border: 0 solid #000;
-}
-
-.actions-row > button > label {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    bottom: 2px;
-    padding: 0;
-    font-size: @font-size-paragraph;
-    white-space: nowrap;
-    display: block;
-    text-overflow: ellipsis;
-    overflow-x: hidden;
-}
-
-.actions-row > button > span {
-    position: absolute;
-    width: 100%;
-    left: 0px;
-    top: 2px;
-    padding: 0;
-    font-size: 25px; /* changes the quick action icon size */
-}
-
-.actions-row > button > img {
-    position: absolute;
-    top: 0px;
-    left: 25%;
-    padding: 2px 2px 0 2px;
-    width: 24px;
-    height: 24px;
+.actions-row > li {
+  display: inline;
+  border: none;
 }
 
 .action-list > li > a > label {
     cursor: pointer !important;
-    display: block;
     line-height: inherit;
-    padding: 0;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    color: @color-light-slate;
-}
-
-/* collapsed/expand icons */
-.group-content > h2 > button {
-    float: right;
-    border: none;
-    height: 32px;
-}
-
-/* busy */
-.panel.busy .actionButton span.indicator {
-    margin: 0 10px 0 0;
-}
-
-.panel .actionButton span.indicator {
-    visibility: hidden;
-    display: none;
+    color: @color-lighter-slate;
 }
 
 .row-disabled > div > button,
@@ -183,246 +65,6 @@ input:focus, textarea:focus {
 .row-readonly > div {
     opacity: 0.5;
     cursor: default;
-}
-
-.row-edit[data-field-type="picklist"] > div > .button,
-.row-edit[data-field-type="lookup"] > div > .button,
-.row-edit[data-field-type="select"] > div > .button,
-.row-edit[data-field-type="address"] > div > .button,
-.row-edit[data-field-type="name"] > div > .button,
-.row-edit[data-field-type="date"] > div > .button,
-.row-edit[data-field-type="note"] > div > .button,
-.row-edit[data-field-type="duration"] > div > .button,
-.row-edit[data-field-type="picklist"] > .button,
-.row-edit[data-field-type="lookup"] > .button,
-.row-edit[data-field-type="select"] > .button,
-.row-edit[data-field-type="address"] > .button,
-.row-edit[data-field-type="name"] > .button,
-.row-edit[data-field-type="date"] > .button,
-.row-edit[data-field-type="note"] > .button,
-.row-edit[data-field-type="signature"] > div > .button,
-.row-edit[data-field-type="recurrences"] > div > .button {
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    right: 19px;
-    display: block;
-    height: 44px;
-    width: 44px;
-    background-color: transparent;
-    border: 0;
-}
-
-.row-edit[data-field-type="picklist"] > div > input,
-.row-edit[data-field-type="lookup"] > div > input,
-.row-edit[data-field-type="select"] > div > input,
-.row-edit[data-field-type="name"] > div > input,
-.row-edit[data-field-type="date"] > div > input,
-.row-edit[data-field-type="note"] > div > input,
-.row-edit[data-field-type="picklist"] > input,
-.row-edit[data-field-type="lookup"] > input,
-.row-edit[data-field-type="select"] > input,
-.row-edit[data-field-type="name"] > input,
-.row-edit[data-field-type="date"] > input,
-.row-edit[data-field-type="note"] > input {
-    padding: 8px 34px 8px 0px;
-}
-
-div.table-layout div.hasButton {
-    width: 30px;
-    white-space: nowrap;
-}
-
-div.table-layout div.hasButton > button {
-    margin: 0;
-    border: 0;
-}
-
-div.table-layout div.hasButton > button.searchButton {
-    border: @button-border;
-}
-
-div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
-    border: 0;
-    padding: 0 6px;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-}
-
-.clear-button {
-    position: absolute;
-    right: 4px;
-    margin: 1px 1px 0 0 !important;
-    padding: 0;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 101;
-    width: 30px;
-    height: 30px;
-    display: block;
-}
-
-/* search */
-.list-search input {
-    border: 0;
-    .box-sizing(border-box);
-    height: 32px;
-    vertical-align: middle;
-    margin: 0 !important;
-}
-
-.list-search .searchButton {
-    cursor: pointer;
-    line-height: 30px;
-    padding: 0 8px 0 6px;
-    border: solid 1px #000;
-    text-align: center;
-    z-index: 100;
-
-    .box-sizing(border-box);
-    display: inline-block;
-    height: 35px;
-}
-
-.list-search .dismissButton {
-    cursor: pointer;
-    line-height: 30px;
-    text-align: center;
-    z-index: 100;
-
-    .box-sizing(border-box);
-    position: absolute;
-    display: inline-block;
-    height: 32px;
-    width: 32px;
-    right: 70px;
-    top: 6px;
-    border: solid 1px black;
-}
-
-.list-search label {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    color: #aaa;
-    line-height: 32px;
-    padding: 0 8px 0 6px;
-    font-weight: normal;
-}
-
-.search-active label {
-    display: none;
-}
-
-.search-active .dismissButton {
-    display: block;
-}
-
-.search-widget button.clear-button {
-    position: static;
-    height: 30px;
-}
-
-div.search-active button.clear-button,
-.text-field-active > button.clear-button,
-button.clear-button:focus {
-    background: url('../../../images/delete.png') no-repeat 50% 50%;
-}
-
-/* edit/insert */
-.row > div > input:not([type|=radio]):not([type|=checkbox]),
-.row > input:not([type|=radio]):not([type|=checkbox]) {
-    height: 44px;
-    vertical-align: middle;
-    padding: 10px 10px 0 0px;
-}
-
-.row-edit[data-field-type="signature"] > div > canvas,
-.row-edit[data-field-type="signature"] > div > img {
-    margin-left: 0px;
-}
-
-.row-edit[data-field-type="duration"] > div > .autoComplete-watermark {
-    position: absolute;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    z-index: 10;
-    color: #999;
-    padding: 3px 0 0 111px;
-}
-
-.row-edit {
-    /*position: relative;*/
-    padding: 2px 0.75em;
-}
-
-.row > div > input[type|=radio], .row > div > input[type|=checkbox],
-.row > input[type|=radio], .row > input[type|=checkbox] {
-    margin: 7px 7px 0 0;
-    height: 25px;
-    width: 25px;
-    display: block;
-}
-
-.row > div > input:not([type|=radio]):not([type|=checkbox]),
-.row > input:not([type|=radio]):not([type|=checkbox]) {
-    -webkit-appearance: none;
-
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-
-    margin: 0;
-    padding: 8px 34px 8px 8px;
-}
-
-.row > div > input[type|=radio], .row > div > input[type|=checkbox],
-.row > input[type|=radio], .row > div > input[type|=checkbox] {
-    margin: 7px 7px 0 0;
-    height: 25px;
-    width: 25px;
-}
-
-.text-input {
-    padding: 8px 34px 8px 0px;
-}
-
-.button {
-    height: 44px;
-    vertical-align: middle;
-    padding: 0 2px 0 2px;
-    outline: none;
-    border: @button-border;
-    .border-radius(@button-border-radius);
-    background-color: @button-bg-color;
-}
-
-.toolButton {
-    position: relative;
-    min-width: 44px;
-    min-height: 44px;
-    padding: 0;
-    z-index: 100;
-}
-
-.toolButton > img {
-    margin: 4px;
-}
-
-.toolButton > span {
-    display: inline-block;
-    background-repeat: no-repeat;
-    background-position: center center;
-    margin: 4px;
-    width: 24px;
-    height: 24px;
 }
 
 .file-wrap > input {
@@ -450,74 +92,25 @@ button.clear-button:focus {
     font-weight: bold !important;
     text-align: left !important;
 }
-
-.toggle {
-    border: @toggle-border;
-    background-color: @toggle-bg-color;
-    .border-radius(@toggle-border-radius);
-    line-height: @toggle-line-height;
-    .user-select(none);
-    width: 70px;
-    height: 44px;
-    margin: 3px 0px 3px 0px;
+.field-control-wrapper {
+    margin-bottom: 20px;
     position: relative;
-    right: auto;
-    .box-sizing(border-box);
 }
-
-.toggle > .thumb {
+.field-control-trigger {
+    cursor: pointer;
+    display: inline-block;
+    height: 34px;
+    top: 0;
+    right: 0;
+    outline: 0;
     position: absolute;
-    width: 40px;
-    height: 40px;
-    left: 0;
-    background-color: @toggle-thumb-bg-color;
-    .border-radius(@toggle-border-radius);
-}
-
-.toggleStateOn > .thumb {
-    left: auto;
+    width: 34px;
+} 
+.field-control-trigger .icon {
+    background-color: inherit;
+    fill: #5c5c5c;
+    height: 18px;
+    pointer-events: none;
     right: 0px;
-}
-
-.toggleStateOn {
-    background-color: @togglestate-on-bg-color;
-    border-color: @togglestate-on-border-bg-color;
-}
-
-.toggle-vertical {
-    width: 64px;
-    height: 126px;
-    margin: 0;
-    position: relative;
-
-    > .thumb {
-        width: 60px;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-    }
-
-    .toggleOn {
-        height: 60px;
-        width: 64px;
-        top: 0;
-    }
-
-    .toggleOff {
-        position: absolute;
-        width: 100%;
-        bottom: 0;
-        top: auto;
-        left: 0px;
-    }
-}
-
-.toggle-vertical.toggleStateOn > .toggleOff {
-    display: none;
-}
-
-.toggleStateOn > .vertical {
-    left: 0px;
-    top: auto;
-    bottom: 0px;
+    width: 18px;
 }

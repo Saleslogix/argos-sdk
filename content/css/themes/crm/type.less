@@ -1,47 +1,13 @@
 // Typography
 @import "variables.less";
-@import "mixins.less";
 
-body {
-    font-family: @font-family;
+// add style not supported by SoHo
+span {
+  font-size: inherit;
 }
 
-h1, .h1 {
-    font-size: @font-size-h1;
-}
-
-h2, .h2 {
-    font-size: @font-size-h2;
-}
-
-h3, .h3 {
-    font-size: @font-size-h3;
-}
-
-h4, .h4 {
-    font-size: @font-size-h4;
-}
-
-h5, .h5 {
-    font-size: @font-size-h5;
-}
-
-p, span {
-    font-size: @font-size-paragraph;
-}
-
-.smalltext {
-    font-size: @font-size-small;
-}
-
-.verysmalltext {
-    font-size: @font-size-very-small;
-}
-
-.title {
-    font-size: @font-size-title;
-}
-
-.subtitle {
-    font-size: @font-size-subtitle;
+// .hyperlink is set to 14px in soho - 
+// below fix is to reset its size based on the parent where hyperlink is placed
+.hyperlink {
+  font-size: inherit !important;
 }

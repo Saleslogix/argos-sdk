@@ -4,15 +4,7 @@ if exist deploy (
 	rmdir deploy /S /Q
 )
 
-mkdir deploy\content\javascript
-mkdir deploy\content\images
-mkdir deploy\content\css\themes\crm
-mkdir deploy\content\dojo\dojo\selector
-mkdir deploy\content\dojo\dijit
-mkdir deploy\content\dojo\dojox
-
-call grunt clean:css clean:js less
-call npm run build
+mkdir deploy\localization
 
 REM .NET Build Tool
 tools\JsBit\jsbit.exe -p "build/release.jsb2" -d "."

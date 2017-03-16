@@ -16,13 +16,13 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import event from 'dojo/_base/event';
 import string from 'dojo/string';
-import domClass from 'dojo/dom-class';
 import format from '../Format';
 import FieldManager from '../FieldManager';
 import EditorField from './EditorField';
 import DateTimePicker from '../DateTimePicker';
 import RelativeDateTimePicker from '../RelativeDateTimePicker';
 import getResource from '../I18n';
+import $ from 'jquery';
 
 import moment from 'moment';
 
@@ -77,12 +77,34 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    *
    */
   widgetTemplate: new Simplate([
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '<button data-dojo-attach-point="triggerNode" data-action="showModal" class="button whiteButton {% if ($$.iconClass) { %} {%: $$.iconClass %}{% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
-    '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onchange:_onChange" type="text" />',
+    `<label for="{%= $.name %}"
+      {% if ($.required) { %}
+        class="required"
+      {% } %}>
+      {%: $.label %}
+    </label>
+    <div class="field-control-wrapper">
+      <button 
+        data-dojo-attach-point="triggerNode" 
+        data-action="showModal" 
+        class="button field-control-trigger whiteButton" 
+        aria-label="{%: $.lookupLabelText %}">
+          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+          </svg>
+        </button>
+      <input 
+        data-dojo-attach-point="inputNode" 
+        data-dojo-attach-event="onchange:_onChange" 
+        type="text"
+        {% if ($.required) { %}
+          data-validate="required"
+          class="required"
+        {% } %}
+        />
+    </div>`,
   ]),
-
-  iconClass: 'fa fa-calendar fa-lg',
+  iconClass: 'calendar',
 
   /**
    * @property {String}
@@ -90,6 +112,11 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    * {@link Calendar Calendars} view id.
    */
   view: 'generic_calendar',
+  /**
+   * required should be true if the field requires input. Defaults to false.
+   * @type {Boolean}
+   */
+  required: false,
   /**
    * @cfg {Boolean}
    * Sent as part of navigation options to {@link Calendar Calendar}, where it controls the
@@ -140,10 +167,10 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       if (this.inputNode.value !== date.format(this.dateFormatText)) {
         this.inputNode.value = date.format(this.dateFormatText);
       }
-      domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+      $(this.containerNode).removeClass('row-error'); // todo: not the right spot for this, add validation eventing
     } else {
       this.validationValue = this.currentValue = null;
-      domClass.add(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+      $(this.containerNode).addClass('row-error'); // todo: not the right spot for this, add validation eventing
     }
   },
   /**
@@ -171,7 +198,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
     const view = App.getPrimaryActiveView();
     if (view) {
       this.currentValue = this.validationValue = view.getDateTime();
-      domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+      $(this.containerNode).removeClass('row-error'); // todo: not the right spot for this, add validation eventing
     }
   },
   getValuesFromModal: function getValuesFromModal(data = {}) {
@@ -189,7 +216,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       this.currentValue = this.validationValue = data.toDate();
       this.inputNode.value = this.formatValue(this.currentValue);
     }
-    domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+    $(this.containerNode).removeClass('row-error'); // todo: not the right spot for this, add validation eventing
   },
   /**
    * Determines if the current value has been modified from the original value.
@@ -204,7 +231,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
    */
   clearValue: function clearValue() {
     this.inherited(arguments);
-    domClass.remove(this.containerNode, 'row-error'); // todo: not the right spot for this, add validation eventing
+    $(this.containerNode).removeClass('row-error'); // todo: not the right spot for this, add validation eventing
   },
   showModal: function showModal() {
     if (this.isDisabled()) {
