@@ -603,11 +603,13 @@ var PickListService = exports.PickListService = function () {
 
   }, {
     key: 'getFirstByKey',
-    value: function getFirstByKey(key, isId, useCache, callback, onError, scope) {
+    value: function getFirstByKey(key, isId, useCache, callback, onError) {
       var _this = this,
           _arguments = arguments;
 
-      var cachedResult = useCache ? this._storage.getItem(this._storageNameSpace, key) : null;
+      var scope = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
+
+      var cachedResult = useCache ? this._storage.getItem(this._storageNameSpace, key + '_' + scope.language) : null;
       if (cachedResult) {
         callback(cachedResult);
       } else {
@@ -621,7 +623,7 @@ var PickListService = exports.PickListService = function () {
                 result = result.$resources[0];
               }
               if (useCache) {
-                _this._storage.setItem(_this._storageNameSpace, key, result);
+                _this._storage.setItem(_this._storageNameSpace, key + '_' + scope.language, result);
               }
               if (typeof callback === 'function') {
                 callback(result);
