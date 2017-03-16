@@ -88,8 +88,8 @@ const __class = declare('argos.GroupedList', [List], {
    */
   moreTemplate: new Simplate([
     '<div class="list-more" data-dojo-attach-point="moreNode">',
-    '<div class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></div>',
-    '<button class="button" data-action="more">',
+    '<p class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></p>',
+    '<button class="btn" data-action="more">',
     '<span>{%= $.moreText %}</span>',
     '</button>',
     '</div>',

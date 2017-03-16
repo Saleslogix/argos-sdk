@@ -17,7 +17,6 @@ import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
 import string from 'dojo/string';
-import when from 'dojo/when';
 import Utility from './Utility';
 import ErrorManager from './ErrorManager';
 import View from './View';
@@ -286,10 +285,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render row content template
    */
   itemRowContentTemplate: new Simplate([
-    '<div id="top_item_indicators" class="list-item-indicator-content"></div>',
+    '<div class="top_item_indicators list-item-indicator-content"></div>',
     '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
-    '<div id="bottom_item_indicators" class="list-item-indicator-content"></div>',
-    '<div id="list-item-content-related"></div>',
+    '<div class="bottom_item_indicators list-item-indicator-content"></div>',
+    '<div class="list-item-content-related"></div>',
   ]),
   /**
    * @property {Simplate}
@@ -719,7 +718,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     if ((toolbar.tbar && !this._refreshAdded) && !window.App.supportsTouch()) {
       this.tools.tbar.push({
         id: 'refresh',
-        cls: 'fa fa-refresh fa-fw fa-lg',
+        svg: 'refresh',
         action: '_refreshList',
       });
       this._refreshAdded = true;
@@ -921,14 +920,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       .getSelections();
     let selection = null;
 
-
     for (const key in selectedItems) {
       if (selectedItems.hasOwnProperty(key)) {
         selection = selectedItems[key];
         break;
       }
     }
-    console.log(selection);
     this._invokeAction(action, selection);
   },
   _invokeAction: function _invokeAction(action, selection) {
@@ -1086,6 +1083,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.options.source = source;
   },
   /**
+   * @deprecated
    * Hides the passed list-action row/panel by removing the selected styling
    * @param {HTMLElement} rowNode The currently selected row.
    */
@@ -1142,11 +1140,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       return;
     }
 
-    if (this.enableActions) {
-      this.hideActionPanel(node.get(0));
-      return;
-    }
-
     node.removeClass('list-item-selected');
     node.addClass('list-item-de-selected');
   },
@@ -1195,8 +1188,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   },
   applyRowIndicators: function applyRowIndicators(entry, rowNode) {
     if (this.itemIndicators && this.itemIndicators.length > 0) {
-      const topIndicatorsNode = $('#top_item_indicators', rowNode);
-      const bottomIndicatorsNode = $('#bottom_item_indicators', rowNode);
+      const topIndicatorsNode = $('.top_item_indicators', rowNode);
+      const bottomIndicatorsNode = $('.bottom_item_indicators', rowNode);
       if (bottomIndicatorsNode[0] && topIndicatorsNode[0]) {
         if (bottomIndicatorsNode[0].childNodes.length === 0 && topIndicatorsNode[0].childNodes.length === 0) {
           const customizeLayout = this._createCustomizedLayout(this.itemIndicators, 'indicators');
@@ -1533,11 +1526,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       queryExpression = this._buildQueryExpression() || null;
       queryResults = this.requestDataUsingStore(queryExpression, queryOptions);
     }
-
-    when(queryResults,
-      this._onQueryComplete.bind(this, queryResults),
-      this._onQueryError.bind(this, queryOptions)
-    );
+    $.when(queryResults)
+    .done((results) => {
+      this._onQueryComplete(queryResults, results);
+    })
+    .fail(() => {
+      this._onQueryError(queryResults, queryOptions);
+    });
 
     return queryResults;
   },
@@ -1627,9 +1622,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       const start = this.position;
 
       try {
-        when(queryResults.total,
-          this._onQueryTotal.bind(this),
-          this._onQueryTotalError.bind(this));
+        $.when(queryResults.total)
+        .done(() => {
+          this._onQueryTotal(queryResults.total);
+        })
+        .fail(() => {
+          this._onQueryTotalError(queryResults.total);
+        });
 
         /* todo: move to a more appropriate location */
         if (this.options && this.options.allowEmptySelection) {
