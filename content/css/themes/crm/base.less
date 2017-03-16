@@ -282,12 +282,19 @@ body {
     overflow: hidden;
 }
 
+.viewContainer {
+    display: flex;
+    flex-direction: row;
+}
+
 .viewContainer > .list,
 .viewContainer > .panel,
 .viewContainer > .dialog,
 .viewContainer > .view {
     display: none;
     visibility: hidden;
+    flex-grow: 1;
+    order: -1;
 }
 
 .viewContainer > [selected="selected"] {

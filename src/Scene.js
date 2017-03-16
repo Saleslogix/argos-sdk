@@ -3,6 +3,8 @@ import {
   setViewSet,
 } from './actions';
 
+import $ from 'jquery';
+
 /*
 Viewsets (visible) | history
 
@@ -79,6 +81,7 @@ export default class Scene {
       removedViews = viewset.slice(viewIndex + 1);
     } else if (viewset.length < maxviewports) {
       // Push new item on
+      $(view.domNode).css({ order: viewset.length + 1 });
       newViewSet = [...viewset, view.id];
     } else {
       // Insert the new id, shift all indexes to the left, removing the first
@@ -100,6 +103,6 @@ export default class Scene {
 
     store.dispatch(setViewSet(newViewSet));
     store.dispatch(insertHistory(data));
-    this._select(view.id, true);
+    this._select(view.id, 'selected');
   }
 }
