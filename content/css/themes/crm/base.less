@@ -676,3 +676,17 @@ body {
 .tab-container > .listview {
     padding-top: 0
 }
+
+// soho applys styles to <a>
+// As of now listActionItemTemplate in listbase is not able to propogate action if action is  not defined on button
+.popupmenu a + button.popupitem {
+    font-size: 14px;
+    font-size: 1.4rem;
+    color: #1a1a1a;
+    line-height: 32px;
+    padding: 0 30px 0 10px;
+    white-space: nowrap;
+    margin: 0;
+    width: 100%;
+    text-align: left
+}

@@ -276,7 +276,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      label               Text added below the icon
    */
   listActionItemTemplate: new Simplate([`
-    <li><a></a><button type="button" data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">
+    <li><a></a><button class="popupitem" type="button" data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">
       {%: $.label %}
     </button></li>
   `]),
@@ -286,7 +286,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   itemRowContentTemplate: new Simplate([
     '<div class="top_item_indicators list-item-indicator-content"></div>',
-    '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
+    '<div class="list-item-content">{%! $$.itemTemplate %}</div>',
     '<div class="bottom_item_indicators list-item-indicator-content"></div>',
     '<div class="list-item-content-related"></div>',
   ]),
