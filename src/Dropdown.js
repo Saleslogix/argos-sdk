@@ -409,7 +409,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     }
   },
   updateGhost: function updateGhost(value) {
-    const current = query(`[data-value=${value}]`, this._list)[0];
+    const current = query(`[data-value="${value}"]`, this._list)[0];
     const input = query('.dropdown__input', this._ghost)[0];
     if (current) {
       this.updateSelected(current);
