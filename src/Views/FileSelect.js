@@ -145,7 +145,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
     this.contentNode.innerHTML = '';
     $(this.fileArea).removeClass('display-none');
     $(this.btnUploadFiles).removeClass('display-none');
-    this.onUpdateProgress('');
+    this.onUpdateProgress('0');
   },
   _browesForFiles: function _browesForFiles(/* file*/) {
     this.btnFileSelect.click();
@@ -248,7 +248,9 @@ const __class = declare('argos.Views.FileSelect', [View], {
   onUpdateProgress: function onUpdateProgress(msg) {
     const progressbar = $('#progressbar', this.contentNode);
     if (progressbar.length) {
-      progressbar.data('progress').update(msg.replace('%', ''));
+      if (!(msg instanceof Array) && !isNaN(msg.replace('%', ''))) {
+        progressbar.data('progress').update(msg.replace('%', ''));
+      }
       $('#progress-label', this.contentNode).text(`${this.loadingText} ${msg}`);
     }
   },
