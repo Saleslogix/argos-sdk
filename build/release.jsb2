@@ -11,6 +11,10 @@
         {
           "text": "jquery.js",
           "path": "../node_modules/jquery/dist/"
+        },
+        {
+          "text": "d3.js",
+          "path": "../node_modules/d3/"
         }
       ]
     }
