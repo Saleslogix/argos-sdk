@@ -15,14 +15,12 @@
 import util from './Utility';
 import ModelManager from './Models/Manager';
 import Toast from './Dialogs/Toast';
-import { model } from './Model';
-import { intent } from './Intent';
-import { updateConnectionState } from './Intents/update-connection';
 import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
 import ErrorManager from './ErrorManager';
 import getResource from './I18n';
 import { sdk } from './reducers';
+import { setConnectionState } from './actions/connection';
 import Scene from './Scene';
 import { render } from './SohoIcons';
 import { createStore } from 'redux';
@@ -211,10 +209,6 @@ export default class Application {
       history: [],
     };
     this.viewShowOptions = [];
-    // TODO: Replace these
-    const actions = intent();
-    this.state$ = model(actions);
-    this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
 
     // For routing need to know homeViewId
     this.ReUI.app = this;
@@ -232,6 +226,8 @@ export default class Application {
      * @type {Modal}
     */
     this.viewSettingsModal = null;
+
+    this.previousState = null;
   }
 
   /**
@@ -286,17 +282,6 @@ export default class Application {
     this.ping();
   }
 
-  _onStateChange(val) {
-    this._updateConnectionState(val.connectionState);
-    this.onStateChange(val);
-  }
-
-  _onStateError(error) {
-    this.onStateError(error);
-  }
-
-  onStateChange(val) {} // eslint-disable-line
-  onStateError(error) {} // eslint-disable-line
   _updateConnectionState(online) {
     // Don't fire the onConnectionChange if we are in the same state.
     if (this.onLine === online) {
@@ -308,11 +293,11 @@ export default class Application {
   }
 
   forceOnline() {
-    updateConnectionState(true);
+    this.store.dispatch(setConnectionState(true));
   }
 
   forceOffline() {
-    updateConnectionState(false);
+    this.store.dispatch(setConnectionState(false));
   }
 
   onConnectionChange(/* online*/) {}
@@ -622,6 +607,21 @@ export default class Application {
     this.store = createStore(this.getReducer(),
       this.getInitialState(),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+    this.store.subscribe(this.onStateChange.bind(this));
+  }
+
+  onStateChange() {
+    const state = this.store.getState();
+
+    if (this.previousState === null) {
+      this.previousState = state;
+    }
+
+    if (this.previousState.online !== state.online) {
+      this._updateConnectionState(state.online);
+    }
+
+    this.previousState = state;
   }
 
   showApplicationMenuOnLarge() {
@@ -679,9 +679,9 @@ export default class Application {
         .take(1);
 
       ping$.subscribe(() => {
-        updateConnectionState(true);
+        this.store.dispatch(setConnectionState(true));
       }, () => {
-        updateConnectionState(false);
+        this.store.dispatch(setConnectionState(false));
       });
     }, this.PING_DEBOUNCE);
   }
@@ -1099,7 +1099,7 @@ export default class Application {
       }
 
       if (init && view && !view._started) {
-        view.init(this.state$, this.store);
+        view.init(this.store);
         view.placeAt(view._placeAt, 'first');
         view._started = true;
         view._placeAt = null;

@@ -1,6 +1,8 @@
 import { SET_MAX_VIEWPORTS, INSERT_HISTORY } from '../actions';
+import { SET_CONNECTION_STATE } from '../actions/connection';
 
 const initialSDKState = {
+  online: false,
   viewports: 1,
   maxviewports: 2,
   viewset: [],
@@ -58,6 +60,10 @@ export function sdk(state = initialSDKState, action) {
     case INSERT_HISTORY:
       return Object.assign({}, state, {
         history: [...state.history, payload.data],
+      });
+    case SET_CONNECTION_STATE:
+      return Object.assign({}, state, {
+        online: payload.online,
       });
     default:
       return state;
