@@ -276,7 +276,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      label               Text added below the icon
    */
   listActionItemTemplate: new Simplate([`
-    <li><a></a><button type="button" data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">
+    <li><a></a><button class="popupitem" type="button" data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">
       {%: $.label %}
     </button></li>
   `]),
@@ -286,7 +286,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   itemRowContentTemplate: new Simplate([
     '<div class="top_item_indicators list-item-indicator-content"></div>',
-    '<div class="list-item-content" data-snap-ignore="true">{%! $$.itemTemplate %}</div>',
+    '<div class="list-item-content">{%! $$.itemTemplate %}</div>',
     '<div class="bottom_item_indicators list-item-indicator-content"></div>',
     '<div class="list-item-content-related"></div>',
   ]),
@@ -897,7 +897,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   invokeActionItemBy: function invokeActionItemBy(actionPredicate, key) {
     const actions = array.filter(this.visibleActions, actionPredicate);
     const selection = this.selectEntrySilent(key);
-    // this.checkActionState();
+    this.checkActionState(); // TODO: validate this flow
     array.forEach(actions, function forEach(action) {
       this._invokeAction(action, selection);
     }, this);
@@ -919,7 +919,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const selectedItems = this.get('selectionModel')
       .getSelections();
     let selection = null;
-
+    
     for (const key in selectedItems) {
       if (selectedItems.hasOwnProperty(key)) {
         selection = selectedItems[key];
@@ -948,7 +948,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * item using the currently selected row as context by passing the action instance the selected row to the
    * action items `enabled` property.
    */
-  checkActionState: function checkActionState() {
+  checkActionState: function checkActionState(rowNode) {
     const selectedItems = this.get('selectionModel')
       .getSelections();
     let selection = null;
@@ -960,7 +960,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       }
     }
 
-    this._applyStateToActions(selection);
+    this._applyStateToActions(selection, rowNode);
   },
   _clearActions: function _clearActions() {
     let children = this.actionsNode && this.actionsNode.children || [];
@@ -1020,9 +1020,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} selection
    */
   _applyStateToActions: function _applyStateToActions(selection, rowNode) {
-    if (!rowNode) {
-      return;
-    }
     this._clearActions();
     this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
     const actionRow = $(rowNode).find('.actions-row')[0];
@@ -1064,8 +1061,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   showActionPanel: function showActionPanel(rowNode) {
     const actionNode = $(rowNode).find('.actions-row');
-    // this.checkActionState(actionNode);
-
+    this.checkActionState(rowNode);
     this.onApplyRowActionPanel(actionNode, rowNode);
   },
   onApplyRowActionPanel: function onApplyRowActionPanel(/* actionNodePanel, rowNode*/) {},
