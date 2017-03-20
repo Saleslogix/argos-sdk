@@ -151,6 +151,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   },
   initStore: function initStore(store) {
     this.appStore = store;
+    this.appStore.subscribe(this._onStateChange.bind(this));
   },
   _updateConnectionState: function _updateConnectionState(state) {
     if (this.connectionState === state) {
@@ -169,7 +170,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   },
   _onStateChange: function _onStateChange() {
     const state = this.appStore.getState();
-    this._updateConnectionState(state.online);
+    this._updateConnectionState(state.sdk.online);
     this.onStateChange(state);
     this.previousState = state;
   },
