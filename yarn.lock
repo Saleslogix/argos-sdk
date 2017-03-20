@@ -14,7 +14,7 @@
 
 "@infor/sohoxi@4.2.6-develop":
   version "4.2.6-develop"
-  resolved "http://npm.infor.com:4873/@infor%2fsohoxi/-/sohoxi-4.2.6-develop.tgz#b8e23120298e4cffdbbb5acf5dbc10a9bf30506c"
+  resolved "http://npm.infor.com:4873/@infor%2fsohoxi/-/sohoxi-4.2.6-develop.tgz#eb6ff47bb0d92609a32dbfa6fa20345ae5cbff91"
   dependencies:
     d3 "^3.4.6"
     jquery "^3.1.1"
@@ -2160,8 +2160,8 @@ jodid25519@^1.0.0:
     jsbn "~0.1.0"
 
 jquery@^3.1.1:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.0.tgz#3bdbba66e1eee0785532dddadb0e0d2521ca584b"
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
 
 js-tokens@^3.0.0:
   version "3.0.1"
