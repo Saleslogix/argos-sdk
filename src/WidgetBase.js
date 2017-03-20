@@ -1,3 +1,4 @@
+/* eslint-disable */ // TODO: Remove this later
 import $ from 'jquery';
 
 export default class WidgetBase {
