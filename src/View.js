@@ -14,7 +14,6 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import on from 'dojo/on';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
@@ -333,14 +332,14 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       this.transitionComplete(to, options);
       $('body').removeClass('transition');
 
-      on.emit(from, 'aftertransition', {
+      $(from).trigger('aftertransition', {
         out: true,
         tag: options.tag,
         data: options.data,
         bubbles: true,
         cancelable: true,
       });
-      on.emit(to, 'aftertransition', {
+      $(to).trigger('aftertransition', {
         out: false,
         tag: options.tag,
         data: options.data,
@@ -358,7 +357,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     // dispatch an 'show' event to let the page be aware that is being show as the result of an external
     // event (i.e. browser back/forward navigation).
     if (options.external) {
-      on.emit(to, 'show', {
+      $(to).trigger('show', {
         tag: options.tag,
         data: options.data,
         bubbles: true,
@@ -366,14 +365,15 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       });
     }
 
-    on.emit(from, 'beforetransition', {
+    $(from).trigger('beforetransition', {
       out: true,
       tag: options.tag,
       data: options.data,
       bubbles: true,
       cancelable: true,
     });
-    on.emit(to, 'beforetransition', {
+
+    $(to).trigger('beforetransition', {
       out: false,
       tag: options.tag,
       data: options.data,
@@ -453,7 +453,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       options.scroll = !options.reverse;
     }
 
-    on.emit(p, 'load', {
+    $(p).trigger('load', {
       bubbles: false,
       cancelable: true,
     });
@@ -461,7 +461,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     const from = App.getCurrentPage();
 
     if (from) {
-      on.emit(from, 'blur', {
+      $(from).trigger('blur', {
         bubbles: false,
         cancelable: true,
       });
@@ -469,14 +469,14 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
 
     App.setCurrentPage(p);
 
-    on.emit(p, 'focus', {
+    $(p).trigger('focus', {
       bubbles: false,
       cancelable: true,
     });
 
     if (from && $(p).attr('selected') !== 'true') {
       if (options.reverse) {
-        on.emit(p, 'unload', {
+        $(p).trigger('unload', {
           bubbles: false,
           cancelable: true,
         });
@@ -484,7 +484,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
 
       window.setTimeout(this.transition.bind(this), App.checkOrientationTime, from, p, options);
     } else {
-      on.emit(p, 'beforetransition', {
+      $(p).trigger('beforetransition', {
         out: false,
         tag: options.tag,
         data: options.data,
@@ -496,7 +496,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
 
       this.transitionComplete(p, options);
 
-      on.emit(p, 'aftertransition', {
+      $(p).trigger('aftertransition', {
         out: false,
         tag: options.tag,
         data: options.data,
