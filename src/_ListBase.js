@@ -919,7 +919,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const selectedItems = this.get('selectionModel')
       .getSelections();
     let selection = null;
-    
+
     for (const key in selectedItems) {
       if (selectedItems.hasOwnProperty(key)) {
         selection = selectedItems[key];
