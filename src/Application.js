@@ -607,21 +607,26 @@ export default class Application {
     this.store = createStore(this.getReducer(),
       this.getInitialState(),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-    this.store.subscribe(this.onStateChange.bind(this));
+    this.store.subscribe(this._onStateChange.bind(this));
   }
 
-  onStateChange() {
+  _onStateChange() {
     const state = this.store.getState();
 
     if (this.previousState === null) {
       this.previousState = state;
     }
 
+    this.onStateChange(state);
+
     if (this.previousState.online !== state.online) {
       this._updateConnectionState(state.online);
     }
 
     this.previousState = state;
+  }
+
+  onStateChange(state) { // eslint-disable-line
   }
 
   showApplicationMenuOnLarge() {
