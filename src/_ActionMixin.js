@@ -3,7 +3,6 @@
  */
 import declare from 'dojo/_base/declare';
 import $ from 'jquery';
-import 'dojo/NodeList-traverse';
 
 /**
  * @class argos._ActionMixin

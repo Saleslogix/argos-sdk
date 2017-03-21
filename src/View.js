@@ -641,5 +641,4 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.View', __class);
 export default __class;

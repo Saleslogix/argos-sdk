@@ -10,8 +10,7 @@
  * @alternateClassName _LegacySDataListMixin
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import ErrorManager from 'argos/ErrorManager';
+import ErrorManager from './ErrorManager';
 import domConstruct from 'dojo/dom-construct';
 import string from 'dojo/string';
 import $ from 'jquery';
@@ -228,5 +227,4 @@ const __class = declare('argos._LegacySDataListMixin', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._LegacySDataListMixin', __class);
 export default __class;

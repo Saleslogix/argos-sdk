@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import Field from './_Field';
 import FieldManager from '../FieldManager';
 
@@ -112,5 +111,4 @@ const control = declare('argos.Fields.BooleanField', [Field], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.BooleanField', control);
 export default FieldManager.register('boolean', control);

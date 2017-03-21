@@ -1964,5 +1964,4 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   getListCount: function getListCount(/* options, callback*/) {},
 });
 
-lang.setObject('Sage.Platform.Mobile._ListBase', __class);
 export default __class;

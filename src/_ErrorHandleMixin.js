@@ -1,5 +1,4 @@
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
 import getResource from './I18n';
 
@@ -108,5 +107,4 @@ const __class = declare('argos._ErrorHandleMixin', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._ErrorHandleMixin', __class);
 export default __class;

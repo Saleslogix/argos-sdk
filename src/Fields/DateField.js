@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import event from 'dojo/_base/event';
 import string from 'dojo/string';
 import format from '../Format';
@@ -84,18 +83,18 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       {%: $.label %}
     </label>
     <div class="field-control-wrapper">
-      <button 
-        data-dojo-attach-point="triggerNode" 
-        data-action="showModal" 
-        class="button field-control-trigger whiteButton" 
+      <button
+        data-dojo-attach-point="triggerNode"
+        data-action="showModal"
+        class="button field-control-trigger whiteButton"
         aria-label="{%: $.lookupLabelText %}">
           <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
           </svg>
         </button>
-      <input 
-        data-dojo-attach-point="inputNode" 
-        data-dojo-attach-event="onchange:_onChange" 
+      <input
+        data-dojo-attach-point="inputNode"
+        data-dojo-attach-event="onchange:_onChange"
         type="text"
         {% if ($.required) { %}
           data-validate="required"
@@ -290,5 +289,4 @@ const control = declare('argos.Fields.DateField', [EditorField], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.DateField', control);
 export default FieldManager.register('date', control);

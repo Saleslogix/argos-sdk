@@ -1315,5 +1315,4 @@ const __class = declare('argos._EditBase', [View], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._EditBase', __class);
 export default __class;

@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import event from 'dojo/_base/event';
 import _Field from 'argos/Fields/_Field';
 
@@ -62,14 +61,14 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
       {%: $.label %}
     </label>
     <div class="field-control-wrapper">
-      <button 
-        class="button simpleSubHeaderButton field-control-trigger" 
+      <button
+        class="button simpleSubHeaderButton field-control-trigger"
         aria-label="{%:  $.lookupLabelText %}">
         <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
         </svg>
       </button>
-      <input data-dojo-attach-point="inputNode" type="text" />   
+      <input data-dojo-attach-point="inputNode" type="text" />
     </div>`,
   ]),
 
@@ -338,5 +337,4 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
 export default __class;

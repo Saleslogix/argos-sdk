@@ -2,7 +2,6 @@
  * Copyright (c) 1997-2014, SalesLogix, NA., LLC. All rights reserved.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import domConstruct from 'dojo/dom-construct';
 import string from 'dojo/string';
 import $ from 'jquery';
@@ -127,5 +126,4 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._LegacySDataDetailMixin', __class);
 export default __class;

@@ -30,7 +30,6 @@
  * @alternateClassName _CustomizationMixin
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import * as customization from '@infor/icrm-js-customization';
 
 const __class = declare('argos._CustomizationMixin', null, {
@@ -52,5 +51,4 @@ const __class = declare('argos._CustomizationMixin', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._CustomizationMixin', __class);
 export default __class;

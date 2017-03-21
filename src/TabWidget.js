@@ -1,6 +1,5 @@
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _Templated from 'argos/_Templated';
+import _Templated from './_Templated';
 import $ from 'jquery';
 
 /**
@@ -95,5 +94,4 @@ const __class = declare('argos.TabWidget', [_Templated], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.TabWidget', __class);
 export default __class;

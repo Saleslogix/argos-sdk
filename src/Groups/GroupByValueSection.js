@@ -2,7 +2,6 @@
  * @class argos.Groups.GroupByValueSection
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import Utility from '../Utility';
 import _GroupBySection from './_GroupBySection';
 import getResource from '../I18n';
@@ -54,5 +53,4 @@ const __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Groups.GroupByValueSection', __class);
 export default __class;

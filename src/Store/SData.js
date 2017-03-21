@@ -448,5 +448,4 @@ const __class = declare('argos.Store.SData', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Store.SData', __class);
 export default __class;

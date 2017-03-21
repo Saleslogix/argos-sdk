@@ -14,7 +14,6 @@
  */
 
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import TextField from './TextField';
 import FieldManager from '../FieldManager';
@@ -108,5 +107,4 @@ const control = declare('argos.Fields.DecimalField', [TextField], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.DecimalField', control);
 export default FieldManager.register('decimal', control);

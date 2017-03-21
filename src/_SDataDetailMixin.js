@@ -235,5 +235,4 @@ const __class = declare('argos._SDataDetailMixin', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._SDataDetailMixin', __class);
 export default __class;

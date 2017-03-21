@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import TextAreaField from './TextAreaField';
 import FieldManager from '../FieldManager';
 
@@ -41,5 +40,4 @@ import FieldManager from '../FieldManager';
  */
 const control = declare('argos.Fields.NoteField', [TextAreaField], {});
 
-lang.setObject('Sage.Platform.Mobile.Fields.NoteField', control);
 export default FieldManager.register('note', control);

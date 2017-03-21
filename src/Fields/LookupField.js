@@ -101,8 +101,8 @@ const control = declare('argos.Fields.LookupField', [_Field], {
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
         </svg>
       </button>
-      <input data-dojo-attach-point="inputNode" 
-        type="text" 
+      <input data-dojo-attach-point="inputNode"
+        type="text"
         {% if ($.requireSelection) { %}
         readonly="readonly"{% } %}
         {% if ($.required) { %}
@@ -824,5 +824,4 @@ const control = declare('argos.Fields.LookupField', [_Field], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.LookupField', control);
 export default FieldManager.register('lookup', control);
