@@ -31,6 +31,7 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
   onRequestDataFailure: function onRequestDataFailure(response, o) {
     alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
     ErrorManager.addError('failure', response);
+    this.isRefreshing = false;
   },
   /**
    * Handler when a request to SData is successful, calls processEntry
@@ -43,6 +44,7 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
       this.changes = this.options.changes;
       this.setValues(this.changes);
     }
+    this.isRefreshing = false;
   },
   /**
    * Creates Sage.SData.Client.SDataSingleResourceRequest instance and sets a number of known properties.
