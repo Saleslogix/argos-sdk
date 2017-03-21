@@ -35,14 +35,13 @@ import * as customization from '@infor/icrm-js-customization';
 const __class = declare('argos._CustomizationMixin', null, {
   id: null,
   customizationSet: null,
-  enableCustomizations: true,
 
-  _getCustomizationsFor: function _getCustomizationsFor(customizationSubSet) {
-    const customizationSet = customizationSubSet ? `${this.customizationSet}/${customizationSubSet}` : this.customizationSet;
-    return App.getCustomizationsFor(customizationSet, this.id);
+  _getCustomizationsFor: function _getCustomizationsFor(customizationSet, customizationSubSet, id) {
+    const set = customizationSubSet ? `${customizationSet}/${customizationSubSet}` : customizationSet;
+    return App.getCustomizationsFor(set, id);
   },
   _createCustomizedLayout: function _createCustomizedLayout(layout, customizationSubSet) {
-    const customizations = this._getCustomizationsFor(customizationSubSet);
+    const customizations = this._getCustomizationsFor(this.customizationSet, customizationSubSet, this.id);
     if (this.enableCustomizations) {
       return customization.createCustomizedLayout(layout, customizations, this.customizationSet, this.id, customizationSubSet);
     }
