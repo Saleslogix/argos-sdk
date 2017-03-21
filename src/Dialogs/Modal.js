@@ -1,7 +1,6 @@
 import declare from 'dojo/_base/declare';
 import Deferred from 'dojo/Deferred';
 import domConstruct from 'dojo/dom-construct';
-import on from 'dojo/on';
 import _Widget from 'dijit/_Widget';
 import _Templated from '../_Templated';
 import getResource from '../I18n';
@@ -53,10 +52,9 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   ]),
 
   id: 'modal-template',
-  _actionListeners: [],
+  _actionListeners: null,
   _bodyOverflow: null,
   _content: null,
-  _containerListener: null,
   _history: [],
   defaultHeaderText: {
     alert: resource.alertText,
@@ -81,6 +79,9 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   showToolbar: true,
   showOverlay: true,
 
+  constructor: function constructor() {
+    this._actionListeners = [];
+  },
   _lockScroll: function _lockScroll() {
     if (this.lockScroll) {
       this._bodyOverflow = $(document.body).css('overflow');
@@ -117,7 +118,7 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   },
   attachContainerListener: function attachContainerListener() {
     this.removeContainerListener();
-    this._containerListener = on(this.modalContainer, 'click', this.onContainerClick.bind(this));
+    $(this.modalContainer).on('click', this.onContainerClick.bind(this));
     return this;
   },
   createModalToolbar: function createModalToolbar(toolbarActions = []) {
@@ -129,7 +130,8 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
           toolbarItem.context = this;
         }
         const item = domConstruct.toDom(this.buttonTemplate.apply(toolbarItem, this));
-        this._actionListeners.push(on(item, 'click', toolbarItem.action.bind(toolbarItem.context)));
+        $(item).on('click', toolbarItem.action.bind(toolbarItem.context));
+        this._actionListeners.push($(item));
         domConstruct.place(item, toolbar);
       });
       domConstruct.place(toolbar, this.modalNode);
@@ -224,16 +226,16 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
     return this;
   },
   removeContainerListener: function removeContainerListener() {
-    if (this._containerListener) {
-      this._containerListener.remove();
-    }
+    $(this.modalContainer).off('click');
     return this;
   },
   removeActionListeners: function removeActionListeners() {
     if (this._actionListeners) {
       this._actionListeners.forEach((listener) => {
-        listener.remove();
+        listener.off();
       });
+
+      this._actionListeners = [];
     }
     return this;
   },
