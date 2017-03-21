@@ -1109,7 +1109,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @private
    */
   _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) { // eslint-disable-line
-    const node = $(`div[data-key='${key}']`, this.contentNode).first();
+    const node = $(this.contentNode).children().first();
     if (!node.length) {
       return;
     }
