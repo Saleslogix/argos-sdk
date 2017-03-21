@@ -1334,6 +1334,7 @@ const __class = declare('argos._EditBase', [View], {
     } else {
       this.onRefreshUpdate();
     }
+    this.validate();
   },
   onRefresh: function onRefresh() {},
   onRefreshInsert: function onRefreshInsert() {},
