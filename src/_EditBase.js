@@ -454,9 +454,8 @@ const __class = declare('argos._EditBase', [View], {
    * @return {Function} Either calls the fields action or returns the inherited version which looks at the view for the action
    */
   invokeAction: function invokeAction(name, parameters, evt, node) {
-    const fieldNode = node && query(node, this.contentNode)
-      .parents('[data-field]');
-    const field = this.fields[fieldNode.length > 0 && $(fieldNode[0]).attr('data-field')];
+    const fieldNode = $(node, this.contentNode).parents('[data-field]');
+    const field = this.fields[fieldNode.length > 0 && fieldNode.first().attr('data-field')];
 
     if (field && typeof field[name] === 'function') {
       return field[name].apply(field, [parameters, evt, node]);
@@ -472,9 +471,8 @@ const __class = declare('argos._EditBase', [View], {
    * @return {Boolean} If the field has the named function defined
    */
   hasAction: function hasAction(name, evt, node) {
-    const fieldNode = node && query(node, this.contentNode)
-      .parents('[data-field]');
-    const field = fieldNode && this.fields[fieldNode.length > 0 && $(fieldNode[0]).attr('data-field')];
+    const fieldNode = $(node, this.contentNode).parents('[data-field]');
+    const field = fieldNode && this.fields[fieldNode.length > 0 && fieldNode.first().attr('data-field')];
 
     if (field && typeof field[name] === 'function') {
       return true;
