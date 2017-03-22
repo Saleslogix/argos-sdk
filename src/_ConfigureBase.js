@@ -19,12 +19,12 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
   itemTemplate: new Simplate([
     '<h4>',
     '<span>{%: $.$descriptor %}</span>',
-    `<button type="button handle" class="btn-icon hide-focus" style="float:right">
+    '</h4>',
+    `<button type="button" class="btn-icon hide-focus draggable">
       <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-menu"></use>
       </svg>
     </button>`,
-    '</h4>',
   ]),
 
   // Localization
