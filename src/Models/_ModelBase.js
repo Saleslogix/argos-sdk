@@ -91,7 +91,7 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful, _Customiza
   },
   getPicklistNameByProperty: function getPicklistNameByProperty(property) {
     const picklist = this.picklists.find(pl => pl.property === property);
-    return picklist && picklist.name || null;
+    return (picklist && picklist.name) || null;
   },
   buildQueryExpression: function buildQueryExpression(query, options) { // eslint-disable-line
   },
