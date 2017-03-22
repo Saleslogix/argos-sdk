@@ -28,21 +28,9 @@ import query from 'dojo/query';
 import string from 'dojo/string';
 import List from './List';
 import Utility from './Utility';
-import getResource from './I18n';
 import $ from 'jquery';
 
-const resource = getResource('groupedList');
-
 const __class = declare('argos.GroupedList', [List], {
-  // Localization
-  /**
-   * @property {String}
-   * Text used in ARIA label for collapsible button
-   */
-  toggleCollapseText: resource.toggleCollapseText,
-
-  collapsedIconClass: 'fa-chevron-right',
-  expanedIconClass: 'fa-chevron-down',
   accordion: null,
 
   /**
@@ -53,7 +41,7 @@ const __class = declare('argos.GroupedList', [List], {
     '<div id="{%= $.id %}" title="{%= $.titleText %}" class="list grouped-list listview-search {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '<div data-dojo-attach-point="searchNode"></div>',
     '{%! $.emptySelectionTemplate %}',
-    '<div class="accordion panel inverse has-icons" data-options="{allowOnePane: false}" data-dojo-attach-point="contentNode"></div>',
+    '<div class="accordion panel inverse has-icons" data-dojo-attach-point="contentNode"></div>',
     '{%! $.moreTemplate %}',
     '{%! $.listActionTemplate %}',
     '</div>',
@@ -63,8 +51,8 @@ const __class = declare('argos.GroupedList', [List], {
    * Simplate that defines the Group template that includes the header element with collapse button and the row container
    */
   groupTemplate: new Simplate([`
-      <div class="accordion-header has-chevron hide-focus" role="presentation">
-        <a aria-haspopup="true" role="button">{%: $.title %}</a>
+      <div class="accordion-header" role="presentation">
+        <a role="button">{%: $.title %}</a>
       </div>
       <div class="accordion-pane" data-group="{%= $.tag %}">
       </div>

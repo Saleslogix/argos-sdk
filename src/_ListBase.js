@@ -227,6 +227,19 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     </div>
     `,
   ]),
+  liRowTemplate: new Simplate([
+    '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
+    '{% if ($$.icon || $$.selectIcon) { %}',
+    '<button type="button" class="btn-icon hide-focus list-item-selector" data-action="selectEntry">',
+    `<svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+        <use xlink:href="#icon-{%= $$.icon || $$.selectIcon %}" />
+      </svg>`,
+    '</button>',
+    '{% } %}',
+    '</button>',
+    '<div class="list-item-content">{%! $$.itemTemplate %}</div>',
+    '</li>',
+  ]),
   /**
    * @cfg {Simplate}
    * The template used to render the content of a row.  This template is not directly rendered, but is
@@ -1733,7 +1746,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   createItemRowNode: function createItemRowNode(entry) {
     let rowNode = null;
     try {
-      rowNode = $(this.rowTemplate.apply(entry, this));
+      if (this.isCardView) {
+        rowNode = $(this.rowTemplate.apply(entry, this));
+      } else {
+        rowNode = $(this.liRowTemplate.apply(entry, this));
+      }
 
       $(this.actionsContent.children[0]).clone().appendTo(rowNode.find('.widget-header'));
 

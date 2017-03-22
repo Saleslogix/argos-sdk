@@ -588,7 +588,7 @@ body {
 }
 
 .pull-to-refresh {
-    width: 100%;
+    width: calc(~'100% - 40px'); // take away 40px padding of .column class
     text-align: center;
     position: absolute;
     visibility: hidden;
@@ -613,7 +613,7 @@ body {
 
     .list-content {
         > li {
-
+            position: relative;
             .resource {
                 display: block;
                 margin: -8px 0 -8px -10px;
@@ -622,7 +622,6 @@ body {
 
             h4 {
                 display:inline-block;
-                margin-top:10px;
                 color: #aaa;
                 > span {
                     &:first-child {
@@ -676,12 +675,27 @@ body {
         }
     }
 }
-.list-item-selector {
-    float: left
-}
 .list-item-selected > .list-item-selector {
     visibility: visible !important;
 }
-.listview .list-item-selector {
-    visibility: hidden;
+.listview {
+    li {
+        position: relative;
+    }
+    .list-content > li h4 {
+        margin-top: 1rem;
+    }
+    .list-item-selector {
+        visibility: hidden;
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+        position: absolute;
+        top: 16px;
+        left: 12px;
+        border: 0 none #000;
+        + .list-item-content {
+            padding-left: 42px;
+        }
+    }
 }
