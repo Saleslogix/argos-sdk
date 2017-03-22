@@ -856,15 +856,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     return entry;
   },
   /**
-   * @template
-   * Optional async processing of the returned entry before it gets processed into layout.
-   * @param {Object} entry Entry from data store
-   * @return {Promise} By default does not do any processing
-   */
-  preProcessEntryAsync: function preProcessEntryAsync(entry) {
-    return new Promise(resolve => resolve(entry));
-  },
-  /**
    * Takes the entry from the data store, applies customization, applies any custom item process and then
    * passes it to process layout.
    * @param {Object} entry Entry from data store
@@ -884,18 +875,16 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   },
   _onGetComplete: function _onGetComplete(entry) {
     try {
-      this.preProcessEntryAsync(entry).then((nextEntry) => {
-        if (nextEntry) {
-          this.processEntry(nextEntry);
-        } else {
-          domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
-        }
+      if (entry) {
+        this.processEntry(entry);
+      } else {
+        domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'only');
+      }
 
-        domClass.remove(this.domNode, 'panel-loading');
+      domClass.remove(this.domNode, 'panel-loading');
 
-        /* this must take place when the content is visible */
-        this.onContentChange();
-      });
+      /* this must take place when the content is visible */
+      this.onContentChange();
     } catch (e) {
       console.error(e); //eslint-disable-line
     } finally {
