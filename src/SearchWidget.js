@@ -280,5 +280,4 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.SearchWidget', __class);
 export default __class;

@@ -14,7 +14,6 @@
  */
 
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import TextField from './TextField';
 import FieldManager from '../FieldManager';
 
@@ -69,5 +68,4 @@ const control = declare('argos.Fields.TextAreaField', [TextField], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.TextAreaField', control);
 export default FieldManager.register('textarea', control);

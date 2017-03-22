@@ -14,8 +14,6 @@
  */
 
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import json from 'dojo/_base/json';
 import format from '../Format';
 import EditorField from './EditorField';
 import FieldManager from '../FieldManager';
@@ -131,7 +129,7 @@ const control = declare('argos.Fields.SignatureField', [EditorField], {
     $(this.inputNode).css('value', val || '');
 
     try {
-      this.signature = json.fromJson(val);
+      this.signature = JSON.parse(val);
     } catch (e) {
       this.signature = [];
     }
@@ -159,5 +157,4 @@ const control = declare('argos.Fields.SignatureField', [EditorField], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.SignatureField', control);
 export default FieldManager.register('signature', control);

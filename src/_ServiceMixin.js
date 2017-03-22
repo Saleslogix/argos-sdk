@@ -19,7 +19,6 @@
  * @deprecated
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 
 const __class = declare('argos._ServiceMixin', null, {
   serviceMap: null,
@@ -46,5 +45,4 @@ const __class = declare('argos._ServiceMixin', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._ServiceMixin', __class);
 export default __class;

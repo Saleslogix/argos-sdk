@@ -195,5 +195,4 @@ const __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Toolbar', __class);
 export default __class;

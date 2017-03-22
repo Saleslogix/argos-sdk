@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import json from 'dojo/_base/json';
 import query from 'dojo/query';
 import win from 'dojo/window';
 import format from '../Format';
@@ -175,7 +173,7 @@ const __class = declare('argos.Views.Signature', [View], {
    * @return {String}
    */
   getValues: function getValues() {
-    return json.toJson(this.optimizeSignature());
+    return JSON.stringify(this.optimizeSignature());
   },
   /**
    * Sets the current value and draws it.
@@ -183,7 +181,7 @@ const __class = declare('argos.Views.Signature', [View], {
    * @param initial Unused.
    */
   setValue: function setValue(val/* , initial*/) {
-    this.signature = val ? json.fromJson(val) : [];
+    this.signature = val ? JSON.parse(val) : [];
     this.redraw(this.signature, this.signatureNode, this.config);
   },
   /**
@@ -382,5 +380,4 @@ const __class = declare('argos.Views.Signature', [View], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Views.Signature', __class);
 export default __class;

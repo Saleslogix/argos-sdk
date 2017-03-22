@@ -2,8 +2,8 @@
 import $ from 'jquery';
 
 export default class WidgetBase {
-  constructor() {
-    this.id = '';
+  constructor(options = {}) {
+    this.id = options.id || 'generic_widgetbase';
     this.srcNodeRef = null;
     this.domNode = null;
     this.containerNode = null;
@@ -18,13 +18,24 @@ export default class WidgetBase {
   updateSoho() {
   }
 
+  get(prop) {
+    console.warn(`Attempting to get ${prop}`);
+  }
+
+  set(prop, val) {
+    console.warn(`Attempting to set ${prop} to ${val}`);
+  }
+
+  subscribe() {
+    console.warn('subscribe is deprecated.');
+  }
+
   postscript(params, srcNodeRef) {
     this.create(params, srcNodeRef);
   }
 
   create(params, srcNodeRef) {
     this.srcNodeRef = $(srcNodeRef);
-    this.id = this.srcNodeRef.attr('id');
     this.params = params;
     this.postMixInProperties();
 

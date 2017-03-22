@@ -237,7 +237,7 @@ const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Template
       return false;
     }
 
-    const all = lang.isArray(this.validator) ? this.validator : [this.validator];
+    const all = Array.isArray(this.validator) ? this.validator : [this.validator];
 
     for (let i = 0; i < all.length; i++) {
       const current = all[i];
@@ -307,5 +307,4 @@ const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Template
   onChange: function onChange(/* value, field*/) {},
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields._Field', __class);
 export default __class;

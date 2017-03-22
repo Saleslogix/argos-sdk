@@ -1078,5 +1078,4 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
 export default __class;

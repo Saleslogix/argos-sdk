@@ -14,7 +14,6 @@
  */
 
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import TextField from './TextField';
 import FieldManager from '../FieldManager';
 
@@ -61,5 +60,4 @@ const control = declare('argos.Fields.HiddenField', [TextField], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.HiddenField', control);
 export default FieldManager.register('hidden', control);

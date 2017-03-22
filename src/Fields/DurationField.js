@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import format from '../Format';
 import LookupField from './LookupField';
@@ -84,9 +83,9 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
     `<label for="{%= $.name %}">{%: $.label %}</label>
     <div class="field-control-wrapper">
       <div class="autoComplete-watermark" data-dojo-attach-point="autoCompleteNode"></div>
-      <button 
-        class="button field-control-trigger simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" 
-        data-dojo-attach-event="onclick:navigateToListView" 
+      <button
+        class="button field-control-trigger simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}"
+        data-dojo-attach-event="onclick:navigateToListView"
         aria-label="{%: $.lookupLabelText %}">
         <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
@@ -398,5 +397,4 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.DurationField', control);
 export default FieldManager.register('duration', control);

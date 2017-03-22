@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import array from 'dojo/_base/array';
 import query from 'dojo/query';
 import Toolbar from './Toolbar';
@@ -299,5 +298,4 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.MainToolbar', __class);
 export default __class;
