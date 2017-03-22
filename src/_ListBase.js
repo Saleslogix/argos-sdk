@@ -121,7 +121,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           {% if ($$.isCardView) { %}
             <div role="presentation" data-dojo-attach-point="contentNode"></div>
           {% } else { %}
-            <ul role="presentation" data-dojo-attach-point="contentNode"></ul>
+            <ul class="list-content" role="presentation" data-dojo-attach-point="contentNode"></ul>
           {% } %}
           {%! $.moreTemplate %}
         </div>
@@ -487,12 +487,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {String}
    * The relative path to the checkmark or select icon for row selector
    */
-  selectIcon: '',
+  selectIcon: 'check',
   /**
    * @property {String}
    * CSS class to use for checkmark or select icon for row selector. Overrides selectIcon.
    */
-  selectIconClass: 'fa fa-check fa-lg',
+  selectIconClass: '',
   /**
    * @property {Object}
    * The search widget instance for the view
@@ -1109,7 +1109,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @private
    */
   _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) { // eslint-disable-line
-    const node = $(this.contentNode).children().first();
+    let node = $(`[data-key='${key}']`, this.contentNode).first();
+
+    // note: activities use data-my-activity-key to associate with entries
+    if (!node.length) {
+      node = $(this.contentNode).children().first();
+    }
     if (!node.length) {
       return;
     }
@@ -1131,7 +1136,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @private
    */
   _onSelectionModelDeselect: function _onSelectionModelDeselect(key, data, tag) {
-    const node = $(tag) || $(`div[data-key="${key}"]`, this.contentNode).first();
+    const node = $(tag) || $(`[data-key="${key}"]`, this.contentNode).first();
     if (!node.length) {
       return;
     }
@@ -1243,7 +1248,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {HTMLElement} node The element that initiated the event.
    */
   selectEntry: function selectEntry(params) {
-    const row = $(`div[data-key='${params.key}']`, this.contentNode).first();
+    const row = $(`[data-key='${params.key}']`, this.contentNode).first();
     const key = row ? row.attr('data-key') : false;
 
     if (this._selectionModel && key) {

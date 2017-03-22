@@ -614,29 +614,29 @@ body {
     .list-content {
         > li {
 
-
             .resource {
                 display: block;
                 margin: -8px 0 -8px -10px;
                 padding: 8px 32px 8px 36px;
             }
 
-            h3 {
+            h4 {
+                display:inline-block;
+                margin-top:10px;
+                color: #aaa;
                 > span {
                     &:first-child {
                         float: left;
                     }
                 }
-
-                > .draggable {
+                
+                + .draggable {
                   float: right;
-                  width: 24px;
-                  height: 40px;
-                  line-height: 40px;
-                  margin-right: 15px;
                   cursor: pointer;
                   text-align: center;
-                  .transform(scale(1.5, 0.75));
+                  button .icon {
+                      fill: #aaa
+                  }
                 }
 
                 > .icon {
@@ -645,15 +645,20 @@ body {
                 }
             }
 
-            &:first-child h3 > [data-action="moveUp"],
-            &:last-child h3 > [data-action="moveDown"] {
+            &:first-child h4 > [data-action="moveUp"],
+            &:last-child h4 > [data-action="moveDown"] {
                 visibility: hidden;
             }
         }
 
         > li.list-item-selected {
-            color: #000;
-            h3 > .icon {
+            h4 {
+                color: #000;
+                button .icon {
+                    fill: #000
+                  }
+            }
+            h4 > .icon {
                 opacity: 1.0;
             }
         }
@@ -670,4 +675,13 @@ body {
             opacity: 0.5;
         }
     }
+}
+.list-item-selector {
+    float: left
+}
+.list-item-selected > .list-item-selector {
+    visibility: visible !important;
+}
+.listview .list-item-selector {
+    visibility: hidden;
 }

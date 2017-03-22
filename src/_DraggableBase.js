@@ -34,10 +34,10 @@ const __class = declare('argos._DraggableBase', null, {
 
   accountForAnimation: function accountForAnimation() {
     if (this._previousElement) {
-      return this._position.h - $(this._previousElement).css('marginBottom') + this._source.previousMarginBottom + this._source.previousMarginTop;
+      return this._position.h - $(this._previousElement).css('margin-bottom').replace('px', '') + this._source.previousMarginBottom + this._source.previousMarginTop;
     }
     if (this._nextElement) {
-      return this._position.h - $(this._nextElement).css('marginTop') + this._source.previousMarginBottom + this._source.previousMarginTop;
+      return this._position.h - $(this._nextElement).css('margin-top').replace('px', '') + this._source.previousMarginBottom + this._source.previousMarginTop;
     }
     return 0;
   },
@@ -60,9 +60,9 @@ const __class = declare('argos._DraggableBase', null, {
       });
     }
     $(this._source).css({
-      opacity: '0.3',
+      opacity: '0.6',
       position: 'absolute',
-      width: `${$(this._source).css('width')}px`,
+      width: $(this._source).css('width'),
       top: `${this._position.y - this._position.offset}px`,
     });
     if (this._scroller) {
@@ -83,10 +83,10 @@ const __class = declare('argos._DraggableBase', null, {
   applyStyling: function applyStyling() {
     if (!this.isScrolling) {
       if (this._previousElement) {
-        this._previousElement.previousMargin = $(this._previousElement).css('marginBottom');
+        this._previousElement.previousMargin = $(this._previousElement).css('margin-bottom').replace('px', '');
         this.setMargins(this._previousElement, 'bottom');
       } else {
-        this._nextElement.previousMargin = $(this._nextElement).css('marginTop');
+        this._nextElement.previousMargin = $(this._nextElement).css('margin-top');
         this.setMargins(this._nextElement, 'top');
       }
     }
@@ -259,8 +259,8 @@ const __class = declare('argos._DraggableBase', null, {
       }
     }
     if (this._source) {
-      this._source.previousMarginBottom = $(this._source).css('marginBottom');
-      this._source.previousMarginTop = $(this._source).css('marginTop');
+      this._source.previousMarginBottom = $(this._source).css('margin-bottom').replace('px', '');
+      this._source.previousMarginTop = $(this._source).css('margin-top').replace('px', '');
       this._position = this.getPositionOf(this._source);
       this._previousElement = this._source.previousSibling;
       this._nextElement = this._source.nextSibling;
@@ -326,11 +326,11 @@ const __class = declare('argos._DraggableBase', null, {
   resetMargins: function resetMargins(element = {}, marginType = {}) {
     if (marginType === 'bottom') {
       $(element).css({
-        marginBottom: `${element.previousMargin}px`,
+        'margin-bottom': `${element.previousMargin}px`,
       });
     } else if (marginType === 'top') {
       $(element).css({
-        marginTop: `${element.previousMargin}px`,
+        'margin-top': `${element.previousMargin}px`,
       });
     }
     return this;
@@ -392,11 +392,11 @@ const __class = declare('argos._DraggableBase', null, {
     }
     if (marginType === 'bottom') {
       $(element).css({
-        marginBottom: `${element.previousMargin + sourceMargins + this._position.h}px`,
+        'margin-bottom': `${element.previousMargin + sourceMargins + this._position.h}px`,
       });
     } else if (marginType === 'top') {
       $(element).css({
-        marginTop: `${element.previousMargin + sourceMargins + this._position.h}px`,
+        'margin-top': `${element.previousMargin + sourceMargins + this._position.h}px`,
       });
     }
     return this;
