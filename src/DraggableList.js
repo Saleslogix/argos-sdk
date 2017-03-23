@@ -13,7 +13,7 @@ import _DraggableBase from './_DraggableBase';
  */
 const __class = declare('argos.DraggableList', [_ListBase, _DraggableBase], {
   isCardView: false,
-  rowTemplate: new Simplate([
+  liRowTemplate: new Simplate([
     '<li role="option" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}" class="list-item-draggable">',
     '<button type="button" class="btn-icon hide-focus list-item-selector" data-action="selectEntry">',
     `<svg class="icon" focusable="false" aria-hidden="true" role="presentation">
