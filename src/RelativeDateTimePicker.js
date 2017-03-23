@@ -1,6 +1,6 @@
 import declare from 'dojo/_base/declare';
 import domConstruct from 'dojo/dom-construct';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
@@ -16,7 +16,7 @@ const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
  * @class argos.DateTimePicker
  * @alternateClassName Date Time Select
  */
-const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _ActionMixin, _CustomizationMixin], {
+const __class = declare('argos.RelativeDateTimePicker', [_WidgetBase, _Templated, _ActionMixin, _CustomizationMixin], {
   widgetTemplate: new Simplate([
     '<div class="relative-datetime-select" data-dojo-attach-point="relativeDateTimeNode">',
     '<div class="relative-datetime-select__title">{%: $.titleText %}</div>',

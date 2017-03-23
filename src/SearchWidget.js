@@ -16,7 +16,7 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import event from 'dojo/_base/event';
 import string from 'dojo/string';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import getResource from './I18n';
 import $ from 'jquery';
@@ -53,7 +53,7 @@ const resource = getResource('searchWidget');
  * @alternateClassName SearchWidget
  * @mixins argos._Templated
  */
-const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
+const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
   /**
    * @property {Object}
    * Provides a setter for HTML node attributes, namely the value for search text

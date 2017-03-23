@@ -1,6 +1,6 @@
 import declare from 'dojo/_base/declare';
 import domConstruct from 'dojo/dom-construct';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from 'argos/_Templated';
 import Calendar from './Calendar';
 import TimePicker from './TimePicker';
@@ -10,7 +10,7 @@ import $ from 'jquery';
 /**
  * @class argos.DateTimePicker
  */
-const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
+const __class = declare('argos.DateTimePicker', [_WidgetBase, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="datetime-select" data-dojo-attach-point="dateTimeNode">',
     '</div>',

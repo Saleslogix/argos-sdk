@@ -27,11 +27,11 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from '../_ActionMixin';
 import _Templated from '../_Templated';
 
-const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Templated], {
+const __class = declare('argos.Fields._Field', [_WidgetBase, _ActionMixin, _Templated], {
   /**
    * @property {View}
    * View that controls the field.

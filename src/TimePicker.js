@@ -2,7 +2,7 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import on from 'dojo/on';
 import domConstruct from 'dojo/dom-construct';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import Dropdown from 'argos/Dropdown';
 import getResource from './I18n';
@@ -17,7 +17,7 @@ const resource = getResource('timePicker');
  * @class argos.TimePicker
  * @alternateClassName Time Select
  */
-const __class = declare('argos.TimePicker', [_Widget, _Templated], {
+const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="time-select panel">',
     '<div class="time-parts">',

@@ -16,7 +16,7 @@
 import declare from 'dojo/_base/declare';
 import array from 'dojo/_base/array';
 import domConstruct from 'dojo/dom-construct';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from 'argos/_Templated';
 
 import $ from 'jquery';
@@ -24,7 +24,7 @@ import $ from 'jquery';
 /**
  * @class argos.Dropdown
  */
-const __class = declare('argos.Dropdown', [_Widget, _Templated], {
+const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
   widgetTemplate: new Simplate([
     `<label>{%: $.label %}</label>
       <select id="{%= $.id %}_dropdownNode" class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownSelect"></select>`,

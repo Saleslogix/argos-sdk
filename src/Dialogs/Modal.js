@@ -1,7 +1,7 @@
 import declare from 'dojo/_base/declare';
 import Deferred from 'dojo/Deferred';
 import domConstruct from 'dojo/dom-construct';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from '../_Templated';
 import getResource from '../I18n';
 
@@ -13,7 +13,7 @@ const resource = getResource('modal');
  * @class argos.Dialogs.Modal
  * @alternateClassName Pop-up
  */
-const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
+const __class = declare('argos.Dialogs.Modal', [_WidgetBase, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="modal__container" data-dojo-attach-point="modalContainer">',
     '{%! $.modalTemplate %}',

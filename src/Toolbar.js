@@ -14,7 +14,7 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from './_ActionMixin';
 import _Templated from './_Templated';
 import $ from 'jquery';
@@ -29,7 +29,7 @@ import $ from 'jquery';
  * @mixins argos._ActionMixin
  * @mixins argos._Templated
  */
-const __class = declare('argos.Toolbar', [_Widget, _ActionMixin, _Templated], {
+const __class = declare('argos.Toolbar', [_WidgetBase, _ActionMixin, _Templated], {
   /**
    * @property {Simplate}
    * HTML markup of the toolbar
