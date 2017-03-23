@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import lang from 'dojo/_base/lang';
 import ConfigureQuickActions from './Views/ConfigureQuickActions';
 import LinkView from './Views/Link';
 import initCulture from './CultureInfo';
@@ -30,18 +29,12 @@ import './Models/Briefcase/Offline';
  * @requires argos.Application
  */
 export default class ApplicationModule {
-  /**
-   * Mixes in the passed options object into itself
-   * @param {Object} options Properties to be mixed in
-   */
-  constructor(options) {
+  constructor() {
     /**
      * @property {Object}
      * The {@link App App} instance for the application
      */
     this.application = null;
-
-    lang.mixin(this, options);
   }
 
   static get customizationsLoaded() {
