@@ -107,11 +107,6 @@ export default class Application {
     this.viewShowOptions = null;
 
     /**
-     * Instance of a Snap.js object (https://github.com/jakiestfu/Snap.js/)
-     */
-    this.snapper = null;
-
-    /**
      * @property {String}
      * Current orientation of the application. Can be landscape or portrait.
      */
