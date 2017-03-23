@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import array from 'dojo/_base/array';
 import query from 'dojo/query';
 import Toolbar from './Toolbar';
 import domConstruct from 'dojo/dom-construct';
@@ -181,23 +180,23 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     query('> [data-action], .toolButton-right', this.domNode).remove();
   },
   buildPersonalizations: function buildPersonalizations() {
-    array.forEach(this.personalizations, function addToPersList(item) {
+    this.personalizations.forEach((item) => {
       const pers = domConstruct.toDom(this.personalizationTemplate.apply({
         name: item.name,
         data: item.data,
         selected: this.selectedPersonalization,
       }, this));
       domConstruct.place(pers, this.personalizationNode);
-    }, this);
+    });
 
-    array.forEach(this.themes, function addToThemeList(item) {
+    this.themes.forEach((item) => {
       const theme = domConstruct.toDom(this.themeTemplate.apply({
         name: item.name,
         data: item.data,
         selected: this.selectedTheme,
       }, this));
       domConstruct.place(theme, this.themeNode);
-    }, this);
+    });
   },
   initSoho: function initSoho() {
     if (this._sohoInit) {

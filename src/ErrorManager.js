@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import json from 'dojo/json';
 import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
 import utility from './Utility';
@@ -25,7 +24,7 @@ let errors = [];
 
 try {
   if (window.localStorage) {
-    errors = json.parse(window.localStorage.getItem('errorlog')) || [];
+    errors = JSON.parse(window.localStorage.getItem('errorlog')) || [];
   }
 } catch (e) {}// eslint-disable-line
 /**
@@ -62,7 +61,7 @@ const __class = lang.setObject('argos.ErrorManager', {
       $key: new Date().getTime(),
       Date: moment().format(),
       Description: description,
-      Error: json.stringify(utility.sanitizeForJson(error)),
+      Error: JSON.stringify(utility.sanitizeForJson(error)),
     };
 
     this.checkCacheSize();
@@ -88,7 +87,7 @@ const __class = lang.setObject('argos.ErrorManager', {
     const errorItem = {
       $key: dateStamp,
       Date: moment().format(),
-      Error: json.stringify(utility.sanitizeForJson({
+      Error: JSON.stringify(utility.sanitizeForJson({
         serverResponse,
         requestOptions,
         viewOptions,
@@ -132,7 +131,7 @@ const __class = lang.setObject('argos.ErrorManager', {
   fromJsonArray: function fromJsonArray(_json) {
     let o;
     try {
-      o = json.parse(_json);
+      o = JSON.parse(_json);
       o = o[0];
     } catch (e) {
       o = {
@@ -262,7 +261,7 @@ const __class = lang.setObject('argos.ErrorManager', {
   save: function save() {
     try {
       if (window.localStorage) {
-        window.localStorage.setItem('errorlog', json.stringify(errors));
+        window.localStorage.setItem('errorlog', JSON.stringify(errors));
       }
     } catch (e) {
       console.error(e);//eslint-disable-line

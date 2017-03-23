@@ -1,4 +1,3 @@
-import array from 'dojo/_base/array';
 import declare from 'dojo/_base/declare';
 import domGeom from 'dojo/dom-geometry';
 import $ from 'jquery';
@@ -207,7 +206,7 @@ const __class = declare('argos._DraggableBase', null, {
     if (element === this._container) {
       return false;
     }
-    if (array.indexOf(element.classList, byClass) !== -1) {
+    if ($(element).hasClass(byClass)) {
       return element;
     }
     return this.findByClass(element.parentNode, byClass);

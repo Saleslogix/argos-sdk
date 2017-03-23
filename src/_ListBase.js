@@ -14,7 +14,6 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import array from 'dojo/_base/array';
 import connect from 'dojo/_base/connect';
 import string from 'dojo/string';
 import Utility from './Utility';
@@ -578,7 +577,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   _setSelectionModelAttr: function _setSelectionModelAttr(selectionModel) {
     if (this._selectionConnects) {
-      array.forEach(this._selectionConnects, this.disconnect, this);
+      this._selectionConnects.forEach(this.disconnect, this);
     }
 
     this._selectionModel = selectionModel;
@@ -786,7 +785,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @return {Object} this.acttions
    */
   createActionLayout: function createActionLayout() {
-    return this.actions || {};
+    return this.actions || [];
   },
   /**
    * Creates the action bar and adds it to the DOM. Note that it replaces `this.actions` with the passed
@@ -806,7 +805,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.ensureQuickActionPrefs();
 
     // Pluck out our system actions that are NOT saved in preferences
-    let systemActions = array.filter(actions, (action) => {
+    let systemActions = actions.filter((action) => {
       return action && action.systemAction;
     });
 
@@ -854,12 +853,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     this.visibleActions = visibleActions;
   },
-  createSystemActionLayout: function createSystemActionLayout(actions) {
-    const systemActions = array.filter(actions, (action) => {
+  createSystemActionLayout: function createSystemActionLayout(actions = []) {
+    const systemActions = actions.filter((action) => {
       return action.systemAction === true;
     });
 
-    const others = array.filter(actions, (action) => {
+    const others = actions.filter((action) => {
       return !action.systemAction;
     });
 
@@ -885,7 +884,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     if (view) {
       view.show({
         viewId: this.id,
-        actions: array.filter(this.actions, (action) => {
+        actions: this.actions.filter((action) => {
           // Exclude system actions
           return action && action.systemAction !== true;
         }),
@@ -916,12 +915,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     return selection;
   },
   invokeActionItemBy: function invokeActionItemBy(actionPredicate, key) {
-    const actions = array.filter(this.visibleActions, actionPredicate);
+    const actions = this.visibleActions.filter(actionPredicate);
     const selection = this.selectEntrySilent(key);
     this.checkActionState(); // TODO: validate this flow
-    array.forEach(actions, function forEach(action) {
+    actions.forEach((action) => {
       this._invokeAction(action, selection);
-    }, this);
+    });
   },
   /**
    * This is the data-action handler for list-actions, it will locate the action instance viw the data-id attribute
@@ -986,7 +985,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   _clearActions: function _clearActions() {
     let children = this.actionsNode && this.actionsNode.children || [];
     children = Array.prototype.slice.call(children);
-    array.forEach(children, (child) => {
+    children.forEach((child) => {
       if (child.parentNode) {
         child.parentNode.removeChild(child);
       }
@@ -1009,7 +1008,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   ensureQuickActionPrefs: function ensureQuickActionPrefs() {
     const appPrefs = this.app && this.app.preferences;
     let actionPrefs = this.getQuickActionPrefs();
-    const filtered = array.filter(this.actions, (action) => {
+    const filtered = this.actions.filter((action) => {
       return action && action.systemAction !== true;
     });
 
@@ -1026,7 +1025,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     // re-create the preferences store
     if (!actionPrefs[this.id] ||
       (actionPrefs[this.id] && actionPrefs[this.id].length !== filtered.length)) {
-      actionPrefs[this.id] = array.map(filtered, (action) => {
+      actionPrefs[this.id] = filtered.map((action) => {
         action.visible = true;
         return action;
       });
@@ -1066,7 +1065,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
   },
   _getActionById: function _getActionById(id) {
-    return array.filter(this.actions, (action) => {
+    return this.actions.filter((action) => {
       return action && action.id === id;
     })[0];
   },

@@ -8,7 +8,6 @@ import string from 'dojo/string';
 import when from 'dojo/when';
 import domConstruct from 'dojo/dom-construct';
 import connect from 'dojo/_base/connect';
-import array from 'dojo/_base/array';
 import $ from 'jquery';
 import SDataStore from './Store/SData';
 import _CustomizationMixin from './_CustomizationMixin';
@@ -466,7 +465,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
     }
   },
   destroy: function destroy() {
-    array.forEach(this._subscribes, (handle) => {
+    this._subscribes.forEach((handle) => {
       connect.unsubscribe(handle);
     });
     this.inherited(arguments);

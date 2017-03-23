@@ -15,7 +15,6 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
-import array from 'dojo/_base/array';
 import Deferred from 'dojo/_base/Deferred';
 import query from 'dojo/query';
 import utility from './Utility';
@@ -510,7 +509,7 @@ const __class = declare('argos._EditBase', [View], {
       const diffs = this.diffs(this.previousValuesAll, currentValues);
 
       if (diffs.length > 0) {
-        array.forEach(diffs, function forEach(val) {
+        diffs.forEach(function forEach(val) {
           this.errors.push({
             name: val,
             message: this.concurrencyErrorText,
@@ -1085,14 +1084,14 @@ const __class = declare('argos._EditBase', [View], {
 
     if (DeepDiff) {
       const _diffs = DeepDiff.diff(left, right, (path, key) => {
-        if (array.indexOf(this.diffPropertyIgnores, key) >= 0) {
+        if (this.diffPropertyIgnores.indexOf(key) >= 0) {
           return true;
         }
       });
 
-      array.forEach(_diffs, (diff) => {
+      _diffs.forEach((diff) => {
         const path = diff.path.join('.');
-        if (diff.kind === DIFF_EDITED && array.indexOf(acc, path) === -1) {
+        if (diff.kind === DIFF_EDITED && acc.indexOf(path) === -1) {
           acc.push(path);
         }
       });

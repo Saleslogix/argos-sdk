@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import array from 'dojo/_base/array';
 import declare from 'dojo/_base/declare';
 import event from 'dojo/_base/event';
 import lang from 'dojo/_base/lang';
@@ -422,12 +421,12 @@ const control = declare('argos.Fields.LookupField', [_Field], {
       return false;
     }
 
-    array.forEach(expand, function forEach(item) {
+    expand.forEach((item) => {
       if (this[item]) {
         options[item] = this.dependsOn // only pass dependentValue if there is a dependency
           ? this.expandExpression(this[item], dependentValue) : this.expandExpression(this[item]);
       }
-    }, this);
+    });
 
     options.dependentValue = dependentValue;
     options.title = this.title;

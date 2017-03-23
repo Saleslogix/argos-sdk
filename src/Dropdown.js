@@ -14,7 +14,6 @@
  */
 
 import declare from 'dojo/_base/declare';
-import array from 'dojo/_base/array';
 import domConstruct from 'dojo/dom-construct';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from 'argos/_Templated';
@@ -60,7 +59,7 @@ const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
     this.items = (items) ? items : [];
     this._defaultValue = defaultValue;
 
-    array.forEach(items, (item) => {
+    items.forEach((item) => {
       if (item.value === defaultValue) {
         itemFound = item;
       }
@@ -70,14 +69,14 @@ const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
       this.items.splice(0, 0, itemFound);
     }
 
-    array.forEach(items, function addToModalList(item) {
+    items.forEach((item) => {
       const option = domConstruct.toDom(this.selectItemTemplate.apply({
         key: item.key,
         value: item.value,
         text: item.text,
       }, this));
       domConstruct.place(option, this.dropdownSelect);
-    }, this);
+    });
 
     $(this.dropdownSelect).dropdown({
       noSearch: true,
@@ -98,10 +97,8 @@ const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
     this.inherited(arguments);
   },
   findValue: function findValue(text) {
-    const value = array.filter(this._list.children, (element) => {
-      if (element.innerText === text) {
-        return element;
-      }
+    const value = this._list.children.filter((element) => {
+      return element.innerText === text;
     });
     return value[0];
   },

@@ -18,7 +18,6 @@
  * @alternateClassName Calendar
  */
 import declare from 'dojo/_base/declare';
-import array from 'dojo/_base/array';
 import lang from 'dojo/_base/lang';
 import query from 'dojo/query';
 import domConstruct from 'dojo/dom-construct';
@@ -212,7 +211,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
       const selected = query('.is-selected', this.weeksNode);
 
       if (selected) {
-        array.forEach(selected, (day) => {
+        selected.forEach((day) => {
           $(day).removeClass('is-selected');
         });
       }
@@ -241,14 +240,14 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
       const selected = query('.is-selected', this.weeksNode);
 
       if (selected) {
-        array.forEach(selected, (day) => {
+        selected.forEach((day) => {
           $(day).removeClass('is-selected');
         });
       }
 
       if (params.$source.parentNode) {
         this._selectedDay = params.$source;
-        array.forEach(params.$source.parentNode.children, (day) => {
+        params.$source.parentNode.children.forEach((day) => {
           $(day).addClass('is-selected');
         });
       }
