@@ -91,11 +91,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           </button>
           <div class="popupmenu-wrapper bottom" role="application" aria-hidden="true">
             <ul id="list_toolbar_popupmenu_{%= $.id %}" class="popupmenu has-icons" role="menu" aria-hidden="true">
+              {% if($.hasSettings) { %}
               <li role="presentation">
                 <a href="#" data-action="openSettings" role="menuitem">
                   List Settings
                 </a>
               </li>
+              {% } %}
             </ul>
             <div class="arrow"></div>
           </div>
@@ -182,6 +184,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * Indicates whether a template is a card view or a list
    */
   isCardView: true,
+
+  /**
+   * @property {Boolean}
+   * Indicates if there is a list settings modal.
+   */
+  hasSettings: false,
   /**
    * @property {Simplate}
    * Template used on lookups to have empty Selection option.
