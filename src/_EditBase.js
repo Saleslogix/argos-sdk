@@ -846,6 +846,7 @@ const __class = declare('argos._EditBase', [View], {
         // fyi: uses the fact that ({} !== {})
         if (value !== noValue) {
           field.setValue(value, initial);
+          domClass.remove(field.containerNode, 'row-error');
         }
       }
     }
@@ -1334,7 +1335,6 @@ const __class = declare('argos._EditBase', [View], {
     } else {
       this.onRefreshUpdate();
     }
-    this.validate();
   },
   onRefresh: function onRefresh() {},
   onRefreshInsert: function onRefreshInsert() {},
