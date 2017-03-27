@@ -10,6 +10,10 @@
         p {
             margin: 0;
         }
+        .list-item-selector {
+            float: left;
+            margin-right: 10px;
+        }
     }
 }
 
@@ -613,7 +617,6 @@ body {
 
     .list-content {
         > li {
-            position: relative;
             .resource {
                 display: block;
                 margin: -8px 0 -8px -10px;
@@ -675,13 +678,18 @@ body {
         }
     }
 }
-.list-item-selected > .list-item-selector {
-    visibility: visible !important;
+.list-show-selectors  {
+    .card-content .list-item-content {
+        margin-left: 0;
+    }
+    .list-item-content {
+        margin-left: 42px;
+    }
+    li {
+        position: relative
+    }
 }
 .listview {
-    li {
-        position: relative;
-    }
     .list-content > li h4 {
         margin-top: 1rem;
     }
@@ -689,13 +697,17 @@ body {
         visibility: hidden;
         width: 36px;
         height: 36px;
-        line-height: 36px;
         position: absolute;
         top: 16px;
         left: 12px;
         border: 0 none #000;
-        + .list-item-content {
-            padding-left: 42px;
+    }
+    .list-item-selector.visible {
+        visibility: visible;
+    }
+    .list-item-selected {
+         .list-item-selector {
+            visibility: visible !important;
         }
     }
 }

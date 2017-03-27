@@ -219,7 +219,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     <div data-key="{%= $[$$.idProperty] %}">
       <div class="widget">
         <div class="widget-header">
-          <h2 class="widget-title">{%: $[$$.labelProperty] %}</h2>
+          {%! $$.itemIconTemplate %}<h2 class="widget-title">{%: $[$$.labelProperty] %}</h2>
           <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $[$$.idProperty] %}">
             <span class="audible">Actions</span>
             <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
@@ -296,19 +296,33 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      label               Text added below the icon
    */
   listActionItemTemplate: new Simplate([`
-    <li><a></a><button class="popupitem" type="button" data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">
-      {%: $.label %}
-    </button></li>
-  `]),
+    <li><a></a><button class="popupitem" type="button" data-action="invokeActionItem" data-id="{%= $.actionIndex %}" 
+    aria-label="{%: $.title || $.id %}">{%: $.label %}</button></li>`]),
     /**
    * @property {Simplate}
    * The template used to render row content template
    */
   itemRowContentTemplate: new Simplate([
     '<div class="top_item_indicators list-item-indicator-content"></div>',
+    // '{%! $$.itemIconTemplate %}',
     '<div class="list-item-content">{%! $$.itemTemplate %}</div>',
     '<div class="bottom_item_indicators list-item-indicator-content"></div>',
     '<div class="list-item-content-related"></div>',
+  ]),
+  itemIconTemplate: new Simplate([
+    '{% if ($$.getItemIconClass($)) { %}',
+    // '<span class="{%= $$.getItemIconClass($) %}"></span>',
+    `<button type="button" class="btn-icon hide-focus" data-action="selectEntry" class="list-item-selector button">
+        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%= $$.getItemIconClass($) || 'alert' %}"></use>
+        </svg>
+        <span>Document</span>
+    </button>`,
+    '{% } else if ($$.getItemIconSource($)) { %}',
+    '<button data-action="selectEntry" class="list-item-selector button">',
+    '<img id="list-item-image_{%: $.$key %}" src="{%: $$.getItemIconSource($) %}" alt="{%: $$.getItemIconAlt($) %}" class="icon" />',
+    '</button>',
+    '{% } %}',
   ]),
   /**
    * @property {Simplate}
@@ -1583,7 +1597,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     return this.itemIconClass;
   },
   getItemIconSource: function getItemIconSource() {
-    return this.itemIcon || this.icon || this.selectIcon;
+    return this.itemIcon || this.icon;
   },
   getItemIconAlt: function getItemIconAlt() {
     return this.itemIconAltText;
@@ -1868,6 +1882,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.inherited(arguments);
 
     $(this.domNode).toggleClass('list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined') ? this.options.hideSearch : this.hideSearch || !this.enableSearch);
+
+    $(this.domNode).toggleClass('list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);
 
     if (this._selectionModel && !this.isSelectionDisabled()) {
       this._selectionModel.useSingleSelection(this.options.singleSelect);
