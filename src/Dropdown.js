@@ -16,7 +16,7 @@
 import declare from 'dojo/_base/declare';
 import domConstruct from 'dojo/dom-construct';
 import _WidgetBase from 'dijit/_WidgetBase';
-import _Templated from 'argos/_Templated';
+import _Templated from './_Templated';
 
 import $ from 'jquery';
 

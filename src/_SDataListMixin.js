@@ -30,7 +30,7 @@ import when from 'dojo/when';
 import string from 'dojo/string';
 import SData from './Store/SData';
 import utility from './Utility';
-import MODEL_TYPES from 'argos/Models/Types';
+import MODEL_TYPES from './Models/Types';
 
 const __class = declare('argos._SDataListMixin', null, {
   /**

@@ -1,6 +1,6 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import PouchDBStore from 'argos/Store/PouchDB';
+import PouchDBStore from '../Store/PouchDB';
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
 import when from 'dojo/when';

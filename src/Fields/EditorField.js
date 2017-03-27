@@ -14,7 +14,7 @@
  */
 import declare from 'dojo/_base/declare';
 import event from 'dojo/_base/event';
-import _Field from 'argos/Fields/_Field';
+import _Field from './_Field';
 
 /**
  * @class argos.Fields.EditorField
