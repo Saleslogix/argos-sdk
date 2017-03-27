@@ -17,7 +17,6 @@ import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
 import array from 'dojo/_base/array';
 import Deferred from 'dojo/_base/Deferred';
-import win from 'dojo/_base/window';
 import domAttr from 'dojo/dom-attr';
 import domClass from 'dojo/dom-class';
 import dom from 'dojo/dom';
@@ -961,7 +960,7 @@ const __class = declare('argos._EditBase', [View], {
       App.bars.tbar.disableTool('save');
     }
 
-    domClass.add(win.body(), 'busy');
+    domClass.add(App._rootDomNode, 'busy');
   },
   /**
    * Enables the form by setting busy to false and enabling the toolbar
@@ -973,7 +972,7 @@ const __class = declare('argos._EditBase', [View], {
       App.bars.tbar.enableTool('save');
     }
 
-    domClass.remove(win.body(), 'busy');
+    domClass.remove(App._rootDomNode, 'busy');
   },
   /**
    * Called by save() when performing an insert (create).
