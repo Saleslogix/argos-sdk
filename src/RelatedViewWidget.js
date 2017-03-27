@@ -12,7 +12,7 @@ import $ from 'jquery';
 import SDataStore from './Store/SData';
 import _CustomizationMixin from './_CustomizationMixin';
 import _ActionMixin from './_ActionMixin';
-import _RelatedViewWidgetBase from 'argos/_RelatedViewWidgetBase';
+import _RelatedViewWidgetBase from './_RelatedViewWidgetBase';
 import getResource from './I18n';
 
 const resource = getResource('relatedViewWidget');

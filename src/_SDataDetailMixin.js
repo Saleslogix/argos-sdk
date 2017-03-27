@@ -27,7 +27,7 @@ import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import utility from './Utility';
 import SData from './Store/SData';
-import MODEL_TYPES from 'argos/Models/Types';
+import MODEL_TYPES from './Models/Types';
 
 const __class = declare('argos._SDataDetailMixin', null, {
 

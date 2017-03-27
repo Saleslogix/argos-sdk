@@ -14,7 +14,7 @@
  */
 
 import declare from 'dojo/_base/declare';
-import Dropdown from 'argos/Dropdown';
+import Dropdown from '../Dropdown';
 import FieldManager from '../FieldManager';
 import _Field from './_Field';
 
