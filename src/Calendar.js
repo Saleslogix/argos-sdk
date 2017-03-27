@@ -18,7 +18,6 @@
  * @alternateClassName Calendar
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import query from 'dojo/query';
 import domConstruct from 'dojo/dom-construct';
 import $ from 'jquery';
@@ -540,5 +539,4 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Calendar', __class);
 export default __class;

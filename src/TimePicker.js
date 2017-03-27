@@ -1,12 +1,8 @@
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import on from 'dojo/on';
-import domConstruct from 'dojo/dom-construct';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
-import Dropdown from 'argos/Dropdown';
+import Dropdown from './Dropdown';
 import getResource from './I18n';
-import string from 'dojo/string';
 
 import moment from 'moment';
 import $ from 'jquery';
@@ -69,7 +65,6 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
   _showAM: null,
   _hourDropdown: null,
   _hourValue: null,
-  _meridiemListener: null,
   _minuteDropdown: null,
   _minuteValue: null,
   _selectedHour: null,
@@ -94,7 +89,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
     if (!this.minuteValues) {
       this.minuteValues = [];
       for (let i = 0; i < 60; i += 5) {
-        const dispVal = (i < 10) ? string.substitute('0${val}', { val: i.toString() }) : i.toString();
+        const dispVal = (i < 10) ? `0${i.toString()}` : i.toString();
         this.minuteValues.push({ value: dispVal, key: i.toString() });
       }
     }
@@ -105,7 +100,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
       this.createHourLayout();
       this._hourDropdown = new Dropdown({ id: 'hour-dropdown', itemMustExist: true, dropdownClass: 'dropdown-mx' });
       this._hourDropdown.createList({ items: this.hourValues, defaultValue: `${initial}` });
-      domConstruct.place(this._hourDropdown.domNode, this.hourNode, 'replace');
+      $(this.hourNode).replaceWith(this._hourDropdown.domNode);
     }
     return this;
   },
@@ -123,7 +118,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
       this.createMinuteLayout();
       this._minuteDropdown = new Dropdown({ id: 'minute-modal', itemMustExist: true, dropdownClass: 'dropdown-mx' });
       this._minuteDropdown.createList({ items: this.minuteValues, defaultValue: `${value}` });
-      domConstruct.place(this._minuteDropdown.domNode, this.minuteNode, 'replace');
+      $(this.minuteNode).replaceWith(this._minuteDropdown.domNode);
     }
     return this;
   },
@@ -138,9 +133,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
     return this.timeValue;
   },
   removeListeners: function removeListeners() {
-    if (this._meridiemListener) {
-      this._meridiemListener.remove();
-    }
+    $(this.meridiemNode.children[0]).off('click');
   },
   setMeridiem: function setMeridiem(value) {
     if (value) {
@@ -198,7 +191,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
         .createMinuteDropdown(`${minutes}`);
     if (!App.is24HourClock()) {
       this.setMeridiem(meridiemToggled);
-      this._meridiemListener = on(this.meridiemNode.children[0], 'click', this.toggleMeridiem.bind(this));
+      $(this.meridiemNode.children[0]).on('click', this.toggleMeridiem.bind(this));
     } else {
       $(this.meridiemNode).css('display', 'none');
     }
@@ -219,5 +212,4 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.TimePicker', __class);
 export default __class;

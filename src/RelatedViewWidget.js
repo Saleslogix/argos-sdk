@@ -472,5 +472,4 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.RelatedViewWidget', __class);
 export default __class;

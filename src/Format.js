@@ -258,5 +258,4 @@ const __class = lang.setObject('argos.Format', {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Format', __class);
 export default __class;

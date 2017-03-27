@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import _DetailBase from './_DetailBase';
 import _SDataDetailMixin from './_SDataDetailMixin';
 import _RelatedWidgetDetailMixin from './_RelatedViewWidgetDetailMixin';
@@ -33,5 +32,4 @@ import _DetailOfflineMixin from './Offline/_DetailOfflineMixin';
  */
 const __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin, _DetailOfflineMixin], {});
 
-lang.setObject('Sage.Platform.Mobile.Detail', __class);
 export default __class;

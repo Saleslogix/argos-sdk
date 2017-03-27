@@ -23,8 +23,6 @@
  * @alternateClassName GroupedList
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import query from 'dojo/query';
 import string from 'dojo/string';
 import List from './List';
 import Utility from './Utility';
@@ -200,15 +198,15 @@ const __class = declare('argos.GroupedList', [List], {
     }
   },
   getGroupsNode: function getGroupsNode(entryGroup) {
-    let results = query(`[data-group="${entryGroup.tag}"]`, this.contentNode);
+    let results = $(`[data-group="${entryGroup.tag}"]`, this.contentNode);
     if (results.length > 0) {
-      results = results[0];
+      results = results.get(0);
     } else {
       // Does not exist, lets create it
       results = $(this.groupTemplate.apply(entryGroup, this));
       $(this.contentNode).append(results);
       // re-query what we just place in (which was a doc frag)
-      results = query(`[data-group="${entryGroup.tag}"]`, this.contentNode)[0];
+      results = $(`[data-group="${entryGroup.tag}"]`, this.contentNode).get(0);
     }
 
     return results;
@@ -274,5 +272,4 @@ const __class = declare('argos.GroupedList', [List], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.GroupedList', __class);
 export default __class;

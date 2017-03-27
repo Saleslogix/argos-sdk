@@ -60,5 +60,4 @@ const __class = lang.setObject('argos.Convert', {
   toDateFromString: convert.toDateFromString,
 });
 
-lang.setObject('Sage.Platform.Mobile.Convert', __class);
 export default __class;

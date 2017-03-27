@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import query from 'dojo/query';
 import win from 'dojo/window';
 import format from '../Format';
 import View from '../View';
@@ -274,7 +273,7 @@ const __class = declare('argos.Views.Signature', [View], {
 
     this.canvasNodeHeight = Math.min(
       Math.floor(this.canvasNodeWidth * 0.5),
-      win.getBox().h - query('.toolbar')[0].offsetHeight
+      win.getBox().h - $('.toolbar').get(0).offsetHeight
     );
 
     this.signatureNode.width = this.canvasNodeWidth;

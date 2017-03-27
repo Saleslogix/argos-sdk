@@ -287,5 +287,4 @@ const __class = lang.setObject('argos.ErrorManager', {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.ErrorManager', __class);
 export default __class;

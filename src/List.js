@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import _ListBase from './_ListBase';
 import _SDataListMixin from './_SDataListMixin';
 import _RelatedWidgetListMixin from './_RelatedViewWidgetListMixin';
@@ -28,6 +27,4 @@ import _RelatedWidgetListMixin from './_RelatedViewWidgetListMixin';
  * @mixins argos._RelateViewdWidgetListMixin
  */
 const __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedWidgetListMixin], {});
-
-lang.setObject('Sage.Platform.Mobile.List', __class);
 export default __class;

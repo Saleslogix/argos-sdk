@@ -1,13 +1,12 @@
 import declare from 'dojo/_base/declare';
-import domConstruct from 'dojo/dom-construct';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
 import DateTimePicker from './DateTimePicker';
 import getResource from './I18n';
-
 import moment from 'moment';
+import $ from 'jquery';
 
 const resource = getResource('relativeDateTimePicker');
 const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
@@ -113,9 +112,9 @@ const __class = declare('argos.RelativeDateTimePicker', [_WidgetBase, _Templated
     return this._selectedTime;
   },
   makeItem: function makeItem({ label, time, format }) {
-    const item = domConstruct.toDom(this.listItemTemplate.apply({ textLeft: label, textRight: time.format(format) }));
+    const item = $(this.listItemTemplate.apply({ textLeft: label, textRight: time.format(format) }));
     item.time = time;
-    domConstruct.place(item, this.listNode);
+    $(this.listNode).append(item);
   },
   makeListItems: function makeListItems({ title, children }) {
     let startIndex = 0;

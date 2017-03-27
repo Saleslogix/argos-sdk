@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import domConstruct from 'dojo/dom-construct';
 import $ from 'jquery';
 import getResource from '../I18n';
@@ -263,5 +262,4 @@ const __class = declare('argos.Views.FileSelect', [View], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Views.FileSelect', __class);
 export default __class;

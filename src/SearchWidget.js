@@ -14,8 +14,6 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import event from 'dojo/_base/event';
-import string from 'dojo/string';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import getResource from './I18n';
@@ -176,12 +174,12 @@ const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
       return this.formatSearchQuery(query);
     }
 
-    newQuery = string.substitute('(${0})', [hashQueries.join(') and (')]);
+    newQuery = `(${hashQueries.join(') and (')})`;
 
     additionalSearch = additionalSearch.replace(/^\s+|\s+$/g, '');
 
     if (additionalSearch) {
-      newQuery += string.substitute(' and (${0})', [this.formatSearchQuery(additionalSearch)]);
+      newQuery += ` and (${this.formatSearchQuery(additionalSearch)})`;
     }
 
     return newQuery;
@@ -212,7 +210,8 @@ const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
    */
   _onKeyPress: function _onKeyPress(evt) {
     if (evt.keyCode === 13 || evt.keyCode === 10) {
-      event.stop(evt);
+      evt.preventDefault();
+      evt.stopPropagation();
       this.queryNode.blur();
       this.search();
     }
