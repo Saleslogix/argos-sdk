@@ -304,14 +304,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   itemRowContentTemplate: new Simplate([
     '<div class="top_item_indicators list-item-indicator-content"></div>',
-    // '{%! $$.itemIconTemplate %}',
     '<div class="list-item-content">{%! $$.itemTemplate %}</div>',
     '<div class="bottom_item_indicators list-item-indicator-content"></div>',
     '<div class="list-item-content-related"></div>',
   ]),
   itemIconTemplate: new Simplate([
     '{% if ($$.getItemIconClass($)) { %}',
-    // '<span class="{%= $$.getItemIconClass($) %}"></span>',
     `<button type="button" class="btn-icon hide-focus" data-action="selectEntry" class="list-item-selector button">
         <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%= $$.getItemIconClass($) || 'alert' %}"></use>
@@ -1882,7 +1880,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.inherited(arguments);
 
     $(this.domNode).toggleClass('list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined') ? this.options.hideSearch : this.hideSearch || !this.enableSearch);
-
+    
     $(this.domNode).toggleClass('list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);
 
     if (this._selectionModel && !this.isSelectionDisabled()) {
