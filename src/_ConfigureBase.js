@@ -20,7 +20,7 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
     '</h4>',
     `<button type="button" class="btn-icon hide-focus draggable">
       <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-menu"></use>
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-drag"></use>
       </svg>
     </button>`,
   ]),
