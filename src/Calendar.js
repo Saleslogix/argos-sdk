@@ -208,7 +208,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
       const selected = $('.is-selected', this.weeksNode);
 
       if (selected) {
-        [].forEach.call(selected, (day) => {
+        selected.each((i, day) => {
           $(day).removeClass('is-selected');
         });
       }
@@ -237,14 +237,14 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
       const selected = $('.is-selected', this.weeksNode);
 
       if (selected) {
-        [].forEach.call(selected, (day) => {
+        selected.each((i, day) => {
           $(day).removeClass('is-selected');
         });
       }
 
       if (params.$source.parentNode) {
         this._selectedDay = params.$source;
-        [].forEach.call(params.$source.parentNode.children, (day) => {
+        $(params.$source.parentNode).children().each((i, day) => {
           $(day).addClass('is-selected');
         });
       }
