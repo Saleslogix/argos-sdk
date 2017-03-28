@@ -246,7 +246,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
 
       if (params.$source.parentNode) {
         this._selectedDay = params.$source;
-        params.$source.parentNode.children.forEach((day) => {
+        [].forEach.call(params.$source.parentNode.children, (day) => {
           $(day).addClass('is-selected');
         });
       }
