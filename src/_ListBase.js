@@ -127,9 +127,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           {%! $.moreTemplate %}
         </div>
       </div>
-      <div style="display: none" data-dojo-attach-point="actionsContent">
-        {%! $.listActionTemplate %}
-      </div>
     </div>
     `,
   ]),
@@ -226,6 +223,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
               <use xlink:href="#icon-more"></use>
             </svg>
           </button>
+          {%! $$.listActionTemplate %}
         </div>
         <div class="card-content" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">
           {%! $$.itemRowContentTemplate %}
@@ -278,7 +276,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render the single list action row.
    */
   listActionTemplate: new Simplate([
-    '<ul data-dojo-attach-point="actionsNode">',
+    '<ul data-dojo-attach-point="actionsNode" class="actions-row popupmenu actions top">',
+    '{%! $$.loadingTemplate %}',
     '</ul>',
   ]),
   /**
@@ -298,7 +297,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   listActionItemTemplate: new Simplate([`
     <li><a></a><button class="popupitem" type="button" data-action="invokeActionItem" data-id="{%= $.actionIndex %}" 
     aria-label="{%: $.title || $.id %}">{%: $.label %}</button></li>`]),
-    /**
+  /**
    * @property {Simplate}
    * The template used to render row content template
    */
@@ -573,7 +572,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {Boolean} Indicates if the list is loading
    */
   listLoading: false,
-  viewType: 'list',
   // Store properties
   itemsProperty: '',
   idProperty: '',
@@ -810,9 +808,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.actions = actions.reduce(this._removeActionDuplicates, []);
     this.visibleActions = [];
 
-    if (!this.actionsNode) {
-      return;
-    }
 
     this.ensureQuickActionPrefs();
 
@@ -858,11 +853,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       lang.mixin(action, options);
 
       const actionTemplate = action.template || this.listActionItemTemplate;
-      $(this.actionsNode).append(actionTemplate.apply(action, action.id));
+      action.templateDom = $(actionTemplate.apply(action, action.id));
 
       visibleActions.push(action);
     }
-
     this.visibleActions = visibleActions;
   },
   createSystemActionLayout: function createSystemActionLayout(actions = []) {
@@ -994,15 +988,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     this._applyStateToActions(selection, rowNode);
   },
-  _clearActions: function _clearActions() {
-    let children = this.actionsNode && this.actionsNode.children || [];
-    children = Array.prototype.slice.call(children);
-    children.forEach((child) => {
-      if (child.parentNode) {
-        child.parentNode.removeChild(child);
-      }
-    });
-  },
   getQuickActionPrefs: function getQuickActionPrefs() {
     return this.app && this.app.preferences && this.app.preferences.quickActions;
   },
@@ -1052,9 +1037,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} selection
    */
   _applyStateToActions: function _applyStateToActions(selection, rowNode) {
-    this._clearActions();
-    this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
     const actionRow = $(rowNode).find('.actions-row')[0];
+    const loadingPopupWidth = parseInt($(actionRow).parent().css('width'), 10);
+    $(actionRow).empty();
 
     for (let i = 0; i < this.visibleActions.length; i++) {
       // The visible action is from our local storage preferences, where the action from the layout
@@ -1063,18 +1048,28 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       // TODO: This will be a problem throughout visible actions, come up with a better solution
       const visibleAction = this.visibleActions[i];
       const action = lang.mixin(visibleAction, this._getActionById(visibleAction.id));
-      const actionNode = actionRow.children[i];
 
       action.isEnabled = (typeof action.enabled === 'undefined') ? true : this.expandExpression(action.enabled, action, selection);
 
       if (!action.hasAccess) {
         action.isEnabled = false;
       }
-
-      if (actionNode) {
-        $(actionNode).toggleClass('toolButton-disabled', !action.isEnabled);
-      }
+      $(visibleAction.templateDom)
+        .clone()
+        .toggleClass('toolButton-disabled', !action.isEnabled)
+        .appendTo(actionRow);
     }
+
+    // Manually repositioning SoHo popup menu which is in open state right now. Soho.Updated would destroy and recreate the popup dom which is not desired.
+    // reposition the popup menu - since it was showing loading and the dimensions would change after the content is updated
+    const widthDelta = (parseInt($(actionRow).parent().css('width'), 10) - loadingPopupWidth);
+    $(actionRow).parent().css({
+      left: parseInt($(actionRow).parent().css('left'), 10) - widthDelta,
+    });
+    // reposition arrow icon on popup
+    $(actionRow).next().css({
+      'margin-left': parseInt($(actionRow).next().css('margin-left'), 10) + widthDelta / 2,
+    });
   },
   _getActionById: function _getActionById(id) {
     return this.actions.filter((action) => {
@@ -1141,15 +1136,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @private
    */
   _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) { // eslint-disable-line
-    let node = $(`[data-key='${key}']`, this.contentNode).first();
-
-    // note: activities use data-my-activity-key to associate with entries
-    if (!node.length) {
-      node = $(this.contentNode).children().first();
-    }
-    if (!node.length) {
-      return;
-    }
+    const node = $(tag);
 
     if (this.enableActions) {
       this.showActionPanel(node.get(0));
@@ -1767,15 +1754,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     try {
       if (this.isCardView) {
         rowNode = $(this.rowTemplate.apply(entry, this));
+
+        // initialize popupmenus on each card
+        const btn = $(rowNode).find('.btn-actions');
+        $(btn).popupmenu();
       } else {
         rowNode = $(this.liRowTemplate.apply(entry, this));
       }
-
-      $(this.actionsContent.children[0]).clone().appendTo(rowNode.find('.widget-header'));
-
-      // initialize popupmenus on each card
-      const btn = rowNode.find('.btn-actions');
-      $(btn).popupmenu();
     } catch (err) {
       console.error(err); // eslint-disable-line
       rowNode = $(this.rowTemplateError.apply(entry, this));
@@ -1880,7 +1865,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.inherited(arguments);
 
     $(this.domNode).toggleClass('list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined') ? this.options.hideSearch : this.hideSearch || !this.enableSearch);
-    
+
     $(this.domNode).toggleClass('list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);
 
     if (this._selectionModel && !this.isSelectionDisabled()) {
