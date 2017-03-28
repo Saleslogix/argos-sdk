@@ -246,7 +246,7 @@ var CachingService = exports.CachingService = function () {
         this._cacheStorage.setItem(namespaceOrKey + '_' + name, JSON.stringify(item));
       } else if (typeof namespaceOrKey === 'string') {
         // should we allow nulls to be stored?
-        this._cacheStorage.setItem('' + namespaceOrKey, item);
+        this._cacheStorage.setItem('' + namespaceOrKey, JSON.stringify(item));
       } else {
         throw new Error(CachingServiceMessages.setItemError);
       }
@@ -609,6 +609,7 @@ var PickListService = exports.PickListService = function () {
 
       var scope = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
 
+      scope.language = scope.language || this._getBrowserLanguage(false);
       var cachedResult = useCache ? this._storage.getItem(this._storageNameSpace, key + '_' + scope.language) : null;
       if (cachedResult) {
         callback(cachedResult);
@@ -816,7 +817,9 @@ var PickListService = exports.PickListService = function () {
       var _this2 = this,
           _arguments2 = arguments;
 
-      var cachedResult = this._storage.getItem(this._storagePropertyDataTypeNameSpace, entityName + '_' + propertyName);
+      scope.language = scope.language || this._getBrowserLanguage(false);
+      var cachedToken = entityName + '_' + propertyName + '_' + scope.language;
+      var cachedResult = this._storage.getItem(this._storagePropertyDataTypeNameSpace, cachedToken);
       if (cachedResult) {
         callback(cachedResult);
       } else {
@@ -826,6 +829,7 @@ var PickListService = exports.PickListService = function () {
             resourceKind: 'entities(\'' + entityName + '\')/properties',
             service: 'metadata',
             language: scope.language || this._getBrowserLanguage(false),
+            filterByLanguage: scope.filterByLanguage || false,
             include: ['DataTypeData'],
             where: 'propertyName eq \'' + propertyName + '\''
           },
@@ -834,7 +838,7 @@ var PickListService = exports.PickListService = function () {
               if (result && result.$resources && result.$resources.length > 0) {
                 result = result.$resources[0];
               }
-              _this2.parent._storage.setItem(_this2.parent._storageDataTypeNameSpace, entityName + '_' + propertyName, result);
+              _this2.parent._storage.setItem(_this2.parent._storageDataTypeNameSpace, cachedToken, result);
               if (typeof callback === 'function') {
                 callback(result);
               } else {
@@ -865,7 +869,9 @@ var PickListService = exports.PickListService = function () {
       var onError = arguments[3];
       var scope = arguments[4];
 
-      var cachedResult = this._storage.getItem(this._storageFormDataTypeNameSpace, pickListName ? formName + '_' + pickListName : '' + formName);
+      scope.language = scope.language || this._getBrowserLanguage(false);
+      var cachedToken = pickListName ? formName + '_' + pickListName + '_' + scope.language : formName + '_' + scope.language;
+      var cachedResult = this._storage.getItem(this._storageFormDataTypeNameSpace, cachedToken);
       if (cachedResult) {
         callback(cachedResult);
       } else {
@@ -880,7 +886,7 @@ var PickListService = exports.PickListService = function () {
               if (result && result.$resources && result.$resources.length > 0) {
                 result = result.$resources[0];
               }
-              _this3.parent._storage.setItem(_this3.parent._storageFormDataTypeNameSpace, pickListName ? formName + '_' + pickListName : '' + formName, result);
+              _this3.parent._storage.setItem(_this3.parent._storageFormDataTypeNameSpace, cachedToken, result);
               if (typeof callback === 'function') {
                 callback(result);
               } else {
@@ -909,11 +915,13 @@ var PickListService = exports.PickListService = function () {
 
   }, {
     key: 'clearCache',
-    value: function clearCache(name) {
+    value: function clearCache(name, lang) {
+      lang = lang || this._getBrowserLanguage(false);
+      var key = name + '_' + lang;
       if (typeof name === 'string') {
-        var item = this._storage.getItem(this._storageNameSpace, name);
+        var item = this._storage.getItem(this._storageNameSpace, key);
         if (item) {
-          this._storage.removeItem(this._storageNameSpace, name);
+          this._storage.removeItem(this._storageNameSpace, key);
         }
       } else {
         console.warn('argument needs to be a String.'); //eslint-disable-line
@@ -942,6 +950,7 @@ var PickListService = exports.PickListService = function () {
      *                          select: String?
      *                          include: Boolean?
      *                          language: String?
+     *                          filterByLanguage: Boolean?
      *                          storageMode: {CODE, ID, TEXT}
      *                      }
      */
@@ -965,6 +974,9 @@ var PickListService = exports.PickListService = function () {
           }
           if (options.language) {
             obj.setQueryArg('language', options.language);
+          }
+          if (options.filterByLanguage) {
+            obj.setQueryArg('filterByLanguage', options.filterByLanguage);
           }
           if (options.storageMode) {
             obj.setQueryArg('storageMode', options.storageMode);
@@ -1025,9 +1037,11 @@ var PickListService = exports.PickListService = function () {
         if (scope.pickListServiceOptions.filter) {
           optionsObj.filter = scope.pickListServiceOptions.filter;
         }
-
         if (scope.pickListServiceOptions.storageMode) {
           optionsObj.storageMode = scope.pickListServiceOptions.storageMode;
+        }
+        if (scope.pickListServiceOptions.filterByLanguage) {
+          optionsObj.filterByLanguage = scope.pickListServiceOptions.filterByLanguage;
         }
       }
       return optionsObj;
@@ -1056,8 +1070,8 @@ var PickListService = exports.PickListService = function () {
       var languageFromCookie = this._getLanguageFromCookie();
       var userLang = languageFromCookie || this._getFromLanguageFromNavigator();
       if (!userLang) {
-        console.warn('no browser language found, will assume en-en for the rest.'); /* give warning because something went wrong... or in test enviroment */ //eslint-disable-line
-        userLang = 'en-en';
+        console.warn('no browser language found, will assume en-us for the rest.'); /* give warning because something went wrong... or in test enviroment */ //eslint-disable-line
+        userLang = 'en-us';
       }
       if (includeFallbacks) {
         var languagePlusFallBacks = this._breakDownALanguageCodeIntoFallBackParts(userLang);
@@ -1072,7 +1086,7 @@ var PickListService = exports.PickListService = function () {
       if (typeof navigator !== 'undefined') {
         return navigator.userLanguage || navigator.browserLanguage || navigator.language;
       }
-      console.warn('no navigator object found. hardcoding language to en-en'); /* give warning because something went wrong... or in test enviroment */ //eslint-disable-line
+      console.warn('no navigator object found. hardcoding language to en-us'); /* give warning because something went wrong... or in test enviroment */ //eslint-disable-line
       return null;
     }
   }, {
