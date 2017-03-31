@@ -140,8 +140,8 @@ const __class = declare('argos._EditBase', [View], {
    */
   validationSummaryTemplate: new Simplate([
     '<div class="panel-validation-summary">',
-    '<h2>{%: $.validationSummaryText %}</h2>',
-    '<ul data-dojo-attach-point="validationContentNode">',
+    '<h3>{%: $.validationSummaryText %}</h3>',
+    '<ul class="panel-validation-messages" data-dojo-attach-point="validationContentNode">',
     '</ul>',
     '</div>',
   ]),
@@ -153,7 +153,7 @@ const __class = declare('argos._EditBase', [View], {
    */
   concurrencySummaryTemplate: new Simplate([
     '<div class="panel-concurrency-summary">',
-    '<h2>{%: $.concurrencySummaryText %}</h2>',
+    '<h3>{%: $.concurrencySummaryText %}</h3>',
     '<ul data-dojo-attach-point="concurrencyContentNode">',
     '</ul>',
     '</div>',
@@ -166,20 +166,17 @@ const __class = declare('argos._EditBase', [View], {
    * * `$$` => field instance that the error is on
    */
   validationSummaryItemTemplate: new Simplate([
-    '<li>',
-    '<a href="#{%= $.name %}">',
-    '<span><b>{%: $$.label %}</b>: {%: $.message %}</span>',
-    '</a>',
-    '</li>',
+    '<li><p>',
+    '<a class="hyperlink" href="#{%= $.name %}">',
+    '<b>{%: $$.label %}</b>: {%: $.message %}',
+    '</a></p></li>',
   ]),
   /**
    * @property {Simplate}
    * * `$` => validation error object
    */
   concurrencySummaryItemTemplate: new Simplate([
-    '<li>',
-    '<span><b>{%: $$.name %}</b>: {%: $.message %}</span>',
-    '</li>',
+    '<li><p><b>{%: $$.name %}</b>: {%: $.message %}</p></li>',
   ]),
   /**
    * @property {Simplate}
