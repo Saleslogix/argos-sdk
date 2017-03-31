@@ -160,7 +160,6 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
   clear: function clear() {
     this.inherited(arguments);
     $('button.toolButton-right', this.toolNode).remove();
-    $('ul svg', $(this.toolNode).next()).parent().parent().remove(); // remove any buttons which might have crept into more items
   },
   postCreate: function postCreate() {
     this.initSoho();
@@ -220,9 +219,6 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
 
       // remove buttons from prev view
       $('button.toolButton-right', this.toolNode).remove();
-
-       // remove any buttons which might have crept into more items
-      $('ul svg', $(this.toolNode).next()).parent().parent().remove();
 
       for (let i = 0; i < tools.length; i++) {
         const tool = tools[i];
