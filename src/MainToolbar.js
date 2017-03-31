@@ -190,7 +190,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
 
     const header = $(this.domNode);
     header.header();
-    this.header = header.data('header');
+    this.toolbar = header.find('.toolbar').data('toolbar');
 
     $('.title > h1', this.domNode).on('click', this.onTitleClick);
 
@@ -200,7 +200,8 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     });
   },
   updateSoho: function updateSoho() {
-    this.header.updated();
+    // updating soho header resets the header text to zero level. update only toolbbar for now.
+    this.toolbar.updated();
   },
   /**
    * Calls parent {@link Toolbar#showTools showTools} which sets the tool collection.
