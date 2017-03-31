@@ -1187,7 +1187,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           this._loadedSelections[key] = false;
         }
 
-        const row = $((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [key])), this.contentNode)[0];
+        const row = $(`[data-key="${key}"], [data-descriptor="${key}"]`, this.contentNode)[0];
 
         if (row && this._loadedSelections[key] !== true) {
           this.activateEntry({

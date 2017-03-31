@@ -58,7 +58,7 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
     const key = (this.entry && this.entry.$key) || this.options.key;
 
     if (key) {
-      request.setResourceSelector(string.substitute("'${0}'", [key]));
+      request.setResourceSelector(`'${key}'`);
     }
 
     if (this.contractName) {

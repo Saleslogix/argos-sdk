@@ -44,7 +44,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
     if (/(\s+)/.test(this.options.key)) {
       request.setResourceSelector(this.options.key);
     } else {
-      request.setResourceSelector(string.substitute("'${0}'", [this.options.key]));
+      request.setResourceSelector(`'${this.options.key}'`);
     }
 
     if (this.resourceKind) {
