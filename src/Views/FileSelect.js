@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import domConstruct from 'dojo/dom-construct';
 import $ from 'jquery';
 import getResource from '../I18n';
 import View from '../View';
@@ -124,7 +123,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
     this.inherited(arguments);
 
     if (!App.supportsFileAPI()) {
-      domConstruct.place(this.notSupportedTemplate.apply({}, this), this.domNode, 'only');
+      $(this.domNode).empty().append(this.notSupportedTemplate.apply({}, this));
       return;
     }
 
@@ -195,7 +194,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
       fileName: `${file.name}  (${filelength})`,
       description: this._getDefaultDescription(file.name),
     };
-    domConstruct.place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
+    $(this.contentNode).append(this.fileTemplate.apply(data, this));
   },
   _getFileLength: function _getFileLength(file) {
     let filelength = 0;
@@ -237,7 +236,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
     $(this.btnUploadFiles).addClass('display-none');
     const tpl = this.loadingTemplate.apply(this);
     $(this.domNode).addClass('list-loading');
-    domConstruct.place(tpl, this.contentNode, 'first');
+    $(this.contentNode).prepend(tpl);
     $('#progressbar', this.contentNode).progress();
   },
   cancelSelect: function cancelSelect() {},

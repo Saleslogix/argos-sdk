@@ -11,7 +11,6 @@
  */
 import declare from 'dojo/_base/declare';
 import ErrorManager from './ErrorManager';
-import domConstruct from 'dojo/dom-construct';
 import string from 'dojo/string';
 import $ from 'jquery';
 
@@ -105,7 +104,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
         const entry = feed.$resources[i];
         entry.$descriptor = entry.$descriptor || feed.$descriptor;
         this.entries[entry.$key] = entry;
-        const rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
+        const rowNode = $(this.rowTemplate.apply(entry, this));
         docfrag.appendChild(rowNode);
         this.onApplyRowTemplate(entry, rowNode);
         if (this.relatedViews.length > 0) {
@@ -114,7 +113,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
       }
 
       if (docfrag.childNodes.length > 0) {
-        domConstruct.place(docfrag, this.contentNode, 'last');
+        $(this.contentNode).append(docfrag);
       }
     }
 

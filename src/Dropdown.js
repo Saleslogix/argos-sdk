@@ -14,7 +14,6 @@
  */
 
 import declare from 'dojo/_base/declare';
-import domConstruct from 'dojo/dom-construct';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 
@@ -70,12 +69,12 @@ const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
     }
 
     items.forEach((item) => {
-      const option = domConstruct.toDom(this.selectItemTemplate.apply({
+      const option = $(this.selectItemTemplate.apply({
         key: item.key,
         value: item.value,
         text: item.text,
       }, this));
-      domConstruct.place(option, this.dropdownSelect);
+      $(this.dropdownSelect).append(option);
     });
 
     $(this.dropdownSelect).dropdown({

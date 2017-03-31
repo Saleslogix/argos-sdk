@@ -16,7 +16,6 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
 import Deferred from 'dojo/_base/Deferred';
-import query from 'dojo/query';
 import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import FieldManager from './FieldManager';
@@ -341,15 +340,15 @@ const __class = declare('argos._EditBase', [View], {
     this.inherited(arguments);
     this.processLayout(this._createCustomizedLayout(this.createLayout()));
 
-    query('div[data-field]', this.contentNode)
-      .forEach(function forEach(node) {
+    $('div[data-field]', this.contentNode)
+      .each((i, node) => {
         const name = $(node).attr('data-field');
         const field = this.fields[name];
         if (field) {
           $(field.domNode).addClass('field');
           field.renderTo(node);
         }
-      }, this);
+      });
   },
   /**
    * Extends init to also init the fields in `this.fields`.

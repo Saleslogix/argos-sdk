@@ -2,7 +2,6 @@
  * Copyright (c) 1997-2014, SalesLogix, NA., LLC. All rights reserved.
  */
 import declare from 'dojo/_base/declare';
-import domConstruct from 'dojo/dom-construct';
 import string from 'dojo/string';
 import $ from 'jquery';
 import ErrorManager from './ErrorManager';
@@ -103,7 +102,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
    */
   onRequestDataFailure: function onRequestDataFailure(response, o) {
     if (response && response.status === 404) {
-      domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
+      $(this.contentNode).append(this.notAvailableTemplate.apply(this));
     } else {
       alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
       ErrorManager.addError('failure', response);
