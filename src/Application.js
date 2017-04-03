@@ -158,13 +158,16 @@ export default class Application {
           const returnTo = from.data && from.data.options && from.data.options.returnTo;
 
           if (returnTo) {
-            let returnIndex = this.app.context.history.reverse()
-                                  .findIndex(val => val.page === returnTo);
-            // Since want to find last index of page, must reverse index
+            let returnIndex = -1;
+            // Finds the last index of the returnTo
+            this.app.context.history.forEach((val, index) => {
+              if (val.page === returnTo) {
+                returnIndex = index;
+              }
+            });
             if (returnIndex !== -1) {
-              returnIndex = (this.app.context.history.length - 1) - returnIndex;
+              this.app.context.history.splice(returnIndex);
             }
-            this.app.context.history.splice(returnIndex);
             page.redirect(returnTo);
             return;
           }
