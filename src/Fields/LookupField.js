@@ -16,11 +16,11 @@ import declare from 'dojo/_base/declare';
 import event from 'dojo/_base/event';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
-import query from 'dojo/query';
 import utility from '../Utility';
 import _Field from './_Field';
 import FieldManager from '../FieldManager';
 import getResource from '../I18n';
+import $ from 'jquery';
 
 const resource = getResource('lookupField');
 
@@ -454,7 +454,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    * @param evt
    */
   _onClick: function _onClick(evt) {
-    const buttonNode = query(evt.target).closest('.button')[0];
+    const buttonNode = $(evt.target).closest('.button').get(0);
 
     if (!this.isDisabled() && (buttonNode || this.requireSelection)) {
       event.stop(evt);

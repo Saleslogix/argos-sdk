@@ -1085,6 +1085,12 @@ export default class Application {
       init: true,
     });
   }
+  getViewDetailOnly(key) {
+    return this._internalGetView({
+      key,
+      init: false,
+    });
+  }
 
   _internalGetView(options) {
     const key = options && options.key;

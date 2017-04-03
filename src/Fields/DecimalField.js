@@ -14,7 +14,6 @@
  */
 
 import declare from 'dojo/_base/declare';
-import string from 'dojo/string';
 import TextField from './TextField';
 import FieldManager from '../FieldManager';
 import Utility from '../Utility';
@@ -64,15 +63,11 @@ const control = declare('argos.Fields.DecimalField', [TextField], {
       if (perc === 0) {
         newVal = '0';
       } else {
-        newVal = string.substitute('0${0}00', [Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.']);
+        newVal = `0${Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.'}00`;
       }
     } else {
       if (perc !== 0) {
-        newVal = string.substitute('${0}${1}${2}', [
-          parseInt(newVal, 10),
-          Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.',
-          newVal.substr(-perc),
-        ]);
+        newVal = `${parseInt(newVal, 10)}${Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.'}${newVal.substr(-perc)}`;
       }
     }
     this.inherited(arguments, [newVal]);

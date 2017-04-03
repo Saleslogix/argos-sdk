@@ -197,8 +197,8 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * * `$$` => view instance
    */
   relatedTemplate: new Simplate([
-    '<li class="{%= $.cls %}">',
-    '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
+    '<li class="{%= $.cls %}" data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %}>',
+    '<a class="{% if ($.disabled) { %}disabled{% } %}">',
     '{% if ($.icon) { %}',
     '<img src="{%= $.icon %}" alt="icon" class="icon" />',
     '{% } else if ($.iconClass) { %}',

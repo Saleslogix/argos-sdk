@@ -56,7 +56,6 @@ const __class = declare('argos._Templated', [_TemplatedMixin], {
     }, 1);
   },
   initSoho: function initSoho() {
-    // TODO: This is gettng invoked more than 200 times for configure menu view
   },
   updateSoho: function updateSoho() {
   },

@@ -2,11 +2,8 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import event from 'dojo/_base/event';
-import on from 'dojo/on';
 import string from 'dojo/string';
 import when from 'dojo/when';
-import domConstruct from 'dojo/dom-construct';
 import connect from 'dojo/_base/connect';
 import $ from 'jquery';
 import SDataStore from './Store/SData';
@@ -202,9 +199,9 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
       };
       lang.mixin(action, options);
       const actionTemplate = action.template || this.relatedActionTemplate;
-      const actionNode = domConstruct.toDom(actionTemplate.apply(action, action.id));
-      on(actionNode, 'click', this.onInvokeActionItem.bind(this));
-      domConstruct.place(actionNode, this.actionsNode, 'last');
+      const actionNode = $(actionTemplate.apply(action, action.id));
+      $(actionNode).on('click', this.onInvokeActionItem.bind(this));
+      $(this.actionsNode).append(actionNode);
     }
 
     this.actions = actions;
@@ -223,7 +220,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
         }
       }
     }
-    event.stop(evt);
+    evt.stopPropagation();
   },
   getStore: function getStore() {
     const store = new SDataStore({
@@ -295,8 +292,8 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
       this.onApply(this.parentEntry[this.parentCollectionProperty].$resources);
     } else {
       if (!this.loadingNode) {
-        this.loadingNode = domConstruct.toDom(this.loadingTemplate.apply(this));
-        domConstruct.place(this.loadingNode, this.relatedViewNode, 'last', this);
+        this.loadingNode = $(this.loadingTemplate.apply(this));
+        $(this.relatedViewNode).append(this.loadingNode);
       }
       $(this.loadingNode).toggleClass('loading');
       if (this.wait) {
@@ -318,8 +315,8 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   onApply: function onApply(relatedFeed) {
     try {
       if (!this.itemsNode) {
-        this.itemsNode = domConstruct.toDom("<div id='itemsNode' class='items'><div>");
-        domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
+        this.itemsNode = $("<div id='itemsNode' class='items'><div>");
+        $(this.relatedViewNode).append(this.itemsNode);
       }
 
       if (relatedFeed.length > 0) {
@@ -354,9 +351,9 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
           const itemEntry = relatedFeed[i];
           itemEntry.$descriptor = itemEntry.$descriptor || relatedFeed.$descriptor;
           const itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
-          const itemNode = domConstruct.toDom(itemHTML);
-          on(itemNode, 'click', this.onSelectViewRow.bind(this));
-          domConstruct.place(itemNode, this.itemsNode, 'last', this);
+          const itemNode = $(itemHTML);
+          $(itemNode).on('click', this.onSelectViewRow.bind(this));
+          $(this.itemsNode).append(itemNode);
         }
       } else {
         if (this.hideWhenNoData) {
@@ -364,7 +361,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
         } else {
           $(this.containerNode).removeClass('hidden');
         }
-        domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
+        $(this.itemsNode).append(this.nodataTemplate.apply(this.parentEntry, this));
         if (this.showTotalInTab) {
           $(this.titleNode).attr({
             innerHTML: `${this.title}  ${string.substitute(this.totalCountText, [0, 0])}`,
@@ -447,7 +444,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   },
   _onRefreshView: function _onRefreshView() {
     if (this.itemsNode) {
-      domConstruct.destroy(this.itemsNode);
+      $(this.itemsNode).remove();
       this.itemsNode = null;
     }
     this.startIndex = 1;

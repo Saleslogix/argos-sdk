@@ -81,7 +81,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           <div data-dojo-attach-point="searchNode"></div>
         </div>
         <div class="more">
-          <button class="btn-actions is-selected hide-focus" type="button" aria-haspopup="true" aria-controls="list_toolbar_popupmenu_{%= $.id %}">
+          <button class="btn-actions is-selected hide-focus" type="button" aria-controls="list_toolbar_popupmenu_{%= $.id %}">
             <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-more">
               </use>
@@ -92,9 +92,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
             <ul id="list_toolbar_popupmenu_{%= $.id %}" class="popupmenu has-icons" role="menu" aria-hidden="true">
               {% if($.hasSettings) { %}
               <li role="presentation">
-                <a href="#" data-action="openSettings" role="menuitem">
-                  List Settings
-                </a>
+                <a href="#" data-action="openSettings" role="menuitem">List Settings</a>
               </li>
               {% } %}
             </ul>
@@ -309,11 +307,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   ]),
   itemIconTemplate: new Simplate([
     '{% if ($$.getItemIconClass($)) { %}',
-    `<button type="button" class="btn-icon hide-focus" data-action="selectEntry" class="list-item-selector button">
+    `<button type="button" class="btn-icon hide-focus" class="list-item-selector button">
         <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%= $$.getItemIconClass($) || 'alert' %}"></use>
         </svg>
-        <span>Document</span>
     </button>`,
     '{% } else if ($$.getItemIconSource($)) { %}',
     '<button data-action="selectEntry" class="list-item-selector button">',
@@ -1190,7 +1187,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           this._loadedSelections[key] = false;
         }
 
-        const row = $((string.substitute('[data-key="${0}"], [data-descriptor="${0}"]', [key])), this.contentNode)[0];
+        const row = $(`[data-key="${key}"], [data-descriptor="${key}"]`, this.contentNode)[0];
 
         if (row && this._loadedSelections[key] !== true) {
           this.activateEntry({
