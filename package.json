@@ -42,6 +42,8 @@
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",
+    "babel-eslint": "^7.2.1",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-preset-es2015-without-strict": "^0.0.4",
     "eslint": "^3.6.1",
     "grunt": "^1.0.1",

@@ -25,7 +25,6 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import Deferred from 'dojo/Deferred';
 import when from 'dojo/when';
 import string from 'dojo/string';
 import SData from './Store/SData';
@@ -192,7 +191,6 @@ const __class = declare('argos._SDataListMixin', null, {
     return true; // no way to determine, always assume more data
   },
   getListCount: function getListCount(options) {
-    const def = new Deferred();
     const store = new SData({
       service: App.services.crm,
       resourceKind: this.resourceKind,
@@ -210,13 +208,13 @@ const __class = declare('argos._SDataListMixin', null, {
 
     const queryResults = store.query(null, queryOptions);
 
-    when(queryResults, () => {
-      def.resolve(queryResults.total);
-    }, (err) => {
-      def.reject(err);
+    return new Promise((resolve, reject) => {
+      when(queryResults, () => {
+        resolve(queryResults.total);
+      }, (err) => {
+        reject(err);
+      });
     });
-
-    return def.promise;
   },
   initModel: function initModel() {
     const model = this.getModel();

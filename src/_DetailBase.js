@@ -14,7 +14,7 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import Deferred from 'dojo/_base/Deferred';
+import when from 'dojo/when';
 import format from './Format';
 import utility from './Utility';
 import ErrorManager from './ErrorManager';
@@ -925,7 +925,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       const getExpression = this._buildGetExpression() || null;
       const getResults = this.requestDataUsingStore(getExpression, getOptions);
 
-      Deferred.when(getResults,
+      when(getResults,
         this._onGetComplete.bind(this),
         this._onGetError.bind(this, getOptions)
       );
