@@ -15,7 +15,7 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
-import Deferred from 'dojo/_base/Deferred';
+import when from 'dojo/when';
 import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import FieldManager from './FieldManager';
@@ -23,7 +23,6 @@ import View from './View';
 import getResource from './I18n';
 import DeepDiff from 'deepdiff';
 import $ from 'jquery';
-import 'dojo/NodeList-manipulate';
 import './Fields/BooleanField';
 import './Fields/DateField';
 import './Fields/DecimalField';
@@ -726,7 +725,7 @@ const __class = declare('argos._EditBase', [View], {
       const getExpression = this._buildGetExpression() || null;
       const getResults = this.requestDataUsingStore(getExpression, getOptions);
 
-      Deferred.when(getResults,
+      when(getResults,
         this._onGetComplete.bind(this),
         this._onGetError.bind(this, getOptions)
       );
@@ -958,7 +957,7 @@ const __class = declare('argos._EditBase', [View], {
         this.onAddError(addOptions, err);
       });
     } else if (store) {
-      Deferred.when(store.add(entry, addOptions),
+      when(store.add(entry, addOptions),
         this.onAddComplete.bind(this, entry),
         this.onAddError.bind(this, addOptions)
       );
@@ -1013,7 +1012,7 @@ const __class = declare('argos._EditBase', [View], {
         this.onPutError(putOptions, err);
       });
     } else if (store) {
-      Deferred.when(store.put(entry, putOptions),
+      when(store.put(entry, putOptions),
         this.onPutComplete.bind(this, entry),
         this.onPutError.bind(this, putOptions)
       );

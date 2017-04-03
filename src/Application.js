@@ -26,7 +26,6 @@ import { render } from './SohoIcons';
 import { createStore } from 'redux';
 import page from 'page';
 import $ from 'jquery';
-import Rx from 'rxjs';
 
 const resource = getResource('sdkApplication');
 
@@ -562,21 +561,25 @@ export default class Application {
    * Initializes this application as well as the toolbar and all currently registered views.
    */
   init(domNode) {
-    this.initIcons();
-    this.initStore();
-    this.initAppDOM(domNode);
-    this.initPreferences();
-    this.initSoho();
-    this.initToasts();
-    this.initPing();
-    this.initConnects();
-    this.initServices(); // TODO: Remove
-    this._startupConnections();
-    this.initModules();
-    this.initToolbars();
-    this.initHash();
-    this.initModal();
-    this.initScene();
+    return new Promise((resolve) => {
+      this.initIcons();
+      this.initStore();
+      this.initAppDOM(domNode);
+      this.initPreferences();
+      this.initSoho();
+      this.initToasts();
+      this.initPing().then(() => {
+        this.initServices(); // TODO: Remove
+        this.initConnects();
+        this._startupConnections();
+        this.initModules();
+        this.initToolbars();
+        this.initHash();
+        this.initModal();
+        this.initScene();
+        resolve(true);
+      });
+    });
   }
 
   initIcons() {
@@ -653,37 +656,48 @@ export default class Application {
   }
 
   initPing() {
-    // this.ping will be set if ping was passed as an options to the ctor
-    if (this.ping) {
-      return;
+    // Lite build, which will not have Rx, disable offline and ping
+    if (FLAGS && FLAGS.LITE) {
+      this.ping = () => {
+        this.store.dispatch(setConnectionState(true));
+      };
+      this.enableOfflineSupport = false;
     }
 
-    this.ping = util.debounce(() => {
-      this.toast.add({
-        message: resource.checkingText,
-        title: resource.connectionToastTitleText,
-        toastTime: this.PING_TIMEOUT,
-      });
-      const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
-        .flatMap(() => {
-          return Rx.Observable.fromPromise(this._ping())
-            .flatMap((online) => {
-              if (online) {
-                return Rx.Observable.of(online);
-              }
+    // this.ping will be set if ping was passed as an options to the ctor
+    if (this.ping) {
+      return Promise.resolve(true);
+    }
 
-              return Rx.Observable.throw(new Error());
-            });
-        })
-        .retry(this.PING_RETRY)
-        .take(1);
+    return import('rxjs').then((Rx) => {
+      this.ping = util.debounce(() => {
+        this.toast.add({
+          message: resource.checkingText,
+          title: resource.connectionToastTitleText,
+          toastTime: this.PING_TIMEOUT,
+        });
+        const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
+          .flatMap(() => {
+            return Rx.Observable.fromPromise(this._ping())
+              .flatMap((online) => {
+                if (online) {
+                  return Rx.Observable.of(online);
+                }
 
-      ping$.subscribe(() => {
-        this.store.dispatch(setConnectionState(true));
-      }, () => {
-        this.store.dispatch(setConnectionState(false));
-      });
-    }, this.PING_DEBOUNCE);
+                return Rx.Observable.throw(new Error());
+              });
+          })
+          .retry(this.PING_RETRY)
+          .take(1);
+
+        ping$.subscribe(() => {
+          this.store.dispatch(setConnectionState(true));
+        }, () => {
+          this.store.dispatch(setConnectionState(false));
+        });
+      }, this.PING_DEBOUNCE);
+      return Promise.resolve(true);
+    });
   }
 
   initPreferences() {
