@@ -109,8 +109,9 @@
             o.params = S.apply({}, o.params);
             o.headers = S.apply({}, o.headers);
 
-            if (o.cache !== true)
+            if (o.cache !== true) {
                 o.params[o.cacheParam || '_t'] = (new Date()).getTime();
+            }
 
             o.method = o.method || 'GET';
 
@@ -137,6 +138,12 @@
 
                 for (var n in o.headers)
                     xhr.setRequestHeader(n, o.headers[n]);
+
+                var etagCache = o.etagCache;
+                if (o.cache && etagCache && etagCache.etag) {
+                    xhr.setRequestHeader('If-None-Match', etagCache.etag);
+                }
+
             }
             catch (headerException)
             {
@@ -1171,6 +1178,9 @@
         password: '',
         batchScope: null,
         timeout: 0,
+        cache: false,
+        cacheParam: '_t',
+        _etags: {},
         maxGetUriLength: 2000,
         constructor: function(options, userName, password) {
             // pass the first argument to the base class; will only have an effect if the argument
@@ -1182,6 +1192,8 @@
             // Other options
             if (isDefined(options.includeContent)) this.uri.setIncludeContent(options.includeContent);
             if (isDefined(options.version)) this.uri.setVersion(options.version);
+            if (isDefined(options.cache)) this.cache = options.cache;
+            if (isDefined(options.cacheParam)) this.cacheParam = options.cacheParam;
 
             // Support for the new compact mode in Saleslogix 8.1 and higher
             if (isDefined(options.compact)) this.uri.setCompact(options.compact);
@@ -1388,16 +1400,33 @@
 
             // todo: temporary fix for SalesLogix Dynamic Adapter only supporting json selector in format parameter
             if (this.json) request.setQueryArg('format', 'json');
+            var url = request.build();
 
             var o = S.apply({
                 async: options.async,
                 headers: {},
                 method: 'GET',
-                url: request.build()
+                url: url,
+                cache: options.cache || this.cache,
+                cacheParam: options.cacheParam || this.cacheParam,
+                etagCache: this._etags[url]
             }, {
                 scope: this,
                 success: function(response, opt) {
-                    var feed = this.processFeed(response);
+                    var responseText = response.responseText;
+
+                    if (response.status === 304) {
+                        responseText = this._etags[url].responseText;
+                    }
+
+                    var contentType = response.getResponseHeader && response.getResponseHeader('Content-Type');
+                    var feed = this.processFeed(responseText, contentType);
+
+                    var etag = response.getResponseHeader('etag');
+                    this._etags[url] = {
+                        etag: etag,
+                        responseText: responseText
+                    };
 
                     this.fireEvent('requestcomplete', request, opt, feed);
 
@@ -2058,15 +2087,14 @@
 
             return {'feed': result};
         },
-        processFeed: function(response) {
-            if (!response.responseText) return null;
+        processFeed: function(responseText, contentType) {
+            if (!responseText) return null;
 
-            var contentType = response.getResponseHeader && response.getResponseHeader('Content-Type');
             var doc;
 
             if (/application\/json/i.test(contentType) || (!contentType && this.isJsonEnabled()))
             {
-                doc = JSON.parse(response.responseText);
+                doc = JSON.parse(responseText);
 
                 // doing this for parity with below, since with JSON, SData will always
                 // adhere to the format, regardless of the User-Agent.
@@ -2083,7 +2111,7 @@
             }
             else
             {
-                doc = this.parseFeedXml(response.responseText);
+                doc = this.parseFeedXml(responseText);
 
                 // depending on the User-Agent the SIF will either send back a feed, or a single entry
                 // todo: is this the right way to handle this? should there be better detection?
