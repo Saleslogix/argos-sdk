@@ -81,23 +81,20 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           <div data-dojo-attach-point="searchNode"></div>
         </div>
         <div class="more">
-          <button class="btn-actions is-selected hide-focus" type="button" aria-controls="list_toolbar_popupmenu_{%= $.id %}">
-            <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-more">
+          <button class="btn-actions" type="button" aria-controls="list_toolbar_popupmenu_{%= $.id %}">
+            <svg class="icon" role="presentation">
+              <use xlink:href="#icon-more">
               </use>
             </svg>
             <span class="audible">More Actions</span>
           </button>
-          <div class="popupmenu-wrapper bottom" role="application" aria-hidden="true">
-            <ul id="list_toolbar_popupmenu_{%= $.id %}" class="popupmenu has-icons" role="menu" aria-hidden="true">
-              {% if($.hasSettings) { %}
-              <li role="presentation">
-                <a href="#" data-action="openSettings" role="menuitem">List Settings</a>
-              </li>
-              {% } %}
-            </ul>
-            <div class="arrow"></div>
-          </div>
+          <ul id="list_toolbar_popupmenu_{%= $.id %}" role="menu">
+            {% if($.hasSettings) { %}
+            <li role="presentation">
+              <a href="#" data-action="openSettings" role="menuitem">List Settings</a>
+            </li>
+            {% } %}
+          </ul>
         </div>
       </div>
       {% if ($$.isNavigationDisabled()) { %}
@@ -185,6 +182,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   hasSettings: false,
   /**
+   * listbase calculated property based on actions available
+   */
+  visibleActions: [],
+  /**
    * @property {Simplate}
    * Template used on lookups to have empty Selection option.
    * This template is not directly rendered but included in {@link #viewTemplate}.
@@ -215,13 +216,15 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       <div class="widget">
         <div class="widget-header">
           {%! $$.itemIconTemplate %}<h2 class="widget-title">{%: $[$$.labelProperty] %}</h2>
-          <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $[$$.idProperty] %}">
-            <span class="audible">Actions</span>
-            <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-              <use xlink:href="#icon-more"></use>
-            </svg>
-          </button>
-          {%! $$.listActionTemplate %}
+          {% if($$.visibleActions.length > 0) { %}
+            <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $[$$.idProperty] %}">
+              <span class="audible">Actions</span>
+              <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+                <use xlink:href="#icon-more"></use>
+              </svg>
+            </button>
+            {%! $$.listActionTemplate %}
+          {% } %}
         </div>
         <div class="card-content" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">
           {%! $$.itemRowContentTemplate %}
@@ -1675,7 +1678,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         }
 
         this.processData(entries);
-        this.updateSoho(); // TODO: remove this from here - it updates toolbar even on more list fetch
       } finally {
         this._clearLoading();
         this.isRefreshing = false;
@@ -1764,9 +1766,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       if (this.isCardView) {
         rowNode = $(this.rowTemplate.apply(entry, this));
 
-        // initialize popupmenus on each card
-        const btn = $(rowNode).find('.btn-actions');
-        $(btn).popupmenu();
+        if (this.visibleActions.length) {
+          // initialize popupmenus on each card
+          const btn = $(rowNode).find('.btn-actions');
+          $(btn).popupmenu();
+        }
       } else {
         rowNode = $(this.liRowTemplate.apply(entry, this));
       }
