@@ -83,7 +83,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     return __class.prototype[prop];
   },
   /**
-   * @param {DOMNode} scrollerNode The node that scrollers and should be pulled on to refresh.
+   * @param {DOMNode} scrollerNode The node that scrolls and should be pulled on to refresh.
    * @param {DOMNode} dragNode The node that the user will drag. Defaults to scrollerNode if not specified.
    */
   initPullToRefresh: function initPullToRefresh(scrollerNode, dragNode) {
