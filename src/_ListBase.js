@@ -64,6 +64,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     },
   },
   /**
+   * @property {Object}
+   *
+   *  Maps to Utility Class
+   */
+  utility: Utility,
+  /**
    * @property {Simplate}
    * The template used to render the view's main DOM element when the view is initialized.
    * This template includes emptySelectionTemplate, moreTemplate and listActionTemplate.
@@ -161,7 +167,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render a row in the view.  This template includes {@link #itemTemplate}.
    */
   rowTemplate: new Simplate([
-    '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
+    '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $$.utility.getValue($, $$.labelProperty) %}">',
     '<button data-action="selectEntry" class="list-item-selector button">',
     '{% if ($$.selectIconClass) { %}',
     '<span class="{%= $$.selectIconClass %}"></span>',
