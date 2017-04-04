@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("moment"));
+		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define(["moment"], factory);
+		define([], factory);
 	else if(typeof exports === 'object')
-		exports["ICRMCommonSDK"] = factory(require("moment"));
+		exports["ICRMCommonSDK"] = factory();
 	else
-		root["ICRMCommonSDK"] = factory(root["moment"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_5__) {
+		root["ICRMCommonSDK"] = factory();
+})(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 22);
+/******/ 	return __webpack_require__(__webpack_require__.s = 21);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,6 +86,7 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.bigNumberAbbrText = undefined;
 exports.decimalAdjust = decimalAdjust;
 exports.fixed = fixed;
 exports.percent = percent;
@@ -93,7 +94,7 @@ exports.bigNumber = bigNumber;
 
 var _utility = __webpack_require__(4);
 
-var bigNumberAbbrText = {
+var bigNumberAbbrText = exports.bigNumberAbbrText = {
   billion: 'B',
   million: 'M',
   thousand: 'K'
@@ -148,9 +149,11 @@ function fixed(val, d) {
     decimals = d;
   }
 
+  // return parseFloat(val).toFixed(decimals);
   var m = Math.pow(10, decimals);
   var v = Math.floor(parseFloat(val) * m) / m;
 
+  // return parseFloat(v.toFixed(decimals));
   return v;
 }
 
@@ -204,7 +207,12 @@ function percent(val, places) {
   return percentFormatter(numberFormated);
 }
 
+/**
+ * Warning: This function is not yet functional
+ */
 function bigNumber(val) {
+  var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'en-US';
+
   var numParse = typeof val !== 'number' ? parseFloat(val) : val;
   var absVal = Math.abs(numParse);
   var text = bigNumberAbbrText;
@@ -216,18 +224,18 @@ function bigNumber(val) {
   var results = numParse.toString();
   if (absVal >= 1000000000) {
     numParse = numParse / 1000000000;
-    numParse = decimalAdjust('round', numParse, -1);
-    results = fixed(numParse, 1) + text.billion;
+    numParse = (0, _utility.roundNumberTo)(numParse, 1);
+    results = numParse.toLocaleString(locale, { minimumFractionDigits: 1 }) + text.billion;
   } else if (absVal >= 1000000) {
     numParse = numParse / 1000000;
-    numParse = decimalAdjust('round', numParse, -1);
-    results = fixed(numParse, 1) + text.million;
+    numParse = (0, _utility.roundNumberTo)(numParse, 1);
+    results = numParse.toLocaleString(locale, { minimumFractionDigits: 1 }) + text.million;
   } else if (absVal >= 1000) {
     numParse = numParse / 1000;
-    numParse = decimalAdjust('round', numParse, -1);
-    results = fixed(numParse, 1) + text.thousand;
+    numParse = (0, _utility.roundNumberTo)(numParse, 1);
+    results = numParse.toLocaleString(locale, { minimumFractionDigits: 1 }) + text.thousand;
   } else {
-    results = decimalAdjust('round', numParse, 2).toString();
+    results = (0, _utility.roundNumberTo)(numParse, 2).toLocaleString(locale);
   }
 
   return results;
@@ -248,13 +256,6 @@ exports.toBoolean = toBoolean;
 exports.toDateFromString = toDateFromString;
 exports.toIsoStringFromDate = toIsoStringFromDate;
 exports.toJsonStringFromDate = toJsonStringFromDate;
-
-var _moment = __webpack_require__(5);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var trueRE = /^(true|T)$/i;
 var isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/;
 var jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//;
@@ -325,25 +326,23 @@ function toDateFromString(v) {
     value = utc;
   } else if (match = isoDate.exec(value)) {
     // eslint-disable-line
-    utc = (0, _moment2.default)(new Date(Date.UTC(parseInt(match[1], 10), parseInt(match[2], 10) - 1, // zero based
-    parseInt(match[3], 10), parseInt(match[4] || 0, 10), parseInt(match[5] || 0, 10), parseInt(match[6] || 0, 10))));
+    utc = new Date(Date.UTC(parseInt(match[1], 10), parseInt(match[2], 10) - 1, // zero based
+    parseInt(match[3], 10), parseInt(match[4] || 0, 10), parseInt(match[5] || 0, 10), parseInt(match[6] || 0, 10)));
 
     if (match[8] && match[8] !== 'Z') {
       var h = parseInt(match[10], 10);
       var m = parseInt(match[11], 10);
+      var mutated = utc;
 
       if (match[9] === '-') {
-        utc.add({
-          minutes: h * 60 + m
-        });
+        mutated = utc.getTime() + (h * 60 + m) * 60 * 1000;
       } else {
-        utc.add({
-          minutes: -1 * (h * 60 + m)
-        });
+        mutated = utc.getTime() - (h * 60 + m) * 60 * 1000;
       }
+      utc = new Date(mutated);
     }
 
-    value = utc.toDate();
+    value = utc;
   }
 
   return value;
@@ -712,7 +711,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _activity = __webpack_require__(15);
+var _activity = __webpack_require__(14);
 
 Object.keys(_activity).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -724,7 +723,7 @@ Object.keys(_activity).forEach(function (key) {
   });
 });
 
-var _data = __webpack_require__(16);
+var _data = __webpack_require__(15);
 
 Object.keys(_data).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -736,7 +735,7 @@ Object.keys(_data).forEach(function (key) {
   });
 });
 
-var _file = __webpack_require__(17);
+var _file = __webpack_require__(16);
 
 Object.keys(_file).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -748,7 +747,7 @@ Object.keys(_file).forEach(function (key) {
   });
 });
 
-var _function = __webpack_require__(18);
+var _function = __webpack_require__(17);
 
 Object.keys(_function).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -760,7 +759,7 @@ Object.keys(_function).forEach(function (key) {
   });
 });
 
-var _http = __webpack_require__(19);
+var _http = __webpack_require__(18);
 
 Object.keys(_http).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -772,7 +771,7 @@ Object.keys(_http).forEach(function (key) {
   });
 });
 
-var _math = __webpack_require__(20);
+var _math = __webpack_require__(19);
 
 Object.keys(_math).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -784,7 +783,7 @@ Object.keys(_math).forEach(function (key) {
   });
 });
 
-var _string = __webpack_require__(21);
+var _string = __webpack_require__(20);
 
 Object.keys(_string).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -817,12 +816,6 @@ exports.default = Utility;
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
-
-/***/ },
-/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -841,7 +834,7 @@ var _utility = __webpack_require__(4);
 
 var utility = _interopRequireWildcard(_utility);
 
-var _format = __webpack_require__(11);
+var _format = __webpack_require__(10);
 
 var format = _interopRequireWildcard(_format);
 
@@ -856,7 +849,7 @@ exports.format = format; /**
                           */
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -883,7 +876,7 @@ function userActivityStatus(val, activityFormatText) {
 }
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1052,7 +1045,7 @@ function address(addr, asText, separator, fmt) {
 }
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1136,7 +1129,7 @@ function multiCurrency(val, code) {
 }
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1145,19 +1138,30 @@ function multiCurrency(val, code) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.dateFormat = dateFormat;
 exports.date = date;
 exports.relativeDate = relativeDate;
 exports.timespan = timespan;
-
-var _moment = __webpack_require__(5);
-
-var _moment2 = _interopRequireDefault(_moment);
 
 var _convert = __webpack_require__(1);
 
 var _number = __webpack_require__(0);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/**
+ * Date format function that allows currying a formatter based on the passed parameters
+ * @param {function} func Function to format the value passed in based on the other two params
+ * @param {string} fmt Format to be used when formatting the date
+ * @param {string} shortDateFormatText Short date format
+ * @return {function} Returns a function that formats a Date based on the the input parameters
+ */
+function dateFormat(func) {
+  var fmt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'M/D/YYYY';
+  var shortDateFormatText = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'M/D/YYYY';
+
+  return function (value) {
+    func(value, fmt, shortDateFormatText);
+  };
+}
 
 /**
  * Takes a date and format string and returns the formatted date as a string.
@@ -1166,10 +1170,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {boolean} utc If a date should be in UTC time set this flag to true to counter-act javascripts built-in timezone applier.
  * @return {string} Date formatted as a string.
  */
-function date(val) {
-  var fmt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'M/D/YYYY';
-  var utc = arguments[2];
-  var shortDateFormatText = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'M/D/YYYY';
+function date(val, utc) {
+  var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (value) {
+    return value;
+  };
 
   var dateValue = void 0;
   if (val instanceof Date) {
@@ -1181,33 +1185,23 @@ function date(val) {
   }
 
   if (dateValue) {
-    dateValue = (0, _moment2.default)(dateValue);
+    var mutated = dateValue;
     if (utc) {
-      dateValue = dateValue.subtract({
-        minutes: dateValue.utcOffset()
-      });
+      mutated = dateValue.getTime() + dateValue.getTimezoneOffset() * 60 * 1000;
+      dateValue = new Date(mutated);
     }
 
-    return dateValue.format(fmt || shortDateFormatText);
+    return format(dateValue);
   }
 
   return val;
 }
 
-function relativeDate(_date, timeless) {
-  var relDate = (0, _moment2.default)(_date);
-  if (!relDate || !relDate.isValid()) {
-    throw new Error('Invalid date passed into Format.relativeDate');
-  }
-
-  if (timeless) {
-    // utc
-    relDate = relDate.subtract({
-      minutes: relDate.utcOffset()
-    });
-  }
-
-  return relDate.fromNow();
+/**
+ * @deprecated Use the date format instead with a fromNow format function
+ */
+function relativeDate() {
+  throw new Error('RelativeDate Format is deprecated, please use the date function instead with a format function');
 }
 
 /**
@@ -1251,7 +1245,7 @@ function timespan(val) {
 }
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1261,7 +1255,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _activity = __webpack_require__(7);
+var _activity = __webpack_require__(6);
 
 Object.keys(_activity).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1273,7 +1267,7 @@ Object.keys(_activity).forEach(function (key) {
   });
 });
 
-var _address = __webpack_require__(8);
+var _address = __webpack_require__(7);
 
 Object.keys(_address).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1285,7 +1279,7 @@ Object.keys(_address).forEach(function (key) {
   });
 });
 
-var _currency = __webpack_require__(9);
+var _currency = __webpack_require__(8);
 
 Object.keys(_currency).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1297,7 +1291,7 @@ Object.keys(_currency).forEach(function (key) {
   });
 });
 
-var _date = __webpack_require__(10);
+var _date = __webpack_require__(9);
 
 Object.keys(_date).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1321,7 +1315,7 @@ Object.keys(_html).forEach(function (key) {
   });
 });
 
-var _name = __webpack_require__(12);
+var _name = __webpack_require__(11);
 
 Object.keys(_name).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1345,7 +1339,7 @@ Object.keys(_number).forEach(function (key) {
   });
 });
 
-var _phone = __webpack_require__(13);
+var _phone = __webpack_require__(12);
 
 Object.keys(_phone).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1357,7 +1351,7 @@ Object.keys(_phone).forEach(function (key) {
   });
 });
 
-var _picklist = __webpack_require__(14);
+var _picklist = __webpack_require__(13);
 
 Object.keys(_picklist).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1412,7 +1406,7 @@ var Format = Object.assign({}, ActivityFormat, AddressFormat, CurrencyFormat, Da
 exports.default = Format;
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1493,7 +1487,7 @@ function nameLF(val) {
 }
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1629,7 +1623,7 @@ function phone() {
 }
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1747,7 +1741,7 @@ function picklist(value, picklistObj) {
 }
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1775,7 +1769,7 @@ function getRealActivityId(activityId) {
 }
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1872,7 +1866,7 @@ function setValue(o, name, val) {
 }
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1950,7 +1944,7 @@ function getFileExtension(fileName) {
 }
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2057,7 +2051,7 @@ function joinFields(seperator, fields) {
 // }
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2080,7 +2074,7 @@ function debounce(fn, wait) {
 }
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2096,7 +2090,7 @@ function roundNumberTo(number, precision) {
 }
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2205,7 +2199,7 @@ function escapeSearchQuery(searchQuery) {
 }
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2215,7 +2209,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _index = __webpack_require__(6);
+var _index = __webpack_require__(5);
 
 Object.keys(_index).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
