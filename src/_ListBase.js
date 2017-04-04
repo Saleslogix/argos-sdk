@@ -936,7 +936,17 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Event} evt The click/tap event
    * @param {HTMLElement} node The node that invoked the action
    */
-  invokeActionItem: function invokeActionItem(parameters /* , evt, node*/) {
+  invokeActionItem: function invokeActionItem(parameters, evt, node) {
+    const popupmenu = $(node)
+      .parent('li')
+      .parent('.actions-row')
+      .parent('.popupmenu-wrapper')
+      .prev()
+      .data('popupmenu');
+    if (popupmenu) {
+      popupmenu.close();
+    }
+
     const index = parameters.id;
     const action = this.visibleActions[index];
     const selectedItems = this.get('selectionModel')
