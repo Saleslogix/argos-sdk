@@ -944,7 +944,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       .prev()
       .data('popupmenu');
     if (popupmenu) {
-      popupmenu.close();
+      setTimeout(() => {
+        popupmenu.close();
+      }, 100);
     }
 
     const index = parameters.id;
