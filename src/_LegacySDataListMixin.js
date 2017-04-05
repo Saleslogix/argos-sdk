@@ -105,7 +105,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
         entry.$descriptor = entry.$descriptor || feed.$descriptor;
         this.entries[entry.$key] = entry;
         const rowNode = $(this.rowTemplate.apply(entry, this));
-        docfrag.appendChild(rowNode);
+        docfrag.appendChild(rowNode.get(0));
         this.onApplyRowTemplate(entry, rowNode);
         if (this.relatedViews.length > 0) {
           this.onProcessRelatedViews(entry, rowNode, feed);
