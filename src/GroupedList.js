@@ -50,7 +50,7 @@ const __class = declare('argos.GroupedList', [List], {
    */
   groupTemplate: new Simplate([`
       <div class="accordion-header" role="presentation">
-        <a href role="button"><span>{%: $.title %}</span></a>
+        <a href="#" role="button"><span>{%: $.title %}</span></a>
       </div>
       <div class="accordion-pane" data-group="{%= $.tag %}">
       </div>
@@ -196,6 +196,7 @@ const __class = declare('argos.GroupedList', [List], {
         $(getGroupsNode(entryGroup)).append(rowNode);
       }
     }
+    this.updateSoho();
   },
   getGroupsNode: function getGroupsNode(entryGroup) {
     let results = $(`[data-group="${entryGroup.tag}"]`, this.contentNode);
