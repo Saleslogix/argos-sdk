@@ -1,13 +1,9 @@
-define(["./create"], function(create){
-	// module:
-	//		dojo/errors/CancelError
+/*
+	Copyright (c) 2004-2016, The JS Foundation All Rights Reserved.
+	Available via Academic Free License >= 2.1 OR the modified BSD license.
+	see: http://dojotoolkit.org/license for details
+*/
 
-	/*=====
-	return function(){
-		// summary:
-		//		Default error if a promise is canceled without a reason.
-	};
-	=====*/
-
-	return create("CancelError", null, null, { dojoType: "cancel", log: false });
-});
+//>>built
+define("dojo/errors/CancelError",["./create"],function(a){return a("CancelError",null,null,{dojoType:"cancel",log:!1})});
+//# sourceMappingURL=CancelError.js.map

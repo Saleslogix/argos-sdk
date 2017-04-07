@@ -1,16 +1,3 @@
-define([
-	"dojo/_base/declare", // declare
-	"./PopupMenuItem",
-	"./MenuBarItem"
-], function(declare, PopupMenuItem, MenuBarItem){
-
-	// module:
-	//		dijit/PopupMenuBarItem
-
-	var _MenuBarItemMixin = MenuBarItem._MenuBarItemMixin;
-
-	return declare("dijit.PopupMenuBarItem", [PopupMenuItem, _MenuBarItemMixin], {
-		// summary:
-		//		Item in a MenuBar like "File" or "Edit", that spawns a submenu when pressed (or hovered)
-	});
-});
+//>>built
+define("dijit/PopupMenuBarItem",["dojo/_base/declare","./PopupMenuItem","./MenuBarItem"],function(a,b,c){return a("dijit.PopupMenuBarItem",[b,c._MenuBarItemMixin],{})});
+//# sourceMappingURL=PopupMenuBarItem.js.map

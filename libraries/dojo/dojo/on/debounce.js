@@ -1,19 +1,9 @@
-define(['../debounce', '../on', './asyncEventListener'], function(debounce, on, asyncEventListener){
-	// summary:
-	//		This module provides an event debouncer for dojo/on
-	// module:
-	//		dojo/on/debounce
+/*
+	Copyright (c) 2004-2016, The JS Foundation All Rights Reserved.
+	Available via Academic Free License >= 2.1 OR the modified BSD license.
+	see: http://dojotoolkit.org/license for details
+*/
 
-	return function(selector, delay){
-		// summary:
-		//		event parser for custom events
-		// selector: String
-		//		The selector to check against
-		// delay: Interger
-		//		The amount of ms before testing the selector
-
-		return function(node, listenerFnc){
-			return on(node, selector, asyncEventListener(debounce(listenerFnc, delay)));
-		};
-	};
-});
+//>>built
+define("dojo/on/debounce",["../debounce","../on","./asyncEventListener"],function(a,b,c){return function(d,e){return function(f,g){return b(f,d,c(a(g,e)))}}});
+//# sourceMappingURL=debounce.js.map

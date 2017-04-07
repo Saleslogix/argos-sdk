@@ -1,9 +1,3 @@
-define({      
-//begin v1.x content
-	buttonOk: "U redu",
-	buttonCancel: "Otkaži",
-	buttonSave: "Sačuvaj",
-	itemClose: "Zatvori"
-//end v1.x content
-});
-
+//>>built
+define("dijit/nls/sr/common",{buttonOk:"U redu",buttonCancel:"Otka\u017ei",buttonSave:"Sa\u010duvaj",itemClose:"Zatvori"});
+//# sourceMappingURL=common.js.map
