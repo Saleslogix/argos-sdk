@@ -1,0 +1,140 @@
+{
+  "projectName": "Argos SDK",
+  "licenseText": "",
+  "deployDir": "deploy/",
+  "pkgs": [
+    {
+      "name": "Argos SDK Global Dependencies",
+      "file": "content/javascript/argos-dependencies.js",
+      "isDebug": true,
+      "fileIncludes": [
+        {
+          "text": "l20n.js",
+          "path": "../libraries/l20n/"
+        },
+        {
+          "text": "Simplate.js",
+          "path": "../libraries/"
+        },
+        {
+          "text": "canvas2image.js",
+          "path": "../libraries/"
+        },
+        {
+          "text": "sdata-client-dependencies-debug.js",
+          "path": "../libraries/sdata/"
+        },
+        {
+          "text": "sdata-client-debug.js",
+          "path": "../libraries/sdata/"
+        },
+        {
+          "text": "pouchdb-6.1.2.js",
+          "path": "../libraries/pouchdb/"
+        },
+        {
+          "text": "deep-diff-0.2.0.min.js",
+          "path": "../libraries/deep-diff/"
+        },
+        {
+          "text": "polyfill.min.js",
+          "path": "../node_modules/babel-polyfill/dist/"
+        },
+        {
+          "text": "moment-with-locales.js",
+          "path": "../node_modules/moment/min/"
+        },
+        {
+          "text": "rx.lite.js",
+          "path": "../node_modules/rx-lite/"
+        },
+        {
+          "text": "common.bundle.js",
+          "path": "../node_modules/@infor/icrm-js-common/dist/bundles"
+        },
+        {
+          "text": "customization.bundle.js",
+          "path": "../node_modules/@infor/icrm-js-customization/dist/bundles"
+        },
+        {
+          "text": "services.bundle.js",
+          "path": "../node_modules/@infor/icrm-js-services/dist/bundles"
+        },
+        {
+          "text": "redux.js",
+          "path": "../node_modules/redux/dist/"
+        },
+        {
+          "text": "d3.js",
+          "path": "../node_modules/d3/"
+        },
+        {
+          "text": "jquery.js",
+          "path": "../node_modules/jquery/dist/"
+        },
+        {
+          "text": "sohoxi.js",
+          "path": "../node_modules/@infor/sohoxi/dist/js/"
+        }
+      ]
+    },
+    {
+      "name": "Argos SDK AMD Dependencies",
+      "file": "content/javascript/argos-amd-dependencies.js",
+      "isDebug": true,
+      "fileIncludes": [
+        {
+          "text": "snap.js",
+          "path": "../libraries/snap/"
+        }
+      ]
+    },
+    {
+      "name": "Argos SDK",
+      "file": "content/javascript/argos-sdk.js",
+      "isDebug": true,
+      "fileIncludes": [<% files.forEach(function(file, i) { %>{
+            "text": "<%- file.fileName %>",
+            "path": "<%- file.folderName %>/"
+          }<% if (i < files.length - 1) {%>, <% } %><%});%>
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "src": "../localization/locales/argos",
+      "dest": "localization/locales/argos",
+      "filters": ".*(\\.l20n)",
+    },
+    {
+      "src": "../libraries/font-awesome-4.4.0/fonts",
+      "dest": "content/css/themes/fonts",
+      "filters": ".*(\\.otf|\\.eot|\\.svg|\\.ttf|\\.woff|\\.woff2)"
+    },
+    {
+      "src": "../content",
+      "dest": "content",
+      "filters": ".*(\\.css|\\.jpg|\\.png|\\.gif)"
+    },
+    {
+      "src": "../min",
+      "dest": "content",
+      "filters": ".*(\\.css)"
+    },
+    {
+      "src": "../node_modules/@infor/sohoxi/dist/css/",
+      "dest": "content/css",
+      "filters": ".*(\\.css)"
+    },
+    {
+      "src": "../libraries/dojo/dojo",
+      "dest": "content/dojo/dojo",
+      "filters": "(dojo\\.js)"
+    },
+    {
+      "src": "../libraries/dojo/dojo/cldr/nls",
+      "dest": "content/dojo/dojo/cldr/nls",
+      "filters": ".*\\.js"
+    }
+  ]
+}

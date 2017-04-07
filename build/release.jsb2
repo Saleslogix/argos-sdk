@@ -3,19 +3,373 @@
   "licenseText": "",
   "deployDir": "deploy/",
   "pkgs": [
-  {
+    {
       "name": "Argos SDK Global Dependencies",
       "file": "content/javascript/argos-dependencies.js",
       "isDebug": true,
       "fileIncludes": [
         {
-          "text": "jquery.js",
-          "path": "../node_modules/jquery/dist/"
+          "text": "l20n.js",
+          "path": "../libraries/l20n/"
+        },
+        {
+          "text": "Simplate.js",
+          "path": "../libraries/"
+        },
+        {
+          "text": "canvas2image.js",
+          "path": "../libraries/"
+        },
+        {
+          "text": "sdata-client-dependencies-debug.js",
+          "path": "../libraries/sdata/"
+        },
+        {
+          "text": "sdata-client-debug.js",
+          "path": "../libraries/sdata/"
+        },
+        {
+          "text": "pouchdb-6.1.2.js",
+          "path": "../libraries/pouchdb/"
+        },
+        {
+          "text": "deep-diff-0.2.0.min.js",
+          "path": "../libraries/deep-diff/"
+        },
+        {
+          "text": "polyfill.min.js",
+          "path": "../node_modules/babel-polyfill/dist/"
+        },
+        {
+          "text": "moment-with-locales.js",
+          "path": "../node_modules/moment/min/"
+        },
+        {
+          "text": "rx.lite.js",
+          "path": "../node_modules/rx-lite/"
+        },
+        {
+          "text": "common.bundle.js",
+          "path": "../node_modules/@infor/icrm-js-common/dist/bundles"
+        },
+        {
+          "text": "customization.bundle.js",
+          "path": "../node_modules/@infor/icrm-js-customization/dist/bundles"
+        },
+        {
+          "text": "services.bundle.js",
+          "path": "../node_modules/@infor/icrm-js-services/dist/bundles"
+        },
+        {
+          "text": "redux.js",
+          "path": "../node_modules/redux/dist/"
         },
         {
           "text": "d3.js",
           "path": "../node_modules/d3/"
+        },
+        {
+          "text": "jquery.js",
+          "path": "../node_modules/jquery/dist/"
+        },
+        {
+          "text": "sohoxi.js",
+          "path": "../node_modules/@infor/sohoxi/dist/js/"
         }
+      ]
+    },
+    {
+      "name": "Argos SDK AMD Dependencies",
+      "file": "content/javascript/argos-amd-dependencies.js",
+      "isDebug": true,
+      "fileIncludes": [
+        {
+          "text": "snap.js",
+          "path": "../libraries/snap/"
+        }
+      ]
+    },
+    {
+      "name": "Argos SDK",
+      "file": "content/javascript/argos-sdk.js",
+      "isDebug": true,
+      "fileIncludes": [{
+            "text": "_ActionMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "I18n.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_CustomizationMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Utility.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_DraggableBase.js",
+            "path": "../src-out/"
+          }, {
+            "text": "FieldManager.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Convert.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_Templated.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Types.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "_ServiceMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "connection.js",
+            "path": "../src-out/actions/"
+          }, {
+            "text": "index.js",
+            "path": "../src-out/actions/"
+          }, {
+            "text": "Manager.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "Toast.js",
+            "path": "../src-out/Dialogs/"
+          }, {
+            "text": "Scene.js",
+            "path": "../src-out/"
+          }, {
+            "text": "SohoIcons.js",
+            "path": "../src-out/"
+          }, {
+            "text": "CultureInfo.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_GroupBySection.js",
+            "path": "../src-out/Groups/"
+          }, {
+            "text": "PouchDB.js",
+            "path": "../src-out/Store/"
+          }, {
+            "text": "WidgetBase.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_PullToRefreshMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Format.js",
+            "path": "../src-out/"
+          }, {
+            "text": "SelectionModel.js",
+            "path": "../src-out/"
+          }, {
+            "text": "ErrorManager.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_ModelBase.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "SData.js",
+            "path": "../src-out/Store/"
+          }, {
+            "text": "_RelatedViewWidgetBase.js",
+            "path": "../src-out/"
+          }, {
+            "text": "BusyIndicator.js",
+            "path": "../src-out/Dialogs/"
+          }, {
+            "text": "Modal.js",
+            "path": "../src-out/Dialogs/"
+          }, {
+            "text": "Dropdown.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_Field.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "SearchWidget.js",
+            "path": "../src-out/"
+          }, {
+            "text": "TabWidget.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Toolbar.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Manager.js",
+            "path": "../src-out/Offline/"
+          }, {
+            "text": "index.js",
+            "path": "../src-out/reducers/"
+          }, {
+            "text": "Adapter.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "DateTimeSection.js",
+            "path": "../src-out/Groups/"
+          }, {
+            "text": "GroupByValueSection.js",
+            "path": "../src-out/Groups/"
+          }, {
+            "text": "ConfigurableSelectionModel.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_LegacySDataDetailMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_LegacySDataListMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_OfflineModelBase.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "_SDataDetailMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_SDataListMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_SDataModelBase.js",
+            "path": "../src-out/Models/"
+          }, {
+            "text": "RelatedViewManager.js",
+            "path": "../src-out/"
+          }, {
+            "text": "RelatedViewWidget.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Calendar.js",
+            "path": "../src-out/"
+          }, {
+            "text": "TimePicker.js",
+            "path": "../src-out/"
+          }, {
+            "text": "BooleanField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "DropdownField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "EditorField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "LookupField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "TextField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "MainToolbar.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_DetailOfflineMixin.js",
+            "path": "../src-out/Offline/"
+          }, {
+            "text": "_ListOfflineMixin.js",
+            "path": "../src-out/Offline/"
+          }, {
+            "text": "Application.js",
+            "path": "../src-out/"
+          }, {
+            "text": "View.js",
+            "path": "../src-out/"
+          }, {
+            "text": "Offline.js",
+            "path": "../src-out/Models/Briefcase/"
+          }, {
+            "text": "Offline.js",
+            "path": "../src-out/Models/RecentlyViewed/"
+          }, {
+            "text": "_LegacySDataEditMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_SDataEditMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_RelatedViewWidgetDetailMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_RelatedViewWidgetEditMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_RelatedViewWidgetListMixin.js",
+            "path": "../src-out/"
+          }, {
+            "text": "DateTimePicker.js",
+            "path": "../src-out/"
+          }, {
+            "text": "SignatureField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "DurationField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "SelectField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "DecimalField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "HiddenField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "PhoneField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "TextAreaField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "_DetailBase.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_ListBase.js",
+            "path": "../src-out/"
+          }, {
+            "text": "FileSelect.js",
+            "path": "../src-out/Views/"
+          }, {
+            "text": "Link.js",
+            "path": "../src-out/Views/"
+          }, {
+            "text": "Signature.js",
+            "path": "../src-out/Views/"
+          }, {
+            "text": "RelativeDateTimePicker.js",
+            "path": "../src-out/"
+          }, {
+            "text": "NoteField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "Detail.js",
+            "path": "../src-out/"
+          }, {
+            "text": "DraggableList.js",
+            "path": "../src-out/"
+          }, {
+            "text": "List.js",
+            "path": "../src-out/"
+          }, {
+            "text": "DateField.js",
+            "path": "../src-out/Fields/"
+          }, {
+            "text": "_ConfigureBase.js",
+            "path": "../src-out/"
+          }, {
+            "text": "GroupedList.js",
+            "path": "../src-out/"
+          }, {
+            "text": "_EditBase.js",
+            "path": "../src-out/"
+          }, {
+            "text": "ConfigureQuickActions.js",
+            "path": "../src-out/Views/"
+          }, {
+            "text": "Edit.js",
+            "path": "../src-out/"
+          }, {
+            "text": "ApplicationModule.js",
+            "path": "../src-out/"
+          }
       ]
     }
   ],
@@ -24,6 +378,26 @@
       "src": "../localization/locales/argos",
       "dest": "localization/locales/argos",
       "filters": ".*(\\.l20n)",
+    },
+    {
+      "src": "../libraries/font-awesome-4.4.0/fonts",
+      "dest": "content/css/themes/fonts",
+      "filters": ".*(\\.otf|\\.eot|\\.svg|\\.ttf|\\.woff|\\.woff2)"
+    },
+    {
+      "src": "../content",
+      "dest": "content",
+      "filters": ".*(\\.css|\\.jpg|\\.png|\\.gif)"
+    },
+    {
+      "src": "../min",
+      "dest": "content",
+      "filters": ".*(\\.css)"
+    },
+    {
+      "src": "../node_modules/@infor/sohoxi/dist/css/",
+      "dest": "content/css",
+      "filters": ".*(\\.css)"
     },
     {
       "src": "../libraries/dojo/dojo",
