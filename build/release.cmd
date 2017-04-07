@@ -5,6 +5,7 @@ if exist deploy (
 )
 
 mkdir deploy\content\javascript
+mkdir deploy\content\javascript\cultures
 mkdir deploy\content\images
 mkdir deploy\content\css\themes\crm
 mkdir deploy\content\dojo\dojo\selector
