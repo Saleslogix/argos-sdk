@@ -29,6 +29,10 @@
           "path": "../libraries/sdata/"
         },
         {
+          "text": "page.js",
+          "path": "../libraries/pagejs-1.6.1/"
+        },
+        {
           "text": "pouchdb-6.1.2.js",
           "path": "../libraries/pouchdb/"
         },
