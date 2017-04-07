@@ -14,7 +14,7 @@
  */
 import declare from 'dojo/_base/declare';
 import _TemplatedMixin from 'dijit/_TemplatedMixin';
-import $ from 'jquery';
+
 
 /**
  * @class argos._Templated

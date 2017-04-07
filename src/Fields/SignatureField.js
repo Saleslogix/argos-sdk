@@ -18,7 +18,7 @@ import format from '../Format';
 import EditorField from './EditorField';
 import FieldManager from '../FieldManager';
 import getResource from '../I18n';
-import $ from 'jquery';
+
 
 const resource = getResource('signatureField');
 

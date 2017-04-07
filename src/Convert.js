@@ -20,7 +20,8 @@
  * @singleton
  */
 import lang from 'dojo/_base/lang';
-import { convert } from '@infor/icrm-js-common';
+
+const convert = ICRMCommonSDK.convert;
 
 const __class = lang.setObject('argos.Convert', {
   /**

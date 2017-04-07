@@ -17,7 +17,7 @@ import declare from 'dojo/_base/declare';
 import event from 'dojo/_base/event';
 import _Field from './_Field';
 import FieldManager from '../FieldManager';
-import $ from 'jquery';
+
 
 /**
  * @class argos.Fields.TextField

@@ -3,8 +3,8 @@ import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import Calendar from './Calendar';
 import TimePicker from './TimePicker';
-import moment from 'moment';
-import $ from 'jquery';
+
+
 
 /**
  * @class argos.DateTimePicker

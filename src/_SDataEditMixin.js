@@ -25,7 +25,7 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import $ from 'jquery';
+
 import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';
 import MODEL_TYPES from './Models/Types';

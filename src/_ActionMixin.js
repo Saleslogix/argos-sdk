@@ -2,7 +2,7 @@
  * See copyright file.
  */
 import declare from 'dojo/_base/declare';
-import $ from 'jquery';
+
 
 /**
  * @class argos._ActionMixin

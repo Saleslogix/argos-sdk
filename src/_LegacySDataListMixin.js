@@ -12,7 +12,7 @@
 import declare from 'dojo/_base/declare';
 import ErrorManager from './ErrorManager';
 import string from 'dojo/string';
-import $ from 'jquery';
+
 
 const __class = declare('argos._LegacySDataListMixin', null, {
   feed: null,

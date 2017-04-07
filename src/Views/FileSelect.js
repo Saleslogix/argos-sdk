@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import $ from 'jquery';
+
 import getResource from '../I18n';
 import View from '../View';
 import '../Fields/TextField';

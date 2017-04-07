@@ -18,7 +18,7 @@ import format from '../Format';
 import LookupField from './LookupField';
 import FieldManager from '../FieldManager';
 import getResource from '../I18n';
-import $ from 'jquery';
+
 
 const resource = getResource('durationField');
 

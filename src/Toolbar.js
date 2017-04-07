@@ -17,7 +17,7 @@ import lang from 'dojo/_base/lang';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from './_ActionMixin';
 import _Templated from './_Templated';
-import $ from 'jquery';
+
 
 /**
  * @class argos.Toolbar

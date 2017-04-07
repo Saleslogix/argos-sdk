@@ -20,9 +20,8 @@ import _CustomizationMixin from './_CustomizationMixin';
 import _Templated from './_Templated';
 import Adapter from './Models/Adapter';
 import getResource from './I18n';
-import { insertHistory } from './actions';
-import page from 'page';
-import $ from 'jquery';
+import { insertHistory } from './actions/index';
+
 
 const resource = getResource('view');
 

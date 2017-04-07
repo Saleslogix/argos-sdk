@@ -26,7 +26,7 @@ import declare from 'dojo/_base/declare';
 import string from 'dojo/string';
 import List from './List';
 import Utility from './Utility';
-import $ from 'jquery';
+
 
 const __class = declare('argos.GroupedList', [List], {
   accordion: null,

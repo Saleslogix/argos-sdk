@@ -2,7 +2,7 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import connect from 'dojo/_base/connect';
-import $ from 'jquery';
+
 import ErrorManager from './ErrorManager';
 import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';

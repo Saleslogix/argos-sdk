@@ -5,7 +5,7 @@ import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import when from 'dojo/when';
 import connect from 'dojo/_base/connect';
-import $ from 'jquery';
+
 import SDataStore from './Store/SData';
 import _CustomizationMixin from './_CustomizationMixin';
 import _ActionMixin from './_ActionMixin';

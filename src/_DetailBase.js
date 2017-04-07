@@ -22,7 +22,6 @@ import View from './View';
 import TabWidget from './TabWidget';
 import getResource from './I18n';
 
-import $ from 'jquery';
 
 const resource = getResource('detailBase');
 

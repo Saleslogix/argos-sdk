@@ -1,4 +1,4 @@
-import { SET_MAX_VIEWPORTS, INSERT_HISTORY } from '../actions';
+import { SET_MAX_VIEWPORTS, INSERT_HISTORY } from '../actions/index';
 import { SET_CONNECTION_STATE } from '../actions/connection';
 
 const initialSDKState = {

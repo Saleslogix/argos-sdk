@@ -4,7 +4,7 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import RelatedViewManager from './RelatedViewManager';
-import $ from 'jquery';
+
 
 const __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
   cls: null,

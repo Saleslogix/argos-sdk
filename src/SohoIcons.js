@@ -1,4 +1,4 @@
-import $ from 'jquery';
+
 
 export function render(element = 'body') {
   $(element).prepend(`

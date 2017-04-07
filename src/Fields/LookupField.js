@@ -20,7 +20,7 @@ import utility from '../Utility';
 import _Field from './_Field';
 import FieldManager from '../FieldManager';
 import getResource from '../I18n';
-import $ from 'jquery';
+
 
 const resource = getResource('lookupField');
 

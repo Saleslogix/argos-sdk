@@ -4,7 +4,7 @@
  * @alternateClassName _PullToRefreshMixin
  */
 import declare from 'dojo/_base/declare';
-import $ from 'jquery';
+
 import getResource from './I18n';
 
 const resource = getResource('pullToRefreshMixin');
@@ -87,111 +87,109 @@ const __class = declare('argos._PullToRefreshMixin', null, {
    * @param {DOMNode} dragNode The node that the user will drag. Defaults to scrollerNode if not specified.
    */
   initPullToRefresh: function initPullToRefresh(scrollerNode, dragNode) {
-    if (!this.enablePullToRefresh || !window.App.supportsTouch() || !scrollerNode || FLAGS.LITE) {
+    if (!this.enablePullToRefresh || !window.App.supportsTouch() || !scrollerNode || !Rx) {
       return;
     }
 
-    import('rxjs').then((Rx) => {
-      this.pullRefreshBanner = $(this.pullRefreshBannerTemplate.apply(this)).get(0);
-      $(dragNode).before(this.pullRefreshBanner);
+    this.pullRefreshBanner = $(this.pullRefreshBannerTemplate.apply(this)).get(0);
+    $(dragNode).before(this.pullRefreshBanner);
 
-      // Pull down to refresh touch handles
-      this.scrollerNode = scrollerNode;
+    // Pull down to refresh touch handles
+    this.scrollerNode = scrollerNode;
 
-      if (dragNode) {
-        this.dragNode = dragNode;
-      } else {
-        this.dragNode = scrollerNode;
-      }
+    if (dragNode) {
+      this.dragNode = dragNode;
+    } else {
+      this.dragNode = scrollerNode;
+    }
 
-      const style = {
-        top: $(dragNode).position().top,
-      };
+    const style = {
+      top: $(dragNode).position().top,
+    };
 
-      const touchstart = Rx.Observable.fromEvent(dragNode, 'touchstart')
-        .filter((evt) => {
-          // The implementor of this mixin should determine what shouldStartPullToRefresh is.
-          const shouldStart = this.shouldStartPullToRefresh(this.scrollerNode);
-          const results = shouldStart && evt.touches[0];
-          return results;
-        })
-        .map((e) => {
-          const evt = e.touches[0];
-          $(this.pullRefreshBanner).css('visibility', 'visible');
-          $(this.dragNode).removeClass(this.animateCls);
-          const bannerHeight = $(this.pullRefreshBanner).height();
+    const touchstart = Rx.Observable.fromEvent(dragNode, 'touchstart')
+      .filter((evt) => {
+        // The implementor of this mixin should determine what shouldStartPullToRefresh is.
+        const shouldStart = this.shouldStartPullToRefresh(this.scrollerNode);
+        const results = shouldStart && evt.touches[0];
+        return results;
+      })
+      .map((e) => {
+        const evt = e.touches[0];
+        $(this.pullRefreshBanner).css('visibility', 'visible');
+        $(this.dragNode).removeClass(this.animateCls);
+        const bannerHeight = $(this.pullRefreshBanner).height();
 
-          // We filtered out if the drag should start, so we are mapping the initial state here.
+        // We filtered out if the drag should start, so we are mapping the initial state here.
+        return {
+          bannerHeight,
+          topCss: style.top,
+          top: parseInt(style.top, 10),
+          y: evt.clientY,
+        };
+      });
+    const touchmove = Rx.Observable.fromEvent(dragNode, 'touchmove');
+    const touchcancel = Rx.Observable.fromEvent(dragNode, 'touchcancel');
+    const touchend = Rx.Observable.fromEvent(dragNode, 'touchend');
+    const done = touchcancel.merge(touchend);
+
+    // Merge the touchstart and dragging observables
+    const dragging = touchstart.flatMap((data) => {
+      let distance; // current dragged distance
+      let maxDistance; // required distance to trigger a refresh
+      return touchmove
+        .map((evt) => {
+          const touches = evt.touches[0];
+          const weight = 2; // slow the drag
+          distance = (touches.clientY - data.y) / weight;
+          maxDistance = data.bannerHeight + 20;
           return {
-            bannerHeight,
-            topCss: style.top,
-            top: parseInt(style.top, 10),
-            y: evt.clientY,
+            evt,
+            distance,
+            maxDistance,
+            top: data.top + distance,
           };
-        });
-      const touchmove = Rx.Observable.fromEvent(dragNode, 'touchmove');
-      const touchcancel = Rx.Observable.fromEvent(dragNode, 'touchcancel');
-      const touchend = Rx.Observable.fromEvent(dragNode, 'touchend');
-      const done = touchcancel.merge(touchend);
+        })
+        .filter((d) => {
+          // Prevent the user from dragging the pane above our starting point
+          return d.distance >= 0;
+        })
+        .takeUntil(done.do(() => {
+          // The "done" observable is a combination of touch end and touch cancel.
+          // We should restore the UI state and invoke callbacks here.
+          $(this.dragNode).css({
+            'margin-top': data.topCss,
+            'overflow-y': data.overflowCssY,
+            'overflow-x': data.overflowCssX,
+          });
 
-      // Merge the touchstart and dragging observables
-      const dragging = touchstart.flatMap((data) => {
-        let distance; // current dragged distance
-        let maxDistance; // required distance to trigger a refresh
-        return touchmove
-          .map((evt) => {
-            const touches = evt.touches[0];
-            const weight = 2; // slow the drag
-            distance = (touches.clientY - data.y) / weight;
-            maxDistance = data.bannerHeight + 20;
-            return {
-              evt,
-              distance,
-              maxDistance,
-              top: data.top + distance,
-            };
-          })
-          .filter((d) => {
-            // Prevent the user from dragging the pane above our starting point
-            return d.distance >= 0;
-          })
-          .takeUntil(done.do(() => {
-            // The "done" observable is a combination of touch end and touch cancel.
-            // We should restore the UI state and invoke callbacks here.
-            $(this.dragNode).css({
-              'margin-top': data.topCss,
-              'overflow-y': data.overflowCssY,
-              'overflow-x': data.overflowCssX,
-            });
+          $(this.pullRefreshBanner).css('visibility', 'hidden');
+          $(this.dragNode).addClass(this.animateCls);
 
-            $(this.pullRefreshBanner).css('visibility', 'hidden');
-            $(this.dragNode).addClass(this.animateCls);
+          // Check if we dragged over the threshold (maxDistance),
+          // if so, fire the callbacks the views will implement.
+          if (distance > maxDistance) {
+            this.onPullToRefreshComplete();
+          } else {
+            this.onPullToRefreshCancel();
+          }
+        }));
+    });
 
-            // Check if we dragged over the threshold (maxDistance),
-            // if so, fire the callbacks the views will implement.
-            if (distance > maxDistance) {
-              this.onPullToRefreshComplete();
-            } else {
-              this.onPullToRefreshCancel();
-            }
-          }));
+    // Listen to the "dragging" observable which is a combination of our touch
+    // start and touch drag. Update the UI while dragging here.
+    dragging.subscribe((data) => {
+      data.evt.preventDefault();
+      $(this.dragNode).css({
+        'margin-top': `${data.top}px`,
+        overflow: 'hidden',
       });
 
-      // Listen to the "dragging" observable which is a combination of our touch
-      // start and touch drag. Update the UI while dragging here.
-      dragging.subscribe((data) => {
-        data.evt.preventDefault();
-        $(this.dragNode).css({
-          'margin-top': `${data.top}px`,
-          overflow: 'hidden',
-        });
-
-        if (data.distance > data.maxDistance) {
-          this.pullRefreshBanner.innerHTML = this.pullReleaseTemplate.apply(this);
-        } else {
-          this.pullRefreshBanner.innerHTML = this.pullRefreshTemplate.apply(this);
-        }
-      });
+      if (data.distance > data.maxDistance) {
+        this.pullRefreshBanner.innerHTML = this.pullReleaseTemplate.apply(this);
+      } else {
+        this.pullRefreshBanner.innerHTML = this.pullRefreshTemplate.apply(this);
+      }
     });
   },
   /**

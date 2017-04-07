@@ -21,8 +21,7 @@ import ErrorManager from './ErrorManager';
 import FieldManager from './FieldManager';
 import View from './View';
 import getResource from './I18n';
-import DeepDiff from 'deepdiff';
-import $ from 'jquery';
+
 import './Fields/BooleanField';
 import './Fields/DateField';
 import './Fields/DecimalField';

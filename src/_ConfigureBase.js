@@ -1,7 +1,7 @@
 import declare from 'dojo/_base/declare';
 import DraggableList from './DraggableList';
 import getResource from './I18n';
-import $ from 'jquery';
+
 
 const resource = getResource('configureBase');
 

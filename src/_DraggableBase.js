@@ -1,6 +1,6 @@
 import declare from 'dojo/_base/declare';
 import domGeom from 'dojo/dom-geometry';
-import $ from 'jquery';
+
 
 /**
  * @class argos._DraggableBase

@@ -15,7 +15,7 @@
 import declare from 'dojo/_base/declare';
 import Toolbar from './Toolbar';
 import getResource from './I18n';
-import $ from 'jquery';
+
 
 const resource = getResource('mainToolbar');
 

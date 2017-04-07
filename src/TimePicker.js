@@ -4,8 +4,8 @@ import _Templated from './_Templated';
 import Dropdown from './Dropdown';
 import getResource from './I18n';
 
-import moment from 'moment';
-import $ from 'jquery';
+
+
 
 const resource = getResource('timePicker');
 

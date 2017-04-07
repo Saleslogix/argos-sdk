@@ -3,7 +3,7 @@
  */
 import declare from 'dojo/_base/declare';
 import string from 'dojo/string';
-import $ from 'jquery';
+
 import ErrorManager from './ErrorManager';
 
 /**

@@ -26,7 +26,15 @@ module.exports = {
     "expect": false,
     "spyOn": false,
     "module": false,
-    "FLAGS": false
+    "moment": false,
+    "Rx": false,
+    "$": false,
+    "d3": false,
+    "Redux": false,
+    "page": false,
+    "DeepDiff": false,
+    "ICRMCustomizationSDK": false,
+    "ICRMCommonSDK": false,
   },
   rules: {
     /**

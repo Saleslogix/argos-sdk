@@ -17,7 +17,6 @@ import declare from 'dojo/_base/declare';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 
-import $ from 'jquery';
 
 /**
  * @class argos.Dropdown

@@ -23,7 +23,7 @@ import SearchWidget from './SearchWidget';
 import ConfigurableSelectionModel from './ConfigurableSelectionModel';
 import _PullToRefreshMixin from './_PullToRefreshMixin';
 import getResource from './I18n';
-import $ from 'jquery';
+
 
 const resource = getResource('listBase');
 

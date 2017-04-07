@@ -17,7 +17,7 @@ import win from 'dojo/window';
 import format from '../Format';
 import View from '../View';
 import getResource from '../I18n';
-import $ from 'jquery';
+
 
 const resource = getResource('signature');
 

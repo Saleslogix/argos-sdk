@@ -19,13 +19,11 @@ import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
 import ErrorManager from './ErrorManager';
 import getResource from './I18n';
-import { sdk } from './reducers';
+import { sdk } from './reducers/index';
 import { setConnectionState } from './actions/connection';
 import Scene from './Scene';
 import { render } from './SohoIcons';
-import { createStore } from 'redux';
-import page from 'page';
-import $ from 'jquery';
+
 
 const resource = getResource('sdkApplication');
 
@@ -561,25 +559,21 @@ export default class Application {
    * Initializes this application as well as the toolbar and all currently registered views.
    */
   init(domNode) {
-    return new Promise((resolve) => {
-      this.initIcons();
-      this.initStore();
-      this.initAppDOM(domNode);
-      this.initPreferences();
-      this.initSoho();
-      this.initToasts();
-      this.initPing().then(() => {
-        this.initServices(); // TODO: Remove
-        this.initConnects();
-        this._startupConnections();
-        this.initModules();
-        this.initToolbars();
-        this.initHash();
-        this.initModal();
-        this.initScene();
-        resolve(true);
-      });
-    });
+    this.initIcons();
+    this.initStore();
+    this.initAppDOM(domNode);
+    this.initPreferences();
+    this.initSoho();
+    this.initToasts();
+    this.initPing();
+    this.initServices(); // TODO: Remove
+    this.initConnects();
+    this._startupConnections();
+    this.initModules();
+    this.initToolbars();
+    this.initHash();
+    this.initModal();
+    this.initScene();
   }
 
   initIcons() {
@@ -602,7 +596,7 @@ export default class Application {
   }
 
   initStore() {
-    this.store = createStore(this.getReducer(),
+    this.store = Redux.createStore(this.getReducer(),
       this.getInitialState(),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
     this.store.subscribe(this._onStateChange.bind(this));
@@ -657,7 +651,7 @@ export default class Application {
 
   initPing() {
     // Lite build, which will not have Rx, disable offline and ping
-    if (FLAGS && FLAGS.LITE) {
+    if (!Rx) {
       this.ping = () => {
         this.store.dispatch(setConnectionState(true));
       };
@@ -666,38 +660,35 @@ export default class Application {
 
     // this.ping will be set if ping was passed as an options to the ctor
     if (this.ping) {
-      return Promise.resolve(true);
+      return;
     }
 
-    return import('rxjs').then((Rx) => {
-      this.ping = util.debounce(() => {
-        this.toast.add({
-          message: resource.checkingText,
-          title: resource.connectionToastTitleText,
-          toastTime: this.PING_TIMEOUT,
-        });
-        const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
-          .flatMap(() => {
-            return Rx.Observable.fromPromise(this._ping())
-              .flatMap((online) => {
-                if (online) {
-                  return Rx.Observable.of(online);
-                }
+    this.ping = util.debounce(() => {
+      this.toast.add({
+        message: resource.checkingText,
+        title: resource.connectionToastTitleText,
+        toastTime: this.PING_TIMEOUT,
+      });
+      const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
+        .flatMap(() => {
+          return Rx.Observable.fromPromise(this._ping())
+            .flatMap((online) => {
+              if (online) {
+                return Rx.Observable.of(online);
+              }
 
-                return Rx.Observable.throw(new Error());
-              });
-          })
-          .retry(this.PING_RETRY)
-          .take(1);
+              return Rx.Observable.throw(new Error());
+            });
+        })
+        .retry(this.PING_RETRY)
+        .take(1);
 
-        ping$.subscribe(() => {
-          this.store.dispatch(setConnectionState(true));
-        }, () => {
-          this.store.dispatch(setConnectionState(false));
-        });
-      }, this.PING_DEBOUNCE);
-      return Promise.resolve(true);
-    });
+      ping$.subscribe(() => {
+        this.store.dispatch(setConnectionState(true));
+      }, () => {
+        this.store.dispatch(setConnectionState(false));
+      });
+    }, this.PING_DEBOUNCE);
   }
 
   initPreferences() {

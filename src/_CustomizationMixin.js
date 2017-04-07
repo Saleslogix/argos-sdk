@@ -30,7 +30,8 @@
  * @alternateClassName _CustomizationMixin
  */
 import declare from 'dojo/_base/declare';
-import * as customization from '@infor/icrm-js-customization';
+
+const customization = ICRMCustomizationSDK;
 
 const __class = declare('argos._CustomizationMixin', null, {
   id: null,

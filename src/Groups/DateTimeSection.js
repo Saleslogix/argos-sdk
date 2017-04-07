@@ -3,7 +3,7 @@ import Utility from '../Utility';
 import _GroupBySection from './_GroupBySection';
 import getResource from '../I18n';
 
-import moment from 'moment';
+
 
 const resource = getResource('dateTimeSection');
 

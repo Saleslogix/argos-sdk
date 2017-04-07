@@ -1,6 +1,6 @@
 import declare from 'dojo/_base/declare';
 import _WidgetBase from 'dijit/_WidgetBase';
-import $ from 'jquery';
+
 import _Templated from '../_Templated';
 import getResource from '../I18n';
 

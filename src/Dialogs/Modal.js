@@ -4,7 +4,6 @@ import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from '../_Templated';
 import getResource from '../I18n';
 
-import $ from 'jquery';
 
 const resource = getResource('modal');
 

@@ -1,6 +1,6 @@
 import declare from 'dojo/_base/declare';
 import _Templated from './_Templated';
-import $ from 'jquery';
+
 
 /**
  * @class argos.TabWidget
