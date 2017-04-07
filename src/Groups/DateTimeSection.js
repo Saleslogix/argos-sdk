@@ -4,7 +4,6 @@ import _GroupBySection from './_GroupBySection';
 import getResource from '../I18n';
 
 
-
 const resource = getResource('dateTimeSection');
 
 /**

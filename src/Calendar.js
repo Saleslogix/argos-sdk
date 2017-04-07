@@ -18,13 +18,11 @@
  * @alternateClassName Calendar
  */
 import declare from 'dojo/_base/declare';
-
 import _ActionMixin from './_ActionMixin';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import Dropdown from './Dropdown';
 import getResource from './I18n';
-
 
 
 const resource = getResource('calendar');

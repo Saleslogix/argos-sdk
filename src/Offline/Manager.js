@@ -4,7 +4,6 @@ import MODEL_TYPES from '../Models/Types';
 import convert from '../Convert';
 
 
-
 /**
  * @class argos.Offline.Manager
  *

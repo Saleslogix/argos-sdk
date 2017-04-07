@@ -7,7 +7,6 @@ import DateTimePicker from './DateTimePicker';
 import getResource from './I18n';
 
 
-
 const resource = getResource('relativeDateTimePicker');
 const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
 

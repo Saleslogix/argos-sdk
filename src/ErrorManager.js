@@ -18,7 +18,6 @@ import utility from './Utility';
 import getResource from './I18n';
 
 
-
 const resource = getResource('errorManager');
 let errors = [];
 

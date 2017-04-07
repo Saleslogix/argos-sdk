@@ -5,8 +5,6 @@ import Dropdown from './Dropdown';
 import getResource from './I18n';
 
 
-
-
 const resource = getResource('timePicker');
 
 /**

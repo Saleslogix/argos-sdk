@@ -32,6 +32,7 @@ module.exports = {
     "d3": false,
     "Redux": false,
     "page": false,
+    "PouchDB": false,
     "DeepDiff": false,
     "ICRMCustomizationSDK": false,
     "ICRMCommonSDK": false,

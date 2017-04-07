@@ -5,7 +5,6 @@ import Calendar from './Calendar';
 import TimePicker from './TimePicker';
 
 
-
 /**
  * @class argos.DateTimePicker
  */

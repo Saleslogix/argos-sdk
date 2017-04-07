@@ -23,8 +23,6 @@ import RelativeDateTimePicker from '../RelativeDateTimePicker';
 import getResource from '../I18n';
 
 
-
-
 const resource = getResource('dateField');
 const dtFormatResource = getResource('dateFieldDateTimeFormat');
 
