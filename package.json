@@ -1,44 +1,19 @@
 {
   "name": "argos-sdk",
-  "version": "4.0.0",
+  "version": "3.7.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/Saleslogix/argos-sdk"
-  },
-  "watch": {
-    "lint": {
-      "patterns": [
-        "src"
-      ],
-      "extensions": [
-        "js",
-        "jsx"
-      ]
-    },
-    "build": {
-      "patterns": [
-        "src"
-      ],
-      "extensions": [
-        "js",
-        "jsx"
-      ]
-    },
-    "less": {
-      "patterns": [
-        "content"
-      ],
-      "extensions": "less"
-    }
   },
   "scripts": {
     "test": "npm run build && grunt test",
     "testbasic": "grunt test:basic",
     "build": "babel src --out-dir src-out --source-maps inline",
+    "build:watch": "babel src --out-dir src-out --source-maps inline --watch",
     "less": "grunt less",
     "lint": "eslint ./src",
     "lint-fix": "eslint --fix ./src",
-    "watch": "npm-watch"
+    "watch": "yarn run build:watch"
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",
@@ -56,8 +31,7 @@
     "grunt-contrib-jasmine": "^1.0.3",
     "grunt-contrib-less": "^1.0.1",
     "grunt-shell": "^2.0.0",
-    "grunt-template-jasmine-istanbul": "^0.5.0",
-    "npm-watch": "^0.1.6"
+    "grunt-template-jasmine-istanbul": "^0.5.0"
   },
   "dependencies": {
     "@infor/icrm-js-common": "^0.1.0",
