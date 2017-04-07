@@ -83,10 +83,6 @@
       "file": "content/javascript/argos-amd-dependencies.js",
       "isDebug": true,
       "fileIncludes": [
-        {
-          "text": "snap.js",
-          "path": "../libraries/snap/"
-        }
       ]
     },
     {
