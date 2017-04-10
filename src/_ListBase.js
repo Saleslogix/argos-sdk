@@ -57,6 +57,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     },
   },
   /**
+   * @property {Object}
+   *
+   *  Maps to Utility Class
+   */
+  utility: Utility,
+  /**
    * @property {Simplate}
    * The template used to render the view's main DOM element when the view is initialized.
    * This template includes emptySelectionTemplate, moreTemplate and listActionTemplate.
@@ -215,7 +221,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     <div data-key="{%= $[$$.idProperty] %}">
       <div class="widget">
         <div class="widget-header">
-          {%! $$.itemIconTemplate %}<h2 class="widget-title">{%: $[$$.labelProperty] %}</h2>
+          {%! $$.itemIconTemplate %}<h2 class="widget-title">{%: $$.utility.getValue($, $$.labelProperty) %}</h2>
           {% if($$.visibleActions.length > 0) { %}
             <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $[$$.idProperty] %}">
               <span class="audible">Actions</span>
@@ -226,7 +232,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
             {%! $$.listActionTemplate %}
           {% } %}
         </div>
-        <div class="card-content" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">
+        <div class="card-content" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $$.utility.getValue($, $$.labelProperty) %}">
           {%! $$.itemRowContentTemplate %}
         </div>
       </div>
@@ -234,7 +240,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     `,
   ]),
   liRowTemplate: new Simplate([
-    '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}">',
+    '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $$.utility.getValue($, $$.labelProperty) %}">',
     '{% if ($$.icon || $$.selectIcon) { %}',
     '<button type="button" class="btn-icon hide-focus list-item-selector" data-action="selectEntry">',
     `<svg class="icon" focusable="false" aria-hidden="true" role="presentation">
@@ -296,7 +302,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      label               Text added below the icon
    */
   listActionItemTemplate: new Simplate([`
-    <li><a></a><button class="popupitem" type="button" data-action="invokeActionItem" data-id="{%= $.actionIndex %}" 
+    <li><a></a><button class="popupitem" type="button" data-action="invokeActionItem" data-id="{%= $.actionIndex %}"
     aria-label="{%: $.title || $.id %}">{%: $.label %}</button></li>`]),
   /**
    * @property {Simplate}

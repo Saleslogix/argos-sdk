@@ -46,6 +46,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
     if (!this._onScrollHandle && this.continuousScrolling) {
       this._onScrollHandle = this.connect(this.domNode, 'onscroll', this.onScroll);
     }
+    this.isRefreshing = false;
   },
   /**
    * Handler when an error occurs while request data from the SData endpoint.
@@ -58,6 +59,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
     ErrorManager.addError('failure', response);
     $(this.domNode).removeClass('list-loading');
     this.listLoading = false;
+    this.isRefreshing = false;
   },
   /**
    * Handler when an a request is aborted from an SData endpoint.
@@ -74,6 +76,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
 
     $(this.domNode).removeClass('list-loading');
     this.listLoading = false;
+    this.isRefreshing = false;
   },
   clear: function clear() {
     this.inherited(arguments);

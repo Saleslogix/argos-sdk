@@ -94,6 +94,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
   onRequestDataSuccess: function onRequestDataSuccess(entry) {
     this.processEntry(entry);
     $(this.domNode).removeClass('panel-loading');
+    this.isRefreshing = false;
   },
   /**
    * Handler when an error occurs while request data from the SData endpoint.
@@ -109,6 +110,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
     }
 
     $(this.domNode).removeClass('panel-loading');
+    this.isRefreshing = false;
   },
   /**
    * Handler when an a request is aborted from an SData endpoint.
@@ -122,6 +124,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
     this.options = false; // force a refresh
     ErrorManager.addError('aborted', response);
     $(this.domNode).removeClass('panel-loading');
+    this.isRefreshing = false;
   },
 });
 
