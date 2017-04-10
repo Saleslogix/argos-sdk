@@ -354,6 +354,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
 
       if (options.complete) {
         options.complete(from, to, options);
+        this._transitionOptions.complete = null;
       }
     }
 
