@@ -229,8 +229,8 @@
 >
 
 <relativeDateTimePicker ""
-  titleText: "Circa..."
-  pickDateTimeText: "Avanzato"
+  titleText: "Approssimativa..."
+  pickDateTimeText: "Avanzate"
   thisEveningText: "Questa sera"
   tomorrowMorningText: "Domani mattina"
   tomorrowAfternoonText: "Domani sera"
@@ -284,5 +284,5 @@
   connectionToastTitleText: "Connessione"
   checkingText: "Controllo della connettività"
   loadingApplicationStateText: "Stato caricamento applicazione"
-  initializingText: "Inizializzazione in corso:"
+  initializingText: "Inizializzazione:"
 >

@@ -1,0 +1,288 @@
+<dateField ""
+  emptyText: ''
+  invalidDateFormatErrorText: "ฟิลด์ '${0}' มีรูปแบบวันที่ไม่ถูกต้อง"
+  cancelText: "ยกเลิก"
+  confirmText: "ยืนยัน"
+  advancedText: "ขั้นสูง"
+>
+
+<durationField ""
+  minutes: "นาที"
+  hours: "ชั่วโมง"
+  days: "วัน"
+  weeks: "สัปดาห์"
+  years: "ปี"
+  invalidDurationErrorText: "ฟิลด์ '${0}' ไม่ใช่ระยะเวลาที่ถูกต้อง"
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "แก้ไข"
+  lookupText: "..."
+  emptyText: "ว่างเปล่า"
+  completeText: "ตกลง"
+>
+
+<lookupField ""
+  dependentErrorText: "ค่าสำหรับ '${0}' ต้องเลือก"
+  emptyText: ""
+  completeText: "เลือก"
+  lookupLabelText: "ค้นหา"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "ลายเซ็น"
+  signatureText: "..."
+>
+
+<dateTimeSection ""
+  displayNameText: "ส่วนวันที่ เวลา"
+  todayText: "วันนี้"
+  tomorrowText: "พรุ่งนี้"
+  laterThisWeekText: "ช่วงหลังในสัปดาห์นี้"
+  earlierThisWeekText: "ช่วงต้นสัปดาห์นี้"
+  thisLaterMonthText: "ช่วงหลังของเดือนนี้"
+  thisEarlierMonthText: "ช่วงต้นของเดือนนี้"
+  thisYearEarlierText: "ช่วงต้นของปีนี้"
+  thisYearLaterText: "ช่วงหลังของปีนี้"
+  yesterdayText: "เมื่อวาน"
+  lastWeekText: "สัปดาห์ที่แล้ว"
+  lastMonthText: "เดือนที่แล้ว"
+  pastYearText: "ปีที่ผ่านแล้ว"
+  nextYearText: "ปีถัดไป"
+  nextMonthText: "เดือนถัดไป"
+  nextWeekText: "สัปดาห์ถัดไป"
+  futureText: "อนาคต"
+  twoWeeksAgoText: "สองสัปดาห์ก่อน"
+  threeWeeksAgoText: "สามสัปดาห์ก่อน"
+  twoMonthsAgoText: "สองเดือนก่อน"
+  threeMonthsAgoText: "สามเดือนก่อน"
+  unknownText: "ไม่รู้จัก"
+>
+
+<groupByValueSection ""
+  displayNameText: "กลุ่มตามส่วน"
+>
+
+<configureQuickActions ""
+  titleText: "กำหนดค่าการดำเนินการด่วน"
+>
+
+<fileSelect ""
+  titleText: "การเลือกไฟล์"
+  addFileText: "คลิกหรือแท็บที่นี่เพื่อเพิ่มไฟล์"
+  uploadText: "อัปโหลด"
+  cancelText: "ยกเลิก"
+  selectFileText: "เลือกไฟล์"
+  loadingText: "กำลังอัปโหลด..."
+  descriptionText: "คำอธิบาย"
+  bytesText: "ไบต์"
+  notSupportedText: "กำลังเพิ่มสิ่งที่แนบไม่ถูกสนับสนุนโดยอุปกรณ์ของคุณ"
+>
+
+<signature ""
+  titleText: "ลายเซ็น"
+  clearCanvasText: "ลบ"
+  undoText: "เลิกทำ"
+>
+
+<configureBase ""
+  titleText: "กำหนดค่า"
+>
+
+<detailBase ""
+  informationText: "ข้อมูล"
+  titleText: "รายละเอียด"
+  entityText: "เอนทิตี"
+  detailsText: "รายละเอียด"
+  loadingText: "กำลังโหลด"
+  notAvailableText: "ข้อมูลที่ร้องขอที่มีอยู่"
+  toggleCollapseText: "สลับ/ยุบ"
+  editText: "แก้ไข"
+>
+
+<editBase ""
+  concurrencyErrorText: "ผู้ใช้รายอื่นได้อัปเดตฟิลด์นี้"
+  toggleCollapseText: "สลับ/ยุบ"
+  saveText: "บันทึก"
+  titleText: "แก้ไข"
+  validationSummaryText: "สรุปการตรวจสอบ"
+  concurrencySummaryText: "ข้อผิดพลาดสกุลเงิน"
+  detailsText: "รายละเอียด"
+  loadingText: "กำลังโหลด"
+  errorGeneral: "มีข้อผิดพลาดเซิร์ฟเวอร์ในการร้องขอข้อมูล"
+  error410:  "ข้อผิดพลาดการบันทึก ระเบียนนี้ไม่มีอยู่อีกแล้ว"
+>
+
+<errorHandleMixin ""
+  general: 'A server error occured.'
+>
+
+<listBase ""
+  moreText: "เรียกข้อมูลระเบียนเพิ่มเติม"
+  emptySelectionText: "ไม่มี"
+  titleText: "รายการ"
+  configureText: "กำหนดค่า"
+  errorRenderText: "ข้อผิดพลาดในการแสดงแม่แบบแถว"
+  remainingText: "${0} ระเบียนคงเหลือ"
+  cancelText: "ยกเลิก"
+  insertText: "ใหม่"
+  noDataText: "ไม่มีระเบียน"
+  loadingText: "กำลังโหลด"
+>
+
+<pullToRefreshMixin ""
+  pullRefreshText: "ดึงลงเพื่อรีเฟรช..."
+  pullReleaseText: "รีลีสเพื่อรีเฟรช"
+>
+
+<relatedViewWidgetBase ""
+  loadingText: "กำลังโหลด"
+>
+
+<calendar ""
+  titleText: "ปฏิทิน"
+  amText: "AM"
+  pmText: "PM"
+  january: "มกราคม"
+  february: "กุมภาพันธ์"
+  march: "มีนาคม"
+  april: "เมษายน"
+  may: "พฤษภาคม"
+  june: "มิถุนายน"
+  july: "กรกฎาคม"
+  august: "สิงหาคม"
+  september: "กันยายน"
+  october: "ตุลาคม"
+  november: "พฤศจิกายน"
+  december: "ธันวาคม"
+  clearText: "ล้าง"
+  todayText: "วันนี้"
+  sundayAbbreviated: "อา."
+  mondayAbbreviated: "จ."
+  tuesdayAbbreviated: "อัง."
+  wednesdayAbbreviated: "พ."
+  thursdayAbbreviated: "พฤ."
+  fridayAbbreviated: "ศ."
+  saturdayAbbreviated: "ส."
+>
+
+<errorManager ""
+  abortedText: "ยกเลิกแล้ว"
+  scopeSaveText: "ขอบเขตไม่ถูกบันทึกในรายงานข้อผิดพลาด"
+>
+
+<format ""
+  yesText: "ใช่"
+  noText: "ไม่"
+  trueText: "T"
+  falseText: "F"
+  hoursText: "ชั่วโมง"
+  hourText: "ชั่วโมง"
+  minutesText: "นาที"
+  minuteText: "นาที"
+  percentFormatText: "${0}${1}"
+  bytesText: "ไบต์"
+>
+
+<groupedList ""
+ toggleCollapseText: "สลับ/ยุบ"
+>
+
+<mainToolbar ""
+  titleText: "มือถือ"
+>
+
+<relatedViewWidget ""
+  nodataText: "ไม่พบระเบียน..."
+  selectMoreDataText: "ดู ${0} ${1} เพิ่มเติม ... "
+  selectMoreDataText2: "ดู ${0} เพิ่มเติม... "
+  navToListText: "ดูรายการ"
+  loadingText: "กำลังโหลด"
+  refreshViewText: "รีเฟรช"
+  itemOfCountText: " ${0} ของ ${1}"
+  totalCountText: " (${0})"
+  titleText: "มุมมองที่เกี่ยวข้อง"
+>
+
+<searchWidget ""
+ searchText: "ค้นหา"
+>
+
+<selectionModel ""
+  requireSelectionText: "ต้องการการเลือก คุณไม่สามารถยกเลิกการเลือกรายการล่าสุด"
+>
+
+<tabWidget ""
+ moreText: "เพิ่มเติม"
+>
+
+<view ""
+ titleText: "มุมมองทั่วไป"
+>
+
+<timePicker ""
+  amText: "AM"
+  pmText: "PM"
+  setTimeText: "ตั้งเวลา"
+>
+
+<relativeDateTimePicker ""
+  titleText: "ประมาณ..."
+  pickDateTimeText: "ขั้นสูง"
+  thisEveningText: "ค่ำนี้"
+  tomorrowMorningText: "พรุ่งนี้เช้า"
+  tomorrowAfternoonText: "พรุ่งนี้ค่ำ"
+  nextWeekText: "สัปดาห์ถัดไป"
+  nextMonthText: "เดือนถัดไป"
+  cancelText: "ยกเลิก"
+  confirmText: "ยืนยัน"
+>
+
+<briefcaseModel ""
+  entityDisplayName: "กระเป๋าเอกสาร"
+  entityDisplayNamePlural : "กระเป๋าเอกสาร"
+>
+
+<recentlyViewedModel ""
+  entityDisplayName: "ที่ดูแล้วล่าสุด"
+  entityDisplayNamePlural : "ที่ดูแล้วล่าสุด"
+>
+
+<busyIndicator ""
+  loadingText: "กำลังโหลด"
+  progressText: "ความคืบหน้า"
+>
+
+<modal
+  alertText: "การแจ้งเตือน"
+  completeText: "เสร็จสมบูรณ์"
+  cancelText: "ยกเลิก"
+  confirmText: "ยืนยัน"
+  editText: "แก้ไข"
+  okayText: "ตกลง"
+  submitText: "ส่ง"
+  warningText: "คำเตือน"
+>
+<_listOfflineMixin
+  goToListViewText: "รายการเก็บในกระเป๋าเอกสารแล้ว คุณต้องการจะย้ายไปที่มุมมองรายการกระเป๋าเอกสารหรือไม่"
+  interruptedText: "การประมวลผลถูกขัดจังหวะและไม่สามารถทำให้เสร็จสมบูรณ์ โปรดลองประมวลผลอีกครั้งเพื่อจัดรายการในกระเป๋าเอกสารอย่างสมบูรณ์"
+  briefcasingText: "กำลังเก็บกระเป๋าเอกสาร โปรดรอ"
+  errorBriefcasingText: "ข้อผิดพลาด การเก็บกระเป๋าเอกสาร"
+>
+
+<_detailOfflineMixin
+  goToDetailViewText: "รายการและรายการที่เกี่ยวข้องเก็บในกระเป๋าเอกสารแล้ว คุณต้องการจะย้ายไปที่มุมมองรายการกระเป๋าเอกสารหรือไม่"
+  interruptedText: "การประมวลผลถูกขัดจังหวะและไม่สามารถทำให้เสร็จสมบูรณ์ โปรดลองประมวลผลอีกครั้งเพื่อจัดรายการในกระเป๋าเอกสารอย่างสมบูรณ์"
+  briefcasingText: "กำลังเก็บกระเป๋าเอกสาร โปรดรอ"
+  errorBriefcasingText: "ข้อผิดพลาด การเก็บกระเป๋าเอกสาร"
+  errorSavingOfflineViewText: "ข้อผิดพลาดการบันทึกมุมมองแบบออฟไลน์"
+>
+
+<sdkApplication
+  connectionToastTitleText: "การเชื่อมต่อ"
+  checkingText: "กำลังตรวจสอบการเชื่อมต่อ"
+  loadingApplicationStateText: "กำลังโหลดรัฐแอปพลิเคชัน"
+  initializingText: "กำลังเตรียมใช้งาน:"
+>
