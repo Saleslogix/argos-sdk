@@ -664,7 +664,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     this.clear();
 
-    this.initPullToRefresh(App.getViewContainerNode(), scrollerNode);
+    this.initPullToRefresh(this.app.getViewContainerNode(), scrollerNode);
   },
   shouldStartPullToRefresh: function shouldStartPullToRefresh() {
     // Get the base results

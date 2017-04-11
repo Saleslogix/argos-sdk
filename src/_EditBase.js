@@ -1084,12 +1084,14 @@ const __class = declare('argos._EditBase', [View], {
         }
       });
 
-      _diffs.forEach((diff) => {
-        const path = diff.path.join('.');
-        if (diff.kind === DIFF_EDITED && acc.indexOf(path) === -1) {
-          acc.push(path);
-        }
-      });
+      if (_diffs) {
+        _diffs.forEach((diff) => {
+          const path = diff.path.join('.');
+          if (diff.kind === DIFF_EDITED && acc.indexOf(path) === -1) {
+            acc.push(path);
+          }
+        });
+      }
     }
 
     return acc;
