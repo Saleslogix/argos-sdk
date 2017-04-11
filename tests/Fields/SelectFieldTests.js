@@ -1,3 +1,4 @@
+/* eslint-disable */
 define('tests/Fields/SelectFieldTests', ['argos/Fields/SelectField'], function(SelectField) {
 return describe('Sage.Platform.Mobile.Fields.SelectField', function() {
 
@@ -15,7 +16,7 @@ return describe('Sage.Platform.Mobile.Fields.SelectField', function() {
     it('Can set nav options to always hide search', function() {
         var field = new SelectField();
 
-        spyOn(Sage.Platform.Mobile.Fields.SelectField.superclass, 'createNavigationOptions').and.returnValue({});
+        spyOn(SelectField.superclass, 'createNavigationOptions').and.returnValue({});
 
         var options = field.createNavigationOptions();
 
@@ -24,7 +25,7 @@ return describe('Sage.Platform.Mobile.Fields.SelectField', function() {
     it('Can set nav options to always disable actions', function() {
         var field = new SelectField();
 
-        spyOn(Sage.Platform.Mobile.Fields.SelectField.superclass, 'createNavigationOptions').and.returnValue({});
+        spyOn(SelectField.superclass, 'createNavigationOptions').and.returnValue({});
 
         var options = field.createNavigationOptions();
 
@@ -33,7 +34,7 @@ return describe('Sage.Platform.Mobile.Fields.SelectField', function() {
     it('Can set nav options to include fields data (non function)', function() {
         var field = new SelectField();
 
-        spyOn(Sage.Platform.Mobile.Fields.SelectField.superclass, 'createNavigationOptions').and.returnValue({});
+        spyOn(SelectField.superclass, 'createNavigationOptions').and.returnValue({});
 
         field.data = 'test';
 
@@ -44,7 +45,7 @@ return describe('Sage.Platform.Mobile.Fields.SelectField', function() {
     it('Can set nav options to include fields data (as function)', function() {
         var field = new SelectField();
 
-        spyOn(Sage.Platform.Mobile.Fields.SelectField.superclass, 'createNavigationOptions').and.returnValue({});
+        spyOn(SelectField.superclass, 'createNavigationOptions').and.returnValue({});
 
         field.data = function(){return 'test';};
 
