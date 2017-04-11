@@ -1,0 +1,288 @@
+<dateField ""
+  emptyText: ''
+  invalidDateFormatErrorText: "Veld ${0} heeft een ongeldige gegevensindeling."
+  cancelText: "Annuleren"
+  confirmText: "Bevestigen"
+  advancedText: "Geavanceerd"
+>
+
+<durationField ""
+  minutes: "minuut/minuten"
+  hours: "uur"
+  days: "dag/dagen"
+  weeks: "week/weken"
+  years: "jaar/jaren"
+  invalidDurationErrorText: "Veld ${0} is geen geldige duur."
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "bewerken"
+  lookupText: "..."
+  emptyText: "leeg"
+  completeText: "OK"
+>
+
+<lookupField ""
+  dependentErrorText: "Er moet een waarde voor ${0} worden geselecteerd."
+  emptyText: ""
+  completeText: "Selecteren"
+  lookupLabelText: "zoekopdracht"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "handtekening"
+  signatureText: "..."
+>
+
+<dateTimeSection ""
+  displayNameText: "Datum/tijd-sectie"
+  todayText: "Vandaag"
+  tomorrowText: "Morgen"
+  laterThisWeekText: "Later deze week"
+  earlierThisWeekText: "Eerder deze week"
+  thisLaterMonthText: "Later deze maand"
+  thisEarlierMonthText: "Eerder deze maand"
+  thisYearEarlierText: "Eerder dit jaar"
+  thisYearLaterText: "Later dit jaar"
+  yesterdayText: "Gisteren"
+  lastWeekText: "Vorige week"
+  lastMonthText: "Vorige maand"
+  pastYearText: "Afgelopen jaar/jaren"
+  nextYearText: "Volgend jaar"
+  nextMonthText: "Volgende maand"
+  nextWeekText: "Volgende week"
+  futureText: "In de toekomst"
+  twoWeeksAgoText: "Twee weken geleden"
+  threeWeeksAgoText: "Drie weken geleden"
+  twoMonthsAgoText: "Twee maanden geleden"
+  threeMonthsAgoText: "Drie maanden geleden"
+  unknownText: "Onbekend"
+>
+
+<groupByValueSection ""
+  displayNameText: "Sectie Groeperen op waarde"
+>
+
+<configureQuickActions ""
+  titleText: "Snelle acties configureren"
+>
+
+<fileSelect ""
+  titleText: "Bestand selecteren"
+  addFileText: "Klik of tik hier om een bestand toe te voegen."
+  uploadText: "Uploaden"
+  cancelText: "Annuleren"
+  selectFileText: "Bestand selecteren"
+  loadingText: "Uploaden..."
+  descriptionText: "omschrijving"
+  bytesText: "bytes"
+  notSupportedText: "Toevoegen van bijlagen wordt niet ondersteund door uw apparaat."
+>
+
+<signature ""
+  titleText: "Handtekening"
+  clearCanvasText: "Wissen"
+  undoText: "Ongedaan maken"
+>
+
+<configureBase ""
+  titleText: "Configureren"
+>
+
+<detailBase ""
+  informationText: "Informatie"
+  titleText: "Details"
+  entityText: "Entiteit"
+  detailsText: "Details"
+  loadingText: "Laden"
+  notAvailableText: "De aangevraagde gegevens zijn niet beschikbaar."
+  toggleCollapseText: "uitvouwen/samenvouwen"
+  editText: "Bewerken"
+>
+
+<editBase ""
+  concurrencyErrorText: "Dit veld is bijgewerkt door een andere gebruiker."
+  toggleCollapseText: "uitvouwen/samenvouwen"
+  saveText: "Opslaan"
+  titleText: "Bewerken"
+  validationSummaryText: "Validatieoverzicht"
+  concurrencySummaryText: "Fout(en) gelijktijdigheid"
+  detailsText: "Details"
+  loadingText: "Laden"
+  errorGeneral: "Er is een serverfout opgetreden tijdens het opvragen van gegevens."
+  error410:  "Fout bij opslaan. Deze record bestaat niet meer."
+>
+
+<errorHandleMixin ""
+  general: 'A server error occured.'
+>
+
+<listBase ""
+  moreText: "Meer records ophalen"
+  emptySelectionText: "Geen"
+  titleText: "Lijst"
+  configureText: "Configureren"
+  errorRenderText: "Fout bij weergeven rijsjabloon."
+  remainingText: "${0} records resterend"
+  cancelText: "Annuleren"
+  insertText: "Nieuw"
+  noDataText: "geen records"
+  loadingText: "Laden"
+>
+
+<pullToRefreshMixin ""
+  pullRefreshText: "Schuif omlaag om te vernieuwen..."
+  pullReleaseText: "Laat los om te vernieuwen..."
+>
+
+<relatedViewWidgetBase ""
+  loadingText: "Laden"
+>
+
+<calendar ""
+  titleText: "Kalender"
+  amText: "AM"
+  pmText: "PM"
+  january: "Januari"
+  february: "Februari"
+  march: "Maart"
+  april: "April"
+  may: "Mei"
+  june: "Juni"
+  july: "Juli"
+  august: "Augustus"
+  september: "September"
+  october: "Oktober"
+  november: "November"
+  december: "December"
+  clearText: "Wissen"
+  todayText: "Vandaag"
+  sundayAbbreviated: "Zo"
+  mondayAbbreviated: "Ma"
+  tuesdayAbbreviated: "Di"
+  wednesdayAbbreviated: "Wo"
+  thursdayAbbreviated: "Do"
+  fridayAbbreviated: "Vr"
+  saturdayAbbreviated: "Za"
+>
+
+<errorManager ""
+  abortedText: "Afgebroken"
+  scopeSaveText: "Omvang is niet opgeslagen in foutrapport"
+>
+
+<format ""
+  yesText: "Ja"
+  noText: "Nee"
+  trueText: "T"
+  falseText: "F"
+  hoursText: "uur"
+  hourText: "uur"
+  minutesText: "minuten"
+  minuteText: "minuut"
+  percentFormatText: "${0}${1}"
+  bytesText: "bytes"
+>
+
+<groupedList ""
+ toggleCollapseText: "uitvouwen/samenvouwen"
+>
+
+<mainToolbar ""
+  titleText: "Mobiel"
+>
+
+<relatedViewWidget ""
+  nodataText: "geen records gevonden..."
+  selectMoreDataText: "zie ${0} andere ${1}... "
+  selectMoreDataText2: "zie ${0} andere... "
+  navToListText: "zie lijst"
+  loadingText: "Laden"
+  refreshViewText: "vernieuwen"
+  itemOfCountText: " ${0} van ${1}"
+  totalCountText: " (${0})"
+  titleText: "Gerelateerde weergave"
+>
+
+<searchWidget ""
+ searchText: "Zoeken"
+>
+
+<selectionModel ""
+  requireSelectionText: "Selectie is vereist, u kunt het laatste item niet deselecteren."
+>
+
+<tabWidget ""
+ moreText: "Meer"
+>
+
+<view ""
+ titleText: "Generieke weergave"
+>
+
+<timePicker ""
+  amText: "AM"
+  pmText: "PM"
+  setTimeText: "Tijd instellen"
+>
+
+<relativeDateTimePicker ""
+  titleText: "Rond..."
+  pickDateTimeText: "Geavanceerd"
+  thisEveningText: "Vanavond"
+  tomorrowMorningText: "Morgenochtend"
+  tomorrowAfternoonText: "Morgenavond"
+  nextWeekText: "Volgende week"
+  nextMonthText: "Volgende maand"
+  cancelText: "Annuleren"
+  confirmText: "Bevestigen"
+>
+
+<briefcaseModel ""
+  entityDisplayName: "Werkmap"
+  entityDisplayNamePlural : "Werkmappen"
+>
+
+<recentlyViewedModel ""
+  entityDisplayName: "Recent weergegeven"
+  entityDisplayNamePlural : "Recent weergegeven"
+>
+
+<busyIndicator ""
+  loadingText: "Laden"
+  progressText: "Voortgang"
+>
+
+<modal
+  alertText: "Alert"
+  completeText: "Voltooid"
+  cancelText: "Annuleren"
+  confirmText: "Bevestigen"
+  editText: "Bewerken"
+  okayText: "OK"
+  submitText: "Indienen"
+  warningText: "Waarschuwing"
+>
+<_listOfflineMixin
+  goToListViewText: "De items zijn in de werkmap geplaatst. Wilt u de lijstweergave van de werkmap activeren?"
+  interruptedText: "De procedure werd onderbroken en is niet volledig voltooid. Voer de procedure opnieuw uit om de plaatsing van items in de werkmap te voltooien."
+  briefcasingText: "Items worden in werkmap geplaatst, een ogenblik geduld."
+  errorBriefcasingText: "Fout bij plaatsen van items in werkmap"
+>
+
+<_detailOfflineMixin
+  goToDetailViewText: "Het item en de gerelateerde items zijn in de werkmap geplaatst. Wilt u de lijstweergave van de werkmap activeren?"
+  interruptedText: "De procedure werd onderbroken en is niet volledig voltooid. Voer de procedure opnieuw uit om de plaatsing van items in de werkmap te voltooien."
+  briefcasingText: "Items worden in werkmap geplaatst, een ogenblik geduld."
+  errorBriefcasingText: "Fout bij plaatsen van items in werkmap"
+  errorSavingOfflineViewText: "fout bij opslaan offlineweergave:"
+>
+
+<sdkApplication
+  connectionToastTitleText: "Verbinding"
+  checkingText: "Verbinding controleren"
+  loadingApplicationStateText: "Status applicatie wordt geladen"
+  initializingText: "Initialiseren:"
+>
