@@ -1,14 +1,20 @@
+/* eslint-disable */
 define('tests/Fields/LookupFieldTests', [
     'argos/Fields/LookupField'
 ], function(
     LookupField
 ) {
+    window.ReUI = {
+      back: function() {}
+    };
     return describe('Sage.Platform.Mobile.Fields.LookupField', function() {
         beforeEach(function() {
             this.app = {
                 getPrimaryActiveView: function() {
                     // Return a fake view
                     return {
+                        getUnloadedSelections: function(){
+                        },
                         get: function() {
                             // Return a fake selection module
                             return {
@@ -83,11 +89,6 @@ define('tests/Fields/LookupFieldTests', [
             field.dependsOn = false;
             options = field.createNavigationOptions();
             expect(options.where).toEqual(field.where);
-
-            field.singleSelect = false;
-            options = field.createNavigationOptions();
-            expect(options.tools.tbar[0].cls).not.toBe(undefined);
-
 
             field.destroy();
         });
@@ -273,4 +274,3 @@ define('tests/Fields/LookupFieldTests', [
         });
     });
 });
-

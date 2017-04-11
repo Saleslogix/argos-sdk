@@ -1,5 +1,10 @@
+/* eslint-disable */
 define('tests/Fields/SignatureFieldTests', ['argos/Fields/SignatureField'], function(Signature) {
 return describe('Sage.Platform.Mobile.Fields.SignatureField', function() {
+
+    window.ReUI = {
+      back: function() {}
+    };
 
     it('Can clear value', function() {
         var field = new Signature();
@@ -54,7 +59,7 @@ return describe('Sage.Platform.Mobile.Fields.SignatureField', function() {
     it('Can set value', function() {
         var field = new Signature();
         field.setValue('test');
-        expect(field.inputNode.value).toEqual('test');
+        expect(field.currentValue).toEqual('test');
         field.setValue('another', true);
         expect(field.originalValue).toEqual('another');
 
