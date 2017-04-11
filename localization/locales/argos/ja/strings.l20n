@@ -1,0 +1,288 @@
+<dateField ""
+  emptyText: ''
+  invalidDateFormatErrorText: "フィールド「${0}」には、無効な日付形式があります。"
+  cancelText: "キャンセル"
+  confirmText: "確認"
+  advancedText: "詳細"
+>
+
+<durationField ""
+  minutes: "分"
+  hours: "時間"
+  days: "日"
+  weeks: "週"
+  years: "年"
+  invalidDurationErrorText: "フィールド「${0}」は、有効な期間ではありません。"
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "編集"
+  lookupText: "..."
+  emptyText: "空"
+  completeText: "OK"
+>
+
+<lookupField ""
+  dependentErrorText: "「${0}」の値を選択する必要があります。"
+  emptyText: ""
+  completeText: "選択"
+  lookupLabelText: "ルックアップ"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "署名"
+  signatureText: "..."
+>
+
+<dateTimeSection ""
+  displayNameText: "日時セクション"
+  todayText: "今日"
+  tomorrowText: "明日"
+  laterThisWeekText: "当週の後半"
+  earlierThisWeekText: "当週の前半"
+  thisLaterMonthText: "当月の後半"
+  thisEarlierMonthText: "当月の前半"
+  thisYearEarlierText: "当年の前半"
+  thisYearLaterText: "当年の後半"
+  yesterdayText: "昨日"
+  lastWeekText: "先週"
+  lastMonthText: "先月"
+  pastYearText: "年"
+  nextYearText: "来年"
+  nextMonthText: "来月"
+  nextWeekText: "来週"
+  futureText: "将来"
+  twoWeeksAgoText: "2 週間前"
+  threeWeeksAgoText: "3 週間前"
+  twoMonthsAgoText: "2 か月前"
+  threeMonthsAgoText: "2 か月前"
+  unknownText: "不明"
+>
+
+<groupByValueSection ""
+  displayNameText: "値セクションでグループ化"
+>
+
+<configureQuickActions ""
+  titleText: "クイックアクションの構成"
+>
+
+<fileSelect ""
+  titleText: "ファイル選択"
+  addFileText: "ここをクリップまたはタップしてファイルを追加します。"
+  uploadText: "アップロード"
+  cancelText: "キャンセル"
+  selectFileText: "ファイルの選択"
+  loadingText: "アップロードしています..."
+  descriptionText: "説明"
+  bytesText: "バイト"
+  notSupportedText: "添付の追加は、お使いのデバイスではサポートされていません。"
+>
+
+<signature ""
+  titleText: "署名"
+  clearCanvasText: "削除"
+  undoText: "元に戻す"
+>
+
+<configureBase ""
+  titleText: "構成"
+>
+
+<detailBase ""
+  informationText: "情報"
+  titleText: "詳細"
+  entityText: "エンティティ"
+  detailsText: "詳細"
+  loadingText: "ロードしています"
+  notAvailableText: "リクエストしたデータは、利用できません。"
+  toggleCollapseText: "トグル折りたたみ"
+  editText: "編集"
+>
+
+<editBase ""
+  concurrencyErrorText: "別のユーザーがこのフィールドを更新しました。"
+  toggleCollapseText: "トグル折りたたみ"
+  saveText: "保存"
+  titleText: "編集"
+  validationSummaryText: "検証サマリー"
+  concurrencySummaryText: "通貨エラー"
+  detailsText: "詳細"
+  loadingText: "ロードしています"
+  errorGeneral: "データの要求中にサーバーエラーが発生しました。"
+  error410:  "エラーを保存しています。このレコードは現在存在していません。"
+>
+
+<errorHandleMixin ""
+  general: 'A server error occured.'
+>
+
+<listBase ""
+  moreText: "その他のレコードの取得"
+  emptySelectionText: "なし"
+  titleText: "リスト"
+  configureText: "構成"
+  errorRenderText: "行テンプレートのレンダリングエラー"
+  remainingText: "残り ${0} レコード"
+  cancelText: "キャンセル"
+  insertText: "新規"
+  noDataText: "レコードなし"
+  loadingText: "ロードしています"
+>
+
+<pullToRefreshMixin ""
+  pullRefreshText: "プルダウンして更新..."
+  pullReleaseText: "リリースして更新..."
+>
+
+<relatedViewWidgetBase ""
+  loadingText: "ロードしています"
+>
+
+<calendar ""
+  titleText: "カレンダー"
+  amText: "AM"
+  pmText: "PM"
+  january: "1 月"
+  february: "2 月"
+  march: "3 月"
+  april: "4 月"
+  may: "5 月"
+  june: "6 月"
+  july: "7 月"
+  august: "8 月"
+  september: "9 月"
+  october: "10 月"
+  november: "11 月"
+  december: "12 月"
+  clearText: "クリア"
+  todayText: "今日"
+  sundayAbbreviated: "日曜日"
+  mondayAbbreviated: "月曜日"
+  tuesdayAbbreviated: "火曜日"
+  wednesdayAbbreviated: "水曜日"
+  thursdayAbbreviated: "木曜日"
+  fridayAbbreviated: "金曜日"
+  saturdayAbbreviated: "土曜日"
+>
+
+<errorManager ""
+  abortedText: "中止"
+  scopeSaveText: "スコープは、エラーレポートに保存されません"
+>
+
+<format ""
+  yesText: "はい"
+  noText: "いいえ"
+  trueText: "T"
+  falseText: "F"
+  hoursText: "時間"
+  hourText: "時間"
+  minutesText: "分"
+  minuteText: "分"
+  percentFormatText: "${0}${1}"
+  bytesText: "バイト"
+>
+
+<groupedList ""
+ toggleCollapseText: "トグル折りたたみ"
+>
+
+<mainToolbar ""
+  titleText: "携帯電話"
+>
+
+<relatedViewWidget ""
+  nodataText: "レコードは見つかりませんでした..."
+  selectMoreDataText: "${0} について更に ${1} を参照... "
+  selectMoreDataText2: "更に ${0} を参照... "
+  navToListText: "リストの参照"
+  loadingText: "ロードしています"
+  refreshViewText: "更新"
+  itemOfCountText: " ${0} / ${1}"
+  totalCountText: " (${0})"
+  titleText: "関連ビュー"
+>
+
+<searchWidget ""
+ searchText: "検索"
+>
+
+<selectionModel ""
+  requireSelectionText: "選択は必須です。最後の項目の選択を解除することはできません。"
+>
+
+<tabWidget ""
+ moreText: "その他"
+>
+
+<view ""
+ titleText: "一般ビュー"
+>
+
+<timePicker ""
+  amText: "AM"
+  pmText: "PM"
+  setTimeText: "時刻を設定"
+>
+
+<relativeDateTimePicker ""
+  titleText: "約..."
+  pickDateTimeText: "詳細"
+  thisEveningText: "今夜"
+  tomorrowMorningText: "明朝"
+  tomorrowAfternoonText: "明晩"
+  nextWeekText: "来週"
+  nextMonthText: "来月"
+  cancelText: "キャンセル"
+  confirmText: "確認"
+>
+
+<briefcaseModel ""
+  entityDisplayName: "ブリーフケース"
+  entityDisplayNamePlural : "ブリーフケース"
+>
+
+<recentlyViewedModel ""
+  entityDisplayName: "最近表示した項目"
+  entityDisplayNamePlural : "最近表示した項目"
+>
+
+<busyIndicator ""
+  loadingText: "ロードしています"
+  progressText: "進行状況"
+>
+
+<modal
+  alertText: "アラート"
+  completeText: "完了"
+  cancelText: "キャンセル"
+  confirmText: "確認"
+  editText: "編集"
+  okayText: "OK"
+  submitText: "提出"
+  warningText: "警告"
+>
+<_listOfflineMixin
+  goToListViewText: "項目はブリーフケースに移動されています。ブリーフケースリストビューに移動しますか?"
+  interruptedText: "処理は中断され、完全に完了しませんでした。処理を再試行して項目を完全にブリーフケースしてください。"
+  briefcasingText: "ブリーフケースしています。お待ちください。"
+  errorBriefcasingText: "ブリーフケースのエラー"
+>
+
+<_detailOfflineMixin
+  goToDetailViewText: "項目および関連項目はブリーフケースに移動されています。ブリーフケースリストビューに移動しますか?"
+  interruptedText: "処理は中断され、完全に完了しませんでした。処理を再試行して項目を完全にブリーフケースしてください。"
+  briefcasingText: "ブリーフケースしています。お待ちください。"
+  errorBriefcasingText: "ブリーフケースのエラー"
+  errorSavingOfflineViewText: "オフラインビューの保存エラー:"
+>
+
+<sdkApplication
+  connectionToastTitleText: "接続"
+  checkingText: "接続を確認しています"
+  loadingApplicationStateText: "アプリケーションの状態をロード中"
+  initializingText: "初期化:"
+>

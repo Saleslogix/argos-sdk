@@ -1,0 +1,288 @@
+<dateField ""
+  emptyText: ''
+  invalidDateFormatErrorText: "El campo «${0}» tiene un formato de fecha no válido."
+  cancelText: "Cancelar"
+  confirmText: "Confirmar"
+  advancedText: "Avanzado"
+>
+
+<durationField ""
+  minutes: "minuto(s)"
+  hours: "hora(s)"
+  days: "día(s)"
+  weeks: "semana(s)"
+  years: "año(s)"
+  invalidDurationErrorText: "El campo «${0}» no es una duración válida."
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "editar"
+  lookupText: "..."
+  emptyText: "vacío"
+  completeText: "Aceptar"
+>
+
+<lookupField ""
+  dependentErrorText: "Se debe seleccionar un valor para «${0}»."
+  emptyText: ""
+  completeText: "Seleccionar"
+  lookupLabelText: "búsqueda"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "firma"
+  signatureText: "..."
+>
+
+<dateTimeSection ""
+  displayNameText: "Sección de fecha y hora"
+  todayText: "Hoy"
+  tomorrowText: "Mañana"
+  laterThisWeekText: "Más adelante esta semana"
+  earlierThisWeekText: "Más pronto esta semana"
+  thisLaterMonthText: "Más tarde este mes"
+  thisEarlierMonthText: "Más pronto este mes"
+  thisYearEarlierText: "Más pronto este año"
+  thisYearLaterText: "Más tarde este año"
+  yesterdayText: "Ayer"
+  lastWeekText: "Última semana"
+  lastMonthText: "Último mes"
+  pastYearText: "Último(s) año(s)"
+  nextYearText: "Año siguiente"
+  nextMonthText: "Mes siguiente"
+  nextWeekText: "Semana siguiente"
+  futureText: "Futuro"
+  twoWeeksAgoText: "Hace dos semanas"
+  threeWeeksAgoText: "Hace tres semanas"
+  twoMonthsAgoText: "Hace dos meses"
+  threeMonthsAgoText: "Hace tres meses"
+  unknownText: "Desconocido"
+>
+
+<groupByValueSection ""
+  displayNameText: "Agrupar por la sección de valor"
+>
+
+<configureQuickActions ""
+  titleText: "Configurar acciones rápidas"
+>
+
+<fileSelect ""
+  titleText: "Seleccionar archivo"
+  addFileText: "Hacer clic o tocar aquí para añadir un archivo."
+  uploadText: "Cargar"
+  cancelText: "Cancelar"
+  selectFileText: "Seleccionar archivo"
+  loadingText: "Cargando..."
+  descriptionText: "descripción"
+  bytesText: "bytes"
+  notSupportedText: "No es posible adjuntar archivos desde su dispositivo."
+>
+
+<signature ""
+  titleText: "Firma"
+  clearCanvasText: "Borrar"
+  undoText: "Deshacer"
+>
+
+<configureBase ""
+  titleText: "Configurar"
+>
+
+<detailBase ""
+  informationText: "Información"
+  titleText: "Detalle"
+  entityText: "Entidad"
+  detailsText: "Detalles"
+  loadingText: "Cargando"
+  notAvailableText: "La información solicitada no está disponible."
+  toggleCollapseText: "contraer alternancia"
+  editText: "Editar"
+>
+
+<editBase ""
+  concurrencyErrorText: "Otro usuario actualizó este campo."
+  toggleCollapseText: "contraer alternancia"
+  saveText: "Guardar"
+  titleText: "Editar"
+  validationSummaryText: "Resumen de validación"
+  concurrencySummaryText: "Error(es) de concurrencia"
+  detailsText: "Detalles"
+  loadingText: "Cargando"
+  errorGeneral: "Ha ocurrido un error en el servidor mientras se estaba solicitando información."
+  error410:  "Error al guardar. Este registro ya no existe."
+>
+
+<errorHandleMixin ""
+  general: 'A server error occured.'
+>
+
+<listBase ""
+  moreText: "Recuperar más registros"
+  emptySelectionText: "Ninguno"
+  titleText: "Lista"
+  configureText: "Configurar"
+  errorRenderText: "Error al representar la plantilla de filas."
+  remainingText: "${0} registros restantes"
+  cancelText: "Cancelar"
+  insertText: "Nuevo"
+  noDataText: "no hay registros"
+  loadingText: "Cargando"
+>
+
+<pullToRefreshMixin ""
+  pullRefreshText: "Tire hacia abajo para actualizar..."
+  pullReleaseText: "Suelte para actualizar..."
+>
+
+<relatedViewWidgetBase ""
+  loadingText: "Cargando"
+>
+
+<calendar ""
+  titleText: "Calendario"
+  amText: "AM"
+  pmText: "PM"
+  january: "Enero"
+  february: "Febrero"
+  march: "Marzo"
+  april: "Abril"
+  may: "Mayo"
+  june: "Junio"
+  july: "Julio"
+  august: "Agosto"
+  september: "Septiembre"
+  october: "Octubre"
+  november: "Noviembre"
+  december: "Diciembre"
+  clearText: "Borrar"
+  todayText: "Hoy"
+  sundayAbbreviated: "Do"
+  mondayAbbreviated: "Lu"
+  tuesdayAbbreviated: "Ma"
+  wednesdayAbbreviated: "Mi"
+  thursdayAbbreviated: "Ju"
+  fridayAbbreviated: "Vi"
+  saturdayAbbreviated: "Sá"
+>
+
+<errorManager ""
+  abortedText: "Anulado"
+  scopeSaveText: "El ámbito no se guarda en el informe de errores"
+>
+
+<format ""
+  yesText: "Sí"
+  noText: "No"
+  trueText: "T"
+  falseText: "F"
+  hoursText: "horas"
+  hourText: "hora"
+  minutesText: "minutos"
+  minuteText: "minuto"
+  percentFormatText: "${0}${1}"
+  bytesText: "bytes"
+>
+
+<groupedList ""
+ toggleCollapseText: "contraer alternancia"
+>
+
+<mainToolbar ""
+  titleText: "Teléfono móvil"
+>
+
+<relatedViewWidget ""
+  nodataText: "no se encontró ningún registro..."
+  selectMoreDataText: "ver ${0} más de ${1}... "
+  selectMoreDataText2: "ver ${0} más... "
+  navToListText: "ver la lista"
+  loadingText: "Cargando"
+  refreshViewText: "actualizar"
+  itemOfCountText: " ${0} de ${1}"
+  totalCountText: " (${0})"
+  titleText: "Vista relacionada"
+>
+
+<searchWidget ""
+ searchText: "Buscar"
+>
+
+<selectionModel ""
+  requireSelectionText: "Se requiere una selección, no puede anular la selección del último artículo."
+>
+
+<tabWidget ""
+ moreText: "Más"
+>
+
+<view ""
+ titleText: "Vista genérica"
+>
+
+<timePicker ""
+  amText: "AM"
+  pmText: "PM"
+  setTimeText: "Establecer hora"
+>
+
+<relativeDateTimePicker ""
+  titleText: "Alrededor..."
+  pickDateTimeText: "Avanzado"
+  thisEveningText: "Esta tarde"
+  tomorrowMorningText: "Mañana por la mañana"
+  tomorrowAfternoonText: "Mañana por la tarde"
+  nextWeekText: "Semana siguiente"
+  nextMonthText: "Mes siguiente"
+  cancelText: "Cancelar"
+  confirmText: "Confirmar"
+>
+
+<briefcaseModel ""
+  entityDisplayName: "Maletín"
+  entityDisplayNamePlural : "Maletines"
+>
+
+<recentlyViewedModel ""
+  entityDisplayName: "Visto recientemente"
+  entityDisplayNamePlural : "Visto recientemente"
+>
+
+<busyIndicator ""
+  loadingText: "Cargando"
+  progressText: "Progreso"
+>
+
+<modal
+  alertText: "Alerta"
+  completeText: "Completar"
+  cancelText: "Cancelar"
+  confirmText: "Confirmar"
+  editText: "Editar"
+  okayText: "Vale"
+  submitText: "Enviar"
+  warningText: "Advertencia"
+>
+<_listOfflineMixin
+  goToListViewText: "Los artículos se han guardado en el maletín. ¿Desea ir a la vista de lista del maletín?"
+  interruptedText: "El proceso se interrumpió y no se pudo completar en su totalidad. Intente realizar de nuevo el proceso para guardar los artículos en el maletín por completo."
+  briefcasingText: "Guardando en maletín, espere."
+  errorBriefcasingText: "Error al guardar en maletín"
+>
+
+<_detailOfflineMixin
+  goToDetailViewText: "El artículo y los artículos relacionados se han guardado en el maletín. ¿Desea ir a la vista de lista del maletín?"
+  interruptedText: "El proceso se interrumpió y no se pudo completar en su totalidad. Intente realizar de nuevo el proceso para guardar los artículos en el maletín por completo."
+  briefcasingText: "Guardando en maletín, espere."
+  errorBriefcasingText: "Error al guardar en maletín"
+  errorSavingOfflineViewText: "error al guardar la vista sin conexión:"
+>
+
+<sdkApplication
+  connectionToastTitleText: "Conexión"
+  checkingText: "Comprobando conectividad"
+  loadingApplicationStateText: "Cargando estado de la aplicación"
+  initializingText: "Inicializando:"
+>

@@ -1,18 +1,18 @@
 <dateField ""
   emptyText: ''
-  invalidDateFormatErrorText: "Некорректный формат даты в поле \"${0}\"."
+  invalidDateFormatErrorText: "Некорректный формат даты в поле "${0}"."
   cancelText: "Отмена"
   confirmText: "Подтвердить"
   advancedText: "Дополнительно"
 >
 
 <durationField ""
-  minutes: "минуты"
-  hours: "часы"
-  days: "дни"
+  minutes: "мин"
+  hours: "ч"
+  days: "дн."
   weeks: "недели"
   years: "годы"
-  invalidDurationErrorText: "Поле \"${0}\" не является допустимой длительностью."
+  invalidDurationErrorText: "Поле "${0}" не является допустимой длительностью."
   emptyText: ""
 >
 
@@ -24,7 +24,7 @@
 >
 
 <lookupField ""
-  dependentErrorText: "Необходимо выбрать значение \"${0}\"."
+  dependentErrorText: "Необходимо выбрать значение "${0}"."
   emptyText: ""
   completeText: "Выбрать"
   lookupLabelText: "поиск"
@@ -84,7 +84,7 @@
 <signature ""
   titleText: "Подпись"
   clearCanvasText: "Очистить"
-  undoText: "Отменить ввод"
+  undoText: "Отменить"
 >
 
 <configureBase ""
@@ -178,9 +178,9 @@
   noText: "Нет"
   trueText: "T"
   falseText: "F"
-  hoursText: "часы"
+  hoursText: "ч"
   hourText: "час"
-  minutesText: "минуты"
+  minutesText: "мин"
   minuteText: "минута"
   percentFormatText: "${0}${1}"
   bytesText: "байт"

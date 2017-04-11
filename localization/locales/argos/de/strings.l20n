@@ -211,7 +211,7 @@
 >
 
 <selectionModel ""
-  requireSelectionText: "Eine Auswahl ist erforderlich. Sie können die Auswahl für den letzten Eintrag nicht aufheben."
+  requireSelectionText: "Eine Auswahl ist erforderlich. Sie können die Auswahl für das letzte Element nicht aufheben."
 >
 
 <tabWidget ""
@@ -266,15 +266,15 @@
   warningText: "Warnung"
 >
 <_listOfflineMixin
-  goToListViewText: "Einträge wurden in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
-  interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Einträge vollständig in die Aktentasche zu verschieben."
+  goToListViewText: "Elemente wurden in die Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
+  interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Elemente vollständig in die Aktentasche zu verschieben."
   briefcasingText: "Einträge werden in Aktentasche verschoben, bitte warten."
   errorBriefcasingText: "Fehler beim Verschieben in Aktentasche"
 >
 
 <_detailOfflineMixin
-  goToDetailViewText: "Eintrag und zugehörige Einträge wurden bereits in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
-  interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Einträge vollständig in die Aktentasche zu verschieben."
+  goToDetailViewText: "Element und zugehörige Elemente wurden bereits in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
+  interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Elemente vollständig in die Aktentasche zu verschieben."
   briefcasingText: "Einträge werden in Aktentasche verschoben, bitte warten."
   errorBriefcasingText: "Fehler beim Verschieben in Aktentasche"
   errorSavingOfflineViewText: "Fehler beim Speichern der Offline-Ansicht:"
