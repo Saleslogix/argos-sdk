@@ -114,6 +114,9 @@
       <% with (scripts) { %>
       var ctx = buildContext();
       ctx.ready(function() {
+        define('jquery', function() {
+          return window.$;
+        });
         require([
           'tests/all'
         ]);
