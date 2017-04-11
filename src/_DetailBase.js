@@ -196,7 +196,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * * `$$` => view instance
    */
   relatedTemplate: new Simplate([
-    '<li class="{%= $.cls %}" data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %}>',
+    '<li class="relatedviewitem {%= $.cls %}" data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %}>',
     '<a class="{% if ($.disabled) { %}disabled{% } %}">',
     '{% if ($.icon) { %}',
     '<img src="{%= $.icon %}" alt="icon" class="icon" />',
@@ -1057,7 +1057,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         const labelNode = $('.related-item-label', rowNode).first();
         if (labelNode.length) {
           $('.busy-xs', labelNode).remove();
-          labelNode.prepend(`<span class="info badge">${result}</span>`);
+          labelNode.after(`<span class="info badge">${result}</span>`);
         } else {
           console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
         }

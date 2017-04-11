@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import event from 'dojo/_base/event';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import utility from '../Utility';
@@ -410,7 +409,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
         if (options.tools.tbar.hasOwnProperty(key)) {
           const item = options.tools.tbar[key];
           if (item.id === options.singleSelectAction) {
-            item.cls = 'invisible';
+            item.cls = 'display-none';
           }
         }
       }
@@ -457,7 +456,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
     const buttonNode = $(evt.target).closest('.button').get(0);
 
     if (!this.isDisabled() && (buttonNode || this.requireSelection)) {
-      event.stop(evt);
+      evt.stopPropagation();
       this.navigateToListView();
     }
   },
