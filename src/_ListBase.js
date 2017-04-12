@@ -79,28 +79,18 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   widgetTemplate: new Simplate([`
     <div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
-      <div class="toolbar has-more-button has-title-button" role="toolbar" aria-label="List Toolbar">
+      <div class="toolbar has-title-button" role="toolbar" aria-label="List Toolbar">
         <div class="title">
           <h1></h1>
         </div>
         <div class="buttonset" data-dojo-attach-point="toolNode">
           <div data-dojo-attach-point="searchNode"></div>
-        </div>
-        <div class="more">
-          <button class="btn-actions" type="button" aria-controls="list_toolbar_popupmenu_{%= $.id %}">
-            <svg class="icon" role="presentation">
-              <use xlink:href="#icon-more">
-              </use>
-            </svg>
-            <span class="audible">More Actions</span>
+          {% if($.hasSettings) { %}
+          <button class="btn" type="button" data-action="openSettings" aria-controls="list_toolbar_setting_{%= $.id %}">
+            <svg class="icon" role="presentation"><use xlink:href="#icon-settings"></use></svg>
+            <span class="audible">List Settings</span>
           </button>
-          <ul id="list_toolbar_popupmenu_{%= $.id %}" role="menu">
-            {% if($.hasSettings) { %}
-            <li role="presentation">
-              <a href="#" data-action="openSettings" role="menuitem">List Settings</a>
-            </li>
-            {% } %}
-          </ul>
+          {% } %}
         </div>
       </div>
       {% if ($$.isNavigationDisabled()) { %}
