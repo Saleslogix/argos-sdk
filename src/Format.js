@@ -80,7 +80,7 @@ const __class = lang.setObject('argos.Format', {
    */
   percentFormatText: resource.percentFormatText,
   /**
-   * Takes a String and encodes `&`, `<`, `>`, `"` to HTML entities
+   * Takes a String and encodes `&`, `<`, `>`, `"`, `'`, and `/` to HTML entities
    * @param {String} String to encode
    * @return {String} Html encoded string
    */
