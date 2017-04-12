@@ -957,6 +957,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     for (const key in selectedItems) {
       if (selectedItems.hasOwnProperty(key)) {
         selection = selectedItems[key];
+        this._selectionModel.deselect(key);
         break;
       }
     }

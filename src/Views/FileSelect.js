@@ -141,8 +141,8 @@ const __class = declare('argos.Views.FileSelect', [View], {
     }.bind(this);
 
     this.contentNode.innerHTML = '';
-    $(this.fileArea).removeClass('display-none');
-    $(this.btnUploadFiles).removeClass('display-none');
+    $(this.fileArea).show();
+    $(this.btnUploadFiles).show();
     this.onUpdateProgress('0');
   },
   _browesForFiles: function _browesForFiles(/* file*/) {
@@ -184,8 +184,8 @@ const __class = declare('argos.Views.FileSelect', [View], {
       }
       this._buildForm(files);
     }
-    $(this.btnUploadFiles).removeClass('display-none');
-    $(this.fileArea).addClass('display-none');
+    $(this.btnUploadFiles).show();
+    $(this.fileArea).hide();
   },
   _addFile: function _addFile(file, index) {
     const filelength = this._getFileLength(file);
@@ -233,7 +233,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
    * Handles the display when the user clicks upload.
    */
   onUploadFiles: function onUploadFiles() {
-    $(this.btnUploadFiles).addClass('display-none');
+    $(this.btnUploadFiles).hide();
     const tpl = this.loadingTemplate.apply(this);
     $(this.domNode).addClass('list-loading');
     $(this.contentNode).prepend(tpl);
