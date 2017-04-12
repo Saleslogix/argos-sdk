@@ -45,7 +45,6 @@ const __class = lang.setObject('argos.Utility', {
    * @return {Object} Object ready to be JSON.stringified.
    */
   sanitizeForJson: util.sanitizeForJson,
-  escape: util.escape,
 });
 
 lang.setObject('Sage.Platform.Mobile.Utility', __class);
