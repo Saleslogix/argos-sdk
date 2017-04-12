@@ -342,14 +342,6 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     });
     return def.promise;
   },
-  createKey: function createKey() {
-    const d = new Date().getTime();
-    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function genkey(c) { // eslint-disable-line
-      const r = (d + Math.random() * 16) % 16 | 0;
-      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-    return '{this.entityName.toLowwer()}-{uuid}';
-  },
   removeFromAuxiliaryEntities: function removeFromAuxiliaryEntities(entityId) {
     const def = new Deferred();
     const rvModel = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
