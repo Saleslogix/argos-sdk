@@ -132,6 +132,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
       <button
         class="btn-icon {%= $.cls %} toolButton-right"
         type="button"
+        title="{%: $.title || $.id %}"
         data-action="invokeTool"
         data-tool="{%= $.id %}">
         {% if ($.svg) { %}
