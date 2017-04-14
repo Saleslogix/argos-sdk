@@ -1,7 +1,7 @@
 import lang from 'dojo/_base/lang';
 
 export default function () {
-  const localeContext = window.localeContext;
+  const localeContext = window.regionalContext;
   const entity = localeContext.getEntitySync('CultureInfo');
 
   if (!entity) {
