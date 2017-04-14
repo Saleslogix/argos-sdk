@@ -27,12 +27,11 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
-import domClass from 'dojo/dom-class';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from '../_ActionMixin';
 import _Templated from '../_Templated';
 
-const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Templated], {
+const __class = declare('argos.Fields._Field', [_WidgetBase, _ActionMixin, _Templated], {
   /**
    * @property {View}
    * View that controls the field.
@@ -187,18 +186,6 @@ const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Template
     this.hidden = true;
     this.onHide(this);
   },
-  toggleHighlight: function toggleHighlight() {
-    const node = this.domNode;
-    if (node) {
-      domClass.toggle(node, this.highlightCls);
-    }
-  },
-  clearHighlight: function clearHighlight() {
-    const node = this.domNode;
-    if (node) {
-      domClass.remove(node, this.highlightCls);
-    }
-  },
   /**
    * Returns the hidden state
    * @return {Boolean}
@@ -250,7 +237,7 @@ const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Template
       return false;
     }
 
-    const all = lang.isArray(this.validator) ? this.validator : [this.validator];
+    const all = Array.isArray(this.validator) ? this.validator : [this.validator];
 
     for (let i = 0; i < all.length; i++) {
       const current = all[i];
@@ -320,5 +307,4 @@ const __class = declare('argos.Fields._Field', [_Widget, _ActionMixin, _Template
   onChange: function onChange(/* value, field*/) {},
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields._Field', __class);
 export default __class;

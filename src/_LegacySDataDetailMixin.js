@@ -2,10 +2,8 @@
  * Copyright (c) 1997-2014, SalesLogix, NA., LLC. All rights reserved.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import domClass from 'dojo/dom-class';
-import domConstruct from 'dojo/dom-construct';
 import string from 'dojo/string';
+
 import ErrorManager from './ErrorManager';
 
 /**
@@ -46,7 +44,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
     if (/(\s+)/.test(this.options.key)) {
       request.setResourceSelector(this.options.key);
     } else {
-      request.setResourceSelector(string.substitute("'${0}'", [this.options.key]));
+      request.setResourceSelector(`'${this.options.key}'`);
     }
 
     if (this.resourceKind) {
@@ -95,7 +93,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
    */
   onRequestDataSuccess: function onRequestDataSuccess(entry) {
     this.processEntry(entry);
-    domClass.remove(this.domNode, 'panel-loading');
+    $(this.domNode).removeClass('panel-loading');
     this.isRefreshing = false;
   },
   /**
@@ -105,13 +103,13 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
    */
   onRequestDataFailure: function onRequestDataFailure(response, o) {
     if (response && response.status === 404) {
-      domConstruct.place(this.notAvailableTemplate.apply(this), this.contentNode, 'last');
+      $(this.contentNode).append(this.notAvailableTemplate.apply(this));
     } else {
       alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
       ErrorManager.addError('failure', response);
     }
 
-    domClass.remove(this.domNode, 'panel-loading');
+    $(this.domNode).removeClass('panel-loading');
     this.isRefreshing = false;
   },
   /**
@@ -125,10 +123,9 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
   onRequestDataAborted: function onRequestDataAborted(response/* , o*/) {
     this.options = false; // force a refresh
     ErrorManager.addError('aborted', response);
-    domClass.remove(this.domNode, 'panel-loading');
+    $(this.domNode).removeClass('panel-loading');
     this.isRefreshing = false;
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._LegacySDataDetailMixin', __class);
 export default __class;

@@ -13,13 +13,12 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
-import domClass from 'dojo/dom-class';
 import format from '../Format';
 import LookupField from './LookupField';
 import FieldManager from '../FieldManager';
 import getResource from '../I18n';
+
 
 const resource = getResource('durationField');
 
@@ -81,12 +80,21 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
    *
    */
   widgetTemplate: new Simplate([
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '<div class="autoComplete-watermark" data-dojo-attach-point="autoCompleteNode"></div>',
-    '<button class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" data-dojo-attach-event="onclick:navigateToListView" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
-    '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>',
+    `<label for="{%= $.name %}">{%: $.label %}</label>
+    <div class="field-control-wrapper">
+      <div class="autoComplete-watermark" data-dojo-attach-point="autoCompleteNode"></div>
+      <button
+        class="button field-control-trigger simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}"
+        data-dojo-attach-event="onclick:navigateToListView"
+        aria-label="{%: $.lookupLabelText %}">
+        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+        </svg>
+      </button>
+      <input data-dojo-attach-point="inputNode" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>
+    </div>`,
   ]),
-  iconClass: 'fa fa-ellipsis-h fa-lg',
+  iconClass: 'more',
 
   // Localization
   /**
@@ -380,14 +388,13 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
     const phraseMatch = this.autoCompletePhraseRE.exec(val);
 
     if (!phraseMatch) {
-      domClass.add(this.containerNode, 'row-error');
+      $(this.containerNode).addClass('row-error');
       return string.substitute(this.invalidDurationErrorText, [val]);
     }
 
-    domClass.remove(this.containerNode, 'row-error');
+    $(this.containerNode).removeClass('row-error');
     return false;
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.DurationField', control);
 export default FieldManager.register('duration', control);

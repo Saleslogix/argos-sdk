@@ -16,10 +16,10 @@ import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import getResource from './I18n';
 
-const resource = getResource('format');
-const dtFormatResource = getResource('formatDateTimeFormat');
 
 const format = ICRMCommonSDK.format;
+const resource = getResource('format');
+const dtFormatResource = getResource('formatDateTimeFormat');
 
 /**
  * @class argos.Format
@@ -260,5 +260,4 @@ const __class = lang.setObject('argos.Format', {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Format', __class);
 export default __class;

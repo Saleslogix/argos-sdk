@@ -65,22 +65,22 @@ return describe('argos.Format', function() {
 
     it('Can create anchor link', function() {
         var testStr = 'www.google.com';
-        expect(format.link(testStr)).toEqual('<a target="_blank" href="http://www.google.com">www.google.com</a>');
+        expect(format.link(testStr)).toEqual('<a class="hyperlink" target="_blank" href="http://www.google.com">www.google.com</a>');
     });
 
     it('Can create sms link', function() {
         var testStr = 'sms:55512345678';
-        expect(format.link(testStr)).toEqual('<a target="_blank" href="sms:55512345678">55512345678</a>');
+        expect(format.link(testStr)).toEqual('<a class="hyperlink" target="_blank" href="sms:55512345678">55512345678</a>');
     });
 
     it('Can create tel link', function() {
         var testStr = 'tel:18005551234';
-        expect(format.link(testStr)).toEqual('<a target="_blank" href="tel:18005551234">18005551234</a>');
+        expect(format.link(testStr)).toEqual('<a class="hyperlink" target="_blank" href="tel:18005551234">18005551234</a>');
     });
 
     it('Can create mailto link', function() {
         var testStr = 'mailto:john.doe@foo.test';
-        expect(format.link(testStr)).toEqual('<a target="_blank" href="mailto:john.doe@foo.test">john.doe@foo.test</a>');
+        expect(format.link(testStr)).toEqual('<a class="hyperlink" target="_blank" href="mailto:john.doe@foo.test">john.doe@foo.test</a>');
     });
 
     it('Can return original value when creating a link for a non-string', function() {
@@ -90,7 +90,7 @@ return describe('argos.Format', function() {
 
     it('Can create mailto link', function() {
         var testStr = 'jimmy.page@rock.com';
-        expect(format.mail(testStr)).toEqual('<a href="mailto:jimmy.page@rock.com">jimmy.page@rock.com</a>');
+        expect(format.mail(testStr)).toEqual('<a class="hyperlink" href="mailto:jimmy.page@rock.com">jimmy.page@rock.com</a>');
     });
     it('Can return original value when creating a mailto link for a non-string', function() {
         var testStr = 1;

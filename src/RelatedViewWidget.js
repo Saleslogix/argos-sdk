@@ -2,19 +2,14 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import event from 'dojo/_base/event';
-import on from 'dojo/on';
 import string from 'dojo/string';
-import domClass from 'dojo/dom-class';
 import when from 'dojo/when';
-import domConstruct from 'dojo/dom-construct';
-import domAttr from 'dojo/dom-attr';
 import connect from 'dojo/_base/connect';
-import array from 'dojo/_base/array';
+
 import SDataStore from './Store/SData';
 import _CustomizationMixin from './_CustomizationMixin';
 import _ActionMixin from './_ActionMixin';
-import _RelatedViewWidgetBase from 'argos/_RelatedViewWidgetBase';
+import _RelatedViewWidgetBase from './_RelatedViewWidgetBase';
 import getResource from './I18n';
 
 const resource = getResource('relatedViewWidget');
@@ -146,15 +141,15 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
     '</div>',
   ]),
   loadingTemplate: new Simplate([
-    '<div class="busyIndicator__container busyIndicator--active" aria-live="polite">',
-    '<div class="busyIndicator busyIndicator--large">',
-    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--one"></div>',
-    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--two"></div>',
-    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--three"></div>',
-    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--four"></div>',
-    '<div class="busyIndicator__bar busyIndicator__bar--large busyIndicator__bar--five"></div>',
+    '<div class="busy-indicator-container" aria-live="polite">',
+    '<div class="busy-indicator active">',
+    '<div class="bar one"></div>',
+    '<div class="bar two"></div>',
+    '<div class="bar three"></div>',
+    '<div class="bar four"></div>',
+    '<div class="bar five"></div>',
     '</div>',
-    '<span class="busyIndicator__label">{%: $.loadingText %}</span>',
+    '<span>{%: $.loadingText %}</span>',
     '</div>',
   ]),
 
@@ -174,7 +169,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   },
   postCreate: function postCreate() {
     if ((!this.showTab) && (this.tabNode)) {
-      domClass.toggle(this.tabNode, 'hidden');
+      $(this.tabNode).toggleClass('hidden');
     }
     if (this.enableActions) {
       this.createActions(this._createCustomizedLayout(this.createActionLayout(), 'relatedview-actions'));
@@ -204,9 +199,9 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
       };
       lang.mixin(action, options);
       const actionTemplate = action.template || this.relatedActionTemplate;
-      const actionNode = domConstruct.toDom(actionTemplate.apply(action, action.id));
-      on(actionNode, 'click', this.onInvokeActionItem.bind(this));
-      domConstruct.place(actionNode, this.actionsNode, 'last');
+      const actionNode = $(actionTemplate.apply(action, action.id));
+      $(actionNode).on('click', this.onInvokeActionItem.bind(this));
+      $(this.actionsNode).append(actionNode);
     }
 
     this.actions = actions;
@@ -225,7 +220,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
         }
       }
     }
-    event.stop(evt);
+    evt.stopPropagation();
   },
   getStore: function getStore() {
     const store = new SDataStore({
@@ -297,10 +292,10 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
       this.onApply(this.parentEntry[this.parentCollectionProperty].$resources);
     } else {
       if (!this.loadingNode) {
-        this.loadingNode = domConstruct.toDom(this.loadingTemplate.apply(this));
-        domConstruct.place(this.loadingNode, this.relatedViewNode, 'last', this);
+        this.loadingNode = $(this.loadingTemplate.apply(this));
+        $(this.relatedViewNode).append(this.loadingNode);
       }
-      domClass.toggle(this.loadingNode, 'loading');
+      $(this.loadingNode).toggleClass('loading');
       if (this.wait) {
         return;
       }
@@ -320,14 +315,14 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   onApply: function onApply(relatedFeed) {
     try {
       if (!this.itemsNode) {
-        this.itemsNode = domConstruct.toDom("<div id='itemsNode' class='items'><div>");
-        domConstruct.place(this.itemsNode, this.relatedViewNode, 'last', this);
+        this.itemsNode = $("<div id='itemsNode' class='items'><div>");
+        $(this.relatedViewNode).append(this.itemsNode);
       }
 
       if (relatedFeed.length > 0) {
         let moreData;
-        domClass.remove(this.containerNode, 'hidden');
-        domClass.remove(this.tabNode, 'collapsed');
+        $(this.containerNode).removeClass('hidden');
+        $(this.tabNode).removeClass('collapsed');
         this.itemCount = this.itemCount + relatedFeed.length;
         const restCount = this.relatedResults.total - this.itemCount;
         if (restCount > 0) {
@@ -338,17 +333,17 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
         }
 
         if (this.showSelectMore) {
-          domAttr.set(this.selectMoreNode, {
+          $(this.selectMoreNode).attr({
             innerHTML: moreData,
           });
         } else {
-          domAttr.set(this.selectMoreNode, {
+          $(this.selectMoreNode).attr({
             innerHTML: '',
           });
         }
 
         if (this.showTotalInTab) {
-          domAttr.set(this.titleNode, {
+          $(this.titleNode).attr({
             innerHTML: `${this.title}  ${string.substitute(this.totalCountText, [this.relatedResults.total])}`,
           });
         }
@@ -356,37 +351,37 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
           const itemEntry = relatedFeed[i];
           itemEntry.$descriptor = itemEntry.$descriptor || relatedFeed.$descriptor;
           const itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
-          const itemNode = domConstruct.toDom(itemHTML);
-          on(itemNode, 'click', this.onSelectViewRow.bind(this));
-          domConstruct.place(itemNode, this.itemsNode, 'last', this);
+          const itemNode = $(itemHTML);
+          $(itemNode).on('click', this.onSelectViewRow.bind(this));
+          $(this.itemsNode).append(itemNode);
         }
       } else {
         if (this.hideWhenNoData) {
-          domClass.add(this.containerNode, 'hidden');
+          $(this.containerNode).addClass('hidden');
         } else {
-          domClass.remove(this.containerNode, 'hidden');
+          $(this.containerNode).removeClass('hidden');
         }
-        domConstruct.place(this.nodataTemplate.apply(this.parentEntry, this), this.itemsNode, 'last');
+        $(this.itemsNode).append(this.nodataTemplate.apply(this.parentEntry, this));
         if (this.showTotalInTab) {
-          domAttr.set(this.titleNode, {
+          $(this.titleNode).attr({
             innerHTML: `${this.title}  ${string.substitute(this.totalCountText, [0, 0])}`,
           });
         }
-        domAttr.set(this.selectMoreNode, {
+        $(this.selectMoreNode).attr({
           innerHTML: '',
         });
         if (this._isInitLoad) {
           this._isInitLoad = false;
-          domClass.toggle(this.tabNode, 'collapsed');
+          $(this.tabNode).toggleClass('collapsed');
         }
       }
-      domClass.toggle(this.loadingNode, 'loading');
+      $(this.loadingNode).toggleClass('loading');
     } catch (error) {
       console.log('Error applying data for related view widget:' + error);//eslint-disable-line
     }
   },
   toggleView: function toggleView(evt) {
-    domClass.toggle(this.tabNode, 'collapsed');
+    $(this.tabNode).toggleClass('collapsed');
 
     if (!this.isLoaded) {
       this.onLoad();
@@ -449,7 +444,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   },
   _onRefreshView: function _onRefreshView() {
     if (this.itemsNode) {
-      domConstruct.destroy(this.itemsNode);
+      $(this.itemsNode).remove();
       this.itemsNode = null;
     }
     this.startIndex = 1;
@@ -467,12 +462,11 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
     }
   },
   destroy: function destroy() {
-    array.forEach(this._subscribes, (handle) => {
+    this._subscribes.forEach((handle) => {
       connect.unsubscribe(handle);
     });
     this.inherited(arguments);
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.RelatedViewWidget', __class);
 export default __class;

@@ -1,42 +1,6 @@
 @import "variables.less";
 @import "mixins.less";
 
-body {
-    color: @text-color;
-    background-color: @body-bg-color;
-}
-
-a {
-    color: @link-color;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-h1, h2, h3, h4, h5 {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-body
-body > .viewContainer {
-    background-color: @body-bg-color;
-}
-
-.list,
-.scroller,
-.list-content,
-.group-content {
-    background-color: @list-bg-color;
-}
-
-.list-content > li,
-.group-content > li {
-    background-color: @list-item-bg-color;
-}
-
 /*For the separate Contextual Menu*/
 .contextualContent > .scroller > .group-content > .list-content {
     margin: 0;
@@ -63,148 +27,30 @@ body > .viewContainer {
     color: @glist-header-color;
 }
 
-.panel-content,
-.panel-loading-indicator {
-    background-color: @panel-content-bg-color;
-    padding: 0 15px;
-}
-
-.panel-content > h2 {
-    border-bottom: @panel-header-border-bottom;
-    color: @panel-header-color;
-    padding: 5px 0 5px 0;
-}
-
-.panel-validation-summary > h2,
-.panel-concurrency-summary > h2 {
+.panel-validation-summary > h3,
+.panel-concurrency-summary > h3 {
     border-bottom: @validation-h2-border;
     border-top: @validation-h2-border;
     background-color: @validation-h2-bg-color;
     color: @validation-h2-color;
 }
 
-.panel-content > h2:first-child {
-    border-top: @panel-content-firstchild-border;
-}
-
-.panel-validation-summary > h2:first-child,
-.panel-concurrency-summary > h2:first-child {
+.panel-validation-summary > h3:first-child,
+.panel-concurrency-summary > h3:first-child {
     border-top: @validation-h2-firstchild-border;
-}
-
-.panel-form-error > .panel-content > h2:first-child {
-    border-top: @fieldset-border;
-}
-
-.panel-content > ul,
-.panel-validation-summary > ul,
-.panel-concurrency-summary > ul {
-    border: @panel-content-list-border;
-    background-color: @panel-content-list-bg-color;
-}
-
-.panel-content > ul a,
-.quick-actions > ul a,
-.panel-validation-summary > ul a {
-    color: @color-lighter-slate;
-    text-decoration: @panel-content-list-link-txtdec;
-}
-
-.panel-content > fieldset > .row,
-.panel-content > div > .row {
-    padding: @panel-content-row-padding;
-    min-height: @panel-content-row-min-height;
-}
-
-.panel-content > fieldset > .row > div > label,
-.panel-content > div > .row > div > label,
-.panel-content > div > .row > label {
-    color: @form-label-color;
-    padding: @panel-content-label-padding;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-
-.detailContent > fieldset > .row > div > label,
-.detailContent > .row > div > label,
-.detailContent > .row > label {
-  width: 25%;
-}
-
-.panel-content > fieldset > .row-edit {
-    border-top: @panel-content-rowedit-border;
-}
-
-.panel-content > fieldset > .row-edit:first-of-type {
-    border-top: 0 none black;
+    padding: 10px 30px;
 }
 
 .quick-actions > .action-list {
     background-color: @color-deep-slate;
     padding: 10px 5px 15px 5px;
-}
-
-.tab-list > .tab,
-.more-tab-dropdown > .tab {
-        border-radius: 2px 2px 0 0;
-        cursor: pointer;
-        padding: 4px 6px 5px;
-        position: relative;
-        -webkit-transition: background-color 0.25s ease;
-        -moz-transition: background-color 0.25s ease;
-        -ms-transition: background-color 0.25s ease;
-        -o-transition: background-color 0.25s ease;
-        transition: background-color 0.25s ease;
-        color: @color-graphite;
-        font-size: 15px;
-        font-weight: normal;
-        text-decoration: none;
-}
-
-.tab-list {
-    border-bottom: 1px solid @color-lighter-slate !important;
-    height: 30px;
-    list-style: none outside none;
-    overflow: hidden;
-    .tab {
-        display: inline-block;
+    button {
+        float: left;
+        margin-top: -5px;
     }
-    .selected {
-        color: @color-azure;
+    .icon {
+        fill: @color-lighter-slate;
     }
-}
-
-.more-tab-dropdown {
-    position: absolute;
-    visibility: hidden;
-    z-index: 10;
-    background-color: @background-lighter;
-    box-shadow: 0 2px 3px @color-light-slate;
-    margin: 0;
-    padding: 0;
-    overflow-y: auto;
-    .tab {
-        display: block;
-    }
-    .selected {
-        background-color: @color-azure;
-        color: #fff;
-    }
-}
-
-.detailContent {
-    padding-top: 15px !important;
-    li {
-        border-bottom: 1px solid @color-lighter-slate;
-    }
-    .row {
-        width: 100%;
-    }
-}
-
-.detailContent.list {
-    padding-top: 0 !important;
 }
 
 .detail-header {
@@ -216,36 +62,8 @@ body > .viewContainer {
     padding: 2px 0 2px 0 !important;
     font-size: 16px;
 }
-.animated-bar {
-    top: -2px;
-    height: 2px;
-    position: relative;
-    background-color: @color-azure;
-    -webkit-transition: left 0.25s ease;
-    -moz-transition: left 0.25s ease;
-    -ms-transition: left 0.25s ease;
-    -o-transition: left 0.25s ease;
-    transition: left 0.25s ease;
-}
-
-body > .viewContainer {
-    border-left: @menu-border;
-}
-
-.snapjs-left .left-drawer {
-    border-right: @menu-border;
-}
 
 /* Calendar */
-.calendar-content {
-    .box-sizing(border-box);
-    padding: 4px;
-}
-
-.time-content {
-    text-align: center;
-    margin-top: 6px;
-}
 
 .logo {
     text-align: center;
@@ -254,18 +72,6 @@ body > .viewContainer {
 .field-highlight {
     border: 2px solid red;
     padding: 5px;
-}
-
-.related-item-count {
-    margin: 0 5px 0 0;
-    min-width: 36px;
-    min-height: 36px;
-    line-height: 36px;
-    display: inline-block;
-    background-color: @color-azure;
-    text-align: center;
-    color: #fff;
-    border-radius: 50%;
 }
 
 .related-item-label {

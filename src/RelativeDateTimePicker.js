@@ -1,11 +1,11 @@
 import declare from 'dojo/_base/declare';
-import domConstruct from 'dojo/dom-construct';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
 import DateTimePicker from './DateTimePicker';
 import getResource from './I18n';
+
 
 const resource = getResource('relativeDateTimePicker');
 const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
@@ -14,7 +14,7 @@ const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
  * @class argos.DateTimePicker
  * @alternateClassName Date Time Select
  */
-const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _ActionMixin, _CustomizationMixin], {
+const __class = declare('argos.RelativeDateTimePicker', [_WidgetBase, _Templated, _ActionMixin, _CustomizationMixin], {
   widgetTemplate: new Simplate([
     '<div class="relative-datetime-select" data-dojo-attach-point="relativeDateTimeNode">',
     '<div class="relative-datetime-select__title">{%: $.titleText %}</div>',
@@ -23,8 +23,8 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
   ]),
   listItemTemplate: new Simplate([
     '<li class="simpleList__item" data-time="{%: $.time %}" data-action="select">',
-    '<div class="item__text--left">{%: $.textLeft %}</div>',
-    '<div class="item__text--right">{%: $.textRight %}</div>',
+    '<div class="item__text--left"><span>{%: $.textLeft %}</span></div>',
+    '<div class="item__text--right"><span>{%: $.textRight %}</span></div>',
     '</li>',
   ]),
 
@@ -111,9 +111,9 @@ const __class = declare('argos.RelativeDateTimePicker', [_Widget, _Templated, _A
     return this._selectedTime;
   },
   makeItem: function makeItem({ label, time, format }) {
-    const item = domConstruct.toDom(this.listItemTemplate.apply({ textLeft: label, textRight: time.format(format) }));
+    const item = $(this.listItemTemplate.apply({ textLeft: label, textRight: time.format(format) }));
     item.time = time;
-    domConstruct.place(item, this.listNode);
+    $(this.listNode).append(item);
   },
   makeListItems: function makeListItems({ title, children }) {
     let startIndex = 0;

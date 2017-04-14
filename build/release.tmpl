@@ -29,40 +29,56 @@
           "path": "../libraries/sdata/"
         },
         {
-          "text": "pouchdb-4.0.3.min.js",
-          "path": "../libraries/PouchDB/"
+          "text": "page.js",
+          "path": "../libraries/pagejs-1.6.1/"
+        },
+        {
+          "text": "pouchdb-6.1.2.js",
+          "path": "../libraries/pouchdb/"
         },
         {
           "text": "deep-diff-0.2.0.min.js",
           "path": "../libraries/deep-diff/"
         },
         {
-          "text": "Chart.min.js",
-          "path": "../libraries/"
-        },
-        {
-          "text": "browser-polyfill.min.js",
-          "path": "../libraries/babel/"
+          "text": "polyfill.min.js",
+          "path": "../node_modules/babel-polyfill/dist/"
         },
         {
           "text": "moment-with-locales.js",
-          "path": "../libraries/moment/"
+          "path": "../node_modules/moment/min/"
         },
         {
-          "text": "rx.all.js",
-          "path": "../libraries/rx/"
+          "text": "rx.lite.js",
+          "path": "../node_modules/rx-lite/"
         },
         {
           "text": "common.bundle.js",
-          "path": "../libraries/icrm/"
+          "path": "../node_modules/@infor/icrm-js-common/dist/bundles"
         },
         {
           "text": "customization.bundle.js",
-          "path": "../libraries/icrm/"
+          "path": "../node_modules/@infor/icrm-js-customization/dist/bundles"
         },
         {
           "text": "services.bundle.js",
-          "path": "../libraries/icrm/"
+          "path": "../node_modules/@infor/icrm-js-services/dist/bundles"
+        },
+        {
+          "text": "redux.min.js",
+          "path": "../node_modules/redux/dist/"
+        },
+        {
+          "text": "d3.js",
+          "path": "../node_modules/d3/build/"
+        },
+        {
+          "text": "jquery.js",
+          "path": "../node_modules/jquery/dist/"
+        },
+        {
+          "text": "sohoxi.js",
+          "path": "../node_modules/@infor/sohoxi/dist/js/"
         }
       ]
     },
@@ -71,10 +87,6 @@
       "file": "content/javascript/argos-amd-dependencies.js",
       "isDebug": true,
       "fileIncludes": [
-        {
-          "text": "snap.js",
-          "path": "../libraries/snap/"
-        }
       ]
     },
     {
@@ -108,6 +120,16 @@
       "src": "../min",
       "dest": "content",
       "filters": ".*(\\.css)"
+    },
+    {
+      "src": "../node_modules/@infor/sohoxi/dist/css/",
+      "dest": "content/css",
+      "filters": ".*(\\.css)"
+    },
+    {
+      "src": "../node_modules/@infor/sohoxi/dist/js/cultures/",
+      "dest": "content/javascript/cultures",
+      "filters": ".*\\.js"
     },
     {
       "src": "../libraries/dojo/dojo",

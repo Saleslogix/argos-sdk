@@ -3,11 +3,13 @@ module.exports = {
     es6: true,
     browser: true
   },
+  parser: "babel-eslint",
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
     ecmaFeatures: {
-      modules: true
+      modules: true,
+      jsx: true,
     }
   },
   "globals": {
@@ -17,7 +19,6 @@ module.exports = {
     "Mobile": false,
     "ReUI": false,
     "Base64": false,
-    "PouchDB": false,
     "Canvas2Image": false,
     "argos": false,
     "describe": false,
@@ -25,10 +26,16 @@ module.exports = {
     "expect": false,
     "spyOn": false,
     "module": false,
-    "Rx": false,
     "moment": false,
+    "Rx": false,
+    "$": false,
+    "d3": false,
+    "Redux": false,
+    "page": false,
+    "PouchDB": false,
+    "DeepDiff": false,
+    "ICRMCustomizationSDK": false,
     "ICRMCommonSDK": false,
-    "ICRMCustomizationSDK": false
   },
   rules: {
     /**
@@ -51,8 +58,8 @@ module.exports = {
 
     // enforce that class methods use "this"
     // http://eslint.org/docs/rules/class-methods-use-this
-    'class-methods-use-this': ['error', {
-      exceptMethods: [],
+    'class-methods-use-this': ['off', {
+      exceptMethods: ['render'],
     }],
 
     // require return statements to either always or never specify values

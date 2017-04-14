@@ -109,8 +109,9 @@
             o.params = S.apply({}, o.params);
             o.headers = S.apply({}, o.headers);
 
-            if (o.cache !== true)
+            if (o.cache !== true) {
                 o.params[o.cacheParam || '_t'] = (new Date()).getTime();
+            }
 
             o.method = o.method || 'GET';
 
@@ -137,6 +138,12 @@
 
                 for (var n in o.headers)
                     xhr.setRequestHeader(n, o.headers[n]);
+
+                var etagCache = o.etagCache;
+                if (o.cache && etagCache && etagCache.etag) {
+                    xhr.setRequestHeader('If-None-Match', etagCache.etag);
+                }
+
             }
             catch (headerException)
             {
@@ -1155,36 +1162,6 @@
         S = Sage,
         C = Sage.namespace('Sage.SData.Client'),
         isDefined = function(value) { return typeof value !== 'undefined'; },
-        expand = function(options, userName, password) {
-            var result = {},
-                url = typeof options === 'object'
-                    ? options['url']
-                    : options;
-
-            var parsed = (typeof parseUri === 'function') && parseUri(url);
-            if (parsed)
-            {
-                if (parsed.host) result.serverName = parsed.host;
-
-                var path = parsed.path.split('/').slice(1);
-
-                // ["sdata", "slx", "dynamic", "-", "accounts"]
-                if (path[0]) result.virtualDirectory = path[0];
-                if (path[1]) result.applicationName = path[1];
-                if (path[2]) result.contractName = path[2];
-                if (path[3]) result.dataSet = path[3];
-
-                if (parsed.port) result.port = parseInt(parsed.port);
-                if (parsed.protocol) result.protocol = parsed.protocol;
-            }
-
-            if (typeof options === 'object') S.apply(result, options);
-
-            if (isDefined(userName)) result.userName = userName;
-            if (isDefined(password)) result.password = password;
-
-            return result;
-        },
         unwrap = function(value) {
             return value && value['#text']
                 ? value['#text']
@@ -1201,42 +1178,33 @@
         password: '',
         batchScope: null,
         timeout: 0,
+        cache: false,
+        cacheParam: '_t',
+        _etags: {},
         maxGetUriLength: 2000,
         constructor: function(options, userName, password) {
             // pass the first argument to the base class; will only have an effect if the argument
             // is an object and has a `listeners` property.
             this.base.call(this, options);
 
-            this.uri = new Sage.SData.Client.SDataUri();
+            this.setUri(options);
 
-            var expanded = expand(options, userName, password);
-
-            if (isDefined(expanded.uri)) this.uri = new Sage.SData.Client.SDataUri(expanded.uri);
-
-            if (isDefined(expanded.serverName)) this.uri.setHost(expanded.serverName);
-            if (isDefined(expanded.virtualDirectory)) this.uri.setServer(expanded.virtualDirectory);
-            if (isDefined(expanded.applicationName)) this.uri.setProduct(expanded.applicationName);
-            if (isDefined(expanded.contractName)) this.uri.setContract(expanded.contractName);
-            if (isDefined(expanded.dataSet)) this.uri.setCompanyDataset(expanded.dataSet);
-            if (isDefined(expanded.port)) this.uri.setPort(expanded.port);
-            if (isDefined(expanded.protocol)) this.uri.setScheme(expanded.protocol);
-
-            if (isDefined(expanded.includeContent)) this.uri.setIncludeContent(expanded.includeContent);
-            if (isDefined(expanded.version)) this.uri.setVersion(expanded.version);
-            if (isDefined(expanded.json)) this.json = expanded.json;
-
-            if (isDefined(expanded.timeout)) this.timeout = expanded.timeout;
-
-            if (isDefined(expanded.maxGetUriLength)) this.maxGetUriLength = expanded.maxGetUriLength;
+            // Other options
+            if (isDefined(options.includeContent)) this.uri.setIncludeContent(options.includeContent);
+            if (isDefined(options.version)) this.uri.setVersion(options.version);
+            if (isDefined(options.cache)) this.cache = options.cache;
+            if (isDefined(options.cacheParam)) this.cacheParam = options.cacheParam;
 
             // Support for the new compact mode in Saleslogix 8.1 and higher
-            if (isDefined(expanded.compact)) this.uri.setCompact(expanded.compact);
+            if (isDefined(options.compact)) this.uri.setCompact(options.compact);
+            if (isDefined(options.userName)) this.userName = options.userName;
+            if (isDefined(options.password)) this.password = options.password;
+            if (isDefined(options.json)) this.json = options.json;
+            if (isDefined(options.maxGetUriLength)) this.maxGetUriLength = options.maxGetUriLength;
+            if (isDefined(options.timeout)) this.timeout = options.timeout;
 
-            if (isDefined(expanded.userName)) this.userName = expanded.userName;
-            if (isDefined(expanded.password)) this.password = expanded.password;
-
-            if (isDefined(expanded.useCredentialedRequest)) this.useCredentialedRequest = expanded.useCredentialedRequest;
-            if (isDefined(expanded.useCrossDomainCookies)) this.useCrossDomainCookies = expanded.useCrossDomainCookies;
+            if (isDefined(options.useCredentialedRequest)) this.useCredentialedRequest = options.useCredentialedRequest;
+            if (isDefined(options.useCrossDomainCookies)) this.useCrossDomainCookies = options.useCrossDomainCookies;
 
             this.addEvents(
                 'beforerequest',
@@ -1245,6 +1213,49 @@
                 'requestaborted',
                 'requesttimeout'
             );
+        },
+        setUri: function(options) {
+            if (isDefined(options.uri)) {
+                this.uri = new Sage.SData.Client.SDataUri(options.uri);
+            } else {
+                this.uri = new Sage.SData.Client.SDataUri();
+                var parsed = this.parseUri(options);
+                // Parsed URI
+                if (isDefined(parsed.serverName)) this.uri.setHost(parsed.serverName);
+                if (isDefined(parsed.virtualDirectory)) this.uri.setServer(parsed.virtualDirectory);
+                if (isDefined(parsed.applicationName)) this.uri.setProduct(parsed.applicationName);
+                if (isDefined(parsed.contractName)) this.uri.setContract(parsed.contractName);
+                if (isDefined(parsed.dataSet)) this.uri.setCompanyDataset(parsed.dataSet);
+                if (isDefined(parsed.port)) this.uri.setPort(parsed.port);
+                if (isDefined(parsed.protocol)) this.uri.setScheme(parsed.protocol);
+            }
+
+            return this;
+        },
+        parseUri: function(options) {
+            var result = {},
+                url = typeof options === 'object'
+                    ? options['url']
+                    : options;
+
+            var parsed = (typeof parseUri === 'function') && window.parseUri(url);
+            if (parsed)
+            {
+                if (parsed.host) result.serverName = parsed.host;
+
+                var path = parsed.path.split('/').slice(1);
+
+                // ["sdata", "slx", "dynamic", "-", "accounts"]
+                if (path[0]) result.virtualDirectory = path[0];
+                if (path[1]) result.applicationName = path[1];
+                if (path[2]) result.contractName = path[2];
+                if (path[3]) result.dataSet = path[3];
+
+                if (parsed.port) result.port = parseInt(parsed.port);
+                if (parsed.protocol) result.protocol = parsed.protocol;
+            }
+
+            return result;
         },
         isJsonEnabled: function() {
             return this.json;
@@ -1389,16 +1400,33 @@
 
             // todo: temporary fix for SalesLogix Dynamic Adapter only supporting json selector in format parameter
             if (this.json) request.setQueryArg('format', 'json');
+            var url = request.build();
 
             var o = S.apply({
                 async: options.async,
                 headers: {},
                 method: 'GET',
-                url: request.build()
+                url: url,
+                cache: options.cache || this.cache,
+                cacheParam: options.cacheParam || this.cacheParam,
+                etagCache: this._etags[url]
             }, {
                 scope: this,
                 success: function(response, opt) {
-                    var feed = this.processFeed(response);
+                    var responseText = response.responseText;
+
+                    if (response.status === 304) {
+                        responseText = this._etags[url].responseText;
+                    }
+
+                    var contentType = response.getResponseHeader && response.getResponseHeader('Content-Type');
+                    var feed = this.processFeed(responseText, contentType);
+
+                    var etag = response.getResponseHeader('etag');
+                    this._etags[url] = {
+                        etag: etag,
+                        responseText: responseText
+                    };
 
                     this.fireEvent('requestcomplete', request, opt, feed);
 
@@ -2059,15 +2087,14 @@
 
             return {'feed': result};
         },
-        processFeed: function(response) {
-            if (!response.responseText) return null;
+        processFeed: function(responseText, contentType) {
+            if (!responseText) return null;
 
-            var contentType = response.getResponseHeader && response.getResponseHeader('Content-Type');
             var doc;
 
             if (/application\/json/i.test(contentType) || (!contentType && this.isJsonEnabled()))
             {
-                doc = JSON.parse(response.responseText);
+                doc = JSON.parse(responseText);
 
                 // doing this for parity with below, since with JSON, SData will always
                 // adhere to the format, regardless of the User-Agent.
@@ -2084,7 +2111,7 @@
             }
             else
             {
-                doc = this.parseFeedXml(response.responseText);
+                doc = this.parseFeedXml(responseText);
 
                 // depending on the User-Agent the SIF will either send back a feed, or a single entry
                 // todo: is this the right way to handle this? should there be better detection?

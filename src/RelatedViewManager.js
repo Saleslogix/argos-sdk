@@ -64,6 +64,5 @@ const __class = declare('argos.RelatedViewManager', null, {
     }
   },
 });
-// Backwards compatibility for custom modules still referencing the old declare global
-lang.setObject('Sage.Platform.Mobile.RelatedViewManager', __class);
+
 export default __class;

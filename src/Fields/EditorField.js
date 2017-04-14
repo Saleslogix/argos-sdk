@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import event from 'dojo/_base/event';
-import _Field from 'argos/Fields/_Field';
+import _Field from './_Field';
 
 /**
  * @class argos.Fields.EditorField
@@ -55,16 +54,33 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
    *
    */
   widgetTemplate: new Simplate([
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '<button class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span>{%: $.lookupText %}</span></button>',
-    '<input data-dojo-attach-point="inputNode" type="text" />',
+    `<label for="{%= $.name %}"
+      {% if ($.required) { %}
+          class="required"
+      {% } %}>
+      {%: $.label %}
+    </label>
+    <div class="field-control-wrapper">
+      <button
+        class="button simpleSubHeaderButton field-control-trigger"
+        aria-label="{%:  $.lookupLabelText %}">
+        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+        </svg>
+      </button>
+      <input data-dojo-attach-point="inputNode" type="text" />
+    </div>`,
   ]),
 
-  iconClass: 'fa fa-pencil fa-lg',
+  iconClass: 'edit',
 
   // Localization
   localeId: 'editorField',
-
+  /**
+   * required should be true if the field requires input. Defaults to false.
+   * @type {Boolean}
+   */
+  required: false,
   /**
    * @cfg {String}
    * The view id that the user will be taken to when the edit button is clicked.
@@ -142,12 +158,12 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
       tools: {
         tbar: [{
           id: 'complete',
-          cls: 'fa fa-check fa-fw fa-lg',
+          svg: 'check',
           fn: this.complete,
           scope: this,
         }, {
           id: 'cancel',
-          cls: 'fa fa-ban fa-fw fa-lg',
+          svg: 'cancel',
           side: 'left',
           fn: ReUI.back,
           scope: ReUI,
@@ -321,5 +337,4 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.EditorField', __class);
 export default __class;

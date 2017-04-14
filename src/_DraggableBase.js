@@ -1,8 +1,6 @@
-import array from 'dojo/_base/array';
 import declare from 'dojo/_base/declare';
-import domConstruct from 'dojo/dom-construct';
 import domGeom from 'dojo/dom-geometry';
-import domStyle from 'dojo/dom-style';
+
 
 /**
  * @class argos._DraggableBase
@@ -35,47 +33,47 @@ const __class = declare('argos._DraggableBase', null, {
 
   accountForAnimation: function accountForAnimation() {
     if (this._previousElement) {
-      return this._position.h - domStyle.get(this._previousElement, 'marginBottom') + this._source.previousMarginBottom + this._source.previousMarginTop;
+      return this._position.h - $(this._previousElement).css('margin-bottom').replace('px', '') + this._source.previousMarginBottom + this._source.previousMarginTop;
     }
     if (this._nextElement) {
-      return this._position.h - domStyle.get(this._nextElement, 'marginTop') + this._source.previousMarginBottom + this._source.previousMarginTop;
+      return this._position.h - $(this._nextElement).css('margin-top').replace('px', '') + this._source.previousMarginBottom + this._source.previousMarginTop;
     }
     return 0;
   },
   applyInitialStyling: function applyInitialStyling() {
-    const containerZ = domStyle.get(this._container, 'zIndex');
-    const containerHeight = domStyle.get(this._container, 'height');
+    const containerZ = $(this._container).css('zIndex');
+    const containerHeight = $(this._container).css('height');
     if (!this.zIndex) {
       if (containerZ > 0) {
-        domStyle.set(this._source, {
+        $(this._source).css({
           zIndex: containerZ + 1,
         });
       } else {
-        domStyle.set(this._source, {
+        $(this._source).css({
           zIndex: 8000,
         });
       }
     } else {
-      domStyle.set(this._source, {
+      $(this._source).css({
         zIndex: this.zIndex,
       });
     }
-    domStyle.set(this._source, {
-      opacity: '0.3',
+    $(this._source).css({
+      opacity: '0.6',
       position: 'absolute',
-      width: `${domStyle.get(this._source, 'width')}px`,
+      width: $(this._source).css('width'),
       top: `${this._position.y - this._position.offset}px`,
     });
     if (this._scroller) {
-      domStyle.set(this._scroller, {
+      $(this._scroller).css({
         overflow: 'hidden',
       });
     } else {
-      domStyle.set(this._container, {
+      $(this._container).css({
         overflow: 'hidden',
       });
     }
-    domStyle.set(this._container, {
+    $(this._container).css({
       height: `${containerHeight + this._position.h}px`,
     });
     this.applyStyling();
@@ -84,10 +82,10 @@ const __class = declare('argos._DraggableBase', null, {
   applyStyling: function applyStyling() {
     if (!this.isScrolling) {
       if (this._previousElement) {
-        this._previousElement.previousMargin = domStyle.get(this._previousElement, 'marginBottom');
+        this._previousElement.previousMargin = $(this._previousElement).css('margin-bottom').replace('px', '');
         this.setMargins(this._previousElement, 'bottom');
       } else {
-        this._nextElement.previousMargin = domStyle.get(this._nextElement, 'marginTop');
+        this._nextElement.previousMargin = $(this._nextElement).css('margin-top');
         this.setMargins(this._nextElement, 'top');
       }
     }
@@ -139,15 +137,15 @@ const __class = declare('argos._DraggableBase', null, {
     this._position = null;
     this._isDragging = false;
     if (this._scroller) {
-      domStyle.set(this._scroller, {
+      $(this._scroller).css({
         overflow: 'auto',
       });
     } else {
-      domStyle.set(this._container, {
+      $(this._container).css({
         overflow: 'auto',
       });
     }
-    domStyle.set(this._container, {
+    $(this._container).css({
       height: '',
     });
     this.clearScrollTimer();
@@ -158,7 +156,7 @@ const __class = declare('argos._DraggableBase', null, {
       sourceTop = this._position.offset;
     }
     this.computePrevNext(sourceTop);
-    domStyle.set(this._source, {
+    $(this._source).css({
       top: `${sourceTop - this._position.offset}px`,
     });
     this._position = this.getPositionOf(this._source);
@@ -208,7 +206,7 @@ const __class = declare('argos._DraggableBase', null, {
     if (element === this._container) {
       return false;
     }
-    if (array.indexOf(element.classList, byClass) !== -1) {
+    if ($(element).hasClass(byClass)) {
       return element;
     }
     return this.findByClass(element.parentNode, byClass);
@@ -260,8 +258,8 @@ const __class = declare('argos._DraggableBase', null, {
       }
     }
     if (this._source) {
-      this._source.previousMarginBottom = domStyle.get(this._source, 'marginBottom');
-      this._source.previousMarginTop = domStyle.get(this._source, 'marginTop');
+      this._source.previousMarginBottom = $(this._source).css('margin-bottom').replace('px', '');
+      this._source.previousMarginTop = $(this._source).css('margin-top').replace('px', '');
       this._position = this.getPositionOf(this._source);
       this._previousElement = this._source.previousSibling;
       this._nextElement = this._source.nextSibling;
@@ -297,24 +295,24 @@ const __class = declare('argos._DraggableBase', null, {
     this._source = this._container.removeChild(this._source);
     if (this._previousElement) {
       // This accounts for when the source is between two nodes or the last element in the container
-      domConstruct.place(this._source, this._previousElement, 'after');
+      $(this._previousElement).after(this._source);
     } else {
       // This is the situation in which the source was placed as the first element of the container
-      domConstruct.place(this._source, this._nextElement, 'before');
+      $(this._nextElement).before(this._source);
     }
-    domStyle.set(this._source, {
+    $(this._source).css({
       top: '',
     });
     return this;
   },
   removeStyling: function removeStyling() {
-    domStyle.set(this._source, {
+    $(this._source).css({
       opacity: '',
       zIndex: '',
       position: '',
       width: '',
     });
-    domStyle.set(this._container, {
+    $(this._container).css({
       overflow: '',
     });
     if (this._previousElement) {
@@ -326,12 +324,12 @@ const __class = declare('argos._DraggableBase', null, {
   },
   resetMargins: function resetMargins(element = {}, marginType = {}) {
     if (marginType === 'bottom') {
-      domStyle.set(element, {
-        marginBottom: `${element.previousMargin}px`,
+      $(element).css({
+        'margin-bottom': `${element.previousMargin}px`,
       });
     } else if (marginType === 'top') {
-      domStyle.set(element, {
-        marginTop: `${element.previousMargin}px`,
+      $(element).css({
+        'margin-top': `${element.previousMargin}px`,
       });
     }
     return this;
@@ -392,12 +390,12 @@ const __class = declare('argos._DraggableBase', null, {
       sourceMargins = 0;
     }
     if (marginType === 'bottom') {
-      domStyle.set(element, {
-        marginBottom: `${element.previousMargin + sourceMargins + this._position.h}px`,
+      $(element).css({
+        'margin-bottom': `${element.previousMargin + sourceMargins + this._position.h}px`,
       });
     } else if (marginType === 'top') {
-      domStyle.set(element, {
-        marginTop: `${element.previousMargin + sourceMargins + this._position.h}px`,
+      $(element).css({
+        'margin-top': `${element.previousMargin + sourceMargins + this._position.h}px`,
       });
     }
     return this;

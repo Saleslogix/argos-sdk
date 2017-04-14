@@ -13,9 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import domAttr from 'dojo/dom-attr';
-import domClass from 'dojo/dom-class';
 import Field from './_Field';
 import FieldManager from '../FieldManager';
 
@@ -37,17 +34,6 @@ import FieldManager from '../FieldManager';
  */
 const control = declare('argos.Fields.BooleanField', [Field], {
   /**
-   * @property {Object}
-   * Provides a setter to the toggleNodes toggled attribute
-   */
-  attributeMap: {
-    toggled: {
-      node: 'toggleNode',
-      type: 'attribute',
-      attribute: 'toggled',
-    },
-  },
-  /**
    * @property {Simplate}
    * Simplate that defines the fields HTML Markup
    *
@@ -55,11 +41,16 @@ const control = declare('argos.Fields.BooleanField', [Field], {
    * * `$$` => Owner View instance
    *
    */
-  widgetTemplate: new Simplate([
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '<div class="toggle" data-dojo-attach-point="toggleNode" data-dojo-attach-event="onclick:_onClick" toggled="{%= !!$.checked %}">',
-    '<span class="thumb"></span>',
-    '</div>',
+  widgetTemplate: new Simplate([`
+      <div class="switch">
+        <input
+          data-dojo-attach-point="toggleNode"
+          type="checkbox" {% if($.checked) { %}checked{% } %}
+          id="{%= $.name %}"
+          name="{%= $.name %}" class="switch" />
+        <label for="{%= $.name %}">{%: $.label %}</label>
+      </div>
+    `,
   ]),
   /**
    * @property {HTMLElement}
@@ -77,26 +68,12 @@ const control = declare('argos.Fields.BooleanField', [Field], {
    * Value used during dirty/modified comparison
    */
   originalValue: null,
-
-  /**
-   * Fires with the toggle switch is pressed and sets the value to
-   * the opposite of the current value
-   * @param {Event} evt The click/tap event
-   */
-  _onClick: function _onClick(/* evt*/) {
-    if (this.isDisabled()) {
-      return;
-    }
-
-    const toggledValue = !this.getValue();
-    this.setValue(toggledValue);
-  },
   /**
    * Returns the current toggled state
    * @return {Boolean}
    */
   getValue: function getValue() {
-    return (domAttr.get(this.toggleNode, 'toggled') === true);
+    return this.toggleNode.checked;
   },
   /**
    * Sets the toggled attribute of the field and applies the needed styling.
@@ -113,14 +90,7 @@ const control = declare('argos.Fields.BooleanField', [Field], {
       this.originalValue = newVal;
     }
 
-    domAttr.set(this.toggleNode, 'toggled', newVal);
-
-    if (newVal === false) {
-      domClass.remove(this.toggleNode, 'toggleStateOn');
-    } else {
-      domClass.add(this.toggleNode, 'toggleStateOn');
-    }
-
+    this.toggleNode.checked = newVal;
     this.onChange(newVal, this);
   },
   /**
@@ -141,5 +111,4 @@ const control = declare('argos.Fields.BooleanField', [Field], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.BooleanField', control);
 export default FieldManager.register('boolean', control);

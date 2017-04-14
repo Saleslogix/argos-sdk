@@ -19,8 +19,8 @@ const __class = declare('argos._RelatedViewWidgetListMixin', null, {
    * The template used to render the single list action row.
    */
   listActionTemplate: new Simplate([
-    '<li data-dojo-attach-point="actionsNode" class="actions-row">',
-    '<div data-dojo-attach-point="relatedActionsNode" class="related-view-list-action"></div></li>',
+    `<ul data-dojo-attach-point="actionsNode" class="actions-row popupmenu actions top">{%! $$.loadingTemplate %}</ul>
+    <div data-dojo-attach-point="relatedActionsNode" class="related-view-list-action"><a></a></div>`,
   ]),
   startup: function startup() {
     this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');

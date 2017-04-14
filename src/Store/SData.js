@@ -14,10 +14,8 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import array from 'dojo/_base/array';
 import Deferred from 'dojo/_base/Deferred';
 import QueryResults from 'dojo/store/util/QueryResults';
-import string from 'dojo/string';
 import convert from '../Convert';
 import utility from '../Utility';
 
@@ -76,7 +74,7 @@ const __class = declare('argos.Store.SData', null, {
       let resourcePredicate;
 
       if (id) {
-        resourcePredicate = /\s+/.test(id) ? id : string.substitute("'${0}'", [id]);
+        resourcePredicate = /\s+/.test(id) ? id : `'${id}'`;
       }
 
       if (resourceProperty) {
@@ -185,7 +183,7 @@ const __class = declare('argos.Store.SData', null, {
         request.setQueryArg('orderby', orderBy);
       } else if (orderBy.length > 0) {
         const order = [];
-        array.forEach(orderBy, function forEach(v) {
+        orderBy.forEach(function forEach(v) {
           if (v.descending) {
             this.push(`${v.attribute} desc`);
           } else {
@@ -448,5 +446,4 @@ const __class = declare('argos.Store.SData', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Store.SData', __class);
 export default __class;

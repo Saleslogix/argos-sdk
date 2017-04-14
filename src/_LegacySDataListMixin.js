@@ -10,11 +10,9 @@
  * @alternateClassName _LegacySDataListMixin
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import ErrorManager from 'argos/ErrorManager';
-import domConstruct from 'dojo/dom-construct';
-import domClass from 'dojo/dom-class';
+import ErrorManager from './ErrorManager';
 import string from 'dojo/string';
+
 
 const __class = declare('argos._LegacySDataListMixin', null, {
   feed: null,
@@ -23,7 +21,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
    * Initiates the SData request.
    */
   requestData: function requestData() {
-    domClass.add(this.domNode, 'list-loading');
+    $(this.domNode).addClass('list-loading');
     this.listLoading = true;
 
     const request = this.createRequest();
@@ -42,7 +40,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
   onRequestDataSuccess: function onRequestDataSuccess(feed) {
     this.processFeed(feed);
 
-    domClass.remove(this.domNode, 'list-loading');
+    $(this.domNode).removeClass('list-loading');
     this.listLoading = false;
 
     if (!this._onScrollHandle && this.continuousScrolling) {
@@ -59,7 +57,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
   onRequestDataFailure: function onRequestDataFailure(response, o) {
     alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
     ErrorManager.addError('failure', response);
-    domClass.remove(this.domNode, 'list-loading');
+    $(this.domNode).removeClass('list-loading');
     this.listLoading = false;
     this.isRefreshing = false;
   },
@@ -76,7 +74,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
     this.options = false; // force a refresh
     ErrorManager.addError('aborted', response);
 
-    domClass.remove(this.domNode, 'list-loading');
+    $(this.domNode).removeClass('list-loading');
     this.listLoading = false;
     this.isRefreshing = false;
   },
@@ -109,8 +107,8 @@ const __class = declare('argos._LegacySDataListMixin', null, {
         const entry = feed.$resources[i];
         entry.$descriptor = entry.$descriptor || feed.$descriptor;
         this.entries[entry.$key] = entry;
-        const rowNode = domConstruct.toDom(this.rowTemplate.apply(entry, this));
-        docfrag.appendChild(rowNode);
+        const rowNode = $(this.rowTemplate.apply(entry, this));
+        docfrag.appendChild(rowNode.get(0));
         this.onApplyRowTemplate(entry, rowNode);
         if (this.relatedViews.length > 0) {
           this.onProcessRelatedViews(entry, rowNode, feed);
@@ -118,7 +116,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
       }
 
       if (docfrag.childNodes.length > 0) {
-        domConstruct.place(docfrag, this.contentNode, 'last');
+        $(this.contentNode).append(docfrag);
       }
     }
 
@@ -128,10 +126,10 @@ const __class = declare('argos._LegacySDataListMixin', null, {
       this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
     }
 
-    domClass.toggle(this.domNode, 'list-has-more', this.hasMoreData());
+    $(this.domNode).toggleClass('list-has-more', this.hasMoreData());
 
     if (this.options.allowEmptySelection) {
-      domClass.add(this.domNode, 'list-has-empty-opt');
+      $(this.domNode).addClass('list-has-empty-opt');
     }
 
     this._loadPreviousSelections();
@@ -231,5 +229,4 @@ const __class = declare('argos._LegacySDataListMixin', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._LegacySDataListMixin', __class);
 export default __class;

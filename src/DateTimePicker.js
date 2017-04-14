@@ -1,15 +1,14 @@
 import declare from 'dojo/_base/declare';
-import domConstruct from 'dojo/dom-construct';
-import domStyle from 'dojo/dom-style';
-import _Widget from 'dijit/_Widget';
-import _Templated from 'argos/_Templated';
+import _WidgetBase from 'dijit/_WidgetBase';
+import _Templated from './_Templated';
 import Calendar from './Calendar';
 import TimePicker from './TimePicker';
+
 
 /**
  * @class argos.DateTimePicker
  */
-const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
+const __class = declare('argos.DateTimePicker', [_WidgetBase, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="datetime-select" data-dojo-attach-point="dateTimeNode">',
     '</div>',
@@ -46,13 +45,13 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
     this.ensureOptions(options);
     if (!this._calendarNode) {
       this._calendarNode = new Calendar({ id: `datetime-calendar ${this.id}`, isModal: this.isModal || options.isModal });
-      domConstruct.place(this._calendarNode.domNode, this.dateTimeNode);
+      $(this.dateTimeNode).append(this._calendarNode.domNode);
       this._calendarNode.show(options);
       this._timeSelectNode = new TimePicker({ id: `datetime-timePicker ${this.id}`, showSetTime: false });
-      domConstruct.place(this._timeSelectNode.domNode, this.dateTimeNode);
+      $(this.dateTimeNode).append(this._timeSelectNode.domNode);
       this._timeSelectNode.show(options);
       if (!this.showTimePicker) {
-        domStyle.set(this._timeSelectNode.domNode, {
+        $(this._timeSelectNode.domNode).css({
           display: 'none',
         });
       }
@@ -60,11 +59,11 @@ const __class = declare('argos.DateTimePicker', [_Widget, _Templated], {
       this._calendarNode.show(options);
       if (this.showTimePicker) {
         this._timeSelectNode.show(options);
-        domStyle.set(this._timeSelectNode.domNode, {
+        $(this._timeSelectNode.domNode).css({
           display: 'block',
         });
       } else {
-        domStyle.set(this._timeSelectNode.domNode, {
+        $(this._timeSelectNode.domNode).css({
           display: 'none',
         });
       }

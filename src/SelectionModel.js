@@ -198,5 +198,4 @@ const __class = declare('argos.SelectionModel', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.SelectionModel', __class);
 export default __class;

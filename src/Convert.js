@@ -21,7 +21,7 @@
  */
 import lang from 'dojo/_base/lang';
 
-const convert = window.ICRMCommonSDK.convert;
+const convert = ICRMCommonSDK.convert;
 
 const __class = lang.setObject('argos.Convert', {
   /**
@@ -61,5 +61,4 @@ const __class = lang.setObject('argos.Convert', {
   toDateFromString: convert.toDateFromString,
 });
 
-lang.setObject('Sage.Platform.Mobile.Convert', __class);
 export default __class;

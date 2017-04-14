@@ -1,7 +1,22 @@
 @import "variables.less";
 @import "mixins.less";
 
-/* snapjs styles */
+.card, .widget {
+  min-height: auto;
+    .card-content {
+        height: auto;
+        min-height: auto;
+        padding: 16px 20px 15px;
+        p {
+            margin: 0;
+        }
+        .list-item-selector {
+            float: left;
+            margin-right: 10px;
+        }
+    }
+}
+
 .tall {
     height: 100%;
 }
@@ -22,111 +37,7 @@
     float: right;
 }
 
-.drawers {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.left-drawer,
-.right-drawer {
-    visibility: hidden;
-    display: none;
-    background-color: @menu-list-item-bg-color;
-    overflow: auto;
-    .list .scroller {
-      background-color: @menu-list-item-bg-color;
-      top: 42px;
-    }
-}
-
-.snapjs-left .left-drawer {
-    visibility: visible;
-    display: block;
-}
-
-.snapjs-right .right-drawer {
-    visibility: visible;
-    display: block;
-}
-
-.left-drawer, .right-drawer {
-    top: 0;
-    left: 0;
-    width: 265px;
-    bottom: 0;
-    -webkit-transition-property: top, bottom;
-    transition-property: top, bottom;
-    -webkit-transition-duration: .2s, .2s;
-    transition-duration: .2s, .2s;
-    -webkit-transition-timing-function: linear, linear;
-    transition-timing-function: linear, linear;
-}
-
-.left-drawer {
-    z-index: 2;
-}
-
-.right-drawer {
-    left: auto;
-    right: 0;
-    z-index: 1;
-}
-
-.left-drawer,
-.right-drawer {
-    -webkit-transition: width 0.3s ease;
-    -moz-transition: width 0.3s ease;
-    -o-transition: width 0.3s ease;
-    transition: width 0.3s ease;
-}
-
-.drawer-inner {
-    -webkit-transition: opacity 0.3s ease;
-    -moz-transition: opacity 0.3s ease;
-    -o-transition: opacity 0.3s ease;
-    transition: opacity 0.3s ease;
-}
-
-.snapjs-expand-left .drawer-inner,
-.snapjs-expand-right .drawer-inner {
-    opacity: 0;
-}
-
-.snapjs-expand-left .left-drawer,
-.snapjs-expand-right .right-drawer {
-    width: 100%;
-}
-
-/* end snapjs styles*/
-
-.list-content > li {
-    cursor: pointer;
-}
-
 .list-more, .list-empty-opt {
-    .toolButton {
-        position: relative;
-        min-width: 28px;
-        min-height: 28px;
-        padding: 0;
-        z-index: 100;
-    }
-
-    .toolButton > img {
-        margin: 4px;
-    }
-
-    .toolButton > span {
-        display: inline-block;
-        background-repeat: no-repeat;
-        background-position: center center;
-        margin: 4px;
-        width: 24px;
-        height: 24px;
-    }
-
     .toolButton-left {
         float: left;
         margin-right: 10px;
@@ -139,6 +50,9 @@
     display: none;
     padding: 12px;
     border-bottom: 1px solid #DDD;
+}
+.list-empty-opt {
+    margin-bottom: 20px;
 }
 
 .list-more .list-remaining {
@@ -157,6 +71,7 @@
 .list-has-more .list-more, .list-has-empty-opt .list-empty-opt {
     display: block;
     background-color: #fff;
+    text-align: center;
 }
 
 .list-has-more .list-remaining {
@@ -177,73 +92,7 @@
     overflow: inherit;
 }
 
-.list-content > li > a {
-    padding: 8px 32px 8px 36px;
-}
-
-/* list selection */
-.list .list-item-selector {
-    visibility: hidden;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    position: absolute;
-    top: 8px;
-    left: 12px;
-    z-index: 10;
-    background: none;
-    border: 0 none #000;
-    padding: 0 2px 0 0px;
-    color: @black-darker;
-}
-
-.list-show-actions .list-item-selector {
-    visibility: visible !important;
-    width: 38px;
-    height: 38px;
-    left: 6px;
-
-    line-height: 30px;
-    padding: 0 2px 0 2px;
-
-    color: @color-slate;
-}
-
-.list-show-actions .list-item-selector > img {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    border: none 0 black;
-}
-
-.list-item-selected > .list-item-selector {
-    visibility: visible !important;
-}
-
-.list-item-static-selector {
-    div {
-        width: 100%;
-        text-align: center;
-    }
-
-    .icon {
-        padding-left: 8px;
-    }
-
-    .fa-stack {
-        top: -7px;
-    }
-
-    visibility: visible;
-    width: 38px;
-    position: absolute;
-    top: 8px;
-    left: 6px;
-    bottom: 0px;
-    z-index: 10;
-}
-
-.list-action-selected + .actions-row {
+.list-action-selected {
     display: block !important;
 }
 
@@ -264,6 +113,15 @@
 
 .actions-row {
     display: none;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #bdbdbd;
+    border-radius: 2px;
+    width: 100%;
+}
+
+.actions-row button {
+  margin: 2px 0;
 }
 
 .actions-row:after {
@@ -319,26 +177,12 @@
     margin: 0;
 }
 
-/* detail veiw */
-.panel .panel-loading-indicator div.row > div {
-    display: inline-block;
-}
-
-.panel .panel-loading-indicator div.row {
-    text-align: center !important;
-    padding: 1em !important;
-    min-height: 1em !important;
-    span {
-        float: none;
-    }
-}
-
 .content-loading > span {
     padding-left: 32px;
     background: url('../../../images/content-loading-light-green.gif') no-repeat scroll 12px 50%;
 }
 
-body.busy {
+.busy {
     opacity: 0.5;
 }
 
@@ -350,19 +194,6 @@ body.busy {
 .list-search {
     padding: 0px;
     position: relative;
-}
-
-div.table-layout {
-    display: table;
-    width: 100%;
-    padding: 0;
-    background: @color-azure;
-}
-
-div.table-layout > div {
-    display: table-cell;
-    vertical-align: middle;
-    padding: 5px 10px 10px 10px;
 }
 
 h2 > .collapsed-indicator {
@@ -415,20 +246,20 @@ ul.action-list > li > a > div {
 }
 
 .action-list > li {
-    height: 30px;
-    line-height: 1em !important;
+    margin-bottom: 10px;
     cursor: pointer !important;
+    label {
+        margin-bottom: 0;
+    }
 }
 
 .action-list > li > a > span {
     display: block;
-    min-height: 1em;
-    max-height: 1.5em;
     line-height: inherit;
-    padding: 2px 0 0 0;
-    color: #777;
+    color: @color-lighter-slate;
     text-overflow: ellipsis;
     overflow: hidden;
+    font-size: 1.1em;
     white-space: nowrap;
 }
 
@@ -455,75 +286,25 @@ body {
     overflow: hidden;
 }
 
-body > .viewContainer {
-    position: absolute;
-    padding: 40px 0 0 0;
-    margin: 0;
-    z-index: 3;
-    top: 0px;
-    bottom: 0px;
-    width: 100%;
-    .box-sizing(border-box);
-}
-
-body[orient="landscape"] {
+[orient="landscape"] {
     min-height: 268px;
     overflow: hidden;
 }
 
-body > .viewContainer > .list,
-body > .viewContainer > .panel,
-body > .viewContainer > .dialog {
+.viewContainer > .list,
+.viewContainer > .panel,
+.viewContainer > .dialog,
+.viewContainer > .view {
     display: none;
     visibility: hidden;
 }
 
-body > .viewContainer > .panel {
-    overflow: auto;
-}
-
-body > .viewContainer > .panel.link-view {
-    overflow: hidden;
-}
-
-body.transition > .viewContainer > .panel,
-body.transition > .viewContainer > .list {
-    position: absolute;
-    top: 64px;
-}
-
-body > .viewContainer > .panel,
-body > .viewContainer > .list {
-    position: absolute;
-    top: 64px;
-    bottom: 0px;
-    width: 100%;
-    .box-sizing(border-box);
-    -webkit-transition-duration: 200ms;
-    -webkit-transition-property: -webkit-transform;
-    -webkit-transform: translateZ(0);
-}
-
-body[orient="landscape"] > .viewContainer > .panel,
-body[orient="landscape"] > .viewContainer > .list {
-    position: absolute;
-    top: 64px; /* Adjust if header toolbar changes */
-    bottom: 0px; /* Adjust if footer toolbar changes */
-    width: 100%;
-    -webkit-transition-property: top, bottom;
-    transition-property: top, bottom;
-    -webkit-transition-duration: 0.2s, 0.2s;
-    transition-duration: 0.2s, 0.2s;
-    -webkit-transition-timing-function: ease, ease;
-    transition-timing-function: ease, ease;
-}
-
-body > .viewContainer > [selected="true"] {
+.viewContainer > [selected="selected"] {
     display: block;
     visibility: visible;
 }
 
-body > .viewContainer > .dialog {
+.viewContainer > .dialog {
     top: 0px;
     bottom: 0px;
     width: 100%;
@@ -556,58 +337,18 @@ body > .viewContainer > .dialog {
     display: inline-block;
 }
 
-.list-content,
-.group-content {
-    margin: 0;
-    padding: 0;
-}
-
-.list-content > li,
-.group-content > li {
-    list-style: none;
-    margin: 0px 0px 1px 0px;
-    padding: 4px 0px 4px 10px;
-    position: relative;
-}
-
-.list-content > li,
-.group-content > li {
-    padding: 8px 32px 8px 6px;
-}
-
-.list-show-selectors .list-item-content,
-.list-item-static-selector + .list-item-content {
-    padding-left: 42px;
-}
-
 .actions-enabled + .list-item-content {
     padding-left: 40px;
 }
 
-.list-content > li > img.icon,
-.list-content > li > * > img.icon {
-    border: 0 none black;
-    margin: 0 .5em 0 0;
-    width: 24px;
-    height: 24px;
-    float: left;
-}
-
-.list-content > li > .list-selector {
-    float: left;
-    margin: 2px 0 0 0px;
-}
-
 .no-data {
     text-align: center;
+    background-color: white;
+    padding: 12px;
 }
 
 .no-data > h3 {
     white-space: normal;
-}
-
-img {
-    border: 0 none black;
 }
 
 .panel > .panel-loading-indicator {
@@ -635,129 +376,18 @@ img {
     display: block;
 }
 
-.panel-content > h2,
-.panel-validation-summary > h2,
-.panel-concurrency-summary > h2 {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    margin: 0;
-    padding: 0 0 0 2px;
-    z-index: 5;
-    position: relative;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-}
-
-.panel > ul > li,
-.panel-content > ul > li,
-.quick-actions > ul > li {
-    list-style: none;
-    line-height: 28px;
-    clear: both;
-}
-
 .panel-validation-summary > ul > li,
 .panel-concurrency-summary > ul > li {
-    list-style: none;
+    list-style-type: disc;
     clear: both;
 }
-
-.panel-content > ul > li > img.icon,
-.panel-content > ul > li > * > img.icon,
-.panel-validation-summary > ul > li > img.icon
-.panel-validation-summary > ul > li > * > img.icon {
-    border: 0 none black;
-    margin: 0 .5em 0 0;
-    width: 24px;
-    height: 24px;
-    float: left;
-}
-
-.panel-content > fieldset,
-.panel-validation-summary > fieldset,
-.panel-concurrency-summary > fieldset,
-.panel-content > div,
-.panel-validation-summary > div,
-.panel-concurrency-summary > div,
-.panel-content > ul,
-.quick-actions > ul,
-.panel-validation-summary > ul,
-.panel-concurrency-summary > ul {
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-
-.panel-content > fieldset:last-child,
-.panel-content > ul:last-child,
-.panel-content > div:last-child {
-    margin: 0;
-    padding: 0 0 0 0;
-}
-
-.panel-content > ul > li,
-.quick-actions > ul > li,
-.panel-validation-summary > ul > li,
-.panel-concurrency-summary > ul > li {
-    list-style: none;
-    margin: 0;
-    padding: 5px 0;
-    position: relative;
-}
-
-.panel-content > ul > li > a,
-.quick-actions > ul > li > a,
-.panel-validation-summary > ul > li > a {
-    padding: 1px;
-    margin: 0 0 0 0.25em; /* matches the padding in the labels */
-    display: block;
-    cursor: pointer;
-}
-
-.panel-validation-summary > ul > li > a > h3,
-.panel-concurrency-summary > ul > li > h3 {
-    overflow: visible;
-    text-overflow: inherit;
-    white-space: inherit;
+.panel-validation-messages {
+    padding-left: 30px;
 }
 
 .row.no-value {
     display: none !important;
     visibility: hidden;
-}
-
-.row > div > label,
-.row > label {
-    margin: 0px;
-    padding: 0;
-    position: relative;
-}
-
-.row {
-    text-align: left;
-    clear: both;
-    padding: 0 .75em;
-}
-
-.row > div > span,
-.row > div > a,
-.row > span,
-.row > a {
-    display: block;
-    margin: 0 0 0 0;
-    width: 70%;
-    position: relative;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    float: right;
-}
-
-.href {
-    color: @link-color;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 .not-available {
@@ -965,10 +595,10 @@ img {
 }
 
 .pull-to-refresh {
-    margin: 20px 0;
+    width: calc(~'100% - 40px'); // take away 40px padding of .column class
     text-align: center;
+    position: absolute;
     visibility: hidden;
-
     > span {
         margin: 0 10px;
         height: 18px;
@@ -990,37 +620,28 @@ img {
 
     .list-content {
         > li {
-            background-color: #fff;
-            color: #aaa;
-            padding: 0;
-            height: 40px;
-            line-height: 40px;
-
             .resource {
                 display: block;
                 margin: -8px 0 -8px -10px;
                 padding: 8px 32px 8px 36px;
             }
 
-            h3 {
-              vertical-align: middle;
-              line-height: 40px;
-
+            h4 {
+                display:inline-block;
+                color: #aaa;
                 > span {
                     &:first-child {
                         float: left;
                     }
                 }
 
-                > .draggable {
+                + .draggable {
                   float: right;
-                  width: 24px;
-                  height: 40px;
-                  line-height: 40px;
-                  margin-right: 15px;
                   cursor: pointer;
                   text-align: center;
-                  .transform(scale(1.5, 0.75));
+                  button .icon {
+                      fill: #aaa
+                  }
                 }
 
                 > .icon {
@@ -1029,15 +650,20 @@ img {
                 }
             }
 
-            &:first-child h3 > [data-action="moveUp"],
-            &:last-child h3 > [data-action="moveDown"] {
+            &:first-child h4 > [data-action="moveUp"],
+            &:last-child h4 > [data-action="moveDown"] {
                 visibility: hidden;
             }
         }
 
         > li.list-item-selected {
-            color: #000;
-            h3 > .icon {
+            h4 {
+                color: #000;
+                button .icon {
+                    fill: #000
+                  }
+            }
+            h4 > .icon {
                 opacity: 1.0;
             }
         }
@@ -1054,4 +680,45 @@ img {
             opacity: 0.5;
         }
     }
+}
+.list-show-selectors  {
+    .card-content .list-item-content {
+        margin-left: 0;
+    }
+    .list-item-content {
+        margin-left: 42px;
+    }
+    li {
+        position: relative;
+    }
+}
+.listview {
+    .list-content > li h4 {
+        margin-top: 1rem;
+    }
+    .list-item-selector {
+        visibility: hidden;
+        width: 36px;
+        height: 36px;
+        position: absolute;
+        top: 16px;
+        left: 12px;
+        border: 0 none #000;
+    }
+    .list-item-selector.visible {
+        visibility: visible;
+    }
+    .list-item-selected {
+         .list-item-selector {
+            visibility: visible !important;
+        }
+    }
+}
+
+.bottom_item_indicators > span {
+  padding: 0 5px;
+}
+
+.relatedviewitem .badge {
+    float: right;
 }

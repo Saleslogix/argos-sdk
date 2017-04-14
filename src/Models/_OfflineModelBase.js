@@ -1,6 +1,6 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import PouchDB from 'argos/Store/PouchDB';
+import PouchDBStore from '../Store/PouchDB';
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
 import when from 'dojo/when';
@@ -10,8 +10,9 @@ import _ModelBase from './_ModelBase';
 import QueryResults from 'dojo/store/util/QueryResults';
 import MODEL_TYPES from './Types';
 
+
 const databaseName = 'crm-offline';
-const _store = new PouchDB(databaseName);
+const _store = new PouchDBStore(databaseName);
 
 /**
  * @class argos.Models._OfflineModelBase

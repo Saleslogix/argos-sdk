@@ -4,6 +4,7 @@ import Manager from '../Manager';
 import MODEL_TYPES from '../Types';
 import getResource from '../../I18n';
 
+
 const resource = getResource('recentlyViewedModel');
 
 /**

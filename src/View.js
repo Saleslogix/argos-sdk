@@ -18,9 +18,10 @@ import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
 import _Templated from './_Templated';
-import _ErrorHandleMixin from './_ErrorHandleMixin';
 import Adapter from './Models/Adapter';
 import getResource from './I18n';
+import { insertHistory } from './actions/index';
+
 
 const resource = getResource('view');
 
@@ -34,9 +35,8 @@ const resource = getResource('view');
  * @mixins argos._ActionMixin
  * @mixins argos._CustomizationMixin
  * @mixins argos._Templated
- * @mixins argos._ErrorHandleMixin
  */
-const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated, _ErrorHandleMixin], {
+const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
   /**
    * This map provides quick access to HTML properties, most notably the selected property of the container
    */
@@ -101,11 +101,58 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   connectionName: false,
   connectionState: null,
   enableOfflineSupport: false,
+  previousState: null,
+  enableCustomizations: true,
+
+  /**
+   * @property {Object}
+   * Localized error messages. One general error message, and messages by HTTP status code.
+   */
+  errorText: {
+    general: resource.general,
+    status: {},
+  },
+  /**
+   * @property {Object}
+   * Http Error Status codes. See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+   */
+  HTTP_STATUS: {
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    PAYMENT_REQUIRED: 402,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    METHOD_NOT_ALLOWED: 405,
+    NOT_ACCEPTABLE: 406,
+    PROXY_AUTH_REQUIRED: 407,
+    REQUEST_TIMEOUT: 408,
+    CONFLICT: 409,
+    GONE: 410,
+    LENGTH_REQUIRED: 411,
+    PRECONDITION_FAILED: 412,
+    REQUEST_ENTITY_TOO_LARGE: 413,
+    REQUEST_URI_TOO_LONG: 414,
+    UNSUPPORTED_MEDIA_TYPE: 415,
+    REQUESTED_RANGE_NOT_SATISFIABLE: 416,
+    EXPECTATION_FAILED: 417,
+  },
+  /**
+   * @property {Array} errorHandlers
+   * Array of objects that should contain a name string property, test function, and handle function.
+   *
+   */
+  errorHandlers: null,
   constructor: function constructor(options) {
     this.app = (options && options.app) || window.App;
   },
   startup: function startup() {
     this.inherited(arguments);
+  },
+  select: function select(node) {
+    $(node).attr('selected', 'true');
+  },
+  unselect: function unselect(node) {
+    $(node).removeAttr('selected');
   },
   /**
    * Called from {@link App#_viewTransitionTo Applications view transition handler} and returns
@@ -132,15 +179,15 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   /**
    * Called on loading of the application.
    */
-  init: function init(state$) {
+  init: function init(store) {
+    this.initStore(store);
     this.startup();
     this.initConnects();
     this.initModel();
-    this.initState(state$);
   },
-  initState: function initState(state$) {
-    this.state$ = state$;
-    this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
+  initStore: function initStore(store) {
+    this.appStore = store;
+    this.appStore.subscribe(this._onStateChange.bind(this));
   },
   _updateConnectionState: function _updateConnectionState(state) {
     if (this.connectionState === state) {
@@ -157,17 +204,15 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   },
   onConnectionStateChange: function onConnectionStateChange(state) { // eslint-disable-line
   },
-  _onStateChange: function _onStateChange(val) {
-    this._updateConnectionState(val.connectionState);
-    this.onStateChange(val);
-  },
-  _onStateError: function _onStateError(error) {
-    this.onStateError(error);
+  _onStateChange: function _onStateChange() {
+    const state = this.appStore.getState();
+    this._updateConnectionState(state.sdk.online);
+    this.onStateChange(state);
+    this.previousState = state;
   },
   onStateChange: function onStateChange(val) {}, // eslint-disable-line
-  onStateError: function onStateError(error) {}, // eslint-disable-line
   /**
-   * Initializes the model instance that is return with the curernt view.
+   * Initializes the model instance that is returned with the current view.
    */
   initModel: function initModel() {
     const model = this.getModel();
@@ -201,7 +246,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     // todo: remove load entirely?
   },
   /**
-   * Called in {@link #show show()} before ReUI is invoked.
+   * Called in {@link #show show()} before route is invoked.
    * @param {Object} options Navigation options passed from the previous view.
    * @return {Boolean} True indicates view needs to be refreshed.
    */
@@ -211,6 +256,62 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     }
 
     return true;
+  },
+  /**
+   * @return {Array} Returns an array of error handlers
+   */
+  createErrorHandlers: function createErrorHandlers() {
+    return this.errorHandlers || [];
+  },
+  /**
+   * Starts matching and executing errorHandlers.
+   * @param {Error} error Error to pass to the errorHandlers
+   */
+  handleError: function handleError(error) {
+    if (!error) {
+      return;
+    }
+
+    function noop() {}
+
+    const matches = this.errorHandlers.filter((handler) => {
+      return handler.test && handler.test.call(this, error);
+    });
+
+    const len = matches.length;
+
+    const getNext = function getNext(index) {
+      // next() chain has ended, return a no-op so calling next() in the last chain won't error
+      if (index === len) {
+        return noop;
+      }
+
+      // Return a closure with index and matches captured.
+      // The handle function can call its "next" param to continue the chain.
+      return function next() {
+        const nextHandler = matches[index];
+        const nextFn = nextHandler && nextHandler.handle;
+
+        nextFn.call(this, error, getNext.call(this, index + 1));
+      }.bind(this);
+    }.bind(this);
+
+    if (len > 0 && matches[0].handle) {
+      // Start the handle chain, the handle can call next() to continue the iteration
+      matches[0].handle.call(this, error, getNext.call(this, 1));
+    }
+  },
+  /**
+   * Gets the general error message, or the error message for the status code.
+   */
+  getErrorMessage: function getErrorMessage(error) {
+    let message = this.errorText.general;
+
+    if (error) {
+      message = this.errorText.status[error.status] || this.errorText.general;
+    }
+
+    return message;
   },
   /**
    * Should refresh the view, such as but not limited to:
@@ -258,7 +359,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     if (this.options.title) {
       this.set('title', this.options.title);
     } else {
-      this.set('title', (this.get('title') || this.titleText));
+      this.set('title', this.titleText);
     }
 
     this.onActivate(this);
@@ -266,10 +367,11 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   _getScrollerAttr: function _getScrollerAttr() {
     return this.scrollerNode || this.domNode;
   },
+  _transitionOptions: null,
   /**
-   * Shows the view using iUI in order to transition to the new element.
+   * Shows the view using pagejs in order to transition to the new element.
    * @param {Object} options The navigation options passed from the previous view.
-   * @param transitionOptions {Object} Optional transition object that is forwarded to ReUI.
+   * @param transitionOptions {Object} Optional transition object that is forwarded to open.
    */
   show: function show(options, transitionOptions) {
     this.errorHandlers = this._createCustomizedLayout(this.createErrorHandlers(), 'errorHandlers');
@@ -287,17 +389,214 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     if (this.options.title) {
       this.set('title', this.options.title);
     } else {
-      this.set('title', (this.get('title') || this.titleText));
+      this.set('title', this.titleText);
     }
 
     const tag = this.getTag();
     const data = this.getContext();
 
-    const newOptions = lang.mixin(transitionOptions || {}, {
+    const to = lang.mixin(transitionOptions || {}, {
       tag,
       data,
     });
-    ReUI.show(this.domNode, newOptions);
+    this._transitionOptions = to;
+    page(this.buildRoute());
+  },
+  hashPrefix: '#!',
+  currentHash: '',
+  transitionComplete: function transitionComplete(_page, options) {
+    if (options.track !== false) {
+      this.currentHash = location.hash;
+
+      if (options.trimmed !== true) {
+        const data = {
+          hash: this.currentHash,
+          page: this.id,
+          tag: options.tag,
+          data: options.data,
+        };
+        App.context.history.push(data);
+        this.appStore.dispatch(insertHistory(data));
+      }
+    }
+  },
+  transition: function transition(from, to, options) {
+    function complete() {
+      this.transitionComplete(to, options);
+      $('body').removeClass('transition');
+
+      $(from).trigger('aftertransition', {
+        out: true,
+        tag: options.tag,
+        data: options.data,
+        bubbles: true,
+        cancelable: true,
+      });
+      $(to).trigger('aftertransition', {
+        out: false,
+        tag: options.tag,
+        data: options.data,
+        bubbles: true,
+        cancelable: true,
+      });
+
+      if (options.complete) {
+        options.complete(from, to, options);
+      }
+    }
+
+    $('body').addClass('transition');
+
+    // dispatch an 'show' event to let the page be aware that is being show as the result of an external
+    // event (i.e. browser back/forward navigation).
+    if (options.external) {
+      $(to).trigger('show', {
+        tag: options.tag,
+        data: options.data,
+        bubbles: true,
+        cancelable: true,
+      });
+    }
+
+    $(from).trigger('beforetransition', {
+      out: true,
+      tag: options.tag,
+      data: options.data,
+      bubbles: true,
+      cancelable: true,
+    });
+
+    $(to).trigger('beforetransition', {
+      out: false,
+      tag: options.tag,
+      data: options.data,
+      bubbles: true,
+      cancelable: true,
+    });
+
+    this.unselect(from);
+    this.select(to);
+    complete.apply(this);
+  },
+  /**
+  * Available Options:
+  *   horizontal: True if the transition is horizontal, False otherwise.
+  *   reverse: True if the transition is a reverse transition (right/down), False otherwise.
+  *   track: False if the transition should not be tracked in history, True otherwise.
+  *   update: False if the transition should not update title and back button, True otherwise.
+  *   scroll: False if the transition should not scroll to the top, True otherwise.
+  */
+  open: function open() {
+    const p = this.domNode;
+    const options = this._transitionOptions || {};
+
+    if (!p) {
+      return;
+    }
+
+    App.setPrimaryTitle(this.get('title'));
+
+    if (options.track !== false) {
+      const count = App.context.history.length;
+      const hash = location.hash;
+      let position = -1;
+
+      // do loop and trim
+      for (position = count - 1; position >= 0; position--) {
+        if (App.context.history[position].hash === hash) {
+          break;
+        }
+      }
+
+      if ((position > -1) && (position === (count - 2))) {
+        // Added check if history item is just one back.
+
+        App.context.history = App.context.history.splice(0, position + 1);
+
+        this.currentHash = hash;
+
+        // indicate that context.history has already been taken care of (i.e. nothing needs to be pushed).
+        options.trimmed = true;
+        // trim up the browser history
+        // if the requested hash does not equal the current location hash, trim up history.
+        // location hash will not match requested hash when show is called directly, but will match
+        // for detected location changes (i.e. the back button).
+      } else if (options.returnTo) {
+        if (typeof options.returnTo === 'function') {
+          for (position = count - 1; position >= 0; position--) {
+            if (options.returnTo(App.context.history[position])) {
+              break;
+            }
+          }
+        } else if (options.returnTo < 0) {
+          position = (count - 1) + options.returnTo;
+        }
+
+        if (position > -1) {
+          // we fix up the history, but do not flag as trimmed, since we do want the new view to be pushed.
+          App.context.history = App.context.history.splice(0, position + 1);
+
+          this.currentHash = App.context.history[App.context.history.length - 1] && App.context.history[App.context.history.length - 1].hash;
+        }
+      }
+    }
+
+    // don't auto-scroll by default if reversing
+    if (options.reverse && typeof options.scroll === 'undefined') {
+      options.scroll = !options.reverse;
+    }
+
+    $(p).trigger('load', {
+      bubbles: false,
+      cancelable: true,
+    });
+
+    const from = App.getCurrentPage();
+
+    if (from) {
+      $(from).trigger('blur', {
+        bubbles: false,
+        cancelable: true,
+      });
+    }
+
+    App.setCurrentPage(p);
+
+    $(p).trigger('focus', {
+      bubbles: false,
+      cancelable: true,
+    });
+
+    if (from && $(p).attr('selected') !== 'true') {
+      if (options.reverse) {
+        $(p).trigger('unload', {
+          bubbles: false,
+          cancelable: true,
+        });
+      }
+
+      window.setTimeout(this.transition.bind(this), App.checkOrientationTime, from, p, options);
+    } else {
+      $(p).trigger('beforetransition', {
+        out: false,
+        tag: options.tag,
+        data: options.data,
+        bubbles: true,
+        cancelable: true,
+      });
+
+      this.select(p);
+
+      this.transitionComplete(p, options);
+
+      $(p).trigger('aftertransition', {
+        out: false,
+        tag: options.tag,
+        data: options.data,
+        bubbles: true,
+        cancelable: true,
+      });
+    }
   },
   /**
    * Expands the passed expression if it is a function.
@@ -382,6 +681,45 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     return this.security;
   },
   /**
+  * @property {String}
+  * Route passed into the router. RegEx expressions are also accepted.
+  */
+  route: '',
+  /**
+  * Gets the route associated with this view. Returns this.id if no route is defined.
+  */
+  getRoute: function getRoute() {
+    if ((typeof this.route === 'string' && this.route.length > 0) || this.route instanceof RegExp) {
+      return this.route;
+    }
+
+    return this.id;
+  },
+  /**
+  * Show method calls this to build a route that it can navigate to. If you add a custom route,
+  * this should change to build a route that can match that.
+  * @returns {String}
+  */
+  buildRoute: function buildRoute() {
+    return this.id;
+  },
+  /**
+  * Fires first when a route is triggered. Any pre-loading should happen here.
+  * @param {Object} ctx
+  * @param {Function} next
+  */
+  routeLoad: function routeLoad(ctx, next) {
+    next();
+  },
+  /**
+  * Fires second when a route is triggered. Any pre-loading should happen here.
+  * @param {Object} ctx
+  * @param {Function} next
+  */
+  routeShow: function routeShow(ctx, next) { // eslint-disable-line
+    this.open();
+  },
+ /*
   * Required for binding to ScrollContainer which utilizes iScroll that requires to be refreshed when the
   * content (therefor scrollable area) changes.
   */
@@ -396,5 +734,4 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.View', __class);
 export default __class;

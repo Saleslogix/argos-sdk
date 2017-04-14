@@ -29,40 +29,56 @@
           "path": "../libraries/sdata/"
         },
         {
-          "text": "pouchdb-4.0.3.min.js",
-          "path": "../libraries/PouchDB/"
+          "text": "page.js",
+          "path": "../libraries/pagejs-1.6.1/"
+        },
+        {
+          "text": "pouchdb-6.1.2.js",
+          "path": "../libraries/pouchdb/"
         },
         {
           "text": "deep-diff-0.2.0.min.js",
           "path": "../libraries/deep-diff/"
         },
         {
-          "text": "Chart.min.js",
-          "path": "../libraries/"
-        },
-        {
-          "text": "browser-polyfill.min.js",
-          "path": "../libraries/babel/"
+          "text": "polyfill.min.js",
+          "path": "../node_modules/babel-polyfill/dist/"
         },
         {
           "text": "moment-with-locales.js",
-          "path": "../libraries/moment/"
+          "path": "../node_modules/moment/min/"
         },
         {
-          "text": "rx.all.js",
-          "path": "../libraries/rx/"
+          "text": "rx.lite.js",
+          "path": "../node_modules/rx-lite/"
         },
         {
           "text": "common.bundle.js",
-          "path": "../libraries/icrm/"
+          "path": "../node_modules/@infor/icrm-js-common/dist/bundles"
         },
         {
           "text": "customization.bundle.js",
-          "path": "../libraries/icrm/"
+          "path": "../node_modules/@infor/icrm-js-customization/dist/bundles"
         },
         {
           "text": "services.bundle.js",
-          "path": "../libraries/icrm/"
+          "path": "../node_modules/@infor/icrm-js-services/dist/bundles"
+        },
+        {
+          "text": "redux.min.js",
+          "path": "../node_modules/redux/dist/"
+        },
+        {
+          "text": "d3.js",
+          "path": "../node_modules/d3/build/"
+        },
+        {
+          "text": "jquery.js",
+          "path": "../node_modules/jquery/dist/"
+        },
+        {
+          "text": "sohoxi.js",
+          "path": "../node_modules/@infor/sohoxi/dist/js/"
         }
       ]
     },
@@ -71,10 +87,6 @@
       "file": "content/javascript/argos-amd-dependencies.js",
       "isDebug": true,
       "fileIncludes": [
-        {
-          "text": "snap.js",
-          "path": "../libraries/snap/"
-        }
       ]
     },
     {
@@ -112,11 +124,23 @@
             "text": "_ServiceMixin.js",
             "path": "../src-out/"
           }, {
+            "text": "connection.js",
+            "path": "../src-out/actions/"
+          }, {
+            "text": "index.js",
+            "path": "../src-out/actions/"
+          }, {
             "text": "Manager.js",
             "path": "../src-out/Models/"
           }, {
-            "text": "update-connection.js",
-            "path": "../src-out/Intents/"
+            "text": "Toast.js",
+            "path": "../src-out/Dialogs/"
+          }, {
+            "text": "Scene.js",
+            "path": "../src-out/"
+          }, {
+            "text": "SohoIcons.js",
+            "path": "../src-out/"
           }, {
             "text": "CultureInfo.js",
             "path": "../src-out/"
@@ -124,16 +148,10 @@
             "text": "_GroupBySection.js",
             "path": "../src-out/Groups/"
           }, {
-            "text": "Connection.js",
-            "path": "../src-out/Models/"
-          }, {
             "text": "PouchDB.js",
             "path": "../src-out/Store/"
           }, {
-            "text": "DomHelper.js",
-            "path": "../src-out/ReUI/"
-          }, {
-            "text": "_ErrorHandleMixin.js",
+            "text": "WidgetBase.js",
             "path": "../src-out/"
           }, {
             "text": "_PullToRefreshMixin.js",
@@ -181,23 +199,17 @@
             "text": "Manager.js",
             "path": "../src-out/Offline/"
           }, {
+            "text": "index.js",
+            "path": "../src-out/reducers/"
+          }, {
             "text": "Adapter.js",
             "path": "../src-out/Models/"
-          }, {
-            "text": "Intent.js",
-            "path": "../src-out/"
           }, {
             "text": "DateTimeSection.js",
             "path": "../src-out/Groups/"
           }, {
             "text": "GroupByValueSection.js",
             "path": "../src-out/Groups/"
-          }, {
-            "text": "Model.js",
-            "path": "../src-out/"
-          }, {
-            "text": "main.js",
-            "path": "../src-out/ReUI/"
           }, {
             "text": "ConfigurableSelectionModel.js",
             "path": "../src-out/"
@@ -225,9 +237,6 @@
           }, {
             "text": "RelatedViewWidget.js",
             "path": "../src-out/"
-          }, {
-            "text": "Toast.js",
-            "path": "../src-out/Dialogs/"
           }, {
             "text": "Calendar.js",
             "path": "../src-out/"
@@ -259,6 +268,9 @@
             "text": "_ListOfflineMixin.js",
             "path": "../src-out/Offline/"
           }, {
+            "text": "Application.js",
+            "path": "../src-out/"
+          }, {
             "text": "View.js",
             "path": "../src-out/"
           }, {
@@ -281,9 +293,6 @@
             "path": "../src-out/"
           }, {
             "text": "_RelatedViewWidgetListMixin.js",
-            "path": "../src-out/"
-          }, {
-            "text": "Application.js",
             "path": "../src-out/"
           }, {
             "text": "DateTimePicker.js",
@@ -384,6 +393,16 @@
       "src": "../min",
       "dest": "content",
       "filters": ".*(\\.css)"
+    },
+    {
+      "src": "../node_modules/@infor/sohoxi/dist/css/",
+      "dest": "content/css",
+      "filters": ".*(\\.css)"
+    },
+    {
+      "src": "../node_modules/@infor/sohoxi/dist/js/cultures/",
+      "dest": "content/javascript/cultures",
+      "filters": ".*\\.js"
     },
     {
       "src": "../libraries/dojo/dojo",

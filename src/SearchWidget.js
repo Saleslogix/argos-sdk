@@ -14,10 +14,7 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import event from 'dojo/_base/event';
-import string from 'dojo/string';
-import domClass from 'dojo/dom-class';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import getResource from './I18n';
 
@@ -53,7 +50,7 @@ const resource = getResource('searchWidget');
  * @alternateClassName SearchWidget
  * @mixins argos._Templated
  */
-const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
+const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
   /**
    * @property {Object}
    * Provides a setter for HTML node attributes, namely the value for search text
@@ -67,25 +64,17 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
   },
 
   /**
-   * @property {Boolean}
-   * Flag to enable the clear and search buttons.
-   */
-  enableButtons: false,
-
-  /**
    * @property {Simplate}
    * Simple that defines the HTML Markup
    */
-  widgetTemplate: new Simplate([
-    '<div class="search-widget">',
-    '<div class="table-layout">',
-    '<div><input type="text" placeholder="{%= $.searchText %}" name="query" class="query" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onfocus:_onFocus,onblur:_onBlur,onkeypress:_onKeyPress, onmouseup: _onMouseUp" /></div>',
-    '{% if ($.enableButtons) { %}',
-    '<div class="hasButton"><button class="clear-button" tabindex="-1" data-dojo-attach-event="onclick: _onClearClick"></button></div>',
-    '<div class="hasButton"><button class="subHeaderButton searchButton" data-dojo-attach-event="click: search">{%= $.searchText %}</button></div>',
-    '{% } %}',
-    '</div>',
-    '</div>',
+  widgetTemplate: new Simplate([`
+    <span class="searchfield-wrapper">
+      <input type="text" placeholder="{%= $.searchText %}" name="query" class="searchfield" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onkeypress:_onKeyPress" />
+      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-search"></use>
+      </svg>
+    </span>
+    `,
   ]),
 
   /**
@@ -119,7 +108,6 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
    * Sets search text to empty and removes active styling
    */
   clear: function clear() {
-    domClass.remove(this.domNode, 'search-active');
     this.set('queryValue', '');
   },
   /**
@@ -185,12 +173,12 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
       return this.formatSearchQuery(query);
     }
 
-    newQuery = string.substitute('(${0})', [hashQueries.join(') and (')]);
+    newQuery = `(${hashQueries.join(') and (')})`;
 
     additionalSearch = additionalSearch.replace(/^\s+|\s+$/g, '');
 
     if (additionalSearch) {
-      newQuery += string.substitute(' and (${0})', [this.formatSearchQuery(additionalSearch)]);
+      newQuery += ` and (${this.formatSearchQuery(additionalSearch)})`;
     }
 
     return newQuery;
@@ -216,43 +204,22 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
     return expression;
   },
   /**
-   * Clears the search input text and attempts to re-open the keyboard
-   * @param {Event} evt Click event
-   */
-  _onClearClick: function _onClearClick(evt) {
-    event.stop(evt);
-    this.clear();
-    this.queryNode.focus();
-    this.queryNode.click();
-  },
-  /**
-   * Tests to see if the search input is empty and toggles the active styling
-   */
-  _onBlur: function _onBlur() {
-    domClass.toggle(this.domNode, 'search-active', !!this.queryNode.value);
-  },
-  /**
-   * Adds the search active styling
-   */
-  _onFocus: function _onFocus() {
-    domClass.add(this.domNode, 'search-active');
-  },
-  _onMouseUp: function _onMouseUp() {
-    // Work around a chrome issue where mouseup after a focus will de-select the text
-    setTimeout(() => {
-      this.queryNode.setSelectionRange(0, 9999);
-    }, 50);
-  },
-  /**
    * Detects the enter/return key and fires {@link #search search}
    * @param {Event} evt Key press event
    */
   _onKeyPress: function _onKeyPress(evt) {
     if (evt.keyCode === 13 || evt.keyCode === 10) {
-      event.stop(evt);
+      evt.preventDefault();
+      evt.stopPropagation();
       this.queryNode.blur();
       this.search();
     }
+  },
+  /**
+   * @deprecated
+   */
+  _onClearClick: function _onClearClick() {
+    console.warn('This method is deprecated.'); // eslint-disable-line
   },
   /**
    * The event that fires when the search widget provides a search query.
@@ -300,16 +267,15 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
   disable: function disable() {
     if (this.queryNode) {
       this.queryNode.disabled = true;
-      domClass.add(this.domNode, 'disabled');
+      $(this.domNode).addClass('disabled');
     }
   },
   enable: function enable() {
     if (this.queryNode) {
       this.queryNode.disabled = false;
-      domClass.remove(this.domNode, 'disabled');
+      $(this.domNode).removeClass('disabled');
     }
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.SearchWidget', __class);
 export default __class;

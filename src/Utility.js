@@ -48,5 +48,4 @@ const __class = lang.setObject('argos.Utility', {
   sanitizeForJson: util.sanitizeForJson,
 });
 
-lang.setObject('Sage.Platform.Mobile.Utility', __class);
 export default __class;

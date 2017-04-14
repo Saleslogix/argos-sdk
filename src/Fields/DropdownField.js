@@ -14,9 +14,9 @@
  */
 
 import declare from 'dojo/_base/declare';
-import Dropdown from 'argos/Dropdown';
-import FieldManager from 'argos/FieldManager';
-import _Field from 'argos/Fields/_Field';
+import Dropdown from '../Dropdown';
+import FieldManager from '../FieldManager';
+import _Field from './_Field';
 
 const __class = declare('argos.DropdownField', [_Field, Dropdown], {
   widgetTemplate: new Simplate([

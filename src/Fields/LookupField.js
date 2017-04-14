@@ -12,16 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import array from 'dojo/_base/array';
 import declare from 'dojo/_base/declare';
-import event from 'dojo/_base/event';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
-import query from 'dojo/query';
 import utility from '../Utility';
 import _Field from './_Field';
 import FieldManager from '../FieldManager';
 import getResource from '../I18n';
+
 
 const resource = getResource('lookupField');
 
@@ -84,14 +82,35 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    *
    */
   widgetTemplate: new Simplate([
-    '{% if ($.label) { %}',
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '{% } %}',
-    '<button style="z-index: 5;" data-action="buttonClick" class="button simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}"><span aria-hidden="true">{%: $.lookupText %}</span></button>',
-    '<input data-dojo-attach-point="inputNode" type="text" {% if ($.requireSelection) { %}readonly="readonly"{% } %} />',
+    `{% if ($.label) { %}
+    <label for="{%= $.name %}"
+      {% if ($.required) { %}
+        class="required"
+      {% } %}>
+        {%: $.label %}
+    </label>
+    {% } %}
+    <div class="field-control-wrapper">
+      <button class="field-control-trigger"
+        aria-label="{%: $.lookupLabelText %}"
+        data-action="buttonClick"
+        title="{%: $.lookupText %}">
+        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+        </svg>
+      </button>
+      <input data-dojo-attach-point="inputNode"
+        type="text"
+        {% if ($.requireSelection) { %}
+        readonly="readonly"{% } %}
+        {% if ($.required) { %}
+            data-validate="required"
+            class="required"
+          {% } %}
+        />
+    </div>`,
   ]),
-
-  iconClass: 'fa fa-search fa-lg',
+  iconClass: 'search',
 
   // Localization
   /**
@@ -137,6 +156,11 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    * The default `valueKeyProperty` if `valueKeyProperty` is not defined.
    */
   keyProperty: '$key',
+  /**
+   * required should be true if the field requires input. Defaults to false.
+   * @type {Boolean}
+   */
+  required: false,
   /**
    * @property {String}
    * The default `valueTextProperty` if `valueTextProperty` is not defined.
@@ -364,13 +388,13 @@ const control = declare('argos.Fields.LookupField', [_Field], {
       tools: {
         tbar: [{
           id: 'complete',
-          cls: 'fa fa-check fa-fw fa-lg',
+          svg: 'check',
           fn: this.complete,
           scope: this,
         }, {
           id: 'cancel',
           side: 'left',
-          cls: 'fa fa-ban fa-fw fa-lg',
+          svg: 'cancel',
           fn: this.reui.back,
           scope: this.reui,
         }],
@@ -385,7 +409,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
         if (options.tools.tbar.hasOwnProperty(key)) {
           const item = options.tools.tbar[key];
           if (item.id === options.singleSelectAction) {
-            item.cls = 'invisible';
+            item.cls = 'display-none';
           }
         }
       }
@@ -396,12 +420,12 @@ const control = declare('argos.Fields.LookupField', [_Field], {
       return false;
     }
 
-    array.forEach(expand, function forEach(item) {
+    expand.forEach((item) => {
       if (this[item]) {
         options[item] = this.dependsOn // only pass dependentValue if there is a dependency
           ? this.expandExpression(this[item], dependentValue) : this.expandExpression(this[item]);
       }
-    }, this);
+    });
 
     options.dependentValue = dependentValue;
     options.title = this.title;
@@ -429,10 +453,10 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    * @param evt
    */
   _onClick: function _onClick(evt) {
-    const buttonNode = query(evt.target).closest('.button')[0];
+    const buttonNode = $(evt.target).closest('.button').get(0);
 
     if (!this.isDisabled() && (buttonNode || this.requireSelection)) {
-      event.stop(evt);
+      evt.stopPropagation();
       this.navigateToListView();
     }
   },
@@ -798,5 +822,4 @@ const control = declare('argos.Fields.LookupField', [_Field], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.LookupField', control);
 export default FieldManager.register('lookup', control);

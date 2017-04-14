@@ -1,0 +1,52 @@
+// reset soho style for listview directly in a tab
+.tab-container > .listview {
+    padding-top: 0
+}
+
+// soho applys styles to <a>
+// As of now listActionItemTemplate in listbase is not able to propogate action if action is  not defined on button
+.popupmenu a + button.popupitem {
+    font-size: 14px;
+    font-size: 1.4rem;
+    color: #1a1a1a;
+    line-height: 32px;
+    padding: 0 30px 0 10px;
+    white-space: nowrap;
+    margin: 0;
+    width: 100%;
+    text-align: left
+}
+
+// add style not supported by SoHo
+span {
+  font-size: inherit;
+}
+
+// .hyperlink is set to 14px in soho - 
+// below fix is to reset its size based on the parent where hyperlink is placed
+.hyperlink {
+  font-size: inherit !important;
+}
+
+.dropdown-mx + div > .dropdown { width: 100px }
+
+/* reset soho calendar-table with below style */
+.calendarContainer .calendar-table {
+  width: auto;
+  padding: 0;
+}
+
+// since we are using a button instead of achor tag.
+.popupmenu li.is-submenu-open, .popupmenu li.is-focused {
+    background-color: transparent;
+}
+.listview li {
+  background-color: #f0f0f0
+}
+.widget-header .btn-icon {
+  height: 25px;
+  min-height: 25px;
+  + .widget-title {
+    width: calc(~'100% - 90px');
+  }
+}
