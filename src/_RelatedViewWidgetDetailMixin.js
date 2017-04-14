@@ -28,12 +28,12 @@ const __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
     if (layout.relatedView) {
       rowNode = $('#related-content-views', sectionNode)[0];
       if (!rowNode) {
-        rowNode = $(this.relatedContentViewsTemplate.apply(data, this));
+        rowNode = $(this.relatedContentViewsTemplate.apply(data, this))[0];
         $(sectionNode).append(rowNode);
       }
 
       const docfrag = document.createDocumentFragment();
-      docfrag.appendChild(rowNode);
+      $(docfrag).append(rowNode);
       this.onProcessRelatedViews(layout.relatedView, rowNode, entry);
       if (docfrag.childNodes.length > 0) {
         $(sectionNode).append(docfrag);

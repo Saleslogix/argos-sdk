@@ -56,7 +56,7 @@ const __class = declare('argos.RelatedViewManager', null, {
           relatedViewWidget.parentNode = contentNode;
           this.relatedViews[relatedViewWidget.id] = relatedViewWidget;
           relatedViewWidget.onInit();
-          relatedViewWidget.placeAt(contentNode, 'last');
+          $(contentNode).append($(relatedViewWidget.domNode));
         }
       }
     } catch (error) {
