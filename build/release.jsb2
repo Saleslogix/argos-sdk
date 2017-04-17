@@ -262,6 +262,9 @@
             "text": "MainToolbar.js",
             "path": "../src-out/"
           }, {
+            "text": "LanguageService.js",
+            "path": "../src-out/"
+          }, {
             "text": "_DetailOfflineMixin.js",
             "path": "../src-out/Offline/"
           }, {
@@ -377,7 +380,7 @@
     {
       "src": "../localization/locales/argos",
       "dest": "localization/locales/argos",
-      "filters": ".*(\\.l20n)",
+      "filters": ".*(\\.l20n)"
     },
     {
       "src": "../libraries/font-awesome-4.4.0/fonts",
