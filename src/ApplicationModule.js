@@ -29,7 +29,12 @@ import './Models/Briefcase/Offline';
  * @requires argos.Application
  */
 export default class ApplicationModule {
-  constructor() {
+  constructor(options = {}) {
+    for (const config in options) {
+      if (options.hasOwnProperty(config)) {
+        this[config] = options[config];
+      }
+    }
     /**
      * @property {Object}
      * The {@link App App} instance for the application
