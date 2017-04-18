@@ -44,6 +44,9 @@ const __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
 
     return rowNode;
   },
+  getRelatedViewId: function getRelatedViewId(relatedView) {
+    return `${this.id}_${relatedView.id}`;
+  },
   /**
    * Gets the related view manager for a related view definition.
    * If a manager is not found a new Related View Manager is created and returned.
@@ -58,7 +61,7 @@ const __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
     if (this.relatedViewManagers[relatedView.id]) {
       relatedViewManager = this.relatedViewManagers[relatedView.id];
     } else {
-      relatedView.id = `${this.id}_${relatedView.id}`;
+      relatedView.id = this.getRelatedViewId(relatedView);
       const relatedViewOptions = {};
       lang.mixin(relatedViewOptions, relatedView);
 
