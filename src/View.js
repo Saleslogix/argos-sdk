@@ -425,19 +425,21 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       this.transitionComplete(to, options);
       $('body').removeClass('transition');
 
-      $(from).trigger('aftertransition', {
+      $(from).trigger({
         out: true,
         tag: options.tag,
         data: options.data,
         bubbles: true,
         cancelable: true,
+        type: 'aftertransition',
       });
-      $(to).trigger('aftertransition', {
+      $(to).trigger({
         out: false,
         tag: options.tag,
         data: options.data,
         bubbles: true,
         cancelable: true,
+        type: 'aftertransition',
       });
 
       if (options.complete) {
@@ -450,28 +452,31 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     // dispatch an 'show' event to let the page be aware that is being show as the result of an external
     // event (i.e. browser back/forward navigation).
     if (options.external) {
-      $(to).trigger('show', {
+      $(to).trigger({
         tag: options.tag,
         data: options.data,
         bubbles: true,
         cancelable: true,
+        type: 'show',
       });
     }
 
-    $(from).trigger('beforetransition', {
+    $(from).trigger({
       out: true,
       tag: options.tag,
       data: options.data,
       bubbles: true,
       cancelable: true,
+      type: 'beforetransition',
     });
 
-    $(to).trigger('beforetransition', {
+    $(to).trigger({
       out: false,
       tag: options.tag,
       data: options.data,
       bubbles: true,
       cancelable: true,
+      type: 'beforetransition',
     });
 
     this.unselect(from);
@@ -546,55 +551,61 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       options.scroll = !options.reverse;
     }
 
-    $(p).trigger('load', {
+    $(p).trigger({
       bubbles: false,
       cancelable: true,
+      type: 'load',
     });
 
     const from = App.getCurrentPage();
 
     if (from) {
-      $(from).trigger('blur', {
+      $(from).trigger({
         bubbles: false,
         cancelable: true,
+        type: 'blur',
       });
     }
 
     App.setCurrentPage(p);
 
-    $(p).trigger('focus', {
+    $(p).trigger({
       bubbles: false,
       cancelable: true,
+      type: 'focus',
     });
 
     if (from && $(p).attr('selected') !== 'true') {
       if (options.reverse) {
-        $(p).trigger('unload', {
+        $(p).trigger({
           bubbles: false,
           cancelable: true,
+          type: 'unload',
         });
       }
 
       window.setTimeout(this.transition.bind(this), App.checkOrientationTime, from, p, options);
     } else {
-      $(p).trigger('beforetransition', {
+      $(p).trigger({
         out: false,
         tag: options.tag,
         data: options.data,
         bubbles: true,
         cancelable: true,
+        type: 'beforetransition',
       });
 
       this.select(p);
 
       this.transitionComplete(p, options);
 
-      $(p).trigger('aftertransition', {
+      $(p).trigger({
         out: false,
         tag: options.tag,
         data: options.data,
         bubbles: true,
         cancelable: true,
+        type: 'aftertransition',
       });
     }
   },
