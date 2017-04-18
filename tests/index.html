@@ -115,6 +115,7 @@
       ctx.registerLocales(defaultLocale, supportedLocales);
       ctx.requestLocales(currentLocale);
       window.localeContext = ctx;
+      window.regionalContext = ctx;
       window.defaultLocaleContext = ctx;
       return ctx;
     }
