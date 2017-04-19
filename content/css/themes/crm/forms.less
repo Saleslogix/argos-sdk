@@ -4,6 +4,10 @@
 @import "variables.less";
 @import "mixins.less";
 
+.switch input:empty{
+  width: 5px;
+}
+
 input, textarea {
     width: 100%;
 }
@@ -105,7 +109,7 @@ input, textarea {
     outline: 0;
     position: absolute;
     width: 34px;
-} 
+}
 .field-control-trigger .icon {
     background-color: inherit;
     fill: #5c5c5c;
