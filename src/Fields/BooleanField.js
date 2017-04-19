@@ -68,6 +68,23 @@ const control = declare('argos.Fields.BooleanField', [Field], {
    * Value used during dirty/modified comparison
    */
   originalValue: null,
+
+  initSoho: function initSoho() {
+    $(this.toggleNode).on('click', this._onClick.bind(this));
+  },
+  /**
+   * Fires with the toggle switch is pressed and sets the value to
+   * the opposite of the current value
+   * @param {Event} evt The click/tap event
+   */
+  _onClick: function _onClick(/* evt*/) {
+    if (this.isDisabled()) {
+      return;
+    }
+
+    const toggledValue = this.getValue();
+    this.setValue(toggledValue);
+  },
   /**
    * Returns the current toggled state
    * @return {Boolean}
