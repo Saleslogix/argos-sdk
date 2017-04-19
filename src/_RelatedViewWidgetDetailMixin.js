@@ -17,7 +17,7 @@ const __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
    */
   relatedContentViewsTemplate: new Simplate([
     '<li class="related-view-detail-content {%= $.cls %}">',
-    '<div id="related-content-views"></div>',
+    '<li id="related-content-views"></li>',
     '</li>',
   ]),
   contextSnapShotTemplate: new Simplate([
