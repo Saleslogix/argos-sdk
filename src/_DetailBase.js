@@ -182,7 +182,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
     '<label>{%: $.label %}</label>',
     '<span class="data">',
-    '<a data-action="activateRelatedEntry" data-view="{%= $.view %}" data-context="{%: $.context %}" data-descriptor="{%: $.descriptor || $.value %}">',
+    '<a class="hyperlink" data-action="activateRelatedEntry" data-view="{%= $.view %}" data-context="{%: $.context %}" data-descriptor="{%: $.descriptor || $.value %}">',
     '{%= $.value %}',
     '</a>',
     '</span>',
