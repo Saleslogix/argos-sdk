@@ -1057,7 +1057,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         const labelNode = $('.related-item-label', rowNode).first();
         if (labelNode.length) {
           $('.busy-xs', labelNode).remove();
-          labelNode.after(`<span class="info badge">${result}</span>`);
+          labelNode.before(`<span class="info badge">${result}</span>`);
         } else {
           console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
         }
