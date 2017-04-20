@@ -212,7 +212,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       <div class="widget">
         <div class="widget-header">
           {%! $$.itemIconTemplate %}<h2 class="widget-title">{%: $$.utility.getValue($, $$.labelProperty) %}</h2>
-          {% if($$.visibleActions.length > 0) { %}
+          {% if($$.visibleActions.length > 0 && $$.enableActions) { %}
             <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $[$$.idProperty] %}">
               <span class="audible">Actions</span>
               <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
