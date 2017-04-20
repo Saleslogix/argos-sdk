@@ -1,6 +1,15 @@
 @import "variables.less";
 @import "mixins.less";
 
+/* Soho override, this might mess up the grid later on.
+   Give detail views padding another way if it does.
+*/
+@media (min-width: 767px) {
+  .column {
+    padding: 0 20px;
+  }
+}
+
 .card, .widget {
   min-height: auto;
     .card-content {
