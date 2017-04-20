@@ -43,7 +43,6 @@ const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
   onSelectScope: null,
   _eventConnections: null,
   _list: null,
-  _orientation: null,
   _selected: null,
   items: null,
   itemMustExist: true,
