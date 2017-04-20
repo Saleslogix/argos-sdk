@@ -208,13 +208,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render a row in the view.  This template includes {@link #itemTemplate}.
    */
   rowTemplate: new Simplate([`
-    <div data-key="{%= $[$$.idProperty] %}">
+    <div data-key="{%= $$.getItemActionKey($) %}">
       <div class="widget">
         <div class="widget-header">
           {%! $$.itemIconTemplate %}
           <h2 class="widget-title">{%: $$.getTitle($, $$.labelProperty) %}</h2>
           {% if($$.visibleActions.length > 0 && $$.enableActions) { %}
-            <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $[$$.idProperty] %}">
+            <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $$.getItemActionKey($) %}">
               <span class="audible">Actions</span>
               <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
                 <use xlink:href="#icon-more"></use>
