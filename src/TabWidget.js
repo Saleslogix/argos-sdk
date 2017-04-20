@@ -31,7 +31,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
    */
   tabListItemTemplate: new Simplate([
     '<li class="tab" role="presentation">',
-    '<a href="#{%: $.name %}">{%: ($.title || $.options.title) %}</a>',
+    '<a href="#{%: $$.id %}_{%: $.name %}">{%: ($.title || $.options.title) %}</a>',
     '</li>',
   ]),
   /**
@@ -54,6 +54,8 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * Array holding the tab dom elements
    */
   tabs: null,
+
+  _sohoTabs: null,
   /**
    * Sets the parentNode for the tabList
    */
@@ -73,7 +75,8 @@ const __class = declare('argos.TabWidget', [_Templated], {
     $(tabs).each((i, tab) => {
       $(this.tabList).append(tab);
     }, this);
-    $(this.tabContainer).tabs();
+    const tempTabs = $(this.tabContainer).tabs();
+    this._sohoTabs = tempTabs.data('tabs');
     return this;
   },
   /**
@@ -81,7 +84,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
   */
   clearTabs: function clearTabs() {
     if (this.tabList && this.tabs) {
-      $(this.tabContainer).data('tabs').destroy();
+      this._sohoTabs.destroy();
       $(this.tabList).empty();
       $('.detailContent', this.tabContainer).remove();
     }
