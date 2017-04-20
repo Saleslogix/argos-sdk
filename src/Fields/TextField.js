@@ -144,13 +144,15 @@ const control = declare('argos.Fields.TextField', [_Field], {
 
   /**
    * Extends the parent implementation to optionally bind the `onkeypress` event if `validInputOnly`
-   * is true.
+   * is true. Binds the 'onblur' and 'keyup' events.
    */
   init: function init() {
     this.inherited(arguments);
     if (this.validInputOnly) {
       this.connect(this.inputNode, 'onkeypress', this._onKeyPress);
     }
+    this.connect(this.inputNode, 'onblur', this._onBlur);
+    this.connect(this.inputNode, 'onkeyup', this._onKeyUp);
   },
   /**
    * Extends the parent implementation to set the disabled attribute of the input to false
