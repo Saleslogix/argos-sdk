@@ -36,6 +36,11 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful, _Customiza
   entityName: 'Entity',
   entityDisplayName: 'Entity',
   entityDisplayNamePlural: 'Entities',
+  /**
+   * @cfg {Boolean}
+   * Enables the use of the customization engine on this model instance
+   */
+  enableCustomizations: true,
   modelName: null,
   modelType: null,
   iconClass: 'fa fa-cloud fa-2x',
