@@ -212,7 +212,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       <div class="widget">
         <div class="widget-header">
           {%! $$.itemIconTemplate %}<h2 class="widget-title">{%: $$.utility.getValue($, $$.labelProperty) %}</h2>
-          {% if($$.visibleActions.length > 0) { %}
+          {% if($$.visibleActions.length > 0 && $$.enableActions) { %}
             <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $[$$.idProperty] %}">
               <span class="audible">Actions</span>
               <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
@@ -222,7 +222,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
             {%! $$.listActionTemplate %}
           {% } %}
         </div>
-        <div class="card-content" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $$.utility.getValue($, $$.labelProperty) %}">
+        <div class="card-content" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $$.getItemDescriptor($) %}">
           {%! $$.itemRowContentTemplate %}
         </div>
       </div>
@@ -1047,7 +1047,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   _applyStateToActions: function _applyStateToActions(selection, rowNode) {
     const actionRow = $(rowNode).find('.actions-row')[0];
-    const loadingPopupWidth = parseInt($(actionRow).parent().css('width'), 10);
     $(actionRow).empty();
 
     for (let i = 0; i < this.visibleActions.length; i++) {
@@ -1069,16 +1068,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         .appendTo(actionRow);
     }
 
-    // Manually repositioning SoHo popup menu which is in open state right now. Soho.Updated would destroy and recreate the popup dom which is not desired.
-    // reposition the popup menu - since it was showing loading and the dimensions would change after the content is updated
-    const widthDelta = (parseInt($(actionRow).parent().css('width'), 10) - loadingPopupWidth);
-    $(actionRow).parent().css({
-      left: parseInt($(actionRow).parent().css('left'), 10) - widthDelta,
-    });
-    // reposition arrow icon on popup
-    $(actionRow).next().css({
-      'margin-left': parseInt($(actionRow).next().css('margin-left'), 10) + widthDelta / 2,
-    });
+    const popupmenu = $(rowNode).find('.btn-actions')[0];
+    $(popupmenu).data('popupmenu').position();
   },
   _getActionById: function _getActionById(id) {
     return this.actions.filter((action) => {

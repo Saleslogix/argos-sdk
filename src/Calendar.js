@@ -353,8 +353,8 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
     for (let i = thisYear - 10; i <= thisYear + 10; i++) {
       items.push(
         {
-          value: i,
-          key: i,
+          value: `${i}`,
+          key: `${i}`,
         }
       );
     }

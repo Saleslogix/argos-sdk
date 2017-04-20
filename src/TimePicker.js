@@ -133,11 +133,11 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
   removeListeners: function removeListeners() {
     $(this.meridiemNode.children[0]).off('click');
   },
-  setMeridiem: function setMeridiem(value) {
-    if (value) {
-      $(this.meridiemNode).addClass('toggleStateOn');
-    } else {
-      $(this.meridiemNode).removeClass('toggleStateOn');
+  setMeridiem: function setMeridiem(value, target) {
+    $(this.meridiemNode).toggleClass('toggleStateOn', value);
+    if (target) {
+      $(target).next().html(value ? this.pmText : this.amText);
+      $(target).prop('checked', value);
     }
     return this;
   },
@@ -188,22 +188,15 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
     this.createHourDropdown(`${hour}`)
         .createMinuteDropdown(`${minutes}`);
     if (!App.is24HourClock()) {
-      this.setMeridiem(meridiemToggled);
+      this.setMeridiem(meridiemToggled, this.meridiemNode.children[0]);
       $(this.meridiemNode.children[0]).on('click', this.toggleMeridiem.bind(this));
     } else {
-      $(this.meridiemNode).css('display', 'none');
+      $(this.meridiemNode).hide();
     }
   },
   toggleMeridiem: function toggleMeridiem({ target }) {
     this._showAM = !this._showAM;
-    if (target) {
-      $(this.meridiemNode).toggleClass('toggleStateOn');
-      if (this._showAM) {
-        $(target).next().html(this.pmText);
-      } else {
-        $(target).next().html(this.amText);
-      }
-    }
+    this.setMeridiem(this._showAM, target);
   },
   _isTimeless: function _isTimeless() {
     return (this.options && this.options.timeless) || this.timeless;
