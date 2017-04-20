@@ -85,7 +85,7 @@ const __class = declare('argos._DraggableBase', null, {
         this._previousElement.previousMargin = $(this._previousElement).css('margin-bottom').replace('px', '');
         this.setMargins(this._previousElement, 'bottom');
       } else {
-        this._nextElement.previousMargin = $(this._nextElement).css('margin-top');
+        this._nextElement.previousMargin = $(this._nextElement).css('margin-top').replace('px', '');
         this.setMargins(this._nextElement, 'top');
       }
     }
