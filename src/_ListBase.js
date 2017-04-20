@@ -211,7 +211,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     <div data-key="{%= $[$$.idProperty] %}">
       <div class="widget">
         <div class="widget-header">
-          {%! $$.itemIconTemplate %}<h2 class="widget-title">{%: $$.utility.getValue($, $$.labelProperty) %}</h2>
+          {%! $$.itemIconTemplate %}
+          <h2 class="widget-title">{%: $$.getTitle($, $$.labelProperty) %}</h2>
           {% if($$.visibleActions.length > 0 && $$.enableActions) { %}
             <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $[$$.idProperty] %}">
               <span class="audible">Actions</span>
@@ -575,6 +576,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   entityProperty: '',
   versionProperty: '',
   isRefreshing: false,
+  /**
+   * Sets the title to card
+   */
+  getTitle: function getTitle(entry, labelProperty) {
+    return this.utility.getValue(entry, labelProperty);
+  },
   /**
    * Setter method for the selection model, also binds the various selection model select events
    * to the respective List event handler for each.
@@ -1643,11 +1650,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
       try {
         $.when(queryResults.total)
-        .done(() => {
-          this._onQueryTotal(queryResults.total);
+        .done((result) => {
+          this._onQueryTotal(result);
         })
-        .fail(() => {
-          this._onQueryTotalError(queryResults.total);
+        .fail((error) => {
+          this._onQueryTotalError(error);
         });
 
         /* todo: move to a more appropriate location */
