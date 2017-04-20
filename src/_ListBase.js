@@ -222,7 +222,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
             {%! $$.listActionTemplate %}
           {% } %}
         </div>
-        <div class="card-content" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $$.getItemDescriptor($) %}">
+        <div class="card-content" data-action="activateEntry" data-key="{%= $$.getItemActionKey($) %}" data-descriptor="{%: $$.getItemDescriptor($) %}">
           {%! $$.itemRowContentTemplate %}
         </div>
       </div>
