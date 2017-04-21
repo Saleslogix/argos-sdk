@@ -542,6 +542,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The default search term to use
    */
   defaultSearchTerm: '',
+
+  /**
+   * @property {String}
+   * The current search term being used for the current requestData().
+   */
+  currentSearchExpression: '',
   /**
    * @property {Object}
    * The selection model for the view
@@ -1529,6 +1535,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     if (!store && !this._model) {
       console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?'); // eslint-disable-line
       return null;
+    }
+
+    if (this.searchWidget) {
+      this.currentSearchExpression = this.searchWidget.getSearchExpression();
     }
 
     this._setLoading();
