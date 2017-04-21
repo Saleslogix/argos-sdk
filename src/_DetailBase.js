@@ -67,7 +67,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel scrollable {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '{%! $.loadingTemplate %}',
     '{%! $.quickActionTemplate %}',
     '<div class="column" data-dojo-attach-point="contentNode">',

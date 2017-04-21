@@ -91,17 +91,17 @@ const __class = declare('argos._PullToRefreshMixin', null, {
       return;
     }
 
+    if (dragNode) {
+      this.dragNode = dragNode;
+    } else {
+      this.dragNode = dragNode = scrollerNode;
+    }
+
     this.pullRefreshBanner = $(this.pullRefreshBannerTemplate.apply(this)).get(0);
     $(dragNode).before(this.pullRefreshBanner);
 
     // Pull down to refresh touch handles
     this.scrollerNode = scrollerNode;
-
-    if (dragNode) {
-      this.dragNode = dragNode;
-    } else {
-      this.dragNode = scrollerNode;
-    }
 
     const style = {
       top: $(dragNode).position().top,
@@ -158,7 +158,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
           // The "done" observable is a combination of touch end and touch cancel.
           // We should restore the UI state and invoke callbacks here.
           $(this.dragNode).css({
-            'margin-top': data.topCss,
+            top: data.topCss,
             'overflow-y': data.overflowCssY,
             'overflow-x': data.overflowCssX,
           });
@@ -181,7 +181,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     dragging.subscribe((data) => {
       data.evt.preventDefault();
       $(this.dragNode).css({
-        'margin-top': `${data.top}px`,
+        top: `${data.top}px`,
         overflow: 'hidden',
       });
 
