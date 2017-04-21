@@ -79,44 +79,42 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   widgetTemplate: new Simplate([`
     <div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
-      <div class="toolbar has-title-button" role="toolbar" aria-label="List Toolbar">
-        <div class="title">
-          <h1></h1>
-        </div>
-        <div class="buttonset" data-dojo-attach-point="toolNode">
-          <div data-dojo-attach-point="searchNode"></div>
-          {% if($.hasSettings) { %}
-          <button class="btn" type="button" data-action="openSettings" aria-controls="list_toolbar_setting_{%= $.id %}">
-            <svg class="icon" role="presentation"><use xlink:href="#icon-settings"></use></svg>
-            <span class="audible">List Settings</span>
-          </button>
-          {% } %}
-        </div>
-      </div>
-      {% if ($$.isNavigationDisabled()) { %}
-      <div class="contextual-toolbar toolbar is-hidden">
-        <div class="buttonset">
-          <button class="btn-tertiary" title="Assign Selected Items" type="button">Assign</button>
-          <button class="btn-tertiary" id="remove" title="Remove Selected Items" type="button">Remove</button>
-        </div>
-      </div>
-      {% } %}
-      <div class="column">
-        <div class="{% if ($$.isNavigationDisabled()) { %} is-multiselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
+      <div class="page-container scrollable{% if ($$.isNavigationDisabled()) { %} is-multiselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
+        {% if ($$.isNavigationDisabled()) { %}
+        data-selectable="multiple"
+        {% } else { %}
+        data-selectable="false"
+        {% } %}
+        data-dojo-attach-point="scrollerNode">
+          <div class="toolbar has-title-button" role="toolbar" aria-label="List Toolbar">
+            <div class="title">
+              <h1></h1>
+            </div>
+            <div class="buttonset" data-dojo-attach-point="toolNode">
+              <div data-dojo-attach-point="searchNode"></div>
+              {% if($.hasSettings) { %}
+              <button class="btn" type="button" data-action="openSettings" aria-controls="list_toolbar_setting_{%= $.id %}">
+                <svg class="icon" role="presentation"><use xlink:href="#icon-settings"></use></svg>
+                <span class="audible">List Settings</span>
+              </button>
+              {% } %}
+            </div>
+          </div>
           {% if ($$.isNavigationDisabled()) { %}
-          data-selectable="multiple"
-          {% } else { %}
-          data-selectable="false"
+          <div class="contextual-toolbar toolbar is-hidden">
+            <div class="buttonset">
+              <button class="btn-tertiary" title="Assign Selected Items" type="button">Assign</button>
+              <button class="btn-tertiary" id="remove" title="Remove Selected Items" type="button">Remove</button>
+            </div>
+          </div>
           {% } %}
-          data-dojo-attach-point="scrollerNode">
-          {%! $.emptySelectionTemplate %}
-          {% if ($$.isCardView) { %}
-            <div role="presentation" data-dojo-attach-point="contentNode"></div>
-          {% } else { %}
-            <ul class="list-content" role="presentation" data-dojo-attach-point="contentNode"></ul>
-          {% } %}
-          {%! $.moreTemplate %}
-        </div>
+        {%! $.emptySelectionTemplate %}
+        {% if ($$.isCardView) { %}
+          <div role="presentation" data-dojo-attach-point="contentNode"></div>
+        {% } else { %}
+          <ul class="list-content" role="presentation" data-dojo-attach-point="contentNode"></ul>
+        {% } %}
+        {%! $.moreTemplate %}
       </div>
     </div>
     `,
@@ -641,8 +639,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   postCreate: function postCreate() {
     this.inherited(arguments);
 
-    const scrollerNode = this.get('scroller');
-
     if (this._selectionModel === null) {
       this.set('selectionModel', new ConfigurableSelectionModel());
     }
@@ -667,7 +663,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     this.clear();
 
-    this.initPullToRefresh(this.app.getViewContainerNode(), scrollerNode);
+    this.initPullToRefresh(this.scrollerNode);
   },
   shouldStartPullToRefresh: function shouldStartPullToRefresh() {
     // Get the base results
@@ -1252,7 +1248,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   _onRefresh: function _onRefresh(/* options*/) {},
   onScroll: function onScroll(/* evt*/) {
-    const scrollerNode = App.getViewContainerNode();
+    const scrollerNode = this.scrollerNode;
     const height = $(scrollerNode).height(); // viewport height (what user sees)
     const scrollHeight = scrollerNode.scrollHeight; // Entire container height
     const scrollTop = scrollerNode.scrollTop; // How far we are scrolled down
@@ -1687,7 +1683,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       }
 
       if (!this._onScrollHandle && this.continuousScrolling) {
-        this._onScrollHandle = this.connect(App.getViewContainerNode(), 'onscroll', this.onScroll);
+        this._onScrollHandle = this.connect(this.scrollerNode, 'onscroll', this.onScroll);
       }
 
       this.onContentChange();
