@@ -694,8 +694,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         formatSearchQuery: this.formatSearchQuery.bind(this),
       });
     }
-
-    this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
   },
   /**
    * Extends dijit Widget to destroy the search widget before destroying the view.
@@ -1940,6 +1938,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     if (this.isRefreshing) {
       return;
     }
+    this.createActions(this._createCustomizedLayout(this.createSystemActionLayout(this.createActionLayout()), 'actions'));
     this.isRefreshing = true;
     this.query = this.getSearchQuery() || this.query;
     this.requestData();
