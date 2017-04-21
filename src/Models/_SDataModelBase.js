@@ -59,7 +59,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     return options && (options.id || options.key);
   },
   getPicklists: function getPicklists() {
-    return App.picklistService.requestPicklistsFromArray(this.picklists.map(picklist => picklist.name));
+    return App.picklistService.requestPicklistsFromArray(this.picklists);
   },
   buildQueryExpression: function _buildQueryExpression(query, options) {
     const passed = options && (options.query || options.where);
