@@ -926,7 +926,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   invokeActionItemBy: function invokeActionItemBy(actionPredicate, key) {
     const actions = this.visibleActions.filter(actionPredicate);
     const selection = this.selectEntrySilent(key);
-    this.checkActionState(); // TODO: validate this flow
+    this.checkActionState();
     actions.forEach((action) => {
       this._invokeAction(action, selection);
     });
@@ -1002,7 +1002,26 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       }
     }
 
-    this._applyStateToActions(selection, rowNode);
+    this._applyStateToActions(selection);
+    this._updateQuickActions(rowNode);
+  },
+  _updateQuickActions: function _updateQuickActions(rowNode) {
+    if (!rowNode) {
+      return;
+    }
+    const actionRow = $(rowNode).find('.actions-row')[0];
+    $(actionRow).empty();
+
+    for (let i = 0; i < this.visibleActions.length; i++) {
+      const action = this.visibleActions[i];
+      $(action.templateDom)
+          .clone()
+          .toggleClass('toolButton-disabled', !action.isEnabled)
+          .appendTo(actionRow);
+    }
+
+    const popupmenu = $(rowNode).find('.btn-actions')[0];
+    $(popupmenu).data('popupmenu').position();
   },
   getQuickActionPrefs: function getQuickActionPrefs() {
     return this.app && this.app.preferences && this.app.preferences.quickActions;
@@ -1052,10 +1071,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * action items `enabled` property.
    * @param {Object} selection
    */
-  _applyStateToActions: function _applyStateToActions(selection, rowNode) {
-    const actionRow = $(rowNode).find('.actions-row')[0];
-    $(actionRow).empty();
-
+  _applyStateToActions: function _applyStateToActions(selection) {
     for (let i = 0; i < this.visibleActions.length; i++) {
       // The visible action is from our local storage preferences, where the action from the layout
       // contains functions that will get stripped out converting it to JSON, get the original action
@@ -1069,14 +1085,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       if (!action.hasAccess) {
         action.isEnabled = false;
       }
-      $(visibleAction.templateDom)
-        .clone()
-        .toggleClass('toolButton-disabled', !action.isEnabled)
-        .appendTo(actionRow);
     }
-
-    const popupmenu = $(rowNode).find('.btn-actions')[0];
-    $(popupmenu).data('popupmenu').position();
   },
   _getActionById: function _getActionById(id) {
     return this.actions.filter((action) => {
