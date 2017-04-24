@@ -629,10 +629,18 @@ export default class Application {
   }
 
   hideApplicationMenuOnLarge() {
-    this.applicationmenu.settings.openOnLarge = true;
+    this.applicationmenu.settings.openOnLarge = false;
     if (this.applicationmenu.isLargerThanBreakpoint()) {
       this.applicationmenu.closeMenu();
     }
+  }
+
+  hideApplicationMenu() {
+    this.applicationmenu.closeMenu();
+  }
+
+  showApplicationMenu() {
+    this.applicationmenu.openMenu();
   }
 
   getReducer() {
