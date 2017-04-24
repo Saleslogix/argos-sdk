@@ -272,7 +272,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render the single list action row.
    */
   listActionTemplate: new Simplate([
-    '<ul data-dojo-attach-point="actionsNode" class="actions-row popupmenu actions top">',
+    '<ul id="popupmenu-{%= $$.getItemActionKey($) %}" data-dojo-attach-point="actionsNode" class="actions-row popupmenu actions top">',
     '{%! $$.loadingTemplate %}',
     '</ul>',
   ]),
@@ -321,13 +321,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render item indicator
    */
   itemIndicatorTemplate: new Simplate([
-    '<span{% if ($.iconCls) { %} class="{%= $.iconCls %}" {% } %}>',
-    '{% if ($.showIcon === false) { %}',
-    '{%: $.valueText %}',
-    '{% } else if ($.indicatorIcon && !$.iconCls) { %}',
-    '<img src="{%= $.indicatorIcon %}" alt="{%= $.label %}" />',
-    '{% } %}',
-    '</span>',
+    '<button type="button" class="btn-icon hide-focus" title="{%= $.label %}">',
+    `<svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+        <use xlink:href="#icon-{%= $.cls %}" />
+      </svg>`,
+    '</button>',
   ]),
   /**
    * @property {HTMLElement}
@@ -1002,26 +1000,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       }
     }
 
-    this._applyStateToActions(selection);
-    this._updateQuickActions(rowNode);
-  },
-  _updateQuickActions: function _updateQuickActions(rowNode) {
-    if (!rowNode) {
-      return;
-    }
-    const actionRow = $(rowNode).find('.actions-row')[0];
-    $(actionRow).empty();
-
-    for (let i = 0; i < this.visibleActions.length; i++) {
-      const action = this.visibleActions[i];
-      $(action.templateDom)
-          .clone()
-          .toggleClass('toolButton-disabled', !action.isEnabled)
-          .appendTo(actionRow);
-    }
-
-    const popupmenu = $(rowNode).find('.btn-actions')[0];
-    $(popupmenu).data('popupmenu').position();
+    this._applyStateToActions(selection, rowNode);
   },
   getQuickActionPrefs: function getQuickActionPrefs() {
     return this.app && this.app.preferences && this.app.preferences.quickActions;
@@ -1071,7 +1050,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * action items `enabled` property.
    * @param {Object} selection
    */
-  _applyStateToActions: function _applyStateToActions(selection) {
+  _applyStateToActions: function _applyStateToActions(selection, rowNode) {
+    let actionRow;
+    if (rowNode) {
+      actionRow = $(rowNode).find('.actions-row')[0];
+      $(actionRow).empty();
+    }
+
     for (let i = 0; i < this.visibleActions.length; i++) {
       // The visible action is from our local storage preferences, where the action from the layout
       // contains functions that will get stripped out converting it to JSON, get the original action
@@ -1085,6 +1070,17 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       if (!action.hasAccess) {
         action.isEnabled = false;
       }
+      if (rowNode) {
+        $(visibleAction.templateDom)
+          .clone()
+          .toggleClass('toolButton-disabled', !action.isEnabled)
+          .appendTo(actionRow);
+      }
+    }
+
+    if (rowNode) {
+      const popupmenu = $(rowNode).find('.btn-actions')[0];
+      $(popupmenu).data('popupmenu').position();
     }
   },
   _getActionById: function _getActionById(id) {
