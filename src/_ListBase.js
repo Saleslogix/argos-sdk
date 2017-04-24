@@ -272,7 +272,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render the single list action row.
    */
   listActionTemplate: new Simplate([
-    '<ul data-dojo-attach-point="actionsNode" class="actions-row popupmenu actions top">',
+    '<ul id="popupmenu-{%= $$.getItemActionKey($) %}" data-dojo-attach-point="actionsNode" class="actions-row popupmenu actions top">',
     '{%! $$.loadingTemplate %}',
     '</ul>',
   ]),
@@ -321,13 +321,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render item indicator
    */
   itemIndicatorTemplate: new Simplate([
-    '<span{% if ($.iconCls) { %} class="{%= $.iconCls %}" {% } %}>',
-    '{% if ($.showIcon === false) { %}',
-    '{%: $.valueText %}',
-    '{% } else if ($.indicatorIcon && !$.iconCls) { %}',
-    '<img src="{%= $.indicatorIcon %}" alt="{%= $.label %}" />',
-    '{% } %}',
-    '</span>',
+    '<button type="button" class="btn-icon hide-focus" title="{%= $.label %}">',
+    `<svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+        <use xlink:href="#icon-{%= $.cls %}" />
+      </svg>`,
+    '</button>',
   ]),
   /**
    * @property {HTMLElement}
@@ -926,7 +924,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   invokeActionItemBy: function invokeActionItemBy(actionPredicate, key) {
     const actions = this.visibleActions.filter(actionPredicate);
     const selection = this.selectEntrySilent(key);
-    this.checkActionState(); // TODO: validate this flow
+    this.checkActionState();
     actions.forEach((action) => {
       this._invokeAction(action, selection);
     });
@@ -1053,8 +1051,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} selection
    */
   _applyStateToActions: function _applyStateToActions(selection, rowNode) {
-    const actionRow = $(rowNode).find('.actions-row')[0];
-    $(actionRow).empty();
+    let actionRow;
+    if (rowNode) {
+      actionRow = $(rowNode).find('.actions-row')[0];
+      $(actionRow).empty();
+    }
 
     for (let i = 0; i < this.visibleActions.length; i++) {
       // The visible action is from our local storage preferences, where the action from the layout
@@ -1069,14 +1070,18 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       if (!action.hasAccess) {
         action.isEnabled = false;
       }
-      $(visibleAction.templateDom)
-        .clone()
-        .toggleClass('toolButton-disabled', !action.isEnabled)
-        .appendTo(actionRow);
+      if (rowNode) {
+        $(visibleAction.templateDom)
+          .clone()
+          .toggleClass('toolButton-disabled', !action.isEnabled)
+          .appendTo(actionRow);
+      }
     }
 
-    const popupmenu = $(rowNode).find('.btn-actions')[0];
-    $(popupmenu).data('popupmenu').position();
+    if (rowNode) {
+      const popupmenu = $(rowNode).find('.btn-actions')[0];
+      $(popupmenu).data('popupmenu').position();
+    }
   },
   _getActionById: function _getActionById(id) {
     return this.actions.filter((action) => {
