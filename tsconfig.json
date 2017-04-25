@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "declaration": false,
+        "lib": ["es6", "dom"],
+        "module": "es6",
+        "moduleResolution": "node",
+        "outDir": "./ts-out",
+        "sourceMap": true,
+        "target": "es5",
+        "types": [
+          "jquery",
+          "node"
+        ],
+        "typeRoots": [
+          "node_modules/@types"
+        ]
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}

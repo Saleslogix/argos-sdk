@@ -25,6 +25,7 @@ obj/
 [Dd]ebug*/
 [Rr]elease*/
 .vscode/*
+ts-out/*
 
 #Tooling
 _ReSharper*/

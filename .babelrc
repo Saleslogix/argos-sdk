@@ -10,7 +10,7 @@
       "strict": false
     }]
   ],
-  "sourceRoot": "src",
+  "sourceRoot": "ts-out",
   "moduleRoot": "argos",
   "moduleIds": true
 }
