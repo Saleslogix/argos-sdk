@@ -23,6 +23,7 @@ import SearchWidget from './SearchWidget';
 import ConfigurableSelectionModel from './ConfigurableSelectionModel';
 import _PullToRefreshMixin from './_PullToRefreshMixin';
 import getResource from './I18n';
+import convert from 'argos/Convert';
 
 
 const resource = getResource('listBase');
@@ -1231,7 +1232,24 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
   },
   createIndicatorLayout: function createIndicatorLayout() {
-    return this.itemIndicators || (this.itemIndicators = []);
+    return this.itemIndicators || (this.itemIndicators = [{
+      id: 'touched',
+      cls: 'flag',
+      onApply: function onApply(entry, parent) {
+        this.isEnabled = parent.hasBeenTouched(entry);
+      },
+    }]);
+  },
+  hasBeenTouched: function hasBeenTouched(entry) {
+    if (entry.ModifyDate) {
+      const modifiedDate = moment(convert.toDateFromString(entry.ModifyDate));
+      const currentDate = moment().endOf('day');
+      const weekAgo = moment().subtract(1, 'weeks');
+
+      return modifiedDate.isAfter(weekAgo) &&
+        modifiedDate.isBefore(currentDate);
+    }
+    return false;
   },
   _refreshList: function _refreshList() {
     this.forceRefresh();
@@ -1626,7 +1644,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       lang.mixin(indicator, options);
 
       if (indicator.isEnabled === false) {
-        indicator.label = '';
         if (indicator.cls) {
           indicator.iconCls = `${indicator.cls} disabled`;
         } else {
