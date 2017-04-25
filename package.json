@@ -8,14 +8,16 @@
   "scripts": {
     "test": "npm run build && grunt test",
     "testbasic": "grunt test:basic",
-    "build": "babel src --out-dir src-out --source-maps inline",
-    "build:watch": "babel src --out-dir src-out --source-maps inline --watch",
+    "build": "tsc && babel ts-out --out-dir src-out --source-maps inline",
+    "build:watch": "tsc --watch && babel ts-out --out-dir src-out --source-maps inline --watch",
     "less": "grunt less",
     "lint": "eslint ./src",
     "lint-fix": "eslint --fix ./src",
     "watch": "yarn run build:watch"
   },
   "devDependencies": {
+    "@types/node": "~7.0.13",
+    "@types/jquery": "^2.0.41",
     "babel-cli": "^6.16.0",
     "babel-eslint": "^7.2.1",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -31,7 +33,9 @@
     "grunt-contrib-jasmine": "^1.0.3",
     "grunt-contrib-less": "^1.0.1",
     "grunt-shell": "^2.0.0",
-    "grunt-template-jasmine-istanbul": "^0.5.0"
+    "grunt-template-jasmine-istanbul": "^0.5.0",
+    "tslint": "~5.1.0",
+    "typescript": "~2.2.2"
   },
   "dependencies": {
     "@infor/icrm-js-common": "^0.1.1",
