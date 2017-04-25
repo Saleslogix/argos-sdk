@@ -163,7 +163,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
     }
     return this;
   },
-  show: function show(options:any = {}) {
+  show: function show(options: any = {}) {
     this.timeValue = {
       isPM: false,
     };

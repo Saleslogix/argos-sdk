@@ -143,7 +143,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    */
   errorHandlers: null,
   constructor: function constructor(options) {
-    this.app = (options && options.app) || App;
+    this.app = (options && options.app) || (window as any).App;
   },
   startup: function startup() {
     this.inherited(arguments);
