@@ -1644,7 +1644,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       lang.mixin(indicator, options);
 
       if (indicator.isEnabled === false) {
-        indicator.label = '';
         if (indicator.cls) {
           indicator.iconCls = `${indicator.cls} disabled`;
         } else {
