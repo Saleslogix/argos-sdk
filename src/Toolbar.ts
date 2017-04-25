@@ -44,8 +44,8 @@ const __class = declare('argos.Toolbar', [_WidgetBase, _ActionMixin, _Templated]
    */
   enabled: true,
   managed: true,
-  constructor: function constructor(options:any = {}) {
-    this.app = options.app || App;
+  constructor: function constructor(options: any = {}) {
+    this.app = options.app || (window as any).App;
   },
   /**
    * Expands the passed expression if it is a function.
