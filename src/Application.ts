@@ -1,5 +1,3 @@
-/* tslint:disable */
-
 /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -97,7 +95,7 @@ export default class Application {
   onRequestTimeout: any;
   toast: any;
   enableOfflineSupport: any;
-  
+
   constructor() {
     /**
      * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
@@ -1045,7 +1043,8 @@ export default class Application {
   }
 
   /**
-   * Checks to see if the passed view instance is the currently active one by comparing it to {@link #getPrimaryActiveView primaryActiveView}.
+   * Checks to see if the passed view instance is the currently active one by
+   * comparing it to {@link #getPrimaryActiveView primaryActiveView}.
    * @param {View} view
    * @return {Boolean} True if the passed view is the same as the active view.
    */
@@ -1345,7 +1344,8 @@ export default class Application {
   /**
    * Searches App.context.history by passing a predicate function that should return true
    * when a match is found.
-   * @param {Function} predicate Function that is called in the provided scope with the current history iteration. It should return true if the history item is the desired context.
+   * @param {Function} predicate Function that is called in the provided scope with the
+   * current history iteration. It should return true if the history item is the desired context.
    * @param {Number} depth
    * @param {Object} scope
    * @return {Object/Boolean} context History data context if found, false if not.
@@ -1375,7 +1375,8 @@ export default class Application {
   /**
    * Shortcut method to {@link #queryNavigationContext queryNavigationContext} that matches the specified resourceKind provided
    * @param {String/String[]} kind The resourceKind(s) the history item must match
-   * @param {Function} predicate Optional. If provided it will be called on matches so you may do an secondary check of the item - returning true for good items.
+   * @param {Function} predicate Optional. If provided it will be called on matches so you may do an
+   * secondary check of the item - returning true for good items.
    * @param {Object} scope Scope the predicate should be called in.
    * @return {Object} context History data context if found, false if not.
    */
@@ -1411,7 +1412,8 @@ export default class Application {
    *
    * A Customization Spec is a special object with the following keys:
    *
-   * * `at`: `function(item)` - passes the current item in the list, the function should return true if this is the item being modified (or is at where you want to insert something).
+   * * `at`: `function(item)` - passes the current item in the list, the function should return true if
+   * this is the item being modified (or is at where you want to insert something).
    * * `at`: `{Number}` - May optionally define the index of the item instead of a function.
    * * `type`: `{String}` - enum of `insert`, `modify`, `replace` or `remove` that indicates the type of customization.
    * * `where`: `{String}` - enum of `before` or `after` only needed when type is `insert`.
@@ -1424,7 +1426,8 @@ export default class Application {
    *
    * All customizations are registered to `this.customizations[path]`.
    *
-   * @param {String} path The customization set such as `list/tools#account_list` or `detail#contact_detail`. First half being the type of customization and the second the view id.
+   * @param {String} path The customization set such as `list/tools#account_list` or
+   * `detail#contact_detail`. First half being the type of customization and the second the view id.
    * @param {Object} spec The customization specification
    */
   registerCustomization(p, s) {
@@ -1454,7 +1457,8 @@ export default class Application {
    * `getCustomizationsFor(set, id)`
    * Where the path is `list/tools` and `id` is the view id
    *
-   * @param {String} path The customization set such as `list/tools#account_list` or `detail#contact_detail`. First half being the type of customization and the second the view id.
+   * @param {String} path The customization set such as `list/tools#account_list` or
+   * `detail#contact_detail`. First half being the type of customization and the second the view id.
    */
   getCustomizationsFor(p) {
     let path = p;
