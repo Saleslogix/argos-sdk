@@ -7,10 +7,11 @@
   },
   "scripts": {
     "build": "tsc && babel ts-out --out-dir src-out --source-maps inline",
-    "build:watch": "'Please run tsc --watch and babel --watch in separate consoles.'",
+    "build:watch": "echo 'run tsc --watch separately' && tsc && babel ts-out --out-dir src-out --source-maps inline --watch",
     "docs": "typedoc --options typedoc.json --exclude \"**/*.+(spec.ts|test.ts)\" ./src/",
     "less": "grunt less",
-    "lint": "tslint \"src/**/*.ts\"",
+    "lint": "eslint ./src",
+    "tslint": "tslint \"src/**/*.ts\"",
     "lint-fix": "eslint --fix ./src",
     "test": "npm run build && grunt test",
     "testbasic": "grunt test:basic",
