@@ -165,7 +165,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     if (store) {
       relatedRequests = [];
       queryResults = store.get(entityId, queryOptions);
-      when(queryResults, function(relatedFeed) { // eslint-disable-line
+      when(queryResults, function (relatedFeed) { 
         const entry = queryResults.results[0];
         if (includeRelated) {
           relatedRequests = this.getRelatedRequests(entry);

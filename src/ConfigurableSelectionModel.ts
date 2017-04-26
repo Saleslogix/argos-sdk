@@ -3,7 +3,8 @@ import SelectionModel from './SelectionModel';
 
 /**
  * @class argos.ConfigurableSelectionModel
- * The ConfigurableSelectionModel adds the logic to the SelectionModel to only have one item selected at a time via the `singleSelection` flag.
+ * The ConfigurableSelectionModel adds the logic to the SelectionModel to only have one item selected at a
+ * time via the `singleSelection` flag.
  * @alternateClassName ConfigurableSelectionModel
  * @extends argos.SelectionModel
  */

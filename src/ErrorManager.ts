@@ -78,7 +78,7 @@ const __class = lang.setObject('argos.ErrorManager', {
    */
   addError: function addError(serverResponse, requestOptions, viewOptions, failType) {
     if (typeof serverResponse === 'string' && arguments.length === 2) {
-      this.addSimpleError.apply(this, arguments); //eslint-disable-line
+      this.addSimpleError.apply(this, arguments);
       return;
     }
 
@@ -171,7 +171,7 @@ const __class = lang.setObject('argos.ErrorManager', {
   serializeValues: function serializeValues(obj) {
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
-        switch (typeof obj[key]) {//eslint-disable-line
+        switch (typeof obj[key]) {
           case 'undefined':
             obj[key] = 'undefined';
             break;
@@ -263,7 +263,7 @@ const __class = lang.setObject('argos.ErrorManager', {
         window.localStorage.setItem('errorlog', JSON.stringify(errors));
       }
     } catch (e) {
-      console.error(e);//eslint-disable-line
+      console.error(e);
     }
   },
   showErrorDialog: function showErrorDialog(title, message, onOkay) {

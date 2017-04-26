@@ -118,7 +118,12 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     busyIndicator.complete(true);
     App.modal.resolveDeferred(true);
     // Attach resolve to move to briefcase list (if user hits okay)
-    return App.modal.createSimpleDialog({ title: 'alert', content: resource.interruptedText, getContent: () => { return; }, leftButton: 'cancel', rightButton: 'confirm' });
+    return App.modal.createSimpleDialog({
+      title: 'alert',
+      content: resource.interruptedText, getContent: () => { return; },
+      leftButton: 'cancel',
+      rightButton: 'confirm'
+    });
   },
   createBusyModal: function createBusyModal(count) {
     App.modal.disableClose = true;
@@ -137,7 +142,13 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     busyIndicator.complete(true);
     App.modal.resolveDeferred(true);
     // Attach resolve to move to briefcase list (if user hits okay)
-    return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToListViewText, getContent: () => { return result; }, leftButton: 'cancel', rightButton: 'okay' });
+    return App.modal.createSimpleDialog({
+      title: 'complete',
+      content: resource.goToListViewText,
+      getContent: () => { return result; },
+      leftButton: 'cancel',
+      rightButton: 'okay'
+    });
   },
   getOfflineIcon: function getOfflineIcon() {
     const model = this.getModel();

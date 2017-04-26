@@ -156,7 +156,9 @@ const __class = declare('argos._LegacySDataListMixin', null, {
     const where = [];
     const options = this.options;
     const pageSize = this.pageSize;
-    const startIndex = this.feed && this.feed.$startIndex > 0 && this.feed.$itemsPerPage > 0 ? this.feed.$startIndex + this.feed.$itemsPerPage : 1;
+    const startIndex = this.feed && this.feed.$startIndex > 0 && this.feed.$itemsPerPage > 0
+      ? this.feed.$startIndex + this.feed.$itemsPerPage
+      : 1;
 
     const request = new Sage.SData.Client.SDataResourceCollectionRequest(this.getService())
       .setCount(pageSize)

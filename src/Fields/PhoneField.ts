@@ -45,7 +45,7 @@ const control = declare('argos.Fields.PhoneField', [TextField], {
    * @property {String}
    * Sets the `<input type=` of the field.
    *
-   * Currently only iOS supports non-numbers when a tel field has a default value: 
+   * Currently only iOS supports non-numbers when a tel field has a default value:
    * [Bug Report](http://code.google.com/p/android/issues/detail?id=19724).
    */
   inputType: has('safari') ? 'tel' : 'text',

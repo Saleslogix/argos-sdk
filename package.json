@@ -10,8 +10,7 @@
     "build:watch": "echo 'run tsc --watch separately' && tsc && babel ts-out --out-dir src-out --source-maps inline --watch",
     "docs": "typedoc --options typedoc.json --exclude \"**/*.+(spec.ts|test.ts)\" ./src/",
     "less": "grunt less",
-    "lint": "eslint ./src",
-    "tslint": "tslint \"src/**/*.ts\"",
+    "lint": "tslint \"src/**/*.ts\"",
     "lint-fix": "eslint --fix ./src",
     "test": "npm run build && grunt test",
     "testbasic": "grunt test:basic",
@@ -37,6 +36,7 @@
     "grunt-shell": "^2.0.0",
     "grunt-template-jasmine-istanbul": "^0.5.0",
     "tslint": "~5.1.0",
+    "tslint-config-airbnb": "1.1.1",
     "typedoc": "0.5.10",
     "typescript": "~2.2.2"
   },

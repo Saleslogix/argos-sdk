@@ -20,7 +20,8 @@
  *
  * A customization object has the following properties:
  *
- * * `at`: `function(item)` - passes the current item in the list, the function should return true if this is the item being modified (or is at where you want to insert something).
+ * * `at`: `function(item)` - passes the current item in the list, the function should return true if this is the
+ *  item being modified (or is at where you want to insert something).
  * * `at`: `{Number}` - May optionally define the index of the item instead of a function.
  * * `type`: `{String}` - enum of `insert`, `modify`, `replace` or `remove` that indicates the type of customization.
  * * `where`: `{String}` - enum of `before` or `after` only needed when type is `insert`.

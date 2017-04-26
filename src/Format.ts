@@ -148,7 +148,8 @@ const __class = lang.setObject('argos.Format', {
   trim: format.trim,
   /**
    * Takes a date and format string and returns the formatted date as a string.
-   * @param {Date/String} val Date to be converted. If string is passed it is converted to a date using {@link convert#toDateFromString Converts toDateFromString}.
+   * @param {Date/String} val Date to be converted. If string is passed it is converted to a date
+   *  using {@link convert#toDateFromString Converts toDateFromString}.
    * @param {String} fmt Format string following [datejs formatting](http://code.google.com/p/datejs/wiki/FormatSpecifiers).
    * @param {Boolean} utc If a date should be in UTC time set this flag to true to counter-act javascripts built-in timezone applier.
    * @return {String} Date formatted as a string.

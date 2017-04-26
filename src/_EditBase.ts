@@ -371,13 +371,14 @@ const __class = declare('argos._EditBase', [View], {
    */
   createToolLayout: function createToolLayout() {
     interface TbarType {
-      id: any,
-      action: any,
-      svg: any,
-      security?: any,
-      side?: any
-    };
-    const tbar: Array<TbarType> = [{
+      id: any;
+      action: any;
+      svg: any;
+      security?: any;
+      side?: any;
+    }
+    
+    const tbar: TbarType[] = [{
       id: 'save',
       action: 'save',
       svg: 'save',

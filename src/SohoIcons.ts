@@ -1,5 +1,4 @@
-
-
+/* tslint:disable */
 export function render(element = 'body') {
   $(element).prepend(`
     <div class="svg-icons" style="display:none">

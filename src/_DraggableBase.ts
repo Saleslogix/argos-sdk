@@ -19,7 +19,10 @@ const __class = declare('argos._DraggableBase', null, {
   _nextElement: null,
   _type: null,
   _class: null,
-  _parentTypeToDrag: null, // This is used when the draggable class is a child of the parent that is desired to drag (ex. a button within a div)
+  /**
+   * This is used when the draggable class is a child of the parent that is desired to drag (ex. a button within a div)
+   */
+  _parentTypeToDrag: null,
   _parentClassToDrag: null,
   _isDragging: false,
   includeScroll: false, // This is the dojo includeScroll for dom-geometry
@@ -33,15 +36,21 @@ const __class = declare('argos._DraggableBase', null, {
 
   accountForAnimation: function accountForAnimation() {
     if (this._previousElement) {
-      return this._position.h - parseInt($(this._previousElement).css('margin-bottom')) + this._source.previousMarginBottom + this._source.previousMarginTop;
+      return this._position.h
+        - parseInt($(this._previousElement).css('margin-bottom'), 10)
+        + this._source.previousMarginBottom
+        + this._source.previousMarginTop;
     }
     if (this._nextElement) {
-      return this._position.h - parseInt($(this._nextElement).css('margin-top')) + this._source.previousMarginBottom + this._source.previousMarginTop;
+      return this._position.h
+        - parseInt($(this._nextElement).css('margin-top'), 10)
+        + this._source.previousMarginBottom
+        + this._source.previousMarginTop;
     }
     return 0;
   },
   applyInitialStyling: function applyInitialStyling() {
-    const containerZ = parseInt($(this._container).css('zIndex'));
+    const containerZ = parseInt($(this._container).css('zIndex'), 10);
     const containerHeight = $(this._container).css('height');
     if (!this.zIndex) {
       if (containerZ > 0) {
@@ -202,7 +211,7 @@ const __class = declare('argos._DraggableBase', null, {
       }
     }
   },
-  findByClass: function findByClass(element:any = {}, byClass:any = {}) {
+  findByClass: function findByClass(element: any = {}, byClass: any = {}) {
     if (element === this._container) {
       return false;
     }
@@ -211,7 +220,7 @@ const __class = declare('argos._DraggableBase', null, {
     }
     return this.findByClass(element.parentNode, byClass);
   },
-  findByType: function findByType(element:any = {}, byType = {}) {
+  findByType: function findByType(element: any = {}, byType = {}) {
     if (element === this._container) {
       return null;
     }
@@ -239,7 +248,7 @@ const __class = declare('argos._DraggableBase', null, {
     }
     return source;
   },
-  getPositionOf: function getPositionOf(element:any = {}) {
+  getPositionOf: function getPositionOf(element: any = {}) {
     const position = domGeom.position(element, this.includeScroll);
     if (position.y !== element.offsetTop) {
       position.offset = position.y - element.offsetTop;
@@ -248,7 +257,7 @@ const __class = declare('argos._DraggableBase', null, {
     }
     return position;
   },
-  onTouchStart: function onTouchStart(touch:any = {}) {
+  onTouchStart: function onTouchStart(touch: any = {}) {
     this._source = this.findSource(touch.target);
     if (!this._scrollerPos) {
       if (this._scroller) {
@@ -266,7 +275,7 @@ const __class = declare('argos._DraggableBase', null, {
       touch.preventDefault();
     }
   },
-  onTouchMove: function onTouchMove(touch:any = {}) {
+  onTouchMove: function onTouchMove(touch: any = {}) {
     if (this._source) {
       let touchMovement;
       if (touch.type === 'mousemove') {
@@ -287,8 +296,8 @@ const __class = declare('argos._DraggableBase', null, {
   onTouchEnd: function onTouchEnd(touch = {}) {
     if (this._source) {
       this.placeItem(touch)
-          .removeStyling()
-          .clearValues();
+        .removeStyling()
+        .clearValues();
     }
   },
   placeItem: function placeItem() {
@@ -322,7 +331,7 @@ const __class = declare('argos._DraggableBase', null, {
     }
     return this;
   },
-  resetMargins: function resetMargins(element:any = {}, marginType = {}) {
+  resetMargins: function resetMargins(element: any = {}, marginType = {}) {
     if (marginType === 'bottom') {
       $(element).css({
         'margin-bottom': `${element.previousMargin}px`,
@@ -334,7 +343,7 @@ const __class = declare('argos._DraggableBase', null, {
     }
     return this;
   },
-  scrollSmooth: function scrollSmooth(toScroll:any = {}, speed:any = {}) {
+  scrollSmooth: function scrollSmooth(toScroll: any = {}, speed: any = {}) {
     const currentScrollTop = toScroll.scrollTop;
     if (speed < 0) {
       if (currentScrollTop >= Math.abs(speed)) {
@@ -356,8 +365,13 @@ const __class = declare('argos._DraggableBase', null, {
   },
   scrollTimer: function scrollTimer() {
     let scrollSpeed = 0;
-    if (this._scrollDirection === 'down' && this._source.offsetTop < this._container.lastChild.offsetTop + this._position.h && this._source !== this._container.lastChild) {
-      let x = (this._scrollingTouch.pageY - this._scrollerPos.offset - this._scrollerPos.h * (1 - this.scrollAt)) / (this._scrollerPos.h * this.scrollAt); // (this._scrollerPos.h - this._scrollerPos.h * (1 - this.scrollAt))
+    if (this._scrollDirection === 'down'
+      && this._source.offsetTop < this._container.lastChild.offsetTop + this._position.h
+      && this._source !== this._container.lastChild) {
+
+      let x = (this._scrollingTouch.pageY - this._scrollerPos.offset - this._scrollerPos.h
+        * (1 - this.scrollAt)) / (this._scrollerPos.h * this.scrollAt);
+        // (this._scrollerPos.h - this._scrollerPos.h * (1 - this.scrollAt))
       if (x < 0) {
         x = 0;
       }
@@ -367,7 +381,8 @@ const __class = declare('argos._DraggableBase', null, {
       } else {
         this.scrollSmooth(this._container, scrollSpeed);
       }
-    } else if (this._scrollDirection === 'up' && this._position.y > this._container.firstChild.offsetTop) { // (this._scroller.scrollTop > 0 || this._container.scrollTop > 0)
+    } else if (this._scrollDirection === 'up' && this._position.y > this._container.firstChild.offsetTop) {
+      // (this._scroller.scrollTop > 0 || this._container.scrollTop > 0)
       let x = 1 - ((this._scrollingTouch.pageY - this._scrollerPos.offset) / (this._scrollerPos.h * this.scrollAt));
       if (x < 0) {
         x = 1;
@@ -384,7 +399,7 @@ const __class = declare('argos._DraggableBase', null, {
     this._class = className;
     return this;
   },
-  setMargins: function setMargins(element:any = {}, marginType = {}) {
+  setMargins: function setMargins(element: any = {}, marginType = {}) {
     let sourceMargins = this._source.previousMarginBottom + this._source.previousMarginTop;
     if (!(sourceMargins > 0)) {
       sourceMargins = 0;

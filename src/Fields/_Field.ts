@@ -272,7 +272,7 @@ const __class = declare('argos.Fields._Field', [_WidgetBase, _ActionMixin, _Temp
       if (result) {
         if (definition.message) {
           result = typeof definition.message === 'function'
-            ? definition.message.call(definition.scope || this, newValue, this, this.owner) 
+            ? definition.message.call(definition.scope || this, newValue, this, this.owner)
             : string.substitute(definition.message, [newValue, this.name, this.label]);
         }
 

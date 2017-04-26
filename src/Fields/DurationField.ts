@@ -267,7 +267,7 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
    * @return {Number}
    */
   getMultiplier: function getMultiplier(key) {
-    let k;
+    let k; // tslint:disable-line
     for (k in this.autoCompleteText) {
       if (this.autoCompleteText.hasOwnProperty(k) && key === this.autoCompleteText[k]) {
         break;

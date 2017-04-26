@@ -19,7 +19,7 @@
  */
 const declare = require('dojo/_base/declare');
 import _ActionMixin from './_ActionMixin';
-const _WidgetBase = require ('dijit/_WidgetBase');
+const _WidgetBase = require('dijit/_WidgetBase');
 import _Templated from './_Templated';
 import Dropdown from './Dropdown';
 import getResource from './I18n';
@@ -261,8 +261,9 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
     this._yearDropdown.setValue(year);
     return this;
   },
-  checkAndRenderDay: function checkAndRenderDay(data:any = {}) {
+  checkAndRenderDay: function checkAndRenderDay(data: any = {}) {
     const dayIndexer = data.day + data.startingDay - 1;
+    // tslint:disable-next-line
     if (data.day === data.todayMoment.date() && data.todayMoment.month() === data.dateMoment.month() && data.todayMoment.year() === data.dateMoment.year()) {
       data.isToday = 'is-today';
     } else {
@@ -280,7 +281,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
     }
     if (this.showSubValues) {
       this.setSubValue(day, data)
-          .setActiveDay(day);
+        .setActiveDay(day);
     }
     $(data.week).append(day);
   },
@@ -294,7 +295,11 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   },
   createMonthDropdown: function createMonthDropdown() {
     if (!this._monthDropdown) {
-      this._monthDropdown = new Dropdown({ id: `month-dropdown ${this.id}`, dropdownClass: 'dropdown--medium input-sm', onSelect: this.setMonth, onSelectScope: this });
+      this._monthDropdown = new Dropdown({
+        id: `month-dropdown ${this.id}`,
+        dropdownClass: 'dropdown--medium input-sm',
+        onSelect: this.setMonth, onSelectScope: this
+      });
       this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.month() });
       $(this.monthNode).append(this._monthDropdown.domNode);
     }
@@ -302,7 +307,12 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   },
   createYearDropdown: function createYearDropdown() {
     if (!this._yearDropdown) {
-      this._yearDropdown = new Dropdown({ id: `year-dropdown ${this.id}`, onSelect: this.setYear, dropdownClass: 'dropdown-mx', onSelectScope: this });
+      this._yearDropdown = new Dropdown({
+        id: `year-dropdown ${this.id}`,
+        onSelect: this.setYear,
+        dropdownClass: 'dropdown-mx',
+        onSelectScope: this
+      });
       this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY') });
       $(this.yearNode).append(this._yearDropdown.domNode);
     }
@@ -385,8 +395,8 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   _refreshCalendar: function refreshCalendar(date = {}) {
     $(this.weeksNode).empty();
     this.renderCalendar(date)
-        .changeMonthShown(date)
-        .changeYearShown(date);
+      .changeMonthShown(date)
+      .changeYearShown(date);
     return this;
   },
   onRefreshCalendar: function onRefreshCalendar() {
@@ -479,14 +489,14 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
 
     return this;
   },
-  setActiveDay: function setActiveDay(day:any = {}) {
+  setActiveDay: function setActiveDay(day: any = {}) {
     if (day.subValue) {
       const active = this.calendarTableDayActiveTemplate.apply({ count: day.subValue }, this);
       $(day).append(active);
     }
     return this;
   },
-  setDateObject: function setDateObject(dateMoment:any = {}) {
+  setDateObject: function setDateObject(dateMoment: any = {}) {
     this.date.day = dateMoment.date();
     this.date.month = dateMoment.format('MMMM');
     this.date.monthNumber = dateMoment.month();
@@ -528,7 +538,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
       this.clearButton.style.display = 'none';
     }
     this.createMonthDropdown()
-        .createYearDropdown();
+      .createYearDropdown();
 
     this.refreshCalendar(this.date);
   },

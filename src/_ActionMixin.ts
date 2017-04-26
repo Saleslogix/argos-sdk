@@ -42,7 +42,9 @@ const __class = declare('argos._ActionMixin', null, {
    * @return {Boolean}
    */
   _isValidElementForAction: function _isValidElementForAction(el) {
-    const contained = this.domNode.contains ? this.domNode !== el && this.domNode.contains(el) : !!(this.domNode.compareDocumentPosition(el) & 16);
+    const contained = this.domNode.contains
+      ? this.domNode !== el && this.domNode.contains(el)
+      : !!(this.domNode.compareDocumentPosition(el) & 16);
 
     return (this.domNode === el) || contained;
   },
