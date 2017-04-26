@@ -6,13 +6,14 @@
     "url": "https://github.com/Saleslogix/argos-sdk"
   },
   "scripts": {
+    "build": "tsc && babel ts-out --out-dir src-out --source-maps inline",
+    "build:watch": "'Please run tsc --watch and babel --watch in separate consoles.'",
+    "docs": "typedoc --options typedoc.json --exclude \"**/*.+(spec.ts|test.ts)\" ./src/",
+    "less": "grunt less",
+    "lint": "tslint \"src/**/*.ts\"",
+    "lint-fix": "eslint --fix ./src",
     "test": "npm run build && grunt test",
     "testbasic": "grunt test:basic",
-    "build": "tsc && babel ts-out --out-dir src-out --source-maps inline",
-    "build:watch": "tsc --watch && babel ts-out --out-dir src-out --source-maps inline --watch",
-    "less": "grunt less",
-    "lint": "eslint ./src",
-    "lint-fix": "eslint --fix ./src",
     "watch": "yarn run build:watch"
   },
   "devDependencies": {
@@ -35,6 +36,7 @@
     "grunt-shell": "^2.0.0",
     "grunt-template-jasmine-istanbul": "^0.5.0",
     "tslint": "~5.1.0",
+    "typedoc": "0.5.10",
     "typescript": "~2.2.2"
   },
   "dependencies": {
