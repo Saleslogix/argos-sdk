@@ -93,7 +93,7 @@ export default declare('argos.Store.PouchDB', null, {
       }
     });
 
-    return QueryResults(deferred.promise); // eslint-disable-line
+    return QueryResults(deferred.promise);
   },
   /**
    * Stores an object.

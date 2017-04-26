@@ -105,7 +105,7 @@ const __class = declare('argos._LegacySDataDetailMixin', null, {
     if (response && response.status === 404) {
       $(this.contentNode).append(this.notAvailableTemplate.apply(this));
     } else {
-      alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
+      alert(string.substitute(this.requestErrorText, [response, o]));
       ErrorManager.addError('failure', response);
     }
 

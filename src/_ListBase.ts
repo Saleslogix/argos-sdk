@@ -779,7 +779,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         return !error.aborted;
       },
       handle: function handleError(error, next) {
-        alert(this.getErrorMessage(error)); // eslint-disable-line
+        alert(this.getErrorMessage(error));
         next();
       },
     }, {
@@ -1154,7 +1154,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {String/HTMLElement} tag An indentifier, may be the actual row node or some other id.
    * @private
    */
-  _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) { // eslint-disable-line
+  _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) {
     const node = $(tag);
 
     if (this.enableActions) {
@@ -1705,7 +1705,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         this._loadPreviousSelections();
       }
     } catch (e) {
-      console.error(e); // eslint-disable-line
+      console.error(e);
       this._logError({
         message: e.message,
         stack: e.stack,
@@ -1786,7 +1786,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         rowNode = $(this.liRowTemplate.apply(entry, this));
       }
     } catch (err) {
-      console.error(err); // eslint-disable-line
+      console.error(err);
       rowNode = $(this.rowTemplateError.apply(entry, this));
     }
     return rowNode.get(0);

@@ -99,7 +99,7 @@ const __class = declare('argos._RelatedViewWidgetListMixin', null, {
           }
         }
       } catch (error) {
-        console.log('Error processing related views:' + error); // eslint-disable-line
+        console.log('Error processing related views:' + error);
       }
     }
   },

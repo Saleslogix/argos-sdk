@@ -496,7 +496,7 @@ const __class = declare('argos._EditBase', [View], {
   convertEntry: function convertEntry(entry) {
     return entry;
   },
-  processFieldLevelSecurity: function processFieldLevelSecurity(entry) { // eslint-disable-line
+  processFieldLevelSecurity: function processFieldLevelSecurity(entry) {
   },
   processData: function processData(entry) {
     this.entry = this.processEntry(this.convertEntry(entry || {})) || {};
@@ -537,7 +537,7 @@ const __class = declare('argos._EditBase', [View], {
     try {
       if (entry) {
         this.processData(entry);
-      } else { // eslint-disable-line
+      } else {
         /* todo: show error message? */
       }
 
@@ -546,7 +546,7 @@ const __class = declare('argos._EditBase', [View], {
       /* this must take place when the content is visible */
       this.onContentChange();
     } catch (e) {
-      console.error(e); // eslint-disable-line
+      console.error(e);
     }
   },
   _onGetError: function _onGetError(getOptions, error) {
@@ -606,7 +606,7 @@ const __class = declare('argos._EditBase', [View], {
         return error.status !== this.HTTP_STATUS.PRECONDITION_FAILED;
       },
       handle: function handleAlert(error, next) {
-        alert(this.getErrorMessage(error)); // eslint-disable-line
+        alert(this.getErrorMessage(error));
         next();
       },
     }, {

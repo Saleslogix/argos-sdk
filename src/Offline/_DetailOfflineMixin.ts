@@ -43,7 +43,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     }
     return tools;
   },
-  briefCaseEntity: function briefCaseEntity(action, selection) { // eslint-disable-line
+  briefCaseEntity: function briefCaseEntity(action, selection) {
     // Start busy indicator modal
     const busyIndicator = this.createBusyModal();
 

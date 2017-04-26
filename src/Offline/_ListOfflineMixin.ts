@@ -43,7 +43,7 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     }
     return tools;
   },
-  briefCaseList: function briefCaseList(action, selection) { // eslint-disable-line
+  briefCaseList: function briefCaseList(action, selection) {
     // Start busy indicator modal
     const busyIndicator = this.createBusyModal(Object.keys(this.entries).length);
     // Start briefcasing
@@ -75,7 +75,7 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
       busyIndicator.updateProgress();
     });
   },
-  briefCaseItem: function briefCaseItem(briefcaseItem) { // eslint-disable-line
+  briefCaseItem: function briefCaseItem(briefcaseItem) {
     // Start busy indicator modal
     const busyIndicator = this.createBusyModal(1);
     // Start briefcasing

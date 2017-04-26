@@ -407,11 +407,11 @@ const __class = declare('argos.Store.SData', null, {
     } else if (request instanceof Sage.SData.Client.SDataServiceOperationRequest) {
       method = request.execute;
       handle.value = method.call(request, this.entry, options);
-      return QueryResults(queryDeferred); // eslint-disable-line
+      return QueryResults(queryDeferred);
     }
 
     handle.value = method.call(request, options);
-    return QueryResults(queryDeferred); // eslint-disable-line
+    return QueryResults(queryDeferred);
   },
   /**
    * Not implemented in this store.

@@ -211,11 +211,11 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       def.reject(err);
     });
     if (queryOptions && (queryOptions as any).returnQueryResults) {
-      return QueryResults(def.promise); // eslint-disable-line
+      return QueryResults(def.promise);
     }
     return def.promise;
   },
-  buildQueryExpression: function buildQueryExpression(queryExpression, options) { // eslint-disable-line
+  buildQueryExpression: function buildQueryExpression(queryExpression, options) {
     return function queryFn(doc, emit) {
       if (doc.entityName === this.entityName) {
         if (queryExpression && (typeof queryExpression === 'function')) {

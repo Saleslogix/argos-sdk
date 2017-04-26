@@ -29,7 +29,7 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * @param {Object} o The options that were passed when creating the Ajax request.
    */
   onRequestDataFailure: function onRequestDataFailure(response, o) {
-    alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
+    alert(string.substitute(this.requestErrorText, [response, o]));
     ErrorManager.addError('failure', response);
     this.isRefreshing = false;
   },
@@ -130,7 +130,7 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
    * @param {Object} o The options that were passed when creating the Ajax request.
    */
   onRequestFailure: function onRequestFailure(response, o) {
-    alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
+    alert(string.substitute(this.requestErrorText, [response, o]));
     ErrorManager.addError('failure', response);
   },
   /**

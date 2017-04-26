@@ -109,7 +109,7 @@ const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
       return item !== null;
     });
 
-    return Memory({// eslint-disable-line
+    return Memory({
       data: list,
     });
   },

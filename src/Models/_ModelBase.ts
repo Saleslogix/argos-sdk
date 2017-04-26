@@ -71,19 +71,19 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful, _Customiza
     this.picklists = this.picklists || this._createCustomizedLayout(this.createPicklists(), 'picklists');
     this.getPicklists();
   },
-  getEntry: function getEntry(options) { // eslint-disable-line
+  getEntry: function getEntry(options) {
   },
-  getEntries: function getEntries(query, options) { // eslint-disable-line
+  getEntries: function getEntries(query, options) {
   },
   getPicklists: function getPicklists() {
   },
-  insertEntry: function insertEntry(entry, options) {// eslint-disable-line
+  insertEntry: function insertEntry(entry, options) {
   },
-  updateEntry: function updateEntry(entry, options) { // eslint-disable-line
+  updateEntry: function updateEntry(entry, options) {
   },
-  deleteEntry: function deleteEntry(entry, options) { // eslint-disable-line
+  deleteEntry: function deleteEntry(entry, options) {
   },
-  saveEntry: function saveEntry(entry, options) { // eslint-disable-line
+  saveEntry: function saveEntry(entry, options) {
   },
   getIconClass: function getIconClass() {
     return this.iconClass;
@@ -98,8 +98,8 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful, _Customiza
     const picklist = this.picklists.find(pl => pl.property === property);
     return (picklist && picklist.name) || null;
   },
-  buildQueryExpression: function buildQueryExpression(query, options) { // eslint-disable-line
+  buildQueryExpression: function buildQueryExpression(query, options) {
   },
-  buildRelatedQueryExpression: function buildRelatedQueryExpression(relationship, entry) { // eslint-disable-line
+  buildRelatedQueryExpression: function buildRelatedQueryExpression(relationship, entry) {
   },
 });

@@ -416,7 +416,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
     }
 
     if (this.dependsOn && !dependentValue) {
-      console.error(string.substitute(this.dependentErrorText, [this.getDependentLabel() || ''])); // eslint-disable-line
+      console.error(string.substitute(this.dependentErrorText, [this.getDependentLabel() || '']));
       return false;
     }
 

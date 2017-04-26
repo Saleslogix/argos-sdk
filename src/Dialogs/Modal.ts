@@ -273,7 +273,7 @@ const __class = declare('argos.Dialogs.Modal', [_WidgetBase, _Templated], {
       $(this.modalNode).append(content);
     } else {
       if (this.isNotSimpleDialog()) {
-        console.log('Current modal content does not have a show function, did you forget to add this?'); // eslint-disable-line
+        console.log('Current modal content does not have a show function, did you forget to add this?');
       } else {
         const content = $(this.modalContentTemplate.apply(this));
         const simpleDialog = $(this.dialogContentTemplate.apply(this._content, this));

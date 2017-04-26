@@ -52,7 +52,7 @@ A view might want to indicate a new viewset should be created in the middle of n
 */
 
 export function sdk(state = initialSDKState, action) {
-  const { type, payload, error, meta } = action; // eslint-disable-line
+  const { type, payload, error, meta } = action;
   switch (type) {
     case SET_MAX_VIEWPORTS:
       return Object.assign({}, state, {

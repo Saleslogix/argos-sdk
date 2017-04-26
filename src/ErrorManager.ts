@@ -25,7 +25,7 @@ try {
   if (window.localStorage) {
     errors = JSON.parse(window.localStorage.getItem('errorlog')) || [];
   }
-} catch (e) {}// eslint-disable-line
+} catch (e) {}
 /**
  * @class argos.ErrorManager
  * ErrorManager is a singleton that parses and stores SData error responses into localStorage.

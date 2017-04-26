@@ -661,7 +661,7 @@ export default class Application {
     this.previousState = state;
   }
 
-  onStateChange(state) { // eslint-disable-line
+  onStateChange(state) {
   }
 
   showApplicationMenuOnLarge() {
@@ -787,7 +787,7 @@ export default class Application {
         window.localStorage.setItem('preferences', JSON.stringify(this.preferences));
       }
     } catch (e) {
-      console.error(e); // eslint-disable-line
+      console.error(e);
     }
   }
 
@@ -797,7 +797,7 @@ export default class Application {
         this.preferences = JSON.parse(window.localStorage.getItem('preferences'));
       }
     } catch (e) {
-      console.error(e); // eslint-disable-line
+      console.error(e);
     }
   }
 

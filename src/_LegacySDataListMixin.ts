@@ -55,7 +55,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
    * @deprecated
    */
   onRequestDataFailure: function onRequestDataFailure(response, o) {
-    alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
+    alert(string.substitute(this.requestErrorText, [response, o]));
     ErrorManager.addError('failure', response);
     $(this.domNode).removeClass('list-loading');
     this.listLoading = false;

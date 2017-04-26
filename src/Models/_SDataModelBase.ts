@@ -18,7 +18,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
 
   _getQueryModelByName: function _getQueryModelByName(name) {
     if (!this.queryModels) {
-      console.warn('No query Models defined'); // eslint-disable-line
+      console.warn('No query Models defined');
     }
 
     const results = this.queryModels.filter(model => model.name === name);
@@ -137,7 +137,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
     });
     return def.promise;
   },
-  onEntryUpdated: function onEntryUpdated(result, orginalEntry) { // eslint-disable-line
+  onEntryUpdated: function onEntryUpdated(result, orginalEntry) {
   },
   /**
    * If an entry is valid, validate should return a promise that resolves to true. If the entry is not valid,
