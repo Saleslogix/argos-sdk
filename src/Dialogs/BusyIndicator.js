@@ -35,7 +35,7 @@ const __class = declare('argos.Dialogs.BusyIndicator', [_WidgetBase, _Templated]
     '</div>',
   ]),
   progressLabelTemplate: new Simplate([
-    '<span class="busyIndicator__progress__label">{%: $.progressText %}</span>',
+    '<div class="busyIndicator__progress__label" style="text-align:center">{%: $.progressText %}</div>',
   ]),
   barTemplate: new Simplate([
     '<div class="busyIndicator__progress__bar"></div>',
