@@ -258,7 +258,7 @@ const __class = lang.setObject('argos.Format', {
   },
   picklist: function picklist(value, picklistObj) {
     return format.picklist(value, picklistObj);
-  }
+  },
 });
 
 lang.setObject('Sage.Platform.Mobile.Format', __class);
