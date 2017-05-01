@@ -1761,7 +1761,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
 
     const count = entries.length;
-    
+
     if (count > 0) {
       const docfrag = document.createDocumentFragment();
       let row = [];
@@ -1772,7 +1772,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         });
         docfrag.appendChild(rowTemplate.get(0));
       };
-      
+
       for (let i = 0; i < count; i++) {
         const entry = this._processEntry(entries[i]);
         // If key comes back with nothing, check that the store is properly
@@ -1793,7 +1793,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         }
         this.onApplyRowTemplate(entry, rowNode);
       }
-      
+
       if (docfrag.childNodes.length > 0) {
         $(this.contentNode).append(docfrag);
       }
