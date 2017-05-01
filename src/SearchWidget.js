@@ -156,7 +156,7 @@ const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
 
       // todo: can optimize later if necessary
       for (let i = 0; i < hashLayout.length && !hashQueryExpression; i++) {
-        if (hashLayout[i].tag === hashTag || hashLayout[i].key === hashTag) {
+        if (hashLayout[i].tag.substr(1) === hashTag || hashLayout[i].key === hashTag) {
           hashQueryExpression = hashLayout[i].query;
         }
       }
