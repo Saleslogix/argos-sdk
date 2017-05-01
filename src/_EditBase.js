@@ -321,10 +321,19 @@ const __class = declare('argos._EditBase', [View], {
   _hasFocused: false,
   /**
    * @property {Boolean}
-   * Flags if the view is multi column of single column.
+   * Flags if the view is multi column or single column.
    */
-  singleColumn: false,
-
+  multiColumnView: true,
+  /**
+   * @property {string}
+   * SoHo class to be applied on multi column.
+   */
+  multiColumnClass: 'one-third',
+  /**
+   * @property {number}
+   * Number of columns in view
+   */
+  multiColumnCount: 3,
   /**
    * Extends constructor to initialze `this.fields` to {}
    * @param o
@@ -671,16 +680,16 @@ const __class = declare('argos._EditBase', [View], {
         content.push('<div class="row">');
       }
 
-      if (!this.singleColumn) {
-        content.push('<div class="one-third column">');
+      if (this.multiColumnView) {
+        content.push(`<div class="${ this.multiColumnClass } column">`);
       }
       this.createRowContent(current, content);
-      if (!this.singleColumn) {
+      if (this.multiColumnView) {
         // in case of hidden field - add empty space for the column to take shape
         content.push('&nbsp;</div>');
       }
 
-      if (!this.singleColumn && rows.length > 3 && (i + 1) % 3 === 0) {
+      if (this.multiColumnView && (i + 1) % this.multiColumnCount === 0) {
         content.push('</div>');
         content.push('<div class="row">');
       }

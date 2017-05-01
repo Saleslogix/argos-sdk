@@ -572,6 +572,21 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {Boolean} Indicates if the list is loading
    */
   listLoading: false,
+  /**
+   * @property {Boolean}
+   * Flags if the view is multi column or single column.
+   */
+  multiColumnView: true,
+  /**
+   * @property {string}
+   * SoHo class to be applied on multi column.
+   */
+  multiColumnClass: 'one-third',
+  /**
+   * @property {number}
+   * Number of columns in view
+   */
+  multiColumnCount: 3,
   // Store properties
   itemsProperty: '',
   idProperty: '',
@@ -1773,10 +1788,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
         const rowNode = this.createItemRowNode(entry);
 
-        if (this.isCardView) {
-          const column = $('<div class="one-third column"><div>').append(rowNode);
+        if (this.isCardView && this.multiColumnView) {
+          const column = $(`<div class="${ this.multiColumnClass } column">`).append(rowNode);
           row.push(column);
-          if ((count > 3 && (i + 1) % 3 === 0) || i === count - 1) {
+          if ((i + 1) % this.multiColumnCount === 0 || i === count - 1) {
             const rowTemplate = $('<div class="row"></div>');
             row.forEach((element) => {
               rowTemplate.append(element);
