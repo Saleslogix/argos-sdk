@@ -16,6 +16,7 @@ import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import getResource from './I18n';
 import { format } from '@infor/icrm-js-common';
+import moment from 'moment';
 
 const resource = getResource('format');
 const dtFormatResource = getResource('formatDateTimeFormat');
@@ -153,7 +154,8 @@ const __class = lang.setObject('argos.Format', {
    * @return {String} Date formatted as a string.
    */
   date: function date(val, fmt, utc) {
-    return format.date(val, fmt, utc, argos.Format.shortDateFormatText);
+    const value = format.date(val, utc);
+    return moment(value).format(fmt || argos.Format.shortDateFormatText);
   },
   /**
    * Takes a number and decimal place and floors the number to that place:
