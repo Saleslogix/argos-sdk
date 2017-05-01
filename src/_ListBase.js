@@ -1789,7 +1789,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         const rowNode = this.createItemRowNode(entry);
 
         if (this.isCardView && this.multiColumnView) {
-          const column = $(`<div class="${ this.multiColumnClass } column">`).append(rowNode);
+          const column = $(`<div class="${this.multiColumnClass} column">`).append(rowNode);
           row.push(column);
           if ((i + 1) % this.multiColumnCount === 0 || i === count - 1) {
             const rowTemplate = $('<div class="row"></div>');
