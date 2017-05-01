@@ -1784,7 +1784,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         if (this.isCardView) {
           const column = $('<div class="one-third column"><div>').append(rowNode);
           row.push(column);   
-          if (count > 3 && (i + 1) % 3 === 0 || i === count - 1) {
+          if ((count > 3 && (i + 1) % 3 === 0) || i === count - 1) {
             createRow(row, docfrag);
             row = [];
           }
