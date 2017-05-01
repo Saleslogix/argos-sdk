@@ -1765,27 +1765,23 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     if (count > 0) {
       const docfrag = document.createDocumentFragment();
       let row = [];
-      const createRow = function createRow(row, docfrag) {
-        const rowTemplate = $('<div class="row"></div>');
-        row.forEach(element => {
-          rowTemplate.append(element);
-        });
-        docfrag.appendChild(rowTemplate.get(0));
-      };
-
       for (let i = 0; i < count; i++) {
         const entry = this._processEntry(entries[i]);
         // If key comes back with nothing, check that the store is properly
         // setup with an idProperty
         this.entries[this.getIdentity(entry)] = entry;
-        
+
         const rowNode = this.createItemRowNode(entry);
-        
+
         if (this.isCardView) {
           const column = $('<div class="one-third column"><div>').append(rowNode);
-          row.push(column);   
+          row.push(column);
           if ((count > 3 && (i + 1) % 3 === 0) || i === count - 1) {
-            createRow(row, docfrag);
+            const rowTemplate = $('<div class="row"></div>');
+            row.forEach((element) => {
+              rowTemplate.append(element);
+            });
+            docfrag.appendChild(rowTemplate.get(0));
             row = [];
           }
         } else {

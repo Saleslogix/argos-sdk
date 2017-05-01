@@ -679,7 +679,7 @@ const __class = declare('argos._EditBase', [View], {
         // in case of hidden field - add empty space for the column to take shape
         content.push('&nbsp;</div>');
       }
-      
+
       if (!this.singleColumn && rows.length > 3 && (i + 1) % 3 === 0) {
         content.push('</div>');
         content.push('<div class="row">');
