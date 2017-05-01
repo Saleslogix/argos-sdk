@@ -572,6 +572,21 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {Boolean} Indicates if the list is loading
    */
   listLoading: false,
+  /**
+   * @property {Boolean}
+   * Flags if the view is multi column or single column.
+   */
+  multiColumnView: true,
+  /**
+   * @property {string}
+   * SoHo class to be applied on multi column.
+   */
+  multiColumnClass: 'one-third',
+  /**
+   * @property {number}
+   * Number of columns in view
+   */
+  multiColumnCount: 3,
   // Store properties
   itemsProperty: '',
   idProperty: '',
@@ -1764,6 +1779,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     if (count > 0) {
       const docfrag = document.createDocumentFragment();
+      let row = [];
       for (let i = 0; i < count; i++) {
         const entry = this._processEntry(entries[i]);
         // If key comes back with nothing, check that the store is properly
@@ -1772,7 +1788,20 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
         const rowNode = this.createItemRowNode(entry);
 
-        docfrag.appendChild(rowNode);
+        if (this.isCardView && this.multiColumnView) {
+          const column = $(`<div class="${ this.multiColumnClass } column">`).append(rowNode);
+          row.push(column);
+          if ((i + 1) % this.multiColumnCount === 0 || i === count - 1) {
+            const rowTemplate = $('<div class="row"></div>');
+            row.forEach((element) => {
+              rowTemplate.append(element);
+            });
+            docfrag.appendChild(rowTemplate.get(0));
+            row = [];
+          }
+        } else {
+          docfrag.appendChild(rowNode);
+        }
         this.onApplyRowTemplate(entry, rowNode);
       }
 
