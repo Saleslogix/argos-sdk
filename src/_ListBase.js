@@ -1761,21 +1761,39 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
 
     const count = entries.length;
-
+    
     if (count > 0) {
       const docfrag = document.createDocumentFragment();
+      let row = [];
+      const createRow = function createRow(row, docfrag) {
+        const rowTemplate = $('<div class="row"></div>');
+        row.forEach(element => {
+          rowTemplate.append(element);
+        });
+        docfrag.appendChild(rowTemplate.get(0));
+      };
+      
       for (let i = 0; i < count; i++) {
         const entry = this._processEntry(entries[i]);
         // If key comes back with nothing, check that the store is properly
         // setup with an idProperty
         this.entries[this.getIdentity(entry)] = entry;
-
+        
         const rowNode = this.createItemRowNode(entry);
-
-        docfrag.appendChild(rowNode);
+        
+        if (this.isCardView) {
+          const column = $('<div class="one-third column"><div>').append(rowNode);
+          row.push(column);   
+          if (count > 3 && (i + 1) % 3 === 0 || i === count - 1) {
+            createRow(row, docfrag);
+            row = [];
+          }
+        } else {
+          docfrag.appendChild(rowNode);
+        }
         this.onApplyRowTemplate(entry, rowNode);
       }
-
+      
       if (docfrag.childNodes.length > 0) {
         $(this.contentNode).append(docfrag);
       }

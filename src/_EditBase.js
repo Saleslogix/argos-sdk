@@ -319,6 +319,11 @@ const __class = declare('argos._EditBase', [View], {
 
   _focusField: null,
   _hasFocused: false,
+  /**
+   * @property {Boolean}
+   * Flags if the view is multi column of single column.
+   */
+  singleColumn: false,
 
   /**
    * Extends constructor to initialze `this.fields` to {}
@@ -663,11 +668,24 @@ const __class = declare('argos._EditBase', [View], {
       if (!sectionStarted) {
         sectionStarted = true;
         content.push(this.sectionBeginTemplate.apply(layout, this));
+        content.push('<div class="row">');
       }
 
+      if (!this.singleColumn) {
+        content.push('<div class="one-third column">');
+      }
       this.createRowContent(current, content);
+      if (!this.singleColumn) {
+        // in case of hidden field - add empty space for the column to take shape
+        content.push('&nbsp;</div>');
+      }
+      
+      if (!this.singleColumn && rows.length > 3 && (i + 1) % 3 === 0) {
+        content.push('</div>');
+        content.push('<div class="row">');
+      }
     }
-
+    content.push('</div>');
     content.push(this.sectionEndTemplate.apply(layout, this));
     const sectionNode = $(content.join(''));
     sectionNode.accordion();
