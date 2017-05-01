@@ -681,7 +681,7 @@ const __class = declare('argos._EditBase', [View], {
       }
 
       if (this.multiColumnView) {
-        content.push(`<div class="${ this.multiColumnClass } column">`);
+        content.push(`<div class="${this.multiColumnClass} column">`);
       }
       this.createRowContent(current, content);
       if (this.multiColumnView) {
