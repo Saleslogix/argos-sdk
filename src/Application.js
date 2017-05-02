@@ -611,8 +611,11 @@ export default class Application {
 
     this.onStateChange(state);
 
-    if (this.previousState.online !== state.online) {
-      this._updateConnectionState(state.online);
+    const sdkState = state && state.sdk;
+    const previousSdkState = this.previousState && this.previousState.sdk;
+
+    if (sdkState && previousSdkState && sdkState.online !== previousSdkState.online) {
+      this._updateConnectionState(sdkState.online);
     }
 
     this.previousState = state;
