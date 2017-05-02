@@ -1524,10 +1524,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   /**
    * Navigates to the defined `this.insertView`, or `this.editView` passing the current views id as the `returnTo`
    * option and setting `insert` to true.
-   * @param {HTMLElement} el Node that initiated the event.
    * @param {Object} additionalOptions Additional options to be passed into the next view.
    */
-  navigateToInsertView: function navigateToInsertView(el, additionalOptions) {
+  navigateToInsertView: function navigateToInsertView(additionalOptions) {
     const view = this.app.getView(this.insertView || this.editView);
     let options = {
       returnTo: this.id,
