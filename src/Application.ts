@@ -53,53 +53,117 @@ const resource = getResource('sdkApplication');
  * @alternateClassName App
  */
 export default class Application {
-  enableConcurrencyCheck: any;
-  ReUI: any;
-  viewShowOptions: any;
-  currentOrientation: any;
-  _appStatePromises: any;
-  _embedded: any;
-  _started: any;
-  _rootDomNode: any;
-  _containerNode: any;
-  customizations: any;
-  services: any;
-  _connections: any;
-  modules: any;
-  views: any;
-  onLine: any;
-  _currentPage: any;
-  bars: any;
-  enableCaching: any;
-  defaultService: any;
-  redirectHash: any;
-  maxUploadFileSize: any;
-  PING_TIMEOUT: any;
-  PING_DEBOUNCE: any;
-  PING_RETRY: any;
-  PING_RESOURCE: any;
-  ModelManager: any;
-  isDynamicInitialized: any;
-  applicationmenu: any;
-  viewSettingsModal: any;
-  previousState: any;
-  context: any;
-  store: any;
-  connections: any;
-  modal: any;
-  _appContainerNode: any;
-  scene: any;
-  _viewContainerNode: any;
-  preferences: any;
-  ping: any;
-  onRequestTimeout: any;
-  toast: any;
-  enableOfflineSupport: any;
+  /**
+   * Array of promises to load app state
+   * @property {Array}
+   */
+  private _appStatePromises: any[];
+  private _appContainerNode: any;
+  private _containerNode: any;
+  private _connections: any;
+  private _currentPage: any;
+  /**
+   * Boolean for whether the application is an embedded app or not
+   * @property {boolean}
+   */
+  private _embedded: boolean;
+  private _rootDomNode: any;
+  private _viewContainerNode: any;
+  /**
+   * Signifies the App has been initialized
+   * @property {Boolean}
+    */
+  private _started: any;
+
+  /**
+   * Instance of SoHo Xi applicationmenu.
+   */
+  public applicationmenu: any;
+  /**
+   * Toolbar instances by key name
+   * @property {Object}
+   */
+  public bars: any;
+  /**
+   * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
+   */
+  public enableConcurrencyCheck: any;
+  public enableOfflineSupport: any;
+  /**
+   * @property {String}
+   * Current orientation of the application. Can be landscape or portrait.
+   */
+  public currentOrientation: string;
+  public connections: any;
+  public context: any;
+  public customizations: any;
+  public isDynamicInitialized: boolean;
+  /**
+   * The default Sage.SData.Client.SDataService instance
+   * @property {Object}
+   */
+  public defaultService: any;
+  public enableCaching: boolean;
+  /**
+   * Signifies the maximum file size that can be uploaded in bytes
+   * @property {int}
+   */
+  public maxUploadFileSize: any;
+  /**
+   * All options are mixed into App itself
+   * @param {Object} options
+   */
+  public ModelManager: any;
+  public modules: any[];
+  public onLine: boolean;
+
+  /**
+   * Timeout for the connection check.
+   */
+  public PING_TIMEOUT: number;
+  /**
+   * Ping debounce time.
+   */
+  public PING_DEBOUNCE: number;
+  /**
+   * Number of times to attempt to ping.
+   */
+  public PING_RETRY: number;
+  /*
+    * Static resource to request on the ping. Should be a small file.
+    */
+  public PING_RESOURCE: string;
+  public onRequestTimeout: any;
+  public previousState: any;
+  public modal: any;
+  public preferences: any;
+  public ping: any;
+  /**
+   * The hash to redirect to after login.
+   * @property {String}
+   */
+  public redirectHash: any;
+  public ReUI: any;
+  public store: any;
+  public scene: any;
+  public services: any;
+  public toast: any;
+  /**
+   * Instance of SoHo Xi modal dialog for view settings. This was previously in
+   * the right drawer.
+   * @type {Modal}
+  */
+  public viewSettingsModal: any;
+
+  /**
+   * @property viewShowOptions {Array} Array with one configuration object that gets pushed before showing a view.
+   * Allows passing in options via routing. Value gets removed once the view is shown.
+   */
+  public viewShowOptions: any;
+  public views: any;
 
   constructor() {
-    /**
-     * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
-     */
+
     this.enableConcurrencyCheck = false;
 
     this.ReUI = {
@@ -140,106 +204,37 @@ export default class Application {
       },
     };
 
-    /**
-     * @property viewShowOptions {Array} Array with one configuration object that gets pushed before showing a view.
-     * Allows passing in options via routing. Value gets removed once the view is shown.
-     */
     this.viewShowOptions = null;
-
-    /**
-     * @property {String}
-     * Current orientation of the application. Can be landscape or portrait.
-     */
     this.currentOrientation = 'portrait';
-
-    /**
-     * Boolean for whether the application is an embedded app or not
-     * @property {boolean}
-     * @private
-     */
     this._embedded = false;
-
-    /**
-     * Array of promises to load app state
-     * @property {Array}
-     * @private
-     */
     this._appStatePromises = null;
-
-    /**
-     * Signifies the App has been initialized
-     * @property {Boolean}
-     * @private
-     */
     this._started = false;
-
     this._rootDomNode = null;
     this._containerNode = null;
     this.customizations = null;
     this.services = null; // TODO: Remove
     this._connections = null;
-    this.modules = null;
     this.views = null;
     this.onLine = true;
     this._currentPage = null;
-    /**
-     * Toolbar instances by key name
-     * @property {Object}
-     */
     this.bars = null;
     this.enableCaching = false;
-    /**
-     * The default Sage.SData.Client.SDataService instance
-     * @property {Object}
-     */
     this.defaultService = null;
-
-    /**
-     * The hash to redirect to after login.
-     * @property {String}
-     */
     this.redirectHash = '';
-    /**
-     * Signifies the maximum file size that can be uploaded in bytes
-     * @property {int}
-     */
     this.maxUploadFileSize = 4000000;
-
-    /**
-     * Timeout for the connection check.
-     */
-    this.PING_TIMEOUT = 3000;
-
-    /**
-     * Ping debounce time.
-     */
+    this.PING_TIMEOUT = 300;
     this.PING_DEBOUNCE = 1000;
-
-    /**
-     * Number of times to attempt to ping.
-     */
     this.PING_RETRY = 5;
-
-    /*
-     * Static resource to request on the ping. Should be a small file.
-     */
     this.PING_RESOURCE = 'ping.gif';
-    /**
-     * All options are mixed into App itself
-     * @param {Object} options
-     */
     this.ModelManager = null;
     this.isDynamicInitialized = false;
-
     this._appStatePromises = [];
-
     this.customizations = {};
     this.services = {}; // TODO: Remove
     this._connections = {};
     this.modules = [];
     this.views = {};
     this.bars = {};
-
     this.context = {
       history: [],
     };
@@ -247,21 +242,9 @@ export default class Application {
 
     // For routing need to know homeViewId
     this.ReUI.app = this;
-
     this.ModelManager = ModelManager;
-
-    /**
-     * Instance of SoHo Xi applicationmenu.
-     */
     this.applicationmenu = null;
-
-    /**
-     * Instance of SoHo Xi modal dialog for view settings. This was previously in
-     * the right drawer.
-     * @type {Modal}
-    */
     this.viewSettingsModal = null;
-
     this.previousState = null;
   }
 
@@ -309,15 +292,15 @@ export default class Application {
     (window as any).ReUI.context.history = this.context.history;
   }
 
-  _onOffline() {
+  private _onOffline() {
     this.ping();
   }
 
-  _onOnline() {
+  private _onOnline() {
     this.ping();
   }
 
-  _updateConnectionState(online) {
+  private _updateConnectionState(online) {
     // Don't fire the onConnectionChange if we are in the same state.
     if (this.onLine === online) {
       return;
@@ -358,7 +341,7 @@ export default class Application {
    * before the PING_TIMEOUT. The promise is rejected if there is timeout or
    * the response is not a 200 or 304.
    */
-  _ping() {
+  private _ping() {
     return new Promise((resolve) => {
       const xhr = new XMLHttpRequest();
       xhr.ontimeout = () => resolve(false);
@@ -425,8 +408,6 @@ export default class Application {
    *       },
    *    });
    *
-   * There are there App state seqences re
-   *
    * @return {Promise}
    */
   initAppState() {
@@ -491,7 +472,7 @@ export default class Application {
    * @param {index) the index of the sequence to start
    * @param {sequences) an array of sequences
    */
-  _initAppStateSequence(index, sequences) {
+  private _initAppStateSequence(index, sequences) {
     return new Promise((resolve, reject) => {
       const seq = sequences[index];
       if (seq) { // We need to send an observable and get ride of the ui element.
@@ -645,7 +626,7 @@ export default class Application {
     this.store.subscribe(this._onStateChange.bind(this));
   }
 
-  _onStateChange() {
+  private _onStateChange() {
     const state = this.store.getState();
 
     if (this.previousState === null) {
@@ -688,7 +669,7 @@ export default class Application {
 
   getReducer() {
     return sdk;
-  }
+  } 
 
   getInitialState() {
     return {};
@@ -791,7 +772,7 @@ export default class Application {
     }
   }
 
-  _loadPreferences() {
+  private _loadPreferences() {
     try {
       if (window.localStorage) {
         this.preferences = JSON.parse(window.localStorage.getItem('preferences'));
@@ -804,7 +785,7 @@ export default class Application {
   /**
    * Establishes various connections to events.
    */
-  _startupConnections() {
+  private _startupConnections() {
     for (const name in this.connections) {
       if (this.connections.hasOwnProperty(name)) {
         if (this.connections.hasOwnProperty(name)) {
@@ -884,7 +865,7 @@ export default class Application {
     return this;
   }
 
-  _onTimeout() {
+  private _onTimeout() {
     this.ping();
   }
 
@@ -913,7 +894,7 @@ export default class Application {
     this._createViewContainerNode();
   }
 
-  _createAppContainerNode() {
+  private _createAppContainerNode() {
     const defaultAppContainerId = 'rootNode';
     $('body').append(`
       <div id="${defaultAppContainerId}">
@@ -922,7 +903,7 @@ export default class Application {
     this._appContainerNode = $(`#${defaultAppContainerId}`).get(0);
   }
 
-  _createViewContainerNode() {
+  private _createViewContainerNode() {
     if (!this._appContainerNode) {
       throw new Error('Set the app container node before creating the view container node.');
     }
@@ -1149,7 +1130,7 @@ export default class Application {
     });
   }
 
-  _internalGetView(options) {
+  private _internalGetView(options) {
     const key = options && options.key;
     const init = options && options.init;
 
@@ -1250,7 +1231,7 @@ export default class Application {
 
   onViewActivate(view) {}
 
-  _onBeforeTransition(evt) {
+  private _onBeforeTransition(evt) {
     const view = this.getView(evt.target);
     if (view) {
       if (evt.out) {
@@ -1261,7 +1242,7 @@ export default class Application {
     }
   }
 
-  _onAfterTransition(evt) {
+  private _onAfterTransition(evt) {
     const view = this.getView(evt.target);
     if (view) {
       if (evt.out) {
@@ -1272,20 +1253,20 @@ export default class Application {
     }
   }
 
-  _onActivate(evt) {
+  private _onActivate(evt) {
     const view = this.getView(evt.target);
     if (view) {
       this._viewActivate(view, evt.tag, evt.data);
     }
   }
 
-  _beforeViewTransitionAway(view) {
+  private _beforeViewTransitionAway(view) {
     this.onBeforeViewTransitionAway(view);
 
     view.beforeTransitionAway();
   }
 
-  _beforeViewTransitionTo(view) {
+  private _beforeViewTransitionTo(view) {
     this.onBeforeViewTransitionTo(view);
 
     for (const n in this.bars) {
@@ -1297,13 +1278,13 @@ export default class Application {
     view.beforeTransitionTo();
   }
 
-  _viewTransitionAway(view) {
+  private _viewTransitionAway(view) {
     this.onViewTransitionAway(view);
 
     view.transitionAway();
   }
 
-  _viewTransitionTo(view) {
+  private _viewTransitionTo(view) {
     this.onViewTransitionTo(view);
 
     const tools = (view.options && view.options.tools) || view.getTools() || {};
@@ -1317,7 +1298,7 @@ export default class Application {
     view.transitionTo();
   }
 
-  _viewActivate(view, tag, data) {
+  private _viewActivate(view, tag, data) {
     this.onViewActivate(view);
 
     view.activate(tag, data);

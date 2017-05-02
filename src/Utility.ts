@@ -22,30 +22,30 @@ const util = ICRMCommonSDK.utility;
  * @alternateClassName Utility
  * @singleton
  */
-const __class = lang.setObject('argos.Utility', {
+export default class Utility {
   /**
    * Replaces a single `"` with two `""` for proper SData query expressions.
    * @param {String} searchQuery Search expression to be escaped.
    * @return {String}
    */
-  escapeSearchQuery: util.escapeSearchQuery,
-  memoize: util.memoize,
-  debounce: util.debounce,
-  getValue: util.getValue,
-  setValue: util.setValue,
-  expand: util.expand,
-  roundNumberTo: util.roundNumberTo,
+  static escapeSearchQuery = util.escapeSearchQuery;
+  static memoize = util.memoize;
+  static debounce = util.debounce;
+  static getValue = util.getValue;
+  static setValue = util.setValue;
+  static expand = util.expand;
+  static roundNumberTo = util.roundNumberTo;
   /**
    * @function
    * Utility function to join fields within a Simplate template.
    */
-  joinFields: util.joinFields,
+  static joinFields = util.joinFields;
   /**
    * Sanitizes an Object so that JSON.stringify will work without errors by discarding non-stringable keys.
    * @param {Object} obj Object to be cleansed of non-stringify friendly keys/values.
    * @return {Object} Object ready to be JSON.stringified.
    */
-  sanitizeForJson: util.sanitizeForJson,
-});
+  static sanitizeForJson = util.sanitizeForJson;
+}
 
-export default __class;
+lang.setObject('argos.Utility', Utility);

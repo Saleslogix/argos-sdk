@@ -1,4 +1,3 @@
-const declare = require('dojo/_base/declare');
 const lang = require('dojo/_base/lang');
 const Deferred = require('dojo/_base/Deferred');
 const QueryResults = require('dojo/store/util/QueryResults');
@@ -10,40 +9,40 @@ const QueryResults = require('dojo/store/util/QueryResults');
  * @requires argos.Convert
  * @requires argos.Utility
  */
-export default declare('argos.Store.PouchDB', null, {
+export default class PouchDBStore {
 
   // interface properties
   /**
    * @property {String} idProperty Name of the property to use as the identifier
    */
-  idProperty: '_id',
+  idProperty = '_id';
 
   /**
    * @property {Array} data Array of objects. If the store has a collection of cached objects,
    * it can make this available in this property.
    */
-  data: null,
+  data = null;
 
   /**
    * @property {String} databaseName Name of the local PouchDB database
    */
-  databaseName: 'argos',
+  databaseName = 'argos';
 
   // Additional properties for metadata fetching
-  revisionProperty: '_rev',
+  revisionProperty = '_rev';
 
   // Private
-  _db: null,
+  _db = null;
 
   /**
    * @constructor
    */
-  constructor: function constructor(props) {
-    lang.mixin(this, props);
+  constructor(props) {
+    Object.assign(this, props);
     this._db = new PouchDB(this.databaseName);
     this.data = [];
-  },
-  get: function get(id, options) {
+  }
+  get(id, options) {
     const deferred = new Deferred();
     this._db.get(id, options || {}, (err, doc) => {
       if (!err) {
@@ -54,7 +53,7 @@ export default declare('argos.Store.PouchDB', null, {
     });
 
     return deferred.promise;
-  },
+  }
   /**
    * Queries the store for objects. This does not alter the store, but returns a
    * set of data from the store.
@@ -67,7 +66,7 @@ export default declare('argos.Store.PouchDB', null, {
    * @returns {dojo.store.api.Store.QueryResults}
    *
    */
-  query: function query(q, queryOptions: any = {}) {
+  query(q, queryOptions: any = {}) {
     const deferred = new Deferred();
     deferred.total = -1;
 
@@ -94,7 +93,7 @@ export default declare('argos.Store.PouchDB', null, {
     });
 
     return QueryResults(deferred.promise);
-  },
+  }
   /**
    * Stores an object.
    * @param {Object} object The object to store.
@@ -105,7 +104,7 @@ export default declare('argos.Store.PouchDB', null, {
    * @param {Boolean} putOptions.overwrite
    * @returns {String|Number}
    */
-  put: function put(object, putOptions) {
+  put(object, putOptions) {
     const deferred = new Deferred();
     function callback(err, response) {
       if (err) {
@@ -122,48 +121,48 @@ export default declare('argos.Store.PouchDB', null, {
     }
 
     return deferred.promise;
-  },
+  }
   /**
    * Creates an object, throws an error if the object already exists.
    * @param {Object} object The object to store
    * @param {Object} addOptions Additional directives for creating objects
    * @param {Boolean} addOptions.overwrite
    */
-  add: function add(object, addOptions: any = {}) {
+  add(object, addOptions: any = {}) {
     addOptions.overwrite = false;
     return this.put(object, addOptions);
-  },
+  }
   /**
    * Removes the document given the id
    * @param id
    * @returns {window.Promise}
    */
-  remove: function remove(id) {
+  remove(id) {
     return this._db.get(id).then((doc) => {
       return this._db.remove(doc);
     });
-  },
+  }
   /**
    * Returns an object's identity using this.idProperty
    * @param {Object} object The object to get the identity from
    * @param {String} string The optional identity property
    * @returns {String|Number}
    */
-  getIdentity: function getIdentity(object, idProperty) {
+  getIdentity(object, idProperty?) {
     if (idProperty) {
       return lang.getObject(idProperty, false, object);
     }
     return lang.getObject(this.idProperty, false, object);
-  },
-  queryEngine: function queryEngine(/* query, options*/) {},
+  }
+  queryEngine(/* query, options*/) {}
   /**
    * Not implemented in this store.
    */
-  transaction: function transaction() {},
+  transaction() {}
   /**
    * Not implemented in this store.
    */
-  getChildren: function getChildren() {},
+  getChildren() {}
   /**
    * Returns any metadata about the object. This may include attribution,
    * cache directives, history, or version information.
@@ -172,7 +171,7 @@ export default declare('argos.Store.PouchDB', null, {
    * @return {Object} Object containing the metadata.
    * @return {String|Number} return.id
    */
-  getMetadata: function getMetadata(object) {
+  getMetadata(object) {
     if (object) {
       return {
         id: this.getIdentity(object),
@@ -181,13 +180,13 @@ export default declare('argos.Store.PouchDB', null, {
     }
 
     return null;
-  },
+  }
   /**
    * Returns an object's revision using this.revisionProperty
    * @param {Object} object The object to get the revision from
    * @returns {String}
    */
-  getRevision: function getRevision(object) {
+  getRevision(object) {
     return lang.getObject(this.revisionProperty, false, object);
-  },
-});
+  }
+}

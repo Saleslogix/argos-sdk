@@ -28,49 +28,49 @@ const dtFormatResource = getResource('formatDateTimeFormat');
  * @requires argos.Convert
  * @singleton
  */
-const __class = lang.setObject('argos.Format', {
+export default class Format {
   /**
    * @property {String}
    * Text used in {@link #yesNo yesNo} formatter for true values
    */
-  yesText: resource.yesText,
+  static yesText = resource.yesText;
   /**
    * @property {String}
    * Text used in {@link #yesNo yesNo} formatter for false values
    */
-  noText: resource.noText,
+  static noText = resource.noText;
   /**
    * @property {String}
    * Text used in {@link #bool bool} formatter for true values
    */
-  trueText: resource.trueText,
+  static trueText = resource.trueText;
   /**
    * @property {String}
    * Text used in {@link #bool bool} formatter for false values
    */
-  falseText: resource.falseText,
+  static falseText = resource.falseText;
   /**
    * @property {String}
    * Text used in {@link #timespan timespan} formatter for more than one hour
    */
-  hoursText: resource.hoursText,
+  static hoursText = resource.hoursText;
   /**
    * @property {String}
    * Text used in {@link #timespan timespan} formatter for exactly one hour
    */
-  hourText: resource.hourText,
+  static hourText = resource.hourText;
   /**
    * @property {String}
    * Text used in {@link #timespan timespan} formatter for more than one minute
    */
-  minutesText: resource.minutesText,
+  static minutesText = resource.minutesText;
   /**
    * @property {String}
    * Text used in {@link #timespan timespan} formatter for exactly one minute
    */
-  minuteText: resource.minuteText,
+  static minuteText = resource.minuteText;
 
-  shortDateFormatText: dtFormatResource.shortDateFormatText,
+  static shortDateFormatText = dtFormatResource.shortDateFormatText;
 
   /**
    * @property {String}
@@ -78,30 +78,30 @@ const __class = lang.setObject('argos.Format', {
    * * `${0}` - percent value
    * * `${1}` - percent synmbol "%"
    */
-  percentFormatText: resource.percentFormatText,
+  static percentFormatText = resource.percentFormatText;
   /**
    * Takes a String and encodes `&`, `<`, `>`, `"`, `'`, and `/` to HTML entities
    * @param {String} String to encode
    * @return {String} Html encoded string
    */
-  encode: format.encode,
+  static encode = format.encode;
   /**
    * Takes a String and decodes `&`, `<`, `>`, `"` from HTML entities back to the character
    * @param {String} String to decode
    * @return {String} Html decoded string
    */
-  decode: format.decode,
+  static decode = format.decode;
   /**
    * Determines if the given item is an empty string or empty arry
    * @param {String/Array} Item to check if empty
    * @return {Boolean} If passed item is empty
    */
-  isEmpty: format.isEmpty,
+  static isEmpty = format.isEmpty;
   /**
    * @property {String}
    * Text used in file size  formatter
    */
-  bytesText: resource.bytesText,
+  static bytesText = resource.bytesText;
   /**
    * @property {Object[]}
    * Array of objects that have the keys `test` and `format` where `test` is a RegExp that
@@ -125,27 +125,27 @@ const __class = lang.setObject('argos.Format', {
    * If you plan to override this value make sure you include the default ones provided.
    *
    */
-  phoneFormat: format.phoneFormat,
+  static phoneFormat = format.phoneFormat;
   /**
    * Takes a url string and wraps it with an `<a>` element with `href=` pointing to the url.
    * @param {String} val Url string to be wrapped
    * @return {String} An `<a>` element as a string.
    */
-  link: function link(val) {
+  static link = function link(val) {
     return format.link(val, (window.navigator as any).standalone);
-  },
+  };
   /**
    * Takes an email string and wraps it with an `<a>` element with `href="mailto:"` pointing to the email.
    * @param {String} val Email string to be wrapped
    * @return {String} An `<a>` element as a string.
    */
-  mail: format.mail,
+  static mail = format.mail;
   /**
    * Removes whitespace from from and end of string
    * @param {String} val String to be trimmed
    * @return {String} String without space on either end
    */
-  trim: format.trim,
+  static trim = format.trim;
   /**
    * Takes a date and format string and returns the formatted date as a string.
    * @param {Date/String} val Date to be converted. If string is passed it is converted to a date
@@ -154,10 +154,10 @@ const __class = lang.setObject('argos.Format', {
    * @param {Boolean} utc If a date should be in UTC time set this flag to true to counter-act javascripts built-in timezone applier.
    * @return {String} Date formatted as a string.
    */
-  date: function date(val, fmt, utc) {
+  static date(val, fmt, utc) {
     const value = format.date(val, utc);
-    return moment(value).format(fmt || argos.Format.shortDateFormatText);
-  },
+    return moment(value).format(fmt || this.shortDateFormatText);
+  }
   /**
    * Takes a number and decimal place and floors the number to that place:
    *
@@ -169,7 +169,7 @@ const __class = lang.setObject('argos.Format', {
    * @param {Number} d Number of decimals places to keep, defaults to 2 if not provided.
    * @return {Number} Fixed number.
    */
-  fixed: format.fixed,
+  static fixed = format.fixed;
   /**
    * Takes a decimal number, multiplies by 100 and adds the % sign with the number of palces to the right.
    *
@@ -182,47 +182,48 @@ const __class = lang.setObject('argos.Format', {
    * @param {Number/String} places If no value is given the default value will be set to 2.
    * @return {String} Number as a percentage with % sign.
    */
-  percent: function percent(val, places) {
+  static params; // hack becoz of wrong scope
+  static percent(val, places) {
     return format.percent(
       val,
       places,
       (num) => {
-        return string.substitute(argos.Format.percentFormatText, [num, Mobile.CultureInfo.numberFormat.percentSymbol]);
+        return string.substitute(this.params.formatModule.percentFormatText, [num, Mobile.CultureInfo.numberFormat.percentSymbol]);
       },
       Mobile.CultureInfo.numberFormat.percentGroupSeparator,
       Mobile.CultureInfo.numberFormat.percentDecimalSeparator);
-  },
+  }
   /**
    * Takes a boolean value and returns the string Yes or No for true or false
    * @param {Boolean/String} val If string it tests if the string is `true` for true, else assumes false
    * @return {String} Yes for true, No for false.
    */
-  yesNo: function yesNo(val) {
-    return format.yesNo(val, argos.Format.yesText, argos.Format.noText);
-  },
+  static yesNo = function yesNo(val) {
+    return format.yesNo(val, this.yesText, this.noText);
+  };
   /**
    * Takes a boolean value and returns the string T or F for true or false
    * @param {Boolean/String} val If string it tests if the string is `true` for true, else assumes false
    * @return {String} T for true, F for false.
    */
-  bool: function bool(val) {
-    return format.bool(val, argos.Format.trueText, argos.Format.falseText);
-  },
+  static bool(val) {
+    return format.bool(val, this.trueText, this.falseText);
+  }
   /**
    * Takes a string and converts all new lines `\n` to HTML `<br>` elements.
    * @param {String} val String with newlines
    * @return {String} String with replaced `\n` with `<br>`
    */
-  nl2br: format.nl2br,
+  static nl2br = format.nl2br;
   /**
-   * Takes a number of minutes and turns it into the string: `'n hours m minutes'`
+    * Takes a number of minutes and turns it into the string: `'n hours m minutes'`
    * @param {Number/String} val Number of minutes, will be `parseFloat` before operations and fixed to 2 decimal places
    * @return {String} A string representation of the minutes as `'n hours m minutes'`
    */
-  timespan: function timespan(val) {
-    const f = argos.Format;
+  static timespan(val) {
+    const f = this;
     return format.timespan(val, f.hoursText, f.hourText, f.minutesText, f.minuteText);
-  },
+  }
   /**
    * Takes a 2D array of `[[x,y],[x,y]]` number coordinates and draws them onto the provided canvas
    * The first point marks where the "pen" starts, each sequential point is then "drawn to" as if holding a
@@ -231,7 +232,7 @@ const __class = lang.setObject('argos.Format', {
    * @param {HTMLElement} canvas The `<canvas>` element to be drawn on
    * @param {Object} options Canvas options: scale, lineWidth and penColor.
    */
-  canvasDraw: format.canvasDraw,
+  static canvasDraw = format.canvasDraw;
   /**
    * Returns the image data (or img element) for a series of vectors
    * @param {Number[][]} vector A series of x,y coordinates in the format of: `[[0,0],[1,5]]`. These will be drawn sequentially as one line.
@@ -239,7 +240,7 @@ const __class = lang.setObject('argos.Format', {
    * @param {Boolean} html Flag for returning image as a data-uri or as a stringified `<img>` element.
    * @return {String} The encoded data of the drawn image, optionally wrapped in `<img>` if html was passed as true
    */
-  imageFromVector: format.imageFromVector,
+  static imageFromVector = format.imageFromVector;
   /**
    * Takes a string phone input and attempts to match it against the predefined
    * phone formats - if a match is found it is returned formatted if not it is returned
@@ -248,17 +249,17 @@ const __class = lang.setObject('argos.Format', {
    * @param asLink {Boolean} True to put the phone in an anchor element pointing to a tel: uri
    * @returns {String}
    */
-  phone: format.phone,
+  static phone = format.phone;
   /**
    * Takes a string input and converts A-Z to their respective phone number character
    * `1800CALLME` -> `1800225563`
    * @param val
    * @returns {String}
    */
-  alphaToPhoneNumeric: format.alphaToPhoneNumeric,
-  fileSize: function fileSize(size) {
-    return format.fileSize(size, argos.Format.bytesText);
-  },
-});
+  static alphaToPhoneNumeric = format.alphaToPhoneNumeric;
+  static fileSize(size) {
+    return format.fileSize(size, this.bytesText);
+  }
+}
 
-export default __class;
+lang.setObject('argos.Format', Format);

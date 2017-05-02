@@ -3,7 +3,6 @@
  * Mixin for pull to refresh actions
  * @alternateClassName _PullToRefreshMixin
  */
-const declare = require('dojo/_base/declare');
 
 import getResource from './I18n';
 
@@ -14,79 +13,79 @@ const resource = getResource('pullToRefreshMixin');
  * Mixin for pull to refresh actions
  * @alternateClassName _PullToRefreshMixin
  */
-const __class = declare('argos._PullToRefreshMixin', null, {
+export default class _PullToRefreshMixin {
   /**
    * @property {Simplate}
    */
-  pullRefreshBannerTemplate: new Simplate([
+  pullRefreshBannerTemplate = new Simplate([
     '<div class="pull-to-refresh">{%! $.pullRefreshTemplate %}</div>',
-  ]),
+  ]);
 
   /**
    * @property {Simplate}
    */
-  pullRefreshTemplate: new Simplate([
+  pullRefreshTemplate = new Simplate([
     `<button type="button" class="btn-icon hide-focus">
           <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-down-arrow"></use>
           </svg>
       </button>
       <p>{%= $$._getText("pullRefreshText") %}</p>`,
-  ]),
+  ]);
 
   /**
    * @property {Simplate}
    */
-  pullReleaseTemplate: new Simplate([
+  pullReleaseTemplate = new Simplate([
     `<button type="button" class="btn-icon hide-focus">
           <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-up-arrow"></use>
           </svg>
       </button>
       <p>{%= $$._getText("pullReleaseText") %}</p>`,
-  ]),
+  ]);
 
   /**
    * @property {String}
    * Text to indicate a pull to refresh
    */
-  pullRefreshText: resource.pullRefreshText,
+  pullRefreshText = resource.pullRefreshText;
   /**
    * @property {String}
    * Text to indicate the user should release to cause the refresh
    */
-  pullReleaseText: resource.pullReleaseText,
+  pullReleaseText = resource.pullReleaseText;
 
   /**
    * @property {Boolean} enablePullToRefresh If true, will enable the user to drag down and refresh the list. Default is true.
    */
-  enablePullToRefresh: true,
+  enablePullToRefresh = true;
 
   /**
    * @property {DOMNode}
    */
-  pullRefreshBanner: null,
+  pullRefreshBanner = null;
 
   /**
    * @property {DOMNode}
    */
-  scrollerNode: null,
+  scrollerNode = null;
 
   /**
    * @property {DOMNode}
    */
-  dragNode: null,
+  dragNode = null;
 
-  animateCls: 'animate',
+  animateCls = 'animate';
 
-  _getText: function _getText(prop) {
-    return __class.prototype[prop];
-  },
+  _getText(prop) {
+    return this[prop];
+  }
   /**
    * @param {DOMNode} scrollerNode The node that scrolls and should be pulled on to refresh.
    * @param {DOMNode} dragNode The node that the user will drag. Defaults to scrollerNode if not specified.
    */
-  initPullToRefresh: function initPullToRefresh(scrollerNode, dragNode) {
+  initPullToRefresh(scrollerNode, dragNode) {
     if (!this.enablePullToRefresh || !App.supportsTouch() || !scrollerNode || !Rx) {
       return;
     }
@@ -191,25 +190,23 @@ const __class = declare('argos._PullToRefreshMixin', null, {
         this.pullRefreshBanner.innerHTML = this.pullRefreshTemplate.apply(this);
       }
     });
-  },
+  }
   /**
    * Derived class must implement this to determine when pull to refresh should start. This is called when onTouchStart is fired.
    * @param {DOMNode} scrollerNode
    * Reference to the scoller node
    * @returns {Boolean}
    */
-  shouldStartPullToRefresh: function shouldStartPullToRefresh(scrollerNode) {
+  shouldStartPullToRefresh(scrollerNode) {
     const scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
     return scrollTop === 0;
-  },
+  }
   /**
    * Fires when the pull to refresh is successful.
    */
-  onPullToRefreshComplete: function onPullToRefreshComplete() {},
+  onPullToRefreshComplete() {}
   /**
    * Fires when the pull to refresh is canceled.
    */
-  onPullToRefreshCancel: function onPullToRefreshCancel() {},
-});
-
-export default __class;
+  onPullToRefreshCancel() {}
+}
