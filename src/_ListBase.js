@@ -207,7 +207,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * The template used to render a row in the view.  This template includes {@link #itemTemplate}.
    */
   rowTemplate: new Simplate([`
-    <div data-key="{%= $$.getItemActionKey($) %}">
+    <div data-action="activateEntry" data-key="{%= $$.getItemActionKey($) %}" data-descriptor="{%: $$.getItemDescriptor($) %}">
       <div class="widget">
         <div class="widget-header">
           {%! $$.itemIconTemplate %}
@@ -222,7 +222,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
             {%! $$.listActionTemplate %}
           {% } %}
         </div>
-        <div class="card-content" data-action="activateEntry" data-key="{%= $$.getItemActionKey($) %}" data-descriptor="{%: $$.getItemDescriptor($) %}">
+        <div class="card-content">
           {%! $$.itemRowContentTemplate %}
         </div>
       </div>
