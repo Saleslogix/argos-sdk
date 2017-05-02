@@ -230,7 +230,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
     '<label>{%: $.label %}</label>',
     '<span class="data">',
-    '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
+    '<a class="hyperlink" data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
     '{%= $.value %}',
     '</a>',
     '</span>',
@@ -598,6 +598,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
     options.fromContext = this;
     if (view && options) {
+      options.returnTo = this.id;
       view.show(options);
     }
   },

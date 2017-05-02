@@ -234,24 +234,12 @@ div > .collapsed-indicator {
     visibility: hidden;
 }
 
-li > .disabled,
-.action-list > li > .disabled {
+li > .disabled {
     opacity: 0.3;
 }
 
 .action-list > ul > li > a {
     text-overflow: ellipsis;
-}
-
-ul.action-list > li > a > div {
-    float: left;
-    margin: 0 5px 0 0;
-    width: 39px;
-    height: 30px;
-    text-align: center;
-    padding: 5px;
-    font-size: 1.1em;
-    .box-sizing(border-box);
 }
 
 .action-list > li {
@@ -260,16 +248,40 @@ ul.action-list > li > a > div {
     label {
         margin-bottom: 0;
     }
+    > a > span {
+        display: block;
+        line-height: inherit;
+        color: @color-lighter-slate;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 1.1em;
+        white-space: nowrap;
+    }
+    > a > div {
+        float: left;
+        margin: 0 5px 0 0;
+        width: 39px;
+        height: 30px;
+        text-align: center;
+        padding: 5px;
+        font-size: 1.1em;
+        .box-sizing(border-box);
+    }
 }
-
-.action-list > li > a > span {
-    display: block;
-    line-height: inherit;
-    color: @color-lighter-slate;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    font-size: 1.1em;
-    white-space: nowrap;
+.landscape .action-list > li {
+    display: inline-block;
+    margin: 0 20px 0 0;
+    label {
+        font-size: 1.4rem;
+        display: inline-block;
+        line-height: 3rem;
+    }
+    .data {
+        display: none
+    }
+}
+.landscape .action-list > li.disabled {
+    display: none;
 }
 
 .invisible {
@@ -304,6 +316,9 @@ body {
 .viewContainer > .panel,
 .viewContainer > .dialog,
 .viewContainer > .view {
+    position: absolute;
+    width: 100%;
+    height: 99%;
     display: none;
     visibility: hidden;
 }
@@ -604,7 +619,7 @@ body {
 }
 
 .pull-to-refresh {
-    width: calc(~'100% - 40px'); // take away 40px padding of .column class
+    width: 100%;
     text-align: center;
     position: absolute;
     visibility: hidden;
@@ -616,11 +631,11 @@ body {
 }
 
 .link-view {
-  .link-node {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
+    .link-node {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
 }
 
 .configurable-list {

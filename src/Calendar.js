@@ -294,7 +294,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   },
   createMonthDropdown: function createMonthDropdown() {
     if (!this._monthDropdown) {
-      this._monthDropdown = new Dropdown({ id: `month-dropdown ${this.id}`, dropdownClass: 'dropdown--medium input-sm', onSelect: this.setMonth, onSelectScope: this });
+      this._monthDropdown = new Dropdown({ id: `month-dropdown-${this.id}`, dropdownClass: 'dropdown--medium input-sm', onSelect: this.setMonth, onSelectScope: this });
       this._monthDropdown.createList({ items: this.monthsText, defaultValue: this.date.selectedDateMoment.month() });
       $(this.monthNode).append(this._monthDropdown.domNode);
     }
@@ -302,7 +302,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   },
   createYearDropdown: function createYearDropdown() {
     if (!this._yearDropdown) {
-      this._yearDropdown = new Dropdown({ id: `year-dropdown ${this.id}`, onSelect: this.setYear, dropdownClass: 'dropdown-mx', onSelectScope: this });
+      this._yearDropdown = new Dropdown({ id: `year-dropdown-${this.id}`, onSelect: this.setYear, dropdownClass: 'dropdown-mx', onSelectScope: this });
       this._yearDropdown.createList({ items: this.getYearRange(), defaultValue: this.date.selectedDateMoment.format('YYYY') });
       $(this.yearNode).append(this._yearDropdown.domNode);
     }
