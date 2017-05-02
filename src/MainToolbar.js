@@ -202,7 +202,9 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
   updateSoho: function updateSoho() {
     // updating soho header resets the header text to zero level. update only toolbbar for now.
     // INFORCRM-16000: added check for toolbar - UpdateToolbar.js uses argos/MainToolbar for controlling visibility
-    this.toolbar && this.toolbar.updated();
+    if (this.toolbar) {
+      this.toolbar.updated();
+    }
   },
   /**
    * Calls parent {@link Toolbar#showTools showTools} which sets the tool collection.
