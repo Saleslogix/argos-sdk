@@ -416,6 +416,11 @@
       "src": "../libraries/dojo/dojo/cldr/nls",
       "dest": "content/dojo/dojo/cldr/nls",
       "filters": ".*\\.js"
+    },
+    {
+      "src": "../docs",
+      "dest": "docs",
+      "filters": ".*"
     }
   ]
 }

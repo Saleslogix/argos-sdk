@@ -202,7 +202,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       this.onConnectionStateChange(state);
     }
   },
-  onConnectionStateChange: function onConnectionStateChange(state) { // eslint-disable-line
+  onConnectionStateChange: function onConnectionStateChange(state) {
   },
   _onStateChange: function _onStateChange() {
     const state = this.appStore.getState();
@@ -210,7 +210,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     this.onStateChange(state);
     this.previousState = state;
   },
-  onStateChange: function onStateChange(val) {}, // eslint-disable-line
+  onStateChange: function onStateChange(val) {},
   /**
    * Initializes the model instance that is returned with the current view.
    */
@@ -727,7 +727,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   * @param {Object} ctx
   * @param {Function} next
   */
-  routeShow: function routeShow(ctx, next) { // eslint-disable-line
+  routeShow: function routeShow(ctx, next) {
     this.open();
   },
  /*

@@ -133,7 +133,11 @@ const __class = declare('argos._SDataListMixin', null, {
   _buildQueryExpression: function _buildQueryExpression() {
     const options = this.options;
     const passed = options && (options.query || options.where);
-    return passed ? this.query ? '(' + utility.expand(this, passed) + ') and (' + this.query + ')' : '(' + utility.expand(this, passed) + ')' : this.query;// eslint-disable-line
+    return passed
+      ? this.query
+        ? '(' + utility.expand(this, passed) + ') and (' + this.query + ')'
+        : '(' + utility.expand(this, passed) + ')'
+      : this.query;
   },
   _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {
     const options = this.options;

@@ -119,9 +119,11 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
    */
   getSelectedKeys: function getSelectedKeys() {
     const results = [];
-
-    // Using forEach instead of map, because if we return a mapped NodeList to the caller, storing that in local storage will generate an error,
-    // for some reason there is a _parent attribute on the NodeList that maeks it recursive.
+    /**
+     * Using forEach instead of map, because if we return a mapped NodeList to the caller,
+     * storing that in local storage will generate an error,
+     * for some reason there is a _parent attribute on the NodeList that maeks it recursive.
+     */
     $('.list-item-selected', this.domNode).filter('[data-key]').each((_, node) => {
       const key = $(node).attr('data-key');
       if (key) {
@@ -137,9 +139,11 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
    */
   getOrderedKeys: function getOrderedKeys() {
     const results = [];
-
-    // Using forEach instead of map, because if we return a mapped NodeList to the caller, storing that in local storage will generate an error,
-    // for some reason there is a _parent attribute on the NodeList that maeks it recursive.
+    /**
+     * Using forEach instead of map, because if we return a mapped NodeList to the caller,
+     * storing that in local storage will generate an error,
+     * for some reason there is a _parent attribute on the NodeList that maeks it recursive.
+     */
     $('li', this.domNode).filter('[data-key]').each((_, node) => {
       const key = $(node).attr('data-key');
       if (key) {

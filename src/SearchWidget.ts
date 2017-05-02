@@ -152,7 +152,7 @@ const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
     let newQuery = query;
     let match;
 
-    while ((match = this.hashTagSearchRE.exec(newQuery))) { // eslint-disable-line
+    while ((match = this.hashTagSearchRE.exec(newQuery))) {
       let hashQueryExpression = null;
       const hashTag = match[1];
 
@@ -221,7 +221,7 @@ const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
    * @deprecated
    */
   _onClearClick: function _onClearClick() {
-    console.warn('This method is deprecated.'); // eslint-disable-line
+    console.warn('This method is deprecated.');
   },
   /**
    * The event that fires when the search widget provides a search query.

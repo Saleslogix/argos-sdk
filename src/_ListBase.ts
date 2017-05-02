@@ -77,6 +77,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    *      resourceKind         set to data-resource-kind
    *
    */
+  /* tslint:disable */
   widgetTemplate: new Simplate([`
     <div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
       <div class="page-container scrollable{% if ($$.isNavigationDisabled()) { %} is-multiselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
@@ -119,6 +120,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     </div>
     `,
   ]),
+  /* tslint:enable */
   /**
    * @property {Simplate}
    * The template used to render the loading message when the view is requesting more data.
@@ -205,6 +207,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {Simplate}
    * The template used to render a row in the view.  This template includes {@link #itemTemplate}.
    */
+  /* tslint:disable */
   rowTemplate: new Simplate([`
     <div data-key="{%= $$.getItemActionKey($) %}">
       <div class="widget">
@@ -228,6 +231,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     </div>
     `,
   ]),
+  /* tslint:enable */
   liRowTemplate: new Simplate([
     '<li data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $$.utility.getValue($, $$.labelProperty) %}">',
     '{% if ($$.icon || $$.selectIcon) { %}',
@@ -632,7 +636,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.toolbar.updated();
   },
   _onListViewSelected: function _onListViewSelected() {
-    console.dir(arguments); //eslint-disable-line
+    console.dir(arguments);
   },
   postCreate: function postCreate() {
     this.inherited(arguments);
@@ -643,7 +647,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.subscribe('/app/refresh', this._onRefresh);
 
     if (this.enableSearch) {
-      const SearchWidgetCtor = lang.isString(this.searchWidgetClass) ? lang.getObject(this.searchWidgetClass, false) : this.searchWidgetClass;
+      const SearchWidgetCtor = lang.isString(this.searchWidgetClass)
+        ? lang.getObject(this.searchWidgetClass, false)
+        : this.searchWidgetClass;
 
       this.searchWidget = this.searchWidget || new SearchWidgetCtor({
         class: 'list-search',
@@ -773,7 +779,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         return !error.aborted;
       },
       handle: function handleError(error, next) {
-        alert(this.getErrorMessage(error)); // eslint-disable-line
+        alert(this.getErrorMessage(error));
         next();
       },
     }, {
@@ -1045,7 +1051,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
   },
   /**
-   * Called from checkActionState method and sets the state of the actions from what was selected from the selected row, it sets the disabled state for each action
+   * Called from checkActionState method and sets the state of the actions from what was selected from the
+   * selected row, it sets the disabled state for each action
    * item using the currently selected row as context by passing the action instance the selected row to the
    * action items `enabled` property.
    * @param {Object} selection
@@ -1147,7 +1154,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {String/HTMLElement} tag An indentifier, may be the actual row node or some other id.
    * @private
    */
-  _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) { // eslint-disable-line
+  _onSelectionModelSelect: function _onSelectionModelSelect(key, data, tag) {
     const node = $(tag);
 
     if (this.enableActions) {
@@ -1534,7 +1541,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const store = this.get('store');
 
     if (!store && !this._model) {
-      console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?'); // eslint-disable-line
+      console.warn('Error requesting data, no store was defined. Did you mean to mixin _SDataListMixin to your list view?');
       return null;
     }
 
@@ -1698,7 +1705,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         this._loadPreviousSelections();
       }
     } catch (e) {
-      console.error(e); // eslint-disable-line
+      console.error(e);
       this._logError({
         message: e.message,
         stack: e.stack,
@@ -1779,7 +1786,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         rowNode = $(this.liRowTemplate.apply(entry, this));
       }
     } catch (err) {
-      console.error(err); // eslint-disable-line
+      console.error(err);
       rowNode = $(this.rowTemplateError.apply(entry, this));
     }
     return rowNode.get(0);
@@ -1881,6 +1888,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   beforeTransitionTo: function beforeTransitionTo() {
     this.inherited(arguments);
 
+    // tslint:disable-next-line
     $(this.domNode).toggleClass('list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined') ? this.options.hideSearch : this.hideSearch || !this.enableSearch);
 
     $(this.domNode).toggleClass('list-show-selectors', !this.isSelectionDisabled() && !this.options.singleSelect);

@@ -23,11 +23,10 @@ const __class = declare('argos.DateTimePicker', [_WidgetBase, _Templated], {
     this.inherited(arguments);
   },
   getContent: function getContent() {
-    interface dt {
+    const data: {
       calendar: any,
       time: any
-    };
-    const data:dt  = {
+    }  = {
       calendar: null,
       time: null
     };
@@ -47,7 +46,7 @@ const __class = declare('argos.DateTimePicker', [_WidgetBase, _Templated], {
       this._timeSelectNode.removeListeners();
     }
   },
-  show: function show(options:any = {}) {
+  show: function show(options: any = {}) {
     this.showTimePicker = options.showTimePicker;
     this.ensureOptions(options);
     if (!this._calendarNode) {

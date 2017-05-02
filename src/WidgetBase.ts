@@ -1,6 +1,3 @@
-/* eslint-disable */ // TODO: Remove this later
-
-
 export default class WidgetBase {
   id: any;
   srcNodeRef: any;
@@ -11,7 +8,7 @@ export default class WidgetBase {
   _started: any;
   params: any;
   widgetTemplate: any;
-  constructor(options:any = {}) {
+  constructor(options: any = {}) {
     this.id = options.id || 'generic_widgetbase';
     this.srcNodeRef = null;
     this.domNode = null;

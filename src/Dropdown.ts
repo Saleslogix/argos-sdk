@@ -103,7 +103,9 @@ const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
     return this._selected;
   },
   getText: function getText() {
-    const text = (this.dropdownSelect.options[this.dropdownSelect.selectedIndex]) ? this.dropdownSelect.options[this.dropdownSelect.selectedIndex].text : '';
+    const text = (this.dropdownSelect.options[this.dropdownSelect.selectedIndex])
+      ? this.dropdownSelect.options[this.dropdownSelect.selectedIndex].text
+      : '';
     return text;
   },
   getValue: function getValue() {
