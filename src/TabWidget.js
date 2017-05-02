@@ -86,7 +86,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
     if (this.tabList && this.tabs) {
       this._sohoTabs.destroy();
       $(this.tabList).empty();
-      $('.detailContent', this.tabContainer).remove();
+      $('.tab-panel', this.tabContainer).remove();
     }
     if (this.tabMapping) {
       this.tabs = [];
