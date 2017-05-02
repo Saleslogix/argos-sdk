@@ -1621,7 +1621,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.createIndicatorLayout();
   },
   getItemActionKey: function getItemActionKey(entry) {
-    return entry.$key || entry[this.idProperty];
+    return this.getIdentity(entry);
   },
   getItemDescriptor: function getItemDescriptor(entry) {
     return entry.$descriptor || entry[this.labelProperty];
@@ -1783,7 +1783,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         const entry = this._processEntry(entries[i]);
         // If key comes back with nothing, check that the store is properly
         // setup with an idProperty
-        this.entries[this.getIdentity(entry)] = entry;
+        this.entries[this.getIdentity(entry, i)] = entry;
 
         const rowNode = this.createItemRowNode(entry);
 
@@ -1829,13 +1829,28 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
     return rowNode.get(0);
   },
-  getIdentity: function getIdentity(entry) {
+  getIdentity: function getIdentity(entry, defaultId) {
+    let modelId;
+    let storeId;
+
     if (this._model) {
-      return this._model.getEntityId(entry);
+      modelId = this._model.getEntityId(entry);
+    }
+
+    if (modelId) {
+      return modelId;
     }
 
     const store = this.get('store');
-    return store.getIdentity(entry, this.idProperty);
+    if (store) {
+      storeId = store.getIdentity(entry, this.idProperty);
+    }
+
+    if (storeId) {
+      return storeId;
+    }
+
+    return defaultId;
   },
   _logError: function _logError(error, message) {
     const fromContext = this.options.fromContext;
