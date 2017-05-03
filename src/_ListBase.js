@@ -630,9 +630,15 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   _getSelectionModelAttr: function _getSelectionModelAttr() {
     return this._selectionModel;
   },
-  constructor: function constructor() {
+  constructor: function constructor(options) {
     this.entries = {};
     this._loadedSelections = {};
+
+    // backward compatibility for disableRightDrawer property. To be removed after 3.7
+    if (options && options.disableRightDrawer) {
+      console.warn('disableRightDrawer property is depracated. Use hasSettings property instead. disableRightDrawer = !hasSettings');  //eslint-disable-line
+      this.hasSettings = false;
+    }
   },
   initSoho: function initSoho() {
     const toolbar = $('.toolbar', this.domNode).first();
