@@ -1,0 +1,85 @@
+.demo-grid > * > .content-area {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  text-align: center; }
+
+.demo-grid h2 {
+  font-size: 1.8rem;
+  padding-top: 11px; }
+
+.row.demo-tests-grid .column,
+.row.demo-tests-grid .columns {
+  min-height: 60px; }
+  .row.demo-tests-grid .column > *,
+  .row.demo-tests-grid .columns > * {
+    vertical-align: middle; }
+
+.draggable.card.demo {
+  min-height: 150px;
+  width: 150px; }
+
+#busy-form {
+  padding: 0 0 1em; }
+
+.contained-scrolling-left-col {
+  background-color: #ffffff;
+  display: inline-block;
+  height: calc(100% - 45px);
+  margin-left: 20px;
+  margin-top: 20px;
+  min-height: 0;
+  width: calc(30% - 20px); }
+  .contained-scrolling-left-col > .content {
+    height: 5000px;
+    width: 3000px; }
+
+.contained-scrolling-right-top {
+  background-color: #ffffff;
+  display: inline-block;
+  height: calc(42% - 20px);
+  margin-left: 20px;
+  margin-top: 20px;
+  min-height: 0;
+  position: absolute;
+  top: 0;
+  width: calc(70% - 40px); }
+  .contained-scrolling-right-top > .content {
+    height: 5000px;
+    width: 3000px; }
+
+.contained-scrolling-right-bottom {
+  background-color: #ffffff;
+  display: inline-block;
+  height: calc(55% - 25px);
+  margin-left: 20px;
+  margin-top: 20px;
+  min-height: 0;
+  width: calc(70% - 40px); }
+  .contained-scrolling-right-bottom > .content {
+    height: 5000px;
+    width: 3000px; }
+
+.demo-column-content > .content {
+  min-height: 5000px; }
+
+@media (max-width: 1279px) {
+  .demo-column-content > .content {
+    min-height: 500px; } }
+
+.wizard-panel {
+  -webkit-transition: opacity 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+  -moz-transition: opacity 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+  -o-transition: opacity 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+  -ms-transition: opacity 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+  transition: opacity 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94); }
+
+.demo-title-pad {
+  margin-top: 2em; }
+
+.demo .icon-sohoxi {
+  fill: #5c5c5c !important;
+  left: 0 !important;
+  top: -6px !important; }
+
+/*# sourceMappingURL=demo.css.map */

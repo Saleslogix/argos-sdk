@@ -70,15 +70,15 @@
         },
         {
           "text": "d3.js",
-          "path": "../deps/d3/"
+          "path": "../libraries/sohoxi/js/"
         },
         {
-          "text": "jquery.js",
-          "path": "../deps/jquery/"
+          "text": "jquery-3.1.1.js",
+          "path": "../libraries/sohoxi/js/"
         },
         {
           "text": "sohoxi.js",
-          "path": "../deps/sohoxijs/"
+          "path": "../libraries/sohoxi/js/"
         }
       ]
     },
@@ -393,12 +393,12 @@
       "filters": ".*(\\.css)"
     },
     {
-      "src": "../deps/sohoxicss/",
+      "src": "../libraries/sohoxi/css/",
       "dest": "content/css",
       "filters": ".*(\\.css)"
     },
     {
-      "src": "../deps/sohoxicultures/",
+      "src": "../libraries/sohoxi/js/cultures/",
       "dest": "content/javascript/cultures",
       "filters": ".*\\.js"
     },
