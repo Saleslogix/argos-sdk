@@ -636,6 +636,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
 
     // backward compatibility for disableRightDrawer property. To be removed after 3.7
     if (options && options.disableRightDrawer) {
+      console.warn('disableRightDrawer property is depracated. Use hasSettings property instead. disableRightDrawer = !hasSettings');  //eslint-disable-line
       this.hasSettings = false;
     }
   },
