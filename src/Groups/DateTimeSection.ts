@@ -1,4 +1,4 @@
-const declare = require('dojo/_base/declare');
+import * as declare from 'dojo/_base/declare';
 import Utility from '../Utility';
 import _GroupBySection from './_GroupBySection';
 import getResource from '../I18n';

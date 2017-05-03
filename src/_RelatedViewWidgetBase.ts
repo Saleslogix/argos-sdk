@@ -1,8 +1,8 @@
 /* see copyright file
  */
-const declare = require('dojo/_base/declare');
-const lang = require('dojo/_base/lang');
-const _WidgetBase = require('dijit/_WidgetBase');
+import * as declare from 'dojo/_base/declare';
+import * as lang from 'dojo/_base/lang';
+import * as _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import getResource from './I18n';
 

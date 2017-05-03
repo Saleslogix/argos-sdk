@@ -1,6 +1,5 @@
-const declare = require('dojo/_base/declare');
-const domGeom = require('dojo/dom-geometry');
-
+import * as declare from 'dojo/_base/declare';
+import * as domGeom from 'dojo/dom-geometry';
 
 /**
  * @class argos._DraggableBase
@@ -251,9 +250,9 @@ const __class = declare('argos._DraggableBase', null, {
   getPositionOf: function getPositionOf(element: any = {}) {
     const position = domGeom.position(element, this.includeScroll);
     if (position.y !== element.offsetTop) {
-      position.offset = position.y - element.offsetTop;
+      (position as any).offset = position.y - element.offsetTop;
     } else {
-      position.offset = 0;
+      (position as any).offset = 0;
     }
     return position;
   },

@@ -1,4 +1,4 @@
-const declare = require('dojo/_base/declare');
+import * as declare from 'dojo/_base/declare';
 import _OfflineModelBase from '../_OfflineModelBase';
 import Manager from '../Manager';
 import MODEL_TYPES from '../Types';

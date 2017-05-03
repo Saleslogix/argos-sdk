@@ -1,9 +1,9 @@
-const declare = require('dojo/_base/declare');
-const SDataStore = require('../Store/SData');
-const Deferred = require('dojo/Deferred');
-const all = require('dojo/promise/all');
-const when = require('dojo/when');
-const string = require('dojo/string');
+import * as declare from 'dojo/_base/declare';
+import SDataStore from '../Store/SData';
+import * as Deferred from 'dojo/Deferred';
+import * as all from 'dojo/promise/all';
+import * as when from 'dojo/when';
+import * as string from 'dojo/string';
 import utility from '../Utility';
 import _ModelBase from './_ModelBase';
 import MODEL_TYPES from './Types';

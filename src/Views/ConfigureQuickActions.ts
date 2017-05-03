@@ -1,5 +1,5 @@
-const declare = require('dojo/_base/declare');
-const Memory = require('dojo/store/Memory');
+import * as Memory from 'dojo/store/Memory';
+import * as declare from 'dojo/_base/declare';
 import _ConfigureBase from '../_ConfigureBase';
 import getResource from '../I18n';
 
@@ -109,7 +109,7 @@ const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
       return item !== null;
     });
 
-    return Memory({
+    return new Memory({
       data: list,
     });
   },

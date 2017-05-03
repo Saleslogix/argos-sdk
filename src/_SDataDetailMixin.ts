@@ -22,9 +22,9 @@
  * @alternateClassName _SDataDetailMixin
  * @requires argos.SData
  */
-const declare = require('dojo/_base/declare');
-const lang = require('dojo/_base/lang');
-const string = require('dojo/string');
+import * as declare from 'dojo/_base/declare';
+import * as lang from 'dojo/_base/lang';
+import * as string from 'dojo/string';
 import utility from './Utility';
 import SData from './Store/SData';
 import MODEL_TYPES from './Models/Types';

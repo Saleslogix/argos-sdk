@@ -12,9 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const lang = require('dojo/_base/lang');
-const Deferred = require('dojo/_base/Deferred');
-const QueryResults = require('dojo/store/util/QueryResults');
+import * as QueryResults from 'dojo/store/util/QueryResults';
+import * as Deferred from 'dojo/_base/Deferred';
+import * as lang from 'dojo/_base/lang';
+
 import convert from '../Convert';
 import utility from '../Utility';
 

@@ -1,4 +1,4 @@
-const declare = require('dojo/_base/declare');
+import * as declare from 'dojo/_base/declare';
 import DraggableList from './DraggableList';
 import getResource from './I18n';
 

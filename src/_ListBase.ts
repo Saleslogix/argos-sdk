@@ -12,10 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const declare = require('dojo/_base/declare');
-const lang = require('dojo/_base/lang');
-const connect = require('dojo/_base/connect');
-const string = require('dojo/string');
+import * as declare from 'dojo/_base/declare';
+import * as lang from 'dojo/_base/lang';
+import * as connect from 'dojo/_base/connect';
+import * as string from 'dojo/string';
 import Utility from './Utility';
 import ErrorManager from './ErrorManager';
 import View from './View';

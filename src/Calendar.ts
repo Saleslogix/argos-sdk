@@ -17,9 +17,9 @@
  * @class argos.Calendar
  * @alternateClassName Calendar
  */
-const declare = require('dojo/_base/declare');
+import * as declare from 'dojo/_base/declare';
 import _ActionMixin from './_ActionMixin';
-const _WidgetBase = require('dijit/_WidgetBase');
+import * as _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import Dropdown from './Dropdown';
 import getResource from './I18n';

@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const lang = require('dojo/_base/lang');
-const string = require('dojo/string');
+import * as lang from 'dojo/_base/lang';
+import * as string from 'dojo/string';
 import getResource from './I18n';
 
 

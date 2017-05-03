@@ -23,8 +23,8 @@
  * @extends argos._SDataDetailMixin
  * @requires argos.SData
  */
-const declare = require('dojo/_base/declare');
-const lang = require('dojo/_base/lang');
+import * as declare from 'dojo/_base/declare';
+import * as lang from 'dojo/_base/lang';
 
 import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';

@@ -23,10 +23,10 @@
  * @requires argos.SData
  * @requires argos.Utility
  */
-const declare = require('dojo/_base/declare');
-const lang = require('dojo/_base/lang');
-const when = require('dojo/when');
-const string = require('dojo/string');
+import * as declare from 'dojo/_base/declare';
+import * as lang from 'dojo/_base/lang';
+import * as when from 'dojo/when';
+import * as string from 'dojo/string';
 import SData from './Store/SData';
 import utility from './Utility';
 import MODEL_TYPES from './Models/Types';

@@ -1,6 +1,6 @@
-const declare = require('dojo/_base/declare');
-const Deferred = require('dojo/Deferred');
-const _WidgetBase = require('dijit/_WidgetBase');
+import * as declare from 'dojo/_base/declare';
+import * as Deferred from 'dojo/Deferred';
+import * as _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from '../_Templated';
 import getResource from '../I18n';
 

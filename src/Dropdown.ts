@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-const declare = require('dojo/_base/declare');
-const _WidgetBase = require('dijit/_WidgetBase');
+import * as declare from 'dojo/_base/declare';
+import * as _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 
 

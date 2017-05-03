@@ -12,9 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const declare = require('dojo/_base/declare');
-const lang = require('dojo/_base/lang');
-const string = require('dojo/string');
+import * as declare from 'dojo/_base/declare';
+import * as lang from 'dojo/_base/lang';
+import * as string from 'dojo/string';
 import utility from '../Utility';
 import _Field from './_Field';
 import FieldManager from '../FieldManager';

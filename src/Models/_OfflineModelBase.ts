@@ -1,13 +1,13 @@
-const declare = require('dojo/_base/declare');
-const lang = require('dojo/_base/lang');
+import * as declare from 'dojo/_base/declare';
+import * as lang from 'dojo/_base/lang';
 import PouchDBStore from '../Store/PouchDB';
-const Deferred = require('dojo/Deferred');
-const all = require('dojo/promise/all');
-const when = require('dojo/when');
+import * as Deferred from 'dojo/Deferred';
+import * as all from 'dojo/promise/all';
+import * as when from 'dojo/when';
 import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
 import _ModelBase from './_ModelBase';
-const QueryResults = require('dojo/store/util/QueryResults');
+import * as QueryResults from 'dojo/store/util/QueryResults';
 import MODEL_TYPES from './Types';
 
 
@@ -211,7 +211,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       def.reject(err);
     });
     if (queryOptions && (queryOptions as any).returnQueryResults) {
-      return QueryResults(def.promise);
+      return QueryResults((def as any).promise);
     }
     return def.promise;
   },

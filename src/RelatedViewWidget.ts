@@ -1,10 +1,10 @@
 /* see copyright file
  */
-const declare = require('dojo/_base/declare');
+import * as declare from 'dojo/_base/declare';
 const lang = require( 'dojo/_base/lang');
-const string = require('dojo/string');
-const when = require('dojo/when');
-const connect = require('dojo/_base/connect');
+import * as string from 'dojo/string';
+import * as when from 'dojo/when';
+import * as connect from 'dojo/_base/connect';
 
 import SDataStore from './Store/SData';
 import _CustomizationMixin from './_CustomizationMixin';
@@ -463,7 +463,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
   },
   destroy: function destroy() {
     this._subscribes.forEach((handle) => {
-      connect.unsubscribe(handle);
+      (connect as any).unsubscribe(handle);
     });
     this.inherited(arguments);
   },
