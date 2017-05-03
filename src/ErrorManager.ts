@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import * as lang from 'dojo/_base/lang';
-// import * as connect from 'dojo/_base/connect';
+import * as connect from 'dojo/_base/connect';
 import utility from './Utility';
 import getResource from './I18n';
 
@@ -249,9 +249,9 @@ export default class ErrorManager {
    * Publishes the `/app/refresh` event to notify that an error has been added
    */
   static onErrorAdd() {
-    // connect.publish('/app/refresh', [{
-    //   resourceKind: 'errorlogs',
-    // }]);
+    connect.publish('/app/refresh', [{
+      resourceKind: 'errorlogs',
+    }]);
   }
 
   /**
