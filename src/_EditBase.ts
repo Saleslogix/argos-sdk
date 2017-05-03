@@ -377,7 +377,7 @@ const __class = declare('argos._EditBase', [View], {
       security?: any;
       side?: any;
     }
-    
+
     const tbar: TbarType[] = [{
       id: 'save',
       action: 'save',
@@ -739,8 +739,9 @@ const __class = declare('argos._EditBase', [View], {
 
       return getResults;
     }
-
-    console.warn('Error requesting data, no model or store was defined. Did you mean to mixin _SDataEditMixin to your edit view?'); // tslint:disable-line
+    // is below console valid??
+    // tslint:disable-next-line
+    console.warn('Error requesting data, no model or store was defined. Did you mean to mixin _SDataEditMixin to your edit view?');
   },
   requestDataUsingModel: function requestDataUsingModel() {
     return this._model.getEntry(this.options);

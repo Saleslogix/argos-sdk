@@ -18,11 +18,10 @@
  * @alternateClassName _ServiceMixin
  * @deprecated
  */
-const declare = require('dojo/_base/declare');
 
-const __class = declare('argos._ServiceMixin', null, {
-  serviceMap: null,
-  constructor: function constructor() {
+export default class _ServiceMixin {
+  serviceMap = null;
+  constructor() {
     const map = this.serviceMap;
     if (map) {
       for (const property in map) {
@@ -35,14 +34,12 @@ const __class = declare('argos._ServiceMixin', null, {
         }
       }
     }
-  },
-  _resolveService: function _resolveService(specification) {
+  }
+  _resolveService(specification) {
     if (specification && specification.type === 'sdata') {
       return App.getService(specification.name);
     }
 
     return App.getService(specification);
-  },
-});
-
-export default __class;
+  }
+}

@@ -32,30 +32,30 @@ try {
  * @alternateClassName ErrorManager
  * @singleton
  */
-const __class = lang.setObject('argos.ErrorManager', {
+export default class ErrorManager {
   // Localization
 
   /**
    * Text used in place of statusText for aborted errors.
    */
-  abortedText: resource.abortedText,
+  abortedText = resource.abortedText;
   /**
    * Text put in place of the scope property to prevent circular references.
    */
-  scopeSaveText: resource.scopeSaveText,
+  scopeSaveText = resource.scopeSaveText;
 
   /**
    * @property {Number}
    * Total amount of errors to keep
    */
-  errorCacheSizeMax: 10,
+  static errorCacheSizeMax = 10;
 
   /**
    * Adds a custom error item and fires the onErrorAdd event
    * @param description Short title or description of the Error. Ex: Duplicate Found, Invalid Email
    * @param error Object The error object that will be JSON-stringified and stored for use.
    */
-  addSimpleError: function addSimpleError(description, error) {
+  static addSimpleError(description, error) {
     const errorItem = {
       $key: new Date().getTime(),
       Date: moment().format(),
@@ -67,7 +67,7 @@ const __class = lang.setObject('argos.ErrorManager', {
     errors.push(errorItem);
     this.onErrorAdd();
     this.save();
-  },
+  }
 
   /**
    * Adds a custom error item by combining error message/options for easier tech support
@@ -76,7 +76,7 @@ const __class = lang.setObject('argos.ErrorManager', {
    * @param {Object} viewOptions The View Options of the view in which the error occurred
    * @param {String} failType Either "failure" or "aborted" as each response has different properties
    */
-  addError: function addError(serverResponse, requestOptions, viewOptions, failType) {
+  static addError(serverResponse, requestOptions, viewOptions?, failType?) {
     if (typeof serverResponse === 'string' && arguments.length === 2) {
       this.addSimpleError.apply(this, arguments);
       return;
@@ -98,14 +98,14 @@ const __class = lang.setObject('argos.ErrorManager', {
     errors.push(errorItem);
     this.onErrorAdd();
     this.save();
-  },
+  }
 
   /**
    * Explicitly extract values due to how read-only objects are enforced
    * @param {Object} response XMLHttpRequest object sent back from server
    * @return {Object} Object with only relevant, standard properties
    */
-  extractFailureResponse: function extractFailureResponse(response) {
+  extractFailureResponse(response) {
     const failureResponse = {
       $descriptor: response.statusText,
       serverResponse: {
@@ -119,7 +119,7 @@ const __class = lang.setObject('argos.ErrorManager', {
       },
     };
     return failureResponse;
-  },
+  }
 
   /**
    * Attempts to parse a json string into a javascript object
@@ -127,7 +127,7 @@ const __class = lang.setObject('argos.ErrorManager', {
    * @param {String} json Json formatted string or array.
    * @return {Object} Javascript object from json string.
    */
-  fromJsonArray: function fromJsonArray(_json) {
+  fromJsonArray(_json) {
     let o;
     try {
       o = JSON.parse(_json);
@@ -139,7 +139,7 @@ const __class = lang.setObject('argos.ErrorManager', {
       };
     }
     return o;
-  },
+  }
 
   /**
    * Abort error is hardset due to exceptions from reading properties
@@ -147,7 +147,7 @@ const __class = lang.setObject('argos.ErrorManager', {
    * @param {Object} response XMLHttpRequest object sent back from server
    * @return {Object} Object with hardset abort info
    */
-  extractAbortResponse: function extractAbortResponse(response) {
+  extractAbortResponse(response) {
     const abortResponse = {
       $descriptor: this.abortedText,
       serverResponse: {
@@ -161,14 +161,14 @@ const __class = lang.setObject('argos.ErrorManager', {
       },
     };
     return abortResponse;
-  },
+  }
 
   /**
    * Prepares an object for JSON serialization by recursively discarding non value keys
    * @param {Object} obj Object to be JSON serialized
    * @return {Object} Cleaned object for for JSON serialization
    */
-  serializeValues: function serializeValues(obj) {
+  serializeValues(obj) {
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         switch (typeof obj[key]) {
@@ -195,20 +195,20 @@ const __class = lang.setObject('argos.ErrorManager', {
     }
 
     return obj;
-  },
+  }
 
   /**
    * Ensures there is at least 1 open spot for a new error by checking against errorCacheSizeMax
    * and removing old errors as needed
    */
-  checkCacheSize: function checkCacheSize() {
+  static checkCacheSize() {
     const errLength = errors.length;
     const cacheSizeIndex = this.errorCacheSizeMax - 1;
 
     if (errLength > cacheSizeIndex) {
       this.removeError(0, errLength - cacheSizeIndex);
     }
-  },
+  }
 
   /**
    * Retrieve a error item that has the specified key|value pair
@@ -216,7 +216,7 @@ const __class = lang.setObject('argos.ErrorManager', {
    * @param {Number/String} value Value of the key to match against
    * @return {Object} Returns the first error item in the match set or null if none found
    */
-  getError: function getError(key, value) {
+  static getError(key, value) {
     const errorList = this.getAllErrors();
 
     for (let i = 0; i < errorList.length; i++) {
@@ -226,38 +226,38 @@ const __class = lang.setObject('argos.ErrorManager', {
     }
 
     return null;
-  },
+  }
 
   /**
    * Returns a copy of all errors.
    * @return {Object[]} Array of error objects.
    */
-  getAllErrors: function getAllErrors() {
+  static getAllErrors() {
     return lang.clone(errors);
-  },
+  }
 
   /**
    * Removes the specified index from the error list.
    * @param {Number} index Index of error to remove.
    * @param {Number} amount Number of errors to remove from indexed point, if not provided defaults to 1.
    */
-  removeError: function removeError(index, amount) {
+  static removeError(index, amount) {
     errors.splice(index, amount || 1);
-  },
+  }
 
   /**
    * Publishes the `/app/refresh` event to notify that an error has been added
    */
-  onErrorAdd: function onErrorAdd() {
+  static onErrorAdd() {
     connect.publish('/app/refresh', [{
       resourceKind: 'errorlogs',
     }]);
-  },
+  }
 
   /**
    * Attempts to save all errors into localStorage under the `errorlog` key.
    */
-  save: function save() {
+  static save() {
     try {
       if (window.localStorage) {
         window.localStorage.setItem('errorlog', JSON.stringify(errors));
@@ -265,8 +265,9 @@ const __class = lang.setObject('argos.ErrorManager', {
     } catch (e) {
       console.error(e);
     }
-  },
-  showErrorDialog: function showErrorDialog(title, message, onOkay) {
+  }
+
+  showErrorDialog(title, message, onOkay) {
     App.modal.disableClose = true;
     App.modal.showToolbar = true;
     App.modal.resolveDeferred(true);
@@ -283,7 +284,7 @@ const __class = lang.setObject('argos.ErrorManager', {
         onOkay();
       }
     });
-  },
-});
+  }
+}
 
-export default __class;
+lang.setObject('argos.ErrorManager', ErrorManager);

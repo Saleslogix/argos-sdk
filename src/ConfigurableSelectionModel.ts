@@ -1,4 +1,3 @@
-const declare = require('dojo/_base/declare');
 import SelectionModel from './SelectionModel';
 
 /**
@@ -8,13 +7,16 @@ import SelectionModel from './SelectionModel';
  * @alternateClassName ConfigurableSelectionModel
  * @extends argos.SelectionModel
  */
-const __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
+export default class ConfigurableSelectionModel extends SelectionModel {
+  constructor() {
+    super(null);
+  }
   /**
    * @property {Boolean}
    * Flag that controls if only one item is selectable at a time. Meaning if this is true
    * then when a selection is made it first {@link SelectionModel#clear clears} the store.
    */
-  singleSelection: false,
+  singleSelection = false;
   /**
    * This function is called in Lists {@link List#beforeTransitionTo beforeTransitionTo} and
    * it is always passed the Lists navigation options `singleSelect`.
@@ -23,9 +25,9 @@ const __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
    *
    * @param {Boolean} val The state that `singleSelection` should be in.
    */
-  useSingleSelection: function useSingleSelection(val) {
+  useSingleSelection(val) {
     this.singleSelection = !!val;
-  },
+  }
   /**
    * Extends the base {@link SelectionModel#select select} by first clearing out the entire
    * store if `singleSelection` is true and there are items already in the store.
@@ -33,15 +35,13 @@ const __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
    * @param {Object} data The item being selected
    * @param tag
    */
-  select: function select(key/* , data, tag*/) {
+  select(key, data, tag) {
     if (this.singleSelection) {
       if (!this.isSelected(key) || (this.count >= 1)) {
         this.clear();
       }
     }
 
-    this.inherited(arguments);
-  },
-});
-
-export default __class;
+    super.select(key, data, tag);
+  }
+}

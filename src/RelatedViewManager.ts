@@ -1,23 +1,24 @@
 /*
  * See copyright file.
  */
-const declare = require('dojo/_base/declare');
 const lang = require('dojo/_base/lang');
 import RelatedViewWidget from './_RelatedViewWidgetBase';
 
 const _widgetTypes = {};
-const __class = declare('argos.RelatedViewManager', null, {
-  id: 'relatedViewManager',
-  relatedViews: null,
-  relatedViewConfig: null,
-  widgetTypes: _widgetTypes,
-  enabled: true,
-  constructor: function constructor(options) {
+export default class RelatedViewManager {
+  id = 'relatedViewManager';
+  relatedViews = null;
+  relatedViewConfig = null;
+  widgetTypes = _widgetTypes;
+  enabled = true;
+
+  constructor(options) {
     this.relatedViews = {};
     lang.mixin(this, options);
     this.registerType('default', RelatedViewWidget);
-  },
-  destroyViews: function destroyViews() {
+  }
+
+  destroyViews() {
     for (const relatedViewId in this.relatedViews) {
       if (this.relatedViews.hasOwnProperty(relatedViewId)) {
         this.relatedViews[relatedViewId].destroy();
@@ -25,18 +26,18 @@ const __class = declare('argos.RelatedViewManager', null, {
     }
 
     this.relatedViews = {};
-  },
-  registerType: function registerType(widgetTypeName, ctor) {
+  }
+  registerType(widgetTypeName, ctor) {
     this.widgetTypes[widgetTypeName] = ctor;
-  },
-  getWidgetType: function getWidgetType(widgetTypeName) {
+  }
+  getWidgetType(widgetTypeName) {
     let widgetType = this.widgetTypes[widgetTypeName];
     if (!widgetType) {
       widgetType = RelatedViewWidget;
     }
     return widgetType;
-  },
-  addView: function addView(entry, contentNode, owner) {
+  }
+  addView(entry, contentNode, owner) {
     try {
       if (contentNode) {
         if (this.enabled) {
@@ -49,7 +50,7 @@ const __class = declare('argos.RelatedViewManager', null, {
           }
           lang.mixin(options, this.relatedViewConfig);
           options.id = `${this.id}_${entry.$key}`;
-          const relatedViewWidget = new this.relatedViewConfig.widgetType(options); // tslint-disable-line
+          const relatedViewWidget = new this.relatedViewConfig.widgetType(options);
           relatedViewWidget.parentEntry = entry;
           relatedViewWidget.parentResourceKind = owner.resourceKind;
           relatedViewWidget.owner = owner;
@@ -60,9 +61,7 @@ const __class = declare('argos.RelatedViewManager', null, {
         }
       }
     } catch (error) {
-      console.log('Error adding related view widgets:' + error); // tslint-disable-line
+      console.log('Error adding related view widgets:' + error);
     }
-  },
-});
-
-export default __class;
+  }
+}

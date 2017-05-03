@@ -12,23 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const declare = require('dojo/_base/declare');
 
-const __class = declare('argos.LanguageService', [], {
-  getLanguage: function getLanguage() {
+export default class LanguageService {
+  static getLanguage() {
     return window.localStorage && window.localStorage.getItem('language');
-  },
-  getRegion: function getRegion() {
+  }
+  static getRegion() {
     return window.localStorage && window.localStorage.getItem('region');
-  },
-  setLanguage: function setLanguage(value) {
+  }
+  static  setLanguage(value) {
     return window.localStorage && window.localStorage.setItem('language', value);
-  },
-  setRegion: function setRegion(value) {
+  }
+  static  setRegion(value) {
     return window.localStorage && window.localStorage.setItem('region', value);
-  },
-  getLanguages: function getLanguages() {
+  }
+  static  getLanguages() {
     return (window as any).supportedLocales;
-  },
-});
-export default __class;
+  }
+}

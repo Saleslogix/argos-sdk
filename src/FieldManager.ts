@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 const lang = require('dojo/_base/lang');
-
 const store = {};
 
 /**
@@ -23,29 +22,29 @@ const store = {};
  * @alternateClassName FieldManager
  * @singleton
  */
-const __class = lang.setObject('argos.FieldManager', {
+export default class FieldManager {
   /**
    * @property {Object}
    * The type map that translates string type names to constructor functions
    */
-  types: store,
+  static types = store;
   /**
    * Registers a field type by providing a unique name and the constructor to be called
    * @param {String} name Unique string name of field, will be what is used in Edit View layouts.
    * @param {Function} ctor Constructor function of field
    */
-  register: function register(name, ctor) {
+  static register(name, ctor) {
     store[name] = ctor;
     return ctor;
-  },
+  }
   /**
    * Retrieves a constructor for the given field name
    * @param name Unique name of field
    * @return {Function} Constructor for the given field type
    */
-  get: function get(name) {
+  static get(name) {
     return store[name];
-  },
-});
+  }
+}
 
-export default __class;
+lang.setObject('argos.FieldManager', FieldManager);
