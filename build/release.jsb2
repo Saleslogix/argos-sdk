@@ -54,15 +54,15 @@
         },
         {
           "text": "common.bundle.js",
-          "path": "../deps/icrm-js-common/"
+          "path": "../libraries/icrm/"
         },
         {
           "text": "customization.bundle.js",
-          "path": "../deps/icrm-js-customization/"
+          "path": "../libraries/icrm/"
         },
         {
           "text": "services.bundle.js",
-          "path": "../deps/icrm-js-services/"
+          "path": "../libraries/icrm/"
         },
         {
           "text": "redux.min.js",

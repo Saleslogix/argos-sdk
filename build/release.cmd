@@ -18,9 +18,6 @@ call yarn run build
 xcopy node_modules\babel-polyfill\dist\polyfill.min.js deps\babel-polyfill\ /E /Y
 xcopy node_modules\moment\min\moment-with-locales.js deps\moment\ /E /Y
 xcopy node_modules\rx-lite\rx.lite.js deps\rx-lite\ /E /Y
-xcopy node_modules\@infor\icrm-js-common\dist\bundles\common.bundle.js deps\icrm-js-common\ /E /Y
-xcopy node_modules\@infor\icrm-js-customization\dist\bundles\customization.bundle.js deps\icrm-js-customization\ /E /Y
-xcopy node_modules\@infor\icrm-js-services\dist\bundles\services.bundle.js deps\icrm-js-services\ /E /Y
 xcopy node_modules\redux\dist\redux.min.js deps\redux\ /E /Y
 
 REM .NET Build Tool

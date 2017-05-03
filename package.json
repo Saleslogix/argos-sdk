@@ -34,10 +34,6 @@
     "grunt-template-jasmine-istanbul": "^0.5.0"
   },
   "dependencies": {
-    "@infor/icrm-js-common": "^0.1.1",
-    "@infor/icrm-js-customization": "^0.1.0",
-    "@infor/icrm-js-services": "^0.1.1",
-    "jquery": "^3.2.1",
     "moment": "^2.17.1",
     "redux": "^3.6.0",
     "redux-logger": "^2.7.4",
