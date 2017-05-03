@@ -328,7 +328,7 @@ const __class = declare('argos._EditBase', [View], {
    * @property {string}
    * SoHo class to be applied on multi column.
    */
-  multiColumnClass: 'one-third',
+  multiColumnClass: 'four',
   /**
    * @property {number}
    * Number of columns in view
@@ -681,7 +681,7 @@ const __class = declare('argos._EditBase', [View], {
       }
 
       if (this.multiColumnView) {
-        content.push(`<div class="${this.multiColumnClass} column">`);
+        content.push(`<div class="${this.multiColumnClass} columns">`);
       }
       this.createRowContent(current, content);
       if (this.multiColumnView) {

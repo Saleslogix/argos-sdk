@@ -581,7 +581,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {string}
    * SoHo class to be applied on multi column.
    */
-  multiColumnClass: 'one-third',
+  multiColumnClass: 'four',
   /**
    * @property {number}
    * Number of columns in view
@@ -1795,7 +1795,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         const rowNode = this.createItemRowNode(entry);
 
         if (this.isCardView && this.multiColumnView) {
-          const column = $(`<div class="${this.multiColumnClass} column">`).append(rowNode);
+          const column = $(`<div class="${this.multiColumnClass} columns">`).append(rowNode);
           row.push(column);
           if ((i + 1) % this.multiColumnCount === 0 || i === count - 1) {
             const rowTemplate = $('<div class="row"></div>');
