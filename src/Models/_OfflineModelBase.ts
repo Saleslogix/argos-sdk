@@ -211,7 +211,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       def.reject(err);
     });
     if (queryOptions && (queryOptions as any).returnQueryResults) {
-      return QueryResults((def as any).promise);
+      return QueryResults([def.promise]);
     }
     return def.promise;
   },

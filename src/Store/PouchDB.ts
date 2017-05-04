@@ -91,7 +91,7 @@ export default class PouchDBStore {
       }
     });
 
-    return QueryResults((deferred as any).promise);
+    return QueryResults([deferred.promise]);
   }
   /**
    * Stores an object.
