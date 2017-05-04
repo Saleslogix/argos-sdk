@@ -41,16 +41,16 @@
           "path": "../libraries/deep-diff/"
         },
         {
-          "text": "polyfill.min.js",
-          "path": "../deps/babel-polyfill/"
+          "text": "polyfill.js",
+          "path": "../libraries/babel-polyfill/"
         },
         {
           "text": "moment-with-locales.js",
-          "path": "../deps/moment/"
+          "path": "../libraries/moment/"
         },
         {
           "text": "rx.lite.js",
-          "path": "../deps/rx-lite/"
+          "path": "../libraries/rxjs/"
         },
         {
           "text": "common.bundle.js",
@@ -65,8 +65,8 @@
           "path": "../libraries/icrm/"
         },
         {
-          "text": "redux.min.js",
-          "path": "../deps/redux/"
+          "text": "redux.js",
+          "path": "../libraries/redux/"
         },
         {
           "text": "d3.js",
