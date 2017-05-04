@@ -12,9 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const declare = require('dojo/_base/declare');
-const _TemplatedMixin = require('dijit/_TemplatedMixin');
-
+import * as declare from 'dojo/_base/declare';
+import * as _TemplatedMixin from 'dijit/_TemplatedMixin';
 
 /**
  * @class argos._Templated

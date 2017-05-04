@@ -30,7 +30,7 @@
  *
  * @alternateClassName _CustomizationMixin
  */
-const declare = require('dojo/_base/declare');
+import * as declare from 'dojo/_base/declare';
 
 const customization = ICRMCustomizationSDK;
 

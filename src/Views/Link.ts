@@ -1,4 +1,4 @@
-const declare = require('dojo/_base/declare');
+import * as declare from 'dojo/_base/declare';
 import View from '../View';
 
 const __class = declare('argos.Views.Link', [View], {

@@ -22,8 +22,8 @@
  * @extends argos.List
  * @alternateClassName GroupedList
  */
-const declare = require('dojo/_base/declare');
-const string = require('dojo/string');
+import * as declare from 'dojo/_base/declare';
+import * as string from 'dojo/string';
 import List from './List';
 import Utility from './Utility';
 

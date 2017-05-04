@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 1997-2014, SalesLogix, NA., LLC. All rights reserved.
  */
-const declare = require('dojo/_base/declare');
-const string = require('dojo/string');
+import * as declare from 'dojo/_base/declare';
+import * as string from 'dojo/string';
 
 import ErrorManager from './ErrorManager';
 

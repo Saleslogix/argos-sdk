@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-const declare = require('dojo/_base/declare');
-const event = require('dojo/_base/event');
+import * as declare from 'dojo/_base/declare';
+import * as event from 'dojo/_base/event';
 import _Field from './_Field';
 import FieldManager from '../FieldManager';
 

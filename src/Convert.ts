@@ -20,7 +20,7 @@
  * @singleton
  */
 
-const lang = require('dojo/_base/lang');
+import * as lang from 'dojo/_base/lang';
 
 const convert = ICRMCommonSDK.convert;
 

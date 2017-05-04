@@ -1,4 +1,4 @@
-const lang = require('dojo/_base/lang');
+import * as lang from 'dojo/_base/lang';
 
 export default function getResource(id) {
   const { defaultLocaleContext, localeContext, regionalContext } = window as any;

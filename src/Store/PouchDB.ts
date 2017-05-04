@@ -1,7 +1,6 @@
-const lang = require('dojo/_base/lang');
-const Deferred = require('dojo/_base/Deferred');
-const QueryResults = require('dojo/store/util/QueryResults');
-
+import * as lang from 'dojo/_base/lang';
+import * as Deferred from 'dojo/_base/Deferred';
+import * as QueryResults from 'dojo/store/util/QueryResults';
 
 /**
  * @class argos.Store.PouchDB
@@ -68,7 +67,7 @@ export default class PouchDBStore {
    */
   query(q, queryOptions: any = {}) {
     const deferred = new Deferred();
-    deferred.total = -1;
+    (deferred as any).total = -1;
 
     // The dojo store interface says query should accept start, count, and sort properties on the queryOptions object
     // We want to allow queryOptions to include PouchDB options, ensure they don't trample each other (PouchDB wins).
@@ -85,14 +84,14 @@ export default class PouchDBStore {
 
     this._db.query(q, queryOptions, (err, response) => {
       if (!err) {
-        deferred.total = response.total_rows;
+        (deferred as any).total = response.total_rows;
         deferred.resolve(response.rows);
       } else {
         deferred.reject(err);
       }
     });
 
-    return QueryResults(deferred.promise);
+    return QueryResults([deferred.promise]);
   }
   /**
    * Stores an object.

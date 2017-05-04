@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const declare = require('dojo/_base/declare');
-const win = require('dojo/window');
+import * as declare from 'dojo/_base/declare';
+import * as win from 'dojo/window';
 import format from '../Format';
 import View from '../View';
 import getResource from '../I18n';

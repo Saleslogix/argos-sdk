@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const declare = require('dojo/_base/declare');
-const string = require('dojo/string');
+import * as declare from 'dojo/_base/declare';
+import * as string from 'dojo/string';
 import format from '../Format';
 import LookupField from './LookupField';
 import FieldManager from '../FieldManager';

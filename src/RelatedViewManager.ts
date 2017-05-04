@@ -1,7 +1,7 @@
 /*
  * See copyright file.
  */
-const lang = require('dojo/_base/lang');
+import * as lang from 'dojo/_base/lang';
 import RelatedViewWidget from './_RelatedViewWidgetBase';
 
 const _widgetTypes = {};

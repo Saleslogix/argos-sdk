@@ -12,9 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const declare = require('dojo/_base/declare');
-const lang = require('dojo/_base/lang');
-const _WidgetBase = require('dijit/_WidgetBase');
+import * as declare from 'dojo/_base/declare';
+import * as lang from 'dojo/_base/lang';
+import * as _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from './_ActionMixin';
 import _Templated from './_Templated';
 

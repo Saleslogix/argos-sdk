@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const declare = require('dojo/_base/declare');
+import * as declare from 'dojo/_base/declare';
 import TextAreaField from './TextAreaField';
 import FieldManager from '../FieldManager';
 

@@ -9,9 +9,9 @@
  *
  * @alternateClassName _LegacySDataListMixin
  */
-const declare = require('dojo/_base/declare');
+import * as declare from 'dojo/_base/declare';
 import ErrorManager from './ErrorManager';
-const string = require('dojo/string');
+import * as string from 'dojo/string';
 
 
 const __class = declare('argos._LegacySDataListMixin', null, {

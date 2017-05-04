@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-const declare = require('dojo/_base/declare');
+import * as declare from 'dojo/_base/declare';
 import TextField from './TextField';
 import FieldManager from '../FieldManager';
 import Utility from '../Utility';

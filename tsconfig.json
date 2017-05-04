@@ -1,22 +1,34 @@
 {
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
         "allowJs": true,
-        "declaration": false,
+        "module": "amd",
         "lib": ["es6", "dom"],
-        "module": "es6",
+        "outDir": "./src-out",
         "moduleResolution": "node",
-        "outDir": "./ts-out",
         "sourceMap": true,
+		"removeComments": false,
         "target": "es5",
+		"experimentalDecorators": true,
         "types": [
           "jquery",
           "node"
         ],
         "typeRoots": [
           "node_modules/@types"
-        ]
+        ],
+        "noImplicitUseStrict": true,
+        "strictNullChecks": false
     },
     "include": [
         "./src/**/*"
+    ],
+    "files": [
+        "./node_modules/dojo-typings/dojo/1.11/index.d.ts",
+        "./node_modules/dojo-typings/dojo/1.11/modules.d.ts",
+        "./node_modules/dojo-typings/dijit/1.11/index.d.ts",
+        "./node_modules/dojo-typings/dijit/1.11/modules.d.ts",
+        "./node_modules/dojo-typings/dojox/1.11/index.d.ts",
+        "./node_modules/dojo-typings/dojox/1.11/modules.d.ts"
     ]
 }

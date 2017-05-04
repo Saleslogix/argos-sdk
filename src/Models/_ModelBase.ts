@@ -12,9 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const declare = require('dojo/_base/declare');
-const Evented = require('dojo/Evented');
-const Stateful = require('dojo/Stateful');
+import * as declare from 'dojo/_base/declare';
+import * as Evented from 'dojo/Evented';
+import * as Stateful from 'dojo/Stateful';
 import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
 

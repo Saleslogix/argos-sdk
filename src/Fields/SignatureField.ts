@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-const declare = require('dojo/_base/declare');
+import * as declare from 'dojo/_base/declare';
 import format from '../Format';
 import EditorField from './EditorField';
 import FieldManager from '../FieldManager';
