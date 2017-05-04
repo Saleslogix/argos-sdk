@@ -182,7 +182,6 @@ const __class = declare('argos._PullToRefreshMixin', null, {
       data.evt.preventDefault();
       $(this.dragNode).css({
         top: `${data.top}px`,
-        overflow: 'hidden',
       });
 
       if (data.distance > data.maxDistance) {

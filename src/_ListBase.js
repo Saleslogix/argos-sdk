@@ -382,7 +382,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {Number}
    * The number of entries to request per SData payload.
    */
-  pageSize: 20,
+  pageSize: 21,
   /**
    * @property {Boolean}
    * Controls the addition of a search widget.
