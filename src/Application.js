@@ -231,6 +231,9 @@ export default class Application {
     $('body').off('beforetransition', this._onBeforeTransition.bind(this));
     $('body').off('aftertransition', this._onAfterTransition.bind(this));
     $('body').off('show', this._onActivate.bind(this));
+    window.removeEventListener('online', this._onOnline.bind(this));
+    window.removeEventListener('offline', this._onOffline.bind(this));
+
     this.uninitialize();
   }
 
