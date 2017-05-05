@@ -70,6 +70,10 @@ define('tests/Stores/SData', [
 
         return data;
     };
+    MockService.prototype.deleteEntry = function(request, data, options) {
+        options.success.call(options.scope || this, data);
+        return data;
+    };
 
     function MockRequest(service) {
         this.service = service || new MockService();
@@ -671,13 +675,24 @@ define('tests/Stores/SData', [
             expect(store.getMetadata()).toBe(null);
         });
 
-        xit('can not remove (not supported)', function() {
-            var remove = function() {
-                var store = new Store();
-                store.remove();
-            };
-
-            expect(remove).toThrow();
+        it('can remove some data', function() {
+            var store, promise, data;
+            store = new Store({
+                service: new MockService(),
+                resourceKind: 'test',
+                resourcePredicate: 'test',
+                contractName: 'dynamic',
+                idProperty: '$key',
+                applicationName: 'slx',
+                scope: this
+            });
+            // Test remove
+            spyOn(store.service, 'deleteEntry').and.callThrough();
+            promise = store.remove({ $key: 'test', data: '123' });
+            expect(store.service.deleteEntry).toHaveBeenCalled();
+            promise.then(function(results) {
+                done();
+            });
         });
     });
 });

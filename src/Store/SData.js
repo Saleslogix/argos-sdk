@@ -59,6 +59,23 @@ const __class = declare('argos.Store.SData', null, {
   constructor: function constructor(props) {
     lang.mixin(this, props);
   },
+  _createRemoveRequest: function createRemoveRequest(object) {
+    const request = new Sage.SData.Client.SDataSingleResourceRequest(this.service);
+
+    if (/(\s+)/.test(object.$key)) {
+      request.setResourceSelector(object.$key);
+    } else {
+      request.setResourceSelector(`'${object.$key}'`);
+    }
+    if (this.resourceKind) {
+      request.setResourceKind(this.resourceKind);
+    }
+    if (this.contractName) {
+      request.setContractName(this.contractName);
+    }
+
+    return request;
+  },
   _createEntryRequest: function _createEntryRequest(identity, getOptions) {
     let request = utility.expand(this, getOptions.request || this.request);
     let id = identity;
@@ -374,9 +391,26 @@ const __class = declare('argos.Store.SData', null, {
   },
 
   /**
-   * Not implemented in this store.
+   * Deletes an entry
+   *
+   * @param {Object} entry The entry to be removed.
+   * @param {Object} removeOptions additional directives for removing options.
+   *
    */
-  remove: function remove(/* id*/) {},
+  remove: function remove(object) {
+    const request = this._createRemoveRequest(object);
+    const handle = {};
+    const deferred = new Deferred();
+    const method = request.delete;
+
+    handle.value = method.call(request, object, {
+      success: this._onTransmitEntrySuccess.bind(this, deferred),
+      failure: this._onRequestFailure.bind(this, deferred),
+      aborted: this._onRequestAbort.bind(this, deferred),
+    });
+
+    return deferred;
+  },
   /**
    * Queries the store for objects. This does not alter the store, but returns a
    * set of data from the store.
