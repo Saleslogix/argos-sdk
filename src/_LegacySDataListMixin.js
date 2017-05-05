@@ -109,7 +109,13 @@ const __class = declare('argos._LegacySDataListMixin', null, {
         const entry = feed.$resources[i];
         entry.$descriptor = entry.$descriptor || feed.$descriptor;
         this.entries[entry.$key] = entry;
-        const rowNode = $(this.rowTemplate.apply(entry, this));
+
+        let rowNode;
+        if (this.isCardView) {
+          rowNode = $(this.rowTemplate.apply(entry, this));
+        } else {
+          rowNode = $(this.liRowTemplate.apply(entry, this));
+        }
 
         if (this.isCardView && this.multiColumnView) {
           const column = $(`<div class="${this.multiColumnClass} columns">`).append(rowNode);
@@ -125,7 +131,6 @@ const __class = declare('argos._LegacySDataListMixin', null, {
         } else {
           docfrag.appendChild(rowNode.get(0));
         }
-
 
         this.onApplyRowTemplate(entry, rowNode);
         if (this.relatedViews.length > 0) {
