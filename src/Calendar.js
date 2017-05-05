@@ -116,14 +116,14 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   _yearDropdown: null,
   constructor: function constructor() {
     const m = this.getCurrentDateMoment();
-    let monthsText = m._locale._months;
+    const monthsText = m._locale._months;
 
     this.monthsText = monthsText.map((val, i) => {
       return {
         text: val,
         value: i,
         key: i,
-      }
+      };
     });
     this.weekDaysShortText = m._locale._weekdaysMin;
   },
