@@ -382,7 +382,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {Number}
    * The number of entries to request per SData payload.
    */
-  pageSize: 20,
+  pageSize: 21,
   /**
    * @property {Boolean}
    * Controls the addition of a search widget.
@@ -581,7 +581,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {string}
    * SoHo class to be applied on multi column.
    */
-  multiColumnClass: 'one-third',
+  multiColumnClass: 'four',
   /**
    * @property {number}
    * Number of columns in view
@@ -630,9 +630,15 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   _getSelectionModelAttr: function _getSelectionModelAttr() {
     return this._selectionModel;
   },
-  constructor: function constructor() {
+  constructor: function constructor(options) {
     this.entries = {};
     this._loadedSelections = {};
+
+    // backward compatibility for disableRightDrawer property. To be removed after 3.7
+    if (options && options.disableRightDrawer) {
+      console.warn('disableRightDrawer property is depracated. Use hasSettings property instead. disableRightDrawer = !hasSettings');  //eslint-disable-line
+      this.hasSettings = false;
+    }
   },
   initSoho: function initSoho() {
     const toolbar = $('.toolbar', this.domNode).first();
@@ -1788,7 +1794,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         const rowNode = this.createItemRowNode(entry);
 
         if (this.isCardView && this.multiColumnView) {
-          const column = $(`<div class="${this.multiColumnClass} column">`).append(rowNode);
+          const column = $(`<div class="${this.multiColumnClass} columns">`).append(rowNode);
           row.push(column);
           if ((i + 1) % this.multiColumnCount === 0 || i === count - 1) {
             const rowTemplate = $('<div class="row"></div>');

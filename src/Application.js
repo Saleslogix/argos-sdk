@@ -231,8 +231,9 @@ export default class Application {
     $('body').off('beforetransition', this._onBeforeTransition.bind(this));
     $('body').off('aftertransition', this._onAfterTransition.bind(this));
     $('body').off('show', this._onActivate.bind(this));
-    $(window).off('online', this._onOnline.bind(this));
-    $(window).off('offline', this._onOffline.bind(this));
+    window.removeEventListener('online', this._onOnline.bind(this));
+    window.removeEventListener('offline', this._onOffline.bind(this));
+
     this.uninitialize();
   }
 
@@ -302,9 +303,9 @@ export default class Application {
     $('body').on('beforetransition', this._onBeforeTransition.bind(this));
     $('body').on('aftertransition', this._onAfterTransition.bind(this));
     $('body').on('show', this._onActivate.bind(this));
-    $.ready(() => {
-      $(window).on('online', this._onOnline.bind(this));
-      $(window).on('offline', this._onOffline.bind(this));
+    $(document).ready(() => {
+      window.addEventListener('online', this._onOnline.bind(this));
+      window.addEventListener('offline', this._onOffline.bind(this));
     });
 
     this.ping();

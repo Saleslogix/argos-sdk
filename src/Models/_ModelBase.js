@@ -43,7 +43,7 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful, _Customiza
   enableCustomizations: true,
   modelName: null,
   modelType: null,
-  iconClass: 'fa fa-cloud fa-2x',
+  iconClass: 'url',
   picklists: null,
   detailViewId: null,
   listViewId: null,
