@@ -98,17 +98,6 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   pmText: resource.pmText,
   clearText: resource.clearText,
   todayText: resource.todayText,
- 
-
-weekDaysShortText: [
-    resource.sundayAbbreviated,
-    resource.mondayAbbreviated,
-    resource.tuesdayAbbreviated,
-    resource.wednesdayAbbreviated,
-    resource.thursdayAbbreviated,
-    resource.fridayAbbreviated,
-    resource.saturdayAbbreviated,
-  ],
 
   // Date is an object containing selected day, month, year, time, todayMoment (today), selectedDateMoment, etc.
   date: null,
