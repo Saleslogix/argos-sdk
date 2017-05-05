@@ -61,11 +61,14 @@ const __class = declare('argos.Store.SData', null, {
   },
   _createRemoveRequest: function createRemoveRequest(object) {
     const request = new Sage.SData.Client.SDataSingleResourceRequest(this.service);
+    let id = object && object.$key;
 
-    if (/(\s+)/.test(object.$key)) {
-      request.setResourceSelector(object.$key);
+    id = id || utility.expand(this.scope || this.resourcePredicate);
+
+    if (/(\s+)/.test(id)) {
+      request.setResourceSelector(id);
     } else {
-      request.setResourceSelector(`'${object.$key}'`);
+      request.setResourceSelector(`'${id}'`);
     }
     if (this.resourceKind) {
       request.setResourceKind(this.resourceKind);
