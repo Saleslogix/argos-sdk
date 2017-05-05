@@ -98,69 +98,9 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   pmText: resource.pmText,
   clearText: resource.clearText,
   todayText: resource.todayText,
-  monthsText: [
-    {
-      text: resource.january,
-      value: 0,
-      key: 0,
-    },
-    {
-      text: resource.february,
-      value: 1,
-      key: 1,
-    },
-    {
-      text: resource.march,
-      value: 2,
-      key: 2,
-    },
-    {
-      text: resource.april,
-      value: 3,
-      key: 3,
-    },
-    {
-      text: resource.may,
-      value: 4,
-      key: 4,
-    },
-    {
-      text: resource.june,
-      value: 5,
-      key: 5,
-    },
-    {
-      text: resource.july,
-      value: 6,
-      key: 6,
-    },
-    {
-      text: resource.august,
-      value: 7,
-      key: 7,
-    },
-    {
-      text: resource.september,
-      value: 8,
-      key: 8,
-    },
-    {
-      text: resource.october,
-      value: 9,
-      key: 9,
-    },
-    {
-      text: resource.november,
-      value: 10,
-      key: 10,
-    },
-    {
-      text: resource.december,
-      value: 11,
-      key: 11,
-    },
-  ],
-  weekDaysShortText: [
+ 
+
+weekDaysShortText: [
     resource.sundayAbbreviated,
     resource.mondayAbbreviated,
     resource.tuesdayAbbreviated,
@@ -185,7 +125,19 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   _selectedDay: null,
   _widgetName: 'calendar',
   _yearDropdown: null,
+  constructor: function constructor() {
+    const m = this.getCurrentDateMoment();
+    let monthsText = m._locale._months;
 
+    this.monthsText = monthsText.map((val, i) => {
+      return {
+        text: val,
+        value: i,
+        key: i,
+      }
+    });
+    this.weekDaysShortText = m._locale._weekdaysMin;
+  },
   changeDay: function changeDay(params) {
     if (!this._selectWeek) {
       this.changeSingleDay(params);
