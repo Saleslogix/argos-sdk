@@ -123,7 +123,7 @@ const __class = declare('argos._LegacySDataListMixin', null, {
             row = [];
           }
         } else {
-          docfrag.appendChild(rowNode);
+          docfrag.appendChild(rowNode.get(0));
         }
 
 
