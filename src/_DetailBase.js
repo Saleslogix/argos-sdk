@@ -1060,7 +1060,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     }
   },
   removeEntry: function removeEntry() {
-    const entry = this._createEntryForDelete();
+    const entry = this._createEntryForRemove();
     if (entry) {
       const store = this.get('store');
       if (store) {
@@ -1071,7 +1071,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       }
     }
   },
-  _createEntryForDelete: function _createEntryForDelete() {
+  _createEntryForRemove: function _createEntryForRemove() {
     const entry = {
       $key: this.entry.$key,
       $etag: this.entry.$etag,
