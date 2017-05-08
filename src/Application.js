@@ -584,10 +584,7 @@ export default class Application {
   initSoho() {
     const container = this.getAppContainerNode();
     const menu = $('.application-menu', container).first();
-    menu.applicationmenu({
-      // openOnLarge: true, // SOHO-6191: this property wont work as it is defined as camel case word.
-      breakpoint: 'tablet',
-    });
+    menu.applicationmenu();
     this.applicationmenu = menu.data('applicationmenu');
 
     const viewSettingsModal = $('.modal.view-settings', container).first();
@@ -629,15 +626,13 @@ export default class Application {
   }
 
   showApplicationMenuOnLarge() {
-    // openOnLarge causes this bug SOHO-6193
+    // todo: openOnLarge causes this bug SOHO-6193
     this.applicationmenu.settings.openOnLarge = true;
 
-    // TODO: SOHO-6192 - make a call to applicationmenu.updated instead
     if (this.applicationmenu.isLargerThanBreakpoint()) {
       this.applicationmenu.openMenu();
     }
   }
-
 
   hideApplicationMenu() {
     this.applicationmenu.closeMenu();
@@ -891,7 +886,8 @@ export default class Application {
     const defaultViewContainerId = 'viewContainer';
     const defaultViewContainerClasses = 'page-container viewContainer';
     $(this._appContainerNode).append(`
-      <nav id="application-menu" class="application-menu show-shadow">
+      <nav id="application-menu" class="application-menu show-shadow"
+        data-options="{'breakpoint': 'tablet'}">
       </nav>
       <div class="page-container scrollable tbarContainer">
         <div id="${defaultViewContainerId}" class="${defaultViewContainerClasses}"></div>
