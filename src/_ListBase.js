@@ -1324,7 +1324,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const key = row ? row.attr('data-key') : false;
 
     if (this._selectionModel && key) {
-      this._selectionModel.toggle(key, this.entries[key], row.get(0));
+      this._selectionModel.select(key, this.entries[key], row.get(0));
     }
 
     if (this.options.singleSelect && this.options.singleSelectAction && !this.enableActions) {
