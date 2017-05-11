@@ -1066,7 +1066,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       if (store) {
         store.remove(entry).then(
           this._onRemoveSuccess.bind(this),
-          this._onRemoveError.bind(this),
+          this._onRemoveError.bind(this)
         );
       }
     }
