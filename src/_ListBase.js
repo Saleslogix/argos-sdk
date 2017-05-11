@@ -92,7 +92,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
               <h1></h1>
             </div>
             <div class="buttonset" data-dojo-attach-point="toolNode">
+              {% if($.enableSearch) { %}
               <div data-dojo-attach-point="searchNode"></div>
+              {% } %}
               {% if($.hasSettings) { %}
               <button class="btn" type="button" data-action="openSettings" aria-controls="list_toolbar_setting_{%= $.id %}">
                 <svg class="icon" role="presentation"><use xlink:href="#icon-settings"></use></svg>
@@ -1322,7 +1324,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const key = row ? row.attr('data-key') : false;
 
     if (this._selectionModel && key) {
-      this._selectionModel.toggle(key, this.entries[key], row.get(0));
+      this._selectionModel.select(key, this.entries[key], row.get(0));
     }
 
     if (this.options.singleSelect && this.options.singleSelectAction && !this.enableActions) {

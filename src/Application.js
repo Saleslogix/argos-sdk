@@ -626,16 +626,11 @@ export default class Application {
   }
 
   showApplicationMenuOnLarge() {
+    // todo: openOnLarge causes this bug SOHO-6193
     this.applicationmenu.settings.openOnLarge = true;
+
     if (this.applicationmenu.isLargerThanBreakpoint()) {
       this.applicationmenu.openMenu();
-    }
-  }
-
-  hideApplicationMenuOnLarge() {
-    this.applicationmenu.settings.openOnLarge = false;
-    if (this.applicationmenu.isLargerThanBreakpoint()) {
-      this.applicationmenu.closeMenu();
     }
   }
 
