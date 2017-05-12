@@ -22,7 +22,7 @@ span {
   font-size: inherit;
 }
 
-// .hyperlink is set to 14px in soho - 
+// .hyperlink is set to 14px in soho -
 // below fix is to reset its size based on the parent where hyperlink is placed
 .hyperlink {
   font-size: inherit !important;
@@ -49,4 +49,8 @@ span {
   + .widget-title {
     width: calc(~'100% - 90px');
   }
+}
+
+@media only screen and (min-width: 500px) {
+  body { -webkit-text-size-adjust:none; }  /* should render everything * 0.8 */
 }
