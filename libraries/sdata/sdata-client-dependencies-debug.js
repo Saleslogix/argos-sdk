@@ -147,7 +147,7 @@ window.Base64 = {
 // MIT License
 
 window.parseUri = function parseUri (str) {
-	var	o   = parseUri.options,
+	var	o   = window.parseUri.options,
 		m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
 		uri = {},
 		i   = 14;
