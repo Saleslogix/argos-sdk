@@ -103,12 +103,35 @@ const __class = declare('argos._LegacySDataListMixin', null, {
       this.set('listContent', this.noDataTemplate.apply(this));
     } else if (feed.$resources) {
       const docfrag = document.createDocumentFragment();
-      for (let i = 0; i < feed.$resources.length; i++) {
+      let row = [];
+      const count = feed.$resources.length;
+      for (let i = 0; i < count; i++) {
         const entry = feed.$resources[i];
         entry.$descriptor = entry.$descriptor || feed.$descriptor;
         this.entries[entry.$key] = entry;
-        const rowNode = $(this.rowTemplate.apply(entry, this));
-        docfrag.appendChild(rowNode.get(0));
+
+        let rowNode;
+        if (this.isCardView) {
+          rowNode = $(this.rowTemplate.apply(entry, this));
+        } else {
+          rowNode = $(this.liRowTemplate.apply(entry, this));
+        }
+
+        if (this.isCardView && this.multiColumnView) {
+          const column = $(`<div class="${this.multiColumnClass} columns">`).append(rowNode);
+          row.push(column);
+          if ((i + 1) % this.multiColumnCount === 0 || i === count - 1) {
+            const rowTemplate = $('<div class="row"></div>');
+            row.forEach((element) => {
+              rowTemplate.append(element);
+            });
+            docfrag.appendChild(rowTemplate.get(0));
+            row = [];
+          }
+        } else {
+          docfrag.appendChild(rowNode.get(0));
+        }
+
         this.onApplyRowTemplate(entry, rowNode);
         if (this.relatedViews.length > 0) {
           this.onProcessRelatedViews(entry, rowNode, feed);

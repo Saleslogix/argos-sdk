@@ -92,7 +92,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
               <h1></h1>
             </div>
             <div class="buttonset" data-dojo-attach-point="toolNode">
+              {% if($.enableSearch) { %}
               <div data-dojo-attach-point="searchNode"></div>
+              {% } %}
               {% if($.hasSettings) { %}
               <button class="btn" type="button" data-action="openSettings" aria-controls="list_toolbar_setting_{%= $.id %}">
                 <svg class="icon" role="presentation"><use xlink:href="#icon-settings"></use></svg>
@@ -382,7 +384,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {Number}
    * The number of entries to request per SData payload.
    */
-  pageSize: 20,
+  pageSize: 21,
   /**
    * @property {Boolean}
    * Controls the addition of a search widget.
@@ -581,7 +583,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {string}
    * SoHo class to be applied on multi column.
    */
-  multiColumnClass: 'one-third',
+  multiColumnClass: 'four',
   /**
    * @property {number}
    * Number of columns in view
@@ -1322,7 +1324,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     const key = row ? row.attr('data-key') : false;
 
     if (this._selectionModel && key) {
-      this._selectionModel.toggle(key, this.entries[key], row.get(0));
+      this._selectionModel.select(key, this.entries[key], row.get(0));
     }
 
     if (this.options.singleSelect && this.options.singleSelectAction && !this.enableActions) {
@@ -1795,7 +1797,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         const rowNode = this.createItemRowNode(entry);
 
         if (this.isCardView && this.multiColumnView) {
-          const column = $(`<div class="${this.multiColumnClass} column">`).append(rowNode);
+          const column = $(`<div class="${this.multiColumnClass} columns">`).append(rowNode);
           row.push(column);
           if ((i + 1) % this.multiColumnCount === 0 || i === count - 1) {
             const rowTemplate = $('<div class="row"></div>');

@@ -11,10 +11,10 @@
 }
 
 .card, .widget {
-  min-height: auto;
+  min-height: initial;
     .card-content {
-        height: auto;
-        min-height: auto;
+        height: initial;
+        min-height: initial;
         padding: 16px 20px 15px;
         p {
             margin: 0;
@@ -623,6 +623,7 @@ body {
     text-align: center;
     position: absolute;
     visibility: hidden;
+    top: 35px;
     > span {
         margin: 0 10px;
         height: 18px;
@@ -746,3 +747,11 @@ body {
 .relatedviewitem .badge {
     float: right;
 }
+
+.widget-header > .btn-icon {
+    line-height: normal;
+    .icon {
+        vertical-align: top;
+    }
+}
+

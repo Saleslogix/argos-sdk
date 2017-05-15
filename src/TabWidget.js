@@ -12,17 +12,17 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * HTML that defines a new tab list
    */
   tabContentTemplate: new Simplate([
-    '{%! $.tabListTemplate %}',
+    '{%! $.tabContainerTemplate %}',
   ]),
   /**
    * @property {Simplate}
    * HTML that defines a new tab list
    */
+  tabContainerTemplate: new Simplate([
+    '<div class="tab-container horizontal" data-dojo-attach-point="tabContainer"><div>',
+  ]),
   tabListTemplate: new Simplate([
-    '<div class="tab-container horizontal" data-dojo-attach-point="tabContainer">',
-    '<ul class="tab-list" data-dojo-attach-point="tabList">',
-    '</ul>',
-    '<div>',
+    '<ul class="tab-list"></ul>',
   ]),
   /**
    * @property {Simplate}
@@ -72,9 +72,12 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * @param {Array} An array of the tab objects.
   */
   createTabs: function createTabs(tabs = []) {
+    this.tabList = $(this.tabListTemplate.apply(this));
     $(tabs).each((i, tab) => {
       $(this.tabList).append(tab);
-    }, this);
+    });
+
+    $(this.tabContainer).prepend($(this.tabList));
     const tempTabs = $(this.tabContainer).tabs();
     this._sohoTabs = tempTabs.data('tabs');
     return this;
@@ -85,7 +88,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
   clearTabs: function clearTabs() {
     if (this.tabList && this.tabs) {
       this._sohoTabs.destroy();
-      $(this.tabList).empty();
+      $(this.tabList).remove();
       $('.tab-panel', this.tabContainer).remove();
     }
     if (this.tabMapping) {

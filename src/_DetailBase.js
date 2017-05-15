@@ -15,6 +15,7 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import when from 'dojo/when';
+import connect from 'dojo/_base/connect';
 import format from './Format';
 import utility from './Utility';
 import ErrorManager from './ErrorManager';
@@ -70,7 +71,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel scrollable {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '{%! $.loadingTemplate %}',
     '{%! $.quickActionTemplate %}',
-    '<div class="column" data-dojo-attach-point="contentNode">',
+    '<div data-dojo-attach-point="contentNode">',
     '{%! $.tabContentTemplate %}',
     '</div>',
     '</div>',
@@ -1056,6 +1057,37 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         .then(renderRelated);
     } else {
       renderRelated(0);
+    }
+  },
+  removeEntry: function removeEntry() {
+    const entry = this._createEntryForRemove();
+    if (entry) {
+      const store = this.get('store');
+      if (store) {
+        store.remove(entry).then(
+          this._onRemoveSuccess.bind(this),
+          this._onRemoveError.bind(this)
+        );
+      }
+    }
+  },
+  _createEntryForRemove: function _createEntryForRemove() {
+    const entry = {
+      $key: this.entry.$key,
+      $etag: this.entry.$etag,
+      $name: this.entry.$name,
+    };
+    return entry;
+  },
+  _onRemoveSuccess: function _onRemoveSuccess() {
+    connect.publish('/app/refresh', [{
+      resourceKind: this.resourceKind,
+    }]);
+    ReUI.back();
+  },
+  _onRemoveError: function _onRemoveError(error) {
+    if (error) {
+      this._onGetError(null, error);
     }
   },
   destroy: function destroy() {
