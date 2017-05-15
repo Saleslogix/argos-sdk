@@ -156,9 +156,11 @@ const __class = lang.setObject('argos.Format', {
   date: function date(val, fmt, utc) {
     const value = format.date(val, utc);
     const m = moment(value);
-    const formattedDate = m.format(fmt || argos.Format.shortDateFormatText);
-    if (m.isValid()) {
-      return formattedDate;
+    if (m) {
+      const formattedDate = m.format(fmt || argos.Format.shortDateFormatText);
+      if (m.isValid()) {
+        return formattedDate;
+      }
     }
     return '';
   },
