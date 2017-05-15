@@ -1,9 +1,6 @@
 import {
-  insertHistory,
-  setViewSet,
-} from './actions';
-
-import $ from 'jquery';
+  showView,
+} from './actions/index';
 
 /*
 Viewsets (visible) | history
@@ -48,6 +45,18 @@ A view might want to indicate a new viewset should be created in the middle of n
 export default class Scene {
   constructor(store) {
     this.store = store;
+    this.previousState = null;
+    this.store.subscribe(this._onStateChange.bind(this));
+  }
+
+  _onStateChange() {
+    const state = this.store.getState();
+
+    if (this.previousState === null) {
+      this.previousState = state;
+    }
+
+    this.previousState = state;
   }
 
   _select(id, value) {
@@ -61,7 +70,7 @@ export default class Scene {
     views.forEach(id => this._select(id, state));
   }
 
-  show(view, options) {
+  /*show(view, options) {
     const store = this.store;
     const state = store.getState();
     const {
@@ -89,7 +98,6 @@ export default class Scene {
       removedViews = viewset.slice(0, 1);
     }
 
-    console.dir(removedViews);
     this._setSelectedState(removedViews, false);
     const currentHash = window && window.location.hash || '';
 
@@ -104,5 +112,9 @@ export default class Scene {
     store.dispatch(setViewSet(newViewSet));
     store.dispatch(insertHistory(data));
     this._select(view.id, 'selected');
+  }*/
+  show(viewId, viewOptions) {
+    const currentHash = window && window.location.hash || '';
+    this.store.dispatch(showView(viewId, viewOptions, currentHash));
   }
 }

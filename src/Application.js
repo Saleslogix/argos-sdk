@@ -21,6 +21,7 @@ import ErrorManager from './ErrorManager';
 import getResource from './I18n';
 import { sdk } from './reducers/index';
 import { setConnectionState } from './actions/connection';
+import { windowResize } from './actions/window';
 import Scene from './Scene';
 import { render } from './SohoIcons';
 
@@ -594,6 +595,7 @@ export default class Application {
 
   initScene() {
     this.scene = new Scene(this.store);
+    this.onResize();
   }
 
   initStore() {
@@ -1191,6 +1193,9 @@ export default class Application {
    * Resize handle
    */
   onResize() {
+    const width = $(window).width();
+    const height = $(window).height();
+    this.store.dispatch(windowResize(width, height));
   }
 
   onRegistered(/* view*/) {}

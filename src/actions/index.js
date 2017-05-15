@@ -1,7 +1,6 @@
 // action Types
 export const SET_MAX_VIEWPORTS = 'SET_MAX_VIEWPORTS';
-export const INSERT_HISTORY = 'INSERT_HISTORY';
-export const SET_VIEWSET = 'SET_VIEWSET';
+export const SHOW_VIEW = 'SHOW_VIEW';
 
 /*
 
@@ -30,20 +29,13 @@ export function setMaxViewPorts(max) {
   };
 }
 
-export function setViewSet(viewset) {
+export function showView(viewId, viewOptions, currentHash) {
   return {
-    type: SET_VIEWSET,
+    type: SHOW_VIEW,
     payload: {
-      viewset,
-    },
-  };
-}
-
-export function insertHistory(data) {
-  return {
-    type: INSERT_HISTORY,
-    payload: {
-      data,
+      viewId,
+      viewOptions,
+      currentHash,
     },
   };
 }

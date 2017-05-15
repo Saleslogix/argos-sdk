@@ -20,6 +20,7 @@ define([
   'tests/Groups/DateTimeSectionTests',
   'tests/localization/en',
   'tests/MainToolbarTests',
+  'tests/ReducerTests',
   'tests/SearchWidgetTests',
   'tests/Stores/PouchDB',
   'tests/Stores/SData',

@@ -20,8 +20,6 @@ import _CustomizationMixin from './_CustomizationMixin';
 import _Templated from './_Templated';
 import Adapter from './Models/Adapter';
 import getResource from './I18n';
-import { insertHistory } from './actions/index';
-
 
 const resource = getResource('view');
 
@@ -416,7 +414,6 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
           data: options.data,
         };
         App.context.history.push(data);
-        this.appStore.dispatch(insertHistory(data));
       }
     }
   },
