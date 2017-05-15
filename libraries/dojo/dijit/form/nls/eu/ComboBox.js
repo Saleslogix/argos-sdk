@@ -1,7 +1,3 @@
-define({      
-//begin v1.x content
-		previousMessage: "Aurreko aukerak",
-		nextMessage: "Aukera gehiago"
-//end v1.x content
-});
-
+//>>built
+define("dijit/form/nls/eu/ComboBox",{previousMessage:"Aurreko aukerak",nextMessage:"Aukera gehiago"});
+//# sourceMappingURL=ComboBox.js.map

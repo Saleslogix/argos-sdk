@@ -13,9 +13,7 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import domConstruct from 'dojo/dom-construct';
-import $ from 'jquery';
+
 import getResource from '../I18n';
 import View from '../View';
 import '../Fields/TextField';
@@ -75,7 +73,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
    */
   widgetTemplate: new Simplate([
     '<div title="{%: $.titleText %}" class="panel column {%= $.cls %}">',
-    '<br>', // TODO: find a way to pad top on panel
+    '<br>', // TODO: all views should be placed in .row -> .columns
     '<div  data-dojo-attach-point="fileArea" class="file-area">',
     `<div class="field" data-dojo-attach-point="fileWrapper">
       <label class="fileupload" data-dojo-attach-point="fileupload">
@@ -125,7 +123,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
     this.inherited(arguments);
 
     if (!App.supportsFileAPI()) {
-      domConstruct.place(this.notSupportedTemplate.apply({}, this), this.domNode, 'only');
+      $(this.domNode).empty().append(this.notSupportedTemplate.apply({}, this));
       return;
     }
 
@@ -143,9 +141,9 @@ const __class = declare('argos.Views.FileSelect', [View], {
     }.bind(this);
 
     this.contentNode.innerHTML = '';
-    $(this.fileArea).removeClass('display-none');
-    $(this.btnUploadFiles).removeClass('display-none');
-    this.onUpdateProgress('');
+    $(this.fileArea).show();
+    $(this.btnUploadFiles).show();
+    this.onUpdateProgress('0');
   },
   _browesForFiles: function _browesForFiles(/* file*/) {
     this.btnFileSelect.click();
@@ -186,8 +184,8 @@ const __class = declare('argos.Views.FileSelect', [View], {
       }
       this._buildForm(files);
     }
-    $(this.btnUploadFiles).removeClass('display-none');
-    $(this.fileArea).addClass('display-none');
+    $(this.btnUploadFiles).show();
+    $(this.fileArea).hide();
   },
   _addFile: function _addFile(file, index) {
     const filelength = this._getFileLength(file);
@@ -196,7 +194,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
       fileName: `${file.name}  (${filelength})`,
       description: this._getDefaultDescription(file.name),
     };
-    domConstruct.place(this.fileTemplate.apply(data, this), this.contentNode, 'last');
+    $(this.contentNode).append(this.fileTemplate.apply(data, this));
   },
   _getFileLength: function _getFileLength(file) {
     let filelength = 0;
@@ -235,10 +233,10 @@ const __class = declare('argos.Views.FileSelect', [View], {
    * Handles the display when the user clicks upload.
    */
   onUploadFiles: function onUploadFiles() {
-    $(this.btnUploadFiles).addClass('display-none');
+    $(this.btnUploadFiles).hide();
     const tpl = this.loadingTemplate.apply(this);
     $(this.domNode).addClass('list-loading');
-    domConstruct.place(tpl, this.contentNode, 'first');
+    $(this.contentNode).prepend(tpl);
     $('#progressbar', this.contentNode).progress();
   },
   cancelSelect: function cancelSelect() {},
@@ -248,7 +246,9 @@ const __class = declare('argos.Views.FileSelect', [View], {
   onUpdateProgress: function onUpdateProgress(msg) {
     const progressbar = $('#progressbar', this.contentNode);
     if (progressbar.length) {
-      progressbar.data('progress').update(msg.replace('%', ''));
+      if (!(msg instanceof Array) && !isNaN(msg.replace('%', ''))) {
+        progressbar.data('progress').update(msg.replace('%', ''));
+      }
       $('#progress-label', this.contentNode).text(`${this.loadingText} ${msg}`);
     }
   },
@@ -261,5 +261,4 @@ const __class = declare('argos.Views.FileSelect', [View], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Views.FileSelect', __class);
 export default __class;

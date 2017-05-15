@@ -1,5 +1,4 @@
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import SelectionModel from './SelectionModel';
 
 /**
@@ -48,5 +47,4 @@ const __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.ConfigurableSelectionModel', __class);
 export default __class;

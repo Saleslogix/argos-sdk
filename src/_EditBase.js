@@ -15,17 +15,13 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
-import array from 'dojo/_base/array';
-import Deferred from 'dojo/_base/Deferred';
-import query from 'dojo/query';
+import when from 'dojo/when';
 import utility from './Utility';
 import ErrorManager from './ErrorManager';
 import FieldManager from './FieldManager';
 import View from './View';
 import getResource from './I18n';
-import DeepDiff from 'deepdiff';
-import $ from 'jquery';
-import 'dojo/NodeList-manipulate';
+
 import './Fields/BooleanField';
 import './Fields/DateField';
 import './Fields/DecimalField';
@@ -106,11 +102,11 @@ const __class = declare('argos._EditBase', [View], {
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%: $.titleText %}" class="edit panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" title="{%: $.titleText %}" class="edit panel scrollable {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '{%! $.loadingTemplate %}',
     '{%! $.validationSummaryTemplate %}',
     '{%! $.concurrencySummaryTemplate %}',
-    '<div class="column" data-dojo-attach-point="contentNode"></div>',
+    '<div data-dojo-attach-point="contentNode"></div>',
     '</div>',
   ]),
   /**
@@ -141,8 +137,8 @@ const __class = declare('argos._EditBase', [View], {
    */
   validationSummaryTemplate: new Simplate([
     '<div class="panel-validation-summary">',
-    '<h2>{%: $.validationSummaryText %}</h2>',
-    '<ul data-dojo-attach-point="validationContentNode">',
+    '<h3>{%: $.validationSummaryText %}</h3>',
+    '<ul class="panel-validation-messages" data-dojo-attach-point="validationContentNode">',
     '</ul>',
     '</div>',
   ]),
@@ -154,7 +150,7 @@ const __class = declare('argos._EditBase', [View], {
    */
   concurrencySummaryTemplate: new Simplate([
     '<div class="panel-concurrency-summary">',
-    '<h2>{%: $.concurrencySummaryText %}</h2>',
+    '<h3>{%: $.concurrencySummaryText %}</h3>',
     '<ul data-dojo-attach-point="concurrencyContentNode">',
     '</ul>',
     '</div>',
@@ -167,20 +163,17 @@ const __class = declare('argos._EditBase', [View], {
    * * `$$` => field instance that the error is on
    */
   validationSummaryItemTemplate: new Simplate([
-    '<li>',
-    '<a href="#{%= $.name %}">',
-    '<span><b>{%: $$.label %}</b>: {%: $.message %}</span>',
-    '</a>',
-    '</li>',
+    '<li><p>',
+    '<a class="hyperlink" href="#{%= $.name %}">',
+    '<b>{%: $$.label %}</b>: {%: $.message %}',
+    '</a></p></li>',
   ]),
   /**
    * @property {Simplate}
    * * `$` => validation error object
    */
   concurrencySummaryItemTemplate: new Simplate([
-    '<li>',
-    '<span><b>{%: $$.name %}</b>: {%: $.message %}</span>',
-    '</li>',
+    '<li><p><b>{%: $$.name %}</b>: {%: $.message %}</p></li>',
   ]),
   /**
    * @property {Simplate}
@@ -326,7 +319,21 @@ const __class = declare('argos._EditBase', [View], {
 
   _focusField: null,
   _hasFocused: false,
-
+  /**
+   * @property {Boolean}
+   * Flags if the view is multi column or single column.
+   */
+  multiColumnView: true,
+  /**
+   * @property {string}
+   * SoHo class to be applied on multi column.
+   */
+  multiColumnClass: 'four',
+  /**
+   * @property {number}
+   * Number of columns in view
+   */
+  multiColumnCount: 3,
   /**
    * Extends constructor to initialze `this.fields` to {}
    * @param o
@@ -345,15 +352,15 @@ const __class = declare('argos._EditBase', [View], {
     this.inherited(arguments);
     this.processLayout(this._createCustomizedLayout(this.createLayout()));
 
-    query('div[data-field]', this.contentNode)
-      .forEach(function forEach(node) {
+    $('div[data-field]', this.contentNode)
+      .each((i, node) => {
         const name = $(node).attr('data-field');
         const field = this.fields[name];
         if (field) {
           $(field.domNode).addClass('field');
           field.renderTo(node);
         }
-      }, this);
+      });
   },
   /**
    * Extends init to also init the fields in `this.fields`.
@@ -454,9 +461,8 @@ const __class = declare('argos._EditBase', [View], {
    * @return {Function} Either calls the fields action or returns the inherited version which looks at the view for the action
    */
   invokeAction: function invokeAction(name, parameters, evt, node) {
-    const fieldNode = node && query(node, this.contentNode)
-      .parents('[data-field]');
-    const field = this.fields[fieldNode.length > 0 && $(fieldNode[0]).attr('data-field')];
+    const fieldNode = $(node, this.contentNode).parents('[data-field]');
+    const field = this.fields[fieldNode.length > 0 && fieldNode.first().attr('data-field')];
 
     if (field && typeof field[name] === 'function') {
       return field[name].apply(field, [parameters, evt, node]);
@@ -472,9 +478,8 @@ const __class = declare('argos._EditBase', [View], {
    * @return {Boolean} If the field has the named function defined
    */
   hasAction: function hasAction(name, evt, node) {
-    const fieldNode = node && query(node, this.contentNode)
-      .parents('[data-field]');
-    const field = fieldNode && this.fields[fieldNode.length > 0 && $(fieldNode[0]).attr('data-field')];
+    const fieldNode = $(node, this.contentNode).parents('[data-field]');
+    const field = fieldNode && this.fields[fieldNode.length > 0 && fieldNode.first().attr('data-field')];
 
     if (field && typeof field[name] === 'function') {
       return true;
@@ -512,7 +517,7 @@ const __class = declare('argos._EditBase', [View], {
       const diffs = this.diffs(this.previousValuesAll, currentValues);
 
       if (diffs.length > 0) {
-        array.forEach(diffs, function forEach(val) {
+        diffs.forEach(function forEach(val) {
           this.errors.push({
             name: val,
             message: this.concurrencyErrorText,
@@ -672,11 +677,24 @@ const __class = declare('argos._EditBase', [View], {
       if (!sectionStarted) {
         sectionStarted = true;
         content.push(this.sectionBeginTemplate.apply(layout, this));
+        content.push('<div class="row">');
       }
 
+      if (this.multiColumnView) {
+        content.push(`<div class="${this.multiColumnClass} columns">`);
+      }
       this.createRowContent(current, content);
-    }
+      if (this.multiColumnView) {
+        // in case of hidden field - add empty space for the column to take shape
+        content.push('&nbsp;</div>');
+      }
 
+      if (this.multiColumnView && (i + 1) % this.multiColumnCount === 0) {
+        content.push('</div>');
+        content.push('<div class="row">');
+      }
+    }
+    content.push('</div>');
     content.push(this.sectionEndTemplate.apply(layout, this));
     const sectionNode = $(content.join(''));
     sectionNode.accordion();
@@ -733,7 +751,7 @@ const __class = declare('argos._EditBase', [View], {
       const getExpression = this._buildGetExpression() || null;
       const getResults = this.requestDataUsingStore(getExpression, getOptions);
 
-      Deferred.when(getResults,
+      when(getResults,
         this._onGetComplete.bind(this),
         this._onGetError.bind(this, getOptions)
       );
@@ -809,6 +827,7 @@ const __class = declare('argos._EditBase', [View], {
         // fyi: uses the fact that ({} !== {})
         if (value !== noValue) {
           field.setValue(value, initial);
+          $(field.containerNode).removeClass('row-error');
         }
       }
     }
@@ -965,7 +984,7 @@ const __class = declare('argos._EditBase', [View], {
         this.onAddError(addOptions, err);
       });
     } else if (store) {
-      Deferred.when(store.add(entry, addOptions),
+      when(store.add(entry, addOptions),
         this.onAddComplete.bind(this, entry),
         this.onAddError.bind(this, addOptions)
       );
@@ -1020,7 +1039,7 @@ const __class = declare('argos._EditBase', [View], {
         this.onPutError(putOptions, err);
       });
     } else if (store) {
-      Deferred.when(store.put(entry, putOptions),
+      when(store.put(entry, putOptions),
         this.onPutComplete.bind(this, entry),
         this.onPutError.bind(this, putOptions)
       );
@@ -1087,17 +1106,19 @@ const __class = declare('argos._EditBase', [View], {
 
     if (DeepDiff) {
       const _diffs = DeepDiff.diff(left, right, (path, key) => {
-        if (array.indexOf(this.diffPropertyIgnores, key) >= 0) {
+        if (this.diffPropertyIgnores.indexOf(key) >= 0) {
           return true;
         }
       });
 
-      array.forEach(_diffs, (diff) => {
-        const path = diff.path.join('.');
-        if (diff.kind === DIFF_EDITED && array.indexOf(acc, path) === -1) {
-          acc.push(path);
-        }
-      });
+      if (_diffs) {
+        _diffs.forEach((diff) => {
+          const path = diff.path.join('.');
+          if (diff.kind === DIFF_EDITED && acc.indexOf(path) === -1) {
+            acc.push(path);
+          }
+        });
+      }
     }
 
     return acc;
@@ -1315,5 +1336,4 @@ const __class = declare('argos._EditBase', [View], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._EditBase', __class);
 export default __class;

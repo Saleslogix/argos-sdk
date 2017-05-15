@@ -14,17 +14,14 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import on from 'dojo/on';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from './_ActionMixin';
 import _CustomizationMixin from './_CustomizationMixin';
 import _Templated from './_Templated';
-import _ErrorHandleMixin from './_ErrorHandleMixin';
 import Adapter from './Models/Adapter';
 import getResource from './I18n';
-import { insertHistory } from './actions';
-import page from 'page';
-import $ from 'jquery';
+import { insertHistory } from './actions/index';
+
 
 const resource = getResource('view');
 
@@ -38,9 +35,8 @@ const resource = getResource('view');
  * @mixins argos._ActionMixin
  * @mixins argos._CustomizationMixin
  * @mixins argos._Templated
- * @mixins argos._ErrorHandleMixin
  */
-const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated, _ErrorHandleMixin], {
+const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
   /**
    * This map provides quick access to HTML properties, most notably the selected property of the container
    */
@@ -105,6 +101,47 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   connectionName: false,
   connectionState: null,
   enableOfflineSupport: false,
+  previousState: null,
+  enableCustomizations: true,
+
+  /**
+   * @property {Object}
+   * Localized error messages. One general error message, and messages by HTTP status code.
+   */
+  errorText: {
+    general: resource.general,
+    status: {},
+  },
+  /**
+   * @property {Object}
+   * Http Error Status codes. See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+   */
+  HTTP_STATUS: {
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    PAYMENT_REQUIRED: 402,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    METHOD_NOT_ALLOWED: 405,
+    NOT_ACCEPTABLE: 406,
+    PROXY_AUTH_REQUIRED: 407,
+    REQUEST_TIMEOUT: 408,
+    CONFLICT: 409,
+    GONE: 410,
+    LENGTH_REQUIRED: 411,
+    PRECONDITION_FAILED: 412,
+    REQUEST_ENTITY_TOO_LARGE: 413,
+    REQUEST_URI_TOO_LONG: 414,
+    UNSUPPORTED_MEDIA_TYPE: 415,
+    REQUESTED_RANGE_NOT_SATISFIABLE: 416,
+    EXPECTATION_FAILED: 417,
+  },
+  /**
+   * @property {Array} errorHandlers
+   * Array of objects that should contain a name string property, test function, and handle function.
+   *
+   */
+  errorHandlers: null,
   constructor: function constructor(options) {
     this.app = (options && options.app) || window.App;
   },
@@ -142,16 +179,15 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   /**
    * Called on loading of the application.
    */
-  init: function init(state$, store) {
+  init: function init(store) {
+    this.initStore(store);
     this.startup();
     this.initConnects();
     this.initModel();
-    this.initState(state$);
-    this.appStore = store;
   },
-  initState: function initState(state$) {
-    this.state$ = state$;
-    this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
+  initStore: function initStore(store) {
+    this.appStore = store;
+    this.appStore.subscribe(this._onStateChange.bind(this));
   },
   _updateConnectionState: function _updateConnectionState(state) {
     if (this.connectionState === state) {
@@ -168,15 +204,13 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   },
   onConnectionStateChange: function onConnectionStateChange(state) { // eslint-disable-line
   },
-  _onStateChange: function _onStateChange(val) {
-    this._updateConnectionState(val.connectionState);
-    this.onStateChange(val);
-  },
-  _onStateError: function _onStateError(error) {
-    this.onStateError(error);
+  _onStateChange: function _onStateChange() {
+    const state = this.appStore.getState();
+    this._updateConnectionState(state.sdk.online);
+    this.onStateChange(state);
+    this.previousState = state;
   },
   onStateChange: function onStateChange(val) {}, // eslint-disable-line
-  onStateError: function onStateError(error) {}, // eslint-disable-line
   /**
    * Initializes the model instance that is returned with the current view.
    */
@@ -222,6 +256,62 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     }
 
     return true;
+  },
+  /**
+   * @return {Array} Returns an array of error handlers
+   */
+  createErrorHandlers: function createErrorHandlers() {
+    return this.errorHandlers || [];
+  },
+  /**
+   * Starts matching and executing errorHandlers.
+   * @param {Error} error Error to pass to the errorHandlers
+   */
+  handleError: function handleError(error) {
+    if (!error) {
+      return;
+    }
+
+    function noop() {}
+
+    const matches = this.errorHandlers.filter((handler) => {
+      return handler.test && handler.test.call(this, error);
+    });
+
+    const len = matches.length;
+
+    const getNext = function getNext(index) {
+      // next() chain has ended, return a no-op so calling next() in the last chain won't error
+      if (index === len) {
+        return noop;
+      }
+
+      // Return a closure with index and matches captured.
+      // The handle function can call its "next" param to continue the chain.
+      return function next() {
+        const nextHandler = matches[index];
+        const nextFn = nextHandler && nextHandler.handle;
+
+        nextFn.call(this, error, getNext.call(this, index + 1));
+      }.bind(this);
+    }.bind(this);
+
+    if (len > 0 && matches[0].handle) {
+      // Start the handle chain, the handle can call next() to continue the iteration
+      matches[0].handle.call(this, error, getNext.call(this, 1));
+    }
+  },
+  /**
+   * Gets the general error message, or the error message for the status code.
+   */
+  getErrorMessage: function getErrorMessage(error) {
+    let message = this.errorText.general;
+
+    if (error) {
+      message = this.errorText.status[error.status] || this.errorText.general;
+    }
+
+    return message;
   },
   /**
    * Should refresh the view, such as but not limited to:
@@ -335,19 +425,21 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       this.transitionComplete(to, options);
       $('body').removeClass('transition');
 
-      on.emit(from, 'aftertransition', {
+      $(from).trigger({
         out: true,
         tag: options.tag,
         data: options.data,
         bubbles: true,
         cancelable: true,
+        type: 'aftertransition',
       });
-      on.emit(to, 'aftertransition', {
+      $(to).trigger({
         out: false,
         tag: options.tag,
         data: options.data,
         bubbles: true,
         cancelable: true,
+        type: 'aftertransition',
       });
 
       if (options.complete) {
@@ -360,27 +452,31 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     // dispatch an 'show' event to let the page be aware that is being show as the result of an external
     // event (i.e. browser back/forward navigation).
     if (options.external) {
-      on.emit(to, 'show', {
+      $(to).trigger({
         tag: options.tag,
         data: options.data,
         bubbles: true,
         cancelable: true,
+        type: 'show',
       });
     }
 
-    on.emit(from, 'beforetransition', {
+    $(from).trigger({
       out: true,
       tag: options.tag,
       data: options.data,
       bubbles: true,
       cancelable: true,
+      type: 'beforetransition',
     });
-    on.emit(to, 'beforetransition', {
+
+    $(to).trigger({
       out: false,
       tag: options.tag,
       data: options.data,
       bubbles: true,
       cancelable: true,
+      type: 'beforetransition',
     });
 
     this.unselect(from);
@@ -455,55 +551,61 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       options.scroll = !options.reverse;
     }
 
-    on.emit(p, 'load', {
+    $(p).trigger({
       bubbles: false,
       cancelable: true,
+      type: 'load',
     });
 
     const from = App.getCurrentPage();
 
     if (from) {
-      on.emit(from, 'blur', {
+      $(from).trigger({
         bubbles: false,
         cancelable: true,
+        type: 'blur',
       });
     }
 
     App.setCurrentPage(p);
 
-    on.emit(p, 'focus', {
+    $(p).trigger({
       bubbles: false,
       cancelable: true,
+      type: 'focus',
     });
 
     if (from && $(p).attr('selected') !== 'true') {
       if (options.reverse) {
-        on.emit(p, 'unload', {
+        $(p).trigger({
           bubbles: false,
           cancelable: true,
+          type: 'unload',
         });
       }
 
       window.setTimeout(this.transition.bind(this), App.checkOrientationTime, from, p, options);
     } else {
-      on.emit(p, 'beforetransition', {
+      $(p).trigger({
         out: false,
         tag: options.tag,
         data: options.data,
         bubbles: true,
         cancelable: true,
+        type: 'beforetransition',
       });
 
       this.select(p);
 
       this.transitionComplete(p, options);
 
-      on.emit(p, 'aftertransition', {
+      $(p).trigger({
         out: false,
         tag: options.tag,
         data: options.data,
         bubbles: true,
         cancelable: true,
+        type: 'aftertransition',
       });
     }
   },
@@ -643,5 +745,4 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.View', __class);
 export default __class;

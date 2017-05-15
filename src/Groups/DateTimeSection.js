@@ -1,10 +1,8 @@
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import Utility from '../Utility';
 import _GroupBySection from './_GroupBySection';
 import getResource from '../I18n';
 
-import moment from 'moment';
 
 const resource = getResource('dateTimeSection');
 
@@ -358,5 +356,4 @@ const __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Groups.DateTimeSection', __class);
 export default __class;

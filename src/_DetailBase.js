@@ -14,7 +14,8 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import Deferred from 'dojo/_base/Deferred';
+import when from 'dojo/when';
+import connect from 'dojo/_base/connect';
 import format from './Format';
 import utility from './Utility';
 import ErrorManager from './ErrorManager';
@@ -22,7 +23,6 @@ import View from './View';
 import TabWidget from './TabWidget';
 import getResource from './I18n';
 
-import $ from 'jquery';
 
 const resource = getResource('detailBase');
 
@@ -68,10 +68,10 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel scrollable {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '{%! $.loadingTemplate %}',
     '{%! $.quickActionTemplate %}',
-    '<div class="column" data-dojo-attach-point="contentNode">',
+    '<div data-dojo-attach-point="contentNode">',
     '{%! $.tabContentTemplate %}',
     '</div>',
     '</div>',
@@ -134,15 +134,15 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     '{% } %}',
     '{% if ($.list || $.options.list) { %}',
     '{% if ($.cls || $.options.cls) { %}',
-    '<ul class="{%= ($.cls || $.options.cls) %}" id="{%: $.name %}">',
+    '<ul class="{%= ($.cls || $.options.cls) %}" id="{%: $$.id %}_{%: $.name %}">',
     '{% } else { %}',
-    '<ul class="detailContent tab-panel listview" id="{%: $.name %}">',
+    '<ul class="detailContent tab-panel listview" id="{%: $$.id %}_{%: $.name %}">',
     '{% } %}',
     '{% } else { %}',
     '{% if ($.cls || $.options.cls) { %}',
-    '<div class="tab-panel {%= ($.cls || $.options.cls) %}" id="{%: $.name %}">',
+    '<div class="tab-panel {%= ($.cls || $.options.cls) %}" id="{%: $$.id %}_{%: $.name %}">',
     '{% } else { %}',
-    '<div class="detailContent tab-panel summary-form" id="{%: $.name %}">',
+    '<div class="detailContent tab-panel summary-form" id="{%: $$.id %}_{%: $.name %}">',
     '{% } %}',
     '{% } %}',
   ]),
@@ -183,7 +183,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
     '<label>{%: $.label %}</label>',
     '<span class="data">',
-    '<a data-action="activateRelatedEntry" data-view="{%= $.view %}" data-context="{%: $.context %}" data-descriptor="{%: $.descriptor || $.value %}">',
+    '<a class="hyperlink" data-action="activateRelatedEntry" data-view="{%= $.view %}" data-context="{%: $.context %}" data-descriptor="{%: $.descriptor || $.value %}">',
     '{%= $.value %}',
     '</a>',
     '</span>',
@@ -197,8 +197,8 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * * `$$` => view instance
    */
   relatedTemplate: new Simplate([
-    '<li class="{%= $.cls %}">',
-    '<a data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
+    '<li class="relatedviewitem {%= $.cls %}" data-action="activateRelatedList" data-view="{%= $.view %}" data-context="{%: $.context %}" {% if ($.disabled) { %}data-disable-action="true"{% } %}>',
+    '<a class="{% if ($.disabled) { %}disabled{% } %}">',
     '{% if ($.icon) { %}',
     '<img src="{%= $.icon %}" alt="icon" class="icon" />',
     '{% } else if ($.iconClass) { %}',
@@ -231,7 +231,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
     '<label>{%: $.label %}</label>',
     '<span class="data">',
-    '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
+    '<a class="hyperlink" data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
     '{%= $.value %}',
     '</a>',
     '</span>',
@@ -268,7 +268,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * `$` => the view instance
    */
   notAvailableTemplate: new Simplate([
-    '<div class="not-available">{%: $.notAvailableText %}</div>',
+    '<p class="not-available">{%: $.notAvailableText %}</p>',
   ]),
   /**
    * @property {String}
@@ -372,11 +372,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * CSS class for the collapse button when in a collapsed state
    */
   toggleExpandClass: 'fa fa-chevron-right',
-  /**
-   * @property {Object}
-   * dojo connect object associated to the setOrientation event
-   */
-  _orientation: null,
   /**
    * @cfg {String}
    * The view id to be taken to when the Edit button is pressed in the toolbar
@@ -604,6 +599,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
     options.fromContext = this;
     if (view && options) {
+      options.returnTo = this.id;
       view.show(options);
     }
   },
@@ -925,7 +921,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       const getExpression = this._buildGetExpression() || null;
       const getResults = this.requestDataUsingStore(getExpression, getOptions);
 
-      Deferred.when(getResults,
+      when(getResults,
         this._onGetComplete.bind(this),
         this._onGetError.bind(this, getOptions)
       );
@@ -1015,16 +1011,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       this.clear();
     }
   },
-  onTransitionAway: function onTransitionAway() {
-    this.inherited(arguments);
-
-    if (this._orientation) {
-      this._orientation.remove();
-    }
-  },
-  onTransitionTo: function onTransitionTo() {
-    this.inherited(arguments);
-  },
   /**
    * If a security breach is detected it sets the content to the notAvailableTemplate, otherwise it calls
    * {@link #requestData requestData} which starts the process sequence.
@@ -1058,7 +1044,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         const labelNode = $('.related-item-label', rowNode).first();
         if (labelNode.length) {
           $('.busy-xs', labelNode).remove();
-          labelNode.prepend(`<span class="info badge">${result}</span>`);
+          labelNode.before(`<span class="info badge">${result}</span>`);
         } else {
           console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
         }
@@ -1073,10 +1059,40 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       renderRelated(0);
     }
   },
+  removeEntry: function removeEntry() {
+    const entry = this._createEntryForRemove();
+    if (entry) {
+      const store = this.get('store');
+      if (store) {
+        store.remove(entry).then(
+          this._onRemoveSuccess.bind(this),
+          this._onRemoveError.bind(this)
+        );
+      }
+    }
+  },
+  _createEntryForRemove: function _createEntryForRemove() {
+    const entry = {
+      $key: this.entry.$key,
+      $etag: this.entry.$etag,
+      $name: this.entry.$name,
+    };
+    return entry;
+  },
+  _onRemoveSuccess: function _onRemoveSuccess() {
+    connect.publish('/app/refresh', [{
+      resourceKind: this.resourceKind,
+    }]);
+    ReUI.back();
+  },
+  _onRemoveError: function _onRemoveError(error) {
+    if (error) {
+      this._onGetError(null, error);
+    }
+  },
   destroy: function destroy() {
     this.inherited(arguments);
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._DetailBase', __class);
 export default __class;

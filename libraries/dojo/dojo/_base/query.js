@@ -1,13 +1,9 @@
-define(["../query", "./NodeList"], function(query){
-	// module:
-	//		dojo/_base/query
+/*
+	Copyright (c) 2004-2016, The JS Foundation All Rights Reserved.
+	Available via Academic Free License >= 2.1 OR the modified BSD license.
+	see: http://dojotoolkit.org/license for details
+*/
 
-	/*=====
-	return {
-		// summary:
-		//		Deprecated.   Use dojo/query instead.
-	};
-	=====*/
-
-	return query;
-});
+//>>built
+define("dojo/_base/query",["../query","./NodeList"],function(a){return a});
+//# sourceMappingURL=query.js.map

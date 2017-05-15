@@ -48,5 +48,4 @@ const __class = lang.setObject('argos.FieldManager', {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.FieldManager', __class);
 export default __class;

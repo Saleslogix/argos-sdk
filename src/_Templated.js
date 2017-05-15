@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import _TemplatedMixin from 'dijit/_TemplatedMixin';
-import $ from 'jquery';
+
 
 /**
  * @class argos._Templated
@@ -62,5 +61,4 @@ const __class = declare('argos._Templated', [_TemplatedMixin], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._Templated', __class);
 export default __class;

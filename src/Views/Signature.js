@@ -13,14 +13,11 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import json from 'dojo/_base/json';
-import query from 'dojo/query';
 import win from 'dojo/window';
 import format from '../Format';
 import View from '../View';
 import getResource from '../I18n';
-import $ from 'jquery';
+
 
 const resource = getResource('signature');
 
@@ -175,7 +172,7 @@ const __class = declare('argos.Views.Signature', [View], {
    * @return {String}
    */
   getValues: function getValues() {
-    return json.toJson(this.optimizeSignature());
+    return JSON.stringify(this.optimizeSignature());
   },
   /**
    * Sets the current value and draws it.
@@ -183,7 +180,7 @@ const __class = declare('argos.Views.Signature', [View], {
    * @param initial Unused.
    */
   setValue: function setValue(val/* , initial*/) {
-    this.signature = val ? json.fromJson(val) : [];
+    this.signature = val ? JSON.parse(val) : [];
     this.redraw(this.signature, this.signatureNode, this.config);
   },
   /**
@@ -276,7 +273,7 @@ const __class = declare('argos.Views.Signature', [View], {
 
     this.canvasNodeHeight = Math.min(
       Math.floor(this.canvasNodeWidth * 0.5),
-      win.getBox().h - query('.toolbar')[0].offsetHeight
+      win.getBox().h - $('.toolbar').get(0).offsetHeight
     );
 
     this.signatureNode.width = this.canvasNodeWidth;
@@ -382,5 +379,4 @@ const __class = declare('argos.Views.Signature', [View], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Views.Signature', __class);
 export default __class;

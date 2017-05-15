@@ -1,8 +1,6 @@
 import declare from 'dojo/_base/declare';
-import domConstruct from 'dojo/dom-construct';
-import Deferred from 'dojo/Deferred';
-import _Widget from 'dijit/_Widget';
-import $ from 'jquery';
+import _WidgetBase from 'dijit/_WidgetBase';
+
 import _Templated from '../_Templated';
 import getResource from '../I18n';
 
@@ -11,7 +9,7 @@ const resource = getResource('busyIndicator');
 /**
  * @class argos.Dialogs.BusyIndicator
  */
-const __class = declare('argos.Dialogs.BusyIndicator', [_Widget, _Templated], {
+const __class = declare('argos.Dialogs.BusyIndicator', [_WidgetBase, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="busyIndicator__container {%: $.containerClass %}" aria-live="polite" data-dojo-attach-point="busyIndicatorNode">',
     '{%! $.busyIndicatorTemplate %}',
@@ -37,7 +35,7 @@ const __class = declare('argos.Dialogs.BusyIndicator', [_Widget, _Templated], {
     '</div>',
   ]),
   progressLabelTemplate: new Simplate([
-    '<span class="busyIndicator__progress__label">{%: $.progressText %}</span>',
+    '<div class="busyIndicator__progress__label" style="text-align:center">{%: $.progressText %}</div>',
   ]),
   barTemplate: new Simplate([
     '<div class="busyIndicator__progress__bar"></div>',
@@ -58,29 +56,28 @@ const __class = declare('argos.Dialogs.BusyIndicator', [_Widget, _Templated], {
 
   complete: function complete(result = {}) {
     $(this.busyIndicatorNode).removeClass('busyIndicator--active');
-    this._busyDeferred.resolve(result);
+    this._busyDeferred(result);
   },
   show: function show() {},
   start: function start(options = {}) {
-    this._busyDeferred = new Deferred();
+    return new Promise((resolve) => {
+      this._busyDeferred = resolve;
+      $(this.busyIndicatorNode).addClass('busyIndicator--active');
 
-    $(this.busyIndicatorNode).addClass('busyIndicator--active');
-
-    if (!this.isAsync || (options.isAsync !== undefined && !options.isAsync)) {
-      this._progressBar = domConstruct.toDom(this.barTemplate.apply(this));
-      this.progressLabelNode = domConstruct.toDom(this.progressLabelTemplate.apply(this));
-      domConstruct.place(this.progressLabelNode, this.progressNode);
-      domConstruct.place(this._progressBar, this.progressNode);
-      this.currentProgress = options.current || 0;
-      this.totalProgress = options.total || options.count || 0;
-    }
-
-    return this._busyDeferred.promise;
+      if (!this.isAsync || (options.isAsync !== undefined && !options.isAsync)) {
+        this._progressBar = $(this.barTemplate.apply(this));
+        this.progressLabelNode = $(this.progressLabelTemplate.apply(this));
+        $(this.progressNode).append(this.progressLabelNode);
+        $(this.progressNode).append(this._progressBar);
+        this.currentProgress = options.current || 0;
+        this.totalProgress = options.total || options.count || 0;
+      }
+    });
   },
   updateProgress: function updateProgress() {
     this.currentProgress = this.currentProgress + 1;
     if (this._progressBar) {
-      $(this._progressBar).css({
+      this._progressBar.css({
         width: `${100 * this.currentProgress / this.totalProgress}%`,
       });
     }

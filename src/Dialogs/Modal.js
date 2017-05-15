@@ -1,12 +1,9 @@
 import declare from 'dojo/_base/declare';
 import Deferred from 'dojo/Deferred';
-import domConstruct from 'dojo/dom-construct';
-import on from 'dojo/on';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from '../_Templated';
 import getResource from '../I18n';
 
-import $ from 'jquery';
 
 const resource = getResource('modal');
 
@@ -14,7 +11,7 @@ const resource = getResource('modal');
  * @class argos.Dialogs.Modal
  * @alternateClassName Pop-up
  */
-const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
+const __class = declare('argos.Dialogs.Modal', [_WidgetBase, _Templated], {
   widgetTemplate: new Simplate([
     '<div class="modal__container" data-dojo-attach-point="modalContainer">',
     '{%! $.modalTemplate %}',
@@ -53,10 +50,9 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   ]),
 
   id: 'modal-template',
-  _actionListeners: [],
+  _actionListeners: null,
   _bodyOverflow: null,
   _content: null,
-  _containerListener: null,
   _history: [],
   defaultHeaderText: {
     alert: resource.alertText,
@@ -81,6 +77,9 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   showToolbar: true,
   showOverlay: true,
 
+  constructor: function constructor() {
+    this._actionListeners = [];
+  },
   _lockScroll: function _lockScroll() {
     if (this.lockScroll) {
       this._bodyOverflow = $(document.body).css('overflow');
@@ -117,22 +116,23 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   },
   attachContainerListener: function attachContainerListener() {
     this.removeContainerListener();
-    this._containerListener = on(this.modalContainer, 'click', this.onContainerClick.bind(this));
+    $(this.modalContainer).on('click', this.onContainerClick.bind(this));
     return this;
   },
   createModalToolbar: function createModalToolbar(toolbarActions = []) {
     if (this.showToolbar) {
-      const toolbar = domConstruct.toDom(this.modalToolbarTemplate.apply(this));
+      const toolbar = $(this.modalToolbarTemplate.apply(this));
       toolbarActions.forEach((toolbarItem) => {
         if (this.defaultToolbarActions[toolbarItem.action]) {
           toolbarItem.action = this.defaultToolbarActions[toolbarItem.action].bind(this)();
           toolbarItem.context = this;
         }
-        const item = domConstruct.toDom(this.buttonTemplate.apply(toolbarItem, this));
-        this._actionListeners.push(on(item, 'click', toolbarItem.action.bind(toolbarItem.context)));
-        domConstruct.place(item, toolbar);
+        const item = $(this.buttonTemplate.apply(toolbarItem, this));
+        $(item).on('click', toolbarItem.action.bind(toolbarItem.context));
+        this._actionListeners.push($(item));
+        $(toolbar).append(item);
       });
-      domConstruct.place(toolbar, this.modalNode);
+      $(this.modalNode).append(toolbar);
     }
     return this;
   },
@@ -183,7 +183,7 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
         this._content.destroy();
       }
       if (this.showToolbar) {
-        domConstruct.empty(this.modalNode);
+        $(this.modalNode).empty();
         this.removeActionListeners();
       }
       $(this.modalContainer).addClass('modal__container--hidden');
@@ -207,7 +207,7 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   },
   place: function place(parent) {
     if (parent) {
-      domConstruct.place(this.modalContainer, parent);
+      $(parent).append(this.modalContainer);
     }
     return this;
   },
@@ -224,16 +224,16 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
     return this;
   },
   removeContainerListener: function removeContainerListener() {
-    if (this._containerListener) {
-      this._containerListener.remove();
-    }
+    $(this.modalContainer).off('click');
     return this;
   },
   removeActionListeners: function removeActionListeners() {
     if (this._actionListeners) {
       this._actionListeners.forEach((listener) => {
-        listener.remove();
+        listener.off();
       });
+
+      this._actionListeners = [];
     }
     return this;
   },
@@ -268,17 +268,17 @@ const __class = declare('argos.Dialogs.Modal', [_Widget, _Templated], {
   showContent: function showContent(options = {}) {
     if (this._content && this._content.show) {
       this._content.show(options);
-      const content = domConstruct.toDom(this.modalContentTemplate.apply(this));
-      domConstruct.place(this._content.domNode || this._content, content);
-      domConstruct.place(content, this.modalNode);
+      const content = $(this.modalContentTemplate.apply(this));
+      $(content).append(this._content.domNode || this._content);
+      $(this.modalNode).append(content);
     } else {
       if (this.isNotSimpleDialog()) {
         console.log('Current modal content does not have a show function, did you forget to add this?'); // eslint-disable-line
       } else {
-        const content = domConstruct.toDom(this.modalContentTemplate.apply(this));
-        const simpleDialog = domConstruct.toDom(this.dialogContentTemplate.apply(this._content, this));
-        domConstruct.place(simpleDialog, content);
-        domConstruct.place(content, this.modalNode);
+        const content = $(this.modalContentTemplate.apply(this));
+        const simpleDialog = $(this.dialogContentTemplate.apply(this._content, this));
+        $(content).append(simpleDialog);
+        $(this.modalNode).append(content);
       }
     }
     return this;

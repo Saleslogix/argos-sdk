@@ -1,7 +1,6 @@
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _Templated from 'argos/_Templated';
-import $ from 'jquery';
+import _Templated from './_Templated';
+
 
 /**
  * @class argos.TabWidget
@@ -13,17 +12,17 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * HTML that defines a new tab list
    */
   tabContentTemplate: new Simplate([
-    '{%! $.tabListTemplate %}',
+    '{%! $.tabContainerTemplate %}',
   ]),
   /**
    * @property {Simplate}
    * HTML that defines a new tab list
    */
+  tabContainerTemplate: new Simplate([
+    '<div class="tab-container horizontal" data-dojo-attach-point="tabContainer"><div>',
+  ]),
   tabListTemplate: new Simplate([
-    '<div class="tab-container horizontal" data-dojo-attach-point="tabContainer">',
-    '<ul class="tab-list" data-dojo-attach-point="tabList">',
-    '</ul>',
-    '<div>',
+    '<ul class="tab-list"></ul>',
   ]),
   /**
    * @property {Simplate}
@@ -32,7 +31,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
    */
   tabListItemTemplate: new Simplate([
     '<li class="tab" role="presentation">',
-    '<a href="#{%: $.name %}">{%: ($.title || $.options.title) %}</a>',
+    '<a href="#{%: $$.id %}_{%: $.name %}">{%: ($.title || $.options.title) %}</a>',
     '</li>',
   ]),
   /**
@@ -55,6 +54,8 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * Array holding the tab dom elements
    */
   tabs: null,
+
+  _sohoTabs: null,
   /**
    * Sets the parentNode for the tabList
    */
@@ -71,10 +72,14 @@ const __class = declare('argos.TabWidget', [_Templated], {
    * @param {Array} An array of the tab objects.
   */
   createTabs: function createTabs(tabs = []) {
+    this.tabList = $(this.tabListTemplate.apply(this));
     $(tabs).each((i, tab) => {
       $(this.tabList).append(tab);
-    }, this);
-    $(this.tabContainer).tabs();
+    });
+
+    $(this.tabContainer).prepend($(this.tabList));
+    const tempTabs = $(this.tabContainer).tabs();
+    this._sohoTabs = tempTabs.data('tabs');
     return this;
   },
   /**
@@ -82,9 +87,9 @@ const __class = declare('argos.TabWidget', [_Templated], {
   */
   clearTabs: function clearTabs() {
     if (this.tabList && this.tabs) {
-      $(this.tabContainer).data('tabs').destroy();
-      $(this.tabList).empty();
-      $('.detailContent', this.tabContainer).remove();
+      this._sohoTabs.destroy();
+      $(this.tabList).remove();
+      $('.tab-panel', this.tabContainer).remove();
     }
     if (this.tabMapping) {
       this.tabs = [];
@@ -95,5 +100,4 @@ const __class = declare('argos.TabWidget', [_Templated], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.TabWidget', __class);
 export default __class;

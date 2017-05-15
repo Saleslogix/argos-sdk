@@ -4,7 +4,11 @@
 @import "variables.less";
 @import "mixins.less";
 
-input, textarea {
+.switch input:empty{
+  width: 5px;
+}
+
+input, textarea, div.dropdown, div.multiselect, .dropdown-wrapper {
     width: 100%;
 }
 
@@ -105,7 +109,7 @@ input, textarea {
     outline: 0;
     position: absolute;
     width: 34px;
-} 
+}
 .field-control-trigger .icon {
     background-color: inherit;
     fill: #5c5c5c;
@@ -113,4 +117,22 @@ input, textarea {
     pointer-events: none;
     right: 0px;
     width: 18px;
+}
+
+.row-edit[data-field-type="duration"] > div > .autoComplete-watermark {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.row-edit > div > input:not([type|=radio]):not([type|=checkbox]),
+.row-edit > input:not([type|=radio]):not([type|=checkbox]) {
+    -webkit-appearance: none;
+
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
 }

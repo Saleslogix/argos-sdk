@@ -1,31 +1,9 @@
-define([], function(){
-	// module:
-	//		dojo/debounce
-	// summary:
-	//		This module provide a debouncer
+/*
+	Copyright (c) 2004-2016, The JS Foundation All Rights Reserved.
+	Available via Academic Free License >= 2.1 OR the modified BSD license.
+	see: http://dojotoolkit.org/license for details
+*/
 
-	return function(cb, wait){
-		// summary:
-		//		Create a function that will only execute after `wait` milliseconds
-		// description:
-		//		Create a function that will only execute after `wait` milliseconds
-		//		of repeated execution. Useful for delaying some event action slightly to allow
-		//		for rapidly-firing events such as window.resize, node.mousemove and so on.
-		// cb: Function
-		//		A callback to fire. Like hitch() and partial(), arguments passed to the
-		//		returned function curry along to the original callback.
-		// wait: Integer
-		//		Time to spend caching executions before actually executing.
-		var timer;
-		return function(){
-			if(timer){
-				clearTimeout(timer);
-			}
-			var self = this;
-			var a = arguments;
-			timer = setTimeout(function(){
-				cb.apply(self, a);
-			}, wait);
-		};
-	};
-});
+//>>built
+define("dojo/debounce",[],function(){return function(b,c){var a;return function(){a&&clearTimeout(a);var d=this,e=arguments;a=setTimeout(function(){b.apply(d,e)},c)}}});
+//# sourceMappingURL=debounce.js.map

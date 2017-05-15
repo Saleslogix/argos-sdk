@@ -27,27 +27,23 @@
     color: @glist-header-color;
 }
 
-.panel-content,
-.panel-loading-indicator {
-    padding: 0 10px;
-}
-
-.panel-validation-summary > h2,
-.panel-concurrency-summary > h2 {
+.panel-validation-summary > h3,
+.panel-concurrency-summary > h3 {
     border-bottom: @validation-h2-border;
     border-top: @validation-h2-border;
     background-color: @validation-h2-bg-color;
     color: @validation-h2-color;
 }
 
-.panel-validation-summary > h2:first-child,
-.panel-concurrency-summary > h2:first-child {
+.panel-validation-summary > h3:first-child,
+.panel-concurrency-summary > h3:first-child {
     border-top: @validation-h2-firstchild-border;
+    padding: 10px 30px;
 }
 
 .quick-actions > .action-list {
     background-color: @color-deep-slate;
-    padding: 10px 5px 15px 5px;
+    padding: 10px 5px;
     button {
         float: left;
         margin-top: -5px;

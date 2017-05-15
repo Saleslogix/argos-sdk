@@ -1,3 +1,4 @@
+/* eslint-disable */
 define('tests/Fields/TextFieldTests', ['dojo/query','dojo/dom-attr','dojo/dom-class','argos/Fields/TextField'], function(query, domAttr, domClass, TextField) {
 return describe('Sage.Platform.Mobile.Fields.TextField', function() {
 
@@ -93,26 +94,6 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
         expect(field.onNotificationTrigger).toHaveBeenCalledWith('test');
     });
 
-    it('Can add active class on focus', function() {
-        var field = new TextField();
-
-        domClass.remove(field.domNode, 'text-field-active');
-
-        field._onFocus();
-
-        expect(domClass.contains(field.domNode, 'text-field-active')).toEqual(true);
-    });
-
-    it('Can remove active class on blur', function() {
-        var field = new TextField();
-
-        domClass.add(field.domNode, 'text-field-active');
-
-        field._onBlur();
-
-        expect(domClass.contains(field.domNode, 'text-field-active')).toEqual(false);
-    });
-
     it('Can call validation trigger with event on blur', function() {
         var field = new TextField();
 
@@ -135,28 +116,6 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
         field._onBlur('test');
 
         expect(field.onNotificationTrigger).toHaveBeenCalledWith('test');
-    });
-
-    it('Can clear value on clear button click', function() {
-        var field = new TextField();
-        var fakeClickEvt = {
-            preventDefault: function() {},
-            stopPropagation: function() {}
-        };
-
-        spyOn(field, 'clearValue');
-
-        field._onClearClick(fakeClickEvt);
-
-        expect(field.clearValue).toHaveBeenCalled();
-
-        // set the text-field-active class on the domNode
-        // clearValue should not be called if it is active
-        field = new TextField();
-        domClass.add(field.domNode, 'text-field-active');
-        spyOn(field, 'clearValue');
-        field._onClearClick(fakeClickEvt);
-        expect(field.clearValue).not.toHaveBeenCalled();
     });
 
     it('Can get value of inputNode', function() {
@@ -325,7 +284,7 @@ return describe('Sage.Platform.Mobile.Fields.TextField', function() {
         var field = new TextField();
 
         field.setValueNoTrigger('test');
-       
+
         expect(field.previousValue).toEqual(field.getValue());
     });
 

@@ -2,7 +2,7 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import connect from 'dojo/_base/connect';
-import $ from 'jquery';
+
 import ErrorManager from './ErrorManager';
 import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';
@@ -31,6 +31,7 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
   onRequestDataFailure: function onRequestDataFailure(response, o) {
     alert(string.substitute(this.requestErrorText, [response, o])); // eslint-disable-line
     ErrorManager.addError('failure', response);
+    this.isRefreshing = false;
   },
   /**
    * Handler when a request to SData is successful, calls processEntry
@@ -43,6 +44,7 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
       this.changes = this.options.changes;
       this.setValues(this.changes);
     }
+    this.isRefreshing = false;
   },
   /**
    * Creates Sage.SData.Client.SDataSingleResourceRequest instance and sets a number of known properties.
@@ -58,7 +60,7 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
     const key = (this.entry && this.entry.$key) || this.options.key;
 
     if (key) {
-      request.setResourceSelector(string.substitute("'${0}'", [key]));
+      request.setResourceSelector(`'${key}'`);
     }
 
     if (this.contractName) {
@@ -261,5 +263,4 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile._LegacySDataEditMixin', __class);
 export default __class;

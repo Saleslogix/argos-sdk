@@ -1,31 +1,9 @@
-define([], function(){
-	// module:
-	//		dojo/throttle
-	// summary:
-	//		This module provide a throttler
+/*
+	Copyright (c) 2004-2016, The JS Foundation All Rights Reserved.
+	Available via Academic Free License >= 2.1 OR the modified BSD license.
+	see: http://dojotoolkit.org/license for details
+*/
 
-	return function(cb, wait){
-		// summary:
-		//		Create a function that will only execute once per `wait` periods.
-		// description:
-		//		Create a function that will only execute once per `wait` periods
-		//		from last execution when called repeatedly. Useful for preventing excessive
-		//		calculations in rapidly firing events, such as window.resize, node.mousemove
-		//		and so on.
-		// cb: Function
-		//		The callback to fire.
-		// wait: Integer
-		//		time to delay before allowing cb to call again.
-		var canrun = true;
-		return function(){
-			if(!canrun){
-				return;
-			}
-			canrun = false;
-			cb.apply(this, arguments);
-			setTimeout(function(){
-				canrun = true;
-			}, wait);
-		};
-	};
-});
+//>>built
+define("dojo/throttle",[],function(){return function(b,c){var a=!0;return function(){a&&(a=!1,b.apply(this,arguments),setTimeout(function(){a=!0},c))}}});
+//# sourceMappingURL=throttle.js.map

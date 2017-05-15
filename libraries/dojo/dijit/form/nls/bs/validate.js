@@ -1,8 +1,3 @@
-define({      
-//begin v1.x content
-	invalidMessage: "Unešena vrijednost je neispravna",
-	missingMessage: "Ova vrijednost je obavezna",
-	rangeMessage: "Ova vrijednost je izvan raspona."
-//end v1.x content
-});
-
+//>>built
+define("dijit/form/nls/bs/validate",{invalidMessage:"Une\u0161ena vrijednost je neispravna",missingMessage:"Ova vrijednost je obavezna",rangeMessage:"Ova vrijednost je izvan raspona."});
+//# sourceMappingURL=validate.js.map

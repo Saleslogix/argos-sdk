@@ -14,12 +14,9 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import event from 'dojo/_base/event';
-import string from 'dojo/string';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import getResource from './I18n';
-import $ from 'jquery';
 
 const resource = getResource('searchWidget');
 
@@ -53,7 +50,7 @@ const resource = getResource('searchWidget');
  * @alternateClassName SearchWidget
  * @mixins argos._Templated
  */
-const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
+const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
   /**
    * @property {Object}
    * Provides a setter for HTML node attributes, namely the value for search text
@@ -159,7 +156,7 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
 
       // todo: can optimize later if necessary
       for (let i = 0; i < hashLayout.length && !hashQueryExpression; i++) {
-        if (hashLayout[i].tag === hashTag || hashLayout[i].key === hashTag) {
+        if (hashLayout[i].tag.substr(1) === hashTag || hashLayout[i].key === hashTag) {
           hashQueryExpression = hashLayout[i].query;
         }
       }
@@ -176,12 +173,12 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
       return this.formatSearchQuery(query);
     }
 
-    newQuery = string.substitute('(${0})', [hashQueries.join(') and (')]);
+    newQuery = `(${hashQueries.join(') and (')})`;
 
     additionalSearch = additionalSearch.replace(/^\s+|\s+$/g, '');
 
     if (additionalSearch) {
-      newQuery += string.substitute(' and (${0})', [this.formatSearchQuery(additionalSearch)]);
+      newQuery += ` and (${this.formatSearchQuery(additionalSearch)})`;
     }
 
     return newQuery;
@@ -212,7 +209,8 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
    */
   _onKeyPress: function _onKeyPress(evt) {
     if (evt.keyCode === 13 || evt.keyCode === 10) {
-      event.stop(evt);
+      evt.preventDefault();
+      evt.stopPropagation();
       this.queryNode.blur();
       this.search();
     }
@@ -280,5 +278,4 @@ const __class = declare('argos.SearchWidget', [_Widget, _Templated], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.SearchWidget', __class);
 export default __class;

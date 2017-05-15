@@ -1,5 +1,4 @@
 import declare from 'dojo/_base/declare';
-import array from 'dojo/_base/array';
 import Memory from 'dojo/store/Memory';
 import _ConfigureBase from '../_ConfigureBase';
 import getResource from '../I18n';
@@ -29,7 +28,7 @@ const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
     const selected = this.getSelectedKeys();
     const all = this._sortActions(this.options.actions, this.getOrderedKeys());
 
-    const save = array.map(all, (action) => {
+    const save = all.map((action) => {
       if (selected.indexOf(action.id) >= 0) {
         action.visible = true;
       } else {
@@ -78,7 +77,7 @@ const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
   },
   createStore: function createStore() {
     let list = [];
-    const all = array.map(this.options.actions, action => action.id);
+    const all = this.options.actions.map(action => action.id);
     const order = this.getSavedOrderedKeys();
 
     // De-dup id's
@@ -92,11 +91,11 @@ const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
     }, []);
 
     // The order array could have had stale id's
-    reduced = array.filter(reduced, (key) => {
+    reduced = reduced.filter((key) => {
       return all.indexOf(key) !== -1;
     });
 
-    list = array.map(this._sortActions(this.options.actions, this.getSavedOrderedKeys()), (action) => {
+    list = this._sortActions(this.options.actions, this.getSavedOrderedKeys()).map((action) => {
       if (reduced.indexOf(action.id) > -1) {
         return {
           $key: action.id,
@@ -106,7 +105,7 @@ const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
       return null;
     });
 
-    list = array.filter(list, (item) => {
+    list = list.filter((item) => {
       return item !== null;
     });
 
@@ -116,17 +115,17 @@ const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
   },
   getSavedOrderedKeys: function getSavedOrderedKeys() {
     const save = this._getQuickActionPrefs();
-    return array.map(save, (action) => {
+    return save.map((action) => {
       return action.id;
     });
   },
   getSavedSelectedKeys: function getSavedSelectedKeys() {
     let save = this._getQuickActionPrefs();
-    save = array.filter(save, (action) => {
+    save = save.filter((action) => {
       return action.visible === true;
     });
 
-    return array.map(save, (action) => {
+    return save.map((action) => {
       return action.id;
     });
   },

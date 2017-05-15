@@ -36,14 +36,23 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful, _Customiza
   entityName: 'Entity',
   entityDisplayName: 'Entity',
   entityDisplayNamePlural: 'Entities',
+  /**
+   * @cfg {Boolean}
+   * Enables the use of the customization engine on this model instance
+   */
+  enableCustomizations: true,
   modelName: null,
   modelType: null,
-  iconClass: 'fa fa-cloud fa-2x',
+  iconClass: 'url',
+  picklists: null,
   detailViewId: null,
   listViewId: null,
   editViewId: null,
   relationships: null,
   createRelationships: function createRelationships() {
+    return [];
+  },
+  createPicklists: function createPicklists() {
     return [];
   },
   _appGetter: function _appGetter() {
@@ -59,10 +68,14 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful, _Customiza
    */
   init: function init() {
     this.relationships = this.relationships || this._createCustomizedLayout(this.createRelationships(), 'relationships');
+    this.picklists = this.picklists || this._createCustomizedLayout(this.createPicklists(), 'picklists');
+    this.getPicklists();
   },
   getEntry: function getEntry(options) { // eslint-disable-line
   },
   getEntries: function getEntries(query, options) { // eslint-disable-line
+  },
+  getPicklists: function getPicklists() {
   },
   insertEntry: function insertEntry(entry, options) {// eslint-disable-line
   },
@@ -80,6 +93,10 @@ export default declare('argos.Models._ModelBase', [Evented, Stateful, _Customiza
   },
   getEntityId: function getEntityId(entry) {
     return utility.getValue(entry, this.idProperty);
+  },
+  getPicklistNameByProperty: function getPicklistNameByProperty(property) {
+    const picklist = this.picklists.find(pl => pl.property === property);
+    return (picklist && picklist.name) || null;
   },
   buildQueryExpression: function buildQueryExpression(query, options) { // eslint-disable-line
   },

@@ -15,20 +15,15 @@
 import util from './Utility';
 import ModelManager from './Models/Manager';
 import Toast from './Dialogs/Toast';
-import { model } from './Model';
-import { intent } from './Intent';
-import { updateConnectionState } from './Intents/update-connection';
 import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
 import ErrorManager from './ErrorManager';
 import getResource from './I18n';
-import { sdk } from './reducers';
+import { sdk } from './reducers/index';
+import { setConnectionState } from './actions/connection';
 import Scene from './Scene';
 import { render } from './SohoIcons';
-import { createStore } from 'redux';
-import page from 'page';
-import $ from 'jquery';
-import Rx from 'rxjs';
+
 
 const resource = getResource('sdkApplication');
 
@@ -107,11 +102,6 @@ export default class Application {
      * Allows passing in options via routing. Value gets removed once the view is shown.
      */
     this.viewShowOptions = null;
-
-    /**
-     * Instance of a Snap.js object (https://github.com/jakiestfu/Snap.js/)
-     */
-    this.snapper = null;
 
     /**
      * @property {String}
@@ -211,10 +201,6 @@ export default class Application {
       history: [],
     };
     this.viewShowOptions = [];
-    // TODO: Replace these
-    const actions = intent();
-    this.state$ = model(actions);
-    this.state$.subscribe(this._onStateChange.bind(this), this._onStateError.bind(this));
 
     // For routing need to know homeViewId
     this.ReUI.app = this;
@@ -232,6 +218,8 @@ export default class Application {
      * @type {Modal}
     */
     this.viewSettingsModal = null;
+
+    this.previousState = null;
   }
 
   /**
@@ -243,8 +231,9 @@ export default class Application {
     $('body').off('beforetransition', this._onBeforeTransition.bind(this));
     $('body').off('aftertransition', this._onAfterTransition.bind(this));
     $('body').off('show', this._onActivate.bind(this));
-    $(window).off('online', this._onOnline.bind(this));
-    $(window).off('offline', this._onOffline.bind(this));
+    window.removeEventListener('online', this._onOnline.bind(this));
+    window.removeEventListener('offline', this._onOffline.bind(this));
+
     this.uninitialize();
   }
 
@@ -286,17 +275,6 @@ export default class Application {
     this.ping();
   }
 
-  _onStateChange(val) {
-    this._updateConnectionState(val.connectionState);
-    this.onStateChange(val);
-  }
-
-  _onStateError(error) {
-    this.onStateError(error);
-  }
-
-  onStateChange(val) {} // eslint-disable-line
-  onStateError(error) {} // eslint-disable-line
   _updateConnectionState(online) {
     // Don't fire the onConnectionChange if we are in the same state.
     if (this.onLine === online) {
@@ -308,11 +286,11 @@ export default class Application {
   }
 
   forceOnline() {
-    updateConnectionState(true);
+    this.store.dispatch(setConnectionState(true));
   }
 
   forceOffline() {
-    updateConnectionState(false);
+    this.store.dispatch(setConnectionState(false));
   }
 
   onConnectionChange(/* online*/) {}
@@ -325,9 +303,9 @@ export default class Application {
     $('body').on('beforetransition', this._onBeforeTransition.bind(this));
     $('body').on('aftertransition', this._onAfterTransition.bind(this));
     $('body').on('show', this._onActivate.bind(this));
-    $.ready(() => {
-      $(window).on('online', this._onOnline.bind(this));
-      $(window).on('offline', this._onOffline.bind(this));
+    $(document).ready(() => {
+      window.addEventListener('online', this._onOnline.bind(this));
+      window.addEventListener('offline', this._onOffline.bind(this));
     });
 
     this.ping();
@@ -589,8 +567,8 @@ export default class Application {
     this.initSoho();
     this.initToasts();
     this.initPing();
-    this.initConnects();
     this.initServices(); // TODO: Remove
+    this.initConnects();
     this._startupConnections();
     this.initModules();
     this.initToolbars();
@@ -619,23 +597,49 @@ export default class Application {
   }
 
   initStore() {
-    this.store = createStore(this.getReducer(),
+    this.store = Redux.createStore(this.getReducer(),
       this.getInitialState(),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+    this.store.subscribe(this._onStateChange.bind(this));
+  }
+
+  _onStateChange() {
+    const state = this.store.getState();
+
+    if (this.previousState === null) {
+      this.previousState = state;
+    }
+
+    this.onStateChange(state);
+
+    const sdkState = state && state.sdk;
+    const previousSdkState = this.previousState && this.previousState.sdk;
+
+    if (sdkState && previousSdkState && sdkState.online !== previousSdkState.online) {
+      this._updateConnectionState(sdkState.online);
+    }
+
+    this.previousState = state;
+  }
+
+  onStateChange(state) { // eslint-disable-line
   }
 
   showApplicationMenuOnLarge() {
+    // todo: openOnLarge causes this bug SOHO-6193
     this.applicationmenu.settings.openOnLarge = true;
+
     if (this.applicationmenu.isLargerThanBreakpoint()) {
       this.applicationmenu.openMenu();
     }
   }
 
-  hideApplicationMenuOnLarge() {
-    this.applicationmenu.settings.openOnLarge = true;
-    if (this.applicationmenu.isLargerThanBreakpoint()) {
-      this.applicationmenu.closeMenu();
-    }
+  hideApplicationMenu() {
+    this.applicationmenu.closeMenu();
+  }
+
+  showApplicationMenu() {
+    this.applicationmenu.openMenu();
   }
 
   getReducer() {
@@ -653,6 +657,14 @@ export default class Application {
   }
 
   initPing() {
+    // Lite build, which will not have Rx, disable offline and ping
+    if (!Rx) {
+      this.ping = () => {
+        this.store.dispatch(setConnectionState(true));
+      };
+      this.enableOfflineSupport = false;
+    }
+
     // this.ping will be set if ping was passed as an options to the ctor
     if (this.ping) {
       return;
@@ -679,9 +691,9 @@ export default class Application {
         .take(1);
 
       ping$.subscribe(() => {
-        updateConnectionState(true);
+        this.store.dispatch(setConnectionState(true));
       }, () => {
-        updateConnectionState(false);
+        this.store.dispatch(setConnectionState(false));
       });
     }, this.PING_DEBOUNCE);
   }
@@ -872,7 +884,7 @@ export default class Application {
     }
 
     const defaultViewContainerId = 'viewContainer';
-    const defaultViewContainerClasses = 'page-container scrollable viewContainer';
+    const defaultViewContainerClasses = 'page-container viewContainer';
     $(this._appContainerNode).append(`
       <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
         data-breakpoint="tablet">
@@ -1085,6 +1097,12 @@ export default class Application {
       init: true,
     });
   }
+  getViewDetailOnly(key) {
+    return this._internalGetView({
+      key,
+      init: false,
+    });
+  }
 
   _internalGetView(options) {
     const key = options && options.key;
@@ -1099,7 +1117,7 @@ export default class Application {
       }
 
       if (init && view && !view._started) {
-        view.init(this.state$, this.store);
+        view.init(this.store);
         view.placeAt(view._placeAt, 'first');
         view._started = true;
         view._placeAt = null;

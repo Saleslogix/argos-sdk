@@ -1,9 +1,8 @@
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
 import MODEL_TYPES from '../Models/Types';
-import convert from 'argos/Convert';
+import convert from '../Convert';
 
-import moment from 'moment';
 
 /**
  * @class argos.Offline.Manager

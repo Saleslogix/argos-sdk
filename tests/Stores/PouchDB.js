@@ -1,3 +1,4 @@
+/* eslint-disable */
 define('tests/Stores/PouchDB', [
     'dojo/_base/lang',
     'dojo/when',
@@ -24,7 +25,7 @@ function(
         });
 
         afterEach(function(done) {
-            PouchDB.destroy('argos-test', function(err, info) {
+            this.store._db.destroy('argos-test', function(err, info) {
                 if (err) {
                     console.log('Error deleting database.');
                     console.error(err);

@@ -27,7 +27,7 @@
   dependentErrorText: "Une valeur doit être sélectionnée pour \"${0}\"."
   emptyText: ""
   completeText: "Sélectionner"
-  lookupLabelText: "recherche"
+  lookupLabelText: "Recherche"
   lookupText: "..."
 >
 

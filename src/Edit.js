@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import _EditBase from './_EditBase';
 import _SDataEditMixin from './_SDataEditMixin';
 import _RelatedWidgetEditMixin from './_RelatedViewWidgetEditMixin';
@@ -32,6 +31,4 @@ import _RelatedWidgetEditMixin from './_RelatedViewWidgetEditMixin';
  * @mixins argos._RelatedViewWidgetEditMixin
  */
 const __class = declare('argos.Edit', [_EditBase, _SDataEditMixin, _RelatedWidgetEditMixin], {});
-
-lang.setObject('Sage.Platform.Mobile.Edit', __class);
 export default __class;

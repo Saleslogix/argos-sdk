@@ -23,26 +23,12 @@
  * @alternateClassName GroupedList
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import query from 'dojo/query';
 import string from 'dojo/string';
 import List from './List';
 import Utility from './Utility';
-import getResource from './I18n';
-import $ from 'jquery';
 
-const resource = getResource('groupedList');
 
 const __class = declare('argos.GroupedList', [List], {
-  // Localization
-  /**
-   * @property {String}
-   * Text used in ARIA label for collapsible button
-   */
-  toggleCollapseText: resource.toggleCollapseText,
-
-  collapsedIconClass: 'fa-chevron-right',
-  expanedIconClass: 'fa-chevron-down',
   accordion: null,
 
   /**
@@ -53,7 +39,7 @@ const __class = declare('argos.GroupedList', [List], {
     '<div id="{%= $.id %}" title="{%= $.titleText %}" class="list grouped-list listview-search {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '<div data-dojo-attach-point="searchNode"></div>',
     '{%! $.emptySelectionTemplate %}',
-    '<div class="accordion panel inverse has-icons" data-options="{allowOnePane: false}" data-dojo-attach-point="contentNode"></div>',
+    '<div class="accordion panel inverse has-icons" data-dojo-attach-point="contentNode"></div>',
     '{%! $.moreTemplate %}',
     '{%! $.listActionTemplate %}',
     '</div>',
@@ -63,8 +49,8 @@ const __class = declare('argos.GroupedList', [List], {
    * Simplate that defines the Group template that includes the header element with collapse button and the row container
    */
   groupTemplate: new Simplate([`
-      <div class="accordion-header has-chevron hide-focus" role="presentation">
-        <a aria-haspopup="true" role="button">{%: $.title %}</a>
+      <div class="accordion-header" role="presentation">
+        <a href="#" role="button"><span>{%: $.title %}</span></a>
       </div>
       <div class="accordion-pane" data-group="{%= $.tag %}">
       </div>
@@ -88,8 +74,8 @@ const __class = declare('argos.GroupedList', [List], {
    */
   moreTemplate: new Simplate([
     '<div class="list-more" data-dojo-attach-point="moreNode">',
-    '<div class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></div>',
-    '<button class="button" data-action="more">',
+    '<p class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></p>',
+    '<button class="btn" data-action="more">',
     '<span>{%= $.moreText %}</span>',
     '</button>',
     '</div>',
@@ -210,17 +196,18 @@ const __class = declare('argos.GroupedList', [List], {
         $(getGroupsNode(entryGroup)).append(rowNode);
       }
     }
+    this.updateSoho();
   },
   getGroupsNode: function getGroupsNode(entryGroup) {
-    let results = query(`[data-group="${entryGroup.tag}"]`, this.contentNode);
+    let results = $(`[data-group="${entryGroup.tag}"]`, this.contentNode);
     if (results.length > 0) {
-      results = results[0];
+      results = results.get(0);
     } else {
       // Does not exist, lets create it
       results = $(this.groupTemplate.apply(entryGroup, this));
       $(this.contentNode).append(results);
       // re-query what we just place in (which was a doc frag)
-      results = query(`[data-group="${entryGroup.tag}"]`, this.contentNode)[0];
+      results = $(`[data-group="${entryGroup.tag}"]`, this.contentNode).get(0);
     }
 
     return results;
@@ -286,5 +273,4 @@ const __class = declare('argos.GroupedList', [List], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.GroupedList', __class);
 export default __class;

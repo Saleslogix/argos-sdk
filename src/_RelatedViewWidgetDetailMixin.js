@@ -3,9 +3,8 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import domConstruct from 'dojo/dom-construct';
-import query from 'dojo/query';
 import RelatedViewManager from './RelatedViewManager';
+
 
 const __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
   cls: null,
@@ -18,7 +17,7 @@ const __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
    */
   relatedContentViewsTemplate: new Simplate([
     '<li class="related-view-detail-content {%= $.cls %}">',
-    '<div id="related-content-views"></div>',
+    '<li id="related-content-views"></li>',
     '</li>',
   ]),
   contextSnapShotTemplate: new Simplate([
@@ -27,23 +26,26 @@ const __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
   createRowNode: function createRowNode(layout, sectionNode, entry, template, data) {
     let rowNode;
     if (layout.relatedView) {
-      rowNode = query('#related-content-views', sectionNode)[0];
+      rowNode = $('#related-content-views', sectionNode)[0];
       if (!rowNode) {
-        rowNode = domConstruct.toDom(this.relatedContentViewsTemplate.apply(data, this));
-        domConstruct.place(rowNode, sectionNode, 'last');
+        rowNode = $(this.relatedContentViewsTemplate.apply(data, this))[0];
+        $(sectionNode).append(rowNode);
       }
 
       const docfrag = document.createDocumentFragment();
-      docfrag.appendChild(rowNode);
+      $(docfrag).append(rowNode);
       this.onProcessRelatedViews(layout.relatedView, rowNode, entry);
       if (docfrag.childNodes.length > 0) {
-        domConstruct.place(docfrag, sectionNode, 'last');
+        $(sectionNode).append(docfrag);
       }
     } else {
       rowNode = this.inherited(arguments);
     }
 
     return rowNode;
+  },
+  getRelatedViewId: function getRelatedViewId(relatedView) {
+    return `${this.id}_${relatedView.id}`;
   },
   /**
    * Gets the related view manager for a related view definition.
@@ -59,7 +61,7 @@ const __class = declare('argos._RelatedViewWidgetDetailMixin', null, {
     if (this.relatedViewManagers[relatedView.id]) {
       relatedViewManager = this.relatedViewManagers[relatedView.id];
     } else {
-      relatedView.id = `${this.id}_${relatedView.id}`;
+      relatedView.id = this.getRelatedViewId(relatedView);
       const relatedViewOptions = {};
       lang.mixin(relatedViewOptions, relatedView);
 

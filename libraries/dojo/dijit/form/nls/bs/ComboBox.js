@@ -1,7 +1,3 @@
-define({      
-//begin v1.x content
-		previousMessage: "Prethodni izbori",
-		nextMessage: "Još izbora"
-//end v1.x content
-});
-
+//>>built
+define("dijit/form/nls/bs/ComboBox",{previousMessage:"Prethodni izbori",nextMessage:"Jo\u0161 izbora"});
+//# sourceMappingURL=ComboBox.js.map

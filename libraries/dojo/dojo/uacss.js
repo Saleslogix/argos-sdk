@@ -1,85 +1,10 @@
-define(["./dom-geometry", "./_base/lang", "./domReady", "./sniff", "./_base/window"],
-	function(geometry, lang, domReady, has, baseWindow){
+/*
+	Copyright (c) 2004-2016, The JS Foundation All Rights Reserved.
+	Available via Academic Free License >= 2.1 OR the modified BSD license.
+	see: http://dojotoolkit.org/license for details
+*/
 
-	// module:
-	//		dojo/uacss
-
-	/*=====
-	return {
-		// summary:
-		//		Applies pre-set CSS classes to the top-level HTML node, based on:
-		//
-		//		- browser (ex: dj_ie)
-		//		- browser version (ex: dj_ie6)
-		//		- box model (ex: dj_contentBox)
-		//		- text direction (ex: dijitRtl)
-		//
-		//		In addition, browser, browser version, and box model are
-		//		combined with an RTL flag when browser text is RTL. ex: dj_ie-rtl.
-		//
-		//		Returns the has() method.
-	};
-	=====*/
-
-	var
-		html = baseWindow.doc.documentElement,
-		ie = has("ie"),
-		trident = has("trident"),
-		opera = has("opera"),
-		maj = Math.floor,
-		ff = has("ff"),
-		boxModel = geometry.boxModel.replace(/-/,''),
-
-		classes = {
-			"dj_quirks": has("quirks"),
-
-			// NOTE: Opera not supported by dijit
-			"dj_opera": opera,
-
-			"dj_khtml": has("khtml"),
-
-			"dj_webkit": has("webkit"),
-			"dj_safari": has("safari"),
-			"dj_chrome": has("chrome"),
-			"dj_edge": has("edge"),
-
-			"dj_gecko": has("mozilla"),
-
-			"dj_ios": has("ios"),
-			"dj_android": has("android")
-		}; // no dojo unsupported browsers
-
-	if(ie){
-		classes["dj_ie"] = true;
-		classes["dj_ie" + maj(ie)] = true;
-		classes["dj_iequirks"] = has("quirks");
-	}
-	if(trident){
-		classes["dj_trident"] = true;
-		classes["dj_trident" + maj(trident)] = true;
-	}
-	if(ff){
-		classes["dj_ff" + maj(ff)] = true;
-	}
-
-	classes["dj_" + boxModel] = true;
-
-	// apply browser, browser version, and box model class names
-	var classStr = "";
-	for(var clz in classes){
-		if(classes[clz]){
-			classStr += clz + " ";
-		}
-	}
-	html.className = lang.trim(html.className + " " + classStr);
-
-	// If RTL mode, then add dj_rtl flag plus repeat existing classes with -rtl extension.
-	// We can't run the code below until the <body> tag has loaded (so we can check for dir=rtl).
-	domReady(function(){
-		if(!geometry.isBodyLtr()){
-			var rtlClassStr = "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl ");
-			html.className = lang.trim(html.className + " " + rtlClassStr + "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl "));
-		}
-	});
-	return has;
-});
+//>>built
+define("dojo/uacss",["./dom-geometry","./_base/lang","./domReady","./sniff","./_base/window"],function(h,k,n,a,c){var d=c.doc.documentElement;c=a("ie");var l=a("trident"),b=a("opera"),f=Math.floor,m=a("ff"),p=h.boxModel.replace(/-/,""),b={dj_quirks:a("quirks"),dj_opera:b,dj_khtml:a("khtml"),dj_webkit:a("webkit"),dj_safari:a("safari"),dj_chrome:a("chrome"),dj_edge:a("edge"),dj_gecko:a("mozilla"),dj_ios:a("ios"),dj_android:a("android")};c&&(b.dj_ie=!0,b["dj_ie"+f(c)]=!0,b.dj_iequirks=a("quirks"));l&&
+(b.dj_trident=!0,b["dj_trident"+f(l)]=!0);m&&(b["dj_ff"+f(m)]=!0);b["dj_"+p]=!0;var e="",g;for(g in b)b[g]&&(e+=g+" ");d.className=k.trim(d.className+" "+e);n(function(){if(!h.isBodyLtr()){var a="dj_rtl dijitRtl "+e.replace(/ /g,"-rtl ");d.className=k.trim(d.className+" "+a+"dj_rtl dijitRtl "+e.replace(/ /g,"-rtl "))}});return a});
+//# sourceMappingURL=uacss.js.map

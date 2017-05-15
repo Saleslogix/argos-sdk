@@ -1,14 +1,29 @@
 @import "variables.less";
 @import "mixins.less";
 
-.card, .widget {
-  min-height: auto;
+/* Soho override, this might mess up the grid later on.
+   Give detail views padding another way if it does.
+*/
+@media (min-width: 767px) {
+  .column {
+    padding: 0 20px;
+  }
 }
 
-.list-content .card-content {
-  height: auto;
-  min-height: auto;
-  padding: 10px;
+.card, .widget {
+  min-height: initial;
+    .card-content {
+        height: initial;
+        min-height: initial;
+        padding: 16px 20px 15px;
+        p {
+            margin: 0;
+        }
+        .list-item-selector {
+            float: left;
+            margin-right: 10px;
+        }
+    }
 }
 
 .tall {
@@ -44,6 +59,9 @@
     display: none;
     padding: 12px;
     border-bottom: 1px solid #DDD;
+}
+.list-empty-opt {
+    margin-bottom: 20px;
 }
 
 .list-more .list-remaining {
@@ -216,24 +234,12 @@ div > .collapsed-indicator {
     visibility: hidden;
 }
 
-li > .disabled,
-.action-list > li > .disabled {
+li > .disabled {
     opacity: 0.3;
 }
 
 .action-list > ul > li > a {
     text-overflow: ellipsis;
-}
-
-ul.action-list > li > a > div {
-    float: left;
-    margin: 0 5px 0 0;
-    width: 39px;
-    height: 30px;
-    text-align: center;
-    padding: 5px;
-    font-size: 1.1em;
-    .box-sizing(border-box);
 }
 
 .action-list > li {
@@ -242,16 +248,40 @@ ul.action-list > li > a > div {
     label {
         margin-bottom: 0;
     }
+    > a > span {
+        display: block;
+        line-height: inherit;
+        color: @color-lighter-slate;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 1.1em;
+        white-space: nowrap;
+    }
+    > a > div {
+        float: left;
+        margin: 0 5px 0 0;
+        width: 39px;
+        height: 30px;
+        text-align: center;
+        padding: 5px;
+        font-size: 1.1em;
+        .box-sizing(border-box);
+    }
 }
-
-.action-list > li > a > span {
-    display: block;
-    line-height: inherit;
-    color: @color-lighter-slate;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    font-size: 1.1em;
-    white-space: nowrap;
+.landscape .action-list > li {
+    display: inline-block;
+    margin: 0 20px 0 0;
+    label {
+        font-size: 1.4rem;
+        display: inline-block;
+        line-height: 3rem;
+    }
+    .data {
+        display: none
+    }
+}
+.landscape .action-list > li.disabled {
+    display: none;
 }
 
 .invisible {
@@ -291,6 +321,9 @@ body {
 .viewContainer > .panel,
 .viewContainer > .dialog,
 .viewContainer > .view {
+    position: absolute;
+    width: 100%;
+    height: 99%;
     display: none;
     visibility: hidden;
     flex-grow: 1;
@@ -342,6 +375,7 @@ body {
 .no-data {
     text-align: center;
     background-color: white;
+    padding: 12px;
 }
 
 .no-data > h3 {
@@ -375,8 +409,11 @@ body {
 
 .panel-validation-summary > ul > li,
 .panel-concurrency-summary > ul > li {
-    list-style: none;
+    list-style-type: disc;
     clear: both;
+}
+.panel-validation-messages {
+    padding-left: 30px;
 }
 
 .row.no-value {
@@ -593,6 +630,7 @@ body {
     text-align: center;
     position: absolute;
     visibility: hidden;
+    top: 35px;
     > span {
         margin: 0 10px;
         height: 18px;
@@ -601,11 +639,11 @@ body {
 }
 
 .link-view {
-  .link-node {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
+    .link-node {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
 }
 
 .configurable-list {
@@ -614,30 +652,28 @@ body {
 
     .list-content {
         > li {
-
-
             .resource {
                 display: block;
                 margin: -8px 0 -8px -10px;
                 padding: 8px 32px 8px 36px;
             }
 
-            h3 {
+            h4 {
+                display:inline-block;
+                color: #aaa;
                 > span {
                     &:first-child {
                         float: left;
                     }
                 }
 
-                > .draggable {
+                + .draggable {
                   float: right;
-                  width: 24px;
-                  height: 40px;
-                  line-height: 40px;
-                  margin-right: 15px;
                   cursor: pointer;
                   text-align: center;
-                  .transform(scale(1.5, 0.75));
+                  button .icon {
+                      fill: #aaa
+                  }
                 }
 
                 > .icon {
@@ -646,15 +682,20 @@ body {
                 }
             }
 
-            &:first-child h3 > [data-action="moveUp"],
-            &:last-child h3 > [data-action="moveDown"] {
+            &:first-child h4 > [data-action="moveUp"],
+            &:last-child h4 > [data-action="moveDown"] {
                 visibility: hidden;
             }
         }
 
         > li.list-item-selected {
-            color: #000;
-            h3 > .icon {
+            h4 {
+                color: #000;
+                button .icon {
+                    fill: #000
+                  }
+            }
+            h4 > .icon {
                 opacity: 1.0;
             }
         }
@@ -672,8 +713,52 @@ body {
         }
     }
 }
-
-// reset soho style for listview directly in a tab
-.tab-container > .listview {
-    padding-top: 0
+.list-show-selectors  {
+    .card-content .list-item-content {
+        margin-left: 0;
+    }
+    .list-item-content {
+        margin-left: 42px;
+    }
+    li {
+        position: relative;
+    }
 }
+.listview {
+    .list-content > li h4 {
+        margin-top: 1rem;
+    }
+    .list-item-selector {
+        visibility: hidden;
+        width: 36px;
+        height: 36px;
+        position: absolute;
+        top: 16px;
+        left: 12px;
+        border: 0 none #000;
+    }
+    .list-item-selector.visible {
+        visibility: visible;
+    }
+    .list-item-selected {
+         .list-item-selector {
+            visibility: visible !important;
+        }
+    }
+}
+
+.bottom_item_indicators > span {
+  padding: 0 5px;
+}
+
+.relatedviewitem .badge {
+    float: right;
+}
+
+.widget-header > .btn-icon {
+    line-height: normal;
+    .icon {
+        vertical-align: top;
+    }
+}
+

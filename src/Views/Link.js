@@ -1,5 +1,4 @@
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import View from '../View';
 
 const __class = declare('argos.Views.Link', [View], {
@@ -27,5 +26,4 @@ const __class = declare('argos.Views.Link', [View], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Views.Link', __class);
 export default __class;

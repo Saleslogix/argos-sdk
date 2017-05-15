@@ -1,16 +1,15 @@
-import declare from 'dojo/_base/declare';
-import $ from 'jquery';
+
 
 /**
  * @class argos.Dialogs.Toast
  * @alternateClassName Global Pop-up
  */
-const __class = declare('argos.Dialogs.Toast', null, {
-  containerNode: null,
-  constructor: function constructor(options) {
+export default class Toast {
+  constructor(options) {
     this.containerNode = options && options.containerNode;
-  },
-  add: function add(options = {}) {
+  }
+
+  add(options = {}) {
     const sohoToastOptions = {
       title: '',
       message: '',
@@ -26,7 +25,5 @@ const __class = declare('argos.Dialogs.Toast', null, {
     });
 
     $(this.containerNode).toast(convertedOptions);
-  },
-});
-
-export default __class;
+  }
+}

@@ -12,9 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import array from 'dojo/_base/array';
-import connect from 'dojo/_base/connect';
-import lang from 'dojo/_base/lang';
 import ConfigureQuickActions from './Views/ConfigureQuickActions';
 import LinkView from './Views/Link';
 import initCulture from './CultureInfo';
@@ -32,29 +29,17 @@ import './Models/Briefcase/Offline';
  * @requires argos.Application
  */
 export default class ApplicationModule {
-  /**
-   * Mixes in the passed options object into itself
-   * @param {Object} options Properties to be mixed in
-   */
-  constructor(options) {
-    /**
-     * @property {Array}
-     * Array of dojo.connect bound to ApplicationModule
-     */
-    this._connects = [];
-
-    /**
-     * @property {Array}
-     * Array of dojo.subscribe bound to ApplicationModule
-     */
-    this._subscribes = [];
+  constructor(options = {}) {
+    for (const config in options) {
+      if (options.hasOwnProperty(config)) {
+        this[config] = options[config];
+      }
+    }
     /**
      * @property {Object}
      * The {@link App App} instance for the application
      */
     this.application = null;
-
-    lang.mixin(this, options);
   }
 
   static get customizationsLoaded() {
@@ -85,14 +70,6 @@ export default class ApplicationModule {
    * Also calls {@link #uninitialize uninitialize}
    */
   destroy() {
-    array.forEach(this._connects, (handle) => {
-      connect.disconnect(handle);
-    });
-
-    array.forEach(this._subscribes, (handle) => {
-      connect.unsubscribe(handle);
-    });
-
     this.uninitialize();
   }
 

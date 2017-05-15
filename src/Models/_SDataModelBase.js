@@ -58,6 +58,9 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
   getId: function getId(options) {
     return options && (options.id || options.key);
   },
+  getPicklists: function getPicklists() {
+    return App.picklistService.requestPicklistsFromArray(this.picklists);
+  },
   buildQueryExpression: function _buildQueryExpression(query, options) {
     const passed = options && (options.query || options.where);
     return passed ? query ? '(' + utility.expand(this, passed) + ') and (' + query + ')' : '(' + utility.expand(this, passed) + ')' : query;// eslint-disable-line
@@ -147,7 +150,9 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
           all(relatedRequests).then(
               (relatedResults) => {
                 this.applyRelatedResults(entry, relatedResults);
-                def.resolve(entry);
+                all(this.getPicklists()).then(
+                  () => def.resolve(entry),
+                  err => def.reject(err));
               },
               (err) => {
                 def.reject(err);

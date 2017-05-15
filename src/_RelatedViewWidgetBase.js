@@ -2,13 +2,13 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import _Widget from 'dijit/_Widget';
+import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 import getResource from './I18n';
 
 const resource = getResource('relatedViewWidgetBase');
 
-const __class = declare('argos._RelatedViewWidgetBase', [_Widget, _Templated], {
+const __class = declare('argos._RelatedViewWidgetBase', [_WidgetBase, _Templated], {
   cls: null,
   loadingText: resource.loadingText,
   /**
@@ -46,5 +46,4 @@ const __class = declare('argos._RelatedViewWidgetBase', [_Widget, _Templated], {
   onLoad: function onLoad() {},
 });
 
-lang.setObject('Sage.Platform.Mobile._RelatedViewWidgetBase', __class);
 export default __class;

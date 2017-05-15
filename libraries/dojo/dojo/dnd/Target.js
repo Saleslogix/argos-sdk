@@ -1,13 +1,9 @@
-define([ "../_base/declare", "../dom-class", "./Source" ], function(declare, domClass, Source){
-	return declare("dojo.dnd.Target", Source, {
-		// summary:
-		//		a Target object, which can be used as a DnD target
+/*
+	Copyright (c) 2004-2016, The JS Foundation All Rights Reserved.
+	Available via Academic Free License >= 2.1 OR the modified BSD license.
+	see: http://dojotoolkit.org/license for details
+*/
 
-		constructor: function(/*===== node, params =====*/){
-			// summary:
-			//		a constructor of the Target --- see the `dojo/dnd/Source` constructor for details
-			this.isSource = false;
-			domClass.remove(this.node, "dojoDndSource");
-		}
-	});
-});
+//>>built
+define("dojo/dnd/Target",["../_base/declare","../dom-class","./Source"],function(a,b,c){return a("dojo.dnd.Target",c,{constructor:function(){this.isSource=!1;b.remove(this.node,"dojoDndSource")}})});
+//# sourceMappingURL=Target.js.map

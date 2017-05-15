@@ -1,9 +1,7 @@
 import declare from 'dojo/_base/declare';
-import query from 'dojo/query';
-import string from 'dojo/string';
 import DraggableList from './DraggableList';
 import getResource from './I18n';
-import $ from 'jquery';
+
 
 const resource = getResource('configureBase');
 
@@ -19,8 +17,12 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
   itemTemplate: new Simplate([
     '<h4>',
     '<span>{%: $.$descriptor %}</span>',
-    '<span class="draggable fa fa-bars"></span>',
     '</h4>',
+    `<button type="button" class="btn-icon hide-focus draggable">
+      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-drag"></use>
+      </svg>
+    </button>`,
   ]),
 
   // Localization
@@ -64,10 +66,10 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
    */
   onSave: function onSave() {},
   moveUp: function moveUp(params) {
-    const node = query(params.$source);
+    const node = $(params.$source);
     const rows = node.parents('li');
 
-    if (rows) {
+    if (rows.length) {
       const prev = rows.prev('li');
       rows.insertBefore(prev);
       this.clearLastMoved();
@@ -80,10 +82,10 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
     }
   },
   moveDown: function moveDown(params) {
-    const node = query(params.$source);
+    const node = $(params.$source);
     const rows = node.parents('li');
 
-    if (rows) {
+    if (rows.length) {
       const next = rows.next('li');
       rows.insertAfter(next);
       this.clearLastMoved();
@@ -96,10 +98,10 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
     }
   },
   clearLastMoved: function clearLastMoved() {
-    const nodes = query('> li', this.contentNode);
+    const nodes = $('> li', this.contentNode);
     const cls = this.lastMovedCls;
 
-    nodes.forEach((node) => {
+    nodes.each((_, node) => {
       $(node).removeClass(cls);
     });
   },
@@ -120,7 +122,7 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
 
     // Using forEach instead of map, because if we return a mapped NodeList to the caller, storing that in local storage will generate an error,
     // for some reason there is a _parent attribute on the NodeList that maeks it recursive.
-    query('.list-item-selected', this.domNode).filter('[data-key]').forEach((node) => {
+    $('.list-item-selected', this.domNode).filter('[data-key]').each((_, node) => {
       const key = $(node).attr('data-key');
       if (key) {
         results.push(key);
@@ -138,7 +140,7 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
 
     // Using forEach instead of map, because if we return a mapped NodeList to the caller, storing that in local storage will generate an error,
     // for some reason there is a _parent attribute on the NodeList that maeks it recursive.
-    query('li', this.domNode).filter('[data-key]').forEach((node) => {
+    $('li', this.domNode).filter('[data-key]').each((_, node) => {
       const key = $(node).attr('data-key');
       if (key) {
         results.push(key);
@@ -170,7 +172,7 @@ const __class = declare('argos._ConfigureBase', [DraggableList], {
     const visible = this.getSavedSelectedKeys();
 
     for (let i = 0; i < visible.length; i++) {
-      const row = query((string.substitute('[data-key="${0}"]', [visible[i]])), this.domNode)[0];
+      const row = $(`[data-key="${visible[i]}"]`, this.domNode).get(0);
       if (row) {
         this._selectionModel.toggle(visible[i], this.entries[visible[i]], row);
       }

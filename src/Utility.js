@@ -13,7 +13,8 @@
  * limitations under the License.
  */
 import lang from 'dojo/_base/lang';
-import { utility as util } from '@infor/icrm-js-common';
+
+const util = ICRMCommonSDK.utility;
 
 /**
  * @class argos.Utility
@@ -47,5 +48,4 @@ const __class = lang.setObject('argos.Utility', {
   sanitizeForJson: util.sanitizeForJson,
 });
 
-lang.setObject('Sage.Platform.Mobile.Utility', __class);
 export default __class;

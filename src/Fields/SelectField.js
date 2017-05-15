@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import LookupField from './LookupField';
 import FieldManager from '../FieldManager';
 
@@ -67,5 +66,4 @@ const control = declare('argos.Fields.SelectField', [LookupField], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.SelectField', control);
 export default FieldManager.register('select', control);

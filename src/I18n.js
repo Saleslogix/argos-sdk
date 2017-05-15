@@ -1,7 +1,7 @@
 import lang from 'dojo/_base/lang';
 
 export default function getResource(id) {
-  const { defaultLocaleContext, localeContext } = window;
+  const { defaultLocaleContext, localeContext, regionalContext } = window;
   if (!defaultLocaleContext || !localeContext) {
     return new Proxy({}, {
       properties: [],
@@ -16,5 +16,8 @@ export default function getResource(id) {
 
   const defaultAttributes = defaultLocaleContext.getEntitySync(id).attributes;
   const currentAttributes = localeContext.getEntitySync(id).attributes;
+
+  const regionalattributes = regionalContext.getEntitySync(id).attributes;
+  lang.mixin(defaultAttributes, regionalattributes);
   return lang.mixin(defaultAttributes, currentAttributes);
 }

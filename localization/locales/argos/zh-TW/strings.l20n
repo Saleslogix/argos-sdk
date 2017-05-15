@@ -27,7 +27,7 @@
   dependentErrorText: "必須為「${0}」選取值。"
   emptyText: ""
   completeText: "選取"
-  lookupLabelText: "查閱"
+  lookupLabelText: "查找"
   lookupText: "..."
 >
 

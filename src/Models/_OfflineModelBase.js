@@ -1,6 +1,6 @@
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import PouchDBStore from 'argos/Store/PouchDB';
+import PouchDBStore from '../Store/PouchDB';
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
 import when from 'dojo/when';
@@ -10,7 +10,6 @@ import _ModelBase from './_ModelBase';
 import QueryResults from 'dojo/store/util/QueryResults';
 import MODEL_TYPES from './Types';
 
-import moment from 'moment';
 
 const databaseName = 'crm-offline';
 const _store = new PouchDBStore(databaseName);
@@ -343,14 +342,6 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       def.reject(err);
     });
     return def.promise;
-  },
-  createKey: function createKey() {
-    const d = new Date().getTime();
-    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function genkey(c) { // eslint-disable-line
-      const r = (d + Math.random() * 16) % 16 | 0;
-      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-    return '{this.entityName.toLowwer()}-{uuid}';
   },
   removeFromAuxiliaryEntities: function removeFromAuxiliaryEntities(entityId) {
     const def = new Deferred();

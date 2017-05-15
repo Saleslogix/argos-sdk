@@ -12,16 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import array from 'dojo/_base/array';
 import declare from 'dojo/_base/declare';
-import event from 'dojo/_base/event';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
-import query from 'dojo/query';
 import utility from '../Utility';
 import _Field from './_Field';
 import FieldManager from '../FieldManager';
 import getResource from '../I18n';
+
 
 const resource = getResource('lookupField');
 
@@ -101,8 +99,8 @@ const control = declare('argos.Fields.LookupField', [_Field], {
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
         </svg>
       </button>
-      <input data-dojo-attach-point="inputNode" 
-        type="text" 
+      <input data-dojo-attach-point="inputNode"
+        type="text"
         {% if ($.requireSelection) { %}
         readonly="readonly"{% } %}
         {% if ($.required) { %}
@@ -411,7 +409,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
         if (options.tools.tbar.hasOwnProperty(key)) {
           const item = options.tools.tbar[key];
           if (item.id === options.singleSelectAction) {
-            item.cls = 'invisible';
+            item.cls = 'display-none';
           }
         }
       }
@@ -422,12 +420,12 @@ const control = declare('argos.Fields.LookupField', [_Field], {
       return false;
     }
 
-    array.forEach(expand, function forEach(item) {
+    expand.forEach((item) => {
       if (this[item]) {
         options[item] = this.dependsOn // only pass dependentValue if there is a dependency
           ? this.expandExpression(this[item], dependentValue) : this.expandExpression(this[item]);
       }
-    }, this);
+    });
 
     options.dependentValue = dependentValue;
     options.title = this.title;
@@ -455,10 +453,10 @@ const control = declare('argos.Fields.LookupField', [_Field], {
    * @param evt
    */
   _onClick: function _onClick(evt) {
-    const buttonNode = query(evt.target).closest('.button')[0];
+    const buttonNode = $(evt.target).closest('.button').get(0);
 
     if (!this.isDisabled() && (buttonNode || this.requireSelection)) {
-      event.stop(evt);
+      evt.stopPropagation();
       this.navigateToListView();
     }
   },
@@ -824,5 +822,4 @@ const control = declare('argos.Fields.LookupField', [_Field], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.LookupField', control);
 export default FieldManager.register('lookup', control);

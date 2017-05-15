@@ -14,10 +14,8 @@
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-import array from 'dojo/_base/array';
 import Deferred from 'dojo/_base/Deferred';
 import QueryResults from 'dojo/store/util/QueryResults';
-import string from 'dojo/string';
 import convert from '../Convert';
 import utility from '../Utility';
 
@@ -61,6 +59,26 @@ const __class = declare('argos.Store.SData', null, {
   constructor: function constructor(props) {
     lang.mixin(this, props);
   },
+  _createRemoveRequest: function createRemoveRequest(object) {
+    const request = new Sage.SData.Client.SDataSingleResourceRequest(this.service);
+    let id = object && object.$key;
+
+    id = id || utility.expand(this.scope || this.resourcePredicate);
+
+    if (/(\s+)/.test(id)) {
+      request.setResourceSelector(id);
+    } else {
+      request.setResourceSelector(`'${id}'`);
+    }
+    if (this.resourceKind) {
+      request.setResourceKind(this.resourceKind);
+    }
+    if (this.contractName) {
+      request.setContractName(this.contractName);
+    }
+
+    return request;
+  },
   _createEntryRequest: function _createEntryRequest(identity, getOptions) {
     let request = utility.expand(this, getOptions.request || this.request);
     let id = identity;
@@ -76,7 +94,7 @@ const __class = declare('argos.Store.SData', null, {
       let resourcePredicate;
 
       if (id) {
-        resourcePredicate = /\s+/.test(id) ? id : string.substitute("'${0}'", [id]);
+        resourcePredicate = /\s+/.test(id) ? id : `'${id}'`;
       }
 
       if (resourceProperty) {
@@ -185,7 +203,7 @@ const __class = declare('argos.Store.SData', null, {
         request.setQueryArg('orderby', orderBy);
       } else if (orderBy.length > 0) {
         const order = [];
-        array.forEach(orderBy, function forEach(v) {
+        orderBy.forEach(function forEach(v) {
           if (v.descending) {
             this.push(`${v.attribute} desc`);
           } else {
@@ -376,9 +394,26 @@ const __class = declare('argos.Store.SData', null, {
   },
 
   /**
-   * Not implemented in this store.
+   * Deletes an entry
+   *
+   * @param {Object} entry The entry to be removed.
+   * @param {Object} removeOptions additional directives for removing options.
+   *
    */
-  remove: function remove(/* id*/) {},
+  remove: function remove(object) {
+    const request = this._createRemoveRequest(object);
+    const handle = {};
+    const deferred = new Deferred();
+    const method = request.delete;
+
+    handle.value = method.call(request, object, {
+      success: this._onTransmitEntrySuccess.bind(this, deferred),
+      failure: this._onRequestFailure.bind(this, deferred),
+      aborted: this._onRequestAbort.bind(this, deferred),
+    });
+
+    return deferred;
+  },
   /**
    * Queries the store for objects. This does not alter the store, but returns a
    * set of data from the store.
@@ -448,5 +483,4 @@ const __class = declare('argos.Store.SData', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Store.SData', __class);
 export default __class;

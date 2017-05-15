@@ -3,6 +3,7 @@ module.exports = {
     es6: true,
     browser: true
   },
+  parser: "babel-eslint",
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
@@ -24,7 +25,17 @@ module.exports = {
     "it": false,
     "expect": false,
     "spyOn": false,
-    "module": false
+    "module": false,
+    "moment": false,
+    "Rx": false,
+    "$": false,
+    "d3": false,
+    "Redux": false,
+    "page": false,
+    "PouchDB": false,
+    "DeepDiff": false,
+    "ICRMCustomizationSDK": false,
+    "ICRMCommonSDK": false,
   },
   rules: {
     /**

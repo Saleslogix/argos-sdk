@@ -1,3 +1,4 @@
+/* eslint-disable */
 define('tests/GroupedListTests', ['dojo/query','dojo/dom-class', 'dojo/text!./feeds/GroupListFeed.json', 'argos/GroupedList'], function(query, domClass, jsonFeed, GroupedList) {
 return describe('Sage.Platform.Mobile.GroupedList', function() {
 
@@ -15,12 +16,15 @@ return describe('Sage.Platform.Mobile.GroupedList', function() {
             },
             getCustomizationsFor: function() {
             },
+            getViewContainerNode: function() {
+            },
             enableGroups: true,
             supportsTouch: function() {
             }
         };
 
         this.list = new GroupedList();
+        this.list.app = window.App;
     });
 
     afterEach(function() {
@@ -34,22 +38,6 @@ return describe('Sage.Platform.Mobile.GroupedList', function() {
 
         expect(group.tag).toEqual(1);
         expect(group.title).toEqual('Default');
-    });
-
-    it('Can added collapsed class to untoggled node', function() {
-        var node = document.createElement('div');
-        this.list.toggleGroup({$source: node});
-
-        expect(domClass.contains(node, 'collapsed')).toEqual(true);
-    });
-    it('Can remove collapsed class from toggled node', function() {
-        var node = document.createElement('div');
-
-        domClass.add(node, 'collapsed');
-
-        this.list.toggleGroup({$source: node});
-
-        expect(domClass.contains(node, 'collapsed')).toEqual(false);
     });
 
     // TODO: These two tests should just use a memory store

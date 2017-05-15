@@ -4,10 +4,8 @@
  * @alternateClassName _PullToRefreshMixin
  */
 import declare from 'dojo/_base/declare';
-import $ from 'jquery';
-import getResource from './I18n';
 
-import Rx from 'rxjs';
+import getResource from './I18n';
 
 const resource = getResource('pullToRefreshMixin');
 
@@ -85,12 +83,18 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     return __class.prototype[prop];
   },
   /**
-   * @param {DOMNode} scrollerNode The node that scrollers and should be pulled on to refresh.
+   * @param {DOMNode} scrollerNode The node that scrolls and should be pulled on to refresh.
    * @param {DOMNode} dragNode The node that the user will drag. Defaults to scrollerNode if not specified.
    */
   initPullToRefresh: function initPullToRefresh(scrollerNode, dragNode) {
-    if (!this.enablePullToRefresh || !window.App.supportsTouch() || !scrollerNode) {
+    if (!this.enablePullToRefresh || !window.App.supportsTouch() || !scrollerNode || !Rx) {
       return;
+    }
+
+    if (dragNode) {
+      this.dragNode = dragNode;
+    } else {
+      this.dragNode = dragNode = scrollerNode;
     }
 
     this.pullRefreshBanner = $(this.pullRefreshBannerTemplate.apply(this)).get(0);
@@ -98,12 +102,6 @@ const __class = declare('argos._PullToRefreshMixin', null, {
 
     // Pull down to refresh touch handles
     this.scrollerNode = scrollerNode;
-
-    if (dragNode) {
-      this.dragNode = dragNode;
-    } else {
-      this.dragNode = scrollerNode;
-    }
 
     const style = {
       top: $(dragNode).position().top,
@@ -160,7 +158,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
           // The "done" observable is a combination of touch end and touch cancel.
           // We should restore the UI state and invoke callbacks here.
           $(this.dragNode).css({
-            'margin-top': data.topCss,
+            top: data.topCss,
             'overflow-y': data.overflowCssY,
             'overflow-x': data.overflowCssX,
           });
@@ -183,8 +181,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     dragging.subscribe((data) => {
       data.evt.preventDefault();
       $(this.dragNode).css({
-        'margin-top': `${data.top}px`,
-        overflow: 'hidden',
+        top: `${data.top}px`,
       });
 
       if (data.distance > data.maxDistance) {

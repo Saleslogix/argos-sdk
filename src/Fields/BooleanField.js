@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
 import Field from './_Field';
 import FieldManager from '../FieldManager';
 
@@ -69,6 +68,23 @@ const control = declare('argos.Fields.BooleanField', [Field], {
    * Value used during dirty/modified comparison
    */
   originalValue: null,
+
+  initSoho: function initSoho() {
+    $(this.toggleNode).on('click', this._onClick.bind(this));
+  },
+  /**
+   * Fires with the toggle switch is pressed and sets the value to
+   * the opposite of the current value
+   * @param {Event} evt The click/tap event
+   */
+  _onClick: function _onClick(/* evt*/) {
+    if (this.isDisabled()) {
+      return;
+    }
+
+    const toggledValue = this.getValue();
+    this.setValue(toggledValue);
+  },
   /**
    * Returns the current toggled state
    * @return {Boolean}
@@ -112,5 +128,4 @@ const control = declare('argos.Fields.BooleanField', [Field], {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Fields.BooleanField', control);
 export default FieldManager.register('boolean', control);

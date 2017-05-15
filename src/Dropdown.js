@@ -14,17 +14,14 @@
  */
 
 import declare from 'dojo/_base/declare';
-import array from 'dojo/_base/array';
-import domConstruct from 'dojo/dom-construct';
-import _Widget from 'dijit/_Widget';
-import _Templated from 'argos/_Templated';
+import _WidgetBase from 'dijit/_WidgetBase';
+import _Templated from './_Templated';
 
-import $ from 'jquery';
 
 /**
  * @class argos.Dropdown
  */
-const __class = declare('argos.Dropdown', [_Widget, _Templated], {
+const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
   widgetTemplate: new Simplate([
     `<label>{%: $.label %}</label>
       <select id="{%= $.id %}_dropdownNode" class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownSelect"></select>`,
@@ -46,7 +43,6 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
   onSelectScope: null,
   _eventConnections: null,
   _list: null,
-  _orientation: null,
   _selected: null,
   items: null,
   itemMustExist: true,
@@ -60,7 +56,7 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this.items = (items) ? items : [];
     this._defaultValue = defaultValue;
 
-    array.forEach(items, (item) => {
+    items.forEach((item) => {
       if (item.value === defaultValue) {
         itemFound = item;
       }
@@ -70,14 +66,14 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
       this.items.splice(0, 0, itemFound);
     }
 
-    array.forEach(items, function addToModalList(item) {
-      const option = domConstruct.toDom(this.selectItemTemplate.apply({
+    items.forEach((item) => {
+      const option = $(this.selectItemTemplate.apply({
         key: item.key,
         value: item.value,
         text: item.text,
       }, this));
-      domConstruct.place(option, this.dropdownSelect);
-    }, this);
+      $(this.dropdownSelect).append(option);
+    });
 
     $(this.dropdownSelect).dropdown({
       noSearch: true,
@@ -98,10 +94,8 @@ const __class = declare('argos.Dropdown', [_Widget, _Templated], {
     this.inherited(arguments);
   },
   findValue: function findValue(text) {
-    const value = array.filter(this._list.children, (element) => {
-      if (element.innerText === text) {
-        return element;
-      }
+    const value = this._list.children.filter((element) => {
+      return element.innerText === text;
     });
     return value[0];
   },

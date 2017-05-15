@@ -32,5 +32,4 @@ const __class = declare('argos.Groups._GroupBySection', null, {
   },
 });
 
-lang.setObject('Sage.Platform.Mobile.Groups._GroupBySection', __class);
 export default __class;
