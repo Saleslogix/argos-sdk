@@ -4,7 +4,6 @@ import { WINDOW_RESIZE, BREAKPOINTS } from '../actions/window';
 
 const initialSDKState = {
   online: false,
-  viewports: 1,
   maxviewports: 3,
   viewset: [],
   history: [],

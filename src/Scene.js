@@ -70,7 +70,7 @@ export default class Scene {
     views.forEach(id => this._select(id, state));
   }
 
-  /*show(view, options) {
+  /* show(view, options) {
     const store = this.store;
     const state = store.getState();
     const {
