@@ -1,6 +1,7 @@
 // action Types
 export const SET_MAX_VIEWPORTS = 'SET_MAX_VIEWPORTS';
 export const SHOW_VIEW = 'SHOW_VIEW';
+export const RESET_VIEWSET = 'RESET_VIEWSET';
 
 /*
 
@@ -37,5 +38,12 @@ export function showView(viewId, viewOptions, currentHash) {
       viewOptions,
       currentHash,
     },
+  };
+}
+
+export function resetViewSet() {
+  return {
+    type: RESET_VIEWSET,
+    payload: null,
   };
 }

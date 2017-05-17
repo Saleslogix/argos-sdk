@@ -1,5 +1,6 @@
 import {
   showView,
+  resetViewSet,
 } from './actions/index';
 
 /*
@@ -147,5 +148,10 @@ export default class Scene {
     if (view) {
       view.show(viewOptions, transitionOptions);
     }
+  }
+
+  showNew(viewId, viewOptions, transitionOptions) {
+    this.store.dispatch(resetViewSet());
+    this.show(viewId, viewOptions, transitionOptions);
   }
 }

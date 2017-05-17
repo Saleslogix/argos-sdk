@@ -1,4 +1,4 @@
-import { SET_MAX_VIEWPORTS, SHOW_VIEW } from '../actions/index';
+import { SET_MAX_VIEWPORTS, SHOW_VIEW, RESET_VIEWSET } from '../actions/index';
 import { SET_CONNECTION_STATE } from '../actions/connection';
 import { WINDOW_RESIZE, BREAKPOINTS } from '../actions/window';
 
@@ -69,6 +69,11 @@ export function sdk(state = initialSDKState, action) {
       });
     case WINDOW_RESIZE:
       return windowResize(state, action);
+    case RESET_VIEWSET:
+      return {
+        ...state,
+        viewset: [],
+      };
     default:
       return state;
   }
