@@ -15,7 +15,7 @@ define('tests/ReducerTests', [
       var state = reducer.sdk(undefined, {});
       expect(state).toEqual({
         online: false,
-        maxviewports: 3,
+        maxviewports: 1,
         viewset: [],
         history: [],
       })

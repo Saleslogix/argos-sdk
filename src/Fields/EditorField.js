@@ -183,15 +183,10 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
       return;
     }
 
-    const view = App.getView(this.view);
     const options = this.createNavigationOptions();
 
-    if (view && options) {
-      if (options.title) {
-        view.set('title', options.title);
-      }
-
-      view.show(options);
+    if (options) {
+      App.scene.show(this.view, options);
     }
   },
   /**

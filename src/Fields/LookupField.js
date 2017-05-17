@@ -441,7 +441,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
 
     if (view && options && !this.disabled) {
       lang.mixin(view, this.viewMixin);
-      view.show(options);
+      App.scene.show(this.view, options);
     }
   },
   buttonClick: function buttonClick() {

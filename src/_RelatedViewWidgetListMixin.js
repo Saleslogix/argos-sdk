@@ -202,7 +202,7 @@ const __class = declare('argos._RelatedViewWidgetListMixin', null, {
     }
   },
   navigateToQuickEdit: function navigateToQuickEdit(action, selection, additionalOptions) {
-    const view = App.getView(action.editView || this.quickEditView || this.editView || this.insertView);
+    const viewId = action.editView || this.quickEditView || this.editView || this.insertView;
     const key = selection.data[this.idProperty];
     let options = {
       key,
@@ -222,9 +222,7 @@ const __class = declare('argos._RelatedViewWidgetListMixin', null, {
       options = lang.mixin(options, additionalOptions);
     }
 
-    if (view) {
-      view.show(options);
-    }
+    App.scene.show(viewId, options);
   },
 });
 export default __class;

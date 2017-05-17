@@ -418,32 +418,6 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     }
   },
   transition: function transition(from, to, options) {
-    function complete() {
-      this.transitionComplete(to, options);
-      $('body').removeClass('transition');
-
-      $(from).trigger({
-        out: true,
-        tag: options.tag,
-        data: options.data,
-        bubbles: true,
-        cancelable: true,
-        type: 'aftertransition',
-      });
-      $(to).trigger({
-        out: false,
-        tag: options.tag,
-        data: options.data,
-        bubbles: true,
-        cancelable: true,
-        type: 'aftertransition',
-      });
-
-      if (options.complete) {
-        options.complete(from, to, options);
-      }
-    }
-
     $('body').addClass('transition');
 
     // dispatch an 'show' event to let the page be aware that is being show as the result of an external
@@ -476,9 +450,32 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       type: 'beforetransition',
     });
 
-    this.unselect(from);
+    // this.unselect(from);
     this.select(to);
-    complete.apply(this);
+
+    this.transitionComplete(to, options);
+    $('body').removeClass('transition');
+
+    $(from).trigger({
+      out: true,
+      tag: options.tag,
+      data: options.data,
+      bubbles: true,
+      cancelable: true,
+      type: 'aftertransition',
+    });
+    $(to).trigger({
+      out: false,
+      tag: options.tag,
+      data: options.data,
+      bubbles: true,
+      cancelable: true,
+      type: 'aftertransition',
+    });
+
+    if (options.complete) {
+      options.complete(from, to, options);
+    }
   },
   /**
   * Available Options:
@@ -489,10 +486,10 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   *   scroll: False if the transition should not scroll to the top, True otherwise.
   */
   open: function open() {
-    const p = this.domNode;
+    const viewDom = this.domNode;
     const options = this._transitionOptions || {};
 
-    if (!p) {
+    if (!viewDom) {
       return;
     }
 
@@ -543,47 +540,34 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       }
     }
 
-    // don't auto-scroll by default if reversing
-    if (options.reverse && typeof options.scroll === 'undefined') {
-      options.scroll = !options.reverse;
-    }
-
-    $(p).trigger({
+    $(viewDom).trigger({
       bubbles: false,
       cancelable: true,
       type: 'load',
     });
 
-    const from = App.getCurrentPage();
+    const previousViewDom = App.getCurrentPage();
 
-    if (from) {
-      $(from).trigger({
+    if (previousViewDom) {
+      $(previousViewDom).trigger({
         bubbles: false,
         cancelable: true,
         type: 'blur',
       });
     }
 
-    App.setCurrentPage(p);
+    App.setCurrentPage(viewDom);
 
-    $(p).trigger({
+    $(viewDom).trigger({
       bubbles: false,
       cancelable: true,
       type: 'focus',
     });
 
-    if (from && $(p).attr('selected') !== 'true') {
-      if (options.reverse) {
-        $(p).trigger({
-          bubbles: false,
-          cancelable: true,
-          type: 'unload',
-        });
-      }
-
-      window.setTimeout(this.transition.bind(this), App.checkOrientationTime, from, p, options);
+    if (previousViewDom && $(viewDom).attr('selected') !== 'true') {
+      this.transition(previousViewDom, viewDom, options);
     } else {
-      $(p).trigger({
+      $(viewDom).trigger({
         out: false,
         tag: options.tag,
         data: options.data,
@@ -592,11 +576,11 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
         type: 'beforetransition',
       });
 
-      this.select(p);
+      this.select(viewDom);
 
-      this.transitionComplete(p, options);
+      this.transitionComplete(viewDom, options);
 
-      $(p).trigger({
+      $(viewDom).trigger({
         out: false,
         tag: options.tag,
         data: options.data,

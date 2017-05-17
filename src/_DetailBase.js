@@ -570,14 +570,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * @param {HTMLElement} el
    */
   navigateToEditView: function navigateToEditView(/* el*/) {
-    const view = App.getView(this.editView);
-    if (view) {
-      const entry = this.entry;
-      view.show({
-        entry,
-        fromContext: this,
-      });
-    }
+    App.scene.show(this.editView, { entry: this.entry, fromContext: this });
   },
   /**
    * Navigates to a given view id passing the options retrieved using the slot index to `this._navigationOptions`.
@@ -587,7 +580,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    */
   navigateToRelatedView: function navigateToRelatedView(id, slot, descriptor) {
     const options = this._navigationOptions[slot];
-    const view = App.getView(id);
 
     if (descriptor && options) {
       options.descriptor = descriptor;
@@ -598,9 +590,9 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     }
 
     options.fromContext = this;
-    if (view && options) {
+    if (options) {
       options.returnTo = this.id;
-      view.show(options);
+      App.scene.show(id, options);
     }
   },
   /**

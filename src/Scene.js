@@ -45,18 +45,45 @@ A view might want to indicate a new viewset should be created in the middle of n
 export default class Scene {
   constructor(store) {
     this.store = store;
-    this.previousState = null;
-    this.store.subscribe(this._onStateChange.bind(this));
+    this.maxviewports = 0;
+    this.viewset = [];
+    this._updateState();
+    this.store.subscribe(this._updateState.bind(this));
   }
 
-  _onStateChange() {
+  _updateState() {
     const state = this.store.getState();
+    this.updateViewsets(state);
+    this.updateMaxViewports(state);
+  }
 
-    if (this.previousState === null) {
-      this.previousState = state;
+  updateViewsets(state) {
+    if (state.sdk.viewset !== this.viewset) {
+      const removedViews = this.viewset.filter(v => state.sdk.viewset.indexOf(v) === -1);
+      removedViews.forEach((v) => {
+        const view = App.getView(v);
+        if (view) {
+          view.unselect(view.domNode);
+          $(view.domNode).css({ order: '' });
+        }
+      });
+      state.sdk.viewset.forEach((v, i) => {
+        const view = App.getView(v);
+        if (view) {
+          $(view.domNode).css({ order: i });
+        }
+      });
     }
 
-    this.previousState = state;
+    this.viewset = state.sdk.viewset;
+  }
+
+  updateMaxViewports(state) {
+    if (state.sdk.maxviewports !== this.maxviewports) {
+      // TODO: Un-select views in the viewset that no longer fit, starting on the LHS
+    }
+
+    this.maxviewports = state.sdk.maxviewports;
   }
 
   _select(id, value) {
@@ -113,8 +140,12 @@ export default class Scene {
     store.dispatch(insertHistory(data));
     this._select(view.id, 'selected');
   }*/
-  show(viewId, viewOptions) {
+  show(viewId, viewOptions, transitionOptions) {
     const currentHash = window && window.location.hash || '';
     this.store.dispatch(showView(viewId, viewOptions, currentHash));
+    const view = App.getView(viewId);
+    if (view) {
+      view.show(viewOptions, transitionOptions);
+    }
   }
 }

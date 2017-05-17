@@ -397,11 +397,8 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
       key: relatedKey,
       title: descriptor,
     };
+    App.scene.show(this.detailViewId, options);
 
-    const view = App.getView(this.detailViewId);
-    if (view) {
-      view.show(options);
-    }
     evt.stopPropagation();
   },
   onNavigateToList: function onNavigateToList(evt) {
@@ -428,10 +425,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
       title: this.title,
     };
 
-    const view = App.getView(this.listViewId);
-    if (view) {
-      view.show(options);
-    }
+    App.scene.show(this.listViewId, options);
     evt.stopPropagation();
   },
   onSelectMoreData: function onSelectMoreData(evt) {

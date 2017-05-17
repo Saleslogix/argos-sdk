@@ -80,7 +80,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   widgetTemplate: new Simplate([`
     <div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
-      <div class="page-container scrollable{% if ($$.isNavigationDisabled()) { %} is-multiselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
+      <div class="scrollable{% if ($$.isNavigationDisabled()) { %} is-multiselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
         {% if ($$.isNavigationDisabled()) { %}
         data-selectable="multiple"
         {% } else { %}
@@ -911,16 +911,13 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }].concat(others);
   },
   configureQuickActions: function configureQuickActions() {
-    const view = App.getView(this.quickActionConfigureView);
-    if (view) {
-      view.show({
-        viewId: this.id,
-        actions: this.actions.filter((action) => {
-          // Exclude system actions
-          return action && action.systemAction !== true;
-        }),
-      });
-    }
+    App.scene.show(this.quickActionConfigureView, {
+      viewId: this.id,
+      actions: this.actions.filter((action) => {
+        // Exclude system actions
+        return action && action.systemAction !== true;
+      }),
+    });
   },
   selectEntrySilent: function selectEntrySilent(key) {
     const enableActions = this.enableActions; // preserve the original value
@@ -1462,7 +1459,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * property of the passed selection data.
    */
   navigateToRelatedView: function navigateToRelatedView(action, selection, viewId, whereQueryFmt, additionalOptions) {
-    const view = this.app.getView(viewId);
     let options = {
       where: string.substitute(whereQueryFmt, [selection.data[this.idProperty]]),
       selectedEntry: selection.data,
@@ -1478,9 +1474,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       key: selection.data[this.idProperty],
     });
 
-    if (view) {
-      view.show(options);
-    }
+    App.scene.show(viewId, options);
   },
   /**
    * Navigates to the defined `this.detailView` passing the params as navigation options.
@@ -1489,7 +1483,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} additionalOptions Additional options to be passed into the next view
    */
   navigateToDetailView: function navigateToDetailView(key, descriptor, additionalOptions) {
-    const view = this.app.getView(this.detailView);
     let options = {
       descriptor, // keep for backwards compat
       title: descriptor,
@@ -1501,9 +1494,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       options = lang.mixin(options, additionalOptions);
     }
 
-    if (view) {
-      view.show(options);
-    }
+    App.scene.show(this.detailView, options);
   },
   /**
    * Helper method for list-actions. Navigates to the defined `this.editView` passing the given selections `idProperty`
@@ -1513,7 +1504,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} additionalOptions Additional options to be passed into the next view.
    */
   navigateToEditView: function navigateToEditView(action, selection, additionalOptions) {
-    const view = this.app.getView(this.editView || this.insertView);
     const key = selection.data[this.idProperty];
     let options = {
       key,
@@ -1525,9 +1515,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       options = lang.mixin(options, additionalOptions);
     }
 
-    if (view) {
-      view.show(options);
-    }
+    App.scene.show(this.editView || this.insertView, options);
   },
   /**
    * Navigates to the defined `this.insertView`, or `this.editView` passing the current views id as the `returnTo`
@@ -1535,7 +1523,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} additionalOptions Additional options to be passed into the next view.
    */
   navigateToInsertView: function navigateToInsertView(additionalOptions) {
-    const view = this.app.getView(this.insertView || this.editView);
     let options = {
       returnTo: this.id,
       insert: true,
@@ -1550,9 +1537,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       options = lang.mixin(options, additionalOptions);
     }
 
-    if (view) {
-      view.show(options);
-    }
+    App.scene.show(this.insertView || this.editView, options);
   },
   /**
    * Deterimines if there is more data to be shown.
