@@ -61,7 +61,7 @@
           "path": "../deps/icrm-js-customization/"
         },
         {
-          "text": "services.bundle.js",
+          "text": "icrm-js-services.js",
           "path": "../deps/icrm-js-services/"
         },
         {

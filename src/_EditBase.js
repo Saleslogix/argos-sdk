@@ -1123,14 +1123,23 @@ const __class = declare('argos._EditBase', [View], {
 
     return acc;
   },
-  _buildRefreshMessage: function _buildRefreshMessage(entry, result) {
-    if (entry) {
-      const store = this.get('store');
-      const id = store.getIdentity(entry);
+  _extractIdPropertyFromEntry: function _extractIdPropertyFromEntry(entry) {
+    const store = this.get('store');
+    if (this._model) {
+      return this._model.getEntityId(entry);
+    } else if (store) {
+      return store.getIdentity(entry);
+    }
+
+    return '';
+  },
+  _buildRefreshMessage: function _buildRefreshMessage(originalEntry, response) {
+    if (originalEntry) {
+      const id = this._extractIdPropertyFromEntry(originalEntry);
       return {
         id,
         key: id,
-        data: result,
+        data: response,
       };
     }
   },
