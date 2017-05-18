@@ -58,8 +58,8 @@ export default class Scene {
     this.updateMaxViewports(state);
   }
 
-  updateViewsets(state) {
-    if (state.sdk.viewset !== this.viewset) {
+  updateViewsets(state, force = false) {
+    if (state.sdk.viewset !== this.viewset || force) {
       const removedViews = this.viewset.filter(v => state.sdk.viewset.indexOf(v) === -1);
       removedViews.forEach((v) => {
         const view = App.getView(v);
@@ -72,6 +72,7 @@ export default class Scene {
         const view = App.getView(v);
         if (view) {
           $(view.domNode).css({ order: i });
+          view.select(view.domNode);
         }
       });
     }
@@ -92,6 +93,8 @@ export default class Scene {
               $(view.domNode).css({ order: '' });
             }
           });
+      } else {
+        this.updateViewsets(state, true);
       }
     }
 

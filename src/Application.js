@@ -304,7 +304,7 @@ export default class Application {
   initConnects() {
     $(window).on('resize', util.debounce(() => {
       this.onResize();
-    }, 1000));
+    }, 500));
     $('body').on('beforetransition', this._onBeforeTransition.bind(this));
     $('body').on('aftertransition', this._onAfterTransition.bind(this));
     $('body').on('show', this._onActivate.bind(this));
