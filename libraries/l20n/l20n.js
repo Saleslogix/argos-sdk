@@ -109,7 +109,7 @@ define('l20n/html', function(require) {
   if (document.readyState === 'complete') {
     window.setTimeout(bootstrap);
   } else {
-    // or wait for the DOM to be interactive to try to pretranslate it 
+    // or wait for the DOM to be interactive to try to pretranslate it
     // using the inline resources
     waitFor('interactive', bootstrap);
   }
@@ -227,7 +227,7 @@ define('l20n/html', function(require) {
       }
     });
 
-    // For now we just take navigator.language, but we'd prefer to get a list 
+    // For now we just take navigator.language, but we'd prefer to get a list
     // of locales that the user can read sorted by user's preference, see:
     //   https://bugzilla.mozilla.org/show_bug.cgi?id=889335
     // For IE we use navigator.browserLanguage, see:
@@ -324,8 +324,8 @@ define('l20n/html', function(require) {
           !templateSupported && typeof L20n.shims.getTemplate !== 'function') {
         node.textContent = entity.value;
       } else {
-        // otherwise, start with an inert template element and move its 
-        // children into `node` but such that `node`'s own children are not 
+        // otherwise, start with an inert template element and move its
+        // children into `node` but such that `node`'s own children are not
         // replaced
         var translation = templateSupported ?
           document.createElement('template') :
@@ -346,20 +346,20 @@ define('l20n/html', function(require) {
     });
   }
 
-  // The goal of overlayElement is to move the children of `translationElement` 
-  // into `sourceElement` such that `sourceElement`'s own children are not 
+  // The goal of overlayElement is to move the children of `translationElement`
+  // into `sourceElement` such that `sourceElement`'s own children are not
   // replaced, but onle have their text nodes and their attributes modified.
   //
   // We want to make it possible for localizers to apply text-level semantics to
-  // the translations and make use of HTML entities.  At the same time, we 
-  // don't trust translations so we need to filter unsafe elements and 
-  // attribtues out and we don't want to break the Web by replacing elements to 
-  // which third-party code might have created references (e.g. two-way 
+  // the translations and make use of HTML entities.  At the same time, we
+  // don't trust translations so we need to filter unsafe elements and
+  // attribtues out and we don't want to break the Web by replacing elements to
+  // which third-party code might have created references (e.g. two-way
   // bindings in MVC frameworks).
   function overlayElement(sourceElement, translationElement) {
     var result = document.createDocumentFragment();
 
-    // take one node from translationElement at a time and check it against the 
+    // take one node from translationElement at a time and check it against the
     // whitelist or try to match it with a corresponding element in the source
     var childElement;
     while (childElement = translationElement.childNodes[0]) {
@@ -393,14 +393,14 @@ define('l20n/html', function(require) {
       result.appendChild(text);
     }
 
-    // clear `sourceElement` and append `result` which by this time contains 
+    // clear `sourceElement` and append `result` which by this time contains
     // `sourceElement`'s original children, overlayed with translation
     sourceElement.textContent = '';
     sourceElement.appendChild(result);
 
-    // if we're overlaying a nested element, translate the whitelisted 
+    // if we're overlaying a nested element, translate the whitelisted
     // attributes; top-level attributes are handled in `translateNode`
-    // XXX attributes previously set here for another language should be 
+    // XXX attributes previously set here for another language should be
     // cleared if a new language doesn't use them; https://bugzil.la/922577
     if (translationElement.attributes) {
       for (var k = 0, attr; attr = translationElement.attributes[k]; k++) {
@@ -443,7 +443,7 @@ define('l20n/html', function(require) {
   }
 
   // ideally, we'd use querySelector(':scope > ELEMENT:nth-of-type(index)'),
-  // but 1) :scope is not widely supported yet and 2) it doesn't work with 
+  // but 1) :scope is not widely supported yet and 2) it doesn't work with
   // DocumentFragments.  :scope is needed to query only immediate children
   // https://developer.mozilla.org/en-US/docs/Web/CSS/:scope
   function getElementOfType(context, element) {
@@ -526,7 +526,7 @@ define('l20n/context', function(require, exports) {
       }
 
       if (self.source) {
-        // Bug 908826 - Don't artificially force asynchronicity when only using 
+        // Bug 908826 - Don't artificially force asynchronicity when only using
         // addResource
         // https://bugzilla.mozilla.org/show_bug.cgi?id=908826
         return setTimeout(function() {
@@ -646,7 +646,7 @@ define('l20n/context', function(require, exports) {
         resourcesToBuild--;
         if (resourcesToBuild === 0) {
           if (resourcesWithErrors === self.resources.length) {
-            // XXX Bug 908780 - Decide what to do when all resources in 
+            // XXX Bug 908780 - Decide what to do when all resources in
             // a locale are missing or broken
             // https://bugzilla.mozilla.org/show_bug.cgi?id=908780
             emitter.emit('error',
@@ -725,7 +725,7 @@ define('l20n/context', function(require, exports) {
     // Locale objects corresponding to the registered languages
     var _locales = {};
 
-    // URLs or text of resources (with information about the type) added via 
+    // URLs or text of resources (with information about the type) added via
     // linkResource and addResource
     var _reslinks = [];
 
@@ -749,7 +749,7 @@ define('l20n/context', function(require, exports) {
           // un-define (remove) the property from dst
           delete dst[key];
         } else if (src[key] === null || typeof src[key] !== 'object') {
-          // if the source property is a primitive, just copy it overwriting 
+          // if the source property is a primitive, just copy it overwriting
           // whatever the destination property is
           dst[key] = src[key];
         } else {
@@ -815,8 +815,8 @@ define('l20n/context', function(require, exports) {
             return;
           }
           var newMany = getMany.call(this, newIds);
-          // rebind the callback in `_retr`: append new globals seen used in 
-          // `newIds` and overwrite the callback with a new one which has the 
+          // rebind the callback in `_retr`: append new globals seen used in
+          // `newIds` and overwrite the callback with a new one which has the
           // updated `ids`
           _retr.bindGet({
             id: callback,
@@ -845,8 +845,8 @@ define('l20n/context', function(require, exports) {
       var many = getMany.call(this, ids);
       var l10n = {
         entities: many.entities,
-        // `reason` might be undefined if context was ready before `localize` 
-        // was called;  in that case, we pass `locales` so that this scenario 
+        // `reason` might be undefined if context was ready before `localize`
+        // was called;  in that case, we pass `locales` so that this scenario
         // is transparent for the callback
         reason: reason || { locales: _fallbackChain.slice() },
         stop: function() {
@@ -858,9 +858,9 @@ define('l20n/context', function(require, exports) {
         callback: bindLocalize.bind(this, ids, callback),
         globals: Object.keys(many.globalsUsed)
       });
-      // callback may call bound.extend which will rebind it if needed;  for 
-      // this to work it needs to be called after _retr.bindGet above;  
-      // otherwise bindGet would listen to globals passed initially in 
+      // callback may call bound.extend which will rebind it if needed;  for
+      // this to work it needs to be called after _retr.bindGet above;
+      // otherwise bindGet would listen to globals passed initially in
       // many.globalsUsed
       callback(l10n);
       return bound;
@@ -920,9 +920,9 @@ define('l20n/context', function(require, exports) {
         if (e instanceof Compiler.RuntimeError) {
           error(new TranslationError(e.message, id, _fallbackChain, locale));
           if (e instanceof Compiler.ValueError) {
-            // salvage the source string which the compiler wasn't able to 
-            // evaluate completely;  this is still better than returning the 
-            // identifer;  prefer a source string from locales earlier in the 
+            // salvage the source string which the compiler wasn't able to
+            // evaluate completely;  this is still better than returning the
+            // identifer;  prefer a source string from locales earlier in the
             // fallback chain, if available
             var source = prevSource || { source: e.source, loc: locale.id };
             return getFromLocale.call(this, cur + 1, id, data, source);
@@ -990,7 +990,9 @@ define('l20n/context', function(require, exports) {
       if (!available) {
         available = [];
       }
-      available.push(defLocale);
+      if (available.indexOf(defLocale) === -1) {
+        available.push(defLocale);
+      }
 
       // uniquify `available` into `_registered`
       available.forEach(function(loc) {
@@ -1026,8 +1028,8 @@ define('l20n/context', function(require, exports) {
           // a resource added via linkResource(String)
           link(res[1], locale);
         } else {
-          // a resource added via linkResource(Function);  the function 
-          // passed is a URL template and it takes the current locale's code 
+          // a resource added via linkResource(Function);  the function
+          // passed is a URL template and it takes the current locale's code
           // as an argument
           link(res[1](locale.id), locale);
         }
@@ -1056,10 +1058,10 @@ define('l20n/context', function(require, exports) {
         });
       }
 
-      // the whole language negotiation process can be asynchronous;  for now 
-      // we just use _registered as the list of all available locales, but in 
-      // the future we might asynchronously try to query a language pack 
-      // service of sorts for its own list of locales supported for this 
+      // the whole language negotiation process can be asynchronous;  for now
+      // we just use _registered as the list of all available locales, but in
+      // the future we might asynchronously try to query a language pack
+      // service of sorts for its own list of locales supported for this
       // context
       if (!_negotiator) {
         var Intl = require('./intl').Intl;
@@ -1229,7 +1231,7 @@ define('l20n/parser', function(require, exports) {
     function getAttributes() {
       var attrs = [];
       var attr, ws1, ch;
- 
+
       while (true) {
         attr = getKVPWithIndex('Attribute');
         attr.local = attr.key.name.charAt(0) === '_';
@@ -1387,7 +1389,7 @@ define('l20n/parser', function(require, exports) {
                   }
               _index += 1;
               placeables++;
-              
+
               buf = '';
               break;
             }
@@ -2112,52 +2114,52 @@ define('l20n/parser', function(require, exports) {
   exports.Parser = Parser;
 
 });
-// This is L20n's on-the-fly compiler.  It takes the AST produced by the parser 
-// and uses it to create a set of JavaScript objects and functions representing 
+// This is L20n's on-the-fly compiler.  It takes the AST produced by the parser
+// and uses it to create a set of JavaScript objects and functions representing
 // entities and macros and other expressions.
 //
 // The module defines a `Compiler` singleton with a single method: `compile`.
-// The result of the compilation is stored on the `entries` object passed as 
-// the second argument to the `compile` function.  The third argument is 
-// `globals`, an object whose properties provide information about the runtime 
+// The result of the compilation is stored on the `entries` object passed as
+// the second argument to the `compile` function.  The third argument is
+// `globals`, an object whose properties provide information about the runtime
 // environment, e.g., the current hour, operating system etc.
 //
 // Main concepts
 // -------------
 //
-// **Entities** and **attributes** are objects which are publicly available.  
-// Their `toString` method is designed to be used by the L20n context to get 
+// **Entities** and **attributes** are objects which are publicly available.
+// Their `toString` method is designed to be used by the L20n context to get
 // a string value of the entity, given the context data passed to the method.
 //
-// All other symbols defined by the grammar are implemented as expression 
+// All other symbols defined by the grammar are implemented as expression
 // functions.  The naming convention is:
 //
 //   - capitalized first letters denote **expressions constructors**, e.g.
 //   `PropertyExpression`.
-//   - camel-case denotes **expression functions** returned by the 
+//   - camel-case denotes **expression functions** returned by the
 //   constructors, e.g. `propertyExpression`.
 //
 // ### Constructors
 //
-// The constructor is called for every node in the AST.  It stores the 
-// components of the expression which are constant and do not depend on the 
-// calling context (an example of the latter would be the data passed by the 
+// The constructor is called for every node in the AST.  It stores the
+// components of the expression which are constant and do not depend on the
+// calling context (an example of the latter would be the data passed by the
 // developer to the `toString` method).
-// 
+//
 // ### Expression functions
 //
-// The constructor, when called, returns an expression function, which, in 
-// turn, is called every time the expression needs to be evaluated.  The 
-// evaluation call is context-dependend.  Every expression function takes two 
+// The constructor, when called, returns an expression function, which, in
+// turn, is called every time the expression needs to be evaluated.  The
+// evaluation call is context-dependend.  Every expression function takes two
 // mandatory arguments and one optional one:
 //
-// - `locals`, which stores the information about the currently evaluated 
+// - `locals`, which stores the information about the currently evaluated
 // entity (`locals.__this__`).  It also stores the arguments passed to macros.
-// - `ctxdata`, which is an object with data passed to the context by the 
-// developer.  The developer can define data on the context, or pass it on 
+// - `ctxdata`, which is an object with data passed to the context by the
+// developer.  The developer can define data on the context, or pass it on
 // a per-call basis.
-// - `key` (optional), which is a number or a string passed to a `HashLiteral` 
-// expression denoting the member of the hash to return.  The member will be 
+// - `key` (optional), which is a number or a string passed to a `HashLiteral`
+// expression denoting the member of the hash to return.  The member will be
 // another expression function which can then be evaluated further.
 //
 //
@@ -2165,32 +2167,32 @@ define('l20n/parser', function(require, exports) {
 // ------------------------------------
 //
 // Every expression function returns an array [`newLocals`, `evaluatedValue`].
-// The reason for this, and in particular for returning `newLocals`, is 
+// The reason for this, and in particular for returning `newLocals`, is
 // important for understanding how the compiler works.
 //
-// In most of the cases. `newLocals` will be the same as the original `locals` 
-// passed to the expression function during the evaluation call.  In some 
-// cases, however, `newLocals.__this__` will reference a different entity than 
-// `locals.__this__` did.  On runtime, as the compiler traverses the AST and 
-// goes deeper into individual branches, when it hits an `identifier` and 
-// evaluates it to an entity, it needs to **bubble up** this find back to the 
-// top expressions in the chain.  This is so that the evaluation of the 
-// top-most expressions in the branch (root being at the very top of the tree) 
+// In most of the cases. `newLocals` will be the same as the original `locals`
+// passed to the expression function during the evaluation call.  In some
+// cases, however, `newLocals.__this__` will reference a different entity than
+// `locals.__this__` did.  On runtime, as the compiler traverses the AST and
+// goes deeper into individual branches, when it hits an `identifier` and
+// evaluates it to an entity, it needs to **bubble up** this find back to the
+// top expressions in the chain.  This is so that the evaluation of the
+// top-most expressions in the branch (root being at the very top of the tree)
 // takes into account the new value of `__this__`.
 //
 // To illustrate this point, consider the following example.
 //
 // Two entities, `brandName` and `about` are defined as such:
-// 
+//
 //     <brandName {
 //       short: "Firefox",
 //       long: "Mozilla {{ ~ }}"
 //     }>
 //     <about "About {{ brandName.long }}">
 //
-// Notice two `complexString`s: `about` references `brandName.long`, and 
-// `brandName.long` references its own entity via `~`.  This `~` (meaning, the 
-// current entity) must always reference `brandName`, even when called from 
+// Notice two `complexString`s: `about` references `brandName.long`, and
+// `brandName.long` references its own entity via `~`.  This `~` (meaning, the
+// current entity) must always reference `brandName`, even when called from
 // `about`.
 //
 // The AST for the `about` entity looks like this:
@@ -2212,48 +2214,48 @@ define('l20n/parser', function(require, exports) {
 //       .attrs
 //       .local[bool=False]
 //
-// During the compilation the compiler will walk the AST top-down to the 
-// deepest terminal leaves and will use expression constructors to create 
-// expression functions for the components.  For instance, for `about`'s value, 
-// the compiler will call `ComplexString()` to create an expression function 
-// `complexString` <1> which will be assigned to the entity's value. The 
-// `ComplexString` construtor, before it returns the `complexString` <1>, will 
-// in turn call other expression constructors to create `content`: 
-// a `stringLiteral` and a `propertyExpression`.  The `PropertyExpression` 
+// During the compilation the compiler will walk the AST top-down to the
+// deepest terminal leaves and will use expression constructors to create
+// expression functions for the components.  For instance, for `about`'s value,
+// the compiler will call `ComplexString()` to create an expression function
+// `complexString` <1> which will be assigned to the entity's value. The
+// `ComplexString` construtor, before it returns the `complexString` <1>, will
+// in turn call other expression constructors to create `content`:
+// a `stringLiteral` and a `propertyExpression`.  The `PropertyExpression`
 // contructor will do the same, etc...
 //
-// When `entity.getString(ctxdata)` is called by a third-party code, we need to 
-// resolve the whole `complexString` <1> to return a single string value.  This 
-// is what **resolving** means and it involves some recursion.  On the other 
-// hand, **evaluating** means _to call the expression once and use what it 
+// When `entity.getString(ctxdata)` is called by a third-party code, we need to
+// resolve the whole `complexString` <1> to return a single string value.  This
+// is what **resolving** means and it involves some recursion.  On the other
+// hand, **evaluating** means _to call the expression once and use what it
 // returns_.
-// 
-// The identifier expression sets `locals.__this__` to the current entity, 
+//
+// The identifier expression sets `locals.__this__` to the current entity,
 // `about`, and tells the `complexString` <1> to _resolve_ itself.
 //
-// In order to resolve the `complexString` <1>, we start by resolving its first 
-// member <2> to a string.  As we resolve deeper down, we bubble down `locals` 
-// set by `toString`.  The first member of `content` turns out to simply be 
+// In order to resolve the `complexString` <1>, we start by resolving its first
+// member <2> to a string.  As we resolve deeper down, we bubble down `locals`
+// set by `toString`.  The first member of `content` turns out to simply be
 // a string that reads `About `.
 //
-// On to the second member, the propertyExpression <3>.  We bubble down 
-// `locals` again and proceed to evaluate the `expression` field, which is an 
-// `identifier`.  Note that we don't _resolve_ it to a string; we _evaluate_ it 
-// to something that can be further used in other expressions, in this case, an 
+// On to the second member, the propertyExpression <3>.  We bubble down
+// `locals` again and proceed to evaluate the `expression` field, which is an
+// `identifier`.  Note that we don't _resolve_ it to a string; we _evaluate_ it
+// to something that can be further used in other expressions, in this case, an
 // **entity** called `brandName`.
 //
-// Had we _resolved_ the `propertyExpression`, it would have resolve to 
-// a string, and it would have been impossible to access the `long` member.  
-// This leads us to an important concept:  the compiler _resolves_ expressions 
-// when it expects a primitive value (a string, a number, a bool).  On the 
-// other hand, it _evaluates_ expressions (calls them only once) when it needs 
+// Had we _resolved_ the `propertyExpression`, it would have resolve to
+// a string, and it would have been impossible to access the `long` member.
+// This leads us to an important concept:  the compiler _resolves_ expressions
+// when it expects a primitive value (a string, a number, a bool).  On the
+// other hand, it _evaluates_ expressions (calls them only once) when it needs
 // to work with them further, e.g. in order to access a member of the hash.
 //
-// This also explains why in the above example, once the compiler hits the 
-// `brandName` identifier and changes the value of `locals.__this__` to the 
-// `brandName` entity, this value doesn't bubble up all the way up to the 
-// `about` entity.  All components of any `complexString` are _resolved_ by the 
-// compiler until a primitive value is returned.  This logic lives in the 
+// This also explains why in the above example, once the compiler hits the
+// `brandName` identifier and changes the value of `locals.__this__` to the
+// `brandName` entity, this value doesn't bubble up all the way up to the
+// `about` entity.  All components of any `complexString` are _resolved_ by the
+// compiler until a primitive value is returned.  This logic lives in the
 // `_resolve` function.
 
 define('l20n/compiler', function(require, exports) {
@@ -2370,10 +2372,10 @@ define('l20n/compiler', function(require, exports) {
         return _resolve(this.value, locals, ctxdata);
       } catch (e) {
         requireCompilerError(e);
-        // `ValueErrors` are not emitted in `StringLiteral` where they are 
-        // created, because if the string in question is being evaluated in an 
-        // index, we'll emit an `IndexError` instead.  To avoid duplication, 
-        // `ValueErrors` are only be emitted if they actually make it to 
+        // `ValueErrors` are not emitted in `StringLiteral` where they are
+        // created, because if the string in question is being evaluated in an
+        // index, we'll emit an `IndexError` instead.  To avoid duplication,
+        // `ValueErrors` are only be emitted if they actually make it to
         // here.  See `IndexExpression` for an example of why they wouldn't.
         if (e instanceof ValueError) {
           _emitter.emit('error', e);
@@ -2385,8 +2387,8 @@ define('l20n/compiler', function(require, exports) {
     Entity.prototype.get = function E_get(ctxdata) {
       // reset `_references` to an empty state
       _references.globals = {};
-      // evaluate the entity and its attributes;  if any globals are used in 
-      // the process, `toString` will populate `_references.globals` 
+      // evaluate the entity and its attributes;  if any globals are used in
+      // the process, `toString` will populate `_references.globals`
       // accordingly.
       var entity = {
         value: this.getString(ctxdata),
@@ -2492,10 +2494,10 @@ define('l20n/compiler', function(require, exports) {
       'ParenthesisExpression': ParenthesisExpression
     };
 
-    // The 'dispatcher' expression constructor.  Other expression constructors 
-    // call this to create expression functions for their components.  For 
+    // The 'dispatcher' expression constructor.  Other expression constructors
+    // call this to create expression functions for their components.  For
     // instance, `ConditionalExpression` calls `Expression` to create
-    // expression functions for its `test`, `consequent` and `alternate` 
+    // expression functions for its `test`, `consequent` and `alternate`
     // symbols.
     function Expression(node, entry, index) {
       // An entity can have no value.  It will be resolved to `null`.
@@ -2526,7 +2528,7 @@ define('l20n/compiler', function(require, exports) {
     }
 
     function _resolve(expr, locals, ctxdata) {
-      // Bail out early if it's a primitive value or `null`.  This is exactly 
+      // Bail out early if it's a primitive value or `null`.  This is exactly
       // what we want.
       if (typeof expr === 'string' ||
           typeof expr === 'boolean' ||
@@ -2565,9 +2567,9 @@ define('l20n/compiler', function(require, exports) {
         if (!locals.__env__.hasOwnProperty(name)) {
           throw new RuntimeError('Reference to an unknown entry: ' + name);
         }
-        // The only thing we care about here is the new `__this__` so we 
-        // discard any other local variables.  Note that because this is an 
-        // assignment to a local variable, the original `locals` passed is not 
+        // The only thing we care about here is the new `__this__` so we
+        // discard any other local variables.  Note that because this is an
+        // assignment to a local variable, the original `locals` passed is not
         // changed.
         locals = {
           __this__: locals.__env__[name],
@@ -2620,8 +2622,8 @@ define('l20n/compiler', function(require, exports) {
     }
     function StringLiteral(node) {
       return function stringLiteral(locals, ctxdata, key) {
-        // if a key was passed, throw;  checking arguments is more reliable 
-        // than testing the value of key because if the key comes from context 
+        // if a key was passed, throw;  checking arguments is more reliable
+        // than testing the value of key because if the key comes from context
         // data it can be any type, also undefined
         if (key !== undefined) {
           throw new RuntimeError('Cannot get property of a string: ' + key);
@@ -2636,11 +2638,11 @@ define('l20n/compiler', function(require, exports) {
         content.push(Expression(node.content[i], entry));
       }
 
-      // Every complexString needs to have its own `dirty` flag whose state 
-      // persists across multiple calls to the given complexString.  On the 
-      // other hand, `dirty` must not be shared by all complexStrings.  Hence 
-      // the need to define `dirty` as a variable available in the closure.  
-      // Note that the anonymous function is a self-invoked one and it returns 
+      // Every complexString needs to have its own `dirty` flag whose state
+      // persists across multiple calls to the given complexString.  On the
+      // other hand, `dirty` must not be shared by all complexStrings.  Hence
+      // the need to define `dirty` as a variable available in the closure.
+      // Note that the anonymous function is a self-invoked one and it returns
       // the closure immediately.
       return (function() {
         var dirty = false;
@@ -2669,9 +2671,9 @@ define('l20n/compiler', function(require, exports) {
             }
           } catch (e) {
             requireCompilerError(e);
-            // only throw, don't emit yet.  If the `ValueError` makes it to 
-            // `getString()` it will be emitted there.  It might, however, be 
-            // cought by `IndexExpression` and changed into a `IndexError`.  
+            // only throw, don't emit yet.  If the `ValueError` makes it to
+            // `getString()` it will be emitted there.  It might, however, be
+            // cought by `IndexExpression` and changed into a `IndexError`.
             // See `IndexExpression` for more explanation.
             throw new ValueError(e.message, entry, node.source);
           } finally {
@@ -2685,8 +2687,8 @@ define('l20n/compiler', function(require, exports) {
     function IndexExpression(node, entry) {
       var expression = Expression(node, entry);
 
-      // This is analogous to `ComplexString` in that an individual index can 
-      // only be visited once during the resolution of an Entity.  `dirty` is 
+      // This is analogous to `ComplexString` in that an individual index can
+      // only be visited once during the resolution of an Entity.  `dirty` is
       // set in a closure context of the returned function.
       return (function() {
         var dirty = false;
@@ -2697,29 +2699,29 @@ define('l20n/compiler', function(require, exports) {
           dirty = true;
           var retval;
           try {
-            // We need to resolve `expression` here so that we catch errors 
-            // thrown deep within.  Without `_resolve` we might end up with an 
-            // unresolved Entity object, and no "Cyclic reference detected" 
+            // We need to resolve `expression` here so that we catch errors
+            // thrown deep within.  Without `_resolve` we might end up with an
+            // unresolved Entity object, and no "Cyclic reference detected"
             // error would be thown.
             retval = _resolve(expression, locals, ctxdata);
           } catch (e) {
-            // If it's an `IndexError` thrown deeper within `expression`, it 
-            // has already been emitted by its `indexExpression`.  We can 
+            // If it's an `IndexError` thrown deeper within `expression`, it
+            // has already been emitted by its `indexExpression`.  We can
             // safely re-throw it here.
             if (e instanceof IndexError) {
               throw e;
             }
 
-            // Otherwise, make sure it's a `RuntimeError` or a `ValueError` and 
+            // Otherwise, make sure it's a `RuntimeError` or a `ValueError` and
             // throw and emit an `IndexError`.
             //
-            // If it's a `ValueError` we want to replace it by an `IndexError` 
-            // here so that `ValueErrors` from the index don't make their way 
-            // up to the context.  The context only cares about ValueErrors 
-            // thrown by the value of the entity it has requested, not entities 
+            // If it's a `ValueError` we want to replace it by an `IndexError`
+            // here so that `ValueErrors` from the index don't make their way
+            // up to the context.  The context only cares about ValueErrors
+            // thrown by the value of the entity it has requested, not entities
             // used in the index.
             //
-            // To illustrate this point with an example, consider the following 
+            // To illustrate this point with an example, consider the following
             // two strings, where `foo` is a missing entity.
             //
             //     <prompt1["remove"] {
@@ -2727,9 +2729,9 @@ define('l20n/compiler', function(require, exports) {
             //       keep: "Keep {{ foo }}?"
             //     }>
             //
-            // `prompt1` will throw a `ValueError`.  The context can use it to 
-            // display the source of the entity, i.e. `Remove {{ foo }}?`.  The 
-            // index resolved properly, so at least we know that we're showing 
+            // `prompt1` will throw a `ValueError`.  The context can use it to
+            // display the source of the entity, i.e. `Remove {{ foo }}?`.  The
+            // index resolved properly, so at least we know that we're showing
             // the right variant of the entity.
             //
             //     <prompt2["{{ foo }}"] {
@@ -2737,12 +2739,12 @@ define('l20n/compiler', function(require, exports) {
             //       keep: "Keep file?"
             //     }>
             //
-            // On the other hand, `prompt2` will throw an `IndexError`.  This 
-            // is a more serious scenario for the context.  We should not 
-            // assume that we know which variant to show to the user.  In fact, 
-            // in the above (much contrived, but still) example, showing the 
-            // incorrect variant will likely lead to data loss.  The context 
-            // should be more strict in this case and should not try to recover 
+            // On the other hand, `prompt2` will throw an `IndexError`.  This
+            // is a more serious scenario for the context.  We should not
+            // assume that we know which variant to show to the user.  In fact,
+            // in the above (much contrived, but still) example, showing the
+            // incorrect variant will likely lead to data loss.  The context
+            // should be more strict in this case and should not try to recover
             // from this error too hard.
             requireCompilerError(e);
             throw emit(IndexError, e.message, entry);
@@ -3000,11 +3002,11 @@ define('l20n/compiler', function(require, exports) {
         locals = parent[0];
         parent = parent[1];
 
-        // At this point, `parent` can be anything and we need to do some 
-        // type-checking to handle erros gracefully (bug 883664) and securely 
+        // At this point, `parent` can be anything and we need to do some
+        // type-checking to handle erros gracefully (bug 883664) and securely
         // (bug 815962).
 
-        // If `parent` is an Entity or an Attribute, `locals` has been 
+        // If `parent` is an Entity or an Attribute, `locals` has been
         // correctly set up by Identifier
         if (parent && parent.value !== undefined) {
           if (typeof parent.value !== 'function') {
@@ -3022,8 +3024,8 @@ define('l20n/compiler', function(require, exports) {
           throw new RuntimeError('Cannot get property of a macro: ' + prop);
         }
 
-        // If `parent` is an object passed by the developer to the context 
-        // (i.e., `expression` was a `VariableExpression`) or a global, return 
+        // If `parent` is an object passed by the developer to the context
+        // (i.e., `expression` was a `VariableExpression`) or a global, return
         // the member of the object corresponding to `prop`
         if (typeof parent === 'object') {
           if (parent === null) {
@@ -3084,7 +3086,7 @@ define('l20n/compiler', function(require, exports) {
   CompilerError.prototype = Object.create(Error.prototype);
   CompilerError.prototype.constructor = CompilerError;
 
-  // `CompilationError` extends `CompilerError`.  It's a class of errors 
+  // `CompilationError` extends `CompilerError`.  It's a class of errors
   // which happen during compilation of the AST.
   function CompilationError(message, entry) {
     CompilerError.call(this, message);
@@ -3094,8 +3096,8 @@ define('l20n/compiler', function(require, exports) {
   CompilationError.prototype = Object.create(CompilerError.prototype);
   CompilationError.prototype.constructor = CompilationError;
 
-  // `RuntimeError` extends `CompilerError`.  It's a class of errors which 
-  // happen during the evaluation of entries, i.e. when you call 
+  // `RuntimeError` extends `CompilerError`.  It's a class of errors which
+  // happen during the evaluation of entries, i.e. when you call
   // `entity.toString()`.
   function RuntimeError(message) {
     CompilerError.call(this, message);
@@ -3104,9 +3106,9 @@ define('l20n/compiler', function(require, exports) {
   RuntimeError.prototype = Object.create(CompilerError.prototype);
   RuntimeError.prototype.constructor = RuntimeError;
 
-  // `ValueError` extends `RuntimeError`.  It's a class of errors which 
-  // happen during the composition of a ComplexString value.  It's easier to 
-  // recover from than an `IndexError` because at least we know that we're 
+  // `ValueError` extends `RuntimeError`.  It's a class of errors which
+  // happen during the composition of a ComplexString value.  It's easier to
+  // recover from than an `IndexError` because at least we know that we're
   // showing the correct member of the hash.
   function ValueError(message, entry, source) {
     RuntimeError.call(this, message);
@@ -3117,10 +3119,10 @@ define('l20n/compiler', function(require, exports) {
   ValueError.prototype = Object.create(RuntimeError.prototype);
   ValueError.prototype.constructor = ValueError;
 
-  // `IndexError` extends `RuntimeError`.  It's a class of errors which 
-  // happen during the lookup of a hash member.  It's harder to recover 
-  // from than `ValueError` because we en dup not knowing which variant of the 
-  // entity value to show and in case the meanings are divergent, the 
+  // `IndexError` extends `RuntimeError`.  It's a class of errors which
+  // happen during the lookup of a hash member.  It's harder to recover
+  // from than `ValueError` because we en dup not knowing which variant of the
+  // entity value to show and in case the meanings are divergent, the
   // consequences for the user can be serious.
   function IndexError(message, entry) {
     RuntimeError.call(this, message);
@@ -3326,7 +3328,7 @@ define('l20n/platform/globals', function(require, exports) {
   };
 
   Global.prototype.get = function get() {
-    // invalidate the cached value if the global is not active;  active 
+    // invalidate the cached value if the global is not active;  active
     // globals handle `value` automatically in `onchange()`
     if (!this.value || !this.isActive) {
       this.value = this._get();
@@ -3343,8 +3345,8 @@ define('l20n/platform/globals', function(require, exports) {
 
 
   // XXX: https://bugzilla.mozilla.org/show_bug.cgi?id=865226
-  // We want to have @screen.width, but since we can't get it from compiler, we 
-  // call it @screen and in order to keep API forward-compatible with 1.0 we 
+  // We want to have @screen.width, but since we can't get it from compiler, we
+  // call it @screen and in order to keep API forward-compatible with 1.0 we
   // return an object with key width to
   // make it callable as @screen.width
   function ScreenGlobal() {
