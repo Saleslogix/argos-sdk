@@ -30,13 +30,14 @@ export function setMaxViewPorts(max) {
   };
 }
 
-export function showView(viewId, viewOptions, currentHash) {
+export function showView(viewId, viewOptions, currentHash, currentViewId) {
   return {
     type: SHOW_VIEW,
     payload: {
       viewId,
       viewOptions,
       currentHash,
+      currentViewId,
     },
   };
 }

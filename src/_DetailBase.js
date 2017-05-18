@@ -570,7 +570,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * @param {HTMLElement} el
    */
   navigateToEditView: function navigateToEditView(/* el*/) {
-    App.scene.show(this.editView, { entry: this.entry, fromContext: this });
+    App.scene.show(this.editView, { entry: this.entry, fromContext: this }, null, this.id);
   },
   /**
    * Navigates to a given view id passing the options retrieved using the slot index to `this._navigationOptions`.
@@ -592,7 +592,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     options.fromContext = this;
     if (options) {
       options.returnTo = this.id;
-      App.scene.show(id, options);
+      App.scene.show(id, options, null, this.id);
     }
   },
   /**

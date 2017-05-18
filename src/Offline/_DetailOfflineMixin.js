@@ -120,6 +120,6 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     return model.getIconClass();
   },
   onEntityBriefcased: function onEntityBriefcased() {
-    App.scene.show('briefcase_list', {});
+    App.scene.show('briefcase_list', {}, null, this.id);
   },
 });

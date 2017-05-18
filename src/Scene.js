@@ -141,17 +141,17 @@ export default class Scene {
     store.dispatch(insertHistory(data));
     this._select(view.id, 'selected');
   }*/
-  show(viewId, viewOptions, transitionOptions) {
+  show(viewId, viewOptions, transitionOptions, currentViewId) {
     const currentHash = window && window.location.hash || '';
-    this.store.dispatch(showView(viewId, viewOptions, currentHash));
+    this.store.dispatch(showView(viewId, viewOptions, currentHash, currentViewId));
     const view = App.getView(viewId);
     if (view) {
       view.show(viewOptions, transitionOptions);
     }
   }
 
-  showNew(viewId, viewOptions, transitionOptions) {
+  showNew(viewId, viewOptions, transitionOptions, currentViewId) {
     this.store.dispatch(resetViewSet());
-    this.show(viewId, viewOptions, transitionOptions);
+    this.show(viewId, viewOptions, transitionOptions, currentViewId);
   }
 }

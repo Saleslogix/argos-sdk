@@ -222,7 +222,7 @@ const __class = declare('argos._RelatedViewWidgetListMixin', null, {
       options = lang.mixin(options, additionalOptions);
     }
 
-    App.scene.show(viewId, options);
+    App.scene.show(viewId, options, null, this.id);
   },
 });
 export default __class;

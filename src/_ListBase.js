@@ -583,12 +583,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @property {string}
    * SoHo class to be applied on multi column.
    */
-  multiColumnClass: 'four',
+  multiColumnClass: 'six',
   /**
    * @property {number}
    * Number of columns in view
    */
-  multiColumnCount: 3,
+  multiColumnCount: 2,
   // Store properties
   itemsProperty: '',
   idProperty: '',
@@ -917,7 +917,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         // Exclude system actions
         return action && action.systemAction !== true;
       }),
-    });
+    }, null, this.id);
   },
   selectEntrySilent: function selectEntrySilent(key) {
     const enableActions = this.enableActions; // preserve the original value
@@ -1474,7 +1474,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       key: selection.data[this.idProperty],
     });
 
-    App.scene.show(viewId, options);
+    App.scene.show(viewId, options, null, this.id);
   },
   /**
    * Navigates to the defined `this.detailView` passing the params as navigation options.
@@ -1494,7 +1494,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       options = lang.mixin(options, additionalOptions);
     }
 
-    App.scene.show(this.detailView, options);
+    App.scene.show(this.detailView, options, null, this.id);
   },
   /**
    * Helper method for list-actions. Navigates to the defined `this.editView` passing the given selections `idProperty`
@@ -1515,7 +1515,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       options = lang.mixin(options, additionalOptions);
     }
 
-    App.scene.show(this.editView || this.insertView, options);
+    App.scene.show(this.editView || this.insertView, options, null, this.id);
   },
   /**
    * Navigates to the defined `this.insertView`, or `this.editView` passing the current views id as the `returnTo`
@@ -1537,7 +1537,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       options = lang.mixin(options, additionalOptions);
     }
 
-    App.scene.show(this.insertView || this.editView, options);
+    App.scene.show(this.insertView || this.editView, options, null, this.id);
   },
   /**
    * Deterimines if there is more data to be shown.

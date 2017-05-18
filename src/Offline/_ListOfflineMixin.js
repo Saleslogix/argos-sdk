@@ -144,6 +144,6 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     return model.getIconClass();
   },
   onListBriefcased: function onListBriefcased() {
-    App.scene.show('briefcase_list', {});
+    App.scene.show('briefcase_list', {}, null, this.id);
   },
 });

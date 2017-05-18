@@ -13,12 +13,19 @@ function showView(state, action) {
   const viewId = action.payload.viewId;
   const viewOptions = action.payload.viewOptions;
   const currentHash = action.payload.currentHash;
+  const currentViewId = action.payload.currentViewId;
   const viewIndex = state.viewset.indexOf(viewId);
+  const currentViewIndex = state.viewset.indexOf(currentViewId);
+  const length = state.viewset.length;
 
   let newViewSet;
   if (viewIndex > -1) {
     // The view already exists in the viewset, preserve up to that view, removing everything to the right
     newViewSet = [...state.viewset].slice(0, viewIndex + 1);
+  } else if (currentViewIndex > -1 && currentViewIndex < length - 1) {
+    // We were givin the current view, preserve up to the current view and the view we are trying to show,
+    // removing everythign to the right
+    newViewSet = [...state.viewset.slice(0, currentViewIndex + 1), viewId];
   } else if (state.viewset.length < state.maxviewports) {
     // Push new item on
     newViewSet = [...state.viewset, viewId];
@@ -46,7 +53,7 @@ function windowResize(state, action) {
   if (width >= BREAKPOINTS.TABLET && width < BREAKPOINTS.LARGE) {
     maxviewports = 2;
   } else if (width >= BREAKPOINTS.LARGE) {
-    maxviewports = 3;
+    maxviewports = 2;
   }
   return {
     ...state,

@@ -47,6 +47,7 @@ define('tests/ReducerTests', [
 
     it('Can show two views', function() {
       var state = reducer.sdk(undefined, indexActions.showView('view1', {}, '/view1'));
+      state.maxviewports = 2;
       expect(state.viewset).toEqual(['view1']);
 
       state = reducer.sdk(state, indexActions.showView('view2', {}, '/view2'));
@@ -106,6 +107,75 @@ define('tests/ReducerTests', [
 
       state = reducer.sdk(state, indexActions.showView('view2', {}, '/view2'));
       expect(state.viewset).toEqual(['view2']);
+    });
+
+    it('Can show views with current view id constraint', function() {
+      var state = reducer.sdk(undefined, {}); // default state
+
+      // 1 viewport
+      state.history = [];
+      state.viewset = [];
+      state.maxviewports = 1;
+      state = reducer.sdk(state, indexActions.showView('account_list', {}, '/account_list'));
+      expect(state.viewset).toEqual(['account_list']);
+
+      state = reducer.sdk(state, indexActions.showView('account_detail', {}, '/account_detail', 'account_list'));
+      expect(state.viewset).toEqual(['account_detail']);
+
+      state = reducer.sdk(state, indexActions.showView('contact_related', {}, '/contact_related', 'account_detail'));
+      expect(state.viewset).toEqual(['contact_related']);
+
+      state = reducer.sdk(state, indexActions.showView('contact_detail', {}, '/contact_detail', 'contact_related'));
+      expect(state.viewset).toEqual(['contact_detail']);
+
+      state.history = [];
+      state.viewset = [];
+      state.maxviewports = 2;
+      /*
+      We are going to run through a scenario where we open the account list and detail in a split pane.
+      When we are on account detail, we want to inspect a few related items, so we will navigate to related
+      contacts and opportunties. The detail pane should stay in context as we do this.
+      */
+      state = reducer.sdk(state, indexActions.showView('account_list', {}, '/account_list'));
+      expect(state.viewset).toEqual(['account_list']);
+
+      state = reducer.sdk(state, indexActions.showView('account_detail', {}, '/account_detail?id=1', 'account_list'));
+      expect(state.viewset).toEqual(['account_list', 'account_detail']);
+
+      state = reducer.sdk(state, indexActions.showView('account_detail', {}, '/account_detail?id=2', 'account_list'));
+      expect(state.viewset).toEqual(['account_list', 'account_detail']);
+
+      state = reducer.sdk(state, indexActions.showView('contact_related', {}, '/contact_related', 'account_detail'));
+      expect(state.viewset).toEqual(['account_detail', 'contact_related']);
+
+      state = reducer.sdk(state, indexActions.showView('opportunity_related', {}, '/opportunity_related', 'account_detail'));
+      expect(state.viewset).toEqual(['account_detail', 'opportunity_related']);
+
+      state = reducer.sdk(state, indexActions.showView('opportunity_detail', {}, '/opportunity_detail?id=1', 'opportunity_related'));
+      expect(state.viewset).toEqual(['opportunity_related', 'opportunity_detail']);
+
+      state.history = [];
+      state.viewset = [];
+      state.maxviewports = 3;
+
+      // The same scenario as above, but with 3 panes.
+      state = reducer.sdk(state, indexActions.showView('account_list', {}, '/account_list'));
+      expect(state.viewset).toEqual(['account_list']);
+
+      state = reducer.sdk(state, indexActions.showView('account_detail', {}, '/account_detail?id=1', 'account_list'));
+      expect(state.viewset).toEqual(['account_list', 'account_detail']);
+
+      state = reducer.sdk(state, indexActions.showView('account_detail', {}, '/account_detail?id=2', 'account_list'));
+      expect(state.viewset).toEqual(['account_list', 'account_detail']);
+
+      state = reducer.sdk(state, indexActions.showView('contact_related', {}, '/contact_related', 'account_detail'));
+      expect(state.viewset).toEqual(['account_list', 'account_detail', 'contact_related']);
+
+      state = reducer.sdk(state, indexActions.showView('opportunity_related', {}, '/opportunity_related', 'account_detail'));
+      expect(state.viewset).toEqual(['account_list', 'account_detail', 'opportunity_related']);
+
+      state = reducer.sdk(state, indexActions.showView('opportunity_detail', {}, '/opportunity_detail?id=1', 'opportunity_related'));
+      expect(state.viewset).toEqual(['account_detail', 'opportunity_related', 'opportunity_detail']);
     });
   });
 });
