@@ -37,7 +37,8 @@ define('tests/ReducerTests', [
       expect(state.maxviewports).toEqual(2);
 
       state = reducer.sdk(undefined, windowActions.windowResize(windowActions.BREAKPOINTS.LARGE, 0));
-      expect(state.maxviewports).toEqual(3);
+      // expect(state.maxviewports).toEqual(3);
+      expect(state.maxviewports).toEqual(2);
     });
 
     it('Can show a view', function() {
