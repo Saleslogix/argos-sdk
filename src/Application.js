@@ -230,7 +230,7 @@ export default class Application {
    * Also calls {@link #uninitialize uninitialize}.
    */
   destroy() {
-    $(window).off('resize', this.onResize.bind(this));
+    $(window).off('resize');
     $('body').off('beforetransition', this._onBeforeTransition.bind(this));
     $('body').off('aftertransition', this._onAfterTransition.bind(this));
     $('body').off('show', this._onActivate.bind(this));
@@ -302,7 +302,9 @@ export default class Application {
    * Establishes various connections to events.
    */
   initConnects() {
-    $(window).on('resize', this.onResize.bind(this));
+    $(window).on('resize', util.debounce(() => {
+      this.onResize();
+    }, 1000));
     $('body').on('beforetransition', this._onBeforeTransition.bind(this));
     $('body').on('aftertransition', this._onAfterTransition.bind(this));
     $('body').on('show', this._onActivate.bind(this));
