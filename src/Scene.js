@@ -81,7 +81,18 @@ export default class Scene {
 
   updateMaxViewports(state) {
     if (state.sdk.maxviewports !== this.maxviewports) {
-      // TODO: Un-select views in the viewset that no longer fit, starting on the LHS
+      const length = state.sdk.viewset.length;
+      if (length > state.sdk.maxviewports) {
+        const diff = length - state.sdk.maxviewports;
+        state.sdk.viewset.filter((_, i) => i < diff)
+          .forEach((v) => {
+            const view = App.getView(v);
+            if (view) {
+              view.unselect(view.domNode);
+              $(view.domNode).css({ order: '' });
+            }
+          });
+      }
     }
 
     this.maxviewports = state.sdk.maxviewports;
@@ -98,49 +109,6 @@ export default class Scene {
     views.forEach(id => this._select(id, state));
   }
 
-  /* show(view, options) {
-    const store = this.store;
-    const state = store.getState();
-    const {
-      sdk: {
-        viewset,
-        maxviewports,
-      },
-    } = state;
-
-    const viewIndex = viewset.indexOf(view.id);
-    let newViewSet;
-    let removedViews = [];
-
-    if (viewIndex > -1) {
-      // The view already exists in the viewset, preserve up to that view, removing everything to the right
-      newViewSet = [...viewset].slice(0, viewIndex + 1);
-      removedViews = viewset.slice(viewIndex + 1);
-    } else if (viewset.length < maxviewports) {
-      // Push new item on
-      $(view.domNode).css({ order: viewset.length + 1 });
-      newViewSet = [...viewset, view.id];
-    } else {
-      // Insert the new id, shift all indexes to the left, removing the first
-      newViewSet = [...viewset, view.id].slice(1);
-      removedViews = viewset.slice(0, 1);
-    }
-
-    this._setSelectedState(removedViews, false);
-    const currentHash = window && window.location.hash || '';
-
-    const data = {
-      hash: currentHash,
-      page: view.id,
-      viewset: newViewSet,
-      tag: options && options.tag || '',
-      data: options && options.data || '',
-    };
-
-    store.dispatch(setViewSet(newViewSet));
-    store.dispatch(insertHistory(data));
-    this._select(view.id, 'selected');
-  }*/
   show(viewId, viewOptions, transitionOptions, currentViewId) {
     const currentHash = window && window.location.hash || '';
     this.store.dispatch(showView(viewId, viewOptions, currentHash, currentViewId));

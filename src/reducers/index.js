@@ -17,6 +17,7 @@ function showView(state, action) {
   const viewIndex = state.viewset.indexOf(viewId);
   const currentViewIndex = state.viewset.indexOf(currentViewId);
   const length = state.viewset.length;
+  const diff = state.viewset.length - state.maxviewports;
 
   let newViewSet;
   if (viewIndex > -1) {
@@ -29,6 +30,10 @@ function showView(state, action) {
   } else if (state.viewset.length < state.maxviewports) {
     // Push new item on
     newViewSet = [...state.viewset, viewId];
+  } else if (diff >= 0) {
+    // The viewset is greater than the max number of viewports (screen was sized down),
+    // trim the LHS, insert the new viewId, and shift all indexes to the left
+    newViewSet = [...state.viewset.slice(diff, length), viewId].slice(1);
   } else {
     // Insert the new id, shift all indexes to the left, removing the first
     newViewSet = [...state.viewset, viewId].slice(1);
