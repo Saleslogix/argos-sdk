@@ -263,6 +263,13 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   ]),
   /**
    * @property {Simplate}
+   * HTML that is used for rows created with columns
+   */
+  rowTemplate: new Simplate([
+    '<div class="row"></div>',
+  ]),
+  /**
+   * @property {Simplate}
    * HTML that is shown when not available
    *
    * `$` => the view instance
@@ -861,11 +868,11 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     this.isRefreshing = false;
   },
   createRow: function createRow(row) {
-    const rowTemplate = $('<div>class="row"</div>');
+    const rowTemplate = $(this.rowTemplate.apply(null, this));
     row.forEach((element) => {
       rowTemplate.append(element);
     });
-    return rowTemplate.get(0);
+    return rowTemplate;
   },
   createRowNode: function createRowNode(layout, sectionNode, entry, template, data) {
     const frag = $(template.apply(data, this));
