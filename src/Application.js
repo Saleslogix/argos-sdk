@@ -889,7 +889,7 @@ export default class Application {
     const defaultViewContainerClasses = 'page-container viewContainer';
     $(this._appContainerNode).append(`
       <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
-        data-breakpoint="tablet">
+        data-breakpoint="large">
       </nav>
       <div class="page-container scrollable tbarContainer">
         <div id="${defaultViewContainerId}" class="${defaultViewContainerClasses}"></div>
