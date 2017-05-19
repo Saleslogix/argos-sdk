@@ -167,7 +167,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * * `$$` => view instance
    */
   propertyTemplate: new Simplate([
-    '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}" data-property="{%= $.property || $.name %}">',
+    '<div class="{%= $$.multiColumnClass %} columns{%= $.cls %}" data-property="{%= $.property || $.name %}">',
     '<label>{%: $.label %}</label>',
     '<span class="data">{%= $.value %}</span>', // todo: create a way to allow the value to not be surrounded with a span tag
     '</div>',
@@ -180,7 +180,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * * `$$` => view instance
    */
   relatedPropertyTemplate: new Simplate([
-    '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
+    '<div class="{%= $$.multiColumnClass %} columns{%= $.cls %}">',
     '<label>{%: $.label %}</label>',
     '<span class="data">',
     '<a class="hyperlink" data-action="activateRelatedEntry" data-view="{%= $.view %}" data-context="{%: $.context %}" data-descriptor="{%: $.descriptor || $.value %}">',
@@ -228,7 +228,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * * `$$` => view instance
    */
   actionPropertyTemplate: new Simplate([
-    '<div class="row{% if(!$.value) { %} no-value{% } %} {%= $.cls %}">',
+    '<div class="{%= $$.multiColumnClass %} columns{%= $.cls %}">',
     '<label>{%: $.label %}</label>',
     '<span class="data">',
     '<a class="hyperlink" data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">',
@@ -387,6 +387,16 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * Flag to signal that the interface is loading and clicking refresh will be ignored to prevent double entity loading
    */
   isRefreshing: false,
+  /**
+   * @property {String}
+   * Determines the SoHo class implemented in property templates
+   */
+  multiColumnClass: 'four',
+  /**
+   * @property {Number}
+   * Determines how many columns the detail view property views should contain
+   */
+  multiColumnCount: 3,
 
   // Store properties
   itemsProperty: '',
@@ -646,13 +656,14 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * @param {Object} entry data response
    */
   processLayout: function processLayout(layout, entry) {
-    const rows = (layout.children || layout.as || layout);
+    const items = (layout.children || layout.as || layout);
     const options = layout.options || (layout.options = {
       title: this.detailsText,
     });
     const sectionQueue = [];
     let sectionStarted = false;
     const callbacks = [];
+    let row = [];
 
     let sectionNode;
 
@@ -660,8 +671,8 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       this.placeTabList(this.contentNode);
     }
 
-    for (let i = 0; i < rows.length; i++) {
-      const current = rows[i];
+    for (let i = 0; i < items.length; i++) {
+      const current = items[i];
       const include = this.expandExpression(current.include, entry);
       const exclude = this.expandExpression(current.exclude, entry);
       let context;
@@ -787,6 +798,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       const useListTemplate = (layout.list || options.list);
 
       let template;
+      let isColumnItem = false;
       // priority: use > (relatedPropertyTemplate | relatedTemplate) > (actionPropertyTemplate | actionTemplate) > propertyTemplate
       if (current.use) {
         template = current.use;
@@ -795,15 +807,29 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         current.relatedItem = true;
       } else if (current.view) {
         template = this.relatedPropertyTemplate;
+        isColumnItem = true;
       } else if (current.action && useListTemplate) {
         template = this.actionTemplate;
       } else if (current.action) {
         template = this.actionPropertyTemplate;
+        isColumnItem = true;
       } else {
         template = this.propertyTemplate;
+        isColumnItem = true;
       }
 
-      const rowNode = this.createRowNode(current, sectionNode, entry, template, data);
+      let rowNode = this.createRowNode(current, sectionNode, entry, template, data);
+      if (isColumnItem && (data.raw && data.value)) {
+        row.push(rowNode);
+        if (row.length >= this.multiColumnCount) {
+          rowNode = this.createRow(row);
+          $(sectionNode).append(rowNode);
+          row = [];
+        }
+      } else if (data.raw && data.value) {
+        $(sectionNode).append(rowNode);
+      }
+
       if (current.relatedItem) {
         try {
           this._processRelatedItem(data, context, rowNode);
@@ -834,9 +860,15 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     }
     this.isRefreshing = false;
   },
+  createRow: function createRow(row) {
+    const rowTemplate = $('<div>class="row"</div>');
+    row.forEach((element) => {
+      rowTemplate.append(element);
+    });
+    return rowTemplate.get(0);
+  },
   createRowNode: function createRowNode(layout, sectionNode, entry, template, data) {
     const frag = $(template.apply(data, this));
-    $(sectionNode).append(frag);
     return frag.get(0);
   },
   _getStoreAttr: function _getStoreAttr() {
