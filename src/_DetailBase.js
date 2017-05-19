@@ -71,7 +71,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel scrollable {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '{%! $.loadingTemplate %}',
     '{%! $.quickActionTemplate %}',
-    '<div data-dojo-attach-point="contentNode">',
+    '<div data-dojo-attach-point="contentNode" class="column">',
     '{%! $.tabContentTemplate %}',
     '</div>',
     '</div>',
