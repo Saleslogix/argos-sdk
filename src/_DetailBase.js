@@ -828,7 +828,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       let rowNode = this.createRowNode(current, sectionNode, entry, template, data);
       if (isColumnItem && (data.raw && data.value)) {
         row.push(rowNode);
-        if (row.length >= this.multiColumnCount) {
+        if (row.length >= this.multiColumnCount || row.length >= items.length) {
           rowNode = this.createRow(row);
           $(sectionNode).append(rowNode);
           row = [];
