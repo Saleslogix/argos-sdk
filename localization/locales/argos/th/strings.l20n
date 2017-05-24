@@ -161,7 +161,7 @@
   todayText: "วันนี้"
   sundayAbbreviated: "อา."
   mondayAbbreviated: "จ."
-  tuesdayAbbreviated: "อัง."
+  tuesdayAbbreviated: "อ."
   wednesdayAbbreviated: "พ."
   thursdayAbbreviated: "พฤ."
   fridayAbbreviated: "ศ."
@@ -283,6 +283,6 @@
 <sdkApplication
   connectionToastTitleText: "การเชื่อมต่อ"
   checkingText: "กำลังตรวจสอบการเชื่อมต่อ"
-  loadingApplicationStateText: "กำลังโหลดรัฐแอปพลิเคชัน"
+  loadingApplicationStateText: "กำลังโหลดสถานะแอปพลิเคชัน"
   initializingText: "กำลังเตรียมใช้งาน:"
 >
