@@ -191,7 +191,7 @@
 >
 
 <mainToolbar ""
-  titleText: "Mobiel"
+  titleText: "Mobiel telefoonnummer"
 >
 
 <relatedViewWidget ""
@@ -257,7 +257,7 @@
 
 <modal
   alertText: "Alert"
-  completeText: "Voltooid"
+  completeText: "Voltooien"
   cancelText: "Annuleren"
   confirmText: "Bevestigen"
   editText: "Bewerken"
