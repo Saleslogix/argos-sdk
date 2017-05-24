@@ -269,20 +269,22 @@ li > .disabled {
         .box-sizing(border-box);
     }
 }
-.landscape .action-list > li {
-    display: inline-block;
-    margin: 0 20px 0 0;
-    label {
-        font-size: 1.4rem;
+@media (min-width: 767px) {
+    .action-list > li {
         display: inline-block;
-        line-height: 3rem;
+        margin: 0 20px 0 0;
+        label {
+            font-size: 1.4rem;
+            display: inline-block;
+            line-height: 3rem;
+        }
+        .data {
+            display: none
+        }
     }
-    .data {
-        display: none
+    .action-list > li.disabled {
+        display: none;
     }
-}
-.landscape .action-list > li.disabled {
-    display: none;
 }
 
 .invisible {
