@@ -48,7 +48,6 @@ input, textarea, div.dropdown, div.multiselect, .dropdown-wrapper {
 
 .action-list > li > a > label {
     cursor: pointer !important;
-    line-height: inherit;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -99,6 +98,9 @@ input, textarea, div.dropdown, div.multiselect, .dropdown-wrapper {
 .field-control-wrapper {
     margin-bottom: 20px;
     position: relative;
+    input {
+        padding-right: 35px;
+    }
 }
 .field-control-trigger {
     cursor: pointer;
