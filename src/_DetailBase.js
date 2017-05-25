@@ -829,7 +829,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       let rowNode = this.createRowNode(current, sectionNode, entry, template, data);
       itemsProcessed++;
       if (isColumnItem) {
-        if (data.raw && data.value) {
+        if ((data.raw || typeof data.raw === 'boolean') && data.value) {
           row.push(rowNode);
         }
         if (row.length >= this.multiColumnCount || itemsProcessed >= items.length) {
@@ -837,7 +837,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
           $(sectionNode).append(rowNode);
           row = [];
         }
-      } else if (data.raw && data.value) {
+      } else if ((data.raw || typeof data.raw === 'boolean') && data.value) {
         $(sectionNode).append(rowNode);
       }
 
