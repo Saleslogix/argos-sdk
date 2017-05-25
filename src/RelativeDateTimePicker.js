@@ -112,7 +112,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_WidgetBase, _Templated
   },
   makeItem: function makeItem({ label, time, format }) {
     const item = $(this.listItemTemplate.apply({ textLeft: label, textRight: time.format(format) }));
-    item.time = time;
+    item[0].time = time;
     $(this.listNode).append(item);
   },
   makeListItems: function makeListItems({ title, children }) {
