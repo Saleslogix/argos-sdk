@@ -671,7 +671,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     let sectionStarted = false;
     const callbacks = [];
     let row = [];
-    let itemsProcessed = 0;
 
     let sectionNode;
 
@@ -827,20 +826,19 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       }
 
       let rowNode = this.createRowNode(current, sectionNode, entry, template, data);
-      itemsProcessed++;
-      if (isColumnItem) {
-        if ((data.raw || typeof data.raw === 'boolean') && data.value) {
+      if ((data.raw || typeof data.raw === 'boolean') && data.value) {
+        if (isColumnItem) {
           row.push(rowNode);
-        }
-        if (row.length >= this.multiColumnCount || itemsProcessed >= items.length) {
-          rowNode = this.createRow(row);
+        } else {
           $(sectionNode).append(rowNode);
-          row = [];
         }
-      } else if ((data.raw || typeof data.raw === 'boolean') && data.value) {
-        $(sectionNode).append(rowNode);
       }
 
+      if (row.length >= this.multiColumnCount || (i >= (items.length - 1) && row)) {
+        rowNode = this.createRow(row);
+        $(sectionNode).append(rowNode);
+        row = [];
+      }
       if (current.relatedItem) {
         try {
           this._processRelatedItem(data, context, rowNode);
