@@ -80,7 +80,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       {% } %}>
       {%: $.label %}
     </label>
-    <div class="field-control-wrapper">
+    <div class="field field-control-wrapper">
       <button
         data-dojo-attach-point="triggerNode"
         data-action="showModal"

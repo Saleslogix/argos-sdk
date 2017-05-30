@@ -90,7 +90,7 @@ const control = declare('argos.Fields.LookupField', [_Field], {
         {%: $.label %}
     </label>
     {% } %}
-    <div class="field-control-wrapper">
+    <div class="field field-control-wrapper">
       <button class="field-control-trigger"
         aria-label="{%: $.lookupLabelText %}"
         data-action="buttonClick"

@@ -60,7 +60,7 @@ const __class = declare('argos.Fields.EditorField', [_Field], {
       {% } %}>
       {%: $.label %}
     </label>
-    <div class="field-control-wrapper">
+    <div class="field field-control-wrapper">
       <button
         class="button simpleSubHeaderButton field-control-trigger"
         aria-label="{%:  $.lookupLabelText %}">
