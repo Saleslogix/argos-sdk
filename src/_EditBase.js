@@ -660,8 +660,8 @@ const __class = declare('argos._EditBase', [View], {
         title: this.detailsText,
       };
     }
-
-    for (let i = 0; i < rows.length; i++) {
+    let j = 0;
+    for (let i = 0; i < rows.length; i++, j++) {
       current = rows[i];
 
       if (current.children || current.as) {
@@ -681,8 +681,15 @@ const __class = declare('argos._EditBase', [View], {
       }
 
       this.createRowContent(current, content);
+      const Ctor = FieldManager.get(current.type);
+      const field = this.fields[current.name || current.property] = new Ctor(lang.mixin({
+        owner: this,
+      }, current));
 
-      if (this.multiColumnView && (i + 1) % this.multiColumnCount === 0) {
+      if (field.type === 'hidden') {
+        j--;
+      }
+      if (this.multiColumnView && (j + 1) % this.multiColumnCount === 0) {
         content.push('</div>');
         content.push('<div class="row">');
       }
