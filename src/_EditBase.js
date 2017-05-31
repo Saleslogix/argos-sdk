@@ -680,14 +680,7 @@ const __class = declare('argos._EditBase', [View], {
         content.push('<div class="row">');
       }
 
-      if (this.multiColumnView) {
-        content.push(`<div class="${this.multiColumnClass} columns">`);
-      }
       this.createRowContent(current, content);
-      if (this.multiColumnView) {
-        // in case of hidden field - add empty space for the column to take shape
-        content.push('&nbsp;</div>');
-      }
 
       if (this.multiColumnView && (i + 1) % this.multiColumnCount === 0) {
         content.push('</div>');
@@ -728,7 +721,17 @@ const __class = declare('argos._EditBase', [View], {
       this.connect(field, 'onEnable', this._onEnableField);
       this.connect(field, 'onDisable', this._onDisableField);
 
+      if (this.multiColumnView) {
+        let hidden = '';
+        if (field.type === 'hidden') {
+          hidden = 'display-none';
+        }
+        content.push(`<div class="${this.multiColumnClass} columns ${hidden}">`);
+      }
       content.push(template.apply(field, this));
+      if (this.multiColumnView) {
+        content.push('</div>');
+      }
     }
   },
   /**

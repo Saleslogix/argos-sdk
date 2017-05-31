@@ -81,7 +81,7 @@ const control = declare('argos.Fields.DurationField', [LookupField], {
    */
   widgetTemplate: new Simplate([
     `<label for="{%= $.name %}">{%: $.label %}</label>
-    <div class="field-control-wrapper">
+    <div class="field field-control-wrapper">
       <div class="autoComplete-watermark" data-dojo-attach-point="autoCompleteNode"></div>
       <button
         class="button field-control-trigger simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}"
