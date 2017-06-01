@@ -70,7 +70,6 @@ const control = declare('argos.Fields.BooleanField', [Field], {
   originalValue: null,
 
   initSoho: function initSoho() {
-    console.log(this)
     $(this.toggleNode).on('click', this._onClick.bind(this));
   },
   /**
