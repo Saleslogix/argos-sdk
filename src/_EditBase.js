@@ -681,13 +681,7 @@ const __class = declare('argos._EditBase', [View], {
       }
 
       this.createRowContent(current, content);
-      const Ctor = FieldManager.get(current.type);
-      let field;
-      if (Ctor) {
-        field = this.fields[current.name || current.property] = new Ctor(lang.mixin({
-          owner: this,
-        }, current));
-      }
+      const field = this.fields[current.name || current.property];
       if (field && field.type === 'hidden') {
         j--;
       }
