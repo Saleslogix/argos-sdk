@@ -46,9 +46,9 @@ const control = declare('argos.Fields.BooleanField', [Field], {
         <input
           data-dojo-attach-point="toggleNode"
           type="checkbox" {% if($.checked) { %}checked{% } %}
-          id="{%= $.name %}"
+          id="{%= $.id %}_{%= $.name %}"
           name="{%= $.name %}" class="switch" />
-        <label for="{%= $.name %}">{%: $.label %}</label>
+        <label for="{%= $.id %}_{%= $.name %}">{%: $.label %}</label>
       </div>
     `,
   ]),
@@ -70,6 +70,7 @@ const control = declare('argos.Fields.BooleanField', [Field], {
   originalValue: null,
 
   initSoho: function initSoho() {
+    console.log(this)
     $(this.toggleNode).on('click', this._onClick.bind(this));
   },
   /**
