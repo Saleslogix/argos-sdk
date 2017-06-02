@@ -1343,7 +1343,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    */
   activateEntry: function activateEntry(params) {
     // dont navigate if clicked on QA button
-    if (params.$event.target.className && params.$event.target.className.indexOf('btn-actions') !== -1) {
+    if (params.$event && params.$event.target.className && params.$event.target.className.indexOf('btn-actions') !== -1) {
       return;
     }
     if (params.key) {
