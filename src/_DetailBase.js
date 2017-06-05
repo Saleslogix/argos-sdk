@@ -663,6 +663,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     const sectionQueue = [];
     let sectionStarted = false;
     const callbacks = [];
+    let row = [];
 
     let sectionNode;
 
@@ -797,6 +798,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       const useListTemplate = (layout.list || options.list);
 
       let template;
+      let isColumnItem = false;
       // priority: use > (relatedPropertyTemplate | relatedTemplate) > (actionPropertyTemplate | actionTemplate) > propertyTemplate
       if (current.use) {
         template = current.use;
@@ -805,15 +807,31 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         current.relatedItem = true;
       } else if (current.view) {
         template = this.relatedPropertyTemplate;
+        isColumnItem = true;
       } else if (current.action && useListTemplate) {
         template = this.actionTemplate;
       } else if (current.action) {
         template = this.actionPropertyTemplate;
+        isColumnItem = true;
       } else {
         template = this.propertyTemplate;
+        isColumnItem = true;
       }
 
-      const rowNode = this.createRowNode(current, sectionNode, entry, template, data);
+      let rowNode = this.createRowNode(current, sectionNode, entry, template, data);
+      if ((data.raw || typeof data.raw === 'boolean') && data.value) {
+        if (isColumnItem) {
+          row.push(rowNode);
+        } else {
+          $(sectionNode).append(rowNode);
+        }
+      }
+
+      if (row.length >= this.multiColumnCount || (i >= (items.length - 1) && row)) {
+        rowNode = this.createRow(row);
+        $(sectionNode).append(rowNode);
+        row = [];
+      }
       if (current.relatedItem) {
         try {
           this._processRelatedItem(data, context, rowNode);
@@ -846,7 +864,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   },
   createRowNode: function createRowNode(layout, sectionNode, entry, template, data) {
     const frag = $(template.apply(data, this));
-    $(sectionNode).append(frag);
     return frag.get(0);
   },
   _getStoreAttr: function _getStoreAttr() {
