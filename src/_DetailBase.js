@@ -685,10 +685,20 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       let context;
 
       if (include !== undefined && !include) {
+        if (i >= (items.length - 1) && row.length > 0) {
+          const rowNode = this.createRow(row);
+          $(sectionNode).append(rowNode);
+          row = [];
+        }
         continue;
       }
 
       if (exclude !== undefined && exclude) {
+        if (i >= (items.length - 1) && row.length > 0) {
+          const rowNode = this.createRow(row);
+          $(sectionNode).append(rowNode);
+          row = [];
+        }
         continue;
       }
 
@@ -826,7 +836,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       }
 
       let rowNode = this.createRowNode(current, sectionNode, entry, template, data);
-      if ((data.raw || typeof data.raw === 'boolean') && data.value) {
+      if ((data.raw !== undefined) && data.value) {
         if (isColumnItem) {
           row.push(rowNode);
         } else {
@@ -834,7 +844,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         }
       }
 
-      if (row.length >= this.multiColumnCount || (i >= (items.length - 1) && row)) {
+      if (row.length >= this.multiColumnCount || (i >= (items.length - 1) && row.length > 0)) {
         rowNode = this.createRow(row);
         $(sectionNode).append(rowNode);
         row = [];
