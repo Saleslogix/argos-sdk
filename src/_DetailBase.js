@@ -22,6 +22,7 @@ import ErrorManager from './ErrorManager';
 import View from './View';
 import TabWidget from './TabWidget';
 import getResource from './I18n';
+import string from 'dojo/string';
 
 
 const resource = getResource('detailBase');
@@ -544,7 +545,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * @private
    */
   placeDetailHeader: function placeDetailHeader() {
-    const value = `${this.entityText} ${this.informationText}`;
+    const value = string.substitute(this.informationText, [this.entityText]);
     $(this.tabContainer).before(this.detailHeaderTemplate.apply({ value }, this));
   },
   /**
