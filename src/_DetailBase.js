@@ -263,6 +263,13 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
   ]),
   /**
    * @property {Simplate}
+   * HTML that is used for rows created with columns
+   */
+  rowTemplate: new Simplate([
+    '<div class="row"></div>',
+  ]),
+  /**
+   * @property {Simplate}
    * HTML that is shown when not available
    *
    * `$` => the view instance
@@ -663,6 +670,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     const sectionQueue = [];
     let sectionStarted = false;
     const callbacks = [];
+    let row = [];
 
     let sectionNode;
 
@@ -677,10 +685,20 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       let context;
 
       if (include !== undefined && !include) {
+        if (i >= (items.length - 1) && row.length > 0) {
+          const rowNode = this.createRow(row);
+          $(sectionNode).append(rowNode);
+          row = [];
+        }
         continue;
       }
 
       if (exclude !== undefined && exclude) {
+        if (i >= (items.length - 1) && row.length > 0) {
+          const rowNode = this.createRow(row);
+          $(sectionNode).append(rowNode);
+          row = [];
+        }
         continue;
       }
 
@@ -797,6 +815,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       const useListTemplate = (layout.list || options.list);
 
       let template;
+      let isColumnItem = false;
       // priority: use > (relatedPropertyTemplate | relatedTemplate) > (actionPropertyTemplate | actionTemplate) > propertyTemplate
       if (current.use) {
         template = current.use;
@@ -805,15 +824,31 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
         current.relatedItem = true;
       } else if (current.view) {
         template = this.relatedPropertyTemplate;
+        isColumnItem = true;
       } else if (current.action && useListTemplate) {
         template = this.actionTemplate;
       } else if (current.action) {
         template = this.actionPropertyTemplate;
+        isColumnItem = true;
       } else {
         template = this.propertyTemplate;
+        isColumnItem = true;
       }
 
-      const rowNode = this.createRowNode(current, sectionNode, entry, template, data);
+      let rowNode = this.createRowNode(current, sectionNode, entry, template, data);
+      if ((data.raw !== undefined) && data.value) {
+        if (isColumnItem) {
+          row.push(rowNode);
+        } else {
+          $(sectionNode).append(rowNode);
+        }
+      }
+
+      if (row.length >= this.multiColumnCount || (i >= (items.length - 1) && row.length > 0)) {
+        rowNode = this.createRow(row);
+        $(sectionNode).append(rowNode);
+        row = [];
+      }
       if (current.relatedItem) {
         try {
           this._processRelatedItem(data, context, rowNode);
@@ -844,9 +879,15 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     }
     this.isRefreshing = false;
   },
+  createRow: function createRow(row) {
+    const rowTemplate = $(this.rowTemplate.apply(null, this));
+    row.forEach((element) => {
+      rowTemplate.append(element);
+    });
+    return rowTemplate;
+  },
   createRowNode: function createRowNode(layout, sectionNode, entry, template, data) {
     const frag = $(template.apply(data, this));
-    $(sectionNode).append(frag);
     return frag.get(0);
   },
   _getStoreAttr: function _getStoreAttr() {
