@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "Information"
+  informationText: "${0} Information"
   titleText: "Detail"
   entityText: "Entity"
   detailsText: "Details"
