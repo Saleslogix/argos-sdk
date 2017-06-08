@@ -80,7 +80,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
   animateCls: 'animate',
 
   _initPosition: {
-    top: -35, // keep in sync with class .pull-to-refresh top
+    top: -35,
   },
 
   _getText: function _getText(prop) {
@@ -120,7 +120,10 @@ const __class = declare('argos._PullToRefreshMixin', null, {
       })
       .map((e) => {
         const evt = e.touches[0];
-        $(this.pullRefreshBanner).css('visibility', 'visible');
+        $(this.pullRefreshBanner).css({
+          visibility: 'visible',
+          top: `${this._initPosition.top}px`,
+        });
         $(this.dragNode).removeClass(this.animateCls);
         const bannerHeight = $(this.pullRefreshBanner).height();
 
