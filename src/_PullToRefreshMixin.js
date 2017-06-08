@@ -98,7 +98,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     }
 
     this.pullRefreshBanner = $(this.pullRefreshBannerTemplate.apply(this)).get(0);
-    $(dragNode).before(this.pullRefreshBanner);
+    $(dragNode).prepend(this.pullRefreshBanner);
 
     // Pull down to refresh touch handles
     this.scrollerNode = scrollerNode;

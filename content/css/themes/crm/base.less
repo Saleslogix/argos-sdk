@@ -315,9 +315,6 @@ body {
     min-height: 268px;
     overflow: hidden;
 }
-.page-container {
-    background-color: #f0f0f0;
-}
 
 .viewContainer > .list,
 .viewContainer > .panel,
@@ -326,6 +323,7 @@ body {
     position: absolute;
     width: 100%;
     height: 99%;
+    margin-top: -40px;
     display: none;
     visibility: hidden;
 }
@@ -628,8 +626,11 @@ body {
 .pull-to-refresh {
     width: 100%;
     text-align: center;
-    position: absolute;
-    visibility: hidden;
+    visibility: visible;
+    button, p {
+        display: inline-block;
+        vertical-align: middle;
+    }
     > span {
         margin: 0 10px;
         height: 18px;
