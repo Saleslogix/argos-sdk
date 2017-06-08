@@ -229,7 +229,7 @@
 >
 
 <relativeDateTimePicker ""
-  titleText: "約..."
+  titleText: "おおよその時間..."
   pickDateTimeText: "詳細"
   thisEveningText: "今夜"
   tomorrowMorningText: "明朝"
