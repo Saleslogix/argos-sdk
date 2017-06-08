@@ -44,7 +44,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    * `$` - the toolbar instance
    */
   widgetTemplate: new Simplate([`
-    <header class="header azure07 is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
+    <header class="header is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
       <div class="toolbar has-more-button has-title-button" role="toolbar" aria-label="Layouts">
         <div class="title">
           <button class="btn-icon application-menu-trigger hide-focus" type="button" tabindex="0">
