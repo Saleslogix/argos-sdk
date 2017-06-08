@@ -79,6 +79,10 @@ const __class = declare('argos._PullToRefreshMixin', null, {
 
   animateCls: 'animate',
 
+  _initPosition: {
+    top: -35, // keep in sync with class .pull-to-refresh top
+  },
+
   _getText: function _getText(prop) {
     return __class.prototype[prop];
   },
@@ -98,7 +102,7 @@ const __class = declare('argos._PullToRefreshMixin', null, {
     }
 
     this.pullRefreshBanner = $(this.pullRefreshBannerTemplate.apply(this)).get(0);
-    $(dragNode).prepend(this.pullRefreshBanner);
+    $(dragNode).before(this.pullRefreshBanner);
 
     // Pull down to refresh touch handles
     this.scrollerNode = scrollerNode;
@@ -162,8 +166,10 @@ const __class = declare('argos._PullToRefreshMixin', null, {
             'overflow-y': data.overflowCssY,
             'overflow-x': data.overflowCssX,
           });
-
-          $(this.pullRefreshBanner).css('visibility', 'hidden');
+          $(this.pullRefreshBanner).css({
+            visibility: 'hidden',
+            top: `${this._initPosition.top}px`,
+          });
           $(this.dragNode).addClass(this.animateCls);
 
           // Check if we dragged over the threshold (maxDistance),
@@ -183,7 +189,9 @@ const __class = declare('argos._PullToRefreshMixin', null, {
       $(this.dragNode).css({
         top: `${data.top}px`,
       });
-
+      $(this.pullRefreshBanner).css({
+        top: `${data.top + this._initPosition.top}px`,
+      });
       if (data.distance > data.maxDistance) {
         this.pullRefreshBanner.innerHTML = this.pullReleaseTemplate.apply(this);
       } else {
