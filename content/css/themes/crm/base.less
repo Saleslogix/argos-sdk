@@ -11,10 +11,10 @@
 }
 
 .card, .widget {
-  min-height: 0;
+  min-height: 0 !important;
     .card-content {
-        height: auto;
-        min-height: 0;
+        height: auto !important;
+        min-height: 0 !important;
         padding: 16px 20px 15px;
         overflow-x: hidden;
         p {
@@ -276,8 +276,8 @@ li > .disabled {
         label {
             font-size: 1.4rem;
             display: inline-block;
-            line-height: 3rem;
-            line-height: 30px;
+            line-height: 2.8rem;
+            line-height: 28px;
         }
         .data {
             display: none
@@ -314,9 +314,6 @@ body {
 [orient="landscape"] {
     min-height: 268px;
     overflow: hidden;
-}
-.page-container {
-    background-color: #f0f0f0;
 }
 
 .viewContainer > .list,
@@ -628,8 +625,12 @@ body {
 .pull-to-refresh {
     width: 100%;
     text-align: center;
-    position: absolute;
     visibility: hidden;
+    position: absolute;
+    button, p {
+        display: inline-block;
+        vertical-align: middle;
+    }
     > span {
         margin: 0 10px;
         height: 18px;
@@ -750,8 +751,18 @@ body {
   padding: 0 5px;
 }
 
-.relatedviewitem .badge {
-    float: right;
+li.relatedviewitem {
+    padding-top:0;
+    padding-bottom: 0;
+    .badge {
+        float: right;
+    }
+    a {
+        padding: 15px 0;
+        margin: 0 0 0 0.25em;
+        display: block;
+        cursor: pointer;
+    }
 }
 
 .widget-header > .btn-icon {
