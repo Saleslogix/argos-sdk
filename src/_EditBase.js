@@ -420,6 +420,7 @@ const __class = declare('argos._EditBase', [View], {
    */
   _onShowField: function _onShowField(field) {
     $(field.containerNode).removeClass('row-hidden');
+    $(field.containerNode).parent().removeClass('display-none');
   },
   /**
    * Handler for a fields on hide event.
@@ -430,6 +431,7 @@ const __class = declare('argos._EditBase', [View], {
    */
   _onHideField: function _onHideField(field) {
     $(field.containerNode).addClass('row-hidden');
+    $(field.containerNode).parent().addClass('display-none');
   },
   /**
    * Handler for a fields on enable event.
@@ -660,8 +662,7 @@ const __class = declare('argos._EditBase', [View], {
         title: this.detailsText,
       };
     }
-    let j = 0;
-    for (let i = 0; i < rows.length; i++, j++) {
+    for (let i = 0; i < rows.length; i++) {
       current = rows[i];
 
       if (current.children || current.as) {
@@ -677,18 +678,10 @@ const __class = declare('argos._EditBase', [View], {
       if (!sectionStarted) {
         sectionStarted = true;
         content.push(this.sectionBeginTemplate.apply(layout, this));
-        content.push('<div class="row">');
+        content.push('<div class="row edit-row">');
       }
 
       this.createRowContent(current, content);
-      const field = this.fields[current.name || current.property];
-      if (field && field.type === 'hidden') {
-        j--;
-      }
-      if (this.multiColumnView && (j + 1) % this.multiColumnCount === 0) {
-        content.push('</div>');
-        content.push('<div class="row">');
-      }
     }
     content.push('</div>');
     content.push(this.sectionEndTemplate.apply(layout, this));
