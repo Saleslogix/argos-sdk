@@ -675,6 +675,7 @@ const __class = declare('argos._EditBase', [View], {
       }
 
       if (!sectionStarted) {
+        j = 0;
         sectionStarted = true;
         content.push(this.sectionBeginTemplate.apply(layout, this));
         content.push('<div class="row">');
