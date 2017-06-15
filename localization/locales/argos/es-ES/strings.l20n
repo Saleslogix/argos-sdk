@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "Seleccionar archivo"
-  addFileText: "Hacer clic o tocar aquí para añadir un archivo."
+  addFileText: "Elija un archivo para añadirlo"
   uploadText: "Cargar"
   cancelText: "Cancelar"
   selectFileText: "Seleccionar archivo"
@@ -212,10 +212,6 @@
 
 <selectionModel ""
   requireSelectionText: "Se requiere una selección, no puede anular la selección del último artículo."
->
-
-<tabWidget ""
- moreText: "Más"
 >
 
 <view ""

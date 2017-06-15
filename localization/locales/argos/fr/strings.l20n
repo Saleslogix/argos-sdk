@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "Sélection de fichier"
-  addFileText: "Cliquez ou appuyez ici pour ajouter un fichier."
+  addFileText: "Choisissez un fichier à ajouter"
   uploadText: "Charger"
   cancelText: "Annuler"
   selectFileText: "Sélectionner un fichier"
@@ -125,7 +125,7 @@
   titleText: "Liste"
   configureText: "Configurer"
   errorRenderText: "Erreur de rendu du modèle de ligne"
-  remainingText: "${0} fiches restantes"
+  remainingText: "${0} enregistrements restants"
   cancelText: "Annuler"
   insertText: "Nouveau"
   noDataText: "Aucun enregistrement"
@@ -212,10 +212,6 @@
 
 <selectionModel ""
   requireSelectionText: "Vous devez effectuer une sélection. Vous ne pouvez pas désélectionner le dernier élément."
->
-
-<tabWidget ""
- moreText: "Plus"
 >
 
 <view ""
