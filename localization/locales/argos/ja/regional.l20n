@@ -56,11 +56,11 @@
 """>
 
 <dateFieldDateTimeFormat ""
-  dateFormatText: "YYYY MM DD"
+  dateFormatText: "YYYY/MM/DD"
 >
 
 <formatDateTimeFormat ""
-  shortDateFormatText: "YYYY M D"
+  shortDateFormatText: "YYYY/M/D"
 >
 
 <relativeDateTimePickerDateTimeFormat ""
