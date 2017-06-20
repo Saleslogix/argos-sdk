@@ -1780,6 +1780,17 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   },
   onApplyRowTemplate: function onApplyRowTemplate(entry, rowNode) {
     this.applyRowIndicators(entry, rowNode);
+    this.initRowQuickActions(rowNode);
+  },
+  initRowQuickActions: function initRowQuickActions(rowNode) {
+    if (this.isCardView && this.visibleActions.length) {
+      // initialize popupmenus on each card
+      const btn = $(rowNode).find('.btn-actions');
+      $(btn).popupmenu();
+      $(btn).on('beforeopen', (evt) => {
+        this.selectEntry({ key: evt.target.attributes['data-key'].value });
+      });
+    }
   },
   processData: function processData(entries) {
     if (!entries) {
@@ -1826,15 +1837,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     try {
       if (this.isCardView) {
         rowNode = $(this.rowTemplate.apply(entry, this));
-
-        if (this.visibleActions.length) {
-          // initialize popupmenus on each card
-          const btn = $(rowNode).find('.btn-actions');
-          $(btn).popupmenu();
-          $(btn).on('beforeopen', (evt) => {
-            this.selectEntry({ key: evt.target.attributes['data-key'].value });
-          });
-        }
       } else {
         rowNode = $(this.liRowTemplate.apply(entry, this));
       }

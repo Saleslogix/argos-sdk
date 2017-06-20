@@ -639,6 +639,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   transitionTo: function transitionTo() {
     if (this.refreshRequired) {
       this.refreshRequired = false;
+      this.isRefreshing = false;
       this.refresh();
     }
 
