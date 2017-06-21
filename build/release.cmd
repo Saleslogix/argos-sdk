@@ -22,8 +22,8 @@ xcopy node_modules\@infor\icrm-js-common\dist\bundles\common.bundle.js deps\icrm
 xcopy node_modules\@infor\icrm-js-customization\dist\bundles\customization.bundle.js deps\icrm-js-customization\ /E /Y
 xcopy node_modules\@infor\icrm-js-services\dist\bundles\icrm-js-services.js deps\icrm-js-services\ /E /Y
 xcopy node_modules\redux\dist\redux.min.js deps\redux\ /E /Y
-xcopy node_modules\@infor\sohoxi\js\vendor\d3.js deps\d3\ /E /Y
 xcopy node_modules\jquery\dist\jquery.js deps\jquery\ /E /Y
+xcopy node_modules\@infor\sohoxi\dist\js\d3.js deps\d3\ /E /Y
 xcopy node_modules\@infor\sohoxi\dist\js\sohoxi.js deps\sohoxijs\ /E /Y
 xcopy node_modules\@infor\sohoxi\dist\css\*.css deps\sohoxicss\ /E /Y
 xcopy node_modules\@infor\sohoxi\dist\js\cultures\*.js deps\sohoxicultures\ /E /Y
