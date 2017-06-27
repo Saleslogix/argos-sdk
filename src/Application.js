@@ -222,6 +222,11 @@ export default class Application {
     this.viewSettingsModal = null;
 
     this.previousState = null;
+    /*
+     * Resource Strings
+     */
+    this.viewSettingsText = resource.viewSettingsText;
+    this.closeText = resource.closeText;
   }
 
   /**
@@ -896,12 +901,12 @@ export default class Application {
         <div class="modal view-settings" role="dialog" aria-modal="true" aria-hidden="false">
           <div class="modal-content">
             <div class="modal-header">
-              <h1>View Settings</h1>
+              <h1>${this.viewSettingsText}</h1>
             </div>
             <div class="modal-body">
             </div>
             <div class="modal-buttonset">
-              <button type="button" class="btn-modal" style="width:100%">Close</button>
+              <button type="button" class="btn-modal" style="width:100%">${this.closeText}</button>
             </div>
           </div>
         </div>
