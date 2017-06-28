@@ -215,7 +215,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           {%! $$.itemIconTemplate %}
           <h2 class="widget-title">{%: $$.getTitle($, $$.labelProperty) %}</h2>
           {% if($$.visibleActions.length > 0 && $$.enableActions) { %}
-            <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $$.getItemActionKey($) %}">
+            <button class="btn-actions" type="button" data-key="{%= $$.getItemActionKey($) %}">
               <span class="audible">Actions</span>
               <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
                 <use xlink:href="#icon-more"></use>
@@ -1342,6 +1342,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} params Collection of `data-` attributes from the node.
    */
   activateEntry: function activateEntry(params) {
+    // dont navigate if clicked on QA button
+    if (params.$event && params.$event.target.className && params.$event.target.className.indexOf('btn-actions') !== -1) {
+      return;
+    }
     if (params.key) {
       if (this._selectionModel && this.isNavigationDisabled()) {
         this._selectionModel.toggle(params.key, this.entries[params.key] || params.descriptor, params.$source);
@@ -1776,6 +1780,17 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   },
   onApplyRowTemplate: function onApplyRowTemplate(entry, rowNode) {
     this.applyRowIndicators(entry, rowNode);
+    this.initRowQuickActions(rowNode);
+  },
+  initRowQuickActions: function initRowQuickActions(rowNode) {
+    if (this.isCardView && this.visibleActions.length) {
+      // initialize popupmenus on each card
+      const btn = $(rowNode).find('.btn-actions');
+      $(btn).popupmenu();
+      $(btn).on('beforeopen', (evt) => {
+        this.selectEntry({ key: evt.target.attributes['data-key'].value });
+      });
+    }
   },
   processData: function processData(entries) {
     if (!entries) {
@@ -1822,12 +1837,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     try {
       if (this.isCardView) {
         rowNode = $(this.rowTemplate.apply(entry, this));
-
-        if (this.visibleActions.length) {
-          // initialize popupmenus on each card
-          const btn = $(rowNode).find('.btn-actions');
-          $(btn).popupmenu();
-        }
       } else {
         rowNode = $(this.liRowTemplate.apply(entry, this));
       }

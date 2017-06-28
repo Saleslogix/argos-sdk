@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "文件选择"
-  addFileText: "单击或点击此处以添加文件。"
+  addFileText: "选择要添加的文件"
   uploadText: "上传"
   cancelText: "取消"
   selectFileText: "选择文件"
@@ -143,8 +143,8 @@
 
 <calendar ""
   titleText: "日历"
-  amText: "AM"
-  pmText: "PM"
+  amText: "上午"
+  pmText: "下午"
   january: "一月"
   february: "二月"
   march: "三月"
@@ -214,17 +214,13 @@
   requireSelectionText: "必须进行选择，不能取消选择最后一项。"
 >
 
-<tabWidget ""
- moreText: "更多"
->
-
 <view ""
  titleText: "通用视图"
 >
 
 <timePicker ""
-  amText: "AM"
-  pmText: "PM"
+  amText: "上午"
+  pmText: "下午"
   setTimeText: "设置时间"
 >
 

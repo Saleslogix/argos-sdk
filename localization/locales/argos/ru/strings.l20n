@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "Выбор файла"
-  addFileText: "Нажмите или коснитесь здесь, чтобы добавить файл."
+  addFileText: "Выберите файл для добавления"
   uploadText: "Отправить"
   cancelText: "Отмена"
   selectFileText: "Выбрать файл"
@@ -143,8 +143,8 @@
 
 <calendar ""
   titleText: "Календарь"
-  amText: "AM"
-  pmText: "PM"
+  amText: "Д.П."
+  pmText: "П.П."
   january: "Январь"
   february: "Февраль"
   march: "Март"
@@ -214,17 +214,13 @@
   requireSelectionText: "Должно быть что-то выбрано, нельзя отменить выбор последнего элемента."
 >
 
-<tabWidget ""
- moreText: "Еще"
->
-
 <view ""
  titleText: "Общий вид"
 >
 
 <timePicker ""
-  amText: "AM"
-  pmText: "PM"
+  amText: "Д.П."
+  pmText: "П.П."
   setTimeText: "Установленное время"
 >
 

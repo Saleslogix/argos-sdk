@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "Information"
+  informationText: "${0} Information"
   titleText: "Detail"
   entityText: "Entity"
   detailsText: "Details"
@@ -111,7 +111,7 @@
   concurrencySummaryText: "Concurrency Error(s)"
   detailsText: "Details"
   loadingText: "Loading"
-  errorGeneral: "A server error occured while requesting data."
+  errorGeneral: "Either the server is not available or you have entered incorrect information for the connection to the endpoint. Try re-entering your endpoint information or contact your System Administrator."
   error410:  "Error saving. This record no longer exists."
 >
 
@@ -281,4 +281,6 @@
   checkingText: "Checking connectivity"
   loadingApplicationStateText: "Loading application state"
   initializingText: "Initializing:"
+  viewSettingsText: "View Settings"
+  closeText: "Close"
 >

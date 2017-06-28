@@ -16,8 +16,8 @@ export default function getResource(id) {
 
   const defaultAttributes = defaultLocaleContext.getEntitySync(id).attributes;
   const currentAttributes = localeContext.getEntitySync(id).attributes;
-
   const regionalattributes = regionalContext.getEntitySync(id).attributes;
-  lang.mixin(defaultAttributes, regionalattributes);
-  return lang.mixin(defaultAttributes, currentAttributes);
+
+  lang.mixin(defaultAttributes, currentAttributes);
+  return lang.mixin(defaultAttributes, regionalattributes);
 }

@@ -26,6 +26,7 @@ span {
 // below fix is to reset its size based on the parent where hyperlink is placed
 .hyperlink {
   font-size: inherit !important;
+  white-space: inherit;
 }
 
 .dropdown-mx + div > .dropdown { width: 100px }
@@ -53,4 +54,26 @@ span {
 
 @media only screen and (min-width: 500px) {
   body { -webkit-text-size-adjust:none; }  /* should render everything * 0.8 */
+}
+
+@media (min-width: 767px) {
+  .signin .row {
+    padding: 0;
+  }
+}
+
+.header {
+    position: absolute; // allows pull-to-refresh to be tucked beneath header
+    z-index: 11;
+}
+.page-container {
+    z-index: 10;
+}
+
+.edit-row {
+  .columns {
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+  }
 }

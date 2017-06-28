@@ -57,7 +57,7 @@
   twoWeeksAgoText: "2 週間前"
   threeWeeksAgoText: "3 週間前"
   twoMonthsAgoText: "2 か月前"
-  threeMonthsAgoText: "2 か月前"
+  threeMonthsAgoText: "3 か月前"
   unknownText: "不明"
 >
 
@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "ファイル選択"
-  addFileText: "ここをクリップまたはタップしてファイルを追加します。"
+  addFileText: "追加するファイルを選択します"
   uploadText: "アップロード"
   cancelText: "キャンセル"
   selectFileText: "ファイルの選択"
@@ -143,8 +143,8 @@
 
 <calendar ""
   titleText: "カレンダー"
-  amText: "AM"
-  pmText: "PM"
+  amText: "午前"
+  pmText: "午後"
   january: "1 月"
   february: "2 月"
   march: "3 月"
@@ -214,22 +214,18 @@
   requireSelectionText: "選択は必須です。最後の項目の選択を解除することはできません。"
 >
 
-<tabWidget ""
- moreText: "その他"
->
-
 <view ""
  titleText: "一般ビュー"
 >
 
 <timePicker ""
-  amText: "AM"
-  pmText: "PM"
+  amText: "午前"
+  pmText: "午後"
   setTimeText: "時刻を設定"
 >
 
 <relativeDateTimePicker ""
-  titleText: "約..."
+  titleText: "おおよその時間..."
   pickDateTimeText: "詳細"
   thisEveningText: "今夜"
   tomorrowMorningText: "明朝"

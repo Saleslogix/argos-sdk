@@ -17,7 +17,7 @@
 >
 
 <editorField ""
-  lookupLabelText: "bewerken"
+  lookupLabelText: "Bewerken"
   lookupText: "..."
   emptyText: "leeg"
   completeText: "OK"
@@ -71,12 +71,12 @@
 
 <fileSelect ""
   titleText: "Bestand selecteren"
-  addFileText: "Klik of tik hier om een bestand toe te voegen."
+  addFileText: "Kies een bestand om toe te voegen"
   uploadText: "Uploaden"
   cancelText: "Annuleren"
   selectFileText: "Bestand selecteren"
   loadingText: "Uploaden..."
-  descriptionText: "omschrijving"
+  descriptionText: "Omschrijving"
   bytesText: "bytes"
   notSupportedText: "Toevoegen van bijlagen wordt niet ondersteund door uw apparaat."
 >
@@ -98,13 +98,13 @@
   detailsText: "Details"
   loadingText: "Laden"
   notAvailableText: "De aangevraagde gegevens zijn niet beschikbaar."
-  toggleCollapseText: "uitvouwen/samenvouwen"
+  toggleCollapseText: "Uitvouwen/samenvouwen"
   editText: "Bewerken"
 >
 
 <editBase ""
   concurrencyErrorText: "Dit veld is bijgewerkt door een andere gebruiker."
-  toggleCollapseText: "uitvouwen/samenvouwen"
+  toggleCollapseText: "Uitvouwen/samenvouwen"
   saveText: "Opslaan"
   titleText: "Bewerken"
   validationSummaryText: "Validatieoverzicht"
@@ -187,11 +187,11 @@
 >
 
 <groupedList ""
- toggleCollapseText: "uitvouwen/samenvouwen"
+ toggleCollapseText: "Uitvouwen/samenvouwen"
 >
 
 <mainToolbar ""
-  titleText: "Mobiel"
+  titleText: "Mobiel telefoonnummer"
 >
 
 <relatedViewWidget ""
@@ -212,10 +212,6 @@
 
 <selectionModel ""
   requireSelectionText: "Selectie is vereist, u kunt het laatste item niet deselecteren."
->
-
-<tabWidget ""
- moreText: "Meer"
 >
 
 <view ""
@@ -257,7 +253,7 @@
 
 <modal
   alertText: "Alert"
-  completeText: "Voltooid"
+  completeText: "Voltooien"
   cancelText: "Annuleren"
   confirmText: "Bevestigen"
   editText: "Bewerken"
@@ -266,14 +262,14 @@
   warningText: "Waarschuwing"
 >
 <_listOfflineMixin
-  goToListViewText: "De items zijn in de werkmap geplaatst. Wilt u de lijstweergave van de werkmap activeren?"
+  goToListViewText: "De items zijn in de werkmap geplaatst. Wilt u naar de lijstweergave van de werkmap gaan?"
   interruptedText: "De procedure werd onderbroken en is niet volledig voltooid. Voer de procedure opnieuw uit om de plaatsing van items in de werkmap te voltooien."
   briefcasingText: "Items worden in werkmap geplaatst, een ogenblik geduld."
   errorBriefcasingText: "Fout bij plaatsen van items in werkmap"
 >
 
 <_detailOfflineMixin
-  goToDetailViewText: "Het item en de gerelateerde items zijn in de werkmap geplaatst. Wilt u de lijstweergave van de werkmap activeren?"
+  goToDetailViewText: "Het item en de gerelateerde items zijn in de werkmap geplaatst. Wilt u naar de lijstweergave van de werkmap gaan?"
   interruptedText: "De procedure werd onderbroken en is niet volledig voltooid. Voer de procedure opnieuw uit om de plaatsing van items in de werkmap te voltooien."
   briefcasingText: "Items worden in werkmap geplaatst, een ogenblik geduld."
   errorBriefcasingText: "Fout bij plaatsen van items in werkmap"

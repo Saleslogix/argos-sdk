@@ -420,6 +420,7 @@ const __class = declare('argos._EditBase', [View], {
    */
   _onShowField: function _onShowField(field) {
     $(field.containerNode).removeClass('row-hidden');
+    $(field.containerNode).parent().removeClass('display-none');
   },
   /**
    * Handler for a fields on hide event.
@@ -430,6 +431,7 @@ const __class = declare('argos._EditBase', [View], {
    */
   _onHideField: function _onHideField(field) {
     $(field.containerNode).addClass('row-hidden');
+    $(field.containerNode).parent().addClass('display-none');
   },
   /**
    * Handler for a fields on enable event.
@@ -660,7 +662,6 @@ const __class = declare('argos._EditBase', [View], {
         title: this.detailsText,
       };
     }
-
     for (let i = 0; i < rows.length; i++) {
       current = rows[i];
 
@@ -677,22 +678,10 @@ const __class = declare('argos._EditBase', [View], {
       if (!sectionStarted) {
         sectionStarted = true;
         content.push(this.sectionBeginTemplate.apply(layout, this));
-        content.push('<div class="row">');
+        content.push('<div class="row edit-row">');
       }
 
-      if (this.multiColumnView) {
-        content.push(`<div class="${this.multiColumnClass} columns">`);
-      }
       this.createRowContent(current, content);
-      if (this.multiColumnView) {
-        // in case of hidden field - add empty space for the column to take shape
-        content.push('&nbsp;</div>');
-      }
-
-      if (this.multiColumnView && (i + 1) % this.multiColumnCount === 0) {
-        content.push('</div>');
-        content.push('<div class="row">');
-      }
     }
     content.push('</div>');
     content.push(this.sectionEndTemplate.apply(layout, this));
@@ -728,7 +717,17 @@ const __class = declare('argos._EditBase', [View], {
       this.connect(field, 'onEnable', this._onEnableField);
       this.connect(field, 'onDisable', this._onDisableField);
 
+      if (this.multiColumnView) {
+        let hidden = '';
+        if (field.type === 'hidden') {
+          hidden = 'display-none';
+        }
+        content.push(`<div class="${this.multiColumnClass} columns ${hidden}">`);
+      }
       content.push(template.apply(field, this));
+      if (this.multiColumnView) {
+        content.push('</div>');
+      }
     }
   },
   /**

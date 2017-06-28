@@ -79,6 +79,10 @@ const __class = declare('argos._PullToRefreshMixin', null, {
 
   animateCls: 'animate',
 
+  _initPosition: {
+    top: -35,
+  },
+
   _getText: function _getText(prop) {
     return __class.prototype[prop];
   },
@@ -116,7 +120,10 @@ const __class = declare('argos._PullToRefreshMixin', null, {
       })
       .map((e) => {
         const evt = e.touches[0];
-        $(this.pullRefreshBanner).css('visibility', 'visible');
+        $(this.pullRefreshBanner).css({
+          visibility: 'visible',
+          top: `${this._initPosition.top}px`,
+        });
         $(this.dragNode).removeClass(this.animateCls);
         const bannerHeight = $(this.pullRefreshBanner).height();
 
@@ -162,8 +169,10 @@ const __class = declare('argos._PullToRefreshMixin', null, {
             'overflow-y': data.overflowCssY,
             'overflow-x': data.overflowCssX,
           });
-
-          $(this.pullRefreshBanner).css('visibility', 'hidden');
+          $(this.pullRefreshBanner).css({
+            visibility: 'hidden',
+            top: `${this._initPosition.top}px`,
+          });
           $(this.dragNode).addClass(this.animateCls);
 
           // Check if we dragged over the threshold (maxDistance),
@@ -183,7 +192,9 @@ const __class = declare('argos._PullToRefreshMixin', null, {
       $(this.dragNode).css({
         top: `${data.top}px`,
       });
-
+      $(this.pullRefreshBanner).css({
+        top: `${data.top + this._initPosition.top}px`,
+      });
       if (data.distance > data.maxDistance) {
         this.pullRefreshBanner.innerHTML = this.pullReleaseTemplate.apply(this);
       } else {
