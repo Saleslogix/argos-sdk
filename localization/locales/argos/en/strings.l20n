@@ -281,4 +281,6 @@
   checkingText: "Checking connectivity"
   loadingApplicationStateText: "Loading application state"
   initializingText: "Initializing:"
+  viewSettingsText: "View Settings"
+  closeText: "Close"
 >
