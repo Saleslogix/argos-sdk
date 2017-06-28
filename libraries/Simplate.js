@@ -91,6 +91,8 @@
         entLtRE = /</g,
         entGtRE = />/g,
         entQuotRE = /"/g,
+        entQuoteSingleRE = /'/g,
+        entForwardSlashRE = /\//g,
         cache = {},
         cacheRE = {},
         useCompatibleParser = ('is,ie'.split(testRE).length != 3),
@@ -117,7 +119,9 @@
             .replace(entAmpRE, '&amp;')
             .replace(entLtRE, '&lt;')
             .replace(entGtRE, '&gt;')
-            .replace(entQuotRE, '&quot;');
+            .replace(entQuotRE, '&quot;')
+            .replace(entQuoteSingleRE, '&#x27')
+            .replace(entForwardSlashRE, '&#x2F');
     };
 
     var escape = function(val) {
