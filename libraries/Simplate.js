@@ -120,8 +120,8 @@
             .replace(entLtRE, '&lt;')
             .replace(entGtRE, '&gt;')
             .replace(entQuotRE, '&quot;')
-            .replace(entQuoteSingleRE, '&#x27')
-            .replace(entForwardSlashRE, '&#x2F');
+            .replace(entQuoteSingleRE, '&#x27;')
+            .replace(entForwardSlashRE, '&#x2F;');
     };
 
     var escape = function(val) {
