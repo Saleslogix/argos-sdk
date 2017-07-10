@@ -100,8 +100,8 @@
   notAvailableText: "The requested data is not available."
   toggleCollapseText: "toggle collapse"
   editText: "Edit"
-  editTooltipText: "edit"
-  refreshTooltipText: "refresh"
+  editTooltipText: "Edit"
+  refreshTooltipText: "Refresh"
 >
 
 <editBase ""
@@ -115,8 +115,8 @@
   loadingText: "Loading"
   errorGeneral: "Either the server is not available or you have entered incorrect information for the connection to the endpoint. Try re-entering your endpoint information or contact your System Administrator."
   error410:  "Error saving. This record no longer exists."
-  saveTooltipText: "save"
-  cancelTooltipText: "cancel"
+  saveTooltipText: "Save"
+  cancelTooltipText: "Cancel"
 >
 
 <errorHandleMixin ""
@@ -134,9 +134,8 @@
   insertText: "New"
   noDataText: "no records"
   loadingText: "Loading"
-  newTooltipText: "new"
-  refreshTooltipText: 'refresh'
-  moreTooltipText: 'more'
+  newTooltipText: "New"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -199,7 +198,7 @@
 
 <mainToolbar ""
   titleText: "Mobile"
-  backTooltipText: "back"
+  backTooltipText: "Back"
 >
 
 <relatedViewWidget ""
@@ -274,7 +273,7 @@
   interruptedText: "The process was interrupted and was not able to fully complete. Please try the process again to fully briefcase the items."
   briefcasingText: "Briefcasing please wait."
   errorBriefcasingText: "Error briefcasing"
-  briefcaseTooltipText: "briefcase"
+  briefcaseTooltipText: "Briefcase"
 >
 
 <_detailOfflineMixin
@@ -283,7 +282,7 @@
   briefcasingText: "Briefcasing please wait."
   errorBriefcasingText: "Error briefcasing"
   errorSavingOfflineViewText: "error saving offline view:"
-  briefcaseTooltipText: "briefcase"
+  briefcaseTooltipText: "Briefcase"
 >
 
 <sdkApplication
