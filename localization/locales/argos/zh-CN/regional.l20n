@@ -51,7 +51,7 @@
     ],
     "digitSubstitution": 1
   },
-  "default24HourClock": false
+  "default24HourClock": true
 }
 """>
 
