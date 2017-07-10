@@ -506,6 +506,16 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   loadingText: resource.loadingText,
   /**
    * @property {String}
+   * The text displayed in tooltip for the new button.
+   */
+  newTooltipText: resource.newTooltipText,
+  /**
+   * @property {String}
+   * The text displayed in tooltip for the refresh button.
+   */
+  refreshTooltipText: resource.refreshTooltipText,
+  /**
+   * @property {String}
    * The customization identifier for this class. When a customization is registered it is passed
    * a path/identifier which is then matched to this property.
    */
@@ -766,6 +776,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       tbar: [{
         id: 'new',
         svg: 'add',
+        title: this.newTooltipText,
         action: 'navigateToInsertView',
         security: this.app.getViewSecurity(this.insertView, 'insert'),
       }],
@@ -774,6 +785,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       this.tools.tbar.push({
         id: 'refresh',
         svg: 'refresh',
+        title: this.refreshTooltipText,
         action: '_refreshList',
       });
       this._refreshAdded = true;
@@ -1780,17 +1792,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   },
   onApplyRowTemplate: function onApplyRowTemplate(entry, rowNode) {
     this.applyRowIndicators(entry, rowNode);
-    this.initRowQuickActions(rowNode);
-  },
-  initRowQuickActions: function initRowQuickActions(rowNode) {
-    if (this.isCardView && this.visibleActions.length) {
-      // initialize popupmenus on each card
-      const btn = $(rowNode).find('.btn-actions');
-      $(btn).popupmenu();
-      $(btn).on('beforeopen', (evt) => {
-        this.selectEntry({ key: evt.target.attributes['data-key'].value });
-      });
-    }
   },
   processData: function processData(entries) {
     if (!entries) {
@@ -1837,6 +1838,15 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     try {
       if (this.isCardView) {
         rowNode = $(this.rowTemplate.apply(entry, this));
+
+        if (this.visibleActions.length) {
+          // initialize popupmenus on each card
+          const btn = $(rowNode).find('.btn-actions');
+          $(btn).popupmenu();
+          $(btn).on('beforeopen', (evt) => {
+            this.selectEntry({ key: evt.target.attributes['data-key'].value });
+          });
+        }
       } else {
         rowNode = $(this.liRowTemplate.apply(entry, this));
       }

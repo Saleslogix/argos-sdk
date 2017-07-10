@@ -37,6 +37,7 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
       tools.tbar.push({
         id: 'briefCase',
         svg: 'roles',
+        title: resource.briefcaseTooltipText,
         action: 'briefCaseList',
         security: '',
       });

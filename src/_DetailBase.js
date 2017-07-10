@@ -405,6 +405,16 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
    * Determines how many columns the detail view property views should contain
    */
   multiColumnCount: 3,
+  /**
+   * @property {String}
+   * Text shown in the top toolbar refresh button
+   */
+  refreshTooltipText: resource.refreshTooltipText,
+  /**
+   * @property {String}
+   * Text shown in the top toolbar edit button
+   */
+  editTooltipText: resource.editTooltipText,
 
   // Store properties
   itemsProperty: '',
@@ -482,6 +492,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
       tools.push({
         id: 'edit',
         svg: 'edit',
+        title: this.editTooltipText,
         action: 'navigateToEditView',
         security: App.getViewSecurity(this.editView, 'update'),
       });
@@ -490,6 +501,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
     tools.push({
       id: 'refresh',
       svg: 'refresh',
+      title: this.refreshTooltipText,
       action: '_refreshClicked',
     });
 

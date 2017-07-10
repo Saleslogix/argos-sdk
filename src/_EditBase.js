@@ -335,6 +335,16 @@ const __class = declare('argos._EditBase', [View], {
    */
   multiColumnCount: 3,
   /**
+   * @property {String}
+   * Text shown in the top toolbar save button
+   */
+  saveTooltipText: resource.saveTooltipText,
+  /**
+   * @property {String}
+   * Text shown in the top toolbar cancel button
+   */
+  cancelTooltipText: resource.cancelTooltipText,
+  /**
    * Extends constructor to initialze `this.fields` to {}
    * @param o
    */
@@ -388,6 +398,7 @@ const __class = declare('argos._EditBase', [View], {
       id: 'save',
       action: 'save',
       svg: 'save',
+      title: this.saveText,
       security: this.options && this.options.insert ? this.insertSecurity : this.updateSecurity,
     }];
 
@@ -395,6 +406,7 @@ const __class = declare('argos._EditBase', [View], {
       tbar.push({
         id: 'cancel',
         svg: 'cancel',
+        title: this.cancelTooltipText,
         side: 'left',
         action: 'onToolCancel',
       });
