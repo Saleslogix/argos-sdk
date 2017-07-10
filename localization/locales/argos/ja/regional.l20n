@@ -6,7 +6,7 @@
   "nativeName": "日本語",
   "numberFormat": {
     "currencyDecimalDigits": 2,
-    "currencyDecimalSeparator": ",",
+    "currencyDecimalSeparator": ".",
     "isReadOnly": true,
     "currencyGroupSizes": [
       3
@@ -17,7 +17,7 @@
     "percentGroupSizes": [
       3
     ],
-    "currencyGroupSeparator": ".",
+    "currencyGroupSeparator": ",",
     "currencySymbol": "¥",
     "naNSymbol": "NaN",
     "currencyNegativePattern": 8,
@@ -27,14 +27,14 @@
     "negativeInfinitySymbol": "-",
     "negativeSign": "-",
     "numberDecimalDigits": 2,
-    "numberDecimalSeparator": ",",
-    "numberGroupSeparator": ".",
+    "numberDecimalSeparator": ".",
+    "numberGroupSeparator": ",",
     "currencyPositivePattern": 3,
     "positiveInfinitySymbol": "+",
     "positiveSign": "+",
     "percentDecimalDigits": 2,
-    "percentDecimalSeparator": ",",
-    "percentGroupSeparator": ".",
+    "percentDecimalSeparator": ".",
+    "percentGroupSeparator": ",",
     "percentSymbol": "%",
     "perMilleSymbol": "‰",
     "nativeDigits": [
