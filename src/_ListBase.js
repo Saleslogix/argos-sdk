@@ -506,6 +506,16 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   loadingText: resource.loadingText,
   /**
    * @property {String}
+   * The text displayed in tooltip for the new button.
+   */
+  newTooltipText: resource.newTooltipText,
+  /**
+   * @property {String}
+   * The text displayed in tooltip for the refresh button.
+   */
+  refreshTooltipText: resource.refreshTooltipText,
+  /**
+   * @property {String}
    * The customization identifier for this class. When a customization is registered it is passed
    * a path/identifier which is then matched to this property.
    */
@@ -766,6 +776,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       tbar: [{
         id: 'new',
         svg: 'add',
+        title: this.newTooltipText,
         action: 'navigateToInsertView',
         security: this.app.getViewSecurity(this.insertView, 'insert'),
       }],
@@ -774,6 +785,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       this.tools.tbar.push({
         id: 'refresh',
         svg: 'refresh',
+        title: this.refreshTooltipText,
         action: '_refreshList',
       });
       this._refreshAdded = true;
