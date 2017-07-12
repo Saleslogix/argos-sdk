@@ -15,6 +15,7 @@ import MODEL_TYPES from './Types';
 const __class = declare('argos.Models.SDataModelBase', [_ModelBase], {
   queryModels: null,
   ModelType: MODEL_TYPES.SDATA,
+  contractName: 'dynamic',
 
   _getQueryModelByName: function _getQueryModelByName(name) {
     if (!this.queryModels) {

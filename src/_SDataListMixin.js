@@ -83,6 +83,8 @@ const __class = declare('argos._SDataListMixin', null, {
    */
   resourcePredicate: null,
 
+  contractName: 'dynamic',
+
   itemsProperty: '$resources',
   idProperty: '$key',
   labelProperty: '$descriptor',
