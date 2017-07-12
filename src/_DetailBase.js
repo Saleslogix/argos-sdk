@@ -799,6 +799,9 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
             data.disabled = true;
           }
         }
+        if (current.contractName) {
+          context.contractName = this.expandExpression(current.contractName, entry);
+        }
         if (current.resourceKind) {
           context.resourceKind = this.expandExpression(current.resourceKind, entry);
         }

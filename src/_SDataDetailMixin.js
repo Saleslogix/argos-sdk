@@ -37,6 +37,9 @@ const __class = declare('argos._SDataDetailMixin', null, {
    * for all SData requests.
    */
   resourceKind: '',
+
+  contractName: 'dynamic',
+
   /**
    * @cfg {String[]}
    * A list of fields to be selected in an SData request.
