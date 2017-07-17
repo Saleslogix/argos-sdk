@@ -89,7 +89,7 @@ const __class = declare('argos.TabWidget', [_Templated], {
     if (this.tabList && this.tabs) {
       try {
         this._sohoTabs.destroy();
-      } catch(ex) {
+      } catch (ex) {
         console.warn(ex); // eslint-disable-line
       }
       $(this.tabList).remove();
