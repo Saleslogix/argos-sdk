@@ -76,7 +76,7 @@ export default class Application {
           const returnTo = from.data && from.data.options && from.data.options.returnTo;
 
           if (returnTo) {
-            let returnIndex = this.app.context.history.reverse()
+            let returnIndex = [...this.app.context.history].reverse()
                                   .findIndex(val => val.page === returnTo);
             // Since want to find last index of page, must reverse index
             if (returnIndex !== -1) {
