@@ -629,7 +629,6 @@ const __class = declare('argos._DetailBase', [View, TabWidget], {
 
     options.fromContext = this;
     if (view && options) {
-      options.returnTo = this.id;
       view.show(options);
     }
   },

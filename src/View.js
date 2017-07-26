@@ -503,30 +503,9 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
 
     if (options.track !== false) {
       const count = App.context.history.length;
-      const hash = location.hash;
-      let position = -1;
+      let position = count - 1;
 
-      // do loop and trim
-      for (position = count - 1; position >= 0; position--) {
-        if (App.context.history[position].hash === hash) {
-          break;
-        }
-      }
-
-      if ((position > -1) && (position === (count - 2))) {
-        // Added check if history item is just one back.
-
-        App.context.history = App.context.history.splice(0, position + 1);
-
-        this.currentHash = hash;
-
-        // indicate that context.history has already been taken care of (i.e. nothing needs to be pushed).
-        options.trimmed = true;
-        // trim up the browser history
-        // if the requested hash does not equal the current location hash, trim up history.
-        // location hash will not match requested hash when show is called directly, but will match
-        // for detected location changes (i.e. the back button).
-      } else if (options.returnTo) {
+      if (options.returnTo) {
         if (typeof options.returnTo === 'function') {
           for (position = count - 1; position >= 0; position--) {
             if (options.returnTo(App.context.history[position])) {
