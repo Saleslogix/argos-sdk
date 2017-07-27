@@ -1115,8 +1115,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
 
     if (rowNode) {
-      const popupmenu = $(rowNode).find('.btn-actions')[0];
-      $(popupmenu).data('popupmenu').position();
+      const popupmenuNode = $(rowNode).find('.btn-actions')[0];
+      const popupmenu = $(popupmenuNode).data('popupmenu');
+      setTimeout(() => {
+        popupmenu.position();
+      }, 1);
     }
   },
   _getActionById: function _getActionById(id) {
