@@ -113,7 +113,7 @@
   concurrencySummaryText: "Concurrency Error(s)"
   detailsText: "Details"
   loadingText: "Loading"
-  errorGeneral: "Either the server is not available or you have entered incorrect information for the connection to the endpoint. Try re-entering your endpoint information or contact your System Administrator."
+  errorGeneral: "A server error occured while requesting data."
   error410:  "Error saving. This record no longer exists."
   saveTooltipText: "Save"
   cancelTooltipText: "Cancel"
