@@ -232,7 +232,9 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         if (tool.offline) {
           onLine = false;
         }
-        $(this.toolNode).prepend(toolTemplate.apply(tool, this.tools[tool.id]));
+        if (tool.cls !== 'display-none') {
+          $(this.toolNode).prepend(toolTemplate.apply(tool, this.tools[tool.id]));
+        }
       }
 
       this.updateSoho();
