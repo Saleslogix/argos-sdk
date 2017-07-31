@@ -522,6 +522,8 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
 
           this.currentHash = App.context.history[App.context.history.length - 1] && App.context.history[App.context.history.length - 1].hash;
         }
+
+        options.returnTo = null;
       }
     }
 
