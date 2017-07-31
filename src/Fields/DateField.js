@@ -169,6 +169,10 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       this.validationValue = this.currentValue = null;
       $(this.containerNode).addClass('row-error'); // todo: not the right spot for this, add validation eventing
     }
+    if (this.previousValue !== this.currentValue) {
+      this.onChange(this.currentValue, this);
+    }
+    this.previousValue = this.currentValue;
   },
   /**
    * Extends the parent {@link EditorField#createNavigationOptions createNavigationOptions} to
@@ -214,6 +218,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       this.inputNode.value = this.formatValue(this.currentValue);
     }
     $(this.containerNode).removeClass('row-error'); // todo: not the right spot for this, add validation eventing
+    this._onChange();
   },
   /**
    * Determines if the current value has been modified from the original value.
