@@ -170,11 +170,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       $(this.containerNode).addClass('row-error'); // todo: not the right spot for this, add validation eventing
     }
     if (this.previousValue !== this.currentValue) {
-      if (val) {
-        this.onChange(this.validationValue, this);
-      } else {
-        this.onChange(this.currentValue, this);
-      }
+      this.onChange(this.currentValue, this);
     }
     this.previousValue = this.currentValue;
   },
