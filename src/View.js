@@ -483,6 +483,9 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     this.select(to);
     complete.apply(this);
   },
+  setPrimaryTitle: function setPrimaryTitle() {
+    App.setPrimaryTitle(this.get('title'));
+  },
   /**
   * Available Options:
   *   horizontal: True if the transition is horizontal, False otherwise.
@@ -499,7 +502,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       return;
     }
 
-    App.setPrimaryTitle(this.get('title'));
+    this.setPrimaryTitle();
 
     if (options.track !== false) {
       const count = App.context.history.length;
