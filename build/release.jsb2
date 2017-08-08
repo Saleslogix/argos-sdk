@@ -69,16 +69,16 @@
           "path": "../deps/redux/"
         },
         {
-          "text": "d3.js",
-          "path": "../deps/d3/"
-        },
-        {
           "text": "jquery.js",
           "path": "../deps/jquery/"
         },
         {
           "text": "sohoxi.js",
           "path": "../deps/sohoxijs/"
+        },
+        {
+          "text": "Chart.min.js",
+          "path": "../libraries/chartjs/"
         }
       ]
     },
