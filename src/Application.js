@@ -1187,6 +1187,11 @@ export default class Application {
       if (this.bars.hasOwnProperty(n)) {
         if (this.bars[n].managed) {
           this.bars[n].set('title', title);
+
+          // update soho toolbar when title is changed since it uses text length to calculate header width
+          const header = $(this.bars.tbar.domNode);
+          this.toolbar = header.find('.toolbar').data('toolbar');
+          this.toolbar.updated();
         }
       }
     }
