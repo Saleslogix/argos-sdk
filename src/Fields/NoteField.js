@@ -18,14 +18,14 @@ import FieldManager from '../FieldManager';
 
 /**
  * @class argos.Fields.NoteField
- * The NoteField is a special case where an overly long text string should be inserted and
+ * @classdesc The NoteField is a special case where an overly long text string should be inserted and
  * you want to take the user to another view for that specific input.
  *
  * The special part is that the it passes the value between its editor via an object with a
  * "Note" property., meaning the Edit View layout should have a field bound to the `noteProperty`
  * defined in this field ("Notes" by default").
  *
- * ###Example:
+ * @example
  *     {
  *         name: 'FullDescription',
  *         property: 'FullDescription',
@@ -33,8 +33,6 @@ import FieldManager from '../FieldManager';
  *         type: 'note',
  *         view: 'text_editor_edit'
  *     }
- *
- * @alternateClassName NoteField
  * @extends argos.Fields.TextAreaField
  * @requires argos.FieldManager
  */

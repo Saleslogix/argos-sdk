@@ -15,7 +15,6 @@
 
 /**
  * @class argos.Calendar
- * @alternateClassName Calendar
  */
 import declare from 'dojo/_base/declare';
 import _ActionMixin from './_ActionMixin';

@@ -4,7 +4,7 @@ import domGeom from 'dojo/dom-geometry';
 
 /**
  * @class argos._DraggableBase
- * A base class used to enable draggable features
+ * @classdesc A base class used to enable draggable features
  */
 const __class = declare('argos._DraggableBase', null, {
   _container: null,

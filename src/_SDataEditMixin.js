@@ -15,11 +15,8 @@
 
 /**
  * @class argos._SDataEditMixin
- *
- * Enables SData for the Edit view.
+ * @classdesc Enables SData for the Edit view.
  * Extends the SDataDetail Mixin by providing functions for $template requests.
- *
- * @alternateClassName _SDataEditMixin
  * @extends argos._SDataDetailMixin
  * @requires argos.SData
  */
@@ -30,7 +27,7 @@ import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';
 import MODEL_TYPES from './Models/Types';
 
-const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], {
+const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], /** @lends argos._SDataEditMixin# */{
   /**
    * @property {Object}
    * The saved SData response.

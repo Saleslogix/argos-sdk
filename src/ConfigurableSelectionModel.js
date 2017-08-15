@@ -3,11 +3,10 @@ import SelectionModel from './SelectionModel';
 
 /**
  * @class argos.ConfigurableSelectionModel
- * The ConfigurableSelectionModel adds the logic to the SelectionModel to only have one item selected at a time via the `singleSelection` flag.
- * @alternateClassName ConfigurableSelectionModel
+ * @classdesc The ConfigurableSelectionModel adds the logic to the SelectionModel to only have one item selected at a time via the `singleSelection` flag.
  * @extends argos.SelectionModel
  */
-const __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], {
+const __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], /** @lends argos.ConfigurableSelectionModel# */{
   /**
    * @property {Boolean}
    * Flag that controls if only one item is selectable at a time. Meaning if this is true

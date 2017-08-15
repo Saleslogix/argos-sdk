@@ -12,7 +12,6 @@ const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
 
 /**
  * @class argos.DateTimePicker
- * @alternateClassName Date Time Select
  */
 const __class = declare('argos.RelativeDateTimePicker', [_WidgetBase, _Templated, _ActionMixin, _CustomizationMixin], {
   widgetTemplate: new Simplate([

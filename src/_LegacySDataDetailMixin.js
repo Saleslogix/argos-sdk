@@ -7,11 +7,11 @@ import string from 'dojo/string';
 import ErrorManager from './ErrorManager';
 
 /**
- * _LegacySDataDetailMixin enables legacy SData operations for the Detail view.
+ * @class argos._LegacySDataDetailMixin
+ * @classdesc Enables legacy SData operations for the Detail view.
  *
- * @alternateClassName _LegacySDataDetailMixin
  */
-const __class = declare('argos._LegacySDataDetailMixin', null, {
+const __class = declare('argos._LegacySDataDetailMixin', null, /** @lends argos._LegacySDataDetailMixin# */{
   /**
    * Initiates the SData request.
    */

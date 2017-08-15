@@ -4,9 +4,8 @@ import _Templated from './_Templated';
 
 /**
  * @class argos.TabWidget
- * @alternateClassName TabWidget
  */
-const __class = declare('argos.TabWidget', [_Templated], {
+const __class = declare('argos.TabWidget', [_Templated], /** @lends argos.TabWidget# */{
   /**
    * @property {Simplate}
    * HTML that defines a new tab list

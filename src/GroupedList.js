@@ -15,12 +15,11 @@
 
 /**
  * @class argos.GroupedList
- * Grouped List provides a hook for grouping rows before rendering them to the page.
+ * @classdesc Grouped List provides a hook for grouping rows before rendering them to the page.
  * The grouping adds a container for the set of rows and is collapsible.
  * Note that it constructs the page sequentially meaning the rows should be in the correct
  * order before attempting to group.
  * @extends argos.List
- * @alternateClassName GroupedList
  */
 import declare from 'dojo/_base/declare';
 import string from 'dojo/string';
@@ -28,7 +27,7 @@ import List from './List';
 import Utility from './Utility';
 
 
-const __class = declare('argos.GroupedList', [List], {
+const __class = declare('argos.GroupedList', [List], /** @lends argos.GroupedList# */{
   accordion: null,
 
   /**

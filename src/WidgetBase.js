@@ -1,7 +1,6 @@
 /* eslint-disable */ // TODO: Remove this later
 
-
-export default class WidgetBase {
+class WidgetBase {
   constructor(options = {}) {
     this.id = options.id || 'generic_widgetbase';
     this.srcNodeRef = null;
@@ -103,3 +102,5 @@ export default class WidgetBase {
   placeAt(reference, position) {
   }
 }
+
+export default WidgetBase;

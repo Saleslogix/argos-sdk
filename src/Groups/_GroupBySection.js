@@ -4,7 +4,7 @@ import lang from 'dojo/_base/lang';
 /**
  * @class argos.Groups._GroupSection
  */
-const __class = declare('argos.Groups._GroupBySection', null, {
+const __class = declare('argos.Groups._GroupBySection', null, /** @lends argos.Groups._GroupSection# */{
   /**
    * @property {String}
    * The unique (within the current form) name of the field

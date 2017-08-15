@@ -25,14 +25,14 @@ const resource = getResource('lookupField');
 
 /**
  * @class argos.Fields.LookupField
- * The LookupField is similiar to an Edit View in that it is a field that takes the user to another
+ * @classdesc The LookupField is similiar to an Edit View in that it is a field that takes the user to another
  * view but the difference is that an EditorField takes the user to an Edit View, whereas LookupField
  * takes the user to a List View.
  *
  * Meaning that LookupField is meant for establishing relationships by only storing the key for a value
  * and with displayed text.
  *
- * ###Example:
+ * @example
  *     {
  *         name: 'Owner',
  *         property: 'Owner',
@@ -40,13 +40,11 @@ const resource = getResource('lookupField');
  *         type: 'lookup',
  *         view: 'user_list'
  *     }
- *
- * @alternateClassName LookupField
  * @extends argos.Fields._Field
  * @requires argos.FieldManager
  * @requires argos.Utility
  */
-const control = declare('argos.Fields.LookupField', [_Field], {
+const control = declare('argos.Fields.LookupField', [_Field], /** @lends argos.Fields.LookupField# */{
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:

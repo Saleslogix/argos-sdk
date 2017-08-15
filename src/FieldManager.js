@@ -18,12 +18,11 @@ const store = {};
 
 /**
  * @class argos.FieldManager
- * Field Manager is a registry for field types that enables the Edit View layouts to
+ * @classdesc Field Manager is a registry for field types that enables the Edit View layouts to
  * simply define `type: 'myFieldType'`.
- * @alternateClassName FieldManager
  * @singleton
  */
-const __class = lang.setObject('argos.FieldManager', {
+const __class = lang.setObject('argos.FieldManager', /** @lends argos.FieldManager */{
   /**
    * @property {Object}
    * The type map that translates string type names to constructor functions

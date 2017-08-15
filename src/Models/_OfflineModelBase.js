@@ -16,7 +16,6 @@ const _store = new PouchDBStore(databaseName);
 
 /**
  * @class argos.Models._OfflineModelBase
- * Base for offline models
  */
 const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _CustomizationMixin], {
 

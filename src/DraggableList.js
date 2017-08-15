@@ -4,10 +4,9 @@ import _DraggableBase from './_DraggableBase';
 
 /**
  * @class argos.DraggableList
- * List extends List and _DraggableBase to make the list draggable
+ * @classdesc List extends List and _DraggableBase to make the list draggable
  * @extends argos.List
  * @extends argos._DraggableBase
- * @alternateClassName Draggable List
  * @requires argos.List
  * @requires argos._DraggableBase
  */

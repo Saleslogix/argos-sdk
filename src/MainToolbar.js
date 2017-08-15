@@ -21,12 +21,11 @@ const resource = getResource('mainToolbar');
 
 /**
  * @class argos.MainToolbar
- * MainToolbar is designed to handle the top application bar with markup and logic to set
+ * @classdesc MainToolbar is designed to handle the top application bar with markup and logic to set
  * a title and position toolbar items to the left or right
- * @alternateClassName MainToolbar
  * @extends argos.Toolbar
  */
-const __class = declare('argos.MainToolbar', [Toolbar], {
+const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToolbar# */{
   /**
    * @property {Object}
    * Used to set the title node's innerHTML

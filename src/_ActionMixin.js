@@ -6,12 +6,13 @@ import declare from 'dojo/_base/declare';
 
 /**
  * @class argos._ActionMixin
- * _ActionMixin provides a click listener to the `domNode` of view it is mixed into.
+ * @classdesc _ActionMixin provides a click listener to the `domNode` of view it is mixed into.
  *
  * When a click event is caught by the handler it finds the closest element with `data-action`
  * and fires that function in the context of the view. When calling the function it passes a `params`
  * object with the following:
  *
+ * @example
  *     {
  *         $event: 'Original click event',
  *         $src: 'The HTML node that initiated the event'
@@ -19,9 +20,8 @@ import declare from 'dojo/_base/declare';
  *
  * and then it mixes it all the `data-` attributes from the node into the params object.
  *
- * @alternateClassName _ActionMixin
  */
-const __class = declare('argos._ActionMixin', null, {
+const __class = declare('argos._ActionMixin', null, /** @lends argos._ActionMixin# */{
   /**
    * @property {String}
    * Comma separated (no spaces) list of events to listen to

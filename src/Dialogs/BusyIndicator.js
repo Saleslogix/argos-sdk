@@ -9,7 +9,7 @@ const resource = getResource('busyIndicator');
 /**
  * @class argos.Dialogs.BusyIndicator
  */
-const __class = declare('argos.Dialogs.BusyIndicator', [_WidgetBase, _Templated], {
+const __class = declare('argos.Dialogs.BusyIndicator', [_WidgetBase, _Templated], /** @lends argos.Dialogs.BusyIndicator# */{
   widgetTemplate: new Simplate([
     '<div class="busyIndicator__container {%: $.containerClass %}" aria-live="polite" data-dojo-attach-point="busyIndicatorNode">',
     '{%! $.busyIndicatorTemplate %}',

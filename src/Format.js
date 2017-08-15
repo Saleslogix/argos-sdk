@@ -23,12 +23,10 @@ const dtFormatResource = getResource('formatDateTimeFormat');
 
 /**
  * @class argos.Format
- * Format is a singleton that provides various formatting functions.
- * @alternateClassName format
- * @requires argos.Convert
+ * @classdesc Format is a singleton that provides various formatting functions.
  * @singleton
  */
-const __class = lang.setObject('argos.Format', {
+const __class = lang.setObject('argos.Format', /** @lends argos.Format */{
   /**
    * @property {String}
    * Text used in {@link #yesNo yesNo} formatter for true values
