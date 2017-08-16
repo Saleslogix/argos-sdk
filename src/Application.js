@@ -18,6 +18,7 @@ import Toast from './Dialogs/Toast';
 import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
 import hash from 'dojo/hash';
+import connect from 'dojo/_base/connect';
 import ErrorManager from './ErrorManager';
 import getResource from './I18n';
 import { sdk } from './reducers/index';
@@ -1037,7 +1038,7 @@ export default class Application {
 
     this.currentOrientation = value;
     this.onSetOrientation(value);
-    // connect.publish('/app/setOrientation', [value]); // TODO: Push this state into redux
+    connect.publish('/app/setOrientation', [value]);
   }
 
   registerOrientationCheck(callback) {
