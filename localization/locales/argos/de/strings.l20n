@@ -27,7 +27,7 @@
   dependentErrorText: "Es muss ein Wert für '${0}' ausgewählt werden."
   emptyText: ""
   completeText: "Auswählen"
-  lookupLabelText: "suchen"
+  lookupLabelText: "Suche"
   lookupText: "..."
 >
 
@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "Informationen"
+  informationText: "${0} - Informationen"
   titleText: "Detail"
   entityText: "Entität"
   detailsText: "Details"
@@ -100,6 +100,8 @@
   notAvailableText: "Die angeforderten Daten sind nicht verfügbar."
   toggleCollapseText: "ein-/ausblenden"
   editText: "Bearbeiten"
+  editTooltipText: "Bearbeiten"
+  refreshTooltipText: "Aktualisieren"
 >
 
 <editBase ""
@@ -113,6 +115,8 @@
   loadingText: "Ladevorgang läuft"
   errorGeneral: "Bei der Anforderung von Daten ist ein Serverfehler aufgetreten."
   error410:  "Fehler beim Speichern. Dieser Datensatz ist nicht mehr vorhanden."
+  saveTooltipText: "Speichern"
+  cancelTooltipText: "Abbrechen"
 >
 
 <errorHandleMixin ""
@@ -121,15 +125,17 @@
 
 <listBase ""
   moreText: "Mehr Datensätze abrufen"
-  emptySelectionText: "Keine"
+  emptySelectionText: "k. A."
   titleText: "Liste"
   configureText: "Konfigurieren"
   errorRenderText: "Fehler beim Darstellen der Zeilenvorlage."
-  remainingText: "${0} Datensätze verbleibend"
+  remainingText: "Weitere ${0} Datensätze vorhanden"
   cancelText: "Abbrechen"
   insertText: "Neu"
   noDataText: "Keine Datensätze"
   loadingText: "Ladevorgang läuft"
+  newTooltipText: "Neu"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -192,6 +198,7 @@
 
 <mainToolbar ""
   titleText: "Mobil"
+  backTooltipText: "Zurück"
 >
 
 <relatedViewWidget ""
@@ -258,7 +265,7 @@
   confirmText: "Bestätigen"
   editText: "Bearbeiten"
   okayText: "OK"
-  submitText: "Senden"
+  submitText: "Übermitteln"
   warningText: "Warnung"
 >
 <_listOfflineMixin
@@ -266,6 +273,7 @@
   interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Elemente vollständig in die Aktentasche zu verschieben."
   briefcasingText: "Einträge werden in Aktentasche verschoben, bitte warten."
   errorBriefcasingText: "Fehler beim Verschieben in Aktentasche"
+  briefcaseTooltipText: "Aktentasche"
 >
 
 <_detailOfflineMixin
@@ -274,11 +282,14 @@
   briefcasingText: "Einträge werden in Aktentasche verschoben, bitte warten."
   errorBriefcasingText: "Fehler beim Verschieben in Aktentasche"
   errorSavingOfflineViewText: "Fehler beim Speichern der Offline-Ansicht:"
+  briefcaseTooltipText: "Aktentasche"
 >
 
 <sdkApplication
   connectionToastTitleText: "Verbindung"
   checkingText: "Verbindung wird geprüft"
-  loadingApplicationStateText: "Anwendungsstatus wird geladen"
+  loadingApplicationStateText: "Status: Anwendung wird geladen"
   initializingText: "Wird initialisiert:"
+  viewSettingsText: "Ansichtseinstellungen"
+  closeText: "Schließen"
 >

@@ -1,6 +1,6 @@
 <dateField ""
   emptyText: ''
-  invalidDateFormatErrorText: "Некорректный формат даты в поле \"${0}\"."
+  invalidDateFormatErrorText: "Некорректный формат даты в поле "${0}"."
   cancelText: "Отмена"
   confirmText: "Подтвердить"
   advancedText: "Дополнительно"
@@ -10,29 +10,29 @@
   minutes: "мин"
   hours: "ч"
   days: "дн."
-  weeks: "недели"
-  years: "годы"
-  invalidDurationErrorText: "Поле \"${0}\" не является допустимой длительностью."
+  weeks: "нед."
+  years: "гг."
+  invalidDurationErrorText: "Поле "${0}" не является допустимой длительностью."
   emptyText: ""
 >
 
 <editorField ""
-  lookupLabelText: "редактировать"
+  lookupLabelText: "Редактировать"
   lookupText: "..."
-  emptyText: "пусто"
-  completeText: "OК"
+  emptyText: "Пусто"
+  completeText: "ОК"
 >
 
 <lookupField ""
-  dependentErrorText: "Необходимо выбрать значение \"${0}\"."
+  dependentErrorText: "Необходимо выбрать значение "${0}"."
   emptyText: ""
   completeText: "Выбрать"
-  lookupLabelText: "поиск"
+  lookupLabelText: "Поиск"
   lookupText: "..."
 >
 
 <signatureField ""
-  signatureLabelText: "подпись"
+  signatureLabelText: "Подпись"
   signatureText: "..."
 >
 
@@ -51,8 +51,8 @@
   lastMonthText: "Прошлый месяц"
   pastYearText: "Прошлый год"
   nextYearText: "Следующий год"
-  nextMonthText: "Следующий месяц"
-  nextWeekText: "Следующая неделя"
+  nextMonthText: "В следующем месяце"
+  nextWeekText: "На следующей неделе"
   futureText: "Будущее"
   twoWeeksAgoText: "Две недели назад"
   threeWeeksAgoText: "Три недели назад"
@@ -76,7 +76,7 @@
   cancelText: "Отмена"
   selectFileText: "Выбрать файл"
   loadingText: "Загрузка..."
-  descriptionText: "описание"
+  descriptionText: "Описание"
   bytesText: "байт"
   notSupportedText: "Ваше устройство не поддерживает добавление вложений."
 >
@@ -92,19 +92,21 @@
 >
 
 <detailBase ""
-  informationText: "Информация"
+  informationText: "Информация ${0}"
   titleText: "Подробности"
   entityText: "Сущность"
   detailsText: "Подробности"
   loadingText: "Загрузка"
   notAvailableText: "Запрошенные данные недоступны."
-  toggleCollapseText: "показать/скрыть"
+  toggleCollapseText: "Показать/скрыть"
   editText: "Редактировать"
+  editTooltipText: "Редактировать"
+  refreshTooltipText: "Обновить"
 >
 
 <editBase ""
   concurrencyErrorText: "Другой пользователь обновил это поле."
-  toggleCollapseText: "показать/скрыть"
+  toggleCollapseText: "Показать/скрыть"
   saveText: "Сохранить"
   titleText: "Редактировать"
   validationSummaryText: "Сводка проверки"
@@ -113,6 +115,8 @@
   loadingText: "Загрузка"
   errorGeneral: "При запросе данных возникла ошибка сервера."
   error410:  "Ошибка при сохранении. Эта запись больше не существует."
+  saveTooltipText: "Сохранить"
+  cancelTooltipText: "Отмена"
 >
 
 <errorHandleMixin ""
@@ -130,6 +134,8 @@
   insertText: "Новый"
   noDataText: "Нет записей"
   loadingText: "Загрузка"
+  newTooltipText: "Создать"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -179,26 +185,27 @@
   trueText: "T"
   falseText: "F"
   hoursText: "ч"
-  hourText: "час"
+  hourText: "ч"
   minutesText: "мин"
-  minuteText: "минута"
+  minuteText: "Минута"
   percentFormatText: "${0}${1}"
   bytesText: "байт"
 >
 
 <groupedList ""
- toggleCollapseText: "показать/скрыть"
+ toggleCollapseText: "Показать/скрыть"
 >
 
 <mainToolbar ""
   titleText: "Мобильный телефон"
+  backTooltipText: "Назад"
 >
 
 <relatedViewWidget ""
-  nodataText: "записи не найдены..."
-  selectMoreDataText: "показать еще ${0} ${1}... "
+  nodataText: "Записи не найдены..."
+  selectMoreDataText: "Показать еще ${0} ${1}... "
   selectMoreDataText2: "см. еще ${0}... "
-  navToListText: "см. список"
+  navToListText: "См. список"
   loadingText: "Загрузка"
   refreshViewText: "Обновить"
   itemOfCountText: " ${0} из ${1}"
@@ -227,11 +234,11 @@
 <relativeDateTimePicker ""
   titleText: "Около..."
   pickDateTimeText: "Дополнительно"
-  thisEveningText: "Этим вечером"
+  thisEveningText: "Сегодня вечером"
   tomorrowMorningText: "Завтра утром"
   tomorrowAfternoonText: "Завтра вечером"
-  nextWeekText: "Следующая неделя"
-  nextMonthText: "Следующий месяц"
+  nextWeekText: "На следующей неделе"
+  nextMonthText: "В следующем месяце"
   cancelText: "Отмена"
   confirmText: "Подтвердить"
 >
@@ -266,6 +273,7 @@
   interruptedText: "Процесс был прерван и не был полностью завершен. Повторите процесс, чтобы полностью переместить элементы в портфель."
   briefcasingText: "Перемещение в портфель, подождите."
   errorBriefcasingText: "Ошибка при перемещении в портфель"
+  briefcaseTooltipText: "Портфель"
 >
 
 <_detailOfflineMixin
@@ -273,7 +281,8 @@
   interruptedText: "Процесс был прерван и не был полностью завершен. Повторите процесс, чтобы полностью переместить элементы в портфель."
   briefcasingText: "Перемещение в портфель, подождите."
   errorBriefcasingText: "Ошибка при перемещении в портфель"
-  errorSavingOfflineViewText: "ошибка при сохранении автономного вида:"
+  errorSavingOfflineViewText: "Ошибка при сохранении автономного вида:"
+  briefcaseTooltipText: "Портфель"
 >
 
 <sdkApplication
@@ -281,4 +290,6 @@
   checkingText: "Проверка подключения"
   loadingApplicationStateText: "Состояние загрузки приложения"
   initializingText: "Инициализация:"
+  viewSettingsText: "ПРОСМОТР НАСТРОЕК"
+  closeText: "Закрыть"
 >

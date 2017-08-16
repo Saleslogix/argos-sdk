@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "信息"
+  informationText: "${0} 信息"
   titleText: "明细"
   entityText: "实体"
   detailsText: "明细"
@@ -100,6 +100,8 @@
   notAvailableText: "请求的数据不可用。"
   toggleCollapseText: "切换折叠"
   editText: "编辑"
+  editTooltipText: "编辑"
+  refreshTooltipText: "刷新"
 >
 
 <editBase ""
@@ -113,6 +115,8 @@
   loadingText: "正在加载"
   errorGeneral: "请求数据时发生服务器错误。"
   error410:  "保存时出现错误。此记录不再存在。"
+  saveTooltipText: "保存"
+  cancelTooltipText: "取消"
 >
 
 <errorHandleMixin ""
@@ -130,6 +134,8 @@
   insertText: "新建"
   noDataText: "无记录"
   loadingText: "正在加载"
+  newTooltipText: "新建"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -192,6 +198,7 @@
 
 <mainToolbar ""
   titleText: "移动电话"
+  backTooltipText: "返回"
 >
 
 <relatedViewWidget ""
@@ -225,7 +232,7 @@
 >
 
 <relativeDateTimePicker ""
-  titleText: "周围..."
+  titleText: "大约..."
   pickDateTimeText: "高级"
   thisEveningText: "今晚"
   tomorrowMorningText: "明早"
@@ -266,6 +273,7 @@
   interruptedText: "处理已中断，无法完全完成。请再次重试此处理以将项目完全加入公文包。"
   briefcasingText: "正在加入公文包，请稍候。"
   errorBriefcasingText: "加入公文包时出错"
+  briefcaseTooltipText: "公文包"
 >
 
 <_detailOfflineMixin
@@ -274,6 +282,7 @@
   briefcasingText: "正在加入公文包，请稍候。"
   errorBriefcasingText: "加入公文包时出错"
   errorSavingOfflineViewText: "保存离线视图时出错："
+  briefcaseTooltipText: "公文包"
 >
 
 <sdkApplication
@@ -281,4 +290,6 @@
   checkingText: "正在检查连接"
   loadingApplicationStateText: "正在加载应用程序状态"
   initializingText: "正在初始化:"
+  viewSettingsText: "视图设置"
+  closeText: "关闭"
 >
