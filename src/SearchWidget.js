@@ -51,8 +51,6 @@ const resource = getResource('searchWidget');
  * @mixins argos._Templated
  */
 const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], /** @lends argos.SearchWidget.prototype */ {
-  /** @lends argos.SearchWidget */
-
   /**
    * Provides a setter for HTML node attributes, namely the value for search text
    * @property {Object}
