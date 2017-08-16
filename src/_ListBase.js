@@ -701,7 +701,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     // Get the base results
     const shouldStart = this.inherited(arguments);
     const selected = $(this.domNode).attr('selected');
-    return shouldStart && selected === 'selected' && !this.listLoading;
+    const actionNode = $(this.domNode).find('.btn-actions.is-open');
+    const actionsOpen = actionNode.length > 0;
+    return shouldStart && selected === 'selected' && !this.listLoading && !actionsOpen;
   },
   forceRefresh: function forceRefresh() {
     this.clear();
