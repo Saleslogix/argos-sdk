@@ -27,16 +27,15 @@ const resource = getResource('view');
 
 /**
  * @class argos.View
- * View is the root Class for all views and incorporates all the base features,
+ * @classdesc View is the root Class for all views and incorporates all the base features,
  * events, and hooks needed to successfully render, hide, show, and transition.
  *
  * All Views are dijit Widgets, namely utilizing its: widgetTemplate, connections, and attributeMap
- * @alternateClassName View
  * @mixins argos._ActionMixin
  * @mixins argos._CustomizationMixin
  * @mixins argos._Templated
  */
-const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
+const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], /** @lends argos.View# */{
   /**
    * This map provides quick access to HTML properties, most notably the selected property of the container
    */

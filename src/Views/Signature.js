@@ -23,15 +23,12 @@ const resource = getResource('signature');
 
 /**
  * @class argos.Views.Signature
- * Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
- *
+ * @classdesc Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
  * It goes hand-in-hand with {@link SignatureField SignatureField}
- *
- * @alternateClassName SignatureView
  * @extends argos.View
  * @requires argos.Format
  */
-const __class = declare('argos.Views.Signature', [View], {
+const __class = declare('argos.Views.Signature', [View], /** @lends argos.Views.Signature# */{
   // Localization
   /**
    * @property {String}

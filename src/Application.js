@@ -46,15 +46,13 @@ Function.prototype.bindDelegate = function bindDelegate(scope) { //eslint-disabl
 };
 
 /**
- * @class argos.Application
- * Application is a nexus that provides many routing and global application services that may be used
+ * @alias argos.Application
+ * @classdesc Application is a nexus that provides many routing and global application services that may be used
  * from anywhere within the app.
  *
  * It provides a shortcut alias to `window.App` (`App`) with the most common usage being `App.getView(id)`.
- *
- * @alternateClassName App
  */
-export default class Application {
+class Application {
   constructor() {
     /**
      * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
@@ -1464,3 +1462,5 @@ export default class Application {
     }
   }
 }
+
+export default Application;

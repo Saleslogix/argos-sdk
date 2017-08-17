@@ -29,17 +29,16 @@ const resource = getResource('detailBase');
 
 /**
  * @class argos._DetailBase
- * A Detail View represents a single record and should display all the info the user may need about the entry.
+ * @classdesc A Detail View represents a single record and should display all the info the user may need about the entry.
  *
  * A Detail entry is identified by its key (idProperty) which is how it requests the data via the endpoint.
  *
- * @alternateClassName _DetailBase
  * @extends argos.View
  * @requires argos.Format
  * @requires argos.Utility
  * @requires argos.ErrorManager
  */
-const __class = declare('argos._DetailBase', [View, TabWidget], {
+const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos._DetailBase# */{
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:

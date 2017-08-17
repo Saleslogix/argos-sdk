@@ -40,7 +40,7 @@ const resource = getResource('editBase');
 
 /**
  * @class argos._EditBase
- * An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
+ * @classdesc An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
  * of a layout similar to Detail rows but are instead Edit fields.
  *
  * A unique part of the Edit view is it's lifecycle in comparison to Detail. The Detail view is torn
@@ -50,8 +50,6 @@ const resource = getResource('editBase');
  * Since Edit Views are typically the "last" view (you always come from a List or Detail view) it warrants
  * special attention to the navigation options that are passed, as they greatly control how the Edit view
  * functions and operates.
- *
- * @alternateClassName _EditBase
  * @extends argos.View
  * @requires argos.Utility
  * @requires argos.Fields.ErrorManager
@@ -68,7 +66,7 @@ const resource = getResource('editBase');
  * @requires argos.Fields.TextAreaField
  * @requires argos.Fields.TextField
  */
-const __class = declare('argos._EditBase', [View], {
+const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# */{
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:
@@ -347,6 +345,7 @@ const __class = declare('argos._EditBase', [View], {
   /**
    * Extends constructor to initialze `this.fields` to {}
    * @param o
+   * @constructs
    */
   constructor: function constructor(/* o*/) {
     this.fields = {};

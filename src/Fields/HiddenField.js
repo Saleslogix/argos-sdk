@@ -19,22 +19,20 @@ import FieldManager from '../FieldManager';
 
 /**
  * @class argos.Fields.HiddenField
- * The Hidden Field is {@link TextField TextField} but instead binds to an `<input type="hidden"`>.
+ * @classdesc The Hidden Field is {@link TextField TextField} but instead binds to an `<input type="hidden"`>.
  *
  * Meaning that the field will not be displayed on screen but may still store strings of text.
  *
- * ###Example:
+ * @example
  *     {
  *         name: 'StatusCodeKey',
  *         property: 'StatusCodeKey',
  *         type: 'hidden'
  *     }
- *
- * @alternateClassName HiddenField
  * @extends argos.Fields.TextField
  * @requires argos.FieldManager
  */
-const control = declare('argos.Fields.HiddenField', [TextField], {
+const control = declare('argos.Fields.HiddenField', [TextField], /** @lends argos.Fields.HiddenField# */{
   propertyTemplate: new Simplate([
     '<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
     '</div>',

@@ -22,12 +22,10 @@ const resource = getResource('fileSelect');
 
 /**
  * @class argos.Views.FileSelect
- * File Select View is a view for selection files capabilities.
- *
- * @alternateClassName FileSelect
+ * @classdesc File Select View is a view for selection files capabilities.
  * @extends argos.View
  */
-const __class = declare('argos.Views.FileSelect', [View], {
+const __class = declare('argos.Views.FileSelect', [View], /** @lends argos.Views.FileSelect# */{
   // Localization
   titleText: resource.titleText,
   addFileText: resource.addFileText,
@@ -107,7 +105,7 @@ const __class = declare('argos.Views.FileSelect', [View], {
   _formParts: [],
 
   /**
-   * @constructor
+   * @constructs
    */
   constructor: function constructor() {},
   postCreate: function postCreate() {

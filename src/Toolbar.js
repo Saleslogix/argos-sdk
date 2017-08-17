@@ -18,18 +18,13 @@ import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from './_ActionMixin';
 import _Templated from './_Templated';
 
-
 /**
  * @class argos.Toolbar
- * Toolbar is a base toolbar class that provides basic rendering of the bar, adding toolbar items and binding their invokacations.
- *
- * Inherits dijit _Widget.
- *
- * @alternateClassName Toolbar
+ * @classdesc Toolbar is a base toolbar class that provides basic rendering of the bar, adding toolbar items and binding their invokacations.
  * @mixins argos._ActionMixin
  * @mixins argos._Templated
  */
-const __class = declare('argos.Toolbar', [_WidgetBase, _ActionMixin, _Templated], {
+const __class = declare('argos.Toolbar', [_WidgetBase, _ActionMixin, _Templated], /** @lends argos.Toolbar# */{
   /**
    * @property {Simplate}
    * HTML markup of the toolbar

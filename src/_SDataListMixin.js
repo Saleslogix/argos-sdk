@@ -15,11 +15,8 @@
 
 /**
  * @class argos._SDataListMixin
- *
- * Enables SData for the List view.
+ * @classdesc Enables SData for the List view.
  * Adds the SData store to the view and exposes the needed properties for creating a Feed request.
- *
- * @alternateClassName _SDataListMixin
  * @requires argos.SData
  * @requires argos.Utility
  */
@@ -31,7 +28,7 @@ import SData from './Store/SData';
 import utility from './Utility';
 import MODEL_TYPES from './Models/Types';
 
-const __class = declare('argos._SDataListMixin', null, {
+const __class = declare('argos._SDataListMixin', null, /** @lends argos._SDataListMixin# */{
   /**
    * @property request Object SData request passed into the store. Optional.
    */

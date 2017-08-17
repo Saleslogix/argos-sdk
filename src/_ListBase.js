@@ -29,17 +29,13 @@ import convert from 'argos/Convert';
 const resource = getResource('listBase');
 
 /**
- * @class argos._ListBase
- * A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
+ * @classdesc A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
  * selection model built in for selecting rows from the list and may be used in a number of different manners.
+ * @class argos._ListBase
  * @extends argos.View
- * @alternateClassName _ListBase
- * @requires argos.ErrorManager
- * @requires argos.Utility
- * @requires argos.SearchWidget
  * @mixins argos._PullToRefreshMixin
  */
-const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
+const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @lends argos._ListBase# */{
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:

@@ -28,10 +28,10 @@ const dtFormatResource = getResource('dateFieldDateTimeFormat');
 
 /**
  * @class argos.Fields.DateField
- * The DateField is an extension of the {@link EditorField EditorField} by accepting Date Objects
+ * @classdesc The DateField is an extension of the {@link EditorField EditorField} by accepting Date Objects
  * for values and using the {@link Calendar Calendar} view for user input.
  *
- * ###Example
+ * @example
  *
  *     {
  *         name: 'StartDate',
@@ -43,13 +43,12 @@ const dtFormatResource = getResource('dateFieldDateTimeFormat');
  *         showRelativeDateTime: true
  *     }
  *
- * @alternateClassName DateField
  * @extends argos.Fields.EditorField
  * @requires argos.Calendar
  * @requires argos.FieldManager
  * @requires argos.Format
  */
-const control = declare('argos.Fields.DateField', [EditorField], {
+const control = declare('argos.Fields.DateField', [EditorField], /** @lends argos.Fields.DateField# */{
   // Localization
   /**
    * @cfg {String}

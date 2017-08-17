@@ -21,26 +21,24 @@ import FieldManager from '../FieldManager';
 
 /**
  * @class argos.Fields.TextField
- * The TextField is the base method of inputting just a string that is bound to a `<input type="text">`.
+ * @classdesc The TextField is the base method of inputting just a string that is bound to a `<input type="text">`.
  *
  * It does introduce:
  *
  * * Clear button - adds a small x buton to clear the input
  * * Option to only allow valid input at each keypress
  *
- * ###Example:
+ * @example
  *     {
  *         name: 'LastName',
  *         property: 'LastName',
  *         label: this.lastNameText,
  *         type: 'text',
  *     }
- *
- * @alternateClassName TextField
  * @extends argos.Fields._Field
  * @requires argos.FieldManager
  */
-const control = declare('argos.Fields.TextField', [_Field], {
+const control = declare('argos.Fields.TextField', [_Field], /** @lends argos.Fields.TextField# */{
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:

@@ -22,6 +22,7 @@ const resource = getResource('searchWidget');
 
 /**
  * @class argos.SearchWidget
+ * @classdesc
  * Search Widget is an SData-enabled search component that {@link List List} uses by default for search.
  *
  * The search widget is a dijit Widget with all the Widget aspects.
@@ -47,13 +48,13 @@ const resource = getResource('searchWidget');
  * `where=(TicketStatus eq 1) and (TicketUrgency gt 3) and (TicketId eq ("Bob") or TicketOwner like "Bob")
  *
  * See the [Defining Hash Tags guide](#!/guides/v2_beyond_the_guide_defining_hashtags) for more information and how it supports localization.
- * @alternateClassName SearchWidget
  * @mixins argos._Templated
  */
-const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
+const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], /** @lends argos.SearchWidget.prototype */ {
   /**
-   * @property {Object}
    * Provides a setter for HTML node attributes, namely the value for search text
+   * @property {Object}
+   * @memberof argos.SearchWidget
    */
   attributeMap: {
     queryValue: {
@@ -64,8 +65,9 @@ const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
   },
 
   /**
-   * @property {Simplate}
    * Simple that defines the HTML Markup
+   * @property {Simplate}
+   * @memberof argos.SearchWidget
    */
   widgetTemplate: new Simplate([`
     <span class="searchfield-wrapper">
@@ -78,8 +80,8 @@ const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
   ]),
 
   /**
-   * @property {String}
    * Text that is used when no value is in the search box - "placeholder" text.
+   * @property {String}
    */
   searchText: resource.searchText,
 
@@ -87,11 +89,13 @@ const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], {
    * @property {RegExp}
    * The regular expression used to determine if a search query is a custom search expression.  A custom search
    * expression is not processed, and directly passed to SData.
+   * @memberof argos.SearchWidget
    */
   customSearchRE: /^#!/,
   /**
-   * @type {RegExp}
    * The regular expression used to determine if a search query is a hash tag search.
+   * @type {RegExp}
+   * @memberof argos.SearchWidget
    */
   hashTagSearchRE: /(?:#|;|,|\.)([^\s]+)/g,
   /**

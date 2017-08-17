@@ -19,10 +19,10 @@ import FieldManager from '../FieldManager';
 
 /**
  * @class argos.Fields.TextAreaField
- * The TextAreaField extends the base TextField by changing the input element to
+ * @classdesc The TextAreaField extends the base TextField by changing the input element to
  * an `<textarea>` element with a configurable amount of visible rows.
  *
- * ###Example:
+ * @example
  *     {
  *         name: 'Description',
  *         property: 'Description',
@@ -30,12 +30,10 @@ import FieldManager from '../FieldManager';
  *         type: 'textarea',
  *         rows: 6
  *     }
- *
- * @alternateClassName TextAreaField
  * @extends argos.Fields.TextField
  * @requires argos.FieldManager
  */
-const control = declare('argos.Fields.TextAreaField', [TextField], {
+const control = declare('argos.Fields.TextAreaField', [TextField], /** @lends argos.Fields.TextAreaField# */{
   /**
    * @cfg {Number}
    * Number of rows to show visually, does not constrain input.

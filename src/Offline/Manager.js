@@ -6,7 +6,6 @@ import convert from '../Convert';
 
 /**
  * @class argos.Offline.Manager
- *
  */
 const __class = {
 

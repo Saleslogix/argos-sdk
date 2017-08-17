@@ -24,7 +24,7 @@ const resource = getResource('durationField');
 
 /**
  * @class argos.Fields.DurationField
- * The Duration field is a mashup of an auto-complete box and a {@link LookupField LookupField} for handling
+ * @classdesc The Duration field is a mashup of an auto-complete box and a {@link LookupField LookupField} for handling
  * duration's of: minutes, hours, days, weeks or years. Meaning a user can type directly into the input area the
  * amount of time or press the lookup button and choose from pre-determined list of times.
  *
@@ -37,7 +37,7 @@ const resource = getResource('durationField');
  *
  * Setting and getting the value is always in minutes as a Number.
  *
- * ###Example:
+ * @example
  *     {
  *         name: 'Duration',
  *         property: 'Duration',
@@ -46,11 +46,10 @@ const resource = getResource('durationField');
  *         view: 'durations_list'
  *     }
  *
- * @alternateClassName DurationField
  * @extends argos.Fields.LookupField
  * @requires argos.FieldManager
  */
-const control = declare('argos.Fields.DurationField', [LookupField], {
+const control = declare('argos.Fields.DurationField', [LookupField], /** @lends argos.Fields.DurationField# */{
   /**
    * Maps various attributes of nodes to setters.
    */

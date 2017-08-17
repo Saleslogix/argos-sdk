@@ -1,20 +1,12 @@
-/**
- * @class argos._PullToRefreshMixin
- * Mixin for pull to refresh actions
- * @alternateClassName _PullToRefreshMixin
- */
 import declare from 'dojo/_base/declare';
-
 import getResource from './I18n';
 
 const resource = getResource('pullToRefreshMixin');
 
 /**
  * @class argos._PullToRefreshMixin
- * Mixin for pull to refresh actions
- * @alternateClassName _PullToRefreshMixin
  */
-const __class = declare('argos._PullToRefreshMixin', null, {
+const __class = declare('argos._PullToRefreshMixin', null, /** @lends argos._PullToRefreshMixin# */ {
   /**
    * @property {Simplate}
    */

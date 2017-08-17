@@ -18,7 +18,10 @@ import Dropdown from '../Dropdown';
 import FieldManager from '../FieldManager';
 import _Field from './_Field';
 
-const __class = declare('argos.DropdownField', [_Field, Dropdown], {
+/**
+ * @class argos.Fields.DropdownField
+ */
+const __class = declare('argos.DropdownField', [_Field, Dropdown], /** @lends argos.Fields.DropdownField# */{
   widgetTemplate: new Simplate([
     '<div data-dojo-attach-point="dropdownNode">',
     '<label>{%: $.label %}</label>',

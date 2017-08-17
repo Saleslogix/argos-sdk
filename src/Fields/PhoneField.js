@@ -22,25 +22,23 @@ import 'dojo/_base/sniff';
 
 /**
  * @class argos.Fields.PhoneField
- * The Phone field is a specialized {@link TextField TextField} that takes a string of numbers
+ * @classdesc The Phone field is a specialized {@link TextField TextField} that takes a string of numbers
  * and groups them into a phone number on blur or when setting a value directly the value
  * shown to the user gets passed through the
  * {@link #formatNumberForDisplay formatNumberForDisplay} function, while
  * {@link #getValue getValue} will still return an unformatted version.
  *
- * ###Example:
+ * @example
  *     {
  *         name: 'SalesPotential',
  *         property: 'SalesPotential',
  *         label: this.salesPotentialText,
  *         type: 'decimal'
  *     }
- *
- * @alternateClassName PhoneField
  * @extends argos.Fields.TextField
  * @requires argos.FieldManager
  */
-const control = declare('argos.Fields.PhoneField', [TextField], {
+const control = declare('argos.Fields.PhoneField', [TextField], /** @lends argos.Fields.PhoneField# */{
   /**
    * @property {String}
    * Sets the `<input type=` of the field.

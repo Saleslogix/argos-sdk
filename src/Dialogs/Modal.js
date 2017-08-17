@@ -9,9 +9,8 @@ const resource = getResource('modal');
 
 /**
  * @class argos.Dialogs.Modal
- * @alternateClassName Pop-up
  */
-const __class = declare('argos.Dialogs.Modal', [_WidgetBase, _Templated], {
+const __class = declare('argos.Dialogs.Modal', [_WidgetBase, _Templated], /** @lends argos.Dialogs.Modal# */{
   widgetTemplate: new Simplate([
     '<div class="modal__container" data-dojo-attach-point="modalContainer">',
     '{%! $.modalTemplate %}',

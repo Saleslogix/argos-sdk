@@ -28,11 +28,10 @@ try {
 } catch (e) {}// eslint-disable-line
 /**
  * @class argos.ErrorManager
- * ErrorManager is a singleton that parses and stores SData error responses into localStorage.
- * @alternateClassName ErrorManager
+ * @classdesc ErrorManager is a singleton that parses and stores SData error responses into localStorage.
  * @singleton
  */
-const __class = lang.setObject('argos.ErrorManager', {
+const __class = lang.setObject('argos.ErrorManager', /** @lends argos.ErrorManager# */{
   // Localization
 
   /**

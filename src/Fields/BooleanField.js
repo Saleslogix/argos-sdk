@@ -18,9 +18,9 @@ import FieldManager from '../FieldManager';
 
 /**
  * @class argos.Fields.BooleanField
- * The Boolean Field is used for true/false values and is visualized as a toggle or light switch.
+ * @classdesc The Boolean Field is used for true/false values and is visualized as a toggle or light switch.
  *
- * ###Example:
+ * @example
  *     {
  *         name: 'IsLead',
  *         property: 'IsLead',
@@ -28,11 +28,10 @@ import FieldManager from '../FieldManager';
  *         type: 'boolean'
  *     }
  *
- * @alternateClassName BooleanField
  * @extends argos.Fields._Field
  * @requires argos.FieldManager
  */
-const control = declare('argos.Fields.BooleanField', [Field], {
+const control = declare('argos.Fields.BooleanField', [Field], /** @lends argos.Fields.BooleanField# */{
   /**
    * @property {Simplate}
    * Simplate that defines the fields HTML Markup

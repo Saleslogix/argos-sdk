@@ -18,11 +18,11 @@ import FieldManager from '../FieldManager';
 
 /**
  * @class argos.Fields.SelectField
- * The SelectField is a minor extension to te LookupField in that it explicitly hides search and actions.
+ * @classdesc The SelectField is a minor extension to te LookupField in that it explicitly hides search and actions.
  *
  * It may also optionally pass the `data` option which a view may optionally use instead of requesting data.
  *
- * ###Example:
+ * @example
  *     {
  *         name: 'State',
  *         property: 'State',
@@ -30,12 +30,10 @@ import FieldManager from '../FieldManager';
  *         type: 'select',
  *         view: 'state_list'
  *     }
- *
- * @alternateClassName SelectField
  * @extends argos.Fields.LookupField
  * @requires argos.FieldManager
  */
-const control = declare('argos.Fields.SelectField', [LookupField], {
+const control = declare('argos.Fields.SelectField', [LookupField], /** @lends argos.SelectField# */ {
   /**
    * @property {Boolean}
    * Overrides the {@link LookupField LookupField} default to explicitly set it to false forcing
@@ -49,7 +47,7 @@ const control = declare('argos.Fields.SelectField', [LookupField], {
    */
   valueTextProperty: false,
   /**
-   * @property {Object/Object[]/Function}
+   * @property {Object|Object[]|Function}
    * If defined will be expanded (if function) and passed in the navigation options to the lookup view
    */
   data: null,

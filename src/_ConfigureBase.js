@@ -7,12 +7,9 @@ const resource = getResource('configureBase');
 
 /**
  * @class argos._ConfigureBase
- *
- *
  * @extends argos._ListBase
- *
  */
-const __class = declare('argos._ConfigureBase', [DraggableList], {
+const __class = declare('argos._ConfigureBase', [DraggableList], /** @lends argos._ConfigureBase# */{
   // Templates
   itemTemplate: new Simplate([
     '<h4>',

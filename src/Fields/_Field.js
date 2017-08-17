@@ -15,11 +15,8 @@
 
 /**
  * @class argos.Fields._Field
- * Field is the base class for all field controls. It describes all the functions a field should support giving no implementation itself, merely a shell. The one function that `_Field` does provide that most fields leave untouched is `validate`.
- *
+ * @classdesc Field is the base class for all field controls. It describes all the functions a field should support giving no implementation itself, merely a shell. The one function that `_Field` does provide that most fields leave untouched is `validate`.
  * All fields are dijit Widgets meaning it goes through the same lifecycle and has all the Widget functionality.
- *
- * @alternateClassName _Field
  * @mixins argos._ActionMixin
  * @mixins argos._Templated
  * @requires argos.FieldManager
@@ -31,7 +28,7 @@ import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from '../_ActionMixin';
 import _Templated from '../_Templated';
 
-const __class = declare('argos.Fields._Field', [_WidgetBase, _ActionMixin, _Templated], {
+const __class = declare('argos.Fields._Field', [_WidgetBase, _ActionMixin, _Templated], /** @lends argos.Fields._Field# */ {
   /**
    * @property {View}
    * View that controls the field.
@@ -112,6 +109,7 @@ const __class = declare('argos.Fields._Field', [_WidgetBase, _ActionMixin, _Temp
   /**
    * Passed options object will be mixed into the field, overwriting any defaults.
    * @param {Object} o Override options
+   * @constructs
    */
   constructor: function constructor(o) {
     lang.mixin(this, o);

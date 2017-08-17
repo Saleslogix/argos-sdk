@@ -5,7 +5,10 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import RelatedViewManager from './RelatedViewManager';
 
-const __class = declare('argos._RelatedViewWidgetListMixin', null, {
+/**
+ * @class argos._RelatedViewWidgetListMixin
+ */
+const __class = declare('argos._RelatedViewWidgetListMixin', null, /** @lends argos._RelatedViewWidgetListMixin# */{
   /**
    * The related view definitions for related views for each row.
    */

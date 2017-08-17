@@ -19,9 +19,8 @@ import _RelatedWidgetListMixin from './_RelatedViewWidgetListMixin';
 
 /**
  * @class argos.List
- * List extends _ListBase and mixes in _SDataListMixin to provide backwards compatibility for consumers.
+ * @classdesc List extends _ListBase and mixes in _SDataListMixin to provide backwards compatibility for consumers.
  * @extends argos._ListBase
- * @alternateClassName List
  * @requires argos._ListBase
  * @requires argos._SDataListMixin
  * @mixins argos._RelateViewdWidgetListMixin
