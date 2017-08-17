@@ -592,6 +592,13 @@ class Application {
     const menu = $('.application-menu', container).first();
     menu.applicationmenu();
     this.applicationmenu = menu.data('applicationmenu');
+    menu.on('applicationmenuopen', () => {
+      connect.publish('/app/menuopen', [true]);
+    });
+
+    menu.on('applicationmenuclose', () => {
+      connect.publish('/app/menuclose', [true]);
+    });
 
     const viewSettingsModal = $('.modal.view-settings', container).first();
     viewSettingsModal.modal();
