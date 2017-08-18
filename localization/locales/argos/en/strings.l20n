@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "Field '${0}' has Invalid date format."
   cancelText: "Cancel"
   confirmText: "Confirm"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occurred."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "no records"
   loadingText: "Loading"
   newTooltipText: "New"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -199,6 +199,18 @@
 <mainToolbar ""
   titleText: "Mobile"
   backTooltipText: "Back"
+  themeText: "Theme"
+  personalizationText: "Personalization"
+  lightText: "Light"
+  darkText: "Dark"
+  highContrastText: "High Contrast"
+  defaultText: "Default"
+  azureText: "Azure"
+  amberText: "Amber"
+  amethystText: "Amethyst"
+  turqoiseText: "Turqoise"
+  emeraldText: "Emerald"
+  graphiteText: "Graphite"
 >
 
 <relatedViewWidget ""
