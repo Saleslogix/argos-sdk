@@ -59,7 +59,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
         <div class="buttonset" data-dojo-attach-point="toolNode">
         </div>
         <div class="more">
-          <button class="btn-actions page-changer" type="button" data-options="{attachToBody: true}">            <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+          <button class="btn-actions page-changer" type="button" data-options="{attachToBody: true}">
             <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
               <use xlink:href="#icon-more"></use>
             </svg>
