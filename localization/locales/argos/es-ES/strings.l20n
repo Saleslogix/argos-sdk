@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "Información"
+  informationText: "Información ${0}"
   titleText: "Detalle"
   entityText: "Entidad"
   detailsText: "Detalles"
@@ -100,6 +100,8 @@
   notAvailableText: "La información solicitada no está disponible."
   toggleCollapseText: "contraer alternancia"
   editText: "Editar"
+  editTooltipText: "Editar"
+  refreshTooltipText: "Actualizar"
 >
 
 <editBase ""
@@ -113,6 +115,8 @@
   loadingText: "Cargando"
   errorGeneral: "Ha ocurrido un error en el servidor mientras se estaba solicitando información."
   error410:  "Error al guardar. Este registro ya no existe."
+  saveTooltipText: "Guardar"
+  cancelTooltipText: "Cancelar"
 >
 
 <errorHandleMixin ""
@@ -130,6 +134,8 @@
   insertText: "Nuevo"
   noDataText: "no hay registros"
   loadingText: "Cargando"
+  newTooltipText: "Nuevo"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -192,6 +198,7 @@
 
 <mainToolbar ""
   titleText: "Teléfono móvil"
+  backTooltipText: "Atrás"
 >
 
 <relatedViewWidget ""
@@ -266,6 +273,7 @@
   interruptedText: "El proceso se interrumpió y no se pudo completar en su totalidad. Intente realizar de nuevo el proceso para guardar los artículos en el maletín por completo."
   briefcasingText: "Guardando en maletín, espere."
   errorBriefcasingText: "Error al guardar en maletín"
+  briefcaseTooltipText: "Maletín"
 >
 
 <_detailOfflineMixin
@@ -274,6 +282,7 @@
   briefcasingText: "Guardando en maletín, espere."
   errorBriefcasingText: "Error al guardar en maletín"
   errorSavingOfflineViewText: "error al guardar la vista sin conexión:"
+  briefcaseTooltipText: "Maletín"
 >
 
 <sdkApplication
@@ -281,4 +290,6 @@
   checkingText: "Comprobando conectividad"
   loadingApplicationStateText: "Cargando estado de la aplicación"
   initializingText: "Inicializando:"
+  viewSettingsText: "Ver la configuración"
+  closeText: "Cerrar"
 >

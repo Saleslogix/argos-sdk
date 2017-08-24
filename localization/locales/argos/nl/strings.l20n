@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "Informatie"
+  informationText: "${0}-informatie"
   titleText: "Details"
   entityText: "Entiteit"
   detailsText: "Details"
@@ -100,6 +100,8 @@
   notAvailableText: "De aangevraagde gegevens zijn niet beschikbaar."
   toggleCollapseText: "Uitvouwen/samenvouwen"
   editText: "Bewerken"
+  editTooltipText: "Bewerken"
+  refreshTooltipText: "Vernieuwen"
 >
 
 <editBase ""
@@ -113,6 +115,8 @@
   loadingText: "Laden"
   errorGeneral: "Er is een serverfout opgetreden tijdens het opvragen van gegevens."
   error410:  "Fout bij opslaan. Deze record bestaat niet meer."
+  saveTooltipText: "Opslaan"
+  cancelTooltipText: "Annuleren"
 >
 
 <errorHandleMixin ""
@@ -130,6 +134,8 @@
   insertText: "Nieuw"
   noDataText: "geen records"
   loadingText: "Laden"
+  newTooltipText: "Nieuw"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -145,27 +151,27 @@
   titleText: "Kalender"
   amText: "AM"
   pmText: "PM"
-  january: "Januari"
-  february: "Februari"
-  march: "Maart"
-  april: "April"
-  may: "Mei"
-  june: "Juni"
-  july: "Juli"
-  august: "Augustus"
-  september: "September"
-  october: "Oktober"
-  november: "November"
-  december: "December"
+  january: "januari"
+  february: "februari"
+  march: "maart"
+  april: "april"
+  may: "mei"
+  june: "juni"
+  july: "juli"
+  august: "augustus"
+  september: "september"
+  october: "oktober"
+  november: "november"
+  december: "december"
   clearText: "Wissen"
   todayText: "Vandaag"
-  sundayAbbreviated: "Zo"
-  mondayAbbreviated: "Ma"
-  tuesdayAbbreviated: "Di"
-  wednesdayAbbreviated: "Wo"
-  thursdayAbbreviated: "Do"
-  fridayAbbreviated: "Vr"
-  saturdayAbbreviated: "Za"
+  sundayAbbreviated: "zo"
+  mondayAbbreviated: "ma"
+  tuesdayAbbreviated: "di"
+  wednesdayAbbreviated: "wo"
+  thursdayAbbreviated: "do"
+  fridayAbbreviated: "vr"
+  saturdayAbbreviated: "za"
 >
 
 <errorManager ""
@@ -191,7 +197,8 @@
 >
 
 <mainToolbar ""
-  titleText: "Mobiel telefoonnummer"
+  titleText: "Mobiel nr"
+  backTooltipText: "Vorige"
 >
 
 <relatedViewWidget ""
@@ -266,6 +273,7 @@
   interruptedText: "De procedure werd onderbroken en is niet volledig voltooid. Voer de procedure opnieuw uit om de plaatsing van items in de werkmap te voltooien."
   briefcasingText: "Items worden in werkmap geplaatst, een ogenblik geduld."
   errorBriefcasingText: "Fout bij plaatsen van items in werkmap"
+  briefcaseTooltipText: "Werkmap"
 >
 
 <_detailOfflineMixin
@@ -274,6 +282,7 @@
   briefcasingText: "Items worden in werkmap geplaatst, een ogenblik geduld."
   errorBriefcasingText: "Fout bij plaatsen van items in werkmap"
   errorSavingOfflineViewText: "fout bij opslaan offlineweergave:"
+  briefcaseTooltipText: "Werkmap"
 >
 
 <sdkApplication
@@ -281,4 +290,6 @@
   checkingText: "Verbinding controleren"
   loadingApplicationStateText: "Status applicatie wordt geladen"
   initializingText: "Initialiseren:"
+  viewSettingsText: "Weergave-instellingen"
+  closeText: "Afsluiten"
 >

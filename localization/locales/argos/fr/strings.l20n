@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "Informations"
+  informationText: "Informations ${0}"
   titleText: "Détail"
   entityText: "Entité"
   detailsText: "Détails"
@@ -100,6 +100,8 @@
   notAvailableText: "Les données demandées ne sont pas disponibles."
   toggleCollapseText: "Développer/réduire"
   editText: "Modifier"
+  editTooltipText: "Modifier"
+  refreshTooltipText: "Actualiser"
 >
 
 <editBase ""
@@ -113,6 +115,8 @@
   loadingText: "Chargement en cours"
   errorGeneral: "Une erreur s'est produite sur le serveur pendant la demande de données."
   error410:  "Erreur d'enregistrement. Cet enregistrement n'existe plus."
+  saveTooltipText: "Enregistrer"
+  cancelTooltipText: "Annuler"
 >
 
 <errorHandleMixin ""
@@ -130,6 +134,8 @@
   insertText: "Nouveau"
   noDataText: "Aucun enregistrement"
   loadingText: "Chargement en cours"
+  newTooltipText: "Nouveau"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -192,6 +198,7 @@
 
 <mainToolbar ""
   titleText: "Téléphone portable"
+  backTooltipText: "Précédent"
 >
 
 <relatedViewWidget ""
@@ -266,6 +273,7 @@
   interruptedText: "Le processus a été interrompu et n'a pas pu être totalement achevé. Veuillez recommencer le processus afin de classer complètement les éléments dans le porte-documents."
   briefcasingText: "Veuillez patienter, mise en porte-documents en cours."
   errorBriefcasingText: "Erreur de porte-documents"
+  briefcaseTooltipText: "Porte-documents"
 >
 
 <_detailOfflineMixin
@@ -274,6 +282,7 @@
   briefcasingText: "Veuillez patienter, mise en porte-documents en cours."
   errorBriefcasingText: "Erreur de porte-documents"
   errorSavingOfflineViewText: "Erreur enregistrement vue hors ligne :"
+  briefcaseTooltipText: "Porte-documents"
 >
 
 <sdkApplication
@@ -281,4 +290,6 @@
   checkingText: "Vérification de la connectivité"
   loadingApplicationStateText: "Chargement de l'état de l'application"
   initializingText: "Initialisation :"
+  viewSettingsText: "Paramètres d'affichage"
+  closeText: "Fermer"
 >

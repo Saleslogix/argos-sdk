@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "資訊"
+  informationText: "${0} 資訊"
   titleText: "詳細資料"
   entityText: "實體"
   detailsText: "詳細資料"
@@ -100,6 +100,8 @@
   notAvailableText: "要求的資料無法使用。"
   toggleCollapseText: "切換摺疊"
   editText: "編輯"
+  editTooltipText: "編輯"
+  refreshTooltipText: "重新整理"
 >
 
 <editBase ""
@@ -113,6 +115,8 @@
   loadingText: "載入"
   errorGeneral: "要求資料時發生伺服器錯誤。"
   error410:  "儲存時發生錯誤。此記錄已不再存在。"
+  saveTooltipText: "儲存"
+  cancelTooltipText: "取消"
 >
 
 <errorHandleMixin ""
@@ -130,6 +134,8 @@
   insertText: "新增"
   noDataText: "無記錄"
   loadingText: "載入"
+  newTooltipText: "新增"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -192,6 +198,7 @@
 
 <mainToolbar ""
   titleText: "行動電話"
+  backTooltipText: "向後"
 >
 
 <relatedViewWidget ""
@@ -227,8 +234,8 @@
 <relativeDateTimePicker ""
   titleText: "大約..."
   pickDateTimeText: "進階"
-  thisEveningText: "這個晚上"
-  tomorrowMorningText: "明天早上"
+  thisEveningText: "今天晚上"
+  tomorrowMorningText: "明天上午"
   tomorrowAfternoonText: "明天晚上"
   nextWeekText: "下週"
   nextMonthText: "下個月"
@@ -266,6 +273,7 @@
   interruptedText: "程序已中斷，無法全部完成。請嘗試重新處理，以將項目完全新增至公事包。"
   briefcasingText: "正在進行簡述，請稍候。"
   errorBriefcasingText: "簡述錯誤"
+  briefcaseTooltipText: "公事包"
 >
 
 <_detailOfflineMixin
@@ -274,6 +282,7 @@
   briefcasingText: "正在進行簡述，請稍候。"
   errorBriefcasingText: "簡述錯誤"
   errorSavingOfflineViewText: "儲存離線檢視時發生錯誤："
+  briefcaseTooltipText: "公事包"
 >
 
 <sdkApplication
@@ -281,4 +290,6 @@
   checkingText: "檢查連線狀態"
   loadingApplicationStateText: "載入應用程式狀態"
   initializingText: "初始化："
+  viewSettingsText: "檢視設定"
+  closeText: "關閉"
 >

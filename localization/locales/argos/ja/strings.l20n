@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "情報"
+  informationText: "${0} 情報"
   titleText: "詳細"
   entityText: "エンティティ"
   detailsText: "詳細"
@@ -100,6 +100,8 @@
   notAvailableText: "リクエストしたデータは、利用できません。"
   toggleCollapseText: "トグル折りたたみ"
   editText: "編集"
+  editTooltipText: "編集"
+  refreshTooltipText: "更新"
 >
 
 <editBase ""
@@ -113,6 +115,8 @@
   loadingText: "ロードしています"
   errorGeneral: "データの要求中にサーバーエラーが発生しました。"
   error410:  "エラーを保存しています。このレコードは現在存在していません。"
+  saveTooltipText: "保存"
+  cancelTooltipText: "キャンセル"
 >
 
 <errorHandleMixin ""
@@ -130,6 +134,8 @@
   insertText: "新規"
   noDataText: "レコードなし"
   loadingText: "ロードしています"
+  newTooltipText: "新規"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -192,6 +198,7 @@
 
 <mainToolbar ""
   titleText: "携帯電話"
+  backTooltipText: "戻る"
 >
 
 <relatedViewWidget ""
@@ -266,6 +273,7 @@
   interruptedText: "処理は中断され、完全に完了しませんでした。処理を再試行して項目を完全にブリーフケースしてください。"
   briefcasingText: "ブリーフケースしています。お待ちください。"
   errorBriefcasingText: "ブリーフケースのエラー"
+  briefcaseTooltipText: "ブリーフケース"
 >
 
 <_detailOfflineMixin
@@ -274,6 +282,7 @@
   briefcasingText: "ブリーフケースしています。お待ちください。"
   errorBriefcasingText: "ブリーフケースのエラー"
   errorSavingOfflineViewText: "オフラインビューの保存エラー:"
+  briefcaseTooltipText: "ブリーフケース"
 >
 
 <sdkApplication
@@ -281,4 +290,6 @@
   checkingText: "接続を確認しています"
   loadingApplicationStateText: "アプリケーションの状態をロード中"
   initializingText: "初期化:"
+  viewSettingsText: "ビュー設定"
+  closeText: "クローズ"
 >
