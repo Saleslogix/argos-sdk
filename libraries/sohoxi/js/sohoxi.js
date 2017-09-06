@@ -1,7 +1,7 @@
 /**
-* Soho XI Controls v4.2.6-develop
-* Date: 23/03/2017 8:37:52 PM
-* Revision: ef6590cad6b36c8797058d4b9aaec8aec9de3103
+* Soho XI Controls v4.3.1
+* Date: 02/08/2017 5:43:08 PM
+* Revision: e252d2880f89e8aed3b77d55c708c04fa428414c
 */
 (function(factory) {
       if (typeof define === 'function' && define.amd) {
@@ -29,10 +29,13 @@
         settings = $.extend({}, defaults, options);
 
     /**
-     * Personalize Control
-     * @constructor
-     * @param {Object} element
-     */
+    * The personalization routines for setting custom company colors.
+    *
+    * @class Personalize
+    * @param {String} colors  &nbsp;-&nbsp; The list of colors
+    * @param {String} theme  &nbsp;-&nbsp; The theme name (light, dark or high-contrast)
+    *
+    */
     function Personalize(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -164,23 +167,25 @@
         Soho.colors.hover = this.validateHex(Soho.colors.hover || this.getLuminousColorShade(Soho.colors.header, -0.5));
 
         //not that the sheet is appended in backwards
-        var cssRules = '.tab-container.module-tabs.is-personalizable { border-top: 1px solid '+ Soho.colors.horizontalBorder +'; border-bottom: 1px solid ' + Soho.colors.horizontalBorder + '}' +
-        ' .module-tabs.is-personalizable .tab:not(:first-child) { border-left: 1px solid '+ Soho.colors.verticalBorder +'}'  +
-        ' .module-tabs.is-personalizable { background-color: '+ Soho.colors.inactive +'}'  +
-        ' .module-tabs.is-personalizable .tab.is-selected { background-color: '+ Soho.colors.header +'}'  +
+        var cssRules = '.tab-container.module-tabs.is-personalizable { border-top: 1px solid '+ Soho.colors.horizontalBorder +' !important; border-bottom: 1px solid ' + Soho.colors.horizontalBorder + ' !important}' +
+        ' .module-tabs.is-personalizable .tab:not(:first-child) { border-left: 1px solid '+ Soho.colors.verticalBorder +' !important}'  +
+        ' .module-tabs.is-personalizable { background-color: '+ Soho.colors.inactive +' !important}'  +
+        ' .module-tabs.is-personalizable .tab.is-selected { background-color: '+ Soho.colors.header +' !important}'  +
+        ' .accordion.panel .accordion-header.is-selected { background-color: '+ Soho.colors.subheader +' !important; color: '+ Soho.colors.text +' !important}'  +
         ' .builder-header.is-personalizable{ background-color: '+ Soho.colors.subheader +'}'  +
         ' .header.is-personalizable { background-color: '+ Soho.colors.header +'}' +
         ' .header.is-personalizable .title { color: '+ Soho.colors.text +'}' +
         ' .header.is-personalizable h1 { color: '+ Soho.colors.text +'}' +
-        ' .module-tabs.is-personalizable .tab-more { border-left: '+ Soho.colors.verticalBorder +' }' +
-        ' .module-tabs.is-personalizable .tab-more:hover { background-color: '+ Soho.colors.hover +' }' +
-        ' .module-tabs.is-personalizable .tab-more.is-open { background-color: '+ Soho.colors.hover +' }' +
-        ' .module-tabs.is-personalizable .tab-more.is-selected { background-color: '+ Soho.colors.header +' }' +
-        ' .subheader.is-personalizable { background-color: '+ Soho.colors.subheader +'}' +
-        ' .builder .sidebar .header {border-right: 1px solid '+ Soho.colors.verticalBorder +'}' +
-        ' .module-tabs.is-personalizable .tab:hover { background-color: '+ Soho.colors.hover +'}' +
-        ' .module-tabs.has-toolbar.is-personalizable .tab-list-container + .toolbar { border-left: '+ Soho.colors.verticalBorder +' }' +
-        ' .module-tabs.is-personalizable [class^="btn"] { background-color: '+ Soho.colors.inactive +' }' +
+        ' .module-tabs.is-personalizable .tab-more { border-left: '+ Soho.colors.verticalBorder +' !important}' +
+        ' .module-tabs.is-personalizable .tab-more:hover { background-color: '+ Soho.colors.hover +' !important}' +
+        ' .module-tabs.is-personalizable .tab-more.is-open { background-color: '+ Soho.colors.hover +' !important}' +
+        ' .module-tabs.is-personalizable .tab-more.is-selected { background-color: '+ Soho.colors.header +' !important}' +
+        ' .header .toolbar > .toolbar-searchfield-wrapper.active .searchfield { background-color: '+ Soho.colors.hover +' !important; border-bottom-color: ' + Soho.colors.hover  +' !important}' +
+        ' .subheader.is-personalizable { background-color: '+ Soho.colors.subheader +' !important}' +
+        ' .builder .sidebar .header {border-right: 1px solid '+ Soho.colors.hover +' !important}' +
+        ' .module-tabs.is-personalizable .tab:hover { background-color: '+ Soho.colors.hover +' !important}' +
+        ' .module-tabs.has-toolbar.is-personalizable .tab-list-container + .toolbar { border-left: '+ Soho.colors.verticalBorder +' !important}' +
+        ' .module-tabs.is-personalizable [class^="btn"] { background-color: '+ Soho.colors.inactive +' !important}' +
         ' .hero-widget.is-personalizable { background-color: '+ Soho.colors.subheader +' }' +
         ' .hero-widget.is-personalizable .hero-bottom { background-color: '+ Soho.colors.header +' }' +
         ' .hero-widget.is-personalizable .hero-footer .hero-footer-nav li::before { color: '+ Soho.colors.verticalBorder +' }' +
@@ -192,8 +197,11 @@
         return cssRules;
       },
 
-      // Changes all personalizable elements inside this element to match the personalization scheme provided.
-      // The original hex color as a string or an object with all the Colors
+      /**
+      * Sets the personalization color(s)
+      *
+      * @param {Array} colors  &nbsp;-&nbsp; The original hex color as a string or an object with all the Colors
+      */
       setColors: function(colors) {
         if (!colors) {
           return;
@@ -203,10 +211,12 @@
         return this;
       },
 
-      // Takes a color and performs a change in luminosity of that color programatically.
-      // @param {String} hex: The original Hexadecimal base color.
-      // @param {Number} lum: A percentage used to set luminosity change on the base color:  -0.1 would be 10% darker, 0.2 would be 20% brighter
-      // @returns {String} hexadecimal color.
+      /**
+      * Takes a color and performs a change in luminosity of that color programatically.
+      * @param {String} hex  &nbsp;-&nbsp; The original Hexadecimal base color.
+      * @param {String} lum  &nbsp;-&nbsp; A percentage used to set luminosity change on the base color:  -0.1 would be 10% darker, 0.2 would be 20% brighter
+      * @returns {String} hexadecimal color.
+      */
       getLuminousColorShade: function(hex, lum) {
         // validate hex string
         hex = this.validateHex(hex).substr(1);
@@ -229,7 +239,11 @@
         'high-contrast'
       ],
 
-      // @param {String} theme: Represents the file name of a color scheme
+      /**
+      * Sets the current theme, blocking the ui during the change.
+      *
+      * @param {String} theme  &nbsp;-&nbsp; Represents the file name of a color scheme (can be dark, light or high-contrast)
+      */
       setTheme: function(theme) {
         if (Soho.theme === theme) {
           return;
@@ -484,11 +498,11 @@
             //Rating
             ['rating'],
 
-            //Light Box
-            ['lightbox'],
-
             //Listbuilder
             ['listbuilder'],
+
+            //Composite Form Wrapper
+            ['compositeform', '.composite-form'],
 
             //Progress
             ['progress', '.progress-bar'],
@@ -503,10 +517,10 @@
             ['multiselect', 'select[multiple]:not(.dropdown), .multiselect:not([data-init])'],
 
             //Button with Effects
-            ['button', '.btn, .btn-secondary, .btn-primary, .btn-modal-primary, .btn-tertiary, .btn-icon, .btn-actions, .btn-menu, .btn-split, .btn-secondary-border'],
+            ['button', '.btn, .btn-toggle, .btn-secondary, .btn-primary, .btn-modal-primary, .btn-tertiary, .btn-icon, .btn-actions, .btn-menu, .btn-split, .btn-secondary-border'],
 
             //Hide Focus
-            ['hideFocus', 'a.hide-focus, a.tick, a.hyperlink'],
+            ['hideFocus', 'a.hide-focus, a.tick, a.hyperlink, .checkbox, .radio, .switch'],
 
             //Circle Pager
             ['circlepager'],
@@ -554,11 +568,7 @@
 
             ['contextualactionpanel', '.contextual-action-panel-trigger'],
 
-            ['sidebar', '.sidebar-nav'],
-
             ['expandablearea', '.expandable-area'],
-
-            ['modalsearch', '.modal-search'],
 
             ['signin'],
 
@@ -677,9 +687,10 @@
           if ($.fn.toolbar) {
             matchedItems('.toolbar:not('+ noinitExcludes +')').each(function() {
               var t = $(this);
-              // Don't re-invoke toolbars that are part of the page/section headers.
+              // Don't re-invoke toolbars that are part of the page/section headers or cap header.
               // header.js manually invokes these toolbars during its setup process.
-              if (t.parents('.header').length || t.parents('.contextual-action-panel').length) {
+              // However, if initialize is specifically being called on the toolbar element, then allow it to happen.
+              if (t.parents('.header, .contextual-action-panel .modal-header').length && !self.element.is('.toolbar')) {
                 return;
               }
 
@@ -1162,28 +1173,60 @@
 
   //Hide Focus - Only show on key entry
   $.fn.hideFocus = function() {
-    var element = $(this);
+    var element = $(this),
+      label = element.next(),
+      isClick = false,
+      isFocused = false,
+      labelClicked = false;
 
-    var isClick = false,
-      isFocused = false;
-
-    element.addClass('hide-focus').on('mousedown.hide-focus touchstart.hide-focus', function() {
-      isClick = true;
-      $(this).addClass('hide-focus');
-    }).on('focusin.hide-focus', function() {
-      var elem = $(this);
-
-      if (!isClick && !isFocused) {
-        elem.removeClass('hide-focus');
+    // Checkbox, Radio buttons or Switch
+    if (element.is('.checkbox, .radio, .switch')) {
+      if (label.is('[type="hidden"]')) {
+        label = label.next();
       }
-      isClick = false;
-      isFocused = true;
-    }).on('focusout.hide-focus', function() {
-      $(this).addClass('hide-focus');
-      isClick = false;
-      isFocused = false;
-    });
+      element.addClass('hide-focus')
+        .on('focusin.hide-focus', function() {
+          if (!isClick && !isFocused && !labelClicked) {
+            element.removeClass('hide-focus');
+          }
+          isClick = false;
+          isFocused = true;
+          labelClicked = false;
+        })
+        .on('focusout.hide-focus', function() {
+          element.addClass('hide-focus');
+          labelClicked = label.is(labelClicked);
+          isClick = false;
+          isFocused = false;
+        });
 
+      label.on('mousedown.hide-focus', function() {
+        labelClicked = this;
+        isClick = true;
+        element.addClass('hide-focus');
+      });
+    }
+
+    // All other elements (ie. Hyperlinks)
+    else {
+      element.addClass('hide-focus')
+        .on('mousedown.hide-focus touchstart.hide-focus', function() {
+          isClick = true;
+          element.addClass('hide-focus');
+        })
+        .on('focusin.hide-focus', function() {
+          if (!isClick && !isFocused) {
+            element.removeClass('hide-focus');
+          }
+          isClick = false;
+          isFocused = true;
+        })
+        .on('focusout.hide-focus', function() {
+          element.addClass('hide-focus');
+          isClick = false;
+          isFocused = false;
+        });
+    }
   };
 
   //Clearable (Shows an X to clear)
@@ -1323,6 +1366,47 @@
     }
   };
 
+  /**
+   * Checks if an element is valid
+   * @param {HTMLElement|SVGElement|jQuery[]} el - The element being checked
+   * @returns {boolean} - represents all values normally contained by a DOMRect or ClientRect
+   */
+  window.Soho.DOM.isElement = function isElement(el) {
+    if ((el instanceof HTMLElement) || (el instanceof SVGElement) || (el instanceof $ && el.length)) {
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   * Runs the generic _getBoundingClientRect()_ method on an element, but returns its results
+   * as a plain object instead of a ClientRect
+   * @param {HTMLElement|SVGElement|jQuery[]} el - The element being manipulated
+   * @returns {object} - represents all values normally contained by a DOMRect or ClientRect
+   */
+  window.Soho.DOM.getDimensions = function getDimensions(el) {
+    if (!Soho.DOM.isElement(el)) {
+      return {};
+    }
+
+    if (el instanceof $) {
+      if (!el.length) {
+        return {};
+      }
+
+      el = el[0];
+    }
+
+    var rect = el.getBoundingClientRect(),
+      rectObj = {};
+    for (var prop in rect) {
+      if (!isNaN(rect[prop])) {
+        rectObj[prop] = rect[prop];
+      }
+    }
+    return rectObj;
+  };
+
   // Debounce method
   window.Soho.utils.debounce = function(func, threshold, execAsap) {
     var timeout;
@@ -1401,6 +1485,304 @@
       }
     }, 1);
   };
+
+  /**
+   * Gets the current size of the viewport
+   * @returns {object}
+   */
+  window.Soho.utils.getViewportSize = function getViewportSize() {
+    return {
+      width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+      height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+    };
+  };
+
+  /**
+   * Gets the various scrollable containers that an element is nested inside of, and returns their scrollHeight and scrollLeft values.
+   * @returns {object[]}
+   */
+  window.Soho.utils.getContainerScrollDistance = function getContainerScrollDistance(element) {
+    if (!Soho.DOM.isElement(element)) {
+      return [];
+    }
+
+    var containers = [],
+      scrollableElements = [
+        '.scrollable', '.scrollable-x', '.scrollable-y', '.modal',
+        '.card-content', '.widget-content', '.tab-panel',
+        '.datagrid-content'
+      ];
+
+    $(element).parents(scrollableElements.join(', ')).each(function() {
+      var el = this;
+
+      containers.push({
+        element: el,
+        left: el.scrollLeft,
+        top: el.scrollTop
+      });
+    });
+
+    // Push the body's scroll area if it's not a "no-scroll" area
+    if (!document.body.classList.contains('no-scroll')) {
+      containers.push({
+        element: document.body,
+        left: document.body.scrollLeft,
+        top: document.body.scrollTop
+      });
+    }
+
+    return containers;
+  };
+
+  /**
+   * Takes an element that is currently hidden by some means (FX: "display: none;") and gets its potential dimensions by checking a clone of the element that is NOT hidden.
+   * @param {HTMLElement|SVGElement|jQuery[]} el - The element being manipulated.
+   * @param {object} options - incoming options.
+   * @param {jQuery[]} [parentElement=undefined] - the parent element where a clone of this hidden element will be attached.
+   * @returns {object}
+   */
+  window.Soho.utils.getHiddenSize = function getHiddenSize(el, options) {
+    var defaults = {
+      dims: { width: 0, height: 0, innerWidth: 0, innerHeight: 0, outerWidth: 0, outerHeight: 0 },
+      parentElement: undefined,
+      includeMargin: false
+    };
+
+    if (!Soho.DOM.isElement(el)) {
+      return defaults.dims;
+    }
+
+    el = $(el);
+    options = $.extend({}, defaults, options);
+
+    // element becomes clone and appended to a parentElement, if defined
+    var hasDefinedParentElement = Soho.DOM.isElement(options.parentElement);
+    if (hasDefinedParentElement) {
+      el = el.clone().appendTo(options.parentElement);
+    }
+
+    var dims = options.dims,
+      hiddenParents = el.parents().add(el),
+      props = {
+        transition: 'none',
+        webkitTransition: 'none',
+        mozTransition: 'none',
+        msTransition: 'none',
+        visibility: 'hidden',
+        display: 'block',
+      },
+      oldProps = [];
+
+    hiddenParents.each(function () {
+      var old = {};
+
+      for (var name in props) {
+        if (this.style[name]) {
+          old[name] = this.style[name];
+          this.style[name] = props[name];
+        }
+      }
+
+      oldProps.push(old);
+    });
+
+    dims.padding = {
+      bottom: el.css('padding-bottom'),
+      left: el.css('padding-left'),
+      right: el.css('padding-right'),
+      top: el.css('padding-top')
+    };
+    dims.width = el.width();
+    dims.outerWidth = el.outerWidth(options.includeMargin);
+    dims.innerWidth = el.innerWidth();
+    dims.scrollWidth = el[0].scrollWidth;
+    dims.height = el.height();
+    dims.innerHeight = el.innerHeight();
+    dims.outerHeight = el.outerHeight(options.includeMargin);
+    dims.scrollHeight = el[0].scrollHeight;
+
+    hiddenParents.each(function (i) {
+      var old = oldProps[i];
+      for (var name in props) {
+        if (old[name]) {
+          this.style[name] = old[name];
+        }
+      }
+    });
+
+    // element is ONLY removed when a parentElement is defined because it was cloned.
+    if (hasDefinedParentElement) {
+      el.remove();
+    }
+
+    return dims;
+  };
+
+  /**
+   * Binds the Soho Util _getHiddenSize()_ to a jQuery selector
+   * @param {object} options - incoming options
+   * @returns {object}
+   */
+  $.fn.getHiddenSize = function(options) {
+    return window.Soho.utils.getHiddenSize(this, options);
+  };
+
+  //==================================================================
+  // Simple Behaviors
+  //==================================================================
+  window.Soho.behaviors = {};
+
+  /**
+   * Allows for the smooth scrolling of an element's content area.
+   * @param {HTMLElement|SVGElement|jQuery[]} el - The element being manipulated.
+   * @param {Number} target - target distance.
+   * @param {Number} duration - the time that will be needed for the scrolling to complete.
+   * @returns {$.Deferred}
+   */
+  window.Soho.behaviors.smoothScrollTo = function(el, target, duration) {
+    var dfd = $.Deferred();
+
+    if (!Soho.DOM.isElement(el)) {
+      // Not a workable element
+      return dfd.reject();
+    }
+
+    // Strip the jQuery
+    if (el instanceof $ && el.length) {
+      el = el[0];
+    }
+
+    // undefined (not zero) target should instantly resolve
+    if (target === undefined || target === null) {
+      return dfd.resolve();
+    }
+
+    if (isNaN(duration)) {
+      duration = 0;
+    }
+
+    target = Math.round(target);
+    duration = Math.round(duration);
+
+    if (duration < 0) {
+      // bad duration
+      return dfd.fail();
+    }
+
+    if (duration === 0) {
+      el.scrollLeft = el.scrollLeft + target;
+      return dfd.resolve();
+    }
+
+    var startTime = Date.now(),
+      endTime = startTime + duration,
+      startLeft = el.scrollLeft,
+      distance = target /*- startLeft*/;
+
+    // based on http://en.wikipedia.org/wiki/Smoothstep
+    function smoothStep(start, end, point) {
+      if (point <= start) { return 0; }
+      if (point >= end) { return 1; }
+      var x = (point - start) / (end - start); // interpolation
+      return x*x*(3 - 2*x);
+    }
+
+    // This is to keep track of where the element's scrollLeft is
+    // supposed to be, based on what we're doing
+    var previousLeft = el.scrollLeft;
+
+    // This is like a think function from a game loop
+    function scrollFrame() {
+      if (el.scrollLeft !== previousLeft) {
+        // interrupted
+        dfd.reject();
+        return;
+      }
+
+      // set the scrollLeft for this frame
+      var now = Date.now();
+      var point = smoothStep(startTime, endTime, now);
+      var frameLeft = Math.round(startLeft + (distance * point));
+      el.scrollLeft = frameLeft;
+
+      // check if we're done!
+      if (now >= endTime) {
+        dfd.resolve();
+        return;
+      }
+
+      // If we were supposed to scroll but didn't, then we
+      // probably hit the limit, so consider it done; not
+      // interrupted.
+      if (el.scrollLeft === previousLeft && el.scrollLeft !== frameLeft) {
+        dfd.resolve();
+        return;
+      }
+      previousLeft = el.scrollLeft;
+
+      // schedule next frame for execution
+      setTimeout(scrollFrame, 0);
+    }
+
+    // boostrap the animation process
+    setTimeout(scrollFrame, 0);
+
+    return dfd;
+  };
+
+  /**
+   * Binds the Soho Behavior _smoothScrollTo()_ to a jQuery selector
+   * @param {Number} target - target distance to scroll the element
+   * @param {Number} duration - the time that will be needed for the scrolling to complete.
+   * @returns {$.Deferred}
+   */
+  $.fn.smoothScroll = function(target, duration) {
+    return window.Soho.behaviors.smoothScrollTo(this, target, duration);
+  };
+
+  //==================================================================
+  // JS-level Breakpoint Access
+  // NOTE: these should match whatever the breakpoints are in "/sass/_config.scss"
+  //==================================================================
+  window.Soho.breakpoints = {
+    'phone': 320,
+    'slim': 400,
+    'phablet': 610,
+    'phone-to-tablet': 767,
+    'wide-tablet': 968,
+    'tablet-to-desktop': 1280,
+    'desktop-to-extralarge': 1600
+  };
+
+  /**
+   * @param {string} breakpoint - matches one of the entries in the "Soho.breakpoints" object.
+   * @returns {boolean}
+   */
+  window.Soho.breakpoints.isAbove = function isAbove(breakpoint) {
+    var bp = Soho.breakpoints[breakpoint];
+    if (!bp) {
+      return false;
+    }
+
+    var windowWidth = $(window).width();
+    return windowWidth > bp;
+  };
+
+  /**
+   * @param {string} breakpoint - matches one of the entries in the "Soho.breakpoints" object.
+   * @returns {boolean}
+   */
+  window.Soho.breakpoints.isBelow = function isBelow(breakpoint) {
+    var bp = Soho.breakpoints[breakpoint];
+    if (!bp) {
+      return false;
+    }
+
+    var windowWidth = $(window).width();
+    return windowWidth < bp;
+  };
+
 
 // Page Bootstrapper
 
@@ -1535,6 +1917,7 @@
       })();
 
       window.Soho.theme = 'light';
+
       return this;
     }
 
@@ -1695,48 +2078,6 @@
     });
   };
 
-  // Extends the jQuery $.css() method to vendor-prefix newer CSS properties that are still in Draft specification
-  $.fn.cssVendorProp = function(prop, value) {
-
-    // Settings
-    var defaults = {
-        propertyName: '', // Name of the CSS property that can be changed
-        propertyValue: '' // Value to set the property to
-      },
-      incomingOptions = {},
-      settings;
-
-    if (!prop) {
-      return;
-    }
-
-    if (typeof prop === 'object') {
-      incomingOptions = prop;
-    }
-
-    if (typeof prop === 'string') {
-      incomingOptions.propertyName = prop;
-      if (value !== undefined) {
-        incomingOptions.propertyValue = value;
-      }
-    }
-
-    settings = $.extend({}, defaults, incomingOptions);
-
-    // Initialize the plugin (Once)
-    return this.each(function() {
-      var prefixes = ['-moz-', '-ms-', '-o-', '-webkit-', ''];
-
-      // Sanitize
-      settings.propertyName = settings.propertyName.toString();
-      settings.propertyValue = settings.propertyValue.toString();
-
-      for (var i = 0, l = prefixes.length; i < l; i++) {
-        this.style[prefixes[i] + settings.propertyName] = settings.propertyValue;
-      }
-    });
-  };
-
 // Localization Routines
 // Data From: http://www.unicode.org/repos/cldr-aux/json/22.1/main/
 // For Docs See: http://ibm.co/1nXyNxp
@@ -1750,6 +2091,13 @@
     existingCulturePath = window.Locale.culturesPath;
   }
 
+  /**
+  * The Locale component handles i18n
+  *
+  * @class Locale
+  * @param {String} currentLocale  &nbsp;-&nbsp; The Currently Set Locale
+  *
+  */
   window.Locale = {
 
     currentLocale:  {name: '', data: {}}, //default
@@ -1822,7 +2170,11 @@
       this.cultures[locale] = data;
     },
 
-    //Set the Local
+    /**
+    * Set the currently used colors.
+    *
+    * @param {String} locale  &nbsp;-&nbsp; The locale to fetch and set.
+    */
     set: function (locale) {
 
       var self = this;
@@ -1849,6 +2201,19 @@
         });
       }
 
+      if (locale && locale !== 'en-US' && !this.cultures['en-US']) {
+        //fetch the english local and cache it from translation defaults
+        $.ajax({
+          url: this.getCulturesPath() + 'en-US.js',
+          dataType: 'script',
+          error: function () {
+            self.dff.reject();
+          }
+        }).done(function () {
+          self.addCulture(locale, self.currentLocale.data);
+        });
+      }
+
       if (locale && self.currentLocale.data && self.currentLocale.dataName === locale) {
         self.dff.resolve(self.currentLocale.name);
       }
@@ -1871,7 +2236,12 @@
       this.updateLang();
     },
 
-    //Format a Date Object and return it parsed in the current locale
+    /**
+    * Format a Date Object and return it parsed in the current locale.
+    *
+    * @param {Date} value  &nbsp;-&nbsp; The date to show in the current locale.
+    * @param {Object} attribs  &nbsp;-&nbsp; Additional formatting settings.
+    */
     formatDate: function(value, attribs) {
 
       //We will use http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
@@ -1886,7 +2256,19 @@
       //Convert if a string..
       if (!(value instanceof Date)) {
         var tDate = new Date(value);
-        value = new Date(tDate.getUTCFullYear(), tDate.getUTCMonth(), tDate.getUTCDate());
+        if (isNaN(tDate) && attribs.date === 'datetime' &&
+          value.substr(4, 1) === '-' &&
+          value.substr(7, 1) === '-') {
+          tDate = new Date(
+            value.substr(0, 4),
+            value.substr(5, 2) - 1,
+            value.substr(8, 2),
+            value.substr(11, 2),
+            value.substr(14, 2),
+            value.substr(17, 2)
+          );
+        }
+        value = tDate;
       }
 
       // TODO: Can we handle this if (this.dff.state()==='pending')
@@ -1926,9 +2308,9 @@
         ret = ret.replace('h', 12);
       }
 
-      ret = ret.replace('hh', (hours > 12 ? hours - 12 : hours));
+      ret = ret.replace('hh', (hours > 12 ? this.pad(hours - 12, 2) : this.pad(hours, 2)));
       ret = ret.replace('h', (hours > 12 ? hours - 12 : hours));
-      ret = ret.replace('HH', hours);
+      ret = ret.replace('HH', this.pad(hours, 2));
       ret = ret.replace('H', (hours > 12 ? hours - 12 : hours));
       ret = ret.replace('mm', this.pad(mins, 2));
       ret = ret.replace('ss', this.pad(seconds, 2));
@@ -1959,6 +2341,11 @@
       return ret.trim();
     },
 
+    /**
+    * Check if the date is valid using the current locale to do so.
+    *
+    * @param {Date} value  &nbsp;-&nbsp; The date to show in the current locale.
+    */
     isValidDate: function (date) {
       if (Object.prototype.toString.call(date) === '[object Date]') {
         // it is a date
@@ -1972,7 +2359,13 @@
       }
     },
 
-    // Take a date string written in the current locale and parse it into a Date Object
+    /**
+    * Take a date string written in the current locale and parse it into a Date Object
+    *
+    * @param {String} dateString  &nbsp;-&nbsp; The string to parse in the current format
+    * @param {String} dateFormat  &nbsp;-&nbsp; The source format fx yyyy-MM-dd
+    * @param {Boolean} isStrict  &nbsp;-&nbsp; If true missing date parts will be considered invalid. If false the current month/day.
+    */
     parseDate: function(dateString, dateFormat, isStrict) {
       var thisLocaleCalendar = this.calendar(),
         orgDatestring = dateString;
@@ -1996,12 +2389,14 @@
       var formatParts,
         dateStringParts,
         dateObj = {},
-        isDateTime = (dateFormat.toLowerCase().indexOf('h') > -1);
+        isDateTime = (dateFormat.toLowerCase().indexOf('h') > -1),
+		isUTC = (dateString.toLowerCase().indexOf('z') > -1),
+        i, l;
 
       if (isDateTime) {
         //replace [space & colon & dot] with "/"
-        dateFormat = dateFormat.replace(/[\s:.-]/g,'/');
-        dateString = dateString.replace(/[\s:.]/g,'/');
+        dateFormat = dateFormat.replace(/[T\s:.-]/g,'/').replace(/z/i, '');
+        dateString = dateString.replace(/[T\s:.-]/g,'/').replace(/z/i, '');
       }
 
       if (dateFormat === 'Mdyyyy' || dateFormat === 'dMyyyy') {
@@ -2026,12 +2421,12 @@
         var lastChar = dateFormat[0],
           newFormat = '', newDateString = '';
 
-        for (var j = 0; j < dateFormat.length; j++) {
-          newFormat +=  (dateFormat[j] !== lastChar ? '/' + dateFormat[j]  : dateFormat[j]);
-          newDateString += (dateFormat[j] !== lastChar ? '/' + dateString[j]  : dateString[j]);
+        for (i = 0, l = dateFormat.length; i < l; i++) {
+          newFormat +=  (dateFormat[i] !== lastChar ? '/' + dateFormat[i]  : dateFormat[i]);
+          newDateString += (dateFormat[i] !== lastChar ? '/' + dateString[i]  : dateString[i]);
 
-          if (j > 1) {
-            lastChar = dateFormat[j];
+          if (i > 1) {
+            lastChar = dateFormat[i];
           }
         }
 
@@ -2069,12 +2464,17 @@
       // Check the incoming date string's parts to make sure the values are valid against the localized
       // Date pattern.
       var month = this.getDatePart(formatParts, dateStringParts, 'M', 'MM', 'MMM'),
-        year = this.getDatePart(formatParts, dateStringParts, 'yy', 'yyyy');
+        year = this.getDatePart(formatParts, dateStringParts, 'yy', 'yyyy'),
+        hasDays = false;
 
-      for (var i = 0; i < dateStringParts.length; i++) {
-        var pattern = formatParts[i],
+      for (i = 0, l = dateStringParts.length; i < l; i++) {
+        var pattern = formatParts[i] + '',
           value = dateStringParts[i],
           numberValue = parseInt(value);
+
+        if (!hasDays) {
+          hasDays = pattern.toLowerCase().indexOf('d') > -1;
+        }
 
         switch(pattern) {
           case 'd':
@@ -2106,9 +2506,9 @@
           case 'MMM':
               var abrMonth = this.calendar().months.abbreviated;
 
-              for (var l = 0; l < abrMonth.length; l++) {
-                if (orgDatestring.indexOf(abrMonth[l]) > -1) {
-                  dateObj.month = l;
+              for (var len = 0; len < abrMonth.length; len++) {
+                if (orgDatestring.indexOf(abrMonth[len]) > -1) {
+                  dateObj.month = len;
                 }
               }
 
@@ -2150,6 +2550,10 @@
             dateObj.ss = value;
             break;
 
+	      case 'SSS':
+            dateObj.ms = value;
+            break;
+
           case 'mm':
             if (numberValue < 0 || numberValue > 60) {
               dateObj.mm = 0;
@@ -2162,6 +2566,12 @@
             if((value.toLowerCase() === thisLocaleCalendar.dayPeriods[0]) ||
              (value.toUpperCase() === thisLocaleCalendar.dayPeriods[0])) {
               dateObj.a = 'AM';
+
+              if (dateObj.h) {
+                if (dateObj.h === 12 || dateObj.h === '12') {
+                  dateObj.h = 0;
+                }
+              }
             }
 
             if((value.toLowerCase() === thisLocaleCalendar.dayPeriods[1]) ||
@@ -2169,7 +2579,9 @@
               dateObj.a = 'PM';
 
               if (dateObj.h) {
-                dateObj.h = parseInt(dateObj.h) + 12;
+                if (dateObj.h < 12) {
+                  dateObj.h = parseInt(dateObj.h) + 12;
+                }
               }
             }
             break;
@@ -2184,23 +2596,89 @@
       }
 
       if (!dateObj.year && dateObj.year !== 0 && !isStrict) {
-        dateObj.year = (new Date()).getFullYear();
+        dateObj.isUndefindedYear = true;
+        for (i = 0, l = formatParts.length; i < l; i++) {
+          if (formatParts[i].indexOf('y') > -1 && dateStringParts[i] !== undefined) {
+            dateObj.isUndefindedYear = false;
+            break;
+          }
+        }
+        if (dateObj.isUndefindedYear) {
+          dateObj.year = (new Date()).getFullYear();
+        } else {
+          delete dateObj.year;
+        }
+      }
+
+      //Fix incomelete 2 and 3 digit years
+      if (dateObj.year && dateObj.year.length === 2) {
+        dateObj.year = '20' + dateObj.year;
+      }
+
+      // TODO: Need to find solution for three digit year
+      // http://jira/browse/SOHO-4691
+      // if (dateObj.year && dateObj.year.length === 3) {
+      //   dateObj.year = '2' + dateObj.year;
+      // }
+
+      dateObj.year = $.trim(dateObj.year);
+      dateObj.day = $.trim(dateObj.day);
+
+      if (dateObj.year === '' || (dateObj.year && !((dateObj.year + '').length === 2 || (dateObj.year + '').length === 4))) {
+        delete dateObj.year;
       }
 
       if (!dateObj.month && dateObj.month !== 0 && !isStrict) {
-        dateObj.month = (new Date()).getMonth();
+        dateObj.isUndefindedMonth = true;
+        for (i = 0, l = formatParts.length; i < l; i++) {
+          if (formatParts[i].indexOf('M') > -1 && dateStringParts[i] !== undefined) {
+            dateObj.isUndefindedMonth = false;
+            break;
+          }
+        }
+        if (dateObj.isUndefindedMonth) {
+          dateObj.month = (new Date()).getMonth();
+        }
       }
 
-      if (!dateObj.day && dateObj.day !== 0 && !isStrict) {
-        dateObj.day = 1;
+      if (!dateObj.day && dateObj.day !== 0 && (!isStrict || !hasDays)) {
+        dateObj.isUndefindedDay = true;
+        for (i = 0, l = formatParts.length; i < l; i++) {
+          if (formatParts[i].indexOf('d') > -1 && dateStringParts[i] !== undefined) {
+            dateObj.isUndefindedDay = false;
+            break;
+          }
+        }
+        if (dateObj.isUndefindedDay) {
+          dateObj.day = 1;
+        } else {
+          delete dateObj.day;
+        }
       }
 
       if (isDateTime) {
-        if (dateObj.h) {
-          dateObj.return = new Date(dateObj.year, dateObj.month, dateObj.day, dateObj.h, dateObj.mm);
+        if (isUTC) {
+          if (dateObj.h !== undefined) {
+            dateObj.return = new Date(Date.UTC(dateObj.year, dateObj.month, dateObj.day, dateObj.h, dateObj.mm));
+          }
+          if (dateObj.ss !== undefined) {
+            dateObj.return = new Date(Date.UTC(dateObj.year, dateObj.month, dateObj.day, dateObj.h, dateObj.mm, dateObj.ss));
+          }
+          if (dateObj.ms !== undefined) {
+            dateObj.return = new Date(Date.UTC(dateObj.year, dateObj.month, dateObj.day, dateObj.h, dateObj.mm, dateObj.ss, dateObj.ms));
+          }
         }
-        if (dateObj.ss !== undefined) {
-          dateObj.return = new Date(dateObj.year, dateObj.month, dateObj.day, dateObj.h, dateObj.mm, dateObj.ss);
+        else
+        {
+          if (dateObj.h !== undefined) {
+            dateObj.return = new Date(dateObj.year, dateObj.month, dateObj.day, dateObj.h, dateObj.mm);
+          }
+          if (dateObj.ss !== undefined) {
+            dateObj.return = new Date(dateObj.year, dateObj.month, dateObj.day, dateObj.h, dateObj.mm, dateObj.ss);
+          }
+          if (dateObj.ms !== undefined) {
+            dateObj.return = new Date(dateObj.year, dateObj.month, dateObj.day, dateObj.h, dateObj.mm, dateObj.ss, dateObj.ms);
+          }
         }
       } else {
         dateObj.return = new Date(dateObj.year, dateObj.month, dateObj.day);
@@ -2222,18 +2700,20 @@
       return ret;
     },
 
-    //format a decimal with thousands and padding in the current locale
-    // options.style can be decimal, currency, percent and integer
-    // http://mzl.la/1MUOEWm
-    // percentSign, minusSign, decimal, group
-    // minimumFractionDigits (0), maximumFractionDigits (3)
+    /**
+    * Format a decimal with thousands and padding in the current locale.
+    * http://mzl.la/1MUOEWm
+    *
+    * @param {Number} number  &nbsp;-&nbsp; The source number.
+    * @param {Boolean} options  &nbsp;-&nbsp; Additional options.style can be decimal, currency, percent and integer options.percentSign, options.minusSign, options.decimal, options.group options.minimumFractionDigits (0), options.maximumFractionDigits (3)
+    */
     formatNumber: function(number, options) {
       //Lookup , decimals, decimalSep, thousandsSep
       var formattedNum, curFormat, percentFormat,
         decimal = options && options.decimal ? options.decimal : this.numbers().decimal,
         group = options && options.group !== undefined ? options.group : this.numbers().group,
-        minimumFractionDigits = options && options.minimumFractionDigits !== undefined ? options.minimumFractionDigits : (options && options.style && (options.style === 'currency' || options.style === 'percent') ? 2: 2),
-        maximumFractionDigits = options && options.maximumFractionDigits !== undefined ? options.maximumFractionDigits : (options && options.style && (options.style === 'currency' || options.style === 'percent') ? 2: (options && options.minimumFractionDigits ? options.minimumFractionDigits :3));
+        minimumFractionDigits = options && options.minimumFractionDigits !== undefined ? options.minimumFractionDigits : (options && options.style && options.style === 'currency' ? 2 : (options && options.style && options.style === 'percent') ? 0 : 2),
+        maximumFractionDigits = options && options.maximumFractionDigits !== undefined ? options.maximumFractionDigits : (options && options.style && (options.style === 'currency' || options.style === 'percent') ? 2 : (options && options.minimumFractionDigits ? options.minimumFractionDigits : 3));
 
       if (number === undefined || number === null || number === '') {
         return undefined;
@@ -2242,10 +2722,6 @@
       if (options && options.style === 'integer') {
         maximumFractionDigits = 0;
         minimumFractionDigits = 0;
-      }
-
-      if (!minimumFractionDigits && options && options.style === 'percent') {
-        minimumFractionDigits = 2;
       }
 
       //TODO: Doc Note: Uses Truncation
@@ -2345,8 +2821,12 @@
       return (truncatedNum / multiplier).toFixed(maxDigits);
     },
 
-
-    //Take a Formatted Number and return a real number
+    /**
+    * Take a Formatted Number and return a real number
+    *
+    * @param {String} input  &nbsp;-&nbsp; The source number (as a string).
+    *
+    */
     parseNumber: function(input) {
       var numSettings = this.currentLocale.data.numbers,
         numString, group, decimal, percentSign, currencySign;
@@ -2371,7 +2851,12 @@
       return parseFloat(numString);
     },
 
-    // Overridable culture messages
+    /**
+    * Overridable culture messages
+    *
+    * @param {String} key  &nbsp;-&nbsp; The key to search for on the string.
+    *
+    */
     translate: function(key) {
       if (this.currentLocale.data === undefined || this.currentLocale.data.messages === undefined) {
         return key;
@@ -2425,6 +2910,59 @@
 
     isRTL: function() {
       return this.currentLocale.data.direction === 'right-to-left';
+    },
+
+    /**
+     * Takes a string and converts its contents to upper case, taking into account Locale-specific character conversions.
+     * In most cases this method will simply pipe the string to `String.prototype.toUpperCase()`
+     * @param {string} str - the incoming string
+     */
+    toUpperCase: function(str) {
+      if (typeof this.currentLocale.data.toUpperCase === 'function') {
+        return this.currentLocale.data.toUpperCase(str);
+      }
+
+      return str.toLocaleUpperCase();
+    },
+
+    /**
+     * Takes a string and converts its contents to lower case, taking into account Locale-specific character conversions.
+     * In most cases this method will simply pipe the string to `String.prototype.toLowerCase()`
+     * @param {string} str - the incoming string
+     * @returns {string}
+     */
+    toLowerCase: function(str) {
+      if (typeof this.currentLocale.data.toLowerCase === 'function') {
+        return this.currentLocale.data.toLowerCase(str);
+      }
+
+      return str.toLocaleLowerCase();
+    },
+
+    /**
+     * Takes a string and capitalizes the first letter, taking into account Locale-specific character conversions.
+     * In most cases this method will simply use a simple algorithm for captializing the first letter of the string.
+     * @param {string} str - the incoming string
+     * @returns {string}
+     */
+    capitalize: function(str) {
+      return this.toUpperCase(str.charAt(0)) + str.slice(1);
+    },
+
+    /**
+     * Takes a string and capitalizes the first letter of each word in a string, taking into account Locale-specific character conversions.
+     * In most cases this method will simply use a simple algorithm for captializing the first letter of the string.
+     * @param {string} str - the incoming string
+     * @returns {string}
+     */
+    capitalizeWords: function(str) {
+      var words = str.split(' ');
+
+      for(var i = 0; i < words.length; i++) {
+        words[i] = this.capitalize(words[i]);
+      }
+
+      return words.join(' ');
     },
 
     flipIconsHorizontally: function() {
@@ -2570,17 +3108,24 @@
 
 
   var defaults = {
-      caseSensitive: false, // Set to true if searches ARE case sensitive
-      filterMode: 'startsWith', // see "filterModes" var for possible values
-      highlightMatchedText: false, // inserts markup that appears to highlight text
-      highlightCallback: null // if defined, will execute this code for highlighting text instead of the built-in highlighting code
+      caseSensitive: false,
+      filterMode: 'startsWith',
+      highlightMatchedText: false,
+      highlightCallback: null
     },
     filterModes = ['startsWith', 'contains'];
 
+
   /**
-   * Abstracted search/filter for use in other controls
-   * @constructor
-   */
+  * Abstracted search/filter for use in other controls
+  *
+  * @class ListFilter
+  * @param {Boolean} caseSensitive  &nbsp;-&nbsp; Set to true if searches ARE case sensitive
+  * @param {String} filterMode  &nbsp;-&nbsp; Type of search can current be either 'startsWith' or 'contains'
+  * @param {Boolean} highlightMatchedText  &nbsp;-&nbsp; Inserts markup that appears to highlight text
+  * @param {Boolean} highlightCallback  &nbsp;-&nbsp; If defined, will execute this code for highlighting text instead of the built-in highlighting code
+  *
+  */
   function ListFilter(settings) {
     this.settings = $.extend({}, defaults, settings);
     Soho.logTimeStart('ListFilter');
@@ -2609,6 +3154,12 @@
       return this;
     },
 
+    /**
+    * Run the filter on the list for the given sreach term.
+    * @param {Array} list  &nbsp;-&nbsp; The array to search.
+    * @param {String} term  &nbsp;-&nbsp; The term to look for.
+    * @returns {Array}
+    */
     filter: function(list, term) {
       if (!list) {
         return false;
@@ -2727,38 +3278,17 @@
         settings = $.extend({}, defaults, options);
 
     /**
-    *
-    * The About Dialog Component displays information regarding the application.
-    * It should present the application name, version, copyright and any other
-    * information that would be useful for application users to present to
-    * support teams. Modal dialogs should not be used as a splash screen.
-    *
-    * Keyboard Usage<br>
-    * <b>Esc</b> Closes and cancels the dialog. <br>
-    * <b>Tab/Shift Tab</b> Move around the objects within the dialog <br>
-    *
-    * Check out the following sample pages: <br>
-    * {@link /controls/about|Main About Example} <br>
-    * {@link /tests/about/as-button|Shows how to show the about via a button click} <br>
-    * {@link /tests/about/close-event|Shows using the Close Event} <br>
+    * The About Dialog Component is displays information regarding the application.
     *
     * @class About
-    * @param {Object} [element=this] - The element to attach to (if manually calling the constructor)
-    * @param {Object} options
-    * @param {String} options.appName The Main Application Name to display in the heading
-    * @param {String} options.content Additional Text content to display at the top.
-    * @param {String} options.copyrightYear The year displayed in the copyright, defaults to current year.
-    * @param {Boolean} options.deviceSpecs Determines whether or not to display device information (Browser, Platform, Locale, Cookies Enabled)
-    * @param {String} options.productName Additional product name information to display
-    * @param {Boolean} options.useDefaultCopyright Add the Legal Approved Infor Copy Right Txt
-    * @param {String} options.version Semantic Version Number fx (4.0.0)
+    * @param {String} appName The Main Application Name to display in the header.
+    * @param {String} content Additional Text content to display at the top.
+    * @param {String} copyrightYear The year displayed in the copyright, defaults to current year.
+    * @param {Boolean} deviceSpecs Determines whether or not to display device information (Browser, Platform, Locale, Cookies Enabled)
+    * @param {String} productName Additional product name information to display.
+    * @param {Boolean} useDefaultCopyright Add the Legal Approved Infor Copy Right Text.
+    * @param {String} version Semantic Version Number for example (4.0.0).
     *
-    * @example
-    * $('body').about({
-    *   appName: 'SoHo Xi ',
-    *   productName: 'Product Name',
-    *   content: '<p>Fashionable components for fashionable applications.</p>'
-    * });
     */
     function About(element) {
       this.settings = $.extend({}, settings);
@@ -2842,10 +3372,10 @@
 
         if (this.settings.deviceSpecs) {
           var specs = this.getDeviceSpecs(),
-            text = '<span class="browser">Browser: ' + specs.browser + '</span><br>' +
-              '<span class="platform">Platform: ' + specs.os + '</span><br>' +
-              '<span class="locale">Locale: ' + specs.locale + '</span><br>' +
-              '<span class="cookiesEnabled">Cookies Enabled: ' + specs.cookiesEnabled + '</span><br>';
+            text = '<span class="browser">' + Locale.translate('Browser') + ' : ' + specs.browser + '</span><br>' +
+              '<span class="platform">' + Locale.translate('Platform') + ' : ' + specs.os + '</span><br>' +
+              '<span class="locale">' + Locale.translate('Locale') + ' : ' + specs.locale + '</span><br>' +
+              '<span class="cookiesEnabled">' + Locale.translate('CookiesEnabled') + ' : ' +  specs.cookiesEnabled + '</span><br>';
           $('<p></p>').html(text).appendTo(body);
         }
 
@@ -2866,99 +3396,34 @@
       },
 
       /**
-      * Beforeopen event, fires before the about is opened.
-      * Opening can be cancelled with return false;
-      *
-      * @event About#beforeopen
-      * @property {Object} node - The about dialog Dom element.
-      */
-
-      /**
-      * Open event, fires as the about dialog is opened.
-      *
-      * @event About#open
-      * @property {Object} node - The about dialog Dom element.
-      */
-
-      /**
-      * After Open event, fires whne the dialog is done opening and is rendered.
-      * Could be used for UI adjstments.
-      *
-      * @event About#afteropen
-      * @property {Object} node - The about dialog Dom element.
-      */
-
-      /**
-      * Beforeclose event, fires before the dialog closes, and can be used to cancel.
-      *
-      * @event About#beforeclose
-      * @property {Object} node - The about dialog Dom element.
-      */
-
-      /**
-      * Close event, fires as the about dialog is closing.
-      *
-      * @event About#close
-      * @property {Object} node - The about dialog Dom element.
-      */
-
-       /**
-       * After Close event, fires when the about dialog has completely closed.
-       *
-       * @event About#afterclose
-       * @property {Object} node - The about dialog Dom element.
-       */
-      handleEvents: function() {
-        var self = this;
-
-        this.element.on('open.about', function(e) {
-          e.stopPropagation();
-          self.element.trigger('click');
-        });
-
-        this.buttons.filter('[name="done"], [name="close"]').on('click.about', function() {
-          self.close();
-        });
-
-        this.modal.data('modal').element.on('beforeopen.about', function() {
-          self.modal.find('.modal-body').scrollTop(0);
-        });
-
-        $(document).on('keydown.about', function(e) {
-          // Close on Escape.
-          if (e.which === 0 || e.which === 27) {
-            self.close();
-          }
-        });
-
-        return this;
-      },
-
-      /**
       * Return the browser specs. Currently returns browse, os, cookiesEnabled and locale
       * @returns {String}
       */
       getDeviceSpecs: function() {
+
         var locale = navigator.appName === 'Microsoft Internet Explorer' ? navigator.userLanguage : navigator.language,
           browser = (function(){
             var ua= navigator.userAgent, tem,
             M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+
             if (/trident/i.test(M[1])){
               tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
               return 'IE '+(tem[1] || '');
             }
+
             if (M[1]=== 'Chrome'){
-              tem= ua.match(/\bOPR\/(\d+)/);
-              if (tem !== null) {
-                return 'Opera '+tem[1];
+              tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+              if (tem!= null) {
+                return tem.slice(1).join(' ').replace('OPR', 'Opera');
               }
             }
+
             M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-            if((tem= ua.match(/version\/(\d+)/i)) !== null) {
+            if ((tem= ua.match(/version\/(\d+)/i))!= null) {
               M.splice(1, 1, tem[1]);
             }
             return M.join(' ');
-          })();
+        })();
 
         return {
           browser: browser,
@@ -2997,7 +3462,61 @@
         this.buttons.off();
         this.element.off('open.about');
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+      * Fires before the dialog is closing. You can return false syncronously to delay closing.
+      *
+      * @event beforeclose
+      * @type {object} fires
+      * @property {Object} event - The jquery event object.
+      * @property {Object} ui - The dialog object
+      */
+
+      /**
+      * Fires as the dialog is closing
+      *
+      * @event close
+      * @type {object} fires
+      * @property {Object} event - The jquery event object.
+      * @property {Object} ui - The dialog object
+      */
+
+      /**
+       *Fires after the dialog has closed in the DOM entirely.
+       *
+       * @event afterclose
+       * @type {object} fires
+       * @property {Object} event - The jquery event object.
+       * @property {Object} ui - The dialog object
+       */
+
+      handleEvents: function() {
+        var self = this;
+
+        this.element.on('open.about', function(e) {
+          e.stopPropagation();
+          self.element.trigger('click');
+        });
+
+        this.buttons.filter('[name="done"], [name="close"]').on('click.about', function() {
+          self.close();
+        });
+
+        this.modal.data('modal').element.on('beforeopen.about', function() {
+          self.modal.find('.modal-body').scrollTop(0);
+        });
+
+        $(document).on('keydown.about', function(e) {
+          // Close on Escape.
+          if (e.which === 0 || e.which === 27) {
+            self.close();
+          }
+        });
+
+        return this;
       }
+
     };
 
     // Initialize the plugin (Once)
@@ -3023,16 +3542,24 @@
     var pluginName = 'accordion',
         defaults = {
           allowOnePane: true,
-          displayChevron: true, // Displays a "Chevron" icon that sits off to the right-most side of a top-level accordion header.  Used in place of an Expander (+/-) if enabled.
-          rerouteOnLinkClick: true, // Can be set to false if routing is externally handled
+          displayChevron: true,
+          rerouteOnLinkClick: true,
           source: null
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The Accordion is a grouped set of collapsible panels used to navigate sections of
+    * related content. Each panel consists of two levels: the top level identifies the
+    * category or section header, and the second level provides the associated options.
+    *
+    * @class Accordion
+    * @param {String} allowOnePane &nbsp;-&nbsp; If set to true, allows only one pane of the Accordion to be open at a time.  If an Accordion pane is open, and that pane contains sub-headers, only one of the pane's sub-headers can be open at a time. (default true)
+    * @param {String} displayChevron  &nbsp;-&nbsp; Displays a "Chevron" icon that sits off to the right-most side of a top-level accordion header.  Used in place of an Expander (+/-) if enabled.
+    * @param {String} rerouteOnLinkClick  &nbsp;-&nbsp; Can be set to false if routing is externally handled
+    * @param {Boolean} source  &nbsp;-&nbsp; A callback function that when implemented provided a call back for "ajax loading" of tab contents on open.
+    *
+    */
     function Accordion(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -3203,102 +3730,6 @@
           this.expand(targetsToExpand);
           this.select(targetsToExpand.last());
         }
-
-        return this;
-      },
-
-      handleEvents: function() {
-        var self = this,
-          headerWhereMouseDown = null,
-          linkFollowedByTouch = null;
-
-        // Returns "Header", "Anchor", or "Expander" based on the element's tag
-        function getElementType(element) {
-          var elementType = 'Header';
-          if (element.is('a')) {
-            elementType = 'Anchor';
-          }
-          if (element.is('button')) {
-            elementType = 'Expander';
-          }
-          return elementType;
-        }
-
-        // Intercepts a 'touchend' event in order to either prevent a link from being followed,
-        // or allows it to continue.
-        function touchendInterceptor(e, element) {
-          linkFollowedByTouch = true;
-          var type = getElementType(element),
-            result = self['handle' + type + 'Click'](e, element);
-
-          if (!result) {
-            e.preventDefault();
-          }
-          return result;
-        }
-
-        // Intercepts a 'click' event in order to either prevent a link from being followed,
-        // or allows it to continue.
-        function clickInterceptor(e, element) {
-          var type = getElementType(element);
-          if (linkFollowedByTouch) {
-            linkFollowedByTouch = null;
-            return false;
-          }
-          return self['handle' + type + 'Click'](e, element);
-        }
-
-        this.headers.on('touchend.accordion', function(e) {
-          return touchendInterceptor(e, $(this));
-        }).on('click.accordion', function(e) {
-          return clickInterceptor(e, $(this));
-        }).on('focusin.accordion', function(e) {
-          var target = $(e.target);
-
-          if (!self.originalSelection) {
-            self.originalSelection = target;
-          }
-
-          if (target.is(':not(.btn)')) {
-            $(this).addClass('is-focused');
-          }
-        }).on('focusout.accordion', function() {
-          if (!$.contains(this, headerWhereMouseDown) || $(this).is($(headerWhereMouseDown))) {
-            $(this).removeClass('is-focused');
-          }
-        }).on('keydown.accordion', function(e) {
-          self.handleKeys(e);
-        }).on('mousedown.accordion', function(e) {
-          $(this).addClass('is-focused');
-          headerWhereMouseDown = e.target;
-        }).on('mouseup.accordion', function() {
-          headerWhereMouseDown = null;
-        });
-
-        this.anchors.on('touchend.accordion', function(e) {
-          return touchendInterceptor(e, $(this));
-        }).on('click.accordion', function(e) {
-          return clickInterceptor(e, $(this));
-        });
-
-        this.headers.children('[class^="btn"]')
-          .on('touchend.accordion', function(e) {
-            return touchendInterceptor(e, $(this));
-          })
-          .on('click.accordion', function(e) {
-            return clickInterceptor(e, $(this));
-          }).on('keydown.accordion', function(e) {
-            self.handleKeys(e);
-          });
-
-        this.element.on('selected.accordion', function(e) {
-          // Don't propagate this event above the accordion element
-          e.stopPropagation();
-        }).on('updated.accordion', function(e) {
-          // Don't propagate just in case this is contained by an Application Menu
-          e.stopPropagation();
-          self.updated();
-        });
 
         return this;
       },
@@ -3513,7 +3944,11 @@
         items.addClass('child-selected');
       },
 
-      // Checks if a particular header is disabled, or if the entire accordion is disabled.
+      /**
+      * Checks if a particular header is disabled, or if the entire accordion is disabled..
+      * @param {Object} header &nbsp;-&nbsp; the jquery header element
+      * @returns {Boolean}
+      */
       isDisabled: function(header) {
         if (this.element.hasClass('is-disabled')) {
           return true;
@@ -3526,7 +3961,11 @@
         return header.hasClass('is-disabled');
       },
 
-      // Checks if an Accordion Section is currently expanded
+      /**
+      * Checks if an Accordion Section is currently expanded
+      * @param {Object} header &nbsp;-&nbsp; the jquery header element
+      * @returns {Boolean}
+      */
       isExpanded: function(header) {
         if (!header || !header.length) {
           return;
@@ -3535,6 +3974,10 @@
         return header.children('a').attr('aria-expanded') === 'true';
       },
 
+      /**
+      * Toggle the given Panel on the Accordion between expanded and collapsed
+      * @param {Object} header &nbsp;-&nbsp; the jquery header element
+      */
       toggle: function(header) {
         if (!header || !header.length || this.isDisabled(header)) {
           return;
@@ -3547,6 +3990,10 @@
         this.expand(header);
       },
 
+      /**
+      * Expand the given Panel on the Accordion.
+      * @param {Object} header &nbsp;-&nbsp; the jquery header element
+      */
       expand: function(header) {
         if (!header || !header.length) {
           return;
@@ -3605,6 +4052,27 @@
         }
       },
 
+      /**
+       * Expands all accordion headers, if possible.
+       */
+      expandAll: function() {
+        if (this.settings.allowOnePane === true) {
+          return;
+        }
+
+        var self = this;
+        this.headers.each(function() {
+          var h = $(this);
+          if (!self.isExpanded(h)) {
+            self.expand(h);
+          }
+        });
+      },
+
+      /**
+      * Collapse the given Panel on the Accordion.
+      * @param {Object} header &nbsp;-&nbsp; the jquery header element
+      */
       collapse: function(header) {
         if (!header || !header.length) {
           return;
@@ -3629,11 +4097,26 @@
         pane.removeClass('is-expanded').closeChildren();
         a.attr('aria-expanded', 'false');
 
+        self.element.trigger('collapse', [a]);
+
         pane.one('animateclosedcomplete', function(e) {
           e.stopPropagation();
           pane[0].style.display = 'none';
           self.element.trigger('aftercollapse', [a]);
         }).animateClosed();
+      },
+
+      /**
+       * Collapses all accordion headers.
+       */
+      collapseAll: function() {
+        var self = this;
+        this.headers.each(function() {
+          var h = $(this);
+          if (self.isExpanded(h)) {
+            self.collapse(h);
+          }
+        });
       },
 
       // Uses a function (this.settings.source()) to call out to an external API to fill the
@@ -3861,6 +4344,9 @@
         }
       },
 
+      /**
+      * Disable an accordion from events
+      */
       disable: function() {
         this.element
           .addClass('is-disabled');
@@ -3868,6 +4354,9 @@
         this.anchors.add(this.headers.children('[class^="btn"]')).attr('tabindex', '-1');
       },
 
+      /**
+      * Enable a disabled accordion.
+      */
       enable: function() {
         this.element
           .removeClass('is-disabled');
@@ -3916,11 +4405,97 @@
         return this;
       },
 
-      // Teardown - Remove added markup and events
+      /**
+      * Teardown and remove any added markup and events.
+      */
       destroy: function() {
         this.teardown();
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Accordion#events
+       * @param {Object} selected  &nbsp;-&nbsp; Fires when a panel is opened.
+       * @param {Object} followlink  &nbsp;-&nbsp; If the anchor is a real link, follow the link and die here. This indicates the link has been followed.
+       * @param {Object} expand  &nbsp;-&nbsp; Fires when expanding a pane is initiated.
+       * @param {Object} afterexpand  &nbsp;-&nbsp; Fires after a pane is expanded.
+       * @param {Object} collapse  &nbsp;-&nbsp; Fires when collapsed a pane is initiated.
+       * @param {Object} aftercollapse  &nbsp;-&nbsp; Fires after a pane is collapsed.
+       *
+       */
+      handleEvents: function() {
+        var self = this,
+          headerWhereMouseDown = null;
+
+        // Returns "Header", "Anchor", or "Expander" based on the element's tag
+        function getElementType(element) {
+          var elementType = 'Header';
+          if (element.is('a')) {
+            elementType = 'Anchor';
+          }
+          if (element.is('button')) {
+            elementType = 'Expander';
+          }
+          return elementType;
+        }
+
+        // Intercepts a 'click' event in order to either prevent a link from being followed,
+        // or allows it to continue.
+        function clickInterceptor(e, element) {
+          var type = getElementType(element);
+          return self['handle' + type + 'Click'](e, element);
+        }
+
+        this.headers.on('click.accordion', function(e) {
+          return clickInterceptor(e, $(this));
+        }).on('focusin.accordion', function(e) {
+          var target = $(e.target);
+
+          if (!self.originalSelection) {
+            self.originalSelection = target;
+          }
+
+          if (target.is(':not(.btn)')) {
+            $(this).addClass('is-focused');
+          }
+        }).on('focusout.accordion', function() {
+          if (!$.contains(this, headerWhereMouseDown) || $(this).is($(headerWhereMouseDown))) {
+            $(this).removeClass('is-focused');
+          }
+        }).on('keydown.accordion', function(e) {
+          self.handleKeys(e);
+        }).on('mousedown.accordion', function(e) {
+          $(this).addClass('is-focused');
+          headerWhereMouseDown = e.target;
+        }).on('mouseup.accordion', function() {
+          headerWhereMouseDown = null;
+        });
+
+        this.anchors.on('click.accordion', function(e) {
+          return clickInterceptor(e, $(this));
+        });
+
+        this.headers.children('[class^="btn"]')
+          .on('click.accordion', function(e) {
+            return clickInterceptor(e, $(this));
+          }).on('keydown.accordion', function(e) {
+            self.handleKeys(e);
+          });
+
+        this.element.on('selected.accordion', function(e) {
+          // Don't propagate this event above the accordion element
+          e.stopPropagation();
+        }).on('updated.accordion', function(e) {
+          // Don't propagate just in case this is contained by an Application Menu
+          e.stopPropagation();
+          self.updated();
+        });
+
+        return this;
       }
+
     };
 
     // Initialize the plugin (Once)
@@ -3943,16 +4518,20 @@
     // Settings and Options
     var pluginName = 'applicationmenu',
         defaults = {
-          breakpoint: 'phablet', // can be 'tablet' (+720), 'desktop' +(1024), or 'large' (+1280);
-          openOnLarge: false, // If true, will automatically open the Application Menu when a large screen-width breakpoint is met.
-          triggers: [] // An Array of jQuery-wrapped elements that are able to open/close this nav menu.
+          breakpoint: 'phone-to-tablet',
+          openOnLarge: false,
+          triggers: []
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The Application Menu provides access to all the functions, pages, and forms in an application.
+    *
+    * @class ApplicationMenu
+    * @param {String} breakpoint  &nbsp;-&nbsp; Can be 'tablet' (+720), 'phablet (+968), ' 'desktop' +(1024), or 'large' (+1280). Default is phablet (968)
+    * @param {String} openOnLarge  &nbsp;-&nbsp; If true, will automatically open the Application Menu when a large screen-width breakpoint is met.
+    * @param {String} triggers  &nbsp;-&nbsp; An Array of jQuery-wrapped elements that are able to open/close this nav menu.
+    */
     function ApplicationMenu(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -3964,12 +4543,20 @@
     // Plugin Methods
     ApplicationMenu.prototype = {
 
+      /**
+       * @private
+       * @returns {this}
+       */
       init: function() {
         this
           .setup()
           .handleEvents();
       },
 
+      /**
+       * @private
+       * @returns {this}
+       */
       setup: function() {
         this.hasTrigger = false;
         this.isAnimating = false;
@@ -3983,15 +4570,9 @@
         var openOnLarge = this.element.attr('data-open-on-large');
         this.settings.openOnLarge = openOnLarge !== undefined ? openOnLarge === 'true' : this.settings.openOnLarge;
 
-        var breakpoints = {
-          'tablet': 767,
-          'phablet': 968,
-          'desktop': 1024,
-          'large': 1280
-        },
+        var breakpoints = Soho.breakpoints,
         dataBreakpoint = this.element.attr('data-breakpoint');
         this.settings.breakpoint = breakpoints[dataBreakpoint] !== undefined ? dataBreakpoint : this.settings.breakpoint;
-        this.breakpoint = breakpoints[this.settings.breakpoint];
 
         // Pull in the list of Nav Menu trigger elements and store them internally.
         this.modifyTriggers(this.settings.triggers, false, true);
@@ -4023,49 +4604,6 @@
         return this;
       },
 
-      handleEvents: function() {
-        var self = this;
-
-        this.handleTriggerEvents();
-
-        // Setup notification change events
-        this.menu.on('notify.applicationmenu', function(e, anchor, value) {
-          self.notify(anchor, value);
-        }).on('updated.applicationmenu', function() {
-          self.updated();
-        });
-
-        this.accordion.on('blur.applicationmenu', function() {
-          self.closeMenu();
-        });
-
-        $(document).on('open-applicationmenu', function() {
-          self.openMenu();
-        }).on('close-applicationmenu', function() {
-          self.closeMenu();
-        });
-
-        $(window).on('scroll.applicationmenu', function() {
-          self.adjustHeight();
-        }).on('resize.applicationmenu', function() {
-          self.testWidth();
-        });
-
-        if (this.settings.openOnLarge && this.isLargerThanBreakpoint()) {
-          this.menu.addClass('no-transition');
-          $('.page-container').addClass('no-transition');
-        }
-        this.testWidth();
-
-        //Remove after initial transition
-        setTimeout(function() {
-          self.menu.removeClass('no-transition');
-          $('.page-container').removeClass('no-transition');
-        }, 800);
-
-        return this;
-      },
-
       // Setup click events on this.element if it's not the menu itself
       // (this means that it's a trigger button)
       handleTriggerEvents: function() {
@@ -4083,9 +4621,9 @@
 
           var isOpen = self.menu.hasClass('is-open');
           if (!isOpen) {
-            self.openMenu();
+            self.openMenu(undefined, true);
           } else {
-            self.closeMenu();
+            self.closeMenu(true);
           }
           return true;
         }
@@ -4137,6 +4675,10 @@
         return tag;
       },
 
+      /**
+       * Adjusts the application menu's height to fit the page.
+       * @private
+       */
       adjustHeight: function() {
         var isSticky = this.scrollTarget.is('.is-sticky'),
           totalHeight = this.scrollTarget.outerHeight(true),
@@ -4149,25 +4691,56 @@
         this.menu[0].style.height = offset > 0 ? ('calc(100% - ' + offset + 'px)') : '100%';
       },
 
+      /**
+       * Checks the window size against the defined breakpoint.
+       * @private
+       */
       isLargerThanBreakpoint: function() {
-        return $(window).width() > this.breakpoint;
+        return Soho.breakpoints.isAbove(this.settings.breakpoint);
       },
 
+      /**
+       * Detects whether or not the application menu is open
+       * @returns {boolean}
+       */
+      isOpen: function() {
+        return this.menu[0].classList.contains('is-open');
+      },
+
+      /**
+       * Detects a change in breakpoint size that can cause the Application Menu's state to change.
+       */
       testWidth: function() {
-        if (this.isLargerThanBreakpoint()) {
-          this.menu.removeClass('show-shadow');
-          if (this.settings.openOnLarge && !this.menu.hasClass('is-open') && this.isAnimating === false) {
-            this.openMenu(true);
+        if (this.isOpen()) {
+          if (Soho.breakpoints.isAbove(this.settings.breakpoint)) {
+            return;
           }
-        } else {
-          this.menu.addClass('show-shadow');
-          if (!this.element.find(document.activeElement).length && this.menu.is('.is-open') && this.isAnimating === false) {
-            this.closeMenu();
+          if (this.element.find(document.activeElement).length || this.isAnimating) {
+            return;
           }
+
+          this.closeMenu();
+          return;
         }
+
+        if (Soho.breakpoints.isBelow(this.settings.breakpoint)) {
+          return;
+        }
+
+        if (this.userClosed || !this.settings.openOnLarge || this.isAnimating) {
+          return;
+        }
+
+        this.openMenu(true);
+
       },
 
-      openMenu: function(noFocus) {
+      /**
+       * Opens the Application Menu
+       * @param {boolean} noFocus - If true, sets focus on the first item in the application menu.
+       * @param {boolean} userOpened - If true, notifies the component that the menu was manually opened by the user.
+       */
+      openMenu: function(noFocus, userOpened) {
         if (this.isAnimating === true) {
           return;
         }
@@ -4186,6 +4759,12 @@
 
           self.isAnimating = false;
           self.element.trigger('applicationmenuopen');
+
+          if (userOpened) {
+            self.userOpened = true;
+            self.userClosed = undefined;
+          }
+
           self.menu.removeClass('no-transition');
           $('.page-container').removeClass('no-transition');
         }
@@ -4219,12 +4798,9 @@
         // Events that will close the nav menu
         // On a timer to prevent conflicts with the Trigger button's click events
         setTimeout(function() {
-          $(document).on('touchend.applicationmenu touchcancel.applicationmenu', function(e) {
-            e.preventDefault();
-            $(e.target).click();
-          }).on('click.applicationmenu', function(e) {
+          $(document).on('click.applicationmenu', function(e) {
             if ($(e.target).parents('.application-menu').length < 1 && !self.isLargerThanBreakpoint()) {
-              self.closeMenu($(e.target).hasClass('application-menu-trigger'));
+              self.closeMenu(true);
             }
           }).on('keydown.applicationmenu', function(e) {
             self.handleKeyDown(e);
@@ -4232,7 +4808,11 @@
         }, 0);
       },
 
-      closeMenu: function() {
+      /**
+       * Closes the Application Menu
+       * @param {boolean} userClosed - if true, sets a flag notifying the component that the user was responsible for closing.
+       */
+      closeMenu: function(userClosed) {
         if (this.isAnimating === true) {
           return;
         }
@@ -4251,6 +4831,12 @@
           self.menu.off(transitionEnd + '.applicationmenu');
           self.menu[0].style.display = 'none';
           self.isAnimating = false;
+
+          if (userClosed) {
+            self.userOpened = undefined;
+            self.userClosed = true;
+          }
+
           self.element.trigger('applicationmenuclose');
         }
 
@@ -4266,17 +4852,23 @@
         this.timeout = setTimeout(close, 300);
 
         this.menu.removeClass('is-open').find('[tabindex]');
-        $(document).off('touchend.applicationmenu touchcancel.applicationmenu click.applicationmenu keydown.applicationmenu');
+        $(document).off('click.applicationmenu keydown.applicationmenu');
       },
 
+      /**
+       * Detects whether or not the Application Menu has external trigger buttons setup to control it.
+       * @returns {boolean}
+       */
       hasTriggers: function() {
         return (this.triggers !== undefined && this.triggers instanceof $ && this.triggers.length);
       },
 
-      // Externally Facing function that can be used to add/remove application nav menu triggers.
-      // If the 'remove' argument is defined, triggers that are defined will be removed internally instead of added.
-      // If the 'norebuild' argument is defined, this control's events won't automatically be rebound to include
-      // the new triggers.
+      /**
+       * Externally Facing function that can be used to add/remove application nav menu triggers.
+       * @param {Array[]} triggers - an array of HTMLElements or jQuery-wrapped elements that will be used as triggers.
+       * @param {boolean} [remove] - if defined, triggers that are defined will be removed internally instead of added.
+       * @param {boolean} [norebuild] - if defined, this control's events won't automatically be rebound to include the new triggers.
+       */
       modifyTriggers: function(triggers, remove, norebuild) {
         if (!triggers || !triggers.length) {
           return;
@@ -4297,13 +4889,22 @@
         this.updated();
       },
 
+      /**
+       * Unbinds event listeners and removes extraneous markup from the Application Menu.
+       * @returns {this}
+       */
       teardown: function() {
+        var api;
         this.accordion.off('blur.applicationmenu');
         this.menu.off('animateopencomplete animateclosedcomplete');
         $(window).off('scroll.applicationmenu');
-        $(document).off('touchend.applicationmenu touchcancel.applicationmenu click.applicationmenu open-applicationmenu close-applicationmenu');
+        $('body').off('resize.applicationmenu');
+        $(document).off('click.applicationmenu open-applicationmenu close-applicationmenu');
 
-        this.accordion.data('accordion').destroy();
+        api = this.accordion ? this.accordion.data('accordion') : null;
+        if (api && api.destroy) {
+          api.destroy();
+        }
 
         if (this.hasTriggers()) {
           this.triggers.off('click.applicationmenu');
@@ -4312,13 +4913,18 @@
         return this;
       },
 
+      /**
+      * Triggers a UI Resync.
+      */
       updated: function() {
         return this
           .teardown()
           .init();
       },
 
-      // Teardown - Remove added markup and events
+      /**
+      * Teardown - Remove added markup and events
+      */
       destroy: function() {
         this.teardown();
         this.menu
@@ -4327,7 +4933,61 @@
           .removeClass('short')
           .removeAttr('style');
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Applicationmenu#events
+       * @param {Object} applicationmenuopen  &nbsp;-&nbsp; Fires when the menu is opened.
+       * @param {Object} applicationmenuclose  &nbsp;-&nbsp; Fires as the menu is closed.
+        *
+       */
+      handleEvents: function() {
+        var self = this;
+
+        this.handleTriggerEvents();
+
+        // Setup notification change events
+        this.menu.on('notify.applicationmenu', function(e, anchor, value) {
+          self.notify(anchor, value);
+        }).on('updated.applicationmenu', function() {
+          self.updated();
+        });
+
+        this.accordion.on('blur.applicationmenu', function() {
+          self.closeMenu();
+        });
+
+        $(document).on('open-applicationmenu', function() {
+          self.openMenu();
+        }).on('close-applicationmenu', function() {
+          self.closeMenu();
+        });
+
+        $(window).on('scroll.applicationmenu', function() {
+          self.adjustHeight();
+        });
+
+        $('body').on('resize.applicationmenu', function() {
+          self.testWidth();
+        });
+
+        if (this.settings.openOnLarge && this.isLargerThanBreakpoint()) {
+          this.menu.addClass('no-transition');
+          $('.page-container').addClass('no-transition');
+        }
+        this.testWidth();
+
+        //Remove after initial transition
+        setTimeout(function() {
+          self.menu.removeClass('no-transition');
+          $('.page-container').removeClass('no-transition');
+        }, 800);
+
+        return this;
       }
+
     };
 
     // Initialize the plugin (Once)
@@ -4346,24 +5006,34 @@
   $.fn.autocomplete = function(options) {
     'use strict';
 
-    // Settings and Options
+    /**
+    * The Autocomplete control provides an easier means of searching through a large amount of data by filtering down the results based on keyboard input from the user.
+    *
+    * @class Autocomplete
+    *
+    * @param {String} source  &nbsp;-&nbsp; Defines the data to use, must be specified.
+    * @param {String} sourceArguments  &nbsp;-&nbsp; If a source method is defined, this flexible object can be passed into the source method, and augmented with parameters specific to the implementation.
+    * @param {Boolean} template  &nbsp;-&nbsp; If defined, use this to draw the contents of each search result instead of the default draw routine.
+    * @param {String} filterMode  &nbsp;-&nbsp; The matching algorithm, startsWith and contains are supported - false will not filter client side
+    * @param {Boolean} delay  &nbsp;-&nbsp; The delay between key strokes on the keypad before it thinks you stopped typing
+    * @param {String} width  &nbsp;-&nbsp; Width of the open auto complete menu
+    * @param {String} offset  &nbsp;-&nbsp; For the open menu, the left or top offset
+    * @param {String} autoSelectFirstItem  &nbsp;-&nbsp; Whether or not to select he first item in the list to be selected
+    *
+    */
     var pluginName = 'autocomplete',
       defaults = {
-        source: [], //Defines the data to use, must be specified.
-        sourceArguments: {}, // If a source method is defined, this flexible object can be passed into the source method, and augmented with parameters specific to the implementation.
-        template: undefined, // If defined, use this to draw the contents of each search result instead of the default draw routine.
-        filterMode: 'startsWith',  // startsWith and contains Supported - false will not client side filter
-        delay: 300, // delay is the delay between key strokes on the keypad before it thinks you stopped typing
-        width: null, //width of the auto complete menu
-        offset: null, //left or top offset
-        autoSelectFirstItem: false // if true will cause the first item in the list to be selected
+        source: [],
+        sourceArguments: {},
+        template: undefined,
+        filterMode: 'startsWith',
+        delay: 300,
+        width: null,
+        offset: null,
+        autoSelectFirstItem: false
       },
       settings = $.extend({}, defaults, options);
 
-    /**
-     * @constructor
-     * @param {Object} element
-     */
     function Autocomplete(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -4412,7 +5082,7 @@
         var self = this,
           matchingOptions = [];
 
-        term = term.toLowerCase();
+        term = Locale.toLowerCase(term);
 
         //append the list
         this.list = $('#autocomplete-list');
@@ -4451,17 +5121,17 @@
 
           if (this.settings.filterMode === 'startsWith') {
               for (var a = 0; a < parts.length; a++) {
-                if (parts[a].toLowerCase().indexOf(term) === 0) {
+                if (Locale.toLowerCase(parts[a]).indexOf(term) === 0) {
                   containsTerm = true;
                 }
               }
 
               //Direct Match
-              if (option.toLowerCase().indexOf(term) === 0) {
+              if (Locale.toLowerCase(option).indexOf(term) === 0) {
                 containsTerm = true;
               }
 
-              if (term.indexOf(' ') > 0 && option.toLowerCase().indexOf(term) > 0) {
+              if (term.indexOf(' ') > 0 && Locale.toLowerCase(option).indexOf(term) > 0) {
                 //Partial dual word match
                 containsTerm = true;
               }
@@ -4469,7 +5139,7 @@
           }
 
           if (this.settings.filterMode === 'contains') {
-            if (option.toLowerCase().indexOf(term) >= 0) {
+            if (Locale.toLowerCase(option).indexOf(term) >= 0) {
               containsTerm = true;
             }
           }
@@ -4484,9 +5154,9 @@
             if (this.settings.filterMode === 'contains') {
               dataset.label = dataset.label.replace(new RegExp('(' + term + ')', 'ig'), '<i>$1</i>');
             } else {
-              dataset.label = option.toLowerCase().indexOf(term)===0 ? '<i>' + option.substr(0,term.length) + '</i>' + option.substr(term.length) : option;
+              dataset.label = Locale.toLowerCase(option).indexOf(term)===0 ? '<i>' + option.substr(0,term.length) + '</i>' + option.substr(term.length) : option;
 
-              var pos = option.toLowerCase().indexOf(term);
+              var pos = Locale.toLowerCase(option).indexOf(term);
               if (pos > 0) {
                 dataset.label = option.substr(0, pos) + '<i>' + option.substr(pos, term.length) + '</i>' + option.substr(term.length + pos);
               }
@@ -4527,6 +5197,7 @@
           ariaListbox: true,
           mouseFocus: false,
           trigger: 'immediate',
+          attachToBody: true,
           autoFocus: false,
           placementOpts: {
             callback: autocompletePlaceCallback,
@@ -4537,8 +5208,7 @@
         this.element.addClass('is-open')
           .popupmenu(popupOpts)
           .on('close.autocomplete', function () {
-            self.list.parent('.popupmenu-wrapper').remove();
-            self.element.removeClass('is-open');
+            self.closeList(true);
           });
 
         // Optionally select the first item in the list
@@ -4554,6 +5224,9 @@
         self.list.off('click touchend')
           .on('touchend.autocomplete click.autocomplete', 'a', function(e) {
             self.select(e, items);
+          })
+          .off('focusout.autocomplete').on('focusout.autocomplete', function() {
+            self.checkActiveElement();
           });
 
         // Highlight anchors on focus
@@ -4586,57 +5259,61 @@
         this.element.trigger('listopen', [items]);
       },
 
-      closeList: function() {
+      closeList: function(dontClosePopup) {
         var popup = this.element.data('popupmenu');
         if (!popup) {
           return;
         }
 
-        popup.close();
+        if (!dontClosePopup) {
+          popup.close();
+        }
+
+        this.element.trigger('listclose');
+        $('#autocomplete-list').parent('.popupmenu-wrapper').remove();
+        $('#autocomplete-list').remove();
+        this.element.removeClass('is-open');
       },
 
       listIsOpen: function() {
-        return this.list && this.list.is(':visible');
-      },
-
-      handleEvents: function () {
-        //similar code as dropdown but close enough to be dry
-        var self = this;
-
-        this.element.off('updated.autocomplete').on('updated.autocomplete', function() {
-          self.updated();
-        }).off('keydown.autocomplete').on('keydown.autocomplete', function(e) {
-          self.handleAutocompleteKeydown(e);
-        }).off('input.autocomplete').on('input.autocomplete', function (e) {
-          self.handleAutocompleteInput(e);
-        }).off('focus.autocomplete').on('focus.autocomplete', function () {
-          self.handleAutocompleteFocus();
-        });
+        return this.list instanceof $ && this.list.length && this.list.is(':visible');
       },
 
       // Handles the Autocomplete's "keydown" event
       handleAutocompleteKeydown: function(e) {
-        var self = this,
-          selected;
+        var self = this;
 
-        function getSelected() {
-          return self.list.find('.is-selected');
-        }
-
-        if (self.isLoading()) {
+        if (this.isLoading()) {
           e.preventDefault();
           return false;
         }
 
-        var excludes = 'li:not(.separator):not(.hidden):not(.heading):not(.group):not(.is-disabled)';
+        if (!this.listIsOpen()) {
+          return;
+        }
+
+        function getHighlighted(items) {
+          return items.filter('.is-selected');
+        }
+
+        function unhighlight(item) {
+          item.removeClass('is-selected is-focused');
+        }
+
+        function highlight(item) {
+          item.addClass('is-selected').find('a').focus();
+        }
+
+        var excludes = 'li:not(.separator):not(.hidden):not(.heading):not(.group):not(.is-disabled)',
+          items = this.list.find(excludes),
+          highlighted = getHighlighted(items);
 
         //Down - select next
         if (e.keyCode === 40 && this.listIsOpen()) {
-          selected = getSelected();
-          if (selected.length) {
+          if (highlighted.length) {
             self.noSelect = true;
-            selected.removeClass('is-selected is-focused');
-            selected.next(excludes).addClass('is-selected').find('a').focus();
+            unhighlight(highlighted);
+            highlight( items.eq(items.index(highlighted) + 1) );
             e.preventDefault();
             e.stopPropagation();
           }
@@ -4644,11 +5321,10 @@
 
         //Up select prev
         if (e.keyCode === 38 && this.listIsOpen()) {
-          selected = getSelected();
-          if (selected.length) {
+          if (highlighted.length) {
             self.noSelect = true;
-            selected.removeClass('is-selected is-focused');
-            selected.prev(excludes).addClass('is-selected').find('a').focus();
+            unhighlight(highlighted);
+            highlight( items.eq(items.index(highlighted) - 1) );
             e.preventDefault();
             e.stopPropagation();
           }
@@ -4656,14 +5332,12 @@
 
         //Enter/Tab - apply selected item
         if ((e.keyCode === 9 || e.keyCode === 13) && this.listIsOpen()) {
-          selected = getSelected();
-
           //Apply selection if an item is selected, otherwise close list and allow default tab/enter behavior to happen
-          if (selected.length) {
+          if (highlighted.length) {
             e.stopPropagation();
             e.preventDefault();
             self.noSelect = true;
-            self.select(selected, this.currentDataSet);
+            self.select(highlighted, this.currentDataSet);
           } else {
             self.closeList();
           }
@@ -4689,6 +5363,26 @@
           self.currentDataSet = response;
           self.openList(term, response);
         });
+      },
+
+      /**
+       * Check to see whether or not the currently-focused element resides within the Autocomplete's field
+       * or list, and if not, fires a "safe-blur" event on the element.
+       *
+       * @private
+       * @param {Object} e - The event object passed in from the jQuery `.on()` listener.
+       */
+      checkActiveElement: function() {
+        var self = this;
+        setTimeout( function() {
+          var activeElem = document.activeElement;
+
+          if ((self.listIsOpen() && $.contains(self.list[0], activeElem)) || self.element.is(activeElem)) {
+            return;
+          }
+
+          self.element.trigger('safe-blur');
+        }, 0);
       },
 
       getDataFromSource: function() {
@@ -4851,10 +5545,16 @@
         return this;
       },
 
+      /**
+      * Enable the input from readonly or disabled state.
+      */
       enable: function() {
         this.element.prop('disabled', false);
       },
 
+      /**
+      * Disable the input from editing
+      */
       disable: function() {
         this.element.prop('disabled', true);
       },
@@ -4869,10 +5569,43 @@
         return this;
       },
 
+      /**
+      * Teardown and remove any added markup and events.
+      */
       destroy: function() {
         this.teardown();
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Autocomplete#events
+       * @param {Object} listopen  &nbsp;-&nbsp; Fires when the menu is opened.
+       * @param {Object} listclosed  &nbsp;-&nbsp; Fires when the menu is closed.
+       * @param {Object} populated  &nbsp;-&nbsp; Fires after the menu is populated with its contents.
+       * @param {Object} input  &nbsp;-&nbsp; Fires after the input is edited.
+       * @param {Object} safe-blur  &nbsp;-&nbsp; Fires after the input (and menu) both loose focus
+       * @param {Object} requestend  &nbsp;-&nbsp; Fires when the ajax request (source option) is completed
+       * @param {Object} requeststart  &nbsp;-&nbsp; Fires when the ajax request (source option) is initiated
+       */
+      handleEvents: function () {
+        //similar code as dropdown but close enough to be dry
+        var self = this;
+
+        this.element.off('updated.autocomplete').on('updated.autocomplete', function() {
+          self.updated();
+        }).off('keydown.autocomplete').on('keydown.autocomplete', function(e) {
+          self.handleAutocompleteKeydown(e);
+        }).off('input.autocomplete').on('input.autocomplete', function (e) {
+          self.handleAutocompleteInput(e);
+        }).off('focus.autocomplete').on('focus.autocomplete', function () {
+          self.handleAutocompleteFocus();
+        }).off('focusout.autocomplete').on('focusout.autocomplete', function () {
+          self.checkActiveElement();
+        });
       }
+
     };
 
     // Initialize Once
@@ -4894,17 +5627,26 @@
     // Settings and Options
     var pluginName = 'busyindicator',
         defaults = {
-          blockUI: true, // makes the element that Busy Indicator is invoked on unusable while it's displayed.
-          text: null, //Custom Text To Show or Will Show Localized Loading....
-          displayDelay: 1000, // number in miliseconds to pass before the markup is displayed.  If 0, displays immediately.
-          timeToComplete: 0, // fires the 'complete' trigger at a certain timing interval.  If 0, goes indefinitely.
+          blockUI: true,
+          text: null,
+          displayDelay: 1000,
+          timeToComplete: 0,
+          transparentOverlay: false,
+          overlayOnly: false
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * A Busy Indicator notifies the user that the system is processing a request, and that they must wait for that request to be processed before continuing with the current task.
+    *
+    * @class BusyIndicator
+    * @param {String} blockUI  &nbsp;-&nbsp; makes the element that Busy Indicator is invoked on unusable while it's displayed.
+    * @param {String} text  &nbsp;-&nbsp; Custom Text To Show or Will Show Localized Loading....
+    * @param {String} displayDelay  &nbsp;-&nbsp; umber in miliseconds to pass before the markup is displayed.  If 0, displays immediately.
+    * @param {Boolean} timeToComplete  &nbsp;-&nbsp; fires the 'complete' trigger at a certain timing interval.  If 0, goes indefinitely.
+    * @param {String} transparentOverlay  &nbsp;-&nbsp; If true, allows the "blockUI" setting to display an overlay that prevents interaction, but appears transparent instead of gray.
+    *
+    */
     function BusyIndicator(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -4933,33 +5675,18 @@
           completionTime = this.element.attr('data-completion-time');
 
         this.blockUI = blockUI !== undefined ? blockUI : this.settings.blockUI;
-        this.loadingText = this.settings.text ? this.settings.text : Locale.translate('Loading');
+        if (!this.settings.overlayOnly) {
+          this.loadingText = this.settings.text ? this.settings.text : Locale.translate('Loading');
+        }
         this.delay = delay !== undefined && !isNaN(delay) && parseInt(delay, 10) > 20 ? delay : !isNaN(this.settings.displayDelay) && this.settings.displayDelay >= 20 ? this.settings.displayDelay : 20;
         this.completionTime = completionTime !== undefined && !isNaN(completionTime) ? parseInt(completionTime, 10) : this.settings.timeToComplete;
 
         return this;
       },
 
-      handleEvents: function() {
-        var self = this;
-        self.element.on('start.busyindicator', function(e) {
-          e.stopPropagation();
-          self.activate();
-        }).on('afterstart.busyindicator', function() {
-          // Complete event is only active once the indicator is "started"
-          self.element.on('complete.busyindicator', function(e) {
-            e.stopPropagation();
-            self.close(true);
-          });
-        }).on('updated.busyindicator', function() {
-          self.close(true);
-          self.updated();
-        });
-
-        return this;
-      },
-
-      // Builds and starts the indicator
+      /**
+      * Builds and starts the indicator
+      */
       activate: function() {
         var self = this;
 
@@ -4969,10 +5696,12 @@
             clearTimeout(self.closeTimeout);
           }
           this.label.remove();
-          this.label = $('<span>' + this.loadingText + '</span>').appendTo(this.container);
+          if (!this.settings.overlayOnly) {
+            this.label = $('<span>' + this.loadingText + '</span>').appendTo(this.container);
 
-          if (this.element.is('input, .dropdown, .multiselect, .busy-xs, .busy-sm')) {
-            this.label.addClass('audible');
+            if (this.element.is('input, .dropdown, .multiselect, .busy-xs, .busy-sm')) {
+              this.label.addClass('audible');
+            }
           }
 
           this.container
@@ -4988,22 +5717,30 @@
         });
         this.loader = $('<div class="busy-indicator active"></div>').appendTo(this.container);
 
-        $('<div class="bar one"></div>' +
-          '<div class="bar two"></div>' +
-          '<div class="bar three"></div>' +
-          '<div class="bar four"></div>' +
-          '<div class="bar five"></div>').appendTo(this.loader);
+        if (!this.settings.overlayOnly) {
+          $('<div class="bar one"></div>' +
+            '<div class="bar two"></div>' +
+            '<div class="bar three"></div>' +
+            '<div class="bar four"></div>' +
+            '<div class="bar five"></div>').appendTo(this.loader);
 
-        this.label = $('<span>'+ this.loadingText +'</span>').appendTo(this.container);
+          this.label = $('<span>'+ this.loadingText +'</span>').appendTo(this.container);
+        }
+
+        var transparency = '';
 
         if (this.blockUI) {
+          if (this.settings.transparentOverlay) {
+            transparency = ' transparent';
+          }
+
           this.originalPositionProp = this.element[0].style.position;
           this.element[0].style.position = 'relative';
-          this.overlay = $('<div class="overlay busy is-hidden"></div>').appendTo(this.element);
+          this.overlay = $('<div class="overlay busy is-hidden'+ transparency +'"></div>').appendTo(this.element);
           this.container.addClass('blocked-ui');
         }
 
-        if (this.element.is('.busy-xs, .busy-sm')) {
+        if (this.label && this.element.is('.busy-xs, .busy-sm')) {
           this.label.addClass('audible');
         }
 
@@ -5014,7 +5751,10 @@
           if (this.blockUI) {
             this.element.addClass('is-blocked');
           }
-          this.label.addClass('audible');
+          if (this.label) {
+            this.label.addClass('audible');
+          }
+
 
           var target;
 
@@ -5071,16 +5811,17 @@
           self.animateWithJS();
         }
 
-
         // Triggers complete if the "timeToComplete" option is set.
         if (this.completionTime > 0) {
           setTimeout(function() {
-            self.element.trigger('close');
+            self.element.trigger('complete');
           }, self.completionTime);
         }
       },
 
-      // Removes the appended markup and hides any trace of the indicator
+      /**
+      * Removes the appended markup and hides any trace of the indicator
+      */
       close: function(fromEvent) {
         var self = this;
 
@@ -5098,15 +5839,18 @@
         if (this.overlay) {
           this.overlay.addClass('is-hidden');
         }
+
         // Give the indicator time to fade out before removing all of its components from view
         self.closeTimeout = setTimeout(function() {
           clearTimeout(self.closeTimeout);
           if (self.container) {
             self.container.remove();
           }
+
           self.container = undefined;
           self.loader = undefined;
           self.label = undefined;
+
           if (self.overlay) {
             self.overlay.remove();
             self.element[0].style.position = self.originalPositionProp;
@@ -5115,7 +5859,7 @@
           self.overlay = undefined;
           self.element.trigger('aftercomplete.busyindicator');
           self.element.off('complete.busyindicator');
-        }, 500);
+        }, 600);
       },
 
       // Browsers that don't support CSS-based animation can still show the animating Busy Indicator.
@@ -5187,11 +5931,42 @@
         return this.setup();
       },
 
-      // Teardown / Destroy
+      /**
+      * Teardown and remove any added markup and events.
+      */
       destroy: function() {
         this.element.off('start.busyindicator complete.busyindicator afterstart.busyindicator aftercomplete.busyindicator updated.busyindicator');
         $.removeData(this.element[0], pluginName);
-      }
+      },
+
+      /**
+       *  This component listens to the following events.
+       *
+       * @fires Busyindicator#events
+       * @param {Object} start  &nbsp;-&nbsp; Starts / shows the indictor.
+       * @param {Object} complete  &nbsp;-&nbsp; Hides / Ends the indictaor
+       * @param {Object} updated  &nbsp;-&nbsp; Sync the UI/Settings. Fx chnaging the text in the DOM.
+       *
+       */
+      handleEvents: function() {
+        var self = this;
+        self.element.on('start.busyindicator', function(e) {
+          e.stopPropagation();
+          self.activate();
+        }).on('afterstart.busyindicator', function() {
+          // Complete event is only active once the indicator is "started"
+          self.element.on('complete.busyindicator', function(e) {
+            e.stopPropagation();
+            self.close(true);
+          });
+        }).on('updated.busyindicator', function() {
+          self.close(true);
+          self.updated();
+        });
+
+        return this;
+      },
+
     };
 
     // Initialize the plugin (Once)
@@ -5207,19 +5982,28 @@
   };
 
 
-  $.fn.button = function() {
-
+  $.fn.button = function(options) {
     'use strict';
 
-    // Settings and Options
-    var pluginName = 'button';
-
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * Clickable Button Elements.
+    *
+    * @class Button
+    *
+    * @param {String} toggleOnIcon  &nbsp;-&nbsp; The icon to use for on state on toggle buttons
+    * @param {String} toggleOffIcon  &nbsp;-&nbsp; The icon to use for off state on toggle buttons
+    *
+    */
+    var pluginName = 'button',
+      defaults = {
+        toggleOnIcon: null,
+        toggleOffIcon: null
+      },
+      settings = $.extend({}, defaults, options);
+
     function Button(element) {
       this.element = $(element);
+      this.settings = $.extend({}, settings);
       Soho.logTimeStart(pluginName);
       this.init();
       Soho.logTimeEnd(pluginName);
@@ -5256,17 +6040,31 @@
           }
         }
 
-        if (this.element.hasClass('icon-favorite')) {
+        if (this.element.hasClass('btn-toggle') || this.element.hasClass('icon-favorite')) {
           this.element.on('click.favorite', function() {
-            var svg = $(this).find('svg:not(.ripple-effect)');
+            var elem = $(this),
+              svg = elem.find('svg:not(.ripple-effect)'),
+              isPressed = elem.attr('aria-pressed') === 'true';
 
-            if (svg.find('use').attr('xlink:href') === '#icon-star-filled') {
-              svg.changeIcon('star-outlined');
+            elem.attr('aria-pressed', isPressed ? 'false' : 'true');
+            if (self.settings.toggleOffIcon && self.settings.toggleOnIcon) {
+              svg.changeIcon(isPressed ? self.settings.toggleOffIcon : self.settings.toggleOnIcon);
             } else {
+              elem.toggleClass('is-pressed');
+            }
+
+            if (elem.hasClass('icon-favorite') && !elem.hasClass('btn-toggle') && svg.find('use').attr('xlink:href') === '#icon-star-filled') {
+              svg.changeIcon('star-outlined');
+            } else if (elem.hasClass('icon-favorite') && !elem.hasClass('btn-toggle')) {
               svg.changeIcon('star-filled');
             }
 
           });
+
+          if (!this.element.attr('aria-pressed')) {
+            this.element.attr('aria-pressed', 'false');
+          }
+
         }
 
         if (!this.element.parent().is('.field') && this.element.hasClass('btn-actions') && !this.element.data('tooltip')) {
@@ -5344,6 +6142,9 @@
         }, 1000);
       },
 
+      /**
+      * Teardown and remove any added markup and events.
+      */
       destroy: function() {
         this.element.off('click.button touchstart.button focusin.hide-focus focusout.hide-focus mousedown.hide-focus touchstart.hide-focus');
 
@@ -5353,6 +6154,16 @@
         }
 
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Autocomplete#events
+       * @param {Object} click  &nbsp;-&nbsp; Fires when the button is clicked (if enabled).
+       * @param {Object} focus  &nbsp;-&nbsp; Fires when the menu is focused.
+       */
+      handleEvents: function () {
       }
     };
 
@@ -5367,12 +6178,6 @@
 
 /**
 * @constructor
-* @todo:
-*   Make vertical bar chart (have horizontal)
-*   Work on update functions or routine
-*   Make responsive
-*   Make Area/Dot Chart
-*   Test With Screen readers
 */
 
 window.Chart = function(container) {
@@ -5392,6 +6197,7 @@ window.Chart = function(container) {
 
   this.isTouch = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   this.pieColors = d3.scale.ordinal().range(colorRange);
+  this.colorRange = colorRange;
   this.greyColors = d3.scale.ordinal().range(['#737373', '#999999', '#bdbdbd', '#d8d8d8']);
   this.sparklineColors = d3.scale.ordinal().range(['#1D5F8A', '#999999', '#bdbdbd', '#d8d8d8']);
   this.colors = d3.scale.ordinal().range(colorRange);
@@ -5414,15 +6220,15 @@ window.Chart = function(container) {
         return '#80ce4d';
       }
       if (specColor ==='neutral' ) {
-        return '#dbdbdb';
+        return '#bdbdbd';
       }
       if (specColor && specColor.indexOf('#') === 0) {
         return data.color;
       }
     }
 
-    if (chartType === 'pie') {
-      return this.pieColors(i);
+    if (chartType === 'pie' || chartType === 'donut') {
+      return this.colorRange[i];
     }
     if (chartType === 'bar-single' || chartType === 'column-single') {
       return '#1D5F8A';
@@ -5470,14 +6276,14 @@ window.Chart = function(container) {
     }
   };
 
-  this.addLegend = function(series) {
+  this.addLegend = function(series, chartType) {
     var i, s = charts.settings;
 
     if (series.length === 0) {
       return;
     }
     var isTwoColumn = series[0].display && series[0].display === 'twocolumn',
-      legend = isTwoColumn ? $('<div class="chart-legend" style="margin: 2em auto auto; border-top: 1px solid #ccc; padding-top: 1em;"></div>') : $('<div class="chart-legend"></div>');
+      legend = isTwoColumn ? $('<div class="chart-legend" style="margin: 2em auto auto; border-top: 1px solid #ccc;  padding-bottom: 1em; padding-top: 1em;"></div>') : $('<div class="chart-legend"></div>');
 
     // Legend width
     var width = 0,
@@ -5506,7 +6312,7 @@ window.Chart = function(container) {
       }
 
       var seriesLine = '<span class="chart-legend-item'+ extraClass +'" tabindex="0"></span>',
-        hexColor = charts.chartColor(i, (series.length === 1 ? 'bar-single' : 'bar'), series[i]);
+        hexColor = charts.chartColor(i, chartType ? chartType : (series.length === 1 ? 'bar-single' : 'bar'), series[i]);
 
       var color = $('<span class="chart-legend-color" style="background-color: '+ (series[i].pattern ? 'transparent' : hexColor) +'"></span>'),
         textBlock = $('<span class="chart-legend-item-text">'+ series[i].name + '</span>');
@@ -5761,10 +6567,18 @@ window.Chart = function(container) {
     //Width of the bar minus the margin
     var barWith = w - textWidth - margins.left;
 
-    xScale = d3.scale.linear()
-      .domain([(xMin < 0 ? xMin : 0), xMax])
-      .nice()
-      .range([0, barWith]).nice();
+    if (settings.useLogScale) {
+      xScale = d3.scale.log()
+        .domain([(xMin > 0 ? xMin : 1), xMax])
+        .nice()
+        .range([1, barWith]).nice();
+
+    } else {
+      xScale = d3.scale.linear()
+        .domain([(xMin < 0 ? xMin : 0), xMax])
+        .nice()
+        .range([0, barWith]).nice();
+    }
 
     if (isStacked) {
       yMap = dataset[0].map(function (d) {
@@ -5818,6 +6632,18 @@ window.Chart = function(container) {
 
     if (isStacked && isNormalized) {
       xAxis.tickFormat(function(d) { return d + '%'; });
+    }
+
+    if (settings.useLogScale) {
+      xAxis.ticks(10, ',.1s');
+
+      if (settings.showLines === false) {
+        xAxis.tickSize(0);
+      }
+    }
+
+    if (settings.ticks) {
+      xAxis.ticks(settings.ticks.number, settings.ticks.format);
     }
 
     yAxis = d3.svg.axis()
@@ -5889,6 +6715,9 @@ window.Chart = function(container) {
       }
     })
     .attr('x', function (d) {
+      if (settings.useLogScale) {
+        return 0;
+      }
       return (isStacked && !isSingle) ? xScale(d.x0) : xScale(0);
     })
     .attr('y', function (d) {
@@ -5930,7 +6759,7 @@ window.Chart = function(container) {
         else {
           content = '<div class="chart-swatch">';
 
-          if(isStacked) {
+          if (isStacked) {
             for (j=0,l=dataset.length; j<l; j++) {
               total = 0;
               hexColor = charts.chartColor(j, 'bar', series[j]);
@@ -6031,13 +6860,46 @@ window.Chart = function(container) {
       svg.selectAll('.y.axis text').style('text-anchor', 'start');
     }
 
+    if (isViewSmall && settings.useLogScale) {
+      var ticks = d3.selectAll('.x .tick text'),
+        foundMid = false;
+
+      //At small breakpoint hide the last ones
+      ticks.attr('class', function(d, i){
+          var middleTick = Math.round(ticks.size()/2);
+
+          if (i >= middleTick && !foundMid && d.toString().startsWith('1')) {
+            foundMid =  true;
+            middleTick = d;
+          }
+
+          if (i !==0 && i !== ticks.size() -1 && (settings.useLogScale ? d !== middleTick : i !== middleTick )) {
+            d3.select(this).remove();
+          }
+      });
+    }
+
     //Animate the Bars In
     svg.selectAll('.bar')
       .transition().duration(1000)
       .attr('width', function (d) {
-        return Math.abs(xScale(d.x) - xScale(0));
+        var scale = xScale(d.x),
+          scale0 = xScale(0);
+
+        if (isNaN(scale)) {
+          scale = 0;
+        }
+
+        if (isNaN(scale0)) {
+          scale0 = 0;
+        }
+
+        return Math.abs(scale - scale0);
       })
       .attr('x', function (d) {
+        if (settings.useLogScale) {
+          return 0;
+        }
         return (isStacked && !isSingle) ? xScale(d.x0) : (d.x < 0 ? xScale(d.x) : xScale(0));
       });
 
@@ -6161,14 +7023,19 @@ window.Chart = function(container) {
 
     var chartData = initialData[0].data;
     chartData = chartData.sort(function(a, b) {
-      return +a.value - +b.value;
+      return isRTL ? +b.value - +a.value : +a.value - +b.value;
     });
 
     var total = d3.sum(chartData, function(d) { return d.value; });
 
     chartData = chartData.map(function (d) {
-      return { data: d, elm: d, name: d.name, color: d.color, value: d.value, percent:d3.round(100*(d.value/total)) };
+      return { data: d, elm: d, name: d.name, color: d.color, value: d.value, percent: d3.round(100*(d.value/total)) };
     });
+
+    if (total === 0) {
+      // Handle zero based pies
+      chartData.push({data: {}, color: '#BDBDBD', name: 'Empty-Pie', value: 100, percent: 100});
+    }
 
     var svg = d3.select(container).append('svg'),
       arcs = svg.append('g').attr('class','arcs'),
@@ -6179,12 +7046,7 @@ window.Chart = function(container) {
 
     var pie = d3.layout.pie().value(function (d) {
       return d.value;
-    });
-    // .sort(null);
-
-    if (isRTL) {
-      pie.sort(null);
-    }
+    }).sort(null);
 
     // Store our chart dimensions
     var dims = {
@@ -6196,10 +7058,12 @@ window.Chart = function(container) {
     dims.height = dims.height > dims.widgetheight ? dims.widgetheight : dims.height;
     dims.height = isSmall && !lb.hideLabels ? dims.width : dims.height;
 
+    var donutWidth = 30;
+
     dims.outerRadius = ((Math.min(dims.width, dims.height) / 2) - 40);
-    dims.innerRadius = isDonut ? dims.outerRadius - (!lb.hideLabels ? 50 : 30) : 0;
-    dims.labelRadius = dims.outerRadius + 20;
-    dims.center = { x: dims.width / 2, y: dims.height / 2 };
+    dims.innerRadius = isDonut ? dims.outerRadius - (donutWidth + 5) : 0;
+    dims.labelRadius = dims.outerRadius + (donutWidth - 10);
+    dims.center = { x: (dims.width / 2) + 7, y: dims.height / 2 };
 
     svg.attr({
       'width': '100%',
@@ -6321,8 +7185,8 @@ window.Chart = function(container) {
         clearInterval(tooltipInterval);
         charts.hideTooltip();
       })
-      .style('fill', function(d, i) {return charts.chartColor(i, 'pie', d.data); })
-      .transition().duration(750)
+      .style('fill', function(d, i) {return charts.chartColor(self.isRTL ? chartData.length-i-1 : i, 'pie', d.data); })
+      .transition().duration(settings.animate === false ? 0 : 350)
       .attrTween('d', function(d) {
         var i = d3.interpolate(d.startAngle + 0.1, d.endAngle);
         return function(t) { d.endAngle = i(t); return pieArcs(d); };
@@ -6406,10 +7270,11 @@ window.Chart = function(container) {
       },
 
       setEvenRoundPercentage = function() {
+
         var arr = [];
         for (var i = 0, l = chartData.length; i < l; i++) {
           var d = chartData[i],
-            v = d.value / total,
+            v = (total === 0 ? 0 : d.value / total),
             f1 = d3.format('0.0%'),
             f2 = d3.format('0.3%'),
             r1 = f1(v),
@@ -6417,6 +7282,7 @@ window.Chart = function(container) {
           perRound.push(+(r1.replace('%','')));
           arr.push(+(r2.replace('%','')));
         }
+
         perEvenRound = evenRound(arr, 100);
         perRoundTotal = perRound.reduce(function(a, b) { return a + b; });
       },
@@ -6426,7 +7292,7 @@ window.Chart = function(container) {
         var r,
           format = d3.format(formatterString || ''),
           percentage = format(d.value / total),
-          name = isShortName ? (d.data.shortName || d.data.name.substring(0, 6) +'...') : d.data.name,
+          name = isShortName ? (d.data.shortName || d.data.name.substring(0, 9) + (d.data.name.length > 9 ? '...' : '')) : d.data.name,
           value = formatterString && formatterString !== '0.0%' ? format(d.value) : d.value;
 
         if (/percentage/i.test(context) && perRoundTotal !== 100) {
@@ -6446,7 +7312,7 @@ window.Chart = function(container) {
       },
 
       labelsColorFormatter = function (d, i, opt) {
-        return opt === 'color-as-arc' ? (charts.chartColor(i, 'pie', d.data)) : (opt === 'default' ? '' : opt);
+        return opt === 'color-as-arc' ? (charts.chartColor(self.isRTL ? chartData.length-i-1 : i, 'pie', d.data)) : (opt === 'default' ? '' : opt);
       },
 
       drawTextlabels = function (isShortName) {
@@ -6463,10 +7329,12 @@ window.Chart = function(container) {
               return labelsContextFormatter(d, lb.contentsTop, lb.formatterTop, isShortName, i);
             })
             .style({
-              'font-weight': lb.isTwoline ? 'bold' : 'normal',
-              'font-size': lb.isTwoline ? (dims.width > 450 ? '1.3em' : '1.1em') : '1em',
+              'font-weight': lb.isTwoline ? 'normal' : 'normal',
+              'font-size': lb.isTwoline ? (dims.width > 450 ? '1.8em' : '1.1em') : '1em',
               'fill': function() {
-                return labelsColorFormatter(d, i, lb.colorTop);
+                var color = labelsColorFormatter(d, i, lb.colorTop);
+                color = color === '#bdbdbd' ? '#868686' : color;
+                return color;
               }
             });
         });
@@ -6497,6 +7365,7 @@ window.Chart = function(container) {
       },
 
       addLabels = function () {
+
         svg.selectAll('.labels').remove();
 
         var labels = svg.append('g').attr('class','labels'),
@@ -6535,8 +7404,7 @@ window.Chart = function(container) {
               labelX = x + (1 * sign);
 
             textLabelsLength++;
-
-            textX.push(labelX);
+            textX.push(x);
             return labelX;
           },
           'y': function (d) {
@@ -6563,8 +7431,11 @@ window.Chart = function(container) {
         if (lb.isTwoline) {
           textLabels.append('tspan')
             .attr({'class': 'lb-bottom',
-              'x': function(d, i) { return textX[i]-2; },
-              'dy': '18'
+              'x': function(d, i) {
+                  var x = textX[i];
+                  return x;
+              },
+              'dy': '17'
             });
         }
 
@@ -6608,151 +7479,156 @@ window.Chart = function(container) {
 
       if (lb.hideLabels) {
         var isRunning = true,
-          // maxRunning = textLabels.length * 15,
           maxRunning = textLabelsLength * 15,
           orgLabelPos,
-          spacing = Math.round(textLabels.node().getBBox().height) + 1;
+          spacing = 35;
 
         // Resolve label positioning collisions
-        (function () {
-          // Record org x, y position
-          orgLabelPos = textLabels[0].map(function(d) {
-            d = d3.select(d);
-            return { x: +d.attr('x'), y: +d.attr('y') };
-          });
 
-          // Fix y position
-          function relax() {
-            var again = false;
-            maxRunning--;
-            textLabels.each(function (d, i) {
-              var a = this,
-                da = d3.select(a),
-                y1 = +da.attr('y');
+        // Record org x, y position
+        orgLabelPos = textLabels[0].map(function(d) {
+          d = d3.select(d);
+          return { x: +d.attr('x'), y: +d.attr('y') };
+        });
 
-              textLabels.each(function (d2, i2) {
-                if (i2 > i) {
-                  var deltaY,
-                    b = this,
-                    db = d3.select(b),
-                    y2 = +db.attr('y');
+        // Fix y position
+        var relax = function () {
+          var again = false;
+          maxRunning--;
+          textLabels.each(function (d, i) {
+            var a = this,
+              da = d3.select(a),
+              y1 = +da.attr('y');
 
-                  if (da.attr('text-anchor') === db.attr('text-anchor')) {
-                    deltaY = Math.round(Math.abs(y1 - y2));
-                    if (deltaY < spacing) {
-                      deltaY += 1;
-                      var newY = y2 > 0 ? y2-(deltaY/2) : y2+(deltaY/2)+1;
-                      again = true;
-                      db.attr('y', newY); //padding
+            textLabels.each(function (d2, i2) {
+              if (i2 > i) {
+                var deltaY,
+                  b = this,
+                  db = d3.select(b),
+                  y2 = +db.attr('y');
 
-                      if (Math.round(Math.abs(newY)) < 2) {
-                        again = false;
-                        newY = y2 > 0 ? y2-(spacing) : y2+(spacing/2);
-                        db.attr('y', newY);
-                      }
+                if (da.attr('text-anchor') === db.attr('text-anchor') && (a === textLabels[0][i2-1])) {
+                  deltaY = Math.round(Math.abs(y1 - y2));
+                  if (deltaY < spacing) {
+                    deltaY += 1;
+                    var newY = y2 > 0 ? y2-(deltaY/2) : y2+(deltaY/2)+1;
+                    again = true;
+                    db.attr('y', newY); //padding
+
+                    if (Math.round(Math.abs(newY)) < 2) {
+                      again = false;
+                      newY = y2 > 0 ? y2-(spacing) : y2+(spacing/2);
+                      db.attr('y', newY);
                     }
                   }
                 }
-              });
+              }
             });
+          });
 
-            if(again && maxRunning > 0) {
-              setTimeout(function() {
-                relax();
-              }, 0);
-            } else {
-              isRunning = false;
-            }
+          if (again && maxRunning > 0) {
+            relax();
+          } else {
+            isRunning = false;
           }
-          relax();
-        })();
+        };
+
+        relax();
 
         // Draw lines and set short name
-        var intervalId = setInterval(function() {
-          if (isRunning) {
-            return;
-          }
-          clearInterval(intervalId);
+        // Fix x position
+        var labelCircles = svg.selectAll('.label-circle');
+        spacing *=  -1;
+        textLabels.each(function(d, i) {
+          var x,
+            label = d3.select(this),
+            x1 = +label.attr('x'),
+            y1 = +label.attr('y'),
+            sign = (x1 > 0 ? 1 : -1);
 
-          // Fix x position
-          textLabels.each(function(d, i) {
-            var x,
-              label = d3.select(this),
-              x1 = +label.attr('x'),
-              y1 = +label.attr('y'),
-              sign = (x1 > 0 ? 1 : -1);
+            x = isRTL ?
+              ((dims.labelRadius - Math.abs(y1) + Math.abs(orgLabelPos[i].x - (spacing * 1.5))) * sign):
+              ((dims.labelRadius - Math.abs(y1) + Math.abs(orgLabelPos[i].x + (spacing * 1.5))) * sign);
 
-              x = isRTL ?
-                ((dims.labelRadius - Math.abs(y1) + Math.abs(orgLabelPos[i].x - (spacing * 2.5))) * sign):
-                ((dims.labelRadius - Math.abs(y1) + Math.abs(orgLabelPos[i].x + (spacing * 2.5))) * sign);
+          if (orgLabelPos[i].y !== y1 || (i === 0 && chartData[i].percent < 10)) {
+            x += chartData[i].percent <= 10 ? Math.ceil(x1/2) : Math.ceil(x1-x)- (spacing/2);
+            label.attr('x', x);
 
-            if (orgLabelPos[i].y !== y1 || (i === 0 && chartData[i].percent < 10)) {
-              x += chartData[i].percent <= 10 ? Math.ceil(x1/2) : Math.ceil(x1-x)- (spacing/2);
-              label.attr('x', x);
+            if (lb.isTwoline) {
+              label.select('.lb-bottom').attr('x', x);
+            }
 
+            var t = d3.transform(d3.select(labelCircles[0][i]).attr('transform')),
+              tx = t.translate[0] + (t.translate[0] > 0 ? 10 : -10);
+
+            if (x < tx || Math.abs(x) > dims.center.x) {
+              label.attr('x', tx);
               if (lb.isTwoline) {
-                label.select('.lb-bottom').attr('x', x);
+                label.select('.lb-bottom').attr('x', tx);
               }
             }
-          });
+          }
+        });
 
-          var lineFunction = d3.svg.line()
-            .x(function(d) { return d.x; })
-            .y(function(d) { return d.y; })
-            .interpolate('basis');
+        var lineFunction = d3.svg.line()
+          .x(function(d) { return d.x; })
+          .y(function(d) { return d.y; })
+          .interpolate('basis');
 
-          var labels = svg.selectAll('.label');
+        var labels = svg.selectAll('.label');
 
-          svg.selectAll('.label-text tspan').each(function() {
-            if (d3.select(this).text().substring(5) === '...') {
-              showLegend = true;
+        svg.selectAll('.label-text tspan').each(function() {
+          if (d3.select(this).text().substring(5) === '...') {
+            showLegend = true;
+          }
+        });
+
+        // Collect source and targets [x, y] position
+        labels.each(function(d, i) {
+          var label = d3.select(this),
+            pieCircle = label.select('.pie-circle'),
+            labelCircle = label.select('.label-circle'),
+            text = label.select('.label-text'),
+            ct = d3.transform(pieCircle.attr('transform')),
+            ct2 = d3.transform(labelCircle.attr('transform')),
+            points = [
+              { x:Number(ct.translate[0]), y:Number(ct.translate[1]) },
+              { x:Number(ct2.translate[0]), y:Number(ct2.translate[1]) },
+              { x:Number(text.attr('x')), y:Number(text.attr('y')) + (lb.isTwoline ? 5 : 0) }
+            ];
+
+          // Draw line from center of arc to label
+          if (lb.linehideWhenMoreThanPercentage > chartData[i].percent) {
+            lines.append('path')
+              .attr({
+                'class': 'label-line',
+                'd': lineFunction(points)
+              })
+              .style({
+                'stroke-width': lb.lineWidth,
+                'stroke': function() { return labelsColorFormatter(d, i, lb.lineColor); }
+              });
             }
-          });
+        });
 
-          // Collect source and targets [x, y] position
-          labels.each(function(d, i) {
-            var label = d3.select(this),
-              pieCircle = label.select('.pie-circle'),
-              labelCircle = label.select('.label-circle'),
-              text = label.select('.label-text'),
-              ct = d3.transform(pieCircle.attr('transform')),
-              ct2 = d3.transform(labelCircle.attr('transform')),
-              points = [
-                { x:Number(ct.translate[0]), y:Number(ct.translate[1]) },
-                { x:Number(ct2.translate[0]), y:Number(ct2.translate[1]) },
-                { x:Number(text.attr('x')), y:Number(text.attr('y')) + (lb.isTwoline ? 5 : 0) }
-              ];
-
-            // Draw line from center of arc to label
-            if (lb.linehideWhenMoreThanPercentage > chartData[i].percent) {
-              lines.append('path')
-                .attr({
-                  'class': 'label-line',
-                  'd': lineFunction(points)
-                })
-                .style({
-                  'stroke-width': lb.lineWidth,
-                  'stroke': function() { return labelsColorFormatter(d, i, lb.lineColor); }
-                });
-              }
-          });
-
-        }, 1);
-
-      } // END: lb.hideLabels
-      else {
+      } else {
         showLegend = true;
       }
 
     //Get the Legend Series'
     var series = chartData.map(function (d) {
-      var name = d.name +' ('+ d.percent +'%)';
-      return {name:name, display:'twocolumn', color: d.color};
+      var name = d.name +' ('+ (isNaN(d.percent) ? 0 : d.percent) +'%)';
+
+      if (d.name === 'Empty-Pie') {
+        name= '';
+      }
+      return {name: name, display:'twocolumn', color: d.color};
+
     });
 
     // Add Legends
     if (showLegend || charts.legendformatter) {
-      charts[charts.legendformatter ? 'renderLegend' : 'addLegend'](series);
+      charts[charts.legendformatter ? 'renderLegend' : 'addLegend'](series, 'donut');
     }
 
     // Set initial selected
@@ -7924,6 +8800,19 @@ window.Chart = function(container) {
 
     $(container).addClass('line-chart' + (isBubble ? ' bubble' : ''));
 
+    var dots = {
+      radius: 5,
+      radiusOnHover: 7,
+      strokeWidth: 2,
+      class: 'dot'
+    };
+    if (isBubble) {
+      dots.radius = 0;
+      dots.radiusOnHover = 0;
+      dots.strokeWidth = 0;
+    }
+    $.extend(true, dots, settings.dots);
+
     var isRTL = charts.isRTL;
 
     var tooltipInterval,
@@ -7949,18 +8838,42 @@ window.Chart = function(container) {
     }
 
     //Append the SVG in the parent area.
-    var dataset = chartData,
-      hideDots = (options.hideDots),
+    var longestLabel = '',
+      longestLabelLength = 0,
+      dataset = chartData,
+      isAxisXRotate = (settings.xAxis && settings.xAxis.rotate !== undefined),
+      getMaxes = function (d, option) {
+        return d3.max(d.data, function(d) {
+          return option ? d.value[option] : d.value;
+        });
+      };
+
+    if (isAxisXRotate) {
+      //get the longeset label
+      dataset[0].data.map(function (d) {
+        if (d.name.length > longestLabel.length) {
+          longestLabel = d.name;
+        }
+      });
+      longestLabelLength = longestLabel.length;
+    }
+
+    var hideDots = (options.hideDots),
       parent = $(container).parent(),
+      isCardAction = !!$('.widget-chart-action', parent).length,
       isViewSmall = parent.width() < 450,
       margin = {
-        top: (isAxisLabels.top ? 40 : 30),
+        top: (isAxisLabels.top ? (isCardAction ? 15 : 40) : (isCardAction ? 5 : 30)),
         right: (isAxisLabels.right ? (isViewSmall ? 45 : 65) : (isViewSmall ? 45 : 55)),
-        bottom: (isAxisLabels.bottom ? 50 : 35),
+        bottom: (isAxisLabels.bottom ? (isAxisXRotate ? 60 : 50) : (isAxisXRotate ? (longestLabelLength * 5) + 35 : 35)),
         left: (isAxisLabels.right ? (isViewSmall ? 55 : 75) : (isViewSmall ? 45 : 65))
       },
       width = parent.width() - margin.left - margin.right,
       height = parent.height() - margin.top - margin.bottom - 30; //legend
+
+    if (isCardAction) {
+      height -= 40;
+    }
 
     var svg = d3.select(container).append('svg')
         .attr('width', width + margin.left + margin.right)
@@ -7996,14 +8909,9 @@ window.Chart = function(container) {
 
     // Calculate the Domain X and Y Ranges
     var maxes,
-      x = d3.scale.linear().range([0, width]),
+      x = ((!!settings.xAxis && !!settings.xAxis.scale) ? (settings.xAxis.scale) : (d3.scale.linear())).range([0, width]),
       y = d3.scale.linear().range([height, 0]),
-      z = d3.scale.linear().range([1, 25]),
-      getMaxes = function (d, option) {
-        return d3.max(d.data, function(d) {
-          return option ? d.value[option] : d.value;
-        });
-      };
+      z = d3.scale.linear().range([1, 25]);
 
     if (isBubble) {
       maxes = {
@@ -8016,17 +8924,20 @@ window.Chart = function(container) {
     }
 
     var entries = d3.max(dataset.map(function(d){ return d.data.length; })) -1,
-      xScale = x.domain([0, isBubble ? d3.max(maxes.x) : entries]).nice(),
+      xScale = x.domain(!!settings.xAxis && !!settings.xAxis.domain ? (settings.xAxis.domain) : ([0, isBubble ? d3.max(maxes.x) : entries])).nice(),
       yScale = y.domain([0, d3.max(isBubble ? maxes.y : maxes)]).nice(),
       zScale = z.domain([0, d3.max(isBubble ? maxes.z : maxes)]).nice();
 
     var xAxis = d3.svg.axis()
       .scale(xScale)
       .orient('bottom')
-      .tickSize(isBubble ? -(height + 10) : 0)
-      .ticks(isBubble && isViewSmall ? Math.round(entries/2) : entries)
+      .ticks((!!settings.xAxis && !!settings.xAxis.ticks) ? (settings.xAxis.ticks) : (isBubble && isViewSmall ? Math.round(entries/2) : entries))
       .tickPadding(10)
+      .tickSize(isBubble ? -(height + 10) : 0)
       .tickFormat(function (d, i) {
+        if (!!settings.xAxis && !!settings.xAxis.formatter) {
+          return settings.xAxis.formatter(d, i);
+        }
         return isBubble ? d : names[i];
       });
 
@@ -8035,6 +8946,19 @@ window.Chart = function(container) {
       .tickSize(-(width + 20))
       .tickPadding(isRTL ? -18 : 20)
       .orient('left');
+
+    if (settings.yAxis && settings.yAxis.formatter) {
+      yAxis.tickFormat(function (d, i) {
+        if (typeof settings.yAxis.formatter === 'function') {
+          return settings.yAxis.formatter(d, i);
+        }
+        return d;
+      });
+    }
+
+    if (settings.yAxis && settings.yAxis.ticks) {
+      yAxis.ticks(settings.yAxis.ticks.number, settings.yAxis.ticks.format);
+    }
 
     //Append The Axis Labels
     if (isAxisLabels.atLeastOne) {
@@ -8097,9 +9021,23 @@ window.Chart = function(container) {
       svg.selectAll('.y.axis text').style('text-anchor', 'start');
     }
 
+    if (isAxisXRotate) {
+      svg.selectAll('.x.axis .tick text')  // select all the text for the xaxis
+      .attr('y', 0)
+      .attr('x', function () {
+        return -(this.getBBox().width + 10);
+      })
+      .attr('dy', '1em')
+      .attr('transform', 'rotate(' + settings.xAxis.rotate + ')')
+      .style('text-anchor', 'start');
+    }
+
     // Create the line generator
     var line = d3.svg.line()
       .x(function(d, i) {
+        if (!!settings.xAxis && !!settings.xAxis.parser)  {
+          return xScale(settings.xAxis.parser(d, i));
+        }
         return xScale(isBubble ? d.value.x : i);
       })
       .y(function(d) {
@@ -8156,11 +9094,16 @@ window.Chart = function(container) {
           .data(d.data)
           .enter()
           .append('circle')
-          .attr('class', 'dot')
-          .attr('cx', function (d, i) { return xScale(isBubble ? d.value.x : i); })
+          .attr('class', dots.class)
+          .attr('cx', function (d, i) {
+            if (!!settings.xAxis && !!settings.xAxis.parser)  {
+              return xScale(settings.xAxis.parser(d, i));
+            }
+            return xScale(isBubble ? d.value.x : i);
+          })
           .attr('cy', function (d) { return yScale(isBubble ? 0 : d.value); })
-          .attr('r', (isBubble ? 0 : 5))
-          .style('stroke-width', (isBubble ? 0 : 2))
+          .attr('r', dots.radius)
+          .style('stroke-width', dots.strokeWidth)
           .style('fill', function () { return charts.chartColor(i, 'line', d); })
           .style('opacity', (isBubble ? '.7' : '1'))
           .on('mouseenter.chart', function(d2) {
@@ -8235,12 +9178,16 @@ window.Chart = function(container) {
             }
 
             //Circle associated with hovered point
-            d3.select(this).attr('r', function (d) { return 2+(isBubble ? zScale(d.value.z) : 5); });
+            d3.select(this).attr('r', function (d) {
+              return isBubble ? (2 + zScale(d.value.z)) : dots.radiusOnHover;
+            });
           })
           .on('mouseleave.chart', function() {
             clearInterval(tooltipInterval);
             charts.hideTooltip();
-            d3.select(this).attr('r', function (d) { return isBubble ? zScale(d.value.z) : 5; });
+            d3.select(this).attr('r', function (d) {
+              return isBubble ? zScale(d.value.z) : dots.radius;
+            });
           })
           .on('click.chart', function(d) {
             charts.selectElement(d3.select(this.parentNode), svg.selectAll('.line-group'), d);
@@ -8258,7 +9205,7 @@ window.Chart = function(container) {
     });
 
     var series = dataset.map(function (d) {
-      return {name: d.name, selectionObj: svg.selectAll('.line-group'), selectionInverse: svg.selectAll('.line-group'), data: d};
+      return {color: d.color, name: d.name, selectionObj: svg.selectAll('.line-group'), selectionInverse: svg.selectAll('.line-group'), data: d};
     });
 
     if (charts.showLegend) {
@@ -8743,9 +9690,15 @@ window.Chart = function(container) {
     // Render
     var html = {body: $('<div class="total bar" />')};
     if (isTarget || isAchievment) {
+      var difference = {};
       html.body.addClass('chart-completion-target' + (isAchievment ? ' chart-targeted-achievement' : ''));
 
-      var totalText = setFormat(dataset.total) + (dataset.total.text ? dataset.total.text : '');
+      if (dataset.total.difference) {
+        difference.value = (dataset.total.value - dataset.completed.value);
+        difference.format = dataset.total.format;
+      }
+
+      var totalText = setFormat(dataset.total.difference ? difference : dataset.total) + (dataset.total.text ? dataset.total.text : '');
       totalText = isAchievment && dataset.remaining ? setFormat(dataset.remaining) + (dataset.remaining.text ? dataset.remaining.text : ''): totalText;
 
       html.label = ''+
@@ -8903,6 +9856,7 @@ window.Chart = function(container) {
   // Make bars to be Selected or Unselected
   this.setSelectedElement = function (o) {
     var s = charts.settings,
+      dataset = s.dataset,
       isPositiveNegative = s.type === 'column-positive-negative',
       isTypeHorizontalBar = s.chartType === 'HorizontalBar',
       isTypeColumn = s.chartType === 'Column',
@@ -8923,8 +9877,15 @@ window.Chart = function(container) {
       pnNegativeText = svg.selectAll('.bartext.negative, .target-bartext.negative'),
       thisGroup = d3.select(o.selector.parentNode),
       thisGroupId = parseInt((thisGroup.node() ? thisGroup.attr('data-group-id') : 0), 10),
-      triggerData = [selector[0], o.d, (isGrouped ? thisGroupId : o.i)],
-      selectedBars = [];
+      triggerData = [],
+      selectedBars = [],
+      thisData;
+
+    if (isStacked || isTypePie) {
+      dataset = dataset || null;
+    } else {
+      dataset = (dataset && dataset[thisGroupId]) ? dataset[thisGroupId].data : null;
+    }
 
     ticksX.style('font-weight', 'normal');
     ticksY.style('font-weight', 'normal');
@@ -8937,7 +9898,7 @@ window.Chart = function(container) {
       svg.selectAll('.bar, .target-bar').style('opacity', 0.6);
 
       // By legends only
-      if (s.isByLegends) {
+      if (s.isByLegends && !isTypePie) {
         if (isPositiveNegative) {
           s.svg.selectAll(isPositive ?
             '.bar.positive, .target-bar.positive': '.bar.negative, .target-bar.negative')
@@ -8945,30 +9906,39 @@ window.Chart = function(container) {
 
           (isPositive ? pnPositiveText : pnNegativeText).style('font-weight', 'bolder');
 
-          svg.selectAll('.bar.is-selected').each(function(d, i) {
-            selectedBars.push([d3.select(this)[0], d, i]);
+          svg.selectAll('.bar').each(function(d, i) {
+            var bar = d3.select(this);
+            if (bar.classed('is-selected')) {
+              selectedBars.push({elem: bar[0], data: (dataset ? dataset[i] : d)});
+            }
           });
-          triggerData.push(selectedBars);
+          triggerData = selectedBars;
         }
         // Grouped and stacked only -NOT singular-
         else if (isTypeColumn || isTypeHorizontalBar) {
           if (isGrouped || isSingular) {
             s.svg.selectAll('.series-'+ o.i).classed('is-selected', true).style('opacity', 1);
-          }
-          else {
+          } else {
             thisGroup.classed('is-selected', true)
               .selectAll('.bar').classed('is-selected', true).style('opacity', 1);
           }
+
           svg.selectAll('.bar.is-selected').each(function(d, i) {
-            selectedBars.push([d3.select(this)[0], d, i]);
+            var bar = d3.select(this);
+
+            thisData = s.dataset;
+            thisData = thisData ? (isStacked ? isSingular ? (thisData[0].data[o.i]) : (thisData[o.i].data[i]) : thisData[i].data[o.i]) : d;
+            selectedBars.push({elem: bar[0], data: thisData});
           });
-          triggerData.push(selectedBars);
+          triggerData = selectedBars;
         }
       }
 
       // Single and stacked only -NOT grouped-
       else if (isSingular && isStacked && isTypeColumn) {
+        thisData = dataset[0] && dataset[0].data ? dataset[0].data : o.d;
         selector.classed('is-selected', true).style('opacity', 1);
+        triggerData.push({elem: selector[0], data: thisData[o.i]});
       }
 
       // Single or groups only -NOT stacked-
@@ -8981,16 +9951,23 @@ window.Chart = function(container) {
         d3.select(svg.selectAll('.bartext')[0][o.i]).style('font-weight', 'bolder');
         d3.select(svg.selectAll('.target-bartext')[0][o.i]).style('font-weight', 'bolder');
 
-        if (isGrouped || isPositiveNegative) {
-          if (!isPositiveNegative) {
+        if (isGrouped || isPositiveNegative || isTypeColumn) {
+          if (!isPositiveNegative && !isTypeColumn || (isTypeColumn && isGrouped)) {
             thisGroup.classed('is-selected', true)
               .selectAll('.bar').classed('is-selected', true).style('opacity', 1);
           }
 
-          svg.selectAll('.bar.is-selected').each(function(d, i) {
-            selectedBars.push([d3.select(this)[0], d, i]);
+          thisGroup.selectAll('.bar').each(function(d, i) {
+            var bar = d3.select(this);
+            if (bar.classed('is-selected')) {
+              selectedBars.push({elem: bar[0], data: (dataset ? dataset[i] : d)});
+            }
           });
-          triggerData.push(selectedBars, thisGroup[0]);
+          if (isGrouped) {
+            triggerData.push({groupIndex: thisGroupId, groupElem: thisGroup[0], groupItems: selectedBars});
+          } else {
+            triggerData = selectedBars;
+          }
         }
       }
 
@@ -9003,17 +9980,25 @@ window.Chart = function(container) {
           .classed('is-selected', true).style('opacity', 1);
 
         svg.selectAll('.bar.is-selected').each(function(d, i) {
-          selectedBars.push([d3.select(this)[0], d, i]);
+          var bar = d3.select(this);
+          selectedBars.push({elem: bar[0], data: (dataset ? dataset[i].data[o.i] : d)});
         });
-        triggerData.push(selectedBars);
+        triggerData = selectedBars;
       }
 
       // Pie
       else if (isTypePie) {
-        var color = charts.chartColor(o.i, 'pie', o.d.data);
+        //Unselect selected ones
+        svg.selectAll('.arc')
+          .style({'stroke': '', 'stroke-width': ''})
+          .attr('transform', '');
+
+        var color = charts.chartColor(o.i, 'pie', o.d.data),
+          thisArcData = dataset && dataset[0] && dataset[0].data ? dataset[0].data[o.i] : (o.d ? o.d.data : o.d);
         selector.classed('is-selected', true)
           .style({'stroke': color, 'stroke-width': 0})
           .attr('transform', 'scale(1.025, 1.025)');
+        triggerData.push({elem: selector[0], data: thisArcData, index: o.i});
       }
     }
     // Task make unselected
@@ -9022,7 +10007,7 @@ window.Chart = function(container) {
       pnPositiveText.style('font-weight', 'bolder');
       pnNegativeText.style('font-weight', 'bolder');
 
-      if(isTypePie) {
+      if (isTypePie) {
         selector.classed('is-selected', false)
           .style('stroke', '#fff')
           .style('stroke-width', '1px')
@@ -9034,8 +10019,10 @@ window.Chart = function(container) {
       s.isByLegends = false;
     }
 
+    this._selected = triggerData;
+
     if (o.isTrigger) {
-      $(o.container).triggerHandler((taskSelected ? 'selected' : 'unselected'), triggerData);
+      $(o.container).triggerHandler((taskSelected ? 'selected' : 'unselected'), [triggerData]);
     }
   };
 
@@ -9154,6 +10141,10 @@ $.fn.chart = function(options) {
     chartInst = new Chart(this, options);
     instance = $.data(this, 'chart', chartInst);
     instance.settings = options;
+    instance._selected = [];
+    instance.getSelected = function() {
+      return this._selected;
+    };
 
     if ($.isEmptyObject(chartInst)) {
      return;
@@ -9264,14 +10255,19 @@ $.fn.chart = function(options) {
             {label: 'Azure', number: '02', value: 'ADD8EB'},
             {label: 'Azure', number: '01', value: 'CBEBF4'}
           ],
-          placeIn: null // null|'editor'
+          placeIn: null, // null|'editor'
+          showLabel: false
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} options
-     */
+    * The ColorPicker Component is a trigger field with a listing colors that can be selected.
+    *
+    * @class ColorPicker
+    * @param {String} colors  &nbsp;-&nbsp; An array of objects of the form {label: 'Azure', number: '01', value: 'CBEBF4'} that can be used to populate the color grid.
+    * @param {String} showLabel  &nbsp;-&nbsp; Show the label if true vs the hex value if false.
+    *
+    */
     function ColorPicker(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -9318,12 +10314,18 @@ $.fn.chart = function(options) {
           .appendTo(this.isEditor ? this.element : this.container);
         this.icon.wrap('<span class="trigger"></span>');
 
-        if (initialValue && initialValue.substr(0,1) !== '#') {
+        if (initialValue && initialValue.substr(0,1) !== '#' && !this.settings.showLabel) {
           initialValue = '#' + initialValue;
           this.element.attr(this.isEditor ? 'data-value' : 'value', initialValue);
         }
 
-        if (initialValue && initialValue.length === 7) {
+        if (initialValue && this.settings.showLabel) {
+          var hexValue = this.getHexFromLabel(initialValue);
+          this.setColor(hexValue);
+          this.element.attr(this.isEditor ? 'data-value' : 'value', hexValue);
+        }
+
+        if (initialValue && initialValue.length === 7 && !this.settings.showLabel) {
           this.setColor(initialValue);
           this.element.attr(this.isEditor ? 'data-value' : 'value', initialValue);
         }
@@ -9335,40 +10337,22 @@ $.fn.chart = function(options) {
         this.addAria();
       },
 
+      getHexFromLabel: function(label) {
+        for (var i = 0; i < this.settings.colors.length; i++) {
+          var data = this.settings.colors[i];
+
+          if (label === data.label + data.number) {
+            return data.value;
+          }
+        }
+      },
+
       // Add/Update Aria
       addAria: function () {
         this.element.attr('role', 'combobox').attr('aria-autocomplete', 'list');
 
         $('label[for="'+ this.element.attr('id') + '"]')
           .append('<span class="audible">' + Locale.translate('UseArrow') + '</span>');
-      },
-
-      // Attach Control Events
-      handleEvents: function () {
-        var self = this;
-        this.icon.parent().onTouchClick().on('click.colorpicker', function () {
-          self.toggleList();
-        });
-
-        this.element.on('focus.colorpicker', function () {
-          $(this).parent().addClass('is-focused');
-        })
-        .on('blur.colorpicker', function () {
-          $(this).parent().removeClass('is-focused');
-        });
-
-        this.element.on('keypress.colorpicker', function () {
-          self.setColor($(this).val());
-        }).on('change.colorpicker', function () {
-          self.setColor($(this).val());
-        });
-
-        //Handle Key Down to open
-        this.element.on('keydown.colorpicker', function (e) {
-          if (e.keyCode === 38 || e.keyCode === 40) {
-            self.toggleList();
-          }
-        });
       },
 
       // Toggle / Open the List
@@ -9424,7 +10408,7 @@ $.fn.chart = function(options) {
         })
         .on('selected.colorpicker', function (e, item) {
           if (!self.isEditor) {
-            self.element.val('#'+item.data('value'));
+            self.element.val(self.settings.showLabel ? item.data('label') : '#'+item.data('value'));
             self.swatch[0].style.backgroundColor = '#' + item.data('value');
           }
           self.element.focus();
@@ -9438,7 +10422,11 @@ $.fn.chart = function(options) {
         }, 1);
       },
 
-      // Set the Visible Color
+      /**
+      * Set the Visible Color
+      * @param {String} hex  &nbsp;-&nbsp; The hex value to use (can have the # or not).
+      * @param {String} text  &nbsp;-&nbsp; The text to display
+      */
       setColor: function (hex, text) {
         // Make sure there is always a hash
         if (hex.substr(0,1) !== '#') {
@@ -9459,6 +10447,7 @@ $.fn.chart = function(options) {
       // Refresh and Append the Color Menu
       updateColorMenu: function () {
         var isMenu =  !!($('#colorpicker-menu').length),
+          self = this,
           menu = $('<ul id="colorpicker-menu" class="popupmenu colorpicker"></ul>'),
           currentTheme = Soho.theme;
 
@@ -9476,6 +10465,10 @@ $.fn.chart = function(options) {
             isBorder = false,
             regexp = new RegExp('\\b'+ currentTheme +'\\b'),
             elemValue = this.isEditor ? this.element.attr('data-value') : this.element.val();
+
+          if (self.settings.showLabel && !this.isEditor) {
+            elemValue = this.getHexFromLabel(elemValue);
+          }
 
           // Set border to this swatch
           if (isBorderAll || regexp.test(settings.colors[i].border)) {
@@ -9520,16 +10513,25 @@ $.fn.chart = function(options) {
         return menu;
       },
 
+      /**
+      * Change the color picker from enabled to disabled.
+      */
       enable: function() {
         this.element.prop('disabled', false);
         this.element.parent().removeClass('is-disabled');
       },
 
+      /**
+      * Make the color picker disabled
+      */
       disable: function() {
         this.element.prop('disabled', true);
         this.element.parent().addClass('is-disabled');
       },
 
+      /**
+      * Returns true if the color picker is disabled.
+      */
       isDisabled: function() {
         return this.element.prop('disabled');
       },
@@ -9561,13 +10563,51 @@ $.fn.chart = function(options) {
         }
       },
 
-      // Teardown
+      /**
+      * Detach events and restore DOM to default.
+      */
       destroy: function() {
         this.swatch.remove();
         this.element.off('keypress.colorpicker');
         this.swatch.off('click.colorpicker');
         $.removeData(this.element[0], pluginName);
+      },
+
+    /**
+     *  This component fires the following events.
+     *
+     * @fires About#events
+     * @param {Object} change  &nbsp;-&nbsp; Fires when a color is typed or selected.
+     * @param {Object} blur  &nbsp;-&nbsp; Fires as the input looses focus
+     *
+     */
+      handleEvents: function () {
+        var self = this;
+        this.icon.parent().onTouchClick().on('click.colorpicker', function () {
+          self.toggleList();
+        });
+
+        this.element.on('focus.colorpicker', function () {
+          $(this).parent().addClass('is-focused');
+        })
+        .on('blur.colorpicker', function () {
+          $(this).parent().removeClass('is-focused');
+        });
+
+        this.element.on('keypress.colorpicker', function () {
+          self.setColor($(this).val());
+        }).on('change.colorpicker', function () {
+          self.setColor($(this).val());
+        });
+
+        //Handle Key Down to open
+        this.element.on('keydown.colorpicker', function (e) {
+          if (e.keyCode === 38 || e.keyCode === 40) {
+            self.toggleList();
+          }
+        });
       }
+
     };
 
     // Initialize the plugin (Once)
@@ -9577,6 +10617,192 @@ $.fn.chart = function(options) {
         instance.settings = $.extend({}, defaults, options);
       } else {
         instance = $.data(this, pluginName, new ColorPicker(this, settings));
+      }
+    });
+  };
+
+
+  //NOTE: Just this part will show up in SoHo Xi Builds.
+
+  $.fn.compositeform = function(options) {
+    'use strict';
+
+    // Settings and Options
+    var pluginName = 'compositeform',
+        defaults = {
+          trigger: null,
+          expandedText: Locale.translate('ShowLess'),
+          collapsedText: Locale.translate('ShowMore'),
+        },
+        settings = $.extend({}, defaults, options);
+
+    /**
+    * The About Dialog Component is displays information regarding the application.
+    *
+    * @class CompositeForm
+    * @param {String} trigger  &nbsp;-&nbsp; Expandable area trigger selector. Passed to expandable area.
+    * @param {String} expandedText  &nbsp;-&nbsp; Text to use for the expand button (Default localized)
+    * @param {String} collapsedText  &nbsp;-&nbsp; Text to use for the collapse button (Default localized)
+    *
+    */
+    function CompositeForm(element, settings) {
+      this.settings = $.extend({}, settings);
+      this.element = $(element);
+      Soho.logTimeStart(pluginName);
+      this.init();
+      Soho.logTimeEnd(pluginName);
+    }
+
+    // Plugin Methods
+    CompositeForm.prototype = {
+      init: function() {
+        return this
+          .build()
+          .handleEvents();
+      },
+
+      /**
+       * Adds markup to the control and stores references to some sub-elements
+       * @returns {this}
+       */
+      build: function() {
+        var classList = this.element[0].classList;
+        if (!classList.contains('composite-form')) {
+          classList.add('composite-form');
+        }
+
+        // Get expandable area reference, if applicable
+        var expandableArea = this.element.find('.expandable-area');
+        if (expandableArea.length) {
+          this.hasSummary = true;
+          this.expandableArea = expandableArea;
+          this.expandableAreaAPI = this.expandableArea.data('expandablearea');
+          if (!this.expandableAreaAPI) {
+            this.expandableArea.expandablearea({ trigger: this.settings.trigger });
+            this.expandableAreaAPI = this.expandableArea.data('expandablearea');
+          }
+
+          // Get expandable trigger
+          this.expander = this.expandableAreaAPI.expander;
+          this.setExpanderText(this.settings.expandedText);
+        } else {
+          this.hasSummary = false;
+        }
+
+        // Check size and append class, if necessary
+        this.checkResponsive();
+
+        return this;
+      },
+
+      /**
+       * Sets up event handlers for this control and its sub-elements
+       * @param {string} expanderText - the text content
+       * @returns {undefined}
+       */
+      handleEvents: function() {
+        var self = this;
+
+        $('body').on('resize.' + pluginName, function(e) {
+          self.checkResponsive(e);
+        });
+
+        this.element.on('updated.' + pluginName, function() {
+          self.updated();
+        });
+
+        function changeExpanderText() {
+          var isExpanded = self.expandableAreaAPI.isExpanded();
+          self.setExpanderText(self.settings[isExpanded ? 'expandedText' : 'collapsedText']);
+        }
+
+        if (this.hasSummary) {
+          this.expandableArea
+            .on('expand.' + pluginName, changeExpanderText)
+            .on('collapse.' + pluginName, changeExpanderText);
+        }
+
+        return this;
+      },
+
+      /**
+       * Checks if we've passed the breakpoint for switching into Responsive mode.
+       * @returns {undefined}
+       */
+      checkResponsive: function() {
+        var cl = this.element[0].classList;
+
+        if (Soho.breakpoints.isBelow('phone-to-tablet')) {
+          cl.add('is-in-responsive-mode');
+        } else {
+          cl.remove('is-in-responsive-mode');
+        }
+      },
+
+      /**
+       * Sets the text content of the Composite Form's Expandable Area Expander.
+       * @param {string} expanderText - the text content
+       * @returns {undefined}
+       */
+      setExpanderText: function(expanderText) {
+        if (!this.hasSummary) {
+          return;
+        }
+
+        if (!(expanderText instanceof String) || !expanderText.length) {
+          return;
+        }
+
+        var textSpan = this.expander.find('span');
+        if (!textSpan) {
+          textSpan = this.expander;
+        }
+        textSpan.text(expanderText);
+      },
+
+      /**
+       * Re-invokes the Composite Form
+       * @returns {this}
+       */
+      updated: function() {
+        return this
+          .teardown()
+          .init();
+      },
+
+      /**
+       * Simple Teardown - remove events & rebuildable markup.
+       * @returns {this}
+       */
+      teardown: function() {
+        $('body').off('resize.' + pluginName);
+        this.element.off('updated.' + pluginName);
+
+        if (this.hasSummary) {
+          this.expandableArea.off('expand.' + pluginName + ' collapse.' + pluginName);
+        }
+
+        return this;
+      },
+
+      /**
+       * Destroys the component instance by removing it from its associated element.
+       * @returns {this}
+       */
+      destroy: function() {
+        this.teardown();
+        $.removeData(this.element[0], pluginName);
+      }
+    };
+
+    // Initialize the plugin (Once)
+    return this.each(function() {
+      var instance = $.data(this, pluginName);
+      if (instance) {
+        instance.settings = $.extend({}, instance.settings, options);
+        instance.updated();
+      } else {
+        instance = $.data(this, pluginName, new CompositeForm(this, settings));
       }
     });
   };
@@ -9669,7 +10895,7 @@ $.fn.chart = function(options) {
           isIframe = false,
           contents;
 
-        this.panel.find('svg').icon();//fixSvg();
+        this.panel.find('svg').icon();
 
         if (this.panel.find('.modal-content').length === 0) {
           children = this.panel.children();
@@ -9737,6 +10963,7 @@ $.fn.chart = function(options) {
           this.toolbar.toolbar();
         }
 
+        Soho.utils.fixSVGIcons(this.element);
         return this;
       },
 
@@ -9780,6 +11007,7 @@ $.fn.chart = function(options) {
 
           // Focus the first focusable element inside the Contextual Panel's Body
           self.panel.find('.modal-body-wrapper').find(':focusable').first().focus();
+          Soho.utils.fixSVGIcons(self.panel);
         }).on('beforedestroy.contextualactionpanel', function() {
           self.teardown();
         });
@@ -9817,7 +11045,10 @@ $.fn.chart = function(options) {
         });
 
         //self.panel.detach().insertAfter(self.element);
-        self.toolbar.data('toolbar').destroy();
+        var toolbar = self.toolbar.data('toolbar');
+        if (toolbar) {
+          toolbar.destroy();
+        }
 
         if (self.header){
           self.header.remove();
@@ -9837,8 +11068,9 @@ $.fn.chart = function(options) {
         if (this.settings.trigger === 'immediate') {
           destroy = true;
         }
-
-        this.panel.data('modal').close(destroy);
+        if (this.panel.data('modal')) {
+          this.panel.data('modal').close(destroy);
+        }
       },
 
       disable: function() {
@@ -9854,6 +11086,7 @@ $.fn.chart = function(options) {
 
       // Teardown - Remove added markup and events
       destroy: function() {
+        this.teardown();
         this.panel.data('modal').destroy();
         $.removeData(this.element[0], pluginName);
       }
@@ -9883,10 +11116,11 @@ $.fn.chart = function(options) {
     var pluginName = 'datepicker',
         defaults = {
           showTime: false,
-          timeFormat: undefined, // The time format
-          minuteInterval: undefined, // Integer from 1 to 60. Multiples of this value are displayed as options in the minutes dropdown.
-          mode: undefined, // options: 'standard', 'range',
-          roundToInterval: undefined, // If a non-matching minutes value is entered, rounds the minutes value to the nearest interval when the field is blurred.
+          timeFormat: undefined,
+          minuteInterval: undefined,
+          secondInterval: undefined,
+          mode: undefined,
+          roundToInterval: undefined,
           dateFormat: 'locale', //or can be a specific format like 'yyyy-MM-dd' iso8601 format
           placeholder: false,
           /*  Disabling of dates
@@ -9917,14 +11151,25 @@ $.fn.chart = function(options) {
         settings = $.extend({}, defaults, options);
 
     /**
-     * A component to support date entry.
-     * Users can either manually enter a date or select a date from a calendar.
-     * A secondary benefit is the ability to restrict the dates that are available for selection.
-     * @class
-     * @param {Object} [element=this] - The element to attach to (only when manually calling the constructor)
-     * @param {Object} [options]
-     * @param {string} [options.dateFormat='locale'] - The format in which to display the date. Defaults to the current locales format but can be set to a custom format like 'yyyy-MM-dd' (iso8601 format).
-     */
+    * A component to support date entry.
+    *
+    * @class DatePicker
+    * @param {Boolean} showTime  &nbsp;-&nbsp; If true the time selector will be shown.
+    * @param {String} timeFormat  &nbsp;-&nbsp; The format to use on the time section fx HH:mm, defaults to current locale's settings.
+    * @param {String} mode  &nbsp;-&nbsp; Time picker mode: options: 'standard', 'range', this controls the avilable selections in the time picker.
+    * @param {Boolean} roundToInterval  &nbsp;-&nbsp; In time picker mode, if a non-matching minutes value is entered, rounds the minutes value to the nearest interval when the field is blurred.
+    * @param {String} dateFormat  &nbsp;-&nbsp; Defaults to current locale but can be overriden to a specific format
+    * @param {Boolean} disable  &nbsp;-&nbsp; Disabled Dates Build up. `{
+      'dates'     : [],
+      'minDate'   : '',
+      'maxDate'   : '',
+      'dayOfWeek' : [],
+      'isEnable' : false
+    }`
+    * @param {Boolean} showLegend  &nbsp;-&nbsp; If true a legend is show to associate dates.
+    * @param {Array} legend  &nbsp;-&nbsp; Legend Build up for example `[{name: 'Public Holiday', color: '#76B051', dates: []}, {name: 'Weekends', color: '#EFA836', dayOfWeek: []}]`
+    *
+    */
     function DatePicker(element) {
       this.element = $(element);
       this.settings = settings;
@@ -9952,6 +11197,9 @@ $.fn.chart = function(options) {
         //Append a trigger button
         this.trigger = $.createIconElement('calendar').insertAfter(this.element);
         this.addAria();
+
+        this.isIslamic = Locale.calendar().name === 'islamic-umalqura';
+        this.conversions = Locale.calendar().conversions;
       },
 
       addAria: function () {
@@ -9959,187 +11207,187 @@ $.fn.chart = function(options) {
         this.label.append('<span class="audible">' + Locale.translate('PressDown') + '</span>');
       },
 
-      //Attach Events used by the Control
-      handleEvents: function () {
-        var self = this;
-
-        this.trigger.on('click.datepicker', function () {
-          if (self.isOpen()) {
-            self.closeCalendar();
-          } else {
-            self.openCalendar();
-          }
-        });
-
-        self.mask();
-        this.handleKeys(this.element);
-      },
-
       // Handle Keyboard Stuff
       handleKeys: function (elem) {
         var self = this;
 
-        elem.off('keydown.datepicker').on('keydown.datepicker', function (e) {
-          var handled = false,
-            key = e.keyCode || e.charCode || 0,
-            focused = $(':focus'),
-            focusedlabel = focused.attr('aria-label');
+        if (elem.is('#calendar-popup')) {
+          elem.off('keydown.datepicker').on('keydown.datepicker', '.calendar-table', function (e) {
+            var handled = false,
+              key = e.keyCode || e.charCode || 0;
 
-          // Focus did not auto move from readonly
-          if (key === 9 && self.element.is('[readonly]')) { //tab
-            self.setFocusOnFocusableElement(self.element, (e.shiftKey ? 'prev' : 'next'));
-            return;
-          }
-
-          if (focusedlabel) {
-            var focusedDate = new Date(focusedlabel);
-            self.currentDate = new Date(focusedDate.getTime());
-          } else if (focused.hasClass('alternate')) {
-              var year = parseInt(self.header.find('.year').text()),
-              month = parseInt(self.header.find('.month').attr('data-month')),
-              day = parseInt(focused.text());
-
-            if (focused.hasClass('prev-month')) {
-              if(month === 0) {
-                month = 11;
-                year--;
-              }
-              else {
-                month--;
-              }
-            } else if (focused.hasClass('next-month')) {
-              if(month === 11) {
-                month = 0;
-                year++;
-              }
-              else {
-                month++;
-              }
+            //Arrow Down: select same day of the week in the next week
+            if (key === 40) {
+                handled = true;
+                self.currentDate.setDate(self.currentDate.getDate() + 7);
+                self.insertDate(self.currentDate);
             }
-            self.currentDate = new Date(year, month, day);
-          }
 
-         //Arrow Down or Alt first opens the dialog
-          if (key === 40 && !self.isOpen()) {
-            handled = true;
-            self.openCalendar();
-
-            setTimeout(function() {
-              self.setFocusAfterOpen();
-            }, 200);
-          }
-
-          //Arrow Down: select same day of the week in the next week
-          if (key === 40 && self.isOpen()) {
+            //Arrow Up: select same day of the week in the previous week
+            if (key === 38) {
               handled = true;
-              self.currentDate.setDate(self.currentDate.getDate() + 7);
+              self.currentDate.setDate(self.currentDate.getDate() - 7);
               self.insertDate(self.currentDate);
-          }
-
-          //Arrow Up: select same day of the week in the previous week
-          if (key === 38 && self.isOpen()) {
-            handled = true;
-            self.currentDate.setDate(self.currentDate.getDate() - 7);
-            self.insertDate(self.currentDate);
-          }
-
-          //Arrow Left
-          if (key === 37 && self.isOpen()) {
-            handled = true;
-            self.currentDate.setDate(self.currentDate.getDate() - 1);
-            self.insertDate(self.currentDate);
-          }
-
-          //Arrow Right
-          if (key === 39 && self.isOpen()) {
-            handled = true;
-            self.currentDate.setDate(self.currentDate.getDate() + 1);
-            self.insertDate(self.currentDate);
-          }
-
-          //Page Up Selects Same Day Next Month
-          if (key === 33 && !e.altKey && self.isOpen()) {
-            handled = true;
-            self.currentDate.setMonth(self.currentDate.getMonth() + 1);
-            self.insertDate(self.currentDate);
-          }
-
-          //Page Down Selects Same Day Prev Month
-          if (key === 34 && !e.altKey && self.isOpen()) {
-            handled = true;
-            self.currentDate.setMonth(self.currentDate.getMonth() - 1);
-            self.insertDate(self.currentDate);
-          }
-
-          //ctrl + Page Up Selects Same Day Next Year
-          if (key === 33 && e.ctrlKey && self.isOpen()) {
-            handled = true;
-            self.currentDate.setFullYear(self.currentDate.getFullYear() + 1);
-            self.insertDate(self.currentDate);
-          }
-
-          //ctrl + Page Down Selects Same Day Prev Year
-          if (key === 34 && e.ctrlKey && self.isOpen()) {
-            handled = true;
-            self.currentDate.setFullYear(self.currentDate.getFullYear() - 1);
-            self.insertDate(self.currentDate);
-          }
-
-          //Home Moves to End of the month
-          if (key === 35 && self.isOpen()) {
-            handled = true;
-            var lastDay =  new Date(self.currentDate.getFullYear(), self.currentDate.getMonth()+1, 0);
-            self.currentDate = lastDay;
-            self.insertDate(self.currentDate);
-          }
-
-          //End Moves to Start of the month
-          if (key === 36 && self.isOpen()) {
-            var firstDay =  new Date(self.currentDate.getFullYear(), self.currentDate.getMonth(), 1);
-            self.currentDate = firstDay;
-            self.insertDate(self.currentDate);
-          }
-
-          // 't' selects today
-          if (key === 84) {
-            handled = true;
-            self.currentDate = new Date();
-
-            if (self.isOpen()) {
-              self.insertDate(self.currentDate, true);
-            } else {
-              self.element.val(Locale.formatDate(self.currentDate, {pattern: self.pattern})).trigger('change');
             }
-          }
 
-          // Space or Enter closes Date Picker, selecting the Date
-          if (key === 32 && self.isOpen() || key === 13 && self.isOpen()) {
-            self.closeCalendar();
-            self.element.focus();
-            handled = true;
-          }
+            //Arrow Left
+            if (key === 37) {
+              handled = true;
+              self.currentDate.setDate(self.currentDate.getDate() - 1);
+              self.insertDate(self.currentDate);
+            }
 
-          // Tab closes Date Picker and goes to next field
-          if (key === 9 && self.isOpen()) {
-            if (!self.settings.showTime) {
-              self.element.focus();
+            //Arrow Right
+            if (key === 39) {
+              handled = true;
+              self.currentDate.setDate(self.currentDate.getDate() + 1);
+              self.insertDate(self.currentDate);
+            }
+
+            //Page Up Selects Same Day Next Month
+            if (key === 33 && !e.altKey) {
+              handled = true;
+              self.currentDate.setMonth(self.currentDate.getMonth() + 1);
+              self.insertDate(self.currentDate);
+            }
+
+            //Page Down Selects Same Day Prev Month
+            if (key === 34 && !e.altKey) {
+              handled = true;
+              self.currentDate.setMonth(self.currentDate.getMonth() - 1);
+              self.insertDate(self.currentDate);
+            }
+
+            //ctrl + Page Up Selects Same Day Next Year
+            if (key === 33 && e.ctrlKey) {
+              handled = true;
+              self.currentDate.setFullYear(self.currentDate.getFullYear() + 1);
+              self.insertDate(self.currentDate);
+            }
+
+            //ctrl + Page Down Selects Same Day Prev Year
+            if (key === 34 && e.ctrlKey) {
+              handled = true;
+              self.currentDate.setFullYear(self.currentDate.getFullYear() - 1);
+              self.insertDate(self.currentDate);
+            }
+
+            //Home Moves to End of the month
+            if (key === 35) {
+              handled = true;
+              var lastDay =  new Date(self.currentDate.getFullYear(), self.currentDate.getMonth()+1, 0);
+              self.currentDate = lastDay;
+              self.insertDate(self.currentDate);
+            }
+
+            //End Moves to Start of the month
+            if (key === 36) {
+              var firstDay =  new Date(self.currentDate.getFullYear(), self.currentDate.getMonth(), 1);
+              self.currentDate = firstDay;
+              self.insertDate(self.currentDate);
+            }
+
+            // 't' selects today
+            if (key === 84) {
+              handled = true;
+              self.setToday();
+            }
+
+            // Space or Enter closes Date Picker, selecting the Date
+            if (key === 32 || key === 13) {
               self.closeCalendar();
+              self.element.focus();
+              handled = true;
             }
-          }
 
-          // Esc closes Date Picker and goes back to field
-          if (key === 27 && self.isOpen()) {
-            self.closeCalendar();
-            self.element.focus();
-          }
+            // Tab closes Date Picker and goes to next field
+            if (key === 9) {
+              if (!self.settings.showTime) {
+                self.element.focus();
+                self.closeCalendar();
+              }
+            }
 
-          if (handled) {
-            e.stopPropagation();
-            e.preventDefault();
-            return false;
-          }
+            // Esc closes Date Picker and goes back to field
+            if (key === 27) {
+              self.closeCalendar();
+              self.element.focus();
+            }
 
-        });
+            if (handled) {
+              e.stopPropagation();
+              e.preventDefault();
+              return false;
+            }
+
+          });
+        }
+        else {
+          elem.off('keydown.datepicker').on('keydown.datepicker', function (e) {
+            var handled = false,
+              key = e.keyCode || e.charCode || 0,
+              focused = $(':focus'),
+              focusedlabel = focused.attr('aria-label');
+
+            // Focus did not auto move from readonly
+            if (key === 9 && self.element.is('[readonly]')) { //tab
+              self.setFocusOnFocusableElement(self.element, (e.shiftKey ? 'prev' : 'next'));
+              return;
+            }
+
+            if (focusedlabel) {
+              var focusedDate = new Date(focusedlabel);
+              self.currentDate = new Date(focusedDate.getTime());
+            } else if (focused.hasClass('alternate')) {
+                var year = parseInt(self.header.find('.year').text()),
+                month = parseInt(self.header.find('.month').attr('data-month')),
+                day = parseInt(focused.text());
+
+              if (focused.hasClass('prev-month')) {
+                if(month === 0) {
+                  month = 11;
+                  year--;
+                }
+                else {
+                  month--;
+                }
+              } else if (focused.hasClass('next-month')) {
+                if(month === 11) {
+                  month = 0;
+                  year++;
+                }
+                else {
+                  month++;
+                }
+              }
+              self.currentDate = new Date(year, month, day);
+            }
+
+           //Arrow Down or Alt first opens the dialog
+            if (key === 40 && !self.isOpen()) {
+              handled = true;
+              self.openCalendar();
+
+              setTimeout(function() {
+                self.setFocusAfterOpen();
+              }, 200);
+            }
+
+            // 't' selects today
+            if (key === 84) {
+              handled = true;
+              self.setToday();
+            }
+
+            if (handled) {
+              e.stopPropagation();
+              e.preventDefault();
+              return false;
+            }
+
+          });
+        }
+
       },
 
       //Parse the Date Format Options
@@ -10167,6 +11415,7 @@ $.fn.chart = function(options) {
           customEvents = this.element.attr('data-validation-events'),
           mask = this.pattern.toLowerCase()
                    .replace(/yyyy/g,'####')
+                   .replace(/mmmm/g,'*********')
                    .replace(/mmm/g,'***')
                    .replace(/mm/g,'##')
                    .replace(/dd/g,'##')
@@ -10210,14 +11459,29 @@ $.fn.chart = function(options) {
         }
       },
 
-      // Return whether or not the calendar div is open.
+      /**
+      * Return whether or not the calendar div is open.
+      */
       isOpen: function () {
         return (this.popup && this.popup.is(':visible') &&
           !this.popup.hasClass('is-hidden'));
       },
 
+      /**
+      * Open the Calendar Popup.
+      */
       open: function() {
         return this.openCalendar();
+      },
+
+      activeTabindex: function(elem, isFocus) {
+        $('td', this.days).removeAttr('tabindex');
+        elem.attr('tabindex', 0);
+
+        if (isFocus) {
+          elem.focus();
+        }
+        return elem;
       },
 
       // Open the calendar in a popup
@@ -10236,12 +11500,15 @@ $.fn.chart = function(options) {
         this.element.addClass('is-active').trigger('listopened');
 
         // Calendar Html in Popups
+        var prevButton = '<button type="button" class="btn-icon prev">' + $.createIcon('caret-left') + '<span>'+ Locale.translate('PreviousMonth') +'</span></button>',
+            nextButton = '<button type="button" class="btn-icon next">' + $.createIcon('caret-right') + '<span>'+ Locale.translate('NextMonth') +'</span></button>';
+
         this.table = $('<table class="calendar-table" aria-label="'+ Locale.translate('Calendar') +'" role="application"></table>');
-        this.header = $('<div class="calendar-header"><span class="month">november</span><span class="year">2015</span><button type="button" class="btn-icon prev" tabindex="-1">' + $.createIcon('caret-left') + '<span>'+ Locale.translate('PreviousMonth') +'</span></button><button type="button" class="btn-icon next" tabindex="-1">' + $.createIcon('caret-right') + '<span>'+ Locale.translate('NextMonth') +'</span></button></div>');
+        this.header = $('<div class="calendar-header"><span class="month">november</span><span class="year">2015</span>'+ (Locale.isRTL() ? prevButton + nextButton : prevButton + nextButton) +'</div>');
         this.dayNames = $('<thead><tr><th>SU</th> <th>MO</th> <th>TU</th> <th>WE</th> <th>TH</th> <th>FR</th> <th>SA</th> </tr> </thead>').appendTo(this.table);
         this.days = $('<tbody> <tr> <td class="alternate">26</td> <td class="alternate">27</td> <td class="alternate">28</td> <td class="alternate">29</td> <td class="alternate" >30</td> <td class="alternate">31</td> <td>1</td> </tr> <tr> <td>2</td> <td>3</td> <td>4</td> <td>5</td> <td>6</td> <td>7</td> <td>8</td> </tr> <tr> <td>9</td> <td>10</td> <td>11</td> <td>12</td> <td>13</td> <td>14</td> <td>15</td> </tr> <tr> <td>16</td> <td>17</td> <td>18</td> <td>19</td> <td class="is-today">20</td> <td>21</td> <td>22</td> </tr> <tr> <td>23</td> <td>24</td> <td>25</td> <td>26</td> <td>27</td> <td>28</td> <td class="alternate">1</td> </tr> <tr> <td class="alternate">2</td> <td class="alternate">3</td> <td class="alternate">4</td> <td class="alternate">5</td> <td class="alternate">6</td> <td class="alternate">7</td> <td class="alternate">8</td> </tr> </tbody>').appendTo(this.table);
         this.timepickerContainer = $('<div class="datepicker-time-container"></div>');
-        this.footer = $('<div class="popup-footer"> <button type="button" class="cancel btn-tertiary" tabindex="-1">'+ Locale.translate('Clear') +'</button> <button type="button" tabindex="-1" class="is-today btn-tertiary">'+Locale.translate('Today')+'</button> </div>');
+        this.footer = $('<div class="popup-footer"> <button type="button" class="cancel btn-tertiary">'+ Locale.translate('Clear') +'</button> <button type="button" class="is-today btn-tertiary">'+Locale.translate('Today')+'</button> </div>');
 
         // Timepicker options
         if (this.settings.showTime) {
@@ -10254,6 +11521,9 @@ $.fn.chart = function(options) {
           }
           if (this.settings.minuteInterval !== undefined) {
             timeOptions.minuteInterval = this.settings.minuteInterval;
+          }
+          if (this.settings.secondInterval !== undefined) {
+            timeOptions.secondInterval = this.settings.minuteInterval;
           }
           if (this.settings.mode !== undefined) {
             timeOptions.mode = this.settings.mode;
@@ -10295,34 +11565,45 @@ $.fn.chart = function(options) {
         };
 
         this.trigger.popover(popoverOpts)
-        .off('hide.datepicker').on('hide.datepicker', function () {
-          self.closeCalendar();
-        }).off('open.datepicker').on('open.datepicker', function () {
-          self.days.find('.is-selected').attr('tabindex', 0).focus();
-        });
-
-        // ICONS: Right to Left Direction
-        setTimeout(function() {
-          if (Locale.isRTL()) {
-            Locale.flipIconsHorizontally();
+        .off('show.datepicker').on('show.datepicker', function () {
+          if (Soho.env.os.name === 'ios') {
+            $('head').triggerHandler('disable-zoom');
           }
-        }, 0);
+          // Horizontal view on mobile
+          if (window.innerHeight < 400) {
+            self.popup.find('.arrow').hide();
+            self.popup.css('min-height', (self.popupClosestScrollable[0].scrollHeight + 2) +'px');
+            self.popupClosestScrollable.css('min-height', '375px');
+          }
+        })
+        .off('hide.datepicker').on('hide.datepicker', function () {
+          if (Soho.env.os.name === 'ios') {
+            self.trigger.one('hide', function() {
+              $('head').triggerHandler('enable-zoom');
+            });
+          }
+          self.popupClosestScrollable.add(self.popup).css('min-height', 'inherit');
+          self.closeCalendar();
+        });
 
         this.handleKeys($('#calendar-popup'));
         $('.calendar-footer a', this.calendar).button();
 
         // Show Month
-        var currentVal = Locale.parseDate(this.element.val(), this.pattern);
-
-        this.currentDate = currentVal || new Date();
-        this.currentMonth = this.currentDate.getMonth();
-        this.currentYear = this.currentDate.getFullYear();
-        this.currentDay = this.currentDate.getDate();
+        this.setValueFromField();
 
         // Set timepicker
         if (this.settings.showTime) {
+
+          //Set to 12:00
+          if (this.element.val() === '') {
+            this.currentDate.setHours(0);
+            this.currentDate.setMinutes(0);
+            this.currentDate.setSeconds(0);
+          }
+
           timeOptions.parentElement = this.timepickerContainer;
-          this.time = self.getTimeString(currentVal, self.show24Hours);
+          this.time = self.getTimeString(this.currentDate, self.show24Hours);
           this.timepicker = this.timepickerContainer.timepicker(timeOptions).data('timepicker');
           this.timepickerContainer.find('dropdown').dropdown();
 
@@ -10330,7 +11611,6 @@ $.fn.chart = function(options) {
           setTimeout(function() {
             self.timepicker.initValues = self.timepicker.getTimeFromField(self.time);
             self.timepicker.afterShow(self.timepickerContainer);
-            self.timepickerContainer.find('div.dropdown').attr('tabindex', '-1');
             return;
           }, 1);
         }
@@ -10340,8 +11620,16 @@ $.fn.chart = function(options) {
         this.todayYear = this.todayDate.getFullYear();
         this.todayDay = this.todayDate.getDate();
 
+        if (this.isIslamic) {
+          this.todayDateIslamic = this.conversions.fromGregorian(this.todayDate);
+          this.todayYear = this.todayDateIslamic[0];
+          this.todayMonth = this.todayDateIslamic[1];
+          this.todayDay = this.todayDateIslamic[2];
+        }
+
         this.showMonth(this.currentMonth, this.currentYear);
         this.popup = $('#calendar-popup');
+        this.popupClosestScrollable = this.popup.closest('.scrollable');
         this.popup.attr('role', 'dialog');
         this.originalDate = this.element.val();
 
@@ -10349,7 +11637,7 @@ $.fn.chart = function(options) {
         this.days.off('click.datepicker').on('click.datepicker', 'td', function () {
           var td = $(this);
           if (td.hasClass('is-disabled')) {
-            td.attr('tabindex', 0).focus();
+            self.activeTabindex(td, true);
           }
           else {
             self.days.find('.is-selected').removeClass('is-selected').removeAttr('aria-selected');
@@ -10379,7 +11667,18 @@ $.fn.chart = function(options) {
             }
 
             self.currentDate = new Date(year, month, day);
-            self.insertDate(self.currentDate);
+
+            if (self.isIslamic) {
+              self.currentDateIslamic[0] = year;
+              self.currentDateIslamic[1] = month;
+              self.currentDateIslamic[2] = day;
+              self.currentYear = self.currentDateIslamic[0];
+              self.currentMonth = self.currentDateIslamic[1];
+              self.currentDay = self.currentDateIslamic[2];
+              self.currentDate = self.conversions.toGregorian(self.currentDateIslamic[0], self.currentDateIslamic[1], self.currentDateIslamic[2]);
+            }
+
+            self.insertDate(self.isIslamic ? self.currentDateIslamic : self.currentDate);
             self.closeCalendar();
             self.element.focus();
           }
@@ -10390,14 +11689,13 @@ $.fn.chart = function(options) {
           var btn = $(this);
 
           if (btn.hasClass('cancel')) {
-            self.element.val('').trigger('change');
+            self.element.val('').trigger('change').trigger('input');
             self.currentDate = null;
             self.closeCalendar();
           }
 
           if (btn.hasClass('is-today')) {
-            self.currentDate = new Date();
-            self.insertDate(self.currentDate);
+            self.setToday();
             self.closeCalendar();
           }
           self.element.focus();
@@ -10415,7 +11713,9 @@ $.fn.chart = function(options) {
 
       },
 
-      // Alias for _closeCalendar()_ that works with the global "closeChildren" method
+      /**
+      * Close the calendar popup.
+      */
       close: function() {
         return this.closeCalendar();
       },
@@ -10601,7 +11901,7 @@ $.fn.chart = function(options) {
         if (!this.calendar) {
           return;
         }
-        this.calendar.find('.is-selected').attr('tabindex', 0).focus();
+        this.activeTabindex(this.calendar.find('.is-selected'), true);
       },
 
       // Update the calendar to show the month (month is zero based)
@@ -10610,6 +11910,10 @@ $.fn.chart = function(options) {
 
         var elementDate = this.currentDate.getDate() ?
           this.currentDate : (new Date()).setHours(0,0,0,0);
+
+        if (this.isIslamic) {
+          elementDate = this.currentDateIslamic;
+        }
 
         if (year.toString().length < 4) {
           year = new Date().getFullYear();
@@ -10636,8 +11940,9 @@ $.fn.chart = function(options) {
         this.currentYear = year;
 
         // Set the Days of the week
+        var firstDayofWeek = (Locale.calendar().firstDayofWeek || 0);
         this.dayNames.find('th').each(function (i) {
-          $(this).text(days[i]);
+          $(this).text(days[(i + firstDayofWeek) % 7]);
         });
 
         //Localize Month Name
@@ -10655,9 +11960,10 @@ $.fn.chart = function(options) {
 
         //Adjust days of the week
         //lead days
-        var leadDays = (new Date(year, month, 1)).getDay();
-        var lastMonthDays = (new Date(year, month+0, 0)).getDate(),
-          thisMonthDays = (new Date(year, month+1, 0)).getDate(),
+        var firstDayOfMonth = this.firstDayOfMonth(year, month),
+          leadDays = (firstDayOfMonth - (Locale.calendar().firstDayofWeek || 0) + 7) % 7,
+          lastMonthDays = this.daysInMonth(year, month + (this.isIslamic ? 1 : 0)),
+          thisMonthDays = this.daysInMonth(year, month+ (this.isIslamic ? 0 : 1)),
           dayCnt = 1, nextMonthDayCnt = 1, exYear, exMonth, exDay;
 
         this.days.find('td').each(function (i) {
@@ -10676,12 +11982,20 @@ $.fn.chart = function(options) {
 
           if (i >= leadDays && dayCnt <= thisMonthDays) {
             th.html('<span aria-hidden="true">' + dayCnt + '</span>');
-            var tHours = elementDate.getHours(),
-              tMinutes = elementDate.getMinutes(),
-              tSeconds = self.isSeconds ? elementDate.getSeconds() : 0;
 
-            if ((new Date(year, month, dayCnt)).setHours(tHours, tMinutes, tSeconds,0) === elementDate.setHours(tHours, tMinutes, tSeconds, 0)) {
-              th.addClass('is-selected').attr('aria-selected', 'true');
+            //Add Selected Class to Selected Date
+            if (self.isIslamic) {
+              if (year === elementDate[0] && month === elementDate[1] && dayCnt === elementDate[2]) {
+                th.addClass('is-selected').attr('aria-selected', 'true');
+              }
+            } else {
+              var tHours = elementDate.getHours(),
+                tMinutes = elementDate.getMinutes(),
+                tSeconds = self.isSeconds ? elementDate.getSeconds() : 0;
+
+              if ((new Date(year, month, dayCnt)).setHours(tHours, tMinutes, tSeconds,0) === elementDate.setHours(tHours, tMinutes, tSeconds, 0)) {
+                th.addClass('is-selected').attr('aria-selected', 'true');
+              }
             }
 
             if (dayCnt === self.todayDay && self.currentMonth === self.todayMonth &&
@@ -10727,11 +12041,13 @@ $.fn.chart = function(options) {
 
       // Put the date in the field and select on the calendar
       insertDate: function (date, isReset) {
-        var input = this.element;
+        var month = (date instanceof Array ? date[1] : date.getMonth()),
+            year  = (date instanceof Array ? date[0] : date.getFullYear()),
+            day = (date instanceof Array ? date[2] : date.getDate()).toString();
 
         // Make sure Calendar is showing that month
-        if (this.currentMonth !== date.getMonth() || this.currentYear !== date.getFullYear()) {
-          this.showMonth(date.getMonth(), date.getFullYear());
+        if (this.currentMonth !== month || this.currentYear !== year) {
+          this.showMonth(month, year);
         }
 
         if (!this.isOpen()) {
@@ -10740,11 +12056,11 @@ $.fn.chart = function(options) {
 
         // Show the Date in the UI
         var dateTd = this.days.find('td:not(.alternate)').filter(function() {
-          return $(this).text().toLowerCase() === date.getDate().toString();
+          return $(this).text().toLowerCase() === day;
         });
 
         if (dateTd.hasClass('is-disabled')) {
-          dateTd.attr({'tabindex': 0}).focus();
+          this.activeTabindex(dateTd, true);
         } else {
           if (this.settings.showTime) {
             if (isReset) {
@@ -10760,9 +12076,10 @@ $.fn.chart = function(options) {
             }
           }
 
-          input.val(Locale.formatDate(date, {pattern: this.pattern})).trigger('change');
+          this.setValue(date, true);
           this.days.find('.is-selected').removeClass('is-selected').removeAttr('aria-selected').removeAttr('tabindex');
-          dateTd.addClass('is-selected').attr({'aria-selected': true, 'tabindex': 0}).focus();
+          dateTd.addClass('is-selected').attr({'aria-selected': true});
+          this.activeTabindex(dateTd, true);
         }
       },
 
@@ -10772,28 +12089,155 @@ $.fn.chart = function(options) {
         return !isNaN(num) ? !!num : !!String(val).toLowerCase().replace(!!0, '');
       },
 
-      // Set the Formatted value in the input
-      setValue: function(date) {
-        //TODO Document this as the way to get the date
-        this.currentDate = date;
-        this.element.val(Locale.formatDate(date, {pattern: this.pattern}));
+      // Find the day of the week of the first of a given month
+      firstDayOfMonth: function (year, month) {
+
+        if (this.isIslamic) {
+		      var firstDay = this.conversions.toGregorian(year, month, 1);
+			    return (firstDay === null ? 1 : firstDay.getDay());
+        }
+        return  (new Date(year, month, 1)).getDay();
       },
 
-      // Make input enabled
+      islamicYearIndex: function (islamicYear) {
+        var yearIdx = islamicYear - 1318;
+        if (yearIdx < 0 || yearIdx >= this.conversions.yearInfo.length) {
+          return 0; // for an out-of-range year, simply returns 0
+        } else {
+          return yearIdx;
+        }
+      },
+
+      // Find the date of the Month (29, 30, 31 ect)
+      daysInMonth: function (year, month) {
+
+        if (this.isIslamic) {
+		      var monthLengthBitmap = this.conversions.yearInfo[this.islamicYearIndex(year)][0];
+    			var monthDayCount = 0;
+    			for (var M = 0; M <= month; M++) {
+    				monthDayCount = 29 + (monthLengthBitmap & 1);
+    				if (M === month) {
+    					return monthDayCount;
+    				}
+    				monthLengthBitmap = monthLengthBitmap >> 1;
+    			}
+    			return 0;
+        }
+        return  (new Date(year, month, 0)).getDate();
+      },
+
+      /**
+      * Set the Formatted value in the input
+      * @param {Date} date  &nbsp;-&nbsp; The date to set in date format.
+      * @param {Boolean} trigger  &nbsp;-&nbsp; If true will trigger the change event.
+      */
+      setValue: function(date, trigger) {
+        //TODO Document this as the way to get the date
+        this.currentDate = date;
+
+        if (date instanceof Array) {
+          this.currentIslamicDate = date;
+          this.currentDate = this.conversions.toGregorian(date[0], date[1], date[2]);
+          date = new Date(date[0], date[1], date[2]);
+        }
+
+        this.element.val(Locale.formatDate(date, {pattern: this.pattern}));
+
+        if (trigger) {
+          this.element.trigger('change').trigger('input');
+        }
+
+      },
+
+      //Get the value from the field and set the internal variables or use current date
+      setValueFromField: function() {
+        var fieldValue = this.element.val(),
+          gregorianValue = fieldValue;
+
+        if (this.isIslamic && fieldValue) {
+          var islamicValue = Locale.parseDate(this.element.val(), this.pattern);
+          gregorianValue = this.conversions.toGregorian(islamicValue.getFullYear(), islamicValue.getMonth(),  islamicValue.getDate());
+        }
+
+        this.currentDate = gregorianValue || new Date();
+        if (typeof this.currentDate === 'string') {
+          this.currentDate = Locale.parseDate(this.currentDate, this.pattern, false);
+        }
+
+        if (this.currentDate === undefined) {
+          this.currentDate = Locale.parseDate(gregorianValue, this.pattern, false);
+        }
+
+        this.currentDate = this.currentDate || new Date();
+        this.currentMonth = this.currentDate.getMonth();
+        this.currentYear = this.currentDate.getFullYear();
+        this.currentDay = this.currentDate.getDate();
+
+        if (this.isIslamic) {
+          this.currentDateIslamic = this.conversions.fromGregorian(this.currentDate);
+          this.currentYear = this.currentDateIslamic[0];
+          this.currentMonth = this.currentDateIslamic[1];
+          this.currentDay = this.currentDateIslamic[2];
+        }
+      },
+
+      /**
+      * Set input to enabled.
+      */
       enable: function() {
         this.element.removeAttr('disabled readonly').closest('.field').removeClass('is-disabled');
       },
 
-      // Make input disabled
+      /**
+      * Set input to disabled.
+      */
       disable: function() {
         this.enable();
         this.element.attr('disabled', 'disabled').closest('.field').addClass('is-disabled');
       },
 
-      // Make input readonly
+      /**
+      * Set input to readonly.
+      */
       readonly: function() {
         this.enable();
         this.element.attr('readonly', 'readonly');
+      },
+
+      /**
+      * Set to todays date in current format.
+      */
+      setToday: function() {
+        this.currentDate = new Date();
+
+        if (this.element.val() === '') {
+          this.currentDate.setHours(0);
+          this.currentDate.setMinutes(0);
+          this.currentDate.setSeconds(0);
+        } else {
+          if (this.timepicker && this.timepicker.hourSelect) {
+            this.currentDate.setHours(this.timepicker.hourSelect.val());
+          }
+
+          if (this.timepicker && this.timepicker.minuteSelect) {
+            this.currentDate.setMinutes(this.timepicker.minuteSelect.val());
+          }
+
+          if (this.timepicker && this.timepicker.secondSelect) {
+            this.currentDate.setSeconds(this.timepicker.secondSelect.val());
+          }
+        }
+
+        if (this.isIslamic) {
+          this.currentDateIslamic = this.conversions.fromGregorian(this.currentDate);
+        }
+
+        if (this.isOpen()) {
+          this.insertDate(this.isIslamic ? this.currentDateIslamic : this.currentDate, true);
+        } else {
+          this.element.val(Locale.formatDate(this.currentDate, {pattern: this.pattern})).trigger('change').trigger('input');
+        }
+
       },
 
       // Set time
@@ -10803,17 +12247,7 @@ $.fn.chart = function(options) {
           seconds = this.isSeconds ? $('#timepicker-seconds').val() : 0,
           period = $('#timepicker-period');
 
-        var timepicker = $('.timepicker.is-active');
-        if (timepicker.length && (!minutes || this.isSeconds && !seconds)) {
-          var d = new Date(date),
-            regex = new RegExp('(\\d+)(?::(\\d\\d))'+ (this.isSeconds ? '(?::(\\d\\d))' : '') +'?\\s*(p?)'),
-            time = timepicker.val().match(regex);
-          d.setHours(parseInt(time[1]) + (time[3] ? 12 : 0));
-          d.setMinutes(parseInt(time[2]) || 0);
-          d.setSeconds(parseInt(time[3]) || 0);
-          minutes = d.getMinutes();
-          seconds = d.getSeconds();
-        }
+
         hours = (period.length && period.val() === 'PM' && hours < 12) ? (parseInt(hours, 10) + 12) : hours;
         hours = (period.length && period.val() === 'AM' && parseInt(hours, 10) === 12) ? 0 : hours;
 
@@ -10894,10 +12328,39 @@ $.fn.chart = function(options) {
         return this;
       },
 
+      /**
+      * Remove all events and reset back to default.
+      */
       destroy: function() {
         this.teardown();
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Datepicker#events
+       * @param {Object} listopened  &nbsp;-&nbsp; Fires as the calendar popup is opened
+       * @param {Object} listclosed  &nbsp;-&nbsp; Fires as the calendar popup is closed
+       * @param {Object} change  &nbsp;-&nbsp; Fires after the value in the input is changed by any means.
+       * @param {Object} input  &nbsp;-&nbsp; Fires after the value in the input is changed by user interaction.
+       *
+       */
+      handleEvents: function () {
+        var self = this;
+
+        this.trigger.on('click.datepicker', function () {
+          if (self.isOpen()) {
+            self.closeCalendar();
+          } else {
+            self.openCalendar();
+          }
+        });
+
+        self.mask();
+        this.handleKeys(this.element);
       }
+
     };
 
     // Initialize the plugin (Once)
@@ -10916,6 +12379,18 @@ $.fn.chart = function(options) {
 window.Formatters = {
 
   Text: function(row, cell, value) {
+    var str = ((value === null || value === undefined || value === '') ? '' : value.toString());
+    return str;
+  },
+
+  Input: function(row, cell, value, col) {
+    if (col.inlineEditor) {
+      var html = '<label for="datagrid-inline-input-' + row + '-' + cell +'" class="audible">'+ col.name +'</label>'+
+          '<input id="datagrid-inline-input-' + row + '-' + cell +'" class="'+ (col.align === 'right' ? 'is-number-mask': '') + '" value="'+ value +'">';
+
+      return html;
+    }
+
     var str = ((value === null || value === undefined || value === '') ? '' : value.toString());
     return str;
   },
@@ -11030,32 +12505,24 @@ window.Formatters = {
   },
 
   Decimal:  function(row, cell, value, col) {
-    var formatted;
-
-    formatted = value;
-
-    if (typeof Locale !== undefined) {
-       formatted = Locale.formatNumber(value, (col.numberFormat ? col.numberFormat : null));
+    var formatted = value;
+    if (typeof Locale !== undefined &&
+        formatted !== null && formatted !== undefined && formatted !== '') {
+       formatted = Locale.formatNumber(+value, col.numberFormat);
     }
-
-    formatted = ((formatted === null || formatted === undefined) ? '' : formatted);
-    return formatted;
+    return ((formatted === null || formatted === undefined) ? '' : formatted);
   },
 
   Integer:  function(row, cell, value, col) {
-    var formatted;
-
-    formatted = value;
-
-    if (typeof Locale !== undefined) {
-      formatted = Locale.formatNumber(value, (col.numberFormat ? col.numberFormat : {style: 'integer'}));
+    var formatted = value;
+    if (typeof Locale !== undefined &&
+        formatted !== null && formatted !== undefined && formatted !== '') {
+      formatted = Locale.formatNumber(+value, col.numberFormat || {style: 'integer'});
     }
-
-    formatted = ((formatted === null || formatted === undefined) ? '' : formatted);
-    return formatted;
+    return (formatted === null || formatted === undefined) ? '' : formatted;
   },
 
-  Hyperlink: function(row, cell, value, col, item) {
+  Hyperlink: function(row, cell, value, col, item, api) {
     var textValue,
       colHref = col.href || '#';
 
@@ -11076,11 +12543,11 @@ window.Formatters = {
     }
 
     return col.icon ?
-      ('<a href="'+ colHref +'" class="btn-icon row-btn '+ (col.cssClass || '') +'" tabindex="-1"' + (col.hyperlinkTooltip ? ' title="'+ col.hyperlinkTooltip + '"': '') + '>'+
+      ('<a href="'+ colHref +'" class="btn-icon row-btn '+ (col.cssClass || '') +'" ' + (!api.settings.rowNavigation ? '' : 'tabindex="-1"') + (col.hyperlinkTooltip ? ' title="'+ col.hyperlinkTooltip + '"': '') + '>'+
           $.createIcon({ icon: col.icon, file: col.iconFile }) +
           '<span class="audible">'+ textValue +'</span>'+
         '</a>') :
-      ('<a href="'+ colHref +'" tabindex="-1" role="presentation" class="hyperlink '+ (col.cssClass || '') + '"' + (col.target ? ' target="' + col.target + '"' : '') + (col.hyperlinkTooltip ? ' title="'+ col.hyperlinkTooltip + '"': '') + '>'+ textValue +'</a>');
+      ('<a href="'+ colHref +'" ' + (!api.settings.rowNavigation ? '' : 'tabindex="-1"') + ' role="presentation" class="hyperlink '+ (col.cssClass || '') + '"' + (col.target ? ' target="' + col.target + '"' : '') + (col.hyperlinkTooltip ? ' title="'+ col.hyperlinkTooltip + '"': '') + '>'+ textValue +'</a>');
   },
 
   Template: function(row, cell, value, col, item) {
@@ -11125,7 +12592,7 @@ window.Formatters = {
     );
   },
 
-  Checkbox: function (row, cell, value, col) {
+  Checkbox: function (row, cell, value, col, item, api) {
     var isChecked;
 
     // Use isChecked function if exists
@@ -11136,8 +12603,13 @@ window.Formatters = {
       isChecked = (value == undefined ? false : value == true); // jshint ignore:line
     }
 
+    // We add hidden Yes/No text so that the exported excel spreadsheet shows this text in checkbox columns
+    var hiddenText = '<span class="hidden" aria-hidden="true" role="presentation">' + Locale.translate(isChecked ? 'Yes' : 'No') + '</span>';
+
+    var animate = api.wasJustUpdated;
+    api.wasJustUpdated = false;
     return '<div class="datagrid-checkbox-wrapper"><span role="checkbox" aria-label="'+ col.name +'" class="datagrid-checkbox ' +
-     (isChecked ? 'is-checked' : '') +'" aria-checked="'+isChecked+'"></span></div>';
+     (isChecked ? 'is-checked ' + (!animate ? ' no-animation' : ' ') : '') +'" aria-checked="'+isChecked+'"></span>' + hiddenText + '</div>';
   },
 
   SelectionCheckbox: function (row, cell, value, col) {
@@ -11173,9 +12645,8 @@ window.Formatters = {
 
   // Expand / Collapse Button
   Expander: function (row, cell, value) {
-    var button = '<button type="button" class="btn-icon datagrid-expand-btn" tabindex="-1">'+
+    var button = '<button type="button" aria-label="' + Locale.translate('ExpandCollapse') + '" class="btn-icon datagrid-expand-btn" tabindex="-1">'+
       '<span class="icon plus-minus"></span>' +
-      '<span class="audible">' + Locale.translate('ExpandCollapse') + '</span>' +
       '</button>' + ( value ? '<span> ' + value + '</span>' : '');
 
     return button;
@@ -11234,8 +12705,9 @@ window.Formatters = {
       beforeText = '';
     }
 
-    if (typeof Locale !== undefined && col.numberFormat) {
-       value = Locale.formatNumber(value, (col.numberFormat ? col.numberFormat : null));
+    if (typeof Locale !== undefined && col.numberFormat &&
+      value !== null && value !== undefined && value !== '') {
+        value = Locale.formatNumber(+value, col.numberFormat);
     }
 
     return (beforeText + ((value === null || value === undefined || value === '') ? '' : value.toString()) + afterText);
@@ -11280,12 +12752,17 @@ window.Formatters = {
 
   // Badge (Visual Indictors)
   Badge: function (row, cell, value, col) {
-    var ranges = Formatters.ClassRange(row, cell, value, col);
+    var colorClasses = col.color,
+      text = col.name;
 
-    return '<span class="badge ' + ranges.classes +'">' + value +' <span class="audible">'+ ranges.text+ '</span></span>';
+    if (col.ranges) {
+      var ranges = Formatters.ClassRange(row, cell, value, col);
+      colorClasses = ranges.classes;
+      text = ranges.text;
+    }
+    return '<span class="badge ' + colorClasses +'">' + value +' <span class="audible">'+ text+ '</span></span>';
   },
 
-  // Tags (low priority)
   Tag: function (row, cell, value, col) {
     var ranges = Formatters.ClassRange(row, cell, value, col);
     return '<span class="tag ' + ranges.classes +'">'+ value + '</span>';
@@ -11316,9 +12793,9 @@ window.Formatters = {
     return '<span class="' + ranges.classes + '">' + text + '</span>';
   },
 
-  Button: function (row, cell, value, col) {
+  Button: function (row, cell, value, col, item, api) {
     var text = col.text ? col.text : ((value === null || value === undefined || value === '') ? '' : value.toString()),
-      markup ='<button type="button" class="'+ ( col.icon ? 'btn-icon': 'btn') + ' row-btn ' + (col.cssClass ? col.cssClass : '') + '" tabindex="-1">';
+      markup ='<button type="button" class="'+ ( col.icon ? 'btn-icon': 'btn-secondary') + ' row-btn ' + (col.cssClass ? col.cssClass : '') + '"' + (!api.settings.rowNavigation ? '' : ' tabindex="-1"') +' >';
 
       if (col.icon) {
         markup += $.createIcon({ icon: col.icon, file: col.iconFile });
@@ -11345,10 +12822,46 @@ window.Formatters = {
       }
     }
 
-    return '<span class="trigger dropdown-trigger">' + formattedValue + '</span>' + $.createIcon({ icon: 'dropdown' });
+    var html = '<span class="trigger dropdown-trigger">' + formattedValue + '</span>' + $.createIcon({ icon: 'dropdown' });
+
+    if (col.inlineEditor) {
+      html = '<label for="full-dropdown" class="audible">'+ col.name +'</label>'+
+        '<select id="'+ 'datagrid-dropdown' + row +'" class="dropdown">';
+
+      for (i = 0; i < col.options.length; i++) {
+        var opt = col.options[i];
+        html += '<option' + (opt.id === undefined ? '' : ' id="' + opt.id + '"') +
+                  ' value="' + opt.value + '"' +
+                  (opt.selected || opt.value === compareValue ? ' selected ' : '') +
+                '>'+ (opt.label !== undefined ? opt.label : opt.value !== undefined ? opt.value : '') + '</option>';
+      }
+
+      html += '</select>'+
+      '<div class="dropdown-wrapper is-inline">'+
+        '<div class="dropdown"><span>'+ formattedValue +'</span></div>'+
+        '<svg class="icon" focusable="false" aria-hidden="true" role="presentation">'+
+          '<use xlink:href="#icon-dropdown"></use>'+
+        '</svg>'+
+      '</div>';
+    }
+
+    return html;
   },
 
-  Favorite: function (row, cell, value, col) {
+  Spinbox: function (row, cell, value, col) {
+    var html = ((value === null || value === undefined || value === '') ? '' : value.toString());
+
+    if (col.inlineEditor) {
+      html = '<label for="spinbox-' + cell + '" class="audible">Quantity</label>' +
+        '<span class="spinbox-wrapper"><span class="spinbox-control down">-</span>' +
+        '<input id="spinbox-' + cell + '" name="spinbox-' + cell + '" type="text" class="spinbox" value="'+ value +'">'+
+        '<span class="spinbox-control up">+</span></span>';
+    }
+
+    return html;
+  },
+
+  Favorite: function (row, cell, value, col, item, api) {
     var isChecked;
 
     // Use isChecked function if exists
@@ -11358,7 +12871,13 @@ window.Formatters = {
       isChecked = (value == undefined ? false : value == true); // jshint ignore:line
     }
 
-    return !isChecked ? '' : '<span class="audible">'+ Locale.translate('Favorite') + '</span><span class="icon-favorite">' + $.createIcon({ icon: 'star-filled' }) + '</span>';
+    var isEditable = col.editor && api.settings.editable;
+
+    if (isChecked) {
+      return '<span aria-label="'+ Locale.translate('Favorite') +'" class="icon-favorite'+ (isEditable ? ' is-editable': '') + '">' + $.createIcon({ icon: 'star-filled' }) + '</span>';
+    } else {
+      return col.showEmpty ? '<span aria-label="'+ Locale.translate('Favorite') +'" class="icon-favorite'+ (isEditable ? ' is-editable': '') + '">' + $.createIcon({ icon: 'star-outlined' }) + '</span>' : '';
+    }
   },
 
   Status: function (row, cell, value, col, item) {
@@ -11370,18 +12889,23 @@ window.Formatters = {
     return $.createIcon({ icon: item.rowStatus.icon, classes: ['icon', 'icon-' + item.rowStatus.icon, 'datagrid-alert-icon'] }) + '<span class="audible">' + item.rowStatus.text + '</span>';
   },
 
-  // Possible future Formatters
-  // Percent
-  // Image?
+  TargetedAchievement: function (row, cell, value, col) {
+    var perc = (100*value),
+      ranges = Formatters.ClassRange(row, cell, perc, col),
+      target = col.target;
+
+    var isWhite = perc > 55;  //Maybe implement this later perc > 60;
+    return '<div class="total bar chart-completion-target chart-targeted-achievement"><div class="target remaining bar" style="width: '+ (target || 0) +'%;"></div><div class="completed bar ' + (col.ranges && ranges.classes ? ranges.classes : 'primary') + '" style="width: '+ perc +'%;"></div>' + (col.showPercentText ? '<div class="chart-targeted-text" '+ (isWhite ? 'style="color: white"' : '') +'>'+ perc +'%</div></div>' : '');
+  },
+  // TODO Possible future Formatters
+    // Image?
   // Multi Select
-  // Re Order - Drag Indicator
   // Sparkline
   // Progress Indicator (n of 100%)
   // Process Indicator
   // Currency
   // File Upload (Simple)
   // Menu Button
-  // Toggle Button (No)
   // Color Picker (Low)
 };
 
@@ -11392,10 +12916,15 @@ window.Editors = {
 
     this.name = 'input';
     this.originalValue = value;
+    this.useValue = column.inlineEditor ? true : false;
 
     this.init = function () {
-      this.input = $('<input type="'+ (column.inputType ? column.inputType : 'text') +'"/>')
-        .appendTo(container);
+      if (column.inlineEditor) {
+        this.input = container.find('input');
+      } else {
+        this.input = $('<input type="'+ (column.inputType || 'text') +'"/>')
+          .appendTo(container);
+      }
 
       if (column.align) {
         this.input.addClass('l-'+ column.align +'-text');
@@ -11414,8 +12943,13 @@ window.Editors = {
     };
 
     this.val = function (value) {
+      var thisValue;
       if (value) {
         this.input.val(value);
+      }
+      if (column && column.numberFormat && column.numberFormat.style === 'percent') {
+        thisValue = this.input.val().trim().replace(/(\s%?|%)$/g, '');
+        return Locale.parseNumber(thisValue) / 100;
       }
       return this.input.val();
     };
@@ -11425,6 +12959,10 @@ window.Editors = {
     };
 
     this.destroy = function () {
+      if (column.inlineEditor) {
+        return;
+      }
+
       var self = this;
       setTimeout(function() {
         self.input.remove();
@@ -11499,7 +13037,7 @@ window.Editors = {
           content: $('.editor-wrapper', container),
           placementOpts: {
             x: 0,
-            y: '-84',
+            y: '-'+ (parseInt(container[0].style.height, 10) + 35),
             parent: this.td,
             parentXAlignment: Locale.isRTL() ? 'right' : 'left',
             strategies: ['flip', 'nudge', 'shrink'],
@@ -11525,6 +13063,7 @@ window.Editors = {
             }
           }
         });
+      Soho.utils.fixSVGIcons($('#editor-popup'));
     };
 
     this.val = function () {
@@ -11540,6 +13079,7 @@ window.Editors = {
 
     this.destroy = function () {
       var self = this;
+      container.removeAttr('style');
       api.quickEditMode = false;
       self.input.off('hide.editor keydown.editor');
       setTimeout(function() {
@@ -11557,14 +13097,17 @@ window.Editors = {
 
     this.name = 'checkbox';
     this.originalValue = value;
+    this.useValue = true; //use the data set value not cell value
 
     this.init = function () {
-      this.input = $('<input type="checkbox" class="checkboxn"/>').appendTo(container);
+
+      this.input = $('<input type="checkbox" class="checkbox"/>').appendTo(container);
       this.input.after('<label class="checkbox-label"></label>');
 
       if (column.align) {
         this.input.addClass('l-'+ column.align +'-text');
       }
+
     };
 
     this.val = function (value) {
@@ -11581,8 +13124,8 @@ window.Editors = {
         isChecked = value;
       }
 
-      if (event.type === 'click' || (event.type === 'keydown' && event.keyCode === 32)) {
-        //just toggle it
+      //just toggle it if we click right on it
+      if ((event.type === 'click' || (event.type === 'keydown' && event.keyCode === 32)) && !$(event.target).is('.datagrid-checkbox-wrapper, .datagrid-cell-wrapper')) {
         isChecked = !isChecked;
         grid.setNextActiveCell(event);
       }
@@ -11613,9 +13156,12 @@ window.Editors = {
     this.cell = grid.activeCell;
 
     this.init = function () {
-      //Uses formatter
+      if (column.inlineEditor) {
+        this.input = container.find('select');
+        return;
+      }
+
       this.input = $('<select class="dropdown"></select>').appendTo(container);
-      this.select = this.input;
 
       if (column.options) {
         var html, opt, optionValue;
@@ -11671,7 +13217,7 @@ window.Editors = {
         var compareValue = column.caseInsensitive && typeof value === 'string' ? value.toLowerCase() : value;
         this.input.val(value);
 
-        this.select.find('option').each(function () {
+        this.input.find('option').each(function () {
           var opt = $(this), valueAttr = opt.attr('value'), type = opt.attr('data-type');
           var optionValue = valueAttr;
 
@@ -11690,7 +13236,7 @@ window.Editors = {
         });
       }
 
-      var selected = this.select.find(':selected'),
+      var selected = this.input.find(':selected'),
         val = selected.attr('value'), dataType = selected.attr('data-type');
 
       // For non-string option values (number, boolean, etc.), convert string attr value to proper type
@@ -11711,10 +13257,10 @@ window.Editors = {
       var self = this;
 
       //Check if isClick or cell touch and just open the list
-      this.select.trigger('openlist');
+      this.input.trigger('openlist');
       this.input.parent().find('div.dropdown').focus();
 
-      this.input.on('listclosed', function (e, type) {
+      this.input.off('listclosed').on('listclosed', function (e, type) {
         grid.commitCellEdit(self.input);
 
         if (type === 'select') {
@@ -11963,8 +13509,107 @@ window.Editors = {
     };
 
     this.init();
-  }
+  },
 
+  Spinbox: function(ow, cell, value, container, column, event, grid) {
+    this.name = 'spinbox';
+    this.originalValue = value;
+    this.useValue = true; //use the data set value not cell value
+
+    this.init = function () {
+      if (column.inlineEditor) {
+        this.input = container.find('input');
+        return;
+      }
+
+      var markup = '<label for="spinbox-' + cell + '" class="audible">Quantity</label>' +
+        '<span class="spinbox-wrapper"><span class="spinbox-control down">-</span>' +
+        '<input id="spinbox-' + cell + '" name="spinbox-' + cell + '" type="text" class="spinbox" value="'+ value +'">'+
+        '<span class="spinbox-control up">+</span></span>';
+
+      container.append(markup);
+      this.input = container.find('input');
+
+      if (!column.editorOptions) {
+        column.editorOptions = {};
+      }
+
+      this.input.spinbox(column.editorOptions);
+    };
+
+    this.val = function (value) {
+      return value ? parseInt(this.input.val(value)) : parseInt(this.input.val());
+    };
+
+    this.focus = function () {
+      grid.quickEditMode = true;
+      this.input.select().focus();
+    };
+
+    this.destroy = function () {
+      if (column.inlineEditor) {
+        return;
+      }
+
+      var self = this;
+      setTimeout(function() {
+        grid.quickEditMode = false;
+        self.input.remove();
+      }, 0);
+    };
+
+    this.init();
+  },
+
+  Favorite: function(row, cell, value, container, column, event, grid) {
+    this.name = 'favorite';
+    this.useValue = true;
+    this.originalValue = value;
+
+    this.init = function () {
+      this.input = $('<span class="icon-favorite">' +
+            $.createIcon({ icon: value ? 'star-filled' : 'star-outlined' }) + '<input type="checkbox"></span>').appendTo(container);
+
+      this.input = this.input.find('input');
+    };
+
+    this.val = function (value) {
+      var isChecked;
+
+      if (value === undefined) {
+        return this.input.prop('checked');
+      }
+
+      // Use isChecked function if exists
+      if (column.isChecked) {
+        isChecked = column.isChecked(value);
+      } else {
+        isChecked = value;
+      }
+
+      //just toggle it when clicked
+      if ((event.type === 'click' || (event.type === 'keydown' && event.keyCode === 32)) && (!$(event.target).is('.datagrid-cell-wrapper'))) {
+        isChecked = !isChecked;
+        grid.setNextActiveCell(event);
+      }
+
+      this.input.prop('checked', isChecked);
+      this.input.find('use').attr('xlink:href', isChecked ? '#icon-star-filled' : '#icon-star-outlined');
+    };
+
+    this.focus = function () {
+      this.input.trigger('focusout').focus();
+    };
+
+    this.destroy = function () {
+      var self = this;
+      setTimeout(function() {
+        self.input.parent().remove();
+      }, 0);
+    };
+
+    this.init();
+  }
 };
 
 window.GroupBy = (function() {
@@ -12079,23 +13724,50 @@ GroupBy.register('list', function(item) {
 
 //Simple Summary Row Accumlator
 window.Aggregators = {};
-window.Aggregators.aggregate = function(items, columns) {
-  var totals = {}, self = this;
+window.Aggregators.aggregate = function (items, columns) {
+    var totals = {}, self = this;
 
-  for (var i = 0; i < columns.length; i++) {
-    if (columns[i].aggregator) {
-      var field = columns[i].field;
+    for (var i = 0; i < columns.length; i++) {
+        if (columns[i].aggregator) {
+            var field = columns[i].field;
 
-      self.sum = function(sum, node) {
-        return sum + Number(node[field]);
-      };
+            self.sum = function (sum, node) {
+                var value;
+                if (field.indexOf('.') > -1) {
+                    value = field.split('.').reduce(function (o, x) {
+                        return (o ? o[x] : '');
+                    }, node);
+                }
+                else {
+                    value = node[field];
+                }
+                return sum + Number(value);
+            };
 
-      var total = items.reduce(self[columns[i].aggregator], 0);
-      totals[field] = total;
+            var total = items.reduce(self[columns[i].aggregator], 0);
+
+            if (field.indexOf('.') > -1) {
+                var currentObj = totals;
+                for (var j = 0; j < field.split('.').length; j++) {
+                    if (j === field.split('.').length - 1) {
+                        currentObj[field.split('.')[j]] = total;
+                    }
+                    else {
+                        if (!(field.split('.')[j] in currentObj)) {
+                            currentObj[field.split('.')[j]] = {};
+                        }
+
+                        currentObj = currentObj[field.split('.')[j]];
+                    }
+                }
+            }
+            else {
+                totals[field] = total;
+            }
+        }
     }
-  }
 
-  return totals;
+    return totals;
 };
 
 $.fn.datagrid = function(options) {
@@ -12113,7 +13785,8 @@ $.fn.datagrid = function(options) {
         columns: [],
         dataset: [],
         columnReorder: false, // Allow Column reorder
-        saveColumns: true, //Save Column Reorder and resize
+        saveColumns: false, //Save Column Reorder and resize
+        saveUserSettings: {}, //Save one or all of the following to local storage : columns: true, rowHeight: true, sortOrder: true, pagesize: true, activePage: true, filter: true
         editable: false,
         isList: false, // Makes a readonly "list"
         menuId: null,  //Id to the right click context menu
@@ -12128,8 +13801,10 @@ $.fn.datagrid = function(options) {
         paging: false,
         pagesize: 25,
         pagesizes: [10, 25, 50, 75],
+        showPageSizeSelector: true, // Will show page size selector
         indeterminate: false, //removed ability to go to a specific page.
         source: null, //callback for paging
+        hidePagerOnOnePage: false, //If true, hides the pager if there's only one page worth of results.
         //Filtering Options
         filterable: false,
         disableClientFilter: false, //Disable Filter Logic client side and let your server do it
@@ -12138,14 +13813,58 @@ $.fn.datagrid = function(options) {
         virtualized: false, // Prevent Unused rows from being added to the DOM
         virtualRowBuffer: 10, //how many extra rows top and bottom to allow as a buffer
         rowReorder: false, //Allows you to reorder rows. Requires rowReorder formatter
-        showDirty: false
+        showDirty: false,
+        allowOneExpandedRow: true, //Only allows one expandable row at a time
+        enableTooltips: false,  //Process tooltip logic at a cost of performance
+        disableRowDeactivation: false, // If a row is activated the user should not be able to deactivate it by clicking on the activated row
+        sizeColumnsEqually: false, //If true make all the columns equal width
+        expandableRow: false, // Supply an empty expandable row template
+        redrawOnResize: true //Run column redraw logic on resize
       },
       settings = $.extend({}, defaults, options);
 
   /**
-   * @constructor
-   * @param {Object} element
-   */
+  * The Datagrid Component displays and process data in tabular format.
+  *
+  * @class Datagrid
+  * @param {Boolean} actionableMode &nbsp;-&nbsp If actionableMode is "true”, tab and shift tab behave like left and right arrow key, if the cell is editable it goes in and out of edit mode. F2 - toggles actionableMode "true" and "false"
+  * @param {Boolean} cellNavigation &nbsp;-&nbsp If cellNavigation is "false”, will show border around whole row on focus
+  * @param {Boolean} rowNavigation  &nbsp;-&nbsp If rowNavigation is "false”, will NOT show border around the row
+  * @param {Boolean} alternateRowShading  &nbsp;-&nbsp Sets shading for readonly grids
+  * @param {Array} columns  &nbsp;-&nbsp an array of columns (see column options)
+  * @param {Array} dataset  &nbsp;-&nbsp an array of data objects
+  * @param {Boolean} columnReorder  &nbsp;-&nbsp Allow Column reorder
+  * @param {Boolean} saveColumns  &nbsp;-&nbsp Save Column Reorder and resize
+  * @param {Object} saveUserSettings  &nbsp;-&nbsp Save one or all of the following to local storage : columns: true, rowHeight: true, sortOrder: true, pagesize: true, activePage: true, filter: true
+  * @param {Boolean} editable &nbsp;-&nbsp Enable editing in the grid, requires column editors.
+  * @param {Boolean} isList  &nbsp;-&nbsp Makes the grid have readonly "list" styling
+  * @param {String} menuId  &nbsp;-&nbsp Id to link a right click context menu element
+  * @param {String} uniqueId &nbsp;-&nbsp Unique ID to use as local storage reference and internal variable names
+  * @param {String} rowHeight &nbsp;-&nbsp Controls the height of the rows / number visible rows. May be (short, medium or normal)
+  * @param {String} selectable &nbsp;-&nbsp Controls the selection Mode this may be: false, 'single' or 'multiple' or 'mixed'
+  * @param {Object} groupable &nbsp;-&nbsp  Controls fields to use for data grouping Use Data grouping fx. {fields: ['incidentId'], supressRow: true, aggregator: 'list', aggregatorOptions: ['unitName1']}
+  * @param {Boolean} clickToSelect &nbsp;-&nbsp Controls if using a selection mode if you can click the rows to select
+  * @param {Object} toolbar  &nbsp;-&nbsp Toggles and appends toolbar features fx.. {title: 'Data Grid Header Title', results: true, keywordFilter: true, filter: true, rowHeight: true, views: true}
+  * @param {Boolean} initializeToolbar &nbsp;-&nbsp Set to false if you will initialize the toolbar yourself
+  * @param {Boolean} paging &nbsp;-&nbsp Enable paging mode
+  * @param {Number} pagesize &nbsp;-&nbsp Number of rows per page
+  * @param {Array} pagesizes &nbsp;-&nbsp Array of page sizes to show in the page size dropdown.
+  * @param {Boolean} indeterminate &nbsp;-&nbsp Disable the ability to go to a specific page when paging.
+  * @param {Function} source  &nbsp;-&nbsp Callback function for paging
+  * @param {Boolean} hidePagerOnOnePage  &nbsp;-&nbsp If true, hides the pager if there's only one page worth of results.
+  * @param {Boolean} filterable &nbsp;-&nbsp Enable Column Filtering, This will require column filterTypes as well.
+  * @param {Boolean} disableClientFilter &nbsp;-&nbsp Disable Filter Logic client side and let your server do it
+  * @param {Boolean} disableClientSort &nbsp;-&nbsp Disable Sort Logic client side and let your server do it
+  * @param {String} resultsText &nbsp;-&nbsp Can provide a custom function to adjust results text on the toolbar
+  * @param {Boolean} rowReorder &nbsp;-&nbsp If set you can reorder rows. Requires rowReorder formatter
+  * @param {Boolean} showDirty &nbsp;-&nbsp  If true the dirty indicator will be shown on the rows
+  * @param {Boolean} allowOneExpandedRow  &nbsp;-&nbsp Controls if you cna expand more than one expandable row.
+  * @param {Boolean} enableTooltips &nbsp;-&nbsp Process tooltip logic at a cost of performance
+  * @param {Boolean} disableRowDeactivation &nbsp;-&nbsp if a row is activated the user should not be able to deactivate it by clicking on the activated row
+  * @param {Boolean} sizeColumnsEqually &nbsp;-&nbsp If true make all the columns equal width
+  * @param {Boolean} expandableRow &nbsp;-&nbsp If true we append an expandable row area without the rowTemplate feature being needed.
+  * @param {Boolean} redrawOnResize &nbsp;-&nbsp If set to false we skip redraw logic on the resize of the page.
+  */
   function Datagrid(element) {
     this.element = $(element);
     Soho.logTimeStart(pluginName);
@@ -12168,13 +13887,16 @@ $.fn.datagrid = function(options) {
       this.settings = settings;
       this.initSettings();
       this.originalColumns = self.columnsFromString(JSON.stringify(this.settings.columns));
+      this.removeToolbarOnDestroy = false;
+      this.nonVisibleCellErrors = [];
 
-      this.appendToolbar();
       this.restoreColumns();
+      this.restoreUserSettings();
+      this.appendToolbar();
       this.setTreeDepth();
       this.setRowGrouping();
       this.setTreeRootNodes();
-      this.render();
+      this.firstRender();
       this.handlePaging();
       this.handleEvents();
       this.handleKeys();
@@ -12194,8 +13916,13 @@ $.fn.datagrid = function(options) {
       this.contextualToolbar.addClass('datagrid-contextual-toolbar');
     },
 
-    //Render the Header and Rows
+    //Re render both header and rows
     render: function () {
+      this.loadData(this.settings.dataset);
+    },
+
+    //Run First Render the Header and Rows
+    firstRender: function () {
       var self = this;
 
       self.contentContainer = $('<div class="datagrid-body"></div>');
@@ -12235,12 +13962,15 @@ $.fn.datagrid = function(options) {
 
       if (this.settings.isList) {
         $(this.element).addClass('is-gridlist');
+      } else {
+        $(this.element).removeClass('is-gridlist');
       }
 
       self.table.empty();
       self.renderRows();
       self.element.append(self.contentContainer);
 
+      self.clearHeaderCache();
       self.renderHeader();
       self.container = self.element.closest('.datagrid-container');
 
@@ -12304,7 +14034,11 @@ $.fn.datagrid = function(options) {
       return dataset;
     },
 
-    // Add a Row
+    /**
+    * Add a row of data to the grid and dataset.
+    * @param {Object} data &nbsp;-&nbsp An data row object
+    * @param {String} location &nbsp;-&nbsp Where to add the row. This can be 'top' or leave off for 'bottom'
+    */
     addRow: function (data, location) {
       var self = this,
         isTop = false,
@@ -12340,7 +14074,7 @@ $.fn.datagrid = function(options) {
         row = isTop ? row : self.settings.dataset.length - 1;
         self.setActiveCell(row, cell);
 
-        rowNode = self.tableBody.find('tr').eq(row);
+        rowNode = self.tableBody.find('tr[aria-rowindex="'+ (row + 1) +'"]');
         args = {row: row, cell: cell, target: rowNode, value: data, oldValue: []};
 
         self.pagerRefresh(location);
@@ -12357,15 +14091,24 @@ $.fn.datagrid = function(options) {
         else if (typeof location === 'number') {
           activePage = Math.floor(location / this.pager.settings.pagesize + 1);
         }
-        this.pager.pagingInfo = this.pager.pagingInfo || {};
-        this.pager.pagingInfo.activePage = activePage;
+
+        this.pager.pagingInfo = $.extend({}, this.pager.pagingInfo, {
+          activePage: activePage,
+          total: this.settings.dataset.length,
+          pagesize: this.settings.pagesize
+        });
+
         this.renderPager(this.pager.pagingInfo);
       }
     },
 
-    //Delete a Specific Row
+    /**
+    * Remove a row of data to the grid and dataset.
+    * @param {Number} row &nbsp;-&nbsp The row index
+    * @param {Boolean} nosync &nbsp;-&nbsp Dont sync the selected rows.
+    */
     removeRow: function (row, nosync) {
-      var rowNode = this.tableBody.find('tr').eq(row),
+      var rowNode = this.tableBody.find('tr[aria-rowindex="'+ (row + 1) +'"]'),
         rowData = this.settings.dataset[row];
 
       this.unselectRow(row, nosync);
@@ -12374,7 +14117,9 @@ $.fn.datagrid = function(options) {
       this.element.trigger('rowremove', {row: row, cell: null, target: rowNode, value: [], oldValue: rowData});
     },
 
-    //Remove all selected rows
+    /**
+    * Remove all selected rows from the grid and dataset.
+    */
     removeSelected: function () {
 
       var self = this,
@@ -12388,7 +14133,6 @@ $.fn.datagrid = function(options) {
       this.syncSelectedUI();
     },
 
-    //Method to Reload the data set
     updateDataset: function (dataset, pagerInfo) {
       this.loadData(dataset, pagerInfo);
     },
@@ -12407,10 +14151,6 @@ $.fn.datagrid = function(options) {
     loadData: function (dataset, pagerInfo, isResponse) {
       this.settings.dataset = dataset;
 
-      if (this.pager) {
-        this.pager.settings.dataset = dataset;
-      }
-
       if (!pagerInfo) {
         pagerInfo = {};
       }
@@ -12420,6 +14160,13 @@ $.fn.datagrid = function(options) {
         pagerInfo.pagesize = this.settings.pagesize;
         pagerInfo.total = -1;
         pagerInfo.type = 'initial';
+      }
+
+      if (this.pager) {
+        if (pagerInfo.activePage > -1) {
+          this.pager.activePage = pagerInfo.activePage;
+        }
+        this.pager.settings.dataset = dataset;
       }
 
       //Update Paging and Clear Rows
@@ -12475,6 +14222,20 @@ $.fn.datagrid = function(options) {
         visible.push(column);
       }
       return visible;
+    },
+
+    lastColumnIdx: function () {
+      var last = 0;
+      for (var j = 0; j < this.settings.columns.length; j++) {
+        var column = settings.columns[j];
+
+        if (column.hidden) {
+          continue;
+        }
+
+        last = j;
+      }
+      return last;
     },
 
     getColumnGroup: function(idx) {
@@ -12544,6 +14305,7 @@ $.fn.datagrid = function(options) {
         headerRow += '<th scope="col" role="columnheader" class="' + (isSortable ? 'is-sortable' : '') + (isResizable ? ' is-resizable' : '') + (column.hidden ? ' is-hidden' : '') + (column.filterType ? ' is-filterable' : '') + (alignmentClass ? alignmentClass : '') + '"' +
          ' id="' + id + '" data-column-id="'+ column.id + '"' + (column.field ? ' data-field="'+ column.field +'"' : '') +
          (column.headerTooltip ? 'title="' + column.headerTooltip + '"' : '') +
+         (column.reorderable === false ? ' data-reorder="false"' : '') +
          (colGroups ? ' headers="' + self.getColumnGroup(j) + '"' : '') + '>';
 
         headerRow += '<div class="' + (isSelection ? 'datagrid-checkbox-wrapper ': 'datagrid-column-wrapper') + (column.align === undefined ? '' : ' l-'+ column.align +'-text') + '"><span class="datagrid-header-text'+ (column.required ? ' required': '') + '">' + self.headerText(settings.columns[j]) + '</span>';
@@ -12572,11 +14334,14 @@ $.fn.datagrid = function(options) {
         self.headerRow = $('<thead>' + headerRow + '</thead>').appendTo(self.headerContainer.find('table'));
         self.element.prepend(self.headerContainer);
       } else {
+        self.headerContainer.find('table').css('width', this.totalWidth);
         self.headerRow.html(headerRow);
         self.headerColGroup.html(cols);
       }
 
-      self.headerRow.find('th[title]').tooltip();
+      if (this.settings.enableTooltips) {
+        self.headerRow.find('th[title]').tooltip();
+      }
 
       if (self.settings.columnReorder) {
         self.createDraggableColumns();
@@ -12584,6 +14349,16 @@ $.fn.datagrid = function(options) {
 
       this.renderFilterRow();
 
+      if (this.restoreSortOrder) {
+        this.setSortIndicator(this.sortColumn.sortId, this.sortColumn.sortAsc);
+        this.restoreSortOrder = false;
+      }
+
+      if (this.restoreFilter) {
+        this.applyFilter(this.savedFilter);
+        this.restoreFilter = false;
+        this.savedFilter = null;
+      }
     },
 
     filterRowRendered: false,
@@ -12620,6 +14395,13 @@ $.fn.datagrid = function(options) {
             case 'decimal':
               filterMarkup += '<input ' + (col.filterDisabled ? ' disabled' : '') + ' type="text" id="'+ filterId +'" data-mask-mode="number" data-mask="'+ (col.mask ? col.mask : '####.00') + '">';
               break;
+            case 'percent':
+              col.maskOptions = {
+                showSymbol: 'percent',
+                pattern: col.mask || (((col.name + '').toLowerCase() === 'decimal') ? '####.00' : '')
+              };
+              filterMarkup += '<input' + (col.filterDisabled ? ' disabled' : '') + ' type="text" id="'+ filterId +'" data-mask-mode="number" data-mask="'+ col.maskOptions.pattern +'"/>';
+              break;
             case 'contents':
             case 'select':
               filterMarkup += '<select ' + (col.filterDisabled ? ' disabled' : '') + (col.filterType ==='select' ? ' class="dropdown"' : ' multiple class="multiselect"') + 'id="'+ filterId +'">';
@@ -12637,6 +14419,9 @@ $.fn.datagrid = function(options) {
               filterMarkup += '</select>';
 
               break;
+			      case 'time':
+              filterMarkup += '<input ' + (col.filterDisabled ? ' disabled' : '') + ' type="text" class="timepicker" id="'+ filterId +'"/>';
+              break;
             default:
               filterMarkup += '<input' + (col.filterDisabled ? ' disabled' : '') + ' type="text" id="'+ filterId +'"/>';
               break;
@@ -12644,10 +14429,11 @@ $.fn.datagrid = function(options) {
 
           filterMarkup += '</div>';
           header.find('.datagrid-column-wrapper').after(filterMarkup);
-          header.find('.datepicker').datepicker(col.editorOptions ? col.editoroptions : {dateFormat: col.dateFormat});
-          header.find('.dropdown').dropdown(col.editorOptions);
+          header.find('.datepicker').datepicker(col.editorOptions ? col.editorOptions : {dateFormat: col.dateFormat});
+          header.find('select.dropdown').dropdown(col.editorOptions);
           header.find('.multiselect').multiselect(col.editorOptions);
-          header.find('[data-mask]').mask();
+          header.find('[data-mask]').mask(col.maskOptions);
+		      header.find('.timepicker').timepicker(col.editorOptions ? col.editorOptions : {timeFormat: col.timeFormat});
         }
       }
 
@@ -12659,24 +14445,16 @@ $.fn.datagrid = function(options) {
         self.applyFilter();
       });
 
-      var lastValue = '';
-
-      this.headerRow.on('keydown.datagrid', '.datagrid-filter-wrapper input', function (e) {
-        var input = $(this);
+      this.headerRow.off('keydown.datagrid').on('keydown.datagrid', '.datagrid-filter-wrapper input', function (e) {
         e.stopPropagation();
 
-        if (e.which === 13 && lastValue !== input.val()) {
+        if (e.which === 13) {
           e.preventDefault();
           $(this).trigger('change');
-          lastValue = input.val();
         }
 
-      }).on('change.datagrid', '.datagrid-filter-wrapper input', function () {
-        var input = $(this);
-        if (lastValue !== input.val()) {
-          self.applyFilter();
-          lastValue = input.val();
-        }
+      }).off('change.datagrid').on('change.datagrid', '.datagrid-filter-wrapper input', function () {
+        self.applyFilter();
       });
 
       this.headerRow.find('.dropdown, .multiselect').on('selected.datagrid', function () {
@@ -12729,13 +14507,13 @@ $.fn.datagrid = function(options) {
 
       if (filterType !== 'checkbox') {
         btnMarkup += ''+
-          render('equals', 'Equals', (filterType === 'integer' || filterType === 'date')) +
+          render('equals', 'Equals', (filterType === 'integer' || filterType === 'date' || filterType === 'time')) +
           render('does-not-equal', 'DoesNotEqual') +
           render('is-empty', 'IsEmpty') +
           render('is-not-empty', 'IsNotEmpty');
       }
 
-      if (filterType === 'integer' || filterType === 'date' || filterType === 'decimal') {
+      if (/\b(integer|decimal|date|time|percent)\b/g.test(filterType)) {
         btnMarkup += ''+
           render('less-than', 'LessThan') +
           render('less-equals', 'LessOrEquals') +
@@ -12762,6 +14540,8 @@ $.fn.datagrid = function(options) {
         this.headerRow.find('.is-filterable').removeClass('is-filterable');
         this.headerRow.find('.datagrid-filter-wrapper').hide();
         this.settings.filterable = false;
+        this.filterRowRendered = false;
+        this.element.removeClass('has-filterable-columns');
       } else {
         this.settings.filterable = true;
 
@@ -12769,19 +14549,22 @@ $.fn.datagrid = function(options) {
           this.renderFilterRow();
         }
 
+        this.element.addClass('has-filterable-columns');
+
         this.headerRow.addClass('is-filterable');
         this.headerRow.find('.is-filterable').addClass('is-filterable');
         this.headerRow.find('.datagrid-filter-wrapper').show();
       }
-
     },
 
-    //Except conditions from outside or pull from filter row
+
     applyFilter: function (conditions) {
       var self = this;
       this.filteredDataset = null;
 
-      if (!conditions) {
+      if (conditions) {
+        this.setFilterConditions(conditions);
+      } else {
         conditions = this.filterConditions();
       }
 
@@ -12794,6 +14577,18 @@ $.fn.datagrid = function(options) {
             rowValue = self.fieldValue(rowData, field),
             rowValueStr = rowValue.toString().toLowerCase(),
             conditionValue = conditions[i].value.toString().toLowerCase();
+
+          //Percent filter type
+          if (columnDef.filterType === 'percent') {
+            conditionValue = (conditionValue / 100).toString();
+            if ((columnDef.name + '').toLowerCase() === 'decimal') {
+              rowValue = window.Formatters.Decimal(false, false, rowValue, columnDef);
+              conditionValue = window.Formatters.Decimal(false, false, conditionValue, columnDef);
+            } else if ((columnDef.name + '').toLowerCase() === 'integer') {
+              rowValue = window.Formatters.Integer(false, false, rowValue, columnDef);
+              conditionValue = window.Formatters.Integer(false, false, conditionValue, columnDef);
+            }
+          }
 
           //Run Data over the formatter
           if (columnDef.filterType === 'text') {
@@ -12810,10 +14605,39 @@ $.fn.datagrid = function(options) {
             rowValue = rowValue.toLowerCase();
           }
 
-          if (rowValue instanceof Date) {
-            rowValue = rowValue.getTime();
-            conditionValue = Locale.parseDate(conditions[i].value, conditions[i].format).getTime();
-          }
+		  if (columnDef.filterType === 'date' || columnDef.filterType === 'time') {
+            conditionValue = Locale.parseDate(conditions[i].value, conditions[i].format);
+            if (conditionValue) {
+              if (columnDef.filterType === 'time') {
+                // drop the day, month and year
+                conditionValue.setDate(1);
+                conditionValue.setMonth(0);
+                conditionValue.setYear(0);
+              }
+              conditionValue = conditionValue.getTime();
+		    }
+
+            if (rowValue instanceof Date) {
+              rowValue = rowValue.getTime();
+            }
+            else if (typeof rowValue === 'string' && rowValue) {
+              if (!columnDef.sourceFormat) {
+                rowValue = Locale.parseDate(rowValue, {pattern: conditions[i].format});
+              } else {
+                rowValue = Locale.parseDate(rowValue, (typeof columnDef.sourceFormat === 'string' ? {pattern: columnDef.sourceFormat}: columnDef.sourceFormat));
+              }
+
+              if (rowValue) {
+                if (columnDef.filterType === 'time') {
+                  // drop the day, month and year
+                  rowValue.setDate(1);
+                  rowValue.setMonth(0);
+                  rowValue.setYear(0);
+                }
+                rowValue = rowValue.getTime();
+              }
+            }
+		  }
 
           if (typeof rowValue === 'number') {
             rowValue =  parseFloat(rowValue);
@@ -12839,13 +14663,13 @@ $.fn.datagrid = function(options) {
 
               break;
             case 'does-not-equal':
-              isMatch = (rowValue !== conditionValue && rowValue !== '');
+              isMatch = (rowValue !== conditionValue);
               break;
             case 'contains':
               isMatch = (rowValueStr.indexOf(conditionValue) > -1 && rowValue.toString() !== '');
               break;
             case 'does-not-contain':
-              isMatch = (rowValueStr.indexOf(conditionValue) === -1 && rowValue.toString() !== '');
+              isMatch = (rowValueStr.indexOf(conditionValue) === -1);
               break;
             case 'end-with':
               isMatch = (rowValueStr.lastIndexOf(conditionValue) === (rowValueStr.length - conditionValue.toString().length)  && rowValueStr !== '' && (rowValueStr.length >= conditionValue.toString().length));
@@ -12926,16 +14750,52 @@ $.fn.datagrid = function(options) {
       }
       this.renderRows();
       this.resetPager('filtered');
+      this.setSearchActivePage();
+      this.element.trigger('filtered', {op: 'apply', conditions: conditions});
+      this.saveUserSettings();
     },
 
-    //Clear and reset the filter
+    /**
+    * Clear the Filter row Conditions and Reset the Data.
+    */
     clearFilter: function () {
       this.renderFilterRow();
       this.applyFilter();
+      this.element.trigger('filtered', {op: 'clear', conditions: []});
+    },
+
+    setFilterConditions: function (conditions) {
+      for (var i = 0; i < conditions.length; i++) {
+        //Find the filter row
+        var rowElem = this.headerRow.find('th[data-column-id="'+ conditions[i].columnId +'"]'),
+          input = rowElem.find('input, select'),
+          btn = rowElem.find('.btn-filter');
+
+        if (conditions[i].value === undefined) {
+          conditions[i].value = '';
+        }
+
+        input.val(conditions[i].value);
+
+        if (input.is('select') && conditions[i].value instanceof Array) {
+          for (var j = 0; j < conditions[i].value.length; j++) {
+            input.find('option[value="'+ conditions[i].value[j] + '"]').prop('selected', true);
+          }
+          input.trigger('updated');
+        }
+
+        btn.find('svg:first > use').attr('xlink:href', '#icon-filter-' + conditions[i].operator);
+      }
     },
 
     //Get filter conditions in array form from the UI
     filterConditions: function () {
+      // Do not modify keyword search filter expr
+      if (this.filterExpr && this.filterExpr.length === 1 && this.filterExpr[0].keywordSearch) {
+        delete this.filterExpr[0].keywordSearch;
+        return this.filterExpr;
+      }
+
       var self = this;
       this.filterExpr = [];
 
@@ -12946,7 +14806,8 @@ $.fn.datagrid = function(options) {
           input = rowElem.find('input, select'),
           isDropdown = input.is('select'),
           svg = btn.find('.icon-dropdown:first'),
-          op;
+          op,
+		      format;
 
         if (!btn.length && !isDropdown) {
           return;
@@ -12968,14 +14829,18 @@ $.fn.datagrid = function(options) {
 
         var condition = {columnId: rowElem.attr('data-column-id'),
           operator: op,
-          value: input.val() ? input.val() : '',
-          ignorecase: 'yes'};
+          value: input.val() ? input.val() : ''};
 
         if (input.data('datepicker')) {
-          var format = input.data('datepicker').settings.dateFormat;
+          format = input.data('datepicker').settings.dateFormat;
           if (format === 'locale') {
             format = Locale.calendar().dateFormat.short;
           }
+          condition.format = format;
+        }
+
+		if (input.data('timepicker')) {
+          format = input.data('timepicker').settings.timeFormat;
           condition.format = format;
         }
 
@@ -12997,7 +14862,8 @@ $.fn.datagrid = function(options) {
         showTarget = $('.drag-target-arrows', self.element);
       }
 
-      headers.prepend('<span class="is-draggable-target"></span><span class="handle">&#8286;</span>');
+      headers.not('[data-reorder="false"]').prepend('</span><span class="handle">&#8286;</span>');
+      headers.prepend('<span class="is-draggable-target"></span>');
       headers.last().append('<span class="is-draggable-target last"></span>');
       self.element.addClass('has-draggable-columns');
 
@@ -13083,7 +14949,6 @@ $.fn.datagrid = function(options) {
               if (self.draggableStatus.endIndex !== -1) {
                 if (self.draggableStatus.startIndex !== self.draggableStatus.endIndex) {
                   target = self.draggableColumnTargets[index];
-
 
                   //Swap columns
                   for (i=0, l=self.settings.columns.length; i < l; i++) {
@@ -13173,8 +15038,6 @@ $.fn.datagrid = function(options) {
       }
 
       // Attach the Drag API
-      //var rowHeight = this.settings.rowHeight === 'normal' ? 50 : (this.settings.rowHeight === 'medium' ? 40 : 30);
-
       this.tableBody.arrange({
           placeholder: '<tr class="datagrid-reorder-placeholder"><td colspan="'+ this.visibleColumns().length +'"></td></tr>',
           handle: '.datagrid-reorder-icon'
@@ -13295,6 +15158,10 @@ $.fn.datagrid = function(options) {
         self.recordCount = s.treeRootNodes[(pagesize * activePage) - pagesize].idx-1;
       }
 
+      if (this.restoreSortOrder) {
+        this.sortDataset();
+      }
+
       for (i = 0; i < dataset.length; i++) {
 
         //For better performance dont render out of page
@@ -13309,7 +15176,9 @@ $.fn.datagrid = function(options) {
 
           if (activePage > 1 && !((i - this.filteredCount) >= pagesize*(activePage-1) && (i - this.filteredCount) < pagesize*activePage)) {
             if (!dataset[i].isFiltered) {
-              this.recordCount++;
+              if (this.filteredCount) {
+                this.recordCount++;
+              }
             } else {
               this.filteredCount++;
             }
@@ -13335,7 +15204,7 @@ $.fn.datagrid = function(options) {
           //First push group row
           if (!this.settings.groupable.suppressGroupRow) {
             //Show the grouping row
-            tableHtml += self.rowHtml(dataset[i], this.recordCount, true);
+            tableHtml += self.rowHtml(dataset[i], this.recordCount, i, true);
           }
 
           if (this.settings.groupable.showOnlyGroupRow && dataset[i].values[0]) {
@@ -13347,32 +15216,32 @@ $.fn.datagrid = function(options) {
 
             rowData.values = dataset[i].values;
 
-            tableHtml += self.rowHtml(rowData, this.recordCount);
+            tableHtml += self.rowHtml(rowData, this.recordCount, i);
             this.recordCount++;
             continue;
           }
 
           //Now Push Groups
           for (var k = 0; k < dataset[i].values.length; k++) {
-            tableHtml += self.rowHtml(dataset[i].values[k], this.recordCount);
+            tableHtml += self.rowHtml(dataset[i].values[k], this.recordCount, i);
             this.recordCount++;
           }
 
           // Now Push summary rowHtml
           if (this.settings.groupable.groupFooterRow) {
-            tableHtml += self.rowHtml(dataset[i], this.recordCount, true, true);
+            tableHtml += self.rowHtml(dataset[i], this.recordCount, i, true, true);
           }
 
           continue;
         }
 
-        tableHtml += self.rowHtml(dataset[i], s.treeGrid ? this.recordCount : i);
+        tableHtml += self.rowHtml(dataset[i], s.treeGrid ? this.recordCount : i, i);
         this.recordCount++;
       }
 
       //Append a Summary Row
       if (this.settings.summaryRow) {
-        tableHtml += self.rowHtml(self.calculateTotals(), this.recordCount, false, true);
+        tableHtml += self.rowHtml(self.calculateTotals(), this.recordCount, null, false, true);
       }
 
       if (self.bodyColGroupHtml !== '<colgroup>') {
@@ -13390,12 +15259,32 @@ $.fn.datagrid = function(options) {
       self.setVirtualHeight();
       self.setScrollClass();
       self.setupTooltips();
-      self.tableBody.find('.dropdown').dropdown();
+      self.afterRender();
 
-      //Set IE elements after dataload
+    },
+
+    afterRender: function() {
+      var self = this;
+
+      //Init Inline Elements
+      self.tableBody.find('select.dropdown').dropdown();
+
+      //Commit Edits for inline editing
+      self.tableBody.find('.dropdown-wrapper.is-inline').prev('select')
+        .on('listclosed', function () {
+           var elem = $(this),
+            newValue = elem.val(),
+            row = elem.closest('tr');
+
+            self.updateCellNode(row.attr('aria-rowindex'), elem.closest('td').index(), newValue, false, true);
+         });
+
+      self.tableBody.find('.spinbox').spinbox();
+
+      //Set UI elements after dataload
       setTimeout(function () {
 
-        if (!s.source) {
+        if (!self.settings.source) {
           self.displayCounts();
         }
 
@@ -13409,7 +15298,16 @@ $.fn.datagrid = function(options) {
         if (self.activeCell.isFocused) {
           self.setActiveCell(self.activeCell.row, self.activeCell.cell);
         }
+
+        //Update Selected Rows Across Page
+        if (self.settings.paging && self.settings.source) {
+          self.updateSelected();
+          self.syncSelectedUI();
+        }
+
+        self.element.trigger('afterrender', {body: self.tableBody, header: self.headerRow, pager: self.pagerBar});
       }, 0);
+
     },
 
     cacheVirtualStats: function () {
@@ -13513,7 +15411,7 @@ $.fn.datagrid = function(options) {
 
     recordCount: 0,
 
-    rowHtml: function (rowData, dataRowIdx, isGroup, isFooter) {
+    rowHtml: function (rowData, dataRowIdx, actualIndex, isGroup, isFooter) {
       var isEven = false,
         self = this,
         isSummaryRow = this.settings.summaryRow && !isGroup && isFooter,
@@ -13565,13 +15463,11 @@ $.fn.datagrid = function(options) {
       }
 
       var ariaRowindex = ((dataRowIdx + 1) + (self.settings.source  ? ((activePage-1) * pagesize) : 0));
-      if (this.settings.indeterminate) {
-        ariaRowindex = (dataRowIdx + 1);
-      }
 
       isEven = (this.recordCount % 2 === 0);
 
       rowHtml = '<tr role="row" aria-rowindex="' + ariaRowindex + '"' +
+                ' data-index="' + actualIndex + '"' +
                 (self.settings.treeGrid && rowData.children ? ' aria-expanded="' + (rowData.expanded ? 'true"' : 'false"') : '') +
                 (self.settings.treeGrid ? ' aria-level= "' + depth + '"' : '') +
                 ' class="datagrid-row'+
@@ -13657,6 +15553,10 @@ $.fn.datagrid = function(options) {
           cssClass += ' ' + col.cssClass(this.recordCount, j, cellValue, col, rowData);
         }
 
+        if (col.cssClass && typeof col.cssClass === 'string') {
+          cssClass += ' ' + col.cssClass;
+        }
+
         cssClass += (col.focusable ? ' is-focusable' : '');
 
         var rowspan = this.calculateRowspan(cellValue, dataRowIdx, col);
@@ -13675,7 +15575,7 @@ $.fn.datagrid = function(options) {
         rowHtml += '<td role="gridcell" ' + ariaReadonly + ' aria-colindex="' + (j+1) + '" '+
             ' aria-describedby="' + self.uniqueId('-header-' + j) + '"' +
            (cssClass ? ' class="' + cssClass + '"' : '') +
-           (col.tooltip ? ' title="' + col.tooltip.replace('{{value}}', cellValue) + '"' : '') +
+           (col.tooltip && typeof col.tooltip === 'string' ? ' title="' + col.tooltip.replace('{{value}}', cellValue) + '"' : '') +
            (col.id === 'rowStatus' && rowData.rowStatus && rowData.rowStatus.tooltip ? ' title="' + rowData.rowStatus.tooltip + '"' : '') +
            (self.settings.columnGroups ? 'headers = "' + self.uniqueId('-header-' + j) + ' ' + self.getColumnGroup(j) + '"' : '') +
            (rowspan ? rowspan : '' ) +
@@ -13708,11 +15608,17 @@ $.fn.datagrid = function(options) {
           '</td></tr>';
       }
 
+      if (self.settings.expandableRow) {
+        rowHtml += '<tr class="datagrid-expandable-row"><td colspan="'+ this.visibleColumns().length +'">' +
+          '<div class="datagrid-row-detail"><div class="datagrid-row-detail-padding"></div></div>' +
+          '</td></tr>';
+      }
+
       //Render Tree Children
       if (rowData.children) {
         for (i=0, l=rowData.children.length; i<l; i++) {
           this.recordCount++;
-          rowHtml += self.rowHtml(rowData.children[i], this.recordCount);
+          rowHtml += self.rowHtml(rowData.children[i], this.recordCount, i);
         }
       }
 
@@ -13779,7 +15685,6 @@ $.fn.datagrid = function(options) {
       }
       this.setScrollClass();
 
-      //TODO Test last column hidden
       if (cacheWidths.widthPercent) {
         return 'style = "width: 100%"';
       } else if (!isNaN(this.totalWidth)) {
@@ -13817,6 +15722,11 @@ $.fn.datagrid = function(options) {
       var visibleColumns, colPercWidth;
       visibleColumns = this.visibleColumns(true);
 
+      var lastColumn = (index === this.lastColumnIdx());
+      if (lastColumn && col.isStretched) {
+        col.width = null;
+      }
+
       if (!this.elemWidth) {
         this.elemWidth = this.element.outerWidth();
 
@@ -13831,7 +15741,7 @@ $.fn.datagrid = function(options) {
         this.widthPixel = false;
       }
 
-        // use cache
+      // use cache
       if (this.headerWidths[index]) {
         var cacheWidths = this.headerWidths[index];
 
@@ -13869,12 +15779,15 @@ $.fn.datagrid = function(options) {
         colWidth = Math.max(textWidth, colWidth || 0);
       }
 
+      lastColumn = index === this.lastColumnIdx() && this.totalWidth !== colWidth;
+
       // Simulate Auto Width Algorithm
-      if ((!this.widthSpecified || col.width === undefined) && visibleColumns.length < 8 &&
+      if ((!this.widthSpecified || col.width === undefined) && this.settings.sizeColumnsEqually &&
         (['selectionCheckbox', 'expander', 'drilldown', 'rowStatus', 'favorite'].indexOf(col.id) === -1)) {
 
         var percentWidth = Math.round(this.elemWidth / visibleColumns.length);
-        colWidth = percentWidth;
+        colWidth = percentWidth - (lastColumn ? 2 : 0); //borders causing scroll
+
         //Handle Columns where auto width is bigger than the percent width
         if (percentWidth < textWidth) {
           colWidth = textWidth;
@@ -13905,19 +15818,19 @@ $.fn.datagrid = function(options) {
 
       // cache the header widths
       this.headerWidths[index] = {id: col.id, width: (this.widthPercent ? colPercWidth : colWidth), widthPercent: this.widthPercent};
-      var lastColumn = index === this.settings.columns.length-1 && this.totalWidth !== colWidth;
       this.totalWidth += col.hidden || lastColumn ? 0 : colWidth;
 
       //For the last column stretch it if it doesnt fit the area
       if (lastColumn) {
-
         var diff = this.elemWidth - this.totalWidth;
 
-        if ((diff > 0) && diff  > colWidth && !this.widthPercent && !this.headerRow) {
-          colWidth = diff - 2;
+        if ((diff > 0) && (diff  > colWidth) && !this.widthPercent) {
+          colWidth = diff - (this.isIe ? 19: 2);
+
           this.headerWidths[index] = {id: col.id, width: colWidth, widthPercent: this.widthPercent};
           col.width = colWidth;
-          this.totalWidth =  this.elemWidth -2;
+          col.isStretched = true;
+          this.totalWidth =  this.elemWidth - (this.isIe ? 19: 2);
         }
 
         if (this.widthPercent) {
@@ -13997,6 +15910,10 @@ $.fn.datagrid = function(options) {
     },
 
     setupTooltips: function () {
+      if (!this.settings.enableTooltips) {
+        return;
+      }
+
       var self = this;
       // Implement Tooltip on cells with title attribute
       this.tableBody.find('td[title]').tooltip({placement: 'left', offset: {left: -5, top: 0}});
@@ -14068,6 +15985,8 @@ $.fn.datagrid = function(options) {
       this.resetPager('updatecolumns');
       this.element.trigger('columnchange', [{type: 'updatecolumns', columns: this.settings.columns}]);
       this.saveColumns();
+      this.saveUserSettings();
+
     },
 
     saveColumns: function () {
@@ -14081,6 +16000,61 @@ $.fn.datagrid = function(options) {
       }
     },
 
+    // Omit events and save to local storage for supported settings
+    saveUserSettings: function () {
+
+      // Emit Event
+      this.element.trigger('settingschanged', [{rowHeight: this.settings.rowHeight,
+        columns: this.settings.columns,
+        sortOrder: this.sortColumn,
+        pagesize: this.settings.pagesize,
+        showPageSizeSelector: this.settings.showPageSizeSelector,
+        activePage: this.pager ? this.pager.activePage : 1,
+        filter: this.filterConditions()}]);
+
+      // Save to Local Storage if the options are set
+      var options = this.settings.saveUserSettings;
+      if ($.isEmptyObject(options) || !this.canUseLocalStorage()) {
+        return;
+      }
+
+      // Save Columns
+      if (options.columns) {
+        localStorage[this.uniqueId('usersettings-columns')] = JSON.stringify(this.settings.columns);
+      }
+
+      // Save Row Height
+      if (options.rowHeight) {
+        localStorage[this.uniqueId('usersettings-row-height')] = this.settings.rowHeight;
+      }
+
+      // Save Sort Order
+      if (options.sortOrder) {
+        localStorage[this.uniqueId('usersettings-sort-order')] = JSON.stringify(this.sortColumn);
+      }
+
+      // Save Page Size
+      if (options.pagesize) {
+        localStorage[this.uniqueId('usersettings-pagesize')] = this.settings.pagesize;
+      }
+
+      // Save Show Page Size Selector
+      if (options.showPageSizeSelector) {
+        localStorage[this.uniqueId('usersettings-show-pagesize-selector')] = this.settings.showPageSizeSelector;
+      }
+
+      // Save Page Num
+      if (options.activePage && this.pager) {
+        localStorage[this.uniqueId('usersettings-active-page')] = this.pager.activePage;
+      }
+
+      // Filter Conditions
+      if (options.filter) {
+        localStorage[this.uniqueId('usersettings-filter')] = JSON.stringify(this.filterConditions());
+      }
+
+    },
+
     canUseLocalStorage: function () {
       try {
         if (localStorage.getItem) {
@@ -14092,6 +16066,10 @@ $.fn.datagrid = function(options) {
     },
 
     columnsFromString: function(columnStr) {
+      if (!columnStr) {
+        return;
+      }
+
       var self = this,
         columns = JSON.parse(columnStr);
 
@@ -14119,7 +16097,7 @@ $.fn.datagrid = function(options) {
       return columns;
     },
 
-    //Restore the columns from a saved list or local storage
+    // Restore the columns from a saved list or local storage
     restoreColumns: function (cols) {
       if (!this.settings.saveColumns || !this.canUseLocalStorage()) {
         return;
@@ -14141,6 +16119,114 @@ $.fn.datagrid = function(options) {
 
     },
 
+    restoreUserSettings: function (settings) {
+      var options = this.settings.saveUserSettings;
+
+      if (!settings && ($.isEmptyObject(options) || !this.canUseLocalStorage())) {
+        return;
+      }
+
+      // Restore The data thats passed in
+      if (settings) {
+
+        if (settings.columns) {
+          this.updateColumns(settings.columns);
+        }
+
+        if (settings.rowHeight) {
+          this.rowHeight(settings.rowHeight);
+        }
+
+        if (settings.sortOrder) {
+          this.setSortColumn(settings.sortOrder.sortId, settings.sortOrder.sortAsc);
+        }
+
+        if (settings.pagesize) {
+          this.settings.pagesize = parseInt(settings.pagesize);
+          this.pager.settings.pagesize = parseInt(settings.pagesize);
+          this.pager.setActivePage(1, true);
+        }
+
+        if (settings.showPageSizeSelector) {
+          this.settings.showPageSizeSelector = settings.showPageSizeSelector;
+          this.pager.showPageSizeSelector(settings.showPageSizeSelector);
+        }
+
+        if (settings.activePage) {
+          this.pager.setActivePage(parseInt(settings.activePage), true);
+        }
+
+        if (settings.filter) {
+          this.applyFilter(settings.filter);
+        }
+        return;
+      }
+
+      // Restore Column Width and Order
+      if (options.columns) {
+        var savedColumns = localStorage[this.uniqueId('usersettings-columns')];
+        this.originalColumns = this.settings.columns;
+
+        if (savedColumns) {
+          this.settings.columns = this.columnsFromString(savedColumns);
+        }
+      }
+
+      // Restore Row Height
+      if (options.rowHeight) {
+        var savedRowHeight = localStorage[this.uniqueId('usersettings-row-height')];
+
+        if (savedRowHeight) {
+          this.settings.rowHeight = savedRowHeight;
+        }
+      }
+
+      // Restore Sort Order
+      if (options.sortOrder) {
+        var savedSortOrder = localStorage[this.uniqueId('usersettings-sort-order')];
+        if (savedSortOrder) {
+          this.sortColumn = JSON.parse(savedSortOrder);
+          this.restoreSortOrder = true;
+        }
+      }
+
+      // Restore Page Size
+      if (options.pagesize) {
+        var savedPagesize = localStorage[this.uniqueId('usersettings-pagesize')];
+        if (savedPagesize) {
+          this.settings.pagesize = parseInt(savedPagesize);
+        }
+      }
+
+      // Restore Show Page Size Selector
+      if (options.showPageSizeSelector) {
+        var savedShowPageSizeSelector = localStorage[this.uniqueId('usersettings-show-pagesize-selector')];
+        savedShowPageSizeSelector = (savedShowPageSizeSelector + '').toLowerCase() === 'true';
+        if (savedShowPageSizeSelector) {
+          this.settings.showPageSizeSelector = savedShowPageSizeSelector;
+        }
+      }
+
+      // Restore Active Page
+      if (options.activePage) {
+        var savedActivePage = localStorage[this.uniqueId('usersettings-active-page')];
+        if (savedActivePage) {
+          this.savedActivePage = parseInt(savedActivePage);
+          this.restoreActivePage = true;
+        }
+      }
+
+      if (options.filter) {
+        var savedFilter = localStorage[this.uniqueId('usersettings-filter')];
+        if (savedFilter) {
+          this.savedFilter = JSON.parse(savedFilter);
+          this.restoreFilter = true;
+        }
+      }
+
+    },
+
+    // Reset Columns from the Menu Option
     resetColumns: function () {
       if (this.canUseLocalStorage()) {
         localStorage.removeItem(this.uniqueId('columns'));
@@ -14149,34 +16235,53 @@ $.fn.datagrid = function(options) {
 
       if (this.originalColumns) {
         this.updateColumns(this.originalColumns);
+        this.originalColumns = this.columnsFromString(JSON.stringify(this.settings.columns));
       }
-
     },
 
-    //Hide a column
+    /**
+    * Hide a column.
+    * @param {String} id &nbsp;-&nbsp The id of the column to hide.
+    */
     hideColumn: function(id) {
       var idx = this.columnIdxById(id);
+
+      if (idx === -1) {
+        return;
+      }
+
       this.settings.columns[idx].hidden = true;
       this.headerRow.find('th').eq(idx).addClass('is-hidden');
       this.tableBody.find('td:nth-child('+ (idx+1) +')').addClass('is-hidden');
       this.headerColGroup.find('col').eq(idx).addClass('is-hidden');
-      this.bodyColGroup.find('col').eq(idx).addClass('is-hidden');
+      if (this.bodyColGroup) {
+        this.bodyColGroup.find('col').eq(idx).addClass('is-hidden');
+      }
 
       this.element.trigger('columnchange', [{type: 'hidecolumn', index: idx, columns: this.settings.columns}]);
       this.saveColumns();
+      this.saveUserSettings();
     },
 
     //Show a hidden column
     showColumn: function(id) {
       var idx = this.columnIdxById(id);
+
+      if (idx === -1) {
+        return;
+      }
+
       this.settings.columns[idx].hidden = false;
       this.headerRow.find('th').eq(idx).removeClass('is-hidden');
       this.tableBody.find('td:nth-child('+ (idx+1) +')').removeClass('is-hidden');
       this.headerColGroup.find('col').eq(idx).removeClass('is-hidden');
-      this.bodyColGroup.find('col').eq(idx).removeClass('is-hidden');
+      if (this.bodyColGroup) {
+        this.bodyColGroup.find('col').eq(idx).removeClass('is-hidden');
+      }
 
       this.element.trigger('columnchange', [{type: 'showcolumn', index: idx, columns: this.settings.columns}]);
       this.saveColumns();
+      this.saveUserSettings();
     },
 
     // Export To Excel
@@ -14252,7 +16357,7 @@ $.fn.datagrid = function(options) {
 
           for (var i = 0; i < dataset.length; i++) {
             if (!dataset[i].isFiltered) {
-              tableHtml += self.rowHtml(dataset[i], i);
+              tableHtml += self.rowHtml(dataset[i], i, i);
             }
           }
 
@@ -14338,7 +16443,7 @@ $.fn.datagrid = function(options) {
                   id = chk.attr('data-column-id'),
                   isChecked = chk.prop('checked');
 
-              args.elem.removeClass('is-selected');
+              args.elem.removeClass('is-selected hide-selected-color');
 
               if (chk.is(':disabled')) {
                 return;
@@ -14415,6 +16520,9 @@ $.fn.datagrid = function(options) {
         self.table.css('width', parseInt(self.tableWidth) + diff);
       }
 
+      this.element.trigger('columnchange', [{type: 'resizecolumn', index: idx, columns: this.settings.columns}]);
+      this.saveColumns();
+      this.saveUserSettings();
       this.clearHeaderCache();
     },
 
@@ -14452,6 +16560,7 @@ $.fn.datagrid = function(options) {
           startingLeft = self.currentHeader.position().left + self.table.scrollLeft() - 10;
           self.tableWidth = self.table[0].offsetWidth;
           columnStartWidth = self.currentHeader[0].offsetWidth;
+
         })
         .on('drag.datagrid', function (e, ui) {
           if (!self.currentHeader) {
@@ -14498,9 +16607,13 @@ $.fn.datagrid = function(options) {
         count = totals;
       }
 
-      var countText = '(' + count + ' ' + Locale.translate('Results') + ')';
-      if (self.settings.resultsText && typeof self.settings.resultsText === 'function') {
-        countText = self.settings.resultsText(self, count);
+      var countText = '(' + count + ' ' + Locale.translate(count === 1 ? 'Result' : 'Results') + ')';
+      if (self.settings.resultsText) {
+        if (typeof self.settings.resultsText === 'function') {
+          countText = self.settings.resultsText(self, count);
+        } else {
+          countText = self.settings.resultsText;
+        }
       }
 
       if (self.toolbar) {
@@ -14534,21 +16647,26 @@ $.fn.datagrid = function(options) {
 
     //Returns a cell node
     cellNode: function (row, cell, includeGroups) {
-      var rowNode = this.tableBody.find('tr').eq(row);
+      var cells,
+        rowNode = this.tableBody.find('tr:not(.datagrid-expandable-row)[aria-rowindex="'+ (row + 1) +'"]');
 
       if (row instanceof jQuery) {
         rowNode = row;
       }
 
-      if (includeGroups) {
+      if (includeGroups && this.settings.groupable) {
         rowNode = this.tableBody.prevAll('.datagrid-rowgroup-header').eq(row);
+        if (rowNode) {
+          rowNode = this.tableBody.find('.datagrid-rowgroup-header').eq(row);
+        }
       }
 
       if (cell === -1) {
         return $();
       }
 
-      return rowNode.find('td').eq(cell);
+      cells = rowNode.find('td');
+      return cells.eq(cell >= cells.length ? cells.length-1 : cell);
     },
 
     scrollLeft: 0,
@@ -14563,10 +16681,18 @@ $.fn.datagrid = function(options) {
 
     },
 
+    handleResize: function () {
+      var self = this;
+      self.clearHeaderCache();
+      self.renderRows();
+      self.renderHeader();
+    },
+
     // Attach All relevant events
     handleEvents: function() {
       var self = this,
-        isMultiple = this.settings.selectable === 'multiple';
+        isMultiple = this.settings.selectable === 'multiple',
+        isMixed = this.settings.selectable === 'mixed';
 
       // Set Focus on rows
       if (!self.settings.cellNavigation && self.settings.rowNavigation) {
@@ -14588,20 +16714,20 @@ $.fn.datagrid = function(options) {
       if (this.settings.virtualized) {
         var oldScroll = 0, oldHeight = 0;
 
-      self.contentContainer
-        .on('scroll.vtable', Soho.utils.debounce(function () {
+        self.contentContainer
+          .on('scroll.vtable', Soho.utils.debounce(function () {
 
-          var scrollTop = this.scrollTop,
-            buffer = 25,
-            hitBottom = scrollTop > (self.virtualRange.bottom - self.virtualRange.bodyHeight - buffer),
-            hitTop = scrollTop < (self.virtualRange.top + buffer);
+            var scrollTop = this.scrollTop,
+              buffer = 25,
+              hitBottom = scrollTop > (self.virtualRange.bottom - self.virtualRange.bodyHeight - buffer),
+              hitTop = scrollTop < (self.virtualRange.top + buffer);
 
-          if (scrollTop !== oldScroll && (hitTop || hitBottom)) {
-            oldScroll = this.scrollTop;
-            self.renderRows();
-            return;
-          }
-        }, 0));
+            if (scrollTop !== oldScroll && (hitTop || hitBottom)) {
+              oldScroll = this.scrollTop;
+              self.renderRows();
+              return;
+            }
+          }, 0));
 
         $('body').on('resize.vtable', function () {
           var height = this.offsetHeight;
@@ -14611,6 +16737,19 @@ $.fn.datagrid = function(options) {
             self.renderRows();
           }
 
+        });
+      }
+
+      // Handle Resize - Re do the columns
+      if (self.settings.redrawOnResize) {
+        var oldWidth = 0;
+
+        $('body').on('resize.datagrid', function () {
+          var width = this.offsetWidth;
+          if (width !== oldWidth) {
+            oldWidth = width;
+            self.handleResize();
+          }
         });
       }
 
@@ -14656,12 +16795,21 @@ $.fn.datagrid = function(options) {
           return false;
         }
 
-        var canSelect = self.settings.clickToSelect ? true :
-          target.is('.datagrid-selection-checkbox') ||
-          target.find('.datagrid-selection-checkbox').length === 1;
+        var isSelectionCheckbox = target.is('.datagrid-selection-checkbox') ||
+                                  target.find('.datagrid-selection-checkbox').length === 1,
+          canSelect = self.settings.clickToSelect ? true : isSelectionCheckbox;
 
         if (target.is('.datagrid-drilldown')) {
           canSelect = false;
+        }
+
+        if (isMixed) {
+          canSelect = isSelectionCheckbox;
+
+          //Then Activate
+          if (!canSelect) {
+            self.toggleRowActivation(target.closest('tr'));
+          }
         }
 
         if (canSelect && isMultiple && e.shiftKey) {
@@ -14671,14 +16819,15 @@ $.fn.datagrid = function(options) {
           self.toggleRowSelection(target.closest('tr'));
         }
 
-        self.makeCellEditable(self.activeCell.row, self.activeCell.cell, e);
+        self.lastClicked = target;
+        var isEditable = self.makeCellEditable(self.activeCell.dataRow, self.activeCell.cell, e);
 
         //Handle Cell Click Event
         var elem = $(this).closest('td'),
           cell = elem.parent().children(':visible').index(elem),
           col = self.columnSettings(cell, true);
 
-        if (col.click && typeof col.click === 'function') {
+        if (col.click && typeof col.click === 'function' && (target.is('button, input[checkbox], a') || target.parent().is('button'))) {
 
           var rowElem = $(this).closest('tr'),
             rowIdx = self.dataRowIndex(rowElem),
@@ -14694,7 +16843,7 @@ $.fn.datagrid = function(options) {
             }
           }
 
-          if (!elem.hasClass('is-cell-readonly')) {
+          if (!elem.hasClass('is-cell-readonly') && (target.is('button, input[checkbox], a') || target.parent().is('button'))) {
             col.click(e, [{row: rowIdx, cell: self.activeCell.cell, item: item, originalEvent: e}]);
           }
         }
@@ -14710,30 +16859,20 @@ $.fn.datagrid = function(options) {
         }
 
         // Apply Quick Edit Mode
-          if (self.isCellEditable(dataRowIdx, cell)) {
-            setTimeout(function() {
-              if ($('textarea, input', elem).length &&
-                  (!$('.dropdown,' +
-                  '[type=image],' +
-                  '[type=button],' +
-                  '[type=submit],' +
-                  '[type=reset],' +
-                  '[type=checkbox],' +
-                  '[type=radio]', elem).length)) {
-                self.quickEditMode = true;
-              }
-            }, 0);
-          }
-
-        /* Test Quick Edit Mode without this. Especially Drop Down
-          if (self.isCellEditable(dataRowIdx, cell)) {
-            setTimeout(function() {
-              if (self.isContainTextfield(elem) && self.notContainTextfield(elem)) {
-                self.quickEditMode = true;
-              }
-            }, 0);
-          }
-         */
+        if (isEditable) {
+          setTimeout(function() {
+            if ($('textarea, input', elem).length &&
+                (!$('.dropdown,' +
+                '[type=image],' +
+                '[type=button],' +
+                '[type=submit],' +
+                '[type=reset],' +
+                '[type=checkbox],' +
+                '[type=radio]', elem).length)) {
+              self.quickEditMode = true;
+            }
+          }, 0);
+        }
 
       });
 
@@ -14788,7 +16927,7 @@ $.fn.datagrid = function(options) {
           }
 
           if (!alignToLeft) {
-             self.currentHeader = self.currentHeader.prev();
+            self.currentHeader = self.currentHeader.prevAll().not('.is-hidden').first();
           }
 
           if (!self.currentHeader.hasClass('is-resizable')) {
@@ -14823,15 +16962,22 @@ $.fn.datagrid = function(options) {
 
         // Keep icon clickable in edit mode
         var target = e.target;
-        if ($(target).is('input.lookup, input.timepicker, input.datepicker')) {
+
+        if ($(target).is('input.lookup, input.timepicker, input.datepicker, input.spinbox')) {
           // Wait for modal popup, if did not found modal popup means
           // icon was not clicked, then commit cell edit
           setTimeout(function() {
             if (!$('.lookup-modal.is-visible, #timepicker-popup, #calendar-popup').length &&
                 !!self.editor && self.editor.input.is(target)) {
+
+              if ($('*:focus').is('.spinbox')) {
+                return;
+              }
               self.commitCellEdit(self.editor.input);
             }
-          }, 200);
+
+          }, 150);
+
           return;
         }
 
@@ -14841,6 +16987,7 @@ $.fn.datagrid = function(options) {
         }
 
         if (self.editor && self.editor.input) {
+          self.lastClicked = null;
           self.commitCellEdit(self.editor.input);
         }
 
@@ -14861,7 +17008,34 @@ $.fn.datagrid = function(options) {
       return false;
     },
 
-    appendToolbar: function () {
+    // Adjust to set a changed row height
+    refreshSelectedRowHeight: function () {
+      var toolbar = this.element.parent().find('.toolbar:not(.contextual-toolbar)'),
+        short = toolbar.find('[data-option="row-short"]'),
+        med = toolbar.find('[data-option="row-medium"]'),
+        normal = toolbar.find('[data-option="row-normal"]');
+
+        if (this.settings.rowHeight === 'short') {
+          short.parent().addClass('is-checked');
+          med.parent().removeClass('is-checked');
+          normal.parent().removeClass('is-checked');
+        }
+
+        if (this.settings.rowHeight === 'medium') {
+          short.parent().removeClass('is-checked');
+          med.parent().addClass('is-checked');
+          normal.parent().removeClass('is-checked');
+        }
+
+        if (this.settings.rowHeight === 'normal') {
+          short.parent().removeClass('is-checked');
+          med.parent().removeClass('is-checked');
+          normal.parent().addClass('is-checked');
+        }
+
+    },
+
+     appendToolbar: function () {
       var toolbar, title = '', more, self = this;
 
       if (!settings.toolbar) {
@@ -14871,8 +17045,10 @@ $.fn.datagrid = function(options) {
       //Allow menu to be added manually
       if (this.element.parent().find('.toolbar:not(.contextual-toolbar)').length === 1) {
         toolbar = this.element.parent().find('.toolbar:not(.contextual-toolbar)');
+        this.refreshSelectedRowHeight();
       } else {
         toolbar = $('<div class="toolbar" role="toolbar"></div>');
+        this.removeToolbarOnDestroy = true;
 
         if (settings.toolbar.title) {
           title = $('<div class="title">' + settings.toolbar.title + '  </div>');
@@ -15005,12 +17181,23 @@ $.fn.datagrid = function(options) {
         toolbar.toolbar(opts);
       }
 
-      toolbar.find('.searchfield').off('keypress.datagrid').on('keypress.datagrid', function (e) {
-        if (e.keyCode === 13 || e.type==='change') {
-          e.preventDefault();
-          self.keywordSearch($(this).val());
-        }
-      });
+      if (settings.toolbar && settings.toolbar.keywordFilter) {
+
+        var thisSearch = toolbar.find('.searchfield'),
+          xIcon = thisSearch.parent().find('.close.icon');
+
+        thisSearch.off('keypress.datagrid').on('keypress.datagrid', function (e) {
+          if (e.keyCode === 13 || e.type==='change') {
+            e.preventDefault();
+            self.keywordSearch(thisSearch.val());
+          }
+        });
+
+        xIcon.off('click.datagrid').on('click.datagrid', function () {
+          self.keywordSearch(thisSearch.val());
+        });
+
+      }
 
       this.toolbar = toolbar;
       this.element.addClass('has-toolbar');
@@ -15022,7 +17209,6 @@ $.fn.datagrid = function(options) {
         settings.rowHeight = height;
       }
 
-      //TODO: Save in Grid Personalization
       this.element.add(this.table)
         .removeClass('short-rowheight medium-rowheight normal-rowheight')
         .addClass(settings.rowHeight + '-rowheight');
@@ -15030,6 +17216,9 @@ $.fn.datagrid = function(options) {
       if (this.virtualRange && this.virtualRange.rowHeight) {
         this.virtualRange.rowHeight = (height === 'normal' ? 40 : (height === 'medium' ? 30 : 25));
       }
+
+      this.saveUserSettings();
+      this.refreshSelectedRowHeight();
       return settings.rowHeight;
     },
 
@@ -15053,24 +17242,102 @@ $.fn.datagrid = function(options) {
         cell.text(text.replace('<i>','').replace('</i>',''));
       });
 
-      if (!term || term.length === 0) {
-        this.displayCounts();
+      term = (term || '').toLowerCase();
+      this.filterExpr.push({column: 'all', operator: 'contains', value: term, keywordSearch: true});
 
-        if (this.pager) {
-          this.resetPager('sorted');
+      this.filterKeywordSearch();
+      this.renderRows();
+      this.resetPager('searched');
+      this.setSearchActivePage();
+
+      if (!this.settings.paging) {
+        this.highlightSearchRows(term);
+      }
+    },
+
+    // Set search active page
+    setSearchActivePage: function () {
+      if (this.pager && this.filterExpr.length === 1) {
+        if (this.filterExpr[0].value !== '') {
+          if (this.pager.searchActivePage === undefined) {
+            this.pager.searchActivePage = this.pager.activePage;
+          }
+          this.pager.setActivePage(1, true);
         }
+        else if (this.filterExpr[0].value === '' && this.pager.searchActivePage > -1) {
+          this.pager.setActivePage(this.pager.searchActivePage, true);
+          delete this.pager.searchActivePage;
+        }
+      }
+      else if (this.pager && this.pager.searchActivePage > -1) {
+        this.pager.setActivePage(this.pager.searchActivePage, true);
+        delete this.pager.searchActivePage;
+      }
+    },
 
+    // Filter to keyword search
+    filterKeywordSearch: function () {
+      var self = this,
+        dataset, isFiltered, i, len,
+        filterExpr = self.filterExpr,
+
+        checkRow = function (data, row) {
+          var isMatch = false,
+
+            checkColumn = function (columnId) {
+              var column = self.columnById(columnId)[0],
+                fieldValue = self.fieldValue(data, column.field),
+                value, cell = self.settings.columns.indexOf(column);
+
+              // Use the formatted value (what the user sees in the cells) since it's a more reliable match
+              value = self.formatValue(column.formatter, row, cell, fieldValue, column, data, self).toLowerCase();
+
+              // Strip any html markup that might be in the formatted value
+              value = value.replace(/(<([^>]+)>)|(&lt;([^>]+)&gt;)/ig, '');
+
+              return value.indexOf(filterExpr.value) > -1;
+            };
+
+          // Check in all visible columns
+          if (filterExpr.column === 'all') {
+            self.headerRow.find('th:visible').each(function () {
+              var th = $(this),
+                columnId = th.attr('data-column-id');
+
+              isMatch = checkColumn(columnId);
+              if (isMatch) {
+                return false;
+              }
+            });
+          }
+          // Check in only one column, given by columnId
+          else if (filterExpr.columnId) {
+            isMatch = checkColumn(filterExpr.columnId);
+          }
+          return isMatch;
+        };
+
+      // Make sure not more/less than one filter expr
+      if (!filterExpr || filterExpr.length !== 1) {
         return;
+      } else {
+        filterExpr = filterExpr[0];
       }
 
-      term = term.toLowerCase();
-      this.filterExpr.push({column: 'all', operator: 'contains', value: term, ignorecase: 'yes'});
-
-      this.highlightSearchRows(term);
-      this.displayCounts();
-
-      if (this.pager) {
-        this.pager.setActivePage(1, true);
+      // Check in dataset
+      if (self.settings.treeGrid) {
+        dataset = self.settings.treeDepth;
+        for (i = 0, len = dataset.length; i < len; i++) {
+          isFiltered = filterExpr.value === '' ? false : !checkRow(dataset[i].node, i);
+          dataset[i].node.isFiltered = isFiltered;
+        }
+      }
+      else {
+        dataset = self.settings.dataset;
+        for (i = 0, len = dataset.length; i < len; i++) {
+          isFiltered = filterExpr.value === '' ? false : !checkRow(dataset[i], i);
+          dataset[i].isFiltered = isFiltered;
+        }
       }
     },
 
@@ -15119,11 +17386,18 @@ $.fn.datagrid = function(options) {
 
     selectAllRows: function () {
       var rows = [],
+        self = this,
         dataset = this.settings.treeGrid ?
           this.settings.treeDepth : this.settings.dataset;
 
-      for (var i=0, l=dataset.length; i < l; i++) {
-        rows.push(i);
+      for (var i = 0, l = dataset.length; i < l; i++) {
+        if (this.filterRowRendered) {
+          if (!dataset[i].isFiltered) {
+            rows.push(self.settings.paging && self.settings.source ? i  : i);
+          }
+        } else {
+          rows.push(i);
+        }
       }
 
       this.dontSyncUi = true;
@@ -15139,6 +17413,24 @@ $.fn.datagrid = function(options) {
       this.dontSyncUi = false;
       this.syncSelectedUI();
       this.element.triggerHandler('selected', [this._selectedRows, 'deselectall']);
+    },
+
+    //Check if exists in array of objects with callback
+    inArrayObjects: function (arr, fn) {
+      for(var i = 0, l = arr.length; i < l; i++) {
+        if (fn(arr[i])) {
+          return i;
+        }
+      }
+      return -1;
+    },
+
+    //Check if node index is exists in selected nodes
+    isNodeSelected: function (index) {
+      var isSelection = this.inArrayObjects(this._selectedRows, function (v) {
+        return v.idx === index;
+      });
+      return isSelection !== -1;
     },
 
     //Toggle selection on a single row
@@ -15171,8 +17463,12 @@ $.fn.datagrid = function(options) {
         var rowData,
           // Select it
           selectNode = function(elem, index, data) {
+            // do not add if already exists in selected
+            if (self.isNodeSelected(index)) {
+              return;
+            }
             checkbox = self.cellNode(elem, self.columnIdxById('selectionCheckbox'));
-            elem.addClass('is-selected').attr('aria-selected', 'true')
+            elem.addClass('is-selected' + (self.settings.selectable === 'mixed' ? ' hide-selected-color' : '')).attr('aria-selected', 'true')
               .find('td').attr('aria-selected', 'true');
             checkbox.find('.datagrid-cell-wrapper .datagrid-checkbox')
               .addClass('is-checked').attr('aria-checked', 'true');
@@ -15197,7 +17493,8 @@ $.fn.datagrid = function(options) {
           self.setNodeStatus(rowNode);
         }
         else {
-          rowData = s.dataset[self.pager && s.source ? rowNode.index() : dataRowIndex];
+          dataRowIndex = self.pager && s.source ? rowNode.index() : dataRowIndex;
+          rowData = s.dataset[dataRowIndex];
           selectNode(rowNode, dataRowIndex, rowData);
           self.lastSelectedRow = idx;// Rememeber index to use shift key
         }
@@ -15222,16 +17519,26 @@ $.fn.datagrid = function(options) {
 
     //Set ui elements based on selected rows
     syncSelectedUI: function () {
+      var s = this.settings,
+        dataset = s.treeGrid ? s.treeDepth : s.dataset,
+        headerCheckbox = this.headerRow.find('.datagrid-checkbox'),
+        rows = dataset;
 
-      var headerCheckbox = this.headerRow.find('.datagrid-checkbox'),
-        s = this.settings;
+      if (this.filterRowRendered) {
+        rows = [];
+        for (var i = 0, l = dataset.length; i < l; i++) {
+          if (!dataset[i].isFiltered) {
+            rows.push(i);
+          }
+        }
+      }
 
       //Sync the header checkbox
       if (this._selectedRows.length > 0) {
         headerCheckbox.addClass('is-checked is-partial');
       }
 
-      if (this._selectedRows.length === (s.treeGrid ? s.treeDepth : s.dataset).length) {
+      if (this._selectedRows.length === rows.length) {
         headerCheckbox.addClass('is-checked').removeClass('is-partial');
       }
 
@@ -15256,10 +17563,59 @@ $.fn.datagrid = function(options) {
 
     },
 
+    // activate a row when in mixed selection mode
+    activateRow: function(idx) {
+      if (this.activatedRow().length === 0 || this.activatedRow()[0].row !== idx) {
+        this.toggleRowActivation(idx);
+      }
+    },
+
+    // deactivate the currently activated row
+    deactivateRow: function() {
+      this.toggleRowActivation(this.activatedRow()[0].row);
+    },
+
+    // Gets the currently activated row
+    activatedRow: function() {
+      var activatedRow = this.tableBody.find('tr.is-rowactivated');
+
+      if (activatedRow.length) {
+        var rowIndex = this.dataRowIndex(activatedRow);
+        return [{ row: rowIndex, item: this.settings.dataset[rowIndex], elem: activatedRow }];
+      } else {
+        return [{ row: -1, item: undefined, elem: activatedRow }];
+      }
+    },
+
+    toggleRowActivation: function (idx) {
+      var row = (typeof idx === 'number' ? this.tableBody.find('tr[aria-rowindex="'+ (idx + 1) +'"]') : idx),
+        rowIndex = (typeof idx === 'number' ? idx : ((this.pager && this.settings.source) ? this.actualArrayIndex(row) : this.dataRowIndex(row))),
+        isActivated = row.hasClass('is-rowactivated');
+
+      if (isActivated) {
+        if (!this.settings.disableRowDeactivation) {
+          row.removeClass('is-rowactivated');
+          this.element.triggerHandler('rowdeactivated', [{row: rowIndex, item: this.settings.dataset[rowIndex]}]);
+        }
+      } else {
+        //Deselect old row
+        var oldActivated = this.tableBody.find('tr.is-rowactivated');
+        if (oldActivated.length) {
+          oldActivated.removeClass('is-rowactivated');
+
+          var oldIdx = this.dataRowIndex(oldActivated);
+          this.element.triggerHandler('rowdeactivated', [{row: oldIdx, item: this.settings.dataset[oldIdx]}]);
+        }
+        row.addClass('is-rowactivated');
+        this.element.triggerHandler('rowactivated', [{row: rowIndex, item: this.settings.dataset[rowIndex]}]);
+      }
+
+    },
+
     toggleRowSelection: function (idx) {
-      var row = (typeof idx === 'number' ? this.tableBody.find('tr[role="row"]').eq(idx) : idx),
+      var row = (typeof idx === 'number' ? this.tableBody.find('tr[aria-rowindex="'+ (idx + 1) +'"]') : idx),
         isSingle = this.settings.selectable === 'single',
-        rowIndex = (typeof idx === 'number' ? idx : this.dataRowIndex(row));
+        rowIndex = (typeof idx === 'number' ? idx : this.settings.treeGrid ? this.dataRowIndex(row) : this.actualArrayIndex(row));
 
       if (this.settings.selectable === false) {
         return;
@@ -15308,7 +17664,7 @@ $.fn.datagrid = function(options) {
       // Unselect it
       var unselectNode = function(elem, index) {
         checkbox = self.cellNode(elem, self.columnIdxById('selectionCheckbox'));
-        elem.removeClass('is-selected').removeAttr('aria-selected')
+        elem.removeClass('is-selected hide-selected-color').removeAttr('aria-selected')
           .find('td').removeAttr('aria-selected');
         checkbox.find('.datagrid-cell-wrapper .datagrid-checkbox')
           .removeClass('is-checked').attr('aria-checked', 'false');
@@ -15426,7 +17782,7 @@ $.fn.datagrid = function(options) {
     selectedRows: function (row, nosync, selectAll) {
       var idx = -1,
           isSingle = this.settings.selectable === 'single',
-          isMultiple = this.settings.selectable === 'multiple',
+          isMultiple = this.settings.selectable === 'multiple' || this.settings.selectable === 'mixed',
           dataset = this.settings.treeGrid ?
             this.settings.treeDepth : this.settings.dataset;
 
@@ -15570,6 +17926,8 @@ $.fn.datagrid = function(options) {
               move = key === 37 ? (index > 0 ? index-1 : index) : (index < last ? index+1 : last);
             }
           }
+          // Update active cell
+          self.activeCell.cell = move;
 
           // Making move
           th.removeAttr('tabindex').removeClass('is-active');
@@ -15620,22 +17978,37 @@ $.fn.datagrid = function(options) {
           row = self.activeCell.row,
           cell = self.activeCell.cell,
           col = self.columnSettings(cell),
+          isGroupRow = rowNode.is('.datagrid-rowgroup-header, .datagrid-rowgroup-footer'),
           item = self.settings.dataset[self.dataRowIndex(node)],
           visibleRows = self.tableBody.find('tr:visible'),
           getVisibleRows = function(index) {
-            var row = visibleRows.eq(index);
+            var row = visibleRows.filter('[aria-rowindex="'+ (index + 1) +'"]');
             if (row.is('.datagrid-rowgroup-header')) {
               return row.index();
             }
             return self.dataRowIndex(row);
           },
-          getNextVisibleCell = function(currentCell, lastCell, prev) {
+          getGroupCell = function(currentCell, lastCell, prev) {
+            var n = self.activeCell.groupNode || node;
             var nextCell = currentCell + (prev ? -1 : +1);
 
             if (nextCell > lastCell) {
+              nextCell = prev ?
+                n.prevAll(':visible').last() : n.nextAll(':visible').last();
+            } else {
+              nextCell = prev ?
+                n.prevAll(':visible').first() : n.nextAll(':visible').first();
+            }
+            return nextCell;
+          },
+          getNextVisibleCell = function(currentCell, lastCell, prev) {
+            if (isGroupRow) {
+              return getGroupCell(currentCell, lastCell, prev);
+            }
+            var nextCell = currentCell + (prev ? -1 : +1);
+            if (nextCell > lastCell) {
              return lastCell;
             }
-
             while (self.settings.columns[nextCell] && self.settings.columns[nextCell].hidden) {
               nextCell = prev ? nextCell-1 : nextCell+1;
             }
@@ -15666,7 +18039,11 @@ $.fn.datagrid = function(options) {
             } else {
               cell = getNextVisibleCell(cell, lastCell);
             }
-            self.setActiveCell(row, cell);
+            if (cell instanceof jQuery) {
+              self.setActiveCell(cell);
+            } else {
+              self.setActiveCell(row, cell);
+            }
             self.quickEditMode = false;
             handled = true;
           }
@@ -15852,6 +18229,7 @@ $.fn.datagrid = function(options) {
     editor: null,
 
     isCellEditable: function(row, cell) {
+
       if (!this.settings.editable) {
         return false;
       }
@@ -15883,7 +18261,7 @@ $.fn.datagrid = function(options) {
     // Invoked in three cases: 1) a row click, 2) keyboard and enter, 3) In actionable mode and tabbing
     makeCellEditable: function(row, cell, event) {
       if (this.editor && this.editor.input) {
-        if (this.editor.input.is('.timepicker, .datepicker, .lookup') && !$(event.target).prev().is(this.editor.input)) {
+        if (this.editor.input.is('.timepicker, .datepicker, .lookup, .spinbox') && !$(event.target).prev().is(this.editor.input)) {
           this.commitCellEdit(this.editor.input);
         }
       }
@@ -15896,11 +18274,8 @@ $.fn.datagrid = function(options) {
         if (event.keyCode === 32 && !$(event.currentTarget).find('.datagrid-selection-checkbox').length) {
           this.toggleRowSelection(this.activeCell.node.closest('tr'));
         }
-        return;
+        return false;
       }
-
-      // Put the Cell into Focus Mode
-      this.setActiveCell(row, cell);
 
       var dataRowIndex = this.dataRowIndex(this.dataRowNode(row)),
         rowData = this.settings.treeGrid ?
@@ -15918,21 +18293,31 @@ $.fn.datagrid = function(options) {
       }
 
       if (!this.isCellEditable(dataRowIndex, cell)) {
-        return;
+        return false;
       }
 
-      if (cellParent.hasClass('is-editing')) {
+      if (cellParent.hasClass('is-editing') || cellParent.hasClass('is-editing-inline')) {
         //Already in edit mode
-        //Editor.focus
         cellNode.find('input').focus();
         return false;
       }
 
-      //Editor.init
-      cellParent
-        .addClass('is-editing')
-        .css({'max-width': cellWidth, 'min-width': cellWidth, 'width': cellWidth});
-      cellNode.empty();
+      // In Show Ediitor mode the editor is on form already
+      if (!col.inlineEditor) {
+
+        if (isEditor) {
+          cellNode.css({'position': 'static', 'height': cellNode.outerHeight()});
+        }
+        //Editor.init
+        cellParent
+          .addClass('is-editing')
+          .css({'max-width': cellWidth, 'min-width': cellWidth, 'width': cellWidth});
+
+        cellNode.empty();
+      } else {
+        cellParent.addClass('is-editing-inline');
+      }
+
       this.editor = new col.editor(dataRowIndex, cell, cellValue, cellNode, col, event, this, rowData);
 
       if (this.editor.useValue) {
@@ -15940,12 +18325,15 @@ $.fn.datagrid = function(options) {
       }
       this.editor.val(cellValue);
       this.editor.focus();
-      this.element.triggerHandler('entereditmode');
+      this.element.triggerHandler('entereditmode', [{row: dataRowIndex, cell: cell, item: rowData, target: cellNode, value: cellValue, column: col, editor: this.editor}]);
+
+      return true;
     },
 
     commitCellEdit: function(input) {
       var newValue, cellNode,
-        isEditor = input.is('.editor');
+        isEditor = input.is('.editor'),
+        isUseActiveRow = !(input.is('.timepicker, .datepicker, .lookup, .spinbox'));
 
       if (!this.editor) {
         return;
@@ -15962,22 +18350,29 @@ $.fn.datagrid = function(options) {
       }
 
       //Format Cell again
-      cellNode.removeClass('is-editing');
+      var isInline = cellNode.hasClass('is-editing-inline');
+      cellNode.removeClass('is-editing is-editing-inline');
 
       //Editor.destroy
       this.editor.destroy();
       this.editor = null;
 
       var rowIndex;
-      if (this.settings.source != null) {
-        rowIndex= this.activeCell.row;
+      if (this.settings.source !== null && isUseActiveRow) {
+        rowIndex = this.activeCell.row;
       } else {
-        rowIndex= this.dataRowIndex(cellNode.parent());
+        rowIndex = this.dataRowIndex(cellNode.parent());
       }
 
+      var cell = cellNode.index();
+      var col = this.columnSettings(cell);
+      var rowData = this.settings.treeGrid ? this.settings.treeDepth[rowIndex].node : this.settings.dataset[rowIndex];
+      var oldValue = this.fieldValue(rowData, col.field);
+
       //Save the Cell Edit back to the data set
-      this.updateCellNode(rowIndex, cellNode.index(), newValue);
-      this.element.triggerHandler('exiteditmode');
+      this.updateCellNode(rowIndex, cell, newValue, false, isInline);
+      var value = this.fieldValue(rowData, col.field);
+      this.element.triggerHandler('exiteditmode', [{row: rowIndex, cell: cell, item: rowData, target: cellNode, value: value, oldValue: oldValue, column: col, editor: this.editor}]);
     },
 
     //Validate a particular cell if it has validation on the column and its visible
@@ -16002,13 +18397,18 @@ $.fn.datagrid = function(options) {
           ruleValid = rule.check(cellValue, $('<input>').val(cellValue), gridInfo);
 
         if (!ruleValid) {
-          messages += rule.message;
+          if (messages) {
+            messages = ((/^\u2022/.test(messages)) ? '' : '\u2022 ') + messages;
+            messages += '<br>' + '\u2022 ' + rule.message;
+          } else {
+            messages = rule.message;
+          }
           isValid = false;
         }
       }
 
       if (!isValid) {
-        self.showCellError(row, cell, messages);
+		self.showCellError(row, cell, messages);
         self.element.trigger('cellerror', {row: row, cell: cell, message: messages, target: this.cellNode(row, cell), value: cellValue, column: column});
       } else {
         self.clearCellError(row, cell);
@@ -16019,7 +18419,13 @@ $.fn.datagrid = function(options) {
     showCellError: function (row, cell, errorMessage) {
       var node = this.cellNode(row, cell);
 
+	  // clear the table nonVisibleCellErrors for the row and cell
+	  this.clearNonVisibleCellErrors(row, cell);
+
       if (!node.length) {
+		// Store the nonVisibleCellError
+	    this.nonVisibleCellErrors.push({ row: row, cell: cell, errorMessage: errorMessage });
+		this.showNonVisibleCellErrors();
         return;
       }
 
@@ -16036,15 +18442,79 @@ $.fn.datagrid = function(options) {
 
     },
 
+	showNonVisibleCellErrors: function () {
+      var messages, tableerrors, icon;
+
+	  // Create empty toolbar
+	  if (!this.toolbar) {
+		settings.toolbar = { title: '' };
+		this.appendToolbar();
+	  }
+
+	  if (this.toolbar.parent().find('.tableerrors').length === 1) {
+        tableerrors = this.element.parent().find('.tableerrors');
+      }
+
+	  if (!this.nonVisibleCellErrors.length) {
+		// clear the displayed error
+		if (tableerrors && tableerrors.length) {
+		  icon = tableerrors.find('.icon-error');
+          var tooltip = icon.data('tooltip');
+          if (tooltip) {
+            tooltip.hide();
+          }
+          tableerrors.find('.icon-error').remove();
+		}
+		return;
+	  }
+
+	  for (var i = 0; i < this.nonVisibleCellErrors.length; i++) {
+		   messages = (messages ? messages + '<br>' : '') + this.nonVisibleCellErrors[i].errorMessage;
+	  }
+
+	  if (this.element.parent().find('.tableerrors').length === 0) {
+        tableerrors = $('<div class="tableerrors"></div>');
+	  }
+	  icon = tableerrors.find('.icon-error');
+	  if (!icon.length) {
+		icon = $($.createIcon({ classes: ['icon-error'], icon: 'error' }));
+		tableerrors.append(icon);
+	  }
+	  if (this.element.hasClass('has-toolbar')) {
+		//Add Error to the Toolbar
+		this.toolbar.append(tableerrors);
+	  }
+      icon.tooltip({placement: 'bottom', isErrorColor: true, content: messages});
+      icon.data('tooltip').show();
+
+    },
+
     clearCellError: function (row, cell) {
+	  this.clearNonVisibleCellErrors(row, cell);
       var node = this.cellNode(row, cell);
 
       if (!node.length) {
         return;
       }
 
-      node.removeClass('error').removeAttr('data-errormessage');
-      node.find('.icon-error').remove();
+      this.clearNodeErrors(node);
+    },
+
+	clearNonVisibleCellErrors: function (row, cell) {
+
+	  if (!this.nonVisibleCellErrors.length) {
+        return;
+	  }
+
+	  this.nonVisibleCellErrors = $.grep(this.nonVisibleCellErrors, function (error) {
+        if (!(error.row === row && error.cell === cell)) {
+          return error;
+        }
+      });
+
+	  if (!this.nonVisibleCellErrors.length) {
+		this.showNonVisibleCellErrors();
+	  }
     },
 
     clearRowError: function (row) {
@@ -16055,11 +18525,23 @@ $.fn.datagrid = function(options) {
     },
 
     clearAllErrors: function () {
+      var self = this;
+
       this.tableBody.find('td.error').each(function () {
         var node = $(this);
-        node.removeClass('error').removeAttr('data-errormessage');
-        node.find('.icon-error').remove();
+        self.clearNodeErrors(node);
       });
+    },
+
+    clearNodeErrors: function (node) {
+      node.removeClass('error').removeAttr('data-errormessage');
+
+      var icon = node.find('.icon-error');
+      var tooltip = icon.data('tooltip');
+      if (tooltip) {
+        tooltip.hide();
+      }
+      node.find('.icon-error').remove();
     },
 
     resetRowStatus: function () {
@@ -16139,7 +18621,7 @@ $.fn.datagrid = function(options) {
       this.updateCellNode(row, cell, value, true);
     },
 
-    updateCellNode: function (row, cell, value, fromApiCall) {
+    updateCellNode: function (row, cell, value, fromApiCall, isInline) {
       var coercedVal, escapedVal,
         rowNode = this.visualRowNode(row),
         cellNode = rowNode.find('td').eq(cell),
@@ -16208,24 +18690,22 @@ $.fn.datagrid = function(options) {
         }
       }
 
-      var correctCellNode;
-      if (this.settings.source != null) {
-       correctCellNode = this.activeCell.node;
-      } else {
-       correctCellNode = cellNode;
+      if (!isInline) {
+        cellNode.find('.datagrid-cell-wrapper').html(formatted);
       }
 
-      correctCellNode.find('.datagrid-cell-wrapper').html(formatted);
+	  if (!fromApiCall) {
+	    //Validate the cell
+        this.validateCell(row, cell);
+	  }
 
       if (coercedVal !== oldVal && !fromApiCall) {
-        //Validate the cell
-        this.validateCell(row, cell);
-
         var args = {row: row, cell: cell, target: cellNode, value: coercedVal, oldValue: oldVal, column: col};
-        if (this.settings.treeDepth[row]) {
-          args.rowData = this.settings.treeDepth[row].node;
-        }
+        args.rowData = isTreeGrid && this.settings.treeDepth[row] ?
+          this.settings.treeDepth[row].node : rowData;
+
         this.element.trigger('cellchange', args);
+        this.wasJustUpdated = true;
 
         if (this.settings.showDirty) {
           this.rowStatus(row, 'dirty');
@@ -16236,37 +18716,29 @@ $.fn.datagrid = function(options) {
 
     //For the row node get the index - adjust for paging / invisible rowsCache
     visualRowIndex: function (row) {
-      var rowIdx = (row.attr('aria-rowindex')-1);
-      if (this.pager) {
-        rowIdx = rowIdx - ((this.pager.activePage -1) * this.settings.pagesize);
-      }
-
-      if (this.settings.groupable) {
-        rowIdx = rowIdx + row.prevAll('.datagrid-rowgroup-header').length;
-      }
-
-      if (isNaN(rowIdx)) {  //Grouped Rows
-        return row.index();
-      }
-      return rowIdx;
+      return this.tableBody.find('tr:visible').index(row);
     },
 
     visualRowNode: function (idx) {
-      var node = this.tableBody.find('tr[aria-rowindex="'+ (idx + 1) +'"]');
+      var rowIdx = idx;
 
-      return node;
+      if (this.settings.paging && this.settings.source) {
+        rowIdx = rowIdx + ((this.pager.activePage -1) * this.settings.pagesize);
+      }
+
+      return this.tableBody.find('tr[aria-rowindex="'+ (rowIdx + 1) +'"]');
     },
 
     dataRowNode: function (idx) {
-      var node = this.tableBody.find('tr[aria-rowindex]').eq(idx);
-
-      return node;
+      return this.tableBody.find('tr[aria-rowindex="'+ (idx + 1) +'"]');
     },
 
     dataRowIndex: function (row) {
-     var rowIdx = (row.attr('aria-rowindex')-1);
+     return row.attr('aria-rowindex') - 1;
+    },
 
-     return rowIdx;
+    actualArrayIndex: function (rowElem) {
+     return parseInt(rowElem.attr('data-index'));
     },
 
     // Update a specific Cell
@@ -16282,6 +18754,8 @@ $.fn.datagrid = function(options) {
 
       if (typeof row === 'number') {
         rowNum = row;
+        rowElem = this.tableBody.find('tr:visible').eq(row);
+        dataRowNum = this.dataRowIndex(rowElem);
       }
 
       //Support passing the td in
@@ -16290,15 +18764,15 @@ $.fn.datagrid = function(options) {
         if (isGroupRow) {
           rowElem = row.parent();
         }
-        cell = isGroupRow ? 0 : row.index();
-        rowNum = isGroupRow ? 0 : this.visualRowIndex(row.parent());
-		dataRowNum = isGroupRow ? 0 : this.dataRowIndex(row.parent());
+        cell = row.index();
+        rowNum = this.visualRowIndex(row.parent());
+		    dataRowNum = this.dataRowIndex(row.parent());
         rowElem = row.parent();
       }
 
       if (row instanceof jQuery && row.is('tr')) {
         rowNum = this.visualRowIndex(row);
-		dataRowNum = this.dataRowIndex(row);
+		    dataRowNum = this.dataRowIndex(row);
         rowElem = row;
       }
 
@@ -16317,7 +18791,7 @@ $.fn.datagrid = function(options) {
       }
 
       //Find the cell if it exists
-      self.activeCell.node = self.cellNode((isGroupRow ? rowElem: rowNum), (isGroupRow ? 0 : cell)).attr('tabindex', '0');
+      self.activeCell.node = self.cellNode((isGroupRow ? rowElem : (dataRowNum > -1 ? dataRowNum : rowNum)), (cell)).attr('tabindex', '0');
 
       if (self.activeCell.node && prevCell.node.length === 1) {
         self.activeCell.row = rowNum;
@@ -16327,8 +18801,11 @@ $.fn.datagrid = function(options) {
         self.activeCell = prevCell;
       }
 
-      if (!$('input, button:not(.datagrid-expand-btn, .datagrid-drilldown, .btn-icon)', self.activeCell.node).length) {
+      if (!$('input, button:not(.btn-secondary, .row-btn, .datagrid-expand-btn, .datagrid-drilldown, .btn-icon)', self.activeCell.node).length) {
         self.activeCell.node.focus();
+        if (isGroupRow) {
+          self.activeCell.groupNode = self.activeCell.node;
+        }
       }
       if (self.activeCell.node.hasClass('is-focusable')) {
         self.activeCell.node.find('button').focus();
@@ -16337,16 +18814,26 @@ $.fn.datagrid = function(options) {
       if (dataRowNum !== undefined) {
         self.activeCell.dataRow = dataRowNum;
       }
+      var colSpan = +rowElem.find('td[colspan]').attr('colspan');
 
-      if (isGroupRow) {
-        self.activeCell.node.find('td:visible:first').attr('tabindex', '0').focus();
+      if (isGroupRow && self.activeCell.node && prevCell.node && !(row instanceof jQuery && row.is('td'))) {
+        if (cell < colSpan) {
+          rowElem.find('td[colspan]').attr('tabindex', '0').focus();
+          self.activeCell.groupNode = rowElem.find('td[colspan]');
+        }
+        else if (cell >= colSpan) {
+          rowElem.find('td').eq(cell-colSpan + 1).attr('tabindex', '0').focus();
+          self.activeCell.groupNode = rowElem.find('td').eq(cell-colSpan + 1);
+        } else {
+          rowElem.find('td').eq(cell).attr('tabindex', '0').focus();
+          self.activeCell.groupNode = rowElem.find('td').eq(cell);
+        }
       }
 
-      if (isGroupRow && self.activeCell.node && prevCell.node) {
-        var colSpan = self.activeCell.node.attr('colspan');
-        if (colSpan >= prevCell.cell) {
-          self.activeCell.node = self.activeCell.node.parent().find('td').eq((prevCell.cell - colSpan) + 1);
-          self.activeCell.node.attr('tabindex', '0').focus();
+      if (isGroupRow && row instanceof jQuery && row.is('td')) {
+        self.activeCell.cell = (colSpan - 1) + cell;
+        if (row.is('[colspan]')) {
+          self.activeCell.cell = cell;
         }
       }
 
@@ -16400,10 +18887,9 @@ $.fn.datagrid = function(options) {
       var self = this,
         rowElement = this.visualRowNode(dataRowIndex),
         expandButton = rowElement.find('.datagrid-expand-btn'),
-        level = rowElement.attr('aria-level'),
-        children = rowElement.nextUntil('[aria-level="1"]'),
+        level = parseInt(rowElement.attr('aria-level'), 10),
+        children = rowElement.nextUntil('[aria-level="'+ level +'"]'),
         isExpanded = expandButton.hasClass('is-expanded'),
-        restCollapsed = false,
         args = [{grid: self, row: dataRowIndex, item: rowElement, children: children}];
 
       if (self.settings.treeDepth[dataRowIndex]) {
@@ -16419,7 +18905,7 @@ $.fn.datagrid = function(options) {
       var toggleExpanded = function() {
         rowElement = self.visualRowNode(dataRowIndex);
         expandButton = rowElement.find('.datagrid-expand-btn');
-        children = rowElement.nextUntil('[aria-level="1"]');
+        children = rowElement.nextUntil('[aria-level="'+ level +'"]');
 
         if (isExpanded) {
           rowElement.attr('aria-expanded', false);
@@ -16432,29 +18918,36 @@ $.fn.datagrid = function(options) {
         }
         self.setExpandedInDataset(dataRowIndex, !isExpanded);
 
-        children.each(function () {
-          var node = $(this);
+        var setChildren = function (rowElement, level, isExpanded) {
+          var nodes = rowElement.nextUntil('[aria-level="'+ level +'"]');
 
-          if (node.hasClass('datagrid-tree-parent') &&
-            node.attr('aria-level') > level) {
-            restCollapsed = node.find('.datagrid-expand-btn.is-expanded').length === 0;
-            node[isExpanded ? 'addClass' : 'removeClass']('is-hidden');
-            return;
+          if (isExpanded) {
+            nodes.each(function () {
+              var node = $(this),
+              nodeLevel = parseInt(node.attr('aria-level'), 10);
+              if (nodeLevel > level) {
+                node.addClass('is-hidden');
+              }
+            });
           }
+          else {
+            nodes.each(function () {
+              var node = $(this),
+                nodeLevel = parseInt(node.attr('aria-level'), 10);
+              if (nodeLevel === (level + 1)) {
+                node.removeClass('is-hidden');
 
-          if (restCollapsed) {
-            node.addClass('is-hidden');
-            return;
+                if (node.is('.datagrid-tree-parent')) {
+                  var nodeIsExpanded = node.find('.datagrid-expand-btn.is-expanded').length > 0;
+                  if (nodeIsExpanded) {
+                    setChildren(node, nodeLevel, !nodeIsExpanded);
+                  }
+                }
+              }
+            });
           }
-
-          if (node.attr('aria-level') > level) {
-            node[isExpanded ? 'addClass' : 'removeClass']('is-hidden');
-          }
-
-          if (node.attr('aria-level') === level) {
-            return false;
-          }
-        });
+        };
+        setChildren(rowElement, level, isExpanded);
         self.setAlternateRowShading();
       };
 
@@ -16471,16 +18964,55 @@ $.fn.datagrid = function(options) {
         expandRow = rowElement.next(),
         expandButton = rowElement.find('.datagrid-expand-btn'),
         detail = expandRow.find('.datagrid-row-detail'),
-        item = self.settings.dataset[dataRowIndex];
+        item = self.settings.dataset[self.actualArrayIndex(rowElement)];
 
       if (rowElement.hasClass('datagrid-tree-parent')) {
         return;
+      }
+
+      if (self.settings.allowOneExpandedRow && self.settings.groupable === null) {
+        //collapse any other expandable rows
+        var prevExpandRow = self.tableBody.find('tr.is-expanded'),
+          parentRow = prevExpandRow.prev(),
+          parentRowIdx = parentRow.attr('aria-rowindex');
+
+        if (prevExpandRow.length && expandRow.index() !== prevExpandRow.index()) {
+          var prevDetail = prevExpandRow.find('.datagrid-row-detail');
+
+          prevExpandRow.removeClass('is-expanded');
+          parentRow.removeClass('is-rowactivated');
+          parentRow.find('.plus-minus').removeClass('active');
+          prevDetail.animateClosed().on('animateclosedcomplete', function () {
+            prevExpandRow.css('display', 'none').removeClass('is-expanded');
+            self.element.triggerHandler('collapserow', [{grid: self, row: parentRowIdx, detail: prevDetail, item: self.settings.dataset[parentRowIdx] }]);
+          });
+
+          var prevActionBtn = prevExpandRow.prev().find('.btn-primary');
+          if (prevActionBtn.length) {
+            prevActionBtn.attr('class', prevActionBtn.attr('class').replace('btn-primary','btn-secondary'));
+          }
+        }
+
+        //Toggle the button to make it primary
+        var isExpanded = !expandRow.hasClass('is-expanded'),
+          actionButton = expandRow.prev().find(isExpanded ? '.btn-secondary' : '.btn-primary');
+
+        if (actionButton.length > 0 && parentRow && actionButton) {
+          var currentClass = actionButton.attr('class') || '';
+
+          actionButton.attr('class', currentClass.replace(isExpanded ? 'btn-secondary' : 'btn-primary',
+              isExpanded ? 'btn-primary' : 'btn-secondary') );
+        }
       }
 
       if (expandRow.hasClass('is-expanded')) {
         expandRow.removeClass('is-expanded');
         expandButton.removeClass('is-expanded')
           .find('.plus-minus').removeClass('active');
+
+        if (self.settings.allowOneExpandedRow) {
+          rowElement.removeClass('is-rowactivated');
+        }
 
         detail.animateClosed().on('animateclosedcomplete', function () {
           expandRow.css('display', 'none');
@@ -16496,6 +19028,10 @@ $.fn.datagrid = function(options) {
 
         //Optionally Contstrain the width
         expandRow.find('.constrained-width').css('max-width', this.element.outerWidth());
+
+        if (self.settings.allowOneExpandedRow) {
+          rowElement.addClass('is-rowactivated');
+        }
 
         detail.animateOpen();
         self.element.triggerHandler('expandrow', [{grid: self, row: dataRowIndex, detail: detail, item: item}]);
@@ -16535,7 +19071,6 @@ $.fn.datagrid = function(options) {
 
     //Api Event to set the sort Column
     setSortColumn: function(id, ascending) {
-      var sort;
       //Set Direction based on if passed in or toggling existing field
       if (ascending !== undefined) {
         this.sortColumn.sortAsc = ascending;
@@ -16550,18 +19085,11 @@ $.fn.datagrid = function(options) {
 
       this.sortColumn.sortId = id;
       this.sortColumn.sortField = (this.columnById(id)[0] ? this.columnById(id)[0].field : id);
-
-      if (this.originalDataset) {
-        this.settings.dataset = this.originalDataset;
-      }
+      this.sortColumn.sortAsc = ascending;
 
       //Do Sort on Data Set
       this.setSortIndicator(id, ascending);
-      sort = this.sortFunction(this.sortColumn.sortId, ascending);
-
-      if (!this.settings.disableClientSort) {
-        settings.dataset.sort(sort);
-      }
+      this.sortDataset();
 
       var wasFocused = this.activeCell.isFocused;
       this.setTreeDepth();
@@ -16578,10 +19106,26 @@ $.fn.datagrid = function(options) {
 
       this.resetPager('sorted');
       this.tableBody.removeClass('is-loading');
+      this.saveUserSettings();
       this.element.trigger('sorted', [this.sortColumn]);
     },
 
+    sortDataset: function() {
+      if (this.originalDataset) {
+        this.settings.dataset = this.originalDataset;
+      }
+      var sort = this.sortFunction(this.sortColumn.sortId, this.sortColumn.sortAsc);
+
+      if (!this.settings.disableClientSort) {
+        settings.dataset.sort(sort);
+      }
+    },
+
     setSortIndicator: function(id, ascending) {
+      if (!this.headerRow) {
+        return;
+      }
+
       //Set Visual Indicator
       this.headerRow.find('.is-sorted-asc, .is-sorted-desc').removeClass('is-sorted-asc is-sorted-desc').attr('aria-sort', 'none');
       this.headerRow.find('[data-column-id="' +id + '"]')
@@ -16628,19 +19172,24 @@ $.fn.datagrid = function(options) {
 
     // Update Selection
     updateSelected: function() {
-      var self = this;
+      var self = this,
+        s = self.settings;
 
       $('tr[role="row"]', self.tableBody).each(function() {
         var row = $(this),
           newIdx = self.dataRowIndex(row),
           checkbox = self.cellNode(row, self.columnIdxById('selectionCheckbox'));
 
+        if (s.paging && s.source && self.pager) {
+          newIdx = (newIdx - ((self.pager.activePage - 1) * s.pagesize));
+        }
+
         $.each(self._selectedRows, function(index, val) {
-          if (self.isEquals(val.data, self.settings.dataset[newIdx])) {
+          if (self.isEquals(val.data, s.dataset[newIdx])) {
             val.idx = newIdx;
             val.elem = row;
             checkbox.find('.datagrid-cell-wrapper .datagrid-checkbox').addClass('is-checked').attr('aria-checked', 'true');
-            row.addClass('is-selected').attr('aria-selected', 'true').find('td').attr('aria-selected', 'true');
+            row.addClass('is-selected' + (s.selectable === 'mixed' ? ' hide-selected-color' : '')).attr('aria-selected', 'true').find('td').attr('aria-selected', 'true');
             return false;
           }
         });
@@ -16673,15 +19222,31 @@ $.fn.datagrid = function(options) {
       pagerElem.pager({
         componentAPI: this,
         dataset: this.settings.dataset,
+        hideOnOnePage: this.settings.hidePagerOnOnePage,
         source: this.settings.source,
         pagesize: this.settings.pagesize,
         indeterminate: this.settings.indeterminate,
         rowTemplate: this.settings.rowTemplate,
-        pagesizes: this.settings.pagesizes
+        pagesizes: this.settings.pagesizes,
+        showPageSizeSelector: this.settings.showPageSizeSelector,
+        activePage: this.restoreActivePage ? parseInt(this.savedActivePage) : 1
       });
+
+      if (this.restoreActivePage) {
+        this.savedActivePage = null;
+        this.restoreActivePage = false;
+      }
+
       this.pager = pagerElem.data('pager');
 
-      pagerElem.on('afterpaging', function (e, args) {
+      pagerElem
+      .on('beforepaging', function () {
+        // Selection support only for current page
+        if (self.pager && self.settings.source) {
+          self._selectedRows = [];
+        }
+      })
+      .on('afterpaging', function (e, args) {
 
         self.displayCounts(args.total);
 
@@ -16696,30 +19261,17 @@ $.fn.datagrid = function(options) {
 
     },
 
-    refreshPagerState: function (pagingInfo) {
-      if (!this.pager) {
-        return;
-      }
-
-      if (pagingInfo) {
-        this.pager.activePage = pagingInfo.activePage;
-      }
-
-      if (pagingInfo) {
-        this.pager.updatePagingInfo(pagingInfo);
-      }
-    },
-
     renderPager: function (pagingInfo, isResponse) {
-      if (!this.pager) {
+      var api = this.pager;
+
+      if (!api) {
         return;
       }
 
-      this.refreshPagerState(pagingInfo);
+      api.updatePagingInfo(pagingInfo);
 
-      this.pager.renderBar();
       if (!isResponse) {
-        this.pager.renderPages(pagingInfo.type);
+        api.renderPages(pagingInfo.type);
       }
 
       // Update selected and Sync header checkbox
@@ -16745,15 +19297,33 @@ $.fn.datagrid = function(options) {
     destroy: function() {
       //Remove the toolbar, clean the div out and remove the pager
       this.element.off().empty().removeClass('datagrid-container');
-      this.element.prev('.toolbar').remove();
+      var toolbar = this.element.prev('.toolbar');
+
+      if (this.removeToolbarOnDestroy && settings.toolbar && settings.toolbar.keywordFilter) {
+        var searchfield = toolbar.find('.searchfield');
+        if (searchfield.data('searchfield')) {
+          searchfield.data('searchfield').destroy();
+        }
+        if (searchfield.data('toolbarsearchfield')) {
+          searchfield.data('toolbarsearchfield').destroy();
+        }
+        searchfield.removeData('options');
+      }
+
+      if (this.removeToolbarOnDestroy) {
+        // only remove toolbar if it was created by this datagrid
+        if (toolbar.data('toolbar')) {
+          toolbar.data('toolbar').destroy();
+        }
+        toolbar.remove();
+      }
       this.element.next('.pager-toolbar').remove();
       $.removeData(this.element[0], pluginName);
 
       //TODO Test Memory Leaks in Chrome - null out fx this.table
       $(document).off('touchstart.datagrid touchend.datagrid touchcancel.datagrid click.datagrid touchmove.datagrid');
       this.contentContainer.off().remove();
-      $('body').off('resize.vtable');
-
+      $('body').off('resize.vtable resize.datagrid');
     }
 
   };
@@ -16777,25 +19347,42 @@ $.fn.datagrid = function(options) {
     // Dropdown Settings and Options
     var pluginName = 'dropdown',
         defaults = {
-          closeOnSelect: true, // When an option is selected, the list will close if set to "true".  List stays open if "false".
-          cssClass: null,  //Append a css class to dropdown-list
-          filterMode: 'contains',  // startsWith and contains Supported - false will not client side filter
+          closeOnSelect: true,
+          cssClass: null,
+          filterMode: 'contains',
           maxSelected: undefined, //If in multiple mode, sets a limit on the number of items that can be selected
-          moveSelectedToTop: false, //When the menu is opened, displays all selected options at the top of the list
+          moveSelected: 'none',
+          moveSelectedToTop: undefined,
           multiple: false, //Turns the dropdown into a multiple selection box
-          noSearch: false, //If true, disables the ability of the user to enter text in the Search Input field in the open combo box
-          source: undefined, //A function that can do an ajax call.
-          sourceArguments: {}, // If a source method is defined, this flexible object can be passed into the source method, and augmented with parameters specific to the implementation.
-          reloadSourceOnOpen: false, // If set to true, will always perform an ajax call whenever the list is opened.  If false, the first AJAX call's results are cached.
-          empty: false, //Initialize Empty Value
-          delay: 300 //Typing Buffer Delay
+          noSearch: false,
+          showEmptyGroupHeaders: false,
+          showSelectAll: false, // If true, on Multiselect dropdowns, will show an additional option at the top of the list labeled "select all".
+          source: undefined,
+          sourceArguments: {},
+          reloadSourceOnOpen: false,
+          empty: false,
+          delay: 300
         },
+        moveSelectedOpts = ['none', 'all', 'group'],
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The Dropdown allows users to select from a list. Like an Html Select.
+    *
+    * @class Dropdown
+    * @param {Boolean} closeOnSelect  &nbsp;-&nbsp; When an option is selected, the list will close if set to "true".  List stays open if "false".
+    * @param {String} cssClass  &nbsp;-&nbsp; Append an optional css class to dropdown-list
+    * @param {String} filterMode  &nbsp;-&nbsp; Search mode to use between 'startsWith' and 'contains', false will not allow client side filter
+    * @param {Boolean} noSearch  &nbsp;-&nbsp; If true, disables the ability of the user to enter text in the Search Input field in the open combo box
+    * @param {Boolean} showEmptyGroupHeaders  &nbsp;-&nbsp; If true, displays <optgroup> headers in the list even if no selectable options are present underneath.
+    * @param {Boolean} source  &nbsp;-&nbsp; A function that can do an ajax call.
+    * @param {Boolean} sourceArguments  &nbsp;-&nbsp; If a source method is defined, this flexible object can be passed into the source method, and augmented with parameters specific to the implementation.
+    * @param {Boolean} sourceArguments  &nbsp;-&nbsp; If a source method is defined, this flexible object can be passed into the source method, and augmented with parameters specific to the implementation.
+    * @param {Boolean} reloadSourceOnOpen  &nbsp;-&nbsp; If set to true, will always perform an ajax call whenever the list is opened.  If false, the first AJAX call's results are cached.
+    * @param {Boolean} empty  &nbsp;-&nbsp; Initialize Empty Value
+    * @param {Boolean} delay  &nbsp;-&nbsp; Typing Buffer Delay in ms
+    *
+    */
     function Dropdown(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -16807,11 +19394,10 @@ $.fn.datagrid = function(options) {
     // Actual DropDown Code
     Dropdown.prototype = {
       init: function() {
-        var orgId = this.element.attr('id'),
-         html = $('html');
+        var orgId = this.element.attr('id');
 
-        this.isIe10 = html.is('.ie10');
-        this.isIe11 = html.is('.ie11');
+        this.isIe10 = (Soho.env.browser.name === 'ie' && Soho.env.browser.version === '10');
+        this.isIe11 = (Soho.env.browser.name === 'ie' && Soho.env.browser.version === '11');
 
         this.inlineLabel = this.element.closest('label');
         this.inlineLabelText = this.inlineLabel.find('.label-text');
@@ -16823,36 +19409,60 @@ $.fn.datagrid = function(options) {
           this.element.parent().find('label').first().attr('for', orgId);
         }
 
-        var cssClass = this.element.is('.dropdown-xs') ? 'dropdown input-xs' :
-            this.element.is('.dropdown-sm') ? 'dropdown input-sm' :
-            this.element.is('.dropdown-lg') ? 'dropdown input-lg' : 'dropdown';
+        // convert <select> tag's size css classes for the pseudo element
+        var elemClassList = this.element[0].classList;
+        if (elemClassList.length === 0) {
+          this.element[0].classList = 'dropdown';
+        }
+        var pseudoClassString = elemClassList.contains('dropdown-xs') ? 'dropdown input-xs' :
+            elemClassList.contains('dropdown-sm') ? 'dropdown input-sm' :
+            elemClassList.contains('dropdown-lg') ? 'dropdown input-lg' : 'dropdown';
 
         //Detect Inline Styles
         var style = this.element.attr('style');
-        this.isHidden = style && style.indexOf('display: none') > 0;
+        this.isHidden = style && style.indexOf('display: none') >= 0;
 
         // Build the wrapper if it doesn't exist
         var baseElement = this.isInlineLabel ? this.inlineLabel : this.element;
         this.wrapper = baseElement.next('.dropdown-wrapper');
-        if (!this.wrapper.length) {
+        this.isWrapped = this.wrapper.length > 0;
+
+        if (!this.isWrapped) {
           this.wrapper = $('<div class="dropdown-wrapper"></div>').insertAfter(baseElement);
+        }
+
+        if (this.isWrapped) {
+          this.pseudoElem = this.wrapper.find('.' + pseudoClassString);
+          this.trigger = this.wrapper.find('.trigger');
+        } else {
+          this.pseudoElem = $('div#'+ orgId + '-shdo');
+        }
+
+        if(elemClassList.contains('text-align-reverse')) {
+          pseudoClassString += ' text-align-reverse';
+        } else if (elemClassList.contains('text-align-center')){
+          pseudoClassString += ' text-align-center';
         }
 
         // Build sub-elements if they don't exist
         this.label = $('label[for="'+ orgId +'"]');
 
-        this.pseudoElem = $('div#'+ orgId + '-shdo');
         if (!this.pseudoElem.length) {
-          this.pseudoElem = $('<div class="'+ cssClass + '"' +
-            ' role="combobox"' +
-            ' aria-autocomplete="list"' +
-            ' aria-controls="dropdown-list"' +
-            ' aria-readonly="true"' +
-            ' aria-expanded="false"' +
-            ' aria-label="'+ this.label.text() + '"' +
-          '>');
+          this.pseudoElem = $('<div class="'+ pseudoClassString + '">');
+        } else {
+          this.pseudoElem[0].setAttribute('class', pseudoClassString);
         }
-        this.pseudoElem.append($('<span></span>'));
+
+        if (!this.isWrapped) {
+          this.pseudoElem.append($('<span></span>'));
+        }
+
+        this.pseudoElem.attr({'role': 'combobox',
+          'aria-autocomplete': 'list',
+          'aria-controls': 'dropdown-list',
+          'aria-readonly': 'true',
+          'aria-expanded': 'false',
+          'aria-label': this.label.text()});
 
         // Pass disabled/readonly from the original element, if applicable
         // "disabled" is a stronger setting than "readonly" - should take precedent.
@@ -16872,7 +19482,9 @@ $.fn.datagrid = function(options) {
         }
         handleStates(this);
 
-        this.wrapper.append(this.pseudoElem, this.trigger);
+        if (!this.isWrapped) {
+          this.wrapper.append(this.pseudoElem, this.trigger);
+        }
 
         // Check for and add the icon
         this.icon = this.wrapper.find('.icon');
@@ -16893,10 +19505,35 @@ $.fn.datagrid = function(options) {
         if (dataMaxselected && !isNaN(dataMaxselected)) {
           this.settings.maxSelected = parseInt(dataMaxselected, 10);
         }
-        var dataMoveSelected = this.element.attr('data-move-selected');
-        if (dataMoveSelected && !this.settings.moveSelectedToTop) {
-          this.settings.moveSelectedToTop = dataMoveSelected === 'true';
+
+        // TODO: deprecate "moveSelectedToTop" in favor of "moveSelected"
+        // _getMoveSelectedSetting()_ converts the old setting to the new text type.
+        function getMoveSelectedSetting(incomingSetting, useText) {
+          switch (incomingSetting) {
+            case (useText ? 'true' : true):
+              return 'all';
+            case (useText ? 'false' : false):
+              return 'none';
+            default:
+              if (moveSelectedOpts.indexOf(incomingSetting) > -1) {
+                return incomingSetting;
+              }
+              return 'none';
+          }
         }
+
+        // Backwards compatibility for deprecated "moveSelectedToTop" setting.
+        if (this.settings.moveSelectedToTop !== undefined) {
+          this.settings.moveSelected = this.settings.moveSelectedToTop;
+        }
+
+        var dataMoveSelected = this.element.attr('data-move-selected');
+        if (dataMoveSelected) {
+          this.settings.moveSelected = getMoveSelectedSetting(dataMoveSelected, true);
+        } else {
+          this.settings.moveSelected = getMoveSelectedSetting(this.settings.moveSelected);
+        }
+
         var dataCloseOnSelect = this.element.attr('data-close-on-select');
         if (dataCloseOnSelect && !this.settings.closeOnSelect) {
           this.settings.closeOnSelect = dataCloseOnSelect === 'true';
@@ -16975,14 +19612,25 @@ $.fn.datagrid = function(options) {
           listContents = '',
           ulContents = '',
           upTopOpts = 0,
-          hasOptGroups = this.element.find('optgroup').length;
+          hasOptGroups = this.element.find('optgroup').length,
+          reverseText = '',
+          isMultiselect = this.settings.multiple === true,
+          moveSelected = '' + this.settings.moveSelected,
+          showSelectAll = this.settings.showSelectAll === true;
+
+        if(this.element[0].classList.contains('text-align-reverse')){
+          reverseText = ' text-align-reverse';
+        } else if (this.element[0].classList.contains('text-align-center')){
+          reverseText = ' text-align-center';
+        }
 
         if (!listExists) {
-          listContents = '<div class="dropdown-list' +
+          listContents = '<div class="dropdown-list' + reverseText +
             (isMobile ? ' mobile' : '') +
             (this.settings.multiple ? ' multiple' : '') + '" id="dropdown-list" role="application" ' + (this.settings.multiple ? 'aria-multiselectable="true"' : '') + '>' +
             '<label for="dropdown-search" class="audible">' + Locale.translate('Search') + '</label>' +
-            '<input type="text" class="dropdown-search" role="combobox" aria-expanded="true" id="dropdown-search" aria-autocomplete="list">' +
+            '<input type="text" class="dropdown-search' + reverseText +
+            '" role="combobox" aria-expanded="true" id="dropdown-search" aria-autocomplete="list">' +
             '<span class="trigger">' +
               (isMobile ? $.createIcon({ icon: 'close', classes: ['close'] }) : $.createIcon('dropdown')) +
               '<span class="audible">' + (isMobile ? Locale.translate('Close') : Locale.translate('Collapse')) + '</span>' +
@@ -16993,7 +19641,9 @@ $.fn.datagrid = function(options) {
         // Get a current list of <option> elements
         // If none are available, simply return out
         var opts = this.element.find('option');
+        var groups = this.element.find('optgroup');
         var selectedOpts = opts.filter(':selected');
+        var groupsSelectedOpts = [];
 
         function buildLiHeader(textContent) {
           return '<li role="presentation" class="group-label" focusable="false">' +
@@ -17014,14 +19664,42 @@ $.fn.datagrid = function(options) {
             cssClasses = option.className;
 
           var trueValue = value && value.value ? value.value : text;
+          if (cssClasses.indexOf('clear') > -1) {
+            if (text === '') {
+              text = Locale.translate('ClearSelection');
+            }
+          }
+
+          // Set attributes need to be copy over
+          var attrToCopy = {
+            str: '',
+            isExclude: function(attr) {
+              var toExclude = ['data-badge', 'data-badge-color', 'data-val'];
+              return $.inArray(attr, toExclude) > -1;
+            }
+          };
+          for (var key in attributes) {
+            if (!attributes.hasOwnProperty(key)) {
+              continue;
+            }
+            attrToCopy.name = attributes[key].name + '';
+            attrToCopy.isData = attrToCopy.name.substr(0, 5) === 'data-';
+            if (attrToCopy.isData && !attrToCopy.isExclude(attrToCopy.name)) {
+              attrToCopy.str += ' '+
+                attrToCopy.name +'="'+ attributes[key].value +'"';
+            }
+          }
 
           liMarkup += '<li role="presentation" class="dropdown-option'+ (isSelected ? ' is-selected' : '') +
                         (isDisabled ? ' is-disabled' : '') +
                         (cssClasses ? ' ' + cssClasses.value : '' ) + '"' +
+                        attrToCopy.str +
                         ' data-val="' + trueValue.replace('"', '/quot/') + '"' +
                         ' tabindex="' + (index && index === 0 ? 0 : -1) + '">' +
                         (title ? '" title="' + title.value + '"' : '') +
-                        '<a role="option" href="#" id="list-option'+ index +'">' +
+                        '<a role="option" href="#" class="' +
+                        (cssClasses.indexOf('clear') > -1 ? ' clear-selection' : '' ) + '"' +
+                        'id="list-option'+ index +'">' +
                           text +
                         '</a>' +
                         (badge ? '<span class="badge "' + (badgeColor ? badgeColor.value : 'azure07') + '"> '+ badge.value + '</span>' : '') +
@@ -17030,9 +19708,40 @@ $.fn.datagrid = function(options) {
           return liMarkup;
         }
 
+        // In multiselect scenarios, shows an option at the top of the list that will
+        // select all available options if checked.
+        if (isMultiselect && showSelectAll) {
+          var allSelected = opts.not('[disabled], .hidden').length === selectedOpts.not('[disabled], .hidden').length;
+
+          ulContents += '<li role="presentation" class="dropdown-select-all-list-item'+ (allSelected ? ' is-selected' : '') + '">' +
+            '<a role="option" href="#" id="dropdown-select-all-anchor" class="dropdown-select-all-anchor">' +
+              Locale.translate('SelectAll') +
+            '</a>' +
+          '</li>';
+        }
+
+        // Move selected options in each group to just underneath their corresponding group headers.
+        if (moveSelected === 'group') {
+          // If no optgroups exist, change to "all" and skip this part.
+          if (!groups || !groups.length) {
+            moveSelected = 'all';
+          } else {
+
+            // Break apart selectedOpts into groups.
+            // These selected items are applied when the header is generated.
+            groups.each(function(i, g) {
+              var els = selectedOpts.filter(function() {
+                return $.contains(g, this);
+              });
+              groupsSelectedOpts.push(els);
+            });
+
+          }
+        }
+
         // Move all selected options to the top of the list if the setting is true.
         // Also adds a group heading if other option groups are found in the <select> element.
-        if (self.settings.moveSelectedToTop) {
+        if (moveSelected === 'all') {
           opts = opts.not(selectedOpts);
 
           // Show a "selected" header if there are selected options
@@ -17046,21 +19755,39 @@ $.fn.datagrid = function(options) {
           });
 
           // Only show the "all" header beneath the selected options if there are no other optgroups present
-          if (!hasOptGroups) {
-            ulContents += buildLiHeader('All ' + (self.isInlineLabel ? self.inlineLabelText.text() : this.label.text()));
+          if (!hasOptGroups && opts.length > 0) {
+            ulContents += buildLiHeader(Locale.translate('All') + ' ' + (self.isInlineLabel ? self.inlineLabelText.text() : this.label.text()));
           }
         }
 
         opts.each(function(i) {
           var count = i + upTopOpts,
-            option = $(this);
+            option = $(this),
+            parent = option.parent(),
+            optgroupIsNotDrawn,
+            optgroupIndex;
 
           // Add Group Header if this is an <optgroup>
-          if (option.is(':first-child') && option.parent().is('optgroup')) {
-            ulContents += buildLiHeader('' + option.parent().attr('label'));
+          // Remove the group header from the queue.
+          if (parent.is('optgroup') && groups.length) {
+            optgroupIndex = parent.index();
+            optgroupIsNotDrawn = groups.index(parent) > -1;
+
+            if (optgroupIsNotDrawn) {
+              groups = groups.not(parent);
+              ulContents += buildLiHeader('' + parent.attr('label'));
+
+              // Add all selected items for this group
+              if (moveSelected === 'group') {
+                groupsSelectedOpts[optgroupIndex].each(function(i) {
+                  ulContents += buildLiOption(this, i);
+                  upTopOpts++;
+                });
+              }
+            }
           }
 
-          if (self.settings.moveSelectedToTop && option.is(':selected')) {
+          if (moveSelected !== 'none' && option.is(':selected')) {
             return;
           }
 
@@ -17089,6 +19816,10 @@ $.fn.datagrid = function(options) {
       setValue: function () {
         var opts = this.element.find('option:selected'),
           text = this.getOptionText(opts);
+
+        if (opts.hasClass('clear')) {
+          text = '';
+        }
 
         if (this.settings.empty && opts.length === 0) {
           this.pseudoElem.find('span').text('');
@@ -17133,58 +19864,10 @@ $.fn.datagrid = function(options) {
           this.pseudoElem.next('svg').hide();
         }
 
-        //TODO: Empty Selection
         if (this.element.attr('placeholder')) {
           this.pseudoElem.attr('placeholder', this.element.attr('placeholder'));
           this.element.removeAttr('placeholder');
         }
-      },
-
-      //Bind mouse and key events
-      handleEvents: function() {
-        var self = this;
-
-        this.pseudoElem.on('keydown.dropdown', function(e) {
-          self.ignoreKeys($(this), e);
-          self.handleKeyDown($(this), e);
-        }).on('keypress.dropdown', function(e) {
-          self.ignoreKeys($(this), e);
-          self.handleAutoComplete(e);
-        }).on('click.dropdown', function(e) {
-          e.stopPropagation();
-        }).on('mouseup.dropdown', function(e) {
-          if (e.button === 2) {
-            return;
-          }
-
-          self.toggleList();
-        }).on('touchend.dropdown touchcancel.dropdown', function(e) {
-          e.stopPropagation();
-          self.toggleList();
-          e.preventDefault();
-        });
-
-        self.element.on('activated.dropdown', function () {
-          self.label.trigger('click');
-        }).on('updated.dropdown', function (e) {
-          e.stopPropagation();
-          self.updated();
-        }).on('openlist.dropdown', function() {
-          self.toggleList();
-        });
-
-        //for form resets.
-        self.element.closest('form').on('reset.dropdown', function() {
-          setTimeout(function () {
-            self.element.triggerHandler('updated');
-          }, 1);
-        });
-
-        //Handle Label click
-        this.label.onTouchClick().on('click', function () {
-          self.pseudoElem.focus();
-        });
-
       },
 
       ignoreKeys: function (input, e) {
@@ -17253,7 +19936,8 @@ $.fn.datagrid = function(options) {
       filterList: function(term) {
         var self = this,
           selected = false,
-          list = $('li', this.listUl),
+          list = $('.dropdown-option', this.listUl),
+          headers = $('.group-label', this.listUl),
           results;
 
         if (!list.length || !this.list || this.list && !this.list.length) {
@@ -17279,7 +19963,7 @@ $.fn.datagrid = function(options) {
           return;
         }
 
-        list.not(results).addClass('hidden');
+        list.not(results).add(headers).addClass('hidden');
         list.filter(results).each(function(i) {
           var li = $(this);
           li.attr('tabindex', i === 0 ? '0' : '-1');
@@ -17295,12 +19979,15 @@ $.fn.datagrid = function(options) {
           li.removeClass('hidden').children('a').html(text);
         });
 
-        term = '';
+        headers.each(function() {
+          var children = $(this).nextUntil('.group-label, .selector').not('.hidden');
+          if (self.settings.showEmptyGroupHeaders || children.length) {
+            $(this).removeClass('hidden');
+          }
+        });
 
-        //Adjust height / top position
-        if (self.list.hasClass('is-ontop')) {
-          self.list[0].style.top = (self.pseudoElem.offset().top - self.list.height() + self.pseudoElem.outerHeight() - 2) + 'px';
-        }
+        term = '';
+        this.position();
       },
 
       // Removes filtering from an open Dropdown list and turns off "search mode"
@@ -17353,7 +20040,7 @@ $.fn.datagrid = function(options) {
       },
 
       handleKeyDown: function(input, e) {
-        var selectedIndex = this.element[0].selectedIndex,
+        var selectedIndex = this.element[0].selectedIndex || -1,
             options = this.element[0].options,
             key = e.which,
             self = this,
@@ -17426,6 +20113,7 @@ $.fn.datagrid = function(options) {
               }
 
               e.preventDefault();
+
               self.selectOption($(options[selectedIndex])); // store the current selection
               if (self.settings.closeOnSelect) {
                 self.closeList('select');  // Close the option list
@@ -17446,7 +20134,8 @@ $.fn.datagrid = function(options) {
               this.highlightOption(next);
               // NOTE: Do not also remove the ".is-selected" class here!  It's not the same as ".is-focused"!
               // Talk to ed.coyle@infor.com if you need to know why.
-              next.parent().find('.is-focused').removeClass('is-focused');
+              next.parent().find
+              ('.is-focused').removeClass('is-focused');
               next.addClass('is-focused');
             }
 
@@ -17501,7 +20190,7 @@ $.fn.datagrid = function(options) {
 
         self.initialFilter = false;
 
-        if (!self.isOpen() && !self.isControl(key) && !this.settings.source) {
+        if (!self.isOpen() && !self.isControl(key) && !this.settings.source && !this.settings.noSearch) {
           //Make this into Auto Complete
           self.initialFilter = true;
           self.isFiltering = true;
@@ -17556,11 +20245,14 @@ $.fn.datagrid = function(options) {
           return valid;
       },
 
-      // Focus the Element
+      /**
+      * Focus the input Element
+      */
       activate: function (useSearchInput) {
         var self = this,
           input = this.pseudoElem;
-        if (useSearchInput) {
+
+        if (useSearchInput || self.isMobile()) {
           input = this.searchInput;
         }
 
@@ -17589,7 +20281,7 @@ $.fn.datagrid = function(options) {
           input[0].focus();
         }
 
-        if ((self.isIe10 || self.isIe11) && input.closest('.time-parts').length) {
+        if (self.isIe10 || self.isIe11) {
           setTimeout(function() {
             input[0].focus();
           }, 0);
@@ -17674,6 +20366,9 @@ $.fn.datagrid = function(options) {
 
         //In a grid cell
         this.isInGrid = this.pseudoElem.closest('.datagrid-row').length === 1;
+        if (this.pseudoElem.parent().hasClass('is-inline')) {
+          this.isInGrid = false;
+        }
 
         if (this.isInGrid) {
           var rowHeight = this.pseudoElem.closest('.datagrid').attr('class').replace('datagrid', '');
@@ -17699,7 +20394,7 @@ $.fn.datagrid = function(options) {
           this.initialFilter = false;
         } else {
           // Change the values of both inputs and swap out the active descendant
-          this.searchInput.val(this.pseudoElem.text());
+          this.searchInput.val(this.pseudoElem.find('span').text());
         }
 
         var noScroll = this.settings.multiple;
@@ -17719,8 +20414,8 @@ $.fn.datagrid = function(options) {
         this.activate(true); // Focus the Search Input
         this.element.trigger('listopened');
 
-        // iOS-specific keypress event that listens for when you click the "done" button
         if (this.isMobile()) {
+          // iOS-specific keypress event that listens for when you click the "done" button
           self.searchInput.on('keypress.dropdown', function(e) {
             if (e.which === 13) {
               self.closeList('select');
@@ -17730,10 +20425,33 @@ $.fn.datagrid = function(options) {
 
         function listItemClickHandler(e) {
           var target = $(e.target),
-            ddOption = target.closest('li.dropdown-option');
+            ddOption = target.closest('li');
 
           if (ddOption.length) {
+            // Do nothing for group labels or separators
+            if (ddOption.is('.separator, .group-label')) {
+              return;
+            }
+
             target = ddOption;
+          }
+
+          if (target.is('.dropdown-select-all-anchor')) {
+            target = target.parent();
+          }
+
+          // If this is the Select All option, select/deselect all.
+          if (self.settings.multiple && target.is('.dropdown-select-all-list-item')) {
+            var doSelectAll = !(target.is('.is-selected'));
+            if (doSelectAll) {
+              target.addClass('is-selected');
+              self.selectOptions(self.element.find('option:not(:selected)'), true);
+            } else {
+              target.removeClass('is-selected');
+              self.selectOptions(self.element.find('option:selected'), true);
+            }
+
+            return true;
           }
 
           e.preventDefault();
@@ -17756,6 +20474,7 @@ $.fn.datagrid = function(options) {
           if (cur.is(':disabled')) {
             return false;
           }
+
           self.selectOption(cur);
 
           if (self.settings.closeOnSelect) {
@@ -17781,6 +20500,9 @@ $.fn.datagrid = function(options) {
             if (target.is('.separator, .group-label')) {
               return;
             }
+
+            self.list.find('li').removeClass('is-focused');
+            target.addClass('is-focused');
           });
 
         // Some list-closing events are on a timer to prevent immediate list close
@@ -17865,10 +20587,20 @@ $.fn.datagrid = function(options) {
         parentScroll = self.element.closest('.scrollable-y').length ? self.element.closest('.scrollable-y') : parentScroll;
         parentScroll.on('scroll.dropdown', scrollDocument);
 
-        // In mobile environments, bind against an orientation change.
-        // in desktop environments, bind against window.resize
-        if (window.orientation === undefined) {
-          $('body').on('resize.dropdown', function() {
+        $('body').on('resize.dropdown', function() {
+          self.position();
+
+          // in desktop environments, close the list on viewport resize
+          if (window.orientation === undefined) {
+            self.closeList('cancel');
+          }
+        });
+
+        // In mobile environments, close the list on an orientation change.
+        // Don't do this on mobile against a resize because of the software keyboard's potential
+        // to cause a "resize" event to fire.
+        if (window.orientation !== undefined) {
+          $(window).on('orientationchange.dropdown', function() {
             self.closeList('cancel');
           });
         }
@@ -17878,90 +20610,71 @@ $.fn.datagrid = function(options) {
         }
       },
 
-      // Set size and positioning of the list
+      /**
+       * Set size and positioning of the list
+       * @private
+       */
       position: function() {
-        var isFixed = false, isAbs = false,
-          top = (this.pseudoElem.offset().top),
-          left = this.pseudoElem.offset().left - $(window).scrollLeft();
+        var self = this,
+          positionOpts = {
+            parentXAlignment: 'left',
+            placement: 'bottom',
+            strategies: ['flip', 'shrink-y']
+          };
 
-        this.list[0].style.top = top +'px';
-        this.list[0].style.left = left +'px';
-
-        //Fixed and Absolute Positioning use cases
-        this.pseudoElem.parentsUntil('body').each(function () {
-          if (this.style.position === 'fixed' && !$(this).is('.modal')) {
-            isFixed = true;
-            return;
+        function dropdownAfterPlaceCallback(e, placementObj) {
+          // Turn upside-down if flipped to the top of the pseudoElem
+          if (placementObj.wasFlipped === true) {
+            self.list.addClass('is-ontop');
+            self.listUl.prependTo(self.list);
           }
-        });
 
-        if (isFixed) {
-          this.list[0].style.position = 'fixed';
-        }
-
-        if (this.pseudoElem.parent('.field')[0] && this.pseudoElem.parent('.field')[0].style.position === 'absolute') {
-          isAbs = true;
-          var parentOffset = this.pseudoElem.parent('.field').offset();
-          this.list[0].style.top = (parentOffset.top + this.pseudoElem.prev('label').height()) +'px';
-          this.list[0].style.left = parentOffset.left +'px';
-        }
-
-        this.list.removeClass('is-ontop');
-
-        //Flow up if not enough room on bottom
-        var roomTop = top,
-          roomBottom = $(window).height() - top - this.pseudoElem.outerHeight();
-
-        if (roomTop > roomBottom && top - $(window).scrollTop() + this.list.outerHeight() > $(window).height()) {
-          this.list[0].style.top = (top - this.list.outerHeight() + this.pseudoElem.outerHeight()) +'px';
-          this.list.addClass('is-ontop');
-          this.listUl.prependTo(this.list);
-        }
-
-        // If the menu is off the top of the screen, cut down the size of the menu to make it fit.
-        if (this.list.offset().top < 0 ) {
-          var listHeight = this.list.outerHeight(),
-            diff = this.list.offset().top * -1;
-          this.list[0].style.top = 0;
-          this.list[0].style.height = (listHeight - diff - 5) +'px';
-        }
-
-        // If the menu is off the bottom of the screen, cut up the size
-        if (this.list.offset().top - $(window).scrollTop() + this.list.outerHeight() >  $(window).height()) {
-          var newHeight = $(window).height() - this.list.offset().top - 5;
-          this.list[0].style.height = newHeight + 'px';
-        }
-
-        //let grow or to field size.
-        this.list.find('input').outerWidth(this.pseudoElem.outerWidth()-3);
-        if (this.list.width() > this.pseudoElem.outerWidth() && !this.isInGrid) {
-          var listWidth = (this.list.outerWidth() + 35) + 'px';
-           this.list[0].style.width = listWidth;
-           this.list.find('input')[0].style.width = listWidth;
-
-           //But not off the left side
-           var wWidth = $(window).width(),
-              intListWidth = parseInt(listWidth),
-              maxWidth = wWidth - parseInt(this.list[0].style.left, 10);
-           if (intListWidth > maxWidth) {
-             this.list[0].style.left = (wWidth - intListWidth - 5) +'px';
-            }
-        } else {
-          var pseudoElemOuterWidth = this.pseudoElem.outerWidth();
-          this.list[0].style.width = pseudoElemOuterWidth + 'px';
-
-          // Fix: text was hard to view,
-          // when cell width smaller then text with editable Datagrid
-          if (this.isInGrid) {
-            this.searchInput[0].style.cssText = 'width:'+ pseudoElemOuterWidth +'px !important';
-            this.list[0].style.width = '';
-            var glistWidth = this.list.outerWidth(),
-              gCellWidth = this.element.closest('.datagrid-cell-wrapper').outerWidth(),
-              gWidth = glistWidth > gCellWidth ? (glistWidth + 20) : gCellWidth;
-            this.list[0].style.width = gWidth +'px';
-            this.searchInput[0].style.width = '';
+          // Set the <UL> height to 100% of the `.dropdown-list` minus the size of the search input
+          var ulHeight = parseInt(window.getComputedStyle(self.listUl[0]).height),
+            listHeight = parseInt(window.getComputedStyle(self.list[0]).height),
+            searchInputHeight = 34;
+          if (ulHeight + searchInputHeight > listHeight) {
+            self.listUl[0].style.height = (listHeight - searchInputHeight) + 'px';
           }
+
+          return placementObj;
         }
+
+        // Reset styles that may have been appended to the list
+        this.list[0].removeAttribute('style');
+        this.listUl[0].removeAttribute('style');
+
+        var parentElement = this.pseudoElem;
+        if (this.isInGrid) {
+          parentElement = this.element.closest('.datagrid-cell-wrapper');
+        }
+
+        // If the list would end up being wider parent,
+        // use the list's width instead of the parent's width
+        var parentElementStyle = window.getComputedStyle(parentElement[0]),
+          parentElementBorderWidth = parseInt(parentElementStyle.borderLeftWidth) * 2,
+          parentElementWidth = Math.round(parseInt(parentElement[0].clientWidth) + parentElementBorderWidth),
+          listDefaultWidth, useParentWidth;
+
+        // Temporarily shrink the value of the search input, and compare the size of the list to
+        // the parent element.
+        this.searchInput[0].style.cssText = 'width: '+ parentElementWidth +'px !important';
+        listDefaultWidth = Math.round(this.list.width());
+        useParentWidth = listDefaultWidth <= parentElementWidth;
+        this.searchInput[0].style.width = '';
+
+        // Add parent info to positionOpts
+        positionOpts.parent = parentElement;
+        positionOpts.useParentWidth = useParentWidth;
+
+        // use negative height of the pseudoElem to get the Dropdown list to overlap the input.
+        positionOpts.y = parseInt(parentElementStyle.height + parentElementStyle.borderTopWidth + parentElementStyle.borderBottomWidth) * -1;
+        if (Soho.env.browser.name === 'ie' && Soho.env.browser.version === '11') {
+          positionOpts.y = (positionOpts.y * 2);
+        }
+
+        this.list.one('afterplace.dropdown', dropdownAfterPlaceCallback).place(positionOpts);
+        this.list.data('place').place(positionOpts);
       },
 
       // Alias that works with the global "closeChildren" method.  See "js/lifecycle.js"
@@ -18001,12 +20714,12 @@ $.fn.datagrid = function(options) {
           .off('click.dropdown scroll.dropdown touchmove.dropdown touchend.dropdown touchcancel.dropdown');
 
         $('body').off('resize.dropdown');
+        $(window).off('orientationchange.dropdown');
         this.element.trigger('listclosed', action);
         this.activate();
         this.list = null;
         this.searchInput = null;
         this.listUl = null;
-
       },
 
       //Set option into view
@@ -18073,7 +20786,9 @@ $.fn.datagrid = function(options) {
 
         if (this.isOpen()) {
           this.list.find('.is-focused').removeClass('is-focused').attr({'tabindex':'-1'});
-          listOption.addClass('is-focused').attr({'tabindex': '0'});
+          if (!option.hasClass('clear')) {
+            listOption.addClass('is-focused').attr({'tabindex': '0'});
+          }
 
           // Set activedescendent for new option
           //this.pseudoElem.attr('aria-activedescendant', listOption.attr('id'));
@@ -18101,12 +20816,34 @@ $.fn.datagrid = function(options) {
         }
       },
 
-      //Select an option and optionally trigger events
+      /**
+       * Convenience method for running _selectOption()_ on a set of list options.
+       * Accepts an array or jQuery selector containing valid list options and selects/deselects them.
+       * @param {Array / jQuery[]} options - incoming options
+       * @param {Boolean} noTrigger - if true, causes the 'selected' and 'change' events not to fire on each list item.
+       */
+      selectOptions: function(options, noTrigger) {
+        // Use a jQuery selector if the incoming options are inside an array
+        if (Array.isArray(options)) {
+          options = $(options);
+        }
+
+        var self = this;
+        options.each(function() {
+          self.selectOption($(this), noTrigger);
+        });
+      },
+
+      /**
+       * Select an option and conditionally trigger events.
+       * Accepts an array or jQuery selector containing valid list options and selects/deselects them.
+       * @param {jQuery} option - the incoming option
+       * @param {boolean} noTrigger - if true, causes the 'selected' and 'change' events not to fire on the list item.
+       */
       selectOption: function(option, noTrigger) {
         if (!option) {
           return option;
         }
-
         var li;
         if (option.is('li')) {
           li = option;
@@ -18120,8 +20857,14 @@ $.fn.datagrid = function(options) {
             });
           }
         }
-        if (!li) {
-          li = this.listUl.find('li[data-val="'+ option.val().replace('"', '/quot/') +'"]');
+
+        var value = option.val();
+        if (!option) {
+          return;
+        }
+
+        if (!li && value) {
+          li = this.listUl.find('li[data-val="'+ value.replace('"', '/quot/') +'"]');
         }
 
         if (option.hasClass('is-disabled') || option.is(':disabled')) {
@@ -18133,8 +20876,12 @@ $.fn.datagrid = function(options) {
           oldText = this.pseudoElem.text(),
           text = '',
           trimmed = '',
+          clearSelection = false,
           isAdded = true; // Sets to false if the option is being removed from a multi-select instead of added
 
+        if (option.hasClass('clear') || code === '') {
+          clearSelection = true;
+        }
 
         if (this.settings.multiple) {
           // Working with a select multiple allows for the "de-selection" of items in the list
@@ -18167,18 +20914,20 @@ $.fn.datagrid = function(options) {
           // Working with a single select
           val = code;
           this.listUl.find('li.is-selected').removeClass('is-selected');
-          li.addClass('is-selected');
+          if (!clearSelection) {
+            li.addClass('is-selected');
+          }
           this.previousActiveDescendant = option.val();
           text = option.text();
         }
-
-        this.element.find('option').each(function () {
-          if (this.value === code) {
-            this.selected = true;
-            return false;
-          }
-        });
-
+        if (!clearSelection) {
+          this.element.find('option').each(function () {
+            if (this.value === code) {
+              this.selected = true;
+              return false;
+            }
+          });
+        }
         // If we're working with a single select and the value hasn't changed, just return without
         // firing a change event
         if (text === oldText) {
@@ -18186,8 +20935,13 @@ $.fn.datagrid = function(options) {
         }
 
         // Change the values of both inputs and swap out the active descendant
-        this.pseudoElem.find('span').text(text);
-        this.searchInput.val(text);
+        if (!clearSelection) {
+          this.pseudoElem.find('span').text(text);
+          this.searchInput.val(text);
+        } else {
+          this.pseudoElem.find('span').text('');
+          this.searchInput.val('');
+        }
 
         if (this.element.attr('maxlength')) {
           trimmed = text.substr(0, this.element.attr('maxlength'));
@@ -18195,9 +20949,12 @@ $.fn.datagrid = function(options) {
           this.searchInput.val(trimmed);
         }
 
+        // Set the new value on the <select>
+        this.element.val(val);
+
         // Fire the change event with the new value if the noTrigger flag isn't set
         if (!noTrigger) {
-          this.element.val(val).trigger('change').triggerHandler('selected', [option, isAdded]);
+          this.element.trigger('change').triggerHandler('selected', [option, isAdded]);
         }
 
         // If multiselect, reset the menu to the unfiltered mode
@@ -18234,7 +20991,7 @@ $.fn.datagrid = function(options) {
           this.isFiltering = false;
 
           var sourceType = typeof this.settings.source,
-            response = function (data) {
+            response = function (data, isManagedByTemplate) {
             //to do - no results back do not open.
             var list = '',
               val = self.element.val();
@@ -18284,23 +21041,25 @@ $.fn.datagrid = function(options) {
             if (!self.isFiltering && !Soho.utils.equals(data, self.dataset)) {
               self.dataset = data;
 
-              self.element.empty();
-              for (var i=0; i < data.length; i++) {
-                var opts;
+              if (!isManagedByTemplate) {
+                self.element.empty();
+                for (var i=0; i < data.length; i++) {
+                  var opts;
 
-                if (data[i].group) {
-                  opts = data[i].options;
-                  list += '<optgroup label="' + data[i].group + '">';
-                  for (var ii = 0; ii < opts.length; ii++) {
-                    buildOption(opts[ii]);
+                  if (data[i].group) {
+                    opts = data[i].options;
+                    list += '<optgroup label="' + data[i].group + '">';
+                    for (var ii = 0; ii < opts.length; ii++) {
+                      buildOption(opts[ii]);
+                    }
+                    list += '</optgroup>';
+                  } else {
+                    buildOption(data[i]);
                   }
-                  list += '</optgroup>';
-                } else {
-                  buildOption(data[i]);
                 }
-              }
 
-              self.element.append(list);
+                self.element.append(list);
+              }
               self.updateList();
             }
 
@@ -18338,19 +21097,16 @@ $.fn.datagrid = function(options) {
         return false;
       },
 
-      // External Facing function to set value by code - Depricated set on select and trigger updated
+      /**
+       * External Facing function to set value by code - Depricated set on select and trigger updated.
+       *
+       * @param {String} code - The value to match and set on the value element.
+       */
       setCode: function(code) {
         var self = this,
           doSetting = function ()  {
-            var option = null;
-
-            self.element.find('option').each(function () {
-              if (this.value === code) {
-                option = $(this);
-              }
-            });
-
-            self.selectOption(option, true);
+            self.element.val(code);
+            self.updated();
           };
 
         if (!self.callSource(doSetting)) {
@@ -18362,15 +21118,13 @@ $.fn.datagrid = function(options) {
         return ['ios', 'android'].indexOf(Soho.env.os.name) > -1;
       },
 
-      // Used to determine whether or not we need to show the full-screen dropdown
-      isFullScreen: function() {
-        return this.isMobile() && $(window).width() < 767;
-      },
-
       isListClosable: function() {
         return this.list.hasClass('is-closable');
       },
 
+      /**
+       * Disable the input element.
+       */
       disable: function() {
         this.element
           .prop('disabled', true)
@@ -18389,6 +21143,16 @@ $.fn.datagrid = function(options) {
         this.closeList('cancel');
       },
 
+      /**
+      * Returns true if the dropdown is disabled.
+      */
+      isDisabled: function() {
+        return this.element.prop('disabled');
+      },
+
+      /**
+       * Enable the input element.
+       */
       enable: function() {
         this.element
           .prop('disabled', false)
@@ -18401,6 +21165,9 @@ $.fn.datagrid = function(options) {
           .removeClass('is-readonly');
       },
 
+      /**
+       * Make the input element readonly.
+       */
       readonly: function() {
         this.element
           .prop('disabled', false)
@@ -18444,6 +21211,9 @@ $.fn.datagrid = function(options) {
         return this;
       },
 
+      /**
+       * Tear down events and restore to default.
+       */
       destroy: function() {
         $.removeData(this.element[0], pluginName);
         this.closeList('cancel');
@@ -18453,6 +21223,68 @@ $.fn.datagrid = function(options) {
         this.wrapper.remove();
         this.listfilter.destroy();
         this.element.removeAttr('style');
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Dropdown#events
+       * @param {Object} listopened  &nbsp;-&nbsp; Fires as the calendar popup is opened
+       * @param {Object} listclosed  &nbsp;-&nbsp; Fires as the calendar popup is closed
+       * @param {Object} change  &nbsp;-&nbsp; Fires after the value in the input is changed by any means.
+       * @param {Object} input  &nbsp;-&nbsp; Fires after the value in the input is changed by user interaction.
+       *
+       */
+      handleEvents: function() {
+        var self = this;
+
+        this.pseudoElem.on('keydown.dropdown', function(e) {
+          self.ignoreKeys($(this), e);
+          self.handleKeyDown($(this), e);
+        }).on('keypress.dropdown', function(e) {
+          if (e.keyCode === 9) {
+            return;
+          }
+          self.ignoreKeys($(this), e);
+
+          if (!self.settings.noSearch) {
+            self.toggleList();
+          }
+          self.handleAutoComplete(e);
+        }).on('click.dropdown', function(e) {
+          e.stopPropagation();
+        }).on('mouseup.dropdown', function(e) {
+          if (e.button === 2) {
+            return;
+          }
+          self.toggleList();
+        }).on('touchend.dropdown touchcancel.dropdown', function(e) {
+          e.stopPropagation();
+          self.toggleList();
+          e.preventDefault();
+        });
+
+        self.element.on('activated.dropdown', function () {
+          self.label.trigger('click');
+        }).on('updated.dropdown', function (e) {
+          e.stopPropagation();
+          self.updated();
+        }).on('openlist.dropdown', function() {
+          self.toggleList();
+        });
+
+        //for form resets.
+        self.element.closest('form').on('reset.dropdown', function() {
+          setTimeout(function () {
+            self.element.triggerHandler('updated');
+          }, 1);
+        });
+
+        //Handle Label click
+        this.label.onTouchClick().on('click', function () {
+          self.pseudoElem.focus();
+        });
+
       }
 
     };
@@ -18479,22 +21311,31 @@ $.fn.datagrid = function(options) {
     // Settings and Options
     var pluginName = 'drag',
       defaults = {
-        axis: null, //Constrains dragging to either axis. Possible values: 'x', 'y'
-        clone: false, //Clone the object - Useful so you dont have to abs position
-        cloneCssClass: 'is-clone', // Css class added to clone element
-        clonePosIsFixed: false, //Clone object use as css style "position: fixed"
-        cloneAppendTo: null, //AppentTo selector for clone ['body'|'parent'|'jquery object'] default:'body'
-        containment: false, //Constrains dragging to within the bounds of the specified element or region. Possible values: "parent", "document", "window".
-        obstacle: false, //Selector of object(s) that you cannot drag into,
+        axis: null,
+        clone: false,
+        cloneCssClass: 'is-clone',
+        clonePosIsFixed: false,
+        cloneAppendTo: null,
+        containment: false,
+        obstacle: false,
         containmentOffset: {left: 0, top: 0}
       },
       settings = $.extend({}, defaults, options);
 
     /**
-     * Drag and Drop Functions with Touch Support
-     * @constructor
-     * @param {Object} element
-     */
+    * Drag/Drop functions with touch support.
+    *
+    * @class Drag
+    * @param {String} axis  &nbsp;-&nbsp; Constrains dragging to either axis. Possible values: null, 'x', 'y'
+    * @param {Boolean} clone  &nbsp;-&nbsp;  Set to true to clone the object to drag. In many situations this is needed to break out of layout.
+    * @param {String} cloneCssClass  &nbsp;-&nbsp; Css class added to clone element (defaults to is-clone)
+    * @param {Boolean} clonePosIsFixed  &nbsp;-&nbsp; if true cloned object will use css style "position: fixed"
+    * @param {String} cloneAppendTo  &nbsp;-&nbsp; Selector to append to for the clone ['body'|'parent'|'jquery object'] default:'body'
+    * @param {Boolean} containment  &nbsp;-&nbsp; Constrains dragging to within the bounds of the specified element or region. Possible values: "parent", "document", "window".
+    * @param {String} obstacle  &nbsp;-&nbsp; jQuery Selector of object(s) that you cannot drag into,
+    * @param {String} containmentOffset  &nbsp;-&nbsp; How close to the containment object should we be allowed to drag in position form. `{left: 0, top: 0}`
+    *
+    */
     function Drag(element) {
       this.element = $(element);
       Soho.logTimeStart(pluginName);
@@ -18507,122 +21348,6 @@ $.fn.datagrid = function(options) {
 
       init: function() {
         this.handleEvents();
-      },
-
-      // Handle Touch/Mouse Drag Drop
-      handleEvents: function() {
-        var self = this;
-        self.offset = null;
-
-        //Touch and Drag Support
-        self.element.attr('draggable', false);
-
-        if ('onpointerdown' in window || 'onmspointerdown' in window) {
-          // Setup pointer events
-          // TODO: Setup Pointer Events for IE10/11
-          /*
-          self.element.on('pointerdown MSPointerDown', function(e) {
-
-          })
-          .on('pointermove MSPointerMove', function(e) {
-
-          })
-          .on('pointerup MSPointerUp', function(e) {
-
-          });
-          */
-        }
-        else {
-
-          //Touch-only Drag Support
-          self.element.on('touchstart.draggable gesturestart.draggable', function(e) {
-            var pos = $(this).position(),
-                orig = e.originalEvent;
-
-            self.offset = {
-              x:  orig.changedTouches[0].pageX - pos.left,
-              y:  orig.changedTouches[0].pageY - pos.top
-            };
-
-            self.originalPos = pos;
-            self.element.addClass('is-dragging');
-            self.element.trigger('dragstart', pos);
-          })
-
-          // Move
-          .on('touchmove.draggable gesturechange.draggable', function(e) {
-            e.preventDefault();
-            var orig = e.originalEvent;
-
-            // do now allow two touch points to drag the same element
-            if (orig.targetTouches.length > 1) {
-              return;
-            }
-            self.move(orig.changedTouches[0].pageX - self.offset.x, orig.changedTouches[0].pageY - self.offset.y);
-          })
-
-          //Finish Touch Dragging
-          .on('touchend.draggable gestureend.draggable touchcancel.draggable', function (e) {
-            e.preventDefault();
-            var touch = e.originalEvent.changedTouches[0];
-            self.finish(touch.pageX - self.offset.x, touch.pageY - self.offset.y);
-          });
-
-        }
-
-        // Always bind mousedown in either scenario, in the event that a mouse is used
-        self.element.on('mousedown.draggable', function(e) {
-          e.preventDefault();
-
-
-          var pos = settings.clonePosIsFixed ?
-            self.element[0].getBoundingClientRect() : self.element.position();
-
-          //Save offset
-          self.offset = {
-            x: e.pageX - pos.left,
-            y: e.pageY - pos.top
-          };
-
-          self.originalPos = pos;
-
-          //Prevent Text Selection
-          $('body').addClass('disable-select');
-
-          //Handle Mouse Press over draggable element
-          $(document).on('mousemove.draggable', function (e) {
-            e.preventDefault();
-            self.move(e.pageX - self.offset.x, e.pageY - self.offset.y);
-          });
-
-          //Handle Mouse release over draggable element close out events and trigger
-          $(document).on('mouseup.draggable', function (e) {
-            e.preventDefault();
-            self.finish(e.pageX - self.offset.x, e.pageY - self.offset.y);
-          });
-
-          self.element.on('mouseup.draggable', function (e) {
-            e.preventDefault();
-            self.finish(e.pageX - self.offset.x, e.pageY - self.offset.y);
-          });
-
-          //Trigger dragging
-          //Clone
-          if (!self.clone && settings.clone) {
-            self.clone = self.element.clone(true);
-            if (settings.cloneAppendTo === 'parent') {
-              settings.cloneAppendTo = self.element.parent();
-            }
-            self.clone
-              .addClass(settings.cloneCssClass)
-              .appendTo(settings.cloneAppendTo || 'body');
-
-          }
-
-          self.element.addClass('is-dragging');
-          self.element.trigger('dragstart', [pos, self.clone]);
-        });
-
       },
 
       //Trigger events and remove clone
@@ -18725,8 +21450,8 @@ $.fn.datagrid = function(options) {
 
           // Caching this so drag is not jaggie
           if (!this.obstacle) {
-            var obstacleOffset = this.obstacle.offset();
             this.obstacle = $(settings.obstacle).not(this.element);
+            var obstacleOffset = $(this.obstacle).offset();
 
             this.constraints = {
               top: obstacleOffset.top,
@@ -18758,11 +21483,124 @@ $.fn.datagrid = function(options) {
         this.element.trigger('drag', css);
       },
 
-      // Teardown
+      /**
+      * Detach all functionality and events.
+      */
       destroy: function() {
         $.removeData(this.element[0], pluginName);
         this.element.off('touchstart.draggable MSPointerDown.draggable pointerdown.draggable touchmove.draggable touchend.draggable touchcancel.draggable mousedown.draggable');
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Drag#events
+       * @param {Object} dragstart  &nbsp;-&nbsp; When the dragging is initiated. Use this to customize/style the drag/drop objects in the DOM.
+       * @param {Object} drag  &nbsp;-&nbsp; Fires (many times) while dragging is occuring. Use this for DOM feedback but be careful about what you do in here for performance.
+       * @param {Object} dragend  &nbsp;-&nbsp; Fires after the drag is completed. Use this to remove / set drag feedback off.
+       *
+       */
+      handleEvents: function() {
+        var self = this;
+        self.offset = null;
+
+        //Touch and Drag Support
+        self.element.attr('draggable', false);
+
+        if ('onpointerdown' in window || 'onmspointerdown' in window) {
+          // TODO: Setup Pointer Events for IE10/11 - pointerdown MSPointerDown, pointermove MSPointerMove, pointerup MSPointerUp
+        } else {
+
+          //Touch-only Drag Support
+          self.element.on('touchstart.draggable gesturestart.draggable', function(e) {
+            var pos = $(this).position(),
+                orig = e.originalEvent;
+
+            self.offset = {
+              x:  orig.changedTouches[0].pageX - pos.left,
+              y:  orig.changedTouches[0].pageY - pos.top
+            };
+
+            self.originalPos = pos;
+            self.element.addClass('is-dragging');
+            self.element.trigger('dragstart', pos);
+          })
+
+          // Move
+          .on('touchmove.draggable gesturechange.draggable', function(e) {
+            e.preventDefault();
+            var orig = e.originalEvent;
+
+            // do now allow two touch points to drag the same element
+            if (orig.targetTouches.length > 1) {
+              return;
+            }
+            self.move(orig.changedTouches[0].pageX - self.offset.x, orig.changedTouches[0].pageY - self.offset.y);
+          })
+
+          //Finish Touch Dragging
+          .on('touchend.draggable gestureend.draggable touchcancel.draggable', function (e) {
+            e.preventDefault();
+            var touch = e.originalEvent.changedTouches[0];
+            self.finish(touch.pageX - self.offset.x, touch.pageY - self.offset.y);
+          });
+
+        }
+
+        // Always bind mousedown in either scenario, in the event that a mouse is used
+        self.element.on('mousedown.draggable', function(e) {
+          e.preventDefault();
+
+          var pos = settings.clonePosIsFixed ?
+            self.element[0].getBoundingClientRect() : self.element.position();
+
+          //Save offset
+          self.offset = {
+            x: e.pageX - pos.left,
+            y: e.pageY - pos.top
+          };
+
+          self.originalPos = pos;
+
+          //Prevent Text Selection
+          $('body').addClass('disable-select');
+
+          //Handle Mouse Press over draggable element
+          $(document).on('mousemove.draggable', function (e) {
+            e.preventDefault();
+            self.move(e.pageX - self.offset.x, e.pageY - self.offset.y);
+          });
+
+          //Handle Mouse release over draggable element close out events and trigger
+          $(document).on('mouseup.draggable', function (e) {
+            e.preventDefault();
+            self.finish(e.pageX - self.offset.x, e.pageY - self.offset.y);
+          });
+
+          self.element.on('mouseup.draggable', function (e) {
+            e.preventDefault();
+            self.finish(e.pageX - self.offset.x, e.pageY - self.offset.y);
+          });
+
+          //Trigger dragging
+          //Clone
+          if (!self.clone && settings.clone) {
+            self.clone = self.element.clone(true);
+            if (settings.cloneAppendTo === 'parent') {
+              settings.cloneAppendTo = self.element.parent();
+            }
+            self.clone
+              .addClass(settings.cloneCssClass)
+              .appendTo(settings.cloneAppendTo || 'body');
+
+          }
+
+          self.element.addClass('is-dragging');
+          self.element.trigger('dragstart', [pos, self.clone]);
+        });
+
       }
+
     };
 
     // Initialize the plugin (Once)
@@ -18795,10 +21633,7 @@ $.fn.datagrid = function(options) {
             'separator', 'source'
           ],
           source: [
-            'bold','italic','underline',
-            'separator', 'anchor',
-            'separator', 'quote',
-            'separator', 'visual'
+            'visual'
           ]
         },
         excludeButtons: {
@@ -18817,10 +21652,16 @@ $.fn.datagrid = function(options) {
       settings = $.extend({}, defaults, options);
 
     /**
-     * Html Editor
-     * @constructor
-     * @param {Object} element
-     */
+    * The Editor Component is displays and edits markdown.
+    *
+    * @class Editor
+    * @param {String} firstHeader  &nbsp;-&nbsp; Allows you to set if the first header inserted is a h3 or h4 element. You should set this to match the structure of the parent page for accessibility
+    * @param {Boolean} secondHeader  &nbsp;-&nbsp; Allows you to set if the second header inserted is a h3 or h4 element. You should set this to match the structure of the parent page for accessibility
+    * @param {String} productName  &nbsp;-&nbsp; Additional product name information to display
+    * @param {String} pasteAsPlainText  &nbsp;-&nbsp; If true, when you paste into the editor the element will be unformatted to plain text.
+    * @param {String} anchor  &nbsp;-&nbsp; Info object to populate the link dialog defaulting to `{url: 'http://www.example.com', class: 'hyperlink', target: 'New window'},`
+    * @param {String} image  &nbsp;-&nbsp; Info object to populate the image dialog defaulting to ` {url: 'http://lorempixel.com/output/cats-q-c-300-200-3.jpg'}`
+    */
     function Editor(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -19078,6 +21919,9 @@ $.fn.datagrid = function(options) {
         $('.trigger', cpElements).off('click.colorpicker');
       },
 
+      /**
+      * Switch between source and editing toolbar.
+      */
       switchToolbars: function() {
         this.destroyToolbar();
 
@@ -19539,6 +22383,9 @@ $.fn.datagrid = function(options) {
         return this;
       },
 
+      /**
+      * Function that creates the Url Modal Dialog. This can be customized by making a modal with ID `#editor-modal-url`
+      */
       createURLModal: function() {
         var targetOptions = '',
           isTargetCustom = true,
@@ -19586,6 +22433,9 @@ $.fn.datagrid = function(options) {
           '</div>').appendTo('body');
       },
 
+       /**
+       * Function that creates the Image Dialog. This can be customized by making a modal with ID `#editor-modal-image`
+       */
       createImageModal: function() {
         var imageModal = $('#editor-modal-image');
         if (imageModal.length > 0) {
@@ -19927,13 +22777,49 @@ $.fn.datagrid = function(options) {
             return this;
           }
           var types, clipboardData, pastedData,
+            paste, p, paragraphs,
             getCleanedHtml = function(pastedData) {
-              var s = pastedData || '';
+              var i, l, attributeStripper,
+                s = pastedData || '',
+                badAttributes = [
+                  'start','xmlns','xmlns:o','xmlns:w','xmlns:x','xmlns:m',
+                  'onmouseover','onmouseout','onmouseenter','onmouseleave',
+                  'onmousemove','onload','onfocus','onblur','onclick',
+                  'style'
+                ];
+
+              // Remove extra word formating
               if (self.isWordFormat(s)) {
                 s = self.cleanWordHtml(s);
               }
-              s = s.replace(/<\/?(html|body)>/gi, '');
+
+              // Remove bad attributes
+              for (i = 0, l = badAttributes.length; i < l; i++) {
+                attributeStripper = new RegExp(' ' + badAttributes[i] + '="(.*?)"','gi');
+                s = self.stripAttribute(s, badAttributes[i], attributeStripper);
+
+                attributeStripper = new RegExp(' ' + badAttributes[i] + '=\'(.*?)\'','gi');
+                s = self.stripAttribute(s, badAttributes[i], attributeStripper);
+              }
+
+              // Remove "ng-" directives and "ng-" classes
+              s = s.replace(/(ng-\w+-\w+="(.|\n)*?"|ng-\w+="(.|\n)*?"|ng-(\w+-\w+)|ng-(\w+))/g, '');
+
+              // Remove comments
+              s = s.replace(/<!--(.*?)-->/gm, '');
+
+              // Remove extra spaces
+              s = s.replace(/\s\s+/g, ' ').replace(/\s>+/g, '>');
+
+              // Remove extra attributes from list elements
+              s = s.replace(/<(ul|ol)(.*?)>/gi, '<$1>');
+
+              // Remove html and body tags
+              s = s.replace(/<\/?(html|body)(.*?)>/gi, '');
+
+              // Remove header tag and content
               s = s.replace(/<head\b[^>]*>(.*?)<\/head>/gi, '');
+
               return s;
             };
 
@@ -19945,12 +22831,32 @@ $.fn.datagrid = function(options) {
               clipboardData = e.originalEvent.clipboardData;
             }
           }
-          types = clipboardData.types;
 
-          // jshint undef:false
-          if (types && ((types instanceof DOMStringList && types.contains('text/html')) || (types.indexOf && types.indexOf('text/html') !== -1))) {
-          // jshint undef:true
-            pastedData =  e.originalEvent.clipboardData.getData('text/html');
+          if (clipboardData && clipboardData.types) {
+            types = clipboardData.types;
+            // jshint undef:false
+            if ((types instanceof DOMStringList && types.contains('text/html')) ||
+                (types.indexOf && types.indexOf('text/html') !== -1)) {
+            // jshint undef:true
+              pastedData =  e.originalEvent.clipboardData.getData('text/html');
+            }
+          } else {
+            paste = window.clipboardData.getData('Text');
+            paragraphs = paste.split(/[\r\n]/g);
+            pastedData = '';
+            for (p = 0; p < paragraphs.length; p += 1) {
+              if (paragraphs[p] !== '') {
+                if (navigator.userAgent.match(/firefox/i) && p === 0) {
+                  pastedData += '<p>' + self.htmlEntities(paragraphs[p]) + '</p>';
+                } else {
+                  if((/\.(gif|jpg|jpeg|tiff|png)$/i).test(paragraphs[p])) {
+                    pastedData += '<img src="' + self.htmlEntities(paragraphs[p]) + '" />';
+                  } else {
+                    pastedData += '<p>' + self.htmlEntities(paragraphs[p]) + '</p>';
+                  }
+                }
+              }
+            }
           }
 
           self.pastedData = getCleanedHtml(pastedData);
@@ -20431,16 +23337,25 @@ $.fn.datagrid = function(options) {
         return this;
       },
 
+     /**
+     * Disable the editable area.
+     */
       disable: function () {
         this.element.addClass('is-disabled').attr('contenteditable', 'false');
         this.container.addClass('is-disabled');
       },
 
+      /**
+      * Enable the editable area.
+      */
       enable: function () {
         this.element.removeClass('is-disabled is-readonly').attr('contenteditable', 'true');
         this.container.removeClass('is-disabled is-readonly');
       },
 
+      /**
+      * Make the editable area readonly.
+      */
       readonly: function () {
         this.element.removeClass('is-readonly').attr('contenteditable', 'false');
         this.container.addClass('is-readonly');
@@ -20531,11 +23446,10 @@ $.fn.datagrid = function(options) {
         });
 
         // Remove line breaks / Mso classes
-        s = s.replace(/(\n|\r| class=(")?Mso[a-zA-Z]+(")?)/g, ' ');
+        s = s.replace(/(\n|\r| class=(\'|")?Mso[a-zA-Z]+(\'|")?)/g, ' ');
 
         var i, l, re,
-          badTags = ['style', 'script','applet','embed','noframes','noscript'],
-          badAttributes = ['style', 'start'];
+          badTags = ['style', 'script','applet','embed','noframes','noscript'];
 
         // Remove everything in between and including "badTags"
         for (i = 0, l = badTags.length; i < l; i++) {
@@ -20543,13 +23457,29 @@ $.fn.datagrid = function(options) {
           s = s.replace(re, '');
         }
 
-        // Remove attributes
-        for (i = 0, l = badAttributes.length; i < l; i++) {
-          var attributeStripper = new RegExp(' ' + badAttributes[i] + '="(.*?)"','gi');
-          s = s.replace(attributeStripper, '');
-        }
-
         return s;
+      },
+
+      // Strip attributes
+      stripAttribute: function (s, attribute, attributeStripper) {
+        return (attribute === 'style') ?
+          this.stripStyles(s, attributeStripper) :
+          s.replace(attributeStripper, '');
+      },
+
+      // Strip styles
+      stripStyles: function (s, styleStripper) {
+        var stylesToKeep = ['color','background','font-weight','font-style','text-decoration','text-align'];
+        return s.replace(styleStripper, function(m) {
+          m = m.replace(/( style=|("|\'))/gi, '');
+          var attributes = m.split(';'),
+          strStyle = '';
+          for (var i = 0; i < attributes.length; i++) {
+            var entry = attributes[i].split(':');
+            strStyle += (stylesToKeep.indexOf(entry[0]) > -1) ? entry[0] +':'+ entry[1] +';' : '';
+          }
+          return (strStyle !=='') ? (' style="'+ strStyle +'"') : '';
+        });
       },
 
       getIndent: function(level) {
@@ -20596,6 +23526,9 @@ $.fn.datagrid = function(options) {
         return result.trim();
       },
 
+      /**
+      * Detach Events and tear back additions.
+      */
       destroy: function () {
         $('html').off('mouseup.editor');
         this.destroyToolbar();
@@ -20604,7 +23537,20 @@ $.fn.datagrid = function(options) {
           $('#editor-modal-url, #editor-modal-image').remove();
         }
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Editor#events
+       * @param {Object} input  &nbsp;-&nbsp; Fires after the value in the input is changed by user interaction.
+       * @param {Object} keydown  &nbsp;-&nbsp; Fires after as keys are pressed.
+       *
+       */
+      handleEvents: function () {
+
       }
+
     };
 
     // Make it plugin protecting from double initialization
@@ -20627,13 +23573,20 @@ $.fn.datagrid = function(options) {
 
     // Settings and Options
     var pluginName = 'expandablearea',
-        defaults = {},
+        defaults = {
+          trigger: null,
+          bottomBorder: false
+        },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The About Dialog Component is displays information regarding the application.
+    *
+    * @class ExpandableArea
+    * @param {String} trigger  &nbsp;-&nbsp; Id of some other button to use as a trigger
+    * @param {String} bottomBorder  &nbsp;-&nbsp; Change the border to bottom vs top (for some cases)
+    *
+    */
     function ExpandableArea(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -20658,9 +23611,11 @@ $.fn.datagrid = function(options) {
           this.id = id = 'expandable-area-' + $('body').find('.expandable-area').index(this.element);
         }
 
-        this.header = this.element.children('.expandable-header');
+        this.header = this.settings.trigger ? this.element : this.element.children('.expandable-header');
         this.footer = this.element.children('.expandable-footer');
         this.content = this.element.children('.expandable-pane');
+
+        this.isCard = this.element.is('.card, .widget');
         return this;
       },
 
@@ -20677,17 +23632,51 @@ $.fn.datagrid = function(options) {
           'id': this.id + '-content'
         });
 
-        //Add the link and footer if not there.
-        if (!this.footer.length) {
+        // Add the link and footer if not there.
+        // If we're using an expandable card,
+        if (!this.isCard && !this.footer.length && !this.settings.trigger) {
           this.footer =  $('<div class="expandable-footer"></div>').appendTo(this.element);
         }
 
-        this.expander = this.footer.find('.expandable-expander');
-        if (!this.expander.length) {
-          this.expander = $('<a href="#" target="_self" class="expandable-expander hyperlink"><span data-translated="true">'+ Locale.translate('ShowMore') +'</span></a>').prependTo(this.footer);
+        function getExpander(instance, useHeaderExpander) {
+          var expander;
+
+          if (useHeaderExpander === true) {
+            // Use icon-based expander in the header
+            expander = instance.header.find('expandable-expander');
+            if (!expander.length) {
+              expander = $('<a href="#" target="_self" class="btn-expander">' +
+                '<svg class="chevron icon" focusable="false" aria-hidden="true" role="presenation">' +
+                  '<use xlink:href="' + '#icon-caret-down' + '"></use>' +
+                '</svg>' +
+                '<span class="audible">'+ Locale.translate('ShowMore') +'</span>' +
+              '</a>').appendTo(instance.header);
+            }
+
+            return expander;
+          }
+
+          // Use the text-based expander button in the footer
+          expander = instance.footer.find('.expandable-expander');
+          if (!expander.length) {
+            expander = $('<a href="#" target="_self" class="expandable-expander hyperlink">' +
+              '<span data-translated="true">'+ Locale.translate('ShowMore') +'</span>' +
+            '</a>').prependTo(instance.footer);
+          }
+          return expander;
         }
 
+        this.expander = getExpander(self, this.isCard);
         this.expander.attr('href', '#').hideFocus();
+
+        if (this.expander.length === 0) {
+          this.expander = $('#' + this.settings.trigger);
+        }
+
+        // Change the borer to the bottom vs top
+        if (this.settings.bottomBorder) {
+          this.element.addClass('has-bottom-border');
+        }
 
         //Initialized in expanded mode.
         if (expanded) {
@@ -20709,28 +23698,12 @@ $.fn.datagrid = function(options) {
         return this;
       },
 
+      /**
+      * Return if the expandable area is current disable or not.
+      * @returns {Boolean}
+      */
       isDisabled: function() {
         return this.element.hasClass('is-disabled');
-      },
-
-      handleEvents: function() {
-        var self = this;
-        this.expander.onTouchClick('expandablearea').on('click.expandablearea', function(e) {
-          if (!self.isDisabled()) {
-            e.preventDefault();
-            self.toggleExpanded();
-          }
-        });
-
-        this.header.on('keydown.expandablearea', function(e) {
-          self.handleKeys(e);
-        }).on('focus.expandablearea', function(e) {
-          self.handleFocus(e);
-        }).on('blur.expandablearea', function(e) {
-          self.handleBlur(e);
-        });
-
-        return this;
       },
 
       handleKeys: function(e) {
@@ -20763,15 +23736,29 @@ $.fn.datagrid = function(options) {
         this.header.removeClass('is-focused');
       },
 
+      /**
+       * Indicates whether or not this area is expanded.
+       * @returns {boolean}
+       */
+      isExpanded: function() {
+        return this.element.is('.is-expanded');
+      },
+
+      /**
+       * Toggle Current Expansion State.
+       */
       toggleExpanded: function() {
         // if (this.header.attr('aria-expanded') === 'true') {
-        if (this.element.is('.is-expanded')) {
+        if (this.isExpanded()) {
           this.close();
         } else {
           this.open();
         }
       },
 
+      /**
+       * Open the pane if closed.
+       */
       open: function() {
         var self = this,
         canExpand = this.element.triggerHandler('beforeexpand', [this.element]);
@@ -20787,6 +23774,10 @@ $.fn.datagrid = function(options) {
 
         this.expander.find('span[data-translated="true"]').text(Locale.translate('ShowLess') ? Locale.translate('ShowLess') : 'Show Less');
 
+        if (this.isCard) {
+          this.expander.find('.icon').addClass('active');
+        }
+
         if (this.content[0]) {
           this.content[0].style.display = 'block';
         }
@@ -20795,6 +23786,9 @@ $.fn.datagrid = function(options) {
         }).animateOpen();
       },
 
+      /**
+       * Close the pane if open.
+       */
       close: function() {
         var self = this,
         canCollapse = this.element.triggerHandler('beforecollapse', [this.element]);
@@ -20807,6 +23801,10 @@ $.fn.datagrid = function(options) {
         this.element.triggerHandler('collapse', [this.element]);
         this.expander.find('span[data-translated="true"]').text(Locale.translate('ShowMore') ? Locale.translate('ShowMore') : 'Show More');
 
+        if (this.isCard) {
+          this.expander.find('.icon').removeClass('active');
+        }
+
         this.content.one('animateclosedcomplete', function() {
           self.element.removeClass('is-expanded');
           self.header.attr('aria-expanded', 'false');
@@ -20815,15 +23813,23 @@ $.fn.datagrid = function(options) {
         }).animateClosed();
       },
 
+      /**
+       * Disable the Expandable Area from being closable.
+       */
       disable: function() {
         this.element.addClass('is-disabled');
       },
 
+      /**
+       * Enable the Expandable Area to allow close.
+       */
       enable: function() {
         this.element.removeClass('is-disabled');
       },
 
-      // Teardown - Remove added markup and events
+      /**
+       * Teardown - Remove added markup and events
+       */
       destroy: function() {
         this.header.children('a').offTouchClick('expandablearea').off();
         this.header.off();
@@ -20833,7 +23839,28 @@ $.fn.datagrid = function(options) {
           .removeAttr('id');
         this.content.removeAttr('id').removeClass('no-transition');
         $.removeData(this.element[0], pluginName);
+      },
+
+      handleEvents: function() {
+        var self = this;
+        this.expander.onTouchClick('expandablearea').on('click.expandablearea', function(e) {
+          if (!self.isDisabled()) {
+            e.preventDefault();
+            self.toggleExpanded();
+          }
+        });
+
+        this.header.on('keydown.expandablearea', function(e) {
+          self.handleKeys(e);
+        }).on('focus.expandablearea', function(e) {
+          self.handleFocus(e);
+        }).on('blur.expandablearea', function(e) {
+          self.handleBlur(e);
+        });
+
+        return this;
       }
+
     };
 
     // Initialize the plugin (Once)
@@ -20848,17 +23875,8 @@ $.fn.datagrid = function(options) {
   };
 
 
-/**
- * The jQuery plugin namespace.
- * @external "jQuery.fn"
- * @see {@link http://learn.jquery.com/plugins/|jQuery Plugins}
- * @private
- */
-
- /**
-  * Make something disabled
-  * @private
-  * @function external:"jQuery.fn".disable
+  /**
+  * Make elements in the jQuery selector disabled if they support the prop disabled. Or has a disable method.
   */
   $.fn.disable = function() {
     $.each(this.data(), function(index, value) {
@@ -20874,10 +23892,8 @@ $.fn.datagrid = function(options) {
     return this;
   };
 
- /**
-  * Make something enabled
-  * @private
-  * @function external:"jQuery.fn".enabled
+  /**
+  * Make elements in the jQuery selector enabled if they support the prop disabled. Or has a enable method.
   */
   $.fn.enable = function() {
     $.each(this.data(), function(index, value) {
@@ -20893,10 +23909,8 @@ $.fn.datagrid = function(options) {
     return this;
   };
 
- /**
-  * Make something readonly
-  * @private
-  * @function external:"jQuery.fn".readonly
+  /**
+  * Make elements in the jQuery selector readonly if they support the prop readonly. Or has a readonly method.
   */
   $.fn.readonly = function() {
     $.each(this.data(), function(index, value) {
@@ -20912,10 +23926,8 @@ $.fn.datagrid = function(options) {
     return this;
   };
 
- /**
-  * Track Input is changed from last submit
-  * @private
-  * @function external:"jQuery.fn".trackdirty
+  /**
+  * Track changes on the inputs passed in the jQuery selector and show a dirty indicator.
   */
   $.fn.trackdirty = function() {
       this.each(function () {
@@ -20931,39 +23943,81 @@ $.fn.datagrid = function(options) {
           }
         }
 
-        input.data('original', valMethod(input))
-         .on('change.dirty', function () {
-          var input = $(this),
-            el = input,
-            field = input.closest('.field'),
-            cssClass = '';
+        // Get absolute position for an element
+        function getAbsolutePosition(element) {
+          var pos = element.position();
+          element.parents().each(function() {
+            var el = this;
+            if (window.getComputedStyle(el, null).position === 'relative') {
+              return false;
+            }
+            pos.left += el.scrollLeft;
+            pos.top += el.scrollTop;
+          });
+          return {left:pos.left, top:pos.top};
+        }
 
+        input.data('original', valMethod(input))
+        .on('resetdirty.dirty', function () {
+          input.data('original', valMethod(input))
+            .triggerHandler('doresetdirty.dirty');
+        })
+        .on('change.dirty doresetdirty.dirty', function (e) {
+          var el = input,
+            field = input.closest('.field'),
+            label = $('label:visible', field),
+            d = {class: '', style: ''};
+
+          if (field.is('.field-fileupload')) {
+            el = label.prev('input');
+          }
+
+          // Used element without .field wrapper
+          if (!label[0]) {
+            label = input.next('label');
+          }
           if (input.attr('data-trackdirty') !== 'true') {
             return;
           }
 
-          //Set css class
+          // Add class to element
           input.addClass('dirty');
-          if ((input.attr('type')==='checkbox' || input.attr('type')==='radio')) {
-            cssClass +=' dirty-'+ input.attr('type') +
-                      (input.is(':checked') ? ' is-checked' : '');
+
+          //Set css class
+          if (input.is('[type="checkbox"], [type="radio"]')) {
+            d.class += ' dirty-'+ input.attr('type');
+            d.class += input.is(':checked') ? ' is-checked' : '';
           }
           if (input.is('select')) {
-            cssClass += ' is-select';
-            el = $('.dropdown-wrapper input[type="text"]', field);
+            d.class += ' is-select';
+            el = input.next('.dropdown-wrapper').find('.dropdown');
           }
 
           //Add class and icon
-          if (!el.prev().is('.icon-dirty')) {
-            el.before('<span class="icon-dirty' + cssClass + '"></span>');
-            $('label:visible', field).append('<span class="audible msg-dirty">'+ Locale.translate('MsgDirty') +'</span>');
+          d.icon = el.prev();
+          if (!d.icon.is('.icon-dirty')) {
+            if (input.is('[type="checkbox"]')) {
+              d.rect = getAbsolutePosition(label);
+              d.style = ' style="left:'+ d.rect.left +'px; top:'+ d.rect.top +'px;"';
+            }
+            d.icon = '<span class="icon-dirty'+ d.class +'"'+ d.style +'></span>';
+            d.msg = Locale.translate('MsgDirty') || '';
+            d.msg = '<span class="audible msg-dirty">'+ d.msg +'</span>';
+
+            // Add icon and msg
+            el.before(d.icon);
+            label.append(d.msg);
+
+            // Cache icon and msg
+            d.icon = el.prev();
+            d.msg = label.find('.msg-dirty');
           }
 
           //Handle reseting value back
           if (valMethod(input) === input.data('original')) {
             input.removeClass('dirty');
-            $('.icon-dirty, .msg-dirty', field).remove();
-            input.trigger('pristine');
+            $('.icon-dirty, .msg-dirty', field).add(d.icon).add(d.msg).remove();
+            input.trigger(e.type === 'doresetdirty' ? 'afterresetdirty' : 'pristine');
             return;
           }
 
@@ -21000,6 +24054,17 @@ $.fn.datagrid = function(options) {
     });
   });
 
+  // Add css classes to parent for apply special rules
+  $(function () {
+    var addCssClassToParent = function(elemArray, cssClass) {
+      for (var i = 0, l = elemArray.length; i < l; i++) {
+        $(elemArray[i]).parent().addClass(cssClass);
+      }
+    };
+    addCssClassToParent($('.field > input:checkbox, .field > .inline-checkbox'), 'field-checkbox');
+    addCssClassToParent($('.field > input:radio, .field > .inline-radio'), 'field-radio');
+  });
+
 
   $.fn.fileupload = function() {
 
@@ -21009,9 +24074,11 @@ $.fn.datagrid = function(options) {
     var pluginName = 'fileupload';
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * A trigger field for uploading a single file.
+    *
+    * @class FileUpload
+    * @param {Boolean} none  &nbsp;-&nbsp; No options
+    */
     function FileUpload(element) {
       this.element = $(element);
       Soho.logTimeStart(pluginName);
@@ -21038,7 +24105,7 @@ $.fn.datagrid = function(options) {
           elemClass = elem.find('input').attr('class'),
           instructions = Locale.translate('FileUpload'),
           label = $('<label for="'+ id +'-filename">'+ elem.text() +' <span class="audible">'+ instructions +'</span></label>'),
-          shadowField = $('<input readonly id="'+ id +'-filename" class="fileupload-background-transparent '+ elemClass +'" type="text">'),
+          shadowField = $('<input readonly id="'+ id +'-filename" class="fileupload-background-transparent'+ (elemClass ? ' '+ elemClass : '') +'" type="text">'),
           svg = '<span class="trigger" tabindex="-1">' + $.createIcon('folder') + '</span>';
 
         elem.before(label, shadowField);
@@ -21067,27 +24134,38 @@ $.fn.datagrid = function(options) {
         });
       },
 
-      // Teardown - Remove added markup and events
+      /**
+      * Teardown - Remove added markup and events
+      */
       destroy: function() {
         this.fileInput.removeAttr('tabindex').off('change.fileupload');
         this.textInput.off('keypress.fileupload');
         this.element.closest('.field-fileupload')
           .removeClass('field-fileupload')
-          .find('>label:first, >[type="text"]:first, .trigger').remove();
+          .find('>label:first, >[type="text"]:first, .trigger, .icon-dirty, .msg-dirty').remove();
 
         $.removeData(this.element[0], pluginName);
       },
 
+      /**
+      * Disable the input and button.
+      */
       disable: function() {
         this.textInput.prop('disabled', true);
         this.fileInput.prop('disabled', true);
       },
 
+      /**
+      * Enable the input and button.
+      */
       enable: function() {
         this.textInput.prop('disabled', false).prop('readonly', false);
         this.fileInput.removeAttr('disabled');
       },
 
+      /**
+      * Make the input readonly and disable the button.
+      */
       readonly: function() {
         this.textInput.prop('readonly', true);
         this.fileInput.prop('disabled', true);
@@ -21111,7 +24189,7 @@ $.fn.datagrid = function(options) {
     // Settings and Options
     var pluginName = 'fileuploadadvanced',
         defaults = {
-          isStandalone: true, // on page -or- on modal [for some visual style only]
+          isStandalone: true, //
           standaloneClass: 'standalone', // css class if on page
           allowedTypes: '*', // restrict file types(ie. 'jpg|png|gif') ['*' all types]
           maxFilesInProcess: 99999, // max files can be upload
@@ -21132,9 +24210,16 @@ $.fn.datagrid = function(options) {
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * A trigger field for uploading a single file.
+    *
+    * @class FileUploadAdvanced
+    * @param {Boolean} isStandalone  &nbsp;-&nbsp; On page(true) -or- on modal (false) , this is used for some visual style only.
+    * @param {Boolean} allowedTypes  &nbsp;-&nbsp; Restrict file types(ie. 'jpg|png|gif') ['*' all types]
+    * @param {Boolean} maxFilesInProcess  &nbsp;-&nbsp; Max number of files can be uploaded
+    * @param {Boolean} maxFileSize  &nbsp;-&nbsp; Max file size in bytes, -1 for unlimited
+    * @param {Boolean} fileName  &nbsp;-&nbsp; Variable name to read from server
+    *
+    */
     function FileUploadAdvanced(element) {
       this.element = $(element);
       this.settings = settings;
@@ -21222,7 +24307,10 @@ $.fn.datagrid = function(options) {
 
       },
 
-      // Read the file contents using HTML5 FormData()
+      /**
+      * Read the file contents using HTML5 FormData()
+      * @param {Object} files &nbsp;-&nbsp; File object containing uploaded files.
+      */
       handleFileUpload: function (files) {
         var fileName = this.settings.fileName.replace('[]', '');
 
@@ -21334,7 +24422,12 @@ $.fn.datagrid = function(options) {
         };
       },
 
-      // For ui testing only
+      /**
+      * Function you can implement to send data to the server.
+      * @param {Object} formData - Contains the form data / file data.
+      * @param {Object} status - Status of the upload operation
+      *
+      */
       sendFileToServer: function (formData, status) {
         var jqXHR = { abort: function() {} },
           tempData = { remove: function() {} },
@@ -21449,7 +24542,6 @@ $.fn.datagrid = function(options) {
           return true;
         },
 
-
       // Helper function that formats the file sizes
       formatFileSize: function (bytes) {
         var scale = {
@@ -21469,7 +24561,9 @@ $.fn.datagrid = function(options) {
         return (bytes / scale.KB).toFixed(2) +' KB';
       },
 
-      // Teardown
+      /**
+      * Teardown - Remove added markup and events
+      */
       destroy: function() {
         this.dropArea.off('dragenter.fileuploadadvanced dragover.fileuploadadvanced drop.fileuploadadvanced');
         $(document).off('dragenter.fileuploadadvanced dragover.fileuploadadvanced drop.fileuploadadvanced');
@@ -21506,22 +24600,31 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Tab Settings and Options
     var pluginName = 'header',
         defaults = {
-          demoOptions: true, // Used to enable/disable default SoHo Xi options for demo purposes
-          useBackButton: true, // If true, displays a back button next to the title in the header toolbar
-          useBreadcrumb: false, // If true, displays a breadcrumb on drilldown
-          usePopupmenu: false, // If true, changes the Header Title into a popupmenu that can change the current page
-          tabs: null, // If defined as an array of Tab objects, displays a series of tabs that represent application sections
-          wizardTicks: null, // If defined as an array of Wizard Ticks, displays a Wizard Control that represents steps in a process
-          useAlternate: false, // If true, use alternate background/text color for sub-navigation areas
-          addScrollClass: false //If true a class will be added as the page scrolls up and down to the header for manipulation. Eg: Docs Page.
+          demoOptions: true,
+          useBackButton: true,
+          useBreadcrumb: false,
+          usePopupmenu: false,
+          tabs: null,
+          wizardTicks: null,
+          useAlternate: false,
+          addScrollClass: false
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * Special Toolbar at the top of the page used to faciliate SoHo Xi Nav Patterns
-     * @constructor
-     * @param {Object} element
-     */
+    * Special Toolbar at the top of the page used to faciliate SoHo Xi Nav Patterns
+    *
+    * @class Header
+    * @param {Boolean} demoOptions  &nbsp;-&nbsp; Used to enable/disable default SoHo Xi options for demo purposes
+    * @param {Boolean} useBackButton  &nbsp;-&nbsp; If true, displays a back button next to the title in the header toolbar
+    * @param {Boolean} useBreadcrumb  &nbsp;-&nbsp; If true, displays a breadcrumb on drilldown
+    * @param {Boolean} usePopupmenu  &nbsp;-&nbsp; f true, changes the Header Title into a popupmenu that can change the current page
+    * @param {Array} tabs  &nbsp;-&nbsp; If defined as an array of Tab objects, displays a series of tabs that represent application sections
+    * @param {Array} wizardTicks  &nbsp;-&nbsp; If defined as an array of Wizard Ticks, displays a Wizard Control that represents steps in a process
+    * @param {Boolean} useAlternate  &nbsp;-&nbsp; If true, use alternate background/text color for sub-navigation areas
+    * @param {Boolean} addScrollClass  &nbsp;-&nbsp; If true a class will be added as the page scrolls up and down to the header for manipulation. Eg: Docs Page.
+    *
+    */
     function Header(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -21901,6 +25004,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.element.trigger('drillTop');
       },
 
+      /**
+      * Reset the toolbar to its default removing the drilled in patterns.
+      */
       reset: function() {
         while (this.levelsDeep.length > 1) {
           this.levelsDeep.pop();
@@ -22052,6 +25158,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
+      /**
+      * Sync up the ui with settings.
+      */
       updated: function() {
         this
           .reset()
@@ -22059,6 +25168,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .init();
       },
 
+      /**
+      * Tear down and destroy the menu and events.
+      */
       destroy: function() {
         this.unbind();
         if (this.hasTitleButton) {
@@ -22098,7 +25210,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           rightClickTarget: '',
           leafHeight: null,
           leafWidth: null,
-          beforeExpand: null  // A callback that fires before node expansion of a node.
+          beforeExpand: null
         },
         settings = $.extend({}, defaults, options);
 
@@ -22135,10 +25247,18 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     };
 
     /**
-     * For Org Charts and Trees ect...
-     * @constructor
-     * @param {Object} element
-     */
+    * The displays custimizable hierarchical data such as an org chart.
+    *
+    * @class Hierarchy
+    * @param {String} legend  &nbsp;-&nbsp; Pass in custom markdown for the legend structure.
+    * @param {String} legendKey  &nbsp;-&nbsp; Key to use for the legend matching
+    * @param {String} dataset  &nbsp;-&nbsp; Hierarchical Data to display
+    * @param {Boolean} newData  &nbsp;-&nbsp; Id to the Html Template
+    * @param {String} templateId  &nbsp;-&nbsp; Additional product name information to display
+    * @param {Boolean} mobileView  &nbsp;-&nbsp; If true will only show mobile view, by default using device info to determine.
+    * @param {String} beforeExpand  &nbsp;-&nbsp; A callback that fires before node expansion of a node.
+    *
+    */
     function Hierarchy(element) {
       this.element = $(element);
       Soho.logTimeStart(pluginName);
@@ -22349,7 +25469,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return nodeData[0];
       },
 
-      // Add data as children for the given nodeId.
+      /**
+      * Add data as children for the given nodeId.
+      */
       add: function (nodeId, currentDataObject, newDataObject) {
         var self            = this;
         var id              = currentDataObject.id !== undefined ? currentDataObject.id : nodeId;
@@ -22379,7 +25501,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Expand the nodes until nodeId is displayed on the page.
+      /**
+      * Expand the nodes until nodeId is displayed on the page.
+      */
       expand: function(event, nodeData, domObject) {
         var self = this,
           node = domObject.leaf,
@@ -22400,7 +25524,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         self.setButtonState(node, nodeData);
       },
 
-      // Collapse the passed in nodeId.
+      /**
+      * Collapse the passed in nodeId.
+      */
       collapse: function(event, nodeData, domObject) {
         var self = this,
           node = domObject.leaf,
@@ -22704,7 +25830,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         leafObject.data  = nodeData;
       },
 
-      // Return whether or not a particular node is a leaf
+      /**
+      * Return whether or not a particular node is a leaf
+      */
       isLeaf: function(dataNode) {
 
         if (dataNode.children === undefined) {
@@ -22838,21 +25966,25 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     var pluginName = 'homepage',
 
         defaults = {
-          gutterSize: 20,
-          widgetWidth: 360,
-          widgetHeight: 370,
+          gutterSize: 20, //Private
+          widgetWidth: 360, //Private
+          widgetHeight: 370, //Private
           animate: true,
-          timeout: 100,
+          timeout: 100, //Private
           columns: 3,
-          easing: 'blockslide'
+          easing: 'blockslide' //Private
         },
         settings = $.extend({}, defaults, options);
 
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The Homepage handles card layout at multiple breakpoints.
+    *
+    * @class Homepage
+    * @param {Boolean} animate  &nbsp;-&nbsp; Disable animation during resize
+    * @param {Number} columns  &nbsp;-&nbsp; Display in 3 (default) or 4 column layout
+    *
+    */
     function Homepage(element) {
       this.element = $(element);
       Soho.logTimeStart(pluginName);
@@ -22867,7 +25999,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.settings = settings;
         this.isTransitionsSupports = this.supportsTransitions();
         this.initHeroWidget();
-        this.attachEvents();
+        this.handleEvents();
 
         //Initial Sizing
         this.resize(this, false);
@@ -23032,18 +26164,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         arr.splice(to, 0, arr.splice(from, 1)[0]);
       },
 
-      attachEvents: function () {
-        var self = this;
-
-        $('body').on('resize.homepage', function() {
-          self.resize(self, self.settings.animate);
-        });
-
-        $('.application-menu').on('applicationmenuopen.homepage applicationmenuclose.homepage', function () {
-          self.resize(self, self.settings.animate);
-        });
-      },
-
       // Resize Method
       resize: function(self, animate) {
         //Sizes of "breakpoints" is  320, 660, 1000 , 1340 (for 320)
@@ -23194,11 +26314,33 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         $('.application-menu').off('applicationmenuopen.homepage applicationmenuclose.homepage');
       },
 
-      // Teardown - Remove added markup and events
+      /**
+      * Teardown - Remove added markup and events
+      */
       destroy: function() {
         this.detachEvents();
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Homepage#events
+       * @param {Object} resize  &nbsp;-&nbsp; Fires after the page is resized and layout is set. Can be used for any special adjustments.
+       *
+       */
+      handleEvents: function () {
+        var self = this;
+
+        $('body').on('resize.homepage', function() {
+          self.resize(self, self.settings.animate);
+        });
+
+        $('.application-menu').on('applicationmenuopen.homepage applicationmenuclose.homepage', function () {
+          self.resize(self, self.settings.animate);
+        });
       }
+
     };
 
     // Initialize the plugin (Once)
@@ -23429,23 +26571,35 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     var pluginName = 'lookup',
         defaults = {
           click: null,
-          field: 'id',  //Field to return from the array or can be a function
-          title: null, //Dialog title or takes the label + Lookup
-          buttons: [], //Pass dialog buttons or Cancel / Apply
-          options: null,  //Options to pass to the data grid
-          beforeShow: null, //Call back before the lookup is opened.
-          modalContent: null, //Custom modal markup
-          editable: true, //Can the user type random text in the field
+          field: 'id',
+          title: null,
+          buttons: [],
+          options: null,
+          beforeShow: null,
+          modalContent: null,
+          editable: true,
           typeahead: false, // Future TODO
           autoApply: true,
-          validator: null //A function that fires to let you validate form items on open and select
+          validator: null
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * Input element that opens a dialog with a list for selection.
+    *
+    * @class Lookup
+    * @param {Function} click  &nbsp;-&nbsp; Provide a special function to run when the dialog opens to customize the interaction entirely.
+    * @param {String} field  &nbsp;-&nbsp; Field name to return from the dataset or can be a function which returns a string on logic
+    * @param {String} title  &nbsp;-&nbsp;  Dialog title to show, or befault shows  field label + "Lookup"
+    * @param {Array} buttons  &nbsp;-&nbsp; Pass dialog buttons or Cancel / Apply
+    * @param {Object} options  &nbsp;-&nbsp; Options to pass to the datagrid
+    * @param {Function} beforeShow  &nbsp;-&nbsp; Call back that executes async before the lookup is opened.
+    * @param {String} modalContent  &nbsp;-&nbsp; Custom modal markup can be sent in here
+    * @param {Boolean} editable  &nbsp;-&nbsp; Can the user type text in the field
+    * @param {String} autoApply  &nbsp;-&nbsp; If set to false the dialog wont apply the value on clicking a value.
+    * @param {Function} validator  &nbsp;-&nbsp; A function that fires to let you validate form items on open and select
+    *
+    */
     function Lookup(element) {
       this.element = $(element);
       Soho.logTimeStart(pluginName);
@@ -23592,6 +26746,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         self.modal.element.find('.btn-actions').removeClass('is-selected');
 
+        // Fix: IE-11 more button was not showing
+        var thisMoreBtn = self.modal.element.find('.toolbar .more > .btn-actions');
+        if (thisMoreBtn.length) {
+          setTimeout(function() {
+            window.Soho.utils.fixSVGIcons(thisMoreBtn);
+          }, 600);
+        }
+
         self.element.trigger('afteropen', [self.modal, self.grid]);
 
         if (self.settings.validator) {
@@ -23657,17 +26819,21 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           content: content,
           buttons: buttons,
           cssClass: 'lookup-modal' + (!hasKeywordSearch ? ' lookup-no-search' : '')
-        }).off('open').on('open', function () {
+        }).off('open.lookup').on('open.lookup', function () {
           self.createGrid();
-          self.element.trigger('afteropen', [self.modal, self.grid]);
-        }).off('close').on('close', function () {
+        }).off('close.lookup').on('close.lookup', function () {
           self.element.focus();
+          self.element.triggerHandler('close', [self.modal, self.grid]);
         });
 
         self.modal = $('body').data('modal');
         if (!this.settings.title) {
           self.modal.element.find('.modal-title').append(' <span class="datagrid-result-count"></span>');
         }
+
+        self.modal.element.off('beforeclose.lookup').on('beforeclose.lookup', function () {
+          self.closeTearDown();
+        });
 
         // Wait until search field available
         setTimeout(function () {
@@ -23677,6 +26843,23 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             }
           });
         }, 300);
+      },
+
+      closeTearDown: function () {
+        var search = $('.modal.is-visible .searchfield').off('keypress.lookup');
+        if (search.data() && search.data('searchfield')) {
+          search.data('searchfield').destroy();
+        }
+
+        if (search.data() && search.data('toolbarsearchfield')) {
+          search.data('toolbarsearchfield').destroy();
+          search.removeData();
+        }
+        search = null;
+
+        if (!this.grid) {
+          this.grid.destroy();
+        }
       },
 
       //Overridable Function in which we create the grid on the current ui dialog.
@@ -23820,34 +27003,46 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         self.element.focus();
       },
 
-      //Enable the field
+      /**
+      * Enable the input.
+      */
       enable: function() {
         this.element.prop('disabled', false).prop('readonly', false);
         this.element.parent().removeClass('is-disabled');
       },
 
-      //Disable the field
+      /**
+      * Disable the input.
+      */
       disable: function() {
         this.element.prop('disabled', true);
         this.element.parent().addClass('is-disabled');
       },
 
-      //Make the field readonly
+      /**
+      * Make the input readonly.
+      */
       readonly: function() {
         this.element.prop('readonly', true);
       },
 
-      //Check if the field is disabled
+      /**
+      * Returns whether or not the Input is disabled
+      */
       isDisabled: function() {
         return this.element.prop('disabled');
       },
 
-      //Check if the field is readonly
+      /**
+      * Returns whether or not the Input is readonly
+      */
       isReadonly: function() {
         return this.element.prop('readonly');
       },
 
-      // Remove added markup and events
+      /**
+      * Teardown events and objects.
+      */
       destroy: function() {
         $.removeData(this.element[0], pluginName);
         this.element.off('click.dropdown keypress.dropdown');
@@ -23956,301 +27151,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
   };
 
 
-  //NOTE: Just this part will show up in SoHo Xi Builds.
-
-  $.fn.lightbox = function(options) {
-    'use strict';
-
-    // Settings and Options
-    var pluginName = 'lightbox',
-        defaults = {
-          // Image src
-          image: '',
-
-          // If set to true, enables cyclic navigation. This means, if you click "next"
-          // after you reach the last element, first element will be displayed (and vice versa).
-          loop: true,
-
-          // If set to false will loads fresh image each time
-          cache: true
-        },
-        settings = $.extend({}, defaults, options);
-
-    /**
-     * @constructor
-     * @param {Object} element
-     */
-    function Lightbox(element) {
-      this.settings = $.extend({}, settings);
-      this.element = $(element);
-      Soho.logTimeStart(pluginName);
-      this.init();
-      Soho.logTimeEnd(pluginName);
-    }
-
-    // Lightbox Methods
-    Lightbox.prototype = {
-      init: function() {
-        return this
-          .build()
-          .handleEvents();
-      },
-
-      // Add markup to the control
-      build: function() {
-        return this;
-      },
-
-      // Sets up event handlers for this control and its sub-elements
-      handleEvents: function() {
-        var self = this;
-
-        this.element.onTouchClick(pluginName).on('click.' + pluginName, function() {
-          self.showImage();
-        });
-
-        $('body').on('resize.'+ pluginName, function() {
-          self.resize();
-        });
-
-        return this;
-      },
-
-      // Show Image Fill Size
-      showImage: function() {
-        var self = this;
-
-        if (!this.settings.image && !this.settings.image.length) {
-          return;
-        }
-
-        // Preload the image
-        self.loadImage(self.settings.image);
-
-        $('body').modal({
-          title: '',
-          content: $('#lightbox-full'),
-          buttons: [],
-          id: 'lightbox-modal',
-          frameHeight: 0
-        })
-        .on('open', function() {
-          var overlay = $('.overlay');
-          if (overlay.length) {
-            overlay[0].style.opacity = '.7';
-          }
-        })
-        .on('afterclose', function () {
-          var modal = $(this);
-
-          $('#lightbox-modal').remove();
-          $('.overlay').remove();
-          modal.data('modal').destroy();
-          modal.off('open').off('afterclose');
-        });
-
-        // Do Ui Customizations
-        self.lightBox = $('#lightbox-modal');
-        self.lightBox.addClass('lightbox-modal').find('.modal-buttonset, .modal-header').remove();
-
-        setTimeout(function () {
-          var modalApi = $('body').data('modal');
-
-          // Activate busyindicator
-          self.busyindicator = $('.modal-body-wrapper').addClass('busy').busyindicator();
-
-          modalApi.extraHeight = 0;
-          $('body').off('resize.modal-' + modalApi.id);
-
-          $('.overlay').onTouchClick(pluginName).on('click.' + pluginName, function () {
-            modalApi.close();
-          });
-        } ,100);
-
-        //Add Buttons
-        self.addButtons();
-      },
-
-      // Add Button Code and Functionality
-      addButtons: function () {
-        var self = this,
-          closeButton = $('<button class="btn-icon" type="button">' + $.createIcon({ classes: ['close'], icon: 'close' }) + '<span class="audible">'+
-            Locale.translate('Close') +'</span></button>');
-
-        this.previousButton = $('<button class="btn-previous" type="button">' + $.createIcon('left-arrow') + '<span class="audible">'+
-            Locale.translate('Previous') +'</span></button>');
-
-        this.nextButton = $('<button class="btn-next" type="button">' + $.createIcon('right-arrow') + '<span class="audible">'+
-            Locale.translate('Next') +'</span></button>');
-
-        this.lightBox[0].style.overflow = 'visible';
-        this.lightBox
-          .find('.modal-content').before(closeButton, this.previousButton, this.nextButton);
-
-        closeButton.onTouchClick(pluginName).on('click.' + pluginName, function () {
-          $('body').data('modal').close();
-        });
-
-        this.previousButton.onTouchClick(pluginName).on('click.' + pluginName, function () {
-           self.loadSiblingImage('previous');
-        });
-
-        this.nextButton.onTouchClick(pluginName).on('click.' + pluginName, function () {
-          self.loadSiblingImage('next');
-        });
-
-        self.currentElement = self.element;
-        self.refreshButtons();
-
-      },
-
-      // Preload the image
-      loadImage: function(path) {
-        var self = this,
-          box = $('#lightbox-full'),
-          img = new Image();
-
-        if (self.loadingInProcess) {
-          return;
-        }
-        self.loadingInProcess = true;
-
-        // Will loads fresh image each time, if set to false
-        if (!this.settings.cache) {
-          path += '?t=' + Math.random() + new Date().getTime();
-        }
-
-        img.src = path;
-        img.id = 'lightbox-full';
-
-        setTimeout(function () {
-          self.busyindicator
-            .scrollTop(0)
-            .css({
-              'max-height': self.getCalcHeight(),
-              'overflow': 'hidden'
-            })
-            .trigger('start');
-        }, 110);
-
-        if (box.length) {
-          box[0].style.opacity = '0';
-
-          setTimeout(function () {
-            box.attr('src', path)[0].style.opacity = '1';
-          }, 300);
-
-        } else {
-          img.style.display = 'none';
-          document.body.appendChild(img);
-        }
-
-        img.onload = function () {
-          self.resize();
-          setTimeout(function () {
-            self.busyindicator.css({'overflow': ''}).trigger('complete');
-            self.loadingInProcess = false;
-          }, 120);
-        };
-      },
-
-      // Calculated modal height
-      getCalcHeight: function() {
-        return ($(window).height()* 0.9) - 100; //90% -(100 :extra elements-height);
-      },
-
-      // Resize
-      resize: function() {
-        var wrapper = $('.modal-body-wrapper'),
-          bodyHeight = $('.modal-body').height(),
-          calcHeight = this.getCalcHeight();
-
-        if (wrapper.length) {
-          wrapper[0].style.maxHeight = bodyHeight > calcHeight ? (calcHeight + 'px') : '';
-        }
-      },
-
-      // Show/Hide next/previous buttons
-      // if loop not set as "true"
-      refreshButtons: function () {
-        if (!this.settings.loop) {
-          var next = this.currentElement.next(),
-            prev = this.currentElement.prev();
-
-          this.nextButton[next && next.length ? 'show' : 'hide']();
-          this.previousButton[prev && prev.length ? 'show' : 'hide']();
-        }
-      },
-
-      // Set next/previous buttons
-      loadSiblingImage: function (direction) {
-
-        // Avoid fire multiple clicks on next/previous buttons
-        if (this.loadingInProcess) {
-          return;
-        }
-
-        var self = this,
-          boxes = $('.lightbox'),
-          index = 0,
-          el, settings;
-
-        boxes.each(function(i) {
-          if (this === self.currentElement[0]) {
-            index = i;
-            return false;
-          }
-        });
-
-        el = (direction === 'next') ?
-          (boxes.eq(index < (boxes.length-1) ? (index+1) : 0)) :
-          (boxes.eq(index > 0 ? (index-1) : (boxes.length-1)));
-
-        settings = el && el.length ? el.data('lightbox').settings : '';
-
-        if (settings && settings.image && settings.image.length) {
-          this.loadImage(settings.image);
-          this.currentElement = el;
-        }
-
-        this.refreshButtons();
-      },
-
-      //Handle Updating Settings
-      updated: function() {
-        return this
-          .teardown()
-          .init();
-      },
-
-      // Simple Teardown - remove events & rebuildable markup.
-      teardown: function() {
-        $('body').off('resize.' + pluginName);
-        this.element.off('updated.' + pluginName).
-          offTouchClick().off('click.' + pluginName);
-        return this;
-      },
-
-      // Teardown - Remove added markup and events
-      destroy: function() {
-        this.teardown();
-        $.removeData(this.element[0], pluginName);
-      }
-    };
-
-    // Initialize the plugin (Once)
-    return this.each(function() {
-      var instance = $.data(this, pluginName);
-      if (instance) {
-        instance.settings = $.extend({}, instance.settings, options);
-        instance.updated();
-      } else {
-        instance = $.data(this, pluginName, new Lightbox(this, settings));
-      }
-    });
-  };
-
-
   $.fn.listview = function(options) {
     // TODOs: edit and/or alt template
     // navigatable
@@ -24260,23 +27160,35 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Settings and Options
     var pluginName = 'listview',
       defaults = {
-        dataset: [], // Array of data
-        template: null,  //Html Template String
-        description: null,  //Audible Label (or use parent title)
-        paging: false, // If true, activates paging
-        pagesize: 10, // If paging is activated, sets the number of listview items available per page
-        searchable: false, // If true, associates itself with a Searchfield/Autocomplete and allows itself to be filtered
-        selectable: 'single', //false, 'single' or 'multiple'
-        selectOnFocus: true, //true or false
-        hoverable: true, //true or false - can disable hover state
-        source: null, // External function that can be used to provide a datasource
+        dataset: [],
+        template: null,
+        description: null,
+        paging: false,
+        pagesize: 10,
+        searchable: false,
+        selectable: 'single',
+        selectOnFocus: true,
+        hoverable: true,
+        source: null
       },
       settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The About Dialog Component is displays information regarding the application.
+    *
+    * @class ListView
+    * @param {Array} dataset  &nbsp;-&nbsp; Array of data to feed the template
+    * @param {String} content  &nbsp;-&nbsp; Html Template String
+    * @param {String} description  &nbsp;-&nbsp; Audible Label (or use parent title)
+    * @param {Boolean} paging  &nbsp;-&nbsp; If true, activates paging
+    * @param {Number} pagesize  &nbsp;-&nbsp; If paging is activated, sets the number of listview items available per page
+    * @param {Boolean} searchable  &nbsp;-&nbsp; If true, associates itself with a Searchfield/Autocomplete and allows itself to be filtered
+    * @param {String|Boolean} selectable  &nbsp;-&nbsp;  //Can be false, 'single' or 'multiple'
+    * @param {Boolean} selectOnFocus  &nbsp;-&nbsp;  //Can be false, 'single' or 'multiple'
+    * @param {Boolean} hoverable  &nbsp;-&nbsp;  //Can be false, 'single' or 'multiple'
+    * @param {Function|String} source  &nbsp;-&nbsp; //If it is a string then it serves as the url for an ajax call that returns the dataset. If its a function it is a call back for getting the data asyncronously.
+    *
+    */
     function ListView(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -24386,12 +27298,23 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return totals;
       },
 
+      /**
+      * Render the template against the dataset.
+      *
+      * @param {Array} dataset  &nbsp;-&nbsp; The data to use
+      * @param {Object} pagerInfo  &nbsp;-&nbsp; Pager instructions
+      */
       render: function(dataset, pagerInfo) {
         var self = this,
           totals = {};
 
         // Render "mustache" Template
         if (typeof Tmpl === 'object' && dataset && this.settings.template) {
+
+          // create a copy of an inlined template
+          if (this.settings.template instanceof $) {
+            this.settings.template = '' + this.settings.template.html();
+          }
 
           if (this.settings.template.indexOf('{{#totals}}') > -1) {
             totals = this.getTotals(dataset);
@@ -24418,6 +27341,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         //Set Initial Tab Index
         first.attr('tabindex', 0);
+
+        //Let the link be focus'd
+        if (!this.settings.selectable && first.find('a').length === 1) {
+          first.removeAttr('tabindex');
+        }
 
         items.each(function (i) {
           var row = $(this);
@@ -24456,16 +27384,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       renderPager: function(updatedPagerInfo) {
         var api = this.element.data('pager');
-
         if (!api || !this.settings.pager) {
           return;
         }
 
-        if (updatedPagerInfo) {
-          api.updatePagingInfo(updatedPagerInfo);
-        }
-
-        api.renderBar();
+        api.updatePagingInfo(updatedPagerInfo);
       },
 
       // Get the Data Source. Can be an array, Object or Url
@@ -24479,7 +27402,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       // Load Data from an external API
       loadData: function (ds, pagerInfo) {
-        var ajaxDs = false;
+        var ajaxDs = false, self = this;
 
         ds = ds || this.settings.dataset;
         pagerInfo = pagerInfo || {};
@@ -24490,11 +27413,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         function done(response, pagingInfo) {
           ds = response;
-          this.render(ds, pagingInfo);
+          self.render(ds, pagingInfo);
         }
 
-        var self = this,
-          s = this.settings.source;
+        var s = this.settings.source;
 
         if (typeof ds === 'string' && (ds.indexOf('http') === 0 || ds.indexOf('/') === 0)) {
           s = ds;
@@ -24503,7 +27425,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         // If paging is not active, and a source is present, attempt to retrieve information from the datasource
         // TODO: Potentially abstract this datasource concept out for use elsewhere
-        if ((!this.settings.paging && s) || ajaxDs) {
+        if ((s) || ajaxDs) {
           switch (typeof s) {
             case 'function':
               return s(pagerInfo, done);
@@ -24530,7 +27452,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.render(ds, pagerInfo);
       },
 
-      // Toggle all
+      /**
+      * Toggle all rows from selected to unselected. (Multiselect)
+      */
       toggleAll: function() {
         this[this.isSelectedAll ?
           'unselectRowsBetweenIndexes' :
@@ -24562,7 +27486,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Clear Selection
       clearSelection: function() {
         if (window.getSelection) {
           window.getSelection().removeAllRanges();
@@ -24571,7 +27494,343 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Handle Keyboard / Navigation Ect
+      // Handle Resize
+      handleResize: function () {
+        var items = $('li .listview-heading, tr .listview-heading', this.element),
+          item1 = items.eq(1),
+          item1W = item1.width();
+
+        if (item1.length && item1W) {
+          items[0].style.width = item1W + 'px';
+        }
+
+        this.setChildIconsValign();
+
+        if (this.element.data('pager')) {
+          this.element.data('pager').renderBar();
+        }
+      },
+
+      // For instances of Listview that are paired with a Searchfield
+      // NOTE: Search functionality is called from "js/listfilter.js"
+      handleSearch: function(e, searchfield) {
+        var list = this.element.find('li, tbody > tr'),
+            term = searchfield.val(),
+            results;
+
+        this.resetSearch(list);
+
+        if (term && term.length) {
+          results = this.listfilter.filter(list, term);
+        }
+
+        if (!results || !results.length && !term) {
+          return;
+        }
+
+        list.not(results).addClass('hidden');
+        list.filter(results).each(function(i) {
+          var li = $(this);
+          li.attr('tabindex', i === 0 ? '0' : '-1');
+          li.highlight(term);
+        });
+
+        this.renderPager();
+      },
+
+      resetSearch: function(list) {
+        list.removeClass('hidden').each(function() {
+          $(this).unhighlight();
+        });
+      },
+
+      // Fix: for vertical-align to icons and buttons
+      setChildIconsValign: function() {
+        $('li > .icon, li > button', this.element).each(function() {
+          var item = $(this),
+          itemHeihgt = item.is('button') ? 42 : 22,
+          row = item.closest('li'),
+          padding = parseInt(row[0].style.paddingTop, 10) + parseInt(row[0].style.paddingBottom, 10),
+          rowHeight = row.outerHeight() - padding;
+
+          this.style.top = ((rowHeight - itemHeihgt)/2) +'px';
+        });
+      },
+
+      focus: function (item) {
+        if (item.is(':hidden') || item.is('.is-disabled')) {
+          return;
+        }
+
+        item.siblings().removeAttr('tabindex');
+        item.attr('tabindex', 0).focus();
+
+        if (!this.settings.selectable && item.find('a').length === 1) {
+          item.find('a').focus();
+          item.removeAttr('tabindex');
+        }
+
+        if (this.settings.selectOnFocus && (this.settings.selectable !== 'multiple')) {
+          this.select(item);
+        }
+      },
+
+      /**
+      * Remove the given list item.
+      *
+      * @param {jQuery|Number} li  &nbsp;-&nbsp; Either the actually jQuery list element or a zero based index
+      */
+      remove: function (li) {
+        if (typeof li === 'number') {
+          li = $(this.element.children()[0]).children().eq(li);
+        }
+        // Un-select selected item
+        // and donot trigger selected event, sinnce we removeing
+        if (li.is('.is-selected')) {
+          this.select(li, true);
+        }
+        li.remove();
+      },
+
+      /**
+      * Remove all list items.
+      */
+      clear: function () {
+        var root = $(this.element.children()[0]);
+        root.empty();
+      },
+
+      /**
+      * Remove all selected rows entirely from the list..
+      */
+      removeAllSelected: function () {
+        var self = this;
+        $.each(this.selectedItems, function(index, selected) {
+          self.remove(selected);
+        });
+      },
+
+      /**
+      * Deselect all selected rows.
+      */
+      clearAllSelected: function () {
+        var self = this;
+        $.each(this.selectedItems, function(index, selected) {
+          // Un-select selected item
+          self.select(selected);
+        });
+      },
+
+      // Initialize sortlist
+      sortInit: function(control, onEvent, attr){
+        if(!attr || $.trim(attr) === '') {
+          return;
+        }
+        $('['+ attr +']').each(function() {
+          var elment = $(this),
+            options = $.fn.parseOptions(elment, attr);
+
+          elment.on(onEvent, function(e) {
+            $(options.list).data(control).setSortColumn(options);
+            e.preventDefault();
+          });
+        });
+      },
+
+      // Consider this deprecated
+      setSortColumn: function(options) {
+        var sort,
+        field = options.orderBy || this.list.sort.field,
+        reverse = options.order;
+
+        if (!this.list.data && !field) {
+          return;
+        }
+
+        reverse = reverse ?
+          (reverse === 'desc') :
+          (this.list.sort && this.list.sort[field] && this.list.sort[field].reverse) ? false : true;
+
+        //reload data
+        if (options.reloadApi || options.reloadApiNoSort) {
+          this.loadData();
+        }
+
+        //reload data but no sort change
+        if (options.reloadApiNoSort) {
+          field = this.list.sort.field;
+          reverse = this.list.sort[field].reverse;
+        }
+
+        sort = this.sortFunction(field, reverse);
+        this.list.data.sort(sort);
+        this.render(this.list.data);
+
+        this.list.sort = {field: field};
+        this.list.sort[field] = {reverse: reverse};
+
+        this.element.trigger('sorted', [this.element, this.list.sort]);
+      },
+
+      //Overridable function to conduct sorting
+      sortFunction: function(field, reverse, primer) {
+        var key;
+        if (!primer) {
+          primer = function(a) {
+            a = (a === undefined || a === null ? '' : a);
+            if (typeof a === 'string') {
+              a = a.toUpperCase();
+
+              if (!isNaN(parseFloat(a))) {
+                a = parseFloat(a);
+              }
+            }
+            return a;
+          };
+        }
+        key = primer ? function(x) { return primer(x[field]); } : function(x) { return x[field]; };
+        reverse = !reverse ? 1 : -1;
+        return function (a, b) {
+           return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+        };
+      },
+
+      /**
+      * Deselect the given list item.
+      * @param {jQuery|Number} li  &nbsp;-&nbsp; Either the actually jQuery list element or a zero based index
+      */
+      unselect: function (li) {
+        if (typeof li === 'number') {
+          li = $(this.element.children()[0]).children().eq(li);
+        }
+        if (li.is('.is-selected')) {
+          this.select(li);
+        }
+      },
+
+      /**
+      * Deselect the given list item.
+      * @param {jQuery|Number} li &nbsp;-&nbsp; Either the actually jQuery list element or a zero based index
+      * @param {Boolean} noTrigger &nbsp;-&nbsp; Do not trigger the selected event.
+      */
+      select: function (li, noTrigger) {
+        var self = this,
+          isChecked = false;
+
+        self.selectedItems = [];
+        if (typeof li === 'number') {
+          li = $(this.element.children()[0]).children().eq(li);
+        }
+
+        isChecked = li.hasClass('is-selected');
+
+        //focus
+        if (!li.is('[tabindex="0"]')) {
+          li.siblings().removeAttr('tabindex');
+          li.attr('tabindex', 0);
+        }
+
+        if (this.settings.selectable === false || this.settings.selectable === 'false') {
+          return;
+        }
+
+        //Select
+        if (this.settings.selectable !== 'multiple') {
+          li.parent().children().removeAttr('aria-selected');
+          li.parent().find('.is-selected').removeClass('is-selected');
+          self.selectedItems[0] = $(this);
+        }
+
+        if (isChecked) {
+          self.selectedItems = [];
+          li.removeClass('is-selected');
+        } else {
+          if (this.settings.selectable) {
+            li.addClass('is-selected');
+            self.lastSelectedRow = li.index();// Rember index to use shift key
+          }
+        }
+
+        li.parent().find('.is-selected').each(function (i) {
+          self.selectedItems[i] = $(this);
+        });
+
+        li.attr('aria-selected', !isChecked);
+        if (!noTrigger) {
+          var triggerStr = isChecked ? 'unselected' : 'selected';
+          this.element.triggerHandler(triggerStr, {selectedItems: this.selectedItems, elem: li});
+        }
+
+        var toolbar, toolbarControl,
+          parent = this.element.closest('.card, .widget');
+
+        if (!parent.length) {
+          parent = this.element.parent();
+        }
+        toolbar = parent.find('.listview-toolbar, .contextual-toolbar');
+
+        toolbarControl = toolbar.data('toolbar');
+
+        if (self.selectedItems.length > 0) {
+          if (toolbarControl) {
+            toolbarControl.toggleMoreMenu();
+          }
+          // Order of operations: set up event, change display prop, animate, toggle menu.
+          // Menu toggle takes place after the animation starts
+          toolbar.one('animateopencomplete', function() {
+            self.element.addClass('is-toolbar-open');
+            toolbar.trigger('recalculate-buttons').removeClass('is-hidden');
+          });
+          if (toolbar[0]) {
+            toolbar[0].style.display = 'block';
+          }
+          // toolbar.animateOpen({distance: 52});
+          toolbar.animateOpen({distance: 40});
+
+          var title = toolbar.find('.title, .selection-count');
+          if (!title || !title.length) {
+            title = $('<div class="title selection-count"></div>');
+            toolbar.prepend(title);
+          }
+          title.text(self.selectedItems.length + ' ' + Locale.translate('Selected'));
+
+        } else {
+          toolbar.addClass('is-hidden').one('animateclosedcomplete', function(e) {
+            e.stopPropagation();
+            this.style.display = 'none';
+          }).animateClosed();
+
+        }
+      },
+
+      updated: function() {
+        this.refresh();
+        return this;
+      },
+
+      teardown: function() {
+        $('body').off('resize.listview');
+        this.element.off('focus.listview click.listview touchend.listview keydown.listview change.selectable-listview afterpaging.listview').empty();
+        return this;
+      },
+
+      /**
+      * Detatch all events and tear down.
+      */
+      destroy: function() {
+        this.teardown();
+        this.element.removeData(pluginName);
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires ListBox#events
+       * @param {Object} selected  &nbsp;-&nbsp; Fires when a row is selected
+       * @param {Object} unselected  &nbsp;-&nbsp; Fires when a row is deselected
+       * @param {Object} rendered  &nbsp;-&nbsp; Fires after the listbox is fully rendered
+       *
+       */
       handleEvents: function () {
         var self = this,
           isSelect = false,
@@ -24584,7 +27843,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           // First element if disabled
           if (item.is(':first-child') && item.hasClass('is-disabled')) {
             var e = $.Event('keydown.listview');
-              e.keyCode= 40; // move down
+
+            e.keyCode= 40; // move down
             isSelect = true;
             item.trigger(e);
           }
@@ -24601,9 +27861,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
 
         // Key Board
-        this.element.on('keydown.listview', 'li, tr', function (e) {
-          var item = $(this),
-            list = item.parent(),
+        this.element.on('keydown.listview', 'li, tr, a', function (e) {
+          var elem = $(this),
+            item = elem.is('a') ? elem.closest('li') : $(this),
+            list = item.is('a') ? item.closest('ul') : item.parent(),
             key = e.keyCode || e.charCode || 0,
             metaKey = e.metaKey;
 
@@ -24614,7 +27875,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           if ((key === 40 || key === 38) && !metaKey) {// move down or up
             var newItem = e.keyCode === 40 ? item.nextAll(':not(.is-disabled):visible:first') : item.prevAll(':not(.is-disabled):visible:first');
 
-            if ($(e.target).is(item) || e.shiftKey) {
+            if (newItem.length && ($(e.target).is(item) || e.shiftKey || elem.is('a'))) {
               self.focus(newItem);
             }
             e.preventDefault();
@@ -24674,15 +27935,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           });
 
           this.element
-          .off('listview', 'li, tr')
-          .on('click.listview', 'a', function (e) {
-            $(this).closest('li').click();
-            e.preventDefault();
-            return false;
-          });
-
-          this.element
-          .off('listview', 'li, tr')
+          .off('click.listview', 'li, tr')
           .on('click.listview', 'li, tr', function (e) {
             var item = $(this);
 
@@ -24754,304 +28007,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
         });
 
-      },
-
-      // Handle Resize
-      handleResize: function () {
-        var items = $('li .listview-heading, tr .listview-heading', this.element),
-          item1 = items.eq(1),
-          item1W = item1.width();
-
-        if (item1.length && item1W) {
-          items[0].style.width = item1W + 'px';
-        }
-
-        this.setChildIconsValign();
-
-        if (this.element.data('pager')) {
-          this.element.data('pager').renderBar();
-        }
-      },
-
-      // For instances of Listview that are paired with a Searchfield
-      // NOTE: Search functionality is called from "js/listfilter.js"
-      handleSearch: function(e, searchfield) {
-        var list = this.element.find('li, tbody > tr'),
-            term = searchfield.val(),
-            results;
-
-        this.resetSearch(list);
-
-        if (term && term.length) {
-          results = this.listfilter.filter(list, term);
-        }
-
-        if (!results || !results.length && !term) {
-          return;
-        }
-
-        list.not(results).addClass('hidden');
-        list.filter(results).each(function(i) {
-          var li = $(this);
-          li.attr('tabindex', i === 0 ? '0' : '-1');
-          li.highlight(term);
-        });
-
-        this.renderPager();
-      },
-
-      resetSearch: function(list) {
-        list.removeClass('hidden').each(function() {
-          $(this).unhighlight();
-        });
-      },
-
-      // Fix: for vertical-align to icons and buttons
-      setChildIconsValign: function() {
-        $('li > .icon, li > button', this.element).each(function() {
-          var item = $(this),
-          itemHeihgt = item.is('button') ? 42 : 22,
-          row = item.closest('li'),
-          padding = parseInt(row[0].style.paddingTop, 10) + parseInt(row[0].style.paddingBottom, 10),
-          rowHeight = row.outerHeight() - padding;
-
-          this.style.top = ((rowHeight - itemHeihgt)/2) +'px';
-        });
-      },
-
-      focus: function (item) {
-        if (item.is(':hidden') || item.is('.is-disabled')) {
-          return;
-        }
-
-        item.removeAttr('tabindex');
-        item.attr('tabindex', 0).focus();
-
-        if (this.settings.selectOnFocus && (this.settings.selectable !== 'multiple')) {
-          this.select(item);
-        }
-      },
-
-      // Remove Either the list element or index
-      remove: function (li) {
-        if (typeof li === 'number') {
-          li = $(this.element.children()[0]).children().eq(li);
-        }
-        // Un-select selected item
-        if (li.is('.is-selected')) {
-          this.select(li);
-        }
-        li.remove();
-      },
-
-      // Remove All
-      clear: function () {
-        var root = $(this.element.children()[0]);
-        root.empty();
-      },
-
-      // Remove all selected
-      removeAllSelected: function () {
-        var self = this;
-        $.each(this.selectedItems, function(index, selected) {
-          self.remove(selected);
-        });
-      },
-
-      // Clear all selected
-      clearAllSelected: function () {
-        var self = this;
-        $.each(this.selectedItems, function(index, selected) {
-          // Un-select selected item
-          self.select(selected);
-        });
-      },
-
-      // Initialize sortlist
-      sortInit: function(control, onEvent, attr){
-        if(!attr || $.trim(attr) === '') {
-          return;
-        }
-        $('['+ attr +']').each(function() {
-          var elment = $(this),
-            options = $.fn.parseOptions(elment, attr);
-
-          elment.on(onEvent, function(e) {
-            $(options.list).data(control).setSortColumn(options);
-            e.preventDefault();
-          });
-        });
-      },
-
-      // Sort data set
-      setSortColumn: function(options) {
-        var sort,
-        field = options.orderBy || this.list.sort.field,
-        reverse = options.order;
-
-        if (!this.list.data && !field) {
-          return;
-        }
-
-        reverse = reverse ?
-          (reverse === 'desc') :
-          (this.list.sort && this.list.sort[field] && this.list.sort[field].reverse) ? false : true;
-
-        //reload data
-        if (options.reloadApi || options.reloadApiNoSort) {
-          this.loadData();
-        }
-
-        //reload data but no sort change
-        if (options.reloadApiNoSort) {
-          field = this.list.sort.field;
-          reverse = this.list.sort[field].reverse;
-        }
-
-        sort = this.sortFunction(field, reverse);
-        this.list.data.sort(sort);
-        this.render(this.list.data);
-
-        this.list.sort = {field: field};
-        this.list.sort[field] = {reverse: reverse};
-
-        this.element.trigger('sorted', [this.element, this.list.sort]);
-      },
-
-      //Overridable function to conduct sorting
-      sortFunction: function(field, reverse, primer) {
-        var key;
-        if (!primer) {
-          primer = function(a) {
-            a = (a === undefined || a === null ? '' : a);
-            if (typeof a === 'string') {
-              a = a.toUpperCase();
-
-              if (!isNaN(parseFloat(a))) {
-                a = parseFloat(a);
-              }
-            }
-            return a;
-          };
-        }
-        key = primer ? function(x) { return primer(x[field]); } : function(x) { return x[field]; };
-        reverse = !reverse ? 1 : -1;
-        return function (a, b) {
-           return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-        };
-      },
-
-      // Un-select selected item
-      unselect: function (li) {
-        if (typeof li === 'number') {
-          li = $(this.element.children()[0]).children().eq(li);
-        }
-        if (li.is('.is-selected')) {
-          this.select(li);
-        }
-      },
-
-      // Handle Selecting the List Element
-      select: function (li) {
-        var self = this,
-          isChecked = false;
-
-        self.selectedItems = [];
-        if (typeof li === 'number') {
-          li = $(this.element.children()[0]).children().eq(li);
-        }
-
-        isChecked = li.hasClass('is-selected');
-
-        //focus
-        li.parent().children().removeAttr('tabindex');
-        li.attr('tabindex', 0);
-
-        if (this.settings.selectable === false || this.settings.selectable === 'false') {
-          return;
-        }
-
-        //Select
-        if (this.settings.selectable !== 'multiple') {
-          li.parent().children().removeAttr('aria-selected');
-          li.parent().find('.is-selected').removeClass('is-selected');
-          self.selectedItems[0] = $(this);
-        }
-
-        if (isChecked) {
-          self.selectedItems = [];
-          li.removeClass('is-selected');
-        } else {
-          if (this.settings.selectable) {
-            li.addClass('is-selected');
-            self.lastSelectedRow = li.index();// Rember index to use shift key
-          }
-        }
-
-        li.parent().find('.is-selected').each(function (i) {
-          self.selectedItems[i] = $(this);
-        });
-
-        li.attr('aria-selected', !isChecked);
-        this.element.triggerHandler('selected', {selectedItems: this.selectedItems, elem: li});
-
-        var toolbar, toolbarControl,
-          parent = this.element.closest('.card, .widget');
-
-        if (!parent.length) {
-          parent = this.element.parent();
-        }
-        toolbar = parent.find('.listview-toolbar, .contextual-toolbar');
-
-        toolbarControl = toolbar.data('toolbar');
-
-        if (self.selectedItems.length > 0) {
-          if (toolbarControl) {
-            toolbarControl.toggleMoreMenu();
-          }
-          // Order of operations: set up event, change display prop, animate, toggle menu.
-          // Menu toggle takes place after the animation starts
-          toolbar.one('animateopencomplete', function() {
-            self.element.addClass('is-toolbar-open');
-            toolbar.trigger('recalculate-buttons').removeClass('is-hidden');
-          });
-          if (toolbar[0]) {
-            toolbar[0].style.display = 'block';
-          }
-          // toolbar.animateOpen({distance: 52});
-          toolbar.animateOpen({distance: 40});
-
-          var title = toolbar.find('.title, .selection-count');
-          if (!title || !title.length) {
-            title = $('<div class="title selection-count"></div>');
-            toolbar.prepend(title);
-          }
-          title.text(self.selectedItems.length + ' ' + Locale.translate('Selected'));
-
-        } else {
-          toolbar.addClass('is-hidden').one('animateclosedcomplete', function(e) {
-            e.stopPropagation();
-            this.style.display = 'none';
-          }).animateClosed();
-
-        }
-      },
-
-      updated: function() {
-        this.refresh();
-        return this;
-      },
-
-      teardown: function() {
-        $('body').off('resize.listview');
-        this.element.off('focus.listview click.listview touchend.listview keydown.listview change.selectable-listview afterpaging.listview').empty();
-        return this;
-      },
-
-      destroy: function() {
-        this.teardown();
-        this.element.removeData(pluginName);
       }
+
     };
 
     // Initializing the Control Once or Call Methods.
@@ -25112,9 +28069,18 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * A list of items with add/remove/delete and sort functionality.
+    *
+    * @class ListBuilder
+    * @param {Object} dataset  &nbsp;-&nbsp; The array of data
+    * @param {String} btnAdd  &nbsp;-&nbsp; The attribute to match the add button in the toolbar (ie. data-action="add")
+    * @param {String} btnEdit  &nbsp;-&nbsp; The attribute to match the edit button in the toolbar (ie. data-action="edit")
+    * @param {Boolean} btnDelete  &nbsp;-&nbsp; The attribute to match the delete button in the toolbar (ie. data-action="delete")
+    * @param {String} btnGoUp  &nbsp;-&nbsp; The attribute to match the move up button in the toolbar (ie. data-action="goup")
+    * @param {Boolean} btnGoDown  &nbsp;-&nbsp; The attribute to match the move up button in the toolbar (ie. data-action="dodown")
+    * @param {String} template  &nbsp;-&nbsp; The list view markdown / template.
+    * @param {String} templateItemContent  &nbsp;-&nbsp; The markdown for editing an item
+    */
     function ListBuilder(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -25127,11 +28093,16 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     ListBuilder.prototype = {
 
       init: function() {
+        var self = this;
         this
           .loadListview()
           .initDataset()
           .setElements()
           .handleEvents();
+
+        setTimeout(function() {
+          self.setSelected();
+        }, 0);
       },
 
       // Load listview
@@ -25260,10 +28231,19 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             self.element.triggerHandler('selected', [data]);
           });
 
+        self.updatedEventsStr = 'arrangeupdate.listbuilder aftergoup.listbuilder aftergodown.listbuilder exiteditmode.listbuilder';
+        self.element
+          .off(self.updatedEventsStr)
+          .on(self.updatedEventsStr, function(e, data) {
+            self.element.triggerHandler('updated', [data]);
+          });
+
         return this;
       }, // END: Handle Events ---------------------------------------------------------------------
 
-      // Add new item
+      /**
+      * Add an item into edit node.
+      */
       addItem: function() {
         var self = this,
           s = self.settings;
@@ -25297,7 +28277,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
-      // Move item up
+      /**
+      * Move the currently selected item up.
+      */
       moveItemUp: function() {
         var self = this,
           node = self.listApi.selectedItems[0];
@@ -25317,7 +28299,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Move item down
+      /**
+      * Move the currently selected item down.
+      */
       moveItemDown: function() {
         var self = this,
           node = self.listApi.selectedItems[0];
@@ -25337,7 +28321,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Edit item
+      /**
+      * Edit the selected item
+      * @param {Boolean} isNewItem  &nbsp;-&nbsp; Is it a new item?
+      */
       editItem: function(isNewItem) {
         var node = this.listApi.selectedItems[0];
         if (node && node.length > 0) {
@@ -25349,7 +28336,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Make item editable
+      /**
+      * Make the node editable
+      * @param {jQuery} node  &nbsp;-&nbsp; The node to edit
+      * @param {Boolean} isNewItem  &nbsp;-&nbsp; Is it a new item?
+      */
       makeEditable: function(node, isNewItem) {
         var self = this,
           data = self.getDataByNode(node),
@@ -25384,7 +28375,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Commit editable item
+      /**
+      * Delete the selected item.
+      * @param {jQuery} node  &nbsp;-&nbsp; The node to delete
+      * @param {Boolean} isNewItem  &nbsp;-&nbsp; Is it a new item?
+      */
       commitEdit: function(node, isNewItem) {
         var self = this,
           s = this.settings,
@@ -25402,7 +28397,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         self.element.triggerHandler('exiteditmode', [data]);
       },
 
-      // Delete item
+      /**
+      * Delete the selected item.
+      */
       deleteItem: function() {
         var self = this,
           node = self.listApi.selectedItems[0];
@@ -25419,7 +28416,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Get data from dataset by node
+      /**
+      * Get data from dataset by node
+      * @returns {Object}
+      */
       getDataByNode: function(node) {
         var data = {};
         for (var i = 0,l = this.dataset.length; i < l; i++) {
@@ -25468,7 +28468,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       // Update dataset
       updateDataset: function(ds) {
-        var nodes = $('li', this.ul),
+        var self = this,
+          nodes = $('li', this.ul),
           lv = $('.listview', this.element).data('listview');
 
         lv.unselectRowsBetweenIndexes([0, nodes.length-1]);
@@ -25479,6 +28480,70 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .initDataset()
           .setElements()
           .handleEvents();
+
+        setTimeout(function() {
+          self.setSelected();
+        }, 0);
+      },
+
+      // Set pre selected items
+      setSelected: function() {
+        $('li[selected]', this.ul).each(function() {
+          var li = $(this);
+          li.removeAttr('selected');
+          if (!li.is('.is-selected')) {
+            li.trigger('click');
+          }
+        });
+        return this;
+      },
+
+      // Make selected
+      select: function(selector) {
+        var li = this.getListItem(selector);
+
+        if (li) {
+          if (!li.is('.is-selected')) {
+            li.trigger('click');
+          }
+        }
+      },
+
+      // Make unselected
+      unselect: function(selector) {
+        var li = this.getListItem(selector);
+
+        if (li) {
+          if (li.is('.is-selected')) {
+            li.trigger('click');
+          }
+        }
+      },
+
+      // Get an item from list, selector: can be
+      // jQuery, DOM element, zero based index or 'first'|'last' as string
+      getListItem: function(selector) {
+        var li = $();
+        if (this.isElement(selector) && $.contains(this.ul, selector)) {
+          li = this.isjQuery(selector) ? selector : $(selector);
+        } else {
+          var idx = parseInt(selector),
+            items = $('li', this.ul);
+          if (!isNaN(idx) && (idx > -1 && idx < items.length)) {
+            li = items.eq(idx); // zero based index
+          } else if ((selector + '').toLowerCase() === 'first') {
+            li = items.first(); // first
+          } else if ((selector + '').toLowerCase() === 'last') {
+            li = items.last(); // last
+          }
+        }
+        // Make sure to return only one item -or- null
+        return (li.length < 1) ? null : ((li.length > 1) ? li.eq(0) : li);
+      },
+
+      // Check if given object is a DOM object
+      isElement: function(obj) {
+        return (this.isjQuery(obj) && obj.get(0) instanceof Element) || obj instanceof Element;
       },
 
       // Make enable
@@ -25506,6 +28571,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       // Unbind all events
       unbind: function() {
+        this.element.off(this.updatedEventsStr);
         $('.listview', this.element).off('selected.listbuilder');
 
         $('li '+ this.arrangeApi.handle, this.ul)
@@ -25555,15 +28621,21 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Settings and Options
     var pluginName = 'circlepager',
         defaults = {
-          startingSlide: null, // First showing slide, an 0-based integer
-          loop: false // Setting loop: true will loop back after next/previous reached to end
+          slidesToShow: 1,
+          startingSlide: null,
+          loop: false
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The Circle Pager Displays content in a sliding carousel and has paging buttons.
+    *
+    * @class CirclePager
+    * @param {String} slidesToShow  &nbsp;-&nbsp; The number of slides to show in one view / pane
+    * @param {String} startingSlide  &nbsp;-&nbsp; First showing slide/group, an 0-based integer
+    * @param {String} loop  &nbsp;-&nbsp;  Setting loop: true will loop back after next/previous reached to end
+    *
+    */
     function CirclePager(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -25593,10 +28665,16 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         this.container = $('.slides', this.element);
         this.slidesJQ = $('.slide', this.element);
+        this.slidesToShow = s.slidesToShow;
         this.slides = [];
         this.slidesJQ.each(function() {
           self.slides.push({ node: $(this) });
         });
+
+        if (this.slides.length) {
+          // Do not go less than slide width
+          this.element.css({'min-width': this.slidesJQ.eq(0).width() + 5});
+        }
 
         this.activeIndex = s.startingSlide !== null &&
           s.startingSlide > -1 && s.startingSlide < this.slides.length ?
@@ -25605,41 +28683,292 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       // Create controls
       createControls: function() {
-        var html = '<div class="controls">';
+        var len = this.slides.length,
+          html = '<div class="controls">',
+          htmlContent = '',
+          numOfButtons = 0,
+          i, l, slide, temp, href, text, buttonText,
+          last, lastIndex, isSingle, isDisabled,
+          previousButton, nextButton;
 
-        for (var i=0,l=this.slides.length; i<l; i++) {
-          var slide = this.slides[i].node,
-            text = slide.attr('data-button-text'),
-            href = '#slide'+ i,
+        for (i = 0, l = len; i < l; i += this.slidesToShow) {
+          temp = '';
+          numOfButtons++;
+          isSingle = (this.slidesToShow === 1) || (len - i === 1);
+          text = Locale.translate(isSingle ? 'SlideOf' : 'SlidesOf') + '';
+          // Keep href in english language only
+          href = isSingle ? '#slide {0} of {1}' : '#slides {0} and {1} of {2}';
+
+          // Collect as much bullets need to present
+          for (var g = 0; g < this.slidesToShow && (i + g) < len; g++) {
+            temp += (i + g + 1) + ', ';
+          }
+          text = text.replace(isSingle ? '{1}' : '{2}', len);
+          href = href.replace(isSingle ? '{1}' : '{2}', len);
+          temp = temp.slice(0, -2);
+          lastIndex = temp.lastIndexOf(',');
+          last = temp.substr(lastIndex + 2);
+
+          // Controls for single slide in view
+          if (isSingle) {
             isDisabled = '';
+            slide = this.slides[i].node;
 
-          if (slide.is('.is-disabled, [disabled]') && !slide.is('[disabled="false"]')) {
-            isDisabled = ' disabled tabindex="-1"';
-            this.slides[i].isDisabled = true;
+            // Set disabled
+            if (slide.is('.is-disabled, [disabled]') && !slide.is('[disabled="false"]')) {
+              isDisabled = ' disabled tabindex="-1"';
+              this.slides[i].isDisabled = true;
+            }
+
+            // Set default starting slide
+            if (slide.is('.active') && this.settings.startingSlide === null && isDisabled === '') {
+              this.activeIndex = i;
+            }
+
+            // Use custom text if supplied
+            buttonText = slide.attr('data-button-text');
+            text = (buttonText && buttonText.length) ?
+              buttonText : text.replace('{0}', temp);
+
+            // href = (buttonText && buttonText.length) ?
+            //   '#'+ $.trim(text) : href.replace('{0}', temp);
+            href = href.replace('{0}', temp);
+
           }
 
-          if (slide.is('.active') && this.settings.startingSlide === null && isDisabled === '') {
-            this.activeIndex = i;
+          // Controls for multiple slides in view
+          else {
+            temp = temp.substr(0, lastIndex);
+            text = text.replace('{1}', last).replace('{0}', temp);
+            href = href.replace('{1}', last).replace('{0}', temp);
           }
 
-          if (text && text.length) {
-            href = ('#'+ $.trim(text)).toLowerCase().replace(/ /g, '-').replace(/--/g, '-');
-          } else {
-            text = 'Slide '+ i;
-          }
+          href = href.toLowerCase().replace(/[\s,--]+/g, '-');
 
-          html += '<a href="'+ href +'" class="control-button hyperlink hide-focus"'+ isDisabled +'><span class="audible">'+ text +'</span></a>';
+          htmlContent += '<a href="'+ href +'" class="control-button hyperlink hide-focus"'+ isDisabled +'><span class="audible">'+ text +'</span></a>';
         }
-        html += '</div>';
+
+        html += htmlContent + '</div>';
+
+        // Previous/Next buttons
+        this.isBulletsNav = this.element.width() > numOfButtons * 29;
+        previousButton = $('.btn-previous', this.element);
+        nextButton = $('.btn-next', this.element);
+        if (!this.isBulletsNav) {
+          if (!previousButton.length) {
+            html += '<button class="btn-previous" type="button">' + $.createIcon('left-arrow') + '<span class="audible">'+
+                Locale.translate('Previous') +'</span></button>';
+          }
+          if (!nextButton.length) {
+            html += '<button class="btn-next" type="button">' + $.createIcon('right-arrow') + '<span class="audible">'+
+                Locale.translate('Next') +'</span></button>';
+          }
+        } else {
+          previousButton.add(nextButton).remove();
+        }
 
         this.element.append(html);
+      },
+
+      // Check if given element is visible in container
+      isVisibleInContainer: function(element) {
+        if (element && element[0]) {
+          var eRect = element[0].getBoundingClientRect();
+          var cRect = this.element[0].getBoundingClientRect();
+          return (eRect.left > cRect.left && eRect.left < (cRect.left + cRect.width) &&
+            eRect.top > cRect.top && eRect.top < (cRect.top + cRect.height));
+        }
+        return -1;
+      },
+
+      // Update number of slides to show in view
+      updateSlidesToShow: function(numOfSlides) {
+        if (!this.isActive) {
+          return;
+        }
+        this.settings.slidesToShow = numOfSlides || 1;
+        this.updated();
+        return this;
+      },
+
+      // Make sure max number of slides to show in view
+      responsiveSlidesToShow: function(numOfSlides) {
+        if (!this.isActive) {
+          return;
+        }
+        var self = this;
+        this.slidesToShow = numOfSlides || this.settings.slidesToShow;
+        this.unbind().slidesJQ.css('width', '');
+        if (this.slides.length) {
+          setTimeout(function() {
+            self.createControls();
+            self.handleEvents();
+            self.showCollapsedView();
+            self.initActiveSlide();
+          }, 0);
+        }
+      },
+
+      /**
+      * Show a slide to First Slide
+      * @param {String} index  &nbsp;-&nbsp; The index of the slide to show (0 based)
+      */
+      show: function(index) {
+        if (!this.isActive) {
+          return;
+        }
+        index = typeof index !== 'undefined' ? index : this.activeIndex;
+        this.activeIndex = index;
+
+        // var isBulletsNav = this.element.width() > this.controlButtons.length * 30;
+        var left = index > 0 ? ((Locale.isRTL() ? '' : '-') + (index * 100) +'%') : 0;
+        this.controlButtons.removeClass('is-active').eq(index).addClass('is-active');
+        this.container[0].style.left = left;
+
+        // Make sure bullets navigation do not overflow
+        if (!this.isBulletsNav) {
+          this.element.addClass('is-bullets-nav-hidden');
+          this.controlButtons.find('span').addClass('audible').end()
+            .eq(index).find('span').removeClass('audible');
+        } else {
+          this.element.removeClass('is-bullets-nav-hidden');
+          this.controlButtons.find('span').addClass('audible');
+        }
+
+        // Set focus
+        if (this.isFocus && this.isBulletsNav) {
+          this.isFocus = false;
+          this.controlButtons.eq(index).focus();
+        }
+      },
+
+      /**
+      * Move to First Slide
+      */
+      first: function() {
+        this.show(0);
+      },
+
+      /**
+      * Move to Last Slide
+      */
+      last: function() {
+        this.show(Math.round(this.slides.length/this.slidesToShow)-1);
+      },
+
+      /**
+      * Move to Previous Slide
+      */
+      prev: function() {
+        var self = this,
+          prev = this.activeIndex > 0 ?
+            this.activeIndex - 1 : (this.settings.loop ? Math.round(this.slides.length/this.slidesToShow)-1 : 0);
+
+        if (this.slides[prev].isDisabled) {
+          setTimeout(function() {
+            self.prev();
+          }, 0);
+          this.activeIndex = prev;
+          return false;
+        }
+        this.show(prev);
+      },
+
+      /**
+      * Move to Next Slide
+      */
+      next: function() {
+        var self = this,
+          next = this.activeIndex >= Math.round(this.slides.length/this.slidesToShow)-1 ?
+            (this.settings.loop ? 0 : this.activeIndex) : this.activeIndex + 1;
+
+        if (this.slides[next].isDisabled) {
+          setTimeout(function() {
+            self.next();
+          }, 0);
+          this.activeIndex = next;
+          return false;
+        }
+        this.show(next);
+      },
+
+      // Make active
+      showCollapsedView: function() {
+        this.isActive = true;
+        this.element.addClass('is-active');
+        this.container[0].style.width = (100 * this.slides.length) +'%';
+        if (this.settings.slidesToShow > 1 &&
+           (this.slidesJQ.eq(0).width() * this.slidesToShow > this.element.width())) {
+          this.responsiveSlidesToShow(this.slidesToShow - 1);
+          return;
+        }
+        for (var i = 0, l = this.slidesJQ.length; i < l; i++) {
+          this.slidesJQ[i].style.width = ((100/this.slidesToShow) / this.slides.length) +'%';
+        }
+        this.show();
+      },
+
+      // Make un-active
+      showExpandedView: function() {
+        this.isActive = false;
+        this.element.removeClass('is-active');
+        this.element[0].style.width = '';
+        this.container[0].style.width = '';
+        this.container[0].style.left = '';
+      },
+
+      // Initialize active slide
+      initActiveSlide: function() {
+        if (this.slides[this.activeIndex].isDisabled) {
+          this.next();
+          return false;
+        }
+        this.show();
+      },
+
+      unbind: function() {
+        $('body').off('resize.circlepager');
+        this.element.off('focus.circlepager keydown.circlepager', '*');
+        this.controlButtons.off('click.circlepager keydown.circlepager');
+        $('.btn-previous, .btn-next', this.element).off('click.circlepager');
+        $('.controls', this.element).remove();
+        this.showExpandedView();
+        return this;
+      },
+
+      updated: function() {
+        return this
+          .unbind()
+          .init();
+      },
+
+      // Teardown
+      destroy: function() {
+        this.unbind();
+        $.removeData(this.element[0], pluginName);
       },
 
       // Handle events
       handleEvents: function() {
         var self = this;
-        this.controlButtons = $('.control-button', this.element);
 
+        // Previous button
+        $('.btn-previous', this.element)
+          .onTouchClick('circlepager')
+          .on('click.circlepager', function (e) {
+            self.prev();
+            e.stopImmediatePropagation();
+          });
+
+        // Next button
+        $('.btn-next', this.element)
+          .onTouchClick('circlepager')
+          .on('click.circlepager', function (e) {
+            self.next();
+            e.stopImmediatePropagation();
+          });
+
+        this.controlButtons = $('.control-button', this.element);
         this.controlButtons.each(function(index) {
           var btn = $(this);
           btn.hideFocus();
@@ -25656,6 +28985,61 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
 
         // Handle keyboard events
+
+        // Prevent hidden slide's content to be get focused
+        // on focusable elements in slides content
+        this.element.on('focus.circlepager', '*', function(e) {
+          var handled = false;
+          if (!self.isVisibleInContainer($(this))) {
+            var canfocus = self.element.find(':focusable');
+            for (var i = 0, l = canfocus.length; i < l; i++) {
+              if (self.isVisibleInContainer(canfocus.eq(i))) {
+                canfocus.eq(i).focus();
+                handled = true;
+                break;
+              }
+            }
+          }
+          e.stopPropagation();
+          if (handled) {
+            return false;
+          }
+        });
+        // Keydown on focusable elements in slides content to
+        // prevent hidden slide's content to be get focused
+        this.element.on('keydown.circlepager', '*', function(e) {
+          var key = e.which || e.keyCode || e.charCode || 0,
+            handled = false,
+            canfocus = $(':focusable'),
+            index = canfocus.index(this);
+
+          if (key === 9) {//tab
+            // Using shift key with tab (going backwards)
+            if (e.shiftKey) {
+              for (var i = index-1; i >= 0; i--) {
+                if ((self.element.has(canfocus.eq(i)).length < 1) ||
+                    (self.isVisibleInContainer(canfocus.eq(i)))) {
+                  canfocus.eq(i).focus();
+                  handled = true;
+                  break;
+                }
+              }
+            }
+            // Using only tab key (going forward)
+            else {
+              if (!self.isVisibleInContainer(canfocus.eq(index + 1))) {
+                self.controlButtons.first().focus();
+                handled = true;
+              }
+            }
+          }
+          e.stopPropagation();
+          if (handled) {
+            return false;
+          }
+        });
+
+        // Control buttons
         this.controlButtons.on('keydown.circlepager', function(e) {
           var key = e.which || e.keyCode || e.charCode || 0,
             handled = false,
@@ -25690,116 +29074,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
         });
 
-      }, // END: Handle Events ---------------------------------------------------------------------
+        // Set max number of slides can view on resize
+        $('body').on('resize.circlepager', function() {
+          self.responsiveSlidesToShow();
+        });
 
-      // Show slide
-      show: function(index) {
-        if (!this.isActive) {
-          return;
-        }
-        index = typeof index !== 'undefined' ? index : this.activeIndex;
-        this.activeIndex = index;
-
-        var left = index > 0 ? ((Locale.isRTL() ? '' : '-') + (index * 100) +'%') : 0;
-        this.controlButtons.removeClass('is-active').eq(index).addClass('is-active');
-        this.container[0].style.left = left;
-
-        // Set focus
-        if (this.isFocus) {
-          this.isFocus = false;
-          this.controlButtons.eq(index).focus();
-        }
-      },
-
-      // First slide
-      first: function() {
-        this.show(0);
-      },
-
-      // Last slide
-      last: function() {
-        this.show(this.slides.length-1);
-      },
-
-      // Previous slide
-      prev: function() {
-        var self = this,
-          prev = this.activeIndex > 0 ?
-            this.activeIndex -1 : (this.settings.loop ? this.slides.length-1 : 0);
-
-        if (this.slides[prev].isDisabled) {
-          setTimeout(function() {
-            self.prev();
-          }, 0);
-          this.activeIndex = prev;
-          return false;
-        }
-        this.show(prev);
-      },
-
-      // Next slide
-      next: function() {
-        var self = this,
-          next = this.activeIndex >= this.slides.length-1 ?
-            (this.settings.loop ? 0 : this.activeIndex) : this.activeIndex + 1;
-
-        if (this.slides[next].isDisabled) {
-          setTimeout(function() {
-            self.next();
-          }, 0);
-          this.activeIndex = next;
-          return false;
-        }
-        this.show(next);
-      },
-
-      // Make active
-      showCollapsedView: function() {
-        this.isActive = true;
-        this.element.addClass('is-active');
-        this.container[0].style.width = (100 * this.slides.length) +'%';
-        for (var i = 0, l = this.slidesJQ.length; i < l; i++) {
-          this.slidesJQ[i].style.width = (100 / this.slides.length) +'%';
-        }
-        this.show();
-      },
-
-      // Make un-active
-      showExpandedView: function() {
-        this.isActive = false;
-        this.element.removeClass('is-active');
-        this.element[0].style.width = '';
-        this.container[0].style.width = '';
-        this.container[0].style.left = '';
-      },
-
-      // Initialize active slide
-      initActiveSlide: function() {
-        if (this.slides[this.activeIndex].isDisabled) {
-          this.next();
-          return false;
-        }
-        this.show();
-      },
-
-      unbind: function() {
-        this.controlButtons.off('click.circlepager keydown.circlepager');
-        $('.controls', this.element).remove();
-        this.showExpandedView();
-        return this;
-      },
-
-      updated: function() {
-        return this
-          .unbind()
-          .init();
-      },
-
-      // Teardown
-      destroy: function() {
-        this.unbind();
-        $.removeData(this.element[0], pluginName);
       }
+
     };
 
     // Initialize the plugin (Once)
@@ -25820,21 +29101,37 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Settings and Options
     var pluginName = 'pager',
         defaults = {
-          componentAPI: undefined, // If defined, becomes the definitive way to call methods on parent component.
-          type: 'list', //Different types of pagers: list, table and more
-          position: 'bottom',  //Can be on top as well.
-          activePage: 1, //Start on this page
-          source: null,  //Call Back Function for Pager Data Source
-          pagesize: 15, //Can be calculate or a specific number
+          componentAPI: undefined,
+          type: 'list',
+          position: 'bottom',
+          activePage: 1,
+          hideOnOnePage: false,
+          source: null,
+          pagesize: 15,
           pagesizes: [15, 25, 50, 75],
-          indeterminate: false // Will not show anything that lets you go to a specific page
+          showPageSizeSelector: true,
+          indeterminate: false
         },
         settings = $.extend({}, defaults, options);
 
+    var PAGER_NON_NUMBER_BUTTON_SELECTOR = 'li:not(.pager-prev):not(.pager-next):not(.pager-first):not(.pager-last)';
+
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The Pager Component supports paging on lists.
+    *
+    * @class Pager
+    * @param {String} componentAPI  &nbsp;-&nbsp; If defined, becomes the definitive way to call methods on parent component.
+    * @param {String} type  &nbsp;-&nbsp; Different types of pagers: list, table and more
+    * @param {String} position  &nbsp;-&nbsp; Can be on 'bottom' or 'top'.
+    * @param {Number} activePage  &nbsp;-&nbsp; Start on this page
+    * @param {Boolean} hideOnOnePage  &nbsp;-&nbsp; If true, hides the pager if there is only one page worth of results.
+    * @param {Function} source  &nbsp;-&nbsp; Call Back Function for Pager Data Source
+    * @param {Number} pagesize  &nbsp;-&nbsp; Can be calculated or a specific number
+    * @param {Array} pagesizes  &nbsp;-&nbsp; Array of numbers of the page size selector
+    * @param {Boolean} showPageSizeSelector  &nbsp;-&nbsp; If false will not show page size selector
+    * @param {Boolean} indeterminate  &nbsp;-&nbsp; If true will not show anything that lets you go to a specific page
+    *
+    */
     function Pager(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -25850,7 +29147,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       init: function() {
         this.setup();
-        this.buttonExpr = 'li:not(.pager-prev):not(.pager-next):not(.pager-first):not(.pager-last)';
         this.createPagerBar();
         this.setActivePage(this.settings.activePage); //Get First Page
         this.renderBar();
@@ -26060,21 +29356,46 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
+      //Show page size selector
+      showPageSizeSelector: function(toggleOption) {
+        toggleOption = (toggleOption + '').toLowerCase() === 'true';
+        this.settings.showPageSizeSelector = toggleOption;
+        if (toggleOption) {
+          this.isShowPageSizeSelectorCall = toggleOption;
+          this.pageCount();
+        } else {
+          this.pagerBar.find('.pager-pagesize').remove();
+        }
+      },
+
       //Set or Get Current Page
-      setActivePage: function(pageNum, force, op) {
-        var lis = this.pagerBar.find(this.buttonExpr);
+      setActivePage: function(pagingInfo, force, op) {
+        var lis = this.pagerBar.find(PAGER_NON_NUMBER_BUTTON_SELECTOR),
+          pageNum;
+
+        // Backwards compatibility with having "pageNum" as the first argument
+        // instead of "pagingInfo"
+        if (!isNaN(pagingInfo)) {
+          pageNum = pagingInfo;
+          pagingInfo = {
+            activePage: pageNum
+          };
+        }
 
         // Check to make sure our internal active page is set
         if (!this.activePage || isNaN(this.activePage)) {
           this.activePage = this.settings.activePage;
         }
 
+        // If any of the following conditions are met, don't rerender the pages.
+        // Only rerender the pager bar.
         if (pageNum === undefined ||
             pageNum === 0 ||
             isNaN(pageNum) ||
             pageNum > this.pageCount() ||
             (pageNum === this.activePage && !force)) {
 
+          this.renderBar(pagingInfo);
           return this.activePage;
         }
 
@@ -26092,8 +29413,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
               .find('.audible').html(Locale.translate('PageOn'));
         }
 
-        this.renderBar();
+        this.renderBar(pagingInfo);
         this.renderPages(op);
+        if (this.settings.componentAPI) {
+          this.settings.componentAPI.saveUserSettings();
+        }
         return pageNum;
       },
 
@@ -26101,13 +29425,17 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       //Get/Set Total Number of pages
       pageCount: function(pages) {
-        var self = this;
+        var self = this,
+          isShowPageSizeSelectorCall = this.isShowPageSizeSelectorCall;
+
+        // Remove call, after cached
+        delete this.isShowPageSizeSelectorCall;
 
         if (pages === undefined && this.settings.indeterminate) {
           this._pageCount = this.settings.pagesize;
         }
 
-        if (pages === undefined && !this.settings.source) {
+        if (pages === undefined && !this.settings.source && !isShowPageSizeSelectorCall) {
           return this._pageCount;
         }
 
@@ -26118,7 +29446,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         //Add in fake pages
         if (!this.isTable) {
           var i, thisClass, thisText, isAriaSelected, isAriaDisabled;
-          this.pagerBar.find(this.buttonExpr).remove();
+          this.pagerBar.find(PAGER_NON_NUMBER_BUTTON_SELECTOR).remove();
 
           for (i = pages; i > 0; i--) {
             if (i === (this.activePage || 1)) {
@@ -26161,7 +29489,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         //Add functionality to change page size.
-        if (this.isTable && this.pagerBar.find('.btn-menu').length === 0) {
+        if (this.isTable && this.pagerBar.find('.btn-menu').length === 0 && self.settings.showPageSizeSelector) {
           var pageSize = $('<li class="pager-pagesize"></li>'),
             pageSizeButton = $('<button type="button" class="btn-menu">' +
               '<span>' + Locale.translate('RecordsPerPage').replace('{0}', this.settings.pagesize) + '</span> ' +
@@ -26192,10 +29520,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             tag.closest('.popupmenu').find('.is-checked').removeClass('is-checked');
             tag.parent('li').addClass('is-checked');
             self.settings.pagesize = parseInt(tag.text());
-            self.setActivePage(1, true, 'first');
-           });
 
-          //$('[href="#25"]').parent().addClass('is-checked');
+            if (self.settings.componentAPI) {
+              self.settings.componentAPI.settings.pagesize = self.settings.pagesize;
+            }
+            self.setActivePage(1, true, 'first');
+          });
         }
 
         var pattern = (''+ this._pageCount).replace(/\d/g, '#');
@@ -26218,13 +29548,23 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return elements;
       },
 
-      // Render Pages
-      renderBar: function() {
+      /**
+       * Renders the pager bar based on derived or forced settings.
+       * @private
+       * @param {SohoPagingInfo} pagingInfo - an object containing information on how to render the pager.
+       * @returns {undefined}
+       */
+      renderBar: function(pagingInfo) {
         //How many can fit?
         var pb = this.pagerBar,
           elems, pc,
           width = (this.element.parent().width() / pb.find('li:first').width()),
-          howMany = Math.floor(width-3);   //Take out the ones that should be visible (buttons and selected)
+          VISIBLE_BUTTONS = 3, // Take out the ones that should be visible (buttons and selected)
+          howMany = Math.floor(width - VISIBLE_BUTTONS);
+
+        if (!pagingInfo) {
+          pagingInfo = {};
+        }
 
         //Check Data Attr
         if (this.element.attr('data-pagesize')) {
@@ -26247,33 +29587,72 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           this.pageCount(pc);
         }
 
-        //Refresh Disabled
+        // Update the input field's number
+        this.pagerBar
+          .find('.pager-count input').val(this.activePage);
+
+        // Update the total number of pages
+        if (this._pageCount !== '0' && !isNaN(this._pageCount)) {
+          this.pagerBar.find('.pager-total-pages').text(this._pageCount);
+        }
+
+        // Update the number of records per page
+        this.pagerBar.find('.btn-menu span')
+          .text(Locale.translate('RecordsPerPage').replace('{0}', this.settings.pagesize));
+
+        // Refresh Disabled
         var prev = pb.find('.pager-prev a'),
           next = pb.find('.pager-next a'),
           first = pb.find('.pager-first a'),
           last = pb.find('.pager-last a'),
           prevGroup = prev.add(first).add('.pager-prev').add('.pager-first'),
-          nextGroup = next.add(last).add('.pager-next').add('.pager-last');
+          nextGroup = next.add(last).add('.pager-next').add('.pager-last'),
+          disabledAttrs = {'disabled': 'disabled', 'tabindex': -1};
 
-        // Reset all
-        prevGroup.add(nextGroup).removeAttr('disabled tabIndex');
+        // Reset all pager buttons' disabled/focusable states
+        this.pagerBar[0].classList.remove('hidden');
+        prevGroup.add(nextGroup).removeAttr('disabled tabindex');
+
+        // Explicit false turns buttons back on.
+        if (pagingInfo.firstPage === false) {
+          prevGroup.removeAttr('disabled').removeAttr('tabindex');
+        }
+        if (pagingInfo.lastPage === false) {
+          nextGroup.removeAttr('disabled').removeAttr('tabindex');
+        }
 
         // First page
-        if (this.activePage === 1) {
-          prevGroup.attr({'disabled': 'disabled', 'tabIndex': -1});
-          nextGroup.attr({'tabIndex': 0});
+        if (pagingInfo.firstPage === true || (pagingInfo.firstPage === undefined && this.activePage === 1)) {
+          prevGroup.attr(disabledAttrs);
+
+          if (pagingInfo.lastPage !== true) {
+            nextGroup.attr({'tabIndex': 0});
+          }
         }
 
         // Last page
-        if (this.activePage === this.pageCount()) {
-          nextGroup.attr({'disabled': 'disabled', 'tabIndex': -1});
-          prevGroup.attr({'tabIndex': 0});
+        if (pagingInfo.lastPage === true || (pagingInfo.lastPage === undefined && this.activePage === this.pageCount())) {
+          nextGroup.attr(disabledAttrs);
+
+          if (pagingInfo.firstPage !== true) {
+            prevGroup.attr({'tabindex': 0});
+          }
         }
 
-        //Remove from the front until selected is visible and we have at least howMany showing
-        //rowTemplate
+        // Hide the entire pager bar if we're only showing one page, if applicable
+        if (this.settings.hideOnOnePage && pagingInfo.total <= pagingInfo.pagesize) {
+          this.pagerBar[0].classList.add('hidden');
+        }
+
+        // Hide the entire pager bar if both sides are disabled, if applicable
+        if ((pagingInfo.firstPage === true && pagingInfo.lastPage === true) && pagingInfo.hideDisabledPagers) {
+          this.pagerBar[0].classList.add('hidden');
+        }
+
+        // Remove from the front until selected is visible and we have at least howMany showing
+        // rowTemplate
         if (!this.settings.source) {
-          elems = pb.find(this.buttonExpr);
+          elems = pb.find(PAGER_NON_NUMBER_BUTTON_SELECTOR);
           elems.show();
           if (elems.length < howMany) {
             return;
@@ -26297,27 +29676,32 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             activePage: self.activePage,
             pagesize: self.settings.pagesize,
             type: op,
-            total: -1
+            total: self.settings.componentAPI ? self.settings.componentAPI.settings.dataset.length : -1
           };
 
         //Make an ajax call and wait
         setTimeout(function () {
           var doPaging = self.element.triggerHandler('beforepaging', request);
-
           if (doPaging === false) {
             return;
           }
 
-          if (self.settings.source) {
+          if (self.settings.source && op) {
             var response;
 
             response = function(data, pagingInfo) {
+              if (pagingInfo && pagingInfo.activePage) {
+                if (pagingInfo.activePage > -1) {
+                  self.activePage = pagingInfo.activePage;
+                }
+              }
+
               //Render Data
               pagingInfo.preserveSelected = true;
-              self.settings.componentAPI.loadData(data, pagingInfo, true);
 
-              //Update Paging Info
-              self.updatePagingInfo(pagingInfo);
+              // Call out to the component's API to pull in dataset information.
+              // This method should also tell the Pager how to re-render itself.
+              self.settings.componentAPI.loadData(data, pagingInfo, true);
 
               setTimeout(function () {
                 self.element.trigger('afterpaging', pagingInfo);
@@ -26385,58 +29769,37 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
        * @param {boolean} [pagingInfo.hideDisabledPagers=false] - causes the pager to become completely hidden if all buttons are disabled
        */
       updatePagingInfo: function(pagingInfo) {
-        this.settings.pagesize = pagingInfo.pagesize || this.settings.pagesize;
-
-        var prevButtons = this.pagerBar.find('.pager-first a, .pager-prev a'),
-          nextButtons = this.pagerBar.find('.pager-next a, .pager-last a'),
-          allButtons = prevButtons.add(nextButtons);
-
-        if (this.isTable && this.settings.componentAPI) {
-          this.settings.componentAPI.settings.pagesize = this.settings.pagesize;
+        if (!pagingInfo) {
+          return;
         }
-        this.pagerBar.find('.btn-menu span').text(Locale.translate('RecordsPerPage').replace('{0}', this.settings.pagesize));
+
+        // Grab and retain the pagesize
+        if (pagingInfo.pagesize) {
+          this.settings.pagesize = pagingInfo.pagesize;
+          if (this.isTable && this.settings.componentAPI) {
+            this.settings.componentAPI.settings.pagesize = pagingInfo.pagesize;
+          }
+        }
+
+        // Set a default total if none are defined.
+        if (!pagingInfo.total) {
+          pagingInfo.total = 0;
+        }
 
         if (this.settings.source) {
           this._pageCount = Math.ceil(pagingInfo.total/this.settings.pagesize);
-          this.activePage = pagingInfo.activePage;
-
           //Set first and last page if passed
-          this.setActivePage(this.activePage, false, 'pageinfo');
+          // If we get a page number as a result, rendering has already happened and
+          // we should not attempt to re-render.
+          return this.setActivePage(pagingInfo, false, 'pageinfo');
         }
 
-        //Update the UI
-        this.pagerBar
-          .find('.pager-count input').val(this.activePage);
-
-        if (this._pageCount !== '0' && !isNaN(this._pageCount)) {
-          this.pagerBar.find('.pager-total-pages').text(this._pageCount);
-        }
-
-        this.pagerBar[0].classList.remove('hidden');
-
-        // Disable paging buttons that shouldn't be used.
-        var attrNames = 'tabindex disabled',
-          attrs = {
-            'disabled': 'disabled',
-            'tabindex': '-1'
-          };
-        if (pagingInfo.firstPage && pagingInfo.lastPage) {
-          allButtons.attr(attrs);
-
-          if (pagingInfo.hideDisabledPagers) {
-            this.pagerBar[0].classList.add('hidden');
-          }
-
-        } else if (pagingInfo.firstPage) {
-          prevButtons.attr(attrs);
-          nextButtons.removeAttr(attrNames);
-        } else if (pagingInfo.lastPage) {
-          prevButtons.removeAttr(attrNames);
-          nextButtons.attr(attrs);
-        }
+        this.renderBar(pagingInfo);
       },
 
-      //Teardown
+      /**
+       * Tear down and detatch all events
+       */
       destroy: function() {
         $.removeData(this.element[0], pluginName);
       }
@@ -26489,6 +29852,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           'container', 'containerOffsetX', 'containerOffsetY',
           'callback',
           'parent', 'parentXAlignment', 'parentYAlignment',
+          'useParentWidth', 'useParentHeight',
           'placement',
           'strategies'
         ];
@@ -26529,6 +29893,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.parentXAlignment = this.isReasonableDefault(this.parentXAlignment, xAlignments) ? this.parentXAlignment : settings.parentXAlignment;
         this.parentYAlignment = this.isReasonableDefault(this.parentYAlignment, yAlignments) ? this.parentYAlignment : settings.parentYAlignment;
         this.placement = this.isReasonableDefault(this.placement, placements) ? this.placement : settings.placement;
+        this.useParentHeight = this.useParentHeight === true;
+        this.useParentWidth = this.useParentWidth === true;
 
         if (!$.isArray(this.strategies) || !this.strategies.length) {
           this.strategies = ['nudge'];
@@ -26606,16 +29972,18 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       // Actually renders an element with coordinates inside the DOM
       render: function(placementObj) {
+        var unitRegex = /(px|%)/i;
+
         this.element.offset({
           'left': placementObj.x,
           'top': placementObj.y
         });
 
         if (placementObj.height) {
-          this.element[0].style.height = placementObj.height + (/(px|%)/i.test(placementObj.height + '') ? '' : 'px');
+          this.element[0].style.height = placementObj.height + (unitRegex.test(placementObj.height + '') ? '' : 'px');
         }
         if (placementObj.width) {
-          this.element[0].style.width = placementObj.width + (/(px|%)/i.test(placementObj.width + '') ? '' : 'px');
+          this.element[0].style.width = placementObj.width + (unitRegex.test(placementObj.width + '') ? '' : 'px');
         }
       },
 
@@ -26664,14 +30032,21 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         var self = this,
-          parentRect = placementObj.parent[0].getBoundingClientRect(),
-          elRect = this.element[0].getBoundingClientRect(),
+          parentRect = Soho.DOM.getDimensions(placementObj.parent[0]),
+          elRect = Soho.DOM.getDimensions(this.element[0]),
           container = this.getContainer(placementObj),
           containerIsBody = container.length && container[0] === document.body,
           // NOTE: Usage of $(window) instead of $('body') is deliberate here - http://stackoverflow.com/a/17776759/4024149.
           // Firefox $('body').scrollTop() will always return zero.
           scrollX = containerIsBody ? $(window).scrollLeft() : container.scrollLeft(),
           scrollY = containerIsBody ? $(window).scrollTop() : container.scrollTop();
+
+        if (placementObj.useParentWidth) {
+          placementObj.width = parentRect.width;
+        }
+        if (placementObj.useParentHeight) {
+          placementObj.height = parentRect.height;
+        }
 
         function getCoordsFromPlacement(placementObj) {
           var cX, cY,
@@ -26826,6 +30201,47 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return placementObj;
       },
 
+      /**
+       * Detects for elements with fixed positioning, or an absolutely-positioned containment.
+       * If either condition is true, this placement should not account for container scrolling.
+       * @private
+       */
+      _accountForScrolling: function(placementObj) {
+        var container = placementObj.container,
+          containerStyle,
+          pos = window.getComputedStyle(this.element[0]).position;
+
+        // fixed-positoned, placed elements don't account for scrolling
+        if (pos === 'fixed') {
+          return false;
+        }
+
+        // Check the container element. If we can't find a valid container element, do account for scrolling.
+        if (!container || !container.length) {
+          container = this.element.parents().filter(function() {
+            var pos = window.getComputedStyle(this).position;
+            return pos === 'absolute' || pos === 'fixed';
+          });
+        }
+        if (!container || !container.length) {
+          return true;
+        }
+
+        if (container[0] === document.body) {
+          return false;
+        }
+
+        containerStyle = window.getComputedStyle(container[0]);
+        pos = containerStyle.position;
+        if (pos === 'fixed') {
+          return false;
+        }
+        if (pos === 'absolute' && containerStyle.overflow === 'hidden') {
+          return false;
+        }
+        return true;
+      },
+
       // Gets a parent container element.
       getContainer: function(placementObj) {
         if (placementObj.container instanceof $ && placementObj.container.length) {
@@ -26972,7 +30388,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           return placementObj;
         }
 
-        var isXCoord = ['left', 'right'].indexOf(placementObj.placement) > -1,
+        var accountForScrolling = this._accountForScrolling(placementObj),
+          isXCoord = ['left', 'right'].indexOf(placementObj.placement) > -1,
           containerBleed = this.settings.bleedFromContainer,
           container = this.getContainer(placementObj),
           containerIsBody = container.length && container[0] === document.body,
@@ -27004,16 +30421,16 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
           switch (dir) {
             case 'left':
-              d = (containerBleed ? 0 : containerRect.left) - (!containerIsBody ? scrollX : 0) - parentRect.left + placementObj.containerOffsetX;
+              d = (containerBleed ? 0 : containerRect.left) - (accountForScrolling ? scrollX : 0) - parentRect.left + placementObj.containerOffsetX;
               break;
             case 'right':
-              d = ((containerBleed ? windowW : containerRect.right) - (!containerIsBody ? scrollX : 0)) - parentRect.right - placementObj.containerOffsetX;
+              d = ((containerBleed ? windowW : containerRect.right) - (accountForScrolling ? scrollX : 0)) - parentRect.right - placementObj.containerOffsetX;
               break;
             case 'top':
-              d = (containerBleed ? 0 : containerRect.top) - (!containerIsBody ? scrollY : 0) - parentRect.top + placementObj.containerOffsetY;
+              d = (containerBleed ? 0 : containerRect.top) - (accountForScrolling ? scrollY : 0) - parentRect.top + placementObj.containerOffsetY;
               break;
             default: // bottom
-              d = ((containerBleed ? windowH : containerRect.bottom) - (!containerIsBody ? scrollY : 0)) - parentRect.bottom - placementObj.containerOffsetY;
+              d = ((containerBleed ? windowH : containerRect.bottom) - (accountForScrolling ? scrollY : 0)) - parentRect.bottom - placementObj.containerOffsetY;
               break;
           }
 
@@ -27035,6 +30452,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             if (originalDistance >= targetDistance) {
               return originalDir;
             }
+
+            placementObj.wasFlipped = true;
             return newDir;
           }
 
@@ -27072,7 +30491,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       // If element height/width is greater than window height/width, shrink to fit
       shrink: function(placementObj, dimension) {
-        var containerBleed = this.settings.bleedFromContainer,
+        var accountForScrolling = this._accountForScrolling(placementObj),
+          containerBleed = this.settings.bleedFromContainer,
           container = this.getContainer(placementObj),
           containerRect = container ? container[0].getBoundingClientRect() : {},
           containerIsBody = container.length && container[0] === document.body,
@@ -27085,10 +30505,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           scrollY = containerIsBody ? $(window).scrollTop() : container.scrollTop(),
           windowH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
           windowW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
-          leftViewportEdge = (containerBleed ? 0 : containerRect.left + placementObj.containerOffsetX) + scrollX,
-          topViewportEdge = (containerBleed ? 0 : containerRect.top + placementObj.containerOffsetY) + scrollY,
-          rightViewportEdge = (containerBleed ? windowW : containerRect.right - placementObj.containerOffsetX) + scrollX,
-          bottomViewportEdge = (containerBleed ? windowH : containerRect.bottom - placementObj.containerOffsetY) + scrollY,
+          leftViewportEdge = (accountForScrolling ? scrollX: 0) + (containerBleed ? 0 : containerRect.left) + placementObj.containerOffsetX,
+          topViewportEdge = (accountForScrolling ? scrollY : 0) + (containerBleed ? 0 : containerRect.top) + placementObj.containerOffsetY,
+          rightViewportEdge = (accountForScrolling ? scrollX : 0) + (containerBleed ? windowW : containerRect.right) - placementObj.containerOffsetX,
+          bottomViewportEdge = (accountForScrolling ? scrollY : 0) + (containerBleed ? windowH : containerRect.bottom) - placementObj.containerOffsetY,
           d;
 
         // Shrink in each direction.
@@ -27191,9 +30611,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         arrow[0].removeAttribute('style');
 
-        if (placementObj.attemptedFlips) {
+        //if (placementObj.attemptedFlips) { TJM Removed for pager bug. Seems to work.
           element.removeClass('top right bottom left').addClass(dir);
-        }
+        //}
 
         // Flip the arrow if we're in RTL mode
         if (this.isRTL && isXCoord) {
@@ -27208,8 +30628,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         if (target.is('.datepicker, .timepicker')) {
           target = target.next('.icon');
         }
-
-        if (target.is('.btn-split-menu, .btn-menu, .btn-actions, .btn-filter, .tab')) {
+        if (target.is('.btn-split-menu, .btn-menu, .btn-actions, .btn-filter, .tab, .tab-more')) {
           target = target.find('.icon').last();
         }
         if (target.is('.searchfield-category-button')) {
@@ -27679,32 +31098,41 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Settings and Options
     var pluginName = 'popupmenu',
       defaults = {
-        menu: null,  //Menu's ID Selector, or a jQuery object representing a menu
-        trigger: 'click',  //click, rightClick, immediate ect
+        menu: null,
+        trigger: 'click',
         autoFocus: true,
         mouseFocus: true,
         attachToBody: false,
-        beforeOpen: null, //Ajax callback for open event
-        ariaListbox: false,   //Switches aria to use listbox construct instead of menu construct (internal)
-        useCoordsForClick: false, //By default, menus open up underneath their target element.  Set this to true to use mouse coordinates for positioning a menu inside of its target element.
-        eventObj: undefined,  //Can pass in the event object so you can do a right click with immediate,
-        placementOpts: { // Gets passed to this control's Place behavior
+        beforeOpen: null,
+        ariaListbox: false,
+        eventObj: undefined,
+        placementOpts: {
           containerOffsetX: 10,
           containerOffsetY: 10,
           strategies: ['flip', 'shrink']
         },
         offset: {
           x: 0,
-          y: 0,
+          y: 0
         }
       },
       settings = $.extend({}, defaults, options);
 
+
     /**
-     * Responsive Popup Menu Control (Context)
-     * @constructor
-     * @param {Object} element
-     */
+    * Responsive Popup Menu Control aka Context Menu when doing a right click action.
+    *
+    * @class PopupMenu
+    * @param {String} menu  &nbsp;-&nbsp; Menu's ID Selector, or a jQuery object representing a menu
+    * @param {String} trigger  &nbsp;-&nbsp; Action on which to trigger a menu can be: click, rightClick, immediate ect
+    * @param {Boolean} autoFocus  &nbsp;-&nbsp; If false the focus will not focus the first list element. (At the cost of accessibility)
+    * @param {Boolean} attachToBody  &nbsp;-&nbsp; If true the menu will be moved out to the body. To be used in certin overflow situations.
+    * @param {String} ariaListbox  &nbsp;-&nbsp;  Switches aria to use listbox construct instead of menu construct (internal)
+    * @param {String} eventObj  &nbsp;-&nbsp; Can pass in the event object so you can do a right click with immediate
+    * @param {Object} placementOpts  &nbsp;-&nbsp; Gets passed to this control's Place behavior
+    * @param {Object} offset  &nbsp;-&nbsp; Can tweak the menu position in the x and y direction. Takes an object of form: `{x: 0, y: 0}`
+    *
+    */
     function PopupMenu(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -27726,6 +31154,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         // This event can be used to pass clientX/clientY coordinates for mouse cursor positioning.
         if (this.settings.trigger === 'immediate') {
           this.open(this.settings.eventObj);
+        }
+
+        // Use some css rules on submenu parents
+        if (this.menu.find('.submenu').length) {
+          this.menu.addClass('has-submenu');
         }
       },
 
@@ -27764,7 +31197,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             break;
           case 'object': // jQuery Object
             if (this.settings.menu === null) {
-              this.menu = this.element.next('.popupmenu');
+              this.menu = this.element.next('.popupmenu, .popupmenu-wrapper');
             } else {
               this.menu = $(this.settings.menu);
             }
@@ -27777,11 +31210,21 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             break;
         }
 
-        //Reuse Same menu
-        if (this.menu.parent().is('.popupmenu-wrapper')) {
-          return;
+        // If markup already exists for the wrapper, use that instead of rebuilding.
+        if (this.menu.is('.popupmenu-wrapper')) {
+          this.preExistingWrapper = true;
+          this.wrapper = this.menu;
+          this.menu = this.wrapper.children('.popupmenu').first();
         }
 
+        // Similar check as above, assuming the menu wasn't a popupmenu wrapper.
+        if (this.menu.parent().is('.popupmenu-wrapper')) {
+          this.preExistingWrapper = true;
+          this.wrapper = this.menu.parent();
+        }
+
+        // If we still don't have a menu reference at this point, fail gracefully by returning out
+        // and simply acting like a button.
         if (this.menu.length === 0) {
           return false;
         }
@@ -27793,13 +31236,25 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           this.menu.detach().appendTo('body');
         }
 
-        this.menu.addClass('popupmenu')
-          .data('trigger', this.element)
-          .attr('role', (this.settings.ariaListbox ? 'listbox' : 'menu'))
-          .wrap('<div class="popupmenu-wrapper"></div>');
+        if (!this.menu.is('.popupmenu')) {
+          this.menu.addClass('popupmenu')
+            .attr('role', (this.settings.ariaListbox ? 'listbox' : 'menu'));
+        }
+
+        // Always store a reference to the trigger element under jQuery data.
+        this.menu.data('trigger', this.element);
 
         this.wrapper = this.menu.parent('.popupmenu-wrapper');
-        this.wrapper.find('svg').icon();
+        if (!this.wrapper.length) {
+          this.wrapper = this.menu.wrap('<div class="popupmenu-wrapper"></div>');
+        }
+
+        // Invoke all icons as icons
+        this.wrapper.find('svg').each(function() {
+          if (!$(this).data('icon')) {
+            $(this).icon();
+          }
+        });
 
         //Enforce Correct Modality
         this.menu.parent('.popupmenu-wrapper').attr('role', 'application').attr('aria-hidden', 'true');
@@ -27822,10 +31277,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           if (!(popup.parent().hasClass('wrapper'))) {
             popup.wrap('<div class="wrapper"></div>');
           }
-
         });
 
-        // If a button with no border append arrow markup
+        // If the trigger element is a button with no border append arrow markup
         var containerClass = this.element.parent().attr('class');
         if ((this.element.hasClass('btn-menu') ||
             this.element.hasClass('btn-actions') ||
@@ -27833,7 +31287,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             this.element.closest('.toolbar').length > 0 ||
             this.element.closest('.masthead').length > 0 ||
             this.element.is('.searchfield-category-button') ||
-            (containerClass && containerClass.indexOf('more') >= 0 && this.element.is(':not(.tab-more)')) ||
+            (containerClass && containerClass.indexOf('more') >= 0) ||
             containerClass && containerClass.indexOf('btn-group') >= 0)) {
 
           var arrow = $('<div class="arrow"></div>'),
@@ -27843,9 +31297,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         // If inside of a ".field-short" container, make smaller
-        if (this.element.closest('.field-short').length) {
-          this.menu.addClass('popupmenu-short');
-        }
+        var addFieldShort = this.element.closest('.field-short').length;
+        this.menu[addFieldShort ? 'addClass' : 'removeClass']('popupmenu-short');
 
         // If button is part of a header/masthead or a container using the "alternate" UI color, add the "alternate" class.
         if (containerClass !== undefined &&
@@ -27866,6 +31319,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
           //PressShiftF10
           this.element.attr('aria-describedby', audibleSpanId);
+        }
+
+        // Unhide the menu markup, if hidden
+        if (this.menu.is('.hidden')) {
+          this.menu.removeClass('hidden');
         }
       },
 
@@ -27891,14 +31349,16 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             }
 
             // disabled menu items, by prop and by className
-            if (Soho.DOM.classNameHas(li.className, 'is-disabled')) {
-              a.setAttribute('aria-disabled', 'true');
-              a.disabled = true;
-            }
+            var $a = $(a),
+              $li = $(li);
 
-            if (a.hasAttribute('disabled')) {
+            if (a.hasAttribute('disabled') || $li.hasClass('is-disabled')) {
+              Soho.DOM.addClass(li, 'is-disabled');
               a.setAttribute('aria-disabled', 'true');
               a.disabled = true;
+            } else {
+              $li.removeClass('is-disabled');
+              $a.prop('disabled', false).removeAttr('aria-disabled');
             }
 
             // menu items that contain submenus
@@ -27906,7 +31366,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
               li.className += (Soho.DOM.classNameExists(li) ? ' ' : '') + 'submenu';
             }
             if (Soho.DOM.classNameHas(li.className, 'submenu')) {
-              var $a = $(a);
 
               // Add a span
               if (!span) {
@@ -27966,26 +31425,40 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
         }
 
-        if (leftClick && !immediate) {
-          this.element
-            .on('mousedown.popupmenu', function (e) {
-              if (e.button > 0 || self.element.is(':disabled')) {
-                return;
-              }
-              doOpen(e);
-          });
+        function contextMenuHandler(e, isLeftClick) {
+          e.preventDefault();
+
+          if (self.keydownThenClick) {
+            self.keydownThenClick = undefined;
+            return;
+          }
+
+          var btn = isLeftClick === true ? 0 : 2;
+          if (e.button > btn || self.element.is(':disabled')) {
+            return;
+          }
+
+          doOpen(e);
         }
 
-        //settings.trigger
-        if (!leftClick) {
-          this.menu.parent().on('contextmenu.popupmenu', disableBrowserContextMenu);
-          this.element
-            .on('contextmenu.popupmenu', disableBrowserContextMenu)
-            .on('mousedown.popupmenu', function (e) {
-              if (e.button === 2 || (e.button === 0 & e.ctrlKey)) {
-                doOpen(e);
-              }
-            });
+        if (!immediate) {
+          // Left-Click activation
+          if (leftClick) {
+            this.element
+              .on('click.popupmenu', function (e) {
+                contextMenuHandler(e, true);
+              });
+          }
+
+          // Right-Click activation
+          if (!leftClick) {
+            this.menu.parent().on('contextmenu.popupmenu', disableBrowserContextMenu);
+            this.element
+              .on('contextmenu.popupmenu', function(e) {
+                disableBrowserContextMenu(e);
+                contextMenuHandler(e);
+              });
+          }
         }
 
         // Setup these next events no matter what trigger type is
@@ -27994,7 +31467,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             switch(e.which) {
               case 13:
               case 32:
-                self.open(e);
+                if (self.settings.trigger === 'click') {
+                  self.keydownThenClick = true;
+                  self.open(e);
+                }
                 break;
               case 121:
                 if (e.shiftKey) { //Shift F10
@@ -28010,15 +31486,17 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           });
 
           // Media Query Listener to detect a menu closing on mobile devices that change orientation.
-          this.matchMedia = window.matchMedia('(orientation: landscape)');
-          this.mediaQueryListener = function() {
-            // Match every time.
-            if (!self.menu.hasClass('is-open')) {
-              return;
-            }
-            self.close();
-          };
-          this.matchMedia.addListener(this.mediaQueryListener);
+          if (window.matchMedia) {
+            this.matchMedia = window.matchMedia('(orientation: landscape)');
+            this.mediaQueryListener = function() {
+              // Match every time.
+              if (!self.menu.hasClass('is-open')) {
+                return;
+              }
+              self.close();
+            };
+            this.matchMedia.addListener(this.mediaQueryListener);
+          }
       },
 
       handleKeys: function () {
@@ -28027,62 +31505,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         //Handle Events in Anchors
         this.menu.onTouchClick('popupmenu', 'a')
-          .on('click.popupmenu', 'a', function (e) {
-
-          var anchor = $(this),
-            href = anchor.attr('href'),
-            selectionResult = [anchor];
-
-          if (anchor.parent().is('.submenu, .hidden, .is-disabled') || anchor[0].disabled) {
-            //Do not close parent items of submenus on click
-            e.preventDefault();
-            return;
-          }
-
-          if (anchor.find('input[checkbox]').length > 0) {
-            return;
-          }
-
-          if (self.element.hasClass('btn-filter')) {
-            self.iconFilteringUpdate(anchor);
-            e.preventDefault();
-          }
-
-          if (self.isInSelectableSection(anchor) || self.menu.hasClass('is-selectable') || self.menu.hasClass('is-multiselectable')) {
-            selectionResult = self.select(anchor);
-          }
-
-          //Single toggle on off of checkbox class
-          if (anchor.parent().hasClass('is-toggleable')) {
-            anchor.parent().toggleClass('is-checked');
-          }
-
-          // Trigger a selected event containing the anchor that was selected
-          self.element.triggerHandler('selected', selectionResult);
-
-          // MultiSelect Lists should act like other "multiselect" items and not close the menu when options are chosen.
-          if (self.menu.hasClass('is-multiselectable') || self.isInMultiselectSection(anchor)) {
-            return;
-          }
-
-          self.close();
-
-          if (self.element.is('.autocomplete')) {
-            return;
-          }
-
-          if (href && href.charAt(0) !== '#') {
-            if (anchor.attr('target') === '_blank') {
-              window.open(href, '_blank');
-            } else {
-              window.location.href = href;
-            }
-            return true;
-          }
-
-          e.preventDefault();
-          e.stopPropagation();
-        });
+          .on('click.popupmenu', 'a', function(e) {
+            self.handleItemClick(e, $(this));
+          });
 
         var excludes = 'li:not(.separator):not(.hidden):not(.heading):not(.group):not(.is-disabled)';
 
@@ -28093,140 +31518,216 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           });
         }
 
-        $(document).off('keydown.popupmenu.' + this.id).on('keydown.popupmenu.' + this.id, function (e) {
-          var key = e.which,
-            focus;
+        setTimeout(function() {
+          $(document).off('keydown.popupmenu.' + this.id).on('keydown.popupmenu.' + this.id, function (e) {
+            var key = e.which,
+              focus;
 
-          //Close on escape
-          if (key === 27) {
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-            self.close(true);
-            return false;
-          }
-
-          //Close on tab
-          if (key === 9) {
-            e.stopPropagation();
-            self.close(true);
-          }
-
-          //Select Checkboxes
-          if (key === 32) {
-            e.stopPropagation();
-
-            var target = $(e.target),
-              checkbox = target.find('input:checkbox');
-            if (checkbox.length) {
-              checkbox.trigger('click');
-              return;
+            //Close on escape
+            if (key === 27) {
+              e.stopPropagation();
+              e.stopImmediatePropagation();
+              self.close(true);
+              return false;
             }
 
-            var a = $();
+            //Close on tab
+            if (key === 9) {
+              e.stopPropagation();
+              self.close(true);
+            }
 
-            // Return here and let Tabs control handle the spacebar
-            if (target.is('.tab') || target.parent().is('.tab') || target.is('.tab-more')) {
-              // Spacebar acts like Enter if there aren't any checkboxes (trigger links, etc)
+            //Select Checkboxes
+            if (key === 32) {
+              e.stopPropagation();
+
+              var target = $(e.target),
+                checkbox = target.find('input:checkbox');
+              if (checkbox.length) {
+                checkbox.trigger('click');
+                return;
+              }
+
+              var a = $();
+
+              // Return here and let Tabs control handle the spacebar
+              if (target.is('.tab') || target.parent().is('.tab') || target.is('.tab-more')) {
+                // Spacebar acts like Enter if there aren't any checkboxes (trigger links, etc)
+                e.preventDefault();
+                return;
+              }
+
+              if (target.is('li')) {
+                a = target.children('a');
+              }
+
+              if (target.is('a')) {
+                a = target;
+              }
+
+              if (a.length) {
+                a.trigger('click');
+                return;
+              }
+            }
+
+            focus = self.menu.find(':focus');
+
+            var isPicker = (self.settings.menu === 'colorpicker-menu'),
+              isAutocomplete = self.element.is('.autocomplete');
+
+            // Close Submenu
+            if (key === 37 && !isAutocomplete) {
+              e.stopPropagation();
               e.preventDefault();
-              return;
-            }
 
-            if (target.is('li')) {
-              a = target.children('a');
-            }
-
-            if (target.is('a')) {
-              a = target;
-            }
-
-            if (a.length) {
-              a.trigger('click');
-              return;
-            }
-          }
-
-          focus = self.menu.find(':focus');
-
-          var isPicker = (self.settings.menu === 'colorpicker-menu'),
-            isAutocomplete = self.element.is('.autocomplete');
-
-          // Close Submenu
-          if (key === 37 && !isAutocomplete) {
-            e.stopPropagation();
-            e.preventDefault();
-
-            if (focus.closest('.popupmenu')[0] !== self.menu[0] && focus.closest('.popupmenu').length > 0) {
-              focus.closest('.popupmenu').removeClass('is-open').parent().parent().removeClass('is-submenu-open');
-              self.highlight(focus.closest('.popupmenu').parent().prev('a'));
-            }
-          }
-
-          //Up on Up
-          if ((!isPicker && key === 38) || (isPicker && key === 37)) {
-             e.stopPropagation();
-             e.preventDefault();
-
-            //Go back to Top on the last one
-            if (focus.parent().prevAll(excludes).length === 0) {
-              if (focus.length === 0) {
-                self.highlight(self.menu.children(excludes).last().find('a'));
-              } else {
-                self.highlight(focus.closest('.popupmenu').children(excludes).last().find('a'));
+              if (focus.closest('.popupmenu')[0] !== self.menu[0] && focus.closest('.popupmenu').length > 0) {
+                focus.closest('.popupmenu').removeClass('is-open').parent().parent().removeClass('is-submenu-open');
+                self.highlight(focus.closest('.popupmenu').parent().prev('a'));
               }
-              return;
             }
-            self.highlight(focus.parent().prevAll(excludes).first().find('a'));
-          }
 
-          //Up a square
-          if (isPicker && key === 38) {
-            e.stopPropagation();
-            e.preventDefault();
+            //Up on Up
+            if ((!isPicker && key === 38) || (isPicker && key === 37)) {
+               e.stopPropagation();
+               e.preventDefault();
 
-            if (focus.parent().prevAll(excludes).length > 0) {
-              self.highlight($(focus.parent().prevAll(excludes)[9]).find('a'));
-            }
-          }
-
-          //Right Open Submenu
-          if (key === 39  && !isAutocomplete) {
-            e.stopPropagation();
-            e.preventDefault();
-
-            if (focus.parent().hasClass('submenu')) {
-              self.showSubmenu(focus.parent());
-              self.highlight(focus.parent().find('.popupmenu a:first'));
-            }
-          }
-
-          //Down
-          if ((!isPicker && key === 40) || (isPicker && key === 39 && !isAutocomplete)) {
-            e.stopPropagation();
-            e.preventDefault();
-
-            //Go back to Top on the last one
-            if (focus.parent().nextAll(excludes).length === 0) {
-              if (focus.length === 0) {
-                self.highlight(self.menu.children(excludes).first().find('a'));
-              } else {
-                self.highlight(focus.closest('.popupmenu').children(excludes).first().find('a'));
+              //Go back to Top on the last one
+              if (focus.parent().prevAll(excludes).length === 0) {
+                if (focus.length === 0) {
+                  self.highlight(self.menu.children(excludes).last().find('a'));
+                } else {
+                  self.highlight(focus.closest('.popupmenu').children(excludes).last().find('a'));
+                }
+                return;
               }
-              return;
+              self.highlight(focus.parent().prevAll(excludes).first().find('a'));
             }
-            self.highlight(focus.parent().nextAll(excludes).first().find('a'));
+
+            //Up a square
+            if (isPicker && key === 38) {
+              e.stopPropagation();
+              e.preventDefault();
+
+              if (focus.parent().prevAll(excludes).length > 0) {
+                self.highlight($(focus.parent().prevAll(excludes)[9]).find('a'));
+              }
+            }
+
+            //Right Open Submenu
+            if (key === 39  && !isAutocomplete) {
+              e.stopPropagation();
+              e.preventDefault();
+
+              if (focus.parent().hasClass('submenu')) {
+                self.showSubmenu(focus.parent());
+                self.highlight(focus.parent().find('.popupmenu a:first'));
+              }
+            }
+
+            //Down
+            if ((!isPicker && key === 40) || (isPicker && key === 39 && !isAutocomplete)) {
+              e.stopPropagation();
+              e.preventDefault();
+
+              //Go back to Top on the last one
+              if (focus.parent().nextAll(excludes).length === 0) {
+                if (focus.length === 0) {
+                  self.highlight(self.menu.children(excludes).first().find('a'));
+                } else {
+                  self.highlight(focus.closest('.popupmenu').children(excludes).first().find('a'));
+                }
+                return;
+              }
+              self.highlight(focus.parent().nextAll(excludes).first().find('a'));
+            }
+
+            //Down a square
+            if ((isPicker && key === 40)) {
+              e.stopPropagation();
+              e.preventDefault();
+
+              if (focus.parent().nextAll(excludes).length > 0) {
+                self.highlight($(focus.parent().nextAll(excludes)[9]).find('a'));
+              }
+            }
+
+          });
+        }, 1);
+      },
+
+      /**
+       * Handles the action of clicking items in the popupmenu.
+       * @private
+       */
+      handleItemClick: function(e, anchor) {
+        var href = anchor.attr('href'),
+          selectionResult = [anchor];
+
+        if (!e && !anchor) {
+          return;
+        }
+
+        if (anchor.parent().is('.submenu, .hidden, .is-disabled') || anchor[0].disabled) {
+          //Do not close parent items of submenus on click
+          e.preventDefault();
+          return;
+        }
+
+        if (anchor.find('input[checkbox]').length > 0) {
+          return;
+        }
+
+        if (this.element.hasClass('btn-filter')) {
+          this.iconFilteringUpdate(anchor);
+          e.preventDefault();
+        }
+
+        if (this.isInSelectableSection(anchor) || this.menu.hasClass('is-selectable') || this.menu.hasClass('is-multiselectable')) {
+          selectionResult = this.select(anchor);
+        }
+
+        // Single toggle on off of checkbox class
+        if (anchor.parent().hasClass('is-toggleable')) {
+          anchor.parent().toggleClass('is-checked');
+        }
+
+        // Trigger a selected event containing the anchor that was selected
+        // If an event object is not passed to `handleItemClick()`, assume it was due to this
+        // event being triggered already, making it not necessary to re-trigger it.
+        if (e) {
+          if (selectionResult.length === 1) {
+            selectionResult.push(undefined);
           }
 
-          //Down a square
-          if ((isPicker && key === 40)) {
-            e.stopPropagation();
-            e.preventDefault();
+          selectionResult.push(true);
+          this.element.triggerHandler('selected', selectionResult);
+        }
 
-            if (focus.parent().nextAll(excludes).length > 0) {
-              self.highlight($(focus.parent().nextAll(excludes)[9]).find('a'));
-            }
+        // MultiSelect Lists should act like other "multiselect" items and not close the menu when options are chosen.
+        if (this.menu.hasClass('is-multiselectable') || this.isInMultiselectSection(anchor)) {
+          return;
+        }
+
+        this.close();
+
+        if (this.element.is('.autocomplete')) {
+          return;
+        }
+
+        if (href && href.charAt(0) !== '#') {
+          if (anchor.attr('target') === '_blank') {
+            window.open(href, '_blank');
+          } else {
+            window.location.href = href;
           }
+          return true;
+        }
 
-        });
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
       },
 
       // Filtering icon initial setup
@@ -28256,15 +31757,40 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      // Get the event position, handling browser cases (IE,FF) as well as SVG
+      getPositionFromEvent: function (e) {
+        var x = 0, y = 0;
+
+        if (!e) {
+          e = window.event;
+        }
+
+        if (!e) {
+          return {};
+        }
+
+        if (e.pageX || e.pageY) {
+          x = e.pageX;
+          y = e.pageY;
+        } else if (e.clientX || e.clientY) {
+          x = e.clientX + document.body.scrollLeft +
+                             document.documentElement.scrollLeft;
+          y = e.clientY + document.body.scrollTop +
+                             document.documentElement.scrollTop;
+        }
+
+        return {
+          x: x,
+          y: y
+        };
+      },
+
       position: function(e) {
         var self = this,
           target = this.element,
           isRTL = this.isRTL(),
           wrapper = this.menu.parent('.popupmenu-wrapper'),
-          mouse =  {
-            x: e && e.clientX ? e.clientX : (window.event && window.event.clientX) ? window.event.clientX : 0,
-            y: e && e.clientY ? e.clientY : (window.event && window.event.clientY) ? window.event.clientY : 0
-          },
+          mouse =  this.getPositionFromEvent(e),
           menuDimensions = {
             width: this.menu.outerWidth(),
             height: this.menu.outerHeight()
@@ -28273,6 +31799,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         if (!wrapper.length) {
           return;
         }
+
+        var elemWidth = this.element.outerWidth();
+        if (elemWidth > menuDimensions.width) {
+          this.menu.width(elemWidth);
+        }
+
 
         if (target.is('svg, .icon') && target.closest('.tab').length) {
           target = target.closest('.tab');
@@ -28289,15 +31821,25 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         var opts = $.extend({}, this.settings.placementOpts),
           strategies = ['flip'];
 
+        /*
         if (!target.is('.autocomplete, .searchfield')) {
           strategies.push('nudge');
         }
+        */
         strategies.push('shrink-y');
 
         // If right-click or immediate (with an incoming event object), use coordinates from the event
         if ((this.settings.trigger === 'immediate' && this.settings.eventObj) || this.settings.trigger === 'rightClick') {
           opts.x = getCoordinates(e, 'x') - (isRTL ? menuDimensions.width : 0) + ((isRTL ? -1 : 1) * this.settings.offset.x);
           opts.y = getCoordinates(e, 'y') + this.settings.offset.y;
+
+          if (opts.x === 0 && opts.y === 0) {
+            opts.x = this.settings.offset.x || 0;
+            opts.y = this.settings.offset.y || 0;
+            opts.parent = this.element;
+            opts.placement = 'bottom';
+            opts.parentXAlignment = isRTL ? 'right' : 'left';
+          }
 
         } else {
           opts.x = this.settings.offset.x || 0;
@@ -28367,6 +31909,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           shiftDown();
         }
 
+        // If inside a "page-container" element, constrain the popupmenu to that element
+        // (fixes SOHO-6223)
+        var container = this.element.parents('.page-container');
+        if (container.length) {
+          opts.container = container.first();
+        }
+
         //=======================================================
         // END Temporary stuff until we sort out passing these settings from the controls that utilize them
         //=======================================================
@@ -28396,6 +31945,40 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return placementObj;
       },
 
+      /**
+       * Calls an external source.
+       * @private
+       */
+      callSource: function (e, doOpen) {
+        if (typeof this.settings.beforeOpen !== 'function') {
+          return;
+        }
+
+        var self = this;
+        var response = function(content) {
+          if (self.ajaxContent instanceof $) {
+            self.ajaxContent.off().remove();
+          }
+          self.ajaxContent = $(content);
+          self.menu.append(self.ajaxContent);
+
+          self.wrapper.removeAttr('style');
+          self.markupItems();
+
+          if (doOpen) {
+            self.open(e, true);
+          }
+        };
+
+        if (typeof this.settings.beforeOpen === 'string') {
+          window[this.settings.beforeOpen](response);
+          return;
+        }
+
+        this.settings.beforeOpen(response);
+        return;
+      },
+
       open: function(e, ajaxReturn) {
         var self = this;
 
@@ -28404,29 +31987,22 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           return;
         }
 
-        if (this.settings.beforeOpen && !ajaxReturn) {
-          var response = function(content) {
-            if (self.ajaxContent instanceof $) {
-              self.ajaxContent.off().remove();
-            }
-            self.ajaxContent = $(content);
-            self.menu.append(self.ajaxContent);
-            self.markupItems();
-            self.open(e, true);
-          };
+        // Check external AJAX source, if applicable
+        if (!ajaxReturn) {
+          this.callSource(e, true);
+        }
 
-          if (typeof this.settings.beforeOpen === 'string') {
-            window[this.settings.beforeOpen](response);
+        var otherMenus = $('.popupmenu.is-open').filter(function() {
+          return $(this).parents('.popupmenu').length === 0;
+        }).not(this.menu);  //close others.
+
+        otherMenus.each(function() {
+          var trigger = $(this).data('trigger');
+          if (!trigger || !trigger.length) {
             return;
           }
 
-          this.settings.beforeOpen(response);
-          return;
-        }
-
-        var otherMenus = $('.popupmenu').not(this.menu);  //close others.
-        otherMenus.each(function() {
-          var api = $(this).data('popupmenu');
+          var api = $(this).data('trigger').data('popupmenu');
           if (api && typeof api.close === 'function') {
             api.close();
           }
@@ -28434,9 +32010,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         this.element.addClass('is-open');
         this.menu.addClass('is-open').attr('aria-hidden', 'false');
-
-        this.menu.find('a').attr('aria-disabled', 'false').parent().removeClass('is-disabled');
-        this.menu.find('a[disabled]').attr('aria-disabled', 'false').parent().addClass('is-disabled');
 
         this.position(e);
 
@@ -28446,7 +32019,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         //Close on Document Click ect..
         setTimeout(function () {
-          $(document).on('touchend.popupmenu.' + this.id +' click.popupmenu.' + this.id, function (e) {
+          $(document).on('touchend.popupmenu.' + self.id +' click.popupmenu.' + self.id, function (e) {
             if (e.button === 2) {
               return;
             }
@@ -28559,7 +32132,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           return;
         }
 
-        var wrapper = li.children('.wrapper').filter(':first');
+        // Trigger an event so other components can listen to this element as a popupmenu trigger.
+        this.element.triggerHandler('show-submenu', [li]);
+
+        var wrapper = li.children('.wrapper').filter(':first'),
+          isRTL = this.isRTL(),
+          rtlPadding = 30;
 
         // Wrap if not wrapped (dynamic menu situation)
         if (wrapper.length === 0) {
@@ -28569,29 +32147,41 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         var menu = wrapper.children('.popupmenu'),
-          mainWrapperOffset = li.parents('.popupmenu-wrapper:first').offset().top;
+          mainWrapperOffset = li.parents('.popupmenu-wrapper:first').offset().top,
+          wrapperLeft = li.position().left + li.outerWidth();
         li.parent().find('.popupmenu').removeClass('is-open').removeAttr('style');
 
-        wrapper[0].style.left = (li.position().left + li.outerWidth()) + 'px';
+        if (isRTL) {
+          wrapperLeft = li.position().left - li.outerWidth() + rtlPadding;
+        }
+        wrapper[0].style.left = wrapperLeft + 'px';
         wrapper[0].style.top = (parseInt(li.position().top) - 5) + 'px';
 
         wrapper.children('.popupmenu').addClass('is-open');
 
         //Handle Case where the menu is off to the right
         var menuWidth = menu.outerWidth();
-        if ((wrapper.offset().left + menuWidth) > ($(window).width() + $(document).scrollLeft())) {
+        if ((wrapper.offset().left + menuWidth) > ($(window).width() + $(document).scrollLeft()) || (isRTL && wrapper.offset().left < 0)) {
           wrapper[0].style.left = '-9999px';
           menuWidth = menu.outerWidth();
-          wrapper[0].style.left = (li.position().left - menuWidth) + 'px';
+          wrapperLeft = li.position().left - menuWidth;
+          if (isRTL) {
+            wrapperLeft = li.position().left + menuWidth + rtlPadding;
+          }
+          wrapper[0].style.left = wrapperLeft + 'px';
           //Did it fit?
-          if (wrapper.offset().left < 0) {
+          if (wrapper.offset().left < 0 || (isRTL && (wrapper.offset().left + menuWidth) > ($(window).width() + $(document).scrollLeft()))) {
             //No. Push the menu's left offset onto the screen.
-            wrapper[0].style.left = (li.position().left - menuWidth + Math.abs(wrapper.offset().left) + 40) + 'px';
+            wrapperLeft = li.position().left - menuWidth + Math.abs(wrapper.offset().left) + 40;
+            if (isRTL) {
+              wrapperLeft = li.position().left - menuWidth - rtlPadding - 40;
+            }
+            wrapper[0].style.left = wrapperLeft + 'px';
             menuWidth = menu.outerWidth();
           }
           // Do one more check to see if the right edge bleeds off the screen.
           // If it does, shrink the menu's X size.
-          if ((wrapper.offset().left + menuWidth) > ($(window).width() + $(document).scrollLeft())) {
+          if ((wrapper.offset().left + menuWidth) > ($(window).width() + $(document).scrollLeft()) || (isRTL && wrapper.offset().left < 0)) {
             var differenceY = (wrapper.offset().left + menuWidth) - ($(window).width() + $(document).scrollLeft());
             menuWidth = menuWidth - differenceY;
             menu[0].style.width = menuWidth + 'px';
@@ -28703,7 +32293,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       },
 
       detach: function () {
-        $(document).off('click.popupmenu touchend.popupmenu keydown.popupmenu');
+        $(document).off('touchend.popupmenu.' + this.id +' click.popupmenu.' + this.id +' keydown.popupmenu');
         $(window).off('scroll.popupmenu orientationchange.popupmenu');
         $('body').off('resize.popupmenu');
         $('.scrollable').off('scroll.popupmenu');
@@ -28724,9 +32314,18 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
+      /**
+       * Close the open menu
+       * @param {Boolean} isCancelled  &nbsp;-&nbsp; Internally set option used if the operation is a cancel. Wont matter for manual api call.
+       * @param {Boolean} noFocus  &nbsp;-&nbsp; Do not return focus to the calling element (fx a button)
+       */
       close: function (isCancelled, noFocus) {
         if (!isCancelled || isCancelled === undefined) {
           isCancelled = false;
+        }
+
+        if (!this.menu.hasClass('is-open')) {
+          return;
         }
 
         var self = this,
@@ -28788,7 +32387,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         if (this.originalParent) {
           this.menu.appendTo(this.originalParent);
         } else {
-          this.menu.insertAfter(this.element);
+          // TODO: Fix when we have time - shouldn't be referencing other controls here
+          var insertTarget = this.element,
+            searchfield = this.element.parent().children('.searchfield');
+          if (searchfield.length) {
+            insertTarget = searchfield.first();
+          }
+
+          this.menu.insertAfter(insertTarget);
         }
 
         this.menu.find('.submenu').children('a').each(function(i, item) {
@@ -28799,7 +32405,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         function unwrapPopup(menu) {
           var wrapper = menu.parent();
-          if (wrapper.is('.popupmenu-wrapper')) {
+          if (wrapper.is('.popupmenu-wrapper, .wrapper')) {
             if (wrapper.data('place')) {
               wrapper.data('place').destroy();
             }
@@ -28807,14 +32413,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
         }
 
-        //unwrapPopup(this.menu);
+        // Unwrap submenus
         this.menu.find('.popupmenu').each(function() {
           unwrapPopup($(this));
         });
-
-        if (this.menu[0]) {
-          $.removeData(this.menu[0], 'trigger');
-        }
 
         if (wrapper.data('place')) {
           wrapper.data('place').destroy();
@@ -28825,11 +32427,15 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           this.matchMedia.removeListener(this.mediaQueryListener);
         }
 
+        if (this.menu[0]) {
+          $.removeData(this.menu[0], 'trigger');
+        }
+
         this.detach();
         this.element
           .removeAttr('aria-controls')
           .removeAttr('aria-haspopup')
-          .off('touchend.popupmenu touchcancel.popupmenu click.popupmenu keypress.popupmenu contextmenu.popupmenu mousedown.popupmenu');
+          .off('touchend.popupmenu touchcancel.popupmenu click.popupmenu keypress.popupmenu contextmenu.popupmenu');
 
         return this;
       },
@@ -28838,6 +32444,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.teardown().init();
       },
 
+      /**
+       * Teardown markup and detach all events.
+       */
       destroy: function() {
         this.teardown();
         this.menu.trigger('destroy');
@@ -28870,10 +32479,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         settings = $.extend({}, defaults, options);
 
     /**
-     * Progress Indicator Control
-     * @constructor
-     * @param {Object} element
-     */
+    * The Progress Component displays loading information.
+    *
+    * @class Progress
+    * @param None
+    */
     function Progress(element) {
       this.element = $(element);
       this.settings = settings;
@@ -28906,6 +32516,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+      * Update the progress bar.
+      *
+      * @param {String} value  &nbsp;-&nbsp; The percent value to use to fill. 0-100
+      */
       update: function (value) {
 
         var perc = this.element.attr('data-value');
@@ -28919,7 +32534,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.updateAria(perc);
       },
 
-      //Teardown
+      /**
+      * Teardown and remove any added markup and events.
+      */
       destroy: function() {
         $.removeData(this.element[0], pluginName);
         this.element.off('updated.progress');
@@ -28963,22 +32580,30 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           mustComplete: false,
           negative: false,
           number: false,
-          processOnInitialize: true, // If set to false, will not initialially mask the value of the input field.
-          processOnBlur: true, // If set to false, will not mask the value of the input field upon blur.
+          processOnInitialize: true,
+          processOnBlur: true,
           thousandsSeparator: false,
-          showSymbol: undefined, // can be 'currency', 'percent'
+          showSymbol: undefined,
         },
         maskModes = ['group', 'number', 'date', 'time'],
         symbols = ['currency', 'percent'],
         settings = $.extend({}, defaults, options);
 
     /**
-     * Inline Field Formatter (Mask) Control
-     * Adds a text-based formatting "mask" to input fields that displays how data should be entered into the field.
-     * Does not allow text entry that does not match the provided mask.
-     * @constructor
-     * @param {Object} element
-     */
+    * The Mask Component limits and aids user input.
+    *
+    * @class Mask
+    * @param {String} pattern  &nbsp;-&nbsp; The mask regex pattern to use
+    * @param {Array} definitions  &nbsp;-&nbsp; An extendable array of letters matching regex expressions.
+    * @param {String} mode  &nbsp;-&nbsp; Hints for specific types, can be number, group, time
+    * @param {Boolean} mustComplete  &nbsp;-&nbsp; Whether or not the entire mask must be typed to be valid or if partial is accepted
+    * @param {Boolean} negative  &nbsp;-&nbsp; If true negative numbers are accepted.
+    * @param {Boolean} processOnInitialize  &nbsp;-&nbsp; If set to false, will not initialially mask the value of the input field.
+    * @param {Boolean} processOnBlur  &nbsp;-&nbsp; If set to false, will not mask the value of the input field upon blur.
+    * @param {Boolean} thousandsSeparator  &nbsp;-&nbsp; If the mask should use the thousands separator or not.
+    * @param {Boolean} showSymbol  &nbsp;-&nbsp; If a non-editable symbol should be inserted can be 'currency', 'percent'
+    *
+    */
     function Mask(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -29056,7 +32681,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
 
           $('<span class="audible ' + symbolType + '"></span>').text(' ' + symbol).appendTo(self.element.prev('label'));
-          this.element.parent('.field')
+          this.element.parent('.field, .datagrid-filter-wrapper')
             .attr('data-currency-symbol', '' + symbol)
             .addClass(symbolType);
         }
@@ -29115,7 +32740,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
           if (val && self.initValue !== val) {
             if (isRemask || self.settings.processOnBlur) {
-              self.remask();
+              self.remask( !isRemask );
             }
             self.element.trigger('change');
           }
@@ -29135,6 +32760,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
           reprocess();
           self.initValue = null;
+          return true;
         });
 
         // Don't continue if the field is hidden -OR- we disallow the masking of contents during initialization.
@@ -29454,7 +33080,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           this.element.val(val);
 
           // reposition the caret to be in the correct spot (after the content we just added).
-          this.caret(pos.begin >= pattSize ? pattSize : pos.begin);
+          if (reprocess !== true) {
+            this.caret(pos.begin >= pattSize ? pattSize : pos.begin);
+          }
 
           // trigger the 'write' event
           this.element.trigger('write.mask', [val]);
@@ -29473,11 +33101,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           insertBufferBeforeDecimal = true,
           decimalAlreadyExists = false;
 
-        // Are we placing the new content after the decimal?
-        insertBufferBeforeDecimal = currentDecimalIndex < pos.begin;
-
         // Does it already exist?
         decimalAlreadyExists = currentDecimalIndex !== -1;
+
+		if (decimalAlreadyExists) {
+          // Are we placing the new content after the decimal?
+          insertBufferBeforeDecimal = currentDecimalIndex >= pos.begin;
+        }
 
         // insert the buffer's contents
         insertBuffer();
@@ -29526,8 +33156,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         // if the original value had a decimal point, place it back in the right spot
         if (patternHasDecimal) {
           if (decimalAlreadyExists) {
-            var inputParts = originalVal.split(DECIMAL_SYMBOL),
+            var inputParts = originalVal.replace(THOUSANDS_SEP_REGEX, '').split(DECIMAL_SYMBOL),
               targetDecimalIndex;
+
 
             // reposition the decimal in the correct spot based on total number of characters
             // in either part of the mask.
@@ -29535,24 +33166,35 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
               if (inputParts[0].length >= maskParts[0].length) {
                 targetDecimalIndex = maskParts[0].length;
               } else {
-                targetDecimalIndex = currentDecimalIndex;
+                targetDecimalIndex = inputParts[0].length;
               }
             } else if (inputParts[1].length === maskParts[1].length) {
-              targetDecimalIndex = (val.length - maskParts[1].length);
+			  if (!insertBufferBeforeDecimal) {
+			    val = val.substring(0, inputParts[0].length + maskParts[1].length);
+			  }
+			  targetDecimalIndex = (val.length - maskParts[1].length);
             } else {
               targetDecimalIndex = (val.length - maskParts[1].length);
             }
 
             val = this.insertAtIndex(val, DECIMAL_SYMBOL, targetDecimalIndex);
-            if (pos.begin === targetDecimalIndex || pos.begin === targetDecimalIndex + 1) {
-              moveCaret(1);
-            }
-
           } else {
             // The decimal doesn't already exist in the value string.
             // if the current value has more characters than the "integer" portion of the mask,
             // automatically add the decimal at index of the last pre-decimal pattern character.
-            if (val.length > maskParts[0].length || decimalInBuffer) {
+			if (decimalInBuffer){
+				if ((val.length - (pos.begin - 1)) > maskParts[1].length) {
+				  val = val.substring(0, (pos.begin - 1) + maskParts[1].length);
+				}
+				if (buffer.indexOf(DECIMAL_SYMBOL) === 0) {
+				  val = this.insertAtIndex(val, DECIMAL_SYMBOL, pos.begin - 1);
+				}
+				else
+				{
+				  val = this.insertAtIndex(val, DECIMAL_SYMBOL, buffer.indexOf(DECIMAL_SYMBOL));
+				}
+			}
+            else if (val.length > maskParts[0].length) {
               val = this.insertAtIndex(val, DECIMAL_SYMBOL, maskParts[0].length);
               if (pos.begin === maskParts[0].length) {
                 moveCaret(1);
@@ -30165,11 +33807,16 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       /**
        * Re-masks the current contents of the field.
-       * @returns { this }
+       * @param {Boolean} remaskingOnBlur  &nbsp;-&nbsp; Internal switch.
+       * @returns {Object}
        **/
-      remask: function() {
+      remask: function(remaskingOnBlur) {
         if (!this.originalPos) {
-          this.originalPos = this.caret();
+          if (remaskingOnBlur) {
+            this.originalPos = { begin: 0, end: this.element.val().length };
+          } else {
+            this.originalPos = this.caret();
+          }
         }
         this.writeInput(true);
         this.resetStorage();
@@ -30235,6 +33882,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
+      /**
+       * Tear Down and destroy events
+       **/
       destroy: function() {
         this.teardown();
         $.removeData(this.element[0], pluginName);
@@ -30265,14 +33915,25 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         defaults = {
           filterMode: 'contains',
           maxSelected: undefined,
+          moveSelected: 'all',
+          showEmptyGroupHeaders: false,
+          showSelectAll: false,
           source: undefined
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The MultiSelect Component allows selecting multiple items from a list
+    *
+    * @class MultiSelect
+    * @param {String} filterMode  &nbsp;-&nbsp; The search mode to use, can be 'contains' or 'startsWith'
+    * @param {Number} maxSelected  &nbsp;-&nbsp; The max number of items which can be selected
+    * @param {String} moveSelected  &nbsp;-&nbsp;  Move selected options in each group to just underneath their corresponding group headers.
+    * @param {Boolean} showEmptyGroupHeaders  &nbsp;-&nbsp; If true groups with no items will still show the empty group header.
+    * @param {Boolean} showSelectAll  &nbsp;-&nbsp; Show the select all text/option.
+    * @param {Function} source  &nbsp;-&nbsp; The calback for ajax.
+    *
+    */
     function MultiSelect(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -30292,7 +33953,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         var ddOpts = {
             closeOnSelect: false,
             empty: true,
-            moveSelectedToTop: true,
+            moveSelected: 'all',
             multiple: true
           };
 
@@ -30308,25 +33969,48 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           ddOpts.maxSelected = this.settings.maxSelected;
         }
 
+        if (this.settings.moveSelected) {
+          ddOpts.moveSelected = this.settings.moveSelected;
+        }
+
+        if (this.settings.showEmptyGroupHeaders) {
+          ddOpts.showEmptyGroupHeaders = this.settings.showEmptyGroupHeaders;
+        }
+
+        if (this.settings.showSelectAll) {
+          ddOpts.showSelectAll = this.settings.showSelectAll;
+        }
+
         this.element.dropdown(ddOpts);
         this.dropdown = this.element.data('dropdown');
 
         return this;
       },
 
+      /**
+      * Enable the multiselect input
+      */
       enable: function() {
         this.dropdown.enable();
       },
 
+      /**
+      * Disable the multiselect input
+      */
       disable: function() {
         this.dropdown.disable();
       },
 
+      /**
+      * Trigger a rebuild due to settings change
+      */
       updated: function() {
         this.build();
       },
 
-      // Teardown - Remove added markup and events
+      /**
+      * Remove added markup and events
+      */
       destroy: function() {
         this.dropdown.destroy();
         this.element.off();
@@ -30352,21 +34036,29 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Settings and Options
     var pluginName = 'message',
       defaults = {
-          title: 'Message Title', //Title text or content shown in the message
-          isError: false, //Show Title as an Error with an Icon
-          message: 'Message Summary', //The message content or text
-          width: 'auto',  //specify a given width or fit to content with auto
-          buttons: null, //Passed through to modal
+          title: 'Message Title',
+          isError: false,
+          message: 'Message Summary',
+          width: 'auto',
+          buttons: null,
           cssClass: null,
-          returnFocus: null //Element to focus on return
+          returnFocus: null
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * Responsive Messages
-     * @constructor
-     * @param {Object} element
-     */
+    * The Message Component is used to show warning / error messages.
+    *
+    * @class Message
+    * @param {String} title  &nbsp;-&nbsp; Title text or content shown in the message
+    * @param {Boolean} isError  &nbsp;-&nbsp; If true, will show title styled as an error with an error icon
+    * @param {String} message  &nbsp;-&nbsp; The message content or text
+    * @param {Number} width  &nbsp;-&nbsp; Pass a specific with or defaults to auto
+    * @param {Object} buttons  &nbsp;-&nbsp; Array of buttons to add to the message (see modal examples as well)
+    * @param {String} cssClass  &nbsp;-&nbsp; Extra Class to add to the dialog for customization.
+    * @param {String} returnFocus  &nbsp;-&nbsp; JQuery Element selector to focus on return
+    *
+    */
     function Message(element) {
       this.element = $(element);
       Soho.logTimeStart(pluginName);
@@ -30445,6 +34137,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * Tear Down and destroy events. However the message will destroy itself on close.
+       **/
       destroy: function() {
         var modalData = this.message.data('modal');
         if (modalData !== undefined) {
@@ -30609,7 +34304,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       disableSubmit: function () {
         var body = this.element,
-          fields = body.find('[data-validate]'),
+          fields = body.find('[data-validate]:visible'),
           inlineBtns = body.find('.modal-buttonset button'),
           primaryButton = inlineBtns.filter('.btn-modal-primary').not('.no-validation');
 
@@ -30819,6 +34514,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
           if (modal.data('modal') && modal.data('modal').overlay) {
             modal.data('modal').overlay[0].style.zIndex = (1020 + i).toString();
+          }
+
+          if (!modal.data('modal')) {
+            var overlay = modal.closest('.modal-page-container').next('.overlay');
+            if (overlay && overlay[0]) {
+              overlay[0].style.zIndex = (1020 + i).toString();
+            }
           }
         });
 
@@ -31090,7 +34792,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         //Fire Events
         self.element.trigger('close', self.isCancelled);
 
-        if (this.oldActive && $(this.oldActive).is('button:visible')) {
+        // Restore focus
+        if (this.oldActive && $(this.oldActive).is('a:visible, button:visible, input:visible, textarea:visible')) {
           this.oldActive.focus();
           this.oldActive = null;
         } else if (this.trigger.parents('.toolbar, .formatter-toolbar').length < 1) {
@@ -31114,7 +34817,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }, 300); // should match the length of time needed for the overlay to fade out
       },
 
-      // NOTE: Destroy method needs to function as a callback because it's
+      // NOTE: Destroy method needs to function as a callback to be cancellable
       destroy: function() {
         var self = this,
           canDestroy = this.element.trigger('beforedestroy');
@@ -31179,153 +34882,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
   };
 
 
-  $.fn.modalsearch = function(options) {
-    'use strict';
-
-    // Settings and Options
-    var pluginName = 'modalsearch',
-        defaults = {},
-        settings = $.extend({}, defaults, options);
-
-    /**
-     * Used Mostly for the Site, but could be used elsewhere with some modifications
-     * @constructor
-     * @param {Object} element
-     */
-    function ModalSearch(element) {
-      this.settings = $.extend({}, settings);
-      this.element = $(element);
-      Soho.logTimeStart(pluginName);
-      this.init();
-      Soho.logTimeEnd(pluginName);
-    }
-
-    // Plugin Methods
-    ModalSearch.prototype = {
-      init: function() {
-        this
-          .setup()
-          .build()
-          .handleEvents();
-      },
-
-      setup: function() {
-        return this;
-      },
-
-      build: function() {
-        this.element.modal({autoFocus: false});
-        this.modal = this.element.data('modal');
-        this.overlay = this.modal.overlay;
-        this.searchInput = this.modal.element.find('#big-search-field');
-        this.searchResults = this.modal.element.find('.search-all');
-
-        this.modal.element.add(this.overlay).addClass('modal-search');
-
-        this.searchResults.empty().append($('<p class="search-result none">' + Locale.translate('NoResults') + '</p>'));
-
-        return this;
-      },
-
-      handleEvents: function() {
-        var self = this;
-
-        // Disconnect the Modal plugin's resize event, because CSS can completely handle window resizing
-        // now that we don't need to calculate margins.
-        $('body').off('resize.modal-' + this.modal.id);
-
-        $(document).on('keydown.modalsearch', function(e) {
-          var key = e.which;
-          if (key === 27) { // Escape
-            if (self.modal.isOpen()) {
-              self.modal.close();
-            }
-          }
-        });
-
-        this.searchInput.on('keydown.modalsearch', function(e) {
-          var key = e.which;
-          if (key === 13) { // Enter
-            self.handleAjax();
-          }
-        });
-
-        // Listen for the 'requestend' event produced by this Control in order to render Search Results.
-        this.modal.element.on('requestend.modalsearch', function(e, term, results) {
-          self.renderSearchResults(e, term, results);
-        }).on('open.modalsearch', function() {
-          self.searchInput.focus();
-        }); // triggered by the Modal Control
-
-        // Moved from 'js/initialize.js'
-        this.modal.element.find('.close').on('click.modalsearch', function() {
-          self.modal.close();
-        });
-
-        return this;
-      },
-
-      // NOTE: Duplicates some code that's also found in Autocomplete AJAX request... not super DRY
-      // TODO: Make the AJAX code more DRY
-      handleAjax: function() {
-        var self = this,
-          sourceURL = this.searchInput.attr('data-source') || undefined,
-          term = this.searchInput.val();
-
-        if (!sourceURL || sourceURL === undefined) {
-          return false;
-        }
-
-        sourceURL = sourceURL.toString();
-
-        var done = function(searchTerm, response) {
-          self.element.removeClass('is-busy');  //TODO: Need style for this
-          self.element.trigger('requestend', [searchTerm, response]);
-        };
-
-        self.element
-          .addClass('busy')
-          .trigger('requeststart', [term]);
-
-        // Source is always a URL
-        var request = $.get(sourceURL + term);
-        request.done(function(data) {
-          done(term, data);
-        }).fail(function() {
-          done(term, []);
-        });
-      },
-
-      // Gets results from the Site Search (powered by Craft CMS) and renders it into the search results section.
-      // CraftCMS returns a pre-rendered HTML template, so just append the results to the Search Results section.
-      renderSearchResults: function(e, term, results) {
-        this.searchResults
-          .empty()
-          .append(results);
-      },
-
-      // Teardown - Remove added markup and events
-      destroy: function() {
-        $(document).off('keydown.modalsearch');
-        this.modal.element.off('requestend.modalsearch open.modalsearch');
-        this.searchInput.off('keydown.modalsearch');
-        this.element.data('modal').destroy();
-        $.removeData(this.element[0], pluginName);
-      }
-    };
-
-    // Initialize the plugin (Once)
-    return this.each(function() {
-      var instance = $.data(this, pluginName);
-      if (instance) {
-        instance.settings = $.extend({}, instance.settings, options);
-      } else {
-        instance = $.data(this, pluginName, new ModalSearch(this, settings));
-      }
-    });
-  };
-
-
   $.fn.rating = function(options) {
 
      // Tab Settings and Options
@@ -31333,10 +34889,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         defaults = {},
         settings = $.extend({}, defaults, options);
 
-    /**
-     * @constructor
-     * @param {Object} element
-     */
     function Rating(element) {
       this.element = $(element);
       Soho.logTimeStart(pluginName);
@@ -31422,66 +34974,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
   };
 
 
-  $.fn.resize = function(options) {
-    'use strict';
-
-    // Settings and Options
-    var pluginName = 'resize',
-        defaults = {
-          axis: 'x'
-        },
-        settings = $.extend({}, defaults, options);
-
-    /**
-     * @constructor
-     * @param {Object} element
-     */
-    function Resize(element) {
-      this.element = $(element);
-      Soho.logTimeStart(pluginName);
-      this.init();
-      Soho.logTimeEnd(pluginName);
-    }
-
-    // Resize Methods
-    Resize.prototype = {
-
-      init: function() {
-        //Original Prototype http://jsfiddle.net/41h9pcpb/2/
-        this.handleEvents();
-      },
-
-      // Handle Touch/Mouse Resize
-      handleEvents: function() {
-        var self = this;
-        self.handle = null;
-
-        this.element.find('.resize-handle').drag({axis: settings.axis}).on('drag.resziable', function (e, args) {
-          self.element[0].style.width = args.left;
-        });
-      },
-
-      // Teardown
-      destroy: function() {
-        $.removeData(this.element[0], pluginName);
-      }
-    };
-
-    // Initialize the plugin (Once)
-    return this.each(function() {
-      var instance = $.data(this, pluginName);
-      if (instance) {
-        instance.settings = $.extend({}, defaults, options);
-        instance.show();
-      } else {
-        instance = $.data(this, pluginName, new Resize(this, settings));
-      }
-    });
-  };
-
-
   $.fn.searchfield = function(options) {
     'use strict';
+
+    if (!options) {
+      options = {};
+    }
 
     // Settings and Options
     var pluginName = 'searchfield',
@@ -31567,20 +35065,28 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         // Add Icon
-        var icon = this.wrapper.find('.icon:not(.icon-dropdown)');
+        var icon = this.wrapper.find('.icon:not(.icon-dropdown)'),
+          insertIconInFront = this.wrapper.hasClass('context') || this.wrapper.hasClass('has-categories');
+
         if (!icon || !icon.length) {
-          icon = $.createIconElement('search').insertAfter(this.element).icon();
+          icon = $.createIconElement('search');
         }
+
+        // Swap icon position to in-front if we have "context/has-categories" CSS class.
+        icon[insertIconInFront ? 'insertBefore' : 'insertAfter'](this.element).icon();
 
         // Change icon to a trigger button if we're dealing with categories
         if (this.hasCategories()) {
           this.wrapper.addClass('has-categories');
 
-          this.button = icon.parent('.searchfield-category-button');
+          this.button = this.wrapper.find('.btn, .searchfield-category-button');
           if (!this.button.length) {
-            this.button = icon.wrap('<button type="button" class="btn searchfield-category-button"></button>').parent();
+            this.button = $('<button type="button" class="btn searchfield-category-button"></button>');
           }
+          icon.appendTo(this.button);
           icon = this.button;
+
+          this.button.insertBefore(this.element);
 
           if (this.settings.showCategoryText) {
             this.wrapper.addClass('show-category');
@@ -31592,37 +35098,42 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
           ddIcon.appendTo(icon);
 
-          this.list = this.wrapper.find('ul.popupmenu');
-          if (!this.list || !this.list.length) {
-            this.list = $('<ul class="popupmenu"></ul>');
-          }
-
-          // Handle Single vs Multi-Selectable Lists
-          var categoryListType = this.settings.categoryMultiselect ? 'is-multiselectable' : 'is-selectable';
-          this.list.addClass(categoryListType);
-          var removeListType = 'is-selectable';
-          if (!this.settings.categoryMultiselect) {
-            removeListType = 'is-multiselectable';
-          }
-          this.list.removeClass(removeListType);
-
-          this.setCategories(this.settings.categories);
-
-          this.list.insertAfter(this.button);
-          this.button.popupmenu({
-            menu: this.list,
-            offset: {
-              y: 10
+          var popupAPI = this.button.data('popupmenu');
+          if (!popupAPI) {
+            this.list = this.wrapper.find('ul.popupmenu');
+            if (!this.list || !this.list.length) {
+              this.list = $('<ul class="popupmenu"></ul>');
             }
-          });
+
+            // Handle Single vs Multi-Selectable Lists
+            var categoryListType = this.settings.categoryMultiselect ? 'is-multiselectable' : 'is-selectable';
+            this.list.addClass(categoryListType);
+            var removeListType = 'is-selectable';
+            if (!this.settings.categoryMultiselect) {
+              removeListType = 'is-multiselectable';
+            }
+            this.list.removeClass(removeListType);
+
+            this.setCategories(this.settings.categories);
+
+            this.list.insertAfter(this.element);
+            this.button.popupmenu({
+              menu: this.list,
+              offset: {
+                y: 10
+              }
+            });
+
+          } else {
+            this.setCategories(this.settings.categories);
+          }
 
           this.setCategoryButtonText();
         }
 
-        // Swap icon position to in-front if we have an "alternate" class.
-        if (this.wrapper.hasClass('context') || this.wrapper.hasClass('has-categories') ) {
-          icon.insertBefore(this.element);
-        }
+        // Hoist the 'alternate' CSS class to the wrapper, if applicable
+        var isAlternate = this.element.hasClass('alternate');
+        this.wrapper[isAlternate ? 'addClass' : 'removeClass']('alternate');
 
         if (this.settings.clearable) {
           this.element.clearable();
@@ -31678,6 +35189,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           self.handleKeydown(e);
         }).on('beforeopen.searchfield', function(e, menu) { // propagates from Autocomplete's Popupmenu
           self.handlePopupBeforeOpen(e, menu);
+        }).on('safe-blur.searchfield listclose.searchfield', function() {
+          self.wrapper.removeClass('popup-is-open');
         });
 
         this.wrapper.on('mouseenter.searchfield', function() {
@@ -31688,7 +35201,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         if (this.hasCategories()) {
           this.button.on('selected.searchfield', function(e, anchor) {
-            self.setCategoryButtonText(e, anchor.text().trim());
+            self.handleCategorySelected(e, anchor);
           }).on('focus.searchfield', function(e) {
             self.handleCategoryFocus(e);
           }).on('blur.searchfield', function(e) {
@@ -31713,6 +35226,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         // to act differntly when the More Results link is activated.
         this.element.on('listopen.searchfield', function(e, items) {
           var list = $('#autocomplete-list');
+
+          // Visual indicator class
+          self.wrapper.addClass('popup-is-open');
 
           list.off('click').on('click.autocomplete', 'a', function (e) {
             var a = $(e.currentTarget),
@@ -31781,14 +35297,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
        * Activates a toolbar-based searchfield and keeps it "open".  Instead of closing it on blur, sets up
        * an explicit, out-of-bounds click/tap that will serve to close it when the user acts.
        * @private
+       * @param {boolean} force - ignore any attempt to return out first
+       * @param {boolean} doFocus - focus the searchfield element.
        * @returns {undefined}
        */
-      setAsActive: function() {
-        if (this.element.hasClass('active')) {
+      setAsActive: function(force, doFocus) {
+        if (!force && this.element.hasClass('active')) {
           return;
         }
-
-        var self = this;
 
         // Activate
         this.element.addClass('active');
@@ -31798,32 +35314,37 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         // if Toolbar Searchfield, allow that control to handle adding this class
-        if (!this.wrapper.is('.toolbar-searchfield-wrapper')) {
+        if (!this.isToolbarSearchfield()) {
           this.wrapper.addClass('has-focus');
         }
 
-        setTimeout(function() {
-          function deactivate(e) {
-            var target = $(e.target),
-              elems = self.element.add(self.element.parent('.searchfield-wrapper'));
-            if (target.is(elems)) {
-              return;
-            }
+        if (doFocus === true) {
+          this.element.focus();
+        }
 
-            //self.element.removeClass('active').blur();
-            toolbar.removeClass('searchfield-active');
-            $(document).offTouchClick('searchfield').off('click.searchfield');
-          }
-
-          $(document).onTouchClick('searchfield', '.searchfield').on('click.searchfield', function(e) {
-            deactivate(e);
-          });
-
-          self.element.one('blur.searchfield', function(e) {
-            deactivate(e);
-          });
-        }, 100);
         this.recalculateParent();
+      },
+
+      /**
+       * Detects whether or not the Searchfield has focus.
+       * @returns {boolean}
+       */
+      hasFocus: function() {
+        var active = document.activeElement;
+
+        if ($.contains(this.wrapper[0], active)) {
+          return true;
+        }
+
+        // Don't close if a category is being selected from a category menu
+        if (this.button && this.button.length) {
+          var menu = this.button.data('popupmenu').menu;
+          if (menu.has(active).length) {
+            return true;
+          }
+        }
+
+        return false;
       },
 
       /**
@@ -31841,14 +35362,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
        * @returns {undefined}
        */
       handleBlur: function() {
-        var self = this;
         this.recalculateParent();
 
-        if (!this.wrapper.is('.toolbar-searchfield-wrapper')) {
-          setTimeout(function() {
-            self.wrapper.removeClass('has-focus');
-          }, 10);
+        if (!this.hasFocus()) {
+          return;
         }
+
+        this.wrapper.removeClass('has-focus');
       },
 
       /**
@@ -31935,17 +35455,44 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       },
 
       /**
+       * Detects whether or not this component is a Toolbar Searchfield
+       * @returns {boolean}
+       */
+      isToolbarSearchfield: function() {
+        return this.wrapper.is('.toolbar-searchfield-wrapper');
+      },
+
+      /**
+       * Category Selection event handler
+       * @private
+       * @returns {undefined}
+       */
+      handleCategorySelected: function(e, anchor) {
+        this.setCategoryButtonText(e, anchor.text().trim());
+
+        // If this is a toolbar searchfield, run the size check that fixes the
+        // trigger button and input field size.
+        var tsAPI = this.element.data('toolbarsearchfield');
+        if (tsAPI && typeof tsAPI.setOpenWidth === 'function') {
+          tsAPI.calculateOpenWidth();
+          tsAPI.setOpenWidth();
+        }
+      },
+
+      /**
        * Category Button Focus event handler
        * @private
        * @returns {undefined}
        */
       handleCategoryFocus: function() {
         // if Toolbar Searchfield, allow that control to handle adding this class
-        if (this.wrapper.is('.toolbar-searchfield-wrapper')) {
+        if (this.isToolbarSearchfield()) {
           return;
         }
 
-        this.wrapper.addClass('has-focus');
+        this.wrapper
+          .removeClass('active')
+          .addClass('has-focus');
       },
 
       /**
@@ -31955,7 +35502,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
        */
       handleCategoryBlur: function() {
         // if Toolbar Searchfield, allow that control to handle adding this class
-        if (this.wrapper.is('.toolbar-searchfield-wrapper')) {
+        if (this.isToolbarSearchfield()) {
           return;
         }
 
@@ -31982,10 +35529,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
        * Gets the currently selected categories as data.
        * @param {boolean} [onlyReturnSelected=false] - If set to true, will only return checked list items.
        * @returns {Object[]} data -
-       * @returns {string} data[].name - Category name
-       * @returns {string|number} data[].id - Category element's ID (if applicable)
-       * @returns {string|number} data[].value - Category element's value (if applicable)
-       * @returns {boolean} [data[].checked=true] - Category's selection status
+       * @returns {string} name - Category name
+       * @returns {string|number} id - Category element's ID (if applicable)
+       * @returns {string|number} value - Category element's value (if applicable)
+       * @returns {boolean} [checked=true] - Category's selection status
        */
       getCategoryData: function(onlyReturnSelected) {
         var categories = this.getCategories(),
@@ -32023,9 +35570,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
        * Updates just the categories setting and rerenders the category list.
        * @param {Object[]} categories - Array of category object definitions.
        * @param {string} categories[].name - Category name.
-       * @param {string|number} [data[].id] - Category element's ID (if applicable).
-       * @param {string|number} [data[].value] - Category element's value (if applicable).
-       * @param {boolean} [data[].checked=true] - Category's selection status
+       * @param {string|number} [id] - Category element's ID (if applicable).
+       * @param {string|number} [value] - Category element's value (if applicable).
+       * @param {boolean} [checked=true] - Category's selection status
        * @return {undefined}
        */
       updateCategories: function(categories) {
@@ -32037,9 +35584,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
        * Creates a new set of categories on the Searchfield and rerenders it.
        * @param {Object[]} categories - Array of category object definitions.
        * @param {string} categories[].name - Category name.
-       * @param {string|number} [data[].id] - Category element's ID (if applicable).
-       * @param {string|number} [data[].value] - Category element's value (if applicable).
-       * @param {boolean} [data[].checked=true] - Category's selection status
+       * @param {string|number} [id] - Category element's ID (if applicable).
+       * @param {string|number} [value] - Category element's value (if applicable).
+       * @param {boolean} [checked=true] - Category's selection status
        * @return {undefined}
        */
       setCategories: function(categories) {
@@ -32105,7 +35652,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
        * @returns {function}
        */
       handlePopupClose: function() {
-        return this.setAsActive();
+        return this.setAsActive(true, true);
       },
 
       /**
@@ -32190,7 +35737,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
        * @returns {this}
        */
       teardown: function() {
-        this.element.off('updated.searchfield focus.searchfield blur.searchfield click.searchfield keydown.searchfield beforeopen.searchfield listopen.searchfield');
+        this.element.off('updated.searchfield focus.searchfield blur.searchfield click.searchfield keydown.searchfield beforeopen.searchfield listopen.searchfield listclose.searchfield safe-blur.searchfield');
 
         if (this.autocomplete) {
           this.autocomplete.destroy();
@@ -32204,7 +35751,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         if (this.element.parent().hasClass('searchfield-wrapper')) {
           this.element.parent().find('ul').remove();
           this.element.parent().find('.icon').remove();
-          this.element.unwrap();
         }
 
         return this;
@@ -32222,226 +35768,28 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
     // Initialize the plugin (Once)
     return this.each(function() {
+
+      // Detect if we're inside of a Toolbar and invoke Toolbar Searchfield first, if applicable.
+      // Added for SOHO-6448.
+      // NOTE: If we merge the searchfield/toolbarsearchfield apis, revisit this solution.
+      var sf = $(this),
+        toolbarParent = sf.parents('.toolbar');
+      if (toolbarParent.length && !options.noToolbarSearchfieldInvoke) {
+        var tbsf = sf.data('toolbarsearchfield');
+        if (!tbsf) {
+          return sf.toolbarsearchfield(options);
+        } else {
+          tbsf.updated();
+        }
+      }
+
+      // Normal invoke setup
       var instance = $.data(this, pluginName);
       if (instance) {
         instance.settings = $.extend({}, instance.settings, options);
         instance.updated();
       } else {
         instance = $.data(this, pluginName, new SearchField(this, settings));
-      }
-    });
-  };
-
-
-  $.fn.sidebar = function(options) {
-    'use strict';
-
-    // Settings and Options
-    var pluginName = 'sidebar',
-      defaults = {
-        isSticky: true
-      },
-      settings = $.extend({}, defaults, options);
-
-    /**
-     * Side Bar Menu Control
-     * @constructor
-     * @param {Object} element
-     */
-    function Sidebar(element) {
-      this.settings = $.extend({}, settings);
-      this.element = $(element);
-      Soho.logTimeStart(pluginName);
-      this.init();
-      Soho.logTimeEnd(pluginName);
-    }
-
-    // Plugin Methods
-    Sidebar.prototype = {
-
-      init: function() {
-        this.build();
-        this.handleEvents();
-        this.isSafari = $('html').is('.is-safari');
-
-        return this;
-      },
-
-      build: function() {
-        var self = this;
-
-        this.closestHeader = $('.header').first();
-        this.sectionList = $('.section-tracker');
-        this.sections = $('.editorial > .main > .content > h2'); //,h3
-
-        //append the links for the heading elements
-        this.sections.each(function (i) {
-          var item = $(this).clone().children().remove().end(),
-            id = 'heading' + i,
-            link = $('<div><a href="#' + id + '" class="hyperlink' + (i === 0 ? ' is-active' : '') + '">' + item.text() + '</a></div>');
-
-          $(this).attr('id', id);
-          self.sectionList.append(link);
-        });
-        this.anchors = this.sectionList.find('a');
-
-        this.editorialContainer = this.element.closest('.editorial');
-        this.pageContainer = this.element.closest('.page-container');
-        if (!this.pageContainer.length) {
-          this.pageContainer = $(window);
-        }
-
-        return this;
-      },
-
-      handleEvents: function() {
-        var self = this;
-
-        this.anchors.onTouchClick('sidebar').on('click.sidebar', function (e) {
-          self.handleAnchorClick(e);
-        });
-
-        if (!this.settings.isSticky) {
-          return this;
-        }
-
-        this.pageContainer.on('scroll.sidebar', function(e) {
-          self.handleScroll(e);
-          self.adjustCurrentNavItem();
-        });
-
-        return this;
-      },
-
-      handleScroll: function() {
-        this.element.removeAttr('style');
-
-        var editorialContainerOffset = this.editorialContainer.position(),
-          sidebarHeight = this.element.outerHeight(),
-          containerTopBoundary = editorialContainerOffset.top,
-          containerBottomBoundary = editorialContainerOffset.top + this.editorialContainer.outerHeight(true),
-          distanceBetweenEditorialContainerAndBottom = this.pageContainer[0].scrollHeight - containerBottomBoundary,
-          scrollTop = this.pageContainer.scrollTop();
-
-        // Conditions
-        var conditionAffixTop = scrollTop < containerTopBoundary,
-          conditionScrollWithBody = scrollTop >= containerTopBoundary && scrollTop + sidebarHeight <= containerBottomBoundary,
-          conditionAffixBottom = scrollTop + sidebarHeight > (containerBottomBoundary),
-          add = '', remove = '',
-          top;
-
-        if (conditionAffixTop) {
-          add = 'affix-top';
-          remove = 'affix-bottom affix';
-        }
-        if (conditionScrollWithBody) {
-          add = 'affix';
-          remove = 'affix-bottom affix-top';
-        }
-        if (conditionAffixBottom) {
-          add = 'affix-bottom';
-          remove = 'affix affix-top';
-          top = (this.pageContainer[0].scrollHeight - editorialContainerOffset.top - distanceBetweenEditorialContainerAndBottom - sidebarHeight) + 'px';
-        }
-
-        this.element.removeClass(remove);
-        if (!this.element.hasClass(add)) {
-          this.element.addClass(add);
-        }
-
-        if (top) {
-          this.element[0].style.top = top;
-        }
-
-        return;
-      },
-
-      adjustCurrentNavItem: function() {
-        if (this.dontAdjustWhileScrolling) {
-          return;
-        }
-
-        var self = this,
-          lastActive = this.sectionList.find('.is-active').removeClass('is-active');
-
-        if (lastActive.length && lastActive.is($(document.activeElement))) {
-          lastActive[0].blur();
-        }
-
-        this.sections.each(function () {
-          var s = this;
-
-          if (self.isOnScreen(s)) {
-            var tag = $('a[href="#' + s.id + '"]');
-            tag.addClass('is-active');
-            tag.parent().prev().find('a').removeClass('is-active');
-            return false;
-          }
-        });
-
-        if (this.sectionList.find('.is-active').length === 0) {
-          lastActive.addClass('is-active');
-        }
-        return;
-      },
-
-      handleAnchorClick: function(e) {
-        var self = this,
-          a = $(e.target);
-        a.parent().parent().find('.is-active').removeClass('is-active');
-
-        this.dontAdjustWhileScrolling = true;
-
-        this.pageContainer.animate({
-          scrollTop: $(a.attr('href')).position().top - 30
-        }, {
-          duration: 150,
-          done: function() {
-            self.dontAdjustWhileScrolling = false;
-            a.addClass('is-active');
-          }
-        });
-
-        e.preventDefault();
-        return;
-      },
-
-      isOnScreen: function (element) {
-        var el = $(element),
-          pos = el.offset(),
-          h = el.outerHeight(true),
-          realBottom = pos.top + h;
-
-        return pos.top < window.innerHeight && realBottom > 0;
-      },
-
-      updated: function() {
-        return this
-          .teardown()
-          .init();
-      },
-
-      teardown: function() {
-        this.container.off('scroll.sidebar').off('scroll.sidebarMenu');
-        this.anchors.offTouchClick('sidebar').off('click.sidebar');
-        return this;
-      },
-
-      // Teardown - Remove added markup and events
-      destroy: function() {
-        this.teardown();
-        $.removeData(this.element[0], pluginName);
-      }
-    };
-
-    // Initialize the plugin just once
-    return this.each(function() {
-      var instance = $.data(this, pluginName);
-      if (instance) {
-        instance.settings = $.extend({}, instance.settings, options);
-        instance.updated();
-      } else {
-        instance = $.data(this, pluginName, new Sidebar(this));
       }
     });
   };
@@ -32456,6 +35804,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         settings = $.extend({}, defaults, options);
 
     /**
+     * @class {SignIn}
      * @constructor
      * @param {Object} element
      */
@@ -32469,11 +35818,48 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Plugin Methods
     SignIn.prototype = {
 
+      /**
+       * @private
+       */
       init: function() {
         this.settings = settings;
         this.handleKeys();
       },
 
+      /**
+       * Checks a keyboard event for a CAPS LOCK modifier.
+       * @param {jQuery.Event} e
+       * @returns {boolean}
+       */
+      isCapslock: function(e) {
+        e = (e) ? e : window.event;
+        var charCode = (e.which) ? e.which : ((e.keyCode) ? e.keyCode : false),
+         shifton = (e.shiftKey) ? e.shiftKey : ((e.modifiers) ? (!!(e.modifiers & 4)) : false);
+
+        if (charCode >= 97 && charCode <= 122 && shifton) {
+          return true;
+        }
+        if (charCode >= 65 && charCode <= 90 && !shifton) {
+          return true;
+        }
+        return false;
+      },
+
+      /**
+       * Teardown - Remove added markup and events
+       */
+      destroy: function() {
+        $.removeData(this.element[0], pluginName);
+        $('body').off('keypress.signin blur.signin change.signin');
+      },
+
+      /**
+       * @fires SignIn#events
+       * @param {Object} keypress
+       * @param {Object} blur
+       * @param {Object} change
+       *
+       */
       handleKeys: function() {
         var self = this,
           cssIcon = $.createIconElement({ classes: 'icon-capslock', icon: 'capslock' });
@@ -32513,34 +35899,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             }
           }, 150);
 
-        })
-        .on('blur.signin change.signin keypress.signin', 'input', function () {
-          if (!$(this).is('#confirm-password')) {
-            $('#username').val($('#username-display').val());
-            $('#password').val($('#password-display').val());
-            $('#new-password').val($('#new-password-display').val());
-          }
         });
-      },
-
-      isCapslock: function(e) {
-        e = (e) ? e : window.event;
-        var charCode = (e.which) ? e.which : ((e.keyCode) ? e.keyCode : false),
-         shifton = (e.shiftKey) ? e.shiftKey : ((e.modifiers) ? (!!(e.modifiers & 4)) : false);
-
-        if (charCode >= 97 && charCode <= 122 && shifton) {
-          return true;
-        }
-        if (charCode >= 65 && charCode <= 90 && !shifton) {
-          return true;
-        }
-        return false;
-      },
-
-      // Teardown - Remove added markup and events
-      destroy: function() {
-        $.removeData(this.element[0], pluginName);
-        $('body').off('keypress.signin blur.signin change.signin');
       }
     };
 
@@ -32574,8 +35933,15 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
     /**
      * Touch Enabled/Responsive and Accessible Slider Control
-     * @constructor
-     * @param {Object} element
+     * @class {Slider}
+     * @param {Array} value
+     * @param {Number} min
+     * @param {Number} max
+     * @param {boolean} range
+     * @param {undefined|Number} step
+     * @param {Array} ticks
+     * @param {undefined|Array} tooltipContent
+     * @param {boolean} persistTooltip
      */
     function Slider(element) {
       this.settings = $.extend({}, defaults, options);
@@ -32612,6 +35978,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Actual Plugin Code
     Slider.prototype = {
 
+      /**
+       * @private
+       * @returns {this}
+       */
       init: function() {
         return this
           .buildSettings()
@@ -32619,6 +35989,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .bindEvents();
       },
 
+      /**
+       * Handles Data Attribute settings, some markup settings
+       * @private
+       * @returns {this}
+       */
       buildSettings: function() {
         var self = this;
 
@@ -32759,6 +36134,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
+      /**
+       * Adds pseudo-markup that helps build the component
+       * @private
+       * @returns {this}
+       */
       addMarkup: function() {
         var self = this,
           isVertical = false;
@@ -32879,43 +36259,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return self;
       },
 
-      bindEvents: function() {
-        var self = this;
-
-        $.each(self.handles, function (i, handle) {
-          handle.on('mousedown.slider', function () {
-            if (self.isDisabled()) {
-              return;
-            }
-            $(this).focus();
-          })
-          .on('click.slider', function (e) {
-            e.preventDefault(); //Prevent from jumping to top.
-          })
-          .on('keydown.slider', function(e) {
-            self.activateHandle(handle);
-            self.handleKeys(e, self);
-          })
-          .on('keyup.slider blur.slider', function() {
-            self.deactivateHandle(handle);
-          });
-
-          self.enableHandleDrag(handle);
-        });
-
-        self.wrapper.on('click.slider touchend.slider touchcancel.slider', function(e) {
-          self.handleRangeClick(e);
-        });
-
-        // Slider Control listens to 'updated' trigger on its base element to update values
-        self.element.on('updated.slider', function() {
-          self.updated();
-        });
-
-        return self;
-      },
-
-      // User is interacting with the Slider Range (not the handle or ticks)
+      /**
+       * User is interacting with the Slider Range (not the handle or ticks)
+       * @param {jQuery.Event} e
+       */
       handleRangeClick: function(e) {
           e.preventDefault();
           if (this.isDisabled()) {
@@ -32988,14 +36335,26 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
       },
 
+      /**
+       * Activates one of the slider handles
+       * @param {jQuery[]} handle
+       */
       activateHandle: function(handle) {
         handle.addClass('is-active');
       },
 
+      /**
+       * Deactivates one of the slider handles
+       * @param {jQuery[]} handle
+       */
       deactivateHandle: function(handle) {
         handle.removeClass('is-active');
       },
 
+      /**
+       * Enables the ability to drag one of the slider handles.
+       * @param {jQuery[]} handle
+       */
       enableHandleDrag: function(handle) {
         if (this.isDisabled()) {
           return;
@@ -33071,6 +36430,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
+      /**
+       * Disables the dragging of a handle.
+       * @param {jQuery[]} handle
+       */
       disableHandleDrag: function(handle) {
         handle.off('drag.slider dragstart dragend');
 
@@ -33083,16 +36446,29 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * @private
+       * @param {Number} value
+       * @returns {Number}
+       */
       convertValueToPercentage: function(value) {
         return (((value - this.settings.min) / (this.settings.max - this.settings.min)) * 100);
       },
 
+      /**
+       * @private
+       * @param {Number} percentage
+       * @returns {Number}
+       */
       convertPercentageToValue: function(percentage) {
         var val = (percentage / 100) * (this.settings.max - this.settings.min) + this.settings.min;
         return this.isRtlHorizontal ? (this.settings.max - val + this.settings.min) : val;
       },
 
-      // Gets a 10% increment/decrement as a value within the range of minimum and maximum values.
+      /**
+       * Gets a 10% increment/decrement as a value within the range of minimum and maximum values.
+       * @returns {Number}
+       */
       getIncrement: function() {
         var increment = 0.1 * (this.settings.max - this.settings.min);
         if (this.settings.step !== undefined && increment <= this.settings.step) {
@@ -33101,6 +36477,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return increment;
       },
 
+      /**
+       * Handles Slider Component's keystrokes
+       * @param {jQuery.Event} e
+       * @param {this} self
+       */
       handleKeys: function(e, self) {
         if (self.isDisabled()) {
           return;
@@ -33142,6 +36523,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * Increases the value of one of the slider handles, accounting for step value, percentage, etc.
+       * Also visually updates the handle on the visual part of the slider.
+       * @param {jQuery.Event} e
+       * @param {jQuery[]} handle
+       * @param {Number} [value] - target value - will be automatically determined if not passed.
+       * @param {Number} [increment] - an integer that will be used as the amount to increment.
+       */
       increaseValue: function(e, handle, value, increment) {
         e.preventDefault();
         clearTimeout(handle.data('animationTimeout'));
@@ -33171,6 +36560,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.updateTooltip(handle);
       },
 
+      /**
+       * Decreases the value of one of the slider handles, accounting for step value, percentage, etc.
+       * Also visually updates the handle on the visual part of the slider.
+       * @param {jQuery.Event} e
+       * @param {jQuery[]} handle
+       * @param {Number} [value] - target value - will be automatically determined if not passed.
+       * @param {Number} [decrement] - an integer that will be used as the amount to decrement.
+       */
       decreaseValue: function(e, handle, value, decrement) {
         e.preventDefault();
         clearTimeout(handle.data('animationTimeout'));
@@ -33200,7 +36597,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.updateTooltip(handle);
       },
 
-      // Changes the position of the bar and handles based on their values.
+      /**
+       * Changes the position of the bar and handles based on their values.
+       */
       updateRange: function() {
         var self = this,
           newVal = this.value(),
@@ -33291,8 +36690,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Allows a handle to animate to a new position if the difference in value is greater
-      // than 3% of the size of the range.
+      /**
+       * Allows a handle to animate to a new position if the difference in value is greater than 3% of the size of the range.
+       * @param {jQuery[]} handle
+       * @param {Number} originalVal
+       * @param {Number} updatedVal
+       */
       checkHandleDifference: function(handle, originalVal, updatedVal) {
         // IE9 doesn't support animation so return immediately.
         if ($('html').hasClass('ie9')) {
@@ -33307,6 +36710,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * If tooltips are active, updates the current placement and content of the Tooltip.
+       * If no handle argument is passed, this method simply hides both handles' tooltips.
+       * @param {jQuery[]} [handle]
+       */
       updateTooltip: function(handle) {
         if (!this.settings.tooltip) {
           return;
@@ -33348,6 +36756,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * Gets a string-based hex value for the closest tick's defined color.
+       * @returns {string}
+       */
       getColorClosestToValue: function() {
         var currentTheme = Soho.theme,
           preColors = {
@@ -33395,9 +36807,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return highestTickColor;
       },
 
-      // External Facing Function to set the value
-      // works as percent for now but need it on ticks
-      // NOTE:  Does not visually update the range.  Use setValue() to do both in one swoop.
+      /**
+       * External Facing Function to set the value. Works as percent for now but need it on ticks.
+       * NOTE:  Does not visually update the range.  Use _setValue()_ to do both in one swoop.
+       * @param {Number} minVal
+       * @param {Number} [maxVal]
+       * @returns {Array}
+       */
       value: function(minVal, maxVal) {
         var self = this;
 
@@ -33445,8 +36861,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return self._value;
       },
 
-      // Returns a value with prefixed/suffixed text content.
-      // Used by the tooltip and default ticks to get potential identifiers like $ and %.
+      /**
+       * Returns a value with prefixed/suffixed text content.
+       * Used by the tooltip and default ticks to get potential identifiers like $ and %.
+       * @param {string} content
+       * @returns {string}
+       */
       getModifiedTextValue: function(content) {
         if (!this.settings.tooltip) {
           return content;
@@ -33454,6 +36874,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this.settings.tooltip[0] + content + this.settings.tooltip[1];
       },
 
+      /**
+       * Enables the slider instance.
+       * @returns {this}
+       */
       enable: function() {
         this.element.prop('disabled', false);
         this.wrapper.removeClass('is-disabled');
@@ -33466,6 +36890,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
+      /**
+       * Disables the slider instance.
+       * @returns {this}
+       */
       disable: function() {
         this.element.prop('disabled', true);
         this.wrapper.addClass('is-disabled');
@@ -33478,27 +36906,37 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
+      /**
+       * Detects whether or not this slider is disabled
+       * @returns {boolean}
+       */
       isDisabled: function() {
         return this.element.prop('disabled');
       },
 
+      /**
+       * Detects whether or not this slider is vertical
+       * @returns {boolean}
+       */
       isVertical: function() {
         return this.wrapper.hasClass('vertical');
       },
 
-      // Externally-facing function that updates the current values and correctly animates the
-      // range handles, if applicable.
+      /**
+       * Externally-facing function that updates the current values and correctly animates the range handles, if applicable.
+       * @param {Number} lowVal
+       * @param {Number} [highVal]
+       * @returns {Array}
+       */
       setValue: function(lowVal, highVal) {
-        var newLowVal = lowVal || undefined,
-          newHighVal = highVal || undefined,
-          oldVals = this.value();
+        var oldVals = this.value();
 
-        this.checkHandleDifference(this.handles[0], oldVals[0], newLowVal);
+        this.checkHandleDifference(this.handles[0], oldVals[0], lowVal);
         if (this.handles[1]) {
-          this.checkHandleDifference(this.handles[1], oldVals[1], newHighVal);
+            this.checkHandleDifference(this.handles[1], oldVals[1], highVal);
         }
 
-        var vals = this.value(newLowVal, newHighVal);
+        var vals = this.value(lowVal, highVal);
         this.updateRange();
         this.updateTooltip();
 
@@ -33507,12 +36945,20 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       // NOTE: refresh() has been deprecated in Xi Controls v4.2 - has been replaced with setValue().
       // This method will be completely removed in v4.3 and v5.x.  Please update your code.
+      /**
+       * @private
+       * @returns {Array}
+       */
       refresh: function(lowVal, highVal) {
         return this.setValue(lowVal, highVal);
       },
 
-      // Settings and markup are complicated in the slider so we just destroy and re-invoke it
-      // with fresh settings.
+      /**
+       * Updates the slider instance after a settings change.
+       * Settings and markup are complicated in the slider so we just destroy and re-invoke it
+       * with fresh settings.
+       * @returns {this}
+       */
       updated: function() {
         this.element.removeAttr('value');
         return this
@@ -33520,6 +36966,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .init();
       },
 
+      /**
+       * Removes the events and pseudo-markup created by the slider
+       * @returns {this}
+       */
       teardown: function() {
         var self = this;
         $.each(self.handles, function (i, handle) {
@@ -33532,9 +36982,59 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
+      /**
+       * Destroys the slider component instance and unlinks it from its base element.
+       */
       destroy: function() {
         this.teardown();
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       * @fires Slider#events
+       * @param {Object} mousedown
+       * @param {Object} click
+       * @param {Object} keydown
+       * @param {Object} keyup
+       * @param {Object} touchend
+       * @param {Object} touchcancel
+       * @param {Object} updated
+       * @returns {this}
+       */
+      bindEvents: function() {
+        var self = this;
+
+        $.each(self.handles, function (i, handle) {
+          handle.on('mousedown.slider', function () {
+            if (self.isDisabled()) {
+              return;
+            }
+            $(this).focus();
+          })
+          .on('click.slider', function (e) {
+            e.preventDefault(); //Prevent from jumping to top.
+          })
+          .on('keydown.slider', function(e) {
+            self.activateHandle(handle);
+            self.handleKeys(e, self);
+          })
+          .on('keyup.slider blur.slider', function() {
+            self.deactivateHandle(handle);
+          });
+
+          self.enableHandleDrag(handle);
+        });
+
+        self.wrapper.on('click.slider touchend.slider touchcancel.slider', function(e) {
+          self.handleRangeClick(e);
+        });
+
+        // Slider Control listens to 'updated' trigger on its base element to update values
+        self.element.on('updated.slider', function() {
+          self.updated();
+        });
+
+        return self;
       }
     };
 
@@ -33569,10 +37069,18 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         },
         settings = $.extend({}, defaults, options);
 
+
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The Arrange Component allows touch and drag support to sort UI items.
+    *
+    * @class Arrange
+    * @param {String} handle  &nbsp;-&nbsp; The class name of the handle element to connect
+    * @param {String} itemsSelector  &nbsp;-&nbsp; The selector to match all the sortable elements.
+    * @param {String} connectWith  &nbsp;-&nbsp; The optional element to connect with when using two lists
+    * @param {String} placeholder  &nbsp;-&nbsp; The html for the element that appears while dragging
+    * @param {String} placeholderCssClass  &nbsp;-&nbsp; The class to add to the ghost element that is being dragged.
+    *
+    */
     function Arrange(element) {
       this.element = $(element);
       Soho.logTimeStart(pluginName);
@@ -33583,14 +37091,72 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Arrange Methods
     Arrange.prototype = {
 
+      // example from: https://github.com/farhadi/html5arrangeable/blob/master/jquery.arrangeable.js
       init: function() {
         this.isTouch = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        this.isIE11 = /Trident.*rv[ :]*11\./i.test(navigator.userAgent);
+        this.isIe11 = (Soho.env.browser.name === 'ie' && Soho.env.browser.version === '11');
         this.handleEvents();
       },
 
-      // Handle Events
-      // example from: https://github.com/farhadi/html5arrangeable/blob/master/jquery.arrangeable.js
+      // Get Element By Touch In List
+      getElementByTouchInList: function(list, x, y) {
+        var returns = false;
+        $(list).each(function() {
+          var item = $(this), offset = item.offset();
+          if (!(x <= offset.left || x >= offset.left + item.outerWidth() ||
+                y <= offset.top  || y >= offset.top + item.outerHeight())) {
+            returns = item;
+          }
+        });
+        return returns;
+      },
+
+      // Dragg touch element
+      dragTouchElement: function(e, elm) {
+        var orig = e.originalEvent.changedTouches[0];
+        elm[0].style.top = (orig.pageY - this.offset.y) + 'px';
+        elm[0].style.left = (orig.pageX - this.offset.x) + 'px';
+      },
+
+      unbind: function() {
+        this.items
+          .removeClass('draggable')
+          .removeAttr('draggable')
+          .off('selectstart.arrange '+ this.dragStart +' '+ this.dragEnd +' '+ this.dragWhileDragging);
+
+        $(this.handle, this.items)
+          .removeClass('draggable')
+          .off('mousedown.arrange mouseup.arrange touchstart.arrange touchend.arrange');
+
+        return this;
+      },
+
+      /**
+      * Resync the UI and Settings.
+      */
+      updated: function() {
+        return this
+          .unbind()
+          .init();
+      },
+
+      /**
+      * Teardown and remove any added markup and events.
+      */
+      destroy: function() {
+        this.unbind();
+        $.removeData(this.element[0], pluginName);
+      },
+
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Arrange#events
+       * @param {Object} beforearrange  &nbsp;-&nbsp; Fires before moving an element allowing you to access the ui to customize the draggable item
+       * @param {Object} afterearrange  &nbsp;-&nbsp; Fires after moving an element allowing you do any follow up updating.
+       *
+       */
       handleEvents: function() {
         var self = this,
           index, isHandle,
@@ -33613,7 +37179,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         self.handle = settings.handle || self.element.attr('data-arrange-handle');
         self.connectWith = self.element.attr('data-arrange-connectWith');
-        self.placeholders = placeholder.addClass(settings.placeholderCssClass +' draggable');
+        self.placeholders = placeholder;
+
+        if (!self.isTouch) {
+          self.placeholders.addClass(settings.placeholderCssClass +' draggable');
+        }
 
         // Use Handle if available
         $(self.handle, items).addClass('draggable')
@@ -33645,7 +37215,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           // Drag start --------------------------------------------------------------------------
           .on(self.dragStart, function(e) {
             if (self.handle && !isHandle) {
-              return false;
+              if (self.isTouch) {
+                return;
+              } else {
+                return false;
+              }
             }
             isHandle = false;
             self.dragging = $(this);
@@ -33655,15 +37229,37 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             $.extend(status, {start: self.dragging, startIndex: index});
             self.element.triggerHandler('beforearrange', status);
 
-            var dt = e.originalEvent.dataTransfer;
-            dt.effectAllowed = 'move';
-            dt.setData('Text', 'dummy');
+            if (self.isTouch) {
+              var rect = self.dragging[0].getBoundingClientRect(),
+                touch = e.originalEvent.changedTouches[0];
+
+              //Save offset
+              self.offset = {
+                x: touch.pageX - rect.left,
+                y: touch.pageY - rect.top
+              };
+              self.placeholderTouch = self.dragging
+                .clone().addClass('is-touch').attr('id', 'arrange-placeholder-touch')
+                .insertBefore(self.dragging);
+
+              self.dragTouchElement(e, self.placeholderTouch);
+            } else {
+              var dt = e.originalEvent.dataTransfer;
+              dt.effectAllowed = 'move';
+              dt.setData('Text', 'dummy');
+            }
+
           })
 
-          // Drag end ----------------------------------------------------------------------------
+          // Drag end ----------------------------------------------------------
           .on(self.dragEnd, function() {
             if (!self.dragging) {
               return;
+            }
+
+            if (self.isTouch) {
+              self.dragging.css('opacity', 1);
+              self.placeholderTouch.remove();
             }
 
             self.placeholders.filter(':visible').after(self.dragging);
@@ -33675,21 +37271,25 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
               self.element.triggerHandler('arrangeupdate', status);
             }
             self.dragging = null;
+            self.placeholderTouch = null;
           })
 
-          // While dragging -----------------------------------------------------------------------
+          // While dragging ----------------------------------------------------
           .on(self.dragWhileDragging, function(e) {
+            if (!self.dragging) {
+              return;
+            }
             var overItem = this,
               overIndex;
             e.preventDefault();
 
-            if(e.type==='drop') {
+            if (e.type==='drop') {
               e.stopPropagation();
               self.dragging.trigger('dragend.arrange');
               return false;
             }
 
-            if(self.isTouch) {
+            if (self.isTouch) {
               var touch = e.originalEvent.touches[0];
               overItem = self.getElementByTouchInList(items, touch.pageX, touch.pageY) || overItem;
             }
@@ -33700,7 +37300,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             }
 
             if (items.is(overItem) && placeholder.index() !== overItem.index()) {
-              self.dragging.hide();
+              if (self.isTouch) {
+                self.dragging.css('opacity', 0);
+              } else {
+                self.dragging.hide();
+              }
 
               if (placeholder.index() < (overItem.index())) {
                 placeholder.insertAfter(overItem);
@@ -33716,7 +37320,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
               // Fix: IE-11 on windows-10 svg was disappering
               var svg = $('svg', overItem);
-              if(self.isIE11 && svg.length) {
+              if(self.isIe11 && svg.length) {
                 overItem.html(overItem.html());
               }
 
@@ -33726,48 +37330,17 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
               self.placeholders.detach();
               self.element.append(placeholder);
             }
-            return false;
-          });//-------------------------------------------------------------------------------------
+
+            if (self.isTouch) {
+              self.dragTouchElement(e, self.placeholderTouch);
+              return;
+            } else {
+              return false;
+            }
+          });//-----------------------------------------------------------------
         });//end each items
-      },
-
-      // Get Element By Touch In List
-      getElementByTouchInList: function(list, x, y) {
-        var returns = false;
-        $(list).each(function() {
-          var item = $(this), offset = item.offset();
-          if (!(x <= offset.left || x >= offset.left + item.outerWidth() ||
-                y <= offset.top  || y >= offset.top + item.outerHeight())) {
-            returns = item;
-          }
-        });
-        return returns;
-      },
-
-      unbind: function() {
-        this.items
-          .removeClass('draggable')
-          .removeAttr('draggable')
-          .off('selectstart.arrange '+ this.dragStart +' '+ this.dragEnd +' '+ this.dragWhileDragging);
-
-        $(this.handle, this.items)
-          .removeClass('draggable')
-          .off('mousedown.arrange mouseup.arrange touchstart.arrange touchend.arrange');
-
-        return this;
-      },
-
-      updated: function() {
-        return this
-          .unbind()
-          .init();
-      },
-
-      // Teardown
-      destroy: function() {
-        this.unbind();
-        $.removeData(this.element[0], pluginName);
       }
+
     };
 
     // Initialize the plugin (Once)
@@ -33841,13 +37414,21 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
     // Settings and Options
     var pluginName = 'spinbox',
-        defaults = {},
+        defaults = {
+          min: null,
+          max: null,
+          step: null
+        },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The Spinbox component provides easy access to modification of a numeric input field.
+    *
+    * @class Spinbox
+    * @param {null|Number} min &nbsp;-&nbsp; if defined, provides a minimum numeric limit
+    * @param {null|Number} max  &nbsp;-&nbsp; if defined, provides a maximum numeric limit
+    * @param {null|Number} step  &nbsp;-&nbsp; if defined, increases or decreases the spinbox value by a specific interval whenever the control buttons are used.
+    */
     function Spinbox(element) {
       this.element = $(element);
       Soho.logTimeStart(pluginName);
@@ -33858,10 +37439,16 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Plugin Methods
     Spinbox.prototype = {
 
+      /**
+       * @private
+       */
       init: function() {
+        this.settings = $.extend({}, settings);
         this.inlineLabel = this.element.closest('label');
         this.inlineLabelText = this.inlineLabel.find('.label-text');
         this.isInlineLabel = this.element.parent().is('.inline');
+        this.isWrapped = this.element.parent().is('.spinbox-wrapper');
+
         this
           .setInitialValue()
           .addMarkup()
@@ -33869,18 +37456,24 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .setWidth();
       },
 
+      /**
+       * Sets the width of the spinbox input field.
+       * @returns {this}
+       */
       setWidth: function() {
         var style = this.element[0].style;
 
         if (style.width) {
-          this.element.parent()[0].style.width = style.width;
-          this.element[0].style.width = (parseInt(style.width) - (this.element.parent().find('.down').outerWidth() * 2)) + 'px';
+          this.element.parent()[0].style.width = (parseInt(style.width) + (this.element.parent().find('.down').outerWidth() * 2)) + 'px';
         }
 
         return this;
       },
 
-      // Sanitize the initial value of the input field.
+      /**
+       * Sanitize the initial value of the input field.
+       * @returns {this}
+       */
       setInitialValue: function() {
         var self = this,
           val = self.checkForNumeric(self.element.val());
@@ -33897,19 +37490,47 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         if (iOS) {
           this.element.attr('pattern','\\d*');
         }
+
+        if (this.settings.max) {
+          this.element.attr('max', this.settings.max);
+        }
+        if (this.settings.step) {
+          this.element.attr('step', this.settings.step);
+        }
+        if (this.settings.min) {
+          this.element.attr('min', this.settings.min);
+        }
+
+
         return this;
       },
 
+      /**
+       * Appends extra control markup to a Spinbox field.
+       * @returns {this}
+       */
       addMarkup: function() {
         var self = this;
         if (this.isInlineLabel) {
           this.inlineLabel.addClass('spinbox-wrapper');
         }
-        else if (!this.element.parent('.spinbox-wrapper').length) {
+        else if (!this.isWrapped) {
           this.element.wrap('<span class="spinbox-wrapper"></span>');
         }
 
         this.isTouch = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        if (this.isWrapped) {
+          this.buttons = {
+            'down' : this.element.parent().find('.down').button(),
+            'up' : this.element.parent().find('.up').button()
+          };
+
+          if (this.isTouch) {
+            this.buttons.down.attr('aria-hidden', 'true');
+            this.buttons.up.attr('aria-hidden', 'true');
+          }
+        }
 
         if (!this.buttons) {
           this.buttons = {
@@ -34011,61 +37632,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
-      bindEvents: function() {
-        var self = this,
-          preventClick = false;
-
-        // Main Spinbox Input
-        this.element.on('focus.spinbox', function() {
-          self.element.parent('.spinbox-wrapper').addClass('is-focused');
-        }).on('blur.spinbox', function() {
-          self.element.parent('.spinbox-wrapper').removeClass('is-focused');
-          // Explicitly trigger the change event if the "original" value is different from its current value.
-          // Prevents an issue where changing the value with arrow keys doesn't trigger the "change" event on blur.
-          self.element.trigger('change');
-        }).on('keydown.spinbox', function(e) {
-          self.handleKeyDown(e, self);
-        }).on('keypress.spinbox', function(e) {
-          self.handleKeyPress(e, self);
-        }).on('keyup.spinbox', function(e) {
-          self.handleKeyup(e, self);
-        }).on('afterPaste.mask', function() {
-          self.handleAfterPaste(self);
-        });
-
-        // Up and Down Buttons
-        var buttons = this.buttons.up.add(this.buttons.down[0]);
-        buttons.on('touchstart.spinbox mousedown.spinbox', function(e) {
-          if (e.which === 1) {
-
-            if (!preventClick) {
-              self.handleClick(e);
-            }
-
-            if (self.isTouch) {
-              return;
-            }
-
-            preventClick = true;
-            self.enableLongPress(e, self);
-
-            $(document).one('mouseup', function() {
-              self.disableLongPress(e, self);
-              preventClick = false;
-              self.element.focus();
-            });
-
-            //Stop MouseDown From Running
-            if (this.isTouch) {
-              e.preventDefault();
-              e.stopPropagation();
-            }
-          }
-        });
-
-        return this;
-      },
-
+      /**
+       * Enables Long Pressing one of the Spinbox control buttons.
+       * @param {jQuery.Event} e
+       * @param {Spinbox} self
+       */
       enableLongPress: function(e, self) {
         self.addButtonStyle(e);
         self.longPressInterval = setInterval(function() {
@@ -34075,13 +37646,21 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }, 140);
       },
 
+      /**
+       * Disables Long Pressing one of the Spinbox control buttons.
+       * @param {jQuery.Event} e
+       * @param {Spinbox} self
+       */
       disableLongPress: function(e, self) {
         self.removeButtonStyle(e);
         clearInterval(self.longPressInterval);
         self.longPressInterval = null;
       },
 
-      // Sets up the click/long press
+      /**
+       * Event handler for 'click' events
+       * @param {jQuery.Event} e
+       */
       handleClick: function(e) {
         if (this.isDisabled() || e.which !== 1) {
           return;
@@ -34100,6 +37679,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * Event handler for 'keydown' events
+       * @param {jQuery.Event} e
+       * @param {Spinbox} self
+       */
       handleKeyDown: function(e, self) {
         var key = e.which,
           validKeycodes = [35, 36, 37, 38, 39, 40];
@@ -34137,6 +37721,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * Event handler for 'keypress' events
+       * @param {jQuery.Event} e
+       * @param {Spinbox} self
+       */
       handleKeyPress: function(e, self) {
         if (self.isDisabled()) {
           return;
@@ -34165,6 +37754,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * Event handler for 'keyup' events
+       * @param {jQuery.Event} e
+       * @param {Spinbox} self
+       */
       handleKeyup: function(e, self) {
         if (self.isDisabled()) {
           return;
@@ -34192,9 +37786,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         self.updateAria(self.element.val());
       },
 
-      // Change a newly pasted value to this element's min or max values, if the pasted value goes
-      // beyond either of those limits.  Listens to an event emitted by the Mask plugin after pasted content
-      // is handled.
+      /**
+       * Change a newly pasted value to this element's min or max values, if the pasted value goes
+       * beyond either of those limits.  Listens to an event emitted by the Mask plugin after pasted content
+       * is handled.
+       * @param {Spinbox} self
+       */
       handleAfterPaste: function(self) {
         var min = Number(self.element.attr('min')),
           max = Number(self.element.attr('max')),
@@ -34204,6 +37801,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         self.updateVal(val);
       },
 
+      /**
+       * Increases the value of the Spinbox field, constrained by the step interval and maximum limit.
+       */
       increaseValue: function() {
         var val = this.checkForNumeric(this.element.val()) + Number(this.element.attr('step') || 1);
         if (this.element.attr('max') && val > this.element.attr('max')) {
@@ -34212,6 +37812,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.updateVal(val);
       },
 
+      /**
+       * Decreases the value of the Spinbox field, constrained by the step interval and minimum limit.
+       */
       decreaseValue: function() {
         var val = this.checkForNumeric(this.element.val()) - Number(this.element.attr('step') || 1);
         if (this.element.attr('min') && val < this.element.attr('min')) {
@@ -34220,13 +37823,21 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.updateVal(val);
       },
 
+      /**
+       * Sets a new spinbox value and focuses the spinbox.
+       * @param {Number|String} newVal
+       */
       updateVal: function(newVal) {
         this.element.val(newVal);
         this.updateAria(newVal);
         this.element.focus();
       },
 
-      // Sanitizes the value of the input field to an integer if it isn't already established.
+      /**
+       * Sanitizes the value of the input field to an integer if it isn't already established.
+       * @param {Number|String} val - will be converted to a number if it's a string.
+       * @returns {Number}
+       */
       checkForNumeric: function(val) {
         // Allow for NULL
         if (val === '') {
@@ -34243,7 +37854,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return 0;
       },
 
-      // Updates the "aria-valuenow" property on the spinbox element if the value is currently set
+      /**
+       * Updates the "aria-valuenow" property on the spinbox element if the value is currently set
+       */
       updateAria: function(val) {
         var min = this.element.attr('min'),
           max = this.element.attr('max');
@@ -34256,7 +37869,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.setIsDisabled(this.buttons.down, (val !== '' && min && val <= min) ? 'disable' : 'enable');
       },
 
-      // adds a "pressed-in" styling for one of the spinner buttons
+      /**
+       * adds a "pressed-in" styling for one of the spinner buttons
+       */
       addButtonStyle: function(e) {
         if (this.isDisabled()) {
           return;
@@ -34268,7 +37883,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         target.addClass('is-active');
       },
 
-      // removes "pressed-in" styling for one of the spinner buttons
+      /**
+       * Removes "pressed-in" styling for one of the spinner buttons
+       */
       removeButtonStyle: function(e) {
         if (this.isDisabled()) {
           return;
@@ -34280,20 +37897,35 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         target.removeClass('is-active');
       },
 
+      /**
+       * Enables the Spinbox
+       */
       enable: function() {
         this.element.prop('disabled', false);
         this.element.parent('.spinbox-wrapper').removeClass('is-disabled');
       },
 
+      /**
+       * Disables the Spinbox
+       */
       disable: function() {
         this.element.prop('disabled', true);
         this.element.parent('.spinbox-wrapper').addClass('is-disabled');
       },
 
+      /**
+       * Determines whether or not the spinbox is disabled.
+       * @returns {boolean}
+       */
       isDisabled: function() {
         return this.element.prop('disabled');
       },
 
+      /**
+       * Toggle whther or not the component is disabled.
+       * @param {jQuery[]} button
+       * @param {booelan} isDisabled
+       */
       setIsDisabled: function(button, isDisabled) {
         isDisabled = isDisabled === undefined ? true :
           (!isDisabled || isDisabled === 'enable') ? false : true;
@@ -34301,7 +37933,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         button[isDisabled ? 'addClass' : 'removeClass']('is-disabled');
       },
 
-      // Teardown
+      /**
+       * Teardown
+       */
       destroy: function() {
         var mask = this.element.data('mask');
         if (mask && typeof mask.destroy === 'function') {
@@ -34323,6 +37957,72 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.element.off('focus.spinbox blur.spinbox keydown.spinbox keyup.spinbox');
         this.element.unwrap();
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       * Sets up event handlers for this control and its sub-elements
+       *
+       * @listens Spinbox#events
+       * @param {Object} focus  &nbsp;-&nbsp;
+       * @param {Object} blur  &nbsp;-&nbsp;
+       * @param {Object} keydown  &nbsp;-&nbsp;
+       * @param {Object} keypress  &nbsp;-&nbsp;
+       * @param {Object} keyup  &nbsp;-&nbsp;
+       * @param {Object} afterpaste  &nbsp;-&nbsp;
+       */
+      bindEvents: function() {
+        var self = this,
+          preventClick = false;
+
+        // Main Spinbox Input
+        this.element.on('focus.spinbox', function() {
+          self.element.parent('.spinbox-wrapper').addClass('is-focused');
+        }).on('blur.spinbox', function() {
+          self.element.parent('.spinbox-wrapper').removeClass('is-focused');
+          // Explicitly trigger the change event if the "original" value is different from its current value.
+          // Prevents an issue where changing the value with arrow keys doesn't trigger the "change" event on blur.
+          self.element.trigger('change');
+        }).on('keydown.spinbox', function(e) {
+          self.handleKeyDown(e, self);
+        }).on('keypress.spinbox', function(e) {
+          self.handleKeyPress(e, self);
+        }).on('keyup.spinbox', function(e) {
+          self.handleKeyup(e, self);
+        }).on('afterpaste.mask', function() {
+          self.handleAfterPaste(self);
+        });
+
+        // Up and Down Buttons
+        var buttons = this.buttons.up.add(this.buttons.down[0]);
+        buttons.on('touchstart.spinbox mousedown.spinbox', function(e) {
+          if (e.which === 1) {
+
+            if (!preventClick) {
+              self.handleClick(e);
+            }
+
+            if (self.isTouch) {
+              return;
+            }
+
+            preventClick = true;
+            self.enableLongPress(e, self);
+
+            $(document).one('mouseup', function() {
+              self.disableLongPress(e, self);
+              preventClick = false;
+              self.element.focus();
+            });
+
+            //Stop MouseDown From Running
+            if (this.isTouch) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }
+        });
+
+        return this;
       }
     };
 
@@ -34387,7 +38087,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           w = parent.width(),
           direction = s.axis === 'x' ? 'left' : 'top',
           thisSide = parent.is('.content') ? parent.parent() : parent,
-          parentHeight;
+          parentHeight,
+          defaultOffset = 299;
 
         setTimeout(function() {
           parentHeight = parent.height();
@@ -34406,6 +38107,37 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             .parent().addClass('splitter-container');
 
           splitter.addClass('splitter-right');
+
+          if (s.collapseButton) {
+            var savedOffset = 0;
+            var $splitterButton = $('<button type="button" class="splitter-btn" id="splitter-collapse-btn" title="Collapse"><svg class="icon" focusable="false" aria-hidden="true" role="presentation"><use xlink:href="#icon-double-chevron"></use></svg></button>');
+            $splitterButton.appendTo(splitter);
+            if (splitter[0].offsetLeft > 10) {
+              $('#splitter-collapse-btn').addClass('rotate');
+            }
+            $('#splitter-collapse-btn').click(function() {
+              if (savedOffset <= 0) {
+                if (splitter[0].offsetLeft <= 10){
+                  self.splitTo(defaultOffset, parentHeight);
+                  $(this).addClass('rotate');
+                } else {
+                  savedOffset = splitter[0].offsetLeft;
+                  self.splitTo(0, parentHeight);
+                  $(this).removeClass('rotate');
+                }
+              } else {
+                if (splitter[0].offsetLeft > 10){
+                  savedOffset = splitter[0].offsetLeft;
+                  self.splitTo(0, parentHeight);
+                  $(this).removeClass('rotate');
+                } else {
+                  self.splitTo(savedOffset, parentHeight);
+                  $(this).addClass('rotate');
+                  savedOffset = 0;
+                }
+              }
+            });
+          }
         }
         else if (this.isSplitterHorizontal) {
           this.topPanel = splitter.prev();
@@ -34462,6 +38194,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         .on('dragend.splitter', function (e, args) {
           $('.overlay').remove();
 
+          if (s.collapseButton) {
+            if (args[direction] <= 10) {
+              $('#splitter-collapse-btn').removeClass('rotate');
+            } else {
+              $('#splitter-collapse-btn').addClass('rotate');
+            }
+          }
+
           if (s.resize === 'end') {
             self.splitTo(args[direction], parentHeight);
           }
@@ -34471,7 +38211,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           if (args.left <= 0) {
             return false;
           }
-
           if (s.resize === 'immediate') {
             self.splitTo(args[direction], parentHeight);
           }
@@ -34484,33 +38223,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         //Aria
         this.element.attr({'aria-dropeffect': 'move', 'tabindex': '0', 'aria-grabbed': 'false'});
-
-        return this;
-      },
-
-      // Sets up event handlers for this control and its sub-elements
-      handleEvents: function() {
-        var self = this;
-
-        this.element
-          .on('updated.' + pluginName, function() {
-            self.updated();
-          })
-          .on('keydown.' + pluginName, function(e) {
-            //Space will toggle selection
-            if (e.which === 32) {
-              self.toggleSelection();
-              e.preventDefault();
-            }
-
-            if (e.which === 37) {
-              self.splitTo(self.split - 15, self.parentHeight);
-            }
-
-            if (e.which === 39) {
-              self.splitTo(self.split + 15, self.parentHeight);
-            }
-          });
 
         return this;
       },
@@ -34593,7 +38305,41 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       destroy: function() {
         this.teardown();
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       * Sets up event handlers for this control and its sub-elements
+       *
+       * @fires Splitter#events
+       * @param {Object} updated  &nbsp;-&nbsp; Fires when the component updates.
+       * @param {Object} keydown  &nbsp;-&nbsp; Fires when a key is pressed while the component is focused.
+       */
+      handleEvents: function() {
+        var self = this;
+
+        this.element
+          .on('updated.' + pluginName, function() {
+            self.updated();
+          })
+          .on('keydown.' + pluginName, function(e) {
+            //Space will toggle selection
+            if (e.which === 32) {
+              self.toggleSelection();
+              e.preventDefault();
+            }
+
+            if (e.which === 37) {
+              self.splitTo(self.split - 15, self.parentHeight);
+            }
+
+            if (e.which === 39) {
+              self.splitTo(self.split + 15, self.parentHeight);
+            }
+          });
+
+        return this;
       }
+
     };
 
     // Initialize the plugin (Once)
@@ -35418,9 +39164,21 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The SwapList Component creates a list of options that can be picked and organized.
+    *
+    * @class SwapList
+    * @param {Array} available &nbsp;-&nbsp; An array containing items for the available bucket.
+    * @param {Array} selected  &nbsp;-&nbsp;  An array containing items for the selected bucket.
+    * @param {Array} additional  &nbsp;-&nbsp;  An array containing items for the additional bucket.
+    * @param {String} availableClass  &nbsp;-&nbsp; A class name linking the available root element.
+    * @param {String} selectedClass  &nbsp;-&nbsp; A class name linking the selected root element.
+    * @param {String} additionalClass &nbsp;-&nbsp; A class name linking the additional root element.
+    * @param {String} availableBtn &nbsp;-&nbsp; A class name linking the available button element.
+    * @param {String} selectedBtnLeft &nbsp;-&nbsp;  A class name linking the move left button element.
+    * @param {String} selectedBtnRight &nbsp;-&nbsp;  A class name linking the move right button element.
+    * @param {String} additionalBtn &nbsp;-&nbsp;  A class name linking the additional button element.
+    * @param {String} template &nbsp;-&nbsp; An Html String with the mustache template for the view.
+    */
     function SwapList(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -35437,6 +39195,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           s = self.settings;
         self.isTouch = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         self.isAdditional = $(s.additionalClass +' .listview', self.element).length > 0;
+
+        if (self.isTouch) {
+          self.element.addClass('is-touch');
+        }
         self.loadListview();
         self.initDataset();
         self.setElements();
@@ -35450,290 +39212,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }, 0);
       },
 
-      // Handle Events
-      handleEvents: function() {
-        var self = this,
-          settings = self.settings,
-          selections = self.selections;
-
-        // TOP BUTTONS =============================================================================
-        self.actionButtons.onTouchClick('swaplist').on('click.swaplist', function () {
-          var actionButton = $(this),
-            container = actionButton.closest('.card'); // Current list clicked from
-
-          if (container.is(settings.availableClass)) { // Move from Available to Selected
-            self.moveElements(settings.availableClass, settings.selectedClass);
-          }
-
-          else if (container.is(settings.additionalClass)) { // Move from Additional to Selected
-            self.moveElements(settings.additionalClass, settings.selectedClass);
-          }
-
-          // Move from Selected
-          else if (container.is(settings.selectedClass)) {
-            if (actionButton.is(settings.selectedBtnLeft)) { // to Available
-              self.moveElements(settings.selectedClass, settings.availableClass);
-            }
-            else if (actionButton.is(settings.selectedBtnRight)) { // to Additional
-              self.moveElements(settings.selectedClass, settings.additionalClass);
-            }
-          }
-        });
-
-
-        // KEYSTROKE ===============================================================================
-        // Keydown event to implement selections
-        self.containers.on('keydown.swaplist', function(e) {
-          var container = $(this);
-          e = e || window.event;
-          if(e.keyCode === 77 && self.hasModifier(e)) { // Modifier + M
-            if(!container.is(settings.selectedClass) ||
-              (container.is(settings.selectedClass) && self.selectedButtons.length === 1)) {
-              container.find(self.actionButtons).trigger('click.swaplist');
-            } else {
-              self.selectedButtons.first().focus();
-            }
-            e.preventDefault();
-          }
-        });
-
-        // Keydown event to handle selected container
-        self.selectedButtons.on('keydown.swaplist', function(e) {
-          var btn = $(this), index, move;
-          e = e || window.event;
-          if(e.keyCode === 13 || e.keyCode === 32) { // Enter or Space
-            btn.trigger('click.swaplist');
-            e.preventDefault();
-          }
-          // Left or Right arrow
-          if((e.keyCode === 37 || e.keyCode === 39) && self.selectedButtons.length > 1) {
-            index = self.selectedButtons.index(this);
-            move = e.keyCode === 37 ?
-              (index > 0 ? index-1 : self.selectedButtons.length-1) :
-              (index < self.selectedButtons.length-1 ? index+1 : 0);
-            self.selectedButtons[move].focus();
-          }
-        });
-
-        self.element.on('keydown.swaplist', self.tabButtonsStr, function(e) {
-          var btn = $(this),
-            keyCode = e.keyCode || e.which;
-
-          if(keyCode === 9 && !e.shiftKey) { // Tab key
-            $('li:first-child', btn.closest('.card')).focus();
-            e.preventDefault();
-          }
-        });
-
-
-        // DRAGGABLE ===============================================================================
-        self.element
-        .on('mousedown.swaplist', self.dragElements, function(e) {
-          if (self.handle) {
-            var target = $(e.target).closest('li');
-            target.attr({ 'draggable': $(e.target).is('.draggable') });
-          }
-          e.stopPropagation();
-        })
-        .onTouchClick('swaplist', self.dragElements)
-
-        // Dragstart - initiate dragging
-        .on(self.dragStart, self.dragElements, function(e) {
-          var touch, pos, posOwner, placeholderContainer,
-            scrollable = $('.scrollable'),
-            target = $(e.target).closest('li'),
-            list = $('.listview', target.closest('.card')).data('listview');
-
-          if (!!self.handle && !selections.isHandle) {
-            return;
-          }
-
-          if(!self.isTouch) {
-            self.draggedMakeSelected(list, target);
-          }
-
-          self.clearSelections(); // Clear selection before fill
-
-          selections.owner = target.closest('.card');
-          selections.dragged = target;
-          selections.draggedIndex = target.index();
-          selections.placeholder = target.clone(true);
-          selections.placeholder.attr('id', 'sl-placeholder');
-
-          self.setSelectionsItems(selections.owner);
-
-          selections.items = list.selectedItems;
-          self.element.triggerHandler('beforeswap', [selections.itemsData]);
-
-          $('.'+ settings.numOfSelectionsClass, settings.itemContentTempl).html(selections.items.length);
-          self.addDropeffects();
-
-          if(!self.isTouch) {
-            selections.dragged.addClass('is-dragging');
-            e.originalEvent.dataTransfer.setData('text', '');
-
-            if (selections.items.length > 1) {
-              $('.'+ settings.itemContentClass, selections.dragged).html(settings.itemContentTempl.html());
-            }
-          }
-          else {
-            touch = e.originalEvent.changedTouches[0];
-            pos = target.position();
-            posOwner = selections.owner.position();
-
-            scrollable = {
-              left: (scrollable.scrollLeft() || 0),
-              top: (scrollable.scrollTop() || 0)
-            };
-
-            self.offset = {
-              x: touch.pageX - ((posOwner.left + scrollable.left) + pos.left),
-              y: touch.pageY - ((posOwner.top + scrollable.top) + pos.top + target.outerHeight(true)*1.2)
-            };
-
-            for (var i = 0, l = self.containers.length; i < l; i++) {
-              self.containers[i].style.zIndex = '1';
-            }
-            selections.placeholderTouch = selections.dragged.clone(true);
-
-            if (selections.items.length > 1 && !$('#sl-placeholder-touch2').length) {
-              selections.dragged.clone()
-                .addClass('is-dragging-touch').attr('id', 'sl-placeholder-touch2')
-                .insertBefore(selections.dragged)
-                .hide();
-            }
-            selections.placeholderTouch.attr('id', 'sl-placeholder-touch').removeClass('is-selected').hide();
-
-            // Mobile view with three container(available, selected, additional) prepend to parent
-            placeholderContainer = (self.element.is('.one-third') && self.isMaxWidth(766)) ? self.element.parent() : self.element;
-            placeholderContainer.prepend('<ul id="sl-placeholder-container"></ul>');
-
-            $('#sl-placeholder-container').append(selections.placeholderTouch);
-            $('#sl-placeholder-container')[0].style.width = selections.owner.width() +'px';
-            $('#sl-placeholder-touch')[0].style.width = selections.owner.width() +'px';
-
-            self.draggTouchElement(e, selections.placeholderTouch);
-          }
-          e.stopPropagation();
-        })
-
-        // Dragenter - set that related/droptarget
-        .on(self.dragEnterWhileDragging, self.dragElements, function(e) {
-          if (!selections.dragged) {
-            return;
-          }
-          self.element.triggerHandler('draggingswap', [selections.itemsData]);
-          selections.related = e.target;
-          $('ul, li', self.element).removeClass('over');
-          $(e.target).closest('ul, li').addClass('over');
-          selections.droptarget = $(selections.related).closest('.card');
-          $('[aria-grabbed="true"]', self.element).not(selections.dragged).slideUp();
-          e.stopPropagation();
-        })
-
-        // Dragover - allow the drag by preventing default, for touch set related/droptarget
-        .on(self.dragOverWhileDragging, self.dragElements, function(e) {
-          if (!selections.dragged) {
-            return;
-          }
-          var touch,
-            overItem = $(this),
-            list = $('.listview', selections.dragged.closest('.card')).data('listview');
-
-          if(self.isTouch) {
-            if (!!self.handle && !selections.isHandle) {
-              return;
-            }
-
-            if (!selections.isInSelection) {
-              self.draggedMakeSelected(list, selections.dragged);
-              selections.items = list.selectedItems;
-              $('.'+ settings.numOfSelectionsClass, settings.itemContentTempl).html(selections.items.length);
-            }
-
-            touch = e.originalEvent.touches[0];
-            overItem = self.getElementByTouchInList($('ul, li', self.element), touch.pageX, touch.pageY) || overItem;
-
-            selections.dragged.addClass('is-dragging');
-            selections.placeholderTouch.addClass('is-dragging is-dragging-touch');
-            selections.placeholderTouch.show();
-
-            $('[aria-grabbed="true"]', self.element)
-              .not(selections.dragged)
-              .not(selections.placeholderTouch)
-              .not('#sl-placeholder-touch2')
-              .slideUp();
-
-            if (selections.items.length > 1) {
-              $('.'+ settings.itemContentClass, (selections.placeholderTouch.add('#sl-placeholder-touch2')))
-                .html(settings.itemContentTempl.html());
-
-              $('#sl-placeholder-touch2').show();
-              selections.dragged.hide();
-            }
-            self.draggTouchElement(e, selections.placeholderTouch);
-
-            self.element.triggerHandler('draggingswap', [selections.itemsData]);
-            selections.related = overItem;
-            $('ul, li', this.element).removeClass('over');
-            overItem.closest('ul, li').addClass('over');
-            selections.droptarget = selections.related.closest('.card');
-          }
-          e.preventDefault();
-          e.stopPropagation();
-        })
-
-        // Dragend - implement items being validly dropped into targets
-        .on(self.dragEnd, self.dragElements, function(e) {
-          var related = $(selections.related).closest('li'),
-          ul = $('ul', selections.droptarget),
-          currentSize = $('li', ul).length,
-          size = selections.items.length + currentSize;
-
-          self.unselectElements($('.listview', selections.owner).data('listview'));
-
-          $.each(selections.items, function(index, val) {
-            val = $(val);
-            if (currentSize && !$(selections.related).is('ul')) {
-              var isLess = (related.index() < selections.draggedIndex),
-                el = isLess ? val : $(selections.items[(selections.items.length-1) - index]),
-                posinset = related.index()+(isLess ? index+1 : index+2);
-
-              val.attr({ 'aria-posinset': posinset, 'aria-setsize': size });
-              related[isLess ? 'before' : 'after'](el);
-
-            } else {
-              val.attr({ 'aria-posinset': currentSize+index+1, 'aria-setsize': size });
-              ul.append(val);
-            }
-            val.focus();
-          });
-
-          if (selections.items.length > 1) {
-            $('.'+ settings.itemContentClass, selections.dragged).html(
-              $('.'+ settings.itemContentClass, selections.placeholder).html()
-            );
-            if(self.isTouch) {
-              selections.dragged.show();
-            }
-          }
-
-          if(self.isTouch) {
-            for (var i = 0, l = self.containers.length; i < l; i++) {
-              self.containers[i].style.zIndex = '';
-            }
-          }
-
-          selections.isHandle = null;
-          $('[aria-grabbed="true"]', self.element).show();
-          self.afterUpdate($('.listview', selections.droptarget).data('listview'));
-          e.preventDefault();
-          e.stopPropagation();
-        });
-      }, // END: Handle Events ---------------------------------------------------------------------
-
-
-      // Load listview
+      /**
+       * Load listview
+       * @private
+       */
       loadListview: function() {
         var i, l, lv, c,
           self = this,
@@ -35757,7 +39239,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       },
 
 
-      // Set elements
+      /**
+       * Set elements
+       * @private
+       */
       setElements: function() {
         this.offset = null;
 
@@ -35810,7 +39295,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         );
       },
 
-      // When list is Empty force to add css class "is-muliselect"
+      /**
+       * When list is Empty force to add css class "is-muliselect"
+       * @private
+       */
       isMultiSelectClass: function() {
         var i, l, lv,
           s = this.settings,
@@ -35824,7 +39312,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Initialize pre selected items
+      /**
+       * Initialize pre selected items
+       * @private
+       * @param {jQuery|HTMLElement} container
+       */
       initSelected: function(container) {
         var list;
         container = this.isjQuery(container) ? container : $(container, this.element);
@@ -35839,7 +39331,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Move Elements
+      /**
+       * Move Elements
+       * @private
+       * @param {jQuery[]|HTMLElement} from
+       * @param {jQuery[]|HTMLElement} to
+       */
       moveElements: function(from, to) {
         var ul, size, currentSize,
           self = this, list;
@@ -35852,7 +39349,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         self.selections.owner = from;
         self.selections.droptarget = to;
 
-        if(self.isTouch) {
+        if (self.isTouch) {
           $.each(list.selectedItems, function(index, val) {
             self.selections.items[index] = val.closest('li');
           });
@@ -35881,25 +39378,41 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Un-select Elements
+      /**
+       * Un-select Elements
+       * @private
+       * @param {jQuery|HTMLElement} list
+       */
       unselectElements: function(list) {
         $.each(list.selectedItems, function(index, val) {
           list.select(val);
         });
       },
 
-      // Detect browser support for drag-n-drop
+      /**
+       * Detect browser support for drag-n-drop
+       * @private
+       * @returns {boolean}
+       */
       isDragAndDropSupports: function() {
         var div = document.createElement('div');
         return ('draggable' in div) || ('ondragstart' in div && 'ondrop' in div);
       },
 
-      // Detect browser support for match-media
+      /**
+       * Detect browser support for match-media
+       * @private
+       * @returns {boolean}
+       */
       isMatchMediaSupports: function() {
         return (typeof window.matchMedia !== 'undefined' || typeof window.msMatchMedia !== 'undefined');
       },
 
-      // Detect browser viewport
+      /**
+       * Detect browser viewport
+       * @private
+       * @returns {Object}
+       */
       viewport: function() {
         var e = window, a = 'inner';
         if (!('innerWidth' in window)) {
@@ -35909,12 +39422,19 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return { width : e[a+'Width'] , height : e[a+'Height'] };
       },
 
-      // Check given [max-width] is true/false
+      /**
+       * Check given [max-width] is true/false
+       * @private
+       * @returns {boolean}
+       */
       isMaxWidth: function(w) {
         return ((this.isMatchMediaSupports() && window.matchMedia('(max-width: '+ w +'px)').matches) || this.viewport().width <= w);
       },
 
-      // Make Draggable
+      /**
+       * Make Draggable
+       * @private
+       */
       makeDraggable: function() {
         var self = this,
           ul = $('ul', self.element);
@@ -35922,7 +39442,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         if (self.isDragAndDropSupports) {
           // Use Handle if available
           self.handle = ul.first().attr('data-swap-handle');
-          self.handle = (!self.isTouch && !!$(self.handle, ul).length) ? self.handle : null;
+          self.handle = $(self.handle, ul).length > 0 ? self.handle : null;
+          // self.handle = (!self.isTouch && $(self.handle, ul).length > 0) ? self.handle : null;
           $(self.handle, ul).addClass('draggable')
             .off('mousedown.swaplist touchstart.swaplist')
             .on('mousedown.swaplist touchstart.swaplist', function() { self.selections.isHandle = true; })
@@ -35935,7 +39456,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             .not('a[href], img')
               .off('selectstart.swaplist')
               .on('selectstart.swaplist', function() {
-              if(this.dragDrop) { this.dragDrop(); } //ie9
+              if (this.dragDrop) { this.dragDrop(); } //ie9
               return false;
             }).end()
             .attr({'draggable': true})
@@ -35943,7 +39464,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Get Element By Touch In List
+      /**
+       * Get Element By Touch In List
+       * @private
+       * @param {jQuery|HTMLElement} list
+       * @param {Number} x
+       * @param {Number} y
+       */
       getElementByTouchInList: function(list, x, y) {
         var returns = false;
         $(list).each(function() {
@@ -35956,19 +39483,31 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return returns;
       },
 
-      // Dragg touch element
+      /**
+       * Drag touch element
+       * @private
+       * @param {jQuery.Event} e
+       * @param {jQuery[]} elm
+       */
       draggTouchElement: function(e, elm) {
         var orig = e.originalEvent.changedTouches[0];
         elm[0].style.top = (orig.pageY - this.offset.y) + 'px';
         elm[0].style.left = (orig.pageX - this.offset.x) + 'px';
       },
 
-      // Shorctut for testing whether a modifier is pressed
+      /**
+       * Shorctut for testing whether a modifier is pressed
+       * @private
+       * @returns {boolean}
+       */
       hasModifier: function(e) {
         return (e.ctrlKey || e.metaKey || e.shiftKey);
       },
 
-      // Applying dropeffect to the target containers
+      /**
+       * Applying dropeffect to the target containers
+       * @private
+       */
       addDropeffects: function() {
         this.targets.each(function() {
           $(this).attr({'aria-dropeffect': 'move', 'tabindex': 0});
@@ -35978,7 +39517,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
-      // Removing dropeffect from the target containers
+      /**
+       * Removing dropeffect from the target containers
+       * @private
+       */
       clearDropeffects: function() {
         this.targets.attr({'aria-dropeffect': 'none'}).removeAttr('tabindex');
         $.each(this.selections.items, function(index, val) {
@@ -35987,7 +39529,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
-      // Clear selections
+      /**
+       * Clear selections
+       * @private
+       */
       clearSelections: function() {
         this.selections.items = [];
         this.selections.itemsData = [];
@@ -36002,7 +39547,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         $('#sl-placeholder-container, #sl-placeholder-touch, #sl-placeholder-touch2, #sl-placeholder').remove();
       },
 
-      // Set selections items
+      /**
+       * Set selections items
+       * @private
+       * @param {jQuery[]|HTMLElement} container
+       */
       setSelectionsItems: function(container) {
         container = this.isjQuery(container) ? container : $(container, this.element);
         var nodes = $('.listview li', container),
@@ -36015,7 +39564,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Init dataset
+      /**
+       * Init dataset
+       * @private
+       */
       initDataset: function() {
         var s = this.settings,
           containers = [
@@ -36055,7 +39607,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Get data list
+      /**
+       * Get data list
+       * @private
+       * @param {jQuery[]|HTMLElement} container
+       * @returns {Object}
+       */
       getDataList: function(container) {
         var s = this.settings,
           d = this.dataset;
@@ -36065,12 +39622,23 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             (container.is(s.availableClass) ? d.available : []));
       },
 
-      // Move an array element position
+      /**
+       * Move an array element position
+       * @private
+       * @param {Array} arr
+       * @param {Number} from
+       * @param {Number} to
+       */
       arrayIndexMove: function(arr, from, to) {
         arr.splice(to, 0, arr.splice(from, 1)[0]);
       },
 
-      // Sync dataset
+      /**
+       * Sync dataset
+       * @private
+       * @param {} owner
+       * @param {jQuery[]} droptarget
+       */
       syncDataset: function(owner, droptarget) {
         var droptargetNodes = $('.listview li', droptarget),
           ownerDataList = this.getDataList(owner),
@@ -36094,12 +39662,20 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Check if a object is jQuery object
+      /**
+       * Check if a object is jQuery object
+       * @private
+       * @param {Object} obj - the object being checked
+       */
       isjQuery: function (obj) {
         return (obj && (obj instanceof jQuery || obj.constructor.prototype.jquery));
       },
 
-      // Update attributes
+      /**
+       * Update attributes
+       * @private
+       * @param {jQuery[]} list
+       */
       updateAttributes: function(list) {
         var items = $('li', list),
           size = items.length;
@@ -36109,7 +39685,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
-      // After update
+      /**
+       * After update
+       * @private
+       * @param {jQuery[]} list
+       */
       afterUpdate: function(list) {
         var self = this;
 
@@ -36133,28 +39713,44 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }, 100);
       },
 
-      // Get items from provided container
+      /**
+       * Get items from provided container
+       * @private
+       * @param {jQuery[]|HTMLElement} container
+       * @returns {Object}
+       */
       getItems: function(container) {
         container = this.isjQuery(container) ? container : $(container, this.element);
         return this.getDataList(container);
       },
 
-      // Get available dataset
+      /**
+        * Get the current representative dataset with only the available elements in it.
+       */
       getAvailable: function() {
         return this.getDataList(this.settings.availableClass);
       },
 
-      // Get selected dataset
+      /**
+       * Get the current representative dataset with only the selected elements in it.
+       */
       getSelected: function() {
         return this.getDataList(this.settings.selectedClass);
       },
 
-      // Get additional dataset
+      /**
+       * Get the current representative dataset with only the additional elements in it.
+       */
       getAdditional: function() {
         return this.getDataList(this.settings.additionalClass);
       },
 
-      // Make selected if dragged element was not selected
+      /**
+       * Make selected if dragged element was not selected
+       * @private
+       * @param {Object} list
+       * @param {jQuery[]} target
+       */
       draggedMakeSelected: function(list, target) {
         var self = this, isInSelection = false;
         if (!self.selections.isInSelection) {
@@ -36172,7 +39768,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Update dataset
+      /**
+       * Updates the internal datasets and refresh the ui.
+       * @param {Object} ds &nbsp;-&nbsp; The updated dataset(s) of the form `{available: [], selected: [], additional: []}`
+       */
       updateDataset: function(ds) {
         var i, l, lv, c, api,
           self = this,
@@ -36201,6 +39800,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         self.initSelected(s.additionalClass);
       },
 
+      /**
+       * Removes event bindings from the swaplist instance.
+       * @private
+       * @returns {this}
+       */
       unbind: function() {
         this.actionButtons.off('click.swaplist');
         this.containers.off('keydown.swaplist');
@@ -36211,17 +39815,315 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
+      /**
+       * Updates this instance of the swaplist component with new settings.
+       * @private
+       * @returns {this}
+       */
       updated: function() {
         return this
           .unbind()
           .init();
       },
 
-      // Teardown
+      /**
+       * Destroys this instance of the swaplist component and removes its link to its base element.
+       */
       destroy: function() {
         this.unbind();
         $.removeData(this.element[0], pluginName);
-      }
+      },
+
+      /**
+       * Sets up event handlers for this control and its sub-elements
+       *
+       * @fires Swaplist#events
+      * @param {Object} swapupdate &nbsp;-&nbsp; Fires when any bucket has its content changed.
+       */
+      handleEvents: function() {
+        var self = this,
+          settings = self.settings,
+          selections = self.selections;
+
+        // TOP BUTTONS =============================================================================
+        self.actionButtons.off('click.swaplist').on('click.swaplist', function () {
+          var actionButton = $(this),
+            container = actionButton.closest('.card'); // Current list clicked from
+
+          if (container.is(settings.availableClass)) { // Move from Available to Selected
+            self.moveElements(settings.availableClass, settings.selectedClass);
+          }
+
+          else if (container.is(settings.additionalClass)) { // Move from Additional to Selected
+            self.moveElements(settings.additionalClass, settings.selectedClass);
+          }
+
+          // Move from Selected
+          else if (container.is(settings.selectedClass)) {
+            if (actionButton.is(settings.selectedBtnLeft)) { // to Available
+              self.moveElements(settings.selectedClass, settings.availableClass);
+            }
+            else if (actionButton.is(settings.selectedBtnRight)) { // to Additional
+              self.moveElements(settings.selectedClass, settings.additionalClass);
+            }
+          }
+        });
+
+
+        // KEYSTROKE ===============================================================================
+        // Keydown event to implement selections
+        self.containers.on('keydown.swaplist', function(e) {
+          var container = $(this);
+          e = e || window.event;
+          if (e.keyCode === 77 && self.hasModifier(e)) { // Modifier + M
+            if (!container.is(settings.selectedClass) ||
+              (container.is(settings.selectedClass) && self.selectedButtons.length === 1)) {
+              container.find(self.actionButtons).trigger('click.swaplist');
+            } else {
+              self.selectedButtons.first().focus();
+            }
+            e.preventDefault();
+          }
+        });
+
+        // Keydown event to handle selected container
+        self.selectedButtons.on('keydown.swaplist', function(e) {
+          var btn = $(this), index, move;
+          e = e || window.event;
+          if (e.keyCode === 13 || e.keyCode === 32) { // Enter or Space
+            btn.trigger('click.swaplist');
+            e.preventDefault();
+          }
+          // Left or Right arrow
+          if ((e.keyCode === 37 || e.keyCode === 39) && self.selectedButtons.length > 1) {
+            index = self.selectedButtons.index(this);
+            move = e.keyCode === 37 ?
+              (index > 0 ? index-1 : self.selectedButtons.length-1) :
+              (index < self.selectedButtons.length-1 ? index+1 : 0);
+            self.selectedButtons[move].focus();
+          }
+        });
+
+        self.element.on('keydown.swaplist', self.tabButtonsStr, function(e) {
+          var btn = $(this),
+            keyCode = e.keyCode || e.which;
+
+          if (keyCode === 9 && !e.shiftKey) { // Tab key
+            $('li:first-child', btn.closest('.card')).focus();
+            e.preventDefault();
+          }
+        });
+
+
+        // DRAGGABLE ===============================================================================
+        self.element
+        .on('mousedown.swaplist', self.dragElements, function(e) {
+          if (self.handle) {
+            var target = $(e.target).closest('li');
+            target.attr({ 'draggable': $(e.target).is('.draggable') });
+          }
+          e.stopPropagation();
+        })
+        .onTouchClick('swaplist', self.dragElements)
+
+        // Dragstart - initiate dragging
+        .on(self.dragStart, self.dragElements, function(e) {
+          e.stopImmediatePropagation();
+          if (self.handle && !selections.isHandle) {
+            e.stopPropagation();
+            return;
+          }
+          var rect, touch, placeholderContainer,
+            target = $(e.target).closest('li'),
+            list = $('.listview', target.closest('.card')).data('listview');
+
+          // Not in draging area
+          if (!list) {
+            return;
+          }
+
+          if (!self.isTouch) {
+            self.draggedMakeSelected(list, target);
+          }
+
+          self.clearSelections(); // Clear selection before fill
+
+          selections.owner = target.closest('.card');
+          selections.dragged = target;
+          selections.draggedIndex = target.index();
+          selections.placeholder = target.clone(true);
+          selections.placeholder.attr('id', 'sl-placeholder');
+
+          self.setSelectionsItems(selections.owner);
+
+          selections.items = list.selectedItems;
+          self.element.triggerHandler('beforeswap', [selections.itemsData]);
+
+          $('.'+ settings.numOfSelectionsClass, settings.itemContentTempl).html(selections.items.length);
+          self.addDropeffects();
+
+          if (!self.isTouch) {
+            selections.dragged.addClass('is-dragging');
+            e.originalEvent.dataTransfer.setData('text', '');
+
+            if (selections.items.length > 1) {
+              $('.'+ settings.itemContentClass, selections.dragged).html(settings.itemContentTempl.html());
+            }
+          }
+          else {
+            rect = target[0].getBoundingClientRect();
+            touch = e.originalEvent.changedTouches[0];
+
+            //Save offset
+            self.offset = {
+              x: touch.pageX - rect.left,
+              y: touch.pageY - rect.top
+            };
+
+            for (var i = 0, l = self.containers.length; i < l; i++) {
+              self.containers[i].style.zIndex = '1';
+            }
+            selections.placeholderTouch = selections.dragged.clone(true);
+
+            if (selections.items.length > 1 && !$('#sl-placeholder-touch2').length) {
+              selections.dragged.clone()
+                .addClass('is-dragging-touch').attr('id', 'sl-placeholder-touch2')
+                .insertBefore(selections.dragged)
+                .hide();
+            }
+            selections.placeholderTouch.attr('id', 'sl-placeholder-touch').removeClass('is-selected').hide();
+
+            // Mobile view with three container(available, selected, additional) prepend to parent
+            placeholderContainer = (self.element.is('.one-third') && self.isMaxWidth(766)) ? self.element.parent() : self.element;
+            placeholderContainer.prepend('<ul id="sl-placeholder-container"></ul>');
+
+            $('#sl-placeholder-container').append(selections.placeholderTouch);
+            $('#sl-placeholder-container')[0].style.width = selections.owner.width() +'px';
+            $('#sl-placeholder-touch')[0].style.width = selections.owner.width() +'px';
+
+            self.draggTouchElement(e, selections.placeholderTouch);
+          }
+          e.stopPropagation();
+        })
+
+        // Dragenter - set that related/droptarget
+        .on(self.dragEnterWhileDragging, self.dragElements, function(e) {
+          if (!selections.dragged) {
+            return;
+          }
+          self.element.triggerHandler('draggingswap', [selections.itemsData]);
+          selections.related = e.target;
+          $('ul, li', self.element).removeClass('over');
+          $(e.target).closest('ul, li').addClass('over');
+          selections.droptarget = $(selections.related).closest('.card');
+          $('[aria-grabbed="true"]', self.element).not(selections.dragged).slideUp();
+          e.stopPropagation();
+        })
+
+        // Dragover - allow the drag by preventing default, for touch set related/droptarget
+        .on(self.dragOverWhileDragging, self.dragElements, function(e) {
+          if (!selections.dragged) {
+            return;
+          }
+          var touch,
+            overItem = $(this),
+            list = $('.listview', selections.dragged.closest('.card')).data('listview');
+
+          if (self.isTouch) {
+            if (!!self.handle && !selections.isHandle) {
+              return;
+            }
+
+            if (!selections.isInSelection) {
+              self.draggedMakeSelected(list, selections.dragged);
+              selections.items = list.selectedItems;
+              $('.'+ settings.numOfSelectionsClass, settings.itemContentTempl).html(selections.items.length);
+            }
+
+            touch = e.originalEvent.touches[0];
+            overItem = self.getElementByTouchInList($('ul, li', self.element), touch.pageX, touch.pageY) || overItem;
+
+            selections.dragged.addClass('is-dragging');
+            selections.placeholderTouch.addClass('is-dragging is-dragging-touch');
+            selections.placeholderTouch.show();
+
+            $('[aria-grabbed="true"]', self.element)
+              .not(selections.dragged)
+              .not(selections.placeholderTouch)
+              .not('#sl-placeholder-touch2')
+              .slideUp();
+
+            if (selections.items.length > 1) {
+              $('.'+ settings.itemContentClass, (selections.placeholderTouch.add('#sl-placeholder-touch2')))
+                .html(settings.itemContentTempl.html());
+
+              $('#sl-placeholder-touch2').show();
+              selections.dragged.hide();
+            }
+            self.draggTouchElement(e, selections.placeholderTouch);
+
+            self.element.triggerHandler('draggingswap', [selections.itemsData]);
+            selections.related = overItem;
+            $('ul, li', this.element).removeClass('over');
+            overItem.closest('ul, li').addClass('over');
+            selections.droptarget = selections.related.closest('.card');
+          }
+          e.preventDefault();
+          e.stopPropagation();
+        })
+
+        // Dragend - implement items being validly dropped into targets
+        .on(self.dragEnd, self.dragElements, function(e) {
+          if (!selections.dragged) {
+            return;
+          }
+          var related = $(selections.related).closest('li'),
+          ul = $('ul', selections.droptarget),
+          currentSize = $('li', ul).length,
+          size = selections.items.length + currentSize;
+
+          self.unselectElements($('.listview', selections.owner).data('listview'));
+
+          $.each(selections.items, function(index, val) {
+            val = $(val);
+            if (currentSize && !$(selections.related).is('ul')) {
+              var isLess = (related.index() < selections.draggedIndex),
+                el = isLess ? val : $(selections.items[(selections.items.length-1) - index]),
+                posinset = related.index()+(isLess ? index+1 : index+2);
+
+              val.attr({ 'aria-posinset': posinset, 'aria-setsize': size });
+              related[isLess ? 'before' : 'after'](el);
+
+            } else {
+              val.attr({ 'aria-posinset': currentSize+index+1, 'aria-setsize': size });
+              ul.append(val);
+            }
+            val.focus();
+          });
+
+          if (selections.items.length > 1) {
+            $('.'+ settings.itemContentClass, selections.dragged).html(
+              $('.'+ settings.itemContentClass, selections.placeholder).html()
+            );
+            if (self.isTouch) {
+              selections.dragged.show();
+            }
+          }
+
+          if (self.isTouch) {
+            for (var i = 0, l = self.containers.length; i < l; i++) {
+              self.containers[i].style.zIndex = '';
+            }
+          }
+
+          selections.isHandle = null;
+          $('[aria-grabbed="true"]', self.element).show();
+          self.afterUpdate($('.listview', selections.droptarget).data('listview'));
+          e.preventDefault();
+          e.stopPropagation();
+        });
+      } // END: Handle Events ---------------------------------------------------------------------
+
     };
 
     // Initialize the plugin (Once)
@@ -36380,7 +40282,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           addTabButton: false, // If set to true, creates a button at the end of the tab list that can be used to add an empty tab and panel
           addTabButtonCallback: null, // if defined as a function, will be used in-place of the default Tab Adding method
           ajaxOptions: null, // if defined, will be used by any internal Tabs AJAX calls as the desired request settings.
-          containerElement: null, // Defines a separate element to be used for containing the tab panels.  Defaults to the Tab Container itself
+          containerElement: null, // Defines a separate element to be used for containing the tab panels.  Defaults to a `.tab-panel-container` element that is created if it doesn't already exist.
           changeTabOnHashChange: false, // If true, will change the selected tab on invocation based on the URL that exists after the hash
           hashChangeCallback: null, // If defined as a function, provides an external method for adjusting the current page hash used by these tabs
           lazyLoad: true, // if true, when using full URLs in tab HREFs, or when using Ajax calls, tabs will be loaded as needed instead of the markup all being established at once.
@@ -36388,6 +40290,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           source: null, // If defined, will serve as a way of pulling in external content to fill tabs.
           sourceArguments: {}, // If a source method is defined, this flexible object can be passed into the source method, and augmented with parameters specific to the implementation.
           tabCounts: false, // If true, Displays a modifiable count above each tab.
+          verticalResponsive: false // If Vertical Tabs & true, will automatically switch to Horizontal Tabs on smaller breakpoints.
         },
         tabContainerTypes = ['horizontal', 'vertical', 'module-tabs', 'header-tabs'],
         settings = $.extend({}, defaults, options);
@@ -36421,33 +40324,78 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       },
 
       build: function() {
-        var self = this;
+        var self = this,
+          tabPanelContainer,
+          moveTabPanelContainer = false;
 
-        this.container = this.element;
-        // Special case for Header Tabs, find the page container use that as the container
-        if (this.element.closest('.header').length > 0) {
-          this.container = $('body > .page-container');
-          if (!this.container.length) {
-            this.container = this.element;
+        // Check for a tab panel container immediately after the `.tab-container` element (default as of Soho Xi 4.3.0)
+        tabPanelContainer = this.element.next('.tab-panel-container');
+
+        // Auto-detect and move existing tab-panel containers in key areas, if applicable.
+        // Check inside the container first
+        if (!tabPanelContainer.length) {
+          tabPanelContainer = this.element.children('.tab-panel-container');
+
+          if (!this.isVerticalTabs()) {
+            moveTabPanelContainer = true;
           }
         }
 
-        // Setting containerElement overrides any changes to the tab panel container.
-        var container = $(this.settings.containerElement);
-        if (container.length) {
-          this.container = container;
-          this.container.addClass('tab-panel-container');
+        // Special case for Header Tabs, find the page container and use that as the container
+        var bodyPageContainer = $('body > .page-container, .application-menu + .page-container');
+        if (this.element.closest('.header').length > 0 && bodyPageContainer.length) {
+          tabPanelContainer = bodyPageContainer;
+        }
+
+        // Special case for Module Tabs, where it's possible for layout reasons for there to be
+        // an application menu element adjacent between the Tab list and the Tab Panel container
+        if (this.element.next('.application-menu').length) {
+          tabPanelContainer = this.element.next().next('.page-container');
+          moveTabPanelContainer = false;
+        }
+
+        // Defining `this.settings.containerElement` ultimately overrides any internal changes to the tab panel container.
+        if (this.settings.containerElement && $(this.settings.containerElement).length) {
+          tabPanelContainer = $(this.settings.containerElement);
+          moveTabPanelContainer = false;
+        }
+
+        // If a `.tab-panel-container` still doesn't exist, create one.
+        if (!tabPanelContainer || !tabPanelContainer.length) {
+          tabPanelContainer = $('<div class="tab-panel-container"></div>');
+          moveTabPanelContainer = true;
+        }
+
+        if (!tabPanelContainer[0].classList.contains('tab-panel-container')) {
+          tabPanelContainer[0].classList.add('tab-panel-container');
+        }
+        if (moveTabPanelContainer) {
+          tabPanelContainer.insertAfter(this.element);
+        }
+
+        this.container = tabPanelContainer;
+
+        // Detect the existence of a "tab-list-container" element, if applicable.
+        // Tab List containers are optional for all tab container types, but mandatory for
+        // Composite Form tabs.
+        var tablistContainer = this.element.children('.tab-list-container');
+        if (!tablistContainer.length && this.isScrollableTabs()) {
+          tablistContainer = $('<div class="tab-list-container"></div>').prependTo(this.element);
+        }
+        if (tablistContainer.length) {
+          this.tablistContainer = tablistContainer;
         }
 
         // Add a default tabs class of "horizontal" if it doesn't already exist
-        var noClass = true;
+        var noClass = true,
+          closestHeader = this.element.closest('.header');
         tabContainerTypes.forEach(function tabTypeIterator(val, i) {
           if (self.element.hasClass(tabContainerTypes[i])) {
             noClass = false;
           }
         });
         if (noClass) {
-          if (this.element.closest('.header').length) {
+          if (closestHeader.length) {
             self.element.addClass('header-tabs');
           } else {
             self.element.addClass('horizontal');
@@ -36456,13 +40404,41 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         // Build Tab Counts
         if (self.settings.tabCounts) {
-          self.container.addClass('has-counts');
+          self.element.addClass('has-counts');
         }
 
         //Attach Tablist role and class to the tab headers container
-        self.tablist = self.element.children('.tab-list');
-        if (!self.tablist.length) {
-          self.tablist = self.element.children('.tab-list-container').children('.tab-list');
+        this.tablist = this.element.children('.tab-list');
+        if (!this.tablist.length) {
+
+          // If we have a `.tab-list-container` element, check that before creating markup
+          if (this.tablistContainer) {
+            this.tablist = this.tablistContainer.children('.tab-list');
+          }
+
+          // Create and append the `.tab-list` if it still doesn't exist.
+          if (!this.tablist.length) {
+            this.tablist = $('<ul class="tab-list"></ul>');
+            if (this.tablistContainer) {
+              this.tablist.appendTo(this.tablistContainer);
+            } else {
+              this.tablist.appendTo(this.element);
+            }
+          }
+        }
+
+        // Double-check that the `.tab-list-container` actually contains the `.tab-list`.
+        // Move it if necessary.
+        if (this.tablistContainer) {
+          if (!this.tablist.parent().is(this.tablistContainer)) {
+            this.tablistContainer.append(this.tablist);
+          }
+
+          this.tablistContainer.on('mousewheel.tabs', function(e) {
+            if (e.deltaY) {
+              this.scrollLeft += e.deltaY;
+            }
+          });
         }
 
         self.tablist
@@ -36472,55 +40448,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             'aria-multiselectable': 'false'
           });
 
-        if (this.hasSquareFocusState()) {
-          self.focusState = self.container.children('.tab-focus-indicator');
-          if (!self.focusState.length) {
-            self.focusState = $('<div class="tab-focus-indicator" role="presentation"></div>').insertBefore(self.tablist);
-          }
-        }
+        // Conditionally Change layout classes if veritcal tabs is in responsive mode, and breakpoints match
+        this.checkResponsive();
 
-        if (this.hasAnimatedBar()) {
-          self.animatedBar = self.container.children('.animated-bar');
-          if (!self.animatedBar.length) {
-            self.animatedBar = $('<div class="animated-bar" role="presentation"></div>').insertBefore(self.tablist);
-          }
-        }
-
-        // Add the markup for the "More" button if it doesn't exist.
-        self.moreButton = self.tablist.next('.tab-more');
-        if (!self.isVerticalTabs() && self.moreButton.length === 0) {
-          var button = $('<div>').attr({'class': 'tab-more'});
-          button.append( $('<span class="more-text">').text(Locale.translate('More')));
-          button.append($.createIconElement({ classes: 'icon-more', icon: 'dropdown' }));
-          self.tablist.after(button);
-          self.moreButton = button;
-        }
-
-        // Add the application menu Module Tab, if applicable
-        if (self.isModuleTabs() && !this.tablist.find('.application-menu-trigger').length) {
-          var appMenuTrigger = $('<li class="tab application-menu-trigger"><a href="#">' +
-            '<span class="icon app-header"><span class="one"></span><span class="two"></span><span class="three"></span></span>' +
-            '<span>Menu</span>' +
-            '</a></tab>');
-          this.tablist.prepend(appMenuTrigger);
-        }
-
-        // Add Tab Button
-        if (this.settings.addTabButton) {
-          this.addTabButton = this.moreButton.next('.add-tab-button');
-          if (!this.addTabButton || !this.addTabButton.length) {
-            this.addTabButton = $('<div class="add-tab-button" tabindex="0" role="button">' +
-              '<span aria-hidden="true" role="presentation">+</span>' +
-              '<span class="audible">'+ Locale.translate('AddNewTab') +'</span>' +
-              '</div>');
-            this.addTabButton.insertAfter(this.moreButton);
-            this.element.addClass('has-add-button');
-          }
-        }
-        if (!this.settings.addTabButton && this.addTabButton && this.addTabButton.length) {
-          this.addTabButton.remove();
-          this.element.removeClass('has-add-button');
-        }
+        // Handle Focus State, Animated Bar, More Button, Add Tabs Button, and App Menu Button.
+        this.renderHelperMarkup();
 
         //for each item in the tabsList...
         self.anchors = self.tablist.children('li:not(.separator)').children('a');
@@ -36571,7 +40503,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         function associateAnchorWithPanel() {
           var a = $(this),
             li = a.parent(),
-            popup = li.data('popupmenu');
+            popup = li.data('popupmenu'),
+            panel;
 
           // Associated the current one
           var href = a.attr('href');
@@ -36582,7 +40515,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
 
           if (href !== undefined && href !== '#') {
-            var panel = $(href);
+            panel = $(href);
 
             if (li.is(':not(.has-popupmenu)') && !panel.length) {
               return;
@@ -36638,6 +40571,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .attr({'role': 'tabpanel'})
           .find('h3:first').attr('tabindex', '0');
 
+        self.panels.appendTo(self.container);
+
         var excludes = ':not(.separator):not(.is-disabled):not(.is-hidden)',
           tabs = this.tablist.children('li' + excludes),
           selected = this.tablist.children('li.is-selected' + excludes),
@@ -36690,6 +40625,114 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           });
         }
 
+        // Setup Edge Fades
+        if (this.tablistContainer) {
+          this.tablistContainer.on('scroll.tabs', function() {
+            self.renderEdgeFading();
+          });
+          this.renderEdgeFading();
+        }
+
+        return this;
+      },
+
+      /**
+       * Adds/removes helper buttons and accessibility-centric markup, based on Tabs' configuration
+       * Designed to be run at any point in the Tabs lifecycle.
+       * @returns {this}
+       */
+      renderHelperMarkup: function() {
+        var auxilaryButtonLocation = this.tablistContainer || this.tablist;
+        if (this.isModuleTabs()) {
+          auxilaryButtonLocation = this.tablist;
+        }
+
+        // Square Focus State
+        if (this.hasSquareFocusState()) {
+          this.focusState = this.element.find('.tab-focus-indicator');
+          if (!this.focusState.length) {
+            this.focusState = $('<div class="tab-focus-indicator" role="presentation"></div>').insertBefore(this.tablist);
+          }
+        } else {
+          if (this.focusState && this.focusState.length) {
+            this.focusState.off().remove();
+            this.focusState = undefined;
+          }
+        }
+
+        // Animated Bar
+        if (this.hasAnimatedBar()) {
+          this.animatedBar = this.element.find('.animated-bar');
+          if (!this.animatedBar.length) {
+            this.animatedBar = $('<div class="animated-bar" role="presentation"></div>');
+          }
+          this.animatedBar.insertBefore(this.tablist);
+        } else {
+          if (this.animatedBar && this.animatedBar.length) {
+            this.animatedBar.off().remove();
+            this.animatedBar = undefined;
+          }
+        }
+
+        // Add the markup for the "More" button if it doesn't exist.
+        if (!this.moreButton) {
+          this.moreButton = $();
+        }
+
+        if (!this.isVerticalTabs()) {
+          if (!this.moreButton.length) {
+            this.moreButton = auxilaryButtonLocation.next('.tab-more');
+          }
+          // If we still don't have a More Button, create one
+          if (!this.moreButton.length) {
+            this.moreButton = $('<div>').attr({'class': 'tab-more'});
+            this.moreButton.append( $('<span class="more-text">').text(Locale.translate('More')));
+            this.moreButton.append($.createIconElement({ classes: 'icon-more', icon: 'dropdown' }));
+          }
+
+          // Append in the right place based on configuration
+          auxilaryButtonLocation.after(this.moreButton);
+        } else {
+          if (this.moreButton.length) {
+            this.moreButton.off().remove();
+            this.moreButton = $();
+          }
+        }
+
+        // Add the application menu Module Tab, if applicable
+        var appMenuTrigger = this.tablist.find('.application-menu-trigger');
+        if (this.isModuleTabs()) {
+          if (!appMenuTrigger.length) {
+            appMenuTrigger = $('<li class="tab application-menu-trigger"><a href="#">' +
+              '<span class="icon app-header"><span class="one"></span><span class="two"></span><span class="three"></span></span>' +
+              '<span>Menu</span>' +
+              '</a></tab>');
+            this.tablist.prepend(appMenuTrigger);
+          }
+        } else {
+          if (this.isVerticalTabs() && appMenuTrigger.length) {
+            appMenuTrigger.off().remove();
+          }
+        }
+
+        // Add Tab Button
+        if (this.settings.addTabButton) {
+          if (!this.addTabButton || !this.addTabButton.length) {
+            this.addTabButton = $('<div class="add-tab-button" tabindex="0" role="button">' +
+              '<span aria-hidden="true" role="presentation">+</span>' +
+              '<span class="audible">'+ Locale.translate('AddNewTab') +'</span>' +
+              '</div>');
+            this.addTabButton.insertAfter(this.moreButton);
+            this.element.addClass('has-add-button');
+          }
+        } else {
+          if (this.addTabButton && this.addTabButton.length) {
+            this.addTabButton.remove();
+            this.addTabButton = undefined;
+            this.element.removeClass('has-add-button');
+          }
+        }
+
         return this;
       },
 
@@ -36738,7 +40781,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           if (li.hasClass('dismissible')) {
             e.preventDefault();
             e.stopPropagation();
-            self.closeDismissibleTab(li.children('a'));
+            self.closeDismissibleTab(li.children('a').attr('href'));
           }
         }
 
@@ -36750,6 +40793,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         // element so that tabs can be added/removed/hidden/shown without needing to change event bindings.
         this.tablist
           .on('mousedown.tabs', '> li', function(e) {
+            self.handleAddFocusData(e, $(this));
+
             // let right click pass through
             if (e.which !== 3) {
               return self.handleTabClick(e, $(this));
@@ -36764,21 +40809,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .on('keydown.tabs', 'a', function(e) {
             return self.handleTabKeyDown(e);
           });
-
-        // Setup a mousedown event on tabs to determine in the focus handler whether or a not a keystroked cause
-        // a change in focus, or a click.  Keystroke focus changes cause different visual situations
-        function addClickFocusData(e) {
-          var tab = $(this);
-          if (tab.is('.is-disabled')) {
-            e.preventDefault();
-            return false;
-          }
-
-          self.hideFocusState();
-          tab.children('a').data('focused-by-click', true);
-        }
-        this.tablist.on('mousedown.tabs', '> li', addClickFocusData);
-        this.moreButton.on('mousedown.tabs', addClickFocusData);
 
         // Setup events on Dropdown Tabs
         function dropdownTabEvents(i, tab) {
@@ -36812,7 +40842,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           });
 
           li.on('selected.tabs', function(e, anchor) {
-            var href = $(anchor).attr('href');
+            var li = $(this),
+              href = $(anchor).attr('href');
             self.activate(href);
 
             if (self.hasSquareFocusState()) {
@@ -36824,6 +40855,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             }
 
             a.focus();
+            self.scrollTabList(li);
+
             li.addClass('is-selected');
             return false;
           });
@@ -36841,34 +40874,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           });
         }
 
-        var dismissible = self.tablist.find('li').filter('is-dismissible');
+        var dismissible = self.tablist.find('li').filter('.dismissible');
         dismissible.each(dismissibleTabEvents);
 
-        // Setup the "more" function
-        this.moreButton
-          .onTouchClick('tabs')
-          .on('click.tabs', function(e) {
-            self.handleMoreButtonClick(e);
-          })
-          .on('keydown.tabs', function(e) {
-            self.handleMoreButtonKeydown(e);
-          })
-          .on('focus.tabs', function(e) {
-            self.handleMoreButtonFocus(e);
-          });
-
-        if (this.settings.addTabButton) {
-          this.addTabButton
-            .onTouchClick('tabs')
-            .on('click.tabs', function() {
-              self.handleAddButton();
-            })
-            .on('keydown.tabs', function(e) {
-              self.handleAddButtonKeydown(e);
-            })
-            .on('focus.tabs', function(e) {
-              self.handleAddButtonFocus(e);
-            });
+        // Events specific to markup that can be re-rendered mid-lifecycle
+        // The responsive vertical tabs system will set this up automatically, so skip
+        if (!this.isResponsiveVerticalTabs()) {
+          this.setupHelperMarkupEvents();
         }
 
         this.panels.on('keydown.tabs', function(e) {
@@ -36900,13 +40912,93 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         $('body').on('resize.tabs' + this.tabsIndex, function() {
           self.handleResize();
         });
-        self.handleResize();
+        self.handleResize(true);
 
         return this;
       },
 
+      /**
+       * Adds events associated with elements that are re-renderable during the Tabs lifecycle
+       * @private
+       * @returns {this}
+       */
+      setupHelperMarkupEvents: function () {
+        var self = this;
+
+        // Setup the "more" function
+        this.moreButton
+          .onTouchClick('tabs')
+          .on('click.tabs', function(e) {
+            self.handleMoreButtonClick(e);
+          })
+          .on('keydown.tabs', function(e) {
+            self.handleMoreButtonKeydown(e);
+          })
+          .on('focus.tabs', function(e) {
+            self.handleMoreButtonFocus(e);
+          })
+          .on('mousedown.tabs', function(e) {
+            self.handleAddFocusData(e, $(this));
+          });
+
+        if (this.settings.addTabButton) {
+          this.addTabButton
+            .onTouchClick('tabs')
+            .on('click.tabs', function() {
+              self.handleAddButton();
+            })
+            .on('keydown.tabs', function(e) {
+              self.handleAddButtonKeydown(e);
+            })
+            .on('focus.tabs', function(e) {
+              self.handleAddButtonFocus(e);
+            });
+        }
+      },
+
+      /**
+       * Removes events associated with elements that are re-renderable during the Tabs lifecycle
+       * @private
+       * @returns {this}
+       */
+      removeHelperMarkupEvents: function() {
+        if (this.moreButton && this.moreButton.length) {
+          this.moreButton.offTouchClick('tabs')
+            .off('click.tabs keydown.tabs focus.tabs mousedown.tabs');
+        }
+
+        if (this.addTabButton && this.addTabButton.length) {
+          this.addTabButton.offTouchClick('tabs')
+            .off('click.tabs keydown.tabs focus.tabs');
+        }
+
+        return this;
+      },
+
+      /**
+       * Setup a mousedown event on tabs to determine in the focus handler whether or a not a keystroked cause
+       * a change in focus, or a click.  Keystroke focus changes cause different visual situations
+       * @param {$.Event} e
+       * @param {jQuery[]} elem
+       * @returns {undefined}
+       */
+      handleAddFocusData: function(e, elem) {
+        var tab = elem;
+        if (tab.is('.is-disabled')) {
+          e.preventDefault();
+          return false;
+        }
+
+        if (!tab.is(this.moreButton)) {
+          tab = tab.children('a');
+        }
+
+        this.hideFocusState();
+        tab.data('focused-by-click', true);
+      },
+
       handleTabClick: function(e, li) {
-        if (this.element.is('.is-disabled') || (li && li.is('.is-disabled'))) {
+        if (this.element.is('.is-disabled') || (li && (li.is('.is-disabled') || li.is('.separator')))) {
           e.stopPropagation();
           e.preventDefault();
           return false;
@@ -36941,8 +41033,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         // close tab on middle click
         if (e.which === 2) {
+          if (li.is('.dismissible') && $(e.target).is('.close')) {
+            this.closeDismissibleTab(href);
+          }
           e.preventDefault();
-          this.closeDismissibleTab(href);
           return;
         }
 
@@ -36954,6 +41048,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         a.focus();
+
+        if (this.isScrollableTabs()) {
+          this.scrollTabList(li);
+        }
 
         // Hide these states
         this.focusBar(li);
@@ -37035,7 +41133,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           return;
         }
 
-        var passableKeys = [8, 13, 32];
+        var self = this,
+          passableKeys = [8, 13, 32];
 
         function isPassableKey() {
           return $.inArray(e.which, passableKeys) > -1;
@@ -37052,8 +41151,15 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
         }
 
-        var self = this,
-          allExcludes = ':not(.separator):not(.is-disabled):not(:hidden)',
+        function openMenu(oldHref) {
+          e.preventDefault();
+          // setTimeout is used to bypass triggering of the keyboard when self.buildPopupMenu() is invoked.
+          setTimeout(function() {
+            self.buildPopupMenu(oldHref);
+          }, 0);
+        }
+
+        var allExcludes = ':not(.separator):not(.is-disabled):not(:hidden)',
           currentLi = $(e.currentTarget).parent(),
           currentA = currentLi.children('a'),
           targetLi,
@@ -37072,7 +41178,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           if (self.settings.addTabButton) {
             return self.addTabButton;
           }
-          return self.tablist.children('li' + allExcludes).last();
+
+          var last = self.tablist.children('li' + allExcludes).last();
+
+          if (self.hasMoreButton() && self.isScrollableTabs()) {
+            openMenu(last.find('a').attr('href'));
+          }
+
+          return last;
         }
 
         function nextTab() {
@@ -37084,10 +41197,17 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             i++;
           }
 
+          var first = self.tablist.children('li' + allExcludes).first();
+
+          if (self.hasMoreButton() && self.isScrollableTabs()) {
+            openMenu(first.find('a').attr('href'));
+            return first;
+          }
+
           if (self.settings.addTabButton) {
             return self.addTabButton;
           }
-          return self.tablist.children('li' + allExcludes).first();
+          return first;
         }
 
         function checkAngularClick() {
@@ -37155,28 +41275,28 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             break;
         }
 
-        var isAddTabButton = targetLi.is('.add-tab-button'),
-          focusStateTarget = isAddTabButton ? targetLi : targetLi.children('a');
+        if (targetLi) {
+          var isAddTabButton = targetLi.is('.add-tab-button'),
+            focusStateTarget = isAddTabButton ? targetLi : targetLi.children('a');
 
-        // Use the matching option in the popup menu if the target is hidden by overflow.
-        if (this.isTabOverflowed(targetLi)) {
-          e.preventDefault();
-          var oldHref = targetLi.children('a').attr('href');
-          // setTimeout is used to bypass triggering of the keyboard when self.buildPopupMenu() is invoked.
-          setTimeout(function() {
-            self.buildPopupMenu(oldHref);
-          }, 0);
-          return;
-        }
+          // Use the matching option in the popup menu if the target is hidden by overflow.
+          if (this.isTabOverflowed(targetLi)) {
+            return openMenu(targetLi.children('a').attr('href'));
+          }
 
-        if (!isAddTabButton) {
-          focusStateTarget.focus();
-        } else {
-          self.addTabButton.focus();
-        }
+          if (!isAddTabButton) {
+            focusStateTarget.focus();
+          } else {
+            self.addTabButton.focus();
+          }
 
-        if (self.hasSquareFocusState()) {
-          self.positionFocusState(focusStateTarget, true);
+          if (this.isScrollableTabs()) {
+            this.scrollTabList(focusStateTarget);
+          }
+
+          if (self.hasSquareFocusState()) {
+            self.positionFocusState(focusStateTarget, true);
+          }
         }
       },
 
@@ -37421,7 +41541,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.positionFocusState(this.addTabButton, true);
       },
 
-      handleResize: function() {
+      handleResize: function(ignoreResponsiveCheck) {
+        if (!ignoreResponsiveCheck) {
+          this.checkResponsive();
+        }
+
         this.setOverflow();
 
         var selected = this.tablist.find('.is-selected');
@@ -37439,6 +41563,49 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         this.handleVerticalTabResize();
         this.renderVisiblePanel();
+        this.renderEdgeFading();
+      },
+
+      checkResponsive: function() {
+        var self = this,
+          classList = self.element[0].classList;
+
+        function rebuild() {
+          self.removeHelperMarkupEvents();
+          self.renderHelperMarkup();
+          self.setupHelperMarkupEvents();
+        }
+
+        function makeResponsive() {
+          if (!classList.contains('is-in-responsive-mode')) {
+            classList.add('is-in-responsive-mode');
+            classList.add('header-tabs');
+            classList.add('alternate');
+            classList.remove('vertical');
+            rebuild();
+          }
+        }
+
+        function makeVertical() {
+          if (classList.contains('is-in-responsive-mode')) {
+            classList.add('vertical');
+            classList.remove('is-in-responsive-mode');
+            classList.remove('header-tabs');
+            classList.remove('alternate');
+            rebuild();
+          }
+        }
+
+        // Check for responsive mode for Vertical tabs
+        if (this.isResponsiveVerticalTabs()) {
+          if (Soho.breakpoints.isBelow('phone-to-tablet')) {
+            makeResponsive();
+          } else {
+            makeVertical();
+          }
+        } else {
+          makeVertical();
+        }
       },
 
       handleVerticalTabResize: function() {
@@ -37479,6 +41646,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return true;
       },
 
+      hasMoreButton: function() {
+        return this.element[0].classList.contains('has-more-button');
+      },
+
+      isInResponsiveMode: function() {
+        return this.element[0].classList.contains('is-in-responsive-mode');
+      },
+
       isModuleTabs: function() {
         return this.element.hasClass('module-tabs');
       },
@@ -37487,8 +41662,16 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this.element.hasClass('vertical');
       },
 
+      isResponsiveVerticalTabs: function() {
+        return this.settings.verticalResponsive === true;
+      },
+
       isHeaderTabs: function() {
         return this.element.hasClass('header-tabs');
+      },
+
+      isScrollableTabs: function() {
+        return !this.isModuleTabs() && !this.isVerticalTabs();
       },
 
       isHidden: function() {
@@ -37612,7 +41795,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       },
 
       isURL: function(href) {
-        if (href.indexOf('#') === 0) {
+        if (!href || href.indexOf('#') === 0) {
           return false;
         }
 
@@ -37651,26 +41834,28 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           return;
         }
 
-        if (this.settings.source && targetPanel.length < 1) {
-          return this.callSource(href);
+        if (targetPanel.length < 1) {
+          if (this.settings.source) {
+            return this.callSource(href);
+          }
+        } else {
+          oldPanel[0].classList.remove('can-show');
+          oldPanel[0].classList.remove('is-visible');
+          oldPanel.closeChildren();
+          self.element.trigger('activated', [a]);
+
+          targetPanelElem.classList.add('can-show');
+          self.renderVisiblePanel();
+          // trigger reflow as display property is none for animation
+          targetPanelElem.offsetHeight; // jshint ignore:line
+
+          targetPanel.one($.fn.transitionEndName() + '.tabs', function() {
+            self.element.trigger('afteractivated', [a]);
+          });
+
+          // Triggers the CSS Animation
+          targetPanelElem.classList.add('is-visible');
         }
-
-        oldPanel[0].classList.remove('can-show');
-        oldPanel[0].classList.remove('is-visible');
-        oldPanel.closeChildren();
-        self.element.trigger('activated', [a]);
-
-        targetPanelElem.classList.add('can-show');
-        self.renderVisiblePanel();
-        // trigger reflow as display property is none for animation
-        targetPanelElem.offsetHeight; // jshint ignore:line
-
-        targetPanel.one($.fn.transitionEndName() + '.tabs', function() {
-          self.element.trigger('afteractivated', [a]);
-        });
-
-        // Triggers the CSS Animation
-        targetPanelElem.classList.add('is-visible');
 
         // Update the currently-selected tab
         self.updateAria(a);
@@ -37712,7 +41897,30 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             }
           });
         }
+      },
 
+      /**
+       * Shows/Hides some tabsets' faded edges based on scrolling position, if applicable.
+       * @returns {undefined}
+       */
+      renderEdgeFading: function() {
+        if (!this.isScrollableTabs() || !this.tablistContainer) {
+          return;
+        }
+
+        var isRTL = Locale.isRTL(),
+          tablistContainerElem = this.tablistContainer[0],
+          scrollLeft = tablistContainerElem.scrollLeft,
+          scrollWidth = tablistContainerElem.scrollWidth,
+          containerWidth = parseInt(window.getComputedStyle(tablistContainerElem).getPropertyValue('width'));
+
+        if (isRTL) {
+          this.element[0].classList[ scrollLeft > 0 ? 'add' : 'remove' ]('scrolled-left');
+          this.element[0].classList[ (scrollWidth - scrollLeft) <= containerWidth ? 'remove' : 'add' ]('scrolled-right');
+        } else {
+          this.element[0].classList[ scrollLeft > 0 ? 'add' : 'remove' ]('scrolled-right');
+          this.element[0].classList[ (scrollWidth - scrollLeft) <= containerWidth ? 'remove' : 'add' ]('scrolled-left');
+        }
       },
 
       /**
@@ -37741,7 +41949,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             // Get a new random tab ID for this tab if one can't be derived from the URL string
             if (isURL) {
               var anchor = self.tablist.find('[href="'+ href +'"]'),
-                containerId = self.container[0].id || '',
+                containerId = self.element[0].id || '',
                 id = anchor.uniqueId('tab', containerId);
 
               href = '#' + id;
@@ -37752,8 +41960,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             self.createTabPanel(href, htmlContent, true);
             self.activate(href);
 
-            self.container.triggerHandler('complete'); // For Busy Indicator
-            self.container.trigger('requestend', [href, htmlContent]);
+            self.element.triggerHandler('complete'); // For Busy Indicator
+            self.element.trigger('requestend', [href, htmlContent]);
           };
 
         this.container.triggerHandler('start'); // For Busy Indicator
@@ -37875,7 +42083,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             api = c.data('tabs');
 
           if (api && api.handleResize && typeof api.handleResize === 'function') {
-            api.handleResize();
+            api.handleResize(true);
           }
         });
       },
@@ -38035,7 +42243,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       // Removes a tab from the list and cleans up properly
       // NOTE: Does not take advantage of _activatePreviousTab()_ due to specific needs of selecting certain
       // Tabs/Anchors at certain times.
-      remove: function(tabId) {
+      remove: function(tabId, disableBeforeClose) {
         var self = this,
           targetLi = this.doGetTab(null, tabId);
 
@@ -38050,9 +42258,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           notATab = '.application-menu-trigger, .separator, .is-disabled, :hidden',
           prevLi = targetLi.prev();
 
-        var canClose = this.element.triggerHandler('beforeclose', [targetLi]);
-        if (canClose === false) {
-          return false;
+        if (!disableBeforeClose) {
+          var canClose = this.element.triggerHandler('beforeclose', [targetLi]);
+          if (canClose === false) {
+            return false;
+          }
         }
 
         var wasSelected = false;
@@ -38153,11 +42363,16 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           return this;
         }
 
-        var a = prevLi.children('a');
+        var a = prevLi.children('a'),
+          activateTargetA = a;
+
         this.positionFocusState(a);
 
         if (wasSelected) {
-          this.activate(a.attr('href'));
+          if (prevLi.is('.has-popupmenu') && prevLi.data('popupmenu')) {
+            activateTargetA = prevLi.data('popupmenu').menu.children().first().children('a');
+          }
+          this.activate(activateTargetA.attr('href'));
         }
 
         this.focusBar(prevLi);
@@ -38336,6 +42551,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         var tab = this.doGetTab(e, tabId),
           hasCounts = this.settings.tabCounts,
+          hasTooltip = this.settings.moduleTabsTooltips,
           anchor = tab.children('a'),
           count;
 
@@ -38347,6 +42563,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         if (hasCounts) {
           anchor.prepend(count);
+        }
+
+        if (hasTooltip) {
+          anchor.data('tooltip').setContent(name.trim());
         }
 
         var doesTabExist = this.tablist.children('li').length < 2 ? tab : undefined;
@@ -38419,17 +42639,31 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         var elem = this.element[0],
           tablist = this.tablist[0],
           HAS_MORE = 'has-more-button',
-          hasMoreIndex = elem.classList.contains(HAS_MORE),
-          tablistStyle = window.getComputedStyle(tablist, null),
-          tabListHeight = parseInt(tablistStyle.getPropertyValue('height')) + 1; // +1 to fix an IE bug
+          hasMoreIndex = this.hasMoreButton(),
+          isScrollableTabs = this.isScrollableTabs();
 
         // Recalc tab width before detection of overflow
         if (this.isModuleTabs()) {
           this.adjustModuleTabs();
         }
 
+        var tablistStyle, tablistHeight,
+          tablistContainerScrollWidth, tablistContainerWidth,
+          overflowCondition;
+
+        if (isScrollableTabs) {
+          tablistContainerScrollWidth = this.tablistContainer[0].scrollWidth;
+          tablistContainerWidth = this.tablistContainer[0].offsetWidth;
+          overflowCondition = tablistContainerScrollWidth > tablistContainerWidth;
+        } else {
+          tablistStyle = window.getComputedStyle(tablist, null);
+          tablistHeight = parseInt(tablistStyle.getPropertyValue('height')) + 1; // +1 to fix an IE bug
+          overflowCondition = tablist.scrollHeight > tablistHeight; // Normal tabs check the height
+        }
+
         // Add "has-more-button" class if we need it, remove it if we don't
-        if (tablist.scrollHeight > tabListHeight) {
+        // Always display the more button on Scrollable Tabs
+        if (overflowCondition) {
           if (!hasMoreIndex) {
             elem.classList.add(HAS_MORE);
           }
@@ -38557,9 +42791,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         // Build the new markup for the popupmenu if it doesn't exist.
         // Reset it if it does exist.
-        var menuHtml = $('#tab-container-popupmenu');
+        var menuHtml = $('#tab-container-popupmenu'),
+          shouldBeSelectable = '';
+        if (this.isScrollableTabs()) {
+          shouldBeSelectable = ' is-selectable';
+        }
+
         if (menuHtml.length === 0) {
-          menuHtml = $('<ul class="tab-list-spillover">').attr('id', 'tab-container-popupmenu').appendTo('body');
+          menuHtml = $('<ul id="tab-container-popupmenu" class="tab-list-spillover'+ shouldBeSelectable +'">').appendTo('body');
         } else {
           menuHtml.html('');
         }
@@ -38572,7 +42811,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           var $item = $(item),
             $itemA = $item.children('a');
 
-          if (!self.isTabOverflowed($item) || $item.is(':hidden')) {
+          if ($item.is(':hidden')) {
+            return;
+          }
+
+          if (!self.isScrollableTabs() && !self.isTabOverflowed($item)) {
             return;
           }
 
@@ -38584,7 +42827,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           var popupLi = $item.clone(),
             popupA = popupLi.children('a');
 
-          popupLi[0].classList.remove('tab', 'is-selected');
+          popupLi[0].classList.remove('tab');
+          if (popupLi[0].classList.contains('is-selected')) {
+            popupLi[0].classList.remove('is-selected');
+            if (self.isScrollableTabs()) {
+              popupLi[0].classList.add('is-checked');
+            }
+          }
+
           popupLi[0].removeAttribute('style');
 
           popupLi.children('.icon').off().appendTo(popupA);
@@ -38592,6 +42842,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
           // Link tab to its corresponding "More Tabs" menu option
           $item.data('moremenu-link', popupA);
+          popupA.find('.icon-more').remove();
 
           // Link "More Tabs" menu option to its corresponding Tab.
           // Remove onclick methods from the popup <li> because they are called
@@ -38630,6 +42881,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         self.tablist.children('li:not(.separator)').removeClass('is-focused');
+        var xOffset = 1;
+        if (!this.isScrollableTabs()) {
+          xOffset = 3;
+        }
 
         // Invoke the popup menu on the button.
         self.moreButton.popupmenu({
@@ -38637,7 +42892,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           attachToBody: true,
           menu: 'tab-container-popupmenu',
           trigger: 'immediate',
-          offset: {x: 3}
+          offset: { x: xOffset }
         });
         self.moreButton.addClass('popup-is-open');
         self.popupmenu = self.moreButton.data('popupmenu');
@@ -38678,6 +42933,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           // NOTE: If we switch the focusing-operations back to how they used to be (blue bar moving around with the focus state)
           // remove the line below.
           self.moreButton.focus();
+
+          self.scrollTabList(tab);
         }
 
         self.moreButton
@@ -38807,9 +43064,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       // Used for checking if a particular tab (in the form of a jquery-wrapped list item) is spilled into
       // the overflow area of the tablist container <UL>.
       isTabOverflowed: function(li) {
-        if (this.isVerticalTabs()) {
+        if (this.isVerticalTabs() || this.isScrollableTabs()) {
           return false;
         }
+
         if (this.tablist.scrollTop() > 0) {
           this.tablist.scrollTop(0);
         }
@@ -38828,6 +43086,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       findLastVisibleTab: function() {
         var tabs = this.tablist.children('li:not(.separator):not(.hidden):not(.is-disabled)'),
           targetFocus = tabs.first();
+
+        // if Scrollable Tabs, simply get the last tab and focus.
+        if (this.isScrollableTabs()) {
+          return tabs.last().find('a').focus();
+        }
+
         while(!(this.isTabOverflowed(targetFocus))) {
           targetFocus = tabs.eq(tabs.index(targetFocus) + 1);
         }
@@ -38850,7 +43114,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         var self = this,
           target = li,
+          scrollingTablist = this.tablistContainer,
+          isRTL = Locale.isRTL(),
           paddingLeft, paddingRight, width,
+          tabMoreWidth,
+          tablistScrollWidth,
+          tablistScrollLeft,
           anchorStyle, targetStyle;
 
         this.animatedBar.removeClass('no-transition');
@@ -38871,15 +43140,23 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           paddingRight += parseInt(anchorStyle.getPropertyValue('padding-right'), 10) || 0;
         }
 
-        var left = Locale.isRTL() ?
-          (paddingRight + target.position().left) : (target.position().left);
+        var left = isRTL ?
+          (paddingRight + target.position().left + target.outerWidth(true)) : (target.position().left);
 
         clearTimeout(self.animationTimeout);
         this.animatedBar.addClass('visible');
 
         function animationTimeout(cb) {
           var style = self.animatedBar[0].style;
-          style.left = left + 'px';
+          tablistScrollLeft = scrollingTablist[0].scrollLeft;
+          tablistScrollWidth = scrollingTablist[0].scrollWidth;
+          tabMoreWidth = this.moreButton.outerWidth(true);
+
+          if (isRTL) {
+            style.right = tablistScrollWidth + paddingRight - (left + tablistScrollLeft) + 'px';
+          } else {
+            style.left = left + tablistScrollLeft + 'px';
+          }
           style.width = width + 'px';
 
           if (cb && typeof cb === 'function') {
@@ -38909,6 +43186,40 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }, 350);
       },
 
+      /**
+       * Wrapper for the Soho behavior _smoothScrollTo()_ that will determine scroll distance.
+       * @param {jQuery[]} target - the target <li> or <a> tag
+       * @param {Number} duration - the time it will take to scroll
+       * @returns {undefined}
+       */
+      scrollTabList: function(target) {
+        if (!this.tablistContainer || !target || !(target instanceof $) || !target.length) {
+          return;
+        }
+
+        var tabCoords = Soho.DOM.getDimensions(target[0]),
+          tabContainerDims = Soho.DOM.getDimensions(this.tablistContainer[0]),
+          d;
+
+        var FADED_AREA = 40, // the faded edges on the sides of the tabset
+          adjustedLeft = tabCoords.left,
+          adjustedRight = tabCoords.right;
+
+        if (adjustedLeft < tabContainerDims.left + FADED_AREA) {
+          d = (Math.round(Math.abs(tabContainerDims.left - adjustedLeft)) * -1) - FADED_AREA;
+        }
+        if (adjustedRight > tabContainerDims.right - FADED_AREA) {
+          d = Math.round(Math.abs(adjustedRight - tabContainerDims.right)) + FADED_AREA;
+        }
+
+        if (d === 0) {
+          d = undefined;
+        }
+
+        // Scroll the tablist container
+        this.tablistContainer.smoothScroll(d, 250);
+      },
+
       hideFocusState: function() {
         if (this.hasSquareFocusState()) {
           this.focusState.removeClass('is-visible');
@@ -38925,7 +43236,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             self.moreButton.hasClass('is-selected') ? self.moreButton :
             self.tablist.children('.is-selected').length > 0 ? self.tablist.children('.is-selected').children('a') : undefined;
 
-        if (!target || target === undefined || !target.length) {
+        if (!target || target === undefined || !target.length || (target.is(this.moreButton) && this.isScrollableTabs())) {
           this.focusState.removeClass('is-visible');
           return;
         }
@@ -38935,27 +43246,41 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           target = target.parent();
         }
 
-        var focusStateElem = this.focusState[0],
-          targetPos = target[0].getBoundingClientRect(),
-          targetClassList = target[0].classList,
-          isModuleTabs = this.isModuleTabs(),
-          isRTL = Locale.isRTL(),
-          parentContainer = this.element;
-
-        function convertClientRectToObj(clientRect) {
-          return {
-            left: clientRect.left,
-            right: clientRect.right,
-            top: clientRect.top,
-            bottom: clientRect.bottom,
-            width: clientRect.width,
-            height: clientRect.height
-          };
+        // Move the focus state from inside the tab list container, if applicable.
+        // Put it back into the tab list container, if not.
+        if (target.is('.add-tab-button, .tab-more')) {
+          if (!this.focusState.parent().is(this.element)) {
+            this.focusState.prependTo(this.element);
+          }
+        } else {
+          if (!this.focusState.parent().is(this.tablistContainer)) {
+            this.focusState.prependTo(this.tablistContainer);
+          }
         }
 
-        function adjustForParentContainer(targetRectObj, parentElement) {
-          var parentRect = parentElement[0].getBoundingClientRect();
+        var focusStateElem = this.focusState[0],
+          targetPos = Soho.DOM.getDimensions(target[0]),
+          targetClassList = target[0].classList,
+          isNotHeaderTabs = (!this.isHeaderTabs() || this.isHeaderTabs() && this.element[0].classList.contains('alternate')),
+          isVerticalTabs = this.isVerticalTabs(),
+          isRTL = Locale.isRTL(),
+          tabMoreWidth = !isVerticalTabs ? this.moreButton.outerWidth(true) : 0,
+          parentContainer = this.element,
+          scrollingTablist = this.tablistContainer,
+          accountForPadding = scrollingTablist && this.focusState.parent().is(scrollingTablist);
+
+        function adjustForParentContainer(targetRectObj, parentElement, tablistContainer) {
+          var parentRect = parentElement[0].getBoundingClientRect(),
+            parentPadding,
+            tabLeftMargin,
+            tablistScrollWidth,
+            tablistScrollLeft;
+
+          // Adjust from the top
           targetRectObj.top = targetRectObj.top - parentRect.top;
+          if (isVerticalTabs) {
+            targetRectObj.top = targetRectObj.top + parentElement[0].scrollTop;
+          }
 
           if (isRTL) {
             targetRectObj.right = parentRect.right - targetRectObj.right;
@@ -38963,29 +43288,53 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             targetRectObj.left = targetRectObj.left - parentRect.left;
           }
 
-          // Dirty Hack for Module Tabs
-          // TODO: Explore why this happens
-          if (isModuleTabs) {
-            targetRectObj.top = targetRectObj.top - 1;
+          // If inside a scrollable tablist, account for the scroll position
+          if (tablistContainer) {
+            tablistScrollLeft = tablistContainer ? tablistContainer[0].scrollLeft : 0;
+            tablistScrollWidth = tablistContainer ? tablistContainer[0].scrollWidth : 0;
+
+            if (isRTL && !isVerticalTabs) {
+              // TODO: Improve this calculation because there's something off
+              var tmpLeft = targetRectObj.left;
+              if (isNotHeaderTabs) {
+                tabLeftMargin = parseInt(window.getComputedStyle(target[0]).marginLeft);
+                targetRectObj.left = tablistScrollWidth - tabLeftMargin - targetRectObj.right + tablistScrollLeft;
+                targetRectObj.right = tablistScrollWidth - tabLeftMargin - tmpLeft + tablistScrollLeft;
+              } else {
+                targetRectObj.left = tablistScrollWidth - (targetRectObj.right + tablistScrollLeft + (tabMoreWidth) + 32);
+                targetRectObj.right = tablistScrollWidth - (tmpLeft + tablistScrollLeft + (tabMoreWidth) + 32);
+              }
+            } else {
+              targetRectObj.left = targetRectObj.left + tablistScrollLeft;
+              targetRectObj.right = targetRectObj.right + tablistScrollLeft;
+            }
+
+            if (accountForPadding) {
+              parentPadding = parseInt(window.getComputedStyle(parentElement[0])[ 'padding' + (isRTL ? 'Right' : 'Left') ]);
+              targetRectObj.left = targetRectObj.left + (isRTL ? parentPadding : (parentPadding * -1));
+              targetRectObj.right = targetRectObj.right + (isRTL ? parentPadding : (parentPadding * -1));
+            }
+          }
+
+          // Alternate Header Tabs have 1px removed from bottom to prevent overlap onto the bottom border
+          if (isNotHeaderTabs && !isVerticalTabs) {
+            targetRectObj.height = targetRectObj.height - 1;
           }
 
           return targetRectObj;
         }
 
-        // convert ClientRects to objects so we can mess with them
-        var targetPosObj = convertClientRectToObj(targetPos);
-
         // Adjust the values one more time if we have tabs contained inside of a page-container, or some other scrollable container.
-        targetPosObj = adjustForParentContainer(targetPosObj, parentContainer);
+        targetPos = adjustForParentContainer(targetPos, parentContainer, scrollingTablist);
 
         // build CSS string containing each prop and set it:
         var targetPosString = '';
-        for (var property in targetPosObj) {
-          if (targetPosObj.hasOwnProperty(property)) {
+        for (var property in targetPos) {
+          if (targetPos.hasOwnProperty(property)) {
             if (targetPosString.length) {
               targetPosString += ' ';
             }
-            targetPosString += '' + property + ': ' + targetPosObj[property] + 'px;';
+            targetPosString += '' + property + ': ' + targetPos[property] + 'px;';
           }
         }
         focusStateElem.setAttribute('style', targetPosString);
@@ -39221,13 +43570,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           popup.destroy();
         }
 
-        if (this.addTabButton && this.addTabButton.length) {
-          this.addTabButton.off().remove();
-          this.addTabButton = undefined;
-        }
+        this.removeHelperMarkupEvents();
 
-        this.moreButton.off().remove();
-        this.moreButton = undefined;
+        if (this.tablistContainer) {
+          this.tablistContainer.off('mousewheel.tabs');
+        }
 
         if (this.hasSquareFocusState()) {
           this.focusState.remove();
@@ -39288,20 +43635,53 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Tag Methods
     Tag.prototype = {
 
+      /**
+       * @private
+       */
       init: function() {
+        this.element.hideFocus();
         this.handleEvents();
       },
 
-      // Handle Events
+      /**
+       * Remove the tag from the DOM
+       */
+      remove: function(event, el) {
+        el = el instanceof jQuery ? el : $(el);
+        var parent = el.parent();
+        this.element.triggerHandler('beforetagremove', {event: event, element: el});
+        el.remove();
+        parent.triggerHandler('aftertagremove', {event: event});
+      },
+
+      /**
+       * Destroy this component instance and remove the link from its base element.
+       */
+      destroy: function() {
+        this.element.off('keydown.tag');
+        $('.dismissable-btn, .dismissible-btn', this.element).off('click.tag').remove();
+
+        $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Tag#events
+       * @param {Object} click  &nbsp;-&nbsp; Fires when the tag is clicked (if enabled).
+       * @param {Object} keydown  &nbsp;-&nbsp; Fires when the tag is focused.
+       */
       handleEvents: function() {
         var self = this,
           btnDismissable = $(
-            '<span class="dismissable-btn">' +
+            '<span class="dismissible-btn">' +
               $.createIcon('close') +
               '<span class="audible"> '+ Locale.translate('Close') +'</span>' +
-            '</span>');
+            '</span>'),
+          dismissibleClass = '.is-dismissable, .is-dismissible';
 
-        if (self.element.is('.is-dismissable')) {
+        // EPC: Deprecating "dismissable" in favor of "dismissible" as of 4.3.0
+        if (self.element.is(dismissibleClass)) {
           self.element.append(btnDismissable);
 
           // Handle Click
@@ -39316,26 +43696,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
               self.remove(event, this);
             }
           });
-
         }
-
-      }, // END: Handle Events ---------------------------------------------------------------------
-
-      // Remove from DOM
-      remove: function(event, el) {
-        el = el instanceof jQuery ? el : $(el);
-        var parent = el.parent();
-        this.element.triggerHandler('beforetagremove', {event: event, element: el});
-        el.remove();
-        parent.triggerHandler('aftertagremove', {event: event});
-      },
-
-      // Teardown
-      destroy: function() {
-        this.element.off('keydown.tag');
-        $('.dismissable-btn', this.element).off('click.tag').remove();
-
-        $.removeData(this.element[0], pluginName);
       }
     };
 
@@ -39357,18 +43718,24 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Settings and Options
     var pluginName = 'textarea',
         defaults = {
-          characterCounter: true, //But needs a maxlength
-          printable: true,  //If the text area can be printed
+          characterCounter: true,
+          printable: true,
           charRemainingText: null,
           charMaxText: null
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
+     * The Textarea Component wraps a standard HTML Textarea element and provides additional features.
+     *
+     * @class Textarea
+     * @param {boolean} characterCounter &nbsp;-&nbsp; Displays a counter that counts down from the maximum length allowed.
+     * @param {boolean} printable &nbsp;-&nbsp; Determines whether or not the text area can be displayed on a printed page.
+     * @param {null|String} charRemainingText  &nbsp;-&nbsp; Text that will be used in place of the "remaining" text.
+     * @param {null|String} charMaxText  &nbsp;-&nbsp; Text that will be used in place of the "Max" text.
      */
     function Textarea(element) {
+      this.settings = $.extend({}, settings);
       this.element = $(element);
       Soho.logTimeStart(pluginName);
       this.init();
@@ -39378,6 +43745,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Plugin Methods
     Textarea.prototype = {
 
+      /**
+       * @private
+       */
       init: function() {
         this.isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
         this.isSafari = (
@@ -39390,51 +43760,20 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             this.element.is('.textarea-sm') ? 'input-sm' :
             this.element.is('.textarea-lg') ? 'input-lg' : '');
 
-        if (settings.characterCounter && this.element.attr('maxlength')) {
+        if (this.settings.characterCounter && this.element.attr('maxlength')) {
           this.counter = $('<span class="textarea-wordcount">Chars Left..</span>').insertAfter(this.element);
         }
-        if (settings.printable) {
+        if (this.settings.printable) {
           this.printarea = $('<span class="textarea-print"></span>').insertBefore(this.element);
         }
         this.handleEvents();
-        this.update(this);
+        this.updateCounter(this);
       },
 
-      // Attach Events
-      handleEvents: function() {
-        var self = this;
-        this.element.on('keyup.textarea', function () {
-          self.update(self);
-        }).on('focus.textarea', function () {
-          if (self.counter) {
-            self.counter.addClass('focus');
-          }
-        }).on('keypress.textarea', function (e) {
-          var length = self.element.val().length,
-          max = self.element.attr('maxlength');
-
-          if ([97, 99, 118, 120].indexOf(e.which) > -1 && (e.metaKey || e.ctrlKey)) {
-            self.update(self);
-            return;
-          }
-
-          if (!self.isPrintable(e.which)) {
-            return;
-          }
-
-          if (length >= max && !self.isSelected(this)) {
-            e.preventDefault();
-          }
-
-        })
-        .on('blur.textarea', function () {
-          self.update(self);
-          if (self.counter) {
-            self.counter.removeClass('focus');
-          }
-        });
-      },
-
+      /**
+       * @private
+       */
+      // TODO: What does this do?
       isSelected: function (input) {
         if (typeof input.selectionStart === 'number') {
           return input.selectionStart === 0 && input.selectionEnd === input.value.length;
@@ -39444,6 +43783,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * Checks a keycode value and determines if it belongs to a printable character.
+       * @param {Number} keycode - a number representing an ASCII keycode value
+       * @returns {boolean}
+       */
       isPrintable: function(keycode) {
         var valid =
           (keycode > 47 && keycode < 58)   || // number keys
@@ -39454,22 +43798,31 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return valid;
       },
 
-      // Counts characters
+      /**
+       * Counts the number of line breaks in a string
+       * @param {String} s
+       * @returns {Number}
+       */
       countLinebreaks: function(s) {
         return (s.match(/\n/g) || []).length;
       },
 
-      update: function (self) {
+      /**
+       * Updates the descriptive markup (counter, etc) to notify the user how many characters can be typed.
+       * @private
+       * @param {TextArea} self
+       */
+      updateCounter: function (self) {
         var value = self.element.val(),
           isExtraLinebreaks = this.isChrome || this.isSafari,
           length = value.length + (isExtraLinebreaks ? this.countLinebreaks(value) : 0),
           max = self.element.attr('maxlength'),
           remaining = (parseInt(max)-length),
-          text = (settings.charRemainingText ? settings.charRemainingText : (Locale.translate('CharactersLeft') === 'CharactersLeft' ? 'Characters Left' : Locale.translate('CharactersLeft'))).replace('{0}', remaining.toString());
+          text = (self.settings.charRemainingText ? self.settings.charRemainingText : (Locale.translate('CharactersLeft') === 'CharactersLeft' ? 'Characters Left' : Locale.translate('CharactersLeft'))).replace('{0}', remaining.toString());
 
         if (self.counter) {
           if (length === 0) {
-            text = (settings.charMaxText ? settings.charMaxText : Locale.translate('CharactersMax')) + max;
+            text = (self.settings.charMaxText ? self.settings.charMaxText : Locale.translate('CharactersMax')) + max;
             self.counter.text(text);
             self.counter.removeClass('almost-empty');
           } else {
@@ -39487,19 +43840,45 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * Enables this component instance.
+       */
       enable: function () {
-        this.element.prop('disable', false).prop('readonly', false);
+        this.element.prop('disabled', false).prop('readonly', false);
       },
 
+      /**
+       * Disables this component instance.
+       */
       disable: function () {
-        this.element.prop('disable', true);
+        this.element.prop('disabled', true);
       },
 
+      /**
+      * Returns true if the texarea is disabled.
+      */
+      isDisabled: function() {
+        return this.element.prop('disabled');
+      },
+
+      /**
+       * Sets this component instance to "readonly"
+       */
       readonly: function () {
         this.element.prop('readonly', true);
       },
 
-      // Teardown
+      /**
+       * Call whenever the plugin's settings are changed
+       */
+      updated: function () {
+        this.destroy();
+        this.init();
+      },
+
+      /**
+       * Destroys this component instance and unlinks it from its element.
+       */
       destroy: function() {
         $.removeData(this.element[0], pluginName);
         if (this.printarea && this.printarea.length) {
@@ -39508,7 +43887,53 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         if (this.counter && this.counter.length) {
           this.counter.remove();
         }
-        this.element.off('keyup.textarea');
+        this.element.off('keyup.textarea, focus.textarea, updated.dropdown, keypress.textarea, blur.textarea');
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires Textarea#events
+       * @param {Object} keyup  &nbsp;-&nbsp; Fires when the button is clicked (if enabled).
+       * @param {Object} focus  &nbsp;-&nbsp; Fires when the menu is focused.
+       * @param {Object} keypress  &nbsp;-&nbsp;
+       * @param {Object} blur  &nbsp;-&nbsp;
+       */
+      handleEvents: function() {
+        var self = this;
+
+        this.element.on('keyup.textarea', function () {
+          self.updateCounter(self);
+        }).on('focus.textarea', function () {
+          if (self.counter) {
+            self.counter.addClass('focus');
+          }
+        }).on('updated.dropdown', function () {
+          self.updated();
+        }).on('keypress.textarea', function (e) {
+          var length = self.element.val().length,
+          max = self.element.attr('maxlength');
+
+          if ([97, 99, 118, 120].indexOf(e.which) > -1 && (e.metaKey || e.ctrlKey)) {
+            self.updateCounter(self);
+            return;
+          }
+
+          if (!self.isPrintable(e.which)) {
+            return;
+          }
+
+          if (length >= max && !self.isSelected(this)) {
+            e.preventDefault();
+          }
+
+        })
+        .on('blur.textarea', function () {
+          self.updateCounter(self);
+          if (self.counter) {
+            self.counter.removeClass('focus');
+          }
+        });
       }
     };
 
@@ -39531,18 +43956,25 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     var pluginName = 'timepicker',
         defaults = {
           timeFormat: Locale.calendar().timeFormat || 'h:mm a', // The time format
-          minuteInterval: 5, // Integer from 1 to 60.  Multiples of this value are displayed as options in the minutes dropdown.
-          secondInterval: 5, // Integer from 1 to 60.
-          mode: 'standard', // options: 'standard', 'range',
+          minuteInterval: 5,
+          secondInterval: 5,
+          mode: 'standard',
           roundToInterval: false,
           parentElement: null
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
-     */
+    * The Timepicker Component provides a click/touch user interface for setting a time.
+    *
+    * @class TimePicker
+    * @param {String} timeFormat &nbsp;-&nbsp; The time format
+    * @param {Number} minuteInterval  &nbsp;-&nbsp; Integer from 1 to 60.  Multiples of this value are displayed as options in the minutes dropdown.
+    * @param {Number} secondInterval  &nbsp;-&nbsp; Integer from 1 to 60.
+    * @param {String} mode  &nbsp;-&nbsp; can be set to 'standard', 'range',
+    * @param {boolean} roundToInterval  &nbsp;-&nbsp; if `true`, automatically rounds user-entered values from the pickers to their nearest interval.
+    * @param {null|jQuery[]} [parentElement] &nbsp;-&nbsp;  if defined as a jQuery-wrapped element, will be used as the target element.
+    */
     function TimePicker(element) {
       this.settings = $.extend({}, settings);
       this.element = $(element);
@@ -39554,6 +43986,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Plugin Methods
     TimePicker.prototype = {
 
+      /**
+       * @private
+       * @returns {this}
+       */
       init: function() {
         this
           .setup()
@@ -39562,7 +43998,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .roundMinutes();
       },
 
-      // Configure any settings for the Timepicker
+      /**
+       * Configure any settings for the Timepicker
+       * @private
+       * @returns {this}
+       */
       setup: function() {
 
         function sanitizeIntervals(value, type) {
@@ -39613,7 +44053,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
-      //Add any markup
+      /**
+       * Add any markup
+       * @private
+       * @returns {this}
+       */
       build: function() {
         //With this option forgoe the input and append the dropdowns/popup to the parent element
         if (this.settings.parentElement) {
@@ -39637,6 +44081,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
+      /**
+       * Adds ARIA-related attributes
+       * @private
+       * @returns {this}
+       */
       addAria: function () {
         this.element.attr({
           'aria-expanded': 'false',
@@ -39648,19 +44097,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.label.append('<span class="audible">' + Locale.translate('UseArrow') + '</span>');
       },
 
-      //Attach Events used by the Control
-      handleEvents: function () {
-        var self = this;
-        this.trigger.onTouchClick('timepicker').on('click.timepicker', function () {
-          self.toggleTimePopup();
-        });
-
-        this.handleKeys();
-        this.handleBlur();
-
-        return this;
-      },
-
+      /**
+       * Sets up a `keydown` event listener.
+       */
       handleKeys: function() {
         var self = this;
 
@@ -39687,6 +44126,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
+      /**
+       * Sets up a `blur` event listener.
+       */
       handleBlur: function() {
         var self = this;
 
@@ -39703,20 +44145,37 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
+      /**
+       * Checks a time format value to see if it is a Military (24-hour) format.
+       * @param {String} value - a string value representing a time format.
+       * @returns {boolean}
+       */
       is24HourFormat: function(value) {
         if (!value) { value = this.settings.timeFormat; }
         return (value.match('HH') || []).length > 0;
       },
 
+      /**
+       * Checks a time format value to see if it includes seconds.
+       * @param {String} value - a string value representing a time format.
+       * @returns {boolean}
+       */
       hasSeconds: function(value) {
         if (!value) { value = this.settings.timeFormat; }
         return (value.match('ss') || []).length > 0;
       },
 
+      /**
+       * Gets a Locale-defined version of the time separator.
+       * @returns {String}
+       */
       getTimeSeparator: function() {
         return Locale.calendar().dateFormat.timeSeparator;
       },
 
+      /**
+       * Rounds the current value of the minutes picker to its nearest interval value.
+       */
       roundMinutes: function() {
         if (!this.getBoolean(this.settings.roundToInterval)) {
           return;
@@ -39760,7 +44219,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       },
 
       // Add masking with the mask function
-      mask: function () {
+            mask: function () {
         if (this.element.data('mask') && typeof this.element.data('mask') === 'object') {
           this.element.data('mask').destroy();
         }
@@ -39775,12 +44234,21 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           customEvents = this.element.attr('data-validation-events');
 
         if (customValidation === 'required' && !customEvents) {
-          validation = customValidation + ' ' + validation;
-          $.extend(events, {'required': 'change blur'});
-        }
-
-        if (customEvents) {
-          events = customEvents;
+            validation = customValidation + ' ' + validation;
+            $.extend(events, {
+                'required': 'change blur'
+            });
+        } else if (!!customValidation && !!customEvents) {
+            // Remove default validation, if found "no-default-validation" string in "data-validate" attribute
+            if (customValidation.indexOf('no-default-validation') > -1) {
+                validation = customValidation.replace(/no-default-validation/g, '');
+                events = $.fn.parseOptions(this.element, 'data-validation-events');
+            }
+                // Keep default validation along custom validation
+            else {
+                validation = customValidation + ' ' + validation;
+                $.extend(events, $.fn.parseOptions(this.element, 'data-validation-events'));
+            }
         }
 
         this.element
@@ -39794,6 +44262,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .triggerHandler('updated');
       },
 
+      /**
+       * Constructs all markup and subcomponents needed to build the standard Timepicker popup.
+       * @private
+       */
       buildStandardPopup: function() {
         var self = this,
           popupContent = $('<div class="timepicker-popup-content"></div>'),
@@ -39857,7 +44329,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             textValue = secondCounter < 10 ? '0' + secondCounter : secondCounter;
 
             selected = '';
-            if (self.initValues.seconds === secondCounter || (!self.initValues.seconds && textValue === '00')) {
+            if (parseInt(self.initValues.seconds, 10) === secondCounter || (!self.initValues.seconds && textValue === '00')) {
               selected = ' selected';
             }
             secondSelect.append($('<option' + selected + '>' + textValue + '</option>'));
@@ -39961,6 +44433,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
+      /**
+       * Sets up events that need to be bound to a standard time picker.
+       * @private
+       */
       setupStandardEvents: function() {
         var self = this;
 
@@ -40018,14 +44494,29 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
+      /**
+       * @private
+       */
       buildRangePopup: function() {
         // TODO: Build this
       },
 
+      /**
+       * @private
+       */
       setupRangeEvents: function() {
         // TODO: Build this
       },
 
+      /**
+       * Gets the value of the Timepicker field as an object separated into hours, minutes, (optional) seconds, and (optional) day period.
+       * @param {String} [value] - this method can optionally be passed a string-based time value to calculate instead of the current field's value.
+       * @returns {Object}
+       * @returns {Object.hours}
+       * @returns {Object.minutes}
+       * @returns {Object.seconds}
+       * @returns {Object.period}
+       */
       getTimeFromField: function(value) {
         var self = this,
           val = value || this.element.val(),
@@ -40129,6 +44620,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return timeparts;
       },
 
+      /**
+       * Retrieves the values from the Timepicker popup's pickers and uses those values to set
+       * the contents of the Timepicker field.
+       */
       setTimeOnField: function() {
         var hours = $('#timepicker-hours').val() || '',
           minutes = $('#timepicker-minutes').val() || '',
@@ -40147,11 +44642,17 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .focus();
       },
 
-      // Return whether or not the calendar div is open.
+      /**
+       * Return whether or not the Timepicker popup is open.
+       * @returns {boolean}
+       */
       isOpen: function () {
         return (this.popup && !this.popup.hasClass('is-hidden'));
       },
 
+      /**
+       * Opens the Timepicker popup, intializing all the dropdown elements and setting up internal events.
+       */
       openTimePopup: function() {
         var self = this;
 
@@ -40181,18 +44682,20 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.popup.find('div.dropdown').first().focus();
       },
 
-      // Triggers the "hide" method on the tooltip plugin.  The Timepicker officially "closes" after the popover's
-      // hide event fully completes because certain events need to be turned off and certain markup needs to be
-      // removed only AFTER the popover is hidden.
+      /**
+       * Triggers the "hide" method on the tooltip plugin.  The Timepicker officially "closes" after the popover's
+       * hide event fully completes because certain events need to be turned off and certain markup needs to be
+       * removed only AFTER the popover is hidden.
+       */
       closeTimePopup: function() {
-
         if (this.trigger.data('tooltip')) {
           this.trigger.data('tooltip').hide();
         }
-
       },
 
-      // This gets fired on the popover's "hide" event
+      /**
+       * This gets fired on the popover's "hide" event
+       */
       onPopupHide: function() {
         if (this.settings.mode === 'standard') {
           $('#timepicker-hours').data('dropdown').destroy();
@@ -40213,6 +44716,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.element.removeClass('is-active');
       },
 
+      /**
+       * Toggles the visibility of the Timepicker popup.
+       */
       toggleTimePopup: function() {
         if (this.isOpen()) {
           this.closeTimePopup();
@@ -40221,8 +44727,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      // Getter for retrieving the value of the timefield
-      // Optional parameter 'removePunctuation' that gets rid of all the value's punctatuion on return.
+      /**
+       * Getter method for retrieving the value of the Timepicker.
+       * @param {boolean} [removePunctuation] - Gets rid of all the value's punctatuion on return.
+       * @returns {String}
+       */
       value: function(removePunctuation) {
         var val = this.element.val();
         if (!removePunctuation || removePunctuation === false) {
@@ -40244,30 +44753,63 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return val;
       },
 
+      /**
+       * Enables the Timepicker
+       */
       enable: function() {
-        this.element.prop('disabled', false);
+        this.element.removeAttr('disabled readonly').closest('.field').removeClass('is-disabled');
       },
 
+      /**
+      * Set input to readonly.
+      */
+      readonly: function() {
+        this.enable();
+        this.element.attr('readonly', 'readonly');
+      },
+
+      /**
+       * Disables the Timepicker
+       */
       disable: function() {
-        this.element.prop('disabled', true);
+        this.enable();
+        this.element.attr('disabled', 'disabled').closest('.field').addClass('is-disabled');
       },
 
+      /**
+       * Detects whether or not the component is disabled
+       * @returns {boolean}
+       */
       isDisabled: function() {
         return this.element.prop('disabled');
       },
 
-      // Convert a string to boolean
+      /**
+       * Convert a string to boolean
+       * @param {String} val - a text string ("true" or "false") that can be converted to a boolean.
+       * @returns {boolean}
+       */
+      // TODO: Move this to Soho.utils?
       getBoolean: function(val) {
         var num = +val;
         return !isNaN(num) ? !!num : !!String(val).toLowerCase().replace(!!0, '');
       },
 
+      /**
+       * Updates the component instance.  Can be used after being passed new settings.
+       * @returns {this}
+       */
       updated: function() {
         return this
           .teardown()
           .init();
       },
 
+      /**
+       * Removes all event bindings, subcomponents and unnecessary markup from this component instance.
+       * @private
+       * @returns {this}
+       */
       teardown: function() {
         this.trigger.off('keydown.timepicker');
         this.element.off('focus.timepicker blur.timepicker keydown.timepicker');
@@ -40287,11 +44829,34 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
-      // Teardown
+      /**
+       * Destroys the component instance.
+       */
       destroy: function() {
         this.teardown();
         $.removeData(this.element[0], 'validate');
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       * Add any markup
+       * @fires TimePicker#events
+       * @param {Object} click  &nbsp;-&nbsp;
+       * @param {Object} touchstart  &nbsp;-&nbsp;
+       * @param {Object} touchmove  &nbsp;-&nbsp;
+       * @param {Object} touchend  &nbsp;-&nbsp;
+       * @param {Object} blur  &nbsp;-&nbsp;
+       */
+      handleEvents: function () {
+        var self = this;
+        this.trigger.onTouchClick('timepicker').on('click.timepicker', function () {
+          self.toggleTimePopup();
+        });
+
+        this.handleKeys();
+        this.handleBlur();
+
+        return this;
       }
     };
 
@@ -41057,24 +45622,30 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
   };
 
 
-  //NOTE: Just this part will show up in SoHo Xi Builds.
-  $.fn.toolbar = function(options) {
 
+  $.fn.toolbar = function(options) {
     'use strict';
 
-    // Settings and Options
     var pluginName = 'toolbar',
         defaults = {
-          rightAligned: false, // Will always attempt to right-align the contents of the toolbar.
-          maxVisibleButtons: 3, // Total amount of buttons that can be present, not including the More button
-          resizeContainers: false, // If true, uses Javascript to size the Title and Buttonset elements in a way that shows as much of the Title area as possible.
-          favorButtonset: true // If "resizeContainers" is true, setting this to true will try to display as many buttons as possible while resizing the toolbar.  Setting to false attempts to show the entire title instead.
+          rightAligned: false,
+          maxVisibleButtons: 3,
+          resizeContainers: true,
+          favorButtonset: true
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * @constructor
-     * @param {Object} element
+     * The Toolbar Component manages various levels of application navigation.  It contains a group of buttons that functionally
+     * related content. Each panel consists of two levels: the top level identifies the
+     * category or section header, and the second level provides the associated options.
+     *
+     * @class Toolbar
+     *
+     * @param {boolean} rightAligned   &nbsp;-&nbsp; Will always attempt to right-align the contents of the toolbar.
+     * @param {Number} maxVisibleButtons   &nbsp;-&nbsp; Total amount of buttons that can be present, not including the More button.
+     * @param {boolean} resizeContainers   &nbsp;-&nbsp; If true, uses Javascript to size the Title and Buttonset elements in a way that shows as much of the Title area as possible.
+     * @param {boolean} favorButtonset   &nbsp;-&nbsp; If "resizeContainers" is true, setting this to true will try to display as many buttons as possible while resizing the toolbar.  Setting to false attempts to show the entire title instead.
      */
     function Toolbar(element) {
       this.settings = $.extend({}, settings);
@@ -41087,6 +45658,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Plugin Methods
     Toolbar.prototype = {
 
+      /**
+       * Initializes the Toolbar Component
+       * @private
+       * @chainable
+       * @returns {this}
+       */
       init: function() {
         return this
           .setup()
@@ -41094,15 +45671,27 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .handleEvents();
       },
 
+      /**
+       * Detects discrepencies in settings.  In general, configures the component based on user settings.
+       * @private
+       * @chainable
+       * @returns {this}
+       */
       setup: function() {
         // Can't have zero buttons
         if (this.settings.maxVisibleButtons <= 0) {
-          this.settings.maxVisibleButtons = 3;
+          this.settings.maxVisibleButtons = defaults.maxVisibleButtons;
         }
 
         return this;
       },
 
+      /**
+       * Adds additional markup, wraps some internal elements, and helps construct a complete Toolbar representation in the HTML Markup.  This method also builds the "More Actions" menu and ties its elements to the toolbar items.
+       * @private
+       * @chainable
+       * @returns {this}
+       */
       build: function() {
         var self = this;
 
@@ -41165,13 +45754,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         // Reference all interactive items in the toolbar
-        this.items = this.buttonset.children('button')
-          .add(this.buttonset.find('input')) // Searchfield Wrappers
+        this.buttonsetItems = this.buttonset.children('button')
+          .add(this.buttonset.find('input')); // Searchfield Wrappers
+
+        // Items contains all actionable items in the toolbar, including the ones in the title, and the more button
+        this.items = this.buttonsetItems
           .add(this.title.children('button'))
           .add(this.more);
-
-        this.buttonsetItems = this.buttonset.children('button, input')
-          .add(this.buttonset.find('.searchfield-wrapper, .toolbar-searchfield-wrapper').children('input'));
 
         // Invoke buttons
         var buttons = this.items.filter('button, input[type="button"], [class^="btn"]');
@@ -41221,104 +45810,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         var menuItems = [];
-        function buildMenuItem() {
-          /*jshint validthis:true */
-          var item = $(this),
-            popupLi = $('<li></li>'),
-            a = $('<a href="#"></a>').appendTo(popupLi);
+        this.items.not(this.more).filter(menuItemFilter).each(function() {
+          menuItems.push(self.buildMoreActionsMenuItem($(this)));
+        });
 
-          if (item.is(':hidden')) {
-            popupLi.addClass('hidden');
-          }
-          if (item.is(':disabled')) {
-            popupLi.addClass('is-disabled');
-          } else {
-            popupLi.removeClass('is-disabled');
-          }
-
-          a.text(self.getItemText(item));
-
-          // Pass along any icons except for the dropdown (which is added as part of the submenu design)
-          var submenuDesignIcon = $.getBaseURL('#icon-dropdown');
-          var icon = item.children('.icon').filter(function() {
-            var iconName = $(this).getIconName();
-
-            return iconName && iconName !== submenuDesignIcon && iconName.indexOf('dropdown') === -1;
-          });
-
-          if (icon && icon.length) {
-            a.html('<span>' + a.text() + '</span>');
-            icon.clone().detach().prependTo(a);
-          }
-
-          var linkspan = popupLi.find('b');
-          if (linkspan.length) {
-            self.moreMenu.addClass('has-icons');
-            linkspan.detach().prependTo(popupLi);
-          }
-
-          function addItemLinksRecursively(menu, diffMenu, parentItem) {
-            var children = menu.children('li'),
-              id = diffMenu.attr('id');
-
-            diffMenu.children('li').each(function(i, diffMenuItem) {
-              var dmi = $(diffMenuItem), // "Diffed" Menu Item
-                omi = children.eq(i), // Corresponding "Original" menu item
-                dmiA = dmi.children('a'), // Anchor inside of "Diffed" menu item
-                omiA = omi.children('a'), // Anchor inside of "Original" menu item
-                dmiID = dmi.attr('id'),
-                dmiAID = dmiA.attr('id');
-
-              // replace menu item ids with spillover-menu specific ids.
-              if (dmiID) {
-                dmi.removeAttr('id').attr('data-original-menu-item', dmiID);
-              }
-              if (dmiAID) {
-                dmiA.removeAttr('id').attr('data-original-menu-anchor', dmiAID);
-              }
-
-              omiA.data('action-button-link', dmiA);
-              dmiA.data('original-button', omiA);
-
-              var omiSubMenu = omi.children('.wrapper').children('.popupmenu'),
-                dmiSubMenu = dmi.children('.wrapper').children('.popupmenu');
-
-              if (omiSubMenu.length && dmiSubMenu.length) {
-                addItemLinksRecursively(omiSubMenu, dmiSubMenu, dmi);
-              }
-            });
-
-            diffMenu.removeAttr('id').attr('data-original-menu', id);
-            parentItem.addClass('submenu');
-
-            if (parentItem.is(popupLi)) {
-              diffMenu.wrap($('<div class="wrapper"></div>'));
-              parentItem.append(diffMenu);
-            }
-          }
-
-          if (item.is('.btn-menu')) {
-            if (!item.data('popupmenu')) {
-              item.popupmenu();
-            }
-
-            var menu = item.data('popupmenu').menu,
-              diffMenu = menu.clone();
-
-            addItemLinksRecursively(menu, diffMenu, popupLi);
-          }
-
-          if (item.is('[data-popdown]')) {
-            item.popdown();
-          }
-
-          // Setup data links between the buttons and their corresponding list items
-          item.data('action-button-link', a);
-          popupLi.children('a').data('original-button', item);
-          menuItems.push(popupLi);
-        }
-
-        this.items.not(this.more).filter(menuItemFilter).each(buildMenuItem);
         menuItems.reverse();
         $.each(menuItems, function(i, item) {
           if (item.text() !== '') {
@@ -41326,47 +45821,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           }
         });
 
-        //Refresh Text and Disabled
-        function refreshTextAndDisabled(menu) {
-          $('li > a', menu).each(function () {
-            var a = $(this),
-                item = a.data('originalButton'),
-                text = self.getItemText(item),
-                submenu;
-
-            if (item) {
-              if (a.find('span').length) {
-                a.find('span').text(text.trim());
-              } else {
-                a.text(text.trim());
-              }
-
-              if (item.is('.hidden') || item.parent().is('.hidden')) {
-                a.closest('li').addClass('hidden');
-              } else {
-                a.closest('li').removeClass('hidden');
-              }
-
-              if (item.parent().is('.is-disabled') || item.is(':disabled')) { // if it's disabled menu item, OR a disabled menu-button
-                a.closest('li').addClass('is-disabled');
-                a.attr('tabindex', '-1');
-              } else {
-                a.closest('li').removeClass('is-disabled');
-                a.removeAttr('disabled');
-              }
-
-              if (item.is('.btn-menu')) {
-                submenu = a.parent().find('.popupmenu').first();
-                refreshTextAndDisabled(submenu);
-              }
-            }
-          });
-        }
-
+        // Setup an Event Listener that will refresh the contents of the More Actions
+        // Menu's items each time the menu is opened.
         if (popupMenuInstance) {
           this.more
             .on('beforeopen.toolbar', function() {
-              refreshTextAndDisabled(self.moreMenu);
+              self.refreshMoreActionsMenu(self.moreMenu);
             })
             .triggerHandler('updated');
         } else {
@@ -41376,10 +45836,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             trigger: 'click',
             menu: this.moreMenu
           })).on('beforeopen.toolbar', function() {
-            refreshTextAndDisabled(self.moreMenu);
+            self.refreshMoreActionsMenu(self.moreMenu);
           });
         }
-
 
         // Setup the tabindexes of all items in the toolbar and set the starting active button.
         function setActiveToolbarItem() {
@@ -41413,14 +45872,217 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         setActiveToolbarItem();
 
         // Toggles the More Menu based on overflow of toolbar items
+        this.adjustMenuItemVisibility();
         this.handleResize();
 
         this.element.triggerHandler('rendered');
         return this;
       },
 
-      // Order of operations for populating the List Item text:
-      // span contents (.audible) >> button title attribute >> tooltip text (if applicable)
+      /**
+       * Builds a single "More Actions Menu" item from a source toolbar item.
+       * Also sets up linkage between the menu item and the original toolbar item to allow events/properties
+       * to propagate when the More Actions item is acted upon.
+       * @param {jQuery[]} item - the source item from the toolbar.
+       * @returns {jQuery[]} - a jQuery-wrapped <li> representing a More Actions menu implementation of the toolbar item.
+       */
+      buildMoreActionsMenuItem: function(item) {
+        var isSplitButton = false;
+
+        // If this item should be skipped, just return out
+        if (item.data('skipit') === true) {
+          item.data('skipit', undefined);
+          return;
+        }
+
+        // Attempt to re-use an existing <li>, if possible.
+        // If a new one is created, setup the linkage between the original element and its
+        // "More Actions" menu counterpart.
+        var a = item.data('action-button-link'),
+          popupLi;
+
+        if (!a || !a.length) {
+          popupLi = $('<li></li>');
+          a = $('<a href="#"></a>').appendTo(popupLi);
+
+          // Setup data links between the buttons and their corresponding list items
+          item.data('action-button-link', a);
+          a.data('original-button', item);
+        } else {
+          popupLi = a.parent();
+        }
+
+        // Refresh states
+        if (item.hasClass('hidden')) {
+          popupLi.addClass('hidden');
+        }
+        if (item.is(':disabled')) {
+          popupLi.addClass('is-disabled');
+        } else {
+          popupLi.removeClass('is-disabled');
+        }
+
+        // Refresh Text
+        a.text(this.getItemText(item));
+
+        // Pass along any icons except for the dropdown (which is added as part of the submenu design)
+        var submenuDesignIcon = $.getBaseURL('#icon-dropdown');
+        var icon = item.children('.icon').filter(function() {
+          var iconName = $(this).getIconName();
+          return iconName && iconName !== submenuDesignIcon && iconName.indexOf('dropdown') === -1;
+        });
+
+        if (icon && icon.length) {
+          a.html('<span>' + a.text() + '</span>');
+          icon.clone().detach().prependTo(a);
+        }
+
+        var linkspan = popupLi.find('b');
+        if (linkspan.length) {
+          this.moreMenu.addClass('has-icons');
+          linkspan.detach().prependTo(popupLi);
+        }
+
+        function addItemLinksRecursively(menu, diffMenu, parentItem) {
+          var children = menu.children('li'),
+            id = diffMenu.attr('id');
+
+          diffMenu.children('li').each(function(i, diffMenuItem) {
+            var dmi = $(diffMenuItem), // "Diffed" Menu Item
+              omi = children.eq(i), // Corresponding "Original" menu item
+              dmiA = dmi.children('a'), // Anchor inside of "Diffed" menu item
+              omiA = omi.children('a'), // Anchor inside of "Original" menu item
+              dmiID = dmi.attr('id'),
+              dmiAID = dmiA.attr('id');
+
+            // replace menu item ids with spillover-menu specific ids.
+            if (dmiID) {
+              dmi.removeAttr('id').attr('data-original-menu-item', dmiID);
+            }
+            if (dmiAID) {
+              dmiA.removeAttr('id').attr('data-original-menu-anchor', dmiAID);
+            }
+
+            omiA.data('action-button-link', dmiA);
+            dmiA.data('original-button', omiA);
+
+            var omiSubMenu = omi.children('.wrapper').children('.popupmenu'),
+              dmiSubMenu = dmi.children('.wrapper').children('.popupmenu');
+
+            if (omiSubMenu.length && dmiSubMenu.length) {
+              addItemLinksRecursively(omiSubMenu, dmiSubMenu, dmi);
+            }
+
+            if (isSplitButton) {
+              dmi.removeClass('is-checked');
+            }
+          });
+
+          diffMenu.removeAttr('id').attr('data-original-menu', id);
+          parentItem.addClass('submenu');
+
+          var appendTarget;
+          if (parentItem.is(popupLi)) {
+            appendTarget = parentItem.children('.wrapper');
+            if (!appendTarget || !appendTarget.length) {
+              appendTarget = $('<div class="wrapper"></div>');
+            }
+            appendTarget.html(diffMenu);
+            parentItem.append(appendTarget);
+          }
+        }
+
+        if (item.is('.btn-menu')) {
+          if (!item.data('popupmenu')) {
+            item.popupmenu();
+          } else {
+            if (!a.children('.icon.arrow').length) {
+              a.append($.createIcon({
+                classes: 'icon arrow icon-dropdown',
+                icon: 'dropdown'
+              }));
+            }
+          }
+
+          var menu = item.data('popupmenu').menu,
+            diffMenu = menu.clone();
+
+          addItemLinksRecursively(menu, diffMenu, popupLi);
+        }
+
+        if (item.is('[data-popdown]')) {
+          item.popdown();
+        }
+
+        return popupLi;
+      },
+
+      /**
+       * Refreshes the More Actions Menu items' text content, icons, states, and submenu content
+       * based on changes made directly to their counterpart elements in the Toolbar.  Can also
+       * optionally refresh only part of the menu.
+       * @param {jQuery[]} menu - the menu/submenu to be refreshed.
+       */
+      refreshMoreActionsMenu: function(menu) {
+        var self = this;
+
+        $('li > a', menu).each(function () {
+          var a = $(this),
+              li = a.parent(),
+              item = a.data('originalButton'),
+              itemParent,
+              text = self.getItemText(item),
+              submenu;
+
+          if (item) {
+            if (a.find('span').length) {
+              a.find('span').text(text.trim());
+            } else {
+              a.text(text.trim());
+            }
+
+            if (item.is('.hidden') || item.parent().is('.hidden')) {
+              li.addClass('hidden');
+            } else {
+              li.removeClass('hidden');
+            }
+
+            if (item.parent().is('.is-disabled') || item.is(':disabled')) { // if it's disabled menu item, OR a disabled menu-button
+              li.addClass('is-disabled');
+              a.attr('tabindex', '-1');
+            } else {
+              li.removeClass('is-disabled');
+              a.removeAttr('disabled');
+            }
+
+            if (item.is('a')) {
+              itemParent = item.parent('li');
+
+              if (itemParent.is('.is-checked')) {
+                li.addClass('is-checked');
+              } else {
+                li.removeClass('is-checked');
+              }
+            }
+
+            if (item.is('.btn-menu')) {
+              submenu = a.parent().find('.popupmenu').first();
+              self.refreshMoreActionsMenu(submenu);
+            }
+          }
+        });
+      },
+
+      /**
+       * Gets the complete text contnts of a Toolbar Item, in order to create its corresponding "more actions" menu item.
+       *
+       * Order of operations for populating the List Item text:
+       * 1. span contents (.audible), then
+       * 2. button title attribute, then
+       * 3. tooltip text (if applicable)
+       * @param {jQuery[]} item - the item being evaluated.
+       * @returns {string} - the complete text representation.
+       */
       getItemText: function (item) {
         if (!item) {
           return;
@@ -41428,7 +46090,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         var span = item.find('.audible'),
           title = item.attr('title'),
           tooltip = item.data('tooltip'),
-          tooltipText = tooltip ? tooltip.content : undefined;
+          tooltipText = tooltip && typeof tooltip.content === 'string' ? tooltip.content : undefined;
 
         var popupLiText = span.length ? span.text() :
           title !== '' && title !== undefined ? item.attr('title') :
@@ -41437,6 +46099,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return popupLiText;
       },
 
+      /**
+       * Sets up all necessary event handling on a Toolbar component
+       * @private
+       * @chainable
+       * @returns {this}
+       */
       handleEvents: function() {
         var self = this;
 
@@ -41449,7 +46117,19 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         this.items.filter('.btn-menu, .btn-actions')
           .off('close.toolbar').on('close.toolbar', function onClosePopup() {
-            $(this).focus();
+            var el = $(this),
+              last;
+
+            if (el.is('.is-overflowed')) {
+              last = self.getLastVisibleButton();
+              if (last && last.length) {
+                last[0].focus();
+              }
+              return;
+            }
+
+            el.focus();
+            self.buttonset.scrollTop(0);
           });
 
         this.items.not(this.more).off('selected.toolbar').on('selected.toolbar', function(e, anchor) {
@@ -41466,25 +46146,73 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           self.handleSelected(e, anchor);
         });
 
+        // Handle possible AJAX calls on Toolbar Menu buttons
+        // TODO: Need to handle mouseenter/touchstart/keydown events that will cause this to trigger,
+        // instead of directly handling this itself.
+        this.more
+          .off('show-submenu.toolbar')
+          .on('show-submenu.toolbar', function(e, li) {
+          self.handleTransferToMenuButtonItem(e, li);
+        });
+
         this.element.off('updated.toolbar').on('updated.toolbar', function(e) {
           e.stopPropagation();
           self.updated();
         }).off('recalculate-buttons.toolbar').on('recalculate-buttons.toolbar', function(e, containerDims) {
           self.handleResize(containerDims);
+        }).off('scrollup.toolbar').on('scrollup.toolbar', function() {
+          var moduleTabsParent = self.element.parents('.tab-container.module-tabs');
+          if (moduleTabsParent.length) {
+            moduleTabsParent.scrollTop(0);
+          }
         });
 
         $('body').off('resize.toolbar-' + this.id).on('resize.toolbar-' + this.id, function() {
           self.handleResize();
         });
 
+        // Trigger _handleResize()_ once to fix container sizes.
+        this.handleResize();
+
         return this;
       },
 
+      /**
+       * Event Handler for the Soho Popupmenu's custom 'show-submenu' event, specifically for
+       * the case of a menu button that's been spilled over into this Toolbar's More Actions menu.
+       * @param {jQuery.Event} e
+       * @param {jQuery[]} li - the `li.submenu` element.
+       */
+      handleTransferToMenuButtonItem: function(e, li) {
+        var originalMenuButton = li.children('a').data('original-button');
+        if (!originalMenuButton) {
+          return;
+        }
+
+        var popupAPI = originalMenuButton.data('popupmenu');
+        if (!popupAPI || typeof popupAPI.settings.beforeOpen !== 'function') {
+          return;
+        }
+
+        // Call out to the MenuButton's AJAX source, get its contents, and populate
+        // the corresponding More Actions menu sub-item.
+        popupAPI.callSource(e);
+        this.buildMoreActionsMenuItem(originalMenuButton);
+      },
+
+      /**
+       * Event handler for the Soho `selected` event on toolbar items
+       * @private
+       * @listens {jQuery.Event} e
+       * @param {jQuery.Event} e
+       * @returns {undefined}
+       */
       handleSelected: function(e, anchor) {
         var itemLink = anchor.data('original-button'),
           li = anchor.parent(),
           itemEvts,
-          toolbarEvts;
+          toolbarEvts,
+          popup, popupTrigger;
 
         // Don't continue if hidden/readonly/disabled
         if (li.is('.hidden, .is-disabled') || anchor.is('[readonly], [disabled]')) {
@@ -41528,7 +46256,15 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             }
           }
 
-          // Trigger Select on the linked item, since it won't be done by another event
+          // If the linked element is a child of a menu button, trigger its 'selected' event.
+          popup = itemLink.parents('.popupmenu');
+          popupTrigger = popup.data('trigger');
+          if (popup.length && popupTrigger instanceof $ && popupTrigger.length) {
+            popupTrigger.triggerHandler('selected', [itemLink]);
+            return;
+          }
+
+          // Manually Trigger Select on the linked item, since it won't be done by another event
           this.triggerSelect(itemLink);
           return;
         }
@@ -41539,35 +46275,32 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.triggerSelect(anchor);
       },
 
+      /**
+       * Event handler for clicks on toolbar items
+       * @private
+       * @listens {jQuery.Event} e
+       * @param {jQuery.Event} e
+       * @returns {false}
+       */
       handleClick: function(e) {
         this.setActiveButton($(e.currentTarget));
         this.triggerSelect($(e.currentTarget));
         return false;
       },
 
+      /**
+       * Event handler for key presses on toolbar items
+       * @private
+       * @listens {jQuery.Event} e
+       * @param {jQuery.Event} e
+       * @returns {undefined}
+       */
       handleKeys: function(e) {
         var self = this,
           key = e.which,
           target = $(e.target),
           isActionButton = target.is('.btn-actions'),
           isRTL = Locale.isRTL();
-
-        /*
-        if (target.is('.btn-actions')) {
-          if (key === 37 || key === 38) { // Left/Up
-            e.preventDefault();
-            target = isRTL ? self.getFirstVisibleButton() : self.getLastVisibleButton();
-          }
-
-          if (key === 39 || (key === 40 && target.attr('aria-expanded') !== 'true')) { // Right (or Down if the menu's closed)
-            e.preventDefault();
-            target = isRTL ? self.getLastVisibleButton() : self.getFirstVisibleButton();
-          }
-
-          self.setActiveButton(target);
-          return;
-        }
-        */
 
         if ((key === 37 && target.is(':not(input)')) ||
           (key === 37 && target.is('input') && e.shiftKey) || // Shift + Left Arrow should be able to navigate away from Searchfields
@@ -41596,18 +46329,24 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return;
       },
 
+      /**
+       * Re-renders the toolbar element and adjusts all internal parts to account for the new size.
+       * @param {Object} [containerDims] - an object containing dimensions that can be set on the Toolbar's title and buttonset elements.
+       * @param {number} [containerDims.title] - represents the width that will be applied to the title element
+       * @param {number} [containerDims.buttonset] - represents the width that will be applied to the buttonset element
+       * @returns {undefined}
+       */
       handleResize: function(containerDims) {
-        var buttons = this.getVisibleButtons();
-
-        for (var i = 0; i < buttons.length; i++) {
-          buttons.visible[i][0].classList.remove('is-overflowed');
-        }
-
         if (this.settings.resizeContainers) {
           var title = containerDims ? containerDims.title : undefined,
             buttonset = containerDims ? containerDims.buttonset : undefined;
 
           this.sizeContainers(title, buttonset);
+        }
+
+        var buttons = this._getButtonsetButtons();
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].removeClass('is-overflowed');
         }
 
         if (this.element.is(':not(:hidden)')) {
@@ -41616,6 +46355,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * Resizes the Toolbar's internal container areas (title, buttonset) to make efficient use of their space.
+       * @private
+       * @chainable
+       * @param {number} titleSize - desired size of the title element.
+       * @param {number} buttonsetSize - desired size of the buttonset element.
+       * @returns {this}
+       */
       sizeContainers: function(titleSize, buttonsetSize) {
         var containerElem = this.element[0],
           titleElem = this.title[0],
@@ -41639,26 +46386,25 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           MIN_TITLE_SIZE = 44 + WHITE_SPACE,
           MIN_BUTTONSET_SIZE = 0;
 
-        buttonsetElem.style.width = 'auto';
-        titleElem.style.width = 'auto';
+        buttonsetElem.style.width = '';
+        titleElem.style.width = '';
 
         if (!containerElem.classList.contains('do-resize')) {
           containerElem.classList.add('do-resize');
         }
 
-        var toolbarStyle = window.getComputedStyle(containerElem),
-          toolbarWidth = parseInt(toolbarStyle.width),
-          padding = parseInt(toolbarStyle.paddingLeft) + parseInt(toolbarStyle.paddingRight),
-          buttonsetWidth = parseInt(window.getComputedStyle(buttonsetElem).width) + WHITE_SPACE,
-          moreWidth = moreElem !== undefined ? parseInt(window.getComputedStyle(moreElem).width) : 0,
-          titleScrollWidth = titleElem.scrollWidth + 1;
+        var toolbarDims = $(containerElem).getHiddenSize(),
+          buttonsetDims = $(buttonsetElem).getHiddenSize(),
+          titleDims = $(titleElem).getHiddenSize(),
+          moreDims = $(moreElem).getHiddenSize(),
+          toolbarPadding = parseInt(toolbarDims.padding.left) + parseInt(toolbarDims.padding.right);
 
-        if (isNaN(moreWidth)) {
-          moreWidth = 50;
+        if (isNaN(moreDims.width)) {
+          moreDims.width = 50;
         }
 
-        if (isNaN(buttonsetWidth) || buttonsetWidth < MIN_BUTTONSET_SIZE) {
-          buttonsetWidth = MIN_BUTTONSET_SIZE;
+        if (isNaN(buttonsetDims.width) || buttonsetDims.width < MIN_BUTTONSET_SIZE) {
+          buttonsetDims.width = MIN_BUTTONSET_SIZE;
         }
 
         function addPx(val) {
@@ -41674,12 +46420,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           targetTitleWidth = parseInt(titleSize);
           targetButtonsetWidth = parseInt(buttonsetSize);
         } else {
-          if (this.settings.favorButtonset) {
-            targetButtonsetWidth = buttonsetWidth;
-            targetTitleWidth = toolbarWidth - (padding + buttonsetWidth + moreWidth);
-          } else {
-            targetTitleWidth = titleScrollWidth;
-            targetButtonsetWidth = toolbarWidth - (padding + titleScrollWidth + moreWidth);
+          if ((buttonsetDims.scrollWidth + titleDims.scrollWidth + moreDims.width + toolbarPadding) > toolbarDims.width) {
+            if (this.settings.favorButtonset) {
+              targetButtonsetWidth = buttonsetDims.width;
+              targetTitleWidth = toolbarDims.width - (toolbarPadding + buttonsetDims.width + moreDims.width);
+            } else {
+              targetTitleWidth = titleDims.scrollWidth;
+              targetButtonsetWidth = toolbarDims.width - (toolbarPadding + titleDims.scrollWidth + moreDims.width);
+            }
           }
         }
 
@@ -41692,8 +46440,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             targetButtonsetWidth = targetButtonsetWidth - d;
           }
 
-          buttonsetElem.style.width = addPx(targetButtonsetWidth);
-          titleElem.style.width = addPx(targetTitleWidth);
+          buttonsetElem.style.width = addPx(targetButtonsetWidth + 2);
+          titleElem.style.width = addPx(targetTitleWidth - 2);
 
           return this;
         }
@@ -41707,12 +46455,17 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           targetTitleWidth = targetTitleWidth - d;
         }
 
-        titleElem.style.width = addPx(targetTitleWidth);
-        buttonsetElem.style.width = addPx(targetButtonsetWidth);
+        // Always favor the title by one extra px for Chrome
+        titleElem.style.width = addPx(targetTitleWidth + 2);
+        buttonsetElem.style.width = addPx(targetButtonsetWidth - 2);
         return this;
       },
 
-      // Go To a button
+      /**
+       * Changes the "active" button on the toolbar.
+       * @param {number} direction - can be `-1` (previous), `1` (next), or `0` (remain on current).
+       * @returns {jQuery[]}
+       */
       navigate: function (direction) {
         var items = this.items.filter(':visible:not(:disabled)'),
           current = items.index(this.activeButton),
@@ -41739,7 +46492,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return false;
       },
 
-      // Gets the last button that's above the overflow line
+      /**
+       * Gets a reference to the last visible (not overflowed) button inside of the buttonset.
+       * @returns {jQuery[]}
+       */
       getLastVisibleButton: function() {
         var items = $(this.items.get().reverse()).not(this.more),
           target;
@@ -41747,7 +46503,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         var i = 0,
           elem;
 
-        while(!target && i < items.length - 1) {
+        while(!target && i < items.length) {
           elem = $(items[i]);
           if (!this.isItemOverflowed(elem)) {
             target = elem;
@@ -41760,13 +46516,17 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           target = items.first();
         }
 
-        while(target.is('.separator, *:disabled, *:hidden')) {
-          target = target.next();
+        while(target.length && target.is('.separator, *:disabled, *:hidden')) {
+          target = target.prev();
         }
 
         return target;
       },
 
+      /**
+       * Gets a reference to the first visible (not overflowed) button inside of the buttonset.
+       * @returns {jQuery[]}
+       */
       getFirstVisibleButton: function() {
         var i = 0,
           items = this.items,
@@ -41780,6 +46540,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return target;
       },
 
+      /**
+       * Sets the currently "active" (focused) Toolbar item
+       * @param {jQuery[]} activeButton - the preferred target element to make active.
+       * @param {boolean} [noFocus] - if defined, prevents this method from giving focus to the new active button.
+       */
       setActiveButton: function(activeButton, noFocus) {
         // Return out of this if we're clicking the currently-active item
         if (activeButton[0] === this.activeButton[0]) {
@@ -41788,10 +46553,18 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         var self = this;
 
+        function getMoreOrLast() {
+          if (self.hasNoMoreButton() || !self.element.hasClass('has-more-button')) {
+            return self.getLastVisibleButton();
+          }
+
+          return self.more;
+        }
+
         function getActiveButton() {
           // Menu items simply set the "More Actions" button as active
           if (activeButton.is('a')) {
-            return self.more;
+            return getMoreOrLast();
           }
 
           // If it's the more button, hide the tooltip and set it as active
@@ -41800,13 +46573,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             if (tooltip && tooltip.tooltip.is(':not(.hidden)')) {
               tooltip.hide();
             }
-            return self.more;
+            return getMoreOrLast();
           }
 
           // Overflowed items also set
           if (self.isItemOverflowed(activeButton)) {
             if (!activeButton.is('.searchfield')) {
-              return self.more;
+              return getMoreOrLast();
             }
           }
 
@@ -41820,11 +46593,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         if (!noFocus) {
           this.activeButton[0].focus();
+          this.element.triggerHandler('navigate', [this.activeButton]);
         }
       },
 
-      /** Triggers a "selected" event on the base Toolbar element using a common element as an argument.
-       * @param {Object} element - a jQuery Object containing an anchor tag, button, or input field.
+      /**
+       * Triggers a "selected" event on the base Toolbar element using a common element as an argument.
+       * @param {HTMLElement|SVGElement|jQuery[]} element - a jQuery Object containing an anchor tag, button, or input field.
        */
       triggerSelect: function(element) {
         var elem = $(element);
@@ -41835,6 +46610,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.element.triggerHandler('selected', [elem]);
       },
 
+      /**
+       * Assembles and returns a list of all buttons inside the Buttonset element.
+       * @returns {Array}
+       */
       _getButtonsetButtons: function() {
         var buttons = [],
           items = this.buttonsetItems,
@@ -41850,6 +46629,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return buttons;
       },
 
+      /**
+       * Gets and Iterates through a list of toolbar items and determines which are currently overflowed, and which are visible.
+       * @param {Array} buttons - an Array of jQuery-wrapped elements that represents toolbar items.
+       * @returns {VisibilitySortedToolbarItems}
+       * @returns {VisibilitySortedToolbarItems.Array} visible - An array containing all visible items.
+       * @returns {VisibilitySortedToolbarItems.Array} hidden - An array containing all hidden (overflowed) items.
+      */
       getVisibleButtons: function(buttons) {
         var self = this,
           hiddenButtons = [],
@@ -41882,6 +46668,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         };
       },
 
+      /**
+       * Gets and Iterates through the full list of Toolbar Items and determines which ones should currently be present in the More Actions menu.
+       * @param {Object} items - an object (normally generated by `_.getVisibleButtons()`) containing arrays of currently visible and hidden buttons, along with some meta-data.
+       * @returns {undefined}
+       */
       adjustMenuItemVisibility: function(items) {
         var iconDisplay = 'removeClass';
 
@@ -41897,6 +46688,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           if (doHide) {
             li.classList.add('hidden');
             elem.classList.remove('is-overflowed');
+
+            /*
+            if (elem.classList.contains('btn-split-menu') && elem.classList.contains('btn-menu')) {
+              $elem.last().last().removeClass('is-overflowed');
+            }
+            */
             return;
           }
 
@@ -41904,6 +46701,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             li.classList.remove('hidden');
           }
           elem.classList.add('is-overflowed');
+
+          /*
+          if (elem.classList.contains('btn-split-menu') && elem.classList.contains('btn-menu')) {
+            $elem.last().last().addClass('is-overflowed');
+          }
+          */
 
           if ($elem.find('.icon').length) {
             iconDisplay = 'addClass';
@@ -41925,8 +46728,16 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.moreMenu[iconDisplay]('has-icons');
       },
 
-      // Item is considered overflow if it's right-most edge sits past the right-most edge of the border.
+      /**
+       * Detects whether or not a toolbar item is currently overflowed.  In general, toolbar items are considered overflow if their right-most edge sits past the right-most edge of the buttonset border.  There are some edge-cases.
+       * @param {jQuery[]} item - the Toolbar item being tested.
+       * @returns {boolean}
+       */
       isItemOverflowed: function(item) {
+        if (this.hasNoMoreButton()) {
+          return false;
+        }
+
         if (!item || item.length === 0) {
           return true;
         }
@@ -41972,6 +46783,19 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return (itemBelowYEdge === true || itemOutsideXEdge === true);
       },
 
+      /**
+       * Detection for this toolbar to have a More Button
+       * @returns {boolean}
+       */
+      hasNoMoreButton: function() {
+        return this.element[0].classList.contains('no-more-button');
+      },
+
+      /**
+       * Determines whether or not the "more actions" button should be displayed.
+       * @private
+       * @returns {undefined}
+       */
       toggleMoreMenu: function() {
         if (this.element.hasClass('no-actions-button')) {
           return;
@@ -42010,6 +46834,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * Creates an `aria-label` attribute on the toolbar, for bettery accessibility
+       * @private
+       * @returns {undefined}
+       */
       buildAriaLabel: function() {
         // Set up an aria-label as per AOL guidelines
         // http://access.aol.com/dhtml-style-guide-working-group/#toolbar
@@ -42035,18 +46864,32 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           .init();
       },
 
+      /**
+       * Enables the entire Toolbar component
+       * @returns {undefined}
+       */
       enable: function() {
         this.element.prop('disabled', false);
         this.items.prop('disabled', false);
         this.more.prop('disabled', false);
       },
 
+      /**
+       * Disables the entire Toolbar component
+       * @returns {undefined}
+       */
       disable: function() {
         this.element.prop('disabled', true);
         this.items.prop('disabled', true);
         this.more.prop('disabled', true).data('popupmenu').close();
       },
 
+      /**
+       * Removes currently associated event listeners from the Toolbar.
+       * @private
+       * @chainable
+       * @returns {this}
+       */
       unbind: function() {
         this.items
           .offTouchClick('toolbar')
@@ -42057,52 +46900,76 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
+      /**
+       * Returns the Toolbar's internal markup to its original state.
+       * @chainable
+       * @returns {this}
+       */
       teardown: function() {
-        function deconstructMenuItem(i, item) {
-          var li = $(item),
-            a = li.children('a'),
-            itemLink = a.data('original-button');
-
-          a.off('updated.toolbar mousedown.toolbar click.toolbar touchend.toolbar touchcancel.toolbar recalculate-buttons.toolbar');
-
-          var icons = li.find('.icon');
-          if (icons.length) {
-            icons.remove();
-          }
-
-          var submenuContainer;
-          if (li.is('.submenu')) {
-            submenuContainer = li.children('.wrapper').children('.popupmenu');
-            submenuContainer.children('li').each(deconstructMenuItem);
-          }
-
-          if (itemLink && itemLink.length) {
-            $.removeData(a[0], 'original-button');
-            $.removeData(itemLink[0], 'action-button-link');
-            a.remove();
-
-            if (submenuContainer) {
-              submenuContainer
-                .off()
-              .parent('.wrapper')
-                .off()
-                .remove();
-            }
-
-            li.remove();
-          }
-
-        }
+        var self = this;
 
         if (this.title && this.title.length) {
-          this.title.off('beforeshow.toolbar').data('tooltip').destroy();
+          var dataTooltip = this.title.off('beforeshow.toolbar').data('tooltip');
+          if (dataTooltip) {
+            dataTooltip.destroy();
+          }
         }
 
-        this.moreMenu.children('li').each(deconstructMenuItem);
+        this.moreMenu.children('li').each(function() {
+          self.teardownMoreActionsMenuItem($(this), true);
+        });
         return this;
       },
 
-      // Teardown - Remove added markup and events
+      /**
+       * Tears down a More Actions Menu item.
+       * @param {jQuery[]} item - the existing <li> from inside the More Actions menu.
+       * @param {boolean} doRemove - if defined, causes the list item to be removed from the more actions menu.
+       */
+      teardownMoreActionsMenuItem: function(item, doRemove) {
+        var self = this,
+          li = $(item),
+          a = li.children('a'),
+          itemLink = a.data('original-button');
+
+        a.off('updated.toolbar mousedown.toolbar click.toolbar touchend.toolbar touchcancel.toolbar recalculate-buttons.toolbar');
+
+        var icons = li.find('.icon');
+        if (icons.length) {
+          icons.remove();
+        }
+
+        var submenuContainer;
+        if (li.is('.submenu')) {
+          submenuContainer = li.children('.wrapper').children('.popupmenu');
+          submenuContainer.children('li').each(function(){
+            self.teardownMoreActionsMenuItem($(this), true);
+          });
+        }
+
+        if (itemLink && itemLink.length) {
+          $.removeData(a[0], 'original-button');
+          $.removeData(itemLink[0], 'action-button-link');
+          a.remove();
+
+          if (submenuContainer) {
+            submenuContainer
+              .off()
+            .parent('.wrapper')
+              .off()
+              .remove();
+          }
+
+          if (doRemove) {
+            li.remove();
+          }
+        }
+      },
+
+      /**
+       * Destroys this Toolbar Component instance and completely disassociates it from its corresponding DOM Element.
+       * @returns {undefined}
+       */
       destroy: function() {
         this
           .unbind()
@@ -42114,6 +46981,17 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             searchFields.data('toolbarsearchfield').destroy();
           }
         }
+
+        /*
+        // Remove split button wrappers
+        if (this.splitButtonWrappers.length) {
+          $.each(this.splitButtonWrappers, function(wrapper) {
+            var els = wrapper.children().detach();
+            els.insertAfter(wrapper);
+            wrapper.remove();
+          });
+        }
+        */
 
         if (this.more.length && this.more.data('popupmenu') !== undefined) {
           this.more.data('popupmenu').destroy();
@@ -42153,15 +47031,20 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Settings and Options
     var pluginName = 'toolbarsearchfield',
         defaults = {
-          clearable: true,  // If "true", provides an "x" button on the right edge that clears the field
-          collapsible: true // If "true", allows the field to expand/collapse on larger breakpoints when focused/blurred respectively
+          clearable: true,
+          collapsible: true,
+          collapsibleOnMobile: true
         },
         settings = $.extend({}, defaults, options);
 
     /**
-     * Depends on both a Toolbar control and Searchfield control to be present
-     * @constructor
-     * @param {Object} element
+     * Searchfield Component Wrapper that extends normal Searchfield functionality and provides collapse/expand behavior.  For use inside of Toolbars.
+     *
+     * @class ToolbarSearchfield
+     *
+     * @param {boolean} clearable  &nbsp;-&nbsp;  If "true", provides an "x" button on the right edge that clears the field
+     * @param {boolean} collapsible  &nbsp;-&nbsp;  If "true", allows the field to expand/collapse on larger breakpoints when focused/blurred respectively
+     * @param {boolean} collapsibleOnMobile &nbsp;-&nbsp;  If true, overrides `collapsible` only on mobile settings.
      */
     function ToolbarSearchfield(element) {
       this.settings = $.extend({}, settings);
@@ -42174,13 +47057,20 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Plugin Methods
     ToolbarSearchfield.prototype = {
 
+      /**
+       * @private
+       * @returns {this}
+       */
       init: function() {
         return this
           .build()
           .handleEvents();
       },
 
-      // Creates and manages any markup the control needs to function.
+      /**
+       * Creates and manages any markup the control needs to function.
+       * @returns {this}
+       */
       build: function() {
         // Used for managing events that are bound to $(document)
         if (!this.id) {
@@ -42210,9 +47100,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
 
         // Invoke Searchfield, pass settings on
-        var sfSettings = $.extend({}, this.settings, $.fn.parseOptions(this.input[0]));
+        var sfSettings = $.extend({ 'noToolbarSearchfieldInvoke': true }, this.settings, $.fn.parseOptions(this.input[0]));
         this.input.searchfield(sfSettings);
-        this.inputWrapper = this.input.parent('.searchfield-wrapper');
+        this.inputWrapper = this.input.parent();
         this.inputWrapper.addClass('toolbar-searchfield-wrapper');
 
         if (sfSettings.categories) {
@@ -42225,55 +47115,61 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         this.xButton = this.inputWrapper.children('.icon.close');
 
-        // Open the searchfield once on intialize if it's a "non-collapsible" searchfield
-        if (!this.settings.collapsible) {
-          this.inputWrapper.addClass('no-transition').one('expanded.' + this.id, function() {
-            $(this).removeClass('no-transition');
-          });
-          this.expand();
-        }
+        this.adjustOnBreakpoint();
 
         return this;
       },
 
-      // Main entry point for setting up event handlers.
-      handleEvents: function() {
-        var self = this;
-
-        this.inputWrapper.on('mousedown.toolbarsearchfield', function() {
-          self.fastExpand = true;
-        }).on('focusin.toolbarsearchfield', function(e) {
-          self.handleFocus(e);
-        }).on('collapse.toolbarsearchfield', function() {
-          self.collapse();
-        });
-
-        if (this.button && this.button.length) {
-          this.button.on('beforeopen.toolbarsearchfield', function(e, menu) {
-            return self.handlePopupBeforeOpen(e, menu);
-          });
-        }
-
-        // Used to determine if the "Tab" key was involved in switching focus to the searchfield.
-        $(document).on('keydown.' + this.id, function(e) {
-          self.handleOutsideKeydown(e);
-        });
-
-        $('body').on('resize.' + this.id, function() {
-          self.adjustOnBreakpoint();
-        });
-
-        return this;
-      },
-
+      /**
+       * TODO: Deprecate in 4.4.0
+       * @private
+       */
       handleDeactivationEvents: function() {
+        return this.addDocumentDeactivationEvents();
+      },
+
+      /**
+       * @private
+       * Sets up event listeners that need to be handled at the global (document) level, since they deal
+       * with general keystrokes.
+       */
+      addDocumentDeactivationEvents: function() {
         var self = this;
 
-        $(document).onTouchClick(this.id).on('click.' + this.id, function(e) {
+        if (!this.handleOutsideStr) {
+          var arr = ['click'].map(function(v) {
+            return v +'.'+ self.id;
+          });
+          this.handleOutsideStr = arr.join(' ');
+        }
+
+        $(document).on(self.handleOutsideStr, function(e) {
           self.handleOutsideClick(e);
         });
       },
 
+      /**
+       * @private
+       * Removes global (document) level event handlers.
+       */
+      removeDocumentDeactivationEvents: function() {
+        var self = this;
+        $(document).off(this.handleOutsideStr, function(e) {
+          self.handleOutsideClick(e);
+        });
+      },
+
+      /**
+       * Detects whether or not the Toolbar Searchfield has focus.
+       * @returns {boolean}
+       */
+      hasFocus: function() {
+        return this.element.data('searchfield').hasFocus();
+      },
+
+      /**
+       * Handles the focus of the searchfield, expanding it on time delay.
+       */
       handleFocus: function() {
         var self = this;
         clearTimeout(this.focusTimer);
@@ -42292,40 +47188,49 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.focusTimer = setTimeout(searchfieldActivationTimer, 0);
       },
 
+      /**
+       * Triggers an artificial "blur" of the searchfield, resulting in a time-delayed collapse.
+       */
       handleFakeBlur: function() {
         var self = this;
         clearTimeout(this.focusTimer);
 
         function searchfieldCollapseTimer() {
-          if (!$.contains(self.inputWrapper[0], document.activeElement) && self.inputWrapper.hasClass('active')) {
-            //self.inputWrapper.removeClass('has-focus');
-            self.collapse();
-          }
+          self.collapse();
         }
 
         this.focusTimer = setTimeout(searchfieldCollapseTimer, 100);
       },
 
-      handleOutsideClick: function(e) {
-        var target = $(e.target);
-
-        // Don't close if we're focused on an element inside the wrapper
-        if ($.contains(this.inputWrapper[0], e.target) || target.is(this.element) || target.is(this.inputWrapper)) {
+      /**
+       * Event Handler for dealing with global (document) level clicks.
+       */
+      handleOutsideClick: function() {
+        if (this.hasFocus()) {
           return;
         }
 
-        // Don't close if a category is being selected from a category menu
-        if (this.button && this.button.length) {
-          var menu = this.button.data('popupmenu').menu;
-          if (menu.has(target).length) {
-            return;
-          }
-        }
-
-        $(document).offTouchClick(this.id).off('click.' + this.id);
+        $(document).off(this.outsideEventStr);
         this.collapse();
       },
 
+      /**
+       * Handles Keydown Events
+       * @param {jQuery.Event} e - jQuery-wrapped Keydown event.
+       */
+      handleKeydown: function(e) {
+        var key = e.which;
+
+        if (key === 9) { // Tab
+          return this.handleFakeBlur();
+        }
+      },
+
+      /**
+       * Handles global (document) level keydown events that are established to help
+       * collapse/de-highlight searchfields on a timer.
+       * @param {jQuery.Event} e - jQuery-wrapped Keydown event
+       */
       handleOutsideKeydown: function(e) {
         var key = e.which;
 
@@ -42341,21 +47246,30 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * Event Handler for the Popupmenu Component's custom `beforeopen` event.
+       * @param {jQuery.Event} e - jQuery-wrapped `beforeopen` Event
+       */
       handlePopupBeforeOpen: function(e, menu) {
         if (!menu) {
           return false;
         }
 
         if (!this.inputWrapper.is('.is-open')) {
-          this.input.focus();
+          this.button.focus();
           return false;
         }
 
         return true;
       },
 
-      // Retrieves the distance between a left and right boundary.
-      // Used on controls like Lookup, Contextual Panel, etc. to fill the space remaining in a toolbar.
+      /**
+       * Retrieves the distance between a left and right boundary.
+       * Used on controls like Lookup, Contextual Panel, etc. to fill the space remaining in a toolbar.
+       * @param {Number|jQuery[]} leftBoundary
+       * @param {Number|jQuery[]} rightBoundary
+       * @returns {Number}
+       */
       getFillSize: function(leftBoundary, rightBoundary) {
         var leftBoundaryNum = 0,
           rightBoundaryNum = 0;
@@ -42428,6 +47342,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         var distance = rightBoundaryNum - leftBoundaryNum;
+
+        // TODO: Remove this once we figure out how to definitively fix the searchfield sizing.
+        // Toolbar Searchfield needs a way to demand that the parent toolbar increase the size of its buttonset
+        // and decrease the size of its title under this condition -- currently there is no way.
         if (distance <= TOOLBARSEARCHFIELD_EXPAND_SIZE) {
           return TOOLBARSEARCHFIELD_EXPAND_SIZE;
         }
@@ -42439,12 +47357,49 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return distance;
       },
 
+      /**
+       * @private
+       */
+      setClosedWidth: function() {
+        // If the searchfield category button exists, change the width of the
+        // input field on the inside to provide space for the (variable) size of the currently-selected
+        // category (or categories)
+        if ((this.button instanceof $) && this.button.length) {
+          var buttonStyle = window.getComputedStyle(this.button[0]),
+            buttonWidth = parseInt(buttonStyle.width),
+            buttonPadding = parseInt(buttonStyle.paddingLeft) + parseInt(buttonStyle.paddingRight);
+
+          if (this.inputWrapper[0]) {
+            this.inputWrapper[0].style.width = (buttonWidth + buttonPadding) + 'px';
+          }
+        }
+      },
+
+      /**
+       * @private
+       */
       setOpenWidth: function() {
         if (this.inputWrapper[0]) {
           this.inputWrapper[0].style.width = this.openWidth;
         }
+
+        // If the searchfield category button exists, change the width of the
+        // input field on the inside to provide space for the (variable) size of the currently-selected
+        // category (or categories)
+        if ((this.button instanceof $) && this.button.length) {
+          var buttonStyle = window.getComputedStyle(this.button[0]),
+            buttonWidth = parseInt(buttonStyle.width),
+            buttonPadding = parseInt(buttonStyle.paddingLeft) + parseInt(buttonStyle.paddingRight),
+            buttonBorder = (parseInt(buttonStyle.borderWidth) * 2),
+            inputWidth = 'calc(100% - ' + (buttonWidth + buttonPadding + buttonBorder - 2) + 'px)';
+
+          this.input[0].style.width = inputWidth;
+        }
       },
 
+      /**
+       * @private
+       */
       calculateOpenWidth: function() {
         var buttonset = this.element.parents('.toolbar').children('.buttonset'),
           nextElem = this.inputWrapper.next(),
@@ -42455,18 +47410,21 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           nextElem = buttonset;
         }
 
-        if (!buttonset.length) {
-          return;
-        }
-
         if (this.shouldBeFullWidth()) {
           width = '100%';
 
           if (this.toolbarParent.closest('.header').length) {
             width = 'calc(100% - 40px)';
           }
+          if (this.toolbarParent.closest('.tab-container.module-tabs').length) {
+            width = 'calc(100% - 1px)';
+          }
 
           this.openWidth = width;
+          return;
+        }
+
+        if (!buttonset.length) {
           return;
         }
 
@@ -42474,36 +47432,83 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         // +10 on the left boundary reduces the likelyhood that the toolbar pushes other elements
         // into the spillover menu whenever the searchfield opens.
         var leftBoundary = buttonset.offset().left + 10;
-        var rightBoundary = this.inputWrapper.next();
+        var rightBoundary = nextElem;
 
         // If the search input sits alone, just use the other side of the buttonset to measure
         if (!rightBoundary.length) {
-          rightBoundary = buttonset.offset().left + buttonset.outerWidth(true);
+          rightBoundary = buttonset.offset().left + 10 + buttonset.outerWidth(true);
         }
 
         width = this.getFillSize(leftBoundary, rightBoundary);
-        this.openWidth = width + 'px';
+        this.openWidth = (width - 1) + 'px';
       },
 
+      /**
+       * Detects whether or not one of the components inside of this searchfield is the document's "active" element.
+       * @returns {boolean}
+       */
       isActive: function() {
-        return this.inputWrapper.hasClass('is-active');
+        return this.inputWrapper.hasClass('active');
       },
 
-      adjustOnBreakpoint: function() {
-        var isFullWidth = this.shouldBeFullWidth(),
-          hasStyleAttr = this.inputWrapper.attr('style');
+      /**
+       * Detects whether or not this searchfield instance is currently expanded.
+       * @returns {boolean}
+       */
+      isOpen: function() {
+        return this.inputWrapper.hasClass('is-open');
+      },
 
-        if (this.isActive()) {
+      /**
+       * Makes necessary adjustments to the DOM surrounding the Searchfield element to accommodate
+       * breakpoint changes.
+       */
+      adjustOnBreakpoint: function() {
+        // On smaller form-factor (tablet/phone)
+        if (this.shouldBeFullWidth()) {
+
+          if (this.hasFocus()) {
+            this.appendToParent();
+
+            this.calculateOpenWidth();
+            this.setOpenWidth();
+
+            if (this.isExpanded) {
+              return;
+            }
+
+            this.expand();
+          } else {
+            if (this.settings.collapsibleOnMobile === true && this.isExpanded) {
+              this.collapse();
+            }
+          }
+
+          return;
+        }
+
+        // On larger form-factor (desktop)
+        this.appendToButtonset();
+
+        if (!this.settings.collapsible) {
+          this.calculateOpenWidth();
+          this.setOpenWidth();
+
+          if (!this.isExpanded) {
+            this.expand();
+          }
+        }
+
+        if (!this.hasFocus() && this.settings.collapsible === true && this.isExpanded) {
           this.collapse();
         }
-
-        if (!isFullWidth && !hasStyleAttr) {
-          this.calculateOpenWidth();
-        }
       },
 
-      // Angular may not be able to get these elements on demand so we need to be
-      // able to call this during the expand method.
+      /**
+       * Angular may not be able to get these elements on demand so we need to be
+       * able to call this during the expand method.
+       * @private
+       */
       getToolbarElements: function() {
         this.buttonsetElem = this.toolbarParent.children('.buttonset')[0];
         if (this.toolbarParent.children('.title').length) {
@@ -42511,15 +47516,25 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      expand: function() {
-        if (this.inputWrapper.hasClass('active')) {
+      /**
+       * Expands the Searchfield
+       */
+      expand: function(noFocus) {
+        var self = this,
+          notFullWidth = !this.shouldBeFullWidth();
+
+        if (this.isActive()) {
           return;
         }
 
-        var self = this,
-          notFullWidth = !this.shouldBeFullWidth(),
-          dontRecalculateButtons = false,
+        var dontRecalculateButtons = false,
+          toolbarAPI = this.toolbarParent.data('toolbar'),
+          toolbarSettings,
           containerSizeSetters;
+
+        if (toolbarAPI) {
+           toolbarSettings = this.toolbarParent.data('toolbar').settings;
+        }
 
         if (this.animationTimer) {
           clearTimeout(this.animationTimer);
@@ -42529,12 +47544,34 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           this.getToolbarElements();
         }
 
+        function expandCallback() {
+
+          if (!self.isOpen()) {
+            self.inputWrapper.addClass('is-open');
+            self.calculateOpenWidth();
+            self.setOpenWidth();
+          }
+
+          var iOS = /(iPad|iPhone|iPod)/g.test( navigator.userAgent );
+          if (!noFocus || iOS) {
+            self.input.focus();
+          }
+
+          var eventArgs = [];
+          if (containerSizeSetters) {
+            eventArgs.push(containerSizeSetters);
+          }
+
+          self.toolbarParent.triggerHandler('recalculate-buttons', eventArgs);
+          self.inputWrapper.triggerHandler('expanded');
+          self.isExpanded = true;
+        }
+
         // Places the input wrapper into the toolbar on smaller breakpoints
         if (!notFullWidth) {
-          this.elemBeforeWrapper = this.inputWrapper.prev();
-          this.inputWrapper.detach().prependTo(this.containmentParent);
-          Soho.utils.fixSVGIcons(this.inputWrapper);
+          this.appendToParent();
         } else {
+
           // Re-adjust the size of the buttonset element if the expanded searchfield would be
           // too large to fit.
           var buttonsetWidth = parseInt(window.getComputedStyle(this.buttonsetElem).width),
@@ -42544,37 +47581,37 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             d = TOOLBARSEARCHFIELD_EXPAND_SIZE - buttonsetWidth;
           }
 
+          var buttonsetElemWidth = buttonsetWidth + TOOLBARSEARCHFIELD_EXPAND_SIZE;
           containerSizeSetters = {
-            buttonset: buttonsetWidth + TOOLBARSEARCHFIELD_EXPAND_SIZE
+            buttonset: buttonsetElemWidth
           };
 
-          if (this.titleElem) {
-            var titleElemWidth = parseInt(window.getComputedStyle(this.titleElem).width);
-            containerSizeSetters.title = (titleElemWidth - d);
+          if (toolbarSettings && toolbarSettings.favorButtonset === true && this.titleElem) {
+            var toolbarStyle = window.getComputedStyle(this.toolbarParent[0]),
+              titleStyle = window.getComputedStyle(this.titleElem),
+              toolbarElemWidth = parseInt(toolbarStyle.width),
+              toolbarPadding = parseInt(toolbarStyle.paddingLeft) + parseInt(toolbarStyle.paddingRight),
+              titleElemWidth = parseInt(titleStyle.width),
+              moreElem = this.toolbarParent.children('more'),
+              moreStyle, moreElemWidth = 0;
+
+            if (moreElem.length) {
+              moreStyle = window.getComputedStyle(moreElem[0]);
+              moreElemWidth = moreStyle.width;
+            }
+
+            if (toolbarElemWidth < (toolbarPadding + titleElemWidth + buttonsetElemWidth + moreElemWidth)) {
+              containerSizeSetters.title = (titleElemWidth - d);
+            }
           }
 
           dontRecalculateButtons = true;
         }
 
         this.inputWrapper.addClass('active');
-        this.handleDeactivationEvents();
+        this.addDocumentDeactivationEvents();
 
-        function expandCallback() {
-          self.inputWrapper.addClass('is-open');
-          self.calculateOpenWidth();
-          self.setOpenWidth();
-          self.input.focus(); // for iOS
-
-          var eventArgs = [];
-          if (containerSizeSetters) {
-            eventArgs.push(containerSizeSetters);
-          }
-
-          self.toolbarParent.triggerHandler('recalculate-buttons', eventArgs);
-          self.inputWrapper.triggerHandler('expanded');
-        }
-
-        if (this.settings.collapsible === false && !this.shouldBeFullWidth()) {
+        if (this.shouldExpandOnMobile()) {
           expandCallback();
           return;
         }
@@ -42582,15 +47619,51 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.animationTimer = setTimeout(expandCallback, 0);
       },
 
+      /**
+       * Collapses the Searchfield
+       */
       collapse: function() {
         var self = this,
           textMethod = 'removeClass';
 
         function closeWidth() {
-          if (self.settings.collapsible || self.shouldBeFullWidth()) {
+          if (self.button instanceof $ && self.button.length) {
+            self.setClosedWidth();
+          } else {
             self.inputWrapper.removeAttr('style');
           }
         }
+
+        function collapseCallback() {
+          self.fastExpand = false;
+
+          closeWidth();
+
+          if (self.button && self.button.length) {
+            self.button.data('popupmenu').close(false, true);
+          }
+
+          self.inputWrapper
+            .removeClass('is-open')
+            .triggerHandler('collapsed');
+
+          self.removeDocumentDeactivationEvents();
+
+          self.isExpanded = false;
+
+          if (Soho.env.os.name === 'ios') {
+            $('head').triggerHandler('enable-zoom');
+          }
+
+          // TODO: Make this process more solid, without FOUC/jumpiness and better focus handling (EPC)
+          // See http://jira/browse/SOHO-6347
+          self.inputWrapper.one($.fn.transitionEndName(), function() {
+            self.toolbarParent.triggerHandler('recalculate-buttons');
+          });
+        }
+
+        // Puts the input wrapper back where it should be if it's been moved due to small form factors.
+        this.appendToButtonset();
 
         if (this.input.val().trim() !== '') {
           textMethod = 'addClass';
@@ -42601,76 +47674,166 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           clearTimeout(this.animationTimer);
         }
 
-        function collapseCallback() {
-          self.inputWrapper.removeClass('is-open');
-          self.fastExpand = false;
-
-          closeWidth();
-
-          if (self.button && self.button.length && self.button.is('.is-open')) {
-            self.button.data('popupmenu').close(false, true);
-          }
-
-          self.toolbarParent.triggerHandler('recalculate-buttons');
-          self.inputWrapper.triggerHandler('collapsed');
+        self.inputWrapper.removeClass('active');
+        if (!self.hasFocus()) {
+          self.inputWrapper.removeClass('has-focus');
         }
 
-        // Puts the input wrapper back where it should be if it's been moved due to small form factors.
-        if (this.inputWrapper.parent().is(this.containmentParent)) {
-          if (!(this.elemBeforeWrapper instanceof $) || !this.elemBeforeWrapper.length) {
-            this.inputWrapper.prependTo(this.toolbarParent.children('.buttonset'));
-          } else {
-            this.inputWrapper.detach().insertAfter(this.elemBeforeWrapper);
-          }
-          Soho.utils.fixSVGIcons(this.inputWrapper);
-
-          this.elemBeforeWrapper = null;
+        // Return out without collapsing or handling callbacks for the `collapse` event if:
+        // Searchfield is not collapsible in general -OR-
+        // Searchfield is only collapsible on mobile, and we aren't below the mobile breakpoint
+        if ((self.settings.collapsible === false && self.settings.collapsibleOnMobile === false) ||
+           (self.settings.collapsible === false && self.settings.collapsibleOnMobile === true && !self.shouldBeFullWidth())) {
+          return;
         }
 
-        self.inputWrapper.removeClass('active has-focus');
-
-        if (this.fastExpand || this.settings.collapsible === false) {
+        if (this.fastExpand || !this.shouldExpandOnMobile()) {
           collapseCallback();
           return;
         }
 
-        this.animationTimer = setTimeout(collapseCallback, 100);
+        this.animationTimer = setTimeout(collapseCallback, 310);
       },
 
+      /**
+       * If focused, we need to store a reference to the element with focus (searchfield, internal buttons, etc)
+       * because once the element becomes removed from the DOM, focus is lost.
+       * @private
+       */
+      saveFocus: function() {
+        if (!this.hasFocus()) {
+          return;
+        }
+        this.focusElem = document.activeElement;
+      },
+
+      /**
+       * Restores focus to an element reference that was previously focused.
+       * @private
+       */
+      restoreFocus: function() {
+        if (!this.focusElem) {
+          return;
+        }
+
+        this.focusElem.focus();
+        this.focusElem = undefined;
+      },
+
+      /**
+       * Appends this searchfield to the `containmentParent` element
+       * Used when the small-form-factor searchfield needs to be established.
+       * @private
+       */
+      appendToParent: function() {
+        if (this.inputWrapper.parent().is(this.containmentParent)) {
+          return;
+        }
+
+        this.saveFocus();
+
+        this.elemBeforeWrapper = this.inputWrapper.prev();
+        this.inputWrapper.detach().prependTo(this.containmentParent);
+        Soho.utils.fixSVGIcons(this.inputWrapper);
+
+        this.restoreFocus();
+      },
+
+      /**
+       * Removes this searchfield from the `containmentParent` element, and places it back into the buttonset.
+       * Used when the small-form-factor searchfield needs to be established.
+       * @private
+       */
+      appendToButtonset: function() {
+        if (!this.inputWrapper.parent().is(this.containmentParent)) {
+          return;
+        }
+
+        this.saveFocus();
+
+        if (!(this.elemBeforeWrapper instanceof $) || !this.elemBeforeWrapper.length) {
+          this.inputWrapper.prependTo(this.toolbarParent.children('.buttonset'));
+        } else {
+          this.inputWrapper.detach().insertAfter(this.elemBeforeWrapper);
+          this.elemBeforeWrapper = null;
+        }
+
+        this.removeDocumentDeactivationEvents();
+        this.toolbarParent.triggerHandler('scrollup');
+        Soho.utils.fixSVGIcons(this.inputWrapper);
+
+        this.restoreFocus();
+      },
+
+      /**
+       * Determines whether or not the full-size Searchfield should open over top of its sibling Toolbar elements.
+       * @private
+       * @returns {boolean}
+       */
       shouldBeFullWidth: function() {
         var header = this.inputWrapper.closest('.header'),
-          headerWidth = header.width(),
-          windowWidth = $(window).width();
+          headerCondition = false;
 
-        return windowWidth < 767 || (header.length > 0 && headerWidth < 320);
+        if (header.length) {
+          headerCondition = header.width() < Soho.breakpoints.phone;
+        }
+
+        return headerCondition || Soho.breakpoints.isBelow('phone-to-tablet');
       },
 
-      // Used when the control has its settings or structural markup changed.  Rebuilds key parts of the control that
-      // otherwise wouldn't automatically update.
+      /**
+       * Determines whether or not the Searchfield should expand on the Mobile breakpoint.
+       * @private
+       * @returns {boolean}
+       */
+      shouldExpandOnMobile: function() {
+        if (this.settings.collapsible === true) {
+          return false;
+        }
+        if (this.settings.collapsibleOnMobile === true) {
+          return true;
+        }
+        return this.shouldBeFullWidth();
+      },
+
+      /**
+       * Used when the control has its settings or structural markup changed.  Rebuilds key parts of the control that
+       * otherwise wouldn't automatically update.
+       * @returns {this}
+       */
       updated: function() {
         return this
           .teardown()
           .init();
       },
 
+      /**
+       * Enables the Searchfield
+       */
       enable: function() {
         this.inputWrapper.addClass('is-disabled');
         this.input.prop('disabled', true);
       },
 
+      /**
+       * Disables the Searchfield
+       */
       disable: function() {
         this.inputWrapper.removeClass('is-disabled');
         this.input.prop('disabled', false);
       },
 
-      // Tears down events, properties, etc. and resets the control to "factory" state
+      /**
+       * Tears down events, properties, etc. and resets the control to "factory" state
+       * @returns {this}
+       */
       teardown: function() {
-        this.inputWrapper.off('mousedown.toolbarsearchfield focusin.toolbarsearchfield collapse.toolbarsearchfield');
+        this.inputWrapper.off('mousedown.toolbarsearchfield focusin.toolbarsearchfield keydown.toolbarsearchfield collapse.toolbarsearchfield');
         this.inputWrapper.find('.icon').remove();
+        $(document).off(this.outsideEventStr);
 
-        if (this.button && this.button.length) {
-          this.button.remove();
-        }
+        this.toolbarParent.off('navigate.toolbarsearchfield');
+        this.element.off('blur.toolbarsearchfield');
 
         if (this.xButton && this.xButton.length) {
           this.xButton.remove();
@@ -42683,10 +47846,72 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
-      // Removes the entire control from the DOM and from this element's internal data
+      /**
+       * Removes the entire control from the DOM and from this element's internal data
+       */
       destroy: function() {
         this.teardown();
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       *  This component fires the following events.
+       *
+       * @fires ToolbarSearchfield#events
+       * @param {Object} mousedown  &nbsp;-&nbsp; Fires when the searchfield is clicked (if enabled).
+       * @param {Object} focusin  &nbsp;-&nbsp; Fires when the searchfield is focused.
+       * @param {Object} keydown  &nbsp;-&nbsp; Fires when a key is pressed inside of the searchfield.
+       * @param {Object} collapse  &nbsp;-&nbsp; Fires when a `collapse` event is triggered externally on the searchfield.
+       *
+       * @param {Object} beforeopen  &nbsp;-&nbsp; Fires when a `beforeopen` event is triggered on the searchfield's optional categories menubutton.
+       *
+       * @param {Object} navigate  &nbsp;-&nbsp; Fires when a `navigate` event is triggered on the searchfield's parent toolbar.
+       *
+       * @param {Object} keydown  &nbsp;-&nbsp; Fires when a `keydown` event is triggered at the `document` level.
+       * @param {Object} resize  &nbsp;-&nbsp; Fires when a `resize` event is triggered at the `body` level.
+       */
+      handleEvents: function() {
+        var self = this;
+
+        this.inputWrapper.on('mousedown.toolbarsearchfield', function() {
+          self.fastExpand = true;
+        }).on('focusin.toolbarsearchfield', function(e) {
+          self.handleFocus(e);
+        }).on('keydown.toolbarsearchfield', function(e) {
+          self.handleKeydown(e);
+        }).on('collapse.toolbarsearchfield', function() {
+          self.collapse();
+        });
+
+        if (this.button && this.button.length) {
+          this.button.on('beforeopen.toolbarsearchfield', function(e, menu) {
+            return self.handlePopupBeforeOpen(e, menu);
+          });
+        }
+
+        this.toolbarParent.on('navigate.toolbarsearchfield', function() {
+          if (!self.hasFocus()) {
+            self.collapse();
+          }
+        });
+
+        // Used to determine if the "Tab" key was involved in switching focus to the searchfield.
+        $(document).on('keydown.' + this.id, function(e) {
+          self.handleOutsideKeydown(e);
+        });
+
+        $('body').on('resize.' + this.id, function() {
+          self.adjustOnBreakpoint();
+        });
+        self.adjustOnBreakpoint();
+
+        if (Soho.env.os.name === 'ios') {
+          this.element.on('blur.toolbarsearchfield', function() {
+            $('head').triggerHandler('disable-zoom');
+          });
+        }
+
+        return this;
       }
     };
 
@@ -42723,6 +47948,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         parentElement: null,
         keepOpen: false,
         extraClass: null,
+        placementOpts: undefined,
         maxWidth: null
       };
 
@@ -42787,8 +48013,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         var titleAttr = this.element.attr('title');
-        if (titleAttr && titleAttr.length) {
-          this.settings.content = titleAttr;
+        if ((!this.settings.popover && titleAttr && titleAttr.length) || (!this.settings.popover && this.settings.title)) {
+          this.settings.content = this.settings.title ? this.settings.title : titleAttr;
           this.element.removeAttr('title');
         }
 
@@ -42852,7 +48078,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         var self = this, timer, delay = 400;
 
         if (this.settings.trigger === 'hover' && !this.settings.isError) {
-          this.element
+          ((this.element.is('.dropdown, .multiselect')) ? this.activeElement : this.element)
             .on('mouseenter.tooltip', function() {
               timer = setTimeout(function() {
                 self.show();
@@ -43055,15 +48281,18 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         if (extraClass) {
           classes += ' ' + extraClass;
         }
-        content[0].classList.remove('hidden');
+
         this.tooltip[0].setAttribute('class', classes);
 
         if (typeof content === 'string') {
           content = $(content);
+          contentArea.html(content);
+          contentArea.find('.hidden').removeClass('hidden');
         } else {
           contentArea.html(content);
         }
 
+        content[0].classList.remove('hidden');
         contentArea[0].firstElementChild.classList.remove('hidden');
 
         if (this.settings.title !== null) {
@@ -43182,6 +48411,23 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             });
           }
 
+          // Hide on Page scroll
+          $('body').on('scroll.tooltip', function() {
+            self.hide();
+          });
+
+          self.element.closest('.modal-body-wrapper').on('scroll.tooltip', function() {
+            self.hide();
+          });
+
+          self.element.closest('.scrollable').on('scroll.tooltip', function() {
+            self.hide();
+          });
+
+          self.element.closest('.datagrid-body').on('scroll.tooltip', function() {
+            self.hide();
+          });
+
           // Click to close
           if (self.settings.isError) {
             self.tooltip.on('click.tooltip', function () {
@@ -43271,7 +48517,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.tooltip[0].style.top = '';
         this.tooltip.find('.arrow').removeAttr('style');
 
-        this.tooltip.off('click.tooltip');
+        this.detachOpenEvents();
 
         if ($('.popover').not('.is-hidden').length === 0) {
           $(document).off('mouseup.tooltip keydown.tooltip');
@@ -43295,17 +48541,29 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return this;
       },
 
+      detachOpenEvents: function () {
+
+        this.tooltip.off('click.tooltip');
+        $(document).off('mouseup.tooltip');
+        $('body').off('resize.tooltip scroll.tooltip');
+        this.element.closest('.modal-body-wrapper').off('scroll.tooltip');
+        this.element.closest('.scrollable').off('scroll.tooltip');
+        this.element.closest('.datagrid-body').off('scroll.tooltip');
+
+      },
+
       teardown: function() {
         this.description.remove();
         this.descriptionId = undefined;
+        this.activeElement = undefined;
+
         this.element.removeAttr('aria-describedby').removeAttr('aria-haspopup');
         if (!this.tooltip.hasClass('is-hidden')) {
           this.hide();
         }
 
         this.element.off('mouseenter.tooltip mouseleave.tooltip mousedown.tooltip click.tooltip mouseup.tooltip updated.tooltip focus.tooltip blur.tooltip');
-        $(document).off('mouseup.tooltip');
-        $('body').off('resize.tooltip');
+        this.detachOpenEvents();
 
         if (this.matchMedia) {
           this.matchMedia.removeListener(this.mediaQueryListener);
@@ -43348,6 +48606,19 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
   //TODO: - Context Menus
   //      - Search
   $.fn.tree = function(options) {
+
+    /**
+     * @class {Tree}
+     *
+     * @param {string} selectable &nbsp;-&nbsp; 'single' or 'multiple'
+     * @param {boolean} hideCheckboxes &nbsp;-&nbsp; Only applies when `selectable` is set to 'multiple'.
+     * @param {null|string} menuId &nbsp;-&nbsp; if defined, will be used to identify a Context Menu by ID attribute in which to add nodes.
+     * @param {boolean} useStepUI &nbsp;-&nbsp; if `true`, turns this tree instance into a "Stepped" tree.
+     * @param {string} folderIconOpen &nbsp;-&nbsp; the icon used when a tree folder node is open.
+     * @param {string} folderIconClosed &nbsp;-&nbsp; the icon used when a tree folder node is closed.
+     * @param {boolean} sortable &nbsp;-&nbsp; if `true`, allows nodes to become sortable.
+     * @param {null|function} onBeforeSelect &nbsp;-&nbsp; if defined as a function, fires that function as a callback before the selection on a node occurs.
+     */
     var pluginName = 'tree',
       defaults = {
         selectable: 'single', // ['single'|'multiple']
@@ -43374,9 +48645,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
     // Tree Methods
     Tree.prototype = {
+
+      /**
+       * @private
+       * @returns {undefined}
+       */
       init: function() {
         this.settings = $.extend({}, settings);
-        this.isIe11 = $('html').is('.ie11');
+        this.isIe11 = (Soho.env.browser.name === 'ie' && Soho.env.browser.version === '11');
         this.initTree();
         this.handleKeys();
         this.setupEvents();
@@ -43388,7 +48664,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this.createSortable();
       },
 
-      //Init Tree from ul, li, a markup structure in DOM
+      /**
+       * Init Tree from ul, li, a markup structure in DOM
+       */
       initTree: function() {
         var self = this,
           s = this.settings,
@@ -43413,7 +48691,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
-      //Init selected notes
+      /**
+       * Init selected notes
+       */
       initSelected: function () {
         var self = this;
         this.element.find('li').each(function() {
@@ -43421,23 +48701,33 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
-      //Focus first tree node
+      /**
+       * Focus the first tree node
+       */
       focusFirst: function () {
         this.element.find('a:first').attr('tabindex', '0');
       },
 
-      //Set focus
+      /**
+       * Set focus
+       * @param {jQuery[]} node
+       */
       setFocus: function (node) {
         node.focus();
       },
 
-      //From the LI, Read props and add stuff
+      /**
+       * From the LI, Read props and add stuff
+       * @param {jQuery[]} a - an anchor tag reference wrapped in a jQuery object.
+       */
       decorateNode: function(a) {
         var subNode,
         parentCount = 0,
         badgeData = a.attr('data-badge'),
         alertIcon = a.attr('data-alert-icon'),
-        badge = {elem: $('<span class="tree-badge badge"></span>')};
+        badge = {elem: $('<span class="tree-badge badge"></span>')},
+        isParentsDisabled = a.parentsUntil(this.element, 'ul[role=group].is-disabled').length > 0,
+        isDisabled = a.hasClass('is-disabled') || isParentsDisabled;
 
         if (typeof badgeData !== 'undefined') {
           badgeData = $.fn.parseOptions(a, 'data-badge');
@@ -43447,8 +48737,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         a.attr({'role': 'treeitem', 'tabindex': '-1', 'aria-selected': 'false'});
 
         // Add Aria disabled
-        if (a.hasClass('is-disabled')) {
-          a.attr('aria-disabled','true');
+        if (isDisabled) {
+          a.addClass('is-disabled').attr('aria-disabled','true');
           var childSection = a.next();
 
           if (childSection.is('ul.is-open')) {
@@ -43533,7 +48823,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           this.setTreeIcon(a.find('svg.icon-tree'), subNode.hasClass('is-open') ? this.settings.folderIconOpen : this.settings.folderIconClosed);
 
           if (a.attr('class') && a.attr('class').indexOf('open') === -1 && a.attr('class').indexOf('closed') === -1) {
-            a.attr('class', '');
+            a.attr('class', isDisabled ? 'is-disabled' : '');
             this.setTreeIcon(a.find('svg.icon-tree'), subNode.hasClass('is-open') ? this.settings.folderIconOpen : this.settings.folderIconClosed);
           }
 
@@ -43546,17 +48836,25 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         a.hideFocus();
       },
 
+      /**
+       * Sets the correct icon to use on a particular SVG element.
+       * @param {jQuery[]} svg - an SVG element reference wrapped in a jQuery object
+       * @param {string} icon - the ID of a Soho Icon type.
+       */
       setTreeIcon: function(svg, icon) {
         // Replace all "icon-", "hide-focus", "\s? - all spaces if any" with nothing
         var iconStr = icon.replace(/#?icon-|hide-focus|\s?/gi, '');
         svg.changeIcon(iconStr);
       },
 
-      //Expand all Parents
+      /**
+       * Expands a collection of tree nodes.
+       * @param {jQuery[]} nodes - a jQuery-wrapped collection of tree node elements.  If left undefined, this will automatically use all `ul[role=group]` elements.
+       */
       expandAll: function(nodes) {
         var self = this;
-
         nodes = nodes || this.element.find('ul[role=group]');
+
         nodes.each(function () {
           var node = $(this);
           node.addClass('is-open');
@@ -43569,9 +48867,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
-      //Collapse all Parents
-      collapseAll: function () {
-        var nodes = this.element.find('ul[role=group]'), self = this;
+      /**
+       * Collapses a collection of tree nodes.
+       * @param {jQuery[]} nodes - a jQuery-wrapped collection of tree node elements.  If left undefined, this will automatically use all `ul[role=group]` elements.
+       */
+      collapseAll: function (nodes) {
+        var self = this;
+        nodes = nodes || this.element.find('ul[role=group]');
 
         nodes.each(function () {
           var node = $(this);
@@ -43589,17 +48891,28 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         });
       },
 
-      // Check if a jQuery object
+      /**
+       * Check if an object is an instance of a jQuery object
+       * @param {Object} obj - the object being tested.
+       * @returns {boolean}
+       */
       isjQuery: function (obj) {
+        // TODO: Move this to a Soho utility object?
         return (obj && (obj instanceof jQuery || obj.constructor.prototype.jquery));
       },
 
-      // Select node by id
+      /**
+       * Selects a tree node specifically using it's ID attribute.
+       * @param {string} id - the ID string to use.
+       */
       selectNodeById: function (id) {
         this.selectNodeByJquerySelector('#'+ id);
       },
 
-      // Select node by [jquery selector] -or- [jquery object]
+      /**
+       * Selects a tree node by [jquery selector] -or- [jquery object]
+       * @param {string|jQuery[]} selector - uses a string that represents a jQuery-wrapped element's ID attribute, or a jQuery-wrapped reference to the element itself.
+       */
       selectNodeByJquerySelector: function (selector) {
         var target = this.isjQuery(selector) ? selector : $(selector);
         if (target.length && !target.is('.is-disabled')) {
@@ -43609,7 +48922,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
-      //Set a node as unselected
+      /**
+       * Deselects a tree node
+       * @param {jQuery[]} node - a jQuery-wrapped element reference to a tree node.
+       * @param {boolean} focus - if defined, causes the node to become focused.
+       */
       unSelectedNode: function (node, focus) {
         if (node.length === 0) {
           return;
@@ -43640,7 +48957,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }, 0);
       },
 
-      //Set a node as the selected one
+      /**
+       * Selects a tree node
+       * @param {jQuery[]} node - a jQuery-wrapped element reference to a tree node.
+       * @param {boolean} focus - if defined, causes the node to become focused.
+       */
       selectNode: function (node, focus) {
         var self = this;
 
@@ -43669,6 +48990,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      /**
+       * ?
+       * @param {jQuery[]} node - a jQuery-wrapped element reference to a tree node.
+       * @param {boolean} focus - if defined, causes the node to become focused.
+       */
       selectNodeFinish: function(node, focus) {
         var self = this;
         var aTags = $('a', this.element);
@@ -43704,6 +49030,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }, 0);
       },
 
+      /**
+       * Deselects a tree node
+       * @param {jQuery[]} node - a jQuery-wrapped element reference to a tree node.
+       */
       setNodeStatus: function(node) {
         var self = this,
           data = node.data('jsonData'),
@@ -43747,6 +49077,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         setStatus(nodes, isFirstSkipped);
       },
 
+      /**
+       * Get's a tree node's current 'selected' status
+       * @param {jQuery[]} node - a jQuery-wrapped element reference to a tree node.
+       * @param {boolean} isFirstSkipped - ?
+       */
       getSelectedStatus: function(node, isFirstSkipped) {
         var status,
           total = 0,
@@ -43771,7 +49106,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         return status;
       },
 
-      //Animate open/closed the node
+      /**
+       * Changes a node's selected status to its opposite form.
+       * @param {jQuery[]} node - a jQuery-wrapped element reference to a tree node.
+       */
       toggleNode: function(node) {
         var next = node.next(),
           self = this;
@@ -43904,7 +49242,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             // First element if disabled
             if (target.hasClass('is-disabled')) {
               var e = $.Event('keydown.tree');
-              e.keyCode= 40; // move down
+              e.keyCode = 40; // move down
               target.trigger(e);
               return;
             }
@@ -44120,21 +49458,22 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       },
 
       getNextNode: function(target) {
-        var next = target.parent().next().find('a:first');
+        var next = target.parent().next().find('a:first'),
+          subTarget = target.next();
 
         //Move Into Children
-        if (target.next().is('ul') && target.next().hasClass('is-open')) {
-          next = target.next().find('a:first');
+        if (subTarget.is('ul.is-open')) {
+          next = subTarget.find('a:first');
         }
 
         //skip disabled
-        if(next.hasClass('is-disabled')) {
+        if (next.hasClass('is-disabled')) {
           next = next.parent().next().find('a:first');
         }
 
         //bottom of a group..{l=1000: max folders to be deep }
         if (next.length === 0) {
-          for (var i=0, l=1000, closest=target; i<l; i++) {
+          for (var i = 0, l = 1000, closest = target; i < l; i++) {
             closest = closest.parent().closest('.folder');
             next = closest.next().find('a:first');
             if (next.length) {
@@ -44142,28 +49481,49 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             }
           }
         }
+
+        //another check for disabled
+        if (next.hasClass('is-disabled')) {
+          next = this.getNextNode(next);
+        }
+
         return next;
       },
 
       getPreviousNode: function(target) {
-        var prev = target.parent().prev().find('a:first');
+        var prev = target.parent().prev().find('a:first'),
+          subTarget = prev.parent();
 
         //move into children at bottom
-        if (prev.parent().is('.folder.is-open') &&
-            prev.parent().find('ul.is-open a').length &&
-            !prev.parent().find('ul.is-disabled').length) {
-          prev = prev.parent().find('ul.is-open a:last');
+        if (subTarget.is('.folder.is-open') &&
+            subTarget.find('ul.is-open a').length &&
+            !subTarget.find('ul.is-disabled').length) {
+          prev = subTarget.find('ul.is-open a:last');
         }
 
         //skip disabled
-        if(prev.hasClass('is-disabled')) {
+        if (prev.hasClass('is-disabled')) {
           prev = prev.parent().prev().find('a:first');
+
+          //another check if get to prev open folder
+          subTarget = prev.parent();
+          if (subTarget.is('.folder.is-open') &&
+              subTarget.find('ul.is-open a').length &&
+              !subTarget.find('ul.is-disabled').length) {
+            prev = subTarget.find('ul.is-open a:last');
+          }
         }
 
         //top of a group
         if (prev.length === 0) {
           prev = target.closest('ul').prev('a');
         }
+
+        //another check for disabled
+        if (prev.hasClass('is-disabled')) {
+          prev = this.getPreviousNode(prev);
+        }
+
         return prev;
       },
 
@@ -44359,6 +49719,16 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
       },
 
+      // Check for true value
+      isTrue: function(v) {
+        return (typeof v !== 'undefined' && v !== null && ((typeof v === 'boolean' && v === true) || (typeof v === 'string' && v.toLowerCase() === 'true')));
+      },
+
+      // Check for false value
+      isFalse: function(v) {
+        return (typeof v !== 'undefined' && v !== null && ((typeof v === 'boolean' && v === false) || (typeof v === 'string' && v.toLowerCase() === 'false')));
+      },
+
       //Update fx rename a node
       updateNode: function (nodeData) {
         //Find the node in the dataset and ui and sync it
@@ -44373,6 +49743,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         if (!elem) {
           return;
         }
+
+        var parent = elem.node.parent(),
+          isDisabled = this.isTrue(nodeData.disabled) || this.isFalse(nodeData.enabled),
+          isEnabled = this.isTrue(nodeData.enabled) || this.isFalse(nodeData.disabled);
 
         // Update badge
         if (nodeData.badge) {
@@ -44427,9 +49801,24 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           elem.icon = nodeData.icon;
         }
 
-        if (nodeData.disabled) {
-          elem.node.addClass('is-disabled');
-          elem.node.attr('aria-disabled','true');
+        if (isDisabled) {
+          elem.node.addClass('is-disabled').attr('aria-disabled','true');
+
+          if (parent.is('.folder.is-open')) {
+            $('a, ul[role=group]', parent).addClass('is-disabled').attr('aria-disabled','true');
+          }
+        }
+
+        if (isEnabled) {
+          var isParentsDisabled = elem.node.parentsUntil(this.element, 'ul[role=group].is-disabled').length > 0;
+
+          if (!isParentsDisabled) {
+            elem.node.removeClass('is-disabled').removeAttr('aria-disabled');
+
+            if (parent.is('.folder.is-open')) {
+              $('a, ul[role=group]', parent).removeClass('is-disabled').removeAttr('aria-disabled');
+            }
+          }
         }
 
         if (nodeData.node) {
@@ -44438,10 +49827,10 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
         if (nodeData.children) {
           if (nodeData.children.length) {
-            this.addChildNodes(nodeData, elem.node.parent());
+            this.addChildNodes(nodeData, parent);
           }
           else {
-            this.removeChildren(nodeData, elem.node.parent());
+            this.removeChildren(nodeData, parent);
           }
         }
 
@@ -44491,7 +49880,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           var node = $(this);
           e.preventDefault();
 
-          $(e.currentTarget).popupmenu({menuId: menuId, eventObj: e, trigger: 'immediate'}).off('selected').on('selected', function (e, args) {
+          $(e.currentTarget).popupmenu({menuId: menuId, eventObj: e, trigger: 'immediate', attachToBody: true}).off('selected').on('selected', function (e, args) {
             self.element.triggerHandler('menuselect', {node: node, item: args});
           });
 
@@ -44836,6 +50225,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
 
   /**
+   * @class Validator
    * @constructor
    * @param {Object} element
    */
@@ -44849,8 +50239,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
   // Plugin Object
   Validator.prototype = {
 
+    /**
+     * @private
+     * @returns {undefined}
+     */
     init: function() {
-
       this.fields = 'input, textarea, select, div[data-validate], div[data-validation]';
       this.isPlaceholderSupport = !!('placeholder' in document.createElement('input'));//placeholder native support is-exists
 
@@ -44865,8 +50258,11 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       this.timeout = null;
     },
 
+    /**
+     * Gets a list of events
+     * @private
+     */
     extractEvents: function (events) {
-
       if (events.indexOf('{') > -1) {
         events = JSON.parse(events.replace(/'/g, '"'));
       }
@@ -44881,9 +50277,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         e = e.split(' ').join('.validate ');
         events = e;
       }
+
       return events;
     },
 
+    /**
+     * @private
+     */
     filterValidations: function (events, type) {
       var validations = [];
 
@@ -44906,6 +50306,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       return validations;
     },
 
+    /**
+     * @private
+     */
     attachEvents: function () {
       var self = this,
         attribs = '[data-validate],[data-validation]';
@@ -44921,7 +50324,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       });
 
       //Link on to the current object and perform validation.
-      this.inputs.filter('input, textarea, div').filter(attribs).not('input[type=checkbox]').each(function () {
+      this.inputs.filter('input, textarea, div').filter(attribs).not('input[type=checkbox], [readonly]').each(function () {
         var field = $(this),
         attribs = field.attr('data-validation-events'),
         events = (attribs ? attribs : 'blur.validate change.validate keyup.validate');
@@ -44971,6 +50374,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           if (tooltip && document.activeElement === field.data('dropdown').searchInput[0]) {
             tooltip.hide();
           }
+          $('#validation-tooltip').hide();
+
         }).on('listclosed.validate', function() {
           var field = $(this),
             tooltip = field.data('tooltip');
@@ -45008,6 +50413,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
     },
 
+    /**
+     * @private
+     */
     validateForm: function (callback) {
       var self = this,
         deferreds = [];
@@ -45036,6 +50444,48 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       });
     },
 
+    /**
+     * Set disable/enable primary button in modal
+     * @private
+     */
+    setModalPrimaryBtn: function(field, modalBtn, isValid) {
+      var modal = field.closest('.modal'),
+        modalFields = modal.find('[data-validate]:visible').add('select[data-validate], :checkbox[data-validate]'),
+        allValid = true;
+
+      if (modalFields.length > 0) {
+        modalFields.each(function () {
+          var modalField = $(this);
+          modalField.data('isValid', isValid);
+          if (modalField.closest('.datagrid-filter-wrapper').length > 0) {
+            return;
+          }
+          var isVisible = modalField[0].offsetParent !== null;
+          if (modalField.is('.required')) {
+            if ((isVisible || modalField.is('select, :checkbox'))  && !modalField.val()) {
+              allValid = false;
+            }
+          } else {
+            if ((isVisible  || modalField.is('select, :checkbox')) && !modalField.isValid()) {
+              allValid = false;
+            }
+          }
+        });
+      }
+
+      if (allValid) {
+        modalBtn.removeAttr('disabled');
+      } else {
+        modalBtn.attr('disabled', 'disabled');
+      }
+    },
+
+    /**
+     * Gets the current value of a field
+     * @private
+     * @param {jQuery[]} field
+     * @returns {?}
+     */
     value: function(field) {
       if (field.is('input[type=checkbox]')) {
         return field.prop('checked');
@@ -45046,8 +50496,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       return field.val();
     },
 
+    /**
+     *
+     * @private
+     * @param {jQuery[]}
+     * @param {jQuery.Event} e
+     * @returns {Array}
+     */
     getTypes: function(field, e) {
-
       var filters = this.filterValidations(field.attr('data-validation-events'), e.type),
         validations;
 
@@ -45076,14 +50532,20 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
           return n !== 'date' && n !== 'time';
         });
       }
+
       return validations;
     },
 
-    // Set Error icon on parent tabs/expandable
+    /**
+     * Set Error icon on parent tabs/expandable
+     * @private
+     * @param {jQuery[]} field
+     * @returns {undefined}
+     */
     setErrorOnParent: function (field) {
       var errorIcon = $.createIcon({ classes: ['icon-error'], icon: 'error' }),
         parent = field.closest('.tab-panel, .expandable-pane'),
-        parentContainer = field.closest('.tab-container, .expandable-area'),
+        parentContainer = field.closest('.tab-container, .tab-panel-container, .expandable-area'),
         iconTarget = parent.attr('id'),
         iconContainer,
         dropdown,
@@ -45091,6 +50553,9 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         menuitem;
 
       //Tabs
+      if (parentContainer.is('.tab-panel-container')) {
+        parentContainer = parentContainer.prev('.tab-container');
+      }
       if (parentContainer.is('.tab-container')) {
         //Default Tabs
         iconContainer = $('.tab-list a[href="#'+ iconTarget +'"]', parentContainer).closest('.tab');
@@ -45159,6 +50624,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       }
     },
 
+    /**
+     *
+     * @private
+     * @param {jQuery[]} field
+     * @param {boolean} showTooltip
+     * @param {jQuery.Event} e
+     */
     validate: function (field, showTooltip, e) {
       //call the validation function inline on the element
       var self = this,
@@ -45230,6 +50702,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       return dfds;
     },
 
+    /**
+     * Retrive the actionble element that should have an error class/icon appended to it.
+     * @private
+     * @param {jQuery[]} field
+     * @returns {jQuery[]}
+     */
     getField: function(field) {
       if (field.is('select') && field.data('dropdown') !== undefined) {
         field = field.data('dropdown').pseudoElem;
@@ -45237,13 +50715,33 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       return field;
     },
 
+    /**
+     * Returns true if the given object has an error
+     *
+     * @param {jQuery[]} field
+     * @returns {boolean}
+     */
     hasError: function(field) {
       return this.getField(field).hasClass('error');
     },
 
+    /**
+     * Adds an error message/icon to a form field.
+     *
+     * @param {jQuery[]} field
+     * @param {String} message
+     * @param {boolean} inline
+     * @param {boolean} showTooltip
+     */
     addError: function(field, message, inline, showTooltip) {
       var loc = this.getField(field).addClass('error'),
-         appendedMsg = (loc.data('data-errormessage') ? loc.data('data-errormessage') + '<br>' : '') + message;
+         dataMsg = loc.data('data-errormessage'),
+         appendedMsg = message;
+
+      if (dataMsg) {
+        appendedMsg = (/^\u2022/.test(dataMsg)) ? '' : '\u2022 ';
+        appendedMsg += dataMsg + '<br>\u2022 ' + message;
+      }
 
       loc.data('data-errormessage', appendedMsg);
 
@@ -45253,19 +50751,27 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       }
 
       if (!inline) {
-        this.showTooltipError(field, message, showTooltip);
+        this.showTooltipError(field, appendedMsg, showTooltip);
         return;
       }
 
       // Disable primary button in modal
-      field.closest('.modal').find('.btn-modal-primary').not('.no-validation')
-        .attr('disabled', 'disabled');
+      var modalBtn = field.closest('.modal').find('.btn-modal-primary').not('.no-validation');
+      if (modalBtn.length) {
+        this.setModalPrimaryBtn(field, modalBtn, false);
+      }
 
       this.showInlineError(loc, message);
     },
 
+    /**
+     * Shows an error icon
+     *
+     * @private
+     * @param {jQuery[]} field
+     * @returns {jQuery[]}
+     */
     showErrorIcon: function(field) {
-
       var loc = this.getField(field).addClass('error'),
         svg = $.createIconElement({ classes: ['icon-error'], icon: 'error' });
 
@@ -45294,11 +50800,21 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         }
 
         $('.icon-confirm', loc.parent('.field, .field-short')).remove();
+      } else {
+        svg = loc.parent('.field, .field-short').find('svg.icon-error');
       }
 
       return svg;
     },
 
+    /**
+     * Shows an tooltip error
+     *
+     * @private
+     * @param {jQuery[]} field
+     * @param {string} message
+     * @param {boolean} showTooltip
+     */
     showTooltipError: function(field, message, showTooltip) {
       if (field.is(':radio')) {
         return;
@@ -45374,7 +50890,15 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       }
     },
 
-    // Toggle radio group error
+    /**
+     * Shows an tooltip error
+     *
+     * @private
+     * @param {jQuery[]} field
+     * @param {string} message
+     * @param {HTMLElement} markup
+     * @param {boolean} isShow
+     */
     toggleRadioError:  function (field, message, markup, isShow) {
       var all, loc,
         name = field.attr('name');
@@ -45396,6 +50920,13 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       }
     },
 
+    /**
+     * Shows an inline error message on a field
+     * @private
+     *
+     * @param {jQuery[]} field
+     * @param {string} message
+     */
     showInlineError: function (field, message) {
       var loc = this.getField(field).addClass('error'),
         markup = '<div class="error-message">' +
@@ -45414,9 +50945,14 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       //Remove positive errors
       field.parent().find('.icon-confirm').remove();
-
     },
 
+    /**
+     * Shows an inline error message on a field
+     *
+     * @private
+     * @param {jQuery[]} field
+     */
     addPositive: function(field) {
       var svg = $.createIcon({ icon: 'confirm', classes: 'icon-confirm'});
 
@@ -45425,6 +50961,12 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       }
     },
 
+    /**
+     * Shows an inline error message on a field
+     *
+     * @private
+     * @param {jQuery[]} field
+     */
     removeError: function(field) {
       var loc = this.getField(field),
         isRadio = field.is(':radio'),
@@ -45455,6 +50997,7 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
       if (field.hasClass('dropdown') || field.hasClass('multiselect')) {
         field.next().next().removeClass('error'); // #shdo
+        field.next().find('div.dropdown').removeClass('error').removeData('data-errormessage');
         field.parent().find('.dropdown-wrapper > .icon-error').off('click.validate').remove(); // SVG Error Icon
       }
 
@@ -45481,14 +51024,22 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       }
 
       // Enable primary button in modal
-      field.closest('.modal').find('.btn-modal-primary').not('.no-validation').removeAttr('disabled');
+      var modalBtn = field.closest('.modal').find('.btn-modal-primary').not('.no-validation');
+      if (modalBtn.length) {
+        this.setModalPrimaryBtn(field, modalBtn, true);
+      }
 
       //Stuff for the inline error
       field.closest('.field, .field-short').find('.error-message').remove();
       field.parent('.field, .field-short').find('.formatter-toolbar').removeClass('error');
-
     },
 
+    /**
+     * Shows an inline error message on a field
+     *
+     * @private
+     * @param {jQuery[]} field
+     */
     removePositive: function(field) {
       $('.icon-confirm', field.parent('.field, .field-short')).remove();
     }
@@ -45616,7 +51167,8 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
             dateFormat = field.data('datepicker').pattern;
           }
 
-          var parsedDate = Locale.parseDate(value, dateFormat, true);
+          var isStrict = !(dateFormat === 'MMMM d' || dateFormat === 'yyyy'),
+            parsedDate = Locale.parseDate(value, dateFormat, isStrict);
           return ((parsedDate === undefined) && value !== '') ? false : true;
         },
         message: 'Invalid Date'
@@ -45811,11 +51363,18 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       doAction = function(isValid) {
         field.data('isValid', isValid);
       };
-    if (api) {
-      $.when.apply($, [api.validate(field, false, 0)]).then(function () {
-        doAction(true);
-      }, function () {
-        doAction(false);
+
+    if (api && api.validate) {
+      var fx = api.validate(field, false, 0);
+      $.when.apply($, fx).always(function() {
+        // [fail] returns the first fail, so we have to loop deferred objects
+        $.each(fx, function() {
+          this.done(function() {
+            doAction(true);
+          }).fail(function() {
+            doAction(false);
+          });
+        });
       });
     }
   };
@@ -45851,6 +51410,15 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
   $.fn.wizard = function(options) {
     'use strict';
 
+    /**
+    * The Autocomplete control provides an easier means of searching through a large amount of data by filtering down the results based on keyboard input from the user.
+    *
+    * @class Wizard
+    *
+    * @param {jQuery[]} ticks  &nbsp;-&nbsp; Defines the data to use, must be specified.
+    *
+    */
+
     // Settings and Options
     var pluginName = 'wizard',
         defaults = {
@@ -45873,12 +51441,20 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
     // Plugin Methods
     Wizard.prototype = {
 
+      /**
+       * @private
+       * @returns {this}
+       */
       init: function() {
         this
           .build()
           .handleEvents();
       },
 
+      /**
+       * @private
+       * @returns {this}
+       */
       build: function() {
         this.header = this.element.find('.wizard-header');
         if (!this.header.length) {
@@ -45898,20 +51474,6 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
         this
           .buildTicks()
           .updateRange();
-
-        return this;
-      },
-
-      handleEvents: function() {
-        var self = this;
-
-        this.element.on('updated', function() {
-          self.updated();
-        });
-
-        this.ticks.onTouchClick('wizard').on('click.wizard', function(e) {
-          self.activate(e, $(this));
-        });
 
         return this;
       },
@@ -46084,6 +51646,25 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
       destroy: function() {
         this.teardown();
         $.removeData(this.element[0], pluginName);
+      },
+
+      /**
+       * This component listens to the following events:
+       * @param module:Wizard~event:updated
+       * @param module:Wizard~event:click
+       */
+      handleEvents: function() {
+        var self = this;
+
+        this.element.on('updated', function() {
+          self.updated();
+        });
+
+        this.ticks.onTouchClick('wizard').on('click.wizard', function(e) {
+          self.activate(e, $(this));
+        });
+
+        return this;
       }
     };
 
