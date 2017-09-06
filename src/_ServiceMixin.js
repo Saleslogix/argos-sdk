@@ -15,7 +15,6 @@
 
 /**
  * @class argos._ServiceMixin
- * @alternateClassName _ServiceMixin
  * @deprecated
  */
 import declare from 'dojo/_base/declare';

@@ -6,11 +6,10 @@ const resource = getResource('selectionModel');
 
 /**
  * @class argos.SelectionModel
- * SelectionModel provides a simple in-memory store for data that fires events
+ * @classdesc SelectionModel provides a simple in-memory store for data that fires events
  * when a item is selected (added) or deselected (removed)
- * @alternateClassName SelectionModel
  */
-const __class = declare('argos.SelectionModel', null, {
+const __class = declare('argos.SelectionModel', null, /** @lends argos.SelectionModel# */{
   // Localization
   requireSelectionText: resource.requireSelectionText,
 
@@ -47,6 +46,7 @@ const __class = declare('argos.SelectionModel', null, {
   /**
    * Initializes the selections to be empty and mixes the passed object overriding any default properties.
    * @param {Object} options The object to be mixed in.
+   * @constructs
    */
   constructor: function constructor(options) {
     this.selections = {};

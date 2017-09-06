@@ -21,10 +21,10 @@ import utility from '../Utility';
 
 /**
  * @class argos.Store.SData
- * SData is an extension of dojo.store that is tailored to handling SData parameters, requests,
+ * @classdesc SData is an extension of dojo.store that is tailored to handling SData parameters, requests,
  * and pre-handling the responses.
  */
-const __class = declare('argos.Store.SData', null, {
+const __class = declare('argos.Store.SData', null, /** @lends argos.Store.SData# */ {
   doDateConversion: false,
 
   /* todo: is this the appropriate name for the expansion scope? */
@@ -54,7 +54,7 @@ const __class = declare('argos.Store.SData', null, {
   versionProperty: '$etag',
 
   /**
-   * @constructor
+   * @constructs
    */
   constructor: function constructor(props) {
     lang.mixin(this, props);

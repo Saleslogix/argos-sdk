@@ -27,16 +27,15 @@ const resource = getResource('view');
 
 /**
  * @class argos.View
- * View is the root Class for all views and incorporates all the base features,
+ * @classdesc View is the root Class for all views and incorporates all the base features,
  * events, and hooks needed to successfully render, hide, show, and transition.
  *
  * All Views are dijit Widgets, namely utilizing its: widgetTemplate, connections, and attributeMap
- * @alternateClassName View
  * @mixins argos._ActionMixin
  * @mixins argos._CustomizationMixin
  * @mixins argos._Templated
  */
-const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], {
+const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], /** @lends argos.View# */{
   /**
    * This map provides quick access to HTML properties, most notably the selected property of the container
    */
@@ -483,6 +482,9 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     this.select(to);
     complete.apply(this);
   },
+  setPrimaryTitle: function setPrimaryTitle() {
+    App.setPrimaryTitle(this.get('title'));
+  },
   /**
   * Available Options:
   *   horizontal: True if the transition is horizontal, False otherwise.
@@ -499,34 +501,13 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
       return;
     }
 
-    App.setPrimaryTitle(this.get('title'));
+    this.setPrimaryTitle();
 
     if (options.track !== false) {
       const count = App.context.history.length;
-      const hash = location.hash;
-      let position = -1;
+      let position = count - 1;
 
-      // do loop and trim
-      for (position = count - 1; position >= 0; position--) {
-        if (App.context.history[position].hash === hash) {
-          break;
-        }
-      }
-
-      if ((position > -1) && (position === (count - 2))) {
-        // Added check if history item is just one back.
-
-        App.context.history = App.context.history.splice(0, position + 1);
-
-        this.currentHash = hash;
-
-        // indicate that context.history has already been taken care of (i.e. nothing needs to be pushed).
-        options.trimmed = true;
-        // trim up the browser history
-        // if the requested hash does not equal the current location hash, trim up history.
-        // location hash will not match requested hash when show is called directly, but will match
-        // for detected location changes (i.e. the back button).
-      } else if (options.returnTo) {
+      if (options.returnTo) {
         if (typeof options.returnTo === 'function') {
           for (position = count - 1; position >= 0; position--) {
             if (options.returnTo(App.context.history[position])) {
@@ -543,6 +524,8 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
 
           this.currentHash = App.context.history[App.context.history.length - 1] && App.context.history[App.context.history.length - 1].hash;
         }
+
+        options.returnTo = null;
       }
     }
 
@@ -639,6 +622,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   transitionTo: function transitionTo() {
     if (this.refreshRequired) {
       this.refreshRequired = false;
+      this.isRefreshing = false;
       this.refresh();
     }
 

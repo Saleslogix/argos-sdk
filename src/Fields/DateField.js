@@ -28,10 +28,10 @@ const dtFormatResource = getResource('dateFieldDateTimeFormat');
 
 /**
  * @class argos.Fields.DateField
- * The DateField is an extension of the {@link EditorField EditorField} by accepting Date Objects
+ * @classdesc The DateField is an extension of the {@link EditorField EditorField} by accepting Date Objects
  * for values and using the {@link Calendar Calendar} view for user input.
  *
- * ###Example
+ * @example
  *
  *     {
  *         name: 'StartDate',
@@ -43,13 +43,12 @@ const dtFormatResource = getResource('dateFieldDateTimeFormat');
  *         showRelativeDateTime: true
  *     }
  *
- * @alternateClassName DateField
  * @extends argos.Fields.EditorField
  * @requires argos.Calendar
  * @requires argos.FieldManager
  * @requires argos.Format
  */
-const control = declare('argos.Fields.DateField', [EditorField], {
+const control = declare('argos.Fields.DateField', [EditorField], /** @lends argos.Fields.DateField# */{
   // Localization
   /**
    * @cfg {String}
@@ -80,7 +79,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       {% } %}>
       {%: $.label %}
     </label>
-    <div class="field-control-wrapper">
+    <div class="field field-control-wrapper">
       <button
         data-dojo-attach-point="triggerNode"
         data-action="showModal"
@@ -165,6 +164,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
         this.inputNode.value = date.format(this.dateFormatText);
       }
       $(this.containerNode).removeClass('row-error'); // todo: not the right spot for this, add validation eventing
+      this.onChange(this.currentValue, this);
     } else {
       this.validationValue = this.currentValue = null;
       $(this.containerNode).addClass('row-error'); // todo: not the right spot for this, add validation eventing
@@ -214,6 +214,7 @@ const control = declare('argos.Fields.DateField', [EditorField], {
       this.inputNode.value = this.formatValue(this.currentValue);
     }
     $(this.containerNode).removeClass('row-error'); // todo: not the right spot for this, add validation eventing
+    this.onChange(this.currentValue, this);
   },
   /**
    * Determines if the current value has been modified from the original value.

@@ -19,10 +19,7 @@ import _RelatedWidgetEditMixin from './_RelatedViewWidgetEditMixin';
 
 /**
  * @class argos.Edit
- *
- * Edit extends _EditBase and mixes in _SDataEditMixin to provide backwards compatibility for consumers.
- *
- * @alternateClassName Edit
+ * @classdesc Edit extends _EditBase and mixes in _SDataEditMixin to provide backwards compatibility for consumers.
  * @extends argos._EditBase
  * @requires argos._EditBase
  * @requires argos._SDataEditMixin

@@ -23,8 +23,7 @@ const resource = getResource('_detailOfflineMixin');
 
 /**
  * @class argos.Offline._DetailOfflineMixin
- * A mixin that provides the detail view offline specific methods and properties
- * @alternateClassName _DetailOfflineMixin
+ * @classdesc A mixin that provides the detail view offline specific methods and properties
  */
 export default declare('argos.Offline._DetailOfflineMixin', null, {
 
@@ -37,6 +36,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
       tools.tbar.push({
         id: 'briefCase',
         svg: 'roles',
+        title: resource.briefcaseTooltipText,
         action: 'briefCaseEntity',
         security: '',
       });

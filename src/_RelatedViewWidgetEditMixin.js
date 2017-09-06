@@ -5,8 +5,10 @@ import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import RelatedViewManager from './RelatedViewManager';
 
-
-const __class = declare('argos._RelatedViewWidgetEditMixin', null, {
+/**
+ * @class argos._RelatedViewWidgetEditMixin
+ */
+const __class = declare('argos._RelatedViewWidgetEditMixin', null, /** @lends argos._RelatedViewWidgetEditMixin# */{
   cls: null,
   /**
    * @property {Simplate}

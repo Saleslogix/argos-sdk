@@ -29,17 +29,13 @@ import convert from 'argos/Convert';
 const resource = getResource('listBase');
 
 /**
- * @class argos._ListBase
- * A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
+ * @classdesc A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
  * selection model built in for selecting rows from the list and may be used in a number of different manners.
+ * @class argos._ListBase
  * @extends argos.View
- * @alternateClassName _ListBase
- * @requires argos.ErrorManager
- * @requires argos.Utility
- * @requires argos.SearchWidget
  * @mixins argos._PullToRefreshMixin
  */
-const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
+const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @lends argos._ListBase# */{
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:
@@ -215,7 +211,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
           {%! $$.itemIconTemplate %}
           <h2 class="widget-title">{%: $$.getTitle($, $$.labelProperty) %}</h2>
           {% if($$.visibleActions.length > 0 && $$.enableActions) { %}
-            <button class="btn-actions" type="button" data-action="selectEntry" data-key="{%= $$.getItemActionKey($) %}">
+            <button class="btn-actions" type="button" data-key="{%= $$.getItemActionKey($) %}">
               <span class="audible">Actions</span>
               <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
                 <use xlink:href="#icon-more"></use>
@@ -506,6 +502,16 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   loadingText: resource.loadingText,
   /**
    * @property {String}
+   * The text displayed in tooltip for the new button.
+   */
+  newTooltipText: resource.newTooltipText,
+  /**
+   * @property {String}
+   * The text displayed in tooltip for the refresh button.
+   */
+  refreshTooltipText: resource.refreshTooltipText,
+  /**
+   * @property {String}
    * The customization identifier for this class. When a customization is registered it is passed
    * a path/identifier which is then matched to this property.
    */
@@ -636,7 +642,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.entries = {};
     this._loadedSelections = {};
 
-    // backward compatibility for disableRightDrawer property. To be removed after 3.7
+    // backward compatibility for disableRightDrawer property. To be removed after 4.0
     if (options && options.disableRightDrawer) {
       console.warn('disableRightDrawer property is depracated. Use hasSettings property instead. disableRightDrawer = !hasSettings');  //eslint-disable-line
       this.hasSettings = false;
@@ -691,7 +697,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     // Get the base results
     const shouldStart = this.inherited(arguments);
     const selected = $(this.domNode).attr('selected');
-    return shouldStart && selected === 'selected' && !this.listLoading;
+    const actionNode = $(this.domNode).find('.btn-actions.is-open');
+    const actionsOpen = actionNode.length > 0;
+    return shouldStart && selected === 'selected' && !this.listLoading && !actionsOpen;
   },
   forceRefresh: function forceRefresh() {
     this.clear();
@@ -766,6 +774,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       tbar: [{
         id: 'new',
         svg: 'add',
+        title: this.newTooltipText,
         action: 'navigateToInsertView',
         security: this.app.getViewSecurity(this.insertView, 'insert'),
       }],
@@ -774,6 +783,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
       this.tools.tbar.push({
         id: 'refresh',
         svg: 'refresh',
+        title: this.refreshTooltipText,
         action: '_refreshList',
       });
       this._refreshAdded = true;
@@ -1103,8 +1113,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
 
     if (rowNode) {
-      const popupmenu = $(rowNode).find('.btn-actions')[0];
-      $(popupmenu).data('popupmenu').position();
+      const popupmenuNode = $(rowNode).find('.btn-actions')[0];
+      const popupmenu = $(popupmenuNode).data('popupmenu');
+      setTimeout(() => {
+        popupmenu.position();
+      }, 1);
     }
   },
   _getActionById: function _getActionById(id) {
@@ -1342,6 +1355,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
    * @param {Object} params Collection of `data-` attributes from the node.
    */
   activateEntry: function activateEntry(params) {
+    // dont navigate if clicked on QA button
+    if (params.$event && params.$event.target.className && params.$event.target.className.indexOf('btn-actions') !== -1) {
+      return;
+    }
     if (params.key) {
       if (this._selectionModel && this.isNavigationDisabled()) {
         this._selectionModel.toggle(params.key, this.entries[params.key] || params.descriptor, params.$source);
@@ -1532,10 +1549,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   /**
    * Navigates to the defined `this.insertView`, or `this.editView` passing the current views id as the `returnTo`
    * option and setting `insert` to true.
-   * @param {HTMLElement} el Node that initiated the event.
    * @param {Object} additionalOptions Additional options to be passed into the next view.
    */
-  navigateToInsertView: function navigateToInsertView(el, additionalOptions) {
+  navigateToInsertView: function navigateToInsertView(additionalOptions) {
     const view = this.app.getView(this.insertView || this.editView);
     let options = {
       returnTo: this.id,
@@ -1630,7 +1646,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     this.createIndicatorLayout();
   },
   getItemActionKey: function getItemActionKey(entry) {
-    return entry.$key || entry[this.idProperty];
+    return this.getIdentity(entry);
   },
   getItemDescriptor: function getItemDescriptor(entry) {
     return entry.$descriptor || entry[this.labelProperty];
@@ -1777,6 +1793,17 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
   },
   onApplyRowTemplate: function onApplyRowTemplate(entry, rowNode) {
     this.applyRowIndicators(entry, rowNode);
+    this.initRowQuickActions(rowNode);
+  },
+  initRowQuickActions: function initRowQuickActions(rowNode) {
+    if (this.isCardView && this.visibleActions.length) {
+      // initialize popupmenus on each card
+      const btn = $(rowNode).find('.btn-actions');
+      $(btn).popupmenu();
+      $(btn).on('beforeopen', (evt) => {
+        this.selectEntry({ key: evt.target.attributes['data-key'].value });
+      });
+    }
   },
   processData: function processData(entries) {
     if (!entries) {
@@ -1792,7 +1819,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
         const entry = this._processEntry(entries[i]);
         // If key comes back with nothing, check that the store is properly
         // setup with an idProperty
-        this.entries[this.getIdentity(entry)] = entry;
+        this.entries[this.getIdentity(entry, i)] = entry;
 
         const rowNode = this.createItemRowNode(entry);
 
@@ -1823,12 +1850,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     try {
       if (this.isCardView) {
         rowNode = $(this.rowTemplate.apply(entry, this));
-
-        if (this.visibleActions.length) {
-          // initialize popupmenus on each card
-          const btn = $(rowNode).find('.btn-actions');
-          $(btn).popupmenu();
-        }
       } else {
         rowNode = $(this.liRowTemplate.apply(entry, this));
       }
@@ -1838,13 +1859,28 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], {
     }
     return rowNode.get(0);
   },
-  getIdentity: function getIdentity(entry) {
+  getIdentity: function getIdentity(entry, defaultId) {
+    let modelId;
+    let storeId;
+
     if (this._model) {
-      return this._model.getEntityId(entry);
+      modelId = this._model.getEntityId(entry);
+    }
+
+    if (modelId) {
+      return modelId;
     }
 
     const store = this.get('store');
-    return store.getIdentity(entry, this.idProperty);
+    if (store) {
+      storeId = store.getIdentity(entry, this.idProperty);
+    }
+
+    if (storeId) {
+      return storeId;
+    }
+
+    return defaultId;
   },
   _logError: function _logError(error, message) {
     const fromContext = this.options.fromContext;

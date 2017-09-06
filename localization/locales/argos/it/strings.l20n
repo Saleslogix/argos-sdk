@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "Selezione file"
-  addFileText: "Fare clic o toccare qui per aggiungere un file."
+  addFileText: "Scegliere un file da aggiungere"
   uploadText: "Carica"
   cancelText: "Annulla"
   selectFileText: "Seleziona file"
@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "Informazioni"
+  informationText: "Informazioni ${0}"
   titleText: "Dettaglio"
   entityText: "Entità"
   detailsText: "Dettagli"
@@ -100,6 +100,8 @@
   notAvailableText: "I dati richiesti non sono disponibili."
   toggleCollapseText: "espandi/comprimi"
   editText: "Modifica"
+  editTooltipText: "Modifica"
+  refreshTooltipText: "Aggiorna"
 >
 
 <editBase ""
@@ -113,6 +115,8 @@
   loadingText: "Caricamento"
   errorGeneral: "Si è verificato un errore del server durante la richiesta di dati."
   error410:  "Errore durante il salvataggio. Il record non esiste più."
+  saveTooltipText: "Salva"
+  cancelTooltipText: "Annulla"
 >
 
 <errorHandleMixin ""
@@ -130,6 +134,8 @@
   insertText: "Nuovo"
   noDataText: "nessun record"
   loadingText: "Caricamento"
+  newTooltipText: "Nuovo"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -192,6 +198,7 @@
 
 <mainToolbar ""
   titleText: "Cellulare"
+  backTooltipText: "Indietro"
 >
 
 <relatedViewWidget ""
@@ -214,10 +221,6 @@
   requireSelectionText: "È necessaria una selezione. Non è possibile deselezionare l'ultimo elemento."
 >
 
-<tabWidget ""
- moreText: "Altro"
->
-
 <view ""
  titleText: "Vista generica"
 >
@@ -229,7 +232,7 @@
 >
 
 <relativeDateTimePicker ""
-  titleText: "Approssimativa..."
+  titleText: "Ora approssimativa..."
   pickDateTimeText: "Avanzate"
   thisEveningText: "Questa sera"
   tomorrowMorningText: "Domani mattina"
@@ -270,6 +273,7 @@
   interruptedText: "Il processo è stato interrotto e non è stato interamente completato. Provare di nuovo per inserire tutti gli elementi in Sincronia file."
   briefcasingText: "Sincronia file in corso. Attendere."
   errorBriefcasingText: "Errore durante la sincronia file"
+  briefcaseTooltipText: "Sincronia file"
 >
 
 <_detailOfflineMixin
@@ -278,6 +282,7 @@
   briefcasingText: "Sincronia file in corso. Attendere."
   errorBriefcasingText: "Errore durante la sincronia file"
   errorSavingOfflineViewText: "errore durante il salvataggio della vista offline:"
+  briefcaseTooltipText: "Sincronia file"
 >
 
 <sdkApplication
@@ -285,4 +290,6 @@
   checkingText: "Controllo della connettività"
   loadingApplicationStateText: "Stato caricamento applicazione"
   initializingText: "Inizializzazione:"
+  viewSettingsText: "Impostazioni di visualizzazione"
+  closeText: "Chiudi"
 >

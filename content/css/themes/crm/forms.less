@@ -8,8 +8,15 @@
   width: 5px;
 }
 
-input, textarea, div.dropdown, div.multiselect, .dropdown-wrapper {
+input,
+textarea,
+div.dropdown,
+div.multiselect,
+.dropdown-wrapper {
     width: 100%;
+}
+input.fileupload-background-transparent {
+    width: 300px;
 }
 
 .group-content > h2 > button {
@@ -48,7 +55,6 @@ input, textarea, div.dropdown, div.multiselect, .dropdown-wrapper {
 
 .action-list > li > a > label {
     cursor: pointer !important;
-    line-height: inherit;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -97,8 +103,10 @@ input, textarea, div.dropdown, div.multiselect, .dropdown-wrapper {
     text-align: left !important;
 }
 .field-control-wrapper {
-    margin-bottom: 20px;
     position: relative;
+    input {
+        padding-right: 35px;
+    }
 }
 .field-control-trigger {
     cursor: pointer;
@@ -135,4 +143,10 @@ input, textarea, div.dropdown, div.multiselect, .dropdown-wrapper {
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
+}
+
+.currency-code-editlabel {
+    position: absolute;
+    top: 27px;
+    right: 10px
 }

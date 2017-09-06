@@ -4,9 +4,8 @@ import _Templated from './_Templated';
 
 /**
  * @class argos.TabWidget
- * @alternateClassName TabWidget
  */
-const __class = declare('argos.TabWidget', [_Templated], {
+const __class = declare('argos.TabWidget', [_Templated], /** @lends argos.TabWidget# */{
   /**
    * @property {Simplate}
    * HTML that defines a new tab list
@@ -87,7 +86,11 @@ const __class = declare('argos.TabWidget', [_Templated], {
   */
   clearTabs: function clearTabs() {
     if (this.tabList && this.tabs) {
-      this._sohoTabs.destroy();
+      try {
+        this._sohoTabs.destroy();
+      } catch (ex) {
+        console.warn(ex); // eslint-disable-line
+      }
       $(this.tabList).remove();
       $('.tab-panel', this.tabContainer).remove();
     }

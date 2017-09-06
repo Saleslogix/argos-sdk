@@ -18,6 +18,8 @@ return describe('Sage.Platform.Mobile.GroupedList', function() {
             },
             getViewContainerNode: function() {
             },
+            getService: function() {
+            },
             enableGroups: true,
             supportsTouch: function() {
             }

@@ -18,11 +18,10 @@ const util = ICRMCommonSDK.utility;
 
 /**
  * @class argos.Utility
- * Utility provides functions that are more javascript enhancers than application related code.
- * @alternateClassName Utility
+ * @classdesc Utility provides functions that are more javascript enhancers than application related code.
  * @singleton
  */
-const __class = lang.setObject('argos.Utility', {
+const __class = lang.setObject('argos.Utility', /** @lends argos.Utility */{
   /**
    * Replaces a single `"` with two `""` for proper SData query expressions.
    * @param {String} searchQuery Search expression to be escaped.
@@ -36,7 +35,6 @@ const __class = lang.setObject('argos.Utility', {
   expand: util.expand,
   roundNumberTo: util.roundNumberTo,
   /**
-   * @function
    * Utility function to join fields within a Simplate template.
    */
   joinFields: util.joinFields,

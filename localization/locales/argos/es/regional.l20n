@@ -2,8 +2,8 @@
 <CultureInfo """
 {
   "name": "es",
-  "englishName": "English (United States)",
-  "nativeName": "English (United States)",
+  "englishName": "Spanish",
+  "nativeName": "Spanish",
   "numberFormat": {
     "currencyDecimalDigits": 2,
     "currencyDecimalSeparator": ",",

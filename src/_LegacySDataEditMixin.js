@@ -8,11 +8,11 @@ import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';
 
 /**
- * _LegacySDataEditMixin enables legacy SData operations for the Edit view.
+ * @classdesc Enables legacy SData operations for the Edit view.
+ * @class argos._LegacySDataEditMixin
  *
- * @alternateClassName _LegacySDataEditMixin
  */
-const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], {
+const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], /** @lends argos._LegacySDataEditMixin# */{
   requestData: function requestData() {
     const request = this.createRequest();
     if (request) {

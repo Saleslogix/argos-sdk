@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "Field '${0}' has Invalid date format."
   cancelText: "Cancel"
   confirmText: "Confirm"
@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "Information"
+  informationText: "${0} Information"
   titleText: "Detail"
   entityText: "Entity"
   detailsText: "Details"
@@ -100,6 +100,8 @@
   notAvailableText: "The requested data is not available."
   toggleCollapseText: "toggle collapse"
   editText: "Edit"
+  editTooltipText: "Edit"
+  refreshTooltipText: "Refresh"
 >
 
 <editBase ""
@@ -113,10 +115,12 @@
   loadingText: "Loading"
   errorGeneral: "A server error occured while requesting data."
   error410:  "Error saving. This record no longer exists."
+  saveTooltipText: "Save"
+  cancelTooltipText: "Cancel"
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occurred."
 >
 
 <listBase ""
@@ -130,6 +134,8 @@
   insertText: "New"
   noDataText: "no records"
   loadingText: "Loading"
+  newTooltipText: "New"
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -192,6 +198,19 @@
 
 <mainToolbar ""
   titleText: "Mobile"
+  backTooltipText: "Back"
+  themeText: "Theme"
+  personalizationText: "Personalization"
+  lightText: "Light"
+  darkText: "Dark"
+  highContrastText: "High Contrast"
+  defaultText: "Default"
+  azureText: "Azure"
+  amberText: "Amber"
+  amethystText: "Amethyst"
+  turqoiseText: "Turqoise"
+  emeraldText: "Emerald"
+  graphiteText: "Graphite"
 >
 
 <relatedViewWidget ""
@@ -266,6 +285,7 @@
   interruptedText: "The process was interrupted and was not able to fully complete. Please try the process again to fully briefcase the items."
   briefcasingText: "Briefcasing please wait."
   errorBriefcasingText: "Error briefcasing"
+  briefcaseTooltipText: "Briefcase"
 >
 
 <_detailOfflineMixin
@@ -274,6 +294,7 @@
   briefcasingText: "Briefcasing please wait."
   errorBriefcasingText: "Error briefcasing"
   errorSavingOfflineViewText: "error saving offline view:"
+  briefcaseTooltipText: "Briefcase"
 >
 
 <sdkApplication
@@ -281,4 +302,6 @@
   checkingText: "Checking connectivity"
   loadingApplicationStateText: "Loading application state"
   initializingText: "Initializing:"
+  viewSettingsText: "View Settings"
+  closeText: "Close"
 >

@@ -57,7 +57,7 @@
   twoWeeksAgoText: "2 週間前"
   threeWeeksAgoText: "3 週間前"
   twoMonthsAgoText: "2 か月前"
-  threeMonthsAgoText: "2 か月前"
+  threeMonthsAgoText: "3 か月前"
   unknownText: "不明"
 >
 
@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "ファイル選択"
-  addFileText: "ここをクリップまたはタップしてファイルを追加します。"
+  addFileText: "追加するファイルを選択します"
   uploadText: "アップロード"
   cancelText: "キャンセル"
   selectFileText: "ファイルの選択"
@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "情報"
+  informationText: "${0} 情報"
   titleText: "詳細"
   entityText: "エンティティ"
   detailsText: "詳細"
@@ -100,6 +100,8 @@
   notAvailableText: "リクエストしたデータは、利用できません。"
   toggleCollapseText: "トグル折りたたみ"
   editText: "編集"
+  editTooltipText: "編集"
+  refreshTooltipText: "更新"
 >
 
 <editBase ""
@@ -113,6 +115,8 @@
   loadingText: "ロードしています"
   errorGeneral: "データの要求中にサーバーエラーが発生しました。"
   error410:  "エラーを保存しています。このレコードは現在存在していません。"
+  saveTooltipText: "保存"
+  cancelTooltipText: "キャンセル"
 >
 
 <errorHandleMixin ""
@@ -130,6 +134,8 @@
   insertText: "新規"
   noDataText: "レコードなし"
   loadingText: "ロードしています"
+  newTooltipText: "新規"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -143,8 +149,8 @@
 
 <calendar ""
   titleText: "カレンダー"
-  amText: "AM"
-  pmText: "PM"
+  amText: "午前"
+  pmText: "午後"
   january: "1 月"
   february: "2 月"
   march: "3 月"
@@ -192,6 +198,7 @@
 
 <mainToolbar ""
   titleText: "携帯電話"
+  backTooltipText: "戻る"
 >
 
 <relatedViewWidget ""
@@ -214,22 +221,18 @@
   requireSelectionText: "選択は必須です。最後の項目の選択を解除することはできません。"
 >
 
-<tabWidget ""
- moreText: "その他"
->
-
 <view ""
  titleText: "一般ビュー"
 >
 
 <timePicker ""
-  amText: "AM"
-  pmText: "PM"
+  amText: "午前"
+  pmText: "午後"
   setTimeText: "時刻を設定"
 >
 
 <relativeDateTimePicker ""
-  titleText: "約..."
+  titleText: "おおよその時間..."
   pickDateTimeText: "詳細"
   thisEveningText: "今夜"
   tomorrowMorningText: "明朝"
@@ -270,6 +273,7 @@
   interruptedText: "処理は中断され、完全に完了しませんでした。処理を再試行して項目を完全にブリーフケースしてください。"
   briefcasingText: "ブリーフケースしています。お待ちください。"
   errorBriefcasingText: "ブリーフケースのエラー"
+  briefcaseTooltipText: "ブリーフケース"
 >
 
 <_detailOfflineMixin
@@ -278,6 +282,7 @@
   briefcasingText: "ブリーフケースしています。お待ちください。"
   errorBriefcasingText: "ブリーフケースのエラー"
   errorSavingOfflineViewText: "オフラインビューの保存エラー:"
+  briefcaseTooltipText: "ブリーフケース"
 >
 
 <sdkApplication
@@ -285,4 +290,6 @@
   checkingText: "接続を確認しています"
   loadingApplicationStateText: "アプリケーションの状態をロード中"
   initializingText: "初期化:"
+  viewSettingsText: "ビュー設定"
+  closeText: "クローズ"
 >

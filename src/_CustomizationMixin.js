@@ -15,7 +15,7 @@
 
 /**
  * @class argos._CustomizationMixin
- * Customization Mixin is a general purpose Customization Engine. It takes a customization object and
+ * @classdesc Customization Mixin is a general purpose Customization Engine. It takes a customization object and
  * a layout object and applies the customization defined to the layout.
  *
  * A customization object has the following properties:
@@ -27,7 +27,6 @@
  * * `value`: `{Object}` - the entire object to create (insert or replace) or the values to overwrite (modify), not needed for remove.
  * * `value`: `{Object[]}` - if inserting you may pass an array of items to create.
  *
- * @alternateClassName _CustomizationMixin
  */
 import declare from 'dojo/_base/declare';
 

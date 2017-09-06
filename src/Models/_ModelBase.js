@@ -20,10 +20,8 @@ import _CustomizationMixin from '../_CustomizationMixin';
 
 /**
  * @class argos.Models._ModelBase
- * A base model class for views to consume
- * @alternateClassName _ModelBase
  */
-export default declare('argos.Models._ModelBase', [Evented, Stateful, _CustomizationMixin], {
+export default declare('argos.Models._ModelBase', [Evented, Stateful, _CustomizationMixin], /** @lends argos.Models_ModelBase# */{
   id: null,
   customizationSet: 'models',
   app: null,

@@ -18,12 +18,10 @@ import _TemplatedMixin from 'dijit/_TemplatedMixin';
 
 /**
  * @class argos._Templated
- * _Templated serves as an override for dijit Widgets to enable the use of
+ * @classdesc _Templated serves as an override for dijit Widgets to enable the use of
  * Simplates for templates it also holds the function to pull the resource strings from l20n.
- *
- * @alternateClassName _Templated
  */
-const __class = declare('argos._Templated', [_TemplatedMixin], {
+const __class = declare('argos._Templated', [_TemplatedMixin], /** @lends argos._Templated# */{
 
   _stringRepl: function _stringRepl(tmpl) {
     return tmpl;

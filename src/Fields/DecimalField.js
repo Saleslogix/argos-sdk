@@ -20,25 +20,23 @@ import Utility from '../Utility';
 
 /**
  * @class argos.Fields.DecimalField
- * The Decimal Field is used for inputting numbers and extends {@link TextField TextField} with:
+ * @classdesc The Decimal Field is used for inputting numbers and extends {@link TextField TextField} with:
  *
  * * hides the clear (x) button;
  * * when setting a value, it converts the decimal and thousands group separator to the localized versions; and
  * * when getting a value, it back-converts the localized punctuation into the en-US format and converts the result into a float (Number).
  *
- * ###Example:
+ * @example
  *     {
  *         name: 'SalesPotential',
  *         property: 'SalesPotential',
  *         label: this.salesPotentialText,
  *         type: 'decimal'
  *     }
- *
- * @alternateClassName DecimalField
  * @extends argos.Fields.TextField
  * @requires argos.FieldManager
  */
-const control = declare('argos.Fields.DecimalField', [TextField], {
+const control = declare('argos.Fields.DecimalField', [TextField], /** @lends argos.Fields.DecimalField# */{
   /**
    * @cfg {Number}
    * Defines how many decimal places to format when setting the value.

@@ -20,10 +20,7 @@ import _DetailOfflineMixin from './Offline/_DetailOfflineMixin';
 
 /**
  * @class argos.Detail
- *
- * Extends _DetailBase and mixes in _SDataDetailMixin to provide backwards compatibility to consumers.
- *
- * @alternateClassName Detail
+ * @classdesc Extends _DetailBase and mixes in _SDataDetailMixin to provide backwards compatibility to consumers.
  * @extends argos._DetailBase
  * @requires argos._DetailBase
  * @requires argos._SDataDetailMixin

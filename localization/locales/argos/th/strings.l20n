@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "การเลือกไฟล์"
-  addFileText: "คลิกหรือแท็บที่นี่เพื่อเพิ่มไฟล์"
+  addFileText: "เลือกไฟล์ที่จะเพิ่ม"
   uploadText: "อัปโหลด"
   cancelText: "ยกเลิก"
   selectFileText: "เลือกไฟล์"
@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "ข้อมูล"
+  informationText: "ข้อมูล ${0}"
   titleText: "รายละเอียด"
   entityText: "เอนทิตี"
   detailsText: "รายละเอียด"
@@ -100,6 +100,8 @@
   notAvailableText: "ข้อมูลที่ร้องขอที่มีอยู่"
   toggleCollapseText: "สลับ/ยุบ"
   editText: "แก้ไข"
+  editTooltipText: "แก้ไข"
+  refreshTooltipText: "รีเฟรช"
 >
 
 <editBase ""
@@ -113,6 +115,8 @@
   loadingText: "กำลังโหลด"
   errorGeneral: "มีข้อผิดพลาดเซิร์ฟเวอร์ในการร้องขอข้อมูล"
   error410:  "ข้อผิดพลาดการบันทึก ระเบียนนี้ไม่มีอยู่อีกแล้ว"
+  saveTooltipText: "บันทึก"
+  cancelTooltipText: "ยกเลิก"
 >
 
 <errorHandleMixin ""
@@ -130,6 +134,8 @@
   insertText: "ใหม่"
   noDataText: "ไม่มีระเบียน"
   loadingText: "กำลังโหลด"
+  newTooltipText: "ใหม่"
+  refreshTooltipText: 'Refresh'
 >
 
 <pullToRefreshMixin ""
@@ -161,7 +167,7 @@
   todayText: "วันนี้"
   sundayAbbreviated: "อา."
   mondayAbbreviated: "จ."
-  tuesdayAbbreviated: "อัง."
+  tuesdayAbbreviated: "อ."
   wednesdayAbbreviated: "พ."
   thursdayAbbreviated: "พฤ."
   fridayAbbreviated: "ศ."
@@ -192,6 +198,7 @@
 
 <mainToolbar ""
   titleText: "มือถือ"
+  backTooltipText: "ย้อนกลับ"
 >
 
 <relatedViewWidget ""
@@ -212,10 +219,6 @@
 
 <selectionModel ""
   requireSelectionText: "ต้องการการเลือก คุณไม่สามารถยกเลิกการเลือกรายการล่าสุด"
->
-
-<tabWidget ""
- moreText: "เพิ่มเติม"
 >
 
 <view ""
@@ -270,6 +273,7 @@
   interruptedText: "การประมวลผลถูกขัดจังหวะและไม่สามารถทำให้เสร็จสมบูรณ์ โปรดลองประมวลผลอีกครั้งเพื่อจัดรายการในกระเป๋าเอกสารอย่างสมบูรณ์"
   briefcasingText: "กำลังเก็บกระเป๋าเอกสาร โปรดรอ"
   errorBriefcasingText: "ข้อผิดพลาด การเก็บกระเป๋าเอกสาร"
+  briefcaseTooltipText: "กระเป๋าเอกสาร"
 >
 
 <_detailOfflineMixin
@@ -278,11 +282,14 @@
   briefcasingText: "กำลังเก็บกระเป๋าเอกสาร โปรดรอ"
   errorBriefcasingText: "ข้อผิดพลาด การเก็บกระเป๋าเอกสาร"
   errorSavingOfflineViewText: "ข้อผิดพลาดการบันทึกมุมมองแบบออฟไลน์"
+  briefcaseTooltipText: "กระเป๋าเอกสาร"
 >
 
 <sdkApplication
   connectionToastTitleText: "การเชื่อมต่อ"
   checkingText: "กำลังตรวจสอบการเชื่อมต่อ"
-  loadingApplicationStateText: "กำลังโหลดรัฐแอปพลิเคชัน"
+  loadingApplicationStateText: "กำลังโหลดสถานะแอปพลิเคชัน"
   initializingText: "กำลังเตรียมใช้งาน:"
+  viewSettingsText: "การตั้งค่ามุมมอง"
+  closeText: "ปิด"
 >

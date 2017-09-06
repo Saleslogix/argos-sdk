@@ -21,12 +21,11 @@ const resource = getResource('mainToolbar');
 
 /**
  * @class argos.MainToolbar
- * MainToolbar is designed to handle the top application bar with markup and logic to set
+ * @classdesc MainToolbar is designed to handle the top application bar with markup and logic to set
  * a title and position toolbar items to the left or right
- * @alternateClassName MainToolbar
  * @extends argos.Toolbar
  */
-const __class = declare('argos.MainToolbar', [Toolbar], {
+const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToolbar# */{
   /**
    * @property {Object}
    * Used to set the title node's innerHTML
@@ -44,8 +43,8 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    * `$` - the toolbar instance
    */
   widgetTemplate: new Simplate([`
-    <header class="header azure07 is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
-      <div class="toolbar has-more-button has-title-button" role="toolbar" aria-label="Layouts">
+    <header class="header is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
+      <div class="toolbar do-resize has-more-button has-title-button" role="toolbar" aria-label="Layouts">
         <div class="title">
           <button class="btn-icon application-menu-trigger hide-focus" type="button" tabindex="0">
               <span class="audible">Show navigation</span>
@@ -60,17 +59,17 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         <div class="buttonset" data-dojo-attach-point="toolNode">
         </div>
         <div class="more">
-          <button class="btn-actions page-changer" type="button">
+          <button class="btn-actions page-changer" type="button" data-options="{attachToBody: true}">
             <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
               <use xlink:href="#icon-more"></use>
             </svg>
             <span class="audible" data-translate="text">More</span>
           </button>
           <ul id="app-toolbar-more" class="popupmenu is-selectable">
-            <li class="heading" role="presentation">Theme</li>
+            <li class="heading" role="presentation">{%= $.themeText %}</li>
             <div data-dojo-attach-point="themeNode"></div>
             <li class="separator" role="presentation"></li>
-            <li class="heading" role="presentation">Personalization</li>
+            <li class="heading" role="presentation">{%= $.personalizationText %}</li>
             <div data-dojo-attach-point="personalizationNode"></div>
           </ul>
         </div>
@@ -87,38 +86,38 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
     '<a href="#" tabindex="-1" role="menuitem" data-rgbcolor="{%= $.data %}">{%= $.name %}</a>',
     '</li>',
   ]),
-  selectedTheme: 'Light',
-  selectedPersonalization: 'Default',
+  selectedTheme: resource.lightText,
+  selectedPersonalization: resource.defaultText,
   themes: [{
-    name: 'Light',
+    name: resource.lightText,
     data: 'light-theme',
   }, {
-    name: 'Dark',
+    name: resource.darkText,
     data: 'dark-theme',
   }, {
-    name: 'High Contrast',
+    name: resource.highContrastText,
     data: 'high-contrast-theme',
   }],
   personalizations: [{
-    name: 'Default',
+    name: resource.defaultText,
     data: '',
   }, {
-    name: 'Azure',
+    name: resource.azureText,
     data: '#368AC0',
   }, {
-    name: 'Amber',
+    name: resource.amberText,
     data: '#EFA836',
   }, {
-    name: 'Amethyst',
+    name: resource.amethystText,
     data: '#9279A6',
   }, {
-    name: 'Turqoise',
+    name: resource.turqoiseText,
     data: '#579E95',
   }, {
-    name: 'Emerald',
+    name: resource.emeraldText,
     data: '#76B051',
   }, {
-    name: 'Graphite',
+    name: resource.graphiteText,
     data: '#5C5C5C',
   }],
   /**
@@ -154,6 +153,8 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
    * Text that is placed into the toolbar titleNode
    */
   titleText: resource.titleText,
+  personalizationText: resource.personalizationText,
+  themeText: resource.themeText,
 
   /**
    * Calls parent {@link Toolbar#clear clear} and removes all toolbar items from DOM.
@@ -232,7 +233,9 @@ const __class = declare('argos.MainToolbar', [Toolbar], {
         if (tool.offline) {
           onLine = false;
         }
-        $(this.toolNode).prepend(toolTemplate.apply(tool, this.tools[tool.id]));
+        if (tool.cls !== 'display-none') {
+          $(this.toolNode).prepend(toolTemplate.apply(tool, this.tools[tool.id]));
+        }
       }
 
       this.updateSoho();

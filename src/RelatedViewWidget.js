@@ -14,7 +14,10 @@ import getResource from './I18n';
 
 const resource = getResource('relatedViewWidget');
 
-const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], {
+/**
+ * @class argos.RelatedViewWidget
+ */
+const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], /** @lends argos.RelatedViewWidget# */{
   cls: 'related-view-widget',
   nodataText: resource.nodataText,
   selectMoreDataText: resource.selectMoreDataText,

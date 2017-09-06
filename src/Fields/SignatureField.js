@@ -24,24 +24,22 @@ const resource = getResource('signatureField');
 
 /**
  * @class argos.Fields.SignatureField
- * The SignatureField uses an HTML5 canvas element to render previews of the signature vector
+ * @classdesc The SignatureField uses an HTML5 canvas element to render previews of the signature vector
  * provided by it's editor view {@link SignatureView SignatureView}.
  *
- * ###Example:
+ * @example
  *     {
  *         name: 'Signature',
  *         property: 'Signature',
  *         label: this.signatureText,
  *         type: 'signature'
  *     }
- *
- * @alternateClassName SignatureField
  * @extends argos.Fields.EditorField
  * @requires argos.FieldManager
  * @requires argos.Views.SignatureView
  * @requires argos.Format
  */
-const control = declare('argos.Fields.SignatureField', [EditorField], {
+const control = declare('argos.Fields.SignatureField', [EditorField], /** @lends argos.Fields.SignatureField# */{
   // Localization
   /**
    * @property {String}

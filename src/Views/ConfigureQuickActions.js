@@ -7,10 +7,7 @@ const resource = getResource('configureQuickActions');
 
 /**
  * @class argos.Views.ConfigureQuickActions
- *
- *
  * @extends argos._ConfigureBase
- *
  */
 const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
   // Localization

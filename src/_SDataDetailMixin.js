@@ -16,10 +16,8 @@
 /**
  * @class argos._SDataDetailMixin
  *
- * Enables SData for the Detail view.
+ * @classdesc Enables SData for the Detail view.
  * Adds the SData store to the view and exposes the needed properties for creating a Entry request.
- *
- * @alternateClassName _SDataDetailMixin
  * @requires argos.SData
  */
 import declare from 'dojo/_base/declare';
@@ -29,7 +27,7 @@ import utility from './Utility';
 import SData from './Store/SData';
 import MODEL_TYPES from './Models/Types';
 
-const __class = declare('argos._SDataDetailMixin', null, {
+const __class = declare('argos._SDataDetailMixin', null, /** @lends argos._SDataDetailMixin# */{
 
   /**
    * @cfg {String} resourceKind
@@ -37,6 +35,9 @@ const __class = declare('argos._SDataDetailMixin', null, {
    * for all SData requests.
    */
   resourceKind: '',
+
+  contractName: 'dynamic',
+
   /**
    * @cfg {String[]}
    * A list of fields to be selected in an SData request.

@@ -21,14 +21,12 @@ import './Models/Briefcase/Offline';
 
 /**
  * @class argos.ApplicationModule
- * ApplicationModule is intended to be extended in the resulting application so that it
+ * @classdesc ApplicationModule is intended to be extended in the resulting application so that it
  * references all the views, toolbars and customizations and registers them to App.
  *
  * You may think of ApplicationModule as "loader" or initializer.
- * @alternateClassName ApplicationModule
- * @requires argos.Application
  */
-export default class ApplicationModule {
+class ApplicationModule {
   constructor(options = {}) {
     for (const config in options) {
       if (options.hasOwnProperty(config)) {
@@ -136,24 +134,27 @@ export default class ApplicationModule {
 
   /**
    * loadCustomizationsDynamic is invoked after appStatePromises run.
+   * @virtual
    */
   loadCustomizationsDynamic() {
   }
 
   /**
    * loadToolbarsDynamic is invoked after appStatePromises run.
+   * @virtual
    */
   loadToolbarsDynamic() {
   }
 
   /**
    * loadViewsDynamic is invoked after appStatePromises run.
+   * @virtual
    */
   loadViewsDynamic() {
   }
   /**
-   * @template
    * This function should be overriden in the app and be used to register all views.
+   * @virtual
    */
   loadViews() {
     if (ApplicationModule.viewsLoaded) {
@@ -168,8 +169,8 @@ export default class ApplicationModule {
     ApplicationModule.viewsLoaded = true;
   }
   /**
-   * @template
    * This function should be overriden in the app and be used to register all toolbars.
+   * @virtual
    */
   loadToolbars() {
     if (ApplicationModule.toolbarsLoaded) {
@@ -223,3 +224,5 @@ export default class ApplicationModule {
     }
   }
 }
+
+export default ApplicationModule;

@@ -17,6 +17,8 @@ import ModelManager from './Models/Manager';
 import Toast from './Dialogs/Toast';
 import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
+import hash from 'dojo/hash';
+import connect from 'dojo/_base/connect';
 import ErrorManager from './ErrorManager';
 import getResource from './I18n';
 import { sdk } from './reducers/index';
@@ -44,15 +46,13 @@ Function.prototype.bindDelegate = function bindDelegate(scope) { //eslint-disabl
 };
 
 /**
- * @class argos.Application
- * Application is a nexus that provides many routing and global application services that may be used
+ * @alias argos.Application
+ * @classdesc Application is a nexus that provides many routing and global application services that may be used
  * from anywhere within the app.
  *
  * It provides a shortcut alias to `window.App` (`App`) with the most common usage being `App.getView(id)`.
- *
- * @alternateClassName App
  */
-export default class Application {
+class Application {
   constructor() {
     /**
      * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
@@ -75,7 +75,7 @@ export default class Application {
           const returnTo = from.data && from.data.options && from.data.options.returnTo;
 
           if (returnTo) {
-            let returnIndex = this.app.context.history.reverse()
+            let returnIndex = [...this.app.context.history].reverse()
                                   .findIndex(val => val.page === returnTo);
             // Since want to find last index of page, must reverse index
             if (returnIndex !== -1) {
@@ -137,6 +137,7 @@ export default class Application {
     this._connections = null;
     this.modules = null;
     this.views = null;
+    this.hash = hash;
     this.onLine = true;
     this._currentPage = null;
     /**
@@ -220,6 +221,11 @@ export default class Application {
     this.viewSettingsModal = null;
 
     this.previousState = null;
+    /*
+     * Resource Strings
+     */
+    this.viewSettingsText = resource.viewSettingsText;
+    this.closeText = resource.closeText;
   }
 
   /**
@@ -586,6 +592,13 @@ export default class Application {
     const menu = $('.application-menu', container).first();
     menu.applicationmenu();
     this.applicationmenu = menu.data('applicationmenu');
+    menu.on('applicationmenuopen', () => {
+      connect.publish('/app/menuopen', [true]);
+    });
+
+    menu.on('applicationmenuclose', () => {
+      connect.publish('/app/menuclose', [true]);
+    });
 
     const viewSettingsModal = $('.modal.view-settings', container).first();
     viewSettingsModal.modal();
@@ -887,19 +900,19 @@ export default class Application {
     const defaultViewContainerClasses = 'page-container viewContainer';
     $(this._appContainerNode).append(`
       <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
-        data-breakpoint="tablet">
+        data-breakpoint="large">
       </nav>
       <div class="page-container scrollable tbarContainer">
         <div id="${defaultViewContainerId}" class="${defaultViewContainerClasses}"></div>
         <div class="modal view-settings" role="dialog" aria-modal="true" aria-hidden="false">
           <div class="modal-content">
             <div class="modal-header">
-              <h1>View Settings</h1>
+              <h1>${this.viewSettingsText}</h1>
             </div>
             <div class="modal-body">
             </div>
             <div class="modal-buttonset">
-              <button type="button" class="btn-modal" style="width:100%">Close</button>
+              <button type="button" class="btn-modal" style="width:100%">${this.closeText}</button>
             </div>
           </div>
         </div>
@@ -1030,7 +1043,7 @@ export default class Application {
 
     this.currentOrientation = value;
     this.onSetOrientation(value);
-    // connect.publish('/app/setOrientation', [value]); // TODO: Push this state into redux
+    connect.publish('/app/setOrientation', [value]);
   }
 
   registerOrientationCheck(callback) {
@@ -1180,6 +1193,11 @@ export default class Application {
       if (this.bars.hasOwnProperty(n)) {
         if (this.bars[n].managed) {
           this.bars[n].set('title', title);
+
+          // update soho toolbar when title is changed since it uses text length to calculate header width
+          const header = $(this.bars.tbar.domNode);
+          this.toolbar = header.find('.toolbar').data('toolbar');
+          this.toolbar.updated();
         }
       }
     }
@@ -1451,3 +1469,5 @@ export default class Application {
     }
   }
 }
+
+export default Application;

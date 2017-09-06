@@ -23,12 +23,10 @@ const dtFormatResource = getResource('formatDateTimeFormat');
 
 /**
  * @class argos.Format
- * Format is a singleton that provides various formatting functions.
- * @alternateClassName format
- * @requires argos.Convert
+ * @classdesc Format is a singleton that provides various formatting functions.
  * @singleton
  */
-const __class = lang.setObject('argos.Format', {
+const __class = lang.setObject('argos.Format', /** @lends argos.Format */{
   /**
    * @property {String}
    * Text used in {@link #yesNo yesNo} formatter for true values
@@ -155,7 +153,14 @@ const __class = lang.setObject('argos.Format', {
    */
   date: function date(val, fmt, utc) {
     const value = format.date(val, utc);
-    return moment(value).format(fmt || argos.Format.shortDateFormatText);
+    const m = moment(value);
+    if (m) {
+      const formattedDate = m.format(fmt || argos.Format.shortDateFormatText);
+      if (m.isValid()) {
+        return formattedDate;
+      }
+    }
+    return '';
   },
   /**
    * Takes a number and decimal place and floors the number to that place:

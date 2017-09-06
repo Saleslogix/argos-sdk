@@ -8,7 +8,10 @@ import getResource from './I18n';
 
 const resource = getResource('relatedViewWidgetBase');
 
-const __class = declare('argos._RelatedViewWidgetBase', [_WidgetBase, _Templated], {
+/**
+ * @class argos._RelatedViewWidgetBase
+ */
+const __class = declare('argos._RelatedViewWidgetBase', [_WidgetBase, _Templated], /** @lends argos._RelatedViewWidgetBase# */{
   cls: null,
   loadingText: resource.loadingText,
   /**

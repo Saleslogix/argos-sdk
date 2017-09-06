@@ -1,10 +1,7 @@
-
-
 /**
  * @class argos.Dialogs.Toast
- * @alternateClassName Global Pop-up
  */
-export default class Toast {
+class Toast {
   constructor(options) {
     this.containerNode = options && options.containerNode;
   }
@@ -27,3 +24,5 @@ export default class Toast {
     $(this.containerNode).toast(convertedOptions);
   }
 }
+
+export default Toast;

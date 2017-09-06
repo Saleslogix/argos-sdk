@@ -40,7 +40,7 @@ const resource = getResource('editBase');
 
 /**
  * @class argos._EditBase
- * An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
+ * @classdesc An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
  * of a layout similar to Detail rows but are instead Edit fields.
  *
  * A unique part of the Edit view is it's lifecycle in comparison to Detail. The Detail view is torn
@@ -50,8 +50,6 @@ const resource = getResource('editBase');
  * Since Edit Views are typically the "last" view (you always come from a List or Detail view) it warrants
  * special attention to the navigation options that are passed, as they greatly control how the Edit view
  * functions and operates.
- *
- * @alternateClassName _EditBase
  * @extends argos.View
  * @requires argos.Utility
  * @requires argos.Fields.ErrorManager
@@ -68,7 +66,7 @@ const resource = getResource('editBase');
  * @requires argos.Fields.TextAreaField
  * @requires argos.Fields.TextField
  */
-const __class = declare('argos._EditBase', [View], {
+const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# */{
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:
@@ -335,8 +333,19 @@ const __class = declare('argos._EditBase', [View], {
    */
   multiColumnCount: 3,
   /**
+   * @property {String}
+   * Text shown in the top toolbar save button
+   */
+  saveTooltipText: resource.saveTooltipText,
+  /**
+   * @property {String}
+   * Text shown in the top toolbar cancel button
+   */
+  cancelTooltipText: resource.cancelTooltipText,
+  /**
    * Extends constructor to initialze `this.fields` to {}
    * @param o
+   * @constructs
    */
   constructor: function constructor(/* o*/) {
     this.fields = {};
@@ -388,6 +397,7 @@ const __class = declare('argos._EditBase', [View], {
       id: 'save',
       action: 'save',
       svg: 'save',
+      title: this.saveText,
       security: this.options && this.options.insert ? this.insertSecurity : this.updateSecurity,
     }];
 
@@ -395,6 +405,7 @@ const __class = declare('argos._EditBase', [View], {
       tbar.push({
         id: 'cancel',
         svg: 'cancel',
+        title: this.cancelTooltipText,
         side: 'left',
         action: 'onToolCancel',
       });
@@ -420,6 +431,7 @@ const __class = declare('argos._EditBase', [View], {
    */
   _onShowField: function _onShowField(field) {
     $(field.containerNode).removeClass('row-hidden');
+    $(field.containerNode).parent().removeClass('display-none');
   },
   /**
    * Handler for a fields on hide event.
@@ -430,6 +442,7 @@ const __class = declare('argos._EditBase', [View], {
    */
   _onHideField: function _onHideField(field) {
     $(field.containerNode).addClass('row-hidden');
+    $(field.containerNode).parent().addClass('display-none');
   },
   /**
    * Handler for a fields on enable event.
@@ -660,7 +673,6 @@ const __class = declare('argos._EditBase', [View], {
         title: this.detailsText,
       };
     }
-
     for (let i = 0; i < rows.length; i++) {
       current = rows[i];
 
@@ -677,22 +689,10 @@ const __class = declare('argos._EditBase', [View], {
       if (!sectionStarted) {
         sectionStarted = true;
         content.push(this.sectionBeginTemplate.apply(layout, this));
-        content.push('<div class="row">');
+        content.push('<div class="row edit-row">');
       }
 
-      if (this.multiColumnView) {
-        content.push(`<div class="${this.multiColumnClass} columns">`);
-      }
       this.createRowContent(current, content);
-      if (this.multiColumnView) {
-        // in case of hidden field - add empty space for the column to take shape
-        content.push('&nbsp;</div>');
-      }
-
-      if (this.multiColumnView && (i + 1) % this.multiColumnCount === 0) {
-        content.push('</div>');
-        content.push('<div class="row">');
-      }
     }
     content.push('</div>');
     content.push(this.sectionEndTemplate.apply(layout, this));
@@ -728,7 +728,17 @@ const __class = declare('argos._EditBase', [View], {
       this.connect(field, 'onEnable', this._onEnableField);
       this.connect(field, 'onDisable', this._onDisableField);
 
+      if (this.multiColumnView) {
+        let hidden = '';
+        if (field.type === 'hidden') {
+          hidden = 'display-none';
+        }
+        content.push(`<div class="${this.multiColumnClass} columns ${hidden}">`);
+      }
       content.push(template.apply(field, this));
+      if (this.multiColumnView) {
+        content.push('</div>');
+      }
     }
   },
   /**
@@ -1123,14 +1133,23 @@ const __class = declare('argos._EditBase', [View], {
 
     return acc;
   },
-  _buildRefreshMessage: function _buildRefreshMessage(entry, result) {
-    if (entry) {
-      const store = this.get('store');
-      const id = store.getIdentity(entry);
+  _extractIdPropertyFromEntry: function _extractIdPropertyFromEntry(entry) {
+    const store = this.get('store');
+    if (this._model) {
+      return this._model.getEntityId(entry);
+    } else if (store) {
+      return store.getIdentity(entry);
+    }
+
+    return '';
+  },
+  _buildRefreshMessage: function _buildRefreshMessage(originalEntry, response) {
+    if (originalEntry) {
+      const id = this._extractIdPropertyFromEntry(originalEntry);
       return {
         id,
         key: id,
-        data: result,
+        data: response,
       };
     }
   },

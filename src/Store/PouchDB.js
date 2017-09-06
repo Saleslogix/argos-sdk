@@ -10,7 +10,7 @@ import QueryResults from 'dojo/store/util/QueryResults';
  * @requires argos.Convert
  * @requires argos.Utility
  */
-export default declare('argos.Store.PouchDB', null, {
+export default declare('argos.Store.PouchDB', null, /** @lends argos.Store.PouchDB# */ {
 
   // interface properties
   /**
@@ -36,7 +36,7 @@ export default declare('argos.Store.PouchDB', null, {
   _db: null,
 
   /**
-   * @constructor
+   * @constructs
    */
   constructor: function constructor(props) {
     lang.mixin(this, props);

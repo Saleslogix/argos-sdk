@@ -12,7 +12,6 @@ const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
 
 /**
  * @class argos.DateTimePicker
- * @alternateClassName Date Time Select
  */
 const __class = declare('argos.RelativeDateTimePicker', [_WidgetBase, _Templated, _ActionMixin, _CustomizationMixin], {
   widgetTemplate: new Simplate([
@@ -35,7 +34,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_WidgetBase, _Templated
   customizationSet: 'relativeDateTimePicker',
   layout: null,
   morningHours: 8,
-  eveningHours: 15,
+  eveningHours: 17,
   showThisEveningUntil: 12,
   isModal: false,
   showTimePicker: true,
@@ -112,7 +111,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_WidgetBase, _Templated
   },
   makeItem: function makeItem({ label, time, format }) {
     const item = $(this.listItemTemplate.apply({ textLeft: label, textRight: time.format(format) }));
-    item.time = time;
+    item[0].time = time;
     $(this.listNode).append(item);
   },
   makeListItems: function makeListItems({ title, children }) {
