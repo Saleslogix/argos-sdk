@@ -8,7 +8,7 @@ const __class = declare('argos.Views.Link', [View], {
   link: '',
   cls: 'link-view',
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel {%= $.cls %}">',
+    '<div id="{%= $.id %}" data-title="{%= $.titleText %}" class="detail panel {%= $.cls %}">',
     '<iframe class="link-node" data-dojo-attach-point="linkNode"',
     'sandbox="allow-scripts allow-forms allow-same-origin">',
     '</iframe>',

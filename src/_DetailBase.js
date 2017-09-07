@@ -51,6 +51,8 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
       node: 'contentNode',
       type: 'innerHTML',
     },
+    title: View.prototype.attributeMap.title,
+    selected: View.prototype.attributeMap.selected,
   },
   /**
    * @property {Simplate}
@@ -68,7 +70,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel scrollable {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" data-title="{%= $.titleText %}" class="detail panel scrollable {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '{%! $.loadingTemplate %}',
     '{%! $.quickActionTemplate %}',
     '<div data-dojo-attach-point="contentNode" class="column">',
