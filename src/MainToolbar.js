@@ -90,13 +90,13 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
   selectedPersonalization: resource.defaultText,
   themes: [{
     name: resource.lightText,
-    data: 'light-theme',
+    data: 'light',
   }, {
     name: resource.darkText,
-    data: 'dark-theme',
+    data: 'dark',
   }, {
     name: resource.highContrastText,
-    data: 'high-contrast-theme',
+    data: 'high-contrast',
   }],
   personalizations: [{
     name: resource.defaultText,
@@ -167,6 +167,10 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     this.initSoho();
     this.inherited(arguments);
   },
+  _changePersonalization: function changeColor(mode, value) {
+    App.preferences[mode] = value && value.nodeValue;
+    App.persistPreferences();
+  },
   buildPersonalizations: function buildPersonalizations() {
     this.personalizations.forEach((item) => {
       const pers = $(this.personalizationTemplate.apply({
@@ -174,9 +178,12 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
         data: item.data,
         selected: this.selectedPersonalization,
       }, this));
+
       $(this.personalizationNode).append(pers);
     });
-
+    $(this.personalizationNode).click((e) => {
+      this._changePersonalization('color', e.target.attributes['data-rgbcolor']);
+    });
     this.themes.forEach((item) => {
       const theme = $(this.themeTemplate.apply({
         name: item.name,
@@ -184,6 +191,9 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
         selected: this.selectedTheme,
       }, this));
       $(this.themeNode).append(theme);
+    });
+    $(this.themeNode).click((e) => {
+      this._changePersonalization('theme', e.target.attributes['data-theme']);
     });
   },
   initSoho: function initSoho() {
@@ -197,7 +207,8 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
 
     // init personalization
     $('body').personalize({
-      startingColor: null,
+      colors: App.preferences.color,
+      theme: App.preferences.theme,
     });
   },
   updateSoho: function updateSoho() {
