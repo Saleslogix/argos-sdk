@@ -100,7 +100,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
   }],
   personalizations: [{
     name: resource.defaultText,
-    data: '',
+    data: '#2578a9',
   }, {
     name: resource.azureText,
     data: '#368AC0',
