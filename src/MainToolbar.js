@@ -90,17 +90,17 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
   selectedPersonalization: resource.defaultText,
   themes: [{
     name: resource.lightText,
-    data: 'light-theme',
+    data: 'light',
   }, {
     name: resource.darkText,
-    data: 'dark-theme',
+    data: 'dark',
   }, {
     name: resource.highContrastText,
-    data: 'high-contrast-theme',
+    data: 'high-contrast',
   }],
   personalizations: [{
     name: resource.defaultText,
-    data: '',
+    data: '#2578a9',
   }, {
     name: resource.azureText,
     data: '#368AC0',
@@ -167,16 +167,31 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     this.initSoho();
     this.inherited(arguments);
   },
+  _changePersonalization: function changeColor(mode, value) {
+    App.preferences[mode] = value && value.nodeValue;
+    App.persistPreferences();
+  },
   buildPersonalizations: function buildPersonalizations() {
+    if (App.preferences.color) {
+      const savedPersolization = this.personalizations.find(obj => obj.data === App.preferences.color);
+      this.selectedPersonalization = savedPersolization && savedPersolization.name;
+    }
+    if (App.preferences.theme) {
+      const savedTheme = this.themes.find(obj => obj.data === App.preferences.theme);
+      this.selectedTheme = savedTheme && savedTheme.name;
+    }
     this.personalizations.forEach((item) => {
       const pers = $(this.personalizationTemplate.apply({
         name: item.name,
         data: item.data,
         selected: this.selectedPersonalization,
       }, this));
+
       $(this.personalizationNode).append(pers);
     });
-
+    $(this.personalizationNode).click((e) => {
+      this._changePersonalization('color', e.target.attributes['data-rgbcolor']);
+    });
     this.themes.forEach((item) => {
       const theme = $(this.themeTemplate.apply({
         name: item.name,
@@ -184,6 +199,9 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
         selected: this.selectedTheme,
       }, this));
       $(this.themeNode).append(theme);
+    });
+    $(this.themeNode).click((e) => {
+      this._changePersonalization('theme', e.target.attributes['data-theme']);
     });
   },
   initSoho: function initSoho() {
@@ -197,7 +215,8 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
 
     // init personalization
     $('body').personalize({
-      startingColor: null,
+      colors: App.preferences.color,
+      theme: App.preferences.theme,
     });
   },
   updateSoho: function updateSoho() {
