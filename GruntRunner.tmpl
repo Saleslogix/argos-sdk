@@ -43,6 +43,10 @@
 
   <!-- Dojo -->
   <script type="text/javascript" src="libraries/dojo/dojo/dojo.js" data-dojo-config="parseOnLoad:false, async:true"></script>
+
+  <!-- Provide an empty resource expected by l20n lib. Argos loads l20n files during bootstrap -->
+  <script type="application/l20n">{}</script>
+
   <script type="text/javascript">
   require({
       baseUrl: "./",
