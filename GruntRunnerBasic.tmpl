@@ -57,6 +57,9 @@
   <script type="text/javascript" src="./node_modules/@infor/icrm-js-customization/dist/bundles/customization.bundle.js"></script>
   <script type="text/javascript" src="./node_modules/@infor/icrm-js-services/dist/bundles/services.bundle.js"></script>
 
+  <!-- Provide an empty resource expected by l20n lib. Argos loads l20n files during bootstrap -->
+  <script type="application/l20n">{}</script>
+
   <!-- Dojo -->
   <script type="text/javascript" src="libraries/dojo/dojo/dojo.js" data-dojo-config="parseOnLoad:false, async:true"></script>
   <script type="text/javascript">

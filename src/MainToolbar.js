@@ -172,11 +172,11 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     App.persistPreferences();
   },
   buildPersonalizations: function buildPersonalizations() {
-    if (App.preferences.color) {
+    if (App && App.preferences && App.preferences.color) {
       const savedPersolization = this.personalizations.find(obj => obj.data === App.preferences.color);
       this.selectedPersonalization = savedPersolization && savedPersolization.name;
     }
-    if (App.preferences.theme) {
+    if (App && App.preferences && App.preferences.theme) {
       const savedTheme = this.themes.find(obj => obj.data === App.preferences.theme);
       this.selectedTheme = savedTheme && savedTheme.name;
     }
@@ -215,8 +215,8 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
 
     // init personalization
     $('body').personalize({
-      colors: App.preferences.color,
-      theme: App.preferences.theme,
+      colors: App && App.preferences && App.preferences.color,
+      theme: App && App.preferences && App.preferences.theme,
     });
   },
   updateSoho: function updateSoho() {
