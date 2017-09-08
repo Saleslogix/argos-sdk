@@ -231,6 +231,8 @@ const control = declare('argos.Fields.TextField', [_Field], /** @lends argos.Fie
 
     if (this.previousValue !== currentValue) {
       this.onChange(currentValue, this);
+    } else {
+      this.previousValue = currentValue;
     }
   },
   /**
