@@ -2,8 +2,8 @@
 <CultureInfo """
 {
   "name": "ru",
-  "englishName": "Russian",
-  "nativeName": "русский",
+  "englishName": "Russian (Russia)",
+  "nativeName": "Русский (Россия)",
   "numberFormat": {
     "currencyDecimalDigits": 2,
     "currencyDecimalSeparator": ",",

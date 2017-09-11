@@ -2,8 +2,8 @@
 <CultureInfo """
 {
   "name": "th",
-  "englishName": "Thai",
-  "nativeName": "ไทย",
+  "englishName": "Thai (Thailand)",
+  "nativeName": "ไทย (ประเทศไทย)",
   "numberFormat": {
     "currencyDecimalDigits": 2,
     "currencyDecimalSeparator": ".",

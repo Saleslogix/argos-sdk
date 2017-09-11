@@ -2,8 +2,8 @@
 <CultureInfo """
 {
   "name": "nl",
-  "englishName": "Dutch",
-  "nativeName": "Nederlands",
+  "englishName": "Dutch (Netherlands)",
+  "nativeName": "Nederlands (Nederland)",
   "numberFormat": {
     "currencyDecimalDigits": 2,
     "currencyDecimalSeparator": ",",

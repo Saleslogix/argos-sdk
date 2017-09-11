@@ -3,7 +3,7 @@
 {
   "name": "zh-CN",
   "englishName": "Chinese (Simplified)",
-  "nativeName": "文中(简体)",
+  "nativeName": "简体中文",
   "numberFormat": {
     "currencyDecimalDigits": 2,
     "currencyDecimalSeparator": ".",
