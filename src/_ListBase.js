@@ -52,6 +52,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
       node: 'remainingContentNode',
       type: 'innerHTML',
     },
+    title: View.prototype.attributeMap.title,
+    selected: View.prototype.attributeMap.selected,
   },
   /**
    * @property {Object}
@@ -75,7 +77,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
    *
    */
   widgetTemplate: new Simplate([`
-    <div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
+    <div id="{%= $.id %}" data-title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
       <div class="page-container scrollable{% if ($$.isNavigationDisabled()) { %} is-multiselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
         {% if ($$.isNavigationDisabled()) { %}
         data-selectable="multiple"

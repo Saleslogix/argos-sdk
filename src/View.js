@@ -43,7 +43,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     title: {
       node: 'domNode',
       type: 'attribute',
-      attribute: 'title',
+      attribute: 'data-title',
     },
     selected: {
       node: 'domNode',
@@ -56,7 +56,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * @property {Simplate}
    */
   widgetTemplate: new Simplate([
-    '<ul id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow {%= $.cls %}">',
+    '<ul id="{%= $.id %}" data-title="{%= $.titleText %}" class="overthrow {%= $.cls %}">',
     '</ul>',
   ]),
   _loadConnect: null,
