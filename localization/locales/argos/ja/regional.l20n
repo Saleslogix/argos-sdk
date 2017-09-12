@@ -2,8 +2,8 @@
 <CultureInfo """
 {
   "name": "ja",
-  "englishName": "Japanese",
-  "nativeName": "日本語",
+  "englishName": "Japanese (Japan)",
+  "nativeName": "日本語 (日本)",
   "numberFormat": {
     "currencyDecimalDigits": 2,
     "currencyDecimalSeparator": ".",
