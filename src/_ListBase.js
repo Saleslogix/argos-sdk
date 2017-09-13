@@ -322,7 +322,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
    * The template used to render item indicator
    */
   itemIndicatorTemplate: new Simplate([
-    '<button type="button" class="btn-icon hide-focus" title="{%= $.label %}">',
+    '<button type="button" class="btn-icon hide-focus" title="{%= $.title %}">',
     `<svg class="icon" focusable="false" aria-hidden="true" role="presentation">
         <use xlink:href="#icon-{%= $.cls %}" />
       </svg>`,
