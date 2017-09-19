@@ -2,12 +2,12 @@
 <CultureInfo """
 {
   "name": "es",
-  "englishName": "Spanish",
-  "nativeName": "Spanish",
+  "englishName": "Spanish (International)",
+  "nativeName": "Español (internacional)",
   "numberFormat": {
     "currencyDecimalDigits": 2,
     "currencyDecimalSeparator": ",",
-    "isReadOnly": false,
+    "isReadOnly": true,
     "currencyGroupSizes": [
       3
     ],
@@ -18,19 +18,19 @@
       3
     ],
     "currencyGroupSeparator": ".",
-    "currencySymbol": "$",
-    "naNSymbol": "NaN",
-    "currencyNegativePattern": 0,
+    "currencySymbol": "€",
+    "naNSymbol": "n. def.",
+    "currencyNegativePattern": 8,
     "numberNegativePattern": 1,
-    "percentPositivePattern": 0,
-    "percentNegativePattern": 0,
+    "percentPositivePattern": 1,
+    "percentNegativePattern": 1,
     "negativeInfinitySymbol": "-Infinito",
     "negativeSign": "-",
     "numberDecimalDigits": 2,
     "numberDecimalSeparator": ",",
     "numberGroupSeparator": ".",
-    "currencyPositivePattern": 0,
-    "positiveInfinitySymbol": "Infinito",
+    "currencyPositivePattern": 3,
+    "positiveInfinitySymbol": "+Infinito",
     "positiveSign": "+",
     "percentDecimalDigits": 2,
     "percentDecimalSeparator": ",",
@@ -51,7 +51,7 @@
     ],
     "digitSubstitution": 1
   },
-  "default24HourClock": false
+  "default24HourClock": true
 }
 """>
 

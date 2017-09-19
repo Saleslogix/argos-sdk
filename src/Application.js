@@ -725,6 +725,10 @@ class Application {
     return (JSON.parse(window.localStorage.getItem('use24HourClock') || Mobile.CultureInfo.default24HourClock.toString()) === true);
   }
 
+  is12HourClock() {
+    return !this.is24HourClock();
+  }
+
   /**
    * Check if the browser supports touch events.
    * @return {Boolean} true if the current browser supports touch events, false otherwise.

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import _WidgetBase from 'dijit/_WidgetBase';
@@ -43,7 +44,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     title: {
       node: 'domNode',
       type: 'attribute',
-      attribute: 'title',
+      attribute: 'data-title',
     },
     selected: {
       node: 'domNode',
@@ -56,7 +57,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
    * @property {Simplate}
    */
   widgetTemplate: new Simplate([
-    '<ul id="{%= $.id %}" title="{%= $.titleText %}" class="overthrow {%= $.cls %}">',
+    '<ul id="{%= $.id %}" data-title="{%= $.titleText %}" class="overthrow {%= $.cls %}">',
     '</ul>',
   ]),
   _loadConnect: null,

@@ -83,6 +83,8 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
       node: 'concurrencyContentNode',
       type: 'innerHTML',
     },
+    title: View.prototype.attributeMap.title,
+    selected: View.prototype.attributeMap.selected,
   },
   /**
    * @property {Simplate}
@@ -100,7 +102,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%: $.titleText %}" class="edit panel scrollable {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" data-title="{%: $.titleText %}" class="edit panel scrollable {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '{%! $.loadingTemplate %}',
     '{%! $.validationSummaryTemplate %}',
     '{%! $.concurrencySummaryTemplate %}',

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import declare from 'dojo/_base/declare';
 
 import getResource from '../I18n';
@@ -70,7 +71,7 @@ const __class = declare('argos.Views.FileSelect', [View], /** @lends argos.Views
    *
    */
   widgetTemplate: new Simplate([
-    '<div title="{%: $.titleText %}" class="panel twelve columns {%= $.cls %}">',
+    '<div data-title="{%: $.titleText %}" class="panel twelve columns {%= $.cls %}">',
     '<br>', // TODO: all views should be placed in .row -> .columns
     '<div data-dojo-attach-point="fileArea" class="file-area">',
     `<div class="field" data-dojo-attach-point="fileWrapper">

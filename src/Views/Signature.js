@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import declare from 'dojo/_base/declare';
 import win from 'dojo/window';
 import format from '../Format';
@@ -55,7 +56,7 @@ const __class = declare('argos.Views.Signature', [View], /** @lends argos.Views.
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%: $.titleText %}" class="panel {%= $.cls %}">',
+    '<div id="{%= $.id %}" data-title="{%: $.titleText %}" class="panel {%= $.cls %}">',
     '{%! $.canvasTemplate %}',
     '<div class="buttons">',
     '<button class="button" data-action="_undo"><span>{%: $.undoText %}</span></button>',

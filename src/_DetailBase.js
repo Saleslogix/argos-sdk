@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import when from 'dojo/when';
@@ -51,6 +52,8 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
       node: 'contentNode',
       type: 'innerHTML',
     },
+    title: View.prototype.attributeMap.title,
+    selected: View.prototype.attributeMap.selected,
   },
   /**
    * @property {Simplate}
@@ -68,7 +71,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
    *
    */
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" title="{%= $.titleText %}" class="detail panel scrollable {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div id="{%= $.id %}" data-title="{%= $.titleText %}" class="detail panel scrollable {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
     '{%! $.loadingTemplate %}',
     '{%! $.quickActionTemplate %}',
     '<div data-dojo-attach-point="contentNode" class="column">',

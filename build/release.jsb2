@@ -33,7 +33,7 @@
           "path": "../libraries/pagejs-1.6.1/"
         },
         {
-          "text": "pouchdb-6.1.2.js",
+          "text": "pouchdb-6.3.4.js",
           "path": "../libraries/pouchdb/"
         },
         {

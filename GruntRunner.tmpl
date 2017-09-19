@@ -20,7 +20,7 @@
   <script type="text/javascript" src="libraries/canvas2image.js"></script>
 
   <!-- PouchDB -->
-  <script type="text/javascript" src="libraries/PouchDB/pouchdb-4.0.3.min.js"></script>
+  <script type="text/javascript" src="libraries/PouchDB/pouchdb-6.3.4.js"></script>
 
   <!-- Deep Diff -->
   <script type="text/javascript" src="libraries/deep-diff/deep-diff-0.2.0.min.js"></script>
@@ -44,6 +44,10 @@
 
   <!-- Dojo -->
   <script type="text/javascript" src="libraries/dojo/dojo/dojo.js" data-dojo-config="parseOnLoad:false, async:true"></script>
+
+  <!-- Provide an empty resource expected by l20n lib. Argos loads l20n files during bootstrap -->
+  <script type="application/l20n">{}</script>
+
   <script type="text/javascript">
   require({
       baseUrl: "./",

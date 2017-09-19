@@ -2,8 +2,8 @@
 <CultureInfo """
 {
   "name": "pt-BR",
-  "englishName": "Inglês (Estados Unidos)",
-  "nativeName": "Inglês (Estados Unidos)",
+  "englishName": "Portuguese (Brazil)",
+  "nativeName": "Português (Brasil)",
   "numberFormat": {
     "currencyDecimalDigits": 2,
     "currencyDecimalSeparator": ",",

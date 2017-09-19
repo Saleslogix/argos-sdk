@@ -230,10 +230,9 @@ const control = declare('argos.Fields.TextField', [_Field], /** @lends argos.Fie
     const currentValue = this.getValue();
 
     if (this.previousValue !== currentValue) {
+      this.previousValue = currentValue;
       this.onChange(currentValue, this);
     }
-
-    this.previousValue = currentValue;
   },
   /**
    * Immediately calls {@link _Field#validate validate} and adds the respective row styling.
@@ -264,7 +263,7 @@ const control = declare('argos.Fields.TextField', [_Field], /** @lends argos.Fie
       this.originalValue = val;
     }
 
-    this.previousValue = false;
+    this.previousValue = val;
     this.set('inputValue', val);
   },
   /**

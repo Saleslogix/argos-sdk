@@ -2,8 +2,8 @@
 <CultureInfo """
 {
   "name": "ja",
-  "englishName": "Japanese",
-  "nativeName": "日本語",
+  "englishName": "Japanese (Japan)",
+  "nativeName": "日本語 (日本)",
   "numberFormat": {
     "currencyDecimalDigits": 2,
     "currencyDecimalSeparator": ".",
@@ -64,8 +64,8 @@
 >
 
 <relativeDateTimePickerDateTimeFormat ""
-  hoursFormat:  "h:mm A"
-  dayHoursFormat: "ddd h:mm A"
+  hoursFormat:  "A h:mm"
+  dayHoursFormat: "ddd A h:mm"
   hoursFormat24:  "H:mm"
   dayHoursFormat24: "ddd H:mm"
 >

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
@@ -52,6 +53,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
       node: 'remainingContentNode',
       type: 'innerHTML',
     },
+    title: View.prototype.attributeMap.title,
+    selected: View.prototype.attributeMap.selected,
   },
   /**
    * @property {Object}
@@ -75,7 +78,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
    *
    */
   widgetTemplate: new Simplate([`
-    <div id="{%= $.id %}" title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
+    <div id="{%= $.id %}" data-title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
       <div class="page-container scrollable{% if ($$.isNavigationDisabled()) { %} is-multiselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
         {% if ($$.isNavigationDisabled()) { %}
         data-selectable="multiple"
@@ -320,7 +323,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
    * The template used to render item indicator
    */
   itemIndicatorTemplate: new Simplate([
-    '<button type="button" class="btn-icon hide-focus" title="{%= $.label %}">',
+    '<button type="button" class="btn-icon hide-focus" title="{%= $.title %}">',
     `<svg class="icon" focusable="false" aria-hidden="true" role="presentation">
         <use xlink:href="#icon-{%= $.cls %}" />
       </svg>`,
