@@ -62,7 +62,8 @@ const control = declare('argos.Fields.TextAreaField', [TextField], /** @lends ar
     }
 
     this.previousValue = false;
-    this.set('inputValue', val);
+    // IE/Edge shows null values in Text Area Fields, check that we're not setting displayed value as null
+    this.set('inputValue', val === null ? '' : val);
   },
 });
 
