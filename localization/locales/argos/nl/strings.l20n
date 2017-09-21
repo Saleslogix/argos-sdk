@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "Veld ${0} heeft een ongeldige gegevensindeling."
   cancelText: "Annuleren"
   confirmText: "Bevestigen"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occured."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "geen records"
   loadingText: "Laden"
   newTooltipText: "Nieuw"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -258,7 +258,7 @@
   progressText: "Voortgang"
 >
 
-<modal
+<modal ""
   alertText: "Alert"
   completeText: "Voltooien"
   cancelText: "Annuleren"
@@ -268,7 +268,7 @@
   submitText: "Indienen"
   warningText: "Waarschuwing"
 >
-<_listOfflineMixin
+<_listOfflineMixin ""
   goToListViewText: "De items zijn in de werkmap geplaatst. Wilt u naar de lijstweergave van de werkmap gaan?"
   interruptedText: "De procedure werd onderbroken en is niet volledig voltooid. Voer de procedure opnieuw uit om de plaatsing van items in de werkmap te voltooien."
   briefcasingText: "Items worden in werkmap geplaatst, een ogenblik geduld."
@@ -276,7 +276,7 @@
   briefcaseTooltipText: "Werkmap"
 >
 
-<_detailOfflineMixin
+<_detailOfflineMixin ""
   goToDetailViewText: "Het item en de gerelateerde items zijn in de werkmap geplaatst. Wilt u naar de lijstweergave van de werkmap gaan?"
   interruptedText: "De procedure werd onderbroken en is niet volledig voltooid. Voer de procedure opnieuw uit om de plaatsing van items in de werkmap te voltooien."
   briefcasingText: "Items worden in werkmap geplaatst, een ogenblik geduld."
@@ -285,7 +285,7 @@
   briefcaseTooltipText: "Werkmap"
 >
 
-<sdkApplication
+<sdkApplication ""
   connectionToastTitleText: "Verbinding"
   checkingText: "Verbinding controleren"
   loadingApplicationStateText: "Status applicatie wordt geladen"

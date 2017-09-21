@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "Некорректный формат даты в поле \"${0}\"."
   cancelText: "Отмена"
   confirmText: "Подтвердить"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occured."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "Нет записей"
   loadingText: "Загрузка"
   newTooltipText: "Создать"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -258,7 +258,7 @@
   progressText: "Ход выполнения"
 >
 
-<modal
+<modal ""
   alertText: "Предупреждение"
   completeText: "Завершить"
   cancelText: "Отмена"
@@ -268,7 +268,7 @@
   submitText: "Отправить"
   warningText: "Предупреждение"
 >
-<_listOfflineMixin
+<_listOfflineMixin ""
   goToListViewText: "Элементы перемещены в портфель. Перейти в список портфеля?"
   interruptedText: "Процесс был прерван и не был полностью завершен. Повторите процесс, чтобы полностью переместить элементы в портфель."
   briefcasingText: "Перемещение в портфель, подождите."
@@ -276,7 +276,7 @@
   briefcaseTooltipText: "Портфель"
 >
 
-<_detailOfflineMixin
+<_detailOfflineMixin ""
   goToDetailViewText: "Элемент и связанные с ним элементы перемещены в портфель. Перейти в список портфеля?"
   interruptedText: "Процесс был прерван и не был полностью завершен. Повторите процесс, чтобы полностью переместить элементы в портфель."
   briefcasingText: "Перемещение в портфель, подождите."
@@ -285,7 +285,7 @@
   briefcaseTooltipText: "Портфель"
 >
 
-<sdkApplication
+<sdkApplication ""
   connectionToastTitleText: "Подключение"
   checkingText: "Проверка подключения"
   loadingApplicationStateText: "Состояние загрузки приложения"

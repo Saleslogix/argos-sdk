@@ -16,6 +16,7 @@
     "watch": "yarn run build:watch"
   },
   "devDependencies": {
+    "antlr4": "^4.7.0",
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-plugin-add-module-exports": "^0.2.1",

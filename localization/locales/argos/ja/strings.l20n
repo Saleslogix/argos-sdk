@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "フィールド「${0}」には、無効な日付形式があります。"
   cancelText: "キャンセル"
   confirmText: "確認"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occured."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "レコードなし"
   loadingText: "ロードしています"
   newTooltipText: "新規"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -258,7 +258,7 @@
   progressText: "進行状況"
 >
 
-<modal
+<modal ""
   alertText: "アラート"
   completeText: "完了"
   cancelText: "キャンセル"
@@ -268,7 +268,7 @@
   submitText: "提出"
   warningText: "警告"
 >
-<_listOfflineMixin
+<_listOfflineMixin ""
   goToListViewText: "項目はブリーフケースに移動されています。ブリーフケースリストビューに移動しますか?"
   interruptedText: "処理は中断され、完全に完了しませんでした。処理を再試行して項目を完全にブリーフケースしてください。"
   briefcasingText: "ブリーフケースしています。お待ちください。"
@@ -276,7 +276,7 @@
   briefcaseTooltipText: "ブリーフケース"
 >
 
-<_detailOfflineMixin
+<_detailOfflineMixin ""
   goToDetailViewText: "項目および関連項目はブリーフケースに移動されています。ブリーフケースリストビューに移動しますか?"
   interruptedText: "処理は中断され、完全に完了しませんでした。処理を再試行して項目を完全にブリーフケースしてください。"
   briefcasingText: "ブリーフケースしています。お待ちください。"
@@ -285,7 +285,7 @@
   briefcaseTooltipText: "ブリーフケース"
 >
 
-<sdkApplication
+<sdkApplication ""
   connectionToastTitleText: "接続"
   checkingText: "接続を確認しています"
   loadingApplicationStateText: "アプリケーションの状態をロード中"

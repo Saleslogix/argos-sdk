@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "Formato data del campo '${0}' non valido."
   cancelText: "Annulla"
   confirmText: "Conferma"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occured."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "nessun record"
   loadingText: "Caricamento"
   newTooltipText: "Nuovo"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -258,7 +258,7 @@
   progressText: "Avanzamento"
 >
 
-<modal
+<modal ""
   alertText: "Avviso"
   completeText: "Completa"
   cancelText: "Annulla"
@@ -268,7 +268,7 @@
   submitText: "Invia"
   warningText: "Avviso"
 >
-<_listOfflineMixin
+<_listOfflineMixin ""
   goToListViewText: "Elementi inseriti in Sincronia file. Passare alla vista elenco di Sincronia file?"
   interruptedText: "Il processo è stato interrotto e non è stato interamente completato. Provare di nuovo per inserire tutti gli elementi in Sincronia file."
   briefcasingText: "Sincronia file in corso. Attendere."
@@ -276,7 +276,7 @@
   briefcaseTooltipText: "Sincronia file"
 >
 
-<_detailOfflineMixin
+<_detailOfflineMixin ""
   goToDetailViewText: "Elemento inserito in Sincronia file con i relativi elementi correlati. Passare alla vista elenco di Sincronia file?"
   interruptedText: "Il processo è stato interrotto e non è stato interamente completato. Provare di nuovo per inserire tutti gli elementi in Sincronia file."
   briefcasingText: "Sincronia file in corso. Attendere."
@@ -285,7 +285,7 @@
   briefcaseTooltipText: "Sincronia file"
 >
 
-<sdkApplication
+<sdkApplication ""
   connectionToastTitleText: "Connessione"
   checkingText: "Controllo della connettività"
   loadingApplicationStateText: "Stato caricamento applicazione"

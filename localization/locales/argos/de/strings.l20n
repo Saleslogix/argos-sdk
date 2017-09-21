@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "Feld '${0}' enthält ein ungültiges Datumsformat."
   cancelText: "Abbrechen"
   confirmText: "Bestätigen"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occured."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "Keine Datensätze"
   loadingText: "Ladevorgang läuft"
   newTooltipText: "Neu"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -258,7 +258,7 @@
   progressText: "Fortschritt"
 >
 
-<modal
+<modal ""
   alertText: "Warnung"
   completeText: "Abschließen"
   cancelText: "Abbrechen"
@@ -268,7 +268,7 @@
   submitText: "Übermitteln"
   warningText: "Warnung"
 >
-<_listOfflineMixin
+<_listOfflineMixin ""
   goToListViewText: "Elemente wurden in die Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
   interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Elemente vollständig in die Aktentasche zu verschieben."
   briefcasingText: "Einträge werden in Aktentasche verschoben, bitte warten."
@@ -276,7 +276,7 @@
   briefcaseTooltipText: "Aktentasche"
 >
 
-<_detailOfflineMixin
+<_detailOfflineMixin ""
   goToDetailViewText: "Element und zugehörige Elemente wurden bereits in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
   interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Elemente vollständig in die Aktentasche zu verschieben."
   briefcasingText: "Einträge werden in Aktentasche verschoben, bitte warten."
@@ -285,7 +285,7 @@
   briefcaseTooltipText: "Aktentasche"
 >
 
-<sdkApplication
+<sdkApplication ""
   connectionToastTitleText: "Verbindung"
   checkingText: "Verbindung wird geprüft"
   loadingApplicationStateText: "Status: Anwendung wird geladen"
