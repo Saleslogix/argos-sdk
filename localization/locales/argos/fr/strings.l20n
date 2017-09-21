@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "Le format de la date du champ \"${0}\" n'est pas valide."
   cancelText: "Annuler"
   confirmText: "Confirmer"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occured."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "Aucun enregistrement"
   loadingText: "Chargement en cours"
   newTooltipText: "Nouveau"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -258,7 +258,7 @@
   progressText: "Progression"
 >
 
-<modal
+<modal ""
   alertText: "Alerte"
   completeText: "Terminer"
   cancelText: "Annuler"
@@ -268,7 +268,7 @@
   submitText: "Soumettre"
   warningText: "Avertissement"
 >
-<_listOfflineMixin
+<_listOfflineMixin ""
   goToListViewText: "Les éléments ont été classés dans le porte-documents. Souhaitez-vous passer à l'affichage de la liste du porte-documents ?"
   interruptedText: "Le processus a été interrompu et n'a pas pu être totalement achevé. Veuillez recommencer le processus afin de classer complètement les éléments dans le porte-documents."
   briefcasingText: "Veuillez patienter, mise en porte-documents en cours."
@@ -276,7 +276,7 @@
   briefcaseTooltipText: "Porte-documents"
 >
 
-<_detailOfflineMixin
+<_detailOfflineMixin ""
   goToDetailViewText: "L'élément et les éléments associés ont été classés dans le porte-documents. Souhaitez-vous passer à l'affichage de la liste du porte-documents ?"
   interruptedText: "Le processus a été interrompu et n'a pas pu être totalement achevé. Veuillez recommencer le processus afin de classer complètement les éléments dans le porte-documents."
   briefcasingText: "Veuillez patienter, mise en porte-documents en cours."
@@ -285,7 +285,7 @@
   briefcaseTooltipText: "Porte-documents"
 >
 
-<sdkApplication
+<sdkApplication ""
   connectionToastTitleText: "Connexion"
   checkingText: "Vérification de la connectivité"
   loadingApplicationStateText: "Chargement de l'état de l'application"

@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "O Campo '${0}' tem formato de data inválido."
   cancelText: "Cancelar"
   confirmText: "Confirmar"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occured."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "nenhum registro"
   loadingText: "Carregando"
   newTooltipText: "Novo"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -258,7 +258,7 @@
   progressText: "Progresso"
 >
 
-<modal
+<modal ""
   alertText: "Alerta"
   completeText: "Concluir"
   cancelText: "Cancelar"
@@ -268,7 +268,7 @@
   submitText: "Enviar"
   warningText: "Aviso"
 >
-<_listOfflineMixin
+<_listOfflineMixin ""
   goToListViewText: "Os itens foram colocados na maleta. Você gostaria de mudar para a visualização em lista da maleta?"
   interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Tente o processo de colocar os itens na maleta novamente."
   briefcasingText: "Agrupando na pasta, aguarde."
@@ -276,7 +276,7 @@
   briefcaseTooltipText: "Maleta"
 >
 
-<_detailOfflineMixin
+<_detailOfflineMixin ""
   goToDetailViewText: "O Item e os itens relacionados foram colocados na maleta. Você gostaria de mudar para a visualização em lista da maleta?"
   interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Tente o processo de colocar os itens na maleta novamente."
   briefcasingText: "Agrupando na pasta, aguarde."
@@ -285,7 +285,7 @@
   briefcaseTooltipText: "Maleta"
 >
 
-<sdkApplication
+<sdkApplication ""
   connectionToastTitleText: "Conexão"
   checkingText: "Verificando conectividade"
   loadingApplicationStateText: "Carregando estado da aplicação"

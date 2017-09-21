@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "ฟิลด์ '${0}' มีรูปแบบวันที่ไม่ถูกต้อง"
   cancelText: "ยกเลิก"
   confirmText: "ยืนยัน"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occured."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "ไม่มีระเบียน"
   loadingText: "กำลังโหลด"
   newTooltipText: "ใหม่"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -258,7 +258,7 @@
   progressText: "ความคืบหน้า"
 >
 
-<modal
+<modal ""
   alertText: "การแจ้งเตือน"
   completeText: "เสร็จสมบูรณ์"
   cancelText: "ยกเลิก"
@@ -268,7 +268,7 @@
   submitText: "ส่ง"
   warningText: "คำเตือน"
 >
-<_listOfflineMixin
+<_listOfflineMixin ""
   goToListViewText: "รายการเก็บในกระเป๋าเอกสารแล้ว คุณต้องการจะย้ายไปที่มุมมองรายการกระเป๋าเอกสารหรือไม่"
   interruptedText: "การประมวลผลถูกขัดจังหวะและไม่สามารถทำให้เสร็จสมบูรณ์ โปรดลองประมวลผลอีกครั้งเพื่อจัดรายการในกระเป๋าเอกสารอย่างสมบูรณ์"
   briefcasingText: "กำลังเก็บกระเป๋าเอกสาร โปรดรอ"
@@ -276,7 +276,7 @@
   briefcaseTooltipText: "กระเป๋าเอกสาร"
 >
 
-<_detailOfflineMixin
+<_detailOfflineMixin ""
   goToDetailViewText: "รายการและรายการที่เกี่ยวข้องเก็บในกระเป๋าเอกสารแล้ว คุณต้องการจะย้ายไปที่มุมมองรายการกระเป๋าเอกสารหรือไม่"
   interruptedText: "การประมวลผลถูกขัดจังหวะและไม่สามารถทำให้เสร็จสมบูรณ์ โปรดลองประมวลผลอีกครั้งเพื่อจัดรายการในกระเป๋าเอกสารอย่างสมบูรณ์"
   briefcasingText: "กำลังเก็บกระเป๋าเอกสาร โปรดรอ"
@@ -285,7 +285,7 @@
   briefcaseTooltipText: "กระเป๋าเอกสาร"
 >
 
-<sdkApplication
+<sdkApplication ""
   connectionToastTitleText: "การเชื่อมต่อ"
   checkingText: "กำลังตรวจสอบการเชื่อมต่อ"
   loadingApplicationStateText: "กำลังโหลดสถานะแอปพลิเคชัน"
