@@ -210,6 +210,6 @@ export default declare('argos.Store.PouchDB', null, /** @lends argos.Store.Pouch
   createNamedQuery: function createNamedQuery(doc) {
     this._db.put(doc, {
       force: true,
-    }).catch((err) => console.error(err));
+    }).catch(err => console.error(err)); // eslint-disable-line
   },
 });

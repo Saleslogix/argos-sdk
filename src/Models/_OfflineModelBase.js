@@ -44,16 +44,16 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     const store = this.getStore();
     // TODO: This is a shared named query, and probably doesn't belong here (will be called multiple times)
     store.createNamedQuery({
-      _id: `_design/entities`,
+      _id: '_design/entities',
       _rev: '1',
       views: {
         by_name: {
-          map: function(doc) {
-            emit(doc.entityName);
-          }.toString()
-        }
-      }
-    })
+          map: function map(doc) {
+            emit(doc.entityName); // eslint-disable-line
+          }.toString(),
+        },
+      },
+    });
   },
   getStore: function getStore() {
     if (!this.store) {
