@@ -36,6 +36,25 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
 
   store: null,
   modelType: MODEL_TYPES.OFFLINE,
+  init: function init() {
+    this.inherited(arguments);
+    this.createNamedQueries();
+  },
+  createNamedQueries: function createNamedQueries() {
+    const store = this.getStore();
+    // TODO: This is a shared named query, and probably doesn't belong here (will be called multiple times)
+    store.createNamedQuery({
+      _id: `_design/entities`,
+      _rev: '1',
+      views: {
+        by_name: {
+          map: function(doc) {
+            emit(doc.entityName);
+          }.toString()
+        }
+      }
+    })
+  },
   getStore: function getStore() {
     if (!this.store) {
       this.store = _store;
@@ -299,8 +318,10 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     const queryOptions = {
       include_docs: true,
       descending: false,
+      key: this.entityName,
     };
-    const queryExpression = this.buildQueryExpression(null, queryOptions);
+
+    const queryExpression = 'entities/by_name';
     const queryResults = store.query(queryExpression, queryOptions);
     when(queryResults, (docs) => {
       const usage = {};
