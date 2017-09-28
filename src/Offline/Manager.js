@@ -16,8 +16,6 @@
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
 import MODEL_TYPES from '../Models/Types';
-import convert from '../Convert';
-
 
 /**
  * @class argos.Offline.Manager
@@ -220,21 +218,12 @@ const __class = {
     });
     return usage;
   },
-  clearData: function clearData(options) {
+  clearAllData: function clearAllData() {
     const def = new Deferred();
     let requests = [];
-    let defaultOptions = options;
-    if (!defaultOptions) {
-      defaultOptions = this.getOptions();
-    }
-    const queryExpression = this.getClearDataQueryExpression(defaultOptions);
     const models = App.ModelManager.getModels(MODEL_TYPES.OFFLINE).filter((model) => {
       if (!model) {
         return false;
-      }
-
-      if (Array.isArray(defaultOptions.skipModels)) {
-        return defaultOptions.skipModels.indexOf(model.entityName) === -1;
       }
 
       if (model.entityName !== 'Authentication') {
@@ -244,7 +233,7 @@ const __class = {
       return false;
     });
     requests = models.map((model) => {
-      return model.clearData(queryExpression, options);
+      return model.clearAllData();
     });
     if (requests.length > 0) {
       all(requests).then((results) => {
@@ -260,51 +249,26 @@ const __class = {
     }
     return def.promise;
   },
-  getClearDataQueryExpression: function getClearDataQueryExpression(options) {
-    const { clearAll, recent, briefcased } = options;
-
-    if (clearAll) {
-      return null;
+  getOlderThan: function getOlderThan(days) {
+    const options = this.getOptions();
+    const results = parseInt(days, 10);
+    if (results >= 0) {
+      return results;
     }
 
-    if (recent) {
-      return (doc, emit) => {
-        if (this.isDocOlderThan(doc, options) && doc.entityName === 'RecentlyViewed') {
-          emit(doc.modifyDate);
-        }
-      };
-    } else if (briefcased) {
-      return (doc, emit) => {
-        if (this.isDocOlderThan(doc, options) && doc.entityName === 'Briefcase') {
-          emit(doc.modifyDate);
-        }
-      };
-    }
-
-    return (doc, emit) => {
-      if (this.isDocOlderThan(doc, options)) {
-        emit(doc.modifyDate);
-      }
-    };
+    return parseInt(options.clearOlderThan, 10);
   },
-  isDocOlderThan: function isDocOlderThan(doc, options) {
-    let olderThan = 0;
-    if (options && options.clearOlderThan) {
-      olderThan = (typeof options.clearOlderThan === 'string') ? parseInt(options.clearOlderThan, 10) : options.clearOlderThan;
-    }
-    if (!doc.modifyDate) {
-      return true;
-    }
-    if (olderThan === 0) {
-      return true;
-    }
-    const recordDate = moment(convert.toDateFromString(doc.modifyDate));
-    const currentDate = moment();
-    const days = currentDate.diff(recordDate, 'days');
-    if (days > olderThan) {
-      return true;
-    }
-    return false;
+  clearRecentData: function clearRecentData(days) {
+    const recentModel = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
+    return this.clearOlderThan(recentModel, days);
+  },
+  clearBriefcaseData: function clearBriefcaseData(days) {
+    const briefcaseModel = App.ModelManager.getModel('Briefcase', MODEL_TYPES.OFFLINE);
+    return this.clearOlderThan(briefcaseModel, days);
+  },
+  clearOlderThan: function clearOlderThan(model, days) {
+    const daysParsed = this.getOlderThan(days);
+    return model.clearDataOlderThan(daysParsed);
   },
   getOptions: function getOptions() {
     let options;

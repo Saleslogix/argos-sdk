@@ -24,6 +24,7 @@ import _CustomizationMixin from '../_CustomizationMixin';
 import _ModelBase from './_ModelBase';
 import QueryResults from 'dojo/store/util/QueryResults';
 import MODEL_TYPES from './Types';
+import convert from '../Convert';
 
 
 const databaseName = 'crm-offline';
@@ -60,15 +61,6 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       this.store = _store;
     }
     return this.store;
-  },
-  getAllIds: function getAllIds() {
-    // The results from this query should just get cached/updated/stored
-    // globally when the application goes offline. This will
-    // prevent some timing issues with calling this async on list loads.
-    const store = this.getStore();
-    return store.query((doc, emit) => {
-      emit(doc._id);
-    });
   },
   getDocId: function getEntityId(entry) {
     return this.getEntityId(entry);
@@ -349,21 +341,69 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     }
     return size;
   },
-  clearData: function clearData(query, options) {
+  clearAllData: function clearAllData() {
     const store = this.getStore();
     const def = new Deferred();
     const queryOptions = {
       include_docs: true,
       descending: true,
+      key: this.entityName,
     };
-    lang.mixin(queryOptions, options);
-    const queryExpression = this.buildQueryExpression(query, queryOptions);
+    const queryExpression = 'entities/by_name';
     const queryResults = store.query(queryExpression, queryOptions);
     when(queryResults, (docs) => {
       const odef = def;
       const deleteRequests = docs.map((doc) => {
         return this._removeDoc(doc.doc);
       });
+      if (deleteRequests.length > 0) {
+        all(deleteRequests).then((results) => {
+          odef.resolve(results);
+        }, (err) => {
+          odef.reject(err);
+        });
+      } else {
+        def.resolve();
+      }
+    }, (err) => {
+      def.reject(err);
+    });
+    return def.promise;
+  },
+  clearDataOlderThan: function clearAllData(days = 0) {
+    const store = this.getStore();
+    const def = new Deferred();
+    const queryOptions = {
+      include_docs: true,
+      descending: true,
+      key: this.entityName,
+    };
+    const queryExpression = 'entities/by_name';
+    const queryResults = store.query(queryExpression, queryOptions);
+    when(queryResults, (docs) => {
+      const odef = def;
+      const deleteRequests = docs.filter(({ doc }) => {
+        if (!doc.modifyDate) {
+          return true;
+        }
+
+        if (days === 0) {
+          return true;
+        }
+
+        const recordDate = moment(convert.toDateFromString(doc.modifyDate));
+        const currentDate = moment();
+        const diff = currentDate.diff(recordDate, 'days');
+        if (diff > days) {
+          return true;
+        }
+
+        return false;
+      })
+      .map((doc) => {
+        return this._removeDoc(doc.doc);
+      });
+
       if (deleteRequests.length > 0) {
         all(deleteRequests).then((results) => {
           odef.resolve(results);
