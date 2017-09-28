@@ -172,6 +172,8 @@ const __class = declare('argos._SDataListMixin', null, /** @lends argos._SDataLi
         queryOptions.queryArgs = options.queryArgs;
       }
     }
+
+    return queryOptions;
   },
   formatSearchQuery: function formatSearchQuery(query) {
     return query;

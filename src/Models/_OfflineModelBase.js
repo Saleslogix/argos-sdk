@@ -222,15 +222,12 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   getEntries: function getEntries(query, options) {
     const store = this.getStore();
     const def = new Deferred();
-    const queryOptions = {
-      include_docs: true,
-      descending: true,
-    };
+    const queryOptions = this.buildQueryOptions();
     lang.mixin(queryOptions, options);
     const queryExpression = this.buildQueryExpression(query, queryOptions);
     const queryResults = store.query(queryExpression, queryOptions);
     when(queryResults, (docs) => {
-      const entities = this.unWrapEntities(docs);
+      const entities = this.processEntries(this.unWrapEntities(docs), queryOptions, docs);
       def.resolve(entities);
     }, (err) => {
       def.reject(err);
@@ -240,16 +237,26 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     }
     return def.promise;
   },
+  processEntries: function processEntries(entities, queryOptions, docs) {
+    if (typeof queryOptions.filter === 'function') {
+      return entities.filter(queryOptions.filter);
+    }
+
+    if (typeof queryOptions.filterDocs === 'function') {
+      return docs.filter(queryOptions.filterDocs);
+    }
+
+    return entities;
+  },
+  buildQueryOptions: function buildQueryOptions() {
+    return {
+      include_docs: true,
+      descending: true,
+      key: this.entityName,
+    };
+  },
   buildQueryExpression: function buildQueryExpression(queryExpression, options) { // eslint-disable-line
-    return function queryFn(doc, emit) {
-      if (doc.entityName === this.entityName) {
-        if (queryExpression && (typeof queryExpression === 'function')) {
-          queryExpression.apply(this, [doc, emit]);
-        } else {
-          emit(doc.modifyDate);
-        }
-      }
-    }.bind(this);
+    return 'entities/by_name';
   },
   unWrapEntities: function unWrapEntities(docs) {
     return docs.map(doc => this.unWrap(doc.doc));
@@ -258,11 +265,13 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     const def = new Deferred();
     const model = App.ModelManager.getModel(relationship.relatedEntity, MODEL_TYPES.OFFLINE);
     if (model) {
-      const queryExpression = this.buildRelatedQueryExpression(relationship, entry);
       const queryOptions = {
         returnQueryResults: true,
+        include_docs: true,
+        filter: this.buildRelatedQueryExpression(relationship, entry),
+        key: relationship.relatedEntity,
       };
-      model.getEntries(queryExpression, queryOptions).then((result) => {
+      model.getEntries(null, queryOptions).then((result) => {
         def.resolve(result.length);
       }, () => {
         def.resolve(-1);
@@ -273,7 +282,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     return def.promise;
   },
   buildRelatedQueryExpression: function buildRelatedQueryExpression(relationship, entry) {
-    return function queryFn(doc, emit) {
+    return (entity) => {
       let parentDataPath;
       let relatedDataPath;
       let relatedValue;
@@ -296,13 +305,15 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       }
 
       const parentValue = utility.getValue(entry, parentDataPath);
-      if (doc.entity) {
-        relatedValue = utility.getValue(doc.entity, relatedDataPath);
+      if (entity) {
+        relatedValue = utility.getValue(entity, relatedDataPath);
       }
       if ((parentValue && relatedValue) && (relatedValue === parentValue)) {
-        emit(doc.modifyDate);
+        return true;
       }
-    }.bind(this);
+
+      return false;
+    };
   },
   getUsage: function getUsage() {
     const store = this.getStore();
