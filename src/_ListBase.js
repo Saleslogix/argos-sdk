@@ -1605,20 +1605,17 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
     this._setLoading();
 
     let queryResults;
-    let queryOptions;
+    let queryOptions = {};
     let queryExpression;
     if (this._model) {
       // Todo: find a better way to transfer this state.
       this.options.count = this.pageSize;
       this.options.start = this.position;
-      queryOptions = {};
-      this._applyStateToQueryOptions(queryOptions);
+      queryOptions = this._applyStateToQueryOptions(queryOptions) || queryOptions;
       queryExpression = this._buildQueryExpression() || null;
       queryResults = this.requestDataUsingModel(queryExpression, queryOptions);
     } else {
-      queryOptions = {};
-      this._applyStateToQueryOptions(queryOptions);
-
+      queryOptions = this._applyStateToQueryOptions(queryOptions) || queryOptions;
       queryExpression = this._buildQueryExpression() || null;
       queryResults = this.requestDataUsingStore(queryExpression, queryOptions);
     }
@@ -1903,7 +1900,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
   _buildQueryExpression: function _buildQueryExpression() {
     return lang.mixin(this.query || {}, this.options && (this.options.query || this.options.where));
   },
-  _applyStateToQueryOptions: function _applyStateToQueryOptions(/* queryOptions*/) {},
+  _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {
+    return queryOptions;
+  },
   /**
    * Handler for the more button. Simply calls {@link #requestData requestData} which already has the info for
    * setting the start index as needed.
