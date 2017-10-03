@@ -440,9 +440,13 @@ class Application {
       });
 
       this._initAppStateSequence(0, sequences).then((results) => {
-        this.clearAppStatePromises();
-        this.initModulesDynamic();
-        resolve(results);
+        try {
+          this.clearAppStatePromises();
+          this.initModulesDynamic();
+          resolve(results);
+        } catch (e) {
+          reject(e);
+        }
       }, (err) => {
         this.clearAppStatePromises();
         reject(err);
