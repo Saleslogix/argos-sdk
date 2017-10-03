@@ -60,7 +60,7 @@ const __class = lang.setObject('argos.ErrorManager', /** @lends argos.ErrorManag
       $key: new Date().getTime(),
       Date: moment().format(),
       Description: description,
-      Error: JSON.stringify(utility.sanitizeForJson(error)),
+      Error: typeof error === 'string' ? error : JSON.stringify(utility.sanitizeForJson(error)),
     };
 
     this.checkCacheSize();
