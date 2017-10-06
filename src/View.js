@@ -715,7 +715,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
   routeShow: function routeShow(ctx, next) { // eslint-disable-line
     this.open();
   },
- /*
+  /*
   * Required for binding to ScrollContainer which utilizes iScroll that requires to be refreshed when the
   * content (therefor scrollable area) changes.
   */

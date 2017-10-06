@@ -1620,12 +1620,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
       queryResults = this.requestDataUsingStore(queryExpression, queryOptions);
     }
     $.when(queryResults)
-    .done((results) => {
-      this._onQueryComplete(queryResults, results);
-    })
-    .fail(() => {
-      this._onQueryError(queryResults, queryOptions);
-    });
+      .done((results) => {
+        this._onQueryComplete(queryResults, results);
+      })
+      .fail(() => {
+        this._onQueryError(queryResults, queryOptions);
+      });
 
     return queryResults;
   },
@@ -1715,12 +1715,12 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
 
       try {
         $.when(queryResults.total)
-        .done((result) => {
-          this._onQueryTotal(result);
-        })
-        .fail((error) => {
-          this._onQueryTotalError(error);
-        });
+          .done((result) => {
+            this._onQueryTotal(result);
+          })
+          .fail((error) => {
+            this._onQueryTotalError(error);
+          });
 
         /* todo: move to a more appropriate location */
         if (this.options && this.options.allowEmptySelection) {

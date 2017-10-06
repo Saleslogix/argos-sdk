@@ -120,11 +120,11 @@ const __class = declare('argos.Dialogs.Modal', [_WidgetBase, _Templated], /** @l
       this.showToolbar = false;
     }
     this.pushHistory(this._content)
-        .setContent(content)
-        .showContent(options)
-        .createModalToolbar(toolbarActions)
-        ._lockScroll()
-        .show();
+      .setContent(content)
+      .showContent(options)
+      .createModalToolbar(toolbarActions)
+      ._lockScroll()
+      .show();
     content._deferred.then(this.hide.bind(this));
     return content._deferred.promise;
   },
@@ -191,8 +191,8 @@ const __class = declare('argos.Dialogs.Modal', [_WidgetBase, _Templated], /** @l
   hide: function hide() {
     if (!this.disableClose) {
       this.removeContainerListener()
-          .removeActionListeners()
-          ._unlockScroll();
+        .removeActionListeners()
+        ._unlockScroll();
       if (this._content && this._content.destroy) {
         this._content.destroy();
       }

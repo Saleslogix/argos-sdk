@@ -188,12 +188,12 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     });
     if (relatedPromises.length > 0) {
       all(relatedPromises).then(
-          (relatedResults) => {
-            def.resolve(relatedResults);
-          },
-          (err) => {
-            def.reject(err);
-          });
+        (relatedResults) => {
+          def.resolve(relatedResults);
+        },
+        (err) => {
+          def.reject(err);
+        });
     } else {
       def.resolve(parentEntry);
     }
@@ -411,9 +411,9 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
 
         return false;
       })
-      .map((doc) => {
-        return this._removeDoc(doc.doc);
-      });
+        .map((doc) => {
+          return this._removeDoc(doc.doc);
+        });
 
       if (deleteRequests.length > 0) {
         all(deleteRequests).then((results) => {
