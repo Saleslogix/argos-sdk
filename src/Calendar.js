@@ -223,7 +223,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
     }
     if (this.showSubValues) {
       this.setSubValue(day, data)
-          .setActiveDay(day);
+        .setActiveDay(day);
     }
     $(data.week).append(day);
   },
@@ -328,8 +328,8 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   _refreshCalendar: function refreshCalendar(date = {}) {
     $(this.weeksNode).empty();
     this.renderCalendar(date)
-        .changeMonthShown(date)
-        .changeYearShown(date);
+      .changeMonthShown(date)
+      .changeYearShown(date);
     return this;
   },
   onRefreshCalendar: function onRefreshCalendar() {
@@ -468,7 +468,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
       this.clearButton.style.display = 'none';
     }
     this.createMonthDropdown()
-        .createYearDropdown();
+      .createYearDropdown();
 
     this.refreshCalendar(this.date);
   },

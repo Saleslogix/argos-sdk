@@ -24,6 +24,7 @@ import _CustomizationMixin from '../_CustomizationMixin';
 import _ModelBase from './_ModelBase';
 import QueryResults from 'dojo/store/util/QueryResults';
 import MODEL_TYPES from './Types';
+import convert from '../Convert';
 
 
 const databaseName = 'crm-offline';
@@ -36,20 +37,30 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
 
   store: null,
   modelType: MODEL_TYPES.OFFLINE,
+  init: function init() {
+    this.inherited(arguments);
+    this.createNamedQueries();
+  },
+  createNamedQueries: function createNamedQueries() {
+    const store = this.getStore();
+    // TODO: This is a shared named query, and probably doesn't belong here (will be called multiple times)
+    store.createNamedQuery({
+      _id: '_design/entities',
+      _rev: '1',
+      views: {
+        by_name: {
+          map: function map(doc) {
+            emit(doc.entityName); // eslint-disable-line
+          }.toString(),
+        },
+      },
+    });
+  },
   getStore: function getStore() {
     if (!this.store) {
       this.store = _store;
     }
     return this.store;
-  },
-  getAllIds: function getAllIds() {
-    // The results from this query should just get cached/updated/stored
-    // globally when the application goes offline. This will
-    // prevent some timing issues with calling this async on list loads.
-    const store = this.getStore();
-    return store.query((doc, emit) => {
-      emit(doc._id);
-    });
   },
   getDocId: function getEntityId(entry) {
     return this.getEntityId(entry);
@@ -177,12 +188,12 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     });
     if (relatedPromises.length > 0) {
       all(relatedPromises).then(
-          (relatedResults) => {
-            def.resolve(relatedResults);
-          },
-          (err) => {
-            def.reject(err);
-          });
+        (relatedResults) => {
+          def.resolve(relatedResults);
+        },
+        (err) => {
+          def.reject(err);
+        });
     } else {
       def.resolve(parentEntry);
     }
@@ -211,15 +222,12 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   getEntries: function getEntries(query, options) {
     const store = this.getStore();
     const def = new Deferred();
-    const queryOptions = {
-      include_docs: true,
-      descending: true,
-    };
+    const queryOptions = this.buildQueryOptions();
     lang.mixin(queryOptions, options);
     const queryExpression = this.buildQueryExpression(query, queryOptions);
     const queryResults = store.query(queryExpression, queryOptions);
     when(queryResults, (docs) => {
-      const entities = this.unWrapEntities(docs);
+      const entities = this.processEntries(this.unWrapEntities(docs), queryOptions, docs);
       def.resolve(entities);
     }, (err) => {
       def.reject(err);
@@ -229,16 +237,26 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     }
     return def.promise;
   },
+  processEntries: function processEntries(entities, queryOptions, docs) {
+    if (typeof queryOptions.filter === 'function') {
+      return entities.filter(queryOptions.filter);
+    }
+
+    if (typeof queryOptions.filterDocs === 'function') {
+      return docs.filter(queryOptions.filterDocs);
+    }
+
+    return entities;
+  },
+  buildQueryOptions: function buildQueryOptions() {
+    return {
+      include_docs: true,
+      descending: true,
+      key: this.entityName,
+    };
+  },
   buildQueryExpression: function buildQueryExpression(queryExpression, options) { // eslint-disable-line
-    return function queryFn(doc, emit) {
-      if (doc.entityName === this.entityName) {
-        if (queryExpression && (typeof queryExpression === 'function')) {
-          queryExpression.apply(this, [doc, emit]);
-        } else {
-          emit(doc.modifyDate);
-        }
-      }
-    }.bind(this);
+    return 'entities/by_name';
   },
   unWrapEntities: function unWrapEntities(docs) {
     return docs.map(doc => this.unWrap(doc.doc));
@@ -247,11 +265,13 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     const def = new Deferred();
     const model = App.ModelManager.getModel(relationship.relatedEntity, MODEL_TYPES.OFFLINE);
     if (model) {
-      const queryExpression = this.buildRelatedQueryExpression(relationship, entry);
       const queryOptions = {
         returnQueryResults: true,
+        include_docs: true,
+        filter: this.buildRelatedQueryExpression(relationship, entry),
+        key: relationship.relatedEntity,
       };
-      model.getEntries(queryExpression, queryOptions).then((result) => {
+      model.getEntries(null, queryOptions).then((result) => {
         def.resolve(result.length);
       }, () => {
         def.resolve(-1);
@@ -262,7 +282,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     return def.promise;
   },
   buildRelatedQueryExpression: function buildRelatedQueryExpression(relationship, entry) {
-    return function queryFn(doc, emit) {
+    return (entity) => {
       let parentDataPath;
       let relatedDataPath;
       let relatedValue;
@@ -285,13 +305,15 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
       }
 
       const parentValue = utility.getValue(entry, parentDataPath);
-      if (doc.entity) {
-        relatedValue = utility.getValue(doc.entity, relatedDataPath);
+      if (entity) {
+        relatedValue = utility.getValue(entity, relatedDataPath);
       }
       if ((parentValue && relatedValue) && (relatedValue === parentValue)) {
-        emit(doc.modifyDate);
+        return true;
       }
-    }.bind(this);
+
+      return false;
+    };
   },
   getUsage: function getUsage() {
     const store = this.getStore();
@@ -299,8 +321,10 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     const queryOptions = {
       include_docs: true,
       descending: false,
+      key: this.entityName,
     };
-    const queryExpression = this.buildQueryExpression(null, queryOptions);
+
+    const queryExpression = 'entities/by_name';
     const queryResults = store.query(queryExpression, queryOptions);
     when(queryResults, (docs) => {
       const usage = {};
@@ -328,21 +352,69 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
     }
     return size;
   },
-  clearData: function clearData(query, options) {
+  clearAllData: function clearAllData() {
     const store = this.getStore();
     const def = new Deferred();
     const queryOptions = {
       include_docs: true,
       descending: true,
+      key: this.entityName,
     };
-    lang.mixin(queryOptions, options);
-    const queryExpression = this.buildQueryExpression(query, queryOptions);
+    const queryExpression = 'entities/by_name';
     const queryResults = store.query(queryExpression, queryOptions);
     when(queryResults, (docs) => {
       const odef = def;
       const deleteRequests = docs.map((doc) => {
         return this._removeDoc(doc.doc);
       });
+      if (deleteRequests.length > 0) {
+        all(deleteRequests).then((results) => {
+          odef.resolve(results);
+        }, (err) => {
+          odef.reject(err);
+        });
+      } else {
+        def.resolve();
+      }
+    }, (err) => {
+      def.reject(err);
+    });
+    return def.promise;
+  },
+  clearDataOlderThan: function clearAllData(days = 0) {
+    const store = this.getStore();
+    const def = new Deferred();
+    const queryOptions = {
+      include_docs: true,
+      descending: true,
+      key: this.entityName,
+    };
+    const queryExpression = 'entities/by_name';
+    const queryResults = store.query(queryExpression, queryOptions);
+    when(queryResults, (docs) => {
+      const odef = def;
+      const deleteRequests = docs.filter(({ doc }) => {
+        if (!doc.modifyDate) {
+          return true;
+        }
+
+        if (days === 0) {
+          return true;
+        }
+
+        const recordDate = moment(convert.toDateFromString(doc.modifyDate));
+        const currentDate = moment();
+        const diff = currentDate.diff(recordDate, 'days');
+        if (diff > days) {
+          return true;
+        }
+
+        return false;
+      })
+        .map((doc) => {
+          return this._removeDoc(doc.doc);
+        });
+
       if (deleteRequests.length > 0) {
         all(deleteRequests).then((results) => {
           odef.resolve(results);

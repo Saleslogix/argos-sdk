@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "El campo «${0}» tiene un formato de fecha no válido."
   cancelText: "Cancelar"
   confirmText: "Confirmar"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occured."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "no hay registros"
   loadingText: "Cargando"
   newTooltipText: "Nuevo"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -258,7 +258,7 @@
   progressText: "Progreso"
 >
 
-<modal
+<modal ""
   alertText: "Alerta"
   completeText: "Completar"
   cancelText: "Cancelar"
@@ -268,7 +268,7 @@
   submitText: "Enviar"
   warningText: "Advertencia"
 >
-<_listOfflineMixin
+<_listOfflineMixin ""
   goToListViewText: "Los artículos se han guardado en el maletín. ¿Desea ir a la vista de lista del maletín?"
   interruptedText: "El proceso se interrumpió y no se pudo completar en su totalidad. Intente realizar de nuevo el proceso para guardar los artículos en el maletín por completo."
   briefcasingText: "Guardando en maletín, espere."
@@ -276,7 +276,7 @@
   briefcaseTooltipText: "Maletín"
 >
 
-<_detailOfflineMixin
+<_detailOfflineMixin ""
   goToDetailViewText: "El artículo y los artículos relacionados se han guardado en el maletín. ¿Desea ir a la vista de lista del maletín?"
   interruptedText: "El proceso se interrumpió y no se pudo completar en su totalidad. Intente realizar de nuevo el proceso para guardar los artículos en el maletín por completo."
   briefcasingText: "Guardando en maletín, espere."
@@ -285,7 +285,7 @@
   briefcaseTooltipText: "Maletín"
 >
 
-<sdkApplication
+<sdkApplication ""
   connectionToastTitleText: "Conexión"
   checkingText: "Comprobando conectividad"
   loadingApplicationStateText: "Cargando estado de la aplicación"

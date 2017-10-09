@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "字段“${0}”的日期格式无效。"
   cancelText: "取消"
   confirmText: "确认"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occured."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "无记录"
   loadingText: "正在加载"
   newTooltipText: "新建"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -258,7 +258,7 @@
   progressText: "进度"
 >
 
-<modal
+<modal ""
   alertText: "警报"
   completeText: "完成"
   cancelText: "取消"
@@ -268,7 +268,7 @@
   submitText: "提交"
   warningText: "警告"
 >
-<_listOfflineMixin
+<_listOfflineMixin ""
   goToListViewText: "项目已加入公文包。是否要移至公文包列表视图?"
   interruptedText: "处理已中断，无法完全完成。请再次重试此处理以将项目完全加入公文包。"
   briefcasingText: "正在加入公文包，请稍候。"
@@ -276,7 +276,7 @@
   briefcaseTooltipText: "公文包"
 >
 
-<_detailOfflineMixin
+<_detailOfflineMixin ""
   goToDetailViewText: "项目和相关项已加入公文包。是否要移至公文包列表视图?"
   interruptedText: "处理已中断，无法完全完成。请再次重试此处理以将项目完全加入公文包。"
   briefcasingText: "正在加入公文包，请稍候。"
@@ -285,7 +285,7 @@
   briefcaseTooltipText: "公文包"
 >
 
-<sdkApplication
+<sdkApplication ""
   connectionToastTitleText: "连接"
   checkingText: "正在检查连接"
   loadingApplicationStateText: "正在加载应用程序状态"

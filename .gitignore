@@ -50,3 +50,4 @@ report/junit.xml
 coverage
 src-out/
 min/css/themes/crm/
+localization-out/

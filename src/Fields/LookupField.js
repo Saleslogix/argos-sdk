@@ -621,8 +621,8 @@ const control = declare('argos.Fields.LookupField', [_Field], /** @lends argos.F
   getValue: function getValue() {
     let value = null;
     const text = this.getText() || '';
-      // if valueKeyProperty or valueTextProperty IS NOT EXPLICITLY set to false
-      // and IS NOT defined use keyProperty or textProperty in its place.
+    // if valueKeyProperty or valueTextProperty IS NOT EXPLICITLY set to false
+    // and IS NOT defined use keyProperty or textProperty in its place.
     const keyProperty = this.valueKeyProperty !== false ? this.valueKeyProperty || this.keyProperty : false;
     const textProperty = this.valueTextProperty !== false ? this.valueTextProperty || this.textProperty : false;
 

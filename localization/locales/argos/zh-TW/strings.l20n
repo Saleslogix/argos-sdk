@@ -1,5 +1,5 @@
 <dateField ""
-  emptyText: ''
+  emptyText: ""
   invalidDateFormatErrorText: "欄位「${0}」的日期格式無效。"
   cancelText: "取消"
   confirmText: "確認"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occured.'
+  general: "A server error occured."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "無記錄"
   loadingText: "載入"
   newTooltipText: "新增"
-  refreshTooltipText: 'Refresh'
+  refreshTooltipText: "Refresh"
 >
 
 <pullToRefreshMixin ""
@@ -258,7 +258,7 @@
   progressText: "進度"
 >
 
-<modal
+<modal ""
   alertText: "警示"
   completeText: "完成"
   cancelText: "取消"
@@ -268,7 +268,7 @@
   submitText: "提交"
   warningText: "警告"
 >
-<_listOfflineMixin
+<_listOfflineMixin ""
   goToListViewText: "項目已經新增至公事包。是否要移至公事包清單檢視？"
   interruptedText: "程序已中斷，無法全部完成。請嘗試重新處理，以將項目完全新增至公事包。"
   briefcasingText: "正在進行簡述，請稍候。"
@@ -276,7 +276,7 @@
   briefcaseTooltipText: "公事包"
 >
 
-<_detailOfflineMixin
+<_detailOfflineMixin ""
   goToDetailViewText: "項目與相關項目已新增至公事包。是否要移至公事包清單檢視？"
   interruptedText: "程序已中斷，無法全部完成。請嘗試重新處理，以將項目完全新增至公事包。"
   briefcasingText: "正在進行簡述，請稍候。"
@@ -285,7 +285,7 @@
   briefcaseTooltipText: "公事包"
 >
 
-<sdkApplication
+<sdkApplication ""
   connectionToastTitleText: "連線"
   checkingText: "檢查連線狀態"
   loadingApplicationStateText: "載入應用程式狀態"

@@ -76,7 +76,7 @@ class Application {
 
           if (returnTo) {
             let returnIndex = [...this.app.context.history].reverse()
-                                  .findIndex(val => val.page === returnTo);
+              .findIndex(val => val.page === returnTo);
             // Since want to find last index of page, must reverse index
             if (returnIndex !== -1) {
               returnIndex = (this.app.context.history.length - 1) - returnIndex;
@@ -440,9 +440,13 @@ class Application {
       });
 
       this._initAppStateSequence(0, sequences).then((results) => {
-        this.clearAppStatePromises();
-        this.initModulesDynamic();
-        resolve(results);
+        try {
+          this.clearAppStatePromises();
+          this.initModulesDynamic();
+          resolve(results);
+        } catch (e) {
+          reject(e);
+        }
       }, (err) => {
         this.clearAppStatePromises();
         reject(err);

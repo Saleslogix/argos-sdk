@@ -162,15 +162,15 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], /** @lends 
         }
         if (relatedRequests.length > 0) {
           all(relatedRequests).then(
-              (relatedResults) => {
-                this.applyRelatedResults(entry, relatedResults);
-                all(this.getPicklists()).then(
-                  () => def.resolve(entry),
-                  err => def.reject(err));
-              },
-              (err) => {
-                def.reject(err);
-              });
+            (relatedResults) => {
+              this.applyRelatedResults(entry, relatedResults);
+              all(this.getPicklists()).then(
+                () => def.resolve(entry),
+                err => def.reject(err));
+            },
+            (err) => {
+              def.reject(err);
+            });
         } else {
           def.resolve(entry);
         }

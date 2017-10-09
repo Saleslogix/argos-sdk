@@ -302,8 +302,8 @@ const __class = declare('argos._DraggableBase', null, {
   onTouchEnd: function onTouchEnd(touch = {}) {
     if (this._source) {
       this.placeItem(touch)
-          .removeStyling()
-          .clearValues();
+        .removeStyling()
+        .clearValues();
     }
   },
   placeItem: function placeItem() {
