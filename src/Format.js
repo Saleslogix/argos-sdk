@@ -154,7 +154,15 @@ const __class = lang.setObject('argos.Format', {
    * @return {String} Date formatted as a string.
    */
   date: function date(val, fmt, utc) {
-    return format.date(val, fmt, utc, argos.Format.shortDateFormatText);
+    const value = format.date(val, utc);
+    const m = moment(value);
+    if (m) {
+      const formattedDate = m.format(fmt || argos.Format.shortDateFormatText);
+      if (m.isValid()) {
+        return formattedDate;
+      }
+    }
+    return '';
   },
   /**
    * Takes a number and decimal place and floors the number to that place:
