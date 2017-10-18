@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("moment"));
+		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define(["moment"], factory);
+		define([], factory);
 	else if(typeof exports === 'object')
-		exports["ICRMCommonSDK"] = factory(require("moment"));
+		exports["ICRMCommonSDK"] = factory();
 	else
-		root["ICRMCommonSDK"] = factory(root["moment"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_5__) {
+		root["ICRMCommonSDK"] = factory();
+})(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -86,46 +86,18 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.decimalAdjust = decimalAdjust;
+exports.bigNumberAbbrText = undefined;
 exports.fixed = fixed;
 exports.percent = percent;
 exports.bigNumber = bigNumber;
 
 var _utility = __webpack_require__(4);
 
-var bigNumberAbbrText = {
+var bigNumberAbbrText = exports.bigNumberAbbrText = {
   billion: 'B',
   million: 'M',
   thousand: 'K'
 };
-
-/**
- * Decimal adjustment of a number.
- * Taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round
- *
- * @param {string}  type  The type of adjustment.
- * @param {number}  value The number.
- * @param {Integer} exp   The exponent (the 10 logarithm of the adjustment base).
- * @returns {number} The adjusted value.
- */
-function decimalAdjust(type, value, exp) {
-  // If the exp is undefined or zero...
-  if (typeof exp === 'undefined' || +exp === 0) {
-    return Math[type](value);
-  }
-  value = +value;
-  exp = +exp;
-  // If the value is not a number or the exp is not an integer...
-  if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
-    return NaN;
-  }
-  // Shift
-  value = value.toString().split('e');
-  value = Math[type](+(value[0] + 'e' + (value[1] ? +value[1] - exp : -exp)));
-  // Shift back
-  value = value.toString().split('e');
-  return +(value[0] + 'e' + (value[1] ? +value[1] + exp : exp));
-}
 
 /**
  * Takes a number and decimal place and floors the number to that place:
@@ -205,6 +177,8 @@ function percent(val, places) {
 }
 
 function bigNumber(val) {
+  var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'en-US';
+
   var numParse = typeof val !== 'number' ? parseFloat(val) : val;
   var absVal = Math.abs(numParse);
   var text = bigNumberAbbrText;
@@ -216,18 +190,18 @@ function bigNumber(val) {
   var results = numParse.toString();
   if (absVal >= 1000000000) {
     numParse = numParse / 1000000000;
-    numParse = decimalAdjust('round', numParse, -1);
-    results = fixed(numParse, 1) + text.billion;
+    numParse = (0, _utility.roundNumberTo)(numParse, 1);
+    results = numParse.toLocaleString(locale, { minimumFractionDigits: 1 }) + text.billion;
   } else if (absVal >= 1000000) {
     numParse = numParse / 1000000;
-    numParse = decimalAdjust('round', numParse, -1);
-    results = fixed(numParse, 1) + text.million;
+    numParse = (0, _utility.roundNumberTo)(numParse, 1);
+    results = numParse.toLocaleString(locale, { minimumFractionDigits: 1 }) + text.million;
   } else if (absVal >= 1000) {
     numParse = numParse / 1000;
-    numParse = decimalAdjust('round', numParse, -1);
-    results = fixed(numParse, 1) + text.thousand;
+    numParse = (0, _utility.roundNumberTo)(numParse, 1);
+    results = numParse.toLocaleString(locale, { minimumFractionDigits: 1 }) + text.thousand;
   } else {
-    results = decimalAdjust('round', numParse, 2).toString();
+    results = (0, _utility.roundNumberTo)(numParse, 2).toLocaleString(locale);
   }
 
   return results;
@@ -248,13 +222,6 @@ exports.toBoolean = toBoolean;
 exports.toDateFromString = toDateFromString;
 exports.toIsoStringFromDate = toIsoStringFromDate;
 exports.toJsonStringFromDate = toJsonStringFromDate;
-
-var _moment = __webpack_require__(5);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var trueRE = /^(true|T)$/i;
 var isoDate = /(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|(-|\+)(\d{2}):(\d{2})))?/;
 var jsonDate = /\/Date\((-?\d+)(?:(-|\+)(\d{2})(\d{2}))?\)\//;
@@ -325,25 +292,23 @@ function toDateFromString(v) {
     value = utc;
   } else if (match = isoDate.exec(value)) {
     // eslint-disable-line
-    utc = (0, _moment2.default)(new Date(Date.UTC(parseInt(match[1], 10), parseInt(match[2], 10) - 1, // zero based
-    parseInt(match[3], 10), parseInt(match[4] || 0, 10), parseInt(match[5] || 0, 10), parseInt(match[6] || 0, 10))));
+    utc = new Date(Date.UTC(parseInt(match[1], 10), parseInt(match[2], 10) - 1, // zero based
+    parseInt(match[3], 10), parseInt(match[4] || 0, 10), parseInt(match[5] || 0, 10), parseInt(match[6] || 0, 10)));
 
     if (match[8] && match[8] !== 'Z') {
       var h = parseInt(match[10], 10);
       var m = parseInt(match[11], 10);
+      var mutated = utc;
 
       if (match[9] === '-') {
-        utc.add({
-          minutes: h * 60 + m
-        });
+        mutated = utc.getTime() + (h * 60 + m) * 60 * 1000;
       } else {
-        utc.add({
-          minutes: -1 * (h * 60 + m)
-        });
+        mutated = utc.getTime() - (h * 60 + m) * 60 * 1000;
       }
+      utc = new Date(mutated);
     }
 
-    value = utc.toDate();
+    value = utc;
   }
 
   return value;
@@ -468,7 +433,7 @@ function decode(val) {
     return val;
   }
 
-  return val.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
+  return val.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, '\'').replace(/&#x2F;/g, '/');
 }
 
 /**
@@ -481,7 +446,7 @@ function encode(val) {
     return val;
   }
 
-  return val.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return val.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
 }
 
 /**
@@ -561,11 +526,11 @@ function link(val) {
 
   if (scheme && scheme.length) {
     var index = val.indexOf(scheme) + scheme.length;
-    return '<a target="_blank" href="' + val + '">' + val.substring(index) + '</a>';
+    return '<a class="hyperlink" target="_blank" href="' + val + '">' + val.substring(index) + '</a>';
   }
 
   // Specify a default URI scheme of http
-  return '<a target="_blank" href="http://' + val + '">' + val + '</a>';
+  return '<a class="hyperlink" target="_blank" href="http://' + val + '">' + val + '</a>';
 }
 
 /**
@@ -578,7 +543,7 @@ function mail(val) {
     return val;
   }
 
-  return '<a href="mailto:' + val + '">' + val + '</a>';
+  return '<a class="hyperlink" href="mailto:' + val + '">' + val + '</a>';
 }
 
 /**
@@ -817,12 +782,6 @@ exports.default = Utility;
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
-
-/***/ },
-/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -841,7 +800,7 @@ var _utility = __webpack_require__(4);
 
 var utility = _interopRequireWildcard(_utility);
 
-var _format = __webpack_require__(11);
+var _format = __webpack_require__(10);
 
 var format = _interopRequireWildcard(_format);
 
@@ -856,7 +815,7 @@ exports.format = format; /**
                           */
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -883,7 +842,7 @@ function userActivityStatus(val, activityFormatText) {
 }
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1048,11 +1007,11 @@ function address(addr, asText, separator, fmt) {
     return parts.join(separator || '<br />');
   }
 
-  return '<a href="javascript:App.showMapForAddress(\'' + encodeURIComponent((0, _html.decode)(parts.join(' '))) + '\');">' + parts.join('<br />') + '</a>';
+  return '<a class="hyperlink" href="javascript:App.showMapForAddress(\'' + encodeURIComponent((0, _html.decode)(parts.join(' '))) + '\');">' + parts.join('<br />') + '</a>';
 }
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1131,12 +1090,12 @@ function fixedLocale(_val, _d) {
   return fVal.replace(/ /g, '\xA0'); // keep numbers from breaking
 }
 
-function multiCurrency(val, code) {
-  return currency(val) + ' ' + code;
+function multiCurrency(val, code, currencyDecimalSeparator, currencyGroupSeparator) {
+  return currency(val, currencyDecimalSeparator, currencyGroupSeparator) + ' ' + code;
 }
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1145,19 +1104,30 @@ function multiCurrency(val, code) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.dateFormat = dateFormat;
 exports.date = date;
 exports.relativeDate = relativeDate;
 exports.timespan = timespan;
-
-var _moment = __webpack_require__(5);
-
-var _moment2 = _interopRequireDefault(_moment);
 
 var _convert = __webpack_require__(1);
 
 var _number = __webpack_require__(0);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/**
+ * Date format function that allows currying a formatter based on the passed parameters
+ * @param {function} func Function to format the value passed in based on the other two params
+ * @param {string} fmt Format to be used when formatting the date
+ * @param {string} shortDateFormatText Short date format
+ * @return {function} Returns a function that formats a Date based on the the input parameters
+ */
+function dateFormat(func) {
+  var fmt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'M/D/YYYY';
+  var shortDateFormatText = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'M/D/YYYY';
+
+  return function (value) {
+    func(value, fmt, shortDateFormatText);
+  };
+}
 
 /**
  * Takes a date and format string and returns the formatted date as a string.
@@ -1166,10 +1136,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {boolean} utc If a date should be in UTC time set this flag to true to counter-act javascripts built-in timezone applier.
  * @return {string} Date formatted as a string.
  */
-function date(val) {
-  var fmt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'M/D/YYYY';
-  var utc = arguments[2];
-  var shortDateFormatText = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'M/D/YYYY';
+function date(val, utc) {
+  var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (value) {
+    return value;
+  };
 
   var dateValue = void 0;
   if (val instanceof Date) {
@@ -1181,33 +1151,23 @@ function date(val) {
   }
 
   if (dateValue) {
-    dateValue = (0, _moment2.default)(dateValue);
+    var mutated = dateValue;
     if (utc) {
-      dateValue = dateValue.subtract({
-        minutes: dateValue.utcOffset()
-      });
+      mutated = dateValue.getTime() + dateValue.getTimezoneOffset() * 60 * 1000;
+      dateValue = new Date(mutated);
     }
 
-    return dateValue.format(fmt || shortDateFormatText);
+    return format(dateValue);
   }
 
   return val;
 }
 
-function relativeDate(_date, timeless) {
-  var relDate = (0, _moment2.default)(_date);
-  if (!relDate || !relDate.isValid()) {
-    throw new Error('Invalid date passed into Format.relativeDate');
-  }
-
-  if (timeless) {
-    // utc
-    relDate = relDate.subtract({
-      minutes: relDate.utcOffset()
-    });
-  }
-
-  return relDate.fromNow();
+/**
+ * @deprecated Use the date format instead with a fromNow format function
+ */
+function relativeDate() {
+  throw new Error('RelativeDate Format is deprecated, please use the date function instead with a format function');
 }
 
 /**
@@ -1251,7 +1211,7 @@ function timespan(val) {
 }
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1261,7 +1221,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _activity = __webpack_require__(7);
+var _activity = __webpack_require__(6);
 
 Object.keys(_activity).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1273,7 +1233,7 @@ Object.keys(_activity).forEach(function (key) {
   });
 });
 
-var _address = __webpack_require__(8);
+var _address = __webpack_require__(7);
 
 Object.keys(_address).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1285,7 +1245,7 @@ Object.keys(_address).forEach(function (key) {
   });
 });
 
-var _currency = __webpack_require__(9);
+var _currency = __webpack_require__(8);
 
 Object.keys(_currency).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1297,7 +1257,7 @@ Object.keys(_currency).forEach(function (key) {
   });
 });
 
-var _date = __webpack_require__(10);
+var _date = __webpack_require__(9);
 
 Object.keys(_date).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1321,7 +1281,7 @@ Object.keys(_html).forEach(function (key) {
   });
 });
 
-var _name = __webpack_require__(12);
+var _name = __webpack_require__(11);
 
 Object.keys(_name).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1345,7 +1305,7 @@ Object.keys(_number).forEach(function (key) {
   });
 });
 
-var _phone = __webpack_require__(13);
+var _phone = __webpack_require__(12);
 
 Object.keys(_phone).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1353,6 +1313,18 @@ Object.keys(_phone).forEach(function (key) {
     enumerable: true,
     get: function get() {
       return _phone[key];
+    }
+  });
+});
+
+var _picklist = __webpack_require__(13);
+
+Object.keys(_picklist).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _picklist[key];
     }
   });
 });
@@ -1385,20 +1357,18 @@ var NumberFormat = _interopRequireWildcard(_number);
 
 var PhoneFormat = _interopRequireWildcard(_phone);
 
+var PickListFormat = _interopRequireWildcard(_picklist);
+
 var StringFormat = _interopRequireWildcard(_string);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var Format = Object.assign({}, ActivityFormat, AddressFormat, CurrencyFormat, DateFormat, HTMLFormat, NameFormat, NumberFormat, PhoneFormat, StringFormat);
-
-// if (window) {
-//   window['Jupiter'] = Object.assign({}, window['Jupiter'], { Format });
-// }
+var Format = Object.assign({}, ActivityFormat, AddressFormat, CurrencyFormat, DateFormat, HTMLFormat, NameFormat, NumberFormat, PhoneFormat, PickListFormat, StringFormat);
 
 exports.default = Format;
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1479,7 +1449,7 @@ function nameLF(val) {
 }
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1573,7 +1543,7 @@ var phoneFormat = exports.phoneFormat = [{
  * @returns {string}
  */
 function alphaToPhoneNumeric() {
-  var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+  var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
   var phoneVal = val || '';
   for (var i = 0; i < phoneLettersMap.length; i++) {
@@ -1601,17 +1571,135 @@ function phone() {
 
   for (var i = 0; i < formatters.length; i++) {
     var formatter = formatters[i];
-    var match = void 0;
-    if (match = formatter.test.exec(clean)) {
+    var match = formatter.test.exec(clean);
+    if (match) {
       formattedMatch = formatter.format([phoneVal, clean].concat(match));
     }
   }
 
   if (formattedMatch) {
-    return asLink ? '<a href="tel:' + clean + '">' + formattedMatch + '</a>' : formattedMatch;
+    return asLink ? '<a class="hyperlink" href="tel:' + clean + '">' + formattedMatch + '</a>' : formattedMatch;
   }
 
   return phoneVal;
+}
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.picklist = picklist;
+var PicklistStorageType = exports.PicklistStorageType = { CODE: 0, ID: 1, TEXT: 2 };
+var PicklistDataDisplayType = exports.PicklistDataDisplayType = { CODE: 0, ID: 1, TEXT: 2 };
+
+function getStoredXByY(value, getX, byY, picklistObj) {
+  /* function is private cannot be static */ //eslint-disable-line
+  if (picklistObj.items) {
+    for (var i = 0; i < picklistObj.items.length; i++) {
+      var item = picklistObj.items[i];
+      // console.log(`${getX} : ${byY} => ${value} ?= ${item[byY]}`);
+      if (item[byY] === value) {
+        if (item[getX]) {
+          return item[getX];
+        }
+      }
+    }
+  }
+  return value;
+}
+function getStoredTextById(value, picklistObj) {
+  return getStoredXByY(value, 'text', 'id', picklistObj);
+}
+function getStoredTextByCode(value, picklistObj) {
+  return getStoredXByY(value, 'text', 'code', picklistObj);
+}
+function getStoredIdByCode(value, picklistObj) {
+  return getStoredXByY(value, 'id', 'code', picklistObj);
+}
+function getStoredIdByText(value, picklistObj) {
+  return getStoredXByY(value, 'id', 'text', picklistObj);
+}
+function getStoredCodeById(value, picklistObj) {
+  return getStoredXByY(value, 'code', 'id', picklistObj);
+}
+function getStoredCodeByText(value, picklistObj) {
+  return getStoredXByY(value, 'code', 'text', picklistObj);
+}
+
+function getStoredText(value, picklistObj) {
+  switch (picklistObj.display) {
+    case PicklistDataDisplayType.ID:
+      // console.log('display is id');
+      return getStoredIdByText(value, picklistObj);
+    case PicklistDataDisplayType.CODE:
+      // console.log('display is code');
+      return getStoredCodeByText(value, picklistObj);
+    default:
+      // StorageType.ID
+      // console.log('display is text');
+      return value;
+  }
+}
+function getStoredId(value, picklistObj) {
+  switch (picklistObj.display) {
+    case PicklistDataDisplayType.TEXT:
+      // console.log('display is text');
+      return getStoredTextById(value, picklistObj);
+    case PicklistDataDisplayType.CODE:
+      // console.log('display is code');
+      return getStoredCodeById(value, picklistObj);
+    default:
+      // StorageType.ID
+      // console.log('display is id');
+      return value;
+  }
+}
+function getStoredCode(value, picklistObj) {
+  switch (picklistObj.display) {
+    case PicklistDataDisplayType.ID:
+      // console.log('display is id');
+      return getStoredIdByCode(value, picklistObj);
+    case PicklistDataDisplayType.TEXT:
+      // console.log('display is Text');
+      return getStoredTextByCode(value, picklistObj);
+    default:
+      // StorageType.Code
+      // console.log('display is code');
+      return value;
+  }
+}
+/**
+* @function takes a string value and using the informaton known about the pick list, to generate a display value. If one is not found the value provided is displayed.
+* @param {String} value the data that needs to be formatted. In this context formatting could mean using the service to display an acceptable localization,
+*            or it could mean displaying a different value stored at the item level. ie the value is stored as code, but want to display id... not too useful, but could happen.
+* @return {String} value based on the current picklist's usage metadata. A picklist can be stored as a code, text, or id, but displayed as a code, text, or id... so function, and a collection of helpers, will handle returning the correct value.
+*/
+function picklist(value, picklistObj) {
+  /* console.log('object : %o', picklistObj);
+  console.log('Store.CODE : %o', StorageType, StorageType.CODE);
+  console.log('Store.ID : %o', StorageType, StorageType.ID);
+  console.log('Store.TEXT : %o', StorageType, StorageType.TEXT);
+  console.log('Store.CODE : %o', DataDisplayType, StorageType.CODE);
+  console.log('Store.ID : %o', DataDisplayType, StorageType.ID);
+  console.log('Store.TEXT : %o', DataDisplayType, StorageType.TEXT); */
+  switch (picklistObj.storage) {
+    case PicklistStorageType.CODE:
+      // console.log('Storage is code');
+      return getStoredCode(value, picklistObj);
+    case PicklistStorageType.ID:
+      // console.log('Storage is id');
+      return getStoredId(value, picklistObj);
+    default:
+      // StorageType.Text
+      // console.log('Storage is using text');
+      return getStoredText(value, picklistObj);
+  }
 }
 
 /***/ },
@@ -2083,7 +2171,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _index = __webpack_require__(6);
+var _index = __webpack_require__(5);
 
 Object.keys(_index).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
