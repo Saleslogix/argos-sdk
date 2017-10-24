@@ -23,10 +23,24 @@ const __class = declare('argos.LanguageService', [], {
     return window.localStorage && window.localStorage.getItem('region');
   },
   setLanguage: function setLanguage(value) {
-    return window.localStorage && window.localStorage.setItem('language', value);
+    let language = value;
+    if (language.length > 2) {
+      const split = language.split('-');
+      if (split[0] === split[1]) {
+        language = split[0];
+      }
+    }
+    return window.localStorage && window.localStorage.setItem('language', language);
   },
   setRegion: function setRegion(value) {
-    return window.localStorage && window.localStorage.setItem('region', value);
+    let region = value;
+    if (region.length > 2) {
+      const split = region.split('-');
+      if (split[0] === split[1]) {
+        region = split[0];
+      }
+    }
+    return window.localStorage && window.localStorage.setItem('region', region);
   },
   getLanguages: function getLanguages() {
     return window.supportedLocales;

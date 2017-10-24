@@ -48,7 +48,7 @@ const __class = declare('argos.GroupedList', [List], /** @lends argos.GroupedLis
    * Simplate that defines the Group template that includes the header element with collapse button and the row container
    */
   groupTemplate: new Simplate([`
-      <div class="accordion-header" role="presentation">
+      <div class="accordion-header" role="presentation" data-tag="{%= $.tag %}">
         <a href="#" role="button"><span>{%: $.title %}</span></a>
       </div>
       <div class="accordion-pane" data-group="{%= $.tag %}">
