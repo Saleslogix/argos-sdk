@@ -385,16 +385,6 @@
       "filters": ".*(\\.css)"
     },
     {
-      "src": "../libraries/sohoxi/css/",
-      "dest": "content/css",
-      "filters": ".*(\\.css)"
-    },
-    {
-      "src": "../libraries/sohoxi/js/cultures/",
-      "dest": "content/javascript/cultures",
-      "filters": ".*\\.js"
-    },
-    {
       "src": "../libraries/dojo/dojo",
       "dest": "content/dojo/dojo",
       "filters": "(dojo\\.js)"
