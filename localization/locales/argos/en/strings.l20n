@@ -113,7 +113,7 @@
   concurrencySummaryText: "Concurrency Error(s)"
   detailsText: "Details"
   loadingText: "Loading"
-  errorGeneral: "A server error occured while requesting data."
+  errorGeneral: "A server error occurred while requesting data."
   error410:  "Error saving. This record no longer exists."
   saveTooltipText: "Save"
   cancelTooltipText: "Cancel"
