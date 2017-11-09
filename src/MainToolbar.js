@@ -112,7 +112,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     name: resource.amethystText,
     data: '#9279A6',
   }, {
-    name: resource.turqoiseText,
+    name: resource.turquoiseText,
     data: '#579E95',
   }, {
     name: resource.emeraldText,

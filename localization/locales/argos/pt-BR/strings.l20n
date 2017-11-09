@@ -8,18 +8,18 @@
 
 <durationField ""
   minutes: "minuto(s)"
-  hours: "hora(s)"
-  days: "dia(s)"
-  weeks: "semana(s)"
-  years: "ano(s)"
+  hours: "Hora(s)"
+  days: "Dia(s)"
+  weeks: "Semana(s)"
+  years: "Ano(s)"
   invalidDurationErrorText: "O Campo '${0}' não é uma duração válida."
   emptyText: ""
 >
 
 <editorField ""
-  lookupLabelText: "editar"
+  lookupLabelText: "Editar"
   lookupText: "..."
-  emptyText: "vazio"
+  emptyText: "Vazio"
   completeText: "OK"
 >
 
@@ -27,12 +27,12 @@
   dependentErrorText: "Um valor para '${0}' deve ser selecionado."
   emptyText: ""
   completeText: "Selecionar"
-  lookupLabelText: "pesquisar"
+  lookupLabelText: "Pesquisar"
   lookupText: "..."
 >
 
 <signatureField ""
-  signatureLabelText: "assinatura"
+  signatureLabelText: "Assinatura"
   signatureText: "..."
 >
 
@@ -76,7 +76,7 @@
   cancelText: "Cancelar"
   selectFileText: "Selecionar arquivo"
   loadingText: "Carregando..."
-  descriptionText: "descrição"
+  descriptionText: "Descrição"
   bytesText: "bytes"
   notSupportedText: "A inclusão de anexos não é suportado pelo seu dispositivo."
 >
@@ -92,13 +92,13 @@
 >
 
 <detailBase ""
-  informationText: "Informações do ${0}"
+  informationText: "Informações sobre ${0}"
   titleText: "Detalhe"
   entityText: "Entidade"
   detailsText: "Detalhes"
   loadingText: "Carregando"
   notAvailableText: "Os dados solicitados não estão disponíveis."
-  toggleCollapseText: "alternar recolher"
+  toggleCollapseText: "Alternar Recolher"
   editText: "Editar"
   editTooltipText: "Editar"
   refreshTooltipText: "Atualizar"
@@ -106,7 +106,7 @@
 
 <editBase ""
   concurrencyErrorText: "Outro usuário atualizou este campo."
-  toggleCollapseText: "alternar recolher"
+  toggleCollapseText: "Alternar Recolher"
   saveText: "Salvar"
   titleText: "Editar"
   validationSummaryText: "Resumo de Validação"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: "A server error occured."
+  general: "Ocorreu um erro no servidor."
 >
 
 <listBase ""
@@ -132,10 +132,10 @@
   remainingText: "${0} registros restantes"
   cancelText: "Cancelar"
   insertText: "Novo"
-  noDataText: "nenhum registro"
+  noDataText: "Nenhum registro"
   loadingText: "Carregando"
   newTooltipText: "Novo"
-  refreshTooltipText: "Refresh"
+  refreshTooltipText: "Atualizar"
 >
 
 <pullToRefreshMixin ""
@@ -184,8 +184,8 @@
   noText: "Não"
   trueText: "V"
   falseText: "F"
-  hoursText: "horas"
-  hourText: "hora"
+  hoursText: "Horas"
+  hourText: "Hora"
   minutesText: "minutos"
   minuteText: "minuto"
   percentFormatText: "${0}${1}"
@@ -193,24 +193,36 @@
 >
 
 <groupedList ""
- toggleCollapseText: "alternar recolher"
+ toggleCollapseText: "Alternar Recolher"
 >
 
 <mainToolbar ""
   titleText: "Celular"
-  backTooltipText: "Anterior"
+  backTooltipText: "Voltar"
+  themeText: "Tema"
+  personalizationText: "Personalização"
+  lightText: "Claro"
+  darkText: "Escuro"
+  highContrastText: "Alto Contraste"
+  defaultText: "Padrão"
+  azureText: "Azul-fino"
+  amberText: "Âmbar"
+  amethystText: "Ametista"
+  turquoiseText: "Turquesa"
+  emeraldText: "Esmeralda"
+  graphiteText: "Grafite"
 >
 
 <relatedViewWidget ""
-  nodataText: "nenhum registro encontrado ..."
-  selectMoreDataText: "ver ${0} mais de ${1} ... "
-  selectMoreDataText2: "ver ${0} mais ... "
-  navToListText: "visualizar lista"
+  nodataText: "Nenhum registro encontrado ..."
+  selectMoreDataText: "Ver mais ${0} de ${1} ... "
+  selectMoreDataText2: "Ver mais ${0}... "
+  navToListText: "Exibir Lista"
   loadingText: "Carregando"
-  refreshViewText: "atualizar"
+  refreshViewText: "Atualizar"
   itemOfCountText: " ${0} de ${1}"
   totalCountText: " (${0})"
-  titleText: "Visualização Relacionada"
+  titleText: "Exibição Relacionada"
 >
 
 <searchWidget ""
@@ -222,7 +234,7 @@
 >
 
 <view ""
- titleText: "Visualização Genérica"
+ titleText: "Exibição Genérica"
 >
 
 <timePicker ""
@@ -269,7 +281,7 @@
   warningText: "Aviso"
 >
 <_listOfflineMixin ""
-  goToListViewText: "Os itens foram colocados na maleta. Você gostaria de mudar para a visualização em lista da maleta?"
+  goToListViewText: "Os itens foram colocados na maleta. Você gostaria de mudar para a exibição em lista da maleta?"
   interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Tente o processo de colocar os itens na maleta novamente."
   briefcasingText: "Agrupando na pasta, aguarde."
   errorBriefcasingText: "Erro ao agrupar na pasta"
@@ -277,11 +289,11 @@
 >
 
 <_detailOfflineMixin ""
-  goToDetailViewText: "O Item e os itens relacionados foram colocados na maleta. Você gostaria de mudar para a visualização em lista da maleta?"
+  goToDetailViewText: "O Item e os itens relacionados foram colocados na maleta. Você gostaria de mudar para a exibição em lista da maleta?"
   interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Tente o processo de colocar os itens na maleta novamente."
   briefcasingText: "Agrupando na pasta, aguarde."
   errorBriefcasingText: "Erro ao agrupar na pasta"
-  errorSavingOfflineViewText: "erro ao salvar a visualização offline:"
+  errorSavingOfflineViewText: "Erro ao salvar a exibição offline:"
   briefcaseTooltipText: "Maleta"
 >
 
@@ -290,6 +302,6 @@
   checkingText: "Verificando conectividade"
   loadingApplicationStateText: "Carregando estado da aplicação"
   initializingText: "Inicializando:"
-  viewSettingsText: "Definições de Visualização"
+  viewSettingsText: "Definições de Exibição"
   closeText: "Fechar"
 >

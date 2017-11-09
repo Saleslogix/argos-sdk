@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: "A server error occured."
+  general: "Es ist ein Serverfehler aufgetreten."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "Keine Datensätze"
   loadingText: "Ladevorgang läuft"
   newTooltipText: "Neu"
-  refreshTooltipText: "Refresh"
+  refreshTooltipText: "Aktualisieren"
 >
 
 <pullToRefreshMixin ""
@@ -199,6 +199,18 @@
 <mainToolbar ""
   titleText: "Mobil"
   backTooltipText: "Zurück"
+  themeText: "Design"
+  personalizationText: "Personalisierung"
+  lightText: "Hell"
+  darkText: "Dunkel"
+  highContrastText: "Kontrast"
+  defaultText: "Standard"
+  azureText: "Azur"
+  amberText: "Bernstein"
+  amethystText: "Amethyst"
+  turquoiseText: "Türkis"
+  emeraldText: "Smaragd"
+  graphiteText: "Graphit"
 >
 
 <relatedViewWidget ""
@@ -277,7 +289,7 @@
 >
 
 <_detailOfflineMixin ""
-  goToDetailViewText: "Element und zugehörige Elemente wurden bereits in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
+  goToDetailViewText: "Element und verknüpfte Elemente wurden bereits in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
   interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Elemente vollständig in die Aktentasche zu verschieben."
   briefcasingText: "Einträge werden in Aktentasche verschoben, bitte warten."
   errorBriefcasingText: "Fehler beim Verschieben in Aktentasche"

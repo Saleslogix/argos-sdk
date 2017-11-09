@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "${0} 信息"
+  informationText: "${0} 的信息"
   titleText: "明细"
   entityText: "实体"
   detailsText: "明细"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: "A server error occured."
+  general: "出现服务器错误。"
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "无记录"
   loadingText: "正在加载"
   newTooltipText: "新建"
-  refreshTooltipText: "Refresh"
+  refreshTooltipText: "刷新"
 >
 
 <pullToRefreshMixin ""
@@ -199,6 +199,18 @@
 <mainToolbar ""
   titleText: "移动电话"
   backTooltipText: "返回"
+  themeText: "主题"
+  personalizationText: "个性化"
+  lightText: "浅色"
+  darkText: "深色"
+  highContrastText: "高对比度"
+  defaultText: "默认值"
+  azureText: "蔚蓝色"
+  amberText: "琥珀色"
+  amethystText: "紫水晶色"
+  turquoiseText: "绿松石色"
+  emeraldText: "翠绿色"
+  graphiteText: "石墨色"
 >
 
 <relatedViewWidget ""

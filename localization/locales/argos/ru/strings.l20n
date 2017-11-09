@@ -72,10 +72,10 @@
 <fileSelect ""
   titleText: "Выбор файла"
   addFileText: "Выберите файл для добавления"
-  uploadText: "Отправить"
+  uploadText: "Передать"
   cancelText: "Отмена"
   selectFileText: "Выбрать файл"
-  loadingText: "Загрузка..."
+  loadingText: "Передача..."
   descriptionText: "Описание"
   bytesText: "байт"
   notSupportedText: "Ваше устройство не поддерживает добавление вложений."
@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "Информация ${0}"
+  informationText: "Информация: ${0}"
   titleText: "Подробности"
   entityText: "Сущность"
   detailsText: "Подробности"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: "A server error occured."
+  general: "Произошла ошибка сервера."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "Нет записей"
   loadingText: "Загрузка"
   newTooltipText: "Создать"
-  refreshTooltipText: "Refresh"
+  refreshTooltipText: "Обновить"
 >
 
 <pullToRefreshMixin ""
@@ -199,6 +199,18 @@
 <mainToolbar ""
   titleText: "Мобильный телефон"
   backTooltipText: "Назад"
+  themeText: "Тема"
+  personalizationText: "Персонализация"
+  lightText: "Светлый"
+  darkText: "Темный"
+  highContrastText: "Высокий контраст"
+  defaultText: "По умолчанию"
+  azureText: "Голубой"
+  amberText: "Янтарный"
+  amethystText: "Аметистовый"
+  turquoiseText: "Бирюзовый"
+  emeraldText: "Зеленый"
+  graphiteText: "Серый"
 >
 
 <relatedViewWidget ""
