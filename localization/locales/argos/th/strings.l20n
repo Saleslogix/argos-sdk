@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "ข้อมูล ${0}"
+  informationText: "ข้อมูลเกี่ยวกับ ${0}"
   titleText: "รายละเอียด"
   entityText: "เอนทิตี"
   detailsText: "รายละเอียด"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: "A server error occured."
+  general: "เกิดข้อผิดพลาดเซิร์ฟเวอร์"
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "ไม่มีระเบียน"
   loadingText: "กำลังโหลด"
   newTooltipText: "ใหม่"
-  refreshTooltipText: "Refresh"
+  refreshTooltipText: "รีเฟรช"
 >
 
 <pullToRefreshMixin ""
@@ -199,6 +199,18 @@
 <mainToolbar ""
   titleText: "มือถือ"
   backTooltipText: "ย้อนกลับ"
+  themeText: "ธีม"
+  personalizationText: "การตั้งค่าส่วนบุคคล"
+  lightText: "สว่าง"
+  darkText: "มืด"
+  highContrastText: "ความคมชัดสูง"
+  defaultText: "เริ่มต้น"
+  azureText: "ขาวอมฟ้า"
+  amberText: "เหลืองอำพัน"
+  amethystText: "ม่วงแอเมทิสต์"
+  turquoiseText: "ฟ้าเทอร์คอยส์"
+  emeraldText: "เขียวมรกต"
+  graphiteText: "กราไฟท์"
 >
 
 <relatedViewWidget ""

@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "${0} 情報"
+  informationText: "${0}の情報"
   titleText: "詳細"
   entityText: "エンティティ"
   detailsText: "詳細"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: "A server error occured."
+  general: "サーバーエラーが発生しました。"
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "レコードなし"
   loadingText: "ロードしています"
   newTooltipText: "新規"
-  refreshTooltipText: "Refresh"
+  refreshTooltipText: "更新"
 >
 
 <pullToRefreshMixin ""
@@ -199,6 +199,18 @@
 <mainToolbar ""
   titleText: "携帯電話"
   backTooltipText: "戻る"
+  themeText: "テーマ"
+  personalizationText: "個人設定"
+  lightText: "淡"
+  darkText: "濃"
+  highContrastText: "ハイコントラスト"
+  defaultText: "デフォルト"
+  azureText: "空色"
+  amberText: "アンバー"
+  amethystText: "アメジスト"
+  turquoiseText: "ターコイズ"
+  emeraldText: "エメラルド"
+  graphiteText: "グラファイト"
 >
 
 <relatedViewWidget ""

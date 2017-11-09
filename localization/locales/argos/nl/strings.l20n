@@ -1,6 +1,6 @@
 <dateField ""
   emptyText: ""
-  invalidDateFormatErrorText: "Veld ${0} heeft een ongeldige gegevensindeling."
+  invalidDateFormatErrorText: "Veld ${0} heeft een ongeldige datumnotatie."
   cancelText: "Annuleren"
   confirmText: "Bevestigen"
   advancedText: "Geavanceerd"
@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "${0}-informatie"
+  informationText: "Informatie over ${0}"
   titleText: "Details"
   entityText: "Entiteit"
   detailsText: "Details"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: "A server error occured."
+  general: "Er is een serverfout opgetreden."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "geen records"
   loadingText: "Laden"
   newTooltipText: "Nieuw"
-  refreshTooltipText: "Refresh"
+  refreshTooltipText: "Vernieuwen"
 >
 
 <pullToRefreshMixin ""
@@ -199,6 +199,18 @@
 <mainToolbar ""
   titleText: "Mobiel nr"
   backTooltipText: "Vorige"
+  themeText: "Thema"
+  personalizationText: "Personalisatie"
+  lightText: "Licht"
+  darkText: "Donker"
+  highContrastText: "Hoog contrast"
+  defaultText: "Standaard"
+  azureText: "Blauw"
+  amberText: "Geel"
+  amethystText: "Paars"
+  turquoiseText: "Turquoise"
+  emeraldText: "Groen"
+  graphiteText: "Grijs"
 >
 
 <relatedViewWidget ""
