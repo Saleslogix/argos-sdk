@@ -1,6 +1,6 @@
 <dateField ""
   emptyText: ""
-  invalidDateFormatErrorText: "Le format de la date du champ "${0}" n'est pas valide."
+  invalidDateFormatErrorText: "Le format de la date du champ \"${0}\" n'est pas valide."
   cancelText: "Annuler"
   confirmText: "Confirmer"
   advancedText: "Avancé"
@@ -24,7 +24,7 @@
 >
 
 <lookupField ""
-  dependentErrorText: "Une valeur doit être sélectionnée pour "${0}"."
+  dependentErrorText: "Une valeur doit être sélectionnée pour \"${0}\"."
   emptyText: ""
   completeText: "Sélectionner"
   lookupLabelText: "Recherche"
