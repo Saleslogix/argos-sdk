@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "${0} 資訊"
+  informationText: "${0} 的資訊"
   titleText: "詳細資料"
   entityText: "實體"
   detailsText: "詳細資料"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: "A server error occured."
+  general: "發生伺服器錯誤。"
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "無記錄"
   loadingText: "載入"
   newTooltipText: "新增"
-  refreshTooltipText: "Refresh"
+  refreshTooltipText: "重新整理"
 >
 
 <pullToRefreshMixin ""
@@ -199,6 +199,18 @@
 <mainToolbar ""
   titleText: "行動電話"
   backTooltipText: "向後"
+  themeText: "主題"
+  personalizationText: "個人化"
+  lightText: "淺色"
+  darkText: "深色"
+  highContrastText: "高對比"
+  defaultText: "預設"
+  azureText: "天藍色"
+  amberText: "琥珀色"
+  amethystText: "紫水晶色"
+  turquoiseText: "藍綠色"
+  emeraldText: "祖母綠"
+  graphiteText: "石墨色"
 >
 
 <relatedViewWidget ""
