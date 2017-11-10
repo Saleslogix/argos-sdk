@@ -229,7 +229,7 @@
 >
 
 <relativeDateTimePicker ""
-  titleText: "Approssimativa..."
+  titleText: "Ora approssimativa..."
   pickDateTimeText: "Avanzate"
   thisEveningText: "Questa sera"
   tomorrowMorningText: "Domani mattina"
