@@ -125,7 +125,7 @@
   titleText: "Liste"
   configureText: "Configurer"
   errorRenderText: "Erreur de rendu du modèle de ligne"
-  remainingText: "${0} fiches restantes"
+  remainingText: "${0} enregistrements restants"
   cancelText: "Annuler"
   insertText: "Nouveau"
   noDataText: "Aucun enregistrement"

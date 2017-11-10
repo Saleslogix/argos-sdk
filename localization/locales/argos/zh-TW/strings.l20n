@@ -143,8 +143,8 @@
 
 <calendar ""
   titleText: "行事曆"
-  amText: "AM"
-  pmText: "PM"
+  amText: "上午"
+  pmText: "下午"
   january: "一月"
   february: "二月"
   march: "三月"
@@ -223,16 +223,16 @@
 >
 
 <timePicker ""
-  amText: "AM"
-  pmText: "PM"
+  amText: "上午"
+  pmText: "下午"
   setTimeText: "設定時間"
 >
 
 <relativeDateTimePicker ""
   titleText: "大約..."
   pickDateTimeText: "進階"
-  thisEveningText: "這個晚上"
-  tomorrowMorningText: "明天早上"
+  thisEveningText: "今天晚上"
+  tomorrowMorningText: "明天上午"
   tomorrowAfternoonText: "明天晚上"
   nextWeekText: "下週"
   nextMonthText: "下個月"

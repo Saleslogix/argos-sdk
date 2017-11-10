@@ -143,8 +143,8 @@
 
 <calendar ""
   titleText: "日历"
-  amText: "AM"
-  pmText: "PM"
+  amText: "上午"
+  pmText: "下午"
   january: "一月"
   february: "二月"
   march: "三月"
@@ -223,13 +223,13 @@
 >
 
 <timePicker ""
-  amText: "AM"
-  pmText: "PM"
+  amText: "上午"
+  pmText: "下午"
   setTimeText: "设置时间"
 >
 
 <relativeDateTimePicker ""
-  titleText: "周围..."
+  titleText: "大约..."
   pickDateTimeText: "高级"
   thisEveningText: "今晚"
   tomorrowMorningText: "明早"

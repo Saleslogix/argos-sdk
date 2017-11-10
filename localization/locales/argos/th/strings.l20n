@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "การเลือกไฟล์"
-  addFileText: "คลิกหรือแท็บที่นี่เพื่อเพิ่มไฟล์"
+  addFileText: "คลิกหรือแตะที่นี่เพื่อเพิ่มไฟล์"
   uploadText: "อัปโหลด"
   cancelText: "ยกเลิก"
   selectFileText: "เลือกไฟล์"

@@ -1,6 +1,6 @@
 <dateField ""
   emptyText: ''
-  invalidDateFormatErrorText: "Veld ${0} heeft een ongeldige gegevensindeling."
+  invalidDateFormatErrorText: "Veld ${0} heeft een ongeldige datumnotatie."
   cancelText: "Annuleren"
   confirmText: "Bevestigen"
   advancedText: "Geavanceerd"
@@ -17,7 +17,7 @@
 >
 
 <editorField ""
-  lookupLabelText: "bewerken"
+  lookupLabelText: "Bewerken"
   lookupText: "..."
   emptyText: "leeg"
   completeText: "OK"
@@ -76,7 +76,7 @@
   cancelText: "Annuleren"
   selectFileText: "Bestand selecteren"
   loadingText: "Uploaden..."
-  descriptionText: "omschrijving"
+  descriptionText: "Omschrijving"
   bytesText: "bytes"
   notSupportedText: "Toevoegen van bijlagen wordt niet ondersteund door uw apparaat."
 >
@@ -98,13 +98,13 @@
   detailsText: "Details"
   loadingText: "Laden"
   notAvailableText: "De aangevraagde gegevens zijn niet beschikbaar."
-  toggleCollapseText: "uitvouwen/samenvouwen"
+  toggleCollapseText: "Uitvouwen/samenvouwen"
   editText: "Bewerken"
 >
 
 <editBase ""
   concurrencyErrorText: "Dit veld is bijgewerkt door een andere gebruiker."
-  toggleCollapseText: "uitvouwen/samenvouwen"
+  toggleCollapseText: "Uitvouwen/samenvouwen"
   saveText: "Opslaan"
   titleText: "Bewerken"
   validationSummaryText: "Validatieoverzicht"
@@ -145,27 +145,27 @@
   titleText: "Kalender"
   amText: "AM"
   pmText: "PM"
-  january: "Januari"
-  february: "Februari"
-  march: "Maart"
-  april: "April"
-  may: "Mei"
-  june: "Juni"
-  july: "Juli"
-  august: "Augustus"
-  september: "September"
-  october: "Oktober"
-  november: "November"
-  december: "December"
+  january: "januari"
+  february: "februari"
+  march: "maart"
+  april: "april"
+  may: "mei"
+  june: "juni"
+  july: "juli"
+  august: "augustus"
+  september: "september"
+  october: "oktober"
+  november: "november"
+  december: "december"
   clearText: "Wissen"
   todayText: "Vandaag"
-  sundayAbbreviated: "Zo"
-  mondayAbbreviated: "Ma"
-  tuesdayAbbreviated: "Di"
-  wednesdayAbbreviated: "Wo"
-  thursdayAbbreviated: "Do"
-  fridayAbbreviated: "Vr"
-  saturdayAbbreviated: "Za"
+  sundayAbbreviated: "zo"
+  mondayAbbreviated: "ma"
+  tuesdayAbbreviated: "di"
+  wednesdayAbbreviated: "wo"
+  thursdayAbbreviated: "do"
+  fridayAbbreviated: "vr"
+  saturdayAbbreviated: "za"
 >
 
 <errorManager ""
@@ -187,11 +187,11 @@
 >
 
 <groupedList ""
- toggleCollapseText: "uitvouwen/samenvouwen"
+ toggleCollapseText: "Uitvouwen/samenvouwen"
 >
 
 <mainToolbar ""
-  titleText: "Mobiel telefoonnummer"
+  titleText: "Mobiel nr"
 >
 
 <relatedViewWidget ""
@@ -266,14 +266,14 @@
   warningText: "Waarschuwing"
 >
 <_listOfflineMixin
-  goToListViewText: "De items zijn in de werkmap geplaatst. Wilt u de lijstweergave van de werkmap activeren?"
+  goToListViewText: "De items zijn in de werkmap geplaatst. Wilt u naar de lijstweergave van de werkmap gaan?"
   interruptedText: "De procedure werd onderbroken en is niet volledig voltooid. Voer de procedure opnieuw uit om de plaatsing van items in de werkmap te voltooien."
   briefcasingText: "Items worden in werkmap geplaatst, een ogenblik geduld."
   errorBriefcasingText: "Fout bij plaatsen van items in werkmap"
 >
 
 <_detailOfflineMixin
-  goToDetailViewText: "Het item en de gerelateerde items zijn in de werkmap geplaatst. Wilt u de lijstweergave van de werkmap activeren?"
+  goToDetailViewText: "Het item en de gerelateerde items zijn in de werkmap geplaatst. Wilt u naar de lijstweergave van de werkmap gaan?"
   interruptedText: "De procedure werd onderbroken en is niet volledig voltooid. Voer de procedure opnieuw uit om de plaatsing van items in de werkmap te voltooien."
   briefcasingText: "Items worden in werkmap geplaatst, een ogenblik geduld."
   errorBriefcasingText: "Fout bij plaatsen van items in werkmap"

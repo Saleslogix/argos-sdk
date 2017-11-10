@@ -27,7 +27,7 @@
   dependentErrorText: "Es muss ein Wert für '${0}' ausgewählt werden."
   emptyText: ""
   completeText: "Auswählen"
-  lookupLabelText: "suchen"
+  lookupLabelText: "Suche"
   lookupText: "..."
 >
 
@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "Dateiauswahl"
-  addFileText: "Zum Hinzufügen einer Datei hier klicken oder tippen."
+  addFileText: "Klicken oder tippen Sie hier, um eine Datei hinzuzufügen."
   uploadText: "Hochladen"
   cancelText: "Abbrechen"
   selectFileText: "Datei auswählen"
@@ -121,11 +121,11 @@
 
 <listBase ""
   moreText: "Mehr Datensätze abrufen"
-  emptySelectionText: "Keine"
+  emptySelectionText: "k. A."
   titleText: "Liste"
   configureText: "Konfigurieren"
   errorRenderText: "Fehler beim Darstellen der Zeilenvorlage."
-  remainingText: "${0} Datensätze verbleibend"
+  remainingText: "Weitere ${0} Datensätze vorhanden"
   cancelText: "Abbrechen"
   insertText: "Neu"
   noDataText: "Keine Datensätze"
@@ -215,7 +215,7 @@
 >
 
 <tabWidget ""
- moreText: "Weitere"
+ moreText: "Mehr"
 >
 
 <view ""
@@ -262,7 +262,7 @@
   confirmText: "Bestätigen"
   editText: "Bearbeiten"
   okayText: "OK"
-  submitText: "Senden"
+  submitText: "Übermitteln"
   warningText: "Warnung"
 >
 <_listOfflineMixin
@@ -273,7 +273,7 @@
 >
 
 <_detailOfflineMixin
-  goToDetailViewText: "Element und zugehörige Elemente wurden bereits in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
+  goToDetailViewText: "Element und verknüpfte Elemente wurden bereits in Aktentasche verschoben. Möchten Sie zur Listenansicht der Aktentasche wechseln?"
   interruptedText: "Der Prozess wurde unterbrochen und konnte nicht vollständig abgeschlossen werden. Versuchen Sie erneut, den Prozess auszuführen, um die Elemente vollständig in die Aktentasche zu verschieben."
   briefcasingText: "Einträge werden in Aktentasche verschoben, bitte warten."
   errorBriefcasingText: "Fehler beim Verschieben in Aktentasche"
@@ -283,6 +283,6 @@
 <sdkApplication
   connectionToastTitleText: "Verbindung"
   checkingText: "Verbindung wird geprüft"
-  loadingApplicationStateText: "Anwendungsstatus wird geladen"
+  loadingApplicationStateText: "Status: Anwendung wird geladen"
   initializingText: "Wird initialisiert:"
 >

@@ -57,7 +57,7 @@
   twoWeeksAgoText: "2 週間前"
   threeWeeksAgoText: "3 週間前"
   twoMonthsAgoText: "2 か月前"
-  threeMonthsAgoText: "2 か月前"
+  threeMonthsAgoText: "3 か月前"
   unknownText: "不明"
 >
 
@@ -71,7 +71,7 @@
 
 <fileSelect ""
   titleText: "ファイル選択"
-  addFileText: "ここをクリップまたはタップしてファイルを追加します。"
+  addFileText: "ここをクリックまたはタップしてファイルを追加します。"
   uploadText: "アップロード"
   cancelText: "キャンセル"
   selectFileText: "ファイルの選択"
@@ -143,8 +143,8 @@
 
 <calendar ""
   titleText: "カレンダー"
-  amText: "AM"
-  pmText: "PM"
+  amText: "午前"
+  pmText: "午後"
   january: "1 月"
   february: "2 月"
   march: "3 月"
@@ -223,8 +223,8 @@
 >
 
 <timePicker ""
-  amText: "AM"
-  pmText: "PM"
+  amText: "午前"
+  pmText: "午後"
   setTimeText: "時刻を設定"
 >
 
