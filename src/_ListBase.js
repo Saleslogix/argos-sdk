@@ -28,6 +28,7 @@ import convert from 'argos/Convert';
 
 
 const resource = getResource('listBase');
+const resourceSDK = getResource('sdkApplication');
 
 /**
  * @classdesc A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
@@ -44,6 +45,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
    * * listContent => contentNode's innerHTML
    * * remainingContent => remainingContentNode's innerHTML
    */
+  viewSettingsText: resourceSDK.viewSettingsText,
   attributeMap: {
     listContent: {
       node: 'contentNode',
@@ -95,7 +97,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
               <div data-dojo-attach-point="searchNode"></div>
               {% } %}
               {% if($.hasSettings) { %}
-              <button class="btn" type="button" data-action="openSettings" aria-controls="list_toolbar_setting_{%= $.id %}">
+              <button class="btn" title="{%= $.viewSettingsText %}" type="button" data-action="openSettings" aria-controls="list_toolbar_setting_{%= $.id %}">
                 <svg class="icon" role="presentation"><use xlink:href="#icon-settings"></use></svg>
                 <span class="audible">List Settings</span>
               </button>
