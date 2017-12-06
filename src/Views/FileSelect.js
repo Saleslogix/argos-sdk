@@ -71,7 +71,7 @@ const __class = declare('argos.Views.FileSelect', [View], /** @lends argos.Views
    *
    */
   widgetTemplate: new Simplate([
-    '<div data-title="{%: $.titleText %}" class="panel twelve columns {%= $.cls %}">',
+    '<div style="padding-top: 10px;" data-title="{%: $.titleText %}" class="panel twelve columns {%= $.cls %}">',
     '<br>', // TODO: all views should be placed in .row -> .columns
     '<div data-dojo-attach-point="fileArea" class="file-area">',
     `<div class="field" data-dojo-attach-point="fileWrapper">
