@@ -60,6 +60,12 @@ const control = declare('argos.Fields.BooleanField', [Field], /** @lends argos.F
 
   /**
    * @property {Boolean}
+   * Local value used to reset toggle node if the field is disabled
+   */
+  toggleValue: false,
+
+  /**
+   * @property {Boolean}
    * When clearing the boolean field it sets the fields value to `this.checked`
    */
   checked: false,
@@ -79,6 +85,7 @@ const control = declare('argos.Fields.BooleanField', [Field], /** @lends argos.F
    */
   _onClick: function _onClick(/* evt*/) {
     if (this.isDisabled()) {
+      this.toggleNode.checked = this.toggleValue;
       return;
     }
 
@@ -107,6 +114,7 @@ const control = declare('argos.Fields.BooleanField', [Field], /** @lends argos.F
       this.originalValue = newVal;
     }
 
+    this.toggleValue = newVal;
     this.toggleNode.checked = newVal;
     this.onChange(newVal, this);
   },
