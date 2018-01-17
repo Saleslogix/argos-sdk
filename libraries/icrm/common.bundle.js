@@ -1070,7 +1070,9 @@ function fixedLocale(_val, _d) {
     p = Math.pow(10, d);
     v = val.toFixed(d); // only d decimal places
     f = Math.floor(parseFloat((p * (v - Math.floor(v))).toPrecision(d))); // for fractional part, only need d significant digits
-    if (f === 0) {
+    if (f.toString().length < d && f !== 0) {
+      f = '0' + f.toString();
+    } else if (f === 0) {
       f = String(p).slice(1);
     }
   } else {
