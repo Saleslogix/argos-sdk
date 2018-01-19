@@ -1067,12 +1067,10 @@ function fixedLocale(_val, _d) {
     d = 2;
   }
   if (d > 0) {
-    p = Math.pow(10, d);
     v = val.toFixed(d); // only d decimal places
-    f = Math.floor(parseFloat((p * (v - Math.floor(v))).toPrecision(d))); // for fractional part, only need d significant digits
-    if (f.toString().length < d && f !== 0) {
-      f = '0' + f.toString();
-    } else if (f === 0) {
+    f = (v - Math.floor(v)).toFixed(d); // only want d decimal places for fraction
+    f = String(f).slice(2);
+    if (f === 0) {
       f = String(p).slice(1);
     }
   } else {
