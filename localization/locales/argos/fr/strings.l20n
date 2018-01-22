@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: "A server error occured."
+  general: "A server error occurred."
 >
 
 <listBase ""
