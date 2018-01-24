@@ -116,7 +116,7 @@
 >
 
 <errorHandleMixin ""
-  general: 'A server error occurred.'
+  general: "A server error occurred."
 >
 
 <listBase ""
