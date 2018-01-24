@@ -281,6 +281,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     const result = this._getToolDOMNode(id);
     if (result) {
       $(result).addClass('toolButton-disabled');
+      result.disabled = true;
     }
   },
   enableTool: function enableTool(id) {
@@ -288,6 +289,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     const result = this._getToolDOMNode(id);
     if (result) {
       $(result).removeClass('toolButton-disabled');
+      result.disabled = false;
     }
   },
   _getToolDOMNode: function _getToolDOMNode(id) {
