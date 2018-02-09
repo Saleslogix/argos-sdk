@@ -105,7 +105,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
   create24HourList: function create24HourList(totalHours) {
     const hourValues = [];
     for (let i = 0; i < totalHours; i++) {
-      const dispVal = (i < 10) ? `0${i.toString()}` : (i + 1).toString();
+      const dispVal = `${i.toString()}`.padStart(2, '0');
       hourValues.push({ value: dispVal, key: dispVal });
     }
     return hourValues;
@@ -114,7 +114,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
     if (!this.minuteValues) {
       this.minuteValues = [];
       for (let i = 0; i < 60; i += 5) {
-        const dispVal = (i < 10) ? `0${i.toString()}` : i.toString();
+        const dispVal = (i < 10) ? `${i.toString()}` : i.toString();
         this.minuteValues.push({ value: dispVal, key: i.toString() });
       }
     }
@@ -212,7 +212,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
       minutes = Array(2).join('0') + minutes;
     }
     this.timeValue.seconds = date.seconds();
-    ((App.is24HourClock() && hour < 10) ? this.createHourDropdown(`0${hour}`) : this.createHourDropdown(`${hour}`))
+    (App.is24HourClock() ? this.createHourDropdown(`${hour}`.padStart(2, '0')) : this.createHourDropdown(`${hour}`))
       .createMinuteDropdown(`${minutes}`);
     if (!App.is24HourClock()) {
       this.setMeridiem(meridiemToggled, this.meridiemNode.children[0]);
