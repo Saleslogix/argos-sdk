@@ -114,7 +114,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
     if (!this.minuteValues) {
       this.minuteValues = [];
       for (let i = 0; i < 60; i += 5) {
-        const dispVal = (i < 10) ? `${i.toString()}` : i.toString();
+        const dispVal = `${i.toString()}`.padStart(2, '0');
         this.minuteValues.push({ value: dispVal, key: i.toString() });
       }
     }
