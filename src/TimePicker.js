@@ -105,7 +105,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
   create24HourList: function create24HourList(totalHours) {
     const hourValues = [];
     for (let i = 0; i < totalHours; i++) {
-      const dispVal = `${i.toString()}`.padStart(2, '0');
+      const dispVal = `${i}`.padStart(2, '0');
       hourValues.push({ value: dispVal, key: dispVal });
     }
     return hourValues;
@@ -114,7 +114,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
     if (!this.minuteValues) {
       this.minuteValues = [];
       for (let i = 0; i < 60; i += 5) {
-        const dispVal = `${i.toString()}`.padStart(2, '0');
+        const dispVal = `${i}`.padStart(2, '0');
         this.minuteValues.push({ value: dispVal, key: i.toString() });
       }
     }
