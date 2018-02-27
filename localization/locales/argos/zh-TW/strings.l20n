@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "${0} 的資訊"
+  informationText: "${0}的資訊"
   titleText: "詳細資料"
   entityText: "實體"
   detailsText: "詳細資料"
@@ -208,7 +208,7 @@
   azureText: "天藍色"
   amberText: "琥珀色"
   amethystText: "紫水晶色"
-  turquoiseText: "藍綠色"
+  turquoiseText: "寶石綠"
   emeraldText: "祖母綠"
   graphiteText: "石墨色"
 >

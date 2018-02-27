@@ -113,7 +113,7 @@
   concurrencySummaryText: "Error(es) de concurrencia"
   detailsText: "Detalles"
   loadingText: "Cargando"
-  errorGeneral: "Ha ocurrido un error en el servidor mientras se estaba solicitando información."
+  errorGeneral: "Se ha producido un error en el servidor mientras se solicitaba información."
   error410:  "Error al guardar. Este registro ya no existe."
   saveTooltipText: "Guardar"
   cancelTooltipText: "Cancelar"

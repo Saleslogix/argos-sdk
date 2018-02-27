@@ -244,13 +244,13 @@
 >
 
 <relativeDateTimePicker ""
-  titleText: "Etwa..."
+  titleText: "Auswahl..."
   pickDateTimeText: "Erweitert"
-  thisEveningText: "Dieser Abend"
+  thisEveningText: "Heute Abend"
   tomorrowMorningText: "Morgen Vormittag"
   tomorrowAfternoonText: "Morgen Abend"
   nextWeekText: "Nächste Woche"
-  nextMonthText: "Nächster Monat"
+  nextMonthText: "Nächsten Monat"
   cancelText: "Abbrechen"
   confirmText: "Bestätigen"
 >
