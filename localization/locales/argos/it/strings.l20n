@@ -3,7 +3,7 @@
   invalidDateFormatErrorText: "Formato data del campo '${0}' non valido."
   cancelText: "Annulla"
   confirmText: "Conferma"
-  advancedText: "Avanzato"
+  advancedText: "Avanzate"
 >
 
 <durationField ""

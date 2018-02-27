@@ -93,9 +93,9 @@
 
 <detailBase ""
   informationText: "Информация: ${0}"
-  titleText: "Подробности"
+  titleText: "Детали"
   entityText: "Сущность"
-  detailsText: "Подробности"
+  detailsText: "Детали"
   loadingText: "Загрузка"
   notAvailableText: "Запрошенные данные недоступны."
   toggleCollapseText: "Показать/скрыть"
@@ -111,7 +111,7 @@
   titleText: "Редактировать"
   validationSummaryText: "Сводка проверки"
   concurrencySummaryText: "Ошибки при совместном доступе"
-  detailsText: "Подробности"
+  detailsText: "Детали"
   loadingText: "Загрузка"
   errorGeneral: "При запросе данных возникла ошибка сервера."
   error410:  "Ошибка при сохранении. Эта запись больше не существует."
@@ -131,7 +131,7 @@
   errorRenderText: "Ошибка при визуализации шаблона строки."
   remainingText: "Осталось записей: ${0}"
   cancelText: "Отмена"
-  insertText: "Новый"
+  insertText: "Создать"
   noDataText: "Нет записей"
   loadingText: "Загрузка"
   newTooltipText: "Создать"
@@ -197,7 +197,7 @@
 >
 
 <mainToolbar ""
-  titleText: "Мобильный телефон"
+  titleText: "Мобильный тел."
   backTooltipText: "Назад"
   themeText: "Тема"
   personalizationText: "Персонализация"
@@ -302,6 +302,6 @@
   checkingText: "Проверка подключения"
   loadingApplicationStateText: "Состояние загрузки приложения"
   initializingText: "Инициализация:"
-  viewSettingsText: "ПРОСМОТР НАСТРОЕК"
+  viewSettingsText: "Просмотр настроек"
   closeText: "Закрыть"
 >

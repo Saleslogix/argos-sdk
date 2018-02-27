@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "Informations ${0}"
+  informationText: "Informations sur ${0}"
   titleText: "Détail"
   entityText: "Entité"
   detailsText: "Détails"
@@ -120,7 +120,7 @@
 >
 
 <errorHandleMixin ""
-  general: "A server error occurred."
+  general: "Une erreur s'est produite sur le serveur."
 >
 
 <listBase ""
@@ -135,7 +135,7 @@
   noDataText: "Aucun enregistrement"
   loadingText: "Chargement en cours"
   newTooltipText: "Nouveau"
-  refreshTooltipText: "Refresh"
+  refreshTooltipText: "Actualiser"
 >
 
 <pullToRefreshMixin ""
@@ -199,6 +199,18 @@
 <mainToolbar ""
   titleText: "Téléphone portable"
   backTooltipText: "Précédent"
+  themeText: "Thème"
+  personalizationText: "Personnalisation"
+  lightText: "Clair"
+  darkText: "Foncé"
+  highContrastText: "Contraste élevé"
+  defaultText: "Par défaut"
+  azureText: "Azure"
+  amberText: "Ambre"
+  amethystText: "Améthyste"
+  turquoiseText: "Turquoise"
+  emeraldText: "Emeraude"
+  graphiteText: "Graphite"
 >
 
 <relatedViewWidget ""

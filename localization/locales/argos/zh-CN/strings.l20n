@@ -92,7 +92,7 @@
 >
 
 <detailBase ""
-  informationText: "${0} 的信息"
+  informationText: "${0}信息"
   titleText: "明细"
   entityText: "实体"
   detailsText: "明细"
@@ -293,7 +293,7 @@
   interruptedText: "处理已中断，无法完全完成。请再次重试此处理以将项目完全加入公文包。"
   briefcasingText: "正在加入公文包，请稍候。"
   errorBriefcasingText: "加入公文包时出错"
-  errorSavingOfflineViewText: "保存离线视图时出错："
+  errorSavingOfflineViewText: "保存脱机视图时出错："
   briefcaseTooltipText: "公文包"
 >
 
