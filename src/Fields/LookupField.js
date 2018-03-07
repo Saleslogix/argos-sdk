@@ -23,6 +23,7 @@ import getResource from '../I18n';
 
 
 const resource = getResource('lookupField');
+const modalResource = getResource('modal');
 
 /**
  * @class argos.Fields.LookupField
@@ -125,9 +126,10 @@ const control = declare('argos.Fields.LookupField', [_Field], /** @lends argos.F
    */
   emptyText: resource.emptyText,
   /**
-   * @deprecated
+   * @property {String}
+   * The tooltip text for saving the selection
    */
-  completeText: resource.completeText,
+  completeText: modalResource.completeText,
   /**
    * @property {String}
    * The ARIA label text in the lookup button
@@ -138,6 +140,11 @@ const control = declare('argos.Fields.LookupField', [_Field], /** @lends argos.F
    * The text placed inside the lookup button
    */
   lookupText: resource.lookupText,
+  /**
+   * @property {String}
+   * The tooltip text for cancelling the selection
+   */
+  cancelText: modalResource.cancelText,
 
   /**
    * @cfg {String}
@@ -388,12 +395,14 @@ const control = declare('argos.Fields.LookupField', [_Field], /** @lends argos.F
         tbar: [{
           id: 'complete',
           svg: 'check',
+          title: this.completeText,
           fn: this.complete,
           scope: this,
         }, {
           id: 'cancel',
           side: 'left',
           svg: 'cancel',
+          title: this.cancelText,
           fn: this.reui.back,
           scope: this.reui,
         }],
