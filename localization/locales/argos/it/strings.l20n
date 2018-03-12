@@ -17,9 +17,9 @@
 >
 
 <editorField ""
-  lookupLabelText: "modifica"
+  lookupLabelText: "Modifica"
   lookupText: "..."
-  emptyText: "vuoto"
+  emptyText: "Vuoto"
   completeText: "OK"
 >
 
@@ -27,12 +27,12 @@
   dependentErrorText: "È necessario selezionare un valore per '${0}'."
   emptyText: ""
   completeText: "Seleziona"
-  lookupLabelText: "ricerca"
+  lookupLabelText: "Ricerca"
   lookupText: "..."
 >
 
 <signatureField ""
-  signatureLabelText: "firma"
+  signatureLabelText: "Firma"
   signatureText: "..."
 >
 
@@ -76,7 +76,7 @@
   cancelText: "Annulla"
   selectFileText: "Seleziona file"
   loadingText: "Caricamento..."
-  descriptionText: "descrizione"
+  descriptionText: "Descrizione"
   bytesText: "byte"
   notSupportedText: "Aggiunta di allegati non supportata dal dispositivo."
 >
@@ -98,7 +98,7 @@
   detailsText: "Dettagli"
   loadingText: "Caricamento"
   notAvailableText: "I dati richiesti non sono disponibili."
-  toggleCollapseText: "espandi/comprimi"
+  toggleCollapseText: "Espandi/Comprimi"
   editText: "Modifica"
   editTooltipText: "Modifica"
   refreshTooltipText: "Aggiorna"
@@ -106,7 +106,7 @@
 
 <editBase ""
   concurrencyErrorText: "Questo campo è stato aggiornato da un altro utente."
-  toggleCollapseText: "espandi/comprimi"
+  toggleCollapseText: "Espandi/Comprimi"
   saveText: "Salva"
   titleText: "Modifica"
   validationSummaryText: "Riepilogo convalida"
@@ -132,7 +132,7 @@
   remainingText: "${0} record rimanenti"
   cancelText: "Annulla"
   insertText: "Nuovo"
-  noDataText: "nessun record"
+  noDataText: "Nessun record"
   loadingText: "Caricamento"
   newTooltipText: "Nuovo"
   refreshTooltipText: "Aggiorna"
@@ -193,7 +193,7 @@
 >
 
 <groupedList ""
- toggleCollapseText: "espandi/comprimi"
+ toggleCollapseText: "Espandi/Comprimi"
 >
 
 <mainToolbar ""
@@ -214,12 +214,12 @@
 >
 
 <relatedViewWidget ""
-  nodataText: "nessun record trovato..."
-  selectMoreDataText: "visualizza altri ${0} di ${1}... "
-  selectMoreDataText2: "visualizza altri ${0}... "
-  navToListText: "vedi elenco"
+  nodataText: "Nessun record trovato..."
+  selectMoreDataText: "Visualizza altri ${0} di ${1}... "
+  selectMoreDataText2: "Visualizza altri ${0}... "
+  navToListText: "Vedi elenco"
   loadingText: "Caricamento"
-  refreshViewText: "aggiorna"
+  refreshViewText: "Aggiorna"
   itemOfCountText: " ${0} di ${1}"
   totalCountText: " (${0})"
   titleText: "Vista correlata"
@@ -293,7 +293,7 @@
   interruptedText: "Il processo è stato interrotto e non è stato interamente completato. Provare di nuovo per inserire tutti gli elementi in Sincronia file."
   briefcasingText: "Sincronia file in corso. Attendere."
   errorBriefcasingText: "Errore durante la sincronia file"
-  errorSavingOfflineViewText: "errore durante il salvataggio della vista offline:"
+  errorSavingOfflineViewText: "Errore durante il salvataggio della vista offline:"
   briefcaseTooltipText: "Sincronia file"
 >
 
