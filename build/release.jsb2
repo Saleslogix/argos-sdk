@@ -9,6 +9,10 @@
       "isDebug": true,
       "fileIncludes": [
         {
+          "text": "pdf.min.js",
+          "path": "../libraries/"
+        },
+        {
           "text": "l20n.js",
           "path": "../libraries/l20n/"
         },
