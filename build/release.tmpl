@@ -10,7 +10,7 @@
       "fileIncludes": [
         {
           "text": "pdf.min.js",
-          "path": "../libraries/"
+          "path": "../libraries/pdfjs/"
         },
         {
           "text": "l20n.js",
@@ -97,6 +97,11 @@
     }
   ],
   "resources": [
+    {
+      "src": "../libraries/pdfjs",
+      "dest": "content/javascript",
+      "filters": "(pdf\\.worker\\.min\\.js)"
+    },
     {
       "src": "../localization/locales/argos",
       "dest": "localization/locales/argos",

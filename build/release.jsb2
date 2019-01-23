@@ -374,6 +374,11 @@
   ],
   "resources": [
     {
+      "src": "../libraries/pdfjs",
+      "dest": "content/javascript",
+      "filters": "(pdf\\.worker\\.min\\.js)"
+    },
+    {
       "src": "../localization/locales/argos",
       "dest": "localization/locales/argos",
       "filters": ".*(\\.l20n)"
