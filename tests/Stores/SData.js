@@ -675,7 +675,7 @@ define('tests/Stores/SData', [
             expect(store.getMetadata()).toBe(null);
         });
 
-        it('can remove some data', function() {
+        it('can remove some data', function(done) {
             var store, promise, data;
             store = new Store({
                 service: new MockService(),
