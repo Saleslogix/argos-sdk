@@ -311,14 +311,18 @@ return describe('argos.Format', function() {
     it('Can present as percent - change location of percent symbol', function() {
         var testStr = .10;
         var places = 0;
+        var original = format.percentFormatText;
         format.percentFormatText = '${1}${0}';
         expect(format.percent(testStr, places)).toEqual('%10');
+        format.percentFormatText = original;
     });
     it('Can present as percent - negative change location of percent symbol', function() {
         var testStr = -.10;
         var places = 0;
+        var original = format.percentFormatText;
         format.percentFormatText = '${1}${0}';
         expect(format.percent(testStr, places)).toEqual('%-10');
+        format.percentFormatText = original;
     });
 
     it('Can present true string to default yes string (Yes)', function() {
