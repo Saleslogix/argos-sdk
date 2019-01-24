@@ -10,7 +10,7 @@
       "fileIncludes": [
         {
           "text": "pdf.min.js",
-          "path": "../libraries/"
+          "path": "../libraries/pdfjs/"
         },
         {
           "text": "l20n.js",
