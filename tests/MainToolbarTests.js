@@ -17,7 +17,7 @@ define('tests/MainToolbarTests', [
       onLine: true
     };
 
-    it('Can handle no tools', function() {
+    xit('Can handle no tools', function() {
       var bar = new MainToolbar({app: mockApp});
 
       bar.showTools();

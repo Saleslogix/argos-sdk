@@ -9,6 +9,10 @@
       "isDebug": true,
       "fileIncludes": [
         {
+          "text": "pdf.min.js",
+          "path": "../libraries/pdfjs/"
+        },
+        {
           "text": "l20n.js",
           "path": "../libraries/l20n/"
         },
@@ -369,6 +373,11 @@
     }
   ],
   "resources": [
+    {
+      "src": "../libraries/pdfjs",
+      "dest": "content/javascript",
+      "filters": "(pdf\\.worker\\.min\\.js)"
+    },
     {
       "src": "../localization/locales/argos",
       "dest": "localization/locales/argos",
