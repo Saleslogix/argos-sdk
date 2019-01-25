@@ -293,7 +293,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     }
   },
   _getToolDOMNode: function _getToolDOMNode(id) {
-    const [result] = $(`button[data-tool=${id}]`, this.domNode);
+    const result = $(`button[data-tool=${id}]`, this.domNode).first();
     return result;
   },
 });
