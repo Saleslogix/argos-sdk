@@ -23,27 +23,42 @@ const __class = declare('argos.LanguageService', [], {
     return window.localStorage && window.localStorage.getItem('region');
   },
   setLanguage: function setLanguage(value) {
-    let language = value;
-    if (language.length > 2) {
-      const split = language.split('-');
-      if (split[0] === split[1]) {
-        language = split[0];
-      }
-    }
+    const language = this.normalizeLocale(value) || value;
     return window.localStorage && window.localStorage.setItem('language', language);
   },
   setRegion: function setRegion(value) {
-    let region = value;
-    if (region.length > 2) {
-      const split = region.split('-');
+    const region = this.normalizeLocale(value) || value;
+    return window.localStorage && window.localStorage.setItem('region', region);
+  },
+  normalizeLocale: function normalizeLanguageCode(locale) {
+    let language = locale;
+    if (language.length > 2) {
+      const split = locale.split('-');
       if (split[0] === split[1]) {
-        region = split[0];
+        language = split[0];
+      } else if (split[1]) {
+        language = `${split[0]}-${split[1].toUpperCase()}`;
       }
     }
-    return window.localStorage && window.localStorage.setItem('region', region);
+    return language;
   },
   getLanguages: function getLanguages() {
     return window.supportedLocales;
+  },
+  bestAvailableLocale: function BestAvailableLocale(availableLocales, locale) {
+    let candidate = this.normalizeLocale(locale);
+    if (availableLocales.indexOf(candidate) !== -1) {
+      return candidate;
+    }
+    let pos = candidate.lastIndexOf('-');
+    if (pos === -1) {
+      return undefined;
+    }
+    if (pos >= 2 && candidate[pos - 2] === '-') {
+      pos -= 2;
+    }
+    candidate = candidate.substring(0, pos);
+    return candidate;
   },
 });
 export default __class;
