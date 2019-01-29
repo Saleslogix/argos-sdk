@@ -1068,10 +1068,12 @@ function fixedLocale(_val, _d) {
   }
   if (d > 0) {
     p = Math.pow(10, d);
-    v = val.toFixed(d); // only d decimal places
-    f = Math.floor(parseFloat((p * (v - Math.floor(v))).toPrecision(d))); // for fractional part, only need d significant digits
+    v = val.toFixed(d);
+    f = (v * p - Math.floor(v) * p) / p;
     if (f === 0) {
       f = String(p).slice(1);
+    } else {
+      f = String(f).slice(2).padEnd(d, '0');
     }
   } else {
     // zero decimal palces
@@ -1090,8 +1092,8 @@ function fixedLocale(_val, _d) {
   return fVal.replace(/ /g, '\xA0'); // keep numbers from breaking
 }
 
-function multiCurrency(val, code) {
-  return currency(val) + ' ' + code;
+function multiCurrency(val, code, currencyDecimalSeparator, currencyGroupSeparator) {
+  return currency(val, currencyDecimalSeparator, currencyGroupSeparator) + ' ' + code;
 }
 
 /***/ },
@@ -1558,22 +1560,27 @@ function alphaToPhoneNumeric() {
  * as is.
  * @param val {string} String inputted phone number to format
  * @param asLink {boolean} True to put the phone in an anchor element pointing to a tel: uri
+ * @param byPassFormatting {boolean} True to bypass the display formatting and set the element to tel: uri
  * @returns {string}
  */
 function phone() {
   var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   var asLink = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var byPassFormatting = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
   var phoneVal = alphaToPhoneNumeric(val);
   var formatters = phoneFormat;
   var clean = /^\+/.test(phoneVal) ? phoneVal : phoneVal.replace(/[^0-9x]/ig, '');
   var formattedMatch = void 0;
-
-  for (var i = 0; i < formatters.length; i++) {
-    var formatter = formatters[i];
-    var match = formatter.test.exec(clean);
-    if (match) {
-      formattedMatch = formatter.format([phoneVal, clean].concat(match));
+  if (byPassFormatting) {
+    formattedMatch = phoneVal;
+  } else {
+    for (var i = 0; i < formatters.length; i++) {
+      var formatter = formatters[i];
+      var match = formatter.test.exec(clean);
+      if (match) {
+        formattedMatch = formatter.format([phoneVal, clean].concat(match));
+      }
     }
   }
 
