@@ -733,6 +733,10 @@ class Application {
     return !this.is24HourClock();
   }
 
+  isCurrentRegionMetric() {
+    return Mobile.CultureInfo.isRegionMetric || this.isRegionMetric;
+  }
+
   /**
    * Check if the browser supports touch events.
    * @return {Boolean} true if the current browser supports touch events, false otherwise.
