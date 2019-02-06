@@ -61,7 +61,7 @@
 >
 
 <formatDateTimeFormat ""
-  shortDateFormatText: "D-M-YYYY"
+  shortDateFormatText: "DD-MM-YYYY"
 >
 
 <relativeDateTimePickerDateTimeFormat ""
