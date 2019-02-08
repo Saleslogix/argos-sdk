@@ -845,6 +845,9 @@ class Application {
     return this;
   }
 
+  onRequestTimeout() {
+  }
+
   /**
    * Optional creates, then registers an Sage.SData.Client.SDataService and adds the result to `App.services`.
    * @param {String} name Unique identifier for the service.
