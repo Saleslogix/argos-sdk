@@ -36,11 +36,13 @@ const __class = declare('argos.GroupedList', [List], /** @lends argos.GroupedLis
    */
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" data-title="{%= $.titleText %}" class="list grouped-list listview-search {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>',
+    '<div class="scrollable" data-selectable="false" data-dojo-attach-point="scrollerNode">',
     '<div data-dojo-attach-point="searchNode"></div>',
     '{%! $.emptySelectionTemplate %}',
     '<div class="accordion panel inverse has-icons" data-dojo-attach-point="contentNode"></div>',
     '{%! $.moreTemplate %}',
     '{%! $.listActionTemplate %}',
+    '</div>',
     '</div>',
   ]),
   /**

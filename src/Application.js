@@ -865,7 +865,7 @@ class Application {
     return this;
   }
 
-  _onTimeout() {
+  onRequestTimeout() {
     this.ping();
   }
 

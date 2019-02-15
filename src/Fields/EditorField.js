@@ -16,6 +16,9 @@
 import declare from 'dojo/_base/declare';
 import event from 'dojo/_base/event';
 import _Field from './_Field';
+import getResource from '../I18n';
+
+const resource = getResource('dateField');
 
 /**
  * @class argos.Fields.EditorField
@@ -72,9 +75,6 @@ const __class = declare('argos.Fields.EditorField', [_Field], /** @lends argos.F
   ]),
 
   iconClass: 'edit',
-
-  // Localization
-  localeId: 'editorField',
   /**
    * required should be true if the field requires input. Defaults to false.
    * @type {Boolean}
@@ -159,12 +159,14 @@ const __class = declare('argos.Fields.EditorField', [_Field], /** @lends argos.F
           id: 'complete',
           svg: 'check',
           fn: this.complete,
+          title: resource.confirmText,
           scope: this,
         }, {
           id: 'cancel',
           svg: 'cancel',
           side: 'left',
           fn: ReUI.back,
+          title: resource.cancelText,
           scope: ReUI,
         }],
       },

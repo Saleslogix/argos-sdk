@@ -27,6 +27,7 @@ module.exports = function gruntJasmine(grunt) {
         host: 'http://127.0.0.1:8001/',
         template: 'GruntRunnerBasic.tmpl',
         summary: true,
+        display: 'full',
       },
     },
   });

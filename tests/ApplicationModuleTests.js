@@ -1,5 +1,5 @@
 define('tests/ApplicationModuleTests', ['argos/ApplicationModule'], function(ApplicationModule) {
-return describe('Sage.Platform.Mobile.ApplicationModule', function() {
+return xdescribe('Sage.Platform.Mobile.ApplicationModule', function() {
 
     it('Can register a view to the set application', function() {
         var module = new ApplicationModule();
