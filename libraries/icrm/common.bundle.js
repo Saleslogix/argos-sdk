@@ -1069,7 +1069,7 @@ function fixedLocale(_val, _d) {
   if (d > 0) {
     p = Math.pow(10, d);
     v = val.toFixed(d);
-    f = (v * p - Math.floor(v) * p) / p;
+    f = (Math.floor(v * p) - Math.floor(v) * p) / p;
     if (f === 0) {
       f = String(p).slice(1);
     } else {
