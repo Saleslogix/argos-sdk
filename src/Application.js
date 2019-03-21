@@ -594,6 +594,9 @@ class Application {
   initSoho() {
     const container = this.getAppContainerNode();
     const menu = $('.application-menu', container).first();
+    const closeMenuButton = $('.icon-close').first();
+    const closeMenuHeader = $('.application-menu-header').first();
+
     menu.applicationmenu();
     this.applicationmenu = menu.data('applicationmenu');
     menu.on('applicationmenuopen', () => {
@@ -602,6 +605,14 @@ class Application {
 
     menu.on('applicationmenuclose', () => {
       connect.publish('/app/menuclose', [true]);
+    });
+
+    closeMenuHeader.on('click', () => {
+      this.hideApplicationMenu();
+    });
+
+    closeMenuButton.on('click', () => {
+      this.hideApplicationMenu();
     });
 
     const viewSettingsModal = $('.modal.view-settings', container).first();
@@ -913,6 +924,13 @@ class Application {
     $(this._appContainerNode).append(`
       <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
         data-breakpoint="large">
+        <div class="application-menu-header">
+          <button type="button" class="btn-icon icon-close">
+              <svg role="presentation" aria-hidden="true" focusable="false" class="icon">
+                <use xlink:href="#icon-close"></use>
+              </svg>
+          </button>
+        </div>
       </nav>
       <div class="page-container scrollable tbarContainer">
         <div id="${defaultViewContainerId}" class="${defaultViewContainerClasses}"></div>
@@ -956,11 +974,12 @@ class Application {
    * @param {View} view A view instance to be registered.
    * @param {domNode} domNode Optional. A DOM node to place the view in.
    */
-  registerView(view, domNode) {
+  registerView(view, domNode, position = 'first') {
     const id = view.id;
 
     const node = domNode || this._viewContainerNode;
     view._placeAt = node;
+    view._placePosition = position;
     this.views[id] = view;
 
     this.registerViewRoute(view);
@@ -1143,7 +1162,7 @@ class Application {
 
       if (init && view && !view._started) {
         view.init(this.store);
-        view.placeAt(view._placeAt, 'first');
+        view.placeAt(view._placeAt, (view._placePosition || 'first'));
         view._started = true;
         view._placeAt = null;
       }
