@@ -19,6 +19,7 @@ import getResource from './I18n';
 
 
 const resource = getResource('configureBase');
+const editResource = getResource('editBase');
 
 /**
  * @class argos._ConfigureBase
@@ -39,6 +40,8 @@ const __class = declare('argos._ConfigureBase', [DraggableList], /** @lends argo
 
   // Localization
   titleText: resource.titleText,
+  saveText: editResource.saveTooltipText,
+  cancelText: editResource.cancelTooltipText,
 
   // View Properties
   id: 'configure_base',
@@ -55,11 +58,13 @@ const __class = declare('argos._ConfigureBase', [DraggableList], /** @lends argo
     return this.tools || (this.tools = {
       tbar: [{
         id: 'save',
+        title: this.saveText,
         svg: 'check',
         fn: this.onSave,
         scope: this,
       }, {
         id: 'cancel',
+        title: this.cancelText,
         svg: 'cancel',
         side: 'left',
         fn: this.onCancel,
