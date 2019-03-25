@@ -187,10 +187,11 @@ class ApplicationModule {
    * Passes the view instance to {@link App#registerView App.registerView}.
    * @param {Object} view View instance to register
    * @param {DOMNode} domNode Optional. DOM node to place the view in.
+   * @param {String} position Optional. The position to place in the given DOM node. (first, last)
    */
-  registerView(view, domNode) {
+  registerView(view, domNode, position = 'first') {
     if (this.application) {
-      this.application.registerView(view, domNode);
+      this.application.registerView(view, domNode, position);
     }
   }
   /**
