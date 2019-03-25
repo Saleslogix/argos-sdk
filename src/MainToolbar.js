@@ -132,7 +132,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
       <button
         class="btn-icon {%= $.cls %} toolButton-right"
         type="button"
-        title="{%: $.title || $.id %}"
+        title="{%: $.title %}"
         data-action="invokeTool"
         data-tool="{%= $.id %}">
         {% if ($.svg) { %}
