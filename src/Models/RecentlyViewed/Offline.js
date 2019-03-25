@@ -48,12 +48,14 @@ const __class = declare('argos.Models.RecentlyViewed.Offline', [_OfflineModelBas
     return entity;
   },
   deleteEntryByEntityContext: function deleteEntryByEntityContext(entityId, entityName) {
-    const queryExpression = function map(doc, emit) {
-      if ((doc.entity.entityId === entityId) && (doc.entity.entityName === entityName)) {
-        emit(doc.entity);
-      }
+    const options = {
+      filter: function filter(entry) {
+        if (entry.entityId === entityId && entry.entityName === entityName) {
+          return entry;
+        }
+      },
     };
-    this.getEntries(queryExpression).then((entries) => {
+    this.getEntries(null, options).then((entries) => {
       if (entries) {
         entries.forEach((entry) => {
           this.deleteEntry(entry.$key);
