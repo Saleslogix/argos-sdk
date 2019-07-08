@@ -116,7 +116,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   constructor: function constructor() {
     const m = this.getCurrentDateMoment();
     let monthsText = moment.months('MMMM');
-    
+
     if (monthsText.standalone) {
       monthsText = monthsText.standalone;
     }
