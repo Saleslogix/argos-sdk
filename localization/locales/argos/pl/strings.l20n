@@ -17,9 +17,9 @@
 >
 
 <editorField ""
-  lookupLabelText: "edycja"
+  lookupLabelText: "Edytuj"
   lookupText: "..."
-  emptyText: "puste"
+  emptyText: "Puste"
   completeText: "OK"
 >
 
@@ -27,12 +27,12 @@
   dependentErrorText: "Wybierz wartość dla '${0}'."
   emptyText: ""
   completeText: "Wybierz"
-  lookupLabelText: "wyszukiwanie"
+  lookupLabelText: "Wyszukiwanie"
   lookupText: "..."
 >
 
 <signatureField ""
-  signatureLabelText: "podpis"
+  signatureLabelText: "Podpis"
   signatureText: "..."
 >
 
@@ -76,13 +76,13 @@
   cancelText: "Anuluj"
   selectFileText: "Wybierz plik"
   loadingText: "Wczytywanie..."
-  descriptionText: "opis"
+  descriptionText: "Opis"
   bytesText: "B"
   notSupportedText: "Twoje urządzenie nie obsługuje dodawania załączników."
 >
 
 <signature ""
-  titleText: "podpis"
+  titleText: "Podpis"
   clearCanvasText: "Wymaż"
   undoText: "Anuluj"
 >
@@ -92,23 +92,23 @@
 >
 
 <detailBase ""
-  informationText: "Informacje o ${0}"
+  informationText: "Informacje - ${0}"
   titleText: "Szczegóły"
   entityText: "Encja"
   detailsText: "Szczegóły"
   loadingText: "Wczytywanie"
   notAvailableText: "Żądane dane są niedostępne."
-  toggleCollapseText: "zwiń/rozwiń"
-  editText: "edycja"
-  editTooltipText: "Edycja"
+  toggleCollapseText: "Zwiń/rozwiń"
+  editText: "Edytuj"
+  editTooltipText: "Edytuj"
   refreshTooltipText: "Odśwież"
 >
 
 <editBase ""
   concurrencyErrorText: "To pole zostało zaktualizowane przez innego użytkownika."
-  toggleCollapseText: "zwiń/rozwiń"
+  toggleCollapseText: "Zwiń/rozwiń"
   saveText: "Zapisz"
-  titleText: "edycja"
+  titleText: "Edytuj"
   validationSummaryText: "Podsumowanie zatwierdzenia"
   concurrencySummaryText: "Błędy zgodności"
   detailsText: "Szczegóły"
@@ -132,7 +132,7 @@
   remainingText: "Pozostałe rekordy: ${0}"
   cancelText: "Anuluj"
   insertText: "Nowy"
-  noDataText: "brak rekordów"
+  noDataText: "Brak rekordów"
   loadingText: "Wczytywanie"
   newTooltipText: "Nowy"
   refreshTooltipText: "Odśwież"
@@ -149,8 +149,8 @@
 
 <calendar ""
   titleText: "Kalendarz"
-  amText: "przed południem"
-  pmText: "po południu"
+  amText: "AM"
+  pmText: "PM"
   january: "Styczeń"
   february: "Luty"
   march: "Marzec"
@@ -193,7 +193,7 @@
 >
 
 <groupedList ""
- toggleCollapseText: "zwiń/rozwiń"
+ toggleCollapseText: "Zwiń/rozwiń"
 >
 
 <mainToolbar ""
@@ -214,12 +214,12 @@
 >
 
 <relatedViewWidget ""
-  nodataText: "nie znaleziono rekordów..."
+  nodataText: "Nie znaleziono rekordów..."
   selectMoreDataText: "Zobacz o ${0} więcej ${1}... "
   selectMoreDataText2: "Zobacz ${0} więcej... "
-  navToListText: "zobacz listę"
+  navToListText: "Zobacz listę"
   loadingText: "Wczytywanie"
-  refreshViewText: "odśwież"
+  refreshViewText: "Odśwież"
   itemOfCountText: " ${0} z ${1}"
   totalCountText: " (${0})"
   titleText: "Widok powiązany"
@@ -238,8 +238,8 @@
 >
 
 <timePicker ""
-  amText: "przed południem"
-  pmText: "po południu"
+  amText: "AM"
+  pmText: "PM"
   setTimeText: "Ustaw godzinę"
 >
 
@@ -275,7 +275,7 @@
   completeText: "Zakończenie"
   cancelText: "Anuluj"
   confirmText: "Zatwierdź"
-  editText: "edycja"
+  editText: "Edytuj"
   okayText: "OK"
   submitText: "Zatwierdź"
   warningText: "Ostrzeżenie"
