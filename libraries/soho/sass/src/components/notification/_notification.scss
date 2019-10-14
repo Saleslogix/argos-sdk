@@ -1,0 +1,84 @@
+// Notification
+//================================================== //
+
+.notification {
+  height: 0;
+  padding: 10px 45px;
+  position: relative;
+  z-index: 1;
+
+  .notification-link {
+    font-weight: 300;
+    padding-left: 5px;
+    text-decoration: underline;
+  }
+
+  .notification-icon {
+    left: 15px;
+    position: absolute;
+    top: calc(50% - 9px);
+  }
+
+  .notification-close {
+    color: inherit;
+    position: absolute;
+    right: 15px;
+    top: calc(50% - 7px);
+
+    .icon {
+      height: 15px;
+    }
+  }
+
+  @mixin notification-styles($init-bkgd, $init-font, $hover-font) {
+    background-color: $init-bkgd;
+    color: $init-font;
+
+    .notification-text {
+      color: $init-font;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .notification-link,
+    .notification-close .icon {
+      color: $init-font;
+
+      &:hover {
+        color: $hover-font;
+      }
+    }
+  }
+
+  &.error {
+    @include notification-styles(
+      $notification-color-error-initial-background,
+      $notification-color-error-initial-font,
+      $notification-color-error-hover-font
+    );
+  }
+
+  &.alert {
+    @include notification-styles(
+      $notification-color-alert-initial-background,
+      $notification-color-alert-initial-font,
+      $notification-color-alert-hover-font);
+  }
+
+  &.success {
+    @include notification-styles(
+      $notification-color-success-initial-background,
+      $notification-color-success-initial-font,
+      $notification-color-success-hover-font
+    );
+  }
+
+  &.info {
+    @include notification-styles(
+      $notification-color-info-initial-background,
+      $notification-color-info-initial-font,
+      $notification-color-info-hover-font
+    );
+  }
+}

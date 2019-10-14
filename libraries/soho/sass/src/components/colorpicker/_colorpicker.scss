@@ -1,0 +1,408 @@
+// Color Picker
+//================================================== //
+
+@mixin swatch-is-empty($offset: -5px, $border-color: $input-color-initial-border) {
+  background-color: $colorpicker-is-empty-bg-color;
+  border: 1px solid $border-color;
+
+  &::before {
+    @include css3(transform, rotate(-45deg));
+
+    border-top: 2px solid $theme-color-status-danger;
+    content: '';
+    left: $offset;
+    position: absolute;
+    right: $offset;
+    top: calc(50% - 1px);
+  }
+}
+
+.colorpicker-min-width {
+  .colorpicker-container {
+    width: auto;
+  }
+}
+
+.colorpicker-input-xs {
+  @extend .input-xs;
+}
+
+.colorpicker-input-sm {
+  @extend .input-sm;
+}
+
+.colorpicker-input-mm {
+  @extend .input-mm;
+}
+
+.colorpicker-input-md {
+  @extend .input-md;
+}
+
+.colorpicker-input-lg {
+  @extend .input-lg;
+}
+
+.colorpicker-container {
+  background-color: $input-color-initial-background;
+  border: 1px solid $input-color-initial-border;
+  border-radius: 2px;
+  display: inline-block;
+  overflow: hidden;
+  width: 150px;
+
+  &.is-focused {
+    border-color: $input-color-focus-border;
+    box-shadow: $focus-box-shadow;
+  }
+
+  &:hover:not(.is-focused):not(.is-open):not(.is-disabled) {
+    border-color: $input-color-hover-border;
+  }
+
+  &.error {
+    border-color: $error-color;
+  }
+
+  &.is-disabled {
+    background-color: $input-color-disabled-background;
+    border-color: $input-color-disabled-border;
+
+    &:hover {
+      border-color: $input-color-disabled-border;
+    }
+
+    .icon:not(.icon-error),
+    .icon:hover {
+      color: $trigger-disabled-color !important;
+      cursor: default;
+    }
+  }
+
+  &.color-only {
+    width: 70px;
+
+    input {
+      width: 0;
+    }
+
+    .trigger {
+      margin-left: -5px;
+    }
+  }
+
+  &.is-readonly {
+    background-color: $input-color-readonly-background;
+    border-color: $input-color-readonly-border;
+
+    &.is-not-editable {
+      background-color: $input-color-initial-background;
+      border-color: $input-color-initial-border;
+
+      input[readonly] {
+        background-color: $input-color-initial-background;
+        border-color: $input-color-initial-border;
+        color: $input-color;
+        -webkit-text-fill-color: $input-color;
+      }
+
+      input[readonly]:focus {
+        color: transparent;
+      }
+
+      .icon:not(.icon-error),
+      .icon:hover {
+        color: $trigger-icon-fill-color;
+        cursor: pointer;
+      }
+
+    }
+
+    &.is-focused {
+      border-color: $input-color-focus-border !important;
+    }
+
+    .icon:not(.icon-error),
+    .icon:hover {
+      color: $trigger-disabled-color;
+      cursor: default;
+    }
+  }
+
+  &.is-open {
+    border-color: $input-color-focus-border;
+  }
+
+  .trigger {
+    cursor: pointer;
+    display: inline-block;
+    height: 34px;
+    margin-left: -5px;
+    vertical-align: top;
+    width: 31px;
+  }
+
+  .icon:not(.icon-error) {
+    color: $trigger-icon-fill-color;
+    height: 16px;
+    left: 9px;
+    position: relative;
+    top: 9px;
+    width: 16px;
+
+    &:hover {
+      color: $trigger-hover-color;
+    }
+  }
+
+  .icon-error {
+    margin-left: -43px;
+  }
+
+  // Color Piece
+  .swatch {
+    background-color: $colorpicker-initial-bg-color;
+    border-radius: 2px;
+    display: inline-block;
+    height: 32px;
+    left: 1px;
+    position: relative;
+    top: 1px;
+    vertical-align: top;
+    width: 32px;
+
+    // Trigger Button
+    .icon:not(.icon-error) {
+      background-color: transparent;
+      height: 16px;
+      left: 46px;
+      top: 9px;
+      width: 16px;
+    }
+
+    &:hover:not(:disabled) .icon {
+      color: $theme-color-brand-primary-base;
+    }
+
+    &:active .icon {
+      color: $theme-color-brand-primary-base;
+    }
+
+    &.is-empty,
+    &.is-invalid {
+      @include swatch-is-empty();
+    }
+  }
+
+  .colorpicker {
+    border: 0;
+    max-height: 34px;
+    padding: 9px 0 8px 10px;
+    text-overflow: ellipsis;
+    width: 90px; //Small Size
+
+    &::-ms-clear {
+      display: none;
+    }
+
+    &:disabled + .swatch {
+      cursor: default;
+      opacity: 0.6;
+    }
+  }
+
+  input.colorpicker {
+    box-shadow: none !important;
+  }
+
+  .icon-dirty {
+    margin: 2px 0 0 3px;
+  }
+}
+
+@include respond-to(phablet) {
+  .colorpicker-container {
+    width: 100% !important;
+  }
+
+  .colorpicker-container input {
+    width: calc(100% - 64px) !important;
+  }
+}
+
+.popupmenu.colorpicker {
+  margin-left: -33px;
+  max-width: 340px;
+  min-height: 50px;
+  min-width: 200px;
+  padding: 18px;
+
+  li {
+    display: inline-block;
+    height: 20px;
+    margin: 4px;
+    width: 22px;
+
+    a {
+      border: 1px solid $popupmenu-bg-color;
+      min-height: auto;
+      padding: 0;
+
+      &:focus {
+        box-shadow: $focus-box-shadow;
+        outline: 1px solid $theme-color-brand-primary-base;
+      }
+
+      &.is-selected {
+        &::after {
+          @include css3(transform, scaleX(-1) rotate(135deg));
+          // border-color: $theme-color-palette-white $theme-color-palette-white $theme-color-palette-white transparent;
+          border-style: solid;
+          border-width: 2px 2px 0 0;
+          content: '';
+          height: 10px;
+          left: 7px;
+          margin-top: -17px;
+          position: absolute;
+          width: 4px;
+          z-index: 1;
+        }
+
+        &.checkmark-one::after {
+          border-color: $colorpicker-checkmark-one-color $colorpicker-checkmark-one-color $colorpicker-checkmark-one-color transparent;
+        }
+
+        &.checkmark-two::after {
+          border-color: $colorpicker-checkmark-two-color $colorpicker-checkmark-two-color $colorpicker-checkmark-two-color transparent;
+        }
+      }
+    }
+  }
+
+  &.popupmenu-short.has-icons {
+    li a {
+      padding: 0;
+    }
+  }
+
+  .swatch {
+    background-color: $theme-color-brand-secondary-alt;
+    display: block;
+    height: 20px;
+    width: 20px;
+
+    &.is-border {
+      border: 1px solid $colorpicker-swatch-border-color;
+    }
+
+    &.is-empty,
+    &.is-invalid {
+      @include swatch-is-empty(-1px, $colorpicker-swatch-border-color);
+    }
+  }
+
+  + .arrow {
+    left: 44px;
+  }
+
+}
+
+.inline.colorpicker-container {
+  .colorpicker {
+    width: 80px;
+  }
+
+  .label-text {
+    position: absolute;
+    top: -18px;
+  }
+}
+
+// Short Fields
+.field-short {
+  .colorpicker-container {
+    width: inherit;
+
+    .trigger {
+      height: 22px;
+      margin-left: -22px;
+      width: 22px;
+
+      .icon:not(.icon-error) {
+        left: 5px;
+        top: 5px;
+      }
+    }
+
+    .swatch {
+      height: 22px;
+      width: 22px;
+
+      &.is-empty,
+      &.is-invalid {
+        @include swatch-is-empty(-2px);
+      }
+    }
+
+    .colorpicker {
+      height: inherit;
+      line-height: 14px;
+      padding: 5px 21px 5px 5px;
+    }
+  }
+}
+
+.ie11 {
+  .colorpicker-container {
+    &.is-readonly {
+      &.is-not-editable {
+        input[readonly]:focus {
+          color: $input-color;
+        }
+      }
+    }
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .colorpicker-container {
+    .colorpicker {
+      padding: 9px 10px 8px 0;
+    }
+
+    .swatch {
+      left: 0;
+      right: 1px;
+    }
+
+    .icon {
+      left: 0;
+    }
+
+    .icon-dirty {
+      margin: 2px 3px 0 0;
+    }
+  }
+
+  .field-short {
+    .colorpicker-container {
+      .trigger {
+        left: 22px;
+        position: relative;
+
+        .icon:not(.icon-error) {
+          left: 0;
+        }
+      }
+
+      .colorpicker {
+        padding: 5px 5px 5px 21px;
+      }
+    }
+  }
+
+  .popupmenu.colorpicker li a {
+    padding: 0;
+  }
+}

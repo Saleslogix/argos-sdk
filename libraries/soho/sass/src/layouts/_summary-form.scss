@@ -1,0 +1,62 @@
+//  Summary / Report Style Fields
+//================================================== //
+
+.summary-form {
+  .field {
+    width: 100%;
+
+    &:last-child {
+      margin-bottom: -20px;
+    }
+  }
+
+  .label {
+    color: $label-color;
+    display: block;
+    font-size: $theme-size-font-sm;
+    margin: 0;
+    max-width: 300px;
+    padding-bottom: 0.3rem;
+    vertical-align: top;
+  }
+
+  //Push the switch back in if nested
+  .switch {
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .data {
+    color: $font-color-extrahighcontrast;
+    display: block;
+    font-size: $theme-size-font-base;
+    font-weight: $theme-number-font-weight-bold;
+    line-height: 2rem;
+    margin-bottom: 2rem;
+
+    &.cozy {
+      line-height: 1rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  i {
+    color: $font-color-extrahighcontrast;
+    font-style: normal;
+  }
+}
+
+//Adjust the summary form layout when in columns for responsive
+@include respond-to(tabletdown) {
+  .summary-form {
+    .column,
+    .columns {
+      padding: 0;
+
+      .field:first-child {
+        margin-top: 10px;
+      }
+    }
+  }
+}

@@ -1,0 +1,346 @@
+// Home Page Pattern
+//==================================================//
+
+// Moved some of this stuff to `<project-root>/sass/controls/_card.scss`.
+
+// Different Widget Heights and Widths
+
+.homepage {
+  height: inherit;
+  margin: 0 auto;
+  padding: 20px 0;
+  position: relative;
+
+  .card,
+  .widget {
+    height: 370px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 360px;
+
+    &:last-child::after {
+      content: '';
+      display: inline-block;
+      height: 20px;
+      position: absolute;
+      top: 370px;
+      width: 10px;
+    }
+  }
+
+  > .content {
+    left: 50%;
+    margin-left: -500px;
+    position: absolute;
+  }
+}
+
+.header + .homepage,
+.header + nav + .homepage {
+  height: calc(100% - 60px);
+  margin-top: 0 !important;
+  overflow: scroll;
+}
+
+.card.double-height,
+.widget.double-height {
+  height: 760px;
+
+  .widget-content,
+  .card-content {
+    height: 708px;
+    min-height: 708px;
+    overflow: auto;
+  }
+}
+
+.card.auto-height,
+.widget.auto-height {
+  @include auto-height;
+
+  .chart-container {
+    padding-bottom: 20px;
+  }
+}
+
+.card.full-height,
+.widget.full-height {
+  height: 100%;
+}
+
+.card.double-width.to-single,
+.widget.double-width.to-single,
+.card.triple-width.to-single,
+.widget.triple-width.to-single,
+.card.quad-width.to-single,
+.widget.quad-width.to-single {
+  width: 360px; // 320 (single)
+}
+
+.card.double-width,
+.widget.double-width,
+.card.triple-width.to-double,
+.widget.triple-width.to-double,
+.card.quad-width.to-double,
+.widget.quad-width.to-double {
+  width: 740px; // 660 (double: 380 + single)
+}
+
+.card.triple-width,
+.widget.triple-width,
+.card.quad-width.to-triple,
+.widget.quad-width.to-triple {
+  width: 1120px; //1000 (triple: 380 + double)
+}
+
+.card.quad-width,
+.widget.quad-width {
+  width: 1500px; //1340 (quad: 380 + triple)
+}
+
+.card.half-height,
+.widget.half-width {
+  height: 270px;
+  min-height: 270px;
+
+  .card-content,
+  .widget-content {
+    height: 216px;
+    min-height: 216px;
+  }
+}
+
+// Centering
+.widget-content.l-center,
+.card-content.l-center {
+  overflow: hidden;
+  text-align: center;
+}
+
+// Hero widget
+.hero-widget {
+  background-color: $subhead-bg-color;
+  color: $header-button-color;
+  max-height: 410px;
+  min-height: 370px;
+  overflow: hidden;
+  width: 100%;
+
+  .hero-top {
+    height: 370px;
+    max-height: 370px;
+    min-height: 370px;
+  }
+
+  .hero-bottom {
+    background-color: $header-bg-color;
+    height: 40px;
+    max-height: 40px;
+    min-height: 40px;
+    width: 100%;
+  }
+
+  .hero-header,
+  .hero-content,
+  .hero-footer {
+    margin: 0 auto;
+    max-width: 1500px;
+    width: 100%;
+
+    .toolbar {
+      padding-left: 15px;
+      padding-right: 0;
+    }
+
+    .title {
+      color: $header-button-color;
+      padding-left: 15px;
+    }
+
+    .btn-tertiary,
+    .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,
+    .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) {
+      color: $header-button-color;
+
+      .icon {
+        color: $header-button-color;
+      }
+
+      &:hover {
+        color: $header-text-color;
+
+        .icon {
+          color: $header-text-color;
+        }
+      }
+
+      &:focus:not(.hide-focus) {
+        box-shadow: 0 0 0 2px transparent, 0 0 0 1px $header-button-color, $header-focus-box-shadow;
+
+        &:active {
+          box-shadow: none;
+        }
+      }
+    }
+
+    .chart-container {
+      .arc,
+      .bar,
+      &.line-chart .dot {
+        stroke: $subhead-bg-color;
+      }
+
+      text {
+        color: $header-text-color;
+        fill: $header-text-color;
+      }
+
+      .chart-legend-item-text {
+        color: $header-text-color;
+        fill: $header-text-color;
+      }
+    }
+
+    .circlepager.is-active .controls .control-button {
+      border-color: $header-button-color;
+
+      &:hover {
+        border-color: $header-text-color;
+      }
+
+      &.is-active {
+        background-color: $header-text-color;
+        border-color: $header-text-color;
+
+        &:hover {
+          background-color: $header-text-color;
+          border-color: $header-text-color;
+        }
+      }
+
+      &:focus:not(.hide-focus) {
+        box-shadow: $header-focus-box-shadow;
+        outline-color: $header-button-color;
+      }
+    }
+  }
+
+  .hero-footer {
+    padding: 0 15px;
+    width: 100%;
+
+    .hero-footer-nav {
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+
+      li {
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+
+        &::before {
+          @include font-size(20);
+
+          color: $panel-border-color;
+          content: '\2758';
+          display: inline-block;
+          margin-right: 2px;
+          padding-top: 2px;
+          vertical-align: top;
+        }
+
+        &:first-child::before {
+          margin-left: 15px;
+        }
+      }
+
+      a {
+        margin-top: 5px;
+      }
+    }
+
+    .hero-footer-nav-title {
+      @include font-size(16);
+
+      display: inline-block;
+      float: left;
+      height: 40px;
+      line-height: 40px;
+
+      &::after,
+      &::before {
+        content: '';
+        display: table;
+      }
+
+      &::after {
+        clear: both;
+      }
+
+    }
+  }
+}
+
+@media only screen and (max-width: 1500px) {
+  .hero-widget {
+    .hero-content {
+      max-width: 1120px;
+    }
+
+    .hero-bottom {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 1120px) {
+  .hero-widget {
+    .hero-content {
+      max-width: calc(100% - 200px);
+    }
+
+    .hero-bottom {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 549px) {
+  .hero-widget {
+    .hero-content {
+      max-width: 100%;
+    }
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .hero-widget {
+    .hero-header,
+    .hero-content,
+    .hero-footer {
+      .toolbar {
+        padding-left: 0;
+        padding-right: 15px;
+      }
+    }
+
+    .hero-footer {
+      .hero-footer-nav {
+        li {
+          &::before {
+            margin-left: 2px;
+            margin-right: inherit;
+          }
+
+          &:first-child::before {
+            margin-left: inherit;
+            margin-right: 15px;
+          }
+        }
+      }
+    }
+  }
+}

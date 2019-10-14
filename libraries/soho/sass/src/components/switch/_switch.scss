@@ -1,0 +1,187 @@
+// Switch
+//================================================== //
+
+.switch {
+  clear: both;
+  display: block;
+  margin: 0;
+
+  // Text Label
+  label {
+    color: $font-color-extrahighcontrast;
+    display: inline-block;
+    font-size: $theme-size-font-base;
+    padding-left: 42px;
+
+    &.inline {
+      margin-bottom: 0;
+    }
+  }
+
+  //Invisible Input
+  input {
+    position: absolute;
+  }
+
+  // Unchecked Styling
+  input:empty {
+    margin-left: -9999px;
+
+    ~ .label-text,
+    ~ label {
+      @include no-select();
+
+      cursor: pointer;
+      line-height: 16px;
+      margin-bottom: 14px;
+      position: relative;
+
+      &:hover {
+        &::after {
+          box-shadow: $switch-hover-box-shadow;
+        }
+      }
+    }
+
+    // ::before is the bar
+    ~ .label-text::before,
+    ~ label::before {
+      background-color: $switch-unchecked-bar-color;
+      border-radius: 4px;
+      height: 4px;
+      left: 0;
+      top: 7px;
+      width: 31px;
+    }
+
+    ~ .label-text::before,
+    ~ .label-text::after,
+    ~ label::before,
+    ~ label::after {
+      @include css3(transition, all 200ms cubic-bezier(0.17, 0.04, 0.03, 0.94) 0s);
+
+      content: ' ';
+      display: block;
+      position: absolute;
+    }
+
+    // ::after is the actual sphere
+    ~ .label-text::after,
+    ~ label::after {
+      background-color: $switch-unchecked-bg-color;
+      border: 1px solid $switch-unchecked-border-color;
+      border-radius: 50%;
+      height: 14px;
+      left: 0;
+      top: 0;
+      width: 14px;
+    }
+  }
+
+  //Checked Styling - Inner
+  input:checked ~ .label-text::before,
+  input:checked ~ label::before {
+    background-color: $switch-checked-bg-color;
+  }
+
+  //Checked Styling - Toggle Handle
+  input:checked ~ .label-text::after,
+  input:checked ~ label::after {
+    background: $radio-color-checked-initial-fill;
+    border-color: $radio-color-checked-initial-fill;
+    left: 15px;
+  }
+
+  // Active State
+  input:not(:disabled):active ~ .label-text::after,
+  input:not(:disabled):not(.hide-focus):focus ~ .label-text::after,
+  input:not(:disabled):active ~ label::after,
+  input:not(:disabled):not(.hide-focus):focus ~ label::after {
+    background-color: $switch-unchecked-pressed-bg-color;
+    box-shadow: $switch-focus-box-shadow;
+  }
+
+  input:not(:disabled):checked:active ~ .label-text::after,
+  input:not(:disabled):checked:focus ~ .label-text::after,
+  input:not(:disabled):checked:active ~ label::after,
+  input:not(:disabled):checked:focus ~ label::after {
+    background-color: $radio-color-checked-initial-fill;
+  }
+
+  input:not(:disabled):checked:hover ~ .label-text::after,
+  input:not(:disabled):checked:hover ~ label::after {
+    background-color: $switch-checked-hover-color;
+  }
+
+  //Disabled
+  input:disabled ~ .label-text,
+  input:disabled ~ label {
+    color: $switch-disabled-label-color;
+    cursor: default;
+
+    &:hover {
+      &::after {
+        box-shadow: none;
+      }
+    }
+  }
+
+  input:disabled ~ .label-text::before,
+  input:disabled ~ label::before {
+    background-color: $switch-disabled-bar-color;
+  }
+
+  input:disabled ~ .label-text::after,
+  input:disabled ~ label::after {
+    background-color: $switch-disabled-bg-color;
+    border-color: $switch-disabled-border-color;
+  }
+
+}
+
+//Rule to remove bottom padding on modal if its the last element.
+.modal-body-wrapper .switch:last-child {
+  margin-bottom: 0;
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .switch {
+    input {
+      border: 0;
+      padding: 0;
+      width: 0;
+    }
+
+    label {
+      padding-left: 0;
+      padding-right: 42px;
+    }
+
+    // Unchecked Styling
+    input:empty {
+      margin-left: 0;
+      margin-right: -9999px;
+
+      ~ .label-text::before,
+      ~ label::before {
+        left: auto;
+        right: 0;
+      }
+
+      ~ .label-text::after,
+      ~ label::after {
+        left: auto;
+        right: 0;
+      }
+    }
+
+    //Checked Styling - Toggle Handle
+    input:checked ~ .label-text::after,
+    input:checked ~ label::after {
+      left: auto;
+      right: 15px;
+    }
+
+  }
+}

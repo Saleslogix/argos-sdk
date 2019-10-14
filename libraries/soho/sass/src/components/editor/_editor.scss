@@ -1,0 +1,635 @@
+// Editor (Rich Text)
+//================================================== //
+
+.editor-container {
+  &.is-readonly,
+  &.is-disabled {
+    .editor {
+      border-top: 1px solid $editor-border-color;
+    }
+
+    &.editor-container:hover .editor:not(.error) {
+      border-color: $editor-hover-border-color;
+    }
+
+    .editor-toolbar {
+      display: none;
+    }
+
+    .hyperlink {
+      cursor: pointer;
+    }
+  }
+
+  &.is-disabled .editor {
+    cursor: default;
+  }
+
+  &.is-readonly .editor {
+    background-color: $input-color-readonly-background;
+    border-color: $input-color-readonly-border;
+    color: $input-readonly-color;
+    cursor: text;
+
+    .hyperlink {
+      color: $hyperlink-color;
+    }
+  }
+
+  // Error message - validation adjustments
+  .error-message {
+    margin-top: 0;
+  }
+
+  .editor-source.hidden + .editor + .error-message {
+    margin-top: -10px;
+  }
+
+  // Customize the formatter toolbar if it's inside an editor
+  .formatter-toolbar {
+    // border-bottom: 1px solid $editor-middle-border-color;
+    margin-bottom: 0;
+    z-index: 20;
+
+    [class^='btn'] {
+      border-radius: 2px;
+    }
+  }
+
+  &:hover {
+    .toolbar,
+    .flex-toolbar {
+      .formatter-toolbar:not(.error) {
+        border-color: $editor-hover-border-color $editor-hover-border-color $editor-border-color;
+      }
+    }
+
+    .editor:not(.error),
+    .editor-source:not(.error) {
+      border-color: transparent $editor-hover-border-color $editor-hover-border-color;
+    }
+  }
+
+  &.is-active,
+  &.is-active:hover:not(.error) {
+    .toolbar,
+    .flex-toolbar {
+      &.formatter-toolbar {
+        border-left-color: $editor-focus-border-color;
+        border-right-color: $editor-focus-border-color;
+        border-top-color: $editor-focus-border-color;
+        box-shadow: $editor-top-focus-box-shadow; //-2px -2px 3px 0px rgba(54, 138, 192, 0.3);
+
+        &.error {
+          border-left-color: $error-color;
+          border-right-color: $error-color;
+          border-top-color: $error-color;
+        }
+      }
+    }
+
+    .editor,
+    .editor-source {
+      border-color: transparent $editor-focus-border-color $editor-focus-border-color;
+      box-shadow: $focus-box-shadow;
+
+      &.error {
+        border-color: transparent $error-color $error-color;
+      }
+    }
+  }
+
+  .editor[data-error-type='tooltip'] + .audible + .icon-error {
+    left: 100%;
+    margin-left: -33px;
+    position: absolute;
+    top: 54px;
+  }
+
+  &.is-preview {
+    .editor-toolbar {
+      display: none;
+    }
+
+    .hyperlink {
+      cursor: pointer;
+    }
+
+    .editor {
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+      height: auto;
+      min-height: auto;
+      padding: 0;
+    }
+
+    &.is-active,
+    &.is-active:hover {
+      .editor {
+        box-shadow: none;
+      }
+    }
+  }
+
+  .icon-dirty {
+    top: 55px;
+  }
+}
+
+.editor {
+  @include rem(line-height, 2.2rem);
+
+  background-color: $editor-bg-color;
+  border: 1px solid;
+  border-color: $editor-border-color;
+  border-radius: 0 0 2px 2px;
+  color: $editor-color;
+  display: block;
+  font-size: $theme-size-font-base;
+  height: 320px;
+  margin-bottom: 20px;
+  min-height: 128px;
+  outline: none;
+  overflow: auto;
+  padding: 15px 10px 10px;
+  width: 100%;
+
+  &.is-disabled {
+    background-color: $input-color-disabled-background;
+    border: 1px solid $input-color-disabled-border;
+    padding: 10px;
+
+    > * {
+      color: $disabled-color;
+    }
+  }
+
+  // Element Style
+  p {
+    @include rem(line-height, 2.2rem);
+
+    color: $editor-color;
+    font-size: $theme-size-font-base;
+    margin-bottom: 15px;
+
+    .hyperlink {
+      color: $hyperlink-color;
+    }
+  }
+
+  h3 {
+    color: $editor-color;
+    font-size: $theme-size-font-xl;
+    line-height: normal;
+  }
+
+  h4 {
+    color: $editor-color;
+    font-size: $theme-size-font-lg;
+    line-height: normal;
+  }
+
+  ul,
+  ol {
+    @include rem(line-height, 2.2rem);
+    @include rem(margin-left, 2rem);
+
+    color: $input-color;
+    font-size: $theme-size-font-base;
+    list-style: disc;
+    margin-bottom: 10px;
+
+    li {
+      line-height: inherit;
+
+      p {
+        line-height: inherit;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  b,
+  strong {
+    font-weight: 800;
+  }
+
+  blockquote {
+    @include antialiased();
+
+    border-left: 3px solid $editor-blockquote-color;
+    line-height: 22px;
+    margin-bottom: 15px;
+    margin-left: 7px;
+    padding-left: 15px;
+  }
+
+  img {
+    margin: 0 auto;
+    max-width: 80%;
+  }
+
+  span {
+    font-weight: inherit;
+  }
+
+  .hyperlink {
+    cursor: auto;
+    font-size: $theme-size-font-base;
+    position: static;
+    text-decoration: none;
+
+    &[contenteditable='false'] {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    &::after {
+      content: none;
+    }
+  }
+}
+
+.toolbar.formatter-toolbar {
+  overflow-x: visible;
+
+  .buttonset {
+    height: 32px;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  [class^='btn'] {
+    margin-top: 6px;
+  }
+
+  &.has-more-button {
+    .buttonset {
+      width: calc(100% - 44px);
+    }
+  }
+}
+
+.flex-toolbar.formatter-toolbar {
+  height: 32px;
+
+  .buttonset {
+    height: auto;
+    width: auto;
+  }
+}
+
+// Toolbar
+.toolbar.formatter-toolbar,
+.flex-toolbar.formatter-toolbar {
+  background-color: $editor-toolbar-bg-color;
+  border: 1px solid $editor-border-color;
+  border-bottom-color: none;
+  border-radius: 2px 2px 0 0;
+  margin-bottom: -1px;
+  padding: 0;
+  text-align: left;
+
+  .buttonset {
+    [class^='btn'] {
+      &:first-child {
+        margin-left: 16px;
+      }
+    }
+  }
+
+  // Flex Toolbar
+  .toolbar-section.buttonset {
+    padding: 0;
+  }
+
+  &.has-more-button {
+    .buttonset {
+      width: calc(100% - 44px);
+    }
+
+    .more {
+      margin-top: 0;
+
+      .btn-actions {
+        height: 22px;
+        margin-top: -1px;
+        min-height: 22px;
+        width: 25px;
+      }
+    }
+  }
+
+  [class^='btn'] {
+    background-color: $editor-toolbar-bg-color;
+    border: 1px solid transparent;
+    color: $editor-btn-color;
+    height: 20px;
+    line-height: normal;
+    min-width: 18px;
+    padding: 0 !important; //overrides some media queries
+    text-align: left;
+
+    span:not(.audible) {
+      color: $font-color;
+      display: inline-block;
+
+      &:not(:last-child) {
+        padding: 0;
+      }
+
+      + .icon {
+        padding-left: 0;
+      }
+    }
+
+    .icon {
+      color: $editor-btn-color;
+      height: 18px;
+      margin: -1px 0 0;
+      padding: 0;
+      pointer-events: none;
+      width: 18px;
+    }
+
+    &:focus:not(.hide-focus),
+    &.is-active:not(.error) {
+      color: $editor-btn-active-color;
+
+      span {
+        color: $editor-btn-active-color;
+      }
+
+      .icon {
+        color: $editor-btn-active-color;
+      }
+
+      &:not(.hide-focus) {
+        box-shadow: $editor-btn-active-box-shadow;
+      }
+    }
+
+    &.is-active {
+      box-shadow: none;
+    }
+
+    &:hover {
+      background-color: transparent;
+      border: 1px solid transparent;
+      color: $editor-btn-hover-color;
+
+      .icon {
+        color: $editor-btn-hover-color;
+      }
+
+      span {
+        color: $editor-btn-hover-color;
+      }
+    }
+
+    &.btn-actions > .icon {
+      left: 2px;
+      position: relative;
+      top: 1px;
+    }
+
+    .html-icon {
+      margin-left: -18px;
+      width: 85px;
+    }
+
+    .visual-icon {
+      margin-left: -12px;
+      margin-right: -11px;
+      width: 85px;
+    }
+
+    &[data-action='visual'] {
+      span {
+        @include font-size(16);
+
+        margin-left: -1px;
+        margin-top: 2px;
+      }
+    }
+
+    &[data-element='h3'],
+    &[data-element='h4'] {
+      margin-right: 15px;
+
+      .icon {
+        margin-left: -5px;
+        margin-right: -5px;
+        width: 32px;
+      }
+    }
+
+    &[data-element='b'],
+    &[data-element='i'] {
+      margin-right: 8px;
+    }
+
+    &[data-element='strike'] {
+      margin-right: 8px;
+    }
+
+    &[data-element='foreColor'] {
+      .icon {
+        margin-top: 1px;
+      }
+
+      .trigger {
+        padding-left: 0;
+        padding-right: 5px;
+
+        .icon {
+          height: 16px;
+          margin-left: -5px;
+          width: 12px;
+        }
+      }
+
+      + .separator {
+        margin-left: -3px;
+      }
+    }
+
+    &[data-element='backColor'] {
+      .icon {
+        height: 17px;
+        margin-top: 1px;
+        width: 16px;
+      }
+
+      .trigger {
+        padding-left: 0;
+        padding-right: 0;
+
+        .icon {
+          height: 16px;
+          width: 12px;
+        }
+      }
+    }
+
+    &[data-element='u'] {
+      margin-right: 10px;
+
+      .icon {
+        height: 17px;
+        margin-top: 2px;
+      }
+    }
+
+    &[data-action='justifyLeft'] {
+      margin-left: 4px;
+      margin-right: 18px;
+    }
+
+    &[data-action='justifyCenter'] {
+      margin-right: 18px;
+    }
+
+    &[data-action='justifyRight'] {
+      margin-right: 16px;
+    }
+
+    &[data-element='blockquote'] {
+      margin-left: 1px;
+      margin-right: 15px;
+    }
+
+    &[data-element='ol'] {
+      margin-right: 18px;
+    }
+
+    &[data-element='ul'] {
+      margin-right: 16px;
+    }
+
+    &[data-element='a'],
+    &[data-element='img'] {
+      margin-left: 4px;
+      margin-right: 16px;
+    }
+  }
+
+  .separator {
+    height: 18px;
+    margin: 1px 15px 0 3px;
+  }
+
+}
+
+.is-disabled .editor-toolbar {
+  display: none;
+}
+
+// Dialog Styling
+
+.editor-source {
+  border: 1px solid;
+  border-color: transparent $editor-border-color $editor-border-color;
+  border-radius: 0 0 2px 2px;
+  font-size: $theme-size-font-base;
+  height: 320px;
+  margin: 0 0 10px;
+  min-height: 88px;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 100%;
+
+  textarea {
+    background-color: $editor-bg-color;
+    border: 0;
+    color: $editor-color;
+    font-size: $theme-size-font-base;
+    font-weight: $theme-number-font-weight-base;
+    height: 100%;
+    line-height: 2.4rem;
+    outline: none;
+    overflow: hidden;
+    padding: 14px 10px 10px;
+    width: 100%;
+
+    &:focus,
+    &.is-focused {
+      box-shadow: none;
+    }
+  }
+
+  > * {
+    vertical-align: top;
+  }
+
+  > .text-container {
+    display: inline-block;
+    min-height: 100%;
+    overflow: visible;
+    width: 100%;
+  }
+
+  > .line-numbers {
+    background-color: $editor-bg-color;
+    display: inline-block;
+    min-height: 100%;
+    padding: 15px 10px 10px;
+
+    > li {
+      font-size: $theme-size-font-sm;
+      line-height: 2.41rem;
+      text-align: center;
+    }
+
+    span {
+      color: $editor-line-number-color;
+    }
+  }
+}
+
+//Error Text
+.editor-placeholder {
+  color: $input-placeholder-color;
+
+  &.error {
+    border-color: transparent $error-color $error-color;
+    color: $error-color;
+  }
+}
+
+.editor-toolbar {
+  &.error {
+    border-color: $error-color $error-color $editor-border-color;
+
+    + .editor-source {
+      border-color: transparent $error-color $error-color;
+    }
+  }
+}
+
+.editor-placeholder::after {
+  content: attr(data-placeholder);
+  font-size: $theme-size-font-base;
+  font-weight: 100;
+  left: 10px;
+  margin-top: -38px;
+  position: absolute;
+  white-space: pre;
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .editor-container {
+    .editor[data-error-type='tooltip'] {
+      ~ .icon-error {
+        left: 40px;
+      }
+    }
+  }
+}

@@ -1,0 +1,475 @@
+// Tooltips
+//================================================== /
+
+.popover,
+.tooltip {
+  background-color: $tooltip-bg-color;
+  border: 1px solid $tooltip-border-color;
+  border-radius: 2px;
+  box-shadow: $tooltip-box-shadow;
+  color: $tooltip-color;
+  font-size: $theme-size-font-sm;
+  left: -9999px;
+  max-width: 300px;
+  min-width: 40px;
+  opacity: 1;
+  padding: 1px;
+  pointer-events: none;
+  position: absolute;
+  text-align: left;
+  top: -9999px;
+  transition: opacity 0.4s ease;
+  white-space: normal;
+  z-index: 5010;
+}
+
+.tooltip {
+  @include word-wrap();
+
+  .links-clickable {
+    pointer-events: auto;
+  }
+
+  &.is-clickable {
+    pointer-events: auto;
+  }
+
+  &.top .arrow::after {
+    border-top-color: $tooltip-bg-color;
+    top: -6px;
+  }
+
+  &.bottom .arrow::after {
+    border-bottom-color: $tooltip-bg-color;
+  }
+
+  &.right .arrow::after {
+    border-right-color: $tooltip-bg-color;
+  }
+
+  &.left .arrow::after {
+    border-left-color: $tooltip-bg-color;
+  }
+
+  .hyperlink {
+    color: $tooltip-color;
+    font-size: $theme-size-font-sm;
+
+    &:hover {
+      color: $tooltip-color;
+    }
+  }
+
+  &.is-error {
+    background-color: $tooltip-error-bg-color;
+    border-color: $tooltip-error-border-color;
+    pointer-events: auto;
+
+    p {
+      color: $tooltip-error-color;
+    }
+
+    &.top {
+      .arrow::after {
+        border-top-color: $tooltip-error-bg-color;
+      }
+    }
+
+    &.bottom {
+      .arrow::after {
+        border-bottom-color: $tooltip-error-bg-color;
+      }
+    }
+
+    &.left {
+      .arrow::after {
+        border-left-color: $tooltip-error-bg-color;
+      }
+    }
+
+    &.right {
+      .arrow::after {
+        border-right-color: $tooltip-error-bg-color;
+      }
+    }
+  }
+
+  p {
+    color: $tooltip-color;
+    font-size: $theme-size-font-sm;
+    -webkit-text-fill-color: $tooltip-color;
+    word-break: normal;
+    word-wrap: break-word;
+  }
+
+  span {
+    font-size: $theme-size-font-sm;
+  }
+
+  .icon {
+    color: $tooltip-color;
+    display: inline-block;
+    height: 14px;
+    margin-top: 2px;
+    width: 14px;
+
+    + p {
+      display: inline-block;
+      margin-left: 2px;
+      margin-top: 2px;
+      vertical-align: top;
+      width: auto;
+    }
+  }
+
+  .action-tooltip {
+    font-weight: $theme-number-font-weight-bold;
+  }
+
+}
+
+.popover {
+  background-color: $popover-bg-color;
+  border: 1px solid $popover-border-color;
+  box-shadow: $popover-box-shadow;
+  color: $popover-color;
+  pointer-events: auto;
+  z-index: 3010;
+
+  .arrow,
+  .arrow::after {
+    border-width: 12px;
+  }
+
+  &.top {
+    .arrow {
+      border-top-color: $popover-arrow-border-color;
+      bottom: -12px;
+      left: calc(50% - 12px);
+    }
+
+    .arrow::after {
+      border-top-color: $popover-bg-color;
+      left: -12px;
+      top: -14px;
+    }
+
+    &.alternate {
+      .arrow::after {
+        border-top-color: $popover-alternate-arrow-color;
+      }
+    }
+  }
+
+  &.bottom {
+    .arrow {
+      border-bottom-color: $popover-arrow-border-color;
+      left: calc(50% - 12px);
+      top: -12px;
+    }
+
+    .arrow::after {
+      border-bottom-color: $popover-bg-color;
+      left: -12px;
+      top: 1px;
+    }
+
+    &.alternate {
+      .arrow::after {
+        border-bottom-color: $popover-bg-color;
+      }
+    }
+  }
+
+  &.right {
+    .arrow {
+      border-right-color: $popover-arrow-border-color;
+      left: -12px;
+      top: calc(50% - 12px);
+    }
+
+    .arrow::after {
+      border-right-color: $popover-bg-color;
+      top: -12px;
+    }
+
+    &.alternate {
+      .arrow::after {
+        border-right-color: $popover-alternate-arrow-color;
+      }
+    }
+  }
+
+  &.left {
+    .arrow {
+      border-left-color: $popover-arrow-border-color;
+      right: -12px;
+      top: calc(50% - 12px);
+    }
+
+    .arrow::after {
+      border-left-color: $popover-bg-color;
+      left: -13px;
+      top: -12px;
+    }
+
+    &.alternate {
+      .arrow::after {
+        border-left-color: $popover-alternate-arrow-color;
+      }
+    }
+  }
+
+  &.no-arrow .arrow {
+    display: none;
+  }
+
+  p {
+    color: $popover-color;
+    max-width: none;
+  }
+
+  .tooltip-content {
+    padding: 20px;
+  }
+
+  &.alternate {
+    background-color: $popover-alternate-bg-color;
+    border: 1px solid $popover-separator-color;
+    max-width: inherit;
+    padding-bottom: 50px;
+
+    .tooltip-title {
+      background-color: $popover-alternate-title-bg-color;
+      color: $popover-alternate-color;
+      font-size: $theme-size-font-lg;
+      padding: 15px 5px 7px 15px;
+    }
+
+    .modal-buttonset {
+      background-color: $popover-alternate-title-bg-color;
+      margin: 20px 0 0 -20px;
+      position: absolute;
+      width: calc(100% - 2px);
+    }
+
+    th {
+      color: $popover-alternate-subheader-color;
+      font-size: $theme-size-font-sm;
+    }
+
+    td,
+    p {
+      color: $popover-alternate-color;
+      font-size: $theme-size-font-base;
+      text-align: left;
+    }
+  }
+
+  .row:last-child {
+    margin-bottom: -15px;
+  }
+}
+
+.popover p,
+.tooltip p {
+  line-height: 15px;
+}
+
+.popover.is-hidden,
+.tooltip.is-hidden {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+
+.tooltip-title {
+  @include font-size(16);
+
+  border-bottom: 1px solid $popover-separator-color;
+  color: $font-color-highcontrast;
+  display: flex;
+  font-weight: $theme-number-font-weight-base;
+  justify-content: space-between;
+  line-height: 18px;
+  margin: 0;
+  padding: 10px 20px;
+
+  .btn-close {
+    margin-left: 0;
+    margin-top: -10px;
+  }
+
+  &.filled {
+    background-color: $theme-color-palette-azure-70;
+    color: $theme-color-palette-white;
+    font-size: $theme-size-font-lg;
+    -webkit-font-smoothing: antialiased;
+    margin: -1px -2px 0 -1px;
+    padding: 15px 5px 7px 15px;
+
+    .btn-close {
+      margin-left: 5px;
+      margin-top: -10px;
+    }
+
+    .icon-close {
+      color: $theme-color-palette-white;
+    }
+  }
+
+  &.ruby {
+    background-color: $theme-color-palette-ruby-60;
+  }
+
+  &.amber {
+    background-color: $theme-color-palette-amber-60;
+  }
+
+  &.emerald {
+    background-color: $theme-color-palette-emerald-60;
+  }
+
+  &.azure {
+    background-color: $theme-color-palette-azure-60;
+  }
+
+  &.turquoise {
+    background-color: $theme-color-palette-turquoise-60;
+  }
+
+  &.amethyst {
+    background-color: $theme-color-palette-amethyst-60;
+  }
+
+  &.slate {
+    background-color: $theme-color-palette-slate-60;
+  }
+
+  &.graphite {
+    background-color: $theme-color-palette-graphite-60;
+  }
+}
+
+.tooltip-content {
+  padding: 7px 10px 5px;
+  word-break: normal;
+
+  // Error Tooltip Styling
+  li {
+    list-style: none outside none;
+  }
+
+  p {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .error-message .message-text {
+    text-align: left;
+  }
+}
+
+.popover-content {
+  margin-left: 0;
+}
+
+.arrow,
+.arrow::after {
+  border-color: transparent;
+  border-style: solid;
+  border-width: 6px;
+  display: block;
+  height: 0;
+  position: absolute;
+  width: 0;
+}
+
+.arrow::after {
+  content: '';
+}
+
+.top {
+  > .arrow {
+    border-bottom-width: 0;
+    bottom: -7px;
+    left: calc(50% - 6px);
+
+    &::after {
+      border-bottom-width: 0;
+      left: -8px;
+      top: -9px;
+    }
+  }
+}
+
+.bottom {
+  > .arrow {
+    border-top-width: 0;
+    left: calc(50% - 6px);
+    top: -7px;
+
+    &::after {
+      border-top-width: 0;
+      left: -6px;
+      top: 0;
+    }
+  }
+}
+
+.right {
+  > .arrow {
+    border-left-width: 0;
+    left: -7px;
+    top: calc(50% - 6px);
+
+    &::after {
+      border-left-width: 0;
+      left: 1px;
+      top: -6px;
+    }
+  }
+}
+
+.left {
+  > .arrow {
+    border-right-width: 0;
+    right: -7px;
+    top: calc(50% - 6px);
+
+    &::after {
+      border-right-width: 0;
+      left: -6px;
+      top: -6px;
+    }
+  }
+}
+
+html[dir='rtl'] {
+  .popover,
+  .tooltip {
+    left: 9999px;
+    text-align: right;
+  }
+
+  .tooltip {
+    .icon {
+      + p {
+        margin-left: inherit;
+        margin-right: 2px;
+      }
+    }
+  }
+
+  .tooltip-content {
+    p {
+      margin-left: inherit;
+      margin-right: 0;
+    }
+  }
+
+  .popover-content {
+    margin-left: inherit;
+    margin-right: 0;
+  }
+
+}

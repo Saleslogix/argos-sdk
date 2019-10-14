@@ -1,0 +1,116 @@
+// Pie and Donut Chart
+//==================================================//
+
+.chart-pie {
+  height: 100%;
+  width: 100%;
+
+  svg {
+    min-height: inherit;
+  }
+
+  // Label and Line Colors
+  .tspan,
+  .lines circle {
+    color: $chart-font-color;
+  }
+
+  .label-text {
+    font-size: $theme-size-font-base;
+  }
+
+  .label-line {
+    color: none;
+    stroke-width: 2px;
+  }
+
+  polyline {
+    color: none;
+    shape-rendering: crispEdges;
+    stroke: $chart-font-color;
+    stroke-width: 1px;
+  }
+
+  .labels text {
+    color: $chart-font-color;
+    font-size: $theme-size-font-sm;
+  }
+
+  .slices path {
+    cursor: pointer;
+    -webkit-tap-highlight-color: $transparent;
+
+    &.is-not-selected {
+      opacity: 0.3;
+    }
+  }
+
+  &.has-right-legend .chart-legend {
+    border-top: 0;
+    margin: 0;
+    width: 30%;
+  }
+
+  // Adjust smaller bottom legend for the pie chart
+  &.is-mobile {
+    svg {
+      margin-top: -5px;
+    }
+
+    .chart-legend {
+      align-items: center;
+      border-top: 0;
+      display: flex;
+      height: 85px;
+      margin-left: 0;
+      margin-top: -20px;
+
+      .chart-legend-item {
+        display: inline-block !important;
+        padding: 2px 7px;
+        width: auto !important;
+      }
+
+      .chart-legend-color {
+        height: 15px;
+        top: 1px;
+        width: 15px;
+      }
+
+      .chart-legend-item-text {
+        position: relative;
+        top: 3px;
+      }
+    }
+  }
+}
+
+.auto-height .chart-pie svg {
+  min-height: 240px;
+}
+
+// A bit different tooltip style
+.is-pie.tooltip {
+  font-weight: $theme-number-font-weight-base;
+
+  b {
+    display: block;
+    text-align: center;
+  }
+}
+
+// Slight Nudge
+@include respond-to(phone) {
+  .chart-pie.has-right-legend .chart-legend {
+    margin: 0;
+    width: 27%;
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .chart-pie.has-right-legend .chart-legend-item-text {
+    padding-left: 0;
+    padding-right: 7px;
+  }
+}

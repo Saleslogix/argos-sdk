@@ -1,0 +1,69 @@
+// Full List Page Pattern
+//================================================== //
+
+.full-width {
+  font-size: $theme-size-font-sm;
+  padding: 20px;
+  width: 100%;
+
+  &.contained {
+    height: inherit;
+  }
+
+  &.no-padding {
+    margin: 0;
+  }
+
+  &.no-top-padding {
+    margin: 0;
+    padding: 0 0 10px;
+  }
+
+  &.no-top-space {
+    margin: 0;
+    padding: 0 20px 20px;
+  }
+
+  .row {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  + .full-width {
+    margin-top: -30px;
+  }
+}
+
+.full-height {
+  height: calc(100% - 40px);
+  margin: 20px;
+
+  &.full-width {
+    padding: 0;
+    width: calc(100% - 40px);
+  }
+
+  &.no-padding {
+    margin: 0;
+  }
+
+  > .tab-container {
+    height: 100%;
+
+    > .tab-panel {
+      height: calc(100% - 35px);
+    }
+  }
+}
+
+.full-height-toolbar {
+  height: calc(100% - 40px);
+}
+
+.tab-panel > .full-width {
+  padding-top: 0;
+}
+
+.toolbar + .full-width {
+  padding-top: 0;
+}

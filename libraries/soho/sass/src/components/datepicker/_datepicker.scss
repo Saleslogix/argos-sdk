@@ -1,0 +1,194 @@
+//* Date Picker
+//================================================== *
+
+.datepicker {
+  width: $datepicker-default-width;
+
+  &.input-xs {
+    width: $field-xs;
+  }
+
+  &.input-sm {
+    width: $field-sm;
+  }
+
+  &.input-mm {
+    width: $field-mm;
+  }
+
+  &.input-md {
+    width: $field-md;
+  }
+
+  &.input-lg {
+    width: $field-lg;
+  }
+
+  &.input-full {
+    width: $field-full;
+  }
+
+  &.input-auto {
+    width: auto;
+  }
+
+  &.datetime {
+    padding-right: 30px;
+    width: auto;
+  }
+
+  + .icon,
+  + .tooltip-description + .icon {
+    color: $trigger-icon-fill-color;
+    cursor: pointer;
+    height: 16px;
+    margin-left: -26px;
+    margin-top: 9px;
+    position: absolute;
+    width: 16px;
+    z-index: 1;
+
+    &:hover {
+      color: $trigger-hover-color;
+    }
+
+    &:active {
+      color: $trigger-active-color;
+    }
+  }
+
+  &.is-open {
+    border-color: $input-color-focus-border;
+
+    + .icon {
+      color: $datepicker-icon-active-color;
+    }
+  }
+
+  + .icon + .icon-error {
+    margin-left: -50px;
+  }
+
+  + .audible + .icon + .icon-error {
+    margin-left: -50px;
+  }
+
+  &:disabled {
+    border-color: $datepicker-disabled-border-color;
+
+    + .icon {
+      color: $datepicker-disabled-icon-color;
+      cursor: default;
+    }
+  }
+
+  &[readonly] {
+    + .icon {
+      color: $datepicker-readonly-icon-color;
+      cursor: default;
+    }
+  }
+}
+
+// Popup Adjustments
+.monthview-popup.popover {
+  max-width: inherit;
+
+  .tooltip-content {
+    padding: 0;
+  }
+
+  .popup-footer {
+    button {
+      background-color: transparent;
+      width: 33.33%;
+
+      // Fixes cut off focus state on the middle button
+      &:nth-child(1) {
+        margin-right: -1px;
+      }
+    }
+
+    &.is-half button {
+      width: 50%;
+    }
+  }
+}
+
+// Short fields
+.field-short {
+  .datepicker {
+    padding-right: 24px;
+
+    + .icon {
+      height: 13px;
+      margin-left: -22px;
+      margin-top: 6px;
+    }
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .datepicker {
+    + .icon,
+    + .tooltip-description + .icon {
+      margin-left: inherit;
+      margin-right: -28px;
+    }
+
+    + .icon + .icon-error {
+      margin-left: inherit;
+      margin-right: -50px;
+    }
+
+    + .audible + .icon + .icon-error {
+      margin-left: inherit;
+      margin-right: -50px;
+    }
+  }
+
+  // Short fields
+  .field-short {
+    .datepicker {
+      padding-left: 24px;
+      padding-right: 2px;
+
+      + .icon {
+        margin-left: inherit;
+        margin-right: -20px;
+      }
+    }
+  }
+}
+
+// IE Hack
+.ie11 {
+  .datepicker + .icon {
+    background-color: rgba($theme-color-palette-white, 0);
+  }
+
+  .is-monthyear {
+    .month,
+    .year {
+      line-height: normal;
+      position: relative;
+      top: 7px;
+    }
+
+    .monthview-header {
+      margin-bottom: -8px;
+      margin-top: 12px;
+
+      button {
+        top: 4px;
+      }
+    }
+  }
+}
+
+.ie-edge {
+  .monthview .btn-monthyear-pane {
+    margin-left: 10px;
+  }
+}

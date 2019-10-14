@@ -1,0 +1,77 @@
+// Field Set Css.
+//================================================== //
+
+fieldset,
+.fieldset {
+  > legend {
+    @include font-size(16);
+    @include antialiased();
+
+    color: $fieldset-title-color;
+    font-weight: $theme-number-font-weight-base;
+    padding-bottom: 20px;
+  }
+
+  &[disabled] {
+    > legend {
+      color: $disabled-color;
+    }
+  }
+
+  .row:last-child {
+    margin-bottom: 0;
+  }
+
+  + fieldset {
+    margin-top: 30px;
+  }
+
+  .row .column,
+  .row .columns {
+    margin-left: 0;
+    margin-right: 20px;
+    padding: 0;
+  }
+
+}
+
+.expandable-area .row:not(:first-child) fieldset {
+  margin-top: 50px;
+}
+
+.fieldset-title,
+.section-title {
+  @include antialiased();
+  @include font-size(16);
+
+  color: $fieldset-title-color;
+  font-weight: $theme-number-font-weight-base;
+  margin-bottom: 0;
+  padding-bottom: 20px;
+  padding-top: 30px;
+}
+
+.row fieldset:not(.radio-group):nth-child(n + 2),
+.row .fieldset:not(.radio-group):nth-child(n + 2) {
+  margin-top: 28px;
+}
+
+.row fieldset:not(.radio-group):nth-child(n + 2) {
+  margin-top: 10px;
+}
+
+.fieldset-hr {
+  border-bottom: 0 none;
+  border-top: 1px solid $fieldset-border-top-color;
+  height: 1px;
+  margin-bottom: 10px;
+  margin-top: 30px;
+  padding: 0;
+}
+
+//Adjust padding for 2nd child down
+@include respond-to(phone) {
+  .row > .columns:not(:first-child) > fieldset {
+    margin-top: 45px;
+  }
+}

@@ -1,0 +1,47 @@
+// Skip Link
+//================================================== //
+
+.skip-link {
+  background-color: $skip-link-bg-color;
+  border: 1px solid $skip-link-border-color;
+  border-radius: 0 0 2px 2px;
+  border-top: 1px;
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
+  color: $skip-link-color;
+  font-size: $theme-size-font-sm;
+  left: 0;
+  line-height: 31px;
+  margin-left: 20px;
+  padding: 0 10px;
+  position: absolute;
+  text-decoration: none;
+  top: -40px;
+  transition: top 1s ease-out 0s, background 1s linear 0s;
+  z-index: 10019;
+
+  &:hover::after {
+    border-bottom: 1px solid $skip-link-color;
+    content: '';
+    height: 23px;
+    left: 10px;
+    position: absolute;
+    width: calc(100% - 20px);
+  }
+}
+
+.skip-link:focus {
+  left: 0;
+  outline: 0 none;
+  position: absolute;
+  top: 0;
+  transition: top 0.3s ease-in 0s, background 0.3s linear 0s;
+}
+
+// Right To Left Styles
+html[dir='rtl'] {
+  .skip-link {
+    left: unset;
+    margin-right: 20px;
+    right: 0;
+  }
+}

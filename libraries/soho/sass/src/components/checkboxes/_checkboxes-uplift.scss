@@ -1,0 +1,6 @@
+// Uplift Checkboxes
+//================================================== //
+
+label.inline:not(.checkbox-label) .checkbox ~ .label-text {
+  margin: 0 auto 5px -5px;
+}

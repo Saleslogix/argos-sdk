@@ -1,0 +1,266 @@
+// Lookup
+//================================================== //
+
+.lookup-wrapper {
+  display: inline-block;
+  margin-bottom: 20px;
+  max-width: 100%;
+  position: relative;
+
+  .lookup {
+    padding-right: 35px;
+    text-overflow: ellipsis;
+
+    &[readonly]:not(.is-not-editable) + .trigger,
+    &[disabled] + .trigger {
+      cursor: default;
+
+      .icon {
+        color: $input-color-disabled-background;
+      }
+    }
+
+    &[disabled] + .trigger > .icon {
+      color: $input-disabled-color;
+    }
+
+    &.is-not-editable {
+      background-color: $input-color-initial-background;
+      border: 1px solid $input-color-initial-border;
+      color: $input-color;
+      -webkit-text-fill-color: $input-color;
+
+      &:not([disabled]) + .trigger {
+        cursor: pointer;
+      }
+
+      &:focus {
+        @include focus-state();
+      }
+    }
+  }
+
+  .trigger {
+    cursor: pointer;
+    display: inline-block;
+    height: 34px;
+    margin-left: -35px;
+    outline: none;
+    position: absolute;
+    width: 34px;
+
+    .icon {
+      background-color: inherit;
+      color: $trigger-icon-fill-color;
+      height: 18px;
+      pointer-events: none;
+      right: -7px;
+      top: 8px;
+      width: 18px;
+    }
+
+    &:hover .icon {
+      color: $trigger-hover-color;
+    }
+  }
+
+  .lookup-autowidth {
+    width: auto;
+  }
+}
+
+.field,
+.field-short {
+  .lookup-wrapper {
+    margin-bottom: 0;
+  }
+}
+
+.ie9 .lookup-wrapper .trigger,
+.ie10 .lookup-wrapper .trigger {
+  background-color: rgba($theme-color-palette-white, 0);
+}
+
+.lookup-modal {
+  .modal-content .modal-body-wrapper {
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  &.lookup-no-search {
+    .toolbar {
+      margin-bottom: 0;
+      margin-top: -32px;
+      vertical-align: top;
+    }
+
+    .modal-header {
+      padding: 15px 20px 5px;
+    }
+  }
+
+  .datagrid tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .datagrid-result-count {
+    top: -2px;
+  }
+
+  .toolbar {
+    margin-bottom: 15px;
+    padding: 0;
+
+    .buttonset {
+      width: 100%;
+    }
+
+    &.do-resize .buttonset {
+      width: 100%;
+    }
+
+    &.has-more-button .buttonset {
+      margin-bottom: 10px;
+      overflow: visible;
+      padding-top: 7px;
+      width: calc(100% - 44px) !important;
+
+      + .more {
+        padding-top: 10px;
+      }
+    }
+  }
+
+  .contextual-toolbar {
+    margin: 0 !important;
+    top: 5px;
+    width: 100%;
+  }
+
+  .modal-body-wrapper {
+    background-color: inherit;
+    overflow: hidden;
+    padding: 0 18px 10px;
+  }
+
+  .modal-buttonset {
+    background-color: inherit;
+    margin-top: 0;
+  }
+
+  .modal-content {
+    margin: 0;
+  }
+
+  .modal-header {
+    padding: 20px 20px 10px;
+  }
+
+  .title {
+    @include antialiased();
+
+    font-size: $theme-size-font-lg;
+  }
+
+  tr.is-clickable {
+    cursor: pointer;
+
+    td:focus,
+    td.is-focused {
+      box-shadow: none;
+    }
+
+    &:hover:not(.datagrid-expandable-row) td:not(.is-editing) {
+      background-color: $datagrid-row-hover-color;
+    }
+  }
+
+  .toolbar-searchfield-wrapper.non-collapsible {
+    width: 100% !important;
+
+    input {
+      background-color: $searchfield-lighter-bg-color;
+
+      &::-webkit-input-placeholder,
+      &::-moz-placeholder,
+      &:-ms-input-placeholder {
+        color: $searchfield-lighter-text-color;
+      }
+
+    }
+  }
+
+}
+
+.ie11 {
+  .lookup-modal .modal-body .toolbar .more {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+// Short fields
+.field-short {
+  .lookup-wrapper {
+    margin-bottom: 0;
+
+    .trigger {
+      height: 24px;
+      margin-left: -22px;
+      width: 18px;
+
+      .icon {
+        height: 14px;
+        right: 0;
+        top: 6px;
+        width: 18px;
+      }
+
+      + .icon {
+        margin-left: -41px;
+      }
+    }
+  }
+
+  .lookup {
+    padding-right: 18px;
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .lookup-wrapper .trigger {
+    margin-left: 0;
+    margin-right: -35px;
+
+    .icon {
+      left: -6px;
+      right: auto;
+      width: 18px;
+    }
+
+    + .icon {
+      margin-left: -41px;
+    }
+  }
+
+  .field-short .lookup-wrapper .trigger {
+    margin-left: 0;
+    margin-right: -20px;
+
+    .icon {
+      height: 14px;
+      left: 0;
+      right: auto;
+      top: 3px;
+      width: 18px;
+    }
+  }
+
+  .lookup-wrapper .lookup {
+    padding-left: 35px;
+    padding-right: 10px;
+    text-align: right;
+    text-overflow: ellipsis;
+  }
+}

@@ -1,0 +1,39 @@
+// Bar Chart
+//==================================================//
+
+.chart-container {
+  .bar,
+  .arc {
+    cursor: pointer;
+    -webkit-tap-highlight-color: $transparent;
+  }
+
+  .arc {
+    stroke: $chart-arc-stroke;
+  }
+
+  .bar {
+    cursor: pointer;
+    stroke: transparent;
+    stroke-width: 1px;
+  }
+
+  &.bar-chart-grouped .chart-legend {
+    margin-top: 5px;
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .chart-container {
+    &.bar-chart {
+      svg {
+        transform: scale(-1, 1);
+
+        text {
+          transform: scale(-1, 1);
+        }
+      }
+    }
+  }
+}

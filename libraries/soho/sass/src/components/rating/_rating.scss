@@ -1,0 +1,80 @@
+// Rating
+//==================================================//
+
+.rating {
+  display: inline-block;
+
+  input {
+    @include opacity(0);
+
+    cursor: pointer;
+    height: 14px;
+    margin: 4px 0 0 1px;
+    position: absolute;
+    width: 14px;
+    z-index: 1;
+  }
+
+  label {
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 7px;
+    padding: 0;
+  }
+
+  // States
+  &.is-readonly input,
+  &.is-readonly label {
+    cursor: default;
+  }
+
+  // Rating Icons - Svg
+  svg.icon {
+    // color: $rating-bg-color;
+    display: inline-block;
+    height: 22px;
+    position: relative;
+    width: 22px;
+  }
+
+  input:focus + label {
+    box-shadow: $focus-box-shadow;
+    outline: $input-color-focus-border;
+  }
+
+  &:not(.is-readonly) {
+    .inline input:active + svg.icon,
+    input:active + label > svg.icon {
+      color: $rating-hover-color;
+    }
+  }
+}
+
+.rating-text {
+  color: $rating-border-color;
+  display: inline-block;
+  font-size: $theme-size-font-base;
+  line-height: 20px;
+  padding-left: 40px;
+}
+
+.rating:not(.is-readonly) .inline input:hover + svg.icon,
+.rating:not(.is-readonly) input:hover + label > svg.icon {
+  color: $rating-hover-color;
+}
+
+.rating .inline .is-filled + svg.icon,
+.rating .is-filled + label > svg.icon {
+  @include opacity(1);
+
+  color: $rating-bg-color;
+}
+
+.rating .inline input:checked + svg.icon,
+.rating .inline .is-half + svg.icon,
+.rating input:checked + label > svg.icon,
+.rating .is-half + label > svg.icon {
+  @include opacity(1);
+
+  color: $rating-bg-color;
+}

@@ -1,0 +1,124 @@
+// Sign In Page Pattern
+//================================================== //
+
+.wrapper {
+  display: table;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.signin {
+  display: table-cell;
+  margin-top: -100px;
+  text-align: center;
+  vertical-align: middle;
+  width: 300px;
+
+  .field::after {
+    clear: both;
+    content: '';
+    display: block;
+  }
+
+  label {
+    text-align: left;
+  }
+
+  .checkbox-label {
+    float: left;
+    top: -6px;
+  }
+
+  h1 {
+    color: $signin-title-color;
+    font-size: $theme-size-font-xl;
+    margin-bottom: 30px;
+    margin-top: -20px;
+    padding: 0;
+    text-align: center;
+  }
+
+  &.sent h1,
+  &.sent p {
+    margin: 0;
+  }
+
+  .hyperlink {
+    display: inline-block;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .btn-primary,
+  input {
+    width: 100%;
+  }
+
+  .dropdown-wrapper {
+    width: 100%;
+  }
+
+  .icon-logo {
+    display: block;
+    height: 90px;
+    margin: 0 auto 40px;
+    width: 90px;
+  }
+
+  .error-message {
+    .message-text {
+      text-align: left;
+    }
+  }
+
+}
+
+.ios .signin .icon-error,
+.ios .signin .icon-success {
+  top: 26.5px !important;
+}
+
+//ios issue in misaligned icon error
+.ios .signin {
+  > #signin {
+    .error-message {
+      .icon-error {
+        top: 0 !important;
+      }
+
+      & .icon-success {
+        top: 0 !important;
+      }
+    }
+  }
+}
+
+.password-hint {
+  strong {
+    font-weight: $theme-number-font-weight-bold;
+  }
+
+  li {
+    list-style: inside;
+  }
+}
+
+// Handle RTL Pages
+html[dir='rtl'] {
+  .signin {
+    label {
+      text-align: right;
+    }
+
+    .checkbox-label {
+      float: right;
+    }
+
+    .error-message {
+      .message-text {
+        text-align: right;
+      }
+    }
+  }
+
+}

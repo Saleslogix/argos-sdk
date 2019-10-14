@@ -1,0 +1,409 @@
+// Cards/Widgets
+//=======================================================
+
+@mixin auto-height {
+  height: auto;
+  min-height: 0;
+
+  .widget-content,
+  .card-content {
+    height: auto;
+    min-height: auto;
+  }
+}
+
+@mixin auto-width {
+  min-width: 0;
+  width: auto;
+
+  .widget-content,
+  .card-content {
+    min-width: 0;
+    width: auto;
+  }
+}
+
+.card,
+.widget {
+  background-color: $cardlist-bg-color;
+  border: 1px solid $cardlist-border-color;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  min-height: 360px;
+  position: relative;
+  width: 100%;
+
+  // Empty State Containers can have variable height
+  &.is-empty {
+    min-height: 0;
+
+    .card-content,
+    .widget-content {
+      height: auto;
+      min-height: 0;
+    }
+  }
+
+  // Expandable card headers set auto-height automatically
+  &.expandable-area {
+    @include auto-height;
+
+    .expandable-header {
+      &:first-child {
+        padding-top: 13px;
+      }
+
+      .icon {
+        height: 18px;
+        width: 18px;
+      }
+    }
+
+    .btn-expander {
+      border: 1px solid transparent;
+      border-radius: 2px;
+      display: inline-block;
+
+      &:focus:not(.hide-focus) {
+        border-color: $button-color-secondary-focus-border;
+      }
+    }
+  }
+
+  .small-thin-text {
+    @include font-size(11);
+
+    color: $font-color-lowcontrast;
+  }
+
+  .full-table {
+    width: 100%;
+  }
+
+  &.auto-size {
+    @include auto-height;
+    @include auto-width;
+  }
+}
+
+.card-header,
+.card-footer,
+.widget-header,
+.widget-footer {
+  padding: 13px 20px;
+  position: relative;
+}
+
+.card-header,
+.widget-header {
+  border-bottom: 1px solid $cardlist-border-color;
+  height: 50px;
+  line-height: 50px;
+
+  &.has-toolbar {
+    padding: 0 13px 0 20px;
+
+    .toolbar {
+      height: 48px;
+      line-height: normal;
+    }
+
+    .title {
+      @include font-size(16);
+
+      color: $cardlist-header-color;
+      -webkit-font-smoothing: antialiased;
+      font-weight: 100;
+      margin: 0;
+      padding-top: 3px;
+      text-rendering: optimizeLegibility !important;
+    }
+
+    //Prevent FOUC
+    .searchfield {
+      border: 1px solid transparent;
+    }
+
+    .searchfield-wrapper {
+      margin: 4px 5px 5px 0;
+    }
+  }
+
+  [class^='btn'] {
+    color: $listview-toolbar-button-text-color;
+
+    span {
+      color: $listview-toolbar-button-text-color;
+    }
+
+    .icon {
+      color: $listview-toolbar-button-icon-color;
+    }
+
+    &:focus,
+    &:hover {
+      color: $listview-toolbar-button-text-hover-color;
+
+      span {
+        color: $listview-toolbar-button-text-hover-color;
+      }
+
+      .icon {
+        color: $listview-toolbar-button-icon-hover-color;
+      }
+    }
+
+    &.is-selected,
+    &.is-selected:focus,
+    &.is-selected:hover {
+      box-shadow: 0 0 0 2px transparent, 0 0 0 1px $listview-toolbar-button-text-selected-color;
+      color: $listview-toolbar-button-text-selected-color;
+
+      span {
+        color: $listview-toolbar-button-text-selected-color;
+      }
+
+      .icon {
+        color: $listview-toolbar-button-icon-selected-color;
+      }
+    }
+  }
+
+  > h2,
+  > h1,
+  > button {
+    display: inline-block;
+    float: left;
+  }
+
+  .btn-actions {
+    background-color: transparent;
+
+    .icon {
+      color: $cardlist-actions-color;
+    }
+
+    .audible {
+      color: $cardlist-actions-color;
+    }
+  }
+
+  &:not(.has-toolbar) {
+    > .btn-actions,
+    > .btn-expander {
+      line-height: normal;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      right: 15px;
+    }
+
+    > .btn-actions {
+      top: 7px;
+    }
+
+    > .btn-expander {
+      top: 5px;
+
+      .icon {
+        left: 11px;
+        top: 11px;
+      }
+    }
+
+    .icon {
+      top: -1px;
+    }
+  }
+}
+
+.widget-content,
+.card-content {
+  height: 318px;
+  min-height: 318px;
+  overflow: auto;
+  width: 100%;
+
+  &.contained,
+  .contained {
+    height: inherit;
+  }
+
+  .card-group-action,
+  .widget-group-action,
+  .card-chart-action,
+  .widget-chart-action {
+    padding: 0 10px 0 20px;
+
+    .toolbar {
+      margin-bottom: 0;
+    }
+  }
+
+  .card-group-action,
+  .widget-group-action {
+    background-color: $body-color-primary-background;
+    border: 1px solid transparent;
+    border-bottom-color: $listview-border-color;
+    font-size: 16px;
+  }
+
+  .card-chart-action,
+  .widget-chart-action {
+    padding-top: 3px;
+  }
+}
+
+.card-footer,
+.widget-footer {
+  border-top: 1px solid $cardlist-border-color;
+  min-height: 50px;
+
+  .pager-toolbar {
+    a {
+      margin: 2px 4px 0;
+    }
+
+  }
+}
+
+.card-list-item {
+  font-size: 0;
+
+  > * {
+    display: inline-block;
+    font-size: 1rem;
+    vertical-align: middle;
+  }
+
+  &.alternate {
+    background-color: $body-color-primary-background;
+  }
+
+}
+
+.card-list-item-thumbnail {
+  width: 64px;
+
+  img {
+    border-radius: 0.5rem;
+  }
+}
+
+.card-list-item-summary {
+  margin: 0 1rem;
+  width: calc(100% - 64px - 2rem - 125px); // 100% - thumbnail size - this element's padding - price container's size
+}
+
+.card-list-item-price-container {
+  text-align: right;
+  width: 125px;
+}
+
+.card-detail-table {
+  td,
+  th {
+    padding-top: 5px;
+
+    &:first-child {
+      padding-top: 0;
+    }
+  }
+}
+
+// Empty-State Widgets/Cards
+.widget-empty-icon,
+.card-empty-icon,
+.widget-empty-title,
+.card-empty-title,
+.widget-empty-info,
+.card-empty-info,
+.widget-empty-actions,
+.card-empty-actions,
+.empty-icon,
+.empty-title,
+.empty-actions,
+.empty-info {
+  -webkit-font-smoothing: antialiased;
+  font-weight: $theme-number-font-weight-base;
+  line-height: normal;
+  text-align: center;
+}
+
+.card-empty-icon,
+.widget-empty-icon,
+.empty-icon {
+  padding: 20px 0;
+}
+
+.card-empty-title,
+.widget-empty-title,
+.empty-title {
+  @include font-size(16);
+
+  padding: 0 0 20px;
+
+  &:first-child {
+    padding: 30px 0 20px;
+  }
+}
+
+.card-empty-info,
+.widget-empty-info,
+.empty-info {
+  font-size: $theme-size-font-base;
+  padding: 0 20px 40px;
+
+  &:last-child {
+    padding: 0 20px 30px;
+  }
+}
+
+.card-empty-actions,
+.widget-empty-actions,
+.empty-actions {
+  padding: 0 0 40px;
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .card-header,
+  .widget-header {
+    > h2,
+    > h1,
+    > button {
+      float: right;
+    }
+
+    &:not(.has-toolbar) > .btn-actions {
+      left: 15px;
+      right: auto;
+    }
+
+    &.has-toolbar {
+      padding: 0 20px 0 13px;
+
+      .searchfield-wrapper {
+        margin: 8px 0 5px 5px;
+      }
+    }
+
+    > button {
+      float: right;
+    }
+
+    > h2,
+    > h1 {
+      float: right;
+      width: 100%;
+    }
+  }
+
+  .card-content,
+  .widget-content {
+    .card-group-action,
+    .widget-group-action {
+      padding: 0 20px 0 10px;
+    }
+  }
+}
