@@ -585,6 +585,7 @@ class Application {
     this.initHash();
     this.initModal();
     this.initScene();
+    this.updateSoho();
   }
 
   initIcons() {
@@ -594,7 +595,6 @@ class Application {
   initSoho() {
     const container = this.getAppContainerNode();
     const menu = $('.application-menu', container).first();
-    const closeMenuButton = $('.icon-close').first();
     const closeMenuHeader = $('.application-menu-header').first();
 
     menu.applicationmenu();
@@ -611,13 +611,16 @@ class Application {
       this.hideApplicationMenu();
     });
 
-    closeMenuButton.on('click', () => {
-      this.hideApplicationMenu();
-    });
-
     const viewSettingsModal = $('.modal.view-settings', container).first();
     viewSettingsModal.modal();
     this.viewSettingsModal = viewSettingsModal.data('modal');
+  }
+
+  /**
+   * Allow us to update any soho components after all the dom is in place.
+   */
+  updateSoho() {
+    this.applicationmenu.updated();
   }
 
   initScene() {
@@ -663,7 +666,7 @@ class Application {
   }
 
   hideApplicationMenu() {
-    this.applicationmenu.closeMenu();
+    this.applicationmenu.closeMenu(true);
   }
 
   showApplicationMenu() {
