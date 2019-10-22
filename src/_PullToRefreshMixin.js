@@ -128,7 +128,6 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends argos._Pul
       .map((e) => {
         const evt = e.touches[0];
         $(this.pullRefreshBanner).css({
-          visibility: 'visible',
           top: `${this._initPosition.top}px`,
         });
         $(this.dragNode).removeClass(this.animateCls);
@@ -200,6 +199,7 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends argos._Pul
         top: `${data.top}px`,
       });
       $(this.pullRefreshBanner).css({
+        visibility: 'visible',
         top: `${data.top + this._initPosition.top}px`,
       });
       if (data.distance > data.maxDistance) {
