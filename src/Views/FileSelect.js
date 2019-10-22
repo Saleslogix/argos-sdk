@@ -77,7 +77,7 @@ const __class = declare('argos.Views.FileSelect', [View], /** @lends argos.Views
     `<div class="field" data-dojo-attach-point="fileWrapper">
       <label class="fileupload" data-dojo-attach-point="fileupload">
           <span class="audible">{%: $.addFileText %}</span>
-          <input type="file" data-dojo-attach-point="btnFileSelect" name="file-input" size="71" accept="*/*"/>
+          <input type="file" data-dojo-attach-point="btnFileSelect" name="file-input" size="71" />
       </label>
     </div>`,
     '</div>',
