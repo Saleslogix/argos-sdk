@@ -276,7 +276,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
    * The template used to render the single list action row.
    */
   listActionTemplate: new Simplate([
-    '<ul id="popupmenu-{%= $$.getItemActionKey($) %}" data-dojo-attach-point="actionsNode" class="actions-row popupmenu actions top">',
+    '<ul id="popupmenu-{%= $$.getItemActionKey($) %}" data-dojo-attach-point="actionsNode" class="popupmenu">',
     '{%! $$.loadingTemplate %}',
     '</ul>',
   ]),
@@ -295,8 +295,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
    *      label               Text added below the icon
    */
   listActionItemTemplate: new Simplate([`
-    <li><a></a><button class="popupitem" type="button" data-action="invokeActionItem" data-id="{%= $.actionIndex %}"
-    aria-label="{%: $.title || $.id %}">{%: $.label %}</button></li>`]),
+    <li><a href="#" data-action="invokeActionItem" data-id="{%= $.actionIndex %}">{%: $.label %}</a></li>`]),
   /**
    * @property {Simplate}
    * The template used to render row content template
@@ -1804,6 +1803,20 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
       $(btn).popupmenu();
       $(btn).on('beforeopen', (evt) => {
         this.selectEntry({ key: evt.target.attributes['data-key'].value });
+      });
+
+      // The click handle in the popup stops propagation which breaks our _ActionMixin click handling
+      // This just wraps the selected element in the popup selection event and triggers the
+      // _ActionMixin method manually
+      $(btn).on('selected', (evt, args) => {
+        const selected = args && args[0];
+        if (!selected) {
+          console.warn('Something went wrong selecting a quick action.');
+          return;
+        }
+
+        const e = $.Event('click', { target: selected });
+        this._initiateActionFromEvent(e);
       });
     }
   },
