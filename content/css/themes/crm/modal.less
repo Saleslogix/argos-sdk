@@ -3,10 +3,18 @@
   max-width: 95%;
   max-height: 95%;
   margin: auto;
-  background-color: #fff;
   overflow: auto;
   box-shadow: 0 0 5px @color-light-slate;
   z-index: 502;
+}
+
+.high-contrast-theme,
+.light-theme .crm-modal {
+  background-color: #fff;
+}
+
+.dark-theme .crm-modal {
+  background-color: #0f0f10
 }
 
 .modal__content {
@@ -14,6 +22,10 @@
   .relative-datetime-select {
     font-size: 14px;
   }
+}
+
+.dark-theme .modal__content {
+  color: #fff;
 }
 
 .modal__container {
