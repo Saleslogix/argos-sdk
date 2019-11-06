@@ -1450,6 +1450,7 @@ $datagrid-short-row-height: 25px;
 
     &.is-rowdisabled {
       opacity: 0.6;
+      pointer-events: none;
 
       td {
         &:hover {
@@ -1582,7 +1583,7 @@ $datagrid-short-row-height: 25px;
       display: block;
       min-height: $datagrid-row-height + 6;
       overflow: hidden;
-      padding: 4px 20px 0;
+      padding: 4px 19px 0;
 
       .colorpicker-container {
         background-color: transparent;
@@ -1727,6 +1728,10 @@ $datagrid-short-row-height: 25px;
       height: 25px;
       position: relative;
       vertical-align: middle;
+
+      .chart-targeted-text {
+        color: $theme-color-palette-white;
+      }
     }
 
     .spinbox-wrapper {
