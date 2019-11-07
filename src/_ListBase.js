@@ -1811,7 +1811,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
       $(btn).on('selected', (evt, args) => {
         const selected = args && args[0];
         if (!selected) {
-          console.warn('Something went wrong selecting a quick action.');
+          console.warn('Something went wrong selecting a quick action.'); // eslint-disable-line
           return;
         }
 
