@@ -1,0 +1,26 @@
+// Two Types of Header Details, 50/50 and Auto
+//================================================== //
+.header-detail {
+  height: 100%;
+  position: relative;
+
+  &.contained,
+  .contained {
+    height: inherit;
+  }
+
+  .header {
+    background-color: $panel-bg-color;
+    height: 50%;
+
+    .content {
+      background-color: $panel-bg-color;
+    }
+  }
+
+  .detail {
+    background-color: $body-color-primary-background;
+    border-top: 1px solid $panel-border-color;
+    height: 50%;
+  }
+}

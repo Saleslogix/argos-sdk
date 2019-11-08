@@ -1,0 +1,44 @@
+// Bullet Chart
+//==================================================//
+
+.bullet-chart {
+  font-size: $theme-size-font-sm;
+
+  .range {
+    cursor: pointer;
+    -webkit-tap-highlight-color: $transparent;
+  }
+
+  .marker {
+    stroke: $theme-color-brand-primary-base;
+    stroke-width: 2px;
+  }
+
+  .tick line {
+    stroke: $font-color;
+    stroke-width: 0.5px;
+  }
+
+  .title {
+    font-size: $theme-size-font-sm;
+    font-weight: $theme-number-font-weight-bold;
+  }
+
+  .subtitle {
+    font-weight: $theme-number-font-weight-base;
+    text-transform: none;
+  }
+
+  //Handles max 3 ranges
+}
+
+.bullet {
+  .range.s0 { color: $theme-color-palette-slate-10; }
+  .range.s1 { color: $theme-color-palette-slate-20; }
+  .range.s2 { color: $theme-color-palette-slate-30; }
+  .measure.s0 { color: $theme-color-palette-azure-20; }
+  .measure.s1 { color: $theme-color-palette-azure-40; }
+  .measure.s2 { color: $theme-color-palette-azure-60; }
+  .measure.s3 { color: $theme-color-palette-azure-80; }
+  .measure.s4 { color: $theme-color-palette-azure-100; }
+}

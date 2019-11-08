@@ -1,0 +1,346 @@
+// Pager
+//================================================== //
+
+.pager-toolbar {
+  font-size: $theme-size-font-base;
+  height: 38px;
+  margin: 5px 10px;
+  max-height: 38px;
+  padding-top: 4px;
+  text-align: center;
+
+  > li {
+    cursor: pointer;
+    display: inline-block;
+
+    > .btn-icon {
+      border: 1px solid transparent;
+      border-radius: 2px;
+      color: $pager-text-color;
+      cursor: pointer;
+      height: 28px;
+      margin: 0 2px;
+      min-height: 28px;
+      outline: none;
+      padding: 5px;
+      position: static;
+      text-decoration: none;
+      transition: all 0.2s ease;
+
+      // Disabled
+      &[disabled] {
+        box-shadow: none;
+        cursor: default;
+
+        .icon {
+          color: $pager-disabled-color;
+        }
+      }
+
+      &:focus {
+        border: 1px solid $pager-text-color;
+        box-shadow: $focus-box-shadow;
+      }
+
+      .audible {
+        color: $theme-color-font-base;
+      }
+    }
+
+    &.pager-prev,
+    &.pager-first,
+    &.pager-last,
+    &.pager-next {
+      > .btn-icon {
+        margin-top: -1px;
+        min-width: 34px;
+        width: 34px;
+
+        .icon {
+          margin-top: -2px;
+        }
+      }
+    }
+
+    &.pager-no {
+      > .btn-icon {
+        font-weight: $theme-number-font-weight-base;
+        margin-top: -1px;
+        min-width: 19px;
+        width: auto;
+      }
+
+      &:hover {
+        > .btn-icon {
+          border-bottom: 1px solid $pager-text-color;
+
+          &[disabled] {
+            border-bottom: 1px solid transparent;
+          }
+        }
+      }
+    }
+
+    &.selected {
+      > .btn-icon {
+        color: $pager-selected-color;
+        font-weight: $theme-number-font-weight-bold;
+      }
+
+      &:hover {
+        > .btn-icon {
+          border-bottom: 1px solid $pager-text-color;
+
+          &:focus {
+            border-bottom: 1px solid transparent;
+          }
+        }
+      }
+    }
+
+    &:not(.selected) {
+      .btn-icon:not([disabled]) {
+        &:active,
+        &:hover {
+          svg {
+            color: $pager-hover-color;
+          }
+        }
+      }
+    }
+
+    svg {
+      pointer-events: none;
+    }
+  }
+}
+
+// Buttons
+.pager-prev,
+.pager-first,
+.pager-last,
+.pager-next {
+  margin: 0;
+  padding: 0;
+
+  .icon {
+    color: $font-color;
+    top: 4px;
+  }
+
+  .btn-icon {
+    backface-visibility: hidden;  // Makes the round ripple-effect pressed state work
+    border-radius: 20px;
+    overflow: hidden;  // Makes the round ripple-effect pressed state work
+    -moz-transform: translate3d(0, 0, 0);  // Makes the round ripple-effect pressed state work
+    -webkit-transform: translate3d(0, 0, 0);  // Makes the round ripple-effect pressed state work
+    transform: translate3d(0, 0, 0); // Makes the round ripple-effect pressed state work
+  }
+
+  .ripple-effect {
+    background-color: $tertiary-btn-ripple-color;
+  }
+}
+
+.paginated li {
+  font-size: $theme-size-font-base;
+}
+
+// Pager for Tables
+.pager-count {
+  display: inline-block;
+  font-size: $theme-size-font-base;
+  line-height: normal;
+
+  > label {
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin-bottom: 0;
+  }
+
+  input {
+    font-size: $theme-size-font-base;
+    height: 30px;
+    margin: 0 5px;
+    padding: 3px 0 !important;
+    text-align: center;
+    width: 30px;
+  }
+
+  .pager-total-pages {
+    display: inline-block;
+    text-align: left;
+  }
+
+  + li {
+    margin-left: 10px;
+  }
+}
+
+// Put some space between the "count" section and the navigation buttons
+li + .pager-count {
+  margin-left: 10px;
+}
+
+.pager-pagesize {
+  float: right;
+
+  button {
+    height: 28px;
+
+    span {
+      font-size: $theme-size-font-base;
+      font-weight: $theme-number-font-weight-base;
+      text-transform: none;
+    }
+
+    .icon {
+      height: 18px;
+      margin-right: -2px;
+      margin-top: 1px;
+      width: 18px;
+    }
+  }
+}
+
+.ie {
+  &.ie11 {
+    .pager-toolbar > li {
+      vertical-align: middle;
+
+      > .btn-icon {
+        display: inline-block;
+
+        svg {
+          pointer-events: auto;
+        }
+      }
+
+      &.pager-prev,
+      &.pager-first,
+      &.pager-last,
+      &.pager-next {
+        .btn-icon {
+          margin-top: 3px;
+
+          svg {
+            top: 2px;
+          }
+        }
+      }
+
+      &.pager-no {
+        .btn-icon {
+          margin-top: 4px;
+        }
+      }
+
+      &.pager-count {
+        label {
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+
+  .pager-count {
+    input {
+      margin-top: 2px;
+      padding-top: 0;
+    }
+  }
+}
+
+// Inside Widgets
+.card,
+.widget {
+  .pager-toolbar {
+    margin: 0;
+  }
+
+  &.card .card-footer .pager-toolbar {
+    height: 30px;
+
+    > li {
+      > .btn-icon {
+        height: 30px;
+        margin: 0;
+        padding: 5px 7px;
+      }
+
+      &.pager-prev,
+      &.pager-first,
+      &.pager-last,
+      &.pager-next,
+      &.pager-no {
+        > .btn-icon {
+          height: 28px;
+          margin-top: -1px;
+        }
+      }
+    }
+  }
+}
+
+.is-firefox {
+  .pager-toolbar {
+    > li {
+      &.pager-prev,
+      &.pager-first,
+      &.pager-last,
+      &.pager-next,
+      &.pager-no {
+        > .btn-icon {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+
+  .card,
+  .widget {
+    &.card .card-footer .pager-toolbar {
+      > li {
+        &.pager-prev,
+        &.pager-first,
+        &.pager-last,
+        &.pager-next,
+        &.pager-no {
+          > .btn-icon {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  // Pager for Tables
+  .pager-count {
+    .pager-total-pages {
+      text-align: right;
+    }
+
+    input {
+      text-align: center;
+    }
+  }
+
+  // Flip the icons around
+  .pager-prev,
+  .pager-first,
+  .pager-last,
+  .pager-next {
+    .icon {
+      -moz-transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+      transform: rotateY(180deg);
+    }
+  }
+
+  .pager-pagesize {
+    float: left;
+  }
+}

@@ -1,0 +1,211 @@
+// Expandable Area
+//================================================== //
+
+@import '../button/button-chevron';
+
+.expandable-area {
+
+  //Header Area
+  .expandable-header {
+    border-top: 1px solid $expandable-area-border-color;
+    position: relative;
+
+    &:first-child {
+      padding-top: 30px;
+    }
+
+    > * {
+      vertical-align: top;
+    }
+
+    &[aria-expanded='true'] {
+      + .expandable-pane {
+        display: block;
+        height: auto;
+      }
+    }
+
+    .icon {
+      height: 15px;
+      left: 5px;
+      top: 0;
+      width: 18px;
+    }
+  }
+
+  //Area that hides/shows and Area that stays visible
+  .expandable-pane {
+    font-size: $theme-size-font-base;
+    height: 0;
+    overflow: hidden;
+
+    > .content {
+      padding: 25px 0 0;
+
+      .column {
+        margin-left: 0;
+        padding-left: 0;
+      }
+
+      p {
+        margin-bottom: 15px;
+      }
+    }
+
+    .row:last-child {
+      margin-bottom: 0;
+    }
+
+    .columns {
+      margin-left: 0;
+      padding: 0;
+    }
+
+    .summary-form .field:last-child {
+      margin-bottom: 20px;
+    }
+
+  }
+
+  .expandable-visible-pane {
+    > .content {
+      margin-top: 25px;
+
+      .column:first-child {
+        margin-left: 0;
+        padding-left: 0;
+      }
+
+      .field:last-child .dropdown-wrapper:last-child,
+      .field:last-child input:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .row:last-child {
+      margin-bottom: 0;
+    }
+
+    .columns {
+      margin-left: 0;
+    }
+
+    + .expandable-pane > .content {
+      padding-top: 0;
+    }
+  }
+
+  //Footer area with the link
+  .expandable-footer {
+    margin-bottom: 26px;
+    margin-top: 4px;
+  }
+
+  //Hide Border on the first
+  &:first-child {
+    .expandable-header {
+      border-top-color: transparent;
+    }
+  }
+
+  &:last-child {
+    .expandable-footer {
+      border-bottom: 1px solid $expandable-area-border-color;
+      padding-bottom: 26px;
+    }
+  }
+
+  //Icon on the header
+  .title {
+    @include font-size(16);
+
+    color: $expandable-area-title-color;
+  }
+
+  //Push the switch out a bit, qualified to panes only not nested children
+  .switch {
+    margin: 12px 4px;
+
+    &:first-child {
+      margin-top: 15px;
+    }
+  }
+
+  //Better handle nested expandables
+  .expandable-area {
+    .expandable-header {
+      padding-top: 10px;
+    }
+  }
+
+  &.has-bottom-border {
+    border-bottom: 1px solid $expandable-area-border-color;
+    margin-top: -5px;
+
+    .row:last-child {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.expandable-area-trigger {
+  .icon {
+    margin-left: 2px !important;
+    width: 16px;
+  }
+
+  .icon-opened {
+    display: none;
+  }
+
+  &.active {
+    .icon-closed {
+      display: none;
+    }
+
+    .icon-opened {
+      display: inline-block;
+    }
+  }
+}
+
+// Overrides for smaller break point
+@include respond-to(phabletdown) {
+  .expandable-area {
+    &.has-bottom-border {
+      .row {
+        .column:not(:first-child) {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+
+  .expandable-pane {
+    .row {
+      .column:not(:first-child) {
+        margin-top: 20px;
+      }
+
+      &.no-top-margins {
+        .column:not(:first-child) {
+          margin-top: 0;
+        }
+      }
+    }
+
+    > .content {
+      padding: 25px 0 15px !important;
+    }
+
+    .compound-field:last-child input:last-child {
+      margin-bottom: 20px !important;
+    }
+  }
+}
+
+.full-width .column:first-child,
+.full-width .columns:first-child {
+  // fixes an issue on http://localhost:4000/examples/landmark/search-form
+  padding-left: 20px !important;
+}

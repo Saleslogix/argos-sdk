@@ -1,0 +1,21 @@
+/**
+ * shared  : shared global vars, mixins ect..
+ * base    : base styles from original (horizontal) layout
+ * mobile  : mobile only overrides and global mobile overrides
+ * paging  : paging layout overrides
+ * stacked : stacked layout for mobile
+ * rtl     : right to left overrides
+ * browser : browser specific overrides
+ */
+
+/** default **/
+@import 'hierarchy-shared';
+@import 'hierarchy-base';
+
+/** implementations **/
+@import 'hierarchy-paging.scss';
+@import 'hierarchy-stacked';
+@import 'hierarchy-rtl';
+@import 'hierarchy-browser-overrides';
+@import 'hierarchy-mobile';
+@import 'hierarchy-print';

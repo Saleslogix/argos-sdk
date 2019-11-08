@@ -1,0 +1,369 @@
+// Wizard
+//================================================== //
+
+// NOTE: See also "_header.scss" for Wizard styles that are specific to the header.
+
+//Internal Variables
+$wizard-height: 164px;
+$wizard-tick-border-width: 2px;
+$wizard-tick-size: 14px;
+$wizard-current-state-size: ($wizard-tick-size * 1.3);
+
+.wizard-header {
+  @include transition(opacity 200ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+
+  background-color: inherit;
+  opacity: 0.1;
+  padding: (($wizard-height / 2) - $wizard-tick-border-width) ($wizard-height / 4);
+  position: relative;
+
+  .bar {
+    background-color: $wizard-bar-bg;
+    height: 2px;
+    position: relative;
+  }
+
+  .completed-range {
+    @include transition(width 200ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+
+    background-color: $wizard-active-color;
+    height: 2px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 0%;
+  }
+
+  .tick {
+    background-color: $wizard-default-bg;
+    border-radius: ($wizard-tick-size / 2);
+    color: $wizard-bar-bg;
+    display: inline-block;
+    height: $wizard-tick-size;
+    margin-left: -3px;
+    margin-top: -($wizard-tick-size / 2) + ($wizard-tick-border-width / 2);
+    position: absolute;
+    -webkit-touch-callout: none;
+    width: $wizard-tick-size;
+
+    // Border for incomplete or non-current ticks
+    &::after {
+      border: $wizard-tick-border-width solid $wizard-bar-bg;
+      border-radius: ($wizard-tick-size / 2);
+      content: '';
+      height: $wizard-tick-size - $wizard-tick-border-width * 2;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: $wizard-tick-size - ($wizard-tick-border-width * 2);
+    }
+
+    // Default Placement for Focus State
+    &::before {
+      border: 1px solid rgba($wizard-active-color, 0);
+      border-radius: 0;
+      content: '';
+      height: 0;
+      left: $wizard-tick-size / 2;
+      position: absolute;
+      top: $wizard-tick-size / 2;
+      width: 0;
+    }
+
+    .label {
+      //@include transition(border-color 200ms cubic-bezier(.17, .04, .03, .94));
+      border: 1px solid transparent;
+      border-radius: 2px;
+      color: $wizard-color;
+      display: inline-block;
+      height: 24px;
+      line-height: 22px;
+      padding: 0 3px;
+      position: absolute;
+      top: ($wizard-tick-size * 2) - 8;
+      white-space: nowrap;
+
+      &.is-ellipsis {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    &.current,
+    &.complete {
+      color: $wizard-active-color;
+
+      &::after {
+        border: 0;
+        left: $wizard-tick-border-width;
+        top: $wizard-tick-border-width;
+      }
+
+      .label {
+        color: $wizard-active-text-color;
+        top: ($wizard-tick-size * 2) - 8;
+      }
+    }
+
+    &.current {
+      @include css3(box-shadow, 0 0 0 2px $wizard-default-bg);
+
+      background-color: $wizard-active-color;
+      border-radius: 50%;
+
+      &::before {
+        border: 1px solid rgba($wizard-active-color, 1);
+        border-radius: ($wizard-current-state-size / 2) + $wizard-tick-border-width;
+        height: $wizard-current-state-size;
+        left: -3px;
+        top: -3px;
+        // top: $wizard-tick-size - $wizard-current-state-size + ($wizard-tick-border-width/2);
+        width: $wizard-current-state-size;
+      }
+
+      .label {
+        font-weight: $theme-number-font-weight-bold;
+      }
+    }
+
+    &.complete {
+      background-color: $wizard-active-color;
+    }
+
+    &.is-disabled {
+      @include unselectable;
+
+      cursor: default;
+      text-decoration: none;
+      width: $wizard-tick-size - 2;
+
+      &::after {
+        border-width: $wizard-tick-border-width / 2;
+      }
+
+      .label {
+        color: $wizard-disabled-color;
+        font-weight: $theme-number-font-weight-base;
+      }
+
+      &.current,
+      &.complete {
+        background-color: $wizard-default-bg;
+
+        &::after {
+          border: $wizard-tick-border-width / 2 solid $wizard-bar-bg;
+          border-radius: ($wizard-tick-size / 2);
+          content: '';
+          height: $wizard-tick-size - $wizard-tick-border-width * 2;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: $wizard-tick-size - ($wizard-tick-border-width * 2);
+        }
+      }
+    }
+
+  }
+
+  a.tick {
+    &.current {
+      cursor: default;
+    }
+
+    &:hover:not(.current):not(.is-disabled):not([disabled]) .label::after {
+      border-bottom: 1px solid;
+      bottom: 1px;
+      content: '';
+      left: 0;
+      margin-left: 3px;
+      position: absolute;
+      width: calc(100% - 6px);
+    }
+
+    &:focus:not(.hide-focus):not(.is-disabled):not([disabled]) .label {
+      box-shadow: $wizard-focus-box-shadow, $focus-box-shadow;
+    }
+  }
+}
+
+// Styles used by the Header Wizard
+.header {
+  .wizard {
+    margin: 0 20px;
+  }
+
+  .wizard-header {
+    background-color: transparent;
+    padding: (($wizard-height / 8) - $wizard-tick-border-width) ($wizard-height / 4) (($wizard-height / 4) - $wizard-tick-border-width);
+
+    .bar {
+      background-color: $wizard-header-secondary-color;
+    }
+
+    .completed-range {
+      background-color: $wizard-header-color;
+    }
+
+    .tick {
+      background-color: $header-bg-color;
+
+      &::after {
+        border-color: $wizard-header-secondary-color;
+      }
+
+      .label {
+        color: $wizard-header-text-color;
+      }
+
+      &.current,
+      &.complete {
+        background-color: $wizard-header-color;
+
+        .label {
+          color: $wizard-header-color;
+        }
+      }
+
+      &.current {
+        @include css3(box-shadow, 0 0 0 2px $header-bg-color);
+
+        &::before {
+          border-color: $wizard-header-color;
+        }
+      }
+
+      &.is-disabled {
+        .label {
+          color: $wizard-header-disabled-color;
+          font-weight: $theme-number-font-weight-base;
+        }
+
+        &.current,
+        &.complete {
+          background-color: $header-bg-color;
+
+          &::after {
+            border: $wizard-tick-border-width / 2 solid $wizard-header-disabled-color;
+            border-radius: ($wizard-tick-size / 2);
+            content: '';
+            height: $wizard-tick-size - $wizard-tick-border-width * 2;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: $wizard-tick-size - ($wizard-tick-border-width * 2);
+          }
+        }
+      }
+
+    }
+
+    a.tick {
+      &:hover:not(.current):not(.is-disabled):not([disabled]) .label {
+        color: $wizard-header-color;
+      }
+
+      &:focus:not(.is-clicked):not(.is-disabled):not([disabled]) .label {
+        box-shadow: $wizard-header-focus-box-shadow;
+      }
+    }
+  }
+
+}
+
+// Toolbar with wizard for some patterns
+.wizard-toolbar {
+  background-color: $wizard-toolbar-bg-color;
+  border-bottom: 1px solid $wizard-toolbar-border-color;
+  display: inline-block;
+  height: 72px;
+  padding: 0 30px;
+  width: 100%;
+
+  .hyperlink {
+    display: inline-block;
+    margin-top: -22px;
+    position: relative;
+    top: 50%;
+  }
+
+  .wizard-header {
+    background-color: $wizard-toolbar-bg-color;
+    padding: 27px 0 0;
+  }
+
+  .wizard {
+    display: inline-block;
+    float: right;
+    padding-right: 30px;
+    width: 45%;
+
+    .tick:not(.current):not(.complete) {
+      background-color: $wizard-toolbar-bg-color;
+    }
+
+  }
+}
+
+// Sectional Wizard (used as an alternative to Wizard in the Header)
+.section-wizard {
+  background-color: $theme-color-palette-white;
+  border-bottom: 1px solid $theme-color-palette-graphite-20;
+  padding: 20px 0 0;
+
+  .wizard-header {
+    background-color: transparent;
+
+    .tick:not(.complete):not(.current) {
+      background-color: $theme-color-palette-white;
+    }
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .wizard-header {
+    .completed-range {
+      left: auto;
+      right: 0;
+    }
+
+    .tick {
+      margin-left: inherit;
+      margin-right: -3px;
+
+      // Border for incomplete or non-current ticks
+      &::after {
+        left: auto;
+        right: 0;
+      }
+
+      // Default Placement for Focus State
+      &::before {
+        left: auto;
+        right: $wizard-tick-size / 2;
+      }
+
+      &.current,
+      &.complete {
+        &::after {
+          left: auto;
+          right: $wizard-tick-border-width;
+        }
+      }
+    }
+  }
+
+  // Toolbar with wizard for some patterns
+  .wizard-toolbar {
+    .wizard {
+      float: left;
+      padding-left: 30px;
+      padding-right: inherit;
+
+      .label {
+        padding-left: inherit;
+        padding-right: 2.5px;
+      }
+    }
+  }
+}

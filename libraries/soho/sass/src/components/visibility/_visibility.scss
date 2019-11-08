@@ -1,0 +1,162 @@
+// Visibility Classes - To hide and show at various media
+//================================================== //
+
+.show {
+  display: block !important;
+}
+
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.collapsed {
+  visibility: collapse;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+// Off Screen Text for Accessibility
+.sr-only,
+.audible {
+  clip: rect(0, 0, 0, 0);
+  height: 0;
+  line-height: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+// Disable transitions
+.no-animation {
+  @include css3(animation, none !important);
+
+  &::before {
+    @include css3(animation, none !important);
+  }
+
+  &::after {
+    @include css3(animation, none !important);
+  }
+}
+
+.no-transition {
+  @include css3(transition, none !important);
+
+  &::before {
+    @include css3(transition, none !important);
+  }
+
+  &::after {
+    @include css3(transition, none !important);
+  }
+}
+
+// Visibility classes for different form factors
+[class*='visible-sm-'],
+[class*='visible-md-'],
+[class*='visible-lg-'],
+[class*='visible-xl-'],
+[class*='visible-print-'] {
+  display: none !important;
+}
+
+@include respond-to(phonedown) {
+  .hidden-xs {
+    display: none !important;
+  }
+}
+
+@include respond-to(phone) {
+  .visible-sm-block {
+    display: block !important;
+  }
+
+  .visible-sm-inline {
+    display: inline !important;
+  }
+
+  .visible-sm-inline-block {
+    display: inline-block !important;
+  }
+
+  .hidden-sm {
+    display: none !important;
+  }
+}
+
+@include respond-to(tablet) {
+  .visible-md-block {
+    display: block !important;
+  }
+
+  .visible-md-inline {
+    display: inline !important;
+  }
+
+  .visible-md-inline-block {
+    display: inline-block !important;
+  }
+
+  .hidden-md {
+    display: none !important;
+  }
+}
+
+@include respond-to(desktop) {
+  .visible-lg-block {
+    display: block !important;
+  }
+
+  .visible-lg-inline {
+    display: inline !important;
+  }
+
+  .visible-lg-inline-block {
+    display: inline-block !important;
+  }
+
+  .hidden-lg {
+    display: none !important;
+  }
+}
+
+@include respond-to(extralarge) {
+  .visible-xl-block {
+    display: block !important;
+  }
+
+  .visible-xl-inline {
+    display: inline !important;
+  }
+
+  .visible-xl-inline-block {
+    display: inline-block !important;
+  }
+
+  .hidden-xl {
+    display: none !important;
+  }
+}
+
+@media print {
+  .visible-print-block {
+    display: block !important;
+  }
+
+  .visible-print-inline {
+    display: inline !important;
+  }
+
+  .visible-print-inline-block {
+    display: inline-block !important;
+  }
+
+  .hidden-print {
+    display: none !important;
+  }
+}

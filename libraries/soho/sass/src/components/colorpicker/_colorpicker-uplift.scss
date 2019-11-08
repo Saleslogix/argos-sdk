@@ -1,0 +1,18 @@
+// Uplift Colorpicker
+//================================================== //
+
+.colorpicker-container {
+  .icon {
+    &:not(.icon-error) {
+      top: 6px;
+    }
+  }
+
+  .colorpicker {
+    max-height: 36px;
+  }
+
+  .swatch {
+    height: 34px;
+  }
+}

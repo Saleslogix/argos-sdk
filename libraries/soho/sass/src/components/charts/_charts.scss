@@ -1,0 +1,542 @@
+// Chart - Svg and Css
+//==================================================//
+
+// Alternate Text message
+.chart-message {
+  background-color: $theme-color-palette-ruby-10;
+  color: $font-color-highcontrast;
+  padding: 20px;
+  text-align: center;
+}
+
+// SVG Chart Styles
+.chart-container {
+  overflow: hidden;
+
+  // Center
+  svg {
+    display: block;
+    margin: 0 auto;
+  }
+
+  // Line Colors - and Visibility
+  .axis {
+    path,
+    line {
+      fill: none;
+      shape-rendering: crispEdges;
+      stroke: $chart-line-color;
+    }
+
+    .tick0 line {
+      stroke: $chart-line-color-axis;
+    }
+
+    &.x .domain,
+    &.y .domain {
+      stroke: transparent;
+    }
+  }
+
+  // Text Color
+  text {
+    @include antialiased();
+
+    fill: $chart-font-color;
+    font-size: $theme-size-font-sm;
+
+    &::selection {
+      fill: $inverse-color;
+    }
+
+    &::-moz-selection {
+      fill: $inverse-color;
+    }
+  }
+
+  .inverse {
+    fill: $chart-font-color-inverse;
+  }
+
+  .chart-donut-text {
+    font-size: $theme-size-font-lg;
+  }
+
+  .label-line {
+    stroke: $chart-line-color;
+  }
+
+  .label-circle {
+    fill: $chart-line-color;
+  }
+
+  // Svg Hidden
+  .is-hidden {
+    @include opacity(0);
+  }
+
+  // Right aligned Legend
+  &.has-right-legend {
+    align-content: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    svg {
+      width: 75%;
+    }
+
+    .chart-legend {
+      border-top: 0;
+      margin: 30px;
+      width: 30%;
+
+      .is-two-column {
+        display: flex;
+        float: none;
+        margin: 2px -5px;
+        padding: 4px 5px 5px;
+        width: 100%;
+      }
+
+      .chart-legend-color {
+        height: 15px;
+        margin: 0;
+        top: 1px;
+        width: 15px;
+      }
+
+      .chart-legend-item-text {
+        line-height: 18px;
+        padding-left: 7px;
+        position: relative;
+        white-space: pre-line;
+      }
+    }
+  }
+
+  &.empty-message {
+    @include vertical-align();
+
+    margin-top: -20px;
+  }
+
+}
+
+// Tooltip Swatch
+.chart-swatch {
+  display: table;
+
+  .swatch-caption {
+    display: table-caption;
+    margin-bottom: 0.7em;
+    text-align: center;
+
+    .indicator-box {
+      display: inline-block;
+      height: 14px;
+      margin-right: 10px;
+      width: 14px;
+    }
+
+    b {
+      position: relative;
+      top: -2px;
+    }
+  }
+
+  .swatch-row {
+    display: table-row;
+    height: 20px;
+
+    div {
+      border-bottom: 9px solid $tooltip-bg-color;
+      display: table-cell;
+      height: 14px;
+      width: 14px;
+    }
+
+    span,
+    b {
+      color: $tooltip-color;
+      display: table-cell;
+      line-height: 12px;
+      padding: 0 5px;
+    }
+
+    b {
+      padding: 0;
+    }
+
+    br {
+      display: block;
+      margin: 5px 0;
+    }
+  }
+
+  &.line .swatch-caption b {
+    display: inline-block;
+  }
+}
+
+.chart-tooltip-total {
+  color: $tooltip-color;
+  display: block;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+// Legend Styling
+.chart-legend {
+  margin-left: 50px;
+  margin-top: -9px;
+
+  &.is-bottom {
+    border-top: 1px solid $panel-border-color;
+    margin: 0 auto;
+    padding-bottom: 1em;
+    padding-top: 1em;
+  }
+
+  &.is-right {
+    border-top: 1px solid $panel-border-color;
+    margin: 0 auto;
+    padding-bottom: 1em;
+    padding-top: 1em;
+  }
+
+  .chart-legend-item {
+    border: 1px solid transparent;
+    float: left;
+    margin-right: 10px;
+    outline: none;
+    padding: 7px;
+
+    &:focus {
+      border-color: $input-color-focus-border;
+      // Removed box shadow to match current style
+      box-shadow: 0 0 4px 1px $focus-box-shadow-color;
+      outline: none;
+    }
+
+    &.is-two-column {
+      display: inline-block;
+      float: none;
+      margin: 0;
+      padding: 0 30px;
+      width: 50%;
+    }
+
+  }
+
+  .chart-legend-color {
+    display: inline-block;
+    height: 12px;
+    margin-right: 10px;
+    position: relative;
+    top: 1px;
+    width: 12px;
+  }
+
+  .chart-legend-item-text {
+    @include ellipsis;
+
+    color: $chart-font-color;
+    font-size: $theme-size-font-sm;
+    width: auto;
+  }
+
+  .lg {
+    .chart-legend-color {
+      height: 20px;
+      width: 20px;
+    }
+
+    .chart-legend-item-text {
+      vertical-align: super;
+    }
+  }
+}
+
+// Spark Line Charts
+.sparkline {
+  // height: 70px;
+  // margin: 50px auto;
+  // position: relative;
+  // width: 200px;
+
+  path {
+    fill: none;
+    stroke-width: 2px;
+  }
+
+  .bar-rect {
+    fill: transparent;
+    stroke-width: 0;
+  }
+
+  .point {
+    stroke-width: 2;
+  }
+
+  .is-not-selected {
+    opacity: 0.35;
+  }
+}
+
+.chart-vertical-bar {
+  text {
+    text-align: left;
+  }
+}
+
+.chart-targeted-achievement {
+  .label {
+    font-size: $theme-size-font-base;
+    margin-top: 2px;
+  }
+
+  .bar {
+    background-color: $chart-targeted-achievement-bg-color;
+    cursor: default;
+    height: 25px !important;
+
+    &.completed {
+      margin-bottom: 5px;
+      margin-top: -25px;
+      max-width: 100%;
+    }
+  }
+
+  .target::after,
+  .completed::after {
+    content: none !important;
+  }
+
+  .remaining {
+    background: repeating-linear-gradient(
+      150deg,
+      $theme-color-palette-azure-40,
+      $theme-color-palette-azure-40 1px,
+      $theme-color-palette-azure-20 1px,
+      $theme-color-palette-azure-20 10px
+    );
+  }
+
+  //Labels
+  .completed {
+    .value {
+      display: none;
+    }
+
+    span {
+      color: $font-color !important;
+      font-size: $theme-size-font-base;
+      font-weight: $theme-number-font-weight-base;
+      right: auto;
+      top: 20px;
+    }
+  }
+
+  .target .value {
+    display: none;
+  }
+
+  .icon-error {
+    display: inline-block;
+    height: 16px;
+    margin-bottom: 1px;
+    margin-right: 0;
+    width: 16px;
+  }
+
+}
+
+.colored.label {
+  color: $theme-color-palette-turquoise-60;
+
+  &.amethyst07 {
+    background-color: transparent;
+    color: $theme-color-palette-amethyst-70;
+
+    .value {
+      color: $theme-color-palette-amethyst-70;
+    }
+  }
+
+  span {
+    background: transparent;
+    color: $font-color;
+  }
+
+  .value {
+    color: $theme-color-palette-turquoise-60;
+
+    &.error-color,
+    &.error {
+      color: $error-color;
+    }
+
+    &.alert {
+      color: $theme-color-status-warning;
+    }
+
+    &.alert-yellow {
+      color: $theme-color-status-caution;
+    }
+
+    &.alert-neutral {
+      color: $alert-neutral;
+    }
+
+    &.dark {
+      color: $chart-progressbar-dark-fill;
+    }
+
+    &.good {
+      color: $theme-color-status-success;
+    }
+
+    &.primary {
+      color: $chart-progressbar-primary-fill;
+    }
+  }
+}
+
+// Move Pattern Swatches Off Screen
+.svg-patterns {
+  position: fixed;
+  top: -9999999px;
+}
+
+// Temporary fix for SVG Tooltip
+#svg-tooltip.tooltip {
+  &.top,
+  &.bottom {
+    .arrow {
+      left: calc(50% - 6px);
+    }
+  }
+
+  &.left,
+  &.right {
+    .arrow {
+      top: calc(50% - 6px);
+    }
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .chart-legend {
+    margin-left: inherit;
+    margin-right: 55px;
+
+    .chart-legend-color {
+      margin-left: 10px;
+      margin-right: inherit;
+    }
+
+    .chart-legend-item {
+      float: right;
+      margin-left: 10px;
+      margin-right: 0;
+    }
+  }
+
+  .completion-chart {
+    .icon-error {
+      left: -20px;
+    }
+
+    &.chart-targeted-achievement {
+      .icon-error {
+        left: -20px;
+        right: auto;
+      }
+    }
+  }
+
+  // Progess Bar Charts
+  .chart-completion-target,
+  .chart-completion {
+    span:not(.audible) {
+      left: 2px;
+      right: auto;
+      text-align: left;
+    }
+
+    .completed {
+      border-left: 1px solid $chart-progressbar-bg-color;
+      border-right: 0 solid $chart-progressbar-bg-color;
+
+      &::after {
+        left: auto;
+        right: 100%;
+      }
+    }
+
+    .target {
+      span:not(.audible) {
+        left: -2px;
+        right: auto;
+        text-align: right;
+      }
+
+      &::after {
+        left: auto;
+        right: 100%;
+      }
+    }
+
+    .target-line {
+      left: auto;
+      right: 45px;
+    }
+  }
+
+  .sparkline,
+  .chart-container.line-chart,
+  .chart-container.bullet-chart,
+  .chart-container.column-chart,
+  .chart-container.chart-vertical-bar {
+    svg {
+      @include css3(transform, scale(-1, 1));
+
+      text {
+        @include css3(transform, scale(-1, 1));
+
+        &.dir-ltr,
+        &.negative,
+        &.negative-value {
+          direction: ltr;
+        }
+      }
+
+      tspan {
+        unicode-bidi: embed;
+      }
+
+      .axis.y {
+        text {
+          text-anchor: start;
+        }
+      }
+
+      .axis-labels {
+        text {
+          @include css3(transform, inherit);
+        }
+      }
+
+    }
+  }
+}
+
+.sparkline-tooltip {
+  line-height: 5px !important;
+
+  b {
+    line-height: 22px;
+  }
+}

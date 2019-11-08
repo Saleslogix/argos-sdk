@@ -1,0 +1,453 @@
+// Tree - Steps
+// Use styles to conver the tree to a stepped wizard
+//==================================================//
+
+.step-process-container {
+
+  // Additional custom toolbar styles
+  .toolbar-custom {
+    background-color: $panel-bg-color;
+    border-bottom: solid 2px $panel-border-color;
+    height: 60px;
+    position: relative;
+
+    .title {
+      &.title-wide {
+        width: 98%;
+      }
+    }
+
+    .heading {
+      color: $font-color-extrahighcontrast;
+      display: table-cell;
+      font-size: $theme-size-font-lg;
+      height: 60px;
+      padding-left: 20px;
+      vertical-align: middle;
+
+      small {
+        display: block;
+        font-size: $theme-size-font-base;
+        margin: 2px 0 0;
+        padding: 0;
+        text-transform: capitalize;
+      }
+    }
+
+    .actions {
+      position: absolute;
+      right: 0;
+      top: 13px;
+    }
+
+    .btn-toggle-steps {
+      left: 10px;
+      position: absolute;
+      top: 13px;
+    }
+
+    &.phone-visible .title {
+      left: 4px;
+      position: relative;
+      top: 2px;
+    }
+  }
+
+  .tree {
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+    width: 100%;
+
+    li {
+      position: relative;
+
+      .icon {
+        // Position new alert icon for step "status"
+        &.step-alert {
+          left: 15px;
+          margin-right: 15px;
+          position: absolute;
+          top: calc(50% - 8px);
+        }
+
+        // Hide normal tree icons
+        &.icon-tree {
+          display: none;
+        }
+      }
+
+      // Selected State (similar to accordion)
+      &.is-selected,
+      &.is-selected:hover,
+      &.is-selected.is-focused {
+        background-color: $accordion-selected-bg-color;
+        border-bottom-color: $accordion-selected-bg-color;
+        color: $accordion-selected-text-color;
+
+        > a {
+          .tree-text {
+            color: $accordion-selected-text-color;
+          }
+
+          .icon,
+          .icon-success,
+          .icon-error {
+            color: $accordion-selected-text-color !important;
+          }
+        }
+      }
+
+      > a {
+        // Borrow some accordion styles
+        background-color: transparent;
+        border-bottom: 1px solid $accordion-border-color;
+        border-radius: 0;
+        border-top: 1px solid transparent;
+        cursor: pointer;
+        display: block;
+        font-size: 0;
+        margin-left: 0;
+        padding: 15px 60px 15px 45px;
+        position: relative;
+
+        // Focus State
+        &:not(.hide-focus):focus {
+          border: 1px solid $tree-focus-border-color;
+        }
+
+        span {
+          display: inline-block;
+          font-size: $theme-size-font-base;
+          max-width: 80%;
+        }
+
+        .tree-text {
+          margin: 0;
+        }
+      }
+    }
+
+    // Show the caret icons for folder nodes
+    li.folder > a {
+      .icon-tree {
+        display: block;
+        position: absolute;
+        right: 15px;
+        top: calc(50% - 8px);
+      }
+    }
+
+    // Unindent and tweak the lower tree lists
+    ul {
+      left: 0;
+      top: 0;
+
+      li {
+        margin: 0;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+
+    // Style the background of the tree folder contents
+    ul.folder {
+      background-color: $accordion-pane-bg-color;
+      padding: 0;
+    }
+  }
+
+  // Style the container and step content panels
+  .step-container {
+    height: calc(100% - 60px);
+    padding: 15px 30px;
+
+    .js-step-panel {
+      display: none;
+
+      &.step-panel-active {
+        display: block;
+      }
+    }
+  }
+
+  .js-step-links-scroll {
+    height: 100%;
+    overflow: auto;
+  }
+
+  .btn-toggle-steps,
+  .phone-visible {
+    display: none;
+  }
+
+  // Remove default tree styling for step-process items.
+  .tree {
+    a {
+      line-height: normal;
+    }
+  }
+}
+
+@include respond-to(tablet) {
+  .step-process-container {
+    .sidebar,
+    .main {
+      @include transform(translateX(0));
+    }
+
+    &.tablet-hide-steps {
+      .main {
+        position: absolute;
+        width: 100%;
+      }
+
+      .sidebar,
+      .main {
+        @include transform(translateX(-250px));
+      }
+    }
+  }
+}
+
+@include respond-to(tabletdown) {
+  .step-process-container {
+    .main,
+    .sidebar {
+      @include transform-transition-list(300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+    }
+
+    .main .btn-toggle-steps {
+      display: inline-block;
+    }
+
+    .toolbar-custom .heading {
+      padding-left: 60px;
+    }
+
+    .toolbar-collapsible {
+      @include transition(margin-top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+
+      padding-right: 10px;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
+
+    .js-step-container-scroll {
+      height: 100%;
+      padding-top: $header-height + 15px;
+    }
+
+    .scrolled-down .toolbar-collapsible {
+      margin-top: -60px;
+    }
+  }
+}
+
+@include respond-to(phone) {
+  .step-process-container {
+    $header-height: 60px;
+
+    .phone-visible {
+      display: block;
+    }
+
+    .phone-hidden {
+      display: none;
+    }
+
+    .main,
+    .sidebar {
+      $this-height: calc(100% - #{$header-height});
+
+      height: $this-height;
+      height: 100%;
+      min-height: $this-height !important;
+      position: absolute;
+    }
+
+    .sidebar {
+      @include css3(transform, translateX(0));
+
+      display: block !important;
+
+      .tree {
+        padding-top: 60px;
+      }
+    }
+
+    .main {
+      @include css3(transform, translateX(100%));
+
+      .toolbar .title {
+        width: auto;
+      }
+    }
+
+    &.phone-hide-steps {
+      .main {
+        @include css3(transform, translateX(0));
+
+        width: 100%;
+      }
+
+      .sidebar {
+        @include css3(transform, translateX(-100%));
+      }
+    }
+
+    .toolbar-custom .actions {
+      display: none;
+    }
+
+    .js-step-links-scroll {
+      padding-top: $header-height;
+      top: $header-height;
+    }
+
+    .js-step-container-scroll {
+      height: calc(100% - #{$header-height});
+    }
+
+    .phone-action-bar {
+      border-top: 1px solid $panel-border-color;
+      bottom: 0;
+      position: absolute;
+      width: 100%;
+
+      button {
+        border-radius: 0;
+        display: inline-block;
+        height: $header-height;
+        margin: 0;
+        width: 50%;
+      }
+    }
+  }
+}
+
+html[dir='rtl'] {
+  .step-process-container {
+    .toolbar-custom {
+      .actions {
+        left: 0;
+        right: auto;
+      }
+
+      .btn-toggle-steps {
+        left: auto;
+        right: 10px;
+      }
+
+      .heading {
+        padding-left: 0;
+        padding-right: 20px;
+      }
+    }
+
+    .tree {
+      ul {
+        right: auto;
+
+        li {
+          margin-left: 10px;
+          margin-right: 0;
+
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+
+        a {
+          margin: 0;
+        }
+      }
+
+      li {
+        > a {
+          padding: 15px 45px 15px 60px;
+        }
+
+        .icon {
+          // Position new alert icon for step "status"
+          &.step-alert {
+            left: auto;
+            margin-left: 15px;
+            margin-right: 0;
+            right: 15px;
+          }
+        }
+
+        &.folder {
+          > a .icon-tree {
+            left: 15px;
+            right: auto;
+          }
+        }
+      }
+    }
+  }
+
+  @include respond-to(tablet) {
+    .step-process-container {
+      &.tablet-hide-steps {
+        .main,
+        .sidebar {
+          @include transform(translateX(250px));
+        }
+      }
+    }
+  }
+
+  @include respond-to(tabletdown) {
+    .step-process-container {
+      .toolbar-custom .heading {
+        padding-left: 0;
+        padding-right: 60px;
+      }
+
+      .toolbar-collapsible {
+        padding-left: 10px;
+        padding-right: 0;
+      }
+    }
+  }
+
+  @include respond-to(phone) {
+    .step-process-container {
+      .sidebar {
+        @include css3(transform, translateX(0));
+      }
+
+      .main {
+        @include css3(transform, translateX(-100%));
+      }
+
+      &.phone-hide-steps {
+        .main {
+          @include css3(transform, translateX(0));
+        }
+
+        .sidebar {
+          @include css3(transform, translateX(100%));
+        }
+      }
+    }
+  }
+
+  &.ie11 {
+    @include respond-to(tablet) {
+      .step-process-container {
+        &.tablet-hide-steps {
+          .main {
+            @include transform(translateX(0));
+          }
+        }
+      }
+    }
+  }
+}

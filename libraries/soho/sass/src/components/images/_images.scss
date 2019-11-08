@@ -1,0 +1,120 @@
+// Images
+//================================================== //
+
+$placeholder-icon-height: 22px;
+
+$images-size: (
+  'sm': (60px, 60px),
+  'md': (154px, 120px),
+  'lg': (300px, 350px)
+);
+
+// Image Placeholder
+@mixin image-placeholder($this-width, $this-height, $this-icon-height) {
+  background: $theme-color-palette-white;
+  border: 1px solid $image-border-color;
+  height: $this-height;
+  max-height: $this-height;
+  max-width: $this-width;
+  text-align: center;
+  width: $this-width;
+
+  .icon {
+    margin-top: ($this-height - $this-icon-height) / 2;
+  }
+}
+
+@each $key, $value in $images-size {
+  .image-#{$key} {
+    border: 1px solid transparent; // to prevent jump on focus
+
+    &:focus {
+      @include focus-state();
+    }
+
+    img {
+      border: 1px solid transparent; // to prevent jump on focus
+      max-height: nth($value, 2);
+      max-width: nth($value, 1);
+
+      &:focus {
+        @include focus-state();
+      }
+    }
+
+    &.placeholder {
+      @include image-placeholder(nth($value, 1), nth($value, 2), $placeholder-icon-height);
+    }
+  }
+}
+
+.image-auto {
+  border: 1px solid transparent; // to prevent jump on focus
+
+  &:focus {
+    @include focus-state();
+  }
+
+  img {
+    border: 1px solid transparent; // to prevent jump on focus
+    &:focus {
+      @include focus-state();
+    }
+  }
+}
+
+.image-round {
+  border: 1px solid transparent; // to prevent jump on focus
+  border-radius: 50%;
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+
+  &:focus {
+    @include focus-state();
+  }
+}
+
+// Photo with svg status
+.image-user-status {
+  display: inline-block;
+
+  .icon {
+    left: 3px;
+    margin-left: -22px;
+    position: relative;
+    top: 6px;
+  }
+}
+
+// Initials for when photo is absent
+.image-initials {
+  background: $theme-color-palette-amethyst-50;
+  border: 1px solid transparent; // to prevent jump on focus
+  border-radius: 50%;
+  color: $theme-color-palette-white;
+  display: inline-block;
+  font-size: $theme-size-font-lg;
+  height: 4.8rem;
+  line-height: 4.8rem;
+  text-align: center;
+  vertical-align: middle;
+  width: 4.8rem;
+
+  + .icon {
+    left: 6px;
+    position: relative;
+    top: 22px;
+  }
+
+  &:focus {
+    @include focus-state();
+  }
+}
+
+// Print Support
+@media print {
+  .image-initials {
+    background-color: $theme-color-palette-graphite-30;
+  }
+}

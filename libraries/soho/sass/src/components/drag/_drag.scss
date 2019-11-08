@@ -1,0 +1,44 @@
+// Drag and Drop Styling
+//================================================== //
+
+.disable-select * {
+  @include no-select;
+}
+
+.draggable {
+  cursor: move;
+  -ms-touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  z-index: 7000;
+
+  &.animated {
+    transition: all 0.2s ease;
+  }
+}
+
+// Resize Styling
+.resize-handle {
+  @include no-select;
+
+  background: transparent none repeat scroll 0 0;
+  border: 1px solid $theme-color-brand-primary-base;
+  cursor: e-resize;
+  height: inherit;
+  left: 48px;
+  position: absolute;
+  top: 0;
+  width: 2px;
+}
+
+[data-sort-exclude='true'] {
+  opacity: 0.5;
+}
+
+.arrange-placeholder {
+  border: 1px dashed $input-color-initial-border;
+}
+
+.arrange-dragging.is-touch {
+  position: fixed;
+}

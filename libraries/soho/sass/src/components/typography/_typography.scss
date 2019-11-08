@@ -1,0 +1,413 @@
+// Typography
+//================================================== */
+
+// Font Variables
+$font-source-sans: 'Source Sans Pro', helvetica, arial;
+
+// Special Fonts for Certain Languages
+$cultures-font-family: (
+  'ar-EG': ('DejaVu', 'Tahoma', 'helvetica', 'arial'),
+  'ar-SA': ('DejaVu', 'Tahoma', 'helvetica', 'arial'),
+  'ja-JP': ('MS PGothic', 'ＭＳ Ｐゴシック', 'helvetica', 'arial'),
+  'ko-KR': ('Malgun Gothic', 'AppleGothic', 'helvetica', 'arial'),
+  'zh-CN': ('华文细黑', '宋体', '微软雅黑', 'Microsoft YaHei New', 'helvetica', 'arial'),
+  'zh-tw': ('华文细黑', '宋体', '微软雅黑', 'Microsoft YaHei New', 'helvetica', 'arial'),
+  'zh-Hans': ('华文细黑', '宋体', '微软雅黑', 'Microsoft YaHei New', 'helvetica', 'arial'),
+  'zh-Hant': ('华文细黑', '宋体', '微软雅黑', 'Microsoft YaHei New', 'helvetica', 'arial'),
+);
+
+// Body Sizes and Color
+html {
+  font-size: 62.5%;
+
+  body {
+    background-color: $body-color-primary-background;
+    color: $font-color-default;
+    font-family: $theme-font-family-base;
+    font-size: 1rem;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &.font-source-sans body {
+    font-family: $font-source-sans;
+  }
+
+  @each $key, $value in $cultures-font-family {
+    &[lang='#{$key}'] body {
+      font-family: $value;
+    }
+  }
+}
+
+// Text Elements
+h1,
+h2,
+h3,
+h4,
+label,
+p,
+small,
+span,
+ul,
+ol {
+  @include antialiased();
+
+  font-weight: $theme-number-font-weight-base;
+  line-height: normal;
+}
+
+h1 {
+  @include rem(line-height, 2.5rem);
+
+  color: $font-color-default;
+  font-size: $theme-size-font-lg;
+
+  + p {
+    margin: 20px 0;
+  }
+}
+
+h2 {
+  @include font-size(16);
+  @include rem(line-height, 2rem);
+
+  color: $font-color-default;
+
+  + p {
+    margin: 20px 0;
+  }
+}
+
+h3 {
+  @include font-size(16);
+  @include rem(line-height, 2rem);
+
+  color: $font-color-default;
+}
+
+h4 {
+  @include font-size(16);
+  @include rem(line-height, 2rem);
+
+  color: $font-color-default;
+}
+
+p {
+  color: $font-color-default;
+  font-size: $theme-size-font-base;
+  line-height: 2rem;
+
+  + h1,
+  + h2,
+  + h3,
+  + h4 {
+    @include rem(margin-top, 2rem);
+  }
+
+  + p {
+    @include rem(margin-top, 1.5rem);
+  }
+}
+
+// Text Color Labels
+.text-default {
+  color: $font-color-default;
+}
+
+.text-descriptive {
+  color: $font-color-descriptive;
+}
+
+.text-link {
+  color: $font-color-hyperlink;
+}
+
+.text-muted {
+  color: $font-color-muted;
+}
+
+.text-emphasis {
+  font-style: italic !important;
+}
+
+.text-strong {
+  font-weight: $theme-number-font-weight-bold !important;
+}
+
+.text-alert {
+  color: $theme-color-status-danger;
+}
+
+.text-primary,
+a.text-primary {
+  @include rem(line-height, 2.5rem);
+
+  font-size: $theme-size-font-lg;
+}
+
+.text-secondary,
+a.text-secondary {
+  @include font-size(16);
+  @include rem(line-height, 2rem);
+}
+
+.text-base,
+a.text-base {
+  @include rem(line-height, 1.5rem);
+
+  font-size: $theme-size-font-base;
+}
+
+.text-small,
+a.text-small {
+  font-size: $theme-size-font-sm;
+}
+
+// Labels
+label,
+.label {
+  color: $label-color;
+  display: block;
+  font-size: $theme-size-font-sm;
+  margin-bottom: 8px;
+  min-height: 13px; //prevents need to use &nbsp; for blank labels
+}
+
+.is-disabled.label,
+.is-disabled .label,
+label.is-disabled,
+.is-disabled label {
+  color: $label-disabled-color;
+}
+
+.data-description {
+  color: $font-color-extrahighcontrast;
+  font-size: $theme-size-font-base;
+  margin-left: 6px;
+}
+
+label.side,
+.label.side {
+  color: $label-color;
+  display: inline-block;
+  font-size: $theme-size-font-base;
+  height: 100%;
+  line-height: 1.5;
+  min-width: 120px;
+}
+
+// App Specific Typography Classes
+
+.widget-title,
+.card-title {
+  @include rem(margin-bottom, 1rem);
+  @include rem(line-height, 2.2rem);
+  @include font-size(16);
+  @include ellipsis();
+
+  color: $cardlist-header-color;
+  margin-top: 2px;
+  max-width: calc(100% - 45px);
+}
+
+.list-title {
+  @include font-size(16);
+  @include rem(margin-bottom, 1rem);
+  @include rem(line-height, 2rem);
+
+  color: $font-color-highcontrast;
+}
+
+small,
+.micro-text {
+  @include rem(margin-bottom, 1rem);
+  @include rem(line-height, 1.5rem);
+
+  color: $font-color-default;
+  font-size: $theme-size-font-sm;
+}
+
+.alert-text {
+  @include font-size(11);
+  @include rem(margin-bottom, 1rem);
+  @include rem(line-height, 2rem);
+
+  color: $theme-color-status-danger;
+  font-weight: $theme-number-font-weight-bold;
+  padding-left: 15px;
+
+  &::before {
+    background-color: $theme-color-status-danger;
+    border-radius: 50%;
+    content: '';
+    height: 8px;
+    margin-left: -14px;
+    margin-top: 4px;
+    position: absolute;
+    width: 8px;
+  }
+}
+
+.error-text {
+  @include font-size(11);
+
+  color: $theme-color-status-danger;
+  font-weight: $theme-number-font-weight-bold;
+}
+
+.warning-text {
+  @include font-size(11);
+
+  color: $theme-color-status-warning;
+  font-weight: $theme-number-font-weight-bold;
+}
+
+.good-text {
+  @include font-size(11);
+
+  color: $theme-color-status-success;
+  font-weight: $theme-number-font-weight-bold;
+}
+
+.info-text {
+  @include font-size(11);
+
+  color: $theme-color-brand-primary-alt;
+  font-weight: $theme-number-font-weight-bold;
+}
+
+.small-thin-text {
+  color: $font-color;
+  font-size: $theme-size-font-xs;
+  font-weight: $theme-number-font-weight-bold;
+
+  + .small-thin-text {
+    margin-top: 0;
+  }
+}
+
+.larger-heavy-text {
+  color: $font-color-highcontrast;
+  font-size: $theme-size-font-base;
+  font-weight: $theme-number-font-weight-bold;
+}
+
+.data-large {
+  @include font-size(22);
+
+  color: $font-color-highcontrast;
+  padding-bottom: 2px;
+}
+
+.xl-text {
+  @include font-size(50);
+}
+
+.align-text-left {
+  text-align: left;
+}
+
+.align-text-right {
+  text-align: right !important;
+}
+
+.align-text-enter, //typo backwards compat
+.align-text-center {
+  text-align: center;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.text-uppercase,
+.uppercase-text {
+  text-transform: uppercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+// Flexible Field alignment
+.field-flex {
+  align-items: center;
+  display: flex;
+
+  .data-description {
+    flex-basis: 25%;
+  }
+
+  .field-flex-group {
+    padding: 20px;
+  }
+}
+
+.field-flex-sm {
+  align-items: center;
+  display: flex;
+  overflow: auto;
+
+  .data-description {
+    flex-basis: auto;
+    line-height: 34px;
+    overflow: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    white-space: nowrap;
+  }
+
+  input {
+    min-width: 25%;
+  }
+}
+
+// Left aligned fields
+.field.label-left {
+  display: flex;
+  font-size: $theme-size-font-base;
+  margin: 5px 0;
+
+  .label {
+    color: $input-color;
+    font-size: $theme-size-font-base;
+    line-height: normal;
+    padding-right: 8px;
+    position: relative;
+
+    &::after {
+      content: ':';
+    }
+  }
+}
+
+// Label + Data Label
+.label + .data {
+  color: $font-color-extrahighcontrast;
+
+  &.is-placeholder {
+    color: $input-placeholder-color;
+  }
+}
+
+// Specifically set Firefox's line-height to be base-16.
+.is-firefox {
+  input,
+  textarea {
+    line-height: 16px;
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .alert-text {
+    padding-left: inherit;
+    padding-right: 15px;
+
+    &::before {
+      margin-left: inherit;
+      margin-right: -14px;
+    }
+  }
+
+}

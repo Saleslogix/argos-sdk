@@ -1,0 +1,66 @@
+//  Object Summary Pattern
+//================================================== //
+.object-summary {
+  margin: 0 auto;
+  max-width: 80%;
+
+  .image,
+  .summary {
+    display: table-cell;
+    vertical-align: top;
+  }
+
+  .image {
+    margin: 10px 20px 0 0;
+    padding-bottom: 20px;
+    width: 200px;
+  }
+
+  .summary {
+    padding-left: 30px;
+    width: auto;
+
+    .details {
+      margin: 20px 0;
+
+      strong {
+        margin-left: 10px;
+      }
+    }
+
+    .subtitle {
+      @include font-size(16);
+
+      margin-bottom: 10px;
+      margin-top: 0;
+    }
+
+    p {
+      margin-bottom: 5px;
+    }
+
+  }
+}
+
+@include respond-to(tabletdown) {
+  .object-summary {
+    .summary {
+      width: 65%;
+    }
+  }
+}
+
+@include respond-to(phone) {
+  .object-summary {
+    .image,
+    .summary {
+      display: block;
+      padding: 0;
+      width: 100%;
+
+      &.image {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}

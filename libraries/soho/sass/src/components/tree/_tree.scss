@@ -1,0 +1,464 @@
+// Tree Component
+//================================================== //
+
+.tree {
+
+  // Tree Items
+  a {
+    @include antialiased();
+    @include transition(background-color 500ms cubic-bezier(0.17, 0.04, 0.03, 0.94),
+    opacity 500ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+
+    border: 1px solid transparent;
+    border-radius: 2px;
+    color: $tree-link-color;
+    font-size: $theme-size-font-base;
+    line-height: 28px;
+    padding: 6px 5px 3px;
+    text-decoration: none;
+    white-space: nowrap;
+
+    //Badge in the tree items
+    .tree-badge {
+      height: 18px;
+      line-height: 18px;
+      margin: -2px 4px 0 3px;
+      padding: 0 7px;
+
+      &.round {
+        padding: 0;
+        width: 18px;
+      }
+    }
+
+    //Text in the tree items
+    .tree-text {
+      @include transition(border 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94), color 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+
+      border-bottom: 1px solid transparent;
+      color: $tree-link-color;
+      margin: 0 0 0 4px;
+    }
+
+    // Icons
+    svg {
+      @include transition(fill 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+
+      color: $tree-icon-color;
+      height: 15px;
+      margin: 0 5px 0 0;
+      top: 2px;
+      width: 15px;
+    }
+
+    //Ignore Visited Color Change
+    &:visited {
+      color: $tree-link-color;
+    }
+
+    //Focus State
+    &:not(.hide-focus):focus {
+      border: 1px solid $tree-focus-border-color;
+      border-radius: 2px;
+      box-shadow: $focus-box-shadow;
+      color: $tree-link-color;
+
+      svg {
+        color: $tree-icon-color;
+      }
+    }
+
+    //Hover State
+    &:hover {
+      color: $tree-hover-color;
+
+      svg {
+        color: $tree-hover-icon-color;
+      }
+
+      .tree-text {
+        color: $tree-hover-color;
+      }
+    }
+
+    //Disable State
+    &.is-disabled {
+      @include unselectable;
+
+      cursor: default;
+
+      .tree-badge {
+        background-color: $tree-disabled-color;
+      }
+
+      .tree-text {
+        color: $tree-disabled-color;
+      }
+
+      svg {
+        color: $tree-disabled-color;
+      }
+
+      &:hover {
+        color: $tree-disabled-color;
+
+        svg {
+          color: $tree-disabled-color;
+        }
+
+        .tree-text {
+          color: $tree-disabled-color;
+        }
+      }
+    }
+
+    //Loading State
+    &.is-loading {
+      opacity: 0.5;
+    }
+  }
+
+  // List Elements
+  li {
+    &.folder {
+      &.is-open {
+        margin-bottom: 0;
+      }
+    }
+
+    // Selected State
+    &.is-selected {
+      > a {
+        background-color: $tree-selected-bg-color;
+        color: $tree-selected-color;
+
+        &.is-over {
+          background-color: $tree-isover-bg-color;
+          border: 1px dashed $tree-isover-border-color;
+        }
+
+        svg {
+          color: $tree-selected-color;
+        }
+
+        .tree-text {
+          border-color: transparent;
+          color: $tree-selected-color;
+        }
+
+        &.is-disabled {
+          @include unselectable;
+
+          background-color: transparent;
+          cursor: default;
+
+          .tree-text {
+            color: $tree-disabled-color;
+          }
+
+          svg {
+            color: $tree-disabled-color;
+          }
+
+          &:hover {
+            color: $tree-disabled-color;
+
+            svg {
+              color: $tree-disabled-color;
+            }
+
+            .tree-text {
+              color: $tree-disabled-color;
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  // Sub Nodes
+  ul {
+    display: none;
+    left: 13px;
+    overflow: hidden;
+    position: relative;
+    top: -7px;
+
+    a {
+      margin: 0 0 0 5px;
+    }
+
+    ul {
+      left: 15px;
+    }
+
+    li:first-child {
+      margin-top: 8px;
+    }
+
+    &.is-disabled::before {
+      opacity: 0.5;
+    }
+
+    li {
+      margin-left: 10px;
+      margin-top: 2px;
+    }
+
+    // Open Tree Nodes
+    &.is-open {
+      display: block;
+    }
+  }
+
+  //Multi Select
+  &.is-multiselect {
+    li {
+      .tree-checkbox {
+        margin-right: 25px;
+        position: relative;
+
+        &::before {
+          @include checkbox-unchecked-before-style;
+
+          margin-left: 4px;
+          margin-top: 0;
+          top: 0;
+        }
+      }
+
+      &.is-selected {
+        > a .tree-checkbox {
+          &::before {
+            @include checkbox-checked-before-style;
+          }
+
+          &::after {
+            @include checkbox-checked-after-style;
+            @include css3(transform-origin, -11px top 0);
+            @include checkbox-animation;
+
+            left: 9px;
+            top: 1px;
+          }
+        }
+
+        > a.is-disabled .tree-checkbox {
+          &::before {
+            @include checkbox-checked-disabled-before-style;
+          }
+
+          &::after {
+            @include checkbox-checked-disabled-after-style;
+            @include css3(transform-origin, -11px top 0);
+            @include checkbox-animation;
+
+            left: 9px;
+            top: 1px;
+          }
+        }
+      }
+
+      &.is-partial {
+        > a .tree-checkbox {
+          &::before {
+            @include checkbox-checked-before-style;
+          }
+
+          &::after {
+            @include checkbox-checked-after-style;
+            @include checkbox-partial-after-style;
+            @include no-animation();
+
+            left: 6px;
+            top: -3px;
+          }
+        }
+
+        > a.is-disabled .tree-checkbox {
+          &::before {
+            @include checkbox-checked-disabled-before-style;
+          }
+
+          &::after {
+            @include checkbox-checked-after-style;
+            @include checkbox-partial-after-style;
+            @include no-animation();
+
+            left: 6px;
+            top: -3px;
+          }
+        }
+      }
+
+      &:not(.is-selected):not(.is-partial):not(.is-disabled):not(.is-error) {
+        a:hover:not(.is-disabled):not(.is-error) .tree-checkbox,
+        a:focus:not(.is-disabled):not(.is-error) .tree-checkbox {
+          &::before {
+            border-color: $listview-color;
+          }
+        }
+      }
+
+    }
+  }
+
+  // Sortable
+  .is-clone {
+    opacity: 0;
+    position: fixed;
+    z-index: 1;
+  }
+
+  .is-selected .is-dragging-clone,
+  .is-dragging-clone,
+  .is-selected .is-dragging-clone:hover,
+  .is-dragging-clone:hover {
+    background-color: $tree-placeholder-bg-color;
+    border: 1px solid $tree-placeholder-bg-color;
+    color: $tree-placeholder-color;
+    line-height: 25px;
+    padding: 0 5px;
+
+    svg {
+      color: $tree-placeholder-color;
+    }
+
+    .tree-text {
+      border-color: transparent;
+      color: $tree-placeholder-color;
+    }
+  }
+
+  .is-dragging {
+    background-color: $tree-selected-bg-color;
+    border: 1px solid $tree-selected-bg-color;
+    color: $tree-selected-color;
+
+    &.is-dragging {
+      opacity: 0.5;
+    }
+
+    svg {
+      color: $tree-selected-color;
+    }
+
+    .tree-text {
+      border-color: transparent;
+      color: $tree-selected-color;
+    }
+  }
+
+  .is-over {
+    background-color: $tree-isover-bg-color;
+    border: 1px dashed $tree-isover-border-color;
+  }
+
+}
+
+.tree-drag-target-arrow {
+  @include horizontal-gradient($tree-selected-color, transparent);
+
+  background-repeat: no-repeat;
+  display: none;
+  height: 1px;
+  margin: 0 0 0 6px;
+  position: fixed;
+  width: 50px;
+
+  &::before {
+    color: $tree-selected-color;
+    content: '\25BA'; // Right triangle
+    display: block;
+    font-size: 7px;
+    height: 0;
+    margin: -3px 0 0 -6px;
+  }
+}
+
+// Firefox only
+.is-firefox {
+  .tree {
+    &.is-multiselect {
+      li {
+        .tree-checkbox::before {
+          top: -2px;
+        }
+
+        &.is-selected {
+          > a .tree-checkbox::after {
+            top: -1px;
+          }
+        }
+
+        &.is-partial {
+          > a .tree-checkbox::after {
+            top: -5px;
+          }
+        }
+      }
+    }
+  }
+
+  .tree-drag-target-arrow::before {
+    margin-top: -3.5px;
+  }
+}
+
+//Tree Detail Pattern
+.sidebar .tree {
+  margin: 20px;
+  min-width: 200px;
+
+  a {
+    white-space: normal;
+  }
+}
+
+//IE
+.ie {
+  &:not(.ie-edge) {
+    .tree a .tree-badge {
+      line-height: 20px;
+    }
+  }
+
+  &.ie-edge {
+    .tree-drag-target-arrow::before {
+      margin-top: -3.5px;
+    }
+  }
+}
+
+//RTL Tree
+html[dir='rtl'] {
+  .tree {
+    ul {
+      left: auto;
+      right: 15px;
+
+      a {
+        margin: 0 5px 0 0;
+      }
+
+      li {
+        margin-left: inherit;
+        margin-right: 10px;
+
+        &:first-child {
+          margin-top: 5px;
+        }
+      }
+
+    }
+
+    svg {
+      margin: 0 0 0 9px;
+    }
+  }
+
+  .sidebar .tree {
+    float: none;
+  }
+}

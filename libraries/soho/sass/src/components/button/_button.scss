@@ -1,0 +1,741 @@
+// Buttons
+//================================================== //
+
+// Also see:
+// sass/controls/_icons.scss
+
+button {
+  background-color: transparent;
+  margin-right: 5px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+// How all button types will deal with iconography
+[class^='btn'] {
+  //Fixes an issue about the circle effect coming out of the button.
+  @include css3-extended(backface-visibility, hidden, (-webkit-, -moz-));
+  @include css3-extended(transform, translate3d(0, 0, 0), (-webkit-, -moz-));
+  @include css3-extended(color, transparent, (-webkit-tap-highlight-));
+  @include transition(color 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94), background-color 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94), border 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94), box-shadow 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+  @include antialiased();
+
+  color: inherit;
+  font-size: $theme-size-font-base;
+  font-weight: $theme-number-font-weight-bold;
+  height: 34px;
+  line-height: normal;
+  min-width: 100px;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: auto;
+
+  > * {
+    vertical-align: middle;
+  }
+
+  > svg {
+    pointer-events: none;
+  }
+
+  > .icon {
+    color: inherit;
+    position: static;
+    width: 18px;
+
+    + span:not(.audible):not(:empty) {
+      padding-left: 5px;
+    }
+
+    + * + span {
+      padding-left: 0;
+    }
+
+    + .icon {
+      margin-left: 0;
+    }
+  }
+
+  .icon {
+    @include transition(color 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+  }
+
+  &.half-width {
+    padding: 0 30px;
+    width: 50%;
+  }
+
+  &.full-width {
+    padding: 0 30px;
+    width: 100%;
+  }
+
+  span {
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    pointer-events: none;
+
+    &.audible,
+    &:empty {
+      + .icon {
+        margin-left: 0;
+      }
+    }
+
+    &:empty:not(.icon):not(.one):not(.two):not(.three):not(.four):not(.five):not(.six):not(.seven):not(.eight):not(.nine) {
+      display: none;
+    }
+  }
+
+  // Stackable buttons take up 100% of their container width and stack
+  &.stackable {
+    margin-bottom: 10px;
+    width: 100%;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.no-padding {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &[disabled],
+  &[disabled]:hover {
+    .disabled-tooltip {
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+}
+
+.btn-primary,
+.btn-secondary {
+  border-radius: 2px;
+  padding: 0 30px;
+}
+
+// standard, primary, destructive
+.btn-primary {
+  background-color: $button-color-primary-initial-background;
+  border: 1px solid $button-color-primary-initial-background;
+  color: $button-color-primary-initial-font;
+
+  &.btn {
+    color: $button-color-primary-initial-font;
+  }
+
+  .icon {
+    color: $button-color-primary-initial-font;
+  }
+
+  // In case both are specified
+  &.btn {
+    color: $button-color-primary-initial-font;
+  }
+
+  &:hover {
+    background-color: $button-color-primary-hover-background;
+    border: 1px solid $button-color-primary-hover-background;
+
+    &.btn {
+      color: $button-color-primary-initial-font;
+    }
+  }
+
+  &:active {
+    background-color: $button-color-primary-active-background;
+    border: 1px solid $button-color-primary-active-background;
+    box-shadow: none;
+  }
+
+  &:focus {
+    border: 1px solid transparent;
+
+    &:not(.hide-focus) {
+      box-shadow: 0 0 0 2px $body-color-primary-background, 0 0 0 3px $button-color-primary-initial-background, $focus-box-shadow;
+    }
+
+    &:active {
+      background-color: $button-color-primary-active-background;
+      box-shadow: none;
+    }
+  }
+
+  &[disabled],
+  &[disabled]:hover {
+    background-color: $button-color-primary-disabled-background;
+    border-color: $button-color-primary-disabled-border;
+    box-shadow: none;
+    color: $button-color-primary-disabled-font;
+    cursor: default;
+
+    .icon {
+      color: $button-color-primary-disabled-icon;
+    }
+  }
+
+  .ripple-effect {
+    background-color: $theme-color-palette-white;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  &.btn-menu {
+    color: $button-color-primary-initial-font;
+
+    .icon {
+      color: $button-color-primary-initial-font;
+    }
+
+    &:hover,
+    &.is-open {
+      color: $button-color-primary-initial-font;
+
+      .icon {
+        color: $button-color-primary-initial-font;
+      }
+    }
+
+  }
+}
+
+a.btn,
+a.btn-icon,
+a.btn-primary,
+a.btn-secondary,
+a.btn-tertiary,
+a.btn-menu,
+a.btn-close {
+  display: inline-block;
+  line-height: 31px;
+  margin-bottom: -2px;
+  min-width: auto;
+  text-decoration: none;
+  width: auto;
+
+  &:not(:root:root) {
+    margin-bottom: auto;
+  }
+
+  &.btn-icon {
+    line-height: 32px;
+    padding: 0 6px;
+  }
+}
+
+.btn-split-menu {
+  min-width: auto;
+
+  + .separator {
+    margin: 3px 3px 0 -10px !important;
+
+    + .btn-split-menu {
+      margin-left: -3px;
+      min-width: 20px;
+      width: 20px;
+
+      .icon {
+        margin-left: -7px;
+      }
+    }
+  }
+
+  &.btn {
+    margin-right: -8px;
+  }
+}
+
+@-moz-document url-prefix() {
+  a.btn,
+  a.btn-primary,
+  a.btn-secondary,
+  a.btn-tertiary,
+  a.btn-menu,
+  a.btn-close {
+    line-height: 32px;
+    margin-bottom: -3px;
+  }
+}
+
+// Secondary Button
+.btn-secondary {
+  background-color: $button-color-secondary-initial-background;
+  border: 1px solid $button-color-secondary-initial-background;
+  color: $button-color-secondary-initial-font;
+
+  .icon {
+    color: $button-color-secondary-initial-font;
+  }
+
+  &:hover {
+    background-color: $button-color-secondary-hover-background;
+    border: 1px solid $button-color-secondary-hover-background;
+  }
+
+  &:active {
+    background-color: $button-color-secondary-active-background;
+    border: 1px solid $button-color-secondary-active-background;
+  }
+
+  &:focus {
+    border: 1px solid transparent;
+
+    &:not(.hide-focus) {
+      box-shadow: 0 0 0 2px $body-color-primary-background, 0 0 0 3px $button-color-secondary-focus-border, $focus-box-shadow;
+    }
+
+    &:active {
+      background-color: $button-color-secondary-active-background;
+      box-shadow: none;
+    }
+  }
+
+  &[disabled],
+  &[disabled]:hover {
+    background-color: $button-color-secondary-disabled-background;
+    border: 1px solid $button-color-secondary-disabled-border;
+    box-shadow: none;
+    color: $button-color-secondary-disabled-font;
+    cursor: default;
+
+    .icon {
+      color: $button-color-secondary-disabled-icon;
+    }
+  }
+
+  .ripple-effect {
+    background: $theme-color-palette-graphite-20;
+  }
+
+  // Menu Button Form
+  &.btn-menu {
+    color: $button-color-secondary-initial-font;
+
+    .icon {
+      color: $button-color-secondary-initial-font;
+    }
+
+    &:hover,
+    &.is-open {
+      color: $button-color-secondary-initial-font;
+
+      .icon {
+        color: $button-color-secondary-initial-font;
+      }
+    }
+  }
+
+}
+
+// Destructive Actions / Third Level Button
+.btn,
+.btn-tertiary,
+.btn-icon,
+.btn-close,
+.btn-actions,
+.btn-menu {
+  border: 1px solid transparent;
+  border-radius: 2px;
+  box-shadow: none;
+  color: $button-color-tertiary-initial-font;
+  overflow: hidden;
+
+  &:hover {
+    color: $button-color-tertiary-hover-font;
+
+    .icon {
+      color: $button-color-tertiary-hover-font;
+    }
+  }
+
+  &:active {
+    color: $button-color-tertiary-active-font;
+  }
+
+  &:focus:not(.hide-focus) {
+    box-shadow: 0 0 0 2px transparent, 0 0 0 1px $button-color-secondary-focus-background, $focus-box-shadow;
+
+    &:active {
+      box-shadow: none;
+    }
+  }
+
+  &[disabled],
+  &[disabled]:hover {
+    color: $button-color-tertiary-disabled-font;
+    cursor: default;
+
+    .icon {
+      color: $button-color-tertiary-disabled-font;
+    }
+  }
+
+  &.is-pressed {
+    color: $button-color-primary-initial-background;
+
+    .icon {
+      color: $button-color-primary-initial-background;
+    }
+  }
+
+  span {
+    color: inherit;
+  }
+
+  .icon {
+    color: $button-color-tertiary-initial-font;
+  }
+
+  .ripple-effect {
+    background-color: $tertiary-btn-ripple-color;
+  }
+
+}
+
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-tertiary,
+.btn-icon,
+.btn-actions,
+.btn-menu {
+  span {
+    &::before,
+    &::after {
+      content: ' ';
+    }
+  }
+}
+
+// Menu Buttons have a special state that shows up when their menus are visible.
+.btn-menu,
+.btn-actions {
+  &.is-open {
+    color: $theme-color-brand-primary-base;
+
+    .icon {
+      color: $theme-color-brand-primary-base;
+    }
+  }
+}
+
+.btn {
+  padding: 0 15px;
+}
+
+.btn-tertiary,
+.btn-menu {
+  // Dark Ui on Light UI
+  &.inverse {
+    color: $tertiary-btn-dark-color;
+
+    .icon {
+      color: $tertiary-btn-dark-color;
+    }
+
+    &:hover,
+    &.is-open {
+      color: $tertiary-btn-dark-hover-color;
+
+      .icon {
+        color: $tertiary-btn-dark-hover-color;
+      }
+    }
+
+  }
+}
+
+.btn-tertiary {
+  padding: 0 10px;
+}
+
+.btn-menu {
+  min-width: auto;
+  padding: 0 10px;
+
+  &.btn-primary,
+  &.btn-secondary {
+    padding-right: 20px;
+  }
+}
+
+// Icon Buttons
+// Also see ./_icons.scss
+.btn-icon,
+.btn-actions,
+.btn-close {
+  border-radius: 18px;
+  height: 36px;
+  margin-top: 0;
+  min-height: 36px;
+  min-width: 36px;
+  padding: 0;
+  width: 36px;
+
+  // Icon Buttons only have one icon (never two) and no text visible, so disable padding
+  > .icon {
+    padding-right: 0;
+  }
+
+  > span {
+    display: inline-block;
+    pointer-events: none;
+    position: absolute;
+    width: 0;
+  }
+
+  &:hover {
+    > span {
+      color: transparent;
+    }
+  }
+}
+
+// Specific Icon Button styles
+.btn-icon {
+  > span:not(.icon) {
+    text-indent: -99999px;
+  }
+
+  .icon.app-header {
+    left: 0;
+    margin-left: 0;
+    position: relative;
+    top: 2px;
+  }
+
+  &.has-content {
+    .icon {
+      color: $theme-color-brand-primary-base;
+    }
+
+    &:hover .icon {
+      color: $theme-color-palette-azure-80;
+    }
+  }
+}
+
+// Ripple Effect
+.ripple-effect {
+  border-radius: 50%;
+  height: 2px;
+  opacity: 0;
+  position: absolute;
+  width: 2px;
+
+  &.is-animation {
+    @include css3(animation, ripple-animation 1s);
+  }
+
+  .ripple-circle {
+    color: rgba($theme-color-palette-white, 0);
+  }
+}
+
+@include keyframes(ripple-animation) {
+  0% {
+    opacity: 0.5;
+  }
+
+  100% {
+    @include css3(transform, scale(20));
+
+    opacity: 0;
+  }
+}
+
+@include respond-to(phone) {
+  // Reset the above rule when these types of buttons appear in toolbars
+  .toolbar {
+    .btn,
+    .btn-teritary {
+      padding: 0 10px;
+
+      .icon {
+        // If an icon is present, the span should not be visible at this breakpoint
+        + span { // prevents oblong-shaped focus state around buttons
+          position: absolute;
+        }
+      }
+    }
+  }
+}
+
+// Short field buttons
+.field-short {
+  [class*='btn'] {
+    height: 25px;
+    margin-bottom: 10px;
+    min-width: 0;
+
+    > .icon:not(.icon-dropdown) {
+      height: 14px;
+      margin: 0;
+      vertical-align: middle;
+
+      + span:not(.audible) {
+        display: inline-block;
+        padding: 0 4px 0 0;
+      }
+    }
+  }
+
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-tertiary,
+  .btn-menu,
+  .btn-icon,
+  .btn-actions,
+  .btn-close {
+    padding: 0 5px;
+  }
+
+  .btn-icon,
+  .btn-actions,
+  .btn-close {
+    border-radius: 12px;
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  button {
+    margin-left: 5px;
+    margin-right: 0;
+
+    &:last-child {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  // How all button types will deal with iconography
+  [class^='btn'] {
+    > .icon {
+      + span:not(.audible):not(:empty) {
+        padding-left: 0;
+        padding-right: 5px;
+      }
+
+      + * + span {
+        padding-right: 0;
+      }
+    }
+
+    span {
+      + .icon {
+        margin-right: 5px;
+      }
+
+      + * + .icon {
+        margin-right: 5px;
+      }
+
+      &.audible {
+        + .icon {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .btn-menu {
+    &.btn-primary,
+    &.btn-secondary {
+      padding-left: 20px;
+      padding-right: 10px;
+    }
+  }
+
+  .btn-icon,
+  .btn-actions {
+    span {
+      + .icon {
+        margin-right: 0;
+      }
+
+      + * + .icon {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+//Do not allow upper case in french
+html[lang^='fr-'] {
+  [class^='btn'] {
+    text-transform: none;
+  }
+}
+
+//Special "Ghost" Secondary Border button-font-size
+.btn-secondary-border {
+  @include transition(all 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+
+  border: 1px solid $secondary-border-btn-border-color;
+  border-radius: 2px;
+  color: $secondary-border-btn-color;
+
+  span {
+    padding: 0 26px;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: $secondary-border-btn-hover-border-color;
+    color: $secondary-border-btn-hover-color;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 1px $body-color-primary-background, 0 0 0 2px $theme-color-brand-primary-base, $focus-box-shadow;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .ripple-effect {
+    background-color: $secondary-border-btn-ripple-color;
+  }
+}
+
+//Grid Filter button
+.btn-filter {
+  min-width: 45px;
+  width: 55px;
+}
+
+.is-mac.is-firefox {
+  .field-short {
+    [class^='btn'] {
+      line-height: 25px;
+    }
+  }
+}
+
+.btn-link {
+  color: $hyperlink-color;
+
+  .icon {
+    color: $hyperlink-color;
+  }
+
+  &:hover {
+    color: $hyperlink-hover-color;
+
+    .icon {
+      color: $hyperlink-hover-color;
+    }
+  }
+}

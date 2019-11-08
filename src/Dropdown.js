@@ -23,8 +23,10 @@ import _Templated from './_Templated';
  */
 const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
   widgetTemplate: new Simplate([
-    `<label>{%: $.label %}</label>
-      <select id="{%= $.id %}_dropdownNode" class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownSelect"></select>`,
+    '<div class="field">',
+    '<label for="{%= $.id %}_dropdownNode" class="label">{%: $.label %}</label>',
+    '<select id="{%= $.id %}_dropdownNode" class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownSelect"></select>',
+    '</div>',
   ]),
   selectItemTemplate: new Simplate([
     '<option value="{%= $.value %}">',

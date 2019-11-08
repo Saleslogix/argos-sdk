@@ -1,0 +1,50 @@
+// Uplift Module Tabs
+//================================================== //
+
+.tab-container.module-tabs {
+  .tab {
+    > a {
+      padding: 5px 6px 7px;
+    }
+
+    &.dismissible {
+      a {
+        padding: 5px 35px 7px 6px;
+      }
+
+      .icon {
+        height: 11px;
+      }
+    }
+
+    &.application-menu-trigger {
+      a {
+        padding: 5px 6px 7px;
+        width: 100%;
+      }
+    }
+  }
+
+  &.has-more-button {
+    .tab-more {
+      padding: 5px 6px 7px;
+
+      .more-text {
+        left: -2px;
+        position: relative;
+        top: -2px;
+      }
+    }
+  }
+
+  &.has-add-button {
+    .add-tab-button span:first-child {
+      font-size: $theme-size-font-lg;
+      top: -10px;
+    }
+  }
+
+  .icon.app-header {
+    top: -6px;
+  }
+}

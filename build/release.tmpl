@@ -9,6 +9,14 @@
       "isDebug": true,
       "fileIncludes": [
         {
+          "text": "jquery-3.4.1.js",
+          "path": "../libraries/soho/js/"
+        },
+        {
+          "text": "sohoxi.js",
+          "path": "../libraries/soho/js/"
+        },
+        {
           "text": "pdf.min.js",
           "path": "../libraries/pdfjs/"
         },
@@ -116,6 +124,16 @@
       "src": "../min",
       "dest": "content",
       "filters": ".*(\\.css)"
+    },
+    {
+      "src": "../libraries/soho/css/",
+      "dest": "content/css",
+      "filters": ".*(\\.css)"
+    },
+    {
+      "src": "../libraries/soho/js/cultures/",
+      "dest": "content/javascript/cultures",
+      "filters": ".*\\.js"
     },
     {
       "src": "../libraries/dojo/dojo",

@@ -1,0 +1,281 @@
+// Spinboxes
+//================================================== //
+
+// Overrides some basic styles from the "input".
+input.spinbox {
+  border-radius: 0;
+  -webkit-font-smoothing: subpixel-antialiased;
+  font-weight: 400;
+  height: 34px;
+  padding: 9px;
+  text-align: center;
+  width: 84px;
+
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.field {
+  > .spinbox {
+    margin-bottom: 0;
+  }
+
+  > .spinbox-wrapper {
+    @include font-size(0);
+
+    position: relative;
+    vertical-align: top;
+  }
+}
+
+.spinbox-control {
+  @include css3(user-select, none);
+
+  backface-visibility: hidden;  // Makes the round ripple-effect pressed state work
+  background-color: $spinbox-button-color;
+  border: 1px solid $input-color-initial-border;
+  border-collapse: separate;
+  color: $font-color;
+  cursor: pointer;
+  display: inline-block;
+  font-size: $theme-size-font-base;
+  font-weight: $theme-number-font-weight-bold;
+  height: 34px;
+  line-height: normal;
+  overflow: hidden;
+  padding: 7px 10px;
+  position: relative;
+  resize: none;
+  text-align: center;
+  -moz-transform: translate3d(0, 0, 0);  // Makes the round ripple-effect pressed state work
+  -webkit-transform: translate3d(0, 0, 0);  // Makes the round ripple-effect pressed state work
+  width: 33px;
+
+  &.up {
+    border-bottom-right-radius: 2px;
+    border-left: 0;
+    border-top-right-radius: 2px;
+  }
+
+  &.down {
+    border-bottom-left-radius: 2px;
+    border-right: 0;
+    border-top-left-radius: 2px;
+  }
+
+  &:hover {
+    color: $spinbox-hover-color;
+  }
+
+  &.is-active {
+    color: $spinbox-active-color;
+  }
+
+  &.is-disabled {
+    background-color: $input-color-disabled-background;
+    border-color: $input-color-disabled-border;
+    color: $disabled-color;
+    cursor: default;
+    -webkit-text-fill-color: $disabled-color;
+  }
+}
+
+// Everything inside the spinbox wrapper is vertically-aligned middle.
+.spinbox-wrapper {
+  display: inline-block;
+
+  > * {
+    vertical-align: middle;
+  }
+
+  .icon-error {
+    margin-right: auto;
+    right: 38px;
+    top: 0;
+  }
+
+  &.error .spinbox-control {
+    border-color: $error-color;
+    color: $error-color;
+  }
+
+  + .icon-error {
+    margin-top: -15px;
+  }
+
+  &.is-focused {
+    box-shadow: $focus-box-shadow;
+
+    > .spinbox-control {
+      border-color: $input-color-focus-border;
+
+      &.is-active {
+        border-color: $input-color-focus-border;
+        box-shadow: $focus-box-shadow;
+      }
+
+      &.is-disabled {
+        background-color: $input-color-disabled-background;
+        border-color: $input-color-disabled-border;
+        color: $disabled-color;
+        cursor: default;
+        -webkit-text-fill-color: $disabled-color;
+      }
+    }
+
+  }
+
+  &.is-disabled {
+    > .spinbox-control {
+      background-color: $input-color-disabled-background;
+      border-color: $input-color-disabled-border;
+      color: $disabled-color;
+      cursor: default;
+      -webkit-text-fill-color: $disabled-color;
+    }
+  }
+
+  &.is-readonly {
+    > .spinbox-control {
+      background-color: $input-color-readonly-background;
+      color: $input-readonly-color;
+      cursor: default;
+      -webkit-text-fill-color: $input-readonly-color;
+    }
+  }
+
+  .ripple-effect {
+    background-color: $tertiary-btn-ripple-color;
+  }
+}
+
+// Short Fields
+.field-short {
+  .spinbox-wrapper {
+    margin-bottom: 0;
+  }
+
+  .spinbox {
+    height: auto;
+    line-height: normal; // initial value declaration is 16px from "_typgraphy.scss" at "input.is-firefox"
+    padding: 5px;
+  }
+
+  .spinbox-control {
+    height: inherit;
+    padding: 4px 7px;
+    width: 25px;
+  }
+}
+
+.field .spinbox {
+  width: calc(100% - 66px);
+}
+
+// Override for iOS to correctly align ".spinbox" as child of  ".field-short"
+.ios {
+  .field-short {
+    .spinbox {
+      padding-top: 6px;
+    }
+  }
+}
+
+// Override for IE to correctly align ".spinbox" as child of  ".field-short"
+.ie {
+  .field-short {
+    .spinbox {
+      height: 25px;
+    }
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .spinbox-control {
+    &.up {
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 0;
+      border-left: 1px solid $input-color-initial-border;
+      border-right: 0;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 0;
+    }
+
+    &.down {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 2px;
+      border-left: 0;
+      border-right: 1px solid $input-color-initial-border;
+      border-top-left-radius: 0;
+      border-top-right-radius: 2px;
+    }
+
+    &.is-disabled {
+      border-color: $input-color-disabled-border;
+    }
+  }
+
+  .spinbox-wrapper {
+    .icon-error {
+      left: 40px;
+      right: auto;
+    }
+
+    &.is-focused {
+      > .spinbox-control {
+        border-color: $input-color-focus-border;
+
+        &.is-active {
+          border-color: $input-color-focus-border;
+        }
+
+        &.is-disabled {
+          border-color: $input-color-disabled-border;
+        }
+      }
+
+    }
+
+    &.is-disabled {
+      > .spinbox-control {
+        border-color: $input-color-disabled-border;
+      }
+    }
+  }
+
+  &:not(.ie11) {
+    .field-short {
+      .spinbox-control {
+        padding: 3px 7px 4px;
+      }
+    }
+  }
+
+  &.is-firefox {
+    .field-short {
+      .spinbox {
+        padding: 5px 4px 4px;
+      }
+    }
+  }
+}
+
+// Ie11
+.ie11 {
+  .field-short {
+    .spinbox-control {
+      height: 25px;
+    }
+  }
+}

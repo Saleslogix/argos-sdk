@@ -1,0 +1,216 @@
+// Hyperlinks
+//================================================== //
+
+@mixin hyperlink-focus-state {
+  border: 1px solid transparent;
+  border-radius: 2px;
+  content: '';
+  display: block;
+  height: calc(100% + 6px);
+  left: -4px;
+  pointer-events: none;
+  position: absolute;
+  top: -4px;
+  width: calc(100% + 6px);
+
+  @include css3(transition, border-color 100ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+}
+
+.hyperlink {
+  @include antialiased();
+
+  color: $hyperlink-color;
+  cursor: pointer;
+  font-size: $theme-size-font-sm;
+  line-height: 1.5rem;
+  position: relative;
+  text-decoration: underline;
+
+  // Focus states appear in ::after pseudo elements to take
+  // advantage of border radius.
+  &::after {
+    @include hyperlink-focus-state;
+  }
+
+  &:hover:not([disabled]) {
+    color: $hyperlink-hover-color;
+  }
+
+  &.show-visited:visited,
+  &.force-visited {
+    color: $hyperlink-visited-color;
+
+    &:focus:not(.hide-focus),
+    &:active {
+      outline: none;
+    }
+  }
+
+  &:focus:not(.hide-focus),
+  &:active {
+    outline: none;
+
+    &::after {
+      border-color: $hyperlink-focus-border-color;
+      box-shadow: $focus-box-shadow;
+    }
+  }
+
+  &[disabled] {
+    color: $hyperlink-disabled-color;
+    pointer-events: none;
+
+    &:hover {
+      cursor: default;
+    }
+
+    &:focus:not(.hide-focus) {
+      outline: none;
+
+      &::after {
+        border-color: $disabled-color;
+      }
+    }
+  }
+
+  &.back,
+  &.directional {
+    color: $hyperlink-color;
+    font-size: $theme-size-font-sm;
+
+    &::after {
+      display: none;
+    }
+
+    span {
+      &::after {
+        @include hyperlink-focus-state;
+      }
+    }
+
+    .icon {
+      color: $hyperlink-color;
+      display: inline;
+      height: 20px;
+      position: relative;
+      top: -1px;
+      vertical-align: middle;
+      width: 20px;
+    }
+
+    &:focus:not(.hide-focus) {
+      span {
+        &::after {
+          border-color: $hyperlink-focus-border-color;
+          box-shadow: $focus-box-shadow;
+        }
+      }
+    }
+  }
+
+  &.back {
+    .icon {
+      left: -6px;
+      margin-right: -12px;
+    }
+
+    span {
+      &::after {
+        margin-left: -2px;
+        width: calc(100% + 4px);
+      }
+    }
+  }
+
+  &.directional {
+    .icon {
+      left: -5px;
+      margin-right: -3px;
+    }
+
+    span {
+      &::after {
+        left: -5px;
+        width: calc(100% - 1px);
+      }
+    }
+  }
+}
+
+//Inline text should be 14px to match content
+p .hyperlink {
+  font-size: $theme-size-font-base;
+  white-space: nowrap;
+}
+
+// Links Stacked - as on the controls index page
+.link-list {
+  margin-bottom: 40px;
+
+  li {
+    line-height: 25px;
+
+    svg {
+      color: $theme-color-brand-primary-base;
+      height: 16px;
+      left: 6px;
+      margin-right: 2px;
+      top: 4px;
+      width: 16px;
+    }
+
+    a span {
+      border: 1px solid transparent;
+      padding-bottom: 3px;
+      padding-left: 2px;
+      position: relative;
+      text-transform: capitalize;
+      top: 0;
+    }
+
+  }
+
+  div {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+
+    &:last-child {
+      border: 0;
+    }
+
+  }
+
+  .timestamp {
+    color: $link-color-disabled-font;
+    display: block;
+    font-size: $theme-size-font-sm;
+    margin: 0;
+    padding: 0;
+    position: static;
+  }
+}
+
+//Right To Left Styles
+html[dir='rtl'] {
+  .hyperlink {
+    &.back {
+      .icon {
+        left: auto;
+        margin-left: -10px;
+        margin-right: auto;
+        right: -8px;
+      }
+
+      span::after {
+        margin-left: 0;
+      }
+    }
+
+    &.directional {
+      span::after {
+        margin-left: 18px;
+      }
+    }
+  }
+
+}

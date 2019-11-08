@@ -1,0 +1,227 @@
+// Vertical Tabs
+//===================================================
+
+// The actual tab styles are abstracted out because there are several different configurations
+// for the Vertical Tabset that need to be written with child selectors in order not to conflict
+// if they are nested.
+@mixin vertical-tab-style {
+  > .tab {
+    width: 100%;
+
+    a {
+      @include antialiased();
+      @include css3(user-select, none);
+      @include css3(touch-callout, none);
+
+      color: $vertical-tab-text-color;
+      display: block;
+      font-size: $theme-size-font-base;
+
+      .icon {
+        color: $vertical-tab-text-color;
+      }
+    }
+
+    &:hover {
+      background-color: $vertical-tab-bg-hover-color;
+
+      a {
+        text-decoration: $vertical-tab-text-hover-decoration;
+      }
+    }
+
+    &.is-selected {
+      background-color: $vertical-tab-active-bg-color;
+
+      a {
+        color: $vertical-tab-active-text-color;
+      }
+
+      &:hover {
+        background-color: $vertical-tab-active-bg-color;
+
+        a {
+          color: $vertical-tab-active-text-color;
+        }
+      }
+    }
+
+    &.is-disabled {
+      color: $disabled-color;
+
+      > a,
+      &:hover > a,
+      &.is-selected > a,
+      .count {
+        color: $disabled-color !important;
+        cursor: default;
+      }
+
+      &:hover {
+        cursor: default;
+
+        &::before {
+          content: none !important;
+        }
+      }
+    }
+  }
+}
+
+.tab-list-info {
+  @include font-size(20);
+
+  color: $vertical-tab-text-color;
+  padding: 10px 30px;
+
+  &:first-child {
+    padding-top: 10px;
+  }
+
+  h2 {
+    @include font-size(20);
+  }
+}
+
+.tab-container.vertical {
+  background-color: $vertical-tab-panel-bg-color;
+  display: inline-block;
+  margin-top: 0;
+  min-height: 200px;
+  min-width: 250px;
+  position: relative;
+
+  > .tab-list,
+  > .tab-list-container {
+    background-color: $vertical-tab-sidebar-bg-color;
+    border-right: 1px solid $vertical-tab-sidebar-border-color;
+    display: inline-block;
+    padding-top: 20px;
+    vertical-align: top;
+    width: 250px;
+  }
+
+  // Use '.tab-list-container' to wrap the tab list when you have other elements inside of the sidebar
+  // of the vertical tabset (for example, optional title, optional button, etc).
+  > .tab-list-container {
+    > .tab-list {
+      @include vertical-tab-style;
+
+      > .tab {
+        a {
+          padding: 10px 30px;
+        }
+      }
+    }
+
+    // Adjust for scrollable tab containers
+    &.scrollable,
+    &.scrollable-x,
+    &.scrollable-y {
+      height: 100%;
+    }
+  }
+
+  > .tab-panel-container,
+  + .tab-panel-container {
+    background-color: $vertical-tab-panel-bg-color;
+    display: inline-block;
+    margin: 0;
+    vertical-align: top;
+    width: calc(100% - 250px);
+
+    &.scrollable,
+    &.scrollable-x,
+    &.scrollable-y {
+      height: 100%;
+    }
+  }
+
+  // Normal configuration of the tabset can just have '.tab-list' directly inside the vertical tabs container.
+  > .tab-list {
+    @include vertical-tab-style;
+
+    height: 100%;
+
+    > .tab {
+      a {
+        padding: 10px 30px;
+      }
+    }
+  }
+
+  // NOTE: It's possible for these tab panels not to be included within the .tab-container class.
+  // If the panels are present inside the .tab-container, these styles will be necessary.
+  .tab-panel {
+    display: none;
+    margin: 30px;
+    padding-top: 0;
+    vertical-align: top;
+
+    &.can-show {
+      display: inline-block;
+      min-width: calc(100% - 60px); // 60px = left/right margin
+    }
+
+    h3 {
+      margin-bottom: 20px;
+    }
+  }
+
+  &::after {
+    clear: both;
+    content: '';
+    display: table-cell;
+  }
+
+  .info {
+    @include font-size(16);
+
+    display: none;
+    line-height: 32px;
+    padding: 1em;
+    position: relative;
+
+    .btn-actions {
+      position: absolute;
+      right: 1.2em;
+      top: 1.2em;
+    }
+  }
+
+  > .tab-focus-indicator,
+  > .tab-list-container > .tab-focus-indicator {
+    border-radius: 0;
+
+    &.is-selected.is-visible {
+      border-color: transparent;
+      box-shadow: inset 0 0 0 1px $theme-color-palette-white;
+    }
+  }
+
+}
+
+// Set padding/height etc. when using Vertical Tabs directly inside a page container
+// Also works for placing a set of vertical tabs directly inside of a higher-level '.tab-panel' element
+.page-container,
+.tab-panel {
+  > .tab-container.vertical {
+    height: 100%;
+    overflow: auto;
+
+    &:only-child {
+      width: 100%;
+    }
+
+    > .tab-list-container,
+    > .tab-panel-container,
+    + .tab-panel-container {
+      min-height: 100%;
+    }
+
+    + .tab-panel-container > .tab-panel {
+      margin: 30px;
+      padding-top: 0;
+    }
+  }
+}

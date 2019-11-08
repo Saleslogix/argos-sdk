@@ -1,0 +1,155 @@
+// =======================================
+// Flexible Toolbar Component
+// ==================================== //
+
+.toolbar-container {
+  &.in-page {
+    height: 40px;
+  }
+}
+
+.flex-toolbar {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.toolbar-section {
+  @include transition(width 100ms $cubic-ease, padding 100ms $cubic-ease);
+
+  white-space: nowrap;
+  width: auto;
+
+  // Allows certain sections to collapse.
+  // NOTE: Not all sections are collapsible.
+  &.title,
+  &.buttonset {
+    flex-grow: 1;
+
+    &:not(.favor) {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    &.static {
+      flex-grow: 0;
+    }
+  }
+
+  // Allows non-defined toolbar sections to grow and fill space
+  &.fluid {
+    flex-grow: 1;
+  }
+
+  &.title {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      display: inline;
+    }
+
+    .page-title,
+    .section-title {
+      display: block;
+      overflow-x: hidden;
+      padding: 0;
+      text-overflow: ellipsis;
+    }
+
+    .section-title {
+      font-size: $theme-size-font-sm;
+    }
+
+    + .toolbar-section.buttonset {
+      text-align: right;
+    }
+
+    &:not(.favor) {
+      text-overflow: ellipsis;
+    }
+  }
+
+  + .toolbar-section.title {
+    padding-left: 10px;
+  }
+
+  &.buttonset {
+    padding: 4px;
+
+    [class^='btn'] {
+      margin-right: 0;
+    }
+  }
+
+  &.search {
+    padding: 0 10px;
+
+    + .buttonset {
+      flex-grow: 0;
+    }
+  }
+
+  > .separator {
+    background-color: $formatter-toolbar-separator-color;
+    display: inline-block;
+    height: 20px;
+    margin: 3px 3px 0;
+    position: relative;
+    top: 6px;
+    width: 1px;
+  }
+
+  // Hide separators that come after "overflowed" elements
+  .is-overflowed,
+  .hidden {
+    + .separator,
+    + .popupmenu,
+    + .popupmenu-wrapper + .separator {
+      display: none;
+    }
+  }
+
+  &.more {
+    button {
+      margin-right: 0;
+
+      &.no-overflowed-items {
+        display: none;
+      }
+    }
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .toolbar-section {
+    &.title + .toolbar-section.buttonset {
+      text-align: left;
+    }
+
+    + .toolbar-section.title {
+      padding-left: 0;
+      padding-right: 10px;
+    }
+
+    &.buttonset {
+      margin-left: 0;
+
+      [class^='btn'] {
+        margin-left: 15px; // reset
+        margin-right: 0;
+      }
+    }
+
+    &.more {
+      button {
+        margin-left: 0;
+      }
+    }
+  }
+
+}

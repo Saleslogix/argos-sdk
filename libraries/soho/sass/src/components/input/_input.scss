@@ -1,0 +1,944 @@
+// User Input - TextBox, Textarea
+//================================================== //
+
+@import './input-mixins';
+
+// Field Style
+.field .checkbox-label,
+.field .checkbox > label {
+  color: $checkbox-color-unchecked-initial-font;
+  display: inline-block;
+  font-size: $theme-size-font-base;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.field > input,
+.field > textarea {
+  margin-bottom: 0;
+}
+
+// Two Connected Fields
+.compound-field {
+  > .field,
+  > .field-short {
+    clear: both;
+    display: inline-block;
+    margin-right: 15px;
+
+    &.field-checkbox label {
+      line-height: 17px;
+    }
+
+    .error-message .message-text {
+      float: left;
+    }
+  }
+
+  > .checkbox-group-label {
+    margin-top: 2px;
+  }
+
+  > .field {
+    line-height: 37px;
+    vertical-align: baseline;
+  }
+
+  > .field-short {
+    margin-right: 10px;
+    vertical-align: top;
+  }
+
+  .dropdown-wrapper {
+    margin-bottom: 0;
+    margin-top: -3px;
+    vertical-align: middle;
+  }
+}
+
+//Move a field up closer - two line fields
+.attach-up {
+  margin-top: -10px;
+}
+
+.attach-up-relative {
+  top: -15px;
+}
+
+.attach-up-relative-x2 {
+  top: -35px;
+}
+
+.field {
+  margin-bottom: 20px;
+  position: relative;
+
+  &.less-margin {
+    margin-bottom: 5px;
+  }
+
+  textarea + .btn-actions {
+    margin-left: 4px;
+    position: absolute;
+    top: calc(50% - 14px);
+  }
+
+  //Input Actions Button - controls/input-actions
+  .btn-actions {
+    border-radius: 50%;
+    height: 30px;
+    min-height: 30px;
+    min-width: 30px;
+    position: relative;
+    top: 0;
+    width: 30px;
+
+    .icon {
+      height: 16px;
+      margin-left: 0;
+      width: 16px;
+    }
+  }
+
+  > .textarea-wordcount {
+    color: $font-color-muted;
+    margin-bottom: 14px;
+  }
+
+  &.field-radio {
+    margin-bottom: 20px;
+
+    .icon-dirty {
+      left: -1px;
+      margin-top: 1px;
+    }
+  }
+
+  &.field-checkbox {
+    margin-bottom: 12px;
+
+    .inline-checkbox .label-text {
+      margin-bottom: 1px !important;
+    }
+  }
+
+  .field:not(.field-checkbox) + &.field-checkbox {
+    margin-bottom: 17px;
+  }
+
+  &.l-pull-left {
+    margin-right: 20px;
+  }
+
+  &.top-padding {
+    margin-top: 3rem;
+  }
+}
+
+.field-pane {
+  height: 0;
+  overflow: hidden;
+  padding: 0 0 0 25px;
+
+  .field-content {
+    padding: 20px 0;
+  }
+}
+
+//Clearable input fx on search or input/clearable
+.icon.close {
+  color: $trigger-icon-fill-color;
+  cursor: pointer;
+  height: 14px;
+  right: 29px;
+  top: 3px;
+
+  &:hover {
+    color: $trigger-hover-color;
+  }
+
+  &.is-empty {
+    display: none;
+  }
+}
+
+[data-clearable='true'] {
+  padding-right: 32px;
+
+  & + .icon.close {
+    margin-left: -27px;
+    right: auto;
+    top: -2px;
+
+    &:hover {
+      color: $trigger-hover-color;
+    }
+  }
+}
+
+.is-disabled {
+  .icon.close {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+
+// Input Style
+input,
+textarea {
+  @include input-style();
+}
+
+// Element with input "like" style borders
+.input-style {
+  background-color: $input-color-initial-background;
+  border: 1px solid $input-color-initial-border;
+  border-collapse: separate;
+
+  &:hover,
+  &.is-hovered {
+    border-color: $input-color-hover-border;
+  }
+
+  &[disabled],
+  &.is-disabled {
+    background-color: $input-color-disabled-background;
+    border: solid 1px $input-color-disabled-border;
+    -webkit-text-fill-color: $input-disabled-color;
+  }
+
+  &[readonly],
+  &.is-readonly {
+    background-color: $input-color-readonly-background;
+    border-color: $input-color-readonly-border;
+    -webkit-text-fill-color: $input-readonly-color;
+  }
+
+  &.is-placeholder {
+    color: $input-placeholder-color;
+    -webkit-text-fill-color: $input-placeholder-color;
+  }
+
+  &.is-focused {
+    @include focus-state();
+  }
+}
+
+// Text Area
+textarea {
+  @include rem(line-height, 2rem);
+
+  min-height: 90px;
+  overflow: auto;
+  padding: 10px;
+  width: $textarea-size;
+
+  &.resizable {
+    resize: vertical;
+  }
+
+  .almost-empty {
+    border-color: $error-color;
+  }
+
+  &.error {
+    padding: 10px 25px 10px 10px;
+  }
+
+  &[readonly],
+  &[disabled] {
+    + .textarea-wordcount {
+      display: none;
+    }
+  }
+
+  &.taller {
+    min-height: 188px;  //height of three fields
+  }
+}
+
+.textarea-wordcount {
+  @include rem(line-height, 2rem);
+
+  display: block;
+  font-size: $theme-size-font-sm;
+  min-height: auto;
+  width: $textarea-size;
+
+  &.almost-empty {
+    color: $error-color;
+  }
+}
+
+.textarea-print {
+  display: none;
+  white-space: pre-line;
+}
+
+// Print Style Sheet
+@media print {
+  // Needed for printing
+
+  textarea,
+  .textarea-wordcount {
+    display: none !important;
+  }
+
+  .textarea-print {
+    display: inline-block !important;
+    height: auto;
+    width: auto;
+  }
+}
+
+.inline {
+  $controls: ('busy', 'colorpicker', 'datepicker', 'switch', 'lookup', 'searchfield', 'timepicker, radio');
+
+  @include inline-control-label($controls);
+  @include inline-control($controls);
+
+  .label-text {
+    display: block;
+  }
+
+  &.inline-switch .label-text {
+    &::before,
+    &::after {
+      margin-left: -40px;
+    }
+  }
+}
+
+// Required Indicator
+label,
+.label {
+  &.required {
+    &:not(.inline) {
+      &:not(.accessible)::after {
+        @include required-indicator($is-content: true);
+      }
+
+      .required-asterisk {
+        @include required-indicator($is-content: false);
+      }
+    }
+
+    .label-text {
+      &:not(.accessible)::after {
+        @include required-indicator($is-content: true);
+      }
+
+      .required-asterisk {
+        @include required-indicator($is-content: false);
+      }
+    }
+  }
+
+}
+
+// Placeholder - Inline help
+// for browser support, these need to be
+// separate declarations rather than comma-separated
+::-webkit-input-placeholder {
+  @include placeholder();
+}
+
+::-moz-placeholder {
+  @include placeholder();
+}
+
+:-ms-input-placeholder {
+  @include placeholder();
+}
+
+::-ms-clear {
+  display: none;
+}
+
+// Error States
+.error,
+.error-message,
+.error-message p,
+.popover .error-message p {
+  color: $error-color;
+}
+
+.error::-webkit-input-placeholder {
+  color: $error-color;
+  opacity: 1;
+}
+
+.error::-moz-placeholder {
+  color: $error-color;
+  opacity: 1;
+}
+
+.error:-ms-input-placeholder {
+  color: $error-color;
+  opacity: 1;
+}
+
+// Alert States
+.alert,
+.alert-message,
+.alert-message p {
+  color: $alert-color;
+}
+
+.alert::-webkit-input-placeholder {
+  color: $alert-color;
+  opacity: 1;
+}
+
+.alert::-moz-placeholder {
+  color: $alert-color;
+  opacity: 1;
+}
+
+.alert:-ms-input-placeholder {
+  color: $alert-color;
+  opacity: 1;
+}
+
+// Success States
+.success,
+.success-message,
+.success-message p {
+  color: $success-color;
+}
+
+.success::-webkit-input-placeholder {
+  color: $success-color;
+  opacity: 1;
+}
+
+.success::-moz-placeholder {
+  color: $success-color;
+  opacity: 1;
+}
+
+.success:-ms-input-placeholder {
+  color: $success-color;
+  opacity: 1;
+}
+
+// Information States
+.info,
+.info-message,
+.info-message p {
+  color: $info-color;
+}
+
+.info::-webkit-input-placeholder {
+  color: $info-color;
+  opacity: 1;
+}
+
+.info::-moz-placeholder {
+  color: $info-color;
+  opacity: 1;
+}
+
+.info:-ms-input-placeholder {
+  color: $info-color;
+  opacity: 1;
+}
+
+// Text Selection
+::selection {
+  background: $theme-color-brand-primary-base;
+  color: $inverse-color;
+  -webkit-text-fill-color: $inverse-color;
+}
+
+::-moz-selection {
+  background: $theme-color-brand-primary-base;
+  color: $inverse-color;
+  -webkit-text-fill-color: $inverse-color;
+}
+
+// Mask component Adjustment Classes
+.is-number-mask {
+  text-align: right;
+}
+
+// Shorter/Legacy Inputs
+.field-short {
+  font-size: 0;
+  margin-bottom: 10px;
+  position: relative;
+
+  &:last-child:not(:only-child) {
+    margin-bottom: 0;
+  }
+
+  input {
+    font-size: $theme-size-font-sm;
+    margin-bottom: 0;
+    padding: 5px;
+    resize: none;
+    text-align: left;
+    width: $field-sm;
+
+    &::-webkit-input-placeholder,
+    &::-moz-placeholder,
+    &:-ms-input-placeholder {
+      font-size: $theme-size-font-sm;
+    }
+  }
+
+  label {
+    display: inline-block;
+    padding-right: 10px;
+    padding-top: 5px;
+    text-align: right;
+    vertical-align: top;
+    width: $field-sm;
+
+    ~ .error-message {
+      left: $field-sm;
+    }
+  }
+
+  .icon-error,
+  .icon-success {
+    height: 14px;
+    margin-left: -27px;
+    margin-top: 6px;
+    top: auto;
+    width: 18px;
+  }
+
+  .icon-error.lower-opacity {
+    opacity: 0.3;
+    z-index: -1;
+  }
+}
+
+// Field Sizes
+.input-lg,
+.colorpicker-container .input-lg.colorpicker,
+.field-short .input-lg {
+  width: $field-lg;
+}
+
+.input-md,
+.colorpicker-container .input-md.colorpicker,
+.input-md.datepicker,
+.field-short .input-md {  //Default
+  width: $field-md;
+}
+
+.input-mm,
+.colorpicker-container .input-mm.colorpicker,
+.input-mm.datepicker,
+.field-short .input-mm {  //Default
+  width: $field-mm;
+}
+
+.input-sm,
+.colorpicker-container .input-sm.colorpicker,
+.field-short .input-sm {
+  width: $field-sm;
+}
+
+.input-xs,
+.colorpicker-container .input-xs.colorpicker,
+.field-short .input-xs {
+  width: $field-xs;
+}
+
+.input-full {
+  width: $field-full;
+}
+
+//Info Field
+.field-info {
+  $this-icon-width: 15px;
+
+  display: block;
+  font-size: $theme-size-font-sm;
+  line-height: 1.2rem;
+  margin-bottom: 12px;
+  margin-top: 7px;
+  max-width: 300px;
+  min-height: 35px;
+  position: relative;
+
+  .icon {
+    height: 15px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: $this-icon-width;
+  }
+
+  .icon-info-field {
+    position: static;
+  }
+
+  + .error-message {
+    margin-top: -12px;
+  }
+
+  .message-text {
+    font-size: inherit;
+    line-height: 14px;
+    margin-bottom: 16px;
+    margin-top: -2px;
+    max-width: 267px;
+    padding-left: $this-icon-width + 5;
+  }
+}
+
+//Error Field
+.error-message {
+  $this-icon-width: 14px;
+
+  color: $error-color;
+  display: block;
+  font-size: $theme-size-font-sm;
+  line-height: 1.2rem;
+  margin-top: 7px;
+  max-width: 300px;
+  position: relative;
+
+  .icon {
+    height: $this-icon-width;
+    left: 0;
+    margin-left: 0;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    width: $this-icon-width;
+  }
+
+  .message-text {
+    font-size: inherit;
+    line-height: 15px;
+    max-width: 280px;
+    padding-left: $this-icon-width + 5;
+  }
+}
+
+// Alert Field
+.alert-message {
+  $this-icon-width: 14px;
+
+  color: $alert-color;
+  display: block;
+  font-size: $theme-size-font-sm;
+  line-height: 1.2rem;
+  margin-top: 7px;
+  max-width: 300px;
+  position: relative;
+
+  .icon {
+    height: $this-icon-width;
+    left: 0;
+    margin-left: 0;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    width: $this-icon-width;
+  }
+
+  .message-text {
+    font-size: inherit;
+    line-height: 15px;
+    max-width: 280px;
+    padding-left: $this-icon-width + 5;
+  }
+}
+
+// Success Field
+.success-message {
+  $this-icon-width: 14px;
+
+  color: $success-color;
+  display: block;
+  font-size: $theme-size-font-sm;
+  line-height: 1.2rem;
+  margin-top: 7px;
+  max-width: 300px;
+  position: relative;
+
+  .icon {
+    height: $this-icon-width;
+    left: 0;
+    margin-left: 0;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    width: $this-icon-width;
+  }
+
+  .message-text {
+    font-size: inherit;
+    line-height: 15px;
+    max-width: 280px;
+    padding-left: $this-icon-width + 5;
+  }
+}
+
+//Information Field
+.custom-icon-message,
+.info-message {
+  $this-icon-width: 14px;
+
+  color: $info-color;
+  display: block;
+  font-size: $theme-size-font-sm;
+  line-height: 1.2rem;
+  margin-top: 7px;
+  max-width: 300px;
+  position: relative;
+
+  .icon {
+    height: $this-icon-width;
+    left: 0;
+    margin-left: 0;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    width: $this-icon-width;
+  }
+
+  .message-text {
+    font-size: inherit;
+    line-height: 15px;
+    max-width: 280px;
+    padding-left: $this-icon-width + 5;
+  }
+}
+
+.column,
+.columns {
+  input.has-actions:not(.datepicker),
+  textarea.has-actions {
+    max-width: $field-md;
+    width: calc(100% - 40px);
+
+    &.textarea {
+      max-width: $textarea-size;
+
+      ~ .btn-tertiary {
+        margin-left: 2px;
+        position: absolute;
+        top: calc(50% - 14px);
+      }
+    }
+
+    &.input-xs {
+      max-width: $field-xs;
+    }
+
+    &.input-sm {
+      max-width: $field-sm;
+    }
+
+    &.input-lg {
+      max-width: $field-lg;
+    }
+
+    &.input-full {
+      max-width: calc(100% - 40px);
+    }
+
+    ~ .btn-tertiary {
+      min-width: 30px;
+      width: 30px;
+    }
+
+    ~ a.btn-tertiary {
+      display: inline;
+      padding: 0 5px;
+    }
+  }
+
+  input.has-actions.datepicker {
+    &.input-xs {
+      max-width: $field-xs;
+      width: calc(100% - 40px);
+    }
+
+    &.input-sm {
+      max-width: $field-sm;
+      width: calc(100% - 40px);
+    }
+
+    &.input-mm {
+      max-width: $field-mm;
+      width: calc(100% - 40px);
+    }
+
+    &.input-md {
+      max-width: $field-md;
+      width: calc(100% - 40px);
+    }
+
+    &.input-lg {
+      max-width: $field-lg;
+      width: calc(100% - 40px);
+    }
+
+    &.input-full {
+      max-width: calc(100% - 40px);
+      width: calc(100% - 40px);
+    }
+
+    ~ a.btn-tertiary {
+      display: inline;
+      padding: 0 5px;
+    }
+  }
+
+  .field > .checkbox-label.top-margin {
+    margin-top: 30px;
+  }
+
+  .field-checkbox span.label {
+    margin-top: 10px;
+  }
+}
+
+.has-actions-wrapper {
+  margin-right: -40px;
+  width: $field-md + 40;
+
+  &.xs {
+    width: $field-xs + 40;
+  }
+
+  &.sm {
+    width: $field-sm + 40;
+  }
+
+  &.lg {
+    width: $field-lg + 40;
+  }
+
+  ~ a.btn-tertiary {
+    display: inline;
+    padding: 0 5px;
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .field-info,
+  .error-message {
+    .icon {
+      left: auto;
+    }
+
+    .message-text {
+      padding-left: inherit;
+      padding-right: 19px;
+    }
+  }
+
+  .field .checkbox-label,
+  .field .checkbox > label {
+    margin-left: inherit;
+    margin-right: -5px;
+  }
+
+  input,
+  textarea {
+    text-align: right;
+
+    &.error {
+      padding-right: 10px;
+    }
+  }
+
+  // Required Indicator
+  label.required::after,
+  .label.required::after {
+    left: auto;
+    right: 3px;
+  }
+
+  // Mask component Adjustment Classes
+  .is-number-mask {
+    text-align: left;
+  }
+
+  [data-mask-mode='number'].spinbox {
+    text-align: center;
+  }
+
+  [data-clearable='true'] {
+    padding-left: 32px;
+    padding-right: 10px;
+
+    & + .icon.close {
+      margin-right: -30px;
+      right: auto;
+    }
+  }
+
+  .field-short {
+    .icon-error,
+    .icon-success {
+      height: 14px;
+      margin-left: inherit;
+      right: 0;
+      top: auto;
+      width: 18px;
+    }
+
+    label {
+      padding-left: 10px;
+      padding-right: inherit;
+      text-align: left;
+
+      ~ .error-message {
+        .icon,
+        .message-text {
+          left: auto;
+          right: $field-sm;
+        }
+      }
+    }
+  }
+
+  .inline.inline-switch .label-text {
+    &::before,
+    &::after {
+      margin-left: inherit;
+      margin-right: -40px;
+    }
+  }
+
+  .compound-field {
+    > .field,
+    > .field-short {
+      .error-message .message-text {
+        float: right;
+      }
+    }
+  }
+}
+
+//When on smaller form factors make 400px fields go down to medium size
+@include respond-to(phone) {
+  .input-lg,
+  .field-short .input-lg {
+    width: $field-md;
+  }
+}
+
+@include respond-to(phone) {
+  .column .field > .checkbox-label.top-margin,
+  .columns .field > .checkbox-label.top-margin {
+    margin-bottom: 5px;
+    margin-top: -5px;
+  }
+
+  .column .field-checkbox span.label,
+  .columns .field-checkbox span.label {
+    margin-top: -22px;
+  }
+}

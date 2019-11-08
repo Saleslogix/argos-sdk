@@ -1,0 +1,1219 @@
+// Select (DropDown)
+//================================================== //
+
+@import '../input/input-mixins';
+
+@mixin list-icon-colors {
+  &.error {
+    color: $error-color;
+  }
+
+  &.alert {
+    color: $theme-color-status-warning;
+  }
+
+  &.alert-yellow {
+    color: $theme-color-status-caution;
+  }
+
+  &.neutral {
+    color: $alert-neutral;
+  }
+
+  &.good {
+    color: $theme-color-status-success;
+  }
+
+  &.info {
+    color: $theme-color-status-base;
+  }
+
+  &.white {
+    color: $theme-color-palette-white;
+  }
+}
+
+select.dropdown,
+select.multiselect,
+select.dropdown-lg,
+select.dropdown-md,
+select.dropdown-mm,
+select.dropdown-sm,
+select.dropdown-xs {
+  display: none;
+  font-size: 50px;
+
+  // Hide when busy indicator on
+  &.busy.is-loading + .dropdown-wrapper .icon {
+    visibility: hidden;
+  }
+}
+
+.dropdown-wrapper {
+  display: inline-block;
+  margin-bottom: 20px;
+  max-width: 100%;
+  position: relative;
+
+  .icon-error,
+  .icon-success,
+  .icon-alert,
+  .icon-info,
+  .icon-pending {
+    right: 20px;
+    top: -5px;
+  }
+
+  .badge {
+    display: inline-block;
+    position: absolute;
+    right: 28px;
+    top: 6px;
+  }
+}
+
+div.dropdown,
+div.multiselect {
+  @include input-style();
+  @include css3(touch-callout, none);
+  @include css3(user-select, none);
+  @include transition(background-color 0.2s ease);
+
+  background-color: $input-color-initial-background;
+  border-color: $input-color-initial-border;
+  color: $dropdown-color-initial-font;
+  cursor: pointer;
+  line-height: normal;
+  overflow: hidden;
+  padding: 8px 30px 8px 10px;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  &.text-align-reverse {
+    text-align: right;
+  }
+
+  &.text-align-center {
+    text-align: center;
+  }
+
+  > span {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+
+    &[data-selected-text='']::before {
+      color: $input-placeholder-color;
+      content: attr(data-placeholder-text);
+      -webkit-text-fill-color: $input-placeholder-color;
+    }
+  }
+
+  > .listoption-icon {
+    @include list-icon-colors();
+
+    color: $popupmenu-icon-color;
+    height: 16px;
+    left: 14px;
+    position: absolute;
+    top: 9px;
+    vertical-align: middle;
+    width: 16px;
+
+    + span {
+      padding-left: 29px;
+    }
+
+    &.swatch {
+      border-radius: 2px;
+      left: 15px;
+    }
+  }
+
+  &:empty {
+    min-height: 34px;
+  }
+
+  &[disabled],
+  &.is-disabled {
+    background-color: $input-color-disabled-background;
+    border-color: $input-color-disabled-border;
+    color: $input-disabled-color;
+    cursor: default;
+    pointer-events: none;
+    -webkit-text-fill-color: $input-disabled-color;
+
+    .icon,
+    + .icon {
+      background-color: $input-color-disabled-background;
+      color: $trigger-disabled-color;
+      cursor: default;
+    }
+  }
+
+  &:active:not([disabled]):not(.is-disabled):not(.is-readonly) {
+    border-color: $trigger-active-color;
+
+    + .icon {
+      color: $trigger-active-color;
+    }
+  }
+
+  &:hover:not([disabled]):not(.is-disabled):not(.is-readonly):not(.is-open):not(.error) {
+    border-color: $trigger-hover-color;
+
+    + .icon {
+      color: $trigger-hover-color;
+    }
+  }
+
+  // Icon States
+  + .icon {
+    background-color: inherit;
+    border-radius: 1px;
+    color: $trigger-icon-fill-color;
+    cursor: pointer;
+    display: inline-block;
+    height: 32px;
+    pointer-events: none;
+    position: absolute;
+    right: 6px;
+    top: 2px;
+    width: 18px;
+  }
+
+  &.is-readonly {
+    background-color: $input-color-readonly-background;
+    border-color: $input-color-readonly-border;
+    color: $input-readonly-color;
+    cursor: text;
+    -webkit-text-fill-color: $input-readonly-color;
+
+    &[tabindex='-1']:focus {
+      border-color: $input-color-readonly-border !important;
+      box-shadow: none;
+    }
+  }
+
+  &:focus {
+    border-color: $input-color-focus-border !important;
+  }
+
+}
+
+// The List
+.dropdown-list {
+  @include unselectable();
+
+  background-color: transparent;
+  border: 1px solid $dropdown-menu-border-color;
+  border-radius: 3px;
+  box-shadow: $dropdown-box-shadow-top, $focus-box-shadow;
+  font-size: $theme-size-font-base;
+  max-height: 340px;
+  min-height: 30px;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  position: absolute;
+  white-space: nowrap;
+  width: auto;
+  z-index: 4501;
+
+  &.text-align-reverse {
+    text-align: right;
+  }
+
+  &.text-align-center {
+    text-align: center;
+  }
+
+  &:active {
+    outline: 0;
+  }
+
+  // Enables certain mobile-specific settings
+  &.mobile {
+    background-color: $body-color-primary-background;
+  }
+
+  &.is-ontop {
+    box-shadow: $dropdown-box-shadow-top;
+  }
+
+  ul {
+    background-color: $popupmenu-bg-color;
+    color: $popupmenu-color;
+    font-size: $theme-size-font-base;
+    height: auto;
+    line-height: 32px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 5px 0;
+    position: relative;
+    text-indent: 10px;
+  }
+
+  li {
+    cursor: pointer;
+    position: relative;
+
+    .dropdown-highlight {
+      color: $dropdown-color-initial-icon;
+      font-style: normal;
+      text-decoration: none;
+    }
+
+    &.is-swatch {
+      padding-left: 30px;
+    }
+
+    span.swatch {
+      border-radius: 2px;
+      display: block;
+      height: 16px;
+      margin-left: -16px;
+      margin-top: 7px;
+      position: absolute;
+      width: 16px;
+    }
+
+    .clear-selection {
+      color: $label-disabled-color;
+    }
+
+    &:hover,
+    &.hover {
+      background-color: $popupmenu-hover-color;
+      outline: none;
+    }
+
+    &.is-disabled {
+      cursor: default;
+      pointer-events: none;
+
+      > a {
+        color: $disabled-color;
+      }
+
+      &:hover,
+      &.hover {
+        background-color: transparent;
+      }
+    }
+
+    &:focus {
+      background-color: $popupmenu-hover-color;
+      outline: none;
+    }
+
+    &.is-focused:not(.is-disabled) {
+      background-color: $dropdown-color-selected-background;
+
+      a {
+        color: $dropdown-color-selected-font;
+      }
+
+      &.is-selected {
+        background-color: $dropdown-color-selected-background;
+
+        a {
+          color: $inverse-color;
+        }
+      }
+
+      .listoption-icon {
+        color: $inverse-color;
+      }
+
+      .badge {
+        background-color: $inverse-color;
+        border-color: $inverse-color;
+        color: $dropdown-color-selected-background !important;
+      }
+    }
+
+    .listoption-icon {
+      @include list-icon-colors();
+
+      color: $popupmenu-icon-color;
+      height: 16px;
+      left: 0;
+      margin-right: 7px;
+      pointer-events: none;
+      top: 3px;
+    }
+
+    // Badge Support
+    .badge {
+      border: 1px solid transparent;
+      display: inline-block;
+      float: right;
+      margin-left: -40px;
+      margin-top: 4px;
+      position: relative;
+      right: 8px;
+      text-indent: 0;
+    }
+  }
+
+  > .listoption-icon {
+    @include list-icon-colors();
+
+    color: $popupmenu-icon-color;
+    height: 16px;
+    left: 10px;
+    position: absolute;
+    top: 8px;
+
+    &.swatch {
+      border-radius: 2px;
+      left: 14px;
+      width: 16px;
+    }
+
+    + span {
+      padding-left: 39px;
+    }
+  }
+
+  &.has-icons {
+    .dropdown-search {
+      padding-left: 39px;
+    }
+  }
+
+  a {
+    @include css3(touch-callout, none);
+    @include css3(user-select, none);
+
+    color: $popupmenu-color;
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: inherit;
+
+    &:empty {
+      height: 32px;
+    }
+  }
+
+  // Added to the dropdown list when doing a search
+  &.search-mode {
+    li {
+      .dropdown-highlight {
+        color: $font-color-extrahighcontrast;
+        font-weight: $theme-number-font-weight-bold;
+        letter-spacing: -0.2;
+      }
+
+      &.is-disabled {
+        a {
+          color: $disabled-color;
+        }
+      }
+
+      &.is-focused {
+        .dropdown-highlight {
+          color: $inverse-color;
+        }
+      }
+    }
+
+  }
+
+  &.multiple {
+    ul {
+      text-indent: 33px;
+    }
+
+    li::before {
+      @include checkbox-unchecked-before-style;
+
+      left: 10px;
+      margin-left: 0;
+      margin-top: 7px;
+    }
+
+    li.is-disabled::before {
+      @include checkbox-unchecked-disabled-before-style;
+    }
+
+    li.is-focused:not(.is-disabled) {
+      background-color: $popupmenu-hover-color;
+
+      > a {
+        color: $font-color-highcontrast;
+      }
+    }
+
+    li.is-selected::before {
+      @include checkbox-checked-before-style;
+    }
+
+    li.is-selected::after {
+      @include checkbox-checked-after-style;
+
+      left: 15px;
+      margin-top: 0;
+      top: 8px;
+    }
+
+    li.is-disabled.is-selected::before {
+      @include checkbox-checked-disabled-before-style;
+    }
+
+    li.is-disabled.is-selected::after {
+      @include checkbox-checked-disabled-after-style;
+    }
+
+    li.group-label,
+    li.separator {
+      &::before,
+      &::after {
+        content: none;
+      }
+    }
+
+    a {
+      color: $font-color-highcontrast;
+    }
+
+    &.search-mode {
+      a {
+        .dropdown-highlight {
+          color: $font-color-highcontrast;
+        }
+      }
+    }
+  }
+
+  .group-label {
+    @include css3(user-select, none);
+
+    color: $label-color;
+    font-size: $theme-size-font-sm;
+    font-weight: $theme-number-font-weight-bold;
+    line-height: 20px;
+    min-height: 20px;
+    padding: 6px 0 4px;
+    text-indent: 10px;
+
+    &:not(:first-child) {
+      border-top: 1px solid $dropdown-menu-separator-border-color;
+      margin-top: 10px;
+    }
+
+    &:hover {
+      background-color: transparent;
+      cursor: default;
+    }
+  }
+
+  > .trigger {
+    cursor: pointer;
+    height: 32px;
+    margin-left: -26px;
+    position: absolute;
+    width: 26px;
+    z-index: 1;
+
+    .icon {
+      background-color: rgba($theme-color-palette-white, 0);
+      color: $trigger-icon-fill-color;
+      left: 1px;
+      top: 8px;
+
+      &.search {
+        height: 18px;
+        margin-top: 0;
+        width: 16px;
+      }
+
+      &.close {
+        right: -6px;
+        top: 0;
+        width: 14px;
+      }
+    }
+  }
+
+  &.dropdown-short {
+    > .trigger {
+      margin-left: -18px;
+    }
+  }
+}
+
+.dropdown-search {
+  background-color: $dropdown-search-bg-color;
+  border: 0;
+  border-bottom: 1px solid $dropdown-menu-separator-border-color;
+  border-radius: 0;
+  color: $dropdown-color-initial-font;
+  padding: 8px 30px 8px 10px;
+  text-overflow: ellipsis;
+  width: 100%;
+
+  &.text-align-reverse {
+    text-align: right;
+  }
+
+  &.text-align-center {
+    text-align: center;
+  }
+
+  &::-ms-clear {
+    display: none;
+  }
+
+  &[readonly] {
+    background-color: $dropdown-search-bg-color !important;
+  }
+
+  &:focus {
+    border: 0;
+    border-bottom: 1px solid $dropdown-menu-separator-color;
+    box-shadow: none;
+    outline: none;
+  }
+}
+
+.modal-engaged .dropdown-search {
+  background-color: $modal-bg-color;
+}
+
+.is-ontop {
+  &.dropdown-list ul {
+    top: -1px;
+  }
+
+  .dropdown-search {
+    border-bottom: 0;
+  }
+}
+
+.no-icon-padding {
+  padding-left: 12px !important;
+}
+
+.dropdown.error {
+  border-color: $error-color;
+
+  &::-webkit-input-placeholder {
+    color: $error-color;
+  }
+}
+
+input.dropdown.error:focus {
+  border-color: $error-color;
+  box-shadow: $error-focus-box-shadow;
+  color: $input-color;
+}
+
+.field,
+.field-short {
+  .dropdown-wrapper {
+    margin-bottom: 0;
+  }
+
+  .dropdown {
+    line-height: normal;
+  }
+}
+
+// Zeroes out a standard form-field rule
+.field {
+  div.dropdown,
+  div.multiselect {
+    .icon + span {
+      vertical-align: top;
+    }
+  }
+}
+
+//Shorter Field Size
+.field-short {
+  div.dropdown {
+    font-size: $theme-size-font-sm;
+    margin-bottom: 0;
+    padding: 5px 21px 5px 5px;
+
+    > .listoption-icon {
+      height: 14px;
+      left: 6px;
+      top: 6px;
+
+      + span {
+        padding-left: 20px;
+      }
+    }
+  }
+
+  div.dropdown,
+  div.multiselect {
+    + .icon {
+      height: 30px;
+      right: 4px;
+      top: -2px;
+    }
+
+    ~ .icon-error {
+      margin-left: -38px;
+      position: absolute;
+      right: auto;
+      top: 0;
+    }
+
+  }
+
+}
+
+// Different Width Dropdowns
+.dropdown-lg,
+.field-short .dropdown-lg {
+  width: 400px;
+}
+
+div.dropdown-lg {
+  width: 400px;
+}
+
+.dropdown-md,
+div.dropdown-md,
+.field-short .dropdown-md {
+  width: 300px;
+}
+
+.dropdown-mm,
+div.dropdown-mm,
+.field-short .dropdown-mm {
+  width: 225px;
+}
+
+.dropdown-sm,
+div.dropdown-sm,
+.field-short .dropdown-sm {
+  width: 150px;
+}
+
+.dropdown-xs,
+div.dropdown-xs,
+.field-short .dropdown-xs {
+  width: 75px;
+}
+
+// Shorter Drop Down Lists
+.dropdown-list.dropdown-short {
+  .dropdown-search {
+    font-size: $theme-size-font-sm;
+    padding: 5px 16px 5px 5px;
+  }
+
+  &.has-icons {
+    .dropdown-search {
+      padding-left: 25px;
+    }
+  }
+
+  ul {
+    font-size: $theme-size-font-sm;
+    text-indent: 5px;
+  }
+
+  li {
+    > a {
+      line-height: 24px;
+    }
+
+    .listoption-icon {
+      height: 14px;
+      width: 14px;
+    }
+  }
+
+  &.is-ontop {
+    margin-top: 8px;
+  }
+
+  > .icon {
+    height: 24px;
+    margin-left: -21px;
+    margin-top: 0;
+    width: 16px;
+  }
+
+  > .listoption-icon {
+    height: 14px;
+    left: 26px;
+    top: 5px;
+  }
+
+  > .trigger {
+    .icon {
+      left: auto;
+      right: 5px;
+      top: 3px;
+
+      &.search {
+        height: 12px;
+        right: -4px;
+        top: -2px;
+        width: 12px;
+      }
+    }
+  }
+
+  // Multiple
+  &.multiple {
+    li {
+      &::before {
+        margin-left: 5px;
+      }
+
+      &::after {
+        margin-top: 0;
+      }
+
+      a {
+        display: inline;
+        padding-left: 26px;
+      }
+    }
+  }
+}
+
+.ie {
+  .is-ontop {
+    margin-top: 1px;
+  }
+
+  .dropdown-list {
+    &:not(.dropdown-short) {
+      > .trigger {
+        margin-left: -30px;
+      }
+    }
+  }
+
+  &.ie11 {
+    .is-ontop {
+      margin-top: 2px;
+
+      .dropdown-search {
+        border-top: 1px solid $dropdown-menu-separator-border-color;
+      }
+    }
+  }
+
+  &.ie-edge18 {
+    .dropdown-list {
+      &.multiple li {
+        &::before {
+          margin-top: 7px;
+        }
+      }
+    }
+  }
+}
+
+// Firefox needs a nudge on the list items
+.is-firefox {
+  .is-ontop {
+    &.dropdown-list ul {
+      margin-top: 1px;
+      top: 0;
+    }
+
+    .dropdown-search {
+      border-top: 1px solid $dropdown-menu-separator-border-color;
+    }
+  }
+
+  div.dropdown,
+  div.multiselect {
+    padding: 9px 30px 8px 10px;
+
+    > span {
+      padding-top: 1px;
+    }
+  }
+
+  // Reset the padding in the rule above for Short Fields
+  .field-short {
+    div.dropdown,
+    div.multiselect {
+      padding: 5px 21px 5px 5px;
+    }
+  }
+
+  .dropdown-search {
+    line-height: normal;
+    padding: 10px 30px 8px 10px;
+  }
+
+  .dropdown-list {
+    &.multiple li {
+      &.is-selected::after {
+        left: 15px;
+        top: 8px;
+      }
+    }
+
+    &.dropdown-short {
+      .dropdown-search {
+        font-size: $theme-size-font-sm;
+        padding: 6px 21px 5px 5px;
+      }
+
+      &.has-icons {
+        .dropdown-search {
+          padding: 6px 21px 5px 25px;
+        }
+      }
+    }
+  }
+}
+
+// iOS needs a nudge too
+.ios {
+  .dropdown-list.multiple li {
+    &::before {
+      top: 0;
+    }
+
+    &.is-selected::after {
+      top: 8px;
+    }
+  }
+
+  div.dropdown,
+  div.multiselect {
+    > .listoption-icon {
+      top: 11px;
+    }
+
+    + .icon {
+      top: 4px;
+    }
+  }
+
+  .dropdown-list {
+    > .trigger {
+      .icon {
+        &.close {
+          top: 10px;
+        }
+      }
+    }
+  }
+}
+
+// for firefox on android
+.is-firefox {
+  &.android {
+    div.dropdown,
+    div.multiselect {
+      > .listoption-icon {
+        top: 12px;
+      }
+
+      + .icon {
+        top: 4px;
+      }
+    }
+  }
+}
+
+// for android
+.android {
+  .dropdown-list {
+    > .trigger {
+      .icon {
+        &.close {
+          top: 10px;
+        }
+      }
+    }
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .dropdown,
+  .multiselect,
+  input.dropdown,
+  input.multiselect {
+    padding: 9px 10px 8px 32px;
+    text-align: right;
+
+    &.text-align-reverse {
+      text-align: left;
+    }
+
+    &.text-align-center {
+      text-align: center;
+    }
+
+    // Icon States
+    + .icon {
+      left: 5px;
+      margin-left: inherit;
+      margin-right: -33px;
+      right: auto !important;
+    }
+  }
+
+  div.dropdown {
+    > .listoption-icon {
+      left: auto;
+      right: 14px;
+
+      + span {
+        padding-left: inherit;
+        padding-right: 29px;
+      }
+    }
+  }
+
+  // The List
+  .dropdown-list {
+    &.multiple {
+      li::before {
+        margin-left: inherit;
+        margin-right: -23px;
+      }
+
+      li.is-selected::after {
+        left: inherit;
+        right: 15px;
+      }
+
+      li.is-disabled.is-selected::after {
+        left: inherit;
+        right: 21px;
+      }
+    }
+
+    > .icon {
+      margin-left: inherit;
+      margin-right: -26px;
+
+      &.search {
+        margin-left: inherit;
+        margin-right: -26px;
+      }
+    }
+
+    > .trigger {
+      .icon {
+        margin-right: -23px;
+      }
+    }
+
+    li {
+      .listoption-icon {
+        left: auto;
+        margin-left: 7px;
+        margin-right: inherit;
+        right: 0;
+      }
+
+      &.is-swatch {
+        padding-right: 30px;
+
+        span.swatch {
+          margin-left: auto;
+          margin-right: -17px;
+        }
+      }
+    }
+
+    > .listoption-icon {
+      left: auto;
+      right: 39px;
+
+      + span {
+        padding-left: inherit;
+        padding-right: 39px;
+      }
+    }
+
+    &.has-icons {
+      .dropdown-search {
+        padding-left: inherit;
+        padding-right: 39px;
+      }
+    }
+  }
+
+  .dropdown-search {
+    padding: 9px 10px 8px 32px;
+
+    &.text-align-reverse {
+      text-align: left;
+    }
+
+    &.text-align-center {
+      text-align: center;
+    }
+  }
+
+  .dropdown-list.dropdown-short {
+    .dropdown-search {
+      padding: 5px 5px 5px 32px;
+    }
+
+    &.has-icons {
+      .dropdown-search {
+        padding-left: inherit;
+        padding-right: 25px;
+      }
+    }
+
+    > .listoption-icon {
+      left: auto;
+      right: 31px;
+    }
+
+    &.multiple {
+      li {
+        a {
+          padding-left: 0;
+          padding-right: 27px;
+        }
+      }
+    }
+
+    > .trigger .icon {
+      right: 0;
+    }
+  }
+
+  .dropdown-wrapper {
+    .icon-error,
+    .icon-success,
+    .icon-alert,
+    .icon-info,
+    .icon-pending {
+      left: 26px;
+      right: auto;
+    }
+  }
+
+  .field-short {
+    .dropdown,
+    .multiselect,
+    input.dropdown,
+    input.multiselect {
+      padding: 5px 5px 5px 18px;
+
+      ~ .icon-error {
+        margin-left: inherit;
+        margin-right: -38px !important;
+      }
+    }
+
+    div.dropdown {
+      > .listoption-icon {
+        left: auto;
+        right: 6px;
+
+        + span {
+          padding-left: inherit;
+          padding-right: 20px;
+        }
+      }
+    }
+  }
+
+  .dropdown-list:not(.dropdown-short) {
+    > .listoption-icon {
+      left: auto;
+      right: 36px;
+
+      &.swatch {
+        right: 39px;
+      }
+    }
+  }
+
+  // Firefox needs different padding in the input fields (differences in font rendering)
+  &.is-firefox {
+    .dropdown,
+    .multiselect,
+    input.dropdown,
+    input.multiselect {
+      padding: 7px 10px 7px 32px;
+    }
+
+    .dropdown-search {
+      padding: 8px 10px 8px 32px;
+    }
+
+    // Reset the padding in the rule above for Short Fields
+    .field-short {
+      div.dropdown,
+      div.multiselect {
+        padding: 5px 5px 5px 21px;
+
+        + .icon {
+          top: 0;
+        }
+      }
+    }
+
+    .dropdown-list.dropdown-short {
+      .dropdown-search {
+        padding: 6px 5px 5px 21px;
+      }
+
+      > .trigger .icon {
+        right: -1px;
+        top: 5px;
+      }
+
+      &.has-icons {
+        .dropdown-search {
+          padding: 6px 25px 5px 21px;
+        }
+      }
+    }
+  }
+
+  // TODO: Figure out why our rules for multiselect checkboxes no longer
+  // work correctly across all browsers.
+  &:not(.is-firefox):not(.ie11) {
+    .dropdown-list.multiple {
+      li::before {
+        margin-right: 10px;
+      }
+
+      &.dropdown-short {
+        li::before {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  &.is-firefox,
+  &.ie11 {
+    .dropdown-list.dropdown-short.multiple {
+      li::before {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  &.is-safari {
+    .dropdown-list.dropdown-short.multiple {
+      li::after {
+        right: 10px;
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+// Empty Message
+//================================================== //
+
+.empty-message {
+  min-height: 60px;
+  padding-bottom: 5px;
+
+  .empty-title {
+    padding: 0 0 15px;
+
+    &:not(.empty-icon) {
+      padding-bottom: 20px;
+    }
+  }
+
+  .empty-icon {
+    padding: 25px 0;
+  }
+}
+
+.datagrid {
+  &.has-filterable-columns .empty-message {
+    top: calc(50% + 32px);
+  }
+
+  .empty-message {
+    position: absolute;
+    top: calc(50% + 20px);
+    transform: translate(0, -50%);
+    width: inherit;
+    z-index: -1;
+  }
+}

@@ -1,0 +1,506 @@
+// File Upload
+//================================================== //
+.field-fileupload {
+  input[type='text'] {
+    padding-right: 56px;
+    text-overflow: ellipsis;
+  }
+
+  .trigger,
+  .trigger-close {
+    cursor: pointer;
+    display: inline-block;
+    margin-left: -36px;
+    outline: 0;
+    text-align: center;
+    width: 36px;
+
+    &.trigger-close {
+      display: none;
+      margin-left: -50px;
+    }
+
+    .icon {
+      color: $trigger-icon-fill-color;
+      height: 14px;
+      top: 2px;
+      vertical-align: baseline;
+      width: 14px;
+    }
+
+    &:hover {
+      .icon {
+        color: $trigger-hover-color;
+      }
+    }
+
+    &:active .icon {
+      color: $trigger-active-color;
+    }
+  }
+
+  label {
+    &.fileupload {
+      display: inline-block;
+    }
+  }
+
+  //Allows fileupload to be readonly without textarea readonly styling
+  input {
+    &.fileupload-background-transparent {
+      background-color: transparent;
+      color: $input-color;
+      padding-right: 50px;
+      -webkit-text-fill-color: $input-color;
+      text-overflow: ellipsis;
+
+      &.readonly {
+        background-color: $input-color-readonly-background;
+        color: $input-readonly-color;
+        -webkit-text-fill-color: $input-readonly-color;
+      }
+
+      &[disabled] {
+        background-color: $input-color-disabled-background;
+        color: $input-disabled-color;
+        -webkit-text-fill-color: $input-disabled-color;
+      }
+    }
+  }
+
+  // Make this flow offscreen
+  label.fileupload input[type='file'],
+  input.fileupload[type='file'] {
+    left: -10000px;
+    position: fixed;
+
+    &:disabled + span:not(.audible),
+    &:disabled + label.fileupload {
+      svg {
+        color: $input-color-disabled-border;
+      }
+
+      &:hover {
+        svg {
+          color: $input-color-disabled-border;
+        }
+      }
+    }
+
+    &:disabled + .trigger {
+      cursor: default;
+    }
+  }
+}
+
+// File Upload Advanced
+//================================================== //
+.fileupload-wrapper {
+  min-width: 335px;
+
+  @include respond-to(phone) {
+    min-width: inherit;
+
+    &.standalone {
+      border: 0;
+      padding: 0;
+    }
+
+    .drop-area {
+      text-align: center;
+
+      .icon {
+        display: block;
+        float: none !important;
+        margin: 0 auto !important;
+      }
+    }
+  }
+
+  &.standalone {
+    padding: 25px 20px;
+  }
+
+  &.is-disabled {
+    .container {
+      border: 1px dashed $fileupload-disabled-border-color;
+
+      &.drop-area {
+        background-color: $fileupload-disabled-bg-color;
+        color: $fileupload-disabled-color;
+
+        .hyperlink,
+        .fileupload-adv-browse-lbl {
+          color: $fileupload-disabled-color;
+          cursor: default;
+        }
+
+        .icon {
+          color: $fileupload-disabled-icon-color;
+          cursor: default;
+        }
+
+        &:hover {
+          background-color: $fileupload-disabled-bg-color;
+          border: 1px dashed $fileupload-disabled-border-color;
+          color: $fileupload-disabled-color;
+
+          .icon {
+            color: $fileupload-disabled-icon-color;
+            cursor: default;
+          }
+        }
+      }
+    }
+
+  }
+
+  .container {
+    border: 1px dashed $fileupload-border-color;
+    border-radius: 2px;
+    margin-bottom: 10px;
+
+    .btn-icon {
+      height: 26px;
+      margin-right: 4px;
+      min-height: 26px;
+      min-width: 26px;
+      top: -2px;
+      width: 26px;
+
+      .icon {
+        height: 13px;
+        width: 13px;
+      }
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &::before,
+    &::after {
+      content: ' ';
+      display: table;
+    }
+
+    &::after {
+      clear: both;
+    }
+
+    &.drop-area {
+      background-color: $fileupload-droparea-bg-color;
+      color: $fileupload-droparea-color;
+      padding: 25px 30px;
+      text-align: center;
+
+      .fileupload-adv-browse-lbl {
+        color: $fileupload-primary-color;
+
+        span {
+          font-size: $theme-size-font-base;
+          margin-left: -2.5px;
+          margin-right: -2.5px;
+          padding: 5px;
+        }
+
+        input[type='file'] {
+          height: 0.1px;
+          opacity: 0;
+          overflow: hidden;
+          width: 0.1px;
+          z-index: -1;
+        }
+      }
+
+      .hyperlink {
+        border: 1px solid transparent;
+
+        &:active::after,
+        &:focus::after {
+          border-color: transparent;
+          box-shadow: none;
+        }
+      }
+
+      &.is-focus {
+        .hyperlink {
+          border-color: $fileupload-droparea-dd-hover-border-color;
+          box-shadow: $focus-box-shadow;
+        }
+      }
+
+      .icon {
+        color: $fileupload-droparea-color;
+      }
+
+      p {
+        color: $fileupload-primary-color;
+        padding-top: 5px;
+      }
+
+      &:hover {
+        background-color: $fileupload-droparea-hover-bg-color;
+        border-color: $fileupload-droparea-hover-border-color;
+        color: $fileupload-droparea-hover-color;
+
+        .icon {
+          color: $fileupload-droparea-hover-icon-color;
+        }
+      }
+
+      &.hover {
+        background-color: $fileupload-droparea-dd-hover-bg-color;
+        border-color: $fileupload-droparea-dd-hover-border-color;
+        color: $fileupload-droparea-dd-hover-color;
+
+        .icon {
+          color: $fileupload-droparea-dd-hover-color;
+        }
+      }
+    }
+
+    .file-row,
+    .progress-row {
+      .status-icon,
+      .description,
+      .size,
+      .action,
+      .progress,
+      .progress-bar {
+        display: inline-block;
+      }
+
+      .description,
+      .size {
+        color: $fileupload-secondary-color;
+        font-size: $theme-size-font-base;
+        height: 34px;
+        line-height: 34px;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .status-icon {
+        background-color: $fileupload-cancel-bg-color;
+        border-radius: 50%;
+        float: left;
+        height: 16px;
+        margin: 8px 10px 0;
+        width: 16px;
+
+        .btn-icon {
+          height: 18px;
+          left: -1px;
+          margin: 0;
+          min-height: 18px;
+          min-width: 18px;
+          top: -1px;
+          width: 18px;
+        }
+
+        .icon {
+          color: $fileupload-status-color;
+          height: 10px;
+          left: 3px;
+          top: 3px;
+          width: 10px;
+        }
+
+        &:hover {
+          background-color: $fileupload-cancel-hover-bg-color;
+
+          .icon {
+            color: $fileupload-status-hover-color;
+          }
+        }
+      }
+
+      .description {
+        color: $fileupload-primary-color;
+        max-width: 55%;
+      }
+
+      .size {
+        color: $fileupload-secondary-color;
+        line-height: 36px;
+        margin-right: 42px;
+        max-width: 75px;
+      }
+
+      .action {
+        margin: 0 5px 0 10px;
+        width: 16px;
+      }
+
+      &.file-row .l-pull-right .action {
+        float: right;
+        height: 16px;
+        margin-top: 7px;
+
+        .icon {
+          color: $fileupload-secondary-color;
+        }
+
+        &:hover {
+          .icon {
+            color: $fileupload-hover-color;
+          }
+        }
+      }
+
+      .progress {
+        margin: 0 0 7px 33px;
+        width: calc(100% - 65px);
+      }
+    }
+
+    &.completed {
+      border-color: $fileupload-completed-border-color;
+
+      .status-icon {
+        background-color: $fileupload-completed-color;
+
+        &:hover {
+          background-color: $fileupload-completed-color;
+
+          .icon {
+            color: $fileupload-status-color;
+          }
+        }
+      }
+
+      .description {
+        color: $fileupload-completed-color;
+      }
+
+      .size {
+        margin-right: inherit;
+      }
+    }
+
+    &.error {
+      border-color: $fileupload-error-border-color;
+      color: $fileupload-error-color;
+
+      .status-icon {
+        background-color: $fileupload-error-color;
+
+        &:hover {
+          background-color: $fileupload-error-hover-color;
+
+          .icon {
+            color: $fileupload-status-color;
+          }
+        }
+      }
+
+      // Area for each file error
+      div.msg {
+        clear: both;
+        font-size: $theme-size-font-base;
+        padding: 0 10px;
+      }
+
+      // Area for general error
+      span.msg {
+        display: inline-block;
+        font-size: $theme-size-font-base;
+        padding: 10px 10px 10px 0;
+        width: calc(100% - 36px);
+      }
+    }
+  }
+
+  em {
+    font-style: normal;
+  }
+}
+
+// OVERWRITES
+//================================================== //
+
+// IE Hack
+.ie9 .fileupload .icon,
+.ie10 .fileupload .icon {
+  background-color: rgba($theme-color-palette-white, 0);
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .field-fileupload {
+    input[type='text'] {
+      padding-left: 56px;
+      padding-right: 8px;
+    }
+
+    .trigger {
+      margin-right: -33px;
+    }
+
+    .trigger-close {
+      margin-left: inherit;
+      margin-right: -13px;
+    }
+
+    // Make this flow offscreen
+    label.fileupload input[type='file'],
+    input.fileupload[type='file'] {
+      left: auto;
+      right: -10000px;
+    }
+  }
+
+  .fileupload-wrapper {
+    .container {
+      &.drop-area {
+        .fileupload-adv-browse-lbl {
+          text-align: center;
+        }
+      }
+
+      &.completed {
+        .file-row,
+        .progress-row {
+          .size {
+            margin-left: 1px;
+            margin-right: inherit;
+          }
+        }
+      }
+
+      .file-row,
+      .progress-row {
+        .progress {
+          margin: 0 33px 7px 0;
+        }
+
+        .size {
+          margin-left: 42px;
+          margin-right: inherit;
+        }
+
+        .status-icon {
+          float: right;
+
+          .btn-icon {
+            left: inherit;
+            right: -1px;
+          }
+
+          .icon {
+            left: inherit;
+            right: 3px;
+          }
+        }
+
+        &.file-row .l-pull-right .action {
+          float: left;
+        }
+      }
+    }
+  }
+
+}

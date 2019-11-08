@@ -28,30 +28,32 @@ const resource = getResource('calendar');
 
 const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated], {
   widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" class="calendar panel">',
+    '<div id="{%= $.id %}" class="calendar">',
+    '<div class="calendar-monthview monthview is-fullsize is-selectable">',
     '{%! $.calendarHeaderTemplate %}',
     '{%! $.calendarTableTemplate %}',
     '{%! $.calendarFooterTemplate %}',
     '</div>',
+    '</div>',
   ]),
   calendarHeaderTemplate: new Simplate([
     '<div class="calendar__header">',
-    `<button type="button" class="btn-icon hide-focus" data-action="decrementMonth">
+    `<button type="button" class="btn-icon prev hide-focus" data-action="decrementMonth">
       <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-previous-page"></use>
       </svg>
     </button>`,
     '<div class="month" data-dojo-attach-point="monthNode" data-action="toggleMonthModal"></div>',
     '<div class="year" data-dojo-attach-point="yearNode" data-action="toggleYearModal"></div>',
-    `<button type="button" class="btn-icon hide-focus" data-action="incrementMonth">
-      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-next-page"></use>
-      </svg>
+    `<button type="button" class="btn-icon next hide-focus" data-action="incrementMonth">
+    <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-next-page"></use>
+    </svg>
     </button>`,
     '</div>',
   ]),
   calendarTableTemplate: new Simplate([
-    '<table class="calendar-table">',
+    '<table class="monthview-table" aria-label="Calendar" role="application">',
     '<thead>',
     '{%! $.calendarWeekDaysTemplate %}',
     '</thead>',
@@ -60,13 +62,17 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   ]),
   calendarFooterTemplate: new Simplate([
     '<div class="calendar-footer" data-dojo-attach-point="footerNode">',
-    '<div class="button button--secondary clear" data-action="clearCalendar" data-dojo-attach-point="clearButton">{%= $.clearText %}</div>',
-    '<div class="button button--secondary toToday" data-action="goToToday" data-dojo-attach-point="todayButton">{%= $.todayText %}</div>',
+    '<button class="btn-secondary clear" data-action="clearCalendar" data-dojo-attach-point="clearButton"><span>{%= $.clearText %}</span></button>',
+    '<button class="btn-secondary toToday" type="button" data-action="goToToday" data-dojo-attach-point="todayButton"><span>{%= $.todayText %}</span></button>',
     '</div>',
   ]),
   calendarTableDayTemplate: new Simplate([
     '<td class="day {%= $.month %} {%= $.weekend %} {%= $.selected %} {%= $.isToday %}" data-action="changeDay" data-date="{%= $.date %}">',
-    '<span>{%= $.day %}</span>',
+    '<span class="day-container">',
+    '<span aria-hidden="true" class="day-text">',
+    '{%= $.day %}',
+    '</span>',
+    '</span>',
     '</td>',
   ]),
   calendarTableDayActiveTemplate: new Simplate([
@@ -74,13 +80,13 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
     '</div>',
   ]),
   calendarTableWeekStartTemplate: new Simplate([
-    '<tr class="calendar-week">',
+    '<tr>',
   ]),
   calendarTableWeekEndTemplate: new Simplate([
     '</tr>',
   ]),
   calendarWeekDaysTemplate: new Simplate([
-    '<tr class="calendar-weekdays">',
+    '<tr>',
     '<th>{%= $.weekDaysShortText[0] %}</th>',
     '<th>{%= $.weekDaysShortText[1] %}</th>',
     '<th>{%= $.weekDaysShortText[2] %}</th>',

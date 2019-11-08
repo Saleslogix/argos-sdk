@@ -1,0 +1,54 @@
+.card,
+.widget {
+  border-radius: 6px;
+  box-shadow: 0 0 8px $cardlist-box-shadow-color;
+}
+
+.card-header,
+.widget-header {
+  border-bottom: none;
+  height: 34px;
+  line-height: normal;
+
+  .card-title,
+  .widget-title {
+    font-size: $theme-size-font-md;
+    font-weight: $theme-number-font-weight-base;
+    line-height: 2.8rem;
+  }
+}
+
+.card-content,
+.widget-content {
+  .card-group-action,
+  .widget-group-action {
+    border-top: 1px solid $listview-border-color;
+  }
+}
+
+.card-header,
+.widget-header {
+  margin: 8px 2px 8px 20px;
+  padding: 0;
+
+  &:not(.has-toolbar) {
+    > .btn-actions {
+      right: 13px;
+      top: -1px;
+    }
+  }
+}
+
+html[dir='rtl'] {
+  .card-header,
+  .widget-header {
+    margin: 8px 20px 8px 2px;
+
+    &:not(.has-toolbar) {
+      > .btn-actions {
+        left: 13px;
+        right: auto;
+      }
+    }
+  }
+}

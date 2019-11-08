@@ -1,0 +1,395 @@
+// Completion Chart
+//==================================================//
+
+.completion-chart {
+  color: $label-color;
+  margin: 10px 0;
+}
+
+.chart-completion-target,
+.chart-completion {
+  background-color: $chart-progressbar-bg-color;
+  height: 10px;
+  width: 100%;
+
+  &.chart-completion {
+    margin-bottom: 25px;
+    margin-top: 5px;
+
+    .completed {
+      background-color: $theme-color-palette-turquoise-60;
+
+      &.error-color,
+      &.error {
+        background-color: $error-color;
+      }
+
+      &::after {
+        width: 0;
+      }
+    }
+  }
+
+  span:not(.audible) {
+    font-size: $theme-size-font-sm;
+    position: absolute;
+    right: 2px;
+    text-align: right;
+    top: 34px;
+
+    &.completed-label,
+    &.completed-label span {
+      position: static;
+      text-align: left;
+      width: 100%;
+    }
+  }
+
+  .chart-percent-text {
+    cursor: default;
+    font-size: $theme-size-font-base;
+    height: 25px;
+    margin-top: -25px;
+    position: relative;
+    text-align: center;
+
+    &.error-color,
+    &.error {
+      color: $error-color;
+    }
+
+    &.alert {
+      color: $theme-color-status-warning;
+    }
+
+    &.alert-yellow {
+      color: $theme-color-status-caution;
+    }
+
+    &.alert-neutral {
+      color: $alert-neutral;
+    }
+
+    &.dark {
+      color: $chart-progressbar-dark-fill;
+    }
+
+    &.good {
+      color: $theme-color-status-success;
+    }
+
+    &.primary {
+      color: $chart-progressbar-primary-fill;
+    }
+
+    &.inverse {
+      color: $inverse-color;
+    }
+  }
+
+  .chart-targeted-text {
+    left: 50%;
+    margin-top: -38px;
+    position: relative;
+
+    &.l-center {
+      left: 0;
+      text-align: center;
+    }
+  }
+
+  .completed {
+    background-color: $chart-progressbar-completed-fill;
+    height: 10px;
+    margin-top: -10px;
+    position: relative;
+    transition: width 0.2s ease 0s;
+    width: 50%;
+
+    &.is-empty::after {
+      content: none;
+    }
+
+    span {
+      color: $chart-progressbar-completed-fill;
+
+      &.value,
+      &.text {
+        position: static;
+      }
+    }
+
+    &.error-color,
+    &.error {
+      background-color: $error-color;
+
+      span {
+        color: $error-color;
+      }
+    }
+
+    &.alert {
+      background-color: $theme-color-status-warning;
+
+      span {
+        color: $theme-color-status-warning;
+      }
+    }
+
+    &.alert-yellow {
+      background-color: $theme-color-status-caution;
+
+      span {
+        color: $theme-color-status-caution;
+      }
+    }
+
+    &.alert-neutral {
+      background-color: $alert-neutral;
+
+      span {
+        color: $alert-neutral;
+      }
+    }
+
+    &.good {
+      background-color: $theme-color-status-success;
+
+      span {
+        color: $theme-color-status-success;
+      }
+    }
+
+    &.primary {
+      background-color: $chart-progressbar-primary-fill;
+
+      span {
+        color: $chart-progressbar-primary-fill;
+      }
+    }
+
+    &.dark {
+      background-color: $chart-progressbar-dark-fill;
+
+      span {
+        color: $chart-progressbar-dark-fill;
+      }
+    }
+
+    &::after {
+      background-color: inherit;
+      content: '';
+      height: 30px;
+      left: 100%;
+      position: absolute;
+      width: 2px;
+    }
+  }
+
+  .target {
+    background-color: $chart-progressbar-target-fill;
+    height: 10px;
+    margin-top: 8px;
+    position: relative;
+    transition: width 0.5s ease 0s;
+    width: 60%;
+
+    span {
+      color: $label-color;
+      font-size: $theme-size-font-sm;
+      position: absolute;
+      text-align: right;
+      top: 34px;
+
+      &.value,
+      &.text {
+        position: static;
+      }
+    }
+
+    &::after {
+      background-color: inherit;
+      content: '';
+      height: 30px;
+      left: 100%;
+      position: absolute;
+      width: 2px;
+    }
+
+    &.overlap {
+      span {
+        color: $label-color;
+        top: 70px;
+        transition: top 0.5s ease 0s;
+      }
+
+      &::after {
+        height: 65px;
+        transition: height 0.5s ease 0s;
+      }
+    }
+  }
+
+  .target-line {
+    background-color: $theme-color-palette-amethyst-70;
+    border-radius: 1px;
+    color: transparent;
+    height: 20px;
+    left: 45px;
+    margin-top: -15px;
+    position: relative;
+    width: 5px;
+    z-index: 1;
+  }
+
+  &.overlap {
+    margin-bottom: 100px !important;
+    transition: margin 0.5s ease 0s;
+  }
+
+  .total,
+  .remaining,
+  .completed,
+  .completed-label,
+  .target-line {
+    &.bar {
+      &.error-color,
+      &.error {
+        background-color: $error-color;
+      }
+
+      &.alert {
+        background-color: $theme-color-status-warning;
+      }
+
+      &.alert-yellow {
+        background-color: $theme-color-status-caution;
+      }
+
+      &.alert-neutral {
+        background-color: $alert-neutral;
+      }
+
+      &.dark {
+        background-color: $chart-progressbar-dark-fill;
+      }
+
+      &.good {
+        background-color: $theme-color-status-success;
+      }
+
+      &.primary {
+        background-color: $chart-progressbar-primary-fill;
+      }
+    }
+
+    .text,
+    .value {
+      &.error-color,
+      &.error {
+        color: $error-color;
+      }
+
+      &.alert {
+        color: $theme-color-status-warning;
+      }
+
+      &.alert-yellow {
+        color: $theme-color-status-caution;
+      }
+
+      &.alert-neutral {
+        color: $alert-neutral;
+      }
+
+      &.dark {
+        color: $chart-progressbar-dark-fill;
+      }
+
+      &.good {
+        color: $theme-color-status-success;
+      }
+
+      &.primary {
+        color: $chart-progressbar-primary-fill;
+      }
+    }
+  }
+
+}
+
+.chart-completion-target-padding .total.bar.chart-completion-target {
+  margin-bottom: 60px;
+
+  .icon {
+    top: 1px;
+  }
+}
+
+.completion-chart {
+  .remaining,
+  .info {
+    .error-color,
+    .error {
+      color: $error-color;
+    }
+
+    .alert {
+      color: $theme-color-status-warning;
+    }
+
+    .alert-yellow {
+      color: $theme-color-status-caution;
+    }
+
+    .alert-neutral {
+      color: $alert-neutral;
+    }
+
+    .dark {
+      color: $chart-progressbar-dark-fill;
+    }
+
+    .good {
+      color: $theme-color-status-success;
+    }
+
+    .primary {
+      color: $chart-progressbar-primary-fill;
+    }
+  }
+
+  .name {
+    position: relative;
+  }
+
+  .icon {
+    display: inline-block;
+    height: 14px;
+    margin: -3px 3px -1px;
+    position: relative;
+    top: 50%;
+    vertical-align: middle;
+    width: 14px;
+  }
+
+  .hyperlink {
+    font-size: $theme-size-font-base;
+  }
+}
+
+.label + .label .chart-completion {
+  margin-top: 20px;
+}
+
+.is-firefox {
+  .chart-percent-text {
+    margin-top: -26px;
+  }
+
+  &.is-mac {
+    .chart-percent-text {
+      margin-top: -23px;
+    }
+  }
+}

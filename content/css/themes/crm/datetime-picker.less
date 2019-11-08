@@ -1,6 +1,10 @@
 @import "variables.less";
 @import "mixins.less";
- 
+
+.calendar {
+  overflow: hidden;
+}
+
 .calendar__header {
   border-bottom: 1px solid @color-lighter-slate;
 
@@ -22,7 +26,7 @@
 }
 
 
-.calendar-table {
+.monthview-table {
 
   .day {
     position: relative;
@@ -82,7 +86,6 @@
 
   .clear {
     float: left;
-    color: @color-azure;
   }
 }
 

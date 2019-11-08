@@ -1,0 +1,182 @@
+//  Panes Layout Pattern
+//================================================== //
+
+.pane {
+  padding-left: 10px;
+
+  //Alternate Color
+  &.alternate {
+    background-color: $theme-color-palette-white;
+  }
+
+  //Content Area
+  .content {
+    min-height: 300px;
+    width: 100%;
+  }
+
+  // used for panes that have a datagrid with a pager
+  .datagrid-container {
+    height: 100%;
+
+    &.paginated {
+      height: calc(100% - 58px);
+    }
+
+    &.has-filterable-columns {
+      .datagrid-body {
+        height: calc(100% - 52px);
+      }
+    }
+  }
+
+  .toolbar + .datagrid-container,
+  .has-toolbar + .datagrid-container {
+    height: calc(100% - 45px);
+
+    &.paginated {
+      height: calc(100% - 103px);
+    }
+  }
+
+  .tab-panel-container {
+    height: calc(100% - 40px);
+
+    .tab-panel {
+      height: 100%;
+    }
+  }
+
+  //Directional Panes
+  &.single {
+    display: inline-block;
+    height: calc(100% - 30px);
+    left: 0;
+    margin: 20px 20px 10px;
+    min-height: 0;
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    width: calc(100% - 40px);
+  }
+
+  &.top-left {
+    display: inline-block;
+    height: calc(50% - 30px);
+    left: 0;
+    margin: 20px 10px 10px 20px;
+    min-height: 0;
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    width: calc(50% - 30px);
+  }
+
+  &.top-right {
+    display: inline-block;
+    height: calc(50% - 30px);
+    margin: 20px 20px 10px 10px;
+    min-height: 0;
+    overflow: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: calc(50% - 30px);
+  }
+
+  &.bottom-left {
+    bottom: 0;
+    display: inline-block;
+    height: calc(50% - 30px);
+    left: 0;
+    margin: 10px 10px 20px 20px;
+    min-height: 0;
+    overflow: auto;
+    position: absolute;
+    width: calc(50% - 30px);
+  }
+
+  &.bottom-right {
+    bottom: 0;
+    display: inline-block;
+    height: calc(50% - 30px);
+    margin: 10px 20px 20px 10px;
+    min-height: 0;
+    overflow: auto;
+    position: absolute;
+    right: 0;
+    width: calc(50% - 30px);
+  }
+
+  &.left {
+    display: inline-block;
+    height: calc(100% - 40px);
+    left: 0;
+    margin: 20px 10px 20px 20px;
+    min-height: 0;
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    width: calc(50% - 30px);
+  }
+
+  &.right {
+    display: inline-block;
+    height: calc(100% - 40px);
+    margin: 20px 20px 20px 10px;
+    min-height: 0;
+    overflow: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: calc(50% - 30px);
+  }
+
+  &.top {
+    display: inline-block;
+    height: calc(50% - 30px);
+    margin: 20px 20px 10px;
+    min-height: 0;
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    width: calc(100% - 40px);
+  }
+
+  &.bottom {
+    bottom: 0;
+    display: inline-block;
+    height: calc(50% - 30px);
+    margin: 10px 20px 20px;
+    min-height: 0;
+    overflow: auto;
+    position: absolute;
+    width: calc(100% - 40px);
+  }
+}
+
+/*
+ don't include `.pane.single` in the responsive section -
+ Since there is only 1 pane no need to do anything differend
+ on different form factors.
+ */
+@include respond-to(phabletdown) {
+  .pane.top,
+  .pane.bottom,
+  .pane.left,
+  .pane.right,
+  .pane.top-left,
+  .pane.top-right,
+  .pane.bottom-left,
+  .pane.bottom-right {
+    height: auto;
+    margin: 0 0 20px 20px;
+    position: relative;
+    width: calc(100% - 40px);
+  }
+
+  .pane:first-child {
+    margin-top: 20px;
+  }
+
+}
