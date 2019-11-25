@@ -384,6 +384,7 @@ $cardlist-text-color: $font-color;
 // Checkboxes
 $checkbox-disabled-text-color: $checkbox-color-unchecked-disabled-font;
 $checkbox-disabled-checked-bg-color: $checkbox-color-checked-disabled-background;
+$checkbox-color-disabled-font: $input-color-disabled-font;
 
 // Switch
 $focus-color: #cbdce6;
@@ -829,6 +830,7 @@ $textarea-size: 362px;
 // Calendar
 $calendar-bg-color: $panel-bg-color;
 $calendar-line-color: $theme-color-palette-graphite-20;
+$calendar-line-color-light: $theme-color-palette-graphite-10;
 $calendar-event-color: $theme-color-font-base;
 $calendar-selected-border-color: $theme-color-brand-primary-base;
 $calendar-selected-bg-color: $theme-color-palette-graphite-10;

@@ -61,8 +61,7 @@
     }
 
     textarea {
-      min-width: 300px;
-      width: auto;
+      max-width: 300px;
 
       &[data-error-type='tooltip'] ~ .icon-error,
       &[data-error-type='tooltip'] ~ .icon-success {
@@ -239,9 +238,31 @@
   z-index: 1000;
 }
 
-.modal-engaged .overlay {
-  opacity: 0.7;
-  visibility: visible;
+// Body tag is notified when a modal is present in the page.
+body.modal-engaged {
+  .overlay {
+    opacity: 0.7;
+    visibility: visible;
+  }
+}
+
+// iOS has lots of issues regarding scrolling of elements that are
+// technically "behind" the modal.  This CSS, as well as some JS in the Modal component,
+// seek to stop scrolling behind the in-focus modal element.
+.ios {
+  body.modal-engaged {
+    -webkit-overflow-scrolling: auto;
+
+    .page-container.scrollable,
+    .page-container.scrollable-x,
+    .page-container.scrollable-y {
+      pointer-events: none;
+    }
+
+    .modal-body-wrapper {
+      -webkit-overflow-scrolling: touch;
+    }
+  }
 }
 
 .modal-header {
@@ -324,7 +345,6 @@
 
   .modal-body-wrapper {
     overflow: auto;
-    -webkit-overflow-scrolling: auto;
     padding: 0 20px;
 
     .field:last-child {
@@ -352,12 +372,8 @@
 
   > .btn-close {
     position: absolute;
-    right: 0;
-    top: 0;
-
-    .icon {
-      width: 16px;
-    }
+    right: 10px;
+    top: 14px;
   }
 
   .message {
@@ -403,7 +419,6 @@
   border-top: 1px solid $modal-btn-border-color;
   height: 50px;
   margin-top: 20px;
-  padding: 2px;// Keep 2px padding around for border to show around on focus
 
   button {
     @include css3(transition, color 0.3s ease 0s);
@@ -416,13 +431,14 @@
     float: left;
     font-size: $theme-size-font-base;
     font-weight: $theme-number-font-weight-bold;
-    height: 46px;
-    line-height: 46px; // Used same value as height to get accurate measurement of vertical height
+    height: 49px;
+    line-height: 49px;
     margin-right: 0;
+    min-width: 0;
     overflow: hidden;
     position: relative;
     text-align: center;
-    width: 100%;// [50px-4px] Keep smaller 4px for border to show around on focus
+    width: 100%;
 
     &:hover {
       color: $modal-btn-hover-color;
@@ -477,6 +493,13 @@
   }
 }
 
+// Message specific styles
+.message {
+  .modal-body-wrapper {
+    padding: 5px 20px;
+  }
+}
+
 // RTL Styles
 html[dir='rtl'] {
   .modal-buttonset {
@@ -521,7 +544,7 @@ html[dir='rtl'] {
     }
 
     .btn-close {
-      left: 0;
+      left: 10px;
       right: auto;
     }
   }

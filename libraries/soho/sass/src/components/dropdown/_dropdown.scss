@@ -104,7 +104,7 @@ div.multiselect {
     text-overflow: ellipsis;
     vertical-align: top;
 
-    &[data-selected-text='']::before {
+    &[data-placeholder-text]::before {
       color: $input-placeholder-color;
       content: attr(data-placeholder-text);
       -webkit-text-fill-color: $input-placeholder-color;
@@ -221,6 +221,10 @@ div.multiselect {
   width: auto;
   z-index: 4501;
 
+  @media screen and (max-height: 270px) {
+    background-color: inherit;
+  }
+
   &.text-align-reverse {
     text-align: right;
   }
@@ -240,6 +244,22 @@ div.multiselect {
 
   &.is-ontop {
     box-shadow: $dropdown-box-shadow-top;
+  }
+
+  &.ffdropdown {
+    > .trigger {
+      .icon {
+        left: 0;
+      }
+    }
+
+    &.is-ontop {
+      > .trigger {
+        .icon {
+          top: 9px;
+        }
+      }
+    }
   }
 
   ul {
@@ -375,6 +395,14 @@ div.multiselect {
 
     + span {
       padding-left: 39px;
+    }
+
+  }
+
+  &.is-ontop {
+    > .listoption-icon {
+      bottom: 6px;
+      top: auto;
     }
   }
 
@@ -735,10 +763,6 @@ div.dropdown-xs,
     }
   }
 
-  &.is-ontop {
-    margin-top: 8px;
-  }
-
   > .icon {
     height: 24px;
     margin-left: -21px;
@@ -770,10 +794,6 @@ div.dropdown-xs,
   // Multiple
   &.multiple {
     li {
-      &::before {
-        margin-left: 5px;
-      }
-
       &::after {
         margin-top: 0;
       }
@@ -805,6 +825,16 @@ div.dropdown-xs,
 
       .dropdown-search {
         border-top: 1px solid $dropdown-menu-separator-border-color;
+      }
+    }
+  }
+
+  &.ie-edge {
+    .dropdown-list {
+      > .trigger {
+        .icon {
+          left: 5px;
+        }
       }
     }
   }
@@ -983,8 +1013,10 @@ html[dir='rtl'] {
   .dropdown-list {
     &.multiple {
       li::before {
+        left: auto;
         margin-left: inherit;
-        margin-right: -23px;
+        margin-right: 0;
+        right: 10px;
       }
 
       li.is-selected::after {
@@ -1180,39 +1212,6 @@ html[dir='rtl'] {
         .dropdown-search {
           padding: 6px 25px 5px 21px;
         }
-      }
-    }
-  }
-
-  // TODO: Figure out why our rules for multiselect checkboxes no longer
-  // work correctly across all browsers.
-  &:not(.is-firefox):not(.ie11) {
-    .dropdown-list.multiple {
-      li::before {
-        margin-right: 10px;
-      }
-
-      &.dropdown-short {
-        li::before {
-          margin-right: 5px;
-        }
-      }
-    }
-  }
-
-  &.is-firefox,
-  &.ie11 {
-    .dropdown-list.dropdown-short.multiple {
-      li::before {
-        margin-right: 5px;
-      }
-    }
-  }
-
-  &.is-safari {
-    .dropdown-list.dropdown-short.multiple {
-      li::after {
-        right: 10px;
       }
     }
   }

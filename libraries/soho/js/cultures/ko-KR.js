@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise, no-undef */
-
 // Get Latest from http://www.unicode.org/Public/cldr/25/
 Soho.Locale.addCulture('ko-KR', {
   // layout/language
@@ -22,6 +20,7 @@ Soho.Locale.addCulture('ko-KR', {
       month: 'M월 d일',
       year: 'yyyy년 M월',
       timestamp: 'a h:mm:ss',
+      hour: 'a h:mm',
       datetime: 'yyyy-MM-dd a h:mm',
       timezone: 'yyyy-MM-dd a h:mm zz',
       timezoneLong: 'yyyy-MM-dd a h:mm zzzz'

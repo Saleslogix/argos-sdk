@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise, no-undef */
-
 // Get Latest from http://www.unicode.org/Public/cldr/25/
 Soho.Locale.addCulture('sk-SK', {
   // layout/language
@@ -10,6 +8,7 @@ Soho.Locale.addCulture('sk-SK', {
   direction: 'left-to-right',
   // ca-gregorian
   calendars: [{
+    name: 'gregorian',
     // ca-gregorian/main/dates/calendars/gregorian/dateFormats/
     dateFormat: {
       separator: '.', // Infered
@@ -21,6 +20,7 @@ Soho.Locale.addCulture('sk-SK', {
       month: 'd. MMMM',
       year: 'MMMM yyyy',
       timestamp: 'H:mm:ss',
+      hour: 'H:mm',
       datetime: 'd. M. yyyy H:mm',
       timezone: 'd. M. yyyy H:mm zz',
       timezoneLong: 'd. M. yyyy H:mm zzzz'

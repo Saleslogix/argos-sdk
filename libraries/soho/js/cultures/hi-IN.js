@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise, no-undef */
-
 // Get Latest from http://www.unicode.org/Public/cldr/25/
 Soho.Locale.addCulture('hi-IN', {
   // layout/language
@@ -22,6 +20,7 @@ Soho.Locale.addCulture('hi-IN', {
       month: 'd MMMM',
       year: 'MMMM, yyyy',
       timestamp: 'h:mm:ss',
+      hour: 'h:mm',
       datetime: 'd-MM-yyyy h:mm a',
       timezone: 'd-MM-yyyy h:mm a zz',
       timezoneLong: 'd-MM-yyyy h:mm a zzzz'
@@ -69,6 +68,7 @@ Soho.Locale.addCulture('hi-IN', {
     Alert: { id: 'Alert', value: 'चेतावनी', comment: 'Alert' },
     AlertOnPage: { id: 'AlertOnPage', value: 'पृष्ठ पर चेतावनी संदेश', comment: 'Alert message(s) on page n' },
     All: { id: 'All', value: 'सभी', comment: 'All items in the context of a filter' },
+    AllDay: { id: 'AllDay', value: 'All Day', comment: 'Label for an event which lasts all day' },
     AllResults: { id: 'AllResults', value: 'के लिए सभी परिणाम', comment: 'Search Results Text' },
     AligntoBottom: { id: 'AligntoBottom', value: 'नीचे से संरेखित', comment: 'Align to Bottom tooltip' },
     AlignCenterHorizontally: { id: 'AlignCenterHorizontally', value: 'क्षैतिज संरेखित मध्य', comment: 'Align Center Horizontally tooltip' },
@@ -100,8 +100,6 @@ Soho.Locale.addCulture('hi-IN', {
     ChangeView: { id: 'ChangeView', value: 'दृश्य बदलें', comment: 'Change the current page from a list of options' },
     Checkbox: { id: 'Checkbox', value: 'चेकबॉक्स', comment: 'Checkbox tooltip' },
     Checked: { id: 'Checked', value: 'जाँच हुआ', comment: 'Checked tooltip' },
-    ChooseA: { id: 'ChooseA', value: 'कोर्इ चुनें ', comment: 'Audible tooltip for choosing a thing in a list.' },
-    ChooseAn: { id: 'ChooseAn', value: 'कोई चुनें ', comment: 'Audible tooltip for choosing an item in a list.' },
     Clear: { id: 'Clear', value: 'क्लियर करें', comment: 'Tooltip for a Clear Action' },
     ClearFilter: { id: 'ClearFilter', value: 'फ़िल्टर क्लियर करें', comment: 'Clear the current filter criteria' },
     ClearFormatting: { id: 'ClearFormatting', value: 'फ़िल्टर क्लियर करें', comment: 'Clear the formatting in editor' },

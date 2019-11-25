@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise, no-undef */
-
 // Get Latest from http://www.unicode.org/Public/cldr/25/
 Soho.Locale.addCulture('de-DE', {
   // layout/language
@@ -22,6 +20,7 @@ Soho.Locale.addCulture('de-DE', {
       month: 'd. MMMM',
       year: 'MMMM yyyy',
       timestamp: 'HH:mm:ss',
+      hour: 'HH:mm',
       datetime: 'dd.MM.yyyy HH:mm',
       timezone: 'dd.MM.yyyy HH:mm zz',
       timezoneLong: 'dd.MM.yyyy HH:mm zzzz'
@@ -70,6 +69,7 @@ Soho.Locale.addCulture('de-DE', {
     Alert: { id: 'Alert', value: 'Benachrichtigung', comment: 'Alert' },
     AlertOnPage: { id: 'AlertOnPage', value: 'Alarmmeldung(en) auf Seite', comment: 'Alert message(s) on page n' },
     All: { id: 'All', value: 'Alle', comment: 'All items in the context of a filter' },
+    AllDay: { id: 'AllDay', value: 'Ganztägig', comment: 'Label for an event which lasts all day' },
     AllResults: { id: 'AllResults', value: 'Alle Ergebnisse für', comment: 'Search Results Text' },
     AligntoBottom: { id: 'AligntoBottom', value: 'Unten ausrichten', comment: 'Align to Bottom tooltip' },
     AlignCenterHorizontally: { id: 'AlignCenterHorizontally', value: 'Horizontal zentrieren', comment: 'Align Center Horizontally tooltip' },
@@ -86,7 +86,7 @@ Soho.Locale.addCulture('de-DE', {
     Bold: { id: 'Bold', value: 'Fett', comment: 'Make text Bold' },
     Bookmarked: { id: 'Bookmarked', value: 'Als Lesezeichen hinzugefügt', comment: 'Bookmark filled - Element is already bookmarked' },
     BookmarkThis: { id: 'BookmarkThis', value: 'Als Lesezeichen hinzufügen', comment: 'Bookmark an element' },
-    Breadcrumb: { id: 'Breadcrumb', value: 'Breadcrumb', comment: 'Text describing the Breadcrumb' },
+    Breadcrumb: { id: 'Breadcrumb', value: 'Klickpfad', comment: 'Text describing the Breadcrumb' },
     Browser: { id: 'Browser', value: 'Browser', comment: 'As in a Web Browser' },
     BulletedList: { id: 'BulletedList', value: 'Aufzählung', comment: 'Bulleted List tooltip' },
     Calendar: { id: 'Calendar', value: 'Kalender', comment: 'Inline Text for the title of the Calendar control' },
@@ -101,8 +101,6 @@ Soho.Locale.addCulture('de-DE', {
     ChangeView: { id: 'ChangeView', value: 'Ansicht ändern', comment: 'Change the current page from a list of options' },
     Checkbox: { id: 'Checkbox', value: 'Kontrollkästchen', comment: 'Checkbox tooltip' },
     Checked: { id: 'Checked', value: 'Markiert', comment: 'Checked tooltip' },
-    ChooseA: { id: 'ChooseA', value: 'Auswählen ', comment: 'Audible tooltip for choosing a thing in a list.' },
-    ChooseAn: { id: 'ChooseAn', value: 'Auswählen ', comment: 'Audible tooltip for choosing an item in a list.' },
     Clear: { id: 'Clear', value: 'Löschen', comment: 'Tooltip for a Clear Action' },
     ClearFilter: { id: 'ClearFilter', value: 'Filter löschen', comment: 'Clear the current filter criteria' },
     ClearFormatting: { id: 'ClearFormatting', value: 'Formatierung entfernen', comment: 'Clear the formatting in editor' },

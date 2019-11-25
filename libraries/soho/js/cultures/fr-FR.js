@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise, no-undef */
-
 // Get Latest from http://www.unicode.org/Public/cldr/25/
 Soho.Locale.addCulture('fr-FR', {
   // layout/language
@@ -10,6 +8,7 @@ Soho.Locale.addCulture('fr-FR', {
   direction: 'left-to-right',
   // ca-gregorian
   calendars: [{
+    name: 'gregorian',
     // ca-gregorian/main/dates/calendars/gregorian/dateFormats/
     dateFormat: {
       separator: '/', // Infered
@@ -21,6 +20,7 @@ Soho.Locale.addCulture('fr-FR', {
       month: 'd MMMM',
       year: 'MMMM yyyy',
       timestamp: 'HH:mm:ss',
+      hour: 'HH:mm',
       datetime: 'dd/MM/yyyy HH:mm',
       timezone: 'dd/MM/yyyy HH:mm zz',
       timezoneLong: 'dd/MM/yyyy HH:mm zzzz'
@@ -68,6 +68,7 @@ Soho.Locale.addCulture('fr-FR', {
     Alert: { id: 'Alert', value: 'Alerte', comment: 'Alert' },
     AlertOnPage: { id: 'AlertOnPage', value: 'Message(s) d\'alerte sur page', comment: 'Alert message(s) on page n' },
     All: { id: 'All', value: 'Tout', comment: 'All items in the context of a filter' },
+    AllDay: { id: 'AllDay', value: 'All Day', comment: 'Label for an event which lasts all day' },
     AllResults: { id: 'AllResults', value: 'Tous les résultats pour', comment: 'Search Results Text' },
     AligntoBottom: { id: 'AligntoBottom', value: 'Aligner en bas', comment: 'Align to Bottom tooltip' },
     AlignCenterHorizontally: { id: 'AlignCenterHorizontally', value: 'Aligner horizontalement au centre', comment: 'Align Center Horizontally tooltip' },
@@ -99,8 +100,6 @@ Soho.Locale.addCulture('fr-FR', {
     ChangeView: { id: 'ChangeView', value: 'Modifier vue', comment: 'Change the current page from a list of options' },
     Checkbox: { id: 'Checkbox', value: 'Case à cocher', comment: 'Checkbox tooltip' },
     Checked: { id: 'Checked', value: 'Coché', comment: 'Checked tooltip' },
-    ChooseA: { id: 'ChooseA', value: 'Choisissez un(e) ', comment: 'Audible tooltip for choosing a thing in a list.' },
-    ChooseAn: { id: 'ChooseAn', value: 'Choisissez un(e) ', comment: 'Audible tooltip for choosing an item in a list.' },
     Clear: { id: 'Clear', value: 'Effacer', comment: 'Tooltip for a Clear Action' },
     ClearFilter: { id: 'ClearFilter', value: 'Effacer le filtre', comment: 'Clear the current filter criteria' },
     ClearFormatting: { id: 'ClearFormatting', value: 'Effacer formatage', comment: 'Clear the formatting in editor' },

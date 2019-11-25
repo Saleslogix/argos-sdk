@@ -35,10 +35,21 @@ $datagrid-list-header-bg-color: $theme-color-palette-white;
 $datagrid-list-header-active-color: $theme-color-palette-graphite-20;
 $datagrid-list-sort-icon-color: $theme-color-palette-slate-40;
 $listview-border-color: $theme-color-palette-slate-20;
-$panel-border-color: $theme-color-palette-slate-20;
+$panel-border-color: $theme-color-palette-graphite-30;
 
 // Tabs
 $tab-text-color: $theme-color-palette-graphite-70;
+
+// Calendar
+$calendar-bg-color: $panel-bg-color;
+$calendar-line-color: $theme-color-palette-graphite-30;
+$calendar-line-color-light: $theme-color-palette-graphite-20;
+$calendar-event-color: $theme-color-font-base;
+$calendar-selected-border-color: $theme-color-brand-primary-base;
+$calendar-selected-bg-color: $theme-color-palette-graphite-20;
+$calendar-hover-bg-color: rgba(240, 240, 240, 0.5);
+$calendar-disabled-bg-color: $theme-color-palette-graphite-20;
+$calendar-disabled-color: $theme-color-brand-secondary-contrast;
 
 // Uplift-only Variables
 $uplift-acc-border-radius: 6px;

@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise, no-undef */
-
 // Get Latest from http://www.unicode.org/Public/cldr/25/
 Soho.Locale.addCulture('th-TH', {
   // layout/language
@@ -10,6 +8,7 @@ Soho.Locale.addCulture('th-TH', {
   direction: 'left-to-right',
   // ca-gregorian
   calendars: [{
+    name: 'gregorian',
     // ca-gregorian/main/dates/calendars/gregorian/dateFormats/
     dateFormat: {
       separator: '/', // Infered
@@ -21,6 +20,7 @@ Soho.Locale.addCulture('th-TH', {
       month: 'd MMMM',
       year: 'MMMM yyyy',
       timestamp: 'HH:mm:ss',
+      hour: 'HH:mm',
       datetime: 'd/M/yyyy HH:mm',
       timezone: 'd/M/yyyy HH:mmm zz',
       timezoneLong: 'd/M/yyyy HH:mm zzzz'

@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise, no-undef */
-
 // Get Latest from http://www.unicode.org/Public/cldr/25/
 Soho.Locale.addCulture('it-IT', {
   // layout/language
@@ -22,6 +20,7 @@ Soho.Locale.addCulture('it-IT', {
       month: 'dd MMMM',
       year: 'MMMM yyyy',
       timestamp: 'HH:mm:ss',
+      hour: 'HH:mm',
       datetime: 'M/d/yyyy HH:mm',
       timezone: 'M/d/yyyy HH:mm zz',
       timezoneLong: 'M/d/yyyy HH:mm zzzz'
@@ -69,6 +68,7 @@ Soho.Locale.addCulture('it-IT', {
     Alert: { id: 'Alert', value: 'Avviso', comment: 'Alert' },
     AlertOnPage: { id: 'AlertOnPage', value: 'Messaggi di avviso a pagina', comment: 'Alert message(s) on page n' },
     All: { id: 'All', value: 'Tutto', comment: 'All items in the context of a filter' },
+    AllDay: { id: 'AllDay', value: 'Giornata intera', comment: 'Label for an event which lasts all day' },
     AllResults: { id: 'AllResults', value: 'Tutti i risultati per', comment: 'Search Results Text' },
     AligntoBottom: { id: 'AligntoBottom', value: 'Allinea in basso', comment: 'Align to Bottom tooltip' },
     AlignCenterHorizontally: { id: 'AlignCenterHorizontally', value: 'Allinea al centro orizzontalmente', comment: 'Align Center Horizontally tooltip' },
@@ -100,8 +100,6 @@ Soho.Locale.addCulture('it-IT', {
     ChangeView: { id: 'ChangeView', value: 'Cambia visualizzazione', comment: 'Change the current page from a list of options' },
     Checkbox: { id: 'Checkbox', value: 'Casella di controllo', comment: 'Checkbox tooltip' },
     Checked: { id: 'Checked', value: 'Selezionato', comment: 'Checked tooltip' },
-    ChooseA: { id: 'ChooseA', value: 'Choose a ', comment: 'Audible tooltip for choosing a thing in a list.' },
-    ChooseAn: { id: 'ChooseAn', value: 'Choose an ', comment: 'Audible tooltip for choosing an item in a list.' },
     Clear: { id: 'Clear', value: 'Cancella', comment: 'Tooltip for a Clear Action' },
     ClearFilter: { id: 'ClearFilter', value: 'Annulla filtro', comment: 'Clear the current filter criteria' },
     ClearFormatting: { id: 'ClearFormatting', value: 'Cancella formattazione', comment: 'Clear the formatting in editor' },

@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise, no-undef */
-
 // Get Latest from http://www.unicode.org/Public/cldr/25/
 Soho.Locale.addCulture('fi-FI', {
   // layout/language
@@ -22,6 +20,7 @@ Soho.Locale.addCulture('fi-FI', {
       month: 'd. MMMM',
       year: 'MMMM yyyy',
       timestamp: 'H.mm:ss',
+      hour: 'H.mm',
       datetime: 'd.M.y H.mm',
       timezone: 'd.M.y H.mm zz',
       timezoneLong: 'd.M.y H.mm zzzz'

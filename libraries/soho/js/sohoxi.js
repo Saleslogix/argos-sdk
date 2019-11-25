@@ -1,7 +1,7 @@
 /*! 
- *  IDS Enterprise Components - v4.22.1
- *  Date: 2019-10-22T13:46:46.067Z
- *  Revision: e1049ea431f1a22a41ae7ac9648e118f465224dd
+ *  IDS Enterprise Components - v4.23.0
+ *  Date: 2019-11-21T17:30:31.566Z
+ *  Revision: 82cef83d9847b84aec89b42f0fff37e041a0df31
  *  
  *  
  *  Apache License
@@ -266,7 +266,7 @@ var Soho = (function (exports) {
     };
   }
 
-  var version = "4.22.1";
+  var version = "4.23.0";
 
   var xssUtils = {};
 
@@ -395,7 +395,7 @@ var Soho = (function (exports) {
         '<': '&lt;',
         '>': '&gt;',
         '"': '&quot;',
-        "'": '&#x27;'
+        "'": '&apos;'
       };
       var reg = /[&<>"']/ig;
       return newValue.replace(reg, function (match) {
@@ -413,15 +413,15 @@ var Soho = (function (exports) {
    * @returns {string} the modified value
    */
   xssUtils.unescapeHTML = function (value) {
-    var newValue = value;
-    if (typeof value === 'string') {
-      newValue = newValue.replace(/&amp;/g, '&');
-      newValue = newValue.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-      newValue = newValue.replace(/&quot;/g, '"');
-      newValue = newValue.replace(/&#x27;/g, "'");
-      newValue = newValue.replace(/&#x2F;/g, '/');
+    if (value === '') {
+      return '';
     }
-    return newValue;
+
+    if (typeof value === 'string') {
+      var doc = new DOMParser().parseFromString(value, 'text/html');
+      return doc.documentElement.textContent;
+    }
+    return value;
   };
 
   /**
@@ -957,9 +957,15 @@ var Soho = (function (exports) {
      */
     set: function set() {
       $('html').attr('data-sohoxi-version', version);
+
+      // Set the viewport meta tag to limit scaling
+      this.viewport = document.querySelector('meta[name=viewport]');
+      if (this.viewport) {
+        this.viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, user-scalable=0');
+      }
+
       this.addBrowserClasses();
       this.addGlobalResize();
-      this.addGlobalEvents();
       this.addDeviceSpecs();
     },
 
@@ -1179,74 +1185,6 @@ var Soho = (function (exports) {
       // Also detect whenenver a load or orientation change occurs
       $(window).on('orientationchange load', function () {
         return breakpoints.compare();
-      });
-    },
-
-
-    /**
-     * Sets up global UI-specific event handlers
-     * @returns {void}
-     */
-    addGlobalEvents: function addGlobalEvents() {
-      var _this = this;
-
-      var self = this;
-
-      this.globalMouseActive = 0;
-      this.globalTouchActive = 0;
-
-      // Detect mouse/touch events on the body to help scrolling detection along
-      $('body').on('mousedown.' + UTIL_NAME, function () {
-        ++_this.globalMouseActive;
-      }).on('mouseup.' + UTIL_NAME, function () {
-        --_this.globalMouseActive;
-      }).on('touchstart.' + UTIL_NAME, function () {
-        ++_this.globalTouchActive;
-      }).on('touchend.' + UTIL_NAME, function () {
-        --_this.globalTouchActive;
-      });
-
-      // On iOS, it's possible to scroll the body tag even if there's a `no-scroll` class attached
-      // This listener persists and will prevent scrolling on the body tag in the event of a `no-scroll`
-      // class, only in iOS environments
-      $(window).on('scroll.' + UTIL_NAME, function (e) {
-        if (self.os.name !== 'ios' || document.body.className.indexOf('no-scroll') === -1) {
-          return true;
-        }
-
-        // If a mouse button or touch is still active, continue as normal
-        if (_this.globalTouchActive || _this.globalMouseActive) {
-          return true;
-        }
-
-        e.preventDefault();
-        if (document.body.scrollTop > 0) {
-          document.body.scrollTop = 0;
-        }
-        return false;
-      });
-
-      // Prevent zooming on inputs/textareas' `focusin`/`focusout` events.
-      // Some components like Dropdown have this feature built in on their specified elements.
-      // This particular setup prevents zooming on input fields not tied to a component wrapper.
-      $('body').on('focusin.' + UTIL_NAME, 'input, textarea', function (e) {
-        var target = e.target;
-        if (target.className.indexOf('dropdown-search') > -1) {
-          return;
-        }
-
-        if (self.os.name === 'ios') {
-          $('head').triggerHandler('disable-zoom');
-        }
-      }).on('focusout.' + UTIL_NAME, 'input, textarea', function (e) {
-        var target = e.target;
-        if (target.className.indexOf('dropdown-search') > -1) {
-          return;
-        }
-
-        if (self.os.name === 'ios') {
-          $('head').triggerHandler('enable-zoom');
-        }
       });
     },
 
@@ -2718,6 +2656,16 @@ var Soho = (function (exports) {
   stringUtils.escapeRegExp = function escapeRegExp(s) {
     return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& whole matched string
   };
+
+  /**
+   * Return the count of a occurences in a string
+   * @param  {string} string The string
+   * @param  {string} subString The substring to count
+   * @returns {number} The frequency
+   */
+  stringUtils.count = function count(string, subString) {
+    return string.split(subString).length - 1;
+  };
    //eslint-disable-line
 
   var numberUtils = {};
@@ -2848,7 +2796,7 @@ var Soho = (function (exports) {
     languages: {},
     dff: [],
     culturesPath: existingCulturePath,
-    defaultLocales: [{ lang: 'af', default: 'af-ZA' }, { lang: 'ar', default: 'ar-EG' }, { lang: 'bg', default: 'bg-BG' }, { lang: 'cs', default: 'cs-CZ' }, { lang: 'da', default: 'da-DK' }, { lang: 'de', default: 'de-DE' }, { lang: 'el', default: 'el-GR' }, { lang: 'en', default: 'en-US' }, { lang: 'es', default: 'es-ES' }, { lang: 'et', default: 'et-EE' }, { lang: 'fi', default: 'fi-FI' }, { lang: 'fr', default: 'fr-FR' }, { lang: 'he', default: 'he-IL' }, { lang: 'hi', default: 'hi-IN' }, { lang: 'hr', default: 'hr-HR' }, { lang: 'hu', default: 'hu-HU' }, { lang: 'id', default: 'id-ID' }, { lang: 'it', default: 'it-IT' }, { lang: 'iw', default: 'he-IL' }, { lang: 'ja', default: 'ja-JP' }, { lang: 'ko', default: 'ko-KR' }, { lang: 'lt', default: 'lt-LT' }, { lang: 'lv', default: 'lv-LV' }, { lang: 'ms', default: 'ms-bn' }, { lang: 'nb', default: 'nb-NO' }, { lang: 'nl', default: 'nl-NL' }, { lang: 'no', default: 'no-NO' }, { lang: 'pl', default: 'pl-PL' }, { lang: 'pt', default: 'pt-PT' }, { lang: 'ro', default: 'ro-RO' }, { lang: 'ru', default: 'ru-RU' }, { lang: 'sk', default: 'sk-SK' }, { lang: 'sl', default: 'sl-SI' }, { lang: 'sv', default: 'sv-SE' }, { lang: 'th', default: 'th-TH' }, { lang: 'tr', default: 'tr-TR' }, { lang: 'uk', default: 'uk-UA' }, { lang: 'vi', default: 'vi-VN' }, { lang: 'zh', default: 'zh-CN' }],
+    defaultLocales: [{ lang: 'af', default: 'af-ZA' }, { lang: 'ar', default: 'ar-EG' }, { lang: 'bg', default: 'bg-BG' }, { lang: 'cs', default: 'cs-CZ' }, { lang: 'da', default: 'da-DK' }, { lang: 'de', default: 'de-DE' }, { lang: 'el', default: 'el-GR' }, { lang: 'en', default: 'en-US' }, { lang: 'es', default: 'es-ES' }, { lang: 'et', default: 'et-EE' }, { lang: 'fi', default: 'fi-FI' }, { lang: 'fr', default: 'fr-FR' }, { lang: 'he', default: 'he-IL' }, { lang: 'hi', default: 'hi-IN' }, { lang: 'hr', default: 'hr-HR' }, { lang: 'hu', default: 'hu-HU' }, { lang: 'id', default: 'id-ID' }, { lang: 'it', default: 'it-IT' }, { lang: 'iw', default: 'he-IL' }, { lang: 'ja', default: 'ja-JP' }, { lang: 'ko', default: 'ko-KR' }, { lang: 'lt', default: 'lt-LT' }, { lang: 'lv', default: 'lv-LV' }, { lang: 'ms', default: 'ms-bn' }, { lang: 'nb', default: 'no-NO' }, { lang: 'nl', default: 'nl-NL' }, { lang: 'no', default: 'no-NO' }, { lang: 'pl', default: 'pl-PL' }, { lang: 'pt', default: 'pt-PT' }, { lang: 'ro', default: 'ro-RO' }, { lang: 'ru', default: 'ru-RU' }, { lang: 'sk', default: 'sk-SK' }, { lang: 'sl', default: 'sl-SI' }, { lang: 'sv', default: 'sv-SE' }, { lang: 'th', default: 'th-TH' }, { lang: 'tr', default: 'tr-TR' }, { lang: 'uk', default: 'uk-UA' }, { lang: 'vi', default: 'vi-VN' }, { lang: 'zh', default: 'zh-CN' }],
     supportedLocales: ['af-ZA', 'ar-EG', 'ar-SA', 'bg-BG', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-AU', 'en-GB', 'en-IN', 'en-NZ', 'en-US', 'en-ZA', 'es-AR', 'es-ES', 'es-419', 'es-MX', 'es-US', 'et-EE', 'fi-FI', 'fr-CA', 'fr-FR', 'he-IL', 'hi-IN', 'hr-HR', 'hu-HU', 'id-ID', 'it-IT', 'ja-JP', 'ko-KR', 'lt-LT', 'lv-LV', 'ms-bn', 'ms-my', 'nb-NO', 'nl-NL', 'no-NO', 'pl-PL', 'pt-BR', 'pt-PT', 'ro-RO', 'ru-RU', 'sk-SK', 'sl-SI', 'sv-SE', 'th-TH', 'tr-TR', 'uk-UA', 'vi-VN', 'zh-CN', 'zh-Hans', 'zh-Hant', 'zh-TW'],
     defaultLocale: 'en-US',
     minify: minifyCultures,
@@ -3034,6 +2982,14 @@ var Soho = (function (exports) {
           nativeName: data.nativeName || (langData ? langData.nativeName : ''),
           messages: data.messages || (langData ? langData.messages : {})
         };
+      } else if (!this.languages[lang] && !data.messages) {
+        var match = this.defaultLocales.filter(function (a) {
+          return a.lang === lang;
+        });
+        var parentLocale = match[0] || [{ default: 'en-US' }];
+        if (parentLocale.default && parentLocale.default !== locale && !this.cultures[parentLocale.default]) {
+          this.appendLocaleScript(parentLocale.default);
+        }
       }
     },
 
@@ -3150,7 +3106,6 @@ var Soho = (function (exports) {
      * @returns {jquery.deferred} which is resolved once the locale culture is retrieved and set
      */
     getLocale: function getLocale(locale, filename) {
-      var self = this;
       locale = this.correctLocale(locale);
       this.dff[locale] = $.Deferred();
 
@@ -3168,10 +3123,10 @@ var Soho = (function (exports) {
         this.appendLocaleScript(locale, false, false, filename);
       }
 
-      if (locale && self.currentLocale.data && self.currentLocale.dataName === locale) {
+      if (locale && this.currentLocale.data && this.currentLocale.dataName === locale) {
         this.dff[locale].resolve(locale);
       }
-      if (self.cultures[locale] && this.cultureInHead()) {
+      if (this.cultures[locale] && this.cultureInHead()) {
         this.dff[locale].resolve(locale);
       }
 
@@ -3344,7 +3299,7 @@ var Soho = (function (exports) {
       ret = ret.replace('y', year);
 
       // Time
-      var showDayPeriods = ret.indexOf(' a') > -1;
+      var showDayPeriods = ret.indexOf(' a') > -1 || ret.indexOf('a') === 0;
 
       if (showDayPeriods && hours === 0) {
         ret = ret.replace('hh', 12);
@@ -3368,14 +3323,23 @@ var Soho = (function (exports) {
       }
 
       // PM
-      if (cal) {
+      if (showDayPeriods && cal) {
         ret = ret.replace(' a', ' ' + (hours >= 12 ? cal.dayPeriods[1] : cal.dayPeriods[0]));
+        if (ret.indexOf('a') === 0) {
+          ret = ret.replace('a', ' ' + (hours >= 12 ? cal.dayPeriods[1] : cal.dayPeriods[0]));
+        }
         ret = ret.replace('EEEE', cal.days.wide[dayOfWeek]); // Day of Week
       }
 
       // Day of Week
       if (cal) {
         ret = ret.replace('EEEE', cal.days.wide[dayOfWeek]); // Day of Week
+      }
+      if (cal) {
+        ret = ret.replace('EEE', cal.days.abbreviated[dayOfWeek]); // Day of Week
+      }
+      if (cal) {
+        ret = ret.replace('EE', cal.days.narrow[dayOfWeek]); // Day of Week
       }
       ret = ret.replace('nnnnn', 'de');
       ret = ret.replace('nnnn', 'ngày');
@@ -3393,6 +3357,74 @@ var Soho = (function (exports) {
       }
 
       return ret.trim();
+    },
+
+
+    /**
+    * Formats a number into the locales hour format.
+    * @param {number} hour The hours to show in the current locale.
+    * @param {object} options Additional date formatting settings.
+    * @returns {string} the hours in either 24 h or 12 h format
+    */
+    formatHour: function formatHour(hour, options) {
+      var timeSeparator = this.calendar().dateFormat.timeSeparator;
+      var locale = this.currentLocale.name;
+      if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
+        locale = options.locale || locale;
+        timeSeparator = options.timeSeparator || this.calendar(locale).dateFormat.timeSeparator;
+      }
+      if (typeof hour === 'string' && hour.indexOf(timeSeparator) === -1) {
+        timeSeparator = ':';
+      }
+
+      var date = new Date();
+      if (typeof hour === 'number') {
+        var split = hour.toString().split('.');
+        date.setHours(split[0]);
+        date.setMinutes(split[1] ? parseFloat('0.' + split[1]) * 60 : 0);
+      } else {
+        var parts = hour.split(timeSeparator);
+        date.setHours(parts[0]);
+        date.setMinutes(parts[1] || 0);
+      }
+      return this.formatDate(date, { date: 'hour' });
+    },
+
+
+    /**
+    * Formats a number into the locales hour format.
+    * @param {number} startHour The hours to show in the current locale.
+    * @param {number} endHour The hours to show in the current locale.
+    * @param {object} options Additional date formatting settings.
+    * @returns {string} the hours in either 24 h or 12 h format
+    */
+    formatHourRange: function formatHourRange(startHour, endHour, options) {
+      var locale = this.currentLocale.name;
+      var dayPeriods = this.calendar(locale).dayPeriods;
+      var removePeriod = false;
+      if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
+        locale = options.locale || locale;
+        dayPeriods = this.calendar(locale).dayPeriods;
+      }
+      var range = Locale.formatHour(startHour, options) + ' - ' + Locale.formatHour(endHour, options);
+
+      if (range.indexOf(':00 AM -') > -1 || range.indexOf(':00 PM -') > -1) {
+        removePeriod = true;
+      }
+
+      if (stringUtils.count(range, dayPeriods[0]) > 1) {
+        range = range.replace(dayPeriods[0], '');
+      }
+
+      if (stringUtils.count(range, dayPeriods[1]) > 1) {
+        range = range.replace(' ' + dayPeriods[1], '');
+      }
+
+      range = range.replace('  ', ' ');
+      if (removePeriod) {
+        range = range.replace(':00 -', ' -');
+      }
+      return range;
     },
 
 
@@ -3799,8 +3831,22 @@ var Soho = (function (exports) {
         }
       }
 
+      var isLeap = function isLeap(y) {
+        return y % 4 === 0 && y % 100 !== 0 || y % 400 === 0;
+      };
+      var closestLeap = function closestLeap(y) {
+        var closestLeapYear = typeof y === 'number' && !isNaN(y) ? y : new Date().getFullYear();
+        for (var i2 = 0; i2 < 4; i2++) {
+          if (isLeap(closestLeapYear)) {
+            break;
+          }
+          closestLeapYear--;
+        }
+        return closestLeapYear;
+      };
+
       dateObj.return = undefined;
-      dateObj.leapYear = dateObj.year % 4 === 0 && dateObj.year % 100 !== 0 || dateObj.year % 400 === 0;
+      dateObj.leapYear = isLeap(dateObj.year);
 
       if (isDateTime && !dateObj.h && !dateObj.mm) {
         return undefined;
@@ -3815,7 +3861,8 @@ var Soho = (function (exports) {
           }
         }
         if (dateObj.isUndefindedYear) {
-          dateObj.year = new Date().getFullYear();
+          var isFeb29 = parseInt(dateObj.day, 10) === 29 && parseInt(dateObj.month, 10) === 1;
+          dateObj.year = isFeb29 ? closestLeap() : new Date().getFullYear();
         } else {
           delete dateObj.year;
         }
@@ -4170,7 +4217,8 @@ var Soho = (function (exports) {
       var percentSign = numSettings ? numSettings.percentSign : '%';
       var currencySign = localeData.currencySign || '$';
 
-      numString = numString.replace(new RegExp('\\' + group, 'g'), '');
+      var exp = group === ' ' ? new RegExp(/\s/g) : new RegExp('\\' + group, 'g');
+      numString = numString.replace(exp, '');
       numString = numString.replace(decimal, '.');
       numString = numString.replace(percentSign, '');
       numString = numString.replace(currencySign, '');
@@ -7752,7 +7800,7 @@ var Soho = (function (exports) {
   };
 
   function personalizeStyles(colors) {
-    return '\n\n.tab-container.module-tabs.is-personalizable {\n  border-top: 1px solid ' + colors.darkest + ' !important;\n  border-bottom: 1px solid ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .tab:not(:first-child) {\n  border-left: 1px solid ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable {\n  background-color: ' + colors.darker + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.accordion.panel .accordion-header.is-selected {\n  background-color: ' + colors.lighter + ' !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.builder-header.is-personalizable{\n  background-color: ' + colors.lighter + ';\n}\n\n.header.is-personalizable {\n  background-color: ' + colors.base + ';\n}\n\n.header.is-personalizable .title {\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable h1 {\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable button:not(:disabled),\n.header.is-personalizable button:not(:disabled) .icon,\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable .header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable button:not(:disabled):hover,\n.header.is-personalizable button:not(:disabled):hover .icon,\n.header.is-personalizable button:not(:disabled):hover .app-header.icon > span,\n.header.is-personalizable .toolbar [class^=\'btn\']:hover:not([disabled]) {\n  color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\n.header.is-personalizable .go-button.is-personalizable {\n  background-color: ' + colors.lightest + ';\n  border-color:' + colors.lightest + ';\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab.is-selected:not(.is-disabled) {\n  color: ' + colors.contrast + ' !important;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled),\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)  {\n  color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)::before {\n  background-color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .animated-bar {\n  background-color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .tab-list-container .tab.is-selected:not(.is-disabled):hover::before {\n  background-color: ' + colors.contrast + ' !important;\n}\n\n.subheader.is-personalizable .go-button.is-personalizable {\n  background-color: ' + colors.dark + ';\n  border-color: ' + colors.dark + ';\n  color: ' + colors.contrast + ';\n}\n\n.module-tabs.is-personalizable .tab-more {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more:hover {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-open {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield {\n  background-color: ' + colors.hover + ' !important;\n  border-bottom-color: ' + colors.hover + ' !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield-category-button {\n  background-color: ' + colors.hover + ' !important;\n  border-bottom-color: ' + colors.hover + ' !important;\n}\n\n.subheader.is-personalizable {\n  background-color: ' + colors.lighter + ' !important;\n}\n\n.builder .sidebar .header {\n  border-right: 1px solid ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab:hover {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.has-toolbar.is-personalizable .tab-list-container + .toolbar {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable [class^="btn"] {\n  background-color: transparent !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled {\n  background-color: ' + colors.darker + ' !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled > svg {\n  fill: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button:hover {\n  background-color: ' + colors.darker + ' !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > .searchfield {\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > svg {\n  fill: ' + colors.contrast + ' !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::before,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::before {\n  background-image: linear-gradient(to right, ' + colors.base + ' , ' + colorUtils.hexToRgba(colors.base, 0) + ') !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::after,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::after {\n  background-image: linear-gradient(to right, ' + colorUtils.hexToRgba(colors.base, 0) + ', ' + colors.base + ') !important;\n}\n\n.hero-widget.is-personalizable {\n  background-color: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .hero-bottom {\n  background-color: ' + colors.base + ';\n}\n\n.hero-widget.is-personalizable .hero-footer .hero-footer-nav li::before {\n  color: ' + colors.light + ';\n}\n\n.hero-widget.is-personalizable .chart-container .arc {\n  stroke: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .chart-container .bar {\n  stroke: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .chart-container.line-chart .dot {\n  stroke: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable {\n  background-color: ' + colors.lighter + ';\n  border-right: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable .application-menu-header {\n  background-color: ' + colors.lighter + ';\n  border-bottom-color: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable .application-menu-footer {\n  background-color: ' + colors.lighter + ';\n  border-top-color: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable button .icon,\n.application-menu.is-personalizable button span,\n.application-menu.is-personalizable .hyperlink {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable button:not(:disabled):hover .icon,\n.application-menu.is-personalizable button:not(:disabled):hover span,\n.application-menu.is-personalizable .hyperlink:hover {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .accordion.panel {\n  background-color: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .name-xl,\n.application-menu.is-personalizable .name,\n.application-menu.is-personalizable .accordion-heading {\n  color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header {\n  background-color: ' + colors.lighter + ' !important;\n  border: 1px solid transparent !important;\n  color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header .icon {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected:hover > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected .icon {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header:hover {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-focused:not(.hide-focus) {\n  border: 1px solid ' + colors.contrast + ' !important;\n  box-shadow: none !important;\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  border: 1px solid ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before,\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable button:focus:not(.hide-focus),\n.application-menu.is-personalizable .hyperlink:focus:not(.hide-focus)::after {\n  border-color: ' + colors.contrast + ' !important;\n  box-shadow: none !important;\n}\n\n.application-menu .application-menu-header button:hover,\n.application-menu .application-menu-footer button:hover {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion-header.has-filtered-children > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.has-filtered-children.is-focused {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield::placeholder {\n  color: ' + colors.contrast + ';\n  opacity: .8;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .icon {\n  color: ' + colors.contrast + ';\n  opacity: .8;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper.active .icon {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header {\n  background-color: ' + colors.base + ' !important;\n  border-top-color: transparent;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header:hover {\n  background-color: ' + colors.darkest + ' !important;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion-heading {\n  border-top-color: ' + colors.darkest + ';\n}\n\n.application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ' + colors.base + ';\n  border-bottom: none !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ' + colors.dark + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header {\n  background-color: transparent !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header:hover {\n  background-color: ' + colors.darkest + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header.is-selected {\n  background-color: ' + colors.darkest + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before {\n  background-color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: transparent !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded {\n  background-color: ' + colors.dark + ' !important;\n  color: ' + colors.subtext + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-selected {\n  background-color: ' + colors.darker + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded + .accordion-pane {\n  background-color: ' + colors.dark + ' !important;\n}\n\n.is-personalizable .personalize-header,\n.is-personalizable.tab-container {\n  background-color: ' + colors.base + ' !important;\n}\n\n.is-personalizable .personalize-subheader {\n  background-color: ' + colors.lighter + ' !important;\n}\n\n.is-personalizable .personalize-text {\n  color: ' + colors.contrast + ' !important;\n}\n\n.is-personalizable .personalize-actionable,\n.is-personalizable .personalize-actionable svg {\n  color: ' + colors.contrast + ';\n  opacity: .8;\n}\n\n.is-personalizable .personalize-actionable:hover:not([disabled]),\n.is-personalizable .personalize-actionable:hover:not([disabled]) svg {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.is-personalizable .personalize-actionable.is-focused:not(.hide-focus),\n.is-personalizable .personalize-actionable:focus:not(.hide-focus) {\n  border-color: ' + colors.contrast + ';\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-actionable.hyperlink:focus:not(.hide-focus)::after {\n  border-color: ' + colors.contrast + ';\n  opacity: 1;\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-vertical-border {\n  border-color: ' + colors.light + ';\n}\n\n.is-personalizable .personalize-horizontal-bottom-border {\n  border-bottom: 1px solid ' + colors.darkest + ';\n}\n\n.is-personalizable .personalize-horizontal-top-border {\n  border-top: 1px solid: ' + colors.darkest + ';\n}\n\n.is-personalizable .personalize-chart-targeted .total.bar {\n  background-color: rgba(255, 255, 255, .8);\n}\n\n.is-personalizable .personalize-chart-targeted .chart-percent-text,\n.is-personalizable .personalize-chart-targeted .label {\n  color: ' + colors.text + ';\n}\n\n.is-personalizable .info-message,\n.is-personalizable .info-message .icon,\n.is-personalizable .info-message p {\n  color: ' + colors.text + ' !important;\n}\n\n.is-personalizable .personalize-actionable-disabled,\n.is-personalizable .personalize-actionable-disabled:hover {\n  opacity: .4 !important;\n  cursor: default;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .arc,\n.hero-widget.is-personalizable .hero-header .chart-container .bar,\n.hero-widget.is-personalizable .hero-header .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-content .chart-container .arc,\n.hero-widget.is-personalizable .hero-content .chart-container .bar,\n.hero-widget.is-personalizable .hero-content .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-footer .chart-container .arc,\n.hero-widget.is-personalizable .hero-footer .chart-container .bar,\n.hero-widget.is-personalizable .hero-footer .chart-container.line-chart .dot {\n    stroke: ' + colors.lighter + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container text,\n.hero-widget.is-personalizable .hero-content .chart-container text,\n.hero-widget.is-personalizable .hero-footer .chart-container text {\n    fill: ' + colors.text + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-content .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-footer .chart-container .chart-legend-item-text {\n  color: ' + colors.text + ';\n  fill: ' + colors.text + ';\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .axis path, .chart-container .axis line,\n.hero-widget.is-personalizable .hero-header .chart-container .axis .tick0 line {\n  stroke: ' + colors.subtext + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .title,\n.hero-widget.is-personalizable .hero-content .title,\n.hero-widget.is-personalizable .hero-footer .title {\n  color: ' + colors.subtext + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-content .btn-tertiary,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-header .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon\n {\n  color: ' + colors.subtext + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon\n {\n  color: ' + colors.text + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ' + colors.subtext + ',\n    0 0 2px 1px ' + colors.subtext + ';\n}\n\n.header.is-personalizable .toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.header.is-personalizable .flex-toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.subheader.is-personalizable .toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.subheader.is-personalizable .flex-toolbar [class^=\'btn\']:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ' + colors.subtext + ',\n    0 0 2px 1px ' + colors.subtext + ';\n}\n\n.tooltip.is-personalizable {\n  background-color: ' + colors.darkest + ';\n  border-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable .chart-swatch .swatch-row div {\n  border-bottom-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable,\n.tooltip.is-personalizable p,\n.tooltip.is-personalizable .chart-swatch .swatch-row span,\n.tooltip.is-personalizable .chart-swatch .swatch-row b {\n  color: ' + colors.tooltipText + ';\n}\n.tooltip.is-personalizable.top .arrow::after {\n  border-top-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.right .arrow::after {\n  border-right-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.bottom .arrow::after {\n  border-bottom-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.left .arrow::after {\n  border-left-color: ' + colors.darkest + ';\n}\n\n    ';
+    return '\n\n.tab-container.module-tabs.is-personalizable {\n  border-top: 1px solid ' + colors.darkest + ' !important;\n  border-bottom: 1px solid ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .tab:not(:first-child) {\n  border-left: 1px solid ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable {\n  background-color: ' + colors.darker + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.accordion.panel .accordion-header.is-selected {\n  background-color: ' + colors.lighter + ' !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.builder-header.is-personalizable{\n  background-color: ' + colors.lighter + ';\n}\n\n.header.is-personalizable {\n  background-color: ' + colors.base + ';\n}\n\n.header.is-personalizable .title {\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable h1 {\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable button:not(:disabled),\n.header.is-personalizable button:not(:disabled) .icon,\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable .header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable button:not(:disabled):hover,\n.header.is-personalizable button:not(:disabled):hover .icon,\n.header.is-personalizable button:not(:disabled):hover .app-header.icon > span,\n.header.is-personalizable .toolbar [class^=\'btn\']:hover:not([disabled]) {\n  color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\n.header.is-personalizable .go-button.is-personalizable {\n  background-color: ' + colors.lightest + ';\n  border-color:' + colors.lightest + ';\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab.is-selected:not(.is-disabled) {\n  color: ' + colors.contrast + ' !important;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled),\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)  {\n  color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\nhtml[class*="theme-uplift-"] .header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\nhtml[class*="theme-uplift-"] .is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  opacity: 1;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)::before {\n  background-color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .animated-bar {\n  background-color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .tab-list-container .tab.is-selected:not(.is-disabled):hover::before {\n  background-color: ' + colors.contrast + ' !important;\n}\n\n.subheader.is-personalizable .go-button.is-personalizable {\n  background-color: ' + colors.dark + ';\n  border-color: ' + colors.dark + ';\n  color: ' + colors.contrast + ';\n}\n\n.module-tabs.is-personalizable .tab-more {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more:hover {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-open {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield {\n  background-color: ' + colors.hover + ' !important;\n  border-bottom-color: ' + colors.hover + ' !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield-category-button {\n  background-color: ' + colors.hover + ' !important;\n  border-bottom-color: ' + colors.hover + ' !important;\n}\n\n.subheader.is-personalizable {\n  background-color: ' + colors.lighter + ' !important;\n}\n\n.builder .sidebar .header {\n  border-right: 1px solid ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab:hover {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.has-toolbar.is-personalizable .tab-list-container + .toolbar {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable [class^="btn"] {\n  background-color: transparent !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled {\n  background-color: ' + colors.darker + ' !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled > svg {\n  fill: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button:hover {\n  background-color: ' + colors.darker + ' !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > .searchfield {\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > svg {\n  fill: ' + colors.contrast + ' !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::before,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::before {\n  background-image: linear-gradient(to right, ' + colors.base + ' , ' + colorUtils.hexToRgba(colors.base, 0) + ') !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::after,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::after {\n  background-image: linear-gradient(to right, ' + colorUtils.hexToRgba(colors.base, 0) + ', ' + colors.base + ') !important;\n}\n\n.hero-widget.is-personalizable {\n  background-color: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .hero-bottom {\n  background-color: ' + colors.base + ';\n}\n\n.hero-widget.is-personalizable .hero-footer .hero-footer-nav li::before {\n  color: ' + colors.light + ';\n}\n\n.hero-widget.is-personalizable .chart-container .arc {\n  stroke: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .chart-container .bar {\n  stroke: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .chart-container.line-chart .dot {\n  stroke: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable {\n  background-color: ' + colors.lighter + ';\n  border-right: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable .application-menu-header {\n  background-color: ' + colors.lighter + ';\n  border-bottom-color: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable .application-menu-footer {\n  background-color: ' + colors.lighter + ';\n  border-top-color: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable button .icon,\n.application-menu.is-personalizable button span,\n.application-menu.is-personalizable .hyperlink {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable button:not(:disabled):hover .icon,\n.application-menu.is-personalizable button:not(:disabled):hover span,\n.application-menu.is-personalizable .hyperlink:hover {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .accordion.panel {\n  background-color: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .name-xl,\n.application-menu.is-personalizable .name,\n.application-menu.is-personalizable .accordion-heading {\n  color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header {\n  background-color: ' + colors.lighter + ' !important;\n  border: 1px solid transparent !important;\n  color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header .icon {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected:hover > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected .icon {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header:hover {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-focused:not(.hide-focus) {\n  border: 1px solid ' + colors.contrast + ' !important;\n  box-shadow: none !important;\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  border: 1px solid ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before,\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable button:focus:not(.hide-focus),\n.application-menu.is-personalizable .hyperlink:focus:not(.hide-focus)::after {\n  border-color: ' + colors.contrast + ' !important;\n  box-shadow: none !important;\n}\n\n.application-menu .application-menu-header button:hover,\n.application-menu .application-menu-footer button:hover {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion-header.has-filtered-children > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.has-filtered-children.is-focused {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield::placeholder {\n  color: ' + colors.contrast + ';\n  opacity: .8;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .icon {\n  color: ' + colors.contrast + ';\n  opacity: .8;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper.active .icon {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header {\n  background-color: ' + colors.base + ' !important;\n  border-top-color: transparent;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header:hover {\n  background-color: ' + colors.darkest + ' !important;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion-heading {\n  border-top-color: ' + colors.darkest + ';\n}\n\n.application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ' + colors.base + ';\n  border-bottom: none !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ' + colors.dark + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header {\n  background-color: transparent !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header:hover {\n  background-color: ' + colors.darkest + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header.is-selected {\n  background-color: ' + colors.darkest + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before {\n  background-color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: transparent !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded {\n  background-color: ' + colors.dark + ' !important;\n  color: ' + colors.subtext + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-selected {\n  background-color: ' + colors.darker + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded + .accordion-pane {\n  background-color: ' + colors.dark + ' !important;\n}\n\n.is-personalizable .personalize-header,\n.is-personalizable.tab-container {\n  background-color: ' + colors.base + ' !important;\n}\n\n.is-personalizable .personalize-subheader {\n  background-color: ' + colors.lighter + ' !important;\n}\n\n.is-personalizable .personalize-text {\n  color: ' + colors.contrast + ' !important;\n}\n\n.is-personalizable .personalize-actionable,\n.is-personalizable .personalize-actionable svg {\n  color: ' + colors.contrast + ';\n  opacity: .8;\n}\n\n.is-personalizable .personalize-actionable:hover:not([disabled]),\n.is-personalizable .personalize-actionable:hover:not([disabled]) svg {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.is-personalizable .personalize-actionable.is-focused:not(.hide-focus),\n.is-personalizable .personalize-actionable:focus:not(.hide-focus) {\n  border-color: ' + colors.contrast + ';\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-actionable.hyperlink:focus:not(.hide-focus)::after {\n  border-color: ' + colors.contrast + ';\n  opacity: 1;\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-vertical-border {\n  border-color: ' + colors.light + ';\n}\n\n.is-personalizable .personalize-horizontal-bottom-border {\n  border-bottom: 1px solid ' + colors.darkest + ';\n}\n\n.is-personalizable .personalize-horizontal-top-border {\n  border-top: 1px solid: ' + colors.darkest + ';\n}\n\n.is-personalizable .personalize-chart-targeted .total.bar {\n  background-color: rgba(255, 255, 255, .8);\n}\n\n.is-personalizable .personalize-chart-targeted .chart-percent-text,\n.is-personalizable .personalize-chart-targeted .label {\n  color: ' + colors.text + ';\n}\n\n.is-personalizable .info-message,\n.is-personalizable .info-message .icon,\n.is-personalizable .info-message p {\n  color: ' + colors.text + ' !important;\n}\n\n.is-personalizable .personalize-actionable-disabled,\n.is-personalizable .personalize-actionable-disabled:hover {\n  opacity: .4 !important;\n  cursor: default;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .arc,\n.hero-widget.is-personalizable .hero-header .chart-container .bar,\n.hero-widget.is-personalizable .hero-header .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-content .chart-container .arc,\n.hero-widget.is-personalizable .hero-content .chart-container .bar,\n.hero-widget.is-personalizable .hero-content .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-footer .chart-container .arc,\n.hero-widget.is-personalizable .hero-footer .chart-container .bar,\n.hero-widget.is-personalizable .hero-footer .chart-container.line-chart .dot {\n    stroke: ' + colors.lighter + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container text,\n.hero-widget.is-personalizable .hero-content .chart-container text,\n.hero-widget.is-personalizable .hero-footer .chart-container text {\n    fill: ' + colors.text + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-content .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-footer .chart-container .chart-legend-item-text {\n  color: ' + colors.text + ';\n  fill: ' + colors.text + ';\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .axis path, .chart-container .axis line,\n.hero-widget.is-personalizable .hero-header .chart-container .axis .tick0 line {\n  stroke: ' + colors.subtext + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .title,\n.hero-widget.is-personalizable .hero-content .title,\n.hero-widget.is-personalizable .hero-footer .title {\n  color: ' + colors.subtext + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-content .btn-tertiary,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-header .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon\n {\n  color: ' + colors.subtext + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon\n {\n  color: ' + colors.text + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ' + colors.subtext + ',\n    0 0 2px 1px ' + colors.subtext + ';\n}\n\n.header.is-personalizable .toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.header.is-personalizable .flex-toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.subheader.is-personalizable .toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.subheader.is-personalizable .flex-toolbar [class^=\'btn\']:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ' + colors.subtext + ',\n    0 0 2px 1px ' + colors.subtext + ';\n}\n\n.tooltip.is-personalizable {\n  background-color: ' + colors.darkest + ';\n  border-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable .chart-swatch .swatch-row div {\n  border-bottom-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable,\n.tooltip.is-personalizable p,\n.tooltip.is-personalizable .chart-swatch .swatch-row span,\n.tooltip.is-personalizable .chart-swatch .swatch-row b {\n  -webkit-text-fill-color: ' + colors.tooltipText + ';\n  color: ' + colors.tooltipText + ';\n}\n.tooltip.is-personalizable.top .arrow::after {\n  border-top-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.right .arrow::after {\n  border-right-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.bottom .arrow::after {\n  border-bottom-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.left .arrow::after {\n  border-left-color: ' + colors.darkest + ';\n}\n\n    ';
   }
 
   // Component name as referenced by jQuery/event namespace/etc
@@ -8085,6 +8133,7 @@ var Soho = (function (exports) {
       newCss.on('load', function () {
         originalCss.remove();
         self.unBlockUi();
+        self.triggerEvent(incomingTheme);
       }).on('error', function () {
         self.unBlockUi();
       });
@@ -8105,19 +8154,6 @@ var Soho = (function (exports) {
       // record state of theme in settings
       this.settings.theme = incomingTheme;
       theme.setTheme(incomingTheme);
-
-      /**
-      * Fires after the theme is changed
-      * @event themechanged
-      * @memberof Personalize
-      * @property {object} event - The jquery event object
-      * @property {object} args - The event args
-      * @property {string} args.theme - The theme id changed to.
-      */
-      this.element.triggerHandler('themechanged', {
-        colors: this.settings.colors.header || this.settings.colors || theme.themeColors().brand.primary.alt.value,
-        theme: incomingTheme || 'theme-soho-light'
-      });
 
       $('body').trigger('resize');
     },
@@ -8156,12 +8192,35 @@ var Soho = (function (exports) {
 
 
     /**
+     * Trigger the change events.
+     * @private
+     * @param {string} incomingTheme Represents the file name of a color
+     * @returns {void}
+     */
+    triggerEvent: function triggerEvent(incomingTheme) {
+      /**
+      * Fires after the theme is changed
+      * @event themechanged
+      * @memberof Personalize
+      * @property {object} event - The jquery event object
+      * @property {object} args - The event args
+      * @property {string} args.theme - The theme id changed to.
+      */
+      this.element.triggerHandler('themechanged', {
+        colors: this.settings.colors.header || this.settings.colors || theme.themeColors().brand.primary.alt.value,
+        theme: incomingTheme || 'theme-soho-light'
+      });
+    },
+
+
+    /**
      * Removes a temporary page overlay built by `blockUi()`
      * @private
      * @returns {void}
      */
     unBlockUi: function unBlockUi() {
       var self = this;
+
       if (!self.settings.blockUI || !self.pageOverlay) {
         return;
       }
@@ -10024,72 +10083,72 @@ var Soho = (function (exports) {
 
     // If element height/width is greater than window height/width, shrink to fit
     shrink: function shrink(placementObj, dimension) {
+      var dX = 0;
+      var dY = 0;
+      var useX = dimension === undefined || dimension === null || dimension === 'x';
+      var useY = dimension === undefined || dimension === null || dimension === 'y';
+
       var accountForScrolling = this.accountForScrolling(placementObj);
+      var menuRect = DOM.getDimensions(this.element[0]);
       var containerBleed = this.settings.bleedFromContainer;
       var container = this.getContainer(placementObj);
       var containerRect = container ? container[0].getBoundingClientRect() : {};
       var containerIsBody = container.length && container[0] === document.body;
-      var rect = this.element[0].getBoundingClientRect();
-      var useX = dimension === undefined || dimension === null || dimension === 'x';
-      var useY = dimension === undefined || dimension === null || dimension === 'y';
+      var coordinateShrink = placementObj.parent === null;
+
       // NOTE: Usage of $(window) instead of $('body') is deliberate here - http://stackoverflow.com/a/17776759/4024149.
       // Firefox $('body').scrollTop() will always return zero.
       var scrollX = containerIsBody ? $(window).scrollLeft() : container.scrollLeft();
       var scrollY = containerIsBody ? $(window).scrollTop() : container.scrollTop();
       var windowH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
       var windowW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+
+      // Figure out the viewport boundaries
       var leftViewportEdge = (accountForScrolling ? scrollX : 0) + (containerBleed ? 0 : containerRect.left) + placementObj.containerOffsetX;
       var topViewportEdge = (accountForScrolling ? scrollY : 0) + (containerBleed ? 0 : containerRect.top) + placementObj.containerOffsetY;
       var rightViewportEdge = (accountForScrolling ? scrollX : 0) + (containerBleed ? windowW : containerRect.right) - placementObj.containerOffsetX;
       var bottomViewportEdge = (accountForScrolling ? scrollY : 0) + (containerBleed ? windowH : containerRect.bottom) - placementObj.containerOffsetY;
-      var d = void 0;
+
+      // If shrinking a coordinate-placed object (no parent), the full range between top/bottom
+      // and left/right boundaries will be used.
+      // If shrinking a parent-placed object, the distance between the parent and whichever
+      // boundary is further will be used.
+      var availableX = rightViewportEdge - leftViewportEdge;
+      var availableY = bottomViewportEdge - topViewportEdge;
+      if (!coordinateShrink) {
+        var parentRect = DOM.getDimensions(placementObj.parent[0]);
+        var availableTop = parentRect.top - topViewportEdge;
+        var availableBottom = bottomViewportEdge - parentRect.bottom;
+        var availableLeft = parentRect.left - leftViewportEdge;
+        var availableRight = rightViewportEdge - parentRect.right;
+        availableX = availableLeft > availableRight ? availableLeft : availableRight;
+        availableY = availableTop > availableBottom ? availableTop : availableBottom;
+      }
 
       // Shrink in each direction.
       // The value of the "containerOffsets" is "factored out" of each calculation,
       // if for some reason the element is larger than the viewport/container space allowed.
-      placementObj.nudges = placementObj.nudges || {};
-
       if (useX) {
-        // Left
-        if (rect.left < leftViewportEdge) {
-          d = Math.abs(leftViewportEdge - rect.left);
-          if (rect.right >= rightViewportEdge) {
-            d -= placementObj.containerOffsetX;
-          }
-          placementObj.width = rect.width - d;
-          placementObj.setCoordinate('x', placementObj.x + d);
-          placementObj.nudges.x += d;
+        if (menuRect.width > availableX) {
+          placementObj.width = availableX;
         }
 
-        // Right
-        if (rect.right > rightViewportEdge) {
-          d = Math.abs(rect.right - rightViewportEdge);
-          if (rect.left <= leftViewportEdge) {
-            d -= placementObj.containerOffsetX;
-          }
-          placementObj.width = rect.width - d;
+        // Shift back into the viewport if off the Left
+        if (menuRect.left < leftViewportEdge) {
+          dX = leftViewportEdge - menuRect.left;
+          placementObj.setCoordinate('x', placementObj.x + dX);
         }
       }
 
       if (useY) {
-        // Top
-        if (rect.top < topViewportEdge) {
-          d = Math.abs(topViewportEdge - rect.top);
-          if (rect.bottom >= bottomViewportEdge) {
-            d -= placementObj.containerOffsetY;
-          }
-          placementObj.height = rect.height - d;
-          placementObj.setCoordinate('y', placementObj.y + d);
-          placementObj.nudges.y += d;
+        if (menuRect.height > availableY) {
+          placementObj.height = availableY;
         }
 
-        // Bottom
-        if (rect.bottom > bottomViewportEdge) {
-          d = Math.abs(rect.bottom - bottomViewportEdge);
-          if (rect.top <= topViewportEdge) {
-            d -= placementObj.containerOffsetY;
-          }
-          placementObj.height = rect.height - d;
+        // Shift back into the viewport if off the Top
+        if (menuRect.top < topViewportEdge) {
+          dY = topViewportEdge - menuRect.top;
+          placementObj.setCoordinate('y', placementObj.y + dY);
         }
       }
 
@@ -12765,10 +12824,9 @@ var Soho = (function (exports) {
         this.settings.menuId = undefined;
       }
 
-      // Automatically set iOS environments to be `attachToBody: true`
-      var isMobile = Environment.os.name === 'ios';
+      // Automatically set safari environments to be `attachToBody: true`
       var isSafari = Environment.browser.name === 'safari';
-      if (isMobile && isSafari) {
+      if (isSafari) {
         this.settings.attachToBody = true;
       }
 
@@ -13441,8 +13499,6 @@ var Soho = (function (exports) {
       }
 
       function contextMenuHandler(e, isLeftClick) {
-        e.preventDefault();
-
         if (self.keydownThenClick) {
           delete self.keydownThenClick;
           return;
@@ -13484,7 +13540,8 @@ var Soho = (function (exports) {
             // Touch-based operation on a mobile device
             this.element.on('touchstart.popupmenu', function (e) {
               // iOS needs this prevented to prevent its own longpress feature in Safari
-              if (Environment.os.name === 'ios') {
+              // NOTE: this should not interfere with normal text input on form fields.
+              if (Environment.os.name === 'ios' && e.target.tagName !== 'INPUT') {
                 e.preventDefault();
               }
               $(e.target).addClass('longpress-target');
@@ -14393,7 +14450,6 @@ var Soho = (function (exports) {
       var tracker = 0;
       var startY = void 0;
       var menuToClose = void 0;
-      var timeout = void 0;
 
       self.menu.find('.popupmenu').removeClass('is-open');
       self.menu.on('mouseenter.popupmenu touchend.popupmenu', '.submenu:not(.is-disabled)', function (thisE) {
@@ -14402,8 +14458,8 @@ var Soho = (function (exports) {
 
           startY = thisE.pageX;
 
-          clearTimeout(timeout);
-          timeout = setTimeout(function () {
+          clearTimeout(self.submenuOpenTimeout);
+          self.submenuOpenTimeout = setTimeout(function () {
             self.openSubmenu(menuitem);
           }, 300);
 
@@ -14432,7 +14488,7 @@ var Soho = (function (exports) {
           menuToClose = null;
         }
 
-        clearTimeout(timeout);
+        clearTimeout(self.submenuOpenTimeout);
       });
 
       if (self.settings.autoFocus) {
@@ -14780,7 +14836,13 @@ var Soho = (function (exports) {
         wrapper[0].style.width = '';
       }
 
-      this.menu.find('.submenu').off(['mouseenter.popupmenu', 'mouseleave.popupmenu'].join(' ')).removeClass('is-submenu-open');
+      this.menu.find('.submenu').off(['mouseenter.popupmenu', 'mouseleave.popupmenu'].join(' '));
+      this.menu.find('.is-submenu-open').removeClass('is-submenu-open');
+
+      if (this.submenuOpenTimeout) {
+        clearTimeout(this.submenuOpenTimeout);
+        delete this.submenuOpenTimeout;
+      }
 
       if (menu[0]) {
         menu[0].style.left = '';
@@ -14954,7 +15016,7 @@ var Soho = (function (exports) {
       this.teardown();
 
       // In some cases, the menu needs to be completely removed on `destroy`.
-      this.menu.trigger('destroy');
+      this.menu.triggerHandler('destroy');
       if (this.settings.removeOnDestroy && this.menu && this.menu.length) {
         this.menu.off().remove();
         delete this.menu;
@@ -15433,6 +15495,12 @@ var Soho = (function (exports) {
   // Component Name
   var COMPONENT_NAME$a = 'accordion';
 
+  // Expander Button Display Modes
+  // In some cases, expander buttons can be all "plus-minus" icons, or all "chevron" icons.
+  // "Classic" is the original mode, with Chevrons at the top level, and Plus-minus style on all subheaders.
+  // "Plus-minus" mode is the replacement setting for the deprecated setting `displayChevron`
+  var expanderDisplayModes = ['classic', 'plus-minus', 'chevron'];
+
   /**
    * The Accordion is a grouped set of collapsible panels used to navigate sections of
    * related content. Each panel consists of two levels: the top level identifies the
@@ -15442,24 +15510,40 @@ var Soho = (function (exports) {
    * @param {object} element The component element.
    * @param {object} [settings] The component settings.
    * @param {string} [settings.allowOnePane=true] If set to true, allows only one pane of the Accordion to be open at a
-   * time.  If an Accordion pane is open, and that pane contains sub-headers only one of the pane's sub-headers can be open at a time. (default true)
-   * @param {string} [settings.displayChevron=true]  Displays a "Chevron" icon that sits off to the right-most
+   * time. If an Accordion pane is open, and that pane contains sub-headers only one of the pane's sub-headers can be open at a time. (default true)
+   * @param {boolean} [settings.displayChevron=true] (deprecated in v4.23.0) Displays a "Chevron" icon that sits off to the right-most
+   * side of a top-level accordion header. Used in place of an Expander (+/-) if enabled.  Use `settings.expanderDisplay` instead.
    * @param {boolean} [settings.enableTooltips=true] If false, does not run logic to apply tooltips to elements with truncated text.
-   * side of a top-level accordion header. Used in place of an Expander (+/-) if enabled.
+   * @param {string} [settings.expanderDisplay='classic'] Changes the iconography used in accordion header expander buttons. By default, top level expanders will be chevrons, and sub-header expanders will be "plus-minus" style.  This setting can also be "plus-minus" or "chevron" to force the same icons throughout the accordion.
    * @param {string} [settings.rerouteOnLinkClick=true]  Can be set to false if routing is externally handled
    * @param {boolean} [settings.source=null]  A callback function that when implemented provided a call back for "ajax loading" of tab contents on open.
    */
   var ACCORDION_DEFAULTS = {
     allowOnePane: true,
-    displayChevron: true,
+    expanderDisplay: expanderDisplayModes[0],
     enableTooltips: true,
     rerouteOnLinkClick: true,
     source: null
   };
 
+  // Handles the conversion of deprecated settings to current settings
+  function handleDeprecatedSettings(settings) {
+    if (settings.displayChevron !== undefined) {
+      warnAboutDeprecation('expanderDisplay setting', 'displayChevron setting');
+      if (settings.displayChevron === false) {
+        settings.expanderDisplay = expanderDisplayModes[1]; // plus-minus
+      } else {
+        settings.expanderDisplay = expanderDisplayModes[0]; // classic
+      }
+      delete settings.displayChevron;
+    }
+    return settings;
+  }
+
   function Accordion(element, settings) {
     this.element = $(element);
     this.settings = utils.mergeSettings(this.element[0], settings, ACCORDION_DEFAULTS);
+    this.settings = handleDeprecatedSettings(this.settings);
     this.init();
   }
 
@@ -15570,7 +15654,7 @@ var Soho = (function (exports) {
           expander = $('<button class="btn" type="button"></button>');
 
           var method = 'insertBefore';
-          if (self.settings.displayChevron && isTopLevel) {
+          if (self.settings.expanderDisplay !== 'plus-minus' && isTopLevel) {
             header.addClass('has-chevron');
             method = 'insertAfter';
           }
@@ -15582,13 +15666,13 @@ var Soho = (function (exports) {
         expander.hideFocus();
 
         // If Chevrons are turned off and an icon is present, it becomes the expander
-        if (outerIcon.length && !self.settings.displayChevron) {
+        if (outerIcon.length && self.settings.expanderDisplay === 'plus-minus') {
           outerIcon.appendTo(expander);
         }
 
         var expanderIcon = expander.children('.icon, .svg, .plus-minus');
         if (!expanderIcon.length) {
-          if (self.settings.displayChevron && isTopLevel) {
+          if (self.settings.expanderDisplay === 'classic' && isTopLevel || self.settings.expanderDisplay === 'chevron') {
             expanderIcon = $.createIconElement({ icon: 'caret-down', classes: ['chevron'] });
           } else {
             var isActive = self.isExpanded(header) ? ' active' : '';
@@ -15606,7 +15690,8 @@ var Soho = (function (exports) {
         expanderIcon.attr(expanderIconOpts);
 
         // Move around the Expander depending on whether or not it's a chevron
-        if (expanderIcon.is('.chevron')) {
+        // ONLY do this if the chevron is top-level.
+        if (expanderIcon.is('.chevron') && isTopLevel) {
           header.addClass('has-chevron');
           expander.insertAfter(header.children('a'));
         } else {
@@ -15616,7 +15701,7 @@ var Soho = (function (exports) {
 
         // Double check to see if we have left-aligned expanders or icons present,
         // so we can add classes that do alignment
-        if (!self.settings.displayChevron && isTopLevel) {
+        if (self.settings.expanderDisplay === 'plus-minus' && isTopLevel) {
           headersHaveIcons = true;
         }
         checkIfIcons();
@@ -16779,6 +16864,7 @@ var Soho = (function (exports) {
 
       if (settings) {
         this.settings = utils.mergeSettings(this.element[0], settings, this.settings);
+        this.settings = handleDeprecatedSettings(this.settings);
       }
 
       var currentFocus = $(document.activeElement);
@@ -17557,6 +17643,7 @@ var Soho = (function (exports) {
       // string result from that callback. Otherwise, perform the standard method
       // of grabbing text content.
       function getSearchableContent(item) {
+        var santitize = true;
         if (typeof self.settings.searchableTextCallback === 'function') {
           return self.settings.searchableTextCallback(item);
         }
@@ -17567,13 +17654,18 @@ var Soho = (function (exports) {
         } else if (item instanceof $) {
           targetContent = $(item).text();
         } else if (item instanceof HTMLElement) {
+          santitize = false; // safe from innerText and we wan encoding.
           targetContent = item.innerText;
         } else {
           // Object
           targetContent = getObjectPropsAsText(item);
         }
 
-        return xssUtils.sanitizeHTML(targetContent);
+        var ret = targetContent;
+        if (santitize) {
+          ret = xssUtils.sanitizeHTML(targetContent);
+        }
+        return ret;
       }
 
       // Iterates through each list item and attempts to find the provided search term.
@@ -18013,29 +18105,6 @@ var Soho = (function (exports) {
     handleListResults: function handleListResults(term, items, filterResult) {
       var self = this;
 
-      var afterPlaceCallback = function afterPlaceCallback(placementObj) {
-        if (placementObj.wasFlipped === true) {
-          self.list.add(self.element).addClass('is-ontop');
-          placementObj.y += 1;
-        }
-        return placementObj;
-      };
-
-      var popupOpts = {
-        menuId: 'autocomplete-list',
-        ariaListbox: true,
-        mouseFocus: false,
-        trigger: 'immediate',
-        attachToBody: true,
-        autoFocus: false,
-        returnFocus: false,
-        triggerSelect: false,
-        placementOpts: {
-          parent: this.element,
-          callback: afterPlaceCallback
-        }
-      };
-
       filterResult.forEach(function (dataset) {
         if (typeof Tmpl !== 'undefined') {
           var renderedTmpl = Tmpl.compile(self.tmpl, dataset);
@@ -18043,9 +18112,34 @@ var Soho = (function (exports) {
         }
       });
 
-      this.element.addClass('is-open').popupmenu(popupOpts).one('close.autocomplete', function () {
-        self.closeList(true);
-      });
+      if (!this.previouslyOpened) {
+        var afterPlaceCallback = function afterPlaceCallback(placementObj) {
+          if (placementObj.wasFlipped === true) {
+            self.list.add(self.element).addClass('is-ontop');
+            placementObj.y += 1;
+          }
+          return placementObj;
+        };
+
+        var popupOpts = {
+          menuId: 'autocomplete-list',
+          ariaListbox: true,
+          mouseFocus: false,
+          trigger: 'immediate',
+          attachToBody: true,
+          autoFocus: false,
+          returnFocus: false,
+          triggerSelect: false,
+          placementOpts: {
+            parent: this.element,
+            callback: afterPlaceCallback
+          }
+        };
+
+        this.element.addClass('is-open').popupmenu(popupOpts).one('close.autocomplete', function () {
+          self.closeList(true);
+        });
+      }
 
       // Adjust the widths of the LIs to the longest
       var lis = self.list.find('li');
@@ -18073,26 +18167,28 @@ var Soho = (function (exports) {
       */
       this.element.trigger('populated', [filterResult]).focus();
 
-      // Overrides the 'click' listener attached by the Popupmenu plugin
-      self.list.on('touchend.' + COMPONENT_NAME$b + ' click.' + COMPONENT_NAME$b, 'a', function (e) {
-        self.select(e);
-      }).on('focusout.' + COMPONENT_NAME$b, function () {
-        self.checkActiveElement();
-      });
+      if (!this.previouslyOpened) {
+        // Overrides the 'click' listener attached by the Popupmenu plugin
+        self.list.on('touchend.' + COMPONENT_NAME$b + ' click.' + COMPONENT_NAME$b, 'a', function (e) {
+          self.select(e);
+        }).on('focusout.' + COMPONENT_NAME$b, function () {
+          self.checkActiveElement();
+        });
 
-      // Highlight anchors on focus
-      var all = self.list.find('a').on('focus.' + COMPONENT_NAME$b + ' touchend.' + COMPONENT_NAME$b, function () {
-        self.highlight($(this), all);
-      });
+        // Highlight anchors on focus
+        var all = self.list.find('a').on('focus.' + COMPONENT_NAME$b + ' touchend.' + COMPONENT_NAME$b, function () {
+          self.highlight($(this), all);
+        });
 
-      if (this.settings.offset) {
-        var domListParent = this.list.parent()[0];
+        if (this.settings.offset) {
+          var domListParent = this.list.parent()[0];
 
-        if (this.settings.offset.left) {
-          domListParent.style.left = parseInt(domListParent.style.left, 10) + this.settings.offset.left + 'px';
-        }
-        if (this.settings.offset.top) {
-          domListParent.style.top = parseInt(domListParent.style.top, 10) + this.settings.offset.top + 'px';
+          if (this.settings.offset.left) {
+            domListParent.style.left = parseInt(domListParent.style.left, 10) + this.settings.offset.left + 'px';
+          }
+          if (this.settings.offset.top) {
+            domListParent.style.top = parseInt(domListParent.style.top, 10) + this.settings.offset.top + 'px';
+          }
         }
       }
 
@@ -18101,9 +18197,17 @@ var Soho = (function (exports) {
       // added and will remove soon popup close that includes aria-live="polite"
       // which have the first suggested item automatically announced when it
       // appears without moving focus.
-      DOM.append(self.list.parent('.popupmenu-wrapper'), '' + ('' + '<span id="ac-is-arialive" aria-live="polite" class="audible">') + $.trim(this.list.find('>li:first-child').text()) + '</span>', '<div><span><a><small><img><svg><i><b><use><br><strong><em>');
+      var previousLiveMessages = document.querySelectorAll('#ac-is-arialive');
+      if (previousLiveMessages) {
+        previousLiveMessages.forEach(function (messageElem) {
+          messageElem.parentNode.removeChild(messageElem);
+        });
+      }
+
+      DOM.append(self.list.parent('.popupmenu-wrapper'), '<span id="ac-is-arialive" aria-live="polite" class="audible">' + $.trim(this.list.find('>li:first-child').text()) + '</span>', '<div><span><a><small><img><svg><i><b><use><br><strong><em>');
 
       this.noSelect = true;
+      this.previouslyOpened = true;
       this.element.trigger('listopen', [filterResult]);
     },
     closeList: function closeList(dontClosePopup) {
@@ -18129,6 +18233,7 @@ var Soho = (function (exports) {
       $('#autocomplete-list').parent('.popupmenu-wrapper').remove();
       $('#autocomplete-list').remove();
       this.element.add(this.list).removeClass('is-open is-ontop');
+      delete this.previouslyOpened;
     },
     listIsOpen: function listIsOpen() {
       return this.list instanceof $ && this.list.length && this.list.is(':visible');
@@ -19663,11 +19768,6 @@ var Soho = (function (exports) {
      */
     handleBlur: function handleBlur() {
       var self = this;
-
-      if (Environment.os.name === 'ios') {
-        $('head').triggerHandler('disable-zoom');
-      }
-
       self.handleSafeBlur();
     },
 
@@ -20499,10 +20599,6 @@ var Soho = (function (exports) {
         }
 
         self.element.trigger('beforecollapse');
-
-        if (Environment.os.name === 'ios') {
-          $('head').triggerHandler('enable-zoom');
-        }
 
         delete self.isExpanded;
         delete self.isExpanding;
@@ -29165,8 +29261,509 @@ var Soho = (function (exports) {
     return this;
   };
 
+  var dateUtils = {};
+
+  /**
+  * Determine whether or not a date is todays date.
+  * @param {date} date The date to check.
+  * @returns {boolean} Returns true or false if the compared date is today.
+  */
+  dateUtils.isToday = function splice(date) {
+    var today = new Date();
+    return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+  };
+
+  /**
+  * Gets the first day of the week.
+  * @param {date} date The date to check.
+  * @param {number} startsOn Day of the week to start on. Sunday is 0, Monday is 1, and so on.
+  * @returns {boolean} Returns true or false if the compared date is today.
+  */
+  dateUtils.firstDayOfWeek = function firstDayOfWeek(date) {
+    var startsOn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+    var dayOfWeek = date.getDay();
+    var firstDay = new Date(date);
+    var diff = dayOfWeek >= startsOn ? dayOfWeek - startsOn : 6 - dayOfWeek;
+
+    firstDay.setDate(date.getDate() - diff);
+    firstDay.setHours(0, 0, 0, 0);
+
+    return firstDay;
+  };
+
+  /**
+  * Gets the first day of the week.
+  * @param {date} date The date to check.
+  * @param {number} startsOn Day of the week to start on. Sunday is 0, Monday is 1, and so on.
+  * @returns {boolean} Returns true or false if the compared date is today.
+  */
+  dateUtils.lastDayOfWeek = function lastDayOfWeek(date) {
+    var startsOn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+    var lastDay = this.firstDayOfWeek(date, startsOn);
+    lastDay.setDate(lastDay.getDate() + 6);
+    lastDay.setHours(23, 59, 59, 999);
+    return lastDay;
+  };
+
+  /**
+   * Get the difference between two dates.
+   * @param {date} first The first date.
+   * @param {date} second The second date.
+   * @param {boolean} useHours The different in hours if true, otherways days.
+  * @returns {number} The difference between the two dates.
+   */
+  dateUtils.dateDiff = function (first, second, useHours) {
+    // Take the difference between the dates and divide by milliseconds per day.
+    // Round to nearest whole number to deal with DST.
+    return Math.round((second - first) / (1000 * 60 * 60 * (useHours ? 1 : 24)));
+  };
+   //eslint-disable-line
+
+  var calendarShared = {};
+
+  /**
+  * Add calculated fields to an event object.
+  * @param {object} event The starting event object
+  * @param {object} locale The locale instance to use
+  * @param {object} language The language instance to use
+  * @param {array} eventTypes The event types to attach
+  * @returns {object} The event object with stuff added.
+  */
+  calendarShared.addCalculatedFields = function addCalculatedFields(event, locale, language, eventTypes) {
+    //eslint-disable-line
+    event.color = this.getEventTypeColor(event.type, eventTypes);
+    event.duration = Math.abs(dateUtils.dateDiff(new Date(event.ends), new Date(event.starts), false));
+    event.durationUnits = event.duration > 1 ? Locale.translate('Days', { locale: locale.name, language: language }) : Locale.translate('Day', { locale: locale.name, language: language });
+    event.daysUntil = event.starts ? dateUtils.dateDiff(new Date(event.starts), new Date()) : 0;
+    event.durationHours = dateUtils.dateDiff(new Date(event.starts), new Date(event.ends), true);
+    event.isDays = true;
+
+    if (event.isAllDay === undefined) {
+      event.isAllDay = true;
+    }
+
+    if (event.durationHours < 24) {
+      event.isDays = false;
+      event.isAllDay = false;
+      event.durationUnits = event.durationHours > 1 ? Locale.translate('Hours', { locale: locale.name, language: language }) : Locale.translate('Hour', { locale: locale.name, language: language });
+    }
+    if (event.isAllDay.toString() === 'true') {
+      event.isDays = true;
+      delete event.durationHours;
+      event.durationUnits = event.duration > 1 ? Locale.translate('Days', { locale: locale.name, language: language }) : Locale.translate('Day', { locale: locale.name, language: language });
+      event.duration = dateUtils.dateDiff(new Date(event.starts), new Date(event.ends));
+    }
+    if (event.duration === 0 && event.isAllDay.toString() === 'true') {
+      event.isDays = true;
+      event.duration = 1;
+      event.durationUnits = Locale.translate('Day', { locale: locale.name, language: language });
+    }
+    if (event.starts) {
+      var startsLocale = Locale.parseDate(event.starts, { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: locale.name });
+      event.startsLocale = Locale.formatDate(startsLocale, { locale: locale.name });
+      event.startsHourLocale = Locale.formatDate(startsLocale, { date: 'hour', locale: locale.name });
+
+      if (Array.isArray(startsLocale)) {
+        event.startsHour = parseFloat(startsLocale[3] + startsLocale[4] / 60);
+      } else {
+        event.startsHour = parseFloat(startsLocale.getHours() + startsLocale.getMinutes() / 60);
+      }
+    }
+    if (event.ends) {
+      var endsLocale = Locale.parseDate(event.ends, { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: locale.name });
+      event.endsLocale = Locale.formatDate(endsLocale, { locale: locale.name });
+      event.endsHourLocale = Locale.formatDate(endsLocale, { date: 'hour', locale: locale.name });
+
+      if (Array.isArray(endsLocale)) {
+        event.endsHour = parseFloat(endsLocale[3] + endsLocale[4] / 60);
+      } else {
+        event.endsHour = parseFloat(endsLocale.getHours() + endsLocale.getMinutes() / 60);
+      }
+    }
+    event.eventTypes = eventTypes;
+    event.isAllDay = event.isAllDay.toString();
+    if (event.isAllDay.toString() === 'false') {
+      delete event.isAllDay;
+    }
+
+    if (!event.isAllDay && event.durationHours >= 24) {
+      event.isAllDay = false;
+      event.durationUnits = Locale.translate('Hours', { locale: locale.name, language: language });
+      event.isDays = false;
+      delete event.duration;
+    }
+    return event;
+  };
+
+  /**
+   * Find the matching type and get the color.
+   * @param {object} id The eventType id to find.
+   * @param {object} eventTypes The event types to use
+   * @returns {object} The Calendar prototype, useful for chaining.
+   */
+  calendarShared.getEventTypeColor = function getEventTypeColor(id, eventTypes) {
+    var color = 'azure';
+    if (!id) {
+      return color;
+    }
+
+    var eventInfo = eventTypes.filter(function (eventType) {
+      return eventType.id === id;
+    });
+    if (eventInfo.length === 1) {
+      color = eventInfo[0].color || 'azure';
+    }
+    return color;
+  };
+
+  /**
+   * Fix missing / incomlete event data
+   * @param {object} event The event object with common event properties.
+   * @param {boolean} addPlaceholder If true placeholder text will be added for some empty fields.
+   * @param {date} currentDate Active date in the calendar.
+   * @param {object} locale The locale to use.
+   * @param {string} language The language to use.
+   * @param {array} events The events array.
+   * @param {array} eventTypes The event types array.
+   * @private
+   */
+  calendarShared.cleanEventData = function cleanEventData(event, addPlaceholder, currentDate, locale, language, events, eventTypes) {
+    var isAllDay = event.isAllDay === 'on' || event.isAllDay === 'true' || event.isAllDay;
+    var startDate = currentDate;
+    var endDate = currentDate;
+
+    if (event.startsLocale && event.endsLocale) {
+      startDate = new Date(Locale.parseDate(event.startsLocale, { locale: locale.name }));
+      endDate = new Date(Locale.parseDate(event.endsLocale, { locale: locale.name }));
+    }
+
+    if (typeof event.starts === 'string' && !event.startsLocale) {
+      startDate = new Date(event.starts);
+    }
+
+    if (typeof event.ends === 'string' && !event.endsLocale) {
+      endDate = new Date(event.ends);
+    }
+
+    if (!Locale.isValidDate(startDate)) {
+      startDate = currentDate;
+    }
+    if (!Locale.isValidDate(endDate)) {
+      endDate = currentDate;
+    }
+
+    if (isAllDay) {
+      startDate.setHours(0, 0, 0, 0);
+      event.starts = Locale.formatDate(new Date(startDate), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: locale.name });
+      endDate.setHours(23, 59, 59, 999);
+      event.ends = Locale.formatDate(new Date(endDate), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: locale.name });
+      event.duration = event.starts === event.ends ? 1 : null;
+      event.isAllDay = true;
+    } else {
+      if (startDate === endDate) {
+        endDate.setHours(endDate.getHours() + parseInt(event.durationHours, 10));
+        event.ends = Locale.formatDate(endDate.toISOString(), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: locale.name });
+        event.duration = null;
+      } else if (event.endsHourLocale && event.startsHourLocale) {
+        var startsHours = Locale.parseDate(event.startsHourLocale, { date: 'hour', locale: locale.name });
+        var endsHours = Locale.parseDate(event.endsHourLocale, { date: 'hour', locale: locale.name });
+        startDate.setHours(startsHours.getHours(), startsHours.getMinutes(), startsHours.getSeconds(), startsHours.getMilliseconds());
+        endDate.setHours(endsHours.getHours(), endsHours.getMinutes(), endsHours.getSeconds(), endsHours.getMilliseconds());
+        event.starts = Locale.formatDate(startDate.toISOString(), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: locale.name });
+        event.ends = Locale.formatDate(endDate.toISOString(), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: locale.name });
+        event.duration = dateUtils.dateDiff(new Date(event.starts), new Date(event.ends));
+      } else {
+        event.ends = Locale.formatDate(new Date(endDate), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: locale.name });
+      }
+      event.starts = Locale.formatDate(new Date(startDate), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: locale.name });
+      event.isAllDay = false;
+    }
+
+    if (event.comments === undefined && addPlaceholder) {
+      event.comments = Locale.translate('NoCommentsEntered', { locale: locale.name, language: language });
+      event.noComments = true;
+    }
+
+    if (!event.subject && addPlaceholder) {
+      event.subject = Locale.translate('NoTitle', { locale: locale.name, language: language });
+    }
+
+    if (!event.type) {
+      // Default to the first one
+      event.type = eventTypes[0].id;
+    }
+
+    if (event.id === undefined && addPlaceholder) {
+      var lastId = events.length === 0 ? 0 : parseInt(events[events.length - 1].id, 10);
+      event.id = (lastId + 1).toString();
+    }
+
+    if (event.title === 'NewEvent') {
+      event.title = Locale.translate('NewEvent', { locale: locale.name, language: language });
+    }
+  };
+   //eslint-disable-line
+
+  // Default Settings
+  var COMPONENT_NAME$p = 'calendartoolbar';
+
+  /**
+   * The Calendar Toolbar Displays a toolbar above calendars and week views.
+   * @class CalendarToolbar
+   * @constructor
+   *
+   * @param {jQuery[]|HTMLElement} element The component element.
+   * @param {object} [settings] The component settings.
+   * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
+   * @param {number} [settings.month] The month to show.
+   * @param {number} [settings.year] The year to show.
+   * @param {boolean} [settings.showToday=true] If true the today button is shown on the header.
+   * @param {function} [settings.onOpenCalendar] Call back for when the calendar is open on the toolbar datepicker, allows you to set the date.
+   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
+   * @param {boolean} [settings.isAlternate] Alternate style for the datepicker popup.
+   * @param {boolean} [settings.isMenuButton] Show the month/year as a menu button object, works if isAlternate is true.
+   * @param {boolean} [settings.isMonthPicker] Indicates this is a month picker on the month and week view. Has some slight different behavior.
+   * @param {boolean} [settings.showViewChanger=false] If false the dropdown to change views will not be shown.
+   * @param {string} [settings.viewChangerValue='month'] The value to show selected in the view changer. Can be month, week, day or schedule.
+  */
+  var COMPONENT_DEFAULTS = {
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+    locale: null,
+    showToday: true,
+    onOpenCalendar: null,
+    onChangeView: null,
+    isAlternate: false,
+    isMenuButton: true,
+    showViewChanger: false,
+    viewChangerValue: 'month',
+    isMonthPicker: false
+  };
+
+  function CalendarToolbar(element, settings) {
+    this.element = $(element);
+    this.settings = utils.mergeSettings(this.element[0], settings, COMPONENT_DEFAULTS);
+    this.init();
+  }
+
+  // CalendarToolbar Methods
+  CalendarToolbar.prototype = {
+    init: function init() {
+      this.setLocale().build().handleEvents();
+    },
+
+
+    /**
+     * Set up the toolbar to the settings.
+     * @private
+     * @returns {void}
+     */
+    build: function build() {
+      this.element[0].classList.add('flex-toolbar');
+      this.element[0].setAttribute('data-init', 'false');
+
+      if (this.settings.isAlternate) {
+        this.element[0].classList.add('is-alternate');
+        var monthYearPaneButton = '<button type="button" class="btn btn-monthyear-pane expandable-area-trigger" id="btn-monthyear-pane">\n        <span class="month">november</span>\n        <span class="year">2019</span>\n        <svg class="icon icon-closed" focusable="false" aria-hidden="true" role="presentation">\n          <use xlink:href="#icon-dropdown"></use>\n        </svg>\n        <svg class="icon icon-opened" focusable="false" aria-hidden="true" role="presentation">\n          <use xlink:href="#icon-dropdown"></use>\n        </svg>\n      </button>';
+
+        this.element[0].innerHTML = '\n        <div class="toolbar-section">\n          ' + (this.settings.isMenuButton ? monthYearPaneButton : '<span class="month">november</span><span class="year">2015</span>') + '\n        </div>\n        <div class="toolbar-section buttonset l-align-' + (this.isRTL ? 'left' : 'right') + '">\n          ' + (this.settings.showToday ? '<a class="hyperlink today" href="#">' + Locale.translate('Today', { locale: this.locale.name, language: this.language }) + '</a>' : '') + '\n          <button type="button" class="btn-icon prev">\n            <svg class="icon" focusable="false" aria-hidden="true" role="presentation"><use xlink:href="#icon-caret-left"></use></svg>\n            <span>' + Locale.translate('PreviousMonth', { locale: this.locale.name, language: this.language }) + '</span>\n            </button>\n          <button type="button" class="btn-icon next">\n              <svg class="icon" focusable="false" aria-hidden="true" role="presentation"><use xlink:href="#icon-caret-right"></use></svg>\n              <span>' + Locale.translate('NextMonth', { locale: this.locale.name, language: this.language }) + '</span>\n          </button>\n        </div>\n      ';
+      } else {
+        this.element[0].innerHTML = '\n        <div class="toolbar-section">\n          <button type="button" class="btn-icon prev">\n            <svg class="icon" focusable="false" aria-hidden="true" role="presentation"><use xlink:href="#icon-caret-left"></use></svg>\n            <span>' + Locale.translate('PreviousMonth', { locale: this.locale.name, language: this.language }) + '</span>\n            </button>\n          <button type="button" class="btn-icon next">\n              <svg class="icon" focusable="false" aria-hidden="true" role="presentation"><use xlink:href="#icon-caret-right"></use></svg>\n              <span>' + Locale.translate('NextMonth', { locale: this.locale.name, language: this.language }) + '</span>\n          </button>\n          <span class="monthview-datepicker">\n            <span class="hidden month" data-month="9">9</span>\n            <span class="hidden year">2019</span>\n            <span class="audible">' + Locale.translate('SelectDay') + '</span>\n            <span tabindex="0" aria-label="' + Locale.translate('Today', { locale: this.locale.name, language: this.language }) + '" id="monthview-datepicker-field" class="datepicker input-auto" data-validation="">October 2019</span>\n          </span>\n          ' + (this.settings.showToday ? '<a class="hyperlink today" href="#">' + Locale.translate('Today', { locale: this.locale.name, language: this.language }) + '</a>' : '') + '\n        </div>\n        <div class="toolbar-section buttonset l-align-right">\n          ' + (!this.settings.showViewChanger ? '' : '<label for="calendar-view-changer" class="label audible">' + Locale.translate('ChangeView', { locale: this.locale.name, language: this.language }) + '</label>\n            <select id="calendar-view-changer" name="calendar-view-changer" class="dropdown">\n              <option value="month"' + (this.settings.viewChangerValue === 'month' ? ' selected' : '') + '>' + Locale.translate('Month', { locale: this.locale.name, language: this.language }) + '</option>\n              <option value="week"' + (this.settings.viewChangerValue === 'week' ? ' selected' : '') + '>' + Locale.translate('Week', { locale: this.locale.name, language: this.language }) + '</option>\n              <option value="day" ' + (this.settings.viewChangerValue === 'day' ? ' selected' : '') + '>' + Locale.translate('Day', { locale: this.locale.name, language: this.language }) + '</option>\n            </select>\n          </div>') + '\n        </div>\n      ';
+      }
+
+      // Invoke the toolbar
+      this.element.toolbarflex({ allowTabs: true });
+
+      // Setup the datepicker
+      this.monthPicker = this.element.find('#monthview-datepicker-field').datepicker({
+        dateFormat: Locale.calendar(this.locale.name).dateFormat.year,
+        locale: this.settings.locale,
+        onOpenCalendar: this.settings.onOpenCalendar,
+        isMonthPicker: this.settings.isMonthPicker,
+        showToday: this.settings.showToday
+      });
+
+      if (this.settings.showViewChanger) {
+        this.viewChanger = this.element.find('#calendar-view-changer').dropdown();
+      }
+      this.todayLink = this.element.find('.hyperlink.today');
+      this.monthPickerApi = this.monthPicker.data('datepicker');
+
+      // Hide focus on buttons
+      this.element.find('button, a').hideFocus();
+      this.setInternalDate(new Date(this.settings.year, this.settings.month, 1));
+      return this;
+    },
+
+
+    /**
+     * Set the internal date state.
+     * @private
+     * @param {date} date The date to set.
+     * @returns {void}
+     */
+    setInternalDate: function setInternalDate(date) {
+      this.currentYear = date.getFullYear();
+      this.currentMonth = date.getMonth();
+      this.currentDay = date.getDate();
+      this.currentDate = date;
+
+      this.monthPicker.text(Locale.formatDate(new Date(this.currentYear, this.currentMonth, this.currentDay), { date: 'year', locale: this.locale.name }));
+      if (!this.currentCalendar || !this.currentCalendar.months) {
+        this.currentCalendar = Locale.calendar();
+      }
+
+      var monthName = this.currentCalendar.months ? this.currentCalendar.months.wide[this.currentMonth] : '';
+      this.element.find('span.month').attr('data-month', this.currentMonth).text(monthName);
+      this.element.find('span.year').text(' ' + this.currentYear);
+
+      // Some locales set the year first
+      var yearFirst = this.currentCalendar.dateFormat.year && this.currentCalendar.dateFormat.year.substr(1, 1) === 'y';
+      if (yearFirst) {
+        var translation = Locale.formatDate(this.currentDate, { date: 'year', locale: this.locale.name });
+        var justYear = translation.split(' ')[0];
+
+        this.element.find('span.year').text(justYear + ' ');
+        this.element.find('span.year').insertBefore(this.element.find('span.month'));
+      }
+      return this;
+    },
+
+
+    /**
+     * Set current calendar
+     * @private
+     * @returns {this} Rhe object for chaining
+     */
+    setCurrentCalendar: function setCurrentCalendar() {
+      this.currentCalendar = Locale.calendar(this.locale.name, this.settings.calendarName);
+      this.isIslamic = this.currentCalendar.name === 'islamic-umalqura';
+      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
+      return this;
+    },
+
+
+    /**
+     * Set current locale to be used if different than the set locale.
+     * @private
+     * @returns {void}
+     */
+    setLocale: function setLocale() {
+      var _this = this;
+
+      if (this.settings.language) {
+        Locale.getLocale(this.settings.language);
+        this.language = this.settings.language;
+      } else {
+        this.language = Locale.currentLanguage.name;
+      }
+
+      if (this.settings.locale && (!this.locale || this.locale.name !== this.settings.locale)) {
+        Locale.getLocale(this.settings.locale).done(function (locale) {
+          _this.locale = Locale.cultures[locale];
+          _this.language = _this.settings.language || _this.locale.language;
+          _this.setCurrentCalendar();
+        });
+      } else if (!this.settings.locale) {
+        this.locale = Locale.currentLocale;
+        this.setCurrentCalendar();
+      }
+      return this;
+    },
+
+
+    /**
+     * Set the view changer dropdown value
+     * @private
+     * @param {string} viewChangerValue The view changer value to use (month, day or week)
+     * @returns {void}
+     */
+    setViewChangerValue: function setViewChangerValue(viewChangerValue) {
+      this.settings.viewChangerValue = viewChangerValue;
+      this.viewChanger.val(viewChangerValue).trigger('updated');
+    },
+
+
+    /**
+     * Attach Events used by the Component.
+     * @private
+     * @returns {void}
+     */
+    handleEvents: function handleEvents() {
+      var _this2 = this;
+
+      var self = this;
+      this.monthPicker.off('change.calendar-toolbar-p').on('change.calendar-toolbar-p', function () {
+        var picker = $(this).data('datepicker');
+        self.setInternalDate(picker.currentDate);
+        self.element.trigger('change-date', { selectedDate: picker.currentDate, isToday: false });
+      });
+
+      this.todayLink.off('click.calendar-toolbar-t').on('click.calendar-toolbar-t', function (e) {
+        _this2.element.trigger('change-date', { selectedDate: _this2.currentDate, isToday: true });
+        e.preventDefault();
+      });
+
+      this.element.find('.prev').off('click.calendar-toolbar-b').on('click.calendar-toolbar-b', function () {
+        _this2.element.trigger('change-prev', { selectedDate: _this2.currentDate, isToday: false });
+      });
+      this.element.find('.next').off('click.calendar-toolbar-b').on('click.calendar-toolbar-b', function () {
+        _this2.element.trigger('change-next', { selectedDate: _this2.currentDate, isToday: false });
+      });
+
+      if (this.settings.onChangeView) {
+        this.element.find('#calendar-view-changer').off('change.calendar-toolbar-v').on('change.calendar-toolbar-v', function (e) {
+          _this2.settings.onChangeView({
+            viewName: e.currentTarget.value,
+            elem: e.currentTarget,
+            api: _this2
+          });
+        });
+      }
+      return this;
+    },
+
+
+    /**
+     * Resync the UI and Settings.
+     * @param {object} settings The settings to apply.
+     * @returns {object} The api
+     */
+    updated: function updated(settings) {
+      if (typeof settings !== 'undefined') {
+        this.settings = utils.mergeSettings(this.element, settings, COMPONENT_DEFAULTS);
+      }
+      return this.teardown().init();
+    },
+
+
+    /**
+     * Teardown all event handles.
+     * @returns {void}
+     */
+    teardown: function teardown() {
+      this.element.off();
+      this.monthPicker.off();
+      this.todayLink.off();
+      this.element.find('.prev .next').off();
+      return this;
+    },
+
+
+    /**
+     * Destroy this component instance and remove the link from its base element.
+     * @returns {void}
+     */
+    destroy: function destroy() {
+      this.unbind();
+      $.removeData(this.element[0], COMPONENT_NAME$p);
+    }
+  };
+
   // Settings and Options
-  var COMPONENT_NAME$p = 'monthview';
+  var COMPONENT_NAME$q = 'monthview';
 
   var COMPONENT_NAME_DEFAULTS = {
     locale: null,
@@ -29187,7 +29784,7 @@ var Soho = (function (exports) {
       restrictMonths: false
     },
     legend: [{ name: 'Public Holiday', color: '#76B051', dates: [] }, { name: 'Weekends', color: '#EFA836', dayOfWeek: [] }],
-    hideDays: false,
+    hideDays: false, // TODO
     showMonthYearPicker: true,
     yearsAhead: 5,
     yearsBack: 4,
@@ -29204,7 +29801,10 @@ var Soho = (function (exports) {
     },
     selectable: true,
     onSelected: null,
-    showToday: true
+    onKeyDown: null,
+    showToday: true,
+    onChangeView: null,
+    isMonthPicker: false
   };
 
   /**
@@ -29220,6 +29820,7 @@ var Soho = (function (exports) {
    * @param {number} [settings.activeDateIslamic] The date to highlight as selected/today (as an array for islamic)
    * @param {number} [settings.isPopup] Is it in a popup (datepicker using it)
    * @param {number} [settings.headerStyle] Configure the header, this can be 'simple' or 'full'. Full adds a picker and today link.
+   * @param {boolean} [settings.isMonthPicker] Indicates this is a month picker on the month and week view. Has some slight different behavior.
    * @param {number} [settings.firstDayOfWeek=null] Set first day of the week. '1' would be Monday.
    * @param {object} [settings.disable] Disable dates in various ways.
    * For example `{minDate: 'M/d/yyyy', maxDate: 'M/d/yyyy'}`. Dates should be in format M/d/yyyy
@@ -29256,8 +29857,10 @@ var Soho = (function (exports) {
    * for example `[{name: 'Public Holiday', color: '#76B051', dates: []},
    * {name: 'Weekends', color: '#EFA836', dayOfWeek: []}]`
    * @param {boolean} [settings.selectable=false] If true the month days can be clicked to select
-   * @param {boolean} [settings.onSelected=false] Call back that fires when a month day is clicked.
+   * @param {boolean} [settings.onSelected=false] Callback that fires when a month day is clicked.
+   * @param {boolean} [settings.onKeyDown=false] Callback that fires when a key is pressed down.
    * @param {boolean} [settings.showToday=true] If true the today button is shown on the header.
+   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
    */
   function MonthView(element, settings) {
     this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS);
@@ -29290,11 +29893,15 @@ var Soho = (function (exports) {
       if (this.settings.language) {
         Locale.getLocale(this.settings.language);
         this.language = this.settings.language;
+      } else {
+        this.language = Locale.currentLanguage.name;
       }
 
       if (this.settings.locale && (!this.locale || this.locale.name !== this.settings.locale)) {
         Locale.getLocale(this.settings.locale).done(function (locale) {
           _this.locale = Locale.cultures[locale];
+          _this.language = _this.settings.language || _this.locale.language;
+          _this.settings.language = _this.language;
           _this.setCurrentCalendar();
           _this.build().handleEvents();
         });
@@ -29330,14 +29937,7 @@ var Soho = (function (exports) {
       this.prevButton = '' + ('<button type="button" class="btn-icon prev">\n        ' + $.createIcon('caret-left') + '\n        <span>' + Locale.translate('PreviousMonth', { locale: this.locale.name, language: this.language }) + '</span>\n      </button>');
       this.nextButton = '' + ('<button type="button" class="btn-icon next">\n        ' + $.createIcon('caret-right') + '\n        <span>' + Locale.translate('NextMonth', { locale: this.locale.name, language: this.language }) + '</span>\n      </button>');
 
-      var monthYearPaneButton = '<button type="button" class="btn btn-monthyear-pane expandable-area-trigger" id="btn-monthyear-pane">\n        <span class="month">november</span>\n        <span class="year">2015</span>\n        <svg class="icon icon-closed" focusable="false" aria-hidden="true" role="presentation">\n          <use xlink:href="#icon-dropdown"></use>\n        </svg>\n        <svg class="icon icon-opened" focusable="false" aria-hidden="true" role="presentation">\n          <use xlink:href="#icon-dropdown"></use>\n        </svg>\n      </button>';
-
-      if (this.settings.hideDays) {
-        monthYearPaneButton = '';
-      }
-
-      this.header = $('' + ('<div class="monthview-header">\n        ' + (this.settings.showMonthYearPicker ? monthYearPaneButton : '<span class="month">november</span><span class="year">2015</span>') + '\n        ' + (this.isRTL ? this.nextButton + this.prevButton : this.prevButton + this.nextButton) + '\n      </div>'));
-      this.table = $('<table class="monthview-table" aria-label="' + Locale.translate('Calendar', { locale: this.locale.name, language: this.language }) + '" role="application"></table>');
+      this.table = $('<table class="monthview-table" aria-label="' + Locale.translate('Calendar', { locale: this.locale.name }) + '" role="application"></table>');
       this.dayNames = $('' + '<thead>\n        <tr>\n          <th>SU</th>\n          <th>MO</th>\n          <th>TU</th>\n          <th>WE</th>\n          <th>TH</th>\n          <th>FR</th>\n          <th>SA</th>\n        </tr>\n      </thead>').appendTo(this.table);
       this.days = $('' + '<tbody>\n        <tr>\n          <td class="alternate">26</td>\n          <td class="alternate">27</td>\n          <td class="alternate">28</td>\n          <td class="alternate">29</td>\n          <td class="alternate" >30</td>\n          <td class="alternate">31</td>\n          <td>1</td>\n        </tr><tr>\n          <td>2</td>\n          <td>3</td>\n          <td>4</td>\n          <td>5</td>\n          <td>6</td>\n          <td>7</td>\n          <td>8</td>\n        </tr><tr>\n          <td>9</td>\n          <td>10</td>\n          <td>11</td>\n          <td>12</td>\n          <td>13</td>\n          <td>14</td>\n          <td>15</td>\n        </tr><tr>\n          <td>16</td>\n          <td>17</td>\n          <td>18</td>\n          <td>19</td>\n          <td class="is-today">20</td>\n          <td>21</td>\n          <td>22</td>\n        </tr><tr>\n          <td>23</td>\n          <td>24</td>\n          <td>25</td>\n          <td>26</td>\n          <td>27</td>\n          <td>28</td>\n          <td class="alternate">1</td>\n        </tr><tr>\n          <td class="alternate">2</td>\n          <td class="alternate">3</td>\n          <td class="alternate">4</td>\n          <td class="alternate">5</td>\n          <td class="alternate">6</td>\n          <td class="alternate">7</td>\n          <td class="alternate">8</td>\n        </tr>\n      </tbody>').appendTo(this.table);
 
@@ -29348,10 +29948,9 @@ var Soho = (function (exports) {
       }
 
       // Reconfigure the header
+      this.header = $('<div class="monthview-header"><div class="calendar-toolbar"></div></div>');
       if (this.settings.headerStyle === 'full') {
-        this.header = $('' + ('<div class="monthview-header full">\n          ' + (this.isRTL ? this.nextButton + this.prevButton : this.prevButton + this.nextButton) + '\n          <span class="monthview-datepicker">\n            <span class="hidden month"></span><span class="hidden year"></span>\n            <input aria-label="' + Locale.translate('Today', { locale: this.locale.name, language: this.language }) + '" id="monthview-datepicker-field" readonly data-init="false" class="datepicker" name="monthview-datepicker-field" type="text"/>\n          </span>\n          ' + (this.settings.showToday ? '<a class="hyperlink today" href="#">' + Locale.translate('Today', { locale: this.locale.name, language: this.language }) + '</a>' : '') + '\n        </div>'));
         this.monthPicker = this.header.find('#monthview-datepicker-field');
-        this.todayLink = this.header.find('.hyperlink.today');
       } else if (this.settings.showToday) {
         this.header.find('.btn-icon.prev').before('<a class="hyperlink today" href="#">' + Locale.translate('Today', { locale: this.locale.name, language: this.language }) + '</a>');
       }
@@ -29366,18 +29965,23 @@ var Soho = (function (exports) {
       // Add Legend
       this.addLegend();
 
-      if (this.settings.headerStyle === 'full') {
-        this.monthPicker.datepicker({
-          autoSize: true,
-          dateFormat: Locale.calendar(this.locale.name).dateFormat.year,
-          locale: this.settings.locale,
-          showMonthYearPicker: true,
-          onOpenCalendar: function onOpenCalendar() {
-            return _this2.currentDate;
-          }
-        });
-        this.header.find('button, a').hideFocus();
-      }
+      // Invoke the toolbar
+      this.calendarToolbarEl = this.header.find('.calendar-toolbar');
+      this.calendarToolbarAPI = new CalendarToolbar(this.calendarToolbarEl[0], {
+        onOpenCalendar: function onOpenCalendar() {
+          return _this2.currentDate;
+        },
+        locale: this.settings.locale,
+        language: this.settings.language,
+        year: this.currentYear,
+        month: this.currentMonth,
+        showToday: this.settings.showToday,
+        isMonthPicker: this.settings.headerStyle === 'full',
+        isAlternate: this.settings.headerStyle !== 'full',
+        isMenuButton: this.settings.headerStyle !== 'full' ? this.settings.showMonthYearPicker : false,
+        showViewChanger: this.settings.showViewChanger,
+        onChangeView: this.settings.onChangeView
+      });
 
       this.handleEvents();
       return this;
@@ -29392,7 +29996,7 @@ var Soho = (function (exports) {
     setCurrentCalendar: function setCurrentCalendar() {
       this.currentCalendar = Locale.calendar(this.locale.name, this.settings.calendarName);
       this.isIslamic = this.currentCalendar.name === 'islamic-umalqura';
-      this.isRTL = this.locale.direction === 'right-to-left';
+      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
       this.conversions = this.currentCalendar.conversions;
     },
 
@@ -29440,6 +30044,8 @@ var Soho = (function (exports) {
         month = 0;
         this.currentMonth = month;
         this.currentYear = year;
+        this.currentDate.setFullYear(year);
+        this.currentDate.setMonth(month);
       }
 
       if (month < 0) {
@@ -29447,9 +30053,14 @@ var Soho = (function (exports) {
         month = 11;
         this.currentMonth = month;
         this.currentYear = year;
+        this.currentDate.setFullYear(year);
+        this.currentDate.setMonth(month);
       }
 
       this.currentDay = this.currentDay || now.getDate();
+      if (!this.currentCalendar || !this.currentCalendar.days) {
+        this.currentCalendar = Locale.calendar();
+      }
 
       var days = this.currentCalendar.days.narrow;
       days = days || this.currentCalendar.days.abbreviated;
@@ -29487,14 +30098,8 @@ var Soho = (function (exports) {
         this.header.find('.year').insertBefore(this.header.find('.month'));
       }
 
-      if (s.headerStyle === 'full' && this.monthPicker) {
-        this.monthPicker.val(Locale.formatDate(new Date(year, month, 1), { date: 'year', locale: this.locale.name }));
-        this.monthPicker.prev('.year').text(year);
-        this.monthPicker.prev().prev('.month').text(month);
-
-        if (this.monthPicker.data('datepicker')) {
-          this.monthPicker.data('datepicker').setSize();
-        }
+      if (s.headerStyle === 'full' && this.calendarToolbarAPI) {
+        this.calendarToolbarAPI.setInternalDate(new Date(year, month, 1));
       }
 
       this.appendMonthYearPicker(month, year);
@@ -29510,6 +30115,13 @@ var Soho = (function (exports) {
       var exYear = void 0;
       var exMonth = void 0;
       var exDay = void 0;
+      var foundSelected = false;
+
+      // Set selected state
+      var setSelected = function setSelected(el, isFound) {
+        foundSelected = isFound;
+        el.addClass('is-selected' + (s.range.useRange ? ' range' : '')).attr('aria-selected', 'true').attr('tabindex', '0');
+      };
 
       this.dayMap = [];
       this.days.find('td').each(function (i) {
@@ -29537,17 +30149,19 @@ var Soho = (function (exports) {
           // Add Selected Class to Selected Date
           if (self.isIslamic) {
             if (year === elementDate[0] && month === elementDate[1] && dayCnt === elementDate[2]) {
-              th.addClass('is-selected' + (s.range.useRange ? ' range' : '')).attr('aria-selected', 'true').attr('tabindex', '0');
+              setSelected(th, true);
             }
           } else {
             var tHours = elementDate.getHours();
             var tMinutes = elementDate.getMinutes();
             var tSeconds = self.isSeconds ? elementDate.getSeconds() : 0;
+            var setHours = function setHours(el) {
+              return el ? el.setHours(tHours, tMinutes, tSeconds, 0) : 0;
+            };
 
-            var newDate = new Date(year, month, dayCnt).setHours(tHours, tMinutes, tSeconds, 0);
-
-            if (newDate === elementDate.setHours(tHours, tMinutes, tSeconds, 0)) {
-              th.addClass('is-selected' + (s.range.useRange ? ' range' : '')).attr('aria-selected', 'true').attr('tabindex', '0');
+            var newDate = setHours(new Date(year, month, dayCnt));
+            if (newDate === setHours(elementDate) || newDate === setHours(self.currentDate)) {
+              setSelected(th, true);
             }
           }
 
@@ -29585,6 +30199,15 @@ var Soho = (function (exports) {
         }
       });
 
+      if (!foundSelected && !s.range.useRange) {
+        var firstDay = self.dayMap.filter(function (d) {
+          return d.key === stringUtils.padDate(year, month, 1);
+        });
+        if (firstDay.length) {
+          setSelected(firstDay[0].elem, false);
+        }
+      }
+
       // Hide 6th Row if all disabled
       var row = this.days.find('tr').eq(5);
       if (row.find('td.alternate').length === 7) {
@@ -29605,17 +30228,10 @@ var Soho = (function (exports) {
       this.setRangeSelection();
       this.validatePrevNext();
 
-      // Select the same day as last month
+      // Allow focus on the same day as last month
       if (!s.range.useRange && this.element.find('td.is-selected').length === 0) {
         this.element.find('td[tabindex]').removeAttr('tabindex');
-        this.element.find('td:not(.alternate) .day-text').filter(function () {
-          var currentDay = self.currentDay;
-          if (s.activeDate) {
-            currentDay = s.activeDate.getDate();
-            self.currentDay = currentDay;
-          }
-          return parseInt($(this).text(), 10) === parseInt(currentDay, 10);
-        }).closest('td').addClass('is-selected').attr('tabindex', '0');
+        this.element.find('td:not(.alternate) .day-text').first().closest('td').attr('tabindex', '0');
       }
 
       /**
@@ -29786,7 +30402,11 @@ var Soho = (function (exports) {
       var s = this.settings;
       var min = new Date(s.disable.minDate).setHours(0, 0, 0, 0);
       var max = new Date(s.disable.maxDate).setHours(0, 0, 0, 0);
-      var d2 = new Date(year, month, date);
+      var d2 = this.isIslamic ? this.conversions.toGregorian(year, month, date) : new Date(year, month, date);
+
+      if (!d2) {
+        return false;
+      }
 
       // dayOfWeek
       if (s.disable.dayOfWeek.indexOf(d2.getDay()) !== -1) {
@@ -29934,7 +30554,7 @@ var Soho = (function (exports) {
       var self = this;
       var s = this.settings;
 
-      this.element.off('updated.' + COMPONENT_NAME$p).on('updated.' + COMPONENT_NAME$p, function () {
+      this.element.off('updated.' + COMPONENT_NAME$q).on('updated.' + COMPONENT_NAME$q, function () {
         _this3.updated();
       });
 
@@ -29985,14 +30605,16 @@ var Soho = (function (exports) {
         });
       }
 
-      if (s.headerStyle === 'full' && this.monthPicker) {
-        this.monthPicker.off('change.monthview').on('change.monthview', function () {
-          var picker = $(this).data('datepicker');
-          self.selectDay(picker.currentDate, false, true);
-        });
-
-        this.todayLink.off('click.monthview').on('click.monthview', function () {
-          _this3.selectToday();
+      if (this.calendarToolbarEl) {
+        this.calendarToolbarEl.off('change-date.monthview').on('change-date.monthview', function (e, args) {
+          if (args.isToday && _this3.settings.isPopup) {
+            return;
+          }
+          if (args.isToday) {
+            _this3.setToday();
+            return;
+          }
+          _this3.selectDay(args.selectedDate, false, true);
         });
       }
 
@@ -30293,7 +30915,7 @@ var Soho = (function (exports) {
     /**
      * Select todays date visually.
      */
-    selectToday: function selectToday() {
+    setToday: function setToday() {
       this.selectDay(new Date(), false, true);
     },
 
@@ -30322,6 +30944,15 @@ var Soho = (function (exports) {
             _this5.datepickerApi.resetRange({ isData: true });
           }
         };
+
+        if (_this5.settings.onKeyDown) {
+          var callbackResult = _this5.settings.onKeyDown({ e: e, key: key, cell: cell, node: _this5.element });
+          if (callbackResult === false) {
+            e.stopPropagation();
+            e.preventDefault();
+            return false;
+          }
+        }
 
         // Arrow Down: select same day of the week in the next week
         if (key === 40) {
@@ -30529,7 +31160,7 @@ var Soho = (function (exports) {
               _this5.datepickerApi.closeCalendar();
             }
           } else {
-            _this5.selectToday();
+            _this5.setToday();
           }
           handled = true;
         }
@@ -30881,7 +31512,7 @@ var Soho = (function (exports) {
      * @returns {object} [description]
      */
     updated: function updated() {
-      return this.destroy().init();
+      return this.teardown().init();
     },
 
 
@@ -30910,7 +31541,827 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       this.teardown();
       this.element.empty();
-      $.removeData(this.element[0], COMPONENT_NAME$p);
+      $.removeData(this.element[0], COMPONENT_NAME$q);
+      return this;
+    }
+  };
+
+  // Settings and Options
+  var COMPONENT_NAME$r = 'weekview';
+
+  var COMPONENT_NAME_DEFAULTS$1 = {
+    eventTypes: [{ id: 'example', label: 'Example', color: 'emerald07', checked: true, click: function click() {} }],
+    filteredTypes: [],
+    events: [],
+    locale: null,
+    language: null,
+    firstDayOfWeek: 0,
+    startDate: null,
+    endDate: null,
+    showAllDay: true,
+    showTimeLine: true,
+    startHour: 7,
+    endHour: 19,
+    showToday: true,
+    showViewChanger: true,
+    onChangeView: null,
+    onChangeWeek: null,
+    onRenderWeek: null,
+    eventTooltip: 'overflow',
+    iconTooltip: 'overflow'
+  };
+
+  /**
+   * WeekView - Renders a Week View Calendar
+   * @class WeekView
+   * @param {string} element The plugin element for the constuctor
+   * @param {object} [settings] The settings element.
+   * @param {array} [settings.eventTypes] An array of objects with data for the event types.
+   * @param {array} [settings.events] An array of objects with data for the events.
+   * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
+   * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale will be used or the passed locale will be used.
+   * @param {date} [settings.startDate] Start of the week to show.
+   * @param {date} [settings.endDate] End of the week to show.
+   * @param {boolean} [settings.firstDayOfWeek=0] Set first day of the week. '1' would be Monday.
+   * @param {boolean} [settings.showAllDay=true] Detemines if the all day events row should be shown.
+   * @param {boolean} [settings.showTimeLine=true] Shows a bar across the current time.
+   * @param {number} [settings.startHour=7] The hour (0-24) to end on each day.
+   * @param {number} [settings.endHour=19] The hour (0-24) to end on each day.
+   * @param {boolean} [settings.showToday=true] Deterimines if the today button should be shown.
+   * @param {boolean} [settings.showViewChanger] If false the dropdown to change views will not be shown.
+   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
+   * @param {function} [settings.onChangeWeek] Call back for when the week is changed.
+   * @param {function} [settings.onRenderMonth] Fires when a week is rendered, allowing you to pass back events or event types to show.
+  * @param {string | function} [settings.eventTooltip] The content of event tooltip. Default value is 'overflow'
+   * @param {string | function} [settings.iconTooltip] The content of event icon tooltip. Default value is 'overflow'
+   */
+  function WeekView(element, settings) {
+    this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS$1);
+    this.element = $(element);
+    this.init();
+  }
+
+  // Plugin Methods
+  WeekView.prototype = {
+
+    /**
+     * Do initialization, build up and / or add events ect.
+     * @private
+     * @returns {object} The Component prototype, useful for chaining.
+     */
+    init: function init() {
+      // Do initialization. Build or Events ect
+      if (!this.settings.startDate) {
+        this.settings.startDate = dateUtils.firstDayOfWeek(new Date(), this.settings.firstDayOfWeek);
+      }
+
+      if (!this.settings.endDate) {
+        this.settings.endDate = dateUtils.lastDayOfWeek(new Date(), this.settings.firstDayOfWeek);
+      }
+
+      return this.build();
+    },
+
+
+    /**
+     * Set current locale to be used
+     * @private
+     * @returns {void}
+     */
+    setLocale: function setLocale() {
+      var _this = this;
+
+      if (this.settings.language) {
+        Locale.getLocale(this.settings.language);
+        this.language = this.settings.language;
+      } else {
+        this.language = Locale.currentLanguage.name;
+      }
+
+      if (this.settings.locale && (!this.locale || this.locale.name !== this.settings.locale)) {
+        Locale.getLocale(this.settings.locale).done(function (locale) {
+          _this.locale = Locale.cultures[locale];
+          _this.language = _this.settings.language || _this.locale.language;
+          _this.setCurrentCalendar();
+          _this.build().handleEvents();
+        });
+      } else if (!this.settings.locale) {
+        this.locale = Locale.currentLocale;
+        this.setCurrentCalendar();
+      }
+    },
+
+
+    /**
+     * Set current calendar
+     * @private
+     * @returns {void}
+     */
+    setCurrentCalendar: function setCurrentCalendar() {
+      this.currentCalendar = Locale.calendar(this.locale.name, this.settings.calendarName);
+      this.isIslamic = this.currentCalendar.name === 'islamic-umalqura';
+      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
+      this.conversions = this.currentCalendar.conversions;
+      return this;
+    },
+
+
+    /**
+     * Add any needed markup to the component.
+     * @private
+     * @returns {object} The WeekView prototype, useful for chaining.
+     */
+    build: function build() {
+      this.setLocale();
+      if (this.rendered || this.settings.locale && (!this.locale || this.locale.name !== this.settings.locale)) {
+        // Defer loading
+        this.rendered = false;
+        return this;
+      }
+
+      this.rendered = true;
+      this.addToolbar();
+      this.showWeek(this.settings.startDate, this.settings.endDate);
+      this.handleEvents();
+      return this;
+    },
+
+
+    /**
+     * Render all the events in the current view.
+     * @param {boolean} isCallback Will be set to true when a callback occurs
+     * @private
+     */
+    renderAllEvents: function renderAllEvents(isCallback) {
+      if (this.settings.onRenderWeek && !isCallback) {
+        this.callOnRenderWeek();
+        return;
+      }
+
+      // Clone and sort the array
+      var eventsSorted = this.settings.events.slice(0);
+      eventsSorted.sort(function (a, b) {
+        return a.starts < b.starts ? -1 : a.starts > b.starts ? 1 : 0;
+      }); // eslint-disable-line
+      this.removeAllEvents();
+
+      for (var i = 0; i < eventsSorted.length; i++) {
+        var event = eventsSorted[i];
+        if (this.settings.filteredTypes.indexOf(event.type) > -1) {
+          continue;
+        }
+        this.renderEvent(event);
+      }
+    },
+
+
+    /**
+     * Execute onRenderWeek and handle the call back.
+     * @private
+     */
+    callOnRenderWeek: function callOnRenderWeek() {
+      var self = this;
+
+      function response(events, eventTypes) {
+        if (eventTypes && eventTypes.length > 0) {
+          self.settings.eventTypes = eventTypes;
+        }
+        if (events && events.length > 0) {
+          self.settings.events = events;
+          self.renderAllEvents(true);
+        }
+      }
+
+      this.settings.onRenderWeek(this.element, response, {
+        api: self,
+        settings: this.settings
+      });
+    },
+
+
+    /**
+     * Remove all events from the month.
+     * @private
+     */
+    removeAllEvents: function removeAllEvents() {
+      var events = this.element[0].querySelectorAll('.calendar-event');
+      for (var i = 0; i < events.length; i++) {
+        events[i].parentNode.removeChild(events[i]);
+      }
+
+      for (var _i = 0; _i < this.dayMap.length; _i++) {
+        this.dayMap[_i].events = [];
+      }
+    },
+
+
+    /**
+     * Render a single event on the ui, use in the loop and other functions.
+     * @private
+     * @param  {object} event The event object.
+     */
+    renderEvent: function renderEvent(event) {
+      var startDate = new Date(event.starts);
+      var startKey = stringUtils.padDate(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+
+      var endDate = new Date(event.ends);
+      var endKey = stringUtils.padDate(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+
+      var days = this.dayMap.filter(function (day) {
+        return day.key >= startKey && day.key <= endKey;
+      });
+      event.endKey = endKey;
+      event.startKey = startKey;
+      event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes);
+
+      // Event is only on this day
+      if (days.length === 1 && !event.isAllDay) {
+        this.appendEventToHours(days[0].elem, event);
+      }
+
+      if (days.length === 1 && event.isAllDay) {
+        this.appendEventToAllDay(days[0].elem, event);
+      }
+
+      // Event extends multiple days or is all day
+      if (days.length > 1) {
+        // TODO
+        for (var i = 0; i < days.length; i++) {
+          var cssClass = i === 0 ? 'calendar-event-start' : 'calendar-event-continue';
+          if (i === days.length - 1) {
+            cssClass = 'calendar-event-ends';
+          }
+          this.appendEventToAllDay(days[i].elem, event, cssClass);
+        }
+      }
+    },
+
+
+    /*
+     * Add the ui event to the container event day
+     * @private
+     * @param {object} container The container to append to
+     * @param {object} event The event data object.
+     * @param {string} cssClass An extra css class
+     */
+    appendEventToAllDay: function appendEventToAllDay(container, event, cssClass) {
+      var allDayContainer = container.querySelector('.week-view-all-day-wrapper');
+      if (!allDayContainer) {
+        return;
+      }
+
+      var node = document.createElement('a');
+      DOM.addClass(node, 'calendar-event', event.color, cssClass);
+      node.setAttribute('data-id', event.id);
+      node.setAttribute('data-key', event.startKey);
+      node.setAttribute('href', '#');
+
+      if (cssClass === 'calendar-event-continue' || cssClass === 'calendar-event-ends') {
+        node.setAttribute('tabindex', '-1');
+      }
+
+      node.innerHTML = '<div class="calendar-event-content">\n      ' + (event.icon ? '<span class="calendar-event-icon"><svg class="icon ' + event.icon + '" focusable="false" aria-hidden="true" role="presentation" data-status="' + event.status + '"><use xlink:href="#' + event.icon + '"></use></svg></span>' : '') + '\n      <span class="calendar-event-title">' + (event.shortSubject || event.subject) + '</span>\n    </div>';
+
+      var containerEvents = allDayContainer.querySelectorAll('.calendar-event');
+      var eventCount = containerEvents.length;
+
+      if (eventCount >= 1) {
+        node.style.top = 22 * eventCount + 'px';
+      }
+      if (eventCount > 2) {
+        var nodes = this.element[0].querySelectorAll('.week-view-all-day-wrapper');
+        for (var i = 0; i < nodes.length; i++) {
+          nodes[i].style.height = 44 + (eventCount - 1) * 23 + 'px';
+        }
+      }
+      allDayContainer.appendChild(node);
+      this.attachTooltip(node, event);
+    },
+
+
+    /**
+     * Add the ui event to the container spanning hours
+     * @private
+     * @param {object} container The container to append to
+     * @param {object} event The event data object.
+     */
+    appendEventToHours: function appendEventToHours(container, event) {
+      var dayHourContainers = this.element[0].querySelectorAll('td:nth-child(' + (container.cellIndex + 1) + ')');
+      for (var i = 0; i < dayHourContainers.length; i++) {
+        var tdEl = dayHourContainers[i];
+        var hour = tdEl.parentNode.getAttribute('data-hour');
+        var startsHere = parseFloat(hour, 10) === event.startsHour;
+
+        if (startsHere) {
+          var duration = event.endsHour - event.startsHour;
+          var displayedTime = '';
+          var node = document.createElement('a');
+          DOM.addClass(node, 'calendar-event', event.color);
+          node.setAttribute('data-id', event.id);
+          node.setAttribute('data-key', event.startKey);
+          node.setAttribute('href', '#');
+
+          if (duration < 0.5) {
+            DOM.addClass(node, 'reduced-padding', event.color);
+          }
+
+          if (duration < 1.5) {
+            DOM.addClass(node, 'is-ellipsis');
+          }
+
+          if (duration > 2) {
+            displayedTime = ' ' + Locale.formatHourRange(event.startsHour, event.endsHour, { locale: this.locale });
+          }
+
+          // Max out at the bottom and show the time
+          if (event.startsHour + duration > this.settings.endHour) {
+            DOM.addClass(node, 'is-cutoff', event.color);
+            duration = this.settings.endHour + 1 - event.startsHour;
+          }
+
+          if (duration < 0.25) {
+            duration = 0.25;
+          }
+
+          // Add one per half hour + 1 px for each border crossed
+          node.style.height = 25 * (duration * 2) + 1.5 * duration + 'px';
+
+          node.innerHTML = '<div class="calendar-event-content">\n          ' + (event.icon ? '<span class="calendar-event-icon"><svg class="icon ' + event.icon + '" focusable="false" aria-hidden="true" role="presentation" data-status="' + event.status + '"><use xlink:href="#' + event.icon + '"></use></svg></span>' : '') + '\n          <span class="calendar-event-title">' + (event.shortSubject || event.subject) + displayedTime + '</span>\n        </div>';
+
+          var containerWrapper = tdEl.querySelector('.week-view-cell-wrapper');
+          var containerEvents = tdEl.querySelectorAll('.calendar-event');
+          var eventCount = containerEvents.length;
+
+          if (eventCount > 0) {
+            var width = 100 / (eventCount + 1);
+            var j = 0;
+
+            for (j = 0; j < eventCount; j++) {
+              containerEvents[j].style.width = width + '%';
+              if (j > 0 && this.isRTL) {
+                containerEvents[j].style.right = width * j + '%';
+              }
+              if (j > 0 && !this.isRTL) {
+                containerEvents[j].style.left = width * j + '%';
+              }
+            }
+            node.style.width = width + '%';
+
+            if (this.isRTL) {
+              node.style.right = width * j + '%';
+            } else {
+              node.style.left = width * j + '%';
+            }
+          }
+          containerWrapper.appendChild(node);
+          this.attachTooltip(node, event);
+        }
+      }
+    },
+
+
+    /**
+     * Add the tooltip functionality.
+     * @private
+     * @param {object} node The dom element.
+     * @param {object} event The event data object.
+     */
+    attachTooltip: function attachTooltip(node, event) {
+      var _this2 = this;
+
+      if (this.settings.iconTooltip !== 'overflow') {
+        var icon = node.querySelector('.calendar-event-icon');
+        if (icon) {
+          if (typeof this.settings.iconTooltip === 'function') {
+            this.settings.iconTooltip({
+              settings: this.settings,
+              event: event
+            });
+          } else if (event[this.settings.iconTooltip]) {
+            icon.setAttribute('title', event[this.settings.iconTooltip]);
+            $(icon).tooltip({
+              content: icon.innerText
+            });
+          }
+        }
+      }
+
+      if (this.settings.eventTooltip !== 'overflow') {
+        if (typeof this.settings.eventTooltip === 'function') {
+          this.settings.eventTooltip({
+            settings: this.settings,
+            event: event
+          });
+        } else if (event[this.settings.eventTooltip]) {
+          node.setAttribute('title', event[this.settings.eventTooltip]);
+          $(node).tooltip({
+            content: node.innerText
+          });
+        }
+      }
+
+      if (!event.shortSubject && (this.settings.eventTooltip === 'overflow' || this.settings.iconToolTip === 'overflow')) {
+        // Show the full text if cut off
+        node.setAttribute('title', event.subject);
+        $(node).tooltip({
+          beforeShow: function beforeShow(response, ui) {
+            var title = ui[0].querySelector('.calendar-event-title');
+            var icon = ui[0].querySelector('.calendar-event-icon');
+            var iconStatus = icon ? icon.querySelector('.icon').getAttribute('data-status') : '';
+
+            if (title.offsetWidth > ui[0].scrollWidth - (icon ? icon.offsetWidth : 0)) {
+              response('' + title.innerText + (iconStatus ? ' (' + Locale.translate(iconStatus, { locale: _this2.locale.name }, false) + ')' : ''));
+              return;
+            }
+            response(false);
+          }
+        });
+      }
+    },
+
+
+    /**
+     * Update the weekview to show the given range of days.
+     * @param {date} startDate The start of the week or range.
+     * @param {date} endDate The end of the week or range.
+     * @returns {void}
+     */
+    showWeek: function showWeek(startDate, endDate) {
+      var _this3 = this;
+
+      this.numberOfDays = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24));
+      this.dayMap = [];
+      this.isDayView = false;
+
+      if (this.numberOfDays === 0 || this.numberOfDays === 1) {
+        this.element.addClass('is-day-view');
+        this.isDayView = true;
+        this.element.find('#calendar-view-changer').val('day').trigger('updated');
+      }
+      this.hasIrregularDays = this.numberOfDays !== 7;
+
+      // Create the header consisting of days in the range
+      this.weekHeader = '<thead class="week-view-table-header"><tr><th><div class="week-view-header-wrapper"><span class="audible">' + Locale.translate('Hour') + '</span></div>';
+      if (this.settings.showAllDay) {
+        this.weekHeader += '<div class="week-view-all-day-wrapper">' + Locale.translate('AllDay', this.locale.name) + '</div>';
+      }
+      this.weekHeader += '</th>';
+
+      for (var day = new Date(startDate.getTime()); day <= endDate; day.setDate(day.getDate() + 1)) {
+        // TODO if this is 'dd EEEE' has wierd overflow
+        var dayOfWeek = Locale.formatDate(day, { pattern: 'dd EEEE', locale: this.locale.name });
+        this.weekHeader += '<th data-key="' + stringUtils.padDate(day.getFullYear(), day.getMonth(), day.getDate()) + '"><div class="week-view-header-wrapper' + (dateUtils.isToday(day) ? ' is-today' : '') + '">' + dayOfWeek + '</div>';
+        if (this.settings.showAllDay) {
+          this.weekHeader += '<div class="week-view-all-day-wrapper"></div>';
+        }
+        this.weekHeader += '</th>';
+      }
+      this.weekHeader += '</tr></thead>';
+
+      // Show the hours in the days
+      this.weekBody = '<tbody>';
+      for (var hour = this.settings.startHour; hour <= this.settings.endHour; hour++) {
+        var weekRow = '<tr class="week-view-hour-row" data-hour="' + hour + '"><td><div class="week-view-cell-wrapper">' + Locale.formatHour(hour, { locale: this.locale }) + '</div></td>';
+        var halfHourRow = '<tr class="week-view-half-hour-row" data-hour="' + hour + '.5"><td><div class="week-view-cell-wrapper"></div></td>';
+
+        for (var _day = new Date(startDate.getTime()); _day <= endDate; _day.setDate(_day.getDate() + 1)) {
+          //eslint-disable-line
+          weekRow += '<td><div class="week-view-cell-wrapper"></div></td>';
+          halfHourRow += '<td><div class="week-view-cell-wrapper"></div></td>';
+        }
+        weekRow += '</tr>';
+        halfHourRow += '</tr>';
+        this.weekBody += weekRow + halfHourRow;
+      }
+      this.weekBody += '</tbody>';
+
+      // Render the table and show the event
+      this.weekContainer = '<div class="week-view-container"><table class="week-view-table">' + this.weekHeader + this.weekBody + '</table></div>';
+      this.element.find('.week-view-container').remove();
+
+      var args = { isDayView: this.isDayView, startDate: startDate, endDate: endDate, elem: this.element, api: this };
+
+      /**
+      * Fires as the calendar popup is opened.
+      * @event weekrendered
+      * @memberof WeekView
+      * @property {object} event - The jquery event object
+      * @property {object} args - The event arguments
+      * @property {boolean} args.isDayView - True if one day is showing.
+      * @property {object} args.startDate - The start date of the event
+      * @property {object} args.endDate - The start date of the event
+      * @property {object} args.elem - The current element.
+      * @property {object} args.api - The WeekView api
+      */
+      this.element.append(this.weekContainer).trigger('weekrendered', args);
+
+      if (this.settings.onChangeWeek) {
+        this.settings.onChangeWeek(args);
+      }
+
+      this.element.find('th').each(function (i, elem) {
+        var key = elem.getAttribute('data-key');
+        if (key) {
+          _this3.dayMap.push({ key: key, elem: elem });
+        }
+      });
+
+      // Add the time line and update the text on the month
+      this.addTimeLine();
+      this.showToolbarMonth(startDate, endDate);
+      this.renderAllEvents();
+
+      // Update currently set start and end date
+      this.settings.startDate = startDate;
+      this.settings.endDate = endDate;
+    },
+
+
+    /**
+     * Update the weekview toolbar to show month(s) being show.
+     * @private
+     * @param {date} startDate The start of the week or range.
+     * @param {date} endDate The end of the week or range.
+     * @returns {void}
+     */
+    showToolbarMonth: function showToolbarMonth(startDate, endDate) {
+      var startMonth = Locale.formatDate(startDate, { pattern: 'MMMM', locale: this.locale.name });
+      var endMonth = Locale.formatDate(endDate, { pattern: 'MMMM', locale: this.locale.name });
+      var startYear = Locale.formatDate(startDate, { pattern: 'yyyy', locale: this.locale.name });
+      var endYear = Locale.formatDate(endDate, { pattern: 'yyyy', locale: this.locale.name });
+      var monthStr = Locale.formatDate(endDate, { date: 'year', locale: this.locale.name });
+
+      if (endMonth !== startMonth) {
+        monthStr = Locale.formatDate(startDate, { pattern: 'MMM', locale: this.locale.name }) + ' - ' + Locale.formatDate(endDate, { pattern: 'MMMM yyyy', locale: this.locale.name });
+      }
+      if (endYear !== startYear) {
+        monthStr = Locale.formatDate(startDate, { pattern: 'MMM yyyy', locale: this.locale.name }) + ' - ' + Locale.formatDate(endDate, { pattern: 'MMM yyyy', locale: this.locale.name });
+      }
+
+      this.monthField.text(monthStr);
+    },
+
+
+    /**
+     * Add a time line on the weekview which moves.
+     * @private
+     */
+    addTimeLine: function addTimeLine() {
+      var _this4 = this;
+
+      if (!this.settings.showTimeLine) {
+        return;
+      }
+
+      var setTime = function setTime() {
+        var now = new Date();
+        var hours = now.getHours();
+        var mins = now.getMinutes();
+        var diff = hours - _this4.settings.startHour + mins / 60;
+        // 53 is the size of one whole hour (25 + two borders)
+        _this4.markers.css('top', diff * 52);
+      };
+
+      if (!this.timeMarker) {
+        this.element.find('.week-view-hour-row:nth-child(1) td').prepend('<div class="week-view-time-marker"></div>');
+        this.markers = $('.week-view-time-marker');
+        setTime();
+
+        this.timer = setInterval(function () {
+          setTime();
+        }, 30 * 1000);
+      }
+    },
+
+
+    /**
+     * Add and invoke the toolbar
+     * @private
+     */
+    addToolbar: function addToolbar() {
+      var _this5 = this;
+
+      // Invoke the toolbar
+      this.header = $('<div class="week-view-header"><div class="calendar-toolbar"></div></div>').appendTo(this.element);
+      this.calendarToolbarEl = this.header.find('.calendar-toolbar');
+      this.calendarToolbarAPI = new CalendarToolbar(this.calendarToolbarEl[0], {
+        onOpenCalendar: function onOpenCalendar() {
+          return _this5.settings.startDate;
+        },
+        locale: this.settings.locale,
+        year: this.currentYear,
+        month: this.currentMonth,
+        showToday: this.settings.showToday,
+        isAlternate: false,
+        isMenuButton: true,
+        showViewChanger: this.settings.showViewChanger,
+        onChangeView: this.settings.onChangeView,
+        viewChangerValue: !this.isDayView ? 'week' : 'day'
+      });
+      this.monthField = this.header.find('#monthview-datepicker-field');
+    },
+
+
+    /**
+     * Sets up event handlers for this component and its sub-elements.
+     * @returns {object} The Calendar prototype, useful for chaining.
+     * @private
+     */
+    handleEvents: function handleEvents() {
+      var _this6 = this;
+
+      this.element.off('updated.' + COMPONENT_NAME$r).on('updated.' + COMPONENT_NAME$r, function () {
+        _this6.updated();
+      });
+
+      this.element.off('change-date.' + COMPONENT_NAME$r).on('change-date.' + COMPONENT_NAME$r, function (e, args) {
+        var startDate = args.isToday ? new Date() : args.selectedDate;
+
+        if (_this6.isDayView) {
+          _this6.settings.startDate = startDate;
+          _this6.settings.endDate = startDate;
+        } else {
+          _this6.settings.startDate = _this6.hasIrregularDays ? startDate : dateUtils.firstDayOfWeek(startDate, _this6.settings.firstDayOfWeek);
+          _this6.settings.startDate.setHours(0, 0, 0, 0);
+
+          _this6.settings.endDate = new Date(_this6.settings.startDate);
+          _this6.settings.endDate.setDate(_this6.settings.endDate.getDate() + _this6.numberOfDays - 1);
+          _this6.settings.endDate.setHours(23, 59, 59, 59);
+        }
+        _this6.showWeek(_this6.settings.startDate, _this6.settings.endDate);
+      });
+
+      this.element.off('change-next.' + COMPONENT_NAME$r).on('change-next.' + COMPONENT_NAME$r, function () {
+        _this6.advanceDays(true);
+      });
+
+      this.element.off('change-prev.' + COMPONENT_NAME$r).on('change-prev.' + COMPONENT_NAME$r, function () {
+        _this6.advanceDays(false);
+      });
+
+      var fireEvent = function fireEvent(target, eventName) {
+        var eventId = target.getAttribute('data-id');
+        var eventData = _this6.settings.events.filter(function (event) {
+          return event.id === eventId;
+        });
+        if (!eventData || eventData.length === 0) {
+          return;
+        }
+        /**
+        * Fires as the calendar popup is opened.
+        * @event eventclick
+        * @memberof WeekView
+        * @property {object} event - The jquery event object
+        * @property {object} args - The event arguments
+        * @property {object} args.settings - The current settings including start and end date.
+        * @property {object} args.event - The event data.
+        */
+        /**
+        * Fires as the calendar popup is opened.
+        * @event eventdblclick
+        * @memberof WeekView
+        * @property {object} event - The jquery event object
+        * @property {object} args - The event arguments
+        * @property {object} args.settings - The current settings including start and end date.
+        * @property {object} args.event - The event data.
+        */
+        _this6.element.trigger(eventName, { settings: _this6.settings, event: eventData[0] });
+      };
+
+      this.element.off('click.' + COMPONENT_NAME$r).on('click.' + COMPONENT_NAME$r, '.calendar-event', function (e) {
+        fireEvent(e.currentTarget, 'eventclick');
+      });
+
+      this.element.off('dblclick.' + COMPONENT_NAME$r).on('dblclick.' + COMPONENT_NAME$r, '.calendar-event', function (e) {
+        fireEvent(e.currentTarget, 'eventdblclick');
+      });
+      return this;
+    },
+
+
+    /**
+     * Handle updated settings and values.
+     * @param {boolean} advance Whether to go up or down in days.
+     */
+    advanceDays: function advanceDays(advance) {
+      var diff = this.isDayView ? 1 : this.numberOfDays;
+      if (!advance) {
+        diff = -diff;
+      }
+      this.settings.startDate.setDate(this.settings.startDate.getDate() + diff);
+      if (this.isDayView) {
+        this.settings.endDate = new Date(this.settings.startDate);
+        this.settings.startDate.setHours(0, 0, 0, 0);
+        this.settings.endDate.setHours(23, 59, 59, 999);
+      } else {
+        this.settings.endDate.setDate(this.settings.endDate.getDate() + diff);
+      }
+      this.showWeek(this.settings.startDate, this.settings.endDate);
+    },
+
+
+    /**
+     * Add a new event via the event object and show it if it should be visible in the calendar.
+     * @param {object} event The event object with common event properties.
+     */
+    addEvent: function addEvent(event) {
+      if (!event.startsLocale) {
+        event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes);
+      }
+
+      calendarShared.cleanEventData(event, true, this.settings.startDate, this.locale, this.language, this.settings.events, this.settings.eventTypes);
+
+      this.settings.events.push(event);
+      this.renderEvent(event);
+    },
+
+
+    /**
+     * Remove all events from the calendar
+     */
+    clearEvents: function clearEvents() {
+      this.settings.events = [];
+      this.renderAllEvents();
+    },
+
+
+    /**
+     * Update an event via the event object and show it if it should be visible in the calendar.
+     * It uses the event id to do this.
+     * @param {object} event The event object with common event properties.
+     */
+    updateEvent: function updateEvent(event) {
+      var eventId = event.id;
+      for (var i = this.settings.events.length - 1; i >= 0; i--) {
+        if (this.settings.events[i].id === eventId) {
+          this.settings.events[i] = utils.extend(true, this.settings.events[i], event);
+          calendarShared.cleanEventData(this.settings.events[i], true, this.settings.startDate, this.locale, this.language, this.settings.events, this.settings.eventTypes);
+        }
+      }
+
+      this.renderAllEvents();
+    },
+
+
+    /**
+     * Remove an event from the dataset and page. It uses the id property.
+     * @param {object} event The event object with common event properties.
+     */
+    deleteEvent: function deleteEvent(event) {
+      var eventId = event.id;
+
+      for (var i = this.settings.events.length - 1; i >= 0; i--) {
+        if (this.settings.events[i].id === eventId) {
+          this.settings.events.splice(i, 1);
+        }
+      }
+      this.renderAllEvents();
+    },
+
+
+    /**
+     * Handle updated settings and values.
+     * @param {object} settings The new settings object to use.
+     * @returns {object} [description]
+     */
+    updated: function updated(settings) {
+      if (!settings) {
+        settings = {};
+      }
+      if (settings) {
+        this.settings = utils.mergeSettings(this.element[0], settings, this.settings);
+      }
+      if (settings.locale) {
+        this.destroy().init();
+        return this;
+      }
+
+      this.renderAllEvents();
+      return this;
+    },
+
+
+    /**
+     * Simple Teardown - remove events & rebuildable markup.
+     * @returns {object} The Component prototype, useful for chaining.
+     * @private
+     */
+    teardown: function teardown() {
+      this.element.off();
+      clearInterval(this.timer);
+      this.timer = null;
+      return this;
+    },
+
+
+    /**
+     * Destroy - Remove added markup and events.
+     * @returns {object} The prototype.
+     */
+    destroy: function destroy() {
+      this.teardown();
+      this.element.empty();
+      $.removeData(this.element[0], COMPONENT_NAME$r);
       return this;
     }
   };
@@ -30918,9 +32369,9 @@ var Soho = (function (exports) {
   /* eslint-disable no-underscore-dangle, no-nested-ternary */
 
   // Settings and Options
-  var COMPONENT_NAME$q = 'calendar';
+  var COMPONENT_NAME$s = 'calendar';
 
-  var COMPONENT_NAME_DEFAULTS$1 = {
+  var COMPONENT_NAME_DEFAULTS$2 = {
     eventTypes: [{ id: 'example', label: 'Example', color: 'emerald07', checked: true, click: function click() {} }],
     events: [],
     locale: null,
@@ -30941,6 +32392,15 @@ var Soho = (function (exports) {
       subject: '',
       isAllDay: true,
       comments: ''
+    },
+    onChangeView: null,
+    showToday: true,
+    weekViewSettings: {
+      firstDayOfWeek: 0,
+      startHour: 7,
+      endHour: 19,
+      showAllDay: true,
+      showTimeLine: true
     }
   };
 
@@ -30959,6 +32419,7 @@ var Soho = (function (exports) {
    * @param {boolean} [settings.showViewChanger] If false the dropdown to change views will not be shown.
    * @param {function} [settings.onRenderMonth] Fires when a month is rendered, allowing you to pass back events or event types to show.
    * @param {function} [settings.onSelected] Fires when a month day is clicked. Allowing you to do something.
+   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
    * @param {string} [settings.template] The ID of the template used for the events.
    * @param {string} [settings.modalTemplate] The ID of the template used for the modal dialog on events.
    * @param {string} [settings.menuId=null] ID of the menu to use for an event right click context menu
@@ -30966,9 +32427,16 @@ var Soho = (function (exports) {
    * @param {string} [settings.newEventDefaults] Initial event properties for the new events dialog.
    * @param {string | function} [settings.eventTooltip] The content of event tooltip. Default value is 'overflow'
    * @param {string | function} [settings.iconTooltip] The content of event icon tooltip. Default value is 'overflow'
+   * @param {boolean} [settings.showToday=true] Deterimines if the today button should be shown.
+   * @param {object} [settings.weekViewSettings = {}] an object containing settings for the internal weekview component.
+   * @param {boolean} [settings.weekViewSettings.firstDayOfWeek=0] Set first day of the week. '1' would be Monday.
+   * @param {number} [settings.weekViewSettings.startHour=7] The hour (0-24) to end on each day.
+   * @param {number} [settings.weekViewSettings.endHour=19] The hour (0-24) to end on each day.
+   * @param {boolean} [settings.weekViewSettings.showAllDay=true] Detemines if the all day events row should be shown.
+   * @param {boolean} [settings.weekViewSettings.showTimeLine=true] Shows a bar across the current time.
    */
   function Calendar(element, settings) {
-    this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS$1);
+    this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS$2);
     this.element = $(element);
     this.init();
   }
@@ -30999,7 +32467,7 @@ var Soho = (function (exports) {
 
       this.rendered = true;
 
-      this.setCurrentCalendar().renderEventTypes().renderMonth().renderViewChanger().handleEvents();
+      this.setCurrentCalendar().renderEventTypes().renderMonthView().renderWeekView().handleEvents();
 
       return this;
     },
@@ -31016,11 +32484,14 @@ var Soho = (function (exports) {
       if (this.settings.language) {
         Locale.getLocale(this.settings.language);
         this.language = this.settings.language;
+      } else {
+        this.language = Locale.currentLanguage.name;
       }
 
       if (this.settings.locale && (!this.locale || this.locale.name !== this.settings.locale)) {
         Locale.getLocale(this.settings.locale).done(function (locale) {
           _this.locale = Locale.cultures[locale];
+          _this.language = _this.settings.language || _this.locale.language;
           _this.setCurrentCalendar();
           _this.build();
         });
@@ -31037,7 +32508,7 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     setCurrentCalendar: function setCurrentCalendar() {
-      this.isRTL = this.locale.direction === 'right-to-left';
+      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
       return this;
     },
 
@@ -31068,8 +32539,20 @@ var Soho = (function (exports) {
      * @returns {object} The Calendar prototype, useful for chaining.
      * @private
      */
-    renderMonth: function renderMonth() {
+    renderMonthView: function renderMonthView() {
+      var _this2 = this;
+
       this.monthViewContainer = document.querySelector('.calendar .calendar-monthview');
+
+      // Handle changing view
+      this.activeView = 'month';
+      this.onChangeToMonth = function (args) {
+        if (_this2.settings.onChangeView) {
+          _this2.settings.onChangeView(args);
+          return;
+        }
+        _this2.changeView(args.viewName);
+      };
 
       this.monthView = new MonthView(this.monthViewContainer, {
         onRenderMonth: this.settings.onRenderMonth,
@@ -31079,11 +32562,117 @@ var Soho = (function (exports) {
         month: this.settings.month,
         year: this.settings.year,
         eventTooltip: this.eventTooltip,
-        iconTooltip: this.iconTooltip
+        iconTooltip: this.iconTooltip,
+        showToday: this.settings.showToday,
+        showViewChanger: this.settings.showViewChanger,
+        onChangeView: this.onChangeToMonth
       });
       this.monthViewHeader = document.querySelector('.calendar .monthview-header');
       this.renderAllEvents();
       return this;
+    },
+
+
+    /**
+     * Render the weekview calendar
+     * @returns {object} The Calendar prototype, useful for chaining.
+     * @private
+     */
+    renderWeekView: function renderWeekView() {
+      var _this3 = this;
+
+      this.weekViewContainer = document.querySelector('.calendar .calendar-weekview');
+      if (!this.weekViewContainer) {
+        return this;
+      }
+
+      // Handle changing view
+      this.weekViewContainer.classList.add('week-view');
+      this.weekViewContainer.classList.add('hidden');
+      this.onChangeToWeekDay = function (args) {
+        if (_this3.settings.onChangeView) {
+          _this3.settings.onChangeView(args);
+          return;
+        }
+        _this3.changeView(args.viewName);
+      };
+
+      var startDate = dateUtils.firstDayOfWeek(new Date(this.currentDate()), this.settings.weekViewSettings.firstDayOfWeek);
+      var endDate = dateUtils.lastDayOfWeek(new Date(this.currentDate()), this.settings.weekViewSettings.firstDayOfWeek);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23, 59, 59, 999);
+
+      this.weekView = new WeekView(this.weekViewContainer, {
+        locale: this.settings.locale,
+        startDate: startDate,
+        endDate: endDate,
+        eventTypes: this.settings.eventTypes,
+        events: this.settings.events,
+        firstDayOfWeek: this.settings.weekViewSettings.firstDayOfWeek,
+        showAllDay: this.settings.weekViewSettings.showAllDay,
+        showTimeLine: this.settings.weekViewSettings.showTimeLine,
+        startHour: this.settings.weekViewSettings.startHour,
+        endHour: this.settings.weekViewSettings.endHour,
+        showToday: this.settings.showToday,
+        showViewChanger: this.settings.showViewChanger,
+        onChangeView: this.onChangeToWeekDay
+      });
+      this.weekViewHeader = document.querySelector('.calendar .calendar-weekview .monthview-header');
+
+      this.weekView.settings.filteredTypes = this.filterEventTypes();
+      this.weekView.settings.onChangeWeek = function (args) {
+        _this3.monthView.selectDay(args.startDate, false, true);
+      };
+      this.weekView.renderAllEvents();
+      return this;
+    },
+
+
+    /**
+     * Set the current view (day, week or month)
+     * @param {string} viewName to set selection
+     * @returns {void}
+     */
+    changeView: function changeView(viewName) {
+      if (viewName === this.activeView || !this.weekViewContainer) {
+        return;
+      }
+
+      var startDate = new Date(this.currentDate());
+      var endDate = new Date(this.currentDate());
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23, 59, 59, 999);
+
+      switch (viewName) {
+        case 'day':
+          this.monthViewContainer.classList.add('hidden');
+          this.weekViewContainer.classList.remove('hidden');
+          this.activeView = 'day';
+          this.weekView.settings.filteredTypes = this.filterEventTypes();
+          this.weekView.showWeek(startDate, endDate);
+          this.clearEventDetails();
+          this.weekView.calendarToolbarAPI.setViewChangerValue(this.activeView);
+          break;
+        case 'week':
+          this.monthViewContainer.classList.add('hidden');
+          this.weekViewContainer.classList.remove('hidden');
+          this.activeView = 'week';
+          startDate = dateUtils.firstDayOfWeek(startDate, this.settings.firstDayOfWeek);
+          endDate = dateUtils.lastDayOfWeek(startDate, this.settings.firstDayOfWeek);
+          this.weekView.settings.filteredTypes = this.filterEventTypes();
+          this.weekView.showWeek(startDate, endDate);
+          this.weekView.calendarToolbarAPI.setViewChangerValue(this.activeView);
+          this.clearEventDetails();
+          break;
+        case 'month':
+          this.monthViewContainer.classList.remove('hidden');
+          this.weekViewContainer.classList.add('hidden');
+          this.activeView = 'month';
+          this.monthView.showMonth(this.settings.month, this.settings.year);
+          this.monthView.calendarToolbarAPI.setViewChangerValue(this.activeView);
+          this.monthView.selectDay(this.currentDate(), false, true);
+          break;
+      }
     },
 
 
@@ -31128,30 +32717,13 @@ var Soho = (function (exports) {
 
 
     /**
-     * Render the dropdown to change views.
-     * @returns {object} The Calendar prototype, useful for chaining.
-     * @private
-     */
-    renderViewChanger: function renderViewChanger() {
-      if (!this.settings.showViewChanger) {
-        return this;
-      }
-      var viewChangerHtml = '<label for="calendar-view-changer" class="label audible">' + Locale.translate('ChangeView', { locale: this.locale.name, language: this.language }) + '</label>\n      <select id="calendar-view-changer" name="calendar-view-changer" class="dropdown">\n        <option value="month" selected>' + Locale.translate('Month', { locale: this.locale.name, language: this.language }) + '</option>\n        <option value="week" disabled>' + Locale.translate('Week', { locale: this.locale.name, language: this.language }) + '</option>\n        <option value="day" disabled>' + Locale.translate('Day', { locale: this.locale.name, language: this.language }) + '</option>\n        <option value="schedule" disabled>' + Locale.translate('Schedule', { locale: this.locale.name, language: this.language }) + '</option>\n      </select>\n    </div>';
-      $(this.monthViewHeader).append(viewChangerHtml);
-      this.viewChangerHtml = $('#calendar-view-changer');
-      this.viewChangerHtml.dropdown();
-      return this;
-    },
-
-
-    /**
      * Render or re-render the events details section, using on the readonly or default eventTemplate
      * @param {string} eventId The event id
      * @param {number} count The event count
      * @private
      */
     renderEventDetails: function renderEventDetails(eventId, count) {
-      if (!this.settings.events) {
+      if (!this.settings.events || this.activeView !== 'month') {
         return;
       }
 
@@ -31194,6 +32766,31 @@ var Soho = (function (exports) {
 
       for (var i = 0; i < dayObj.events.length; i++) {
         this.renderEventDetails(dayObj.events[i].id, dayObj.events.length);
+      }
+    },
+
+
+    /**
+     * If a upcomming day is clicked render that day/year.
+     * @private
+     * @param {string} key The date as an index key.
+     */
+    renderDay: function renderDay(key) {
+      this.monthView.selectDay(key);
+
+      var startDate = new Date(this.currentDate());
+      var endDate = new Date(this.currentDate());
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23, 59, 59, 999);
+
+      if (this.activeView === 'day') {
+        this.weekView.showWeek(startDate, endDate);
+      }
+
+      if (this.activeView === 'week') {
+        startDate = dateUtils.firstDayOfWeek(startDate, this.settings.firstDayOfWeek);
+        endDate = dateUtils.lastDayOfWeek(startDate, this.settings.firstDayOfWeek);
+        this.weekView.showWeek(startDate, endDate);
       }
     },
 
@@ -31244,27 +32841,8 @@ var Soho = (function (exports) {
 
 
     /**
-     * Get the difference between two dates.
-     * @private
-     * @param {date} first The first date.
-     * @param {date} second The second date.
-     * @param {boolean} useHours The different in hours if true, otherways days.
-     * @param {boolean} isFullDay Add an hour to include the full day to match the calendar.
-     * @returns {number} The difference between the two dates.
-     */
-    dateDiff: function dateDiff(first, second, useHours, isFullDay) {
-      // Take the difference between the dates and divide by milliseconds per day.
-      // Round to nearest whole number to deal with DST.
-      var diff = Math.round((second - first) / (1000 * 60 * 60 * (useHours ? 1 : 24)));
-      if (isFullDay) {
-        diff += 1;
-      }
-      return diff;
-    },
-
-
-    /**
      * Render/ReRender the events attached to the settings.
+     * @private
      * @param {boolean} isCallback Will be set to true when a callback occurs
      * @returns {object} The Calendar prototype, useful for chaining.
      */
@@ -31297,6 +32875,10 @@ var Soho = (function (exports) {
       }
 
       this.renderSelectedEventDetails();
+      if (this.weekView) {
+        this.weekView.settings.filteredTypes = filters;
+        this.weekView.renderAllEvents();
+      }
       return this;
     },
 
@@ -31321,8 +32903,7 @@ var Soho = (function (exports) {
       });
       event.endKey = endKey;
       event.startKey = startKey;
-      event = this.addCalculatedFields(event);
-      // const idx = self.monthView.dayMap.findIndex(day => day.key >= startKey && day.key <= endKey);
+      event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes);
       var idx = -1;
       for (var i = 0; i < self.monthView.dayMap.length; ++i) {
         if (self.monthView.dayMap[i].key >= startKey && self.monthView.dayMap[i].key <= endKey) {
@@ -31374,57 +32955,6 @@ var Soho = (function (exports) {
 
 
     /**
-     * Add calculated fields to the event object.
-     * @private
-     * @param {object} event The starting event object
-     * @returns {object} The event object with stuff added.
-     */
-    addCalculatedFields: function addCalculatedFields(event) {
-      event.color = this.getEventTypeColor(event.type);
-      event.duration = Math.abs(this.dateDiff(new Date(event.ends), new Date(event.starts), false, event.isFullDay));
-      event.durationUnits = event.duration > 1 ? Locale.translate('Days', { locale: this.locale.name, language: this.language }) : Locale.translate('Day', { locale: this.locale.name, language: this.language });
-      event.daysUntil = event.starts ? this.dateDiff(new Date(event.starts), new Date()) : 0;
-      event.durationHours = this.dateDiff(new Date(event.starts), new Date(event.ends), true);
-      event.isDays = true;
-      if (event.isAllDay === undefined) {
-        event.isAllDay = true;
-      }
-
-      if (event.durationHours < 24) {
-        event.isDays = false;
-        event.isAllDay = false;
-        delete event.duration;
-        event.durationUnits = event.durationHours > 1 ? Locale.translate('Hours', { locale: this.locale.name, language: this.language }) : Locale.translate('Hour', { locale: this.locale.name, language: this.language });
-      }
-      if (event.isAllDay.toString() === 'true') {
-        event.isDays = true;
-        delete event.durationHours;
-        event.durationUnits = event.duration > 1 ? Locale.translate('Days', { locale: this.locale.name, language: this.language }) : Locale.translate('Day', { locale: this.locale.name, language: this.language });
-        event.duration = this.dateDiff(new Date(event.starts), new Date(event.ends));
-      }
-      if (event.duration === 0 && event.isAllDay.toString() === 'true') {
-        event.isDays = true;
-        event.duration = 1;
-        event.durationUnits = Locale.translate('Day', { locale: this.locale.name, language: this.language });
-      }
-      if (event.starts) {
-        var startsLocale = Locale.parseDate(event.starts, { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: this.locale.name });
-        event.startsLocale = Locale.formatDate(startsLocale, { locale: this.locale.name });
-      }
-      if (event.ends) {
-        var endsLocale = Locale.parseDate(event.ends, { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: this.locale.name });
-        event.endsLocale = Locale.formatDate(endsLocale, { locale: this.locale.name });
-      }
-      event.eventTypes = this.settings.eventTypes;
-      event.isAllDay = event.isAllDay.toString();
-      if (event.isAllDay.toString() === 'false') {
-        delete event.isAllDay;
-      }
-      return event;
-    },
-
-
-    /**
      * Add the ui event to the container.
      * @private
      * @param {object} container The container to append to
@@ -31434,7 +32964,7 @@ var Soho = (function (exports) {
      * @returns {object} The Calendar prototype, useful for chaining.
      */
     appendEvent: function appendEvent(container, event, type, idx) {
-      var _this2 = this;
+      var _this4 = this;
 
       var node = void 0;
       var eventCnt = container.querySelectorAll('.calendar-event').length;
@@ -31516,7 +33046,7 @@ var Soho = (function (exports) {
             var iconStatus = icon ? icon.querySelector('.icon').getAttribute('data-status') : '';
 
             if (title.offsetWidth > ui[0].scrollWidth - (icon ? icon.offsetWidth : 0)) {
-              response('' + title.innerText + (iconStatus ? ' (' + Locale.translate(iconStatus, { locale: _this2.locale.name, language: _this2.language }, false) + ')' : ''));
+              response('' + title.innerText + (iconStatus ? ' (' + Locale.translate(iconStatus, { locale: _this4.locale.name, language: _this4.language }, false) + ')' : ''));
               return;
             }
             response(false);
@@ -31525,28 +33055,6 @@ var Soho = (function (exports) {
       }
 
       return this;
-    },
-
-
-    /**
-     * Find the matching type and get the color.
-     * @param {object} id The eventType id to find.
-     * @param {object} event The event data object.
-     * @returns {object} The Calendar prototype, useful for chaining.
-     */
-    getEventTypeColor: function getEventTypeColor(id) {
-      var color = 'azure';
-      if (!id) {
-        return color;
-      }
-
-      var eventInfo = this.settings.eventTypes.filter(function (eventType) {
-        return eventType.id === id;
-      });
-      if (eventInfo.length === 1) {
-        color = eventInfo[0].color || 'azure';
-      }
-      return color;
     },
 
 
@@ -31578,53 +33086,53 @@ var Soho = (function (exports) {
      * @private
      */
     handleEvents: function handleEvents() {
-      var _this3 = this;
+      var _this5 = this;
 
       var self = this;
 
-      this.element.off('updated.' + COMPONENT_NAME$q).on('updated.' + COMPONENT_NAME$q, function () {
-        _this3.updated();
+      this.element.off('updated.' + COMPONENT_NAME$s).on('updated.' + COMPONENT_NAME$s, function () {
+        _this5.updated();
       });
 
       this.isSwitchingMonth = false;
-      this.element.off('monthrendered.' + COMPONENT_NAME$q).on('monthrendered.' + COMPONENT_NAME$q, function (e, args) {
-        _this3.isSwitchingMonth = true;
-        if (_this3.modalVisible()) {
-          _this3.removeModal();
+      this.element.off('monthrendered.' + COMPONENT_NAME$s).on('monthrendered.' + COMPONENT_NAME$s, function (e, args) {
+        _this5.isSwitchingMonth = true;
+        if (_this5.modalVisible()) {
+          _this5.removeModal();
         }
-        _this3.settings.year = args.year;
-        _this3.settings.month = args.month;
-        _this3.renderAllEvents();
+        _this5.settings.year = args.year;
+        _this5.settings.month = args.month;
+        _this5.renderAllEvents();
 
         setTimeout(function () {
-          _this3.isSwitchingMonth = false;
+          _this5.isSwitchingMonth = false;
         }, 500);
       });
 
-      this.element.off('change.' + COMPONENT_NAME$q).on('change.' + COMPONENT_NAME$q, '.checkbox', function () {
-        _this3.renderAllEvents(true);
+      this.element.off('change.' + COMPONENT_NAME$s).on('change.' + COMPONENT_NAME$s, '.checkbox', function () {
+        _this5.renderAllEvents(true);
       });
 
-      $(this.monthViewContainer).off('selected.' + COMPONENT_NAME$q).on('selected.' + COMPONENT_NAME$q, function () {
-        _this3.renderSelectedEventDetails();
+      $(this.monthViewContainer).off('selected.' + COMPONENT_NAME$s).on('selected.' + COMPONENT_NAME$s, function () {
+        _this5.renderSelectedEventDetails();
       });
 
-      this.element.off('click.' + COMPONENT_NAME$q + '-upcoming').on('click.' + COMPONENT_NAME$q + '-upcoming', '.calendar-upcoming-event', function (e) {
+      this.element.off('click.' + COMPONENT_NAME$s + '-upcoming').on('click.' + COMPONENT_NAME$s + '-upcoming', '.calendar-upcoming-event', function (e) {
         var key = e.currentTarget.getAttribute('data-key');
-        _this3.monthView.selectDay(key);
+        _this5.renderDay(key);
       });
 
-      this.element.off('contextmenu.' + COMPONENT_NAME$q).on('contextmenu.' + COMPONENT_NAME$q, '.calendar-event', function (e) {
+      this.element.off('contextmenu.' + COMPONENT_NAME$s).on('contextmenu.' + COMPONENT_NAME$s, '.calendar-event', function (e) {
         e.stopPropagation();
         var hasMenu = function hasMenu() {
           return self.settings.menuId && $('#' + self.settings.menuId).length > 0;
         };
 
         var eventId = e.currentTarget.getAttribute('data-id');
-        var eventData = _this3.settings.events.filter(function (event) {
+        var eventData = _this5.settings.events.filter(function (event) {
           return event.id === eventId;
         });
-        _this3.element.triggerHandler('contextmenu', { originalEvent: e, month: _this3.settings.month, year: _this3.settings.year, event: eventData[0] });
+        _this5.element.triggerHandler('contextmenu', { originalEvent: e, month: _this5.settings.month, year: _this5.settings.year, event: eventData[0] });
 
         if (!self.isSubscribedTo(e, 'contextmenu') && !hasMenu()) {
           return true;
@@ -31637,7 +33145,7 @@ var Soho = (function (exports) {
         }
 
         var event = $(e.currentTarget);
-        event.popupmenu({ attachToBody: true, menuId: _this3.settings.menuId, eventObj: e, trigger: 'immediate', offset: { y: 5 } });
+        event.popupmenu({ attachToBody: true, menuId: _this5.settings.menuId, eventObj: e, trigger: 'immediate', offset: { y: 5 } });
 
         event.off('selected.calendar').on('selected.calendar', function (evt, elem) {
           // const eventId = this.getAttribute('data-id');
@@ -31657,36 +33165,40 @@ var Soho = (function (exports) {
         return false;
       });
 
-      var showModalWithCallback = function showModalWithCallback(eventData, isAdd) {
-        _this3.showEventModal(eventData, function (elem, event) {
+      var showModalWithCallback = function showModalWithCallback(eventData, isAdd, eventTarget) {
+        _this5.showEventModal(eventData, function (elem, event) {
           // Collect the data and popuplate the event object
           var inputs = elem.querySelectorAll('input, textarea, select');
           for (var i = 0; i < inputs.length; i++) {
             event[inputs[i].id] = inputs[i].getAttribute('type') === 'checkbox' ? inputs[i].checked : inputs[i].value;
           }
-
           if (isAdd) {
-            _this3.addEvent(event);
+            _this5.addEvent(event);
           } else {
-            _this3.updateEvent(event);
+            _this5.updateEvent(event);
           }
-        });
+        }, eventTarget);
       };
 
       var timer = 0;
       var delay = 100;
       var prevent = false;
-      this.element.off('click.' + COMPONENT_NAME$q + '-event').on('click.' + COMPONENT_NAME$q + '-event', '.calendar-event', function (e) {
+      this.element.off('click.' + COMPONENT_NAME$s + '-event').on('click.' + COMPONENT_NAME$s + '-event', '.calendar-event', function (e) {
         timer = setTimeout(function () {
           if (!prevent) {
             var eventId = e.currentTarget.getAttribute('data-id');
-            var eventData = _this3.settings.events.filter(function (event) {
+            var eventData = _this5.settings.events.filter(function (event) {
               return event.id === eventId;
             });
             if (!eventData || eventData.length === 0) {
               return;
             }
-            showModalWithCallback(eventData[0], false);
+            var target = $(e.currentTarget);
+            var eventTarget = target.find('.calendar-event-title');
+            if (e.currentTarget.classList.contains('event-day-span') || e.currentTarget.classList.contains('event-day-end')) {
+              eventTarget = self.element.find('.event-day-start[data-id="' + target.attr('data-id') + '"] .calendar-event-title');
+            }
+            showModalWithCallback(eventData[0], false, eventTarget);
             /**
              * Fires when an event in the calendar is clicked.
              * @event eventclick
@@ -31695,17 +33207,17 @@ var Soho = (function (exports) {
              * @property {number} args.year - The year currently rendered in the calendar.
              * @property {object} args.event - The data for the event.
              */
-            _this3.element.triggerHandler('eventclick', { month: _this3.settings.month, year: _this3.settings.year, event: eventData[0] });
+            _this5.element.triggerHandler('eventclick', { month: _this5.settings.month, year: _this5.settings.year, event: eventData[0] });
           }
           prevent = false;
         }, delay);
       });
 
-      this.element.off('dblclick.' + COMPONENT_NAME$q + '-event').on('dblclick.' + COMPONENT_NAME$q + '-event', '.calendar-event', function (e) {
+      this.element.off('dblclick.' + COMPONENT_NAME$s + '-event').on('dblclick.' + COMPONENT_NAME$s + '-event', '.calendar-event', function (e) {
         clearTimeout(timer);
         prevent = true;
         var eventId = e.currentTarget.getAttribute('data-id');
-        var eventData = _this3.settings.events.filter(function (event) {
+        var eventData = _this5.settings.events.filter(function (event) {
           return event.id === eventId;
         });
         if (!eventData || eventData.length === 0) {
@@ -31719,25 +33231,25 @@ var Soho = (function (exports) {
          * @property {number} args.year - The year currently rendered in the calendar.
          * @property {object} args.event - The data for the event.
          */
-        _this3.element.trigger('eventdblclick', { month: _this3.settings.month, year: _this3.settings.year, event: eventData[0] });
+        _this5.element.trigger('eventdblclick', { month: _this5.settings.month, year: _this5.settings.year, event: eventData[0] });
       });
 
-      this.element.off('dblclick.' + COMPONENT_NAME$q).on('dblclick.' + COMPONENT_NAME$q, 'td', function (e) {
+      this.element.off('dblclick.' + COMPONENT_NAME$s).on('dblclick.' + COMPONENT_NAME$s, 'td', function (e) {
         // throw this case out or you can click the wrong day
-        if (_this3.isSwitchingMonth || _this3.modalVisible()) {
+        if (_this5.isSwitchingMonth || _this5.modalVisible()) {
           return;
         }
         var key = e.currentTarget.getAttribute('data-key');
         var day = new Date(key.substr(0, 4), key.substr(4, 2) - 1, key.substr(6, 2));
 
-        var eventData = utils.extend({}, _this3.settings.newEventDefaults);
+        var eventData = utils.extend({}, _this5.settings.newEventDefaults);
         eventData.startKey = key;
         eventData.endKey = key;
         eventData.starts = day;
         eventData.ends = day;
         e.stopPropagation();
 
-        _this3.cleanEventData(eventData, false);
+        calendarShared.cleanEventData(eventData, false, _this5.currentDate(), _this5.locale, _this5.language, _this5.settings.events, _this5.settings.eventTypes);
         showModalWithCallback(eventData, true);
 
         /**
@@ -31747,7 +33259,7 @@ var Soho = (function (exports) {
          * @param {object} eventData - Information about the calendar date double clicked.
          * @param {object} api - Access to the Calendar API
          */
-        _this3.element.triggerHandler('dblclick', { eventData: eventData, api: _this3 });
+        _this5.element.triggerHandler('dblclick', { eventData: eventData, api: _this5 });
       });
       return this;
     },
@@ -31792,7 +33304,7 @@ var Soho = (function (exports) {
 
 
     /**
-     * Handle updated settings and values.
+     * Execute onRenderMonth and handle the call back.
      * @private
      */
     callOnRenderMonth: function callOnRenderMonth() {
@@ -31801,13 +33313,23 @@ var Soho = (function (exports) {
       function response(events, eventTypes) {
         if (eventTypes && eventTypes.length > 0) {
           self.settings.eventTypes = eventTypes;
+
+          if (self.weekView) {
+            self.weekView.settings.eventTypes = eventTypes;
+          }
           self.renderEventTypes();
         }
         if (events && events.length > 0) {
           self.settings.events = events;
           self.renderAllEvents(true);
+
+          if (self.weekView) {
+            self.weekView.settings.events = events;
+            self.weekView.renderAllEvents(true);
+          }
         }
       }
+
       this.settings.onRenderMonth(this.element, response, {
         api: self,
         month: this.settings.month,
@@ -31821,7 +33343,11 @@ var Soho = (function (exports) {
      * @returns {date} the currently selected date on the control.
      */
     currentDate: function currentDate() {
-      return this.isRTL ? this.monthView.currentIslamicDate : this.monthView.currentDate;
+      var ret = this.isIslamic ? this.monthView.currentIslamicDate : this.monthView.currentDate;
+      if (!Locale.isValidDate(ret)) {
+        return new Date();
+      }
+      return ret;
     },
 
 
@@ -31846,6 +33372,11 @@ var Soho = (function (exports) {
       var dayObj = this.monthView.dayMap.filter(function (dayFilter) {
         return dayFilter.key === date;
       });
+      if (this.activeView !== 'month') {
+        dayObj = this.weekView.dayMap.filter(function (dayFilter) {
+          return dayFilter.key === date;
+        });
+      }
 
       var dayEvents = {
         date: this.monthView.currentDate,
@@ -31885,9 +33416,11 @@ var Soho = (function (exports) {
         }
       }
 
-      event.color = this.getEventTypeColor(event.type);
+      event.color = calendarShared.getEventTypeColor(event.type, this.settings.eventTypes);
       event.startsLong = Locale.formatDate(event.starts, { date: 'long', locale: this.locale.name });
       event.endsLong = Locale.formatDate(event.ends, { date: 'long', locale: this.locale.name });
+      event.startsHoursLong = Locale.formatDate(event.starts, { date: 'long', locale: this.locale.name }) + ' ' + Locale.formatDate(event.starts, { date: 'hour', locale: this.locale.name });
+      event.endsHoursLong = Locale.formatDate(event.ends, { date: 'long', locale: this.locale.name }) + ' ' + Locale.formatDate(event.ends, { date: 'hour', locale: this.locale.name });
       event.typeLabel = this.getEventTypeLabel(event.type);
 
       var renderedTmpl = Tmpl.compile(template, { event: event });
@@ -31907,10 +33440,14 @@ var Soho = (function (exports) {
      * @param {object} event The event object with common event properties.
      */
     addEvent: function addEvent(event) {
-      this.cleanEventData(event, true);
+      calendarShared.cleanEventData(event, true, this.currentDate(), this.locale, this.language, this.settings.events, this.settings.eventTypes);
       this.settings.events.push(event);
       this.renderEvent(event);
       this.renderSelectedEventDetails();
+
+      if (this.weekView) {
+        this.weekView.addEvent(event);
+      }
     },
 
 
@@ -31924,11 +33461,15 @@ var Soho = (function (exports) {
       for (var i = this.settings.events.length - 1; i >= 0; i--) {
         if (this.settings.events[i].id === eventId) {
           this.settings.events[i] = utils.extend(true, this.settings.events[i], event);
-          this.cleanEventData(this.settings.events[i], true);
+          calendarShared.cleanEventData(this.settings.events[i], true, this.currentDate(), this.locale, this.language, this.settings.events, this.settings.eventTypes);
         }
       }
 
       this.renderAllEvents();
+
+      if (this.weekView) {
+        this.weekView.updateEvent(event);
+      }
     },
 
 
@@ -31945,67 +33486,22 @@ var Soho = (function (exports) {
         }
       }
       this.renderAllEvents();
+
+      if (this.weekView) {
+        this.weekView.deleteEvent(event);
+      }
     },
 
 
     /**
-     * Fix missing / incomlete event data
-     * @param {object} event The event object with common event properties.
-     * @param {boolean} addPlaceholder If true placeholder text will be added for some empty fields.
-     * @private
+     * Remove all events from the calendar
      */
-    cleanEventData: function cleanEventData(event, addPlaceholder) {
-      var isAllDay = event.isAllDay === 'on' || event.isAllDay === 'true' || event.isAllDay;
-      var startDate = new Date(event.starts);
-      var endDate = new Date(event.ends);
+    clearEvents: function clearEvents() {
+      this.settings.events = [];
+      this.renderAllEvents();
 
-      if (!Locale.isValidDate(startDate)) {
-        startDate = this.currentDate();
-      }
-      if (!Locale.isValidDate(endDate)) {
-        endDate = this.currentDate();
-      }
-
-      if (isAllDay) {
-        startDate.setHours(0, 0, 0, 0);
-        event.starts = Locale.formatDate(new Date(startDate), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: this.locale.name });
-        endDate.setHours(23, 59, 59, 999);
-        event.ends = Locale.formatDate(new Date(endDate), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: this.locale.name });
-        event.duration = event.starts === event.ends ? 1 : null;
-        event.isAllDay = true;
-      } else {
-        if (startDate === endDate) {
-          endDate.setHours(endDate.getHours() + parseInt(event.durationHours, 10));
-          event.ends = Locale.formatDate(endDate.toISOString(), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: this.locale.name });
-          event.duration = null;
-        } else {
-          event.ends = Locale.formatDate(new Date(endDate), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: this.locale.name });
-        }
-        event.starts = Locale.formatDate(new Date(startDate), { pattern: 'yyyy-MM-ddTHH:mm:ss.SSS', locale: this.locale.name });
-        event.isAllDay = false;
-      }
-
-      if (event.comments === undefined && addPlaceholder) {
-        event.comments = Locale.translate('NoCommentsEntered', { locale: this.locale.name, language: this.language });
-        event.noComments = true;
-      }
-
-      if (!event.subject && addPlaceholder) {
-        event.subject = Locale.translate('NoTitle', { locale: this.locale.name, language: this.language });
-      }
-
-      if (!event.type) {
-        // Default to the first one
-        event.type = this.settings.eventTypes[0].id;
-      }
-
-      if (event.id === undefined && addPlaceholder) {
-        var lastId = this.settings.events.length === 0 ? 0 : parseInt(this.settings.events[this.settings.events.length - 1].id, 10);
-        event.id = (lastId + 1).toString();
-      }
-
-      if (event.title === 'NewEvent') {
-        event.title = Locale.translate('NewEvent', { locale: this.locale.name, language: this.language });
+      if (this.weekView) {
+        this.weekView.clearEvents();
       }
     },
 
@@ -32014,9 +33510,10 @@ var Soho = (function (exports) {
      * Show a modal used to add/edit events. This uses the modalTemplate setting for the modal contents.
      * @param {object} event The event object with common event properties for defaulting fields in the template.
      * @param {function} done The callback for when the modal closes.
+     * @param {object} eventTarget The target element for the popup.
      */
-    showEventModal: function showEventModal(event, done) {
-      var _this4 = this;
+    showEventModal: function showEventModal(event, done, eventTarget) {
+      var _this6 = this;
 
       if (!this.settings.modalTemplate) {
         return;
@@ -32030,18 +33527,35 @@ var Soho = (function (exports) {
       DOM.addClass(this.modalContents, 'calendar-event-modal', 'hidden');
       document.getElementsByTagName('body')[0].appendChild(this.modalContents);
 
-      event = this.addCalculatedFields(event);
+      event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes);
       this.renderTmpl(event || {}, this.settings.modalTemplate, this.modalContents);
       var dayObj = this.getDayEvents();
+
+      var isCancel = true;
+      dayObj.elem = $(dayObj.elem);
+      var placementArgs = dayObj.elem.index() === 6 ? this.isRTL ? 'right' : 'left' : this.isRTL ? 'left' : 'right';
+
+      if (!eventTarget && this.activeView === 'day') {
+        eventTarget = $('.week-view-header-wrapper');
+        placementArgs = this.isRTL ? 'left' : 'right';
+      }
+
+      if (!eventTarget) {
+        eventTarget = dayObj.elem;
+      }
+
       var modalOptions = this.settings.modalOptions || {
         content: $(this.modalContents),
         closebutton: true,
-        // Placement logic wasnt working, flip left most cell
-        placement: dayObj.elem.index() === 6 ? 'left' : 'right',
         popover: true,
-        offset: {
-          y: 10
+        placementOpts: {
+          parent: eventTarget,
+          strategies: ['flip', 'nudge', 'shrink-y'],
+          parentXAlignment: 'center',
+          parentYAlignment: 'center',
+          placement: placementArgs
         },
+        offset: { x: 15 },
         title: event.title || event.subject,
         trigger: 'immediate',
         keepOpen: true,
@@ -32050,27 +33564,29 @@ var Soho = (function (exports) {
         headerClass: event.color
       };
 
-      var isCancel = true;
-      dayObj.elem.off('hide.calendar').on('hide.calendar', function () {
+      eventTarget.off('hide.calendar').on('hide.calendar', function () {
         if (isCancel) {
-          _this4.removeModal();
+          _this6.removeModal();
           return;
         }
 
-        done(_this4.modalContents, event);
-        _this4.element.trigger('hidemodal', { elem: _this4.modalContents, event: event });
-        _this4.removeModal();
+        done(_this6.modalContents, event);
+        _this6.element.trigger('hidemodal', { elem: _this6.modalContents, event: event });
+        _this6.removeModal();
         isCancel = true;
       }).popover(modalOptions).off('show.calendar').on('show.calendar', function (evt, elem) {
-        _this4.element.trigger('showmodal', { elem: _this4.modalContents, event: event });
-
+        _this6.element.trigger('showmodal', { elem: _this6.modalContents, event: event });
         // Wire the click on isAllDay to disable spinbox.
         elem.find('#isAllDay').off().on('click.calendar', function (e) {
           var isDisabled = $(e.currentTarget).prop('checked');
           if (isDisabled) {
-            elem.find('#durationHours').data('spinbox').disable();
+            elem.find('#durationHours').prop('disabled', true);
+            elem.find('#endsHourLocale').prop('disabled', true);
+            elem.find('#startsHourLocale').prop('disabled', true);
           } else {
-            elem.find('#durationHours').data('spinbox').enable();
+            elem.find('#durationHours').prop('disabled', false);
+            elem.find('#endsHourLocale').prop('disabled', false);
+            elem.find('#startsHourLocale').prop('disabled', false);
           }
         });
 
@@ -32083,7 +33599,7 @@ var Soho = (function (exports) {
 
         // Wire the buttons
         elem.find('button').on('click', function (e) {
-          var popupApi = dayObj.elem.data('tooltip');
+          var popupApi = eventTarget.data('tooltip');
           var action = e.currentTarget.getAttribute('data-action');
           isCancel = action !== 'submit';
           if (popupApi) {
@@ -32092,7 +33608,7 @@ var Soho = (function (exports) {
         });
       });
 
-      this.activeElem = dayObj.elem;
+      this.activeElem = eventTarget;
     },
 
 
@@ -32113,19 +33629,13 @@ var Soho = (function (exports) {
       this.modalContents = null;
       if (this.activeElem) {
         this.activeElem.off();
-        this.activeElem.data('tooltip').destroy();
+        if (this.activeElem.data('tooltip')) {
+          this.activeElem.data('tooltip').destroy();
+        }
       }
       DOM.remove(document.getElementById('calendar-popup'));
       DOM.remove(document.querySelector('.calendar-event-modal'));
-    },
-
-
-    /**
-     * Remove all events from the calendar
-     */
-    clearEvents: function clearEvents() {
-      this.settings.events = [];
-      this.renderAllEvents();
+      $('#timepicker-popup').hide();
     },
 
 
@@ -32147,8 +33657,24 @@ var Soho = (function (exports) {
         this.destroy().init();
         return this;
       }
+
+      // Update weekview mapped settings.
+      if (this.weekView && settings.events) {
+        this.weekView.settings.events = settings.events;
+      }
+      if (this.weekView && settings.eventTypes) {
+        this.weekView.settings.events = settings.events;
+      }
+      if (this.weekView && settings.weekViewSettings) {
+        this.weekView.settings = utils.mergeSettings(this.element[0], settings.weekViewSettings, this.weekViews.settings);
+      }
+
       this.monthView.showMonth(this.settings.month, this.settings.year);
       this.renderAllEvents();
+
+      if (this.weekView && settings.weekViewSettings) {
+        this.weekView.renderAllEvents();
+      }
       return this;
     },
 
@@ -32162,6 +33688,13 @@ var Soho = (function (exports) {
       this.element.off();
       $(this.monthViewContainer).off();
 
+      if (this.monthView) {
+        this.monthView.destroy();
+      }
+
+      if (this.weekView) {
+        this.weekView.destroy();
+      }
       return this;
     },
 
@@ -32186,7 +33719,7 @@ var Soho = (function (exports) {
       }
       this.removeModal();
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$q);
+      $.removeData(this.element[0], COMPONENT_NAME$s);
       return this;
     }
   };
@@ -32198,17 +33731,17 @@ var Soho = (function (exports) {
    */
   $.fn.calendar = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$q);
+      var instance = $.data(this, COMPONENT_NAME$s);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$q, new Calendar(this, settings));
+        instance = $.data(this, COMPONENT_NAME$s, new Calendar(this, settings));
       }
     });
   };
 
   // Default Settings
-  var COMPONENT_NAME$r = 'circlepager';
+  var COMPONENT_NAME$t = 'circlepager';
 
   /**
    * The Circle Pager Displays content in a sliding carousel and has paging buttons.
@@ -32629,7 +34162,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$r);
+      $.removeData(this.element[0], COMPONENT_NAME$t);
     },
 
 
@@ -32783,17 +34316,33 @@ var Soho = (function (exports) {
    */
   $.fn.circlepager = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$r);
+      var instance = $.data(this, COMPONENT_NAME$t);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$r, new CirclePager(this, settings));
+        instance = $.data(this, COMPONENT_NAME$t, new CirclePager(this, settings));
+      }
+    });
+  };
+
+  /**
+   * jQuery Component Wrapper for CalendarToolbar
+   * @param {object} [settings] incoming settings
+   * @returns {jQuery[]} elements being acted on
+   */
+  $.fn.calendartoolbar = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$p);
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$p, new CalendarToolbar(this, settings));
       }
     });
   };
 
   // Default Settings
-  var COMPONENT_NAME$s = 'colorpicker';
+  var COMPONENT_NAME$u = 'colorpicker';
 
   /**
    * The ColorPicker Component is a trigger field with a listing colors that can be selected.
@@ -33399,10 +34948,10 @@ var Soho = (function (exports) {
       return this.init();
     },
     teardown: function teardown() {
-      this.element.off(['keypress.' + COMPONENT_NAME$s, 'keyup.' + COMPONENT_NAME$s, 'blur.' + COMPONENT_NAME$s, 'openlist.' + COMPONENT_NAME$s, 'change.' + COMPONENT_NAME$s, 'paste.' + COMPONENT_NAME$s].join(' '));
+      this.element.off(['keypress.' + COMPONENT_NAME$u, 'keyup.' + COMPONENT_NAME$u, 'blur.' + COMPONENT_NAME$u, 'openlist.' + COMPONENT_NAME$u, 'change.' + COMPONENT_NAME$u, 'paste.' + COMPONENT_NAME$u].join(' '));
 
       if (this.swatch && this.swatch.length) {
-        this.swatch.off('click.' + COMPONENT_NAME$s);
+        this.swatch.off('click.' + COMPONENT_NAME$u);
         this.swatch.remove();
         delete this.swatch;
       }
@@ -33433,7 +34982,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$s);
+      $.removeData(this.element[0], COMPONENT_NAME$u);
       return this;
     },
 
@@ -33499,16 +35048,16 @@ var Soho = (function (exports) {
    */
   $.fn.colorpicker = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$s);
+      var instance = $.data(this, COMPONENT_NAME$u);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$s, new ColorPicker(this, settings));
+        instance = $.data(this, COMPONENT_NAME$u, new ColorPicker(this, settings));
       }
     });
   };
 
-  var COMPONENT_NAME$t = 'expandablearea';
+  var COMPONENT_NAME$v = 'expandablearea';
 
   /**
   * An expandable pane / area.
@@ -33847,7 +35396,7 @@ var Soho = (function (exports) {
       this.header.off();
       this.header.removeAttr('aria-controls').removeAttr('aria-expanded').removeAttr('id');
       this.content.removeAttr('id').removeClass('no-transition');
-      $.removeData(this.element[0], COMPONENT_NAME$t);
+      $.removeData(this.element[0], COMPONENT_NAME$v);
     },
 
 
@@ -33882,17 +35431,17 @@ var Soho = (function (exports) {
 
   $.fn.expandablearea = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$t);
+      var instance = $.data(this, COMPONENT_NAME$v);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$t, new ExpandableArea(this, settings));
+        instance = $.data(this, COMPONENT_NAME$v, new ExpandableArea(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$u = 'compositeform';
+  var COMPONENT_NAME$w = 'compositeform';
 
   /**
   * CompositeForm is a specialized responsive form component.
@@ -33977,11 +35526,11 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var self = this;
 
-      $('body').off('resize.' + COMPONENT_NAME$u).on('resize.' + COMPONENT_NAME$u, function (e) {
+      $('body').off('resize.' + COMPONENT_NAME$w).on('resize.' + COMPONENT_NAME$w, function (e) {
         self.checkResponsive(e);
       });
 
-      this.element.on('updated.' + COMPONENT_NAME$u, function () {
+      this.element.on('updated.' + COMPONENT_NAME$w, function () {
         self.updated();
       });
 
@@ -33991,7 +35540,7 @@ var Soho = (function (exports) {
       }
 
       if (this.hasSummary) {
-        this.expandableArea.on('expand.' + COMPONENT_NAME$u, changeExpanderText).on('collapse.' + COMPONENT_NAME$u, changeExpanderText);
+        this.expandableArea.on('expand.' + COMPONENT_NAME$w, changeExpanderText).on('collapse.' + COMPONENT_NAME$w, changeExpanderText);
       }
 
       return this;
@@ -34062,11 +35611,11 @@ var Soho = (function (exports) {
      * @returns {object} The component API for chaining.
      */
     teardown: function teardown() {
-      $('body').off('resize.' + COMPONENT_NAME$u);
-      this.element.off('updated.' + COMPONENT_NAME$u);
+      $('body').off('resize.' + COMPONENT_NAME$w);
+      this.element.off('updated.' + COMPONENT_NAME$w);
 
       if (this.hasSummary) {
-        this.expandableArea.off('expand.' + COMPONENT_NAME$u + ' collapse.' + COMPONENT_NAME$u);
+        this.expandableArea.off('expand.' + COMPONENT_NAME$w + ' collapse.' + COMPONENT_NAME$w);
       }
 
       return this;
@@ -34079,7 +35628,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$u);
+      $.removeData(this.element[0], COMPONENT_NAME$w);
     }
   };
 
@@ -34090,16 +35639,16 @@ var Soho = (function (exports) {
    */
   $.fn.compositeform = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$u);
+      var instance = $.data(this, COMPONENT_NAME$w);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$u, new CompositeForm(this, settings));
+        instance = $.data(this, COMPONENT_NAME$w, new CompositeForm(this, settings));
       }
     });
   };
 
-  var COMPONENT_NAME$v = 'contextualactionpanel';
+  var COMPONENT_NAME$x = 'contextualactionpanel';
 
   /**
   * A more complex modal for complex in page interactions.
@@ -34393,16 +35942,16 @@ var Soho = (function (exports) {
       this.buttons = this.panel.find('.buttonset').children('button');
 
       this.closeButton = this.panel.find('.modal-header').find('.btn-close, [name="close"], button.close-button');
-      if (!predefined && this.settings.modalSettings.showCloseBtn && !this.closeButton.length) {
-        this.closeButton = $('\n        <button class="btn-close" type="button">\n          <svg class="icon icon-close" focusable="false" aria-hidden="true" role="presentation">\n            <use xlink:href="#icon-close"></use>\n          </svg>\n          <span>Close</span>\n        </button>\n      ');
+      if (this.settings.modalSettings.showCloseBtn && !this.closeButton.length) {
+        var closeText = Locale.translate('Close');
+        this.closeButton = $('\n        <button class="btn-close" type="button" title="' + closeText + '">\n          ' + $.createIcon('close') + '\n          <span class="audible">' + closeText + '</span>\n        </button>\n      ');
 
         if (!this.settings.modalSettings.useFlexToolbar) {
-          var CAPToolbarButton = $('<div class="close-button"></div>').append(this.closeButton);
-          this.header.append(CAPToolbarButton);
+          buttonset.append(this.closeButton);
         } else {
           var standaloneSection = $('<div class="toolbar-section static"></div>').append(this.closeButton);
           var more = this.toolbar.find('.toolbar-section.more');
-          standaloneSection.after(more.length ? more : buttonset);
+          standaloneSection.insertAfter(more.length ? more : buttonset);
         }
       }
 
@@ -34440,8 +35989,6 @@ var Soho = (function (exports) {
       this.panel.addClass('is-animating').off('open.contextualactionpanel').on('open.contextualactionpanel', function (e) {
         passEvent(e);
         self.panel.removeClass('is-animating');
-      }).off('beforeclose.contextualactionpanel').on('beforeclose.contextualactionpanel', function () {
-        self.panel.addClass('is-animating');
       }).off('close.contextualactionpanel').on('close.contextualactionpanel', function (e) {
         passEvent(e);
       }).off('beforeopen.contextualactionpanel').on('beforeopen.contextualactionpanel', function (e) {
@@ -34604,7 +36151,7 @@ var Soho = (function (exports) {
       if (this.modalAPI && this.modalAPI.isOpen) {
         this.modalAPI.close(true);
       }
-      $.removeData(this.element[0], COMPONENT_NAME$v);
+      $.removeData(this.element[0], COMPONENT_NAME$x);
     }
   };
 
@@ -34615,17 +36162,17 @@ var Soho = (function (exports) {
    */
   $.fn.contextualactionpanel = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$v);
+      var instance = $.data(this, COMPONENT_NAME$x);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$v, new ContextualActionPanel(this, settings));
+        instance = $.data(this, COMPONENT_NAME$x, new ContextualActionPanel(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$w = 'tooltip';
+  var COMPONENT_NAME$y = 'tooltip';
 
   /**
    * Tooltip and Popover Control
@@ -34862,21 +36409,21 @@ var Soho = (function (exports) {
       }
 
       if (this.settings.trigger === 'hover' && !this.settings.isError) {
-        (this.element.is('.dropdown, .multiselect, span.longpress-target') ? this.activeElement : this.element).on('mouseenter.' + COMPONENT_NAME$w, function () {
+        (this.element.is('.dropdown, .multiselect, span.longpress-target') ? this.activeElement : this.element).on('mouseenter.' + COMPONENT_NAME$y, function () {
           if (self.isTouch) {
             return;
           }
           showOnTimer();
-        }).on('mouseleave.' + COMPONENT_NAME$w, function () {
+        }).on('mouseleave.' + COMPONENT_NAME$y, function () {
           hideOnTimer();
-        }).on('click.' + COMPONENT_NAME$w, function () {
+        }).on('click.' + COMPONENT_NAME$y, function () {
           if (self.isTouch) {
             return;
           }
           showImmediately();
-        }).on('longpress.' + COMPONENT_NAME$w, function () {
+        }).on('longpress.' + COMPONENT_NAME$y, function () {
           showImmediately();
-        }).on('updated.' + COMPONENT_NAME$w, function () {
+        }).on('updated.' + COMPONENT_NAME$y, function () {
           self.updated();
         });
       }
@@ -34890,7 +36437,7 @@ var Soho = (function (exports) {
       }
 
       if (this.settings.trigger === 'click') {
-        this.element.on('click.' + COMPONENT_NAME$w, function () {
+        this.element.on('click.' + COMPONENT_NAME$y, function () {
           toggleTooltipDisplay();
         });
       }
@@ -34903,9 +36450,9 @@ var Soho = (function (exports) {
 
       var isFocusable = this.settings.trigger === 'focus';
       if (isFocusable) {
-        this.element.on('focus.' + COMPONENT_NAME$w, function () {
+        this.element.on('focus.' + COMPONENT_NAME$y, function () {
           showImmediately();
-        }).on('blur.' + COMPONENT_NAME$w, function () {
+        }).on('blur.' + COMPONENT_NAME$y, function () {
           if (!self.settings.keepOpen) {
             hideImmediately();
           }
@@ -34913,7 +36460,7 @@ var Soho = (function (exports) {
       }
 
       // Close the popup/tooltip on orientation changes (but not when keyboard is open)
-      $(window).on('orientationchange.' + COMPONENT_NAME$w, function () {
+      $(window).on('orientationchange.' + COMPONENT_NAME$y, function () {
         if (!self.visible) {
           return;
         }
@@ -35245,7 +36792,7 @@ var Soho = (function (exports) {
       self.tooltip[0].classList[isPersonalizable ? 'add' : 'remove']('is-personalizable');
 
       setTimeout(function () {
-        $(document).on(mouseUpEventName + '.' + COMPONENT_NAME$w + '-' + self.uniqueId, function (e) {
+        $(document).on(mouseUpEventName + '.' + COMPONENT_NAME$y + '-' + self.uniqueId, function (e) {
           var target = $(e.target);
 
           if (self.settings.isError || self.settings.trigger === 'focus') {
@@ -35268,7 +36815,7 @@ var Soho = (function (exports) {
           if (target.closest('.popover').length === 1 && target.closest('.popover').not('.monthview-popup').length && self.element.prev().is('.datepicker')) {
             self.hide(e);
           }
-        }).on('keydown.' + COMPONENT_NAME$w + '-' + self.uniqueId, function (e) {
+        }).on('keydown.' + COMPONENT_NAME$y + '-' + self.uniqueId, function (e) {
           if (e.which === 27 || self.settings.isError) {
             self.hide();
           }
@@ -35279,13 +36826,13 @@ var Soho = (function (exports) {
         }
 
         if (window.orientation === undefined) {
-          $('body').on('resize.' + COMPONENT_NAME$w, function () {
+          $('body').on('resize.' + COMPONENT_NAME$y, function () {
             self.hide();
           });
         }
 
         // Hide on Page scroll
-        $('body').on('scroll.' + COMPONENT_NAME$w, function () {
+        $('body').on('scroll.' + COMPONENT_NAME$y, function () {
           self.hide();
         });
 
@@ -35303,7 +36850,7 @@ var Soho = (function (exports) {
 
         // Click to close
         if (self.settings.isError) {
-          self.tooltip.on('click.' + COMPONENT_NAME$w, function () {
+          self.tooltip.on('click.' + COMPONENT_NAME$y, function () {
             self.hide();
           });
         }
@@ -35489,15 +37036,15 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     detachOpenEvents: function detachOpenEvents() {
-      this.tooltip.off('click.' + COMPONENT_NAME$w);
+      this.tooltip.off('click.' + COMPONENT_NAME$y);
 
-      $(document).off(['keydown.' + COMPONENT_NAME$w + '-' + self.uniqueId, 'mouseup.' + COMPONENT_NAME$w + '-' + self.uniqueId, 'touchend.' + COMPONENT_NAME$w + '-' + self.uniqueId].join(' '));
+      $(document).off(['keydown.' + COMPONENT_NAME$y + '-' + self.uniqueId, 'mouseup.' + COMPONENT_NAME$y + '-' + self.uniqueId, 'touchend.' + COMPONENT_NAME$y + '-' + self.uniqueId].join(' '));
 
-      $('body').off(['resize.' + COMPONENT_NAME$w, 'scroll.' + COMPONENT_NAME$w].join(' '));
+      $('body').off(['resize.' + COMPONENT_NAME$y, 'scroll.' + COMPONENT_NAME$y].join(' '));
 
-      this.element.closest('.modal-body-wrapper').off('scroll.' + COMPONENT_NAME$w);
-      this.element.closest('.scrollable').off('scroll.' + COMPONENT_NAME$w);
-      this.element.closest('.datagrid-body').off('scroll.' + COMPONENT_NAME$w);
+      this.element.closest('.modal-body-wrapper').off('scroll.' + COMPONENT_NAME$y);
+      this.element.closest('.scrollable').off('scroll.' + COMPONENT_NAME$y);
+      this.element.closest('.datagrid-body').off('scroll.' + COMPONENT_NAME$y);
     },
 
 
@@ -35520,11 +37067,11 @@ var Soho = (function (exports) {
         this.tooltip.data('place').destroy();
       }
 
-      this.element.off(['mouseenter.' + COMPONENT_NAME$w, 'mouseleave.' + COMPONENT_NAME$w, 'longpress.' + COMPONENT_NAME$w, 'click.' + COMPONENT_NAME$w, 'updated.' + COMPONENT_NAME$w, 'focus.' + COMPONENT_NAME$w, 'blur.' + COMPONENT_NAME$w].join(' '));
+      this.element.off(['mouseenter.' + COMPONENT_NAME$y, 'mouseleave.' + COMPONENT_NAME$y, 'longpress.' + COMPONENT_NAME$y, 'click.' + COMPONENT_NAME$y, 'updated.' + COMPONENT_NAME$y, 'focus.' + COMPONENT_NAME$y, 'blur.' + COMPONENT_NAME$y].join(' '));
 
       this.detachOpenEvents();
 
-      $(window).off('orientationchange.' + COMPONENT_NAME$w);
+      $(window).off('orientationchange.' + COMPONENT_NAME$y);
 
       return this;
     },
@@ -35536,7 +37083,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$w);
+      $.removeData(this.element[0], COMPONENT_NAME$y);
     }
   };
 
@@ -35547,11 +37094,11 @@ var Soho = (function (exports) {
    */
   $.fn.tooltip = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$w);
+      var instance = $.data(this, COMPONENT_NAME$y);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$w, new Tooltip(this, settings));
+        instance = $.data(this, COMPONENT_NAME$y, new Tooltip(this, settings));
       }
     });
   };
@@ -35561,7 +37108,7 @@ var Soho = (function (exports) {
   $.fn.popover = $.fn.tooltip;
 
   // Name of this component.
-  var COMPONENT_NAME$x = 'dropdown';
+  var COMPONENT_NAME$z = 'dropdown';
 
   // Dropdown Settings and Options
   var moveSelectedOpts = ['none', 'all', 'group'];
@@ -35665,6 +37212,13 @@ var Soho = (function (exports) {
         }
       }
       return false;
+    },
+
+    /**
+     * @returns {boolean} whether or not this Dropdown component is a "short" field.
+     */
+    get isShortField() {
+      return this.element.closest('.field-short').length > 0;
     },
 
     /**
@@ -36076,7 +37630,7 @@ var Soho = (function (exports) {
       var opts = this.element.find('option:selected');
       var optText = this.getOptionText(opts);
       this.tooltipApi = this.pseudoElem.find('span').tooltip({
-        content: optText,
+        content: xssUtils.escapeHTML(optText),
         parentElement: this.pseudoElem,
         trigger: this.isMobile() ? 'immediate' : 'hover'
       }).on('blur.dropdowntooltip', function () {
@@ -36387,9 +37941,8 @@ var Soho = (function (exports) {
         this.listUl.find('[title]').addClass('has-tooltip').tooltip();
       }
 
-      this.position();
-
       if (this.isOpen()) {
+        this.position();
         this.highlightOption(this.listUl.find('li:visible:not(.separator):not(.group-label):not(.is-disabled)').first());
       }
     },
@@ -36412,6 +37965,7 @@ var Soho = (function (exports) {
         DOM.html(_span, '<span class="audible">' + this.label.text() + ' </span>', '<div><p><span><ul><li><a><abbr><b><i><kbd><small><strong><sub><svg><use><br>');
         _span = $('#' + this.element.attr('id')).next().find('span').first();
         DOM.html(_span, '<span class="audible">' + this.label.text() + ' </span>', '<div><p><span><ul><li><a><abbr><b><i><kbd><small><strong><sub><svg><use><br>');
+        this.setPlaceholder(text);
         return;
       }
 
@@ -36423,13 +37977,10 @@ var Soho = (function (exports) {
       text = text.trim();
       var span = this.pseudoElem.find('span');
       if (span.length > 0) {
-        span[0].innerHTML = '<span class="audible">' + this.label.text() + ' </span>' + text;
+        span[0].innerHTML = '<span class="audible">' + this.label.text() + ' </span>' + xssUtils.escapeHTML(text);
       }
 
-      // If there is a placeholder set the selected text
-      if (this.element.attr('placeholder')) {
-        this.pseudoElem.find('span').not('.audible').attr('data-selected-text', text);
-      }
+      this.setPlaceholder(text);
 
       // Set the "previousActiveDescendant" to the first of the items
       this.previousActiveDescendant = opts.first().val();
@@ -36468,11 +38019,23 @@ var Soho = (function (exports) {
         this.pseudoElem.hide().prev('label').hide();
         this.pseudoElem.next('svg').hide();
       }
+    },
 
-      // set placeholder text on pseudoElem span element
-      if (this.element.attr('placeholder')) {
-        this.pseudoElem.find('span').not('.audible').attr('data-placeholder-text', this.element.attr('placeholder'));
-        this.pseudoElem.find('span').not('.audible').attr('data-selected-text', '');
+
+    /**
+     * Set placeholder text, if value empty
+     * @private
+     * @param  {string} text The selected text value.
+     * @returns {void}
+     */
+    setPlaceholder: function setPlaceholder(text) {
+      this.placeholder = this.placeholder || { text: this.element.attr('placeholder') };
+      if (this.placeholder.text) {
+        var isEmpty = typeof text !== 'string' || typeof text === 'string' && text === '';
+        this.placeholder.elem = this.placeholder.elem || this.pseudoElem.find('span:not(.audible)');
+        this.placeholder.elem.attr('data-placeholder-text', isEmpty ? this.placeholder.text : '');
+      } else {
+        delete this.placeholder;
       }
     },
 
@@ -36532,14 +38095,14 @@ var Soho = (function (exports) {
         this.searchKeyMode = false;
       }
 
-      this.searchInput.on('keydown.' + COMPONENT_NAME$x, function (e) {
+      this.searchInput.on('keydown.' + COMPONENT_NAME$z, function (e) {
         var searchInput = $(_this3);
         if (!_this3.ignoreKeys(searchInput, e)) {
           return false;
         }
 
         return _this3.handleKeyDown(searchInput, e);
-      }).on('input.' + COMPONENT_NAME$x, function (e) {
+      }).on('input.' + COMPONENT_NAME$z, function (e) {
         _this3.isFiltering = true;
         _this3.handleAutoComplete(e);
       });
@@ -36595,6 +38158,7 @@ var Soho = (function (exports) {
       list.not(results).add(headers).addClass('hidden');
       list.filter(results).each(function (i) {
         var li = $(this);
+        var a = li.children('a');
         li.attr('tabindex', i === 0 ? '0' : '-1');
 
         if (!selected) {
@@ -36604,14 +38168,29 @@ var Soho = (function (exports) {
 
         // Highlight Term
         var exp = self.getSearchRegex(term);
-        var text = li.text().replace(exp, '<span class="dropdown-highlight">$1</span>').trim();
+        var text = li.text();
+        text = xssUtils.escapeHTML(text);
+        text = text.replace(/&lt;/g, '&#16;');
+        text = text.replace(/&gt;/g, '&#17;');
+        text = text.replace(/&apos;/g, '&#18;');
+        text = text.replace(/&quot;/g, '&#19;');
+        text = text.replace(/&amp;/g, '&');
+        text = text.replace(exp, '<span class="dropdown-highlight">$1</span>').trim();
+        text = text.replace(/&#16;/g, '&lt;');
+        text = text.replace(/&#17;/g, '&gt;');
+        text = text.replace(/&#18;/g, '&apos;');
+        text = text.replace(/&#19;/g, '&quot;');
+
         var icon = li.children('a').find('svg').length !== 0 ? new XMLSerializer().serializeToString(li.children('a').find('svg')[0]) : '';
+        var swatch = li.children('a').find('.swatch');
+        var swatchHtml = swatch.length !== 0 ? swatch[0].outerHTML : '';
 
         if (icon) {
           hasIcons = true;
         }
-
-        li.children('a').html(icon + text);
+        if (a[0]) {
+          a[0].innerHTML = swatchHtml + icon + text;
+        }
       });
 
       headers.each(function () {
@@ -36654,14 +38233,18 @@ var Soho = (function (exports) {
         var a = $(this).children('a');
         var li = $(this);
 
-        var text = a.text();
+        var text = xssUtils.escapeHTML(a.text());
         var icon = li.children('a').find('svg').length !== 0 ? new XMLSerializer().serializeToString(li.children('a').find('svg')[0]) : '';
+        var swatch = li.children('a').find('.swatch');
+        var swatchHtml = swatch.length !== 0 ? swatch[0].outerHTML : '';
 
         if (icon) {
           hasIcons = true;
         }
 
-        a.html(icon + text);
+        if (a[0]) {
+          a[0].innerHTML = swatchHtml + icon + text;
+        }
       });
 
       // Adjust height / top position
@@ -36808,7 +38391,8 @@ var Soho = (function (exports) {
               e.preventDefault();
 
               if (options.length && selectedIndex > -1) {
-                self.selectOption($(options[selectedIndex])); // store the current selection
+                // store the current selection
+                self.selectOption(this.correctValue($(options[selectedIndex])));
               }
 
               if (self.settings.closeOnSelect) {
@@ -37113,7 +38697,7 @@ var Soho = (function (exports) {
       var regex = void 0;
 
       try {
-        regex = new RegExp('(' + term + ')', 'i');
+        regex = new RegExp('(' + stringUtils.escapeRegExp(term) + ')', 'i');
       } catch (e) {
         // create a "matches all" regex if we can't create a regex from the search term
         regex = /[\s\S]*/i;
@@ -37199,10 +38783,6 @@ var Soho = (function (exports) {
         isEmpty = true;
       }
 
-      if (Environment.os.name === 'ios') {
-        $('head').triggerHandler('disable-zoom');
-      }
-
       // Close any other drop downs.
       $('select').each(function () {
         var data = $(this).data();
@@ -37234,9 +38814,9 @@ var Soho = (function (exports) {
       this.list.show();
 
       // Persist the "short" input field
-      var isShort = this.element.closest('.field-short').length === 1;
-
-      this.list.addClass(isShort ? 'dropdown-short' : '');
+      if (this.isShortField) {
+        this.list[0].classList.add('dropdown-short');
+      }
 
       this.pseudoElem.attr('aria-expanded', 'true').addClass('is-open');
 
@@ -37274,11 +38854,12 @@ var Soho = (function (exports) {
       if (this.filterTerm) {
         this.searchInput.val(this.filterTerm);
       } else {
-        var fieldValue = this.pseudoElem.find('span:not(.audible)').contents().eq(1).text().trim();
-        this.searchInput.val(fieldValue);
-        if (this.element.attr('placeholder')) {
-          this.pseudoElem.find('span').not('.audible').attr('data-selected-text', '');
+        var span = this.pseudoElem.find('span:not(.audible)').contents().eq(1);
+        if (span.length === 0) {
+          span = this.pseudoElem.find('span:not(.audible)');
         }
+        var fieldValue = span.text().trim();
+        this.searchInput.val(fieldValue);
       }
 
       var noScroll = this.settings.multiple;
@@ -37430,10 +39011,6 @@ var Soho = (function (exports) {
           self.closeList('cancel');
         });
       }
-
-      if (Environment.os.name === 'ios') {
-        $('head').triggerHandler('enable-zoom');
-      }
     },
 
 
@@ -37456,24 +39033,46 @@ var Soho = (function (exports) {
           self.listUl.prependTo(self.list);
         }
 
+        var listStyle = window.getComputedStyle(self.list[0]);
+        var listStyleTop = listStyle.top ? parseInt(listStyle.top, 10) : 0;
+
+        // When flipping, account for borders in the adjusted placement
+        var flippedOffset = 0;
+        if (!Environment.browser.isIE11()) {
+          flippedOffset = parseInt(listStyle.borderBottomWidth, 10) + parseInt(listStyle.borderTopWidth, 10);
+        }
+
+        // Firefox has different alignments without an adjustment:
+        var browserOffset = 0;
+        if (Environment.browser.name === 'firefox') {
+          browserOffset = 4;
+        }
+
         // Set the <UL> height to 100% of the `.dropdown-list` minus the size of the search input
         var ulHeight = parseInt(self.listUl[0].offsetHeight, 10);
         var listHeight = parseInt(self.list[0].offsetHeight, 10) + 5;
-        var searchInputHeight = $(this).hasClass('dropdown-short') ? 24 : 34;
+        var searchInputHeight = parseInt(self.searchInput[0].offsetHeight, 10);
         var isToBottom = parseInt(self.list[0].offsetTop, 10) + parseInt(self.list[0].offsetHeight, 10) >= window.innerHeight;
         var isSmaller = searchInputHeight < listHeight - searchInputHeight * 2 && ulHeight + searchInputHeight >= listHeight;
 
-        if (isSmaller && !isToBottom) {
-          self.listUl[0].style.height = listHeight - searchInputHeight * 2 + 'px';
-        }
-
-        if (isSmaller && isToBottom) {
-          self.listUl[0].style.height = listHeight - searchInputHeight * 2 + 'px';
-          self.list[0].style.height = parseInt(self.list[0].style.height, 10) - 10 + 'px';
+        var adjustedUlHeight = void 0;
+        if (isSmaller) {
+          adjustedUlHeight = listHeight - searchInputHeight - 5 + 'px';
+          if (isToBottom) {
+            self.list[0].style.height = parseInt(listHeight, 10) - 10 + 'px';
+          }
         }
 
         if (placementObj.wasFlipped) {
-          self.listUl[0].style.height = parseInt(self.listUl[0].style.height, 10) + (searchInputHeight - 5) + 'px';
+          adjustedUlHeight = listHeight - searchInputHeight - browserOffset - 5 + 'px';
+
+          if (!self.isShortField) {
+            self.list[0].style.top = listStyleTop + searchInputHeight + flippedOffset + 'px';
+          }
+        }
+
+        if (adjustedUlHeight) {
+          self.listUl[0].style.height = adjustedUlHeight;
         }
 
         return placementObj;
@@ -37552,18 +39151,7 @@ var Soho = (function (exports) {
         return true; //eslint-disable-line
       }
 
-      var val = target.attr('data-val').replace(/"/g, '/quot/');
-      var cur = this.element.find('option[value="' + val + '"]');
-      // Try matching the option's text if 'cur' comes back empty or overpopulated.
-      // Supports options that don't have a 'value' attribute
-      // And also some special &quote handling
-      if (cur.length === 0 || cur.length > 1) {
-        cur = this.element.find('option').filter(function () {
-          var elem = $(this);
-          var attr = elem.attr('value');
-          return elem.text() === val || attr && attr.replace(/"/g, '/quot/') === val;
-        });
-      }
+      var cur = this.correctValue(target);
 
       if (cur.is(':disabled')) {
         return false; //eslint-disable-line
@@ -37594,6 +39182,27 @@ var Soho = (function (exports) {
       }
 
       return true; //eslint-disable-line
+    },
+
+
+    /**
+     * Try matching the option's text if 'cur' comes back empty or overpopulated.
+     * Supports options that don't have a 'value' attribute, And also some special &quote handling.
+     * @private
+     * @param  {object} option The object to correct.
+     * @returns {object} The corrected object
+     */
+    correctValue: function correctValue(option) {
+      var val = option.attr('data-val').replace(/"/g, '/quot/');
+      var cur = this.element.find('option[value="' + val + '"]');
+      if (cur.length === 0 || cur.length > 1) {
+        cur = this.element.find('option').filter(function () {
+          var elem = $(this);
+          var attr = elem.attr('value');
+          return elem.text() === val || attr && attr.replace(/"/g, '/quot/') === val;
+        });
+      }
+      return cur;
     },
 
 
@@ -37632,7 +39241,7 @@ var Soho = (function (exports) {
       this.searchKeyMode = false;
       this.setDisplayedValues();
 
-      this.searchInput.off(['input.' + COMPONENT_NAME$x, 'keydown.' + COMPONENT_NAME$x].join(' '));
+      this.searchInput.off(['input.' + COMPONENT_NAME$z, 'keydown.' + COMPONENT_NAME$z].join(' '));
 
       // Destroy any tooltip items
       this.listUl.find('.has-tooltip').each(function () {
@@ -37642,13 +39251,13 @@ var Soho = (function (exports) {
         }
       });
 
-      this.list.off(['click.' + COMPONENT_NAME$x, 'touchmove.' + COMPONENT_NAME$x, 'touchend.' + COMPONENT_NAME$x, 'touchcancel.' + COMPONENT_NAME$x, 'mousewheel.' + COMPONENT_NAME$x, 'mouseenter.' + COMPONENT_NAME$x].join(' ')).remove();
+      this.list.off(['click.' + COMPONENT_NAME$z, 'touchmove.' + COMPONENT_NAME$z, 'touchend.' + COMPONENT_NAME$z, 'touchcancel.' + COMPONENT_NAME$z, 'mousewheel.' + COMPONENT_NAME$z, 'mouseenter.' + COMPONENT_NAME$z].join(' ')).remove();
 
       this.pseudoElem.removeClass('is-open').removeAttr('aria-expanded');
 
       this.searchInput.removeAttr('aria-activedescendant');
 
-      $(document).off(['click.' + COMPONENT_NAME$x, 'scroll.' + COMPONENT_NAME$x, 'touchstart.' + COMPONENT_NAME$x, 'touchmove.' + COMPONENT_NAME$x, 'touchend.' + COMPONENT_NAME$x, 'touchcancel.' + COMPONENT_NAME$x].join(' '));
+      $(document).off(['click.' + COMPONENT_NAME$z, 'scroll.' + COMPONENT_NAME$z, 'touchstart.' + COMPONENT_NAME$z, 'touchmove.' + COMPONENT_NAME$z, 'touchend.' + COMPONENT_NAME$z, 'touchcancel.' + COMPONENT_NAME$z].join(' '));
 
       var modalScroll = $('.modal.is-visible .modal-body-wrapper');
       var parentScroll = this.element.closest('.scrollable').length ? this.element.closest('.scrollable') : $(document);
@@ -38051,11 +39660,16 @@ var Soho = (function (exports) {
 
       this.setBadge(option);
 
-      if (Environment.browser.name === 'ie' && Environment.browser.version === '11') {
-        var ieHtml = $('#' + this.element.attr('id')).html();
-        var ieVal = $('#' + this.element.attr('id')).val();
-        this.element.html(ieHtml);
-        this.element.val(ieVal);
+      var id = this.element.attr('id');
+      if (Environment.browser.isIE11() && id) {
+        var ieHtml = $('#' + id).html();
+        var ieVal = $('#' + id).val();
+        if (ieHtml) {
+          this.element.html(ieHtml);
+        }
+        if (ieVal) {
+          this.element.val(ieVal);
+        }
       }
     },
 
@@ -38487,8 +40101,11 @@ var Soho = (function (exports) {
       if (this.selectedValues) {
         delete this.selectedValues;
       }
+      if (this.placeholder) {
+        delete this.placeholder;
+      }
 
-      $.removeData(this.element[0], COMPONENT_NAME$x);
+      $.removeData(this.element[0], COMPONENT_NAME$z);
       this.closeList('cancel');
       this.pseudoElem.off().remove();
       this.icon.remove();
@@ -38564,17 +40181,17 @@ var Soho = (function (exports) {
   $.fn.dropdown = function (settings) {
     // Keep the Chaining and Init the Controls or Settings
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$x);
+      var instance = $.data(this, COMPONENT_NAME$z);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$x, new Dropdown(this, settings));
+        instance = $.data(this, COMPONENT_NAME$z, new Dropdown(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$y = 'timepicker';
+  var COMPONENT_NAME$A = 'timepicker';
 
   // Timepicker Modes
   var TIMEPICKER_MODES = ['standard', 'range'];
@@ -38645,6 +40262,7 @@ var Soho = (function (exports) {
       if (this.settings.locale) {
         Locale.getLocale(this.settings.locale).done(function (locale) {
           _this.locale = Locale.cultures[locale];
+          _this.language = _this.settings.language || _this.locale.language;
           _this.setCurrentCalendar();
         });
       }
@@ -38666,7 +40284,7 @@ var Soho = (function (exports) {
       if (this.settings.timeFormat === undefined) {
         this.settings.timeFormat = this.currentCalendar.timeFormat || 'h:mm a';
       }
-      this.isRTL = this.locale.direction === 'right-to-left';
+      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
       this.build();
       return this;
     },
@@ -39666,7 +41284,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$y);
+      $.removeData(this.element[0], COMPONENT_NAME$A);
     },
 
 
@@ -39700,11 +41318,11 @@ var Soho = (function (exports) {
    */
   $.fn.timepicker = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$y);
+      var instance = $.data(this, COMPONENT_NAME$A);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$y, new TimePicker(this, settings));
+        instance = $.data(this, COMPONENT_NAME$A, new TimePicker(this, settings));
       }
     });
   };
@@ -39868,7 +41486,16 @@ var Soho = (function (exports) {
               var timeFormat = options.timeFormat || Locale.calendar().timeFormat;
               format += ' ' + timeFormat;
             }
+            if (datepickerApi && datepickerApi.isIslamic) {
+              format = {
+                pattern: datepickerApi.pattern,
+                locale: datepickerApi.locale.name
+              };
+            }
             dateObj = Locale.parseDate(dateObj, format);
+          }
+          if (datepickerApi && datepickerApi.isIslamic && dateObj instanceof Date) {
+            dateObj = datepickerApi.conversions.toGregorian(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
           }
           var d2 = options.useUTC ? Locale.dateToUTC(dateObj) : dateObj;
 
@@ -40135,7 +41762,7 @@ var Soho = (function (exports) {
   var Validation = new ValidationRules();
 
   // Component Name
-  var COMPONENT_NAME$z = 'toast';
+  var COMPONENT_NAME$B = 'toast';
 
   // Default Component Settings
   var TOAST_DEFAULTS = {
@@ -40579,7 +42206,7 @@ var Soho = (function (exports) {
       }
       $(document).off('keydown.toast keyup.toast mouseup.toast touchend.toast');
       container.remove();
-      $.removeData(this.element[0], COMPONENT_NAME$z);
+      $.removeData(this.element[0], COMPONENT_NAME$B);
     }
   };
 
@@ -40590,17 +42217,17 @@ var Soho = (function (exports) {
    */
   $.fn.toast = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$z);
+      var instance = $.data(this, COMPONENT_NAME$B);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$z, new Toast(this, settings));
+        instance = $.data(this, COMPONENT_NAME$B, new Toast(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$A = 'Validator';
+  var COMPONENT_NAME$C = 'Validator';
 
   /**
    * Validation Message Defaults
@@ -41740,6 +43367,7 @@ var Soho = (function (exports) {
       if (settings) {
         this.settings = utils.mergeSettings(this.element[0], settings, this.settings);
       }
+      this.init();
     }
   };
 
@@ -41852,9 +43480,9 @@ var Soho = (function (exports) {
    */
   $.fn.addMessage = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$A);
+      var instance = $.data(this, COMPONENT_NAME$C);
       if (!instance) {
-        instance = $.data(this, COMPONENT_NAME$A, new Validator(this, settings));
+        instance = $.data(this, COMPONENT_NAME$C, new Validator(this, settings));
       }
 
       var rule = {
@@ -41900,9 +43528,9 @@ var Soho = (function (exports) {
     }
 
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$A);
+      var instance = $.data(this, COMPONENT_NAME$C);
       if (!instance) {
-        instance = $.data(this, COMPONENT_NAME$A, new Validator(this, settings));
+        instance = $.data(this, COMPONENT_NAME$C, new Validator(this, settings));
       }
 
       var field = $(this);
@@ -41917,7 +43545,7 @@ var Soho = (function (exports) {
       }
       instance.setIconOnParent(field, settings.type);
 
-      $.removeData(this, COMPONENT_NAME$A);
+      $.removeData(this, COMPONENT_NAME$C);
     });
   };
 
@@ -42001,7 +43629,7 @@ var Soho = (function (exports) {
   };
 
   // Component Name
-  var COMPONENT_NAME$B = 'datepicker';
+  var COMPONENT_NAME$D = 'datepicker';
 
   /**
    * A component to support date entry.
@@ -42022,7 +43650,7 @@ var Soho = (function (exports) {
    *  rounds the minutes value to the nearest interval when the field is blurred.
    * @param {string} [settings.dateFormat='locale'] Defaults to current locale but can be
    * @param {string} [settings.placeholder=false] Text to show in input element while empty.
-   * @param {number} [settings.firstDayOfWeek=null] Set first day of the week. '1' would be Monday.
+   * @param {number} [settings.firstDayOfWeek=0] Set first day of the week. '1' would be Monday.
    * @param {object} [settings.disable] Disable dates in various ways.
    * For example `{minDate: 'M/d/yyyy', maxDate: 'M/d/yyyy'}`. Dates should be in format M/d/yyyy
    * or be a Date() object or string that can be converted to a date with new Date().
@@ -42059,14 +43687,16 @@ var Soho = (function (exports) {
    * @param {boolean} [settings.range.selectForward=false] Range only in forward direction.
    * @param {boolean} [settings.range.selectBackward=false] Range only in backward direction.
    * @param {boolean} [settings.range.includeDisabled=false] Include disable dates in range of dates.
+   * @param {boolean} [settings.range.selectWeek=false] If true will act as a week picker.
    * @param {string} [settings.calendarName] The name of the calendar to use in instance of multiple calendars. At this time only ar-SA and ar-EG locales have either 'gregorian' or 'islamic-umalqura' as valid values.
    * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
    * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale will be used or the passed locale will be used.
    * @param {boolean} [settings.useUTC=false] If true the dates will use UTC format. This is only partially
    * implemented https://jira.infor.com/browse/SOHO-3437
-   * @param {boolean} [settings.autoSize=false] If true the field will be sized to the width of the date.
    * @param {boolean} [settings.hideButtons=false] If true bottom and next/prev buttons will be not shown.
    * @param {boolean} [settings.showToday=true] If true the today button is shown on the header.
+   * @param {function} [settings.onOpenCalendar] Call back for when the calendar is open, allows you to set the date.
+   * @param {boolean} [settings.isMonthPicker] Indicates this is a month picker on the month and week view. Has some slight different behavior.
    */
   var DATEPICKER_DEFAULTS = {
     showTime: false,
@@ -42078,7 +43708,7 @@ var Soho = (function (exports) {
     roundToInterval: undefined,
     dateFormat: 'locale', // or can be a specific format
     placeholder: false,
-    firstDayOfWeek: null,
+    firstDayOfWeek: 0,
     disable: {
       dates: [],
       minDate: '',
@@ -42105,15 +43735,17 @@ var Soho = (function (exports) {
       maxDays: 0, // Maximum days
       selectForward: false, // Only in forward direction
       selectBackward: false, // Only in backward direction
-      includeDisabled: false // if true range will include disable dates in it
+      includeDisabled: false, // if true range will include disable dates in it
+      selectWeek: false // if true will act as a week picker
     },
     calendarName: null,
     locale: null,
     language: null,
     useUTC: false,
-    autoSize: false,
     hideButtons: false,
-    showToday: true
+    showToday: true,
+    onOpenCalendar: null,
+    isMonthPicker: false
   };
 
   function DatePicker(element, settings) {
@@ -42144,20 +43776,30 @@ var Soho = (function (exports) {
       this.element.attr('autocomplete', 'off');
 
       // Append a trigger button
-      this.trigger = $.createIconElement('calendar').insertAfter(this.element);
+      if (this.element.next().is('svg')) {
+        this.trigger = this.element.next();
+      } else {
+        this.trigger = $.createIconElement('calendar').insertAfter(this.element);
+      }
 
       // Hide icon if datepicker input is hidden
       if (this.element.hasClass('hidden')) {
         this.trigger.addClass('hidden');
       }
 
+      // Enable classes and settings for week selection
+      if (this.settings.range.selectWeek) {
+        this.settings.selectForward = true;
+        this.settings.minDays = 6;
+        this.settings.maxDays = 7;
+      }
+
       // Set the current calendar
       this.setLocale();
       this.addAria();
-      if (!this.settings.locale && !this.settings.lanuage) {
+      if (!this.settings.locale && !this.settings.language) {
         this.setCurrentCalendar();
       }
-      this.setSize();
     },
 
 
@@ -42169,18 +43811,54 @@ var Soho = (function (exports) {
     setLocale: function setLocale() {
       var _this = this;
 
+      var s = this.settings;
       this.locale = Locale.currentLocale;
-      if (this.settings.locale) {
-        Locale.getLocale(this.settings.locale).done(function (locale) {
-          _this.locale = Locale.cultures[locale];
-          _this.setCurrentCalendar();
-        });
-      }
+
       if (this.settings.language) {
-        Locale.getLocale(this.settings.language).done(function () {
-          _this.language = _this.settings.language;
+        Locale.getLocale(this.settings.language);
+        this.language = this.settings.language;
+      } else {
+        this.language = Locale.currentLanguage.name;
+      }
+
+      if (s.locale) {
+        Locale.getLocale(s.locale).done(function (locale) {
+          var similarApi = _this.getSimilarApi('locale', locale);
+          similarApi.forEach(function (api) {
+            api.locale = Locale.cultures[locale];
+            api.language = _this.settings.language || api.locale.language;
+            api.setCurrentCalendar();
+          });
         });
       }
+      if (s.language) {
+        Locale.getLocale(s.language).done(function () {
+          var similarApi = _this.getSimilarApi('language', s.language);
+          similarApi.forEach(function (api) {
+            api.language = s.language;
+          });
+        });
+      }
+    },
+
+
+    /**
+     * Get list of similar api elements.
+     * @private
+     * @param {string} key to check
+     * @param {string} value to check
+     * @returns {array} list of api elements
+     */
+    getSimilarApi: function getSimilarApi(key, value) {
+      var elems = [].slice.call(document.querySelectorAll('.datepicker'));
+      var similarApi = [];
+      elems.forEach(function (node) {
+        var datepickerApi = $(node).data('datepicker');
+        if (datepickerApi && datepickerApi.settings[key] === value) {
+          similarApi.push(datepickerApi);
+        }
+      });
+      return similarApi;
     },
 
 
@@ -42192,27 +43870,11 @@ var Soho = (function (exports) {
     setCurrentCalendar: function setCurrentCalendar() {
       this.currentCalendar = Locale.calendar(this.locale.name, this.settings.calendarName);
       this.isIslamic = this.currentCalendar.name === 'islamic-umalqura';
-      this.isRTL = this.locale.direction === 'right-to-left';
+      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
       this.conversions = this.currentCalendar.conversions;
       this.isFullMonth = this.settings.dateFormat.indexOf('MMMM') > -1;
       this.setFormat();
       this.mask();
-    },
-
-
-    /**
-     * Set size attribute based on current contents
-     * @private
-     * @returns {void}
-     */
-    setSize: function setSize() {
-      if (!this.settings.autoSize) {
-        return;
-      }
-      var elem = this.element[0];
-      var padding = 45;
-      elem.classList.add('input-auto');
-      elem.style.width = stringUtils.textWidth(elem.value, 16) + padding + 'px';
     },
 
 
@@ -42278,7 +43940,7 @@ var Soho = (function (exports) {
 
           // Tab closes Date Picker and goes to next field on the modal
           if (key === 9) {
-            if (s.range.useRange && $(e.target).is('.next')) {
+            if (s.range.useRange && $(e.target).is('.next') && !s.range.selectWeek) {
               _this2.calendarAPI.days.find('td:visible:last').attr('tabindex', 0).focus();
             } else {
               _this2.containFocus(e);
@@ -42466,17 +44128,6 @@ var Soho = (function (exports) {
 
 
     /**
-     * Open the calendar popup.
-     * This method is slated to be removed in a future v4.15.0 or v5.0.0.
-     * @deprecated as of v4.9.0. Please use `openCalendar()` instead.
-     * @returns {void}
-     */
-    open: function open() {
-      return deprecateMethod(this.openCalendar, this.open).apply(this);
-    },
-
-
-    /**
      * Open the calendar in a popup
      * @private
      * @returns {void}
@@ -42502,7 +44153,10 @@ var Soho = (function (exports) {
       */
       this.element.addClass('is-active is-open').trigger('listopened');
       this.timepickerContainer = $('<div class="datepicker-time-container"></div>');
-      this.footer = $('' + ('<div class="popup-footer">\n        <button type="button" class="is-cancel btn-tertiary">\n          ' + Locale.translate('Clear', { locale: this.locale.name, language: this.language }) + '\n        </button>\n        <button type="button" class="is-select btn-primary">\n          ' + Locale.translate('Apply', { locale: this.locale.name, language: this.language }) + '\n        </button>\n      </div>'));
+      var clearButton = '<button type="button" class="is-cancel btn-tertiary">\n      ' + Locale.translate(this.settings.isMonthPicker ? 'Cancel' : 'Clear', { locale: this.locale.name, language: this.language }) + '\n    </button>';
+      var applyButton = ' <button type="button" class="is-select btn-primary">\n      ' + Locale.translate('Apply', { locale: this.locale.name, language: this.language }) + '\n    </button>';
+
+      this.footer = $('' + ('<div class="popup-footer">\n        ' + (this.isRTL ? applyButton + clearButton : clearButton + applyButton) + '\n      </div>'));
 
       if (s.hideDays) {
         this.footer = $('' + ('<div class="popup-footer">\n          <button type="button" class="is-cancel btn-tertiary">\n            ' + Locale.translate('Clear', { locale: this.locale.name, language: this.language }) + '\n          </button>\n          <button type="button" class="is-select-month btn-primary">\n            ' + Locale.translate('Apply', { locale: this.locale.name, language: this.language }) + '\n          </button>\n        </div>'));
@@ -42588,6 +44242,8 @@ var Soho = (function (exports) {
       if (this.settings.onOpenCalendar) {
         // In some cases, month picker wants to set a specifc time.
         this.settings.activeDate = this.settings.onOpenCalendar();
+        this.settings.month = this.settings.activeDate.getMonth();
+        this.settings.year = this.settings.activeDate.getFullYear();
 
         if (this.isIslamic) {
           this.settings.activeDateIslamic = this.conversions.fromGregorian(this.settings.activeDate);
@@ -42603,7 +44259,19 @@ var Soho = (function (exports) {
       // Handle day change
       this.settings.onSelected = function (node, args) {
         _this4.currentDate = new Date(args.year, args.month, args.day);
-        if (self.settings.range.useRange && self.settings.range.first) {
+
+        if (self.settings.range.useRange && self.settings.range.first && self.settings.range.selectWeek) {
+          var first = dateUtils.firstDayOfWeek(new Date(), _this4.settings.firstDayOfWeek);
+          var last = dateUtils.lastDayOfWeek(new Date(), _this4.settings.firstDayOfWeek);
+          self.settings.range.first = {};
+          self.settings.range.second = undefined;
+
+          self.setWeekRange({ day: first.getDate(), month: first.getMonth(), year: first.getFullYear() }, { day: last.getDate(), month: last.getMonth(), year: last.getFullYear() });
+          self.closeCalendar();
+          self.element.focus();
+          return;
+        }
+        if (self.settings.range.useRange && self.settings.range.first && !self.settings.range.selectWeek) {
           return;
         }
         self.insertDate(_this4.currentDate);
@@ -42613,6 +44281,29 @@ var Soho = (function (exports) {
           self.element.focus();
         }
       };
+
+      if (this.settings.range.useRange && this.settings.range.selectWeek) {
+        this.settings.onKeyDown = function (args) {
+          if (args.key === 37 || args.key === 39) {
+            return false;
+          }
+          if (args.key === 38 || args.key === 40) {
+            // up and down a week
+            // TODO - Later if this is really needed.
+            return false;
+          }
+          if (args.key === 13) {
+            // select a week
+            // TODO - Later if this is really needed.
+            return false;
+          }
+          return true;
+        };
+      }
+
+      if (!this.settings.language) {
+        this.settings.language = this.language;
+      }
 
       this.calendarAPI = new MonthView(this.calendarContainer, this.settings);
       this.calendar = this.calendarAPI.element;
@@ -42650,16 +44341,12 @@ var Soho = (function (exports) {
         placement: 'bottom',
         popover: true,
         trigger: 'immediate',
-        extraClass: 'monthview-popup',
+        extraClass: this.settings.range.selectWeek ? 'monthview-popup is-range-week' : 'monthview-popup',
         tooltipElement: '#monthview-popup',
         initializeContent: false
       };
 
       this.trigger.popover(popoverOpts).off('show.datepicker').on('show.datepicker', function () {
-        if (Environment.os.name === 'ios') {
-          $('head').triggerHandler('disable-zoom');
-        }
-
         // Horizontal view on mobile
         if (window.innerHeight < 400 && _this4.popupClosestScrollable) {
           _this4.popup.find('.arrow').hide();
@@ -42682,13 +44369,17 @@ var Soho = (function (exports) {
           });
           _this4.popup.find('.btn-monthyear-pane').button();
         }
-      }).off('hide.datepicker').on('hide.datepicker', function () {
-        if (Environment.os.name === 'ios') {
-          _this4.trigger.one('hide', function () {
-            $('head').triggerHandler('enable-zoom');
+
+        // Add range selection for each week
+        if (_this4.settings.range.selectWeek) {
+          var tableBody = _this4.popup.find('tbody');
+          _this4.popup.find('.monthview-table tr').hover(function (e) {
+            var tr = $(e.currentTarget);
+            tableBody.find('td').removeClass('is-selected range-selection end-date');
+            tr.find('td').addClass('range-selection');
           });
         }
-
+      }).off('hide.datepicker').on('hide.datepicker', function () {
         _this4.popupClosestScrollable.add(_this4.popup).css('min-height', '');
         _this4.closeCalendar();
       });
@@ -42710,8 +44401,15 @@ var Soho = (function (exports) {
         if (td.hasClass('is-disabled')) {
           self.calendarAPI.activeTabindex(td, true);
         } else {
-          if (s.range.useRange && (!s.range.first || s.range.second)) {
+          if (s.range.useRange && (!s.range.first || s.range.second) && !s.range.selectWeek) {
             self.calendarAPI.days.find('.is-selected').removeClass('is-selected range').removeAttr('aria-selected');
+          }
+          if (s.range.useRange && s.range.selectWeek) {
+            var first = self.calendarAPI.getCellDate(self.calendar.find('td.range-selection').first());
+            var last = self.calendarAPI.getCellDate(self.calendar.find('td.range-selection').last());
+
+            self.setWeekRange(first, last);
+            return;
           }
           if (!s.range.useRange) {
             self.calendarAPI.days.find('.is-selected').removeClass('is-selected').removeAttr('aria-selected').removeAttr('tabindex');
@@ -42742,8 +44440,10 @@ var Soho = (function (exports) {
           * @memberof DatePicker
           * @property {object} event - The jquery event object
           */
-          self.element.val('').trigger('change').trigger('input');
-          self.currentDate = null;
+          if (!self.settings.isMonthPicker) {
+            self.element.val('').trigger('change').trigger('input');
+            self.currentDate = null;
+          }
           self.closeCalendar();
         }
 
@@ -42754,17 +44454,18 @@ var Soho = (function (exports) {
         if (btn.hasClass('is-select-month') || btn.hasClass('is-select-month-pane')) {
           var year = parseInt(self.calendarAPI.monthYearPane.find('.is-year .is-selected a').attr('data-year'), 10);
           var month = parseInt(self.calendarAPI.monthYearPane.find('.is-month .is-selected a').attr('data-month'), 10);
+          var day = self.calendarAPI.currentDay || 1;
 
-          self.currentDate = new Date(year, month, 1);
+          self.currentDate = new Date(year, month, day);
 
           if (self.isIslamic) {
             self.currentDateIslamic[0] = year;
             self.currentDateIslamic[1] = month;
-            self.currentDateIslamic[2] = 1;
+            self.currentDateIslamic[2] = day;
             self.currentYear = year;
             self.currentMonth = month;
-            self.currentDay = 1;
-            self.currentDate = self.conversions.toGregorian(year, month, 1);
+            self.currentDay = day;
+            self.currentDate = self.conversions.toGregorian(year, month, day);
           }
 
           if (s.range.useRange) {
@@ -42851,6 +44552,22 @@ var Soho = (function (exports) {
 
 
     /**
+     * Inserts a week range in the field.
+     * @private
+     * @param {object} first The first range object.
+     * @param {object} last The last range object.
+     * @returns {void}
+     */
+    setWeekRange: function setWeekRange(first, last) {
+      var s = this.settings;
+      s.range.first.date = new Date(first.year, first.month, first.day);
+      s.range.second = undefined;
+      this.setValue(new Date(last.year, last.month, last.day));
+      this.calendarAPI.days.find('.is-selected').removeClass('is-selected range').removeAttr('aria-selected');
+    },
+
+
+    /**
      * Close the calendar popup.
      * This method is slated to be removed in a future v4.15.0 or v5.0.0.
      * @deprecated as of v4.9.0. Please use `closeCalendar()` instead.
@@ -42925,8 +44642,15 @@ var Soho = (function (exports) {
         // Pre selection compleated now show the calendar
         this.popup.removeClass('is-hidden');
       }
-      this.calendarAPI.activeTabindex(this.calendar.find('td.is-selected'), true);
       this.calendarAPI.datepickerApi = this;
+
+      if (s.range.useRange && s.range.selectWeek) {
+        var tr = this.calendar.find('td.is-selected').first().parent();
+        this.calendar.find('td[tabindex]').removeAttr('tabindex');
+        tr.attr('tabindex', '0').focus();
+        return;
+      }
+      this.calendarAPI.activeTabindex(this.calendar.find('td.is-selected'), true);
     },
 
 
@@ -43058,8 +44782,6 @@ var Soho = (function (exports) {
           this.element.trigger('change').trigger('input');
         }
       }
-
-      this.setSize();
     },
 
 
@@ -43326,6 +45048,8 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     setValueFromField: function setValueFromField() {
+      var _this8 = this;
+
       var s = this.settings;
       this.setCurrentCalendar();
 
@@ -43353,8 +45077,25 @@ var Soho = (function (exports) {
           pattern: this.pattern,
           locale: this.locale.name
         });
-        gregorianValue = this.conversions.toGregorian(islamicValue[0], islamicValue[1], islamicValue[2]);
+        if (islamicValue instanceof Date) {
+          gregorianValue = this.conversions.toGregorian(islamicValue.getFullYear(), islamicValue.getMonth(), islamicValue.getDate());
+        } else if (islamicValue instanceof Array) {
+          gregorianValue = this.conversions.toGregorian(islamicValue[0], islamicValue[1], islamicValue[2]);
+        }
       }
+      var getSelectedDay = function getSelectedDay() {
+        var day = new Date().getDate();
+        if (_this8.calendarAPI) {
+          var selected = _this8.calendarAPI.dayMap.filter(function (d) {
+            return d.elem.is('.is-selected');
+          });
+          if (selected.length) {
+            day = parseInt(selected[0].key.substr(6), 10);
+          }
+        }
+        return day;
+      };
+      var selectedDay = getSelectedDay();
 
       this.currentDate = gregorianValue || new Date();
       if (typeof this.currentDate === 'string') {
@@ -43363,6 +45104,9 @@ var Soho = (function (exports) {
           locale: this.locale.name,
           calendarName: this.settings.calendarName
         }, false);
+        if (this.pattern && this.pattern.indexOf('d') === -1) {
+          this.currentDate.setDate(selectedDay);
+        }
       }
 
       if (this.currentDate === undefined) {
@@ -43378,6 +45122,7 @@ var Soho = (function (exports) {
         this.currentYear = this.currentDateIslamic[0];
         this.currentMonth = this.currentDateIslamic[1];
         this.currentDay = this.currentDateIslamic[2];
+        this.currentIslamicDate = this.currentDateIslamic;
       } else {
         this.currentDate = this.currentDate || new Date();
         this.currentMonth = this.currentDate.getMonth();
@@ -43395,11 +45140,15 @@ var Soho = (function (exports) {
       }, isStrict);
 
       if (parsedDate !== undefined && self.element.val().trim() !== '' && !s.range.useRange) {
-        self.setValue(Locale.parseDate(self.element.val().trim(), {
+        var thisParseDate = Locale.parseDate(self.element.val().trim(), {
           pattern: self.pattern,
           locale: this.locale.name,
           calendarName: this.settings.calendarName
-        }, false));
+        }, false);
+        if (self.pattern && self.pattern.indexOf('d') === -1) {
+          thisParseDate.setDate(selectedDay);
+        }
+        self.setValue(thisParseDate);
       }
 
       if (s.range.useRange && s.range.first && s.range.first.date && s.range.second) {
@@ -43604,13 +45353,13 @@ var Soho = (function (exports) {
      * @returns {string} range dates to display in element
      */
     getRangeValue: function getRangeValue() {
-      var _this8 = this;
+      var _this9 = this;
 
       var s = this.settings;
       var formatDate = function formatDate(d) {
         return Locale.formatDate(d, {
-          pattern: _this8.pattern,
-          locale: _this8.locale.name
+          pattern: _this9.pattern,
+          locale: _this9.locale.name
         });
       };
 
@@ -43658,6 +45407,7 @@ var Soho = (function (exports) {
 
       if (this.addedValidation) {
         this.element.removeAttr('data-validate').removeData('validate validationEvents');
+        delete this.addedValidation;
       }
 
       return this;
@@ -43672,7 +45422,7 @@ var Soho = (function (exports) {
       this.closeCalendar();
       this.teardown();
       if (this.element[0]) {
-        $.removeData(this.element[0], COMPONENT_NAME$B);
+        $.removeData(this.element[0], COMPONENT_NAME$D);
       }
     },
 
@@ -43721,18 +45471,18 @@ var Soho = (function (exports) {
    */
   $.fn.datepicker = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$B);
+      var instance = $.data(this, COMPONENT_NAME$D);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$B, new DatePicker(this, settings));
+        instance = $.data(this, COMPONENT_NAME$D, new DatePicker(this, settings));
       }
     });
   };
 
   /* eslint-disable no-useless-escape */
 
-  var COMPONENT_NAME$C = 'editor';
+  var COMPONENT_NAME$E = 'editor';
 
   /**
   * The Editor Component displays and edits markdown.
@@ -46153,7 +47903,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$C);
+      $.removeData(this.element[0], COMPONENT_NAME$E);
     },
 
 
@@ -46390,17 +48140,17 @@ var Soho = (function (exports) {
   // Initialize the plugin (Once)
   $.fn.editor = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$C);
+      var instance = $.data(this, COMPONENT_NAME$E);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$C, new Editor(this, settings));
+        instance = $.data(this, COMPONENT_NAME$E, new Editor(this, settings));
       }
     });
   };
 
   // The name of this component
-  var COMPONENT_NAME$D = 'hierarchy';
+  var COMPONENT_NAME$F = 'hierarchy';
 
   /**
    * The displays customizable hierarchical data such as an org chart.
@@ -47633,7 +49383,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      this.element.removeData(COMPONENT_NAME$D);
+      this.element.removeData(COMPONENT_NAME$F);
     }
   };
 
@@ -47644,17 +49394,17 @@ var Soho = (function (exports) {
    */
   $.fn.hierarchy = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$D);
+      var instance = $.data(this, COMPONENT_NAME$F);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$D, new Hierarchy(this, settings));
+        instance = $.data(this, COMPONENT_NAME$F, new Hierarchy(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$E = 'fieldfilter';
+  var COMPONENT_NAME$G = 'fieldfilter';
 
   /**
    * Ability to have a dropdown next to the field.
@@ -47847,10 +49597,10 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this = this;
 
-      this.ffdropdown.on('listopened.' + COMPONENT_NAME$E, function () {
+      this.ffdropdown.on('listopened.' + COMPONENT_NAME$G, function () {
         // drowpdownWidth - border (52)
         $('#dropdown-list ul').width(_this.element.outerWidth() + 52);
-      }).on('selected.' + COMPONENT_NAME$E, function (e, args) {
+      }).on('selected.' + COMPONENT_NAME$G, function (e, args) {
         /**
          * Fires after the value in the dropdown is selected.
          * @event filtered
@@ -47902,7 +49652,7 @@ var Soho = (function (exports) {
      * @returns {object} The api
      */
     unbind: function unbind() {
-      this.ffdropdown.off('.' + COMPONENT_NAME$E);
+      this.ffdropdown.off('.' + COMPONENT_NAME$G);
 
       // Remove Dropdown
       if (this.ddApi && typeof this.ddApi.destroy === 'function') {
@@ -47933,7 +49683,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$E);
+      $.removeData(this.element[0], COMPONENT_NAME$G);
     }
   };
 
@@ -47944,17 +49694,17 @@ var Soho = (function (exports) {
    */
   $.fn.fieldfilter = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$E);
+      var instance = $.data(this, COMPONENT_NAME$G);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$E, new FieldFilter(this, settings));
+        instance = $.data(this, COMPONENT_NAME$G, new FieldFilter(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$F = 'fieldoptions';
+  var COMPONENT_NAME$H = 'fieldoptions';
 
   /**
   * A control bind next to another component to add some extra functionality.
@@ -48019,7 +49769,7 @@ var Soho = (function (exports) {
       // https://stackoverflow.com/a/43010274
       if (this.isFirefox && this.trigger.length) {
         this.trigger[0].contentEditable = true;
-        this.trigger.on('keydown.' + COMPONENT_NAME$F, function (e) {
+        this.trigger.on('keydown.' + COMPONENT_NAME$H, function (e) {
           var key = e.which || e.keyCode || e.charCode || 0;
           if (key !== 9) {
             e.preventDefault();
@@ -48098,9 +49848,9 @@ var Soho = (function (exports) {
       };
       var onPopupToggle = function onPopupToggle(elem) {
         if (elem.trigger) {
-          elem.trigger.off('show.' + COMPONENT_NAME$F).on('show.' + COMPONENT_NAME$F, function () {
+          elem.trigger.off('show.' + COMPONENT_NAME$H).on('show.' + COMPONENT_NAME$H, function () {
             doActive();
-          }).off('hide.' + COMPONENT_NAME$F).on('hide.' + COMPONENT_NAME$F, function (e) {
+          }).off('hide.' + COMPONENT_NAME$H).on('hide.' + COMPONENT_NAME$H, function (e) {
             if (canUnactive(e)) {
               doUnactive();
               _this2.element.removeClass('is-open');
@@ -48135,12 +49885,12 @@ var Soho = (function (exports) {
       // In desktop environments, the button should only display when the field is in use.
       if (Environment.features.touch) {
         this.field.addClass('visible');
-        this.trigger.on('beforeopen.' + COMPONENT_NAME$F, function (e) {
+        this.trigger.on('beforeopen.' + COMPONENT_NAME$H, function (e) {
           if (!canActive()) {
             return;
           }
           doActive();
-        }).on('close.' + COMPONENT_NAME$F, function (e) {
+        }).on('close.' + COMPONENT_NAME$H, function (e) {
           if (!canUnactive(e)) {
             return;
           }
@@ -48148,7 +49898,7 @@ var Soho = (function (exports) {
         });
       } else {
         this.field.removeClass('visible');
-        this.field.on('mouseover.' + COMPONENT_NAME$F, function () {
+        this.field.on('mouseover.' + COMPONENT_NAME$H, function () {
           if (self.element.prop('disabled') || self.element.closest('is-disabled').length) {
             return;
           }
@@ -48156,7 +49906,7 @@ var Soho = (function (exports) {
           if (self.field[0].className.indexOf('visible') < 0) {
             self.field[0].classList.add('visible');
           }
-        }).on('mouseout.' + COMPONENT_NAME$F, function () {
+        }).on('mouseout.' + COMPONENT_NAME$H, function () {
           if (self.field[0].className.indexOf('visible') > -1) {
             self.field[0].classList.remove('visible');
           }
@@ -48186,12 +49936,12 @@ var Soho = (function (exports) {
       }
       // Move trigger(action-button) in to lookup-wrapper
       if (lookup || isColorpicker) {
-        this.field.on('click.' + COMPONENT_NAME$F, '.lookup-wrapper .trigger, .colorpicker-container .trigger', function () {
+        this.field.on('click.' + COMPONENT_NAME$H, '.lookup-wrapper .trigger, .colorpicker-container .trigger', function () {
           doActive();
         });
 
         if (isColorpicker) {
-          this.element.on('beforeopen.' + COMPONENT_NAME$F, function () {
+          this.element.on('beforeopen.' + COMPONENT_NAME$H, function () {
             doActive();
           });
         }
@@ -48200,19 +49950,19 @@ var Soho = (function (exports) {
       if (isCheckbox) {
         this.trigger.addClass('is-checkbox');
         if (!Environment.features.touch && this.isSafari) {
-          this.field.on('click.' + COMPONENT_NAME$F, '.checkbox-label', function () {
+          this.field.on('click.' + COMPONENT_NAME$H, '.checkbox-label', function () {
             doActive();
-          }).on('mouseout.' + COMPONENT_NAME$F, '.checkbox-label', function () {
+          }).on('mouseout.' + COMPONENT_NAME$H, '.checkbox-label', function () {
             doUnactive();
           });
         }
       }
       // Bind fileupload events
       if (isFileupload) {
-        this.element.on('change.' + COMPONENT_NAME$F, function () {
+        this.element.on('change.' + COMPONENT_NAME$H, function () {
           _this2.targetElem.focus();
         });
-        this.field.on('click.' + COMPONENT_NAME$F, '.trigger, .trigger-close', function () {
+        this.field.on('click.' + COMPONENT_NAME$H, '.trigger, .trigger-close', function () {
           doActive();
         });
       }
@@ -48225,7 +49975,7 @@ var Soho = (function (exports) {
       // Fieldset - set trigger(action-button) top value and bind events
       if (isFieldset) {
         setTriggerCssTop();
-        this.targetElem.add(this.trigger).on('keydown.' + COMPONENT_NAME$F, function (e) {
+        this.targetElem.add(this.trigger).on('keydown.' + COMPONENT_NAME$H, function (e) {
           var key = e.which || e.keyCode || e.charCode || 0;
           if (key === 13) {
             setTimeout(function () {
@@ -48233,42 +49983,42 @@ var Soho = (function (exports) {
             }, 0);
           }
         });
-        this.targetElem.attr('tabindex', 0).on('click.' + COMPONENT_NAME$F, function () {
+        this.targetElem.attr('tabindex', 0).on('click.' + COMPONENT_NAME$H, function () {
           doActive();
         });
-        $(document).on('click.' + COMPONENT_NAME$F, function (e) {
+        $(document).on('click.' + COMPONENT_NAME$H, function (e) {
           if (!$(e.target).is(_this2.element)) {
             doUnactive();
           }
         });
-        $('body').on('resize.' + COMPONENT_NAME$F, function () {
+        $('body').on('resize.' + COMPONENT_NAME$H, function () {
           setTriggerCssTop();
         });
       }
       // Radio group - set trigger(action-button) top value and bind events
       if (isRadio) {
         setTriggerCssTop();
-        this.element.on('focusin.' + COMPONENT_NAME$F, '.radio', function () {
+        this.element.on('focusin.' + COMPONENT_NAME$H, '.radio', function () {
           var delay = _this2.isSafari ? 200 : 0;
           addFocused();
           setTimeout(function () {
             doActive();
           }, delay);
-        }).on('focusout.' + COMPONENT_NAME$F, '.radio', function () {
+        }).on('focusout.' + COMPONENT_NAME$H, '.radio', function () {
           removeFocused();
         });
-        $('body').on('resize.' + COMPONENT_NAME$F, function () {
+        $('body').on('resize.' + COMPONENT_NAME$H, function () {
           setTriggerCssTop();
         });
       }
 
       // Element events
-      this.targetElem.on('focusin.' + COMPONENT_NAME$F, function () {
+      this.targetElem.on('focusin.' + COMPONENT_NAME$H, function () {
         doActive();
         if (isRadio && _this2.isSafari) {
           addFocused();
         }
-      }).on('focusout.' + COMPONENT_NAME$F, function (e) {
+      }).on('focusout.' + COMPONENT_NAME$H, function (e) {
         var delay = _this2.isSafari ? 200 : 0;
         if (isRadio && _this2.isSafari) {
           removeFocused();
@@ -48281,15 +50031,15 @@ var Soho = (function (exports) {
       });
 
       // Trigger(action button) events
-      this.trigger.on('focusin.' + COMPONENT_NAME$F + ' click.' + COMPONENT_NAME$F, function () {
+      this.trigger.on('focusin.' + COMPONENT_NAME$H + ' click.' + COMPONENT_NAME$H, function () {
         doActive();
-      }).on('focusout.' + COMPONENT_NAME$F, function (e) {
+      }).on('focusout.' + COMPONENT_NAME$H, function (e) {
         if (canUnactive(e)) {
           doUnactive();
         }
-      }).on('selected.' + COMPONENT_NAME$F, function () {
+      }).on('selected.' + COMPONENT_NAME$H, function () {
         _this2.popupmenuApi.settings.returnFocus = true;
-      }).on('close.' + COMPONENT_NAME$F, function (e) {
+      }).on('close.' + COMPONENT_NAME$H, function (e) {
         if (canUnactive(e)) {
           doUnactive();
         }
@@ -48301,12 +50051,12 @@ var Soho = (function (exports) {
         if (isRadio) {
           this.element.attr('tabindex', 0);
         }
-        this.targetElem.on('keydown.' + COMPONENT_NAME$F, function (e) {
+        this.targetElem.on('keydown.' + COMPONENT_NAME$H, function (e) {
           var key = e.which || e.keyCode || e.charCode || 0;
           if (key === 9 && !e.shiftKey) {
             if (isRadio) {
               _this2.targetElem.find(':checked, .radio:first').not(':disabled').focus();
-              _this2.targetElem.find('.radio').off('keydown.' + COMPONENT_NAME$F).on('keydown.' + COMPONENT_NAME$F, function (e2) {
+              _this2.targetElem.find('.radio').off('keydown.' + COMPONENT_NAME$H).on('keydown.' + COMPONENT_NAME$H, function (e2) {
                 var key2 = e2.which || e2.keyCode || e2.charCode || 0;
                 if (key2 === 9 && !e.shiftKey) {
                   setTimeout(function () {
@@ -48324,9 +50074,9 @@ var Soho = (function (exports) {
         });
       }
 
-      this.element.on('listopened.' + COMPONENT_NAME$F, function () {
+      this.element.on('listopened.' + COMPONENT_NAME$H, function () {
         doActive();
-      }).on('listclosed.' + COMPONENT_NAME$F, function () {
+      }).on('listclosed.' + COMPONENT_NAME$H, function () {
         doUnactive();
       });
 
@@ -48360,17 +50110,17 @@ var Soho = (function (exports) {
      * @returns {object} The api
      */
     unbind: function unbind() {
-      this.field.off(['click.' + COMPONENT_NAME$F, 'mouseover.' + COMPONENT_NAME$F, 'mouseout.' + COMPONENT_NAME$F].join(' '));
+      this.field.off(['click.' + COMPONENT_NAME$H, 'mouseover.' + COMPONENT_NAME$H, 'mouseout.' + COMPONENT_NAME$H].join(' '));
 
-      this.element.off(['beforeopen.' + COMPONENT_NAME$F, 'change.' + COMPONENT_NAME$F, 'focusin.' + COMPONENT_NAME$F, 'focusout.' + COMPONENT_NAME$F, 'listclosed.' + COMPONENT_NAME$F, 'listopened.' + COMPONENT_NAME$F].join(' '));
+      this.element.off(['beforeopen.' + COMPONENT_NAME$H, 'change.' + COMPONENT_NAME$H, 'focusin.' + COMPONENT_NAME$H, 'focusout.' + COMPONENT_NAME$H, 'listclosed.' + COMPONENT_NAME$H, 'listopened.' + COMPONENT_NAME$H].join(' '));
 
-      this.trigger.off(['beforeopen.' + COMPONENT_NAME$F, 'click.' + COMPONENT_NAME$F, 'focusin.' + COMPONENT_NAME$F, 'focusout.' + COMPONENT_NAME$F, 'selected.' + COMPONENT_NAME$F, 'close.' + COMPONENT_NAME$F].join(' '));
+      this.trigger.off(['beforeopen.' + COMPONENT_NAME$H, 'click.' + COMPONENT_NAME$H, 'focusin.' + COMPONENT_NAME$H, 'focusout.' + COMPONENT_NAME$H, 'selected.' + COMPONENT_NAME$H, 'close.' + COMPONENT_NAME$H].join(' '));
 
-      this.targetElem.off(['click.' + COMPONENT_NAME$F, 'keydown.' + COMPONENT_NAME$F].join(' '));
+      this.targetElem.off(['click.' + COMPONENT_NAME$H, 'keydown.' + COMPONENT_NAME$H].join(' '));
 
-      $('body').off(['resize.' + COMPONENT_NAME$F].join(' '));
+      $('body').off(['resize.' + COMPONENT_NAME$H].join(' '));
 
-      $(document).off(['click.' + COMPONENT_NAME$F].join(' '));
+      $(document).off(['click.' + COMPONENT_NAME$H].join(' '));
 
       return this;
     },
@@ -48395,7 +50145,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$F);
+      $.removeData(this.element[0], COMPONENT_NAME$H);
     }
   };
 
@@ -48406,17 +50156,17 @@ var Soho = (function (exports) {
    */
   $.fn.fieldoptions = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$F);
+      var instance = $.data(this, COMPONENT_NAME$H);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$F, new FieldOptions(this, settings));
+        instance = $.data(this, COMPONENT_NAME$H, new FieldOptions(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$G = 'fileupload';
+  var COMPONENT_NAME$I = 'fileupload';
 
   /**
   * A list of items with add/remove/delete and sort functionality.
@@ -48627,7 +50377,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$G);
+      $.removeData(this.element[0], COMPONENT_NAME$I);
     },
 
 
@@ -48671,18 +50421,18 @@ var Soho = (function (exports) {
    */
   $.fn.fileupload = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$G);
+      var instance = $.data(this, COMPONENT_NAME$I);
 
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$G, new FileUpload(this, settings));
+        instance = $.data(this, COMPONENT_NAME$I, new FileUpload(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$H = 'fileuploadadvanced';
+  var COMPONENT_NAME$J = 'fileuploadadvanced';
 
   /**
   * A trigger field for uploading a single file.
@@ -48937,7 +50687,8 @@ var Soho = (function (exports) {
         * @property {object} file - file to set the status
         */
         this.element.triggerHandler('beforecreatestatus', [files[i]]);
-        /* global FormData */
+
+        // use FormData API
         var fd = new FormData();
         fd.append(fileName + '[]', files[i]);
 
@@ -49209,7 +50960,7 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       this.unbind();
       $('.fileupload-wrapper', this.element).remove();
-      $.removeData(this.element[0], COMPONENT_NAME$H);
+      $.removeData(this.element[0], COMPONENT_NAME$J);
     }
   };
 
@@ -49227,17 +50978,17 @@ var Soho = (function (exports) {
    */
   $.fn.fileuploadadvanced = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$H);
+      var instance = $.data(this, COMPONENT_NAME$J);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$H, new FileUploadAdvanced(this, settings));
+        instance = $.data(this, COMPONENT_NAME$J, new FileUploadAdvanced(this, settings));
       }
     });
   };
 
   // Default Settings
-  var COMPONENT_NAME$I = 'homepage';
+  var COMPONENT_NAME$K = 'homepage';
 
   /**
   * The Homepage handles card layout at multiple breakpoints.
@@ -49748,7 +51499,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.detachEvents();
-      $.removeData(this.element[0], COMPONENT_NAME$I);
+      $.removeData(this.element[0], COMPONENT_NAME$K);
     },
 
 
@@ -49777,11 +51528,11 @@ var Soho = (function (exports) {
    */
   $.fn.homepage = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$I);
+      var instance = $.data(this, COMPONENT_NAME$K);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$I, new Homepage(this, settings));
+        instance = $.data(this, COMPONENT_NAME$K, new Homepage(this, settings));
       }
     });
   };
@@ -49789,7 +51540,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-underscore-dangle */
 
   // The name of this component.
-  var COMPONENT_NAME$J = 'pager';
+  var COMPONENT_NAME$L = 'pager';
 
   // Selector for Pager elements that should have a tabIndex
   var FOCUSABLE_SELECTOR = ['.pager-first > .btn-icon', '.pager-prev > .btn-icon', '.pager-next > .btn-icon', '.pager-last > .btn-icon', '.pager-no > .btn-icon', '.pager-count input', '.pager-pagesize button'].join(', ');
@@ -51228,15 +52979,15 @@ var Soho = (function (exports) {
         });
       }
 
-      this.pagerBar.off(['click.' + COMPONENT_NAME$J, 'keydown.' + COMPONENT_NAME$J].join(' '));
+      this.pagerBar.off(['click.' + COMPONENT_NAME$L, 'keydown.' + COMPONENT_NAME$L].join(' '));
 
       if (this.pageSelectorInput) {
-        $(this.pageSelectorInput).off(['focus.' + COMPONENT_NAME$J, 'blur.' + COMPONENT_NAME$J, 'keydown.' + COMPONENT_NAME$J].join(' '));
+        $(this.pageSelectorInput).off(['focus.' + COMPONENT_NAME$L, 'blur.' + COMPONENT_NAME$L, 'keydown.' + COMPONENT_NAME$L].join(' '));
         $(this.pageSelectorInput).data('mask').destroy();
       }
 
       if (this.pageSizeSelectorButton) {
-        $(this.pageSizeSelectorButton).off('selected.' + COMPONENT_NAME$J);
+        $(this.pageSizeSelectorButton).off('selected.' + COMPONENT_NAME$L);
         this.teardownPageSizeSelector();
       }
 
@@ -51276,7 +53027,7 @@ var Soho = (function (exports) {
       if (this.pagerBar) {
         this.pagerBar.remove();
       }
-      $.removeData(this.element[0], COMPONENT_NAME$J);
+      $.removeData(this.element[0], COMPONENT_NAME$L);
     }
   };
 
@@ -51287,16 +53038,16 @@ var Soho = (function (exports) {
    */
   $.fn.pager = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$J);
+      var instance = $.data(this, COMPONENT_NAME$L);
       if (!instance) {
-        instance = $.data(this, COMPONENT_NAME$J, new Pager(this, settings));
+        instance = $.data(this, COMPONENT_NAME$L, new Pager(this, settings));
       } else {
         instance.updated(settings);
       }
     });
   };
 
-  var COMPONENT_NAME$K = 'listview';
+  var COMPONENT_NAME$M = 'listview';
 
   /**
    * Creates lists of small pieces of relevant, actionable information.
@@ -52619,7 +54370,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      this.element.removeData(COMPONENT_NAME$K);
+      this.element.removeData(COMPONENT_NAME$M);
     },
 
 
@@ -52902,17 +54653,17 @@ var Soho = (function (exports) {
     var combinedSettings = utils.extend({}, settings, inlineOpts);
 
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$K);
+      var instance = $.data(this, COMPONENT_NAME$M);
       if (instance) {
         instance.updated(combinedSettings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$K, new ListView(this, combinedSettings));
+        instance = $.data(this, COMPONENT_NAME$M, new ListView(this, combinedSettings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$L = 'listbuilder';
+  var COMPONENT_NAME$N = 'listbuilder';
 
   /**
    * A list of items with add/remove/delete and sort functionality.
@@ -53634,7 +55385,6 @@ var Soho = (function (exports) {
      * @returns {object} item node
      */
     isElement: function isElement(obj) {
-      /* global Element */
       return this.isjQuery(obj) && obj.get(0) instanceof Element || obj instanceof Element;
     },
 
@@ -53711,7 +55461,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$L);
+      $.removeData(this.element[0], COMPONENT_NAME$N);
     }
   };
 
@@ -53722,17 +55472,17 @@ var Soho = (function (exports) {
    */
   $.fn.listbuilder = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$L);
+      var instance = $.data(this, COMPONENT_NAME$N);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$L, new ListBuilder(this, settings));
+        instance = $.data(this, COMPONENT_NAME$N, new ListBuilder(this, settings));
       }
     });
   };
 
   // The name of this component.
-  var COMPONENT_NAME$M = 'modal';
+  var COMPONENT_NAME$O = 'modal';
 
   // Possible values for the `trigger` setting
   var MODAL_TRIGGER_SETTINGS = ['click', 'immediate'];
@@ -53881,7 +55631,7 @@ var Soho = (function (exports) {
 
       // Used for tracking events tied to the Window object
       this.id = this.element.attr('id') || parseInt($('.modal').length, 10) + 1;
-      this.namespace = COMPONENT_NAME$M + '-' + this.id;
+      this.namespace = COMPONENT_NAME$O + '-' + this.id;
 
       // Find the button or anchor with same dialog ID
       this.trigger = $('[data-modal="' + this.element.attr('id') + '"]');
@@ -53946,10 +55696,14 @@ var Soho = (function (exports) {
       var _this = this;
 
       var isAppended = false;
+      var maxWidth = this.settings.maxWidth ? ' style="max-width: ' + this.settings.maxWidth + 'px;"' : '';
 
-      this.element = $('' + ('<div class="modal">' + '<div class="modal-content" style="max-width: ') + (this.settings.maxWidth ? this.settings.maxWidth : '') + 'px' + ('">' + '<div class="modal-header"><h1 class="modal-title">') + '</h1></div>' + '<div class="modal-body-wrapper">' + '<div class="modal-body"></div>' + '</div>' + '</div>' + '</div>');
+      this.element = $('\n      <div class="modal">\n        <div class="modal-content"' + maxWidth + '>\n          <div class="modal-header"><h1 class="modal-title"></h1></div>\n          <div class="modal-body-wrapper">\n            <div class="modal-body"></div>\n          </div>\n        </div>\n      </div>\n    ');
 
-      if (this.settings.showCloseBtn) {
+      // Only draw the close button if we're not in a CAP.
+      // CAP has its own rendering process for buttons, which are inside a toolbar and not
+      // part of the Modal Buttonset
+      if (this.settings.showCloseBtn && !this.isCAP) {
         var closeBtn = $('\n        <button type="button" class="btn-icon btn-close" title="' + Locale.translate('Close') + '" aria-hidden="true">\n          ' + $.createIcon('close') + '\n          <span class="audible">' + Locale.translate('Close') + '</span>\n        </button>\n      ');
         this.element.find('.modal-content').append(closeBtn);
         closeBtn.on('click.' + this.namespace, function () {
@@ -54701,6 +56455,10 @@ var Soho = (function (exports) {
         return false;
       }
 
+      if (this.isCAP) {
+        this.element.addClass('is-animating');
+      }
+
       if (this.mainContent && this.removeNoScroll) {
         this.mainContent.removeClass('no-scroll');
       }
@@ -54827,7 +56585,7 @@ var Soho = (function (exports) {
         }
         self.element[0].removeAttribute('data-modal');
 
-        $.removeData(self.element[0], COMPONENT_NAME$M);
+        $.removeData(self.element[0], COMPONENT_NAME$O);
         if (self.isCAP && self.capAPI) {
           self.capAPI.destroy();
         }
@@ -54836,18 +56594,18 @@ var Soho = (function (exports) {
           duration: 21, // should match the length of time needed for the overlay to fade out
           timeoutCallback: function timeoutCallback() {
             var elem = null;
-            var modalApi = self.element ? self.element.data(COMPONENT_NAME$M) : null;
+            var modalApi = self.element ? self.element.data(COMPONENT_NAME$O) : null;
             if (modalApi) {
               elem = self.element[0];
             } else {
-              modalApi = self.trigger ? self.trigger.data(COMPONENT_NAME$M) : null;
+              modalApi = self.trigger ? self.trigger.data(COMPONENT_NAME$O) : null;
               if (modalApi) {
                 elem = self.trigger[0];
               }
             }
             if (elem && modalApi && modalApi.overlay) {
               modalApi.overlay.remove();
-              $.removeData(elem, COMPONENT_NAME$M);
+              $.removeData(elem, COMPONENT_NAME$O);
             }
           }
         });
@@ -55018,11 +56776,11 @@ var Soho = (function (exports) {
   */
   $.fn.modal = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$M);
+      var instance = $.data(this, COMPONENT_NAME$O);
       var elem = $(this);
 
       if (!elem.is('.modal')) {
-        instance = elem.closest('.modal').data(COMPONENT_NAME$M);
+        instance = elem.closest('.modal').data(COMPONENT_NAME$O);
       }
 
       if (instance && settings) {
@@ -55040,7 +56798,7 @@ var Soho = (function (exports) {
         return;
       }
 
-      instance = $.data(this, COMPONENT_NAME$M, new Modal(this, settings));
+      instance = $.data(this, COMPONENT_NAME$O, new Modal(this, settings));
     });
   };
 
@@ -55051,17 +56809,17 @@ var Soho = (function (exports) {
    */
   $.fn.monthview = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$p);
+      var instance = $.data(this, COMPONENT_NAME$q);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$p, new MonthView(this, settings));
+        instance = $.data(this, COMPONENT_NAME$q, new MonthView(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$N = 'multiselect';
+  var COMPONENT_NAME$P = 'multiselect';
 
   // Component Defaults
   var MULTISELECT_DEFAULTS = {
@@ -55157,7 +56915,7 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       this.dropdown.destroy();
       this.element.off();
-      $.removeData(this.element[0], COMPONENT_NAME$N);
+      $.removeData(this.element[0], COMPONENT_NAME$P);
     }
   };
 
@@ -55168,17 +56926,17 @@ var Soho = (function (exports) {
    */
   $.fn.multiselect = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$N);
+      var instance = $.data(this, COMPONENT_NAME$P);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$N, new MultiSelect(this, settings));
+        instance = $.data(this, COMPONENT_NAME$P, new MultiSelect(this, settings));
       }
     });
   };
 
   // Settings and Options
-  var COMPONENT_NAME$O = 'notification';
+  var COMPONENT_NAME$Q = 'notification';
 
   var NOTIFICATION_DEFAULTS = {
     message: 'Hi! Im a notification message.',
@@ -55260,11 +57018,11 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var self = this;
 
-      this.element.off('updated.' + COMPONENT_NAME$O).on('updated.' + COMPONENT_NAME$O, function () {
+      this.element.off('updated.' + COMPONENT_NAME$Q).on('updated.' + COMPONENT_NAME$Q, function () {
         self.updated();
       });
 
-      $(this.notificationEl).off('click.' + COMPONENT_NAME$O).on('click.' + COMPONENT_NAME$O, '.notification-close', function () {
+      $(this.notificationEl).off('click.' + COMPONENT_NAME$Q).on('click.' + COMPONENT_NAME$Q, '.notification-close', function () {
         self.destroy();
       });
 
@@ -55292,8 +57050,8 @@ var Soho = (function (exports) {
      * @returns {object} The Component prototype, useful for chaining.
      */
     teardown: function teardown() {
-      this.element.off('updated.' + COMPONENT_NAME$O);
-      this.element.off('click.' + COMPONENT_NAME$O, '.notification-close');
+      this.element.off('updated.' + COMPONENT_NAME$Q);
+      this.element.off('click.' + COMPONENT_NAME$Q, '.notification-close');
       return this;
     },
 
@@ -55307,7 +57065,7 @@ var Soho = (function (exports) {
       }
 
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$O);
+      $.removeData(this.element[0], COMPONENT_NAME$Q);
     }
   };
 
@@ -55318,12 +57076,12 @@ var Soho = (function (exports) {
    */
   $.fn.notification = function (settings) {
     return this.each(function () {
-      $.data(this, COMPONENT_NAME$O, new Notification(this, settings));
+      $.data(this, COMPONENT_NAME$Q, new Notification(this, settings));
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$P = 'progress';
+  var COMPONENT_NAME$R = 'progress';
 
   // Default Progress Options
   var PROGRESS_DEFAULTS = {};
@@ -55424,7 +57182,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$P);
+      $.removeData(this.element[0], COMPONENT_NAME$R);
     }
   };
 
@@ -55435,11 +57193,11 @@ var Soho = (function (exports) {
    */
   $.fn.progress = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$P);
+      var instance = $.data(this, COMPONENT_NAME$R);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$P, new Progress(this, settings));
+        instance = $.data(this, COMPONENT_NAME$R, new Progress(this, settings));
       }
     });
   };
@@ -55447,7 +57205,7 @@ var Soho = (function (exports) {
   // jQuery Components
 
   // Component Name
-  var COMPONENT_NAME$Q = 'popdown';
+  var COMPONENT_NAME$S = 'popdown';
 
   /**
    * The Popdown Component can be used to open an animated popdown from a button. This may in the future
@@ -55861,7 +57619,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$Q);
+      $.removeData(this.element[0], COMPONENT_NAME$S);
     }
   };
 
@@ -55872,17 +57630,17 @@ var Soho = (function (exports) {
    */
   $.fn.popdown = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$Q);
+      var instance = $.data(this, COMPONENT_NAME$S);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$Q, new Popdown(this, settings));
+        instance = $.data(this, COMPONENT_NAME$S, new Popdown(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$R = 'rating';
+  var COMPONENT_NAME$T = 'rating';
 
   // Default Rating Options
   var RATING_DEFAULTS = {};
@@ -55919,7 +57677,7 @@ var Soho = (function (exports) {
       var inputs = $('input', this.element);
 
       var _loop = function _loop(i, l) {
-        $(inputs[i]).on('change.' + COMPONENT_NAME$R, function () {
+        $(inputs[i]).on('change.' + COMPONENT_NAME$T, function () {
           if (!_this.element.hasClass('is-readonly')) {
             _this.val(i + 1);
           }
@@ -56029,7 +57787,7 @@ var Soho = (function (exports) {
      * @returns {object} The api
      */
     unbind: function unbind() {
-      this.element.find('input').off('change.' + COMPONENT_NAME$R);
+      this.element.find('input').off('change.' + COMPONENT_NAME$T);
       return this;
     },
 
@@ -56053,7 +57811,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$R);
+      $.removeData(this.element[0], COMPONENT_NAME$T);
     }
   };
 
@@ -56064,17 +57822,17 @@ var Soho = (function (exports) {
    */
   $.fn.rating = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$R);
+      var instance = $.data(this, COMPONENT_NAME$T);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$R, new Rating(this, settings));
+        instance = $.data(this, COMPONENT_NAME$T, new Rating(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$S = 'signin';
+  var COMPONENT_NAME$U = 'signin';
 
   // Default SignIn Options
   var SIGNIN_DEFAULTS = {};
@@ -56162,7 +57920,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$S);
+      $.removeData(this.element[0], COMPONENT_NAME$U);
     },
 
 
@@ -56216,11 +57974,11 @@ var Soho = (function (exports) {
    */
   $.fn.signin = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$S);
+      var instance = $.data(this, COMPONENT_NAME$U);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$S, new SignIn(this, settings));
+        instance = $.data(this, COMPONENT_NAME$U, new SignIn(this, settings));
       }
     });
   };
@@ -56228,7 +57986,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-underscore-dangle */
 
   // Component Name
-  var COMPONENT_NAME$T = 'slider';
+  var COMPONENT_NAME$V = 'slider';
 
   // The Component Defaults
   var SLIDER_DEFAULTS = {
@@ -57407,7 +59165,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$T);
+      $.removeData(this.element[0], COMPONENT_NAME$V);
     },
 
 
@@ -57457,166 +59215,17 @@ var Soho = (function (exports) {
    */
   $.fn.slider = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$T);
+      var instance = $.data(this, COMPONENT_NAME$V);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$T, new Slider(this, settings));
-      }
-    });
-  };
-
-  // Name of this component
-  var COMPONENT_NAME$U = 'zoom';
-
-  /**
-  * The Zoom Component is used to manage zoom on mobile devices.
-  * @class Zoom
-  * @param {object} element The component element.
-  * @param {object} [settings] The component settings.
-  */
-  function Zoom(element, settings) {
-    this.element = $(element);
-    this.settings = utils.mergeSettings(element, settings);
-    this.init();
-  }
-
-  Zoom.prototype = {
-    init: function init() {
-      return this.build().handleEvents();
-    },
-
-
-    /**
-    * Add markup to the control
-    * @private
-    * @returns {object} The api prototype for chaining.
-    */
-    build: function build() {
-      // get references to elements
-      this.viewport = this.element.find('meta[name=viewport]');
-      this.body = $('body');
-
-      return this;
-    },
-
-
-    /**
-    * Sets up event handlers for this control and its sub-elements
-    * @private
-    * @returns {object} The api prototype for chaining.
-    */
-    handleEvents: function handleEvents() {
-      var self = this;
-
-      // Allow the head to listen to events to globally deal with the zoom problem on
-      // a per-control basis (for example, Dropdown/Multiselect need to handle this issue manually).
-      this.element.on('updated.' + COMPONENT_NAME$U, function () {
-        self.updated();
-      }).on('enable-zoom', function () {
-        self.enableZoom();
-      }).on('disable-zoom', function () {
-        self.disableZoom();
-      });
-
-      // Don't continue setting this up on each element if
-      if (Environment.os.name !== 'ios') {
-        return this;
-      }
-
-      // Setup conditional events for all elements that need it.
-      this.body.on('touchstart.zoomdisabler', 'input, label', function () {
-        if (self.noZoomTimeout) {
-          return;
-        }
-
-        self.disableZoom();
-      }).on('touchend.zoomdisabler', 'input, label', function () {
-        if (self.noZoomTimeout) {
-          clearTimeout(self.noZoomTimeout);
-          self.noZoomTimeout = null;
-        }
-        self.noZoomTimeout = setTimeout(function () {
-          self.noZoomTimeout = null;
-          self.enableZoom();
-        }, 600);
-      });
-
-      return this;
-    },
-
-
-    /**
-    * Enable zoom by un-setting the meta tag.
-    */
-    enableZoom: function enableZoom() {
-      // TODO: Test to see if prepending this meta tag conflicts with Base Tag implementation
-      this.viewport[0].setAttribute('content', 'width=device-width, initial-scale=1.0, user-scalable=1');
-    },
-
-
-    /**
-    * Disable zoom by setting the meta tag.
-    */
-    disableZoom: function disableZoom() {
-      // TODO: Test to see if prepending this meta tag conflicts with Base Tag implementation
-      this.viewport[0].setAttribute('content', 'width=device-width, initial-scale=1.0, user-scalable=0');
-    },
-
-
-    /**
-    * Handle Updating Settings
-    * @param {object} settings The settings to update to.
-    * @returns {this} component instance
-    */
-    updated: function updated(settings) {
-      if (settings) {
-        this.settings = utils.mergeSettings(this.element[0], settings, this.settings);
-      }
-
-      return this.teardown().init();
-    },
-
-
-    /**
-    * Simple Teardown - remove events & rebuildable markup.
-    * @private
-    * @returns {object} component instance
-    */
-    teardown: function teardown() {
-      this.element.off('updated.' + COMPONENT_NAME$U + ' enable-zoom disable-zoom');
-      this.body.off('touchstart.zoomdisabler touchend.zoomdisabler');
-      return this;
-    },
-
-
-    /**
-    * Teardown - Remove added markup and events
-    */
-    destroy: function destroy() {
-      this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$U);
-    }
-  };
-
-  /**
-   * jQuery Component Wrapper for Zoom
-   * @param {object} [settings] incoming settings
-   * @returns {jQuery[]} elements being acted on
-   */
-  $.fn.zoom = function (settings) {
-    return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$U);
-      if (instance) {
-        instance.updated(settings);
-      } else {
-        instance = $.data(this, COMPONENT_NAME$U, new Zoom(this, settings));
+        instance = $.data(this, COMPONENT_NAME$V, new Slider(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$V = 'spinbox';
+  var COMPONENT_NAME$W = 'spinbox';
 
   // Component Defaults
   var SPINBOX_DEFAULTS = {
@@ -57917,7 +59526,7 @@ var Soho = (function (exports) {
         this.decreaseValue();
       }
 
-      this.safeFocus();
+      this.element.focus();
     },
 
 
@@ -58216,24 +59825,6 @@ var Soho = (function (exports) {
 
 
     /**
-     * Focuses the main input field without a mobile zoom.
-     * @returns {void}
-     */
-    safeFocus: function safeFocus() {
-      var isMobile = Environment.os.name === 'ios' || Environment.os.name === 'android';
-      if (isMobile) {
-        $('head').triggerHandler('disable-zoom');
-      }
-
-      this.element.focus();
-
-      if (isMobile) {
-        $('head').triggerHandler('enable-zoom');
-      }
-    },
-
-
-    /**
      * Enables the Spinbox
      * @returns {void}
      */
@@ -58333,7 +59924,7 @@ var Soho = (function (exports) {
       this.buttons.down.remove();
       this.element.off('focus.spinbox blur.spinbox keydown.spinbox keyup.spinbox');
       this.element.unwrap();
-      $.removeData(this.element[0], COMPONENT_NAME$V);
+      $.removeData(this.element[0], COMPONENT_NAME$W);
     },
 
 
@@ -58419,7 +60010,7 @@ var Soho = (function (exports) {
           $(document).one('mouseup', function () {
             self.disableLongPress(e, self);
             preventClick = false;
-            self.safeFocus();
+            self.element.focus();
           });
         }
       });
@@ -58435,17 +60026,17 @@ var Soho = (function (exports) {
    */
   $.fn.spinbox = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$V);
+      var instance = $.data(this, COMPONENT_NAME$W);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$V, new Spinbox(this, settings));
+        instance = $.data(this, COMPONENT_NAME$W, new Spinbox(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$W = 'splitter';
+  var COMPONENT_NAME$X = 'splitter';
 
   // Default Splitter Options
   var SPLITTER_DEFAULTS = {
@@ -58759,7 +60350,7 @@ var Soho = (function (exports) {
      * @returns {object} The api
      */
     unbind: function unbind() {
-      this.element.off('updated.' + COMPONENT_NAME$W);
+      this.element.off('updated.' + COMPONENT_NAME$X);
       return this;
     },
 
@@ -58783,7 +60374,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$W);
+      $.removeData(this.element[0], COMPONENT_NAME$X);
     },
 
 
@@ -58804,7 +60395,7 @@ var Soho = (function (exports) {
       * @type {object}
       * @property {object} event - The jquery event object
       */
-      .on('updated.' + COMPONENT_NAME$W, function () {
+      .on('updated.' + COMPONENT_NAME$X, function () {
         _this.updated();
       })
 
@@ -58816,7 +60407,7 @@ var Soho = (function (exports) {
       * @type {object}
       * @property {object} event - The jquery event object
       */
-      .on('keydown.' + COMPONENT_NAME$W, function (e) {
+      .on('keydown.' + COMPONENT_NAME$X, function (e) {
         // Space will toggle selection
         if (e.which === 32) {
           _this.toggleSelection();
@@ -58843,17 +60434,17 @@ var Soho = (function (exports) {
    */
   $.fn.splitter = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$W);
+      var instance = $.data(this, COMPONENT_NAME$X);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$W, new Splitter(this, settings));
+        instance = $.data(this, COMPONENT_NAME$X, new Splitter(this, settings));
       }
     });
   };
 
   // The name of this component
-  var COMPONENT_NAME$X = 'swaplist';
+  var COMPONENT_NAME$Y = 'swaplist';
 
   // The Component Defaults
   var SWAPLIST_DEFAULTS = {
@@ -59744,7 +61335,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$X);
+      $.removeData(this.element[0], COMPONENT_NAME$Y);
     },
 
 
@@ -60086,17 +61677,17 @@ var Soho = (function (exports) {
    */
   $.fn.swaplist = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$X);
+      var instance = $.data(this, COMPONENT_NAME$Y);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$X, new SwapList(this, settings));
+        instance = $.data(this, COMPONENT_NAME$Y, new SwapList(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$Y = 'scrollaction';
+  var COMPONENT_NAME$Z = 'scrollaction';
 
   // Default ScrollAction Options
   var SCROLLACTION_DEFAULTS = {
@@ -60160,7 +61751,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$Y);
+      $.removeData(this.element[0], COMPONENT_NAME$Z);
     },
 
 
@@ -60196,17 +61787,17 @@ var Soho = (function (exports) {
    */
   $.fn.scrollaction = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$Y);
+      var instance = $.data(this, COMPONENT_NAME$Z);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$Y, new ScrollAction(this, settings));
+        instance = $.data(this, COMPONENT_NAME$Z, new ScrollAction(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$Z = 'stepchart';
+  var COMPONENT_NAME$_ = 'stepchart';
 
   // Default component options
   var DEFAULT_STEPCHART_OPTIONS = {
@@ -60372,7 +61963,7 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       this.element.empty();
       this.settings = null;
-      $.removeData(this.element[0], COMPONENT_NAME$Z);
+      $.removeData(this.element[0], COMPONENT_NAME$_);
 
       return this;
     }
@@ -60385,21 +61976,21 @@ var Soho = (function (exports) {
    */
   $.fn.stepchart = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$Z);
+      var instance = $.data(this, COMPONENT_NAME$_);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$Z, new StepChart(this, settings));
+        instance = $.data(this, COMPONENT_NAME$_, new StepChart(this, settings));
         instance.destroy = function destroy() {
           this.teardown();
-          $.removeData(this, COMPONENT_NAME$Z);
+          $.removeData(this, COMPONENT_NAME$_);
         };
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$_ = 'tabs';
+  var COMPONENT_NAME$$ = 'tabs';
 
   // Types of possible Tab containers
   var tabContainerTypes = ['horizontal', 'vertical', 'module-tabs', 'header-tabs'];
@@ -64385,7 +65976,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$_);
+      $.removeData(this.element[0], COMPONENT_NAME$$);
     }
   };
 
@@ -64396,11 +65987,11 @@ var Soho = (function (exports) {
    */
   $.fn.tabs = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$_);
+      var instance = $.data(this, COMPONENT_NAME$$);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$_, new Tabs(this, settings));
+        instance = $.data(this, COMPONENT_NAME$$, new Tabs(this, settings));
       }
     });
   };
@@ -64409,7 +66000,7 @@ var Soho = (function (exports) {
   $.fn.verticaltabs = $.fn.tabs;
 
   // Component Name
-  var COMPONENT_NAME$$ = 'tag';
+  var COMPONENT_NAME$10 = 'tag';
 
   // Default Tag Options
   var TAG_DEFAULTS = {};
@@ -64501,7 +66092,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$$);
+      $.removeData(this.element[0], COMPONENT_NAME$10);
     },
 
 
@@ -64553,17 +66144,17 @@ var Soho = (function (exports) {
   // Initialize the plugin (Once)
   $.fn.tag = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$$);
+      var instance = $.data(this, COMPONENT_NAME$10);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$$, new Tag(this, settings));
+        instance = $.data(this, COMPONENT_NAME$10, new Tag(this, settings));
       }
     });
   };
 
   // Name of this component
-  var COMPONENT_NAME$10 = 'textarea';
+  var COMPONENT_NAME$11 = 'textarea';
 
   // Component Options
   var TEXTAREA_DEFAULTS = {
@@ -64932,17 +66523,17 @@ var Soho = (function (exports) {
    */
   $.fn.textarea = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$10);
+      var instance = $.data(this, COMPONENT_NAME$11);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$10, new Textarea(this, settings));
+        instance = $.data(this, COMPONENT_NAME$11, new Textarea(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$11 = 'toolbar';
+  var COMPONENT_NAME$12 = 'toolbar';
 
   /**
    * The Toolbar Component manages various levels of application navigation.
@@ -66407,7 +67998,7 @@ var Soho = (function (exports) {
         item.classList.remove('is-overflowed');
         item.removeAttribute('tabindex');
       });
-      this.items.off(['keydown.' + COMPONENT_NAME$11, 'click.' + COMPONENT_NAME$11, 'focus.' + COMPONENT_NAME$11, 'blur.' + COMPONENT_NAME$11, 'close.' + COMPONENT_NAME$11, 'selected.' + COMPONENT_NAME$11].join(' '));
+      this.items.off(['keydown.' + COMPONENT_NAME$12, 'click.' + COMPONENT_NAME$12, 'focus.' + COMPONENT_NAME$12, 'blur.' + COMPONENT_NAME$12, 'close.' + COMPONENT_NAME$12, 'selected.' + COMPONENT_NAME$12].join(' '));
 
       delete this.items;
 
@@ -66448,7 +68039,7 @@ var Soho = (function (exports) {
         delete this.moreMenu;
       }
       if (this.more.length && this.more.data('popupmenu') !== undefined) {
-        this.more.off(['keydown.' + COMPONENT_NAME$11, 'beforeopen.' + COMPONENT_NAME$11, 'selected.' + COMPONENT_NAME$11, 'show-submenu.' + COMPONENT_NAME$11].join(' '));
+        this.more.off(['keydown.' + COMPONENT_NAME$12, 'beforeopen.' + COMPONENT_NAME$12, 'selected.' + COMPONENT_NAME$12, 'show-submenu.' + COMPONENT_NAME$12].join(' '));
 
         this.more.data('popupmenu').destroy();
         delete this.more;
@@ -66459,7 +68050,7 @@ var Soho = (function (exports) {
         delete this.activeButton;
       }
 
-      this.element.off(['updated.' + COMPONENT_NAME$11, 'recalculate-buttons.' + COMPONENT_NAME$11, 'scrollup.' + COMPONENT_NAME$11].join(' '));
+      this.element.off(['updated.' + COMPONENT_NAME$12, 'recalculate-buttons.' + COMPONENT_NAME$12, 'scrollup.' + COMPONENT_NAME$12].join(' '));
 
       this.element[0].classList.remove('do-resize');
       this.element.removeAttr('role').removeAttr('aria-label');
@@ -66519,7 +68110,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$11);
+      $.removeData(this.element[0], COMPONENT_NAME$12);
     }
   };
 
@@ -66530,17 +68121,17 @@ var Soho = (function (exports) {
    */
   $.fn.toolbar = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$11);
+      var instance = $.data(this, COMPONENT_NAME$12);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$11, new Toolbar(this, settings));
+        instance = $.data(this, COMPONENT_NAME$12, new Toolbar(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$12 = 'toolbarflexitem';
+  var COMPONENT_NAME$13 = 'toolbarflexitem';
 
   // Filters out buttons located inside of Searchfield wrappers.
   // Only `input` elements should be picked up by the item detector.
@@ -66583,7 +68174,8 @@ var Soho = (function (exports) {
     disabled: false,
     readOnly: false,
     hidden: false,
-    componentSettings: undefined
+    componentSettings: undefined,
+    allowTabs: false
   };
 
   /**
@@ -66632,6 +68224,11 @@ var Soho = (function (exports) {
      * @property {HTMLElement} toolbar the parent toolbar's base element.
      */
     type: undefined,
+
+    /**
+     * @property {boolean} a different type to check if the object is a ToolbarFlexItem.
+     */
+    isToolbarFlexItem: true,
 
     /**
      * @private
@@ -66942,7 +68539,7 @@ var Soho = (function (exports) {
       var popupmenuConsumers = ['menubutton', 'actionbutton', 'colorpicker'];
       if (popupmenuConsumers.indexOf(this.type) > -1) {
         // Listen to the Popupmenu's selected event
-        $element.on('selected.' + COMPONENT_NAME$12, function (e, anchor) {
+        $element.on('selected.' + COMPONENT_NAME$13, function (e, anchor) {
           if (_this.selectedAnchor) {
             return;
           }
@@ -66982,11 +68579,13 @@ var Soho = (function (exports) {
       }
 
       if (this.type === 'actionbutton') {
-        $element.on('beforeopen.' + COMPONENT_NAME$12, this.handleActionButtonBeforeOpen.bind(this));
-        $('body').off('resize.' + COMPONENT_NAME$12).on('resize.' + COMPONENT_NAME$12, this.handleActionButtonResize.bind(this));
+        $element.on('beforeopen.' + COMPONENT_NAME$13, this.handleActionButtonBeforeOpen.bind(this));
+        $('body').off('resize.' + COMPONENT_NAME$13).on('resize.' + COMPONENT_NAME$13, this.handleActionButtonResize.bind(this));
       }
 
-      $element.on('focus.' + COMPONENT_NAME$12, this.handleFocus.bind(this));
+      if (!this.settings.allowTabs) {
+        $element.on('focus.' + COMPONENT_NAME$13, this.handleFocus.bind(this));
+      }
     },
 
 
@@ -67029,8 +68628,10 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     render: function render() {
+      // eslint-disable-next-line
       this.disabled = this.disabled;
       if (this.hasReadOnly) {
+        // eslint-disable-next-line
         this.readonly = this.readonly;
       }
 
@@ -67409,9 +69010,9 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     teardown: function teardown() {
-      $(this.element).off('selected.' + COMPONENT_NAME$12).off('beforeopen.' + COMPONENT_NAME$12).off('focus.' + COMPONENT_NAME$12);
+      $(this.element).off('selected.' + COMPONENT_NAME$13).off('beforeopen.' + COMPONENT_NAME$13).off('focus.' + COMPONENT_NAME$13);
 
-      $('body').off('resize.' + COMPONENT_NAME$12);
+      $('body').off('resize.' + COMPONENT_NAME$13);
 
       this.teardownPredefinedItems();
 
@@ -67436,11 +69037,11 @@ var Soho = (function (exports) {
    */
   $.fn.toolbarflexitem = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$12);
+      var instance = $.data(this, COMPONENT_NAME$13);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$12, new ToolbarFlexItem(this, settings));
+        instance = $.data(this, COMPONENT_NAME$13, new ToolbarFlexItem(this, settings));
 
         // Remove the jQuery Component reference from $.data
         var oldDestroy = instance.destroy;
@@ -67448,28 +69049,30 @@ var Soho = (function (exports) {
           if (typeof oldDestroy === 'function') {
             oldDestroy.call(this);
           }
-          $.removeData(this, COMPONENT_NAME$12);
+          $.removeData(this, COMPONENT_NAME$13);
         };
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$13 = 'toolbar-flex';
+  var COMPONENT_NAME$14 = 'toolbar-flex';
 
   /**
    * Component Default Settings
    * @namespace
    */
   var TOOLBAR_FLEX_DEFAULTS = {
-    // ajax function to be called before the more menu is opened
-    beforeMoreMenuOpen: null
+    beforeMoreMenuOpen: null,
+    allowTabs: false
   };
 
   /**
    * @constructor
    * @param {HTMLElement} element the base element
    * @param {object} [settings] incoming settings
+   * @param {function} [settings.beforeMoreMenuOpen=null] Ajax function to be called before the more menu is opened
+   * @param {boolean} [settings.allowTabs] Allows tab to navigate the toolbar
    */
   function ToolbarFlex(element, settings) {
     this.element = element;
@@ -67505,7 +69108,8 @@ var Soho = (function (exports) {
         }
         $(item).toolbarflexitem({
           toolbarAPI: _this,
-          componentSettings: itemComponentSettings
+          componentSettings: itemComponentSettings,
+          allowTabs: _this.settings.allowTabs
         });
         return $(item).data('toolbarflexitem');
       });
@@ -67515,17 +69119,20 @@ var Soho = (function (exports) {
       }
 
       // Check for a focused item
-      this.items.forEach(function (item) {
-        if (item.focused) {
-          if (_this.focusedItem === undefined) {
-            _this.focusedItem = item;
-          } else {
-            item.focused = false;
+      if (!this.settings.allowTabs) {
+        this.items.forEach(function (item) {
+          if (item.focused) {
+            if (_this.focusedItem === undefined) {
+              _this.focusedItem = item;
+            } else {
+              item.focused = false;
+            }
           }
+        });
+
+        if (!this.focusedItem) {
+          this.focusedItem = this.items[0];
         }
-      });
-      if (!this.focusedItem) {
-        this.focusedItem = this.items[0];
       }
 
       this.render();
@@ -67551,23 +69158,25 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this2 = this;
 
-      this.keydownListener = this.handleKeydown.bind(this);
-      this.element.addEventListener('keydown', this.keydownListener);
+      if (!this.settings.allowTabs) {
+        this.keydownListener = this.handleKeydown.bind(this);
+        this.element.addEventListener('keydown', this.keydownListener);
 
-      this.keyupListener = this.handleKeyup.bind(this);
-      this.element.addEventListener('keyup', this.keyupListener);
+        this.keyupListener = this.handleKeyup.bind(this);
+        this.element.addEventListener('keyup', this.keyupListener);
 
-      this.clickListener = this.handleClick.bind(this);
-      this.element.addEventListener('click', this.clickListener);
+        this.clickListener = this.handleClick.bind(this);
+        this.element.addEventListener('click', this.clickListener);
+      }
 
-      $(this.element).on('selected.' + COMPONENT_NAME$13, function (e) {
+      $(this.element).on('selected.' + COMPONENT_NAME$14, function (e) {
         for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
           args[_key - 1] = arguments[_key];
         }
       });
 
       // Inlined Searchfields can cause navigation requiring a focus change to occur on collapse.
-      $(this.element).on('collapsed-responsive.' + COMPONENT_NAME$13, function (e, direction) {
+      $(this.element).on('collapsed-responsive.' + COMPONENT_NAME$14, function (e, direction) {
         e.stopPropagation();
         _this2.navigate(direction, null, true);
       });
@@ -67749,7 +69358,7 @@ var Soho = (function (exports) {
      * @returns {ToolbarFlexItem} an instance of a Toolbar item
      */
     getItemFromElement: function getItemFromElement(element) {
-      if (element instanceof ToolbarFlexItem) {
+      if (element instanceof ToolbarFlexItem || element.isToolbarFlexItem) {
         return element;
       }
 
@@ -68021,12 +69630,14 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     teardown: function teardown() {
-      this.element.removeEventListener('keydown', this.keydownListener);
-      this.element.removeEventListener('keyup', this.keyupListener);
-      this.element.removeEventListener('click', this.clickListener);
+      if (!this.settings.allowTabs) {
+        this.element.removeEventListener('keydown', this.keydownListener);
+        this.element.removeEventListener('keyup', this.keyupListener);
+        this.element.removeEventListener('click', this.clickListener);
+      }
 
-      $(this.element).off('selected.' + COMPONENT_NAME$13);
-      $(this.element).off('collapsed-responsive.' + COMPONENT_NAME$13);
+      $(this.element).off('selected.' + COMPONENT_NAME$14);
+      $(this.element).off('collapsed-responsive.' + COMPONENT_NAME$14);
 
       this.items.forEach(function (item) {
         item.teardown();
@@ -68052,11 +69663,11 @@ var Soho = (function (exports) {
    */
   $.fn.toolbarflex = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$13);
+      var instance = $.data(this, COMPONENT_NAME$14);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$13, new ToolbarFlex(this, settings));
+        instance = $.data(this, COMPONENT_NAME$14, new ToolbarFlex(this, settings));
 
         // Remove the jQuery Component reference from $.data
         var oldDestroy = instance.destroy;
@@ -68064,7 +69675,7 @@ var Soho = (function (exports) {
           if (typeof oldDestroy === 'function') {
             oldDestroy.call(this);
           }
-          $.removeData(this, COMPONENT_NAME$13);
+          $.removeData(this, COMPONENT_NAME$14);
         };
       }
     });
@@ -68078,7 +69689,7 @@ var Soho = (function (exports) {
   $.fn.toolbarsearchfield = $.fn.searchfield;
 
   // Component Name
-  var COMPONENT_NAME$14 = 'trackdirty';
+  var COMPONENT_NAME$15 = 'trackdirty';
 
   // Default Trackdirty Options
   var TRACKDIRTY_DEFAULTS = {};
@@ -68194,7 +69805,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$14);
+      $.removeData(this.element[0], COMPONENT_NAME$15);
     },
 
 
@@ -68329,17 +69940,17 @@ var Soho = (function (exports) {
    */
   $.fn.trackdirty = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$14);
+      var instance = $.data(this, COMPONENT_NAME$15);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$14, new Trackdirty(this, settings));
+        instance = $.data(this, COMPONENT_NAME$15, new Trackdirty(this, settings));
       }
     });
   };
 
   // The name of this component.
-  var COMPONENT_NAME$15 = 'tree';
+  var COMPONENT_NAME$16 = 'tree';
 
   /**
   * The tree Component displays a hierarchical list.
@@ -70776,7 +72387,7 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       this.unbind();
       this.element.empty();
-      $.removeData(this.element[0], COMPONENT_NAME$15);
+      $.removeData(this.element[0], COMPONENT_NAME$16);
     },
 
 
@@ -70861,11 +72472,11 @@ var Soho = (function (exports) {
    */
   $.fn.tree = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$15);
+      var instance = $.data(this, COMPONENT_NAME$16);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$15, new Tree(this, settings));
+        instance = $.data(this, COMPONENT_NAME$16, new Tree(this, settings));
       }
     });
   };
@@ -70873,7 +72484,7 @@ var Soho = (function (exports) {
   // Shared Imports
 
   // Settings and Options
-  var COMPONENT_NAME$16 = 'treemap';
+  var COMPONENT_NAME$17 = 'treemap';
 
   // Default Radar Options
   var TREEMAP_DEFAULTS = {
@@ -71045,21 +72656,21 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this2 = this;
 
-      this.element.on('updated.' + COMPONENT_NAME$16, function () {
+      this.element.on('updated.' + COMPONENT_NAME$17, function () {
         _this2.updated();
       });
 
       if (this.settings.redrawOnResize) {
-        $('body').on('resize.' + COMPONENT_NAME$16, function () {
+        $('body').on('resize.' + COMPONENT_NAME$17, function () {
           _this2.handleResize();
         });
 
-        this.element.on('resize.' + COMPONENT_NAME$16, function () {
+        this.element.on('resize.' + COMPONENT_NAME$17, function () {
           _this2.handleResize();
         });
       }
 
-      $('html').on('themechanged.' + COMPONENT_NAME$16, function () {
+      $('html').on('themechanged.' + COMPONENT_NAME$17, function () {
         _this2.updated();
       });
       return this;
@@ -71110,9 +72721,9 @@ var Soho = (function (exports) {
      * @returns {object} The Component prototype, useful for chaining.
      */
     teardown: function teardown() {
-      this.element.off('updated.' + COMPONENT_NAME$16);
-      $('body').off('resize.' + COMPONENT_NAME$16);
-      $('html').off('themechanged.' + COMPONENT_NAME$16);
+      this.element.off('updated.' + COMPONENT_NAME$17);
+      $('body').off('resize.' + COMPONENT_NAME$17);
+      $('html').off('themechanged.' + COMPONENT_NAME$17);
       return this;
     },
 
@@ -71125,7 +72736,7 @@ var Soho = (function (exports) {
       this.element.empty().removeClass('chart-treemap');
       charts.removeTooltip();
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$16);
+      $.removeData(this.element[0], COMPONENT_NAME$17);
     }
   };
 
@@ -71136,11 +72747,27 @@ var Soho = (function (exports) {
    */
   $.fn.treemap = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$16);
+      var instance = $.data(this, COMPONENT_NAME$17);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$16, new Treemap(this, settings));
+        instance = $.data(this, COMPONENT_NAME$17, new Treemap(this, settings));
+      }
+    });
+  };
+
+  /**
+   * jQuery Component Wrapper for WeekView
+   * @param {object} [settings] incoming settings
+   * @returns {jQuery[]} elements being acted on
+   */
+  $.fn.weekview = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$r);
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$r, new WeekView(this, settings));
       }
     });
   };
@@ -71148,7 +72775,7 @@ var Soho = (function (exports) {
   // jQuery Components
 
   // Component Name
-  var COMPONENT_NAME$17 = 'wizard';
+  var COMPONENT_NAME$18 = 'wizard';
 
   // Component Default Settings
   var WIZARD_DEFAULTS = {
@@ -71176,7 +72803,7 @@ var Soho = (function (exports) {
      * @private
      */
     init: function init() {
-      this.namespace = utils.uniqueId({ classList: [COMPONENT_NAME$17] });
+      this.namespace = utils.uniqueId({ classList: [COMPONENT_NAME$18] });
       this.build().handleEvents();
     },
 
@@ -71426,7 +73053,7 @@ var Soho = (function (exports) {
     setTooltip: function setTooltip(label) {
       var _this3 = this;
 
-      label.jqEl.tooltip({ content: label.label, placement: 'bottom' }).on('blur.' + COMPONENT_NAME$17, function () {
+      label.jqEl.tooltip({ content: label.label, placement: 'bottom' }).on('blur.' + COMPONENT_NAME$18, function () {
         return _this3.removeTooltip(label);
       });
     },
@@ -71441,7 +73068,7 @@ var Soho = (function (exports) {
     removeTooltip: function removeTooltip(label) {
       var tooltipApi = label.jqEl.data('tooltip');
       if (tooltipApi) {
-        tooltipApi.element.off('blur.' + COMPONENT_NAME$17);
+        tooltipApi.element.off('blur.' + COMPONENT_NAME$18);
         tooltipApi.destroy();
       }
     },
@@ -71522,8 +73149,8 @@ var Soho = (function (exports) {
       });
       delete this.labels;
 
-      this.ticks.off('click.' + COMPONENT_NAME$17);
-      this.element.off('updated.' + COMPONENT_NAME$17);
+      this.ticks.off('click.' + COMPONENT_NAME$18);
+      this.element.off('updated.' + COMPONENT_NAME$18);
       $('body').off('resize.' + this.namespace);
 
       this.ticks.remove();
@@ -71638,7 +73265,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$17);
+      $.removeData(this.element[0], COMPONENT_NAME$18);
     },
 
 
@@ -71654,11 +73281,11 @@ var Soho = (function (exports) {
 
       var self = this;
 
-      this.element.on('updated.' + COMPONENT_NAME$17, function () {
+      this.element.on('updated.' + COMPONENT_NAME$18, function () {
         self.updated();
       });
 
-      this.ticks.on('click.' + COMPONENT_NAME$17, function (e) {
+      this.ticks.on('click.' + COMPONENT_NAME$18, function (e) {
         self.activate(e, $(this));
       });
 
@@ -71677,11 +73304,11 @@ var Soho = (function (exports) {
    */
   $.fn.wizard = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$17);
+      var instance = $.data(this, COMPONENT_NAME$18);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$17, new Wizard(this, settings));
+        instance = $.data(this, COMPONENT_NAME$18, new Wizard(this, settings));
       }
     });
   };
@@ -72082,8 +73709,11 @@ var Soho = (function (exports) {
         delete item.isAllChildrenFiltered;
       }
 
-      var button = '<button type="button" class="btn-icon datagrid-expand-btn' + (isOpen ? ' is-expanded' : '') + '" tabindex="-1"' + (depth ? ' style="margin-left: ' + (depth ? 30 * (depth - 1) + 'px' : '') + '"' : '') + expandedBtnDisabledHtml + '>\n      <span class="icon plus-minus ' + (isOpen ? ' active' : '') + '"></span>\n      <span class="audible">' + Locale.translate('ExpandCollapse') + '</span>\n      </button>' + (value ? ' <span>' + value + '</span>' : '');
-      var node = ' <span class="datagrid-tree-node"' + (depth ? ' style="margin-left: ' + (depth ? 30 * depth + 'px' : '') + '"' : '') + '>' + value + '</span>';
+      // Tabsize as button width (+/-)
+      var tabsize = api.settings.rowHeight === 'short' ? 22 : 30;
+
+      var button = '<button type="button" class="btn-icon datagrid-expand-btn' + (isOpen ? ' is-expanded' : '') + '" tabindex="-1"' + (depth ? ' style="margin-left: ' + (depth ? tabsize * (depth - 1) + 'px' : '') + '"' : '') + expandedBtnDisabledHtml + '>\n      <span class="icon plus-minus ' + (isOpen ? ' active' : '') + '"></span>\n      <span class="audible">' + Locale.translate('ExpandCollapse') + '</span>\n      </button>' + (value ? ' <span>' + value + '</span>' : '');
+      var node = ' <span class="datagrid-tree-node"' + (depth ? ' style="margin-left: ' + (depth ? tabsize * depth + 'px' : '') + '"' : '') + '>' + value + '</span>';
 
       return item && item[col.children ? col.children : 'children'] ? button : node;
     },
@@ -72727,6 +74357,9 @@ var Soho = (function (exports) {
         var selected = this.input.find(':selected');
         var val = selected.attr('value');
         var dataType = selected.attr('data-type');
+        if (!val && this.input.find('option[selected]').length > 0) {
+          val = this.input.find('option[selected]').attr('value');
+        }
 
         // For non-string option values (number, boolean, etc.),
         // convert string attr value to proper type
@@ -73836,7 +75469,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-underscore-dangle, no-continue, no-nested-ternary */
 
   // The name of this component.
-  var COMPONENT_NAME$18 = 'datagrid';
+  var COMPONENT_NAME$19 = 'datagrid';
 
   /**
    * The Datagrid Component displays and process data in tabular format.
@@ -75783,7 +77416,7 @@ var Soho = (function (exports) {
             rowValue = rowValue === null || rowValue === undefined ? '' : rowValue.toString().toLowerCase();
           }
 
-          if ((typeof rowValue === 'number' || !isNaN(rowValue) && rowValue !== '' && !(conditions[i].value instanceof Array)) && columnDef.filterType !== 'date' && columnDef.filterType !== 'time') {
+          if ((typeof rowValue === 'number' || !isNaN(rowValue) && rowValue !== '' && !(conditions[i].value instanceof Array)) && !/^(date|time|text)$/.test(columnDef.filterType)) {
             rowValue = rowValue === null ? rowValue : parseFloat(rowValue);
             conditionValue = Locale.parseNumber(conditionValue);
           }
@@ -77411,7 +79044,7 @@ var Soho = (function (exports) {
               if (currentDepth < treeDepthItem.depth) {
                 parentNode = self.settings.treeDepth[i2];
 
-                if (parentNode.node.isExpanded !== undefined && !parentNode.node.isExpanded || currentDepth === 1) {
+                if (currentDepth === 1 || parentNode.node.expanded !== undefined && !parentNode.node.expanded) {
                   break;
                 }
               }
@@ -79358,12 +80991,14 @@ var Soho = (function (exports) {
     */
     triggerRowEvent: function triggerRowEvent(eventName, e, stopPropagation) {
       var self = this;
-      var cell = $(e.target).closest('td').index();
-      var rowElem = $(e.target).closest('tr');
+      var target = $(e.target);
+      var rowElem = target.closest('tr');
+      var cellElem = target.closest('td');
+      var cell = cellElem.index();
       var row = this.settings.treeGrid ? this.actualRowIndex(rowElem) : this.dataRowIndex(rowElem);
       var isTrigger = true;
 
-      if ($(e.target).is('a')) {
+      if (target.is('a')) {
         stopPropagation = false;
       }
 
@@ -79388,7 +81023,8 @@ var Soho = (function (exports) {
       }
 
       if (isTrigger) {
-        self.element.trigger(eventName, [{ row: row, cell: cell, item: item, originalEvent: e }]);
+        var args = { row: row, rowElem: rowElem, cell: cell, cellElem: cellElem, item: item, originalEvent: e };
+        self.element.trigger(eventName, [args]);
       }
 
       return false;
@@ -79466,14 +81102,14 @@ var Soho = (function (exports) {
 
       // Handle Paging
       if (this.settings.paging) {
-        this.tableBody.on('page.' + COMPONENT_NAME$18, function (e, pagingInfo) {
+        this.tableBody.on('page.' + COMPONENT_NAME$19, function (e, pagingInfo) {
           if (pagingInfo.type === 'filtered' && _this7.settings.source) {
             return;
           }
           self.saveUserSettings();
           self.render(null, pagingInfo);
           self.afterPaging(pagingInfo);
-        }).on('pagesizechange.' + COMPONENT_NAME$18, function (e, pagingInfo) {
+        }).on('pagesizechange.' + COMPONENT_NAME$19, function (e, pagingInfo) {
           self.render(null, pagingInfo);
           self.afterPaging(pagingInfo);
         });
@@ -79760,20 +81396,17 @@ var Soho = (function (exports) {
       * @property {object} args.originalEvent The original event object.
       */
       this.element.off('contextmenu.datagrid').on('contextmenu.datagrid', 'tbody tr', function (e) {
+        e.stopPropagation();
+        self.closePrevPopupmenu();
+        self.triggerRowEvent('contextmenu', e, !!self.settings.menuId);
+
         var hasMenu = function hasMenu() {
           return self.settings.menuId && $('#' + self.settings.menuId).length > 0;
         };
-        self.triggerRowEvent('contextmenu', e, !!self.settings.menuId);
-
-        if (!self.isSubscribedTo(e, 'contextmenu') && !hasMenu()) {
+        if (!hasMenu() || !self.isSubscribedTo(e, 'contextmenu') && !hasMenu()) {
           return true;
         }
         e.preventDefault();
-        self.closePrevPopupmenu();
-
-        if (!hasMenu()) {
-          return true;
-        }
 
         $(e.currentTarget).popupmenu({
           menuId: self.settings.menuId,
@@ -80447,8 +82080,12 @@ var Soho = (function (exports) {
 
     /**
     * Deselect all rows that are currently selected.
+    * @private
+    * @param  {boolean} nosync Do not sync the header
+    * @param  {boolean} noTrigger Do not trgger event
+    * @returns {void}
     */
-    unSelectAllRows: function unSelectAllRows() {
+    unSelectAllRows: function unSelectAllRows(nosync, noTrigger) {
       // Nothing to do
       if (!this._selectedRows || this._selectedRows.length === 0) {
         return;
@@ -80456,13 +82093,21 @@ var Soho = (function (exports) {
       this.dontSyncUi = true;
       // Unselect each row backwards so the indexes are correct
       for (var i = this._selectedRows.length - 1; i >= 0; i--) {
-        var idx = this.settings.groupable ? this._selectedRows[i].idx : this.pagingRowIndex(this._selectedRows[i].idx);
-        this.unselectRow(idx, true, true);
+        if (this._selectedRows[i]) {
+          var idx = this.settings.groupable ? this._selectedRows[i].idx : this.pagingRowIndex(this._selectedRows[i].idx);
+          this.unselectRow(idx, true, true);
+        }
       }
       // Sync the Ui and call the events
       this.dontSyncUi = false;
-      this.syncSelectedUI();
-      this.element.triggerHandler('selected', [this._selectedRows, 'deselectall']);
+
+      if (!nosync) {
+        this.syncSelectedUI();
+      }
+
+      if (!noTrigger) {
+        this.element.triggerHandler('selected', [this._selectedRows, 'deselectall']);
+      }
     },
 
 
@@ -80563,9 +82208,11 @@ var Soho = (function (exports) {
         var rowData = void 0;
 
         if (s.treeGrid) {
+          var level = parseInt(rowNode.attr('aria-level'), 10);
+          rowData = s.treeDepth[self.pagerAPI && s.source ? rowNode.index() : idx].node;
           if (rowNode.is('.datagrid-tree-parent') && s.selectable === 'multiple') {
             // Select node and node-children
-            rowNode.add(rowNode.nextUntil('[aria-level="1"]')).each(function (i) {
+            rowNode.add(rowNode.nextUntil('[aria-level="' + level + '"]')).each(function (i) {
               var elem = $(this);
               var index = elem.attr('aria-rowindex') - 1;
               var actualIdx = self.actualPagingRowIndex(index);
@@ -80574,37 +82221,59 @@ var Soho = (function (exports) {
               // Allow select node if selectChildren is true or only first node
               // if selectChildren is false
               if (s.selectChildren || !s.selectChildren && i === 0) {
+                var canAdd = !elem.is(rowNode) && !elem.hasClass('is-selected');
                 self.selectNode(elem, index, data);
+                if (canAdd) {
+                  self._selectedRows.push({
+                    idx: actualIdx,
+                    data: data,
+                    elem: elem,
+                    page: self.pagerAPI ? self.pagerAPI.activePage : 1,
+                    pagingIdx: actualIdx,
+                    pagesize: s.pagesize
+                  });
+                }
               }
             });
           } else if (s.selectable === 'siblings') {
-            this.unSelectAllRows();
+            this.unSelectAllRows(true, true);
 
             // Select node and node-siblings
-            var level = rowNode.attr('aria-level');
-            var nexts = rowNode.nextUntil('[aria-level!="' + level + '"]');
-            var prevs = rowNode.prevUntil('[aria-level!="' + level + '"]');
+            var nexts = void 0;
+            var prevs = void 0;
 
-            if (level === '1') {
+            if (level === 1) {
               nexts = rowNode.parent().find('[aria-level="1"]');
-              prevs = null;
+            } else if (level > 1) {
+              nexts = rowNode.nextUntil('[aria-level="' + (level - 1) + '"]').filter('[aria-level="' + level + '"]');
+              prevs = rowNode.prevUntil('[aria-level="' + (level - 1) + '"]').filter('[aria-level="' + level + '"]');
             }
 
             rowNode.add(nexts).add(prevs).each(function (i) {
               var elem = $(this);
               var index = elem.attr('aria-rowindex') - 1;
-              var actualIndex = self.actualPagingRowIndex(index);
-              var data = s.treeDepth[actualIndex].node;
+              var actualIdx = self.actualPagingRowIndex(index);
+              var data = s.treeDepth[actualIdx].node;
 
               // Allow select node if selectChildren is true or only first node
               // if selectChildren is false
               if (s.selectChildren || !s.selectChildren && i === 0) {
+                var canAdd = !elem.is(rowNode) && !elem.hasClass('is-selected');
                 self.selectNode(elem, index, data);
+                if (canAdd) {
+                  self._selectedRows.push({
+                    idx: actualIdx,
+                    data: data,
+                    elem: elem,
+                    page: self.pagerAPI ? self.pagerAPI.activePage : 1,
+                    pagingIdx: actualIdx,
+                    pagesize: s.pagesize
+                  });
+                }
               }
             });
           } else {
             // Default to Single element selection
-            rowData = s.treeDepth[self.pagerAPI && s.source ? rowNode.index() : idx].node;
             self.selectNode(rowNode, idx, rowData);
           }
           self.setNodeStatus(rowNode);
@@ -81187,9 +82856,10 @@ var Soho = (function (exports) {
       };
 
       if (s.treeGrid) {
+        var level = parseInt(rowNode.attr('aria-level'), 10);
         if (rowNode.is('.datagrid-tree-parent') && s.selectable === 'multiple') {
           // Select node and node-children
-          rowNode.add(rowNode.nextUntil('[aria-level="1"]')).each(function (i) {
+          rowNode.add(rowNode.nextUntil('[aria-level="' + level + '"]')).each(function (i) {
             var elem = $(this);
             var index = elem.attr('aria-rowindex') - 1;
             var actualIndex = self.actualPagingRowIndex(index);
@@ -81295,12 +82965,19 @@ var Soho = (function (exports) {
     * @returns {object} The status
     */
     getSelectedStatus: function getSelectedStatus(node) {
+      var s = this.settings;
       var status = false;
       var total = 0;
       var selected = 0;
       var unselected = 0;
+      var targetNodes = node.add(node.nextUntil('[aria-level="1"]'));
 
-      node.add(node.nextUntil('[aria-level="1"]')).each(function () {
+      if (s.treeGrid && s.selectable === 'multiple') {
+        var level = node.attr('aria-level');
+        targetNodes = node.add(node.nextUntil('[aria-level="' + level + '"]'));
+      }
+
+      targetNodes.each(function () {
         total++;
         if ($(this).is('.is-selected')) {
           selected++;
@@ -83659,7 +85336,7 @@ var Soho = (function (exports) {
         self.setExpandedInDataset(parentRowIdx, !isExpanded);
 
         var setChildren = function setChildren(elem, lev, expanded) {
-          var nodes = elem.nextUntil('[aria-level="' + level + '"]');
+          var nodes = elem.nextUntil('[aria-level="' + lev + '"]');
 
           if (expanded) {
             nodes.each(function () {
@@ -84033,7 +85710,7 @@ var Soho = (function (exports) {
       var idx = -1;
 
       var _loop5 = function _loop5(i, _data) {
-        if (s.groupable) {
+        if (s.groupable && !_this13.originalDataset) {
           // Object.values is not supported in IE11; hence usage of Object.keys and Map
           for (var k = 0; k < Object.keys(dataset[i]).length; k++) {
             idx++;
@@ -84061,7 +85738,7 @@ var Soho = (function (exports) {
               elem: _this13.visualRowNode(i),
               pagesize: _this13.settings.pagesize,
               page: _this13.pagerAPI ? _this13.pagerAPI.activePage : 1,
-              pagingIdx: idx
+              pagingIdx: i
             });
           }
         }
@@ -84621,7 +86298,7 @@ var Soho = (function (exports) {
 
       // UnBind the pager
       if (this.pagerAPI) {
-        this.tableBody.off('page.' + COMPONENT_NAME$18 + ' pagesizechange.' + COMPONENT_NAME$18);
+        this.tableBody.off('page.' + COMPONENT_NAME$19 + ' pagesizechange.' + COMPONENT_NAME$19);
         this.pagerAPI.destroy();
       }
 
@@ -84648,7 +86325,7 @@ var Soho = (function (exports) {
       }
 
       this.element.next('.pager-toolbar').remove();
-      $.removeData(this.element[0], COMPONENT_NAME$18);
+      $.removeData(this.element[0], COMPONENT_NAME$19);
 
       this.element.off();
       $(document).off('touchstart.datagrid touchend.datagrid touchcancel.datagrid click.datagrid touchmove.datagrid');
@@ -84667,6 +86344,10 @@ var Soho = (function (exports) {
     updated: function updated(settings) {
       this.settings = utils.mergeSettings(this.element, settings, this.settings);
 
+      if (this.pagerAPI && typeof this.pagerAPI.destroy === 'function') {
+        this.pagerAPI.destroy();
+      }
+
       if (settings && settings.frozenColumns) {
         this.headerRow = undefined;
         this.element.empty();
@@ -84682,6 +86363,7 @@ var Soho = (function (exports) {
       }
 
       this.render();
+      this.handlePaging();
 
       return this;
     }
@@ -84694,17 +86376,17 @@ var Soho = (function (exports) {
    */
   $.fn.datagrid = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$18);
+      var instance = $.data(this, COMPONENT_NAME$19);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$18, new Datagrid(this, settings));
+        instance = $.data(this, COMPONENT_NAME$19, new Datagrid(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$19 = 'formcompact';
+  var COMPONENT_NAME$1a = 'formcompact';
 
   // Settings
   var FORMCOMPACT_DEFAULTS = {};
@@ -84772,9 +86454,9 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this2 = this;
 
-      $(this.form).on('focusin.' + COMPONENT_NAME$19, 'input', function (e) {
+      $(this.form).on('focusin.' + COMPONENT_NAME$1a, 'input', function (e) {
         return _this2.handleFocusIn(e);
-      }).on('focusout.' + COMPONENT_NAME$19, 'input', function (e) {
+      }).on('focusout.' + COMPONENT_NAME$1a, 'input', function (e) {
         return _this2.handleFocusOut(e);
       });
 
@@ -84875,7 +86557,7 @@ var Soho = (function (exports) {
       this.inputsObserver.disconnect();
       delete this.inputsObserver;
 
-      $(this.form).off(['focusin.' + COMPONENT_NAME$19, 'focusout.' + COMPONENT_NAME$19].join(' '));
+      $(this.form).off(['focusin.' + COMPONENT_NAME$1a, 'focusout.' + COMPONENT_NAME$1a].join(' '));
       delete this.form;
       delete this.inputs;
     },
@@ -84886,7 +86568,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element, COMPONENT_NAME$19);
+      $.removeData(this.element, COMPONENT_NAME$1a);
     }
   };
 
@@ -84897,17 +86579,17 @@ var Soho = (function (exports) {
    */
   $.fn.formcompact = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$19);
+      var instance = $.data(this, COMPONENT_NAME$1a);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$19, new FormCompact(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1a, new FormCompact(this, settings));
       }
     });
   };
 
   // The Component Name
-  var COMPONENT_NAME$1a = 'header';
+  var COMPONENT_NAME$1b = 'header';
 
   /**
    * Special Header with Toolbar at the top of the page used to faciliate IDS Enterprise Nav Patterns
@@ -85295,13 +86977,13 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var self = this;
 
-      this.element.on('updated.' + COMPONENT_NAME$1a, function (e, settings) {
+      this.element.on('updated.' + COMPONENT_NAME$1b, function (e, settings) {
         self.updated(settings);
-      }).on('reset.' + COMPONENT_NAME$1a, function () {
+      }).on('reset.' + COMPONENT_NAME$1b, function () {
         self.reset();
-      }).on('drilldown.' + COMPONENT_NAME$1a, function (e, viewTitle) {
+      }).on('drilldown.' + COMPONENT_NAME$1b, function (e, viewTitle) {
         self.drilldown(viewTitle);
-      }).on('drillup.' + COMPONENT_NAME$1a, function (e, viewTitle) {
+      }).on('drillup.' + COMPONENT_NAME$1b, function (e, viewTitle) {
         self.drillup(viewTitle);
       });
 
@@ -85311,7 +86993,7 @@ var Soho = (function (exports) {
 
       // Popupmenu Events
       if (this.titlePopup && this.titlePopup.length) {
-        this.titlePopup.on('selected.' + COMPONENT_NAME$1a, function (e, anchor) {
+        this.titlePopup.on('selected.' + COMPONENT_NAME$1b, function (e, anchor) {
           var text = void 0;
           if (!(anchor instanceof $)) {
             // Toolbar Flex Item
@@ -85339,7 +87021,7 @@ var Soho = (function (exports) {
         return;
       }
 
-      this.titleButton.bindFirst('click.' + COMPONENT_NAME$1a, function (e) {
+      this.titleButton.bindFirst('click.' + COMPONENT_NAME$1b, function (e) {
         if (_this.levelsDeep.length > 1) {
           e.stopImmediatePropagation();
           _this.drillup();
@@ -85388,8 +87070,14 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     initPageChanger: function initPageChanger() {
-      var changer = this.element.find('.page-changer');
-      var colorArea = changer.next().find('li.personalization-colors');
+      this.changer = this.element.find('.page-changer');
+      if (!this.changer.length) {
+        return;
+      }
+
+      var api = this.changer.data('popupmenu');
+      var menu = api.menu;
+      var colorArea = menu.find('li.personalization-colors');
 
       if (colorArea.length > 0) {
         var colors = theme.personalizationColors();
@@ -85402,13 +87090,13 @@ var Soho = (function (exports) {
         colorArea.replaceWith(colorsHtml);
       }
 
-      changer.on('selected.header', function (e, link) {
+      this.changer.on('selected.header', function (e, link) {
         // Change Theme with Variant
         var themeNameAttr = link.attr('data-theme-name');
         var themeVariantAttr = link.attr('data-theme-variant');
         if (themeNameAttr || themeVariantAttr) {
-          var name = changer.next().find('.is-checked a[data-theme-name]').attr('data-theme-name');
-          var variant = changer.next().find('.is-checked a[data-theme-variant]').attr('data-theme-variant');
+          var name = menu.find('.is-checked a[data-theme-name]').attr('data-theme-name');
+          var variant = menu.find('.is-checked a[data-theme-variant]').attr('data-theme-variant');
           if (name && variant) {
             personalization.setTheme(name + '-' + variant);
           }
@@ -85564,7 +87252,7 @@ var Soho = (function (exports) {
           appMenu.modifyTriggers([this.titleButton], true, true);
         }
 
-        this.titleButton.off('click.' + COMPONENT_NAME$1a).remove();
+        this.titleButton.off('click.' + COMPONENT_NAME$1b).remove();
         this.titleButton = $();
 
         // Need to trigger an update on the toolbar control to make sure
@@ -85734,14 +87422,14 @@ var Soho = (function (exports) {
      */
     unbind: function unbind() {
       if (this.titleButton && this.titleButton.length) {
-        this.titleButton.off('click.' + COMPONENT_NAME$1a);
+        this.titleButton.off('click.' + COMPONENT_NAME$1b);
       }
 
       if (this.titlePopup && this.titlePopup.length) {
-        this.titlePopup.off('updated.' + COMPONENT_NAME$1a);
+        this.titlePopup.off('updated.' + COMPONENT_NAME$1b);
       }
 
-      this.element.off(['updated.' + COMPONENT_NAME$1a, 'reset.' + COMPONENT_NAME$1a, 'drilldown.' + COMPONENT_NAME$1a, 'drillup.' + COMPONENT_NAME$1a].join(' '));
+      this.element.off(['updated.' + COMPONENT_NAME$1b, 'reset.' + COMPONENT_NAME$1b, 'drilldown.' + COMPONENT_NAME$1b, 'drillup.' + COMPONENT_NAME$1b].join(' '));
 
       return this;
     },
@@ -85771,7 +87459,16 @@ var Soho = (function (exports) {
         this.toolbarElem.removeClass('has-title-button');
       }
 
-      $.removeData(this.element[0], COMPONENT_NAME$1a);
+      if (this.changer) {
+        var api = this.changer.data('popupmenu');
+        if (api && typeof api.destroy === 'function') {
+          api.destroy();
+        }
+        this.changer.remove();
+        delete this.changer;
+      }
+
+      $.removeData(this.element[0], COMPONENT_NAME$1b);
     }
   };
 
@@ -85782,19 +87479,19 @@ var Soho = (function (exports) {
    */
   $.fn.header = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$1a);
+      var instance = $.data(this, COMPONENT_NAME$1b);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$1a, new Header(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1b, new Header(this, settings));
       }
     });
   };
 
-  /* eslint-disable no-continue: "off, no-underscore-dangle */
+  /* eslint-disable no-underscore-dangle */
 
   // Component Name
-  var COMPONENT_NAME$1b = 'lookup';
+  var COMPONENT_NAME$1c = 'lookup';
 
   // Lookup components are "modal" (one on-screen at any given time)
   var LOOKUP_GRID_ID = 'lookup-datagrid';
@@ -86596,7 +88293,7 @@ var Soho = (function (exports) {
     * @returns {void}
     */
     destroy: function destroy() {
-      $.removeData(this.element[0], COMPONENT_NAME$1b);
+      $.removeData(this.element[0], COMPONENT_NAME$1c);
       $('.modal .searchfield').off('keypress.lookup');
       $('body').off('open.lookup close.lookup');
       if (this.modal && this.modal.element) {
@@ -86620,17 +88317,17 @@ var Soho = (function (exports) {
    */
   $.fn.lookup = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$1b);
+      var instance = $.data(this, COMPONENT_NAME$1c);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$1b, new Lookup(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1c, new Lookup(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$1c = 'multitabs';
+  var COMPONENT_NAME$1d = 'multitabs';
 
   // Default Settings for MultiTabs
   var MULTITABS_DEFAULTS = {
@@ -87007,7 +88704,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$1c);
+      $.removeData(this.element[0], COMPONENT_NAME$1d);
     }
   };
 
@@ -87018,17 +88715,17 @@ var Soho = (function (exports) {
    */
   $.fn.multitabs = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$1c);
+      var instance = $.data(this, COMPONENT_NAME$1d);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$1c, new MultiTabs(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1d, new MultiTabs(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$1d = 'listdetail';
+  var COMPONENT_NAME$1e = 'listdetail';
   // Available breakpoint types for Edge Bleeding
   var LIST_DETAIL_EDGE_BLEED_BREAKPOINTS = ['phone', 'tablet'];
 
@@ -87235,10 +88932,10 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this2 = this;
 
-      $(this.element).on('drilldown.' + COMPONENT_NAME$1d, function (e, item) {
+      $(this.element).on('drilldown.' + COMPONENT_NAME$1e, function (e, item) {
         e.stopPropagation();
         _this2.drilldown(item, e.target);
-      }).on('drillup.' + COMPONENT_NAME$1d, function (e) {
+      }).on('drillup.' + COMPONENT_NAME$1e, function (e) {
         e.stopPropagation();
         _this2.drillup();
       });
@@ -87252,7 +88949,7 @@ var Soho = (function (exports) {
       }
 
       // Run certain responsive checks on page resize
-      $('body').off('resize.' + COMPONENT_NAME$1d).on('resize.' + COMPONENT_NAME$1d, function () {
+      $('body').off('resize.' + COMPONENT_NAME$1e).on('resize.' + COMPONENT_NAME$1e, function () {
         _this2.handleResize();
       });
     },
@@ -87370,7 +89067,7 @@ var Soho = (function (exports) {
 
       if (this.childrenListDetailElements) {
         this.childrenListDetailElements.forEach(function (elem) {
-          var api = $(elem).data(COMPONENT_NAME$1d);
+          var api = $(elem).data(COMPONENT_NAME$1e);
           if (api && typeof api.drillup === 'function') {
             api.drillup();
           }
@@ -87503,9 +89200,9 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     teardown: function teardown() {
-      $('body').off('resize.' + COMPONENT_NAME$1d);
+      $('body').off('resize.' + COMPONENT_NAME$1e);
 
-      $(this.element).off('drilldown.' + COMPONENT_NAME$1d + ' drillup.' + COMPONENT_NAME$1d);
+      $(this.element).off('drilldown.' + COMPONENT_NAME$1e + ' drillup.' + COMPONENT_NAME$1e);
 
       if (this.backElement) {
         this.backElement.removeEventListener('click', this.handleBackClick.bind(this));
@@ -87540,7 +89237,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element, COMPONENT_NAME$1d);
+      $.removeData(this.element, COMPONENT_NAME$1e);
     }
   };
 
@@ -87551,21 +89248,21 @@ var Soho = (function (exports) {
    */
   $.fn.listdetail = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$1d);
+      var instance = $.data(this, COMPONENT_NAME$1e);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$1d, new ListDetail(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1e, new ListDetail(this, settings));
         instance.destroy = function destroy() {
           this.teardown();
-          $.removeData(this, COMPONENT_NAME$1d);
+          $.removeData(this, COMPONENT_NAME$1e);
         };
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$1e = 'stepprocess';
+  var COMPONENT_NAME$1f = 'stepprocess';
 
   // Default Stepprocess Options
   var STEPPROCESS_DEFAULTS = {
@@ -88403,7 +90100,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$1e);
+      $.removeData(this.element[0], COMPONENT_NAME$1f);
     }
   };
 
@@ -88414,11 +90111,11 @@ var Soho = (function (exports) {
    */
   $.fn.stepprocess = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$1e);
+      var instance = $.data(this, COMPONENT_NAME$1f);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$1e, new Stepprocess(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1f, new Stepprocess(this, settings));
       }
     });
   };
@@ -88449,14 +90146,6 @@ var Soho = (function (exports) {
   // Array of plugin names, selectors (optional), and callback functions (optional),
   // for no-configuration initializations.
   var PLUGIN_MAPPINGS = [
-
-  // Mobile Zoom Control
-  // Needs manual invokation because the rest of initialization is scoped to the
-  // calling element, which is the <body> tag.
-  ['zoom', null, function () {
-    $('head').zoom();
-  }],
-
   // Application Menu
   ['applicationmenu', '#application-menu', function (rootElem, pluginName, selector) {
     matchedItems(rootElem, selector).each(function (i, item) {
@@ -88576,7 +90265,7 @@ var Soho = (function (exports) {
   ['tag'],
 
   // Busy Indicator
-  ['busyindicator', '.busy, .busy-xs, .busy-sm'], ['header'], ['fileupload', 'input.fileupload:not(.fileupload-background-transparent)'], ['fileuploadadvanced', '.fileupload-advanced'], ['fieldfilter', '.field-filter'], ['fieldoptions', '.field-options'], ['about'], ['contextualactionpanel', '.contextual-action-panel-trigger'], ['expandablearea', '.expandable-area'], ['signin'], ['homepage'], ['lookup', '.lookup:not([data-init])'], ['wizard'], ['popdown', '[data-popdown]'], ['stepchart', '.step-chart'], ['calendar', '.calendar'], ['monthview', '.monthview'], ['listview'],
+  ['busyindicator', '.busy, .busy-xs, .busy-sm'], ['header'], ['fileupload', 'input.fileupload:not(.fileupload-background-transparent)'], ['fileuploadadvanced', '.fileupload-advanced'], ['fieldfilter', '.field-filter'], ['fieldoptions', '.field-options'], ['about'], ['contextualactionpanel', '.contextual-action-panel-trigger'], ['expandablearea', '.expandable-area'], ['signin'], ['homepage'], ['lookup', '.lookup:not([data-init])'], ['wizard'], ['popdown', '[data-popdown]'], ['stepchart', '.step-chart'], ['calendar', '.calendar'], ['calendartoolbar', '.calendar-toolbar'], ['monthview', '.monthview'], ['weekview', '.week-view'], ['listview'],
 
   // Track Dirty
   ['trackdirty', '[data-trackdirty="true"]'],
@@ -89049,14 +90738,15 @@ var Soho = (function (exports) {
     Treemap: Treemap,
     Validator: Validator,
     Wizard: Wizard,
-    Zoom: Zoom,
     Calendar: Calendar,
+    CalendarToolbar: CalendarToolbar,
     CompositeForm: CompositeForm,
     Datagrid: Datagrid,
     FormCompact: FormCompact,
     Header: Header,
     Lookup: Lookup,
     MonthView: MonthView,
+    WeekView: WeekView,
     MultiTabs: MultiTabs
   });
 

@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise, no-undef */
-
 // Get Latest from http://www.unicode.org/Public/cldr/25/
 Soho.Locale.addCulture('lt-LT', {
   // layout/language
@@ -22,6 +20,7 @@ Soho.Locale.addCulture('lt-LT', {
       month: 'MMMM d d.',
       year: 'yyyy m. MMMM',
       timestamp: 'HH:mm:ss',
+      hour: 'HH:mm',
       datetime: 'yyyy-MM-dd HH:mm',
       timezone: 'yyyy-MM-dd HH:mm zz',
       timezoneLong: 'yyyy-MM-dd HH:mm zzzz'

@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise, no-undef */
-
 // Get Latest from http://www.unicode.org/Public/cldr/25/
 Soho.Locale.addCulture('uk-UA', {
   // layout/language
@@ -10,6 +8,7 @@ Soho.Locale.addCulture('uk-UA', {
   direction: 'left-to-right',
   // ca-gregorian
   calendars: [{
+    name: 'gregorian',
     // ca-gregorian/main/dates/calendars/gregorian/dateFormats/
     dateFormat: {
       separator: '.', // Infered
@@ -21,6 +20,7 @@ Soho.Locale.addCulture('uk-UA', {
       month: 'd MMMM',
       year: 'MMMM yyyy  р.',
       timestamp: 'HH:mm:ss',
+      hour: 'HH:mm',
       datetime: 'dd.MM.yyyy HH:mm',
       timezone: 'dd.MM.yyyy HH:mm zz',
       timezoneLong: 'dd.MM.yyyy HH:mm zzzz'
@@ -68,6 +68,7 @@ Soho.Locale.addCulture('uk-UA', {
     Alert: { id: 'Alert', value: 'Оповіщення', comment: 'Alert' },
     AlertOnPage: { id: 'AlertOnPage', value: 'Оповіщення на сторінці', comment: 'Alert message(s) on page n' },
     All: { id: 'All', value: 'Усі', comment: 'All items in the context of a filter' },
+    AllDay: { id: 'AllDay', value: 'Цілий день', comment: 'Label for an event which lasts all day' },
     AllResults: { id: 'AllResults', value: 'Усі результати для', comment: 'Search Results Text' },
     AligntoBottom: { id: 'AligntoBottom', value: 'Вирівняти за нижнім краєм', comment: 'Align to Bottom tooltip' },
     AlignCenterHorizontally: { id: 'AlignCenterHorizontally', value: 'Горизонтальне вирівнювання по центру', comment: 'Align Center Horizontally tooltip' },
@@ -99,8 +100,6 @@ Soho.Locale.addCulture('uk-UA', {
     ChangeView: { id: 'ChangeView', value: 'Змінити подання', comment: 'Change the current page from a list of options' },
     Checkbox: { id: 'Checkbox', value: 'Прапорець', comment: 'Checkbox tooltip' },
     Checked: { id: 'Checked', value: 'Установлено', comment: 'Checked tooltip' },
-    ChooseA: { id: 'ChooseA', value: 'Виберіть ', comment: 'Audible tooltip for choosing a thing in a list.' },
-    ChooseAn: { id: 'ChooseAn', value: 'Виберіть ', comment: 'Audible tooltip for choosing an item in a list.' },
     Clear: { id: 'Clear', value: 'Очистити', comment: 'Tooltip for a Clear Action' },
     ClearFilter: { id: 'ClearFilter', value: 'Очистить фільтр', comment: 'Clear the current filter criteria' },
     ClearFormatting: { id: 'ClearFormatting', value: 'Очистить формат', comment: 'Clear the formatting in editor' },

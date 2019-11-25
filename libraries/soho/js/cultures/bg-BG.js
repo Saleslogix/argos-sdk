@@ -1,4 +1,3 @@
-/* eslint-disable no-bitwise, no-undef */
 // Get Latest from http://www.unicode.org/Public/cldr/25/
 Soho.Locale.addCulture('bg-BG', {
   // https://blazingbulgaria.wordpress.com/2012/06/15/time-in-bulgarian/
@@ -22,6 +21,7 @@ Soho.Locale.addCulture('bg-BG', {
       month: 'd MMMM',
       year: 'MMMM yyyy г.',
       timestamp: 'H:mm:ss',
+      hour: 'H:mm',
       datetime: 'd.MM.yyyy H:mm',
       timezone: 'd.MM.yyyy H:mm zz',
       timezoneLong: 'd.MM.yyyy H:mm zzzz'
