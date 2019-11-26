@@ -51,7 +51,7 @@ const control = declare('argos.Fields.PhoneField', [TextField], /** @lends argos
    * Formats the displayed value (inputNode value) using {@link format.phone format.phone}.
    */
   _onBlur: function _onBlur() {
-    this.inherited(arguments);
+    this.inherited(_onBlur, arguments);
 
     // temporarily added: http://code.google.com/p/android/issues/detail?id=14519
     this.set('inputValue', format.phone(this.inputNode.value));
@@ -62,7 +62,7 @@ const control = declare('argos.Fields.PhoneField', [TextField], /** @lends argos
    * @return {String}
    */
   getValue: function getValue() {
-    let value = this.inherited(arguments);
+    let value = this.inherited(getValue, arguments);
 
     if (/^\+/.test(value)) {
       return value;
@@ -95,7 +95,7 @@ const control = declare('argos.Fields.PhoneField', [TextField], /** @lends argos
     // temporarily removed: http://code.google.com/p/android/issues/detail?id=14519
     this.set('inputValue', format.phone(this.inputNode.value, this.getValue()));
     */
-    this.inherited(arguments);
+    this.inherited(_onKeyUp, arguments);
   },
 });
 

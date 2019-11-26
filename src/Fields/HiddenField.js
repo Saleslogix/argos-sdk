@@ -54,7 +54,7 @@ const control = declare('argos.Fields.HiddenField', [TextField], /** @lends argo
    */
   bind: function bind() {
     // call field's bind. we don't want event handlers for this.
-    this.inherited(arguments);
+    this.inherited(bind, arguments);
   },
 });
 

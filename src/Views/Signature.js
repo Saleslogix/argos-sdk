@@ -143,7 +143,7 @@ const __class = declare('argos.Views.Signature', [View], /** @lends argos.Views.
   canvasNodeHeight: 120,
 
   show: function show(options) {
-    this.inherited(arguments);
+    this.inherited(show, arguments);
 
     if (options && options.lineWidth) {
       this.config.lineWidth = options.lineWidth;

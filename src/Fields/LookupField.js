@@ -284,7 +284,7 @@ const control = declare('argos.Fields.LookupField', [_Field], /** @lends argos.F
    * if require selection is false connect to onkeyup and onblur.
    */
   init: function init() {
-    this.inherited(arguments);
+    this.inherited(init, arguments);
 
     this.connect(this.containerNode, 'onclick', this._onClick);
 
@@ -300,7 +300,7 @@ const control = declare('argos.Fields.LookupField', [_Field], /** @lends argos.F
    * Extends enable to also remove the disabled attribute
    */
   enable: function enable() {
-    this.inherited(arguments);
+    this.inherited(enable, arguments);
 
     this.set('inputDisabled', false);
   },
@@ -308,7 +308,7 @@ const control = declare('argos.Fields.LookupField', [_Field], /** @lends argos.F
    * Extends disable to also set the disabled attribute
    */
   disable: function disable() {
-    this.inherited(arguments);
+    this.inherited(disable, arguments);
 
     this.set('inputDisabled', true);
   },

@@ -374,7 +374,7 @@ const control = declare('argos.Fields.DurationField', [LookupField], /** @lends 
    * @return {Object} Navigation options object to be passed
    */
   createNavigationOptions: function createNavigationOptions() {
-    const options = this.inherited(arguments);
+    const options = this.inherited(createNavigationOptions, arguments);
     options.hideSearch = true;
     options.data = this.expandExpression(this.data);
     return options;

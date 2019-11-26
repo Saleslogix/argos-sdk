@@ -202,7 +202,7 @@ const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], /** 
    * state and `key` of the entry (false if inserting)
    */
   getContext: function getContext() {
-    return lang.mixin(this.inherited(arguments), {
+    return lang.mixin(this.inherited(getContext, arguments), {
       resourceKind: this.resourceKind,
       insert: this.options.insert,
       key: this.options.insert ? false : this.options.entry && this.options.entry.$key,

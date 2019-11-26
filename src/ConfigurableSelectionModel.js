@@ -57,7 +57,7 @@ const __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], /*
       }
     }
 
-    this.inherited(arguments);
+    this.inherited(select, arguments);
   },
 });
 

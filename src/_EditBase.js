@@ -360,7 +360,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
    *
    */
   startup: function startup() {
-    this.inherited(arguments);
+    this.inherited(startup, arguments);
     this.processLayout(this._createCustomizedLayout(this.createLayout()));
 
     $('div[data-field]', this.contentNode)
@@ -377,7 +377,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
    * Extends init to also init the fields in `this.fields`.
    */
   init: function init() {
-    this.inherited(arguments);
+    this.inherited(init, arguments);
 
     for (const name in this.fields) {
       if (this.fields.hasOwnProperty(name)) {
@@ -483,7 +483,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
       return field[name].apply(field, [parameters, evt, node]);
     }
 
-    return this.inherited(arguments);
+    return this.inherited(invokeAction, arguments);
   },
   /**
    * Determines if a field has defined on it the supplied name as a function
@@ -500,7 +500,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
       return true;
     }
 
-    return this.inherited(arguments);
+    return this.inherited(hasAction, arguments);
   },
   createStore: function createStore() {
     return null;
@@ -1232,7 +1232,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
    * state and `key` of the entry (false if inserting)
    */
   getContext: function getContext() {
-    return lang.mixin(this.inherited(arguments), {
+    return lang.mixin(this.inherited(getContext, arguments), {
       resourceKind: this.resourceKind,
       insert: this.options.insert,
       key: this.options.insert ? false : this.options.key ? this.options.key : this.options.entry && this.options.entry[this.idProperty] // eslint-disable-line
@@ -1262,7 +1262,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
       }
     }
 
-    this.inherited(arguments);
+    this.inherited(beforeTransitionTo, arguments);
   },
   onTransitionTo: function onTransitionTo() {
     // Focus the default focus field if it exists and it has not already been focused.
@@ -1272,7 +1272,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
       this._hasFocused = true;
     }
 
-    this.inherited(arguments);
+    this.inherited(onTransitionTo, arguments);
   },
   /**
    * Empties the activate method which prevents detection of refresh from transititioning.
@@ -1294,7 +1294,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
       }
     }
 
-    return this.inherited(arguments);
+    return this.inherited(refreshRequiredFor, arguments);
   },
   /**
    * Refresh first clears out any variables set to previous data.

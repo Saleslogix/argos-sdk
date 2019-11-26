@@ -41,7 +41,7 @@ const __class = declare('argos.DraggableList', [_ListBase, _DraggableBase], {
     this.setupDraggable(this.contentNode, this.scrollerNode)
       .setClass('draggable')
       .setParentClassToDrag('list-item-draggable');
-    this.inherited(arguments);
+    this.inherited(show, arguments);
   },
 });
 

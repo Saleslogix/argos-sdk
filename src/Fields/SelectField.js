@@ -57,7 +57,7 @@ const control = declare('argos.Fields.SelectField', [LookupField], /** @lends ar
    * hidden and optionally pass data defined on the field.
    */
   createNavigationOptions: function createNavigationOptions() {
-    const options = this.inherited(arguments);
+    const options = this.inherited(createNavigationOptions, arguments);
     options.hideSearch = true;
     options.enableActions = false;
     options.data = this.expandExpression(this.data);

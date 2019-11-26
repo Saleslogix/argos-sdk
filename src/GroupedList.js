@@ -217,7 +217,7 @@ const __class = declare('argos.GroupedList', [List], /** @lends argos.GroupedLis
    * Called on application startup to configure the search widget if present and create the list actions.
    */
   startup: function startup() {
-    this.inherited(arguments);
+    this.inherited(startup, arguments);
     this._initGroupBySections();
   },
   _initGroupBySections: function _initGroupBySections() {

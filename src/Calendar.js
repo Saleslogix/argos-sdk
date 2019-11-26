@@ -264,7 +264,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
   destroy: function destroy() {
     this._yearDropdown.destroy();
     this._monthDropdown.destroy();
-    this.inherited(arguments);
+    this.inherited(destroy, arguments);
   },
   getContent: function getContent() {
     if (this.options.timeless) {
@@ -314,7 +314,7 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
     this.refreshCalendar(this.date);
   },
   init: function init() {
-    this.inherited(arguments);
+    this.inherited(init, arguments);
   },
   isActive: function isActive(day) {
     if (day) {

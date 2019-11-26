@@ -177,7 +177,7 @@ const control = declare('argos.Fields.DateField', [EditorField], /** @lends argo
    * @return {Object} Navigation options
    */
   createNavigationOptions: function createNavigationOptions() {
-    const options = this.inherited(arguments);
+    const options = this.inherited(createNavigationOptions, arguments);
 
     if (this.currentValue !== '' && this.currentValue !== null) {
       options.date = this.currentValue;
@@ -229,7 +229,7 @@ const control = declare('argos.Fields.DateField', [EditorField], /** @lends argo
    * error validation styling.
    */
   clearValue: function clearValue() {
-    this.inherited(arguments);
+    this.inherited(clearValue, arguments);
     $(this.containerNode).removeClass('row-error'); // todo: not the right spot for this, add validation eventing
   },
   showModal: function showModal() {
@@ -285,7 +285,7 @@ const control = declare('argos.Fields.DateField', [EditorField], /** @lends argo
       return string.substitute(this.invalidDateFormatErrorText, [this.label]);
     }
 
-    return this.inherited(arguments);
+    return this.inherited(validate, arguments);
   },
 });
 

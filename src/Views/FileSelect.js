@@ -110,7 +110,7 @@ const __class = declare('argos.Views.FileSelect', [View], /** @lends argos.Views
    */
   constructor: function constructor() {},
   postCreate: function postCreate() {
-    this.inherited(arguments);
+    this.inherited(postCreate, arguments);
     $(this.domNode).removeClass('list-loading');
   },
   /**
@@ -119,7 +119,7 @@ const __class = declare('argos.Views.FileSelect', [View], /** @lends argos.Views
    * @extends show
    */
   show: function show(/* options*/) {
-    this.inherited(arguments);
+    this.inherited(show, arguments);
 
     if (!App.supportsFileAPI()) {
       $(this.domNode).empty().append(this.notSupportedTemplate.apply({}, this));

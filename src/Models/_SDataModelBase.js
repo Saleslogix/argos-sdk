@@ -39,7 +39,7 @@ const __class = declare('argos.Models.SDataModelBase', [_ModelBase], /** @lends 
     return results[0];
   },
   init: function init() {
-    this.inherited(arguments);
+    this.inherited(init, arguments);
 
     if (!this.queryModels) {
       this.queryModels = this._createCustomizedLayout(this.createQueryModels(), 'queryModel');

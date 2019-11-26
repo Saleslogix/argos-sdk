@@ -115,7 +115,7 @@ const __class = declare('argos.Fields.EditorField', [_Field], /** @lends argos.F
    * to {@link #_onClick _onClick}.
    */
   init: function init() {
-    this.inherited(arguments);
+    this.inherited(init, arguments);
 
     this.connect(this.containerNode, 'onclick', this._onClick);
   },
@@ -123,7 +123,7 @@ const __class = declare('argos.Fields.EditorField', [_Field], /** @lends argos.F
    * Extends the parent implementation to also call {@link #_enableTextElement _enableTextElement}.
    */
   enable: function enable() {
-    this.inherited(arguments);
+    this.inherited(enable, arguments);
 
     this._enableTextElement();
   },
@@ -137,7 +137,7 @@ const __class = declare('argos.Fields.EditorField', [_Field], /** @lends argos.F
    * Extends the parent implementation to also call {@link #_disableTextElement _disableTextElement}.
    */
   disable: function disable() {
-    this.inherited(arguments);
+    this.inherited(disable, arguments);
     this._disableTextElement();
   },
   /**
@@ -300,7 +300,7 @@ const __class = declare('argos.Fields.EditorField', [_Field], /** @lends argos.F
    * @param value
    */
   validate: function validate(value) {
-    return typeof value === 'undefined' ? this.inherited(arguments, [this.validationValue]) : this.inherited(arguments);
+    return typeof value === 'undefined' ? this.inherited(validate, arguments, [this.validationValue]) : this.inherited(validate, arguments);
   },
   /**
    * Sets the current value to the item passed, as the default if initial is true. Then it sets

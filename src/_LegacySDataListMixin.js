@@ -89,7 +89,7 @@ const __class = declare('argos._LegacySDataListMixin', null, /** @lends argos._L
     this.isRefreshing = false;
   },
   clear: function clear() {
-    this.inherited(arguments);
+    this.inherited(clear, arguments);
     this.feed = null;
     this.entries = {};
   },

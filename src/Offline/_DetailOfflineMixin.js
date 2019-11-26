@@ -31,7 +31,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     if (this.tools) {
       return this.tools;
     }
-    const tools = this.inherited(arguments);
+    const tools = this.inherited(createToolLayout, arguments);
     if (tools && tools.tbar && this.enableOffline && App.enableOfflineSupport) {
       tools.tbar.push({
         id: 'briefCase',
@@ -96,7 +96,7 @@ export default declare('argos.Offline._DetailOfflineMixin', null, {
     }
   },
   show: function show() {
-    this.inherited(arguments);
+    this.inherited(show, arguments);
     // Check if we are coming back to a previously fetched entry.
     // refreshRequired is an indication we are switching to a new entry and
     // this.entry will be stale.

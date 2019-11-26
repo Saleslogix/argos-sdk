@@ -119,7 +119,7 @@ const __class = declare('argos.RelativeDateTimePicker', [_WidgetBase, _Templated
     }];
   },
   init: function init() {
-    this.inherited(arguments);
+    this.inherited(init, arguments);
   },
   getContent: function getContent() {
     return this._selectedTime;

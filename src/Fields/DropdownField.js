@@ -39,7 +39,7 @@ const __class = declare('argos.DropdownField', [_Field, Dropdown], /** @lends ar
   },
   renderTo: function renderTo() {
     this.createList({ items: this.items, defaultValue: this.defaultValue });
-    this.inherited(arguments);
+    this.inherited(renderTo, arguments);
     // TODO: Place in the getData function call and createList call here so the dropdown will be created with the relevant data
   },
   /**
@@ -47,7 +47,7 @@ const __class = declare('argos.DropdownField', [_Field, Dropdown], /** @lends ar
    * to {@link #_onClick _onClick}.
    */
   init: function init() {
-    this.inherited(arguments);
+    this.inherited(init, arguments);
 
     this.connect(this.containerNode, 'onclick', this.onClick);
   },

@@ -46,10 +46,10 @@ const __class = declare('argos._Templated', [_TemplatedMixin], /** @lends argos.
       }
     }
 
-    this.inherited(arguments);
+    this.inherited(buildRendering, arguments);
   },
   startup: function startup() {
-    this.inherited(arguments);
+    this.inherited(startup, arguments);
     setTimeout(() => {
       this.initSoho();
     }, 1);

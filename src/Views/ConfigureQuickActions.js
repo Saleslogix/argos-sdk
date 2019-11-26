@@ -81,11 +81,11 @@ const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
   },
   clear: function clear() {
     this.store = null;
-    this.inherited(arguments);
+    this.inherited(clear, arguments);
   },
   show: function show() {
     this.refreshRequired = true;
-    this.inherited(arguments);
+    this.inherited(show, arguments);
   },
   createStore: function createStore() {
     let list = [];

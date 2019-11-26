@@ -38,7 +38,7 @@ const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _C
   store: null,
   modelType: MODEL_TYPES.OFFLINE,
   init: function init() {
-    this.inherited(arguments);
+    this.inherited(init, arguments);
     this.createNamedQueries();
   },
   createNamedQueries: function createNamedQueries() {

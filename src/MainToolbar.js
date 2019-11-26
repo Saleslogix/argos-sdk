@@ -161,12 +161,12 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
    * Calls parent {@link Toolbar#clear clear} and removes all toolbar items from DOM.
    */
   clear: function clear() {
-    this.inherited(arguments);
+    this.inherited(clear, arguments);
     $('button.toolButton-right', this.toolNode).remove();
   },
   postCreate: function postCreate() {
     this.initSoho();
-    this.inherited(arguments);
+    this.inherited(postCreate, arguments);
   },
   _changePersonalization: function changeColor(mode, value) {
     App.preferences[mode] = value && value.nodeValue;
@@ -233,7 +233,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
    * @param {Object[]} tools Array of toolbar item definitions
    */
   showTools: function showTools(tools) {
-    this.inherited(arguments);
+    this.inherited(showTools, arguments);
     $(this.domNode).removeClass(`toolbar-size-${this.size}`);
     let onLine = this.app.onLine;
     if (tools) {
@@ -277,7 +277,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
   },
 
   disableTool: function disableTool(id) {
-    this.inherited(arguments);
+    this.inherited(disableTool, arguments);
     const result = this._getToolDOMNode(id);
     if (result) {
       $(result).addClass('toolButton-disabled');
@@ -285,7 +285,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     }
   },
   enableTool: function enableTool(id) {
-    this.inherited(arguments);
+    this.inherited(enableTool, arguments);
     const result = this._getToolDOMNode(id);
     if (result) {
       $(result).removeClass('toolButton-disabled');

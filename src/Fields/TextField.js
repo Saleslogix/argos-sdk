@@ -145,7 +145,7 @@ const control = declare('argos.Fields.TextField', [_Field], /** @lends argos.Fie
    * is true. Binds the 'onblur' and 'keyup' events.
    */
   init: function init() {
-    this.inherited(arguments);
+    this.inherited(init, arguments);
     if (this.validInputOnly) {
       this.connect(this.inputNode, 'onkeypress', this._onKeyPress);
     }
@@ -156,7 +156,7 @@ const control = declare('argos.Fields.TextField', [_Field], /** @lends argos.Fie
    * Extends the parent implementation to set the disabled attribute of the input to false
    */
   enable: function enable() {
-    this.inherited(arguments);
+    this.inherited(enable, arguments);
     $(this.inputNode).css('disabled', false);
     $(this.inputNode).enable();
   },
@@ -164,7 +164,7 @@ const control = declare('argos.Fields.TextField', [_Field], /** @lends argos.Fie
    * Extends the parent implementation to set the disabled attribute of the input to true
    */
   disable: function disable() {
-    this.inherited(arguments);
+    this.inherited(disable, arguments);
 
     $(this.inputNode).css('disabled', true);
     $(this.inputNode).disable();

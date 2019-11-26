@@ -481,7 +481,7 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
     this._subscribes.forEach((handle) => {
       connect.unsubscribe(handle);
     });
-    this.inherited(arguments);
+    this.inherited(destroy, arguments);
   },
 });
 

@@ -53,7 +53,7 @@ const __class = declare('argos._RelatedViewWidgetDetailMixin', null, /** @lends 
         $(sectionNode).append(docfrag);
       }
     } else {
-      rowNode = this.inherited(arguments);
+      rowNode = this.inherited(createRowNode, arguments);
     }
 
     return rowNode;
@@ -122,11 +122,11 @@ const __class = declare('argos._RelatedViewWidgetDetailMixin', null, /** @lends 
    */
   destroy: function destroy() {
     this.destroyRelatedViewWidgets();
-    this.inherited(arguments);
+    this.inherited(destroy, arguments);
   },
   requestData: function requestData() {
     this.destroyRelatedViewWidgets();
-    this.inherited(arguments);
+    this.inherited(requestData, arguments);
   },
   /**
    * Returns a rendered html snap shot of the entry.

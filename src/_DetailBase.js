@@ -429,7 +429,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
    * Extends the dijit widget postCreate to subscribe to the global `/app/refresh` event and clear the view.
    */
   postCreate: function postCreate() {
-    this.inherited(arguments);
+    this.inherited(postCreate, arguments);
     this.subscribe('/app/refresh', this._onRefresh);
     this.clear();
   },
@@ -538,7 +538,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
     if (parameters && /true/i.test(parameters.disableAction)) {
       return null;
     }
-    return this.inherited(arguments);
+    return this.inherited(invokeAction, arguments);
   },
   /**
    * Toggles the collapsed state of the section.
@@ -1028,7 +1028,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
       return false;
     }
 
-    return this.inherited(arguments);
+    return this.inherited(refreshRequiredFor, arguments);
   },
   /**
    * Extends the {@link View#activate parent implementation} to set the nav options title attribute to the descriptor
@@ -1041,14 +1041,14 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
       options.title = options.title || options.descriptor;
     }
 
-    this.inherited(arguments);
+    this.inherited(activate, arguments);
   },
   show: function show(options) {
     if (options && options.descriptor) {
       options.title = options.title || options.descriptor;
     }
 
-    this.inherited(arguments);
+    this.inherited(show, arguments);
   },
   /**
    * Returns the view key
@@ -1062,7 +1062,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
    * @return {Object} View context object
    */
   getContext: function getContext() {
-    return lang.mixin(this.inherited(arguments), {
+    return lang.mixin(this.inherited(getContext, arguments), {
       resourceKind: this.resourceKind,
       key: this.options.key,
       descriptor: this.options.descriptor,
@@ -1073,7 +1073,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
    * @return {Object} View context object
    */
   beforeTransitionTo: function beforeTransitionTo() {
-    this.inherited(arguments);
+    this.inherited(beforeTransitionTo, arguments);
 
     if (this.refreshRequired) {
       this.clear();
@@ -1159,7 +1159,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
     }
   },
   destroy: function destroy() {
-    this.inherited(arguments);
+    this.inherited(destroy, arguments);
   },
 });
 

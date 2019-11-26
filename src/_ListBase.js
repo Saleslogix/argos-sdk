@@ -669,7 +669,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
     console.dir(arguments); //eslint-disable-line
   },
   postCreate: function postCreate() {
-    this.inherited(arguments);
+    this.inherited(postCreate, arguments);
 
     if (this._selectionModel === null) {
       this.set('selectionModel', new ConfigurableSelectionModel());
@@ -699,7 +699,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
   },
   shouldStartPullToRefresh: function shouldStartPullToRefresh() {
     // Get the base results
-    const shouldStart = this.inherited(arguments);
+    const shouldStart = this.inherited(shouldStartPullToRefresh, arguments);
     const selected = $(this.domNode).attr('selected');
     const actionNode = $(this.domNode).find('.btn-actions.is-open');
     const actionsOpen = actionNode.length > 0;
@@ -722,7 +722,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
    * Called on application startup to configure the search widget if present and create the list actions.
    */
   startup: function startup() {
-    this.inherited(arguments);
+    this.inherited(startup, arguments);
 
     if (this.searchWidget) {
       this.searchWidget.configure({
@@ -744,7 +744,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
     }
 
     delete this.store;
-    this.inherited(arguments);
+    this.inherited(destroy, arguments);
   },
   _getStoreAttr: function _getStoreAttr() {
     return this.store || (this.store = this.createStore());
@@ -765,7 +765,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
       }
     }
 
-    this.inherited(arguments);
+    this.inherited(show, arguments);
   },
   /**
    * Sets and returns the toolbar item layout definition, this method should be overriden in the view
@@ -1643,7 +1643,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
     return store.query(queryExpression, queryOptions);
   },
   postMixInProperties: function postMixInProperties() {
-    this.inherited(arguments);
+    this.inherited(postMixInProperties, arguments);
     this.createIndicatorLayout();
   },
   getItemActionKey: function getItemActionKey(entry) {
@@ -1971,7 +1971,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
       return false;
     }
 
-    return this.inherited(arguments);
+    return this.inherited(refreshRequiredFor, arguments);
   },
   /**
    * Returns the current views context by expanding upon the {@link View#getContext parent implementation} to include
@@ -1979,14 +1979,14 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
    * @return {Object} context.
    */
   getContext: function getContext() {
-    return this.inherited(arguments);
+    return this.inherited(getContext, arguments);
   },
   /**
    * Extends the {@link View#beforeTransitionTo parent implementation} by also toggling the visibility of the views
    * components and clearing the view and selection model as needed.
    */
   beforeTransitionTo: function beforeTransitionTo() {
-    this.inherited(arguments);
+    this.inherited(beforeTransitionTo, arguments);
 
     $(this.domNode).toggleClass('list-hide-search', (this.options && typeof this.options.hideSearch !== 'undefined') ? this.options.hideSearch : this.hideSearch || !this.enableSearch);
 
@@ -2026,7 +2026,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
       this._loadPreviousSelections();
     }
 
-    this.inherited(arguments);
+    this.inherited(transitionTo, arguments);
   },
   /**
    * Generates the hash tag layout by taking the hash tags defined in `this.hashTagQueries` and converting them

@@ -36,13 +36,13 @@ const __class = declare('argos._RelatedViewWidgetEditMixin', null, /** @lends ar
     if (layout.relatedView) {
       content.push(this.relatedContentViewsTemplate.apply(layout.relatedView, this));
     } else {
-      this.inherited(arguments);
+      this.inherited(createRowContent, arguments);
     }
   },
   processData: function processData(entry) {
     this.destroyRelatedViewWidgets();
     this.createRelatedViews(this.layout, entry);
-    this.inherited(arguments);
+    this.inherited(processData, arguments);
   },
   createRelatedViews: function createRelatedViews(layout, entry) {
     layout.forEach((item) => {
@@ -117,7 +117,7 @@ const __class = declare('argos._RelatedViewWidgetEditMixin', null, /** @lends ar
    */
   destroy: function destroy() {
     this.destroyRelatedViewWidgets();
-    this.inherited(arguments);
+    this.inherited(destroy, arguments);
   },
 });
 export default __class;

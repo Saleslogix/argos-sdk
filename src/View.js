@@ -146,7 +146,7 @@ const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _Customization
     this.app = (options && options.app) || window.App;
   },
   startup: function startup() {
-    this.inherited(arguments);
+    this.inherited(startup, arguments);
   },
   select: function select(node) {
     $(node).attr('selected', 'true');

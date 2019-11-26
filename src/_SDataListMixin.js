@@ -99,7 +99,7 @@ const __class = declare('argos._SDataListMixin', null, /** @lends argos._SDataLi
     return string.substitute(fmt, [lang.getObject(property || '$key', false, entry)]);
   },
   getContext: function getContext() {
-    return lang.mixin(this.inherited(arguments), {
+    return lang.mixin(this.inherited(getContext, arguments), {
       resourceKind: this.resourceKind,
     });
   },

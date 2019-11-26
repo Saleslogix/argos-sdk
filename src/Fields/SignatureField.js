@@ -96,7 +96,7 @@ const control = declare('argos.Fields.SignatureField', [EditorField], /** @lends
    * @return {Object} Navigation options
    */
   createNavigationOptions: function createNavigationOptions() {
-    const options = this.inherited(arguments);
+    const options = this.inherited(createNavigationOptions, arguments);
     options.signature = this.signature;
     return options;
   },

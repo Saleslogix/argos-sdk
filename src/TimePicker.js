@@ -150,7 +150,7 @@ const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
   destroy: function destroy() {
     this._hourDropdown.destroy();
     this._minuteDropdown.destroy();
-    this.inherited(arguments);
+    this.inherited(destroy, arguments);
   },
   getContent: function getContent() {
     this.setTimeValue();

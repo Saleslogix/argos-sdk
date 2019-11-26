@@ -68,7 +68,7 @@ const control = declare('argos.Fields.DecimalField', [TextField], /** @lends arg
         newVal = `${parseInt(newVal, 10)}${Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.'}${newVal.substr(-perc)}`;
       }
     }
-    this.inherited(arguments, [newVal]);
+    this.inherited(setValue, arguments, [newVal]);
   },
   /**
    * Retrieves the value from the {@link TextField#getValue parent implementation} but before
@@ -76,7 +76,7 @@ const control = declare('argos.Fields.DecimalField', [TextField], /** @lends arg
    * @return {Number}
    */
   getValue: function getValue() {
-    let value = this.inherited(arguments);
+    let value = this.inherited(getValue, arguments);
     // SData (and other functions) expect American formatted numbers
     value = value
       .replace(Mobile.CultureInfo.numberFormat.currencyGroupSeparator, '')

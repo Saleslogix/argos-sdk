@@ -34,7 +34,7 @@ const __class = declare('argos.DateTimePicker', [_WidgetBase, _Templated], {
   showTimePicker: false,
 
   init: function init() {
-    this.inherited(arguments);
+    this.inherited(init, arguments);
   },
   getContent: function getContent() {
     const data = {};

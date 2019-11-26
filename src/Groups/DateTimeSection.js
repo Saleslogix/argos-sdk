@@ -54,7 +54,7 @@ const __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
     this.init();
   },
   init: function init() {
-    this.inherited(arguments);
+    this.inherited(init, arguments);
     this.sections = [];
 
     this.sections.push({

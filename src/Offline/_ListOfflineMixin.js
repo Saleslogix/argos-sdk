@@ -31,7 +31,7 @@ export default declare('argos.Offline._ListOfflineMixin', null, {
     if (this.tools) {
       return this.tools;
     }
-    const tools = this.inherited(arguments);
+    const tools = this.inherited(createToolLayout, arguments);
     if (tools && tools.tbar && this.enableOffline && App.enableOfflineSupport) {
       tools.tbar.push({
         id: 'briefCase',

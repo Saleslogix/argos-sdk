@@ -124,7 +124,7 @@ const __class = declare('argos._ConfigureBase', [DraggableList], /** @lends argo
   },
   activateEntry: function activateEntry() {
     this.clearLastMoved();
-    this.inherited(arguments);
+    this.inherited(activateEntry, arguments);
   },
   hasMoreData: function hasMoreData() {
     return false;
@@ -185,7 +185,7 @@ const __class = declare('argos._ConfigureBase', [DraggableList], /** @lends argo
    * Processes data from the store. Restores previously selected items by calling this.getSavedSelectedKeys()
    */
   processData: function processData() {
-    this.inherited(arguments);
+    this.inherited(processData, arguments);
     const visible = this.getSavedSelectedKeys();
 
     for (let i = 0; i < visible.length; i++) {

@@ -39,7 +39,7 @@ const __class = declare('argos._RelatedViewWidgetListMixin', null, /** @lends ar
   ]),
   startup: function startup() {
     this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
-    this.inherited(arguments);
+    this.inherited(startup, arguments);
   },
   /**
    * Sets and returns the related view definition, this method should be overriden in the view
@@ -53,12 +53,12 @@ const __class = declare('argos._RelatedViewWidgetListMixin', null, /** @lends ar
     if (this.relatedViews.length > 0) {
       this.onProcessRelatedViews(entry, rowNode);
     }
-    this.inherited(arguments);
+    this.inherited(onApplyRowTemplate, arguments);
   },
   selectEntry: function selectEntry() {
     this.destroyRelatedView(this.currentRelatedView);
     this.currentRelatedView = null;
-    this.inherited(arguments);
+    this.inherited(selectEntry, arguments);
   },
   /**
    * Gets the related view manager for a related view definition.
@@ -134,10 +134,10 @@ const __class = declare('argos._RelatedViewWidgetListMixin', null, /** @lends ar
    */
   destroy: function destroy() {
     this.destroyRelatedViewWidgets();
-    this.inherited(arguments);
+    this.inherited(destroy, arguments);
   },
   clear: function clear() {
-    this.inherited(arguments);
+    this.inherited(clear, arguments);
     this.destroyRelatedViewWidgets();
   },
   /**

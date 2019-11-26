@@ -93,7 +93,7 @@ const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
       evt.remove();
     });
     this._eventConnections = [];
-    this.inherited(arguments);
+    this.inherited(destroy, arguments);
   },
   findValue: function findValue(text) {
     const value = this._list.children.filter((element) => {
@@ -113,7 +113,7 @@ const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
     return value;
   },
   postCreate: function postCreate() {
-    this.inherited(arguments);
+    this.inherited(postCreate, arguments);
   },
   setValue: function setValue(value) {
     if (value === 0 || value) {

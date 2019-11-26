@@ -45,7 +45,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], /** @lends
   ],
 
   _buildRefreshMessage: function _buildRefreshMessage() {
-    const message = this.inherited(arguments);
+    const message = this.inherited(_buildRefreshMessage, arguments);
 
     return lang.mixin(message, {
       resourceKind: this.resourceKind,
@@ -63,7 +63,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], /** @lends
   },
   createEntryForUpdate: function createEntryForUpdate(v) {
     let values = v;
-    values = this.inherited(arguments);
+    values = this.inherited(createEntryForUpdate, arguments);
     values = lang.mixin(values, {
       $key: this.entry.$key,
       $etag: this.entry.$etag,
@@ -78,7 +78,7 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], /** @lends
   },
   createEntryForInsert: function createEntryForInsert(v) {
     let values = v;
-    values = this.inherited(arguments);
+    values = this.inherited(createEntryForInsert, arguments);
     return lang.mixin(values, {
       $name: this.entityName,
     });
