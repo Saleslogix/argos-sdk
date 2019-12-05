@@ -45,7 +45,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
    */
   widgetTemplate: new Simplate([`
     <header class="header is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
-      <div class="toolbar do-resize has-more-button has-title-button" role="toolbar" aria-label="Layouts">
+      <div class="toolbar do-resize has-more-button has-title-button" role="toolbar" aria-label="Layouts" data-options="{maxVisibleButtons: 2}">
         <div class="title">
           <button class="btn-icon application-menu-trigger hide-focus" type="button" tabindex="0">
               <span class="audible">Show navigation</span>
@@ -130,7 +130,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
    */
   toolTemplate: new Simplate([`
       <button
-        class="btn-icon {%= $.cls %} toolButton-right"
+        class="btn-tertiary hide-focus {%= $.cls %} toolButton-right"
         type="button"
         title="{%: $.title %}"
         data-action="invokeTool"
@@ -140,7 +140,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
           <use xlink:href="#icon-{%= $.svg %}"/>
         </svg>
         {% } %}
-        <span class="audible">{%: $.title || $.id %}</span>
+        <span>{%: $.title || $.id %}</span>
       </button>
     `,
   ]),
