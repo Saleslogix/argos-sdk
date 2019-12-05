@@ -404,7 +404,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
     }];
 
     if (!App.isOnFirstView()) {
-      tbar.push({
+      tbar.unshift({
         id: 'cancel',
         svg: 'cancel',
         title: this.cancelTooltipText,
