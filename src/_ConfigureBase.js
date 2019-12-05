@@ -57,18 +57,18 @@ const __class = declare('argos._ConfigureBase', [DraggableList], /** @lends argo
   createToolLayout: function createToolLayout() {
     return this.tools || (this.tools = {
       tbar: [{
-        id: 'save',
-        title: this.saveText,
-        svg: 'check',
-        fn: this.onSave,
-        scope: this,
-      }, {
         id: 'cancel',
         title: this.cancelText,
         svg: 'cancel',
         side: 'left',
         fn: this.onCancel,
         scope: ReUI,
+      }, {
+        id: 'save',
+        title: this.saveText,
+        svg: 'check',
+        fn: this.onSave,
+        scope: this,
       }],
     });
   },
