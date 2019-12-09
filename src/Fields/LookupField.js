@@ -393,18 +393,18 @@ const control = declare('argos.Fields.LookupField', [_Field], /** @lends argos.F
       simpleMode: true,
       tools: {
         tbar: [{
-          id: 'complete',
-          svg: 'check',
-          title: this.completeText,
-          fn: this.complete,
-          scope: this,
-        }, {
           id: 'cancel',
           side: 'left',
           svg: 'cancel',
           title: this.cancelText,
           fn: this.reui.back,
           scope: this.reui,
+        }, {
+          id: 'complete',
+          svg: 'check',
+          title: this.completeText,
+          fn: this.complete,
+          scope: this,
         }],
       },
     };
