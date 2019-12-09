@@ -84,7 +84,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
   ]),
   personalizationTemplate: new Simplate([
     '<li class="is-selectable {% if($.name === $.selected) { %} is-checked {% }  %}">',
-    '<a href="#" tabindex="-1" role="menuitem" data-rgbcolor="{%= $.data %}">{%= $.name %}</a>',
+    '<a href="#" tabindex="-1" role="menuitem" data-rgbcolor="{%= $.data %}" data-colorid="{%= $.colorid %}">{%= $.name %}</a>',
     '</li>',
   ]),
   selectedTheme: '',
@@ -143,25 +143,27 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
   buildPersonalizations: function buildPersonalizations() {
     const sohoColors = Soho.theme.personalizationColors();
 
-    if (App && App.preferences && App.preferences.color) {
-      const savedPersolization = sohoColors[App.preferences.color];
+    if (App && App.preferences && App.preferences.colorId) {
+      const savedPersolization = sohoColors[App.preferences.colorId];
       this.selectedPersonalization = savedPersolization && savedPersolization.name;
     }
     if (App && App.preferences && App.preferences.theme) {
-      const savedTheme = Soho.theme.themes().find(obj => obj.data === App.preferences.theme);
+      const savedTheme = Soho.theme.themes().find(obj => obj.id === App.preferences.theme);
       this.selectedTheme = savedTheme && savedTheme.name;
     }
     Object.keys(sohoColors).forEach((key) => {
-      const color = sohoColors[key]
+      const color = sohoColors[key];
       const pers = $(this.personalizationTemplate.apply({
         name: color.name,
         data: color.value,
+        colorid: color.id,
         selected: this.selectedPersonalization,
       }, this));
 
       $(this.personalizationNode).append(pers);
     });
     $(this.personalizationNode).click((e) => {
+      this._changePersonalization('colorId', e.target.attributes['data-colorid']);
       this._changePersonalization('color', e.target.attributes['data-rgbcolor']);
     });
     Soho.theme.themes().forEach((item) => {
