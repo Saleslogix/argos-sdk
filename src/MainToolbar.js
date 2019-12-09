@@ -215,7 +215,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     $('.title > h1', this.domNode).on('click', this.onTitleClick);
 
     // init personalization
-    $('body').personalize({
+    $('html').personalize({
       colors: App && App.preferences && App.preferences.color,
       theme: App && App.preferences && App.preferences.theme,
     });
