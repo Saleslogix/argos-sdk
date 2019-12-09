@@ -87,40 +87,8 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     '<a href="#" tabindex="-1" role="menuitem" data-rgbcolor="{%= $.data %}">{%= $.name %}</a>',
     '</li>',
   ]),
-  selectedTheme: resource.lightText,
+  selectedTheme: '',
   selectedPersonalization: resource.defaultText,
-  themes: [{
-    name: resource.lightText,
-    data: 'light',
-  }, {
-    name: resource.darkText,
-    data: 'dark',
-  }, {
-    name: resource.highContrastText,
-    data: 'high-contrast',
-  }],
-  personalizations: [{
-    name: resource.defaultText,
-    data: '#2578a9',
-  }, {
-    name: resource.azureText,
-    data: '#368AC0',
-  }, {
-    name: resource.amberText,
-    data: '#EFA836',
-  }, {
-    name: resource.amethystText,
-    data: '#9279A6',
-  }, {
-    name: resource.turquoiseText,
-    data: '#579E95',
-  }, {
-    name: resource.emeraldText,
-    data: '#76B051',
-  }, {
-    name: resource.graphiteText,
-    data: '#5C5C5C',
-  }],
   /**
    * @property {Simplate}
    * Simplate that defines the toolbar item HTML Markup
@@ -173,18 +141,21 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     App.persistPreferences();
   },
   buildPersonalizations: function buildPersonalizations() {
+    const sohoColors = Soho.theme.personalizationColors();
+
     if (App && App.preferences && App.preferences.color) {
-      const savedPersolization = this.personalizations.find(obj => obj.data === App.preferences.color);
+      const savedPersolization = sohoColors[App.preferences.color];
       this.selectedPersonalization = savedPersolization && savedPersolization.name;
     }
     if (App && App.preferences && App.preferences.theme) {
-      const savedTheme = this.themes.find(obj => obj.data === App.preferences.theme);
+      const savedTheme = Soho.theme.themes().find(obj => obj.data === App.preferences.theme);
       this.selectedTheme = savedTheme && savedTheme.name;
     }
-    this.personalizations.forEach((item) => {
+    Object.keys(sohoColors).forEach((key) => {
+      const color = sohoColors[key]
       const pers = $(this.personalizationTemplate.apply({
-        name: item.name,
-        data: item.data,
+        name: color.name,
+        data: color.value,
         selected: this.selectedPersonalization,
       }, this));
 
@@ -193,10 +164,10 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToo
     $(this.personalizationNode).click((e) => {
       this._changePersonalization('color', e.target.attributes['data-rgbcolor']);
     });
-    this.themes.forEach((item) => {
+    Soho.theme.themes().forEach((item) => {
       const theme = $(this.themeTemplate.apply({
         name: item.name,
-        data: item.data,
+        data: item.id,
         selected: this.selectedTheme,
       }, this));
       $(this.themeNode).append(theme);

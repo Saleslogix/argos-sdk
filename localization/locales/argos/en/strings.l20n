@@ -201,16 +201,7 @@
   backTooltipText: "Back"
   themeText: "Theme"
   personalizationText: "Personalization"
-  lightText: "Light"
-  darkText: "Dark"
-  highContrastText: "High Contrast"
   defaultText: "Default"
-  azureText: "Azure"
-  amberText: "Amber"
-  amethystText: "Amethyst"
-  turquoiseText: "Turquoise"
-  emeraldText: "Emerald"
-  graphiteText: "Graphite"
 >
 
 <relatedViewWidget ""
