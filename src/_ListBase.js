@@ -213,7 +213,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
     <div data-action="activateEntry" data-key="{%= $$.getItemActionKey($) %}" data-descriptor="{%: $$.getItemDescriptor($) %}">
       <div class="widget">
         <div class="widget-header">
-          {%! $$.itemIconTemplate %}
           <h2 class="widget-title">{%: $$.getTitle($, $$.labelProperty) %}</h2>
           {% if($$.visibleActions.length > 0 && $$.enableActions) { %}
             <button class="btn-actions" type="button" data-key="{%= $$.getItemActionKey($) %}">
