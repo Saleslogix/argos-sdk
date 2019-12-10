@@ -551,7 +551,6 @@ body {
 }
 .configurable-list .list-content > li h4 {
   display: inline-block;
-  color: #aaa;
 }
 .configurable-list .list-content > li h4 > span:first-child {
   float: left;
@@ -571,12 +570,6 @@ body {
 .configurable-list .list-content > li:first-child h4 > [data-action="moveUp"],
 .configurable-list .list-content > li:last-child h4 > [data-action="moveDown"] {
   visibility: hidden;
-}
-.configurable-list .list-content > li.list-item-selected h4 {
-  color: #000;
-}
-.configurable-list .list-content > li.list-item-selected h4 button .icon {
-  fill: #000;
 }
 .configurable-list .list-content > li.list-item-selected h4 > .icon {
   opacity: 1;
