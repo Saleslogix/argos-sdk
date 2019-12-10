@@ -109,7 +109,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos
    * HTML that creates the quick action list
    */
   quickActionTemplate: new Simplate([
-    '<div class="quick-actions" data-dojo-attach-point="quickActions"></div>',
+    '<div class="quick-actions toolbar" data-dojo-attach-point="quickActions"></div>',
   ]),
   /**
    * @property {Simplate}

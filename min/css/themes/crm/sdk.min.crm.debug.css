@@ -205,7 +205,6 @@ li > .disabled {
 .action-list > li > a > span {
   display: block;
   line-height: inherit;
-  color: #c8cbd4;
   text-overflow: ellipsis;
   overflow: hidden;
   font-size: 11px;
@@ -679,16 +678,11 @@ li.relatedviewitem a {
   padding: 10px 30px;
 }
 .quick-actions > .action-list {
-  background-color: #313236;
   padding: 10px 5px 5px;
-  border-bottom: 1px solid #414247;
 }
 .quick-actions > .action-list button {
   float: left;
   margin-top: -5px;
-}
-.quick-actions > .action-list .icon {
-  fill: #c8cbd4;
 }
 .detail-header {
   padding: 25px 0 10px 0 !important;
@@ -753,7 +747,6 @@ input.fileupload-background-transparent {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  color: #c8cbd4;
 }
 .row-disabled > div > button,
 .row-disabled > div > input,
@@ -846,21 +839,21 @@ input.fileupload-background-transparent {
   box-shadow: 0 0 5px #888b94;
   z-index: 502;
 }
-.high-contrast-theme,
-.light-theme .crm-modal {
+.theme-soho-contrast .crm-modal,
+.theme-uplift-contrast .crm-modal,
+.theme-uplift-light .crm-modal,
+.theme-soho-light .crm-modal {
   background-color: #fff;
 }
-.dark-theme .crm-modal {
-  background-color: #0f0f10;
+.theme-uplift-dark .crm-modal,
+.theme-soho-dark .crm-modal {
+  background-color: #414247;
 }
 .modal__content {
   padding: 0 15px;
 }
 .modal__content .relative-datetime-select {
   font-size: 14px;
-}
-.dark-theme .modal__content {
-  color: #fff;
 }
 .modal__container {
   position: absolute;
@@ -943,7 +936,6 @@ input.fileupload-background-transparent {
   border-left: 1px solid #d8d8d8;
   border-radius: 0;
   box-sizing: border-box;
-  color: #5c5c5c;
   cursor: pointer;
   float: left;
   font-weight: bold;
@@ -960,9 +952,6 @@ input.fileupload-background-transparent {
   -webkit-transition: color 0.3s ease 0s;
   -moz-transition: color 0.3s ease 0s;
   -o-transition: color 0.3s ease 0s;
-}
-.dark-theme .button--flat {
-  color: #fff;
 }
 .button--flat--split {
   width: 50%;
