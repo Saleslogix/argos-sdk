@@ -9,7 +9,7 @@
     "test": "npm run build && grunt test",
     "testbasic": "grunt test:basic",
     "build": "babel src --out-dir src-out",
-    "build:watch": "babel src --out-dir src-out",
+    "build:watch": "babel src --out-dir src-out --watch",
     "less": "grunt less",
     "lint": "eslint ./src",
     "lint-fix": "eslint --fix ./src",
