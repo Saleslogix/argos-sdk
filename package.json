@@ -8,8 +8,8 @@
   "scripts": {
     "test": "npm run build && grunt test",
     "testbasic": "grunt test:basic",
-    "build": "babel src --out-dir src-out --source-maps inline",
-    "build:watch": "babel src --out-dir src-out --source-maps inline --watch",
+    "build": "babel src --out-dir src-out",
+    "build:watch": "babel src --out-dir src-out",
     "less": "grunt less",
     "lint": "eslint ./src",
     "lint-fix": "eslint --fix ./src",
