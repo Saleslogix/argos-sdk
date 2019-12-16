@@ -36,7 +36,22 @@ const resource = getResource('view');
  * @mixins argos._CustomizationMixin
  * @mixins argos._Templated
  */
-const __class = declare('argos.View', [_WidgetBase, _ActionMixin, _CustomizationMixin, _Templated], /** @lends argos.View# */{
+const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templated], /** @lends argos.View# */{
+
+  _ActionMixin: null,
+  postCreate: function postCreate() {
+    this._ActionMixin = new _ActionMixin();
+    this._ActionMixin.postCreate(this);
+  },
+  hasAction: function hasAction(name) {
+    return this._ActionMixin.hasAction(name);
+  },
+  invokeAction: function invokeAction(name, parameters, evt, el) {
+    return this._ActionMixin.invokeAction(name, parameters, evt, el);
+  },
+  _initiateActionFromEvent: function _initiateActionFromEvent(evt) {
+    return this._ActionMixin._initiateActionFromEvent(evt);
+  },
   /**
    * This map provides quick access to HTML properties, most notably the selected property of the container
    */

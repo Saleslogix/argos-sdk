@@ -26,7 +26,8 @@ import getResource from './I18n';
 
 const resource = getResource('calendar');
 
-const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated], {
+const __class = declare('argos.Calendar', [_WidgetBase, _Templated], {
+  _ActionMixin: null,
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" class="calendar">',
     '<div class="calendar-monthview monthview is-fullsize is-selectable">',
@@ -134,6 +135,10 @@ const __class = declare('argos.Calendar', [_WidgetBase, _ActionMixin, _Templated
       };
     });
     this.weekDaysShortText = m._locale._weekdaysMin;
+  },
+  postCreate: function postCreate() {
+    this._ActionMixin = new _ActionMixin();
+    this._ActionMixin.postCreate(this);
   },
   changeDay: function changeDay(params) {
     if (!this._selectWeek) {

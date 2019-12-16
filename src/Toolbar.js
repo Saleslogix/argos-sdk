@@ -25,7 +25,8 @@ import _Templated from './_Templated';
  * @mixins argos._ActionMixin
  * @mixins argos._Templated
  */
-const __class = declare('argos.Toolbar', [_WidgetBase, _ActionMixin, _Templated], /** @lends argos.Toolbar# */{
+const __class = declare('argos.Toolbar', [_WidgetBase, _Templated], /** @lends argos.Toolbar# */{
+  _ActionMixin: null,
   /**
    * @property {Simplate}
    * HTML markup of the toolbar
@@ -42,6 +43,10 @@ const __class = declare('argos.Toolbar', [_WidgetBase, _ActionMixin, _Templated]
   managed: true,
   constructor: function constructor(options = {}) {
     this.app = options.app || window.App;
+  },
+  postCreate: function postCreate() {
+    this._ActionMixin = new _ActionMixin();
+    this._ActionMixin.postCreate(this);
   },
   /**
    * Expands the passed expression if it is a function.

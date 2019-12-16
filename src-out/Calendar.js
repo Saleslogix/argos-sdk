@@ -41,7 +41,8 @@ define('argos/Calendar', ['module', 'exports', 'dojo/_base/declare', './_ActionM
    */
   var resource = (0, _I18n2.default)('calendar');
 
-  var __class = (0, _declare2.default)('argos.Calendar', [_WidgetBase3.default, _ActionMixin3.default, _Templated3.default], {
+  var __class = (0, _declare2.default)('argos.Calendar', [_WidgetBase3.default, _Templated3.default], {
+    _ActionMixin: null,
     widgetTemplate: new Simplate(['<div id="{%= $.id %}" class="calendar">', '<div class="calendar-monthview monthview is-fullsize is-selectable">', '{%! $.calendarHeaderTemplate %}', '{%! $.calendarTableTemplate %}', '{%! $.calendarFooterTemplate %}', '</div>', '</div>']),
     calendarHeaderTemplate: new Simplate(['<div class="calendar__header">', '<button type="button" class="btn-icon prev hide-focus" data-action="decrementMonth">\n      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-previous-page"></use>\n      </svg>\n    </button>', '<div class="month" data-dojo-attach-point="monthNode" data-action="toggleMonthModal"></div>', '<div class="year" data-dojo-attach-point="yearNode" data-action="toggleYearModal"></div>', '<button type="button" class="btn-icon next hide-focus" data-action="incrementMonth">\n    <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-next-page"></use>\n    </svg>\n    </button>', '</div>']),
     calendarTableTemplate: new Simplate(['<table class="monthview-table" aria-label="Calendar" role="application">', '<thead>', '{%! $.calendarWeekDaysTemplate %}', '</thead>', '<tbody data-dojo-attach-point="weeksNode"></tbody>', '</table>']),
@@ -89,6 +90,10 @@ define('argos/Calendar', ['module', 'exports', 'dojo/_base/declare', './_ActionM
         };
       });
       this.weekDaysShortText = m._locale._weekdaysMin;
+    },
+    postCreate: function postCreate() {
+      this._ActionMixin = new _ActionMixin3.default();
+      this._ActionMixin.postCreate(this);
     },
     changeDay: function changeDay(params) {
       if (!this._selectWeek) {

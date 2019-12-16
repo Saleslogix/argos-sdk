@@ -30,7 +30,8 @@ const resource = getResource('relatedViewWidget');
 /**
  * @class argos.RelatedViewWidget
  */
-const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin, _ActionMixin], /** @lends argos.RelatedViewWidget# */{
+const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _CustomizationMixin], /** @lends argos.RelatedViewWidget# */{
+  _ActionMixin: null,
   cls: 'related-view-widget',
   nodataText: resource.nodataText,
   selectMoreDataText: resource.selectMoreDataText,
@@ -184,6 +185,9 @@ const __class = declare('argos.RelatedViewWidget', [_RelatedViewWidgetBase, _Cus
     this._subscribes.push(connect.subscribe('/app/refresh', this, this._onAppRefresh));
   },
   postCreate: function postCreate() {
+    this._ActionMixin = new _ActionMixin();
+    this._ActionMixin.postCreate(this);
+
     if ((!this.showTab) && (this.tabNode)) {
       $(this.tabNode).toggleClass('hidden');
     }

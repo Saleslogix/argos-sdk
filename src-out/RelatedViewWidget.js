@@ -49,7 +49,8 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
   /**
    * @class argos.RelatedViewWidget
    */
-  var __class = (0, _declare2.default)('argos.RelatedViewWidget', [_RelatedViewWidgetBase3.default, _CustomizationMixin3.default, _ActionMixin3.default], /** @lends argos.RelatedViewWidget# */{
+  var __class = (0, _declare2.default)('argos.RelatedViewWidget', [_RelatedViewWidgetBase3.default, _CustomizationMixin3.default], /** @lends argos.RelatedViewWidget# */{
+    _ActionMixin: null,
     cls: 'related-view-widget',
     nodataText: resource.nodataText,
     selectMoreDataText: resource.selectMoreDataText,
@@ -123,6 +124,9 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
       this._subscribes.push(_connect2.default.subscribe('/app/refresh', this, this._onAppRefresh));
     },
     postCreate: function postCreate() {
+      this._ActionMixin = new _ActionMixin3.default();
+      this._ActionMixin.postCreate(this);
+
       if (!this.showTab && this.tabNode) {
         $(this.tabNode).toggleClass('hidden');
       }

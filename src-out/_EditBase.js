@@ -428,7 +428,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
         return field[name].apply(field, [parameters, evt, node]);
       }
 
-      return this.inherited(invokeAction, arguments);
+      return this._ActionMixin.invokeAction(name, parameters, evt, node);
     },
     /**
      * Determines if a field has defined on it the supplied name as a function
@@ -445,7 +445,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
         return true;
       }
 
-      return this.inherited(hasAction, arguments);
+      return this._ActionMixin.hasAction(name, evt, node);
     },
     createStore: function createStore() {
       return null;

@@ -52,7 +52,22 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.View', [_WidgetBase3.default, _ActionMixin3.default, _CustomizationMixin3.default, _Templated3.default], /** @lends argos.View# */{
+  var __class = (0, _declare2.default)('argos.View', [_WidgetBase3.default, _CustomizationMixin3.default, _Templated3.default], /** @lends argos.View# */{
+
+    _ActionMixin: null,
+    postCreate: function postCreate() {
+      this._ActionMixin = new _ActionMixin3.default();
+      this._ActionMixin.postCreate(this);
+    },
+    hasAction: function hasAction(name) {
+      return this._ActionMixin.hasAction(name);
+    },
+    invokeAction: function invokeAction(name, parameters, evt, el) {
+      return this._ActionMixin.invokeAction(name, parameters, evt, el);
+    },
+    _initiateActionFromEvent: function _initiateActionFromEvent(evt) {
+      return this._ActionMixin._initiateActionFromEvent(evt);
+    },
     /**
      * This map provides quick access to HTML properties, most notably the selected property of the container
      */

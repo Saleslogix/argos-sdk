@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-
 
 /**
  * @class argos._ActionMixin
@@ -33,36 +31,42 @@ import declare from 'dojo/_base/declare';
  * and then it mixes it all the `data-` attributes from the node into the params object.
  *
  */
-const __class = declare('argos._ActionMixin', null, /** @lends argos._ActionMixin# */{
-  /**
-   * @property {String}
-   * Comma separated (no spaces) list of events to listen to
-   */
-  actionsFrom: 'click',
-  /**
-   * Extends the dijit Widget `postCreate` to connect to all events defined in `actionsFrom`.
-   */
-  postCreate: function postCreate() {
+class _ActionMixin {
+  constructor() {
+    this.actionsFrom = 'click';
+    this.container = null;
+  }
+
+  postCreate(container) {
     // todo: add delegation
+    if (!container) {
+      return;
+    }
+
+    this.container = container;
+    this.actionsFrom = this.container.actionsFrom || this.actionsFrom;
     this.actionsFrom.split(',').forEach((evt) => {
-      $(this.domNode).on(evt, this._initiateActionFromEvent.bind(this));
+      $(this.container.domNode).on(evt, this._initiateActionFromEvent.bind(this));
     });
-  },
+  }
+
   /**
    * Verifies that the given HTML element is within our view.
    * @param {HTMLElement} el
    * @return {Boolean}
    */
-  _isValidElementForAction: function _isValidElementForAction(el) {
-    const contained = this.domNode.contains ? this.domNode !== el && this.domNode.contains(el) : !!(this.domNode.compareDocumentPosition(el) & 16);
+  _isValidElementForAction(el) {
+    const domNode = this.container.domNode;
+    const contained = domNode.contains ? domNode !== el && domNode.contains(el) : !!(domNode.compareDocumentPosition(el) & 16);
 
-    return (this.domNode === el) || contained;
-  },
+    return (domNode === el) || contained;
+  }
+
   /**
    * Takes an event and fires the closest valid `data-action` with the attached `data-` attributes
    * @param {Event} evt
    */
-  _initiateActionFromEvent: function _initiateActionFromEvent(evt) {
+  _initiateActionFromEvent(evt) {
     const el = $(evt.target).closest('[data-action]').get(0);
     const action = $(el).attr('data-action');
 
@@ -71,7 +75,8 @@ const __class = declare('argos._ActionMixin', null, /** @lends argos._ActionMixi
       this.invokeAction(action, parameters, evt, el);
       evt.stopPropagation();
     }
-  },
+  }
+
   /**
    * Extracts the `data-` attributes of an element and adds `$event` and `$source` being the two originals values.
    * @param {String} name Name of the action/function being fired.
@@ -79,7 +84,7 @@ const __class = declare('argos._ActionMixin', null, /** @lends argos._ActionMixi
    * @param {HTMLElement} el The node that has the `data-action` attribute
    * @return {Object} Object with the original event and source along with all the `data-` attributes in pascal case.
    */
-  _getParametersForAction: function _getParametersForAction(name, evt, el) {
+  _getParametersForAction(name, evt, el) {
     const parameters = {
       $event: evt,
       $source: el,
@@ -103,7 +108,8 @@ const __class = declare('argos._ActionMixin', null, /** @lends argos._ActionMixi
     }
 
     return parameters;
-  },
+  }
+
   /**
    * Determines if the view contains a function with the given name
    * @param {String} name Name of function being tested.
@@ -111,9 +117,10 @@ const __class = declare('argos._ActionMixin', null, /** @lends argos._ActionMixi
    * @param el
    * @return {Boolean}
    */
-  hasAction: function hasAction(name/* , evt, el*/) {
-    return (typeof this[name] === 'function');
-  },
+  hasAction(name/* , evt, el*/) {
+    return (typeof this.container[name] === 'function');
+  }
+
   /**
    * Calls the given function name in the context of the view passing
    * the {@link #_getParametersForAction parameters gathered} and the event and element.
@@ -122,9 +129,9 @@ const __class = declare('argos._ActionMixin', null, /** @lends argos._ActionMixi
    * @param {Event} evt The event that fired
    * @param {HTMLElement} el The HTML element that has the `data-action`
    */
-  invokeAction: function invokeAction(name, parameters, evt, el) {
-    return this[name].apply(this, [parameters, evt, el]);
-  },
-});
+  invokeAction(name, parameters, evt, el) {
+    return this.container[name].apply(this.container, [parameters, evt, el]);
+  }
+}
 
-export default __class;
+export default _ActionMixin;

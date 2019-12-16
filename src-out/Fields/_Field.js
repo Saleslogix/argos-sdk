@@ -44,7 +44,9 @@ define('argos/Fields/_Field', ['module', 'exports', 'dojo/_base/declare', 'dojo/
    * @mixins argos._Templated
    * @requires argos.FieldManager
    */
-  var __class = (0, _declare2.default)('argos.Fields._Field', [_WidgetBase3.default, _ActionMixin3.default, _Templated3.default], /** @lends argos.Fields._Field# */{
+  var __class = (0, _declare2.default)('argos.Fields._Field', [_WidgetBase3.default, _Templated3.default], /** @lends argos.Fields._Field# */{
+    _ActionMixin: null,
+
     /**
      * @property {View}
      * View that controls the field.
@@ -135,6 +137,10 @@ define('argos/Fields/_Field', ['module', 'exports', 'dojo/_base/declare', 'dojo/
       if (this.reui === null) {
         this.reui = window.ReUI;
       }
+    },
+    postCreate: function postCreate() {
+      this._ActionMixin = new _ActionMixin3.default();
+      this._ActionMixin.postCreate(this);
     },
     /**
      * Focuses the input for the field

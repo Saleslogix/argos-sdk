@@ -25,7 +25,8 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
    * @mixins argos._ActionMixin
    * @mixins argos._Templated
    */
-  var __class = (0, _declare2.default)('argos.Toolbar', [_WidgetBase3.default, _ActionMixin3.default, _Templated3.default], /** @lends argos.Toolbar# */{
+  var __class = (0, _declare2.default)('argos.Toolbar', [_WidgetBase3.default, _Templated3.default], /** @lends argos.Toolbar# */{
+    _ActionMixin: null,
     /**
      * @property {Simplate}
      * HTML markup of the toolbar
@@ -41,6 +42,10 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
       this.app = options.app || window.App;
+    },
+    postCreate: function postCreate() {
+      this._ActionMixin = new _ActionMixin3.default();
+      this._ActionMixin.postCreate(this);
     },
     /**
      * Expands the passed expression if it is a function.

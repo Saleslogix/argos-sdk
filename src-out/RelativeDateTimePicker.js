@@ -43,7 +43,8 @@ define('argos/RelativeDateTimePicker', ['module', 'exports', 'dojo/_base/declare
   /**
    * @class argos.DateTimePicker
    */
-  var __class = (0, _declare2.default)('argos.RelativeDateTimePicker', [_WidgetBase3.default, _Templated3.default, _ActionMixin3.default, _CustomizationMixin3.default], {
+  var __class = (0, _declare2.default)('argos.RelativeDateTimePicker', [_WidgetBase3.default, _Templated3.default, _CustomizationMixin3.default], {
+    _ActionMixin: null,
     widgetTemplate: new Simplate(['<div class="relative-datetime-select" data-dojo-attach-point="relativeDateTimeNode">', '<div class="relative-datetime-select__title">{%: $.titleText %}</div>', '<ul class="simpleList" data-dojo-attach-point="listNode"></ul>', '</div>']),
     listItemTemplate: new Simplate(['<li class="simpleList__item" data-time="{%: $.time %}" data-action="select">', '<div class="item__text--left"><span>{%: $.textLeft %}</span></div>', '<div class="item__text--right"><span>{%: $.textRight %}</span></div>', '</li>']),
 
@@ -69,6 +70,11 @@ define('argos/RelativeDateTimePicker', ['module', 'exports', 'dojo/_base/declare
     dayHoursFormat: dtFormatResource.dayHoursFormat,
     hoursFormat24: dtFormatResource.hoursFormat24,
     dayHoursFormat24: dtFormatResource.dayHoursFormat24,
+
+    postCreate: function postCreate() {
+      this._ActionMixin = new _ActionMixin3.default();
+      this._ActionMixin.postCreate(this);
+    },
 
     createLayout: function createLayout() {
       return [{

@@ -28,7 +28,9 @@ import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from '../_ActionMixin';
 import _Templated from '../_Templated';
 
-const __class = declare('argos.Fields._Field', [_WidgetBase, _ActionMixin, _Templated], /** @lends argos.Fields._Field# */ {
+const __class = declare('argos.Fields._Field', [_WidgetBase, _Templated], /** @lends argos.Fields._Field# */ {
+  _ActionMixin: null,
+
   /**
    * @property {View}
    * View that controls the field.
@@ -121,6 +123,10 @@ const __class = declare('argos.Fields._Field', [_WidgetBase, _ActionMixin, _Temp
     if (this.reui === null) {
       this.reui = window.ReUI;
     }
+  },
+  postCreate: function postCreate() {
+    this._ActionMixin = new _ActionMixin();
+    this._ActionMixin.postCreate(this);
   },
   /**
    * Focuses the input for the field

@@ -440,11 +440,11 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * @param {Event} evt
      * @param {HTMLElement} el
      */
-    invokeAction: function invokeAction(name, parameters /* , evt, el*/) {
+    invokeAction: function invokeAction(name, parameters, evt, el) {
       if (parameters && /true/i.test(parameters.disableAction)) {
         return null;
       }
-      return this.inherited(invokeAction, arguments);
+      return this._ActionMixin.invokeAction(name, parameters, evt, el);
     },
     /**
      * Toggles the collapsed state of the section.

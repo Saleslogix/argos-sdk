@@ -483,7 +483,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
       return field[name].apply(field, [parameters, evt, node]);
     }
 
-    return this.inherited(invokeAction, arguments);
+    return this._ActionMixin.invokeAction(name, parameters, evt, node);
   },
   /**
    * Determines if a field has defined on it the supplied name as a function
@@ -500,7 +500,7 @@ const __class = declare('argos._EditBase', [View], /** @lends argos._EditBase# *
       return true;
     }
 
-    return this.inherited(hasAction, arguments);
+    return this._ActionMixin.hasAction(name, evt, node);
   },
   createStore: function createStore() {
     return null;
