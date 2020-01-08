@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/ApplicationModule
+ */
 import ConfigureQuickActions from './Views/ConfigureQuickActions';
 import LinkView from './Views/Link';
 import initCulture from './CultureInfo';
@@ -21,7 +24,9 @@ import './Models/RecentlyViewed/Offline';
 import './Models/Briefcase/Offline';
 
 /**
- * @class argos.ApplicationModule
+ * @class
+ * @alias module:argos/ApplicationModule
+ * @abstract
  * @classdesc ApplicationModule is intended to be extended in the resulting application so that it
  * references all the views, toolbars and customizations and registers them to App.
  *

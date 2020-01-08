@@ -32,13 +32,17 @@ define('argos/Views/ConfigureQuickActions', ['module', 'exports', 'dojo/_base/de
    * limitations under the License.
    */
 
+  /**
+   * @module argos/Views/ConfigureQuickActions
+   */
   var resource = (0, _I18n2.default)('configureQuickActions');
 
   /**
-   * @class argos.Views.ConfigureQuickActions
-   * @extends argos._ConfigureBase
+   * @class
+   * @alias module:argos/Views/ConfigureQuickActions
+   * @extends module:argos/_ConfigureBase
    */
-  var __class = (0, _declare2.default)('argos.Views.ConfigureQuickActions', [_ConfigureBase3.default], {
+  var __class = (0, _declare2.default)('argos.Views.ConfigureQuickActions', [_ConfigureBase3.default], /** @lends module:argos/Views/ConfigureQuickActions.prototype */{
     // Localization
     titleText: resource.titleText,
 

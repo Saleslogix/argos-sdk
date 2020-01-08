@@ -13,17 +13,21 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/FieldManager
+ */
 import lang from 'dojo/_base/lang';
 
 const store = {};
 
 /**
- * @class argos.FieldManager
+ * @class
+ * @alias module:argos/FieldManager
  * @classdesc Field Manager is a registry for field types that enables the Edit View layouts to
  * simply define `type: 'myFieldType'`.
- * @singleton
+ * @static
  */
-const __class = lang.setObject('argos.FieldManager', /** @lends argos.FieldManager */{
+const __class = lang.setObject('argos.FieldManager', /** @lends module:argos/FieldManager */{
   /**
    * @property {Object}
    * The type map that translates string type names to constructor functions

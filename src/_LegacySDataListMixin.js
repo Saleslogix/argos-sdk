@@ -13,18 +13,22 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/_LegacySDataListMixin
+ */
 import declare from 'dojo/_base/declare';
 import ErrorManager from './ErrorManager';
 import string from 'dojo/string';
 
 /**
- * @class argos._LegacySDataListMixin
+ * @class
+ * @alias module:argos/_LegacySDataListMixin
  * @classdesc Enables legacy SData operations for the List view.
  *
  * Adds the original SData operations to the view, use this in addition to _SDataListMixin.
  *
  */
-const __class = declare('argos._LegacySDataListMixin', null, /** @lends argos._LegacySDataListMixin# */{
+const __class = declare('argos._LegacySDataListMixin', null, /** @lends module:argos/_LegacySDataListMixin.prototype */{
   feed: null,
 
   /**

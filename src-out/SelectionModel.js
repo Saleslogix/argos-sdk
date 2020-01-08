@@ -18,7 +18,8 @@ define('argos/SelectionModel', ['module', 'exports', 'dojo/_base/lang', 'dojo/_b
   var resource = (0, _I18n2.default)('selectionModel');
 
   /**
-   * @class argos.SelectionModel
+   * @class
+   * @alias module:argos/SelectionModel
    * @classdesc SelectionModel provides a simple in-memory store for data that fires events
    * when a item is selected (added) or deselected (removed)
    */
@@ -37,7 +38,10 @@ define('argos/SelectionModel', ['module', 'exports', 'dojo/_base/lang', 'dojo/_b
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.SelectionModel', null, /** @lends argos.SelectionModel# */{
+  /**
+   * @module argos/SelectionModel
+   */
+  var __class = (0, _declare2.default)('argos.SelectionModel', null, /** @lends module:argos/SelectionModel.prototype */{
     // Localization
     requireSelectionText: resource.requireSelectionText,
 

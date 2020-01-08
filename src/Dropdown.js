@@ -13,15 +13,20 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Dropdown
+ */
 import declare from 'dojo/_base/declare';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
 
 
 /**
- * @class argos.Dropdown
+ * @class
+ * @alias module:argos/Dropdown
+ * @extends module:argos/_Templated
  */
-const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], {
+const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], /** @lends module:argos/Dropdown.prototype */ {
   widgetTemplate: new Simplate([
     '<div class="field">',
     '<label for="{%= $.id %}_dropdownNode" class="label">{%: $.label %}</label>',

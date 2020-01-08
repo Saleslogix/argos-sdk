@@ -14,20 +14,22 @@
  */
 
 /**
- * @class argos._SDataEditMixin
- * @classdesc Enables SData for the Edit view.
- * Extends the SDataDetail Mixin by providing functions for $template requests.
- * @extends argos._SDataDetailMixin
- * @requires argos.SData
+ * @module argos/_SDataEditMixin
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
-
 import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';
 import MODEL_TYPES from './Models/Types';
 
-const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], /** @lends argos._SDataEditMixin# */{
+/**
+ * @class
+ * @alias module:argos/_SDataEditMixin
+ * @classdesc Enables SData for the Edit view.
+ * Extends the SDataDetail Mixin by providing functions for $template requests.
+ * @mixes module:argos/_SDataDetailMixin
+ */
+const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], /** @lends module:argos/_SDataEditMixin.prototype */{
   /**
    * @property {Object}
    * The saved SData response.

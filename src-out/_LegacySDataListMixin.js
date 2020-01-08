@@ -16,13 +16,14 @@ define('argos/_LegacySDataListMixin', ['module', 'exports', 'dojo/_base/declare'
   }
 
   /**
-   * @class argos._LegacySDataListMixin
+   * @class
+   * @alias module:argos/_LegacySDataListMixin
    * @classdesc Enables legacy SData operations for the List view.
    *
    * Adds the original SData operations to the view, use this in addition to _SDataListMixin.
    *
    */
-  var __class = (0, _declare2.default)('argos._LegacySDataListMixin', null, /** @lends argos._LegacySDataListMixin# */{
+  var __class = (0, _declare2.default)('argos._LegacySDataListMixin', null, /** @lends module:argos/_LegacySDataListMixin.prototype */{
     feed: null,
 
     /**
@@ -269,6 +270,9 @@ define('argos/_LegacySDataListMixin', ['module', 'exports', 'dojo/_base/declare'
        * limitations under the License.
        */
 
+  /**
+   * @module argos/_LegacySDataListMixin
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

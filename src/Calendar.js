@@ -14,7 +14,7 @@
  */
 
 /**
- * @class argos.Calendar
+ * @module argos/Calendar
  */
 import declare from 'dojo/_base/declare';
 import _ActionMixin from './_ActionMixin';
@@ -23,10 +23,14 @@ import _Templated from './_Templated';
 import Dropdown from './Dropdown';
 import getResource from './I18n';
 
-
 const resource = getResource('calendar');
 
-const __class = declare('argos.Calendar', [_WidgetBase, _Templated], {
+/**
+ * @class
+ * @alias module:argos/Calendar
+ * @extends module:argos/_Templated
+ */
+const __class = declare('argos.Calendar', [_WidgetBase, _Templated], /** @lends module:argos/Calendar.prototype */{
   _ActionMixin: null,
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" class="calendar">',

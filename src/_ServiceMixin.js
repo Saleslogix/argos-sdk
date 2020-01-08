@@ -14,11 +14,16 @@
  */
 
 /**
- * @class argos._ServiceMixin
- * @deprecated
+ * @module argos/_ServiceMixin
  */
 import declare from 'dojo/_base/declare';
 
+/**
+ * @class
+ * @mixin
+ * @alias module:argos/_ServiceMixin
+ * @deprecated
+ */
 const __class = declare('argos._ServiceMixin', null, {
   serviceMap: null,
   constructor: function constructor() {

@@ -15,6 +15,15 @@
 
 /* eslint-disable */ // TODO: Remove this later
 
+/**
+ * @module argos/WidgetBase
+ */
+
+ /**
+  * Standin - Don't use.
+  * @class
+  * @alias module:argos/WidgetBase
+  */
 class WidgetBase {
   constructor(options = {}) {
     this.id = options.id || 'generic_widgetbase';

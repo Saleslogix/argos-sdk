@@ -17,6 +17,15 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
     };
   }
 
+  /**
+   * @class
+   * @alias module:argos/GroupedList
+   * @classdesc Grouped List provides a hook for grouping rows before rendering them to the page.
+   * The grouping adds a container for the set of rows and is collapsible.
+   * Note that it constructs the page sequentially meaning the rows should be in the correct
+   * order before attempting to group.
+   * @extends module:argos/List
+   */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
    * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,14 +42,9 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
    */
 
   /**
-   * @class argos.GroupedList
-   * @classdesc Grouped List provides a hook for grouping rows before rendering them to the page.
-   * The grouping adds a container for the set of rows and is collapsible.
-   * Note that it constructs the page sequentially meaning the rows should be in the correct
-   * order before attempting to group.
-   * @extends argos.List
+   * @module argos/GroupedList
    */
-  var __class = (0, _declare2.default)('argos.GroupedList', [_List2.default], /** @lends argos.GroupedList# */{
+  var __class = (0, _declare2.default)('argos.GroupedList', [_List2.default], /** @lends module:argos/GroupedList.prototype */{
     accordion: null,
 
     /**

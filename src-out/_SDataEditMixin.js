@@ -19,7 +19,14 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
     };
   }
 
-  var __class = (0, _declare2.default)('argos._SDataEditMixin', [_SDataDetailMixin3.default], /** @lends argos._SDataEditMixin# */{
+  /**
+   * @class
+   * @alias module:argos/_SDataEditMixin
+   * @classdesc Enables SData for the Edit view.
+   * Extends the SDataDetail Mixin by providing functions for $template requests.
+   * @mixes module:argos/_SDataDetailMixin
+   */
+  var __class = (0, _declare2.default)('argos._SDataEditMixin', [_SDataDetailMixin3.default], /** @lends module:argos/_SDataEditMixin.prototype */{
     /**
      * @property {Object}
      * The saved SData response.
@@ -396,11 +403,7 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
        */
 
   /**
-   * @class argos._SDataEditMixin
-   * @classdesc Enables SData for the Edit view.
-   * Extends the SDataDetail Mixin by providing functions for $template requests.
-   * @extends argos._SDataDetailMixin
-   * @requires argos.SData
+   * @module argos/_SDataEditMixin
    */
   exports.default = __class;
   module.exports = exports['default'];

@@ -13,17 +13,24 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/_PullToRefreshMixin
+ */
 import declare from 'dojo/_base/declare';
 import getResource from './I18n';
 
 const resource = getResource('pullToRefreshMixin');
 
 /**
- * @class argos._PullToRefreshMixin
+ * @class
+ * @alias module:argos/_PullToRefreshMixin
+ * @mixin
  */
-const __class = declare('argos._PullToRefreshMixin', null, /** @lends argos._PullToRefreshMixin# */ {
+const __class = declare('argos._PullToRefreshMixin', null, /** @lends module:argos/_PullToRefreshMixin.prototype */ {
   /**
-   * @property {Simplate}
+   * @property {external:Simplate}
+   * @memberof module:argos/_PullToRefreshMixin
+   * @static
    */
   pullRefreshBannerTemplate: new Simplate([
     '<div class="pull-to-refresh">{%! $.pullRefreshTemplate %}</div>',
@@ -31,6 +38,8 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends argos._Pul
 
   /**
    * @property {Simplate}
+   * @memberof module:argos/_PullToRefreshMixin
+   * @static
    */
   pullRefreshTemplate: new Simplate([
     `<button type="button" class="btn-icon hide-focus">
@@ -43,6 +52,8 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends argos._Pul
 
   /**
    * @property {Simplate}
+   * @memberof module:argos/_PullToRefreshMixin
+   * @static
    */
   pullReleaseTemplate: new Simplate([
     `<button type="button" class="btn-icon hide-focus">

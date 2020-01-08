@@ -24,11 +24,12 @@ define('argos/_LegacySDataEditMixin', ['module', 'exports', 'dojo/_base/declare'
   }
 
   /**
+   * @class
+   * @alias module:argos/_LegacySDataEditMixin
    * @classdesc Enables legacy SData operations for the Edit view.
-   * @class argos._LegacySDataEditMixin
    *
    */
-  var __class = (0, _declare2.default)('argos._LegacySDataEditMixin', [_SDataDetailMixin3.default], /** @lends argos._LegacySDataEditMixin# */{
+  var __class = (0, _declare2.default)('argos._LegacySDataEditMixin', [_SDataDetailMixin3.default], /** @lends module:argos/_LegacySDataEditMixin.prototype */{
     requestData: function requestData() {
       var request = this.createRequest();
       if (request) {
@@ -292,6 +293,9 @@ define('argos/_LegacySDataEditMixin', ['module', 'exports', 'dojo/_base/declare'
        * limitations under the License.
        */
 
+  /**
+   * @module argos/_LegacySDataEditMixin
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

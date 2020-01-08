@@ -22,7 +22,8 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
   var resource = (0, _I18n2.default)('searchWidget');
 
   /**
-   * @class argos.SearchWidget
+   * @class
+   * @alias module:argos/SearchWidget
    * @classdesc
    * Search Widget is an SData-enabled search component that {@link List List} uses by default for search.
    *
@@ -49,7 +50,7 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
    * `where=(TicketStatus eq 1) and (TicketUrgency gt 3) and (TicketId eq ("Bob") or TicketOwner like "Bob")
    *
    * See the [Defining Hash Tags guide](#!/guides/v2_beyond_the_guide_defining_hashtags) for more information and how it supports localization.
-   * @mixins argos._Templated
+   * @extends module:argos/_Templated
    */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
@@ -66,7 +67,10 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.SearchWidget', [_WidgetBase3.default, _Templated3.default], /** @lends argos.SearchWidget.prototype */{
+  /**
+   * @module argos/SearchWidget
+   */
+  var __class = (0, _declare2.default)('argos.SearchWidget', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/SearchWidget.prototype */{
     /**
      * Provides a setter for HTML node attributes, namely the value for search text
      * @property {Object}

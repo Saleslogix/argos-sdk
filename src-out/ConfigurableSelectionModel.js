@@ -14,9 +14,10 @@ define('argos/ConfigurableSelectionModel', ['module', 'exports', 'dojo/_base/dec
   }
 
   /**
-   * @class argos.ConfigurableSelectionModel
+   * @class
+   * @alias module:argos/ConfigurableSelectionModel
    * @classdesc The ConfigurableSelectionModel adds the logic to the SelectionModel to only have one item selected at a time via the `singleSelection` flag.
-   * @extends argos.SelectionModel
+   * @extends module:argos/SelectionModel
    */
   /* Copyright 2017 Infor
    *
@@ -33,7 +34,10 @@ define('argos/ConfigurableSelectionModel', ['module', 'exports', 'dojo/_base/dec
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.ConfigurableSelectionModel', [_SelectionModel2.default], /** @lends argos.ConfigurableSelectionModel# */{
+  /**
+   * @module argos/ConfigurableSelectionModel
+   */
+  var __class = (0, _declare2.default)('argos.ConfigurableSelectionModel', [_SelectionModel2.default], /** @lends module:argos/ConfigurableSelectionModel.prototype */{
     /**
      * @property {Boolean}
      * Flag that controls if only one item is selectable at a time. Meaning if this is true

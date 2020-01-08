@@ -13,8 +13,15 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/I18n
+ */
 import lang from 'dojo/_base/lang';
 
+/**
+ * Gets the localization dictionary for a given id.
+ * @param {String} id
+ */
 export default function getResource(id) {
   const { defaultLocaleContext, localeContext, regionalContext } = window;
   if (!defaultLocaleContext || !localeContext) {

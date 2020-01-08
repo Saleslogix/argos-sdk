@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/TimePicker
+ */
 import declare from 'dojo/_base/declare';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
@@ -23,9 +26,11 @@ import getResource from './I18n';
 const resource = getResource('timePicker');
 
 /**
- * @class argos.TimePicker
+ * @class
+ * @alias module:argos/TimePicker
+ * @extends module:argos/_Templated
  */
-const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], {
+const __class = declare('argos.TimePicker', [_WidgetBase, _Templated], /** @lends module:argos/TimePicker.prototype */{
   widgetTemplate: new Simplate([
     '<div class="time-select panel">',
     '<div class="time-parts">',

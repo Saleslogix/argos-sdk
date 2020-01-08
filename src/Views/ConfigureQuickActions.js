@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Views/ConfigureQuickActions
+ */
 import declare from 'dojo/_base/declare';
 import Memory from 'dojo/store/Memory';
 import _ConfigureBase from '../_ConfigureBase';
@@ -21,10 +24,11 @@ import getResource from '../I18n';
 const resource = getResource('configureQuickActions');
 
 /**
- * @class argos.Views.ConfigureQuickActions
- * @extends argos._ConfigureBase
+ * @class
+ * @alias module:argos/Views/ConfigureQuickActions
+ * @extends module:argos/_ConfigureBase
  */
-const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], {
+const __class = declare('argos.Views.ConfigureQuickActions', [_ConfigureBase], /** @lends module:argos/Views/ConfigureQuickActions.prototype */{
   // Localization
   titleText: resource.titleText,
 

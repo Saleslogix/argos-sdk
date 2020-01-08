@@ -34,15 +34,13 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
   var resource = (0, _I18n2.default)('detailBase');
 
   /**
-   * @class argos._DetailBase
+   * @class
+   * @alias module:argos/_DetailBase
    * @classdesc A Detail View represents a single record and should display all the info the user may need about the entry.
    *
    * A Detail entry is identified by its key (idProperty) which is how it requests the data via the endpoint.
    *
-   * @extends argos.View
-   * @requires argos.Format
-   * @requires argos.Utility
-   * @requires argos.ErrorManager
+   * @extends module:argos/View
    */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
@@ -59,7 +57,10 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos._DetailBase', [_View2.default, _TabWidget2.default], /** @lends argos._DetailBase# */{
+  /**
+   * @module argos/_DetailBase
+   */
+  var __class = (0, _declare2.default)('argos._DetailBase', [_View2.default, _TabWidget2.default], /** @lends module:argos/_DetailBase.prototype */{
     /**
      * @property {Object}
      * Creates a setter map to html nodes, namely:

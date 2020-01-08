@@ -16,11 +16,12 @@ define('argos/_LegacySDataDetailMixin', ['module', 'exports', 'dojo/_base/declar
   }
 
   /**
-   * @class argos._LegacySDataDetailMixin
+   * @class
+   * @alias module:argos/_LegacySDataDetailMixin
    * @classdesc Enables legacy SData operations for the Detail view.
    *
    */
-  var __class = (0, _declare2.default)('argos._LegacySDataDetailMixin', null, /** @lends argos._LegacySDataDetailMixin# */{
+  var __class = (0, _declare2.default)('argos._LegacySDataDetailMixin', null, /** @lends module:argos/_LegacySDataDetailMixin.prototype */{
     /**
      * Initiates the SData request.
      */
@@ -150,6 +151,9 @@ define('argos/_LegacySDataDetailMixin', ['module', 'exports', 'dojo/_base/declar
        * limitations under the License.
        */
 
+  /**
+   * @module argos/_LegacySDataDetailMixin
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

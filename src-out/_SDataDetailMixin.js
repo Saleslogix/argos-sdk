@@ -21,6 +21,14 @@ define('argos/_SDataDetailMixin', ['module', 'exports', 'dojo/_base/declare', 'd
     };
   }
 
+  /**
+   * @class
+   * @mixin
+   * @alias module:argos/_SDataDetailMixin
+   *
+   * @classdesc Enables SData for the Detail view.
+   * Adds the SData store to the view and exposes the needed properties for creating a Entry request.
+   */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
    * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +45,9 @@ define('argos/_SDataDetailMixin', ['module', 'exports', 'dojo/_base/declare', 'd
    */
 
   /**
-   * @class argos._SDataDetailMixin
-   *
-   * @classdesc Enables SData for the Detail view.
-   * Adds the SData store to the view and exposes the needed properties for creating a Entry request.
-   * @requires argos.SData
+   * @module argos/_SDataDetailMixin
    */
-  var __class = (0, _declare2.default)('argos._SDataDetailMixin', null, /** @lends argos._SDataDetailMixin# */{
+  var __class = (0, _declare2.default)('argos._SDataDetailMixin', null, /** @lends module:argos/_SDataDetailMixin.prototype */{
 
     /**
      * @cfg {String} resourceKind

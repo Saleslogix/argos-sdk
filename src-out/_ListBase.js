@@ -48,17 +48,13 @@ define('argos/_ListBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
    * limitations under the License.
    */
 
+  /**
+   * @module argos/_ListBase
+   */
   var resource = (0, _I18n2.default)('listBase');
   var resourceSDK = (0, _I18n2.default)('sdkApplication');
 
-  /**
-   * @classdesc A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
-   * selection model built in for selecting rows from the list and may be used in a number of different manners.
-   * @class argos._ListBase
-   * @extends argos.View
-   * @mixins argos._PullToRefreshMixin
-   */
-  var __class = (0, _declare2.default)('argos._ListBase', [_View2.default, _PullToRefreshMixin3.default], /** @lends argos._ListBase# */{
+  var __class = (0, _declare2.default)('argos._ListBase', [_View2.default, _PullToRefreshMixin3.default], /** @lends module:argos/_ListBase.prototype */{
     /**
      * @property {Object}
      * Creates a setter map to html nodes, namely:
@@ -519,6 +515,18 @@ define('argos/_ListBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
     _getSelectionModelAttr: function _getSelectionModelAttr() {
       return this._selectionModel;
     },
+
+    /**
+      * @class
+      * @alias module:argos/_ListBase
+      * @classdesc A List View is a view used to display a collection of entries in an easy to skim list. The List View also has a
+      * selection model built in for selecting rows from the list and may be used in a number of different manners.
+      *
+      * @extends module:argos/View
+      * @mixes module:argos/_PullToRefreshMixin
+      *
+      * @param {Object} options
+      */
     constructor: function constructor(options) {
       this.entries = {};
       this._loadedSelections = {};

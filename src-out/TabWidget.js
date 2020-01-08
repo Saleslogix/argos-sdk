@@ -14,7 +14,9 @@ define('argos/TabWidget', ['module', 'exports', 'dojo/_base/declare', './_Templa
   }
 
   /**
-   * @class argos.TabWidget
+   * @class
+   * @alias module:argos/TabWidget
+   * @extends module:argos/_Templated
    */
   /* Copyright 2017 Infor
    *
@@ -31,7 +33,10 @@ define('argos/TabWidget', ['module', 'exports', 'dojo/_base/declare', './_Templa
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.TabWidget', [_Templated3.default], /** @lends argos.TabWidget# */{
+  /**
+   * @module argos/TabWidget
+   */
+  var __class = (0, _declare2.default)('argos.TabWidget', [_Templated3.default], /** @lends module:argos/TabWidget.prototype */{
     /**
      * @property {Simplate}
      * HTML that defines a new tab list

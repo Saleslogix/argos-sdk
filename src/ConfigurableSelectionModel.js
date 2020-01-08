@@ -13,15 +13,19 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/ConfigurableSelectionModel
+ */
 import declare from 'dojo/_base/declare';
 import SelectionModel from './SelectionModel';
 
 /**
- * @class argos.ConfigurableSelectionModel
+ * @class
+ * @alias module:argos/ConfigurableSelectionModel
  * @classdesc The ConfigurableSelectionModel adds the logic to the SelectionModel to only have one item selected at a time via the `singleSelection` flag.
- * @extends argos.SelectionModel
+ * @extends module:argos/SelectionModel
  */
-const __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], /** @lends argos.ConfigurableSelectionModel# */{
+const __class = declare('argos.ConfigurableSelectionModel', [SelectionModel], /** @lends module:argos/ConfigurableSelectionModel.prototype */{
   /**
    * @property {Boolean}
    * Flag that controls if only one item is selectable at a time. Meaning if this is true

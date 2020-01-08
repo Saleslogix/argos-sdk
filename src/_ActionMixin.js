@@ -13,9 +13,15 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/_ActionMixin
+ */
+
 
 /**
- * @class argos._ActionMixin
+ * @mixin
+ * @class
+ * @alias module:argos/_ActionMixin
  * @classdesc _ActionMixin provides a click listener to the `domNode` of view it is mixed into.
  *
  * When a click event is caught by the handler it finds the closest element with `data-action`
@@ -23,10 +29,10 @@
  * object with the following:
  *
  * @example
- *     {
- *         $event: 'Original click event',
- *         $src: 'The HTML node that initiated the event'
- *     }
+ * {
+ *   $event: 'Original click event',
+ *   $src: 'The HTML node that initiated the event'
+ * }
  *
  * and then it mixes it all the `data-` attributes from the node into the params object.
  *

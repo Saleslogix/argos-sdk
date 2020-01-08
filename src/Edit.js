@@ -13,20 +13,21 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Edit
+ */
 import declare from 'dojo/_base/declare';
 import _EditBase from './_EditBase';
 import _SDataEditMixin from './_SDataEditMixin';
 import _RelatedWidgetEditMixin from './_RelatedViewWidgetEditMixin';
 
 /**
- * @class argos.Edit
+ * @class
+ * @alias module:argos/Edit
  * @classdesc Edit extends _EditBase and mixes in _SDataEditMixin to provide backwards compatibility for consumers.
- * @extends argos._EditBase
- * @requires argos._EditBase
- * @requires argos._SDataEditMixin
- * @mixins argos._SDataEditMixin
- * @requires argos._RelatedViewWidgetEditMixin
- * @mixins argos._RelatedViewWidgetEditMixin
+ * @extends module:argos/_EditBase
+ * @mixes module:argos/_SDataEditMixin
+ * @mixes module:argos/_RelatedViewWidgetEditMixin
  */
 const __class = declare('argos.Edit', [_EditBase, _SDataEditMixin, _RelatedWidgetEditMixin], {});
 export default __class;

@@ -20,12 +20,13 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
   }
 
   /**
-   * @class argos.Toolbar
+   * @class
+   * @alias module:argos/Toolbar
    * @classdesc Toolbar is a base toolbar class that provides basic rendering of the bar, adding toolbar items and binding their invokacations.
-   * @mixins argos._ActionMixin
-   * @mixins argos._Templated
+   * @mixes module:argos/_ActionMixin
+   * @extends module:argos/_Templated
    */
-  var __class = (0, _declare2.default)('argos.Toolbar', [_WidgetBase3.default, _Templated3.default], /** @lends argos.Toolbar# */{
+  var __class = (0, _declare2.default)('argos.Toolbar', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Toolbar.prototype */{
     _ActionMixin: null,
     /**
      * @property {Simplate}
@@ -208,6 +209,9 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
        * limitations under the License.
        */
 
+  /**
+   * @module argos/Toolbar
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

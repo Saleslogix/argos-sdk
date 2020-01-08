@@ -23,7 +23,14 @@ define('argos/_SDataListMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
     };
   }
 
-  var __class = (0, _declare2.default)('argos._SDataListMixin', null, /** @lends argos._SDataListMixin# */{
+  /**
+   * @class
+   * @mixin
+   * @alias module:argos/_SDataListMixin
+   * @classdesc Enables SData for the List view.
+   * Adds the SData store to the view and exposes the needed properties for creating a Feed request.
+   */
+  var __class = (0, _declare2.default)('argos._SDataListMixin', null, /** @lends module:argos/_SDataListMixin.prototype */{
     /**
      * @property request Object SData request passed into the store. Optional.
      */
@@ -327,11 +334,7 @@ define('argos/_SDataListMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
        */
 
   /**
-   * @class argos._SDataListMixin
-   * @classdesc Enables SData for the List view.
-   * Adds the SData store to the view and exposes the needed properties for creating a Feed request.
-   * @requires argos.SData
-   * @requires argos.Utility
+   * @module argos/_SDataListMixin
    */
   exports.default = __class;
   module.exports = exports['default'];

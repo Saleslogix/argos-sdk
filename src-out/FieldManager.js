@@ -14,10 +14,11 @@ define('argos/FieldManager', ['module', 'exports', 'dojo/_base/lang'], function 
   var store = {};
 
   /**
-   * @class argos.FieldManager
+   * @class
+   * @alias module:argos/FieldManager
    * @classdesc Field Manager is a registry for field types that enables the Edit View layouts to
    * simply define `type: 'myFieldType'`.
-   * @singleton
+   * @static
    */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
@@ -34,7 +35,10 @@ define('argos/FieldManager', ['module', 'exports', 'dojo/_base/lang'], function 
    * limitations under the License.
    */
 
-  var __class = _lang2.default.setObject('argos.FieldManager', /** @lends argos.FieldManager */{
+  /**
+   * @module argos/FieldManager
+   */
+  var __class = _lang2.default.setObject('argos.FieldManager', /** @lends module:argos/FieldManager */{
     /**
      * @property {Object}
      * The type map that translates string type names to constructor functions

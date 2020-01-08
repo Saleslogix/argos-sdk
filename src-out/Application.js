@@ -91,7 +91,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
   };
 
   /**
-   * @alias argos.Application
+   * @alias module:argos/Application
    * @classdesc Application is a nexus that provides many routing and global application services that may be used
    * from anywhere within the app.
    *

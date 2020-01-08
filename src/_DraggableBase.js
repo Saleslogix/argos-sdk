@@ -13,15 +13,19 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/_DraggableBase
+ */
 import declare from 'dojo/_base/declare';
 import domGeom from 'dojo/dom-geometry';
 
 
 /**
- * @class argos._DraggableBase
+ * @class
+ * @alias module:argos/_DraggableBase
  * @classdesc A base class used to enable draggable features
  */
-const __class = declare('argos._DraggableBase', null, {
+const __class = declare('argos._DraggableBase', null, /** @lends module:argos/_DraggableBase.prototype */ {
   _container: null,
   _isScrolling: null,
   _scrollingTouch: null,

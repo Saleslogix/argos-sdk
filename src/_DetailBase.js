@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/_DetailBase
+ */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import when from 'dojo/when';
@@ -29,17 +32,15 @@ import string from 'dojo/string';
 const resource = getResource('detailBase');
 
 /**
- * @class argos._DetailBase
+ * @class
+ * @alias module:argos/_DetailBase
  * @classdesc A Detail View represents a single record and should display all the info the user may need about the entry.
  *
  * A Detail entry is identified by its key (idProperty) which is how it requests the data via the endpoint.
  *
- * @extends argos.View
- * @requires argos.Format
- * @requires argos.Utility
- * @requires argos.ErrorManager
+ * @extends module:argos/View
  */
-const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends argos._DetailBase# */{
+const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends module:argos/_DetailBase.prototype */{
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:

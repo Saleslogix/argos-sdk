@@ -18,10 +18,11 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
   var resource = (0, _I18n2.default)('mainToolbar');
 
   /**
-   * @class argos.MainToolbar
+   * @class
+   * @alias module:argos/MainToolbar
    * @classdesc MainToolbar is designed to handle the top application bar with markup and logic to set
    * a title and position toolbar items to the left or right
-   * @extends argos.Toolbar
+   * @extends module:argos/Toolbar
    */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
@@ -38,7 +39,10 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.MainToolbar', [_Toolbar2.default], /** @lends argos.MainToolbar# */{
+  /**
+   * @module argos/MainToolbar
+   */
+  var __class = (0, _declare2.default)('argos.MainToolbar', [_Toolbar2.default], /** @lends module:argos/MainToolbar.prototype */{
     /**
      * @property {Object}
      * Used to set the title node's innerHTML

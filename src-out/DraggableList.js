@@ -16,14 +16,13 @@ define('argos/DraggableList', ['module', 'exports', 'dojo/_base/declare', './_Li
   }
 
   /**
-   * @class argos.DraggableList
-   * @classdesc List extends List and _DraggableBase to make the list draggable
-   * @extends argos.List
-   * @extends argos._DraggableBase
-   * @requires argos.List
-   * @requires argos._DraggableBase
+   * @class
+   * @alias module:argos/DraggableList
+   * @classdesc List extends _ListBase and _DraggableBase to make the list draggable
+   * @extends module:argos/_ListBase
+   * @extends module:argos/_DraggableBase
    */
-  var __class = (0, _declare2.default)('argos.DraggableList', [_ListBase3.default, _DraggableBase3.default], {
+  var __class = (0, _declare2.default)('argos.DraggableList', [_ListBase3.default, _DraggableBase3.default], /** @lends module:argos/DraggableList.prototype */{
     isCardView: false,
     liRowTemplate: new Simplate(['<li role="option" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}" class="list-item-draggable">', '<button type="button" class="btn-icon hide-focus list-item-selector" data-action="selectEntry">', '<svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n        <use xlink:href="#icon-{%= $$.selectIcon %}" />\n      </svg>', '</button>', '<div class="list-item-content">{%! $$.itemTemplate %}</div>', '</li>']),
     show: function show() {
@@ -45,6 +44,9 @@ define('argos/DraggableList', ['module', 'exports', 'dojo/_base/declare', './_Li
        * limitations under the License.
        */
 
+  /**
+   * @module argos/DraggableList
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

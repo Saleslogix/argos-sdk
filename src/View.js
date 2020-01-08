@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+  * @module argos/View
+  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import _WidgetBase from 'dijit/_WidgetBase';
@@ -26,17 +29,7 @@ import { insertHistory } from './actions/index';
 
 const resource = getResource('view');
 
-/**
- * @class argos.View
- * @classdesc View is the root Class for all views and incorporates all the base features,
- * events, and hooks needed to successfully render, hide, show, and transition.
- *
- * All Views are dijit Widgets, namely utilizing its: widgetTemplate, connections, and attributeMap
- * @mixins argos._ActionMixin
- * @mixins argos._CustomizationMixin
- * @mixins argos._Templated
- */
-const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templated], /** @lends argos.View# */{
+const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templated], /** @lends module:argos/View.prototype */{
 
   _ActionMixin: null,
   postCreate: function postCreate() {
@@ -54,6 +47,8 @@ const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templa
   },
   /**
    * This map provides quick access to HTML properties, most notably the selected property of the container
+   * @memberof module:argos/View
+   * @static
    */
   attributeMap: {
     title: {
@@ -69,7 +64,9 @@ const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templa
   },
   /**
    * The widgetTemplate is a Simplate that will be used as the main HTML markup of the View.
-   * @property {Simplate}
+   * @property {external:Simplate}
+   * @memberof module:argos/View
+   * @static
    */
   widgetTemplate: new Simplate([
     '<ul id="{%= $.id %}" data-title="{%= $.titleText %}" class="overthrow {%= $.cls %}">',
@@ -95,7 +92,7 @@ const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templa
    */
   security: null,
   /**
-   * A reference to the globa App object
+   * A reference to the global App object
    */
   app: null,
 
@@ -122,6 +119,8 @@ const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templa
   /**
    * @property {Object}
    * Localized error messages. One general error message, and messages by HTTP status code.
+   * @memberof module:argos/View
+   * @static
    */
   errorText: {
     general: resource.general,
@@ -130,6 +129,8 @@ const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templa
   /**
    * @property {Object}
    * Http Error Status codes. See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+   * @memberof module:argos/View
+   * @static
    */
   HTTP_STATUS: {
     BAD_REQUEST: 400,
@@ -157,6 +158,20 @@ const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templa
    *
    */
   errorHandlers: null,
+
+  /**
+   * @class
+   * @alias module:argos/View
+   * @classdesc View is the root Class for all views and incorporates all the base features,
+   * events, and hooks needed to successfully render, hide, show, and transition.
+   * All Views are dijit Widgets, namely utilizing its: widgetTemplate, connections, and attributeMap
+   *
+   * @mixes module:argos/_ActionMixin
+   * @mixes module:argos/_CustomizationMixin
+   * @mixes module:argos/_Templated
+   * @param {Object} options
+   * @param {module:argos/Application} options.app Instance of the application
+   */
   constructor: function constructor(options) {
     this.app = (options && options.app) || window.App;
   },

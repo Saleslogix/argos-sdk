@@ -17,7 +17,14 @@ define('argos/SohoIcons', ['exports'], function (exports) {
    * See the License for the specific language governing permissions and
    * limitations under the License.
    */
+  /**
+   * @module argos/SohoIcons
+   */
 
+  /**
+   * Renders a div with all the soho svg icons into the given domnode.
+   * @param {DOMNode} element
+   */
   function render() {
     var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'body';
 

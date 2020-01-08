@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/MainToolbar
+ */
 import declare from 'dojo/_base/declare';
 import Toolbar from './Toolbar';
 import getResource from './I18n';
@@ -21,12 +24,13 @@ import getResource from './I18n';
 const resource = getResource('mainToolbar');
 
 /**
- * @class argos.MainToolbar
+ * @class
+ * @alias module:argos/MainToolbar
  * @classdesc MainToolbar is designed to handle the top application bar with markup and logic to set
  * a title and position toolbar items to the left or right
- * @extends argos.Toolbar
+ * @extends module:argos/Toolbar
  */
-const __class = declare('argos.MainToolbar', [Toolbar], /** @lends argos.MainToolbar# */{
+const __class = declare('argos.MainToolbar', [Toolbar], /** @lends module:argos/MainToolbar.prototype */{
   /**
    * @property {Object}
    * Used to set the title node's innerHTML

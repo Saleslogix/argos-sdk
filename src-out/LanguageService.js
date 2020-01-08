@@ -11,21 +11,45 @@ define('argos/LanguageService', ['module', 'exports', 'dojo/_base/declare'], fun
     };
   }
 
-  var __class = (0, _declare2.default)('argos.LanguageService', [], {
+  /**
+   * @class
+   * @alias module:argos/LanguageService
+   */
+  var __class = (0, _declare2.default)('argos.LanguageService', [], /** @lends module:argos/LanguageService.prototype */{
+
+    /**
+     *
+     */
     getLanguage: function getLanguage() {
       return window.localStorage && window.localStorage.getItem('language');
     },
+
+    /**
+     *
+     */
     getRegion: function getRegion() {
       return window.localStorage && window.localStorage.getItem('region');
     },
+
+    /**
+     *
+     */
     setLanguage: function setLanguage(value) {
       var language = this.normalizeLocale(value) || value;
       return window.localStorage && window.localStorage.setItem('language', language);
     },
+
+    /**
+     *
+     */
     setRegion: function setRegion(value) {
       var region = this.normalizeLocale(value) || value;
       return window.localStorage && window.localStorage.setItem('region', region);
     },
+
+    /**
+     *
+     */
     normalizeLocale: function normalizeLanguageCode(locale) {
       var language = locale;
       if (language.length > 2) {
@@ -38,9 +62,16 @@ define('argos/LanguageService', ['module', 'exports', 'dojo/_base/declare'], fun
       }
       return language;
     },
+    /**
+     * Gets a list of supported locales.
+     */
     getLanguages: function getLanguages() {
       return window.supportedLocales;
     },
+
+    /**
+     *
+     */
     bestAvailableLocale: function BestAvailableLocale(availableLocales, locale) {
       var candidate = this.normalizeLocale(locale);
       if (availableLocales.indexOf(candidate) !== -1) {
@@ -71,6 +102,9 @@ define('argos/LanguageService', ['module', 'exports', 'dojo/_base/declare'], fun
        * limitations under the License.
        */
 
+  /**
+   * @module argos/LanguageService
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

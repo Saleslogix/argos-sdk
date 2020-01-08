@@ -16,9 +16,11 @@ define('argos/_RelatedViewWidgetDetailMixin', ['module', 'exports', 'dojo/_base/
   }
 
   /**
-   * @class argos._RelatedViewWidgetDetailMixin
+   * @class
+   * @mixin
+   * @alias module:argos/_RelatedViewWidgetDetailMixin
    */
-  var __class = (0, _declare2.default)('argos._RelatedViewWidgetDetailMixin', null, /** @lends argos._RelatedViewWidgetDetailMixin# */{
+  var __class = (0, _declare2.default)('argos._RelatedViewWidgetDetailMixin', null, /** @lends module:argos/_RelatedViewWidgetDetailMixin.prototype */{
     cls: null,
     /**
      * @property {Simplate}
@@ -146,6 +148,9 @@ define('argos/_RelatedViewWidgetDetailMixin', ['module', 'exports', 'dojo/_base/
        * limitations under the License.
        */
 
+  /**
+   * @module argos/_RelatedViewWidgetDetailMixin
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

@@ -13,14 +13,19 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/_RelatedViewWidgetListMixin
+ */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import RelatedViewManager from './RelatedViewManager';
 
 /**
- * @class argos._RelatedViewWidgetListMixin
+ * @class
+ * @mixin
+ * @alias module:argos/_RelatedViewWidgetListMixin
  */
-const __class = declare('argos._RelatedViewWidgetListMixin', null, /** @lends argos._RelatedViewWidgetListMixin# */{
+const __class = declare('argos._RelatedViewWidgetListMixin', null, /** @lends module:argos/_RelatedViewWidgetListMixin.prototype */{
   /**
    * The related view definitions for related views for each row.
    */

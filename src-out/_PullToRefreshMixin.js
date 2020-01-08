@@ -28,24 +28,35 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
    * limitations under the License.
    */
 
+  /**
+   * @module argos/_PullToRefreshMixin
+   */
   var resource = (0, _I18n2.default)('pullToRefreshMixin');
 
   /**
-   * @class argos._PullToRefreshMixin
+   * @class
+   * @alias module:argos/_PullToRefreshMixin
+   * @mixin
    */
-  var __class = (0, _declare2.default)('argos._PullToRefreshMixin', null, /** @lends argos._PullToRefreshMixin# */{
+  var __class = (0, _declare2.default)('argos._PullToRefreshMixin', null, /** @lends module:argos/_PullToRefreshMixin.prototype */{
     /**
-     * @property {Simplate}
+     * @property {external:Simplate}
+     * @memberof module:argos/_PullToRefreshMixin
+     * @static
      */
     pullRefreshBannerTemplate: new Simplate(['<div class="pull-to-refresh">{%! $.pullRefreshTemplate %}</div>']),
 
     /**
      * @property {Simplate}
+     * @memberof module:argos/_PullToRefreshMixin
+     * @static
      */
     pullRefreshTemplate: new Simplate(['<button type="button" class="btn-icon hide-focus">\n          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-down-arrow"></use>\n          </svg>\n      </button>\n      <p>{%= $$._getText("pullRefreshText") %}</p>']),
 
     /**
      * @property {Simplate}
+     * @memberof module:argos/_PullToRefreshMixin
+     * @static
      */
     pullReleaseTemplate: new Simplate(['<button type="button" class="btn-icon hide-focus">\n          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-up-arrow"></use>\n          </svg>\n      </button>\n      <p>{%= $$._getText("pullReleaseText") %}</p>']),
 

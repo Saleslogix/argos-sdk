@@ -44,12 +44,18 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
    * limitations under the License.
    */
 
+  /**
+   * @module argos/RelatedViewWidget
+   */
   var resource = (0, _I18n2.default)('relatedViewWidget');
 
   /**
-   * @class argos.RelatedViewWidget
+   * @class
+   * @alias module:argos/RelatedViewWidget
+   * @extends module:argos/_RelatedViewWidgetBase
+   * @mixes module:argos/_CustomizationMixin
    */
-  var __class = (0, _declare2.default)('argos.RelatedViewWidget', [_RelatedViewWidgetBase3.default, _CustomizationMixin3.default], /** @lends argos.RelatedViewWidget# */{
+  var __class = (0, _declare2.default)('argos.RelatedViewWidget', [_RelatedViewWidgetBase3.default, _CustomizationMixin3.default], /** @lends moduleargos/RelatedViewWidget.prototype */{
     _ActionMixin: null,
     cls: 'related-view-widget',
     nodataText: resource.nodataText,

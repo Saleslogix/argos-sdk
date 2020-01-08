@@ -13,16 +13,20 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/_LegacySDataDetailMixin
+ */
 import declare from 'dojo/_base/declare';
 import string from 'dojo/string';
 import ErrorManager from './ErrorManager';
 
 /**
- * @class argos._LegacySDataDetailMixin
+ * @class
+ * @alias module:argos/_LegacySDataDetailMixin
  * @classdesc Enables legacy SData operations for the Detail view.
  *
  */
-const __class = declare('argos._LegacySDataDetailMixin', null, /** @lends argos._LegacySDataDetailMixin# */{
+const __class = declare('argos._LegacySDataDetailMixin', null, /** @lends module:argos/_LegacySDataDetailMixin.prototype */{
   /**
    * Initiates the SData request.
    */

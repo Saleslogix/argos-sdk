@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/RelativeDateTimePicker
+ */
 import declare from 'dojo/_base/declare';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
@@ -26,9 +29,12 @@ const resource = getResource('relativeDateTimePicker');
 const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
 
 /**
- * @class argos.DateTimePicker
+ * @class
+ * @alias module:argos/RelativeDateTimePicker
+ * @extends module:argos/_Templated
+ * @mixes module:argos/_CustomizationMixin
  */
-const __class = declare('argos.RelativeDateTimePicker', [_WidgetBase, _Templated, _CustomizationMixin], {
+const __class = declare('argos.RelativeDateTimePicker', [_WidgetBase, _Templated, _CustomizationMixin], /** @lends module:argos/RelativeDateTimePicker.prototype */ {
   _ActionMixin: null,
   widgetTemplate: new Simplate([
     '<div class="relative-datetime-select" data-dojo-attach-point="relativeDateTimeNode">',

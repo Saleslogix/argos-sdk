@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/_LegacySDataEditMixin
+ */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
@@ -23,11 +26,12 @@ import convert from './Convert';
 import _SDataDetailMixin from './_SDataDetailMixin';
 
 /**
+ * @class
+ * @alias module:argos/_LegacySDataEditMixin
  * @classdesc Enables legacy SData operations for the Edit view.
- * @class argos._LegacySDataEditMixin
  *
  */
-const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], /** @lends argos._LegacySDataEditMixin# */{
+const __class = declare('argos._LegacySDataEditMixin', [_SDataDetailMixin], /** @lends module:argos/_LegacySDataEditMixin.prototype */{
   requestData: function requestData() {
     const request = this.createRequest();
     if (request) {

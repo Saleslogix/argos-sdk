@@ -14,15 +14,19 @@
  */
 
 /**
- * @class argos.Convert
- * @classdesc Convert provides a number of type transformation functions.
- * @singleton
+ * @module argos/Convert
  */
 import lang from 'dojo/_base/lang';
 
 const convert = ICRMCommonSDK.convert;
 
-const __class = lang.setObject('argos.Convert', /** @lends argos.Convert */{
+/**
+ * @class
+ * @alias module:argos/Convert
+ * @classdesc Convert provides a number of type transformation functions.
+ * @static
+ */
+const __class = lang.setObject('argos.Convert', /** @lends module:argos/Convert */{
   /**
    * Takes a string and checks to see if it is `true` or `T`, else returns false
    * @param {String} value String bool value

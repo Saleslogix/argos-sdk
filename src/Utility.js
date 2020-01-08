@@ -13,28 +13,56 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Utility
+ */
 import lang from 'dojo/_base/lang';
 
 const util = ICRMCommonSDK.utility;
 
 /**
- * @class argos.Utility
+ * @class
+ * @alias module:argos/Utility
  * @classdesc Utility provides functions that are more javascript enhancers than application related code.
- * @singleton
  */
-const __class = lang.setObject('argos.Utility', /** @lends argos.Utility */{
+const __class = lang.setObject('argos.Utility', /** @lends module:argos/Utility */{
   /**
    * Replaces a single `"` with two `""` for proper SData query expressions.
    * @param {String} searchQuery Search expression to be escaped.
    * @return {String}
    */
   escapeSearchQuery: util.escapeSearchQuery,
+
+  /**
+   *
+   */
   memoize: util.memoize,
+
+  /**
+   *
+   */
   debounce: util.debounce,
+
+  /**
+   *
+   */
   getValue: util.getValue,
+
+  /**
+   *
+   */
   setValue: util.setValue,
+
+  /**
+   *
+   */
   expand: util.expand,
+
+  /**
+   *
+   */
   roundNumberTo: util.roundNumberTo,
+
   /**
    * Utility function to join fields within a Simplate template.
    */

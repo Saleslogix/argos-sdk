@@ -12,6 +12,10 @@ define('argos/I18n', ['module', 'exports', 'dojo/_base/lang'], function (module,
     };
   }
 
+  /**
+   * Gets the localization dictionary for a given id.
+   * @param {String} id
+   */
   function getResource(id) {
     var _window = window,
         defaultLocaleContext = _window.defaultLocaleContext,
@@ -51,5 +55,8 @@ define('argos/I18n', ['module', 'exports', 'dojo/_base/lang'], function (module,
      * limitations under the License.
      */
 
+  /**
+   * @module argos/I18n
+   */
   module.exports = exports['default'];
 });

@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
+/**
+  * @module argos/Application
+  */
 import util from './Utility';
 import ModelManager from './Models/Manager';
 import Toast from './Dialogs/Toast';
@@ -46,7 +51,7 @@ Function.prototype.bindDelegate = function bindDelegate(scope) { //eslint-disabl
 };
 
 /**
- * @alias argos.Application
+ * @alias module:argos/Application
  * @classdesc Application is a nexus that provides many routing and global application services that may be used
  * from anywhere within the app.
  *

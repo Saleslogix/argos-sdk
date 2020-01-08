@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/DateTimePicker
+ */
 import declare from 'dojo/_base/declare';
 import _WidgetBase from 'dijit/_WidgetBase';
 import _Templated from './_Templated';
@@ -20,9 +23,11 @@ import Calendar from './Calendar';
 import TimePicker from './TimePicker';
 
 /**
- * @class argos.DateTimePicker
+ * @class
+ * @alias module:argos/DateTimePicker
+ * @extends module:argos/_Templated
  */
-const __class = declare('argos.DateTimePicker', [_WidgetBase, _Templated], {
+const __class = declare('argos.DateTimePicker', [_WidgetBase, _Templated], /** @lends module:argos/DateTimePicker.prototype */{
   widgetTemplate: new Simplate([
     '<div class="datetime-select" data-dojo-attach-point="dateTimeNode">',
     '</div>',

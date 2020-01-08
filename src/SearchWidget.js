@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/SearchWidget
+ */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import _WidgetBase from 'dijit/_WidgetBase';
@@ -22,7 +25,8 @@ import getResource from './I18n';
 const resource = getResource('searchWidget');
 
 /**
- * @class argos.SearchWidget
+ * @class
+ * @alias module:argos/SearchWidget
  * @classdesc
  * Search Widget is an SData-enabled search component that {@link List List} uses by default for search.
  *
@@ -49,9 +53,9 @@ const resource = getResource('searchWidget');
  * `where=(TicketStatus eq 1) and (TicketUrgency gt 3) and (TicketId eq ("Bob") or TicketOwner like "Bob")
  *
  * See the [Defining Hash Tags guide](#!/guides/v2_beyond_the_guide_defining_hashtags) for more information and how it supports localization.
- * @mixins argos._Templated
+ * @extends module:argos/_Templated
  */
-const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], /** @lends argos.SearchWidget.prototype */ {
+const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], /** @lends module:argos/SearchWidget.prototype */ {
   /**
    * Provides a setter for HTML node attributes, namely the value for search text
    * @property {Object}

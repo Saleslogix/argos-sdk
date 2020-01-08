@@ -30,13 +30,18 @@ define('argos/_ConfigureBase', ['module', 'exports', 'dojo/_base/declare', './Dr
                                                         * limitations under the License.
                                                         */
 
+  /**
+   * @module argos/_ConfigureBase
+   */
+
   var editResource = (0, _I18n2.default)('editBase');
 
   /**
-   * @class argos._ConfigureBase
-   * @extends argos._ListBase
+   * @class
+   * @alias module:argos/_ConfigureBase
+   * @extends module:argos/DraggableList
    */
-  var __class = (0, _declare2.default)('argos._ConfigureBase', [_DraggableList2.default], /** @lends argos._ConfigureBase# */{
+  var __class = (0, _declare2.default)('argos._ConfigureBase', [_DraggableList2.default], /** @lends module:argos/_ConfigureBase.prototype */{
     // Templates
     itemTemplate: new Simplate(['<h4>', '<span>{%: $.$descriptor %}</span>', '</h4>', '<button type="button" class="btn-icon hide-focus draggable">\n      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-drag"></use>\n      </svg>\n    </button>']),
 

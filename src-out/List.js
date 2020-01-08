@@ -18,12 +18,12 @@ define('argos/List', ['module', 'exports', 'dojo/_base/declare', './_ListBase', 
   }
 
   /**
-   * @class argos.List
+   * @class
+   * @alias module:argos/List
    * @classdesc List extends _ListBase and mixes in _SDataListMixin to provide backwards compatibility for consumers.
-   * @extends argos._ListBase
-   * @requires argos._ListBase
-   * @requires argos._SDataListMixin
-   * @mixins argos._RelateViewdWidgetListMixin
+   * @extends module:argos/_ListBase
+   * @extends module:argos/_SDataListMixin
+   * @mixes module:argos/_RelateViewdWidgetListMixin
    */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
@@ -40,6 +40,9 @@ define('argos/List', ['module', 'exports', 'dojo/_base/declare', './_ListBase', 
    * limitations under the License.
    */
 
+  /**
+   * @module argos/List
+   */
   var __class = (0, _declare2.default)('argos.List', [_ListBase3.default, _SDataListMixin3.default, _RelatedViewWidgetListMixin2.default], {});
   exports.default = __class;
   module.exports = exports['default'];

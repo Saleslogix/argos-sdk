@@ -37,11 +37,16 @@ define('argos/Calendar', ['module', 'exports', 'dojo/_base/declare', './_ActionM
    */
 
   /**
-   * @class argos.Calendar
+   * @module argos/Calendar
    */
   var resource = (0, _I18n2.default)('calendar');
 
-  var __class = (0, _declare2.default)('argos.Calendar', [_WidgetBase3.default, _Templated3.default], {
+  /**
+   * @class
+   * @alias module:argos/Calendar
+   * @extends module:argos/_Templated
+   */
+  var __class = (0, _declare2.default)('argos.Calendar', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Calendar.prototype */{
     _ActionMixin: null,
     widgetTemplate: new Simplate(['<div id="{%= $.id %}" class="calendar">', '<div class="calendar-monthview monthview is-fullsize is-selectable">', '{%! $.calendarHeaderTemplate %}', '{%! $.calendarTableTemplate %}', '{%! $.calendarFooterTemplate %}', '</div>', '</div>']),
     calendarHeaderTemplate: new Simplate(['<div class="calendar__header">', '<button type="button" class="btn-icon prev hide-focus" data-action="decrementMonth">\n      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-previous-page"></use>\n      </svg>\n    </button>', '<div class="month" data-dojo-attach-point="monthNode" data-action="toggleMonthModal"></div>', '<div class="year" data-dojo-attach-point="yearNode" data-action="toggleYearModal"></div>', '<button type="button" class="btn-icon next hide-focus" data-action="incrementMonth">\n    <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-next-page"></use>\n    </svg>\n    </button>', '</div>']),

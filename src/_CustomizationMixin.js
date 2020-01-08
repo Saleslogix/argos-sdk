@@ -14,7 +14,16 @@
  */
 
 /**
- * @class argos._CustomizationMixin
+ * @module argos/_CustomizationMixin
+ */
+import declare from 'dojo/_base/declare';
+
+const customization = ICRMCustomizationSDK;
+
+
+/**
+ * @class
+ * @alias module:argos/_CustomizationMixin
  * @classdesc Customization Mixin is a general purpose Customization Engine. It takes a customization object and
  * a layout object and applies the customization defined to the layout.
  *
@@ -28,18 +37,37 @@
  * * `value`: `{Object[]}` - if inserting you may pass an array of items to create.
  *
  */
-import declare from 'dojo/_base/declare';
+const __class = declare('argos._CustomizationMixin', null, /** @lends module:argos/_CustomizationMixin.prototype */ {
 
-const customization = ICRMCustomizationSDK;
-
-const __class = declare('argos._CustomizationMixin', null, {
+  /**
+   * id of object taking on customizations. In most cases this will be the view's id.
+   * @type {String}
+   */
   id: null,
+
+  /**
+   * Name of customization set
+   * @type {String}
+   */
   customizationSet: null,
 
+  /**
+   * Retrieves registered customizations from a global registry (App)
+   * @param customizationSet
+   * @param customizationSubSet
+   * @param id
+   * @private
+   */
   _getCustomizationsFor: function _getCustomizationsFor(customizationSet, customizationSubSet, id) {
     const set = customizationSubSet ? `${customizationSet}/${customizationSubSet}` : customizationSet;
     return App.getCustomizationsFor(set, id);
   },
+
+  /**
+   * Applies registered customizations to the given layout.
+   * @param {Array} layout
+   * @param {String} customizationSubSet
+   */
   _createCustomizedLayout: function _createCustomizedLayout(layout, customizationSubSet) {
     const customizations = this._getCustomizationsFor(this.customizationSet, customizationSubSet, this.id);
     if (this.enableCustomizations) {

@@ -13,6 +13,10 @@
  * limitations under the License.
  */
 
+
+/**
+ * @module argos/_ConfigureBase
+ */
 import declare from 'dojo/_base/declare';
 import DraggableList from './DraggableList';
 import getResource from './I18n';
@@ -22,10 +26,11 @@ const resource = getResource('configureBase');
 const editResource = getResource('editBase');
 
 /**
- * @class argos._ConfigureBase
- * @extends argos._ListBase
+ * @class
+ * @alias module:argos/_ConfigureBase
+ * @extends module:argos/DraggableList
  */
-const __class = declare('argos._ConfigureBase', [DraggableList], /** @lends argos._ConfigureBase# */{
+const __class = declare('argos._ConfigureBase', [DraggableList], /** @lends module:argos/_ConfigureBase.prototype */{
   // Templates
   itemTemplate: new Simplate([
     '<h4>',

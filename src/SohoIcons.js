@@ -12,7 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * @module argos/SohoIcons
+ */
 
+/**
+ * Renders a div with all the soho svg icons into the given domnode.
+ * @param {DOMNode} element
+ */
 export function render(element = 'body') {
   $(element).prepend(`
   <div class="svg-icons"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svg-icons">

@@ -22,7 +22,9 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
   var resource = (0, _I18n2.default)('timePicker');
 
   /**
-   * @class argos.TimePicker
+   * @class
+   * @alias module:argos/TimePicker
+   * @extends module:argos/_Templated
    */
   /* Copyright 2017 Infor
    *
@@ -39,7 +41,10 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.TimePicker', [_WidgetBase3.default, _Templated3.default], {
+  /**
+   * @module argos/TimePicker
+   */
+  var __class = (0, _declare2.default)('argos.TimePicker', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/TimePicker.prototype */{
     widgetTemplate: new Simplate(['<div class="time-select panel">', '<div class="time-parts">', '{%! $.hourSelectTemplate %}', ' : ', '{%! $.minuteSelectTemplate %}', '{%! $.meridiemSelectTemplate %}', '</div>', '{% if ($.showSetTime) { %}', '<div class="button tertiary">{%= $.setTimeText %}</div>', '{% } %}', '</div>']),
     hourSelectTemplate: new Simplate(['<div data-dojo-attach-point="hourNode">', '</div>']),
     minuteSelectTemplate: new Simplate(['<div data-dojo-attach-point="minuteNode">', '</div>']),

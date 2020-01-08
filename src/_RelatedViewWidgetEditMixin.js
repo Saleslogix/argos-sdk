@@ -13,14 +13,19 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/_RelatedViewWidgetEditMixin
+ */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import RelatedViewManager from './RelatedViewManager';
 
 /**
- * @class argos._RelatedViewWidgetEditMixin
+ * @class
+ * @mixin
+ * @alias module:argos/_RelatedViewWidgetEditMixin
  */
-const __class = declare('argos._RelatedViewWidgetEditMixin', null, /** @lends argos._RelatedViewWidgetEditMixin# */{
+const __class = declare('argos._RelatedViewWidgetEditMixin', null, /** @lends module:argos/_RelatedViewWidgetEditMixin.prototype */{
   cls: null,
   /**
    * @property {Simplate}

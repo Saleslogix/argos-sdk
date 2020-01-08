@@ -20,9 +20,11 @@ define('argos/DateTimePicker', ['module', 'exports', 'dojo/_base/declare', 'diji
   }
 
   /**
-   * @class argos.DateTimePicker
+   * @class
+   * @alias module:argos/DateTimePicker
+   * @extends module:argos/_Templated
    */
-  var __class = (0, _declare2.default)('argos.DateTimePicker', [_WidgetBase3.default, _Templated3.default], {
+  var __class = (0, _declare2.default)('argos.DateTimePicker', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/DateTimePicker.prototype */{
     widgetTemplate: new Simplate(['<div class="datetime-select" data-dojo-attach-point="dateTimeNode">', '</div>']),
 
     _calendarNode: null,
@@ -106,6 +108,9 @@ define('argos/DateTimePicker', ['module', 'exports', 'dojo/_base/declare', 'diji
        * limitations under the License.
        */
 
+  /**
+   * @module argos/DateTimePicker
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

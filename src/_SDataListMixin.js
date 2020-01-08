@@ -14,11 +14,7 @@
  */
 
 /**
- * @class argos._SDataListMixin
- * @classdesc Enables SData for the List view.
- * Adds the SData store to the view and exposes the needed properties for creating a Feed request.
- * @requires argos.SData
- * @requires argos.Utility
+ * @module argos/_SDataListMixin
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
@@ -28,7 +24,14 @@ import SData from './Store/SData';
 import utility from './Utility';
 import MODEL_TYPES from './Models/Types';
 
-const __class = declare('argos._SDataListMixin', null, /** @lends argos._SDataListMixin# */{
+/**
+ * @class
+ * @mixin
+ * @alias module:argos/_SDataListMixin
+ * @classdesc Enables SData for the List view.
+ * Adds the SData store to the view and exposes the needed properties for creating a Feed request.
+ */
+const __class = declare('argos._SDataListMixin', null, /** @lends module:argos/_SDataListMixin.prototype */{
   /**
    * @property request Object SData request passed into the store. Optional.
    */

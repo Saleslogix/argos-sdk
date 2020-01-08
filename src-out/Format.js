@@ -30,15 +30,20 @@ define('argos/Format', ['module', 'exports', 'dojo/_base/lang', 'dojo/string', '
                                       * limitations under the License.
                                       */
 
+  /**
+    * @module argos/Format
+    */
+
   var resource = (0, _I18n2.default)('format');
   var dtFormatResource = (0, _I18n2.default)('formatDateTimeFormat');
 
   /**
-   * @class argos.Format
+   * @class
+   * @alias module:argos/Format
    * @classdesc Format is a singleton that provides various formatting functions.
-   * @singleton
+   * @static
    */
-  var __class = _lang2.default.setObject('argos.Format', /** @lends argos.Format */{
+  var __class = _lang2.default.setObject('argos.Format', /** @lends module:argos/Format */{
     /**
      * @property {String}
      * Text used in {@link #yesNo yesNo} formatter for true values

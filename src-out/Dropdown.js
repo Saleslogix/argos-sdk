@@ -16,9 +16,11 @@ define('argos/Dropdown', ['module', 'exports', 'dojo/_base/declare', 'dijit/_Wid
   }
 
   /**
-   * @class argos.Dropdown
+   * @class
+   * @alias module:argos/Dropdown
+   * @extends module:argos/_Templated
    */
-  var __class = (0, _declare2.default)('argos.Dropdown', [_WidgetBase3.default, _Templated3.default], {
+  var __class = (0, _declare2.default)('argos.Dropdown', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Dropdown.prototype */{
     widgetTemplate: new Simplate(['<div class="field">', '<label for="{%= $.id %}_dropdownNode" class="label">{%: $.label %}</label>', '<select id="{%= $.id %}_dropdownNode" class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownSelect"></select>', '</div>']),
     selectItemTemplate: new Simplate(['<option value="{%= $.value %}">', '{% if ($.text) { %}', '{%= $.text %}', '{% } else { %}', '{%= $.value %}', '{% } %}', '</option>']),
 
@@ -125,6 +127,9 @@ define('argos/Dropdown', ['module', 'exports', 'dojo/_base/declare', 'dijit/_Wid
        * limitations under the License.
        */
 
+  /**
+   * @module argos/Dropdown
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

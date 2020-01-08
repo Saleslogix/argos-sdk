@@ -13,12 +13,9 @@
  * limitations under the License.
  */
 
+
 /**
- * @class argos._SDataDetailMixin
- *
- * @classdesc Enables SData for the Detail view.
- * Adds the SData store to the view and exposes the needed properties for creating a Entry request.
- * @requires argos.SData
+ * @module argos/_SDataDetailMixin
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
@@ -27,7 +24,16 @@ import utility from './Utility';
 import SData from './Store/SData';
 import MODEL_TYPES from './Models/Types';
 
-const __class = declare('argos._SDataDetailMixin', null, /** @lends argos._SDataDetailMixin# */{
+
+/**
+ * @class
+ * @mixin
+ * @alias module:argos/_SDataDetailMixin
+ *
+ * @classdesc Enables SData for the Detail view.
+ * Adds the SData store to the view and exposes the needed properties for creating a Entry request.
+ */
+const __class = declare('argos._SDataDetailMixin', null, /** @lends module:argos/_SDataDetailMixin.prototype */{
 
   /**
    * @cfg {String} resourceKind

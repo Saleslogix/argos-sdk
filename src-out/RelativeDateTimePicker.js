@@ -38,12 +38,19 @@ define('argos/RelativeDateTimePicker', ['module', 'exports', 'dojo/_base/declare
                                                                  * limitations under the License.
                                                                  */
 
+  /**
+   * @module argos/RelativeDateTimePicker
+   */
+
   var dtFormatResource = (0, _I18n2.default)('relativeDateTimePickerDateTimeFormat');
 
   /**
-   * @class argos.DateTimePicker
+   * @class
+   * @alias module:argos/RelativeDateTimePicker
+   * @extends module:argos/_Templated
+   * @mixes module:argos/_CustomizationMixin
    */
-  var __class = (0, _declare2.default)('argos.RelativeDateTimePicker', [_WidgetBase3.default, _Templated3.default, _CustomizationMixin3.default], {
+  var __class = (0, _declare2.default)('argos.RelativeDateTimePicker', [_WidgetBase3.default, _Templated3.default, _CustomizationMixin3.default], /** @lends module:argos/RelativeDateTimePicker.prototype */{
     _ActionMixin: null,
     widgetTemplate: new Simplate(['<div class="relative-datetime-select" data-dojo-attach-point="relativeDateTimeNode">', '<div class="relative-datetime-select__title">{%: $.titleText %}</div>', '<ul class="simpleList" data-dojo-attach-point="listNode"></ul>', '</div>']),
     listItemTemplate: new Simplate(['<li class="simpleList__item" data-time="{%: $.time %}" data-action="select">', '<div class="item__text--left"><span>{%: $.textLeft %}</span></div>', '<div class="item__text--right"><span>{%: $.textRight %}</span></div>', '</li>']),

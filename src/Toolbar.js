@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Toolbar
+ */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import _WidgetBase from 'dijit/_WidgetBase';
@@ -20,12 +23,13 @@ import _ActionMixin from './_ActionMixin';
 import _Templated from './_Templated';
 
 /**
- * @class argos.Toolbar
+ * @class
+ * @alias module:argos/Toolbar
  * @classdesc Toolbar is a base toolbar class that provides basic rendering of the bar, adding toolbar items and binding their invokacations.
- * @mixins argos._ActionMixin
- * @mixins argos._Templated
+ * @mixes module:argos/_ActionMixin
+ * @extends module:argos/_Templated
  */
-const __class = declare('argos.Toolbar', [_WidgetBase, _Templated], /** @lends argos.Toolbar# */{
+const __class = declare('argos.Toolbar', [_WidgetBase, _Templated], /** @lends module:argos/Toolbar.prototype */{
   _ActionMixin: null,
   /**
    * @property {Simplate}

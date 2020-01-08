@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/ErrorManager
+ */
 import lang from 'dojo/_base/lang';
 import connect from 'dojo/_base/connect';
 import utility from './Utility';
@@ -27,12 +30,14 @@ try {
     errors = JSON.parse(window.localStorage.getItem('errorlog')) || [];
   }
 } catch (e) {}// eslint-disable-line
+
 /**
- * @class argos.ErrorManager
+ * @class
+ * @alias module:argos/ErrorManager
  * @classdesc ErrorManager is a singleton that parses and stores SData error responses into localStorage.
- * @singleton
+ * @static
  */
-const __class = lang.setObject('argos.ErrorManager', /** @lends argos.ErrorManager# */{
+const __class = lang.setObject('argos.ErrorManager', /** @lends module:argos/ErrorManager */{
   // Localization
 
   /**

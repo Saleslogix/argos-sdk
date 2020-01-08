@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/SelectionModel
+ */
 import lang from 'dojo/_base/lang';
 import declare from 'dojo/_base/declare';
 import getResource from './I18n';
@@ -20,11 +23,12 @@ import getResource from './I18n';
 const resource = getResource('selectionModel');
 
 /**
- * @class argos.SelectionModel
+ * @class
+ * @alias module:argos/SelectionModel
  * @classdesc SelectionModel provides a simple in-memory store for data that fires events
  * when a item is selected (added) or deselected (removed)
  */
-const __class = declare('argos.SelectionModel', null, /** @lends argos.SelectionModel# */{
+const __class = declare('argos.SelectionModel', null, /** @lends module:argos/SelectionModel.prototype */{
   // Localization
   requireSelectionText: resource.requireSelectionText,
 

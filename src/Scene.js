@@ -13,6 +13,14 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Scene
+ */
+
+/**
+  * @class
+  * @alias module:argos/Scene
+  */
 class Scene {
   constructor(store) {
     this.viewset = [];

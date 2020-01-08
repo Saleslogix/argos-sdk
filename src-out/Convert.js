@@ -11,29 +11,33 @@ define('argos/Convert', ['module', 'exports', 'dojo/_base/lang'], function (modu
     };
   }
 
-  var convert = ICRMCommonSDK.convert; /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
-                                        *
-                                        * Licensed under the Apache License, Version 2.0 (the "License");
-                                        * you may not use this file except in compliance with the License.
-                                        * You may obtain a copy of the License at
-                                        *
-                                        *     http://www.apache.org/licenses/LICENSE-2.0
-                                        *
-                                        * Unless required by applicable law or agreed to in writing, software
-                                        * distributed under the License is distributed on an "AS IS" BASIS,
-                                        * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                        * See the License for the specific language governing permissions and
-                                        * limitations under the License.
-                                        */
+  var convert = ICRMCommonSDK.convert;
 
   /**
-   * @class argos.Convert
+   * @class
+   * @alias module:argos/Convert
    * @classdesc Convert provides a number of type transformation functions.
-   * @singleton
+   * @static
+   */
+  /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *     http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
    */
 
-
-  var __class = _lang2.default.setObject('argos.Convert', /** @lends argos.Convert */{
+  /**
+   * @module argos/Convert
+   */
+  var __class = _lang2.default.setObject('argos.Convert', /** @lends module:argos/Convert */{
     /**
      * Takes a string and checks to see if it is `true` or `T`, else returns false
      * @param {String} value String bool value

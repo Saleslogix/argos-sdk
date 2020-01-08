@@ -13,13 +13,18 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/TabWidget
+ */
 import declare from 'dojo/_base/declare';
 import _Templated from './_Templated';
 
 /**
- * @class argos.TabWidget
+ * @class
+ * @alias module:argos/TabWidget
+ * @extends module:argos/_Templated
  */
-const __class = declare('argos.TabWidget', [_Templated], /** @lends argos.TabWidget# */{
+const __class = declare('argos.TabWidget', [_Templated], /** @lends module:argos/TabWidget.prototype */{
   /**
    * @property {Simplate}
    * HTML that defines a new tab list

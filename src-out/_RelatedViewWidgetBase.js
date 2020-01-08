@@ -22,7 +22,9 @@ define('argos/_RelatedViewWidgetBase', ['module', 'exports', 'dojo/_base/declare
   var resource = (0, _I18n2.default)('relatedViewWidgetBase');
 
   /**
-   * @class argos._RelatedViewWidgetBase
+   * @class
+   * @alias module:argos/_RelatedViewWidgetBase
+   * @extends module:argos/_Templated
    */
   /* Copyright 2017 Infor
    *
@@ -39,7 +41,10 @@ define('argos/_RelatedViewWidgetBase', ['module', 'exports', 'dojo/_base/declare
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos._RelatedViewWidgetBase', [_WidgetBase3.default, _Templated3.default], /** @lends argos._RelatedViewWidgetBase# */{
+  /**
+   * @module argos/_RelatedViewWidgetBase
+   */
+  var __class = (0, _declare2.default)('argos._RelatedViewWidgetBase', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/_RelatedViewWidgetBase.prototype */{
     cls: null,
     loadingText: resource.loadingText,
     /**

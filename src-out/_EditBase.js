@@ -35,35 +35,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
 
   var resource = (0, _I18n2.default)('editBase');
 
-  /**
-   * @class argos._EditBase
-   * @classdesc An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
-   * of a layout similar to Detail rows but are instead Edit fields.
-   *
-   * A unique part of the Edit view is it's lifecycle in comparison to Detail. The Detail view is torn
-   * down and rebuilt with every record. With Edit the form is emptied (HTML left in-tact) and new values
-   * are applied to the fields.
-   *
-   * Since Edit Views are typically the "last" view (you always come from a List or Detail view) it warrants
-   * special attention to the navigation options that are passed, as they greatly control how the Edit view
-   * functions and operates.
-   * @extends argos.View
-   * @requires argos.Utility
-   * @requires argos.Fields.ErrorManager
-   * @requires argos.Fields.FieldManager
-   * @requires argos.Fields.BooleanField
-   * @requires argos.Fields.DecimalField
-   * @requires argos.Fields.DurationField
-   * @requires argos.Fields.HiddenField
-   * @requires argos.Fields.LookupField
-   * @requires argos.Fields.NoteField
-   * @requires argos.Fields.PhoneField
-   * @requires argos.Fields.SelectField
-   * @requires argos.Fields.SignatureField
-   * @requires argos.Fields.TextAreaField
-   * @requires argos.Fields.TextField
-   */
-  var __class = (0, _declare2.default)('argos._EditBase', [_View2.default], /** @lends argos._EditBase# */{
+  var __class = (0, _declare2.default)('argos._EditBase', [_View2.default], /** @lends module:argos/_EditBase */{
     /**
      * @property {Object}
      * Creates a setter map to html nodes, namely:
@@ -288,10 +260,22 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * Text shown in the top toolbar cancel button
      */
     cancelTooltipText: resource.cancelTooltipText,
+
     /**
-     * Extends constructor to initialze `this.fields` to {}
-     * @param o
-     * @constructs
+     * @class
+     * @alias module:argos/_EditBase
+     * @classdesc An Edit View is a dual purpose view - used for both Creating and Updating records. It is comprised
+     * of a layout similar to Detail rows but are instead Edit fields.
+     *
+     * A unique part of the Edit view is it's lifecycle in comparison to Detail. The Detail view is torn
+     * down and rebuilt with every record. With Edit the form is emptied (HTML left in-tact) and new values
+     * are applied to the fields.
+     *
+     * Since Edit Views are typically the "last" view (you always come from a List or Detail view) it warrants
+     * special attention to the navigation options that are passed, as they greatly control how the Edit view
+     * functions and operates.
+     * @extends module:argos/View
+     * @param {Object} options
      */
     constructor: function constructor() /* o*/{
       this.fields = {};

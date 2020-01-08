@@ -25,34 +25,27 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
     };
   }
 
-  var resource = (0, _I18n2.default)('view');
+  var resource = (0, _I18n2.default)('view'); /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+                                               *
+                                               * Licensed under the Apache License, Version 2.0 (the "License");
+                                               * you may not use this file except in compliance with the License.
+                                               * You may obtain a copy of the License at
+                                               *
+                                               *     http://www.apache.org/licenses/LICENSE-2.0
+                                               *
+                                               * Unless required by applicable law or agreed to in writing, software
+                                               * distributed under the License is distributed on an "AS IS" BASIS,
+                                               * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                               * See the License for the specific language governing permissions and
+                                               * limitations under the License.
+                                               */
 
   /**
-   * @class argos.View
-   * @classdesc View is the root Class for all views and incorporates all the base features,
-   * events, and hooks needed to successfully render, hide, show, and transition.
-   *
-   * All Views are dijit Widgets, namely utilizing its: widgetTemplate, connections, and attributeMap
-   * @mixins argos._ActionMixin
-   * @mixins argos._CustomizationMixin
-   * @mixins argos._Templated
-   */
-  /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
-   *
-   * Licensed under the Apache License, Version 2.0 (the "License");
-   * you may not use this file except in compliance with the License.
-   * You may obtain a copy of the License at
-   *
-   *     http://www.apache.org/licenses/LICENSE-2.0
-   *
-   * Unless required by applicable law or agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
-   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   * See the License for the specific language governing permissions and
-   * limitations under the License.
-   */
+    * @module argos/View
+    */
 
-  var __class = (0, _declare2.default)('argos.View', [_WidgetBase3.default, _CustomizationMixin3.default, _Templated3.default], /** @lends argos.View# */{
+
+  var __class = (0, _declare2.default)('argos.View', [_WidgetBase3.default, _CustomizationMixin3.default, _Templated3.default], /** @lends module:argos/View.prototype */{
 
     _ActionMixin: null,
     postCreate: function postCreate() {
@@ -70,6 +63,8 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
     },
     /**
      * This map provides quick access to HTML properties, most notably the selected property of the container
+     * @memberof module:argos/View
+     * @static
      */
     attributeMap: {
       title: {
@@ -85,7 +80,9 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
     },
     /**
      * The widgetTemplate is a Simplate that will be used as the main HTML markup of the View.
-     * @property {Simplate}
+     * @property {external:Simplate}
+     * @memberof module:argos/View
+     * @static
      */
     widgetTemplate: new Simplate(['<ul id="{%= $.id %}" data-title="{%= $.titleText %}" class="overthrow {%= $.cls %}">', '</ul>']),
     _loadConnect: null,
@@ -108,7 +105,7 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
      */
     security: null,
     /**
-     * A reference to the globa App object
+     * A reference to the global App object
      */
     app: null,
 
@@ -135,6 +132,8 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
     /**
      * @property {Object}
      * Localized error messages. One general error message, and messages by HTTP status code.
+     * @memberof module:argos/View
+     * @static
      */
     errorText: {
       general: resource.general,
@@ -143,6 +142,8 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
     /**
      * @property {Object}
      * Http Error Status codes. See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+     * @memberof module:argos/View
+     * @static
      */
     HTTP_STATUS: {
       BAD_REQUEST: 400,
@@ -170,6 +171,20 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
      *
      */
     errorHandlers: null,
+
+    /**
+     * @class
+     * @alias module:argos/View
+     * @classdesc View is the root Class for all views and incorporates all the base features,
+     * events, and hooks needed to successfully render, hide, show, and transition.
+     * All Views are dijit Widgets, namely utilizing its: widgetTemplate, connections, and attributeMap
+     *
+     * @mixes module:argos/_ActionMixin
+     * @mixes module:argos/_CustomizationMixin
+     * @mixes module:argos/_Templated
+     * @param {Object} options
+     * @param {module:argos/Application} options.app Instance of the application
+     */
     constructor: function constructor(options) {
       this.app = options && options.app || window.App;
     },

@@ -20,13 +20,12 @@ define('argos/Detail', ['module', 'exports', 'dojo/_base/declare', './_DetailBas
   }
 
   /**
-   * @class argos.Detail
+   * @class
    * @classdesc Extends _DetailBase and mixes in _SDataDetailMixin to provide backwards compatibility to consumers.
-   * @extends argos._DetailBase
-   * @requires argos._DetailBase
-   * @requires argos._SDataDetailMixin
-   * @mixins argos._SDataDetailMixin
-   * @mixins argos._RelatedViewWidgetDetailMixin
+   * @alias module:argos/Detail
+   * @extends module:argos/_DetailBase
+   * @mixes module:argos/_SDataDetailMixin
+   * @mixes module:argos/_RelatedViewWidgetDetailMixin
    */
   var __class = (0, _declare2.default)('argos.Detail', [_DetailBase3.default, _SDataDetailMixin3.default, _RelatedViewWidgetDetailMixin2.default, _DetailOfflineMixin3.default], {}); /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
                                                                                                                                                                                        *
@@ -43,6 +42,9 @@ define('argos/Detail', ['module', 'exports', 'dojo/_base/declare', './_DetailBas
                                                                                                                                                                                        * limitations under the License.
                                                                                                                                                                                        */
 
+  /**
+   * @module argos/Detail
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

@@ -13,19 +13,21 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/DraggableList
+ */
 import declare from 'dojo/_base/declare';
 import _ListBase from './_ListBase';
 import _DraggableBase from './_DraggableBase';
 
 /**
- * @class argos.DraggableList
- * @classdesc List extends List and _DraggableBase to make the list draggable
- * @extends argos.List
- * @extends argos._DraggableBase
- * @requires argos.List
- * @requires argos._DraggableBase
+ * @class
+ * @alias module:argos/DraggableList
+ * @classdesc List extends _ListBase and _DraggableBase to make the list draggable
+ * @extends module:argos/_ListBase
+ * @extends module:argos/_DraggableBase
  */
-const __class = declare('argos.DraggableList', [_ListBase, _DraggableBase], {
+const __class = declare('argos.DraggableList', [_ListBase, _DraggableBase], /** @lends module:argos/DraggableList.prototype */{
   isCardView: false,
   liRowTemplate: new Simplate([
     '<li role="option" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}" class="list-item-draggable">',

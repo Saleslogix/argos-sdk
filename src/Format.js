@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+  * @module argos/Format
+  */
 import lang from 'dojo/_base/lang';
 import string from 'dojo/string';
 import getResource from './I18n';
@@ -23,11 +26,12 @@ const resource = getResource('format');
 const dtFormatResource = getResource('formatDateTimeFormat');
 
 /**
- * @class argos.Format
+ * @class
+ * @alias module:argos/Format
  * @classdesc Format is a singleton that provides various formatting functions.
- * @singleton
+ * @static
  */
-const __class = lang.setObject('argos.Format', /** @lends argos.Format */{
+const __class = lang.setObject('argos.Format', /** @lends module:argos/Format */{
   /**
    * @property {String}
    * Text used in {@link #yesNo yesNo} formatter for true values

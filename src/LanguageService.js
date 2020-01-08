@@ -13,23 +13,50 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/LanguageService
+ */
 import declare from 'dojo/_base/declare';
 
-const __class = declare('argos.LanguageService', [], {
+/**
+ * @class
+ * @alias module:argos/LanguageService
+ */
+const __class = declare('argos.LanguageService', [], /** @lends module:argos/LanguageService.prototype */{
+
+  /**
+   *
+   */
   getLanguage: function getLanguage() {
     return window.localStorage && window.localStorage.getItem('language');
   },
+
+  /**
+   *
+   */
   getRegion: function getRegion() {
     return window.localStorage && window.localStorage.getItem('region');
   },
+
+  /**
+   *
+   */
   setLanguage: function setLanguage(value) {
     const language = this.normalizeLocale(value) || value;
     return window.localStorage && window.localStorage.setItem('language', language);
   },
+
+  /**
+   *
+   */
   setRegion: function setRegion(value) {
     const region = this.normalizeLocale(value) || value;
     return window.localStorage && window.localStorage.setItem('region', region);
   },
+
+  /**
+   *
+   */
   normalizeLocale: function normalizeLanguageCode(locale) {
     let language = locale;
     if (language.length > 2) {
@@ -42,9 +69,16 @@ const __class = declare('argos.LanguageService', [], {
     }
     return language;
   },
+  /**
+   * Gets a list of supported locales.
+   */
   getLanguages: function getLanguages() {
     return window.supportedLocales;
   },
+
+  /**
+   *
+   */
   bestAvailableLocale: function BestAvailableLocale(availableLocales, locale) {
     let candidate = this.normalizeLocale(locale);
     if (availableLocales.indexOf(candidate) !== -1) {

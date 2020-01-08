@@ -14,7 +14,8 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
   }
 
   /**
-   * @class argos._DraggableBase
+   * @class
+   * @alias module:argos/_DraggableBase
    * @classdesc A base class used to enable draggable features
    */
   /* Copyright 2017 Infor
@@ -32,7 +33,10 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos._DraggableBase', null, {
+  /**
+   * @module argos/_DraggableBase
+   */
+  var __class = (0, _declare2.default)('argos._DraggableBase', null, /** @lends module:argos/_DraggableBase.prototype */{
     _container: null,
     _isScrolling: null,
     _scrollingTouch: null,

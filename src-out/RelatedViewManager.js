@@ -15,22 +15,31 @@ define('argos/RelatedViewManager', ['module', 'exports', 'dojo/_base/declare', '
     };
   }
 
-  var _widgetTypes = {}; /* Copyright 2017 Infor
-                          *
-                          * Licensed under the Apache License, Version 2.0 (the "License");
-                          * you may not use this file except in compliance with the License.
-                          * You may obtain a copy of the License at
-                          *
-                          *    http://www.apache.org/licenses/LICENSE-2.0
-                          *
-                          * Unless required by applicable law or agreed to in writing, software
-                          * distributed under the License is distributed on an "AS IS" BASIS,
-                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                          * See the License for the specific language governing permissions and
-                          * limitations under the License.
-                          */
+  var _widgetTypes = {};
 
-  var __class = (0, _declare2.default)('argos.RelatedViewManager', null, {
+  /**
+   * @class
+   * @alias module:argos/RelatedViewManager
+   */
+  /* Copyright 2017 Infor
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *    http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+   */
+
+  /**
+   * @module argos/RelatedViewManager
+   */
+  var __class = (0, _declare2.default)('argos.RelatedViewManager', null, /** @lends module:argos/RelatedViewManager.prototype */{
     id: 'relatedViewManager',
     relatedViews: null,
     relatedViewConfig: null,
@@ -41,6 +50,10 @@ define('argos/RelatedViewManager', ['module', 'exports', 'dojo/_base/declare', '
       _lang2.default.mixin(this, options);
       this.registerType('default', _RelatedViewWidgetBase2.default);
     },
+
+    /**
+     *
+     */
     destroyViews: function destroyViews() {
       for (var relatedViewId in this.relatedViews) {
         if (this.relatedViews.hasOwnProperty(relatedViewId)) {
@@ -50,9 +63,17 @@ define('argos/RelatedViewManager', ['module', 'exports', 'dojo/_base/declare', '
 
       this.relatedViews = {};
     },
+
+    /**
+     *
+     */
     registerType: function registerType(widgetTypeName, ctor) {
       this.widgetTypes[widgetTypeName] = ctor;
     },
+
+    /**
+     *
+     */
     getWidgetType: function getWidgetType(widgetTypeName) {
       var widgetType = this.widgetTypes[widgetTypeName];
       if (!widgetType) {
@@ -60,6 +81,10 @@ define('argos/RelatedViewManager', ['module', 'exports', 'dojo/_base/declare', '
       }
       return widgetType;
     },
+
+    /**
+     *
+     */
     addView: function addView(entry, contentNode, owner) {
       try {
         if (contentNode) {

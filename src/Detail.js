@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Detail
+ */
 import declare from 'dojo/_base/declare';
 import _DetailBase from './_DetailBase';
 import _SDataDetailMixin from './_SDataDetailMixin';
@@ -20,13 +23,12 @@ import _RelatedWidgetDetailMixin from './_RelatedViewWidgetDetailMixin';
 import _DetailOfflineMixin from './Offline/_DetailOfflineMixin';
 
 /**
- * @class argos.Detail
+ * @class
  * @classdesc Extends _DetailBase and mixes in _SDataDetailMixin to provide backwards compatibility to consumers.
- * @extends argos._DetailBase
- * @requires argos._DetailBase
- * @requires argos._SDataDetailMixin
- * @mixins argos._SDataDetailMixin
- * @mixins argos._RelatedViewWidgetDetailMixin
+ * @alias module:argos/Detail
+ * @extends module:argos/_DetailBase
+ * @mixes module:argos/_SDataDetailMixin
+ * @mixes module:argos/_RelatedViewWidgetDetailMixin
  */
 const __class = declare('argos.Detail', [_DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin, _DetailOfflineMixin], {});
 

@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/_RelatedViewWidgetBase
+ */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import _WidgetBase from 'dijit/_WidgetBase';
@@ -22,9 +25,11 @@ import getResource from './I18n';
 const resource = getResource('relatedViewWidgetBase');
 
 /**
- * @class argos._RelatedViewWidgetBase
+ * @class
+ * @alias module:argos/_RelatedViewWidgetBase
+ * @extends module:argos/_Templated
  */
-const __class = declare('argos._RelatedViewWidgetBase', [_WidgetBase, _Templated], /** @lends argos._RelatedViewWidgetBase# */{
+const __class = declare('argos._RelatedViewWidgetBase', [_WidgetBase, _Templated], /** @lends module:argos/_RelatedViewWidgetBase.prototype */{
   cls: null,
   loadingText: resource.loadingText,
   /**

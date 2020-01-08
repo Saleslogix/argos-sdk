@@ -14,7 +14,9 @@ define('argos/_Templated', ['module', 'exports', 'dojo/_base/declare', 'dijit/_T
   }
 
   /**
-   * @class argos._Templated
+   * @class
+   * @alias module:argos/_Templated
+   * @mixin
    * @classdesc _Templated serves as an override for dijit Widgets to enable the use of
    * Simplates for templates it also holds the function to pull the resource strings from l20n.
    */
@@ -33,11 +35,15 @@ define('argos/_Templated', ['module', 'exports', 'dojo/_base/declare', 'dijit/_T
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos._Templated', [_TemplatedMixin3.default], /** @lends argos._Templated# */{
+  /**
+   * @module argos/_Templated
+   */
+  var __class = (0, _declare2.default)('argos._Templated', [_TemplatedMixin3.default], /** @lends module:argos/_Templated.prototype */{
 
     _stringRepl: function _stringRepl(tmpl) {
       return tmpl;
     },
+
     /**
      * Processes `this.widgetTemplate` or `this.contentTemplate`
      */
