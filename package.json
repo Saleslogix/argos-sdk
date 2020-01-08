@@ -7,7 +7,6 @@
   },
   "scripts": {
     "test": "npm run build && grunt test",
-    "testbasic": "grunt test:basic",
     "build": "babel src --out-dir src-out",
     "build:watch": "babel src --out-dir src-out --watch",
     "less": "grunt less",
@@ -27,15 +26,14 @@
     "babel-preset-es2015-without-strict": "^0.0.4",
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
-    "eslint": "^6.7.2",
+    "eslint": "^6.8.0",
     "grunt": "^1.0.4",
-    "grunt-argos-deps": "git+https://git@github.com/Saleslogix/grunt-argos-deps.git#v0.1.4",
+    "grunt-argos-deps": "git+https://git@github.com/Saleslogix/grunt-argos-deps.git#v0.1.5",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-connect": "^2.1.0",
     "grunt-contrib-jasmine": "^2.1.0",
     "grunt-contrib-less": "^2.0.0",
-    "grunt-shell": "^3.0.1",
-    "grunt-template-jasmine-istanbul": "^0.5.0"
+    "grunt-shell": "^3.0.1"
   },
   "dependencies": {}
 }
