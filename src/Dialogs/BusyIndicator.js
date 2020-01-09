@@ -13,18 +13,22 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Dialogs/BusyIndicator
+ */
 import declare from 'dojo/_base/declare';
 import _WidgetBase from 'dijit/_WidgetBase';
-
 import _Templated from '../_Templated';
 import getResource from '../I18n';
 
 const resource = getResource('busyIndicator');
 
 /**
- * @class argos.Dialogs.BusyIndicator
+ * @class
+ * @alias module:argos/Dialogs/BusyIndicator
+ * @extends module:argos/_Templated
  */
-const __class = declare('argos.Dialogs.BusyIndicator', [_WidgetBase, _Templated], /** @lends argos.Dialogs.BusyIndicator# */{
+const __class = declare('argos.Dialogs.BusyIndicator', [_WidgetBase, _Templated], /** @lends module:argos/Dialogs/BusyIndicator.prototype */{
   widgetTemplate: new Simplate([
     '<div class="busyIndicator__container {%: $.containerClass %}" aria-live="polite" data-dojo-attach-point="busyIndicatorNode">',
     '{%! $.busyIndicatorTemplate %}',

@@ -13,6 +13,10 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/actions
+ */
+
 // action Types
 export const SET_MAX_VIEWPORTS = 'SET_MAX_VIEWPORTS';
 export const INSERT_HISTORY = 'INSERT_HISTORY';
@@ -34,7 +38,9 @@ An action MUST NOT
 + include properties other than type, payload, error, and meta.
 */
 
-// creators
+/**
+ * @param {Number} max
+ */
 export function setMaxViewPorts(max) {
   return {
     type: SET_MAX_VIEWPORTS,
@@ -44,6 +50,9 @@ export function setMaxViewPorts(max) {
   };
 }
 
+/**
+ * @param {Object} data
+ */
 export function insertHistory(data) {
   return {
     type: INSERT_HISTORY,

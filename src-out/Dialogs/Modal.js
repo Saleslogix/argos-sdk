@@ -22,7 +22,9 @@ define('argos/Dialogs/Modal', ['module', 'exports', 'dojo/_base/declare', 'dojo/
   var resource = (0, _I18n2.default)('modal');
 
   /**
-   * @class argos.Dialogs.Modal
+   * @class
+   * @alias module:argos/Dialogs/Modal
+   * @extends module:argos/_Templated
    */
   /* Copyright 2017 Infor
    *
@@ -39,7 +41,10 @@ define('argos/Dialogs/Modal', ['module', 'exports', 'dojo/_base/declare', 'dojo/
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.Dialogs.Modal', [_WidgetBase3.default, _Templated3.default], /** @lends argos.Dialogs.Modal# */{
+  /**
+   * @module argos/Dialogs/Modal
+   */
+  var __class = (0, _declare2.default)('argos.Dialogs.Modal', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Dialogs/Modal.prototype */{
     widgetTemplate: new Simplate(['<div class="modal__container" data-dojo-attach-point="modalContainer">', '{%! $.modalTemplate %}', '{%! $.modalOverlayTemplate %}', '</div>']),
     dialogContentTemplate: new Simplate(['<div class="modal__header__title">{%: $.title %}</div>', '<p class="modal__content__text">{%: $.content %}</p>']),
     modalContentTemplate: new Simplate(['<div class="modal__content">', '</div>']),

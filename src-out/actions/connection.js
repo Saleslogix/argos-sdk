@@ -18,6 +18,10 @@ define('argos/actions/connection', ['exports'], function (exports) {
    * limitations under the License.
    */
 
+  /**
+   * @module argos/actions/connection
+   */
+
   // action Types
   var SET_CONNECTION_STATE = exports.SET_CONNECTION_STATE = 'SET_CONNECTION_STATE';
 
@@ -38,7 +42,12 @@ define('argos/actions/connection', ['exports'], function (exports) {
   + include properties other than type, payload, error, and meta.
   */
 
-  // creators
+  /**
+   * Action creator for connection state. Returns a
+   * reducer action of SET_CONNECTION_STATE with payload
+   * online set to the param.
+   * @param {Boolean} online
+   */
   function setConnectionState(online) {
     return {
       type: SET_CONNECTION_STATE,

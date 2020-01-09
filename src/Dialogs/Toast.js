@@ -14,7 +14,12 @@
  */
 
 /**
- * @class argos.Dialogs.Toast
+ * @module argos/Dialogs/Toast
+ */
+
+/**
+ * @class
+ * @alias module:argos/Dialogs/Toast
  */
 class Toast {
   constructor(options) {

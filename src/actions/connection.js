@@ -13,6 +13,10 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/actions/connection
+ */
+
 // action Types
 export const SET_CONNECTION_STATE = 'SET_CONNECTION_STATE';
 
@@ -33,7 +37,12 @@ An action MUST NOT
 + include properties other than type, payload, error, and meta.
 */
 
-// creators
+/**
+ * Action creator for connection state. Returns a
+ * reducer action of SET_CONNECTION_STATE with payload
+ * online set to the param.
+ * @param {Boolean} online
+ */
 export function setConnectionState(online) {
   return {
     type: SET_CONNECTION_STATE,

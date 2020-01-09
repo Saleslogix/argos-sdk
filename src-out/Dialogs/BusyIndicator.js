@@ -32,12 +32,17 @@ define('argos/Dialogs/BusyIndicator', ['module', 'exports', 'dojo/_base/declare'
    * limitations under the License.
    */
 
+  /**
+   * @module argos/Dialogs/BusyIndicator
+   */
   var resource = (0, _I18n2.default)('busyIndicator');
 
   /**
-   * @class argos.Dialogs.BusyIndicator
+   * @class
+   * @alias module:argos/Dialogs/BusyIndicator
+   * @extends module:argos/_Templated
    */
-  var __class = (0, _declare2.default)('argos.Dialogs.BusyIndicator', [_WidgetBase3.default, _Templated3.default], /** @lends argos.Dialogs.BusyIndicator# */{
+  var __class = (0, _declare2.default)('argos.Dialogs.BusyIndicator', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Dialogs/BusyIndicator.prototype */{
     widgetTemplate: new Simplate(['<div class="busyIndicator__container {%: $.containerClass %}" aria-live="polite" data-dojo-attach-point="busyIndicatorNode">', '{%! $.busyIndicatorTemplate %}', '{%! $.progressBarTemplate %}', '</div>']),
     busyIndicatorTemplate: new Simplate(['<div class="busy-{%: $.size %}" style="height: 100%; width: 100%;">', '<div class="busy-indicator-container" aria-live="polite" role="status">', '<div class="busy-indicator active">', '<div class="bar one"></div>', '<div class="bar two"></div>', '<div class="bar three"></div>', '<div class="bar four"></div>', '<div class="bar five"></div>', '</div>', '<span data-dojo-attach-point="labelNode">{%: $.label %}</span>', '</div>', '</div>']),
     progressBarTemplate: new Simplate(['<div class="busyIndicator__progress" data-dojo-attach-point="progressNode">', '</div>']),
