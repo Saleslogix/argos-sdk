@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Groups/DateTimeSection
+ */
 import declare from 'dojo/_base/declare';
 import Utility from '../Utility';
 import _GroupBySection from './_GroupBySection';
@@ -22,9 +25,10 @@ import getResource from '../I18n';
 const resource = getResource('dateTimeSection');
 
 /**
- * @class argos.Groups.DateTimeSection
+ * @class
+ * @alias module:argos/Groups/DateTimeSection
  */
-const __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], {
+const __class = declare('argos.Groups.DateTimeSection', [_GroupBySection], /** @lends module:argos/Groups/DateTimeSection.prototype */{
   name: 'DateTimeSectionFilter',
   displayNameText: resource.displayNameText,
   todayText: resource.todayText,

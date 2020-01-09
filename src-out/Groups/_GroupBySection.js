@@ -14,7 +14,8 @@ define('argos/Groups/_GroupBySection', ['module', 'exports', 'dojo/_base/declare
   }
 
   /**
-   * @class argos.Groups._GroupSection
+   * @class
+   * @alias module:argos/Groups/_GroupBySection
    */
   /* Copyright 2017 Infor
    *
@@ -31,7 +32,10 @@ define('argos/Groups/_GroupBySection', ['module', 'exports', 'dojo/_base/declare
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.Groups._GroupBySection', null, /** @lends argos.Groups._GroupSection# */{
+  /**
+   * @module argos/Groups/_GroupBySection
+   */
+  var __class = (0, _declare2.default)('argos.Groups._GroupBySection', null, /** @lends module:argos/Groups/_GroupBySection.prototype */{
     /**
      * @property {String}
      * The unique (within the current form) name of the field

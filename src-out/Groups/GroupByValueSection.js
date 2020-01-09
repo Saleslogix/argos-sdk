@@ -33,11 +33,15 @@ define('argos/Groups/GroupByValueSection', ['module', 'exports', 'dojo/_base/dec
    */
 
   /**
-   * @class argos.Groups.GroupByValueSection
+   * @module argos/Groups/GroupByValueSection
    */
   var resource = (0, _I18n2.default)('groupByValueSection');
 
-  var __class = (0, _declare2.default)('argos.Groups.GroupByValueSection', [_GroupBySection3.default], {
+  /**
+   * @class
+   * @alias module:argos/Groups/GroupByValueSection
+   */
+  var __class = (0, _declare2.default)('argos.Groups.GroupByValueSection', [_GroupBySection3.default], /** @lends module:argos/Groups/GroupByValueSection.prototype */{
     name: 'DateTimeSectionFilter',
     displayNameText: resource.displayNameText,
     width: 0,

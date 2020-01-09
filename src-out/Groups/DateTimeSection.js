@@ -32,12 +32,16 @@ define('argos/Groups/DateTimeSection', ['module', 'exports', 'dojo/_base/declare
    * limitations under the License.
    */
 
+  /**
+   * @module argos/Groups/DateTimeSection
+   */
   var resource = (0, _I18n2.default)('dateTimeSection');
 
   /**
-   * @class argos.Groups.DateTimeSection
+   * @class
+   * @alias module:argos/Groups/DateTimeSection
    */
-  var __class = (0, _declare2.default)('argos.Groups.DateTimeSection', [_GroupBySection3.default], {
+  var __class = (0, _declare2.default)('argos.Groups.DateTimeSection', [_GroupBySection3.default], /** @lends module:argos/Groups/DateTimeSection.prototype */{
     name: 'DateTimeSectionFilter',
     displayNameText: resource.displayNameText,
     todayText: resource.todayText,

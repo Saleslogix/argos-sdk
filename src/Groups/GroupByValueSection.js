@@ -14,7 +14,7 @@
  */
 
 /**
- * @class argos.Groups.GroupByValueSection
+ * @module argos/Groups/GroupByValueSection
  */
 import declare from 'dojo/_base/declare';
 import Utility from '../Utility';
@@ -23,7 +23,11 @@ import getResource from '../I18n';
 
 const resource = getResource('groupByValueSection');
 
-const __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], {
+/**
+ * @class
+ * @alias module:argos/Groups/GroupByValueSection
+ */
+const __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], /** @lends module:argos/Groups/GroupByValueSection.prototype */{
   name: 'DateTimeSectionFilter',
   displayNameText: resource.displayNameText,
   width: 0,
