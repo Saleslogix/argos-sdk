@@ -22,7 +22,8 @@ define('argos/Offline/_DetailOfflineMixin', ['module', 'exports', 'dojo/_base/de
   var resource = (0, _I18n2.default)('_detailOfflineMixin');
 
   /**
-   * @class argos.Offline._DetailOfflineMixin
+   * @class
+   * @alias module:argos/Offline/_DetailOfflineMixin
    * @classdesc A mixin that provides the detail view offline specific methods and properties
    */
   /* Copyright 2015 Infor
@@ -39,7 +40,11 @@ define('argos/Offline/_DetailOfflineMixin', ['module', 'exports', 'dojo/_base/de
    * See the License for the specific language governing permissions and
    * limitations under the License.
    */
-  exports.default = (0, _declare2.default)('argos.Offline._DetailOfflineMixin', null, {
+
+  /**
+   * @module argos/Offline/_DetailOfflineMixin
+   */
+  exports.default = (0, _declare2.default)('argos.Offline._DetailOfflineMixin', null, /** @lends module:argos/Offline/_DetailOfflineMixin.prototype */{
 
     createToolLayout: function createToolLayout() {
       if (this.tools) {

@@ -16,9 +16,10 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
   }
 
   /**
-   * @class argos.Offline.Manager
+   * @class
+   * @alias module:argos/Offline/Manager
    */
-  var __class = {
+  var __class = /** @lends module:argos/Offline/Manager */{
 
     defaultClearOlderThan: 2,
     /**
@@ -63,6 +64,9 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
       var rvModel = App.ModelManager.getModel('RecentlyViewed', _Types2.default.OFFLINE);
       return rvModel.deleteEntry(id);
     },
+    /**
+     * @param {String} briefcaseId
+     */
     removeBriefcase: function removeBriefcase(briefcaseId) {
       var def = new _Deferred2.default();
       if (!briefcaseId) {
@@ -98,6 +102,9 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
       });
       return def.promise;
     },
+    /**
+     *
+     */
     briefCaseEntity: function briefCaseEntity(entityName, entityId, options, defProgress) {
       var onlineModel = null;
       var offlineModel = null;
@@ -137,6 +144,9 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
       }
       return def.promise;
     },
+    /**
+     *
+     */
     briefCaseEntities: function briefCaseEntities(entities) {
       var _this = this;
 
@@ -159,6 +169,9 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
       }
       return def.promise;
     },
+    /**
+     *
+     */
     getUsage: function getUsage() {
       var _this2 = this;
 
@@ -220,6 +233,9 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
       });
       return usage;
     },
+    /**
+     *
+     */
     clearAllData: function clearAllData() {
       var _this3 = this;
 
@@ -253,6 +269,9 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
       }
       return def.promise;
     },
+    /**
+     *
+     */
     getOlderThan: function getOlderThan(days) {
       var options = this.getOptions();
       var results = parseInt(days, 10);
@@ -262,18 +281,30 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
 
       return parseInt(options.clearOlderThan, 10);
     },
+    /**
+     *
+     */
     clearRecentData: function clearRecentData(days) {
       var recentModel = App.ModelManager.getModel('RecentlyViewed', _Types2.default.OFFLINE);
       return this.clearOlderThan(recentModel, days);
     },
+    /**
+     *
+     */
     clearBriefcaseData: function clearBriefcaseData(days) {
       var briefcaseModel = App.ModelManager.getModel('Briefcase', _Types2.default.OFFLINE);
       return this.clearOlderThan(briefcaseModel, days);
     },
+    /**
+     *
+     */
     clearOlderThan: function clearOlderThan(model, days) {
       var daysParsed = this.getOlderThan(days);
       return model.clearDataOlderThan(daysParsed);
     },
+    /**
+     *
+     */
     getOptions: function getOptions() {
       var options = void 0;
       if (!App.preferences.offlineOptions) {
@@ -286,18 +317,27 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
 
       return options;
     },
+    /**
+     *
+     */
     saveOptions: function saveOptions(options) {
       if (options) {
         App.preferences.offlineOptions = options;
         App.persistPreferences();
       }
     },
+    /**
+     *
+     */
     getDefaultOptions: function getDefaultOptions() {
       var options = {
         clearOlderThan: this.defaultClearOlderThan
       };
       return options;
     },
+    /**
+     *
+     */
     getClearOlderThanValues: function getClearOlderThanValues() {
       var values = [{
         key: 0,
@@ -342,6 +382,9 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
       * limitations under the License.
       */
 
+  /**
+   * @module argos/Offline/Manager
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

@@ -65,6 +65,12 @@ define('argos/reducers/index', ['exports', '../actions/index', '../actions/conne
   [ 3 ] | [ 1, 2, 3 ]
   */
 
+  /**
+   * Root reducer function
+   * @param {Object} state Current application state
+   * @param {String} action.type
+   * @param {Object} action.payload
+   */
   function sdk() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialSDKState;
     var action = arguments[1];

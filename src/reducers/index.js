@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/reducers
+ */
 import { SET_MAX_VIEWPORTS, INSERT_HISTORY } from '../actions/index';
 import { SET_CONNECTION_STATE } from '../actions/connection';
 
@@ -65,6 +68,12 @@ A view might want to indicate a new viewset should be created in the middle of n
 [ 3 ] | [ 1, 2, 3 ]
 */
 
+/**
+ * Root reducer function
+ * @param {Object} state Current application state
+ * @param {String} action.type
+ * @param {Object} action.payload
+ */
 export function sdk(state = initialSDKState, action) {
   const { type, payload, error, meta } = action; // eslint-disable-line
   switch (type) {

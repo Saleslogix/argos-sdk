@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * @module argos/Offline/_ListOfflineMixin
+ */
 import declare from 'dojo/_base/declare';
 import OfflineManager from './Manager';
 import BusyIndicator from '../Dialogs/BusyIndicator';
@@ -22,10 +26,11 @@ const resource = getResource('_listOfflineMixin');
 
 
 /**
- * @class argos.Offline._DetailOfflineMixin
+ * @class
+ * @alias module:argos/Offline/_ListOfflineMixin
  * @classdesc A mixin that provides the detail view offline specific methods and properties
  */
-export default declare('argos.Offline._ListOfflineMixin', null, {
+export default declare('argos.Offline._ListOfflineMixin', null, /** @lends module:argos/Offline/_ListOfflineMixin.prototype */{
   autoNavigateToBriefcase: false,
   createToolLayout: function createToolLayout() {
     if (this.tools) {

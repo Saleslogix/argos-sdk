@@ -13,14 +13,18 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Offline/Manager
+ */
 import Deferred from 'dojo/Deferred';
 import all from 'dojo/promise/all';
 import MODEL_TYPES from '../Models/Types';
 
 /**
- * @class argos.Offline.Manager
+ * @class
+ * @alias module:argos/Offline/Manager
  */
-const __class = {
+const __class = /** @lends module:argos/Offline/Manager */{
 
   defaultClearOlderThan: 2,
   /**
@@ -65,6 +69,9 @@ const __class = {
     const rvModel = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
     return rvModel.deleteEntry(id);
   },
+  /**
+   * @param {String} briefcaseId
+   */
   removeBriefcase: function removeBriefcase(briefcaseId) {
     const def = new Deferred();
     if (!briefcaseId) {
@@ -100,6 +107,9 @@ const __class = {
     });
     return def.promise;
   },
+  /**
+   *
+   */
   briefCaseEntity: function briefCaseEntity(entityName, entityId, options, defProgress) {
     let onlineModel = null;
     let offlineModel = null;
@@ -139,6 +149,9 @@ const __class = {
     }
     return def.promise;
   },
+  /**
+   *
+   */
   briefCaseEntities: function briefCaseEntities(entities) {
     const def = new Deferred();
     let briefcaseRequests = [];
@@ -159,6 +172,9 @@ const __class = {
     }
     return def.promise;
   },
+  /**
+   *
+   */
   getUsage: function getUsage() {
     const def = new Deferred();
     let usageRequests = [];
@@ -218,6 +234,9 @@ const __class = {
     });
     return usage;
   },
+  /**
+   *
+   */
   clearAllData: function clearAllData() {
     const def = new Deferred();
     let requests = [];
@@ -249,6 +268,9 @@ const __class = {
     }
     return def.promise;
   },
+  /**
+   *
+   */
   getOlderThan: function getOlderThan(days) {
     const options = this.getOptions();
     const results = parseInt(days, 10);
@@ -258,18 +280,30 @@ const __class = {
 
     return parseInt(options.clearOlderThan, 10);
   },
+  /**
+   *
+   */
   clearRecentData: function clearRecentData(days) {
     const recentModel = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
     return this.clearOlderThan(recentModel, days);
   },
+  /**
+   *
+   */
   clearBriefcaseData: function clearBriefcaseData(days) {
     const briefcaseModel = App.ModelManager.getModel('Briefcase', MODEL_TYPES.OFFLINE);
     return this.clearOlderThan(briefcaseModel, days);
   },
+  /**
+   *
+   */
   clearOlderThan: function clearOlderThan(model, days) {
     const daysParsed = this.getOlderThan(days);
     return model.clearDataOlderThan(daysParsed);
   },
+  /**
+   *
+   */
   getOptions: function getOptions() {
     let options;
     if (!App.preferences.offlineOptions) {
@@ -282,18 +316,27 @@ const __class = {
 
     return options;
   },
+  /**
+   *
+   */
   saveOptions: function saveOptions(options) {
     if (options) {
       App.preferences.offlineOptions = options;
       App.persistPreferences();
     }
   },
+  /**
+   *
+   */
   getDefaultOptions: function getDefaultOptions() {
     const options = {
       clearOlderThan: this.defaultClearOlderThan,
     };
     return options;
   },
+  /**
+   *
+   */
   getClearOlderThanValues: function getClearOlderThanValues() {
     const values = [
       {
