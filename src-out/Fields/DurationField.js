@@ -36,11 +36,15 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
    * limitations under the License.
    */
 
+  /**
+   * @module argos/Fields/DurationField
+   */
   var resource = (0, _I18n2.default)('durationField');
 
   /**
-   * @class argos.Fields.DurationField
-   * @classdesc The Duration field is a mashup of an auto-complete box and a {@link LookupField LookupField} for handling
+   * @class
+   * @alias module:argos/Fields/DurationField
+   * @classdesc The Duration field is a mashup of an auto-complete box and a {@link module:argos/Fields/LookupField LookupField} for handling
    * duration's of: minutes, hours, days, weeks or years. Meaning a user can type directly into the input area the
    * amount of time or press the lookup button and choose from pre-determined list of times.
    *
@@ -62,10 +66,9 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
    *         view: 'durations_list'
    *     }
    *
-   * @extends argos.Fields.LookupField
-   * @requires argos.FieldManager
+   * @extends module:argos/Fields/LookupField
    */
-  var control = (0, _declare2.default)('argos.Fields.DurationField', [_LookupField2.default], /** @lends argos.Fields.DurationField# */{
+  var control = (0, _declare2.default)('argos.Fields.DurationField', [_LookupField2.default], /** @lends module:argos/Fields/DurationField.prototype */{
     /**
      * Maps various attributes of nodes to setters.
      */

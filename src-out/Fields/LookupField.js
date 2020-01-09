@@ -38,10 +38,15 @@ define('argos/Fields/LookupField', ['module', 'exports', 'dojo/_base/declare', '
                                                       * limitations under the License.
                                                       */
 
+  /**
+   * @module argos/Fields/LookupField
+   */
+
   var modalResource = (0, _I18n2.default)('modal');
 
   /**
-   * @class argos.Fields.LookupField
+   * @class
+   * @alias module:argos/Fields/LookupField
    * @classdesc The LookupField is similiar to an Edit View in that it is a field that takes the user to another
    * view but the difference is that an EditorField takes the user to an Edit View, whereas LookupField
    * takes the user to a List View.
@@ -50,18 +55,16 @@ define('argos/Fields/LookupField', ['module', 'exports', 'dojo/_base/declare', '
    * and with displayed text.
    *
    * @example
-   *     {
-   *         name: 'Owner',
-   *         property: 'Owner',
-   *         label: this.ownerText,
-   *         type: 'lookup',
-   *         view: 'user_list'
-   *     }
-   * @extends argos.Fields._Field
-   * @requires argos.FieldManager
-   * @requires argos.Utility
+   * {
+   *   name: 'Owner',
+   *   property: 'Owner',
+   *   label: this.ownerText,
+   *   type: 'lookup',
+   *   view: 'user_list'
+   * }
+   * @extends module:argos/Fields/_Field
    */
-  var control = (0, _declare2.default)('argos.Fields.LookupField', [_Field3.default], /** @lends argos.Fields.LookupField# */{
+  var control = (0, _declare2.default)('argos.Fields.LookupField', [_Field3.default], /** @lends module:argos/Fields/LookupField.prototype */{
     /**
      * @property {Object}
      * Creates a setter map to html nodes, namely:

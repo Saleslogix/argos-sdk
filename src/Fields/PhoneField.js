@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Fields/PhoneField
+ */
 import declare from 'dojo/_base/declare';
 import has from 'dojo/has';
 import FieldManager from '../FieldManager';
@@ -21,24 +24,24 @@ import format from '../Format';
 import 'dojo/_base/sniff';
 
 /**
- * @class argos.Fields.PhoneField
- * @classdesc The Phone field is a specialized {@link TextField TextField} that takes a string of numbers
+ * @class
+ * @alias module:argos/Fields/PhoneField
+ * @classdesc The Phone field is a specialized {@link module:argos/Fields/TextField TextField} that takes a string of numbers
  * and groups them into a phone number on blur or when setting a value directly the value
  * shown to the user gets passed through the
  * {@link #formatNumberForDisplay formatNumberForDisplay} function, while
  * {@link #getValue getValue} will still return an unformatted version.
  *
  * @example
- *     {
- *         name: 'SalesPotential',
- *         property: 'SalesPotential',
- *         label: this.salesPotentialText,
- *         type: 'decimal'
- *     }
- * @extends argos.Fields.TextField
- * @requires argos.FieldManager
+ * {
+ *   name: 'SalesPotential',
+ *   property: 'SalesPotential',
+ *   label: this.salesPotentialText,
+ *   type: 'decimal'
+ * }
+ * @extends module:argos/Fields/TextField
  */
-const control = declare('argos.Fields.PhoneField', [TextField], /** @lends argos.Fields.PhoneField# */{
+const control = declare('argos.Fields.PhoneField', [TextField], /** @lends module:argos/Fields/PhoneField.prototype */{
   /**
    * @property {String}
    * Sets the `<input type=` of the field.

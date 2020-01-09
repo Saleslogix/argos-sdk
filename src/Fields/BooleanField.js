@@ -13,12 +13,16 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Fields/BooleanField
+ */
 import declare from 'dojo/_base/declare';
 import Field from './_Field';
 import FieldManager from '../FieldManager';
 
 /**
- * @class argos.Fields.BooleanField
+ * @class
+ * @alias module:argos/Fields/BooleanField
  * @classdesc The Boolean Field is used for true/false values and is visualized as a toggle or light switch.
  *
  * @example
@@ -29,10 +33,9 @@ import FieldManager from '../FieldManager';
  *         type: 'boolean'
  *     }
  *
- * @extends argos.Fields._Field
- * @requires argos.FieldManager
+ * @extends module:argos/Fields/_Field
  */
-const control = declare('argos.Fields.BooleanField', [Field], /** @lends argos.Fields.BooleanField# */{
+const control = declare('argos.Fields.BooleanField', [Field], /** @lends module:argos/Fields/BooleanField.prototype */{
   /**
    * @property {Simplate}
    * Simplate that defines the fields HTML Markup

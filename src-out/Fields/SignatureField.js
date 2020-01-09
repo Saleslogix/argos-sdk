@@ -22,21 +22,19 @@ define('argos/Fields/SignatureField', ['module', 'exports', 'dojo/_base/declare'
   var resource = (0, _I18n2.default)('signatureField');
 
   /**
-   * @class argos.Fields.SignatureField
+   * @class
+   * @alias module:argos/Fields//SignatureField
    * @classdesc The SignatureField uses an HTML5 canvas element to render previews of the signature vector
-   * provided by it's editor view {@link SignatureView SignatureView}.
+   * provided by it's editor view {@link module:argos/Views/Signature SignatureView}.
    *
    * @example
-   *     {
-   *         name: 'Signature',
-   *         property: 'Signature',
-   *         label: this.signatureText,
-   *         type: 'signature'
-   *     }
-   * @extends argos.Fields.EditorField
-   * @requires argos.FieldManager
-   * @requires argos.Views.SignatureView
-   * @requires argos.Format
+   * {
+   *    name: 'Signature',
+   *    property: 'Signature',
+   *    label: this.signatureText,
+   *    type: 'signature'
+   * }
+   * @extends module:argos/Fields/EditorField
    */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
@@ -53,7 +51,10 @@ define('argos/Fields/SignatureField', ['module', 'exports', 'dojo/_base/declare'
    * limitations under the License.
    */
 
-  var control = (0, _declare2.default)('argos.Fields.SignatureField', [_EditorField2.default], /** @lends argos.Fields.SignatureField# */{
+  /**
+   * @module argos/Fields/SignatureField
+   */
+  var control = (0, _declare2.default)('argos.Fields.SignatureField', [_EditorField2.default], /** @lends module:argos/Fields/SignatureField.prototype */{
     // Localization
     /**
      * @property {String}

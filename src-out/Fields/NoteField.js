@@ -16,7 +16,8 @@ define('argos/Fields/NoteField', ['module', 'exports', 'dojo/_base/declare', './
   }
 
   /**
-   * @class argos.Fields.NoteField
+   * @class
+   * @alias module:argos/Fields/NoteField
    * @classdesc The NoteField is a special case where an overly long text string should be inserted and
    * you want to take the user to another view for that specific input.
    *
@@ -25,15 +26,14 @@ define('argos/Fields/NoteField', ['module', 'exports', 'dojo/_base/declare', './
    * defined in this field ("Notes" by default").
    *
    * @example
-   *     {
-   *         name: 'FullDescription',
-   *         property: 'FullDescription',
-   *         label: this.fullDescriptionText,
-   *         type: 'note',
-   *         view: 'text_editor_edit'
-   *     }
-   * @extends argos.Fields.TextAreaField
-   * @requires argos.FieldManager
+   * {
+   *   name: 'FullDescription',
+   *   property: 'FullDescription',
+   *   label: this.fullDescriptionText,
+   *   type: 'note',
+   *   view: 'text_editor_edit'
+   * }
+   * @extends module:argos/Fields/TextAreaField
    */
   var control = (0, _declare2.default)('argos.Fields.NoteField', [_TextAreaField2.default], {}); /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
                                                                                                   *
@@ -50,6 +50,9 @@ define('argos/Fields/NoteField', ['module', 'exports', 'dojo/_base/declare', './
                                                                                                   * limitations under the License.
                                                                                                   */
 
+  /**
+   * @module argos/Fields/NoteField
+   */
   exports.default = _FieldManager2.default.register('note', control);
   module.exports = exports['default'];
 });

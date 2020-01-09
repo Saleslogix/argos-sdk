@@ -18,7 +18,8 @@ define('argos/Fields/TextField', ['module', 'exports', 'dojo/_base/declare', 'do
   }
 
   /**
-   * @class argos.Fields.TextField
+   * @class
+   * @alias module:argos/Fields/TextField
    * @classdesc The TextField is the base method of inputting just a string that is bound to a `<input type="text">`.
    *
    * It does introduce:
@@ -27,14 +28,13 @@ define('argos/Fields/TextField', ['module', 'exports', 'dojo/_base/declare', 'do
    * * Option to only allow valid input at each keypress
    *
    * @example
-   *     {
-   *         name: 'LastName',
-   *         property: 'LastName',
-   *         label: this.lastNameText,
-   *         type: 'text',
-   *     }
-   * @extends argos.Fields._Field
-   * @requires argos.FieldManager
+   * {
+   *   name: 'LastName',
+   *   property: 'LastName',
+   *   label: this.lastNameText,
+   *   type: 'text',
+   * }
+   * @extends module:argos/Fields/_Field
    */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
@@ -51,7 +51,10 @@ define('argos/Fields/TextField', ['module', 'exports', 'dojo/_base/declare', 'do
    * limitations under the License.
    */
 
-  var control = (0, _declare2.default)('argos.Fields.TextField', [_Field3.default], /** @lends argos.Fields.TextField# */{
+  /**
+   * @module argos/Fields/TextField
+   */
+  var control = (0, _declare2.default)('argos.Fields.TextField', [_Field3.default], /** @lends module:argos/Fields/TextField.prototype */{
     /**
      * @property {Object}
      * Creates a setter map to html nodes, namely:

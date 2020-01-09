@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Fields/TextField
+ */
 import declare from 'dojo/_base/declare';
 import event from 'dojo/_base/event';
 import _Field from './_Field';
@@ -20,7 +23,8 @@ import FieldManager from '../FieldManager';
 
 
 /**
- * @class argos.Fields.TextField
+ * @class
+ * @alias module:argos/Fields/TextField
  * @classdesc The TextField is the base method of inputting just a string that is bound to a `<input type="text">`.
  *
  * It does introduce:
@@ -29,16 +33,15 @@ import FieldManager from '../FieldManager';
  * * Option to only allow valid input at each keypress
  *
  * @example
- *     {
- *         name: 'LastName',
- *         property: 'LastName',
- *         label: this.lastNameText,
- *         type: 'text',
- *     }
- * @extends argos.Fields._Field
- * @requires argos.FieldManager
+ * {
+ *   name: 'LastName',
+ *   property: 'LastName',
+ *   label: this.lastNameText,
+ *   type: 'text',
+ * }
+ * @extends module:argos/Fields/_Field
  */
-const control = declare('argos.Fields.TextField', [_Field], /** @lends argos.Fields.TextField# */{
+const control = declare('argos.Fields.TextField', [_Field], /** @lends module:argos/Fields/TextField.prototype */{
   /**
    * @property {Object}
    * Creates a setter map to html nodes, namely:

@@ -20,22 +20,22 @@ define('argos/Fields/PhoneField', ['module', 'exports', 'dojo/_base/declare', 'd
   }
 
   /**
-   * @class argos.Fields.PhoneField
-   * @classdesc The Phone field is a specialized {@link TextField TextField} that takes a string of numbers
+   * @class
+   * @alias module:argos/Fields/PhoneField
+   * @classdesc The Phone field is a specialized {@link module:argos/Fields/TextField TextField} that takes a string of numbers
    * and groups them into a phone number on blur or when setting a value directly the value
    * shown to the user gets passed through the
    * {@link #formatNumberForDisplay formatNumberForDisplay} function, while
    * {@link #getValue getValue} will still return an unformatted version.
    *
    * @example
-   *     {
-   *         name: 'SalesPotential',
-   *         property: 'SalesPotential',
-   *         label: this.salesPotentialText,
-   *         type: 'decimal'
-   *     }
-   * @extends argos.Fields.TextField
-   * @requires argos.FieldManager
+   * {
+   *   name: 'SalesPotential',
+   *   property: 'SalesPotential',
+   *   label: this.salesPotentialText,
+   *   type: 'decimal'
+   * }
+   * @extends module:argos/Fields/TextField
    */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
@@ -52,7 +52,10 @@ define('argos/Fields/PhoneField', ['module', 'exports', 'dojo/_base/declare', 'd
    * limitations under the License.
    */
 
-  var control = (0, _declare2.default)('argos.Fields.PhoneField', [_TextField2.default], /** @lends argos.Fields.PhoneField# */{
+  /**
+   * @module argos/Fields/PhoneField
+   */
+  var control = (0, _declare2.default)('argos.Fields.PhoneField', [_TextField2.default], /** @lends module:argos/Fields/PhoneField.prototype */{
     /**
      * @property {String}
      * Sets the `<input type=` of the field.

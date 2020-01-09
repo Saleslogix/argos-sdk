@@ -13,27 +13,30 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Fields/TextAreaField
+ */
 import declare from 'dojo/_base/declare';
 import TextField from './TextField';
 import FieldManager from '../FieldManager';
 
 /**
- * @class argos.Fields.TextAreaField
+ * @class
+ * @alias module:argos/Fields/TextAreaField
  * @classdesc The TextAreaField extends the base TextField by changing the input element to
  * an `<textarea>` element with a configurable amount of visible rows.
  *
  * @example
- *     {
- *         name: 'Description',
- *         property: 'Description',
- *         label: this.descriptionText,
- *         type: 'textarea',
- *         rows: 6
- *     }
- * @extends argos.Fields.TextField
- * @requires argos.FieldManager
+ * {
+ *   name: 'Description',
+ *   property: 'Description',
+ *   label: this.descriptionText,
+ *   type: 'textarea',
+ *   rows: 6
+ * }
+ * @extends module:argos/Fields/TextField
  */
-const control = declare('argos.Fields.TextAreaField', [TextField], /** @lends argos.Fields.TextAreaField# */{
+const control = declare('argos.Fields.TextAreaField', [TextField], /** @lends module:argos/Fields/TextAreaField.prototype */{
   /**
    * @cfg {Number}
    * Number of rows to show visually, does not constrain input.

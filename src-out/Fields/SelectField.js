@@ -16,23 +16,23 @@ define('argos/Fields/SelectField', ['module', 'exports', 'dojo/_base/declare', '
   }
 
   /**
-   * @class argos.Fields.SelectField
+   * @class
+   * @alias module:argos/Fields/SelectField
    * @classdesc The SelectField is a minor extension to te LookupField in that it explicitly hides search and actions.
    *
    * It may also optionally pass the `data` option which a view may optionally use instead of requesting data.
    *
    * @example
-   *     {
-   *         name: 'State',
-   *         property: 'State',
-   *         label: this.stateText,
-   *         type: 'select',
-   *         view: 'state_list'
-   *     }
-   * @extends argos.Fields.LookupField
-   * @requires argos.FieldManager
+   * {
+   *    name: 'State',
+   *    property: 'State',
+   *    label: this.stateText,
+   *    type: 'select',
+   *    view: 'state_list'
+   * }
+   * @extends module:argos/Fields/LookupField
    */
-  var control = (0, _declare2.default)('argos.Fields.SelectField', [_LookupField2.default], /** @lends argos.SelectField# */{
+  var control = (0, _declare2.default)('argos.Fields.SelectField', [_LookupField2.default], /** @lends module:argos/Fields/SelectField.prototype */{
     /**
      * @property {Boolean}
      * Overrides the {@link LookupField LookupField} default to explicitly set it to false forcing
@@ -76,6 +76,9 @@ define('argos/Fields/SelectField', ['module', 'exports', 'dojo/_base/declare', '
        * limitations under the License.
        */
 
+  /**
+   * @module argos/Fields/SelectField
+   */
   exports.default = _FieldManager2.default.register('select', control);
   module.exports = exports['default'];
 });

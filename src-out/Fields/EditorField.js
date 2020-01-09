@@ -32,10 +32,14 @@ define('argos/Fields/EditorField', ['module', 'exports', 'dojo/_base/declare', '
    * limitations under the License.
    */
 
+  /**
+   * @module argos/Fields/EditorField
+   */
   var resource = (0, _I18n2.default)('dateField');
 
   /**
-   * @class argos.Fields.EditorField
+   * @class
+   * @alias module:argos/Fields/EditorField
    * @classdesc The EditorField is not a field per say but a base class for another field type to inherit from. The
    * intent of an EditorField is you have a field where the input should come from another form. EditorField
    * will handle the navigation, gathering values from the other view, going back and applying to the form
@@ -44,9 +48,9 @@ define('argos/Fields/EditorField', ['module', 'exports', 'dojo/_base/declare', '
    * A prime example of an editor field extension would be an AddressField - say you are entering a contacts
    * details and need the address. You could make an AddressField that extends EditorField for handling all
    * the address parts and takes the user to an address_edit with all the street/city/postal etc.
-   * @extends argos._Field
+   * @extends module:argos/Fields/_Field
    */
-  var __class = (0, _declare2.default)('argos.Fields.EditorField', [_Field3.default], /** @lends argos.Fields.EditorField# */{
+  var __class = (0, _declare2.default)('argos.Fields.EditorField', [_Field3.default], /** @lends module:argos/Fields/EditorField.prototype */{
     /**
      * @property {Object}
      * Creates a setter map to html nodes, namely:

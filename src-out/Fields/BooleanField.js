@@ -16,7 +16,8 @@ define('argos/Fields/BooleanField', ['module', 'exports', 'dojo/_base/declare', 
   }
 
   /**
-   * @class argos.Fields.BooleanField
+   * @class
+   * @alias module:argos/Fields/BooleanField
    * @classdesc The Boolean Field is used for true/false values and is visualized as a toggle or light switch.
    *
    * @example
@@ -27,10 +28,9 @@ define('argos/Fields/BooleanField', ['module', 'exports', 'dojo/_base/declare', 
    *         type: 'boolean'
    *     }
    *
-   * @extends argos.Fields._Field
-   * @requires argos.FieldManager
+   * @extends module:argos/Fields/_Field
    */
-  var control = (0, _declare2.default)('argos.Fields.BooleanField', [_Field2.default], /** @lends argos.Fields.BooleanField# */{
+  var control = (0, _declare2.default)('argos.Fields.BooleanField', [_Field2.default], /** @lends module:argos/Fields/BooleanField.prototype */{
     /**
      * @property {Simplate}
      * Simplate that defines the fields HTML Markup
@@ -137,6 +137,9 @@ define('argos/Fields/BooleanField', ['module', 'exports', 'dojo/_base/declare', 
        * limitations under the License.
        */
 
+  /**
+   * @module argos/Fields/BooleanField
+   */
   exports.default = _FieldManager2.default.register('boolean', control);
   module.exports = exports['default'];
 });

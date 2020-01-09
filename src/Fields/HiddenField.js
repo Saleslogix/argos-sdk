@@ -13,26 +13,29 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Fields/HiddenField
+ */
 import declare from 'dojo/_base/declare';
 import TextField from './TextField';
 import FieldManager from '../FieldManager';
 
 /**
- * @class argos.Fields.HiddenField
- * @classdesc The Hidden Field is {@link TextField TextField} but instead binds to an `<input type="hidden"`>.
+ * @class
+ * @alias module:argos/Fields/HiddenField
+ * @classdesc The Hidden Field is {@link module:argos/Fields/TextField TextField} but instead binds to an `<input type="hidden"`>.
  *
  * Meaning that the field will not be displayed on screen but may still store strings of text.
  *
  * @example
- *     {
- *         name: 'StatusCodeKey',
- *         property: 'StatusCodeKey',
- *         type: 'hidden'
- *     }
- * @extends argos.Fields.TextField
- * @requires argos.FieldManager
+ * {
+ *   name: 'StatusCodeKey',
+ *   property: 'StatusCodeKey',
+ *   type: 'hidden'
+ * }
+ * @extends module:argos/Fields/TextField
  */
-const control = declare('argos.Fields.HiddenField', [TextField], /** @lends argos.Fields.HiddenField# */{
+const control = declare('argos.Fields.HiddenField', [TextField], /** @lends module:argos/Fields/HiddenField.prototype */{
   propertyTemplate: new Simplate([
     '<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
     '</div>',

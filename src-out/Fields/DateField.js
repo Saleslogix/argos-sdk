@@ -42,10 +42,15 @@ define('argos/Fields/DateField', ['module', 'exports', 'dojo/_base/declare', 'do
                                                     * limitations under the License.
                                                     */
 
+  /**
+   * @module argos/Fields/DateField
+   */
+
   var dtFormatResource = (0, _I18n2.default)('dateFieldDateTimeFormat');
 
   /**
-   * @class argos.Fields.DateField
+   * @class
+   * @alias module:argos/Fields/DateField
    * @classdesc The DateField is an extension of the {@link EditorField EditorField} by accepting Date Objects
    * for values and using the {@link Calendar Calendar} view for user input.
    *
@@ -61,12 +66,9 @@ define('argos/Fields/DateField', ['module', 'exports', 'dojo/_base/declare', 'do
    *         showRelativeDateTime: true
    *     }
    *
-   * @extends argos.Fields.EditorField
-   * @requires argos.Calendar
-   * @requires argos.FieldManager
-   * @requires argos.Format
+   * @extends module:argos/Fields/EditorField
    */
-  var control = (0, _declare2.default)('argos.Fields.DateField', [_EditorField2.default], /** @lends argos.Fields.DateField# */{
+  var control = (0, _declare2.default)('argos.Fields.DateField', [_EditorField2.default], /** @lends module:argos/Fields/DateField.prototype */{
     // Localization
     /**
      * @cfg {String}

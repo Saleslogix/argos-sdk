@@ -16,22 +16,22 @@ define('argos/Fields/TextAreaField', ['module', 'exports', 'dojo/_base/declare',
   }
 
   /**
-   * @class argos.Fields.TextAreaField
+   * @class
+   * @alias module:argos/Fields/TextAreaField
    * @classdesc The TextAreaField extends the base TextField by changing the input element to
    * an `<textarea>` element with a configurable amount of visible rows.
    *
    * @example
-   *     {
-   *         name: 'Description',
-   *         property: 'Description',
-   *         label: this.descriptionText,
-   *         type: 'textarea',
-   *         rows: 6
-   *     }
-   * @extends argos.Fields.TextField
-   * @requires argos.FieldManager
+   * {
+   *   name: 'Description',
+   *   property: 'Description',
+   *   label: this.descriptionText,
+   *   type: 'textarea',
+   *   rows: 6
+   * }
+   * @extends module:argos/Fields/TextField
    */
-  var control = (0, _declare2.default)('argos.Fields.TextAreaField', [_TextField2.default], /** @lends argos.Fields.TextAreaField# */{
+  var control = (0, _declare2.default)('argos.Fields.TextAreaField', [_TextField2.default], /** @lends module:argos/Fields/TextAreaField.prototype */{
     /**
      * @cfg {Number}
      * Number of rows to show visually, does not constrain input.
@@ -78,6 +78,9 @@ define('argos/Fields/TextAreaField', ['module', 'exports', 'dojo/_base/declare',
        * limitations under the License.
        */
 
+  /**
+   * @module argos/Fields/TextAreaField
+   */
   exports.default = _FieldManager2.default.register('textarea', control);
   module.exports = exports['default'];
 });

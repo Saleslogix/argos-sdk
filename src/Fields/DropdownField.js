@@ -13,15 +13,19 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Fields/DropdownField
+ */
 import declare from 'dojo/_base/declare';
 import Dropdown from '../Dropdown';
 import FieldManager from '../FieldManager';
 import _Field from './_Field';
 
 /**
- * @class argos.Fields.DropdownField
+ * @class
+ * @alias module:argos/Fields/DropdownField
  */
-const __class = declare('argos.DropdownField', [_Field, Dropdown], /** @lends argos.Fields.DropdownField# */{
+const __class = declare('argos.DropdownField', [_Field, Dropdown], /** @lends module:argos/Fields/DropdownField.prototype */{
   widgetTemplate: new Simplate([
     '<div data-dojo-attach-point="dropdownNode">',
     '<label>{%: $.label %}</label>',

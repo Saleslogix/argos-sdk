@@ -18,7 +18,8 @@ define('argos/Fields/DecimalField', ['module', 'exports', 'dojo/_base/declare', 
   }
 
   /**
-   * @class argos.Fields.DecimalField
+   * @class
+   * @alias module:argos/Fields/DecimalField
    * @classdesc The Decimal Field is used for inputting numbers and extends {@link TextField TextField} with:
    *
    * * hides the clear (x) button;
@@ -26,14 +27,13 @@ define('argos/Fields/DecimalField', ['module', 'exports', 'dojo/_base/declare', 
    * * when getting a value, it back-converts the localized punctuation into the en-US format and converts the result into a float (Number).
    *
    * @example
-   *     {
-   *         name: 'SalesPotential',
-   *         property: 'SalesPotential',
-   *         label: this.salesPotentialText,
-   *         type: 'decimal'
-   *     }
-   * @extends argos.Fields.TextField
-   * @requires argos.FieldManager
+   * {
+   *   name: 'SalesPotential',
+   *   property: 'SalesPotential',
+   *   label: this.salesPotentialText,
+   *   type: 'decimal'
+   * }
+   * @extends module:argos/Fields/TextField
    */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
@@ -50,7 +50,10 @@ define('argos/Fields/DecimalField', ['module', 'exports', 'dojo/_base/declare', 
    * limitations under the License.
    */
 
-  var control = (0, _declare2.default)('argos.Fields.DecimalField', [_TextField2.default], /** @lends argos.Fields.DecimalField# */{
+  /**
+   * @module argos/Fields/DecimalField
+   */
+  var control = (0, _declare2.default)('argos.Fields.DecimalField', [_TextField2.default], /** @lends modules:argos/Fields/DecimalField.prototype */{
     /**
      * @cfg {Number}
      * Defines how many decimal places to format when setting the value.

@@ -14,12 +14,7 @@
  */
 
 /**
- * @class argos.Fields._Field
- * @classdesc Field is the base class for all field controls. It describes all the functions a field should support giving no implementation itself, merely a shell. The one function that `_Field` does provide that most fields leave untouched is `validate`.
- * All fields are dijit Widgets meaning it goes through the same lifecycle and has all the Widget functionality.
- * @mixins argos._ActionMixin
- * @mixins argos._Templated
- * @requires argos.FieldManager
+ * @module argos/Fields/_Field
  */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
@@ -28,32 +23,40 @@ import _WidgetBase from 'dijit/_WidgetBase';
 import _ActionMixin from '../_ActionMixin';
 import _Templated from '../_Templated';
 
-const __class = declare('argos.Fields._Field', [_WidgetBase, _Templated], /** @lends argos.Fields._Field# */ {
+/**
+ * @class
+ * @alias module:argos/Fields/_Field
+ * @classdesc Field is the base class for all field controls. It describes all the functions a field should support giving no implementation itself, merely a shell. The one function that `_Field` does provide that most fields leave untouched is `validate`.
+ * All fields are dijit Widgets meaning it goes through the same lifecycle and has all the Widget functionality.
+ * @mixes module:argos/_ActionMixin
+ * @extends module:argos/_Templated
+ */
+const __class = declare('argos.Fields._Field', [_WidgetBase, _Templated], /** @lends module:argos/Fields/_Field.prototype */ {
   _ActionMixin: null,
 
   /**
-   * @property {View}
+   * @property {View} owner
    * View that controls the field.
    */
   owner: false,
   /**
-   * @property {String}
+   * @property {String} applyTo
    * If defined it will use the applyTo string when getting and setting properties from
    * the SData object instead of the `property` property.
    */
   applyTo: false,
   /**
-   * @property {Boolean}
+   * @property {Boolean} alwaysUseValue
    * Signifies that the field should always be included when the form calls {@link Edit#getValues getValues}.
    */
   alwaysUseValue: false,
   /**
-   * @property {Boolean}
+   * @property {Boolean} disabled
    * Indicates the disabled state
    */
   disabled: false,
   /**
-   * @property {Boolean}
+   * @property {Boolean} hidden
    * Indicates the visibility state
    */
   hidden: false,
@@ -65,29 +68,29 @@ const __class = declare('argos.Fields._Field', [_WidgetBase, _Templated], /** @l
    */
   default: undefined,
   /**
-   * @property {String}
+   * @property {String} name
    * The unique (within the current form) name of the field
    */
   name: null,
   /**
-   * @property {String}
+   * @property {String} label
    * The text that will, by default, show to the left of a field.
    */
   label: null,
   /**
-   * @property {String}
+   * @property {String} property
    * The SData property that the field will be bound to.
    */
   property: null,
   /**
-   * @property {String}
+   * @property {String} type
    * The registered name of the field that gets mapped in {@link FieldManager FieldManager} when
    * the field is constructed
    */
   type: null,
 
   /**
-   * @property {Boolean}
+   * @property {Boolean} autoFocus
    * Flag to indicate if this field should be focused when the form is shown.
    */
   autoFocus: false,

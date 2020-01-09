@@ -13,13 +13,17 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Fields/DecimalField
+ */
 import declare from 'dojo/_base/declare';
 import TextField from './TextField';
 import FieldManager from '../FieldManager';
 import Utility from '../Utility';
 
 /**
- * @class argos.Fields.DecimalField
+ * @class
+ * @alias module:argos/Fields/DecimalField
  * @classdesc The Decimal Field is used for inputting numbers and extends {@link TextField TextField} with:
  *
  * * hides the clear (x) button;
@@ -27,16 +31,15 @@ import Utility from '../Utility';
  * * when getting a value, it back-converts the localized punctuation into the en-US format and converts the result into a float (Number).
  *
  * @example
- *     {
- *         name: 'SalesPotential',
- *         property: 'SalesPotential',
- *         label: this.salesPotentialText,
- *         type: 'decimal'
- *     }
- * @extends argos.Fields.TextField
- * @requires argos.FieldManager
+ * {
+ *   name: 'SalesPotential',
+ *   property: 'SalesPotential',
+ *   label: this.salesPotentialText,
+ *   type: 'decimal'
+ * }
+ * @extends module:argos/Fields/TextField
  */
-const control = declare('argos.Fields.DecimalField', [TextField], /** @lends argos.Fields.DecimalField# */{
+const control = declare('argos.Fields.DecimalField', [TextField], /** @lends modules:argos/Fields/DecimalField.prototype */{
   /**
    * @cfg {Number}
    * Defines how many decimal places to format when setting the value.

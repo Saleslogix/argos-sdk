@@ -16,21 +16,21 @@ define('argos/Fields/HiddenField', ['module', 'exports', 'dojo/_base/declare', '
   }
 
   /**
-   * @class argos.Fields.HiddenField
-   * @classdesc The Hidden Field is {@link TextField TextField} but instead binds to an `<input type="hidden"`>.
+   * @class
+   * @alias module:argos/Fields/HiddenField
+   * @classdesc The Hidden Field is {@link module:argos/Fields/TextField TextField} but instead binds to an `<input type="hidden"`>.
    *
    * Meaning that the field will not be displayed on screen but may still store strings of text.
    *
    * @example
-   *     {
-   *         name: 'StatusCodeKey',
-   *         property: 'StatusCodeKey',
-   *         type: 'hidden'
-   *     }
-   * @extends argos.Fields.TextField
-   * @requires argos.FieldManager
+   * {
+   *   name: 'StatusCodeKey',
+   *   property: 'StatusCodeKey',
+   *   type: 'hidden'
+   * }
+   * @extends module:argos/Fields/TextField
    */
-  var control = (0, _declare2.default)('argos.Fields.HiddenField', [_TextField2.default], /** @lends argos.Fields.HiddenField# */{
+  var control = (0, _declare2.default)('argos.Fields.HiddenField', [_TextField2.default], /** @lends module:argos/Fields/HiddenField.prototype */{
     propertyTemplate: new Simplate(['<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">', '</div>']),
 
     /**
@@ -64,6 +64,9 @@ define('argos/Fields/HiddenField', ['module', 'exports', 'dojo/_base/declare', '
        * limitations under the License.
        */
 
+  /**
+   * @module argos/Fields/HiddenField
+   */
   exports.default = _FieldManager2.default.register('hidden', control);
   module.exports = exports['default'];
 });

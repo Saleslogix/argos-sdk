@@ -13,12 +13,16 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Fields/NoteField
+ */
 import declare from 'dojo/_base/declare';
 import TextAreaField from './TextAreaField';
 import FieldManager from '../FieldManager';
 
 /**
- * @class argos.Fields.NoteField
+ * @class
+ * @alias module:argos/Fields/NoteField
  * @classdesc The NoteField is a special case where an overly long text string should be inserted and
  * you want to take the user to another view for that specific input.
  *
@@ -27,15 +31,14 @@ import FieldManager from '../FieldManager';
  * defined in this field ("Notes" by default").
  *
  * @example
- *     {
- *         name: 'FullDescription',
- *         property: 'FullDescription',
- *         label: this.fullDescriptionText,
- *         type: 'note',
- *         view: 'text_editor_edit'
- *     }
- * @extends argos.Fields.TextAreaField
- * @requires argos.FieldManager
+ * {
+ *   name: 'FullDescription',
+ *   property: 'FullDescription',
+ *   label: this.fullDescriptionText,
+ *   type: 'note',
+ *   view: 'text_editor_edit'
+ * }
+ * @extends module:argos/Fields/TextAreaField
  */
 const control = declare('argos.Fields.NoteField', [TextAreaField], {});
 

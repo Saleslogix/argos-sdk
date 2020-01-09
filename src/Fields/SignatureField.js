@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Fields/SignatureField
+ */
 import declare from 'dojo/_base/declare';
 import format from '../Format';
 import EditorField from './EditorField';
@@ -23,23 +26,21 @@ import getResource from '../I18n';
 const resource = getResource('signatureField');
 
 /**
- * @class argos.Fields.SignatureField
+ * @class
+ * @alias module:argos/Fields//SignatureField
  * @classdesc The SignatureField uses an HTML5 canvas element to render previews of the signature vector
- * provided by it's editor view {@link SignatureView SignatureView}.
+ * provided by it's editor view {@link module:argos/Views/Signature SignatureView}.
  *
  * @example
- *     {
- *         name: 'Signature',
- *         property: 'Signature',
- *         label: this.signatureText,
- *         type: 'signature'
- *     }
- * @extends argos.Fields.EditorField
- * @requires argos.FieldManager
- * @requires argos.Views.SignatureView
- * @requires argos.Format
+ * {
+ *    name: 'Signature',
+ *    property: 'Signature',
+ *    label: this.signatureText,
+ *    type: 'signature'
+ * }
+ * @extends module:argos/Fields/EditorField
  */
-const control = declare('argos.Fields.SignatureField', [EditorField], /** @lends argos.Fields.SignatureField# */{
+const control = declare('argos.Fields.SignatureField', [EditorField], /** @lends module:argos/Fields/SignatureField.prototype */{
   // Localization
   /**
    * @property {String}
