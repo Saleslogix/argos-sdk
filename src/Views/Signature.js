@@ -13,23 +13,25 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Views/Signature
+ */
 import declare from 'dojo/_base/declare';
 import win from 'dojo/window';
 import format from '../Format';
 import View from '../View';
 import getResource from '../I18n';
 
-
 const resource = getResource('signature');
 
 /**
- * @class argos.Views.Signature
+ * @class
+ * @alias module:argos/Views/Signature
  * @classdesc Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
  * It goes hand-in-hand with {@link SignatureField SignatureField}
- * @extends argos.View
- * @requires argos.Format
+ * @extends module:argos/View
  */
-const __class = declare('argos.Views.Signature', [View], /** @lends argos.Views.Signature# */{
+const __class = declare('argos.Views.Signature', [View], /** @lends module:argos/Views/Signature.prototype */{
   // Localization
   /**
    * @property {String}

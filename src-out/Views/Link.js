@@ -13,6 +13,11 @@ define('argos/Views/Link', ['module', 'exports', 'dojo/_base/declare', '../View'
     };
   }
 
+  /**
+   * @class
+   * @alias module:argos/Views/Link
+   * @extends module:argos/View
+   */
   /* Copyright 2017 Infor
    *
    * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,10 +33,16 @@ define('argos/Views/Link', ['module', 'exports', 'dojo/_base/declare', '../View'
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.Views.Link', [_View2.default], {
+  /**
+   * @module argos/Views/Link
+   */
+  var __class = (0, _declare2.default)('argos.Views.Link', [_View2.default], /** @lends module:argos/Views/Link.prototype */{
     id: 'link_view',
     titleText: '',
     viewType: 'detail',
+    /**
+     *
+     */
     link: '',
     cls: 'link-view',
     widgetTemplate: new Simplate(['<div id="{%= $.id %}" data-title="{%= $.titleText %}" class="detail panel {%= $.cls %}">', '<iframe class="link-node" data-dojo-attach-point="linkNode"', 'sandbox="allow-scripts allow-forms allow-same-origin">', '</iframe>', '</div>']),

@@ -30,14 +30,18 @@ define('argos/Views/FileSelect', ['module', 'exports', 'dojo/_base/declare', '..
    * limitations under the License.
    */
 
+  /**
+   * @module argos/Views/FileSelect
+   */
   var resource = (0, _I18n2.default)('fileSelect');
 
   /**
-   * @class argos.Views.FileSelect
+   * @class
+   * @alias module:argos/Views/FileSelect
    * @classdesc File Select View is a view for selection files capabilities.
-   * @extends argos.View
+   * @extends module:argos/View
    */
-  var __class = (0, _declare2.default)('argos.Views.FileSelect', [_View2.default], /** @lends argos.Views.FileSelect# */{
+  var __class = (0, _declare2.default)('argos.Views.FileSelect', [_View2.default], /** @lends module:argos/Views/FileSelect.prototype */{
     // Localization
     titleText: resource.titleText,
     addFileText: resource.addFileText,

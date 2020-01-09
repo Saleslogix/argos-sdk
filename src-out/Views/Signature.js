@@ -22,11 +22,11 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', 'doj
   var resource = (0, _I18n2.default)('signature');
 
   /**
-   * @class argos.Views.Signature
+   * @class
+   * @alias module:argos/Views/Signature
    * @classdesc Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
    * It goes hand-in-hand with {@link SignatureField SignatureField}
-   * @extends argos.View
-   * @requires argos.Format
+   * @extends module:argos/View
    */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
@@ -43,7 +43,10 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', 'doj
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.Views.Signature', [_View2.default], /** @lends argos.Views.Signature# */{
+  /**
+   * @module argos/Views/Signature
+   */
+  var __class = (0, _declare2.default)('argos.Views.Signature', [_View2.default], /** @lends module:argos/Views/Signature.prototype */{
     // Localization
     /**
      * @property {String}

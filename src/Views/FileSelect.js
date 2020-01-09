@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Views/FileSelect
+ */
 import declare from 'dojo/_base/declare';
 
 import getResource from '../I18n';
@@ -22,11 +25,12 @@ import '../Fields/TextField';
 const resource = getResource('fileSelect');
 
 /**
- * @class argos.Views.FileSelect
+ * @class
+ * @alias module:argos/Views/FileSelect
  * @classdesc File Select View is a view for selection files capabilities.
- * @extends argos.View
+ * @extends module:argos/View
  */
-const __class = declare('argos.Views.FileSelect', [View], /** @lends argos.Views.FileSelect# */{
+const __class = declare('argos.Views.FileSelect', [View], /** @lends module:argos/Views/FileSelect.prototype */{
   // Localization
   titleText: resource.titleText,
   addFileText: resource.addFileText,

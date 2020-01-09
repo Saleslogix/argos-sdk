@@ -13,13 +13,24 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Views/Link
+ */
 import declare from 'dojo/_base/declare';
 import View from '../View';
 
-const __class = declare('argos.Views.Link', [View], {
+/**
+ * @class
+ * @alias module:argos/Views/Link
+ * @extends module:argos/View
+ */
+const __class = declare('argos.Views.Link', [View], /** @lends module:argos/Views/Link.prototype */{
   id: 'link_view',
   titleText: '',
   viewType: 'detail',
+  /**
+   *
+   */
   link: '',
   cls: 'link-view',
   widgetTemplate: new Simplate([
