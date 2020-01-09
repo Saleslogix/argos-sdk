@@ -17,7 +17,7 @@ define('argos/Store/PouchDB', ['module', 'exports', 'dojo/_base/declare', 'dojo/
     };
   }
 
-  exports.default = (0, _declare2.default)('argos.Store.PouchDB', null, /** @lends argos.Store.PouchDB# */{
+  exports.default = (0, _declare2.default)('argos.Store.PouchDB', null, /** @lends module:argos/Store/PouchDB.prototype */{
 
     // interface properties
     /**

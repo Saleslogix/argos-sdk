@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Store/PouchDB
+ */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import Deferred from 'dojo/_base/Deferred';
@@ -20,12 +23,10 @@ import QueryResults from 'dojo/store/util/QueryResults';
 
 
 /**
- * @class argos.Store.PouchDB
- *
- * @requires argos.Convert
- * @requires argos.Utility
+ * @class
+ * @alias module:argos/Store/PouchDB
  */
-export default declare('argos.Store.PouchDB', null, /** @lends argos.Store.PouchDB# */ {
+export default declare('argos.Store.PouchDB', null, /** @lends module:argos/Store/PouchDB.prototype */ {
 
   // interface properties
   /**

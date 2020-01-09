@@ -22,7 +22,8 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
   }
 
   /**
-   * @class argos.Store.SData
+   * @class
+   * @alias module:argos/Store/SData
    * @classdesc SData is an extension of dojo.store that is tailored to handling SData parameters, requests,
    * and pre-handling the responses.
    */
@@ -41,7 +42,10 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.Store.SData', null, /** @lends argos.Store.SData# */{
+  /**
+   * @module argos/Store/SData
+   */
+  var __class = (0, _declare2.default)('argos.Store.SData', null, /** @lends module:argos/Store/SData.prototype */{
     doDateConversion: false,
 
     /* todo: is this the appropriate name for the expansion scope? */

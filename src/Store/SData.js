@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Store/SData
+ */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import Deferred from 'dojo/_base/Deferred';
@@ -21,11 +24,12 @@ import convert from '../Convert';
 import utility from '../Utility';
 
 /**
- * @class argos.Store.SData
+ * @class
+ * @alias module:argos/Store/SData
  * @classdesc SData is an extension of dojo.store that is tailored to handling SData parameters, requests,
  * and pre-handling the responses.
  */
-const __class = declare('argos.Store.SData', null, /** @lends argos.Store.SData# */ {
+const __class = declare('argos.Store.SData', null, /** @lends module:argos/Store/SData.prototype */ {
   doDateConversion: false,
 
   /* todo: is this the appropriate name for the expansion scope? */
