@@ -48,13 +48,19 @@ define('argos/Models/_OfflineModelBase', ['module', 'exports', 'dojo/_base/decla
    * limitations under the License.
    */
 
+  /**
+   * @module argos/Models/_OfflineModelBase
+   */
   var databaseName = 'crm-offline';
   var _store = new _PouchDB2.default(databaseName);
 
   /**
-   * @class argos.Models._OfflineModelBase
+   * @class
+   * @alias module:argos/Models/_OfflineModelBase
+   * @extends module:argos/Models/_ModelBase
+   * @extends module:argos/_CustomizationMixin
    */
-  var __class = (0, _declare2.default)('argos.Models.Offline.OfflineModelBase', [_ModelBase3.default, _CustomizationMixin3.default], {
+  var __class = (0, _declare2.default)('argos.Models.Offline.OfflineModelBase', [_ModelBase3.default, _CustomizationMixin3.default], /** @lends module:argos/Models/_OfflineModelBase.prototype */{
 
     store: null,
     modelType: _Types2.default.OFFLINE,

@@ -19,7 +19,7 @@ define('argos/Models/_ModelBase', ['module', 'exports', 'dojo/_base/declare', 'd
     };
   }
 
-  exports.default = (0, _declare2.default)('argos.Models._ModelBase', [_Evented2.default, _Stateful2.default, _CustomizationMixin3.default], /** @lends argos.Models_ModelBase# */{
+  exports.default = (0, _declare2.default)('argos.Models._ModelBase', [_Evented2.default, _Stateful2.default, _CustomizationMixin3.default], /** @lends module:argos/Models/_ModelBase.prototype */{
     id: null,
     customizationSet: 'models',
     app: null,

@@ -22,7 +22,9 @@ define('argos/Models/RecentlyViewed/Offline', ['module', 'exports', 'dojo/_base/
   var resource = (0, _I18n2.default)('recentlyViewedModel');
 
   /**
-   * @class argos.Models.RecentlyViewed.Offline
+   * @class
+   * @alias module:argos/Models/RecentlyViewed/Offline
+   * @extends module:argos/Models/_OfflineModelBase
    */
   /* Copyright 2017 Infor
    *
@@ -39,7 +41,10 @@ define('argos/Models/RecentlyViewed/Offline', ['module', 'exports', 'dojo/_base/
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.Models.RecentlyViewed.Offline', [_OfflineModelBase3.default], {
+  /**
+   * @module argos/Models/RecentlyViewed/Offline
+   */
+  var __class = (0, _declare2.default)('argos.Models.RecentlyViewed.Offline', [_OfflineModelBase3.default], /** @lends module:argos/Models/RecentlyViewed/Offline.prototype*/{
     id: 'recentlyviewed_offline_model',
     entityName: 'RecentlyViewed',
     modelName: 'RecentlyViewed',

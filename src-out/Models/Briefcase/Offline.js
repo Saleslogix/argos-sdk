@@ -22,7 +22,9 @@ define('argos/Models/Briefcase/Offline', ['module', 'exports', 'dojo/_base/decla
   var resource = (0, _I18n2.default)('briefcaseModel');
 
   /**
-   * @class argos.Models.Briefcase.Offline
+   * @class
+   * @alias module:argos/Models/Briefcase/Offline
+   * @extends module:argos/Models/_OfflineModelBase
    */
   /* Copyright 2017 Infor
    *
@@ -39,7 +41,10 @@ define('argos/Models/Briefcase/Offline', ['module', 'exports', 'dojo/_base/decla
    * limitations under the License.
    */
 
-  var __class = (0, _declare2.default)('argos.Models.Briefcase.Offline', [_OfflineModelBase3.default], {
+  /**
+   * @module argos/Models/Briefcase/Offline
+   */
+  var __class = (0, _declare2.default)('argos.Models.Briefcase.Offline', [_OfflineModelBase3.default], /** @lends module:argos/Models/Briefcase/Offline.prototype */{
     id: 'briefcase_offline_model',
     entityName: 'Briefcase',
     modelName: 'Briefcase',

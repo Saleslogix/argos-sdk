@@ -14,7 +14,13 @@
  */
 
 /**
- * @class argos.Models.Types
+ * @module argos/Models/Types
+ */
+
+/**
+ * @readonly
+ * @enum {string}
+ * @alias module:argos/Models/Types
  */
 export default {
   SDATA: 'sdata',

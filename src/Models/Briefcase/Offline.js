@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Models/Briefcase/Offline
+ */
 import declare from 'dojo/_base/declare';
 import _OfflineModelBase from '../_OfflineModelBase';
 import Manager from '../Manager';
@@ -23,9 +26,11 @@ import getResource from '../../I18n';
 const resource = getResource('briefcaseModel');
 
 /**
- * @class argos.Models.Briefcase.Offline
+ * @class
+ * @alias module:argos/Models/Briefcase/Offline
+ * @extends module:argos/Models/_OfflineModelBase
  */
-const __class = declare('argos.Models.Briefcase.Offline', [_OfflineModelBase], {
+const __class = declare('argos.Models.Briefcase.Offline', [_OfflineModelBase], /** @lends module:argos/Models/Briefcase/Offline.prototype */{
   id: 'briefcase_offline_model',
   entityName: 'Briefcase',
   modelName: 'Briefcase',

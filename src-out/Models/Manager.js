@@ -14,7 +14,9 @@ define('argos/Models/Manager', ['module', 'exports', 'dojo/_base/lang'], functio
   var store = new Map();
 
   /**
-   * @class argos.Models.Manager
+   * @class
+   * @alias module:argos/Models/Manager
+   * @static
    */
   /* Copyright 2017 Infor
    *
@@ -31,7 +33,10 @@ define('argos/Models/Manager', ['module', 'exports', 'dojo/_base/lang'], functio
    * limitations under the License.
    */
 
-  var __class = _lang2.default.setObject('argos.Models.Manager', {
+  /**
+   * @module argos/Models/Manager
+   */
+  var __class = _lang2.default.setObject('argos.Models.Manager', /** @lends module:argos/Models/Manager */{
     register: function register(modelName, modelType, ctor) {
       var value = new Map();
       if (store.has(modelName)) {

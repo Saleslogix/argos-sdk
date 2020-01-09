@@ -28,9 +28,11 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
   }
 
   /**
-   * @class argos.Models._SDataModelBase
+   * @class
+   * @alias module:argos/Models/SDataModelBase
+   * @extends module:argos/Models/_ModelBase
    */
-  var __class = (0, _declare2.default)('argos.Models.SDataModelBase', [_ModelBase3.default], /** @lends argos.Models.SDataModelBase# */{
+  var __class = (0, _declare2.default)('argos.Models.SDataModelBase', [_ModelBase3.default], /** @lends module:argos/Models/SDataModelBase.prototype */{
     queryModels: null,
     ModelType: _Types2.default.SDATA,
 
@@ -324,6 +326,9 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
        * limitations under the License.
        */
 
+  /**
+   * @module argos/Models/SDataModelBase
+   */
   exports.default = __class;
   module.exports = exports['default'];
 });

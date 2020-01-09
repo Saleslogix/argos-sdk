@@ -13,7 +13,7 @@ define('argos/Models/Adapter', ['module', 'exports', './Manager', './Types'], fu
     };
   }
 
-  exports.default = {
+  exports.default = /** @lends module:argos/Models/Adapter */{
     getModel: function getModel(entityName) {
       var Ctor = void 0;
       if (App.onLine) {

@@ -13,13 +13,18 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Models/Adapter
+ */
 import Manager from './Manager';
 import MODEL_TYPES from './Types';
 
 /**
- * @class argos.Models.Adapter
+ * @class
+ * @alias module:argos/Models/Adapter
+ * @static
  */
-export default {
+export default /** @lends module:argos/Models/Adapter */{
   getModel: function getModel(entityName) {
     let Ctor;
     if (App.onLine) {

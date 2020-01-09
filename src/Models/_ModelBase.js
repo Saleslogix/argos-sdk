@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * @module argos/Models/_ModelBase
+ */
 import declare from 'dojo/_base/declare';
 import Evented from 'dojo/Evented';
 import Stateful from 'dojo/Stateful';
@@ -19,9 +23,11 @@ import utility from '../Utility';
 import _CustomizationMixin from '../_CustomizationMixin';
 
 /**
- * @class argos.Models._ModelBase
+ * @class
+ * @alias module:argos/Models/_ModelBase
+ * @extends module:argos/_CustomizationMixin
  */
-export default declare('argos.Models._ModelBase', [Evented, Stateful, _CustomizationMixin], /** @lends argos.Models_ModelBase# */{
+export default declare('argos.Models._ModelBase', [Evented, Stateful, _CustomizationMixin], /** @lends module:argos/Models/_ModelBase.prototype */{
   id: null,
   customizationSet: 'models',
   app: null,

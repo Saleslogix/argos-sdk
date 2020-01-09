@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Models/_OfflineModelBase
+ */
 import declare from 'dojo/_base/declare';
 import lang from 'dojo/_base/lang';
 import PouchDBStore from '../Store/PouchDB';
@@ -26,14 +29,16 @@ import QueryResults from 'dojo/store/util/QueryResults';
 import MODEL_TYPES from './Types';
 import convert from '../Convert';
 
-
 const databaseName = 'crm-offline';
 const _store = new PouchDBStore(databaseName);
 
 /**
- * @class argos.Models._OfflineModelBase
+ * @class
+ * @alias module:argos/Models/_OfflineModelBase
+ * @extends module:argos/Models/_ModelBase
+ * @extends module:argos/_CustomizationMixin
  */
-const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _CustomizationMixin], {
+const __class = declare('argos.Models.Offline.OfflineModelBase', [_ModelBase, _CustomizationMixin], /** @lends module:argos/Models/_OfflineModelBase.prototype */{
 
   store: null,
   modelType: MODEL_TYPES.OFFLINE,

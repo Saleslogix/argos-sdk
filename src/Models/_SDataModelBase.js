@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Models/SDataModelBase
+ */
 import declare from 'dojo/_base/declare';
 import SDataStore from '../Store/SData';
 import Deferred from 'dojo/Deferred';
@@ -24,9 +27,11 @@ import _ModelBase from './_ModelBase';
 import MODEL_TYPES from './Types';
 
 /**
- * @class argos.Models._SDataModelBase
+ * @class
+ * @alias module:argos/Models/SDataModelBase
+ * @extends module:argos/Models/_ModelBase
  */
-const __class = declare('argos.Models.SDataModelBase', [_ModelBase], /** @lends argos.Models.SDataModelBase# */{
+const __class = declare('argos.Models.SDataModelBase', [_ModelBase], /** @lends module:argos/Models/SDataModelBase.prototype */{
   queryModels: null,
   ModelType: MODEL_TYPES.SDATA,
 

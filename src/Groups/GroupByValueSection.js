@@ -26,6 +26,7 @@ const resource = getResource('groupByValueSection');
 /**
  * @class
  * @alias module:argos/Groups/GroupByValueSection
+ * @extends module:argos/Groups/_GroupBySection
  */
 const __class = declare('argos.Groups.GroupByValueSection', [_GroupBySection], /** @lends module:argos/Groups/GroupByValueSection.prototype */{
   name: 'DateTimeSectionFilter',

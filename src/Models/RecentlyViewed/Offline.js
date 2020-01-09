@@ -13,19 +13,23 @@
  * limitations under the License.
  */
 
+/**
+ * @module argos/Models/RecentlyViewed/Offline
+ */
 import declare from 'dojo/_base/declare';
 import _OfflineModelBase from '../_OfflineModelBase';
 import Manager from '../Manager';
 import MODEL_TYPES from '../Types';
 import getResource from '../../I18n';
 
-
 const resource = getResource('recentlyViewedModel');
 
 /**
- * @class argos.Models.RecentlyViewed.Offline
+ * @class
+ * @alias module:argos/Models/RecentlyViewed/Offline
+ * @extends module:argos/Models/_OfflineModelBase
  */
-const __class = declare('argos.Models.RecentlyViewed.Offline', [_OfflineModelBase], {
+const __class = declare('argos.Models.RecentlyViewed.Offline', [_OfflineModelBase], /** @lends module:argos/Models/RecentlyViewed/Offline.prototype*/{
   id: 'recentlyviewed_offline_model',
   entityName: 'RecentlyViewed',
   modelName: 'RecentlyViewed',
