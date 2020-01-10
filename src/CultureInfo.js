@@ -13,13 +13,11 @@
  * limitations under the License.
  */
 
-/**
- * @module argos/CultureInfo
- */
 import lang from 'dojo/_base/lang';
 
 /**
  * Gets the culture information from the regional context (l20n).
+ * @module argos/CultureInfo
  */
 export default function () {
   const localeContext = window.regionalContext;
