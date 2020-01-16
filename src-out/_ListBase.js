@@ -184,7 +184,7 @@ define('argos/_ListBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * @property {Simplate}
      * The template used to render the single list action row.
      */
-    listActionTemplate: new Simplate(['<ul id="popupmenu-{%= $$.getItemActionKey($) %}" data-dojo-attach-point="actionsNode" class="popupmenu">', '{%! $$.loadingTemplate %}', '</ul>']),
+    listActionTemplate: new Simplate(['<ul id="popupmenu-{%= $$.getItemActionKey($) %}" data-dojo-attach-point="actionsNode" class="actions-row popupmenu">', '{%! $$.loadingTemplate %}', '</ul>']),
     /**
      * @property {Simplate}
      * The template used to render a list action item.
@@ -983,6 +983,10 @@ define('argos/_ListBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       var actionRow = void 0;
       if (rowNode) {
         actionRow = $(rowNode).find('.actions-row')[0];
+        if (typeof actionRow === 'undefined') {
+          throw new Error('The actions-row domNode is missing. Ensure your listActionTemplate has an "actions-row" className.');
+        }
+
         $(actionRow).empty();
       }
 
