@@ -51,6 +51,8 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
     postCreate: function postCreate() {
       this._ActionMixin = new _ActionMixin3.default();
       this._ActionMixin.postCreate(this);
+      this._ActionMixin.onCheckAction = this.hasAction.bind(this);
+      this._ActionMixin.onInvokeAction = this.invokeAction.bind(this);
     },
     hasAction: function hasAction(name) {
       return this._ActionMixin.hasAction(name);

@@ -35,6 +35,8 @@ const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templa
   postCreate: function postCreate() {
     this._ActionMixin = new _ActionMixin();
     this._ActionMixin.postCreate(this);
+    this._ActionMixin.onCheckAction = this.hasAction.bind(this);
+    this._ActionMixin.onInvokeAction = this.invokeAction.bind(this);
   },
   hasAction: function hasAction(name) {
     return this._ActionMixin.hasAction(name);

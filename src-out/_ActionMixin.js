@@ -65,9 +65,9 @@ define('argos/_ActionMixin', ['module', 'exports'], function (module, exports) {
         var el = $(evt.target).closest('[data-action]').get(0);
         var action = $(el).attr('data-action');
 
-        if (action && this._isValidElementForAction(el) && this.hasAction(action, evt, el)) {
+        if (action && this._isValidElementForAction(el) && this.onCheckAction(action, evt, el)) {
           var parameters = this._getParametersForAction(action, evt, el);
-          this.invokeAction(action, parameters, evt, el);
+          this.onInvokeAction(action, parameters, evt, el);
           evt.stopPropagation();
         }
       }
@@ -99,9 +99,19 @@ define('argos/_ActionMixin', ['module', 'exports'], function (module, exports) {
         return parameters;
       }
     }, {
+      key: 'onCheckAction',
+      value: function onCheckAction(name, evt, el) {
+        return this.hasAction(name, evt, el);
+      }
+    }, {
       key: 'hasAction',
       value: function hasAction(name /* , evt, el*/) {
         return typeof this.container[name] === 'function';
+      }
+    }, {
+      key: 'onInvokeAction',
+      value: function onInvokeAction(name, parameters, evt, el) {
+        this.invokeAction(name, parameters, evt, el);
       }
     }, {
       key: 'invokeAction',
