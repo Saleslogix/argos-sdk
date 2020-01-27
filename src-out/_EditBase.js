@@ -373,7 +373,9 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      */
     _onHideField: function _onHideField(field) {
       $(field.containerNode).addClass('row-hidden');
-      $(field.containerNode).parent().addClass('display-none');
+      if (this.multiColumnView) {
+        $(field.containerNode).parent().addClass('display-none');
+      }
     },
     /**
      * Handler for a fields on enable event.
