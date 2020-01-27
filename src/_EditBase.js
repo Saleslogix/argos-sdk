@@ -433,7 +433,9 @@ const __class = declare('argos._EditBase', [View], /** @lends module:argos/_Edit
    */
   _onHideField: function _onHideField(field) {
     $(field.containerNode).addClass('row-hidden');
-    $(field.containerNode).parent().addClass('display-none');
+    if (this.multiColumnView) {
+      $(field.containerNode).parent().addClass('display-none');
+    }
   },
   /**
    * Handler for a fields on enable event.
