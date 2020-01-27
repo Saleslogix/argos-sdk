@@ -95,7 +95,7 @@ define('argos/Fields/DecimalField', ['module', 'exports', 'dojo/_base/declare', 
     getValue: function getValue() {
       var value = this.inherited(getValue, arguments);
       // SData (and other functions) expect American formatted numbers
-      value = value.replace(Mobile.CultureInfo.numberFormat.currencyGroupSeparator, '').replace(Mobile.CultureInfo.numberFormat.numberGroupSeparator, '').replace(Mobile.CultureInfo.numberFormat.currencyDecimalSeparator, '.').replace(Mobile.CultureInfo.numberFormat.numberDecimalSeparator, '.');
+      value = value.replace(Mobile.CultureInfo.numberFormat.currencySymbol, '').replace(Mobile.CultureInfo.numberFormat.currencyGroupSeparator, '').replace(Mobile.CultureInfo.numberFormat.numberGroupSeparator, '').replace(Mobile.CultureInfo.numberFormat.currencyDecimalSeparator, '.').replace(Mobile.CultureInfo.numberFormat.numberDecimalSeparator, '.');
       return parseFloat(value);
     },
     /**
