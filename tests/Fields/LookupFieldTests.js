@@ -68,7 +68,7 @@ define('tests/Fields/LookupFieldTests', [
             // Default
             options = field.createNavigationOptions();
             expect(options.singleSelect).toEqual(field.singleSelect);
-            expect(options.tools.tbar[0].cls).toBe('display-none');
+            expect(options.tools.tbar[1].cls).toBe('display-none');
 
             // No singleSelectionAction specified, defaults to 'complete'
             field.singleSelectAction = '';

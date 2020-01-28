@@ -82,6 +82,7 @@ const control = declare('argos.Fields.DecimalField', [TextField], /** @lends mod
     let value = this.inherited(getValue, arguments);
     // SData (and other functions) expect American formatted numbers
     value = value
+      .replace(Mobile.CultureInfo.numberFormat.currencySymbol, '')
       .replace(Mobile.CultureInfo.numberFormat.currencyGroupSeparator, '')
       .replace(Mobile.CultureInfo.numberFormat.numberGroupSeparator, '')
       .replace(Mobile.CultureInfo.numberFormat.currencyDecimalSeparator, '.')
